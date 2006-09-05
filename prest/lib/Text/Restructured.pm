@@ -274,6 +274,7 @@ sub init : method {
     delete $main::opt_D{perlpath};
     $self->{MY_DEFAULT_ROLE} = $DEFAULT_ROLE;
     $self->{MY_ROLES} = { %ROLES };
+    $self->{ANONYMOUS_TARGETS} = [ ];
 }
 
 # Returns a DOM object for a problematic with its ids.
@@ -352,170 +353,168 @@ sub Coalesce : method {
     my ($enumtype, $enumval, $enumprefix, $enumsuffix) = ('') x 4;
     for ($p=0; $p <= 2 && $p < @$paras; $p++) {
 #print STDERR "[",join("][",@{$paras}[0..2]),"]\n";
-	if (defined $paras->[$p]) {
-	    # Pull out the part of the paragraph prior to a blank line
-	    my @split = split /^(\s*\n)/, $paras->[$p], 2;
-	    my ($pre_p, $post_p) = @split > 1 ? @split :
-		($paras->[$p], '');
-	    # May need to split the first paragraph
-	    if ($pre_p =~ /^($BULLETS)(?: |\n)/so) {
-		# Bulleted list
-		if ((my @s = split /^(?![$1]|  )(.)/m, $pre_p, 2) > 1) {
-		    # Bulleted list has unexpected unindent
-		    splice(@$paras, $p, 1,($s[0],
-					   # This is a sentinel that an error occurred
-					   "\n" . q($self->system_message(2, $source, $lineno, "Bullet list ends without a blank line; unexpected unindent.")),
-					   "$s[1]$s[-1]$post_p"));
-		}
+	# Pull out the part of the paragraph prior to a blank line
+	my @split = split /^(\s*\n)/, $paras->[$p], 2;
+	my ($pre_p, $post_p) = @split > 1 ? @split :
+	    ($paras->[$p], '');
+	# May need to split the first paragraph
+	if ($pre_p =~ /^($BULLETS)(?: |\n)/so) {
+	    # Bulleted list
+	    if ((my @s = split /^(?![$1]|  )(.)/m, $pre_p, 2) > 1) {
+		# Bulleted list has unexpected unindent
+		splice(@$paras, $p, 1,($s[0],
+				       # This is a sentinel that an error occurred
+				       "\n" . q($self->system_message(2, $source, $lineno, "Bullet list ends without a blank line; unexpected unindent.")),
+				       "$s[1]$s[-1]$post_p"));
 	    }
-	    elsif ($pre_p =~ /^($LINE_BLOCK)(?: |\n)/so) {
-		# Line block
-		if ((my @s = split /^(?!$LINE_BLOCK(?:\s+\S|\n)|  )(.)/m,
+	}
+	elsif ($pre_p =~ /^($LINE_BLOCK)(?: |\n)/so) {
+	    # Line block
+	    if ((my @s = split /^(?!$LINE_BLOCK(?:\s+\S|\n)|  )(.)/m,
+		 $pre_p, 2) > 1) {
+		# Line block has unexpected unindent
+		splice(@$paras, $p, 1,($s[0],
+				       # This is a sentinel that an error occurred
+				       "\n" . q($self->system_message(2, $source, $lineno, "Line block ends without a blank line.")),
+				       "$s[1]$s[-1]$post_p"));
+	    }
+	}
+	elsif ($pre_p =~ /^$SECTION_HEADER/om) {
+	}
+	elsif ($pre_p =~ /^((\.\.|__)( |\n))/) {
+	    # A comment or anonymous target
+	    $pre_p =~ s/^(.*\n?)//;
+	    my $first = $1;
+	    if ((my @s = split /^((?:\.\.|__)(?: |\n))/m, $pre_p, 2) > 1){
+		splice(@$paras, $p, 1, "$first$s[0]", "", "$s[1]$s[-1]");
+	    }
+	}
+	elsif ($pre_p =~ /^( |\n)/) {
+	    # These get dealt with elsewhere
+	}
+	elsif ($pre_p =~ /^$ENUM .*\n(?=\Z|\n| |$ENUM)/o) {
+	    # An enumerated list
+	    my ($prefix,$index,$suffix) = map(defined $_ ? $_ : '',
+					      ($1,$2,$3));
+	    my $type = $self->EnumType($index);
+	    $type = 'arabic' if $type eq '#';
+	    my $val = $self->EnumVal($index, $type);
+	    $pre_p =~ s/^(.*\n)//;
+	    my $first = $1;
+	    my @enum_list;
+	    while ($pre_p ne '') {
+		if ((my @s = split /^($ENUM .*\n(?=\Z|\n| |$ENUM))/mo,
 		     $pre_p, 2) > 1) {
-		    # Line block has unexpected unindent
-		    splice(@$paras, $p, 1,($s[0],
-					   # This is a sentinel that an error occurred
-					   "\n" . q($self->system_message(2, $source, $lineno, "Line block ends without a blank line.")),
-					   "$s[1]$s[-1]$post_p"));
-		}
-	    }
-	    elsif ($pre_p =~ /^$SECTION_HEADER/om) {
-	    }
-	    elsif ($pre_p =~ /^((\.\.|__)( |\n))/) {
-		# A comment or anonymous target
-		$pre_p =~ s/^(.*\n?)//;
-		my $first = $1;
-		if ((my @s = split /^((?:\.\.|__)(?: |\n))/m, $pre_p, 2) > 1){
-		    splice(@$paras, $p, 1, "$first$s[0]", "", "$s[1]$s[-1]");
-		}
-	    }
-	    elsif ($pre_p =~ /^( |\n)/) {
-		# These get dealt with elsewhere
-	    }
-	    elsif ($pre_p =~ /^$ENUM .*\n(?=\Z|\n| |$ENUM)/o) {
-		# An enumerated list
-		my ($prefix,$index,$suffix) = map(defined $_ ? $_ : '',
-						  ($1,$2,$3));
-		my $type = $self->EnumType($index);
-		$type = 'arabic' if $type eq '#';
-		my $val = $self->EnumVal($index, $type);
-		$pre_p =~ s/^(.*\n)//;
-		my $first = $1;
-		my @enum_list;
-		while ($pre_p ne '') {
-		    if ((my @s = split /^($ENUM .*\n(?=\Z|\n| |$ENUM))/mo,
-			 $pre_p, 2) > 1) {
-			# Check for out-of-sequence enumerated list item
-			my ($pf,$in,$sf) = map(defined $_ ? $_ : '',
-					       @s[2..4]);
-			my $v = $self->EnumVal($in, $type);
-			if ($pf ne $prefix || $sf ne $suffix ||
-			    ($v ne '#' && $v != $val+1)) {
-			    my $enum_list = join('',@enum_list);
-			    splice(@$paras, $p, 1, "$enum_list$first$s[0]",
-				   "\n" . q($self->system_message(2, $source, $lineno, "Enumerated list ends without a blank line; unexpected unindent.")),
-				   "$s[1]$s[-1]$post_p");
-			    last;
-			}
-			else {
-			    push(@enum_list, "$first$s[0]");
-			    $first = $s[1];
-			    $pre_p = "$s[-1]";
-			    $val++;
-			}
-		    }
-		    else {
-			push(@enum_list, "$first$pre_p");
-			$first = "";
-			$pre_p = "";
-		    }
-		}
-		push (@enum_list, $first) if $first ne '';
-#print "$p: {\n",map("[$_]\n", @enum_list),"}\n";
-		# Check any enumerated lists for unexpected indent
-		my $prev_paras = '';
-		my $enum;
-		while ($enum = shift @enum_list) {
-		    my $para = $enum;
-		    $para =~ /^($ENUM )/o;
-		    my $spaces = " " x length($1);
-		    $para =~ s/^(.*\n)//;
-		    my $first = $1;
-		    if ((my @s = split /^(?!$spaces)(.)/m, $para, 2) > 1) {
-			my $rest = join('',@enum_list);
-			my @items =
-			    (
-			     # This is a sentinel that an error occurred
-			     "\n" . q($self->system_message(2, $source, $lineno, "Enumerated list ends without a blank line; unexpected unindent.")),
-			     "$s[1]$s[-1]$rest$post_p");
-			# Enumerated list has unexpected indent
-			splice(@$paras, $p, 1, "$prev_paras$first$s[0]",
-			       @items);
+		    # Check for out-of-sequence enumerated list item
+		    my ($pf,$in,$sf) = map(defined $_ ? $_ : '',
+					   @s[2..4]);
+		    my $v = $self->EnumVal($in, $type);
+		    if ($pf ne $prefix || $sf ne $suffix ||
+			($v ne '#' && $v != $val+1)) {
+			my $enum_list = join('',@enum_list);
+			splice(@$paras, $p, 1, "$enum_list$first$s[0]",
+			       "\n" . q($self->system_message(2, $source, $lineno, "Enumerated list ends without a blank line; unexpected unindent.")),
+			       "$s[1]$s[-1]$post_p");
 			last;
 		    }
-		    $prev_paras .= "$first$para";
-		}
-	    }
-	    elsif ($pre_p =~ /^$FIELD_LIST/) {
-		# A field list
-		if ((my @s = split /^(?! |$FIELD_LIST)(.)/m, $pre_p, 2) > 1) {
-		    # Field list has unexpected indent
-		    splice(@$paras, $p, 1,($s[0],
-					   # This is a sentinel that an error occurred
-					   "\n" . q($self->system_message(2, $source, $lineno, "Field list ends without a blank line; unexpected unindent.")),
-					   "$s[1]$s[-1]$post_p"));
-		}
-	    }
-	    elsif ($pre_p =~ /^$OPTION_LIST/) {
-		# An option list
-		if ((my @s = split /^(?! |$OPTION_LIST)(.)/m, $pre_p, 2) > 1){
-		    # Field list has unexpected indent
-		    splice(@$paras, $p, 1,($s[0],
-					   # This is a sentinel that an error occurred
-					   "\n" . q($self->system_message(2, $source, $lineno, "Option list ends without a blank line; unexpected unindent.")),
-					   "$s[1]$s[-1]$post_p"));
-		}
-	    }
-	    elsif ($self->IsTable($pre_p)) {
-		# It's a table
-		if ($pre_p =~ /^[+][+-]+[+] *\n/ &&
-		    (my @s = split /^([^|+])/m, $pre_p, 2) > 1) {
-		    my $after = "$s[1]$s[-1]$post_p";
-		    # Table is missing blank line
-		    splice(@$paras, $p, 1, ($s[0],
-					    # This is a sentinel that an error occurred
-					    "\n" . q($self->system_message(2, $source, $lineno, "Blank line required after table.")),
-					    $after));
-		    if ($after =~ /^ /) {
-			splice(@$paras, $p+1, 0, 
-			       # This is a sentinel that an error occurred
-			       "\n" . q($self->system_message(3, $source, $lineno, "Unexpected indentation.")),
-			       "");
-			
+		    else {
+			push(@enum_list, "$first$s[0]");
+			$first = $s[1];
+			$pre_p = "$s[-1]";
+			$val++;
 		    }
 		}
-	    }
-	    elsif ($pre_p =~ /^\S.*\n /) {
-		# A definition list
-		if (#$pre_p =~ /^\S.*\n\S/m ||
-		    (my @s = split /^(\S.*\n)$/m, $pre_p, 2) > 1) {
-		    # Definition list has unexpected indent
-		    splice(@$paras, $p, 1,($s[0],
-					   # This is a sentinel that an error occurred
-					   "\n" . q($self->system_message(2, $source, $lineno, "Definition list ends without a blank line; unexpected unindent.")),
-					   "$s[1]$post_p"));
+		else {
+		    push(@enum_list, "$first$pre_p");
+		    $first = "";
+		    $pre_p = "";
 		}
 	    }
-	    else {
-		# A standard paragraph
-		if ((my @s = split /^( )/m, $pre_p, 2) > 1
-		    && $pre_p !~ /:: *$/) {
-		    # This "paragraph" has indentation or other problems
-		    splice(@$paras, $p, 1,($s[0],
-					   # This is a sentinel that an error occurred
-					   "\n" . q($self->system_message(3, $source, $lineno, "Unexpected indentation.")),
-					   "$s[1]$s[-1]$post_p"));
+	    push (@enum_list, $first) if $first ne '';
+#print "$p: {\n",map("[$_]\n", @enum_list),"}\n";
+	    # Check any enumerated lists for unexpected indent
+	    my $prev_paras = '';
+	    my $enum;
+	    while ($enum = shift @enum_list) {
+		my $para = $enum;
+		$para =~ /^($ENUM )/o;
+		my $spaces = " " x length($1);
+		$para =~ s/^(.*\n)//;
+		my $first = $1;
+		if ((my @s = split /^(?!$spaces)(.)/m, $para, 2) > 1) {
+		    my $rest = join('',@enum_list);
+		    my @items =
+			(
+			 # This is a sentinel that an error occurred
+			 "\n" . q($self->system_message(2, $source, $lineno, "Enumerated list ends without a blank line; unexpected unindent.")),
+			 "$s[1]$s[-1]$rest$post_p");
+		    # Enumerated list has unexpected indent
+		    splice(@$paras, $p, 1, "$prev_paras$first$s[0]",
+			   @items);
+		    last;
 		}
+		$prev_paras .= "$first$para";
+	    }
+	}
+	elsif ($pre_p =~ /^$FIELD_LIST/) {
+	    # A field list
+	    if ((my @s = split /^(?! |$FIELD_LIST)(.)/m, $pre_p, 2) > 1) {
+		# Field list has unexpected indent
+		splice(@$paras, $p, 1,($s[0],
+				       # This is a sentinel that an error occurred
+				       "\n" . q($self->system_message(2, $source, $lineno, "Field list ends without a blank line; unexpected unindent.")),
+				       "$s[1]$s[-1]$post_p"));
+	    }
+	}
+	elsif ($pre_p =~ /^$OPTION_LIST/) {
+	    # An option list
+	    if ((my @s = split /^(?! |$OPTION_LIST)(.)/m, $pre_p, 2) > 1){
+		# Field list has unexpected indent
+		splice(@$paras, $p, 1,($s[0],
+				       # This is a sentinel that an error occurred
+				       "\n" . q($self->system_message(2, $source, $lineno, "Option list ends without a blank line; unexpected unindent.")),
+				       "$s[1]$s[-1]$post_p"));
+	    }
+	}
+	elsif ($self->IsTable($pre_p)) {
+	    # It's a table
+	    if ($pre_p =~ /^[+][+-]+[+] *\n/ &&
+		(my @s = split /^([^|+])/m, $pre_p, 2) > 1) {
+		my $after = "$s[1]$s[-1]$post_p";
+		# Table is missing blank line
+		splice(@$paras, $p, 1, ($s[0],
+					# This is a sentinel that an error occurred
+					"\n" . q($self->system_message(2, $source, $lineno, "Blank line required after table.")),
+					$after));
+		if ($after =~ /^ /) {
+		    splice(@$paras, $p+1, 0, 
+			   # This is a sentinel that an error occurred
+			   "\n" . q($self->system_message(3, $source, $lineno, "Unexpected indentation.")),
+			   "");
+		    
+		}
+	    }
+	}
+	elsif ($pre_p =~ /^\S.*\n /) {
+	    # A definition list
+	    if (#$pre_p =~ /^\S.*\n\S/m ||
+		(my @s = split /^(\S.*\n)$/m, $pre_p, 2) > 1) {
+		# Definition list has unexpected indent
+		splice(@$paras, $p, 1,($s[0],
+				       # This is a sentinel that an error occurred
+				       "\n" . q($self->system_message(2, $source, $lineno, "Definition list ends without a blank line; unexpected unindent.")),
+				       "$s[1]$post_p"));
+	    }
+	}
+	else {
+	    # A standard paragraph
+	    if ((my @s = split /^( )/m, $pre_p, 2) > 1
+		&& $pre_p !~ /:: *$/) {
+		# This "paragraph" has indentation or other problems
+		splice(@$paras, $p, 1,($s[0],
+				       # This is a sentinel that an error occurred
+				       "\n" . q($self->system_message(3, $source, $lineno, "Unexpected indentation.")),
+				       "$s[1]$s[-1]$post_p"));
 	    }
 	}
 	# Or may need to join consecutive paragraphs
@@ -635,7 +634,7 @@ sub DefinitionList : method {
 	my ($term, $spaces) = ($1, $2);
 	my $dli = $DOM->new('definition_list_item');
 	$dom->append($dli);
-	my $class = '';
+	my $classifiers = '';
 	my @errs;
 	if ($term =~ /:: *$/) {
 	    push (@errs, $self->system_message
@@ -646,22 +645,22 @@ sub DefinitionList : method {
 	# within a literal quote.
 	# Get rid of all literal quotes
 	my %strings;
-	$term =~ s/(\A| )(``((?!``).)*``)(?=[ \n\]\):;])/
+	$term =~ s/(\A| )(``((?!``).)*``)/
 	    my $v = $2; my $s = \$v; bless $s,"STR"; $strings{$s}=$2; "$1$s"/ge;
 	if ($term !~ /^``((?!``).)*``/ && $term =~ /(.*?) : (.*)/) {
 	    $term = $1;
-	    $class = $2;
+	    $classifiers = $2;
 	}
 	# Put the literal quotes back
 	$term =~ s/(STR=SCALAR\(0x[0-9a-f]+\))/$strings{$1} || $1/ge;
-	$class =~ s/(STR=SCALAR\(0x[0-9a-f]+\))/$strings{$1} || $1/ge;
 	my $def = $DOM->new('definition');
 	my $t = $DOM->new('term');
 	push(@errs, $self->Inline($t, $term, $source, $lineno));
 	$dli->append($t);
-	if ($class ne '') {
-	    my @classifiers = split / +: +/, $class;
+	if ($classifiers ne '') {
+	    my @classifiers = split / +: +/, $classifiers;
 	    foreach (@classifiers) {
+		s/(STR=SCALAR\(0x[0-9a-f]+\))/$strings{$1} || $1/ge;
 		my $classifier = $DOM->new('classifier');
 		push(@errs, $self->Inline($classifier, $_, $source, $lineno));
 		$dli->append($classifier);
@@ -721,8 +720,7 @@ sub Directive : method {
     elsif ($directive eq '') {
 	push(@dom, $self->system_message
 	     (2, $source, $lineno, qq($errmsgid "$subst" empty or invalid.),
-	      $lit))
-	    if $subst ne '';
+	      $lit));
     }
     else {
 	if (! defined $DIRECTIVES{$directive}) {
@@ -731,11 +729,16 @@ sub Directive : method {
 	    $DIRECTIVES{$directive} = \&$d if defined &$d;
 	}
 	if (! defined $DIRECTIVES{$directive}) {
-	    push(@dom,$self->system_message
+	    push(@dom, $self->system_message
 		 (1, $source, $lineno,
 		  qq(No directive entry for "$dname" in module "Text::Restructured::Directive".\nTrying "$dname" as canonical directive name.)));
 	    eval("use Text::Restructured::Directive::$directive");
-	    die "Error compiling $directive: $@" if $@ && ! $@ =~ /in \@INC/;
+	    if ($@ && $@ !~ /in \@INC/) {
+		push(@dom, $self->system_message
+		     (4, $source, $lineno,
+		      qq(Error compiling "$directive": $@)));
+		return 1, \@dom, [];
+	    }
 	    return 1, \@dom, [$lit] if defined $DIRECTIVES{$directive};
 	}
 	if ( defined $DIRECTIVES{$directive}) {
@@ -845,6 +848,7 @@ sub EnumType : method {
     my @matches = 
 	$index=~/^(?:([0-9]+)|([a-hj-z])|([A-HJ-Z])|([ivxlcdm]+)|([IVXLCDM]+))|(\#)$/;
     my @defs = grep(defined $matches[$_], 0 .. 5);
+    # Devel::Cover branch 0 1 assert defined $defs[0]
     my $type = defined $defs[0] ? $ENUM_STRINGS[$defs[0]] : 'error';
     return $type;
 }
@@ -893,7 +897,6 @@ sub EnumVal : method {
 #          list of DOM objects and unprocessed paragraphs
 sub Explicit : method {
     my($self, $parent, $para, $source, $lineno) = @_;
-#print "Explicit(",join(',',@_),")\n";
 
     my $new_parent = $parent;
     my $lines = 0;
@@ -920,7 +923,6 @@ sub Explicit : method {
     if ($anon) {
 	$target = "$anon:$next";
     }
-#print "[$anon][$footnote][$target]\n";
     if (defined $footnote) {
 	# It's a footnote or citation
 	my %attr;
@@ -984,7 +986,7 @@ sub Explicit : method {
 	}
 	my $t = $1;
 	my $indent = $anon ? 3 :
-	    $uri =~ /^./ ? length($t)+($anon ? 0 : 3) :
+	    $uri =~ /^./ ? length($t) + 3 :
 	    do { $uri =~ /\n( +)/; length($1 || '') };
 	my $spaces = ' ' x $indent;
 	if ($uri =~ /^(?:\`((?:.|\n)*)\`|([\w.-]+))_$/) {
@@ -1004,7 +1006,6 @@ sub Explicit : method {
 		$uri = "mailto:$uri"
 		    if $uri !~ /^$Text::Restructured::URIre::scheme:/o &&
 		    $uri =~ /\@/ && $uri !~ /^\`.*\`$/;
-		$uri = $1 if $uri =~ /^\`(.*)\`$/;
 		$attr{refuri} = $uri;
 	    }
 	}
@@ -1080,13 +1081,7 @@ sub FieldList : method {
 	my $body = $DOM->new('field_body');
 	$field->append($n, $body);
 	$body->append($self->Inline($n, $name, $source, $lineno+$lines));
-	# Remove initial spaces
-	my @spaces = $para =~ /^(?!\A)( +)/mg;
-	my $spaces = defined $spaces[0] ? $spaces[0] : '';
-	foreach (@spaces) {
-	    $spaces = $_ if length($_) < length($spaces);
-	}
-	$para =~ s/^$spaces//mg;
+	$para = $self->RemoveMinIndent($para, '(?!\A)');
 	$self->Paragraphs($body, $para, $source, $lineno+$lines);
 	$lines += $para =~ tr/\n//;
 	$processed .= $para;
@@ -1102,14 +1097,12 @@ sub HashifyFieldList : method {
     my ($self, $text) = @_;
 
     my %hash;
-    if ($text =~ /^ *($FIELD_LIST)/mo) {
-	my @fields = split /^(?=:)/m, $text;
-	foreach my $field (@fields) {
-	    next unless $field =~ /^:([^:\n]*): *(.*)/s;
-	    my ($fname,$val) = ($1, $2);
-	    chomp $val;
-	    $hash{$fname} = $val;
-	}
+    my @fields = split /^(?=:)/m, $text;
+    foreach my $field (@fields) {
+	next unless $field =~ /^:([^:\n]*): *(.*)/s;
+	my ($fname,$val) = ($1, $2);
+	chomp $val;
+	$hash{$fname} = $val;
     }
 
     return \%hash;
@@ -1143,6 +1136,7 @@ sub Inline : method {
 	if (! $is_end) {
 	    # We don't have an end
 	    if ($start =~ /^(\[|)$/) {
+		last if $start eq '' && $mid eq '';
 		$pending .= "$start$mid";
 		$text = $next1;
 	    }
@@ -1261,20 +1255,7 @@ sub Inline : method {
 		    if ($pre ne '<' && substr($next1,0,1) ne '>' &&
 			$implicit && $uri =~ /(.*)([\)\]\};:\'\",.>\?])$/) {
 			my ($newuri, $lastchar) = ($1, $2);
-			if (defined $LEFT_BRACE{$lastchar}) {
-			    # It's a close brace/paren/bracket/angle bracket
-			    # It's part of the URI if the URI would otherwise
-			    # be unmatched.
-			    my $rb = "\\$lastchar";
-			    my $lb = "\\$LEFT_BRACE{$lastchar}";
-			    my $nleft = $newuri =~ s/($lb)/$1/g;
-			    my $nright = $newuri =~ s/($rb)/$1/g;
-			    if ($nleft <= $nright) {
-				$mid = $uri = $newuri;
-				$text = "$lastchar$text";
-			    }
-			}
-			else {
+			if (!defined $LEFT_BRACE{$lastchar}) {
 			    $mid = $uri = $newuri;
 			    $text = "$lastchar$text";
 			}
@@ -1327,15 +1308,13 @@ sub Inline : method {
 		    if defined $attr{role};
 		$attr{role} = $self->{MY_DEFAULT_ROLE}
 		if ! defined $attr{role};
-		if (defined $attr{role} &&
-		    defined $self->{MY_ROLES}{$attr{role}}) {
+		if (defined $self->{MY_ROLES}{$attr{role}}) {
 		    my $role = $self->{MY_ROLES}{$attr{role}};
 		    $role = $self->{MY_ROLES}{$role->{alias}}
   			while defined $role->{alias};
 		    my @errs = &{$role->{check}}($self, $mid, $lit, $parent,
 						 $source, $lineno, $attr{role})
 			if defined $role->{check};
-#		    delete $attr{role};
 		    delete $attr{position};
 		    if (@errs) {
 			push @problems, @errs;
@@ -1368,7 +1347,7 @@ sub Inline : method {
 		    }
 		    $was_interpreted = 1;
 		}
-		elsif (defined $attr{role}) {
+		else {
 		    # We have something problematic here
 		    my ($dom,$refid,$id) = $self->problematic($lit);
 		    $parent->append($dom);
@@ -1635,15 +1614,19 @@ sub LineBlock : method {
     my $dom = $DOM->new('line_block');
     # Calculate our minimum indentation
     my @indents = map length $_, $para =~ /^(?:$LINE_BLOCK)( +)\S/gm;
-    my $indent = $indents[0];
+    my $indent = $indents[0] || 0;
     grep do { $indent = $_ if $_ < $indent }, @indents;
     my $spaces = ' ' x $indent;
     my @paras = split /^$LINE_BLOCK(?:$spaces(\S))/m, $para;
     my $prev = shift @paras || '';
     if ($prev) {
-	if ($prev =~ /^$LINE_BLOCK *$/) {
-	    my $li = $DOM->new('line');
-	    $dom->append($li);
+	if ($prev =~ /^$LINE_BLOCK *(\n$LINE_BLOCK *)*$/) {
+	    # One or more blank lines
+	    my @lines = $prev =~ /(\n)/g;
+	    foreach (@lines) {
+		my $li = $DOM->new('line');
+		$dom->append($li);
+	    }
 	}
 	else {
 	    # Start with another line block
@@ -1729,8 +1712,10 @@ sub NormalizeName : method {
     # Convert strings of spaces to a single space
     $s =~ s/[\s]+/ /g;
     # Remove inline markup characters
-    $s =~ s/(^|(?!\\).)([*\`|])/$1 eq "\\" ? "$1$2" : $1/ge;
-    $s =~ s/(^|(?!\\).)([*\`|])/$1 eq "\\" ? "$1$2" : $1/ge;
+    my $old_s = $s;
+    while ($s =~ s/(^|(?!\\).)($MARK_START)/$1/go && $s ne $old_s) {
+	$old_s = $s;
+    }
     # Handle backslashes
     $s =~ s/\\(.)/$1/g;
     return $s;
@@ -1776,12 +1761,7 @@ sub OptionList : method {
 	my $proc = "$options$para";
 	# Remove initial spaces
 	$para =~ s/^ +//;
-	my @spaces = $para =~ /^(?!\A)( +)/mg;
-	my $spaces = defined $spaces[0] ? $spaces[0] : '';
-	foreach (@spaces) {
-	    $spaces = $_ if length($_) < length($spaces);
-	}
-	$para =~ s/^$spaces//mg;
+	$para = $self->RemoveMinIndent($para, '(?!\A)');
 	$self->Paragraphs($desc, $para, $source, $lineno);
 	$lineno += $proc =~ tr/\n//;
 	$processed .= $proc;
@@ -1941,14 +1921,6 @@ sub Paragraphs : method {
 		$dom = $DOM->new('block_quote');
 	    }
 	    push @dom, $dom;
-	    # Compute the minimum indent of my lines
-	    my $min_indent = 0xffff;
-	    my @spaces = $para =~ /^( *)\S/mg;
-	    foreach (@spaces) {
-		my $len = length($_);
-		last if $len == 0;
-		$min_indent = $len if $len < $min_indent;
-	    }
 	    # Make sure nothing is unindented
 	    my $badindent = 0;
 	    if ((my @s = split /^(\S)/m, $para, 2) > 1) {
@@ -1956,8 +1928,7 @@ sub Paragraphs : method {
 		$para = $s[0];
 		$badindent = 1;
 	    }
-	    my $spaces = ' ' x $min_indent;
-	    $para =~ s/^$spaces//mg;
+	    $para = $self->RemoveMinIndent($para);
 	    if ($exp_literal) {
 		$dom->append($DOM->newPCDATA($para));
 	    }
@@ -1969,6 +1940,7 @@ sub Paragraphs : method {
 		$self->Paragraphs($dom, $para, $source, $lineno);
 		if (defined $attr) {
 		    my ($spaces) = $attr =~ /\n( *)/;
+		    # Devel::Cover branch 0 1 assert defined $spaces
 		    $attr =~ s/^$spaces//gm if defined $spaces;
 		    my $attribution = $DOM->new('attribution');
 		    $dom->append($attribution);
@@ -2018,14 +1990,7 @@ sub Paragraphs : method {
 	}
 	# Check for transitions 
 	elsif ($para =~ /^(($SEC_CHARS)\2\2\2+)$/o) {
-	    if (length($1) < 4) {
-		push(@dom, system_$self->message(1, $source, $lineno,
-						 "Unexpected possible title overline or transition.\nTreating it as ordinary text because it's so short."));
-		my $p = $DOM->new('paragraph');
-		$p->append($DOM->newPCDATA($para));
-		push(@dom, $p);
-	    }
-	    elsif ($parent->{tag} !~ /^(document|section|entry)$/) {
+	    if ($parent->{tag} !~ /^(document|section|entry)$/) {
 		push(@dom, $self->system_message
 		     (4, $source, $lineno,
 		      "Unexpected section title or transition.", $para));
@@ -2123,8 +2088,11 @@ sub Parse {
 	my $t = "Text::Restructured::$transform";
 	$t =~ s/\./::/g;
 	# Check the original transform path before giving up
+	# Devel::Cover branch 0 0 Anticipates user-defined transforms
 	($t = $transform) =~ s/\./::/g if ! defined &$t;
+	# Devel::Cover branch 0 0 Anticipates user-defined transforms
 	if (! defined &$t) {
+	    # Devel::Cover statement 0 0 Anticipates user-defined transforms
 	    $dom->append
 		($parser->system_message
 		 (4, $source, 0,
@@ -2183,7 +2151,7 @@ sub RegisterName : method {
 	$self->{REFERENCE_DOM}{$tag}{$dom->{attr}{ids}[0]} = $dom
 	    if defined $dom->{attr}{ids};
     }
-    return unless defined $name;
+#    return unless defined $name;
     my $uri = $dom->{attr}{refuri};
     my $level = 1;
     my $target;
@@ -2203,7 +2171,6 @@ sub RegisterName : method {
 	}
 	if (((defined $uri && ($target->{attr}{refuri} || '') ne $uri) ||
 	     (! defined $uri &&
-#	      ($tag !~ 'section' && $ttag ne 'section') &&
 	      # Both targets are explicit 
 	      ($tag =~ /^(target|footnote|citation)$/ &&
 	       $ttag =~ /^(target|footnote|citation)$/) &&
@@ -2248,6 +2215,20 @@ sub RegisterName : method {
     return $error;
 }
 
+# Checks the lines of a paragraph for the minimum indentation and removes it.
+# Arguments: paragraph string, whether to ignore the first line
+# Returns: unindented paragraph string
+sub RemoveMinIndent : method {
+    my ($self, $para, $ifl) = @_;
+    my @spaces = $ifl ? $para =~ /^(?!\A)( +)/mg : $para =~ /^( +)/mg;
+    my $spaces = defined $spaces[0] ? $spaces[0] : '';
+    foreach (@spaces) {
+	$spaces = $_ if length($_) < length($spaces);
+    }
+    $para =~ s/^$spaces//mg;
+    return $para;
+}
+
 # Takes the name associated with one DOM and reassigns it to another
 # Arguments: source DOM, target DOM
 # Returns: None
@@ -2264,8 +2245,8 @@ sub ReregisterName : method {
 	my $space = $NAMESPACE{$tag} || 'target';
 	foreach my $casename (@{$olddom->{attr}{names}}) {
 	    my $name = lc $casename;
-	    next unless defined $name;
 
+	    # Devel::Cover +3 branch 0 1 All targets probably point to old DOM
 	    @{$self->{TARGET_NAME}{$space}{$name}} =
 		map $_ eq $olddom ? $newdom : $_,
 		@{$self->{TARGET_NAME}{$space}{$name}};
@@ -2856,6 +2837,7 @@ sub Table : method {
 	$entry->{entryattr} = $main::opt_D{entryattr};
 	$lastv = $v;
     }
+    # Devel::Cover branch 0 1 Assert defined $row
     $row->{rowattr} = $main::opt_D{rowattr} if defined $row;
     return $dom;
 }
@@ -2885,6 +2867,7 @@ sub UnknownRole : method {
 sub DeepCopy {
     my($var) = @_;
     return $var if ref($var) eq '';
+    # Devel::COVER branch 3 1 
     if ("$var" =~ /HASH/) {
 	my(%val);
 	@val{keys %$var} = map(DeepCopy($_),values %$var);
@@ -2898,13 +2881,8 @@ sub DeepCopy {
 	my($val) = DeepCopy($$var);
 	return \$val;
     }
-    elsif ("$var" =~ /CODE/) {
-	return $var;
-    }
-    else {
-	my $val = "$var";
-	return $val;
-    }
+    # Must be CODE
+    return $var;
 }
 
 # Takes a string and handles backslash-quoting of characters
@@ -3027,8 +3005,9 @@ sub admonition {
     if ($name eq 'admonition') {
 	# A generic admonition
 	my $ttext = $dhash->{args};
-	return no_args($parser, $name, $source, $lineno, $lit)
-	    if $ttext =~ /^$/;
+	my $err = arg_check($parser, $name, $source, $lineno, $ttext, $lit,
+			    '1+');
+	return $err if $err;
 	$adm->{attr}{classes} = [ $dhash->{options}{class} ||
 				  $parser->NormalizeId("$name-$ttext") ];
 	my $title = $DOM->new('title');
@@ -3046,7 +3025,9 @@ sub admonition {
 # Returns: array of DOM objects
 sub class {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
-    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno);
+    my @optlist = ();
+    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
+				\@optlist, '1+');
     return $dhash if ref($dhash) eq $DOM;
 
     return $parser->system_message
@@ -3055,7 +3036,6 @@ sub class {
 	if $dhash->{content} ne '';
 
     my($args, $options) = map($dhash->{$_}, qw(args options));
-    return no_args($parser, $name, $source, $lineno, $lit) if $args eq '';
     return $parser->system_message
 	(3, $source, $lineno,
 	 qq(Invalid class attribute value for "$name" directive: "$args".),
@@ -3067,10 +3047,7 @@ sub class {
     my $details = $pending->{internal}{'.details'} = { };
     $details->{class} = $args;
     @{$pending}{qw(source lineno lit)} = ($source, $lineno, $lit);
-    my @optlist = ();
-    my $err = check_option_names($parser, $name, $options, \@optlist,
-				 $source, $lineno, $lit);
-    return $err || $pending;
+    return $pending;
 }
 
 # Built-in handler for compound directive.
@@ -3079,7 +3056,9 @@ sub class {
 # Returns: array of DOM objects
 sub compound {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
-    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno);
+    my @optlist = qw(class);
+    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
+				\@optlist);
     return $dhash if ref($dhash) eq $DOM;
     my($content, $args, $options) =
 	map($dhash->{$_}, qw(content args options));
@@ -3094,10 +3073,6 @@ sub compound {
 	(3, $source, $lineno,
 	 qq(The "$name" compound is empty; content required.), $lit)
 	if $content =~ /^$/;
-    my @optlist = qw(class);
-    my $err = check_option_names($parser, $name, $options, \@optlist,
-				 $source, $lineno, $lit);
-    return $err if $err;
 
     my $comp = $DOM->new($name);
     $parser->Paragraphs($comp, $content, $source, $dhash->{content_lineno});
@@ -3113,7 +3088,9 @@ sub compound {
 # Returns: array of DOM objects
 sub contents {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
-    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno);
+    my @optlist = qw(depth local backlinks);
+    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno, 
+				\@optlist);
     return $dhash if ref($dhash) eq $DOM;
 
     return $parser->system_message
@@ -3136,10 +3113,9 @@ sub contents {
 	my $title = $DOM->new('title');
 	my $fake = $DOM->new('fake');
 	$parser->Paragraphs($fake, $ttext, $source, $lineno);
-	my $last = $fake->last();
-	if ($fake->num_contents() == 1 && $last->{tag} eq 'paragraph') {
-	    $title->append($last->contents());
-	}
+	my $last = $fake->last;
+	$title->append($last->contents)
+	    if $fake->num_contents == 1 && $last->{tag} eq 'paragraph';
 	$topic->append($title);
     }
     
@@ -3149,16 +3125,13 @@ sub contents {
 	"docutils.transforms.parts.Contents";
     $pending->{source} = $source;
     $pending->{lineno} = $lineno;
-    my @optlist = qw(depth local backlinks);
-    my $err = check_option_names($parser, $name, $options, \@optlist, $source,
-				 $lineno, $lit);
-    return $err if $err;
 
     # Save away the enclosing section for local toc
     $pending->{section} = $parser->{SEC_DOM}[-1] if defined $options->{local};
     my $opt;
     foreach $opt (sort keys %$options) {
 	my $str = $options->{$opt};
+	# Devel::Cover branch 2 1 Defensive programming
 	if ($opt eq 'local') {
 	    return bad_option($parser, $name, $opt, $str, 3, $source, $lineno,
 			      qq(no argument is allowed; "$str" supplied.),
@@ -3188,12 +3161,7 @@ sub contents {
 # Returns: array of DOM objects
 sub decoration {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
-#     return system_message($name, 3, $source, $lineno,
-# 			  "directive must be used before any body blocks.",
-# 			  $lit)
-# 	if $parent->{tag} ne 'document';
-    my $topdom = $parser->{TOPDOM};
-    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno);
+    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno, []);
     return $dhash if ref($dhash) eq $DOM;
     return system_msg
 	($parser, $name, 3, $source, $lineno,
@@ -3201,6 +3169,7 @@ sub decoration {
 	 $lit)
 	if $dhash->{content} ne '' && $dhash->{args} ne '';
 
+    my $topdom = $parser->{TOPDOM};
     # See if there's already the right kind of block under <decoration>
     my $dec = $topdom->{content}[0];
     if (! defined $dec || $dec->{tag} ne 'decoration') {
@@ -3239,7 +3208,7 @@ sub decoration {
 # Returns: array of DOM objects
 sub default_role {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
-    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno);
+    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno, []);
     return $dhash if ref($dhash) eq $DOM;
     return system_msg($parser, $name, 3, $source, $lineno,
 		      'no content block permitted.', $lit)
@@ -3276,7 +3245,7 @@ sub figure {
     my @dline = split(/\n/, $dtext);
     my $dline = join("\n", @dline[0 .. $cline-1]);
     my %myopts = (figwidth=>'width', figclass=>'@classes', align=>'align');
-    my $image = image($parser, "image", $parent, $source, $lineno, $dline,
+    my $image = image($parser, $name, $parent, $source, $lineno, $dline,
 		      $lit, keys %myopts);
     return $image if $image->{tag} eq 'system_message';
 
@@ -3300,8 +3269,9 @@ sub figure {
     my $legend_lineno;
     if ((my @s = split /^(\n+)/m, $content, 2) > 1) {
 	$caption = $s[0];
-	$legend = $s[-1];
-	if ($legend ne "") {
+	$legend = $s[2];
+	# Devel::Cover branch 0 1 Assert $legend ne ''
+	if ($legend ne '') {
 	    my $pre = "$s[0]$s[1]";
 	    $legend_lineno = $content_lineno + ($pre =~ s/(\n)/\n/g);
 	}
@@ -3339,7 +3309,10 @@ sub figure {
 # Returns: array of DOM objects
 sub image {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit, @extra_opts) = @_;
-    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno);
+    my @optlist = (qw(width height scale alt usemap target align class),
+		   @extra_opts);
+    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
+				\@optlist, '1+');
     return $dhash if ref($dhash) eq $DOM;
     my($args, $content, $options) =
 	map($dhash->{$_}, qw(args content options));
@@ -3347,16 +3320,9 @@ sub image {
     return system_msg($parser, $name, 3, $source, $lineno,
 		      "no content permitted.", $dtext)
 	if ($content ne '' && $name eq 'image');
-    my ($err) = arg_check($parser, $name, $source, $lineno, $args, $lit, 1);
-    return $err if $err;
     $args =~ s/[ \n]//g;
 
     # Process the options
-    my @optlist = (qw(width height scale alt usemap target align class),
-		   @extra_opts);
-    $err = check_option_names($parser, $name, $options, \@optlist, $source,
-			      $lineno, $lit);
-    return $err if $err;
     if (defined $options->{scale}) {
 	my $scale = $options->{scale};
  	my $err = check_int_option($parser, $name, 'scale', $scale, $scale,
@@ -3406,7 +3372,7 @@ sub image {
     $attr{alt} = $alt if $alt ne '';
     delete $options->{$_} foreach (@extra_opts);
 
-    my $dom = $DOM->new(lc $name, uri=>$args, %attr, %$options);
+    my $dom = $DOM->new('image', uri=>$args, %attr, %$options);
     if (my $target = $options->{target}) {
 	delete $dom->{attr}{target};
 	my $newdom = $DOM->new('reference');
@@ -3433,7 +3399,9 @@ sub image {
 # Returns: array of DOM objects
 sub include {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
-    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno);
+    my @optlist = qw(literal encoding);
+    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
+				\@optlist);
     return $dhash if ref($dhash) eq $DOM;
     my($args, $options) = map($dhash->{$_}, qw(args options));
 
@@ -3461,6 +3429,7 @@ sub include {
 #  	use Encode qw/encode decode/;
 #  	$text = decode($options->{encoding}, $text)
 #  	    if defined $options->{encoding};
+	return if $text =~ /^$/;
 	if (defined $options->{literal}) {
 	    my $lb = $DOM->new('literal_block', %Text::Restructured::XML_SPACE,
 			      source=>$file);
@@ -3468,7 +3437,7 @@ sub include {
 	    return $lb;
 	}
 	else {
-	    $parser->Paragraphs($parent, $text, $file, 1) if defined $text;
+	    $parser->Paragraphs($parent, $text, $file, 1);
 	}
     }
     else {
@@ -3486,16 +3455,12 @@ sub include {
 # Returns: array of DOM objects
 sub line_block {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
-    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno);
+    my @optlist = qw(class);
+    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
+				\@optlist, 0);
     return $dhash if ref($dhash) eq $DOM;
     my($args, $content, $content_lineno, $options) =
 	map($dhash->{$_}, qw(args content content_lineno options));
-    my ($err) = arg_check($parser, $name, $source, $lineno, $args, $lit, 0);
-    return $err if $err;
-    my @optlist = qw(class);
-    $err = check_option_names($parser, $name, $options, \@optlist, $source,
-			      $lineno, $lit);
-    return $err if $err;
     return $parser->system_message
 	(2, $source, $lineno,
 	 qq(Content block expected for the "$name" directive; none found.),
@@ -3504,6 +3469,7 @@ sub line_block {
     my ($proc, @doms) = $parser->LineBlock($content, $source, $content_lineno);
     if ($options->{class}) {
 	my ($lb) = grep($_->{tag} eq 'line_block', @doms);
+	# Devel::Cover branch 0 1 Defensive programming
 	$lb->{attr}{classes} = [ $options->{class} ] if $lb;
     }
     return grep(ref $_ eq $DOM, @doms);
@@ -3535,13 +3501,7 @@ sub meta {
 	    $para = $s[0];
 	    $next = "$s[1]$s[-1]";
 	}
-	# Remove initial spaces
-	my @spaces = $para =~ /^(?!\A)( +)/mg;
-	my $spaces = defined $spaces[0] ? $spaces[0] : '';
-	foreach (@spaces) {
-	    $spaces = $_ if length($_) < length($spaces);
-	}
-	$para =~ s/^$spaces//mg;
+	$para = $parser->RemoveMinIndent($para, '(?!\A)');
 
 	return $parser->system_message(1, $source, $lineno+$lines,
 				       qq(No content for meta tag "$field".),
@@ -3558,7 +3518,6 @@ sub meta {
 	my $opt = $field;
 	$opt =~ s/^([\w\.-]+)(?:=([\w\.-]+))?\s*//;
 	my ($name, $nametag);
-	$nametag = 'name' unless defined $nametag;
 	if (defined $2) {
 	    ($nametag, $name) = ($1, $2);
 	}
@@ -3604,16 +3563,15 @@ sub meta {
 # Returns: array of DOM objects
 sub parsed_literal {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
-    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno);
+    my $dhash =
+	parse_directive($parser, $dtext, $lit, $source, $lineno, [], 0);
     return $dhash if ref($dhash) eq $DOM;
     my($args, $content, $content_lineno, $options) =
 	map($dhash->{$_}, qw(args content content_lineno options));
-    my ($err) = arg_check($parser, $name, $source, $lineno, $args, $lit, 0);
-    return $err if $err;
-    my @optlist = qw();
-    $err = check_option_names($parser, $name, $options, \@optlist, $source,
-			      $lineno, $lit);
-    return $err if $err;
+    return $parser->system_message
+	(2, $source, $lineno,
+	 qq(Content block expected for the "$name" directive; none found.),
+	 $lit) unless $content;
     my $lb = $DOM->new('parsed_literal', %Text::Restructured::XML_SPACE);
     my @errs = $parser->Inline($lb, $content, $source, $content_lineno);
     return $lb, @errs;
@@ -3625,15 +3583,12 @@ sub parsed_literal {
 # Returns: array of DOM objects
 sub raw {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
-    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno);
+    my @optlist = qw(file url);
+    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
+				\@optlist, '1+');
     return $dhash if ref($dhash) eq $DOM;
     my($args, $content, $options) =
 	map($dhash->{$_}, qw(args content options));
-
-    my @optlist = qw(file url);
-    my $err = check_option_names($parser, $name, $options, \@optlist, $source,
-				 $lineno, $lit);
-    return $err if $err;
 
     return $parser->system_message(3, $source, $lineno,
 			       qq("$name" directive may not both specify an external file and have content.),
@@ -3684,13 +3639,12 @@ sub raw {
 # Returns: array of DOM objects
 sub replace {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
-    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno);
+    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno, []);
     return $dhash if ref($dhash) eq $DOM;
     my($args, $content) = map($dhash->{$_}, qw(args content));
 
     my $fake = $DOM->new('fake');
-    my $text = $args;
-    $text .= "\n$content" if defined $content;
+    my $text = "$args\n$content";
     return $parser->system_message
 	(3, $source, $lineno,
 	 qq(The "$name" directive is empty; content required.))
@@ -3725,7 +3679,9 @@ sub replace {
 # Returns: array of DOM objects
 sub role {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
-    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno);
+    my @optlist = qw(class format prefix suffix);
+    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
+				\@optlist, '1+');
     return $dhash if ref($dhash) eq $DOM;
 
     my($args, $options) =
@@ -3734,6 +3690,13 @@ sub role {
     my ($role, $tag) = $args =~ /^([^\( ]*)(?:\s*\(\s*(.*?)\s*\))?/;
     return $parser->UnknownRole($tag, $source, $lineno, $lit)
 	if defined $tag && !defined $parser->{MY_ROLES}{$tag};
+    foreach my $optname (qw(prefix suffix)) {
+	my $opt = $options->{$optname};
+	next unless defined $opt;
+	my $err = check_fieldlist_option($parser, $name, $optname, $opt,
+					 $opt, $source, $lineno, $lit);
+	return $err if $err;
+    }
     my $msg = $parser->DefineRole($role, $tag, %$options);
     $msg = $msg =~ /invalid/i ?
 	qq(Error in "$name" directive:\n$msg) :
@@ -3751,7 +3714,9 @@ sub role {
 # Returns: array of DOM objects
 sub sectnum {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
-    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno);
+    my @optlist = qw(depth prefix start suffix);
+    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
+				\@optlist, 0);
     return $dhash if ref($dhash) eq $DOM;
     my($args, $content, $options) =
 	map($dhash->{$_}, qw(args content options));
@@ -3759,12 +3724,6 @@ sub sectnum {
     return system_msg($parser, $name, 3, $source, $lineno,
 		      "no content permitted.", $dtext)
 	if ($content ne '');
-    my ($err) = arg_check($parser, $name, $source, $lineno, $args, $lit, 0);
-    return $err if $err;
-    my @optlist = qw(depth prefix start suffix);
-    $err = check_option_names($parser, $name, $options, \@optlist, $source,
-			      $lineno, $lit);
-    return $err if $err;
     foreach my $optname (qw(depth start)) {
 	if (defined $options->{$optname}) {
 	    my $opt = $options->{$optname};
@@ -3787,12 +3746,12 @@ sub sectnum {
 # Returns: array of DOM objects
 sub rubric {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
-    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno);
+    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno, [],
+				'1+');
     return $dhash if ref($dhash) eq $DOM;
 
     (my $args = $dhash->{args}) =~ s/\n/ /g;
 
-    return no_args($parser, $name, $source, $lineno, $lit) if $args eq '';
     return system_msg($parser, $name, 3, $source, $lineno,
 		      "no content permitted.", $lit)
 	if $dhash->{content} ne '';
@@ -3809,16 +3768,14 @@ sub rubric {
 # Returns: array of DOM objects
 sub sidebar {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
-    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno);
+    my @optlist = qw(subtitle);
+    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
+				\@optlist, '1+');
     return $dhash if ref($dhash) eq $DOM;
     my($args, $content, $options, $content_lineno) =
 	map($dhash->{$_}, qw(args content options content_lineno));
 
     $args =~ s/\n//g;
-    my @optlist = qw(subtitle);
-    my $err = check_option_names($parser, $name, $options, \@optlist, $source,
-				 $lineno, $lit);
-    return $err if $err;
 
     return $parser->system_message
 	(3, $source, $lineno,
@@ -3849,7 +3806,14 @@ sub sidebar {
 # Returns: array of DOM objects
 sub table {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
-    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno);
+    my @optlist = qw(class align);
+    push @optlist, qw(widths header-rows stub-columns header file url
+		      encoding delim quote keepspace escape)
+	if $name eq 'csv-table';
+    push @optlist, qw(widths header-rows stub-columns)
+	if $name eq 'list-table';
+    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
+				\@optlist);
     return $dhash if ref($dhash) eq $DOM;
     my($args, $content, $content_lineno, $options) =
 	map($dhash->{$_}, qw(args content content_lineno options));
@@ -3880,7 +3844,6 @@ sub table {
 		$table->{attr}{$myopts{$opt}} = $options->{$opt};
 	    }
 	}
-#	$table->{attr}{$myopts{$opt}} = $options->{$opt}
     }
 
     my $title = $args;
@@ -3894,179 +3857,118 @@ sub table {
  	    $titledom->append($paras[0]->contents());
  	    $table->append($titledom);
  	}
+	else {
+	    return $parser->system_message(3, $source, $lineno,
+					   qq(The title in a "$name" directive must be a single paragraph only.),
+					   $lit);
+	}
     }
 
-    if ($name eq 'csv-table') {
-	return $parser->system_message(3, $source, $lineno,
-				       qq("$name" directive may not both specify an external file and have content.),
-				       $lit)
-	    if $dhash->{content} ne '' && defined $options->{file};
-	return $parser->system_message(3, $source, $lineno,
-				       qq(The "file" and "url" options may not be simultaneously specified for the "$name" directive.),
-				       $lit)
-	    if defined $options->{file} && defined $options->{url};
-	my $content = $dhash->{content};
-	if (defined $options->{file}) {
-	    if (open CSV, $options->{file}) {
-		$content = join '', <CSV>;
-		return $parser->system_message
-		    (3, $source, $lineno,
-		     qq(No table data detected in CSV file.), $lit)
-		    if $content eq '';
-	    }
-	    else {
-		my $err = system_error();
-		return $parser->system_message(4, $source, $lineno,
-					       qq(Problems with "$name" directive path:\n$err: '$options->{file}'.),
-					       $lit);
-	    }
-	    my $encoding = $options->{encoding} || '';
-	    if ($encoding eq 'latin-1') {
-		return $parser->system_message(3, $source, $lineno,
-					       qq(Error with CSV data in "$name" directive:\nstring with NUL bytes), $lit)
-		    if $content =~ /\000/;
-	    }
-	    elsif ($encoding ne '') {
-		use Encode qw(encode decode);
-		$content = decode($encoding, $content);
-	    }
-	}
-	elsif (defined $options->{url}) {
-	    my $url = $options->{url};
-	    return $parser->system_message(4, $source, $lineno,
-					   qq(Problems with "$name" directive URL "$url":\nunknown url type: $url.)
-					   , $lit)
-		unless $url =~ /^(($Text::Restructured::URIre::scheme):(?:$Text::Restructured::URIre::hier_part|$Text::Restructured::URIre::opaque_part))/o; 
-	    return $parser->system_message(4, $source, $lineno,
-					   qq(The "url" option is not yet implemented for the "$name" directive.),
-					   $lit)
-		if defined $options->{url};
-	}
-	my $delim = $options->{delim};
-	if (! defined $delim) {
-	    $delim = ',';
-	}
-	elsif ($delim eq 'space') {
-	    $delim = ' ';
-	}
-	elsif ($delim =~ /^0x([\da-f]{2})/i) {
-	    $delim = chr hex $1;
-	}
-	elsif ($delim =~ /^U\+(\d+)/) {
-	    return bad_option($parser, $name, 'delim', $delim, 3, $source, $lineno,
-			      qq(code too large (long int too large to convert to int).),
-			      $lit)
-		if $1 > 0xffffffff;
-	    
-	}
-	elsif (length($delim) ne 1) {
-	    return bad_option($parser, $name, 'delim', $delim, 3, $source, $lineno,
-			      qq('$delim' invalid; must be a single character or a Unicode code.),
-			      $lit);
-	}
-	$delim = "\Q$delim";
-	return $parser->system_message(2, $source, $lineno,
-				       qq(The "$name" directive requires content; none supplied.),
-				       $lit)
-	    if $content eq '' &&
-	    ! defined $options->{file} && ! defined $options->{url};
-	my %lines;
+    if ($name =~ /^(csv|list)-table$/) {
 	my $rows;
-	$rows = ParseCSV($parser, $content, \%lines, $delim);
-	return $parser->system_message
-	    (3, $source, $lineno,
-	     qq(Error with CSV data in "$name" directive:\n$rows), $lit)
-	    unless ref($rows) eq 'ARRAY';
-	return $rows if ref($rows) eq $DOM;
 	my $cols = 0;
-	grep (do {$cols = @$_ if @$_ > $cols}, @$rows);
-	my $tg = $DOM->new('tgroup', cols=>$cols);
-	$table->append($tg);
-	my @widths;
-	if (defined (my $widths = $options->{widths})) {
-	    @widths = split /[, ]\s*/, $widths;
-	    return $parser->system_message(3, $source, $lineno,
-					   qq("$name" widths do not match the number of columns in table ($cols).),
-					   $lit)
-		if @widths != $cols;
-	    foreach (@widths) {
-		my $err = check_int_option($parser, $name, 'widths', $_, $widths,
-					   $source, $lineno, $lit, 1);
-		return $err if $err;
-	    }
-	}
-	return $parser->system_message(3, $source, $lineno,
-				       qq($options->{'stub-columns'} stub column(s) specified but only $cols column(s) of data supplied ("$name" directive).),
-				       $lit)
-	    if ($options->{'stub-columns'} || 0) > $cols;
-	return $parser->system_message(3, $source, $lineno,
-				       qq(Insufficient data supplied ($cols column(s)); no data remaining for table body, required by "$name" directive.),
-				       $lit)
-	    if ($options->{'stub-columns'} || 0) == $cols;
-	for (my $i=0; $i < $cols; $i++) {
-	    my $cs = $DOM->new('colspec');
-	    $tg->append($cs);
-	    $cs->{attr}{colwidth} = $i < @widths ? $widths[$i] :
-		int(100/$cols);
-	    $cs->{attr}{stub} = 1 if defined $options->{'stub-columns'} &&
-		$i < $options->{'stub-columns'};
-	}
 	my $heads;
-	if (defined $options->{'header'}) {
-	    $heads = ParseCSV($parser, $options->{'header'}, \%lines, $delim);
-	    return $parser->system_message
-		(3, $source, $lineno,
-		 qq(Error with CSV data in "$name" directive:\n$heads), $lit)
-		unless ref($heads) eq 'ARRAY';
-	}
-	return $parser->system_message(3, $source, $lineno,
-				       qq($options->{'header-rows'} header row(s) specified but only @{[0+@$rows]} row(s) of data supplied ("$name" directive).),
-				       $lit)
-	    if ($options->{'header-rows'} || 0) > @$rows;
-	return $parser->system_message(3, $source, $lineno,
-				       qq(Insufficient data supplied (@{[0+@$rows]} row(s)); no data remaining for table body, required by "$name" directive.),
-				       $lit)
-	    if ($options->{'header-rows'} || 0) == @$rows;
-	my @heads = defined $heads ? @$heads : $options->{'header-rows'}
-	? splice(@$rows, 0, $options->{'header-rows'}) : ();
-	
-	foreach my $section (qw(thead tbody)) {
-	    my $hb_rows = $section eq 'thead' ? \@heads : $rows;
-	    next unless @$hb_rows;
-	    my $sec = $DOM->new($section);
-	    $tg->append($sec);
-	    foreach my $row (@$hb_rows) {
-		my $r = $DOM->new('row');
-		$sec->append($r);
-		for (my $entry = 0; $entry < $cols; $entry++) {
-		    my $e = $DOM->new('entry');
-		    $r->append($e);
-		    my $lines = $lines{$row}[$entry] || 0;
-		    $parser->Paragraphs($e, $row->[$entry], $source,
-					$content_lineno+$lines);
-		    $e->{entryattr} = $main::opt_D{entryattr}
-		    if defined $main::opt_D{entryattr} &&
-			$main::opt_D{entryattr} ne '';
+	my %lines;
+	if ($name eq 'csv-table') {
+	    return $parser->system_message(3, $source, $lineno,
+					   qq("$name" directive may not both specify an external file and have content.),
+					   $lit)
+		if $dhash->{content} ne '' && defined $options->{file};
+	    return $parser->system_message(3, $source, $lineno,
+					   qq(The "file" and "url" options may not be simultaneously specified for the "$name" directive.),
+					   $lit)
+		if defined $options->{file} && defined $options->{url};
+	    my $content = $dhash->{content};
+	    if (defined $options->{file}) {
+		if (open CSV, $options->{file}) {
+		    $content = join '', <CSV>;
+		    return $parser->system_message
+			(3, $source, $lineno,
+			 qq(No table data detected in CSV file.), $lit)
+			if $content eq '';
+		}
+		else {
+		    my $err = system_error();
+		    return $parser->system_message(4, $source, $lineno,
+						   qq(Problems with "$name" directive path:\n$err: '$options->{file}'.),
+						   $lit);
+		}
+		my $encoding = $options->{encoding} || '';
+		if ($encoding eq 'latin-1') {
+		    return $parser->system_message(3, $source, $lineno,
+						   qq(Error with CSV data in "$name" directive:\nstring with NUL bytes), $lit)
+			if $content =~ /\000/;
+		}
+		elsif ($encoding ne '') {
+		    use Encode qw(encode decode);
+		    $content = decode($encoding, $content);
 		}
 	    }
+	    elsif (defined $options->{url}) {
+		my $url = $options->{url};
+		return $parser->system_message(4, $source, $lineno,
+					       qq(Problems with "$name" directive URL "$url":\nunknown url type: $url.)
+					       , $lit)
+		    unless $url =~ /^(($Text::Restructured::URIre::scheme):(?:$Text::Restructured::URIre::hier_part|$Text::Restructured::URIre::opaque_part))/o; 
+		return $parser->system_message(4, $source, $lineno,
+					       qq(The "url" option is not yet implemented for the "$name" directive.),
+					       $lit);
+	    }
+	    my $delim = $options->{delim};
+	    if (! defined $delim) {
+		$delim = ',';
+	    }
+	    elsif ($delim eq 'space') {
+		$delim = ' ';
+	    }
+	    elsif ($delim =~ /^0x([\da-f]{2})/i) {
+		$delim = chr hex $1;
+	    }
+	    elsif ($delim =~ /^U\+0*([\da-f]+)/i) {
+		return bad_option($parser, $name, 'delim', $delim, 3, $source, $lineno,
+				  qq(code too large (long int too large to convert to int).),
+				  $lit)
+		    if length $1 > 8;
+		$delim = chr hex $1;
+	    }
+	    elsif (length($delim) ne 1) {
+		return bad_option($parser, $name, 'delim', $delim, 3, $source, $lineno,
+				  qq('$delim' invalid; must be a single character or a Unicode code.),
+				  $lit);
+	    }
+	    $delim = "\Q$delim";
+	    return $parser->system_message(2, $source, $lineno,
+					   qq(The "$name" directive requires content; none supplied.),
+					   $lit)
+		if $content eq '' &&
+		! defined $options->{file} && ! defined $options->{url};
+	    my %lines;
+	    $rows = ParseCSV($parser, $content, \%lines, $delim);
+	    return $parser->system_message
+		(3, $source, $lineno,
+		 qq(Error with CSV data in "$name" directive:\n$rows), $lit)
+		unless ref($rows) eq 'ARRAY';
+	    grep (do {$cols = @$_ if @$_ > $cols}, @$rows);
+	    if (defined $options->{'header'}) {
+		$heads = ParseCSV($parser, $options->{'header'}, \%lines,
+				  $delim);
+		return $parser->system_message
+		    (3, $source, $lineno,
+		     qq(Error with CSV data in "$name" directive:\n$heads),
+		     $lit)
+		    unless ref($heads) eq 'ARRAY';
+	    }
 	}
-    }
-    elsif ($name eq 'list-table') {
-	my $rows = ParseListTable($parser, $content, $source, $content_lineno);
-	return $parser->system_message
-	    (3, $source, $lineno,
-	     qq(Error parsing content block for the "$name" directive: $rows.),
-	     $lit)
-	    unless ref($rows) eq 'ARRAY';
-	return $parser->system_message(3, $source, $lineno,
-				       qq($options->{'header-rows'} header row(s) specified but only @{[0+@$rows]} row(s) of data supplied ("$name" directive).),
-				       $lit)
-	    if ($options->{'header-rows'} || 0) > @$rows;
-	return $parser->system_message(3, $source, $lineno,
-				       qq(Insufficient data supplied (@{[0+@$rows]} row(s)); no data remaining for table body, required by "$name" directive.),
-				       $lit)
-	    if ($options->{'header-rows'} || 0) == @$rows;
-	my $cols = @{$rows->[0]};
+	elsif ($name eq 'list-table') {
+	    $rows = ParseListTable($parser, $content, $source,
+				   $content_lineno);
+	    return $parser->system_message
+		(3, $source, $lineno,
+		 qq(Error parsing content block for the "$name" directive: $rows.),
+		 $lit)
+		unless ref($rows) eq 'ARRAY';
+	    $cols = @{$rows->[0]};
+	}
 	my $tg = $DOM->new('tgroup', cols=>$cols);
 	$table->append($tg);
 	my @widths;
@@ -4098,7 +4000,14 @@ sub table {
 	    $cs->{attr}{stub} = 1 if defined $options->{'stub-columns'} &&
 		$i < $options->{'stub-columns'};
 	}
-	my $heads;
+	return $parser->system_message(3, $source, $lineno,
+				       qq($options->{'header-rows'} header row(s) specified but only @{[0+@$rows]} row(s) of data supplied ("$name" directive).),
+				       $lit)
+	    if ($options->{'header-rows'} || 0) > @$rows;
+	return $parser->system_message(3, $source, $lineno,
+				       qq(Insufficient data supplied (@{[0+@$rows]} row(s)); no data remaining for table body, required by "$name" directive.),
+				       $lit)
+	    if ($options->{'header-rows'} || 0) == @$rows;
 	my @heads = defined $heads ? @$heads : $options->{'header-rows'}
 	? splice(@$rows, 0, $options->{'header-rows'}) : ();
 	
@@ -4113,7 +4022,14 @@ sub table {
 		for (my $entry = 0; $entry < $cols; $entry++) {
 		    my $e = $DOM->new('entry');
 		    $r->append($e);
-		    $e->append(@{$row->[$entry]});
+		    if ($name eq 'csv-table') {
+			my $lines = $lines{$row}[$entry] || 0;
+			$parser->Paragraphs($e, $row->[$entry], $source,
+					    $content_lineno+$lines);
+		    }
+		    else {
+			$e->append(@{$row->[$entry]});
+		    }
 		    $e->{entryattr} = $main::opt_D{entryattr}
 		    if defined $main::opt_D{entryattr} &&
 			$main::opt_D{entryattr} ne '';
@@ -4128,8 +4044,7 @@ sub table {
 	    if $content eq '';
 	my $fake = $DOM->new('fake');
 	$parser->Paragraphs($fake, $content, $source, $content_lineno);
-	$table->append($fake->{content}[0]->contents())
-	    if $fake->{content}[0]{tag} eq 'table';
+	$table->append($fake->{content}[0]->contents());
     }
     return @dom;
 }
@@ -4201,16 +4116,12 @@ sub ParseListTable {
 # Returns: array of DOM objects
 sub target_notes {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
-    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno);
+    my @optlist = qw(class);
+    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
+				\@optlist, 0);
     return $dhash if ref($dhash) eq $DOM;
     my($args, $content, $content_lineno, $options) =
 	map($dhash->{$_}, qw(args content content_lineno options));
-    my ($err) = arg_check($parser, $name, $source, $lineno, $args, $lit, 0);
-    return $err if $err;
-    my @optlist = qw();
-    $err = check_option_names($parser, $name, $options, \@optlist, $source,
-			      $lineno, $lit);
-    return $err if $err;
     return system_msg($parser, $name, 3, $source, $lineno,
 		      "no content permitted.", $dtext)
 	if ($content ne '');
@@ -4218,7 +4129,7 @@ sub target_notes {
     my $pending = $DOM->new('pending');
     $pending->{internal}{'.transform'} =
 	"docutils.transforms.references.TargetNotes";
-    %{$pending->{internal}{'.details'}{depth}} = %$options
+    %{$pending->{internal}{'.details'}} = %$options
 	if defined $options;
     return $pending;
 }
@@ -4259,10 +4170,10 @@ sub test_directive {
 # Returns: array of DOM objects
 sub title {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
-    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno);
+    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno, [],
+				'1+');
     return $dhash if ref($dhash) eq $DOM;
     my $args = $dhash->{args};
-    return no_args($parser, $name, $source, $lineno, $lit) if $args eq '';
     return system_msg($parser, $name, 3, $source, $lineno,
 		      "no content permitted.", $dtext)
 	if ($dhash->{content} ne '');
@@ -4276,13 +4187,13 @@ sub title {
 # Returns: array of DOM objects
 sub topic {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
-    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno);
+    my @arglist = qw(class);
+    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
+				\@arglist, '1+');
     return $dhash if ref($dhash) eq $DOM;
     my($args, $content, $content_lineno) =
 	map($dhash->{$_}, qw(args content content_lineno));
 
-    my ($err) = arg_check($parser, $name, $source, $lineno, $args, $lit, 1);
-    return $err if $err;
     return $parser->system_message
 	(2, $source, $lineno,
 	 qq(Content block expected for the "$name" directive; none found.),
@@ -4303,22 +4214,19 @@ sub topic {
 # Returns: array of DOM objects
 sub unicode {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
-    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno);
+    my @optlist = qw(trim ltrim rtrim);
+    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
+				\@optlist, '1+');
     return $dhash if ref($dhash) eq $DOM;
     my($args, $content, $options) =
 	map($dhash->{$_}, qw(args content options));
 
     my $fake = $DOM->new('fake');
     my $text = $args;
-    return no_args($parser, $name, $source, $lineno, $lit) if $text eq '';
     return $parser->system_message(3, $source, $lineno,
 				   qq(Invalid context: the "$name" directive can only be used within a substitution definition.),
 				   $lit)
 	unless $parent->{tag} eq 'substitution_definition';
-    my @optlist = qw(trim ltrim rtrim);
-    my $err = check_option_names($parser, $name, $options, \@optlist, $source,
-				 $lineno, $lit);
-    return $err if $err;
 
     # Remove comments
     $text =~ s/\s*\.\..*//;
@@ -4357,20 +4265,19 @@ sub unicode {
 # INTERNAL ROUTINE.
 # Returns a system error if a directive argument check fails.
 # May also be useful to plug-in directives.
-# Arguments: parser, name, source, lineno, args, lit text, expected # of args
+# Arguments: parser, name, source, lineno, args, lit text, 
+#            expected # of args possibly appended with '+' to indicate # is min
 # Returns: DOM if the check fails
 sub arg_check {
     my ($parser, $name, $source, $lineno, $args, $lit, $exp) = @_;
 
-    my @dom;
+    my ($exp_num, $min) = $exp =~ /(\d+)([+])?/;
     my (@args) = split(/\s+/, $args);
     my $got = @args;
-    push(@dom, system_msg($parser, $name, 3, $source, $lineno,
-			  "$exp argument(s) required, $got supplied.",
-			  $lit))
-	unless $got >= $exp;
-    
-    return @dom;
+    return system_msg($parser, $name, 3, $source, $lineno,
+		      "$exp_num argument(s) required, $got supplied.", $lit)
+	unless $got >= $exp_num && $min || $got == $exp_num;
+    return;
 }
 
 # INTERNAL ROUTINE.
@@ -4412,6 +4319,20 @@ sub check_enum_option {
 	return bad_option($parser, $name, $opt, $val, 3, $source, $lineno,
 			  qq("$val" unknown; choose from $list.), $lit);
     }
+    return;
+}
+
+# INTERNAL ROUTINE.
+# Returns a system message DOM if the option value does not parse as a
+# field list.  May also be useful to plug-in directives.
+# Arguments: parser, directive name, option name, option value,
+#            complete option string, source, line number, literal
+# Returns: error DOM or None
+sub check_fieldlist_option {
+    my ($parser, $name, $opt, $val, $option, $source, $lineno, $lit) = @_;
+    return bad_option($parser, $name, $opt, $option, 3, $source, $lineno,
+		      "invalid literal for fieldlist.", $lit)
+	unless $val =~ /^ *($Text::Restructured::FIELD_LIST)/mo;
     return;
 }
 
@@ -4515,23 +4436,14 @@ sub handle_directive {
 }
 
 # INTERNAL ROUTINE.
-# Returns a system message when no arguments were supplied
-# Arguments: directive name, level, source, lineno, literal string,
-# Returns: system_message DOM
-sub no_args {
-    my ($parser, $name, $source, $lineno, $lit) = @_;
-    return system_msg($parser, $name, 3, $source, $lineno,
-		      qq(1 argument(s) required, 0 supplied.), $lit);
-}
-
-
-# INTERNAL ROUTINE.
 # Parses the text of a directive into its arguments, options, and contents.
 # May also be useful to plug-in directives.
-# Arguments: Parser obj, Directive text, literal text, source, lineno
+# Arguments: Parser obj, Directive text, literal text, source, lineno,
+#            reference to array of allowed options (optional)
+#            required # of arguments appended with '+' if minimum (optional),
 # Returns: Error DOM or `directive arguments hash ref`_
 sub parse_directive {
-    my($parser, $dtext, $lit, $source, $lineno) = @_;
+    my ($parser, $dtext, $lit, $source, $lineno, $opts_p, $req_arg) = @_;
 
     my ($pre, $directive, $body) = $dtext =~ /(\s*)([\w\.-]+)\s*:: *(.*)/s;
     my $dname = $directive;
@@ -4545,59 +4457,61 @@ sub parse_directive {
     }
     else {
 	$args = $body;
-	$body = "";
+	$body = '';
     }
 
     my $content_lineno = $lineno + ($args =~ tr/\n//);
     $args =~ s/^\n//;
     $args =~ s/^   //mg;
     $args =~ s/\n$//;
-    if (! defined $args && $body !~ /^ *($Text::Restructured::FIELD_LIST|::)/o
-	&& (my @s = split /^(\n(?:\n+))/m, $lit, 2) > 1) {
-	# Any ensuing paragraph is a block quote
-	$lit = "$s[0]\n";
-	$body =~ /^\n\n/m;
-	$content_lineno += 2;
-	$body = "$s[0]\n";
-    }
     my $spaces = "   ";
     my %options;
     $body =~ s/^$spaces//mg;
     my $err = 0;
-    if (defined $args || $body =~ /^ *($Text::Restructured::FIELD_LIST:::)/o) {
-	my $options;
-	if ((my @s = split /^(\n+)/m, $body, 2) > 1) {
-	    $options = "$s[0]";
-	    my $pre = "$s[0]$s[1]";
-	    $body = "$s[-1]";
-	    $content_lineno += ($pre =~ tr/\n//);
+    my $options;
+    if ((my @s = split /^(\n+)/m, $body, 2) > 1) {
+	$options = "$s[0]";
+	my $pre = "$s[0]$s[1]";
+	$body = "$s[-1]";
+	$content_lineno += ($pre =~ tr/\n//);
+    }
+    else {
+	$options = $body;
+	$body = '';
+    }
+    my @options = split /^(?=:)/m, $options;
+    my $option;
+    foreach $option (@options) {
+	my ($opt,$val) = $option =~ /^:([^:\n]*): *(.*)/s;
+	return system_msg($parser, $directive, 3, $source, $lineno,
+			  "invalid option block.", $lit)
+	    if $opt eq '';
+	if (defined $options{$opt}) {
+	    $err = 1;
+	    return system_msg
+		($parser, $directive, 3, $source, $lineno,
+		 qq(invalid option data: duplicate option "$opt".), $lit);
 	}
-	else {
-	    $options = $body;
-	    $body = "";
+	chomp $val;
+	if ($val =~ /^(?!\A)( *)/m) {
+	    my $spaces = $1;
+	    $val =~ s/^$spaces//gm;
 	}
-	my @options = split /^(?=:)/m, $options;
-	my $option;
-	foreach $option (@options) {
-	    my ($opt,$val) = $option =~ /^:([^:\n]*): *(.*)/s;
-	    return system_msg($parser, $directive, 3, $source, $lineno,
-			      "invalid option block.", $lit)
-		if $opt eq '';
-	    if (defined $options{$opt}) {
-		$err = 1;
-		return system_msg
-		    ($parser, $directive, 3, $source, $lineno,
-		     qq(invalid option data: duplicate option "$opt".), $lit);
-	    }
-	    chomp $val;
-	    if ($val =~ /^(?!\A)( *)/m) {
-		my $spaces = $1;
-		$val =~ s/^$spaces//gm;
-	    }
-	    $options{$opt} = $val;
-	}
+	$options{$opt} = $val;
     }
 #print "[$args][",join(',',map("$_=>$options{$_}",sort keys %options)),"][$body]\n";
+
+    # Do any optional checks
+    if (defined $req_arg) {
+	my $err = arg_check($parser, $dname, $source, $lineno, $args, $lit,
+			    $req_arg);
+	return $err if $err;
+    }
+    if (defined $opts_p) {
+	my $err = check_option_names($parser, $dname, \%options, $opts_p,
+				     $source, $lineno, $lit);
+	return $err if $err;
+    }
 
     my $dhash = {name=>$dname, args=>$args, content=>$body,
 		 content_lineno=>$content_lineno};
