@@ -42,7 +42,8 @@ phase PROCESS {
     }
 
     sub .* = {
-	my ($dom, $str) = @_;
+	my ($dom, $str, $writer) = @_;
+	# Devel::Cover condition 0 0 $str should always be defined
 	$str =~ s/^/    /mg if defined $str && $str ne '';
 	my $attr = defined $dom->{attr} ?
 	    join('',map(qq( $_) . (! defined $dom->{attr}{$_} ? '' :
@@ -51,6 +52,7 @@ phase PROCESS {
 				   qq(="$dom->{attr}{$_}")),
 			sort keys %{$dom->{attr}})) : '';
 	my $internal = '';
+	# Devel::Cover condition 0 1 internal defined implies non-empty hash
 	if (defined $dom->{internal} && %{$dom->{internal}}) {
             my $int = $dom->{internal};
 	    $internal = "    .. internal attributes:\n";
@@ -62,7 +64,7 @@ phase PROCESS {
 		my $val = $int->{'.details'}{$key};
 		my $string;
 		if (ref($val) eq 'Text::Restructured::DOM') {
-                    $string = main::ProcessDOM($val);
+                    $string = $writer->ProcessDOMPhase($val, 'PROCESS');
 		    $string =~ s/^/$spaces    /mg;
 		    $string = "\n$string";
 		} 
