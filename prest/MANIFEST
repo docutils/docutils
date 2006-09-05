@@ -197,7 +197,6 @@ t/40_writers/latex.init/simple.mytex
 t/40_writers/latex.init/simple.rst
 t/40_writers/latex.init/test.mytex
 t/40_writers/latex.init/test.rst
-t/40_writers/latex.init/test.skip.pl
 t/40_writers/latex.init/test.stderr
 t/40_writers/latex.init/title.eps
 t/40_writers/Suite.mak
@@ -213,8 +212,6 @@ t/40_writers/xref.init/idxtest1.rst
 t/40_writers/xref.init/idxtest2.rst
 t/40_writers/xref.init/idxtest3.rst
 t/40_writers/xref.init/idxtest4
-t/40_writers/xref.init/idxtest4.rst
-t/40_writers/xref.init/index.idx
 t/40_writers/xref.init/index01.idx
 t/40_writers/xref.init/index02.idx
 t/40_writers/xref.init/smiley.gif
@@ -240,7 +237,6 @@ t/40_writers/xref.init/xref05.xref
 t/40_writers/xref.init/xref06.stderr
 t/40_writers/xref.init/xref06.xref
 t/40_writers/xref.init/xreftest.rst
-t/40_writers/xref.init/xreftest.xref
 t/60_new/directives.init/tables01.dom
 t/60_new/directives.init/tables01.rst
 t/60_new/directives.init/tables02.dom
@@ -769,19 +765,14 @@ t/80_misc/transforms.init/targets_01.dom
 t/80_misc/transforms.init/targets_01.rst
 t/90_bugs/html.init/Dir.mak
 t/90_bugs/html.init/hyphencell.myhtml
-t/90_bugs/html.init/hyphencell.r
 t/90_bugs/html.init/hyphencell.rst
 t/90_bugs/html.init/inlinelit.myhtml
-t/90_bugs/html.init/inlinelit.r
 t/90_bugs/html.init/inlinelit.rst
 t/90_bugs/html.init/method.myhtml
-t/90_bugs/html.init/method.r
 t/90_bugs/html.init/method.rst
 t/90_bugs/html.init/raw.myhtml
-t/90_bugs/html.init/raw.r
 t/90_bugs/html.init/raw.rst
 t/90_bugs/html.init/refininterp.myhtml
-t/90_bugs/html.init/refininterp.r
 t/90_bugs/html.init/refininterp.rst
 t/90_bugs/parse.init/analogy.dom
 t/90_bugs/parse.init/analogy.rst
