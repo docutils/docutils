@@ -232,7 +232,7 @@ foreach my $test (@tests) {
 	$errs =~ s/([.\\\[\]{}()+*$@])/\\$1/g;
 	# Fix line numbers,  paths
 	$errs =~ s/(\\\(eval \d+\\\))/$1(\\[.*\\])?/g;
-	$errs =~ s! /\S+/! /\\S+/!g;
+	$errs =~ s!(^| )/\S+/!$1/\\S+/!mg;
 	$errs =~ s/(line|eval) (\d+)/$1 \\d+/g;
 	like ($make_errs . `cat $base.chk 2>&1`, qr/$errs/, $test);
     }
