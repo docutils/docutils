@@ -47,22 +47,15 @@ BEGIN {
 sub main {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
     my $dhash = Text::Restructured::Directive::parse_directive
-	($parser, $dtext, $lit, $source, $lineno);
+	($parser, $dtext, $lit, $source, $lineno, [], '1+');
+    return $dhash if ref($dhash) eq "Text::Restructured::DOM";
     my($args, $options, $content) =
 	map(defined $dhash->{$_} ? $dhash->{$_} : '',
 	    qw(args options content));
     return Text::Restructured::Directive::system_msg
 	($parser, $name, 3, $source, $lineno,
-	 qq(The $name directive must have an argument.), $lit)
-	if $args =~ /^$/;
-    return Text::Restructured::Directive::system_msg
-	($parser, $name, 3, $source, $lineno,
 	 qq(The $name directive must have content.), $lit)
 	if $content =~ /^$/;
-    return Text::Restructured::Directive::system_msg
-	($parser, $name, 3, $source, $lineno,
-	 qq(The $name directive has no options.), $lit)
-	if $options !~ /^$/;
     if (! $Perl::safe) {
 	# Create a safe compartment for the Perl to run
 	use Safe;
@@ -117,8 +110,7 @@ sub main {
 	my $fake = new Text::Restructured::DOM('fake');
 	$parser->Paragraphs($fake, $content, $newsource, 1);
 	my $last = $fake->last();
-	if (@{$fake->{content}} == 1 &&
-	    $last->{tag} eq 'paragraph') {
+	if (@{$fake->{content}} == 1 && $last->{tag} eq 'paragraph') {
 	    chomp $last->{content}[-1]{text} if $last->{content}[-1]{text};
 	    return @{$last->{content}};
 	}
