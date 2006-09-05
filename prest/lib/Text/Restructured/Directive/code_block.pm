@@ -1,4 +1,4 @@
-# $Id: if.pm 729 2005-11-04 22:25:20Z r31609 $
+# $Id: code_block.pm 729 2005-11-04 22:25:20Z r31609 $
 # Copyright (C) 2002-2005 Freescale Semiconductor, Inc.
 # Distributed under terms of the Perl license, which is the disjunction of
 # the GNU General Public License (GPL) and the Artistic License.
@@ -48,6 +48,14 @@ The directive has the following options:
   or ``heavy`` (default ``heavy``).  Ignored if ``:color:`` is specified.
 ``:numbered:``
   Number the lines of the code block.
+
+This directive also uses the following command-line definition:
+
+  -D code-block-states-file=<file>   The file to be passed to the states
+                                     program to specify how to do the
+                                     formatting.  Searches the perl include
+                                     path to find the file.  Default is
+                                     "Text/Restructured/Directive/rst.st".
 =end Description
 =end reST
 =cut
@@ -70,8 +78,9 @@ BEGIN {
 # Returns: array of DOM objects
 sub main {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
+    my @optlist = qw(color file level numbered);
     my $dhash = Text::Restructured::Directive::parse_directive
-	($parser, $dtext, $lit, $source, $lineno);
+	($parser, $dtext, $lit, $source, $lineno, \@optlist);
     my($args, $content, $content_lineno, $options) =
 	map($dhash->{$_} || '', qw(args content content_lineno options));
 
@@ -83,9 +92,11 @@ sub main {
     $ENV{PATH} = "";
     my ($states_bin) = grep -x "$_/states",
 	qw(/bin /usr/bin /usr/local/bin);
-    my $subdir = "Text/Restructured/Directive";
-    my ($st_dir) = grep -r "$_/$subdir/rst.st", @INC;
-    my ($st) = grep -r $_, "$st_dir/$subdir/rst.st";
+    my $subdir = 'Text/Restructured/Directive';
+    my $st_name = $main::opt_D{'code-block-states-file'} || "$subdir/rst.st";
+    my ($st_dir) = grep -r "$_/$st_name", ('.', @INC);
+    $st_dir = '' unless defined $st_dir;
+    my ($st) = grep -r $_, $st_name, "$st_dir/$st_name";
 
     if ($states_bin && $st) {
 	# We have the ability to run states
@@ -107,11 +118,11 @@ sub main {
 	unlink $input_file unless $options->{file};
 	my $pl = $DOM->new('parsed_literal', %Text::Restructured::XML_SPACE);
 	my @errs;
+	$markup = numbered($markup) if defined $options->{numbered};
 	if ($?) {
 	    $pl->append($DOM->newPCDATA($markup));
 	}
 	else {
-	    $markup = numbered($markup) if defined $options->{numbered};
 	    if (defined $options->{color}) {
 		# Make sure the roles are defined
 		foreach my $role (qw(comment function-name
@@ -125,32 +136,27 @@ sub main {
 	}
 	return $pl, @errs;
     }
-    else {
-	# We can't run states; just create a literal block
-	my $lb = $DOM->new('literal_block', %Text::Restructured::XML_SPACE);
-	if ($options->{file}) {
-	    my $file = $options->{file};
-	    $lb->{attr}{source} = $file;
-	    if (open(FILE,$file)) {
-		my $text = join('',<FILE>);
-		$text = numbered($text) if defined $options->{numbered};
-		$lb->append($DOM->newPCDATA($text));
-	    }
-	    else {
-		my $err = "IOError: " . system_error();
-		return system_message
-		    ($parser, 4, $source, $lineno,
-		     qq(Problems with "$name" directive path:\n$err: '$args'.),
-		     $lit);
-	    }
+
+    # We can't run states; just create a literal block
+    my $lb = $DOM->new('literal_block', %Text::Restructured::XML_SPACE);
+    if ($options->{file}) {
+	my $file = $options->{file};
+	$lb->{attr}{source} = $file;
+	if (open(FILE,$file)) {
+	    $content = join('',<FILE>);
 	}
 	else {
-	    $lb->append($DOM->newPCDATA($content));
+	    my $err = "IOError: " . Text::Restructured::Directive::system_error();
+	    return Text::Restructured::system_message
+		($parser, 4, $source, $lineno,
+		 qq(Problems with "$name" directive path:\n$err: '$options->{file}'.),
+		 $lit);
 	}
-	return $lb;
     }
-
-    return;
+    $content = numbered($content) if defined $options->{numbered};
+    
+    $lb->append($DOM->newPCDATA($content));
+    return $lb;
 }
 
 # Numbers the lines of a text block
