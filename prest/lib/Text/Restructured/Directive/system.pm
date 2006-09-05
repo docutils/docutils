@@ -53,8 +53,9 @@ BEGIN {
 # Returns: array of DOM objects
 sub main {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
+    my @optlist = qw(lenient literal);
     my $dhash = Text::Restructured::Directive::parse_directive
-	($parser, $dtext, $lit, $source, $lineno);
+	($parser, $dtext, $lit, $source, $lineno, \@optlist);
     return $dhash if ref($dhash) eq $DOM;
     my($args, $options) = map($dhash->{$_}, qw(args options));
 
@@ -104,6 +105,7 @@ unlink "/tmp/$$";
 (\$text, \$?, \$errmsg)
 EOS
     my ($text, $syserr, $errmsg) = $Perl::safe->reval($code);
+    $text = '' unless defined $text;
     my $err = $@ =~ /trapped by/ ? "$@Run with -D trusted if you believe the code is safe" : $@;
     return $parser->system_message(4, $source, $lineno,
 			       qq(Error executing "$name" directive: $err.),
@@ -112,7 +114,7 @@ EOS
 
     return Text::Restructured::Directive::system_msg
     ($parser, $name, 3, $source, $lineno, "Non-zero exit code: " .
-     ($errmsg || $text || '') )
+     ($errmsg || $text) )
     if $syserr && ! defined $options->{lenient};
     my $newsource = qq($name directive at $source, line $lineno);
     $text .= $errmsg if defined $errmsg;
@@ -124,10 +126,10 @@ EOS
     }
     elsif ($parent->{tag} eq 'substitution_definition') {
 	chomp $text;
-	$parent->append($DOM->newPCDATA($text));
+	return $DOM->newPCDATA($text);
     }
     else {
-	$parser->Paragraphs($parent, $text, $newsource, 1) if defined $text;
+	$parser->Paragraphs($parent, $text, $newsource, 1) if $text ne '';
     }
 
     return;
