@@ -59,11 +59,10 @@ sub newPCDATA {
 # Appends to the contents of a DOM object.
 # Arguments: DOM objects to append
 # Returns: The new number of contents
-sub append {
+sub append : method {
     my ($dom, @doms) = @_;
 
     @PARENT{@doms} = ($dom) x @doms;
-#    grep do {$_->{parent} = $dom}, @doms;
     push @{$dom->{content}}, @doms;
 }
 
@@ -71,7 +70,7 @@ sub append {
 # Returns the content objects the DOM object has
 # Arguments: None
 # Returns: Array of content DOM objects
-sub contents {
+sub contents : method {
     my ($dom, @doms) = @_;
 
     return @{$dom->{content}};
@@ -81,7 +80,7 @@ sub contents {
 # Returns the index of a child in the contents (-1 if it does not occur).
 # Arguments: child DOM object
 # Returns: index number
-sub index {
+sub index : method {
     my ($dom, $child) = @_;
     my $i;
     for ($i=0; $i<@{$dom->{content}}; $i++) {
@@ -94,7 +93,7 @@ sub index {
 # Returns the last DOM in the contents of a DOM.
 # Arguments: None
 # Returns: last DOM object (or undefined)
-sub last {
+sub last : method {
     my ($dom) = @_;
 
     my $last;
@@ -110,10 +109,9 @@ sub last {
 # go up in the tree to find the next object.
 # Arguments: optional regular expression for tags to ignore
 # Returns: next DOM or undef
-sub next {
+sub next : method {
     my ($dom, $ignore) = @_;
 
-#    my $parent = $dom->{parent};
     my $parent = $dom->parent();
     my $indx = $parent->index($dom) + 1;
     my $cur_parent = $parent;
@@ -132,14 +130,13 @@ sub next {
 	$indx = $new_parent->index($cur_parent) + 1;
 	$cur_parent = $new_parent;
     }
-    return;
 }
 
 # INSTANCE METHOD.
 # Returns the number of content objects the DOM object has
 # Arguments: None
 # Returns: Number of elements
-sub num_contents {
+sub num_contents : method {
     my ($dom, @doms) = @_;
 
     return 0+@{$dom->{content}};
@@ -149,7 +146,7 @@ sub num_contents {
 # Returns the parent DOM of an instance.
 # Arguments: None
 # Returns: The DOM object's parent
-sub parent {
+sub parent : method {
     my ($dom) = @_;
 
     return $PARENT{$dom};
@@ -159,11 +156,10 @@ sub parent {
 # Puts the arguments at the beginning of the contents of a DOM object.
 # Arguments: DOM objects to prepend
 # Returns: The new number of objects
-sub prepend {
+sub prepend : method {
     my ($dom, @doms) = @_;
 
     @PARENT{@doms} = ($dom) x @doms;
-#    grep do {$_->{parent} = $dom}, @doms;
     unshift (@{$dom->{content}}, @doms);
 }
 
@@ -178,7 +174,7 @@ sub prepend {
 # Callback routine arguments: target DOM, 'pre'/'post',
 #                             optional additional arguments
 # Callback routine returns: non-zero in 'pre' mode to avoid further recursion.
-sub Recurse {
+sub Recurse : method {
     my($dom, $sub, $when, @args) = @_;
 
     $when = 'post' unless defined $when;
@@ -206,11 +202,10 @@ sub Recurse {
 # Replaces the contents of a DOM object with a new set of objects.
 # Arguments: DOM objects to replace
 # Returns: None
-sub replace {
+sub replace : method {
     my ($dom, @doms) = @_;
 
     @PARENT{@doms} = ($dom) x @doms;
-#    grep do {$_->{parent} = $dom}, @doms;
     @{$dom->{content}} = @doms;
     return;
 }
@@ -228,7 +223,7 @@ sub replace {
 #                           substituted for the current node (this
 #                           list is returned on the 'post' call if
 #                           'both' is selected).
-sub Reshape {
+sub Reshape : method {
     my($dom, $sub, $when, @args) = @_;
 
     $when = 'post' unless defined $when;
@@ -261,12 +256,83 @@ sub Reshape {
 # Splices objects into the contents of a DOM object.
 # Arguments: start index, number to replace, list of DOM objects to splice
 # Returns: Array of removed objects
-sub splice {
+sub splice : method {
     my ($dom, $index, $n, @doms) = @_;
 
     @PARENT{@doms} = ($dom) x @doms;
-#    grep do {$_->{parent} = $dom}, @doms;
     return splice(@{$dom->{content}}, $index, $n, @doms);
+}
+
+# Parses a file in the DOM (pseudo-XML) format.
+# Arguments: First line of file
+# Returns: DOM object
+# Uses globals: <> file handle
+sub Parse {
+    my ($first_line) = @_;
+    my $last_indent = -1;
+    my @stack;
+    my @indents;
+    my $tos;	# top of stack
+    my $main;
+    $_ = $first_line;
+    do {
+	/(\s*).*/;
+	my $spaces = $1;
+	my $indent = length($spaces);
+	if (@stack > 0) {
+	    my $i;
+	    for ($i=0; $i < @indents; $i++) {
+		last if $indent <= $indents[$i]+1;
+	    }
+	    splice(@stack, $i);
+	    splice(@indents, $i);
+	    $tos = $stack[-1];
+	}
+
+	if (/^(\s*)<(\w+)\s*([^>]*)>\s*$/) {
+	    my ($spaces, $tag, $attrlist) = ($1, $2, $3);
+	    my $dom = new Text::Restructured::DOM($tag);
+	    while ($attrlist ne '') {
+		if ($attrlist =~ s/^([\w:]+)=([\"\'])([^\"]*)\2\s*//) {
+		    $dom->{attr}{$1} = $3;
+		}
+		elsif ($attrlist =~ s/^(\w+)\s*//) {
+		    $dom->{attr}{$1} = undef;
+		}
+		else {
+		    goto pcdata;
+		}
+	    }
+	    $tos->append($dom) if $tos;
+	    if (@stack > 0) {
+		$tos = $dom;
+	    }
+	    else {
+		$main = $dom;
+	    }
+	    push (@stack, $dom);
+	    push (@indents, $indent);
+	    $tos = $dom;
+	}
+	else {
+	  pcdata:
+	    substr($_,0,$indents[-1]+4) = "";
+	    chomp;
+	    my $text = $_;
+	    my $ncontent = @{$tos->{content}};
+	    if ($ncontent > 0 &&
+		$tos->{content}[$ncontent-1]{tag} eq '#PCDATA') {
+		$tos->{content}[$ncontent-1]{text} .= "$text\n";
+	    }
+	    else {
+		my $dom = newPCDATA Text::Restructured::DOM("$text\n");
+		$tos->append($dom);
+	    }
+	}
+    } while <>;
+
+    $main->{attr}{source} = $main::opt_D{source} || $ARGV;
+    return $main;
 }
 
 
