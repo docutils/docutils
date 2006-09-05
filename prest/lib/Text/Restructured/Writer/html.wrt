@@ -24,16 +24,17 @@ It uses the following output defines:
 -W colspecs[=<0|1>]    Output colgroup width sections in tables based upon 
                        the relative widths of the table columns in the 
                        source.  Default is 1.
--W embed-stylesheet[=<0|stylesheet-name>]
-                       Embed the stylesheet verbatim in the HTML
-                       output.  If <stylesheet-name> is not supplied,
-                       then the prest's default stylesheet (which may
-                       differ from the default for -W stylesheet) is
-                       embedded.  Default is 0 (no embedded stylesheet).
+-W embed-stylesheet[=<0|1>]
+                       Embed the primary stylesheet verbatim in the
+                       HTML output if possible.  Stylesheets with
+                       http: URLs are not embeddable.  If prest is
+                       installed with no default URL specified, the
+                       default stylesheet is always embedded.  Default
+                       is 0.
 -W field-limit=<num>   Specify the maximum width (in characters) for
                        field names in field lists.  Longer fields will
                        span an entire row of the table used to render
-                       the field list.  Default is 15 characters.
+                       the field list.  Default is 14 characters.
 -W footnote-backlinks=<0|1>
                        Enable backlinks from footnotes and citations
                        to their references if 1 (default is 1).
@@ -52,14 +53,19 @@ It uses the following output defines:
                        options in option lists.  Longer options will
                        span an entire row of the table used to render
                        the option list.  Default is 14 characters.
--W stylesheet[=<0|URL>]
-                       Specify a URL for the stylesheet link in the
-                       HTML header (default is
+-W stylesheet[=<0|URL|file>]
+                       Specify a URL or file for the primary stylesheet
+                       in the HTML header, or 0 or 'none' to omit the
+                       primary stylesheet.  A file or "file:" URL
+                       should be either a full path or a path relative
+                       to where the HTML file will be served.  The
+                       stylesheet will be a link unless 
+                       -W embed-stylesheet is specified and the
+                       stylesheet is embeddable.  Defaults to
                        "${Text::Restructured::PrestConfig::DEFAULTCSS}"
-                       if no -W stylesheet option is given or if given
-                       with no argument), or 0 to omit the stylesheet
-                       link.  Defaults to 0 if -W embed-stylesheet is
-                       specified with no argument.
+-W stylesheet2=file
+		       Specify a file to be embedded in the HTML
+                       header as a secondary stylesheet.
 -W target-tag=<a|span>
                        The HTML tag to use for target definitions (default 
                        is "a").
@@ -72,7 +78,8 @@ sub BEGIN = {
     use vars qw($attribution $bodyattr $cloak_email_addresses $colspecs
 		$embed_stylesheet $field_limit $footnote_backlinks
 		$footnote_references $html_prolog
-		$link_target $option_limit $stylesheet $target_tag);
+		$link_target $option_limit $stylesheet $stylesheet2
+		$target_tag);
 
     # Static globals
     use vars qw($DOM);
@@ -82,28 +89,40 @@ sub BEGIN = {
     use vars qw($HAS_CONTENTS $TARGET_FRAME $FOOTER $HEADER @HEAD_INFO
 		%USED_DEFAULT);
 
-     # Defaults for -W flags
-     $attribution = 'dash' unless defined $attribution;
-     $bodyattr = '' unless defined $bodyattr;
-     $cloak_email_addresses = '' unless defined $cloak_email_addresses;
-     $colspecs = 1 unless defined $colspecs;
-     $embed_stylesheet = defined $embed_stylesheet ? $embed_stylesheet :
-	 $Text::Restructured::PrestConfig::DEFAULTCSS =~ /none/i &&
-	 ! defined $stylesheet ? 1 : 0;
-     $field_limit = 15 unless defined $field_limit;
-     $footnote_backlinks = 1 unless defined $footnote_backlinks;
-     $footnote_references = 'superscript'
-	 unless defined $footnote_references;
-     $html_prolog = 0 unless defined $html_prolog;
-     $link_target = "''" unless defined $link_target;
-     $option_limit = 14 unless defined $option_limit;
-     $stylesheet =
-	 ($embed_stylesheet eq 1 && (!defined $stylesheet ||
-				     $stylesheet =~ /^none$/i) ? 0
-	  : (!defined $stylesheet ||
-	     $embed_stylesheet eq 1 && $stylesheet eq 1) ?
-	  $Text::Restructured::PrestConfig::DEFAULTCSS : $stylesheet);
-     $target_tag = "a" unless defined $target_tag;
+    # Defaults for -W flags
+    $attribution = 'dash' unless defined $attribution;
+    $bodyattr = '' unless defined $bodyattr;
+    $cloak_email_addresses = '' unless defined $cloak_email_addresses;
+    $colspecs = 1 unless defined $colspecs;
+    # Note: $stylesheet will be 'none' only if DEFAULTCSS is
+    $stylesheet = '' unless defined $stylesheet;
+    $stylesheet = $stylesheet =~ /^(0|none)$/i ? 0 :
+	$stylesheet ? $stylesheet :
+	$Text::Restructured::PrestConfig::DEFAULTCSS;
+    my $embeddable = $stylesheet && $stylesheet !~ /^http:/;
+    $embed_stylesheet =	$stylesheet =~ /^none$/ ||
+	$embed_stylesheet && $embeddable;
+    $field_limit = 14 unless defined $field_limit;
+    $footnote_backlinks = 1 unless defined $footnote_backlinks;
+    $footnote_references = 'superscript'
+	unless defined $footnote_references;
+    $html_prolog = 0 unless defined $html_prolog;
+    $link_target = "''" unless defined $link_target;
+    $option_limit = 14 unless defined $option_limit;
+    $target_tag = "a" unless defined $target_tag;
+}
+
+# Creates a default HTML string
+sub Default {
+    my ($dom, $str) = @_;
+    my $attr = GetAttr($dom);
+    if (($dom->{attr}{'xml:space'} || '') eq 'preserve') {
+	$str = qq(<pre class="$dom->{tag}">$str</pre>\n\n);
+    }
+    my $newstr = "<$dom->{tag}$attr>$str</$dom->{tag}>";
+    # Annotate the DOM with our content string
+    $dom->{_html}{str} = $str;
+    return $newstr;
 }
 
 # Creates a string from a reference to an attribute hash.  Attribute
@@ -120,21 +139,21 @@ sub MakeAttrList {
 			       sort keys %$attr));
 }
 
-# Returns the attribute string for a DOM based upon its attr and hattr
+# Returns the attribute string for a DOM based upon its attr and _html,attr
 # elements.
 # Arguments: DOM object
 # Returns: string
 sub GetAttr {
     my ($dom) = @_;
 
-    # The classes attribute has to be handle separately since it's
-    # called 'class' in the output
-    my @classes = ($dom->{attr}{classes} ? @{$dom->{attr}{classes}} : (),
-		   $dom->{_html}{attr}{class} ?
-		   @{$dom->{_html}{attr}{class}} : ());
-    $dom->{_html}{attr}{class} = \@classes if @classes;
-    delete $dom->{attr}{classes};
-    return $dom->{_html}{attr} ? MakeAttrList(\%{$dom->{_html}{attr}}) : '';
+    # The only thing taken from attr is {classes}, which is translated to
+    # 'class' under {_html}.
+    $dom->{_html}{attr}{class} = $dom->{attr}{classes}
+        if $dom->{attr}{classes} && @{$dom->{attr}{classes}};
+    my $attr_list = $dom->{_html}{attr} ?
+	MakeAttrList(\%{$dom->{_html}{attr}}) : '';
+    delete $dom->{_html}{attr}{class};
+    return $attr_list;
 }
 
 # Returns all the "paragraphs" from the DOM's contents (everything except
@@ -173,7 +192,7 @@ phase FIXATTR {
 		@{$dom->{attr}{$attr}} =
 		    map(EncodeHTML($_), @{$dom->{attr}{$attr}});
 	    }
-	    else {
+	    elsif (defined $dom->{attr}{$attr}) {
 		$dom->{attr}{$attr} =
 		    EncodeHTML($dom->{attr}{$attr});
 	    }
@@ -250,7 +269,7 @@ phase PREPROCESS {
 	chomp $str;
 	#### FIX 
 	use vars qw($FIRST_REFERENCE);
-	push (@{$dom->{_html}{attr}{class}},  'first', 'last')
+	push (@{$dom->{attr}{classes}},  'first', 'last')
 	    if ! $FIRST_REFERENCE++;
 	return;
     }
@@ -261,9 +280,7 @@ phase PREPROCESS {
 
     sub literal = { # PREPROCESS
 	my ($dom, $str) = @_;
-	return $dom->{_html}{txt} if defined $dom->{_html}{txt};
 	PreprocessLiteral($dom);
-	$dom->{_html}{txt} = $str;
 	return;
 
 	sub PreprocessLiteral {
@@ -275,6 +292,9 @@ phase PREPROCESS {
 		    $str =~ s|(\s+)|</span>$1<span class="pre">|g;
 		    $str =~ s/( +) /("&nbsp;" x length($1)) . " "/ge;
 		    $child->{val} = qq(<span class="pre">$str</span>);
+		}
+		elsif ($child->{tag} eq 'literal') {
+		    $child->{_html}{txt} = $child->{lit};
 		}
 		else {
 		    PreprocessLiteral($child);
@@ -296,16 +316,7 @@ phase PREPROCESS {
 	    my $str;
 	    my $child;
 	    foreach $child ($dom->contents()) {
-		if ($child->{tag} eq '#PCDATA') {
-		    $str .= EncodeHTML($child->{text});
-		}
-		else {
-		    my $s = TraverseLiteral($child);
-		    $s =~ s/^/    /mg if defined $s;
-		    $str .= EncodeHTML($child->{text})
-			if defined $child->{text};
-		    $str .= $s;
-		}
+		$str .= EncodeHTML($child->{text});
 	    }
 	    return $str;
 	}
@@ -326,9 +337,9 @@ phase PREPROCESS {
     sub definition|field_body|description|entry = { # PREPROCESS
 	my ($dom, $str) = @_;
 	my @paras = Paras($dom);
-	if (@paras) {
-	    push @{$paras[0]{_html}{attr}{class}}, 'first';
-	    push @{$paras[-1]{_html}{attr}{class}}, 'last';
+	if (@paras > 1) {
+	    push @{$paras[0]{attr}{classes}}, 'first';
+	    push @{$paras[-1]{attr}{classes}}, 'last';
 	}
 	return Default($dom, $str);
     }
@@ -351,7 +362,7 @@ phase PREPROCESS {
 	if (! $dom->{_html}{simple}) {
  	    foreach $li ($dom->contents()) {
  		$li->{_html}{simple} = 0;
-		push @{$li->{content}[0]{_html}{attr}{class}},'first';
+		push @{$li->{content}[0]{attr}{classes}},'first';
 	    }
 	}
 	return Default($dom, $str);
@@ -392,18 +403,19 @@ phase PREPROCESS {
     sub footnote|citation = { # PREPROCESS
 	my ($dom, $str) = @_;
 	# Get the label out of our first child's child
+	# Devel::Cover branch 0 1 First child is always label
 	if ($dom->{content}[0]{tag} eq 'label') {
 	    my $label = $dom->{content}[0]{_html}{str};
 	    chomp $label;
 	    $dom->{_html}{label} = $label;
+	    # Delete the label that is our first child
+	    $dom->splice(0, 1);
 	}
-	# Delete the label that is our first child
-	$dom->splice(0, 1) if $dom->{content}[0]{tag} eq 'label';
 	# Label the first/last paragraph if needed
 	my @paragraphs = Paras($dom);
-	push @{$paragraphs[0]{_html}{attr}{class}}, 'first'
+	push @{$paragraphs[0]{attr}{classes}}, 'first'
 	    if @paragraphs > 1;
-	push @{$paragraphs[-1]{_html}{attr}{class}}, 'last'
+	push @{$paragraphs[-1]{attr}{classes}}, 'last'
 	    if @paragraphs > 1;
     }
 
@@ -489,7 +501,6 @@ phase PREPROCESS {
     sub generated = { # PREPROCESS
 	my ($dom, $str) = @_;
 	return $str;
-	return EncodeHTML($str);
     }
 
     sub sidebar = { # PREPROCESS
@@ -546,17 +557,6 @@ phase PREPROCESS {
 	my ($dom, $str) = @_;
 	$USED_DEFAULT{$dom->{tag}} = 1;
 	return Default($dom, $str);
-        sub Default {
-	    my ($dom, $str) = @_;
-	    my $attr = MakeAttrList($dom->{attr});
-	    if (($dom->{attr}{'xml:space'} || '') eq 'preserve') {
-		$str = qq(<pre class="$dom->{tag}">$str</pre>\n\n);
-	    }
-	    my $newstr = "<$dom->{tag}$attr>$str</$dom->{tag}>";
-	    # Annotate the DOM with our content string
-	    $dom->{_html}{str} = $str;
-	    return $newstr;
-	}
     }
 }
 
@@ -576,16 +576,12 @@ phase PROCESS {
 		(($p_tag eq 'list_item' && $parent->{_html}{simple}) ||
 		 (@paras == 1 && $p_tag !~ /list_item|block_quote|topic/)));
 
-	my @classes = ($dom->{attr}{classes} ? @{$dom->{attr}{classes}} : (),
-		       $dom->{_html}{attr}{class} ?
-		       @{$dom->{_html}{attr}{class}} : ());
-	my %attr;
-	$attr{class} = \@classes if @classes;
-	$attr{id} = shift @{$dom->{attr}{ids}} if $dom->{attr}{ids};
+	$dom->{_html}{attr}{id} = shift @{$dom->{attr}{ids}}
+	    if $dom->{attr}{ids};
 	my @ids = @{$dom->{attr}{ids}} if $dom->{attr}{ids};
 	my $spans = join '', map(qq(<$target_tag id="$_"></$target_tag>),
 				 @ids);
-	my $attr = MakeAttrList(\%attr);
+	my $attr = GetAttr($dom);
 	return  "$spans<p$attr>$str</p>\n";
     }
 
@@ -597,9 +593,7 @@ phase PROCESS {
 
     sub (?:doctest|literal)_block = { # PROCESS
 	my ($dom, $str) = @_;
-	my @class = $dom->{_html}{attr}{class} ?
-	    @{$dom->{_html}{attr}{class}} :
-	    $dom->{attr}{classes} ? @{$dom->{attr}{classes}} : ();
+	my @class = $dom->{attr}{classes} ? @{$dom->{attr}{classes}} : ();
 	my $class = $dom->{tag};
 	$class =~ s/_/-/;
 	push(@class, $class);
@@ -661,43 +655,35 @@ phase PROCESS {
 	BEGIN { %LIST_TAGS = ('bullet_list'=>'ul', 'enumerated_list'=>'ol',
 			      'definition_list'=>'dl'); }
 	my $tag = $LIST_TAGS{$dom->{tag}};
-	my @class;
 	my $attr = $dom->{attr};
-	push @class, $attr->{classes}[0] if $attr->{classes};
-	push @class, @{$dom->{_html}{attr}{class}}
-	if defined $dom->{_html}{attr}{class};
-	push @class, $attr->{enumtype} if $tag eq 'ol';
-	push @class, 'docutils' if $tag eq 'dl';
-	push @class, 'simple' if $dom->{_html}{simple};
-	my $class_keys = join(' ',@class);
-	my $class = $class_keys ? qq( class="$class_keys") : '';
-	my $start = defined $attr->{start} ? qq( start="$attr->{start}") : '';
-	return (qq(<$tag$class$start>\n$str</$tag>\n));
+	$dom->{attr}{classes} = [] if !$dom->{attr}{classes};
+	my $class = $dom->{attr}{classes};
+	push @$class, $attr->{enumtype} if $tag eq 'ol';
+	push @$class, 'docutils' if $tag eq 'dl';
+	push @$class, 'simple' if $dom->{_html}{simple};
+	$dom->{_html}{attr}{start} = $attr->{start} if defined $attr->{start};
+	my $attrlist = GetAttr($dom);
+	return (qq(<$tag$attrlist>\n$str</$tag>\n));
     }
 
     sub list_item = { # PROCESS
 	my ($dom, $str) = @_;
-	# Insert our ID into any reference tag
-	my $id = $dom->{attr}{ids}[0];
-	$str =~ s/(<a [^>]+)/$1 id="$id" name="$id"/ if defined $id;
 	return qq(<li>$str</li>\n);
     }
 
     sub section = { # PROCESS
 	my ($dom, $str) = @_;
-	my $attr = $dom->{attr};
-	my @class;
-	@class = @{$attr->{classes}} if $attr->{classes};
-	push @class, 'section';
-	my $class = join(' ',@class);
-	my %attr = ('class'=>$class);
-	$attr{id} = $attr->{ids}[0] if $attr->{ids};
-	$attr = MakeAttrList(\%attr);
-	my @ids = @{$dom->{attr}{ids}} if $dom->{attr}{ids};
+	
+ 	my $attr = $dom->{attr};
+	my $hattr = $dom->{_html}{attr} = {};
+	$hattr->{id} = $attr->{ids}[0] if $attr->{ids};
+	push @{$attr->{classes}}, 'section';
+	my @ids = @{$attr->{ids}} if $attr->{ids};
 	shift @ids;
 	my $spans = join '', map(qq(<$target_tag id="$_"></$target_tag>),
 				 @ids);
-	return qq($spans<div$attr>\n$str</div>\n);
+	my $attrlist = GetAttr($dom);
+	return qq($spans<div$attrlist>\n$str</div>\n);
     }
 
     # All of these items need to chomp a preceding #PCDATA
@@ -708,26 +694,13 @@ phase PROCESS {
 	    %TAG_TRANSLATE = qw(emphasis em subscript sub superscript sup);
 	}
 	$dom->{tag} = defined $TAG_TRANSLATE{$dom->{tag}} ?
-	    $TAG_TRANSLATE{$dom->{tag}} : defined $dom->{_html}{newtag} ?
-	    $dom->{_html}{newtag} : $dom->{tag};
-	ChompPreceding($dom);
+	    $TAG_TRANSLATE{$dom->{tag}} : $dom->{tag};
 	chomp $str;
 	return Default($dom, $str);
-
-	sub ChompPreceding {
-	    my ($dom) = @_;
-	    my $parent = $dom->parent();
-	    my $content = $parent->{content};
-	    my $i = $parent->index($dom);
-	    chomp $content->[$i-1]{val}
-	    if $i > 0 && $content->[$i-1]{tag} eq '#PCDATA' &&
-		substr($content->[$i-1]{val}, -2) =~ /[ \(;]\n/;
-	}
     }
 
     sub target = { # PROCESS
 	my ($dom, $str) = @_;
-	ChompPreceding($dom);
 	chomp $str;
 	my $id = $dom->{attr}{ids} ? $dom->{attr}{ids}[0] : '';
 	my $class = $str ne '' ? qq( class="target") : '';
@@ -739,7 +712,6 @@ phase PROCESS {
 
     sub problematic = { # PROCESS
 	my ($dom, $str) = @_;
-	ChompPreceding($dom);
 	my $attr = $dom->{attr};
 	return qq(<a href="#$attr->{refid}" name="$attr->{ids}[0]"><span class="problematic" id="$attr->{ids}[0]">$str</span></a>);
     }
@@ -748,7 +720,6 @@ phase PROCESS {
 	my ($dom, $str) = @_;
 
 	my $parent = $dom->parent();
-	ChompPreceding($dom);
 	my %attr;
 	$attr{class} = "footnote-reference";
 	my $ref = $attr{href} = "#$dom->{attr}{refid}";
@@ -765,8 +736,8 @@ phase PROCESS {
 
     sub literal = { # PROCESS
 	my ($dom, $str) = @_;
-	ChompPreceding($dom);
-	return qq(<tt class="docutils literal">$str</tt>);
+	return defined $dom->{_html}{txt} ? $dom->{_html}{txt} :
+	    qq(<tt class="docutils literal">$str</tt>);
     }
 
     sub term = { # PROCESS
@@ -794,8 +765,8 @@ phase PROCESS {
 	my $ref = defined $dom->{attr}{refuri} ?
 	    $dom->{attr}{refuri} : defined $dom->{attr}{refid} ?
 	    "#$dom->{attr}{refid}" : undef;
-	my @class = $dom->{_html}{attr}{class} ?
-	    @{$dom->{_html}{attr}{class}} : ();
+	my @class = $dom->{attr}{classes} ?
+	    @{$dom->{attr}{classes}} : ();
 	push(@class, $dom->{tag});
 	my $class = join(' ',@class);
 	my %attr = ('class'=>"$class");
@@ -822,8 +793,8 @@ phase PROCESS {
     sub footnote|citation = { # PROCESS
 	my ($dom, $str) = @_;
 	my (@list1, @list2);
-	my @class = $dom->{_html}{attr}{class} ?
-	    @{$dom->{_html}{attr}{class}} : ();
+	my @class = $dom->{attr}{classes} ?
+	    @{$dom->{attr}{classes}} : ();
 	push @class, 'docutils';
 	push @class, $dom->{tag};
 	my $class = qq(class=") . join(' ',@class) . qq(");
@@ -832,6 +803,7 @@ phase PROCESS {
 	push(@list1, qq(<colgroup><col class="label" /><col /></colgroup>\n));
 	push(@list1, qq(<tbody valign="top">\n));
 	unshift(@list2, qq(</tbody>\n));
+	# Devel::Cover branch 0 1 html/label is always defined
 	my $label = defined $dom->{_html}{label} ? $dom->{_html}{label} :
 	    $dom->{attr}{name};
 	my $backlinks;
@@ -876,17 +848,16 @@ phase PROCESS {
 
     sub topic = { # PROCESS
 	my ($dom, $str) = @_;
+	my $hattr = $dom->{_html}{attr} = {};
 	my $class = $dom->{attr}{classes} ? $dom->{attr}{classes}[0] : '';
-	my $id = '';
 	if ($class eq 'contents') {
 	    $HAS_CONTENTS = 1;
-	    $id = qq( id="$dom->{attr}{ids}[0]");
+	    $hattr->{id} = $dom->{attr}{ids}[0];
 	}
 	my %attr;
-	@{$attr{class}} = @{$dom->{attr}{classes}} if $dom->{attr}{classes};
-	push @{$attr{class}}, 'topic';
-	my $attr = MakeAttrList(\%attr);
-	return qq(<div$attr$id>\n$str</div>\n);
+	push @{$dom->{attr}{classes}}, 'topic';
+	my $attrlist = GetAttr($dom);
+	return qq(<div$attrlist>\n$str</div>\n);
     }
 
     sub field_list = { # PROCESS
@@ -914,18 +885,15 @@ phase PROCESS {
 	my ($dom, $str) = @_;
 	my %fields = map(($_->{tag}, $_->{val}), $dom->contents());
 	my @str;
-	my @fieldargs = ($fields{field_name});
-	push(@fieldargs, $fields{field_argument})
-	    if defined $fields{field_argument};
-	my $fieldargs = join(' ',@fieldargs);
-	# Back-convert HTML codes to figure out how long fieldargs is
-	(my $fieldchars = $fieldargs) =~ s/&.*;/ /g;
-	my $colspan = length($fieldchars) >= $field_limit ?
+	my $fieldname = $fields{field_name};
+ 	# Back-convert HTML codes to figure out how long fieldargs is
+ 	(my $fieldchars = $fieldname) =~ s/&.*;/ /g;
+	my $colspan = length($fieldchars) > $field_limit ?
 	    qq( colspan="2") : '';
 	my $tr = $colspan ? "</tr>\n" : '';
 	my $cr = $fields{field_body} =~ m|</p>$| ? "\n" : '';
 	push(@str,
-	     qq(<tr class="field"><th class="field-name"$colspan>$fieldargs:</th>$tr));
+	     qq(<tr class="field"><th class="field-name"$colspan>$fieldname:</th>$tr));
 	push(@str, $colspan ?
 	     qq(<tr><td>&nbsp;</td><td class="field-body">$fields{field_body}$cr</td>\n)
 	     : qq(<td class="field-body">$fields{field_body}$cr</td>\n)
@@ -998,12 +966,13 @@ EOS
     sub table = { # PROCESS
 	my ($dom, $str) = @_;
 	my $tattr = $dom->{tableattr} || '';
-	my %attr = ($tattr =~ /(\w+)(?:=(\S+))?/g,
-		    $tattr =~ /(\w+)="(.*?)"/g);
-	$attr{class} = [split /\s+/, $attr{class}] if $attr{class};
-	unshift(@{$attr{class}}, @{$dom->{attr}{classes}})
-	    if $dom->{attr}{classes};
-	my $attr = MakeAttrList(\%attr);
+	%{$dom->{_html}{attr}} = ($tattr =~ /(\w+)(?:=(\S+))?/g,
+				  $tattr =~ /(\w+)="(.*?)"/g);
+	if ($dom->{_html}{attr}{class}) {
+	    push @{$dom->{attr}{classes}}, $dom->{_html}{attr}{class};
+	    delete $dom->{_html}{attr}{class};
+	}
+	my $attr = GetAttr($dom);
 	return qq(<table$attr>\n$str</table>\n);
     }
 
@@ -1045,34 +1014,32 @@ EOS
     sub entry = { # PROCESS
 	my ($dom, $str) = @_;
 	my $attr = $dom->{attr};
-	my %attr = map($_ eq 'morerows' ? ('rowspan'=>$attr->{$_}+1) :
-		       $_ eq 'morecols' ? ('colspan'=>$attr->{$_}+1) :
-		       ($_=>$attr->{$_}), keys %$attr);
 	my $eattr = $dom->{entryattr} || '';
-	my %eattr = ($eattr =~ /(\w+)(?:=(\S+))?/g,
-		     $eattr =~ /(\w+)="(.*?)"/g);
-	@attr{keys %eattr} = values %eattr;
-	if ($attr{classes}) {
-	    $attr{class} = $attr{classes};
-	    delete $attr{classes};
-	}
-	delete $attr{align} if ($attr{align} || '') eq 'left';
-	my $attrlist = MakeAttrList(\%attr);
+	# Devel::Cover branch 0 1 there are no pass-thru attributes
+	%{$dom->{_html}{attr}} =
+	    (map($_ eq 'morerows' ? ('rowspan'=>$attr->{$_}+1) :
+		 $_ eq 'morecols' ? ('colspan'=>$attr->{$_}+1) :
+		 $_ eq 'classes' ||
+		 $_ eq 'align' && $attr->{$_} eq 'left'? () :
+		 ($_=>$attr->{$_}), keys %$attr),
+	     $eattr =~ /(\w+)(?:=(\S+))?/g,
+	     $eattr =~ /(\w+)="(.*?)"/g);
+	my $attrlist = GetAttr($dom);
 	$str = '&nbsp;' if $str eq '';
-	my $tag = $attr{class} && grep($_ eq 'stub', @{$attr{class}}) ?
+	my $tag = $attr->{classes} && grep($_ eq 'stub', @{$attr->{classes}}) ?
 	    "th" : "td";
 	return qq(<$tag$attrlist>$str</$tag>\n);
     }
 
     sub citation_reference = { # PROCESS
 	my ($dom, $str) = @_;
-	my %attr;
-	$attr{class} = "citation-reference";
-	my $ref = $attr{href} = "#$dom->{attr}{refid}";
-	$attr{name} = $attr{id} = $dom->{attr}{ids}[0];
+	my $hattr = $dom->{_html}{attr} = {};
+	push @{$dom->{attr}{classes}}, 'citation-reference';
+	my $ref = $hattr->{href} = "#$dom->{attr}{refid}";
+	$hattr->{name} = $hattr->{id} = $dom->{attr}{ids}[0];
 	my $target = &$TARGET_FRAME($ref);
-	$attr{target} = $target if $target ne '';
-	my $attr = MakeAttrList(\%attr);
+	$hattr->{target} = $target if $target ne '';
+	my $attr = GetAttr($dom);
 	return qq(<a$attr>[$str]</a>);
     }
 
@@ -1081,25 +1048,25 @@ EOS
 
 	my $attr = $dom->{attr};
 	my $alt = main::FirstDefined($attr->{alt}, $attr->{uri});
-	my %attr = ('alt'=>$alt, 'src'=>$attr->{uri});
-	my @attr_out = qw(height width align usemap);
+	my $hattr = $dom->{_html}{attr} = {};
+	@$hattr{qw(alt src)} = ($alt, $attr->{uri});
+ 	my @attr_out = qw(height width align usemap);
 	foreach (@attr_out) {
-	    $attr{$_} = $attr->{$_} if defined $attr->{$_};
+	    $hattr->{$_} = $attr->{$_} if defined $attr->{$_};
 	}
-	$attr{class} = $dom->{attr}{classes} if $dom->{attr}{classes};
-	$attr{refid} = $dom->{attr}{ids} if $dom->{attr}{ids};
-	my $attrlist = MakeAttrList(\%attr);
+#	$hattr->{refid} = $dom->{attr}{ids} if $dom->{attr}{ids};
+	my $attrlist = GetAttr($dom);
 	my $img = qq(<img$attrlist />);
 	return $img;
     }
 
     sub figure = { # PROCESS
 	my ($dom, $str) = @_;
-	my %attr = %{$dom->{attr}};
-	push @{$attr{classes}}, 'figure';
-	$attr{class} = $attr{classes};
-	delete $attr{classes};
-	my $attr = MakeAttrList(\%attr);
+	# Copy the non-classes attributes to {_html}{attr}
+	%{$dom->{_html}{attr}} = map($_ ne 'classes' ? ($_, $dom->{attr}{$_}) :
+				     (), keys %{$dom->{attr}});
+	push @{$dom->{attr}{classes}}, 'figure';
+	my $attr = GetAttr($dom);
 	return qq(<div$attr>\n$str</div>\n);
     }
 
@@ -1118,7 +1085,7 @@ EOS
 
     sub line_block = { # PROCESS
 	my ($dom, $str) = @_;
-	$dom->{attr}{class} = [ 'line-block' ] unless $dom->{attr}{class};
+	$dom->{attr}{classes} = [ 'line-block' ] unless $dom->{attr}{classes};
 	my $attr = GetAttr($dom);
 	return qq(<div$attr>\n$str</div>\n);
     }
@@ -1127,7 +1094,6 @@ EOS
 	my ($dom, $str) = @_;
 	chomp $str;
 	$str = "<br />" if $str eq '';
-	$str =~ s!^( +)!"&nbsp;" x length($1)!e;
 	return qq(<div class="line">$str</div>\n);;
     }
 
@@ -1148,12 +1114,13 @@ EOS
 	my $name = $attr->{ids} ? qq( name="$attr->{ids}[0]") : '';
 	my $line = $attr->{line} ? qq(, line $attr->{line}) : '';
 	my $id = $attr->{ids} ? qq( id="$attr->{ids}[0]") : '';
-	return << "EOS"
+	return << "EOS" 
 <div class="system-message"$id>
 <p class="system-message-title">System Message: <a$name>$attr->{type}/$attr->{level}</a> (<tt class="docutils">$attr->{source}</tt>$line)$backlink</p>
 $str</div>
 EOS
-	    if $parent->{attr}{classes}[0] eq 'system-messages';
+	    if ($parent->{attr}{classes} && @{$parent->{attr}{classes}} &&
+		$parent->{attr}{classes}[0] eq 'system-messages');
 	return;
     }
 
@@ -1209,18 +1176,25 @@ EOPROLOG2
 	push (@{$head->[0]},
 	      map(ref($_) ? qq(<meta name="$_->[0]" content="$_->[1]" />\n) :
 		  $_, @HEAD_INFO));
+	my @embeds;
+	if ($stylesheet =~ /^none$/i) {
+	    # Find the default stylesheet
+	    my $default = "Text/Restructured/default.css";
+	    my ($dir) = grep -f "$_/$default", @INC;
+	    push @embeds, "$dir/$default";
+	    $stylesheet = 0;
+	}
+	elsif ($stylesheet !~ /^http:/ && $embed_stylesheet) {
+	    push @embeds, $stylesheet =~ m!^file:(?://)?(.*)! ? $1 :
+		$stylesheet;
+	    $stylesheet = 0;
+	}
 	if ($stylesheet) {
 	    push @{$head->[0]}, qq(<link rel="stylesheet" href="$stylesheet" type="text/css" />\n);
 	}
-        if ($embed_stylesheet) {
-	    my $ss = $embed_stylesheet;
-	    if ($ss eq 1) { #  Yes, it's supposed to be a string comparison
-		# Find the default stylesheet
-		my $default = "Text/Restructured/default.css";
-		my ($dir) = grep -f "$_/$default", @INC;
-		$ss = "$dir/$default";
-	    }
-	    open SS, $ss or die "Cannot open stylesheet $stylesheet";
+	push @embeds, $stylesheet2 if $stylesheet2;
+	foreach my $embed (@embeds) {
+	    open SS, $embed or die "Cannot open stylesheet $embed";
 	    my $ss_text = join '', <SS>;
 	    push(@{$head->[0]},
 		 sprintf(qq(<style type="text/css">\n%s</style>\n),
@@ -1235,7 +1209,7 @@ EOPROLOG2
 	push @{$body->[0]}, map(qq(<span id="$_"></span>),
 				@{$dom->{attr}{ids}}
 				[1 .. $#{$dom->{attr}{ids}}])
-	    if$dom->{attr}{ids} && @{$dom->{attr}{ids}} > 1;
+	    if $dom->{attr}{ids} && @{$dom->{attr}{ids}} > 1;
 	push (@{$body->[0]},
 	      qq(<div class="document") .
 	      ($dom->{attr}{ids} ? qq( id="$dom->{attr}{ids}[0]") : "")
@@ -1346,12 +1320,7 @@ EOS
 	my ($dom, $str) = @_;
 
 	my $tag = 'span';
-	my %attr = %{$dom->{attr}};
-	if ($attr{classes}) {
-	    $attr{class} = join ' ', @{$attr{classes}};
-	    delete $attr{classes};
-	}
-	my $attr = MakeAttrList(\%attr);
+	my $attr = GetAttr($dom);
 	return qq(<$tag$attr>$str</$tag>);
     }
 
