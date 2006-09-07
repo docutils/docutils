@@ -260,7 +260,11 @@ EOS
 Descriptions of Writers
 =======================
 EOS
+	;
+	    my %done_writer;
 	    foreach $writer (@writers) {
+		my ($writer_name) = $writer =~ m|([^/]+)\.wrt$|;
+		next if $done_writer{$writer_name}++;
 		my $output = 0;
 		# Devel::Cover branch 0 0 Assert I can open writers
 		open(WRITER, $writer) or die "Cannot open $writer";
@@ -268,8 +272,8 @@ EOS
 		    if ((/^=begin $mark/ .. /^=end $mark/) &&
 			    ! /^=(begin|end) $mark/) {
 			if (! $output++) {
-			    $writer =~ m|([^/]+)\.wrt$|;
-			    my $title = "Documentation for writer '$1'";
+			    my $title =
+				"Documentation for writer '$writer_name'";
 			    print "\n$title\n",('-' x length($title)),"\n";
 			}
 			s/(\$\{[^\}]+\})/eval $1/ge;
