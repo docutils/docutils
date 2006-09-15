@@ -74,6 +74,14 @@
 ;;   (require 'rst)
 ;;   (add-hook 'text-mode-hook 'rst-text-mode-bindings)
 ;;
+;; Emacs installations seem to vary a lot. If you experience problems in Emacs 21
+;; regarding font-lock-preprocessor-face not being found, then (require 'font-lock)
+;; just before (require 'rst) should solve these problems::
+;;
+;;   (require 'font-lock)
+;;   (require 'rst)
+;;   (add-hook 'text-mode-hook 'rst-text-mode-bindings)
+;;
 ;; rst-prefix-map is the prefix map for all the functionality provide by this
 ;; module.  In addition, other shorter bindings are also provided on the
 ;; mode-specific-map prefix (i.e C-c).
