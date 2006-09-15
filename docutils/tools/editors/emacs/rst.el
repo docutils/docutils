@@ -68,15 +68,8 @@
 
 ;;; Installation instructions
 
-;; Add this line to your .emacs file and bind the versatile sectioning commands
+;; Add these lines to your .emacs file and bind the versatile sectioning commands
 ;; in text mode, like this::
-;;
-;;   (require 'rst)
-;;   (add-hook 'text-mode-hook 'rst-text-mode-bindings)
-;;
-;; Emacs installations seem to vary a lot. If you experience problems in Emacs 21
-;; regarding font-lock-preprocessor-face not being found, then (require 'font-lock)
-;; just before (require 'rst) should solve these problems::
 ;;
 ;;   (require 'font-lock)
 ;;   (require 'rst)
