@@ -68,10 +68,9 @@
 
 ;;; Installation instructions
 
-;; Add these lines to your .emacs file and bind the versatile sectioning commands
+;; Add this line to your .emacs file and bind the versatile sectioning commands
 ;; in text mode, like this::
 ;;
-;;   (require 'font-lock)
 ;;   (require 'rst)
 ;;   (add-hook 'text-mode-hook 'rst-text-mode-bindings)
 ;;
@@ -2473,6 +2472,8 @@ The value of this variable is used when Rst Mode is turned on."
   :type '(boolean))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(require 'font-lock)
 
 (defgroup rst-faces nil "Faces used in Rst Mode"
   :group 'rst
