@@ -2932,7 +2932,7 @@ Turning on `rst-mode' calls the normal hooks `text-mode-hook' and
 		 (list 0 rst-comment-face 'append)))))
      (append
       (list
-       (concat re-bol "\\(" re-emt "\\)\\(\\s *\\)\\?$")
+       (concat re-bol "\\(" re-emt "\\)\\(\\s *\\)$")
        (list 1 rst-comment-face)
        (list 2 rst-comment-face))
       (if rst-mode-lazy
