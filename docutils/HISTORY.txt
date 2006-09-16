@@ -98,6 +98,8 @@ Changes Since 0.4
   - Added ``rst-straighten-decorations`` function.
   - The ``compile`` module is now always loaded.
   - Added ``rst-toggle-line-block`` function.
+  - Headings consisting only of non-ASCII characters are now
+    recognized by ``rst-toc`` and ``rst-adjust``.
 
 * setup.py:
 

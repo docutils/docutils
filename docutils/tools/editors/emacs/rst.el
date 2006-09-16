@@ -473,7 +473,7 @@ style."
   :group 'rst-adjust)
 
 
-(defvar rst-section-text-regexp "^[ \t]*\\S-*[a-zA-Z0-9]\\S-*"
+(defvar rst-section-text-regexp "^[ \t]*\\S-*\\w\\S-*"
   "Regular expression for valid section title text.")
 
 
@@ -2798,7 +2798,7 @@ Turning on `rst-mode' calls the normal hooks `text-mode-hook' and
 			       (< emacs-major-version 21)
 			       (save-match-data
 				 (string-match "XEmacs\\|Lucid" emacs-version)))
-			      "^a-zA-Z0-9 \t\x00-\x1F"
+			      "^\\w \t\x00-\x1F"
 			    "^[:word:][:space:][:cntrl:]")
 			  "]\\)\\2\\2+\\)" re-hws "*$"))
 	 )
