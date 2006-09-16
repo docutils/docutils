@@ -141,6 +141,7 @@ donations, tasty treats, and related projects:
 * Laurence Tratt
 * Adrian van den Dries
 * Guido van Rossum
+* Seo Sanghyeon
 * Miroslav Vasko
 * Paul Viren
 * Martin von Loewis
