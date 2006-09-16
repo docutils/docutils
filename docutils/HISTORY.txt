@@ -26,6 +26,7 @@ Changes Since 0.4
 
   - Added code to determine the input encoding from data: encoding
     declarations or the presence of byte order marks (UTF-8 & UTF-16).
+  - Added support for IronPython 1.0.
 
 * docutils/nodes.py:
 

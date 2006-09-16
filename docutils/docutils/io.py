@@ -197,13 +197,14 @@ class Output(TransformSpec):
         else:
             try:
                 return data.encode(self.encoding, self.error_handler)
-            except ValueError:
-                # ValueError is raised if there are unencodable chars
-                # in data and the error_handler isn't found.
+            except (LookupError, ValueError):
+                # LookupError is raised if there are unencodable chars
+                # in data and the error_handler isn't found. In old
+                # Python versions, ValueError is raised.
                 if self.error_handler == 'xmlcharrefreplace':
                     # We are using xmlcharrefreplace with a Python
-                    # version that doesn't support it (2.1 or 2.2), so
-                    # we emulate its behavior.
+                    # version that doesn't support it (2.1, 2.2, or
+                    # IronPython 1.0) so we emulate its behavior.
                     return ''.join([self.xmlcharref_encode(char)
                                     for char in data])
                 else:
