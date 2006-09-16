@@ -781,7 +781,8 @@ __ rst/alternatives.html#or-not-to-do
   <http://thread.gmane.org/gmane.text.docutils.user/2443>,
   <http://thread.gmane.org/gmane.text.docutils.user/2715>,
   <http://thread.gmane.org/gmane.text.docutils.user/3027>,
-  <http://thread.gmane.org/gmane.text.docutils.user/3120>.
+  <http://thread.gmane.org/gmane.text.docutils.user/3120>,
+  <http://permalink.gmane.org/gmane.text.docutils.user/3253>.
 
 * The current list-recognition logic has too many false positives, as
   in ::
