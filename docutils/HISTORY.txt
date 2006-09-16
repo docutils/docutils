@@ -100,6 +100,9 @@ Changes Since 0.4
   - Added ``rst-toggle-line-block`` function.
   - Headings consisting only of non-ASCII characters are now
     recognized by ``rst-toc`` and ``rst-adjust``.
+  - Added font-lock support for multi-line comments where the first
+    comment line is empty.
+  - Added ``(require 'font-lock)``.
 
 * setup.py:
 
