@@ -106,7 +106,7 @@ __docformat__ = 'reStructuredText'
 import sys
 import re
 import roman
-from types import TupleType, FunctionType
+from types import TupleType, FunctionType, MethodType
 from docutils import nodes, statemachine, utils, urischemes
 from docutils import ApplicationError, DataError
 from docutils.statemachine import StateMachineWS, StateWS
@@ -2011,7 +2011,7 @@ class Body(RSTState):
 
         Returns a 2-tuple: list of nodes, and a "blank finish" boolean.
         """
-        if isinstance(directive, FunctionType):
+        if isinstance(directive, (FunctionType, MethodType)):
             from docutils.parsers.rst import convert_directive_function
             directive = convert_directive_function(directive)
         lineno = self.state_machine.abs_line_number()
