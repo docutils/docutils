@@ -18,14 +18,16 @@ Producing LaTeX code from reST input could be done in at least two ways:
 
 a. Transform the internal markup into corresponding LaTeX markup e.g.
    a section title would be written as ```\section{this section ...}``.
+
+   This is limited by LaTeX and/or requires hacking around bugs and features
+   in LaTeX, but produces a readable (?) LaTeX file.
+
+   If you prefer this tase try ``rst2latex``.
 b. Using LaTeX as a typesetting system to produce desired paperwork
    without caring about loosing document structure information.
 
-The former might be preferable, but limits to LaTeXs capabilities, so 
-in reality it is a mix. The reality is that LaTeX has a titlepage with
-title, author and date, by default only title is used. Author and date
-are shown in the docutils docinfo table and set to blank for LaTeX.
-To get author and date set by LaTeX specify option "use-LaTeX-docinfo".
+   ``rst2newlatex`` adds a lot of LaTeX macros and uses LaTex as a typesetter
+   without caring about producing readable LaTeX files.
 
 Options
 =======
@@ -113,6 +115,24 @@ line spacing           Is done with package *setspace*, which gives
 font selection         see below
 =====================  ================================================
 
+PDF generation
+--------------
+
+LaTeX offers three ways
+
+pdflatex :
+  Generates a pdf-document directly from the LaTeX file. As always one
+  might need to call it twice (thrice) to get internal references correct.
+
+latex dvipdfm :
+  Use ``latex`` to generate a dvi file and ``dvipdfm`` to produce a pdf file.
+  For this one should specify ``documentoptions=dvipdfm``.
+
+latex dvips ps2pdf :
+  Produce a dvi file with ``latex``, postscript with ``dvips`` and pdf with
+  ``ps2pdf``.
+
+see next section for fond selection.
 
 Font selection
 --------------
