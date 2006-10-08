@@ -82,6 +82,8 @@ Changes Since 0.4
 
 * docutils/writers/latex2e/__init__.py:
 
+  - Use centering instead of center for figure contents, to avoid vertical
+    space.
   - Recognize table class: borderless, nolines, booktabs, standard.
   - Fix: Renaming contents section does not work with latex writer; SF
     bug #1487405.
