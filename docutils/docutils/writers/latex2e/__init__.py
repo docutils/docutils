@@ -1401,11 +1401,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_figure(self, node):
         if (not node.attributes.has_key('align') or
             node.attributes['align'] == 'center'):
-            align = 'center'
+            # centering does not add vertical space like center.
+            align = '\n\\centering'
+            align_end = ''
         else:
-            align = 'flush'+node.attributes['align']
-        self.body.append( '\\begin{figure}[htbp]\\begin{%s}\n' % align )
-        self.context.append( '\\end{%s}\\end{figure}\n' % align )
+            # TODO non vertical space for other alignments.
+            align = '\\begin{flush%s}' % node.attributes['align']
+            align_end = '\\end{flush%s}' % node.attributes['align']
+        self.body.append( '\\begin{figure}[htbp]%s\n' % align )
+        self.context.append( '%s\\end{figure}\n' % align_end )
 
     def depart_figure(self, node):
         self.body.append( self.context.pop() )
