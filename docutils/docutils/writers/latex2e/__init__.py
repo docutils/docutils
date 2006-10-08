@@ -702,6 +702,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.insert_newline = 0
         # mbox_newline: to tell encode to add mbox and newline.
         self.mbox_newline = 0
+        # inside citation reference labels underscores dont need to be escaped.
+        self.inside_citation_reference_label = 0
 
         # Stack of section counters so that we don't have to use_latex_toc.
         # This will grow and shrink as processing occurs.
@@ -860,7 +862,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 text = text.replace('_', '{\\_}')
         else:
             text = self.babel.quote_quotes(text)
-            text = text.replace("_", '{\\_}')
+            if not self.inside_citation_reference_label:
+                text = text.replace("_", '{\\_}')
         for char in separate_chars * 2:
             # Do it twice ("* 2") becaues otherwise we would replace
             # "---" by "-{}--".
@@ -1026,6 +1029,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_citation_reference(self, node):
         if self._use_latex_citations:
             self.body.append('\\cite{')
+            self.inside_citation_reference_label = 1
         else:
             href = ''
             if node.has_key('refid'):
@@ -1037,6 +1041,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_citation_reference(self, node):
         if self._use_latex_citations:
             self.body.append('}')
+            self.inside_citation_reference_label = 0
         else:
             self.body.append('}]')
 
