@@ -16,6 +16,8 @@ def suite():
     s.generateTests(totest)
     settings['use_latex_toc'] = 1
     s.generateTests(totest_latex_toc)
+    settings['use_latex_citations'] = 1
+    s.generateTests(totest_latex_citations)
     return s
 
 
@@ -81,6 +83,7 @@ latex_head = """\
 
 totest = {}
 totest_latex_toc = {}
+totest_latex_citations = {}
 
 totest['table_of_contents'] = [
 # input
@@ -187,6 +190,37 @@ Paragraph 2.
 \\end{document}
 """],
 
+]
+
+
+totest_latex_citations['citations_with_underscore'] = [
+# input
+["""\
+Just a test citation [my_cite2006]_.
+
+.. [my_cite2006]
+   The underscore is mishandled.
+""",
+## # expected output
+latex_head + """\
+\\title{}
+\\author{}
+\\date{}
+\\raggedbottom
+\\begin{document}
+
+\\setlength{\\locallinewidth}{\\linewidth}
+
+Just a test citation \\cite{my_cite2006}.
+
+\\begin{thebibliography}{my{\\_}cite2006}
+\\bibitem[my{\\_}cite2006]{my_cite2006}{
+The underscore is mishandled.
+}
+\\end{thebibliography}
+
+\\end{document}
+"""],
 ]
 
 

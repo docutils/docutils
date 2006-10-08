@@ -82,6 +82,8 @@ Changes Since 0.4
 
 * docutils/writers/latex2e/__init__.py:
 
+  - Fix: Do not escape underscores in citation reference labels if
+    use-latex-citations is set.
   - Use centering instead of center for figure contents, to avoid vertical
     space.
   - Recognize table class: borderless, nolines, booktabs, standard.
