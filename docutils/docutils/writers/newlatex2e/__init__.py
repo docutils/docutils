@@ -312,7 +312,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
             # spaces.
             if self.literal_block:
                 # Replace newlines with real newlines.
-                text = text.replace('\n', '\mbox{}\\\\')
+                text = text.replace('\n', '\mbox{}\\\\{}')
                 replace_fn = self.encode_replace_for_literal_block_spaces
             else:
                 replace_fn = self.encode_replace_for_inline_literal_spaces
