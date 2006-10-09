@@ -850,6 +850,8 @@
   % See ltfloat.dtx for details.
   {%
     \insert\footins{%
+      % BUG: This is too small if the user adds
+      % \onehalfspacing or \doublespace.
       \vspace{\Dfootnotesep}%
       \Dsetfootnotespacing%
       \Dformatfootnote{#1}%
