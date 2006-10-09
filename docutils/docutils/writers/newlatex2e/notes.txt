@@ -67,3 +67,6 @@ here.
       | :Name:             |
       |     Paragraph.     |
       +--------------------+
+
+* We want to support underscores in citation references, they need to
+  appear unescaped.
