@@ -14,28 +14,37 @@
 Introduction
 ============
 
-Producing LaTeX code from reST input could be done in at least two ways:
+Producing LaTeX code from reST input can be done in at least two ways:
 
-a. Transform the internal markup into corresponding LaTeX markup e.g.
-   a section title would be written as ```\section{this section ...}``.
+a. Transform the internal markup into corresponding LaTeX markup.
+   For example, a section title would be written with the LaTeX section
+   command: ``\section{this section title}``.
 
-   This is limited by LaTeX and/or requires hacking around bugs and features
-   in LaTeX, but produces a readable (?) LaTeX file.
+   This can be constrained by the LaTeX document class
+   and may require hacking around bugs/features in LaTeX,
+   but it produces a readable LaTeX file.
 
-   If you prefer this tase try ``rst2latex``.
-b. Using LaTeX as a typesetting system to produce desired paperwork
-   without caring about loosing document structure information.
+   If you prefer this approach, try ``rst2latex``.
 
-   ``rst2newlatex`` adds a lot of LaTeX macros and uses LaTex as a typesetter
+b. Use LaTeX as a typesetting system to produce the desired document structure
+   without bothering with the usual LaTeX idioms for representing
+   document structure information.
+
+   This is not constrained by a particular LaTeX document class
+   and therefore requires hacking around bugs/features in LaTeX.
+   But it produces a hard to read LaTeX file.
+
+   ``rst2newlatex`` adds a lot of LaTeX macros and uses LaTeX as a typesetter
    without caring about producing readable LaTeX files.
+
 
 Options
 =======
 
-Configuration can be done in two ways (again):
+Configuration can be done in two ways:
 
 1. Options to the docutils tool: e.g. language selection.
-2. Options to LaTeX via the stylesheet file.
+2. Options to LaTeX via a stylesheet file.
 
 The generated LaTeX documents should be kept processable by a standard
 LaTeX installation (if such a thing exists), therefore the document
@@ -43,7 +52,7 @@ contains default settings. To allow *overwriting defaults* the stylesheet
 is included at last.
 
 Run ``rst2latex.py --help`` to see the command-line options, or have look in
-config documentytion.
+config documentation.
 
 
 =====================  ================================================
@@ -64,10 +73,16 @@ papersize              Default: a4paper. Paper geometry can be changed
 
                          \geometry{a5paper,landscape}
 ---------------------  ------------------------------------------------
-paragraph indent       By default LaTeX indents the forst line in a
-                       paragraph. The following lines set indentation 
-                       to zero but add a vertical space between 
-                       paragraphs.::
+paragraph indent       The default LaTeX behavior in most document classes
+                       is the following: indent the first line in 
+                       a paragraph unless it is the first line of 
+                       a chapter, section, subsection, or 
+                       subsubsection.
+
+                       This is configurable.  For example, you could 
+                       use the following lines to set paragraph 
+                       indentation to zero but add a vertical space 
+                       between paragraphs.::
 
                          \setlength{\parindent}{0pt}
                          \setlength{\parskip}{6pt plus 2pt minus 1pt}
@@ -121,18 +136,19 @@ PDF generation
 LaTeX offers three ways
 
 pdflatex :
-  Generates a pdf-document directly from the LaTeX file. As always one
+  Generates a PDF document directly from the LaTeX file. As always one
   might need to call it twice (thrice) to get internal references correct.
 
 latex dvipdfm :
   Use ``latex`` to generate a dvi file and ``dvipdfm`` to produce a pdf file.
-  For this one should specify ``documentoptions=dvipdfm``.
+  If you will take this approach, specify ``documentoptions=dvipdfm``.
 
 latex dvips ps2pdf :
   Produce a dvi file with ``latex``, postscript with ``dvips`` and pdf with
   ``ps2pdf``.
 
-see next section for fond selection.
+see next section for font selection.
+
 
 Font selection
 --------------
@@ -374,7 +390,7 @@ Miscellaneous
 * Selection of LaTeX fontsize configurable.
 * Assumed reST linelength for table width setting configurable.
 * literal-block indentation configurable.
-* recongize LaTeX and replace by ``\LaTeX``.
+* recognize LaTeX and replace by ``\LaTeX``.
 * Support embed-stylesheet.
 * Sidebar handling.
 * Maybe add end of line after term in definition list. see
@@ -403,7 +419,7 @@ Miscellaneous
 * No link to system errors.
 * Hyperlinks are not hyphenated; this leads to bad spacing. See
   docs/user/rst/demo.txt 2.14 directives.
-* Meta keywords into pdf ?
+* Meta keywords into PDF ?
 * Pagestyle headings does not work, when sections are starred.
 * For additional docinfo items: the field_body is inserted as text, i.e. no
   markup is done.
