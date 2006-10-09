@@ -184,8 +184,8 @@ testing the parser and other parts of the Docutils system.
 Submitting the Language Modules
 ===============================
 
-If you do not have CVS write access and want to contribute your
-language modules, feel free to submit them at the `SourceForge patch
+If you do not have repository write access and want to contribute your
+language modules, feel free to submit them via the `SourceForge patch
 tracker`__.
 
 __ http://sourceforge.net/tracker/?group_id=38414&atid=422032
