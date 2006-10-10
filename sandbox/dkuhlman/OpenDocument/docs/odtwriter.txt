@@ -203,7 +203,20 @@ in the generated ``.odt``.   These styles have names prefixed with
     http://www.oasis-open.org/committees/tc_home.php?wg_abbrev=office
 
 
+Hints and Suggestions
+=====================
 
+Table of contents
+-----------------
+
+``odtwriter`` can generate an outline style table of contents.
+However, if you want an ``oowriter`` style table of contents along
+with the formatting control that ``oowriter`` gives you, then you
+may want to omit the ``.. contents::`` directive and, after
+generating your document, open it in ``oowriter`` and insert a
+table of contents.   That feature is under menu item::
+
+    Insert --> Indexes and Tables --> Indexes and Tables
 
 
 
