@@ -1625,26 +1625,26 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # the others we must use \mbox.
         #
         # We can distinguish between the two kinds by the number of
-        # siblings the compose this node: if it is composed by a
-        # single element, it's surely is either a real one, otherwise
-        # it's a parsed-literal that does not contain any markup.
+        # siblings that compose this node: if it is composed by a
+        # single element, it's surely either a real one or a
+        # parsed-literal that does not contain any markup.
         #
+        if not self.active_table.is_open():
+            # no quote inside tables, to avoid vertical space between
+            # table border and literal block.
+            # BUG: fails if normal text preceeds the literal block.
+            self.body.append('\\begin{quote}')
+        else:
+            self.body.append('\n')
         if (self.settings.use_verbatim_when_possible and (len(node) == 1)
               # in case of a parsed-literal containing just a "**bold**" word:
               and isinstance(node[0], nodes.Text)):
             self.verbatim = 1
-            self.body.append('\\begin{quote}\\begin{verbatim}\n')
+            self.body.append('\\begin{verbatim}\n')
         else:
             self.literal_block = 1
             self.insert_none_breaking_blanks = 1
-            if self.active_table.is_open():
-                self.body.append('\n{\\ttfamily \\raggedright \\noindent\n')
-            else:
-                # no quote inside tables, to avoid vertical space between
-                # table border and literal block.
-                # BUG: fails if normal text preceeds the literal block.
-                self.body.append('\\begin{quote}')
-                self.body.append('{\\ttfamily \\raggedright \\noindent\n')
+            self.body.append('{\\ttfamily \\raggedright \\noindent\n')
             # * obey..: is from julien and never worked for me (grubert).
             #   self.body.append('{\\obeylines\\obeyspaces\\ttfamily\n')
 
