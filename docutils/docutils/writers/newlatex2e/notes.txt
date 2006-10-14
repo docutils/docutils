@@ -70,3 +70,7 @@ here.
 
 * We want to support underscores in citation references, they need to
   appear unescaped.
+
+* If there's raw code between paragraphs, it gets appended to the last
+  paragraph unless we do ``\par``.  That's a little bit ugly.  Can we
+  fix this?  (Change paragraph handling maybe?)
