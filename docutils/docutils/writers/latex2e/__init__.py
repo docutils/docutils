@@ -67,9 +67,10 @@ class Writer(writers.Writer):
           'directory.  Overrides --stylesheet.',
           ['--stylesheet-path'],
           {'metavar': '<file>', 'overrides': 'stylesheet'}),
-         ('Table of contents by docutils (default) or latex. Latex (writer) '
-          'supports only one ToC per document, but docutils does not write '
-          'pagenumbers.',
+         ('Table of contents by docutils (default) or LaTeX. LaTeX (writer) '
+          'supports only one ToC per document, but docutils does not know of '
+          'pagenumbers. LaTeX table of contents also means LaTeX generates '
+          'sectionnumbers.',
           ['--use-latex-toc'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
@@ -159,7 +160,7 @@ class Writer(writers.Writer):
 Notes on LaTeX
 --------------
 
-* latex does not support multiple tocs in one document.
+* LaTeX does not support multiple tocs in one document.
   (might be no limitation except for docutils documentation)
 
 * width
