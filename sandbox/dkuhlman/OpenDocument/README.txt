@@ -38,5 +38,11 @@ For more information on Docutils, see: http://docutils.sourceforge.net/
 History
 =======
 
+10/18/2006
+----------
+
+Added support for images and figures.
+
+
 
 

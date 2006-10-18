@@ -18,11 +18,10 @@ from xml.dom import minidom
 import codecs
 import time
 import re
-from types import ListType
-try:
-    import Image                        # check for the Python Imaging Library
-except ImportError:
-    Image = None
+##try:
+##    import Image                        # check for the Python Imaging Library
+##except ImportError:
+##    Image = None
 import docutils
 from docutils import frontend, nodes, utils, writers, languages
 
@@ -291,6 +290,7 @@ class Writer(writers.Writer):
         s1 = self.get_stylesheet()
         zinfo = zipfile.ZipInfo('styles.xml')
         zfile.writestr(zinfo, s1)
+        self.store_embedded_files(zfile)
         zfile.close()
         f.seek(0)
         whole = f.read()
@@ -298,6 +298,21 @@ class Writer(writers.Writer):
         self.parts['whole'] = whole
         self.parts['encoding'] = self.document.settings.output_encoding
         self.parts['version'] = docutils.__version__
+
+    def store_embedded_files(self, zfile):
+        embedded_files = self.visitor.get_embedded_file_list()
+        for source, destination in embedded_files:
+            if source is None:
+                continue
+            try:
+                #print 'zipping -- source: "%s"  destination: "%s"' % (
+                #    source, destination, )
+                #ipshell('(store_embedded_files) #1')
+                destination1 = destination.decode('latin-1').encode('utf-8')
+                zfile.write(source, destination1, zipfile.ZIP_STORED)
+                #ipshell('(store_embedded_files) #2')
+            except OSError, e:
+                print "Error: Can't open file %s." % (source, )
 
     def get_stylesheet(self):
         """Retrieve the stylesheet from either a .xml file or from
@@ -416,6 +431,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.field_name = None
         self.field_element = None
         self.title = None
+        self.image_count = 0
+        self.embedded_file_list = []
 
     def astext(self):
         root = self.content_tree.getroot()
@@ -432,6 +449,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def set_title(self, title): self.title = title
     def get_title(self): return self.title
+    def set_embedded_file_list(self, embedded_file_list):
+        self.embedded_file_list = embedded_file_list
+    def get_embedded_file_list(self): return self.embedded_file_list
 
     #
     # Utility methods
@@ -582,6 +602,13 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def depart_bullet_list(self, node):
         self.set_to_parent()
         self.paragraph_style_stack.pop()
+
+    def visit_caption(self, node):
+        raise nodes.SkipChildren()
+        pass
+
+    def depart_caption(self, node):
+        pass
 
     def visit_comment(self, node):
         #ipshell('At visit_comment')
@@ -773,10 +800,238 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         #self.trace_depart_node(node)
         pass
 
+    def visit_figure(self, node):
+        #ipshell('At visit_figure')
+        #self.trace_visit_node(node)
+        pass
+
+    def depart_figure(self, node):
+        #self.trace_depart_node(node)
+        pass
+
     def visit_generated(self, node):
         pass
 
     def depart_generated(self, node):
+        pass
+
+    def check_file_exists(self, path):
+        if os.path.exists(path):
+            return 1
+        else:
+            return 0
+
+    def visit_image(self, node):
+        #ipshell('At visit_image')
+        #self.trace_visit_node(node)
+        # Capture the image file.
+        if 'uri' in node.attributes:
+            source = node.attributes['uri']
+            if not self.check_file_exists(source):
+                print 'Error: Cannot find image file %s.' % (source, )
+                return
+        else:
+            return
+        filename = os.path.split(source)[1]
+        destination = 'Pictures/1%08x%s' % (self.image_count, filename, )
+        spec = (source, destination,)
+        self.embedded_file_list.append(spec)
+        # Is this a figure (containing an image) or just a plain image?
+        if isinstance(node.parent, docutils.nodes.figure):
+            self.generate_figure(node, source, destination)
+        else:
+            el1 = etree.SubElement(self.current_element, 'text:p',
+            attrib={'text:style-name': 'rststyle-textbody'})
+            self.generate_image(node, source, destination, el1)
+
+    def generate_figure(self, node, source, destination):
+        caption = None
+        for node1 in node.parent.children:
+            if node1.tagname == 'caption':
+                caption = node1.astext()
+        self.image_count += 1
+        style_name = 'rstframestyle%d' % self.image_count
+        if 'scale' in node.attributes:
+            try:
+                scale = int(node.attributes['scale'])
+                if scale < 1 or scale > 100:
+                    raise ValueError
+                scale = scale * 0.01
+            except ValueError, e:
+                print 'Error: Invalid scale for image: "%s"' % (
+                    node.attributes['scale'], )
+        else:
+            scale = 1.0
+        width = None
+        if 'width' in node.attributes:
+            try:
+                width = int(node.attributes['width'])
+                width = width * (35.278 / 1000.0)
+                width *= scale
+                #attrib['svg:width'] = '%.2fcm' % (width, )
+            except ValueError, e:
+                print 'Error: Invalid width for image: "%s"' % (
+                    node.attributes['width'], )
+        height = None
+        if 'height' in node.attributes:
+            try:
+                height = int(node.attributes['height'])
+                height = height * (35.278 / 1000.0)
+                height *= scale
+                #attrib['svg:height'] = '%.2fcm' % (height, )
+            except ValueError, e:
+                print 'Error: Invalid height for image: "%s"' % (
+                    node.attributes['height'], )
+        # Add the styles
+        attrib = {
+            'style:name': style_name,
+            'style:family': 'graphic',
+            'style:parent-style-name': 'Frame',
+            }
+        el1 = etree.SubElement(self.automatic_styles, 
+            'style:style', attrib=attrib)
+        halign = 'center'
+        valign = 'top'
+        if 'align' in node.attributes:
+            align = node.attributes['align'].split()
+            for val in align:
+                if val in ('left', 'center', 'right'):
+                    halign = val
+                elif val in ('top', 'middle', 'bottom'):
+                    valign = val
+        attrib = {
+            'fo:margin-left': '0cm',
+            'fo:margin-right': '0cm',
+            'fo:margin-top': '0cm',
+            'fo:margin-bottom': '0cm',
+            'style:wrap': 'dynamic',
+            'style:number-wrapped-paragraphs': 'no-limit',
+            'style:vertical-pos': valign,
+            'style:vertical-rel': 'paragraph',
+            'style:horizontal-pos': halign,
+            'style:horizontal-rel': 'paragraph',
+            'fo:padding': '0cm',
+            'fo:border': 'none',
+            }
+        el2 = etree.SubElement(el1,
+            'style:graphic-properties', attrib=attrib)
+        # Add the content
+        attrib = {'text:style-name': 'rststyle-textbody'}
+        el1 = etree.SubElement(self.current_element, 'text:p', attrib=attrib)
+        attrib = {
+            'draw:style-name': style_name,
+            'draw:name': 'Frame1',
+            'text:anchor-type': 'paragraph',
+            'draw:z-index': '1',
+            }
+        if width is not None:
+            attrib['svg:width'] = '%.2fcm' % (width, )
+        el1 = etree.SubElement(el1, 'draw:frame', attrib=attrib)
+        attrib = {}
+        if height is not None:
+            attrib['fo:min-height'] = '%.2fcm' % (height, )
+        el1 = etree.SubElement(el1, 'draw:text-box', attrib=attrib)
+        attrib = {'text:style-name': 'rststyle-caption', }
+        el1 = etree.SubElement(el1, 'text:p', attrib=attrib)
+        # Add the image (frame) inside the figure/caption frame.
+        #ipshell('At visit_image #1')
+        el2 = self.generate_image(node, source, destination, el1)
+        if caption:
+            el2.tail = caption
+
+    def generate_image(self, node, source, destination, current_element):
+        self.image_count += 1
+        style_name = 'rstframestyle%d' % self.image_count
+        # Add the style.
+        attrib = {
+            'style:name': style_name,
+            'style:family': 'graphic',
+            'style:parent-style-name': 'Graphics',
+            }
+        el1 = etree.SubElement(self.automatic_styles, 
+            'style:style', attrib=attrib)
+        halign = 'center'
+        valign = 'top'
+        if 'align' in node.attributes:
+            align = node.attributes['align'].split()
+            for val in align:
+                if val in ('left', 'center', 'right'):
+                    halign = val
+                elif val in ('top', 'middle', 'bottom'):
+                    valign = val
+        #ipshell('At visit_image:align')
+        attrib = {
+            'style:vertical-pos': 'top',
+            'style:vertical-rel': 'paragraph',
+            'style:horizontal-pos': halign,
+            'style:vertical-pos': valign,
+            'style:horizontal-rel': 'paragraph',
+            'style:mirror': 'none',
+            'fo:clip': 'rect(0cm 0cm 0cm 0cm)',
+            'draw:luminance': '0%',
+            'draw:contrast': '0%',
+            'draw:red': '0%',
+            'draw:green': '0%',
+            'draw:blue': '0%',
+            'draw:gamma': '100%',
+            'draw:color-inversion': 'false',
+            'draw:image-opacity': '100%',
+            'draw:color-mode': 'standard',
+            }
+        el2 = etree.SubElement(el1,
+            'style:graphic-properties', attrib=attrib)
+        # Add the content.
+        #el = etree.SubElement(current_element, 'text:p',
+        #    attrib={'text:style-name': 'rststyle-textbody'})
+        attrib={
+            'draw:style-name': style_name,
+            'draw:name': 'graphics2',
+            'text:anchor-type': 'paragraph',
+            #'svg:width': '%fcm' % (width, ),
+            #'svg:height': '%fcm' % (height, ),
+            'draw:z-index': '1',
+            }
+        if 'scale' in node.attributes:
+            try:
+                scale = int(node.attributes['scale'])
+                if scale < 1 or scale > 100:
+                    raise ValueError
+                scale = scale * 0.01
+            except ValueError, e:
+                print 'Error: Invalid scale for image: "%s"' % (
+                    node.attributes['scale'], )
+        else:
+            scale = 1.0
+        if 'width' in node.attributes:
+            try:
+                width = int(node.attributes['width'])
+                width = width * (35.278 / 1000.0)
+                width *= scale
+                attrib['svg:width'] = '%.2fcm' % (width, )
+            except ValueError, e:
+                print 'Error: Invalid width for image: "%s"' % (
+                    node.attributes['width'], )
+        if 'height' in node.attributes:
+            try:
+                height = int(node.attributes['height'])
+                height = height * (35.278 / 1000.0)
+                height *= scale
+                attrib['svg:height'] = '%.2fcm' % (height, )
+            except ValueError, e:
+                print 'Error: Invalid height for image: "%s"' % (
+                    node.attributes['height'], )
+        el1 = etree.SubElement(current_element, 'draw:frame', attrib=attrib)
+        el2 = etree.SubElement(el1, 'draw:image', attrib={
+            'xlink:href': '%s' % (destination, ),
+            'xlink:type': 'simple',
+            'xlink:show': 'embed',
+            'xlink:actuate': 'onLoad',
+            })
+        return el1
+
+    def depart_image(self, node):
+        #self.trace_depart_node(node)
+        #self.set_to_parent()
         pass
 
     def visit_literal(self, node):
