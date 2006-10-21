@@ -1,0 +1,22 @@
+#!/bin/sh
+
+IN_DIR=input
+OUT_DIR=output
+EXP_DIR=expected
+
+if [ -z "$1" ] ; then
+  FILES=*.txt
+else
+  FILES=$1
+fi
+
+CMD="python rst2man.py --traceback"
+
+for IN_F in $IN_DIR/$FILES ; do
+  BASE=`basename $IN_F`
+  F_BASE=${BASE/.txt}
+  $CMD $IN_F $OUT_DIR/$F_BASE.man
+  diff -s -u $EXP_DIR/$F_BASE.man $OUT_DIR/$F_BASE.man
+done
+
+
