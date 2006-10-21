@@ -16,7 +16,9 @@ for IN_F in $IN_DIR/$FILES ; do
   BASE=`basename $IN_F`
   F_BASE=${BASE/.txt}
   $CMD $IN_F $OUT_DIR/$F_BASE.man
-  diff -s -u $EXP_DIR/$F_BASE.man $OUT_DIR/$F_BASE.man
+  if [ $? -eq 0 ] ; then
+    diff -s -u $EXP_DIR/$F_BASE.man $OUT_DIR/$F_BASE.man
+  fi
 done
 
 
