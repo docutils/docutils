@@ -138,7 +138,7 @@ done
 
 CMD="$BASE_CMD"
 # with latex toc
-for F in toc ; do
+for F in toc toc-autonr ; do
   INF=test/$F.txt
   OUTF="$INF-use-latex-toc.tex"
   REFF="$OUTF.ref"
