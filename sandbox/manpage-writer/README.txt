@@ -57,6 +57,13 @@ Problems
     eral exclusive invocations as is shown in the SYNOPSIS  section  of  this
     manual page.
 
+* use title and subtitle to built ::
+
+    NAME
+       man - program to view ...
+
+* line ends around email or web addresses in texts.
+* too much line ends.
 * Is one rst-document one manpage section or might there be more sections
   contained.
 * Tables
@@ -66,8 +73,10 @@ Problems
 Change log
 ''''''''''
 
-* man py:
 
-  - 2006-10-21: from sandbox/grubert
+* writers/manpage.py:
+
+  - 2006-10-21: from sandbox/grubert, better option list handling,
+                definition list handling.
 
 .. _Docutils: http://docutils.sourceforge.net/
