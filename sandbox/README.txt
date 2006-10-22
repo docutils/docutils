@@ -56,6 +56,8 @@ __ http://docs.python.org/doc/doc.html
   <http://docutils.sf.net/sandbox/dkuhlman/>`__ and `his homepage
   <http://www.rexx.com/~dkuhlman/rstpythonlatex_intro.html>`__.
 
+* `docpy-writer <http://docutils.sf.net/sandbox/docpy-writer/>`__ was 
+  used for ctypes documentation.
 
 Other Sandbox Projects
 ----------------------
