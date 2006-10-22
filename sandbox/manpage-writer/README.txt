@@ -17,6 +17,39 @@ with tables, equations and images is not on the list, is it ?
 Module information
 ''''''''''''''''''
 
+man pages look like ::
+       
+   man(1)     Man Pager Utils     man(1)
+       
+   NAME
+       man - an interface to the on-line reference manuals
+       
+   SYNOPSIS
+       man [-c|-w|-tZT device] [-adhu7V] [-m system[,...]] [-L locale]
+     
+in roff formatting ::
+     
+     .TH man 1 "14 May 2001" "2.3.19" "Manual pager utils"
+     .SH NAME
+     man \- an interface to the on-line reference manuals
+     .SH SYNOPSIS
+     .\" The general command line
+     .B man
+     .RB [\| \-c \||\| \-w \||\| \-tZT
+     .IR device \|]
+
+This means we have 
+
+* a title "man" 
+* a subtitle "an interface to the on-line reference manuals"
+* a section "1"
+* a group "Manual pager utils"
+* a date "14 May 2001"
+* a version "2.3.19"
+
+
+
+
 Problems
 ''''''''
 
@@ -63,6 +96,9 @@ Problems
        man - program to view ...
 
 * line ends around email or web addresses in texts.
+  How to distinguish something is inline or not ?
+
+  
 * too much line ends.
 * Is one rst-document one manpage section or might there be more sections
   contained.
@@ -76,6 +112,7 @@ Change log
 
 * writers/manpage.py:
 
+  - 2006-10-22: less empty lines
   - 2006-10-21: from sandbox/grubert, better option list handling,
                 definition list handling.
 
