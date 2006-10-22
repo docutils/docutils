@@ -1,0 +1,55 @@
+=========
+ rst2man
+=========
+
+---------------------------------------------
+generate unix manpages from reStructured text
+---------------------------------------------
+
+:Author: grubert@users.sourceforge.net
+:Date:   2006-10-22
+:Copyright: public domain
+            Behave responsible.
+:Version: 0.0.1
+:Manual section: 1
+:Manual group: text processing
+
+.. TODO: authors and author with name <email>
+
+SYNOPSIS
+========
+
+-o x   an option
+-b     another
+
+DESCRIPTION
+===========
+
+Run it and examine output.
+
+OPTIONS
+=======
+
+Possibly take *NAME* from rst-title.
+
+FILES
+=====
+
+This is a file.
+
+SEE ALSO
+========
+
+`docutils <http://docutils.sourceforge.net>`__
+
+BUGS
+====
+
+Numerous mapping problems.
+
+1. Where do we get the manual section number from ? Commandline ?
+2. docutils authors should be filled into section "AUTHORS".
+3. be carefull with linebreaks in generated code.
+4. list items.
+
+

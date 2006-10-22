@@ -74,9 +74,35 @@ class Translator(nodes.NodeVisitor):
         self.colspecs = []
         self.compact_p = 1
         self.compact_simple = None
-        self.in_docinfo = None
-        # depart_text appends so much new line chars
-        self.nr_of_nl=2
+        # writing the header .TH and .SH NAME is postboned after
+        # docinfo.
+        self._docinfo = {
+                "title" : "", "subtitle" : "",
+                "manual_section" : "", "manual_group" : "",
+                "author" : "", 
+                "date" : "", 
+                "copyright" : "",
+                "version" : "",
+                    }
+        self._in_docinfo = None
+        self.header_written = 0
+        self.authors = []
+        # central definition of simple processing rules
+        # what to output on : visit, depart
+        self.defs = {
+                'definition' : ('', ''),
+                'definition_list' : ('', ''),
+                'definition_list_item' : ('\n.TP', ''),
+                'description' : ('\n', ''),
+                'literal_block' : ('\n.nf\n', '\n.fi\n'),
+                'option_list' : ('', ''),
+                'option_list_item' : ('\n.TP', ''),
+                'reference' : ('', ''),
+                'strong' : ('\n.B ', ''),
+                'term' : ('\n.B ', '\n'),
+                    }
+        # TODO dont specify the newline before a dot-command, but ensure
+        # check it is there.
 
     def comment_begin(self, text):
         """Return commented version of the passed text WITHOUT end of line/comment."""
@@ -98,8 +124,19 @@ class Translator(nodes.NodeVisitor):
         self.body.append(text)
 
     def depart_Text(self, node):
-        self.body.append('\n\n'*self.nr_of_nl)
-        self.nr_of_nl=2
+        pass
+
+    def append_header(self):
+        """append header with .TH and .SH NAME"""
+        # TODO before everything
+        if self.header_written:
+            return
+        tmpl = (".TH %(title)s %(manual_section)s"
+                " \"%(date)s\" \"%(version)s\" \"%(manual_group)s\"\n"
+                ".SH NAME\n"
+                "%(title)s \- %(subtitle)s\n")
+        self.body.append(tmpl % self._docinfo)
+        self.header_written = 1
 
     def visit_address(self, node):
         raise NotImplementedError, node.astext()
@@ -125,16 +162,17 @@ class Translator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def visit_author(self, node):
-        self.visit_docinfo_item(node, 'author')
+        self._docinfo['author'] = node.astext()
+        raise nodes.SkipNode
 
     def depart_author(self, node):
-        self.depart_docinfo_item()
+        pass
 
     def visit_authors(self, node):
-        pass
+        self.body.append(self.comment('visit_authors'))
 
     def depart_authors(self, node):
-        pass
+        self.body.append(self.comment('depart_authors'))
 
     def visit_block_quote(self, node):
         self.body.append(self.comment('visit_block_quote'))
@@ -240,10 +278,8 @@ class Translator(nodes.NodeVisitor):
         self.depart_docinfo_item()
 
     def visit_copyright(self, node):
-        self.visit_docinfo_item(node, 'copyright')
-
-    def depart_copyright(self, node):
-        self.depart_docinfo_item()
+        self._docinfo['copyright'] = node.astext()
+        raise nodes.SkipNode
 
     def visit_danger(self, node):
         self.visit_admonition(node, 'danger')
@@ -252,10 +288,8 @@ class Translator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def visit_date(self, node):
-        self.visit_docinfo_item(node, 'date')
-
-    def depart_date(self, node):
-        self.depart_docinfo_item()
+        self._docinfo['date'] = node.astext()
+        raise nodes.SkipNode
 
     def visit_decoration(self, node):
         pass
@@ -264,39 +298,41 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def visit_definition(self, node):
-        self.nr_of_nl = 1
+        self.body.append(self.defs['definition'][0])
 
     def depart_definition(self, node):
-        pass
+        self.body.append(self.defs['definition'][1])
 
     def visit_definition_list(self, node):
-        pass
+        self.body.append(self.defs['definition_list'][0])
 
     def depart_definition_list(self, node):
-        pass
+        self.body.append(self.defs['definition_list'][1])
 
     def visit_definition_list_item(self, node):
-        self.body.append('\n.TP')
-        self.nr_of_nl = 1
+        self.body.append(self.defs['definition_list_item'][0])
 
     def depart_definition_list_item(self, node):
-        pass
+        self.body.append(self.defs['definition_list_item'][1])
 
     def visit_description(self, node):
-        self.body.append('\n')
+        self.body.append(self.defs['description'][0])
 
     def depart_description(self, node):
-        pass
+        self.body.append(self.defs['description'][1])
 
     def visit_docinfo(self, node):
-        self.body.append(self.comment('visit_docinfo'))
+        self._in_docinfo = 1
 
     def depart_docinfo(self, node):
-        self.body.append(self.comment('depart_docinfo'))
+        self._in_docinfo = None
+        # TODO nothing should be written before this
+        self.append_header()
 
     def visit_docinfo_item(self, node, name):
         self.body.append(self.comment('%s: ' % self.language.labels[name]))
         if len(node):
+            return
             if isinstance(node[0], nodes.Element):
                 node[0].set_class('first')
             if isinstance(node[0], nodes.Element):
@@ -315,13 +351,20 @@ class Translator(nodes.NodeVisitor):
 
     def visit_document(self, node):
         self.body.append(self.comment(self.document_start))
-        # BUG ad date and revision
-        # BUG where do we get the name and the filemodification date.
-        self.body.append('.TH FOO 1 "%s" "Linux User Manuals"\n' % time.strftime("%B %Y"))
+        # writing header is postboned
+        self.header_written = 0
 
     def depart_document(self, node):
-        self.body.append(self.comment('Generated by docutils manpage writer on %s.\n' 
-                                    % (time.strftime('%Y-%m-%d %H:%M')) ) )
+        if self._docinfo['author']:
+            self.body.append('\n.SH AUTHOR\n%s\n' 
+                    % self._docinfo['author'])
+        if self._docinfo['copyright']:
+            self.body.append('\n.SH COPYRIGHT\n%s\n' 
+                    % self._docinfo['copyright'])
+        self.body.append(
+                self.comment(
+                        'Generated by docutils manpage writer on %s.\n' 
+                        % (time.strftime('%Y-%m-%d %H:%M')) ) )
 
     def visit_emphasis(self, node):
         self.body.append('\n.I ')
@@ -365,16 +408,16 @@ class Translator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def visit_field(self, node):
-        self.body.append(self.comment('visit_field'))
+        pass
 
     def depart_field(self, node):
-        self.body.append(self.comment('depart_field'))
+        pass
 
     def visit_field_body(self, node):
-        self.body.append(self.comment('visit_field_body'))
-        if len(node):
-            node[0].set_class('first')
-            node[-1].set_class('last')
+        if self._in_docinfo:
+            self._docinfo[
+                    self._field_name.lower().replace(" ","_")] = node.astext()
+            raise nodes.SkipNode
 
     def depart_field_body(self, node):
         self.body.append(self.comment('depart_field_body'))
@@ -386,10 +429,9 @@ class Translator(nodes.NodeVisitor):
         self.body.append(self.comment('depart_field_list'))
 
     def visit_field_name(self, node):
-        self.body.append(self.comment('visit_field_name'))
-        atts = {}
-        if self.in_docinfo:
-            atts['class'] = 'docinfo-name'
+        if self._in_docinfo:
+            self._field_name = node.astext()
+            raise nodes.SkipNode
         else:
             atts['class'] = 'field-name'
         if len(node.astext()) > 14:
@@ -568,11 +610,10 @@ class Translator(nodes.NodeVisitor):
         self.body.append(self.comment('depart_literal'))
 
     def visit_literal_block(self, node):
-        self.body.append('.nf\n')
-        self.nr_of_nl=1
+        self.body.append(self.defs['literal_block'][0])
 
     def depart_literal_block(self, node):
-        self.body.append('.fi\n')
+        self.body.append(self.defs['literal_block'][1])
 
     def visit_meta(self, node):
         raise NotImplementedError, node.astext()
@@ -588,18 +629,17 @@ class Translator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def visit_option_list(self, node):
-        # e.g. the list of commandline options
-        pass
+        self.body.append(self.defs['option_list'][0])
 
     def depart_option_list(self, node):
-        pass
+        self.body.append(self.defs['option_list'][1])
 
     def visit_option_list_item(self, node):
         # one item of the list
-        self.body.append('\n.TP')
+        self.body.append(self.defs['option_list_item'][0])
 
     def depart_option_list_item(self, node):
-        pass
+        self.body.append(self.defs['option_list_item'][1])
 
     def visit_option_group(self, node):
         # as one option could have several forms it is a group
@@ -610,7 +650,6 @@ class Translator(nodes.NodeVisitor):
         self.context.append('.B')           # blind guess
         self.context.append(len(self.body)) # to be able to insert later
         self.context.append(0)              # option counter
-        self.nr_of_nl=0
 
     def depart_option_group(self, node):
         self.context.pop()  # the counter
@@ -664,8 +703,7 @@ class Translator(nodes.NodeVisitor):
 
     def depart_paragraph(self, node):
         # .PP or an empty line
-        return
-        self.body.append('>\n')
+        self.body.append('\n\n')
 
     def visit_problematic(self, node):
         raise NotImplementedError, node.astext()
@@ -691,10 +729,10 @@ class Translator(nodes.NodeVisitor):
 
     def visit_reference(self, node):
         """E.g. email address."""
-        pass
+        self.body.append(self.defs['reference'][0])
 
     def depart_reference(self, node):
-        pass
+        self.body.append(self.defs['reference'][1])
 
     def visit_revision(self, node):
         self.visit_docinfo_item(node, 'revision')
@@ -725,12 +763,10 @@ class Translator(nodes.NodeVisitor):
         self.depart_docinfo_item()
 
     def visit_strong(self, node):
-        raise NotImplementedError, node.astext()
-        self.body.append('<strong>')
+        self.body.append(self.defs['strong'][1])
 
     def depart_strong(self, node):
-        raise NotImplementedError, node.astext()
-        self.body.append('</strong>')
+        self.body.append(self.defs['strong'][1])
 
     def visit_substitution_definition(self, node):
         """Internal only."""
@@ -740,12 +776,11 @@ class Translator(nodes.NodeVisitor):
         self.unimplemented_visit(node)
 
     def visit_subtitle(self, node):
-        raise NotImplementedError, node.astext()
-        self.body.append(self.starttag(node, 'h2', '', CLASS='subtitle'))
+        self._docinfo["subtitle"] = node.astext()
+        raise nodes.SkipNode
 
     def depart_subtitle(self, node):
-        raise NotImplementedError, node.astext()
-        self.body.append('</h2>\n')
+        pass
 
     def visit_system_message(self, node):
         # TODO add report_level
@@ -791,10 +826,10 @@ class Translator(nodes.NodeVisitor):
         self.body.append('</tbody>\n')
 
     def visit_term(self, node):
-        self.body.append('\n.B ')
+        self.body.append(self.defs['term'][0])
 
     def depart_term(self, node):
-        self.nr_of_nl = 1
+        self.body.append(self.defs['term'][1])
 
     def visit_tgroup(self, node):
         raise NotImplementedError, node.astext()
@@ -832,8 +867,9 @@ class Translator(nodes.NodeVisitor):
         elif isinstance(node.parent, nodes.admonition):
             self.body.append(self.comment('admonition-title'))
         elif self.section_level == 0:
-            # document title maybe for .TH
-            pass
+            # document title for .TH
+            self._docinfo['title'] = node.astext()
+            raise nodes.SkipNode
         else:
             self.body.append('\n.SH ')
 
@@ -865,11 +901,11 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def visit_version(self, node):
-        raise NotImplementedError, node.astext()
-        self.visit_docinfo_item(node, 'version', meta=None)
+        self._docinfo["version"] = node.astext()
+        raise nodes.SkipNode
 
     def depart_version(self, node):
-        self.depart_docinfo_item()
+        pass
 
     def visit_warning(self, node):
         self.visit_admonition(node, 'warning')
