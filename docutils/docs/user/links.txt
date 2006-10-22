@@ -149,7 +149,7 @@ code base.
 .. _pysource_reader: http://docutils.sf.net/sandbox/davidg/pysource_reader/
 .. _Python Source Reader: http://docutils.sf.net/docs/dev/pysource.html
 .. _PythonPoint: http://docutils.sf.net/sandbox/richard/pythonpoint/
-.. _Manpage Writer: http://docutils.sf.net/sandbox/grubert/man/
+.. _Manpage Writer: http://docutils.sf.net/sandbox/manpage-writer/
 .. _ReportLabs/PDF Writer: http://docutils.sf.net/sandbox/dreamcatcher/rlpdf/
 .. _DocBook Writer: http://docutils.sf.net/sandbox/oliverr/docbook/
 .. _DocFactory: http://docutils.sf.net/sandbox/gschwant/docfactory/doc/
