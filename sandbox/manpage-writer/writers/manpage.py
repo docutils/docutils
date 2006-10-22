@@ -74,6 +74,8 @@ class Translator(nodes.NodeVisitor):
         self.colspecs = []
         self.compact_p = 1
         self.compact_simple = None
+        # the list style "*" bullet or "#" numbered
+        self._list_char = []
         # writing the header .TH and .SH NAME is postboned after
         # docinfo.
         self._docinfo = {
@@ -192,10 +194,11 @@ class Translator(nodes.NodeVisitor):
             return 1
 
     def visit_bullet_list(self, node):
-        self.body.append(self.comment('depart_bullet_list'))
+        # bullet might be '\(bu'
+        self._list_char.append("*")
 
     def depart_bullet_list(self, node):
-        self.body.append(self.comment('depart_bullet_list'))
+        self._list_char.pop()
 
     def visit_caption(self, node):
         raise NotImplementedError, node.astext()
@@ -396,10 +399,11 @@ class Translator(nodes.NodeVisitor):
         self.body.append(self.context.pop())
 
     def visit_enumerated_list(self, node):
-        self.body.append(self.comment('visit_enumerated_list'))
+        # TODO intendation
+        self._list_char.append(0)
 
     def depart_enumerated_list(self, node):
-        self.body.append(self.comment('depart_enumerated_list'))
+        self._list_char.pop()
 
     def visit_error(self, node):
         self.visit_admonition(node, 'error')
@@ -598,10 +602,14 @@ class Translator(nodes.NodeVisitor):
         self.body.append('\n</pre>\n')
 
     def visit_list_item(self, node):
-        self.body.append(self.comment('visit_list_item'))
+        try:
+            self._list_char[-1] += 1
+        except:
+            pass
+        self.body.append('\n.TP\n\B %s\n' % str(self._list_char[-1]))
 
     def depart_list_item(self, node):
-        self.body.append(self.comment('depart_list_item'))
+        pass
 
     def visit_literal(self, node):
         self.body.append(self.comment('visit_literal'))
