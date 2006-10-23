@@ -47,9 +47,6 @@ This means we have
 * a date "14 May 2001"
 * a version "2.3.19"
 
-
-
-
 Problems
 ''''''''
 
@@ -97,9 +94,7 @@ Problems
 
 * line ends around email or web addresses in texts.
   How to distinguish something is inline or not ?
-
   
-* too much line ends.
 * Is one rst-document one manpage section or might there be more sections
   contained.
 * Tables
@@ -112,6 +107,7 @@ Change log
 
 * writers/manpage.py:
 
+  - 2006-10-23: Fix: listbullets and numbers were prefixed with ``0``.
   - 2006-10-22: less empty lines
   - 2006-10-21: from sandbox/grubert, better option list handling,
                 definition list handling.

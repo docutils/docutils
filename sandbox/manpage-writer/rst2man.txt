@@ -7,7 +7,7 @@ generate unix manpages from reStructured text
 ---------------------------------------------
 
 :Author: grubert@users.sourceforge.net
-:Date:   2006-10-22
+:Date:   2006-10-23
 :Copyright: public domain
 :Version: 0.1
 :Manual section: 1
@@ -51,24 +51,26 @@ OPTIONS
 
 And a lot more standard docutils options.
 
-FILES
-=====
+PROBLEMS
+========
 
-None yet.
+1. linux man page howto advises to use the man macro package,
+   UCB uses the newer doc macros.
 
 SEE ALSO
 ========
 
 `docutils <http://docutils.sourceforge.net>`__
+`linux man page howto <http://tldp.org/HOWTO/Man-Page/>`__
 
 and ``man man``
 
 BUGS
 ====
 
-1. Format options are included as they are required. 
-2. bullet lists
-3. number lists
+* Format options are included as they are required. 
+* tables are not supported.
+* images are not supported.
 
 
 Discussion is still open.
