@@ -131,6 +131,7 @@ class Translator(nodes.NodeVisitor):
     def append_header(self):
         """append header with .TH and .SH NAME"""
         # TODO before everything
+        # .TH title section date source manual
         if self.header_written:
             return
         tmpl = (".TH %(title)s %(manual_section)s"
@@ -194,10 +195,15 @@ class Translator(nodes.NodeVisitor):
             return 1
 
     def visit_bullet_list(self, node):
+        # BUG indentation debends on number of entries in enumerated lists.
+        if len(self._list_char) > 0:
+            self.body.append('\n.RS %d' % (len(self._list_char)*2))
         self._list_char.append("*")
 
     def depart_bullet_list(self, node):
         self._list_char.pop()
+        if len(self._list_char) > 0:
+            self.body.append('\n.RE\n')
 
     def visit_caption(self, node):
         raise NotImplementedError, node.astext()
@@ -398,11 +404,16 @@ class Translator(nodes.NodeVisitor):
         self.body.append(self.context.pop())
 
     def visit_enumerated_list(self, node):
-        # TODO intendation
+        if len(self._list_char) > 0:
+            # indentation depends on previous list
+            self.body.append('\n.RS %d' % (len(self._list_char)*2))
+        # TODO other start values.
         self._list_char.append(0)
 
     def depart_enumerated_list(self, node):
         self._list_char.pop()
+        if len(self._list_char) > 0:
+            self.body.append('\n.RE\n')
 
     def visit_error(self, node):
         self.visit_admonition(node, 'error')
@@ -604,10 +615,10 @@ class Translator(nodes.NodeVisitor):
         try:
             self._list_char[-1] += 1
         except:
-            # bullet lists are done this way in javadoc.1
+            # bullets \(bu or \(em em dash
             self.body.append('\n.TP 2\n\\(bu\n')
         else:
-            self.body.append('\n.TP 2\n%s\n' % str(self._list_char[-1]))
+            self.body.append('\n.TP 3\n%d.\n' % self._list_char[-1])
 
     def depart_list_item(self, node):
         pass
