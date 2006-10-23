@@ -100,7 +100,8 @@ Problems
 * Tables
 * Images
 * Equations
-* nested list entries sometimes get bold.
+* nested list entries sometimes get bold. RST problem
+* RST problem "-d #  option " breaks
 * enumerated lists with more than 9 
 
 Change log

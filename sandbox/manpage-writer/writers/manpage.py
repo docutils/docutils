@@ -128,6 +128,48 @@ class Translator(nodes.NodeVisitor):
     def depart_Text(self, node):
         pass
 
+    def list_start(self, node):
+        class enum_char:
+            enum_style = {
+                    'arabic'     : (3,1),
+                    'loweralpha' : (2,'a'),
+                    'upperalpha' : (2,'A'),
+                    'lowerroman' : (5,'i'),
+                    'upperroman' : (5,'I'),
+                    'bullet'     : (2,'\\(bu'),
+                    'emdash'     : (2,'\\(em'),
+                     }
+            def __init__(self, style):
+                self._style = self.enum_style[style]
+                self._cnt = -1
+            def next(self):
+                self._cnt += 1
+                try:
+                    return "%d." % (self._style[1] + self._cnt)
+                except:
+                    if self._style[1][0] == '\\':
+                        return self._style[1]
+                    # BUG romans dont work
+                    # BUG alpha only a...z
+                    return "%c." % (ord(self._style[1])+self._cnt)
+            def get_width(self):
+                return self._style[0]
+
+        if node.has_key('enumtype'):
+            self._list_char.append(enum_char(node['enumtype']))
+        else:
+            self._list_char.append(enum_char('bullet'))
+        if len(self._list_char) > 1:
+            # indent nested lists
+            # BUG indentation depends on indentation of parent list.
+            self.body.append('\n.RS %d' % self._list_char[-2].get_width())
+
+    def list_end(self):
+        self._list_char.pop()
+        if len(self._list_char) > 0:
+            self.body.append('\n.RE\n')
+
+
     def append_header(self):
         """append header with .TH and .SH NAME"""
         # TODO before everything
@@ -195,15 +237,10 @@ class Translator(nodes.NodeVisitor):
             return 1
 
     def visit_bullet_list(self, node):
-        # BUG indentation debends on number of entries in enumerated lists.
-        if len(self._list_char) > 0:
-            self.body.append('\n.RS %d' % (len(self._list_char)*2))
-        self._list_char.append("*")
+        self.list_start(node)
 
     def depart_bullet_list(self, node):
-        self._list_char.pop()
-        if len(self._list_char) > 0:
-            self.body.append('\n.RE\n')
+        self.list_end()
 
     def visit_caption(self, node):
         raise NotImplementedError, node.astext()
@@ -404,16 +441,10 @@ class Translator(nodes.NodeVisitor):
         self.body.append(self.context.pop())
 
     def visit_enumerated_list(self, node):
-        if len(self._list_char) > 0:
-            # indentation depends on previous list
-            self.body.append('\n.RS %d' % (len(self._list_char)*2))
-        # TODO other start values.
-        self._list_char.append(0)
+        self.list_start(node)
 
     def depart_enumerated_list(self, node):
-        self._list_char.pop()
-        if len(self._list_char) > 0:
-            self.body.append('\n.RE\n')
+        self.list_end()
 
     def visit_error(self, node):
         self.visit_admonition(node, 'error')
@@ -612,13 +643,9 @@ class Translator(nodes.NodeVisitor):
         self.body.append('\n</pre>\n')
 
     def visit_list_item(self, node):
-        try:
-            self._list_char[-1] += 1
-        except:
-            # bullets \(bu or \(em em dash
-            self.body.append('\n.TP 2\n\\(bu\n')
-        else:
-            self.body.append('\n.TP 3\n%d.\n' % self._list_char[-1])
+        self.body.append('\n.TP %d\n%s\n' % (
+                self._list_char[-1].get_width(),
+                self._list_char[-1].next(),) )
 
     def depart_list_item(self, node):
         pass
