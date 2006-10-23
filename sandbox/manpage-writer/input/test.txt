@@ -32,6 +32,10 @@ OPTIONS
 
 Possibly take *NAME* from rst-title.
 
+* bullet list
+* and a longer entry, and a longer entry, and a longer entry, and a longer entry,
+  and a longer entry, and a longer entry, and a longer entry, and a longer entry,
+
 FILES
 =====
 
@@ -50,6 +54,7 @@ Numerous mapping problems.
 1. Where do we get the manual section number from ? Commandline ?
 2. docutils authors should be filled into section "AUTHORS".
 3. be carefull with linebreaks in generated code.
-4. list items.
+4. list items. 
+   bullets and enumerators.
 
 

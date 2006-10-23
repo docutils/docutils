@@ -194,7 +194,6 @@ class Translator(nodes.NodeVisitor):
             return 1
 
     def visit_bullet_list(self, node):
-        # bullet might be '\(bu'
         self._list_char.append("*")
 
     def depart_bullet_list(self, node):
@@ -605,8 +604,10 @@ class Translator(nodes.NodeVisitor):
         try:
             self._list_char[-1] += 1
         except:
-            pass
-        self.body.append('\n.TP\n\B %s\n' % str(self._list_char[-1]))
+            # bullet lists are done this way in javadoc.1
+            self.body.append('\n.TP 2\n\\(bu\n')
+        else:
+            self.body.append('\n.TP 2\n%s\n' % str(self._list_char[-1]))
 
     def depart_list_item(self, node):
         pass
