@@ -100,6 +100,8 @@ Problems
 * Tables
 * Images
 * Equations
+* nested list entries sometimes get bold.
+* enumerated lists with more than 9 
 
 Change log
 ''''''''''

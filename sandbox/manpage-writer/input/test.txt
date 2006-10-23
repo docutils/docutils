@@ -36,6 +36,25 @@ Possibly take *NAME* from rst-title.
 * and a longer entry, and a longer entry, and a longer entry, and a longer entry,
   and a longer entry, and a longer entry, and a longer entry, and a longer entry,
 
+  1. and a nested 
+  2. enumeration
+
+     - and some other BUG this line is bold
+	 - bullets
+
+  3. a third
+  4. a third
+  5. a third
+  6. a third
+  7. a third
+  8. a third
+  9. a third
+  10. a third BUG indentation must be 3 if there are more than 
+
+7. dont start with 1
+9. dont increment by 1
+13. bad at all.
+
 FILES
 =====
 
