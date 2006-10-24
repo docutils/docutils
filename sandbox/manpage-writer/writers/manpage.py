@@ -225,17 +225,6 @@ class Translator(nodes.NodeVisitor):
     def depart_block_quote(self, node):
         self.body.append(self.comment('depart_block_quote'))
 
-    def check_simple_list(self, node):
-        raise NotImplementedError, node.astext()
-        """Check for a simple list that can be rendered compactly."""
-        visitor = SimpleListChecker(self.document)
-        try:
-            node.walk(visitor)
-        except nodes.NodeFound:
-            return None
-        else:
-            return 1
-
     def visit_bullet_list(self, node):
         self.list_start(node)
 
@@ -963,47 +952,5 @@ class Translator(nodes.NodeVisitor):
     def unimplemented_visit(self, node):
         raise NotImplementedError('visiting unimplemented node type: %s'
                                   % node.__class__.__name__)
-
-
-class SimpleListChecker(nodes.GenericNodeVisitor):
-
-    """
-    Raise `nodes.SkipNode` if non-simple list item is encountered.
-
-    Here "simple" means a list item containing nothing other than a single
-    paragraph, a simple list, or a paragraph followed by a simple list.
-    """
-
-    def default_visit(self, node):
-        raise nodes.NodeFound
-
-    def visit_bullet_list(self, node):
-        pass
-
-    def visit_enumerated_list(self, node):
-        pass
-
-    def visit_list_item(self, node):
-        children = []
-        for child in node.get_children():
-            if not isinstance(child, nodes.Invisible):
-                children.append(child)
-        if (children and isinstance(children[0], nodes.paragraph)
-            and (isinstance(children[-1], nodes.bullet_list)
-                 or isinstance(children[-1], nodes.enumerated_list))):
-            children.pop()
-        if len(children) <= 1:
-            return
-        else:
-            raise nodes.NodeFound
-
-    def invisible_visit(self, node):
-        """Invisible nodes should be ignored."""
-        pass
-
-    visit_comment = invisible_visit
-    visit_substitution_definition = invisible_visit
-    visit_target = invisible_visit
-    visit_pending = invisible_visit
 
 # vim: set et ts=4 ai :
