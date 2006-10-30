@@ -662,12 +662,16 @@ class Translator(nodes.NodeVisitor):
         self.body.append('</div>\n')
 
     def visit_line_block(self, node):
-        raise NotImplementedError, node.astext()
-        self.body.append(self.starttag(node, 'pre', CLASS='line-block'))
+        self.body.append('\n')
 
     def depart_line_block(self, node):
-        raise NotImplementedError, node.astext()
-        self.body.append('\n</pre>\n')
+        self.body.append('\n')
+
+    def visit_line(self, node):
+        pass
+
+    def depart_line(self, node):
+        self.body.append('\n.br\n')
 
     def visit_list_item(self, node):
         self.body.append('\n.TP %d\n%s\n' % (
