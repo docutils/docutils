@@ -78,6 +78,13 @@ Tables
 | header   |        |
 +----------+--------+
 
+lineblock
+---------
+
+| paul
+| tel. 12345
+| LA
+
 FILES
 =====
 

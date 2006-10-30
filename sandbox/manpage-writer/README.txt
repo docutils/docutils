@@ -104,6 +104,7 @@ Problems
 * nested list entries sometimes get bold. RST problem
 * RST problem "-d #  option " breaks
 * enumerated lists with more than 9 
+* line blocks in tables have too much new lines.
 
 Change log
 ''''''''''
@@ -111,6 +112,7 @@ Change log
 
 * writers/manpage.py:
 
+  - 2006-10-30: Add line block.
   - 2006-10-30: Add headerless tables.
   - 2006-10-23: Fix: listbullets and numbers were prefixed with ``0``.
   - 2006-10-22: less empty lines
