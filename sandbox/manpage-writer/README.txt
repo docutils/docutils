@@ -97,7 +97,8 @@ Problems
   
 * Is one rst-document one manpage section or might there be more sections
   contained.
-* Tables
+* Tables are possible in roff, via the external processor tbl. Although
+  advised to avoid if possible.
 * Images
 * Equations
 * nested list entries sometimes get bold. RST problem
@@ -110,6 +111,7 @@ Change log
 
 * writers/manpage.py:
 
+  - 2006-10-30: Add headerless tables.
   - 2006-10-23: Fix: listbullets and numbers were prefixed with ``0``.
   - 2006-10-22: less empty lines
   - 2006-10-21: from sandbox/grubert, better option list handling,

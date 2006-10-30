@@ -63,15 +63,20 @@ SEE ALSO
 `docutils <http://docutils.sourceforge.net>`__
 `linux man page howto <http://tldp.org/HOWTO/Man-Page/>`__
 
-and ``man man``
+and ``man man`` ``man 7 man ``
 
 BUGS
 ====
 
-* Format options are included as they are required. 
-* tables are not supported.
-* images are not supported.
+* Format options are included as they are required, only the simplest
+  options are supported, and no complex things should be used in man pages.
+* tables:
 
+  - no header allowed
+  - always have a border
+  - cell alignment is always top/left.
+
+* images are not supported.
 
 Discussion is still open.
 
