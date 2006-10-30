@@ -54,11 +54,50 @@ class Writer(writers.Writer):
         self.output = visitor.astext()
 
 
+class Table:
+    def __init__(self):
+        self._rows = []
+        self._options = ['center', ]
+        self._tab_char = '\t'
+        self._coldefs = []
+    def new_row(self):
+        self._rows.append([])
+    def append_cell(self, text):
+        self._rows[-1].append(text)
+        if len(self._coldefs) < len(self._rows[-1]):
+            self._coldefs.append('l')
+    def astext(self):
+        text = '.TS\n'
+        text += ' '.join(self._options) + ';\n'
+        text += '|%s|.\n' % ('|'.join(self._coldefs))
+        for row in self._rows:
+            # row = array of cells. cell = array of lines.
+            # line above 
+            text += '_\n'
+            nr_of_cells = len(row)
+            ln_cnt = -1
+            while ln_cnt < 10: # safety belt
+                ln_cnt += 1
+                line = []
+                last_line = 1 
+                for cell in row:
+                    if len(cell) > ln_cnt:
+                        line.append(cell[ln_cnt])
+                        last_line = 0 
+                    else:
+                        line.append(" ")
+                if last_line:
+                    break
+                text += self._tab_char.join(line) + '\n'
+        text += '_\n'
+        text += '.TE\n'
+        return text
+
 class Translator(nodes.NodeVisitor):
     """"""
 
     words_and_spaces = re.compile(r'\S+| +|\n')
-    document_start = """Man page generated from reStructeredText."""	
+    document_start = """Man page generated from reStructeredText."""
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
@@ -87,6 +126,8 @@ class Translator(nodes.NodeVisitor):
                 "version" : "",
                     }
         self._in_docinfo = None
+        self._active_table = None
+        self._in_entry = None
         self.header_written = 0
         self.authors = []
         # central definition of simple processing rules
@@ -290,15 +331,7 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def write_colspecs(self):
-        raise NotImplementedError, node.astext()
-        width = 0
-        for node in self.colspecs:
-            width += node['colwidth']
-        for node in self.colspecs:
-            colwidth = int(node['colwidth'] * 100.0 / width + 0.5)
-            self.body.append(self.emptytag(node, 'col',
-                                           width='%i%%' % colwidth))
-        self.colspecs = []
+        self.body.append("%s.\n" % ('L '*len(self.colspecs)))
 
     def visit_comment(self, node,
                       sub=re.compile('-(?=-)').sub):
@@ -407,7 +440,10 @@ class Translator(nodes.NodeVisitor):
         self.body.append('\n')
 
     def visit_entry(self, node):
-        raise NotImplementedError, node.astext()
+        # BUG entries have to be on one line separated by tab force it.
+        self.context.append(len(self.body))
+        self._in_entry = 1
+        return
         if isinstance(node.parent.parent, nodes.thead):
             tagname = 'th'
         else:
@@ -426,8 +462,10 @@ class Translator(nodes.NodeVisitor):
             node[-1].set_class('last')
 
     def depart_entry(self, node):
-        raise NotImplementedError, node.astext()
-        self.body.append(self.context.pop())
+        start = self.context.pop()
+        self._active_table.append_cell(self.body[start:])
+        del self.body[start:]
+        self._in_entry = 0
 
     def visit_enumerated_list(self, node):
         self.list_start(node)
@@ -733,13 +771,13 @@ class Translator(nodes.NodeVisitor):
         self.depart_docinfo_item()
 
     def visit_paragraph(self, node):
-        # .PP or
+        # TODO .PP or new line
         return
-        self.body.append('\n')
 
     def depart_paragraph(self, node):
-        # .PP or an empty line
-        self.body.append('\n\n')
+        # TODO .PP or an empty line
+        if not self._in_entry:
+            self.body.append('\n\n')
 
     def visit_problematic(self, node):
         raise NotImplementedError, node.astext()
@@ -777,12 +815,10 @@ class Translator(nodes.NodeVisitor):
         self.depart_docinfo_item()
 
     def visit_row(self, node):
-        raise NotImplementedError, node.astext()
-        self.body.append(self.starttag(node, 'tr', ''))
+        self._active_table.new_row()
 
     def depart_row(self, node):
-        raise NotImplementedError, node.astext()
-        self.body.append('</tr>\n')
+        pass
 
     def visit_section(self, node):
         # BUG first section = title should say NAME for whatis database.
@@ -815,9 +851,6 @@ class Translator(nodes.NodeVisitor):
         self._docinfo["subtitle"] = node.astext()
         raise nodes.SkipNode
 
-    def depart_subtitle(self, node):
-        pass
-
     def visit_system_message(self, node):
         # TODO add report_level
         #if node['level'] < self.document.reporter['writer'].report_level:
@@ -839,11 +872,11 @@ class Translator(nodes.NodeVisitor):
         self.body.append('\n')
 
     def visit_table(self, node):
-        self.body.append(self.comment('visit_table'))
-        raise nodes.SkipNode
+        self._active_table = Table()
 
     def depart_table(self, node):
-        self.body.append(self.comment('depart_table'))
+        self.body.append(self._active_table.astext())
+        self._active_table = None
 
     def visit_target(self, node):
         self.body.append(self.comment('visit_target'))
@@ -852,14 +885,10 @@ class Translator(nodes.NodeVisitor):
         self.body.append(self.comment('depart_target'))
 
     def visit_tbody(self, node):
-        raise NotImplementedError, node.astext()
-        self.write_colspecs()
-        self.body.append(self.context.pop()) # '</colgroup>\n' or ''
-        self.body.append(self.starttag(node, 'tbody', valign='top'))
+        pass
 
     def depart_tbody(self, node):
-        raise NotImplementedError, node.astext()
-        self.body.append('</tbody>\n')
+        pass
 
     def visit_term(self, node):
         self.body.append(self.defs['term'][0])
@@ -868,11 +897,7 @@ class Translator(nodes.NodeVisitor):
         self.body.append(self.defs['term'][1])
 
     def visit_tgroup(self, node):
-        raise NotImplementedError, node.astext()
-        # Mozilla needs <colgroup>:
-        self.body.append(self.starttag(node, 'colgroup'))
-        # Appended by thead or tbody:
-        self.context.append('</colgroup>\n')
+        pass
 
     def depart_tgroup(self, node):
         pass
@@ -939,9 +964,6 @@ class Translator(nodes.NodeVisitor):
     def visit_version(self, node):
         self._docinfo["version"] = node.astext()
         raise nodes.SkipNode
-
-    def depart_version(self, node):
-        pass
 
     def visit_warning(self, node):
         self.visit_admonition(node, 'warning')

@@ -30,7 +30,15 @@ Run it and examine output.
 OPTIONS
 =======
 
-Possibly take *NAME* from rst-title.
+Character formatting
+--------------------
+
+*BUG* The section title should be separated from the title above.
+
+
+
+Lists
+-----
 
 * bullet list
 * and a longer entry, and a longer entry, and a longer entry, and a longer entry,
@@ -39,14 +47,14 @@ Possibly take *NAME* from rst-title.
   1. and a nested 
   2. enumeration
 
-     - and some other BUG this line is bold
+     - BUG this line is bold
 	 - bullets
 
   3. a third
   4. a third
   5. a third
 
-     a. alphabeticall
+     a. alphabetically BUG not recognized as list start
 	 b. betacarotin
 	 c. grammar
 
@@ -54,11 +62,21 @@ Possibly take *NAME* from rst-title.
   7. a third
   8. a third
   9. a third
-  10. a third BUG indentation must be 3 if there are more than 
+  10. a BUG indentation must be 3 if there are more than 
 
 7. dont start with 1
 9. dont increment by 1
 13. bad at all.
+
+Tables
+------
+
++----------+--------+
+| single   | frame  |
++----------+--------+
+| no table |        |
+| header   |        |
++----------+--------+
 
 FILES
 =====
