@@ -130,6 +130,7 @@ class Translator(nodes.NodeVisitor):
         self._in_entry = None
         self.header_written = 0
         self.authors = []
+        self.section_level = 0
         # central definition of simple processing rules
         # what to output on : visit, depart
         self.defs = {
@@ -799,8 +800,7 @@ class Translator(nodes.NodeVisitor):
         self.body.append(self.context.pop())
 
     def visit_raw(self, node):
-        raise NotImplementedError, node.astext()
-        if node.get('format') == 'html':
+        if node.get('format') == 'manpage':
             self.body.append(node.astext())
         # Keep non-HTML raw text out of output:
         raise nodes.SkipNode
@@ -825,7 +825,6 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def visit_section(self, node):
-        # BUG first section = title should say NAME for whatis database.
         self.section_level += 1
 
     def depart_section(self, node):
@@ -935,8 +934,10 @@ class Translator(nodes.NodeVisitor):
             # document title for .TH
             self._docinfo['title'] = node.astext()
             raise nodes.SkipNode
-        else:
+        elif self.section_level == 1:
             self.body.append('\n.SH ')
+        else:
+            self.body.append('\n.SS ')
 
     def depart_title(self, node):
         self.body.append('\n')
