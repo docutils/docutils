@@ -112,6 +112,7 @@ Change log
 
 * writers/manpage.py:
 
+  - 2006-10-31: Add raw.
   - 2006-10-31: Distinguish section_level 0 (TH), 1 (SH) other (SS).
   - 2006-10-30: Add line block.
   - 2006-10-30: Add headerless tables.
