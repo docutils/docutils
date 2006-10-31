@@ -85,6 +85,18 @@ lineblock
 | tel. 12345
 | LA
 
+raw
+---
+
+.. raw :: manpage
+
+   raw input to man
+
+.. raw :: latex
+   
+   never seen
+
+
 FILES
 =====
 

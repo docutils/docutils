@@ -155,8 +155,7 @@ class Translator(nodes.NodeVisitor):
 
     def comment(self, text):
         """Return commented version of the passed text."""
-        prefix = '\n.\\" '
-        return prefix+prefix.join(text.split('\n'))+'\n'
+        return self.comment_begin(text)+'\n'
 
     def astext(self):
         """Return the final formatted document as a string."""
