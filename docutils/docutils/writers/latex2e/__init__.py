@@ -1515,6 +1515,20 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_hint(self, node):
         self.depart_admonition()
 
+    def latex_image_length(self, width_str):
+        match = re.match('(\d*\.?\d*)\s*(\S*)', width_str)
+        if not match:
+            # fallback
+            return width_str
+        res = width_str
+        amount, unit = match.groups()[:2]
+        if unit == "px":
+            # LaTeX does not know pixels but points
+            res = "%spt" % amount
+        elif unit == "%":
+            res = "%.3f\\linewidth" % (float(amount)/100.0)
+        return res
+
     def visit_image(self, node):
         attrs = node.attributes
         # Add image URI to dependency list, assuming that it's
@@ -1522,7 +1536,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.settings.record_dependencies.add(attrs['uri'])
         pre = []                        # in reverse order
         post = []
-        include_graphics_options = ""
+        include_graphics_options = []
         inline = isinstance(node.parent, nodes.TextElement)
         if attrs.has_key('scale'):
             # Could also be done with ``scale`` option to
@@ -1530,7 +1544,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
             pre.append('\\scalebox{%f}{' % (attrs['scale'] / 100.0,))
             post.append('}')
         if attrs.has_key('width'):
-            include_graphics_options = '[width=%s]' % attrs['width']
+            include_graphics_options.append('width=%s' % (
+                            self.latex_image_length(attrs['width']), ))
+        if attrs.has_key('height'):
+            include_graphics_options.append('height=%s' % (
+                            self.latex_image_length(attrs['height']), ))
         if attrs.has_key('align'):
             align_prepost = {
                 # By default latex aligns the top of an image.
@@ -1553,8 +1571,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
             post.append('\n')
         pre.reverse()
         self.body.extend( pre )
+        options = ''
+        if len(include_graphics_options)>0:
+            options = '[%s]' % (','.join(include_graphics_options))
         self.body.append( '\\includegraphics%s{%s}' % (
-                include_graphics_options, attrs['uri'] ) )
+                            options, attrs['uri'] ) )
         self.body.extend( post )
 
     def depart_image(self, node):

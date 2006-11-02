@@ -82,6 +82,10 @@ Changes Since 0.4
 
 * docutils/writers/latex2e/__init__.py:
 
+  - Image width unit ``px`` is translated to ``pt``:
+  - Add image height support.
+  - Fix: image width ``70%`` is converted ``0.700\linewidth``.
+    bug #1457388
   - Fix: Do not escape underscores in citation reference labels if
     use-latex-citations is set.
   - Use centering instead of center for figure contents, to avoid vertical
