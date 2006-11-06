@@ -1305,6 +1305,11 @@ These settings are for internal use only; setting them in
 configuration files has no effect, and there are no corresponding
 command-line options.
 
+_`_config_files`
+    List of paths of applied configuration files.
+
+    Default: None.  No command-line options.
+
 _`_directories`
     (``buildhtml.py`` front end.)  List of paths to source
     directories, set from positional arguments.
