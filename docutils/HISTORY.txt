@@ -21,6 +21,9 @@ Changes Since 0.4
 
   - Configuration files are now assumed and required to be
     UTF-8-encoded.
+  - Paths of applied configuration files are now recorded in the
+    runtime setting ``_config_files`` (accessible via
+    ``--dump-settings``).
 
 * docutils/io.py:
 

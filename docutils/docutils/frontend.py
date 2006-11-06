@@ -445,7 +445,8 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
 
     settings_defaults = {'_disable_config': None,
                          '_source': None,
-                         '_destination': None,}
+                         '_destination': None,
+                         '_config_files': None}
     """Defaults for settings that don't have command-line option equivalents."""
 
     relative_path_settings = ('warning_stream',)
@@ -466,6 +467,9 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
 
         self.lists = {}
         """Set of list-type settings."""
+
+        self.config_files = []
+        """List of paths of applied configuration files."""
 
         optparse.OptionParser.__init__(
             self, option_class=Option, add_help_option=None,
@@ -546,6 +550,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
         """Returns a dictionary containing appropriate config file settings."""
         parser = ConfigParser()
         parser.read(config_file, self)
+        self.config_files.extend(parser._files)
         base_path = os.path.dirname(config_file)
         applied = {}
         settings = Values()
@@ -567,6 +572,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
         values._source, values._destination = self.check_args(args)
         make_paths_absolute(values.__dict__, self.relative_path_settings,
                             os.getcwd())
+        values._config_files = self.config_files
         return values
 
     def check_args(self, args):
@@ -591,7 +597,9 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
 
     def get_default_values(self):
         """Needed to get custom `Values` instances."""
-        return Values(self.defaults)
+        defaults = Values(self.defaults)
+        defaults._config_files = self.config_files
+        return defaults
 
     def get_option_by_dest(self, dest):
         """
@@ -631,6 +639,12 @@ Unable to read configuration file "%s": content not encoded as UTF-8.
 Skipping "%s" configuration file.
 """
 
+    def __init__(self, *args, **kwargs):
+        CP.ConfigParser.__init__(self, *args, **kwargs)
+
+        self._files = []
+        """List of paths of configuration files read."""
+
     def read(self, filenames, option_parser):
         if type(filenames) in (types.StringType, types.UnicodeType):
             filenames = [filenames]
@@ -644,8 +658,10 @@ Skipping "%s" configuration file.
                 CP.ConfigParser.readfp(self, fp, filename)
             except UnicodeDecodeError:
                 sys.stderr.write(self.not_utf8_error % (filename, filename))
+                fp.close()
                 continue
             fp.close()
+            self._files.append(filename)
             if self.has_section('options'):
                 self.handle_old_config(filename)
             self.validate_settings(filename, option_parser)
