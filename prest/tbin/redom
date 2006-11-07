@@ -18,8 +18,6 @@ BEGIN {
     ($timere = $time) =~ s/\\([()])/\\\\\\$1/g;
 }
 s!(\d{4})([-/])(\d{2})\2(\d{2})$timere!\\d{4}[-/\]\\d{2}\[-/\]\\d{2}$time!go;
-# Get rid of junque characters in generated section numbers
-#s/   /.*/; 
 # Handle uppercase vs lowercase unicode
 s/(\\u)([\da-f]{4})/$1(?i)$2/ig;
 # Deal with revisions that may change

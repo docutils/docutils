@@ -89,7 +89,6 @@ sub main {
 	 qq(Cannot have both :file: option and content.), $lit)
 	if $options->{file} && $content !~ /^$/;
 
-    $ENV{PATH} = "";
     my ($states_bin) = grep -x "$_/states",
 	qw(/bin /usr/bin /usr/local/bin);
     my $subdir = 'Text/Restructured/Directive';

@@ -564,6 +564,41 @@ The following option is recognized:
     Set a "classes" attribute value on the compound element.  See the
     class_ directive below.
 
+.. _mathml:
+.. _ascii-mathml:
+
+Mathematical Equations
+======================
+
+:Directive Type: "ascii-mathml", "mathml"
+:Doctree Element: mathml
+:Directive Arguments: Possible.
+:Directive Options: Possible.
+:Directive Content: Possible.
+
+This directive is used to create mathematical markup from `ASCIIMathML`_.
+Unlike the ``mathml`` and ``ascii-mathml`` roles, which produce
+inline-style mathematical markup, the directive produces display-style
+markup unless it is used in a substitution definition, in which case
+it also defaults to inline-style markup.  However, the style can be
+overridden by means of the directive options.
+
+.. _AsciiMathML: ascii-mathml.xhtml
+
+The following option is recognized:
+
+``mstyle`` : field list text
+    The field list gives a set of key/value pairs for the `mstyle
+    attribute`_ of the generated mathml markup.  For example, the
+    following directive would not use display style and would have the
+    math equation in green::
+
+      .. ascii-mathml:: E = mc^2
+         :mstyle:
+             :displaystyle: false
+             :mathcolor:    green
+
+.. _mstyle attribute: ascii-mathml.xhtml#attributes-for-mstyle
 
 --------
  Tables

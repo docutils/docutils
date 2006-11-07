@@ -13,7 +13,7 @@ use ExtUtils::MakeMaker;
 
 ## Note: The version number for the entire release is specified here and
 ## propagated.  Be sure to edit for every release.
-my $Version = "0.003018";
+my $Version = "0.003019";
 
 use vars qw($opt_f $opt_h $opt_k);
 my $OUTPUT_CFG_FILE = $opt_f = 'config.log';
@@ -246,6 +246,7 @@ EOS
 # Substitute in for ${perlvar} references
 $generic_t =~ s/(\$ \{ [^\}]+ \})/eval $1/gex;
 
+my @TESTS;
 my @generic_t_dirs = grep -d $_, <t/*>;
 # Create generic .t files
 foreach my $dir (@generic_t_dirs) {
@@ -256,6 +257,7 @@ foreach my $dir (@generic_t_dirs) {
 	open T, ">$dir/$t";
 	print T $generic_t;
 	close T;
+	push @TESTS, "$dir/$t";
     }
 }
 
@@ -278,15 +280,17 @@ WriteMakefile(
     EXE_FILES      => [qw(prest)],
     MAN1PODS       => {},
     MAN3PODS       => {},
-    PREREQ_PM      => {}, # e.g., Module::Name => 1.1
+    PREREQ_PM      => { 'Text::ASCIIMathML'=>0 }, # e.g., Module::Name => 1.1
     PL_FILES       => {'lib/Text/Restructured/PrestConfig.pm.PL' =>
 		       "lib/Text/Restructured/PrestConfig.pm"},
     PM             => {'lib/Text/Restructured/PrestConfig.pm' =>
 		       'blib/lib/Text/Restructured/PrestConfig.pm',
 		       %pm_files},
 #    FIXIN          => 'cp',
-    test           => { TESTS => q($(shell find t -name '*.t' -type f)) },
-    clean          => { FILES => q[$(TEST_FILES) $(TEST_FILES:.t=.dir) t/Common.mk lib/Text/Restructured/PrestConfig.pm] },
+    test           => { TESTS => join ' ',@TESTS },
+    clean          => { FILES =>(join(' ', (@TESTS, map(/(.*)\.t$/ && "$1.dir",
+							@TESTS))) .
+				 q[ t/Common.mk lib/Text/Restructured/PrestConfig.pm]) },
     dist           => { COMPRESS => 'gzip', SUFFIX => '.gz' },
     realclean      => { FILES => q(config.log config.log.bak) },
 );

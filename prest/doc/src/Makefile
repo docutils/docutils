@@ -5,8 +5,10 @@ TOOLS_DIR = ../tools
 DIFFRE_DIR = ../../tbin
 
 RSTS := $(wildcard *.rst)
+XRSTS := $(wildcard *.xrst)
 HTMLS := $(wildcard *.html)
 DEST_HTMLS = $(addprefix $(DEST_DIR)/,$(RSTS:.rst=.html))
+DEST_XHTMLS = $(addprefix $(DEST_DIR)/,$(XRSTS:.rst=.html))
 OTHER_TARGETS = $(addprefix $(DEST_DIR)/,index.html quickref.html)
 LATEST_HTMLS := $(notdir $(wildcard latest/*.html))
 DIFF_TARGETS = $(addprefix $(DEST_DIR)/,$(LATEST_HTMLS:.html=_diff.html))
@@ -34,6 +36,7 @@ HTML_ALTS = ($(subst $(BLANK),|,$(RSTS:.rst=) $(HTMLS:.html=)))\.html
 PREST_FLAGS_prest_usage = -D trusted
 PREST_FLAGS_prest_internals = -D trusted
 PREST_FLAGS_prest_extend = -D trusted
+PREST_FLAGS_ascii-mathml = -D mstyle='mathcolor=red'
 
 targets:	$(DEST_DIR) $(DEST_HTMLS) $(OTHER_TARGETS) $(DIFF_TARGETS)
 
@@ -53,6 +56,10 @@ $(DEST_DIR):
 $(DEST_DIR)/%.html: %.rst $(PREST_SRC) $(HTML_WRITER)
 	$(PERL) -pe 's!../../\w+/rst/($(HTML_ALTS))!./$$1!g; s!\.\./!http://docutils.sourceforge.net/spec/!g' $< | \
 	$(PREST_CMD) $(HTML_FLAGS) $(PREST_FLAGS_$(notdir $*)) -- - > $@ 
+	-chmod 664 $@
+
+$(DEST_DIR)/%.xhtml: %.xrst $(PREST_SRC) $(HTML_WRITER)
+	$(PREST_CMD) $(HTML_FLAGS) $(PREST_FLAGS_$(notdir $*)) $< > $@ 
 	-chmod 664 $@
 
 $(DEST_DIR)/%_diff.html: $(DEST_DIR)/%.html latest/%.html $(HTMLDIFF)

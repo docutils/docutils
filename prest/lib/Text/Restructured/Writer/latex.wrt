@@ -130,6 +130,10 @@ sub BEGIN {
     @FOOTNOTE_SYMBOLS{@footnote_symbols} = (1 .. @footnote_symbols);
 }
 
+sub Warn {
+    print STDERR "$main::opt_w writer: Warning: $_[0]\n";
+}
+
 # This phase marks elements as being contained within footnotes or literals
 # and computes nesting levels for sections and enumerated_lists.
 phase MARK = {
@@ -1131,9 +1135,5 @@ EOS
 	Warn("no handler for tag $dom->{tag}")
 	    unless $PRINTED{$dom->{tag}}++;
 	return $str;
-
-	sub Warn {
-	    print STDERR "$main::opt_w writer: Warning: $_[0]\n";
-	}
     }
 }

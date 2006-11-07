@@ -4,6 +4,7 @@ PERL_FLAG_badwrt3 = -I.
 PERL_FLAG_badwrt4 = -I.
 PERL_FLAG_html = -I.
 PERL_FLAG_writer = -I.
+PERL_FLAG_mathml01 = -I.
 
 RST_FLAG_indtarget = -D xformoff='Decorations'
 RST_FLAG_badwrt1 = -w bad1

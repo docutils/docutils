@@ -41,6 +41,11 @@ phase PROCESS {
 	return $text;
     }
 
+    sub mathml {
+	my ($dom, $str) = @_;
+	return $dom->{attr}{mathml} ? $dom->{attr}{mathml}->text . "\n" : $str;
+    }
+
     sub .* = {
 	my ($dom, $str, $writer) = @_;
 	# Devel::Cover condition 0 0 $str should always be defined
