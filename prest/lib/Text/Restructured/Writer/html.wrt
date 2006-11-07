@@ -87,7 +87,7 @@ sub BEGIN = {
 
     # Run-time globals
     use vars qw($HAS_CONTENTS $TARGET_FRAME $FOOTER $HEADER @HEAD_INFO
-		%USED_DEFAULT);
+		%USED_DEFAULT $DOCTYPE);
 
     # Defaults for -W flags
     $attribution = 'dash' unless defined $attribution;
@@ -110,6 +110,13 @@ sub BEGIN = {
     $link_target = "''" unless defined $link_target;
     $option_limit = 14 unless defined $option_limit;
     $target_tag = "a" unless defined $target_tag;
+
+    $DOCTYPE = $html_prolog ? << "EOPROLOG1" : << "EOPROLOG2" ;
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+EOPROLOG1
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+EOPROLOG2
+    ;
 }
 
 # Creates a default HTML string
@@ -552,6 +559,19 @@ phase PREPROCESS {
 	push @{$dom->{attr}{classes}}, 'compound';
 	return;
     }
+
+    sub mathml = { # PREPROCESS
+	my ($dom, $str) = @_;
+	$DOCTYPE = << "EOS" if $dom->{attr}{mathml};
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" 
+               "http://www.w3.org/TR/MathML2/dtd/xhtml-math11-f.dtd" [
+  <!ENTITY mathml "http://www.w3.org/1998/Math/MathML">
+]>
+EOS
+	;
+	return $dom->{attr}{mathml} ? $dom->{attr}{mathml}->text : $str;
+    }
+
 
     sub .* = { # PREPROCESS
 	my ($dom, $str) = @_;
@@ -1145,13 +1165,9 @@ EOS
 	my $doc = [[], []];
 
 	# Handle the prolog
-	my $prolog = $html_prolog ? << "EOPROLOG1" : << "EOPROLOG2" ;
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-EOPROLOG1
-<?xml version="1.0" encoding="utf-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-EOPROLOG2
-	push (@{$doc->[0]}, $prolog);
+	push @{$doc->[0]}, qq(<?xml version="1.0" encoding="utf-8" ?>\n)
+	    unless $html_prolog;
+	push @{$doc->[0]}, $DOCTYPE;
 	push (@{$doc->[0]}, qq(<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n));
 	unshift (@{$doc->[1]}, qq(</html>\n));
 

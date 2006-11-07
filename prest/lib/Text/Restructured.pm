@@ -29,6 +29,11 @@ Defines for reStructuredText parser
                    containing the directive (which may not be the
                    same as the directory in which trip is invoked, ".".
                    Default is "<.>".
+-D mstyle=<comma-separated-attr-val-list>
+                   A comma-separated set of attribute=value pairs to
+                   be used for the <mstyle> elements of MathML
+                   markup.  Default is displaystyle=true for
+                   ascii-mathml directive.
 -D nestinline[=<0|1>]
                    Specify whether to allow nesting of inline markup.
                    There are some limitations, like strong cannot be
@@ -182,36 +187,60 @@ BEGIN {
 		   list_table=> \&Text::Restructured::Directive::table,
 		   restructuredtext_test_directive
 		             => \&Text::Restructured::Directive::test_directive,
+		   ascii_mathml
+		             => \&Text::Restructured::Directive::ascii_mathml,
+		   mathml    => \&Text::Restructured::Directive::ascii_mathml,
 		   );
-    %ROLES = (emphasis=>{tag=>'emphasis'},
-	      strong=>{tag=>'strong'},
-	      literal=>{tag=>'literal'},
-	      subscript=>{tag=>'subscript'},
-	      sub=>{alias=>'subscript'},
+    %ROLES = (emphasis   =>{tag=>'emphasis'},
+	      strong     =>{tag=>'strong'},
+	      literal    =>{tag=>'literal'},
+	      subscript  =>{tag=>'subscript'},
+	      sub        =>{alias=>'subscript'},
 	      superscript=>{tag=>'superscript'},
-	      sup=>{alias=>'superscript'},
-	      ab=>{tag=>'abbreviation'},
-	      ac=>{tag=>'acronym'},
-	      inline=>{tag=>'inline'},
-	      raw=>{tag=>'raw', attr=>{'xml:space'=>'preserve'},
+	      sup        =>{alias=>'superscript'},
+	      ab         =>{tag=>'abbreviation'},
+	      ac         =>{tag=>'acronym'},
+	      inline     =>{tag=>'inline'},
+	      raw        =>{tag=>'raw', attr=>{'xml:space'=>'preserve'},
 		check=>\&Text::Restructured::Role::raw},
-	      
 	      'raw-formatting'=>{tag=>'inline'},
-	      'pep-reference'=>{alias=>'PEP'},
-	      PEP=>{tag=>'reference',
-		    attr=>{refuri=>"http://www.python.org/peps/pep-%04d.html"},
-		    text=>"PEP %s",
-		    check=>\&Text::Restructured::Role::PEP,
+	      'pep-reference' =>{alias=>'PEP'},
+	      PEP        =>{
+		  tag  =>'reference',
+		  attr =>{refuri=>"http://www.python.org/peps/pep-%04d.html"},
+		  text =>"PEP %s",
+		  check=>\&Text::Restructured::Role::PEP,
 		},
 	      'rfc-reference'=>{alias=>'RFC'},
-	      RFC=>{tag=>'reference',
-		    attr=>{refuri=>"http://www.faqs.org/rfcs/rfc%04d.html"},
-		    text=>"RFC %s",
-		    check=>\&Text::Restructured::Role::RFC,
+	      RFC        =>{
+		  tag  =>'reference',
+		  attr =>{refuri=>"http://www.faqs.org/rfcs/rfc%04d.html"},
+		  text =>"RFC %s",
+		  check=>\&Text::Restructured::Role::RFC,
 		},
 	      'title-reference'=>{tag=>'title_reference'},
-	      title=>{alias=>'title-reference'},
-	      t=>{alias=>'title-reference'},
+	      title      =>{alias=>'title-reference'},
+	      t          =>{alias=>'title-reference'},
+	      'ascii-mathml'=>{alias=>'mathml'},
+	      mathml     =>{
+		  tag =>'mathml',
+		  attr=>{mathml=>sub {
+		      my ($parser, $attr, $text) = @_;
+		      if (! $parser->{_MathML}) {
+			  eval "use Text::ASCIIMathML";
+			  $parser->{_MathML} = new Text::ASCIIMathML
+			      unless $@;
+		      }
+		      return $parser->{_MathML} ?
+			  $parser->{_MathML}->TextToMathMLTree
+			  ($text, [title=>$text, xmlns=>"&mathml;"],
+			   [$main::opt_D{mstyle} ?
+			    @{$main::opt_D{mstyle}} : ()]) :
+			   '';
+		      
+		  },
+		     'raw'=>1},
+	      },
 	      );
     *DEFAULT_ROLE = \'title-reference';  #';
     @UNITS = (qw(em ex px in cm mm pt pc), '');
@@ -272,6 +301,14 @@ sub init : method {
     $new_inc =~ s/<inc>/$perl_inc/gi;
     @INC = split(/:/, $new_inc);
     delete $main::opt_D{perlpath};
+
+    # Preprocess the mstyle define
+    if ($main::opt_D{mstyle} && ref($main::opt_D{mstyle}) ne 'ARRAY') {
+	my %attr = map((/(\w+)=(.*)/g), split(/\s*,\s*/,
+					      $main::opt_D{mstyle}));
+	$main::opt_D{mstyle} = [ map(($_,$attr{$_}), sort keys %attr) ] ;
+    }
+
     $self->{MY_DEFAULT_ROLE} = $DEFAULT_ROLE;
     $self->{MY_ROLES} = { %ROLES };
     $self->{ANONYMOUS_TARGETS} = [ ];
@@ -1326,6 +1363,8 @@ sub Inline : method {
 			    $attr{$attr} =
 				ref($role->{attr}{$attr}) eq 'ARRAY' ?
 				$role->{attr}{$attr} :
+				ref($role->{attr}{$attr}) eq 'CODE' ?
+				&{$role->{attr}{$attr}}($self, $attr, $mid):
 				sprintf $role->{attr}{$attr}, $mid;
 			}
 		    }
@@ -1372,9 +1411,14 @@ sub Inline : method {
 	    $parent->append($dom);
 	    $parent->append($suffix) if $suffix;
 	    if ($tag =~ /^(literal)$/ && ! $was_interpreted || $implicit ||
-		$tag eq 'raw' || ! $main::opt_D{nestinline}) {
+		$tag eq 'raw' ||
+		(defined $attr{role} &&
+		 $self->{MY_ROLES}{$attr{role}}{attr}{raw}) ||
+		! $main::opt_D{nestinline}) {
 		$mid = RemoveBackslashes($mid)
-		    if $tag !~ /^(literal|raw)$/;
+		    if $tag !~ /^(literal|raw)$/ &&
+		    !(defined $attr{role} &&
+		      $self->{MY_ROLES}{$attr{role}}{attr}{raw});
 		$dom->append($DOM->newPCDATA($mid))
 		    if $mid ne '';
 	    }
@@ -2990,8 +3034,6 @@ BEGIN {
 # Returns: array of DOM objects
 sub admonition {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
-    my $subst = $parent->{attr}{name}
-    if $parent->{tag} eq 'substitution_definition';
 
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno);
     return $dhash if ref($dhash) eq $DOM;
@@ -3017,6 +3059,59 @@ sub admonition {
     $parser->Paragraphs($adm, $content, $source, $dhash->{content_lineno});
 
     return $adm;
+}
+
+# Built-in handler for ascii-mathml directives.
+# Arguments: parser, directive name, parent, source, line number,
+#            directive text, literal text
+# Returns: array of DOM objects
+sub ascii_mathml {
+    my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
+    my @optlist = qw(mstyle);
+    my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
+				\@optlist);
+    return $dhash if ref($dhash) eq $DOM;
+    my($args, $options, $content) = map($dhash->{$_},
+					qw(args options content));
+    foreach my $optname (qw(mstyle)) {
+	my $opt = $options->{$optname};
+	next unless defined $opt;
+	my $err = check_fieldlist_option($parser, $name, $optname, $opt,
+					 $opt, $source, $lineno, $lit);
+	return $err if $err;
+    }
+    return Text::Restructured::Directive::system_msg
+	($parser, $name, 3, $source, $lineno,
+	 qq(Cannot have both argument and content.), $lit)
+	if $args !~ /^$/ && $content !~ /^$/;
+
+    my $subst = $parent->{tag} eq 'substitution_definition';
+    my $text = "$args$content";
+    if (! $parser->{_MathML}) {
+	eval "use Text::ASCIIMathML";
+	$parser->{_MathML} = new Text::ASCIIMathML unless $@;
+    }
+    chomp $text;
+    my $pcdata = $DOM->newPCDATA("$text\n");
+    my $math = $parser->{_MathML} ? $DOM->new('mathml') : $pcdata;
+    if ($parser->{_MathML}) {
+	my %mstyle = (($subst ? () : (displaystyle=>'true')),
+			($options->{mstyle} ?
+			 %{$parser->HashifyFieldList($options->{mstyle})} :
+			 ()),
+			);
+	$math->{attr}{mathml} = $parser->{_MathML}->TextToMathMLTree
+	    ($text, [title=>$text, xmlns=>"&mathml;"],
+	     [($main::opt_D{mstyle} ?
+	       @{$main::opt_D{mstyle}} : ()), %mstyle]);
+	return if ! defined $math->{attr}{mathml};
+	$math->append($pcdata);
+    }
+    return $math if $subst;
+
+    my $para = $DOM->new('paragraph');
+    $para->append($math);
+    return $para;
 }
 
 # Built-in handler for class directives.
@@ -3959,7 +4054,7 @@ sub table {
 		    unless ref($heads) eq 'ARRAY';
 	    }
 	}
-	elsif ($name eq 'list-table') {
+	else { # elsif ($name eq 'list-table') {
 	    $rows = ParseListTable($parser, $content, $source,
 				   $content_lineno);
 	    return $parser->system_message

@@ -31,6 +31,11 @@ phase PROCESS {
 	return $text;
     }
 
+    sub mathml {
+	my ($dom, $str) = @_;
+	return $dom->{attr}{mathml} ? $dom->{attr}{mathml}->text . "\n" : $str;
+    }
+
     sub .* = {
 	my ($dom, $str) = @_;
 	my $attr = defined $dom->{attr} ?

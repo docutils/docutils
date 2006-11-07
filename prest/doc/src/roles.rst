@@ -308,3 +308,23 @@ In addition to "class_", the following option is recognized:
 
 ``format`` : text
     One or more space-separated output format names (Writer names).
+
+``ascii-mathml``
+================
+
+:Aliases: ``:mathml:``
+:DTD Element: mathml
+:Customization:
+    :Options: class_, format
+    :Content: None
+
+The ``ascii-mathml`` role is used to provide markup for mathematical
+notation.  It is currently supported only by the latex writer.  See
+the `ascii-mathml`_ document for further details.
+
+.. note:: In order for at least some browsers (e.g. Firefox) to render
+   mathml markup, the file must be saved with an extension of ``.xhtml``
+   or ``.xml``; the markup is not processed for files with extension
+   ``.html`` or ``.htm``.
+
+.. ascii-mathml:: ascii-mathml.xhtml

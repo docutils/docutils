@@ -1,0 +1,2 @@
+.. mathml::
+   :: badoption
