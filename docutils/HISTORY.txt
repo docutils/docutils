@@ -53,6 +53,8 @@ Changes Since 0.4
 
   - Added ``Directive`` base class.
   - Added ``DirectiveError`` base class.
+  - Fixed ``file_insertion_enabled`` & ``raw_enabled`` setting
+    definitions.
 
 * docutils/parsers/directives/:
 
@@ -103,6 +105,9 @@ Changes Since 0.4
 
   - Changed to support new python.org website structure and
     pep2pyramid.py.
+
+* docs/howto/security.txt: "Deploying Docutils Securely", added to
+  project.
 
 * tools/editors/emacs/rst.el:
 
