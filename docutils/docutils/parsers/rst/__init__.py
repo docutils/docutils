@@ -113,24 +113,25 @@ class Parser(docutils.parsers.Parser):
           {'action': 'store_true', 'validator': frontend.validate_boolean}),
          ('Leave spaces before footnote references.',
           ['--leave-footnote-reference-space'],
-          {'action': 'store_false', 'dest': 'trim_footnote_reference_space',
-           'validator': frontend.validate_boolean}),
+          {'action': 'store_false', 'dest': 'trim_footnote_reference_space'}),
          ('Disable directives that insert the contents of external file '
           '("include" & "raw"); replaced with a "warning" system message.',
           ['--no-file-insertion'],
           {'action': 'store_false', 'default': 1,
-           'dest': 'file_insertion_enabled'}),
+           'dest': 'file_insertion_enabled',
+           'validator': frontend.validate_boolean}),
          ('Enable directives that insert the contents of external file '
           '("include" & "raw").  Enabled by default.',
           ['--file-insertion-enabled'],
-          {'action': 'store_true', 'dest': 'file_insertion_enabled'}),
+          {'action': 'store_true'}),
          ('Disable the "raw" directives; replaced with a "warning" '
           'system message.',
           ['--no-raw'],
-          {'action': 'store_false', 'default': 1, 'dest': 'raw_enabled'}),
+          {'action': 'store_false', 'default': 1, 'dest': 'raw_enabled',
+           'validator': frontend.validate_boolean}),
          ('Enable the "raw" directive.  Enabled by default.',
           ['--raw-enabled'],
-          {'action': 'store_true', 'dest': 'raw_enabled'}),))
+          {'action': 'store_true'}),))
 
     config_section = 'restructuredtext parser'
     config_section_dependencies = ('parsers',)

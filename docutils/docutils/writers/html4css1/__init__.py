@@ -74,8 +74,7 @@ class Writer(writers.Writer):
          ('Link to the stylesheet in the output HTML file.  Default: '
           'embed the stylesheet, do not link to it.',
           ['--link-stylesheet'],
-          {'dest': 'embed_stylesheet', 'action': 'store_false',
-           'validator': frontend.validate_boolean}),
+          {'dest': 'embed_stylesheet', 'action': 'store_false'}),
          ('Specify the initial header level.  Default is 1 for "<h1>".  '
           'Does not affect document title & subtitle (see --no-doc-title).',
           ['--initial-header-level'],

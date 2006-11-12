@@ -43,8 +43,7 @@ class Reader(readers.Reader):
            'validator': frontend.validate_boolean}),
          ('Deactivate the promotion of lone subsection titles.',
           ['--no-section-subtitles'],
-          {'dest': 'sectsubtitle_xform', 'action': 'store_false',
-           'validator': frontend.validate_boolean}),
+          {'dest': 'sectsubtitle_xform', 'action': 'store_false'}),
          ))
 
     config_section = 'standalone reader'
