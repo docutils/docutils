@@ -54,7 +54,7 @@ class Writer(html4css1.Writer):
          ('Allow existing theme files in the ``ui/<theme>`` directory to be '
           'overwritten.  The default is not to overwrite theme files.',
           ['--overwrite-theme-files'],
-          {'action': 'store_true'}),
+          {'action': 'store_true', 'validator': validate_boolean}),
          ('Keep existing theme files in the ``ui/<theme>`` directory; do not '
           'overwrite any.  This is the default.',
           ['--keep-theme-files'],
@@ -66,7 +66,8 @@ class Writer(html4css1.Writer):
          ('Normally hide the presentation controls in slideshow mode. '
           'This is the default.',
           ['--hidden-controls'],
-          {'action': 'store_true', 'default': True}),
+          {'action': 'store_true', 'default': True,
+           'validator': validate_boolean}),
          ('Always show the presentation controls in slideshow mode.  '
           'The default is to hide the controls.',
           ['--visible-controls'],
@@ -74,7 +75,7 @@ class Writer(html4css1.Writer):
          ('Enable the current slide indicator ("1 / 15").  '
           'The default is to disable it.',
           ['--current-slide'],
-          {'action': 'store_true'}),
+          {'action': 'store_true', 'validator': validate_boolean}),
          ('Disable the current slide indicator.  This is the default.',
           ['--no-current-slide'],
           {'dest': 'current_slide', 'action': 'store_false'}),))
