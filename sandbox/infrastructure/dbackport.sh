@@ -43,12 +43,13 @@ while test -n "$1"; do
     svn diff
     if test "`svn st docutils test *.py -q`"; then
         # Some code has changed.
-        # Python 2.4 is faster and outputs unified diffs for the functional
+        # Python 2.5 is faster and outputs unified diffs for the functional
         # tests, so it comes first.
-        nice python2.4 -u test/alltests.py
+        nice python2.5 -u test/alltests.py
         nice python2.1 -u test/alltests.py
         nice python2.2 -u test/alltests.py
         nice python2.3 -u test/alltests.py
+        nice python2.4 -u test/alltests.py
     fi
     echo
     echo Press enter to commit or Ctrl+C to abort.
