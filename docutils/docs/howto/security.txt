@@ -144,6 +144,16 @@ should contain the following lines::
 .. _Docutils Configuration: ../user/config.html
 
 
+Version Applicability
+=====================
+
+The ``file_insertion_enabled`` & ``raw_enabled`` settings were added
+to Docutils 0.3.9; previous versions will ignore these settings.  A
+bug existed in the configuration file handling of these settings in
+Docutils 0.4 and earlier.  The bug was fixed with the 0.4.1 release on
+2006-11-12.
+
+
 Related Documents
 =================
 
