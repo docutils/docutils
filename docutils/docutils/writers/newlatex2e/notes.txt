@@ -74,3 +74,6 @@ here.
 * If there's raw code between paragraphs, it gets appended to the last
   paragraph unless we do ``\par``.  That's a little bit ugly.  Can we
   fix this?  (Change paragraph handling maybe?)
+
+* Test that, say, all Latin 1 characters are renderable.  (And
+  possibly test more characters.)
