@@ -80,22 +80,32 @@ class SettingsSpec:
 
     - Option group title (string or `None` which implies no group, just a list
       of single options).
-    
+
     - Description (string or `None`).
-    
+
     - A sequence of option tuples.  Each consists of:
 
       - Help text (string)
-      
+
       - List of option strings (e.g. ``['-Q', '--quux']``).
-      
-      - Dictionary of keyword arguments.  It contains arguments to the
-        OptionParser/OptionGroup ``add_option`` method, possibly with the
-        addition of a 'validator' keyword (see the
-        `docutils.frontend.OptionParser.validators` instance attribute).  Runtime
-        settings names are derived implicitly from long option names
+
+      - Dictionary of keyword arguments sent to the OptionParser/OptionGroup
+        ``add_option`` method.
+
+        Runtime setting names are derived implicitly from long option names
         ('--a-setting' becomes ``settings.a_setting``) or explicitly from the
-        'dest' keyword argument.  See optparse docs for more details.
+        'dest' keyword argument.
+
+        Most settings will also have a 'validator' keyword & function.  The
+        validator function validates setting values (from configuration files
+        and command-line option arguments) and converts them to appropriate
+        types.  For example, the ``docutils.frontend.validate_boolean``
+        function, **required by all boolean settings**, converts true values
+        ('1', 'on', 'yes', and 'true') to 1 and false values ('0', 'off',
+        'no', 'false', and '') to 0.  Validators need only be set once per
+        setting.  See the `docutils.frontend.validate_*` functions.
+
+        See the optparse docs for more details.
 
     - More triples of group title, description, options, as many times as
       needed.  Thus, `settings_spec` tuples can be simply concatenated.
@@ -183,7 +193,7 @@ class Component(SettingsSpec, TransformSpec):
 
     supported = ()
     """Names for this component.  Override in subclasses."""
-    
+
     def supports(self, format):
         """
         Is `format` supported by this component?
