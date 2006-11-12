@@ -132,7 +132,7 @@ should contain the following lines::
 .. Note:: Due to a bug in the definitions of these security-related
    settings, the right-hand-side of the above lines (the values)
    should be left blank, as shown.  The bug was corrected on
-   2006-11-11 and is reflected in Docutils releases 0.4.1 and higher.
+   2006-11-12 and is reflected in Docutils releases 0.4.1 and higher.
    In these versions, more verbose forms may be used, such as::
 
        [general]
