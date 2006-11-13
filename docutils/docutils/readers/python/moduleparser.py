@@ -3,7 +3,7 @@
 # Copyright: This module has been placed in the public domain.
 
 """
-Parser for Python modules.  Requires Python 2.2 or higher.
+Parser for Python modules.
 
 The `parse_module()` function takes a module's text and file name,
 runs it through the module parser (using compiler.py and tokenize.py)
