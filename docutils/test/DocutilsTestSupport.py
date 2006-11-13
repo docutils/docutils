@@ -65,6 +65,7 @@ try:
     from docutils.parsers import rst
     from docutils.parsers.rst import states, tableparser, roles, languages
     from docutils.readers import standalone, pep
+    from docutils.readers.python import moduleparser
     from docutils.statemachine import StringList, string2lines
 except ImportError:
     # The importing module (usually __init__.py in one of the
@@ -75,12 +76,6 @@ except ImportError:
     traceback.print_exc()
     sys.exit(1)
 
-try:
-    from docutils.readers.python import moduleparser
-    from tokenize import generate_tokens
-    del generate_tokens
-except ImportError:      # moduleparser depends on modules added in Python 2.2
-    moduleparser = None
 
 try:
     import mypdb as pdb
@@ -634,17 +629,6 @@ class PythonModuleParserTestSuite(CustomTestSuite):
     """
     A collection of PythonModuleParserTestCase.
     """
-
-    notified = None
-
-    def __init__(self, *args, **kwargs):
-        if moduleparser is None:
-            if not self.notified:
-                print ('Tests of docutils.readers.python skipped; '
-                       'Python 2.2 or higher required.')
-                PythonModuleParserTestSuite.notified = 1
-            self.generateTests = self.generate_no_tests
-        CustomTestSuite.__init__(self, *args, **kwargs)
 
     def generateTests(self, dict, dictname='totest',
                       testmethod='test_parser'):
