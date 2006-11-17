@@ -79,6 +79,11 @@ class Writer(writers.Writer):
           ['--use-latex-docinfo'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
+         ('Use LaTeX abstract environment for the documents abstract.'
+          'Per default the abstract is an unnumbered section.',
+          ['--use-latex-abstract'],
+          {'default': 0, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
          ('Color of any hyperlinks embedded in text '
           '(default: "blue", "0" to disable).',
           ['--hyperlink-color'], {'default': 'blue'}),
@@ -2009,6 +2014,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
             and self.use_latex_toc):
                 self.body.append('\\renewcommand{\\contentsname}{')
                 self.context.append('}\n\\tableofcontents\n\n\\bigskip\n')
+            elif ('abstract' in self.topic_classes
+            and self.settings.use_latex_abstract):
+                raise nodes.SkipNode
             else: # or section titles before the table of contents.
                 # BUG: latex chokes on center environment with 
                 # "perhaps a missing item", therefore we use hfill.
@@ -2052,8 +2060,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_topic(self, node):
         self.topic_classes = node['classes']
+        if ('abstract' in self.topic_classes
+            and self.settings.use_latex_abstract):
+            self.body.append('\\begin{abstract}\n')
 
     def depart_topic(self, node):
+        if ('abstract' in self.topic_classes
+            and self.settings.use_latex_abstract):
+            self.body.append('\\end{abstract}\n')
         self.topic_classes = []
         if 'contents' in node['classes'] and self.use_latex_toc:
             pass

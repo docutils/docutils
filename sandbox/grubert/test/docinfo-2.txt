@@ -7,6 +7,9 @@
 :Date: $Date$
 :Web site: http://docutils.sourceforge.net/
 :Copyright: This document has been placed in the public domain.
+:Abstract: This document is here to test two cases. Authors and
+  abstract.
+
 
 .. contents::
 

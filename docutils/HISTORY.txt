@@ -87,7 +87,8 @@ Changes Since 0.4
 
 * docutils/writers/latex2e/__init__.py:
 
-  - Image width unit ``px`` is translated to ``pt``:
+  - Add option --use-latex-abstract.
+  - Image width unit ``px`` is translated to ``pt``.
   - Add image height support.
   - Fix: image width ``70%`` is converted ``0.700\linewidth``.
     bug #1457388

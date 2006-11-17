@@ -127,6 +127,14 @@ REFF="$OUTF.ref"
 $CMD $INF > $OUTF
 do_diff $REFF $OUTF 
 
+CMD="$BASE_CMD --use-latex-abstract"
+F=docinfo-2
+INF=test/$F.txt
+OUTF="$INF-use-latex-abstract.tex"
+REFF="$OUTF.ref"
+$CMD $INF > $OUTF
+do_diff $REFF $OUTF 
+
 CMD="$BASE_CMD --use-latex-docinfo"
 for F in docinfo docinfo-2 ; do
   INF=test/$F.txt
