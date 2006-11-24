@@ -959,11 +959,13 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def visit_transition(self, node):
-        raise NotImplementedError, node.astext()
-        self.body.append(self.emptytag(node, 'hr'))
+        # .PP      Begin a new paragraph and reset prevailing indent.
+        # .sp N    leaves N lines of blank space.
+        # .ce      centers the next line
+        self.body.append('\n.sp\n.ce\n----\n')
 
     def depart_transition(self, node):
-        pass
+        self.body.append('\n.ce 0\n.sp\n')
 
     def visit_version(self, node):
         self._docinfo["version"] = node.astext()
