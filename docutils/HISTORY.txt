@@ -87,6 +87,7 @@ Changes Since 0.4
 
 * docutils/writers/latex2e/__init__.py:
 
+  - Fix: output ``hypertarget{ node.get(refid) }{}`` from visit_target. 
   - Add option --use-latex-abstract.
   - Image width unit ``px`` is translated to ``pt``.
   - Add image height support.
