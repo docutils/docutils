@@ -1924,6 +1924,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
             for id in node['ids']:
                 self.body.append('\\hypertarget{%s}{' % id)
             self.context.append('}' * len(node['ids']))
+        elif node.get("refid"):
+            self.body.append('\\hypertarget{%s}{' % node.get("refid"))
+            self.context.append('}')
         else:
             self.context.append('')
 

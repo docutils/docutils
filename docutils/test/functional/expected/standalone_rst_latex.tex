@@ -127,9 +127,9 @@ reStructuredText construct.
 
 % This is a comment. Note how any initial comments are moved by
 % transforms to after the document title, subtitle, and docinfo. 
-% Above is the document title, and below is the subtitle.
+\hypertarget{doctitle}{}% Above is the document title, and below is the subtitle.
 % They are transformed from section titles after parsing. 
-% bibliographic fields (which also require a transform): 
+\hypertarget{subtitle}{}% bibliographic fields (which also require a transform): 
 \hypertarget{table-of-contents}{}
 \pdfbookmark[0]{Table of Contents}{table-of-contents}
 \subsubsection*{~\hfill Table of Contents\hfill ~}
@@ -774,7 +774,7 @@ rendered separately and differently from footnotes.
 
 Here's a reference to the above, [\hyperlink{cit2002}{CIT2002}], and a {\color{red}\bfseries{}{[}nonexistent{]}{\_}}
 citation.
-
+\hypertarget{another-target}{}
 
 %___________________________________________________________________________
 
@@ -783,7 +783,7 @@ citation.
 \pdfbookmark[1]{2.13~~~Targets}{targets}
 \pdfbookmark[1]{2.13~~~Targets}{another-target}
 \subsection*{2.13~~~Targets}
-
+\hypertarget{example}{}
 This paragraph is pointed to by the explicit ``example'' target. A
 reference can be found under \href{\#inline-markup}{Inline Markup}, above. \href{\#inline-hyperlink-targets}{Inline
 hyperlink targets} are also possible.
@@ -796,7 +796,7 @@ Explicit external targets are interpolated into references such as
 
 Targets may be indirect and anonymous.  Thus \href{\#id22}{this phrase} may also
 refer to the \href{\#id22}{Targets} section.
-
+\hypertarget{id22}{}
 Here's a {\color{red}\bfseries{}`hyperlink reference without a target`{\_}}, which generates an
 error.
 
@@ -873,7 +873,7 @@ document (a document-wide \href{\#table-of-contents}{table of contents}).
 An image directive (also clickable -{}- a hyperlink reference):
 \href{\#directives}{\includegraphics{../../../docs/user/rst/images/title.png}}
 Image with multiple IDs:
-
+\hypertarget{image-target-1}{}\hypertarget{image-target-2}{}\hypertarget{image-target-3}{}
 \includegraphics{../../../docs/user/rst/images/title.png}
 
 A centered image:
