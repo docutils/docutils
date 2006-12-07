@@ -18,6 +18,7 @@ from xml.dom import minidom
 import codecs
 import time
 import re
+import StringIO
 ##try:
 ##    import Image                        # check for the Python Imaging Library
 ##except ImportError:
@@ -26,14 +27,16 @@ import docutils
 from docutils import frontend, nodes, utils, writers, languages
 
 
-ElementTree = None
+WhichElementTree = ''
 try:
     from lxml import etree
     #print '*** using lxml'
+    WhichElementTree = 'lxml'
 except ImportError, e:
     try:
         from elementtree import ElementTree as etree
         #print '*** using ElementTree'
+        WhichElementTree = 'elementtree'
     except ImportError, e:
         print '***'
         print '*** Error: Must install either ElementTree or lxml.'
@@ -47,6 +50,57 @@ args = ['-pdb', '-pi1', 'In <\\#>: ', '-pi2', '   .\\D.: ',
 ipshell = IPShellEmbed(args,
     banner = 'Entering IPython.  Press Ctrl-D to exit.',
     exit_msg = 'Leaving Interpreter, back to program.')
+
+
+#
+# ElementTree does not support getparent method (lxml does).
+# This wrapper class and the following support functions provide
+#   that support for the ability to get the parent of an element.
+#
+if WhichElementTree == 'elementtree':
+    class _ElementInterfaceWrapper(etree._ElementInterface):
+        def __init__(self, tag, attrib=None):
+            etree._ElementInterface.__init__(self, tag, attrib)
+            if attrib is None:
+                attrib = {}
+            self.parent = None
+        def setparent(self, parent):
+            self.parent = parent
+        def getparent(self):
+            return self.parent
+
+#
+# ElementTree support functions.
+# In order to be able to get the parent of elements, must use these
+#   instead of the functions with same name provided by ElementTree.
+#
+def Element(tag, attrib=None):
+    if attrib is None:
+        attrib = {}
+    if WhichElementTree == 'lxml':
+        el = etree.Element(tag, attrib)
+    else:
+        el = _ElementInterfaceWrapper(tag, attrib)
+    return el
+
+def SubElement(parent, tag, attrib=None):
+    if attrib is None:
+        attrib = {}
+    if WhichElementTree == 'lxml':
+        el = etree.SubElement(parent, tag, attrib)
+    else:
+        el = _ElementInterfaceWrapper(tag, attrib)
+        parent.append(el)
+        el.setparent(parent)
+    return el
+
+def ToString(et):
+    outstream = StringIO.StringIO()
+    et.write(outstream)
+    s1 = outstream.getvalue()
+    outstream.close()
+    return s1
+
 
 
 #
@@ -278,18 +332,14 @@ class Writer(writers.Writer):
         writers.Writer.assemble_parts(self)
         f = tempfile.NamedTemporaryFile()
         zfile = zipfile.ZipFile(f, 'w', zipfile.ZIP_DEFLATED)
-        zinfo = zipfile.ZipInfo('content.xml')
-        zfile.writestr(zinfo, self.visitor.content_astext())
+        zfile.writestr('content.xml', self.visitor.content_astext())
         zfile.writestr('mimetype', MIME_TYPE)
         s1 = self.create_manifest()
-        zinfo = zipfile.ZipInfo('META-INF/manifest.xml')
-        zfile.writestr(zinfo, s1)
+        zfile.writestr('META-INF/manifest.xml', s1)
         s1 = self.create_meta()
-        zinfo = zipfile.ZipInfo('meta.xml')
-        zfile.writestr(zinfo, s1)
+        zfile.writestr('meta.xml', s1)
         s1 = self.get_stylesheet()
-        zinfo = zipfile.ZipInfo('styles.xml')
-        zfile.writestr(zinfo, s1)
+        zfile.writestr('styles.xml', s1)
         self.store_embedded_files(zfile)
         zfile.close()
         f.seek(0)
@@ -337,59 +387,59 @@ class Writer(writers.Writer):
         pass
 
     def create_manifest(self):
-        root = etree.Element('manifest:manifest',
+        root = Element('manifest:manifest',
             attrib=MANIFEST_NAMESPACE_DICT)
         doc = etree.ElementTree(root)
-        etree.SubElement(root, 'manifest:file-entry', attrib={
+        SubElement(root, 'manifest:file-entry', attrib={
             'manifest:media-type': 'application/vnd.oasis.opendocument.text',
             'manifest:full-path': '/',
             })
-        etree.SubElement(root, 'manifest:file-entry', attrib={
+        SubElement(root, 'manifest:file-entry', attrib={
             'manifest:media-type': 'text/xml',
             'manifest:full-path': 'content.xml',
             })
-        etree.SubElement(root, 'manifest:file-entry', attrib={
+        SubElement(root, 'manifest:file-entry', attrib={
             'manifest:media-type': 'text/xml',
             'manifest:full-path': 'styles.xml',
             })
-        etree.SubElement(root, 'manifest:file-entry', attrib={
+        SubElement(root, 'manifest:file-entry', attrib={
             'manifest:media-type': 'text/xml',
             'manifest:full-path': 'meta.xml',
             })
-        s1 = etree.tostring(doc)
+        s1 = ToString(doc)
         doc = minidom.parseString(s1)
         s1 = doc.toprettyxml('  ')
         return s1
 
     def create_meta(self):
-        root = etree.Element('office:document-meta', attrib=META_NAMESPACE_DICT)
+        root = Element('office:document-meta', attrib=META_NAMESPACE_DICT)
         doc = etree.ElementTree(root)
-        root = etree.SubElement(root, 'office:meta')
-        el1 = etree.SubElement(root, 'meta:generator')
+        root = SubElement(root, 'office:meta')
+        el1 = SubElement(root, 'meta:generator')
         el1.text = 'Docutils/rst2odf.py/%s' % (VERSION, )
         s1 = os.environ.get('USER', '')
-        el1 = etree.SubElement(root, 'meta:initial-creator')
+        el1 = SubElement(root, 'meta:initial-creator')
         el1.text = s1
         s2 = time.strftime('%Y-%m-%dT%H:%M:%S', time.localtime())
-        el1 = etree.SubElement(root, 'meta:creation-date')
+        el1 = SubElement(root, 'meta:creation-date')
         el1.text = s2
-        el1 = etree.SubElement(root, 'dc:creator')
+        el1 = SubElement(root, 'dc:creator')
         el1.text = s1
-        el1 = etree.SubElement(root, 'dc:date')
+        el1 = SubElement(root, 'dc:date')
         el1.text = s2
-        el1 = etree.SubElement(root, 'dc:language')
+        el1 = SubElement(root, 'dc:language')
         el1.text = 'en-US'
-        el1 = etree.SubElement(root, 'meta:editing-cycles')
+        el1 = SubElement(root, 'meta:editing-cycles')
         el1.text = '1'
-        el1 = etree.SubElement(root, 'meta:editing-duration')
+        el1 = SubElement(root, 'meta:editing-duration')
         el1.text = 'PT00M01S'
         title = self.visitor.get_title()
-        el1 = etree.SubElement(root, 'dc:title')
+        el1 = SubElement(root, 'dc:title')
         if title:
             el1.text = title
         else:
             el1.text = '[no title]'
-        s1 = etree.tostring(doc)
+        s1 = ToString(doc)
         #doc = minidom.parseString(s1)
         #s1 = doc.toprettyxml('  ')
         return s1
@@ -405,19 +455,19 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.section_level = 0
         self.section_count = 0
         # Create ElementTree content and styles documents.
-        root = etree.Element(
+        root = Element(
             'office:document-content', CONTENT_NAMESPACE_DICT
             )
         self.content_tree = etree.ElementTree(element=root)
         self.current_element = root
-        etree.SubElement(root, 'office:scripts')
-        etree.SubElement(root, 'office:font-face-decls')
-        el = etree.SubElement(root, 'office:automatic-styles')
+        SubElement(root, 'office:scripts')
+        SubElement(root, 'office:font-face-decls')
+        el = SubElement(root, 'office:automatic-styles')
         self.automatic_styles = el
-        el = etree.SubElement(root, 'office:body')
-        el = etree.SubElement(el, 'office:text')
+        el = SubElement(root, 'office:body')
+        el = SubElement(el, 'office:text')
         self.current_element = el
-        root = etree.Element(
+        root = Element(
             'office:document-styles', STYLES_NAMESPACE_DICT
             )
         self.styles_tree = etree.ElementTree(element=root)
@@ -436,7 +486,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def astext(self):
         root = self.content_tree.getroot()
-        s1 = etree.tostring(root)
+        et = etree.ElementTree(root)
+        s1 = ToString(et)
         return s1
 
     def content_astext(self):
@@ -444,7 +495,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def styles_astext(self):
         root = self.styles_tree.getroot()
-        s1 = etree.tostring(root)
+        et = etree.ElementTree(root)
+        s1 = ToString(et)
         return s1
 
     def set_title(self, title): self.title = title
@@ -458,9 +510,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def append_child(self, tag, attrib=None):
         if attrib is None:
-            el = etree.SubElement(self.current_element, tag)
+            el = SubElement(self.current_element, tag)
         else:
-            el = etree.SubElement(self.current_element, tag, attrib)
+            el = SubElement(self.current_element, tag, attrib)
         return el
 
     def set_current_element(self, el):
@@ -472,7 +524,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def generate_labeled_block(self, node, label):
         el = self.append_child('text:p', attrib={
             'text:style-name': 'rststyle-textbody'})
-        el1 = etree.SubElement(el, 'text:span',
+        el1 = SubElement(el, 'text:span',
             attrib={'text:style-name': 'rststyle-strong'})
         el1.text = label
         el = self.append_child('text:p', attrib={
@@ -574,7 +626,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         label = 'Authors:'
         el = self.append_child('text:p', attrib={
             'text:style-name': 'rststyle-textbody'})
-        el1 = etree.SubElement(el, 'text:span',
+        el1 = SubElement(el, 'text:span',
             attrib={'text:style-name': 'rststyle-strong'})
         el1.text = label
 
@@ -593,7 +645,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         #import pdb; pdb.set_trace()
         #ipshell('At visit_bullet_list')
         #print '(visit_bullet_list) node: %s' % node.astext()
-        el = etree.SubElement(self.current_element, 'text:list', attrib={
+        el = SubElement(self.current_element, 'text:list', attrib={
             'text:style-name': 'rststyle-bulletlist',
             })
         self.set_current_element(el)
@@ -614,8 +666,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         #ipshell('At visit_comment')
         el = self.append_child('text:p',
             attrib={'text:style-name': 'rststyle-textbody'})
-        el1 =  etree.SubElement(el, 'office:annotation', attrib={})
-        el2 =  etree.SubElement(el1, 'text:p', attrib={})
+        el1 =  SubElement(el, 'office:annotation', attrib={})
+        el2 =  SubElement(el1, 'text:p', attrib={})
         el2.text = node.astext()
 
     def depart_comment(self, node):
@@ -631,7 +683,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def visit_date(self, node):
         el = self.append_child('text:p', attrib={
             'text:style-name': 'rststyle-textbody'})
-        el1 = etree.SubElement(el, 'text:span',
+        el1 = SubElement(el, 'text:span',
             attrib={'text:style-name': 'rststyle-strong'})
         el1.text = 'Date: '
         el1.tail = node.astext()
@@ -653,10 +705,10 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         #ipshell('At depart_decoration')
         el = self.current_element.getchildren()[-1]
         self.current_element.remove(el)
-        el1 = etree.Element('text:section', attrib={
+        el1 = Element('text:section', attrib={
             'text:name': '_rstFooterSection',
             })
-        el2 = etree.SubElement(el1, 'text:p', attrib={
+        el2 = SubElement(el1, 'text:p', attrib={
             'text:style-name': 'rststyle-horizontalline'})
         el1.append(el)
         self.footer_element = el1
@@ -687,7 +739,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def visit_term(self, node):
         el = self.append_child('text:p', attrib={
             'text:style-name': 'rststyle-textbody'})
-        el1 = etree.SubElement(el, 'text:span',
+        el1 = SubElement(el, 'text:span',
             attrib={'text:style-name': 'rststyle-strong'})
         #el1.text = node.astext()
         self.set_current_element(el1)
@@ -725,7 +777,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.set_to_parent()
 
     def visit_emphasis(self, node):
-        el = etree.SubElement(self.current_element, 'text:span',
+        el = SubElement(self.current_element, 'text:span',
             attrib={'text:style-name': 'rststyle-emphasis'})
         self.set_current_element(el)
 
@@ -736,7 +788,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         #ipshell('At visit_enumerated_list')
         #import pdb; pdb.set_trace()
         #print '(visit_enumerated_list) node: %s' % node.astext()
-        el = etree.SubElement(self.current_element, 'text:list', attrib={
+        el = SubElement(self.current_element, 'text:list', attrib={
             'text:style-name': 'rststyle-enumlist',
             })
         self.set_current_element(el)
@@ -750,7 +802,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         #import pdb; pdb.set_trace()
         #ipshell('At visit_document')
         #print '(visit_list_item) node: %s' % node.astext()
-        el = etree.SubElement(self.current_element, 'text:list-item')
+        el = SubElement(self.current_element, 'text:list-item')
         self.set_current_element(el)
 
     def depart_list_item(self, node):
@@ -780,7 +832,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         #self.trace_visit_node(node)
         el = self.append_child('text:p', attrib={
             'text:style-name': 'rststyle-textbody'})
-        el1 = etree.SubElement(el, 'text:span',
+        el1 = SubElement(el, 'text:span',
             attrib={'text:style-name': 'rststyle-strong'})
         el1.text = node.astext()
 
@@ -840,7 +892,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         if isinstance(node.parent, docutils.nodes.figure):
             self.generate_figure(node, source, destination)
         else:
-            el1 = etree.SubElement(self.current_element, 'text:p',
+            el1 = SubElement(self.current_element, 'text:p',
             attrib={'text:style-name': 'rststyle-textbody'})
             self.generate_image(node, source, destination, el1)
 
@@ -888,7 +940,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             'style:family': 'graphic',
             'style:parent-style-name': 'Frame',
             }
-        el1 = etree.SubElement(self.automatic_styles, 
+        el1 = SubElement(self.automatic_styles, 
             'style:style', attrib=attrib)
         halign = 'center'
         valign = 'top'
@@ -913,11 +965,11 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             'fo:padding': '0cm',
             'fo:border': 'none',
             }
-        el2 = etree.SubElement(el1,
+        el2 = SubElement(el1,
             'style:graphic-properties', attrib=attrib)
         # Add the content
         attrib = {'text:style-name': 'rststyle-textbody'}
-        el1 = etree.SubElement(self.current_element, 'text:p', attrib=attrib)
+        el1 = SubElement(self.current_element, 'text:p', attrib=attrib)
         attrib = {
             'draw:style-name': style_name,
             'draw:name': 'Frame1',
@@ -926,13 +978,13 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             }
         if width is not None:
             attrib['svg:width'] = '%.2fcm' % (width, )
-        el1 = etree.SubElement(el1, 'draw:frame', attrib=attrib)
+        el1 = SubElement(el1, 'draw:frame', attrib=attrib)
         attrib = {}
         if height is not None:
             attrib['fo:min-height'] = '%.2fcm' % (height, )
-        el1 = etree.SubElement(el1, 'draw:text-box', attrib=attrib)
+        el1 = SubElement(el1, 'draw:text-box', attrib=attrib)
         attrib = {'text:style-name': 'rststyle-caption', }
-        el1 = etree.SubElement(el1, 'text:p', attrib=attrib)
+        el1 = SubElement(el1, 'text:p', attrib=attrib)
         # Add the image (frame) inside the figure/caption frame.
         #ipshell('At visit_image #1')
         el2 = self.generate_image(node, source, destination, el1)
@@ -948,7 +1000,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             'style:family': 'graphic',
             'style:parent-style-name': 'Graphics',
             }
-        el1 = etree.SubElement(self.automatic_styles, 
+        el1 = SubElement(self.automatic_styles, 
             'style:style', attrib=attrib)
         halign = 'center'
         valign = 'top'
@@ -978,10 +1030,10 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             'draw:image-opacity': '100%',
             'draw:color-mode': 'standard',
             }
-        el2 = etree.SubElement(el1,
+        el2 = SubElement(el1,
             'style:graphic-properties', attrib=attrib)
         # Add the content.
-        #el = etree.SubElement(current_element, 'text:p',
+        #el = SubElement(current_element, 'text:p',
         #    attrib={'text:style-name': 'rststyle-textbody'})
         attrib={
             'draw:style-name': style_name,
@@ -1020,8 +1072,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             except ValueError, e:
                 print 'Error: Invalid height for image: "%s"' % (
                     node.attributes['height'], )
-        el1 = etree.SubElement(current_element, 'draw:frame', attrib=attrib)
-        el2 = etree.SubElement(el1, 'draw:image', attrib={
+        el1 = SubElement(current_element, 'draw:frame', attrib=attrib)
+        el2 = SubElement(el1, 'draw:image', attrib={
             'xlink:href': '%s' % (destination, ),
             'xlink:type': 'simple',
             'xlink:show': 'embed',
@@ -1036,7 +1088,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_literal(self, node):
         #ipshell('At visit_literal')
-        el = etree.SubElement(self.current_element, 'text:span',
+        el = SubElement(self.current_element, 'text:span',
             attrib={'text:style-name': 'rststyle-inlineliteral'})
         self.set_current_element(el)
 
@@ -1066,7 +1118,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 'text:style-name': 'rststyle-codeblock',
                 })
             if padcount > 0:
-                el1 = etree.SubElement(el, 'text:s', attrib={
+                el1 = SubElement(el, 'text:s', attrib={
                     'text:c': '%d' % padcount, })
                 el1.tail = line
             else:
@@ -1092,53 +1144,53 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         # Generate automatic styles
         if not self.optiontablestyles_generated:
             self.optiontablestyles_generated = True
-            el = etree.SubElement(self.automatic_styles, 'style:style', attrib={
+            el = SubElement(self.automatic_styles, 'style:style', attrib={
                 'style:name': table_name,
                 'style:family': 'table'})
-            el1 = etree.SubElement(el, 'style:table-properties', attrib={
+            el1 = SubElement(el, 'style:table-properties', attrib={
                 'style:width': '17.59cm',
                 'table:align': 'left',
                 'style:shadow': 'none'})
-            el = etree.SubElement(self.automatic_styles, 'style:style', attrib={
+            el = SubElement(self.automatic_styles, 'style:style', attrib={
                 'style:name': '%s.A' % table_name,
                 'style:family': 'table-column'})
-            el1 = etree.SubElement(el, 'style:table-column-properties', attrib={
+            el1 = SubElement(el, 'style:table-column-properties', attrib={
                 'style:column-width': '4.999cm'})
-            el = etree.SubElement(self.automatic_styles, 'style:style', attrib={
+            el = SubElement(self.automatic_styles, 'style:style', attrib={
                 'style:name': '%s.B' % table_name,
                 'style:family': 'table-column'})
-            el1 = etree.SubElement(el, 'style:table-column-properties', attrib={
+            el1 = SubElement(el, 'style:table-column-properties', attrib={
                 'style:column-width': '12.587cm'})
-            el = etree.SubElement(self.automatic_styles, 'style:style', attrib={
+            el = SubElement(self.automatic_styles, 'style:style', attrib={
                 'style:name': '%s.A1' % table_name,
                 'style:family': 'table-cell'})
-            el1 = etree.SubElement(el, 'style:table-cell-properties', attrib={
+            el1 = SubElement(el, 'style:table-cell-properties', attrib={
                 'fo:background-color': 'transparent',
                 'fo:padding': '0.097cm',
                 'fo:border-left': '0.035cm solid #000000',
                 'fo:border-right': 'none',
                 'fo:border-top': '0.035cm solid #000000',
                 'fo:border-bottom': '0.035cm solid #000000'})
-            el2 = etree.SubElement(el1, 'style:background-image')
-            el = etree.SubElement(self.automatic_styles, 'style:style', attrib={
+            el2 = SubElement(el1, 'style:background-image')
+            el = SubElement(self.automatic_styles, 'style:style', attrib={
                 'style:name': '%s.B1' % table_name,
                 'style:family': 'table-cell'})
-            el1 = etree.SubElement(el, 'style:table-cell-properties', attrib={
+            el1 = SubElement(el, 'style:table-cell-properties', attrib={
                 'fo:padding': '0.097cm',
                 'fo:border': '0.035cm solid #000000'})
-            el = etree.SubElement(self.automatic_styles, 'style:style', attrib={
+            el = SubElement(self.automatic_styles, 'style:style', attrib={
                 'style:name': '%s.A2' % table_name,
                 'style:family': 'table-cell'})
-            el1 = etree.SubElement(el, 'style:table-cell-properties', attrib={
+            el1 = SubElement(el, 'style:table-cell-properties', attrib={
                 'fo:padding': '0.097cm',
                 'fo:border-left': '0.035cm solid #000000',
                 'fo:border-right': 'none',
                 'fo:border-top': 'none',
                 'fo:border-bottom': '0.035cm solid #000000'})
-            el = etree.SubElement(self.automatic_styles, 'style:style', attrib={
+            el = SubElement(self.automatic_styles, 'style:style', attrib={
                 'style:name': '%s.B2' % table_name,
                 'style:family': 'table-cell'})
-            el1 = etree.SubElement(el, 'style:table-cell-properties', attrib={
+            el1 = SubElement(el, 'style:table-cell-properties', attrib={
                 'fo:padding': '0.097cm',
                 'fo:border-left': '0.035cm solid #000000',
                 'fo:border-right': '0.035cm solid #000000',
@@ -1150,22 +1202,22 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             'table:name': table_name,
             'table:style-name': table_name,
             })
-        el1 = etree.SubElement(el, 'table:table-column', attrib={
+        el1 = SubElement(el, 'table:table-column', attrib={
             'table:style-name': '%s.A' % table_name})
-        el1 = etree.SubElement(el, 'table:table-column', attrib={
+        el1 = SubElement(el, 'table:table-column', attrib={
             'table:style-name': '%s.B' % table_name})
-        el1 = etree.SubElement(el, 'table:table-header-rows')
-        el2 = etree.SubElement(el1, 'table:table-row')
-        el3 = etree.SubElement(el2, 'table:table-cell', attrib={
+        el1 = SubElement(el, 'table:table-header-rows')
+        el2 = SubElement(el1, 'table:table-row')
+        el3 = SubElement(el2, 'table:table-cell', attrib={
             'table:style-name': '%s.A1' % table_name,
             'office:value-type': 'string'})
-        el4 = etree.SubElement(el3, 'text:p', attrib={
+        el4 = SubElement(el3, 'text:p', attrib={
             'text:style-name': 'Table_20_Heading'})
         el4.text= 'Option'
-        el3 = etree.SubElement(el2, 'table:table-cell', attrib={
+        el3 = SubElement(el2, 'table:table-cell', attrib={
             'table:style-name': '%s.B1' % table_name,
             'office:value-type': 'string'})
-        el4 = etree.SubElement(el3, 'text:p', attrib={
+        el4 = SubElement(el3, 'text:p', attrib={
             'text:style-name': 'Table_20_Heading'})
         el4.text= 'Description'
         self.set_current_element(el)
@@ -1217,7 +1269,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             'table:style-name': 'Table%d.B2' % self.table_count,
             'office:value-type': 'string',
         })
-        el1 = etree.SubElement(el, 'text:p', attrib={
+        el1 = SubElement(el, 'text:p', attrib={
             'text:style-name': 'Table_20_Contents'})
         el1.text = node.astext()
         raise nodes.SkipChildren()
@@ -1273,7 +1325,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def visit_revision(self, node):
         el = self.append_child('text:p', attrib={
             'text:style-name': 'rststyle-textbody'})
-        el1 = etree.SubElement(el, 'text:span',
+        el1 = SubElement(el, 'text:span',
             attrib={'text:style-name': 'rststyle-strong'})
         el1.text = 'Revision: '
         el1.tail = node.astext()
@@ -1297,7 +1349,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_strong(self, node):
         #ipshell('At visit_strong')
-        el = etree.SubElement(self.current_element, 'text:span',
+        el = SubElement(self.current_element, 'text:span',
             attrib={'text:style-name': 'rststyle-strong'})
         self.set_current_element(el)
 
@@ -1315,29 +1367,29 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         #ipshell('At visit_table')
         self.table_count += 1
         table_name = '%s%d' % (TableStylePrefix, self.table_count, )
-        el1 = etree.SubElement(self.automatic_styles, 'style:style', attrib={
+        el1 = SubElement(self.automatic_styles, 'style:style', attrib={
             'style:name': '%s' % table_name,
             'style:family': 'table',
             })
-        el1_1 = etree.SubElement(el1, 'style:table-properties', attrib={
+        el1_1 = SubElement(el1, 'style:table-properties', attrib={
             #'style:width': '17.59cm',
             'table:align': 'margins',
             })
         # We use a single cell style for all cells in this table.
         # That's probably not correct, but seems to work.
-        el2 = etree.SubElement(self.automatic_styles, 'style:style', attrib={
+        el2 = SubElement(self.automatic_styles, 'style:style', attrib={
             'style:name': '%s.A1' % table_name,
             'style:family': 'table-cell',
             })
         line_style1 = '0.%03dcm solid #000000' % self.settings.table_border_thickness
-        el2_1 = etree.SubElement(el2, 'style:table-cell-properties', attrib={
+        el2_1 = SubElement(el2, 'style:table-cell-properties', attrib={
             'fo:padding': '0.049cm',
             'fo:border-left': line_style1,
             'fo:border-right': line_style1,
             'fo:border-top': line_style1,
             'fo:border-bottom': line_style1,
             })
-        el3 = etree.SubElement(self.current_element, 'table:table', attrib={
+        el3 = SubElement(self.current_element, 'table:table', attrib={
             'table:name': '%s' % table_name,
             'table:style-name': '%s' % table_name,
             })
@@ -1369,11 +1421,11 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         colspec_name = '%s%d.%s' % (
             TableStylePrefix, self.table_count, chr(self.column_count),)
         colwidth = node['colwidth']
-        el1 = etree.SubElement(self.automatic_styles, 'style:style', attrib={
+        el1 = SubElement(self.automatic_styles, 'style:style', attrib={
             'style:name': colspec_name,
             'style:family': 'table-column',
             })
-        el1_1 = etree.SubElement(el1, 'style:table-column-properties', attrib={
+        el1_1 = SubElement(el1, 'style:table-column-properties', attrib={
             'style:column-width': '%dcm' % colwidth })
         el2 = self.append_child('table:table-column', attrib={
             'table:style-name': colspec_name,
@@ -1463,7 +1515,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 print '    Reducing to heading level 3 for heading:'
                 print '    "%s"' % node.astext()
                 section_level = 3
-            el1 = etree.SubElement(self.current_element, 'text:h', attrib = {
+            el1 = SubElement(self.current_element, 'text:h', attrib = {
                 'text:outline-level': '%d' % section_level,
                 #'text:style-name': 'Heading_20_%d' % section_level,
                 'text:style-name': 'rststyle-heading%d' % section_level,
@@ -1472,7 +1524,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             #el1.text = text.decode('latin-1').encode('utf-8')
             el1.text = self.encode(text)
         elif isinstance(node.parent, docutils.nodes.document):
-            el1 = etree.SubElement(self.current_element, 'text:h', attrib = {
+            el1 = SubElement(self.current_element, 'text:h', attrib = {
                 'text:outline-level': '1',
                 'text:style-name': 'rststyle-heading1',
                 })
@@ -1502,7 +1554,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                     'text:style-name': 'rststyle-horizontalline'})
                 el = self.append_child('text:p', attrib={
                     'text:style-name': 'rststyle-centeredtextbody'})
-                el1 = etree.SubElement(el, 'text:span',
+                el1 = SubElement(el, 'text:span',
                     attrib={'text:style-name': 'rststyle-strong'})
                 el1.text = 'Contents'
             elif 'abstract' in node.attributes['classes']:
@@ -1510,7 +1562,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                     'text:style-name': 'rststyle-horizontalline'})
                 el = self.append_child('text:p', attrib={
                     'text:style-name': 'rststyle-centeredtextbody'})
-                el1 = etree.SubElement(el, 'text:span',
+                el1 = SubElement(el, 'text:span',
                     attrib={'text:style-name': 'rststyle-strong'})
                 el1.text = 'Abstract'
 
