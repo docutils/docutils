@@ -93,6 +93,29 @@ recognized:
 * Off: "false", "no", "off", "0", "" (no value)
 
 
+Example
+=======
+
+This is the contents of the ``tools/docutils.conf`` configuration file
+supplied with Docutils::
+
+    # These entries affect all processing:
+    [general]
+    source-link: yes
+    datestamp: %Y-%m-%d %H:%M UTC
+    generator: on
+
+    # These entries affect HTML output:
+    [html4css1 writer]
+    # Required for docutils-update, the website build system:
+    stylesheet-path: ../docutils/writers/html4css1/html4css1.css
+    embed-stylesheet: no
+    field-name-limit: 20
+
+Individual configuration sections and settings are described in the
+following section.
+
+
 -------------------------------------
 Configuration File Sections & Entries
 -------------------------------------
