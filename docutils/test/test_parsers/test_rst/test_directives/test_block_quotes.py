@@ -26,7 +26,8 @@ generic_tests = [
 
    This is another block quote.
 
-   -- Another Attribution
+   -- Another Attribution,
+      Second Line
 """,
 """\
 <document source="test data">
@@ -39,7 +40,8 @@ generic_tests = [
         <paragraph>
             This is another block quote.
         <attribution>
-            Another Attribution
+            Another Attribution,
+            Second Line
 """],
 # TODO: Add class option.
 ["""\

@@ -1145,7 +1145,9 @@ class Body(RSTState):
             return (indented, None, None, None, None)
 
     def check_attribution(self, indented, attribution_start):
-        """Check attribution shape
+        """
+        Check attribution shape.
+        Return the index past the end of the attribution, and the indent.
         """
         indent = None
         i = attribution_start + 1
@@ -1157,6 +1159,9 @@ class Body(RSTState):
                 indent = len(line) - len(line.lstrip())
             elif len(line) - len(line.lstrip()) != indent:
                 return None, None       # bad shape; not an attribution
+        else:
+            # return index of line after last attribution line:
+            i += 1
         return i, (indent or 0)
 
     def parse_attribution(self, indented, line_offset):
