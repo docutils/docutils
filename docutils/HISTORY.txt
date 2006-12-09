@@ -17,6 +17,12 @@
 Changes Since 0.4
 =================
 
+* docutils/languages/he.py: Added to project: Hebrew mappings by
+  Meir Kriheli.
+
+* docutils/parsers/rst/languages/he.py: Added to project: Hebrew 
+  mappings by Meir Kriheli.
+
 * docutils/frontend.py:
 
   - Configuration files are now assumed and required to be

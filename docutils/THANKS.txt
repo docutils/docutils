@@ -80,6 +80,7 @@ donations, tasty treats, and related projects:
 * Axel Kollmorgen
 * Jeff Kowalczyk
 * Martin F. Krafft
+* Meir Kriheli
 * Dave Kuhlman
 * Lloyd Kvam
 * Kirill Lapshin
