@@ -240,6 +240,9 @@ class Babel:
             #self.quotes = ("\"`", "\"'")
             self.quotes = ('{\\glqq}', '{\\grqq}')
             self.double_quote_replacment = "{\\dq}"
+        elif re.search('^it',self.language):
+            self.quotes = ("``", "''")
+            self.double_quote_replacment = r'{\char`\"}'
         else:
             self.quotes = ("``", "''")
         self.quote_index = 0
