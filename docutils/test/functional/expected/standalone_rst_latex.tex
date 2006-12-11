@@ -217,16 +217,20 @@ reStructuredText construct.
 \end{list}
 
 \item {} \href{\#tests-for-the-latex-writer}{3~~~Tests for the LaTeX writer}
+
+\item {} \href{\#some-tests-for-the-latex2e-writer}{4~~~Some Tests for the LaTeX2e Writer}
+
+\item {} \href{\#id23}{5~~~Option lists}
 \begin{list}{}{}
-\item {} \href{\#monospaced-non-alphanumeric-characters}{3.1~~~Monospaced non-alphanumeric characters}
+\item {} \href{\#monospaced-non-alphanumeric-characters}{5.1~~~Monospaced non-alphanumeric characters}
 
-\item {} \href{\#various-non-ascii-characters}{3.2~~~Various non-ASCII characters}
+\item {} \href{\#various-non-ascii-characters}{5.2~~~Various non-ASCII characters}
 
-\item {} \href{\#custom-roles}{3.3~~~Custom Roles}
+\item {} \href{\#custom-roles}{5.3~~~Custom Roles}
 
 \end{list}
 
-\item {} \href{\#error-handling}{4~~~Error Handling}
+\item {} \href{\#error-handling}{6~~~Error Handling}
 
 \end{list}
 
@@ -302,10 +306,10 @@ A paragraph.
 
 Paragraphs contain text and may contain inline markup: \emph{emphasis},
 \textbf{strong emphasis}, \texttt{inline literals}, standalone hyperlinks
-(\href{http://www.python.org}{http://www.python.org}), external hyperlinks (\href{http://www.python.org/}{Python}\raisebox{.5em}[0em]{\scriptsize\hyperlink{id25}{5}}), internal
+(\href{http://www.python.org}{http://www.python.org}), external hyperlinks (\href{http://www.python.org/}{Python}\raisebox{.5em}[0em]{\scriptsize\hyperlink{id26}{5}}), internal
 cross-references (\href{\#example}{example}), external hyperlinks with embedded URIs
 (\href{http://www.python.org}{Python web site}), \href{http://www.python.org/}{anonymous hyperlink
-references}\raisebox{.5em}[0em]{\scriptsize\hyperlink{id25}{5}} (\href{http://docutils.sourceforge.net/}{a second reference}\raisebox{.5em}[0em]{\scriptsize\hyperlink{id30}{6}}), footnote references (manually
+references}\raisebox{.5em}[0em]{\scriptsize\hyperlink{id26}{5}} (\href{http://docutils.sourceforge.net/}{a second reference}\raisebox{.5em}[0em]{\scriptsize\hyperlink{id31}{6}}), footnote references (manually
 numbered\raisebox{.5em}[0em]{\scriptsize\hyperlink{id8}{1}}, anonymous auto-numbered\raisebox{.5em}[0em]{\scriptsize\hyperlink{id11}{3}}, labeled auto-numbered\raisebox{.5em}[0em]{\scriptsize\hyperlink{label}{2}}, or symbolic\raisebox{.5em}[0em]{\scriptsize\hyperlink{id12}{*}}), citation references ([\hyperlink{cit2002}{CIT2002}]),
 substitution references (\includegraphics{../../../docs/user/rst/images/biohazard.png}), and \hypertarget{inline-hyperlink-targets}{inline hyperlink targets}
 (see \href{\#id22}{Targets} below for a reference back to here).  Character-level
@@ -783,7 +787,7 @@ Section headers are implicit targets, referred to by name. See
 \href{\#id22}{Targets}, which is a subsection of \href{\#body-elements}{Body Elements}.
 
 Explicit external targets are interpolated into references such as
-``\href{http://www.python.org/}{Python}\raisebox{.5em}[0em]{\scriptsize\hyperlink{id25}{5}}''.
+``\href{http://www.python.org/}{Python}\raisebox{.5em}[0em]{\scriptsize\hyperlink{id26}{5}}''.
 
 Targets may be indirect and anonymous.  Thus \href{\#id22}{this phrase} may also
 refer to the \href{\#id22}{Targets} section.
@@ -1110,10 +1114,10 @@ This is a topic.
 \hypertarget{target-footnotes}{}
 \pdfbookmark[2]{2.14.5~~~Target Footnotes}{target-footnotes}
 \subsubsection*{2.14.5~~~Target Footnotes}
-\begin{figure}[b]\hypertarget{id25}$^{5}$
+\begin{figure}[b]\hypertarget{id26}$^{5}$
 \href{http://www.python.org/}{http://www.python.org/}
 \end{figure}
-\begin{figure}[b]\hypertarget{id30}$^{6}$
+\begin{figure}[b]\hypertarget{id31}$^{6}$
 \href{http://docutils.sourceforge.net/}{http://docutils.sourceforge.net/}
 \end{figure}
 
@@ -1124,7 +1128,7 @@ This is a topic.
 \pdfbookmark[2]{2.14.6~~~Replacement Text}{replacement-text}
 \subsubsection*{2.14.6~~~Replacement Text}
 
-I recommend you try \href{http://www.python.org/}{Python, \emph{the} best language around}\raisebox{.5em}[0em]{\scriptsize\hyperlink{id25}{5}}.
+I recommend you try \href{http://www.python.org/}{Python, \emph{the} best language around}\raisebox{.5em}[0em]{\scriptsize\hyperlink{id26}{5}}.
 
 
 %___________________________________________________________________________
@@ -1383,9 +1387,56 @@ body row 3
 
 %___________________________________________________________________________
 
+\hypertarget{some-tests-for-the-latex2e-writer}{}
+\pdfbookmark[0]{4~~~Some Tests for the LaTeX2e Writer}{some-tests-for-the-latex2e-writer}
+\section*{4~~~Some Tests for the LaTeX2e Writer}
+
+These tests have been written to exercise some unusual combinations of
+syntax elements which may cause trouble for the LaTeX writer but do
+not need to be tested with other writers (e.g. the HTML writer).
+
+This file is user by the standalone{\_}rst{\_}latex test.
+
+
+%___________________________________________________________________________
+
+\hypertarget{id23}{}
+\pdfbookmark[0]{5~~~Option lists}{id23}
+\section*{5~~~Option lists}
+
+The LaTeX-2e description environment is used for definition lists.
+The definition is continued on the same line as the term, this should
+not happen if a option-list is at the top of the definition.
+
+If the option list is not at the first element in the definition, it
+is contained in a quote
+\begin{quote}
+\begin{optionlist}{3cm}
+\item [-{}-help]  
+show help
+\item [-v]  
+verbose
+\end{optionlist}
+\end{quote}
+\begin{description}
+%[visit_definition_list_item]
+\item[{In a definition list:}] ~
+\begin{optionlist}{3cm}
+\item [-{}-help]  
+show help
+\item [-v]  
+verbose
+\end{optionlist}
+
+%[depart_definition_list_item]
+\end{description}
+
+
+%___________________________________________________________________________
+
 \hypertarget{monospaced-non-alphanumeric-characters}{}
-\pdfbookmark[1]{3.1~~~Monospaced non-alphanumeric characters}{monospaced-non-alphanumeric-characters}
-\subsection*{3.1~~~Monospaced non-alphanumeric characters}
+\pdfbookmark[1]{5.1~~~Monospaced non-alphanumeric characters}{monospaced-non-alphanumeric-characters}
+\subsection*{5.1~~~Monospaced non-alphanumeric characters}
 
 These are all ASCII characters except a-zA-Z0-9 and space:
 
@@ -1402,8 +1453,8 @@ width as the third line.
 %___________________________________________________________________________
 
 \hypertarget{various-non-ascii-characters}{}
-\pdfbookmark[1]{3.2~~~Various non-ASCII characters}{various-non-ascii-characters}
-\subsection*{3.2~~~Various non-ASCII characters}
+\pdfbookmark[1]{5.2~~~Various non-ASCII characters}{various-non-ascii-characters}
+\subsection*{5.2~~~Various non-ASCII characters}
 
 \begin{longtable}[c]{|p{0.03\locallinewidth}|p{0.42\locallinewidth}|}
 \hline
@@ -1520,8 +1571,8 @@ X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~
 %___________________________________________________________________________
 
 \hypertarget{custom-roles}{}
-\pdfbookmark[1]{3.3~~~Custom Roles}{custom-roles}
-\subsection*{3.3~~~Custom Roles}
+\pdfbookmark[1]{5.3~~~Custom Roles}{custom-roles}
+\subsection*{5.3~~~Custom Roles}
 \begin{itemize}
 \item {} 
 A role based on an existing role.
@@ -1549,8 +1600,8 @@ A role with class attribute.
 %___________________________________________________________________________
 
 \hypertarget{error-handling}{}
-\pdfbookmark[0]{4~~~Error Handling}{error-handling}
-\section*{4~~~Error Handling}
+\pdfbookmark[0]{6~~~Error Handling}{error-handling}
+\section*{6~~~Error Handling}
 
 Any errors caught during processing will generate system messages.
 
