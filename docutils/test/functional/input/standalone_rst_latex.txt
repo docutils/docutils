@@ -6,8 +6,11 @@
 Tests for the LaTeX writer
 ==========================
 
+.. include:: data/latex2e.txt
+
 .. include:: data/nonalphanumeric.txt
 .. include:: data/unicode.txt
 .. include:: data/custom_roles.txt
 
 .. include:: data/errors.txt
+
