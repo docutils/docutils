@@ -138,6 +138,7 @@ class Translator(nodes.NodeVisitor):
                 'definition_list' : ('', ''),
                 'definition_list_item' : ('\n.TP', ''),
                 'description' : ('\n', ''),
+                'field_name' : ('\n.TP\n.B ', '\n'),
                 'literal_block' : ('\n.nf\n', '\n.fi\n'),
                 'option_list' : ('', ''),
                 'option_list_item' : ('\n.TP', ''),
@@ -505,16 +506,10 @@ class Translator(nodes.NodeVisitor):
             self._field_name = node.astext()
             raise nodes.SkipNode
         else:
-            atts['class'] = 'field-name'
-        if len(node.astext()) > 14:
-            atts['colspan'] = 2
-            self.context.append('</tr>\n<tr><td>&nbsp;</td>')
-        else:
-            self.context.append('')
-        self.body.append(self.comment('atts'))
+            self.body.append(self.defs['field_name'][0])
 
     def depart_field_name(self, node):
-        self.body.append(self.comment('depart_field_name'))
+        self.body.append(self.defs['field_name'][1])
 
     def visit_figure(self, node):
         raise NotImplementedError, node.astext()
@@ -775,6 +770,7 @@ class Translator(nodes.NodeVisitor):
         self.depart_docinfo_item()
 
     def visit_paragraph(self, node):
+        # BUG every but the first paragraph in a list must be intended
         # TODO .PP or new line
         return
 

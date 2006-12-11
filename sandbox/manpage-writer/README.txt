@@ -112,6 +112,7 @@ Change log
 
 * writers/manpage.py:
 
+  - 2006-12-11: Add field name.
   - 2006-11-24: Add transition.
   - 2006-10-31: Add raw.
   - 2006-10-31: Distinguish section_level 0 (TH), 1 (SH) other (SS).

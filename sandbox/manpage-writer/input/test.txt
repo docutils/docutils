@@ -68,6 +68,18 @@ Lists
 9. dont increment by 1
 13. bad at all.
 
+Field lists
+-----------
+
+:first: a short label and a short text
+:secondly a longer label: and some more text and some more text
+  and some more text   and some more text
+
+definition lists
+  are also a valuable option and simple nonintrusive formatting
+definition too :
+  with the colon.
+
 Tables
 ------
 
