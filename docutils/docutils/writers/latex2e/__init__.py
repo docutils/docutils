@@ -544,8 +544,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
     use_latex_toc = 0
 
     # TODO: use mixins for different implementations.
-    # list environment for option-list. else tabularx
-    use_optionlist_for_option_list = 1
     # list environment for docinfo. else tabularx
     use_optionlist_for_docinfo = 0 # NOT YET IN USE
 
@@ -1114,11 +1112,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_definition(self, node):
-        self.body.append('%[visit_definition]\n')
+        pass
 
     def depart_definition(self, node):
         self.body.append('\n')
-        self.body.append('%[depart_definition]\n')
 
     def visit_definition_list(self, node):
         self.body.append( '\\begin{description}\n' )
@@ -1133,10 +1130,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('%[depart_definition_list_item]\n')
 
     def visit_description(self, node):
-        if self.use_optionlist_for_option_list:
-            self.body.append( ' ' )
-        else:
-            self.body.append( ' & ' )
+        self.body.append( ' ' )
 
     def depart_description(self, node):
         pass
@@ -1723,48 +1717,25 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_option_group(self, node):
-        if self.use_optionlist_for_option_list:
-            self.body.append('\\item [')
-        else:
-            if len(node.astext()) > 14:
-                self.body.append('\\multicolumn{2}{l}{')
-                self.context.append('} \\\\\n  ')
-            else:
-                self.context.append('')
-            self.body.append('\\texttt{')
+        self.body.append('\\item [')
         # flag for first option
         self.context.append(0)
 
     def depart_option_group(self, node):
         self.context.pop() # the flag
-        if self.use_optionlist_for_option_list:
-            self.body.append('] ')
-        else:
-            self.body.append('}')
-            self.body.append(self.context.pop())
+        self.body.append('] ')
 
     def visit_option_list(self, node):
-        self.body.append('% [option list]\n')
-        if self.use_optionlist_for_option_list:
-            self.body.append('\\begin{optionlist}{3cm}\n')
-        else:
-            self.body.append('\\begin{center}\n')
-            # BUG: use admwidth or make it relative to textwidth ?
-            self.body.append('\\begin{tabularx}{.9\\linewidth}{lX}\n')
+        self.body.append('\\begin{optionlist}{3cm}\n')
 
     def depart_option_list(self, node):
-        if self.use_optionlist_for_option_list:
-            self.body.append('\\end{optionlist}\n')
-        else:
-            self.body.append('\\end{tabularx}\n')
-            self.body.append('\\end{center}\n')
+        self.body.append('\\end{optionlist}\n')
 
     def visit_option_list_item(self, node):
         pass
 
     def depart_option_list_item(self, node):
-        if not self.use_optionlist_for_option_list:
-            self.body.append('\\\\\n')
+        pass
 
     def visit_option_string(self, node):
         ##self.body.append(self.starttag(node, 'span', '', CLASS='option'))

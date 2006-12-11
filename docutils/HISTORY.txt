@@ -93,6 +93,8 @@ Changes Since 0.4
 
 * docutils/writers/latex2e/__init__.py:
 
+  - Remove inactive code for use_optionlist_for_option_list.
+  - Remove latex comments from option_list output.
   - Fix: bug# 1612270 double qoutes in italian literal.
   - Fix: output ``hypertarget{ node.get(refid) }{}`` from visit_target. 
   - Add option --use-latex-abstract.
