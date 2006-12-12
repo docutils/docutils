@@ -13,7 +13,6 @@ except:
 from docutils.parsers.rst.roles import register_canonical_role
 from docutils import nodes
 from docutils.writers.html4css1 import HTMLTranslator
-from docutils.parsers.rst.directives import _directives
 from docutils.core import publish_cmdline, default_description
 
 
@@ -41,22 +40,43 @@ register_canonical_role('latex-math', latex_math_role)
 
 
 # Register directive:
-def latex_math_directive(name, arguments, options, content, lineno,
-                         content_offset, block_text, state, state_machine):
-    latex = ''.join(content)
-    try:
-        mathml_tree = parse_latex_math(latex, inline=False)
-    except SyntaxError, msg:
-        error = state_machine.reporter.error(
-            msg, nodes.literal_block(block_text, block_text), line=lineno)
-        return [error]
-    node = latex_math(block_text, mathml_tree)
-    return [node]
-latex_math_directive.arguments = None
-latex_math_directive.options = {}
-latex_math_directive.content = 1
-_directives['latex-math'] = latex_math_directive
-
+try:
+    from docutils.parsers.rst import Directive
+except ImportError:
+    # Register directive the old way:
+    from docutils.parsers.rst.directives import _directives
+    def latex_math_directive(name, arguments, options, content, lineno,
+                             content_offset, block_text, state, state_machine):
+        latex = ''.join(content)
+        try:
+            mathml_tree = parse_latex_math(latex, inline=False)
+        except SyntaxError, msg:
+            error = state_machine.reporter.error(
+                msg, nodes.literal_block(block_text, block_text), line=lineno)
+            return [error]
+        node = latex_math(block_text, mathml_tree)
+        return [node]
+    latex_math_directive.arguments = None
+    latex_math_directive.options = {}
+    latex_math_directive.content = 1
+    _directives['latex-math'] = latex_math_directive
+else:
+    # Register directive the new way:
+    from docutils.parsers.rst import directives
+    class latex_math_directive(Directive):
+        has_content = True
+        def run(self): 
+            latex = ''.join(self.content)
+            try:
+                mathml_tree = parse_latex_math(latex, inline=False)
+            except SyntaxError, msg:
+                error = self.state_machine.reporter.error(
+                    msg, nodes.literal_block(self.block_text, self.block_text),
+                    line=self.lineno)
+                return [error]
+            node = latex_math(self.block_text, mathml_tree)
+            return [node]
+    directives.register_directive('latex-math', latex_math_directive)
 
 # Add visit/depart methods to HTML-Translator:
 def visit_latex_math(self, node):
