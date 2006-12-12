@@ -43,7 +43,7 @@ def latex_math_directive(name, arguments, options, content, lineno,
 latex_math_directive.arguments = None
 latex_math_directive.options = {}
 latex_math_directive.content = 1
-_directives['latex-math'] = latex_math_directive
+_directives['latex-math'] = latex_math_directive  # XXX
 
 
 # Add visit/depart methods to HTML-Translator:
