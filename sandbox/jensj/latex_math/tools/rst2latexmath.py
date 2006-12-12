@@ -13,7 +13,6 @@ except:
 from docutils.parsers.rst.roles import register_canonical_role
 from docutils import nodes
 from docutils.writers.latex2e import LaTeXTranslator
-from docutils.parsers.rst.directives import _directives
 from docutils.core import publish_cmdline, default_description
 
 
@@ -35,16 +34,28 @@ register_canonical_role('latex-math', latex_math_role)
 
 
 # Register directive:
-def latex_math_directive(name, arguments, options, content, lineno,
-                         content_offset, block_text, state, state_machine):
-    latex = ''.join(content)
-    node = latex_math(block_text, latex)
-    return [node]
-latex_math_directive.arguments = None
-latex_math_directive.options = {}
-latex_math_directive.content = 1
-_directives['latex-math'] = latex_math_directive  # XXX
-
+try:
+    from docutils.parsers.rst import Directive
+except ImportError:
+    from docutils.parsers.rst.directives import _directives
+    def latex_math_directive(name, arguments, options, content, lineno,
+                             content_offset, block_text, state, state_machine):
+        latex = ''.join(content)
+        node = latex_math(block_text, latex)
+        return [node]
+    latex_math_directive.arguments = None
+    latex_math_directive.options = {}
+    latex_math_directive.content = 1
+    _directives['latex-math'] = latex_math_directive
+else:
+    from docutils.parsers.rst import directives
+    class latex_math_directive(Directive):
+        has_content = True
+        def run(self): 
+            latex = ''.join(self.content)
+            node = latex_math(self.block_text, latex)
+            return [node]
+    directives.register_directive('latex-math', latex_math_directive)
 
 # Add visit/depart methods to HTML-Translator:
 def visit_latex_math(self, node):
