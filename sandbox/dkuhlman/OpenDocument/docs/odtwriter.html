@@ -6,7 +6,7 @@
 <meta name="generator" content="Docutils 0.5: http://docutils.sourceforge.net/" />
 <title>Odtwriter for Docutils</title>
 <meta name="author" content="Dave Kuhlman" />
-<meta name="date" content="Sept. 1, 2006" />
+<meta name="date" content="Dec. 19, 2006" />
 <meta name="copyright" content="Copyright (c) 2006 Dave Kuhlman.  All Rights Reserved. This software is subject to the provisions of the MIT License http://www.opensource.org/licenses/mit-license.php." />
 <style type="text/css">
 
@@ -191,9 +191,9 @@ tt.docutils {
 </pre>
 </td></tr>
 <tr><th class="docinfo-name">Revision:</th>
-<td>1.0a</td></tr>
+<td>1.0b</td></tr>
 <tr><th class="docinfo-name">Date:</th>
-<td>Sept. 1, 2006</td></tr>
+<td>Dec. 19, 2006</td></tr>
 <tr><th class="docinfo-name">Copyright:</th>
 <td>Copyright (c) 2006 Dave Kuhlman.  All Rights Reserved.
 This software is subject to the provisions of the MIT License
@@ -209,18 +209,22 @@ This software is subject to the provisions of the MIT License
 <ul class="auto-toc simple">
 <li><a class="reference" href="#introduction" id="id1" name="id1">1&nbsp;&nbsp;&nbsp;Introduction</a></li>
 <li><a class="reference" href="#how-to-install-it" id="id2" name="id2">2&nbsp;&nbsp;&nbsp;How to Install It</a></li>
-<li><a class="reference" href="#how-to-use-it" id="id3" name="id3">3&nbsp;&nbsp;&nbsp;How to Use It</a></li>
-<li><a class="reference" href="#styles" id="id4" name="id4">4&nbsp;&nbsp;&nbsp;Styles</a><ul class="auto-toc">
-<li><a class="reference" href="#styles-used-by-odtwriter" id="id5" name="id5">4.1&nbsp;&nbsp;&nbsp;Styles used by odtwriter</a><ul class="auto-toc">
-<li><a class="reference" href="#paragraph-styles" id="id6" name="id6">4.1.1&nbsp;&nbsp;&nbsp;Paragraph styles</a></li>
-<li><a class="reference" href="#character-styles" id="id7" name="id7">4.1.2&nbsp;&nbsp;&nbsp;Character styles</a></li>
+<li><a class="reference" href="#how-to-use-it" id="id3" name="id3">3&nbsp;&nbsp;&nbsp;How to Use It</a><ul class="auto-toc">
+<li><a class="reference" href="#command-line-flags" id="id4" name="id4">3.1&nbsp;&nbsp;&nbsp;Command line flags</a></li>
 </ul>
 </li>
-<li><a class="reference" href="#table-styles" id="id8" name="id8">4.2&nbsp;&nbsp;&nbsp;Table styles</a></li>
+<li><a class="reference" href="#styles" id="id5" name="id5">4&nbsp;&nbsp;&nbsp;Styles</a><ul class="auto-toc">
+<li><a class="reference" href="#styles-used-by-odtwriter" id="id6" name="id6">4.1&nbsp;&nbsp;&nbsp;Styles used by odtwriter</a><ul class="auto-toc">
+<li><a class="reference" href="#paragraph-styles" id="id7" name="id7">4.1.1&nbsp;&nbsp;&nbsp;Paragraph styles</a></li>
+<li><a class="reference" href="#character-styles" id="id8" name="id8">4.1.2&nbsp;&nbsp;&nbsp;Character styles</a></li>
 </ul>
 </li>
-<li><a class="reference" href="#hints-and-suggestions" id="id9" name="id9">5&nbsp;&nbsp;&nbsp;Hints and Suggestions</a><ul class="auto-toc">
-<li><a class="reference" href="#table-of-contents" id="id10" name="id10">5.1&nbsp;&nbsp;&nbsp;Table of contents</a></li>
+<li><a class="reference" href="#table-styles" id="id9" name="id9">4.2&nbsp;&nbsp;&nbsp;Table styles</a></li>
+</ul>
+</li>
+<li><a class="reference" href="#hints-and-suggestions" id="id10" name="id10">5&nbsp;&nbsp;&nbsp;Hints and Suggestions</a><ul class="auto-toc">
+<li><a class="reference" href="#table-of-contents" id="id11" name="id11">5.1&nbsp;&nbsp;&nbsp;Table of contents</a></li>
+<li><a class="reference" href="#syntax-highlighting" id="id12" name="id12">5.2&nbsp;&nbsp;&nbsp;Syntax highlighting</a></li>
 </ul>
 </li>
 </ul>
@@ -280,9 +284,49 @@ $ rst2odt.py -s -g python_comments.txt python_comments.odt
 
 $ rst2odt.py --source-url=odtwriter.txt --generator --stylesheet-path=/myconfigs/styles.odt odtwriter.txt odtwriter.odt
 </pre>
+<div class="section">
+<h2><a class="toc-backref" href="#id4" id="command-line-flags" name="command-line-flags">3.1&nbsp;&nbsp;&nbsp;Command line flags</a></h2>
+<p>The following command line flags are specific to <tt class="docutils literal"><span class="pre">odtwriter</span></tt>:</p>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">--stylesheet=<var>&lt;URL&gt;</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>Specify a stylesheet URL, used verbatim.  Overrides
+--stylesheet-path.</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">--stylesheet-path=<var>&lt;file&gt;</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>Specify a stylesheet file, relative to the current
+working directory.  The path is adjusted relative to
+the output ODF file.  Overrides --stylesheet.
+Default: &quot;/usr/local/lib/python2.5/site-
+packages/docutils/writers/odtwriter/styles.odt&quot;</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">--cloak-email-addresses</span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>Obfuscate email addresses to confuse harvesters while
+still keeping email links usable with standards-
+compliant browsers.</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">--table-border-thickness=<var>TABLE_BORDER_THICKNESS</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>Specify the thickness of table borders in thousands of
+a cm.  Default is 35.</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">--add-syntax-highlighting</span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>Add syntax highlighting in literal code
+blocks. Default is no. Requires installation of
+Pygments.</td></tr>
+</tbody>
+</table>
+</div>
 </div>
 <div class="section">
-<h1><a class="toc-backref" href="#id4" id="styles" name="styles">4&nbsp;&nbsp;&nbsp;Styles</a></h1>
+<h1><a class="toc-backref" href="#id5" id="styles" name="styles">4&nbsp;&nbsp;&nbsp;Styles</a></h1>
 <p><tt class="docutils literal"><span class="pre">odtwriter</span></tt> uses a number of styles that are defined in the
 default <tt class="docutils literal"><span class="pre">styles.xml</span></tt>.  This section describes those styles.</p>
 <p>You can modify the look of documents generated by <tt class="docutils literal"><span class="pre">odtwriter</span></tt> in
@@ -323,22 +367,38 @@ output document.</p>
 </li>
 </ul>
 <div class="section">
-<h2><a class="toc-backref" href="#id5" id="styles-used-by-odtwriter" name="styles-used-by-odtwriter">4.1&nbsp;&nbsp;&nbsp;Styles used by odtwriter</a></h2>
+<h2><a class="toc-backref" href="#id6" id="styles-used-by-odtwriter" name="styles-used-by-odtwriter">4.1&nbsp;&nbsp;&nbsp;Styles used by odtwriter</a></h2>
 <p>This section describes the styles used by <tt class="docutils literal"><span class="pre">odtwriter</span></tt>.</p>
 <p>Note that we do not describe the &quot;look&quot; of these styles.  That can
 be easily changed by using <tt class="docutils literal"><span class="pre">oowriter</span></tt> to edit the document
 <tt class="docutils literal"><span class="pre">styles.odt</span></tt> (or a copy of it), and modifying any of the styles
 described here.</p>
+<p>To change the definition and appearance of these styles, open
+<tt class="docutils literal"><span class="pre">styles.odt</span></tt> in <tt class="docutils literal"><span class="pre">oowriter</span></tt> and open the Styles and Formatting
+window by using the following menu item:</p>
+<blockquote>
+Format --&gt; Styles and Formatting</blockquote>
+<p>Then, click on the Paragraph Styles button or the Character Styles
+button at the top of the Styles and Formatting window.  You may
+also need to select &quot;All Styles&quot; from the drop-down selection list
+at the bottom of the Styles and Formatting window in order to see
+the styles used by <tt class="docutils literal"><span class="pre">odtwriter</span></tt>.</p>
+<p>Notice that you can make a copy of file <tt class="docutils literal"><span class="pre">styles.odt</span></tt>, modify it
+using <tt class="docutils literal"><span class="pre">oowriter</span></tt>, and then use your copy with the
+<tt class="docutils literal"><span class="pre">--stylesheet-path=&lt;file&gt;</span></tt> command line option.  Example:</p>
+<pre class="literal-block">
+$ rst2odt.py --stylesheet-path=mystyles.odt test2.txt test2.odt
+</pre>
 <div class="section">
-<h3><a class="toc-backref" href="#id6" id="paragraph-styles" name="paragraph-styles">4.1.1&nbsp;&nbsp;&nbsp;Paragraph styles</a></h3>
+<h3><a class="toc-backref" href="#id7" id="paragraph-styles" name="paragraph-styles">4.1.1&nbsp;&nbsp;&nbsp;Paragraph styles</a></h3>
 <dl class="docutils">
 <dt>rststyle-blockindent</dt>
 <dd>An indented block.</dd>
 <dt>rststyle-blockquote</dt>
 <dd>A block quote.</dd>
 <dt>rststyle-codeblock</dt>
-<dd>A block of example code.  Derived from the <tt class="docutils literal"><span class="pre">Preformatted</span> <span class="pre">Text</span></tt>
-style in <tt class="docutils literal"><span class="pre">oowriter</span></tt>.</dd>
+<dd>Literal code blocks -- A block of example code.  Derived from
+the <tt class="docutils literal"><span class="pre">Preformatted</span> <span class="pre">Text</span></tt> style in <tt class="docutils literal"><span class="pre">oowriter</span></tt>.</dd>
 <dt>rststyle-heading{1|2|3|4|5}</dt>
 <dd>Headings (sub-titles).  Five levels of sub-headings are
 provided: rststyle-heading1 through rststyle-heading5.</dd>
@@ -355,7 +415,7 @@ provided: rststyle-heading1 through rststyle-heading5.</dd>
 </dl>
 </div>
 <div class="section">
-<h3><a class="toc-backref" href="#id7" id="character-styles" name="character-styles">4.1.2&nbsp;&nbsp;&nbsp;Character styles</a></h3>
+<h3><a class="toc-backref" href="#id8" id="character-styles" name="character-styles">4.1.2&nbsp;&nbsp;&nbsp;Character styles</a></h3>
 <dl class="docutils">
 <dt>rststyle-emphasis</dt>
 <dd>Emphasis.  Normally rendered as italics.</dd>
@@ -365,11 +425,30 @@ provided: rststyle-heading1 through rststyle-heading5.</dd>
 <dd>Strong emphasis.  Normally rendered as boldface.</dd>
 <dt>rststyle-quotation</dt>
 <dd>In-line quoted material.</dd>
+<dt>rststyle-codeblock-classname</dt>
+<dd>Syntax highlighting in literal code blocks -- class names.</dd>
+<dt>rststyle-codeblock-comment</dt>
+<dd>Syntax highlighting in literal code blocks -- comments.</dd>
+<dt>rststyle-codeblock-functionname</dt>
+<dd>Syntax highlighting in literal code blocks -- function names.</dd>
+<dt>rststyle-codeblock-keyword</dt>
+<dd>Syntax highlighting in literal code blocks -- Python language
+keywords.</dd>
+<dt>rststyle-codeblock-name</dt>
+<dd>Syntax highlighting in literal code blocks -- other names, for
+example, variables.</dd>
+<dt>rststyle-codeblock-number</dt>
+<dd>Syntax highlighting in literal code blocks -- literal numbers,
+including integers, floats, hex numbers, and octal numbers.</dd>
+<dt>rststyle-codeblock-operator</dt>
+<dd>Syntax highlighting in literal code blocks -- Python operators.</dd>
+<dt>rststyle-codeblock-string</dt>
+<dd>Syntax highlighting in literal code blocks -- literal strings.</dd>
 </dl>
 </div>
 </div>
 <div class="section">
-<h2><a class="toc-backref" href="#id8" id="table-styles" name="table-styles">4.2&nbsp;&nbsp;&nbsp;Table styles</a></h2>
+<h2><a class="toc-backref" href="#id9" id="table-styles" name="table-styles">4.2&nbsp;&nbsp;&nbsp;Table styles</a></h2>
 <p>Table styles are generated by <tt class="docutils literal"><span class="pre">oowriter</span></tt> for each table that you
 create.  Therefore, <tt class="docutils literal"><span class="pre">odtwriter</span></tt> attempts to do something
 similar.  These styles are created in the <tt class="docutils literal"><span class="pre">content.xml</span></tt> document
@@ -378,9 +457,9 @@ in the generated <tt class="docutils literal"><span class="pre">.odt</span></tt>
 </div>
 </div>
 <div class="section">
-<h1><a class="toc-backref" href="#id9" id="hints-and-suggestions" name="hints-and-suggestions">5&nbsp;&nbsp;&nbsp;Hints and Suggestions</a></h1>
+<h1><a class="toc-backref" href="#id10" id="hints-and-suggestions" name="hints-and-suggestions">5&nbsp;&nbsp;&nbsp;Hints and Suggestions</a></h1>
 <div class="section">
-<h2><a class="toc-backref" href="#id10" id="table-of-contents" name="table-of-contents">5.1&nbsp;&nbsp;&nbsp;Table of contents</a></h2>
+<h2><a class="toc-backref" href="#id11" id="table-of-contents" name="table-of-contents">5.1&nbsp;&nbsp;&nbsp;Table of contents</a></h2>
 <p><tt class="docutils literal"><span class="pre">odtwriter</span></tt> can generate an outline style table of contents.
 However, if you want an <tt class="docutils literal"><span class="pre">oowriter</span></tt> style table of contents along
 with the formatting control that <tt class="docutils literal"><span class="pre">oowriter</span></tt> gives you, then you
@@ -390,6 +469,44 @@ table of contents.   That feature is under menu item:</p>
 <pre class="literal-block">
 Insert --&gt; Indexes and Tables --&gt; Indexes and Tables
 </pre>
+</div>
+<div class="section">
+<h2><a class="toc-backref" href="#id12" id="syntax-highlighting" name="syntax-highlighting">5.2&nbsp;&nbsp;&nbsp;Syntax highlighting</a></h2>
+<p><tt class="docutils literal"><span class="pre">odtwriter</span></tt> can add syntax highlighting to code in literal code
+blocks.  In order to activate this, do both of the following: (1)
+install Pygments and (2) use the command line flag
+<tt class="docutils literal"><span class="pre">--add-syntax-highlighting</span></tt>.  You can find Pygments here:
+<a class="reference" href="http://pygments.pocoo.org/">Pygments</a>.</p>
+<p>The following styles are defined in styles.odt and are used for
+literal code blocks and syntax highlighting:</p>
+<ul class="simple">
+<li>Paragraph styles:<ul>
+<li>rststyle-codeblock -- The style for the code block as a whole.</li>
+</ul>
+</li>
+<li>Character styles:<ul>
+<li>rststyle-codeblock-classname -- class names.</li>
+<li>rststyle-codeblock-comment -- comments.</li>
+<li>rststyle-codeblock-functionname -- function names.</li>
+<li>rststyle-codeblock-keyword -- Python language keywords.</li>
+<li>rststyle-codeblock-name -- other names, for example,
+variables.</li>
+<li>rststyle-codeblock-number -- literal numbers, including
+integers, floats, hex numbers, and octal numbers.</li>
+<li>rststyle-codeblock-operator -- Python operators.</li>
+<li>rststyle-codeblock-string -- literal strings.</li>
+</ul>
+</li>
+</ul>
+<p>Each of the above styles has a default appearance that is defined
+in <tt class="docutils literal"><span class="pre">styles.odt</span></tt>.  To change that definition and appearance, open
+<tt class="docutils literal"><span class="pre">styles.odt</span></tt> in <tt class="docutils literal"><span class="pre">oowriter</span></tt> and use menu item:</p>
+<blockquote>
+Format --&gt; Styles and Formatting</blockquote>
+<p>Then, click on the Paragraph Styles button or the Character Styles
+button at the top of the Styles and Formatting window.  You may
+also need to select &quot;All Styles&quot; from the drop-down selection list
+at the bottom of the Styles and Formatting window.</p>
 <!-- Configuration for Emacs -->
 <!-- Local Variables:
 mode: indented-text

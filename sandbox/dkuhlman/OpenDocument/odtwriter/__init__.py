@@ -43,6 +43,64 @@ except ImportError, e:
         print '***'
         raise
 
+try:
+    import pygments
+    class OdtPygmentsFormatter(pygments.formatter.Formatter):
+        def format(self, tokensource, outfile):
+            tokenclass = pygments.token.Token
+            for ttype, value in tokensource:
+                value = self._escape_cdata(value)
+                if ttype == tokenclass.Keyword:
+                    s2 = 'rststyle-codeblock-keyword'
+                    s1 = '<text:span text:style-name="%s">%s</text:span>' % \
+                        (s2, value, )
+                elif ttype == tokenclass.Literal.String:
+                    s2 = 'rststyle-codeblock-string'
+                    s1 = '<text:span text:style-name="%s">%s</text:span>' % \
+                        (s2, value, )
+                elif ttype in (
+                        tokenclass.Literal.Number.Integer,
+                        tokenclass.Literal.Number.Integer.Long,
+                        tokenclass.Literal.Number.Float,
+                        tokenclass.Literal.Number.Hex,
+                        tokenclass.Literal.Number.Oct,
+                        tokenclass.Literal.Number,
+                        ):
+                    s2 = 'rststyle-codeblock-number'
+                    s1 = '<text:span text:style-name="%s">%s</text:span>' % \
+                        (s2, value, )
+                elif ttype == tokenclass.Operator:
+                    s2 = 'rststyle-codeblock-operator'
+                    s1 = '<text:span text:style-name="%s">%s</text:span>' % \
+                        (s2, value, )
+                elif ttype == tokenclass.Comment:
+                    s2 = 'rststyle-codeblock-comment'
+                    s1 = '<text:span text:style-name="%s">%s</text:span>' % \
+                        (s2, value, )
+                elif ttype == tokenclass.Name.Class:
+                    s2 = 'rststyle-codeblock-classname'
+                    s1 = '<text:span text:style-name="%s">%s</text:span>' % \
+                        (s2, value, )
+                elif ttype == tokenclass.Name.Function:
+                    s2 = 'rststyle-codeblock-functionname'
+                    s1 = '<text:span text:style-name="%s">%s</text:span>' % \
+                        (s2, value, )
+                elif ttype == tokenclass.Name:
+                    s2 = 'rststyle-codeblock-name'
+                    s1 = '<text:span text:style-name="%s">%s</text:span>' % \
+                        (s2, value, )
+                else:
+                    s1 = value
+                outfile.write(s1)
+        def _escape_cdata(self, text):
+            text = text.replace("&", "&amp;")
+            text = text.replace("<", "&lt;")
+            text = text.replace(">", "&gt;")
+            return text
+
+except ImportError, e:
+    pygments = None
+
 
 ##from IPython.Shell import IPShellEmbed
 ##args = ['-pdb', '-pi1', 'In <\\#>: ', '-pi2', '   .\\D.: ',
@@ -279,25 +337,31 @@ class Writer(writers.Writer):
         None,
         (
         ('Specify a stylesheet URL, used verbatim.  Overrides '
-          '--stylesheet-path.',
-          ['--stylesheet'],
-          {'metavar': '<URL>', 'overrides': 'stylesheet_path'}),
-         ('Specify a stylesheet file, relative to the current working '
-          'directory.  The path is adjusted relative to the output ODF '
-          'file.  Overrides --stylesheet.  Default: "%s"'
-          % default_stylesheet_path,
-          ['--stylesheet-path'],
-          {'metavar': '<file>', 'overrides': 'stylesheet',
-           'default': default_stylesheet_path}),
-         ('Obfuscate email addresses to confuse harvesters while still '
-          'keeping email links usable with standards-compliant browsers.',
-          ['--cloak-email-addresses'],
-          {'action': 'store_true', 'validator': frontend.validate_boolean}),
-         ('Specify the thickness of table borders in thousands of a cm.  '
-           'Default is 35.',
-          ['--table-border-thickness'],
-          {'default': 35,
-           'validator': frontend.validate_nonnegative_int}),
+            '--stylesheet-path.',
+            ['--stylesheet'],
+            {'metavar': '<URL>', 'overrides': 'stylesheet_path'}),
+        ('Specify a stylesheet file, relative to the current working '
+            'directory.  The path is adjusted relative to the output ODF '
+            'file.  Overrides --stylesheet.  Default: "%s"'
+            % default_stylesheet_path,
+            ['--stylesheet-path'],
+            {'metavar': '<file>', 'overrides': 'stylesheet',
+                'default': default_stylesheet_path}),
+        ('Obfuscate email addresses to confuse harvesters while still '
+            'keeping email links usable with standards-compliant browsers.',
+            ['--cloak-email-addresses'],
+            {'default': False, 'action': 'store_true',
+                'validator': frontend.validate_boolean}),
+        ('Specify the thickness of table borders in thousands of a cm.  '
+            'Default is 35.',
+            ['--table-border-thickness'],
+            {'default': 35,
+                'validator': frontend.validate_nonnegative_int}),
+        ('Add syntax highlighting in literal code blocks.'
+            'Default is No.  Requires installation of Pygments.',
+            ['--add-syntax-highlighting'],
+            {'default': False, 'action': 'store_true',
+                'validator': frontend.validate_boolean}),
         ))
 
     settings_defaults = {
@@ -332,14 +396,14 @@ class Writer(writers.Writer):
         writers.Writer.assemble_parts(self)
         f = tempfile.NamedTemporaryFile()
         zfile = zipfile.ZipFile(f, 'w', zipfile.ZIP_DEFLATED)
-        zfile.writestr('content.xml', self.visitor.content_astext())
-        zfile.writestr('mimetype', MIME_TYPE)
+        self.write_zip_str(zfile, 'content.xml', self.visitor.content_astext())
+        self.write_zip_str(zfile, 'mimetype', MIME_TYPE)
         s1 = self.create_manifest()
-        zfile.writestr('META-INF/manifest.xml', s1)
+        self.write_zip_str(zfile, 'META-INF/manifest.xml', s1)
         s1 = self.create_meta()
-        zfile.writestr('meta.xml', s1)
+        self.write_zip_str(zfile, 'meta.xml', s1)
         s1 = self.get_stylesheet()
-        zfile.writestr('styles.xml', s1)
+        self.write_zip_str(zfile, 'styles.xml', s1)
         self.store_embedded_files(zfile)
         zfile.close()
         f.seek(0)
@@ -348,6 +412,14 @@ class Writer(writers.Writer):
         self.parts['whole'] = whole
         self.parts['encoding'] = self.document.settings.output_encoding
         self.parts['version'] = docutils.__version__
+
+    def write_zip_str(self, zfile, name, bytes):
+        localtime = time.localtime(time.time())
+        zinfo = zipfile.ZipInfo(name, localtime)
+        # Add some standard UNIX file access permissions (-rw-r--r--).
+        zinfo.external_attr = (0x81a4 & 0xFFFF) << 16L
+        zinfo.compress_type = zipfile.ZIP_DEFLATED
+        zfile.writestr(zinfo, bytes)
 
     def store_embedded_files(self, zfile):
         embedded_files = self.visitor.get_embedded_file_list()
@@ -1095,7 +1167,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def depart_literal(self, node):
         self.set_to_parent()
 
-    def calculate_code_block_padding(self, line):
+    def _calculate_code_block_padding(self, line):
         count = 0
         matchobj = SPACES_PATTERN.match(line)
         if matchobj:
@@ -1108,21 +1180,44 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 count = len(pad) * 8
         return count
 
+    def _add_syntax_highlighting(self, insource):
+        lexer = pygments.lexers.get_lexer_by_name("python", stripall=True)
+        fmtr = OdtPygmentsFormatter()
+        outsource = pygments.highlight(insource, lexer, fmtr)
+        return outsource
+
+    def _escape_cdata(self, text):
+        text = text.replace("&", "&amp;")
+        text = text.replace("<", "&lt;")
+        text = text.replace(">", "&gt;")
+        return text
+
+    wrapper1 = '<text:p text:style-name="rststyle-codeblock">%s</text:p>'
+    wrapper2 = '<text:p text:style-name="rststyle-codeblock"><text:s text:c="%d"/>%s</text:p>'
+
     def visit_literal_block(self, node):
         #ipshell('At visit_literal_block')
-        lines = node.astext().split('\n')
+        source = node.astext()
+        if pygments and self.settings.add_syntax_highlighting:
+            source = self._add_syntax_highlighting(source)
+        else:
+            source = self._escape_cdata(source)
+        lines = source.split('\n')
+        lines1 = ['<wrappertag1 xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0">']
         for line in lines:
-            padcount = self.calculate_code_block_padding(line)
+            padcount = self._calculate_code_block_padding(line)
             line = line.lstrip(' \t')
-            el = self.append_child('text:p', attrib={
-                'text:style-name': 'rststyle-codeblock',
-                })
             if padcount > 0:
-                el1 = SubElement(el, 'text:s', attrib={
-                    'text:c': '%d' % padcount, })
-                el1.tail = line
+                s3 = ODFTranslator.wrapper2 % (padcount, line, )
             else:
-                el.text = line
+                s3 = ODFTranslator.wrapper1 % line
+            lines1.append(s3)
+        lines1.append('</wrappertag1>')
+        s1 = ''.join(lines1)
+        el1 = etree.fromstring(s1)
+        children = el1.getchildren()
+        for child in children:
+            self.current_element.append(child)
 
     def depart_literal_block(self, node):
         pass

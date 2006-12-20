@@ -38,7 +38,36 @@ For more information on Docutils, see: http://docutils.sourceforge.net/
 History
 =======
 
-10/18/2006
+2006/12/19 -- Version 1.0b
+--------------------------
+
+Added syntax highlighting for literal code blocks.  Syntax
+highlighting is applied only if Pygments is installed and the
+--add-syntax-highlighting command line flag is used.  Pygments can
+be found here:  http://pygments.pocoo.org/.  See the odtwriter
+documentation for information about the styles used for syntax
+highlighting.
+
+
+2006/12/18 -- Version 1.0b
+--------------------------
+
+Fixed zipfile so that members of .odt have UNIX access permissions
+and are stored deflated.
+
+
+2006/12/07
+----------
+
+Fix for ElementTree getparent() and fixed zip DEFLATE.
+- ElementTree does not implement getparent().  Created wrapper
+  class to support this.
+- Use of ZipInfo instances prevented compression.  Remove it.
+
+Removed references to IPShell
+
+
+2006/10/18
 ----------
 
 Added support for images and figures.

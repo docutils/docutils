@@ -6,8 +6,8 @@ Odtwriter for Docutils
 :address: dkuhlman@rexx.com
     http://www.rexx.com/~dkuhlman
 
-:revision: 1.0a
-:date: Sept. 1, 2006
+:revision: 1.0b
+:date: Dec. 19, 2006
 
 :copyright: Copyright (c) 2006 Dave Kuhlman.  All Rights Reserved.
     This software is subject to the provisions of the MIT License
@@ -81,6 +81,31 @@ Examples::
 
     $ rst2odt.py --source-url=odtwriter.txt --generator --stylesheet-path=/myconfigs/styles.odt odtwriter.txt odtwriter.odt
 
+Command line flags
+------------------
+
+The following command line flags are specific to ``odtwriter``:
+
+--stylesheet=<URL>      Specify a stylesheet URL, used verbatim.  Overrides
+                        --stylesheet-path.
+--stylesheet-path=<file>
+                        Specify a stylesheet file, relative to the current
+                        working directory.  The path is adjusted relative to
+                        the output ODF file.  Overrides --stylesheet.
+                        Default: "/usr/local/lib/python2.5/site-
+                        packages/docutils/writers/odtwriter/styles.odt"
+--cloak-email-addresses
+                        Obfuscate email addresses to confuse harvesters while
+                        still keeping email links usable with standards-
+                        compliant browsers.
+--table-border-thickness=TABLE_BORDER_THICKNESS
+                        Specify the thickness of table borders in thousands of
+                        a cm.  Default is 35.
+--add-syntax-highlighting
+                        Add syntax highlighting in literal code
+                        blocks. Default is no. Requires installation of 
+                        Pygments.
+
 
 Styles
 ======
@@ -136,6 +161,24 @@ be easily changed by using ``oowriter`` to edit the document
 ``styles.odt`` (or a copy of it), and modifying any of the styles
 described here.
 
+To change the definition and appearance of these styles, open
+``styles.odt`` in ``oowriter`` and open the Styles and Formatting
+window by using the following menu item:
+
+    Format --> Styles and Formatting
+
+Then, click on the Paragraph Styles button or the Character Styles
+button at the top of the Styles and Formatting window.  You may
+also need to select "All Styles" from the drop-down selection list
+at the bottom of the Styles and Formatting window in order to see
+the styles used by ``odtwriter``.
+
+Notice that you can make a copy of file ``styles.odt``, modify it
+using ``oowriter``, and then use your copy with the
+``--stylesheet-path=<file>`` command line option.  Example::
+
+    $ rst2odt.py --stylesheet-path=mystyles.odt test2.txt test2.odt
+
 
 Paragraph styles
 ~~~~~~~~~~~~~~~~
@@ -147,8 +190,8 @@ rststyle-blockquote
     A block quote.
 
 rststyle-codeblock
-    A block of example code.  Derived from the ``Preformatted Text``
-    style in ``oowriter``.
+    Literal code blocks -- A block of example code.  Derived from
+    the ``Preformatted Text`` style in ``oowriter``.
 
 rststyle-heading{1|2|3|4|5}
     Headings (sub-titles).  Five levels of sub-headings are
@@ -184,6 +227,33 @@ rststyle-strong
 rststyle-quotation
     In-line quoted material.
 
+rststyle-codeblock-classname
+    Syntax highlighting in literal code blocks -- class names.
+
+rststyle-codeblock-comment
+    Syntax highlighting in literal code blocks -- comments.
+
+rststyle-codeblock-functionname
+    Syntax highlighting in literal code blocks -- function names.
+
+rststyle-codeblock-keyword
+    Syntax highlighting in literal code blocks -- Python language
+    keywords.
+
+rststyle-codeblock-name
+    Syntax highlighting in literal code blocks -- other names, for
+    example, variables.
+
+rststyle-codeblock-number
+    Syntax highlighting in literal code blocks -- literal numbers,
+    including integers, floats, hex numbers, and octal numbers.
+
+rststyle-codeblock-operator
+    Syntax highlighting in literal code blocks -- Python operators.
+
+rststyle-codeblock-string
+    Syntax highlighting in literal code blocks -- literal strings.
+
 
 Table styles
 ------------
@@ -217,6 +287,55 @@ generating your document, open it in ``oowriter`` and insert a
 table of contents.   That feature is under menu item::
 
     Insert --> Indexes and Tables --> Indexes and Tables
+
+
+Syntax highlighting
+-------------------
+
+``odtwriter`` can add syntax highlighting to code in literal code
+blocks.  In order to activate this, do both of the following: (1)
+install Pygments and (2) use the command line flag
+``--add-syntax-highlighting``.  You can find Pygments here:
+`Pygments <http://pygments.pocoo.org/>`_.
+
+The following styles are defined in styles.odt and are used for
+literal code blocks and syntax highlighting:
+
+- Paragraph styles:
+
+  - rststyle-codeblock -- The style for the code block as a whole.
+
+- Character styles:
+
+  - rststyle-codeblock-classname -- class names.
+
+  - rststyle-codeblock-comment -- comments.
+
+  - rststyle-codeblock-functionname -- function names.
+
+  - rststyle-codeblock-keyword -- Python language keywords.
+
+  - rststyle-codeblock-name -- other names, for example,
+    variables.
+
+  - rststyle-codeblock-number -- literal numbers, including
+    integers, floats, hex numbers, and octal numbers.
+
+  - rststyle-codeblock-operator -- Python operators.
+
+  - rststyle-codeblock-string -- literal strings.
+
+Each of the above styles has a default appearance that is defined
+in ``styles.odt``.  To change that definition and appearance, open
+``styles.odt`` in ``oowriter`` and use menu item:
+
+    Format --> Styles and Formatting
+
+Then, click on the Paragraph Styles button or the Character Styles
+button at the top of the Styles and Formatting window.  You may
+also need to select "All Styles" from the drop-down selection list
+at the bottom of the Styles and Formatting window.
+
 
 
 
