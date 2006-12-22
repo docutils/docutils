@@ -1158,6 +1158,36 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         #self.set_to_parent()
         pass
 
+    def visit_line(self, node):
+        #ipshell('At visit_line')
+        pass
+
+    def depart_line(self, node):
+        #ipshell('At depart_line')
+        pass
+
+    def visit_line_block(self, node):
+        #ipshell('At visit_line_block')
+        s1 = node.astext()
+        lines = s1.split('\n')
+        el = self.append_child('text:p', attrib={
+            'text:style-name': 'rststyle-textbody'})
+        el.text = lines[0]
+        first = True
+        if len(lines) > 1:
+            for line in lines[1:]:
+                if line == '':
+                    if first:
+                        first = False
+                        continue
+                first = True
+                el1 = SubElement(el, 'text:line-break')
+                el1.tail = line
+
+    def depart_line_block(self, node):
+        #ipshell('At depart_line_block')
+        pass
+
     def visit_literal(self, node):
         #ipshell('At visit_literal')
         el = SubElement(self.current_element, 'text:span',
@@ -1631,6 +1661,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def depart_title(self, node):
         pass
 
+    visit_subtitle = visit_title
+    depart_subtitle = depart_title
+    
     def visit_title_reference(self, node):
         #ipshell('At visit_title_reference')
         el = self.append_child('text:span', attrib={
