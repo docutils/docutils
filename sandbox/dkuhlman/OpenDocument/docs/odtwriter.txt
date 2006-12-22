@@ -292,10 +292,20 @@ table of contents.   That feature is under menu item::
 Syntax highlighting
 -------------------
 
-``odtwriter`` can add syntax highlighting to code in literal code
-blocks.  In order to activate this, do both of the following: (1)
-install Pygments and (2) use the command line flag
-``--add-syntax-highlighting``.  You can find Pygments here:
+``odtwriter`` can add Python syntax highlighting to code in
+literal code blocks.  In order to activate this, do both of the
+following: (1) install Pygments and (2) use the command line flag
+``--add-syntax-highlighting``.  Example::
+
+    $ rst2odt.py -g --add-syntax-highlight test.txt test.odt
+
+**Caution:** When ``odtwriter`` does syntax highlighting, it
+applies a Python lexer and Python syntax highlighting.  If you
+have literal code blocks that contain code which is *not* Python
+code, then you likely do *not* want to use the
+``--add-syntax-highlighting`` flag.
+
+You can find Pygments here:
 `Pygments <http://pygments.pocoo.org/>`_.
 
 The following styles are defined in styles.odt and are used for

@@ -38,6 +38,16 @@ For more information on Docutils, see: http://docutils.sourceforge.net/
 History
 =======
 
+2006/12/22 -- Version 1.0b
+--------------------------
+
+Implemented visit_line, depart_line, visit_line_block,
+depart_line_block.
+
+Implemented visit_subtitle and visit_subtitle as references to
+visit_title and depart_title.
+
+
 2006/12/19 -- Version 1.0b
 --------------------------
 
