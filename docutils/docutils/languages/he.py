@@ -1,7 +1,5 @@
-# Author: David Goodger
-# Contact: goodger@users.sourceforge.net
-# Revision: $Revision$
-# Date: $Date$
+# Author: Meir Kriheli
+# Id: $Id$
 # Copyright: This module has been placed in the public domain.
 
 # New language mappings are welcome.  Before doing a new translation, please
@@ -49,7 +47,7 @@ bibliographic_fields = {
       u'\u05db\u05ea\u05d5\u05d1\u05ea': 'address',
       u'\u05d0\u05d9\u05e9 \u05e7\u05e9\u05e8': 'contact',
       u'\u05d2\u05e8\u05e1\u05d4': 'version',
-      u'\u05d2\u05e8\u05e1\u05d4': 'revision',
+      u'\u05de\u05d4\u05d3\u05d5\u05e8\u05d4': 'revision',
       u'\u05e1\u05d8\u05d8\u05d5\u05e1': 'status',
       u'\u05ea\u05d0\u05e8\u05d9\u05da': 'date',
       u'\u05d6\u05db\u05d5\u05d9\u05d5\u05ea \u05e9\u05de\u05d5\u05e8\u05d5\u05ea': 'copyright',
