@@ -6,7 +6,7 @@
 <meta name="generator" content="Docutils 0.5: http://docutils.sourceforge.net/" />
 <title>Odtwriter for Docutils</title>
 <meta name="author" content="Dave Kuhlman" />
-<meta name="date" content="Dec. 19, 2006" />
+<meta name="date" content="Dec. 23, 2006" />
 <meta name="copyright" content="Copyright (c) 2006 Dave Kuhlman.  All Rights Reserved. This software is subject to the provisions of the MIT License http://www.opensource.org/licenses/mit-license.php." />
 <style type="text/css">
 
@@ -193,7 +193,7 @@ tt.docutils {
 <tr><th class="docinfo-name">Revision:</th>
 <td>1.0b</td></tr>
 <tr><th class="docinfo-name">Date:</th>
-<td>Dec. 19, 2006</td></tr>
+<td>Dec. 23, 2006</td></tr>
 <tr><th class="docinfo-name">Copyright:</th>
 <td>Copyright (c) 2006 Dave Kuhlman.  All Rights Reserved.
 This software is subject to the provisions of the MIT License
@@ -208,41 +208,68 @@ This software is subject to the provisions of the MIT License
 <p class="topic-title first"><a id="contents" name="contents">Contents</a></p>
 <ul class="auto-toc simple">
 <li><a class="reference" href="#introduction" id="id1" name="id1">1&nbsp;&nbsp;&nbsp;Introduction</a></li>
-<li><a class="reference" href="#how-to-install-it" id="id2" name="id2">2&nbsp;&nbsp;&nbsp;How to Install It</a></li>
-<li><a class="reference" href="#how-to-use-it" id="id3" name="id3">3&nbsp;&nbsp;&nbsp;How to Use It</a><ul class="auto-toc">
-<li><a class="reference" href="#command-line-flags" id="id4" name="id4">3.1&nbsp;&nbsp;&nbsp;Command line flags</a></li>
+<li><a class="reference" href="#how-to-install-it" id="id2" name="id2">2&nbsp;&nbsp;&nbsp;How to Install It</a><ul class="auto-toc">
+<li><a class="reference" href="#where-to-get-it" id="id3" name="id3">2.1&nbsp;&nbsp;&nbsp;Where to get it</a></li>
+<li><a class="reference" href="#requirements" id="id4" name="id4">2.2&nbsp;&nbsp;&nbsp;Requirements</a></li>
+<li><a class="reference" href="#installation" id="id5" name="id5">2.3&nbsp;&nbsp;&nbsp;Installation</a></li>
 </ul>
 </li>
-<li><a class="reference" href="#styles" id="id5" name="id5">4&nbsp;&nbsp;&nbsp;Styles</a><ul class="auto-toc">
-<li><a class="reference" href="#styles-used-by-odtwriter" id="id6" name="id6">4.1&nbsp;&nbsp;&nbsp;Styles used by odtwriter</a><ul class="auto-toc">
-<li><a class="reference" href="#paragraph-styles" id="id7" name="id7">4.1.1&nbsp;&nbsp;&nbsp;Paragraph styles</a></li>
-<li><a class="reference" href="#character-styles" id="id8" name="id8">4.1.2&nbsp;&nbsp;&nbsp;Character styles</a></li>
+<li><a class="reference" href="#how-to-use-it" id="id6" name="id6">3&nbsp;&nbsp;&nbsp;How to Use It</a><ul class="auto-toc">
+<li><a class="reference" href="#command-line-flags" id="id7" name="id7">3.1&nbsp;&nbsp;&nbsp;Command line flags</a></li>
 </ul>
 </li>
-<li><a class="reference" href="#table-styles" id="id9" name="id9">4.2&nbsp;&nbsp;&nbsp;Table styles</a></li>
+<li><a class="reference" href="#styles" id="id8" name="id8">4&nbsp;&nbsp;&nbsp;Styles</a><ul class="auto-toc">
+<li><a class="reference" href="#styles-used-by-odtwriter" id="id9" name="id9">4.1&nbsp;&nbsp;&nbsp;Styles used by odtwriter</a><ul class="auto-toc">
+<li><a class="reference" href="#paragraph-styles" id="id10" name="id10">4.1.1&nbsp;&nbsp;&nbsp;Paragraph styles</a></li>
+<li><a class="reference" href="#character-styles" id="id11" name="id11">4.1.2&nbsp;&nbsp;&nbsp;Character styles</a></li>
 </ul>
 </li>
-<li><a class="reference" href="#hints-and-suggestions" id="id10" name="id10">5&nbsp;&nbsp;&nbsp;Hints and Suggestions</a><ul class="auto-toc">
-<li><a class="reference" href="#table-of-contents" id="id11" name="id11">5.1&nbsp;&nbsp;&nbsp;Table of contents</a></li>
-<li><a class="reference" href="#syntax-highlighting" id="id12" name="id12">5.2&nbsp;&nbsp;&nbsp;Syntax highlighting</a></li>
+<li><a class="reference" href="#table-styles" id="id12" name="id12">4.2&nbsp;&nbsp;&nbsp;Table styles</a></li>
+</ul>
+</li>
+<li><a class="reference" href="#hints-and-suggestions" id="id13" name="id13">5&nbsp;&nbsp;&nbsp;Hints and Suggestions</a><ul class="auto-toc">
+<li><a class="reference" href="#table-of-contents" id="id14" name="id14">5.1&nbsp;&nbsp;&nbsp;Table of contents</a></li>
+<li><a class="reference" href="#syntax-highlighting" id="id15" name="id15">5.2&nbsp;&nbsp;&nbsp;Syntax highlighting</a><ul class="auto-toc">
+<li><a class="reference" href="#controlling-syntax-highlighting-within-a-document" id="id16" name="id16">5.2.1&nbsp;&nbsp;&nbsp;Controlling syntax highlighting within a document</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="section">
 <h1><a class="toc-backref" href="#id1" id="introduction" name="introduction">1&nbsp;&nbsp;&nbsp;Introduction</a></h1>
-<p>What it does -- <tt class="docutils literal"><span class="pre">rst2odt.py/odtwriter.py</span></tt> translate reST
+<p>What it does -- <tt class="docutils literal"><span class="pre">rst2odt.py/odtwriter.py</span></tt> translates reST
 (reStructuredText) into a Open Document Format <tt class="docutils literal"><span class="pre">.odt</span></tt> file.  You
-can learn more about here:</p>
+can learn more about that format here:</p>
 <ul class="simple">
 <li><a class="reference" href="http://www.oasis-open.org/committees/tc_home.php?wg_abbrev=office">OASIS Open Document Format for Office Applications
 (OpenDocument) TC</a></li>
 <li><a class="reference" href="http://en.wikipedia.org/wiki/OpenDocument">Open Document at Wikipedia</a></li>
 </ul>
+<p>You should be able to open documents (.odt files) generated with
+<tt class="docutils literal"><span class="pre">rst2odt.py</span></tt> in <tt class="docutils literal"><span class="pre">OpenOffice/oowriter</span></tt>.  I use OpenOffice version
+2.0 in my testing.</p>
 </div>
 <div class="section">
 <h1><a class="toc-backref" href="#id2" id="how-to-install-it" name="how-to-install-it">2&nbsp;&nbsp;&nbsp;How to Install It</a></h1>
-<p>Requirements -- <tt class="docutils literal"><span class="pre">odtwriter</span></tt> requires:</p>
+<div class="section">
+<h2><a class="toc-backref" href="#id3" id="where-to-get-it" name="where-to-get-it">2.1&nbsp;&nbsp;&nbsp;Where to get it</a></h2>
+<p><tt class="docutils literal"><span class="pre">odtwriter</span></tt> is available via Subversion from
+the Docutils repository under
+<tt class="docutils literal"><span class="pre">docutils/sandbox/dkuhlman/OpenDocument/</span></tt>. The following will
+download Docutils including <tt class="docutils literal"><span class="pre">odtwriter</span></tt> and associated files into
+your current directory:</p>
+<pre class="literal-block">
+$ svn checkout svn://svn.berlios.de/docutils/trunk docutils
+</pre>
+<p>For more information about access to the Docutils Subversion
+repository, see:
+<a class="reference" href="http://docutils.sourceforge.net/docs/dev/repository.html">http://docutils.sourceforge.net/docs/dev/repository.html</a>.</p>
+</div>
+<div class="section">
+<h2><a class="toc-backref" href="#id4" id="requirements" name="requirements">2.2&nbsp;&nbsp;&nbsp;Requirements</a></h2>
+<p><tt class="docutils literal"><span class="pre">odtwriter</span></tt> requires:</p>
 <ul>
 <li><p class="first">Python</p>
 </li>
@@ -256,19 +283,26 @@ can learn more about here:</p>
 <p><tt class="docutils literal"><span class="pre">odtwriter</span></tt> will try first to use Lxml, and if it is not
 installed will use ElementTree.</p>
 </li>
+<li><p class="first">Optional -- <a class="reference" href="http://pygments.pocoo.org/">Pygments</a> is required for syntax highlighting of
+Python code in literal blocks.</p>
+</li>
 </ul>
+</div>
+<div class="section">
+<h2><a class="toc-backref" href="#id5" id="installation" name="installation">2.3&nbsp;&nbsp;&nbsp;Installation</a></h2>
 <p>Install <tt class="docutils literal"><span class="pre">odtwriter</span></tt> with the standard Python installation
 commands:</p>
 <pre class="literal-block">
 $ python setup.py build
-$ python setup.py install       # as root
+$ python setup.py install       # possibly as root
 </pre>
 <p>This will install <tt class="docutils literal"><span class="pre">rst2odt.py</span></tt> in your <tt class="docutils literal"><span class="pre">bin</span></tt> directory and the
 odtwriter and the styles file under <tt class="docutils literal"><span class="pre">docutils/writers/odtwriter</span></tt>
 within your Docutils installation.</p>
 </div>
+</div>
 <div class="section">
-<h1><a class="toc-backref" href="#id3" id="how-to-use-it" name="how-to-use-it">3&nbsp;&nbsp;&nbsp;How to Use It</a></h1>
+<h1><a class="toc-backref" href="#id6" id="how-to-use-it" name="how-to-use-it">3&nbsp;&nbsp;&nbsp;How to Use It</a></h1>
 <p>Run it from the command line as follows:</p>
 <pre class="literal-block">
 $ rst2odt.py myinput.txt myoutput.odt
@@ -285,7 +319,7 @@ $ rst2odt.py -s -g python_comments.txt python_comments.odt
 $ rst2odt.py --source-url=odtwriter.txt --generator --stylesheet-path=/myconfigs/styles.odt odtwriter.txt odtwriter.odt
 </pre>
 <div class="section">
-<h2><a class="toc-backref" href="#id4" id="command-line-flags" name="command-line-flags">3.1&nbsp;&nbsp;&nbsp;Command line flags</a></h2>
+<h2><a class="toc-backref" href="#id7" id="command-line-flags" name="command-line-flags">3.1&nbsp;&nbsp;&nbsp;Command line flags</a></h2>
 <p>The following command line flags are specific to <tt class="docutils literal"><span class="pre">odtwriter</span></tt>:</p>
 <table class="docutils option-list" frame="void" rules="none">
 <col class="option" />
@@ -326,7 +360,7 @@ Pygments.</td></tr>
 </div>
 </div>
 <div class="section">
-<h1><a class="toc-backref" href="#id5" id="styles" name="styles">4&nbsp;&nbsp;&nbsp;Styles</a></h1>
+<h1><a class="toc-backref" href="#id8" id="styles" name="styles">4&nbsp;&nbsp;&nbsp;Styles</a></h1>
 <p><tt class="docutils literal"><span class="pre">odtwriter</span></tt> uses a number of styles that are defined in the
 default <tt class="docutils literal"><span class="pre">styles.xml</span></tt>.  This section describes those styles.</p>
 <p>You can modify the look of documents generated by <tt class="docutils literal"><span class="pre">odtwriter</span></tt> in
@@ -367,7 +401,7 @@ output document.</p>
 </li>
 </ul>
 <div class="section">
-<h2><a class="toc-backref" href="#id6" id="styles-used-by-odtwriter" name="styles-used-by-odtwriter">4.1&nbsp;&nbsp;&nbsp;Styles used by odtwriter</a></h2>
+<h2><a class="toc-backref" href="#id9" id="styles-used-by-odtwriter" name="styles-used-by-odtwriter">4.1&nbsp;&nbsp;&nbsp;Styles used by odtwriter</a></h2>
 <p>This section describes the styles used by <tt class="docutils literal"><span class="pre">odtwriter</span></tt>.</p>
 <p>Note that we do not describe the &quot;look&quot; of these styles.  That can
 be easily changed by using <tt class="docutils literal"><span class="pre">oowriter</span></tt> to edit the document
@@ -390,7 +424,7 @@ using <tt class="docutils literal"><span class="pre">oowriter</span></tt>, and t
 $ rst2odt.py --stylesheet-path=mystyles.odt test2.txt test2.odt
 </pre>
 <div class="section">
-<h3><a class="toc-backref" href="#id7" id="paragraph-styles" name="paragraph-styles">4.1.1&nbsp;&nbsp;&nbsp;Paragraph styles</a></h3>
+<h3><a class="toc-backref" href="#id10" id="paragraph-styles" name="paragraph-styles">4.1.1&nbsp;&nbsp;&nbsp;Paragraph styles</a></h3>
 <dl class="docutils">
 <dt>rststyle-blockindent</dt>
 <dd>An indented block.</dd>
@@ -415,7 +449,7 @@ provided: rststyle-heading1 through rststyle-heading5.</dd>
 </dl>
 </div>
 <div class="section">
-<h3><a class="toc-backref" href="#id8" id="character-styles" name="character-styles">4.1.2&nbsp;&nbsp;&nbsp;Character styles</a></h3>
+<h3><a class="toc-backref" href="#id11" id="character-styles" name="character-styles">4.1.2&nbsp;&nbsp;&nbsp;Character styles</a></h3>
 <dl class="docutils">
 <dt>rststyle-emphasis</dt>
 <dd>Emphasis.  Normally rendered as italics.</dd>
@@ -448,7 +482,7 @@ including integers, floats, hex numbers, and octal numbers.</dd>
 </div>
 </div>
 <div class="section">
-<h2><a class="toc-backref" href="#id9" id="table-styles" name="table-styles">4.2&nbsp;&nbsp;&nbsp;Table styles</a></h2>
+<h2><a class="toc-backref" href="#id12" id="table-styles" name="table-styles">4.2&nbsp;&nbsp;&nbsp;Table styles</a></h2>
 <p>Table styles are generated by <tt class="docutils literal"><span class="pre">oowriter</span></tt> for each table that you
 create.  Therefore, <tt class="docutils literal"><span class="pre">odtwriter</span></tt> attempts to do something
 similar.  These styles are created in the <tt class="docutils literal"><span class="pre">content.xml</span></tt> document
@@ -457,9 +491,9 @@ in the generated <tt class="docutils literal"><span class="pre">.odt</span></tt>
 </div>
 </div>
 <div class="section">
-<h1><a class="toc-backref" href="#id10" id="hints-and-suggestions" name="hints-and-suggestions">5&nbsp;&nbsp;&nbsp;Hints and Suggestions</a></h1>
+<h1><a class="toc-backref" href="#id13" id="hints-and-suggestions" name="hints-and-suggestions">5&nbsp;&nbsp;&nbsp;Hints and Suggestions</a></h1>
 <div class="section">
-<h2><a class="toc-backref" href="#id11" id="table-of-contents" name="table-of-contents">5.1&nbsp;&nbsp;&nbsp;Table of contents</a></h2>
+<h2><a class="toc-backref" href="#id14" id="table-of-contents" name="table-of-contents">5.1&nbsp;&nbsp;&nbsp;Table of contents</a></h2>
 <p><tt class="docutils literal"><span class="pre">odtwriter</span></tt> can generate an outline style table of contents.
 However, if you want an <tt class="docutils literal"><span class="pre">oowriter</span></tt> style table of contents along
 with the formatting control that <tt class="docutils literal"><span class="pre">oowriter</span></tt> gives you, then you
@@ -471,7 +505,7 @@ Insert --&gt; Indexes and Tables --&gt; Indexes and Tables
 </pre>
 </div>
 <div class="section">
-<h2><a class="toc-backref" href="#id12" id="syntax-highlighting" name="syntax-highlighting">5.2&nbsp;&nbsp;&nbsp;Syntax highlighting</a></h2>
+<h2><a class="toc-backref" href="#id15" id="syntax-highlighting" name="syntax-highlighting">5.2&nbsp;&nbsp;&nbsp;Syntax highlighting</a></h2>
 <p><tt class="docutils literal"><span class="pre">odtwriter</span></tt> can add Python syntax highlighting to code in
 literal code blocks.  In order to activate this, do both of the
 following: (1) install Pygments and (2) use the command line flag
@@ -484,8 +518,7 @@ applies a Python lexer and Python syntax highlighting.  If you
 have literal code blocks that contain code which is <em>not</em> Python
 code, then you likely do <em>not</em> want to use the
 <tt class="docutils literal"><span class="pre">--add-syntax-highlighting</span></tt> flag.</p>
-<p>You can find Pygments here:
-<a class="reference" href="http://pygments.pocoo.org/">Pygments</a>.</p>
+<p>You can find Pygments here: <a class="reference" href="http://pygments.pocoo.org/">Pygments</a>.</p>
 <p>The following styles are defined in styles.odt and are used for
 literal code blocks and syntax highlighting:</p>
 <ul class="simple">
@@ -516,6 +549,36 @@ Format --&gt; Styles and Formatting</blockquote>
 button at the top of the Styles and Formatting window.  You may
 also need to select &quot;All Styles&quot; from the drop-down selection list
 at the bottom of the Styles and Formatting window.</p>
+<div class="section">
+<h3><a class="toc-backref" href="#id16" id="controlling-syntax-highlighting-within-a-document" name="controlling-syntax-highlighting-within-a-document">5.2.1&nbsp;&nbsp;&nbsp;Controlling syntax highlighting within a document</a></h3>
+<p>By default, when you use the <tt class="docutils literal"><span class="pre">--add-syntax-highlighting</span></tt> command
+line flag, syntax highlighting in literal blocks is on and the
+Python lexer is used.  You can change this within your reST document
+with the following directive:</p>
+<pre class="literal-block">
+.. syntaxhighlight newstate [lexer]
+</pre>
+<p>where:</p>
+<ul class="simple">
+<li><em>newstate</em> is either &quot;on&quot; or &quot;off&quot;, which makes highlighting
+active or inactive.</li>
+<li><em>lexer</em> is the Pygments lexer to use.  Change the lexer to match
+the language in literal code blocks.  <em>lexer</em> should be one of
+<em>aliases</em> listed at <a class="reference" href="http://pygments.pocoo.org/docs/lexers/">Pygments Available Lexers</a>, for example &quot;python&quot;,
+&quot;pycon&quot;, &quot;java&quot;, &quot;cpp&quot;, &quot;c&quot;, &quot;perl&quot;, &quot;javascript&quot;, etc.</li>
+</ul>
+<p>Examples:</p>
+<pre class="literal-block">
+.. syntaxhighlight:: on python
+.. syntaxhighlight:: off
+.. syntaxhighlight:: on
+.. syntaxhighlight:: on java
+</pre>
+<p>The syntax highlighting state set by this directive remains in
+effect until the next directive is encountered in the reST document.</p>
+<p>Note to Pythonistas, there is a separate lexer for examples of
+code from the Python interactive prompt and console output or
+doctests.  The alias for that lexer is &quot;pycon&quot;.</p>
 <!-- Configuration for Emacs -->
 <!-- Local Variables:
 mode: indented-text
@@ -523,6 +586,7 @@ indent-tabs-mode: nil
 sentence-end-double-space: t
 fill-column: 68
 End: -->
+</div>
 </div>
 </div>
 </div>

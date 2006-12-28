@@ -38,6 +38,17 @@ For more information on Docutils, see: http://docutils.sourceforge.net/
 History
 =======
 
+2006/12/27 -- Version 1.0b
+--------------------------
+
+Added a Docutils directive which enables user (1) to turn syntax
+highlighting in literal code blocks on and off and (2) to specify
+which lexer (language) to use during syntax highlighing.
+
+Updated the documentation to describe the syntax highlighting
+directive.
+
+
 2006/12/22 -- Version 1.0b
 --------------------------
 

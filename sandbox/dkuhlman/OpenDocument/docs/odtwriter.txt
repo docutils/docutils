@@ -7,7 +7,7 @@ Odtwriter for Docutils
     http://www.rexx.com/~dkuhlman
 
 :revision: 1.0b
-:date: Dec. 19, 2006
+:date: Dec. 23, 2006
 
 :copyright: Copyright (c) 2006 Dave Kuhlman.  All Rights Reserved.
     This software is subject to the provisions of the MIT License
@@ -24,20 +24,43 @@ Odtwriter for Docutils
 Introduction
 ============
 
-What it does -- ``rst2odt.py/odtwriter.py`` translate reST
+What it does -- ``rst2odt.py/odtwriter.py`` translates reST
 (reStructuredText) into a Open Document Format ``.odt`` file.  You
-can learn more about here:
+can learn more about that format here:
 
 - `OASIS Open Document Format for Office Applications
   (OpenDocument) TC`_
 
 - `Open Document at Wikipedia`_
 
+You should be able to open documents (.odt files) generated with
+``rst2odt.py`` in ``OpenOffice/oowriter``.  I use OpenOffice version
+2.0 in my testing.
+
 
 How to Install It
 =================
 
-Requirements -- ``odtwriter`` requires:
+Where to get it
+---------------
+
+``odtwriter`` is available via Subversion from
+the Docutils repository under
+``docutils/sandbox/dkuhlman/OpenDocument/``. The following will
+download Docutils including ``odtwriter`` and associated files into
+your current directory::
+
+    $ svn checkout svn://svn.berlios.de/docutils/trunk docutils
+
+For more information about access to the Docutils Subversion
+repository, see:
+http://docutils.sourceforge.net/docs/dev/repository.html.
+
+
+Requirements
+------------
+
+``odtwriter`` requires:
 
 - Python
 
@@ -52,11 +75,18 @@ Requirements -- ``odtwriter`` requires:
   ``odtwriter`` will try first to use Lxml, and if it is not
   installed will use ElementTree.
 
+- Optional -- `Pygments`_ is required for syntax highlighting of
+  Python code in literal blocks.
+
+
+Installation
+------------
+
 Install ``odtwriter`` with the standard Python installation
 commands::
 
     $ python setup.py build
-    $ python setup.py install       # as root
+    $ python setup.py install       # possibly as root
 
 This will install ``rst2odt.py`` in your ``bin`` directory and the
 odtwriter and the styles file under ``docutils/writers/odtwriter``
@@ -305,8 +335,7 @@ have literal code blocks that contain code which is *not* Python
 code, then you likely do *not* want to use the
 ``--add-syntax-highlighting`` flag.
 
-You can find Pygments here:
-`Pygments <http://pygments.pocoo.org/>`_.
+You can find Pygments here: `Pygments`_.
 
 The following styles are defined in styles.odt and are used for
 literal code blocks and syntax highlighting:
@@ -345,6 +374,48 @@ Then, click on the Paragraph Styles button or the Character Styles
 button at the top of the Styles and Formatting window.  You may
 also need to select "All Styles" from the drop-down selection list
 at the bottom of the Styles and Formatting window.
+
+
+Controlling syntax highlighting within a document
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+By default, when you use the ``--add-syntax-highlighting`` command
+line flag, syntax highlighting in literal blocks is on and the
+Python lexer is used.  You can change this within your reST document
+with the following directive::
+
+    .. syntaxhighlight newstate [lexer]
+
+where:
+
+- *newstate* is either "on" or "off", which makes highlighting
+  active or inactive.
+
+- *lexer* is the Pygments lexer to use.  Change the lexer to match
+  the language in literal code blocks.  *lexer* should be one of
+  *aliases* listed at `Pygments Available Lexers
+  <http://pygments.pocoo.org/docs/lexers/>`_, for example "python",
+  "pycon", "java", "cpp", "c", "perl", "javascript", etc.
+
+Examples::
+
+    .. syntaxhighlight:: on python
+    .. syntaxhighlight:: off
+    .. syntaxhighlight:: on
+    .. syntaxhighlight:: on java
+
+The syntax highlighting state set by this directive remains in
+effect until the next directive is encountered in the reST document.
+
+Note to Pythonistas, there is a separate lexer for examples of
+code from the Python interactive prompt and console output or
+doctests.  The alias for that lexer is "pycon".
+
+
+
+
+.. _`Pygments`:
+    http://pygments.pocoo.org/
 
 
 

@@ -25,6 +25,7 @@ import StringIO
 ##    Image = None
 import docutils
 from docutils import frontend, nodes, utils, writers, languages
+from docutils.parsers import rst
 
 
 WhichElementTree = ''
@@ -240,6 +241,36 @@ META_NAMESPACE_DICT = {
 
 MIME_TYPE = 'application/vnd.oasis.opendocument.text'
 
+
+#
+# Classes
+#
+
+#
+# Class to control syntax highlighting.
+class SyntaxHighlight(rst.Directive):
+    required_arguments = 1
+    optional_arguments = 1
+
+    def run(self):
+        if self.arguments[0] not in ('on', 'off'):
+            raise self.error(
+                'Error in "%s" directive: "%s" is not a valid value for '
+                    'first argument.  Valid values are "on", "off".'
+                    % (self.name, self.arguments[0]))
+        arguments = ' '.join(self.arguments)
+        paragraph = nodes.paragraph(arguments, arguments)
+        field_body = nodes.field_body()
+        field_body += paragraph
+        paragraph = nodes.paragraph('syntaxhighlight', 'syntaxhighlight')
+        field_name = nodes.field_name()
+        field_name += paragraph
+        field = nodes.field()
+        field += field_name
+        field += field_body
+        return [field]
+
+rst.directives.register_directive('syntaxhighlight', SyntaxHighlight)
 
 class Writer(writers.Writer):
 
@@ -555,6 +586,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.title = None
         self.image_count = 0
         self.embedded_file_list = []
+        self.syntaxhighlighting = 1
+        self.syntaxhighlight_lexer = 'python'
 
     def astext(self):
         root = self.content_tree.getroot()
@@ -890,13 +923,33 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         pass
 
     def visit_field(self, node):
+        # Note that the syntaxhighlight directive produces this field node.
+        # See class SyntaxHighlight, above.
         #ipshell('At visit_field')
-        #self.trace_visit_node(node)
-        pass
+        children = node.children
+        if len(children) == 2:
+            name = children[0].astext()
+            if name == 'syntaxhighlight':
+                body = children[1].astext()
+                args = body.split()
+                if len(args) == 2:
+                    self.syntaxhighlight_lexer = args[1]
+                if args[0] == 'on':
+                    self.syntaxhighlighting = 1
+                elif args[0] == 'off':
+                    self.syntaxhighlighting = 0
+                raise nodes.SkipChildren()
 
     def depart_field(self, node):
-        #self.trace_depart_node(node)
-        #self.current_element.append(self.field_element)
+        pass
+
+    def visit_field_list(self, node):
+        #ipshell('At visit_field_list')
+        print '*** field_list node: %s' % node
+        pass
+
+    def depart_field_list(self, node):
+        #ipshell('At depart_field_list')
         pass
 
     def visit_field_name(self, node):
@@ -1211,7 +1264,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         return count
 
     def _add_syntax_highlighting(self, insource):
-        lexer = pygments.lexers.get_lexer_by_name("python", stripall=True)
+        #print '(_add_syntax_highlighting) using lexer: %s' % self.syntaxhighlight_lexer
+        lexer = pygments.lexers.get_lexer_by_name(
+            self.syntaxhighlight_lexer, stripall=True)
         fmtr = OdtPygmentsFormatter()
         outsource = pygments.highlight(insource, lexer, fmtr)
         return outsource
@@ -1228,7 +1283,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def visit_literal_block(self, node):
         #ipshell('At visit_literal_block')
         source = node.astext()
-        if pygments and self.settings.add_syntax_highlighting:
+        if pygments and self.settings.add_syntax_highlighting and \
+            self.syntaxhighlighting:
             source = self._add_syntax_highlighting(source)
         else:
             source = self._escape_cdata(source)
@@ -1482,7 +1538,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.set_to_parent()
 
     def visit_system_message(self, node):
-        print '(visit_system_message) node: %s' % (node.astext(), )
+        #print '(visit_system_message) node: %s' % (node.astext(), )
+        pass
 
     def depart_system_message(self, node):
         pass
