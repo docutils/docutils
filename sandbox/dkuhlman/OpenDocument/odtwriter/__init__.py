@@ -15,14 +15,9 @@ import os.path
 import tempfile
 import zipfile
 from xml.dom import minidom
-import codecs
 import time
 import re
 import StringIO
-##try:
-##    import Image                        # check for the Python Imaging Library
-##except ImportError:
-##    Image = None
 import docutils
 from docutils import frontend, nodes, utils, writers, languages
 from docutils.parsers import rst
@@ -47,10 +42,12 @@ except ImportError, e:
 try:
     import pygments
     class OdtPygmentsFormatter(pygments.formatter.Formatter):
+        pass
+    class OdtPygmentsProgFormatter(OdtPygmentsFormatter):
         def format(self, tokensource, outfile):
             tokenclass = pygments.token.Token
             for ttype, value in tokensource:
-                value = self._escape_cdata(value)
+                value = escape_cdata(value)
                 if ttype == tokenclass.Keyword:
                     s2 = 'rststyle-codeblock-keyword'
                     s1 = '<text:span text:style-name="%s">%s</text:span>' % \
@@ -93,11 +90,41 @@ try:
                 else:
                     s1 = value
                 outfile.write(s1)
-        def _escape_cdata(self, text):
-            text = text.replace("&", "&amp;")
-            text = text.replace("<", "&lt;")
-            text = text.replace(">", "&gt;")
-            return text
+    class OdtPygmentsLaTeXFormatter(OdtPygmentsFormatter):
+        def format(self, tokensource, outfile):
+            tokenclass = pygments.token.Token
+            for ttype, value in tokensource:
+                value = escape_cdata(value)
+                if ttype == tokenclass.Keyword:
+                    s2 = 'rststyle-codeblock-keyword'
+                    s1 = '<text:span text:style-name="%s">%s</text:span>' % \
+                        (s2, value, )
+                elif ttype in (tokenclass.Literal.String,
+                        tokenclass.Literal.String.Backtick,
+                        ):
+                    s2 = 'rststyle-codeblock-string'
+                    s1 = '<text:span text:style-name="%s">%s</text:span>' % \
+                        (s2, value, )
+                elif ttype == tokenclass.Name.Attribute:
+                    s2 = 'rststyle-codeblock-operator'
+                    s1 = '<text:span text:style-name="%s">%s</text:span>' % \
+                        (s2, value, )
+                elif ttype == tokenclass.Comment:
+                    if value[-1] == '\n':
+                        s2 = 'rststyle-codeblock-comment'
+                        s1 = '<text:span text:style-name="%s">%s</text:span>\n' % \
+                            (s2, value[:-1], )
+                    else:
+                        s2 = 'rststyle-codeblock-comment'
+                        s1 = '<text:span text:style-name="%s">%s</text:span>' % \
+                            (s2, value, )
+                elif ttype == tokenclass.Name.Builtin:
+                    s2 = 'rststyle-codeblock-name'
+                    s1 = '<text:span text:style-name="%s">%s</text:span>' % \
+                        (s2, value, )
+                else:
+                    s1 = value
+                outfile.write(s1)
 
 except ImportError, e:
     pygments = None
@@ -127,6 +154,10 @@ if WhichElementTree == 'elementtree':
             self.parent = parent
         def getparent(self):
             return self.parent
+
+#
+# Functions
+#
 
 #
 # ElementTree support functions.
@@ -160,6 +191,11 @@ def ToString(et):
     outstream.close()
     return s1
 
+def escape_cdata(text):
+    text = text.replace("&", "&amp;")
+    text = text.replace("<", "&lt;")
+    text = text.replace(">", "&gt;")
+    return text
 
 
 #
@@ -945,7 +981,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_field_list(self, node):
         #ipshell('At visit_field_list')
-        print '*** field_list node: %s' % node
         pass
 
     def depart_field_list(self, node):
@@ -1267,15 +1302,12 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         #print '(_add_syntax_highlighting) using lexer: %s' % self.syntaxhighlight_lexer
         lexer = pygments.lexers.get_lexer_by_name(
             self.syntaxhighlight_lexer, stripall=True)
-        fmtr = OdtPygmentsFormatter()
+        if self.syntaxhighlight_lexer in ('latex', 'tex'):
+            fmtr = OdtPygmentsLaTeXFormatter()
+        else:
+            fmtr = OdtPygmentsProgFormatter()
         outsource = pygments.highlight(insource, lexer, fmtr)
         return outsource
-
-    def _escape_cdata(self, text):
-        text = text.replace("&", "&amp;")
-        text = text.replace("<", "&lt;")
-        text = text.replace(">", "&gt;")
-        return text
 
     wrapper1 = '<text:p text:style-name="rststyle-codeblock">%s</text:p>'
     wrapper2 = '<text:p text:style-name="rststyle-codeblock"><text:s text:c="%d"/>%s</text:p>'
@@ -1287,7 +1319,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             self.syntaxhighlighting:
             source = self._add_syntax_highlighting(source)
         else:
-            source = self._escape_cdata(source)
+            source = escape_cdata(source)
         lines = source.split('\n')
         lines1 = ['<wrappertag1 xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0">']
         for line in lines:
@@ -1297,6 +1329,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 s3 = ODFTranslator.wrapper2 % (padcount, line, )
             else:
                 s3 = ODFTranslator.wrapper1 % line
+            s3 = s3.replace("&#10;", "\n")
             lines1.append(s3)
         lines1.append('</wrappertag1>')
         s1 = ''.join(lines1)
@@ -1475,7 +1508,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.set_to_parent()
 
     def visit_problematic(self, node):
-        print '(visit_problematic) node: %s' % (node.astext(), )
+        #print '(visit_problematic) node: %s' % (node.astext(), )
+        pass
 
     def depart_problematic(self, node):
         pass
