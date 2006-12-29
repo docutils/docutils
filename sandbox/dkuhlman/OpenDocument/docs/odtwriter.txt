@@ -7,7 +7,7 @@ Odtwriter for Docutils
     http://www.rexx.com/~dkuhlman
 
 :revision: 1.0b
-:date: Dec. 23, 2006
+:date: Dec. 29, 2006
 
 :copyright: Copyright (c) 2006 Dave Kuhlman.  All Rights Reserved.
     This software is subject to the provisions of the MIT License
@@ -26,7 +26,7 @@ Introduction
 
 What it does -- ``rst2odt.py/odtwriter.py`` translates reST
 (reStructuredText) into a Open Document Format ``.odt`` file.  You
-can learn more about that format here:
+can learn more about the ODF format here:
 
 - `OASIS Open Document Format for Office Applications
   (OpenDocument) TC`_
@@ -76,7 +76,7 @@ Requirements
   installed will use ElementTree.
 
 - Optional -- `Pygments`_ is required for syntax highlighting of
-  Python code in literal blocks.
+  code in literal blocks.  See section `Syntax highlighting`_.
 
 
 Installation
@@ -329,11 +329,13 @@ following: (1) install Pygments and (2) use the command line flag
 
     $ rst2odt.py -g --add-syntax-highlight test.txt test.odt
 
-**Caution:** When ``odtwriter`` does syntax highlighting, it
-applies a Python lexer and Python syntax highlighting.  If you
-have literal code blocks that contain code which is *not* Python
-code, then you likely do *not* want to use the
-``--add-syntax-highlighting`` flag.
+**Caution:** When ``odtwriter`` does syntax highlighting, by
+default, it applies a Python lexer and Python syntax highlighting.
+If you have literal code blocks that contain code which is *not*
+Python code, then you likely to want either (1) to use the
+``.. syntaxhighlight::`` directive to change the language/lexer or to
+turn off highlighting across sections of your document or (2) to
+*not* use the ``--add-syntax-highlighting`` flag.
 
 You can find Pygments here: `Pygments`_.
 
@@ -404,8 +406,9 @@ Examples::
     .. syntaxhighlight:: on
     .. syntaxhighlight:: on java
 
-The syntax highlighting state set by this directive remains in
-effect until the next directive is encountered in the reST document.
+The syntax highlighting state and language/lexer set by this
+directive remain in effect until the next directive is encountered
+in the reST document.
 
 Note to Pythonistas, there is a separate lexer for examples of
 code from the Python interactive prompt and console output or

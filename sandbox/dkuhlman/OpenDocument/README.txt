@@ -38,6 +38,12 @@ For more information on Docutils, see: http://docutils.sourceforge.net/
 History
 =======
 
+2006/12/29 -- Version 1.0b
+--------------------------
+
+Added a separate lexer for LaTeX syntax highlighting.
+
+
 2006/12/27 -- Version 1.0b
 --------------------------
 
