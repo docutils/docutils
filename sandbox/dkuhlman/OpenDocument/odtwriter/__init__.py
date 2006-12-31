@@ -41,6 +41,8 @@ except ImportError, e:
 
 try:
     import pygments
+    import pygments.formatter
+    import pygments.lexers
     class OdtPygmentsFormatter(pygments.formatter.Formatter):
         pass
     class OdtPygmentsProgFormatter(OdtPygmentsFormatter):
