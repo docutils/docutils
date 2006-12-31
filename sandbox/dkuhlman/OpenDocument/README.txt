@@ -38,6 +38,11 @@ For more information on Docutils, see: http://docutils.sourceforge.net/
 History
 =======
 
+2006/12/31 -- Version 1.0b
+--------------------------
+
+Fixed imports to match latest version of Pygments.
+
 2006/12/29 -- Version 1.0b
 --------------------------
 
