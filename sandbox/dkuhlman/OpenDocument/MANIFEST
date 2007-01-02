@@ -1,0 +1,10 @@
+README.txt
+LICENSE
+setup.py
+MANIFEST
+odtwriter/__init__.py
+odtwriter/styles.odt
+tools/rst2odt.py
+docs/odtwriter.txt
+docs/odtwriter.html
+docs/odtwriter.odt

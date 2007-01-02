@@ -17,9 +17,6 @@ except:
 from docutils.core import publish_cmdline, default_description, \
     Publisher, default_usage
 from docutils import io
-#from docutils.writers.docutils_xml import Writer
-#from docutils.writers.html4css1 import Writer
-#from OOwriter import Writer
 from docutils.writers.odtwriter import Writer
 
 
