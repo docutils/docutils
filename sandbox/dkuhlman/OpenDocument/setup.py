@@ -3,8 +3,8 @@ import sys, os
 from distutils.core import setup
 
 
-setup(name="rst_to_odt",
-    version="1.0b",
+setup(name="odtwriter",
+    version="1.0c",
     description="convert rst to ODF/odt.",
     author="Dave Kuhlman",
     author_email="dkuhlman@rexx.com",
