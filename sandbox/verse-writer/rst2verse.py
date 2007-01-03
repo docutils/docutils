@@ -1,5 +1,6 @@
 #!/usr/bin/python
 #
+# $Id$
 # Author: Engelbert Gruber <grubert@users.sourceforge.net>
 # Copyright: This module has been placed in the public domain.
 

@@ -3,6 +3,10 @@ verse writer
 
 :Date: 2007-01-03
 
+rst2verse is a LaTeX-writer to transfer single file poems into 
+LaTeX. The generated files are assumed to be included into a master 
+LaTeX document.
+
 Usage :
 
   rst2vers.py input output
