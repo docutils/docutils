@@ -1,0 +1,26 @@
+#!/bin/sh
+
+IN_DIR=input
+OUT_DIR=output
+EXP_DIR=expected
+
+if [ -z "$1" ] ; then
+  FILES=*.txt
+else
+  FILES=$1
+fi
+
+if [ ! -d $OUT_DIR ] ; then
+  mkdir $OUT_DIR
+fi
+
+CMD="python rst2verse.py"
+
+for IN_F in $IN_DIR/$FILES ; do
+  BASE=`basename $IN_F`
+  F_BASE=${BASE/.txt}
+  $CMD $IN_F $OUT_DIR/$F_BASE.tex
+  if [ $? -eq 0 ] ; then
+    diff -s -u $EXP_DIR/$F_BASE.tex $OUT_DIR/$F_BASE.tex
+  fi
+done
