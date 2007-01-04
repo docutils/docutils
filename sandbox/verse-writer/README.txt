@@ -1,7 +1,7 @@
 verse writer
 ============
 
-:Date: 2007-01-03
+:Date: 2007-01-04
 
 rst2verse is a LaTeX-writer to transfer single file poems into 
 LaTeX. The generated files are assumed to be included into a master 
@@ -35,3 +35,22 @@ output ::
   I will live in the secure orbit \\
 
   \end{verse}
+
+verse commands
+--------------
+
+* ``\poemtitle{TITEL}``  poems title. Similar to ``\section`` commands
+  this is included in a table of contents.
+* ``\\``   new line in verse.
+* ``\\!``  end of last line in a stanza. Adds a separating line.
+* ``\vin`` indent line by 1,5 em.
+
+Open issues
+-----------
+
+* Inlcude into the standard latex-writer to be able to set poems with
+  surrounding text. This would require a option to use verse for 
+  literal-blocks and to use poemtitle if the section contains only
+  a literal-block (poem).
+* End the line with ``\\!`` if the next line is blank.
+* Only one ``\vin`` level is supported.
