@@ -65,7 +65,8 @@ class VerseLaTeXTranslator(LaTeXTranslator):
 
     def __init__(self, document):
         LaTeXTranslator.__init__(self, document)
-        self._verse_in = []
+        self._verse_in = []     # add vin indentation.
+        self._in_stanza = 0
 
     def astext(self):
         return ''.join(self.body)
@@ -94,12 +95,17 @@ class VerseLaTeXTranslator(LaTeXTranslator):
 
     def visit_line(self, node):
         if len(node.astext().strip())==0:
+            if self._in_stanza != 0:
+                # change last line end to ``\\!\n``
+                self.body[-1] = self.body[-1].rstrip() + '!\n'
             self.body.append('\n')
+            self._in_stanza = 0
             raise nodes.SkipNode
         if len(self._verse_in)>0:
             # BUG assume only one indentation is needed
             self.body.append(self._verse_in[0])
     def depart_line(self, node):
+        self._in_stanza = 1
         self.body.append(' \\\\\n')
 
 

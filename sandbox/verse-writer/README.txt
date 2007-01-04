@@ -52,5 +52,4 @@ Open issues
   surrounding text. This would require a option to use verse for 
   literal-blocks and to use poemtitle if the section contains only
   a literal-block (poem).
-* End the line with ``\\!`` if the next line is blank.
 * Only one ``\vin`` level is supported.
