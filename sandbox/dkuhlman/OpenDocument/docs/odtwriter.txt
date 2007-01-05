@@ -7,7 +7,7 @@ Odtwriter for Docutils
     http://www.rexx.com/~dkuhlman
 
 :revision: 1.0c
-:date: Jan. 2, 2007
+:date: Jan. 5, 2007
 
 :copyright: Copyright (c) 2006 Dave Kuhlman.  All Rights Reserved.
     This software is subject to the provisions of the MIT License
@@ -193,7 +193,7 @@ described here.
 
 To change the definition and appearance of these styles, open
 ``styles.odt`` in ``oowriter`` and open the Styles and Formatting
-window by using the following menu item:
+window by using the following menu item::
 
     Format --> Styles and Formatting
 
@@ -238,6 +238,10 @@ rststyle-enumitem
 
 rststyle-horizontalline
     A horizontal line, e.g. used for transitions.
+
+rststyle-table-title
+    The style for titles of tables.  See section `The table
+    directive`_.
 
 rststyle-textbody
     Normal text
@@ -413,6 +417,54 @@ in the reST document.
 Note to Pythonistas, there is a separate lexer for examples of
 code from the Python interactive prompt and console output or
 doctests.  The alias for that lexer is "pycon".
+
+
+The container directive
+-----------------------
+
+There is limited support for the ``container`` directive.  The
+limitations are the following:
+
+- Only the first class in the list of classes (arguments) is used
+  and
+
+- That class/style must be a paragraph style and not (for example) a
+  character style.
+
+So, for example::
+
+    .. container:: style-1 style-2 style-3
+
+        a block of text
+
+Only ``style-1`` is used; ``style-2`` and ``style-3`` are ignored.
+And, ``style-1`` must be a paragraph style.
+
+To define a paragraph style, use the following menu item::
+
+    Format --> Styles and Formatting
+
+Then, click on the Paragraph Styles button.
+
+
+The table directive
+-------------------
+
+The ``table`` directive can be used to add a title to a table.
+Example::
+
+    .. table:: A little test table
+
+        =========== =============
+        Name        Value
+        =========== =============
+        Dave        Cute
+        Mona        Smart
+        =========== =============
+
+The above will insert the title "A little test table" at the top of the
+table.  You can modify the appearance of the title by modifying the
+paragraph style ``rststyle-table-title``.
 
 
 

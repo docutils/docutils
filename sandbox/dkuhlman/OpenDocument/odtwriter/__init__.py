@@ -816,6 +816,18 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def depart_comment(self, node):
         pass
 
+    def visit_container(self, node):
+        styles = node.attributes.get('classes', ())
+        #ipshell('At visit_container 1')
+        if len(styles) > 0:
+            self.paragraph_style_stack.append(styles[0])
+
+    def depart_container(self, node):
+        #ipshell('At depart_container')
+        styles = node.attributes.get('classes', ())
+        if len(styles) > 0:
+            self.paragraph_style_stack.pop()
+
     def visit_copyright(self, node):
         el = self.generate_labeled_block(node, 'Copyright: ')
         self.set_current_element(el)
@@ -1496,6 +1508,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def visit_paragraph(self, node):
         #ipshell('At visit_paragraph')
         #self.trace_visit_node(node)
+        #print '>> (paragraph)'
         if self.omit:
             return
         style_name = self.paragraph_style_stack[-1]
@@ -1505,6 +1518,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def depart_paragraph(self, node):
         #self.trace_depart_node(node)
+        #print '<< (paragraph)'
         if self.omit:
             return
         self.set_to_parent()
@@ -1607,11 +1621,24 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             'fo:border-top': line_style1,
             'fo:border-bottom': line_style1,
             })
-        el3 = SubElement(self.current_element, 'table:table', attrib={
+        title = None
+        for child in node.children:
+            if child.tagname == 'title':
+                title = child.astext()
+                break
+        if title is not None:
+            el3 = self.append_child('text:p', attrib={
+                'text:style-name': 'rststyle-table-title',
+                })
+            el3.text = title
+        else:
+            #print 'no table title'
+            pass
+        el4 = SubElement(self.current_element, 'table:table', attrib={
             'table:name': '%s' % table_name,
             'table:style-name': '%s' % table_name,
             })
-        self.set_current_element(el3)
+        self.set_current_element(el4)
         self.current_table_style = el1
         self.table_width = 0
 
