@@ -1,37 +1,32 @@
 Index
 *****
 
-.. raw:: html
+.. compound::
+   :class: contents
 
-   <DIV class="contents">
+   **Contents:**
 
-**Contents:**
-
-    `2`_
-    `4`_
-    `A`_
-    `B`_
-    `C`_
-    `E`_
-    `G`_
-    `H`_
-    `I`_
-    `J`_
-    `L`_
-    `M`_
-    `N`_
-    `O`_
-    `P`_
-    `R`_
-    `S`_
-    `T`_
-    `W`_
-    `X`_
-    `Y`_
-
-.. raw:: html
-
-   </DIV><hr><p></p>
+     `2`_
+     `4`_
+     `A`_
+     `B`_
+     `C`_
+     `E`_
+     `G`_
+     `H`_
+     `I`_
+     `J`_
+     `L`_
+     `M`_
+     `N`_
+     `O`_
+     `P`_
+     `R`_
+     `S`_
+     `T`_
+     `W`_
+     `X`_
+     `Y`_
 
 ==== ============================== ===============================================
 _`2` `2nd indirect target`__        idxtest1.html: 1 Introduction
