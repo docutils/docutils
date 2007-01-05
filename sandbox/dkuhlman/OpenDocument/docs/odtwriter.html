@@ -6,7 +6,7 @@
 <meta name="generator" content="Docutils 0.5: http://docutils.sourceforge.net/" />
 <title>Odtwriter for Docutils</title>
 <meta name="author" content="Dave Kuhlman" />
-<meta name="date" content="Jan. 2, 2007" />
+<meta name="date" content="Jan. 5, 2007" />
 <meta name="copyright" content="Copyright (c) 2006 Dave Kuhlman.  All Rights Reserved. This software is subject to the provisions of the MIT License http://www.opensource.org/licenses/mit-license.php." />
 <style type="text/css">
 
@@ -193,7 +193,7 @@ tt.docutils {
 <tr><th class="docinfo-name">Revision:</th>
 <td>1.0c</td></tr>
 <tr><th class="docinfo-name">Date:</th>
-<td>Jan. 2, 2007</td></tr>
+<td>Jan. 5, 2007</td></tr>
 <tr><th class="docinfo-name">Copyright:</th>
 <td>Copyright (c) 2006 Dave Kuhlman.  All Rights Reserved.
 This software is subject to the provisions of the MIT License
@@ -233,6 +233,8 @@ This software is subject to the provisions of the MIT License
 <li><a class="reference" href="#controlling-syntax-highlighting-within-a-document" id="id16" name="id16">5.2.1&nbsp;&nbsp;&nbsp;Controlling syntax highlighting within a document</a></li>
 </ul>
 </li>
+<li><a class="reference" href="#the-container-directive" id="id17" name="id17">5.3&nbsp;&nbsp;&nbsp;The container directive</a></li>
+<li><a class="reference" href="#the-table-directive" id="id18" name="id18">5.4&nbsp;&nbsp;&nbsp;The table directive</a></li>
 </ul>
 </li>
 </ul>
@@ -410,8 +412,9 @@ described here.</p>
 <p>To change the definition and appearance of these styles, open
 <tt class="docutils literal"><span class="pre">styles.odt</span></tt> in <tt class="docutils literal"><span class="pre">oowriter</span></tt> and open the Styles and Formatting
 window by using the following menu item:</p>
-<blockquote>
-Format --&gt; Styles and Formatting</blockquote>
+<pre class="literal-block">
+Format --&gt; Styles and Formatting
+</pre>
 <p>Then, click on the Paragraph Styles button or the Character Styles
 button at the top of the Styles and Formatting window.  You may
 also need to select &quot;All Styles&quot; from the drop-down selection list
@@ -444,6 +447,9 @@ provided: rststyle-heading1 through rststyle-heading5.</dd>
 <dd>An item in an enumerated list.</dd>
 <dt>rststyle-horizontalline</dt>
 <dd>A horizontal line, e.g. used for transitions.</dd>
+<dt>rststyle-table-title</dt>
+<dd>The style for titles of tables.  See section <a class="reference" href="#the-table-directive">The table
+directive</a>.</dd>
 <dt>rststyle-textbody</dt>
 <dd>Normal text</dd>
 </dl>
@@ -582,6 +588,49 @@ in the reST document.</p>
 <p>Note to Pythonistas, there is a separate lexer for examples of
 code from the Python interactive prompt and console output or
 doctests.  The alias for that lexer is &quot;pycon&quot;.</p>
+</div>
+</div>
+<div class="section">
+<h2><a class="toc-backref" href="#id17" id="the-container-directive" name="the-container-directive">5.3&nbsp;&nbsp;&nbsp;The container directive</a></h2>
+<p>There is limited support for the <tt class="docutils literal"><span class="pre">container</span></tt> directive.  The
+limitations are the following:</p>
+<ul class="simple">
+<li>Only the first class in the list of classes (arguments) is used
+and</li>
+<li>That class/style must be a paragraph style and not (for example) a
+character style.</li>
+</ul>
+<p>So, for example:</p>
+<pre class="literal-block">
+.. container:: style-1 style-2 style-3
+
+    a block of text
+</pre>
+<p>Only <tt class="docutils literal"><span class="pre">style-1</span></tt> is used; <tt class="docutils literal"><span class="pre">style-2</span></tt> and <tt class="docutils literal"><span class="pre">style-3</span></tt> are ignored.
+And, <tt class="docutils literal"><span class="pre">style-1</span></tt> must be a paragraph style.</p>
+<p>To define a paragraph style, use the following menu item:</p>
+<pre class="literal-block">
+Format --&gt; Styles and Formatting
+</pre>
+<p>Then, click on the Paragraph Styles button.</p>
+</div>
+<div class="section">
+<h2><a class="toc-backref" href="#id18" id="the-table-directive" name="the-table-directive">5.4&nbsp;&nbsp;&nbsp;The table directive</a></h2>
+<p>The <tt class="docutils literal"><span class="pre">table</span></tt> directive can be used to add a title to a table.
+Example:</p>
+<pre class="literal-block">
+.. table:: A little test table
+
+    =========== =============
+    Name        Value
+    =========== =============
+    Dave        Cute
+    Mona        Smart
+    =========== =============
+</pre>
+<p>The above will insert the title &quot;A little test table&quot; at the top of the
+table.  You can modify the appearance of the title by modifying the
+paragraph style <tt class="docutils literal"><span class="pre">rststyle-table-title</span></tt>.</p>
 <!-- Configuration for Emacs -->
 <!-- Local Variables:
 mode: indented-text
@@ -589,7 +638,6 @@ indent-tabs-mode: nil
 sentence-end-double-space: t
 fill-column: 68
 End: -->
-</div>
 </div>
 </div>
 </div>

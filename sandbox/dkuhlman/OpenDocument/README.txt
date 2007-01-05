@@ -38,10 +38,23 @@ For more information on Docutils, see: http://docutils.sourceforge.net/
 History
 =======
 
+2007/01/05 -- Version 1.0c
+--------------------------
+
+Added support for the "table" directive.  Insert title into output
+with new rststyle-table-title style.
+
+Added limited support for "container" directive.  Limitations: (1)
+Only the first class in the list of classes (arguments) is used
+and (2) that class/style must be a paragraph style and not (for
+example) a character style.
+
+
 2006/12/31 -- Version 1.0b
 --------------------------
 
 Fixed imports to match latest version of Pygments.
+
 
 2006/12/29 -- Version 1.0b
 --------------------------
