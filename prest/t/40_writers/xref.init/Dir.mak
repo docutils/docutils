@@ -46,27 +46,27 @@ TOCCMD = $(PRESTCMD) -w toc
 XREFWRT = $(LIBDIR)/Restructured/Writer/xref.wrt
 XREFCMD = $(PRESTCMD) -w xref
 
-index%.out: $(IDXRSTs) index%.idx $(RST2DOC) $(INDEXWRT) $(PMFILES)
+index%.idxo: $(IDXRSTs) index%.idx $(RST2DOC) $(INDEXWRT) $(PMFILES)
 	@$(PERL) $(PERL_FLAGS) $(INDEXCMD) $(RST_FLAG_index$*) $(IDXRSTs)
 
-index%.dbg: $(IDXRSTs) index%.idx $(RST2DOC) $(INDEXWRT) $(PMFILES)
+index%.idxd: $(IDXRSTs) index%.idx $(RST2DOC) $(INDEXWRT) $(PMFILES)
 	@$(PERL) $(PERL_FLAGS) -d $(INDEXCMD) $(RST_FLAG_index$*) $(IDXRSTs) $(DEBUG_FLAGS)
 
 index%.chk: $(IDXRSTs) index%.idx $(PREST) $(INDEXWRT) $(PMFILES)
 	@$(PERL) $(PERL_FLAGS) $(INDEXCMD) $(RST_FLAG_index$*) $(IDXRSTs) | diff index$*.idx - > $@
 
-toc%.out: $(IDXRSTs) toc%.toc $(PREST) $(TOCWRT) $(PMFILES)
+toc%.toco: $(IDXRSTs) toc%.toc $(PREST) $(TOCWRT) $(PMFILES)
 	@$(PERL) $(PERL_FLAGS) $(TOCCMD) $(RST_FLAG_toc$*) $(IDXRSTs)
 
-toc%.dbg: $(IDXRSTs) toc%.toc $(PREST) $(TOCWRT) $(PMFILES)
+toc%.tocd: $(IDXRSTs) toc%.toc $(PREST) $(TOCWRT) $(PMFILES)
 	@$(PERL) $(PERL_FLAGS) -d $(TOCCMD) $(RST_FLAG_toc$*) $(IDXRSTs) $(DEBUG_FLAGS)
 
 toc%.chk: $(IDXRSTs) toc%.toc $(PREST) $(TOCWRT) $(PMFILES)
 	@$(PERL) $(PERL_FLAGS) $(TOCCMD) $(RST_FLAG_toc$*) $(IDXRSTs) | diff toc$*.toc - > $@
-xref%.out:	 xreftest.rst xref%.xref $(PREST) $(XREFWRT) $(PMFILES)
+xref%.xrefo:	 xreftest.rst xref%.xref $(PREST) $(XREFWRT) $(PMFILES)
 	@$(PERL) $(PERL_FLAGS) $(XREFCMD) $(RST_FLAG_xref$*) xreftest.rst 
 
-xref%.dbg:	 xreftest.rst xref%.xref $(PREST) $(XREFWRT) $(PMFILES)
+xref%.xrefd:	 xreftest.rst xref%.xref $(PREST) $(XREFWRT) $(PMFILES)
 	@$(PERL) $(PERL_FLAGS) -d $(XREFCMD) $(RST_FLAG_xref$*) xreftest.rst $(DEBUG_FLAGS)
 
 xref%.chk:   xreftest.rst xref%.xref $(PREST) $(XREFWRT) $(PMFILES)
