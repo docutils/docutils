@@ -15,7 +15,7 @@ It uses the following output defines:
 -W attribution=<dash|parentheses|parens|none>
                        Specifies how the attribution of a block quote
                        is to be formatted (default is 'dash').
--W bodyattr=<text>     Specifies attributes to be passed to the <body>
+-W body-attr=<text>    Specifies attributes to be passed to the <body>
                        tag (default is '').
 -W cloak-email-addresses[=<0|1>]
                        Enables cloaking of email addresses to keep
@@ -81,7 +81,7 @@ It uses the following output defines:
 
 sub BEGIN = {
     # My -W flags
-    use vars qw($attribution $bodyattr $cloak_email_addresses $colspecs
+    use vars qw($attribution $body_attr $cloak_email_addresses $colspecs
 		$embed_stylesheet $field_limit $footnote_backlinks
 		$footnote_references $html_prolog $image_exts
 		$link_target $option_limit $stylesheet $stylesheet2
@@ -97,7 +97,7 @@ sub BEGIN = {
 
     # Defaults for -W flags
     $attribution = 'dash' unless defined $attribution;
-    $bodyattr = '' unless defined $bodyattr;
+    $body_attr = '' unless defined $body_attr;
     $cloak_email_addresses = '' unless defined $cloak_email_addresses;
     $colspecs = 1 unless defined $colspecs;
     # Note: $stylesheet will be 'none' only if DEFAULTCSS is
@@ -995,7 +995,7 @@ EOS
 
     sub table = { # PROCESS
 	my ($dom, $str) = @_;
-	my $tattr = $dom->{tableattr} || '';
+	my $tattr = $dom->{table_attr} || '';
 	%{$dom->{_html}{attr}} = ($tattr =~ /(\w+)(?:=(\S+))?/g,
 				  $tattr =~ /(\w+)="(.*?)"/g);
 	if ($dom->{_html}{attr}{class}) {
@@ -1036,15 +1036,15 @@ EOS
 
     sub row = { # PROCESS
 	my ($dom, $str) = @_;
-	my $attr = defined $dom->{rowattr} && $dom->{rowattr} ne '' ?
-	    " $dom->{rowattr}" : '';
+	my $attr = defined $dom->{row_attr} && $dom->{row_attr} ne '' ?
+	    " $dom->{row_attr}" : '';
 	return qq(<tr$attr>$str</tr>\n);
     }
 
     sub entry = { # PROCESS
 	my ($dom, $str) = @_;
 	my $attr = $dom->{attr};
-	my $eattr = $dom->{entryattr} || '';
+	my $eattr = $dom->{entry_attr} || '';
 	# Devel::Cover branch 0 1 there are no pass-thru attributes
 	%{$dom->{_html}{attr}} =
 	    (map($_ eq 'morerows' ? ('rowspan'=>$attr->{$_}+1) :
@@ -1235,7 +1235,7 @@ EOS
 	}
 	push @{$head->[0]}, @HEAD if @HEAD;
 	# Handle the body.
-        my $battr = $bodyattr ? " $bodyattr" : '';
+        my $battr = $body_attr ? " $body_attr" : '';
 	my $body = [["<body$battr>\n"], ["</body>\n"]];
 	unshift @{$body->[1]}, $FOOTER if defined $FOOTER;
 	push @{$doc->[0]}, $body;
