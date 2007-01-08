@@ -15,11 +15,13 @@ includes:
 
 1. All non-anonymous internal targets, exported as ::
 
-     .. <targetName>: <sourceFileName><ext>.<suffix>#<targetID>
+     .. _<targetName>: <base-file><ext>.<suffix>#<targetID>
+
+   Here <base-file> is the base file name (file name without extension).
 
 2. All citations, exported as::
 
-     .. <citationName>: <sourceFileName><ext>.<suffix>#<citationID>
+     .. _<citationName>: <base-file><ext>.<suffix>#<citationID>
 
 3. Substitution definitions that have the same names as internal
    targets but do not, directly or indirectly through substitution
@@ -30,36 +32,95 @@ includes:
    exported according to 3. Substitution definitions are exported
    as defined in the source file.
 
+5. If -W xref-sections is specified,
+
+   a. Targets for all section titles, exported as ::
+
+        .. _<base-file>.<base-title>: <base-file><ext>.<suffix>#<titleID>
+
+      Here <base-title> is the title name prior to any autonumbering.
+
+   b. Substitution definitions for all section titles, exported as ::
+
+        .. |<base-file>.<base-title>| replace:: <section-title>
+
+   c. Target for the file itself, exported as ::
+
+        .. _<base-file>.: <sourceFileName><ext>.<suffix>
+
+   d. Substitution definition for the file itself, exported as ::
+
+       .. |<base-file>.| replace:: <document-title>
+
 This writer uses the following output definitions:
 
--W file_suffix=<suffix>  Specify a file suffix to be used for
+-W appendix=<string>     String to use for an appendix reference when
+                         xref-sections=1 (default "Appendix").  An
+                         appendix is a document with a
+                         "number-prefixed" title that is not a number.
+-W chapter=<string>      String to use for a chapter reference when
+                         xref-sections=1 (default "Chapter").  A
+                         chapter is a document with a
+                         "number-prefixed" title that is a number.
+-W file-suffix=<suffix>  Specify a file suffix to be used for
                          exporting the cross reference targets
                          (default is html).
--W filename_ext=<ext>    Specify an extension to the filename,
+-W filename-ext=<ext>    Specify an extension to the filename,
                          (e.g. "_main") so the file location of
                          targets becomes <file><ext>.<suffix>
                          (default is "").
--W file_path=<dir>       Specify additional path information for
+-W file-path=<dir>       Specify additional path information for
                          the target file (default is "")
+-W section=<string>      String to use for a section reference when
+                         xref-sections=1 (default "Section").
 -W sprintf=<string>      Specify an sprintf string for formatting the
                          output definitions (default is "%s").
+-W xref-sections=<0|1>   Output cross-reference for section titles
+                         (default is 0).
+-W xref-targets=<0|1>    Output cross-reference for internal targets
+                         (default is 1)
 =end Description
 =end reST
 =cut
 
 sub BEGIN = {
     # My -W flags
-    use vars qw($file_suffix $filename_ext $file_path $sprintf);
+    use vars qw($appendix $chapter $file_suffix $filename_ext $file_path
+		$section $sprintf $xref_sections $xref_targets);
 
     # Run-time globals
-    use vars qw($XREF_STRS %TARGET_NAMES @TARGETS);
+    use vars qw($BASE_FILE $OUT_FILE %TARGET_NAMES @TARGETS $XREF_STRS);
 
     # Defaults for -W flags
+    $appendix = "Appendix" unless defined $appendix;
+    $chapter = "Chapter" unless defined $chapter;
     $file_suffix = 'html' unless defined $file_suffix;
     $filename_ext = '' unless defined $filename_ext;
     $file_path = "" unless defined $file_path;
     $file_path .= "/" if ($file_path && $file_path !~ /\/$/);
+    $section = "Section" unless defined $section;
     $sprintf = "%s" unless defined $sprintf;
+    $xref_sections = 0 unless defined $xref_sections;
+    $xref_targets = 1 unless defined $xref_targets;
+}
+
+sub exportableDef {
+    my ($dom) = @_;
+    # Devel::Cover branch 0 0 It will probably never be defined
+    return $dom->{_xref}{exportable}
+    if defined $dom->{_xref}{exportable};
+    my @contents = $dom->contents();
+    $dom->{_xref}{exportable} = "true";
+    foreach my $child (@contents) {
+	my $ctag = $child->{tag};
+	if ($ctag eq 'target' ||
+	    $ctag eq 'footnote_reference' ||
+	    $ctag eq 'problematic' ||
+	    ($ctag eq 'reference' && $child->{attr}{refuri})) {
+	    $dom->{_xref}{exportable} = "false";
+	}
+    }
+    return $dom->{_xref}{exportable};
 }
 
 # During the first pass, write all non-anonymous internal targets and
@@ -67,15 +128,16 @@ sub BEGIN = {
 phase PREPROCESS {
     sub document = {
 	my ($dom, $str) = @_;
-	my $fileName = $dom->{attr}{source};
-	$fileName .= "$filename_ext.$file_suffix"
-	    if (!($fileName =~ s/\.[^\.\/]*$/$filename_ext\.$file_suffix/o));
-	$fileName = "$file_path$fileName";
+	$OUT_FILE = $BASE_FILE = $dom->{attr}{source};
+	$BASE_FILE =~ s/\..*?$//;
+	$OUT_FILE .= "$filename_ext.$file_suffix"
+	    if (!($OUT_FILE =~ s/\..*?$/$filename_ext\.$file_suffix/o));
+	return unless $xref_targets;
 	my $str2;
 	my ($key, $value);
 	foreach (@TARGETS) {
 	    my ($name, $id) = @$_;
-	    $str2 .= sprintf "$sprintf\n", ".. _`$name`: $fileName#$id";
+	    $str2 .= sprintf "$sprintf\n", ".. _`$name`: $file_path$OUT_FILE#$id";
 	}
 	return $str2;
     }
@@ -139,10 +201,45 @@ phase PREPROCESS {
 #    has the same name as an internal target.
 # o. It does not contain (directly or indirectly) footnote and external 
 #    references, internal target, or problematic elements.
+# Also, handle xref-sections=1
 phase PROCESS {
     sub document = {
 	my ($dom, $str) = @_;
+	if ($xref_sections) {
+	    $XREF_STRS .= ".. _$BASE_FILE.: $file_path$OUT_FILE\n";
+	    my $title = '';
+	    $dom->{content}[0]->Recurse(sub {
+		my ($dom) = @_;
+		$title .= $dom->{text} if $dom->{tag} eq '#PCDATA';
+	    });
+	    $title =~ s/^(.*?)\.?\xa0+/ /;
+	    my ($number) = ($1);
+	    my $ref = ! defined $number ? $title :
+		$number =~ /\d$/ ? "$chapter $number" : "$appendix $number";
+	    $XREF_STRS .= ".. |$BASE_FILE.| replace:: $ref\n";
+	}
 	return $XREF_STRS;
+    }
+
+    sub section = {
+	my ($dom, $str) = @_;
+	if ($xref_sections) {
+	    my $name = $dom->{attr}{names}[0];
+	    return if ! defined $name;
+	    $XREF_STRS .= (".. _$BASE_FILE.$name: $file_path$OUT_FILE#" .
+			   Text::Restructured::NormalizeId(0, $name) . "\n");
+	    my $title = '';
+	    $dom->{content}[0]->Recurse(sub {
+		my ($dom) = @_;
+		$title .= $dom->{text} if $dom->{tag} eq '#PCDATA';
+	    });
+	    $title =~ s/^((.*?)(\..*?)?)\xa0+/ /;
+	    my ($number, $prefix, $suffix) = ($1, $2, $3);
+	    my $ref = ! defined $number ? $title :
+		$suffix ne '' ? "$section $number" :
+		$prefix =~ /\d$/ ?"$chapter $number" : "$appendix $number";
+	    $XREF_STRS .= ".. |$BASE_FILE.$name| replace:: $ref\n";
+	}
     }
 
     sub substitution_definition = {
@@ -150,6 +247,7 @@ phase PROCESS {
  	# Do nothing if this definition has been exported, has been
  	# previously identified as not exportable, or does not have
  	# the same name as an internal target or citation.
+	return unless $xref_targets;
 	# Devel::Cover +2 condition 0 1 null string always false
 	return 
 	    if ($dom->{_xref}{exported} ||
@@ -160,24 +258,5 @@ phase PROCESS {
 	$XREF_STRS .= $dom->{lit} . "\n";
 	$dom->{_xref}{exported} = 1;
 	return;
-	
-	sub exportableDef {
-	    my ($dom) = @_;
-	    # Devel::Cover branch 0 0 It will probably never be defined
-	    return $dom->{_xref}{exportable}
-	    if defined $dom->{_xref}{exportable};
-	    my @contents = $dom->contents();
-	    $dom->{_xref}{exportable} = "true";
-	    foreach my $child (@contents) {
-		my $ctag = $child->{tag};
- 		if ($ctag eq 'target' ||
-		    $ctag eq 'footnote_reference' ||
-		    $ctag eq 'problematic' ||
-		    ($ctag eq 'reference' && $child->{attr}{refuri})) {
-		    $dom->{_xref}{exportable} = "false";
-		}
-	    }
-	    return $dom->{_xref}{exportable};
-	}
     }
 }
