@@ -5,4 +5,9 @@
 use FindBin;
 eval "%CFG = (" . `cat $FindBin::RealBin/../config.log` . ")";
 
-exec $CFG{perl},"-I$FindBin::RealBin/../blib/lib", "$FindBin::RealBin/../blib/script/prest", @ARGV;
+my @ARGS = ("-I$FindBin::RealBin/../blib/lib",
+	    "$FindBin::RealBin/../blib/script/prest",
+	    @ARGV);
+unshift @ARGS, '-d' if $ENV{DEBUG};
+
+exec $CFG{perl},@ARGS;
