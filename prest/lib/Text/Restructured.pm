@@ -14,15 +14,21 @@ Defines for reStructuredText parser
 -----------------------------------
 -D align=<0|1>     Allow inferring right/center alignment in
                    single line simple table cells (default is 1).
--D entryattr=<text>
+-D entry-attr=<text>
                    Specifies attributes to be passed to table entry
                    (default is '').  Note: this option can be
                    changed on the fly within a table by using a perl
-                   directive to set $main::opt_D{entryattr}.
--D includeext=<text>
+                   directive to set $main::opt_D{entry_attr}.
+-D file-insertion-enabled[=<0|1>]
+                   Allows include directives to include files, which may
+                   be a potential security hole.  Default is 1.
+-D ignore-include-errs[=<0|1>]
+                   Specifies that no error should be generated for
+                   missing include files. Default is 0.
+-D include-ext=<text>
                    A colon-separated list of extensions to check for
                    included files.  Default is ":.rst:.txt".
--D includepath=<text>
+-D include-path=<text>
                    A colon-separated list of directories for the
                    include directive to search.  The special token
                    "<.>" represents the directory of the file 
@@ -34,32 +40,36 @@ Defines for reStructuredText parser
                    be used for the <mstyle> elements of MathML
                    markup.  Default is displaystyle=true for
                    ascii-mathml directive.
--D nestinline[=<0|1>]
+-D nest-inline[=<0|1>]
                    Specify whether to allow nesting of inline markup.
                    There are some limitations, like strong cannot be
                    nested within emphasis.
                    Default is 1 (1 if specified with no value).
--D perlpath=<text>
+-D perl-path=<text>
                    A colon-separated list of directories to search
                    for Perl modules.  The special token "<INC>" 
                    represents the default Perl include path.
                    Default is "<INC>".
+-D raw-enabled[=<0|1>]
+                   Allows raw directives to be processed, which may
+                   be a potential security hole.  Default is 1.
 -D report=<level>  Set verbosity threshold; report system messages
                    at or higher than <level> (by name or number:
                    "info" or "1", warning/2, error/3, severe/4; 
                    also, "none" or 5).  Default is 2 (warning).
--D rowattr=<text>  Specifies attributes to be passed to table rows
+-D row-attr=<text>
+                   Specifies attributes to be passed to table rows
                    (default is '').  Note: this option can be
                    changed on the fly within a table by using a perl
-                   directive to set $main::opt_D{rowattr}.
+                   directive to set $main::opt_D{row_attr}.
 -D source=<text>   Overrides the file name as the source.
--D tableattr=<text>
+-D table-attr=<text>
                    Specifies attributes to be passed to tables (default
-                   is '${Text::Restructured::DEFAULTS{tableattr}}'). 
+                   is '${Text::Restructured::DEFAULTS{table_attr}}'). 
                    Note: this option can be changed on the fly to
                    have tables with different characteristics by
                    using a perl directive to set
-                   $main::opt_D{tableattr}.
+                   $main::opt_D{table_attr}.
 -D tabstops=<num>  Specifies that tab characters are assumed to tab
                    out to every <num> characters (default is 8).
 -D xformoff=<regexp>
@@ -245,11 +255,15 @@ BEGIN {
     *DEFAULT_ROLE = \'title-reference';  #';
     @UNITS = (qw(em ex px in cm mm pt pc), '');
     %XML_SPACE = ('xml:space'=>'preserve');
-    %DEFAULTS = (align=>1, report=>2, includeext=>':.rst:.txt',
-		 includepath=>'<.>', nestinline=>1,
-		 perlpath=>'<INC>',
-#		 tableattr=>'class="table" frame="border" rules="all"',
-		 tableattr=>'border="1" class="docutils"',
+    %DEFAULTS = (align=>1, 
+		 file_insertion_enabled=>1,
+		 include_ext=>':.rst:.txt',
+		 include_path=>'<.>',
+		 nest_inline=>1,
+		 perl_path=>'<INC>',
+		 raw_enabled=>1,
+		 report=>2,
+		 table_attr=>'border="1" class="docutils"',
 		 tabstops=>8);
 }
 
@@ -297,10 +311,10 @@ sub init : method {
 
     # Handle the Perl include path
     my $perl_inc = join(':', @INC);
-    my $new_inc = $main::opt_D{perlpath};
+    my $new_inc = $main::opt_D{perl_path};
     $new_inc =~ s/<inc>/$perl_inc/gi;
     @INC = split(/:/, $new_inc);
-    delete $main::opt_D{perlpath};
+    delete $main::opt_D{perl_path};
 
     # Preprocess the mstyle define
     if ($main::opt_D{mstyle} && ref($main::opt_D{mstyle}) ne 'ARRAY') {
@@ -1286,7 +1300,7 @@ sub Inline : method {
 		if ((defined $embeduri || $implicit) &&
 		    do {$uri = $implicit ? $mid : $embeduri;
 			$uri =~ s/\s//g;
-			$uri =~ /^($Text::Restructured::URIre::URI_reference|$EMAIL)$/o}) {
+			$uri =~ /^($Text::Restructured::URIre::URI_reference(\#\S+)?|(\#\S+)|$EMAIL)$/o}) {
 		    # Implicit references may pick up extra punctuation at
 		    # the end.
 		    if ($pre ne '<' && substr($next1,0,1) ne '>' &&
@@ -1414,7 +1428,7 @@ sub Inline : method {
 		$tag eq 'raw' ||
 		(defined $attr{role} &&
 		 $self->{MY_ROLES}{$attr{role}}{attr}{raw}) ||
-		! $main::opt_D{nestinline}) {
+		! $main::opt_D{nest_inline}) {
 		$mid = RemoveBackslashes($mid)
 		    if $tag !~ /^(literal|raw)$/ &&
 		    !(defined $attr{role} &&
@@ -1466,7 +1480,7 @@ sub InlineEnd : method {
 	$self->InlineFindEnd($text, $start, $outer_start);
     my ($full_mid, $next) = ($orig_mid, $orig_next);
     goto do_return
-	unless $is_end && $main::opt_D{nestinline} && $start ne '``';
+	unless $is_end && $main::opt_D{nest_inline} && $start ne '``';
 
     # We only need to recurse to get it right if the start symbol is
     # "*" or "`" (emphasis or interpreted/target)
@@ -2235,7 +2249,9 @@ sub RegisterName : method {
 	grep ($_ ne $dom &&
 	      (defined $_->{attr}{names} && $_->{attr}{names}[0] ||
 	       defined $_->{attr}{dupnames} && $_->{attr}{dupnames}[0] || '')
-	      eq $casename,
+	      eq $casename &&
+	      (($_->{source} || '') ne ($source || '') ||
+	       $_->{lineno} != $lineno),
 	      @{$self->{TARGET_NAME}{$space}{$name}}) if $name ne '';
     if (@same_name_targets > 0) {
 	my %attr;
@@ -2445,7 +2461,14 @@ sub SectionBreaks : method {
 		$self->{SEC_LEVEL}{$secstyle} = $#{$self->{SEC_STYLE}};
 	    }
 	    else {
-		splice(@{$self->{SEC_DOM}}, $self->{SEC_LEVEL}{$secstyle});
+		splice(@{$self->{SEC_DOM}}, $self->{SEC_LEVEL}{$secstyle})
+		    if $self->{SEC_LEVEL}{$secstyle} <= @{$self->{SEC_DOM}};
+	    }
+	    if ($self->{SEC_LEVEL}{$secstyle} > @{$self->{SEC_DOM}}) {
+		push(@dom,
+		     $self->system_message
+		     (3, $source, $lineno + (($line eq 'over') ? 1 : 0),
+		      "Title level inconsistent:", "$lit"));
 	    }
 	    if (@dom) {
 		$self->{SEC_DOM}[-1]->append(@dom);
@@ -2537,7 +2560,7 @@ sub SimpleTable : method {
     }
     
     my $dom = $DOM->new('table');
-    $dom->{tableattr} = $main::opt_D{tableattr};
+    $dom->{table_attr} = $main::opt_D{table_attr};
     my $tgroup = $DOM->new('tgroup', cols=>@colwidth+0);
     $dom->append($tgroup);
     my $colspec;
@@ -2678,9 +2701,9 @@ sub SimpleTable : method {
 		    $celltext =~ s/^$spaces//gm;
 		    $self->Paragraphs($entry, $celltext, $source,
 				      $lineno+$row_start);
-		    $entry->{entryattr} = $main::opt_D{entryattr};
+		    $entry->{entry_attr} = $main::opt_D{entry_attr};
 		}
-		$row->{rowattr} = $main::opt_D{rowattr};
+		$row->{row_attr} = $main::opt_D{row_attr};
 	    }
 	    $row_start = $next_row_start;
 	}
@@ -2788,7 +2811,7 @@ sub Table : method {
     }
 
     my $dom = $DOM->new('table');
-    $dom->{tableattr} = $main::opt_D{tableattr};
+    $dom->{table_attr} = $main::opt_D{table_attr};
     my $tgroup = $DOM->new('tgroup', cols=>$#cols);
     $dom->append($tgroup);
     my $c;
@@ -2815,7 +2838,7 @@ sub Table : method {
 		$tbody = $DOM->new('tbody');
 		$tgroup->append($tbody);
 	    }
-	    $row->{rowattr} = $main::opt_D{rowattr} if defined $row;
+	    $row->{row_attr} = $main::opt_D{row_attr} if defined $row;
 	    $row = $DOM->new('row');
 	    $tbody->append($row);
 	}
@@ -2878,11 +2901,11 @@ sub Table : method {
 	my $spaces = $1;
 	$celltext =~ s/^$spaces//gm;
 	$self->Paragraphs($entry, $celltext, $source, $lineno+$v+1);
-	$entry->{entryattr} = $main::opt_D{entryattr};
+	$entry->{entry_attr} = $main::opt_D{entry_attr};
 	$lastv = $v;
     }
     # Devel::Cover branch 0 1 Assert defined $row
-    $row->{rowattr} = $main::opt_D{rowattr} if defined $row;
+    $row->{row_attr} = $main::opt_D{row_attr} if defined $row;
     return $dom;
 }
 
@@ -3494,15 +3517,18 @@ sub image {
 # Returns: array of DOM objects
 sub include {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
+    return $parser->system_message(2, $source, $lineno,
+				   qq("$name" directive disabled.), $lit)
+	unless $main::opt_D{file_insertion_enabled};
     my @optlist = qw(literal encoding);
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
 				\@optlist);
     return $dhash if ref($dhash) eq $DOM;
     my($args, $options) = map($dhash->{$_}, qw(args options));
 
-    my @exts = split(/:/, $main::opt_D{includeext});
+    my @exts = split(/:/, $main::opt_D{include_ext});
     my $mydir = $source =~ m|(.*)/| ? $1 : ".";
-    my $path = $main::opt_D{includepath};
+    my $path = $main::opt_D{include_path};
     $path =~ s/<\.>/$mydir/;
     my @dirs = map(m|^\./?$| ? "" : m|/$| ? $_ : "$_/",split(/:/, $path));
     $args =~ s/^<(.*)>$/$1/;
@@ -3532,14 +3558,17 @@ sub include {
 	    return $lb;
 	}
 	else {
+	    push @Text::Restructured::INCLUDES, [$source, $lineno];
 	    $parser->Paragraphs($parent, $text, $file, 1);
+	    pop @Text::Restructured::INCLUDES;
 	}
     }
     else {
 	my $err = "IOError: " . system_error();
 	return $parser->system_message
 	    (4, $source, $lineno,
-	     qq(Problems with "$name" directive path:\n$err: '$args'.), $lit);
+	     qq(Problems with "$name" directive path:\n$err: '$args'.), $lit)
+	    unless $main::opt_D{ignore_include_errs};
     }
     return;
 }
@@ -3678,7 +3707,11 @@ sub parsed_literal {
 # Returns: array of DOM objects
 sub raw {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
-    my @optlist = qw(file url);
+    return $parser->system_message(2, $source, $lineno,
+				   qq("$name" directive disabled.), $lit)
+	unless ($main::opt_D{file_insertion_enabled} &&
+		$main::opt_D{raw_enabled});
+    my @optlist = qw(file head url);
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
 				\@optlist, '1+');
     return $dhash if ref($dhash) eq $DOM;
@@ -3720,6 +3753,7 @@ sub raw {
 	}
     }
 
+    $attr{head} = 1 if defined $options->{head};
     my $dom = $DOM->new('raw', format=>$args, %Text::Restructured::XML_SPACE,
 		       %attr);
     chomp $content;
@@ -3809,7 +3843,7 @@ sub role {
 # Returns: array of DOM objects
 sub sectnum {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
-    my @optlist = qw(depth prefix start suffix);
+    my @optlist = qw(depth prefix prefix-title start suffix);
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
 				\@optlist, 0);
     return $dhash if ref($dhash) eq $DOM;
@@ -3928,7 +3962,7 @@ sub table {
 
     my @dom;
     my $table = $DOM->new('table');
-    $table->{tableattr} = $main::opt_D{tableattr};
+    $table->{table_attr} = $main::opt_D{table_attr};
     push(@dom, $table);
     foreach my $opt (keys %myopts) {
 	if (defined $myopts{$opt} && $myopts{$opt} ne '' && $options->{$opt}) {
@@ -3965,6 +3999,11 @@ sub table {
 	my $heads;
 	my %lines;
 	if ($name eq 'csv-table') {
+	    return $parser->system_message(2, $source, $lineno,
+					   qq("$name" directive :file: option disabled.),
+					   $lit)
+		if (defined $options->{file} &&
+		    ! $main::opt_D{file_insertion_enabled});
 	    return $parser->system_message(3, $source, $lineno,
 					   qq("$name" directive may not both specify an external file and have content.),
 					   $lit)
@@ -4125,9 +4164,9 @@ sub table {
 		    else {
 			$e->append(@{$row->[$entry]});
 		    }
-		    $e->{entryattr} = $main::opt_D{entryattr}
-		    if defined $main::opt_D{entryattr} &&
-			$main::opt_D{entryattr} ne '';
+		    $e->{entry_attr} = $main::opt_D{entry_attr}
+		    if defined $main::opt_D{entry_attr} &&
+			$main::opt_D{entry_attr} ne '';
 		}
 	    }
 	}
