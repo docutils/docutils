@@ -15,6 +15,8 @@ both). It has the following options:
 
 ``:lenient:``
   Causes the exit code for the subprocess to be ignored.
+``:file: <filename>``
+  Takes the perl code from file <filename>.
 ``:literal:``
   Interpret the returned value as a literal block.
 
@@ -34,6 +36,8 @@ use within the perl code:
    The name of the source file containing the perl directive.
 ``$LINENO``
    The line number of the perl directive within $SOURCE.
+``@INCLUDES``
+   Array of [filename, linenumber] pairs of files which have included this one
 ``$opt_<x>``
    The ``<x>`` option from the command line.
 ``$TOP_FILE``
@@ -81,7 +85,7 @@ BEGIN {
 sub main {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
     print STDERR "Debug: $name: $source, $lineno\n" if $main::opt_d >= 3;
-    my @optlist = qw(lenient literal);
+    my @optlist = qw(file lenient literal);
     my $dhash = Text::Restructured::Directive::parse_directive
 	($parser, $dtext, $lit, $source, $lineno, \@optlist);
     return $dhash if ref($dhash) eq $DOM;
@@ -90,6 +94,20 @@ sub main {
 	($parser, $name, 3, $source, $lineno,
 	 qq(Cannot have both argument and content.), $lit)
 	if $args !~ /^$/ && $content !~ /^$/;
+    my $code = "$args$content";
+    if ($options->{file}) {
+	return Text::Restructured::Directive::system_msg
+	    ($parser, $name, 3, $source, $lineno,
+	     qq(Cannot have both :file: and content.), $lit)
+	    if $code ne '';
+	open FILE, $options->{file} or
+	    return Text::Restructured::Directive::system_msg
+	    ($parser, $name, 3, $source, $lineno,
+	     qq(Cannot open file "$options->{file}".), $lit);
+	$code = join '', <FILE>;
+	close FILE;
+    }
+    
     if (! $Perl::safe) {
 	# Create a safe compartment for the Perl to run
 	use Safe;
@@ -132,7 +150,8 @@ sub main {
     $Perl::Safe::SOURCE = $source;
     $Perl::Safe::LINENO = $lineno;
     $Perl::Safe::TOP_FILE = $main::TOP_FILE;
-    my @text = $Perl::safe->reval("$args$content");
+    @Perl::Safe::INCLUDES = @Text::Restructured::INCLUDES;
+    my @text = $Perl::safe->reval($code);
     my $newsource = qq($name directive at $source, line $lineno);
     my $err = $@ =~ /trapped by/ ? "$@Run with -D trusted if you believe the code is safe" : $@;
     return $parser->system_message
