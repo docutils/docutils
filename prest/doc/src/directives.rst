@@ -542,11 +542,8 @@ that begins in one physical paragraph and ends in another.
    like HTML's ``<div>`` element.  Do not use it only to group a
    sequence of elements, or you may get unexpected results.
 
-   If you happen to need a generic block-level container, please
-   describe your use-case in an email to the Docutils-users_ mailing
-   list.
-
-   .. _Docutils-users: ../../user/mailing-lists.html#docutils-users
+   If you need a generic block-level container, please use the
+   container_ directive, described below.
 
 Compound paragraphs are typically rendered as multiple distinct text
 blocks, with the possibility of variations to emphasize their logical
@@ -600,6 +597,37 @@ The following option is recognized:
 
 .. _mstyle attribute: ascii-mathml.xhtml#attributes-for-mstyle
 
+Container
+=========
+
+:Directive Type: "container"
+:Doctree Element: container
+:Directive Arguments: One or more, optional (class names).
+:Directive Options: None.
+:Directive Content: Interpreted as body elements.
+
+(New in Docutils 0.3.10)
+
+The "container" directive surrounds its contents (arbitrary body
+elements) with a generic block-level "container" element.  Combined
+with the optional "class_" attribute argument(s), this is an extension
+mechanism for users & applications.  For example::
+
+    .. container:: custom
+
+       This paragraph might be rendered in a custom way.
+
+Parsing the above results in the following pseudo-XML::
+
+    <container classes="custom">
+        <paragraph>
+            This paragraph might be rendered in a custom way.
+
+The "container" directive is the equivalent of HTML's ``<div>``
+element.  It may be used to group a sequence of elements for user- or
+application-specific purposes.
+
+
 --------
  Tables
 --------
@@ -651,6 +679,12 @@ CSV Table
 :Directive Arguments: 1, optional (table title).
 :Directive Options: Possible.
 :Directive Content: A CSV (comma-separated values) table.
+
+.. WARNING::
+
+   The "csv-table" directive's ":file:" and ":url:" options represent
+   a potential security holes.  They can be disabled with the
+   "file_insertion_enabled" runtime setting.
 
 (New in Docutils 0.3.4)
 
@@ -1345,6 +1379,13 @@ Including an External Document Fragment
 :Directive Options: Possible.
 :Directive Content: None.
 
+.. WARNING::
+
+   The "include" directive represents a potential security hole.  It
+   can be disabled with the "file_insertion_enabled_" runtime setting.
+
+   .. _file_insertion_enabled: ../../user/config.html#file-insertion-enabled
+
 The "include" directive reads a reStructuredText-formatted text file
 and parses it in the current document's context at the point of the
 directive.  The directive argument is the path to the file to be
@@ -1444,6 +1485,12 @@ Raw Data Pass-Through
 :Directive Content: Stored verbatim, uninterpreted.  None (empty) if a
                     "file" or "url" option given.
 
+.. WARNING::
+
+   The "raw" directive represents a potential security hole.  It can
+   be disabled with the "raw_enabled" or "file_insertion_enabled"
+   runtime settings.
+
 .. Caution::
 
    The "raw" directive is a stop-gap measure allowing the author to
@@ -1456,6 +1503,8 @@ Raw Data Pass-Through
    that functionality may be missing from reStructuredText.  Please
    describe your situation in a message to the Docutils-users_ mailing
    list.
+
+   .. _Docutils-users: ../../user/mailing-lists.html#docutils-users
 
 The "raw" directive indicates non-reStructuredText data that is to be
 passed untouched to the Writer.  The names of the output formats are
@@ -1575,7 +1624,7 @@ The text above is parsed and transformed into this doctree fragment::
     - However the `CSS1 spec`_ defines identifiers based on the "name"
       token, a tighter interpretation ("flex" tokenizer notation
       below; "latin1" and "escape" 8-bit characters have been replaced
-      with XML entities)::
+      with entities)::
 
           unicode     \\[0-9a-f]{1,4}
           latin1      [&iexcl;-&yuml;]
