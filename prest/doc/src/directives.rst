@@ -907,6 +907,10 @@ The following options are recognized:
     any separating punctuation (in the example, a period, ".") must be
     explicitly provided.  The default is no prefix.
 
+``prefix-title`` : flag
+    Specifies whether a prefix should also be appended to the title
+    for the document.
+
 ``suffix`` : string
     An arbitrary string that is appended to the automatically
     generated section numbers.  The default is no suffix.
@@ -1271,6 +1275,10 @@ The following defines are processed by the perl directive:
 
 The following options are recognized:
 
+``file`` : string
+    Uses the text from the file represented by the string.  Both
+    arguments and contents must be empty if :file: is used.
+
 ``literal`` : flag (empty)
     The entire returned text is inserted into the document as a single
     literal block (useful for debugging).
@@ -1475,6 +1483,9 @@ The following options are recognized:
     The text encoding of the external raw data (file or URL).
     Defaults to the document's encoding (if specified).
 
+``head`` : flag (empty)
+    The raw text gets put into the head material of the document rather
+    than the body (if applicable).
 
 .. _classes:
 
