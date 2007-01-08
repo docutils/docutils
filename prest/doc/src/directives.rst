@@ -1227,6 +1227,16 @@ is omitted.  This behavior can be useful for putting comments in a
 reStructuredText document that should not be propagated to the output
 as comments.
 
+The "if" directive defines the following global variables:
+
+``$SOURCE``
+   The name of the source file containing the perl directive.
+``$LINENO``
+   The line number of the perl directive within ``$SOURCE``.
+``@INCLUDES``
+   Array of reference to array of [file name, line number] pairs that
+   have included the current file.
+
 The "if" directive processes the following define:
 
 -D perl='perl-code'
@@ -1253,14 +1263,17 @@ The "perl" directive executes perl code and interpolates whatever is
 returned by the execution.  The perl code can be placed either in
 the arguments or the contents section (or both).
 
-The perl directive defines the following global variables:
+The "perl" directive defines the following global variables:
 
 ``$SOURCE``
    The name of the source file containing the perl directive.
 ``$LINENO``
    The line number of the perl directive within ``$SOURCE``.
+``@INCLUDES``
+   Array of reference to array of [file name, line number] pairs that
+   have included the current file.
 
-The following defines are processed by the perl directive:
+The following defines are processed by the "perl" directive:
 
 -D perl='perl-code'
                 Specifies some perl code that is executed prior
