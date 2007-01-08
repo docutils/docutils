@@ -108,12 +108,14 @@ sub DFS {
 # Internal routine. Called recursively by DFS.
 sub _DFS {
     my($g, $p, $sub) = @_;
-    &$sub($g, $p);
-    $g->{$p->[0]}{$p->[1]}{dfs} = 1;
-    my @edges = $g->GetVertexEdges($p);
-    my $p2;
-    foreach $p2 (@edges) {
-	$g->_DFS($p2, $sub) unless $g->{$p2->[0]}{$p2->[1]}{dfs};
+    my @list = ($p);
+    while (@list) {
+	my $p2 = shift @list;
+	if (! $g->{$p2->[0]}{$p2->[1]}{dfs}) {
+	    &$sub($g, $p2);
+	    $g->{$p2->[0]}{$p2->[1]}{dfs} = 1;
+	    push @list, $g->GetVertexEdges($p2);
+	}
     }
 }
 
