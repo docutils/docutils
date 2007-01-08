@@ -84,7 +84,10 @@ sub main {
 	    if defined &{"Text::Restructured::DOM::$_"};
 	}
     }
+    $Perl::Safe::SOURCE = $source;
+    $Perl::Safe::LINENO = $lineno;
     $Perl::Safe::TOP_FILE = $main::TOP_FILE;
+    @Perl::Safe::INCLUDES = @Text::Restructured::INCLUDES;
 
     if (defined $main::opt_D{perl}) {
 	my $exp = $main::opt_D{perl};
