@@ -23,6 +23,16 @@
 			     docutils.transforms.universal.Decorations
 			     );
 
+%Transforms::PENDING_PRIORITY =
+    (
+     'docutils.transforms.components.Filter'      => -200,
+     'docutils.transforms.parts.Class'            =>  100,
+     'docutils.transforms.parts.Contents'         => 1000,
+     'docutils.transforms.parts.Sectnum'          => -100,
+     'docutils.transforms.references.TargetNotes' =>  200,
+     );
+
+
 # Note: These package names were chosen to correspond with those of
 # the original python implementation of docutils.
 package Text::Restructured::docutils::transforms::components;
@@ -36,15 +46,19 @@ Defines for reStructuredText transforms
                        the document (default is 1).
 -D date=<0|1>          Include the date at the end of the document
                        (default is 0).
+-D docinfo-levels=<number>
+                       Indicates how many section levels to go down to
+                       process docinfo field lists (default is 0).
+                       (Values greater than 0 technically violate the DTD).
 -D time=<0|1>          Include the date and time at the end of the
                        document (default is 1, overrides date if 1).
--D source_link=<0|1>   Include a "View document source" link (default
+-D source-link=<0|1>   Include a "View document source" link (default
                        is 1).
--D source_url=<URL>    Use the supplied <URL> verbatim for a "View
+-D source-url=<URL>    Use the supplied <URL> verbatim for a "View
                        document source" link; implies -D source_link=1.
--D keep_title_section  Keeps the section intact from which the document
+-D keep-title-section  Keeps the section intact from which the document
                        title is taken.
--D section_subtitles   Promote lone subsection titles to section subtitles.
+-D section-subtitles   Promote lone subsection titles to section subtitles.
 =end Usage
 =end reST
 =cut
@@ -88,14 +102,10 @@ my @bib_elements = qw(author authors organization address contact version
 my %BIB_ELEMENTS;
 @BIB_ELEMENTS{@bib_elements} = (1) x @bib_elements;
 
-# Processes a docutils.transforms.frontmatter.DocInfo transform.
-# Processes field lists at the beginning of the DOM that are one of
-# the docinfo types into a docinfo section.
-# Arguments: top-level DOM, parser obj
-sub DocInfo {
+sub process_docinfo {
     my ($dom, $parser) = @_;
 
-    # Create a docinfo if needed
+     # Create a docinfo if needed
     my @field_lists = grep($_->{tag} eq 'field_list', $dom->contents());
     my %element_seen;
     if (@field_lists) {
@@ -255,6 +265,23 @@ sub DocInfo {
 }
 }
 
+# Processes a docutils.transforms.frontmatter.DocInfo transform.
+# Processes field lists at the beginning of the DOM that are one of
+# the docinfo types into a docinfo section.
+# Arguments: top-level DOM, parser obj
+sub DocInfo {
+    my ($dom, $parser, $level) = @_;
+
+    $level = $level || 0;
+    process_docinfo($dom, $parser);
+    if ($level < ($main::opt_D{docinfo_levels} || 0)) {
+	my @sections = grep($_->{tag} eq 'section', $dom->contents());
+	foreach my $section (@sections) {
+	    process_docinfo($section, $parser);
+	}
+    }
+}
+
 # Processes a docutils.transforms.frontmatter.DocTitle transform.
 # Creates a document title if the top-level DOM has only one top-level
 # section.  Creates a subtitle if a unique top-level section has a
@@ -369,31 +396,42 @@ package Text::Restructured::docutils::transforms::misc;
 sub Pending {
     my ($topdom, $parser) = @_;
 
-    # Handle pending transformations
-    $topdom->Reshape
+    # Collect together all the pending transactions
+    my @pendings;
+    $topdom->Recurse
 	(sub {
 	     my($dom) = @_;
-	     if ($dom->{tag} eq 'pending') {
-		 my $transform = $dom->{internal}{'.transform'};
-		 (my $t = "Text::Restructured::$transform") =~ s/\./::/g;
-		 # Check the original transform path before giving up
-		 ($t = $transform) =~ s/\./::/g if ! defined &$t;
-		 return $parser->system_message(4, $dom->{source},
-					    $dom->{lineno},
-					    qq(No transform code found for "$transform".))
-		     unless defined &$t;
-		 my $details = $dom->{internal}{'.details'};
-		 no strict 'refs';
-		 print STDERR "Debug: Transform $transform\n" if $main::opt_d;
-		 my @result = eval { &$t($dom, $parser, $details) };
-		 return $parser->system_message(4, $dom->{source},
-						$dom->{lineno},
-						qq(Error in transform code "$transform": $@))
-		     if $@;
-		 return @result;
-	     }
-	     return $dom;
+	     push @pendings, $dom if $dom->{tag} eq 'pending';
 	 });
+    # Sort them by priority
+    @pendings = sort {
+	($Transforms::PENDING_PRIORITY{$a->{internal}{'.transform'}} || 0) <=>
+	($Transforms::PENDING_PRIORITY{$b->{internal}{'.transform'}} || 0)
+    } @pendings;
+    # Run them in priority order
+    foreach my $dom (@pendings) {
+	my @result;
+	my $transform = $dom->{internal}{'.transform'};
+	(my $t = "Text::Restructured::$transform") =~ s/\./::/g;
+	# Check the original transform path before giving up
+	($t = $transform) =~ s/\./::/g if ! defined &$t;
+	if (! defined &$t) {
+	    push @result,
+	    $parser->system_message(4, $dom->{source}, $dom->{lineno},
+				    qq(No transform code found for "$transform".));
+	}
+	else {
+	    my $details = $dom->{internal}{'.details'};
+	    no strict 'refs';
+	    print STDERR "Debug: Transform $transform\n" if $main::opt_d;
+	    @result = eval { &$t($dom, $parser, $details) };
+	    push @result,
+	    $parser->system_message(4, $dom->{source}, $dom->{lineno},
+				    qq(Error in transform code "$transform": $@))
+		if $@;
+	}
+	$dom->substitute(@result);
+    }
 }
 
 package Text::Restructured::docutils::transforms::parts;
@@ -487,7 +525,7 @@ sub Contents {
 			      }
 			      , 'both');
 			 $ref->append(@contents);
-			 $list[0]{attr}{classes} = ['auto-toc']
+			 $bl->{attr}{classes} = ['auto-toc']
 			     if ($dom->{content}[0]{content}[0]{tag}
 				 eq 'generated');
 		     }
@@ -527,49 +565,30 @@ sub Contents {
 sub Sectnum {
     my ($dom, $parser, $details) = @_;
 
-    my $topdom = $parser->{TOPDOM};
+    my $startdom = $dom;
+    while ($startdom->{tag} ne 'section' && $startdom->{tag} ne 'document') {
+	$startdom = $startdom->parent;
+    }
     # First process the table of contents topic if it exists
-    my ($toc) = grep($_->{tag} eq 'topic' && defined $_->{attr}{classes} &&
-		     $_->{attr}{classes}[0] eq 'contents',
-		     $topdom->contents());
     my @list; # Used in closure of sub
     my $prefix = defined $details->{prefix} ? $details->{prefix} : '';
     my $suffix = defined $details->{suffix} ? $details->{suffix} : '';
     my $start = $details->{start} || 1;
-    if (defined $toc) {
-	$toc->Recurse
-	    (sub {
-		 my($dom, $when) = @_;
-		 if ($dom->{tag} eq 'bullet_list') {
-		     if ($when eq 'pre') {
-			 push(@list, $start-1);
-			 $dom->{attr}{classes} = ['auto-toc']
-			     if (! defined $details->{depth} ||
-				 @list <= $details->{depth});
-		     }
-		     else { pop(@list) };
-		 }
-		 elsif ($dom->{tag} eq 'list_item' && $when eq 'pre') {
-		     $list[-1]++;
-		 }
-		 elsif ($dom->{tag} eq 'reference' && $when eq 'pre'
-			&& (! defined $details->{depth} ||
-			    @list <= $details->{depth})) {
-		     my $gen = $DOM->new('generated', classes=>['sectnum']);
-		     $gen->append($DOM->newPCDATA($prefix . join('.',@list)
-						. $suffix . ("\xa0"x3)));
-		     $dom->prepend($gen);
-		 }
-		 return 0;
-	     }
-	     , 'both') ;
+    my $prefix_title = defined $details->{'prefix-title'} ? 1 : 0;
+    if ($prefix_title && $prefix ne '') {
+	$startdom->{attr}{title} = $prefix . ("\xa0"x3) .
+	    $startdom->{attr}{title} if defined $startdom->{attr}{title};
+	my $gen = $DOM->new('generated', classes=>['sectnum']);
+	$gen->append($DOM->newPCDATA($prefix . ("\xa0"x3)));
+	$startdom->{content}[0]->prepend($gen);
     }
 
     # Next process the sections recursively
     @list = ($start-1);
-    $topdom->Recurse
+    $startdom->Recurse
 	(sub {
 	     my($dom, $when) = @_;
+	     return 0 if $dom eq $startdom;
 	     if ($dom->{tag} eq 'section') {
 		 if ($when eq 'pre') {
 		     if (! defined $details->{depth} ||
