@@ -44,6 +44,12 @@ It uses the following output defines:
 -W html-prolog=<0|1>
                        Generate file prolog for XHTML if 0 or
                        HTML if 1 (default is 0).
+-W image-exts=<ext-list>
+                       A comma-separated list of "ext1=ext2" pairs where 
+                       any URI with extension ext1 has it mapped to ext2.
+                       This option allows using a single document
+                       source with multiple writers by using whatever
+                       figure extension is appropriate for a given writer.
 -W link-target=<expr>  An expression that determines what the target
                        frame will be in link references.  The
                        link URL is available in ``$_`` so that the
@@ -77,7 +83,7 @@ sub BEGIN = {
     # My -W flags
     use vars qw($attribution $bodyattr $cloak_email_addresses $colspecs
 		$embed_stylesheet $field_limit $footnote_backlinks
-		$footnote_references $html_prolog
+		$footnote_references $html_prolog $image_exts
 		$link_target $option_limit $stylesheet $stylesheet2
 		$target_tag);
 
@@ -86,8 +92,8 @@ sub BEGIN = {
     *DOM = \'Text::Restructured::DOM'; #';
 
     # Run-time globals
-    use vars qw($HAS_CONTENTS $TARGET_FRAME $FOOTER $HEADER @HEAD_INFO
-		%USED_DEFAULT $DOCTYPE);
+    use vars qw($HAS_CONTENTS $TARGET_FRAME $FOOTER $HEADER @HEAD @HEAD_INFO
+		%IMAGE_EXTS $IMAGE_EXT_RE %USED_DEFAULT $DOCTYPE);
 
     # Defaults for -W flags
     $attribution = 'dash' unless defined $attribution;
@@ -110,7 +116,10 @@ sub BEGIN = {
     $link_target = "''" unless defined $link_target;
     $option_limit = 14 unless defined $option_limit;
     $target_tag = "a" unless defined $target_tag;
+    $image_exts = '' unless defined $image_exts;
 
+    %IMAGE_EXTS = split /[,=]/, $image_exts;
+    $IMAGE_EXT_RE = join '|', map("\Q$_", keys %IMAGE_EXTS);
     $DOCTYPE = $html_prolog ? << "EOPROLOG1" : << "EOPROLOG2" ;
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 EOPROLOG1
@@ -724,8 +733,9 @@ phase PROCESS {
 	chomp $str;
 	my $id = $dom->{attr}{ids} ? $dom->{attr}{ids}[0] : '';
 	my $class = $str ne '' ? qq( class="target") : '';
-	return (! defined $dom->{attr}{refuri}
-		&& defined $dom->{attr}{id}) || $str ne '' ?
+	return (! defined $dom->{attr}{refuri} &&
+		! defined $dom->{attr}{refid} &&
+		defined $dom->{attr}{ids}) || $str ne '' ?
 	    qq(<$target_tag$class id="$id">$str</$target_tag>) :
 	    "";
     }
@@ -742,7 +752,7 @@ phase PROCESS {
 	my $parent = $dom->parent();
 	my %attr;
 	$attr{class} = "footnote-reference";
-	my $ref = $attr{href} = "#$dom->{attr}{refid}";
+	my $ref = $attr{href} = "#$dom->{attr}{refid}" if $dom->{attr}{refid};
 	$attr{name} = $attr{id} = $dom->{attr}{ids}[0];
 	my $target = &$TARGET_FRAME($ref);
 	$attr{target} = $target if $target ne '';
@@ -1070,6 +1080,9 @@ EOS
 	my $alt = main::FirstDefined($attr->{alt}, $attr->{uri});
 	my $hattr = $dom->{_html}{attr} = {};
 	@$hattr{qw(alt src)} = ($alt, $attr->{uri});
+	if ($IMAGE_EXT_RE) {
+	    $hattr->{src} =~ s/($IMAGE_EXT_RE)$/$IMAGE_EXTS{$1}/o;
+	}
  	my @attr_out = qw(height width align usemap);
 	foreach (@attr_out) {
 	    $hattr->{$_} = $attr->{$_} if defined $attr->{$_};
@@ -1149,6 +1162,10 @@ EOS
 	return unless $dom->{attr}{format} =~ /\bhtml\b/;
 	my $s = $dom->{content}[0]{text};
 	chomp $s;
+	if ($dom->{attr}{head}) {
+	    push @HEAD, "$s\n";
+	    return;
+	}
 	return $s unless $dom->{attr}{classes};
 	my $parent = $dom->parent();
 	my $tag = $parent->{tag} =~ /section|document/ ? 'div' : 'span';
@@ -1216,6 +1233,7 @@ EOS
 		 sprintf(qq(<style type="text/css">\n%s</style>\n),
 			 $ss_text));
 	}
+	push @{$head->[0]}, @HEAD if @HEAD;
 	# Handle the body.
         my $battr = $bodyattr ? " $bodyattr" : '';
 	my $body = [["<body$battr>\n"], ["</body>\n"]];
