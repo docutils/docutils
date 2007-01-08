@@ -18,15 +18,19 @@ html file.
 
 This writer uses the following output defines:
 
--W file_suffix=<suffix>  Specify a file suffix to be used for
-                         the html version of the source files
-                         (default is "html").
--W filename_ext=<ext>    Specify an extension to the filename,
-                         (e.g. "_main") so the location of
-                         targets becomes <file><ext>.<suffix>
-                         (default is "").
--W short_titles=<0|1>    Specify that short titles should be used
-                         in the index (default is 1).
+-W file-suffix=<suffix>    Specify a file suffix to be used for
+                           the html version of the source files
+                           (default is "html").
+-W filename-ext=<ext>      Specify an extension to the filename,
+                           (e.g. "_main") so the location of
+                           targets becomes <file><ext>.<suffix>
+                           (default is "").
+-W output-header=<0|1>     Specify that a title and contents header
+                           should be output (default is 1).    
+-W short-titles=<0|1>      Specify that short titles should be used
+                           in the index (default is 1).
+-W title-underline=<char>  Specify the underline character to use
+                           for the title in the header (default is '*').
 =end Description
 =end reST
 =cut
@@ -43,7 +47,8 @@ This writer uses the following output defines:
 
 sub BEGIN = {
     # My -W flags
-    use vars qw($file_suffix $filename_ext $short_titles);
+    use vars qw($file_suffix $filename_ext $output_header $short_titles
+		$title_underline);
 
     # Static globals
     use vars qw(%START);
@@ -65,7 +70,7 @@ sub END {
     my $format = "%-4s %-${MAX_NAME}s %s\n";
     my $table = sprintf($format,
 			("=" x 4, "=" x $MAX_NAME, "=" x $MAX_SEC));
-    my ($targets, $header);
+    my $targets;
     my @anchors;
     foreach (@sorted) {
 	my ($refname, $target, $section) = @$_;
@@ -82,13 +87,17 @@ sub END {
 	$targets .= "__ $target\n";
     }
     $table .= sprintf($format, ("=" x 4, "=" x $MAX_NAME, "=" x $MAX_SEC));
-    $header = "Index\n*****\n\n" .
-	".. raw:: html\n\n   <DIV class=\"contents\">\n\n" .
-	"**Contents:**\n\n";
-    foreach (@anchors) {
-	$header .= "    `$_`_\n";
+    my $header = '';
+    if ($output_header) {
+	my $ul = $title_underline x 5;
+	$header = "Index\n$ul\n\n" .
+	    ".. compound::\n   :class: contents\n\n" .
+	    "   **Contents:**\n\n";
+	foreach (@anchors) {
+	    $header .= "     `$_`_\n";
+	}
+	$header .= "\n";
     }
-    $header .= "\n.. raw:: html\n\n   </DIV><hr><p></p>\n\n";
     print $header, $table, "\n", $targets;
 }
 
@@ -183,6 +192,9 @@ phase PROCESS = {
 	$dom->{_index}{refname} =~ s/\n/ /mg if $dom->{_index}{refname};
     }
 
+    sub raw = {
+    }
+
     sub literal = {
 	my ($dom, $str, $writer) = @_;
 	return QuoteStart($dom, "``$str``", $writer);
@@ -214,7 +226,9 @@ phase PROCESS = {
 	collectTargets($dom, "");
 	$file_suffix = 'html' unless defined $file_suffix;
 	$filename_ext = '' unless defined $filename_ext;
+	$output_header = 1 unless defined $output_header;
 	$short_titles = 1 unless defined $short_titles;
+	$title_underline = '*' unless defined $title_underline;
 	my $fileName = $dom->{attr}{source};
 	$fileName .= "$filename_ext.$file_suffix"
 	    if $fileName !~ s/\.[^\.\/]*$/$filename_ext\.$file_suffix/o;
@@ -238,6 +252,7 @@ phase PROCESS = {
 
 	# Only indirect targets that point to inline targets are indices.
 	foreach my $tdom (@INDIRECT_TARGETS) {
+	    next unless defined $tdom->{attr}{refid};
 	    my $target = $INLINE_TARGETS{$tdom->{attr}{refid}};
 	    next if ! defined $target;
 	    my $loc = (defined $target->{section} && $target->{section} ne ''
@@ -286,6 +301,6 @@ phase PROCESS = {
 	my ($dom, $str, $writer) = @_;
 	# Handle all the interpreted roles
 	return unless exists $Text::Restructured::ROLES{$dom->{tag}};
-	return QuoteStart($dom, ":$dom->{tag}:`$str`");
+	return QuoteStart($dom, ":$dom->{tag}:`$str`", $writer);
     }
 }
