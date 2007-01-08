@@ -263,6 +263,24 @@ sub splice : method {
     return splice(@{$dom->{content}}, $index, $n, @doms);
 }
 
+# INSTANCE METHOD.
+# Substitutes a different set of DOM objects for a given DOM object in the
+# contents of its parent.
+# Arguments: list of DOM objects
+# Returns: None
+sub substitute : method {
+    my($dom, @new_doms) = @_;
+
+    my $parent = $dom->parent;
+    return unless $parent;
+    my $index = $parent->index($dom);
+    return if $index < 0;
+    splice @{$parent->{content}}, $index, 1, @new_doms;
+    delete $PARENT{$dom};
+    @PARENT{@new_doms} = ($parent) x @new_doms;
+}
+
+
 # Parses a file in the DOM (pseudo-XML) format.
 # Arguments: First line of file
 # Returns: DOM object
