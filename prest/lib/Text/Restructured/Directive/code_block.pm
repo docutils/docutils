@@ -92,7 +92,7 @@ sub main {
     my ($states_bin) = grep -x "$_/states",
 	qw(/bin /usr/bin /usr/local/bin);
     my $subdir = 'Text/Restructured/Directive';
-    my $st_name = $main::opt_D{'code-block-states-file'} || "$subdir/rst.st";
+    my $st_name = $main::opt_D{code_block_states_file} || "$subdir/rst.st";
     my ($st_dir) = grep -r "$_/$st_name", ('.', @INC);
     $st_dir = '' unless defined $st_dir;
     my ($st) = grep -r $_, $st_name, "$st_dir/$st_name";
