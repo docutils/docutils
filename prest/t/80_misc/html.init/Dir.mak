@@ -8,11 +8,11 @@ PERL_FLAG_embed-stylesheet3 = -Ifiledefaultcss
 PERL_FLAG_stylesheet2_2 = -Ifiledefaultcss
 
 RST_FLAG_attribution1 = -W attribution=parens -W html-prolog=1 -W embed-stylesheet -W stylesheet=none
-RST_FLAG_attribution2 = -W attribution=none -W bodyattr='bgcolor=red'
+RST_FLAG_attribution2 = -W attribution=none -W body-attr='bgcolor=red'
 RST_FLAG_bad-link-target = -W link-target='1/0'
 RST_FLAG_cloak-email = -W cloak-email-addresses
 RST_FLAG_colspecs = -W colspecs=0
-RST_FLAG_entryattr = -D entryattr='class="latin" bgcolor=blue' -D align
+RST_FLAG_entryattr = -D entry-attr='class="latin" bgcolor=blue' -D align
 RST_FLAG_embed-stylesheet2 = -W embed-stylesheet
 RST_FLAG_embed-stylesheet3 = -W embed-stylesheet
 RST_FLAG_embed-stylesheet4 = -W embed-stylesheet -W stylesheet=local.css
@@ -28,5 +28,5 @@ RST_FLAG_stylesheet1 = -W stylesheet=local.css
 RST_FLAG_stylesheet2 = -W stylesheet=file:nodefaultcss/Text/Restructured/default.css
 RST_FLAG_stylesheet2_1 = -W stylesheet2=local.css
 RST_FLAG_stylesheet2_2 = -W embed-stylesheet -W stylesheet2=local.css
-RST_FLAG_subtitle1 = -D section_subtitles
-RST_FLAG_subtitle2 = -D section_subtitles
+RST_FLAG_subtitle1 = -D section-subtitles
+RST_FLAG_subtitle2 = -D section-subtitles
