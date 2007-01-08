@@ -122,6 +122,11 @@ sub main {
 	${"Eval_::$var"} = $opt_W{$key};
     }
     # Process -D variables
+    %opt_D = map(do{
+	my $val = $opt_D{$_};
+	s/-/_/g;
+	($_, $val);
+    }, keys %opt_D);
     my %report_levels = (info=>1, warning=>2, error=>3, severe=>4, none=>5);
     $opt_D{report} = do {local $^W=0;  # Temporarily shut off warnings
 			 main::FirstDefined($report_levels{$opt_D{report}},
