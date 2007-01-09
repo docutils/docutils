@@ -207,11 +207,14 @@ def escape_cdata(text):
 DEBUG = 0
 SPACES_PATTERN = re.compile(r'( +)')
 TABS_PATTERN = re.compile(r'(\t+)')
+FILL_PAT1 = re.compile(r'^ +')
+FILL_PAT2 = re.compile(r' {2,}')
 
 TableStylePrefix = 'rststyle-Table'
 
 GENERATOR_DESC = 'Docutils.org/odtwriter'
 
+NAME_SPACE_1 = 'urn:oasis:names:tc:opendocument:xmlns:office:1.0'
 
 CONTENT_NAMESPACE_DICT = {
     'office:version': '1.0',
@@ -225,7 +228,7 @@ CONTENT_NAMESPACE_DICT = {
     'xmlns:math': 'http://www.w3.org/1998/Math/MathML',
     'xmlns:meta': 'urn:oasis:names:tc:opendocument:xmlns:meta:1.0',
     'xmlns:number': 'urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0',
-    'xmlns:office': 'urn:oasis:names:tc:opendocument:xmlns:office:1.0',
+    'xmlns:office': NAME_SPACE_1,
     'xmlns:ooo': 'http://openoffice.org/2004/office',
     'xmlns:oooc': 'http://openoffice.org/2004/calc',
     'xmlns:ooow': 'http://openoffice.org/2004/writer',
@@ -252,7 +255,7 @@ STYLES_NAMESPACE_DICT = {
     'xmlns:math': 'http://www.w3.org/1998/Math/MathML',
     'xmlns:meta': 'urn:oasis:names:tc:opendocument:xmlns:meta:1.0',
     'xmlns:number': 'urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0',
-    'xmlns:office': 'urn:oasis:names:tc:opendocument:xmlns:office:1.0',
+    'xmlns:office': NAME_SPACE_1,
     'xmlns:ooo': 'http://openoffice.org/2004/office',
     'xmlns:oooc': 'http://openoffice.org/2004/calc',
     'xmlns:ooow': 'http://openoffice.org/2004/writer',
@@ -272,7 +275,7 @@ META_NAMESPACE_DICT = {
     'office:version': '1.0',
     'xmlns:dc': 'http://purl.org/dc/elements/1.1/',
     'xmlns:meta': 'urn:oasis:names:tc:opendocument:xmlns:meta:1.0',
-    'xmlns:office': 'urn:oasis:names:tc:opendocument:xmlns:office:1.0',
+    'xmlns:office': NAME_SPACE_1,
     'xmlns:ooo': 'http://openoffice.org/2004/office',
     'xmlns:xlink': 'http://www.w3.org/1999/xlink',
 }
@@ -522,6 +525,7 @@ class Writer(writers.Writer):
             zfile.close()
         else:
             raise RuntimeError, 'stylesheet path must be .odt or .xml file.'
+        s1 = self.visitor.add_header_footer(s1)
         return s1
 
     def assemble_parts(self):
@@ -626,6 +630,38 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.embedded_file_list = []
         self.syntaxhighlighting = 1
         self.syntaxhighlight_lexer = 'python'
+        self.header_content = None
+        self.footer_content = None
+
+    def add_header_footer(self, content):
+        if self.header_content is not None or self.footer_content is not None:
+            root_el = etree.fromstring(content)
+            path = '{%s}master-styles' % (NAME_SPACE_1, )
+            master_el = root_el.find(path)
+            if not master_el:
+                return content
+            el1 = etree.SubElement(master_el, 'style:master-page', attrib={
+                'style:name': 'Standard',
+                'style:page-layout-name': 'pm1',
+                })
+            if self.header_content is not None:
+                el2 = etree.SubElement(el1, 'style:header')
+                el3 = etree.SubElement(el2, 'text:p', attrib={
+                    'text:style-name': 'rststyle-header',
+                    })
+                el3.text = self.header_content
+            if self.footer_content is not None:
+                el2 = etree.SubElement(el1, 'style:footer')
+                footer_lines = self.footer_content.split('\n')
+                for line in footer_lines:
+                    if line:
+                        el3 = etree.SubElement(el2, 'text:p', attrib={
+                            'text:style-name': 'rststyle-footer',
+                            })
+                        el3.text = line
+            new_tree = etree.ElementTree(root_el)
+            new_content = ToString(new_tree)
+            return new_content
 
     def astext(self):
         root = self.content_tree.getroot()
@@ -710,7 +746,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     #
     # Visitor functions
     #
-    # In alphabetic order.
+    # In alphabetic order, more or less.
     #   See docutils.docutils.nodes.node_class_names.
     #
 
@@ -854,9 +890,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         pass
 
     def depart_decoration(self, node):
-        #global DEBUG
-        #self.trace_depart_node(node)
-        #DEBUG = 0
         #ipshell('At depart_decoration')
         el = self.current_element.getchildren()[-1]
         self.current_element.remove(el)
@@ -871,7 +904,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def visit_definition(self, node):
         el = self.append_child('text:p',
             attrib={'text:style-name': 'rststyle-blockindent'})
-        #el1.text = node.astext()
         self.set_current_element(el)
         self.omit = True
 
@@ -963,13 +995,20 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def depart_list_item(self, node):
         self.set_to_parent()
 
-    def visit_footer(self, node):
-        #ipshell('At visit_footer')
-        #self.trace_visit_node(node)
+    def visit_header(self, node):
+        #ipshell('At visit_header')
+        self.header_content = node.astext()
+        raise nodes.SkipChildren()
+
+    def depart_header(self, node):
         pass
 
+    def visit_footer(self, node):
+        #ipshell('At visit_footer')
+        self.footer_content = node.astext()
+        raise nodes.SkipChildren()
+
     def depart_footer(self, node):
-        #self.trace_depart_node(node)
         pass
 
     def visit_field(self, node):
@@ -1323,8 +1362,22 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         outsource = pygments.highlight(insource, lexer, fmtr)
         return outsource
 
+    def fill_line(self, line):
+        line = FILL_PAT1.sub(self.fill_func1, line)
+        line = FILL_PAT2.sub(self.fill_func2, line)
+        return line
+
+    def fill_func1(self, matchobj):
+        spaces = matchobj.group(0)
+        repl = '<text:s text:c="%d"/>' % (len(spaces), )
+        return repl
+
+    def fill_func2(self, matchobj):
+        spaces = matchobj.group(0)
+        repl = ' <text:s text:c="%d"/>' % (len(spaces) - 1, )
+        return repl
+
     wrapper1 = '<text:p text:style-name="rststyle-codeblock">%s</text:p>'
-    wrapper2 = '<text:p text:style-name="rststyle-codeblock"><text:s text:c="%d"/>%s</text:p>'
 
     def visit_literal_block(self, node):
         #ipshell('At visit_literal_block')
@@ -1337,12 +1390,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         lines = source.split('\n')
         lines1 = ['<wrappertag1 xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0">']
         for line in lines:
-            padcount = self._calculate_code_block_padding(line)
-            line = line.lstrip(' \t')
-            if padcount > 0:
-                s3 = ODFTranslator.wrapper2 % (padcount, line, )
-            else:
-                s3 = ODFTranslator.wrapper1 % line
+            line = self.fill_line(line)
+            s3 = ODFTranslator.wrapper1 % (line, )
             s3 = s3.replace("&#10;", "\n")
             lines1.append(s3)
         lines1.append('</wrappertag1>')
