@@ -38,6 +38,18 @@ For more information on Docutils, see: http://docutils.sourceforge.net/
 History
 =======
 
+2007/01/08 -- Version 1.0c
+--------------------------
+
+Added support for ..header:: and ..footer:: directives.  Added
+styles rststyle-header and rststyle-footer.  The generator,
+date/time, and generated-by decorations are now combined with the
+content from the ..footer:: directive.
+
+Made fix to literal_blocks so that interior spaces in a line are
+preserved.
+
+
 2007/01/05 -- Version 1.0c
 --------------------------
 

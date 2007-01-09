@@ -6,7 +6,7 @@
 <meta name="generator" content="Docutils 0.5: http://docutils.sourceforge.net/" />
 <title>Odtwriter for Docutils</title>
 <meta name="author" content="Dave Kuhlman" />
-<meta name="date" content="Jan. 5, 2007" />
+<meta name="date" content="Jan. 8, 2007" />
 <meta name="copyright" content="Copyright (c) 2006 Dave Kuhlman.  All Rights Reserved. This software is subject to the provisions of the MIT License http://www.opensource.org/licenses/mit-license.php." />
 <style type="text/css">
 
@@ -193,7 +193,7 @@ tt.docutils {
 <tr><th class="docinfo-name">Revision:</th>
 <td>1.0c</td></tr>
 <tr><th class="docinfo-name">Date:</th>
-<td>Jan. 5, 2007</td></tr>
+<td>Jan. 8, 2007</td></tr>
 <tr><th class="docinfo-name">Copyright:</th>
 <td>Copyright (c) 2006 Dave Kuhlman.  All Rights Reserved.
 This software is subject to the provisions of the MIT License
@@ -445,6 +445,15 @@ provided: rststyle-heading1 through rststyle-heading5.</dd>
 <dd>An item in an bullet list.</dd>
 <dt>rststyle-enumitem</dt>
 <dd>An item in an enumerated list.</dd>
+<dt>rststyle-footer</dt>
+<dd>The style for footers.  The footer content originates from the
+<tt class="docutils literal"><span class="pre">..footer::</span></tt> directive and in response to the command line
+flags for generator (<tt class="docutils literal"><span class="pre">--generator</span></tt>), date/time generated
+(<tt class="docutils literal"><span class="pre">--date</span></tt> and <tt class="docutils literal"><span class="pre">--time</span></tt>), and view source link
+(<tt class="docutils literal"><span class="pre">--source-link</span></tt> and <tt class="docutils literal"><span class="pre">--source-url=URL</span></tt>).</dd>
+<dt>rststyle-header</dt>
+<dd>The style for headers.  The header content originates from the
+<tt class="docutils literal"><span class="pre">..header::</span></tt> directive.</dd>
 <dt>rststyle-horizontalline</dt>
 <dd>A horizontal line, e.g. used for transitions.</dd>
 <dt>rststyle-table-title</dt>
@@ -551,8 +560,9 @@ integers, floats, hex numbers, and octal numbers.</li>
 <p>Each of the above styles has a default appearance that is defined
 in <tt class="docutils literal"><span class="pre">styles.odt</span></tt>.  To change that definition and appearance, open
 <tt class="docutils literal"><span class="pre">styles.odt</span></tt> in <tt class="docutils literal"><span class="pre">oowriter</span></tt> and use menu item:</p>
-<blockquote>
-Format --&gt; Styles and Formatting</blockquote>
+<pre class="literal-block">
+Format --&gt; Styles and Formatting
+</pre>
 <p>Then, click on the Paragraph Styles button or the Character Styles
 button at the top of the Styles and Formatting window.  You may
 also need to select &quot;All Styles&quot; from the drop-down selection list
