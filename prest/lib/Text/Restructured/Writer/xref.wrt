@@ -212,7 +212,7 @@ phase PROCESS {
 		my ($dom) = @_;
 		$title .= $dom->{text} if $dom->{tag} eq '#PCDATA';
 	    });
-	    $title =~ s/^(.*?)\.?\xa0+/ /;
+	    $title =~ s/^(.*?)\.?[\xa0\xc2]+/ /;
 	    my ($number) = ($1);
 	    my $ref = ! defined $number ? $title :
 		$number =~ /\d$/ ? "$chapter $number" : "$appendix $number";
@@ -233,7 +233,7 @@ phase PROCESS {
 		my ($dom) = @_;
 		$title .= $dom->{text} if $dom->{tag} eq '#PCDATA';
 	    });
-	    $title =~ s/^((.*?)(\..*?)?)\xa0+/ /;
+	    $title =~ s/^((.*?)(\..*?)?)[\xa0\xc2]+/ /;
 	    my ($number, $prefix, $suffix) = ($1, $2, $3);
 	    my $ref = ! defined $number ? $title :
 		$suffix ne '' ? "$section $number" :
