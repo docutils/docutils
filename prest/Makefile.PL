@@ -13,7 +13,7 @@ use ExtUtils::MakeMaker;
 
 ## Note: The version number for the entire release is specified here and
 ## propagated.  Be sure to edit for every release.
-my $Version = "0.003019";
+my $Version = "0.003020";
 
 use vars qw($opt_f $opt_h $opt_k);
 my $OUTPUT_CFG_FILE = $opt_f = 'config.log';
@@ -194,7 +194,7 @@ chdir "$myname.dir";
 
 # Check to see if we need to skip all tests
 if (-f "skip.pl") {
-    chomp (my $error = `$^X -I $base/blib/lib skip.pl 2>&1`);
+    chomp (my $error = `$^X -I$base/blib/lib skip.pl 2>&1`);
     plan(skip_all => "because $error") if $?;
 }
 
@@ -210,10 +210,10 @@ plan tests => 0+@tests;
 # Do the tests
 TEST:
 foreach my $test (@tests) {
-    my ($base) = $test =~ /(.*)\.rst/;
-    if (-f "$base.skip.pl") {
+    my ($base_test) = $test =~ /(.*)\.rst/;
+    if (-f "$base_test.skip.pl") {
 	# Check whether we need to skip this file
-	chomp (my $error = `$^X -I ../../../blib/lib $base.skip.pl 2>&1`);
+	chomp (my $error = `$^X -I$base/blib/lib $base_test.skip.pl 2>&1`);
       SKIP:
 	{
 	    skip("because $error", 1) if $?;
@@ -221,12 +221,12 @@ foreach my $test (@tests) {
 	next TEST if $?
     }
     delete $ENV{PERL5LIB};
-    my $make_errs = `make -s -f ../../Common.mk $base.chk 2>&1`;
+    my $make_errs = `make -s -f ../../Common.mk $base_test.chk 2>&1`;
     # Fake around perl 5.8.8 non-disablable warning
     $make_errs =~ s/^Wide character in print.*\n//gm;
     # Remove make messages
     $make_errs =~ s/^make\[\d\]: (Enter|Leav)ing directory.*\n//gm;
-    my $errs = -f "$base.stderr" ? `cat $base.stderr` : '';
+    my $errs = -f "$base_test.stderr" ? `cat $base_test.stderr` : '';
     if ($errs) {
 	# Convert search characters
 	$errs =~ s/([.\\\[\]{}()+*$@])/\\$1/g;
@@ -234,10 +234,10 @@ foreach my $test (@tests) {
 	$errs =~ s/(\\\(eval \d+\\\))/$1(\\[.*\\])?/g;
 	$errs =~ s!(^| )/\S+/!$1/\\S+/!mg;
 	$errs =~ s/(line|eval) (\d+)/$1 \\d+/g;
-	like ($make_errs . `cat $base.chk 2>&1`, qr/$errs/, $test);
+	like ($make_errs . `cat $base_test.chk 2>&1`, qr/$errs/, $test);
     }
     else {
-	is ($make_errs . `cat $base.chk 2>&1`, $errs, $test);
+	is ($make_errs . `cat $base_test.chk 2>&1`, $errs, $test);
     }
 }
 ##^^^^^^^^^^^^^^^^^^ Generic .t file ^^^^^^^^^^^^^^^^^^##
