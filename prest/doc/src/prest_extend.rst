@@ -168,10 +168,11 @@ As an example, here is the code for the dom writer:
 .. system:: perl -ne 'print if /^phase/ .. 0' .\./.\./blib/lib/Text/Restructured/Writer/dom.wrt
    :literal:
 
-This example is perhaps not typical, since it needs to call the
-internal `main::ProcessDOM`_ routine in order to process the DOM
-objects in the internal ``.details`` field of the DOM; most writers
-should have no need to do so.
+This example is not typical, since it needs to call the internal
+`Text::Restructured::Writer::ProcessDOMPhase`_ (via the writer object)
+routine in order to process the DOM objects in the internal
+``.details`` field of the DOM; most writers should have no need to do
+so.
 
 It is also up to the writer to provide the documentation that appears
 when the user runs ``prest -h``.  Any comment in the writer appearing
