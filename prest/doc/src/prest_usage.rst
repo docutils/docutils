@@ -11,6 +11,7 @@ Usage of Prest
    # Make path safe for -T
    my $perl_dir = $1 if $^X =~ m|^(.*)/|;
    $ENV{PATH} = "$perl_dir:/bin";
+   ''
 
 .. contents::
 
