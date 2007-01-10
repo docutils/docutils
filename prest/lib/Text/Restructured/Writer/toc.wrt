@@ -137,7 +137,8 @@ phase PROCESS = {
 	my ($dom, $str) = @_;
 	# Note: This code will have to change if the number of
         # non-breaking spaces inserted is some number other than 3.
-	$str =~ s/(.*)\1\1$/ /;
+	$str =~ s/[\xa0\xc2]+$/ /;
+	#$str =~ s/(.*)\1\1$/ /;
 	return $str;
     }
 

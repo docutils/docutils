@@ -191,7 +191,7 @@ sub EncodeHTML {
     $s =~ s/&/&amp;/g;
     $s =~ s/</&lt;/g;
     $s =~ s/>/&gt;/g;
-    $s =~ s/\xa0/&nbsp;/g;
+    $s =~ s/[\xa0\xc2]/&nbsp;/g;
 #    $s =~ s/\"/&quot;/g;   ######## FIX
     $s =~ s/\@/&\#64;/g;   ######## FIX
     return $s;
