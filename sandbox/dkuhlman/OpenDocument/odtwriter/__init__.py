@@ -662,6 +662,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             new_tree = etree.ElementTree(root_el)
             new_content = ToString(new_tree)
             return new_content
+        else:
+            return content
 
     def astext(self):
         root = self.content_tree.getroot()
@@ -733,15 +735,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def _trace_show_level(self, level):
         for idx in range(level):
             print '   ',
-
-##    def translate_escapes(self, mo):
-##        val = mo.group()
-##        if val == '\\n':
-##            result ='\n'
-##        elif val == '\\t':
-##            result = '\t'
-##        return result
-
 
     #
     # Visitor functions
@@ -821,9 +814,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.paragraph_style_stack.pop()
 
     def visit_bullet_list(self, node):
-        #import pdb; pdb.set_trace()
         #ipshell('At visit_bullet_list')
-        #print '(visit_bullet_list) node: %s' % node.astext()
         el = SubElement(self.current_element, 'text:list', attrib={
             'text:style-name': 'rststyle-bulletlist',
             })
@@ -936,7 +927,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.set_to_parent()
 
     def visit_document(self, node):
-        #import pdb; pdb.set_trace()
         #ipshell('At visit_document')
         #self.set_current_element(self.content_tree.getroot())
         pass
@@ -973,8 +963,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_enumerated_list(self, node):
         #ipshell('At visit_enumerated_list')
-        #import pdb; pdb.set_trace()
-        #print '(visit_enumerated_list) node: %s' % node.astext()
         el = SubElement(self.current_element, 'text:list', attrib={
             'text:style-name': 'rststyle-enumlist',
             })
@@ -986,9 +974,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.paragraph_style_stack.pop()
 
     def visit_list_item(self, node):
-        #import pdb; pdb.set_trace()
         #ipshell('At visit_document')
-        #print '(visit_list_item) node: %s' % node.astext()
         el = SubElement(self.current_element, 'text:list-item')
         self.set_current_element(el)
 
@@ -1224,7 +1210,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                     halign = val
                 elif val in ('top', 'middle', 'bottom'):
                     valign = val
-        #ipshell('At visit_image:align')
         attrib = {
             'style:vertical-pos': 'top',
             'style:vertical-rel': 'paragraph',
@@ -1295,8 +1280,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         return el1
 
     def depart_image(self, node):
-        #self.trace_depart_node(node)
-        #self.set_to_parent()
         pass
 
     def visit_line(self, node):
@@ -1557,7 +1540,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def visit_paragraph(self, node):
         #ipshell('At visit_paragraph')
         #self.trace_visit_node(node)
-        #print '>> (paragraph)'
         if self.omit:
             return
         style_name = self.paragraph_style_stack[-1]
@@ -1567,7 +1549,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def depart_paragraph(self, node):
         #self.trace_depart_node(node)
-        #print '<< (paragraph)'
         if self.omit:
             return
         self.set_to_parent()
