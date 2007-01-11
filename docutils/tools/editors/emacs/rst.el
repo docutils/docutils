@@ -2310,7 +2310,7 @@ of each paragraph only."
 
 	    (previous nil valid)
 
- 	    (curcol (current-column) 
+ 	    (curcol (current-column)
 		    (current-column))
 
 	    (valid (and (= curcol leftcol)
@@ -2323,7 +2323,7 @@ of each paragraph only."
 	(if (if ,first-only
 		(and valid (not previous))
 	      valid)
-	    ,body-consequent 
+	    ,body-consequent
 	  ,body-alternative)
 
 	))))
@@ -3203,13 +3203,18 @@ string)) to be used for converting the document.")
   (let ((file-name "docutils.conf")
         (buffer-file (buffer-file-name)))
     ;; Move up in the dir hierarchy till we find a change log file.
-    (let ((dir (file-name-directory buffer-file)))
-      (while (and (or (not (string= "/" dir)) (setq dir nil) nil)
+    (let* ((dir (file-name-directory buffer-file))
+	   (prevdir nil))
+      (while (and (or (not (string= dir prevdir))
+		      (setq dir nil) 
+		      nil)
                   (not (file-exists-p (concat dir file-name))))
         ;; Move up to the parent dir and try again.
+	(setq prevdir dir)
         (setq dir (expand-file-name (file-name-directory
                                      (directory-file-name
-                                     (file-name-directory dir))))) )
+				      (file-name-directory dir)))))
+	)
       (or (and dir (concat dir file-name)) nil)
     )))
 
