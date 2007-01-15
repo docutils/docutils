@@ -255,7 +255,8 @@ rststyle-table-title
     directive`_.
 
 rststyle-textbody
-    Normal text
+    Normal text.  The style for paragraphs.
+
 
 Character styles
 ~~~~~~~~~~~~~~~~
