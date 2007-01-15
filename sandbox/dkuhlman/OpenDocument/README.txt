@@ -38,6 +38,17 @@ For more information on Docutils, see: http://docutils.sourceforge.net/
 History
 =======
 
+2007/01/15 -- Version 1.0c
+--------------------------
+
+Fix for footers -- Error traceback occurred when there is no
+footer, i.e. no .. footer:: directive and none of 
+--generator, --date, --time, --source-link, --source-url=URL.
+
+Another fix for titles, headers, and footers -- The title of the
+document was being shoved to the bottom of the document.
+
+
 2007/01/08 -- Version 1.0c
 --------------------------
 

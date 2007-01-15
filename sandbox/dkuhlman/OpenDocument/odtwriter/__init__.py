@@ -882,15 +882,16 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def depart_decoration(self, node):
         #ipshell('At depart_decoration')
-        el = self.current_element.getchildren()[-1]
-        self.current_element.remove(el)
-        el1 = Element('text:section', attrib={
-            'text:name': '_rstFooterSection',
-            })
-        el2 = SubElement(el1, 'text:p', attrib={
-            'text:style-name': 'rststyle-horizontalline'})
-        el1.append(el)
-        self.footer_element = el1
+##        el = self.current_element.getchildren()[-1]
+##        self.current_element.remove(el)
+##        el1 = Element('text:section', attrib={
+##            'text:name': '_rstFooterSection',
+##            })
+##        el2 = SubElement(el1, 'text:p', attrib={
+##            'text:style-name': 'rststyle-horizontalline'})
+##        el1.append(el)
+##        self.footer_element = el1
+        pass
 
     def visit_definition(self, node):
         el = self.append_child('text:p',
