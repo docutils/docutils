@@ -118,11 +118,11 @@ And even more stuff
 """,
 """\
 {'fragment': '''<p>Some stuff</p>
-<div class="section">
-<h1><a id="section" name="section">Section</a></h1>
+<div class="section" id="section">
+<h1>Section</h1>
 <p>Some more stuff</p>
-<div class="section">
-<h2><a id="another-section" name="another-section">Another Section</a></h2>
+<div class="section" id="another-section">
+<h2>Another Section</h2>
 <p>And even more stuff</p>
 </div>
 </div>\\n''',
@@ -130,11 +130,11 @@ And even more stuff
 <h1 class="title">Title</h1>
 <h2 class="subtitle" id="subtitle">Subtitle</h2>
 <p>Some stuff</p>
-<div class="section">
-<h1><a id="section" name="section">Section</a></h1>
+<div class="section" id="section">
+<h1>Section</h1>
 <p>Some more stuff</p>
-<div class="section">
-<h2><a id="another-section" name="another-section">Another Section</a></h2>
+<div class="section" id="another-section">
+<h2>Another Section</h2>
 <p>And even more stuff</p>
 </div>
 </div>
@@ -265,32 +265,32 @@ Another Section
 And even more stuff
 """,
 """\
-{'fragment': '''<div class="section">
-<h1><a id="title" name="title">Title</a></h1>
-<div class="section">
-<h2><a id="not-a-subtitle" name="not-a-subtitle">Not A Subtitle</a></h2>
+{'fragment': '''<div class="section" id="title">
+<h1>Title</h1>
+<div class="section" id="not-a-subtitle">
+<h2>Not A Subtitle</h2>
 <p>Some stuff</p>
-<div class="section">
-<h3><a id="section" name="section">Section</a></h3>
+<div class="section" id="section">
+<h3>Section</h3>
 <p>Some more stuff</p>
-<div class="section">
-<h4><a id="another-section" name="another-section">Another Section</a></h4>
+<div class="section" id="another-section">
+<h4>Another Section</h4>
 <p>And even more stuff</p>
 </div>
 </div>
 </div>
 </div>\\n''',
  'html_body': '''<div class="document">
-<div class="section">
-<h1><a id="title" name="title">Title</a></h1>
-<div class="section">
-<h2><a id="not-a-subtitle" name="not-a-subtitle">Not A Subtitle</a></h2>
+<div class="section" id="title">
+<h1>Title</h1>
+<div class="section" id="not-a-subtitle">
+<h2>Not A Subtitle</h2>
 <p>Some stuff</p>
-<div class="section">
-<h3><a id="section" name="section">Section</a></h3>
+<div class="section" id="section">
+<h3>Section</h3>
 <p>Some more stuff</p>
-<div class="section">
-<h4><a id="another-section" name="another-section">Another Section</a></h4>
+<div class="section" id="another-section">
+<h4>Another Section</h4>
 <p>And even more stuff</p>
 </div>
 </div>

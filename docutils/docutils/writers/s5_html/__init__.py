@@ -333,5 +333,5 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
         else:
             html4css1.HTMLTranslator.visit_subtitle(self, node)
 
-    def visit_title(self, node, move_ids=0):
-        html4css1.HTMLTranslator.visit_title(self, node, move_ids=move_ids)
+    def visit_title(self, node):
+        html4css1.HTMLTranslator.visit_title(self, node)

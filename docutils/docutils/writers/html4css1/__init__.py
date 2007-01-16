@@ -407,12 +407,6 @@ class HTMLTranslator(nodes.NodeVisitor):
         """Construct and return an XML-compatible empty tag."""
         return self.starttag(node, tagname, suffix, empty=1, **attributes)
 
-    # !!! to be removed in Docutils 0.5 (change calls to use "starttag"):
-    def start_tag_with_title(self, node, tagname, **atts):
-        """ID and NAME attributes will be handled in the title."""
-        node = {'classes': node.get('classes', [])}
-        return self.starttag(node, tagname, **atts)
-
     def set_class_on_child(self, node, class_, index=0):
         """
         Set class `class_` on the visible child no. index of `node`.
@@ -462,7 +456,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item()
 
     def visit_admonition(self, node):
-        self.body.append(self.start_tag_with_title(node, 'div'))
+        self.body.append(self.starttag(node, 'div'))
         self.set_first_last(node)
 
     def depart_admonition(self, node=None):
@@ -721,6 +715,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.html_body.extend(self.body_prefix[1:] + self.body_pre_docinfo
                               + self.docinfo + self.body
                               + self.body_suffix[:-1])
+        assert not self.context, 'internal error: context not empty'
 
     def visit_emphasis(self, node):
         self.body.append('<em>')
@@ -1264,7 +1259,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_section(self, node):
         self.section_level += 1
         self.body.append(
-            self.start_tag_with_title(node, 'div', CLASS='section'))
+            self.starttag(node, 'div', CLASS='section'))
 
     def depart_section(self, node):
         self.section_level -= 1
@@ -1272,7 +1267,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_sidebar(self, node):
         self.body.append(
-            self.start_tag_with_title(node, 'div', CLASS='sidebar'))
+            self.starttag(node, 'div', CLASS='sidebar'))
         self.set_first_last(node)
         self.in_sidebar = 1
 
@@ -1429,30 +1424,26 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_thead(self, node):
         self.body.append('</thead>\n')
 
-    def visit_title(self, node, move_ids=1):
+    def visit_title(self, node):
         """Only 6 section levels are supported by HTML."""
         check_id = 0
         close_tag = '</p>\n'
         if isinstance(node.parent, nodes.topic):
             self.body.append(
                   self.starttag(node, 'p', '', CLASS='topic-title first'))
-            check_id = 1
         elif isinstance(node.parent, nodes.sidebar):
             self.body.append(
                   self.starttag(node, 'p', '', CLASS='sidebar-title'))
-            check_id = 1
         elif isinstance(node.parent, nodes.Admonition):
             self.body.append(
                   self.starttag(node, 'p', '', CLASS='admonition-title'))
-            check_id = 1
         elif isinstance(node.parent, nodes.table):
             self.body.append(
                   self.starttag(node, 'caption', ''))
-            check_id = 1
             close_tag = '</caption>\n'
         elif isinstance(node.parent, nodes.document):
             self.body.append(self.starttag(node, 'h1', '', CLASS='title'))
-            self.context.append('</h1>\n')
+            close_tag = '</h1>\n'
             self.in_document_title = len(self.body)
         else:
             assert isinstance(node.parent, nodes.section)
@@ -1464,27 +1455,15 @@ class HTMLTranslator(nodes.NodeVisitor):
             self.body.append(
                   self.starttag(node, 'h%s' % h_level, '', **atts))
             atts = {}
-            # !!! conditional to be removed in Docutils 0.5:
-            if move_ids:
-                if node.parent['ids']:
-                    atts['ids'] = node.parent['ids']
             if node.hasattr('refid'):
                 atts['class'] = 'toc-backref'
                 atts['href'] = '#' + node['refid']
             if atts:
                 self.body.append(self.starttag({}, 'a', '', **atts))
-                self.context.append('</a></h%s>\n' % (h_level))
+                close_tag = '</a></h%s>\n' % (h_level)
             else:
-                self.context.append('</h%s>\n' % (h_level))
-        # !!! conditional to be removed in Docutils 0.5:
-        if check_id:
-            if node.parent['ids']:
-                atts={'ids': node.parent['ids']}
-                self.body.append(
-                    self.starttag({}, 'a', '', **atts))
-                self.context.append('</a>' + close_tag)
-            else:
-                self.context.append(close_tag)
+                close_tag = '</h%s>\n' % (h_level)
+        self.context.append(close_tag)
 
     def depart_title(self, node):
         self.body.append(self.context.pop())
@@ -1502,7 +1481,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</cite>')
 
     def visit_topic(self, node):
-        self.body.append(self.start_tag_with_title(node, 'div', CLASS='topic'))
+        self.body.append(self.starttag(node, 'div', CLASS='topic'))
         self.topic_classes = node['classes']
 
     def depart_topic(self, node):
