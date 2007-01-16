@@ -48,6 +48,11 @@ footer, i.e. no .. footer:: directive and none of
 Another fix for titles, headers, and footers -- The title of the
 document was being shoved to the bottom of the document.
 
+Enhancement to table of contents -- Now there are separate list
+styles for list inside the table of contents and lists outside the
+table of contents.  See styles rststyle-bulletlist,
+rststyle-tocbulletlist, rststyle-enumlist, and
+rststyle-tocenumlist.
 
 2007/01/08 -- Version 1.0c
 --------------------------

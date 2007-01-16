@@ -209,6 +209,9 @@ SPACES_PATTERN = re.compile(r'( +)')
 TABS_PATTERN = re.compile(r'(\t+)')
 FILL_PAT1 = re.compile(r'^ +')
 FILL_PAT2 = re.compile(r' {2,}')
+# Match a section number followed by 3 \xa0 bytes.
+# Note that we actually check for the class "auto-toc" instead.
+#SECTNUM_PAT = re.compile(r'^\d*(\.\d*)*\240\240\240')
 
 TableStylePrefix = 'rststyle-Table'
 
@@ -632,6 +635,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.syntaxhighlight_lexer = 'python'
         self.header_content = None
         self.footer_content = None
+        self.in_table_of_contents = False
 
     def add_header_footer(self, content):
         if self.header_content is not None or self.footer_content is not None:
@@ -815,11 +819,24 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_bullet_list(self, node):
         #ipshell('At visit_bullet_list')
-        el = SubElement(self.current_element, 'text:list', attrib={
-            'text:style-name': 'rststyle-bulletlist',
-            })
+        if self.in_table_of_contents:
+            if node.has_key('classes') and \
+                    'auto-toc' in node.attributes['classes']:
+                el = SubElement(self.current_element, 'text:list', attrib={
+                    'text:style-name': 'rststyle-tocenumlist',
+                    })
+                self.paragraph_style_stack.append('rststyle-enumitem')
+            else:
+                el = SubElement(self.current_element, 'text:list', attrib={
+                    'text:style-name': 'rststyle-tocbulletlist',
+                    })
+                self.paragraph_style_stack.append('rststyle-bulletitem')
+        else:
+            el = SubElement(self.current_element, 'text:list', attrib={
+                'text:style-name': 'rststyle-bulletlist',
+                })
+            self.paragraph_style_stack.append('rststyle-bulletitem')
         self.set_current_element(el)
-        self.paragraph_style_stack.append('rststyle-bulletitem')
 
     def depart_bullet_list(self, node):
         self.set_to_parent()
@@ -975,7 +992,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.paragraph_style_stack.pop()
 
     def visit_list_item(self, node):
-        #ipshell('At visit_document')
+        #ipshell('At visit_list_item')
         el = SubElement(self.current_element, 'text:list-item')
         self.set_current_element(el)
 
@@ -1836,6 +1853,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 el1 = SubElement(el, 'text:span',
                     attrib={'text:style-name': 'rststyle-strong'})
                 el1.text = 'Contents'
+                self.in_table_of_contents = True
             elif 'abstract' in node.attributes['classes']:
                 el = self.append_child('text:p', attrib={
                     'text:style-name': 'rststyle-horizontalline'})
@@ -1851,6 +1869,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             if 'contents' in node.attributes['classes']:
                 el = self.append_child('text:p', attrib={
                     'text:style-name': 'rststyle-horizontalline'})
+                self.in_table_of_contents = False
 
     def visit_transition(self, node):
         el = self.append_child('text:p', attrib={
