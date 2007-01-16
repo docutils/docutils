@@ -236,7 +236,6 @@ class HTMLTranslator(nodes.NodeVisitor):
                  'http://docutils.sourceforge.net/" />\n')
     stylesheet_link = '<link rel="stylesheet" href="%s" type="text/css" />\n'
     embedded_stylesheet = '<style type="text/css">\n\n%s\n</style>\n'
-    named_tags = ['a', 'applet', 'form', 'frame', 'iframe', 'img', 'map']
     words_and_spaces = re.compile(r'\S+| +|\n')
 
     def __init__(self, document):
@@ -380,9 +379,6 @@ class HTMLTranslator(nodes.NodeVisitor):
                     # Non-empty tag.  Place the auxiliary <span> tag
                     # *inside* the element, as the first child.
                     suffix += '<span id="%s"></span>' % id
-        # !!! next 2 lines to be removed in Docutils 0.5:
-        if atts.has_key('id') and tagname in self.named_tags:
-            atts['name'] = atts['id']   # for compatibility with old browsers
         attlist = atts.items()
         attlist.sort()
         parts = [tagname]
@@ -715,7 +711,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.html_body.extend(self.body_prefix[1:] + self.body_pre_docinfo
                               + self.docinfo + self.body
                               + self.body_suffix[:-1])
-        assert not self.context, 'internal error: context not empty'
+        assert not self.context, 'len(context) = %s' % len(self.context)
 
     def visit_emphasis(self, node):
         self.body.append('<em>')
@@ -884,9 +880,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         if self.settings.footnote_backlinks and backrefs:
             if len(backrefs) == 1:
                 self.context.append('')
-                self.context.append(
-                    '<a class="fn-backref" href="#%s" name="%s">'
-                    % (backrefs[0], node['ids'][0]))
+                self.context.append('</a>')
+                self.context.append('<a class="fn-backref" href="#%s">'
+                                    % backrefs[0])
             else:
                 i = 1
                 for backref in backrefs:
@@ -894,10 +890,10 @@ class HTMLTranslator(nodes.NodeVisitor):
                                      % (backref, i))
                     i += 1
                 self.context.append('<em>(%s)</em> ' % ', '.join(backlinks))
-                self.context.append('<a name="%s">' % node['ids'][0])
+                self.context += ['', '']
         else:
             self.context.append('')
-            self.context.append('<a name="%s">' % node['ids'][0])
+            self.context += ['', '']
         # If the node does not only consist of a label.
         if len(node) > 1:
             # If there are preceding backlinks, we do not set class
@@ -1015,11 +1011,13 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</span>')
 
     def visit_label(self, node):
+        # Context added in footnote_backrefs.
         self.body.append(self.starttag(node, 'td', '%s[' % self.context.pop(),
                                        CLASS='label'))
 
     def depart_label(self, node):
-        self.body.append(']</a></td><td>%s' % self.context.pop())
+        # Context added in footnote_backrefs.
+        self.body.append(']%s</td><td>%s' % (self.context.pop(), self.context.pop()))
 
     def visit_legend(self, node):
         self.body.append(self.starttag(node, 'div', CLASS='legend'))
@@ -1192,8 +1190,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_problematic(self, node):
         if node.hasattr('refid'):
-            self.body.append('<a href="#%s" name="%s">' % (node['refid'],
-                                                           node['ids'][0]))
+            self.body.append('<a href="#%s">' % node['refid'])
             self.context.append('</a>')
         else:
             self.context.append('')
@@ -1334,10 +1331,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_system_message(self, node):
         self.body.append(self.starttag(node, 'div', CLASS='system-message'))
         self.body.append('<p class="system-message-title">')
-        attr = {}
         backref_text = ''
-        if node['ids']:
-            attr['name'] = node['ids'][0]
         if len(node['backrefs']):
             backrefs = node['backrefs']
             if len(backrefs) == 1:
@@ -1355,14 +1349,9 @@ class HTMLTranslator(nodes.NodeVisitor):
             line = ', line %s' % node['line']
         else:
             line = ''
-        if attr:
-            a_start = self.starttag({}, 'a', '', **attr)
-            a_end = '</a>'
-        else:
-            a_start = a_end = ''
-        self.body.append('System Message: %s%s/%s%s '
+        self.body.append('System Message: %s/%s '
                          '(<tt class="docutils">%s</tt>%s)%s</p>\n'
-                         % (a_start, node['type'], node['level'], a_end,
+                         % (node['type'], node['level'],
                             self.encode(node['source']), line, backref_text))
 
     def depart_system_message(self, node):

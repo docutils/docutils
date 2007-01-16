@@ -79,8 +79,9 @@ Changes Since 0.4
   - Moved template functionality from the PEP/HTML writer here.
   - Expanded the fragments available in the ``parts`` attribute.
   - Moved ``id`` attributes from titles to surrounding ``div``
-    elements; dropped ``name`` attributes (``id`` is universally
-    supported now).
+    elements.
+  - Dropped all ``name`` attributes of ``a`` elements (``id`` is
+    universally supported now).
 
 * docutils/writers/html4css1/template.txt: Added to project.
 
