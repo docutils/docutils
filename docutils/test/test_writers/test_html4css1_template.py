@@ -81,8 +81,8 @@ docinfo = """\
 
 
 body = """\
-<div class="section">
-<h1><a id="section" name="section">Section</a></h1>
+<div class="section" id="section">
+<h1>Section</h1>
 <p>Some text.</p>
 </div>"""
 
@@ -138,8 +138,8 @@ docinfo = """\
 
 
 body = """\
-<div class="section">
-<h1><a id="section" name="section">Section</a></h1>
+<div class="section" id="section">
+<h1>Section</h1>
 <p>Some text.</p>
 </div>"""
 
@@ -180,8 +180,8 @@ meta = """\
 
 
 fragment = """\
-<div class="section">
-<h1><a id="section" name="section">Section</a></h1>
+<div class="section" id="section">
+<h1>Section</h1>
 <p>Some text.</p>
 </div>"""
 
@@ -218,8 +218,8 @@ html_body = """\
 <td>Me</td></tr>
 </tbody>
 </table>
-<div class="section">
-<h1><a id="section" name="section">Section</a></h1>
+<div class="section" id="section">
+<h1>Section</h1>
 <p>Some text.</p>
 </div>
 </div>
