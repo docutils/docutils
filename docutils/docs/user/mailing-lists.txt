@@ -102,9 +102,15 @@ Reply-To header of all check-in emails points to Docutils-develop.)
 This mailing list is accessible via `email subscription`__, web__ or
 news__ (gmane.text.docutils.cvs) as well.
 
+If you are using an email subscription and you would prefer to only
+receive check-in messages for changes that affect the main Docutils
+distribution (i.e. ``trunk/docutils/*``), go to the `list options`_
+page and select the "Docutils core" topic.
+
 __ http://lists.sourceforge.net/lists/listinfo/docutils-checkins
 __ http://news.gmane.org/gmane.text.docutils.cvs
 __ nntp://news.gmane.org/gmane.text.docutils.cvs
+.. _list options: http://lists.sf.net/lists/options/docutils-checkins
 
 .. _Subversion repository: http://docutils.sf.net/docs/dev/repository.html
 .. _Docutils: http://docutils.sourceforge.net/
