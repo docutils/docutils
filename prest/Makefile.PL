@@ -13,7 +13,7 @@ use ExtUtils::MakeMaker;
 
 ## Note: The version number for the entire release is specified here and
 ## propagated.  Be sure to edit for every release.
-my $Version = "0.003020";
+my $Version = "0.003021";
 
 use vars qw($opt_f $opt_h $opt_k);
 my $OUTPUT_CFG_FILE = $opt_f = 'config.log';
@@ -207,6 +207,9 @@ if (<test_*.py>) {
 my @tests = -f "tests.pl" ? do "tests.pl" : <*.rst>;
 plan tests => 0+@tests;
 
+# Fix PERL5LIB to keep only blib directories
+$ENV{PERL5LIB} = join ':',grep(/\bblib\b/, split(/:/, $ENV{PERL5LIB}));
+
 # Do the tests
 TEST:
 foreach my $test (@tests) {
@@ -220,7 +223,6 @@ foreach my $test (@tests) {
 	}
 	next TEST if $?
     }
-    delete $ENV{PERL5LIB};
     my $make_errs = `make -s -f ../../Common.mk $base_test.chk 2>&1`;
     # Fake around perl 5.8.8 non-disablable warning
     $make_errs =~ s/^Wide character in print.*\n//gm;
