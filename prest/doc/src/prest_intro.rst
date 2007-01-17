@@ -53,6 +53,7 @@ reStructuredText Interpreted Text Roles  `prest version`__ `docutils version`__ 
 Usage of Prest                           `prest version`__
 Internals of Prest                       `prest version`__
 How to Extend Prest                      `prest version`__
+Prest Release Notes                      `prest version`__
 ======================================== ================= ==================== ======
 
 __ http://docutils.sourceforge.net/docs/rst/quickstart.html
@@ -80,6 +81,8 @@ __ prest_usage.html
 __ prest_internals.html
 
 __ prest_extend.html
+
+__ prest_releases.html
 
 ..
    Local Variables:
