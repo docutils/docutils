@@ -1,102 +1,113 @@
 .. -*-rst-*-
 
-Release History
+Release Notes
 ===============
 
 .. contents::
 
+Release 0.3.21
+--------------
+
+Updated the ``toc`` writer to have expanded abilities with the ``-W
+file-suffix`` option.
+
+Fixed the Makefile.PL so that hopefully at least some platforms will
+pass regression tests.
+
+Added release notes to the prest documentation.
+
 Release 0.3.20
 --------------
 
-Made the html, toc, and xref writers compatible with non-breaking
-spaces in Perl 5.8.0 implementation of Unicode.  (Unicode
+Made the ``html``, ``toc``, and ``xref`` writers compatible with
+non-breaking spaces in Perl 5.8.0 implementation of Unicode.  (Unicode
 implementation was fixed in Perl 5.8.6.)
 
-All -D or -W option names can use either hyphens ("-") or underscores
-("_") for word separators; internally everything uses underscores.
+All ``-D`` or ``-W`` option names can use either hyphens ("-") or
+underscores ("_") for word separators; internally everything uses
+underscores.
 
 reStructuredText parsing:
 
-* Added hyphens to the following -D options: entry-attr, include-ext,
-  include-path, nest-inline, perl-path, row-attr, table-attr.
-* Added the following -D options: file-insertion-enabled,
-  ignore-include-errs, raw-enabled.
+* Added hyphens to the following ``-D`` options: ``entry-attr``,
+  ``include-ext``, ``include-path``, ``nest-inline``, ``perl-path``,
+  ``row-attr``, ``table-attr``.
+* Added the following ``-D`` options: ``file-insertion-enabled``,
+  ``ignore-include-errs``, ``raw-enabled``.
 * Fixed a bug where explicit targets were not permitted within an
-  embedded url (e.g., 'reference <#explicit-target>').
+  embedded url (e.g., '``reference <#explicit-target>``').
 * Don't consider targets defined on the same source/line number to be
   duplicate targets (can happen with multiply-included files).
 * Fixed the checking for inconsistent title levels to be more robust.
-* Keep an @INCLUDES array to keep track of the include stack.  This
-  variable can be accessed in a perl/if directive.
+* Keep an ``@INCLUDES`` array to keep track of the include stack.  This
+  variable can be accessed in a ``perl``/``if`` directive.
 * Fixed a bug where large grid tables could result in a deep
   recursion error.
 
 reStructuredText transforms:
 
-* Added the -D docinfo-levels option.
-* Changed the documentation to show the -D options with hyphens ("-")
+* Added the ``-D docinfo-levels`` option.
+* Changed the documentation to show the ``-D`` options with hyphens ("-")
   instead of underscores ("_") separting words.
-* The sectnum:: directive now processes starting from its containing
+* The ``sectnum`` directive now processes starting from its containing
   section, rather than from the top of the DOM tree.
 
-Directive 'raw':
+Directive '``raw``':
 
-* Added a :head: option.
+* Added a ``:head:`` option.
 
-Directive 'if':
+Directive '``if``':
 
-* Export the $SOURCE, $LINE, and @INCLUDES for use in Perl code.
+* Export the ``$SOURCE``, ``$LINE``, and ``@INCLUDES`` for use in Perl
+  code.
 
-Directive 'perl':
+Directive '``perl``':
 
-* Implemented :file: option.
-* Exported @INCLUDES.
+* Implemented ``:file:`` option.
+* Exported ``@INCLUDES``.
 
-Directive 'sectnum':
+Directive '``sectnum``':
 
-* Added a :prefix-title: option.
+* Added a ``:prefix-title:`` option.
 
-Writer 'html':
+Writer '``html``':
 
-* Inserted hyphen in the -W body-attr option.
-* Updated for adding hyphens to the following -D options: table-attr,
-  entry-attr, row-attr.
-* Added -W image-exts option.
-* Added support for :head: option of raw DOM.
+* Inserted hyphen in the ``-W body-attr`` option.
+* Updated for adding hyphens to the following ``-D`` options:
+  ``table-attr``, ``entry-attr``, ``row-attr``.
+* Added ``-W image-exts`` option.
+* Added support for ``:head:`` option of ``raw`` DOM.
 * Fixed a bug with targets.
 * Fixed a potential undefined variable warning for footnote references.
 
-Writer 'index':
+Writer '``index``':
 
-* Changed documentation for -W options to use hyphens ("-") instead of
+* Changed documentation for ``-W`` options to use hyphens ("-") instead of
   underscores ("_") between words.
-* Implemented -W output-header and -W title-underline options.
-* Changed implementation to use a compound directive instead of a raw
-  directive to set the class for the generated contents.
+* Implemented ``-W output-header`` and ``-W title-underline`` options.
+* Changed implementation to use a ``compound`` directive instead of a
+  ``raw`` directive to set the class for the generated contents.
 * Removed a potential undefined variable warning for indirect targets.
 
-Writer 'toc':
+Writer '``toc``':
 
-* Updated documentation to show -W options with hyphens ("-") instead of
+* Updated documentation to show ``-W`` options with hyphens ("-") instead of
   underscores ("_") to separate words.
 * Restructured for simplicity.
 * Changed the way non-breaking spaces are removed from generated DOM
   objects since the auto-numbering may have things other than numbers
   in it.
 
-Writer 'xref':
+Writer '``xref``':
 
-* Added -W appendix option.
-* Added -W chapter option.
-* Added -W section option.
-* Added -W xref-sections option.
-* Added -W xref-targets option.
+* Added the following ``-W`` options: ``appendix``, ``chapter``,
+  ``section``, ``xref-sections``, ``xref-targets``.
 * Restructured the code for simplification.
 
 Release 0.3.19
 --------------
 Added support for ascii-mathml role and directive to produce mathml
-markup.  The mathml markup is only supported in the dom and html
+markup.  The mathml markup is only supported in the ``dom`` and ``html``
 writers for now.
 
 Release 0.3.18
@@ -104,19 +115,19 @@ Release 0.3.18
 
 Went through code coverage reports and updated the tests to bring the
 line and condition coverage up to 100% (except the soon-to-be-outdated
-latex writer).  This analysis resulted in the following fixes:
+``latex`` writer).  This analysis resulted in the following fixes:
 
 Prest application:
 
 * Fixed a bug where help prints out multiple times if there are
   duplicate writers.
 * Relocated all the code for parsing and interpreting writer schemas
-  to Text::Restructured::Writer.
+  to ``Text::Restructured::Writer``.
 * Fixed the version number not to end with a period.
-* Don't use FindBin to append the directory in which the script is
-  found to its @INC path.
-* Don't convert digits in -W options to underscores.
-* Removed code for parsing DOM files to Text::Restructured::DOM::Parse.
+* Don't use ``FindBin`` to append the directory in which the script is
+  found to its ``@INC`` path.
+* Don't convert digits in ``-W`` options to underscores.
+* Removed code for parsing DOM files to ``Text::Restructured::DOM::Parse``.
 * Insert blank line in usage before "Descriptions of Plug-in
   Directives" and "Descriptions of Writers".
 
@@ -124,7 +135,7 @@ reStructuredText parsing:
 
 * Stricter option checking in most directives.
 * Removed package globals and incorporated into a parser object.
-* Initialize ANONYMOUS_TARGETS in init.
+* Initialize ``ANONYMOUS_TARGETS`` in init.
 * Fixed the handling of inline literals in definition lists.
 * Put a system message in the document rather than dying if a plug-in
   directive fails to compile.
@@ -135,15 +146,15 @@ reStructuredText parsing:
 * Fixed an infinite loop that could come up if a line block started
   with two or more blank lines.
 * Fixed the removal of inline markup characters from normalized names.
-* Have include directive do nothing if the file is empty, as opposed
+* Have ``include`` directive do nothing if the file is empty, as opposed
   to returning an empty paragraph.
-* Added checks for the prefix and suffix options to the role directive
-  to be sure they're formatted correctly.
+* Added checks for the ``:prefix:`` and ``:suffix:`` options to the
+  ``role`` directive to be sure they're formatted correctly.
 * Return a system message if the title in a table-type directive is
   not a single paragraph.
-* Merged the code for csv-table and list-table directives to the
+* Merged the code for ``csv-table`` and ``list-table`` directives to the
   extent possible.
-* Fixed the "class" option for target-notes.
+* Fixed the ``:class:`` option for ``target-notes``.
 
 reStructuredText transforms:
 
@@ -151,49 +162,49 @@ reStructuredText transforms:
   invariant.
 * Return a system message if evaluating transform code results in an
   error.
-* Process "class" option for target-notes directive.
-* Allow decorations transform to put in link to prest documentation if
+* Process ``:class:`` option for ``target-notes`` directive.
+* Allow ``decorations`` transform to put in link to prest documentation if
   DOCURL is specified.
 
+Directive '``code_block``':
 
-Directive 'code_block':
+* Added ``-D code-block-states-file`` option.
+* Do line numbering whether or not states can be run if
+  ``:numbered:``.
 
-* Added "-D code-block-states-file" option.
-* Do line numbering whether or not states can be run if :numbered:.
+Directive '``system``':
 
-Directive 'system':
-
-* Return a PCDATA DOM if in a substitution definition context (instead
+* Return a ``PCDATA`` DOM if in a substitution definition context (instead
   of appending it).
 * Don't add a null paragraph if the text is empty.
 
-Writer 'dom':
+Writer '``dom``':
 
-* Updated to use $writer argument to access ProcessDOMPhase.
+* Updated to use ``$writer`` argument to access ``ProcessDOMPhase``.
 
-Writer 'html':
+Writer '``html``':
 
-* Changed the semantics of "-W embed-stylesheet" and "-W stylesheet".
-* Added "-W stylesheet2" option to specify a secondary embedded stylesheet.
-* Changed default of -W field-limit to 14 from 15.
-* Reworked so all the writer's annotations are in DOM's {_html} member.
-* Reworked so that DOM's {attr} member is read-only; HTML attributes
-  are all copied to {_html}{attr} member.
-* Factored out much of the attribute handling into a GetAttr routine.
+* Changed the semantics of ``-W embed-stylesheet`` and ``-W stylesheet``.
+* Added ``-W stylesheet2`` option to specify a secondary embedded stylesheet.
+* Changed default of ``-W field-limit`` to 14 from 15.
+* Reworked so all the writer's annotations are in DOM's ``{_html}`` member.
+* Reworked so that DOM's ``{attr}`` member is read-only; HTML attributes
+  are all copied to ``{_html}{attr}`` member.
+* Factored out much of the attribute handling into a ``GetAttr`` routine.
 * Fixed output of literals embedded in literals.
 
-Writer 'index':
+Writer '``index``':
 
 * Restructured code for simplification
-* Pass the a writer argument into QuoteStart.
-* Fixed processing of -W short-titles.
+* Pass the a writer argument into ``QuoteStart``.
+* Fixed processing of ``-W short-titles``.
 * Added handler for interpreted roles.
 
-Writer 'toc':
+Writer '``toc``':
 
-* Simplified code for generated.
+* Simplified code for ``generated``.
 
-Writer 'xref':
+Writer '``xref``':
 
 * Simplified code for substitution definitions.
 
@@ -217,18 +228,18 @@ Prest application:
   more than once.
 * Removed the path out of the subroutine names created when compiling
   writer routines.
-* Fixed the #line directives for writer subroutines so that better
+* Fixed the ``#line`` directives for writer subroutines so that better
   error messages/coverage results are obtained.
 
-Made writers more efficient by renaming package subroutines to BEGIN
+Made writers more efficient by renaming package subroutines to ``BEGIN``
 so that they will always be called exactly once.
 
-Writer 'html':
+Writer '``html``':
 
-* Incorporated changes in docutils html writer:
+* Incorporated changes in docutils ``html`` writer:
  
-  * No longer change double-quotes to "&quot;".
-  * No longer put a newline after a <pre>.
+  * No longer change double-quotes to "``&quot;``".
+  * No longer put a newline after a ``<pre>``.
 
 Release 0.3.14
 --------------
