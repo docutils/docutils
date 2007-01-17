@@ -11,6 +11,7 @@ doc/src/Makefile
 doc/src/prest_extend.rst
 doc/src/prest_internals.rst
 doc/src/prest_intro.rst
+doc/src/prest_releases.rst
 doc/src/prest_usage.rst
 doc/src/quickref.html
 doc/src/quickstart.rst
