@@ -17,7 +17,12 @@ This writer uses the following output defines:
 
 -W file-suffix=<suffix>
                   Specify a file suffix to be used as the 
-                  targets of TOC entries (default is "html").
+                  targets of TOC entries.  It is either a string or
+		  a comma-separated list of "ext1=ext2" pairs where 
+		  any file with extension ext1 has it mapped to ext2.
+		  This option allows generating a table of contents
+                  for multiple documents where more than one extension
+                  is needed (e.g., .html and .xhtml).  Default is "html".
 -W filename-ext=<ext>
                   Specify an extension to the filename,
                   (e.g. "_main") so the file location of
@@ -59,7 +64,8 @@ sub BEGIN = {
 		$include_noheader $exclude_top $top_in_list);
 
     # Run-time globals
-    use vars qw($TOCSTR $TGTSTR $INCLUDE_TOP @FINAL_TOP_SECS);
+    use vars qw($TOCSTR $TGTSTR $INCLUDE_TOP @FINAL_TOP_SECS
+		$SFX_SUB $DEFAULT_SFX);
 
     # Defaults for -W flags
     $file_suffix = 'html' unless defined $file_suffix;
@@ -71,6 +77,20 @@ sub BEGIN = {
     $top_in_list = 0 unless defined $top_in_list;
 
     ($TOCSTR, $TGTSTR) = ('') x 2;
+
+    # Preprocess $file_suffix into a subroutine
+    my @sfx_pairs = split /[=,]/, $file_suffix;
+    unshift @sfx_pairs, '.*?' if @sfx_pairs == 1;
+    my %sfx_to = @sfx_pairs;
+    my @sfx_from = @sfx_pairs[map(2*$_, 0 .. ($#sfx_pairs >> 1))];
+    my $sfx_sub = 'sub { $_[0] =~ s/\.(?:' .
+	join('|', map("($_)", @sfx_from)) . ')$/"$filename_ext." . (' .
+	join(' : ', map("\$$_ ? '$sfx_to{$sfx_from[$_-1]}'",
+			1 .. @sfx_from), "'')") .
+	'/e }';
+    $SFX_SUB = eval $sfx_sub;
+    die $@ if $@;
+    $DEFAULT_SFX = $sfx_to{$sfx_from[0]};
 }
 
 sub END {
@@ -163,8 +183,9 @@ phase PROCESS = {
     sub document = {
 	my ($dom, $str) = @_;
 	my $fileName = $dom->{attr}{source};
-	$fileName .= "$filename_ext.$file_suffix"
-	    if (!($fileName =~ s/\.[^\.\/]*$/$filename_ext\.$file_suffix/o));
+	$fileName .= "$filename_ext.$DEFAULT_SFX"
+	    unless &$SFX_SUB($fileName);
+#	    if (!($fileName =~ s/\.[^\.\/]*$/$filename_ext\.$file_suffix/o));
 	my $firstHeader = defined $dom->{_toc}{subSections} ?
 	    ${${$dom->{_toc}{subSections}}[0]}[0] : '';
 	if ($str && ($str ne $firstHeader)) {
