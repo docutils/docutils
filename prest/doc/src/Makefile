@@ -79,3 +79,5 @@ clean:
 $(DEST_DIR)/prest_internals.html:	$(PERLSYNOPSIS) $(PM_FILES)
 
 $(DEST_DIR)/prest_extend.html:	prest_internals.xref
+
+$(DEST_DIR)/prest_releases.html: ../../ReleaseNotes.txt
