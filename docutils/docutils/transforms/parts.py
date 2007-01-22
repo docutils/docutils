@@ -101,12 +101,7 @@ class Contents(Transform):
 
     def build_contents(self, node, level=0):
         level += 1
-        sections = []
-        i = len(node) - 1
-        while i >= 0 and isinstance(node[i], nodes.section):
-            sections.append(node[i])
-            i -= 1
-        sections.reverse()
+        sections = [sect for sect in node if isinstance(sect, nodes.section)]
         entries = []
         autonum = 0
         depth = self.startnode.details.get('depth', sys.maxint)
