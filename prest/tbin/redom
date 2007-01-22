@@ -38,5 +38,6 @@ $AFTER_DATE = /<date>/;
 s/(: )(.*)( trapped by operation mask)/$1($2|.*)$3/;
 # System messages may differ in different locales
 s/(\\\[Errno \d+\\\])(.*)/$1($2|.*)/;
+s/(\bstates: )(.*)/$1($2|.*)/;
 # Handle -d output
 s!^.*(/Text/Restructured/Writer/dom\\\.wrt, line )\d+!.*$1\\d+!;
