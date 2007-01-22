@@ -26,6 +26,7 @@ Usage: ${TOOL_NAME} [options] file(s)
 Options:
   -d            Print debugging info on STDERR.  May be used multiple
                 times to get more information.
+  -e <encoding> Specifies an encoding to use for output (default 'utf8')
   -h            Print full usage help
   -w <writer>   Process the writer schema from <writer>.wrt (default 'html')
   -D var[=val]  Define a variable that affects parsing (may be multiple)
@@ -33,6 +34,7 @@ Options:
   -V            Print version info
 
 Available writers: ${\WriterList()}.
+Available encodings: ${\EncodingList()}.
 =end Usage
 =end reST
 =cut
@@ -60,6 +62,7 @@ Available writers: ${\WriterList()}.
 # Global variables:
 #   ``$main::TOP_FILE``: Name of the top-level file being processed.
 #   ``$main::opt_d``:    Debug mode
+#   ``$main::opt_e``:    Desired output encoding
 #   ``$main::opt_w``:    The writer schema to be used.
 #   ``%main::opt_D``:    Hash whose keys are names of variables whose
 #                        defines are specified on the command line
@@ -75,7 +78,7 @@ Available writers: ${\WriterList()}.
 
 use strict;
 
-use vars qw($opt_V $opt_h $opt_d $opt_w %opt_W %opt_D);
+use vars qw($opt_V $opt_h $opt_d $opt_e $opt_w %opt_W %opt_D);
 use vars qw($TOOL_NAME $YEAR $TOP_FILE $SVNID $SVNNAME $VERSION
 	    $TOOL_ID);
 
@@ -105,7 +108,7 @@ sub main {
 
     # Parse options
     Getopt::Long::config('no_ignore_case');
-    Usage() unless GetOptions qw(d+ h w=s D:s% W:s% V);
+    Usage() unless GetOptions qw(d+ e:s h w=s D:s% W:s% V);
     # Give usage information
     Usage('Description') if $opt_h;
     Usage('Id') if $opt_V;
@@ -132,6 +135,9 @@ sub main {
 			 main::FirstDefined($report_levels{$opt_D{report}},
 					    $opt_D{report})} ;
 
+    # May need to specify an encoding for STDOUT
+    binmode STDOUT, ":encoding($opt_e)" if $opt_e;
+
     use Text::Restructured::Writer;
     my $writer = new Text::Restructured::Writer($opt_w);
 
@@ -156,6 +162,17 @@ sub main {
     }
 }
 
+# Gets list of encodings
+# Arguments: none
+# Returns: list of writers
+sub EncodingList {
+    my @encodings;
+
+    use Encode;
+    @encodings = Encode->encodings();
+    return join(', ', @encodings);
+}
+
 # Returns the first defined value in an array.
 # Argument: array
 # Returns: value
@@ -171,10 +188,12 @@ sub FirstDefined {
 # Returns: list of writers
 sub WriterList {
     my ($dir,@writers);
+    my %writer_seen;
     foreach $dir (@INC) {
-	push(@writers, glob("$dir/Text/Restructured/Writer/*.wrt"));
+	push @writers, glob("$dir/Text/Restructured/Writer/*.wrt")
     }
-    grep(s|.*/([^/]+)\.wrt$|$1|, @writers);
+    @writers = grep(! $writer_seen{$_}++,
+		    grep(s|.*/([^/]+)\.wrt$|$1|, @writers));
     return join(', ', @writers);
 }
 
