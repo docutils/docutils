@@ -1182,7 +1182,8 @@ EOS
 	my $doc = [[], []];
 
 	# Handle the prolog
-	push @{$doc->[0]}, qq(<?xml version="1.0" encoding="utf-8" ?>\n)
+	my $enc = $main::opt_e || 'utf-8';
+	push @{$doc->[0]}, qq(<?xml version="1.0" encoding="$enc" ?>\n)
 	    unless $html_prolog;
 	push @{$doc->[0]}, $DOCTYPE;
 	push (@{$doc->[0]}, qq(<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n));
@@ -1192,7 +1193,7 @@ EOS
 	my $head = [["<head>\n"], ["</head>\n"]];
 	push (@{$doc->[0]}, $head);
 	push (@{$head->[0]}, 
-	      qq(<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />\n));
+	      qq(<meta http-equiv="Content-Type" content="text/html; charset=$enc" />\n));
 	push (@{$head->[0]},
 	      qq(<meta name="generator" content="$main::TOOL_ID" />\n))
 	    unless defined $main::opt_D{generator} &&
