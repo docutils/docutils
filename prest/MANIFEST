@@ -319,8 +319,10 @@ t/70_plugins/code_block.init/code09.rst
 t/70_plugins/code_block.init/code10.dom
 t/70_plugins/code_block.init/code10.rst
 t/70_plugins/code_block.init/code11.dom
+t/70_plugins/code_block.init/code11.r
 t/70_plugins/code_block.init/code11.rst
 t/70_plugins/code_block.init/code12.dom
+t/70_plugins/code_block.init/code12.r
 t/70_plugins/code_block.init/code12.rst
 t/70_plugins/code_block.init/Dir.mak
 t/70_plugins/code_block.init/foo.sh
