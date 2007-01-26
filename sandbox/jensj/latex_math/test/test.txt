@@ -1,7 +1,7 @@
 Testing MathML
 --------------
 
-Inline math: :latex-math:`\siin(x_n^2)`.  And displayed math:
+Inline math: :latex-math:`n! + \sin(x_n^2)`.  And displayed math:
 
 .. latex-math::
 
