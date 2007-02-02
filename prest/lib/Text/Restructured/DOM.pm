@@ -280,20 +280,29 @@ sub substitute : method {
     @PARENT{@new_doms} = ($parent) x @new_doms;
 }
 
+# INSTANCE METHOD.
+# Returns the tag of a DOM object
+# Arguments: None
+# Returns: Tag
+sub tag : method {
+    my($dom) = @_;
 
-# Parses a file in the DOM (pseudo-XML) format.
-# Arguments: First line of file
+    $dom->{tag};
+}
+
+# Parses text that is in DOM (pseudo-XML) format.
+# Arguments: Text, reference to hash of command-line options
 # Returns: DOM object
-# Uses globals: <> file handle
+# Uses globals: None
 sub Parse {
-    my ($first_line) = @_;
+    my ($text, $opt) = @_;
     my $last_indent = -1;
     my @stack;
     my @indents;
     my $tos;	# top of stack
     my $main;
-    $_ = $first_line;
-    do {
+    my @text = split /\n/, $text;
+    foreach (@text) {
 	/(\s*).*/;
 	my $spaces = $1;
 	my $indent = length($spaces);
@@ -347,11 +356,80 @@ sub Parse {
 		$tos->append($dom);
 	    }
 	}
-    } while <>;
+    };
 
-    $main->{attr}{source} = $main::opt_D{source} || $ARGV;
+    $main->{attr}{source} = $opt->{D}{source} || $ARGV;
     return $main;
 }
 
+# Methods relating to the DTD
+
+BEGIN {
+# These are computed from the docutils.dtd using XML::Smart::DTD
+my @takes_body_elts =
+    qw(admonition attention block_quote caution citation compound
+       container danger definition description document error
+       field_body footer footnote header hint important legend
+       list_item note section sidebar system_message tip topic
+       warning);
+my @takes_inline_elts =
+    qw(abbreviation acronym address attribution author caption
+       classifier contact copyright date doctest_block emphasis
+       field_name generated inline line literal_block organization
+       paragraph problematic raw reference revision rubric status
+       strong subscript substitution_definition substitution_reference
+       subtitle superscript target term title title_reference
+       version);
+my @is_body_elt =
+    qw(admonition attention block_quote bullet_list caution citation
+       comment compound container danger definition_list doctest_block
+       enumerated_list error field_list figure footnote hint image
+       important line_block literal_block note option_list paragraph
+       pending raw reference rubric substitution_definition
+       system_message table target tip warning);
+my @is_inline_elt =
+    qw(emphasis strong literal reference footnote_reference
+       citation_reference substitution_reference title_reference
+       abbreviation acronym subscript superscript inline problematic
+       generated target image raw);
+my (%takes_body_elts, %takes_inline_elts, %is_body_elt, %is_inline_elt);
+@takes_body_elts{@takes_body_elts}     = (1) x @takes_body_elts;
+@takes_inline_elts{@takes_inline_elts} = (1) x @takes_inline_elts;
+@is_body_elt{@is_body_elt}             = (1) x @is_body_elt;
+@is_inline_elt{@is_inline_elt}         = (1) x @is_inline_elt;
+
+# INSTANCE METHOD.
+# Arguments: None
+# Returns: True if the DOM object can take body elements in its contents
+sub takes_body_elts : method {
+    my ($dom) = @_;
+    return $takes_body_elts{$dom->tag};
+}
+
+# INSTANCE METHOD.
+# Arguments: None
+# Returns: True if the DOM object can take inline elements in its contents
+sub takes_inline_elts : method {
+    my ($dom) = @_;
+    return $takes_inline_elts{$dom->tag};
+}
+
+# INSTANCE METHOD.
+# Arguments: None
+# Returns: True if the DOM object is a body element
+sub is_body_elt : method {
+    my ($dom) = @_;
+    return $is_body_elt{$dom->tag};
+}
+
+# INSTANCE METHOD.
+# Arguments: None
+# Returns: True if the DOM object is an inline element
+sub is_inline_elt : method {
+    my ($dom) = @_;
+    return $is_inline_elt{$dom->tag};
+}
+
+}
 
 1;
