@@ -1267,9 +1267,13 @@ The "if" directive defines the following global variables:
    The name of the source file containing the perl directive.
 ``$LINENO``
    The line number of the perl directive within ``$SOURCE``.
+``TOP_FILE``
+   The top-level file being processed.
 ``@INCLUDES``
    Array of reference to array of [file name, line number] pairs that
    have included the current file.
+``$opt_<x>`` or ``%opt_<x>``
+   The ``<x>`` option from the command line.
 
 The "if" directive processes the following define:
 
@@ -1303,9 +1307,13 @@ The "perl" directive defines the following global variables:
    The name of the source file containing the perl directive.
 ``$LINENO``
    The line number of the perl directive within ``$SOURCE``.
+``TOP_FILE``
+   The top-level file being processed.
 ``@INCLUDES``
    Array of reference to array of [file name, line number] pairs that
    have included the current file.
+``$opt_<x>`` or ``%opt_<x>``
+   The ``<x>`` option from the command line.
 
 The following defines are processed by the "perl" directive:
 
