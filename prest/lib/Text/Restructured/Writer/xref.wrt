@@ -211,7 +211,8 @@ phase PROCESS {
 	    $dom->{content}[0]->Recurse(sub {
 		my ($dom) = @_;
 		$title .= $dom->{text} if $dom->{tag} eq '#PCDATA';
-	    });
+	    }) if $dom->{content}[0]{tag} eq 'title';
+            $title = $dom->{attr}{title} || '' unless $title;
 	    $title =~ s/^(.*?)\.?[\xa0\xc2]+/ /;
 	    my ($number) = ($1);
 	    my $ref = ! defined $number ? $title :
