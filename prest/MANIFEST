@@ -800,6 +800,8 @@ t/80_misc/transforms.init/targets_01.rst
 t/90_bugs/html.init/Dir.mak
 t/90_bugs/html.init/hyphencell.myhtml
 t/90_bugs/html.init/hyphencell.rst
+t/90_bugs/html.init/imagesubst.myhtml
+t/90_bugs/html.init/imagesubst.rst
 t/90_bugs/html.init/inlinelit.myhtml
 t/90_bugs/html.init/inlinelit.rst
 t/90_bugs/html.init/method.myhtml
