@@ -13,7 +13,7 @@ use ExtUtils::MakeMaker;
 
 ## Note: The version number for the entire release is specified here and
 ## propagated.  Be sure to edit for every release.
-my $Version = "0.003021";
+my $Version = "0.003022";
 
 use vars qw($opt_f $opt_h $opt_k);
 my $OUTPUT_CFG_FILE = $opt_f = 'config.log';
@@ -128,9 +128,6 @@ TESTBIN = ${base}/tbin
 EXTRACT_TESTS = $(TESTBIN)/extract_tests
 DIFFRE = $(TESTBIN)/diffre
 PERL = ${Perl}
-ifdef COVER
-  COVER_FLAG = -MDevel::Cover=-db,../../cover_db,-silent,1,-summary,0
-endif
 DEBUG_FLAGS = -D no_line_directives
 
 # If the suite has makefile definitions, use them
@@ -138,6 +135,9 @@ DEBUG_FLAGS = -D no_line_directives
 # If the local directory has makefile definitions, use them
 -include Dir.mak
 
+ifdef COVER
+  COVER_FLAG = -MDevel::Cover=-db,../../cover_db,-silent,1,-summary,0
+endif
 PERL_FLAGS += -I${base}/blib/lib${taint_flag} $(COVER_FLAG)
 
 # Some global flags if not overridden
@@ -195,7 +195,7 @@ chdir "$myname.dir";
 # Check to see if we need to skip all tests
 if (-f "skip.pl") {
     chomp (my $error = `$^X -I$base/blib/lib skip.pl 2>&1`);
-    plan(skip_all => "because $error") if $?;
+    plan(skip_all => $error) if $?;
 }
 
 # Now unpack the tests if needed
@@ -219,7 +219,7 @@ foreach my $test (@tests) {
 	chomp (my $error = `$^X -I$base/blib/lib $base_test.skip.pl 2>&1`);
       SKIP:
 	{
-	    skip("because $error", 1) if $?;
+	    skip($error, 1) if $?;
 	}
 	next TEST if $?
     }
