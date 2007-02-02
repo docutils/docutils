@@ -79,8 +79,8 @@ use strict;
 sub Filter{
     my ($dom, $parser, $details) = @_;
 
-    if ($main::opt_w eq eval($details->{format}) ||
-	$main::opt_w eq 'dom') {
+    if ($parser->{opt}{w} eq eval($details->{format}) ||
+	$parser->{opt}{w} eq 'dom') {
 	my $nodes = $details->{nodes};
 	return $DOM->new($nodes->{tag}, %{$nodes->{attr}});
     }
@@ -274,7 +274,7 @@ sub DocInfo {
 
     $level = $level || 0;
     process_docinfo($dom, $parser);
-    if ($level < ($main::opt_D{docinfo_levels} || 0)) {
+    if ($level < ($parser->{opt}{D}{docinfo_levels} || 0)) {
 	my @sections = grep($_->{tag} eq 'section', $dom->contents());
 	foreach my $section (@sections) {
 	    process_docinfo($section, $parser);
@@ -311,7 +311,7 @@ sub SectionSubTitle {
 	     }
 	     return $dom;
 	 }
-	 , 'pre') if $main::opt_D{section_subtitles};
+	 , 'pre') if $parser->{opt}{D}{section_subtitles};
     return;
 }
 
@@ -324,11 +324,13 @@ sub create_title {
     # If the document has one section, coalesce it with the DOM
     my @sections = grep($_->{tag} eq 'section', $dom->contents());
     
-    if (@sections == 1 && ($main::opt_D{keep_title_section} ||
+    if (@sections == 1 && ($parser->{opt}{D}{keep_title_section} ||
 			   !grep($_->{tag} !~
 				 /^(section|comment|system_message|target|substitution_definition|title|decoration)$/,
 				 $dom->contents()))) {
 	my $sec = $sections[0];
+	push @{$sec->{attr}{classes}}, 'title'
+	    if $parser->{opt}{D}{keep_title_section};
 	my @non_sections = grep($_->{tag} !~ /^(?:section|title)$/,
 				$dom->contents());
 	my ($prev_title) = grep $_->{tag} eq 'title', $dom->contents();
@@ -345,7 +347,7 @@ sub create_title {
 		  $ttext; #Text::Restructured::NormalizeName($ttext, 'keepcase');
 	    @{$dom->{attr}}{keys %{$sec->{attr}}} = values %{$sec->{attr}};
 	}
-	if ($main::opt_D{keep_title_section} && ! defined $prev_title) {
+	if ($parser->{opt}{D}{keep_title_section} && ! defined $prev_title) {
 	    # Don't duplicate ids from the section if we keep the section
 	    delete $dom->{attr}{ids};
 	    my $title = $sec->{content}[0];
@@ -423,7 +425,7 @@ sub Pending {
 	else {
 	    my $details = $dom->{internal}{'.details'};
 	    no strict 'refs';
-	    print STDERR "Debug: Transform $transform\n" if $main::opt_d;
+	    print STDERR "Debug: Transform $transform\n" if $parser->{opt}{d};
 	    @result = eval { &$t($dom, $parser, $details) };
 	    push @result,
 	    $parser->system_message(4, $dom->{source}, $dom->{lineno},
@@ -884,9 +886,9 @@ sub CitationReferences {
 	if ($tag =~ /^(?:(citation|substitution)_reference)$/) { 
 	    my $what = $1 eq 'citation' ? $1 :
 		'substitution_definition';
-	    my $name = main::FirstDefined($dom->{attr}{names} &&
-					  $dom->{attr}{names}[0],
-					  $dom->{attr}{refname});
+ 	    my $name =
+ 		$dom->{attr}{names} && defined $dom->{attr}{names}[0] ?
+		$dom->{attr}{names}[0] : $dom->{attr}{refname};
 	    my $target = $parser->{REFERENCE_DOM}{$what}{$name};
 	    $target = ($parser->{REFERENCE_DOM}{"$what.lc"}{lc $name})
 		unless defined $target;
@@ -946,9 +948,9 @@ sub FootnoteReferences {
 	     my($dom) = @_;
 	     my $tag = $dom->{tag};
 	     if ($tag eq 'footnote_reference' && !$dom->{resolved}) {
-		 my $name = main::FirstDefined($dom->{attr}{names} &&
-					       $dom->{attr}{names}[0],
-					       $dom->{attr}{refname});
+		 my $name =
+		     $dom->{attr}{names} && defined $dom->{attr}{names}[0] ||
+		     $dom->{attr}{refname};
 		 my $footnote = defined $name ?
 		     $parser->{REFERENCE_DOM}{footnote}{$name} :
 		     $AUTO_FOOTNOTES[$AUTO_FOOTNOTE_REF++];
@@ -1254,30 +1256,32 @@ sub Decorations {
     return if defined $dec && ($dec->{content}[0]{tag} eq 'footer' ||
 			       $dec->num_contents() > 1);
     my $para = $DOM->new('paragraph');
-    my $source_link = main::FirstDefined($main::opt_D{source_link}, 1);
+    my $source_link =
+	defined $parser->{opt}{D}{source_link} ?
+	$parser->{opt}{D}{source_link} : 1;
     if ($source_link) {
-	my $source_url = main::FirstDefined($main::opt_D{source_url},
-					    $topdom->{attr}{source});
+	my $source_url = defined $parser->{opt}{D}{source_url} ?
+	    $parser->{opt}{D}{source_url} : $topdom->{attr}{source};
 	my $ref = $DOM->new('reference', refuri=>$source_url);
 	$ref->append($DOM->newPCDATA('View document source'));
 	$para->append($ref);
 	$para->append($DOM->newPCDATA(".\n"));	
     }
-    my $time = main::FirstDefined($main::opt_D{time}, 1);
-    my $date = main::FirstDefined($main::opt_D{date}, 0);
+    my $time = defined $parser->{opt}{D}{time} ? $parser->{opt}{D}{time} : 1;
+    my $date = defined $parser->{opt}{D}{date} ? $parser->{opt}{D}{date} : 0;
     if ($date || $time) {
 	my $format = "%Y/%m/%d" . ($time ? " %H:%M:%S %Z" : "");
 	use POSIX;
 	my $date = POSIX::strftime($format, localtime);
 	$para->append($DOM->newPCDATA("Generated on: $date.\n"));
     }
-    my $generator = main::FirstDefined($main::opt_D{generator}, 1);
+    my $generator =
+	defined $parser->{opt}{D}{generator} ? $parser->{opt}{D}{generator} : 1;
     if ($generator) {
 	use Text::Restructured::PrestConfig;
-	my $tool_id = $main::TOOL_ID;
 	my $docurl = $Text::Restructured::PrestConfig::DOCURL;
 	$para->append($DOM->newPCDATA("Generated by "));
-	my $tool_dom = $DOM->newPCDATA($tool_id);
+	my $tool_dom = $DOM->newPCDATA($topdom->{TOOL_ID});
 	if ($docurl !~ /^none$/i) {
 	    my $docref = $DOM->new('reference', refuri=>$docurl);
 	    $docref->append($tool_dom);
@@ -1340,7 +1344,7 @@ sub Messages {
 	     my($dom) = @_;
 	     push (@SYSTEM_MESSAGES, $dom)
 		 if ($dom->{tag} eq 'system_message' &&
-		     $dom->{attr}{level} >= $main::opt_D{report});
+		     $dom->{attr}{level} >= $parser->{opt}{D}{report});
 	     return $dom->{tag} ne 'system_message' ? ($dom) : ();
 	 }
 	 );
