@@ -131,7 +131,7 @@ sub BEGIN {
 }
 
 sub Warn {
-    print STDERR "$main::opt_w writer: Warning: $_[0]\n";
+    print STDERR "latex writer: Warning: $_[0]\n";
 }
 
 # This phase marks elements as being contained within footnotes or literals
@@ -575,7 +575,7 @@ phase PROCESS = {
 	    return "\\styletopictitle{$dom->{title}} $str"
 	}
 	else {
-	    print STDERR "$main::opt_w writer: Warning: unsupported type of topic: $class\n";
+	    print STDERR "latex writer: Warning: unsupported type of topic: $class\n";
 	}
 	return;
     }
@@ -1012,7 +1012,7 @@ EOS
 	    
 	}
 	else {
-	    print STDERR "$main::opt_w writer: Warning: unsupported role for interpreted text: $role\n";
+	    print STDERR "latex writer: Warning: unsupported role for interpreted text: $role\n";
 	}
 	chomp $str;
 	return $str;
@@ -1087,7 +1087,7 @@ EOS
     sub document = { # PROCESS
 	my ($dom, $str) = @_;
 	my @inputs = split(',',$inputs);
-	my $ind_file = $main::TOP_FILE;
+	my $ind_file = $dom->{TOP_FILE};
 	$ind_file =~ s|\.[^/]+$|.idx|;
 	my $decoration;
 	if ($dom->{content}[0]{tag} eq 'decoration') {

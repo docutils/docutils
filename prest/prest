@@ -61,24 +61,12 @@ Available encodings: ${\EncodingList()}.
 
 # Global variables:
 #   ``$main::TOP_FILE``: Name of the top-level file being processed.
-#   ``$main::opt_d``:    Debug mode
-#   ``$main::opt_e``:    Desired output encoding
-#   ``$main::opt_w``:    The writer schema to be used.
-#   ``%main::opt_D``:    Hash whose keys are names of variables whose
-#                        defines are specified on the command line
-#                        with -D and whose values are the associated
-#                        value (or 1 if no value is supplied)
-#   ``%main::opt_W``:    Hash whose keys are names of variables whose
-#                        defines are specified on the command line
-#                        with -W and whose values are the associated
-#                        value (or 1 if no value is supplied)
 #   ``$main::MY_DIR``:   The real directory in which the prest script lives
 #   ``$main::TOOL_ID``:  The tool name and release number
 #   ``$main::VERSION``:  The prest version
 
 use strict;
 
-use vars qw($opt_V $opt_h $opt_d $opt_e $opt_w %opt_W %opt_D);
 use vars qw($TOOL_NAME $YEAR $TOP_FILE $SVNID $SVNNAME $VERSION
 	    $TOOL_ID);
 
@@ -103,59 +91,42 @@ BEGIN {
 sub main {
     use Getopt::Long;
     # Set default option values
-    $opt_w = "html";
-    $opt_d = 0;
+    my %opt = (w=>'html', d=>0, D=>{});
 
     # Parse options
     Getopt::Long::config('no_ignore_case');
-    Usage() unless GetOptions qw(d+ e:s h w=s D:s% W:s% V);
+    Usage() unless GetOptions \%opt, qw(d+ e:s h w=s D:s% W:s% V);
     # Give usage information
-    Usage('Description') if $opt_h;
-    Usage('Id') if $opt_V;
+    Usage('Description') if $opt{h};
+    Usage('Id') if $opt{V};
     Usage() unless @ARGV;
 
-    # Set default of 1 for unspecified -W options
-    foreach (keys %opt_W) {
-	$opt_W{$_} = 1 if defined $opt_W{$_} && $opt_W{$_} eq '';
-    }
-    # Initialize defined variables
-    foreach my $key (keys %opt_W) {
-	(my $var = $key) =~ tr/a-zA-Z0-9/_/c;
-	no strict 'refs';
-	${"Eval_::$var"} = $opt_W{$key};
-    }
-    # Process -D variables
-    %opt_D = map(do{
-	my $val = $opt_D{$_};
-	s/-/_/g;
-	($_, $val);
-    }, keys %opt_D);
-    my %report_levels = (info=>1, warning=>2, error=>3, severe=>4, none=>5);
-    $opt_D{report} = do {local $^W=0;  # Temporarily shut off warnings
-			 main::FirstDefined($report_levels{$opt_D{report}},
-					    $opt_D{report})} ;
-
     # May need to specify an encoding for STDOUT
-    binmode STDOUT, ":encoding($opt_e)" if $opt_e;
+    binmode STDOUT, ":encoding($opt{e})" if $opt{e};
 
     use Text::Restructured::Writer;
-    my $writer = new Text::Restructured::Writer($opt_w);
+    my $writer = new Text::Restructured::Writer($opt{w}, \%opt);
 
-    my $first_line = <>;
-    my $dom;
-    $first_line = "" if ! defined $first_line;
-    my $eof = eof;
     use Text::Restructured::DOM;
+
     # Handle all the documents
-    while (defined $first_line) {
-	$TOP_FILE = $ARGV;
-	if ($first_line =~ /^<document/) {
-	    # We have a DOM for input, rather than an rst file
-	    ($dom, $first_line) = Text::Restructured::DOM::Parse($first_line);
+    my $rst_parser;
+    push @ARGV, '-' unless @ARGV;
+    foreach $TOP_FILE (@ARGV) {
+	open F,$TOP_FILE;
+	my @doc = <F>;
+	close F;
+	my $dom;
+	my $doc = join '', @doc;
+	if ($doc =~ /^<document/) {
+	    # We have a DOM for input rather than an reST file
+	    $dom = Text::Restructured::DOM::Parse($doc, \%opt);
 	}
 	else {
 	    use Text::Restructured;
-	    ($dom, $first_line, $eof) = Text::Restructured::Parse($first_line, $eof);
+	    $rst_parser = new Text::Restructured(\%opt, $TOOL_ID)
+		unless $rst_parser;
+	    $dom = $rst_parser->Parse($doc, $TOP_FILE);
 	}
 	# Now compute the output string
 	print $writer->ProcessDOM($dom);
