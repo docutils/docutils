@@ -8,6 +8,11 @@ package Text::Restructured;
 # This package does parsing of reStructuredText files
 
 =pod
+
+=head1 NAME
+
+Text::Restructured - Perl implementation of reStructuredText parser
+
 =begin reST
 =begin Usage
 Defines for reStructuredText parser
@@ -244,8 +249,8 @@ BEGIN {
 		      return $parser->{_MathML} ?
 			  $parser->{_MathML}->TextToMathMLTree
 			  ($text, [title=>$text, xmlns=>"&mathml;"],
-			   [$main::opt_D{mstyle} ?
-			    @{$main::opt_D{mstyle}} : ()]) :
+			   [$parser->{opt}{D}{mstyle} ?
+			    @{$parser->{opt}{D}{mstyle}} : ()]) :
 			   '';
 		      
 		  },
@@ -270,9 +275,10 @@ BEGIN {
 use Text::Restructured::DOM;
 
 # Creates a new Parser object
+# Arguments: hash to reference of options, tool identifier
 sub new {
-    my ($class) = @_;
-    my $self = {};
+    my ($class, $opt, $tool_id) = @_;
+    my $self = { opt => $opt, TOOL_ID => $tool_id };
     bless $self, $class;
     $self->init();
     $self;
@@ -280,23 +286,34 @@ sub new {
 
 # Processes defaults for -D defines and resets object variables
 # between documents.
-# Arguments: document DOM object
+# Arguments: document DOM object, file name
 # Returns: None
 # Sets instance vars: SEC_LEVEL, SEC_DOM, TOPDOM SEC_STYLE,
 #               ANONYMOUS_TARGETS, REFERENCE_DOM, TARGET_NAME,
 #               ALL_TARGET_IDS, ALL_TARGET_NAMES MY_ROLES,
 #               MY_DEFAULT_ROLE
 sub init : method {
-    my ($self, $doc) = @_;
+    my ($self, $doc, $filename) = @_;
 
+    # Process -D variables
+    %{$self->{opt}{D}} = map(do{
+	my $val = $self->{opt}{D}{$_};
+	s/-/_/g;
+	($_, $val);
+    }, keys %{$self->{opt}{D}});
     foreach (keys %DEFAULTS) {
-	$main::opt_D{$_} = $DEFAULTS{$_} unless defined $main::opt_D{$_};
+	$self->{opt}{D}{$_} = $DEFAULTS{$_} unless defined $self->{opt}{D}{$_};
     }
-    foreach (keys %main::opt_D) {
+    foreach (keys %{$self->{opt}{D}}) {
 	# Force any defines with no values specified to be 1
-	$main::opt_D{$_} = 1
-	    if defined $main::opt_D{$_} && $main::opt_D{$_} eq '';
+	$self->{opt}{D}{$_} = 1
+	    if defined $self->{opt}{D}{$_} && $self->{opt}{D}{$_} eq '';
     }
+    my %report_levels = (info=>1, warning=>2, error=>3, severe=>4, none=>5);
+    $self->{opt}{D}{report} =
+	do { local $^W=0;  # Temporarily shut off warnings
+	     $report_levels{$self->{opt}{D}{report}} ||
+		 $self->{opt}{D}{report} };
 
     delete $self->{NEXT_ID};
     delete $self->{SEC_LEVEL};
@@ -308,19 +325,20 @@ sub init : method {
     delete $self->{ALL_TARGET_IDS};
     delete $self->{ALL_TARGET_NAMES};
     $self->{TOPDOM} = $doc;
+    $self->{TOP_FILE} = $filename;
 
     # Handle the Perl include path
     my $perl_inc = join(':', @INC);
-    my $new_inc = $main::opt_D{perl_path};
+    my $new_inc = $self->{opt}{D}{perl_path};
     $new_inc =~ s/<inc>/$perl_inc/gi;
     @INC = split(/:/, $new_inc);
-    delete $main::opt_D{perl_path};
+    delete $self->{opt}{D}{perl_path};
 
     # Preprocess the mstyle define
-    if ($main::opt_D{mstyle} && ref($main::opt_D{mstyle}) ne 'ARRAY') {
+    if ($self->{opt}{D}{mstyle} && ref($self->{opt}{D}{mstyle}) ne 'ARRAY') {
 	my %attr = map((/(\w+)=(.*)/g), split(/\s*,\s*/,
-					      $main::opt_D{mstyle}));
-	$main::opt_D{mstyle} = [ map(($_,$attr{$_}), sort keys %attr) ] ;
+					      $self->{opt}{D}{mstyle}));
+	$self->{opt}{D}{mstyle} = [ map(($_,$attr{$_}), sort keys %attr) ] ;
     }
 
     $self->{MY_DEFAULT_ROLE} = $DEFAULT_ROLE;
@@ -359,7 +377,7 @@ sub system_message : method {
     }
     my $line = $lineno ? ":$lineno" : '';
     print STDERR "$source$line ($ERROR_LEVELS{$level}/$level) $msg\n"
-	if $level >= $main::opt_D{report} && $source ne 'test data';
+	if $level >= $self->{opt}{D}{report} && $source ne 'test data';
     return $dom;
 }
 
@@ -1041,7 +1059,7 @@ sub Explicit : method {
 	    do { $uri =~ /\n( +)/; length($1 || '') };
 	my $spaces = ' ' x $indent;
 	if ($uri =~ /^(?:\`((?:.|\n)*)\`|([\w.-]+))_$/) {
-	    my $name = main::FirstDefined($1, $2);
+	    my $name = defined $1 ? $1 : $2;
 	    # Get rid of newline-indents
 	    $name =~ s/\n$spaces/ /g;
 	    $attr{refname} = $self->NormalizeName($name);
@@ -1386,16 +1404,18 @@ sub Inline : method {
 			if defined $role->{text};
 		    my $options = $role->{options};
 		    if ($options && $options->{prefix} &&
-			defined (my $pfx = ($options->{prefix}{$main::opt_w} ||
-					    $options->{prefix}{default}))) {
-			my $raw = $DOM->new('raw', format=>$main::opt_w);
+			defined (my $pfx =
+				 ($options->{prefix}{$self->{opt}{w}} ||
+				  $options->{prefix}{default}))) {
+			my $raw = $DOM->new('raw', format=>$self->{opt}{w});
 			$raw->append($DOM->newPCDATA($pfx));
 			$parent->append($raw);
 		    }
 		    if ($options && $options->{suffix} &&
-			defined (my $sfx = ($options->{suffix}{$main::opt_w} ||
-					    $options->{suffix}{default}))) {
-			$suffix = $DOM->new('raw', format=>$main::opt_w);
+			defined (my $sfx =
+				 ($options->{suffix}{$self->{opt}{w}} ||
+				  $options->{suffix}{default}))) {
+			$suffix = $DOM->new('raw', format=>$self->{opt}{w});
 			$suffix->append($DOM->newPCDATA($sfx));
 		    }
 		    $was_interpreted = 1;
@@ -1428,7 +1448,7 @@ sub Inline : method {
 		$tag eq 'raw' ||
 		(defined $attr{role} &&
 		 $self->{MY_ROLES}{$attr{role}}{attr}{raw}) ||
-		! $main::opt_D{nest_inline}) {
+		! $self->{opt}{D}{nest_inline}) {
 		$mid = RemoveBackslashes($mid)
 		    if $tag !~ /^(literal|raw)$/ &&
 		    !(defined $attr{role} &&
@@ -1480,7 +1500,7 @@ sub InlineEnd : method {
 	$self->InlineFindEnd($text, $start, $outer_start);
     my ($full_mid, $next) = ($orig_mid, $orig_next);
     goto do_return
-	unless $is_end && $main::opt_D{nest_inline} && $start ne '``';
+	unless $is_end && $self->{opt}{D}{nest_inline} && $start ne '``';
 
     # We only need to recurse to get it right if the start symbol is
     # "*" or "`" (emphasis or interpreted/target)
@@ -1839,7 +1859,7 @@ sub Paragraphs : method {
     # Convert any tabs to spaces
     while ($text =~ s/^([^\t\n]*)\t/
 	   my $l = length($1);
-	   my $ts = $main::opt_D{tabstops};
+	   my $ts = $self->{opt}{D}{tabstops};
 	   my $s = " " x ($ts - ($l % $ts));
 	   "$1$s"/gem) {
     }
@@ -2108,41 +2128,27 @@ sub Paragraphs : method {
 }
 
 # Parses a reStructuredText document.
-# Arguments: First line of file, whether we're at end of file
+# Arguments: Text, file name
 # Returns: DOM object
-# Uses globals: <> file handle
-sub Parse {
-    my ($first_line, $eof) = @_;
-    my $next_first_line;
-    my $source = defined $main::opt_D{source} ? $main::opt_D{source} :
-	$ARGV;
-    my @file;
-    if (! $eof) {
-	while (<>) {
-	    push @file, $_;
-	    if (eof) {
-		close ARGV;
-		$next_first_line = <>;
-		$eof = eof;
-		last;
-	    }
-	}
-    }
-    my $file = join('',@file);
+# Uses globals: None
+sub Parse : method {
+    my ($self, $text, $filename) = @_;
+    my $source = defined $self->{opt}{D}{source} ? $self->{opt}{D}{source} :
+	$filename;
     my $dom = $DOM->new('document', source=>$source);
     $dom->{source} = $source;
-    my $text = "$first_line$file";
+    $dom->{TOP_FILE} = $filename;
+    $dom->{TOOL_ID} = $self->{TOOL_ID};
 
-    my $parser = new Text::Restructured;
-    $parser->init($dom);
-    $parser->Paragraphs($dom, $text, $source, 1);
+    $self->init($dom, $filename);
+    $self->Paragraphs($dom, $text, $source, 1);
 
     # Do transformations on the DOM
     use Text::Restructured::Transforms;
     my $transform;
     foreach $transform (@Transforms::TRANSFORMS) {
-	next if (defined $main::opt_D{xformoff} &&
-		 $transform =~ /$main::opt_D{xformoff}/o);
+	next if (defined $self->{opt}{D}{xformoff} &&
+		 $transform =~ /$self->{opt}{D}{xformoff}/o);
 	my $t = "Text::Restructured::$transform";
 	$t =~ s/\./::/g;
 	# Check the original transform path before giving up
@@ -2152,17 +2158,17 @@ sub Parse {
 	if (! defined &$t) {
 	    # Devel::Cover statement 0 0 Anticipates user-defined transforms
 	    $dom->append
-		($parser->system_message
+		($self->system_message
 		 (4, $source, 0,
 		  qq(No transform code found for "$transform".)));
 	}
 	else {
 	    no strict 'refs';
-	    &$t($dom, $parser);
+	    &$t($dom, $self);
 	}
     }
     
-    return $dom, $next_first_line, $eof;
+    return $dom;
 }
 
 # Quotes lines involved in simple tables that could be confused with
@@ -2560,7 +2566,7 @@ sub SimpleTable : method {
     }
     
     my $dom = $DOM->new('table');
-    $dom->{table_attr} = $main::opt_D{table_attr};
+    $dom->{table_attr} = $self->{opt}{D}{table_attr};
     my $tgroup = $DOM->new('tgroup', cols=>@colwidth+0);
     $dom->append($tgroup);
     my $colspec;
@@ -2670,7 +2676,7 @@ sub SimpleTable : method {
 					    . "\n"}, $row_start .. $row_end));
 		    # Infer right/center alignment from first row of entries
 		    if (($celltext =~ /\A.*\n[ \n]*\Z/) &&
-			$main::opt_D{align}) {
+			$self->{opt}{D}{align}) {
 			$celltext =~ /(.*)/;
 			my $ct = $1;
 			$entry->{attr}{align} = $ct =~ /^\S/ ? 'left' :
@@ -2701,9 +2707,9 @@ sub SimpleTable : method {
 		    $celltext =~ s/^$spaces//gm;
 		    $self->Paragraphs($entry, $celltext, $source,
 				      $lineno+$row_start);
-		    $entry->{entry_attr} = $main::opt_D{entry_attr};
+		    $entry->{entry_attr} = $self->{opt}{D}{entry_attr};
 		}
-		$row->{row_attr} = $main::opt_D{row_attr};
+		$row->{row_attr} = $self->{opt}{D}{row_attr};
 	    }
 	    $row_start = $next_row_start;
 	}
@@ -2811,7 +2817,7 @@ sub Table : method {
     }
 
     my $dom = $DOM->new('table');
-    $dom->{table_attr} = $main::opt_D{table_attr};
+    $dom->{table_attr} = $self->{opt}{D}{table_attr};
     my $tgroup = $DOM->new('tgroup', cols=>$#cols);
     $dom->append($tgroup);
     my $c;
@@ -2838,7 +2844,7 @@ sub Table : method {
 		$tbody = $DOM->new('tbody');
 		$tgroup->append($tbody);
 	    }
-	    $row->{row_attr} = $main::opt_D{row_attr} if defined $row;
+	    $row->{row_attr} = $self->{opt}{D}{row_attr} if defined $row;
 	    $row = $DOM->new('row');
 	    $tbody->append($row);
 	}
@@ -2901,11 +2907,11 @@ sub Table : method {
 	my $spaces = $1;
 	$celltext =~ s/^$spaces//gm;
 	$self->Paragraphs($entry, $celltext, $source, $lineno+$v+1);
-	$entry->{entry_attr} = $main::opt_D{entry_attr};
+	$entry->{entry_attr} = $self->{opt}{D}{entry_attr};
 	$lastv = $v;
     }
     # Devel::Cover branch 0 1 Assert defined $row
-    $row->{row_attr} = $main::opt_D{row_attr} if defined $row;
+    $row->{row_attr} = $self->{opt}{D}{row_attr} if defined $row;
     return $dom;
 }
 
@@ -3125,8 +3131,8 @@ sub ascii_mathml {
 			);
 	$math->{attr}{mathml} = $parser->{_MathML}->TextToMathMLTree
 	    ($text, [title=>$text, xmlns=>"&mathml;"],
-	     [($main::opt_D{mstyle} ?
-	       @{$main::opt_D{mstyle}} : ()), %mstyle]);
+	     [($parser->{opt}{D}{mstyle} ?
+	       @{$parser->{opt}{D}{mstyle}} : ()), %mstyle]);
 	return if ! defined $math->{attr}{mathml};
 	$math->append($pcdata);
     }
@@ -3369,6 +3375,8 @@ sub figure {
 
     my @dom;
     my $figure = $DOM->new(lc $name);
+    $figure->{attr}{classes} = [split /\s+/, $options->{class}]
+	if $options->{class};
     $figure->append($image);
     push(@dom, $figure);
     foreach (keys %myopts) {
@@ -3519,16 +3527,16 @@ sub include {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
     return $parser->system_message(2, $source, $lineno,
 				   qq("$name" directive disabled.), $lit)
-	unless $main::opt_D{file_insertion_enabled};
+	unless $parser->{opt}{D}{file_insertion_enabled};
     my @optlist = qw(literal encoding);
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
 				\@optlist);
     return $dhash if ref($dhash) eq $DOM;
     my($args, $options) = map($dhash->{$_}, qw(args options));
 
-    my @exts = split(/:/, $main::opt_D{include_ext});
+    my @exts = split(/:/, $parser->{opt}{D}{include_ext});
     my $mydir = $source =~ m|(.*)/| ? $1 : ".";
-    my $path = $main::opt_D{include_path};
+    my $path = $parser->{opt}{D}{include_path};
     $path =~ s/<\.>/$mydir/;
     my @dirs = map(m|^\./?$| ? "" : m|/$| ? $_ : "$_/",split(/:/, $path));
     $args =~ s/^<(.*)>$/$1/;
@@ -3543,7 +3551,8 @@ sub include {
 	}
     }
     my $text;
-    print STDERR "Debug: $source, $lineno: Including $file\n" if $main::opt_d;
+    print STDERR "Debug: $source, $lineno: Including $file\n"
+	if $parser->{opt}{d};
     if (open(FILE,$file)) {
 	$text = join('',<FILE>);
 # TODO:
@@ -3568,7 +3577,7 @@ sub include {
 	return $parser->system_message
 	    (4, $source, $lineno,
 	     qq(Problems with "$name" directive path:\n$err: '$args'.), $lit)
-	    unless $main::opt_D{ignore_include_errs};
+	    unless $parser->{opt}{D}{ignore_include_errs};
     }
     return;
 }
@@ -3709,8 +3718,8 @@ sub raw {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
     return $parser->system_message(2, $source, $lineno,
 				   qq("$name" directive disabled.), $lit)
-	unless ($main::opt_D{file_insertion_enabled} &&
-		$main::opt_D{raw_enabled});
+	unless ($parser->{opt}{D}{file_insertion_enabled} &&
+		$parser->{opt}{D}{raw_enabled});
     my @optlist = qw(file head url);
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
 				\@optlist, '1+');
@@ -3962,7 +3971,7 @@ sub table {
 
     my @dom;
     my $table = $DOM->new('table');
-    $table->{table_attr} = $main::opt_D{table_attr};
+    $table->{table_attr} = $parser->{opt}{D}{table_attr};
     push(@dom, $table);
     foreach my $opt (keys %myopts) {
 	if (defined $myopts{$opt} && $myopts{$opt} ne '' && $options->{$opt}) {
@@ -4003,7 +4012,7 @@ sub table {
 					   qq("$name" directive :file: option disabled.),
 					   $lit)
 		if (defined $options->{file} &&
-		    ! $main::opt_D{file_insertion_enabled});
+		    ! $parser->{opt}{D}{file_insertion_enabled});
 	    return $parser->system_message(3, $source, $lineno,
 					   qq("$name" directive may not both specify an external file and have content.),
 					   $lit)
@@ -4164,9 +4173,9 @@ sub table {
 		    else {
 			$e->append(@{$row->[$entry]});
 		    }
-		    $e->{entry_attr} = $main::opt_D{entry_attr}
-		    if defined $main::opt_D{entry_attr} &&
-			$main::opt_D{entry_attr} ne '';
+		    $e->{entry_attr} = $parser->{opt}{D}{entry_attr}
+		    if defined $parser->{opt}{D}{entry_attr} &&
+			$parser->{opt}{D}{entry_attr} ne '';
 		}
 	    }
 	}
