@@ -185,9 +185,11 @@ phase PROCESS = {
 	my $fileName = $dom->{attr}{source};
 	$fileName .= "$filename_ext.$DEFAULT_SFX"
 	    unless &$SFX_SUB($fileName);
-#	    if (!($fileName =~ s/\.[^\.\/]*$/$filename_ext\.$file_suffix/o));
 	my $firstHeader = defined $dom->{_toc}{subSections} ?
 	    ${${$dom->{_toc}{subSections}}[0]}[0] : '';
+	# If there was a title produced by a removed section, use it
+	$str = $dom->{attr}{title} || '' unless $str;
+	$str =~ s/[\xa0\xa2]+/ /;
 	if ($str && ($str ne $firstHeader)) {
 	    # If the top-level section has been removed (due to
 	    # transformation) restore it in the TOC.
