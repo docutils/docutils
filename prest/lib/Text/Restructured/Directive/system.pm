@@ -68,15 +68,28 @@ sub main {
 	use Safe;
 	$Perl::safe = new Safe "Perl::Safe";
 	# Grant privileges to the safe if -D trusted specified
-	$Perl::safe->mask(Safe::empty_opset()) if $main::opt_D{trusted};
+	$Perl::safe->mask(Safe::empty_opset()) if $parser->{opt}{D}{trusted};
 	# Share $opt_ variables, $^A to $^Z, %ENV, STDIN, STDOUT, STDERR,
 	# VERSION
-	my @vars = grep(/^opt_|^[\x00-\x1f]|^(ENV|STD(IN|OUT|ERR)|VERSION)\Z/,
+	my @vars = grep(/^[\x00-\x1f]|^(ENV|STD(IN|OUT|ERR)|VERSION)\Z/,
 			keys %main::);
 	foreach (@vars) {
 	    local *var = $main::{$_};
 	    *{"Perl::Safe::$_"} = *var;
 	}
+	# Share $opt_ variables
+ 	foreach (keys %{$parser->{opt}}) {
+	    my $opt = $parser->{opt}{$_};
+	    if (ref $opt eq 'ARRAY') {
+		*{"Perl::Safe::opt_$_"} = \@$opt;
+	    }
+	    elsif (ref $opt eq 'HASH') {
+		*{"Perl::Safe::opt_$_"} = \%$opt;
+	    }
+	    else {
+		*{"Perl::Safe::opt_$_"} = \$opt;
+	    }
+ 	}
 	# Share RST and DOM subroutines
 	foreach (keys %Text::Restructured::) {
 	    local *opt = $Text::Restructured::{$_};
@@ -93,7 +106,7 @@ sub main {
 	    if defined &{"Text::Restructured::DOM::$_"};
 	}
     }
-    $Perl::Safe::TOP_FILE = $main::TOP_FILE;
+    $Perl::Safe::TOP_FILE = $parser->{TOP_FILE};
 
     $args =~ s/\n/ /g;
     my $code = << "EOS";

@@ -84,7 +84,7 @@ BEGIN {
 # Returns: array of DOM objects
 sub main {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
-    print STDERR "Debug: $name: $source, $lineno\n" if $main::opt_d >= 3;
+    print STDERR "Debug: $name: $source, $lineno\n" if $parser->{opt}{d} >= 3;
     my @optlist = qw(file lenient literal);
     my $dhash = Text::Restructured::Directive::parse_directive
 	($parser, $dtext, $lit, $source, $lineno, \@optlist);
@@ -113,15 +113,28 @@ sub main {
 	use Safe;
 	$Perl::safe = new Safe "Perl::Safe";
 	# Grant privileges to the safe if -D trusted specified
-	$Perl::safe->mask(Safe::empty_opset()) if $main::opt_D{trusted};
+	$Perl::safe->mask(Safe::empty_opset()) if $parser->{opt}{D}{trusted};
 	# Share $opt_ variables, $^A to $^Z, %ENV, STDIN, STDOUT, STDERR,
 	# VERSION
-	my @vars = grep(/^opt_|^[\x00-\x1f]\Z|^(ENV|STD(IN|OUT|ERR)|VERSION)\Z/,
+	my @vars = grep(/^[\x00-\x1f]|^(ENV|STD(IN|OUT|ERR)|VERSION)\Z/,
 			keys %main::);
 	foreach (@vars) {
 	    local *var = $main::{$_};
 	    *{"Perl::Safe::$_"} = *var;
 	}
+	# Share $opt_ variables
+ 	foreach (keys %{$parser->{opt}}) {
+	    my $opt = $parser->{opt}{$_};
+	    if (ref $opt eq 'ARRAY') {
+		*{"Perl::Safe::opt_$_"} = \@$opt;
+	    }
+	    elsif (ref $opt eq 'HASH') {
+		*{"Perl::Safe::opt_$_"} = \%$opt;
+	    }
+	    else {
+		*{"Perl::Safe::opt_$_"} = \$opt;
+	    }
+ 	}
 	# Share RST and DOM subroutines
 	foreach (keys %Text::Restructured::) {
 	    local *opt = $Text::Restructured::{$_};
@@ -137,10 +150,10 @@ sub main {
 	}
     }
     
-    if (defined $main::opt_D{perl}) {
-	my $exp = $main::opt_D{perl};
+    if (defined $parser->{opt}{D}{perl}) {
+	my $exp = $parser->{opt}{D}{perl};
 	$Perl::safe->reval($exp);
-	delete $main::opt_D{perl};
+	delete $parser->{opt}{D}{perl};
 	my $err = $@ =~ /trapped by/ ? "$@Run with -D trusted if you believe the code is safe" : $@;
 	return $parser->system_message
 	    (4, $source, $lineno,
@@ -149,7 +162,7 @@ sub main {
     }
     $Perl::Safe::SOURCE = $source;
     $Perl::Safe::LINENO = $lineno;
-    $Perl::Safe::TOP_FILE = $main::TOP_FILE;
+    $Perl::Safe::TOP_FILE = $parser->{TOP_FILE};
     @Perl::Safe::INCLUDES = @Text::Restructured::INCLUDES;
     my @text = $Perl::safe->reval($code);
     my $newsource = qq($name directive at $source, line $lineno);
