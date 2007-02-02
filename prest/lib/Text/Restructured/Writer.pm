@@ -13,6 +13,7 @@ package Text::Restructured::Writer;
 #       ``handler``:  Reference to hash whose keys are phase names and
 #                     whose values are handler structures.
 #       ``phases``:   Reference to array of phase names (in order)
+#       ``ancestors``:  Reference to array of ancestor DOMs during traversal
 #   handler: Hash reference with the following keys
 #       ``tag``:      Regular expression of DOM tags handled by the handler
 #       ``line``:     The file and line number where the handler routine
@@ -24,15 +25,35 @@ use strict;
 
 # CLASS METHOD.
 # Creates a new Writer object.
-# Arguments: writer name
+# Arguments: writer name, reference to hash of command-line options
 # Returns: Writer object
 sub new {
-    my ($class, $writer_name) = @_;
+    my ($class, $writer_name, $opt) = @_;
 
-    my $writer = bless { };
+    my $writer = bless { opt => $opt };
+    # Handle options processing
+    foreach (keys %{$opt->{W}}) {
+	$opt->{W}{$_} = 1 if defined $opt->{W}{$_} && $opt->{W}{$_} eq '';
+    }
+    # Initialize defined variables
+    foreach my $key (keys %{$opt->{W}}) {
+	(my $var = $key) =~ tr/a-zA-Z0-9/_/c;
+	no strict 'refs';
+	${"Eval_::$var"} = $opt->{W}{$key};
+    }
     $writer->ParseSchema($writer_name);
     $writer->Precompile();
+
     return $writer;
+}
+
+# Returns a reference to the array of ancestors in the traversal.
+# The last one is the immediate parent.
+# Arguments: none
+# Returns: Array reference
+sub Ancestors : method {
+    my ($self) = @_;
+    $self->{ancestors};
 }
 
 # Parses the writer's schema file.
@@ -111,8 +132,9 @@ sub Precompile : method {
 	    # Need to untaint the text for the subroutine.
 	    ($handler->{text} || '') =~ /(.*)/s;
 	    my $text = $1;
-	    $handler->{code} = DoEval($text, $handler->{line},
-				      $phase eq '' ? $handler->{tag} : undef);
+	    $handler->{code} =
+		$self->DoEval($text, $handler->{line},
+			      $phase eq '' ? $handler->{tag} : undef);
 	}
     }
 }
@@ -139,6 +161,7 @@ sub ProcessDOMPhase : method {
     my $handarray = $self->{handler}{$phase};
     my $searchstring = "^(?:" . join('|',map("($_->{tag})",@$handarray)) .
 	')$';
+    $self->{ancestors} = [];
     my $str = $self->TraverseDOM($dom, $phase, $handarray, $searchstring);
     return defined $str ? $str : '';
 }
@@ -152,6 +175,7 @@ sub TraverseDOM : method {
     my $match = $match[0];
     my $str;
 
+    push @{$self->{ancestors}}, $dom;
     foreach my $content (@{$dom->{content}}) {
 	my $val = $self->TraverseDOM($content, $phase, $handarray,
 				     $searchstring);
@@ -159,28 +183,30 @@ sub TraverseDOM : method {
     }
     my $substr = join('',map(defined $_->{val} ? $_->{val} : '',
 			     @{$dom->{content}}));
+    pop @{$self->{ancestors}};
     if (defined $match) {
-	print STDERR "$phase: $dom->{tag}\n" if $main::opt_d >= 1;
+	print STDERR "$phase: $dom->{tag}\n" if $self->{opt}{d} >= 1;
 	$str = eval { &{$handarray->[$match]{code}}
 		      ($dom, $substr, $self, $phase) };
 	print STDERR "$str\n"
-	    if $main::opt_d >= 2 && defined $str && $str ne '';
+	    if $self->{opt}{d} >= 2 && defined $str && $str ne '';
 	die "Error: $handarray->[$match]{line}: $@" if $@;
     }
 
     return $str;
 }
 
+# INSTANCE METHOD
 # Precompiles a subroutine that evaluates an expression.
 # Arguments: string expression, line number, optional subroutine name
 # Returns: anonymous subroutine reference
 # Exceptions: Program termination if error in evaluation
 # Uses globals: None
 # Sets globals: ``Eval_::<subname>``
-sub DoEval {
-    my ($str, $line, $subname) = @_;
+sub DoEval : method {
+    my ($self, $str, $line, $subname) = @_;
     my ($file, $lineno) = $line =~ /(.*), line (\d+)/;
-    print STDERR "$line\n" if $main::opt_d >= 1;
+    print STDERR "$line\n" if $self->{opt}{d} >= 1;
     # N.B. Don't just set to $line because it may be tainted
     if (! $subname) {
 	my ($f) = $file =~ m!([^/]+)$!;
@@ -188,7 +214,7 @@ sub DoEval {
     }
     $subname =~ s/\W/_/g;
     my $sub = "sub Eval_::$subname {package Eval_;\n $str}";
-    my $line_directive = defined $main::opt_D{'no_line_directives'} ? "" :
+    my $line_directive = defined $self->{opt}{D}{no_line_directives} ? "" :
 	qq(\#line $lineno "$file"\n);
     my $val = eval("$line_directive$sub");
     die "Error: $line: $@" if $@;
