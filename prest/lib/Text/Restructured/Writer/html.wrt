@@ -495,13 +495,17 @@ phase PREPROCESS {
     }
 
     sub image = { # PREPROCESS
-	my ($dom, $str) = @_;
-	# Insert a <div> object in the DOM above me.  It either goes
-	# directly above me, or if I am the only child of a reference,
-	# above the reference
-	my $parent = $dom->parent();
+	my ($dom, $str, $writer) = @_;
+	# Insert a <div> object in the DOM above me if my parent takes
+	# body elements.
+	my $ancest = $writer->Ancestors;
+	my $parent = $ancest->[-1];
+#	my $parent = $dom->parent();
+	return unless $parent->takes_body_elts;
 	my $indx = $parent->index($dom);
 	my @classes = ('image');
+	# ??? It either goes directly above me, or if I am
+	# the only child of a reference, above the reference. ???
 	push @classes, @{$dom->{attr}{classes}} if $dom->{attr}{classes};
 	if ($parent->{tag} eq 'reference' && $parent->num_contents() == 1) {
 	    my $pparent = $parent->parent();
@@ -662,6 +666,9 @@ phase PROCESS {
 	    $tag_attr = qq( class="$p_tag-title first");
 	}
 	elsif ($parent->{attr}{classes}[0] || '' eq 'system-messages') {
+	    $tag_attr = qq( class="title")
+		if $p_tag eq 'section' &&
+		grep /^title$/, @{$parent->{attr}{classes}};
 	    $tag = "h$nesting";
 	}
 	else {
@@ -1077,7 +1084,7 @@ EOS
 	my ($dom, $str) = @_;
 
 	my $attr = $dom->{attr};
-	my $alt = main::FirstDefined($attr->{alt}, $attr->{uri});
+	my $alt = defined $attr->{alt} ? $attr->{alt} : $attr->{uri};
 	my $hattr = $dom->{_html}{attr} = {};
 	@$hattr{qw(alt src)} = ($alt, $attr->{uri});
 	if ($IMAGE_EXT_RE) {
@@ -1178,11 +1185,11 @@ EOS
     }
 
     sub document = { # PROCESS
-	my ($dom, $str) = @_;
+	my ($dom, $str, $writer) = @_;
 	my $doc = [[], []];
 
 	# Handle the prolog
-	my $enc = $main::opt_e || 'utf-8';
+	my $enc = $writer->{opt}{e} || 'utf-8';
 	push @{$doc->[0]}, qq(<?xml version="1.0" encoding="$enc" ?>\n)
 	    unless $html_prolog;
 	push @{$doc->[0]}, $DOCTYPE;
@@ -1195,12 +1202,12 @@ EOS
 	push (@{$head->[0]}, 
 	      qq(<meta http-equiv="Content-Type" content="text/html; charset=$enc" />\n));
 	push (@{$head->[0]},
-	      qq(<meta name="generator" content="$main::TOOL_ID" />\n))
-	    unless defined $main::opt_D{generator} &&
-	    $main::opt_D{generator} eq 0;
+	      qq(<meta name="generator" content="$dom->{TOOL_ID}" />\n))
+	    unless defined $writer->{opt}{D}{generator} &&
+	    $writer->{opt}{D}{generator} eq 0;
 	my $title = $dom->num_contents() &&
 	    $dom->{content}[0]{tag} eq 'title' ?
-	    $dom->{content}[0]{_html}{str} : '';
+	    $dom->{content}[0]{_html}{str} : $dom->{attr}{title} || '';
 	chomp $title;
 	my $subtitle = $dom->num_contents() > 1 &&
 	    $dom->{content}[1]{tag} eq 'subtitle' ?
@@ -1251,7 +1258,7 @@ EOS
 	      . qq(>\n));
 	unshift (@{$body->[1]}, qq(</div>\n));
 	push (@{$body->[0]}, qq(<h1 class="title">$title</h1>\n))
-	    if $title ne '' && ! $main::opt_D{keep_title_section};
+	    if $title ne '' && ! $writer->{opt}{D}{keep_title_section};
 	my $id = $dom->num_contents() > 1 &&
 	    $dom->{content}[1]{attr}{ids} ?
 	    qq( id="$dom->{content}[1]{attr}{ids}[0]") : '';
