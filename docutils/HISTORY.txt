@@ -73,8 +73,10 @@ Changes Since 0.4
 
 * docutils/transforms/universal.py:
 
-  - Added ``StripClasses`` transform to remove from the document tree
-    all elements with classes in ``settings.strip_classes``.
+  - Added ``StripClassesAndElements`` transform to remove from the
+    document tree all elements with classes in
+    ``settings.strip_elements_with_classes`` and all "classes"
+    attribute values in ``self.document.settings.strip_classes``.
 
 * docutils/transforms/writer_aux.py:
 
