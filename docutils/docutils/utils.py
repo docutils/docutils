@@ -16,7 +16,7 @@ import warnings
 import unicodedata
 from types import StringType, UnicodeType
 from docutils import ApplicationError, DataError
-from docutils import frontend, nodes
+from docutils import nodes
 
 
 class SystemMessage(ApplicationError):
@@ -385,6 +385,7 @@ def new_document(source_path, settings=None):
         `settings` : optparse.Values object
             Runtime settings.  If none provided, a default set will be used.
     """
+    from docutils import frontend
     if settings is None:
         settings = frontend.OptionParser().get_default_values()
     reporter = new_reporter(source_path, settings)
