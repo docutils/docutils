@@ -34,7 +34,7 @@ class Writer(Component):
         return Component.get_transforms(self) + [
             universal.Messages,
             universal.FilterMessages,
-            ]
+            universal.StripClassesAndElements,]
 
     document = None
     """The document to write (Docutils doctree); set by `write`."""
