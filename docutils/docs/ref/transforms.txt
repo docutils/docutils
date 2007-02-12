@@ -65,7 +65,7 @@ parts.Contents                  "contents" (d/p),             720
 
 universal.StripComments         Reader (r)                    740
 
-universal.StripClasses          Writer (w)                    750
+universal.StripClasses...       Writer (w)                    750
 
 peps.PEPZero                    peps.Headers (t/p)            760
 
