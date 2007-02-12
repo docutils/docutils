@@ -34,6 +34,8 @@ import warnings
 import ConfigParser as CP
 import codecs
 import docutils
+import docutils.utils
+import docutils.nodes
 try:
     import optparse
     from optparse import SUPPRESS_HELP
@@ -161,12 +163,25 @@ def validate_url_trailing_slash(
     else:
         return value + '/'
 
-def validate_dependency_file(
-    setting, value, option_parser, config_parser=None, config_section=None):
+def validate_dependency_file(setting, value, option_parser,
+                             config_parser=None, config_section=None):
     try:
         return docutils.utils.DependencyList(value)
     except IOError:
         return docutils.utils.DependencyList(None)
+
+def validate_strip_class(setting, value, option_parser,
+                         config_parser=None, config_section=None):
+    if config_parser:                   # validate all values
+        class_values = value
+    else:                               # just validate the latest value
+        class_values = [value[-1]]
+    for class_value in class_values:
+        normalized = docutils.nodes.make_id(class_value)
+        if class_value != normalized:
+            raise ValueError('invalid class value %r (perhaps %r?)'
+                             % (class_value, normalized))
+    return value
 
 def make_paths_absolute(pathdict, keys, base_path=None):
     """
@@ -343,6 +358,16 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
          ('Leave comment elements in the document tree. (default)',
           ['--leave-comments'],
           {'action': 'store_false', 'dest': 'strip_comments'}),
+         ('Remove all elements with classes="<class>" from the document tree. '
+          '(Multiple-use option.)',
+          ['--strip-elements-with-class'],
+          {'action': 'append', 'dest': 'strip_elements_with_classes',
+           'metavar': '<class>', 'validator': validate_strip_class}),
+         ('Remove all classes="<class>" attributes from elements in the '
+          'document tree. (Multiple-use option.)',
+          ['--strip-class'],
+          {'action': 'append', 'dest': 'strip_classes',
+           'metavar': '<class>', 'validator': validate_strip_class}),
          ('Report system messages at or higher than <level>: "info" or "1", '
           '"warning"/"2" (default), "error"/"3", "severe"/"4", "none"/"5"',
           ['--report', '-r'], {'choices': threshold_choices, 'default': 2,
