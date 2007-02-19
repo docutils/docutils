@@ -200,8 +200,6 @@
 ;;
 ;; Other
 ;; -----
-;; - lazy-lock is obsolete, we should look at placing the require conditionally
-;;   and doing the appropriate setup for font-lock.
 ;; - We should rename "adornment" to "decoration" or vice-versa in this
 ;;   document.
 ;; - Add an option to forego using the file structure in order to make
@@ -1355,6 +1353,22 @@ specified, the default buffer is used."
 	(set-marker (cdr lm) nil)
 	)
     )))
+
+
+(defun rst-straighten-deco-spacing (&optional buffer)
+  "Adjust the spacing before and after decorations in BUFFER.
+The spacing will be standard.  If no buffer is specified, the
+default buffer is used."
+  (interactive)
+  (save-excursion
+    (let* ((alldecos (rst-find-all-decorations)))
+      (dolist (deco alldecos)
+	;; Go to the appropriate position
+	(prin1 deco)
+;; FIXME: todo
+	)
+    )))
+
 
 (defun rst-find-pfx-in-region (beg end pfx-re)
   "Find all the positions of prefixes in region between BEG and END.
@@ -2712,6 +2726,7 @@ Turning on `rst-mode' calls the normal hooks `text-mode-hook' and
   (set (make-local-variable 'paragraph-separate) paragraph-start)
   (set (make-local-variable 'indent-line-function) 'indent-relative-maybe)
   (set (make-local-variable 'adaptive-fill-mode) t)
+  (set (make-local-variable 'comment-start) ".. ")
 
   ;; Special variables
   (make-local-variable 'rst-adornment-level-alist)
@@ -2725,20 +2740,30 @@ Turning on `rst-mode' calls the normal hooks `text-mode-hook' and
   (when (boundp 'font-lock-support-mode)
     ;; rst-mode has its own mind about font-lock-support-mode
     (make-local-variable 'font-lock-support-mode)
-    (cond
-     ((and (not rst-mode-lazy) (not font-lock-support-mode)))
-     ;; No support mode set and none required - leave it alone
-     ((or (not font-lock-support-mode) ;; No support mode set (but required)
-	  (symbolp font-lock-support-mode)) ;; or a fixed mode for all
-      (setq font-lock-support-mode
-	    (list (cons 'rst-mode (and rst-mode-lazy 'lazy-lock-mode))
-		  (cons t font-lock-support-mode))))
-     ((and (listp font-lock-support-mode)
-	   (not (assoc 'rst-mode font-lock-support-mode)))
-      ;; A list of modes missing rst-mode
-      (setq font-lock-support-mode
-	    (append '((cons 'rst-mode (and rst-mode-lazy 'lazy-lock-mode)))
-		    font-lock-support-mode)))))
+    ;; jit-lock-mode replaced lazy-lock-mode in GNU Emacs 22
+    (let ((jit-or-lazy-lock-mode
+           (cond
+            ((fboundp 'jit-lock-mode) 'jit-lock-mode)
+            ((fboundp 'lazy-lock-mode) 'lazy-lock-mode)
+            ;; if neither lazy-lock nor jit-lock is supported,
+            ;; tell user and disable rst-mode-lazy
+            (t (when rst-mode-lazy
+                 (message "Disabled lazy fontification, because no known support mode found.")
+                 (setq rst-mode-lazy nil))))))
+      (cond
+       ((and (not rst-mode-lazy) (not font-lock-support-mode)))
+       ;; No support mode set and none required - leave it alone
+       ((or (not font-lock-support-mode) ;; No support mode set (but required)
+	    (symbolp font-lock-support-mode)) ;; or a fixed mode for all
+	(setq font-lock-support-mode
+	      (list (cons 'rst-mode (and rst-mode-lazy 'jit-or-lazy-lock-mode))
+		    (cons t font-lock-support-mode))))
+       ((and (listp font-lock-support-mode)
+	     (not (assoc 'rst-mode font-lock-support-mode)))
+	;; A list of modes missing rst-mode
+	(setq font-lock-support-mode
+	      (append '((cons 'rst-mode (and rst-mode-lazy 'jit-or-lazy-lock-mode)))
+		      font-lock-support-mode))))))
 
   ;; Names and hooks
   (setq mode-name "reST")
@@ -2813,13 +2838,13 @@ Turning on `rst-mode' calls the normal hooks `text-mode-hook' and
       1 rst-block-face)
      ;; `Enumerated Lists`_
      (list
-      (concat re-bol "\\((?\\([0-9]+\\|[A-Za-z]\\|[IVXLCMivxlcm]+\\)[.)]"
+      (concat re-bol "\\((?\\(#\\|[0-9]+\\|[A-Za-z]\\|[IVXLCMivxlcm]+\\)[.)]"
 	      re-blksep1 "\\)")
       1 rst-block-face)
      ;; `Definition Lists`_ FIXME: missing
      ;; `Field Lists`_
      (list
-      (concat re-bol "\\(:[^:]+:\\)" re-blksep1)
+      (concat re-bol "\\(:[^:\n]+:\\)" re-blksep1)
       1 rst-external-face)
      ;; `Option Lists`_
      (list
@@ -2832,18 +2857,18 @@ Turning on `rst-mode' calls the normal hooks `text-mode-hook' and
      ;; All the `Explicit Markup Blocks`_
      ;; `Footnotes`_ / `Citations`_
      (list
-      (concat re-bol "\\(" re-ems "\\[[^[]+\\]\\)" re-blksep1)
+      (concat re-bol "\\(" re-ems "\\[[^[\n]+\\]\\)" re-blksep1)
       1 rst-definition-face)
      ;; `Directives`_ / `Substitution Definitions`_
      (list
-      (concat re-bol "\\(" re-ems "\\)\\(\\(|[^|]+|[\t ]+\\)?\\)\\("
+      (concat re-bol "\\(" re-ems "\\)\\(\\(|[^|\n]+|[\t ]+\\)?\\)\\("
 	      re-sym1 "+::\\)" re-blksep1)
       (list 1 rst-directive-face)
       (list 2 rst-definition-face)
       (list 4 rst-directive-face))
      ;; `Hyperlink Targets`_
      (list
-      (concat re-bol "\\(" re-ems "_\\([^:\\`]\\|\\\\.\\|`[^`]+`\\)+:\\)"
+      (concat re-bol "\\(" re-ems "_\\([^:\\`\n]\\|\\\\.\\|`[^`\n]+`\\)+:\\)"
 	      re-blksep1)
       1 rst-definition-face)
      (list
@@ -2871,7 +2896,7 @@ Turning on `rst-mode' calls the normal hooks `text-mode-hook' and
      ;; `Hyperlink References`_
      ;; FIXME: `Embedded URIs`_ not considered
      (list
-      (concat re-imp1 "\\(\\(`" re-imb2 "`\\|\\sw+\\)__?\\)" re-ims1)
+      (concat re-imp1 "\\(\\(`" re-imb2 "`\\|\\(\\sw\\(\\sw\\|-\\)+\\sw\\)\\)__?\\)" re-ims1)
       2 rst-reference-face)
      ;; `Interpreted Text`_
      (list
@@ -2922,7 +2947,8 @@ Turning on `rst-mode' calls the normal hooks `text-mode-hook' and
      ;; `Comments`_
      (append
       (list
-       (concat re-bol "\\(" re-ems "\\)\[^[|_]\\([^:]\\|:\\([^:]\\|$\\)\\)*$")
+       (concat re-bol "\\(" re-ems "\\)\[^[|_]\\([^:\n]\\|:\\([^:\n]\\|$\\)\\)*$")
+
        (list 1 rst-comment-face))
       (if rst-mode-lazy
 	  (list
