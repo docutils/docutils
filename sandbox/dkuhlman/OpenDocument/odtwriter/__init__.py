@@ -294,14 +294,10 @@ MIME_TYPE = 'application/vnd.oasis.opendocument.text'
 # Class to control syntax highlighting.
 class SyntaxHighlight(rst.Directive):
     required_arguments = 1
-    optional_arguments = 1
-
+    optional_arguments = 0
+    #
+    # See visit_field for code that processes the node created here.
     def run(self):
-        if self.arguments[0] not in ('on', 'off'):
-            raise self.error(
-                'Error in "%s" directive: "%s" is not a valid value for '
-                    'first argument.  Valid values are "on", "off".'
-                    % (self.name, self.arguments[0]))
         arguments = ' '.join(self.arguments)
         paragraph = nodes.paragraph(arguments, arguments)
         field_body = nodes.field_body()
@@ -314,7 +310,7 @@ class SyntaxHighlight(rst.Directive):
         field += field_body
         return [field]
 
-rst.directives.register_directive('syntaxhighlight', SyntaxHighlight)
+rst.directives.register_directive('sourcecode', SyntaxHighlight)
 
 class Writer(writers.Writer):
 
@@ -1025,12 +1021,12 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             if name == 'syntaxhighlight':
                 body = children[1].astext()
                 args = body.split()
-                if len(args) == 2:
-                    self.syntaxhighlight_lexer = args[1]
                 if args[0] == 'on':
                     self.syntaxhighlighting = 1
                 elif args[0] == 'off':
                     self.syntaxhighlighting = 0
+                else:
+                    self.syntaxhighlight_lexer = args[0]
                 raise nodes.SkipChildren()
 
     def depart_field(self, node):

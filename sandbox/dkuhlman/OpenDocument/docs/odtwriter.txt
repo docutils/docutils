@@ -7,7 +7,7 @@ Odtwriter for Docutils
     http://www.rexx.com/~dkuhlman
 
 :revision: 1.0c
-:date: Jan. 8, 2007
+:date: Feb. 19, 2007
 
 :copyright: Copyright (c) 2006 Dave Kuhlman.  All Rights Reserved.
     This software is subject to the provisions of the MIT License
@@ -44,7 +44,10 @@ How to Install It
 Where to get it
 ---------------
 
-``odtwriter`` is available via Subversion from
+The distribution file is here: `source distribution of 
+ODF/ODT writer for Docutils <odtwriter-1.0c.tar.gz>`_.
+
+``odtwriter`` is also available via Subversion from
 the Docutils repository under
 ``docutils/sandbox/dkuhlman/OpenDocument/``. The following will
 download Docutils including ``odtwriter`` and associated files into
@@ -314,7 +317,7 @@ rststyle-tocbulletlist
     Lists in the table of contents when section numbering is off
 
 rststyle-tocenumlist
-    List in the table of contents when section numbering is on
+    Lists in the table of contents when section numbering is on
 
 
 
@@ -366,7 +369,7 @@ following: (1) install Pygments and (2) use the command line flag
 default, it applies a Python lexer and Python syntax highlighting.
 If you have literal code blocks that contain code which is *not*
 Python code, then you likely to want either (1) to use the
-``.. syntaxhighlight::`` directive to change the language/lexer or to
+``.. sourcecode::`` directive to change the language/lexer or to
 turn off highlighting across sections of your document or (2) to
 *not* use the ``--add-syntax-highlighting`` flag.
 
@@ -419,7 +422,11 @@ line flag, syntax highlighting in literal blocks is on and the
 Python lexer is used.  You can change this within your reST document
 with the following directive::
 
-    .. syntaxhighlight newstate [lexer]
+    .. sourcecode newstate
+
+or::
+
+    .. sourcecode lexer
 
 where:
 
@@ -434,18 +441,24 @@ where:
 
 Examples::
 
-    .. syntaxhighlight:: on python
-    .. syntaxhighlight:: off
-    .. syntaxhighlight:: on
-    .. syntaxhighlight:: on java
+    .. sourcecode:: on
+    .. sourcecode:: python
+    .. sourcecode:: off
+    .. sourcecode:: java
+    .. sourcecode:: on
 
-The syntax highlighting state and language/lexer set by this
-directive remain in effect until the next directive is encountered
-in the reST document.
+A few additional notes and hints:
 
-Note to Pythonistas, there is a separate lexer for examples of
-code from the Python interactive prompt and console output or
-doctests.  The alias for that lexer is "pycon".
+- The syntax highlighting state and language/lexer set by this
+  directive remain in effect until the next ``sourcecode`` directive
+  is encountered in the reST document.
+
+- In order to turn syntax highlighting on (or off) and set the
+  lexer, you will need to use this directive twice.
+
+- Special note to Pythonistas, there is a separate lexer for
+  examples of code from the Python interactive prompt and console
+  output or doctests.  The alias for that lexer is "pycon".
 
 
 The container directive
