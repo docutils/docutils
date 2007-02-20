@@ -38,6 +38,13 @@ For more information on Docutils, see: http://docutils.sourceforge.net/
 History
 =======
 
+2007/02/20 -- Version 1.0c
+--------------------------
+
+Renamed directive "syntaxhighlight" to "sourcecode".  Also changed
+to a single argument, which can be "on" or "off" or <lexer-name>.
+
+
 2007/01/15 -- Version 1.0c
 --------------------------
 
