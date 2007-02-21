@@ -15,6 +15,14 @@ sections in the source documents.
 
 This writer uses the following output defines:
 
+-W depth=<positive_integer>
+                  Specify the depth of TOC, with 1 corresponding to
+                  the top level sections (default is 99).
+-W exclude-top=<0|1>
+                  Specify whether the top level section headers 
+                  should be excluded from the TOC (default is 0,
+                  do not exclude). This has no effect if 
+                  ``-W symbol='<char>'`` is present.
 -W file-suffix=<suffix>
                   Specify a file suffix to be used as the 
                   targets of TOC entries.  It is either a string or
@@ -28,9 +36,15 @@ This writer uses the following output defines:
                   (e.g. "_main") so the file location of
                   targets becomes <file><ext>.<suffix>
                   (default is "").
--W depth=<positive_integer>
-                  Specify the depth of TOC, with 1 corresponding to
-                  the top level sections (default is 99).
+-W include-noheader=<0|1>
+                  If set to 1, the writer includes in the TOC 
+                  the document source bare name for any document 
+                  that does not have a header
+                  (default is 0, do not include).
+-W parent-role=<role name>
+                  If specified, items which have sublists are created
+                  as interpreted text with the given role.  The role must 
+                  be defined elsewhere.
 -W symbol=<header_marking_character>
                   If specified, the writer uses the symbol to create
                   additional headers for the document titles.
@@ -38,16 +52,6 @@ This writer uses the following output defines:
                   This output define overwrites ``-W exclude_top=1``. 
                   If a document does not have a title, use the
                   document source bare name instead.
--W include-noheader=<0|1>
-                  If set to 1, the writer includes in the TOC 
-                  the document source bare name for any document 
-                  that does not have a header
-                  (default is 0, do not include).
--W exclude-top=<0|1>
-                  Specify whether the top level section headers 
-                  should be excluded from the TOC (default is 0,
-                  do not exclude). This has no effect if 
-                  ``-W symbol='<char>'`` is present.
 -W top-in-list=<0|1>
                   Specify whether the top level section headers
                   should be part of the list with other section 
@@ -60,8 +64,8 @@ This writer uses the following output defines:
 
 sub BEGIN = {
     # My -W flags
-    use vars qw($file_suffix $filename_ext $depth $symbol
-		$include_noheader $exclude_top $top_in_list);
+    use vars qw($depth $exclude_top $file_suffix $filename_ext
+		$include_noheader $parent_role $symbol $top_in_list);
 
     # Run-time globals
     use vars qw($TOCSTR $TGTSTR $INCLUDE_TOP @FINAL_TOP_SECS
@@ -117,29 +121,27 @@ sub writeTOC {
     $name =~ s/</\\\</g;
     $name =~ s/>/\\\>/g;
     $name =~ s/^\s*(.*?)\s*$/$1/;
-    if ($level == 0) {
-	# Write the top level section as header if required by user
-	if ($INCLUDE_TOP && $top_in_list) {
-	    # Top level entry is part of the list
-	    $TOCSTR .= "* `$name`__\n";
-	    $TGTSTR .= $id? "__ $source#$id\n" : "__ $source\n";
-	}
-	elsif ($INCLUDE_TOP) {
-	    # Top level entry is part of a separate paragraph
-	    $TOCSTR .= "`$name`__\n\n";
-	    $TGTSTR .= $id? "__ $source#$id\n" : "__ $source\n";
-	}
-    }
-    else {
+    my $is_parent = (defined $subref && @$subref && $level < $depth - 1 && 
+		     ($level > 0 || ($INCLUDE_TOP && $top_in_list)));
+    if ($level > 0) {
 	my $indent = ($INCLUDE_TOP && $top_in_list)? $level : $level - 1;
 	$indent = "  " x $indent;
-	$TOCSTR .= $indent . "* `$name`__\n";
-	$TGTSTR .= "__ $source#$id\n";
+	$TOCSTR .= $indent;
     }
-    if (defined $subref && @$subref && $level < $depth - 1 && 
-	($level > 0 || ($INCLUDE_TOP && $top_in_list))) {
-	$TOCSTR .= "\n";
+    if ($level > 0 || $INCLUDE_TOP) {
+	# Write the top level section as header if required by user
+	if ($level == 0 && !$top_in_list) {
+	    # Top level entry is part of a separate paragraph
+	    $TOCSTR .= "`$name`__\n\n";
+	}
+	else {
+	    $TOCSTR .= $is_parent && defined $parent_role ?
+		"* :$parent_role:`\\ `$name`__`\n" : "* `$name`__\n";
+	}
+	$TOCSTR .= "\n" if $is_parent;
+	$TGTSTR .= $id ? "__ $source#$id\n" : "__ $source\n";
     }
+    
     foreach (@$subref) {
 	writeTOC($_, $level + 1, $source);
     }
