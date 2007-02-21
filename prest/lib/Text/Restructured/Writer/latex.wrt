@@ -271,7 +271,7 @@ phase PREPROCESS = {
 		    );
 	my $attr = %attr ?
 	    "[" . join(',',map("$_=$attr{$_}",keys %attr)) . "]" : '';
-	my $image = $uri =~ /\.$image_ext$/ && -r $uri ?
+	my $image = $uri =~ /\.$image_ext$/ ?
 	    do { $PACKAGES{graphicx} = 1; "\\includegraphics$attr\{$uri}" }
 	    : "{\\tt $uri}";
 	$dom->{image} = $image;
@@ -767,14 +767,22 @@ EOS
 	return "\\ensuremath{_{$str}}";
     }
 
-    sub raw|reference = { # PROCESS
+    sub raw = { # PROCESS
 	my ($dom, $str) = @_;
+	return unless $dom->{attr}{format} =~ /\blatex\b/;
 	chomp $str;
 	my $uri = $footnote_links && defined $dom->{attr}{refuri} ?
 	    "\\renewcommand{\\thefootnote}{\\alph{footnote}}\\footnote{$dom->{attr}{refuri}}\\renewcommand{\\thefootnote}{\\arabic{footnote}}" : '';
 	return "$str$uri";
     }
 
+    sub reference = { # PROCESS
+	my ($dom, $str) = @_;
+	chomp $str;
+	my $uri = $footnote_links && defined $dom->{attr}{refuri} ?
+	    "\\renewcommand{\\thefootnote}{\\alph{footnote}}\\footnote{$dom->{attr}{refuri}}\\renewcommand{\\thefootnote}{\\arabic{footnote}}" : '';
+	return "$str$uri";
+    }
 
     sub emphasis|title_reference = { # PROCESS
 	my ($dom, $str) = @_;
@@ -828,7 +836,7 @@ EOS
 	my $title = $dom->{tag};
 	substr($title,0,1) =~ tr/a-z/A-Z/;
 	$str .= "\n" unless $str =~ /\n$/;
-	my @list = ("\\fbox{\\parbox{\\columnwidth}{\n",
+	my @list = ("\n\\noindent\\fbox{\\parbox{\\columnwidth}{\n",
 		    "\\styleadmonitiontitle{$title}\n",
 		    $str,
 		    ,"}}\n",
