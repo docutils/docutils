@@ -110,6 +110,7 @@ latex_head + """\
 \\hypertarget{table-of-contents}{}
 \\pdfbookmark[0]{Table of Contents}{table-of-contents}
 \\subsubsection*{~\\hfill Table of Contents\\hfill ~}
+\\label{table-of-contents}
 \\begin{list}{}{}
 \\item {} \\href{\\#title-1}{Title 1}
 \\begin{list}{}{}
@@ -126,6 +127,7 @@ latex_head + """\
 \\hypertarget{title-1}{}
 \\pdfbookmark[0]{Title 1}{title-1}
 \\section*{Title 1}
+\\label{title-1}
 
 Paragraph 1.
 
@@ -135,6 +137,7 @@ Paragraph 1.
 \\hypertarget{title-2}{}
 \\pdfbookmark[1]{Title 2}{title-2}
 \\subsection*{Title 2}
+\\label{title-2}
 
 Paragraph 2.
 
@@ -170,12 +173,14 @@ latex_head + """\
 \\tableofcontents
 
 \\bigskip
+\\label{table-of-contents}
 
 
 %___________________________________________________________________________
 
 \\hypertarget{title-1}{}
 \\section{Title 1}
+\\label{title-1}
 
 Paragraph 1.
 
@@ -184,6 +189,7 @@ Paragraph 1.
 
 \\hypertarget{title-2}{}
 \\subsection{Title 2}
+\\label{title-2}
 
 Paragraph 2.
 
