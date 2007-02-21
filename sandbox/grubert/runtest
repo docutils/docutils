@@ -35,7 +35,6 @@ else
   FM=$1
 fi
 
-
 for INF in `ls test/$FM` ; do
   OUTF="$INF.tex"
   REFF="$OUTF.ref"
@@ -70,6 +69,15 @@ for FONTENC in "" T1 OT1 ; do
   done
 done
 
+# reference-label
+for LR in "" "ref" ; do
+  for INF in test/links.txt ; do
+    OUTF="$INF-$LR.tex"
+    REFF="$OUTF.ref"
+    $CMD --reference-label=$LR $2 $3 $INF > $OUTF
+    do_diff $REFF $OUTF 
+  done
+done
 # table-style
 
 for TABSTYLE in "" standard booktabs nolines ; do
@@ -155,20 +163,29 @@ for F in toc toc-autonr ; do
 done
 
 # german
-for F in toc ; do
-  INF=test/$F.txt
-  OUTF="$INF-de.tex"
-  REFF="$OUTF.ref"
-  $CMD -l de $INF > $OUTF
-  do_diff $REFF $OUTF 
+for F in toc quotes ; do
+  for L in de fr it ; do
+    INF=test/$F.txt
+    OUTF="$INF-$L.tex"
+    REFF="$OUTF.ref"
+    $CMD -l $L $INF > $OUTF
+    do_diff $REFF $OUTF 
+  done
 done
 
-# french
-for F in toc ; do
+# spanish --language=es flags inhibits --use-latex-docinfo when using
+# --documentclass=book and --use-latex-toc
+CMD="$BASE_CMD --documentclass=book --use-latex-toc --use-latex-docinfo"
+for F in toc quotes ; do
   INF=test/$F.txt
-  OUTF="$INF-fr.tex"
+  OUTF="$INF-latex-docinfo.tex"
   REFF="$OUTF.ref"
-  $CMD -l fr $INF > $OUTF
+  $CMD $INF > $OUTF
+  LANG=es
+  do_diff $REFF $OUTF 
+  OUTF="$INF-$LANG-latex-docinfo.tex"
+  REFF="$OUTF.ref"
+  $CMD --language=$LANG $INF > $OUTF
   do_diff $REFF $OUTF 
 done
 

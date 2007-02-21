@@ -12,3 +12,64 @@ Contributed by d.abrahams
 
 .. _`lvalue iterators`: new-iter-concepts.html#lvalue-iterators-lib-lvalue-iterators
 
+hyper links
+-----------
+
+Explicit targets and references.
+
+.. raw:: latex
+
+   \label{section_2}
+
+.. _example:
+
+This paragraph is pointed to by the explicit "example" target.
+
+.. raw:: latex
+
+    \newpage
+
+This is an internal cross-references (example_).
+
+This is an internal cross-references (`hyper links`_).
+
+href offers a named link to a hypertarget.
+
+refpage a link with page-number text to a label.
+
+.. raw:: latex
+
+   \pageref{section_2}
+
+
+One might consider adding 
+
+``\pageref{key}`` :
+  The ``\pageref command produces the page number of the place in 
+  the text where the corresponding ``\label`` command appears. ie. 
+  where ``\label{key}`` appears. For a smart version see ``\vpageref``.
+``\ref{key}`` :
+  The \ref command produces the number of the sectional unit, equation 
+  number, ... of the corresponding \label command. For a smart version 
+  see \vref.
+
+Smarter version of the original latex2e cross reference commands.
+Generated strings are customizable, Babel options are recognized (further
+info in the package documentation).
+
+``\vref``, ``\vpageref`` :
+  ``\vref`` is similar to ``\ref`` but adds an additional page reference, 
+  like on the facing page or on page 27 whenever the corresponding 
+  ``\label`` is not on the same page.
+
+  ``\vpageref`` is a variation of ``\pageref`` with similar functionality.
+``\vrefrange``, ``\vpagerefrange`` :
+  The ``\v...range`` commands take two labels as arguments and produce 
+  strings which depend on wether or not these labels fall onto a single 
+  page or on different pages.
+``\vref*``, ``\vpageref*``, ``\vpagerefrange*`` :
+ Star ``*`` variants do not add any space before the generated text for
+ situations like: ``(\vref{foo} ...)``
+
+
+
