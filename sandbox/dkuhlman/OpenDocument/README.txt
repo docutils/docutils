@@ -38,6 +38,12 @@ For more information on Docutils, see: http://docutils.sourceforge.net/
 History
 =======
 
+2007/02/21 -- Version 1.0c
+--------------------------
+
+Fixed headers and footers.  Added support for references/URLs.
+
+
 2007/02/20 -- Version 1.0c
 --------------------------
 
