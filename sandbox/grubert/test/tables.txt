@@ -157,3 +157,9 @@ a longer and complicated table thanks to dave abrahams
 |                          |  >::type::value == false   |                         |
 +--------------------------+----------------------------+-------------------------+
 
+hyphens as content in a grid table cell
+
++----------------+------------------+
+| John Smith     | Mary Scott-Smith |
++----------------+------------------+
+
