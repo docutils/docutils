@@ -31,6 +31,7 @@ RST_FLAG_toc10 = -W symbol="=" -W top_in_list -W include_noheader
 RST_FLAG_toc11 = -W top_in_list -W include_noheader
 RST_FLAG_toc12 = -W symbol="=" -W include_noheader
 RST_FLAG_toc13 = -D keep_title_section
+RST_FLAG_toc14 = -W parent-role=submenu
 RST_FLAG_xref01 = -W file_suffix=htm
 RST_FLAG_xref02 =
 RST_FLAG_xref03 = -W filename_ext=_main -W file_path=.
