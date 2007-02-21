@@ -31,6 +31,11 @@ It uses the following output defines:
                        installed with no default URL specified, the
                        default stylesheet is always embedded.  Default
                        is 0.
+-W enum-list-prefixes[=<0|1>]
+                       Specify whether to keep information on prefixes
+                       and suffixes of enumerated lists in the output;
+                       can be used to specify styles based upon the prefix
+                       and suffix attributes.
 -W field-limit=<num>   Specify the maximum width (in characters) for
                        field names in field lists.  Longer fields will
                        span an entire row of the table used to render
@@ -50,6 +55,7 @@ It uses the following output defines:
                        This option allows using a single document
                        source with multiple writers by using whatever
                        figure extension is appropriate for a given writer.
+                       (Deprecated: use "-D image-exts=" instead.)
 -W link-target=<expr>  An expression that determines what the target
                        frame will be in link references.  The
                        link URL is available in ``$_`` so that the
@@ -82,10 +88,10 @@ It uses the following output defines:
 sub BEGIN = {
     # My -W flags
     use vars qw($attribution $body_attr $cloak_email_addresses $colspecs
-		$embed_stylesheet $field_limit $footnote_backlinks
-		$footnote_references $html_prolog $image_exts
-		$link_target $option_limit $stylesheet $stylesheet2
-		$target_tag);
+		$embed_stylesheet $enum_list_prefixes $field_limit
+		$footnote_backlinks $footnote_references $html_prolog
+		$image_exts $link_target $option_limit $stylesheet
+		$stylesheet2 $target_tag);
 
     # Static globals
     use vars qw($DOM);
@@ -698,6 +704,12 @@ phase PROCESS {
 	push @$class, 'docutils' if $tag eq 'dl';
 	push @$class, 'simple' if $dom->{_html}{simple};
 	$dom->{_html}{attr}{start} = $attr->{start} if defined $attr->{start};
+	if ($enum_list_prefixes) {
+	    $dom->{_html}{attr}{prefix} = $attr->{prefix}
+	    if $attr->{prefix};
+	    $dom->{_html}{attr}{suffix} = $attr->{suffix}
+	    if $attr->{suffix};
+	}
 	my $attrlist = GetAttr($dom);
 	return (qq(<$tag$attrlist>\n$str</$tag>\n));
     }
