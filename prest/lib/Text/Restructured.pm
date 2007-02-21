@@ -30,6 +30,12 @@ Defines for reStructuredText parser
 -D ignore-include-errs[=<0|1>]
                    Specifies that no error should be generated for
                    missing include files. Default is 0.
+-D image-exts=<ext-list>
+		   A comma-separated list of "ext1=ext2" pairs where 
+		   any URI with extension ext1 has it mapped to ext2.
+		   This option allows using a single document
+		   source with multiple writers by using whatever
+		   figure extension is appropriate for a given writer.
 -D include-ext=<text>
                    A colon-separated list of extensions to check for
                    included files.  Default is ":.rst:.txt".
@@ -278,8 +284,11 @@ use Text::Restructured::DOM;
 # Arguments: hash to reference of options, tool identifier
 sub new {
     my ($class, $opt, $tool_id) = @_;
-    my $self = { opt => $opt, TOOL_ID => $tool_id };
+    my $self = { opt => { %$opt }, TOOL_ID => $tool_id };
     bless $self, $class;
+    $self->{opt}{d} ||= 0;
+    $self->{opt}{w} = 'html' unless $self->{opt}{w};
+    $self->{opt}{D} = {} unless $self->{opt}{D};
     $self->init();
     $self;
 }
@@ -3497,6 +3506,17 @@ sub image {
     if $parent->{tag} eq 'substitution_definition';
     $attr{alt} = $alt if $alt ne '';
     delete $options->{$_} foreach (@extra_opts);
+
+    # Process image extensions
+    if ($parser->{opt}{D}{image_exts}) {
+	if (! $parser->{IMAGE_EXT_RE}) {
+	    %{$parser->{IMAGE_EXTS}} =
+		split /[,=]/, $parser->{opt}{D}{image_exts};
+	    $parser->{IMAGE_EXT_RE} =
+		join '|', map("\Q$_", keys %{$parser->{IMAGE_EXTS}});
+	}
+	$args =~ s/($parser->{IMAGE_EXT_RE})$/$parser->{IMAGE_EXTS}{$1}/o;
+    }
 
     my $dom = $DOM->new('image', uri=>$args, %attr, %$options);
     if (my $target = $options->{target}) {
