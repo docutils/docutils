@@ -133,6 +133,7 @@ reStructuredText construct.
 \hypertarget{table-of-contents}{}
 \pdfbookmark[0]{Table of Contents}{table-of-contents}
 \subsubsection*{~\hfill Table of Contents\hfill ~}
+\label{table-of-contents}
 \begin{list}{}{}
 \item {} \href{\#structural-elements}{1~~~Structural Elements}
 \begin{list}{}{}
@@ -241,6 +242,7 @@ reStructuredText construct.
 \hypertarget{structural-elements}{}
 \pdfbookmark[0]{1~~~Structural Elements}{structural-elements}
 \section*{1~~~Structural Elements}
+\label{structural-elements}
 
 
 %___________________________________________________________________________
@@ -248,6 +250,7 @@ reStructuredText construct.
 \hypertarget{section-title}{}
 \pdfbookmark[1]{1.1~~~Section Title}{section-title}
 \subsection*{1.1~~~Section Title}
+\label{section-title}
 \textbf{Section Subtitle}\vspace{0.2cm}
 
 \noindent 
@@ -259,6 +262,7 @@ That's it, the text just above this line.
 \hypertarget{empty-section}{}
 \pdfbookmark[1]{1.2~~~Empty Section}{empty-section}
 \subsection*{1.2~~~Empty Section}
+\label{empty-section}
 
 
 %___________________________________________________________________________
@@ -266,6 +270,7 @@ That's it, the text just above this line.
 \hypertarget{transitions}{}
 \pdfbookmark[1]{1.3~~~Transitions}{transitions}
 \subsection*{1.3~~~Transitions}
+\label{transitions}
 
 Here's a transition:
 
@@ -287,6 +292,7 @@ It divides the section.  Transitions may also occur between sections:
 \hypertarget{body-elements}{}
 \pdfbookmark[0]{2~~~Body Elements}{body-elements}
 \section*{2~~~Body Elements}
+\label{body-elements}
 
 
 %___________________________________________________________________________
@@ -294,6 +300,7 @@ It divides the section.  Transitions may also occur between sections:
 \hypertarget{paragraphs}{}
 \pdfbookmark[1]{2.1~~~Paragraphs}{paragraphs}
 \subsection*{2.1~~~Paragraphs}
+\label{paragraphs}
 
 A paragraph.
 
@@ -303,6 +310,7 @@ A paragraph.
 \hypertarget{inline-markup}{}
 \pdfbookmark[2]{2.1.1~~~Inline Markup}{inline-markup}
 \subsubsection*{2.1.1~~~Inline Markup}
+\label{inline-markup}
 
 Paragraphs contain text and may contain inline markup: \emph{emphasis},
 \textbf{strong emphasis}, \texttt{inline literals}, standalone hyperlinks
@@ -340,6 +348,7 @@ live link to PEP 258 here.
 \hypertarget{bullet-lists}{}
 \pdfbookmark[1]{2.2~~~Bullet Lists}{bullet-lists}
 \subsection*{2.2~~~Bullet Lists}
+\label{bullet-lists}
 \begin{itemize}
 \item {} 
 A bullet list
@@ -388,6 +397,7 @@ This nested list should be compacted by the HTML writer.
 \hypertarget{enumerated-lists}{}
 \pdfbookmark[1]{2.3~~~Enumerated Lists}{enumerated-lists}
 \subsection*{2.3~~~Enumerated Lists}
+\label{enumerated-lists}
 \newcounter{listcnt0}
 \begin{list}{\arabic{listcnt0}.}
 {
@@ -490,6 +500,7 @@ iv
 \hypertarget{definition-lists}{}
 \pdfbookmark[1]{2.4~~~Definition Lists}{definition-lists}
 \subsection*{2.4~~~Definition Lists}
+\label{definition-lists}
 \begin{description}
 %[visit_definition_list_item]
 \item[{Term}] 
@@ -524,6 +535,7 @@ Definition
 \hypertarget{field-lists}{}
 \pdfbookmark[1]{2.5~~~Field Lists}{field-lists}
 \subsection*{2.5~~~Field Lists}
+\label{field-lists}
 \begin{quote}
 \begin{description}
 \item [what:]
@@ -554,6 +566,7 @@ doesn't get stripped away.)
 \hypertarget{option-lists}{}
 \pdfbookmark[1]{2.6~~~Option Lists}{option-lists}
 \subsection*{2.6~~~Option Lists}
+\label{option-lists}
 
 For listing command-line options:
 \begin{optionlist}{3cm}
@@ -591,6 +604,7 @@ description.
 \hypertarget{literal-blocks}{}
 \pdfbookmark[1]{2.7~~~Literal Blocks}{literal-blocks}
 \subsection*{2.7~~~Literal Blocks}
+\label{literal-blocks}
 
 Literal blocks are indicated with a double-colon (``::'') at the end of
 the preceding paragraph (over there \texttt{-{}->}).  They can be indented:
@@ -614,6 +628,7 @@ Or they can be quoted without indentation:
 \hypertarget{line-blocks}{}
 \pdfbookmark[1]{2.8~~~Line Blocks}{line-blocks}
 \subsection*{2.8~~~Line Blocks}
+\label{line-blocks}
 
 This section tests line blocks.  Line blocks are body elements which
 consist of lines and other line blocks.  Nested line blocks cause
@@ -691,6 +706,7 @@ Take it away, Eric the Orchestra Leader!
 \hypertarget{block-quotes}{}
 \pdfbookmark[1]{2.9~~~Block Quotes}{block-quotes}
 \subsection*{2.9~~~Block Quotes}
+\label{block-quotes}
 
 Block quotes consist of indented body elements:
 \begin{quote}
@@ -712,6 +728,7 @@ own it, and what it is too.
 \hypertarget{doctest-blocks}{}
 \pdfbookmark[1]{2.10~~~Doctest Blocks}{doctest-blocks}
 \subsection*{2.10~~~Doctest Blocks}
+\label{doctest-blocks}
 \begin{verbatim}>>> print 'Python-specific usage examples; begun with ">>>"'
 Python-specific usage examples; begun with ">>>"
 >>> print '(cut and pasted from interactive Python sessions)'
@@ -723,6 +740,7 @@ Python-specific usage examples; begun with ">>>"
 \hypertarget{footnotes}{}
 \pdfbookmark[1]{2.11~~~Footnotes}{footnotes}
 \subsection*{2.11~~~Footnotes}
+\label{footnotes}
 \begin{figure}[b]\hypertarget{id8}$^{1}$
 A footnote contains body elements, consistently indented by at
 least 3 spaces.
@@ -762,6 +780,7 @@ nonexistent footnote:{\color{red}\bfseries{}{[}5{]}{\_}}.
 \hypertarget{citations}{}
 \pdfbookmark[1]{2.12~~~Citations}{citations}
 \subsection*{2.12~~~Citations}
+\label{citations}
 \begin{figure}[b]\hypertarget{cit2002}[CIT2002]
 Citations are text-labeled footnotes. They may be
 rendered separately and differently from footnotes.
@@ -778,6 +797,8 @@ citation.
 \pdfbookmark[1]{2.13~~~Targets}{targets}
 \pdfbookmark[1]{2.13~~~Targets}{another-target}
 \subsection*{2.13~~~Targets}
+\label{targets}
+\label{another-target}
 \hypertarget{example}{}
 This paragraph is pointed to by the explicit ``example'' target. A
 reference can be found under \href{\#inline-markup}{Inline Markup}, above. \href{\#inline-hyperlink-targets}{Inline
@@ -801,6 +822,7 @@ error.
 \hypertarget{duplicate-target-names}{}
 \pdfbookmark[2]{2.13.1~~~Duplicate Target Names}{duplicate-target-names}
 \subsubsection*{2.13.1~~~Duplicate Target Names}
+\label{duplicate-target-names}
 
 Duplicate names in section headers or other implicit targets will
 generate ``info'' (level-1) system messages.  Duplicate names in
@@ -812,6 +834,7 @@ explicit targets will generate ``warning'' (level-2) system messages.
 \hypertarget{id20}{}
 \pdfbookmark[2]{2.13.2~~~Duplicate Target Names}{id20}
 \subsubsection*{2.13.2~~~Duplicate Target Names}
+\label{id20}
 
 Since there are two ``Duplicate Target Names'' section headers, we
 cannot uniquely refer to either of them by name.  If we try to (like
@@ -823,6 +846,7 @@ this: {\color{red}\bfseries{}`Duplicate Target Names`{\_}}), an error is generat
 \hypertarget{directives}{}
 \pdfbookmark[1]{2.14~~~Directives}{directives}
 \subsection*{2.14~~~Directives}
+\label{directives}
 \begin{list}{}{}
 \item {} \href{\#document-parts}{2.14.1~~~Document Parts}
 
@@ -853,6 +877,7 @@ others, please see
 \hypertarget{document-parts}{}
 \pdfbookmark[2]{2.14.1~~~Document Parts}{document-parts}
 \subsubsection*{2.14.1~~~Document Parts}
+\label{document-parts}
 
 An example of the ``contents'' directive can be seen above this section
 (a local, untitled table of \href{\#contents}{contents}) and at the beginning of the
@@ -864,6 +889,7 @@ document (a document-wide \href{\#table-of-contents}{table of contents}).
 \hypertarget{images}{}
 \pdfbookmark[2]{2.14.2~~~Images}{images}
 \subsubsection*{2.14.2~~~Images}
+\label{images}
 
 An image directive (also clickable -{}- a hyperlink reference):
 \href{\#directives}{\includegraphics{../../../docs/user/rst/images/title.png}}
@@ -970,6 +996,7 @@ An image 3 cm high:
 \hypertarget{admonitions}{}
 \pdfbookmark[2]{2.14.3~~~Admonitions}{admonitions}
 \subsubsection*{2.14.3~~~Admonitions}
+\label{admonitions}
 \begin{center}\begin{sffamily}
 \fbox{\parbox{\admonitionwidth}{
 \textbf{\large Attention!}
@@ -1081,6 +1108,7 @@ You can make up your own admonition too.
 \hypertarget{topics-sidebars-and-rubrics}{}
 \pdfbookmark[2]{2.14.4~~~Topics, Sidebars, and Rubrics}{topics-sidebars-and-rubrics}
 \subsubsection*{2.14.4~~~Topics, Sidebars, and Rubrics}
+\label{topics-sidebars-and-rubrics}
 
 \setlength{\locallinewidth}{0.9\admonitionwidth}
 \begin{center}\begin{sffamily}
@@ -1114,6 +1142,7 @@ This is a topic.
 \hypertarget{target-footnotes}{}
 \pdfbookmark[2]{2.14.5~~~Target Footnotes}{target-footnotes}
 \subsubsection*{2.14.5~~~Target Footnotes}
+\label{target-footnotes}
 \begin{figure}[b]\hypertarget{id26}$^{5}$
 \href{http://www.python.org/}{http://www.python.org/}
 \end{figure}
@@ -1127,6 +1156,7 @@ This is a topic.
 \hypertarget{replacement-text}{}
 \pdfbookmark[2]{2.14.6~~~Replacement Text}{replacement-text}
 \subsubsection*{2.14.6~~~Replacement Text}
+\label{replacement-text}
 
 I recommend you try \href{http://www.python.org/}{Python, \emph{the} best language around}\raisebox{.5em}[0em]{\scriptsize\hyperlink{id26}{5}}.
 
@@ -1136,6 +1166,7 @@ I recommend you try \href{http://www.python.org/}{Python, \emph{the} best langua
 \hypertarget{compound-paragraph}{}
 \pdfbookmark[2]{2.14.7~~~Compound Paragraph}{compound-paragraph}
 \subsubsection*{2.14.7~~~Compound Paragraph}
+\label{compound-paragraph}
 
 Compound 1, paragraph 1.
 
@@ -1210,6 +1241,7 @@ Compound 7, another paragraph.
 \hypertarget{parsed-literal-blocks}{}
 \pdfbookmark[2]{2.14.8~~~Parsed Literal Blocks}{parsed-literal-blocks}
 \subsubsection*{2.14.8~~~Parsed Literal Blocks}
+\label{parsed-literal-blocks}
 \begin{quote}{\ttfamily \raggedright \noindent
 This~is~a~parsed~literal~block.~\\
 ~~~~This~line~is~indented.~~The~next~line~is~blank.~\\
@@ -1224,6 +1256,7 @@ text},~footnotes\raisebox{.5em}[0em]{\scriptsize\hyperlink{id8}{1}},~\hypertarge
 \hypertarget{substitution-definitions}{}
 \pdfbookmark[1]{2.15~~~Substitution Definitions}{substitution-definitions}
 \subsection*{2.15~~~Substitution Definitions}
+\label{substitution-definitions}
 
 An inline image (\includegraphics{../../../docs/user/rst/images/biohazard.png}) example:
 
@@ -1235,6 +1268,7 @@ An inline image (\includegraphics{../../../docs/user/rst/images/biohazard.png}) 
 \hypertarget{comments}{}
 \pdfbookmark[1]{2.16~~~Comments}{comments}
 \subsection*{2.16~~~Comments}
+\label{comments}
 
 Here's one:
 % Comments begin with two dots and a space. Anything may
@@ -1253,6 +1287,7 @@ Here's one:
 \hypertarget{raw-text}{}
 \pdfbookmark[1]{2.17~~~Raw text}{raw-text}
 \subsection*{2.17~~~Raw text}
+\label{raw-text}
 
 This does not necessarily look nice, because there may be missing white space.
 
@@ -1266,6 +1301,7 @@ Fifth test in LaTeX.\\Line two.
 \hypertarget{container}{}
 \pdfbookmark[1]{2.18~~~Container}{container}
 \subsection*{2.18~~~Container}
+\label{container}
 
 paragraph 1
 
@@ -1277,6 +1313,7 @@ paragraph 2
 \hypertarget{colspanning-tables}{}
 \pdfbookmark[1]{2.19~~~Colspanning tables}{colspanning-tables}
 \subsection*{2.19~~~Colspanning tables}
+\label{colspanning-tables}
 
 This table has a cell spanning two columns:
 
@@ -1337,6 +1374,7 @@ True
 \hypertarget{rowspanning-tables}{}
 \pdfbookmark[1]{2.20~~~Rowspanning tables}{rowspanning-tables}
 \subsection*{2.20~~~Rowspanning tables}
+\label{rowspanning-tables}
 
 Here's a table with cells spanning several rows:
 
@@ -1383,6 +1421,7 @@ body row 3
 \hypertarget{tests-for-the-latex-writer}{}
 \pdfbookmark[0]{3~~~Tests for the LaTeX writer}{tests-for-the-latex-writer}
 \section*{3~~~Tests for the LaTeX writer}
+\label{tests-for-the-latex-writer}
 
 
 %___________________________________________________________________________
@@ -1390,6 +1429,7 @@ body row 3
 \hypertarget{some-tests-for-the-latex2e-writer}{}
 \pdfbookmark[0]{4~~~Some Tests for the LaTeX2e Writer}{some-tests-for-the-latex2e-writer}
 \section*{4~~~Some Tests for the LaTeX2e Writer}
+\label{some-tests-for-the-latex2e-writer}
 
 These tests have been written to exercise some unusual combinations of
 syntax elements which may cause trouble for the LaTeX writer but do
@@ -1403,6 +1443,7 @@ This file is user by the standalone{\_}rst{\_}latex test.
 \hypertarget{id23}{}
 \pdfbookmark[0]{5~~~Option lists}{id23}
 \section*{5~~~Option lists}
+\label{id23}
 
 The LaTeX-2e description environment is used for definition lists.
 The definition is continued on the same line as the term, this should
@@ -1437,6 +1478,7 @@ verbose
 \hypertarget{monospaced-non-alphanumeric-characters}{}
 \pdfbookmark[1]{5.1~~~Monospaced non-alphanumeric characters}{monospaced-non-alphanumeric-characters}
 \subsection*{5.1~~~Monospaced non-alphanumeric characters}
+\label{monospaced-non-alphanumeric-characters}
 
 These are all ASCII characters except a-zA-Z0-9 and space:
 
@@ -1455,6 +1497,7 @@ width as the third line.
 \hypertarget{various-non-ascii-characters}{}
 \pdfbookmark[1]{5.2~~~Various non-ASCII characters}{various-non-ascii-characters}
 \subsection*{5.2~~~Various non-ASCII characters}
+\label{various-non-ascii-characters}
 
 \begin{longtable}[c]{|p{0.03\locallinewidth}|p{0.42\locallinewidth}|}
 \hline
@@ -1573,6 +1616,7 @@ X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~
 \hypertarget{custom-roles}{}
 \pdfbookmark[1]{5.3~~~Custom Roles}{custom-roles}
 \subsection*{5.3~~~Custom Roles}
+\label{custom-roles}
 \begin{itemize}
 \item {} 
 A role based on an existing role.
@@ -1602,6 +1646,7 @@ A role with class attribute.
 \hypertarget{error-handling}{}
 \pdfbookmark[0]{6~~~Error Handling}{error-handling}
 \section*{6~~~Error Handling}
+\label{error-handling}
 
 Any errors caught during processing will generate system messages.
 

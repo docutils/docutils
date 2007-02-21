@@ -107,6 +107,10 @@ Changes Since 0.4
 
 * docutils/writers/latex2e/__init__.py:
 
+  - New option ``--reference-label`` to allow usage of LaTeX ref for 
+    labels in section references.
+  - Add a label after every section to support sectionnumbers as reference
+    labels.
   - Fix: bug# 1605376 rst2latex: bad options group list
   - Remove inactive code for use_optionlist_for_option_list.
   - Remove latex comments from option_list output.

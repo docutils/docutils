@@ -135,6 +135,11 @@ class Writer(writers.Writer):
           'emulation using CM fonts).',
           ['--font-encoding'],
           {'default': ''}),
+         ('Per default the latex-writer puts the reference title into '
+          'hyperreferences. Specify "ref*" or "pageref*" to get the section '
+          'number or the page number.',
+          ['--reference-label'],
+          {'default': None, }),
           ),)
 
     settings_defaults = {'output_encoding': 'latin-1'}
@@ -568,6 +573,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.use_latex_docinfo = settings.use_latex_docinfo
         self.use_latex_footnotes = settings.use_latex_footnotes
         self._use_latex_citations = settings.use_latex_citations
+        self._reference_label = settings.reference_label
         self.hyperlink_color = settings.hyperlink_color
         self.compound_enumerators = settings.compound_enumerators
         self.font_encoding = settings.font_encoding
@@ -1790,6 +1796,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             raise AssertionError('Unknown reference.')
         self.body.append('\\href{%s}{' % href)
+        if self._reference_label and not node.has_key('refuri'):
+            self.body.append('\\%s{%s}}' % (self._reference_label,
+                        href.replace(hash_char, '')))
+            raise nodes.SkipNode
 
     def depart_reference(self, node):
         self.body.append('}')
@@ -2037,6 +2047,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_title(self, node):
         self.body.append(self.context.pop())
+        for id in node.parent['ids']:
+            self.body.append('\\label{%s}\n' % id)
 
     def visit_topic(self, node):
         self.topic_classes = node['classes']
