@@ -621,7 +621,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.column_count = ord('A') - 1
         self.trace_level = -1
         self.optiontablestyles_generated = False
-        self.footer_element = None
         self.field_name = None
         self.field_element = None
         self.title = None
@@ -629,12 +628,14 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.embedded_file_list = []
         self.syntaxhighlighting = 1
         self.syntaxhighlight_lexer = 'python'
-        self.header_content = None
-        self.footer_content = None
+        self.header_content = []
+        self.footer_content = []
+        self.in_header = False
+        self.in_footer = False
         self.in_table_of_contents = False
 
     def add_header_footer(self, content):
-        if self.header_content is not None or self.footer_content is not None:
+        if len(self.header_content) > 0 or len(self.footer_content) > 0:
             root_el = etree.fromstring(content)
             path = '{%s}master-styles' % (NAME_SPACE_1, )
             master_el = root_el.find(path)
@@ -644,21 +645,16 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 'style:name': 'Standard',
                 'style:page-layout-name': 'pm1',
                 })
-            if self.header_content is not None:
+            if len(self.header_content) > 0:
                 el2 = etree.SubElement(el1, 'style:header')
-                el3 = etree.SubElement(el2, 'text:p', attrib={
-                    'text:style-name': 'rststyle-header',
-                    })
-                el3.text = self.header_content
-            if self.footer_content is not None:
+                for el in self.header_content:
+                    el.attrib['text:style-name'] = 'rststyle-header'
+                    el2.append(el)
+            if len(self.footer_content) > 0:
                 el2 = etree.SubElement(el1, 'style:footer')
-                footer_lines = self.footer_content.split('\n')
-                for line in footer_lines:
-                    if line:
-                        el3 = etree.SubElement(el2, 'text:p', attrib={
-                            'text:style-name': 'rststyle-footer',
-                            })
-                        el3.text = line
+                for el in self.footer_content:
+                    el.attrib['text:style-name'] = 'rststyle-footer'
+                    el2.append(el)
             new_tree = etree.ElementTree(root_el)
             new_content = ToString(new_tree)
             return new_content
@@ -895,15 +891,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def depart_decoration(self, node):
         #ipshell('At depart_decoration')
-##        el = self.current_element.getchildren()[-1]
-##        self.current_element.remove(el)
-##        el1 = Element('text:section', attrib={
-##            'text:name': '_rstFooterSection',
-##            })
-##        el2 = SubElement(el1, 'text:p', attrib={
-##            'text:style-name': 'rststyle-horizontalline'})
-##        el1.append(el)
-##        self.footer_element = el1
         pass
 
     def visit_definition(self, node):
@@ -946,8 +933,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         pass
 
     def depart_document(self, node):
-        if self.footer_element is not None:
-            self.current_element.append(self.footer_element)
         pass
 
     def visit_docinfo(self, node):
@@ -997,19 +982,19 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_header(self, node):
         #ipshell('At visit_header')
-        self.header_content = node.astext()
-        raise nodes.SkipChildren()
+        self.in_header = True
 
     def depart_header(self, node):
-        pass
+        #ipshell('At depart_header')
+        self.in_header = False
 
     def visit_footer(self, node):
         #ipshell('At visit_footer')
-        self.footer_content = node.astext()
-        raise nodes.SkipChildren()
+        self.in_footer = True
 
     def depart_footer(self, node):
-        pass
+        #ipshell('At depart_footer')
+        self.in_footer = False
 
     def visit_field(self, node):
         # Note that the syntaxhighlight directive produces this field node.
@@ -1556,9 +1541,18 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         #self.trace_visit_node(node)
         if self.omit:
             return
-        style_name = self.paragraph_style_stack[-1]
-        el = self.append_child('text:p',
-            attrib={'text:style-name': style_name})
+        if self.in_header:
+            style_name = 'rststyle-header'
+            el = self.append_child('text:p',
+                attrib={'text:style-name': style_name})
+        elif self.in_footer:
+            style_name = 'rststyle-footer'
+            el = self.append_child('text:p',
+                attrib={'text:style-name': style_name})
+        else:
+            style_name = self.paragraph_style_stack[-1]
+            el = self.append_child('text:p',
+                attrib={'text:style-name': style_name})
         self.set_current_element(el)
 
     def depart_paragraph(self, node):
@@ -1566,6 +1560,12 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         if self.omit:
             return
         self.set_to_parent()
+        if self.in_header:
+            self.header_content.append(self.current_element.getchildren()[-1])
+            self.current_element.remove(self.current_element.getchildren()[-1])
+        elif self.in_footer:
+            self.footer_content.append(self.current_element.getchildren()[-1])
+            self.current_element.remove(self.current_element.getchildren()[-1])
 
     def visit_problematic(self, node):
         #print '(visit_problematic) node: %s' % (node.astext(), )
