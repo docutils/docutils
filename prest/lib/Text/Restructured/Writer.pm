@@ -30,17 +30,21 @@ use strict;
 sub new {
     my ($class, $writer_name, $opt) = @_;
 
-    my $writer = bless { opt => $opt };
+    my $writer = bless { opt => { %$opt } };
     # Handle options processing
     foreach (keys %{$opt->{W}}) {
-	$opt->{W}{$_} = 1 if defined $opt->{W}{$_} && $opt->{W}{$_} eq '';
+	$writer->{opt}{W}{$_} = 1
+	    if defined $writer->{opt}{W}{$_} && $writer->{opt}{W}{$_} eq '';
     }
     # Initialize defined variables
-    foreach my $key (keys %{$opt->{W}}) {
+    foreach my $key (keys %{$writer->{opt}{W}}) {
 	(my $var = $key) =~ tr/a-zA-Z0-9/_/c;
 	no strict 'refs';
-	${"Eval_::$var"} = $opt->{W}{$key};
+	${"Eval_::$var"} = $writer->{opt}{W}{$key};
     }
+    $writer->{opt}{d} ||= 0;
+    $writer->{opt}{w} = $writer_name;
+    $writer->{opt}{D} = {} unless $writer->{opt}{D};
     $writer->ParseSchema($writer_name);
     $writer->Precompile();
 
