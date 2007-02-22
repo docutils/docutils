@@ -24,14 +24,14 @@ be specified by using different writer schemas.
 Usage: ${TOOL_NAME} [options] file(s)
 
 Options:
-  -d            Print debugging info on STDERR.  May be used multiple
-                times to get more information.
-  -e <encoding> Specifies an encoding to use for output (default 'utf8')
-  -h            Print full usage help
-  -w <writer>   Process the writer schema from <writer>.wrt (default 'html')
-  -D var[=val]  Define a variable that affects parsing (may be multiple)
-  -W var[=val]  Define a variable that affects a writer (may be multiple)
-  -V            Print version info
+  -d             Print debugging info on STDERR.  May be used multiple
+                 times to get more information.
+  -e <encoding>  Specifies an encoding to use for output (default 'utf8')
+  -h             Print full usage help
+  -w <writer>    Process the writer schema from <writer>.wrt (default 'html')
+  -D var[=val]   Define a variable that affects parsing (may be multiple)
+  -W var[=val]   Define a variable that affects a writer (may be multiple)
+  -V             Print version info
 
 Available writers: ${\WriterList()}.
 Available encodings: ${\EncodingList()}.
