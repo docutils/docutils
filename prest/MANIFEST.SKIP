@@ -29,6 +29,7 @@
 ^doc/html
 ^bin
 ^blib
+^demodoc
 ^helpers/
 ^src/
 ^t/cover_db
