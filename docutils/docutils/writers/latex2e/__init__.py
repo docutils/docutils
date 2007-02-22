@@ -140,6 +140,10 @@ class Writer(writers.Writer):
           'number or the page number.',
           ['--reference-label'],
           {'default': None, }),
+         ('Specify style and database for bibtex, for example '
+          '"--use-bibtex=mystyle,mydb1,mydb2".',
+          ['--use-bibtex'],
+          {'default': None, }),
           ),)
 
     settings_defaults = {'output_encoding': 'latin-1'}
@@ -587,6 +591,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             self.colorlinks = 'true'
 
+        if self.settings.use_bibtex:
+            self.bibtex = self.settings.use_bibtex.split(",",1)
+        else:
+            self.bibtex = None
         # language: labels, bibliographic_fields, and author_separators.
         # to allow writing labes for specific languages.
         self.language = languages.get_language(settings.language_code)
@@ -1219,16 +1227,20 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_document(self, node):
         # TODO insertion point of bibliography should none automatic.
         if self._use_latex_citations and len(self._bibitems)>0:
-            widest_label = ""
-            for bi in self._bibitems:
-                if len(widest_label)<len(bi[0]):
-                    widest_label = bi[0]
-            self.body.append('\n\\begin{thebibliography}{%s}\n'%widest_label)
-            for bi in self._bibitems:
-                # cite_key: underscores must not be escaped
-                cite_key = bi[0].replace(r"{\_}","_")
-                self.body.append('\\bibitem[%s]{%s}{%s}\n' % (bi[0], cite_key, bi[1]))
-            self.body.append('\\end{thebibliography}\n')
+            if not self.bibtex:
+                widest_label = ""
+                for bi in self._bibitems:
+                    if len(widest_label)<len(bi[0]):
+                        widest_label = bi[0]
+                self.body.append('\n\\begin{thebibliography}{%s}\n'%widest_label)
+                for bi in self._bibitems:
+                    # cite_key: underscores must not be escaped
+                    cite_key = bi[0].replace(r"{\_}","_")
+                    self.body.append('\\bibitem[%s]{%s}{%s}\n' % (bi[0], cite_key, bi[1]))
+                self.body.append('\\end{thebibliography}\n')
+            else:
+                self.body.append('\n\\bibliographystyle{%s}\n' % self.bibtex[0])
+                self.body.append('\\bibliography{%s}\n' % self.bibtex[1])
 
         self.body_suffix.append('\\end{document}\n')
 
