@@ -204,9 +204,18 @@ OUTF="$INF-use-latex-citations.tex"
 REFF="$OUTF.ref"
 $CMD $INF > $OUTF
 do_diff $REFF $OUTF 
+
 # on a file without citations
 INF=test/no-citations.txt
 OUTF="$INF-use-latex-citations.tex"
+REFF="$OUTF.ref"
+$CMD $INF > $OUTF
+do_diff $REFF $OUTF 
+
+# use bibtex
+INF=test/citations.txt
+CMD="$BASE_CMD --use-latex-citations --use-bibtex=mystyle,mydb1,mydb2"
+OUTF="$INF-use-bibtex.tex"
 REFF="$OUTF.ref"
 $CMD $INF > $OUTF
 do_diff $REFF $OUTF 

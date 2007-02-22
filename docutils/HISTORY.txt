@@ -107,6 +107,7 @@ Changes Since 0.4
 
 * docutils/writers/latex2e/__init__.py:
 
+  - New option ``--use-bibtex=style,db1,db2``.
   - New option ``--reference-label`` to allow usage of LaTeX ref for 
     labels in section references.
   - Add a label after every section to support sectionnumbers as reference
