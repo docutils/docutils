@@ -41,7 +41,7 @@ This writer uses the following output defines:
                   the document source bare name for any document 
                   that does not have a header
                   (default is 0, do not include).
--W parent-role=<role name>
+-W parent-role=<role_name>
                   If specified, items which have sublists are created
                   as interpreted text with the given role.  The role must 
                   be defined elsewhere.
