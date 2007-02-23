@@ -13,7 +13,7 @@ use ExtUtils::MakeMaker;
 
 ## Note: The version number for the entire release is specified here and
 ## propagated.  Be sure to edit for every release.
-my $Version = "0.003023";
+my $Version = "0.003024";
 
 use vars qw($opt_f $opt_h $opt_k);
 my $OUTPUT_CFG_FILE = $opt_f = 'config.log';
@@ -272,7 +272,9 @@ unlink "lib/Text/Restructured/PrestConfig.pm";
 
 #### Finally, create the Makefile
 # Get list of perl modules in lib subdirectory
-chomp (my @pm_files = `find lib -type d -name .svn -prune , -type d -name CVS -prune , -type f -and -not -name '*~' -and -not -name '*.PL'`);
+chomp (my @pm_files =
+       grep ! /\.svn|\bCVS\b/, 
+       `find lib -type f -and -not -name '*~' -and -not -name '*.PL'`);
 my %pm_files;
 @pm_files{@pm_files} = map "blib/$_", @pm_files;
 
