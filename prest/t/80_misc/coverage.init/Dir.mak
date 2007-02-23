@@ -1,3 +1,4 @@
+PERL_FLAG_baddirect = -I.
 PERL_FLAG_badwrt1 = -I.
 PERL_FLAG_badwrt2 = -I.
 PERL_FLAG_badwrt3 = -I.

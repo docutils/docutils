@@ -79,7 +79,7 @@ use strict;
 sub Filter{
     my ($dom, $parser, $details) = @_;
 
-    if ($parser->{opt}{w} eq eval($details->{format}) ||
+    if ("'$parser->{opt}{w}'" eq $details->{format} ||
 	$parser->{opt}{w} eq 'dom') {
 	my $nodes = $details->{nodes};
 	return $DOM->new($nodes->{tag}, %{$nodes->{attr}});

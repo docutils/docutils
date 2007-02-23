@@ -114,7 +114,12 @@ sub main {
 	    if defined $options->{level};
 	push @args, "-s $1" if $args =~ /^(\w+)$/;
 	my $cmd = "$states_bin/states @args -f $st $input_file 2>&1";
-	my $markup = `$cmd`;
+	my $markup;
+	do {			# Make safe for -T flag
+	    local %ENV;
+	    $ENV{PATH} = '';
+	    $markup = `$cmd`;
+	};
 	unlink $input_file unless $options->{file};
 	my $pl = $DOM->new('parsed_literal', %Text::Restructured::XML_SPACE);
 	my @errs;
