@@ -267,6 +267,8 @@ t/60_new/directives.init/tables02.rst
 t/60_new/directives.init/tables03.dom
 t/60_new/directives.init/tables03.rst
 t/60_new/directives.init/Text/ASCIIMathML.pm
+t/60_new/html.init/bodyonly.myhtml
+t/60_new/html.init/bodyonly.rst
 t/60_new/html.init/Dir.mak
 t/60_new/html.init/entryattr.myhtml
 t/60_new/html.init/entryattr.rst
@@ -348,7 +350,6 @@ t/70_plugins/if.init/if05.r
 t/70_plugins/if.init/if05.rst
 t/70_plugins/if.init/if06.dom
 t/70_plugins/if.init/if06.rst
-t/70_plugins/if.init/if06.stderr
 t/70_plugins/if.init/if07.dom
 t/70_plugins/if.init/if07.rst
 t/70_plugins/if.init/if08.dom
@@ -402,7 +403,6 @@ t/70_plugins/perl.init/perl10.r
 t/70_plugins/perl.init/perl10.rst
 t/70_plugins/perl.init/perl11.dom
 t/70_plugins/perl.init/perl11.rst
-t/70_plugins/perl.init/perl11.stderr
 t/70_plugins/perl.init/perl12.dom
 t/70_plugins/perl.init/perl12.rst
 t/70_plugins/perl.init/perl13.dom
@@ -798,6 +798,8 @@ t/80_misc/transforms.init/docurl/Text/Restructured/PrestConfig.pm
 t/80_misc/transforms.init/nodocurl/Text/Restructured/PrestConfig.pm
 t/80_misc/transforms.init/targets_01.dom
 t/80_misc/transforms.init/targets_01.rst
+t/90_bugs/html.init/alt.myhtml
+t/90_bugs/html.init/alt.rst
 t/90_bugs/html.init/Dir.mak
 t/90_bugs/html.init/hyphencell.myhtml
 t/90_bugs/html.init/hyphencell.rst
