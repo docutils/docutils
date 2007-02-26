@@ -1,0 +1,353 @@
+.. include:: <s5defs.txt>
+
+.. footer:: Felix Wiemann
+
+================
+ Document Trees
+================
+
+------------------------------------------
+ Patterns and anti-patterns in your code.
+------------------------------------------
+
+.. raw:: html
+
+   <center style="margin-top: 100px; color: #555555;"><em>— Felix Wiemann —</em></center>
+
+.. role:: incremental
+.. default-role:: incremental
+
+PART A: How to Convert
+======================
+
+.. class:: incremental
+
+   Format A (Wiki) —> Format B (XHTML)
+
+   DocBook —> LaTeX
+
+   OpenDocument —> CHM
+
+   RTF —> Troff
+
+.. class:: handout
+
+   Just examples, could also be DocBook to LaTeX.
+
+.. |event| image:: graphics/parsing-event-small.png
+   :class: bordered
+
+
+Input
+=====
+
+.. image:: graphics/downscale/input.png
+
+
+Output
+======
+
+.. image:: graphics/downscale/output.png
+
+
+1. Direct Conversion
+====================
+
+.. container:: incremental
+
+   .. image:: graphics/downscale/direct.png
+
+   (e.g. used in MoinMoin wiki)
+
+
+1. Direct Conversion
+====================
+
+.. image:: graphics/downscale/direct.png
+
+.. class:: incremental
+
+   1. Parser encounters: |event|
+   2. Parser calls ``writer.visit_emphasis()``.
+   3. Writer writes ``self.output.append('<em>')``.
+
+   <p>\ `This is` `<em>`\ `emphasized`\ `</em>` `text.`\ `</p>`
+
+
+1. Direct Conversion
+====================
+
+.. class:: incremental
+
+Inflexible, but fast.
+
+
+2. Using Document Tree
+======================
+
+.. container:: incremental
+
+   .. image:: graphics/downscale/indirect.png
+
+   1. Input format —> internal document tree.
+   2. Internal document tree —> output format.
+
+   (e.g. used in Docutils)
+
+
+2. Using Document Tree
+======================
+
+.. class:: incremental
+
+   Slow, but can do transformations:
+
+   .. image:: graphics/downscale/indirect-plus-transform.png
+
+
+Which Approach?
+===============
+
+| **Performance** (direct conversion)
+| vs. **features** (using document tree).
+
+Choose carefully at the start (hard to refactor).
+
+
+\
+=
+
+| Assume we have a document tree
+| how do we write it out?
+
+
+PART B
+======
+Writing out the Document Tree
+-----------------------------
+
+.. image:: graphics/downscale/part-b-writing-out.png
+
+
+The Bad Way
+===========
+
+.. class:: handout
+
+   I'll show you later why this is bad.
+
+Obvious approach: For each node, call ``visit_`` and ``depart_``
+methods::
+
+    def visit_emphasis():
+        self.output.append('<em>')
+
+    def depart_emphasis():
+        self.output.append('</em>')
+
+
+The Bad Way
+===========
+
+.. class:: incremental
+
+::
+
+    <paragraph>
+        This is
+        <emphasis>
+            emphasized
+        text.
+
+.. class:: handout
+
+   So this document tree gets rendered using this call sequence:
+
+
+The Bad Way
+===========
+
+.. class:: incremental
+
+::
+
+    Call                      Output
+    -----------------------   ----------
+    visit_paragraph()         <p>
+        visit_Text()          This is
+        visit_emphasis()      <em>
+            visit_Text()      emphasized
+        depart_emphasis()     </em>
+        visit_Text()          text.
+    depart_paragraph()        </p>
+
+
+The Bad Way
+===========
+
+.. container:: incremental
+
+   We can push and pop from a stack:
+
+   ::
+
+       def visit_reference():
+           if use_superscript:
+               self.output.append('<sup>')
+               self.stack.append('</sup>')
+           else:  # use brackets
+               self.output.append('[')
+               self.stack.append(']')
+
+       def depart_reference():
+           self.output.append(self.stack.pop())
+
+.. class:: handout
+
+   Still very legible.
+
+
+The Bad Way
+===========
+
+.. class:: incremental
+
+   Works well for a long time...
+
+   Until output structure != document tree structure.  E.g.:
+
+
+The Bad Way
+===========
+
+Consider how footnotes are rendered:
+
+.. container:: incremental
+
+   .. [1] Unreferenced footnote.
+   .. [2] Referenced (one backlink).
+   .. [3] Referenced (3 backlinks).
+
+.. class:: handout
+
+   This is only a difference in *rendering*.  In the document tree,
+   they look the same.
+
+
+The Bad Way
+===========
+
+::
+
+    <footnote>
+        <label>
+            1
+        <paragraph>
+            Unreferenced footnote.
+
+
+The Bad Way
+===========
+
+::
+
+    <footnote>
+        <label>
+            2
+        <paragraph>
+            Referenced (one backlink).
+
+
+The Bad Way
+===========
+
+::
+
+    <footnote>
+        <label>
+            3
+        <paragraph>
+            Referenced (3 backlinks).
+
+
+The Bad Way
+===========
+
+.. class:: incremental
+ 
+   So our footnote implementation gets messy. *(example)*
+
+   Overall, it becomes hard to implement new features.
+
+   ———> This is an **anti-pattern**.
+
+
+The Right Way
+=============
+
+.. class:: incremental
+
+   1. Generate a tree of XHTML nodes.
+   2. Write it out.
+
+   .. image:: graphics/downscale/writing-out-via-tree.png
+
+
+The Right Way
+=============
+
+::
+
+    def visit_emphasis(self, node):
+        # Recursive
+        return [xhtml.em(self.generate_tree(
+                                 node.children))]
+
+.. class:: handout
+
+   So visit_emphasis creates an ``em`` node, recursively populates it
+   with the XHTML representation of its own children, and returns it.
+
+.. container:: incremental
+
+   **Benefit:**
+
+   * Maintainable and legible!
+
+   * More powerful.
+   
+   .. | Does it help?
+      | ``visit_footnote`` is still a long method, but legible and maintainable.
+
+
+Summary
+=======
+
+.. class:: handout
+
+   If you use an internal document tree, do yourself the favor of
+   using an intermediate tree structure for the output format.
+
+.. image:: graphics/downscale/indirect-with-output-tree.png
+
+.. class:: incremental
+
+   | Use the Right Way from the start.
+   | You only get trouble after 1500 LOC.
+
+   (How to refactor?  Ask me!)
+
+\
+=
+
+Thanks for listening!
+
+
+\
+=
+\
+=
+\
+=
+
+[2]_ [3]_ [3]_ [3]_

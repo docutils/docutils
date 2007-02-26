@@ -1,0 +1,6 @@
+@import url(file:///home/felix/.python/lib/docutils/writers/html4css1/html4css1.css);
+
+/* .incremental { color: black ! important; } */
+.slide .current { color: black ! important; }
+/* .green  { color: black ! important; } */
+div#footer {bottom: 20px ! important;}

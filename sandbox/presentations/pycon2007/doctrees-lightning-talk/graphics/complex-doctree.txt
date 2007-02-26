@@ -1,0 +1,35 @@
+<topic classes="contents" ids="table-of-contents" names="table\ of\ contents">
+    <title>
+        Table of Contents
+    <bullet_list classes="auto-toc">
+        <list_item>
+            <paragraph>
+                <reference ids="id32" refid="structural-elements">
+                    <generated classes="sectnum">
+                        1
+                    Structural Elements
+            <bullet_list classes="auto-toc">
+                <list_item>
+                    <paragraph>
+                        <reference ids="id33" refid="section-title">
+                            <generated classes="sectnum">
+                                1.1
+                            Section Title
+                <list_item>
+                    <paragraph>
+                        <reference ids="id34" refid="empty-section">
+                            <generated classes="sectnum">
+                                1.2
+                            Empty Section
+                <list_item>
+                    <paragraph>
+                        <reference ids="id35" refid="transitions">
+                            <generated classes="sectnum">
+                                1.3
+                            Transitions
+        <list_item>
+            <paragraph>
+                <reference ids="id36" refid="body-elements">
+                    <generated classes="sectnum">
+                        2
+                    Body Elements

@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# Note: You need to manually export all .dia files as high-res .png
+# files (width=5000) before running this script.
+mkdir downscale
+for i in *png; do convert "$i" -resize 950x downscale/$i; done
