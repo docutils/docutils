@@ -10,7 +10,7 @@
 
 # Specific files
 ^annotations$
-^config\.log$
+^config\.log.*$
 ^config\.prl$
 ^Makefile$
 ^MANIFEST\.SKIP$
