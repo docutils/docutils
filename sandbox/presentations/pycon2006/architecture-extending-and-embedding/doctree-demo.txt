@@ -1,0 +1,3 @@
+I like the Python_ language.
+
+.. _Python: http://www.python.org/

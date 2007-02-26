@@ -1,0 +1,9 @@
+Test.  [1]_
+
+.. [1] First footnote.
+
+Second.  [2]_
+
+.. [2] Second footnote.
+
+Another test.
