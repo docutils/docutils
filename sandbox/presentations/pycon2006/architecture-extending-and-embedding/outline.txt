@@ -1,0 +1,90 @@
+======================================================================
+ Docutils Developers Tutorial: Architecture, Extending, and Embedding
+======================================================================
+
+:Author: David Goodger <goodger@python.org>
+:Author: Felix Wiemann <Felix.Wiemann@ososo.de>
+:Timeslot: 45 minutes
+:Intended audience: intermediate to advanced programmers
+
+
+Summary of Presentation
+=======================
+
+A very quick overview of the Docutils architecture, followed by
+examples of using Docutils in applications, extending Docutils with
+new plug-ins, languages, and Writers, and extending reStructuredText
+with directives and interpreted text roles.  Finally, we will create
+and test a new directive, live!
+
+
+Presentation Outline
+====================
+
+* Introductions
+
+  - David Goodger: project founder & architect
+
+  - Felix Wiemann: release manager, joined the project about 2 years
+    ago
+
+* What is Docutils?
+
+  - Vision -- mission statement [DJG: docs/ref/rst/introduction.txt]
+
+  - Current status
+
+  - Missing elements:
+
+    - Plugin mechanism
+
+    - Python Source Reader
+
+* Quick overview of the Docutils architecture:
+
+  - How the components work together.
+
+  - High-level execution trace of a typical run.
+
+  - Test suite
+
+  (components.svg modified)
+
+* Document Tree
+
+* Using Docutils in your own app.
+
+  - The Docutils Publisher convenience functions.
+
+  - Examples of existing uses: Docutils front-end tools, wikis, etc.
+
+* Extending Docutils.
+
+  Docutils is a modular system, and components (Reader, Parser,
+  Writer) are specified at run time.  New versions of components can
+  be added, directly to the Docutils core or in your own application.
+
+  - Languages
+
+* Test-first development: the test suite
+
+  - Format of tests
+
+  - Adding tests, test modules, test packages
+
+* Detailed overview of Writer components
+
+  - Translator class: Visitor pattern, tree traversal, stack-based
+    context
+
+  - How to create a new Writer
+
+* The anatomy of a Transform
+
+* Extending reStructuredText:
+
+  - Directives
+
+  - Interpreted text roles
+
+* Write and test a directive, live.
