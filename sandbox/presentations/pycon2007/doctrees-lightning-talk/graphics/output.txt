@@ -1,0 +1,8 @@
+<div class="document">
+<p>This is some <em>emphasized</em> text.</p>
+<ol class="arabic simple">
+<li>First list item.</li>
+<li>Second list item.</li>
+<li>Third list item.</li>
+</ol>
+</div>
