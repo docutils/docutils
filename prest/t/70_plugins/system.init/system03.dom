@@ -8,11 +8,11 @@
                 Trying "perl" as canonical directive name.
         <paragraph>
             The following system directive should generate a system error.
-        <system_message level="1" line="11" source="test data" type="INFO">
+        <system_message level="1" line="1" source="perl directive at test data, line 10" type="INFO">
             <paragraph>
                 No directive entry for "system" in module "Text::Restructured::Directive".
                 Trying "system" as canonical directive name.
-        <system_message level="3" line="11" source="test data" type="ERROR">
+        <system_message level="3" line="1" source="perl directive at test data, line 10" type="ERROR">
             <paragraph>
                 Error in "system" directive:
                 Non-zero exit code: Errare humanum est at -e line 1.
@@ -20,7 +20,7 @@
         <paragraph>
             The following system directive should include the literal text of an
             error message.
-        <literal_block source="system directive at test data, line 17" xml:space="preserve">
+        <literal_block source="system directive at perl directive at test data, line 20, line 1" xml:space="preserve">
             Errare humanum est at -e line 1.
         <paragraph>
             A paragraph.

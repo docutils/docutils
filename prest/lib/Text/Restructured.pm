@@ -386,7 +386,7 @@ sub system_message : method {
     }
     my $line = $lineno ? ":$lineno" : '';
     print STDERR "$source$line ($ERROR_LEVELS{$level}/$level) $msg\n"
-	if $level >= $self->{opt}{D}{report} && $source ne 'test data';
+	if $level >= $self->{opt}{D}{report} && $source !~ 'test data';
     return $dom;
 }
 
