@@ -5,6 +5,60 @@ Release Notes
 
 .. contents::
 
+Release 0.3.25
+--------------
+* Fixed a problem with Makefile.PL.
+
+ReStructuredText parsing:
+
+* Don't write messages to STDERR for errors in directives in test
+  data.
+
+Writer 'html':
+
+* Fixed a problem with quote markes in "alt" image text.
+* Added "-W body-only" flag.
+
+Release 0.3.24
+--------------
+* Fixed problems with running with -T.
+* Fixed Makefile.
+
+Release 0.3.23
+--------------
+* Fixed the help to parse as reStructuredText.
+* Execute evals in Text::Restructured::Writer::Eval instead of Eval_::.
+* Initialize some of the opt variables to avoid warnings if not driven
+  by prest.
+
+ReStructuredText parsing:
+
+* Added "-D image-exts" flag so that each writer doesn't have to
+  support the functionality separately.
+
+Writer 'html':
+
+* Added "-W enum-list-prefixes" flag.
+* Documentation deprecates "-W image-exts".
+
+Writer 'latex':
+
+* Be more lenient about including graphics for files that aren't in
+  the current directory.
+* Fixed the processing of raw DOM elements to ignore those not
+  intended for latex.
+* Added a newline before admonitions so they're processed in vertical
+  mode.
+
+Writer 'toc':
+
+* Added "-W parent-role" flag.
+
+
+
+Release 0.3.22
+--------------
+
 Release 0.3.21
 --------------
 
