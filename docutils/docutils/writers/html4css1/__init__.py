@@ -17,7 +17,6 @@ __docformat__ = 'reStructuredText'
 import sys
 import os
 import os.path
-import codecs
 import time
 import re
 from types import ListType
@@ -159,9 +158,8 @@ class Writer(writers.Writer):
         self.output = self.apply_template()
 
     def apply_template(self):
-        template_file = codecs.open(
-            self.document.settings.template, 'r', 'utf-8')
-        template = template_file.read()
+        template_file = open(self.document.settings.template)
+        template = unicode(template_file.read(), 'utf-8')
         template_file.close()
         subs = self.interpolation_dict()
         return template % subs
