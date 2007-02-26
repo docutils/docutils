@@ -92,6 +92,8 @@ Changes Since 0.4
     elements.
   - Dropped all ``name`` attributes of ``a`` elements (``id`` is
     universally supported now).
+  - ``template.txt`` is now opened in text mode instead of binary mode
+    (to ensure Windows compatibility).
 
 * docutils/writers/html4css1/template.txt: Added to project.
 
