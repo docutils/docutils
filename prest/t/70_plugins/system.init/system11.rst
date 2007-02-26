@@ -3,12 +3,15 @@ System Test
 
 .. perl::
    # Remove insecure path for -T
-   my $perl_dir = $1 if $^X =~ m|(.*)/|;
-   $ENV{PATH} = "/bin:$perl_dir"; '';
+   $ENV{PATH} = '';
 
 The following system directive should generate a system message.
 
-.. system:: perl -e 'die "Errare humanum est"'
-   :literal:
+.. perl::
+
+   << "EOS"
+   .. system:: $^X -e 'die "Errare humanum est"'
+      :literal:
+   EOS
 
 A paragraph.
