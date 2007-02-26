@@ -17,6 +17,8 @@ It uses the following output defines:
                        is to be formatted (default is 'dash').
 -W body-attr=<text>    Specifies attributes to be passed to the <body>
                        tag (default is '').
+-W body-only[=<0|1>]   Only the contents of the HTML body tag are output.
+                       Default is 0 unless specified with no value.
 -W cloak-email-addresses[=<0|1>]
                        Enables cloaking of email addresses to keep
                        spambots from harvesting email addresses.
@@ -87,11 +89,12 @@ It uses the following output defines:
 
 sub BEGIN = {
     # My -W flags
-    use vars qw($attribution $body_attr $cloak_email_addresses $colspecs
-		$embed_stylesheet $enum_list_prefixes $field_limit
-		$footnote_backlinks $footnote_references $html_prolog
-		$image_exts $link_target $option_limit $stylesheet
-		$stylesheet2 $target_tag);
+   use vars qw($attribution $body_attr $body_only
+	       $cloak_email_addresses $colspecs $embed_stylesheet
+	       $enum_list_prefixes $field_limit $footnote_backlinks
+	       $footnote_references $html_prolog $image_exts
+	       $link_target $option_limit $stylesheet $stylesheet2
+	       $target_tag);
 
     # Static globals
     use vars qw($DOM);
@@ -154,6 +157,10 @@ sub Default {
 sub MakeAttrList {
     my ($attr) = @_;
     return '' unless defined $attr && %$attr;
+    # Quote "
+    grep ref($attr->{$_}) eq 'ARRAY' ?
+	grep(s/\"/&quot;/g, @{$attr->{$_}}) :
+	defined $attr->{$_} && $attr->{$_} =~ s/\"/&quot;/g, keys %$attr;
     return ' ' . join(' ', map($_ . (! defined $attr->{$_} ? '' :
 				     ref($attr->{$_}) eq 'ARRAY' ?
 				     qq(="@{$attr->{$_}}") :
@@ -1256,7 +1263,7 @@ EOS
 	push @{$head->[0]}, @HEAD if @HEAD;
 	# Handle the body.
         my $battr = $body_attr ? " $body_attr" : '';
-	my $body = [["<body$battr>\n"], ["</body>\n"]];
+	my $body = $body_only ? [] : [["<body$battr>\n"], ["</body>\n"]];
 	unshift @{$body->[1]}, $FOOTER if defined $FOOTER;
 	push @{$doc->[0]}, $body;
 	push @{$body->[0]}, $HEADER if defined $HEADER;
@@ -1290,7 +1297,7 @@ EOS
 	    push (@{$body->[0]}, $content->{val});
 	}
 
-	my @list = Flatten($doc);
+	my @list = $body_only ? Flatten($body) : Flatten($doc);
 	return join '',@list;
 
 	# This subroutine takes an array of items which may
