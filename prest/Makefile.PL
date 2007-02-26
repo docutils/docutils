@@ -13,7 +13,7 @@ use ExtUtils::MakeMaker;
 
 ## Note: The version number for the entire release is specified here and
 ## propagated.  Be sure to edit for every release.
-my $Version = "0.003024";
+my $Version = "0.003025";
 
 use vars qw($opt_f $opt_h $opt_k);
 my $OUTPUT_CFG_FILE = $opt_f = 'config.log';
@@ -311,6 +311,8 @@ sub MY::libscan {
 sub MY::postamble {
     return <<'MAKE_FRAG';
 FIXIN = $(PERLRUNINST) insertperl.pl
+
+$(INST_SCRIPT)/prest : blib/lib/Text/Restructured/PrestConfig.pm
 
 .PHONY: doc
 doc ::
