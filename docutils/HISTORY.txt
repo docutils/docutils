@@ -109,6 +109,7 @@ Changes Since 0.4
 
 * docutils/writers/latex2e/__init__.py:
 
+  - Put ensuremath around some latin1 chars.
   - Set ``usepackage[utf8x]{inputenc}`` for utf-8.
   - New option ``--use-bibtex=style,db1,db2``.
   - New option ``--reference-label`` to allow usage of LaTeX ref for 
