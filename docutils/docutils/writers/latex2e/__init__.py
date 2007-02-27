@@ -19,7 +19,7 @@ import re
 import string
 from types import ListType
 from docutils import frontend, nodes, languages, writers, utils
-
+from docutils.writers.newlatex2e import unicode_map
 
 class Writer(writers.Writer):
 
@@ -543,7 +543,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
     # Dummy settings might be taken from document settings
 
     latex_head = '\\documentclass[%s]{%s}\n'
-    encoding = '\\usepackage[%s]{inputenc}\n'
     linking = '\\usepackage[colorlinks=%s,linkcolor=%s,urlcolor=%s]{hyperref}\n'
     stylesheet = '\\input{%s}\n'
     # add a generated on day , machine by user using docutils version.
@@ -624,7 +623,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
             fontenc_header = '\\usepackage{ae}\n\\usepackage{aeguill}\n'
         else:
             fontenc_header = '\\usepackage[%s]{fontenc}\n' % (self.font_encoding,)
-        input_encoding = self.encoding % self.latex_encoding
+        if self.latex_encoding.startswith('utf8'):
+            input_encoding = '\\usepackage{ucs}\n\\usepackage[utf8x]{inputenc}\n'
+        else:
+            input_encoding = '\\usepackage[%s]{inputenc}\n' % self.latex_encoding
         if self.settings.graphicx_option == '':
             self.graphicx_package = '\\usepackage{graphicx}\n'
         elif self.settings.graphicx_option.lower() == 'auto':
@@ -788,6 +790,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
              }
         if tr.has_key(docutils_encoding.lower()):
             return tr[docutils_encoding.lower()]
+        # convert: latin-1 and utf-8 and similar things
         return docutils_encoding.replace("_", "").replace("-", "").lower()
 
     def language_label(self, docutil_label):
@@ -808,6 +811,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         u'\u2026' : '{\\dots}',
         u'\u2122' : '{\\texttrademark}',
         u'\u21d4' : '{$\\Leftrightarrow$}',
+        # greek alphabet ?
     }
 
     def unicode_to_latex(self,text):
