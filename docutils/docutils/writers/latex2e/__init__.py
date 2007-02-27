@@ -823,6 +823,17 @@ class LaTeXTranslator(nodes.NodeVisitor):
             text = text.replace(uchar,self.latex_equivalents[uchar])
         return text
 
+    def ensure_math(self, text):
+        if not self.__dict__.has_key('ensure_math_re'):
+            chars = {
+                # lnot,pm,twosuperior,threesuperior,mu,onesuperior,times,div
+                'latin1' : '\xac\xb1\xb2\xb3\xb5\xb9\xd7\xf7' ,
+                # also latin5 and latin9
+                }
+            self.ensure_math_re = re.compile('([%s])' % chars['latin1'])
+        text = self.ensure_math_re.sub(r'\\ensuremath{\1}', text)
+        return text
+
     def encode(self, text):
         """
         Encode special characters (``# $ % & ~ _ ^ \ { }``) in `text` & return
@@ -910,6 +921,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             text = text.replace(' ', '~')
         if self.latex_encoding != 'utf8':
             text = self.unicode_to_latex(text)
+            text = self.ensure_math(text)
         return text
 
     def attval(self, text,
