@@ -20,6 +20,175 @@
 
 Obtaining the Docutils Code
 ===========================
+The latest snapshot of the docutils code is located at sourcforge as a 
+tarball_. 
+
+Alternatively, you can get direct access to the subversion server as described
+on the docutils site in the `repository instructions`_.
+
+.. _tarball: http://docutils.sourceforge.net/docutils-snapshot.tgz
+
+.. _repository instructions: 
+  http://docutils.sourceforge.net/docs/dev/repository.html
+
+Organization of the Docutils Code
+=================================
+Within the docutils directory, the package for docutils is in a 
+subdirectory also called docutils. This directory contains both
+modules and subpackages.
+
+Modules in Docutils
+===================
+__init__.py
+-----------
+The __init__ module contains base classes and
+functions that are inherited in other modules 
+throughout the docutils package.
+
+core.py
+-------
+The core module contains the `Publisher` object.
+  
+Calling the ``publish_*`` convenience functions (or instantiating a
+`Publisher` object) with component names will result in default
+behavior.  For custom behavior (setting component options), create
+custom component objects first, and pass *them* to
+``publish_*``/`Publisher`.  See `The Docutils Publisher`_.
+
+.. _The Docutils Publisher: http://docutils.sf.net/docs/api/publisher.html
+  
+frontend.py
+-----------
+Command-line and common processing for Docutils front-end tools. 
+Includes classes which parse options and functions for proccessing those options.
+
+io.py
+-----
+I/O classes provide a uniform API for low-level input and output.  Subclasses
+will exist for a variety of input/output mechanisms.
+
+nodes.py
+--------
+Docutils document tree element class library. 
+
+Classes in CamelCase are abstract base classes or auxiliary classes. The one
+exception is `Text`, for a text (PCDATA) node; uppercase is used to
+differentiate from element classes.  Classes in lower_case_with_underscores
+are element classes, matching the XML element generic identifiers in the DTD_.
+
+The position of each node (the level at which it can occur) is significant and
+is represented by abstract base classes (`Root`, `Structural`, `Body`,
+`Inline`, etc.).  Certain transformations will be easier because we can use
+``isinstance(node, base_class)`` to determine the position of the node in the
+hierarchy.
+
+.. _DTD: http://docutils.sourceforge.net/docs/ref/docutils.dtd
+
+statemachine.py
+---------------
+A finite state machine specialized for regular-expression-based text 
+filters. This module is used by the reST parser, but is designed to 
+be of general utility.
+  
+urischemes.py
+-------------
+`schemes` is a dictionary with lowercase URI addressing schemes as
+keys and descriptions as values.
+  
+utils.py
+--------
+Miscellaneous utilities for the documentation utilities.
+
+examples.py
+-----------
+Contains practical examples of Docutils client code.
+
+Subpackages in Docutils
+=======================
+
+languages
+---------
+This package contains modules for language-dependent features of Docutils.
+
+parsers
+-------
+This package contains Docutils parser modules. 
+
+:null.py: A module containing a parser which does nothing. This is used
+	when transforming from a pickled document tree to any form.
+
+:rst: A subpackage containing the parser for reStructuredText. The 
+	reStructuredText parser is implemented as a state machine, examining
+	its input one line at a time. To understand how the parser works,
+	please first become familiar with the `docutils.statemachine` module,
+	then see the `states` module.
+
+readers
+-------
+This package contains Docutils Reader modules. Each reader module or 
+package must export a subclass also called 'Reader'. The three steps
+of a Reader's responsibility are defined: `scan()`, `parse()`, and 
+`transform()`. Call `read()` to process a document.
+
+transforms
+----------
+This package contains modules for standard tree transforms available
+to Docutils components. Tree transforms serve a variety of purposes:
+
+- To tie up certain syntax-specific "loose ends" that remain after the
+  initial parsing of the input plaintext. These transforms are used to
+  supplement a limited syntax.
+
+- To automate the internal linking of the document tree (hyperlink
+  references, footnote references, etc.).
+
+- To extract useful information from the document tree. These
+  transforms may be used to construct (for example) indexes and tables
+  of contents.
+
+Each transform is an optional step that a Docutils Reader may choose to
+perform on the parsed document, depending on the input context. A Docutils
+Reader may also perform Reader-specific transforms before or after performing
+these standard transforms.
+
+writers
+-------
+This package contains Docutils Writer modules.
+
+
+.. |---| unicode:: 8212 .. em-dash
+  :trim:
+
+..
+  Local Variables:
+  mode: indented-text
+  indent-tabs-mode: nil
+  sentence-end-double-space: t
+  fill-column: 78
+  End:
+=======
+============================
+ Docutils_ Code Introduction
+============================
+
+:Author: John Mulder 
+	w/ text borrowed from throughout the docutils docstrings.
+:Contact: johnmulder@gmail.com
+:Revision: $Revision$
+:Date: $Date$
+:Copyright: This document has been placed in the public domain.
+:Abstract: This is the introduction to the Docutils source code
+:Prerequisites: You will need some basic Python_ knowledge, as 
+  well as some understanding of ReStructuredText_.
+  
+.. _Docutils: http://docutils.sourceforge.net/
+.. _Python: http://www.python.org
+.. _ReStructuredText: 
+  http://docutils.sourceforge.net/docs/user/rst/quickstart.html
+.. contents::
+
+Obtaining the Docutils Code
+===========================
 
 The latest snapshot of the docutils code is located at sourcforge as a 
 tarball_. 
