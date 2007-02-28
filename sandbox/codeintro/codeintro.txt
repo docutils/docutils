@@ -5,8 +5,8 @@
 :Author: John Mulder 
 	w/ text borrowed from throughout the docutils docstrings.
 :Contact: johnmulder@gmail.com
-:Revision: $Revision:  $
-:Date: $Date: 2007-02-28 $
+:Revision: $Revision$
+:Date: $Date$
 :Copyright: This document has been placed in the public domain.
 :Abstract: This is the introduction to the Docutils source code
 :Prerequisites: You will need some basic Python_ knowledge, as 
