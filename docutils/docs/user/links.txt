@@ -34,7 +34,7 @@ the box.
 * For Blogs (Weblogs), please see the `FAQ entry about Blogs`_.
 
 * Pandoc_ is a document converter; it can read Markdown and (subsets
-  of) reStructuredText, HTML, and LaTeX, and it can write markdown,
+  of) reStructuredText, HTML, and LaTeX, and it can write Markdown,
   reStructuredText, HTML, LaTeX, RTF, DocBook XML, and S5.
 
 * restxsl_, by Michael Alyn Miller, lets you transform
