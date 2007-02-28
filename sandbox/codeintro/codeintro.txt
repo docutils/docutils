@@ -114,14 +114,14 @@ parsers
 -------
 This package contains Docutils parser modules. 
 
-:null.py: A module containing a parser which does nothing. This is used
-	when transforming from a pickled document tree to any form.
+  :null.py: A module containing a parser which does nothing. This is used
+            when transforming from a pickled document tree to any form.
 
-:rst: A subpackage containing the parser for reStructuredText. The 
-	reStructuredText parser is implemented as a state machine, examining
-	its input one line at a time. To understand how the parser works,
-	please first become familiar with the `docutils.statemachine` module,
-	then see the `states` module.
+  :rst:     A subpackage containing the parser for reStructuredText. The 
+            reStructuredText parser is implemented as a state machine, examining
+            its input one line at a time. To understand how the parser works,
+            please first become familiar with the `docutils.statemachine` module,
+            then see the `states` module.
 
 readers
 -------
@@ -146,14 +146,46 @@ to Docutils components. Tree transforms serve a variety of purposes:
   transforms may be used to construct (for example) indexes and tables
   of contents.
 
-Each transform is an optional step that a Docutils Reader may choose to
-perform on the parsed document, depending on the input context. A Docutils
-Reader may also perform Reader-specific transforms before or after performing
-these standard transforms.
+Each transform is an optional step that a Docutils Reader may choose
+to perform on the parsed document, depending on the input context. A
+Docutils Reader may also perform Reader-specific transforms before or
+after performing these standard transforms.
 
 writers
 -------
 This package contains Docutils Writer modules.
+
+Each writer module or package must export a subclass also called
+'Writer'. Each writer must support all standard node types listed in 
+`docutils.nodes.node_class_names`. The `write()` method is the main
+entry point.
+
+In the subpackages, each writer is implemented in the `__init__.py` files.
+
+Subpackages in Writer:
+
+	:html4css1: Simple HyperText Markup Language document tree 
+                Writer. The output conforms to the XHTML version
+                1.0 Transitional DTD (*almost* strict).  The output
+                contains a minimum of formatting information.  The
+                cascading style sheet "html4css1.css" is required
+                for proper viewing with a modern graphical browser. 
+
+	:latex2e: LaTeX2e document tree Writer.
+
+	:newlatex2e: LaTeX2e document tree Writer.
+
+	:pep_html: PEP HTML Writer.
+
+	:s5_html: S5/HTML Slideshow Writer.
+
+Modules in Writer:
+
+    :docutils_xml: Simple internal document tree Writer, writes Docutils XML.
+    
+    :null: A do-nothing Writer.
+    
+    :pseudoxml: Simple internal document tree Writer, writes indented pseudo-XML.
 
 
 .. |---| unicode:: 8212 .. em-dash
@@ -166,5 +198,4 @@ This package contains Docutils Writer modules.
   sentence-end-double-space: t
   fill-column: 78
   End:
-  
-  
+    
