@@ -146,9 +146,9 @@ and are stored deflated.
 ----------
 
 Fix for ElementTree getparent() and fixed zip DEFLATE.
-- ElementTree does not implement getparent().  Created wrapper
-  class to support this.
-- Use of ZipInfo instances prevented compression.  Remove it.
+  - ElementTree does not implement getparent().  Created wrapper
+    class to support this.
+  - Use of ZipInfo instances prevented compression.  Remove it.
 
 Removed references to IPShell
 
