@@ -135,7 +135,7 @@ Setting Up Your Subversion Client For Development
 `````````````````````````````````````````````````
 
 Before commiting changes to the repository, please ensure that the
-following lines are contained (and uncommented) in your
+following lines are contained (and uncommented) in your local
 ~/.subversion/config file, so that new files are added with the
 correct properties set::
 
