@@ -17,10 +17,8 @@ to Docutils components. Tree transforms serve a variety of purposes:
   transforms may be used to construct (for example) indexes and tables
   of contents.
 
-Each transform is an optional step that a Docutils Reader may choose to
-perform on the parsed document, depending on the input context. A Docutils
-Reader may also perform Reader-specific transforms before or after performing
-these standard transforms.
+Each transform is an optional step that a Docutils component may
+choose to perform on the parsed document.
 """
 
 __docformat__ = 'reStructuredText'
