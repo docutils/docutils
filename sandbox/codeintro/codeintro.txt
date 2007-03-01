@@ -34,29 +34,59 @@ on the docutils site in the `repository instructions`_.
 Docutils Flow of Execution
 ==========================
 The flow of a document through a docutils utility starts with a 
-`Publisher` object from `docutils/core.py`. The publisher then 
-calls the following:
+`Publisher` object from `docutils/core.py`. The publisher is used
+as follows:
 
-1. Reader in: `docutils/readers`
+1. Instantiate the publisher, which in turn instantiates the
+   following:
+   
+   a. The document tree (`docutils.nodes` objects).
+   b. A `docutils.readers.Reader` instance.
+   c. A `docutils.parsers.Parser` instance.
+   d. A `docutils.writers.Writer` instance.
+   
+2. Set Components:
 
-   a. Scan input text from file, string, or pre-proccessed document
-      tree. Uses a subclass of `Input` in:
-      `docutils/io.py`
-   b. Parse text into document tree. The parser chosen depends on
-      the document format of the input. Uses a parser in:
-      `docutils/parsers/`
+   If reader, parser, or writer objects are not passed to
+   the publisher, check for names to have been passed in
+   and use them instead. If neither are passed in, use defualts.
+   
+3. Process settings: ???
 
-2. Transformer in: `docutils/transforms/__init__.py`
-   a. Apply transforms to the document tree as
-      determined by the reader and writer. Uses transforms in:
-      `docutils/transforms/`
+4. Set Source:
 
-3. Writer in: `docutils/writer`
+5. Set Destination
 
-   a. Takes document tree as input.
-   b. Instanciates a subclass of `docutils.nodes.NodeVisitor` which
-      traverses the doctree using the `Node.walkabout()` function in:
-      `docutils/nodes/nodes.py`
+6. Publish:
+
+   A. set io:???
+   
+   B. Call the read function of the Reader
+   
+      i. Scan input text from file, string, or pre-proccessed
+         document tree. Uses a subclass of `Input` in:
+         `docutils/io.py`
+      ii. Parse text into document tree. The parser chosen
+          depends on the document format of the input. Uses
+          a parser in:
+          `docutils/parsers/`
+      iii. Return a document tree to the Publisher. The tree
+           is made up of nodes from:
+           `docutils/nodes.py`      
+  
+   C. Call the apply transforms function of the Transformer
+      in: `docutils/transforms/__init__.py`
+
+       Apply transforms to the document tree as determined by the
+       reader and writer. Uses transforms in:
+       `docutils/transforms/`
+   
+   D. Call the write function of the Writer in: `docutils/writer`
+
+      a. Takes document tree as input.
+      b. Instantiates a subclass of `docutils.nodes.NodeVisitor` which
+         traverses the doctree using the `Node.walkabout()` function in:
+         `docutils/nodes/nodes.py`
 
 Organization of the Docutils Code
 =================================
@@ -173,10 +203,8 @@ to Docutils components. Tree transforms serve a variety of purposes:
   transforms may be used to construct (for example) indexes and tables
   of contents.
 
-Each transform is an optional step that a Docutils Reader may choose
-to perform on the parsed document, depending on the input context. A
-Docutils Reader may also perform Reader-specific transforms before or
-after performing these standard transforms.
+Each transform is an optional step that a Docutils component may
+choose to perform on the parsed document.
 
 writers
 -------
