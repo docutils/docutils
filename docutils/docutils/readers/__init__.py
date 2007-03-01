@@ -20,8 +20,8 @@ class Reader(Component):
 
     Each reader module or package must export a subclass also called 'Reader'.
 
-    The three steps of a Reader's responsibility are defined: `scan()`,
-    `parse()`, and `transform()`. Call `read()` to process a document.
+    The two steps of a Reader's responsibility are `scan()` and
+    `parse()`.  Call `read()` to process a document.
     """
 
     component_type = 'reader'
