@@ -34,9 +34,30 @@ on the docutils site in the `repository instructions`_.
 Organization of the Docutils Code
 =================================
 Within the docutils directory, the package for docutils is in a 
-subdirectory also called docutils. This directory contains both
+subdirectory also called docutils. This contains both
 modules and subpackages.
 
+The flow of a document through a docutils utility, like the ones included
+in `docutils/tools` is as follows:
+
+1. Reader defined in: `docutils/readers`
+
+   a. input from file
+   b. parse text into document tree, using a parser in:
+      `docutils/parsers/`
+   c. apply transform(s) to the document tree as needed for the specific
+      input format, using transforms in:
+      `docutils/transforms/`
+
+2. Writer defined in: `docutils/writer`
+
+   a. takes document tree as input
+   b. using a subclass of `docutils.nodes.NodeVisitor`, perform
+      traverse of the doctree using the `Node.walkabout()` function in:
+      `docutils/nodes/nodes.py`
+      
+   
+   
 Modules in Docutils
 ===================
 __init__.py
@@ -162,6 +183,14 @@ entry point.
 
 In the subpackages, each writer is implemented in the `__init__.py` files.
 
+Modules in Writer:
+
+    :docutils_xml: Simple internal document tree Writer, writes Docutils XML.
+    
+    :null: A do-nothing Writer.
+    
+    :pseudoxml: Simple internal document tree Writer, writes indented pseudo-XML.
+
 Subpackages in Writer:
 
 	:html4css1: Simple HyperText Markup Language document tree 
@@ -178,14 +207,6 @@ Subpackages in Writer:
 	:pep_html: PEP HTML Writer.
 
 	:s5_html: S5/HTML Slideshow Writer.
-
-Modules in Writer:
-
-    :docutils_xml: Simple internal document tree Writer, writes Docutils XML.
-    
-    :null: A do-nothing Writer.
-    
-    :pseudoxml: Simple internal document tree Writer, writes indented pseudo-XML.
 
 
 .. |---| unicode:: 8212 .. em-dash
