@@ -1,5 +1,0 @@
-"Header row, column 1", "Header 2", "Header 3", "Header 4"
-"Body row 1, column 1", "Column 2", "Column 3", "Column 4"
-"Body row 2", "Cells may span columns.", ,
-"Body row 3", "Cells may span rows.", "- Table cells - contain - body elements.",
-"Body row 4",,,
