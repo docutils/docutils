@@ -15,7 +15,7 @@
    To get a checkout of the Docutils source tree (without the
    sandboxes), type ::
 
-       svn co http://svn.berlios.de/svnroot/repos/docutils/trunk/docutils
+       svn checkout http://svn.berlios.de/svnroot/repos/docutils/trunk/docutils
 
    If you are going to commit changes to the repository, please read
    the **whole document**, especially the section "`Information for
@@ -25,20 +25,25 @@ Docutils uses a Subversion_ repository located at ``svn.berlios.de``.
 Subversion is exhaustively documented in the `Subversion Book`_
 (svnbook).
 
-.. _Subversion: http://subversion.tigris.org/
-.. _Subversion Book: http://svnbook.red-bean.com/
+While Unix and Mac OS X users will probably prefer the standard
+Subversion command line interface, Windows user may want to try
+TortoiseSVN_, a convenient explorer extension.  The instructions apply
+analogously.
 
 Note that while the repository and the snapshots reside at BerliOS_,
 all other project data (web site, releases, mailing lists, trackers)
 is hosted by SourceForge.net_.
 
-.. _BerliOS: http://developer.berlios.de/
-.. _SourceForge.net: http://sourceforge.net/
-
 For the project policy on repository use (check-in requirements,
 branching, etc.), please see the `Docutils Project Policies`__.
 
 __ policies.html#subversion-repository
+
+.. _Subversion: http://subversion.tigris.org/
+.. _Subversion Book: http://svnbook.red-bean.com/
+.. _TortoiseSVN: http://tortoisesvn.tigris.org/
+.. _BerliOS: http://developer.berlios.de/
+.. _SourceForge.net: http://sourceforge.net/
 
 .. contents::
 
