@@ -109,6 +109,34 @@ If you changed your mind and want to use a different repository root,
     svn switch --relocate OLDROOT NEWROOT
 
 
+Workaround for Localized Dates
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If you have a non-english locale, you should perform all check-out and
+update operations with ``LC_TIME=C`` in the environment.  Either set
+it in your shell init file (e.g. ``~/.bashrc``), or (if you like
+localized dates in other programs) always do ::
+
+    env LC_TIME=C svn checkout ...
+    env LC_TIME=C svn update ...
+
+This applies both to anonymous and developer access.
+
+The reason is that subversion localizes its expansion of the ``Date``
+keyword, which may result in non-ASCII characters in other locales.
+Non-ASCII characters upset Python, even if they only appear in
+comments.  Strangely, Subversion always uses UTF-8 to format the date,
+ignoring locale settings.  So adding a UTF-8 encoding declaration to
+all Python sources would help.  However, we are not sure if we want to
+do this.
+
+(Arguably, the Right Thing would be for subversion to understand file
+encodings: convert file contents, localize keywords and expand an
+Encoding keyword to reflect the encoding used.  But for now,
+``LC_TIME=C`` fixes this by disabling the translation of the date [the
+current time zone is still respected].)
+
+
 Information for Developers
 --------------------------
 
@@ -145,34 +173,6 @@ correct properties set::
     *.png = svn:mime-type=image/png
     *.jpg = svn:mime-type=image/jpeg
     *.gif = svn:mime-type=image/gif
-
-
-Workaround for Localized Dates
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-If you have a non-english locale, you should perform all check-out and
-update operations with ``LC_TIME=C`` in the environment.  Either set
-it in your shell init file (e.g. ``~/.bashrc``), or (if you like
-localized dates in other programs) always do ::
-
-    env LC_TIME=C svn checkout ...
-    env LC_TIME=C svn update ...
-
-This applies both to anonymous and developer access.
-
-The reason is that subversion localizes its expansion of the ``Date``
-keyword, which may result in non-ASCII characters in other locales.
-Non-ASCII characters upset Python, even if they only appear in
-comments.  Strangely, Subversion always uses UTF-8 to format the date,
-ignoring locale settings.  So adding a UTF-8 encoding declaration to
-all Python sources would help.  However, we are not sure if we want to
-do this.
-
-(Arguably, the Right Thing would be for subversion to understand file
-encodings: convert file contents, localize keywords and expand an
-Encoding keyword to reflect the encoding used.  But for now,
-``LC_TIME=C`` fixes this by disabling the translation of the date [the
-current time zone is still respected].)
 
 
 Setting Up SSH Keys
