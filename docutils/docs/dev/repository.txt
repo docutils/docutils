@@ -10,7 +10,16 @@
 
 .. _Docutils: http://docutils.sourceforge.net/
 
-.. contents::
+.. admonition:: Quick Instructions
+
+   To get a checkout of the Docutils source tree (without the
+   sandboxes), type ::
+
+       svn co http://svn.berlios.de/svnroot/repos/docutils/trunk/docutils
+
+   If you are going to commit changes to the repository, please read
+   the **whole document**, especially the section "`Information for
+   Developers`_"!
 
 Docutils uses a Subversion_ repository located at ``svn.berlios.de``.
 Subversion is exhaustively documented in the `Subversion Book`_
@@ -19,120 +28,94 @@ Subversion is exhaustively documented in the `Subversion Book`_
 .. _Subversion: http://subversion.tigris.org/
 .. _Subversion Book: http://svnbook.red-bean.com/
 
-.. Note::
+Note that while the repository and the snapshots reside at BerliOS_,
+all other project data (web site, releases, mailing lists, trackers)
+is hosted by SourceForge.net_.
 
-   While the repository resides at BerliOS, all other project data
-   (web site, snapshots, releases, mailing lists, trackers) is hosted
-   at SourceForge.
+.. _BerliOS: http://developer.berlios.de/
+.. _SourceForge.net: http://sourceforge.net/
 
 For the project policy on repository use (check-in requirements,
 branching, etc.), please see the `Docutils Project Policies`__.
 
 __ policies.html#subversion-repository
 
+.. contents::
+
 
 Accessing the Repository
 ========================
 
+General Information
+-------------------
+
 Web Access
-----------
+~~~~~~~~~~
 
 The repository can be browsed and examined via the web at
 http://svn.berlios.de/viewcvs/docutils/.
 
 
-Anonymous Access
-----------------
+Repository Access Methods
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Anonymous (read-only) access is available at ``svn://svn.berlios.de/docutils/``.
+To get a checkout of the Docutils repository, first determine the root
+of the repository depending on your preferred protocol::
 
-To check out the current main source tree of Docutils, type ::
+    svn://svn.berlios.de/docutils                     (anonymous)
+    http://svn.berlios.de/svnroot/repos/docutils      (anonymous + developers)
+    https://svn.berlios.de/svnroot/repos/docutils     (anonymous + developers)
+    svn+ssh://<username>@svn.berlios.de/svnroot/repos/docutils
+                                                      (developers only)
 
-    svn checkout svn://svn.berlios.de/docutils/trunk/docutils
 
-To check out everything (main tree, sandboxes, and web site), type ::
+Checking Out the Repository
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    svn checkout svn://svn.berlios.de/docutils/trunk docutils
+To check out only the current main source tree of Docutils, type ::
+
+    svn checkout ROOT/trunk/docutils
+
+(Substitute your preferred repository root for ROOT.)  To check out
+everything (main tree, sandboxes, web site, and parallel projects),
+type ::
+
+    svn checkout ROOT/trunk docutils
 
 This will create a working copy of the whole trunk in a new directory
 called ``docutils``.
 
-If you cannot use the ``svn`` port, you can also use the HTTP access
-method by substituting "http://svn.berlios.de/svnroot/repos" for
-"svn://svn.berlios.de".
+Note that you probably do *not* want to check out the ROOT itself
+(without "/trunk"), because then you'd end up fetching the whole
+Docutils tree for every branch and tag over and over again.
 
-Note that you should *not* check out ``svn://svn.berlios.de/docutils``
-(without "trunk"), because then you'd end up fetching the whole
-Docutils tree for every branch and tag over and over again, wasting
-your and BerliOS's bandwidth.
-
-To update your working copy later on, cd into the working copy and
+To update your working copy later on, ``cd`` into the working copy and
 type ::
 
     svn update
 
 
-Workaround for Localized Dates
-------------------------------
+Switching the Repository Root
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you have a non-english locale, you should perform all check-out and update 
-operations with ``LC_TIME=C`` in the environment.  Either set it in your shell 
-init file, or (if you like localized dates in other programs) always do ::
+If you changed your mind and want to use a different repository root,
+``cd`` into your working copy and type::
 
-    env LC_TIME=C svn checkout ...
-    env LC_TIME=C svn update ...
-    
-This applies both to anonymous and developer access.
-
-The reason is that subversion localizes its expansion of the ``Date``
-keyword, which may result in non-ASCII characters in other locales.
-Non-ASCII characters upset Python, even if they only appear in comments.
-Strangely, Subversion always uses UTF-8 to format the date, ignoring 
-locale settings.  So adding a UTF-8 encoding declaration to all Python
-sources would help.  However, we are not sure we want to do this.
-
-Arguably, the Right Thing would be for subversion to understand file
-encodings: convert file contents, localize keywords and expand an Encoding
-keyword to reflect the encoding used.  But for now, ``LC_TIME=C`` fixes this
-by disabling the translation of the date (the current time zone is still
-respected).
+    svn switch --relocate OLDROOT NEWROOT
 
 
-Developer Access
-----------------
+Information for Developers
+--------------------------
 
-(Developers who had write-access for Docutils' CVS repository on
-SourceForge.net should `register at BerliOS`__ and send a message with
-their BerliOS user name to `Felix Wiemann <Felix.Wiemann@ososo.de>`_.)
-
-__ https://developer.berlios.de/account/register.php
-
-If you are a developer, you get read-write access via
-``svn+ssh://<user>@svn.berlios.de/svnroot/repos/docutils/``, where
-``<user>`` is your BerliOS user account name.  So to retrieve a
-working copy, type ::
-
-    svn checkout svn+ssh://<user>@svn.berlios.de/svnroot/repos/docutils/trunk \
-        docutils
-
-If you have a non-english locale, set ``LC_TIME=C`` as described above.
-
-If you previously had an anonymous working copy and gained developer
-access, you can switch the URL associated with your working copy with
-this command (executed in the root of your working copy) ::
-
-    svn switch --relocate svn://svn.berlios.de/docutils \
-        svn+ssh://<user>@svn.berlios.de/svnroot/repos/docutils
-
-(Again, ``<user>`` is your BerliOS user account name.)
-
-If you cannot use the ``ssh`` port, you can also use the HTTPS access
-method by substituting "https://svn.berlios.de" for
-"svn+ssh://svn.berlios.de".
+If you would like to have write access to the repository, register
+with SourceForge.net_ and BerliOS_, and send your SourceForge.net and
+BerliOS user names to `Felix Wiemann <Felix.Wiemann@ososo.de>`_.
+(Note that there may be a delay of several hours until you can commit
+changes to the repository.)
 
 
 Setting Up Your Subversion Client For Development
-`````````````````````````````````````````````````
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Before commiting changes to the repository, please ensure that the
 following lines are contained (and uncommented) in your local
@@ -159,53 +142,57 @@ correct properties set::
     *.gif = svn:mime-type=image/gif
 
 
-Setting Up SSH Access
-`````````````````````
+Workaround for Localized Dates
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-With a public & private key pair, you can access the shell and
-Subversion servers without having to enter your password.  There are
-two places to add your SSH public key on BerliOS: your web account and
-your shell account.
+If you have a non-english locale, you should perform all check-out and
+update operations with ``LC_TIME=C`` in the environment.  Either set
+it in your shell init file (e.g. ``~/.bashrc``), or (if you like
+localized dates in other programs) always do ::
 
-* Adding your SSH key to your BerliOS web account:
+    env LC_TIME=C svn checkout ...
+    env LC_TIME=C svn update ...
 
-  1. Log in on the web at https://developer.berlios.de/.  Create your
-     account first if necessary.  You should be taken to your "My
-     Personal Page" (https://developer.berlios.de/my/).
+This applies both to anonymous and developer access.
 
-  2. Choose "Account Options" from the menu below the top banner.
+The reason is that subversion localizes its expansion of the ``Date``
+keyword, which may result in non-ASCII characters in other locales.
+Non-ASCII characters upset Python, even if they only appear in
+comments.  Strangely, Subversion always uses UTF-8 to format the date,
+ignoring locale settings.  So adding a UTF-8 encoding declaration to
+all Python sources would help.  However, we are not sure if we want to
+do this.
 
-  3. At the bottom of the "Account Maintenance" page
-     (https://developer.berlios.de/account/) you'll find a "Shell
-     Account Information" section; click on "[Edit Keys]".
+(Arguably, the Right Thing would be for subversion to understand file
+encodings: convert file contents, localize keywords and expand an
+Encoding keyword to reflect the encoding used.  But for now,
+``LC_TIME=C`` fixes this by disabling the translation of the date [the
+current time zone is still respected].)
 
-  4. Copy and paste your SSH public key into the edit box on this page
-     (https://developer.berlios.de/account/editsshkeys.php).  Further
-     instructions are available on this page.
 
-* Adding your SSH key to your BerliOS shell account:
+Setting Up SSH Keys
+~~~~~~~~~~~~~~~~~~~
 
-  1. Log in to the BerliOS shell server::
+If you are a developer and you are using the svn+ssh access method
+instead of https or http, you may want to set a public & private key
+pair, so that you can access the shell and Subversion servers without
+having to enter your password.
 
-         ssh <user>@shell.berlios.de
+To do this, log in on BerliOS_ and copy and paste your SSH public key
+into the edit box on the "`CVS/SVN/SSH Shared Keys`__" page.  Further
+instructions are available on this page.
 
-     You'll be asked for your password, which you set when you created
-     your account.
+__ https://developer.berlios.de/account/editsshkeys.php
 
-  2. Create a .ssh directory in your home directory, and remove
-     permissions for group & other::
 
-         mkdir .ssh
-         chmod og-rwx .ssh
+Migration from SourceForge.net
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-     Exit the SSH session.
+Developers who had write-access for Docutils' CVS repository on
+SourceForge.net should `register with BerliOS`__ and send a message
+with their BerliOS user name to `Felix Wiemann`_.
 
-  3. Copy your public key to the .ssh directory on BerliOS::
-
-         scp .ssh/id_dsa.pub <user>@shell.berlios.de:.ssh/authorized_keys
-
-  Now you should be able to start an SSH session without needing your
-  password.
+__ https://developer.berlios.de/account/register.php
 
 
 Repository Layout
@@ -237,9 +224,10 @@ The following tree shows the repository layout::
         |-- sandbox/
         `-- web/
 
-``docutils/branches/`` and ``docutils/tags/`` contain (shallow) copies
-of the whole trunk.
-
 The main source tree lives at ``docutils/trunk/docutils/``, next to
 the sandboxes (``docutils/trunk/sandbox/``) and the web site files
 (``docutils/trunk/web/``).
+
+``docutils/branches/`` and ``docutils/tags/`` contain (shallow) copies
+of either the whole trunk or only the main source tree
+(``docutils/trunk/docutils``).
