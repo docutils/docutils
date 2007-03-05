@@ -1,0 +1,3 @@
+"""
+AAFigure directive for reStructuredText.
+"""
