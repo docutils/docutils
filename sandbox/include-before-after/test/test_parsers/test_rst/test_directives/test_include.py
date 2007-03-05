@@ -29,6 +29,7 @@ include10 = os.path.join(mydir, 'include10.txt')
 include10rel = DocutilsTestSupport.utils.relative_path(None, include10)
 include11 = os.path.join(mydir, 'include 11.txt')
 include11rel = DocutilsTestSupport.utils.relative_path(None, include11)
+include12 = os.path.join(mydir, 'include12.txt')
 utf_16_file = os.path.join(mydir, 'utf-16.csv')
 utf_16_file_rel = DocutilsTestSupport.utils.relative_path(None, utf_16_file)
 nonexistent = os.path.join(os.path.dirname(states.__file__),
@@ -390,6 +391,26 @@ Nonexistent standard include data file:
         <literal_block xml:space="preserve">
             .. include:: <nonexistent>
 """ % nonexistent_rel],
+["""\
+Include before-after Test
+=========================
+
+.. include:: %s
+   :after: .. start here
+   :until: .. stop here
+
+A paragraph.
+""" % include12,
+"""\
+<document source="test data">
+    <section ids="include-before-after-test" names="include\ before-after\ test">
+        <title>
+            Include before-after Test
+        <paragraph>
+            In include12.txt (after start here, before stop here)
+        <paragraph>
+            A paragraph.
+"""],
 ]
 
 
