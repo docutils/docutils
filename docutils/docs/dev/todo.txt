@@ -489,7 +489,13 @@ General
       compact-lists: no
 
   Is this even possible?  Should the criterion be the name of the
-  input file or the output file?
+  input file or the output file?  Alternative (more explicit) syntax::
+
+      [source_file index.txt]
+      ...
+
+      [dest_file index.html]
+      ...
 
 * The "validator" support added to OptionParser is very similar to
   "traits_" in SciPy_.  Perhaps something could be done with them?
@@ -1296,6 +1302,11 @@ when used in a document.
 
   - _`misc.settings`: Set any(?) Docutils runtime setting from within
     a document?  Needs much thought and discussion.
+
+    Security concerns need to be taken into account (it shouldn't be
+    possible to enable ``file_insertion_enabled`` from within a
+    document), and settings that only would have taken effect before
+    the directive (like ``tab-width``) shouldn't be accessible either.
 
   - _`misc.gather`: Gather (move, or copy) all instances of a specific
     element.  A generalization of the "endnotes" & "citations" ideas.
