@@ -271,13 +271,24 @@ class mstyle(math):
 
 class mover(math):
     nchildren = 2
-    reversed = True
+    def __init__(self, children=None, reversed=False):
+        self.reversed = reversed
+        math.__init__(self, children)
+
     def xml(self):
         if self.reversed:
             self.children.reverse()
             self.reversed = False
         return math.xml(self)
 
+class munder(math):
+    nchildren = 2
+
+class munderover(math):
+    nchildren = 3
+    def __init__(self, children=None):
+        math.__init__(self, children)
+        
 class mtext(math):
     nchildren = 0
     def __init__(self, text):
@@ -290,7 +301,7 @@ class mtext(math):
 over = {'tilde': '~',
         'hat': '^',
         'bar': '_',
-        'vec': u'\u20D7'}
+        'vec': u'\u2192'}
 
 Greek = {
     # Upper case greek letters:
@@ -306,12 +317,15 @@ special = {
     'subset': u'\u2282', 'propto': u'\u221d', 'geq': u'\u2265', 'ge': u'\u2265', 'sqsubset': u'\u228f', 'Join': u'\u2a1d', 'frown': u'\u2322', 'models': u'\u22a7', 'supset': u'\u2283', 'in': u'\u2208', 'doteq': u'\u2250', 'dashv': u'\u22a3', 'gg': u'\u226b', 'leq': u'\u2264', 'succ': u'\u227b', 'vdash': u'\u22a2', 'cong': u'\u2245', 'simeq': u'\u2243', 'subseteq': u'\u2286', 'parallel': u'\u2225', 'equiv': u'\u2261', 'ni': u'\u220b', 'le': u'\u2264', 'approx': u'\u2248', 'precsim': u'\u227e', 'sqsupset': u'\u2290', 'll': u'\u226a', 'sqsupseteq': u'\u2292', 'mid': u'\u2223', 'prec': u'\u227a', 'succsim': u'\u227f', 'bowtie': u'\u22c8', 'perp': u'\u27c2', 'sqsubseteq': u'\u2291', 'asymp': u'\u224d', 'smile': u'\u2323', 'supseteq': u'\u2287', 'sim': u'\u223c', 'neq': u'\u2260',
     # Arrow symbols:
     'searrow': u'\u2198', 'updownarrow': u'\u2195', 'Uparrow': u'\u21d1', 'longleftrightarrow': u'\u27f7', 'Leftarrow': u'\u21d0', 'longmapsto': u'\u27fc', 'Longleftarrow': u'\u27f8', 'nearrow': u'\u2197', 'hookleftarrow': u'\u21a9', 'downarrow': u'\u2193', 'Leftrightarrow': u'\u21d4', 'longrightarrow': u'\u27f6', 'rightharpoondown': u'\u21c1', 'longleftarrow': u'\u27f5', 'rightarrow': u'\u2192', 'Updownarrow': u'\u21d5', 'rightharpoonup': u'\u21c0', 'Longleftrightarrow': u'\u27fa', 'leftarrow': u'\u2190', 'mapsto': u'\u21a6', 'nwarrow': u'\u2196', 'uparrow': u'\u2191', 'leftharpoonup': u'\u21bc', 'leftharpoondown': u'\u21bd', 'Downarrow': u'\u21d3', 'leftrightarrow': u'\u2194', 'Longrightarrow': u'\u27f9', 'swarrow': u'\u2199', 'hookrightarrow': u'\u21aa', 'Rightarrow': u'\u21d2',
-    # Miscellaneous symbold:
+    # Miscellaneous symbols:
     'infty': u'\u221e', 'surd': u'\u221a', 'partial': u'\u2202', 'ddots': u'\u22f1', 'exists': u'\u2203', 'flat': u'\u266d', 'diamondsuit': u'\u2662', 'wp': u'\u2118', 'spadesuit': u'\u2660', 'Re': u'\u211c', 'vdots': u'\u22ee', 'aleph': u'\u2135', 'clubsuit': u'\u2663', 'sharp': u'\u266f', 'angle': u'\u2220', 'prime': u'\u2032', 'natural': u'\u266e', 'ell': u'\u2113', 'neg': u'\xac', 'top': u'\u22a4', 'nabla': u'\u2207', 'bot': u'\u22a5', 'heartsuit': u'\u2661', 'cdots': u'\u22ef', 'Im': u'\u2111', 'forall': u'\u2200', 'imath': u'\u0131', 'hbar': u'\u210f', 'emptyset': u'\u2205',
     # Variable-sized symbols:
     'bigotimes': u'\u2a02', 'coprod': u'\u2210', 'int': u'\u222b', 'sum': u'\u2211', 'bigodot': u'\u2a00', 'bigcup': u'\u22c3', 'biguplus': u'\u2a04', 'bigcap': u'\u22c2', 'bigoplus': u'\u2a01', 'oint': u'\u222e', 'bigvee': u'\u22c1', 'bigwedge': u'\u22c0', 'prod': u'\u220f',
     # Braces:
     'langle': u'\u2329', 'rangle': u'\u232A'}
+
+sumintprod = ''.join([special[symbol] for symbol in
+                      ['sum', 'int', 'oint', 'prod']])
 
 functions = ['arccos', 'arcsin', 'arctan', 'arg', 'cos',  'cosh',
              'cot',    'coth',   'csc',    'deg', 'det',  'dim',
@@ -385,7 +399,9 @@ def parse_latex_math(string, inline=True):
         elif c == '_':
             child = node.delete_child()
             if isinstance(child, msup):
-                sub = msubsup(child.children[0:2], reversed=True)
+                sub = msubsup(child.children, reversed=True)
+            elif isinstance(child, mo) and child.data in sumintprod:
+                sub = munder(child)
             else:
                 sub = msub(child)
             node.append(sub)
@@ -393,7 +409,12 @@ def parse_latex_math(string, inline=True):
         elif c == '^':
             child = node.delete_child()
             if isinstance(child, msub):
-                sup = msubsup(child.children[0:2])
+                sup = msubsup(child.children)
+            elif isinstance(child, mo) and child.data in sumintprod:
+                sup = mover(child)
+            elif (isinstance(child, munder) and
+                  child.children[0].data in sumintprod):
+                sup = munderover(child.children)
             else:
                 sup = msup(child)
             node.append(sup)
@@ -488,7 +509,9 @@ def handle_keyword(name, node, string):
             raise SyntaxError('Missing left-brace!')
         fenced = mfenced(par)
         node.append(fenced)
-        node = fenced
+        row = mrow()
+        fenced.append(row)
+        node = row
         skip += len(par)
     elif name == 'right':
         for par in [')', ']', '|', '\\}', '\\rangle', '.']:
@@ -496,6 +519,7 @@ def handle_keyword(name, node, string):
                 break
         else:
             raise SyntaxError('Missing right-brace!')
+        node = node.close()
         node.closepar = par
         node = node.close()
         skip += len(par)
@@ -527,7 +551,7 @@ def handle_keyword(name, node, string):
     else:
         chr = over.get(name)
         if chr is not None:
-            ovr = mover(mo(chr))
+            ovr = mover(mo(chr), reversed=True)
             node.append(ovr)
             node = ovr
         else:
