@@ -633,6 +633,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.in_header = False
         self.in_footer = False
         self.in_table_of_contents = False
+        self.footnote_dict = {}
+        self.footnote_found = False
 
     def add_header_footer(self, content):
         if len(self.header_content) > 0 or len(self.footer_content) > 0:
@@ -1057,6 +1059,56 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def depart_figure(self, node):
         #self.trace_depart_node(node)
+        pass
+
+    def visit_footnote(self, node):
+        #ipshell('At visit_footnote')
+        ids = node.attributes['ids']
+        el1 = None
+        for id in ids:
+            if id in self.footnote_dict:
+                el1 = self.footnote_dict[id]
+                break
+        if el1 is not None:
+            el2 = etree.SubElement(el1, 'text:note-body')
+            self.paragraph_style_stack.append('rststyle-footnote')
+            self.set_current_element(el2)
+            self.footnote_found = True
+        else:
+            self.footnote_found = False
+
+    def depart_footnote(self, node):
+        #ipshell('At depart_footnote')
+        if self.footnote_found:
+            self.current_element.text = ''
+            self.set_to_parent()
+            self.set_to_parent()
+
+    def visit_footnote_reference(self, node):
+        #ipshell('At visit_footnote_reference')
+        id = node.attributes['refid']
+        el1 = self.append_child('text:note', attrib={
+            'text:id': '%s' % (id, ),
+            'text:note-class': 'footnote',
+            })
+        child = node.children[0]
+        label = child.astext()
+        el2 = etree.SubElement(el1, 'text:note-citation', attrib={
+            'text:label': label,
+            })
+        el2.text = label
+        self.footnote_dict[id] = el1
+
+    def depart_footnote_reference(self, node):
+        #ipshell('At depart_footnote_reference')
+        pass
+
+    def visit_label(self, node):
+        #ipshell('At visit_label')
+        pass
+
+    def depart_label(self, node):
+        #ipshell('At depart_label')
         pass
 
     def visit_generated(self, node):

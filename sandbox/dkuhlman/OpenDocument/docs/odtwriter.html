@@ -236,6 +236,7 @@ This software is subject to the provisions of the MIT License
 </li>
 <li><a class="reference" href="#the-container-directive" id="id18">5.3&nbsp;&nbsp;&nbsp;The container directive</a></li>
 <li><a class="reference" href="#the-table-directive" id="id19">5.4&nbsp;&nbsp;&nbsp;The table directive</a></li>
+<li><a class="reference" href="#footnotes" id="id20">5.5&nbsp;&nbsp;&nbsp;Footnotes</a></li>
 </ul>
 </li>
 </ul>
@@ -439,6 +440,9 @@ $ rst2odt.py --stylesheet-path=mystyles.odt test2.txt test2.odt
 <dt>rststyle-codeblock</dt>
 <dd>Literal code blocks -- A block of example code.  Derived from
 the <tt class="docutils literal"><span class="pre">Preformatted</span> <span class="pre">Text</span></tt> style in <tt class="docutils literal"><span class="pre">oowriter</span></tt>.</dd>
+<dt>rststyle-footnote</dt>
+<dd>The style for footnotes.  This style affects the footnote
+content, not the footnote reference in the body of the document.</dd>
 <dt>rststyle-heading{1|2|3|4|5}</dt>
 <dd>Headings (sub-titles).  Five levels of sub-headings are
 provided: rststyle-heading1 through rststyle-heading5.</dd>
@@ -667,6 +671,12 @@ Example:</p>
 <p>The above will insert the title &quot;A little test table&quot; at the top of the
 table.  You can modify the appearance of the title by modifying the
 paragraph style <tt class="docutils literal"><span class="pre">rststyle-table-title</span></tt>.</p>
+</div>
+<div class="section" id="footnotes">
+<h2><a class="toc-backref" href="#id20">5.5&nbsp;&nbsp;&nbsp;Footnotes</a></h2>
+<p>Footnotes are supported.</p>
+<p>There is an additional style <tt class="docutils literal"><span class="pre">rststyle-footnote</span></tt> for footnotes.
+See <a class="reference" href="#paragraph-styles">Paragraph styles</a>.</p>
 <!-- Configuration for Emacs -->
 <!-- Local Variables:
 mode: indented-text

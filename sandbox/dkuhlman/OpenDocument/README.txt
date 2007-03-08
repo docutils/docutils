@@ -38,6 +38,12 @@ For more information on Docutils, see: http://docutils.sourceforge.net/
 History
 =======
 
+2007/03/08 -- Version 1.0d
+--------------------------
+
+Added support for footnotes.
+
+
 2007/02/21 -- Version 1.0c
 --------------------------
 

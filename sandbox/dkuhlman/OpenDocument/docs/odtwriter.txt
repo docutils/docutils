@@ -226,6 +226,10 @@ rststyle-codeblock
     Literal code blocks -- A block of example code.  Derived from
     the ``Preformatted Text`` style in ``oowriter``.
 
+rststyle-footnote
+    The style for footnotes.  This style affects the footnote
+    content, not the footnote reference in the body of the document.
+
 rststyle-heading{1|2|3|4|5}
     Headings (sub-titles).  Five levels of sub-headings are
     provided: rststyle-heading1 through rststyle-heading5.
@@ -507,6 +511,15 @@ Example::
 The above will insert the title "A little test table" at the top of the
 table.  You can modify the appearance of the title by modifying the
 paragraph style ``rststyle-table-title``.
+
+
+Footnotes
+---------
+
+Footnotes are supported.
+
+There is an additional style ``rststyle-footnote`` for footnotes.
+See `Paragraph styles`_.
 
 
 
