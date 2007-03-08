@@ -1308,6 +1308,9 @@ when used in a document.
     document), and settings that only would have taken effect before
     the directive (like ``tab-width``) shouldn't be accessible either.
 
+    See this sub-thread:
+    <http://thread.gmane.org/gmane.text.docutils.user/3620/focus=3649>
+
   - _`misc.gather`: Gather (move, or copy) all instances of a specific
     element.  A generalization of the "endnotes" & "citations" ideas.
 
