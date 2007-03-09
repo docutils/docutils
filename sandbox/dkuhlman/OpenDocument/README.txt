@@ -38,6 +38,12 @@ For more information on Docutils, see: http://docutils.sourceforge.net/
 History
 =======
 
+2007/03/09 -- Version 1.0d
+--------------------------
+
+Fix for non-utf-8 character sets, e.g. Russian.
+
+
 2007/03/08 -- Version 1.0d
 --------------------------
 

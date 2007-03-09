@@ -21,6 +21,7 @@ import StringIO
 import docutils
 from docutils import frontend, nodes, utils, writers, languages
 from docutils.parsers import rst
+import inspect
 
 
 WhichElementTree = ''
@@ -312,6 +313,33 @@ class SyntaxHighlight(rst.Directive):
 
 rst.directives.register_directive('sourcecode', SyntaxHighlight)
 
+#
+# Register directives defined in a module named "odtwriter_plugins".
+#
+def load_plugins():
+    plugin_mod = None
+    count = 0
+    try:
+        import odtwriter_plugins
+        plugin_mod = odtwriter_plugins
+    except ImportError, e:
+        pass
+    if plugin_mod is None:
+        return count
+    klasses = inspect.getmembers(plugin_mod, inspect.isclass)
+    for klass in klasses:
+        if register_plugin(*klass):
+            count += 1
+    return count
+
+def register_plugin(name, klass):
+    plugin_name = getattr(klass, 'plugin_name', None)
+    if plugin_name is not None:
+        rst.directives.register_directive(plugin_name, klass)
+
+load_plugins()
+
+
 class Writer(writers.Writer):
 
     supported = ('html', 'html4css1', 'xhtml')
@@ -498,12 +526,9 @@ class Writer(writers.Writer):
             if source is None:
                 continue
             try:
-                #print 'zipping -- source: "%s"  destination: "%s"' % (
-                #    source, destination, )
-                #ipshell('(store_embedded_files) #1')
+                # encode/decode
                 destination1 = destination.decode('latin-1').encode('utf-8')
                 zfile.write(source, destination1, zipfile.ZIP_STORED)
-                #ipshell('(store_embedded_files) #2')
             except OSError, e:
                 print "Error: Can't open file %s." % (source, )
 
@@ -757,7 +782,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             #isinstance(node.parent, docutils.nodes.definition):
             return
         text = node.astext()
-        #print '(visit_Text) text:', text.encode('utf-8'), node.parent.__class__
         # Are we in mixed content?  If so, add the text to the
         #   etree tail of the previous sibling element.
         if len(self.current_element.getchildren()) > 0:
@@ -1862,6 +1886,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 'text:style-name': 'rststyle-heading%d' % section_level,
                 })
             text = node.astext()
+            # encode/decode
             #el1.text = text.decode('latin-1').encode('utf-8')
             el1.text = self.encode(text)
         elif isinstance(node.parent, docutils.nodes.document):
@@ -1870,7 +1895,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 'text:style-name': 'rststyle-heading1',
                 })
             text = node.astext()
-            text = text.decode('latin-1').encode('utf-8')
+            # encode/decode
+            #text = text.decode('latin-1').encode('utf-8')
             el1.text = text
             self.title = text
 
