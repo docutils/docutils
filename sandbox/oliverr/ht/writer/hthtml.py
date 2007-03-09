@@ -22,7 +22,7 @@ import os
 from docutils import nodes
 from docutils import writers
 from docutils.writers.html4css1 import frontend, HTMLTranslator, utils
-
+from docutils.transforms import writer_aux
 
 class Writer(writers.Writer):
 
@@ -69,11 +69,21 @@ class Writer(writers.Writer):
           ('Omit the XML declaration.  Use with caution.',
           ['--no-xml-declaration'], {'dest': 'xml_declaration', 'default': 1,
                                      'action': 'store_false'}),
+         ('Specify the maximum width (in characters) for one-column field '
+          'names.  Longer field names will span an entire row of the table '
+          'used to render the field list.  Default is 14 characters.  '
+          'Use 0 for "no limit".',
+          ['--field-name-limit'],
+          {'default': 14, 'metavar': '<level>',
+           'validator': frontend.validate_nonnegative_int}),
          ('Scramble email addresses to confuse harvesters.  '
           'For example, "abc@example.org" will become '
           '``<a href="mailto:%61%62%63%40...">abc at example dot org</a>``.',
           ['--cloak-email-addresses'],
-          {'action': 'store_true', 'validator': frontend.validate_boolean}),))
+          {'action': 'store_true', 'validator': frontend.validate_boolean}),
+         ('Disable compact simple field lists.',
+          ['--no-compact-field-lists'],
+          {'dest': 'compact_field_lists', 'action': 'store_false'}),))
 
     relative_path_settings = ('stylesheet_path',)
 
@@ -82,6 +92,9 @@ class Writer(writers.Writer):
     def __init__(self):
         writers.Writer.__init__(self)
         self.translator_class = HTTranslator
+
+    def get_transforms(self):
+        return writers.Writer.get_transforms(self) + [writer_aux.Admonitions]
 
     def translate(self):
         visitor = self.translator_class(self.document)
