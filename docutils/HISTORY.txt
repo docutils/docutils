@@ -149,6 +149,11 @@ Changes Since 0.4
 * docs/howto/security.txt: "Deploying Docutils Securely", added to
   project.
 
+* tools/buildhtml.py:
+
+  -- Added ``ignore`` setting to exclude a list of shell patterns
+     (default: ``.svn:CVS``).
+
 * tools/editors/emacs/rst.el:
 
   - Changed license to "GPL".

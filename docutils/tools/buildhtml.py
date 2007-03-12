@@ -25,9 +25,10 @@ import sys
 import os
 import os.path
 import copy
+from fnmatch import fnmatch
 import docutils
 from docutils import ApplicationError
-from docutils import core, frontend
+from docutils import core, frontend, utils
 from docutils.parsers import rst
 from docutils.readers import standalone, pep
 from docutils.writers import html4css1, pep_html
@@ -61,6 +62,13 @@ class SettingsSpec(docutils.SettingsSpec):
           'more than once to specify multiple directories.',
           ['--prune'],
           {'metavar': '<directory>', 'action': 'append',
+           'validator': frontend.validate_colon_separated_string_list}),
+         ('Recursively ignore files or directories matching any of the given '
+          'wildcard (shell globbing) patterns (separated by colons).  '
+          'Default: ".svn:CVS"',
+          ['--ignore'],
+          {'metavar': '<patterns>', 'action': 'append',
+           'default': ['.svn', 'CVS'],
            'validator': frontend.validate_colon_separated_string_list}),
          ('Work silently (no progress messages).  Independent of "--quiet".',
           ['--silent'],
@@ -185,6 +193,13 @@ class Builder:
         if not self.initial_settings.silent:
             print >>sys.stderr, '/// Processing directory:', directory
             sys.stderr.flush()
+        # settings.ignore grows many duplicate entries as we recurse
+        # if we add patterns in config files or on the command line.
+        for pattern in utils.uniq(settings.ignore):
+            for i in range(len(names) - 1, -1, -1):
+                if fnmatch(names[i], pattern):
+                    # Modify in place!
+                    del names[i]
         prune = 0
         for name in names:
             if name.endswith('.txt'):
