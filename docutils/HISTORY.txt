@@ -71,6 +71,11 @@ Changes Since 0.4
     object-oriented directive interface.  Errors are now (mostly)
     thrown using the new ``DirectiveError`` class.
 
+* docutils/parsers/directives/misc.py:
+
+  - Added ``start-after`` and ``end-before`` options to ``include``
+    directive.
+
 * docutils/transforms/universal.py:
 
   - Added ``StripClassesAndElements`` transform to remove from the
