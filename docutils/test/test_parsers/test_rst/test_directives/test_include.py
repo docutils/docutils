@@ -29,6 +29,9 @@ include10 = os.path.join(mydir, 'include10.txt')
 include10rel = DocutilsTestSupport.utils.relative_path(None, include10)
 include11 = os.path.join(mydir, 'include 11.txt')
 include11rel = DocutilsTestSupport.utils.relative_path(None, include11)
+include12 = os.path.join(mydir, 'include12.txt')
+include13 = os.path.join(mydir, 'include13.txt')
+include13rel = DocutilsTestSupport.utils.relative_path(None, include13)
 utf_16_file = os.path.join(mydir, 'utf-16.csv')
 utf_16_file_rel = DocutilsTestSupport.utils.relative_path(None, utf_16_file)
 nonexistent = os.path.join(os.path.dirname(states.__file__),
@@ -390,6 +393,103 @@ Nonexistent standard include data file:
         <literal_block xml:space="preserve">
             .. include:: <nonexistent>
 """ % nonexistent_rel],
+["""\
+Include start-after/end-before Test
+
+.. include:: %s
+   :start-after: .. start here
+   :end-before: .. stop here
+
+A paragraph.
+""" % include12,
+"""\
+<document source="test data">
+    <paragraph>
+        Include start-after/end-before Test
+    <paragraph>
+        In include12.txt (after "start here", before "stop here")
+    <paragraph>
+        A paragraph.
+"""],
+["""\
+Include start-after/end-before Test, single option variant
+
+.. include:: %s
+   :end-before: .. start here
+
+.. include:: %s
+   :start-after: .. stop here
+
+A paragraph.
+""" % (include12, include12),
+"""\
+<document source="test data">
+    <paragraph>
+        Include start-after/end-before Test, single option variant
+    <paragraph>
+        In include12.txt (but before "start here")
+    <paragraph>
+        In include12.txt (after "stop here")
+    <paragraph>
+        A paragraph.
+"""],
+["""\
+Include start-after/end-before multi-line test.
+
+.. include:: %s
+   :start-after: From: me
+                 To: you
+   :end-before: -------
+                -- mork of ork
+
+.. include:: %s
+   :start-after: From: me
+                 To: you
+   :end-before:
+       -------
+         -- mork of ork
+
+A paragraph.
+""" % (include13, include13),
+"""\
+<document source="test data">
+    <paragraph>
+        Include start-after/end-before multi-line test.
+    <system_message level="4" line="3" source="test data" type="SEVERE">
+        <paragraph>
+            Problem with "end-before" option of "include" directive:
+            Text not found.
+        <literal_block xml:space="preserve">
+            .. include:: %s
+               :start-after: From: me
+                             To: you
+               :end-before: -------
+                            -- mork of ork
+    <paragraph>
+        In include13.txt (between header and signature)
+    <paragraph>
+        A paragraph.
+""" % include13],
+["""\
+Error handling test; "end-before" error handling tested in previous test.
+
+.. include:: %s
+   :start-after: bad string
+   :end-before: mork of ork
+""" % include13,
+"""\
+<document source="test data">
+    <paragraph>
+        Error handling test; "end-before" error handling tested in previous test.
+    <system_message level="4" line="3" source="test data" type="SEVERE">
+        <paragraph>
+            Problem with "start-after" option of "include" directive:
+            Text not found.
+        <literal_block xml:space="preserve">
+            .. include:: %s
+               :start-after: bad string
+               :end-before: mork of ork
+""" % include13],
 ]
 
 
