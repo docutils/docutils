@@ -280,7 +280,7 @@ class IndirectHyperlinks(Transform):
               'Indirect hyperlink target %s refers to target "%s", %s.'
               % (naming, target['refname'], explanation), base_node=target)
         msgid = self.document.set_id(msg)
-        for ref in uniq(reflist):
+        for ref in utils.uniq(reflist):
             prb = nodes.problematic(
                   ref.rawsource, ref.rawsource, refid=msgid)
             prbid = self.document.set_id(prb)
@@ -894,11 +894,3 @@ class DanglingReferencesVisitor(nodes.SparseNodeVisitor):
             node.resolved = 1
 
     visit_footnote_reference = visit_citation_reference = visit_reference
-
-
-def uniq(L):
-     r = []
-     for item in L:
-         if not item in r:
-             r.append(item)
-     return r

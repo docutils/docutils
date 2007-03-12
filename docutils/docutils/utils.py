@@ -514,6 +514,13 @@ if hasattr(unicodedata, 'east_asian_width'):
 else:
     column_width = len
 
+def uniq(L):
+     r = []
+     for item in L:
+         if not item in r:
+             r.append(item)
+     return r
+
 
 class DependencyList:
 
