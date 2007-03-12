@@ -7,7 +7,7 @@ Odtwriter for Docutils
     http://www.rexx.com/~dkuhlman
 
 :revision: 1.0d
-:date: Feb. 19, 2007
+:date: March 12, 2007
 
 :copyright: Copyright (c) 2006 Dave Kuhlman.  All Rights Reserved.
     This software is subject to the provisions of the MIT License
@@ -44,8 +44,11 @@ How to Install It
 Where to get it
 ---------------
 
-The distribution file is here: `source distribution of 
-ODF/ODT writer for Docutils <odtwriter-1.0d.tar.gz>`_.
+The source distribution of 
+ODF/ODT writer for Docutils 
+is here:
+`http://www.rexx.com/~dkuhlman/odtwriter-1.0d.tar.gz
+<http://www.rexx.com/~dkuhlman/odtwriter-1.0d.tar.gz>`_.
 
 ``odtwriter`` is also available via Subversion from
 the Docutils repository under
@@ -216,29 +219,28 @@ using ``oowriter``, and then use your copy with the
 Paragraph styles
 ~~~~~~~~~~~~~~~~
 
+rststyle-attribution
+    The style for attributions, for example, the attribution in a
+    ``.. epigraph::`` directive.  Derived from
+    ``rststyle-blockquote``.
+
 rststyle-blockindent
     An indented block.
 
 rststyle-blockquote
     A block quote.
 
-rststyle-codeblock
-    Literal code blocks -- A block of example code.  Derived from
-    the ``Preformatted Text`` style in ``oowriter``.
-
-rststyle-footnote
-    The style for footnotes.  This style affects the footnote
-    content, not the footnote reference in the body of the document.
-
-rststyle-heading{1|2|3|4|5}
-    Headings (sub-titles).  Five levels of sub-headings are
-    provided: rststyle-heading1 through rststyle-heading5.
-
 rststyle-bodyindent
     An indented block.
 
 rststyle-bulletitem
     An item in an bullet list.
+
+rststyle-codeblock
+    Literal code blocks -- A block of example code.  Created with
+    double colon ("::") followed by an indented block or with the
+    ``.. parsed-literal::`` directive.  Derived from the
+    ``Preformatted Text`` style in ``oowriter``.
 
 rststyle-enumitem
     An item in an enumerated list.
@@ -250,9 +252,22 @@ rststyle-footer
     (``--date`` and ``--time``), and view source link
     (``--source-link`` and ``--source-url=URL``).
 
+rststyle-epigraph
+    The style for epigraphs, for example, the body of an
+    ``.. epigraph::`` directive.  Derived from
+    ``rststyle-blockquote``.
+
+rststyle-footnote
+    The style for footnotes.  This style affects the footnote
+    content, not the footnote reference in the body of the document.
+
 rststyle-header
     The style for headers.  The header content originates from the
     ``..header::`` directive.
+
+rststyle-heading{1|2|3|4|5}
+    Headings (sub-titles).  Five levels of sub-headings are
+    provided: rststyle-heading1 through rststyle-heading5.
 
 rststyle-horizontalline
     A horizontal line, e.g. used for transitions.
@@ -262,7 +277,13 @@ rststyle-table-title
     directive`_.
 
 rststyle-textbody
-    Normal text.  The style for paragraphs.
+    Normal text.  The style for paragraphs.  Derived from the ``Text
+    body`` style in ``oowriter``.
+
+rststyle-lineblock
+    The style for line blocks created either with the ``.. line-block::``
+    directive or with vertical bars.  Derived from the
+    ``rststyle-textbody`` style.
 
 
 Character styles

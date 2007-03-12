@@ -38,6 +38,23 @@ For more information on Docutils, see: http://docutils.sourceforge.net/
 History
 =======
 
+2007/03/12 -- Version 1.0d
+--------------------------
+
+Added support for epigraph and the associated attribution.  Added
+and fixed styles for epigraph, attribution, and block-quote.
+
+Added support for line-block.  Added style for line blocks.
+
+Added support for substitution (replace directive).  Actually, the
+substitution is done before odtwriter starts walking the tree. 
+But, I added the visit/depart methods so as to eliminate the error
+messages.
+
+Fixed visit_Text so that it can add *multiple* text nodes that are
+all children of the same node.
+
+
 2007/03/09 -- Version 1.0d
 --------------------------
 

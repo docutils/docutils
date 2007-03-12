@@ -786,9 +786,15 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         #   etree tail of the previous sibling element.
         if len(self.current_element.getchildren()) > 0:
             #print '*** (visit_Text) 1. text: %s' % text
-            self.current_element.getchildren()[-1].tail = text
+            if self.current_element.getchildren()[-1].tail:
+                self.current_element.getchildren()[-1].tail += text
+            else:
+                self.current_element.getchildren()[-1].tail = text
         else:
-            self.current_element.text = text
+            if self.current_element.text:
+                self.current_element.text += text
+            else:
+                self.current_element.text = text
 
     def depart_Text(self, node):
         pass
@@ -800,6 +806,16 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def depart_address(self, node):
         self.set_to_parent()
+
+    def visit_attribution(self, node):
+        #ipshell('At visit_attribution')
+        el = self.append_child('text:p', attrib={
+            'text:style-name': 'rststyle-attribution'})
+        el.text = node.astext()
+
+    def depart_attribution(self, node):
+        #ipshell('At depart_attribution')
+        pass
 
     def visit_author(self, node):
         #self.trace_visit_node(node)
@@ -830,7 +846,10 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_block_quote(self, node):
         #ipshell('At visit_block_quote')
-        self.paragraph_style_stack.append('rststyle-blockquote')
+        if 'epigraph' in node.attributes['classes']:
+            self.paragraph_style_stack.append('rststyle-epigraph')
+        else:
+            self.paragraph_style_stack.append('rststyle-blockquote')
 
     def depart_block_quote(self, node):
         self.paragraph_style_stack.pop()
@@ -1370,7 +1389,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         s1 = node.astext()
         lines = s1.split('\n')
         el = self.append_child('text:p', attrib={
-            'text:style-name': 'rststyle-textbody'})
+            'text:style-name': 'rststyle-lineblock'})
         el.text = lines[0]
         first = True
         if len(lines) > 1:
@@ -1632,6 +1651,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.set_current_element(el)
 
     def depart_paragraph(self, node):
+        #ipshell('At depart_paragraph')
         #self.trace_depart_node(node)
         if self.omit:
             return
@@ -1706,6 +1726,14 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def depart_strong(self, node):
         self.set_to_parent()
+
+    def visit_substitution_definition(self, node):
+        #ipshell('At visit_substitution_definition')
+        pass
+
+    def depart_substitution_definition(self, node):
+        #ipshell('At depart_substitution_definition')
+        pass
 
     def visit_system_message(self, node):
         #print '(visit_system_message) node: %s' % (node.astext(), )
