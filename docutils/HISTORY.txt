@@ -74,7 +74,7 @@ Changes Since 0.4
 * docutils/parsers/directives/misc.py:
 
   - Added ``start-after`` and ``end-before`` options to ``include``
-    directive.
+    directive; thanks to Stefan Rank.
 
 * docutils/transforms/universal.py:
 
