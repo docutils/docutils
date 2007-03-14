@@ -18,10 +18,11 @@ from xml.dom import minidom
 import time
 import re
 import StringIO
+import inspect
+import imp
 import docutils
 from docutils import frontend, nodes, utils, writers, languages
 from docutils.parsers import rst
-import inspect
 
 
 WhichElementTree = ''
@@ -320,8 +321,11 @@ def load_plugins():
     plugin_mod = None
     count = 0
     try:
-        import odtwriter_plugins
-        plugin_mod = odtwriter_plugins
+        name = 'odtwriter_plugins'
+        fp, pathname, description = imp.find_module(name)
+        plugin_mod = imp.load_module(name, fp, pathname, description)
+        #import odtwriter_plugins
+        #plugin_mod = odtwriter_plugins
     except ImportError, e:
         pass
     if plugin_mod is None:
@@ -346,6 +350,7 @@ class Writer(writers.Writer):
     """Formats this writer supports."""
 
     default_stylesheet = 'styles.odt'
+##    default_plugins_name = 'docutils_plugins'
 
     default_stylesheet_path = utils.relative_path(
         os.path.join(os.getcwd(), 'dummy'),
@@ -461,6 +466,10 @@ class Writer(writers.Writer):
             ['--add-syntax-highlighting'],
             {'default': False, 'action': 'store_true',
                 'validator': frontend.validate_boolean}),
+##        ('Specify a plugins/directives module (without .py). '
+##            'Default: "%s"' % default_plugins_name,
+##            ['--plugins-module-name'],
+##            {'default': default_plugins_name}),
         ))
 
     settings_defaults = {
@@ -641,6 +650,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             )
         self.styles_tree = etree.ElementTree(element=root)
         self.paragraph_style_stack = ['rststyle-textbody', ]
+        self.list_style_stack = []
         self.omit = False
         self.table_count = 0
         self.column_count = ord('A') - 1
@@ -657,6 +667,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.footer_content = []
         self.in_header = False
         self.in_footer = False
+        self.blockstyle = ''
         self.in_table_of_contents = False
         self.footnote_dict = {}
         self.footnote_found = False
@@ -848,11 +859,17 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         #ipshell('At visit_block_quote')
         if 'epigraph' in node.attributes['classes']:
             self.paragraph_style_stack.append('rststyle-epigraph')
+            self.blockstyle = 'rststyle-epigraph'
+        elif 'highlights' in node.attributes['classes']:
+            self.paragraph_style_stack.append('rststyle-highlights')
+            self.blockstyle = 'rststyle-highlights'
         else:
             self.paragraph_style_stack.append('rststyle-blockquote')
+            self.blockstyle = 'rststyle-blockquote'
 
     def depart_block_quote(self, node):
         self.paragraph_style_stack.pop()
+        self.blockstyle = ''
 
     def visit_bullet_list(self, node):
         #ipshell('At visit_bullet_list')
@@ -862,22 +879,38 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 el = SubElement(self.current_element, 'text:list', attrib={
                     'text:style-name': 'rststyle-tocenumlist',
                     })
-                self.paragraph_style_stack.append('rststyle-enumitem')
+                self.list_style_stack.append('rststyle-enumitem')
             else:
                 el = SubElement(self.current_element, 'text:list', attrib={
                     'text:style-name': 'rststyle-tocbulletlist',
                     })
-                self.paragraph_style_stack.append('rststyle-bulletitem')
+                self.list_style_stack.append('rststyle-bulletitem')
         else:
-            el = SubElement(self.current_element, 'text:list', attrib={
-                'text:style-name': 'rststyle-bulletlist',
-                })
-            self.paragraph_style_stack.append('rststyle-bulletitem')
+            if self.blockstyle == 'rststyle-blockquote':
+                el = SubElement(self.current_element, 'text:list', attrib={
+                    'text:style-name': 'rststyle-blockquote-bulletlist',
+                    })
+                self.list_style_stack.append('rststyle-blockquote-bulletitem')
+            elif self.blockstyle == 'rststyle-highlights':
+                el = SubElement(self.current_element, 'text:list', attrib={
+                    'text:style-name': 'rststyle-highlights-bulletlist',
+                    })
+                self.list_style_stack.append('rststyle-highlights-bulletitem')
+            elif self.blockstyle == 'rststyle-epigraph':
+                el = SubElement(self.current_element, 'text:list', attrib={
+                    'text:style-name': 'rststyle-epigraph-bulletlist',
+                    })
+                self.list_style_stack.append('rststyle-epigraph-bulletitem')
+            else:
+                el = SubElement(self.current_element, 'text:list', attrib={
+                    'text:style-name': 'rststyle-bulletlist',
+                    })
+                self.list_style_stack.append('rststyle-bulletitem')
         self.set_current_element(el)
 
     def depart_bullet_list(self, node):
         self.set_to_parent()
-        self.paragraph_style_stack.pop()
+        self.list_style_stack.pop()
 
     def visit_caption(self, node):
         raise nodes.SkipChildren()
@@ -1006,24 +1039,41 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.set_to_parent()
 
     def visit_enumerated_list(self, node):
-        #ipshell('At visit_enumerated_list')
-        el = SubElement(self.current_element, 'text:list', attrib={
-            'text:style-name': 'rststyle-enumlist',
-            })
+        if self.blockstyle == 'rststyle-blockquote':
+            el = SubElement(self.current_element, 'text:list', attrib={
+                'text:style-name': 'rststyle-blockquote-enumlist',
+                })
+            self.list_style_stack.append('rststyle-blockquote-enumitem')
+        elif self.blockstyle == 'rststyle-highlights':
+            el = SubElement(self.current_element, 'text:list', attrib={
+                'text:style-name': 'rststyle-highlights-enumlist',
+                })
+            self.list_style_stack.append('rststyle-highlights-enumitem')
+        elif self.blockstyle == 'rststyle-epigraph':
+            el = SubElement(self.current_element, 'text:list', attrib={
+                'text:style-name': 'rststyle-epigraph-enumlist',
+                })
+            self.list_style_stack.append('rststyle-epigraph-enumitem')
+        else:
+            el = SubElement(self.current_element, 'text:list', attrib={
+                'text:style-name': 'rststyle-enumlist',
+                })
+            self.list_style_stack.append('rststyle-enumitem')
         self.set_current_element(el)
-        self.paragraph_style_stack.append('rststyle-enumitem')
 
     def depart_enumerated_list(self, node):
         self.set_to_parent()
-        self.paragraph_style_stack.pop()
+        self.list_style_stack.pop()
 
     def visit_list_item(self, node):
         #ipshell('At visit_list_item')
-        el = SubElement(self.current_element, 'text:list-item')
+        el = self.append_child('text:list-item')
+        self.paragraph_style_stack.append(self.list_style_stack[-1])
         self.set_current_element(el)
 
     def depart_list_item(self, node):
         self.set_to_parent()
+        self.paragraph_style_stack.pop()
 
     def visit_header(self, node):
         #ipshell('At visit_header')

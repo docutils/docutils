@@ -6,7 +6,7 @@
 <meta name="generator" content="Docutils 0.5: http://docutils.sourceforge.net/" />
 <title>Odtwriter for Docutils</title>
 <meta name="author" content="Dave Kuhlman" />
-<meta name="date" content="March 12, 2007" />
+<meta name="date" content="March 13, 2007" />
 <meta name="copyright" content="Copyright (c) 2006 Dave Kuhlman.  All Rights Reserved. This software is subject to the provisions of the MIT License http://www.opensource.org/licenses/mit-license.php." />
 <style type="text/css">
 
@@ -193,7 +193,7 @@ tt.docutils {
 <tr><th class="docinfo-name">Revision:</th>
 <td>1.0d</td></tr>
 <tr><th class="docinfo-name">Date:</th>
-<td>March 12, 2007</td></tr>
+<td>March 13, 2007</td></tr>
 <tr><th class="docinfo-name">Copyright:</th>
 <td>Copyright (c) 2006 Dave Kuhlman.  All Rights Reserved.
 This software is subject to the provisions of the MIT License
@@ -443,6 +443,10 @@ $ rst2odt.py --stylesheet-path=mystyles.odt test2.txt test2.odt
 <dd>An indented block.</dd>
 <dt>rststyle-blockquote</dt>
 <dd>A block quote.</dd>
+<dt>rststyle-blockquote-bulletitem</dt>
+<dd>The style for bullet list items inside block quote.</dd>
+<dt>rststyle-blockquote-enumitem</dt>
+<dd>The style for enumerated list items inside block quote.</dd>
 <dt>rststyle-bodyindent</dt>
 <dd>An indented block.</dd>
 <dt>rststyle-bulletitem</dt>
@@ -454,16 +458,20 @@ double colon (&quot;::&quot;) followed by an indented block or with the
 <tt class="docutils literal"><span class="pre">Preformatted</span> <span class="pre">Text</span></tt> style in <tt class="docutils literal"><span class="pre">oowriter</span></tt>.</dd>
 <dt>rststyle-enumitem</dt>
 <dd>An item in an enumerated list.</dd>
+<dt>rststyle-epigraph</dt>
+<dd>The style for epigraphs, for example, the body of an
+<tt class="docutils literal"><span class="pre">..</span> <span class="pre">epigraph::</span></tt> directive.  Derived from
+<tt class="docutils literal"><span class="pre">rststyle-blockquote</span></tt>.</dd>
+<dt>rststyle-epigraph-bulletitem</dt>
+<dd>The style for bullet list items inside epigraphs.</dd>
+<dt>rststyle-epigraph-enumitem</dt>
+<dd>The style for enumerated list items inside epigraphs.</dd>
 <dt>rststyle-footer</dt>
 <dd>The style for footers.  The footer content originates from the
 <tt class="docutils literal"><span class="pre">..footer::</span></tt> directive and in response to the command line
 flags for generator (<tt class="docutils literal"><span class="pre">--generator</span></tt>), date/time generated
 (<tt class="docutils literal"><span class="pre">--date</span></tt> and <tt class="docutils literal"><span class="pre">--time</span></tt>), and view source link
 (<tt class="docutils literal"><span class="pre">--source-link</span></tt> and <tt class="docutils literal"><span class="pre">--source-url=URL</span></tt>).</dd>
-<dt>rststyle-epigraph</dt>
-<dd>The style for epigraphs, for example, the body of an
-<tt class="docutils literal"><span class="pre">..</span> <span class="pre">epigraph::</span></tt> directive.  Derived from
-<tt class="docutils literal"><span class="pre">rststyle-blockquote</span></tt>.</dd>
 <dt>rststyle-footnote</dt>
 <dd>The style for footnotes.  This style affects the footnote
 content, not the footnote reference in the body of the document.</dd>
@@ -473,6 +481,14 @@ content, not the footnote reference in the body of the document.</dd>
 <dt>rststyle-heading{1|2|3|4|5}</dt>
 <dd>Headings (sub-titles).  Five levels of sub-headings are
 provided: rststyle-heading1 through rststyle-heading5.</dd>
+<dt>rststyle-highlights</dt>
+<dd>The style for highlightss, for example, the body of an
+<tt class="docutils literal"><span class="pre">..</span> <span class="pre">highlights::</span></tt> directive.  Derived from
+<tt class="docutils literal"><span class="pre">rststyle-blockquote</span></tt>.</dd>
+<dt>rststyle-highlights-bulletitem</dt>
+<dd>The style for bullet list items inside highlights.</dd>
+<dt>rststyle-highlights-enumitem</dt>
+<dd>The style for enumerated list items inside highlights.</dd>
 <dt>rststyle-horizontalline</dt>
 <dd>A horizontal line, e.g. used for transitions.</dd>
 <dt>rststyle-table-title</dt>
@@ -524,12 +540,28 @@ including integers, floats, hex numbers, and octal numbers.</dd>
 <dl class="docutils">
 <dt>rststyle-bulletlist</dt>
 <dd>Bullet lists (but not in the table of contents)</dd>
+<dt>rststyle-blockquote-bulletlist</dt>
+<dd>Bullet lists in block quotes.</dd>
+<dt>rststyle-blockquote-enumlist</dt>
+<dd>Enumerated lists in block quotes.</dd>
 <dt>rststyle-enumlist</dt>
 <dd>Enumerated lists (but not in the table of contents)</dd>
+<dt>rststyle-epigraph-bulletlist</dt>
+<dd>Bullet lists in epigraphs.  See the <tt class="docutils literal"><span class="pre">..</span> <span class="pre">epigraph::</span></tt>
+directive.</dd>
+<dt>rststyle-epigraph-enumlist</dt>
+<dd>Enumerated lists in epigraphs.  See the <tt class="docutils literal"><span class="pre">..</span> <span class="pre">epigraph::</span></tt>
+directive.</dd>
+<dt>rststyle-highlights-bulletlist</dt>
+<dd>Bullet lists in highlights blocks.  See the <tt class="docutils literal"><span class="pre">..</span> <span class="pre">highlights::</span></tt>
+directive.</dd>
+<dt>rststyle-highlights-enumlist</dt>
+<dd>Enumerated lists in highlights blocks.  See the <tt class="docutils literal"><span class="pre">..</span> <span class="pre">highlights::</span></tt>
+directive.</dd>
 <dt>rststyle-tocbulletlist</dt>
-<dd>Lists in the table of contents when section numbering is off</dd>
+<dd>Lists in the table of contents when section numbering is off.</dd>
 <dt>rststyle-tocenumlist</dt>
-<dd>Lists in the table of contents when section numbering is on</dd>
+<dd>Lists in the table of contents when section numbering is on.</dd>
 </dl>
 </div>
 <div class="section" id="table-styles">
