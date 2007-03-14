@@ -311,6 +311,7 @@ colormodel = "blackwhite";
  * - rtf                generate Rich Text Format (rtf - MS Word, WordPerfect)
  *                      This code can be suched into MS Word or PowerPoint
  *                      for a pretty version of the code
+ * - rst                generate reStructuredText
  */
 language = "enscript";
 
@@ -1494,6 +1495,7 @@ namerules
   /\.awk$/				awk;
   /\.sh$/				sh;
   /\.vba$/				vba;
+  /\.php$/				php;
   /^.*$/				passthrough;
 }
 
@@ -4666,6 +4668,200 @@ state postscript
     language_print ($0);
   }
 }
+
+
+/**
+ * Name: php
+ * Description: PHP programming language.
+ * Author: Andrew Wooster <wooster_spam at@ nextthing.org>
+ *
+ * For this to be able to highlight HTML outside of the PHP code it looks 
+ * like html.st would need to be modified.
+ */
+
+state php_dqstring
+{
+  /\\\\./ {
+    language_print ($0);
+  }
+  /\"/ {
+    language_print ($0);
+    return;
+  }
+  LANGUAGE_SPECIALS {
+    language_print ($0);
+  }
+}
+
+state php_sqstring
+{
+  /\\\\./ {
+    language_print ($0);
+  }
+  /[\']/ {
+    language_print ($0);
+    return;
+  }
+  LANGUAGE_SPECIALS {
+    language_print ($0);
+  }
+}
+
+state php_bqstring
+{
+  /\\\\./ {
+    language_print ($0);
+  }
+  /\`/ {
+    language_print ($0);
+    return;
+  }
+  LANGUAGE_SPECIALS {
+    language_print ($0);
+  }
+}
+
+
+state php_code
+{
+  /* Comments. */
+  /\/\*/ {
+    comment_face (true);
+    language_print ($0);
+    call (c_comment);
+    comment_face (false);
+  }
+  /(#|\/\/).*$/ {
+    comment_face (true);
+    language_print ($0);
+    comment_face (false);
+  }
+  
+  /* Ignore escaped quote marks. */
+  /*
+  /\\\"/ {
+    language_print ($0);
+  }
+  /\\\'/ {
+    language_print ($0);
+  }
+  /\\\`/ {
+    language_print ($0);
+  }
+  */
+  
+  /* PHP strings. */
+  /\"/ {
+    string_face (true);
+    language_print ($0);
+    call (php_dqstring);
+    string_face (false);
+  }
+  /[\']/ {
+    string_face (true);
+    language_print ($0);
+    call (php_sqstring);
+    string_face (false);
+  }
+  /`/ {
+    string_face (true);
+    language_print ($0);
+    call (php_bqstring);
+    string_face (false);
+  }
+  
+  /* Variables */
+  /[$][A-Za-z_][A-Za-z_0-9]*/ {
+    variable_name_face (true);
+    language_print ($0);
+    variable_name_face (false);
+  }
+  
+  /* Function definitions. */
+  /\b(function)([ \t]+)([A-Za-z\$_][A-Za-z\$_0-9]*)([ \t]*\()/ {
+    keyword_face (true);
+    language_print ($1);
+    keyword_face (false);
+    
+    language_print ($2);
+    
+    function_name_face (true);
+    language_print ($3);
+    function_name_face (false);
+    
+    language_print ($4);
+  }
+  
+  /* Keywords
+        (build-re '(
+      __CLASS__ __FILE__ __FUNCTION__ __LINE__ __METHOD__ 
+      __autoload __call __construct __destruct __get __set __sleep 
+      __toString __wakeup abstract and array as break case catch 
+      cfunction class clone const continue declare default die do 
+      echo else elseif empty enddeclare endfor endforeach endif 
+      endswitch endwhile eval exception exit extends false final 
+      float for foreach function global if implements include 
+      include_once int interface isset list new object 
+      old_function or parent php_user_filter print private 
+      protected public require require_once return static string 
+      switch throw true try unset use var while xor 
+      ))
+   */
+  /\b(__(CLASS__|F(ILE__|UNCTION__)|LINE__|METHOD__|autoload|c(all|onstruct)\
+|destruct|get|s(et|leep)|toString|wakeup)\
+|a(bstract|nd|rray|s)|break\
+|c(a(se|tch)|function|l(ass|one)|on(st|tinue))|d(e(clare|fault)|ie|o)\
+|e(cho|lse(|if)|mpty|nd(declare|for(|each)|if|switch|while)|val\
+|x(ception|it|tends))\
+|f(alse|inal|loat|or(|each)|unction)|global\
+|i(f|mplements|n(clude(|_once)|t(|erface))|sset)|list|new\
+|o(bject|ld_function|r)\
+|p(arent|hp_user_filter|r(i(nt|vate)|otected)|ublic)\
+|re(quire(|_once)|turn)|s(t(atic|ring)|witch)|t(hrow|r(ue|y))\
+|u(nset|se)|var|while|xor)\b/ {
+    keyword_face (true);
+    language_print ($0);
+    keyword_face (false);
+  }
+  
+  /\?>/ {
+    keyword_face (true);
+    language_print ($0);
+    keyword_face (false);
+    return;
+  }
+  
+  LANGUAGE_SPECIALS {
+    language_print ($0);
+  }
+}
+
+php_has_php_tags = 0;
+
+
+state php
+{
+  BEGIN {
+    header ();
+  }
+  
+  END {
+    trailer ();
+  }
+  
+  /<\?(php)?/ {
+    keyword_face (true);
+    language_print ($0);
+    keyword_face (false);
+    call (php_code);
+    php_has_php_tags = 1;
+  }
+  
+  LANGUAGE_SPECIALS {
+    language_print ($0);
+  }
+}
+
 
 
 /**
