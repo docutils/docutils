@@ -7,7 +7,7 @@ Odtwriter for Docutils
     http://www.rexx.com/~dkuhlman
 
 :revision: 1.0d
-:date: March 12, 2007
+:date: March 13, 2007
 
 :copyright: Copyright (c) 2006 Dave Kuhlman.  All Rights Reserved.
     This software is subject to the provisions of the MIT License
@@ -230,6 +230,12 @@ rststyle-blockindent
 rststyle-blockquote
     A block quote.
 
+rststyle-blockquote-bulletitem
+    The style for bullet list items inside block quote.
+
+rststyle-blockquote-enumitem
+    The style for enumerated list items inside block quote.
+
 rststyle-bodyindent
     An indented block.
 
@@ -245,17 +251,23 @@ rststyle-codeblock
 rststyle-enumitem
     An item in an enumerated list.
 
+rststyle-epigraph
+    The style for epigraphs, for example, the body of an
+    ``.. epigraph::`` directive.  Derived from
+    ``rststyle-blockquote``.
+
+rststyle-epigraph-bulletitem
+    The style for bullet list items inside epigraphs.
+
+rststyle-epigraph-enumitem
+    The style for enumerated list items inside epigraphs.
+
 rststyle-footer
     The style for footers.  The footer content originates from the
     ``..footer::`` directive and in response to the command line
     flags for generator (``--generator``), date/time generated
     (``--date`` and ``--time``), and view source link
     (``--source-link`` and ``--source-url=URL``).
-
-rststyle-epigraph
-    The style for epigraphs, for example, the body of an
-    ``.. epigraph::`` directive.  Derived from
-    ``rststyle-blockquote``.
 
 rststyle-footnote
     The style for footnotes.  This style affects the footnote
@@ -268,6 +280,17 @@ rststyle-header
 rststyle-heading{1|2|3|4|5}
     Headings (sub-titles).  Five levels of sub-headings are
     provided: rststyle-heading1 through rststyle-heading5.
+
+rststyle-highlights
+    The style for highlightss, for example, the body of an
+    ``.. highlights::`` directive.  Derived from
+    ``rststyle-blockquote``.
+
+rststyle-highlights-bulletitem
+    The style for bullet list items inside highlights.
+
+rststyle-highlights-enumitem
+    The style for enumerated list items inside highlights.
 
 rststyle-horizontalline
     A horizontal line, e.g. used for transitions.
@@ -335,14 +358,38 @@ List styles
 rststyle-bulletlist
     Bullet lists (but not in the table of contents)
 
+rststyle-blockquote-bulletlist
+    Bullet lists in block quotes.
+
+rststyle-blockquote-enumlist
+    Enumerated lists in block quotes.
+
 rststyle-enumlist
     Enumerated lists (but not in the table of contents)
 
+rststyle-epigraph-bulletlist
+    Bullet lists in epigraphs.  See the ``.. epigraph::``
+    directive.
+
+rststyle-epigraph-enumlist
+    Enumerated lists in epigraphs.  See the ``.. epigraph::``
+    directive.
+
+rststyle-highlights-bulletlist
+    Bullet lists in highlights blocks.  See the ``.. highlights::``
+    directive.
+
+rststyle-highlights-enumlist
+    Enumerated lists in highlights blocks.  See the ``.. highlights::``
+    directive.
+
 rststyle-tocbulletlist
-    Lists in the table of contents when section numbering is off
+    Lists in the table of contents when section numbering is off.
 
 rststyle-tocenumlist
-    Lists in the table of contents when section numbering is on
+    Lists in the table of contents when section numbering is on.
+
+
 
 
 

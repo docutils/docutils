@@ -38,6 +38,15 @@ For more information on Docutils, see: http://docutils.sourceforge.net/
 History
 =======
 
+2007/03/14 -- Version 1.0d
+--------------------------
+
+Added support for highlights block/directive.
+
+Fixed styles in highlights, epigraphs, and blockquotes.  Bullet and
+enum lists now have their own styles in each of these block types.
+
+
 2007/03/12 -- Version 1.0d
 --------------------------
 
