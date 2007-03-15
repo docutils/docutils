@@ -1,0 +1,165 @@
+
+
+PEP: 9999
+Title: User Plugins for Docutils Readers/Writers
+Version: $Revision$
+Last-Modified: $Date$
+Author: Dave Kuhlman <dkuhlman@rexx.com>
+Status: Active
+Type: Informational
+Content-Type: text/x-rst
+Created: 12-Mar-2007
+Post-History: 15-Mar-2007
+
+
+Abstract
+========
+
+This proposal describes a standard for support of user directives for
+Docutils readers/writers.  It is intended that Docutils writers (for
+example, rst2html.py, rst2latex.py, rst2odt.py, etc.) would attempt to
+load and register directives as described by this proposal.
+
+
+Rationale
+=========
+
+Directives are a Docutils extension mechanism.  In particular,
+directives enable us to implement a class that adds nodes to the
+document node tree as that tree is being constructed and before the
+tree is processed by a writer.
+
+This proposal describes a way to make directive implementations
+automatically loadable.  It is intended that this mechanism would
+enable users to add their own directives and even to provide different
+directive implementations for different documents.
+
+
+The Proposal
+============
+
+The following items describe this proposal:
+
+- Each writer will attempt to import a directive module containing
+  directive implementation classes.
+
+- The default directive module name is ``docutils_directives.py``.
+  Each writer will also implement a command line flag
+  ``--plugins-module-name`` that will enable users to override the
+  default directive module name.  But see note on problems with using
+  a command line flag below.
+
+- All classes in the directive module which contain the class variable
+  ``directive_name`` will be treated as directive implementation
+  classes.  Each such class will be registered as a directive using
+  the value of ``directive_name`` as the directive name.
+
+- Each directive implementation class must follow the directive class
+  implementation guidelines given at
+  `Creating reStructuredText Directives`_.
+
+Notes:
+
+- I'd like users to be able to pass in the name of the plugins module
+  on the command line.  However, this seems difficult, because the
+  writer class, which has access to configuration variables, does not
+  get control until after the node tree has been constructed, and it
+  is during construction of the node tree that plugins (directive
+  classes) are run.
+
+- The mechanism described above registers all classes in a module, if
+  the class has the class variable named ``directive_name``.
+  Therefore, that module could "include" directive implementations
+  from other modules using the following::
+
+      from my_other_module import *
+
+  or::
+
+      from my_other_module import MyDirectiveClass1, MyDirectiveClass2
+
+- This proposal supports the implementation of directives by *classes*
+  but not by *functions*.  But, I can't find any documentation on
+  implementing a directive as a function, anyway.  See:
+  `Creating reStructuredText Directives`_.
+
+
+Alternatives
+============
+
+Felix Wiemann also has a proposal for extensions.  That proposal seems
+more oriented toward adding extensions to an installation of Docutils
+rather than, as in this proposal, enabling users to load and register
+directives automatically, on the fly.  So, for example, under Felix's
+plugins proposal, in order to change the implementation of a
+directive, the user must perform some sort of install operation.  Am I
+right about that?
+
+Felix's proposal also appears to be much more general and powerful
+than this one.  It covers the ability to add other types of extensions
+besides directives.  A quote from Felix's proposal:
+
+    "Specifically, this document covers the addition of Docutils components
+    (readers, parsers, and writers), and the addition of reStructuredText
+    roles and directives."
+
+See:
+
+- http://svn.berlios.de/viewcvs/docutils/branches/plugins/docs/howto/
+
+- "How To Create Extensions to Docutils" --
+  http://svn.berlios.de/viewcvs/docutils/branches/plugins/docs/howto/extensions.txt?view=markup
+
+
+
+A Sample Implementation
+=======================
+
+The following code could be added near the top of a Docutils writer in
+order to implement this proposal.  This code is provided for
+discussion.  Note that it does not support a command line flag that
+can pass in the directive module name. ::
+
+    import inspect
+
+    #
+    # Register directives defined in a module named "odtwriter_plugins".
+    #
+    def load_plugins():
+        plugin_mod = None
+        count = 0
+        try:
+            import odtwriter_plugins
+            plugin_mod = odtwriter_plugins
+        except ImportError, e:
+            pass
+        if plugin_mod is None:
+            return count
+        klasses = inspect.getmembers(plugin_mod, inspect.isclass)
+        for klass in klasses:
+            if register_plugin(*klass):
+                count += 1
+        return count
+
+    def register_plugin(name, klass):
+        plugin_name = getattr(klass, 'plugin_name', None)
+        if plugin_name is not None:
+            rst.directives.register_directive(plugin_name, klass)
+
+    load_plugins()
+
+
+
+Copyright
+=========
+
+This document has been placed in the public domain.
+
+
+
+.. _`Creating reStructuredText Directives`:
+   http://docutils.sourceforge.net/docs/howto/rst-directives.html
+
+
+
+
