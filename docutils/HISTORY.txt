@@ -100,7 +100,7 @@ Changes Since 0.4
   - ``template.txt`` is now opened in text mode instead of binary mode
     (to ensure Windows compatibility).
   - Special characters like "<" or ">" are now encoded when embedding
-    style sheets.
+    style sheets, so that the resulting XHTML is valid.
 
 * docutils/writers/html4css1/template.txt: Added to project.
 
