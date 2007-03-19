@@ -9,6 +9,27 @@
 :Copyright: This document has been placed in the public domain.
 
 
+.. raw:: html
+
+   <div class="sidebar">
+   <p class="first sidebar-title">Search the archives on Gmane</p>
+   <form method="get" action="http://search.gmane.org/">
+   <p style="margin-bottom: 3px;"><input type="text" name="query" style="width: 100%;" /></p>
+   <p>Search in <select name="group">
+       <option value="gmane.text.docutils.*">all mailing lists</option>
+       <option value="gmane.text.docutils.user">Docutils-users</option>
+       <option value="gmane.text.docutils.devel">Docutils-develop</option>
+       <option value="gmane.text.docutils.cvs">Docutils-checkins</option>
+       <option value="gmane.comp.python.documentation">Doc-SIG</option>
+       </select></p>
+   <p>Sort by <select name="sort">
+       <option value="relevance">relevance</option>
+       <option value="date">date (newest first)</option>
+       <option value="revdate">date (oldest first)</option></select></p>
+   <p class="last"><input type="submit" value="Search" /></p>
+   </form>
+   </div>
+
 All discussion about Docutils takes place on mailing lists.
 
 There are four different lists with traffic related to Docutils.  If
@@ -56,22 +77,6 @@ to the whitelist and future messages will be posted to the mailing
 list without moderation.
 
 
-Doc-SIG
--------
-
-The "Python Documentation Special Interest Group" (Doc-SIG) mailing
-list is occasionally used to discuss the usage of Docutils for Python
-documentation.
-
-This mailing list can be accessed via `email subscription`__, web__ or
-news__ (gmane.comp.python.documentation) as well.  You must be
-subscribed in order to post messages to this mailing list.
-
-__ http://mail.python.org/mailman/listinfo/doc-sig
-__ http://news.gmane.org/gmane.comp.python.documentation
-__ nntp://news.gmane.org/gmane.comp.python.documentation
-
-
 Docutils-develop
 ----------------
 
@@ -112,6 +117,22 @@ __ http://news.gmane.org/gmane.text.docutils.cvs
 __ nntp://news.gmane.org/gmane.text.docutils.cvs
 .. _list options: http://lists.sf.net/lists/options/docutils-checkins
 
-.. _Subversion repository: http://docutils.sf.net/docs/dev/repository.html
+Doc-SIG
+-------
+
+The "Python Documentation Special Interest Group" (Doc-SIG) mailing
+list is occasionally used to discuss the usage of Docutils for Python
+documentation.
+
+This mailing list can be accessed via `email subscription`__, web__ or
+news__ (gmane.comp.python.documentation) as well.  You must be
+subscribed in order to post messages to this mailing list.
+
+__ http://mail.python.org/mailman/listinfo/doc-sig
+__ http://news.gmane.org/gmane.comp.python.documentation
+__ nntp://news.gmane.org/gmane.comp.python.documentation
+
+
+.. _Subversion repository: ../dev/repository.html
 .. _Docutils: http://docutils.sourceforge.net/
-.. _FAQ: http://docutils.sourceforge.net/FAQ.html
+.. _FAQ: ../../FAQ.html
