@@ -261,7 +261,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                 stylesheet = utils.get_stylesheet_reference(
                     settings, os.path.join(os.getcwd(), 'dummy'))
                 settings.record_dependencies.add(stylesheet)
-                stylesheet_text = self.encode(open(stylesheet).read())
+                stylesheet_text = open(stylesheet).read()
                 self.stylesheet = [self.embedded_stylesheet % stylesheet_text]
             else:
                 self.stylesheet = [self.stylesheet_link
