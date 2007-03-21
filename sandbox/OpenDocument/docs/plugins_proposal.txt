@@ -1,15 +1,14 @@
+========================================================
+A Proposal for User Plugins for Docutils Readers/Writers
+========================================================
 
+:Author: Dave Kuhlman
+:address: dkuhlman@rexx.com
+    http://www.rexx.com/~dkuhlman
 
-PEP: 9999
-Title: User Plugins for Docutils Readers/Writers
-Version: $Revision$
-Last-Modified: $Date$
-Author: Dave Kuhlman <dkuhlman@rexx.com>
-Status: Active
-Type: Informational
-Content-Type: text/x-rst
-Created: 12-Mar-2007
-Post-History: 15-Mar-2007
+:date: March 21, 2007
+
+.. contents::
 
 
 Abstract
