@@ -61,6 +61,13 @@ class Node:
         """
         return 1
 
+    def __str__(self):
+        return self.__unicode__().encode('raw_unicode_escape')
+
+    def __unicode__(self):
+        # Override in subclass.
+        raise NotImplementedError
+
     def asdom(self, dom=None):
         """Return a DOM **fragment** representation of this Node."""
         if dom is None:
@@ -306,6 +313,9 @@ class Text(Node, UserString):
     def astext(self):
         return self.data
 
+    def __unicode__(self):
+        return self.data
+
     def copy(self):
         return self.__class__(self.data)
 
@@ -425,14 +435,11 @@ class Element(Node):
         else:
             return '<%s...>' % self.tagname
 
-    def __str__(self):
-        return self.__unicode__().encode('raw_unicode_escape')
-
     def __unicode__(self):
         if self.children:
             return u'%s%s%s' % (self.starttag(),
-                                 ''.join([str(c) for c in self.children]),
-                                 self.endtag())
+                                ''.join([unicode(c) for c in self.children]),
+                                self.endtag())
         else:
             return self.emptytag()
 

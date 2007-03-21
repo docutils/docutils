@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # $Id$
 # Author: David Goodger <goodger@python.org>
@@ -20,12 +21,17 @@ class TextTests(unittest.TestCase):
 
     def setUp(self):
         self.text = nodes.Text('Line 1.\nLine 2.')
+        self.unicode_text = nodes.Text(u'Möhren')
 
     def test_repr(self):
         self.assertEquals(repr(self.text), r"<#text: 'Line 1.\nLine 2.'>")
 
     def test_str(self):
         self.assertEquals(str(self.text), 'Line 1.\nLine 2.')
+
+    def test_unicode(self):
+        self.assertEquals(unicode(self.unicode_text), u'Möhren')
+        self.assertEquals(str(self.unicode_text), 'M\xf6hren')
 
     def test_astext(self):
         self.assertEquals(self.text.astext(), 'Line 1.\nLine 2.')
@@ -155,6 +161,10 @@ class ElementTests(unittest.TestCase):
         # Make sure the 'child4' ID hasn't been duplicated.
         self.assertEquals(child4['ids'], ['child4'])
         self.assertEquals(len(parent), 5)
+
+    def test_unicode(self):
+        node = nodes.Element(u'Möhren', nodes.Text(u'Möhren', u'Möhren'))
+        self.assertEquals(unicode(node), u'<Element>Möhren</Element>')
 
 
 class MiscTests(unittest.TestCase):
