@@ -96,10 +96,10 @@ totest['raw'] = [
 <document source="test data">
     <raw format="html" source="%s" xml:space="preserve">
         "Treat", "Quantity", "Description"
-        "Albatr\\xb0\\xdf", 2.99, "\\xa1On a \\u03c3\\u03c4\\u03b9\\u03ba!"
-        "Crunchy Frog", 1.49, "If we took the b\\xf6nes out, it wouldn\\u2019t be
+        "Albatr\xb0\xdf", 2.99, "\xa1On a \\u03c3\\u03c4\\u03b9\\u03ba!"
+        "Crunchy Frog", 1.49, "If we took the b\xf6nes out, it wouldn\\u2019t be
         crunchy, now would it?"
-        "Gannet Ripple", 1.99, "\\xbfOn a \\u03c3\\u03c4\\u03b9\\u03ba?"
+        "Gannet Ripple", 1.99, "\xbfOn a \\u03c3\\u03c4\\u03b9\\u03ba?"
 """ % utf_16_file_rel],
 ["""\
 Raw input file is UTF-16-encoded, and is not valid ASCII.
