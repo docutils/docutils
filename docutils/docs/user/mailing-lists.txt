@@ -12,7 +12,7 @@
 .. raw:: html
 
    <div class="sidebar">
-   <p class="first sidebar-title">Search the archives on Gmane</p>
+   <p class="first sidebar-title">Search the list archives on Gmane</p>
    <form method="get" action="http://search.gmane.org/">
    <p style="margin-bottom: 3px;"><input type="text" name="query" style="width: 100%;" /></p>
    <p>Search in <select name="group">
@@ -52,19 +52,22 @@ mailing lists; use the one you feel most comfortable with.
   __ http://lists.sourceforge.net/lists/listinfo/docutils-users
 
 * Using Gmane's `web interface`__.  To post a message, click "post" or
-  "followup" in the drop-down menu on the right.
+  "followup" in the drop-down menu on the right.  (Gmane also has a
+  complete **archive** of the mailing list; use the search form at the
+  top of this page to search it.)
 
   __ http://news.gmane.org/gmane.text.docutils.user
 
-* If you prefer using a newsreader, you can also use Gmane's `NNTP
+* If you prefer to use a newsreader, you can also use Gmane's `NNTP
   interface`__ (gmane.text.docutils.user on news.gmane.org).
 
   __ nntp://news.gmane.org/gmane.text.docutils.user.
 
 **If you do not wish to subscribe,** you can also just send an email
-message to Docutils-users@lists.sourceforge.net.  Please note in your
-message that you are not subscribed (to make sure that you receive
-copies [CCs] of any replies).
+message with your question or comment to
+Docutils-users@lists.sourceforge.net.  Please note in your message
+that you are not subscribed (to make sure that you receive copies
+[CCs] of any replies).
 
 The first time you post a message without being subscribed (also when
 posting via Gmane), you will receive an automatic response with the
