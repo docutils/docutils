@@ -62,7 +62,7 @@ class Node:
         return 1
 
     def __str__(self):
-        return self.__unicode__().encode('raw_unicode_escape')
+        return self.__unicode__().encode('ascii', 'backslashreplace')
 
     def __unicode__(self):
         # Override in subclass.

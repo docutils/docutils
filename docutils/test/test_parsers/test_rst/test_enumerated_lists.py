@@ -679,7 +679,7 @@ Princeton, NJ.
     <paragraph>
         Using a non-breaking space as a workaround:
     <paragraph>
-        A.\xa0Einstein was a great influence on
+        A.\\xa0Einstein was a great influence on
         B. Physicist, who was a colleague of
         C. Chemist.  They all worked in
         Princeton, NJ.

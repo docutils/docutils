@@ -146,7 +146,7 @@ class LanguageTestCase(DocutilsTestSupport.CustomTestCase):
             text = ('Module docutils.parsers.rst.languages.%s:\n    %s'
                     % (self.language, '\n    '.join(failures)))
             if type(text) == UnicodeType:
-                text = text.encode('raw_unicode_escape')
+                text = text.encode('ascii', 'backslashreplace')
             self.fail(text)
 
     def test_roles(self):
@@ -181,7 +181,7 @@ class LanguageTestCase(DocutilsTestSupport.CustomTestCase):
             text = ('Module docutils.parsers.rst.languages.%s:\n    %s'
                     % (self.language, '\n    '.join(failures)))
             if type(text) == UnicodeType:
-                text = text.encode('raw_unicode_escape')
+                text = text.encode('ascii', 'backslashreplace')
             self.fail(text)
 
 

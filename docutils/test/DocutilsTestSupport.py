@@ -191,11 +191,11 @@ class CustomTestCase(StandardTestCase):
     def compare_output(self, input, output, expected):
         """`input`, `output`, and `expected` should all be strings."""
         if isinstance(input, UnicodeType):
-            input = input.encode('raw_unicode_escape')
+            input = input.encode('ascii', 'backslashreplace')
         if isinstance(output, UnicodeType):
-            output = output.encode('raw_unicode_escape')
+            output = output.encode('ascii', 'backslashreplace')
         if isinstance(expected, UnicodeType):
-            expected = expected.encode('raw_unicode_escape')
+            expected = expected.encode('ascii', 'backslashreplace')
         try:
             self.assertEquals(output, expected)
         except AssertionError, error:
@@ -807,7 +807,7 @@ class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
         output = []
         for key in keys:
             output.append("%r: '''%s'''"
-                          % (key, parts[key].encode('raw_unicode_escape')))
+                          % (key, parts[key].encode('ascii', 'backslashreplace')))
             if output[-1].endswith("\n'''"):
                 output[-1] = output[-1][:-4] + "\\n'''"
         return '{' + ',\n '.join(output) + '}\n'
