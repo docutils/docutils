@@ -31,7 +31,7 @@ class TextTests(unittest.TestCase):
 
     def test_unicode(self):
         self.assertEquals(unicode(self.unicode_text), u'Möhren')
-        self.assertEquals(str(self.unicode_text), 'M\\xf6hren')
+        self.assertEquals(str(self.unicode_text), 'M\xf6hren')
 
     def test_astext(self):
         self.assertEquals(self.text.astext(), 'Line 1.\nLine 2.')

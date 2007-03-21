@@ -245,7 +245,7 @@ class Publisher:
         if self.settings.dump_pseudo_xml:
             print >>sys.stderr, '\n::: Pseudo-XML:'
             print >>sys.stderr, self.document.pformat().encode(
-                'ascii', 'backslashreplace')
+                'raw_unicode_escape')
 
     def report_Exception(self, error):
         if isinstance(error, utils.SystemMessage):
