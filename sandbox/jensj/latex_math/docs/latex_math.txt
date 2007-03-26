@@ -32,7 +32,7 @@ produce :m:`\psi(r)=\exp(-2r)`.  Inside the back-tics you can write
 anything you would write between dollar signs in a LaTeX ducument.
 
 For producing displayed math (like an ``equation*`` environment in a
-LaTeX document) there is a ``latex-math`` role.  If you write::
+LaTeX document) there is a ``latex-math`` directive.  If you write::
 
   .. latex-math::
 
@@ -44,6 +44,14 @@ you will get:
 
    \psi(r) = e^{-2r}
 
+
+.. tip::
+
+  If you put ``.. default-role:: latex-math`` at the top of your
+  document, then you can write ```x^2``` instead of the longer
+  version: ``:latex-math:`x^2```.  You can also introduce an
+  abreviation like this ``.. role:: m(latex-math)``.  That will allow
+  you to write ``:m:`x^2``` or ```x^2`:m:``.
 
 
 Commands and symbols
