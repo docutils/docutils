@@ -47,7 +47,7 @@ except ImportError:
     from docutils.parsers.rst.directives import _directives
     def latex_math_directive(name, arguments, options, content, lineno,
                              content_offset, block_text, state, state_machine):
-        latex = ''.join(content)
+        latex = ' '.join(content)
         try:
             mathml_tree = parse_latex_math(latex, inline=False)
         except SyntaxError, msg:
@@ -66,7 +66,7 @@ else:
     class latex_math_directive(Directive):
         has_content = True
         def run(self): 
-            latex = ''.join(self.content)
+            latex = ' '.join(self.content)
             try:
                 mathml_tree = parse_latex_math(latex, inline=False)
             except SyntaxError, msg:
@@ -81,16 +81,7 @@ else:
 # Add visit/depart methods to HTML-Translator:
 def visit_latex_math(self, node):
     mathml = ''.join(node.mathml_tree.xml())
-    string = """<math xmlns="http://www.w3.org/1998/Math/MathML">
-    <semantics>
-    %s
-    </semantics>
-    </math>
-    """ % mathml
-    inline = isinstance(node.parent, nodes.TextElement)
-    if not inline:
-        string += '<br/>\n'
-    self.body.append(string)
+    self.body.append(mathml)
     if not self.has_mathml_dtd:
         doctype = ('<!DOCTYPE html'
                    ' PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN"'
@@ -115,7 +106,7 @@ class math:
     nchildren = 1000000
     """Required number of children"""
     
-    def __init__(self, children=None):
+    def __init__(self, children=None, inline=None):
         """math([children]) -> MathML element
 
         children can be one child or a list of children."""
@@ -128,6 +119,9 @@ class math:
             else:
                 # Only one child:
                 self.append(children)
+
+        if inline is not None:
+            self.inline = inline
 
     def __repr__(self):
         if hasattr(self, 'children'):
@@ -180,7 +174,13 @@ class math:
         return self.xml_start() + self.xml_body() + self.xml_end()
     
     def xml_start(self):
-        return ['<%s>' % self.__class__.__name__]
+        if not hasattr(self, 'inline'):
+            return ['<%s>' % self.__class__.__name__]
+        xmlns = 'http://www.w3.org/1998/Math/MathML'
+        if self.inline:
+            return ['<math xmlns="%s">' % xmlns]
+        else:
+            return ['<math xmlns="%s" mode="display">' % xmlns]
 
     def xml_end(self):
         return ['</%s>' % self.__class__.__name__]
@@ -350,10 +350,10 @@ def parse_latex_math(string, inline=True):
 
     if inline:
         node = mrow()
-        tree = node
+        tree = math(node, inline=True)
     else:
         node = mtd()
-        tree = mstyle(mtable(mtr(node)), displaystyle='true')
+        tree = math(mtable(mtr(node)), inline=False)
 
     while len(string) > 0:
         n = len(string)
@@ -394,7 +394,7 @@ def parse_latex_math(string, inline=True):
             node = node.append(mi(c))
         elif c.isdigit():
             node = node.append(mn(c))
-        elif c in '+-/()[]|=<>,.!':
+        elif c in "+-/()[]|=<>,.!'":
             node = node.append(mo(c))
         elif c == '_':
             child = node.delete_child()
