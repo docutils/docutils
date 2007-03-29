@@ -256,6 +256,7 @@
 	     ("C" . rst-compile-alt-toolset)
 	     ("x" . rst-compile-pseudo-region)
 	     ("q" . rst-compile-pdf-preview)
+	     ("Q" . rst-compile-slides-preview)
 	     ))
   (define-key rst-prefix-map (car m) (cdr m)))
 
@@ -3315,6 +3316,20 @@ of the entire buffer, if the region is not selected."
     ;; output.
     ))
 
+(defvar rst-slides-program "firefox"
+  "Program used to preview S5 slides.")
+
+(defun rst-compile-slides-preview ()
+  "Convert the document to an S5 slide presentation and launch a preview program."
+  (interactive)
+  (let* ((tmp-filename "/tmp/slides.html")
+	 (command (format "rst2s5.py %s %s && %s %s" 
+			  buffer-file-name tmp-filename
+			  rst-slides-program tmp-filename)))
+    (start-process-shell-command "rst-slides-preview" nil command)
+    ;; Note: you could also use (compile command) to view the compilation
+    ;; output.
+    ))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
