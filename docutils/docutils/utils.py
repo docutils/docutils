@@ -63,6 +63,13 @@ class Reporter:
     levels = 'DEBUG INFO WARNING ERROR SEVERE'.split()
     """List of names for system message levels, indexed by level."""
 
+    # system message level constants:
+    (DEBUG_LEVEL,
+     INFO_LEVEL,
+     WARNING_LEVEL,
+     ERROR_LEVEL,
+     SEVERE_LEVEL) = range(5)
+
     def __init__(self, source, report_level, halt_level, stream=None,
                  debug=0, encoding='ascii', error_handler='replace'):
         """
@@ -166,12 +173,12 @@ class Reporter:
                                    type=self.levels[level],
                                    *children, **attributes)
         if self.stream and (level >= self.report_level
-                            or self.debug_flag and level == 0):
+                            or self.debug_flag and level == self.DEBUG_LEVEL):
             msgtext = msg.astext().encode(self.encoding, self.error_handler)
             print >>self.stream, msgtext
         if level >= self.halt_level:
             raise SystemMessage(msg, level)
-        if level > 0 or self.debug_flag:
+        if level > self.DEBUG_LEVEL or self.debug_flag:
             self.notify_observers(msg)
         self.max_level = max(level, self.max_level)
         return msg
@@ -183,28 +190,28 @@ class Reporter:
         separately from the others.
         """
         if self.debug_flag:
-            return self.system_message(0, *args, **kwargs)
+            return self.system_message(self.DEBUG_LEVEL, *args, **kwargs)
 
     def info(self, *args, **kwargs):
         """
         Level-1, "INFO": a minor issue that can be ignored. Typically there is
         no effect on processing, and level-1 system messages are not reported.
         """
-        return self.system_message(1, *args, **kwargs)
+        return self.system_message(self.INFO_LEVEL, *args, **kwargs)
 
     def warning(self, *args, **kwargs):
         """
         Level-2, "WARNING": an issue that should be addressed. If ignored,
         there may be unpredictable problems with the output.
         """
-        return self.system_message(2, *args, **kwargs)
+        return self.system_message(self.WARNING_LEVEL, *args, **kwargs)
 
     def error(self, *args, **kwargs):
         """
         Level-3, "ERROR": an error that should be addressed. If ignored, the
         output will contain errors.
         """
-        return self.system_message(3, *args, **kwargs)
+        return self.system_message(self.ERROR_LEVEL, *args, **kwargs)
 
     def severe(self, *args, **kwargs):
         """
@@ -212,7 +219,7 @@ class Reporter:
         the output will contain severe errors. Typically level-4 system
         messages are turned into exceptions which halt processing.
         """
-        return self.system_message(4, *args, **kwargs)
+        return self.system_message(self.SEVERE_LEVEL, *args, **kwargs)
 
 
 class ExtensionOptionError(DataError): pass
