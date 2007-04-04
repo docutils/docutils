@@ -127,6 +127,18 @@ line spacing           Is done with package *setspace*, which gives
 
                        for bigger linespacing.
 ---------------------  ------------------------------------------------
+use verbatim when      When possibile, use verbatim for literal-blocks.
+possible               Default is to always use the mbox environment.
+
+                       A literal-block element, when processed by a
+                       docutils-writer might have it's origin in a
+                       markup with "::" syntax or a 
+                       ".. parsed-literal::" directive.
+
+                       A LaTeX verbatim environment is only useable if
+                       there are no elements contained in the 
+                       literal-block.
+---------------------  ------------------------------------------------
 font selection         see below
 =====================  ================================================
 
