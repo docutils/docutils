@@ -99,6 +99,8 @@ Changes Since 0.4
     universally supported now).
   - ``template.txt`` is now opened in text mode instead of binary mode
     (to ensure Windows compatibility).
+  - ``a`` elements now have an "internal" or "external" class,
+    depending on reference type.
 
 * docutils/writers/html4css1/template.txt: Added to project.
 

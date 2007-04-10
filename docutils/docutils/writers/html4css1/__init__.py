@@ -1210,17 +1210,19 @@ class HTMLTranslator(nodes.NodeVisitor):
         raise nodes.SkipNode
 
     def visit_reference(self, node):
+        atts = {'class': 'reference'}
         if node.has_key('refuri'):
-            href = node['refuri']
+            atts['href'] = node['refuri']
             if ( self.settings.cloak_email_addresses
-                 and href.startswith('mailto:')):
-                href = self.cloak_mailto(href)
+                 and atts['href'].startswith('mailto:')):
+                atts['href'] = self.cloak_mailto(atts['href'])
                 self.in_mailto = 1
+            atts['class'] += ' external'
         else:
             assert node.has_key('refid'), \
                    'References must have "refuri" or "refid" attribute.'
-            href = '#' + node['refid']
-        atts = {'href': href, 'class': 'reference'}
+            atts['href'] = '#' + node['refid']
+            atts['class'] += ' internal'
         if not isinstance(node.parent, nodes.TextElement):
             assert len(node) == 1 and isinstance(node[0], nodes.image)
             atts['class'] += ' image-reference'
