@@ -21,7 +21,7 @@ class TextTests(unittest.TestCase):
 
     def setUp(self):
         self.text = nodes.Text('Line 1.\nLine 2.')
-        self.unicode_text = nodes.Text(u'Möhren')
+        self.unicode_text = nodes.Text(unicode('Möhren', 'utf8'))
 
     def test_repr(self):
         self.assertEquals(repr(self.text), r"<#text: 'Line 1.\nLine 2.'>")
@@ -30,7 +30,7 @@ class TextTests(unittest.TestCase):
         self.assertEquals(str(self.text), 'Line 1.\nLine 2.')
 
     def test_unicode(self):
-        self.assertEquals(unicode(self.unicode_text), u'Möhren')
+        self.assertEquals(unicode(self.unicode_text), unicode('Möhren', 'utf8'))
         self.assertEquals(str(self.unicode_text), 'M\xf6hren')
 
     def test_astext(self):
@@ -163,8 +163,10 @@ class ElementTests(unittest.TestCase):
         self.assertEquals(len(parent), 5)
 
     def test_unicode(self):
-        node = nodes.Element(u'Möhren', nodes.Text(u'Möhren', u'Möhren'))
-        self.assertEquals(unicode(node), u'<Element>Möhren</Element>')
+        node = nodes.Element(u'Möhren', nodes.Text(unicode('Möhren', 'utf8'),
+                                                   unicode('Möhren', 'utf8')))
+        self.assertEquals(unicode(node), unicode('<Element>Möhren</Element>',
+                                                 'utf8'))
 
 
 class MiscTests(unittest.TestCase):
