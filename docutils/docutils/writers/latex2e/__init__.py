@@ -21,6 +21,8 @@ from types import ListType
 from docutils import frontend, nodes, languages, writers, utils
 from docutils.writers.newlatex2e import unicode_map
 
+from docutils.transforms.references import DanglingReferencesVisitor
+
 class Writer(writers.Writer):
 
     supported = ('latex','latex2e')
@@ -336,20 +338,6 @@ latex_headings = {
 class DocumentClass:
     """Details of a LaTeX document class."""
 
-    # BUG: LaTeX has no deeper sections (actually paragrah is no
-    # section either).
-    # BUG: No support for unknown document classes.  Make 'article'
-    # default?
-    _class_sections = {
-        'book': ( 'chapter', 'section', 'subsection', 'subsubsection' ),
-        'scrbook': ( 'chapter', 'section', 'subsection', 'subsubsection' ),
-        'report': ( 'chapter', 'section', 'subsection', 'subsubsection' ),
-        'scrreprt': ( 'chapter', 'section', 'subsection', 'subsubsection' ),
-        'article': ( 'section', 'subsection', 'subsubsection' ),
-        'scrartcl': ( 'section', 'subsection', 'subsubsection' ),
-        }
-    _deepest_section = 'subsubsection'
-
     def __init__(self, document_class):
         self.document_class = document_class
 
@@ -359,11 +347,14 @@ class DocumentClass:
 
             Level is 1,2,3..., as level 0 is the title."""
 
-        sections = self._class_sections[self.document_class]
+        sections = [ 'section', 'subsection', 'subsubsection', 
+                     'paragraph', 'subparagraph' ]
+        if self.document_class in ('book', 'report', 'scrartcl', 'scrbook'):
+            sections.insert(0, 'chapter')
         if level <= len(sections):
             return sections[level-1]
         else:
-            return self._deepest_section
+            return sections[-1]
 
 class Table:
     """ Manage a table while traversing.
@@ -592,6 +583,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         if self.settings.use_bibtex:
             self.bibtex = self.settings.use_bibtex.split(",",1)
+            # TODO avoid errors on not declared citations.
         else:
             self.bibtex = None
         # language: labels, bibliographic_fields, and author_separators.
