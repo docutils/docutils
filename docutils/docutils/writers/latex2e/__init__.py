@@ -1684,8 +1684,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # table border and literal block.
             # BUG: fails if normal text preceeds the literal block.
             self.body.append('\\begin{quote}')
+            self.context.append('\\end{quote}\n')
         else:
             self.body.append('\n')
+            self.context.append('\n')
         if (self.settings.use_verbatim_when_possible and (len(node) == 1)
               # in case of a parsed-literal containing just a "**bold**" word:
               and isinstance(node[0], nodes.Text)):
@@ -1700,17 +1702,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_literal_block(self, node):
         if self.verbatim:
-            self.body.append('\n\\end{verbatim}\\end{quote}\n')
+            self.body.append('\n\\end{verbatim}')
             self.verbatim = 0
         else:
-            if self.active_table.is_open():
-                self.body.append('\n}\n')
-            else:
-                self.body.append('\n')
-                self.body.append('}\\end{quote}\n')
+            self.body.append('\n}')
             self.insert_none_breaking_blanks = 0
             self.literal_block = 0
             # obey end: self.body.append('}\n')
+        self.body.append(self.context.pop())
 
     def visit_meta(self, node):
         self.body.append('[visit_meta]\n')
