@@ -478,7 +478,8 @@ class Table:
         #    a.append('\\hline\n')
         if self._table_style == 'booktabs':
             a.append('\\midrule\n')
-        a.append('\\endhead\n')
+        if self._latex_type == 'longtable':
+            a.append('\\endhead\n')
         # for longtable one could add firsthead, foot and lastfoot
         self._in_thead = 0
         return a
@@ -598,6 +599,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         self.d_class = DocumentClass(settings.documentclass)
         # object for a table while proccessing.
+        self.table_stack = []
         self.active_table = Table('longtable',settings.table_style)
 
         # HACK.  Should have more sophisticated typearea handling.
@@ -1911,8 +1913,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_table(self, node):
         if self.active_table.is_open():
-            print 'nested tables are not supported'
-            raise AssertionError
+            self.table_stack.append(self.active_table)
+            # nesting longtable does not work (e.g. 2007-04-18)
+            self.active_table = Table('tabular',self.settings.table_style)
         self.active_table.open()
         for cl in node['classes']:
             self.active_table.set_table_style(cl)
@@ -1921,7 +1924,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_table(self, node):
         self.body.append(self.active_table.get_closing() + '\n')
         self.active_table.close()
-        self.active_table.set_table_style(self.settings.table_style)
+        if len(self.table_stack)>0:
+            self.active_table = self.table_stack.pop()
+        else:
+            self.active_table.set_table_style(self.settings.table_style)
 
     def visit_target(self, node):
         # BUG: why not (refuri or refid or refname) means not footnote ?
