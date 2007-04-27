@@ -47,3 +47,6 @@ s/(<[ou]l) class="(?!simple)([t-z][^\"]+) simple"(>)/$1 class="(simple )?$2"$3/;
 s/(<[ou]l) class="(?!simple)([^\"]+)"(>)/$1 class="$2( simple)?"$3/;
 s/(<[ou]l) class="(?!simple)([a-s][^\"]+)"(>)/$1 class="$2( simple)?"$3/;
 s/(<[ou]l) class="(?!simple)([t-z][^\"]+)"(>)/$1 class="(simple )?$2"$3/;
+
+# Deal with perl eval numbers that may change in error messages
+s/\\\((eval )(\d+)\\\)(\\\[.+\\\])?/\\($1\\d+\\).*/;
