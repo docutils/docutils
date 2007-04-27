@@ -5,6 +5,10 @@ Release Notes
 
 .. contents::
 
+Release 0.3.27
+--------------
+Fixed problem with CPAN indexing of versions.
+
 Release 0.3.26
 --------------
 * Completely reworked the regression test structure so as not to be
