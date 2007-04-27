@@ -1,0 +1,5 @@
+# -*-perl-*-
+{
+    $PREST_DIR_FLAGS = q(-D xformoff='Decorations');
+}
+

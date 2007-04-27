@@ -1,0 +1,10 @@
+# -*-perl-*-
+{
+    $PREST_DIR_FLAGS = q(-W nobackn=0);
+
+    %PREST_FILE_FLAGS =
+	(code09 => q(-D code-block-states-file=nosuchfile.rst),
+	 code10 => q(-D code-block-states-file=nosuchfile.rst),
+	 code11 => q(-D code-block-states-file=nosuchfile.rst),
+	 );
+}
