@@ -931,7 +931,7 @@ EOS
 		    my $gramps = $parent->parent();
 		    my $colwidths = $gramps->{colwidths};
 		    my $totwidth = $gramps->{totwidth};
-		    my $mywidth;
+		    my $mywidth = 0;
 		    for ($j=0; $j < $cols; $j++) {
 			$mywidth += $colwidths->[$i+$j];
 		    }
