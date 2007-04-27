@@ -30,7 +30,7 @@ use strict;
 sub new {
     my ($class, $writer_name, $opt) = @_;
 
-    my $writer = bless { opt => { %$opt } };
+    my $writer = bless { opt => { %$opt } }, $class;
     # Handle options processing
     foreach (keys %{$opt->{W}}) {
 	$writer->{opt}{W}{$_} = 1
