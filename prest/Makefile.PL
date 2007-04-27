@@ -13,7 +13,7 @@ use ExtUtils::MakeMaker;
 
 ## Note: The version number for the entire release is specified here and
 ## propagated.  Be sure to edit for every release.
-my $Version = "0.003026";
+my $Version = "0.003027";
 
 use vars qw($opt_f $opt_h $opt_k);
 my $OUTPUT_CFG_FILE = $opt_f = 'config.log';
@@ -146,6 +146,7 @@ my %pm_files;
 
 # See lib/ExtUtils/MakeMaker.pm for details of how to influence
 # the contents of the Makefile that is written.
+my $pm_filter = "$^X -pe 'END { print qq{\\044VERSION = $Version\\012} }'";
 WriteMakefile(
     NAME           => 'Text::Restructured',
     AUTHOR         => 'Mark Nodine <mnodine@alum.mit.edu>',
@@ -162,6 +163,7 @@ WriteMakefile(
     PM             => {'lib/Text/Restructured/PrestConfig.pm' =>
 		       'blib/lib/Text/Restructured/PrestConfig.pm',
 		       %pm_files},
+    PM_FILTER      =>  qq($^X -pe "END{print qq{our \\044VERSION=$Version\\;\\n}}"),
 #    FIXIN          => 'cp',
     test           => { TESTS => join ' ',@TESTS },
     clean          => { FILES =>(join(' ', (@TESTS, map(/(.*)\.t$/ && "$1.dir",

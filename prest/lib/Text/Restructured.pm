@@ -5,7 +5,6 @@
 # the GNU General Public License (GPL) and the Artistic License.
 
 package Text::Restructured;
-eval { use Text::Restructured::PrestConfig; $VERSION = $Text::Restructured::PrestConfig::VERSION; };
 
 # This package does parsing of reStructuredText files
 
