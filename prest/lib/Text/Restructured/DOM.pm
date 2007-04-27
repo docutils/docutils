@@ -38,7 +38,7 @@ use vars qw(%PARENT);
 sub new {
     my ($class, $tag, %attr) = @_;
 
-    my $dom = bless { };
+    my $dom = bless { }, $class;
     $dom->{tag} = $tag if defined $tag;
     $dom->{attr} = {%attr} if %attr;
     $dom->{content} = [];
