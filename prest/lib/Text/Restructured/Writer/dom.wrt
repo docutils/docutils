@@ -23,9 +23,20 @@ It recognizes the following defines:
 sub BEGIN {
     # My -W flags
     use vars qw($nobackn);
-
+    
     # Defaults for -W flags
     $nobackn = 0 unless defined $nobackn;
+
+    # Globals
+    use vars qw(%QUOTE);
+    %QUOTE = ('<'=>'lt', '>'=>'gt', '"', 'quot');
+}
+
+# Returns an equal sign and a quoted attribute from a list of attribute values
+sub quote_attr {
+    my (@attr) = @_;
+    s/([<>\"])/&$QUOTE{$1};/g foreach (@attr);
+    qq(="@attr");
 }
 
 phase PROCESS {
@@ -53,8 +64,8 @@ phase PROCESS {
 	my $attr = defined $dom->{attr} ?
 	    join('',map(qq( $_) . (! defined $dom->{attr}{$_} ? '' :
 				   ref($dom->{attr}{$_}) eq 'ARRAY' ?
-				   qq(="@{$dom->{attr}{$_}}") :
-				   qq(="$dom->{attr}{$_}")),
+				   quote_attr(@{$dom->{attr}{$_}}) :
+				   quote_attr($dom->{attr}{$_})),
 			sort keys %{$dom->{attr}})) : '';
 	my $internal = '';
 	# Devel::Cover condition 0 1 internal defined implies non-empty hash
