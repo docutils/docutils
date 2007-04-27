@@ -1,7 +1,0 @@
-# -*-makefile-*-
-DIR_FLAGS = -D trusted -D include-path='<.>':../data -W nobackn=0
-RST_FLAG_perl08 = -D xformoff='(?!Pending).......$$'
-RST_FLAG_perl09 = -D perl='$$a=0;$$b=1'
-RST_FLAG_perl10 = -D perl=4/0
-RST_FLAG_trusted01 = -D trusted=0
-RST_FLAG_trusted03 = -D trusted=0 -D perl='$$a=1;open F,"perl14.rst"'

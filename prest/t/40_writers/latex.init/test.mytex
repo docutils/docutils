@@ -484,32 +484,38 @@ This paragraph is also part of the legend.
 \end{figure}
 
 \subsubsection{Admonitions}
-\fbox{\parbox{\columnwidth}{
+
+\noindent\fbox{\parbox{\columnwidth}{
 \styleadmonitiontitle{Attention}
 
 Directives at large.
 }}
-\fbox{\parbox{\columnwidth}{
+
+\noindent\fbox{\parbox{\columnwidth}{
 \styleadmonitiontitle{Caution}
 
 Don't take any wooden nickels.
 }}
-\fbox{\parbox{\columnwidth}{
+
+\noindent\fbox{\parbox{\columnwidth}{
 \styleadmonitiontitle{Danger}
 
 Mad scientist at work!
 }}
-\fbox{\parbox{\columnwidth}{
+
+\noindent\fbox{\parbox{\columnwidth}{
 \styleadmonitiontitle{Error}
 
 Does not compute.
 }}
-\fbox{\parbox{\columnwidth}{
+
+\noindent\fbox{\parbox{\columnwidth}{
 \styleadmonitiontitle{Hint}
 
 It's bigger than a bread box.
 }}
-\fbox{\parbox{\columnwidth}{
+
+\noindent\fbox{\parbox{\columnwidth}{
 \styleadmonitiontitle{Important}
 \begin{itemize}
 \item 
@@ -522,17 +528,20 @@ Call your mother.
 Back up your data.
 \end{itemize}
 }}
-\fbox{\parbox{\columnwidth}{
+
+\noindent\fbox{\parbox{\columnwidth}{
 \styleadmonitiontitle{Note}
 
 This is a note.
 }}
-\fbox{\parbox{\columnwidth}{
+
+\noindent\fbox{\parbox{\columnwidth}{
 \styleadmonitiontitle{Tip}
 
 15\% if the service is good.
 }}
-\fbox{\parbox{\columnwidth}{
+
+\noindent\fbox{\parbox{\columnwidth}{
 \styleadmonitiontitle{Warning}
 
 Strong prose may provoke extreme mental exertion.

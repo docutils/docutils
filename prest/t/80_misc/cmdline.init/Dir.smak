@@ -1,0 +1,19 @@
+# -*-perl-*-
+{
+    %POSTPROC_FILE =
+	(badopt => q(| head -2),
+	 noargs => q(| head -1),
+	 opt_h => q(| egrep '^(Description of|(Defines|Documentation) for)'),
+	 opt_V => q(| head -1),
+	 );
+
+    %PREST_FILE_FLAGS =
+	(badopt => q(-Q),
+	 noargs => q(-D),	# Cancels out the noargs.rst argument
+	 opt_d => q(-d),
+	 opt_dx2 => q(-d -d),
+	 opt_dxq3 => q(-d -d -d),
+	 opt_h => q(-h),
+	 opt_V => q(-V),
+	 );
+}

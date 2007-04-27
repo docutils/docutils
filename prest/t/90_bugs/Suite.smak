@@ -1,0 +1,6 @@
+# -*-perl-*-
+{
+    # Override global flags
+    $PREST_FLAGS = '';
+    $PREST_SUITE_FLAGS = q(-D xformoff=Decorations -D align=0);
+}

@@ -5,6 +5,16 @@ Release Notes
 
 .. contents::
 
+Release 0.3.26
+--------------
+* Completely reworked the regression test structure so as not to be
+  dependent upon GNU make.
+
+Writers 'dom' and 'xml':
+
+* Fixed a bug with attribute strings that contain double quotes.
+
+
 Release 0.3.25
 --------------
 * Fixed a problem with Makefile.PL.

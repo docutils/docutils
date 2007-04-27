@@ -1,0 +1,31 @@
+# -*-perl-*-
+{
+    %PERL_FILE_FLAGS =
+	(baddirect => q(-I.),
+	 badwrt1 => q(-I.),
+	 badwrt2 => q(-I.),
+	 badwrt3 => q(-I.),
+	 badwrt4 => q(-I.),
+	 html => q(-I.),
+	 writer => q(-I.),
+	 mathml01 => q(-I.),
+	 );
+
+    %PREST_FILE_FLAGS =
+	(indtarget => q(-D xformoff='Decorations'),
+	 badwrt1 => q(-w bad1),
+	 badwrt2 => q(-w bad2),
+	 badwrt3 => q(-w bad3),
+	 badwrt4 => q(-w bad4),
+	 dom => q(-D trusted),
+	 html => q(-D generator=0),
+	 nowrt => q(-w nosuchwriter),
+	 restructured => q(-D xformoff='Decorations'),
+	 transforms => q(-D xformoff='Decorations'),
+	 pending => q(-d -D xformoff='Decorations'),
+	 writer => q(-w cover -D no_line_directives),
+	 );
+
+    # Don't define "-W nobackn"
+    $PREST_WRT_FLAGS{dom} = '';
+}
