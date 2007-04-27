@@ -41,3 +41,6 @@ s/(\\\[Errno \d+\\\])(.*)/$1($2|.*)/;
 s/(\bstates: )(.*)/$1($2|.*)/;
 # Handle -d output
 s!^.*(/Text/Restructured/Writer/dom\\\.wrt, line )\d+!.*$1\\d+!;
+# Handle line numbers in error messages
+s/(\\\.(?:pm|wrt),? line )(\d+)/$1($2|\\d+)/g;
+
