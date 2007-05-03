@@ -9,6 +9,14 @@ open CF, $cf or die "Cannot open $cf; rerun 'perl Makefile.PL'";
 my %CONFIG = eval(join('',<CF>));
 close CF;
 
+# Figure out where my <DATA> block starts
+open ME, $0;
+while (<ME>) {
+    last if /^__END__/;
+}
+my $LINENO = $.+3;
+close ME;
+
 open OUT, ">$file" or die "Cannot write to $file";
 # My output
 my $output = join '',<DATA>;
@@ -22,6 +30,7 @@ print OUT $output;
 close OUT;
 __END__
 # $Id$
+#line ${LINENO} Restructured.pm.PL
 # Copyright (C) 2002-2005 Freescale Semiconductor, Inc.
 
 # Distributed under terms of the Perl license, which is the disjunction of
@@ -417,7 +426,7 @@ sub system_message : method {
     }
     my $line = $lineno ? ":$lineno" : '';
     print STDERR "$source$line ($ERROR_LEVELS{$level}/$level) $msg\n"
-	if $level >= $self->{opt}{D}{report} && $source !~ 'test data';
+	if $level >= $self->{opt}{D}{report} && $source !~ /test data/;
     return $dom;
 }
 
