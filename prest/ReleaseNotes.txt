@@ -5,6 +5,13 @@ Release Notes
 
 .. contents::
 
+Release 0.3.28
+--------------
+* Create lib/Text/Restructured.pm from lib/Text/Restructured.pm.PL so
+  we can insert the versio number in to allow CPAN to index it
+  correctly.
+* Fixed a problem with creating regular-expression expects for tests.
+
 Release 0.3.27
 --------------
 Fixed problem with CPAN indexing of versions.

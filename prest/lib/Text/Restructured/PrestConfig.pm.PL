@@ -11,7 +11,12 @@ close CF;
 
 open OUT, ">$file" or die "Cannot write to $file";
 # My output
-my $output = << 'EOS';
+my $output = join '',<DATA>;
+# Substitute in for ${perlvar} references
+$output =~ s/(\$ \{ \S+ \})/my $v = eval "qq($1)"; $v || $1/gex;
+print OUT $output;
+close OUT;
+__END__
 package Text::Restructured::PrestConfig;
 
 $DEFAULTCSS = "${CONFIG{defaultcss}}";
@@ -21,8 +26,3 @@ $VERSION = "${CONFIG{version}}";
 $DOCURL = "${CONFIG{docurl}}";
 
 1;
-EOS
-# Substitute in for ${perlvar} references
-$output =~ s/(\$ \{ \S+ \})/eval "qq($1)"/gex;
-print OUT $output;
-close OUT;

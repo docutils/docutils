@@ -374,7 +374,7 @@ find_oks:
 	    my $dep = $deps->[-1];
 	    $dep =~ /\. (my)? ([^\.]+?) \z/x;
 	    my $re = $2;
-	    execute "$TBIN/re$re @$deps > $target";
+	    execute "$PERL $TBIN/re$re @$deps > $target";
 	}
 
 # Run prest with the appropriate writer
