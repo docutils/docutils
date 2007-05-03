@@ -117,7 +117,7 @@ use FindBin;
 
 use lib "$FindBin::RealBin/..";
 use gress;
-do_tests;
+do_tests('../../Common.smak');
 EOS
 
 my @TESTS;
@@ -164,7 +164,9 @@ WriteMakefile(
 		       'lib/Text/Restructured.pm',
 		       'lib/Text/Restructured/PrestConfig.pm.PL' =>
 		       'lib/Text/Restructured/PrestConfig.pm'},
-    PM             => {'lib/Text/Restructured/PrestConfig.pm' =>
+    PM             => {'lib/Text/Restructured.pm' =>
+		       'blib/lib/Text/Restructured.pm',
+		       'lib/Text/Restructured/PrestConfig.pm' =>
 		       'blib/lib/Text/Restructured/PrestConfig.pm',
 		       %pm_files},
 #    PM_FILTER      =>  qq($^X -pe "END{print qq{our \\044VERSION=$Version\\;\\n}}"),

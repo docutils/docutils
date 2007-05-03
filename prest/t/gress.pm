@@ -9,6 +9,8 @@ use FindBin;
 use lib "$FindBin::RealBin/../../tbin";
 use Slay::Makefile;
 
+# $Id$
+
 =head1 NAME
 
 gress
@@ -136,7 +138,7 @@ sub do_tests {
     my %opts;
     $opts{debug} = 1 if $ENV{MKDBG};
     my $sm = Slay::Makefile->new(\%opts);
-    $sm->parse("../../Common.smak");
+    $sm->parse($makefile);
     # Run the pretest target, if any
     eval { $sm->make('pretest') };
     $sm->maker->check_targets('test') unless @ARGV;
