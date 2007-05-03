@@ -5,6 +5,8 @@ use warnings;
 
 use ExtUtils::MakeMaker;
 
+# $Id$
+
 # Usage: perl Makefile.PL [options]
 # Options:
 #  -f file   Use file for default configuration values (default is config.log)
@@ -13,7 +15,7 @@ use ExtUtils::MakeMaker;
 
 ## Note: The version number for the entire release is specified here and
 ## propagated.  Be sure to edit for every release.
-my $Version = "0.003027";
+my $Version = "0.003028";
 
 use vars qw($opt_f $opt_h $opt_k);
 my $OUTPUT_CFG_FILE = $opt_f = 'config.log';
@@ -158,12 +160,14 @@ WriteMakefile(
     PREREQ_PM      => { 'Text::ASCIIMathML'=>0,
 			'Slay::Makefile'=>0,
 			}, # e.g., Module::Name => 1.1
-    PL_FILES       => {'lib/Text/Restructured/PrestConfig.pm.PL' =>
-		       "lib/Text/Restructured/PrestConfig.pm"},
+    PL_FILES       => {'lib/Text/Restructured.pm.PL' =>
+		       'lib/Text/Restructured.pm',
+		       'lib/Text/Restructured/PrestConfig.pm.PL' =>
+		       'lib/Text/Restructured/PrestConfig.pm'},
     PM             => {'lib/Text/Restructured/PrestConfig.pm' =>
 		       'blib/lib/Text/Restructured/PrestConfig.pm',
 		       %pm_files},
-    PM_FILTER      =>  qq($^X -pe "END{print qq{our \\044VERSION=$Version\\;\\n}}"),
+#    PM_FILTER      =>  qq($^X -pe "END{print qq{our \\044VERSION=$Version\\;\\n}}"),
 #    FIXIN          => 'cp',
     test           => { TESTS => join ' ',@TESTS },
     clean          => { FILES =>(join(' ', (@TESTS, map(/(.*)\.t$/ && "$1.dir",
