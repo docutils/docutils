@@ -1,10 +1,14 @@
-# $Id: code_block.pm 729 2005-11-04 22:25:20Z r31609 $
+# $Id$
 # Copyright (C) 2002-2005 Freescale Semiconductor, Inc.
 # Distributed under terms of the Perl license, which is the disjunction of
 # the GNU General Public License (GPL) and the Artistic License.
 
 # This package implements the code-block directive for the perl implementation
 # of reStructuredText.
+
+package Text::Restructured::Directive::code_block;
+
+$VERSION = ( q$Revision: 729$ ) =~ /(\d+)/g;
 
 =pod
 =begin reST
@@ -59,8 +63,6 @@ This directive also uses the following command-line definition:
 =end Description
 =end reST
 =cut
-
-package Text::Restructured::Directive::code_block;
 
 BEGIN {
     Text::Restructured::Directive::handle_directive

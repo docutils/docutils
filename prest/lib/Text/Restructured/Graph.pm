@@ -1,9 +1,11 @@
-package Text::Restructured::Graph;
-
-# $Id: Graph.pm 4330 2006-01-30 03:10:07Z mnodine $
+# $Id$
 # Copyright (C) 2002-2005 Freescale Semiconductor, Inc.
 # Distributed under terms of the Perl license, which is the disjunction of
 # the GNU General Public License (GPL) and the Artistic License.
+
+package Text::Restructured::Graph;
+
+$VERSION = ( q$Revision: 4330$ ) =~ /(\d+)/g;
 
 # This package contains routines for representing and manipulating
 # graph objects.
