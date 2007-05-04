@@ -1,3 +1,4 @@
+ChangeLog
 COPYING.txt
 doc/src/alternatives.rst
 doc/src/ascii-mathml.xrst
@@ -21,7 +22,6 @@ doc/tools/htmldiff.prl
 doc/tools/perlsynopsis.prl
 GPL.txt
 insertperl.pl
-lib/Text/Restructured.pm.PL
 lib/Text/Restructured/default.css
 lib/Text/Restructured/Directive/code_block.pm
 lib/Text/Restructured/Directive/if.pm
@@ -46,7 +46,6 @@ MANIFEST			This list of files
 MODIFY.txt
 prest
 README
-ReleaseNotes.txt
 t/10_parse/block_quotes.init/test_block_quotes.py
 t/10_parse/bullet_lists.init/test_bullet_lists.py
 t/10_parse/citations.init/test_citations.py

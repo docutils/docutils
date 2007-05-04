@@ -1,10 +1,14 @@
-# $Id: perl.pm 768 2006-01-28 03:33:28Z marknodine $
+# $Id$
 # Copyright (C) 2002-2005 Freescale Semiconductor, Inc.
 # Distributed under terms of the Perl license, which is the disjunction of
 # the GNU General Public License (GPL) and the Artistic License.
 
 # This package implements the perl directive for the perl implementation
 # of reStructuredText.
+
+package Text::Restructured::Directive::perl;
+
+$VERSION = ( q$Revision: 768$ ) =~ /(\d+)/g;
 
 =pod
 =begin reST
@@ -65,8 +69,6 @@ The following defines are processed by the perl directive:
 =end Description
 =end reST
 =cut
-
-package Text::Restructured::Directive::perl;
 
 BEGIN {
     Text::Restructured::Directive::handle_directive

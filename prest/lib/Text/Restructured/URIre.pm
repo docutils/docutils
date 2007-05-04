@@ -5,6 +5,8 @@
 
 package Text::Restructured::URIre;
 
+$VERSION = ( q$Revision: 4580$ ) =~ /(\d+)/g;
+
 # Declare read-only regular expressions for URI references
 
 BEGIN {

@@ -13,9 +13,17 @@ use ExtUtils::MakeMaker;
 #  -h        Print help
 #  -k        Keep same values as config.log (or file specified with -f)
 
-## Note: The version number for the entire release is specified here and
-## propagated.  Be sure to edit for every release.
-my $Version = "0.003028";
+## Be sure to edit the version number in lib/Text/Restructured.pm for
+## every release.
+my $Version;
+open PM, "lib/Text/Restructured.pm";
+while (<PM>) {
+    if (/\$VERSION\s*=/) {
+	my $VERSION;
+	$Version = eval $_;
+    }
+}
+close PM;
 
 use vars qw($opt_f $opt_h $opt_k);
 my $OUTPUT_CFG_FILE = $opt_f = 'config.log';
@@ -160,13 +168,9 @@ WriteMakefile(
     PREREQ_PM      => { 'Text::ASCIIMathML'=>0,
 			'Slay::Makefile'=>0,
 			}, # e.g., Module::Name => 1.1
-    PL_FILES       => {'lib/Text/Restructured.pm.PL' =>
-		       'lib/Text/Restructured.pm',
-		       'lib/Text/Restructured/PrestConfig.pm.PL' =>
+    PL_FILES       => {'lib/Text/Restructured/PrestConfig.pm.PL' =>
 		       'lib/Text/Restructured/PrestConfig.pm'},
-    PM             => {'lib/Text/Restructured.pm' =>
-		       'blib/lib/Text/Restructured.pm',
-		       'lib/Text/Restructured/PrestConfig.pm' =>
+    PM             => {'lib/Text/Restructured/PrestConfig.pm' =>
 		       'blib/lib/Text/Restructured/PrestConfig.pm',
 		       %pm_files},
 #    PM_FILTER      =>  qq($^X -pe "END{print qq{our \\044VERSION=$Version\\;\\n}}"),
