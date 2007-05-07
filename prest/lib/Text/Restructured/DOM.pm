@@ -5,7 +5,7 @@
 
 package Text::Restructured::DOM;
 
-$VERSION = ( q$Revision: 5055$ ) =~ /(\d+)/g;
+($VERSION) = q$Revision$ =~ /(\d+)/g;
 
 # This package contains routines for Document Object Model (DOM) objects.
 # A DOM object is the prest equivalent of a doctree object.
