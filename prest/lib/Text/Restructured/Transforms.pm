@@ -37,6 +37,8 @@
 # the original python implementation of docutils.
 package Text::Restructured::docutils::transforms::components;
 
+($VERSION) = q$Revision$ =~ /(\d+)/g;
+
 =pod
 =begin reST
 =begin Usage

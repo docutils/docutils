@@ -5,7 +5,8 @@
 
 package Text::Restructured;
 
-$VERSION = 0.003029;
+# N.B.: keep version in quotes so trailing 0's are not lost
+$VERSION = '0.003030';
 
 # This package does parsing of reStructuredText files
 
