@@ -5,7 +5,7 @@
 
 package Text::Restructured::Writer;
 
-$VERSION = ( q$Revision: 4580$ ) =~ /(\d+)/g;
+($VERSION) = q$Revision$ =~ /(\d+)/g;
 
 # This package contains routines for parsing and processing 
 # writer schemas for Text::Restructured.

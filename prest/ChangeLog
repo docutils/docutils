@@ -5,6 +5,11 @@ Release Notes
 
 .. contents::
 
+Release 0.3.30
+--------------
+* Fixed problem with find command in Makefile.PL that used a Linuxism.
+* Made most of the perl modules use the subversion release as version number.
+
 Release 0.3.29
 --------------
 * Renamed ReleaseNotes.txt to ChangeLog so that it will appear as a

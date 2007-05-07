@@ -8,7 +8,7 @@
 
 package Text::Restructured::Directive::code_block;
 
-$VERSION = ( q$Revision: 729$ ) =~ /(\d+)/g;
+($VERSION) = q$Revision$ =~ /(\d+)/g;
 
 =pod
 =begin reST

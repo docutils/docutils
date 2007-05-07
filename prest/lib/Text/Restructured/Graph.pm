@@ -5,7 +5,7 @@
 
 package Text::Restructured::Graph;
 
-$VERSION = ( q$Revision: 4330$ ) =~ /(\d+)/g;
+($VERSION) = q$Revision$ =~ /(\d+)/g;
 
 # This package contains routines for representing and manipulating
 # graph objects.

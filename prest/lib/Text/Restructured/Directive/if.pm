@@ -8,7 +8,7 @@
 
 package Text::Restructured::Directive::if;
 
-$VERSION = ( q$Revision: 768$ ) =~ /(\d+)/g;
+($VERSION) = q$Revision$ =~ /(\d+)/g;
 
 =pod
 =begin reST
