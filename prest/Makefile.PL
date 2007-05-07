@@ -19,7 +19,7 @@ my $Version;
 open PM, "lib/Text/Restructured.pm";
 while (<PM>) {
     if (/\$VERSION\s*=/) {
-	my $VERSION;
+	my $VERSION;		# N.B.: Needed so $VERSION passes strict
 	$Version = eval $_;
     }
 }
@@ -149,8 +149,7 @@ unlink "lib/Text/Restructured/PrestConfig.pm";
 #### Finally, create the Makefile
 # Get list of perl modules in lib subdirectory
 chomp (my @pm_files =
-       grep ! /\.svn|\bCVS\b/, 
-       `find lib -type f -and -not -name '*~' -and -not -name '*.PL'`);
+       grep ! /\.svn|\bCVS\b|~\Z|\.PL\Z/, `find lib -type f`);
 my %pm_files;
 @pm_files{@pm_files} = map "blib/$_", @pm_files;
 
