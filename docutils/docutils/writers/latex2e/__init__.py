@@ -155,6 +155,9 @@ class Writer(writers.Writer):
     config_section = 'latex2e writer'
     config_section_dependencies = ('writers',)
 
+    visitor_attributes = ("head_prefix", "head", 
+            "body_prefix", "body", "body_suffix")
+
     output = None
     """Final translated form of `document`."""
 
@@ -171,6 +174,12 @@ class Writer(writers.Writer):
         self.body_prefix = visitor.body_prefix
         self.body = visitor.body
         self.body_suffix = visitor.body_suffix
+
+    def assemble_parts(self):
+        writers.Writer.assemble_parts(self)
+        for part in self.visitor_attributes:
+            self.parts[part] = ''.join(getattr(self, part))
+
 
 """
 Notes on LaTeX

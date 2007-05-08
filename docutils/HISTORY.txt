@@ -116,6 +116,7 @@ Changes Since 0.4
 
 * docutils/writers/latex2e/__init__.py:
 
+  - Add assemble_parts to writer.
   - Add simply support for nested tables.
   - Fix verbatim in tables if use-verbatim-when-possible.
   - Use section commands down to subparagraph.
