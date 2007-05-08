@@ -78,8 +78,14 @@ for LR in "" "ref" ; do
     do_diff $REFF $OUTF 
   done
 done
-# table-style
 
+INF="test/tables.txt"
+OUTF="$INF-verbatim.tex"
+REFF="$OUTF.ref"
+$CMD --use-verbatim-when-possible $2 $3 $INF > $OUTF
+do_diff $REFF $OUTF 
+
+# table-style
 for TABSTYLE in "" standard booktabs nolines ; do
   for INF in `ls test/tables.txt` ; do
     OUTF="$INF-$TABSTYLE.tex"

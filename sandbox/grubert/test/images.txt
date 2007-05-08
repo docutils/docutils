@@ -1,5 +1,5 @@
 Testing image attributes
-------------------------
+========================
 
 the unscaled image
 
@@ -16,9 +16,6 @@ center and scale
    :scale: 200
    :align: center
 
-.. image:: biohazard.png
-   :rotate: 90
-
 an image with a web target
 
 .. image:: debian.png
@@ -32,9 +29,25 @@ and for figure too
    :width: 5cm
    :align: right
 
+
 figure and scale
 
 .. figure:: biohazard.png
    :scale: 300
    :align: left
+
+unsupported things
+------------------
+
+.. image:: biohazard.png
+   :rotate: 90
+
+how to set a label
+
+.. image:: biohazard.png
+   :name: classy pic
+
+.. figure:: biohazard.png
+   :label: classy pic
+
 
