@@ -126,9 +126,9 @@ class HTTranslator(HTMLTranslator):
     def astext(self):
         headers = ''.join(['%s: %s\n' % (k,v) \
             for (k,v) in self.headers.items()])
-        # kludge! want footer, but not '</body></html>'
+        # kludge! want footer, but not class document '</div>' '</body></html>'
         body = self.body_pre_docinfo + self.docinfo + self.body + \
-                self.body_suffix[:-1]
+                self.body_suffix[:-2]
 
         return ''.join([headers + '\n'] + body)
 
