@@ -1,0 +1,30 @@
+py-rest-doc
+===========
+
+This sandbox project is about moving the official Python documentation
+to reStructuredText.
+
+
+What you need to know
+---------------------
+
+To convert the LaTeX doc to reST, create a target directory for the
+reST sources and run ::
+
+   python convert.py /path/to/checkout/Doc /path/to/rest/dir
+
+This will convert all LaTeX sources to reST files in the target directory.
+
+Note: the ``inst`` document ("Installing Python Modules") is only
+convertable after applying the patch in ``etc/inst.diff``.
+
+
+To build the HTML, you'll need the ``Pygments`` and ``Jinja``
+packages from the Cheese Shop. The former is used as the highlighter,
+the latter is the templating engine for HTML output.
+
+Then, create a target directory and run ::
+
+   python sphinx-run.py /path/to/rest/dir /path/to/target/dir
+
+This will create HTML files in the target directory.
