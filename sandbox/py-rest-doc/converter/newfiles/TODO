@@ -1,0 +1,9 @@
+To do after conversion
+======================
+
+* fix all references and links marked with `XXX`
+* adjust all literal include paths
+* remove all non-literal includes
+* fix all duplicate labels and undefined label references
+* fix the email package docs: add a toctree
+* split very large files and add toctrees
