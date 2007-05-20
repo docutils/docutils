@@ -15,8 +15,8 @@ Documentation <http://docutils.sourceforge.net/rst.html>`_.
 Paragraphs
 ----------
 
-The most basic block a reST document is made of. Paragraphs are chunks of text
-separated by one ore more blank lines. As in Python, indentation is significant
+The most basic block a reST document is made of.  Paragraphs are chunks of text
+separated by one ore more blank lines.  As in Python, indentation is significant
 in reST, so all lines of a paragraph must be left-aligned.
 
 
@@ -42,17 +42,17 @@ Be aware of some restrictions of this markup:
 These restrictions may be lifted in future versions of the docutils.
 
 reST also allows for custom \`\`interpreted text roles'', which signify that the
-enclosed text should be interpreted in a specific way. Sphinx uses this to
+enclosed text should be interpreted in a specific way.  Sphinx uses this to
 provide semantic markup and cross-referencing of identifiers, as described in
-the appropriate section.
+the appropriate section.  The general syntax is ``:rolename:`content```.
 
 
 Lists and Quotes
 ----------------
 
 List markup is natural: just place an asterisk at the start of a paragraph and
-indent properly. The same goes for numbered lists; they can also be autonumbered
-using a ``#`` sign::
+indent properly.  The same goes for numbered lists; they can also be
+autonumbered using a ``#`` sign::
 
    * This is a bulleted list.
    * It has two items, the second
@@ -91,7 +91,7 @@ Source Code
 -----------
 
 Literal code blocks are introduced by ending a paragraph with the special marker
-``::``. The literal block must be indented, to be able to include blank lines::
+``::``.  The literal block must be indented, to be able to include blank lines::
 
    This is a normal text paragraph. The next paragraph is a code sample::
 
@@ -114,6 +114,23 @@ That way, the second sentence in the above example's first paragraph would be
 rendered as \`\`The next paragraph is a code sample:''.
 
 
+Hyperlinks
+----------
+
+External links
+^^^^^^^^^^^^^^
+
+Use ```Link text <http://target>`_`` for inline web links.  If the link text
+should be the web address, you don't need special markup at all, the parser
+finds links and mail addresses in ordinary text.
+
+Internal links
+^^^^^^^^^^^^^^
+
+Internal linking is done via a special reST role, see the section on specific
+markup.
+
+
 Sections
 --------
 
@@ -125,8 +142,8 @@ section title with a punctuation character, at least as long as the text::
    =================
 
 Normally, there are no heading levels assigned to certain characters as the
-structure is determined from the succession of headings. However, for the Python
-documentation, we use this convention:
+structure is determined from the succession of headings.  However, for the
+Python documentation, we use this convention:
 
 * ``#`` with overline, for parts
 * ``*`` with overline, for chapters
@@ -136,27 +153,63 @@ documentation, we use this convention:
 * ``"``, for paragraphs
 
 
-Footnotes
----------
+Explicit Markup
+---------------
 
-XXX
+"Explicit markup" is used in reST for most constructs that need special
+handling, such as footnotes, specially-highlighted paragraphs, comments, and
+generic directives.
 
-Hyperlinks
-----------
-
-XXX
-
-Comments
---------
-
-XXX
-
+An explicit markup block begins with a line starting with ``.. `` and is
+terminated by the next paragraph at the same level of indentation.  (There needs
+to be a blank line between explicit markup and normal paragraphs.  This may all
+sound a bit complicated, but it is intuitive enough when you write it.)
 
 
 Directives
 ----------
 
-XXX
+A directive is a generic block of explicit markup.  Besides roles, it is one of
+the extension mechanisms of reST, and Sphinx makes heavy use of it.
+
+Basically, a directive consists of a name, arguments, options and content. (Keep
+this terminology in mind, it is used in the next chapter describing custom
+directives.)  Looking at this example, ::
+
+   .. function:: foo(x)
+                 foo(y, z)
+      :bar: no
+
+      Return a line of text input from the user.
+
+``function`` is the directive name.  It is given two arguments here, the
+remainder of the first line and the second line, as well as one option ``bar``
+(as you can see, options are given in the lines immediately following the
+arguments and indicated by the colons).
+
+The directive content follows after a blank line and is indented relative to the
+directive start.
+
+
+Footnotes
+---------
+
+For footnotes, use ``[#]_`` to mark the footnote location, and add the footnote
+body at the bottom of the document after a "Footnotes" rubric heading, like so::
+
+   Lorem ipsum [#]_ dolor sit amet ... [#]_
+
+   .. rubric:: Footnotes
+
+   .. [#] Text of the first footnote.
+   .. [#] Text of the second footnote.
+
+
+Comments
+--------
+
+Every explicit markup block which isn't a valid markup construct (like the
+footnotes above) is regared as a comment.
 
 
 Source encoding
