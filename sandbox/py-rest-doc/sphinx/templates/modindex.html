@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% set title = 'Global Module Index' %}
+{% block body %}
+
+   <h1 id="global-module-index">Global Module Index</h1>
+
+   <p>Some module names are followed by an annotation indicating what platform
+     they are available on.</p>
+
+     {# XXX: add "show synopsis" link #}
+   <table width="100%" class="indextable"><tr><td width="33%" valign="top">
+   {% set collen = len(modindexentries) // 3 %}
+   {% set numcol = 1 %}
+   {% for modname, (filename, synopsis, platform)  in modindexentries %}
+      <a href="{{ filename }}" title="{{ synopsis }}"><tt>{{ modname }}</tt></a>
+      {% if platform %} <em>({{ platform }})</em>{% endif %}
+      <br>
+      {% if numcol < 3 and loop.index % collen == 0 %}
+      {% set numcol = numcol+1 %}
+      </td><td width="33%" valign="top">
+      {% endif %}
+   {% endfor %}
+   </td></tr></table>
+
+{% endblock %}

@@ -1,0 +1,14 @@
+div.documentwrapper {
+    width: 100%;
+}
+
+div.body {
+    margin: 0;
+}
+
+div.sidebar,
+div.related,
+div.footer,
+#top-link {
+    display: none;
+}
