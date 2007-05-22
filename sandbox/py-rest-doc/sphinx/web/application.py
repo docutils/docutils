@@ -66,7 +66,11 @@ class DocumentationApplication(object):
         """
         Search the database.
         """
-        #XXX: this code is ugly. especially the way the summary is created.
+        # disabled for now
+        if not req.args.get('q'):
+            return RedirectResponse('')
+        return RedirectResponse('q/%s/' % req.args['q'])
+
         results = None
         if 'q' in req.args:
             # sidebar checks for keywords too.
