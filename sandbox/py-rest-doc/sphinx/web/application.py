@@ -113,7 +113,7 @@ class DocumentationApplication(object):
             url = get_target_uri(filename)
             return RedirectResponse(url)
         # XXX: do a difflib match test here
-        return Response(render_template(req, 'not_found.html'))
+        return Response(render_template(req, 'not_found.html'), status=404)
 
     def __call__(self, environ, start_response):
         """
@@ -137,7 +137,7 @@ class DocumentationApplication(object):
         return resp(environ, start_response)
 
 
-def make_app(conf=None):
+def make_app(conf):
     """
     Creates the WSGI application based on a configuration passed.
     Handled configuration values so far:
@@ -146,8 +146,8 @@ def make_app(conf=None):
         the folder containing the documentation data as generated
         by sphinx with the web builder.
     """
-    app = DocumentationApplication(conf or {})
+    app = DocumentationApplication(conf)
     app = SharedDataMiddleware(app, {
-        '/style':   path.join(path.dirname(__file__), '..', 'style')
+        '/style':   path.join(conf['data_root_path'], 'style')
     })
     return app
