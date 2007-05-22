@@ -28,3 +28,12 @@ Then, create a target directory and run ::
    python sphinx-run.py /path/to/rest/dir /path/to/target/dir
 
 This will create HTML files in the target directory.
+
+
+Things That Should Be Improved
+------------------------------
+
+-  Offline and online search work completely different. The
+   keywords are just searched from the sidebar and other
+   incompatibilities. It's also questionable if a text search
+   like the current implementation makes sense for the documentation.
