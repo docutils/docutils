@@ -451,9 +451,9 @@ class StandaloneHTMLBuilder(Builder):
         )
 
 
-class DjangoHTMLBuilder(StandaloneHTMLBuilder):
+class WebHTMLBuilder(StandaloneHTMLBuilder):
     """
-    Builds HTML docs usable with the Django web-based doc server.
+    Builds HTML docs usable with the web-based doc server.
     """
     # doesn't use the standalone specific options
     option_spec = Builder.option_spec
@@ -486,9 +486,8 @@ class DjangoHTMLBuilder(StandaloneHTMLBuilder):
         fp.close()
 
 
-
 builders = {
     'html': StandaloneHTMLBuilder,
-    'django': DjangoHTMLBuilder,
+    'web': WebHTMLBuilder,
 #    'latex': LatexBuilder,
 }
