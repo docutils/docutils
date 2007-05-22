@@ -28,7 +28,8 @@ def get_target_uri(source_filename):
     return source_filename[:-4] + '/'
 
 
-def render_template(req, template_name, context):
+def render_template(req, template_name, context=None):
+    context = context or {}
     tmpl = jinja_env.get_template(template_name)
 
     def relative_path_to(otheruri, resource=False):
@@ -57,7 +58,7 @@ class DocumentationApplication(object):
         """
         if req.method == 'POST':
             pass
-        return Response(render_template(req, 'search.html', {}))
+        return Response(render_template(req, 'search.html'))
 
     def get_page(self, req, url):
         """
@@ -111,7 +112,8 @@ class DocumentationApplication(object):
             filename, title, arg = self.environment.modules[url]
             url = get_target_uri(filename)
             return RedirectResponse(url)
-        raise NotImplementedError(url)
+        # XXX: do a difflib match test here
+        return Response(render_template(req, 'not_found.html'))
 
     def __call__(self, environ, start_response):
         """
