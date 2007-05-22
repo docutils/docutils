@@ -97,11 +97,21 @@ class DocumentationApplication(object):
         self.cache[url] = (filename, path.getmtime(filename), text)
         return Response(text)
 
-    def get_close_matches(self, req, url):
+    pretty_type = {
+        'data': 'module data',
+        'cfunction': 'C function',
+        'cmember': 'C member',
+        'cmacro': 'C macro',
+        'ctype': 'C type',
+        'cvar': 'C variable',
+    }
+
+    def get_keyword_matches(self, req, url):
         """
-        Find close matches. If there is an exact match (for example
+        Find keyword matches. If there is an exact match, just redirect:
         http://docs.python.org/os.path.exists would automatically
         redirect to http://docs.python.org/modules/os.path/#os.path.exists.
+        Else, show a page with close matches.
 
         Module references are processed first so that "os.path" is handled as
         a module and not as member of os.
@@ -125,7 +135,7 @@ class DocumentationApplication(object):
             close_matches.append({
                 'href':         relative_uri(url + '/', link),
                 'title':        title,
-                'type':         type,
+                'type':         self.pretty_type.get(type, type),
                 'description':  desc
             })
         return Response(render_template(req, 'not_found.html', {
@@ -147,11 +157,13 @@ class DocumentationApplication(object):
             url = req.path.strip('/') or 'index'
             if url == 'search':
                 resp = self.search(req)
+            elif url == 'index' and req.args.get('q', ''):
+                resp = self.get_keyword_matches(req, req.args['q'])
             else:
                 try:
                     resp = self.get_page(req, url)
                 except NotFound:
-                    resp = self.get_close_matches(req, url)
+                    resp = self.get_keyword_matches(req, url)
         return resp(environ, start_response)
 
 

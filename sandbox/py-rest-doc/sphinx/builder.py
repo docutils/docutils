@@ -137,9 +137,8 @@ class Builder(object):
         """Build all source files."""
         self.options.freshenv = True
         self.load_env()
-        self.msg('build summary:', nonl=1)
-        self.msg('Building all source files.', nobold=1)
-        self.build(self.all_source_files, self.all_source_files)
+        self.build(self.all_source_files, self.all_source_files,
+                   summary='all source files')
 
     def build_specific(self, source_filenames):
         """Only rebuild as much as needed for changes in the source_filenames."""
@@ -153,10 +152,8 @@ class Builder(object):
             to_read = self.all_source_files
         else:
             to_read = to_write
-        self.msg('build summary:', nonl=1)
-        self.msg('Building %d source files given on command line.' %
-                 len(to_read), nobold=1)
-        self.build(to_read, to_write)
+        self.build(to_read, to_write,
+                   summary='%d source files given on command line' % len(to_read))
 
     def build_update(self):
         """Only rebuild files changed or added since last build."""
@@ -173,16 +170,18 @@ class Builder(object):
                 if mtime > self.env.mtimes[filename]:
                     to_build.append(filename)
         if not to_build:
-            self.msg('no out of date files found, exiting.')
+            self.msg('no files are out of date, exiting.')
             return
-        self.msg('build summary:', nonl=1)
-        self.msg('Building %d source files that are out of date.' %
-                 len(to_build), nobold=1)
-        self.build(to_build, to_build)
+        self.build(to_build, to_build,
+                   summary='%d source files that are out of date' % len(to_build))
 
-    def build(self, to_read, to_write):
+    def build(self, to_read, to_write, summary=None):
         assert self.env
         self.doctrees = {}
+
+        if summary:
+            self.msg('building [%s]:' % self.name, nonl=1)
+            self.msg(summary, nobold=1)
 
         # read -- collect all warnings from docutils
         stream = StringIO.StringIO()
@@ -246,6 +245,7 @@ class StandaloneHTMLBuilder(Builder):
     """
     Builds standalone HTML docs.
     """
+    name = 'html'
 
     option_spec = Builder.option_spec
     option_spec.update({
@@ -343,6 +343,7 @@ class StandaloneHTMLBuilder(Builder):
             next = next,
             sourcename = sourcename,
             last_updated = self.last_updated,
+            builder = self.name,
         )
 
         self.handle_file(filename, context)
@@ -364,7 +365,7 @@ class StandaloneHTMLBuilder(Builder):
             key=lambda x: x[0].lower()))
 
         # use pseudo name 'special.rst' because all of them are at top level
-        # XXX: wrong for index
+        # XXX: wrong for index?
         parents = [{'link': self.get_relative_uri('special.rst', 'index.rst'),
                     'title': 'Python Documentation'}]
 
@@ -376,6 +377,7 @@ class StandaloneHTMLBuilder(Builder):
             modindexentries = modules,
             parents = parents,
             len = len,
+            builder = self.name,
         )
 
         self.handle_specials(specialcontext)
@@ -455,6 +457,8 @@ class WebHTMLBuilder(StandaloneHTMLBuilder):
     """
     Builds HTML docs usable with the web-based doc server.
     """
+    name = 'web'
+
     # doesn't use the standalone specific options
     option_spec = Builder.option_spec
     option_spec.update({

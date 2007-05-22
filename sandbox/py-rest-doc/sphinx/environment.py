@@ -468,7 +468,7 @@ class BuildEnvironment:
             for title, (fn, desc, _) in self.modules.iteritems():
                 yield ('module', fn, title, desc)
             for title, (fn, _) in self.descrefs.iteritems():
-                yield ('ref', fn, title, '')
+                yield (_, fn, title, '')
 
         result = []
         for type, filename, title, desc in possibilities():
