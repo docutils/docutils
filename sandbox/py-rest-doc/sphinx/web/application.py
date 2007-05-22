@@ -204,6 +204,10 @@ class DocumentationApplication(object):
             url = req.path.strip('/') or 'index'
             if url == 'search':
                 resp = self.search(req)
+            elif url == 'index' and 'q' in req.args:
+                resp = RedirectResponse('q/%s/' % req.args['q'])
+            elif url.startswith('q/'):
+                resp = self.get_keyword_matches(req, url[2:])
             else:
                 try:
                     resp = self.get_page(req, url)
