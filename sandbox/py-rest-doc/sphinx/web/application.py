@@ -6,15 +6,17 @@
     A simple WSGI application that serves an interactive version
     of the python documentation.
 
-    :copyright: 2007 by Armin Ronacher.
+    :copyright: 2007 by Georg Brandl, Armin Ronacher.
     :license: Python license.
 """
 from __future__ import with_statement
+
 import cPickle as pickle
 from os import path
-from ..util import relative_uri
+
 from .util import Request, Response, RedirectResponse, SharedDataMiddleware, \
      NotFound, jinja_env
+from ..util import relative_uri
 
 
 special_urls = set(['index', 'genindex', 'modindex'])
@@ -50,7 +52,7 @@ class DocumentationApplication(object):
         self.cache = {}
         self.data_root = conf['data_root_path']
         with file(path.join(self.data_root, 'environment.pickle')) as f:
-            self.environment = pickle.load(f)
+            self.env = pickle.load(f)
 
     def search(self, req):
         """
@@ -97,26 +99,26 @@ class DocumentationApplication(object):
 
     def get_close_matches(self, req, url):
         """
-        Lookup close matches. If there is an exact match (for example
+        Find close matches. If there is an exact match (for example
         http://docs.python.org/os.path.exists would automatically
         redirect to http://docs.python.org/modules/os.path/#os.path.exists.
 
-        Module references are processed first so that "os.path" is
-        handled as module and not as member of os.
+        Module references are processed first so that "os.path" is handled as
+        a module and not as member of os.
         """
         # module references
-        if url in self.environment.modules:
-            filename, title, system = self.environment.modules[url]
+        if url in self.env.modules:
+            filename, title, system = self.env.modules[url]
             url = get_target_uri(filename)
             return RedirectResponse(url)
         # direct references
-        if url in self.environment.descrefs:
-            filename, ref_type = self.environment.descrefs[url]
+        if url in self.env.descrefs:
+            filename, ref_type = self.env.descrefs[url]
             url = get_target_uri(filename) + '#' + url
             return RedirectResponse(url)
         # get some close matches
         close_matches = []
-        for type, filename, title, desc in self.environment.get_close_matches(url):
+        for type, filename, title, desc in self.env.get_close_matches(url):
             link = get_target_uri(filename)
             if type == 'ref':
                 link += '#' + title
@@ -133,7 +135,7 @@ class DocumentationApplication(object):
 
     def __call__(self, environ, start_response):
         """
-        Dispatch the requests.
+        Dispatch requests.
         """
         req = Request(environ)
         if not req.path.endswith('/') and req.method == 'GET':
@@ -155,7 +157,7 @@ class DocumentationApplication(object):
 
 def make_app(conf):
     """
-    Creates the WSGI application based on a configuration passed.
+    Create the WSGI application based on a configuration dict.
     Handled configuration values so far:
 
     `data_root_path`

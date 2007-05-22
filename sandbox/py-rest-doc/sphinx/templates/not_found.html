@@ -3,7 +3,7 @@
 {% block body %}
   <h1 id="page-not-found">Keyword Not Found</h1>
   <p>
-    Sorry, but the requested keyword <strong>{{ keyword|e }}</strong> is
+    Sorry, but the keyword <strong>{{ keyword|e }}</strong> is
     not associated with a page. {% if close_matches %}A similarity search
     returned {{ close_matches|length }} items that are possible matches:
     {% endif %}
@@ -19,9 +19,10 @@
   <p>
     If you want to search the entire Python documentation for the string
     "{{ keyword|e }}", then <a href="{{ pathto('search.rst') }}?q={{ keyword|e
-    }}">click here</a>.
+    }}">use the search function</a>.
   </p>
   <p>
-    For a quick overview over all documented modules <a href="{{ pathto("modules.rst") }}">click here</a>.
+    For a quick overview over all documented modules,
+    <a href="{{ pathto('modules/index.rst') }}">click here</a>.
   </p>
 {% endblock %}

@@ -10,14 +10,16 @@
     :license: Python license.
 """
 from __future__ import with_statement
+
 import cgi
-import tempfile
 import urllib
+import tempfile
 from os import path
 from time import gmtime
 from Cookie import SimpleCookie
-from cStringIO import StringIO
 from datetime import datetime
+from cStringIO import StringIO
+
 from jinja import Environment, FileSystemLoader
 
 

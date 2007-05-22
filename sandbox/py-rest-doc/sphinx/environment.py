@@ -9,9 +9,9 @@
     :license: Python license.
 """
 
+import heapq
 import difflib
 import itertools
-import heapq
 import cPickle as pickle
 from os import path
 from string import uppercase
@@ -458,20 +458,20 @@ class BuildEnvironment:
 
     def get_close_matches(self, searchstring, n=20, cutoff=0.55):
         """
-        Return a list of tuples in the form
-        ``(type, filename, title, description)`` with close matches for
-        the given search string.
+        Return a list of tuples in the form ``(type, filename, title,
+        description)`` with close matches for the given search string.
         """
         s = difflib.SequenceMatcher()
         s.set_seq2(searchstring.lower())
 
-        possibilities = [('module', fn, title, desc) for (title, (fn, desc, _))
-                         in self.modules.iteritems()] + \
-                        [('ref', fn, title, '') for (title, (fn, _))
-                         in self.descrefs.iteritems()]
+        def possibilities():
+            for title, (fn, desc, _) in self.modules.iteritems():
+                yield ('module', fn, title, desc)
+            for title, (fn, _) in self.descrefs.iteritems():
+                yield ('ref', fn, title, '')
 
         result = []
-        for type, filename, title, desc in possibilities:
+        for type, filename, title, desc in possibilities():
             s.set_seq1(title.lower())
             if s.real_quick_ratio() >= cutoff and \
                s.quick_ratio() >= cutoff and \
