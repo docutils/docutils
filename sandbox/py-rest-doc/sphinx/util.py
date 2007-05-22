@@ -76,6 +76,35 @@ def get_category(filename):
     return parts[0]
 
 
+def shorten_result(text='', keywords=[], maxlen=240, fuzz=60):
+    if not text:
+        text = ''
+    text_low = text.lower()
+    beg = -1
+    for k in keywords:
+        i = text_low.find(k.lower())
+        if (i > -1 and i < beg) or beg == -1:
+            beg = i
+    excerpt_beg = 0
+    if beg > fuzz:
+        for sep in ('.', ':', ';', '='):
+            eb = text.find(sep, beg - fuzz, beg - 1)
+            if eb > -1:
+                eb += 1
+                break
+        else:
+            eb = beg - fuzz
+        excerpt_beg = eb
+    if excerpt_beg < 0:
+        excerpt_beg = 0
+    msg = text[excerpt_beg:beg+maxlen]
+    if beg > fuzz:
+        msg = '... ' + msg
+    if beg < len(text)-maxlen:
+        msg = msg + ' ...'
+    return msg
+
+
 class attrdict(dict):
     def __getattr__(self, key):
         return self[key]

@@ -29,7 +29,7 @@
     :license: Public Domain (?).
 """
 
-class PorterStemmer:
+class PorterStemmer(object):
 
     def __init__(self):
         """The main part of the stemming algorithm starts here.

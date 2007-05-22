@@ -436,7 +436,7 @@ class StandaloneHTMLBuilder(Builder):
         if self.indexer is not None:
             self.msg('dumping search index...')
             f = open(path.join(self.outdir, 'searchindex.json'), 'w')
-            self.indexer.dump(f)
+            self.indexer.dump(f, 'json')
             f.close()
 
     def render_partial(self, node):
@@ -462,6 +462,7 @@ class WebHTMLBuilder(StandaloneHTMLBuilder):
     option_spec = Builder.option_spec
     option_spec.update({
         'nostyle': 'Don\'t copy style and script files',
+        'searchindex': 'Create a search index for the online search',
     })
 
     def get_target_uri(self, source_filename):
@@ -472,6 +473,14 @@ class WebHTMLBuilder(StandaloneHTMLBuilder):
         return source_filename[:-4] + '/'
 
     def handle_file(self, filename, context):
+        # only index pages with title and category
+        title = context['title']
+        if self.indexer is not None and title:
+            category = get_category(filename)
+            if category is not None:
+                self.indexer.feed(filename, category, title,
+                                  self.doctrees[filename])
+
         outfilename = path.join(self.outdir, filename[:-4] + '.fpickle')
         ensuredir(path.dirname(outfilename))
         fp = open(outfilename, 'wb')
@@ -489,6 +498,12 @@ class WebHTMLBuilder(StandaloneHTMLBuilder):
         specialcontext.pop('pathto', None)
         pickle.dump(specialcontext, fp, 2)
         fp.close()
+
+        if self.indexer is not None:
+            self.msg('dumping search index...')
+            f = open(path.join(self.outdir, 'searchindex.pickle'), 'w')
+            self.indexer.dump(f, 'pickle')
+            f.close()
 
 
 builders = {
