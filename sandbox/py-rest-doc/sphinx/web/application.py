@@ -116,13 +116,19 @@ class DocumentationApplication(object):
             return RedirectResponse(url)
         # get some close matches
         close_matches = []
-        for type, filename, title in self.environment.get_close_matches(url):
+        for type, filename, title, desc in self.environment.get_close_matches(url):
             link = get_target_uri(filename)
             if type == 'ref':
                 link += '#' + title
-            close_matches.append((relative_uri(url + '/', link), title))
+            close_matches.append({
+                'href':         relative_uri(url + '/', link),
+                'title':        title,
+                'type':         type,
+                'description':  desc
+            })
         return Response(render_template(req, 'not_found.html', {
-            'close_matches': close_matches
+            'close_matches':    close_matches,
+            'keyword':          url
         }), status=404)
 
     def __call__(self, environ, start_response):

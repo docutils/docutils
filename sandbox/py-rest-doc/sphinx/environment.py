@@ -456,27 +456,27 @@ class BuildEnvironment:
             if newnode:
                 node.replace_self(newnode)
 
-    def get_close_matches(self, searchstring, n=20):
+    def get_close_matches(self, searchstring, n=20, cutoff=0.55):
         """
-        Return a list of tuples in the form ``(type, filename, title)`` with
-        close matches for the given search string.
+        Return a list of tuples in the form
+        ``(type, filename, title, description)`` with close matches for
+        the given search string.
         """
-        cutoff = 0.6
         s = difflib.SequenceMatcher()
         s.set_seq2(searchstring)
 
-        possibilities = [('module', fn, title) for (title, (fn, _, _)) in
-                         self.modules.iteritems()] + \
-                        [('ref', fn, title) for (title, (fn, _)) in
-                         self.descrefs.iteritems()]
+        possibilities = [('module', fn, title, desc) for (title, (fn, desc, _))
+                         in self.modules.iteritems()] + \
+                        [('ref', fn, title, '') for (title, (fn, _))
+                         in self.descrefs.iteritems()]
 
         result = []
-        for type, filename, title in possibilities:
+        for type, filename, title, desc in possibilities:
             s.set_seq1(title)
             if s.real_quick_ratio() >= cutoff and \
                s.quick_ratio() >= cutoff and \
                s.ratio() >= cutoff:
-                result.append((s.ratio(), type, filename, title))
+                result.append((s.ratio(), type, filename, title, desc))
 
         return [item[1:] for item in heapq.nlargest(n, result)]
 
