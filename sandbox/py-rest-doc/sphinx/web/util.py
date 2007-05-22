@@ -12,6 +12,7 @@
 from __future__ import with_statement
 import cgi
 import tempfile
+import urllib
 from os import path
 from time import gmtime
 from Cookie import SimpleCookie
@@ -575,6 +576,31 @@ class Response(object):
                 yield item.encode(charset)
             else:
                 yield str(item)
+
+
+class RedirectResponse(Response):
+
+    def __init__(self, target_url, code=302):
+        if not target_url.startswith('/'):
+            target_url = '/' + target_url
+        self.target_url = target_url
+        super(RedirectResponse, self).__init__('Moved...', status=code)
+
+    def __call__(self, environ, start_response):
+        url = environ['wsgi.url_scheme'] + '://'
+        if 'HTTP_HOST' in environ:
+            url += environ['HTTP_HOST']
+        else:
+            url += environ['SERVER_NAME']
+            if (environ['wsgi.url_scheme'], environ['SERVER_PORT']) not \
+               in (('https', '443'), ('http', '80')):
+                url += ':' + environ['SERVER_PORT']
+
+        url += urllib.quote(environ.get('SCRIPT_INFO', '').rstrip('/'))
+        url += self.target_url
+
+        self.headers['Location'] = url
+        return super(RedirectResponse, self).__call__(environ, start_response)
 
 
 class SharedDataMiddleware(object):
