@@ -17,7 +17,8 @@ from os import path
 from ..highlighting import highlight_block
 from .util import Request, Response, RedirectResponse, SharedDataMiddleware, \
      NotFound, jinja_env
-from ..util import relative_uri
+from ..search import SearchFrontend
+from ..util import relative_uri, shorten_result
 
 
 special_urls = set(['index', 'genindex', 'modindex'])
@@ -41,6 +42,10 @@ def render_template(req, template_name, context=None):
         return relative_uri(req.path, otheruri)
     context['pathto'] = relative_path_to
 
+    # add it here a second time for templates that don't
+    # get the builder information from the environment (such as search)
+    context['builder'] = 'web'
+
     return tmpl.render(context)
 
 
@@ -54,14 +59,33 @@ class DocumentationApplication(object):
         self.data_root = conf['data_root_path']
         with file(path.join(self.data_root, 'environment.pickle')) as f:
             self.env = pickle.load(f)
+        with file(path.join(self.data_root, 'searchindex.pickle')) as f:
+            self.search_frontend = SearchFrontend(pickle.load(f))
 
     def search(self, req):
         """
         Search the database.
         """
-        if req.method == 'POST':
-            pass
-        return Response(render_template(req, 'search.html'))
+        #XXX: this code is ugly. especially the way the summary is created.
+        results = None
+        if 'q' in req.args:
+            # sidebar checks for keywords too.
+            if req.args.get('check_keywords') == 'yes':
+                resp = self.get_keyword_matches(req, req.args['q'], True)
+                if resp is not None:
+                    return resp
+            results = []
+            for fn, title in self.search_frontend.search(req.args['q'],
+                                            req.args.getlist('area')):
+                with file(path.join(self.data_root, 'sources', fn[:-4] + '.txt')) as f:
+                    source = f.read().decode('utf-8')
+                context = shorten_result(source, req.args['q'].split())
+                results.append((fn, title, context))
+        return Response(render_template(req, 'search.html', {
+            'search_results':       results,
+            'search_performed':     bool(req.args.get('q')),
+            'current_page_name':    'search'
+        }))
 
     def show_source(self, req, page):
         """
@@ -120,7 +144,7 @@ class DocumentationApplication(object):
         'cvar': 'C variable',
     }
 
-    def get_keyword_matches(self, req, term=None):
+    def get_keyword_matches(self, req, term=None, avoid_fuzzy=False):
         """
         Find keyword matches. If there is an exact match, just redirect:
         http://docs.python.org/os.path.exists would automatically
@@ -130,9 +154,8 @@ class DocumentationApplication(object):
         Module references are processed first so that "os.path" is handled as
         a module and not as member of os.
         """
-        requrl = req.path.strip('/')
         if term is None:
-            term = requrl
+            term = req.path.strip('/')
         # module references
         if term in self.env.modules:
             filename, title, system = self.env.modules[term]
@@ -143,6 +166,10 @@ class DocumentationApplication(object):
             filename, ref_type = self.env.descrefs[term]
             url = get_target_uri(filename) + '#' + term
             return RedirectResponse(url)
+
+        if avoid_fuzzy:
+            return
+
         # get some close matches
         close_matches = []
         for type, filename, title, desc in self.env.get_close_matches(term):
@@ -177,8 +204,6 @@ class DocumentationApplication(object):
             url = req.path.strip('/') or 'index'
             if url == 'search':
                 resp = self.search(req)
-            elif url == 'index' and req.args.get('q', ''):
-                resp = self.get_keyword_matches(req, req.args['q'])
             else:
                 try:
                     resp = self.get_page(req, url)

@@ -545,7 +545,7 @@ var Documentation = {
             var item = results.pop();
             var listItem = $('<li style="display:none"></li>');
             listItem.append($('<a/>').attr('href', item[0] + '.html' +
-                                           highlightstring).text(item[1]));
+                                           highlightstring).html(item[1]));
             $.get(item[0] + '.txt', function(data) {
               listItem.append($.makeSearchSummary(data, searchwords, hlwords));
               output.append(listItem);

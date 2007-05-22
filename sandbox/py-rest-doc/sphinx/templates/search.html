@@ -12,7 +12,7 @@
     In order to speed up the results you can limit your search by
     excluding some of the sections listed below.
   </p>
-  <form action="search.html" method="get">
+  <form action="" method="get">
     <input type="text" name="q" value="">
     <input type="submit" value="search">
     <p>
@@ -37,11 +37,28 @@
     {% endfor %}
     </ul>
   </form>
+  {% if search_performed %}
+    <h2>Search Results</h2>
+    {% if not search_results %}
+      <p>Your search did not match any results.</p>
+    {% endif %}  
+  {% endif %}
   <div id="search-results">
+  {% if search_results %}
+    <ul>
+    {% for href, caption, context in search_results %}
+      <li><a href="{{ pathto(item.href) }}">{{ caption }}</a>
+        <div class="context">{{ context|e }}</div>
+      </li>
+    {% endfor %}
+    </ul>
+  {% endif %}
   </div>
-  <script type="text/javascript">
-    $(document).ready(function() {
-      Documentation.Search.init();
-    });
-  </script>
+  {% if builder == 'html' %}
+    <script type="text/javascript">
+      $(document).ready(function() {
+        Documentation.Search.init();
+      });
+    </script>
+  {% endif %}
 {% endblock %}
