@@ -463,7 +463,7 @@ class BuildEnvironment:
         the given search string.
         """
         s = difflib.SequenceMatcher()
-        s.set_seq2(searchstring)
+        s.set_seq2(searchstring.lower())
 
         possibilities = [('module', fn, title, desc) for (title, (fn, desc, _))
                          in self.modules.iteritems()] + \
@@ -472,7 +472,7 @@ class BuildEnvironment:
 
         result = []
         for type, filename, title, desc in possibilities:
-            s.set_seq1(title)
+            s.set_seq1(title.lower())
             if s.real_quick_ratio() >= cutoff and \
                s.quick_ratio() >= cutoff and \
                s.ratio() >= cutoff:
