@@ -77,11 +77,6 @@ jinja_env = Environment(loader=FileSystemLoader(templates_path,
                         friendly_traceback=False)
 
 
-def render_template(template_name, context):
-    tmpl = jinja_env.get_template(template_name)
-    return tmpl.render(context)
-
-
 class lazy_property(object):
     """
     Descriptor implementing a "lazy property", i.e. the function
