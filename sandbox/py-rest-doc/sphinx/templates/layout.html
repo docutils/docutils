@@ -23,8 +23,7 @@
           <li class="right"><a href="{{ prev.link|e }}" title="{{ prev.title|striptags }}">previous</a> |</li>
         {%- endif %}
         {%- for parent in parents %}
-          <li><a href="{{ parent.link|e }}">{{ parent.title }}</a>{%
-            if not loop.last %} &raquo;{% endif %}</li>
+          <li><a href="{{ parent.link|e }}">{{ parent.title }}</a> &raquo;</li>
         {%- endfor %}
       </ul>
     </div>
