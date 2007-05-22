@@ -177,7 +177,7 @@ class DocumentationApplication(object):
             if type == 'ref':
                 link += '#' + title
             close_matches.append({
-                'href':         relative_uri(requrl + '/', link),
+                'href':         relative_uri(req.url, link),
                 'title':        title,
                 'type':         self.pretty_type.get(type, type),
                 'description':  desc
