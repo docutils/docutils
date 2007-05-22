@@ -22,7 +22,6 @@ Python and how to embed it in other applications.
 
    using.rst
    mac.rst
-   macfs.rst
    macic.rst
    macos.rst
    macostools.rst
