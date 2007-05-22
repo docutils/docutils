@@ -596,7 +596,6 @@ class RedirectResponse(Response):
 
         url += urllib.quote(environ.get('SCRIPT_INFO', '').rstrip('/'))
         url += self.target_url
-        print url
 
         self.headers['Location'] = url
         return super(RedirectResponse, self).__call__(environ, start_response)
