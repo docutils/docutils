@@ -8,6 +8,17 @@
     are easier to guess. Some of the old URLs still work and redirect to
     the new location, others do not because they were way too generic.
   </p>
+  {% if close_matches %}
+    <h3>Similar Pages</h3>
+    <p>
+      Here a list of {{ close_matches|length }} pages with a similar page name:
+    </p>
+    <ul>
+    {% for href, title in close_matches %}
+      <li><a href="{{ href }}">{{ title|e }}</a></li>
+    {% endfor %}
+    </ul>
+  {% endif %}
   <h3>You can</h3>
   <ul>
     <li><a href="{{ pathto("index.rst") }}">Click here</a> to go to the index.</li>

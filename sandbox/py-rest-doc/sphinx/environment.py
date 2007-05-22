@@ -9,7 +9,9 @@
     :license: Python license.
 """
 
+import difflib
 import itertools
+import heapq
 import cPickle as pickle
 from os import path
 from string import uppercase
@@ -453,6 +455,30 @@ class BuildEnvironment:
 
             if newnode:
                 node.replace_self(newnode)
+
+    def get_close_matches(self, searchstring, n=20):
+        """
+        Return a list of tuples in the form ``(type, filename, title)`` with
+        close matches for the given search string.
+        """
+        cutoff = 0.6
+        s = difflib.SequenceMatcher()
+        s.set_seq2(searchstring)
+
+        possibilities = [('module', fn, title) for (title, (fn, _, _)) in
+                         self.modules.iteritems()] + \
+                        [('ref', fn, title) for (title, (fn, _)) in
+                         self.descrefs.iteritems()]
+
+        result = []
+        for type, filename, title in possibilities:
+            s.set_seq1(title)
+            if s.real_quick_ratio() >= cutoff and \
+               s.quick_ratio() >= cutoff and \
+               s.ratio() >= cutoff:
+                result.append((s.ratio(), type, filename, title))
+
+        return [item[1:] for item in heapq.nlargest(n, result)]
 
     def resolve_toctrees(self, documents):
         # determine which files (containing a toc) must be rebuilt for each

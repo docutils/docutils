@@ -100,20 +100,30 @@ class DocumentationApplication(object):
         Lookup close matches. If there is an exact match (for example
         http://docs.python.org/os.path.exists would automatically
         redirect to http://docs.python.org/modules/os.path/#os.path.exists.
+
+        Module references are processed first so that "os.path" is
+        handled as module and not as member of os.
         """
+        # module references
+        if url in self.environment.modules:
+            filename, title, system = self.environment.modules[url]
+            url = get_target_uri(filename)
+            return RedirectResponse(url)
         # direct references
         if url in self.environment.descrefs:
             filename, ref_type = self.environment.descrefs[url]
             url = get_target_uri(filename) + '#' + url
             return RedirectResponse(url)
-        # module references
-        # XXX: should those have a higher priority?
-        if url in self.environment.modules:
-            filename, title, arg = self.environment.modules[url]
-            url = get_target_uri(filename)
-            return RedirectResponse(url)
-        # XXX: do a difflib match test here
-        return Response(render_template(req, 'not_found.html'), status=404)
+        # get some close matches
+        close_matches = []
+        for type, filename, title in self.environment.get_close_matches(url):
+            link = get_target_uri(filename)
+            if type == 'ref':
+                link += '#' + title
+            close_matches.append((relative_uri(url + '/', link), title))
+        return Response(render_template(req, 'not_found.html', {
+            'close_matches': close_matches
+        }), status=404)
 
     def __call__(self, environ, start_response):
         """
