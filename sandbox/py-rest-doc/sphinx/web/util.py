@@ -74,7 +74,12 @@ HTTP_STATUS_CODES = {
 templates_path = path.join(path.dirname(__file__), '..', 'templates')
 jinja_env = Environment(loader=FileSystemLoader(templates_path,
                                                 use_memcache=True),
-                        friendly_traceback=False)
+                        friendly_traceback=True)
+
+
+def render_template(template_name, context):
+    tmpl = jinja_env.get_template(template_name)
+    return tmpl.render(context)
 
 
 class lazy_property(object):
@@ -98,7 +103,7 @@ class lazy_property(object):
 
 class _StorageHelper(cgi.FieldStorage):
     """
-    Helper class used by `BaseRequest` to parse submitted file and
+    Helper class used by `Request` to parse submitted file and
     form data. Don't use this class directly.
     """
 
@@ -379,7 +384,7 @@ class Headers(object):
 
 
 class Request(object):
-    charset = 'ascii'
+    charset = 'utf-8'
 
     def __init__(self, environ):
         self.environ = environ
