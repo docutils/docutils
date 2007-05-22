@@ -314,7 +314,6 @@ var Documentation = {
 
   init : function() {
     this.addContextElements();
-    this.addTopButton();
 
     // fix firefox anchor bug
     if (document.location.hash && $.browser.mozilla) {
@@ -373,18 +372,6 @@ var Documentation = {
           attr('title', 'Permalink to this definition').
           appendTo(this);
     });
-  },
-
-  /**
-   * add a button that jumps to the top
-   */
-  addTopButton : function() {
-    $('<a id="top-link" href="#"></a>').
-        attr('onclick', function() {
-          window.scrollTo(0, 0);
-        }).
-        attr('title', 'Jump to top').
-        appendTo($('body'));
   },
 
   /**

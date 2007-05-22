@@ -296,7 +296,6 @@ class StandaloneHTMLBuilder(Builder):
         else:
             self.last_updated = None
 
-
     def write_file(self, filename, doctree):
         destination = StringOutput(encoding='utf-8')
         doctree.settings = self.docsettings
@@ -479,9 +478,11 @@ class WebHTMLBuilder(StandaloneHTMLBuilder):
         context.pop('pathto', None) # can't be pickled
         pickle.dump(context, fp, 2)
         fp.close()
+
         # copy the source file for the "show source" link
-        shutil.copyfile(path.join(self.srcdir, filename),
-                        path.join(self.outdir, context['sourcename']))
+        source_name = path.join(self.outdir, 'sources', context['sourcename'])
+        ensuredir(path.dirname(source_name))
+        shutil.copyfile(path.join(self.srcdir, filename), source_name)
 
     def handle_specials(self, specialcontext):
         fp = open(path.join(self.outdir, 'specials.pickle'), 'wb')

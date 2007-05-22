@@ -14,6 +14,7 @@ from __future__ import with_statement
 import cPickle as pickle
 from os import path
 
+from ..highlighting import highlight_block
 from .util import Request, Response, RedirectResponse, SharedDataMiddleware, \
      NotFound, jinja_env
 from ..util import relative_uri
@@ -62,6 +63,19 @@ class DocumentationApplication(object):
             pass
         return Response(render_template(req, 'search.html'))
 
+    def show_source(self, req, page):
+        """
+        Show the highlighted source for a given page.
+        """
+        source_name = path.join(self.data_root, 'sources', page + '.txt')
+        if not path.exists(source_name):
+            return self.get_keyword_matches(req)
+        with file(source_name) as f:
+            highlighted_code = highlight_block(f.read().decode('utf-8'), 'rest')
+        return Response(render_template(req, 'show_source.html', {
+            'highlighted_code': highlighted_code
+        }))
+
     def get_page(self, req, url):
         """
         Show the requested documentation page or raise an
@@ -106,7 +120,7 @@ class DocumentationApplication(object):
         'cvar': 'C variable',
     }
 
-    def get_keyword_matches(self, req, url):
+    def get_keyword_matches(self, req):
         """
         Find keyword matches. If there is an exact match, just redirect:
         http://docs.python.org/os.path.exists would automatically
@@ -116,6 +130,7 @@ class DocumentationApplication(object):
         Module references are processed first so that "os.path" is handled as
         a module and not as member of os.
         """
+        url = req.path.strip('/')
         # module references
         if url in self.env.modules:
             filename, title, system = self.env.modules[url]
@@ -153,6 +168,9 @@ class DocumentationApplication(object):
             if query:
                 query = '?' + query
             resp = RedirectResponse(req.path + '/' + query)
+        elif req.path.startswith('/source/'):
+            sourcename = req.path[8:].strip('/')
+            resp = self.show_source(req, sourcename)
         else:
             url = req.path.strip('/') or 'index'
             if url == 'search':
@@ -163,7 +181,7 @@ class DocumentationApplication(object):
                 try:
                     resp = self.get_page(req, url)
                 except NotFound:
-                    resp = self.get_keyword_matches(req, url)
+                    resp = self.get_keyword_matches(req)
         return resp(environ, start_response)
 
 
