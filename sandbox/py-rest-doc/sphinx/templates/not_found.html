@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% set title = 'Page Not Found' %}
+{% block body %}
+  <h1 id="page-not-found">Page Not Found</h1>
+  <p>
+    Sorry, but the requested URL does not exist. We recently updated the
+    python documentation and the names of the URLs changed so that they
+    are easier to guess. Some of the old URLs still work and redirect to
+    the new location, others do not because they were way too generic.
+  </p>
+  <h3>You can</h3>
+  <ul>
+    <li><a href="{{ pathto("index.rst") }}">Click here</a> to go to the index.</li>
+    <li><a href="{{ pathto("search.rst") }}">Search for</a> this topic.</li>
+    <li><a href="#">file a bug</a> when you think that there is something missing.</li>
+  </ul>
+{% endblock %}
