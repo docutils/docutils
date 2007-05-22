@@ -3,15 +3,14 @@
 {% block body %}
   <h1 id="page-not-found">Keyword Not Found</h1>
   <p>
-    Sorry, but the keyword <strong>{{ keyword|e }}</strong> is
-    not associated with a page. {% if close_matches %}A similarity search
-    returned {{ close_matches|length }} items that are possible matches:
-    {% endif %}
+    The keyword <strong>{{ keyword|e }}</strong> is not directly associated with
+    a page. {% if close_matches %}A similarity search returned {{
+    close_matches|length }} items that are possible matches: {% endif %}
   </p>
   {% if close_matches %}
     <ul>
     {% for item in close_matches %}
-      <li><a href="{{ item.href }}">{{ item.title|e }}</a>{% if item.description
+      <li><a href="{{ item.href }}">{{ item.title|e }}</a> ({{ item.type }}) {% if item.description
       %} &mdash; {{ item.description|e }}{% endif %}</li>
     {% endfor %}
     </ul>

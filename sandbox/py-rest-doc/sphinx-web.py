@@ -7,22 +7,27 @@
     :license: Python license.
 """
 import sys
+import getopt
 from wsgiref.simple_server import make_server
+
 from sphinx.web.application import make_app
 
-if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print 'usage: %s <doc_root>' % sys.argv[0]
-        sys.exit(-1)
-    app = make_app({'data_root_path': sys.argv[1]})
+def main(argv):
+    opts, args = getopt.getopt(argv[1:], "dh")
+    opts = dict(opts)
+    if len(args) != 1 or '-h' in opts:
+        print 'usage: %s [-d] <doc_root>' % argv[0]
+        print ' -d: use werkzeug debugger if installed'
+        return 2
+    app = make_app({'data_root_path': args[0]})
 
-    #XXX: make this configurable
-    try:
-        from werkzeug.debug import DebuggedApplication
-    except ImportError:
-        pass
-    else:
-        app = DebuggedApplication(app, True)
+    if '-d' in opts:
+        try:
+            from werkzeug.debug import DebuggedApplication
+        except ImportError:
+            pass
+        else:
+            app = DebuggedApplication(app, True)
 
     srv = make_server('localhost', 3000, app)
     try:
@@ -30,3 +35,8 @@ if __name__ == '__main__':
         srv.serve_forever()
     except KeyboardInterrupt:
         pass
+    
+
+if __name__ == '__main__':
+    sys.exit(main(sys.argv))
+
