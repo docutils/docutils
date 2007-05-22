@@ -120,7 +120,7 @@ class DocumentationApplication(object):
         'cvar': 'C variable',
     }
 
-    def get_keyword_matches(self, req):
+    def get_keyword_matches(self, req, term=None):
         """
         Find keyword matches. If there is an exact match, just redirect:
         http://docs.python.org/os.path.exists would automatically
@@ -130,32 +130,34 @@ class DocumentationApplication(object):
         Module references are processed first so that "os.path" is handled as
         a module and not as member of os.
         """
-        url = req.path.strip('/')
+        requrl = req.path.strip('/')
+        if term is None:
+            term = requrl
         # module references
-        if url in self.env.modules:
-            filename, title, system = self.env.modules[url]
+        if term in self.env.modules:
+            filename, title, system = self.env.modules[term]
             url = get_target_uri(filename)
             return RedirectResponse(url)
         # direct references
-        if url in self.env.descrefs:
-            filename, ref_type = self.env.descrefs[url]
-            url = get_target_uri(filename) + '#' + url
+        if term in self.env.descrefs:
+            filename, ref_type = self.env.descrefs[term]
+            url = get_target_uri(filename) + '#' + term
             return RedirectResponse(url)
         # get some close matches
         close_matches = []
-        for type, filename, title, desc in self.env.get_close_matches(url):
+        for type, filename, title, desc in self.env.get_close_matches(term):
             link = get_target_uri(filename)
             if type == 'ref':
                 link += '#' + title
             close_matches.append({
-                'href':         relative_uri(url + '/', link),
+                'href':         relative_uri(requrl + '/', link),
                 'title':        title,
                 'type':         self.pretty_type.get(type, type),
                 'description':  desc
             })
         return Response(render_template(req, 'not_found.html', {
             'close_matches':    close_matches,
-            'keyword':          url
+            'keyword':          term
         }), status=404)
 
     def __call__(self, environ, start_response):
