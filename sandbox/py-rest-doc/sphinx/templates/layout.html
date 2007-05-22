@@ -44,7 +44,11 @@
           {% if sourcename %}
             <h3>This Page</h3>
             <ul class="this-page-menu">
-              <li><a href="{{ pathto(sourcename, 1)|e }}">Show Source</a></li>
+              {% if builder == 'web' %}
+                <li><a href="{{ pathto('source/' + sourcename)|e }}">Show Source</a></li>
+              {% elif builder == 'html' %}
+                <li><a href="{{ pathto(sourcename, true)|e }}">Show Source</a></li>
+              {% endif %}
               <li><a href="http://bugs.python.org/XXX?page={{ sourcename|e }}">Report Bug</a></li>
             </ul>
           {% endif %}
@@ -72,8 +76,7 @@
               <input type="text" name="q">
               <input type="hidden" name="area" value="default">
             </form>
-          {% endif %}
-          {% if builder == 'web' %}
+          {% elif builder == 'web' %}
             <h3 style="margin-top: 10px">Keyword search</h3>
             <form class="search" action"{{ pathto('index.rst') }}" method="get">
               <input type="text" name="q">

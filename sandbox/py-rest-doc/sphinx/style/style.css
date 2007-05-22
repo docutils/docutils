@@ -170,21 +170,6 @@ ul.search li div.context {
     text-align: left;
 }
 
-/* :::: TOPC LINK :::: */
-#top-link {
-    position: fixed;
-    right: 10px;
-    bottom: 10px;
-    width: 24px;
-    height: 24px;
-    background-image: url(top.png);
-    opacity: 0.3;
-}
-
-#top-link:hover {
-    opacity: 1;
-}
-
 /* :::: INDEX PAGE :::: */
 
 table.contentstable {

@@ -79,11 +79,6 @@ jinja_env = Environment(loader=FileSystemLoader(templates_path,
                         friendly_traceback=True)
 
 
-def render_template(template_name, context):
-    tmpl = jinja_env.get_template(template_name)
-    return tmpl.render(context)
-
-
 class lazy_property(object):
     """
     Descriptor implementing a "lazy property", i.e. the function
@@ -485,7 +480,8 @@ class Request(object):
         """Requested path."""
         path = '/' + (self.environ.get('PATH_INFO') or '').lstrip('/')
         path = path.decode(self.charset, self.charset)
-        return path.replace('+', ' ')
+        parts = path.replace('+', ' ').split('/')
+        return u'/'.join(p for p in parts if p != '..')
     path = lazy_property(path)
 
 
