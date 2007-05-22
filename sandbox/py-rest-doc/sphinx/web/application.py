@@ -13,8 +13,8 @@ from __future__ import with_statement
 import cPickle as pickle
 from os import path
 from ..util import relative_uri
-from .util import Request, Response, SharedDataMiddleware, NotFound, \
-     render_template
+from .util import Request, Response, RedirectResponse, SharedDataMiddleware, \
+     NotFound, render_template
 
 
 special_urls = set(['index', 'genindex', 'modindex', 'search'])
@@ -76,11 +76,14 @@ class DocumentationApplication(object):
 
     def __call__(self, environ, start_response):
         req = Request(environ)
-        url = req.path.strip('/') or 'index'
-        try:
-            resp = self.get_page(req, url)
-        except NotFound:
-            resp = self.get_close_matches(req, url)
+        if not req.path.endswith('/'):
+            resp = RedirectResponse(req.path + '/')
+        else:
+            url = req.path.strip('/') or 'index'
+            try:
+                resp = self.get_page(req, url)
+            except NotFound:
+                resp = self.get_close_matches(req, url)
         return resp(environ, start_response)
 
 
