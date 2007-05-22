@@ -14,7 +14,7 @@ import cPickle as pickle
 from os import path
 from ..util import relative_uri
 from .util import Request, Response, RedirectResponse, SharedDataMiddleware, \
-     NotFound, render_template
+     NotFound, jinja_env
 
 
 special_urls = set(['index', 'genindex', 'modindex'])
@@ -28,7 +28,22 @@ def get_target_uri(source_filename):
     return source_filename[:-4] + '/'
 
 
+def render_template(req, template_name, context):
+    tmpl = jinja_env.get_template(template_name)
+
+    def relative_path_to(otheruri, resource=False):
+        if not resource:
+            otheruri = get_target_uri(otheruri)
+        return relative_uri(req.path, otheruri)
+    context['pathto'] = relative_path_to
+
+    return tmpl.render(context)
+
+
 class DocumentationApplication(object):
+    """
+    Serves the documentation.
+    """
 
     def __init__(self, conf):
         self.cache = {}
@@ -36,26 +51,13 @@ class DocumentationApplication(object):
         with file(path.join(self.data_root, 'environment.pickle')) as f:
             self.environment = pickle.load(f)
 
-    def update_context(self, req, context):
-        """
-        Put some request specific globals into the context
-        """
-        url = req.path
-        def relative_path_to(otheruri, resource=False):
-            if not resource:
-                otheruri = get_target_uri(otheruri)
-            return relative_uri(url, otheruri)
-        context['pathto'] = relative_path_to
-
     def search(self, req):
         """
         Search the database.
         """
         if req.method == 'POST':
             pass
-        context = {}
-        self.update_context(req, context)
-        return Response(render_template('search.html', context))
+        return Response(render_template(req, 'search.html', {}))
 
     def get_page(self, req, url):
         """
@@ -88,8 +90,7 @@ class DocumentationApplication(object):
                 raise NotFound()
             templatename = 'page.html'
 
-        self.update_context(req, context)
-        text = render_template(templatename, context)
+        text = render_template(req, templatename, context)
         self.cache[url] = (filename, path.getmtime(filename), text)
         return Response(text)
 
@@ -105,6 +106,7 @@ class DocumentationApplication(object):
             url = get_target_uri(filename) + '#' + url
             return RedirectResponse(url)
         # module references
+        # XXX: should those have a higher priority?
         if url in self.environment.modules:
             filename, title, arg = self.environment.modules[url]
             url = get_target_uri(filename)
