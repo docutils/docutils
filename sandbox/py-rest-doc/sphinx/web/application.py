@@ -104,6 +104,11 @@ class DocumentationApplication(object):
             filename, ref_type = self.environment.descrefs[url]
             url = get_target_uri(filename) + '#' + url
             return RedirectResponse(url)
+        # module references
+        if url in self.environment.modules:
+            filename, title, arg = self.environment.modules[url]
+            url = get_target_uri(filename)
+            return RedirectResponse(url)
         raise NotImplementedError(url)
 
     def __call__(self, environ, start_response):
