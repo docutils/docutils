@@ -16,12 +16,51 @@
     :license: Python license.
 """
 import sqlite3
+import time
 from threading import local
 from datetime import datetime
 from .markdown import markdown
 
 
 _thread_local = local()
+
+
+def adapt_datetime(val):
+    return time.mktime(val.timetuple())
+
+def convert_datetime(val):
+    return datetime.utcfromtimestamp(float(val))
+
+sqlite3.register_adapter(datetime, adapt_datetime)
+sqlite3.register_converter('datetime', convert_datetime)
+
+
+def connect(path):
+    """Connect and create tables if required. Also assigns
+    the connection for the current thread."""
+    con = sqlite3.connect(path, detect_types=sqlite3.PARSE_DECLTYPES)
+    con.isolation_level = None
+
+    # create tables that do not exist.
+    for table in tables:
+        try:
+            con.execute('select * from %s;' % table)
+        except sqlite3.OperationalError:
+            con.execute(tables[table])
+
+    set_connection(con)
+    return con
+
+
+def get_cursor():
+    """Return a new cursor."""
+    return _thread_local.connection.cursor()
+
+
+def set_connection(con):
+    """Call this after thread creation to make this connection
+    the connection for this thread."""
+    _thread_local.connection = con
 
 
 #: tables that we use
@@ -51,6 +90,7 @@ class Comment(object):
         self.title = title
         if pub_date is None:
             pub_date = datetime.utcnow()
+        print type(pub_date), repr(pub_date)
         self.pub_date = pub_date
         self.author = author
         self.author_mail = author_mail
@@ -129,31 +169,3 @@ class Comment(object):
             self.associated_page,
             self.comment_id or 'not saved'
         )
-
-
-def connect(path):
-    """Connect and create tables if required. Also assigns
-    the connection for the current thread."""
-    con = sqlite3.connect(path)
-    con.isolation_level = None
-
-    # create tables that do not exist.
-    for table in tables:
-        try:
-            con.execute('select * from %s;' % table)
-        except sqlite3.OperationalError:
-            con.execute(tables[table])
-
-    return set_connection(con)
-
-
-def get_cursor():
-    """Return a new cursor."""
-    return _thread_local.connection.cursor()
-
-
-def set_connection(con):
-    """Call this after thread creation to make this connection
-    the connection for this thread."""
-    _thread_local.connection = con
-    return con
