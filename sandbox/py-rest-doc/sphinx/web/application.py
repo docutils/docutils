@@ -14,7 +14,6 @@ from __future__ import with_statement
 import cPickle as pickle
 from os import path
 
-from ..highlighting import highlight_block
 from .util import Request, Response, RedirectResponse, SharedDataMiddleware, \
      NotFound, jinja_env
 from ..search import SearchFrontend
@@ -99,10 +98,7 @@ class DocumentationApplication(object):
         if not path.exists(source_name):
             return self.get_keyword_matches(req)
         with file(source_name) as f:
-            highlighted_code = highlight_block(f.read().decode('utf-8'), 'rest')
-        return Response(render_template(req, 'show_source.html', {
-            'highlighted_code': highlighted_code
-        }))
+            return Response(f.read(), mimetype='text/plain')
 
     def get_page(self, req, url):
         """
@@ -176,19 +172,24 @@ class DocumentationApplication(object):
 
         # get some close matches
         close_matches = []
-        for type, filename, title, desc in self.env.get_close_matches(term):
+        good_matches = 0
+        for ratio, type, filename, title, desc in self.env.get_close_matches(term):
             link = get_target_uri(filename)
-            if type == 'ref':
+            if type != 'module':
                 link += '#' + title
+            good_match = ratio > 0.7
+            good_matches += good_match
             close_matches.append({
                 'href':         relative_uri(req.path, link),
                 'title':        title,
+                'good_match':   good_match,
                 'type':         self.pretty_type.get(type, type),
                 'description':  desc
             })
         return Response(render_template(req, 'not_found.html', {
-            'close_matches':    close_matches,
-            'keyword':          term
+            'close_matches':        close_matches,
+            'good_matches_count':   good_matches,
+            'keyword':              term
         }), status=404)
 
     def __call__(self, environ, start_response):

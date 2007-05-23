@@ -170,6 +170,10 @@ ul.search li div.context {
     text-align: left;
 }
 
+ul.keywordmatches li.goodmatch a {
+    font-weight: bold;
+}
+
 /* :::: INDEX PAGE :::: */
 
 table.contentstable {

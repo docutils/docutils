@@ -458,7 +458,7 @@ class BuildEnvironment:
 
     def get_close_matches(self, searchstring, n=20, cutoff=0.55):
         """
-        Return a list of tuples in the form ``(type, filename, title,
+        Return a list of tuples in the form ``(ratio, type, filename, title,
         description)`` with close matches for the given search string.
         """
         s = difflib.SequenceMatcher()
@@ -478,7 +478,7 @@ class BuildEnvironment:
                s.ratio() >= cutoff:
                 result.append((s.ratio(), type, filename, title, desc))
 
-        return [item[1:] for item in heapq.nlargest(n, result)]
+        return heapq.nlargest(n, result)
 
     def resolve_toctrees(self, documents):
         # determine which files (containing a toc) must be rebuilt for each
