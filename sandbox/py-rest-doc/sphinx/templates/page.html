@@ -11,6 +11,11 @@
         <p class="meta">by {{ comment.author|e }}, written on
           {{ comment.pub_date }}</p>
       </div>
+    {% else %}
+      <div class="comment">
+        There are no user contributed notes for this page. Use the
+        form below to attach your comment to this page.
+      </div>
     {% endfor %}
     <h4>New Comment</h4>
     {% if form.error %}
