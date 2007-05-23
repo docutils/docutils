@@ -18,6 +18,7 @@ from .util import Request, Response, RedirectResponse, SharedDataMiddleware, \
      NotFound, jinja_env
 from ..search import SearchFrontend
 from ..util import relative_uri, shorten_result
+from .database import connect, set_connection
 
 
 special_urls = set(['index', 'genindex', 'modindex'])
@@ -60,6 +61,7 @@ class DocumentationApplication(object):
             self.env = pickle.load(f)
         with file(path.join(self.data_root, 'searchindex.pickle')) as f:
             self.search_frontend = SearchFrontend(pickle.load(f))
+        self.db_con = connect(path.join(self.data_root, 'sphinx.db'))
 
     def search(self, req):
         """
@@ -196,6 +198,7 @@ class DocumentationApplication(object):
         """
         Dispatch requests.
         """
+        set_connection(self.db_con)
         req = Request(environ)
         if not req.path.endswith('/') and req.method == 'GET':
             query = req.environ.get('QUERY_STRING', '')
