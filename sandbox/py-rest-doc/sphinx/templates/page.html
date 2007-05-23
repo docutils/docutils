@@ -1,4 +1,17 @@
 {% extends "layout.html" %}
 {% block body %}
   {{ body }}
+  <h3 id="comments">Comments</h3>
+  {% for comment in comments %}
+    <div class="comment">
+      <h5>{{ comment.title|e }}</h5>
+      <p class="meta">by {{ comment.author|e }}, written on
+        {{ comment.pub_date }}</p>
+      {{ comment.parsed_comment_body }}
+    </div>
+  {% endfor %}
+  <hr>
+  <p>
+    Comment form here.
+  </p>
 {% endblock %}
