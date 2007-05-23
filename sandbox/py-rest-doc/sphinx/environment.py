@@ -470,13 +470,23 @@ class BuildEnvironment:
             for title, (fn, _) in self.descrefs.iteritems():
                 yield (_, fn, title, '')
 
+        def dotsearch(string):
+            parts = string.lower().split('.')
+            for idx in xrange(0, len(parts)):
+                yield '.'.join(parts[idx:])
+
         result = []
         for type, filename, title, desc in possibilities():
-            s.set_seq1(title.lower())
-            if s.real_quick_ratio() >= cutoff and \
-               s.quick_ratio() >= cutoff and \
-               s.ratio() >= cutoff:
-                result.append((s.ratio(), type, filename, title, desc))
+            best_res = 0
+            for part in dotsearch(title):
+                s.set_seq1(part)
+                if s.real_quick_ratio() >= cutoff and \
+                   s.quick_ratio() >= cutoff and \
+                   s.ratio() >= cutoff and \
+                   s.ratio() > best_res:
+                    best_res = s.ratio()
+            if best_res:
+                result.append((best_res, type, filename, title, desc))
 
         return heapq.nlargest(n, result)
 

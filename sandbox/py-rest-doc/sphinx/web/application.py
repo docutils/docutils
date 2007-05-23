@@ -177,7 +177,7 @@ class DocumentationApplication(object):
             link = get_target_uri(filename)
             if type != 'module':
                 link += '#' + title
-            good_match = ratio > 0.7
+            good_match = ratio > 0.75
             good_matches += good_match
             close_matches.append({
                 'href':         relative_uri(req.path, link),
