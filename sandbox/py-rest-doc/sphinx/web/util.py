@@ -429,6 +429,21 @@ class Request(object):
             self._buffered_stream = StringIO(self.data)
         return self._buffered_stream.readline(*args)
 
+    def make_external_url(self, path):
+        url = self.environ['wsgi.url_scheme'] + '://'
+        if 'HTTP_HOST' in self.environ:
+            url += self.environ['HTTP_HOST']
+        else:
+            url += self.environ['SERVER_NAME']
+            if (self.environ['wsgi.url_scheme'], self.environ['SERVER_PORT']) not \
+               in (('https', '443'), ('http', '80')):
+                url += ':' + self.environ['SERVER_PORT']
+
+        url += urllib.quote(self.environ.get('SCRIPT_INFO', '').rstrip('/'))
+        if not path.startswith('/'):
+            path = '/' + path
+        return url + path
+
     def args(self):
         """URL parameters"""
         items = []

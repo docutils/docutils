@@ -18,6 +18,7 @@ from .util import Request, Response, RedirectResponse, SharedDataMiddleware, \
      NotFound, jinja_env
 from ..search import SearchFrontend
 from ..util import relative_uri, shorten_result
+from .feed import Feed
 from .database import connect, set_connection, Comment
 
 
@@ -109,6 +110,15 @@ class DocumentationApplication(object):
         """
         page_id = url + '.rst'
         cache_possible = True
+
+        # generate feed if wanted
+        if req.args.get('feed') == 'comments':
+            feed = Feed(req, 'Comments for %s' % url, 'List of comments for '
+                        'the topic %s' % url, url)
+            for comment in Comment.get_for_page(page_id):
+                feed.add_item(comment.title, comment.author, comment.url,
+                              comment.parsed_comment_body, comment.pub_date)
+            return Response(feed.generate(), mimetype='application/rss+xml')
 
         # do the form validation and comment saving if the
         # request method is post.

@@ -1,4 +1,7 @@
 {% extends "layout.html" %}
+{% set page_links = [
+  ('?feed=comments', 'application/rss+xml', 'Page Comments')
+] %}
 {% block body %}
   {{ body }}
 
