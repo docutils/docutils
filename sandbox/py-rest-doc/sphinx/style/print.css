@@ -9,6 +9,7 @@ div.body {
 div.sidebar,
 div.related,
 div.footer,
+div#comments,
 #top-link {
     display: none;
 }

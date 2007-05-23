@@ -1,34 +1,37 @@
 {% extends "layout.html" %}
 {% block body %}
   {{ body }}
-  <h3 id="comments">Comments</h3>
-  {% for comment in comments %}
-    <div class="comment" id="comment-{{ comment.comment_id }}">
-      <h5>{{ comment.title|e }}</h5>
-      <p class="meta">by {{ comment.author|e }}, written on
-        {{ comment.pub_date }}</p>
-      {{ comment.parsed_comment_body }}
-    </div>
-  {% endfor %}
-  <h4>New Comment</h4>
-  {% if form.error %}
-    <div class="error">
-      You have to fill out all fields and provide a valid mail address.
-    </div>
-  {% endif %}
-  <form action="" method="post">
-    <dl>
-      <dt>Title</dt>
-      <dd><input type="text" name="title" value="{{ form.title|e(true) }}"></dd>
-      <dt>Name</dt>
-      <dd><input type="text" name="author" value="{{ form.author|e(true) }}"></dd>
-      <dt>E-Mail</dt>
-      <dd><input type="text" name="author_mail" value="{{ form.author_mail|e(true) }}"></dd>
-    </dl>
-    <textarea name="comment_body" rows="7" cols="50">{{ form.comment_body|e }}</textarea>
-    <div class="actions">
-      <input type="reset" value="Reset Form">
-      <input type="submit" value="Submit Comment">
-    </div>
-  </form>
+
+  <div id="comments">
+    <h3>Comments</h3>
+    {% for comment in comments %}
+      <div class="comment" id="comment-{{ comment.comment_id }}">
+        <h4>{{ comment.title|e }}</h5>
+        {{ comment.parsed_comment_body }}
+        <p class="meta">by {{ comment.author|e }}, written on
+          {{ comment.pub_date }}</p>
+      </div>
+    {% endfor %}
+    <h4>New Comment</h4>
+    {% if form.error %}
+      <div class="error">
+        You have to fill out all fields and provide a valid mail address.
+      </div>
+    {% endif %}
+    <form action="" method="post">
+      <dl>
+        <dt>Title</dt>
+        <dd><input type="text" name="title" value="{{ form.title|e(true) }}"></dd>
+        <dt>Name</dt>
+        <dd><input type="text" name="author" value="{{ form.author|e(true) }}"></dd>
+        <dt>E-Mail</dt>
+        <dd><input type="text" name="author_mail" value="{{ form.author_mail|e(true) }}"></dd>
+      </dl>
+      <textarea name="comment_body" rows="7" cols="50">{{ form.comment_body|e }}</textarea>
+      <div class="actions">
+        <input type="reset" value="Reset Form">
+        <input type="submit" value="Submit Comment">
+      </div>
+    </form>
+  </div>
 {% endblock %}
