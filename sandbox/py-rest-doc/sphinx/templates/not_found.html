@@ -5,12 +5,16 @@
   <p>
     The keyword <strong>{{ keyword|e }}</strong> is not directly associated with
     a page. {% if close_matches %}A similarity search returned {{
-    close_matches|length }} items that are possible matches: {% endif %}
+    close_matches|length }} items that are possible matches.
+    {% if good_matches_count %}{{ good_matches_count }} of them are really
+    good matches and emphasized.{% endif %}{% endif %}
   </p>
   {% if close_matches %}
-    <ul>
+    <ul class="keywordmatches">
     {% for item in close_matches %}
-      <li><a href="{{ item.href }}">{{ item.title|e }}</a> ({{ item.type }}) {% if item.description
+      <li{% if item.good_match %} class="goodmatch"{% endif
+        %}><a href="{{ item.href }}">{{ item.title|e }}</a> ({{
+          item.type }}) {% if item.description
       %} &mdash; {{ item.description|e }}{% endif %}</li>
     {% endfor %}
     </ul>
