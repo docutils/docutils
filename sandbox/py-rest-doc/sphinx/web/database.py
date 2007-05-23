@@ -12,6 +12,7 @@
 import sqlite3
 from threading import local
 from datetime import datetime
+from .markdown import markdown
 
 
 _thread_local = local()
@@ -49,6 +50,10 @@ class Comment(object):
         self.author_mail = author_mail
         self.comment_body = comment_body
 
+    @property
+    def parsed_comment_body(self):
+        return markdown(self.comment_body, safe_mode=True)
+
     def save(self):
         """
         Save the comment and use the cursor provided.
@@ -71,29 +76,42 @@ class Comment(object):
         cur.close()
 
     @staticmethod
+    def _make_comment(row):
+        rv = Comment(*row[1:])
+        rv.comment_id = row[0]
+        return rv
+
+    @staticmethod
     def get(comment_id):
         cur = get_cursor()
         cur.execute('select * from comments where comment_id = ?', (comment_id,))
         row = cur.fetchone()
         if row is None:
             raise ValueError('comment not found')
-        rv = Comment(*row[1:])
-        rv.comment_id = row[0]
-        cur.close()
-        return rv
+        try:
+            return Comment._make_comment(row)
+        finally:
+            cur.close()
 
     @staticmethod
     def get_for_page(associated_page):
         cur = get_cursor()
         cur.execute('select * from comments where associated_page = ?',
                     (associated_page,))
-        result = []
-        for row in cur:
-            rv = Comment(*row[1:])
-            rv.comment_id = row[0]
-            result.append(rv)
-        cur.close()
-        return result
+        try:
+            return [Comment._make_comment(row) for row in cur]
+        finally:
+            cur.close()
+
+    @staticmethod
+    def get_recent(n=10):
+        cur = get_cursor()
+        cur.execute('select * from comments order by comment_id desc limit ?',
+                    (n,))
+        try:
+            return [Comment._make_comment(row) for row in cur]
+        finally:
+            cur.close()
 
     def __repr__(self):
         return '<Comment by %r on %r (%s)>' % (
@@ -104,7 +122,8 @@ class Comment(object):
 
 
 def connect(path):
-    """Connect and create tables if required."""
+    """Connect and create tables if required. Also assigns
+    the connection for the current thread."""
     con = sqlite3.connect(path)
     con.isolation_level = None
 
@@ -115,8 +134,7 @@ def connect(path):
         except sqlite3.OperationalError:
             con.execute(tables[table])
 
-    _thread_local.connection = con
-    return con
+    return set_connection(con)
 
 
 def get_cursor():
@@ -128,3 +146,4 @@ def set_connection(con):
     """Call this after thread creation to make this connection
     the connection for this thread."""
     _thread_local.connection = con
+    return con

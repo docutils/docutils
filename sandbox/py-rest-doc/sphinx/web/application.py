@@ -18,7 +18,7 @@ from .util import Request, Response, RedirectResponse, SharedDataMiddleware, \
      NotFound, jinja_env
 from ..search import SearchFrontend
 from ..util import relative_uri, shorten_result
-from .database import connect, set_connection
+from .database import connect, set_connection, Comment
 
 
 special_urls = set(['index', 'genindex', 'modindex'])
@@ -133,6 +133,7 @@ class DocumentationApplication(object):
                 raise NotFound()
             templatename = 'page.html'
 
+        context['comments'] = Comment.get_for_page(url + '.rst')
         text = render_template(req, templatename, context)
         self.cache[url] = (filename, path.getmtime(filename), text)
         return Response(text)
