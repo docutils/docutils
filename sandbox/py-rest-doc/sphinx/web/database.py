@@ -6,6 +6,12 @@
     The models of the MVC thing we don't really use. Currently
     just used for comments.
 
+    The database connections are thread local. To set the connection
+    for a thread use the `set_connection` function provided. The
+    `connect` method automatically sets up new tables and returns a
+    usable connection which is also set as the connection for the
+    thread that called that function.
+
     :copyright: 2007 by Georg Brandl, Armin Ronacher.
     :license: Python license.
 """

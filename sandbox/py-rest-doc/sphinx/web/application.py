@@ -110,6 +110,8 @@ class DocumentationApplication(object):
         page_id = url + '.rst'
         cache_possible = True
 
+        # do the form validation and comment saving if the
+        # request method is post.
         title = author = author_mail = comment_body = ''
         form_error = False
         if req.method == 'POST':
@@ -129,6 +131,8 @@ class DocumentationApplication(object):
                 return RedirectResponse(comment.url)
             cache_possible = False
 
+        # if the form validation fails the cache is used so that
+        # we can put error messages and defaults to the page.
         if cache_possible:
             try:
                 filename, mtime, text = self.cache[url]
@@ -138,12 +142,14 @@ class DocumentationApplication(object):
                 if path.getmtime(filename) == mtime:
                     return Response(text)
 
+        # render special templates such as the index
         if url in special_urls:
             filename = path.join(self.data_root, 'specials.pickle')
             with open(filename, 'rb') as f:
                 context = pickle.load(f)
             templatename = url + '.html'
 
+        # render the page based on the settings in the pickle
         else:
             for filename in [path.join(self.data_root, url) + '.fpickle',
                              path.join(self.data_root, url, 'index.fpickle')]:
@@ -165,7 +171,9 @@ class DocumentationApplication(object):
             'error':            form_error
         }
         text = render_template(req, templatename, context)
-        self.cache[url] = (filename, path.getmtime(filename), text)
+
+        if cache_possible:
+            self.cache[url] = (filename, path.getmtime(filename), text)
         return Response(text)
 
     pretty_type = {
