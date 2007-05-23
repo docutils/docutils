@@ -51,6 +51,10 @@ class Comment(object):
         self.comment_body = comment_body
 
     @property
+    def url(self):
+        return '%s#comment-%s' % (self.associated_page[:-4], self.comment_id)
+
+    @property
     def parsed_comment_body(self):
         return markdown(self.comment_body, safe_mode=True)
 

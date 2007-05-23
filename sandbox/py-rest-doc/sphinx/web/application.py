@@ -107,13 +107,36 @@ class DocumentationApplication(object):
         Show the requested documentation page or raise an
         `NotFound` exception to display a page with close matches.
         """
-        try:
-            filename, mtime, text = self.cache[url]
-        except KeyError:
-            pass
-        else:
-            if path.getmtime(filename) == mtime:
-                return Response(text)
+        page_id = url + '.rst'
+        cache_possible = True
+
+        title = author = author_mail = comment_body = ''
+        form_error = False
+        if req.method == 'POST':
+            title = req.form.get('title')
+            author = req.form.get('author')
+            author_mail = req.form.get('author_mail')
+            comment_body = req.form.get('comment_body')
+
+            form_error = not (title and author and author_mail and
+                              comment_body)
+
+            if not form_error:
+                self.cache.pop(url, None)
+                comment = Comment(page_id, title, author, author_mail,
+                                  comment_body)
+                comment.save()
+                return RedirectResponse(comment.url)
+            cache_possible = False
+
+        if cache_possible:
+            try:
+                filename, mtime, text = self.cache[url]
+            except KeyError:
+                pass
+            else:
+                if path.getmtime(filename) == mtime:
+                    return Response(text)
 
         if url in special_urls:
             filename = path.join(self.data_root, 'specials.pickle')
@@ -133,7 +156,14 @@ class DocumentationApplication(object):
                 raise NotFound()
             templatename = 'page.html'
 
-        context['comments'] = Comment.get_for_page(url + '.rst')
+        context['comments'] = Comment.get_for_page(page_id)
+        context['form'] = {
+            'title':            title,
+            'author':           author,
+            'author_mail':      author_mail,
+            'comment_body':     comment_body,
+            'error':            form_error
+        }
         text = render_template(req, templatename, context)
         self.cache[url] = (filename, path.getmtime(filename), text)
         return Response(text)
