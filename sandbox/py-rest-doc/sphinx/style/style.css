@@ -243,6 +243,21 @@ div#comments div.comment h4 {
     color: white;
 }
 
+div#comments div.comment pre,
+div#comments div.comment tt {
+    background-color: #ccc;
+    border: none;
+}
+
+div#comments div.error {
+    font-weight: bold;
+    border: 2px solid #333;
+    padding: 5px;
+    margin: 5px 20px 0 30px;
+    background-color: #666;
+    color: #eee;
+}
+
 /* :::: INDEX PAGE :::: */
 
 table.contentstable {

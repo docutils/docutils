@@ -29,7 +29,7 @@ def adapt_datetime(val):
     return time.mktime(val.timetuple())
 
 def convert_datetime(val):
-    return datetime.utcfromtimestamp(float(val))
+    return datetime.fromtimestamp(float(val))
 
 sqlite3.register_adapter(datetime, adapt_datetime)
 sqlite3.register_converter('datetime', convert_datetime)
