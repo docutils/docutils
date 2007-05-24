@@ -10,13 +10,18 @@
 """
 
 from docutils import nodes
-from docutils.writers import html4css1
+from docutils.writers.html4css1 import Writer, HTMLTranslator as BaseTranslator
+
+from .smartypants import smartyPants
 
 
-class HTMLWriter(html4css1.Writer):
-    def __init__(self):
-        html4css1.Writer.__init__(self)
-        self.translator_class = HTMLTranslator
+class HTMLWriter(Writer):
+    def __init__(self, config):
+        Writer.__init__(self)
+        if config.get('use_smartypants', False):
+            self.translator_class = SmartyPantsHTMLTranslator
+        else:
+            self.translator_class = HTMLTranslator
 
 
 version_text = {
@@ -25,10 +30,14 @@ version_text = {
     'versionadded': 'New in version %s',
 }
 
-class HTMLTranslator(html4css1.HTMLTranslator):
+class HTMLTranslator(BaseTranslator):
+    """
+    Our custom HTML translator.
+    """
 
     def __init__(self, *args, **kwds):
-        html4css1.HTMLTranslator.__init__(self, *args, **kwds)
+        self.no_smarty = 0
+        BaseTranslator.__init__(self, *args, **kwds)
         self.highlightlang = 'python'
 
     def visit_desc(self, node):
@@ -122,7 +131,7 @@ class HTMLTranslator(html4css1.HTMLTranslator):
             self.body.append(self.starttag(node, 'h%d' % h_level, '', **attrs))
             self.context.append('</h%d>\n' % h_level)
         else:
-            html4css1.HTMLTranslator.visit_title(self, node, move_ids)
+            BaseTranslator.visit_title(self, node, move_ids)
 
     # overwritten
     def visit_literal_block(self, node):
@@ -178,3 +187,28 @@ class HTMLTranslator(html4css1.HTMLTranslator):
 
     def visit_index(self, node):
         raise nodes.SkipNode
+
+
+class SmartyPantsHTMLTranslator(HTMLTranslator):
+    """
+    Handle ordinary text via smartypants, converting quotes and dashes
+    to the correct entities.
+    """
+
+    def __init__(self, *args, **kwds):
+        self.no_smarty = 0
+        HTMLTranslator.__init__(self, *args, **kwds)
+
+    def visit_literal(self, node):
+        self.no_smarty += 1
+        try:
+            # this raises SkipNode
+            HTMLTranslator.visit_literal(self, node)
+        finally:
+            self.no_smarty -= 1
+
+    def encode(self, text):
+        text = HTMLTranslator.encode(self, text)
+        if self.no_smarty <= 0:
+            text = smartyPants(text, "qBD")
+        return text
