@@ -26,9 +26,7 @@
     {% if comments_enabled %}
       <h4 id="comments-new-comment">New Comment</h4>
       {% if form.error %}
-        <div class="error">
-          You have to fill out all fields and provide a valid mail address.
-        </div>
+        <div class="error">{{ form.error|e }}</div>
       {% endif %}
       <form action="#comments-new-comment" method="post">
         <dl>
@@ -54,19 +52,23 @@
           </div>
         {% endif %}
         <div class="help">
-          <div class="preamble">You can format a comment using the
-          following syntax elements provided:</div>
-          `code` / ``code too`` / **strong** /
-          *emphasized* / !!!important!!! /
-          [[link_target Link Title]] /
-          [[link_target_only]] / &lt;code&gt;code block with
-          syntax highlighting&lt;/code&gt; / &lt;quote&gt;some
-          quoted text&lt;/quote&gt;.
-          <div class="detail">
+          <p>
+            <strong>You can format a comment using the
+            following syntax elements provided:</strong>
+          </p>
+          <p>
+            `code` / ``code too`` / **strong** /
+            *emphasized* / !!!important!!! /
+            [[link_target Link Title]] /
+            [[link_target_only]] / &lt;code&gt;code block with
+            syntax highlighting&lt;/code&gt; / &lt;quote&gt;some
+            quoted text&lt;/quote&gt;.
+          </p>
+          <p>
             HTML is not supported, relative link targets are treated as
             quicklinks and code blocks that start with "&gt;&gt;&gt;" are
             highlighted as interactive python sessions.
-          </div>
+          </p>
         </div>
         <div class="actions">
           <input type="reset" value="Reset Form">
