@@ -133,26 +133,27 @@ class DocumentationApplication(object):
         title = comment_body = ''
         author = req.cookies.get('author', '')
         author_mail = req.cookies.get('author_mail', '')
-        form_error = False
+        form_error = None
         preview = None
 
         if comments_enabled and req.method == 'POST':
-            title = req.form.get('title')
-            author = req.form.get('author')
-            author_mail = req.form.get('author_mail')
-            comment_body = req.form.get('comment_body')
+            title = req.form.get('title', '').strip()
+            author = req.form.get('author', '').strip()
+            author_mail = req.form.get('author_mail', '')
+            comment_body = req.form.get('comment_body', '')
             fields = (title, author, author_mail, comment_body)
 
             if req.form.get('preview'):
                 preview = Comment(page_id, title, author, author_mail,
                                   comment_body)
             elif req.form.get('homepage') or self.antispam.is_spam(fields):
-                return Response('Rejected Spam', mimetype='text/plain', status=403)
+                form_error = 'Your text contains blocked URLs or words.'
             else:
-                form_error = not all(fields) or \
-                             _mail_re.search(author_mail) is not None
-
-                if not form_error:
+                if not all(fields):
+                    form_error = 'You have to fill out all fields.'
+                elif _mail_re.search(author_mail) is None:
+                    form_error = 'You have to provide a valid mail adress.'
+                else:
                     self.cache.pop(url, None)
                     comment = Comment(page_id, title, author, author_mail,
                                       comment_body)

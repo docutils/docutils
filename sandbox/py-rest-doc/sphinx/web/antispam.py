@@ -20,15 +20,20 @@ UPDATE_INTERVAL = 60 * 60 * 24 * 7
 
 
 class AntiSpam(object):
+    """
+    Class that reads a bad content database (flat file that is automatically
+    updated from the moin moin server) and checks strings against it.
+    """
 
     def __init__(self, bad_content_file):
         self.bad_content_file = bad_content_file
-        self.lines = None
+        lines = None
 
         if not path.exists(self.bad_content_file):
             last_change = 0
         else:
             last_change = path.getmtime(self.bad_content_file)
+
         if last_change + UPDATE_INTERVAL < time.time():
             try:
                 f = urllib.urlopen(DOWNLOAD_URL)
@@ -36,19 +41,19 @@ class AntiSpam(object):
             except:
                 pass
             else:
-                self.lines = [l.strip() for l in data.splitlines()
+                lines = [l.strip() for l in data.splitlines()
                               if not l.startswith('#')]
                 f = file(bad_content_file, 'w')
-                f.write('\n'.join(self.lines))
+                f.write('\n'.join(lines))
                 last_change = int(time.time())
 
-        if self.lines is None:
+        if lines is None:
             with file(bad_content_file) as f:
-                self.lines = [l.strip() for l in f]
+                lines = [l.strip() for l in f]
+        self.rules = [re.compile(rule) for rule in lines if rule]
 
     def is_spam(self, fields):
-        for line in self.lines:
-            regex = re.compile(line)
+        for regex in self.rules:
             for field in fields:
                 if regex.search(field) is not None:
                     return True
