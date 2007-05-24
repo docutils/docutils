@@ -258,6 +258,15 @@ div#comments input, div#comments textarea {
     border: 1px solid #444;
 }
 
+div#comments input#homepage {
+    display: none;
+}
+
+div#comments input[type="reset"],
+div#comments input[type="submit"] {
+    cursor: pointer;
+}
+
 div#comments div.preview {
     margin: 10px 20px 10px 0;
     padding: 10px;
