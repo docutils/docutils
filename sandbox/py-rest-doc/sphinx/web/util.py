@@ -78,6 +78,14 @@ jinja_env = Environment(loader=FileSystemLoader(templates_path,
                                                 use_memcache=True),
                         friendly_traceback=True)
 
+def do_datetime_format():
+    def wrapped(env, ctx, value):
+        return value.strftime('%a, %d %b %Y %H:%M')
+    return wrapped
+
+
+jinja_env.filters['datetimeformat'] = do_datetime_format
+
 
 class lazy_property(object):
     """

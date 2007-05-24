@@ -14,7 +14,7 @@
         <h4>{{ comment.title|e }}</h5>
         {{ comment.parsed_comment_body }}
         <p class="meta">by {{ comment.author|e }}, written on
-          {{ comment.pub_date }} |
+          {{ comment.pub_date|datetimeformat }} |
           <a href="#comment-{{ comment.comment_id }}">#</a></p>
       </div>
     {% else %}
@@ -47,7 +47,7 @@
               <h4>{{ preview.title|e }}</h5>
               {{ preview.parsed_comment_body }}
               <p class="meta">by {{ preview.author|e }}, written on
-                {{ preview.pub_date }} |
+                {{ preview.pub_date|datetimeformat }} |
                 <a href="#">#</a></p>
             </div>
           </div>
