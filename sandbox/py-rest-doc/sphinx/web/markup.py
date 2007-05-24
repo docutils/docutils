@@ -3,7 +3,7 @@
     sphinx.web.markup
     ~~~~~~~~~~~~~~~~~
 
-    Awefully simple markup used in comments. Syntax:
+    Awfully simple markup used in comments. Syntax:
 
     `this is some <code>`
         like <tt> in HTML
@@ -26,14 +26,14 @@
         URL is relative the provided callback is called to get
         the full URL.
 
-    [[http://www.google.com/|go to google]]
+    [[http://www.google.com/ go to google]]
         Link with "go to google" as caption.
 
     <code>preformatted code that could by python code</code>
-        Python code. (most of the time), otherwise preformatted
+        Python code (most of the time), otherwise preformatted.
 
     <quote>cite someone</quote>
-        Like <blockquote> in HTML
+        Like <blockquote> in HTML.
 
     :copyright: 2007 by Armin Ronacher.
     :license: Python license.
@@ -41,20 +41,21 @@
 import cgi
 import re
 from urlparse import urlparse
+
 from ..highlighting import highlight_block
 
 
 inline_formatting = {
-    'escaped_code': ('``',          '``'),
-    'code':         ('`',           '`'),
-    'strong':       ('**',          '**'),
-    'emphasized':   ('*',           '*'),
-    'important':    ('!!!',         '!!!'),
-    'link':         ('[[',          ']]'),
-    'quote':        ('<quote>',     '</quote>'),
-    'code_block':   ('<code>',      '</code>'),
-    'paragraph':    (r'\n{2,}',     None),
-    'newline':      (r'\\$',        None)
+    'escaped_code': ('``',        '``'),
+    'code':         ('`',         '`'),
+    'strong':       ('**',        '**'),
+    'emphasized':   ('*',         '*'),
+    'important':    ('!!!',       '!!!'),
+    'link':         ('[[',        ']]'),
+    'quote':        ('<quote>',   '</quote>'),
+    'code_block':   ('<code>',    '</code>'),
+    'paragraph':    (r'\n{2,}',   None),
+    'newline':      (r'\\$',      None)
 }
 
 simple_formattings = {
@@ -198,8 +199,8 @@ class MarkupParser(object):
                         data = '<tt>%s</tt>' % data
                     paragraph.append(data)
             elif token == 'link':
-                if '|' in data:
-                    href, caption = data.split('|', 1)
+                if ' ' in data:
+                    href, caption = data.split(' ', 1)
                 else:
                     href = caption = data
                 protocol = urlparse(href)[0]
