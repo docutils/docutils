@@ -6,6 +6,7 @@
   {{ body }}
 
   <div id="comments">
+  {% if comments_enabled or comments %}
     <h3>Comments</h3>
     {% for comment in comments %}
       <div class="comment" id="comment-{{ comment.comment_id }}">
@@ -21,41 +22,57 @@
         form below to attach your comment to this page.
       </div>
     {% endfor %}
-    <h4>New Comment</h4>
-    {% if form.error %}
-      <div class="error">
-        You have to fill out all fields and provide a valid mail address.
-      </div>
-    {% endif %}
-    <form action="#comments" method="post">
-      <dl>
-        <dt>Title</dt>
-        <dd><input type="text" name="title" value="{{ form.title|e(true) }}"></dd>
-        <dt>Name</dt>
-        <dd><input type="text" name="author" value="{{ form.author|e(true) }}"></dd>
-        <dt>E-Mail</dt>
-        <dd><input type="text" name="author_mail" value="{{ form.author_mail|e(true) }}"></dd>
-      </dl>
-      <textarea name="comment_body" rows="7" cols="50">{{ form.comment_body|e }}</textarea>
-      <div class="help">
-        <div class="preamble">You can format a comment using the
-        following syntax elements provided:</div>
-        <tt>`code`</tt> / <tt>``code``</tt> / <strong>**strong**</strong> /
-        <em>*emphasized*</em> / <em class="important">!!!important!!!</em> /
-        <a href="#">[[link_target|Link Title]]</a> /
-        <a href="#">[[link_target]]</a> / <tt>&lt;code&gt;code block with
-        syntax highlighting&lt;/code&gt;</tt> / <tt>&lt;quote&gt;some
-        quoted text&lt;/quote&gt;</tt>.
-        <div class="detail">
-          HTML is not supported, relative link targets are treated as
-          quicklinks and code blocks that start with "&gt;&gt;&gt;" are
-          highlighted as interactive python sessions.
+    {% if comments_enabled %}
+      <h4>New Comment</h4>
+      {% if form.error %}
+        <div class="error">
+          You have to fill out all fields and provide a valid mail address.
         </div>
-      </div>
-      <div class="actions">
-        <input type="reset" value="Reset Form">
-        <input type="submit" value="Submit Comment">
-      </div>
-    </form>
+      {% endif %}
+      <form action="#comments" method="post">
+        <dl>
+          <dt>Name</dt>
+          <dd><input type="text" name="author" value="{{ form.author|e(true) }}"></dd>
+          <dt>E-Mail</dt>
+          <dd><input type="text" name="author_mail" value="{{ form.author_mail|e(true) }}"></dd>
+          <dt>Comment Title</dt>
+          <dd><input type="text" name="title" value="{{ form.title|e(true) }}"></dd>
+        </dl>
+        <textarea name="comment_body" rows="7" cols="50">{{ form.comment_body|e }}</textarea>
+        {% if preview %}
+          <div class="preview">
+            <h4>Your Comment</h4>
+            <div class="comment">
+              <h4>{{ preview.title|e }}</h5>
+              {{ preview.parsed_comment_body }}
+              <p class="meta">by {{ preview.author|e }}, written on
+                {{ preview.pub_date }} |
+                <a href="#">#</a></p>
+            </div>
+          </div>
+        {% endif %}
+        <div class="help">
+          <div class="preamble">You can format a comment using the
+          following syntax elements provided:</div>
+          <tt>`code`</tt> / <tt>``code``</tt> / <strong>**strong**</strong> /
+          <em>*emphasized*</em> / <em class="important">!!!important!!!</em> /
+          <a href="#">[[link_target|Link Title]]</a> /
+          <a href="#">[[link_target]]</a> / <tt>&lt;code&gt;code block with
+          syntax highlighting&lt;/code&gt;</tt> / &lt;quote&gt;some
+          quoted text&lt;/quote&gt;.
+          <div class="detail">
+            HTML is not supported, relative link targets are treated as
+            quicklinks and code blocks that start with "&gt;&gt;&gt;" are
+            highlighted as interactive python sessions.
+          </div>
+        </div>
+        <div class="actions">
+          <input type="reset" value="Reset Form">
+          <input type="submit" value="Submit Comment">
+          <input type="submit" name="preview" value="Preview">
+        </div>
+      </form>
+    {% endif %}
+  {% endif %}
   </div>
 {% endblock %}
