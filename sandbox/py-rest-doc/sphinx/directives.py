@@ -409,7 +409,7 @@ directives.register_directive('module', module_directive)
 
 def author_directive(name, arguments, options, content, lineno,
                      content_offset, block_text, state, state_machine):
-    # The author directives aren't included in the HTML text
+    # The author directives aren't included in the built document
     return []
 
 author_directive.arguments = (1, 0, 1)

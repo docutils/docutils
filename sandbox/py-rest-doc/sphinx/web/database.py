@@ -15,10 +15,11 @@
     :copyright: 2007 by Georg Brandl, Armin Ronacher.
     :license: Python license.
 """
-import sqlite3
 import time
+import sqlite3
 from threading import local
 from datetime import datetime
+
 from .markdown import markdown
 
 

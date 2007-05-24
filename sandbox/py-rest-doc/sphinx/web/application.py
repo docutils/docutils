@@ -14,12 +14,12 @@ from __future__ import with_statement
 import cPickle as pickle
 from os import path
 
+from .feed import Feed
+from .database import connect, set_connection, Comment
 from .util import Request, Response, RedirectResponse, SharedDataMiddleware, \
      NotFound, jinja_env
 from ..search import SearchFrontend
 from ..util import relative_uri, shorten_result
-from .feed import Feed
-from .database import connect, set_connection, Comment
 
 
 special_urls = set(['index', 'genindex', 'modindex'])
