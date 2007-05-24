@@ -75,13 +75,29 @@ class DefaultSubstitutions(Transform):
                 ref.replace_self(nodes.Text(text, text))
 
 
+class MoveModuleTargets(Transform):
+    """
+    Move module targets to their nearest enclosing section title.
+    """
+    default_priority = 210
+
+    def apply(self):
+        for node in self.document.traverse(nodes.target):
+            if not node['ids']:
+                continue
+            if node['ids'][0].startswith('module-') and \
+                   node.parent.__class__ is nodes.section:
+                node.parent['ids'] = node['ids']
+                node.parent.remove(node)
+
+
 class MyStandaloneReader(standalone.Reader):
     """
     Add our own Substitutions transform.
     """
     def get_transforms(self):
         tf = standalone.Reader.get_transforms(self)
-        return tf + [DefaultSubstitutions]
+        return tf + [DefaultSubstitutions, MoveModuleTargets]
 
 
 class MyContentsFilter(ContentsFilter):
@@ -386,8 +402,6 @@ class BuildEnvironment:
 
     def resolve_references(self, doctree, docfilename):
         for node in doctree.traverse(addnodes.pending_xref):
-            #if node not in node.parent.children:
-            #    continue
             contnode = node[0].deepcopy()
             newnode = None
 
