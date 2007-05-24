@@ -30,7 +30,6 @@ generic_docroles = {
     'mailheader' : nodes.emphasis,
     'makevar' : nodes.Text,
     'manpage' : nodes.emphasis,
-    'menuselection' : nodes.emphasis,
     'mimetype' : nodes.emphasis,
     'newsgroup' : nodes.emphasis,
     'option' : nodes.emphasis,
@@ -111,6 +110,10 @@ def xfileref_role(typ, rawtext, text, lineno, inliner, options={}, content=[]):
     return [pnode], []
 
 
+def menusel_role(typ, rawtext, text, lineno, inliner, options={}, content=[]):
+    return [nodes.emphasis(rawtext, text.replace('-->', u'\N{TRIANGULAR BULLET}'))], []
+
+
 specific_docroles = {
     'data': xfileref_role,
     'exc': xfileref_role,
@@ -129,6 +132,8 @@ specific_docroles = {
 
     'ref': xfileref_role,
     'token' : xfileref_role,
+
+    'menuselection' : menusel_role,
 }
 
 for rolename, func in specific_docroles.iteritems():
