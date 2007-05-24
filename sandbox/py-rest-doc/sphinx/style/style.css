@@ -188,7 +188,7 @@ div#comments h3 {
 }
 
 div#comments div.comment {
-    margin: 10px 10px 10px 30px;
+    margin: 10px 10px 10px 20px;
     padding: 10px;
     border: 1px solid #666;
     background-color: #333;
@@ -210,23 +210,44 @@ div#comments h4 {
 
 div#comments form {
     display: block;
-    margin: 0 0 0 30px;
+    margin: 0 0 0 20px;
 }
 
 div#comments form dl {
     color: white;
 }
 
+div#comments form dt {
+    clear: both;
+    float: left;
+    width: 80px;
+}
+
 div#comments textarea {
     width: 98%;
-    height: 200px;
+    height: 160px;
+}
+
+div#comments div.help {
+    padding: 10px;
+    margin: 10px 20px 10px 0;
+    background-color: #ccc;
+}
+
+div#comments div.help div.preamble {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+div#comments div.help div.detail {
+    margin-top: 8px;
 }
 
 div#comments div.actions {
     border-top: 1px solid #555;
     background-color: #333;
-    margin: 10px 0 0 -30px;
-    padding: 5px 0 5px 30px;
+    margin: 10px 0 0 -20px;
+    padding: 5px 0 5px 20px;
 }
 
 div#comments input, div#comments textarea {
@@ -239,6 +260,8 @@ div#comments input, div#comments textarea {
 
 div#comments div.comment h4 {
     margin: -10px -10px 5px -10px;
+    padding: 3px;
+    font-size: 16px;
     background-color: #555;
     color: white;
 }
@@ -250,7 +273,7 @@ div#comments div.comment tt {
     border: none;
 }
 
-div#comments div.comment em.important {
+div#comments em.important {
     color: #d00;
     font-weight: bold;
     font-style: normal;
