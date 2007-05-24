@@ -12,7 +12,7 @@
 from docutils import nodes
 from docutils.writers.html4css1 import Writer, HTMLTranslator as BaseTranslator
 
-from .smartypants import smartyPants
+from .smartypants import sphinx_smarty_pants
 
 
 class HTMLWriter(Writer):
@@ -210,5 +210,5 @@ class SmartyPantsHTMLTranslator(HTMLTranslator):
     def encode(self, text):
         text = HTMLTranslator.encode(self, text)
         if self.no_smarty <= 0:
-            text = smartyPants(text, "qBD")
+            text = sphinx_smarty_pants(text)
         return text

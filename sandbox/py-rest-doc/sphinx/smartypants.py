@@ -547,6 +547,15 @@ def smartyPants(text, attr=default_smartypants_attr):
     return "".join(result)
 
 
+def sphinx_smarty_pants(t):
+    t = educateDashesOldSchool(t)
+    # Note: backticks need to be processed before quotes.
+    t = educateBackticks(t)
+    t = educateSingleBackticks(t)
+    t = educateQuotes(t)
+    return t
+
+
 def educateQuotes(str):
     """
     Parameter:  String.
