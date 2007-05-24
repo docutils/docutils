@@ -25,7 +25,7 @@ the latter is the templating engine for HTML output.
 
 Then, create a target directory and run ::
 
-   python sphinx-run.py /path/to/rest/dir /path/to/target/dir
+   python sphinx-build.py /path/to/rest/dir /path/to/target/dir
 
 This will create HTML files in the target directory.
 
@@ -35,7 +35,7 @@ Running the online (web) version
 
 First, you need to build the source with the "web" builder::
 
-   python sphinx-run.py -b web /path/to/rest/dir /path/to/target/dir
+   python sphinx-build.py -b web /path/to/rest/dir /path/to/target/dir
 
 This will create files with pickled contents for the web application
 in the target directory.
