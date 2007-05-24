@@ -131,7 +131,7 @@ class DocumentationApplication(object):
                 if not all(fields):
                     form_error = 'You have to fill out all fields.'
                 elif _mail_re.search(author_mail) is None:
-                    form_error = 'You have to provide a valid mail adress.'
+                    form_error = 'You have to provide a valid mail address.'
                 else:
                     self.cache.pop(url, None)
                     comment = Comment(page_id, title, author, author_mail,

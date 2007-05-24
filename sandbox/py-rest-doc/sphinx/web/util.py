@@ -601,17 +601,17 @@ class Response(object):
             d = '%s, %s %02d:%02d:%02d GMT' % (day, date, expires.tm_hour,
                                                expires.tm_min, expires.tm_sec)
             self._cookies[key]['expires'] = d
-        if not path is None:
+        if path is not None:
             self._cookies[key]['path'] = path
-        if not domain is None:
+        if domain is not None:
             self._cookies[key]['domain'] = domain
-        if not secure is None:
+        if secure is not None:
             self._cookies[key]['secure'] = secure
 
     def delete_cookie(self, key):
         if self._cookies is None:
             self._cookies = SimpleCookie()
-        if not key in self._cookies:
+        if key not in self._cookies:
             self._cookies[key] = ''
         self._cookies[key]['max-age'] = 0
 
