@@ -132,7 +132,7 @@ class NbspNode(TextNode):
 
 
 simplecmd_mapping = {
-    'ldots': u'\N{HORIZONTAL ELLIPSIS}',
+    'ldots': u'...',
     'moreargs': '...',
     'unspecified': '...',
     'ASCII': 'ASCII',
@@ -143,7 +143,7 @@ simplecmd_mapping = {
     'EOF': 'EOF',
     'Cpp': 'C++',
     'C': 'C',
-    'sub': u'\N{TRIANGULAR BULLET} ',
+    'sub': u'--> ',
     'textbackslash': '\\\\',
     'textunderscore': '_',
     'texteuro': u'\N{EURO SIGN}',

@@ -40,9 +40,9 @@ def umlaut(cmd, c):
         from .latexparser import ParserError
         raise ParserError('unsupported umlaut \\%s%s' % (cmd, c), 0)
 
-def escape_rest(text):
-    return text.replace('`', '\\`').replace('---', u'\N{EM DASH}'). \
-           replace('--', u'\N{EN DASH}').replace('|', '\\|').replace('*', '\\*')
+def fixup_text(text):
+    return text.replace('``', '"').replace("''", '"').replace('`', "'").\
+           replace('|', '\\|').replace('*', '\\*')
 
 def empty(node):
     return (type(node) is EmptyNode)
@@ -66,11 +66,10 @@ def my_make_id(name):
     return make_id(markup_re.sub(r'\2', name))
 
 alphanum = u'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-wordchars_s = alphanum + u'_.\N{EM DASH}\N{EN DASH}'
-wordchars_e = alphanum + u'+`(\N{EM DASH}\N{EN DASH}'
+wordchars_s = alphanum + u'_.-'
+wordchars_e = alphanum + u'+`(-'
 bad_markup_re = re.compile(r'(:[a-zA-Z0-9_-]+:)?(`{1,2})[ ]*(.+?)[ ]*(\2)')
 quoted_code_re = re.compile(r'\\`(``.+?``)\'')
-escaped_bt_re = re.compile(r'(?<!\\)\\`')
 
 def repair_bad_inline_markup(text):
     # remove quoting from `\code{x}'
@@ -78,8 +77,6 @@ def repair_bad_inline_markup(text):
 
     # special: the literal backslash
     xtext = xtext.replace('``\\``', '\x03')
-    # don't let quoted backticks interfer
-    xtext = escaped_bt_re.sub('\x01', xtext)
     # special: literal backquotes
     xtext = xtext.replace('``````', '\x02')
 
@@ -96,5 +93,4 @@ def repair_bad_inline_markup(text):
             ntext.append('\\ ')
         lasti = m.end()
     ntext.append(xtext[lasti:])
-    return ''.join(ntext).replace('\x01', '\\`').replace('\x02', '``````').\
-           replace('\x03', '``\\``')
+    return ''.join(ntext).replace('\x02', '``````').replace('\x03', '``\\``')

@@ -79,7 +79,7 @@ wrapper = textwrap.TextWrapper(width=WIDTH, break_long_words=False)
 
 from .docnodes import RootNode, TextNode, NodeList, InlineNode, \
      CommentNode, EmptyNode
-from .util import escape_rest, empty, text, my_make_id, \
+from .util import fixup_text, empty, text, my_make_id, \
      repair_bad_inline_markup
 from .filenamemap import includes_mapping
 
@@ -808,7 +808,7 @@ class RestWriter(object):
         if self.noescape:
             self.curpar.append(node.text)
         else:
-            self.curpar.append(escape_rest(node.text))
+            self.curpar.append(fixup_text(node.text))
 
     visit_NbspNode = visit_TextNode
     visit_SimpleCmdNode = visit_TextNode
