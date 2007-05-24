@@ -72,32 +72,11 @@ class DocumentationApplication(object):
 
     def search(self, req):
         """
-        Search the database.
+        Search the database. Currently just a keyword based search
         """
-        # disabled for now
         if not req.args.get('q'):
             return RedirectResponse('')
         return RedirectResponse('q/%s/' % req.args['q'])
-
-        results = None
-        if 'q' in req.args:
-            # sidebar checks for keywords too.
-            if req.args.get('check_keywords') == 'yes':
-                resp = self.get_keyword_matches(req, req.args['q'], True)
-                if resp is not None:
-                    return resp
-            results = []
-            for fn, title in self.search_frontend.search(req.args['q'],
-                                            req.args.getlist('area')):
-                with file(path.join(self.data_root, 'sources', fn[:-4] + '.txt')) as f:
-                    source = f.read().decode('utf-8')
-                context = shorten_result(source, req.args['q'].split())
-                results.append((fn, title, context))
-        return Response(render_template(req, 'search.html', {
-            'search_results':       results,
-            'search_performed':     bool(req.args.get('q')),
-            'current_page_name':    'search'
-        }))
 
     def show_source(self, req, page):
         """
