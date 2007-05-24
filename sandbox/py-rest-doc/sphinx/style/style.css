@@ -264,6 +264,8 @@ div#comments input#homepage {
 div#comments input[type="reset"],
 div#comments input[type="submit"] {
     cursor: pointer;
+    font-weight: bold;
+    padding: 2px;
 }
 
 div#comments div.preview {
