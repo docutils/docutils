@@ -37,6 +37,21 @@
         <dd><input type="text" name="author_mail" value="{{ form.author_mail|e(true) }}"></dd>
       </dl>
       <textarea name="comment_body" rows="7" cols="50">{{ form.comment_body|e }}</textarea>
+      <div class="help">
+        <div class="preamble">You can format a comment using the
+        following syntax elements provided:</div>
+        <tt>`code`</tt> / <tt>``code``</tt> / <strong>**strong**</strong> /
+        <em>*emphasized*</em> / <em class="important">!!!important!!!</em> /
+        <a href="#">[[link_target|Link Title]]</a> /
+        <a href="#">[[link_target]]</a> / <tt>&lt;code&gt;code block with
+        syntax highlighting&lt;/code&gt;</tt> / <tt>&lt;quote&gt;some
+        quoted text&lt;/quote&gt;</tt>.
+        <div class="detail">
+          HTML is not supported, relative link targets are treated as
+          quicklinks and code blocks that start with "&gt;&gt;&gt;" are
+          highlighted as interactive python sessions.
+        </div>
+      </div>
       <div class="actions">
         <input type="reset" value="Reset Form">
         <input type="submit" value="Submit Comment">
