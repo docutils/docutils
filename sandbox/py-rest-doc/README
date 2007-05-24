@@ -30,6 +30,23 @@ Then, create a target directory and run ::
 This will create HTML files in the target directory.
 
 
+Running the online (web) version
+--------------------------------
+
+First, you need to build the source with the "web" builder::
+
+   python sphinx-run.py -b web /path/to/rest/dir /path/to/target/dir
+
+This will create files with pickled contents for the web application
+in the target directory.
+
+Then, you can run ::
+
+   python sphinx-web.py /path/to/target/dir
+
+which will serve the documentation using wsgiref on localhost:3000.
+
+
 Things That Should Be Improved
 ------------------------------
 

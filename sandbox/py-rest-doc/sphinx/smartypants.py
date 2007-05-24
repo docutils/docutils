@@ -74,11 +74,10 @@ import re
 
 
 def sphinx_smarty_pants(t):
+    t = t.replace('&quot;', '"')
     t = educateDashesOldSchool(t)
-    # Note: backticks need to be processed before quotes.
-    #t = educateBackticks(t)
-    #t = educateSingleBackticks(t)
     t = educateQuotes(t)
+    t = t.replace('"', '&quot;')
     return t
 
 # Constants for quote education.
