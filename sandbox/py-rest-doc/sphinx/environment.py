@@ -218,6 +218,8 @@ class BuildEnvironment:
                     del self.labels[labelname]
             self.indexentries.pop(filename, None)
 
+    # --------- SINGLE FILE BUILDING -------------------------------------------
+
     def update_file(self, filename):
         """Parse a file and add/update inventory entries for the doctree."""
         self.clear_file(filename)
@@ -393,35 +395,7 @@ class BuildEnvironment:
             (type, string, targetid, aliasname))
     # -------
 
-    def find_desc(self, modname, classname, name, type):
-        """Find a description node matching "name", perhaps using
-           the given module and/or classname."""
-        # skip parens
-        if name[-2:] == '()':
-            name = name[:-2]
-
-        # don't add module and class names for C things
-        if type[0] == 'c' and type not in ('class', 'const'):
-            # skip trailing star and whitespace
-            name = name.rstrip(' *')
-            if name in self.descrefs and self.descrefs[name][1][0] == 'c':
-                return name, self.descrefs[name]
-            return None, None
-
-        if name in self.descrefs:
-            newname = name
-        elif modname and modname + '.' + name in self.descrefs:
-            newname = modname + '.' + name
-        elif modname and classname and \
-                 modname + '.' + classname + '.' + name in self.descrefs:
-            newname = modname + '.' + classname + '.' + name
-        # special case: builtin exceptions have module "exceptions" set
-        elif type == 'exc' and '.' not in name and \
-             'exceptions.' + name in self.descrefs:
-            newname = 'exceptions.' + name
-        else:
-            return None, None
-        return newname, self.descrefs[newname]
+    # --------- GLOBAL BUILDING ------------------------------------------------
 
     def resolve_references(self, doctree, docfilename):
         for node in doctree.traverse(addnodes.pending_xref):
@@ -492,40 +466,6 @@ class BuildEnvironment:
 
             if newnode:
                 node.replace_self(newnode)
-
-    def get_close_matches(self, searchstring, n=20, cutoff=0.55):
-        """
-        Return a list of tuples in the form ``(ratio, type, filename, title,
-        description)`` with close matches for the given search string.
-        """
-        s = difflib.SequenceMatcher()
-        s.set_seq2(searchstring.lower())
-
-        def possibilities():
-            for title, (fn, desc, _) in self.modules.iteritems():
-                yield ('module', fn, title, desc)
-            for title, (fn, _) in self.descrefs.iteritems():
-                yield (_, fn, title, '')
-
-        def dotsearch(string):
-            parts = string.lower().split('.')
-            for idx in xrange(0, len(parts)):
-                yield '.'.join(parts[idx:])
-
-        result = []
-        for type, filename, title, desc in possibilities():
-            best_res = 0
-            for part in dotsearch(title):
-                s.set_seq1(part)
-                if s.real_quick_ratio() >= cutoff and \
-                   s.quick_ratio() >= cutoff and \
-                   s.ratio() >= cutoff and \
-                   s.ratio() > best_res:
-                    best_res = s.ratio()
-            if best_res:
-                result.append((best_res, type, filename, title, desc))
-
-        return heapq.nlargest(n, result)
 
     def resolve_toctrees(self, documents):
         # determine which files (containing a toc) must be rebuilt for each
@@ -641,3 +581,88 @@ class BuildEnvironment:
                     continue
                 self.warning_stream.write(
                     'WARNING: %s isn\'t included in any toctree\n' % filename)
+
+    # --------- QUERYING -------------------------------------------------------
+
+    def find_desc(self, modname, classname, name, type):
+        """Find a description node matching "name", perhaps using
+           the given module and/or classname."""
+        # skip parens
+        if name[-2:] == '()':
+            name = name[:-2]
+
+        # don't add module and class names for C things
+        if type[0] == 'c' and type not in ('class', 'const'):
+            # skip trailing star and whitespace
+            name = name.rstrip(' *')
+            if name in self.descrefs and self.descrefs[name][1][0] == 'c':
+                return name, self.descrefs[name]
+            return None, None
+
+        if name in self.descrefs:
+            newname = name
+        elif modname and modname + '.' + name in self.descrefs:
+            newname = modname + '.' + name
+        elif modname and classname and \
+                 modname + '.' + classname + '.' + name in self.descrefs:
+            newname = modname + '.' + classname + '.' + name
+        # special case: builtin exceptions have module "exceptions" set
+        elif type == 'exc' and '.' not in name and \
+             'exceptions.' + name in self.descrefs:
+            newname = 'exceptions.' + name
+        else:
+            return None, None
+        return newname, self.descrefs[newname]
+
+    def find_keyword(self, keyword, avoid_fuzzy=False):
+        """
+        Find keyword matches for a keyword. If there's an exact match, just return
+        it, else return a list of fuzzy matches if avoid_fuzzy isn't True.
+
+        Keywords searched are: first modules, then descrefs.
+
+        Returns: None if nothing found
+                 (type, filename, anchorname) if exact match found
+                 list of (quality, type, filename, anchorname, description) if fuzzy
+        """
+
+        if term in self.modules:
+            filename, title, system = self.modules[term]
+            return 'module', filename, 'module-' + term
+        if term in self.descrefs:
+            filename, ref_type = self.descrefs[term]
+            return ref_type, filename, term
+
+        if avoid_fuzzy:
+            return
+
+        # find fuzzy matches
+        s = difflib.SequenceMatcher()
+        s.set_seq2(searchstring.lower())
+
+        def possibilities():
+            for title, (fn, desc, _) in self.modules.iteritems():
+                yield ('module', fn, 'module-'+title, desc)
+            for title, (fn, desctype) in self.descrefs.iteritems():
+                yield (desctype, fn, title, '')
+
+        def dotsearch(string):
+            parts = string.lower().split('.')
+            for idx in xrange(0, len(parts)):
+                yield '.'.join(parts[idx:])
+
+        result = []
+        for type, filename, title, desc in possibilities():
+            best_res = 0
+            for part in dotsearch(title):
+                s.set_seq1(part)
+                if s.real_quick_ratio() >= cutoff and \
+                   s.quick_ratio() >= cutoff and \
+                   s.ratio() >= cutoff and \
+                   s.ratio() > best_res:
+                    best_res = s.ratio()
+            if best_res:
+                result.append((best_res, type, filename, title, desc))
+
+        return heapq.nlargest(n, result)
+
