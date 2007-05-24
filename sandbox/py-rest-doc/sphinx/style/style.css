@@ -272,7 +272,7 @@ div#comments div.preview {
     margin: 10px 20px 10px 0;
     padding: 10px;
     border: 1px solid #0f3646;
-    background-color: #222;
+    background-color: #05171e;
 }
 
 div#comments div.preview div.comment {
@@ -283,7 +283,7 @@ div#comments div.preview h4 {
     margin: -10px -10px 10px -10px;
     padding: 3px;
     font-size: 20px;
-    background-color: #555;
+    background-color: #
     color: white;
 }
 

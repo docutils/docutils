@@ -110,8 +110,8 @@ class DocumentationApplication(object):
         # do the form validation and comment saving if the
         # request method is post.
         title = comment_body = ''
-        author = req.cookies.get('author', '')
-        author_mail = req.cookies.get('author_mail', '')
+        author = req.session.get('author', '')
+        author_mail = req.session.get('author_mail', '')
         form_error = None
         preview = None
 
@@ -137,10 +137,11 @@ class DocumentationApplication(object):
                     comment = Comment(page_id, title, author, author_mail,
                                       comment_body)
                     comment.save()
-                    resp = RedirectResponse(comment.url)
-                    resp.set_cookie('author', author)
-                    resp.set_cookie('author_mail', author_mail)
-                    return resp
+                    req.session.update(
+                        author=author,
+                        author_mail=author_mail
+                    )
+                    return RedirectResponse(comment.url)
             cache_possible = False
 
         # if the form validation fails the cache is used so that
@@ -191,6 +192,22 @@ class DocumentationApplication(object):
         if cache_possible:
             self.cache[url] = (filename, path.getmtime(filename), text)
         return Response(text)
+
+    def get_recent_comments_feed(self, req):
+        """
+        Get the feed of recent comments.
+        """
+        feed = Feed(req, 'Recent Comments', 'Recent Comments', '')
+        for comment in Comment.get_recent():
+            feed.add_item(comment.title, comment.author, comment.url,
+                          comment.parsed_comment_body, comment.pub_date)
+        return Response(feed.generate(), mimetype='application/rss+xml')
+
+    def get_admin_page(self, req, page):
+        """
+        Get some administration pages.
+        """
+        raise TypeError()
 
     pretty_type = {
         'data': 'module data',
@@ -261,13 +278,11 @@ class DocumentationApplication(object):
             elif url == 'index' and 'q' in req.args:
                 resp = RedirectResponse('q/%s/' % req.args['q'])
             elif url == 'index' and req.args.get('feed') == 'recent_comments':
-                feed = Feed(req, 'Recent Comments', 'Recent Comments', '')
-                for comment in Comment.get_recent():
-                    feed.add_item(comment.title, comment.author, comment.url,
-                                  comment.parsed_comment_body, comment.pub_date)
-                resp = Response(feed.generate(), mimetype='application/rss+xml')
+                resp = self.get_recent_comments_feed(req)
             elif url.startswith('q/'):
                 resp = self.get_keyword_matches(req, url[2:])
+            elif url.startswith('admin/'):
+                resp = self.get_admin_page(req, url[6:])
             else:
                 try:
                     resp = self.get_page(req, url)
