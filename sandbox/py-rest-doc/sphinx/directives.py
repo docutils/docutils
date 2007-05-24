@@ -250,7 +250,7 @@ def desc_directive(desctype, arguments, options, content, lineno,
 
     noindex = ('noindex' in options)
     signatures = map(lambda s: s.strip(), arguments[0].split('\n'))
-    names = set()
+    names = []
     for i, sig in enumerate(signatures):
         # add a signature node for each signature in the current unit
         # and add a reference target for it
@@ -282,15 +282,15 @@ def desc_directive(desctype, arguments, options, content, lineno,
                 signode['ids'].append(fullname)
                 state.document.note_explicit_target(signode)
                 env.note_descref(fullname, desctype)
-            names.add(name)
+            names.append(name)
 
             env.note_index_entry('single',
                                  desc_index_text(desctype, env.currmodule, name),
                                  fullname, fullname)
 
     subnode = addnodes.desc_content()
-    if desctype == 'class':
-        env.currclass = arguments[0].split('\n')[0].partition('(')[0].strip()
+    if desctype == 'class' and names:
+        env.currclass = names[0]
     state.nested_parse(content, content_offset, subnode)
     if desctype == 'class':
         env.currclass = None
