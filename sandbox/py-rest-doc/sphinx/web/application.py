@@ -280,6 +280,12 @@ class DocumentationApplication(object):
                 resp = self.search(req)
             elif url == 'index' and 'q' in req.args:
                 resp = RedirectResponse('q/%s/' % req.args['q'])
+            elif url == 'index' and req.args.get('feed') == 'recent_comments':
+                feed = Feed(req, 'Recent Comments', 'Recent Comments', '')
+                for comment in Comment.get_recent():
+                    feed.add_item(comment.title, comment.author, comment.url,
+                                  comment.parsed_comment_body, comment.pub_date)
+                resp = Response(feed.generate(), mimetype='application/rss+xml')
             elif url.startswith('q/'):
                 resp = self.get_keyword_matches(req, url[2:])
             else:
