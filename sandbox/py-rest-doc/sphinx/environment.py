@@ -36,7 +36,7 @@ default_settings = {
 
 # This is increased every time a new environment attribute is added
 # to properly invalidate pickle files.
-ENV_VERSION = 5
+ENV_VERSION = 6
 
 
 def walk_depth(node, depth, maxdepth):
@@ -183,11 +183,14 @@ class BuildEnvironment:
 
         self.indexentries = {}      # filename -> list of
                                     # (type, string, target, aliasname)
+        self.versionchanges = {}    # version -> list of
+                                    # (type, filename, module, descname, content)
 
         # These are set while parsing a file
         self.filename = None        # current file name
         self.currmodule = None      # current module name
         self.currclass = None       # current class name
+        self.currdesc = None        # current descref name
         self.index_num = 0          # autonumber for index targets
 
     def set_warning_stream(self, stream):
@@ -217,6 +220,9 @@ class BuildEnvironment:
                 if fn == filename:
                     del self.labels[labelname]
             self.indexentries.pop(filename, None)
+            for version, changes in self.versionchanges.items():
+                new = [change for change in changes if change[1] != filename]
+                changes[:] = new
 
     # --------- SINGLE FILE BUILDING -------------------------------------------
 
@@ -393,6 +399,10 @@ class BuildEnvironment:
     def note_index_entry(self, type, string, targetid, aliasname):
         self.indexentries.setdefault(self.filename, []).append(
             (type, string, targetid, aliasname))
+
+    def note_versionchange(self, type, version, node):
+        self.versionchanges.setdefault(version, []).append(
+            (type, self.filename, self.currmodule, self.currdesc, node.deepcopy()))
     # -------
 
     # --------- GLOBAL BUILDING ------------------------------------------------
@@ -626,19 +636,19 @@ class BuildEnvironment:
                  list of (quality, type, filename, anchorname, description) if fuzzy
         """
 
-        if term in self.modules:
-            filename, title, system = self.modules[term]
-            return 'module', filename, 'module-' + term
-        if term in self.descrefs:
-            filename, ref_type = self.descrefs[term]
-            return ref_type, filename, term
+        if keyword in self.modules:
+            filename, title, system = self.modules[keyword]
+            return 'module', filename, 'module-' + keyword
+        if keyword in self.descrefs:
+            filename, ref_type = self.descrefs[keyword]
+            return ref_type, filename, keyword
 
         if avoid_fuzzy:
             return
 
         # find fuzzy matches
         s = difflib.SequenceMatcher()
-        s.set_seq2(searchstring.lower())
+        s.set_seq2(keyword.lower())
 
         def possibilities():
             for title, (fn, desc, _) in self.modules.iteritems():

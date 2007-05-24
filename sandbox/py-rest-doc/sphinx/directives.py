@@ -289,11 +289,16 @@ def desc_directive(desctype, arguments, options, content, lineno,
                                  fullname, fullname)
 
     subnode = addnodes.desc_content()
+    # needed for automatic qualification of members
     if desctype == 'class' and names:
         env.currclass = names[0]
+    # needed for association of version{added,changed} directives
+    if names:
+        env.currdesc = names[0]
     state.nested_parse(content, content_offset, subnode)
     if desctype == 'class':
         env.currclass = None
+    env.currdesc = None
     node.append(subnode)
     return [node]
 
@@ -337,9 +342,12 @@ def version_directive(name, arguments, options, content, lineno,
         node.extend(inodes)
         if content:
             state.nested_parse(content, content_offset, node)
-        return [node] + messages
+        ret = [node] + messages
     else:
-        return [node]
+        ret = [node]
+    env = state.document.settings.env
+    env.note_versionchange(node['type'], node['version'], node)
+    return ret
 
 version_directive.arguments = (1, 1, 1)
 version_directive.content = 1
