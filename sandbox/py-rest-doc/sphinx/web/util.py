@@ -14,8 +14,12 @@ from __future__ import with_statement
 import cgi
 import urllib
 import tempfile
+import cPickle as pickle
+import tempfile
+from hashlib import sha1
 from os import path
-from time import gmtime
+from time import gmtime, time
+from random import random
 from Cookie import SimpleCookie
 from datetime import datetime
 from cStringIO import StringIO
@@ -71,6 +75,8 @@ HTTP_STATUS_CODES = {
     507:    'INSUFFICIENT STORAGE',
     510:    'NOT EXTENDED'
 }
+
+SID_COOKIE_NAME = 'python_doc_sid'
 
 
 templates_path = path.join(path.dirname(__file__), '..', 'templates')
@@ -388,12 +394,38 @@ class Headers(object):
         )
 
 
+class Session(dict):
+
+    def __init__(self, sid):
+        self.sid = sid
+        if sid is not None:
+            if path.exists(self.filename):
+                with file(self.filename, 'rb') as f:
+                    self.update(pickle.load(f))
+
+    @property
+    def filename(self):
+        if self.sid is not None:
+            return path.join(tempfile.gettempdir(), '__pydoc_sess' + self.sid)
+
+    @property
+    def worth_saving(self):
+        return self.sid is None and self
+
+    def save(self):
+        if self.sid is None:
+            self.sid = sha1('%s|%s' % (time(), random())).hexdigest()
+        with file(self.filename, 'wb') as f:
+            pickle.dump(dict(self), f, pickle.HIGHEST_PROTOCOL)
+
+
 class Request(object):
     charset = 'utf-8'
 
     def __init__(self, environ):
         self.environ = environ
         self.environ['werkzeug.request'] = self
+        self.session = Session(self.cookies.get(SID_COOKIE_NAME))
 
     def _get_file_stream(self):
         """Called to get a stream for the file upload.
@@ -584,6 +616,11 @@ class Response(object):
         self._cookies[key]['max-age'] = 0
 
     def __call__(self, environ, start_response):
+        req = environ['werkzeug.request']
+        if req.session.worth_saving:
+            req.session.save()
+            self.set_cookie(SID_COOKIE_NAME, req.session.sid)
+
         headers = self.headers.to_list(self.charset)
         if self._cookies is not None:
             for morsel in self._cookies.values():
