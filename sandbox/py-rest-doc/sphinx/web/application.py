@@ -11,10 +11,12 @@
 """
 from __future__ import with_statement
 
+import re
 import cPickle as pickle
 from os import path
 
 from .feed import Feed
+from .antispam import AntiSpam
 from .database import connect, set_connection, Comment
 from .util import Request, Response, RedirectResponse, SharedDataMiddleware, \
      NotFound, jinja_env
@@ -23,6 +25,9 @@ from ..util import relative_uri, shorten_result
 
 
 special_urls = set(['index', 'genindex', 'modindex'])
+
+_mail_re = re.compile(r'^([a-zA-Z0-9_\.\-])+\@'
+                      r'(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,})+$')
 
 
 def get_target_uri(source_filename):
@@ -63,6 +68,7 @@ class DocumentationApplication(object):
         with file(path.join(self.data_root, 'searchindex.pickle')) as f:
             self.search_frontend = SearchFrontend(pickle.load(f))
         self.db_con = connect(path.join(self.data_root, 'sphinx.db'))
+        self.antispam = AntiSpam(path.join(self.data_root, 'bad_content'))
 
     def search(self, req):
         """
@@ -135,13 +141,16 @@ class DocumentationApplication(object):
             author = req.form.get('author')
             author_mail = req.form.get('author_mail')
             comment_body = req.form.get('comment_body')
+            fields = (title, author, author_mail, comment_body)
 
             if req.form.get('preview'):
                 preview = Comment(page_id, title, author, author_mail,
                                   comment_body)
+            elif req.form.get('homepage') or self.antispam.is_spam(fields):
+                return Response('Rejected Spam', mimetype='text/plain', status=403)
             else:
-                form_error = not (title and author and author_mail and
-                                  comment_body)
+                form_error = not all(fields) or \
+                             _mail_re.search(author_mail) is not None
 
                 if not form_error:
                     self.cache.pop(url, None)

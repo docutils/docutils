@@ -24,13 +24,13 @@
       </div>
     {% endfor %}
     {% if comments_enabled %}
-      <h4>New Comment</h4>
+      <h4 id="comments-new-comment">New Comment</h4>
       {% if form.error %}
         <div class="error">
           You have to fill out all fields and provide a valid mail address.
         </div>
       {% endif %}
-      <form action="#comments" method="post">
+      <form action="#comments-new-comment" method="post">
         <dl>
           <dt>Name</dt>
           <dd><input type="text" name="author" value="{{ form.author|e(true) }}"></dd>
@@ -39,6 +39,7 @@
           <dt>Comment Title</dt>
           <dd><input type="text" name="title" value="{{ form.title|e(true) }}"></dd>
         </dl>
+        <input name="homepage" id="homepage">
         <textarea name="comment_body" rows="7" cols="50">{{ form.comment_body|e }}</textarea>
         {% if preview %}
           <div class="preview">
