@@ -76,8 +76,8 @@ import re
 def sphinx_smarty_pants(t):
     t = educateDashesOldSchool(t)
     # Note: backticks need to be processed before quotes.
-    t = educateBackticks(t)
-    t = educateSingleBackticks(t)
+    #t = educateBackticks(t)
+    #t = educateSingleBackticks(t)
     t = educateQuotes(t)
     return t
 
