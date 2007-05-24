@@ -100,19 +100,36 @@ def desc_index_text(desctype, currmodule, name):
 
 # ------ functions to parse a Python or C signature and create desc_* nodes.
 
-py_sig_re = re.compile(r'''^([\w.]*\.)?        # module names
+py_sig_re = re.compile(r'''^([\w.]*\.)?        # class names
                            (\w+)  \s*          # thing name
                            (?: \((.*)\) )? $   # optionally arguments
                         ''', re.VERBOSE)
 
 py_paramlist_re = re.compile(r'([\[\],])')  # split at '[', ']' and ','
 
-# Adapted from Ed Loper's docutils sandbox.
-def parse_py_signature(signode, sig, desctype):
-    """Transform a python signature into RST nodes. Returns (signode, fullname)."""
+def parse_py_signature(signode, sig, desctype, currclass):
+    """
+    Transform a python signature into RST nodes. Returns (signode, fullname).
+    Return the fully qualified name of the thing.
+
+    If inside a class, the current class name is handled intelligently:
+    * it is stripped from the displayed name if present
+    * it is added to the full name (return value) if not present
+    """
     m = py_sig_re.match(sig)
     if m is None: raise ValueError
     classname, name, arglist = m.groups()
+
+    if currclass:
+        if classname and classname.startswith(currclass):
+            fullname = classname + name
+            classname = classname[len(currclass):].lstrip('.')
+        elif classname:
+            fullname = currclass + '.' + classname + name
+        else:
+            fullname = currclass + '.' + name
+    else:
+        fullname = classname + name if classname else name
 
     if classname:
         signode += addnodes.desc_classname(classname, classname)
@@ -121,7 +138,7 @@ def parse_py_signature(signode, sig, desctype):
         if desctype in ('function', 'method'):
             # for callables, add an empty parameter list
             signode += addnodes.desc_parameterlist()
-        return classname + name if classname else name
+        return fullname
     signode += addnodes.desc_parameterlist()
 
     stack = [signode[-1]]
@@ -140,7 +157,7 @@ def parse_py_signature(signode, sig, desctype):
             token = token.strip()
             stack[-1] += addnodes.desc_parameter(token, token)
     if len(stack) != 1: raise ValueError
-    return classname + name if classname else name
+    return fullname
 
 
 c_sig_re = re.compile(
@@ -230,8 +247,6 @@ def desc_directive(desctype, arguments, options, content, lineno,
     env = state.document.settings.env
     node = addnodes.desc()
     node['desctype'] = desctype
-    if desctype == 'class':
-        env.currclass = arguments[0].split('\n')[0].partition('(')[0].strip()
 
     noindex = ('noindex' in options)
     signatures = map(lambda s: s.strip(), arguments[0].split('\n'))
@@ -245,7 +260,7 @@ def desc_directive(desctype, arguments, options, content, lineno,
         try:
             if desctype in ('function', 'data', 'class', 'exception',
                             'method', 'attribute'):
-                name = parse_py_signature(signode, sig, desctype)
+                name = parse_py_signature(signode, sig, desctype, env.currclass)
             elif desctype in ('cfunction', 'cmember', 'cmacro', 'ctype', 'cvar'):
                 name = parse_c_signature(signode, sig, desctype)
             elif desctype == 'opcode':
@@ -274,7 +289,11 @@ def desc_directive(desctype, arguments, options, content, lineno,
                                  fullname, fullname)
 
     subnode = addnodes.desc_content()
+    if desctype == 'class':
+        env.currclass = arguments[0].split('\n')[0].partition('(')[0].strip()
     state.nested_parse(content, content_offset, subnode)
+    if desctype == 'class':
+        env.currclass = None
     node.append(subnode)
     return [node]
 
