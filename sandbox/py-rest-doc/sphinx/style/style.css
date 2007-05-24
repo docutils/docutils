@@ -176,13 +176,14 @@ ul.keywordmatches li.goodmatch a {
 
 /* :::: COMMENTS :::: */
 div#comments {
-    background-color: #222;
+    background-color: #051d27;
     margin: 20px -20px -30px -20px;
     padding: 0 0 1px 0;
 }
 
 div#comments h3 {
-    background-color: #444;
+    background-color: #092835;
+    border-bottom: 1px solid #09232e;
     color: white;
     margin: 0 0 20px 0;
 }
@@ -190,8 +191,8 @@ div#comments h3 {
 div#comments div.comment {
     margin: 10px 10px 10px 20px;
     padding: 10px;
-    border: 1px solid #666;
-    background-color: #333;
+    border: 1px solid #0f3646;
+    background-color: #09232e;
     color: #eee;
 }
 
@@ -204,7 +205,8 @@ div#comments div.comment p.meta {
 
 div#comments h4 {
     margin: 30px 0 20px 0;
-    background-color: #444;
+    background-color: #092835;
+    border-bottom: 1px solid #09232e;
     color: white;
 }
 
@@ -231,7 +233,8 @@ div#comments textarea {
 div#comments div.help {
     padding: 10px 10px 0 10px;
     margin: 10px 20px 10px 0;
-    background-color: #ccc;
+    background-color: #0e3241;
+    color: white;
 }
 
 div#comments div.help p {
@@ -240,8 +243,8 @@ div#comments div.help p {
 }
 
 div#comments div.actions {
-    border-top: 1px solid #555;
-    background-color: #333;
+    border-top: 1px solid #05171e;
+    background-color: #09232e;
     margin: 10px 0 0 -20px;
     padding: 5px 0 5px 20px;
 }
@@ -250,8 +253,8 @@ div#comments input, div#comments textarea {
     font-family: 'Bitstream Vera Sans', 'Arial', sans-serif;
     font-size: 13px;
     color: white;
-    background-color: #111;
-    border: 1px solid #444;
+    background-color: #05171e;
+    border: 1px solid #092835;
 }
 
 div#comments input#homepage {
@@ -266,7 +269,7 @@ div#comments input[type="submit"] {
 div#comments div.preview {
     margin: 10px 20px 10px 0;
     padding: 10px;
-    border: 1px solid #555;
+    border: 1px solid #0f3646;
     background-color: #222;
 }
 
@@ -286,7 +289,8 @@ div#comments div.comment h4 {
     margin: -10px -10px 5px -10px;
     padding: 3px;
     font-size: 16px;
-    background-color: #555;
+    background-color: #0e3241;
+    border-bottom: 1px solid #0f3646;
     color: white;
 }
 
@@ -311,15 +315,15 @@ div#comments div.comment a {
 div#comments div.comment blockquote {
     margin: 5px 10px 5px 10px;
     padding: 10px;
-    border: 1px solid #444;
-    background-color: #292929;
+    border: 1px solid #0f3646;
+    background-color: #071c25;
 }
 
 div#comments div.error {
     font-weight: bold;
-    border: 2px solid #333;
+    border: 2px solid #09232e;
     padding: 5px;
-    margin: 5px 20px 0 30px;
+    margin: 5px 20px 0 20px;
     background-color: #666;
     color: #eee;
 }
