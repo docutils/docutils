@@ -5,6 +5,7 @@
 {% block body %}
   {{ body }}
 
+  {% if builder == "web" %}
   <div id="comments">
   {% if comments_enabled or comments %}
     <h3>Comments</h3>
@@ -54,11 +55,11 @@
         <div class="help">
           <div class="preamble">You can format a comment using the
           following syntax elements provided:</div>
-          <tt>`code`</tt> / <tt>``code``</tt> / <strong>**strong**</strong> /
-          <em>*emphasized*</em> / <em class="important">!!!important!!!</em> /
-          <a href="#">[[link_target|Link Title]]</a> /
-          <a href="#">[[link_target]]</a> / <tt>&lt;code&gt;code block with
-          syntax highlighting&lt;/code&gt;</tt> / &lt;quote&gt;some
+          `code` / ``code too`` / **strong** /
+          *emphasized* / !!!important!!! /
+          [[link_target Link Title]] /
+          [[link_target_only]] / &lt;code&gt;code block with
+          syntax highlighting&lt;/code&gt; / &lt;quote&gt;some
           quoted text&lt;/quote&gt;.
           <div class="detail">
             HTML is not supported, relative link targets are treated as
@@ -75,4 +76,5 @@
     {% endif %}
   {% endif %}
   </div>
+  {% endif %}
 {% endblock %}
