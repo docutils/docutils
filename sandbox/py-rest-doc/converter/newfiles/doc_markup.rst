@@ -411,12 +411,12 @@ in a different style:
    Menu selections should be marked using the ``menuselection`` role.  This is
    used to mark a complete sequence of menu selections, including selecting
    submenus and choosing a specific operation, or any subsequence of such a
-   sequence.  The names of individual selections should be separated by the
-   *TRIANGULAR BULLET* Unicode character.
+   sequence.  The names of individual selections should be separated by
+   ``-->``.
 
    For example, to mark the selection \`\`Start > Programs'', use this markup::
 
-      :menuselection:`Start ‣ Programs`
+      :menuselection:`Start --> Programs`
 
    When including a selection that includes some trailing indicator, such as the
    ellipsis some operating systems use to indicate that the command opens a
