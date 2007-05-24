@@ -213,41 +213,32 @@ class DocumentationApplication(object):
         """
         if term is None:
             term = req.path.strip('/')
-        # module references
-        if term in self.env.modules:
-            filename, title, system = self.env.modules[term]
-            url = get_target_uri(filename)
-            return RedirectResponse(url)
-        # direct references
-        if term in self.env.descrefs:
-            filename, ref_type = self.env.descrefs[term]
-            url = get_target_uri(filename) + '#' + term
-            return RedirectResponse(url)
 
-        if avoid_fuzzy:
+        matches = self.env.find_keyword(term, avoid_fuzzy)
+        if not matches:
             return
-
-        # get some close matches
-        close_matches = []
-        good_matches = 0
-        for ratio, type, filename, title, desc in self.env.get_close_matches(term):
-            link = get_target_uri(filename)
-            if type != 'module':
-                link += '#' + title
-            good_match = ratio > 0.75
-            good_matches += good_match
-            close_matches.append({
-                'href':         relative_uri(req.path, link),
-                'title':        title,
-                'good_match':   good_match,
-                'type':         self.pretty_type.get(type, type),
-                'description':  desc
-            })
-        return Response(render_template(req, 'not_found.html', {
-            'close_matches':        close_matches,
-            'good_matches_count':   good_matches,
-            'keyword':              term
-        }), status=404)
+        if type(matches) is tuple:
+            return RedirectResponse(get_target_uri(matches[1]) + '#' + matches[2])
+        elif type(matches) is list:
+            # get some close matches
+            close_matches = []
+            good_matches = 0
+            for ratio, type, filename, anchorname, desc in matches:
+                link = get_target_uri(filename) + '#' + anchorname
+                good_match = ratio > 0.75
+                good_matches += good_match
+                close_matches.append({
+                    'href':         relative_uri(req.path, link),
+                    'title':        anchorname,
+                    'good_match':   good_match,
+                    'type':         self.pretty_type.get(type, type),
+                    'description':  desc,
+                })
+            return Response(render_template(req, 'not_found.html', {
+                'close_matches':        close_matches,
+                'good_matches_count':   good_matches,
+                'keyword':              term
+            }), status=404)
 
     def __call__(self, environ, start_response):
         """
