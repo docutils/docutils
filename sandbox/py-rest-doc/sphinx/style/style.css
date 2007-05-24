@@ -220,7 +220,7 @@ div#comments form dl {
 div#comments form dt {
     clear: both;
     float: left;
-    width: 80px;
+    width: 110px;
 }
 
 div#comments textarea {
@@ -256,6 +256,25 @@ div#comments input, div#comments textarea {
     color: white;
     background-color: #111;
     border: 1px solid #444;
+}
+
+div#comments div.preview {
+    margin: 10px 20px 10px 0;
+    padding: 10px;
+    border: 1px solid #555;
+    background-color: #222;
+}
+
+div#comments div.preview div.comment {
+    margin: 0;
+}
+
+div#comments div.preview h4 {
+    margin: -10px -10px 10px -10px;
+    padding: 3px;
+    font-size: 20px;
+    background-color: #555;
+    color: white;
 }
 
 div#comments div.comment h4 {

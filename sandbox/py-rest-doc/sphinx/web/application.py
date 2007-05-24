@@ -110,6 +110,8 @@ class DocumentationApplication(object):
         """
         page_id = url + '.rst'
         cache_possible = True
+        comments_enabled = self.env.metadata.get(page_id, {}) \
+                               .get('comments_enabled', True)
 
         # generate feed if wanted
         if req.args.get('feed') == 'comments':
@@ -122,23 +124,34 @@ class DocumentationApplication(object):
 
         # do the form validation and comment saving if the
         # request method is post.
-        title = author = author_mail = comment_body = ''
+        title = comment_body = ''
+        author = req.cookies.get('author', '')
+        author_mail = req.cookies.get('author_mail', '')
         form_error = False
-        if req.method == 'POST':
+        preview = None
+
+        if comments_enabled and req.method == 'POST':
             title = req.form.get('title')
             author = req.form.get('author')
             author_mail = req.form.get('author_mail')
             comment_body = req.form.get('comment_body')
 
-            form_error = not (title and author and author_mail and
-                              comment_body)
-
-            if not form_error:
-                self.cache.pop(url, None)
-                comment = Comment(page_id, title, author, author_mail,
+            if req.form.get('preview'):
+                preview = Comment(page_id, title, author, author_mail,
                                   comment_body)
-                comment.save()
-                return RedirectResponse(comment.url)
+            else:
+                form_error = not (title and author and author_mail and
+                                  comment_body)
+
+                if not form_error:
+                    self.cache.pop(url, None)
+                    comment = Comment(page_id, title, author, author_mail,
+                                      comment_body)
+                    comment.save()
+                    resp = RedirectResponse(comment.url)
+                    resp.set_cookie('author', author)
+                    resp.set_cookie('author_mail', author_mail)
+                    return resp
             cache_possible = False
 
         # if the form validation fails the cache is used so that
@@ -172,14 +185,18 @@ class DocumentationApplication(object):
                 raise NotFound()
             templatename = 'page.html'
 
-        context['comments'] = Comment.get_for_page(page_id)
-        context['form'] = {
-            'title':            title,
-            'author':           author,
-            'author_mail':      author_mail,
-            'comment_body':     comment_body,
-            'error':            form_error
-        }
+        context.update(
+            comments_enabled=comments_enabled,
+            comments=Comment.get_for_page(page_id),
+            preview=preview,
+            form={
+                'title':            title,
+                'author':           author,
+                'author_mail':      author_mail,
+                'comment_body':     comment_body,
+                'error':            form_error
+            }
+        )
         text = render_template(req, templatename, context)
 
         if cache_possible:
