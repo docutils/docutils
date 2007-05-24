@@ -157,6 +157,9 @@ class BuildEnvironment:
 
         self.mtimes = {}            # filename -> mtime at the time of build
 
+        # File metadata
+        self.metadata = {}          # filename -> dict of metadata items
+
         # TOC inventory
         self.titles = {}            # filename -> title node
                                     # this also contains all existing filenames
@@ -224,6 +227,7 @@ class BuildEnvironment:
                                   settings_overrides=self.settings,
                                   reader=MyStandaloneReader())
         self.remove_system_messages(doctree)
+        self.process_metadata(filename, doctree)
         self.create_title_from(filename, doctree)
         self.note_labels_from(filename, doctree)
         self.build_toc_from(filename, doctree)
@@ -240,6 +244,25 @@ class BuildEnvironment:
         self.currmodule = None
         self.currclass = None
         return doctree
+
+    def process_metadata(self, filename, doctree):
+        """
+        Process the docinfo part of the doctree as metadata.
+        """
+        self.metadata[filename] = md = {}
+        docinfo = doctree[0]
+        if docinfo.__class__ is not nodes.docinfo:
+            # nothing to see here
+            return
+        for node in docinfo:
+            if node.__class__ is nodes.author:
+                # handled specially by docutils
+                md['author'] = node.astext()
+            elif node.__class__ is nodes.field:
+                name, body = node
+                md[name.astext()] = body.astext()
+        print md
+        del doctree[0]
 
     def remove_system_messages(self, doctree):
         """
