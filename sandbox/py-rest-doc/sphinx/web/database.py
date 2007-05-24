@@ -17,23 +17,13 @@
 """
 import time
 import sqlite3
-from threading import local
 from datetime import datetime
+from threading import local
 
-from .markdown import markdown
+from .markup import markup
 
 
 _thread_local = local()
-
-
-def adapt_datetime(val):
-    return time.mktime(val.timetuple())
-
-def convert_datetime(val):
-    return datetime.fromtimestamp(float(val))
-
-sqlite3.register_adapter(datetime, adapt_datetime)
-sqlite3.register_converter('datetime', convert_datetime)
 
 
 def connect(path):
@@ -74,7 +64,7 @@ tables = {
             author varchar(200),
             author_mail varchar(250),
             comment_body text,
-            pub_date datetime
+            pub_date timestamp
         );'''
 }
 
@@ -91,7 +81,6 @@ class Comment(object):
         self.title = title
         if pub_date is None:
             pub_date = datetime.utcnow()
-        print type(pub_date), repr(pub_date)
         self.pub_date = pub_date
         self.author = author
         self.author_mail = author_mail
@@ -103,7 +92,12 @@ class Comment(object):
 
     @property
     def parsed_comment_body(self):
-        return markdown(self.comment_body, safe_mode=True)
+        from .application import get_target_uri
+        from ..util import relative_uri
+        uri = get_target_uri(self.associated_page)
+        def make_rel_link(keyword):
+            return relative_uri(uri, 'q/%s/' % keyword)
+        return markup(self.comment_body, make_rel_link)
 
     def save(self):
         """
