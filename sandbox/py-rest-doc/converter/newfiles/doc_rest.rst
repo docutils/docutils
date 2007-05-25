@@ -41,7 +41,7 @@ Be aware of some restrictions of this markup:
 
 These restrictions may be lifted in future versions of the docutils.
 
-reST also allows for custom \`\`interpreted text roles'', which signify that the
+reST also allows for custom "interpreted text roles"', which signify that the
 enclosed text should be interpreted in a specific way.  Sphinx uses this to
 provide semantic markup and cross-referencing of identifiers, as described in
 the appropriate section.  The general syntax is ``:rolename:`content```.
@@ -111,7 +111,7 @@ The handling of the ``::`` marker is smart:
   colon.
 
 That way, the second sentence in the above example's first paragraph would be
-rendered as \`\`The next paragraph is a code sample:''.
+rendered as "The next paragraph is a code sample:".
 
 
 Hyperlinks

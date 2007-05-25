@@ -7,7 +7,7 @@
 :Release: |version|
 :Date: |today|
 
-This document describes the Python Distribution Utilities (\`\`Distutils'') from
+This document describes the Python Distribution Utilities ("Distutils") from
 the module developer's point of view, describing how to use the Distutils to
 make Python modules and extensions easily available to a wider audience with
 very little overhead for build/release/install mechanics.
