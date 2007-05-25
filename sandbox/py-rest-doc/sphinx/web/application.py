@@ -21,29 +21,21 @@ from .antispam import AntiSpam
 from .database import connect, set_connection, Comment
 from .userdb import UserDatabase
 from .util import Request, Response, RedirectResponse, SharedDataMiddleware, \
-     NotFound, render_template
+     NotFound, render_template, get_target_uri
 from ..search import SearchFrontend
 from ..util import relative_uri, shorten_result
 
 
-special_urls = set(['index', 'genindex', 'modindex'])
-
 _mail_re = re.compile(r'^([a-zA-Z0-9_\.\-])+\@'
                       r'(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,})+$')
-
-
-def get_target_uri(source_filename):
-    if source_filename == 'index.rst':
-        return ''
-    if source_filename.endswith('/index.rst'):
-        return source_filename[:-9] # up to /
-    return source_filename[:-4] + '/'
 
 
 class DocumentationApplication(object):
     """
     Serves the documentation.
     """
+
+    special_urls = set(['index', 'genindex', 'modindex'])
 
     def __init__(self, conf):
         self.cache = {}
@@ -79,104 +71,108 @@ class DocumentationApplication(object):
         Show the requested documentation page or raise an
         `NotFound` exception to display a page with close matches.
         """
-        page_id = url + '.rst'
         cache_possible = True
-        comments_enabled = self.env.metadata.get(page_id, {}) \
-                               .get('comments_enabled', True)
+        # these are special because they have a different context
+        # XXX: this is a mess!
+        if url in self.special_urls:
+            rstfilename = '@' + url  # only used as cache key
+            filename = path.join(self.data_root, 'specials.pickle')
+            with open(filename, 'rb') as f:
+                context = pickle.load(f)
+            templatename = url + '.html'
+            comments = False
 
-        # generate feed if wanted
-        if req.args.get('feed') == 'comments':
-            feed = Feed(req, 'Comments for %s' % url, 'List of comments for '
-                        'the topic %s' % url, url)
-            for comment in Comment.get_for_page(page_id):
-                feed.add_item(comment.title, comment.author, comment.url,
-                              comment.parsed_comment_body, comment.pub_date)
-            return Response(feed.generate(), mimetype='application/rss+xml')
+        # it's a normal page (or a 404)
+        else:
+            rstfilename = url + '.rst'
+            if rstfilename not in self.env.mtimes:
+                # probably it's an index document
+                rstfilename = url + '/index.rst'
+                if rstfilename not in self.env.mtimes:
+                    raise NotFound()
+            comments = self.env.metadata[rstfilename].get('comments_enabled', True)
 
-        # do the form validation and comment saving if the
-        # request method is post.
-        title = comment_body = ''
-        author = req.session.get('author', '')
-        author_mail = req.session.get('author_mail', '')
-        form_error = None
-        preview = None
+            # generate comments feed if wanted
+            if comments and req.args.get('feed') == 'comments':
+                # XXX: nice title instead of "url"
+                feed = Feed(req, 'Comments for "%s"' % url, 'List of comments for '
+                            'the topic "%s"' % url, url)
+                for comment in Comment.get_for_page(rstfilename):
+                    feed.add_item(comment.title, comment.author, comment.url,
+                                  comment.parsed_comment_body, comment.pub_date)
+                return Response(feed.generate(), mimetype='application/rss+xml')
 
-        if comments_enabled and req.method == 'POST':
-            title = req.form.get('title', '').strip()
-            author = req.form.get('author', '').strip()
-            author_mail = req.form.get('author_mail', '')
-            comment_body = req.form.get('comment_body', '')
-            fields = (title, author, author_mail, comment_body)
+            filename = path.join(self.data_root, rstfilename[:-3] + 'fpickle')
+            with open(filename, 'rb') as f:
+                context = pickle.load(f)
+            templatename = 'page.html'
 
-            if req.form.get('preview'):
-                preview = Comment(page_id, title, author, author_mail,
-                                  comment_body)
-            elif req.form.get('homepage') or self.antispam.is_spam(fields):
-                form_error = 'Your text contains blocked URLs or words.'
-            else:
-                if not all(fields):
-                    form_error = 'You have to fill out all fields.'
-                elif _mail_re.search(author_mail) is None:
-                    form_error = 'You have to provide a valid mail address.'
-                else:
-                    self.cache.pop(page_id, None)
-                    comment = Comment(page_id, title, author, author_mail,
+            cache_possible = True
+
+            # do the form validation and comment saving if the
+            # request method is post.
+            title = comment_body = ''
+            author = req.session.get('author', '')
+            author_mail = req.session.get('author_mail', '')
+            form_error = None
+            preview = None
+
+            if comments and req.method == 'POST':
+                title = req.form.get('title', '').strip()
+                author = req.form.get('author', '').strip()
+                author_mail = req.form.get('author_mail', '')
+                comment_body = req.form.get('comment_body', '')
+                fields = (title, author, author_mail, comment_body)
+
+                if req.form.get('preview'):
+                    preview = Comment(rstfilename, title, author, author_mail,
                                       comment_body)
-                    comment.save()
-                    req.session.update(
-                        author=author,
-                        author_mail=author_mail
-                    )
-                    return RedirectResponse(comment.url)
-            cache_possible = False
+                elif req.form.get('homepage') or self.antispam.is_spam(fields):
+                    form_error = 'Your text contains blocked URLs or words.'
+                else:
+                    if not all(fields):
+                        form_error = 'You have to fill out all fields.'
+                    elif _mail_re.search(author_mail) is None:
+                        form_error = 'You have to provide a valid mail address.'
+                    else:
+                        self.cache.pop(rstfilename, None)
+                        comment = Comment(rstfilename, title, author, author_mail,
+                                          comment_body)
+                        comment.save()
+                        req.session.update(
+                            author=author,
+                            author_mail=author_mail
+                        )
+                        return RedirectResponse(comment.url)
+                cache_possible = False
 
-        # if the form validation fails the cache is used so that
+            context.update(
+                comments_enabled=comments,
+                comments=Comment.get_for_page(rstfilename),
+                preview=preview,
+                comments_form={
+                    'title':            title,
+                    'author':           author,
+                    'author_mail':      author_mail,
+                    'comment_body':     comment_body,
+                    'error':            form_error
+                }
+            )
+
+        # if the form validation failed, the cache is used so that
         # we can put error messages and defaults to the page.
         if cache_possible:
             try:
-                filename, mtime, text = self.cache[page_id]
+                filename, mtime, text = self.cache[rstfilename]
             except KeyError:
                 pass
             else:
                 if path.getmtime(filename) == mtime:
                     return Response(text)
-
-        # render special templates such as the index
-        if url in special_urls:
-            filename = path.join(self.data_root, 'specials.pickle')
-            with open(filename, 'rb') as f:
-                context = pickle.load(f)
-            templatename = url + '.html'
-
-        # render the page based on the settings in the pickle
+            text = render_template(req, templatename, context)
+            self.cache[rstfilename] = (filename, path.getmtime(filename), text)
         else:
-            for filename in [path.join(self.data_root, url) + '.fpickle',
-                             path.join(self.data_root, url, 'index.fpickle')]:
-                if not path.exists(filename):
-                    continue
-                with open(filename, 'rb') as f:
-                    context = pickle.load(f)
-                    break
-            else:
-                raise NotFound()
-            templatename = 'page.html'
-
-        context.update(
-            comments_enabled=comments_enabled,
-            comments=Comment.get_for_page(page_id),
-            preview=preview,
-            form={
-                'title':            title,
-                'author':           author,
-                'author_mail':      author_mail,
-                'comment_body':     comment_body,
-                'error':            form_error
-            }
-        )
-        text = render_template(req, templatename, context)
-
-        if cache_possible:
-            self.cache[page_id] = (filename, path.getmtime(filename), text)
+            text = render_template(req, templatename, context)
         return Response(text)
 
     def get_recent_comments_feed(self, req):

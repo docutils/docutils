@@ -92,7 +92,7 @@ class Comment(object):
 
     @property
     def parsed_comment_body(self):
-        from .application import get_target_uri
+        from .util import get_target_uri
         from ..util import relative_uri
         uri = get_target_uri(self.associated_page)
         def make_rel_link(keyword):
