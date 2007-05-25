@@ -675,4 +675,3 @@ class BuildEnvironment:
                 result.append((best_res, type, filename, title, desc))
 
         return heapq.nlargest(n, result)
-

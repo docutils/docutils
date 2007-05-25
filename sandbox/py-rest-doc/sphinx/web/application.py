@@ -18,6 +18,7 @@ from os import path
 from .feed import Feed
 from .antispam import AntiSpam
 from .database import connect, set_connection, Comment
+from .userdb import UserDatabase
 from .util import Request, Response, RedirectResponse, SharedDataMiddleware, \
      NotFound, jinja_env
 from ..search import SearchFrontend
@@ -51,6 +52,7 @@ def render_template(req, template_name, context=None):
     # add it here a second time for templates that don't
     # get the builder information from the environment (such as search)
     context['builder'] = 'web'
+    context['req'] = req
 
     return tmpl.render(context)
 
@@ -69,6 +71,7 @@ class DocumentationApplication(object):
             self.search_frontend = SearchFrontend(pickle.load(f))
         self.db_con = connect(path.join(self.data_root, 'sphinx.db'))
         self.antispam = AntiSpam(path.join(self.data_root, 'bad_content'))
+        self.userdb = UserDatabase(path.join(self.data_root, 'docusers'))
 
     def search(self, req):
         """
@@ -133,7 +136,7 @@ class DocumentationApplication(object):
                 elif _mail_re.search(author_mail) is None:
                     form_error = 'You have to provide a valid mail address.'
                 else:
-                    self.cache.pop(url, None)
+                    self.cache.pop(page_id, None)
                     comment = Comment(page_id, title, author, author_mail,
                                       comment_body)
                     comment.save()
@@ -148,7 +151,7 @@ class DocumentationApplication(object):
         # we can put error messages and defaults to the page.
         if cache_possible:
             try:
-                filename, mtime, text = self.cache[url]
+                filename, mtime, text = self.cache[page_id]
             except KeyError:
                 pass
             else:
@@ -190,7 +193,7 @@ class DocumentationApplication(object):
         text = render_template(req, templatename, context)
 
         if cache_possible:
-            self.cache[url] = (filename, path.getmtime(filename), text)
+            self.cache[page_id] = (filename, path.getmtime(filename), text)
         return Response(text)
 
     def get_recent_comments_feed(self, req):
@@ -207,7 +210,100 @@ class DocumentationApplication(object):
         """
         Get some administration pages.
         """
-        raise TypeError()
+        if page == 'login':
+            if req.user is not None:
+                return RedirectResponse('admin/')
+            login_failed = False
+            if req.method == 'POST':
+                if req.form.get('cancel'):
+                    return RedirectResponse('')
+                username = req.form.get('username')
+                password = req.form.get('password')
+                if self.userdb.check_password(username, password):
+                    req.login(username)
+                    return RedirectResponse('admin/')
+                login_failed = True
+            return Response(render_template(req, 'admin/login.html', {
+                'login_failed': login_failed
+            }))
+        elif req.user is None:
+            return RedirectResponse('admin/login/')
+        elif page == 'logout':
+            req.logout()
+            return RedirectResponse('admin/')
+        elif page == 'change_password':
+            change_failed = change_successful = False
+            if req.method == 'POST':
+                if req.form.get('cancel'):
+                    return RedirectResponse('admin/')
+                pw = req.form.get('pw1')
+                if pw and pw == req.form.get('pw2'):
+                    self.userdb.set_password(req.user, pw)
+                    self.userdb.save()
+                    change_successful = True
+                else:
+                    change_failed = True
+            return Response(render_template(req, 'admin/change_password.html', {
+                'change_failed':        change_failed,
+                'change_successful':    change_successful
+            }))
+        elif page.split('/')[0] == 'moderate_comments':
+            details_for = page[18:] + '.rst' or None
+            to_delete = set()
+            edit_detail = None
+            for item in req.form.getlist('delete'):
+                try:
+                    to_delete.add(int(item))
+                except ValueError:
+                    pass
+
+            if 'edit' in req.args:
+                try:
+                    edit_detail = Comment.get(int(req.args['edit']))
+                except ValueError:
+                    pass
+
+            if req.method == 'POST':
+                if req.form.get('cancel'):
+                    return RedirectResponse('admin/')
+                elif req.form.get('confirmated'):
+                    for comment_id in to_delete:
+                        try:
+                            Comment.get(comment_id).delete()
+                        except ValueError:
+                            pass
+                    return RedirectResponse('admin/' + page)
+                elif req.form.get('aborted'):
+                    return RedirectResponse('admin/' + page)
+                elif req.form.get('edit'):
+                    try:
+                        edit_detail = Comment.get(int(req.args['edit']))
+                    except ValueError:
+                        pass
+                    else:
+                        edit_detail.author = req.form.get('author', '')
+                        edit_detail.author_mail = req.form.get('author_mail', '')
+                        edit_detail.title = req.form.get('title', '')
+                        edit_detail.comment_body = req.form.get('comment_body', '')
+                        edit_detail.save()
+                        self.cache.pop(edit_detail.associated_page, None)
+                    return RedirectResponse('admin/' + page)
+
+            return Response(render_template(req, 'admin/moderate_comments.html', {
+                'pages_with_comments': [{
+                    'page_id':      page_id,
+                    'title':        page_id,        #XXX: get title somehow
+                    'has_details':  details_for == page_id,
+                    'comments':     comments
+                } for page_id, comments in Comment.get_overview(details_for)],
+                'to_delete':        to_delete,
+                'ask_confirmation': req.method == 'POST' and to_delete,
+                'edit_detail':      edit_detail
+            }))
+        elif page == '':
+            return Response(render_template(req, 'admin/index.html'))
+        else:
+            raise ValueError()
 
     pretty_type = {
         'data': 'module data',
@@ -234,9 +330,9 @@ class DocumentationApplication(object):
         matches = self.env.find_keyword(term, avoid_fuzzy)
         if not matches:
             return
-        if type(matches) is tuple:
+        if isinstance(matches, tuple):
             return RedirectResponse(get_target_uri(matches[1]) + '#' + matches[2])
-        elif type(matches) is list:
+        else:
             # get some close matches
             close_matches = []
             good_matches = 0
@@ -281,7 +377,7 @@ class DocumentationApplication(object):
                 resp = self.get_recent_comments_feed(req)
             elif url.startswith('q/'):
                 resp = self.get_keyword_matches(req, url[2:])
-            elif url.startswith('admin/'):
+            elif url == 'admin' or url.startswith('admin/'):
                 resp = self.get_admin_page(req, url[6:])
             else:
                 try:
