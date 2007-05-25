@@ -196,11 +196,17 @@ div#comments div.comment {
     color: #eee;
 }
 
+div#comments div.comment p,
+div#comments div.comment pre,
+div#comments div.comment blockquote {
+    margin: 0 0 10px 0;
+}
+
 div#comments div.comment p.meta {
     font-style: italic;
     color: #ccc;
     text-align: right;
-    margin: 0;
+    margin: -10px 0 0 0;
 }
 
 div#comments h4 {
@@ -322,12 +328,11 @@ div#comments div.comment blockquote {
 }
 
 div#comments div.error {
-    font-weight: bold;
-    border: 2px solid #09232e;
-    padding: 5px;
     margin: 5px 20px 0 20px;
-    background-color: #666;
-    color: #eee;
+    padding: 5px;
+    border: 2px solid #05171e;
+    background-color: #092835;
+    font-weight: bold;
 }
 
 /* :::: INDEX PAGE :::: */

@@ -120,6 +120,12 @@ class Comment(object):
                                   pub_date=? where comment_id = ?''', args)
         cur.close()
 
+    def delete(self):
+        cur = get_cursor()
+        cur.execute('delete from comments where comment_id = ?',
+                    (self.comment_id,))
+        cur.close()
+
     @staticmethod
     def _make_comment(row):
         rv = Comment(*row[1:])
@@ -157,6 +163,21 @@ class Comment(object):
             return [Comment._make_comment(row) for row in cur]
         finally:
             cur.close()
+
+    @staticmethod
+    def get_overview(detail_for=None):
+        cur = get_cursor()
+        cur.execute('''select distinct associated_page from comments
+                              order by associated_page asc''')
+        pages = []
+        for row in cur:
+            page_id = row[0]
+            if page_id == detail_for:
+                pages.append((page_id, Comment.get_for_page(page_id)))
+            else:
+                pages.append((page_id, []))
+        cur.close()
+        return pages
 
     def __repr__(self):
         return '<Comment by %r on %r (%s)>' % (

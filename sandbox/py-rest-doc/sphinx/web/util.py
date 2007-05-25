@@ -408,10 +408,6 @@ class Session(dict):
         if self.sid is not None:
             return path.join(tempfile.gettempdir(), '__pydoc_sess' + self.sid)
 
-    @property
-    def worth_saving(self):
-        return self.sid is None and self
-
     def save(self):
         if self.sid is None:
             self.sid = sha1('%s|%s' % (time(), random())).hexdigest()
@@ -426,6 +422,14 @@ class Request(object):
         self.environ = environ
         self.environ['werkzeug.request'] = self
         self.session = Session(self.cookies.get(SID_COOKIE_NAME))
+        self.user = self.session.get('user')
+
+    def login(self, user):
+        self.user = self.session['user'] = user
+
+    def logout(self):
+        self.user = None
+        self.session.pop('user', None)
 
     def _get_file_stream(self):
         """Called to get a stream for the file upload.
@@ -617,7 +621,7 @@ class Response(object):
 
     def __call__(self, environ, start_response):
         req = environ['werkzeug.request']
-        if req.session.worth_saving:
+        if req.session:
             req.session.save()
             self.set_cookie(SID_COOKIE_NAME, req.session.sid)
 

@@ -1,0 +1,134 @@
+/**
+ * Sphinx Admin Panel
+ */
+
+div.admin {
+    margin: 0 -20px -30px -20px;
+    padding: 0 20px 10px 20px;
+    background-color: #051d27;
+    color: white;
+}
+
+div.admin a {
+    color: #fff;
+    text-decoration: underline;
+}
+
+div.admin h1,
+div.admin h2 {
+    background-color: #092835;
+    border-bottom: 1px solid #09232e;
+    color: white;
+}
+
+div.admin input, div.admin textarea {
+    font-family: 'Bitstream Vera Sans', 'Arial', sans-serif;
+    font-size: 13px;
+    color: white;
+    background-color: #05171e;
+    border: 1px solid #092835;
+}
+
+div.admin input[type="reset"],
+div.admin input[type="submit"] {
+    cursor: pointer;
+    font-weight: bold;
+    padding: 2px;
+}
+
+div.admin div.actions {
+    margin: 10px 0 0 0;
+    padding: 5px;
+    background-color: #05171e;
+}
+
+div.admin div.error {
+    margin: 10px 0 0 0;
+    padding: 5px;
+    border: 2px solid #05171e;
+    background-color: #092835;
+    font-weight: bold;
+}
+
+div.admin div.dialog {
+    background-color: #05171e;
+    margin: 10px 0 10px 0;
+}
+
+div.admin div.dialog h2 {
+    margin: 0;
+    font-size: 18px;
+    padding: 3px;
+}
+
+div.admin div.dialog div.text {
+    padding: 10px;
+}
+
+div.admin div.dialog div.buttons {
+    padding: 5px 10px 5px 10px;
+}
+
+div.admin table.comments {
+    width: 100%;
+    border: 1px solid #092835;
+    border-collapse: collapse;
+    background-color: #05171e;
+}
+
+div.admin table.comments th {
+    background-color: #092835;
+    border-bottom: 1px solid #05171e;
+    padding: 5px;
+}
+
+div.admin table.comments td {
+    border: 1px solid #092835;
+    border-left: none;
+    border-right: none;
+    text-align: left;
+    line-height: 24px;
+    padding: 0 5px 0 5px;
+}
+
+div.admin table.comments tr:hover {
+    background-color: #081c25;
+}
+
+div.admin table.comments td.pub_date {
+    font-style: italic;
+    text-align: right;
+}
+
+div.admin table.comments td.actions input {
+    padding: 0;
+}
+
+div.admin table.comments td.actions {
+    text-align: right;
+    width: 70px;
+}
+
+div.admin table.comments span.meta {
+    font-size: 11px;
+    color: #aaa;
+}
+
+div.admin table.comments span.meta a {
+    color: #aaa;
+}
+
+div.admin div.comment_form dl {
+    color: white;
+}
+
+div.admin div.comment_form dt {
+    clear: both;
+    float: left;
+    width: 110px;
+}
+
+div.admin div.comment_form textarea {
+    width: 98%;
+    height: 160px;
+}

@@ -6,10 +6,13 @@
     <title>{{ title|striptags }} &mdash; Python Documentation</title>
     <link rel="stylesheet" href="{{ pathto('style/style.css', 1) }}" type="text/css">
     <link rel="stylesheet" href="{{ pathto('style/pygments.css', 1) }}" type="text/css">
-    <link rel="stylesheet" href="{{ pathto('style/print.css', 1) }}" type="text/css" media="print" />
+    <link rel="stylesheet" href="{{ pathto('style/print.css', 1) }}" type="text/css" media="print">
     {%- for link, type, title in page_links %}
       <link rel="alternate" type="{{ type|e(true) }}" title="{{ title|e(true) }}" href="{{ link|e(true) }}">
     {%- endfor %}
+    {%- if in_admin_panel %}
+      <link rel="stylesheet" href="{{ pathto('style/admin.css', 1) }}" type="text/css">
+    {%- endif %}
     <script type="text/javascript" src="{{ pathto('style/jquery.js', 1) }}"></script>
     <script type="text/javascript" src="{{ pathto('style/doctools.js', 1) }}"></script>
   </head>

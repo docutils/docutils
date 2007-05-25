@@ -1,0 +1,14 @@
+{% extends "admin/layout.html" %}
+{% block admin_body %}
+  <h1>Administration Index</h1>
+  <p>
+    Welcome in the documentation administration, {{ req.user|e }}.
+  </p>
+  <h2>Tasks</h2>
+  <ul>
+    <li><a href="moderate_comments/">Moderate Comments</a></li>
+    <li><a href="change_password/">Change Password</a></li>
+    <li><a href="../">Back To Documentation</a></li>
+    <li><a href="logout/">Logout</a></li>
+  </ul>
+{% endblock %}
