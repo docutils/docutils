@@ -21,6 +21,10 @@ div.admin h2 {
     color: white;
 }
 
+div.admin form form {
+    display: inline;
+}
+
 div.admin input, div.admin textarea {
     font-family: 'Bitstream Vera Sans', 'Arial', sans-serif;
     font-size: 13px;
@@ -69,20 +73,20 @@ div.admin div.dialog div.buttons {
     padding: 5px 10px 5px 10px;
 }
 
-div.admin table.comments {
+div.admin table.mapping {
     width: 100%;
     border: 1px solid #092835;
     border-collapse: collapse;
     background-color: #05171e;
 }
 
-div.admin table.comments th {
+div.admin table.mapping th {
     background-color: #092835;
     border-bottom: 1px solid #05171e;
     padding: 5px;
 }
 
-div.admin table.comments td {
+div.admin table.mapping td {
     border: 1px solid #092835;
     border-left: none;
     border-right: none;
@@ -91,44 +95,52 @@ div.admin table.comments td {
     padding: 0 5px 0 5px;
 }
 
-div.admin table.comments tr:hover {
+div.admin table.mapping tr:hover {
     background-color: #081c25;
 }
 
-div.admin table.comments td.pub_date {
+div.admin table.mapping td.username {
+    width: 180px;
+}
+
+div.admin table.mapping td.pub_date {
     font-style: italic;
     text-align: right;
 }
 
-div.admin table.comments td.actions input {
+div.admin table.mapping td.groups input {
+    width: 100%;
+}
+
+div.admin table.mapping td.actions input {
     padding: 0;
 }
 
-div.admin table.comments td.actions {
+div.admin table.mapping .actions {
     text-align: right;
     width: 70px;
 }
 
-div.admin table.comments span.meta {
+div.admin table.mapping span.meta {
     font-size: 11px;
     color: #aaa;
 }
 
-div.admin table.comments span.meta a {
+div.admin table.mapping span.meta a {
     color: #aaa;
 }
 
-div.admin div.comment_form dl {
+div.admin div.detail_form dl {
     color: white;
 }
 
-div.admin div.comment_form dt {
+div.admin div.detail_form dt {
     clear: both;
     float: left;
     width: 110px;
 }
 
-div.admin div.comment_form textarea {
+div.admin div.detail_form textarea {
     width: 98%;
     height: 160px;
 }

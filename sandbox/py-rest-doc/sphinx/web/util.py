@@ -683,8 +683,7 @@ class SharedDataMiddleware(object):
             mime_type = guessed_type[0]
         start_response('200 OK', [('Content-Type', mime_type)])
         with file(filename, 'rb') as f:
-            result = f.read()
-        return iter([result])
+            return [f.read()]
 
     def __call__(self, environ, start_response):
         p = environ.get('PATH_INFO', '')
