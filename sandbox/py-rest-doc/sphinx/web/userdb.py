@@ -13,6 +13,42 @@
 from __future__ import with_statement
 from os import path
 from hashlib import sha1
+from random import choice, randrange
+from collections import defaultdict
+
+
+def gen_password(length=8, add_numbers=True, mix_case=True,
+                 add_special_char=True):
+    """
+    Generate a pronounceable password.
+    """
+    if length <= 0:
+        raise ValueError('requested password of length <= 0')
+    consonants = 'bcdfghjklmnprstvwz'
+    vowels = 'aeiou'
+    if mix_case:
+        consonants = consonants * 2 + consonants.upper()
+        vowels = vowels * 2 + vowels.upper()
+    pw =  ''.join([choice(consonants) +
+                   choice(vowels) +
+                   choice(consonants + vowels) for _
+                   in xrange(length // 3 + 1)])[:length]
+    if add_numbers:
+        n = length // 3
+        if n > 0:
+            pw = pw[:-n]
+            for _ in xrange(n):
+                pw += choice('0123456789')
+    if add_special_char:
+        tmp = randrange(0, len(pw))
+        l1 = pw[:tmp]
+        l2 = pw[tmp:]
+        if max(len(l1), len(l2)) == len(l1):
+            l1 = l1[:-1]
+        else:
+            l2 = l2[:-1]
+        return l1 + choice('#$&%?!') + l2
+    return pw
 
 
 class UserDatabase(object):
@@ -20,25 +56,25 @@ class UserDatabase(object):
     def __init__(self, filename):
         self.filename = filename
         self.users = {}
+        self.privileges = defaultdict(set)
         if path.exists(filename):
             with file(filename) as f:
                 for line in f:
-                    if line.strip():
-                        user, password = line.split(':', 1)
-                        self.users[user.strip()] = password.strip()
-
-    def add_user(self, user, password):
-        if user in self.users:
-            raise ValueError('user %r already exists' % user)
-        self.users[user] = sha1('%s|%s' % (user, password)).hexdigest()
-
-    def remove_user(self, user):
-        del self.users[user]
+                    line = line.strip()
+                    if line and line[0] != '#':
+                        parts = line.split(':')
+                        self.users[parts[0]] = parts[1]
+                        self.privileges[parts[0]].update(parts[2].split(','))
 
     def set_password(self, user, password):
-        if user not in self.users:
-            raise ValueError('unknown user %r' % user)
+        """Encode the password for a user (also adds users)."""
         self.users[user] = sha1('%s|%s' % (user, password)).hexdigest()
+
+    def add_user(self, user):
+        """Add a new user and return the generated password."""
+        pw = gen_password(8, add_special_char=False)
+        self.set_password(user, pw)
+        return pw
 
     def check_password(self, user, password):
         return user in self.users and \
@@ -47,4 +83,5 @@ class UserDatabase(object):
     def save(self):
         with file(self.filename, 'w') as f:
             for username, password in self.users.iteritems():
-                f.write('%s:%s\n' % (username, password))
+                privileges = ','.join(self.privileges.get(username, ()))
+                f.write('%s:%s:%s\n' % (username, password, privileges))

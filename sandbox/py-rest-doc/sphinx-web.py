@@ -35,8 +35,7 @@ def main(argv):
         srv.serve_forever()
     except KeyboardInterrupt:
         pass
-    
+
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv))
-

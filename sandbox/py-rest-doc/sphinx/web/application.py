@@ -210,6 +210,11 @@ class DocumentationApplication(object):
         """
         Get some administration pages.
         """
+        is_master_admin = False
+        is_logged_in = req.user is not None
+        if is_logged_in:
+            is_master_admin = 'master' in self.userdb.privileges[req.user]
+
         if page == 'login':
             if req.user is not None:
                 return RedirectResponse('admin/')
@@ -226,7 +231,7 @@ class DocumentationApplication(object):
             return Response(render_template(req, 'admin/login.html', {
                 'login_failed': login_failed
             }))
-        elif req.user is None:
+        elif not is_logged_in:
             return RedirectResponse('admin/login/')
         elif page == 'logout':
             req.logout()
@@ -251,11 +256,6 @@ class DocumentationApplication(object):
             details_for = page[18:] + '.rst' or None
             to_delete = set()
             edit_detail = None
-            for item in req.form.getlist('delete'):
-                try:
-                    to_delete.add(int(item))
-                except ValueError:
-                    pass
 
             if 'edit' in req.args:
                 try:
@@ -264,6 +264,11 @@ class DocumentationApplication(object):
                     pass
 
             if req.method == 'POST':
+                for item in req.form.getlist('delete'):
+                    try:
+                        to_delete.add(int(item))
+                    except ValueError:
+                        pass
                 if req.form.get('cancel'):
                     return RedirectResponse('admin/')
                 elif req.form.get('confirmated'):
@@ -275,7 +280,7 @@ class DocumentationApplication(object):
                     return RedirectResponse('admin/' + page)
                 elif req.form.get('aborted'):
                     return RedirectResponse('admin/' + page)
-                elif req.form.get('edit'):
+                elif req.form.get('edit') and not to_delete:
                     try:
                         edit_detail = Comment.get(int(req.args['edit']))
                     except ValueError:
@@ -300,10 +305,79 @@ class DocumentationApplication(object):
                 'ask_confirmation': req.method == 'POST' and to_delete,
                 'edit_detail':      edit_detail
             }))
+        elif page == 'manage_users' and is_master_admin:
+            add_user_mode = False
+            user_privileges = {}
+            users = sorted((user, []) for user in self.userdb.users)
+            to_delete = set()
+            generated_user = generated_password = None
+
+            if req.method == 'POST':
+                for item in req.form.getlist('delete'):
+                    try:
+                        to_delete.add(item)
+                    except ValueError:
+                        pass
+                for name, item in req.form.iteritems():
+                    if name.startswith('privileges-'):
+                        user_privileges[name[11:]] = [x.strip() for x
+                                                      in item.split(',')]
+                if req.form.get('cancel'):
+                    return RedirectResponse('admin/')
+                elif req.form.get('add_user'):
+                    username = req.form.get('username')
+                    if username:
+                        generated_password = self.userdb.add_user(username)
+                        self.userdb.save()
+                        generated_user = username
+                    else:
+                        add_user_mode = True
+                elif req.form.get('aborted'):
+                    return RedirectResponse('admin/manage_users/')
+
+            users = {}
+            for user in self.userdb.users:
+                if not user in user_privileges:
+                    users[user] = sorted(self.userdb.privileges[user])
+                else:
+                    users[user] = user_privileges[user]
+
+            new_users = users.copy()
+            for user in to_delete:
+                new_users.pop(user, None)
+
+            self_destruction = not req.user in new_users or \
+                               'master' not in new_users[req.user]
+
+            if req.method == 'POST' and (not to_delete or
+               (to_delete and req.form.get('confirmated'))) and \
+               req.form.get('update'):
+                old_users = self.userdb.users.copy()
+                for user in old_users:
+                    if user not in new_users:
+                        del self.userdb.users[user]
+                    else:
+                        self.userdb.privileges[user].clear()
+                        self.userdb.privileges[user].update(new_users[user])
+                self.userdb.save()
+                return RedirectResponse('admin/manage_users/')
+
+            return Response(render_template(req, 'admin/manage_users.html', {
+                'users':                users,
+                'add_user_mode':        add_user_mode,
+                'to_delete':            to_delete,
+                'ask_confirmation':     req.method == 'POST' and to_delete \
+                                        and not self_destruction,
+                'generated_user':       generated_user,
+                'generated_password':   generated_password,
+                'self_destruction':     self_destruction
+            }))
         elif page == '':
-            return Response(render_template(req, 'admin/index.html'))
+            return Response(render_template(req, 'admin/index.html', {
+                'is_master_admin':  is_master_admin
+            }))
         else:
-            raise ValueError()
+            raise RedirectResponse('admin/')
 
     pretty_type = {
         'data': 'module data',
