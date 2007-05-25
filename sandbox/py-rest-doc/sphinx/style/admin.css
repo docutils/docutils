@@ -5,19 +5,23 @@
 div.admin {
     margin: 0 -20px -30px -20px;
     padding: 0 20px 10px 20px;
-    background-color: #c9decb;
+    background-color: #f2f2f2;
     color: black;
 }
 
 div.admin a {
-    color: #234F32;
+    color: #333;
     text-decoration: underline;
+}
+
+div.admin a:hover {
+    color: black;
 }
 
 div.admin h1,
 div.admin h2 {
-    background-color: #0b3f2b;
-    border-bottom: 1px solid #234F32;
+    background-color: #555;
+    border-bottom: 1px solid #222;
     color: white;
 }
 
@@ -28,10 +32,10 @@ div.admin form form {
 div.admin input, div.admin textarea {
     font-family: 'Bitstream Vera Sans', 'Arial', sans-serif;
     font-size: 13px;
-    color: black;
+    color: #333;
     padding: 2px;
-    background-color: #a0baa2;
-    border: 1px solid #083322;
+    background-color: #fff;
+    border: 1px solid #aaa;
 }
 
 div.admin input[type="reset"],
@@ -41,31 +45,35 @@ div.admin input[type="submit"] {
     padding: 2px;
 }
 
+div.admin input[type="reset"]:hover,
+div.admin input[type="submit"]:hover {
+    border: 1px solid #333;
+}
+
 div.admin div.actions {
     margin: 10px 0 0 0;
     padding: 5px;
-    background-color: #234F32;
+    background-color: #aaa;
+    border: 1px solid #777;
 }
 
 div.admin div.error {
     margin: 10px 0 0 0;
     padding: 5px;
-    border: 2px solid #234F32;
-    background-color: #083322;
+    border: 2px solid #222;
+    background-color: #ccc;
     font-weight: bold;
-    color: white;
 }
 
 div.admin div.dialog {
-    background-color: #234F32;
-    color: white;
+    background-color: #ccc;
     margin: 10px 0 10px 0;
 }
 
 div.admin div.dialog h2 {
     margin: 0;
     font-size: 18px;
-    padding: 3px;
+    padding: 4px 10px 4px 10px;
 }
 
 div.admin div.dialog div.text {
@@ -78,24 +86,24 @@ div.admin div.dialog div.buttons {
 
 div.admin table.mapping {
     width: 100%;
-    border: 1px solid #083322;
+    border: 1px solid #999;
     border-collapse: collapse;
-    background-color: #0b3f2b;
+    background-color: #aaa;
 }
 
 div.admin table.mapping th {
-    background-color: #234F32;
-    border-bottom: 1px solid #083322;
+    background-color: #ddd;
+    border-bottom: 1px solid #888;
     padding: 5px;
 }
 
 div.admin table.mapping,
 div.admin table.mapping a {
-    color: white;
+    color: black;
 }
 
 div.admin table.mapping td {
-    border: 1px solid #083322;
+    border: 1px solid #888;
     border-left: none;
     border-right: none;
     text-align: left;
@@ -104,7 +112,7 @@ div.admin table.mapping td {
 }
 
 div.admin table.mapping tr:hover {
-    background-color: #0a3625;
+    background-color: #888;
 }
 
 div.admin table.mapping td.username {
@@ -131,15 +139,11 @@ div.admin table.mapping .actions {
 
 div.admin table.mapping span.meta {
     font-size: 11px;
-    color: #aaa;
+    color: #222;
 }
 
 div.admin table.mapping span.meta a {
-    color: #aaa;
-}
-
-div.admin div.detail_form dl {
-    color: white;
+    color: #222;
 }
 
 div.admin div.detail_form dt {
