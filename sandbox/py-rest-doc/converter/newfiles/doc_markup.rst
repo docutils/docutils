@@ -5,7 +5,7 @@ Additional Markup Constructs
 
 Sphinx adds a lot of new directives and interpreted text roles to standard reST
 markup.  This section contains the reference material for these facilities.
-Documentation for \`\`standard'' reST constructs is not included here, though
+Documentation for "standard" reST constructs is not included here, though
 they are used in the Python documentation.
 
 Meta-information markup
@@ -93,7 +93,7 @@ The signatures of object methods or data attributes should always include the
 type name (``.. method:: FileInput.input(...)``), even if it is obvious from the
 context which type they belong to; this is to enable consistent
 cross-references.  If you describe methods belonging to an abstract protocol,
-such as \`\`context managers'', include a (pseudo-)type name too to make the
+such as "context managers", include a (pseudo-)type name too to make the
 index entries more informative.
 
 The directives are:
@@ -122,7 +122,7 @@ The directives are:
 
 .. describe:: cmacro
 
-   Describes a \`\`simple'' C macro.  Simple macros are macros which are used
+   Describes a "simple" C macro.  Simple macros are macros which are used
    for code expansion, but which do not take arguments so cannot be described as
    functions.  This is not to be used for simple constant definitions.  Examples
    of its use in the Python documentation include :cmacro:`PyObject_HEAD` and
@@ -142,7 +142,7 @@ The directives are:
 .. describe:: data
 
    Describes global data in a module, including both variables and values used
-   as \`\`defined constants.''  Class and object attributes are not documented
+   as "defined constants."  Class and object attributes are not documented
    using this environment.
 
 .. describe:: exception
@@ -206,7 +206,7 @@ preceding paragraph and delimited by indentation.
 Representing an interactive session requires including the prompts and output
 along with the Python code.  No special markup is required for interactive
 sessions.  After the last line of input or output presented, there should not be
-an \`\`unused'' primary prompt; this is an example of what *not* to do::
+an "unused" primary prompt; this is an example of what *not* to do::
 
    >>> 1 + 1
    2
@@ -214,7 +214,7 @@ an \`\`unused'' primary prompt; this is an example of what *not* to do::
 
 Syntax highlighting is handled in a smart way:
 
-* There is a \`\`highlighting language'' for each source file.  Per default,
+* There is a "highlighting language" for each source file.  Per default,
   this is ``'python'`` as the majority of files will have to highlight Python
   snippets.
 
@@ -280,7 +280,7 @@ a matching identifier is found:
 
 .. describe:: const
 
-   The name of a \`\`defined'' constant.  This may be a C-language ``#define``
+   The name of a "defined" constant.  This may be a C-language ``#define``
    or a Python variable that is not intended to be changed.
 
 .. describe:: class
@@ -322,7 +322,7 @@ are defined in the API documentation:
 
 .. describe:: cmacro
 
-   The name of a \`\`simple'' C macro, as defined above.
+   The name of a "simple" C macro, as defined above.
 
 .. describe:: ctype
 
@@ -391,7 +391,7 @@ in a different style:
 
    The name of an RFC 822-style mail header.  This markup does not imply that
    the header is being used in an email message, but can be used to refer to any
-   header of the same \`\`style.''  This is also used for headers defined by the
+   header of the same "style."  This is also used for headers defined by the
    various MIME specifications.  The header name should be entered in the same
    way it would normally be found in practice, with the camel-casing conventions
    being preferred where there is more than one common usage. For example:
@@ -414,7 +414,7 @@ in a different style:
    sequence.  The names of individual selections should be separated by
    ``-->``.
 
-   For example, to mark the selection \`\`Start > Programs'', use this markup::
+   For example, to mark the selection "Start > Programs", use this markup::
 
       :menuselection:`Start --> Programs`
 

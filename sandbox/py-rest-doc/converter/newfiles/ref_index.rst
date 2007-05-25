@@ -7,7 +7,7 @@
 :Release: |version|
 :Date: |today|
 
-This reference manual describes the syntax and \`\`core semantics'' of the
+This reference manual describes the syntax and "core semantics" of the
 language. It is terse, but attempts to be exact and complete. The semantics of
 non-essential built-in object types and of the built-in functions and modules
 are described in :ref:`modules-index`. For an informal introduction to the
