@@ -24,58 +24,60 @@
       </div>
     {% endfor %}
     {% if comments_enabled %}
-      <h4 id="comments-new-comment">New Comment</h4>
-      {% if form.error %}
-        <div class="error">{{ form.error|e }}</div>
-      {% endif %}
-      <form action="#comments-new-comment" method="post">
-        <dl>
-          <dt>Name</dt>
-          <dd><input type="text" size="24" name="author" value="{{ form.author|e(true) }}"></dd>
-          <dt>E-Mail</dt>
-          <dd><input type="text" size="24" name="author_mail" value="{{ form.author_mail|e(true) }}"></dd>
-          <dt>Comment Title</dt>
-          <dd><input type="text" size="36" name="title" value="{{ form.title|e(true) }}"></dd>
-        </dl>
-        <input name="homepage" id="homepage">
-        <textarea name="comment_body" rows="7" cols="50">{{ form.comment_body|e }}</textarea>
-        {% if preview %}
-          <div class="preview">
-            <h4>Your Comment</h4>
-            <div class="comment">
-              <h4>{{ preview.title|e }}</h5>
-              {{ preview.parsed_comment_body }}
-              <p class="meta">by {{ preview.author|e }}, written on
-                {{ preview.pub_date|datetimeformat }} |
-                <a href="#">#</a></p>
-            </div>
-          </div>
+      <div class="new-comment-box">
+        <h4 id="comments-new-comment">New Comment</h4>
+        {% if form.error %}
+          <div class="error">{{ form.error|e }}</div>
         {% endif %}
-        <div class="help">
-          <p>
-            <strong>You can format a comment using the
-            following syntax elements provided:</strong>
-          </p>
-          <p>
-            `code` / ``code too`` / **strong** /
-            *emphasized* / !!!important!!! /
-            [[link_target Link Title]] /
-            [[link_target_only]] / &lt;code&gt;code block with
-            syntax highlighting&lt;/code&gt; / &lt;quote&gt;some
-            quoted text&lt;/quote&gt;.
-          </p>
-          <p>
-            HTML is not supported, relative link targets are treated as
-            quicklinks and code blocks that start with "&gt;&gt;&gt;" are
-            highlighted as interactive python sessions.
-          </p>
-        </div>
-        <div class="actions">
-          <input type="reset" value="Reset Form">
-          <input type="submit" value="Submit Comment">
-          <input type="submit" name="preview" value="Preview">
-        </div>
-      </form>
+        <form action="#comments-new-comment" method="post">
+          <dl>
+            <dt>Name</dt>
+            <dd><input type="text" size="24" name="author" value="{{ form.author|e(true) }}"></dd>
+            <dt>E-Mail</dt>
+            <dd><input type="text" size="24" name="author_mail" value="{{ form.author_mail|e(true) }}"></dd>
+            <dt>Comment Title</dt>
+            <dd><input type="text" size="36" name="title" value="{{ form.title|e(true) }}"></dd>
+          </dl>
+          <input name="homepage" id="homepage">
+          <textarea name="comment_body" rows="7" cols="50">{{ form.comment_body|e }}</textarea>
+          {% if preview %}
+            <div class="preview">
+              <h4>Your Comment</h4>
+              <div class="comment">
+                <h4>{{ preview.title|e }}</h5>
+                {{ preview.parsed_comment_body }}
+                <p class="meta">by {{ preview.author|e }}, written on
+                  {{ preview.pub_date|datetimeformat }} |
+                  <a href="#">#</a></p>
+              </div>
+            </div>
+          {% endif %}
+          <div class="help">
+            <p>
+              <strong>You can format a comment using the
+              following syntax elements provided:</strong>
+            </p>
+            <p>
+              `code` / ``code too`` / **strong** /
+              *emphasized* / !!!important!!! /
+              [[link_target Link Title]] /
+              [[link_target_only]] / &lt;code&gt;code block with
+              syntax highlighting&lt;/code&gt; / &lt;quote&gt;some
+              quoted text&lt;/quote&gt;.
+            </p>
+            <p>
+              HTML is not supported, relative link targets are treated as
+              quicklinks and code blocks that start with "&gt;&gt;&gt;" are
+              highlighted as interactive python sessions.
+            </p>
+          </div>
+          <div class="actions">
+            <input type="reset" value="Reset Form">
+            <input type="submit" value="Submit Comment">
+            <input type="submit" name="preview" value="Preview">
+          </div>
+        </form>
+      </div>
     {% endif %}
   {% endif %}
   </div>
