@@ -5,19 +5,19 @@
 div.admin {
     margin: 0 -20px -30px -20px;
     padding: 0 20px 10px 20px;
-    background-color: #051d27;
-    color: white;
+    background-color: #ac9;
+    color: black;
 }
 
 div.admin a {
-    color: #fff;
+    color: #234F32;
     text-decoration: underline;
 }
 
 div.admin h1,
 div.admin h2 {
-    background-color: #092835;
-    border-bottom: 1px solid #09232e;
+    background-color: #0b3f2b;
+    border-bottom: 1px solid #234F32;
     color: white;
 }
 
@@ -29,8 +29,8 @@ div.admin input, div.admin textarea {
     font-family: 'Bitstream Vera Sans', 'Arial', sans-serif;
     font-size: 13px;
     color: white;
-    background-color: #05171e;
-    border: 1px solid #092835;
+    background-color: #22422d;
+    border: 1px solid #083322;
 }
 
 div.admin input[type="reset"],
@@ -43,19 +43,21 @@ div.admin input[type="submit"] {
 div.admin div.actions {
     margin: 10px 0 0 0;
     padding: 5px;
-    background-color: #05171e;
+    background-color: #234F32;
 }
 
 div.admin div.error {
     margin: 10px 0 0 0;
     padding: 5px;
-    border: 2px solid #05171e;
-    background-color: #092835;
+    border: 2px solid #234F32;
+    background-color: #083322;
     font-weight: bold;
+    color: white;
 }
 
 div.admin div.dialog {
-    background-color: #05171e;
+    background-color: #234F32;
+    color: white;
     margin: 10px 0 10px 0;
 }
 
@@ -75,19 +77,24 @@ div.admin div.dialog div.buttons {
 
 div.admin table.mapping {
     width: 100%;
-    border: 1px solid #092835;
+    border: 1px solid #083322;
     border-collapse: collapse;
-    background-color: #05171e;
+    background-color: #0b3f2b;
 }
 
 div.admin table.mapping th {
-    background-color: #092835;
-    border-bottom: 1px solid #05171e;
+    background-color: #234F32;
+    border-bottom: 1px solid #083322;
     padding: 5px;
 }
 
+div.admin table.mapping,
+div.admin table.mapping a {
+    color: white;
+}
+
 div.admin table.mapping td {
-    border: 1px solid #092835;
+    border: 1px solid #083322;
     border-left: none;
     border-right: none;
     text-align: left;
@@ -96,7 +103,7 @@ div.admin table.mapping td {
 }
 
 div.admin table.mapping tr:hover {
-    background-color: #081c25;
+    background-color: #0a3625;
 }
 
 div.admin table.mapping td.username {
