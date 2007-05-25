@@ -196,17 +196,15 @@ div#comments div.comment {
     color: #eee;
 }
 
-div#comments div.comment p,
-div#comments div.comment pre,
-div#comments div.comment blockquote {
-    margin: 0 0 10px 0;
+div#comments div.comment p {
+    margin: 5px 0 5px 0;
 }
 
 div#comments div.comment p.meta {
     font-style: italic;
     color: #ccc;
     text-align: right;
-    margin: -10px 0 0 0;
+    margin: -5px 0 -5px 0;
 }
 
 div#comments h4 {
@@ -321,7 +319,7 @@ div#comments div.comment a {
 }
 
 div#comments div.comment blockquote {
-    margin: 5px 10px 5px 10px;
+    margin: 10px;
     padding: 10px;
     border: 1px solid #0f3646;
     background-color: #071c25;
