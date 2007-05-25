@@ -64,7 +64,9 @@ class UserDatabase(object):
                     if line and line[0] != '#':
                         parts = line.split(':')
                         self.users[parts[0]] = parts[1]
-                        self.privileges[parts[0]].update(parts[2].split(','))
+                        self.privileges[parts[0]].update(x for x in
+                                                         parts[2].split(',')
+                                                         if x)
 
     def set_password(self, user, password):
         """Encode the password for a user (also adds users)."""
