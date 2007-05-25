@@ -7,7 +7,9 @@
   <h2>Tasks</h2>
   <ul>
     <li><a href="moderate_comments/">Moderate Comments</a></li>
-    <li><a href="change_password/">Change Password</a></li>
+    {%- if can_change_password %}
+      <li><a href="change_password/">Change Password</a></li>
+    {%- endif %}
     {%- if is_master_admin %}
       <li><a href="manage_users/">Manage Users</a></li>
     {%- endif %}
