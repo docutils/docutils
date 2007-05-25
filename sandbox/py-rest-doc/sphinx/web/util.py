@@ -79,6 +79,9 @@ HTTP_STATUS_CODES = {
 SID_COOKIE_NAME = 'python_doc_sid'
 
 
+# ------------------------------------------------------------------------------
+# Setup the templating environment
+
 templates_path = path.join(path.dirname(__file__), '..', 'templates')
 jinja_env = Environment(loader=FileSystemLoader(templates_path,
                                                 use_memcache=True),
@@ -91,6 +94,24 @@ def do_datetime_format():
 
 
 jinja_env.filters['datetimeformat'] = do_datetime_format
+
+
+def render_template(req, template_name, context=None):
+    context = context or {}
+    tmpl = jinja_env.get_template(template_name)
+
+    def relative_path_to(otheruri, resource=False):
+        if not resource:
+            otheruri = get_target_uri(otheruri)
+        return relative_uri(req.path, otheruri)
+    context['pathto'] = relative_path_to
+
+    # add it here a second time for templates that don't
+    # get the builder information from the environment (such as search)
+    context['builder'] = 'web'
+    context['req'] = req
+
+    return tmpl.render(context)
 
 
 class lazy_property(object):
@@ -110,6 +131,10 @@ class lazy_property(object):
         value = self._func(obj)
         setattr(obj, self._name, value)
         return value
+
+
+# ------------------------------------------------------------------------------
+# Support for HTTP parameter parsing, requests and responses
 
 
 class _StorageHelper(cgi.FieldStorage):

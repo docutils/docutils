@@ -42,7 +42,7 @@ def main(argv):
                 print 'Error: Passwords don\'t match.'
                 sys.exit(1)
             orig_app.userdb.set_password('admin', pw1)
-            orig_app.userdb.privileges['admin'] = set(['master'])
+            orig_app.userdb.privileges['admin'].add('master')
             orig_app.userdb.save()
 
     srv = make_server('localhost', 3000, app)
