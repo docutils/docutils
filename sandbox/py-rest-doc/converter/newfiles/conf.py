@@ -28,7 +28,7 @@ last_updated_format = '%b %d, %Y'
 
 # If true, SmartyPants will be used to convert quotes and dashes to
 # typographically correct entities.
-use_smartypants = False
+use_smartypants = True
 
 # If true, trailing '()' will be stripped from :func: etc. cross-references.
 strip_trailing_parentheses = False

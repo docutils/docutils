@@ -8,8 +8,10 @@ syntax, to provide authors enough information to autor documents productively.
 Since reST was designed to be a simple, unobtrusive markup language, this will
 not take too long.
 
-For all further question that may arise, refer to the `reStructuredText User
-Documentation <http://docutils.sourceforge.net/rst.html>`_.
+.. seealso::
+
+   The authoritative `reStructuredText User
+   Documentation <http://docutils.sourceforge.net/rst.html>`_.
 
 
 Paragraphs
@@ -104,7 +106,7 @@ Literal code blocks are introduced by ending a paragraph with the special marker
 
 The handling of the ``::`` marker is smart:
 
-* If it occurs in a paragraph of its own, that paragraph is completely left
+* If it occurs as a paragraph of its own, that paragraph is completely left
   out of the document.
 * If it is preceded by whitespace, the marker is removed.
 * If it is preceded by non-whitespace, the marker is replaced by a single
@@ -128,7 +130,7 @@ Internal links
 ^^^^^^^^^^^^^^
 
 Internal linking is done via a special reST role, see the section on specific
-markup.
+markup, :ref:`doc-ref-role`.
 
 
 Sections
@@ -160,10 +162,11 @@ Explicit Markup
 handling, such as footnotes, specially-highlighted paragraphs, comments, and
 generic directives.
 
-An explicit markup block begins with a line starting with ``.. `` and is
-terminated by the next paragraph at the same level of indentation.  (There needs
-to be a blank line between explicit markup and normal paragraphs.  This may all
-sound a bit complicated, but it is intuitive enough when you write it.)
+An explicit markup block begins with a line starting with ``..`` followed by
+whitespace and is terminated by the next paragraph at the same level of
+indentation.  (There needs to be a blank line between explicit markup and normal
+paragraphs.  This may all sound a bit complicated, but it is intuitive enough
+when you write it.)
 
 
 Directives
