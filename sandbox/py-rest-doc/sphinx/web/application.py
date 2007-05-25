@@ -285,18 +285,26 @@ class DocumentationApplication(object):
                 elif req.form.get('aborted'):
                     return RedirectResponse('admin/' + page)
                 elif req.form.get('edit') and not to_delete:
-                    try:
-                        edit_detail = Comment.get(int(req.args['edit']))
-                    except ValueError:
-                        pass
+                    if 'delete_this' in req.form:
+                        try:
+                            to_delete.add(req.form['delete_this'])
+                        except ValueError:
+                            pass
                     else:
-                        edit_detail.author = req.form.get('author', '')
-                        edit_detail.author_mail = req.form.get('author_mail', '')
-                        edit_detail.title = req.form.get('title', '')
-                        edit_detail.comment_body = req.form.get('comment_body', '')
-                        edit_detail.save()
-                        self.cache.pop(edit_detail.associated_page, None)
-                    return RedirectResponse('admin/' + page)
+                        try:
+                            edit_detail = c = Comment.get(int(req.args['edit']))
+                        except ValueError:
+                            pass
+                        else:
+                            if req.form.get('view'):
+                                return RedirectResponse(c.url)
+                            c.author = req.form.get('author', '')
+                            c.author_mail = req.form.get('author_mail', '')
+                            c.title = req.form.get('title', '')
+                            c.comment_body = req.form.get('comment_body', '')
+                            c.save()
+                            self.cache.pop(edit_detail.associated_page, None)
+                        return RedirectResponse('admin/' + page)
 
             return Response(render_template(req, 'admin/moderate_comments.html', {
                 'pages_with_comments': [{
