@@ -275,7 +275,7 @@ class DocumentationApplication(object):
                         pass
                 if req.form.get('cancel'):
                     return RedirectResponse('admin/')
-                elif req.form.get('confirmated'):
+                elif req.form.get('confirmed'):
                     for comment_id in to_delete:
                         try:
                             Comment.get(comment_id).delete()
@@ -366,7 +366,7 @@ class DocumentationApplication(object):
                                'master' not in new_users[req.user]
 
             if req.method == 'POST' and (not to_delete or
-               (to_delete and req.form.get('confirmated'))) and \
+               (to_delete and req.form.get('confirmed'))) and \
                req.form.get('update'):
                 old_users = self.userdb.users.copy()
                 for user in old_users:
@@ -496,8 +496,8 @@ def make_app(conf):
         the folder containing the documentation data as generated
         by sphinx with the web builder.
     """
-    app = DocumentationApplication(conf)
-    app = SharedDataMiddleware(app, {
+    orig_app = DocumentationApplication(conf)
+    app = SharedDataMiddleware(orig_app, {
         '/style':   path.join(conf['data_root_path'], 'style')
     })
-    return app
+    return orig_app, app
