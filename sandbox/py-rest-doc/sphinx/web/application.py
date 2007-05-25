@@ -311,6 +311,7 @@ class DocumentationApplication(object):
             users = sorted((user, []) for user in self.userdb.users)
             to_delete = set()
             generated_user = generated_password = None
+            user_exists = False
 
             if req.method == 'POST':
                 for item in req.form.getlist('delete'):
@@ -327,9 +328,12 @@ class DocumentationApplication(object):
                 elif req.form.get('add_user'):
                     username = req.form.get('username')
                     if username:
-                        generated_password = self.userdb.add_user(username)
-                        self.userdb.save()
-                        generated_user = username
+                        if username in self.userdb.users:
+                            user_exists = username
+                        else:
+                            generated_password = self.userdb.add_user(username)
+                            self.userdb.save()
+                            generated_user = username
                     else:
                         add_user_mode = True
                 elif req.form.get('aborted'):
@@ -370,7 +374,8 @@ class DocumentationApplication(object):
                                         and not self_destruction,
                 'generated_user':       generated_user,
                 'generated_password':   generated_password,
-                'self_destruction':     self_destruction
+                'self_destruction':     self_destruction,
+                'user_exists':          user_exists
             }))
         elif page == '':
             return Response(render_template(req, 'admin/index.html', {

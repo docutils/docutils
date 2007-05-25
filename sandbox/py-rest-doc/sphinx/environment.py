@@ -624,7 +624,7 @@ class BuildEnvironment:
             return None, None
         return newname, self.descrefs[newname]
 
-    def find_keyword(self, keyword, avoid_fuzzy=False):
+    def find_keyword(self, keyword, avoid_fuzzy=False, cutoff=0.6, n=20):
         """
         Find keyword matches for a keyword. If there's an exact match, just return
         it, else return a list of fuzzy matches if avoid_fuzzy isn't True.

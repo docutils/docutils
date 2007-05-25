@@ -332,6 +332,7 @@ div#comments div.error {
     padding: 5px;
     border: 2px solid #05171e;
     background-color: #092835;
+    color: white;
     font-weight: bold;
 }
 
