@@ -5,7 +5,7 @@
 div.admin {
     margin: 0 -20px -30px -20px;
     padding: 0 20px 10px 20px;
-    background-color: #ac9;
+    background-color: #c9decb;
     color: black;
 }
 
@@ -28,8 +28,9 @@ div.admin form form {
 div.admin input, div.admin textarea {
     font-family: 'Bitstream Vera Sans', 'Arial', sans-serif;
     font-size: 13px;
-    color: white;
-    background-color: #22422d;
+    color: black;
+    padding: 2px;
+    background-color: #a0baa2;
     border: 1px solid #083322;
 }
 
