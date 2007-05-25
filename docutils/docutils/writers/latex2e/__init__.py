@@ -384,6 +384,7 @@ class Table:
         self._attrs = {}
         self._col_width = []
         self._rowspan = []
+        self.stubs = []
 
     def open(self):
         self._open = 1
@@ -396,6 +397,7 @@ class Table:
         self._col_specs = None
         self.caption = None
         self._attrs = {}
+        self.stubs = []
     def is_open(self):
         return self._open
     def set_table_style(self, table_style):
@@ -431,8 +433,10 @@ class Table:
             lines = '\\hline\n'
         return '%s\\end{%s}' % (line,self._latex_type)
 
-    def visit_colspec(self,node):
+    def visit_colspec(self, node):
         self._col_specs.append(node)
+        # "stubs" list is an attribute of the tgroup element:
+        self.stubs.append(node.attributes.get('stub'))
 
     def get_colspecs(self):
         """
@@ -535,6 +539,10 @@ class Table:
         return self._cell_in_row
     def visit_entry(self):
         self._cell_in_row += 1
+    def is_stub_column(self):
+        if len(self.stubs) >= self._cell_in_row:
+            return self.stubs[self._cell_in_row-1]
+        return False
 
 
 class LaTeXTranslator(nodes.NodeVisitor):
@@ -1316,6 +1324,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         # header / not header
         if isinstance(node.parent.parent, nodes.thead):
+            self.body.append('\\textbf{')
+            self.context.append('}')
+        elif self.active_table.is_stub_column():
             self.body.append('\\textbf{')
             self.context.append('}')
         else:
