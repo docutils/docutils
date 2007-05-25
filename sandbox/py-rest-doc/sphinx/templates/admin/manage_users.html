@@ -7,6 +7,11 @@
     remove your own user or "master" privilege. Privileges are separated
     by commas &mdash; optional whitespace is ignored.
   </p>
+  <p><strong>Privileges</strong></p>
+  <ul>
+    <li><tt>master</tt> &mdash; user can create and edit user accounts.</li>
+    <li><tt>frozenpassword</tt> &mdash; user cannot change his password.</li>
+  </ul>
   <form action="" method="post">
     {% if ask_confirmation %}
       <div class="dialog">

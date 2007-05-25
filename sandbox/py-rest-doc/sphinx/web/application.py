@@ -210,10 +210,14 @@ class DocumentationApplication(object):
         """
         Get some administration pages.
         """
-        is_master_admin = False
         is_logged_in = req.user is not None
         if is_logged_in:
-            is_master_admin = 'master' in self.userdb.privileges[req.user]
+            privileges = self.userdb.privileges[req.user]
+            is_master_admin = 'master' in privileges
+            can_change_password = 'frozenpassword' not in privileges
+        else:
+            privileges = set()
+            can_change_password = is_master_admin = False
 
         if page == 'login':
             if req.user is not None:
@@ -236,7 +240,7 @@ class DocumentationApplication(object):
         elif page == 'logout':
             req.logout()
             return RedirectResponse('admin/')
-        elif page == 'change_password':
+        elif page == 'change_password' and can_change_password:
             change_failed = change_successful = False
             if req.method == 'POST':
                 if req.form.get('cancel'):
@@ -379,7 +383,8 @@ class DocumentationApplication(object):
             }))
         elif page == '':
             return Response(render_template(req, 'admin/index.html', {
-                'is_master_admin':  is_master_admin
+                'is_master_admin':      is_master_admin,
+                'can_change_password':  can_change_password
             }))
         else:
             raise RedirectResponse('admin/')
