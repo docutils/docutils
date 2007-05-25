@@ -9,7 +9,7 @@ div.body {
 div.sidebar,
 div.related,
 div.footer,
-div#comments,
+div#comments div.new-comment-box,
 #top-link {
     display: none;
 }

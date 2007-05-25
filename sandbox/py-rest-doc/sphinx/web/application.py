@@ -420,16 +420,24 @@ class DocumentationApplication(object):
             term = req.path.strip('/')
 
         matches = self.env.find_keyword(term, avoid_fuzzy)
-        if not matches:
+
+        # if avoid_fuzzy is False matches can be None
+        if matches is None:
             return
+
         if isinstance(matches, tuple):
-            return RedirectResponse(get_target_uri(matches[1]) + '#' + matches[2])
+            url = get_target_uri(matches[1])
+            if matches[0] != 'module':
+                url += '#' + matches[2]
+            return RedirectResponse(url)
         else:
             # get some close matches
             close_matches = []
             good_matches = 0
             for ratio, type, filename, anchorname, desc in matches:
-                link = get_target_uri(filename) + '#' + anchorname
+                link = get_target_uri(filename)
+                if type != 'module':
+                    link += '#' + anchorname
                 good_match = ratio > 0.75
                 good_matches += good_match
                 close_matches.append({
