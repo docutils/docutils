@@ -8,6 +8,8 @@ markup.  This section contains the reference material for these facilities.
 Documentation for "standard" reST constructs is not included here, though
 they are used in the Python documentation.
 
+XXX: file-wide metadata
+
 Meta-information markup
 -----------------------
 
@@ -190,10 +192,17 @@ The directives are:
    Describes a Python bytecode instruction.
 
 
-There is also a generic version of these directives, named ``describe``.  It
-produces the same formatting as the specific ones but does not create index
-entries or cross-referencing targets.  It is used, for example, to describe the
-directives in this document.
+There is also a generic version of these directives:
+
+.. describe:: describe
+
+   This directive produces the same formatting as the specific ones explained
+   above but does not create index entries or cross-referencing targets.  It is
+   used, for example, to describe the directives in this document. Example::
+
+      .. describe:: opcode
+
+         Describes a Python bytecode instruction.
 
 
 Showing code examples
@@ -337,6 +346,7 @@ to objects:
    The name of a grammar token (used in the reference manual to create links
    between production displays).
 
+.. _doc-ref-role:
 
 .. XXX: describe "ref"
 
