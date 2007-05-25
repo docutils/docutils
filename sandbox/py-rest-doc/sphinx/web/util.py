@@ -26,6 +26,8 @@ from cStringIO import StringIO
 
 from jinja import Environment, FileSystemLoader
 
+from ..util import relative_uri
+
 
 HTTP_STATUS_CODES = {
     100:    'CONTINUE',
@@ -77,6 +79,15 @@ HTTP_STATUS_CODES = {
 }
 
 SID_COOKIE_NAME = 'python_doc_sid'
+
+
+def get_target_uri(source_filename):
+    """Get the web-URI for a given reST file name."""
+    if source_filename == 'index.rst':
+        return ''
+    if source_filename.endswith('/index.rst'):
+        return source_filename[:-9] # up to /
+    return source_filename[:-4] + '/'
 
 
 # ------------------------------------------------------------------------------

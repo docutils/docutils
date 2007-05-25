@@ -155,6 +155,8 @@ class BuildEnvironment:
         # this is to invalidate old pickles
         self.version = ENV_VERSION
 
+        # Build times -- to determine changed files
+        # Also use this as an inventory of all existing and built filenames.
         self.mtimes = {}            # filename -> mtime at the time of build
 
         # File metadata
@@ -162,7 +164,6 @@ class BuildEnvironment:
 
         # TOC inventory
         self.titles = {}            # filename -> title node
-                                    # this also contains all existing filenames
         self.tocs = {}              # filename -> table of contents nodetree
         self.toc_num_entries = {}   # filename -> number of real entries
                                     # used to determine when to show the TOC in a sidebar
@@ -199,7 +200,8 @@ class BuildEnvironment:
 
     def clear_file(self, filename):
         """Remove all traces of a source file in the inventory."""
-        if filename in self.titles:
+        if filename in self.mtimes:
+            self.mtimes.pop(filename, None)
             self.titles.pop(filename, None)
             self.tocs.pop(filename, None)
             self.toctree_children.pop(filename, None)
@@ -584,7 +586,7 @@ class BuildEnvironment:
     def check_consistency(self):
         """Do consistency checks."""
 
-        for filename in self.titles:
+        for filename in self.mtimes:
             if filename not in self.toctree_relations:
                 if filename == 'contents.rst':
                     # the master file is not included anywhere ;)
