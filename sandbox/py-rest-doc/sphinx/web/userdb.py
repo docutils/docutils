@@ -76,6 +76,7 @@ class UserDatabase(object):
         """Add a new user and return the generated password."""
         pw = gen_password(8, add_special_char=False)
         self.set_password(user, pw)
+        self.privileges[user].clear()
         return pw
 
     def check_password(self, user, password):
