@@ -18,7 +18,7 @@ import cPickle as pickle
 import tempfile
 from hashlib import sha1
 from os import path
-from time import gmtime, time
+from time import gmtime, time, asctime
 from random import random
 from Cookie import SimpleCookie
 from datetime import datetime
@@ -709,26 +709,31 @@ class SharedDataMiddleware(object):
     def __init__(self, app, exports):
         self.app = app
         self.exports = exports
+        self.cache = {}
 
     def serve_file(self, filename, start_response):
         from mimetypes import guess_type
         guessed_type = guess_type(filename)
-        if guessed_type[0] is None:
-            mime_type = 'text/plain'
-        else:
-            mime_type = guessed_type[0]
-        start_response('200 OK', [('Content-Type', mime_type)])
-        with file(filename, 'rb') as f:
+        mime_type = guessed_type[0] or 'text/plain'
+        expiry = time() + 3600 # one hour
+        expiry = asctime(gmtime(expiry))
+        start_response('200 OK', [('Content-Type', mime_type),
+                                  ('Cache-Control', 'public'),
+                                  ('Expires', expiry)])
+        with open(filename, 'rb') as f:
             return [f.read()]
 
     def __call__(self, environ, start_response):
         p = environ.get('PATH_INFO', '')
+        if p in self.cache:
+            return self.serve_file(self.cache[p], start_response)
         for search_path, file_path in self.exports.iteritems():
             if not search_path.endswith('/'):
                 search_path += '/'
             if p.startswith(search_path):
                 real_path = path.join(file_path, p[len(search_path):])
                 if path.exists(real_path) and path.isfile(real_path):
+                    self.cache[p] = real_path
                     return self.serve_file(real_path, start_response)
         return self.app(environ, start_response)
 

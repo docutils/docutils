@@ -75,7 +75,7 @@ class DocumentationApplication(object):
         """
         cache_possible = True
         # these are special because they have a different context
-        # XXX: this is a mess!
+        # XXX: this distinction is probably a mess!
         if url in self.special_urls:
             rstfilename = '@' + url  # only used as cache key
             filename = path.join(self.data_root, 'specials.pickle')
@@ -93,29 +93,22 @@ class DocumentationApplication(object):
 
             # generate comments feed if wanted
             if comments and req.args.get('feed') == 'comments':
-                # XXX: nice title instead of "url"
-                feed = Feed(req, 'Comments for "%s"' % url, 'List of comments for '
-                            'the topic "%s"' % url, url)
-                for comment in Comment.get_for_page(rstfilename):
-                    feed.add_item(comment.title, comment.author, comment.url,
-                                  comment.parsed_comment_body, comment.pub_date)
-                return Response(feed.generate(), mimetype='application/rss+xml')
+                return self.get_comments_feed(req, url, rstfilename)
 
+            # else load the page
             filename = path.join(self.data_root, rstfilename[:-3] + 'fpickle')
             with open(filename, 'rb') as f:
                 context = pickle.load(f)
             templatename = 'page.html'
 
-            cache_possible = True
-
-            # do the form validation and comment saving if the
-            # request method is post.
+            # default values for the comment form
             title = comment_body = ''
             author = req.session.get('author', '')
             author_mail = req.session.get('author_mail', '')
             form_error = None
             preview = None
 
+            # do form validation and comment saving if the request method is POST.
             if comments and req.method == 'POST':
                 title = req.form.get('title', '').strip()
                 author = req.form.get('author', '').strip()
@@ -126,6 +119,7 @@ class DocumentationApplication(object):
                 if req.form.get('preview'):
                     preview = Comment(rstfilename, title, author, author_mail,
                                       comment_body)
+                # 'homepage' is a forbidden field to thwart bots
                 elif req.form.get('homepage') or self.antispam.is_spam(fields):
                     form_error = 'Your text contains blocked URLs or words.'
                 else:
@@ -141,23 +135,23 @@ class DocumentationApplication(object):
                                           comment_body)
                         comment.save()
                         req.session.update(
-                            author=author,
-                            author_mail=author_mail
+                            author = author,
+                            author_mail = author_mail,
                         )
                         return RedirectResponse(comment.url)
                 cache_possible = False
 
             context.update(
-                comments_enabled=comments,
-                comments=Comment.get_for_page(rstfilename),
-                preview=preview,
-                comments_form={
-                    'title':            title,
-                    'author':           author,
-                    'author_mail':      author_mail,
-                    'comment_body':     comment_body,
-                    'error':            form_error
-                }
+                comments_enabled = comments,
+                comments = Comment.get_for_page(rstfilename),
+                preview = preview,
+                comments_form = {
+                    'title':         title,
+                    'author':        author,
+                    'author_mail':   author_mail,
+                    'comment_body':  comment_body,
+                    'error':         form_error,
+                },
             )
 
         # if the form validation failed, the cache is used so that
@@ -175,6 +169,15 @@ class DocumentationApplication(object):
         else:
             text = render_template(req, templatename, context)
         return Response(text)
+
+    def get_comments_feed(self, req, url, rstfilename):
+        # XXX: nice title instead of "url"
+        feed = Feed(req, 'Comments for "%s"' % url, 'List of comments for '
+                    'the topic "%s"' % url, url)
+        for comment in Comment.get_for_page(rstfilename):
+            feed.add_item(comment.title, comment.author, comment.url,
+                          comment.parsed_comment_body, comment.pub_date)
+        return Response(feed.generate(), mimetype='application/rss+xml')
 
     def get_recent_comments_feed(self, req):
         """
