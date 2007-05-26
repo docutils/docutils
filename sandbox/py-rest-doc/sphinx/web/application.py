@@ -16,7 +16,7 @@ import cPickle as pickle
 from os import path
 
 from .feed import Feed
-from .admin import get_admin_page
+from .admin import AdminPanel
 from .antispam import AntiSpam
 from .database import connect, set_connection, Comment
 from .userdb import UserDatabase
@@ -47,6 +47,7 @@ class DocumentationApplication(object):
         self.db_con = connect(path.join(self.data_root, 'sphinx.db'))
         self.antispam = AntiSpam(path.join(self.data_root, 'bad_content'))
         self.userdb = UserDatabase(path.join(self.data_root, 'docusers'))
+        self.admin_panel = AdminPanel(self)
 
     def search(self, req):
         """
@@ -84,12 +85,9 @@ class DocumentationApplication(object):
 
         # it's a normal page (or a 404)
         else:
-            rstfilename = url + '.rst'
-            if rstfilename not in self.env.mtimes:
-                # probably it's an index document
-                rstfilename = url + '/index.rst'
-                if rstfilename not in self.env.mtimes:
-                    raise NotFound()
+            rstfilename = self.env.get_real_filename(url)
+            if rstfilename is None:
+                raise NotFound()
             comments = self.env.metadata[rstfilename].get('comments_enabled', True)
 
             # generate comments feed if wanted
@@ -266,7 +264,7 @@ class DocumentationApplication(object):
             elif url.startswith('q/'):
                 resp = self.get_keyword_matches(req, url[2:])
             elif url == 'admin' or url.startswith('admin/'):
-                resp = get_admin_page(req, url[6:], self.userdb, self.cache)
+                resp = self.admin_panel.dispatch(req, url[6:])
             else:
                 try:
                     resp = self.get_page(req, url)
