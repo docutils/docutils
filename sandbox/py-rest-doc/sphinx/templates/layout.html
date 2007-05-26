@@ -88,7 +88,7 @@
               <input type="hidden" name="area" value="default">
             </form>
           {% endif %}
-          {% if builder == 'web' %}
+          {% if builder == 'web' and on_index %}
           <form action="{{ pathto('index.rst') }}" method="get">
             <input type="hidden" name="do" value="stylesheet">
             <select name="new_design">
