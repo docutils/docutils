@@ -187,7 +187,8 @@ class Builder(object):
         for filename in status_iterator(to_read, bold('reading...'),
                                         colorfunc=purple, stream=self.status_stream):
             # note: the doctrees are *not* kept in memory
-            if path.getmtime(filename) > self.env.all_files.get(filename, 0):
+            if path.getmtime(path.join(self.srcdir, filename)) > \
+               self.env.all_files.get(filename, 0):
                 self.env.read_file(filename)
 
         warnings = stream.getvalue()
