@@ -438,17 +438,23 @@ class Session(dict):
             if path.exists(self.filename):
                 with file(self.filename, 'rb') as f:
                     self.update(pickle.load(f))
+        self._orig = dict(self)
 
     @property
     def filename(self):
         if self.sid is not None:
             return path.join(tempfile.gettempdir(), '__pydoc_sess' + self.sid)
 
+    @property
+    def worth_saving(self):
+        return self != self._orig
+
     def save(self):
         if self.sid is None:
             self.sid = sha1('%s|%s' % (time(), random())).hexdigest()
         with file(self.filename, 'wb') as f:
             pickle.dump(dict(self), f, pickle.HIGHEST_PROTOCOL)
+        self._orig = dict(self)
 
 
 class Request(object):
@@ -657,7 +663,7 @@ class Response(object):
 
     def __call__(self, environ, start_response):
         req = environ['werkzeug.request']
-        if req.session:
+        if req.session.worth_saving:
             req.session.save()
             self.set_cookie(SID_COOKIE_NAME, req.session.sid)
 
