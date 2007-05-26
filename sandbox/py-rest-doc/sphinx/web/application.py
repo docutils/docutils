@@ -133,6 +133,8 @@ class DocumentationApplication(object):
                         form_error = 'You have to fill out all fields.'
                     elif _mail_re.search(author_mail) is None:
                         form_error = 'You have to provide a valid mail address.'
+                    elif len(comment_body) < 20:
+                        form_error = 'You comment is too short.'
                     else:
                         self.cache.pop(rstfilename, None)
                         comment = Comment(rstfilename, title, author, author_mail,

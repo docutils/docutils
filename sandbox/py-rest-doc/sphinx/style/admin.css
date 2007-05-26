@@ -97,6 +97,10 @@ div.admin table.mapping th {
     padding: 5px;
 }
 
+div.admin table.mapping th.recent_comments {
+    background-color: #c5cba4;
+}
+
 div.admin table.mapping,
 div.admin table.mapping a {
     color: black;
