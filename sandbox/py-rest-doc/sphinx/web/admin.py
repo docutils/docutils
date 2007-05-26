@@ -191,7 +191,7 @@ class AdminPanel(object):
         """
         if url == 'recent_comments':
             details_for = None
-            recent_comments = Comment.get_recent()
+            recent_comments = Comment.get_recent(20)
         else:
             details_for = url and self.env.get_real_filename(url) or None
             recent_comments = None
