@@ -8,6 +8,7 @@
     :copyright: 2007 by Georg Brandl.
     :license: Python license.
 """
+from __future__ import with_statement
 
 import heapq
 import difflib
@@ -19,9 +20,11 @@ from string import uppercase
 from docutils import nodes
 from docutils.io import FileInput
 from docutils.core import publish_doctree
+from docutils.utils import Reporter
 from docutils.readers import standalone
 from docutils.transforms import Transform
 from docutils.transforms.parts import ContentsFilter
+from docutils.transforms.universal import FilterMessages
 
 from . import addnodes
 
@@ -36,7 +39,7 @@ default_settings = {
 
 # This is increased every time a new environment attribute is added
 # to properly invalidate pickle files.
-ENV_VERSION = 6
+ENV_VERSION = 7
 
 
 def walk_depth(node, depth, maxdepth):
@@ -97,7 +100,8 @@ class MyStandaloneReader(standalone.Reader):
     """
     def get_transforms(self):
         tf = standalone.Reader.get_transforms(self)
-        return tf + [DefaultSubstitutions, MoveModuleTargets]
+        return tf + [DefaultSubstitutions, MoveModuleTargets,
+                     FilterMessages]
 
 
 class MyContentsFilter(ContentsFilter):
@@ -120,6 +124,8 @@ class BuildEnvironment:
     containing a "toctree" directive, because they have to change if sections
     are edited in other files. This keeps the environment size moderate.
     """
+
+    # --------- ENVIRONMENT PERSISTENCE ----------------------------------------
 
     @staticmethod
     def frompickle(filename, builder):
@@ -146,10 +152,16 @@ class BuildEnvironment:
         self.set_warning_stream(wstream)
         self.builder = builder
 
+    # --------- ENVIRONMENT INITIALIZATION -------------------------------------
+
     def __init__(self, builder):
         self.builder = builder
+
+        # the docutils settings for building
         self.settings = default_settings.copy()
         self.settings['env'] = self
+
+        # the stream to write warning messages to
         self.warning_stream = None
 
         # this is to invalidate old pickles
@@ -157,7 +169,7 @@ class BuildEnvironment:
 
         # Build times -- to determine changed files
         # Also use this as an inventory of all existing and built filenames.
-        self.mtimes = {}            # filename -> mtime at the time of build
+        self.all_files = {}         # filename -> mtime at the time of build
 
         # File metadata
         self.metadata = {}          # filename -> dict of metadata items
@@ -168,14 +180,12 @@ class BuildEnvironment:
         self.toc_num_entries = {}   # filename -> number of real entries
                                     # used to determine when to show the TOC in a sidebar
                                     # (don't show if it's only one item)
-        self.toctree_children = {}  # filename -> included filenames in a toctree
         self.toctree_relations = {} # filename -> ["parent", "previous", "next"] filename
                                     # for navigating in the toctree
-        self.toctree_doctrees = {}  # filenames with toctrees -> doctree of the file
         self.files_to_rebuild = {}  # filename -> list of files (containing its TOCs)
                                     # to rebuild too
 
-        # x-ref target inventory
+        # X-ref target inventory
         self.descrefs = {}          # fullname -> filename, desctype
         self.filemodules = {}       # filename -> [modules]
         self.modules = {}           # modname -> filename, synopsis, platform
@@ -200,12 +210,10 @@ class BuildEnvironment:
 
     def clear_file(self, filename):
         """Remove all traces of a source file in the inventory."""
-        if filename in self.mtimes:
-            self.mtimes.pop(filename, None)
+        if filename in self.all_files:
+            self.all_files.pop(filename, None)
             self.titles.pop(filename, None)
             self.tocs.pop(filename, None)
-            self.toctree_children.pop(filename, None)
-            self.toctree_doctrees.pop(filename, None)
             self.files_to_rebuild.pop(filename, None)
 
             for fullname, (fn, _) in self.descrefs.items():
@@ -228,32 +236,45 @@ class BuildEnvironment:
 
     # --------- SINGLE FILE BUILDING -------------------------------------------
 
-    def update_file(self, filename):
+    def get_doctree(self, filename):
+        """Read the doctree for a file from the pickle and return it."""
+        doctree_filename = path.join(self.builder.srcdir, filename[:-3] + 'doctree')
+        with file(doctree_filename, 'rb') as f:
+            doctree = pickle.load(f)
+        doctree.reporter = Reporter(filename, 2, 4, stream=self.warning_stream)
+        return doctree
+
+    def read_file(self, filename):
         """Parse a file and add/update inventory entries for the doctree."""
+        # remove all inventory entries for that file
         self.clear_file(filename)
+
         self.filename = filename
         filesystem_filename = path.join(self.builder.srcdir, filename)
         doctree = publish_doctree(None, filesystem_filename, FileInput,
                                   settings_overrides=self.settings,
                                   reader=MyStandaloneReader())
-        self.remove_system_messages(doctree)
         self.process_metadata(filename, doctree)
         self.create_title_from(filename, doctree)
         self.note_labels_from(filename, doctree)
         self.build_toc_from(filename, doctree)
-        if filename in self.toctree_doctrees:
-            tree = doctree.deepcopy()
-            # make it picklable
-            tree.reporter = None
-            tree.transformer = None
-            tree.settings.warning_stream = None
-            self.toctree_doctrees[filename] = tree
-        self.mtimes[filename] = path.getmtime(filesystem_filename)
+        self.all_files[filename] = path.getmtime(filesystem_filename)
+
+        # make it picklable
+        doctree.reporter = None
+        doctree.transformer = None
+        doctree.settings.env = None
+        doctree.settings.warning_stream = None
+
+        # save the parsed doctree
+        doctree_filename = filesystem_filename[:-3] + 'doctree'
+        with file(doctree_filename, 'wb') as f:
+            pickle.dump(doctree, f, pickle.HIGHEST_PROTOCOL)
+
         # cleanup
         self.filename = None
         self.currmodule = None
         self.currclass = None
-        return doctree
 
     def process_metadata(self, filename, doctree):
         """
@@ -271,21 +292,13 @@ class BuildEnvironment:
             elif node.__class__ is nodes.field:
                 name, body = node
                 md[name.astext()] = body.astext()
-        print md
         del doctree[0]
 
-    def remove_system_messages(self, doctree):
-        """
-        Remove info-level system messages from the doctree.
-        This is necessary because the transform doing this otherwise
-        is not active for our setup.
-        """
-        for node in doctree.traverse(nodes.system_message):
-            if node['level'] < 2:
-                node.parent.remove(node)
-
     def create_title_from(self, filename, document):
-        """Add a title node to the document (just copy the first section title)."""
+        """
+        Add a title node to the document (just copy the first section title),
+        and store that title in the environment.
+        """
         for node in document.traverse(nodes.section):
             titlenode = nodes.title()
             visitor = MyContentsFilter(document)
@@ -321,8 +334,10 @@ class BuildEnvironment:
             # the "next" file for the last toctree item is the parent again
             next = includefiles[i+1] if i < includefiles_len-1 else filename
             self.toctree_relations[includefile] = [filename, previous, next]
+            # note that if the included file is rebuilt, this one must be
+            # too (since the TOC of the included file could have changed)
+            self.files_to_rebuild.setdefault(includefile, set()).add(filename)
 
-        self.toctree_children.setdefault(filename, []).extend(includefiles)
 
     def build_toc_from(self, filename, document):
         """Build a TOC from the doctree and store it in the inventory."""
@@ -395,8 +410,6 @@ class BuildEnvironment:
     def note_token(self, tokenname):
         self.tokens[tokenname] = self.filename
 
-    def note_toctree_file(self):
-        self.toctree_doctrees[self.filename] = None
 
     def note_index_entry(self, type, string, targetid, aliasname):
         self.indexentries.setdefault(self.filename, []).append(
@@ -407,7 +420,48 @@ class BuildEnvironment:
             (type, self.filename, self.currmodule, self.currdesc, node.deepcopy()))
     # -------
 
-    # --------- GLOBAL BUILDING ------------------------------------------------
+    # --------- RESOLVING REFERENCES AND TOCTREES ------------------------------
+
+    def get_and_resolve_doctree(self, filename):
+        doctree = self.get_doctree(filename)
+
+        # resolve all pending cross-references
+        self.resolve_references(doctree, filename)
+
+        # now, resolve all toctree nodes
+        def _entries_from_toctree(toctreenode):
+            """Return TOC entries for a toctree node."""
+            includefiles = map(str, toctreenode['includefiles'])
+
+            entries = []
+            for includefile in includefiles:
+                toc = self.tocs[includefile].deepcopy()
+                for toctreenode in toc.traverse(addnodes.toctree):
+                    toctreenode.parent.replace_self(
+                        _entries_from_toctree(toctreenode))
+                entries.append(toc)
+            if entries:
+                return addnodes.compact_paragraph('', '', *entries)
+            return []
+
+        for toctreenode in doctree.traverse(addnodes.toctree):
+            maxdepth = toctreenode.get('maxdepth', -1)
+            newnode = _entries_from_toctree(toctreenode)
+            # prune the tree to maxdepth
+            if maxdepth > 0:
+                walk_depth(newnode, 1, maxdepth)
+            toctreenode.replace_self(newnode)
+
+        # set the target paths in the toctrees (they are not known
+        # at TOC generation time)
+        for node in doctree.traverse(nodes.reference):
+            if node.has_key('anchorname'):
+                # a TOC reference
+                node['refuri'] = self.builder.get_relative_uri(
+                    filename, node['refuri']) + node['anchorname']
+
+        return doctree
+
 
     def resolve_references(self, doctree, docfilename):
         for node in doctree.traverse(addnodes.pending_xref):
@@ -479,54 +533,8 @@ class BuildEnvironment:
             if newnode:
                 node.replace_self(newnode)
 
-    def resolve_toctrees(self, documents):
-        # determine which files (containing a toc) must be rebuilt for each
-        # target file (basically all "parent" files)
-        for filename in self.tocs:
-            relation = self.toctree_relations.get(filename)
-            while relation:
-                self.files_to_rebuild.setdefault(filename, set()).add(relation[0])
-                relation = self.toctree_relations.get(relation[0])
-
-        # resolve all toctree nodes from TOCs
-        def entries_from_toctree(toctreenode):
-            """Return TOC entries for a toctree node."""
-            includefiles = map(str, toctreenode['includefiles'])
-
-            entries = []
-            for includefile in includefiles:
-                toc = self.tocs[includefile].deepcopy()
-                for toctreenode in toc.traverse(addnodes.toctree):
-                    toctreenode.parent.replace_self(
-                        entries_from_toctree(toctreenode))
-                entries.append(toc)
-            if entries:
-                return addnodes.compact_paragraph('', '', *entries)
-            return []
-
-        for filename in self.toctree_doctrees:
-            if filename in documents:
-                document = documents[filename]
-            else:  # cached
-                document = self.toctree_doctrees[filename]
-
-            for toctreenode in document.traverse(addnodes.toctree):
-                maxdepth = toctreenode.get('maxdepth', -1)
-                newnode = entries_from_toctree(toctreenode)
-                # prune the tree to maxdepth
-                if maxdepth > 0:
-                    walk_depth(newnode, 1, maxdepth)
-                toctreenode.replace_self(newnode)
-
-            # set the target paths in the toctrees (they are not known
-            # at TOC generation time)
-            for node in document.traverse(nodes.reference):
-                if node.has_key('anchorname'):
-                    # a TOC reference
-                    node['refuri'] = self.builder.get_relative_uri(
-                        filename, node['refuri']) + node['anchorname']
-
     def create_index(self):
+        """Create the real index from the collected index entries."""
         new = {}
 
         def add_entry(word, subword, dic=new):
@@ -586,7 +594,7 @@ class BuildEnvironment:
     def check_consistency(self):
         """Do consistency checks."""
 
-        for filename in self.mtimes:
+        for filename in self.all_files:
             if filename not in self.toctree_relations:
                 if filename == 'contents.rst':
                     # the master file is not included anywhere ;)
@@ -686,5 +694,5 @@ class BuildEnvironment:
         value will be `None`.
         """
         for rstname in filename + '.rst', filename + path.sep + 'index.rst':
-            if rstname in self.mtimes:
+            if rstname in self.all_files:
                 return rstname
