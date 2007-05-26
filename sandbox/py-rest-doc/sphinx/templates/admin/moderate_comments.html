@@ -46,12 +46,15 @@
       </div>
     </div>
   {% endif %}
-  {%- macro render_row(comment) %}
+  {%- macro render_row(comment, include_page=false) %}
     <tr>
       <td class="title">
         <a href="{{ pathto(comment.url, true) }}">{{ comment.title|e }}</a>
         <span class="meta">by <a href="mailto:{{ comment.author_mail|e
-        }}">{{ comment.author|e }}</a></span>
+        }}">{{ comment.author|e }}</a>{% if include_page
+        %} on <a href="{{ pathto('admin/moderate_comments/' +
+        comment.associated_page) }}">{{ comment.associated_page }}</a{%
+        endif %}</span>
       </td>
       <td class="pub_date">{{ comment.pub_date|datetimeformat }}</td>
       <td class="actions">
@@ -63,33 +66,35 @@
     </tr>
   {%- endmacro %}
     <table class="mapping">
-      <tr>
-        <th colspan="4" class="recent_comments">
-          <a href="{{ pathto('admin/moderate_comments/recent_comments/', true)
-            }}">Recent Comments</a>
-          <span class="meta">(<a href="{{ pathto('index.rst')
-            }}?feed=recent_comments">feed</a>)</span>
-        </th>
-      </tr>
-      {%- for comment in recent_comments %}
-        {{- render_row(comment) }}
-      {%- endfor %}
-      {%- for page in pages_with_comments %}
+      {% if pages_with_comments %}
         <tr>
-          <th colspan="4">
-            <a href="{{ pathto('admin/moderate_comments/' + page.page_id) }}">{{ page.title|e }}</a>
-            <span class="meta">(<a href="{{ pathto(page.page_id) }}">view</a> |
-            <a href="{{ pathto(page.page_id) }}?feed=comments">feed</a>)</span>
+          <th colspan="4" class="recent_comments">
+            <a href="{{ pathto('admin/moderate_comments/recent_comments/', true)
+              }}">Recent Comments</a>
+            <span class="meta">(<a href="{{ pathto('index.rst')
+              }}?feed=recent_comments">feed</a>)</span>
           </th>
         </tr>
-        {%- if page.has_details %}
-          {%- for comment in page.comments %}
-            {{- render_row(comment) }}
-          {%- endfor %}
-        {%- endif %}
+        {%- for comment in recent_comments %}
+          {{- render_row(comment, true) }}
+        {%- endfor %}
+        {%- for page in pages_with_comments %}
+          <tr>
+            <th colspan="4">
+              <a href="{{ pathto('admin/moderate_comments/' + page.page_id) }}">{{ page.title|e }}</a>
+              <span class="meta">(<a href="{{ pathto(page.page_id) }}">view</a> |
+              <a href="{{ pathto(page.page_id) }}?feed=comments">feed</a>)</span>
+            </th>
+          </tr>
+          {%- if page.has_details %}
+            {%- for comment in page.comments %}
+              {{- render_row(comment) }}
+            {%- endfor %}
+          {%- endif %}
+        {% endfor %}
       {%- else %}
         <tr><th>no comments submitted so far</th></tr>
-      {%- endfor %}
+      {%- endif %}
     </table>
     <div class="actions">
       <input type="submit" value="Delete">

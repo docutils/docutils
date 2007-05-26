@@ -148,7 +148,7 @@ class Comment(object):
     def get_for_page(associated_page, reverse=False):
         cur = get_cursor()
         cur.execute('''select * from comments where associated_page = ?
-                    order by comment_id %s''' % 'desc' if reverse else 'asc',
+                    order by comment_id %s''' % ('desc' if reverse else 'asc'),
                     (associated_page,))
         try:
             return [Comment._make_comment(row) for row in cur]
