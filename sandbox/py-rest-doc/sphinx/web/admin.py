@@ -189,7 +189,12 @@ class AdminPanel(object):
         """
         Comment moderation panel.
         """
-        details_for = url and self.env.get_real_filename(url) or None
+        if url == 'recent_comments':
+            details_for = None
+            recent_comments = Comment.get_recent()
+        else:
+            details_for = url and self.env.get_real_filename(url) or None
+            recent_comments = None
         to_delete = set()
         edit_detail = None
 
@@ -245,6 +250,7 @@ class AdminPanel(object):
                 'has_details':  details_for == page_id,
                 'comments':     comments
             } for page_id, comments in Comment.get_overview(details_for)],
+            'recent_comments':  recent_comments,
             'to_delete':        to_delete,
             'ask_confirmation': req.method == 'POST' and to_delete,
             'edit_detail':      edit_detail

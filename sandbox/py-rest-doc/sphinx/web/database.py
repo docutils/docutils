@@ -145,9 +145,10 @@ class Comment(object):
             cur.close()
 
     @staticmethod
-    def get_for_page(associated_page):
+    def get_for_page(associated_page, reverse=False):
         cur = get_cursor()
-        cur.execute('select * from comments where associated_page = ?',
+        cur.execute('''select * from comments where associated_page = ?
+                    order by comment_id %s''' % 'desc' if reverse else 'asc',
                     (associated_page,))
         try:
             return [Comment._make_comment(row) for row in cur]
@@ -173,7 +174,7 @@ class Comment(object):
         for row in cur:
             page_id = row[0]
             if page_id == detail_for:
-                pages.append((page_id, Comment.get_for_page(page_id)))
+                pages.append((page_id, Comment.get_for_page(page_id, True)))
             else:
                 pages.append((page_id, []))
         cur.close()

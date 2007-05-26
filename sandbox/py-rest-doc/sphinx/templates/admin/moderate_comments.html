@@ -46,34 +46,50 @@
       </div>
     </div>
   {% endif %}
+  {%- macro render_row(comment) %}
+    <tr>
+      <td class="title">
+        <a href="{{ pathto(comment.url, true) }}">{{ comment.title|e }}</a>
+        <span class="meta">by <a href="mailto:{{ comment.author_mail|e
+        }}">{{ comment.author|e }}</a></span>
+      </td>
+      <td class="pub_date">{{ comment.pub_date|datetimeformat }}</td>
+      <td class="actions">
+        <span class="meta"><a href="?edit={{ comment.comment_id }}">edit</a></span>
+        <input type="checkbox" name="delete" value="{{
+        comment.comment_id }}"{% if comment.comment_id in to_delete
+        %} checked{% endif %}>
+      </td>
+    </tr>
+  {%- endmacro %}
     <table class="mapping">
-    {%- for page in pages_with_comments %}
       <tr>
-        <th colspan="4">
-          <a href="{{ pathto('admin/moderate_comments/' + page.page_id) }}">{{ page.title|e }}</a>
-          <span class="meta">(<a href="{{ pathto(page.page_id) }}">view</a> |
-          <a href="{{ pathto(page.page_id) }}?feed=comments">feed</a>)</span>
+        <th colspan="4" class="recent_comments">
+          <a href="{{ pathto('admin/moderate_comments/recent_comments/', true)
+            }}">Recent Comments</a>
+          <span class="meta">(<a href="{{ pathto('index.rst')
+            }}?feed=recent_comments">feed</a>)</span>
         </th>
       </tr>
-      {%- if page.has_details %}
-      {%- for comment in page.comments %}
-      <tr>
-        <td class="title">
-          <a href="{{ pathto(comment.url, true) }}">{{ comment.title|e }}</a>
-          <span class="meta">by <a href="mailto:{{ comment.author_mail|e
-          }}">{{ comment.author|e }}</a></span>
-        </td>
-        <td class="pub_date">{{ comment.pub_date|datetimeformat }}</td>
-        <td class="actions">
-          <span class="meta"><a href="?edit={{ comment.comment_id }}">edit</a></span>
-          <input type="checkbox" name="delete" value="{{
-          comment.comment_id }}"{% if comment.comment_id in to_delete
-          %} checked{% endif %}>
-        </td>
-      </tr>
+      {%- for comment in recent_comments %}
+        {{- render_row(comment) }}
       {%- endfor %}
-      {%- endif %}
-    {%- endfor %}
+      {%- for page in pages_with_comments %}
+        <tr>
+          <th colspan="4">
+            <a href="{{ pathto('admin/moderate_comments/' + page.page_id) }}">{{ page.title|e }}</a>
+            <span class="meta">(<a href="{{ pathto(page.page_id) }}">view</a> |
+            <a href="{{ pathto(page.page_id) }}?feed=comments">feed</a>)</span>
+          </th>
+        </tr>
+        {%- if page.has_details %}
+          {%- for comment in page.comments %}
+            {{- render_row(comment) }}
+          {%- endfor %}
+        {%- endif %}
+      {%- else %}
+        <tr><th>no comments submitted so far</th></tr>
+      {%- endfor %}
     </table>
     <div class="actions">
       <input type="submit" value="Delete">
