@@ -51,7 +51,7 @@ class DocumentationApplication(object):
 
     def search(self, req):
         """
-        Search the database. Currently just a keyword based search
+        Search the database. Currently just a keyword based search.
         """
         if not req.args.get('q'):
             return RedirectResponse('')
@@ -61,10 +61,11 @@ class DocumentationApplication(object):
         """
         Show the highlighted source for a given page.
         """
-        source_name = path.join(self.data_root, 'sources', page + '.txt')
-        if not path.exists(source_name):
+        page_id = self.env.get_real_filename(page)
+        if page_id is None:
             return self.get_keyword_matches(req)
-        with file(source_name) as f:
+        filename = path.join(self.data_root, 'sources', page_id)[:-3] + 'txt'
+        with file(filename) as f:
             return Response(f.read(), mimetype='text/plain')
 
     def get_page(self, req, url):
@@ -245,31 +246,44 @@ class DocumentationApplication(object):
         """
         set_connection(self.db_con)
         req = Request(environ)
+        url = req.path.strip('/') or 'index'
+
+        # require a trailing slash on GET requests
+        # this ensures nice looking urls and working relative
+        # links for cached resources.
         if not req.path.endswith('/') and req.method == 'GET':
             query = req.environ.get('QUERY_STRING', '')
             if query:
                 query = '?' + query
             resp = RedirectResponse(req.path + '/' + query)
-        elif req.path.startswith('/source/'):
-            sourcename = req.path[8:].strip('/')
-            resp = self.show_source(req, sourcename)
+        # go to the search page. this is currently just a redirect
+        # to /q/ which is handled below
+        elif url == 'search':
+            resp = self.search(req)
+        # the index page can have a "q" parameter that starts a
+        # redirect to the /q/ page which starts a fuzzy search
+        # or redirect.
+        elif url == 'index' and 'q' in req.args:
+            resp = RedirectResponse('q/%s/' % req.args['q'])
+        # the index page also provides some feeds
+        elif url == 'index' and req.args.get('feed') == 'recent_comments':
+            resp = self.get_recent_comments_feed(req)
+        # start the fuzzy search
+        elif url.startswith('q/'):
+            resp = self.get_keyword_matches(req, url[2:])
+        # source view
+        elif url.startswith('source/'):
+            resp = self.show_source(req, url[7:])
+        # dispatch requests to the admin panel
+        elif url == 'admin' or url.startswith('admin/'):
+            resp = self.admin_panel.dispatch(req, url[6:])
+        # everything else is handled as page or fuzzy search
+        # if a page does not exist.
         else:
-            url = req.path.strip('/') or 'index'
-            if url == 'search':
-                resp = self.search(req)
-            elif url == 'index' and 'q' in req.args:
-                resp = RedirectResponse('q/%s/' % req.args['q'])
-            elif url == 'index' and req.args.get('feed') == 'recent_comments':
-                resp = self.get_recent_comments_feed(req)
-            elif url.startswith('q/'):
-                resp = self.get_keyword_matches(req, url[2:])
-            elif url == 'admin' or url.startswith('admin/'):
-                resp = self.admin_panel.dispatch(req, url[6:])
-            else:
-                try:
-                    resp = self.get_page(req, url)
-                except NotFound:
-                    resp = self.get_keyword_matches(req)
+            try:
+                resp = self.get_page(req, url)
+            except NotFound:
+                resp = self.get_keyword_matches(req)
         return resp(environ, start_response)
 
 
