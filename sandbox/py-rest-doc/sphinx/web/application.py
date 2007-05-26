@@ -77,7 +77,8 @@ class DocumentationApplication(object):
         """
         cache_possible = True
         context = {
-            'known_designs':    sorted(self.known_designs)
+            'known_designs':    sorted(self.known_designs),
+            'on_index':         url == 'index'
         }
 
         # these are special because they have a different context
