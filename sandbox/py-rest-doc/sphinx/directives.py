@@ -449,8 +449,6 @@ directives.register_directive('moduleauthor', author_directive)
 def toctree_directive(name, arguments, options, content, lineno,
                       content_offset, block_text, state, state_machine):
     env = state.document.settings.env
-    env.note_toctree_file()
-
     dirname = path.dirname(env.filename)
 
     subnode = addnodes.toctree()

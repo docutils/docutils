@@ -79,7 +79,6 @@ class Builder(object):
             srcdirname, '*.rst', exclude=set(self.config.get('unused_files', ()))))
         # filled in later
         self.env = None
-        self.doctrees = None
 
     # helper methods
 
@@ -177,18 +176,19 @@ class Builder(object):
 
     def build(self, to_read, to_write, summary=None):
         assert self.env
-        self.doctrees = {}
 
         if summary:
             self.msg('building [%s]:' % self.name, nonl=1)
             self.msg(summary, nobold=1)
 
-        # read -- collect all warnings from docutils
+        # while reading, collect all warnings from docutils
         stream = StringIO.StringIO()
         self.env.set_warning_stream(stream)
         for filename in status_iterator(to_read, bold('reading...'),
                                         colorfunc=purple, stream=self.status_stream):
-            self.doctrees[filename] = self.env.update_file(filename)
+            # note: the doctrees are *not* kept in memory
+            if path.getmtime(filename) > self.env.all_files.get(filename, 0):
+                self.env.read_file(filename)
 
         warnings = stream.getvalue()
         if warnings:
@@ -201,11 +201,11 @@ class Builder(object):
         self.env.topickle(path.join(self.outdir, ENV_PICKLE_FILENAME))
         self.msg('done', nobold=True)
 
-        # transform (resolve cross-references etc.)
-        self.msg('transforming...')
-        self.env.resolve_toctrees(self.doctrees)
-        self.env.create_index()
+        # global actions
+        self.msg('checking consistency...')
         self.env.check_consistency()
+        self.msg('creating index...')
+        self.env.create_index()
 
         self.prepare_writing()
 
@@ -214,17 +214,12 @@ class Builder(object):
         for filename in to_write:
             for tocfilename in self.env.files_to_rebuild.get(filename, []):
                 to_write_set.add(tocfilename)
-                if tocfilename not in self.doctrees:
-                    self.doctrees[tocfilename] = self.env.toctree_doctrees[tocfilename]
-                    # need to create a new reporter since the original one
-                    # was removed before pickling
-                    reporter = Reporter(tocfilename, 2, 4, stream=self.warning_stream)
-                    self.doctrees[tocfilename].reporter = reporter
 
         # write target files
         for filename in status_iterator(sorted(to_write_set), bold('writing...'),
                                         colorfunc=green, stream=self.status_stream):
-            self.write_file(filename, self.doctrees[filename])
+            doctree = self.env.get_and_resolve_doctree(filename)
+            self.write_file(filename, doctree)
 
         # finish (write style files etc.)
         self.msg('finishing...')
@@ -300,7 +295,6 @@ class StandaloneHTMLBuilder(Builder):
         destination = StringOutput(encoding='utf-8')
         doctree.settings = self.docsettings
 
-        self.env.resolve_references(doctree, filename)
         output = self.docwriter.write(doctree, destination)
         self.docwriter.assemble_parts()
 
@@ -464,6 +458,10 @@ class WebHTMLBuilder(StandaloneHTMLBuilder):
         'nostyle': 'Don\'t copy style and script files',
         'searchindex': 'Create a search index for the online search',
     })
+
+    def init(self):
+        # Nothing to do here.
+        pass
 
     def get_target_uri(self, source_filename):
         if source_filename == 'index.rst':
