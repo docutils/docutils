@@ -39,7 +39,9 @@ class DocumentationApplication(object):
 
     def __init__(self, conf):
         self.cache = {}
+        self.generated_stylesheets = {}
         self.data_root = conf['data_root_path']
+        self.debug = conf['debug']
         with file(path.join(self.data_root, 'environment.pickle')) as f:
             self.env = pickle.load(f)
         with file(path.join(self.data_root, 'searchindex.pickle')) as f:
@@ -74,13 +76,17 @@ class DocumentationApplication(object):
         `NotFound` exception to display a page with close matches.
         """
         cache_possible = True
+        context = {
+            'known_designs':    sorted(self.known_designs)
+        }
+
         # these are special because they have a different context
         # XXX: this distinction is probably a mess!
         if url in self.special_urls:
             rstfilename = '@' + url  # only used as cache key
             filename = path.join(self.data_root, 'specials.pickle')
             with open(filename, 'rb') as f:
-                context = pickle.load(f)
+                context.update(pickle.load(f))
             templatename = url + '.html'
             comments = False
 
@@ -98,7 +104,7 @@ class DocumentationApplication(object):
             # else load the page
             filename = path.join(self.data_root, rstfilename[:-3] + 'fpickle')
             with open(filename, 'rb') as f:
-                context = pickle.load(f)
+                context.update(pickle.load(f))
             templatename = 'page.html'
 
             # default values for the comment form
@@ -245,6 +251,45 @@ class DocumentationApplication(object):
                 'keyword':              term
             }), status=404)
 
+    known_designs = {
+        'default':      ['default.css', 'pygments.css'],
+        'rightsidebar': ['default.css', 'rightsidebar.css', 'pygments.css']
+    }
+
+    def get_user_stylesheet(self, req):
+        """
+        Stylesheets are exchangeable. Handle them here and
+        cache them on the server side until server shuts down
+        and on the client side for 1 hour but not if in debug mode.
+        """
+        style = req.session.get('design')
+        if style not in self.known_designs:
+            style = 'default'
+
+        new_style = req.args.get('new_design')
+        if new_style:
+            if new_style in self.known_designs:
+                req.session['design'] = new_style
+            return RedirectResponse('')
+
+        if style in self.generated_stylesheets:
+            stylesheet = self.generated_stylesheets[style]
+        else:
+            stylesheet = []
+            for filename in self.known_designs[style]:
+                with file(path.join(self.data_root, 'style', filename)) as f:
+                    stylesheet.append(f.read())
+            stylesheet = '\n'.join(stylesheet)
+            if not self.debug:
+                self.generated_stylesheets[style] = stylesheet
+
+        if req.args.get('admin') == 'yes':
+            with file(path.join(self.data_root, 'style', 'admin.css')) as f:
+                stylesheet += '\n' + f.read()
+
+        # XXX: add timestamp based http caching
+        return Response(stylesheet, mimetype='text/css')
+
     def __call__(self, environ, start_response):
         """
         Dispatch requests.
@@ -265,14 +310,19 @@ class DocumentationApplication(object):
         # to /q/ which is handled below
         elif url == 'search':
             resp = self.search(req)
-        # the index page can have a "q" parameter that starts a
-        # redirect to the /q/ page which starts a fuzzy search
-        # or redirect.
-        elif url == 'index' and 'q' in req.args:
-            resp = RedirectResponse('q/%s/' % req.args['q'])
-        # the index page also provides some feeds
-        elif url == 'index' and req.args.get('feed') == 'recent_comments':
-            resp = self.get_recent_comments_feed(req)
+        # index page is special
+        elif url == 'index':
+            # alias for fuzzy search
+            if 'q' in req.args:
+                resp = RedirectResponse('q/%s/' % req.args['q'])
+            # feeds
+            elif req.args.get('feed') == 'recent_comments':
+                resp = self.get_recent_comments_feed(req)
+            # stylesheet
+            elif req.args.get('do') == 'stylesheet':
+                resp = self.get_user_stylesheet(req)
+            else:
+                resp = self.get_page(req, 'index')
         # start the fuzzy search
         elif url.startswith('q/'):
             resp = self.get_keyword_matches(req, url[2:])

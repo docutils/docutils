@@ -4,15 +4,16 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>{{ title|striptags }} &mdash; Python Documentation</title>
-    <link rel="stylesheet" href="{{ pathto('style/style.css', 1) }}" type="text/css">
-    <link rel="stylesheet" href="{{ pathto('style/pygments.css', 1) }}" type="text/css">
-    <link rel="stylesheet" href="{{ pathto('style/print.css', 1) }}" type="text/css" media="print">
+    {%- if builder == 'web' %}
+      <link rel="stylesheet" href="{{ pathto('index.rst') }}?do=stylesheet{%
+      if in_admin_panel %}&admin=yes{% endif %}" type="text/css">
+    {%- else %}
+      <link rel="stylesheet" href="{{ pathto('style/default.css', 1) }}" type="text/css">
+      <link rel="stylesheet" href="{{ pathto('style/pygments.css', 1) }}" type="text/css">
+    {%- endif %}
     {%- for link, type, title in page_links %}
       <link rel="alternate" type="{{ type|e(true) }}" title="{{ title|e(true) }}" href="{{ link|e(true) }}">
     {%- endfor %}
-    {%- if in_admin_panel %}
-      <link rel="stylesheet" href="{{ pathto('style/admin.css', 1) }}" type="text/css">
-    {%- endif %}
     <script type="text/javascript" src="{{ pathto('style/jquery.js', 1) }}"></script>
     <script type="text/javascript" src="{{ pathto('style/doctools.js', 1) }}"></script>
   </head>
@@ -86,6 +87,18 @@
               <input type="hidden" name="check_keywords" value="yes">
               <input type="hidden" name="area" value="default">
             </form>
+          {% endif %}
+          {% if builder == 'web' %}
+          <form action="{{ pathto('index.rst') }}" method="get">
+            <input type="hidden" name="do" value="stylesheet">
+            <select name="new_design">
+              <option>Select Design</option>
+            {%- for design in known_designs %}
+              <option>{{ design|e }}</option>
+            {%- endfor %}
+            </select>
+            <input type="submit" value="Change">
+          </form>
           {% endif %}
         </div>
       </div>
