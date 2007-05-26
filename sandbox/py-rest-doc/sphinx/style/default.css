@@ -612,3 +612,22 @@ form.comment textarea {
     height: 200px;
     margin-bottom: 10px;
 }
+
+/* :::: PRINT :::: */
+@media print {
+    div.documentwrapper {
+        width: 100%;
+    }
+
+    div.body {
+        margin: 0;
+    }
+
+    div.sidebar,
+    div.related,
+    div.footer,
+    div#comments div.new-comment-box,
+    #top-link {
+        display: none;
+    }
+}

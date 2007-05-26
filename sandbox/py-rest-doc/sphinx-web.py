@@ -19,9 +19,14 @@ def main(argv):
         print 'usage: %s [-d] <doc_root>' % argv[0]
         print ' -d: use werkzeug debugger if installed'
         return 2
-    orig_app, app = make_app({'data_root_path': args[0]})
 
-    if '-d' in opts:
+    debug = '-d' in opts
+    orig_app, app = make_app({
+        'data_root_path':   args[0],
+        'debug':            debug
+    })
+
+    if debug:
         try:
             from werkzeug.debug import DebuggedApplication
         except ImportError:
