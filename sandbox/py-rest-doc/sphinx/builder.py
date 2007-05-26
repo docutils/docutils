@@ -395,7 +395,7 @@ class StandaloneHTMLBuilder(Builder):
             f.write(get_stylesheet())
             f.close()
 
-    # --------- these are overwritten by the Django builder
+    # --------- these are overwritten by the Web builder
 
     def handle_file(self, filename, context):
         # only index pages with title
@@ -495,7 +495,7 @@ class WebHTMLBuilder(StandaloneHTMLBuilder):
 
     def handle_specials(self, specialcontext):
         fp = open(path.join(self.outdir, 'specials.pickle'), 'wb')
-        specialcontext.pop('pathto', None)
+        specialcontext.pop('pathto', None) # can't be pickled
         pickle.dump(specialcontext, fp, 2)
         fp.close()
 
