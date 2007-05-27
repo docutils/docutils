@@ -340,8 +340,8 @@ table.contentstable {
     width: 90%;
 }
 
-table.contentstable td {
-    line-height: 130%;
+table.contentstable p.biglink {
+    line-height: 150%;
 }
 
 a.biglink {
