@@ -8,11 +8,13 @@
     :copyright: 2007 by Georg Brandl.
     :license: BSD license.
 """
+from __future__ import with_statement
 
 import os
 import re
 import sys
 import time
+import types
 import codecs
 import shutil
 import cPickle as pickle
@@ -39,6 +41,7 @@ from . import directives
 
 ENV_PICKLE_FILENAME = 'environment.pickle'
 
+# Helper objects
 
 class relpath_to(object):
     def __init__(self, builder, filename):
@@ -50,17 +53,30 @@ class relpath_to(object):
         return relative_uri(self.baseuri, otheruri)
 
 
+class collect_env_warnings(object):
+    def __init__(self, builder):
+        self.builder = builder
+    def __enter__(self):
+        self.stream = StringIO.StringIO()
+        self.builder.env.set_warning_stream(self.stream)
+    def __exit__(self, *args):
+        self.builder.env.set_warning_stream(self.builder.warning_stream)
+        warnings = self.stream.getvalue()
+        if warnings:
+            print >>self.builder.warning_stream, warnings
+
+
 class Builder(object):
     """
     Builds target formats from the reST sources.
     """
 
     option_spec = {
-        'freshenv': 'Don\'t read a pickled environment',
+        'freshenv': 'Don\'t use a pickled environment',
     }
 
-    def __init__(self, srcdirname, outdirname,
-                 options, status_stream=None, warning_stream=None):
+    def __init__(self, srcdirname, outdirname, options,
+                 status_stream=None, warning_stream=None):
         self.srcdir = srcdirname
         self.outdir = outdirname
 
@@ -69,21 +85,23 @@ class Builder(object):
 
         self.config = {}
         execfile(path.join(srcdirname, 'conf.py'), self.config)
+        # remove potentially pickling-problematic values
+        del self.config['__builtins__']
+        for key, val in self.config.items():
+            if isinstance(val, types.ModuleType):
+                del self.config[key]
 
         self.status_stream = status_stream or sys.stdout
         self.warning_stream = warning_stream or sys.stderr
 
         self.init()
 
-        self.all_source_files = list(get_matching_files(
-            srcdirname, '*.rst', exclude=set(self.config.get('unused_files', ()))))
         # filled in later
         self.env = None
 
     # helper methods
 
     def validate_options(self):
-        """Check if the given options make sense."""
         for option in self.options:
             if option not in self.option_spec:
                 raise ValueError('Got unexpected option %s' % option)
@@ -91,7 +109,7 @@ class Builder(object):
             if option not in self.options:
                 self.options[option] = False
 
-    def msg(self, message, nonl=False, nobold=False):
+    def msg(self, message='', nonl=False, nobold=False):
         if not nobold: message = bold(message)
         if nonl:
             print >>self.status_stream, message,
@@ -112,90 +130,63 @@ class Builder(object):
         return relative_uri(self.get_target_uri(from_),
                             self.get_target_uri(to))
 
+    def get_outdated_files(self):
+        """Return a list of output files that are outdated."""
+        raise NotImplementedError
+
     # build methods
 
     def load_env(self):
         """Set up the build environment. Return True if a pickled file could be
            successfully loaded, False if a new environment had to be created."""
-        ret = False
-        if self.options.freshenv:
-            self.env = BuildEnvironment(self)
-        else:
+        if not self.options.freshenv:
             try:
                 self.msg('trying to load pickled env...', nonl=True)
                 self.env = BuildEnvironment.frompickle(
-                    path.join(self.outdir, ENV_PICKLE_FILENAME), self)
+                    path.join(self.outdir, ENV_PICKLE_FILENAME))
                 self.msg('done', nobold=True)
-                ret = True
             except Exception, err:
                 self.msg('failed: %s' % err, nobold=True)
-                self.env = BuildEnvironment(self)
-        return ret
+                self.env = BuildEnvironment(self.srcdir)
+        else:
+            self.env = BuildEnvironment(self.srcdir)
 
     def build_all(self):
         """Build all source files."""
-        self.options.freshenv = True
         self.load_env()
-        self.build(self.all_source_files, self.all_source_files,
-                   summary='all source files')
+        self.build(None, summary='all source files')
 
     def build_specific(self, source_filenames):
         """Only rebuild as much as needed for changes in the source_filenames."""
         # bring the filenames to the canonical format, that is,
         # relative to the source directory.
         dirlen = len(self.srcdir) + 1
-        to_write = [path.abspath(filename)[dirlen:]
-                    for filename in source_filenames]
-
-        if not self.load_env():
-            to_read = self.all_source_files
-        else:
-            to_read = to_write
-        self.build(to_read, to_write,
+        to_write = [path.abspath(filename)[dirlen:] for filename in source_filenames]
+        self.load_env()
+        self.build(to_write,
                    summary='%d source files given on command line' % len(to_read))
 
     def build_update(self):
         """Only rebuild files changed or added since last build."""
-        if not self.load_env():
-            self.build_all()
-            return
-        to_build = []
-        for filename in self.all_source_files:
-            if filename not in self.env.mtimes:
-                to_build.append(filename)
-                continue
-            else:
-                mtime = path.getmtime(path.join(self.srcdir, filename))
-                if mtime > self.env.mtimes[filename]:
-                    to_build.append(filename)
+        self.load_env()
+        to_build = list(self.get_outdated_files())
         if not to_build:
             self.msg('no files are out of date, exiting.')
             return
-        self.build(to_build, to_build,
+        self.build(to_build,
                    summary='%d source files that are out of date' % len(to_build))
 
-    def build(self, to_read, to_write, summary=None):
-        assert self.env
-
+    def build(self, filenames, summary=None):
         if summary:
             self.msg('building [%s]:' % self.name, nonl=1)
             self.msg(summary, nobold=1)
 
         # while reading, collect all warnings from docutils
-        stream = StringIO.StringIO()
-        self.env.set_warning_stream(stream)
-        for filename in status_iterator(to_read, bold('reading...'),
-                                        colorfunc=purple, stream=self.status_stream):
-            # note: the doctrees are *not* kept in memory
-            if path.getmtime(path.join(self.srcdir, filename)) > \
-               self.env.all_files.get(filename, 0):
-                self.env.read_file(filename)
-
-        warnings = stream.getvalue()
-        if warnings:
-            print >>self.warning_stream, warnings
-        # output all further warnings directly
-        self.env.set_warning_stream(self.warning_stream)
+        with collect_env_warnings(self):
+            self.msg('reading, updating environment...')
+            for filename in self.env.update(self.config):
+                self.msg(purple(filename), nonl=1, nobold=1)
+            self.msg()
 
         # save the environment
         self.msg('pickling the env...', nonl=True)
@@ -206,21 +197,27 @@ class Builder(object):
         self.msg('checking consistency...')
         self.env.check_consistency()
         self.msg('creating index...')
-        self.env.create_index()
+        self.env.create_index(self)
 
         self.prepare_writing()
 
-        # add all TOC files that may have changed
-        to_write_set = set(to_write)
-        for filename in to_write:
-            for tocfilename in self.env.files_to_rebuild.get(filename, []):
-                to_write_set.add(tocfilename)
+        if filenames:
+            # add all TOC files that may have changed
+            filenames_set = set(filenames)
+            for filename in filenames:
+                for tocfilename in self.env.files_to_rebuild.get(filename, []):
+                    filenames_set.add(tocfilename)
+        else:
+            # build all
+            filenames_set = set(self.env.all_files)
 
         # write target files
-        for filename in status_iterator(sorted(to_write_set), bold('writing...'),
-                                        colorfunc=green, stream=self.status_stream):
-            doctree = self.env.get_and_resolve_doctree(filename)
-            self.write_file(filename, doctree)
+        with collect_env_warnings(self):
+            self.msg('writing output...')
+            for filename in status_iterator(sorted(filenames_set), green,
+                                            stream=self.status_stream):
+                doctree = self.env.get_and_resolve_doctree(filename, self)
+                self.write_file(filename, doctree)
 
         # finish (write style files etc.)
         self.msg('finishing...')
@@ -392,6 +389,17 @@ class StandaloneHTMLBuilder(Builder):
 
     # --------- these are overwritten by the Web builder
 
+    def get_outdated_files(self):
+        for filename in get_matching_files(
+            self.srcdir, '*.rst', exclude=set(self.config.get('unused_files', ()))):
+            try:
+                targetmtime = path.getmtime(path.join(self.outdir,
+                                                      filename[:-4] + '.html'))
+            except:
+                targetmtime = 0
+            if path.getmtime(path.join(self.srcdir, filename)) > targetmtime:
+                yield filename
+
     def handle_file(self, filename, context):
         # only index pages with title
         title = context['title']
@@ -463,6 +471,17 @@ class WebHTMLBuilder(StandaloneHTMLBuilder):
     def init(self):
         # Nothing to do here.
         pass
+
+    def get_outdated_files(self):
+        for filename in get_matching_files(
+            self.srcdir, '*.rst', exclude=set(self.config.get('unused_files', ()))):
+            try:
+                targetmtime = path.getmtime(path.join(self.outdir,
+                                                      filename[:-4] + '.fpickle'))
+            except:
+                targetmtime = 0
+            if path.getmtime(path.join(self.srcdir, filename)) > targetmtime:
+                yield filename
 
     def get_target_uri(self, source_filename):
         if source_filename == 'index.rst':

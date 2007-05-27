@@ -483,7 +483,7 @@ div.note {
 }
 
 p.admonition-title {
-    margin: 0px;
+    margin: 0px 0px 5px 0px;
     font-weight: bold;
     font-size: 1.1em;
 }

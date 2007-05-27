@@ -98,7 +98,7 @@ innernodetypes = {
 def xfileref_role(typ, rawtext, text, lineno, inliner, options={}, content=[]):
     env = inliner.document.settings.env
     text = utils.unescape(text)
-    if env.builder.config.get('strip_trailing_parentheses', False):
+    if env.config.get('strip_trailing_parentheses', False):
         if text[-2:] == '()':
             text = text[:-2]
     pnode = addnodes.pending_xref(rawtext)
