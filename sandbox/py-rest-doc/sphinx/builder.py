@@ -11,7 +11,6 @@
 from __future__ import with_statement
 
 import os
-import re
 import sys
 import time
 import types
@@ -20,11 +19,10 @@ import shutil
 import cPickle as pickle
 import cStringIO as StringIO
 from os import path
-from functools import partial
 
 from docutils.io import StringOutput, DocTreeInput
 from docutils.core import publish_parts
-from docutils.utils import Reporter, new_document
+from docutils.utils import new_document
 from docutils.readers import doctree
 from docutils.frontend import OptionParser
 
@@ -164,7 +162,7 @@ class Builder(object):
         to_write = [path.abspath(filename)[dirlen:] for filename in source_filenames]
         self.load_env()
         self.build(to_write,
-                   summary='%d source files given on command line' % len(to_read))
+                   summary='%d source files given on command line' % len(to_write))
 
     def build_update(self):
         """Only rebuild files changed or added since last build."""
@@ -337,7 +335,7 @@ class StandaloneHTMLBuilder(Builder):
             builder = self.name,
         )
 
-        self.handle_file(filename, context)
+        self.handle_file(filename, doctree, context)
 
     def finish(self):
         # calculate some things used in the templates
@@ -400,14 +398,14 @@ class StandaloneHTMLBuilder(Builder):
             if path.getmtime(path.join(self.srcdir, filename)) > targetmtime:
                 yield filename
 
-    def handle_file(self, filename, context):
+    def handle_file(self, filename, doctree, context):
         # only index pages with title
         title = context['title']
         if self.indexer is not None and title:
             category = get_category(filename)
             if category is not None:
                 self.indexer.feed(self.get_target_uri(filename)[:-5], # strip '.html'
-                                  category, title, self.doctrees[filename])
+                                  category, title, doctree)
 
         output = self.page_template.render(context)
         outfilename = path.join(self.outdir, filename[:-4] + '.html')
@@ -490,14 +488,13 @@ class WebHTMLBuilder(StandaloneHTMLBuilder):
             return source_filename[:-9] # up to /
         return source_filename[:-4] + '/'
 
-    def handle_file(self, filename, context):
+    def handle_file(self, filename, doctree, context):
         # only index pages with title and category
         title = context['title']
         if self.indexer is not None and title:
             category = get_category(filename)
             if category is not None:
-                self.indexer.feed(filename, category, title,
-                                  self.doctrees[filename])
+                self.indexer.feed(filename, category, title, doctree)
 
         outfilename = path.join(self.outdir, filename[:-4] + '.fpickle')
         ensuredir(path.dirname(outfilename))
