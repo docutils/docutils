@@ -27,6 +27,7 @@ from docutils.transforms.parts import ContentsFilter
 from docutils.transforms.universal import FilterMessages
 
 from . import addnodes
+from .util import get_matching_files
 
 default_settings = {
     'embed_stylesheet': False,
@@ -39,7 +40,7 @@ default_settings = {
 
 # This is increased every time a new environment attribute is added
 # to properly invalidate pickle files.
-ENV_VERSION = 7
+ENV_VERSION = 8
 
 
 def walk_depth(node, depth, maxdepth):
@@ -74,7 +75,7 @@ class DefaultSubstitutions(Transform):
         for ref in self.document.traverse(nodes.substitution_reference):
             refname = ref['refname']
             if refname in to_handle:
-                text = self.document.settings.env.builder.config.get(refname, '')
+                text = self.document.settings.env.config.get(refname, '')
                 ref.replace_self(nodes.Text(text, text))
 
 
@@ -128,34 +129,27 @@ class BuildEnvironment:
     # --------- ENVIRONMENT PERSISTENCE ----------------------------------------
 
     @staticmethod
-    def frompickle(filename, builder):
-        picklefile = open(filename, 'rb')
-        env = pickle.load(picklefile)
-        picklefile.close()
-
+    def frompickle(filename):
+        with open(filename, 'rb') as picklefile:
+            env = pickle.load(picklefile)
         if env.version != ENV_VERSION:
             raise IOError('env version not current')
-
-        env.builder = builder
         return env
 
     def topickle(self, filename):
         # remove unpicklable attributes
-        builder = self.builder
-        self.builder = None
         wstream = self.warning_stream
         self.set_warning_stream(None)
-        picklefile = open(filename, 'wb')
-        pickle.dump(self, picklefile, pickle.HIGHEST_PROTOCOL)
-        picklefile.close()
+        with open(filename, 'wb') as picklefile:
+            pickle.dump(self, picklefile, pickle.HIGHEST_PROTOCOL)
         # reset stream
         self.set_warning_stream(wstream)
-        self.builder = builder
 
     # --------- ENVIRONMENT INITIALIZATION -------------------------------------
 
-    def __init__(self, builder):
-        self.builder = builder
+    def __init__(self, srcdir):
+        self.srcdir = srcdir
+        self.config = {}
 
         # the docutils settings for building
         self.settings = default_settings.copy()
@@ -192,6 +186,7 @@ class BuildEnvironment:
         self.tokens = {}            # tokenname -> filename
         self.labels = {}            # labelname -> filename, labelid
 
+        # Other inventories
         self.indexentries = {}      # filename -> list of
                                     # (type, string, target, aliasname)
         self.versionchanges = {}    # version -> list of
@@ -212,17 +207,19 @@ class BuildEnvironment:
         """Remove all traces of a source file in the inventory."""
         if filename in self.all_files:
             self.all_files.pop(filename, None)
+            self.metadata.pop(filename, None)
             self.titles.pop(filename, None)
             self.tocs.pop(filename, None)
+            self.toc_num_entries.pop(filename, None)
             self.files_to_rebuild.pop(filename, None)
 
             for fullname, (fn, _) in self.descrefs.items():
                 if fn == filename:
                     del self.descrefs[fullname]
+            self.filemodules.pop(filename, None)
             for modname, (fn, _, _) in self.modules.items():
                 if fn == filename:
                     del self.modules[modname]
-            self.filemodules.pop(filename, None)
             for tokenname, fn in self.tokens.items():
                 if fn == filename:
                     del self.tokens[tokenname]
@@ -234,15 +231,49 @@ class BuildEnvironment:
                 new = [change for change in changes if change[1] != filename]
                 changes[:] = new
 
-    # --------- SINGLE FILE BUILDING -------------------------------------------
+    def get_outdated_files(self, config):
+        """
+        Return (removed, changed) iterables.
+        """
+        all_source_files = list(get_matching_files(
+            self.srcdir, '*.rst', exclude=set(config.get('unused_files', ()))))
 
-    def get_doctree(self, filename):
-        """Read the doctree for a file from the pickle and return it."""
-        doctree_filename = path.join(self.builder.srcdir, filename[:-3] + 'doctree')
-        with file(doctree_filename, 'rb') as f:
-            doctree = pickle.load(f)
-        doctree.reporter = Reporter(filename, 2, 4, stream=self.warning_stream)
-        return doctree
+        # clear all files no longer present
+        removed = set(self.all_files) - set(all_source_files)
+
+        if config != self.config:
+            # config values affect e.g. substitutions
+            changed = all_source_files
+        else:
+            changed = []
+            for filename in all_source_files:
+                if filename not in self.all_files:
+                    changed.append(filename)
+                else:
+                    mtime = path.getmtime(path.join(self.srcdir, filename))
+                    if mtime > self.all_files.get(filename, 0):
+                        changed.append(filename)
+
+        return removed, changed
+
+    def update(self, config):
+        """
+        (Re-)read all files new or changed since last update.
+        Yields filenames as it processes them.
+        """
+        removed, changed = self.get_outdated_files(config)
+        self.config = config
+
+        # clear all files no longer present
+        for filename in removed:
+            self.clear_file(filename)
+
+        # read all new and changed files
+        for filename in changed:
+            yield filename
+            self.read_file(filename)
+
+    # --------- SINGLE FILE BUILDING -------------------------------------------
 
     def read_file(self, filename):
         """Parse a file and add/update inventory entries for the doctree."""
@@ -250,7 +281,7 @@ class BuildEnvironment:
         self.clear_file(filename)
 
         self.filename = filename
-        filesystem_filename = path.join(self.builder.srcdir, filename)
+        filesystem_filename = path.join(self.srcdir, filename)
         doctree = publish_doctree(None, filesystem_filename, FileInput,
                                   settings_overrides=self.settings,
                                   reader=MyStandaloneReader())
@@ -422,11 +453,19 @@ class BuildEnvironment:
 
     # --------- RESOLVING REFERENCES AND TOCTREES ------------------------------
 
-    def get_and_resolve_doctree(self, filename):
+    def get_doctree(self, filename):
+        """Read the doctree for a file from the pickle and return it."""
+        doctree_filename = path.join(self.srcdir, filename[:-3] + 'doctree')
+        with file(doctree_filename, 'rb') as f:
+            doctree = pickle.load(f)
+        doctree.reporter = Reporter(filename, 2, 4, stream=self.warning_stream)
+        return doctree
+
+    def get_and_resolve_doctree(self, filename, builder):
         doctree = self.get_doctree(filename)
 
         # resolve all pending cross-references
-        self.resolve_references(doctree, filename)
+        self.resolve_references(doctree, filename, builder)
 
         # now, resolve all toctree nodes
         def _entries_from_toctree(toctreenode):
@@ -435,11 +474,17 @@ class BuildEnvironment:
 
             entries = []
             for includefile in includefiles:
-                toc = self.tocs[includefile].deepcopy()
-                for toctreenode in toc.traverse(addnodes.toctree):
-                    toctreenode.parent.replace_self(
-                        _entries_from_toctree(toctreenode))
-                entries.append(toc)
+                try:
+                    toc = self.tocs[includefile].deepcopy()
+                except KeyError, err:
+                    # this is raised if the included file does not exist
+                    print >>self.warning_stream, 'WARNING: %s: toctree contains ' \
+                          'ref to nonexisting file %r' % (filename, includefile)
+                else:
+                    for toctreenode in toc.traverse(addnodes.toctree):
+                        toctreenode.parent.replace_self(
+                            _entries_from_toctree(toctreenode))
+                    entries.append(toc)
             if entries:
                 return addnodes.compact_paragraph('', '', *entries)
             return []
@@ -457,13 +502,13 @@ class BuildEnvironment:
         for node in doctree.traverse(nodes.reference):
             if node.has_key('anchorname'):
                 # a TOC reference
-                node['refuri'] = self.builder.get_relative_uri(
+                node['refuri'] = builder.get_relative_uri(
                     filename, node['refuri']) + node['anchorname']
 
         return doctree
 
 
-    def resolve_references(self, doctree, docfilename):
+    def resolve_references(self, doctree, docfilename, builder):
         for node in doctree.traverse(addnodes.pending_xref):
             contnode = node[0].deepcopy()
             newnode = None
@@ -485,7 +530,7 @@ class BuildEnvironment:
                     if filename == docfilename:
                         newnode['refid'] = labelid
                     else:
-                        newnode['refuri'] = self.builder.get_relative_uri(
+                        newnode['refuri'] = builder.get_relative_uri(
                             docfilename, filename) + '#' + labelid
                     newnode.append(nodes.emphasis(sectname, sectname))
             elif typ == 'token':
@@ -497,7 +542,7 @@ class BuildEnvironment:
                     if filename == docfilename:
                         newnode['refid'] = 'grammar-token-' + target
                     else:
-                        newnode['refuri'] = self.builder.get_relative_uri(
+                        newnode['refuri'] = builder.get_relative_uri(
                             docfilename, filename) + '#grammar-token-' + target
                     newnode.append(contnode)
             elif typ == 'mod':
@@ -514,7 +559,7 @@ class BuildEnvironment:
                         anchor = '#' + 'module-' + target
                     newnode = nodes.reference('', '')
                     newnode['refuri'] = (
-                        self.builder.get_relative_uri(docfilename, filename) + anchor)
+                        builder.get_relative_uri(docfilename, filename) + anchor)
                     newnode.append(contnode)
             else:
                 name, desc = self.find_desc(modname, clsname, target, typ)
@@ -526,14 +571,14 @@ class BuildEnvironment:
                         newnode['refid'] = name
                     else:
                         newnode['refuri'] = (
-                            self.builder.get_relative_uri(docfilename, desc[0])
+                            builder.get_relative_uri(docfilename, desc[0])
                             + '#' + name)
                     newnode.append(contnode)
 
             if newnode:
                 node.replace_self(newnode)
 
-    def create_index(self):
+    def create_index(self, builder):
         """Create the real index from the collected index entries."""
         new = {}
 
@@ -544,7 +589,7 @@ class BuildEnvironment:
             if subword:
                 add_entry(subword, '', dic=entry[1])
             else:
-                entry[0].append(self.builder.get_relative_uri('genindex.rst', fn)
+                entry[0].append(builder.get_relative_uri('genindex.rst', fn)
                                 + '#' + tid)
 
         for fn, entries in self.indexentries.iteritems():
