@@ -348,6 +348,13 @@ Problems
 
 Open to be fixed or open to discussion.
 
+Lists
+-----
+
+Definitions in definition lists start on the same line as the term. Putting 
+``\leavevmode`` after the term results in a new newline if the definition
+starts with a item list or similar.
+
 footnotes and citations
 -----------------------
 
@@ -397,6 +404,9 @@ Tables
     uses raggedright. 
   - Ragged right fails on followup paragraphs as the vertical space would be
     missing.
+* Use tabularx column type ``X`` and let latex decide width.
+* csv-tables do not have a colwidth.
+
 
 Notes
 ~~~~~
@@ -419,8 +429,6 @@ Miscellaneous
 * recognize LaTeX and replace by ``\LaTeX``.
 * Support embed-stylesheet.
 * Sidebar handling.
-* Maybe add end of line after term in definition list. see
-    http://roundup.sf.net/doc-0.5/features.pdf
 * Pdfbookmark level 4 (and greater) does not work (might be settable but OTOH).
 * center subsection{Abstract} gives a LaTeX error here.
   ``! LaTeX Error: Something's wrong--perhaps a missing \item.``
