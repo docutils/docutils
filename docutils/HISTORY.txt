@@ -116,6 +116,8 @@ Changes Since 0.4
 
 * docutils/writers/latex2e/__init__.py:
 
+  - Using leavemode optoin_list no longer needs to check if parent
+    is a definition list.
   - Append ``\leavemode`` to definition list terms.
   - No longer write vist_/depart_definition_list_item comments to output.
   - Table column width with 3 decimal places.
