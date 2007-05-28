@@ -470,7 +470,7 @@ class Table:
             colwidth = factor * float(node['colwidth']+1) / width
             self._col_width.append(colwidth+0.005)
             self._rowspan.append(0)
-            latex_table_spec += "%sp{%.2f\\locallinewidth}" % (bar,colwidth+0.005)
+            latex_table_spec += "%sp{%.3f\\locallinewidth}" % (bar,colwidth+0.005)
         return latex_table_spec+bar
 
     def get_column_width(self):
