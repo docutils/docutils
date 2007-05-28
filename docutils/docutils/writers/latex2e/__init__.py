@@ -1165,10 +1165,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append( '\\end{description}\n' )
 
     def visit_definition_list_item(self, node):
-        self.body.append('%[visit_definition_list_item]\n')
+        pass
 
     def depart_definition_list_item(self, node):
-        self.body.append('%[depart_definition_list_item]\n')
+        pass
 
     def visit_description(self, node):
         self.body.append( ' ' )
@@ -1980,7 +1980,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_term(self, node):
         # definition list term.
-        self.body.append('}] ')
+        # \leavevmode results in a line break if the term is followed by a item list.
+        self.body.append('}] \leavevmode ')
 
     def visit_tgroup(self, node):
         #self.body.append(self.starttag(node, 'colgroup'))
