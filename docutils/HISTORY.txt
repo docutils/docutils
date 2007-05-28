@@ -116,6 +116,8 @@ Changes Since 0.4
 
 * docutils/writers/latex2e/__init__.py:
 
+  - Append ``\leavemode`` to definition list terms.
+  - No longer write vist_/depart_definition_list_item comments to output.
   - Table column width with 3 decimal places.
   - Add table stubs support (boldfont).
   - Add assemble_parts to writer.
