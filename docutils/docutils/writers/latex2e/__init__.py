@@ -1773,9 +1773,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('] ')
 
     def visit_option_list(self, node):
-        # force new line after definition
-        if isinstance(node.parent, nodes.definition):
-            self.body.append('~\n')
         self.body.append('\\begin{optionlist}{3cm}\n')
 
     def depart_option_list(self, node):
