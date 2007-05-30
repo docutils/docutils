@@ -284,6 +284,7 @@ image formats depend on the used driver (dvi, dvips, pdftex, ...).
 If pdf-image inclusion in pdf files fails, specify
 ``--graphicx-option=pdftex`` or ``--graphicx-option=auto``.
 
+Wrapping text around images requires the wrapfig package.
 
 Commands directly to LaTeX
 ==========================
