@@ -1,0 +1,28 @@
+Summer of Code -- Time Line
+===========================
+
+May 28 - June 10
+    Add support for multiple input documents.
+
+June 11 - June 17
+    Design and implement framework support for multiple output
+    documents.
+
+June 18 - June 24
+    Implement Python-specific LaTeX output.
+
+June 25 - July 1
+    Add reStructuredText markup such as roles and possibly directives
+    similar to the current Python-specific LaTeX markup.
+
+July 2 - July 13
+    Implement support for multiple output documents in the HTML
+    writer.  Add styling for the resulting HTML to make it resemble
+    the current output of the LaTeX to HTML tool chain.
+
+August 5 - August 12
+     Create user documentation.  This is crucial for the success and
+     adoption of reStructuredText-based package documentation.
+
+August 13 - August 20
+     Buffer time.
