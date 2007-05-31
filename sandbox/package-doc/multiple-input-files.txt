@@ -1,0 +1,80 @@
+==================================
+ Support for Multiple Input Files
+==================================
+
+:Author: Lea Wiemann <LeWiemann@gmail.com>
+:Date: $Date$
+:Revision: $Revision$
+:Copyright: This document has been placed in the public domain.
+
+We would like to support documents whose source text comes from
+multiple files.  For instance, the Docutils documentation tree could
+be considered a large document; parsing all files into one single
+document tree would enable us to do cross-linking between parts of the
+documentation (our current way to cross-link between files is to link
+to HTML files and fragments, which is a hack).
+
+Note that this issue is separate from output to multiple files; after
+implementing support for multiple files, all we will be able to do is
+to generate a huge single output file.
+
+This is a collection of notes and semi-random thoughts (many of which
+are credit to David, from IM conversations).  Feel free to add yours!
+
+* Create a "subdocument" directive (syntax: ".. subdocument::
+  file.txt").  This directive causes the referenced file to be parsed
+  and its document tree to be inserted in place.
+
+  - The sub-document must have a document title.  (This document title
+    will become a section title.)
+    
+  - The subdocument directive should be treated like a section; that
+    is, no elements except for more sections or transitions may
+    follow.
+    
+  - In order to facilitate assembling a large number of hierarchical
+    files into a large document, the subdocument directive should
+    allow specifying any number of files, like this::
+
+        .. subdocument::
+
+           chapter1.txt
+               chapter1-section1.txt
+               chapter1-section2.txt
+           chapter2.txt
+               chapter2-section1.txt
+               ...
+
+    Specifying an indented file (like chapter1-section1.txt) is
+    equivalent to inserting ".. subdocument:: chapter1-section1.txt"
+    at the end of chapter1.txt.
+
+    Lists of files should be required to be directive content, not
+    parameters, because file lists as parameters would be prone to
+    uncaught user errors.  In this example, the indentation of
+    "chapter1-section1.txt" would be stripped by the directive parser,
+    which is contrary to what the user expects::
+
+        .. subdocument:: chapter1.txt
+               chapter1-section1.txt
+
+  - Implementation-wise: Insert a pending node, which will be resolved
+    by a very early transform.  That transform parses the sub-document
+    and inserts the document tree.
+
+* What do we do with docinfos in subdocuments?
+
+  - Allow for section infos by generalizing the existing docinfo node.
+
+  - Add an option to either strip or leave docinfos.  Perhaps
+    specifiable as an option to the "subdocument" directive, and/or on
+    a per-input-file basis (how?), and/or as a command line option.
+    (Applied in which order?)
+
+  - Should there also be a way to have per-section section infos in
+    reStructuredText files, as opposed to just file-wide docinfos?  If
+    not, the only way to get section infos in a document is to use
+    sub-documents (which might be fine).
+
+  - For a first implementation, just go the easy route and strip all
+    docinfos in sub-documents.
