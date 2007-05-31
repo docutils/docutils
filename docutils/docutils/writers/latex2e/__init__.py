@@ -424,7 +424,12 @@ class Table:
         return ''
     # horizontal lines are drawn below a row, because we.
     def get_opening(self):
-        return '\\begin{%s}[c]' % self._latex_type
+        if self._latex_type == 'longtable':
+            # otherwise longtable might move before paragraph and subparagraph
+            prefix = '\\leavevmode\n'
+        else:
+            prefix = ''
+        return '%s\\begin{%s}[c]' % (prefix, self._latex_type)
     def get_closing(self):
         line = ""
         if self._table_style == 'booktabs':
@@ -2085,7 +2090,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
             section_name = self.d_class.section(self.section_level)
             self.body.append('\\%s%s{' % (section_name, section_star))
-
+            # MAYBE postfix paragraph and subparagraph with \leavemode to
+            # ensure floatables stay in the section and text starts on a new line.
             self.context.append('}\n')
 
     def depart_title(self, node):

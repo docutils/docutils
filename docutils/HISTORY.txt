@@ -116,6 +116,7 @@ Changes Since 0.4
 
 * docutils/writers/latex2e/__init__.py:
 
+  - Put leavevmode before longtable to avoid having it moved before sub/pargraph.
   - Using leavemode optoin_list no longer needs to check if parent
     is a definition list.
   - Append ``\leavemode`` to definition list terms.

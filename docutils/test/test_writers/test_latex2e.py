@@ -385,6 +385,7 @@ latex_head + """\
 
 \\setlength{\\locallinewidth}{\\linewidth}
 
+\\leavevmode
 \\begin{longtable}[c]{|p{0.075\locallinewidth}|p{0.075\locallinewidth}|}
 \\caption{Foo}\\\\
 \\hline
@@ -419,6 +420,7 @@ latex_head + """\
 
 \\setlength{\\locallinewidth}{\\linewidth}
 
+\\leavevmode
 \\begin{longtable}[c]{p{0.075\locallinewidth}p{0.075\locallinewidth}}
 
 1
