@@ -21,7 +21,11 @@ to generate a huge single output file.
 This is a collection of notes and semi-random thoughts (many of which
 are credit to David, from IM conversations).  Feel free to add yours!
 
-* Create a "subdocument" directive (syntax: ".. subdocument::
+* The "include" directive is not usable for this because we want to
+  have independent parsing contexts (for instance, section title
+  adornment should not have to be consistent across input files).
+
+* So create a "subdocument" directive (syntax: ".. subdocument::
   file.txt").  This directive causes the referenced file to be parsed
   and its document tree to be inserted in place.
 
@@ -78,3 +82,7 @@ are credit to David, from IM conversations).  Feel free to add yours!
 
   - For a first implementation, just go the easy route and strip all
     docinfos in sub-documents.
+
+* In order to facilitate multi-file output that parallels the input
+  file structure, add "source" attributes to section nodes for
+  sections that come from different input files.
