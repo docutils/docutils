@@ -62,10 +62,6 @@ are credit to David, from IM conversations).  Feel free to add yours!
         .. subdocument:: chapter1.txt
                chapter1-section1.txt
 
-  - Implementation-wise: Insert a pending node, which will be resolved
-    by a very early transform.  That transform parses the sub-document
-    and inserts the document tree.
-
 * What do we do with docinfos in subdocuments?
 
   - Allow for section infos by generalizing the existing docinfo node.
