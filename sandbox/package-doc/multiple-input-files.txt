@@ -15,8 +15,8 @@ documentation (our current way to cross-link between files is to link
 to HTML files and fragments, which is a hack).
 
 Note that this issue is separate from output to multiple files; after
-implementing support for multiple files, all we will be able to do is
-to generate a huge single output file.
+implementing support for multiple input files, all we will be able to
+do is to generate a huge single output file.
 
 This is a collection of notes and semi-random thoughts (many of which
 are credit to David, from IM conversations).  Feel free to add yours!
