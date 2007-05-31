@@ -119,7 +119,8 @@ Changes Since 0.4
   - Using leavemode optoin_list no longer needs to check if parent
     is a definition list.
   - Append ``\leavemode`` to definition list terms.
-  - No longer write vist_/depart_definition_list_item comments to output.
+  - No longer write visit\_/depart_definition_list_item comments to
+    output.
   - Table column width with 3 decimal places.
   - Add table stubs support (boldfont).
   - Add assemble_parts to writer.
