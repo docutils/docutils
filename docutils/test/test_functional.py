@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # $Id$
-# Author: Felix Wiemann <Felix.Wiemann@ososo.de>
+# Author: Lea Wiemann <LeWiemann@gmail.com>
 # Copyright: This module has been placed in the public domain.
 
 """

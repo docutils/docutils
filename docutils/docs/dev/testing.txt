@@ -2,7 +2,7 @@
  Docutils_ Testing
 ===================
 
-:Authors: Felix Wiemann <Felix.Wiemann@ososo.de>;
+:Authors: Lea Wiemann <LeWiemann@gmail.com>;
           David Goodger <goodger@python.org>
 :Revision: $Revision$
 :Date: $Date$

@@ -1320,7 +1320,7 @@ Perhaps line block syntax like this would do::
      |   Ethan Hunt
      |   Jim Phelps
      |   Claire Phelps
-     | CIA: Felix Leiter
+     | CIA: Lea Leiter
 
 Note that the "nested" list does not have nested syntax (the "|" are
 not further indented); the leading whitespace would still be

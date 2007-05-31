@@ -873,7 +873,7 @@ __ rst/alternatives.html#or-not-to-do
   This may not be just a parser issue; it may need framework support.
 
   Mailing list threads: `Images in both HTML and LaTeX`__ (especially
-  `this summary of Felix's objections`__), `more-universal links?`__,
+  `this summary of Lea's objections`__), `more-universal links?`__,
   `Output-format-sensitive link targets?`__
 
   __ http://thread.gmane.org/gmane.text.docutils.user/1239

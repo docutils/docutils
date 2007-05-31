@@ -10,7 +10,7 @@
 
 The Docutils web site, <http://docutils.sourceforge.net/>, is
 maintained automatically by the ``docutils-update`` script, run as an
-hourly cron job on shell.berlios.de (by user "felixwiemann").  The
+hourly cron job on shell.berlios.de (by user "leawiemann").  The
 script will process any .txt file which is newer than the
 corresponding .html file in the project's web directory on
 shell.berlios.de (``/home/groups/docutils/htdocs/aux/htdocs/``) and
@@ -37,9 +37,9 @@ The docutils-update__ script is located at
 __ http://docutils.sf.net/sandbox/infrastructure/docutils-update
 
 If you want to share files via the web, you can upload them using the
-uploaddocutils.sh__ script (``sandbox/fwiemann/uploaddocutils.sh``).
+uploaddocutils.sh__ script (``sandbox/wiemann/uploaddocutils.sh``).
 
-__ http://docutils.sf.net/sandbox/fwiemann/uploaddocutils.sh
+__ http://docutils.sf.net/sandbox/wiemann/uploaddocutils.sh
 
 
 ..

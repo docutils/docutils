@@ -2,7 +2,7 @@
  Docutils_ Release Procedure
 =============================
 
-:Authors: David Goodger; Felix Wiemann; open to all Docutils developers
+:Authors: David Goodger; Lea Wiemann; open to all Docutils developers
 :Contact: goodger@python.org
 :Date: $Date$
 :Revision: $Revision$
@@ -12,7 +12,7 @@
 
 
 Steps in boldface text are *not* covered by the release script at
-sandbox/fwiemann/release.sh.  "Not covered" means that you aren't even
+sandbox/wiemann/release.sh.  "Not covered" means that you aren't even
 reminded of them.
 
 .. Note:: This document does not cover branching and tagging, but the

@@ -1,5 +1,5 @@
 # $Id$
-# Author: Felix Wiemann <Felix.Wiemann@ososo.de>
+# Author: Lea Wiemann <LeWiemann@gmail.com>
 # Copyright: This file has been placed in the public domain.
 
 # This is a mapping of Unicode characters to LaTeX equivalents.

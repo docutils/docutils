@@ -11,8 +11,8 @@ Please find the documentation inline at the beginning of the source
 file.
 
 The author is Antonios Christofides.  Please direct any patches to
-`Felix Wiemann <Felix.Wiemann@ososo.de>`_, though.
+`Lea Wiemann <LeWiemann@gmail.com>`_, though.
 
 Have fun!
 
--- Felix Wiemann <Felix.Wiemann@ososo.de>
+-- Lea Wiemann <LeWiemann@gmail.com>

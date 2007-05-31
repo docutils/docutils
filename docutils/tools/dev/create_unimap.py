@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # $Id$
-# Author: Felix Wiemann <Felix.Wiemann@ososo.de>
+# Author: Lea Wiemann <LeWiemann@gmail.com>
 # Copyright: This file has been placed in the public domain.
 
 # Call: create_unimap.py < unicode.xml > unicode_latex.py
@@ -64,7 +64,7 @@ unicode_map.update(text_map)
 # entries for those chars for which no text entry exists.
 
 print '# $%s$' % 'Id'
-print '# Author: Felix Wiemann <Felix.Wiemann@ososo.de>'
+print '# Author: Lea Wiemann <LeWiemann@gmail.com>'
 print '# Copyright: This file has been placed in the public domain.'
 print
 print '# This is a mapping of Unicode characters to LaTeX equivalents.'

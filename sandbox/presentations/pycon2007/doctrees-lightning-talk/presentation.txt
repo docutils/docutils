@@ -1,6 +1,6 @@
 .. include:: <s5defs.txt>
 
-.. footer:: Felix Wiemann
+.. footer:: Lea Wiemann
 
 ================
  Document Trees
@@ -12,7 +12,7 @@
 
 .. raw:: html
 
-   <center style="margin-top: 100px; color: #555555;"><em>— Felix Wiemann —</em></center>
+   <center style="margin-top: 100px; color: #555555;"><em>— Lea Wiemann —</em></center>
 
 .. role:: incremental
 .. default-role:: incremental

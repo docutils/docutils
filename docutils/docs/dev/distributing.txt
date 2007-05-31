@@ -2,8 +2,8 @@
  Docutils_ Distributor's Guide
 ===============================
 
-:Author: Felix Wiemann
-:Contact: Felix.Wiemann@ososo.de
+:Author: Lea Wiemann
+:Contact: LeWiemann@gmail.com
 :Revision: $Revision$
 :Date: $Date$
 :Copyright: This document has been placed in the public domain.

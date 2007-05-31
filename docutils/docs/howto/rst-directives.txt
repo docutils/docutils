@@ -2,9 +2,9 @@
  Creating reStructuredText_ Directives
 =======================================
 
-:Authors: Dethe Elza, David Goodger, Felix Wiemann
+:Authors: Dethe Elza, David Goodger, Lea Wiemann
 :Contact: delza@enfoldingsystems.com, goodger@python.org,
-          Felix.Wiemann@ososo.de
+          LeWiemann@gmail.com
 :Date: $Date$
 :Revision: $Revision$
 :Copyright: This document has been placed in the public domain.

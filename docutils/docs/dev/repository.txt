@@ -2,8 +2,8 @@
  The Docutils_ Subversion Repository
 =====================================
 
-:Author: Felix Wiemann
-:Contact: Felix.Wiemann@ososo.de
+:Author: Lea Wiemann
+:Contact: LeWiemann@gmail.com
 :Revision: $Revision$
 :Date: $Date$
 :Copyright: This document has been placed in the public domain.
@@ -114,7 +114,7 @@ Information for Developers
 
 If you would like to have write access to the repository, register
 with SourceForge.net_ and BerliOS_, and send your SourceForge.net and
-BerliOS user names to `Felix Wiemann <Felix.Wiemann@ososo.de>`_.
+BerliOS user names to `Lea Wiemann <LeWiemann@gmail.com>`_.
 (Note that there may be a delay of several hours until you can commit
 changes to the repository.)
 
@@ -167,7 +167,7 @@ Migration from SourceForge.net
 
 Developers who had write-access for Docutils' CVS repository on
 SourceForge.net should `register with BerliOS`__ and send a message
-with their BerliOS user name to `Felix Wiemann`_.
+with their BerliOS user name to `Lea Wiemann`_.
 
 __ https://developer.berlios.de/account/register.php
 

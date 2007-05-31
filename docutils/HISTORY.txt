@@ -705,7 +705,7 @@ Release 0.3.7 (2004-12-24)
   - Converted the line-block directive to use the new structure.
   - Extracted the old line-block functionality to the ``block``
     function (still used).
-  - Added ``compound`` directive (thanks to Felix Wiemann).
+  - Added ``compound`` directive (thanks to Lea Wiemann).
 
 * docutils/parsers/rst/directives/misc.py:
 
@@ -861,7 +861,7 @@ General:
   - Added ``THANKS.txt`` from "Acknowledgements" in ``HISTORY.txt``.
   - Added "How To Report Bugs" to ``BUGS.txt``.
   - Went through all the sources and docs (including under web/) and
-    updated links.  Mostly done by Felix Wiemann; thanks Felix!
+    updated links.  Mostly done by Lea Wiemann; thanks Lea!
     (Still need to update links in the sandboxes.)
 
 Specific:
