@@ -2,8 +2,8 @@
  Docutils Release Notes
 ========================
 
-:Author: Felix Wiemann
-:Contact: Felix.Wiemann@ososo.de
+:Author: Lea Wiemann
+:Contact: LeWiemann@gmail.com
 :Date: $Date$
 :Revision: $Revision$
 :Web site: http://docutils.sourceforge.net/

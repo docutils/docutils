@@ -86,17 +86,17 @@ Notes:
 Alternatives
 ============
 
-Felix Wiemann also has a proposal for extensions.  That proposal seems
+Lea Wiemann also has a proposal for extensions.  That proposal seems
 more oriented toward adding extensions to an installation of Docutils
 rather than, as in this proposal, enabling users to load and register
-directives automatically, on the fly.  So, for example, under Felix's
+directives automatically, on the fly.  So, for example, under Lea's
 plugins proposal, in order to change the implementation of a
 directive, the user must perform some sort of install operation.  Am I
 right about that?
 
-Felix's proposal also appears to be much more general and powerful
+Lea's proposal also appears to be much more general and powerful
 than this one.  It covers the ability to add other types of extensions
-besides directives.  A quote from Felix's proposal:
+besides directives.  A quote from Lea's proposal:
 
     "Specifically, this document covers the addition of Docutils components
     (readers, parsers, and writers), and the addition of reStructuredText

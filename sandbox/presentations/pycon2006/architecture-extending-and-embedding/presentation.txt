@@ -9,7 +9,7 @@
 
    | David Goodger
    | &
-   | Felix Wiemann
+   | Lea Wiemann
 
 .. class:: big center
 
@@ -34,7 +34,7 @@
    * from, and currently living in: Montreal, Canada
    * work for a large investment organization, writing software in Python
 
-   Felix Wiemann:
+   Lea Wiemann:
 
    * joined the project about 2 years ago
    * release manager

@@ -7,8 +7,8 @@
 
 Redirect permanent docs/ref/rst/substitutions.html http://docutils.sourceforge.net/docs/ref/rst/definitions.html
 Redirect permanent docs/ref/rst/substitutions.txt http://docutils.sourceforge.net/docs/ref/rst/definitions.txt
-Redirect permanent /sandbox/felixwiemann http://docutils.sourceforge.net/sandbox/fwiemann
-Redirect permanent /sandbox/fwiemann/xhtml2rest http://docutils.sourceforge.net/sandbox/xhtml2rest
+Redirect permanent /sandbox/leawiemann http://docutils.sourceforge.net/sandbox/wiemann
+Redirect permanent /sandbox/wiemann/xhtml2rest http://docutils.sourceforge.net/sandbox/xhtml2rest
 Redirect permanent /sandbox/ax- http://docutils.sourceforge.net/sandbox/axk
 Redirect permanent /sandbox/dkuhlman/OpenDocument http://docutils.sourceforge.net/sandbox/OpenDocument
 

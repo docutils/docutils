@@ -150,7 +150,7 @@ donations, tasty treats, and related projects:
 * Barry Warsaw
 * Wu Wei
 * Edward Welbourne
-* Felix Wiemann
+* Lea Wiemann
 * Anthony Williams
 * Ka-Ping Yee
 * Moshe Zadka

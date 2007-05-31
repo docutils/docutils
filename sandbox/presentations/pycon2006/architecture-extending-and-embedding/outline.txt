@@ -3,7 +3,7 @@
 ======================================================================
 
 :Author: David Goodger <goodger@python.org>
-:Author: Felix Wiemann <Felix.Wiemann@ososo.de>
+:Author: Lea Wiemann <LeWiemann@gmail.com>
 :Timeslot: 45 minutes
 :Intended audience: intermediate to advanced programmers
 
@@ -25,7 +25,7 @@ Presentation Outline
 
   - David Goodger: project founder & architect
 
-  - Felix Wiemann: release manager, joined the project about 2 years
+  - Lea Wiemann: release manager, joined the project about 2 years
     ago
 
 * What is Docutils?

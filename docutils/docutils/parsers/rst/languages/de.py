@@ -1,6 +1,6 @@
 # $Id$
 # Authors: Engelbert Gruber <grubert@users.sourceforge.net>;
-#          Felix Wiemann <Felix.Wiemann@ososo.de>
+#          Lea Wiemann <LeWiemann@gmail.com>
 # Copyright: This module has been placed in the public domain.
 
 # New language mappings are welcome.  Before doing a new translation, please

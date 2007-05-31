@@ -2,8 +2,8 @@
  Docutils_ Link List
 =====================
 
-:Author: Felix Wiemann
-:Contact: Felix.Wiemann@ososo.de
+:Author: Lea Wiemann
+:Contact: LeWiemann@gmail.com
 :Revision: $Revision$
 :Date: $Date$
 :Copyright: This document has been placed in the public domain.
@@ -143,7 +143,7 @@ code base.
 .. _rst2ht: http://www.rutherfurd.net/articles/rst-ht2html.html
 .. _ht2html: http://ht2html.sourceforge.net/
 .. _htmlnav: http://docutils.sf.net/sandbox/gschwant/htmlnav/
-.. _xhtml2rest: http://docutils.sf.net/sandbox/fwiemann/xhtml2rest/
+.. _xhtml2rest: http://docutils.sf.net/sandbox/wiemann/xhtml2rest/
 .. _rst2chm: http://www.rutherfurd.net/software/rst2chm/
 .. _rest2web: http://www.voidspace.org.uk/python/rest2web/
 .. _Docutils Sandbox: http://docutils.sf.net/sandbox/README.html
