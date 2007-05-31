@@ -86,3 +86,28 @@ are credit to David, from IM conversations).  Feel free to add yours!
 * In order to facilitate multi-file output that parallels the input
   file structure, add "source" attributes to section nodes for
   sections that come from different input files.
+
+* Allow multiple top-level sections in sub-documents.  (No reason not
+  to; the implementation doesn't get much harder.)  Sub-documents can
+  therefore contain either a lone document title (and optionally a
+  docinfo), or multiple top-level sections.  Only support per-document
+  docinfos -- if a sub-document contains multiple top-level sections,
+  don't touch field lists at all.
+
+* Restriction: Do not allow sub-documents without a top-level section,
+  or with body elements in front of the first section.  IOW, the
+  sub-document may only contain PreBibliographic elements, sections,
+  and transitions.  The PreBibliographic elements in front of the
+  first section get moved into the section.
+
+  David says this restriction is bad and we probably shouldn't have it
+  -- for instance you might want to have an introductory paragraph in
+  front of the first section of the first sub-document; Lea doesn't
+  mind the restriction and says you could use the "include" directive.
+  Since having the restriction makes the implementation somewhat
+  easier, we agreed on having this restriction, waiting until the
+  first user presents a good use case to remove it, and calling it a
+  YAGNI until then.
+
+* Silently drop header and footer in sub-documents.  (Document this in
+  directives.txt though.)
