@@ -112,6 +112,7 @@ Change log
 
 * writers/manpage.py:
 
+  - 2007-06-01: Enforce we have a TH.
   - 2006-12-11: Add field name.
   - 2006-11-24: Add transition.
   - 2006-10-31: Add raw.

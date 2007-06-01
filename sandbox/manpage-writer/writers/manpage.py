@@ -160,6 +160,9 @@ class Translator(nodes.NodeVisitor):
 
     def astext(self):
         """Return the final formatted document as a string."""
+        if not self.header_written:
+            # ensure we get a ".TH" as viewers require it.
+            self.head.append(self.header())
         return ''.join(self.head + self.body + self.foot)
 
     def visit_Text(self, node):
@@ -212,17 +215,20 @@ class Translator(nodes.NodeVisitor):
             self.body.append('\n.RE\n')
 
 
+    def header(self):
+        tmpl = (".TH %(title)s %(manual_section)s"
+                " \"%(date)s\" \"%(version)s\" \"%(manual_group)s\"\n"
+                ".SH NAME\n"
+                "%(title)s \- %(subtitle)s\n")
+        return tmpl % self._docinfo
+
     def append_header(self):
         """append header with .TH and .SH NAME"""
         # TODO before everything
         # .TH title section date source manual
         if self.header_written:
             return
-        tmpl = (".TH %(title)s %(manual_section)s"
-                " \"%(date)s\" \"%(version)s\" \"%(manual_group)s\"\n"
-                ".SH NAME\n"
-                "%(title)s \- %(subtitle)s\n")
-        self.body.append(tmpl % self._docinfo)
+        self.body.append(self.header())
         self.header_written = 1
 
     def visit_address(self, node):
