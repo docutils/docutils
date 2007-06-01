@@ -16,6 +16,21 @@
     {%- endfor %}
     <script type="text/javascript" src="{{ pathto('style/jquery.js', 1) }}"></script>
     <script type="text/javascript" src="{{ pathto('style/doctools.js', 1) }}"></script>
+    <link rel="author" title="About these documents" href="{{ pathto('about.rst') }}">
+    <link rel="contents" title="Global table of contents" href="{{ pathto('contents.rst') }}">
+    <link rel="index" title="Global index" href="{{ pathto('genindex.rst') }}">
+    <link rel="search" title="Search" href="{{ pathto('search.rst') }}">
+    <link rel="copyright" title="Copyright" href="{{ pathto('copyright.rst') }}">
+    {%- if parents %}
+    <link rel="top" title="{{ parents[0].title|striptags }}" href="{{ parents[0].link|e }}">
+    <link rel="up" title="{{ parents[-1].title|striptags }}" href="{{ parents[-1].link|e }}">
+    {%- endif %}
+    {%- if next %}
+    <link rel="next" title="{{ next.title|striptags }}" href="{{ next.link|e }}">
+    {%- endif %}
+    {%- if prev %}
+    <link rel="prev" title="{{ prev.title|striptags }}" href="{{ prev.link|e }}">
+    {%- endif %}
   </head>
   <body>
     <div class="related">
