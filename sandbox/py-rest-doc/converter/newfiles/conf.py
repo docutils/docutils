@@ -2,8 +2,8 @@
 #
 # Python documentation build configuration file
 #
-# The contents of this file are pickled, so don't put values in it that aren't
-# pickleable (module imports are okay, they're removed automatically).
+# The contents of this file are pickled, so don't put values in the namespace
+# that aren't pickleable (module imports are okay, they're removed automatically).
 #
 
 import time
