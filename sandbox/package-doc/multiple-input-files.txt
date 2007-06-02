@@ -7,6 +7,12 @@
 :Revision: $Revision$
 :Copyright: This document has been placed in the public domain.
 
+.. contents::
+
+
+Introduction
+============
+
 We would like to support documents whose source text comes from
 multiple files.  For instance, the Docutils documentation tree could
 be considered a large document; parsing all files into one single
@@ -21,13 +27,23 @@ do is to generate a huge single output file.
 This is a collection of notes and semi-random thoughts (many of which
 are credit to David, from IM conversations).  Feel free to add yours!
 
-.. admonition:: Terminology
 
-   The whole document is simply called *the document*.  Its input
-   consists of multiple *files*: A *master* file (which references the
-   sub-documents), and *sub-document* files.  The sub-document files
-   should (probably) each be processable stand-alone (without the
-   other files), each forming a document on its own.
+Terminology
+===========
+
+Right now, we are using the foloowing terminology: The whole document
+is simply called *the document*.  Its input consists of multiple
+*files*: A *master* file (which references the sub-documents), and
+*sub-document* files.  The sub-document files should (probably) each
+be processable stand-alone (without the other files), each forming a
+document on its own.
+
+Should we say "book" instead of "document"?  Is "file" confusing
+(physical vs. logical entity?); should be use "sub-document" instead?
+
+
+The ``subdocument`` Directive
+=============================
 
 * The "include" directive is not usable for this because we want to
   have independent parsing contexts (for instance, section title
@@ -115,6 +131,9 @@ are credit to David, from IM conversations).  Feel free to add yours!
 
 * Silently drop header and footer in sub-documents.  (Document this in
   directives.txt though.)
+
+* To do: Explore alternatives besides "subdocument" for the directive
+  name.
 
 * You may want to read some insightful remarks by Joaquim Baptista on
   how `files should be expected to be part of different documents`__.
