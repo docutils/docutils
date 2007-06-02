@@ -252,7 +252,92 @@ It is possible to always name the namespace of the current file (as it
 is done in C++).  For instance, "``.. namespace:: frob``" at the
 beginning of a file could declare that the namespace of the current
 file is called "frob".  However, this is a little verbose as it adds a
-line at the top of each file (see the sidebar).
+line at the top of each file (see the sidebar).  Also, it removes the
+reader's ability to easily look up the referenced files (you might not
+know which file(s) declare the "frob" namespace).
+
+On the other hand, namespace names could also be derived from paths
+and file names.  (Note though that these two options need not be
+mutually exclusive.)  Since using only the file name would cause
+ambiguity, it is necessary to include its path in the namespace name.
+For instance, the file ``docs/dev/todo.txt`` could be referenced by
+the implicit namespace identifier ``docs/dev/todo.txt``; a reference
+would look like ```docs/dev/todo.txt -> large documents`_`` (see
+`Qualifier Syntax`_ below though).  Using paths relative to the
+current file makes it hard to move files or document parts.
+Therefore, we need to establish the notion of a *project root* which
+path names are relative to:
+
+Probably, the project root should be specified using docutils.conf.
+One option is to place a docutils.conf in the project root with the
+following lines::
+
+    [general]
+    is-project-root: yes
+
+When the reference resolver needs to locate a file, it checks for a
+docutils.conf setting the is-project-root switch first in the current
+directory, then in the parent directory, and so on.
+
+Having an ``is-project-root`` switch has the advantage that it is very
+simple, and it only requires one docutils.conf file in the project
+root.  (However, the ``is-project-root`` does not integrate well
+conceptually with the existing settings system, since it says
+something about the containing directory, not about how to process the
+files contained therein.)
+
+It may also be desirable to specify alternate project roots; in this
+case, looking up files is done by checking for their existence first
+in the main project root, and then in the alternate roots.  A use-case
+for the Docutils tree would be to have the main Docutils directory as
+the main project root, and its parent directory (for referencing files
+in the web/ and sandbox/ directories) and the docs/ subdirectory (for
+convenience) as alternate roots.  In this example, the docutils.conf
+in the main Docutils directory might look like this::
+
+    [general]
+    is-project-root: yes
+    alternate-project-root: ../
+    alternate-project-root: docs/
+
+``alternate-project-root`` settings are additive, and they are honored
+by the reference resolver for all docutils.conf files in the directory
+of the current file and all ancestor directories up to project root
+directory (declared by ``is-project-root: yes``).  The disadvantages
+of the ``alternate-project-root`` are that it may be too complicated,
+it may cause ambiguities when resolving namespace identifiers, and it
+means that the referenced file is not as easily locatable by the
+reader of a reStructuredText file.
+
+A general disadvantage of using paths as namespace identifiers is that
+changes in the directory structure cause a massive amount of changes
+in the reStructuredText files, because all the paths need to be
+updated.  This is not any worse than the current situation.  However,
+to improve maintainability it would be desirable to make the namespace
+of an often-referenced files known under a shorter name.  (This
+mechanism should be file-local; that is, the shorter namespace
+identifier should only be valid within the file where it is declared.)
+For instance, one could make "docs/ref/restructuredtext.txt" known as
+"spec" using one of the following syntax alternatives::
+
+    .. namespace:: spec = docs/ref/restructuredtext.txt
+
+    .. namespace:: spec <- docs/ref/restructuredtext.txt
+            (like smalltalk)
+
+    .. namespace:: docs/ref/restructuredtext.txt = spec
+            (unusual assignment order)
+
+    .. namespace:: docs/ref/restructuredtext.txt -> spec
+            (possible confusion with qualifier syntax)
+
+    .. namespace:: docs/ref/restructuredtext.txt == spec
+    .. namespace:: spec == docs/ref/restructuredtext.txt
+            (both are equivalent)
+
+XXX describe syntax alternatives for equivalents of C++'s "using
+namespace" keyword.
+
 
 Qualifier Syntax
 ~~~~~~~~~~~~~~~~
@@ -312,19 +397,3 @@ stripped.
   ``config#foo_``); visually distinguishing between old-style and
   new-style targets is important, and a qualifier syntax paralleling
   HTML's fragment identifier makes this hard.
-
-----------------------------------------------------------------------
-
-XXX TODO:
-
-- How to derive namespace names.
-- Why we need the notion of a *project root* for namespace names
-  derived from paths and file names, and how to find the root.
-- Syntax alternatives for shortening namespace identifiers
-  (e.g. ``.. external-targets:: config = docs/user/config.txt``)
-- Explore how to avoid spreading path names all over the document
-  (maintenance issue?).
-- Explore relative vs. absolute path references (mutually
-  exclusive!).
-- Name some advantages (explicitness, more?) and disadvantages
-  (verbosity, complexity).
