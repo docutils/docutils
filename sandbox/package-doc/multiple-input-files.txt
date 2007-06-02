@@ -21,6 +21,14 @@ do is to generate a huge single output file.
 This is a collection of notes and semi-random thoughts (many of which
 are credit to David, from IM conversations).  Feel free to add yours!
 
+.. admonition:: Terminology
+
+   The whole document is simply called *the document*.  Its input
+   consists of multiple *files*: A *master* file (which references the
+   sub-documents), and *sub-document* files.  The sub-document files
+   should (probably) each be processable stand-alone (without the
+   other files), each forming a document on its own.
+
 * The "include" directive is not usable for this because we want to
   have independent parsing contexts (for instance, section title
   adornment should not have to be consistent across input files).
@@ -107,3 +115,117 @@ are credit to David, from IM conversations).  Feel free to add yours!
 
 * Silently drop header and footer in sub-documents.  (Document this in
   directives.txt though.)
+
+* You may want to read some insightful remarks by Joaquim Baptista on
+  how `files should be expected to be part of different documents`__.
+
+  .. _different documents:
+  __ http://article.gmane.org/gmane.text.docutils.devel/4043
+
+
+.. _xrefs:
+
+Cross-references
+================
+
+.. note:: You may need to read the `reST spec`_ in order to understand
+   the terminology (targets, references).  In this section, "*external
+   reference*" means a reference whose target is outside of the
+   current file, but within the current document.
+
+   .. _reST spec: http://docutils.sf.net/docs/ref/rst/restructuredtext.html
+
+A major issue to think about is how to do **cross-references**
+(colloquially known as **xrefs**) between files.  Things like
+substitutions or role definitions should not be shared between files
+(their definitions can simply be loaded using the "include"
+directive).  However, sharing targets and thereby allowing
+cross-references between files is one of the major points why we want
+an architecture that supports multiple input files.
+
+Issues arise once we think about how to group target names into
+namespaces.  Unfortunately, simply putting all targets into a global,
+document-wide namespace is bound to cause collisions; files that were
+processable stand-alone are no longer processable when used in
+conjunction with other files because they share common target names.
+
+Bad Proposal: Local and Global Namespace, no Qualifiers
+-------------------------------------------------------
+
+An obvious solution would be to add a notion of a file-local and a
+global namespace.  When trying to resolve a reference, first the
+target name is looked up in the local namespace of the current file;
+if no suitable target is found there, the target name is searched for
+document-wide, in the global namespace; if the target name exists and
+is unique within the document, the reference can be resolved.
+
+If references to the global namespace are not marked up as such,
+however, the individual files are no longer processable stand-alone
+because they contain unresolvable references.  While it is to be
+expected that external cross-references may not (fully) work any
+longer when a file is processed stand-alone, it would be nice to be
+able to handle unresolved external references somehow, rather than
+simply throwing an error. (XXX explain why we really want this a) for
+authoring and b) for processing files individually in a
+compiler-linker like fashion. For point b, briefly talk about
+target->ID mapping files [databases].)
+
+This can be solved by marking external references as such, like this::
+
+    `local target name`_
+    `-> global target name`_
+
+where "local target name" must be a unique target name within the
+current file, and "global target name" must be a unique target name
+within the current document.
+
+.. We would need to explicitly establish a notion of "stand-alone" vs.
+   "full document" processing in this case, but this proposal is being
+   shot down anyway, so I'm not going to get into it.
+
+This approach turns out to have a major drawback though: External
+references depend on the context of the containing document.  However,
+as Joaquim `pointed out`__, files should be expected to be part of
+several documents.  This means that once a file is put into the
+context of a new document, its external references might point to
+non-existing or duplicate targets.  This seems like a maintenance
+problem for complex (large) collections of documentation.
+
+__ different documents_
+
+Another peculiarity of this system is that an external reference is
+not associated to the file that defines the target outside of a
+document context.  This brings the advantage that renaming and moving
+files won't invalidate reference names.  On the downside, it lacks
+clarity for the reader because the file containing a target is often
+not inferable from the target name (try to guess which file ```->
+html4css1`_`` links to) -- this may be significant since
+reStructuredText should be readable in its source form.
+
+Proposal: Explicit Qualifiers
+-----------------------------
+
+(XXX WRITEMETOMORROWONCEYOUGOTSOMESLEEP)
+
+Short version: Another possibility is to have explicit qualifiers,
+like ::
+
+    `<docs/user/config.txt> html4css1`_
+
+to reference the target "html4css1" in the namespace
+"docs/user/config.txt".
+
+* XXX TODO:
+
+  - How to derive namespace names.
+  - Why we need the notion of a *project root* for namespace names
+    derived from paths and file names, and how to find the root.
+  - Syntax alternatives for qualifier/separator/target
+    (e.g. ``<qualifier> target_``).
+  - Syntax alternatives for shortening namespace identifiers
+    (e.g. ``.. external-targets:: config = docs/user/config.txt``)
+  - Explore how to avoid spreading path names all over the document
+    (maintenance issue?).
+  - Explore relative vs. absolute references (mutually exclusive!).
+  - Name some advantages (explicitness, more?) and disadvantages
+    (verbosity, complexity).
