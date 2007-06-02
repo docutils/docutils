@@ -168,6 +168,7 @@ document-wide namespace is bound to cause collisions; files that were
 processable stand-alone are no longer processable when used in
 conjunction with other files because they share common target names.
 
+
 Bad Proposal: Local and Global Namespace, no Qualifiers
 -------------------------------------------------------
 
@@ -221,30 +222,109 @@ not inferable from the target name (try to guess which file ```->
 html4css1`_`` links to) -- this may be significant since
 reStructuredText should be readable in its source form.
 
+
 Proposal: Explicit Qualifiers
 -----------------------------
 
-(XXX WRITEMETOMORROWONCEYOUGOTSOMESLEEP)
+Since linking to targets outside the scope of the current document
+appears to be a bad idea, we may need some form of qualifiers.
 
-Short version: Another possibility is to have explicit qualifiers,
-like ::
+Namespace Identifiers
+~~~~~~~~~~~~~~~~~~~~~
 
-    `<docs/user/config.txt> html4css1`_
+This makes it necessary to add a notion of *namespace identifiers*.
 
-to reference the target "html4css1" in the namespace
-"docs/user/config.txt".
+.. sidebar:: Why headers are a bad idea
 
-* XXX TODO:
+   One of the appealing features of reStructuredText, compared to
+   LaTeX, is that writing a document does not require writing a
+   header.  Just type the title, some text, run rst2html, and you're
+   done.  Writing a stand-alone LaTeX document on the other hand
+   typically begins with declaring the \\documentclass, loading all
+   the packages you need for your document, setting some options, and
+   finally \\begin{document}.
 
-  - How to derive namespace names.
-  - Why we need the notion of a *project root* for namespace names
-    derived from paths and file names, and how to find the root.
-  - Syntax alternatives for qualifier/separator/target
-    (e.g. ``<qualifier> target_``).
-  - Syntax alternatives for shortening namespace identifiers
-    (e.g. ``.. external-targets:: config = docs/user/config.txt``)
-  - Explore how to avoid spreading path names all over the document
-    (maintenance issue?).
-  - Explore relative vs. absolute references (mutually exclusive!).
-  - Name some advantages (explicitness, more?) and disadvantages
-    (verbosity, complexity).
+   While it may not be possible to go *entirely* without any explicit
+   markup, it is certainly a worthwhile goal to keep the amount of
+   such markup to a minimum.
+
+It is possible to always name the namespace of the current file (as it
+is done in C++).  For instance, "``.. namespace:: frob``" at the
+beginning of a file could declare that the namespace of the current
+file is called "frob".  However, this is a little verbose as it adds a
+line at the top of each file (see the sidebar).
+
+Qualifier Syntax
+~~~~~~~~~~~~~~~~
+
+Note that in all of these examples, the reference text of the inline
+reference (like ```<namespace> target`_``) comes out as "target",
+i.e. the namespace identifier and the decoration or separator are
+stripped.
+
+* Angled brackets::
+
+      `<namespace> target`_
+      .. _reference: <namespace> target_
+
+  This is similar to the syntax for embedded URI's (```target
+  <URI>`_``).  It fits well into the existing syntax, but may be
+  confusing at the same time.
+
+* Arrows::
+
+      `namespace -> target`_
+      .. _reference: namespace -> target_
+
+  In case of "imported" namespaces (analogously to C++'s "using
+  namespace" keyword), this would also allow for namespace-less
+  references; for instance, after ".. import:: namespace" it would be
+  possible to write::
+
+      `-> target`_
+
+  The syntax may collide with existing target names.  (Perhaps we
+  could give existing targets name priority though?  I.e., the
+  reference resolver checks whether "foo -> bar" is a valid local
+  target name before looking up target "bar" in namespace "foo".)
+
+  Alternatives for the arrow: ``-->``, or ``>>``.
+
+  Should there we whitespace around the arrow (yes/no/optional)?  It
+  looks more readable with whitespace, but omitting the whitespace
+  makes it terser.
+
+* HTML fragment identifier syntax::
+
+      `namespace#target`_
+      .. _reference: namespace#target_
+
+  This is probably a bad idea since it easily gets confused with
+  relative URIs::
+
+      .. _reference1: spec.html#target  (<--- URI)
+      .. _reference2: spec#target_      (<--- external target)
+
+  This is especially bothersome in cases such as Docutils' own
+  documentation tree, where we would want to refactor targets
+  referring to relative URI's into indirect targets cross-referencing
+  targets in other documents (so ``config.html#foo`` becomes
+  ``config#foo_``); visually distinguishing between old-style and
+  new-style targets is important, and a qualifier syntax paralleling
+  HTML's fragment identifier makes this hard.
+
+----------------------------------------------------------------------
+
+XXX TODO:
+
+- How to derive namespace names.
+- Why we need the notion of a *project root* for namespace names
+  derived from paths and file names, and how to find the root.
+- Syntax alternatives for shortening namespace identifiers
+  (e.g. ``.. external-targets:: config = docs/user/config.txt``)
+- Explore how to avoid spreading path names all over the document
+  (maintenance issue?).
+- Explore relative vs. absolute path references (mutually
+  exclusive!).
+- Name some advantages (explicitness, more?) and disadvantages
+  (verbosity, complexity).
