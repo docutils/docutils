@@ -21,8 +21,8 @@
     <link rel="index" title="Global index" href="{{ pathto('genindex.rst') }}">
     <link rel="search" title="Search" href="{{ pathto('search.rst') }}">
     <link rel="copyright" title="Copyright" href="{{ pathto('copyright.rst') }}">
+    <link rel="top" title="Python Documentation" href="{{ pathto('index.rst') }}">
     {%- if parents %}
-    <link rel="top" title="{{ parents[0].title|striptags }}" href="{{ parents[0].link|e }}">
     <link rel="up" title="{{ parents[-1].title|striptags }}" href="{{ parents[-1].link|e }}">
     {%- endif %}
     {%- if next %}
@@ -44,6 +44,7 @@
         {%- if prev %}
           <li class="right"><a href="{{ prev.link|e }}" title="{{ prev.title|striptags }}">previous</a> |</li>
         {%- endif %}
+        <li><a href="{{ pathto('index.rst') }}">Python Documentation</a> &raquo;</li>
         {%- for parent in parents %}
           <li><a href="{{ parent.link|e }}">{{ parent.title }}</a> &raquo;</li>
         {%- endfor %}

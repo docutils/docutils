@@ -73,13 +73,16 @@ class Builder(object):
         'freshenv': 'Don\'t use a pickled environment',
     }
 
-    def __init__(self, srcdirname, outdirname, options,
+    def __init__(self, srcdirname, outdirname, options, env=None,
                  status_stream=None, warning_stream=None):
         self.srcdir = srcdirname
         self.outdir = outdirname
 
         self.options = attrdict(options)
         self.validate_options()
+
+        # probably set in load_env()
+        self.env = env
 
         self.config = {}
         execfile(path.join(srcdirname, 'conf.py'), self.config)
@@ -93,9 +96,6 @@ class Builder(object):
         self.warning_stream = warning_stream or sys.stderr
 
         self.init()
-
-        # filled in later
-        self.env = None
 
     # helper methods
 
@@ -137,6 +137,8 @@ class Builder(object):
     def load_env(self):
         """Set up the build environment. Return True if a pickled file could be
            successfully loaded, False if a new environment had to be created."""
+        if self.env:
+            return
         if not self.options.freshenv:
             try:
                 self.msg('trying to load pickled env...', nonl=True)

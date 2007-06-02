@@ -89,7 +89,8 @@ def main(argv):
         builder = 'html'
 
     builderobj = builders[builder](srcdirname, outdirname, options,
-                                   sys.stdout, sys.stderr)
+                                   status_stream=sys.stdout,
+                                   warning_stream=sys.stderr)
     if update:
         builderobj.build_update()
     elif filenames:
