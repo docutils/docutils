@@ -8,6 +8,10 @@ to reStructuredText.
 What you need to know
 ---------------------
 
+As prerequisites, you need Pygments >= 0.8 and Jinja >= 1.1, easily
+installable from PyPI. The former is used as the highlighter, the latter
+is the templating engine for HTML output.
+
 To convert the LaTeX doc to reST, create a target directory for the
 reST sources and run ::
 
@@ -17,11 +21,6 @@ This will convert all LaTeX sources to reST files in the target directory.
 
 Note: the ``inst`` document ("Installing Python Modules") is only
 convertable after applying the patch in ``etc/inst.diff``.
-
-
-To build the HTML, you'll need the ``Pygments`` and ``Jinja``
-packages from the Cheese Shop. The former is used as the highlighter,
-the latter is the templating engine for HTML output.
 
 Then, create a target directory and run ::
 
