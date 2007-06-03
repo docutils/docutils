@@ -39,7 +39,7 @@ LeWiemann@gmail.com and dgoodger@gmail.com, respectively.
 Terminology
 ===========
 
-Right now, we are using the foloowing terminology: The whole document
+Right now, we are using the following terminology: The whole document
 is simply called *the document*.  Its input consists of multiple
 *files*: A *master* file (which references the sub-documents), and
 *sub-document* files.  The sub-document files should (probably) each
@@ -47,7 +47,7 @@ be processable stand-alone (without the other files), each forming a
 document on its own.
 
 Should we say "book" instead of "document"?  Is "file" confusing
-(physical vs. logical entity?); should be use "sub-document" instead?
+(physical vs. logical entity) -- should be use "sub-document" instead?
 
 
 The ``subdocument`` Directive
@@ -94,19 +94,19 @@ The ``subdocument`` Directive
         .. subdocument:: chapter1.txt
                chapter1-section1.txt
 
-* What do we do with docinfos in subdocuments?
+* What to do with docinfos in subdocuments:
 
   - Allow for section infos by generalizing the existing docinfo node.
 
   - Add an option to either strip or leave docinfos.  Perhaps
     specifiable as an option to the "subdocument" directive, and/or on
-    a per-input-file basis (how?), and/or as a command line option.
-    (Applied in which order?)
+    a per-input-file basis (how?), and/or as a command line option
+    (applied in which order?).
 
-  - Should there also be a way to have per-section section infos in
-    reStructuredText files, as opposed to just file-wide docinfos?  If
-    not, the only way to get section infos in a document is to use
-    sub-documents (which might be fine).
+  - There is currently no way to have per-section "section infos" in
+    reStructuredText files, as opposed to only file-wide docinfos.  So
+    the only way to get section infos in a document is to use
+    sub-documents.  This might be just fine though.
 
   - For a first implementation, just go the easy route and strip all
     docinfos in sub-documents.
@@ -187,16 +187,31 @@ if no suitable target is found there, the target name is searched for
 document-wide, in the global namespace; if the target name exists and
 is unique within the document, the reference can be resolved.
 
+.. sidebar:: Why independent references are a good idea
+
+   While the requirement that the whole document be processed in order
+   to resolve external references makes implementation easier, it is
+   certainly worthwhile to provide for a means to resolve external
+   references without a re-run of the whole document for speed
+   reasons:
+
+   Since authoring can involve an edit-process-edit-process cycle, it
+   should be possible to process files individually, rather than the
+   whole document (which can be very slow).  Of course, as long as
+   external references are marked in the source file as such, they
+   can, in a stand-alone pass, always be marked as "unresolvable"
+   (e.g. in red) in the output, and only be resolved when the whole
+   document is processed.  However, it would be even better to be able
+   to actually resolve the references.
+
 If references to the global namespace are not marked up as such,
 however, the individual files are no longer processable stand-alone
-because they contain unresolvable references.  While it is to be
-expected that external cross-references may not (fully) work any
+because they contain unresolvable references.  While it may be
+acceptable that external cross-references do not (fully) work any
 longer when a file is processed stand-alone, it would be nice to be
-able to handle unresolved external references somehow, rather than
-simply throwing an error. (XXX explain why we really want this a) for
-authoring and b) for processing files individually in a
-compiler-linker like fashion. For point b, briefly talk about
-target->ID mapping files [databases].)
+able to handle unresolved external references somehow (at least by
+marking them as "unresolvable" in the output), rather than simply
+throwing an error (see the sidebar).
 
 This can be solved by marking external references as such, like this::
 
@@ -376,10 +391,10 @@ stripped.
 
       `-> target`_
 
-  The syntax may collide with existing target names.  (Perhaps we
-  could give existing targets name priority though?  I.e., the
-  reference resolver checks whether "foo -> bar" is a valid local
-  target name before looking up target "bar" in namespace "foo".)
+  The syntax may collide with existing target names.  (We could give
+  existing targets name priority though.  I.e., the reference resolver
+  checks whether "foo -> bar" is a valid local target name before
+  looking up target "bar" in namespace "foo".)
 
   Alternatives for the arrow: ``-->``, or ``>>``.
 
@@ -405,3 +420,7 @@ stripped.
   ``config#foo_``); visually distinguishing between old-style and
   new-style targets is important, and a qualifier syntax paralleling
   HTML's fragment identifier makes this hard.
+
+.. XXX TODO: how to processing files individually in a compiler-linker
+   like fashion. talk about target->ID mapping files [databases], or a
+   project-wide cache file perhaps.
