@@ -7,6 +7,7 @@
 :Revision: $Revision$
 :Copyright: This document has been placed in the public domain.
 
+.. sectnum::
 .. contents::
 
 
@@ -226,6 +227,10 @@ within the current document.
    "full document" processing in this case, but this proposal is being
    shot down anyway, so I'm not going to get into it.
 
+
+Drawbacks
+~~~~~~~~~
+
 This approach turns out to have a major drawback though: External
 references depend on the context of the containing document.  However,
 as Joaquim `pointed out`__, files should be expected to be part of
@@ -251,6 +256,7 @@ Proposal: Explicit Qualifiers
 
 Since linking to targets outside the scope of the current document
 appears to be a bad idea, we may need some form of qualifiers.
+
 
 Namespace Identifiers
 ~~~~~~~~~~~~~~~~~~~~~
@@ -291,6 +297,10 @@ current file makes it hard to move files or document parts.
 Therefore, we need to establish the notion of a *project root* which
 path names are relative to:
 
+
+Project Root
+~~~~~~~~~~~~
+
 Probably, the project root should be specified using docutils.conf.
 One option is to place a docutils.conf in the project root with the
 following lines::
@@ -326,11 +336,15 @@ in the main Docutils directory might look like this::
 ``alternate-project-root`` settings are additive, and they are honored
 by the reference resolver for all docutils.conf files in the directory
 of the current file and all ancestor directories up to project root
-directory (declared by ``is-project-root: yes``).  The disadvantages
-of the ``alternate-project-root`` are that it may be too complicated,
-it may cause ambiguities when resolving namespace identifiers, and it
-means that the referenced file is not as easily locatable by the
-reader of a reStructuredText file.
+directory (which is declared by ``is-project-root: yes``).  The
+disadvantages of the ``alternate-project-root`` are that it may be too
+complicated, it may cause ambiguities when resolving namespace
+identifiers, and it means that the referenced file is not as easily
+locatable by the reader of a reStructuredText file.
+
+
+Namespace Aliases
+~~~~~~~~~~~~~~~~~
 
 A general disadvantage of using paths as namespace identifiers is that
 changes in the directory structure cause a massive amount of changes
@@ -358,6 +372,9 @@ For instance, one could make "docs/ref/restructuredtext.txt" known as
     .. namespace:: spec == docs/ref/restructuredtext.txt
             (both are equivalent)
 
+An alternatives to "namespace" is "alias", but it is not clear what
+exactly "alias" aliases.
+
 
 Importing Namespaces
 ~~~~~~~~~~~~~~~~~~~~
@@ -384,10 +401,10 @@ logical fit::
 Qualifier Syntax
 ~~~~~~~~~~~~~~~~
 
-Note that in all of these examples, the reference text of the inline
-reference (like ```<namespace> target`_``) comes out as "target",
-i.e. the namespace identifier and the decoration or separator are
-stripped.
+Note that in all of the examples below, the reference text of the
+inline reference (like ```<namespace> target`_``) comes out as
+"target", i.e. the namespace identifier and the decoration or
+separator are stripped.
 
 * Angled brackets::
 
