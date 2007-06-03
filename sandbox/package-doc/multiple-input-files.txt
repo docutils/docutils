@@ -498,11 +498,12 @@ order to avoid LaTeX-like creation of many junk files.  Possible names
 include docutils.cache, docutils.aux, or either of them with leading
 dot (does this work reliably on Windows?).  The file is stored in the
 project root and contains a header and a large pickle string (reading
-and writing even large pickle streams is reasonably fast).  In the
-header of the pickle file, store sys.version and docutils.__version__;
-discard cache files that have the wrong version.  Potential security
-issue: Since unpickling is unsafe, an attacker could provide a
-manufactured cache file with a documentation tree, which is then
+and writing even large strings of pickled data is reasonably fast).
+In the header of the cache file, store sys.version and
+docutils.__version__; discard cache files that have the wrong version.
+
+Potential security issue: Since unpickling is unsafe, an attacker
+could provide a carefully crafted cache file, which is then
 automatically picked up by Docutils.  Remedies: Insert some
 unguessable system-specific key (generate randomly and store in
 ~/.docutils.cache.key), and automatically discard cache files that
