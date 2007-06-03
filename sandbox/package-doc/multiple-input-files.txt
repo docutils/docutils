@@ -25,7 +25,15 @@ implementing support for multiple input files, all we will be able to
 do is to generate a huge single output file.
 
 This is a collection of notes and semi-random thoughts (many of which
-are credit to David, from IM conversations).  Feel free to add yours!
+are credit to David, from IM conversations).  Feel free to add yours
+and/or make changes as you see fit!
+
+You can also discuss this proposal on the Docutils-develop_ mailing
+list, or reach us individually via email or Jabber/Google Talk at
+LeWiemann@gmail.com and dgoodger@gmail.com, respectively.
+
+.. _Docutils-develop:
+   http://docutils.sf.net/docs/user/mailing-lists.html#docutils-develop
 
 
 Terminology
