@@ -362,6 +362,61 @@ XXX describe syntax alternatives for equivalents of C++'s "using
 namespace" keyword.
 
 
+Caching
+~~~~~~~
+
+In order to be able to regenerate the whole documentation tree in a
+timely manner after changing a single file, it is necessary to
+implement a caching system.
+
+Processing a document is done in the following steps:
+
+1. For each file in the documentation tree, parse it and turn the
+   target names into file-local ID's (this includes error handling for
+   duplicate target names).  Cache the parse tree, the name-to-ID
+   mapping, and the list of all included files.  Skip this step for
+   files whose cache entry date-stamp is newer than the file's mtime
+   and ctime, and all included files mtimes and ctimes.
+
+   This means that the either the "subdocument" directive must be
+   resolved at transform time rather than parse time, or that the
+   cache must keep track not only of dependent files referenced via
+   "include", but also via "subdocument" (which reduces cache hit
+   rates).
+
+2. For each file, run transforms, resolving external references using
+   the cached name-to-ID mappings of other files.
+
+3. Write out the resulting document (currently a single file).  (The
+   writer needs to turn namespace/ID pairs into output-file-local
+   ID's.)
+
+Processing a file stand-alone is done in the same way, except that
+steps 1 and 2 are only performed for the file being processed, not for
+each file in the documentation tree.  If other files' cached
+name-to-ID mappings are not up-to-date (when being accessed in step
+2), they should probably be automatically updated.
+
+All cache entries should be stored in a project-wide cache file, in
+order to avoid LaTeX-like creation of many junk files.  Possible names
+include docutils.cache, docutils.aux, or either of them with leading
+dot (does this work reliably on Windows?).  The file is stored in the
+project root and contains a header and a large pickle string (reading
+and writing even large pickle streams is reasonably fast).  In the
+header of the pickle file, store sys.version and docutils.__version__;
+discard cache files that have the wrong version.  Potential security
+issue: Since unpickling is unsafe, an attacker could provide a
+manufactured cache file with a documentation tree, which is then
+automatically picked up by Docutils.  Remedies: Insert some
+unguessable system-specific key (generate randomly and store in
+~/.docutils.cache.key), and automatically discard cache files that
+have the wrong key.  Or simply place a big warning in the
+documentation not to accept cache files from strangers.
+
+No caching is done if no project-root is found (which means that the
+file being processed is not part of a larger documentation tree).
+
+
 Qualifier Syntax
 ~~~~~~~~~~~~~~~~
 
@@ -420,7 +475,3 @@ stripped.
   ``config#foo_``); visually distinguishing between old-style and
   new-style targets is important, and a qualifier syntax paralleling
   HTML's fragment identifier makes this hard.
-
-.. XXX TODO: how to processing files individually in a compiler-linker
-   like fashion. talk about target->ID mapping files [databases], or a
-   project-wide cache file perhaps.
