@@ -358,8 +358,27 @@ For instance, one could make "docs/ref/restructuredtext.txt" known as
     .. namespace:: spec == docs/ref/restructuredtext.txt
             (both are equivalent)
 
-XXX describe syntax alternatives for equivalents of C++'s "using
-namespace" keyword.
+
+Importing Namespaces
+~~~~~~~~~~~~~~~~~~~~
+
+While namespaces should generally be available without explicitly
+importing them (in order to avoid length headers), it would probably
+be handy to have a means of inserting all targets of another namespace
+into the current one.  Contenders for the syntax::
+
+    .. import:: namespace   (Pythonic)
+
+    .. import-targets:: namespace   (more verbose)
+
+    .. using:: namespace    (like C++)
+
+Or, provided that we use "``.. namespace:: short-name <- namespace``",
+and "```namespace -> target`_``" as reference syntax, this would be a
+logical fit::
+
+    .. namespace:: <- namespace
+    `-> target`_                   (instead of `namespace -> target`_)
 
 
 Caching
