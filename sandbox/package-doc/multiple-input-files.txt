@@ -75,27 +75,22 @@ The ``subdocument`` Directive
   file.txt").  This directive causes the referenced file to be parsed
   and its document tree to be inserted in place.
 
-  - The sub-document must have a document title.  (This document title
-    will become a section title.)
-    
-    [DG] I disagree.  A subdocument should be independently parseable,
-    but does not require a title.  If it lacks such a title, its
-    context is limited in the compound document.  NOTE: it would be OK
-    to assume that subdocuments are titled for now; just note the
-    temporary restriction and a to-do item.
+  - The sub-document must only consist of top-level sections and
+    transitions, or it must have a document title.  (The document
+    title will become a section title when the sub-document is
+    inserted using the ``subdocument`` directive.)  We only support
+    per-document docinfos -- if a sub-document contains multiple
+    top-level sections, don't touch field lists at all.
 
-    [DG] Reading on, I see that this is partly addressed below.  You
-    should combine the text in one place, or clearly indicate (via a
-    link) that more follows.
+    This restriction may be lifted later; there is no theoretical
+    reason that prevents sub-documents from containing arbitrary text
+    (within the limits of the DTD, e.g. no body elements may end up
+    after section elements) -- it is merely somewhat harder to
+    implement.
 
-  - The subdocument directive should be treated like a section; that
-    is, no elements except for more sections or transitions may
-    follow.
-
-    [DG] Again, I think this depends on the context.  Subdocuments
-    should be evaluated in the context of the "subdocument" directive.
-    A subdocument should be insertable anywhere it makes sense in the
-    document tree.
+  - As long as above restrictions apply, the subdocument directive can
+    be treated like a section at parse-time; that is, no elements
+    except for more sections or transitions may follow.
     
   - In order to facilitate assembling a large number of hierarchical
     files into a large document, the subdocument directive should
@@ -127,34 +122,30 @@ The ``subdocument`` Directive
 
   - Allow for section infos by generalizing the existing docinfo node.
 
-  - Add an option to either strip or leave docinfos.  Perhaps
-    specifiable as an option to the "subdocument" directive, and/or on
-    a per-input-file basis (how?), and/or as a command line option
-    (applied in which order?).
+  - Add an option to either strip or leave docinfos, specifiable as an
+    option to the "subdocument" directive:
 
-    [DG] How:
-         As a directive option, but split into multiple directives.
-         Uniform handling::
+    Uniform handling::
 
-             .. subdocument:: :leave-docinfo:
+        .. subdocument:: :leave-docinfo:
 
-                chapter1.txt
-                chapter2.txt
-                chapter3.txt
+           chapter1.txt
+           chapter2.txt
+           chapter3.txt
 
-         Non-uniform handling::
+    Non-uniform handling::
 
-             .. subdocument::
+        .. subdocument::
 
-                chapter1.txt
+           chapter1.txt
 
-             .. subdocument:: :leave-docinfo:
+        .. subdocument:: :leave-docinfo:
 
-                chapter2.txt
+           chapter2.txt
 
-             .. subdocument::
+        .. subdocument::
 
-                chapter3.txt
+           chapter3.txt
 
   - There is currently no way to have per-section "section infos" in
     reStructuredText files, as opposed to only file-wide docinfos.  So
@@ -168,27 +159,19 @@ The ``subdocument`` Directive
   file structure, add "source" attributes to section nodes for
   sections that come from different input files.
 
-* Allow multiple top-level sections in sub-documents.  (No reason not
-  to; the implementation doesn't get much harder.)  Sub-documents can
-  therefore contain either a lone document title (and optionally a
-  docinfo), or multiple top-level sections.  Only support per-document
-  docinfos -- if a sub-document contains multiple top-level sections,
-  don't touch field lists at all.
-
 * Restriction: Do not allow sub-documents without a top-level section,
   or with body elements in front of the first section.  IOW, the
   sub-document may only contain PreBibliographic elements, sections,
   and transitions.  The PreBibliographic elements in front of the
   first section get moved into the section.
 
-  David says this restriction is bad and we probably shouldn't have it
-  -- for instance you might want to have an introductory paragraph in
-  front of the first section of the first sub-document.  Lea doesn't
-  mind the restriction and says you could use the "include" directive.
-  Since having the restriction makes the implementation somewhat
-  easier, we agreed on having this restriction, waiting until the
-  first user presents a good use case to remove it, and calling it a
-  YAGNI until then.
+  David says we shouldn't have this restriction -- for instance you
+  might want to have an introductory paragraph in front of the first
+  section of the first sub-document.  Lea doesn't mind the restriction
+  and says you could use the "include" directive.  Since having the
+  restriction makes the implementation somewhat easier, we agreed on
+  having this restriction, waiting until the first user presents a
+  good use case to remove it, and calling it a YAGNI until then.
 
 * Silently drop header and footer in sub-documents.  (Document this in
   directives.txt though.)
@@ -233,11 +216,8 @@ processable stand-alone are no longer processable when used in
 conjunction with other files because they share common target names.
 
 
-Bad Proposal: Local and Global Namespace, no Qualifiers
--------------------------------------------------------
-
-[DG] You use terms like "bad" too easily.  It reeks of prejudice.
-Better to say "Rejected Proposal" in this case.
+Rejected Proposal: Local and Global Namespace, no Qualifiers
+------------------------------------------------------------
 
 An obvious solution would be to add a notion of a file-local and a
 global namespace.  When trying to resolve a reference, first the
@@ -501,8 +481,7 @@ separator are stripped.
       `namespace#target`_
       .. _reference: namespace#target_
 
-  This is probably a bad idea since it easily gets confused with
-  relative URIs::
+  Unfortunately though, this easily gets confused with relative URIs::
 
       .. _reference1: spec.html#target  (<--- URI)
       .. _reference2: spec#target_      (<--- external target)
