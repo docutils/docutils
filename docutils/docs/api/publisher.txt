@@ -45,8 +45,8 @@ handles everything else.  There are five convenience functions in the
   `publish_from_doctree`_.
 
 :_`publish_from_doctree`: for programmatic use to render from an
-  existing document tree data structure (doctree); returns a pair of
-  encoded string output and document parts.
+  existing document tree data structure (doctree); returns the encoded
+  output as a string.
 
 :_`publish_programmatically`: for custom programmatic use.  This
   function implements common code and is used by ``publish_file``,
