@@ -16,14 +16,17 @@ Introduction
 
 We would like to support documents whose source text comes from
 multiple files.  For instance, the Docutils documentation tree could
-be considered a large document; parsing all files into one single
+be considered a single large document; parsing all files into one single
 document tree would enable us to do cross-linking between parts of the
 documentation (our current way to cross-link between files is to link
-to HTML files and fragments, which is a hack).
+to HTML files and fragments, which is limited to HTML).
+Another example is a reference manual for a customized software
+system.  The manual is built from a set of subdocuments that may
+differ from installation to installation.
 
-Note that this issue is separate from output to multiple files; after
+Note that this issue is separate from that of output to multiple files; after
 implementing support for multiple input files, all we will be able to
-do is to generate a huge single output file.
+do is to generate a single huge output file.
 
 This is a collection of notes and semi-random thoughts (many of which
 are credit to David, from IM conversations).  Feel free to add yours
@@ -41,7 +44,7 @@ Terminology
 ===========
 
 Right now, we are using the following terminology: The whole document
-is simply called *the document*.  Its input consists of multiple
+is simply called the *document*.  Its input consists of multiple
 *files*: A *master* file (which references the sub-documents), and
 *sub-document* files.  The sub-document files should (probably) each
 be processable stand-alone (without the other files), each forming a
@@ -49,6 +52,16 @@ document on its own.
 
 Should we say "book" instead of "document"?  Is "file" confusing
 (physical vs. logical entity) -- should we use "sub-document" instead?
+
+[DG] No, "book" has its own connotations.  "Document" is too
+imprecise.  Instead, I would use "compound document" or "composite
+document", to differentiate from a subdocument or simple one-file
+standalone document.  Or make up a word, like "superdocument".
+These work nicely: "assembly", "compendium", "collection".
+
+[DG] There should be clear terms for both physical and logical
+concepts.  Physically, "file" is fine; everything is a file.
+Logically, the terms should be clear and distinct.
 
 
 The ``subdocument`` Directive
@@ -65,9 +78,24 @@ The ``subdocument`` Directive
   - The sub-document must have a document title.  (This document title
     will become a section title.)
     
+    [DG] I disagree.  A subdocument should be independently parseable,
+    but does not require a title.  If it lacks such a title, its
+    context is limited in the compound document.  NOTE: it would be OK
+    to assume that subdocuments are titled for now; just note the
+    temporary restriction and a to-do item.
+
+    [DG] Reading on, I see that this is partly addressed below.  You
+    should combine the text in one place, or clearly indicate (via a
+    link) that more follows.
+
   - The subdocument directive should be treated like a section; that
     is, no elements except for more sections or transitions may
     follow.
+
+    [DG] Again, I think this depends on the context.  Subdocuments
+    should be evaluated in the context of the "subdocument" directive.
+    A subdocument should be insertable anywhere it makes sense in the
+    document tree.
     
   - In order to facilitate assembling a large number of hierarchical
     files into a large document, the subdocument directive should
@@ -104,6 +132,30 @@ The ``subdocument`` Directive
     a per-input-file basis (how?), and/or as a command line option
     (applied in which order?).
 
+    [DG] How:
+         As a directive option, but split into multiple directives.
+         Uniform handling::
+
+             .. subdocument:: :leave-docinfo:
+
+                chapter1.txt
+                chapter2.txt
+                chapter3.txt
+
+         Non-uniform handling::
+
+             .. subdocument::
+
+                chapter1.txt
+
+             .. subdocument:: :leave-docinfo:
+
+                chapter2.txt
+
+             .. subdocument::
+
+                chapter3.txt
+
   - There is currently no way to have per-section "section infos" in
     reStructuredText files, as opposed to only file-wide docinfos.  So
     the only way to get section infos in a document is to use
@@ -131,7 +183,7 @@ The ``subdocument`` Directive
 
   David says this restriction is bad and we probably shouldn't have it
   -- for instance you might want to have an introductory paragraph in
-  front of the first section of the first sub-document; Lea doesn't
+  front of the first section of the first sub-document.  Lea doesn't
   mind the restriction and says you could use the "include" directive.
   Since having the restriction makes the implementation somewhat
   easier, we agreed on having this restriction, waiting until the
@@ -143,6 +195,9 @@ The ``subdocument`` Directive
 
 * To do: Explore alternatives besides "subdocument" for the directive
   name.
+
+  [DG] "subdoc" is a good alias.  "Subdocument" implies a single item;
+  perhaps "manifest" instead, for multiple items?
 
 * You may want to read some insightful remarks by Joaquim Baptista on
   how `files should be expected to be part of different documents`__.
@@ -168,7 +223,7 @@ A major issue to think about is how to do **cross-references**
 substitutions or role definitions should not be shared between files
 (their definitions can simply be loaded using the "include"
 directive).  However, sharing targets and thereby allowing
-cross-references between files is one of the major points why we want
+cross-references between files is one of the major features of
 an architecture that supports multiple input files.
 
 Issues arise once we think about how to group target names into
@@ -180,6 +235,9 @@ conjunction with other files because they share common target names.
 
 Bad Proposal: Local and Global Namespace, no Qualifiers
 -------------------------------------------------------
+
+[DG] You use terms like "bad" too easily.  It reeks of prejudice.
+Better to say "Rejected Proposal" in this case.
 
 An obvious solution would be to add a notion of a file-local and a
 global namespace.  When trying to resolve a reference, first the
@@ -194,7 +252,7 @@ is unique within the document, the reference can be resolved.
    to resolve external references makes implementation easier, it is
    certainly worthwhile to provide for a means to resolve external
    references without a re-run of the whole document for speed
-   reasons:
+   reasons.
 
    Since authoring can involve an edit-process-edit-process cycle, it
    should be possible to process files individually, rather than the
@@ -223,9 +281,9 @@ where "local target name" must be a unique target name within the
 current file, and "global target name" must be a unique target name
 within the current document.
 
-.. We would need to explicitly establish a notion of "stand-alone" vs.
-   "full document" processing in this case, but this proposal is being
-   shot down anyway, so I'm not going to get into it.
+(We would need to explicitly establish a notion of "stand-alone" vs.
+"full document" processing in this case.  But since this proposal is
+being rejected, I'm not going to explore this further.)
 
 
 Drawbacks
@@ -242,7 +300,7 @@ problem for complex (large) collections of documentation.
 __ different documents_
 
 Another peculiarity of this system is that an external reference is
-not associated to the file that defines the target outside of a
+not associated with the file that defines the target outside of a
 document context.  This brings the advantage that renaming and moving
 files won't invalidate reference names.  On the downside, it lacks
 clarity for the reader because the file containing a target is often
@@ -255,7 +313,7 @@ Proposal: Explicit Qualifiers
 -----------------------------
 
 Since linking to targets outside the scope of the current document
-appears to be a bad idea, we may need some form of qualifiers.
+appears to be deficient, we may need some form of qualifiers.
 
 
 Namespace Identifiers
