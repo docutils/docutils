@@ -15,14 +15,14 @@ Introduction
 ============
 
 We would like to support documents whose source text comes from
-multiple files.  For instance, the Docutils documentation tree could
-be considered a single large document; parsing all files into one single
-document tree would enable us to do cross-linking between parts of the
-documentation (our current way to cross-link between files is to link
-to HTML files and fragments, which is limited to HTML).
-Another example is a reference manual for a customized software
-system.  The manual is built from a set of subdocuments that may
-differ from installation to installation.
+multiple files.  For instance, the Docutils documentation collection
+could be considered a single large document; parsing all files into
+one single document tree would enable us to do cross-linking between
+parts of the documentation (our current way to cross-link between
+files is to link to HTML files and fragments, which is limited to
+HTML).  Another example is a reference manual for a customized
+software system.  The manual is built from a set of subdocuments that
+may differ from installation to installation.
 
 Note that this issue is separate from that of output to multiple files; after
 implementing support for multiple input files, all we will be able to
@@ -376,11 +376,12 @@ files contained therein.)
 It may also be desirable to specify alternate project roots; in this
 case, looking up files is done by checking for their existence first
 in the main project root, and then in the alternate roots.  A use-case
-for the Docutils tree would be to have the main Docutils directory as
-the main project root, and its parent directory (for referencing files
-in the web/ and sandbox/ directories) and the docs/ subdirectory (for
-convenience) as alternate roots.  In this example, the docutils.conf
-in the main Docutils directory might look like this::
+for the Docutils documentation would be to have the main Docutils
+directory as the main project root, and its parent directory (for
+referencing files in the web/ and sandbox/ directories) and the docs/
+subdirectory (for convenience) as alternate roots.  In this example,
+the docutils.conf in the main Docutils directory might look like
+this::
 
     [general]
     is-project-root: yes
@@ -503,7 +504,7 @@ separator are stripped.
       .. _reference2: spec#target_      (<--- external target)
 
   This is especially bothersome in cases such as Docutils' own
-  documentation tree, where we would want to refactor targets
+  documentation collection, where we would want to refactor targets
   referring to relative URI's into indirect targets cross-referencing
   targets in other documents (so ``config.html#foo`` becomes
   ``config#foo_``); visually distinguishing between old-style and
@@ -514,15 +515,15 @@ separator are stripped.
 Caching
 -------
 
-In order to be able to regenerate the whole documentation tree in a
-timely manner after changing a single file, it is necessary to
+In order to be able to regenerate the whole documentation collection
+in a timely manner after changing a single file, it is necessary to
 implement a caching system.
 
 Processing a document is done in the following steps:
 
-1. For each file in the documentation tree, parse it and turn the
-   target names into file-local ID's (this includes error handling for
-   duplicate target names).  Cache the parse tree, the name-to-ID
+1. For each file in the documentation collection, parse it and turn
+   the target names into file-local ID's (this includes error handling
+   for duplicate target names).  Cache the parse tree, the name-to-ID
    mapping, and the list of all included files.  Skip this step for
    files whose cache entry date-stamp is newer than the file's mtime
    and ctime, and all included files mtimes and ctimes.
@@ -540,7 +541,7 @@ Processing a document is done in the following steps:
 
 Processing a file stand-alone is done in the same way, except that
 steps 1 and 2 are only performed for the file being processed, not for
-each file in the documentation tree.  If other files' cached
+each file in the documentation collection.  If other files' cached
 name-to-ID mappings are not up-to-date (when being accessed in step
 2), they should be automatically updated.
 
@@ -562,7 +563,8 @@ have the wrong key.  Or simply place a big warning in the
 documentation not to accept cache files from strangers.
 
 No caching is done if no project-root is found (which means that the
-file being processed is not part of a larger documentation tree).
+file being processed is not part of a larger documentation
+collection).
 
 
 Implementation
@@ -584,8 +586,8 @@ parser and (re-)parses the requested file.
 
 In fact, all calls by the standalone reader [#reader]_ to the
 reStructuredText parser should go through the cache.  In the case of
-independent files which are not part of a larger documentation tree,
-the system simply does not find a project root and always assumes a
-cache miss.
+independent files which are not part of a larger documentation
+collection, the system simply does not find a project root and always
+assumes a cache miss.
 
 .. [#reader] Or should we create a new reader?
