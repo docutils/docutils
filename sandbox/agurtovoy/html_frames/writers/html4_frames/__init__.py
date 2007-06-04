@@ -13,18 +13,29 @@ import os.path
 import os
 import re
 
+from docutils.transforms import writer_aux
+
 
 class Writer(writers.Writer):
 
     settings_spec = html4css1.Writer.settings_spec + (
         'HTML/Frames-Specific Options',
         """The HTML --stylesheet option's default is set to """
-        '"frames.css".',
-        ()
+        '"style.css".',
+        (
+            ('Override chunk pages\' directory', ['--chunk_dir_name']
+                , { 'default': None, 'metavar': '<name>' }
+                )
+          ,
+        )
         )
 
-    settings_default_overrides = { 'stylesheet': 'frames.css' }
-    relative_path_settings = ('stylesheet_path',)
+    settings_default_overrides = {
+          'stylesheet': 'style.css'
+        , 'stylesheet_path': None
+        , 'embed_stylesheet': False
+        }
+
     config_section = 'html4frames writer'
     config_section_dependencies = ('writers',)
 
@@ -33,25 +44,36 @@ class Writer(writers.Writer):
         self.__super.__init__(self)
         self.translator = frame_pages_translator
 
-    def translate(self, document, page_files_dir, extension):
-        visitor = self.translator(document, page_files_dir, extension)
+    def get_transforms(self):
+        return writers.Writer.get_transforms(self) + [writer_aux.Admonitions]
+
+    def translate(self, document, index_file, page_files_dir, extension):
+        visitor = self.translator(document, index_file, page_files_dir, extension)
         document.walkabout(visitor)
         self.output = None # needed by writers.Writer
         return visitor.result()
 
     def write(self, document, destination):
+        self.document = document
         self.language = docutils.languages.get_language(
             document.settings.language_code)
+        self.destination = destination
 
         index_file_path = destination.destination_path
         index_file_name = os.path.basename(index_file_path)
-        (page_files_dir, extension) = os.path.splitext(index_file_name)
+        (index_file, extension) = os.path.splitext(index_file_name)
+        
+        if document.settings.chunk_dir_name:
+            page_files_dir = document.settings.chunk_dir_name
+        else:
+            page_files_dir = index_file
+        
         chunk_files_path = os.path.join(
               os.path.dirname(index_file_path)
             , page_files_dir
             )
         
-        (index_text, pages) = self.translate(document, page_files_dir, extension)
+        (index_text, pages) = self.translate(document, index_file, page_files_dir, extension)
                 
         if len(pages) > 0 and not os.path.exists(chunk_files_path):
             os.mkdir(chunk_files_path)
@@ -79,106 +101,159 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
     page_translator = html4css1.HTMLTranslator
     tocframe = 'tocframe'
     docframe = 'docframe'
-    tocframe_width = 30
-    nav_bar_separator = '<hr class="navigation-bar-separator">\n'
+    tocframe_width = 25
     re_href = re.compile('(href=")(.*?)(")')
-        
-    def __init__(self, document, page_files_dir, extension):
+    no_frames = 0
+    use_id_for_home_page = 1
+
+    def __init__(self, document, index_file, page_files_dir, extension):
         self.__super = docutils.nodes.NodeVisitor
         self.__super.__init__(self, document)
         
         self.section_level = 0
         self.max_chunk_level = 0
         self.settings = document.settings
+        
+        if _is_uri_relative(self.settings.stylesheet):
+            self.chunk_stylesheet = '../%s' % self.settings.stylesheet
+            self.settings.stylesheet = None
+        
         self.reporter = document.reporter
-        self.visitors = [self.__page_translator(document, self.docframe)]
         self.toc_nav_builder = None
         self.page_files_dir = page_files_dir
+        self.index_file = index_file
         self.extension = extension
+        self.document_title = None
         self.pages = {}
         self.page_subtoc = {}
-        self.tocframe_page = _toc_entry(id='%s_toc' % self.page_files_dir)
-        self.home_page = _toc_entry(id='%s_home' % self.page_files_dir)
+        if self.no_frames:
+            self.visitors = [self._page_translator(document, self.docframe)]
+            self.home_page = _toc_entry(_node_id(document), 'Front Page')
+            self.tocframe = self.docframe
+        else:
+            self.visitors = [self._page_translator(self._node_to_document(document), self.docframe)]
+            if self.use_id_for_home_page: home_page_id = _node_id(document)
+            else:                         home_page_id = self.index_file
+            self.home_page = _toc_entry(home_page_id, 'Front Page')
+
+        self.full_toc_page = _toc_entry('%s_toc' % self.page_files_dir, 'Full TOC')
+        self.full_toc_page.up = self.home_page
+        
         self.toc = self.home_page
         self.in_home_page = 0
+
 
     def active_visitor(self):
         return self.visitors[-1]
 
+
     def result(self):
-        self.pages[self.home_page.id] = self.visitors[0].astext()
-        html_spec = self.visitors[0]
-        index_page = ''.join( 
-                  html_spec.head_prefix + html_spec.head + html_spec.stylesheet
-                + ['</head>\n<frameset cols="%d%%,%d%%">\n' 
-                      % (self.tocframe_width, 100 - self.tocframe_width)]
-                + ['<frame name="%s" src="%s" scrolling="auto">\n' 
-                    % (self.tocframe, self.__chunk_ref(self.tocframe_page.id, 1))]
-                + ['<frame name="%s" src="%s" scrolling="auto">\n' 
-                    % (self.docframe, self.__chunk_ref(self.home_page.id, 1))]
-                + ['</frameset>\n</html>\n']
-                )
+        if self.no_frames:
+            return (self.visitors[0].astext(), self.pages)        
+        else:
+            self.pages[self.home_page.id] = self.visitors[0].astext()
+            html_spec = self.visitors[0]
+            index_page = ''.join( 
+                    html_spec.head_prefix + html_spec.head
+                    + ['</head>\n<frameset cols="%d%%,%d%%">\n' 
+                        % (self.tocframe_width, 100 - self.tocframe_width)]
+                    + ['<frame name="%s" src="%s" scrolling="auto">\n' 
+                        % (self.tocframe, self._chunk_ref(None, self.full_toc_page.id))]
+                    + ['<frame name="%s" src="%s" scrolling="auto">\n' 
+                        % (self.docframe, self._chunk_ref(None, self.home_page.id))]
+                    + ['</frameset>\n</html>\n']
+                    )
 
-        return (index_page, self.pages)
+            return (index_page, self.pages)
 
+
+    def visit_raw(self, node):
+        if node.get('format') == 'html/pre_docinfo':
+            self.active_visitor().body_pre_docinfo.insert(0, node.astext())
+            raise docutils.nodes.SkipNode
+
+        self.active_visitor().visit_raw(node)
+        
 
     def visit_section(self, node):
         self.section_level += 1
         if self.section_level <= self.max_chunk_level:
-            section_id = node.get('id')
+            section_id = _node_id(node)
             if self.page_subtoc.has_key(section_id):
-                node.append(self.page_subtoc[section_id])
-            
-            self.visitors.append(self.__page_translator(
-                  self.__node_to_document(node)
-                , self.docframe
-                ))
+                node.append(self.page_subtoc[section_id])            
 
             self.toc = self.toc.next
-            self.active_visitor().nav_bar = self.__nav_bar(self.toc)
+            self.visitors.append(self._page_translator(
+                  self._node_to_document(node)
+                , self.docframe
+                , self._page_title(self.toc)
+                ))
+
+            self.active_visitor().nav_bar = self._nav_bar(self.toc)
+            self.active_visitor().body.append(self._header_start())
             self.active_visitor().body.append(self.active_visitor().nav_bar)
-            self.active_visitor().body.append(self.nav_bar_separator)
+            self.active_visitor().body.append(self._page_location(self.toc))
+            self.active_visitor().body.append(self._header_end())
 
         self.active_visitor().visit_section(node)
 
     def depart_section(self, node):
         self.active_visitor().depart_section(node)
         if self.section_level <= self.max_chunk_level:
-            self.active_visitor().body.append(self.nav_bar_separator)
+            self.active_visitor().body.append(self._footer_start())
             self.active_visitor().body.append(self.active_visitor().nav_bar)
+            self.active_visitor().body.append(self._footer_end())
+            self._handle_depart_page(self.active_visitor(), node)
             visitor = self.visitors.pop()
-            self.pages[node.get('id')] = visitor.astext()
+            self.pages[_node_id(node)] = visitor.astext()
 
         self.section_level -= 1
 
 
     def visit_topic(self, node):
-        if node.get('class') == 'contents' and not self.in_home_page:
+        if _is_toc_node( node ) and not self.in_home_page:
             self.toc_nav_builder = _toc_nav_builder(home=self.home_page)
-            self.visitors.append(self.__page_translator(
-                  self.__node_to_document(node)
+            self.visitors.append(self._page_translator(
+                  self._node_to_document(node)
                 , self.tocframe
+                , self._page_title(self.full_toc_page)
                 ))
+            
+            if self.no_frames:
+                self.active_visitor().nav_bar = self._nav_bar(self.toc)
+                self.active_visitor().body.append(self._header_start())
+                self.active_visitor().body.append(self.active_visitor().nav_bar)
+                self.active_visitor().body.append(self._header_end())
         else:
             self.active_visitor().visit_topic(node)
 
     def depart_topic(self, node):
-        if node.get('class') == 'contents' and not self.in_home_page:
+        if _is_toc_node( node ) and not self.in_home_page:
             self.toc_nav_builder = None
+            if self.no_frames:
+                self.active_visitor().body.append(self._footer_start())
+                self.active_visitor().body.append(self.active_visitor().nav_bar)
+                self.active_visitor().body.append(self._footer_end())
+
             tocframe_visitor = self.visitors.pop()
-            self.pages[self.tocframe_page.id] = tocframe_visitor.astext()
-            self.in_home_page = 1
+            self.pages[self.full_toc_page.id] = tocframe_visitor.astext()
+            self.in_home_page = 1            
+                        
             home_page_toc = self.page_subtoc[self.home_page.id]
+            if self.no_frames:
+                home_page_toc.append(self._build_full_toc_entry())
+
             home_page_toc.walkabout(self)
+            
             self.in_home_page = 0
         else:
             self.active_visitor().depart_topic(node)
 
 
     def visit_bullet_list(self, node):
-        if self.__is_in_main_toc():
+        if self._is_in_main_toc():
             section_id = self.toc_nav_builder.last_visited.id
-            self.page_subtoc[section_id] = self.__subtoc(node)
+            self.page_subtoc[section_id] = self._subtoc(node)
             self.toc_nav_builder.subsection()
             self.section_level += 1
             if self.section_level > self.max_chunk_level:
@@ -188,29 +263,61 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
 
     def depart_bullet_list(self, node):
         self.active_visitor().depart_bullet_list(node)
-        if self.__is_in_main_toc():
+        if self._is_in_main_toc():
             self.toc_nav_builder.up()
             self.section_level -= 1
 
 
     def visit_reference(self, node):
-        self.__adjust_node_uri(node, 'refuri')
+        self._adjust_node_uri(node, 'refuri')
         self.active_visitor().visit_reference(node)
+
+        # formatting fix, temporary here        
+        if not isinstance(node.parent, docutils.nodes.TextElement):
+            a = self.active_visitor().body[-1]
+            self.active_visitor().body.pop()
+            self.active_visitor().body.pop()
+            self.active_visitor().context[-1] = ''
+            self.active_visitor().body.append(a)
+        
         if node.has_key('refuri'):
-            self.active_visitor().body[-1] = self.__add_target_attr(
+            self.active_visitor().body[-1] = self._add_target_attr(
                   self.active_visitor().body[-1]
                 , '_top'
                 )
 
         if node.has_key('refid'):
+            anchor = None
             section_id = node.get('refid')
-            self.active_visitor().body[-1] = self.__replace_href(
-                  self.__chunk_ref(section_id)
+
+            if self.document.ids.has_key(section_id):
+                n = self.document.ids[section_id]
+                sections = []
+                while n:
+                    if isinstance(n, docutils.nodes.section):
+                        sections.insert(0, n)
+                    n = n.parent
+                
+                if len(sections) > self.max_chunk_level:
+                    anchor = section_id
+                    section_id = _node_id(sections[self.max_chunk_level - 1])
+                elif len(sections):
+                    anchor = section_id
+                    section_id = _node_id(sections[-1])
+                
+                # if it's a page, don't link to the page's title instead of just the page itself
+                if anchor == section_id or anchor.find('id') == 0: # or -> temporary hack!
+                    anchor = None
+            
+            self.active_visitor().body[-1] = self._replace_href(
+                  self._chunk_ref(self._active_chunk_id(), section_id, anchor)
                 , self.active_visitor().body[-1]
                 )
 
-            if self.__is_in_main_toc():
-                self.toc_nav_builder.along(section_id)
+            if self._is_in_main_toc():
+                name = _node_name(node)
+                if not name: name = node.astext()
+                self.toc_nav_builder.along(section_id, name)
     
 
     def depart_reference(self, node):
@@ -218,18 +325,25 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
 
 
     def visit_image(self, node):
-        self.__adjust_node_uri(node, 'uri')
+        self._adjust_node_uri(node, 'uri')
         self.active_visitor().visit_image(node)
+                
 
     def depart_image(self, node):
         self.active_visitor().depart_image(node)
 
 
     def visit_title(self, node):
+        if self.section_level == 0 and not self._is_in_main_toc():
+            self.document_title = self.encode(node.astext())
+        
         self.active_visitor().visit_title(node)
-        if node.has_key('refid'):
-            self.active_visitor().body[-1] = self.__replace_href(
-                  '%s#%s' % ( self.__chunk_ref(self.toc.up.id), node.get('refid') )
+        if node.has_key('refid') and self.toc.up:
+            self.active_visitor().body[-1] = self._replace_href(
+                  '%s#%s' % ( 
+                      self._chunk_ref(self._active_chunk_id(), self.toc.up.id)
+                    , node.get('refid')
+                    )
                 , self.active_visitor().body[-1]
                 )
 
@@ -237,29 +351,36 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
         self.active_visitor().depart_title(node)
 
     
-    def __page_translator(self, document, frame):
+    def encode(self, text):
+        return self.active_visitor().encode(text)
+    
+    
+    def _page_translator(self, document, frame, title=None):
         result = self.page_translator(document)
         result.body_prefix = ['</head>\n<body class="%s">\n' % frame]
+        if title:
+            result.head.append('<title>%s</title>\n' % title)
+
         return result
         
-    def __subtoc(self, node):
+    def _subtoc(self, node):
         def _auto_toc_filter(node,root=node):
             return  node != root \
                 and isinstance(node, docutils.nodes.bullet_list)
 
-        node['id'] = 'outline'
+        _set_node_id(node, 'outline')
         if node.get('class', '') == '': node['class'] = 'toc'
         return _filter_tree(
-              self.__node_to_document(node)
+              self._node_to_document(node)
             , _auto_toc_filter
             )
 
 
-    def __add_target_attr(self, href, target):        
+    def _add_target_attr(self, href, target):        
         return self.re_href.sub(r'\1\2\3 target="%s"' % target, href)
 
-    def __replace_href(self, new, old):
-        if not self.__is_in_main_toc():
+    def _replace_href(self, new, old):
+        if not self._is_in_main_toc() or self.no_frames:
             return self.re_href.sub(r'\1%s\3' % new, old)
         else:
             return self.re_href.sub(
@@ -267,47 +388,119 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
                 , old
                 )
 
-    def __nav_bar(self, toc_node):
-        return '<span class="navigation-bar">%s</span>\n' \
-            % '<span class="navigation-group-separator">&nbsp;|&nbsp;</span>'.join([
-                  self.__nav_group(['Prev', 'Next'],  [toc_node.prev, toc_node.next])
-                , self.__nav_group(['Back', 'Along'], [toc_node.back, toc_node.along])
-                , self.__nav_group(['Up',   'Home'],  [toc_node.up, self.home_page])
-                ])
+    def _header_start(self):
+        return '<table class="header"><tr class="header">'
+       
+    def _header_end(self):
+        return '</tr></table><div class="header-separator"></div>\n'
 
-    def __nav_group(self, labels, nodes):
+
+    def _footer_start(self):
+        return '\n<div class="footer-separator"></div>\n<table class="footer"><tr class="footer">'
+       
+    def _footer_end(self):
+        return '</tr></table>'
+
+
+    def _nav_bar(self, toc_node):
+        nav_bar = [
+              self._nav_group(['Prev', 'Next'],  [toc_node.prev, toc_node.next])
+            , self._nav_group(['Back', 'Along'], [toc_node.back, toc_node.along])
+            , self._nav_group(['Up',   'Home'],  [toc_node.up, self.home_page])
+            ]
+        
+        if self.no_frames:
+            nav_bar.append(self._nav_group([self.full_toc_page.name], [self.full_toc_page]))   
+        
+        return '<td class="header-group navigation-bar">%s</td>\n' \
+            % '<span class="navigation-group-separator">&nbsp;|&nbsp;</span>'.join(nav_bar)
+
+    
+    def _page_location(self, toc_node):
+        result = ''
+        while toc_node:
+            page_link = self._toc_node_link(toc_node.name, toc_node)
+            if result:  result = '%s / %s' % (page_link, result)
+            else:       result = page_link
+            toc_node = toc_node.up
+            
+        return '<td class="header-group page-location">%s</td>\n' % result
+    
+
+    def _page_title(self, toc_node):
+        result = toc_node.name
+        level = 0
+        while toc_node.up:
+            toc_node = toc_node.up
+            level +=1 
+
+        if level > 0: result = '%s: %s' % (self.document_title, result)        
+        return result
+    
+    
+    def _nav_group(self, labels, nodes):
         return '<span class="navigation-group">%s</span>' % '&nbsp;'.join(
-              map(lambda l,n: self.__toc_node_link(l, n), labels, nodes)
+              map(lambda l,n: self._toc_node_link(l, n), labels, nodes)
             )
     
     
-    def __node_to_document(self, node):
+    def _node_to_document(self, node):
         node.settings = self.settings
+        node.settings.stylesheet = self.chunk_stylesheet
+        node.settings.stylesheet_path = None
         node.reporter = self.reporter
         return node
 
-    def __adjust_node_uri(self, node, attr):
+    def _adjust_node_uri(self, node, attr):
         if node.has_key(attr):
             src_uri = node[attr]
             if _is_uri_relative(src_uri):
                 node[attr] = '../%s' % src_uri    
     
-    def __toc_node_link(self, name, toc_node):
+    def _toc_node_link(self, name, toc_node):
         if not toc_node: return name
         return '<a href="%s" class="navigation-link">%s</a>' % ( 
-              self.__chunk_ref(toc_node.id)
+              self._chunk_ref(self._active_chunk_id(), toc_node.id)
             , name
             )
     
+    def _build_full_toc_entry(self):
+        reference = docutils.nodes.reference('', self.full_toc_page.name, refid=self.full_toc_page.id)
+        entry = docutils.nodes.paragraph('', '', reference)
+        item = docutils.nodes.list_item('', entry)
+        return item
 
-    def __chunk_ref(self, chunk_name, from_index=0):
-        if from_index:
-            return './%s/%s%s' % (self.page_files_dir, chunk_name, self.extension)
+
+    def _chunk_ref(self, source_id, target_id, anchor=None):
+        if self.no_frames:
+            if target_id == self.home_page.id and source_id != target_id:
+                prefix = '../'
+            elif source_id == self.home_page.id:
+                prefix = './%s/' % self.page_files_dir
         else:
-            return './%s%s' % (chunk_name, self.extension)
+            if source_id is None:
+                prefix = './%s/' % self.page_files_dir
+            else:
+                prefix = './'
 
-    def __is_in_main_toc(self):
+        if target_id == self.home_page.id and not self.use_id_for_home_page:
+            target_id = self.index_file
+        
+        if not anchor:
+            return '%s%s%s' % (prefix, target_id, self.extension)
+        else:
+            return '%s%s%s#%s' % (prefix, target_id, self.extension, anchor)
+
+
+    def _active_chunk_id(self):
+        return _node_id(self.active_visitor().document)
+
+    def _is_in_main_toc(self):
         return self.toc_nav_builder
+
+
+    def _handle_depart_page(self, translator, node):
+        pass
 
 
 def _setup_forwarding(visitor):
@@ -356,15 +549,15 @@ class _toc_nav_builder:
 
     def subsection(self):
         parent = self.last_visited
-        self.last_visited = _toc_entry(id=None)
+        self.last_visited = _toc_entry(id=None, name=None)
         self.last_visited.up = self.last_visited.prev = parent
         parent.next = self.last_visited
         self.last_sibling = self.last_visited
 
-    def along(self, section_id):
+    def along(self, section_id, name):
         last = self.last_visited
         if last.id:
-            self.last_visited = _toc_entry(id=section_id)
+            self.last_visited = _toc_entry(section_id, name)
             self.last_visited.prev = last
             self.last_visited.back = self.last_sibling
             self.last_visited.up = self.last_sibling.up
@@ -372,12 +565,32 @@ class _toc_nav_builder:
             self.last_sibling = self.last_visited
         else:
             self.last_visited.id = section_id
+            self.last_visited.name = name
 
     def up(self):
         self.last_sibling = self.last_sibling.up
 
 
 class _toc_entry:
-    def __init__(self, id):
+    def __init__(self, id, name):
         self.id = id
+        self.name = name
         self.prev = self.next = self.back = self.along = self.up = None
+
+
+def _is_toc_node( node ):
+    return _node_id( node ) == 'contents'    
+
+def _node_id( node ):
+    return node['ids'][0]
+
+
+def _set_node_id( node, id ):
+    node['ids'] = id
+
+
+def _node_name( node ):
+    if len( node['names'] ):
+        return node['names'][0]
+
+    return None
