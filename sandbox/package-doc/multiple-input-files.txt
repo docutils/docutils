@@ -21,7 +21,7 @@ one single document tree would enable us to do cross-linking between
 parts of the documentation (our current way to cross-link between
 files is to link to HTML files and fragments, which is limited to
 HTML).  Another example is a reference manual for a customized
-software system.  The manual is built from a set of subdocuments that
+software system.  The manual is built from a set of sub-documents that
 may differ from installation to installation.
 
 Note that this issue is separate from that of output to multiple files; after
@@ -43,48 +43,13 @@ LeWiemann@gmail.com and dgoodger@gmail.com, respectively.
 Terminology
 ===========
 
-Right now, we are using the following terminology: The whole document
-is simply called the *document*.  Its input consists of multiple
-*files*: A *master* file (which references the sub-documents), and
-*sub-document* files.  The sub-document files should (probably) each
-be processable stand-alone (without the other files), each forming a
-document on its own.
-
-Should we say "book" instead of "document"?  Is "file" confusing
-(physical vs. logical entity) -- should we use "sub-document" instead?
-
-[DG] No, "book" has its own connotations.  "Document" is too
-imprecise.  Instead, I would use "compound document" or "composite
-document", to differentiate from a subdocument or simple one-file
-standalone document.  Or make up a word, like "superdocument".
-These work nicely: "assembly", "compendium", "collection".
-
-[LW] There is of course a conceptual difference between the
-"superdocument" (I like this term -- "super-document" perhaps though)
-and the sub-documents.  This is especially true in the case of one
-single manifest-like super-document and many sub-document files.
-However, I see only two ways two draw a hard technical difference
-between the two:
-
-* A super-document is self-contained in terms of references, whereas
-  the sub-documents *may* have unresolved external references.  This
-  definition is ambiguous for the sub-document.
-
-* Alternatively, a super-document is the file whose name you passed to
-  the front-end.  A sub-document is any file directly or indirectly
-  referenced from the super-document.  This definition is ambiguous
-  because it changes from run to run, since you can also process the
-  sub-documents individually.
-
-[LW] As long as there is no clear, unambiguous distinction, I would
-suggest that in the documentation, we just refer to all of them as
-"documents" (and add specifiers like "with unresolved external
-references" where needed), and add a section which explains how
-(conceptually) you can have a "super-document" and "sub-documents".
-
-[DG] There should be clear terms for both physical and logical
-concepts.  Physically, "file" is fine; everything is a file.
-Logically, the terms should be clear and distinct.
+Right now, we are using the following terminology: A document which
+includes other documents (using the ``subdocument`` directive
+described below) is called a *super-document*.  The included documents
+are called *sub-documents*.  Sub-documents can in turn include other
+documents and can thus be super-documents themselves.  The top-most
+super-document in the hierarchy, which is not included by any other
+document, is called the *omni-document*.
 
 
 The ``subdocument`` Directive
@@ -140,6 +105,9 @@ The ``subdocument`` Directive
 
         .. subdocument:: chapter1.txt
                chapter1-section1.txt
+
+* The sub-document files should each be processable stand-alone
+  (without the other files), each forming a document on its own.
 
 * What to do with docinfos in subdocuments:
 
@@ -199,9 +167,10 @@ The ``subdocument`` Directive
   perhaps "manifest" instead, for multiple items?
 
 * You may want to read some insightful remarks by Joaquim Baptista on
-  how `files should be expected to be part of different documents`__.
+  how `files should be expected to be part of different
+  super-documents`__.
 
-  .. _different documents:
+  .. _different super-documents:
   __ http://article.gmane.org/gmane.text.docutils.devel/4043
 
 
@@ -213,7 +182,7 @@ Cross-references
 .. note:: You may need to read the `reST spec`_ in order to understand
    the terminology (targets, references).  In this section, "*external
    reference*" means a reference whose target is outside of the
-   current file, but within the current document.
+   current file, but within the current omni-document.
 
    .. _reST spec: http://docutils.sf.net/docs/ref/rst/restructuredtext.html
 
@@ -240,24 +209,23 @@ global namespace.  When trying to resolve a reference, first the
 target name is looked up in the local namespace of the current file;
 if no suitable target is found there, the target name is searched for
 document-wide, in the global namespace; if the target name exists and
-is unique within the document, the reference can be resolved.
+is unique within the omni-document, the reference can be resolved.
 
 .. sidebar:: Why independent references are a good idea
 
-   While the requirement that the whole document be processed in order
+   While the requirement that the omni-document be processed in order
    to resolve external references makes implementation easier, it is
    certainly worthwhile to provide for a means to resolve external
-   references without a re-run of the whole document for speed
-   reasons.
+   references without a re-run of the omni-document for speed reasons.
 
    Since authoring can involve an edit-process-edit-process cycle, it
    should be possible to process files individually, rather than the
-   whole document (which can be very slow).  Of course, as long as
+   omni-document (which can be very slow).  Of course, as long as
    external references are marked in the source file as such, they
    can, in a stand-alone pass, always be marked as "unresolvable"
-   (e.g. in red) in the output, and only be resolved when the whole
-   document is processed.  However, it would be even better to be able
-   to actually resolve the references.
+   (e.g. in red) in the output, and only be resolved when the
+   omni-document is processed.  However, it would be even better to be
+   able to actually resolve the references.
 
 If references to the global namespace are not marked up as such,
 however, the individual files are no longer processable stand-alone
@@ -275,7 +243,7 @@ This can be solved by marking external references as such, like this::
 
 where "local target name" must be a unique target name within the
 current file, and "global target name" must be a unique target name
-within the current document.
+within the current omni-document.
 
 (We would need to explicitly establish a notion of "stand-alone" vs.
 "full document" processing in this case.  But since this proposal is
@@ -286,30 +254,30 @@ Drawbacks
 ~~~~~~~~~
 
 This approach turns out to have a major drawback though: External
-references depend on the context of the containing document.  However,
-as Joaquim `pointed out`__, files should be expected to be part of
-several documents.  This means that once a file is put into the
-context of a new document, its external references might point to
-non-existing or duplicate targets.  This seems like a maintenance
-problem for complex (large) collections of documentation.
+references depend on the context of the containing super-document.
+However, as Joaquim `pointed out`__, files should be expected to be
+part of several super-documents.  This means that once a file is put
+into the context of a new document, its external references might
+point to non-existing or duplicate targets.  This seems like a
+maintenance problem for complex (large) collections of documentation.
 
-__ different documents_
+__ different super-documents_
 
-Another peculiarity of this system is that an external reference is
-not associated with the file that defines the target outside of a
-document context.  This brings the advantage that renaming and moving
-files won't invalidate reference names.  On the downside, it lacks
-clarity for the reader because the file containing a target is often
-not inferable from the target name (try to guess which file ```->
-html4css1`_`` links to) -- this may be significant since
+Another peculiarity of this system is that, as long as a file is
+processed stand-alone, external references are not associated with the
+file that defines the target.  This brings the advantage that renaming
+and moving files won't invalidate reference names.  On the downside,
+it lacks clarity for the reader because the file containing a target
+is often not inferable from the target name (try to guess which file
+```-> html4css1`_`` links to) -- this may be significant since
 reStructuredText should be readable in its source form.
 
 
 Proposal: Explicit Qualifiers
 -----------------------------
 
-Since linking to targets outside the scope of the current document
-appears to be deficient, we may need some form of qualifiers.
+Since linking to targets outside the scope of the current sub-document
+has significant disadvantages, we may need some form of qualifiers.
 
 
 Namespace Identifiers
@@ -320,7 +288,7 @@ This makes it necessary to add a notion of *namespace identifiers*.
 .. sidebar:: Why headers are a bad idea
 
    One of the appealing features of reStructuredText, compared to
-   LaTeX, is that writing a document does not require writing a
+   LaTeX, is that creating a new file does not require writing a
    header.  Just type the title, some text, run rst2html, and you're
    done.  Writing a stand-alone LaTeX document on the other hand
    typically begins with declaring the \\documentclass, loading all
@@ -528,9 +496,9 @@ Processing a document is done in the following steps:
    files whose cache entry date-stamp is newer than the file's mtime
    and ctime, and all included files mtimes and ctimes.
 
-   This means that the either the "subdocument" directive must be
-   resolved at transform time, because otherwise we cannot store the
-   doctree before the sub-document has been inserted.
+   This means that the "subdocument" directive must be resolved at
+   transform time, because otherwise we cannot store the doctree
+   before the sub-document has been inserted.
 
 2. For each file, run transforms, resolving external references using
    the cached name-to-ID mappings of other files.
