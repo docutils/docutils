@@ -529,9 +529,10 @@ All requests for doctree and name-to-ID mappings should go through the
 caching system.  In case of a miss, the caching system instantiates a
 parser and (re-)parses the requested file.
 
-In fact, all calls by the standalone reader to the reStructuredText
-parser should go through the cache.  In the case of independent files
-which are not part of a larger documentation tree, the system simply
-does not find a project root and always assumes a cache miss.
+In fact, all calls by the standalone reader [#reader]_ to the
+reStructuredText parser should go through the cache.  In the case of
+independent files which are not part of a larger documentation tree,
+the system simply does not find a project root and always assumes a
+cache miss.
 
-.. [1] Or should we create a new reader?
+.. [#reader] Or should we create a new reader?
