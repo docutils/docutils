@@ -459,7 +459,7 @@ separator are stripped.
 
 
 Caching
-~~~~~~~
+-------
 
 In order to be able to regenerate the whole documentation tree in a
 timely manner after changing a single file, it is necessary to
@@ -475,10 +475,8 @@ Processing a document is done in the following steps:
    and ctime, and all included files mtimes and ctimes.
 
    This means that the either the "subdocument" directive must be
-   resolved at transform time rather than parse time, or that the
-   cache must keep track not only of dependent files referenced via
-   "include", but also via "subdocument" (which reduces cache hit
-   rates).
+   resolved at transform time, because otherwise we cannot store the
+   doctree before the sub-document has been inserted.
 
 2. For each file, run transforms, resolving external references using
    the cached name-to-ID mappings of other files.
@@ -515,7 +513,7 @@ file being processed is not part of a larger documentation tree).
 
 
 Implementation
-~~~~~~~~~~~~~~
+--------------
 
 As described in section Caching_, when processing files stand-alone
 and resolving their external references, it may be necessary to
@@ -523,25 +521,15 @@ process (or re-process) referenced files.  Since this is during
 transform-time, the parser instance is no longer available; it is
 therefore necessary to create a new instance.
 
-This instance has to be parameterized somehow, for instance to expect
-PEP syntax or a normal reStructuredText file.  There are four
-possibilities to do this: File name guessing (recognize pep-\*.txt),
-content guessing (recognize an RFC 2822 list at the top with a PEP:
-line), configuration via docutils.conf, or always assuming standard
-reST (no support for PEP's).  Either file name guessing or only
-support for standard reST should do; they are easiest to implement.
+We might want to choose a parser.  However, it seems a lot easier to
+assume only standard reStructuredText files for now and simply
+hard-code the standard reStructuredText parser.
 
 All requests for doctree and name-to-ID mappings should go through the
 caching system.  In case of a miss, the caching system instantiates a
-parser and (re-)parses the requested file.  Perhaps the caching system
-should also be responsible for file name guessing (alternatives: the
-standalone reader, the reStructuredText parser), and for deciding
-which parser class to instantiate.
+parser and (re-)parses the requested file.
 
 Also, all calls from the publisher should be routed through the
 caching system.  In the case of independent files which are not part
 of a larger documentation tree, the system simply does not find a
 project root and always assumes a cache miss.
-
-This also means that no separate front-end is needed anymore for PEP
-files, since they are recognized by their file names.
