@@ -59,6 +59,29 @@ document", to differentiate from a subdocument or simple one-file
 standalone document.  Or make up a word, like "superdocument".
 These work nicely: "assembly", "compendium", "collection".
 
+[LW] There is of course a conceptual difference between the
+"superdocument" (I like this term -- "super-document" perhaps though)
+and the sub-documents.  This is especially true in the case of one
+single manifest-like super-document and many sub-document files.
+However, I see only two ways two draw a hard technical difference
+between the two:
+
+* A super-document is self-contained in terms of references, whereas
+  the sub-documents *may* have unresolved external references.  This
+  definition is ambiguous for the sub-document.
+
+* Alternatively, a super-document is the file whose name you passed to
+  the front-end.  A sub-document is any file directly or indirectly
+  referenced from the super-document.  This definition is ambiguous
+  because it changes from run to run, since you can also process the
+  sub-documents individually.
+
+[LW] As long as there is no clear, unambiguous distinction, I would
+suggest that in the documentation, we just refer to all of them as
+"documents" (and add specifiers like "with unresolved external
+references" where needed), and add a section which explains how
+(conceptually) you can have a "super-document" and "sub-documents".
+
 [DG] There should be clear terms for both physical and logical
 concepts.  Physically, "file" is fine; everything is a file.
 Logically, the terms should be clear and distinct.
@@ -135,17 +158,10 @@ The ``subdocument`` Directive
 
     Non-uniform handling::
 
-        .. subdocument::
-
-           chapter1.txt
-
-        .. subdocument:: :leave-docinfo:
-
-           chapter2.txt
-
-        .. subdocument::
-
-           chapter3.txt
+        .. subdocument:: chapter1.txt
+        .. subdocument:: chapter2.txt
+           :leave-docinfo:
+        .. subdocument:: chapter3.txt
 
   - There is currently no way to have per-section "section infos" in
     reStructuredText files, as opposed to only file-wide docinfos.  So
