@@ -491,7 +491,7 @@ Processing a file stand-alone is done in the same way, except that
 steps 1 and 2 are only performed for the file being processed, not for
 each file in the documentation tree.  If other files' cached
 name-to-ID mappings are not up-to-date (when being accessed in step
-2), they should probably be automatically updated.
+2), they should be automatically updated.
 
 All cache entries should be stored in a project-wide cache file, in
 order to avoid LaTeX-like creation of many junk files.  Possible names
@@ -512,3 +512,36 @@ documentation not to accept cache files from strangers.
 
 No caching is done if no project-root is found (which means that the
 file being processed is not part of a larger documentation tree).
+
+
+Implementation
+~~~~~~~~~~~~~~
+
+As described in section Caching_, when processing files stand-alone
+and resolving their external references, it may be necessary to
+process or re-process referenced files.  Since this is during
+transform-time, the parser instance is no longer available; it is
+therefore necessary to create a new instantiate a new parser
+instance.
+
+This instance has to be parameterized somehow, for instance to expect
+PEP syntax or a normal reStructuredText file.  There are three
+possibilities to do this: File name guessing (recognize pep-*.txt),
+content guessing (recognize an RFC 2822 list at the top with a PEP:
+line), or configuration via docutils.conf.  File name guessing should
+do for now.
+
+All requests for doctree and name-to-ID mappings should go through the
+caching system.  In case of a miss, the caching system instantiates a
+parser and re-parses the requested file.  Perhaps the caching system
+should also be responsible for file name guessing (alternatives: the
+standalone reader, the reStructuredText parser), and for deciding
+which parser class to instantiate.
+
+Also, all calls from the publisher should be routed through the
+caching system.  In the case of independent files which are not part
+of a larger documentation tree, the system simply does not find a
+project root and assumes a cache miss.
+
+This also means that no separate front-end is needed anymore for PEP
+files, since they are recognized by their file names.
