@@ -48,7 +48,7 @@ be processable stand-alone (without the other files), each forming a
 document on its own.
 
 Should we say "book" instead of "document"?  Is "file" confusing
-(physical vs. logical entity) -- should be use "sub-document" instead?
+(physical vs. logical entity) -- should we use "sub-document" instead?
 
 
 The ``subdocument`` Directive
