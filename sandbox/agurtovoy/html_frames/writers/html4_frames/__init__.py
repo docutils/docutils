@@ -4,11 +4,12 @@
 # Date: $Date$
 # Copyright: This module has been placed in the public domain.
 
-from docutils import writers
+from docutils import frontend, writers, utils
 from docutils.writers import html4css1
 import docutils.nodes
 
 import urlparse
+import shutil
 import os.path
 import os
 import re
@@ -18,25 +19,44 @@ from docutils.transforms import writer_aux
 
 class Writer(writers.Writer):
 
+    default_stylesheet = 'style.css'
+    default_stylesheet_path = utils.relative_path(
+        os.path.join(os.getcwd(), 'dummy'),
+        os.path.join(os.path.dirname(__file__), default_stylesheet))
+
     settings_spec = html4css1.Writer.settings_spec + (
-        'HTML/Frames-Specific Options',
-        """The HTML --stylesheet option's default is set to """
-        '"style.css".',
-        (
-            ('Override chunk pages\' directory', ['--chunk_dir_name']
+        'HTML/Frames-Specific Options'
+      , ''
+      , (
+            ('Chunked output without frames. Default: disabled.'
+                , ['--no-frames']
+                , { 'default': 0, 'action': 'store_true',
+                    'validator': frontend.validate_boolean }
+                )
+          , ('Do not copy the stylesheet to the chunks output directory. '
+             'Default: disabled if \'--embed-stylesheet\' is not specified, '
+             'enabled otherwise.'
+                , ['--dont-copy-stylesheet']
+                , { 'default': 0, 'action': 'store_true',
+                    'validator': frontend.validate_boolean }
+                )
+          , ('Specify the chunks output directory. Default is a base name '
+             'of the output document (without extension).'
+                , ['--chunk-dir-name']
                 , { 'default': None, 'metavar': '<name>' }
                 )
-          ,
+          , ('Specify the TOC frame\'s width. Default is "25%".', ['--toc_frame_width']
+                , { 'default': '25%', 'metavar': '<name>' }
+                )
         )
-        )
+      )
 
     settings_default_overrides = {
-          'stylesheet': 'style.css'
-        , 'stylesheet_path': None
+          'stylesheet_path': default_stylesheet_path
         , 'embed_stylesheet': False
         }
 
-    config_section = 'html4frames writer'
+    config_section = 'html4_frames writer'
     config_section_dependencies = ('writers',)
 
     def __init__(self):
@@ -72,11 +92,29 @@ class Writer(writers.Writer):
               os.path.dirname(index_file_path)
             , page_files_dir
             )
+
+        output_stylesheet = None
+        if document.settings.embed_stylesheet:
+            document.settings.dont_copy_stylesheet = 1
         
+        if not document.settings.dont_copy_stylesheet:
+            stylesheet_path = utils.get_stylesheet_reference(document.settings)
+            if stylesheet_path:
+                output_stylesheet = os.path.basename(stylesheet_path)
+                document.settings.stylesheet = '%s/%s' % ( page_files_dir, output_stylesheet )
+                document.settings.stylesheet_path = None
+
+            
         (index_text, pages) = self.translate(document, index_file, page_files_dir, extension)
                 
         if len(pages) > 0 and not os.path.exists(chunk_files_path):
             os.mkdir(chunk_files_path)
+
+        if output_stylesheet:
+            shutil.copy(
+                  stylesheet_path
+                , os.path.join(chunk_files_path, output_stylesheet)
+                )
         
         destination.write(index_text)
         
@@ -101,10 +139,7 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
     page_translator = html4css1.HTMLTranslator
     tocframe = 'tocframe'
     docframe = 'docframe'
-    tocframe_width = 25
     re_href = re.compile('(href=")(.*?)(")')
-    no_frames = 0
-    use_id_for_home_page = 1
 
     def __init__(self, document, index_file, page_files_dir, extension):
         self.__super = docutils.nodes.NodeVisitor
@@ -112,12 +147,7 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
         
         self.section_level = 0
         self.max_chunk_level = 0
-        self.settings = document.settings
-        
-        if _is_uri_relative(self.settings.stylesheet):
-            self.chunk_stylesheet = '../%s' % self.settings.stylesheet
-            self.settings.stylesheet = None
-        
+        self.settings = document.settings                
         self.reporter = document.reporter
         self.toc_nav_builder = None
         self.page_files_dir = page_files_dir
@@ -126,15 +156,14 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
         self.document_title = None
         self.pages = {}
         self.page_subtoc = {}
-        if self.no_frames:
+
+        if self.settings.no_frames:
             self.visitors = [self._page_translator(document, self.docframe)]
             self.home_page = _toc_entry(_node_id(document), 'Front Page')
             self.tocframe = self.docframe
         else:
             self.visitors = [self._page_translator(self._node_to_document(document), self.docframe)]
-            if self.use_id_for_home_page: home_page_id = _node_id(document)
-            else:                         home_page_id = self.index_file
-            self.home_page = _toc_entry(home_page_id, 'Front Page')
+            self.home_page = _toc_entry(_node_id(document), 'Front Page')
 
         self.full_toc_page = _toc_entry('%s_toc' % self.page_files_dir, 'Full TOC')
         self.full_toc_page.up = self.home_page
@@ -148,15 +177,15 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
 
 
     def result(self):
-        if self.no_frames:
+        if self.settings.no_frames:
             return (self.visitors[0].astext(), self.pages)        
         else:
             self.pages[self.home_page.id] = self.visitors[0].astext()
             html_spec = self.visitors[0]
             index_page = ''.join( 
                     html_spec.head_prefix + html_spec.head
-                    + ['</head>\n<frameset cols="%d%%,%d%%">\n' 
-                        % (self.tocframe_width, 100 - self.tocframe_width)]
+                    + ['</head>\n<frameset cols="%s,*">\n' 
+                        % self.settings.toc_frame_width]
                     + ['<frame name="%s" src="%s" scrolling="auto">\n' 
                         % (self.tocframe, self._chunk_ref(None, self.full_toc_page.id))]
                     + ['<frame name="%s" src="%s" scrolling="auto">\n' 
@@ -219,7 +248,7 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
                 , self._page_title(self.full_toc_page)
                 ))
             
-            if self.no_frames:
+            if self.settings.no_frames:
                 self.active_visitor().nav_bar = self._nav_bar(self.toc)
                 self.active_visitor().body.append(self._header_start())
                 self.active_visitor().body.append(self.active_visitor().nav_bar)
@@ -230,7 +259,7 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
     def depart_topic(self, node):
         if _is_toc_node( node ) and not self.in_home_page:
             self.toc_nav_builder = None
-            if self.no_frames:
+            if self.settings.no_frames:
                 self.active_visitor().body.append(self._footer_start())
                 self.active_visitor().body.append(self.active_visitor().nav_bar)
                 self.active_visitor().body.append(self._footer_end())
@@ -240,7 +269,7 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
             self.in_home_page = 1            
                         
             home_page_toc = self.page_subtoc[self.home_page.id]
-            if self.no_frames:
+            if self.settings.no_frames:
                 home_page_toc.append(self._build_full_toc_entry())
 
             home_page_toc.walkabout(self)
@@ -380,7 +409,7 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
         return self.re_href.sub(r'\1\2\3 target="%s"' % target, href)
 
     def _replace_href(self, new, old):
-        if not self._is_in_main_toc() or self.no_frames:
+        if not self._is_in_main_toc() or self.settings.no_frames:
             return self.re_href.sub(r'\1%s\3' % new, old)
         else:
             return self.re_href.sub(
@@ -409,7 +438,7 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
             , self._nav_group(['Up',   'Home'],  [toc_node.up, self.home_page])
             ]
         
-        if self.no_frames:
+        if self.settings.no_frames:
             nav_bar.append(self._nav_group([self.full_toc_page.name], [self.full_toc_page]))   
         
         return '<td class="header-group navigation-bar">%s</td>\n' \
@@ -445,9 +474,9 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
     
     
     def _node_to_document(self, node):
-        node.settings = self.settings
-        node.settings.stylesheet = self.chunk_stylesheet
-        node.settings.stylesheet_path = None
+        node.settings = self.settings.copy()
+        if not self.settings.dont_copy_stylesheet:
+            node.settings.stylesheet = '../%s' % self.settings.stylesheet
         node.reporter = self.reporter
         return node
 
@@ -472,19 +501,18 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
 
 
     def _chunk_ref(self, source_id, target_id, anchor=None):
-        if self.no_frames:
+        prefix = './'
+        if self.settings.no_frames:
             if target_id == self.home_page.id and source_id != target_id:
                 prefix = '../'
             elif source_id == self.home_page.id:
                 prefix = './%s/' % self.page_files_dir
-        else:
-            if source_id is None:
-                prefix = './%s/' % self.page_files_dir
-            else:
-                prefix = './'
 
-        if target_id == self.home_page.id and not self.use_id_for_home_page:
-            target_id = self.index_file
+            if target_id == self.home_page.id:
+                target_id = self.index_file
+
+        elif source_id is None:
+            prefix = './%s/' % self.page_files_dir
         
         if not anchor:
             return '%s%s%s' % (prefix, target_id, self.extension)
