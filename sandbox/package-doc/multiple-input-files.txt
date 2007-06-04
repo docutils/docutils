@@ -526,7 +526,7 @@ instance.
 
 This instance has to be parameterized somehow, for instance to expect
 PEP syntax or a normal reStructuredText file.  There are three
-possibilities to do this: File name guessing (recognize pep-*.txt),
+possibilities to do this: File name guessing (recognize pep-\*.txt),
 content guessing (recognize an RFC 2822 list at the top with a PEP:
 line), or configuration via docutils.conf.  File name guessing should
 do for now.
