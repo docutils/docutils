@@ -348,11 +348,12 @@ Implementation
 
 In order to parse sub-documents, we need to instantiate a new parser.
 
-[DG] The Reader could pass a callback (or just pass ``self``) to the
-Parser's constructor; the "subdocument" directive will call that
-callback (or ``self.parse_subdocument``), and the Reader is
-responsible for creating new Parsers and assembling the
-super-document.
+This is made possible by turning the reader, parser, and writer
+parameters to the publisher into classes (or callbacks) instead of
+instances.
+
+The Parser must know about the Reader (or about the Publisher) and
+calls Reader.parse_[sub]document in order to parser sub-documents.
 
 
 Dumpster
