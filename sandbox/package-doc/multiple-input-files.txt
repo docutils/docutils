@@ -431,15 +431,13 @@ namespace might be a handy shortcut though.
 Qualifier Syntax
 ~~~~~~~~~~~~~~~~
 
-Note that in all of the examples below, the reference text of the
-inline reference (like ```<namespace> target`_``) comes out as
-"target", i.e. the namespace identifier and the decoration or
+Note that in all of the examples below, the reference text comes out
+as "target", i.e. the namespace identifier and the decoration or
 separator are stripped.
 
 * Angled brackets::
 
       `<namespace> target`_
-      .. _reference: <namespace> target_
 
   This is similar to the syntax for embedded URI's (```target
   <URI>`_``).  It fits well into the existing syntax, but may be
@@ -448,19 +446,16 @@ separator are stripped.
 * Arrows::
 
       `namespace -> target`_
-      .. _reference: namespace -> target_
 
-  In case of "imported" namespaces (analogously to C++'s "using
-  namespace" keyword), this would also allow for namespace-less
-  references; for instance, after ".. import:: namespace" it would be
-  possible to write::
+  This would also allow for namespace-less references; for instance,
+  after ".. namespace:: <- namespace" it could be possible to write::
 
       `-> target`_
 
-  The syntax may collide with existing target names.  (We could give
-  existing targets name priority though.  I.e., the reference resolver
-  checks whether "foo -> bar" is a valid local target name before
-  looking up target "bar" in namespace "foo".)
+  The arrow syntax may collide with existing target names.  (We could
+  give existing targets name priority though.  I.e., the reference
+  resolver checks whether "foo -> bar" is a valid local target name
+  before looking up target "bar" in namespace "foo".)
 
   Alternatives for the arrow: ``-->``, or ``>>``.
 
@@ -471,18 +466,17 @@ separator are stripped.
 * HTML fragment identifier syntax::
 
       `namespace#target`_
-      .. _reference: namespace#target_
 
   Unfortunately though, this easily gets confused with relative URIs::
 
       .. _reference1: spec.html#target  (<--- URI)
-      .. _reference2: spec#target_      (<--- external target)
+      .. _reference2: `spec#target`_      (<--- external target)
 
   This is especially bothersome in cases such as Docutils' own
   documentation collection, where we would want to refactor targets
   referring to relative URI's into indirect targets cross-referencing
   targets in other documents (so ``config.html#foo`` becomes
-  ``config#foo_``); visually distinguishing between old-style and
+  ```config#foo`_``); visually distinguishing between old-style and
   new-style targets is important, and a qualifier syntax paralleling
   HTML's fragment identifier makes this hard.
 
