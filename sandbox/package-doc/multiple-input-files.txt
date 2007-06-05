@@ -15,18 +15,18 @@ Introduction
 ============
 
 We would like to support documents whose source text comes from
-multiple files.  For instance, the Docutils documentation collection
-could be considered a single large document; parsing all files into
-one single document tree would enable us to do cross-linking between
-parts of the documentation (our current way to cross-link between
-files is to link to HTML files and fragments, which is limited to
-HTML).  Another example is a reference manual for a customized
-software system.  The manual is built from a set of sub-documents that
-may differ from installation to installation.
+multiple files.  For instance, the Docutils documentation could be
+considered a single large document; parsing all files into one single
+document tree would enable us to do cross-linking between parts of the
+documentation (our current way to cross-link between files is to link
+to HTML files and fragments, which is limited to HTML).  Another
+example is a reference manual for a customized software system.  The
+manual is built from a set of sub-documents that may differ from
+installation to installation.
 
-Note that this issue is separate from that of output to multiple files; after
-implementing support for multiple input files, all we will be able to
-do is to generate a single huge output file.
+Note that this issue is separate from that of output to multiple
+files; after implementing support for multiple input files, all we
+will be able to do is to generate a single huge output file.
 
 This is a collection of notes and semi-random thoughts (many of which
 are credit to David, from IM conversations).  Feel free to add yours
@@ -47,9 +47,13 @@ Right now, we are using the following terminology: A document which
 includes other documents (using the ``subdocument`` directive
 described below) is called a *super-document*.  The included documents
 are called *sub-documents*.  Sub-documents can in turn include other
-documents and can thus be super-documents themselves.  The top-most
+documents and can thus be super-documents themselves.  Any top-most
 super-document in the hierarchy, which is not included by any other
-document, is called the *omni-document*.
+document, is called a *compound document*.
+
+The set of all documents that can be part of a compound document is
+the *document set* (or *docset*).  The directory that is ancestor to
+all documents in the document set is the *docset root*.
 
 
 The ``subdocument`` Directive
@@ -167,10 +171,10 @@ The ``subdocument`` Directive
   perhaps "manifest" instead, for multiple items?
 
 * You may want to read some insightful remarks by Joaquim Baptista on
-  how `files should be expected to be part of different
-  super-documents`__.
+  how `files should be expected to be part of different compound
+  documents`__.
 
-  .. _different super-documents:
+  .. _different compound documents:
   __ http://article.gmane.org/gmane.text.docutils.devel/4043
 
 
@@ -180,9 +184,9 @@ Cross-references
 ================
 
 .. note:: You may need to read the `reST spec`_ in order to understand
-   the terminology (targets, references).  In this section, "*external
-   reference*" means a reference whose target is outside of the
-   current file, but within the current omni-document.
+   the terminology (targets, references).  In this section, an
+   "*external named reference*" means a reference whose target is
+   outside of the current file, but within the current docset.
 
    .. _reST spec: http://docutils.sf.net/docs/ref/rst/restructuredtext.html
 
@@ -209,30 +213,31 @@ global namespace.  When trying to resolve a reference, first the
 target name is looked up in the local namespace of the current file;
 if no suitable target is found there, the target name is searched for
 document-wide, in the global namespace; if the target name exists and
-is unique within the omni-document, the reference can be resolved.
+is unique within the compound document, the reference can be resolved.
 
 .. sidebar:: Why independent references are a good idea
 
-   While the requirement that the omni-document be processed in order
-   to resolve external references makes implementation easier, it is
-   certainly worthwhile to provide for a means to resolve external
-   references without a re-run of the omni-document for speed reasons.
+   While the requirement that the compound document be processed in
+   order to resolve external named references makes implementation
+   easier, it is certainly worthwhile to provide for a means to
+   resolve external named references without a re-run of the compound
+   document for speed reasons.
 
    Since authoring can involve an edit-process-edit-process cycle, it
    should be possible to process files individually, rather than the
-   omni-document (which can be very slow).  Of course, as long as
-   external references are marked in the source file as such, they
-   can, in a stand-alone pass, always be marked as "unresolvable"
-   (e.g. in red) in the output, and only be resolved when the
-   omni-document is processed.  However, it would be even better to be
-   able to actually resolve the references.
+   compound document (which can be very slow).  Of course, as long as
+   external named references are marked in the source file as such,
+   they can, in a stand-alone pass, always be marked as "unresolvable"
+   (e.g. in red) in the output, and only be resolved when the compound
+   document is processed.  However, it would be even better to be able
+   to actually resolve the references.
 
 If references to the global namespace are not marked up as such,
 however, the individual files are no longer processable stand-alone
 because they contain unresolvable references.  While it may be
-acceptable that external cross-references do not (fully) work any
-longer when a file is processed stand-alone, it would be nice to be
-able to handle unresolved external references somehow (at least by
+acceptable that external named cross-references do not (fully) work
+any longer when a file is processed stand-alone, it would be nice to
+be able to handle unresolved external references somehow (at least by
 marking them as "unresolvable" in the output), rather than simply
 throwing an error (see the sidebar).
 
@@ -243,7 +248,7 @@ This can be solved by marking external references as such, like this::
 
 where "local target name" must be a unique target name within the
 current file, and "global target name" must be a unique target name
-within the current omni-document.
+within the current compound document.
 
 (We would need to explicitly establish a notion of "stand-alone" vs.
 "full document" processing in this case.  But since this proposal is
@@ -254,23 +259,24 @@ Drawbacks
 ~~~~~~~~~
 
 This approach turns out to have a major drawback though: External
-references depend on the context of the containing super-document.
-However, as Joaquim `pointed out`__, files should be expected to be
-part of several super-documents.  This means that once a file is put
-into the context of a new document, its external references might
-point to non-existing or duplicate targets.  This seems like a
-maintenance problem for complex (large) collections of documentation.
+named references depend on the context of the containing
+super-document.  However, as Joaquim `pointed out`__, files should be
+expected to be part of several super-documents.  This means that once
+a file is put into the context of a new document, its external named
+references might point to non-existing or duplicate targets.  This
+seems like a maintenance problem for complex (large) collections of
+documentation.
 
-__ different super-documents_
+__ `different compound documents`_
 
 Another peculiarity of this system is that, as long as a file is
-processed stand-alone, external references are not associated with the
-file that defines the target.  This brings the advantage that renaming
-and moving files won't invalidate reference names.  On the downside,
-it lacks clarity for the reader because the file containing a target
-is often not inferable from the target name (try to guess which file
-```-> html4css1`_`` links to) -- this may be significant since
-reStructuredText should be readable in its source form.
+processed stand-alone, external named references are not associated
+with the file that defines the target.  This brings the advantage that
+renaming and moving files won't invalidate reference names.  On the
+downside, it lacks clarity for the reader because the file containing
+a target is often not inferable from the target name (try to guess
+which file ```-> html4css1`_`` links to) -- this may be significant
+since reStructuredText should be readable in its source form.
 
 
 Proposal: Explicit Qualifiers
@@ -316,54 +322,11 @@ the implicit namespace identifier ``docs/dev/todo.txt``; a reference
 would look like ```docs/dev/todo.txt -> large documents`_`` (see
 `Qualifier Syntax`_ below though).  Using paths relative to the
 current file makes it hard to move files or document parts.
-Therefore, we need to establish the notion of a *project root* which
-path names are relative to:
+Therefore, we need to establish the notion of a *docset root* which
+path names are relative to.
 
-
-Project Root
-~~~~~~~~~~~~
-
-Probably, the project root should be specified using docutils.conf.
-One option is to place a docutils.conf in the project root with the
-following lines::
-
-    [general]
-    is-project-root: yes
-
-When the reference resolver needs to locate a file, it checks for a
-docutils.conf setting the is-project-root switch first in the current
-directory, then in the parent directory, and so on.
-
-Having an ``is-project-root`` switch has the advantage that it is very
-simple, and it only requires one docutils.conf file in the project
-root.  (However, the ``is-project-root`` does not integrate well
-conceptually with the existing settings system, since it says
-something about the containing directory, not about how to process the
-files contained therein.)
-
-It may also be desirable to specify alternate project roots; in this
-case, looking up files is done by checking for their existence first
-in the main project root, and then in the alternate roots.  A use-case
-for the Docutils documentation would be to have the main Docutils
-directory as the main project root, and its parent directory (for
-referencing files in the web/ and sandbox/ directories) and the docs/
-subdirectory (for convenience) as alternate roots.  In this example,
-the docutils.conf in the main Docutils directory might look like
-this::
-
-    [general]
-    is-project-root: yes
-    alternate-project-root: ../
-    alternate-project-root: docs/
-
-``alternate-project-root`` settings are additive, and they are honored
-by the reference resolver for all docutils.conf files in the directory
-of the current file and all ancestor directories up to project root
-directory (which is declared by ``is-project-root: yes``).  The
-disadvantages of the ``alternate-project-root`` are that it may be too
-complicated, it may cause ambiguities when resolving namespace
-identifiers, and it means that the referenced file is not as easily
-locatable by the reader of a reStructuredText file.
+The docset root should be specified using a "docset-root" directive at
+the top of each sub-document that uses external named references.
 
 
 Namespace Aliases
@@ -476,40 +439,39 @@ separator are stripped.
   Unfortunately though, this easily gets confused with relative URIs::
 
       .. _reference1: spec.html#target  (<--- URI)
-      .. _reference2: `spec#target`_      (<--- external target)
+      .. _reference2: `spec#target`_    (<--- external target)
 
   This is especially bothersome in cases such as Docutils' own
-  documentation collection, where we would want to refactor targets
-  referring to relative URI's into indirect targets cross-referencing
-  targets in other documents (so ``config.html#foo`` becomes
-  ```config#foo`_``); visually distinguishing between old-style and
-  new-style targets is important, and a qualifier syntax paralleling
-  HTML's fragment identifier makes this hard.
+  documentation, where we would want to refactor targets referring to
+  relative URI's into indirect targets cross-referencing targets in
+  other documents (so ``config.html#foo`` becomes ```config#foo`_``);
+  visually distinguishing between old-style and new-style targets is
+  important, and a qualifier syntax paralleling HTML's fragment
+  identifier makes this hard.
 
 
 Caching
 -------
 
-In order to be able to regenerate the whole documentation collection
-in a timely manner after changing a single file, it is necessary to
+In order to be able to regenerate the whole compound document in a
+timely manner after changing a single file, it is necessary to
 implement a caching system.
 
 Processing a document is done in the following steps:
 
-1. For each file in the documentation collection, parse it and turn
-   the target names into file-local ID's (this includes error handling
-   for duplicate target names).  Cache the parse tree, the name-to-ID
-   mapping, and the list of all files included using the "include"
-   directive.  Skip this step for files whose cache entry date-stamp
-   is newer than the file's mtime and ctime, and all included files
-   mtimes and ctimes.
+1. For each file in the docset, parse it and turn the target names
+   into file-local ID's (this includes error handling for duplicate
+   target names).  Cache the parse tree, the name-to-ID mapping, and
+   the list of all files included using the "include" directive.  Skip
+   this step for files whose cache entry date-stamp is newer than the
+   file's mtime and ctime, and all included files mtimes and ctimes.
 
    This means that the "subdocument" directive must be resolved at
    transform time (and not at parse time), because otherwise we cannot
    store the doctree before the sub-document has been inserted.
 
-2. For each file, run transforms, resolving external references using
-   the cached name-to-ID mappings of other files.
+2. For each file, run transforms, resolving external named references
+   using the cached name-to-ID mappings of other files.
 
 3. Write out the resulting document (currently a single file).  (The
    writer needs to turn namespace/ID pairs into output-file-local
@@ -517,18 +479,18 @@ Processing a document is done in the following steps:
 
 Processing a file stand-alone is done in the same way, except that
 steps 1 and 2 are only performed for the file being processed, not for
-each file in the documentation collection.  If other files' cached
-name-to-ID mappings are not up-to-date (when being accessed in step
-2), they should be automatically updated.
+each file in the docset.  If other files' cached name-to-ID mappings
+are not up-to-date (when being accessed in step 2), they should be
+automatically updated.
 
-All cache entries should be stored in a project-wide cache file, in
-order to avoid LaTeX-like creation of many junk files.  Possible names
-include docutils.cache, docutils.aux, or either of them with leading
-dot.  The file is stored in the project root and contains a header and
-a large pickle string (reading and writing even large strings of
-pickled data is reasonably fast).  In the header of the cache file,
-store sys.version and docutils.__version__; discard cache files that
-have the wrong version.
+All cache entries should be stored in a docset cache file, in order to
+avoid LaTeX-like creation of many junk files.  Possible names include
+docutils.cache, docutils.aux, or either of them with leading dot.  The
+file is stored in the docset root and contains a header and a large
+pickle string (reading and writing even large strings of pickled data
+is reasonably fast).  In the header of the cache file, store
+sys.version and docutils.__version__; discard cache files that have
+the wrong version.
 
 Potential security issue: Since unpickling is unsafe, an attacker
 could provide a carefully crafted cache file, which is then
@@ -538,16 +500,16 @@ unguessable system-specific key (generate randomly and store in
 have the wrong key.  Or simply place a big warning in the
 documentation not to accept cache files from strangers.
 
-No caching is done if no project-root is found (which means that the
-file being processed is not part of a larger documentation
-collection).
+No caching is done if no docset-root is defined (which means that the
+file being processed is independent and not part of any compound
+document).
 
 
 Implementation
 --------------
 
 As described in section Caching_, when processing files stand-alone
-and resolving their external references, it may be necessary to
+and resolving their external named references, it may be necessary to
 process (or re-process) referenced files.  Since this is during
 transform-time, the parser instance is no longer available; it is
 therefore necessary to create a new instance.
@@ -568,5 +530,5 @@ parser and (re-)parses the requested file.
 
 In fact, all calls by the standalone reader to the reStructuredText
 parser should go through the cache.  In the case of independent files
-which are not part of a larger documentation collection, the system
-simply does not find a project root and always assumes a cache miss.
+which are not part of a larger docset, the system always assumes a
+cache miss.
