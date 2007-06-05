@@ -180,7 +180,7 @@ The ``subdocument`` Directive
 
 .. _xrefs:
 
-Cross-references
+Cross-References
 ================
 
 .. note:: You may need to read the `reST spec`_ in order to understand
@@ -203,6 +203,163 @@ namespaces.  Unfortunately, simply putting all targets into a global,
 document-wide namespace is bound to cause collisions; files that were
 processable stand-alone are no longer processable when used in
 conjunction with other files because they share common target names.
+
+Since linking to targets outside the scope of the current sub-document
+has significant disadvantages, we will need some form of qualifiers.
+
+
+Namespace Identifiers
+---------------------
+
+This makes it necessary to add a notion of *namespace identifiers*.
+
+.. sidebar:: Why headers are a bad idea
+
+   One of the appealing features of reStructuredText, compared to
+   LaTeX, is that creating a new file does not require writing a
+   header.  Just type the title, some text, run rst2html, and you're
+   done.  Writing a stand-alone LaTeX document on the other hand
+   typically begins with declaring the \\documentclass, loading all
+   the packages you need for your document, setting some options, and
+   finally \\begin{document}.
+
+   While it may not be possible to go *entirely* without any explicit
+   markup, it is certainly a worthwhile goal to keep the amount of
+   such markup to a minimum.
+
+It is possible to always name the namespace of the current file (as it
+is done in C++).  For instance, "``.. namespace:: frob``" at the
+beginning of a file could declare that the namespace of the current
+file is called "frob".  However, this is a little verbose as it adds a
+line at the top of each file (see the sidebar).  Also, it removes the
+reader's ability to easily look up the referenced files (you might not
+know which file(s) declare the "frob" namespace).
+
+On the other hand, namespace names could also be derived from paths
+and file names.  (Note though that these two options need not be
+mutually exclusive.)  Since using only the file name would cause
+ambiguity, it is necessary to include its path in the namespace name.
+For instance, the file ``docs/dev/todo.txt`` could be referenced by
+the implicit namespace identifier ``docs/dev/todo.txt``; a reference
+would look like ```docs/dev/todo.txt -> large documents`_`` (see
+`Qualifier Syntax`_ below though).  Using paths relative to the
+current file makes it hard to move files or document parts.
+Therefore, we need to establish the notion of a *docset root* which
+path names are relative to.
+
+The docset root should be specified using a "docset-root" directive at
+the top of each sub-document that uses external named references.
+
+
+Namespace Aliases
+-----------------
+
+A general disadvantage of using paths as namespace identifiers is that
+changes in the directory structure cause a massive amount of changes
+in the reStructuredText files, because all the paths need to be
+updated.  This is not any worse than the current situation.  However,
+to improve maintainability it would be desirable to make the namespace
+of an often-referenced files known under a shorter name.  (This
+mechanism should be file-local; that is, the shorter namespace
+identifier should only be valid within the file where it is declared.)
+For instance, one could make "docs/ref/restructuredtext.txt" known as
+"spec" using one of the following syntax alternatives::
+
+    .. namespace:: spec = docs/ref/restructuredtext.txt
+
+    .. namespace-alias:: spec = docs/ref/restructuredtext.txt
+
+    .. alias:: spec = docs/ref/restructuredtext.txt
+
+
+Importing Namespaces
+--------------------
+
+While namespaces should generally be available without explicitly
+importing them (in order to avoid length headers), it would probably
+be handy to have a means of inserting all targets of another namespace
+into the current one (similar to Python's "from module import \*").
+The disadvantage is that it may cause confusion.
+
+Contenders for the syntax::
+
+    .. import:: namespace   (Pythonic)
+
+    .. import-targets:: namespace   (more verbose)
+
+    .. using:: namespace    (like C++)
+
+Or, provided that we use "``.. namespace:: short-name <- namespace``",
+and "```namespace -> target`_``" as reference syntax, this would be a
+logical fit::
+
+    .. namespace:: <- namespace
+    `-> target`_                   (instead of `namespace -> target`_)
+
+The advantage of this syntax is that we can prohibit importing more
+than one namespace, which might cause confusion.  Importing only one
+namespace might be a handy shortcut though.
+
+
+Qualifier Syntax
+----------------
+
+Note that in all of the examples below, the reference text comes out
+as "target", i.e. the namespace identifier and the decoration or
+separator are stripped.
+
+* Angled brackets::
+
+      `<namespace> target`_
+
+  This is similar to the syntax for embedded URI's (```target
+  <URI>`_``).  It fits well into the existing syntax, but may be
+  confusing at the same time.
+
+* Angled brackets with hash sign::
+
+      `<namespace#> target`_
+
+  The "#" emphasizes the namespace/fragment split.
+
+* Arrows::
+
+      `namespace -> target`_
+
+  This would also allow for namespace-less references; for instance,
+  after ".. namespace:: <- namespace" it could be possible to write::
+
+      `-> target`_
+
+  The arrow syntax may collide with existing target names.  (We could
+  give existing targets name priority though.  I.e., the reference
+  resolver checks whether "foo -> bar" is a valid local target name
+  before looking up target "bar" in namespace "foo".)
+
+  Alternatives for the arrow: ``-->``, or ``>>``.
+
+  Should there we whitespace around the arrow (yes/no/optional)?  It
+  looks more readable with whitespace, but omitting the whitespace
+  makes it terser.
+
+
+Implementation
+==============
+
+In order to parse sub-documents, we need to instantiate a new parser.
+
+[DG] The Reader could pass a callback (or just pass ``self``) to the
+Parser's constructor; the "subdocument" directive will call that
+callback (or ``self.parse_subdocument``), and the Reader is
+responsible for creating new Parsers and assembling the
+super-document.
+
+
+Dumpster
+========
+
+You can stop reading now.  This section is only to archive sections
+we're no longer interested in.
 
 
 Rejected Proposal: Local and Global Namespace, no Qualifiers
@@ -279,177 +436,6 @@ which file ```-> html4css1`_`` links to) -- this may be significant
 since reStructuredText should be readable in its source form.
 
 
-Proposal: Explicit Qualifiers
------------------------------
-
-Since linking to targets outside the scope of the current sub-document
-has significant disadvantages, we may need some form of qualifiers.
-
-
-Namespace Identifiers
-~~~~~~~~~~~~~~~~~~~~~
-
-This makes it necessary to add a notion of *namespace identifiers*.
-
-.. sidebar:: Why headers are a bad idea
-
-   One of the appealing features of reStructuredText, compared to
-   LaTeX, is that creating a new file does not require writing a
-   header.  Just type the title, some text, run rst2html, and you're
-   done.  Writing a stand-alone LaTeX document on the other hand
-   typically begins with declaring the \\documentclass, loading all
-   the packages you need for your document, setting some options, and
-   finally \\begin{document}.
-
-   While it may not be possible to go *entirely* without any explicit
-   markup, it is certainly a worthwhile goal to keep the amount of
-   such markup to a minimum.
-
-It is possible to always name the namespace of the current file (as it
-is done in C++).  For instance, "``.. namespace:: frob``" at the
-beginning of a file could declare that the namespace of the current
-file is called "frob".  However, this is a little verbose as it adds a
-line at the top of each file (see the sidebar).  Also, it removes the
-reader's ability to easily look up the referenced files (you might not
-know which file(s) declare the "frob" namespace).
-
-On the other hand, namespace names could also be derived from paths
-and file names.  (Note though that these two options need not be
-mutually exclusive.)  Since using only the file name would cause
-ambiguity, it is necessary to include its path in the namespace name.
-For instance, the file ``docs/dev/todo.txt`` could be referenced by
-the implicit namespace identifier ``docs/dev/todo.txt``; a reference
-would look like ```docs/dev/todo.txt -> large documents`_`` (see
-`Qualifier Syntax`_ below though).  Using paths relative to the
-current file makes it hard to move files or document parts.
-Therefore, we need to establish the notion of a *docset root* which
-path names are relative to.
-
-The docset root should be specified using a "docset-root" directive at
-the top of each sub-document that uses external named references.
-
-
-Namespace Aliases
-~~~~~~~~~~~~~~~~~
-
-A general disadvantage of using paths as namespace identifiers is that
-changes in the directory structure cause a massive amount of changes
-in the reStructuredText files, because all the paths need to be
-updated.  This is not any worse than the current situation.  However,
-to improve maintainability it would be desirable to make the namespace
-of an often-referenced files known under a shorter name.  (This
-mechanism should be file-local; that is, the shorter namespace
-identifier should only be valid within the file where it is declared.)
-For instance, one could make "docs/ref/restructuredtext.txt" known as
-"spec" using one of the following syntax alternatives::
-
-    .. namespace:: spec = docs/ref/restructuredtext.txt
-
-    .. namespace:: spec <- docs/ref/restructuredtext.txt
-            (like smalltalk)
-
-    .. namespace:: docs/ref/restructuredtext.txt = spec
-            (unusual assignment order)
-
-    .. namespace:: docs/ref/restructuredtext.txt -> spec
-            (possible confusion with qualifier syntax)
-
-    .. namespace:: docs/ref/restructuredtext.txt == spec
-    .. namespace:: spec == docs/ref/restructuredtext.txt
-            (both are equivalent)
-
-An alternatives to "namespace" is "alias", but it is not clear what
-exactly "alias" aliases.
-
-
-Importing Namespaces
-~~~~~~~~~~~~~~~~~~~~
-
-While namespaces should generally be available without explicitly
-importing them (in order to avoid length headers), it would probably
-be handy to have a means of inserting all targets of another namespace
-into the current one (similar to Python's "from module import \*").
-The disadvantage is that it may cause confusion.
-
-Contenders for the syntax::
-
-    .. import:: namespace   (Pythonic)
-
-    .. import-targets:: namespace   (more verbose)
-
-    .. using:: namespace    (like C++)
-
-Or, provided that we use "``.. namespace:: short-name <- namespace``",
-and "```namespace -> target`_``" as reference syntax, this would be a
-logical fit::
-
-    .. namespace:: <- namespace
-    `-> target`_                   (instead of `namespace -> target`_)
-
-The advantage of this syntax is that we can prohibit importing more
-than one namespace, which might cause confusion.  Importing only one
-namespace might be a handy shortcut though.
-
-
-Qualifier Syntax
-~~~~~~~~~~~~~~~~
-
-Note that in all of the examples below, the reference text comes out
-as "target", i.e. the namespace identifier and the decoration or
-separator are stripped.
-
-* Angled brackets::
-
-      `<namespace> target`_
-
-  This is similar to the syntax for embedded URI's (```target
-  <URI>`_``).  It fits well into the existing syntax, but may be
-  confusing at the same time.
-
-* Angled brackets with hash sign::
-
-      `<namespace#> target`_
-
-  The "#" emphasizes the namespace/fragment split.
-
-* Arrows::
-
-      `namespace -> target`_
-
-  This would also allow for namespace-less references; for instance,
-  after ".. namespace:: <- namespace" it could be possible to write::
-
-      `-> target`_
-
-  The arrow syntax may collide with existing target names.  (We could
-  give existing targets name priority though.  I.e., the reference
-  resolver checks whether "foo -> bar" is a valid local target name
-  before looking up target "bar" in namespace "foo".)
-
-  Alternatives for the arrow: ``-->``, or ``>>``.
-
-  Should there we whitespace around the arrow (yes/no/optional)?  It
-  looks more readable with whitespace, but omitting the whitespace
-  makes it terser.
-
-* HTML fragment identifier syntax::
-
-      `namespace#target`_
-
-  Unfortunately though, this easily gets confused with relative URIs::
-
-      .. _reference1: spec.html#target  (<--- URI)
-      .. _reference2: `spec#target`_    (<--- external target)
-
-  This is especially bothersome in cases such as Docutils' own
-  documentation, where we would want to refactor targets referring to
-  relative URI's into indirect targets cross-referencing targets in
-  other documents (so ``config.html#foo`` becomes ```config#foo`_``);
-  visually distinguishing between old-style and new-style targets is
-  important, and a qualifier syntax paralleling HTML's fragment
-  identifier makes this hard.
-
-
 Caching
 -------
 
@@ -513,16 +499,6 @@ and resolving their external named references, it may be necessary to
 process (or re-process) referenced files.  Since this is during
 transform-time, the parser instance is no longer available; it is
 therefore necessary to create a new instance.
-
-We might want to choose a parser.  However, it seems a lot easier to
-assume only standard reStructuredText files for now and simply
-hard-code the standard reStructuredText parser.
-
-[DG] New idea: the Reader could pass a callback (or just pass
-``self``) to the Parser's constructor; the "subdocument" directive
-will call that callback (or ``self.parse_subdocument``), and the
-Reader is responsible for creating new Parsers and assembling the
-super-document.
 
 All requests for doctree and name-to-ID mappings should go through the
 caching system.  In case of a miss, the caching system instantiates a
