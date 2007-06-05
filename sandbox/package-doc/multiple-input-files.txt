@@ -505,8 +505,8 @@ Processing a document is done in the following steps:
    mtimes and ctimes.
 
    This means that the "subdocument" directive must be resolved at
-   transform time, because otherwise we cannot store the doctree
-   before the sub-document has been inserted.
+   transform time (and not at parse time), because otherwise we cannot
+   store the doctree before the sub-document has been inserted.
 
 2. For each file, run transforms, resolving external references using
    the cached name-to-ID mappings of other files.
@@ -524,11 +524,11 @@ name-to-ID mappings are not up-to-date (when being accessed in step
 All cache entries should be stored in a project-wide cache file, in
 order to avoid LaTeX-like creation of many junk files.  Possible names
 include docutils.cache, docutils.aux, or either of them with leading
-dot (does this work reliably on Windows?).  The file is stored in the
-project root and contains a header and a large pickle string (reading
-and writing even large strings of pickled data is reasonably fast).
-In the header of the cache file, store sys.version and
-docutils.__version__; discard cache files that have the wrong version.
+dot.  The file is stored in the project root and contains a header and
+a large pickle string (reading and writing even large strings of
+pickled data is reasonably fast).  In the header of the cache file,
+store sys.version and docutils.__version__; discard cache files that
+have the wrong version.
 
 Potential security issue: Since unpickling is unsafe, an attacker
 could provide a carefully crafted cache file, which is then
@@ -560,10 +560,7 @@ All requests for doctree and name-to-ID mappings should go through the
 caching system.  In case of a miss, the caching system instantiates a
 parser and (re-)parses the requested file.
 
-In fact, all calls by the standalone reader [#reader]_ to the
-reStructuredText parser should go through the cache.  In the case of
-independent files which are not part of a larger documentation
-collection, the system simply does not find a project root and always
-assumes a cache miss.
-
-.. [#reader] Or should we create a new reader?
+In fact, all calls by the standalone reader to the reStructuredText
+parser should go through the cache.  In the case of independent files
+which are not part of a larger documentation collection, the system
+simply does not find a project root and always assumes a cache miss.
