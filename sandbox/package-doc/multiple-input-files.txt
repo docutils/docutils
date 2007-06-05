@@ -443,6 +443,12 @@ separator are stripped.
   <URI>`_``).  It fits well into the existing syntax, but may be
   confusing at the same time.
 
+* Angled brackets with hash sign::
+
+      `<namespace#> target`_
+
+  The "#" emphasizes the namespace/fragment split.
+
 * Arrows::
 
       `namespace -> target`_
@@ -493,9 +499,10 @@ Processing a document is done in the following steps:
 1. For each file in the documentation collection, parse it and turn
    the target names into file-local ID's (this includes error handling
    for duplicate target names).  Cache the parse tree, the name-to-ID
-   mapping, and the list of all included files.  Skip this step for
-   files whose cache entry date-stamp is newer than the file's mtime
-   and ctime, and all included files mtimes and ctimes.
+   mapping, and the list of all files included using the "include"
+   directive.  Skip this step for files whose cache entry date-stamp
+   is newer than the file's mtime and ctime, and all included files
+   mtimes and ctimes.
 
    This means that the "subdocument" directive must be resolved at
    transform time, because otherwise we cannot store the doctree
