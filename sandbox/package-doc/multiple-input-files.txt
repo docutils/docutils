@@ -556,12 +556,6 @@ We might want to choose a parser.  However, it seems a lot easier to
 assume only standard reStructuredText files for now and simply
 hard-code the standard reStructuredText parser.
 
-[DG] New idea: the Reader could pass a callback (or just pass
-``self``) to the Parser's constructor; the "subdocument" directive
-will call that callback (or ``self.parse_subdocument``), and the
-Reader is responsible for creating new Parsers and assembling the
-super-document.
-
 All requests for doctree and name-to-ID mappings should go through the
 caching system.  In case of a miss, the caching system instantiates a
 parser and (re-)parses the requested file.
