@@ -170,6 +170,9 @@ The ``subdocument`` Directive
   [DG] "subdoc" is a good alias.  "Subdocument" implies a single item;
   perhaps "manifest" instead, for multiple items?
 
+* ``docutils.conf`` files in the sub-documents' respective directories
+  are honored.
+
 * You may want to read some insightful remarks by Joaquim Baptista on
   how `files should be expected to be part of different compound
   documents`__.
@@ -317,11 +320,14 @@ separator are stripped.
 Implementation
 ==============
 
-In order to parse sub-documents, we need to instantiate a new parser.
+In order to parse sub-documents, we need to create new parser
+instances.
 
-This is made possible by turning the reader, parser, and writer
-parameters of the Publisher into classes (or callbacks) instead of
-instances.  The Parser must know about the Reader (or about the
+For now, we'll instantiate them by calling parser.__class__(); in the
+long run the reader, parser, and writer parameters of the Publisher
+should be turned into classes (or callbacks) instead of instances.
+
+The Parser must know about the Reader (or about the
 Publisher) and calls Reader.parse_[sub]document in order to parser
 sub-documents.
 
