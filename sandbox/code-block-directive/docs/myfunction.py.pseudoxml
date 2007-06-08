@@ -1,0 +1,35 @@
+<document source="/home/milde/.python/PyLit/trunk/rstdocs/features/myfunction.py.txt">
+    <decoration>
+        <footer>
+            <paragraph>
+                Generated on: 2007-06-05.
+    <paragraph>
+        This is a test of the new code-block directive:
+    <comment xml:space="preserve">
+        Translate this document to HTML with a pygments enhanced frontend, e.g.
+        
+        rst2html-highlight --stylesheet=pygments-default.css --link-stylesheet
+    <literal_block classes="code-block python" raw_content="[u'def my_function():', u'    "just a test"', u'    print 8/2']" xml:space="preserve">
+        <inline classes="k">
+            def
+         
+        <inline classes="nf">
+            my_function
+        <inline classes="p">
+            ():
+        
+            
+        <inline classes="s">
+            "just a test"
+        
+            
+        <inline classes="k">
+            print
+         
+        <inline classes="mi">
+            8
+        <inline classes="o">
+            /
+        <inline classes="mi">
+            2
+        
