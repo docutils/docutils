@@ -62,6 +62,11 @@ __ http://docs.python.org/doc/doc.html
 Other Sandbox Projects
 ----------------------
 
+* code-block-directive__ contains documentation, reasoning and experimental
+  code for support of syntax highlight in docutils.
+  
+__code-block-directive: code-block-directive  
+
 For other sandbox projects, please see the `Docutils Link List`_.
 
 .. _Docutils Link List: http://docutils.sf.net/docs/user/links.html

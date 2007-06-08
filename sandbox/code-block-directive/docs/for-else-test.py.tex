@@ -1,0 +1,166 @@
+\documentclass[10pt,a4paper,english]{article}
+\usepackage{babel}
+\usepackage{ae}
+\usepackage{aeguill}
+\usepackage{shortvrb}
+\usepackage[latin1]{inputenc}
+\usepackage{tabularx}
+\usepackage{longtable}
+\setlength{\extrarowheight}{2pt}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{multirow}
+\usepackage{ifthen}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
+\usepackage[DIV12]{typearea}
+%% generator Docutils: http://docutils.sourceforge.net/
+\newlength{\admonitionwidth}
+\setlength{\admonitionwidth}{0.9\textwidth}
+\newlength{\docinfowidth}
+\setlength{\docinfowidth}{0.9\textwidth}
+\newlength{\locallinewidth}
+\newcommand{\optionlistlabel}[1]{\bf #1 \hfill}
+\newenvironment{optionlist}[1]
+{\begin{list}{}
+  {\setlength{\labelwidth}{#1}
+   \setlength{\rightmargin}{1cm}
+   \setlength{\leftmargin}{\rightmargin}
+   \addtolength{\leftmargin}{\labelwidth}
+   \addtolength{\leftmargin}{\labelsep}
+   \renewcommand{\makelabel}{\optionlistlabel}}
+}{\end{list}}
+\newlength{\lineblockindentation}
+\setlength{\lineblockindentation}{2.5em}
+\newenvironment{lineblock}[1]
+{\begin{list}{}
+  {\setlength{\partopsep}{\parskip}
+   \addtolength{\partopsep}{\baselineskip}
+   \topsep0pt\itemsep0.15\baselineskip\parsep0pt
+   \leftmargin#1}
+ \raggedright}
+{\end{list}}
+% begin: floats for footnotes tweaking.
+\setlength{\floatsep}{0.5em}
+\setlength{\textfloatsep}{\fill}
+\addtolength{\textfloatsep}{3em}
+\renewcommand{\textfraction}{0.5}
+\renewcommand{\topfraction}{0.5}
+\renewcommand{\bottomfraction}{0.5}
+\setcounter{totalnumber}{50}
+\setcounter{topnumber}{50}
+\setcounter{bottomnumber}{50}
+% end floats for footnotes
+% some commands, that could be overwritten in the style file.
+\newcommand{\rubric}[1]{\subsection*{~\hfill {\it #1} \hfill ~}}
+\newcommand{\titlereference}[1]{\textsl{#1}}
+% end of "some commands"
+\input{pygments-default.sty}
+\title{Example for syntax highlight with Pygments}
+\author{}
+\date{}
+\hypersetup{
+pdftitle={Example for syntax highlight with Pygments}
+}
+\raggedbottom
+\begin{document}
+\maketitle
+
+
+\setlength{\locallinewidth}{\linewidth}
+% # -*- rst-mode -*- 
+
+Translate this document to HTML with a pygments enhanced frontend:
+\begin{quote}{\ttfamily \raggedright \noindent
+rst2html-pygments~-{}-stylesheet=pygments-default.css
+}\end{quote}
+
+or to LaTeX with:
+\begin{quote}{\ttfamily \raggedright \noindent
+rst2latex-pygments~-{}-stylesheet=pygments-default.sty
+}\end{quote}
+
+to gain syntax highlight in the output.
+% Run the doctests with ``pylit --doctest for-else-test.py``. 
+
+
+%___________________________________________________________________________
+
+\hypertarget{for-else-test}{}
+\pdfbookmark[0]{for-else-test}{for-else-test}
+\section*{for-else-test}
+
+Test the flow in a \titlereference{for} loop with \titlereference{else} statement.
+
+First define a simple \titlereference{for} loop.
+\begin{Verbatim}[commandchars=@\[\]]
+@Cax[def] @CaJ[loop1](iterable):
+    @Car["""simple for loop with `else` statement"""]
+    @Cax[for] i @Cam[in] iterable:
+        @Cax[print] i
+    @Cax[else]:
+        @Cax[print] @Cad["]@Cad[iterable empty]@Cad["]
+    @Cax[print] @Cad["]@Cad[Ende]@Cad["]
+
+\end{Verbatim}
+
+Now test it:
+
+The first test runs as I expect: iterator empty -{\textgreater} else clause applies:
+\begin{Verbatim}[commandchars=@\[\]]
+@CaN[>>> ]loop1(@CaW[range](@Cag[0]))
+@Caa[iterable empty]
+@Caa[Ende]
+
+\end{Verbatim}
+
+However, the else clause even runs if the iterator is not empty in the first
+place but after it is ``spent'':
+\begin{Verbatim}[commandchars=@\[\]]
+@CaN[>>> ]loop1(@CaW[range](@Cag[3]))
+@Caa[0]
+@Caa[1]
+@Caa[2]
+@Caa[iterable empty]
+@Caa[Ende]
+
+\end{Verbatim}
+
+It seems like the else clause can only be prevented, if we break out of
+the loop. Let's try
+\begin{Verbatim}[commandchars=@\[\]]
+@Cax[def] @CaJ[loop2](iterable):
+    @Car["""for loop with `break` and `else` statement"""]
+    @Cax[for] i @Cam[in] iterable:
+        @Cax[print] i
+        @Cax[break]
+    @Cax[else]:
+        @Cax[print] @Cad["]@Cad[iterable empty]@Cad["]
+    @Cax[print] @Cad["]@Cad[Ende]@Cad["]
+
+\end{Verbatim}
+
+And indeed, the else clause is skipped after breaking out of the loop:
+\begin{Verbatim}[commandchars=@\[\]]
+@CaN[>>> ]loop2(@CaW[range](@Cag[3]))
+@Caa[0]
+@Caa[Ende]
+
+\end{Verbatim}
+
+The empty iterator runs as expected:
+\begin{Verbatim}[commandchars=@\[\]]
+@CaN[>>> ]loop2(@CaW[range](@Cag[0]))
+@Caa[iterable empty]
+@Caa[Ende]
+
+\end{Verbatim}
+
+\begin{center}\small
+
+Generated on: 2007-04-24.
+
+
+\end{center}
+
+\end{document}

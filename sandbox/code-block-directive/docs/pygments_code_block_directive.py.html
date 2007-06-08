@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="generator" content="Docutils 0.4.1: http://docutils.sourceforge.net/" />
+<title></title>
+<meta name="author" content="a Pygments author|contributor; Felix Wiemann; Guenter Milde" />
+<meta name="date" content="$Date$" />
+<meta name="copyright" content="This module has been placed in the public domain." />
+<link rel="stylesheet" href="/usr/lib/python2.4/site-packages/docutils/writers/html4css1/html4css1.css" type="text/css" />
+</head>
+<body>
+<div class="document">
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr><th class="docinfo-name">Author:</th>
+<td>a Pygments author|contributor; Felix Wiemann; Guenter Milde</td></tr>
+<tr><th class="docinfo-name">Date:</th>
+<td>$Date$</td></tr>
+<tr><th class="docinfo-name">Copyright:</th>
+<td>This module has been placed in the public domain.</td></tr>
+</tbody>
+</table>
+<!-- #!/usr/bin/python -->
+<p>This is a merge of <a class="reference" href="http://pygments.org/docs/rstdirective/">Using Pygments in ReST documents</a> from the <a class="reference" href="http://pygments.org/">pygments</a>
+documentation, and a <a class="reference" href="http://article.gmane.org/gmane.text.docutils.user/3689">proof of concept</a> by Felix Wiemann.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="14%" />
+<col width="86%" />
+</colgroup>
+<tbody valign="top">
+<tr><td>2007-06-01</td>
+<td>Removed redundancy from class values.</td>
+</tr>
+<tr><td>2007-06-04</td>
+<td>Merge of successive tokens of same type
+(code taken from pygments.formatters.others).</td>
+</tr>
+<tr><td>2007-06-05</td>
+<td>Separate docutils formatter script
+Use pygments' CSS class names (like the html formatter)
+allowing the use of pygments-produced style sheets.</td>
+</tr>
+</tbody>
+</table>
+<pre class="literal-block">
+&quot;&quot;&quot;Define and register a code-block directive using pygments
+&quot;&quot;&quot;
+</pre>
+<div class="section">
+<h1><a id="requirements" name="requirements">Requirements</a></h1>
+<pre class="literal-block">
+from docutils import nodes
+from docutils.parsers.rst import directives
+import pygments
+from pygments.lexers import get_lexer_by_name
+from pygments_docutils_formatter import DocutilsFormatter
+</pre>
+</div>
+<div class="section">
+<h1><a id="customisation" name="customisation">Customisation</a></h1>
+<p>Do not insert inline nodes for the following tokens.
+(You could add e.g. Token.Punctuation like <tt class="docutils literal"><span class="pre">['',</span> <span class="pre">'p']</span></tt>.)</p>
+<pre class="literal-block">
+unstyled_tokens = ['']
+</pre>
+</div>
+<div class="section">
+<h1><a id="code-block-directive" name="code-block-directive">code_block_directive</a></h1>
+<pre class="literal-block">
+def code_block_directive(name, arguments, options, content, lineno,
+                       content_offset, block_text, state, state_machine):
+    language = arguments[0]
+    # create a literal block element and set class argument
+    code_block = nodes.literal_block(raw_content=content,
+                                     classes=[&quot;code-block&quot;, language])
+    # Get lexer for language (use text as fallback)
+    try:
+        lexer = get_lexer_by_name(language)
+    except ValueError:
+        lexer = get_lexer_by_name('text')
+
+    # parse content with pygments
+    tokens = list(pygments.lex(u'\n'.join(content), lexer))
+
+    for cls, value in DocutilsFormatter(tokens):
+        if cls in unstyled_tokens:
+            # insert as Text to decrease the verbosity of the output.
+            code_block += nodes.Text(value, value)
+        else:
+            code_block += nodes.inline(value, value, classes=[cls])
+
+    return [code_block]
+</pre>
+</div>
+<div class="section">
+<h1><a id="register-directive" name="register-directive">Register Directive</a></h1>
+<pre class="literal-block">
+code_block_directive.arguments = (1, 0, 1)
+code_block_directive.content = 1
+directives.register_directive('code-block', code_block_directive)
+</pre>
+</div>
+<div class="section">
+<h1><a id="test-output" name="test-output">Test output</a></h1>
+<p>If called from the command line, call the docutils publisher to render the
+input:</p>
+<pre class="literal-block">
+if __name__ == '__main__':
+    from docutils.core import publish_cmdline, default_description
+    description = &quot;code-block directive test output&quot; + default_description
+    try:
+        import locale
+        locale.setlocale(locale.LC_ALL, '')
+    except:
+        pass
+    # Uncomment the desired output format:
+    publish_cmdline(writer_name='pseudoxml', description=description)
+    # publish_cmdline(writer_name='xml', description=description)
+    # publish_cmdline(writer_name='html', description=description)
+    # publish_cmdline(writer_name='latex', description=description)
+    # publish_cmdline(writer_name='newlatex2e', description=description)
+</pre>
+</div>
+</div>
+<div class="footer">
+<hr class="footer" />
+<a class="reference" href="pygments_code_block_directive.py.txt">View document source</a>.
+Generated on: 2007-06-05.
+
+</div>
+</body>
+</html>

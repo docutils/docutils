@@ -1,0 +1,11 @@
+This is a test of the new code-block directive:
+
+.. Translate this document to HTML with a pygments enhanced frontend, e.g.
+
+     rst2html-highlight --stylesheet=pygments-default.css --link-stylesheet
+
+.. code-block:: python
+
+  def my_function():
+      "just a test"
+      print 8/2
