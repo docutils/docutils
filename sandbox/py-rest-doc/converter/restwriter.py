@@ -172,7 +172,7 @@ class RestWriter(object):
         self.sectionlabel = ''          # most recent \label command
         self.thisclass = ''             # most recent classdesc name
         self.sectionmeta = None         # current section metadata
-        self.noescape = False           # don't escape text nodes
+        self.noescape = 0               # don't escape text nodes
         self.indexsubitem = ''          # current \withsubitem text
 
     def write_document(self, rootnode):
@@ -387,12 +387,13 @@ class RestWriter(object):
     def visit_wrapped(self, pre, node, post, noescape=False):
         """ Write a node within a paragraph, wrapped with pre and post strings. """
         if noescape:
-            self.noescape = True
+            self.noescape += 1
         self.curpar.append(pre)
         with self.noflush:
             self.visit_node(node)
         self.curpar.append(post)
-        self.noescape = False
+        if noescape:
+            self.noescape -= 1
 
     def visit_node(self, node):
         """ "Write" a node (appends to curpar or writes something). """
@@ -515,13 +516,13 @@ class RestWriter(object):
 
     def _write_sig(self, spec, args):
         # don't escape "*" in signatures
-        self.noescape = True
+        self.noescape += 1
         for c in spec:
             if c.isdigit():
                 self.visit_node(self.get_textonly_node(args[int(c)]))
             else:
                 self.curpar.append(c)
-        self.noescape = False
+        self.noescape -= 1
 
     def visit_DescEnvironmentNode(self, node):
         envname = node.envname
@@ -932,7 +933,7 @@ class RestWriter(object):
                                    ' <%s>`_' % target)
         elif cmdname == 'character':
             # ``'a'`` is not longer than :character:`a`
-            self.visit_wrapped("``'", content, "'``")
+            self.visit_wrapped("``'", content, "'``", noescape=True)
         elif cmdname == 'manpage':
             self.curpar.append(':manpage:`')
             self.visit_node(self.get_textonly_node(content, warn=0))
