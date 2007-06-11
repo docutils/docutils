@@ -310,10 +310,8 @@ class StandaloneHTMLBuilder(Builder):
                  'title': self.render_partial(self.env.titles[related[0]])['title']})
             related = self.env.toctree_relations.get(related[0])
         if parents:
-            parents.pop() # remove link to "contents.rst"
-        parents.append(
-            {'link': self.get_relative_uri(filename, 'index.rst'),
-             'title': 'Python Documentation'})
+            parents.pop() # remove link to "contents.rst"; we have a generic
+                          # "back to index" link already
         parents.reverse()
 
         title = self.env.titles.get(filename)
@@ -335,6 +333,7 @@ class StandaloneHTMLBuilder(Builder):
             sourcename = sourcename,
             last_updated = self.last_updated,
             builder = self.name,
+            release = self.config['version']
         )
 
         self.handle_file(filename, doctree, context)
@@ -355,20 +354,16 @@ class StandaloneHTMLBuilder(Builder):
              for (mn, (fn, sy, pl)) in self.env.modules.iteritems()),
             key=lambda x: x[0].lower()))
 
-        # use pseudo name 'special.rst' because all of them are at top level
-        # XXX: wrong for index?
-        parents = [{'link': self.get_relative_uri('special.rst', 'index.rst'),
-                    'title': 'Python Documentation'}]
-
         specialcontext = dict(
             # used to create links to supporting files like stylesheets
             pathto = relpath_to(self, self.get_target_uri('special.rst')),
             genindexentries = self.env.index,
             genindexcounts = indexcounts,
             modindexentries = modules,
-            parents = parents,
+            parents = [],
             len = len,
             builder = self.name,
+            release = self.config['version'],
         )
 
         self.handle_specials(specialcontext)
