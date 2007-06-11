@@ -71,6 +71,7 @@ def main(argv):
         elif opt == '-u':
             if filenames:
                 usage(argv, 'Cannot combine update option and filenames.')
+                return 1
             update = True
         elif opt == '-O':
             if '=' in val:

@@ -251,6 +251,10 @@ class BuildEnvironment:
                 if filename not in self.all_files:
                     changed.append(filename)
                 else:
+                    # if the doctree file is not there, rebuild
+                    if not path.isfile(path.join(self.srcdir, filename[:-3] + 'doctree')):
+                        changed.append(filename)
+                        continue
                     mtime, md5 = self.all_files[filename]
                     newmtime = path.getmtime(path.join(self.srcdir, filename))
                     if newmtime == mtime:

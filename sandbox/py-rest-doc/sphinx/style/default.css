@@ -562,15 +562,15 @@ tt.descclassname {
     background-color: transparent;
 }
 
+tt.xref {
+    background-color: transparent;
+    font-weight: bold;
+}
+
 .footnote:target  { background-color: #ffa }
 
 h1 tt, h2 tt, h3 tt, h4 tt, h5 tt, h6 tt {
     background-color: transparent;
-}
-
-a tt {
-    background-color: transparent;
-    font-weight: bold;
 }
 
 .optional {
