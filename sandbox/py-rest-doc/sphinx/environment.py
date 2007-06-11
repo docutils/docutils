@@ -11,6 +11,7 @@
 from __future__ import with_statement
 
 import heapq
+import hashlib
 import difflib
 import itertools
 import cPickle as pickle
@@ -40,7 +41,7 @@ default_settings = {
 
 # This is increased every time a new environment attribute is added
 # to properly invalidate pickle files.
-ENV_VERSION = 8
+ENV_VERSION = 9
 
 
 def walk_depth(node, depth, maxdepth):
@@ -163,7 +164,7 @@ class BuildEnvironment:
 
         # Build times -- to determine changed files
         # Also use this as an inventory of all existing and built filenames.
-        self.all_files = {}         # filename -> mtime at the time of build
+        self.all_files = {}         # filename -> (mtime, md5) at the time of build
 
         # File metadata
         self.metadata = {}          # filename -> dict of metadata items
@@ -250,8 +251,14 @@ class BuildEnvironment:
                 if filename not in self.all_files:
                     changed.append(filename)
                 else:
-                    mtime = path.getmtime(path.join(self.srcdir, filename))
-                    if mtime > self.all_files.get(filename, 0):
+                    mtime, md5 = self.all_files[filename]
+                    newmtime = path.getmtime(path.join(self.srcdir, filename))
+                    if newmtime == mtime:
+                        continue
+                    # check the MD5
+                    with file(path.join(self.srcdir, filename), 'rb') as f:
+                        newmd5 = hashlib.md5(f.read()).digest()
+                    if newmd5 != md5:
                         changed.append(filename)
 
         return removed, changed
@@ -289,7 +296,11 @@ class BuildEnvironment:
         self.create_title_from(filename, doctree)
         self.note_labels_from(filename, doctree)
         self.build_toc_from(filename, doctree)
-        self.all_files[filename] = path.getmtime(filesystem_filename)
+
+        # calculate the MD5 of the file at time of build
+        with file(filesystem_filename, 'rb') as f:
+            md5 = hashlib.md5(f.read()).digest()
+        self.all_files[filename] = (path.getmtime(filesystem_filename), md5)
 
         # make it picklable
         doctree.reporter = None
