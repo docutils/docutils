@@ -106,7 +106,7 @@ def xfileref_role(typ, rawtext, text, lineno, inliner, options={}, content=[]):
     pnode['reftarget'] = ws_re.sub('', text)
     pnode['modname'] = env.currmodule
     pnode['classname'] = env.currclass
-    pnode += innernodetypes.get(typ, nodes.literal)(rawtext, text)
+    pnode += innernodetypes.get(typ, nodes.literal)(rawtext, text, classes=['xref'])
     return [pnode], []
 
 
