@@ -1,0 +1,21 @@
+#!/usr/bin/sh
+
+# (re)create a html rendering of the standalone_rst_html4css1.txt syntax
+# example
+
+# The default INPUT path works with a Debian python-docutils installation. 
+# Adapt if needed.
+
+INPUT=/usr/src/docutils-svn/docutils/test/functional/input/standalone_rst_html4css1.txt
+OUTPUT=../data/standalone_rst_html4trans.html
+
+../rst2html_trans.py $INPUT --traceback > $OUTPUT
+
+# Replace: 
+
+# '../../../docs/user/rst/images/'
+# '../../../docutils/docs/user/rst/images/'
+
+python fix_image_links.py $OUTPUT
+
+
