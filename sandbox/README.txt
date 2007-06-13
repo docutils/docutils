@@ -1,18 +1,23 @@
+..                            -*- rst-mode -*-
+
 =====================
  README: The Sandbox
 =====================
 
-The Sandbox_ is a place to play around, to try out and share ideas.
-It's a part of the Subversion repository but it isn't distributed as
-part of Docutils_ releases.  Each developer who wants to play here
-should create their own subdirectory (suggested name: SourceForge ID,
-or given name + family initial).
+The Sandbox_ is a place to play around, to try out and share ideas. It's a
+part of the Subversion repository but it isn't distributed as part of
+Docutils_ releases. 
+It's OK to make a mess in the sandbox! But please, play nice.
 
-It's OK to make a mess here!  But please, play nice.
+A project-specific subdirectory should be created for each new project. 
+Any developer who wants to play in the sandbox may create their own
+subdirectory (suggested name: SourceForge ID, or given name + family
+initial), but project directories are recommended over personal directories,
+which discourage collaboration. 
 
 For more information, please see the `Docutils Project Policies`_.
 
-.. This link gives readers a way to *get to* the sandbox:
+.. This link gives readers a way to *go to* the sandbox:
 .. _Sandbox: ./
 
 .. _Docutils: http://docutils.sourceforge.net/
@@ -62,11 +67,12 @@ __ http://docs.python.org/doc/doc.html
 Other Sandbox Projects
 ----------------------
 
-* code-block-directive__ contains documentation, reasoning and experimental
+* code-block-directive_ contains documentation, reasoning and experimental
   code for support of syntax highlight in docutils.
   
-__code-block-directive: code-block-directive  
 
 For other sandbox projects, please see the `Docutils Link List`_.
+
+.. _code-block-directive: code-block-directive
 
 .. _Docutils Link List: http://docutils.sf.net/docs/user/links.html
