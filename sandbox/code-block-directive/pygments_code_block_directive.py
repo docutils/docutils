@@ -14,9 +14,10 @@
 # 2007-06-05 Separate docutils formatter script
 #            Use pygments' CSS class names (like the html formatter)
 #            allowing the use of pygments-produced style sheets.
-# 2007-06-07 Re-include the formatting of the parsed tokens 
-#            (class DocutilsInterface)
-# 2007-06-08 Failsave implementation (fallback if pygments not found)
+# 2007-06-07 Merge in the formatting of the parsed tokens
+#            (misnamed as docutils_formatter) as class DocutilsInterface
+# 2007-06-08 Failsave implementation (fallback to a standard literal block 
+#            if pygments not found)
 # ========== ===========================================================
 # 
 # ::
@@ -53,7 +54,7 @@ unstyled_tokens = ['']
 # This interface class combines code from
 # pygments.formatters.html and pygments.formatters.others.
 # 
-# It does not require anything of docutils and could alse become a part of
+# It does not require anything of docutils and could also become a part of
 # pygments::
 
 class DocutilsInterface(object):
