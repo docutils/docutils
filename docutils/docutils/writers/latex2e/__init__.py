@@ -76,6 +76,10 @@ class Writer(writers.Writer):
           ['--use-latex-toc'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
+         ('Add parts on top of the section hierarchy.',
+          ['--use-part-section'],
+          {'default': 0, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
          ('Let LaTeX print author and date, do not show it in docutils '
           'document info.',
           ['--use-latex-docinfo'],
@@ -347,8 +351,9 @@ latex_headings = {
 class DocumentClass:
     """Details of a LaTeX document class."""
 
-    def __init__(self, document_class):
+    def __init__(self, document_class, with_part=False):
         self.document_class = document_class
+        self._with_part = with_part
 
     def section(self, level):
         """ Return the section name at the given level for the specific
@@ -360,6 +365,8 @@ class DocumentClass:
                      'paragraph', 'subparagraph' ]
         if self.document_class in ('book', 'report', 'scrartcl', 'scrbook'):
             sections.insert(0, 'chapter')
+        if self._with_part:
+            sections.insert(0, 'part')
         if level <= len(sections):
             return sections[level-1]
         else:
@@ -619,7 +626,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.d_options += ',%s' % \
                     self.babel.get_language()
 
-        self.d_class = DocumentClass(settings.documentclass)
+        self.d_class = DocumentClass(settings.documentclass, settings.use_part_section)
         # object for a table while proccessing.
         self.table_stack = []
         self.active_table = Table('longtable',settings.table_style)
