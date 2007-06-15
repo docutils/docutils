@@ -25,50 +25,54 @@ class TestPackages(object):
     def test_optionstring_empty(self):
         """return empty string for empty optionlist"""
         assert self.pkgs._optionstring([]) == ''
+        
+    def test_optionstring_empty_content(self):
+        assert self.pkgs._optionstring(['']) == ''
+        assert self.pkgs._optionstring(['', None]) == ''
 
     def test_require(self):
-        print "empty packages dict", self.pkgs.packages
-        assert self.pkgs.packages == {}, "packages dict should be empty"
+        print "empty packages dict", self.pkgs.register
+        assert self.pkgs.register == {}, "packages dict should be empty"
         self.pkgs.require("muckla")
-        print "with 'muckla'", self.pkgs.packages
-        assert self.pkgs.packages['muckla'] == ()
+        print "with 'muckla'", self.pkgs.register
+        assert self.pkgs.register['muckla'] == ()
         self.pkgs.require("hens", 'soffi', 'moffi')
-        print "with 'hens'", self.pkgs.packages
-        assert self.pkgs.packages['hens'] == ('soffi', 'moffi')
+        print "with 'hens'", self.pkgs.register
+        assert self.pkgs.register['hens'] == ('soffi', 'moffi')
         
     def test_require_twice(self):
         """calling Packages.require() twice with the same package 
         should result in only one package entry"""
         self.pkgs.require("mula")
         self.pkgs.require("mula")
-        print "with 'mula'", self.pkgs.packages
-        assert self.pkgs.packages['mula'] == ()
-        assert len(self.pkgs.packages) == 1, "one package registered"
+        print "with 'mula'", self.pkgs.register
+        assert self.pkgs.register['mula'] == ()
+        assert len(self.pkgs.register) == 1, "one package registered"
 
     def test_call(self):
         # return empty list if no packages are required
-        assert self.pkgs() == ['% required LaTeX packages\n']
+        assert self.pkgs() == []
         # return list of packages
         self.pkgs.require("mole")
         self.pkgs.require("hens", 'soffi', 'moffi')
         lines = self.pkgs()
         print lines
         # order of lines is undefined
-        assert len(lines) == 3, "should return 3 lines"
+        assert len(lines) == 2, "should return 2 lines"
         assert '\\usepackage{mole}\n' in lines, "should use 'mole'"
         assert '\usepackage[soffi,moffi]{hens}\n' in lines, "should use 'hens'"
         del self.pkgs
 
     def test_str(self):
         """should return latex commands for inclusion of required packages"""
-        assert str(self.pkgs) == '% required LaTeX packages\n'
+        assert str(self.pkgs) == ''
         self.pkgs.require("mouse")
         self.pkgs.require("hens", 'soffi', 'moffi')
         result = str(self.pkgs)
         print result
         # order of lines is undefined
         lines = result.splitlines(True)
-        assert len(lines) == 3, "should return 3 lines"
+        assert len(lines) == 2, "should return 2 lines"
         assert '\\usepackage{mouse}\n' in lines, "should use 'mouse'"
         assert '\usepackage[soffi,moffi]{hens}\n' in lines, "should use 'hens'"
         del self.pkgs
