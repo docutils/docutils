@@ -173,11 +173,9 @@ class Writer(writers.Writer):
         visitor = self.translator_class(self.document)
         self.document.walkabout(visitor)
         self.output = visitor.astext()
-        self.head_prefix = visitor.head_prefix
-        self.head = visitor.head
-        self.body_prefix = visitor.body_prefix
-        self.body = visitor.body
-        self.body_suffix = visitor.body_suffix
+        # copy parts 
+        for attr in self.visitor_attributes:
+            setattr(self, attr, getattr(visitor, attr))
 
     def assemble_parts(self):
         writers.Writer.assemble_parts(self)
@@ -309,14 +307,21 @@ class Packages:
     Collect required packages. If called as string, return '\\usepackage'
     lines for required packages"""
     
-    def __init__(self, packages_dict={}):
-        self.packages = packages_dict.copy()
+    def __init__(self, packages_register={}):
+        self.register = packages_register.copy()
         
     def require(self, package, *options):
-        self.packages[package] = options
+        """register a package as required"""
+        self.register[package] = options
+    
+    def update(self, packages_instance):
+        """merge the packages registered in `packages_instance`"""
+        self.register.update(packages_instance.register) 
     
     def _optionstring(self, options):
         """format list of options as optional argument"""
+        # filter empty options (e.g. '' or None)
+        options = [option for option in options if option]
         if not options:
             return ''
         return '[%s]' % ','.join(options)
@@ -324,10 +329,11 @@ class Packages:
     def __call__(self):
         """return list of 'usepackage' lines for required packages
         """
-        return ['% required LaTeX packages\n'] \
-             + ['\\usepackage%s{%s}\n'%(self._optionstring(options), package)
-                for package, options in self.packages.items()]
-
+        return ['\\usepackage%s{%s}\n'%(self._optionstring(options), package)
+                for package, options in self.register.items()]
+    
+    def __repr__(self):
+        return 'Packages(%r)' % self.register
 
     def __str__(self):
         return ''.join(self())
@@ -418,6 +424,7 @@ class Table:
     def __init__(self,latex_type,table_style):
         self._latex_type = latex_type
         self._table_style = table_style
+        self.packages = Packages()      # collect required packages
         self._open = 0
         # miscellaneous attributes
         self._attrs = {}
@@ -432,6 +439,11 @@ class Table:
         self._attrs = {}
         self._in_head = 0 # maybe context with search
     def close(self):
+        # register required packages for this table
+        if self._table_style == 'booktabs':
+            self.packages.require('booktabs')
+        if self._latex_type == 'longtable':
+            self.packages.require('longtable')
         self._open = 0
         self._col_specs = None
         self.caption = None
@@ -439,20 +451,12 @@ class Table:
         self.stubs = []
     def is_open(self):
         return self._open
+    
     def set_table_style(self, table_style):
         if not table_style in ('standard','booktabs','borderless','nolines'):
             return
         self._table_style = table_style
 
-    def used_packages(self):
-        """Return list of used packages and options 
-        
-        as tuples like (<package-name>, option, option, ...)
-        """
-        if self._table_style == 'booktabs':
-            return [('booktabs', )]
-        return []
-    
     def get_latex_type(self):
         return self._latex_type
 
@@ -599,12 +603,18 @@ class LaTeXTranslator(nodes.NodeVisitor):
     # When options are given to the documentclass, latex will pass them
     # to other packages, as done with babel.
     # Dummy settings might be taken from document settings
-
+    
+    # Templates
+    # ---------
+    
     latex_head = '\\documentclass[%s]{%s}\n'
     linking = '\\usepackage[colorlinks=%s,linkcolor=%s,urlcolor=%s]{hyperref}\n'
     stylesheet = '\\input{%s}\n'
-    # add a generated on day , machine by user using docutils version.
+    # TODO (or not?): add a generated on day , machine by user using docutils version.
     generator = '%% generator Docutils: http://docutils.sourceforge.net/\n'
+    
+    # Config setting defaults
+    # -----------------------
 
     # use latex tableofcontents or let docutils do it.
     use_latex_toc = 0
@@ -660,51 +670,54 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.author_separator = self.language.author_separators[0]
         self.d_options = self.settings.documentoptions
         if self.babel.get_language():
-            self.d_options += ',%s' % \
-                    self.babel.get_language()
+            self.d_options += ',%s' % self.babel.get_language()
 
-        self.d_class = DocumentClass(settings.documentclass, settings.use_part_section)
+        self.d_class = DocumentClass(settings.documentclass, 
+                                     settings.use_part_section)
         # LaTeX package manager
-        self.latex_packages = Packages()
+        self.packages = Packages()
         #  Font encoding
         if self.font_encoding == '':
-            self.latex_packages.require('ae')
-            self.latex_packages.require('aeguill')
+            self.packages.require('ae')
+            self.packages.require('aeguill')
         elif self.font_encoding != 'OT1':
-            self.latex_packages.require('fontenc', self.font_encoding)
+            self.packages.require('fontenc', self.font_encoding)
         #  Input encoding
         if self.latex_encoding.startswith('utf8'):
-            self.latex_packages.require('ucs')
-            self.latex_packages.require('inputenc', 'utf8x')
+            self.packages.require('ucs')
+            self.packages.require('inputenc', 'utf8x')
         else:
-            self.latex_packages.require('inputenc', self.latex_encoding)
-
-        # object for a table while proccessing.
-        self.table_stack = []
-        self.active_table = Table('longtable',settings.table_style)
-
+            self.packages.require('inputenc', self.latex_encoding)
+        # Grapic package
+        self.graphicx_package = []
+        if self.settings.graphicx_option.lower() == 'auto':
+            # Let LaTeX determine option at runtime
+            # TODO use ifthen LaTeX command instead of raw TeX
+            self.graphicx_package = [
+                                     '\\ifx\\pdftexversion\\undefined',
+                                     '  \\usepackage{graphicx}',
+                                     '\\else',
+                                     '  \\usepackage[pdftex]{graphicx}',
+                                     '\\fi\n']
+        else:
+            self.packages.require('graphicx', self.settings.graphicx_option)
+        # More packages
+        self.packages.require('amsmath')  # where is this needed?
+        self.packages.require('color')  # require only if needed?
+        # possible other packages.
+        # 'fancyhdr'  (set this in the style sheet)
+        # 'ltxtable' is a combination of tabularx and longtable (pagebreaks).
+        #   but ??
+        
+        # Use typearea package to determine the margins:
         # HACK.  Should have more sophisticated typearea handling.
-        self.typearea = ''
+        # (Or do the typearea handling in the style sheet?)
+        self.typearea = []
         if settings.documentclass.find('scr') == -1:
-            self.latex_packages.require('typearea', 'DIV12')
+            self.packages.require('typearea', 'DIV12')
         elif (self.d_options.find('DIV') == -1 
               and self.d_options.find('BCOR') == -1):
-            self.typearea = '\\typearea{12}\n'
-        
-        # Grapic package
-        if self.settings.graphicx_option == '':
-            self.graphicx_package = '\\usepackage{graphicx}\n'
-        elif self.settings.graphicx_option.lower() == 'auto':
-            self.graphicx_package = '\n'.join(
-                ('%Check if we are compiling under latex or pdflatex',
-                 '\\ifx\\pdftexversion\\undefined',
-                 '  \\usepackage{graphicx}',
-                 '\\else',
-                 '  \\usepackage[pdftex]{graphicx}',
-                 '\\fi\n'))
-        else:
-            self.graphicx_package = (
-                '\\usepackage[%s]{graphicx}\n' % self.settings.graphicx_option)
+            self.typearea.append('\\typearea{12}\n')
 
         if self.linking: # and maybe check for pdf
             self.pdfinfo = [ ]
@@ -713,22 +726,30 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             self.pdfinfo = None
         
-        # head_prefix == LaTeX preamble
-        #   First line: LaTeX document class
+        # `head_prefix` is the LaTeX preamble
+        # and will be completed after walkabout() by assemble_head_prefix().
         self.head_prefix = [
-            self.latex_head % (self.d_options, settings.documentclass),
+            # this are the documents first lines, starting with document class
+            self.latex_head % (self.d_options, settings.documentclass), 
+            self.generator,
+            '\n',                
+            '% LaTeX Preamble\n',
+            '% ==============\n',
+            '% Required LaTeX Packages\n',
+            '% -----------------------\n',
             '\\usepackage{babel}\n', # language is in document's options.
             '\\usepackage{ifthen}\n',   # before hyperref!
-            '\\usepackage{amsmath}\n',   # what fore amsmath.
             ]
-        #   to be completed after walkabout() by assemble_head_prefix().
         
         # NOTE: Latex wants a date and an author, rst puts this into
         #   docinfo, so normally we do not want latex author/date handling.
         # latex article has its own handling of date and author, deactivate.
         # So we always emit \title{...} \author{...} \date{...}, even if the
         # "..." are empty strings.
-        self.head = [ ]
+        self.head = ['\n',
+                     '% Head\n',
+                     '% ====\n',
+                    ]
         
         # separate title, so we can append subtitle.
         self.title = ''
@@ -744,6 +765,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.topic_classes = []
         # column specification for tables
         self.table_caption = None
+        # object for a table while proccessing.
+        self.table_stack = []
+        self.active_table = Table('longtable',settings.table_style)
         
         # Flags to encode
         # ---------------
@@ -786,53 +810,57 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def assemble_head_prefix(self):
         """Build the latex preamble and assign to self.head_prefix
         
-        Do this after a walkabout to include actually required components
+        Called by `astext` after a walkabout to include actually 
+        required components
         """
-            
-        fixed_preamble_lines = [        
-              # optional packages (required only in some cases)
-              # * tabularx: for docinfo, automatic width of columns, always on one page.
-              '\\usepackage{tabularx}\n',
-              '\\usepackage{longtable}\n',
-              # possible other packages.
-              # * fancyhdr
-              # * ltxtable is a combination of tabularx and longtable (pagebreaks).
-              #   but ??
-              #
-              # extra space between text in tables and the line above them
-              '\\setlength{\\extrarowheight}{2pt}\n',
-              self.graphicx_package,
-              '\\usepackage{color}\n',
-              '\\usepackage{multirow}\n',
-              self.linking % (self.colorlinks, self.hyperlink_color, self.hyperlink_color),
-              self.typearea,
-              self.generator,
-              # latex lengths
-              '\\newlength{\\admonitionwidth}\n',
-              '\\setlength{\\admonitionwidth}{0.9\\textwidth}\n'
-              # width for docinfo tablewidth
-              '\\newlength{\\docinfowidth}\n',
-              '\\setlength{\\docinfowidth}{0.9\\textwidth}\n'
-              # linewidth of current environment, so tables are not wider
-              # than the sidebar: using locallinewidth seems to defer evaluation
-              # of linewidth, this is fixing it.
-              '\\newlength{\\locallinewidth}\n',
-              # will be set later.
-              ]
         
+        # Defaults|Fallbacks for locally defined latex objects
         # TODO insert only required commands and environments
-        self.head_prefix = (self.head_prefix + self.latex_packages()
-                            + fixed_preamble_lines
-                            + latex_headings['optionlist_environment']
-                            + latex_headings['lineblock_environment']
-                            + latex_headings['footnote_floats']
-                            + latex_headings['some_commands']
-                           )
+        local_definitions = (
+            ['\n',
+             '% Defaults for locally defined latex objects\n',
+             '% ------------------------------------------\n',
+             # latex lengths
+             '\\newlength{\\admonitionwidth}\n',
+             '\\setlength{\\admonitionwidth}{0.9\\textwidth}\n'
+             # width for docinfo tablewidth
+             '\\newlength{\\docinfowidth}\n',
+             '\\setlength{\\docinfowidth}{0.9\\textwidth}\n'
+             # linewidth of current environment, so tables are not wider
+             # than the sidebar: using locallinewidth seems to defer evaluation
+             # of linewidth, this is fixing it.
+             '\\newlength{\\locallinewidth}\n',
+             # will be set/updated in the document body
+            ]
+            + latex_headings['optionlist_environment']
+            + latex_headings['lineblock_environment']
+            + latex_headings['footnote_floats']
+            + latex_headings['some_commands']
+        )
+        
+        style_settings = ['\n',
+                          '% Layout settings\n',
+                          '% ---------------\n',
+                          # extra space between text in tables 
+                          # and the line above them 
+                          # TODO: (needs what package?)
+                          # '\\setlength{\\extrarowheight}{2pt}\n'
+                         ]
         ## stylesheet is last: so it might be possible to overwrite defaults.
         stylesheet = utils.get_stylesheet_reference(self.settings)
         if stylesheet:
             settings.record_dependencies.add(stylesheet)
-            self.head_prefix.append(self.stylesheet % (stylesheet))
+            style_settings.append(self.stylesheet % (stylesheet))
+            
+        self.head_prefix.extend(self.packages()
+                                + self.typearea
+                                + self.graphicx_package
+                                + [self.linking % (self.colorlinks, 
+                                                   self.hyperlink_color, 
+                                                   self.hyperlink_color)]
+                                + local_definitions
+                                + style_settings
+                               )
 
  
 
@@ -1013,20 +1041,21 @@ class LaTeXTranslator(nodes.NodeVisitor):
         return self.encode(whitespace.sub(' ', text))
 
     def astext(self):
-        if self.pdfinfo is not None:
-            if self.pdfauthor:
-                self.pdfinfo.append('pdfauthor={%s}' % self.pdfauthor)
+        # complete head_prefix (LaTeX preamble)
+        self.assemble_head_prefix()
+        # compleate head
+        if self.pdfinfo is not None and self.pdfauthor:
+            self.pdfinfo.append('pdfauthor={%s}' % self.pdfauthor)
         if self.pdfinfo:
             pdfinfo = '\\hypersetup{\n' + ',\n'.join(self.pdfinfo) + '\n}\n'
         else:
             pdfinfo = ''
-        head = '\\title{%s}\n\\author{%s}\n\\date{%s}\n' % \
-               (self.title,
-                ' \\and\n'.join(['~\\\\\n'.join(author_lines)
-                                 for author_lines in self.author_stack]),
-                self.date)
-        self.assemble_head_prefix()
-        return ''.join(self.head_prefix + [head] + self.head + [pdfinfo]
+        authors = ' \\and\n'.join(['~\\\\\n'.join(author_lines)
+                                   for author_lines in self.author_stack])
+        self.head.append('\\title{%s}\n\\author{%s}\n\\date{%s}\n' 
+                         % (self.title, authors, self.date))
+        # assemble document
+        return ''.join(self.head_prefix + self.head + [pdfinfo]
                         + self.body_prefix  + self.body + self.body_suffix)
 
     def visit_Text(self, node):
@@ -1250,6 +1279,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_docinfo(self, node):
+        self.packages.require('tabularx')
         self.docinfo = []
         self.docinfo.append('%' + '_'*75 + '\n')
         self.docinfo.append('\\begin{center}\n')
@@ -1375,6 +1405,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             raise NotImplementedError('Cells that '
             'span multiple rows *and* columns are not supported, sorry.')
         if node.has_key('morerows'):
+            self.packages.require('multirow')
             count = node['morerows'] + 1
             self.active_table.set_rowspan(self.active_table.get_entry_number()-1,count)
             self.body.append('\\multirow{%d}{%s}{' % \
@@ -1554,7 +1585,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         del self.body[start:]
 
     def visit_footnote(self, node):
-        self.latex_packages.require('shortvrb')  # allows verb in footnotes.
+        self.packages.require('shortvrb')  # allows verb in footnotes.
 
         if self.use_latex_footnotes:
             num,text = node.astext().split(None,1)
@@ -2016,7 +2047,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_table(self, node):
         self.body.append(self.active_table.get_closing() + '\n')
         self.active_table.close()
-        self.latex_packages.require(*self.active_table.used_packages())
+        self.packages.update(self.active_table.packages)
         if len(self.table_stack)>0:
             self.active_table = self.table_stack.pop()
         else:

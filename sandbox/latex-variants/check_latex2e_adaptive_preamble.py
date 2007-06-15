@@ -109,6 +109,20 @@ indentation.
 
 """
 
+table = """
+
+=== ===
+ABC DEF
+--- ---
+
+ 23   5
+  7  99
+
+=== ===
+
+""" 
+
+
 system_message = """
 
 this link should `trigger a system message`_ as it has no defined target.
@@ -119,16 +133,15 @@ this link should `trigger a system message`_ as it has no defined target.
 # Sample input text::
 sample = "".join([
                   title,
-                  # bibliographic_list,
-                  # admonitions,
+                  bibliographic_list,
+                  admonitions,
                   literal_block,
-                  # line_block,
-                  # system_message
+                  line_block,
+                  table,
+                  system_message
                  ])
 
-output = publish_string(sample, 
-                        writer=Writer()
-                       )
+output = publish_string(sample, writer=Writer())
 
 # print to stdout:
 
