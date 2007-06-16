@@ -107,8 +107,10 @@ def do_datetime_format():
 jinja_env.filters['datetimeformat'] = do_datetime_format
 
 
-def render_template(req, template_name, context=None):
-    context = context or {}
+def render_template(req, template_name, *contexts):
+    context = {}
+    for ctx in contexts:
+        context.update(ctx)
     tmpl = jinja_env.get_template(template_name)
 
     def relative_path_to(otheruri, resource=False):

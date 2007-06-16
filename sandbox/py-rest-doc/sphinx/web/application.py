@@ -44,6 +44,8 @@ class DocumentationApplication(object):
         self.debug = conf['debug']
         with file(path.join(self.data_root, 'environment.pickle')) as f:
             self.env = pickle.load(f)
+        with file(path.join(self.data_root, 'globalcontext.pickle')) as f:
+            self.globalcontext = pickle.load(f)
         with file(path.join(self.data_root, 'searchindex.pickle')) as f:
             self.search_frontend = SearchFrontend(pickle.load(f))
         self.db_con = connect(path.join(self.data_root, 'sphinx.db'))
@@ -81,7 +83,7 @@ class DocumentationApplication(object):
         with file(filename) as f:
             contents = f.read()
 
-        return Response(render_template(req, 'edit.html', dict(
+        return Response(render_template(req, 'edit.html', self.globalcontext, dict(
             contents=contents,
             pagename=page,
             submiturl=relative_uri('/@edit/'+page+'/', '/@submit/'+page),
@@ -189,10 +191,10 @@ class DocumentationApplication(object):
             else:
                 if path.getmtime(filename) == mtime:
                     return Response(text)
-            text = render_template(req, templatename, context)
+            text = render_template(req, templatename, self.globalcontext, context)
             self.cache[rstfilename] = (filename, path.getmtime(filename), text)
         else:
-            text = render_template(req, templatename, context)
+            text = render_template(req, templatename, self.globalcontext, context)
         return Response(text)
 
     def get_comments_feed(self, req, url, rstfilename):
@@ -218,7 +220,7 @@ class DocumentationApplication(object):
         """
         Show a simple error 404 page.
         """
-        return Response(render_template(req, 'not_found.html'))
+        return Response(render_template(req, 'not_found.html', self.globalcontext))
 
     pretty_type = {
         'data': 'module data',
@@ -275,7 +277,7 @@ class DocumentationApplication(object):
                 'close_matches':        close_matches,
                 'good_matches_count':   good_matches,
                 'keyword':              term
-            }), status=404 if is_error_page else 404)
+            }, self.globalcontext), status=404 if is_error_page else 404)
 
     known_designs = {
         'default':      ['default.css', 'pygments.css'],
