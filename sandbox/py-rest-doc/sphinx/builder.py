@@ -301,6 +301,14 @@ class StandaloneHTMLBuilder(Builder):
         else:
             self.last_updated = None
 
+        self.globalcontext = dict(
+            last_updated = self.last_updated,
+            builder = self.name,
+            release = self.config['version'],
+            parents = [],
+            len = len,
+        )
+
     def write_file(self, filename, doctree):
         destination = StringOutput(encoding='utf-8')
         doctree.settings = self.docsettings
@@ -334,6 +342,7 @@ class StandaloneHTMLBuilder(Builder):
         sourcename = filename[:-4] + '.txt'
         context = dict(
             title = title,
+            sourcename = sourcename,
             pathto = relpath_to(self, self.get_target_uri(filename)),
             body = self.docwriter.parts['fragment'],
             toc = self.render_partial(self.env.get_toc_for(filename))['fragment'],
@@ -342,10 +351,6 @@ class StandaloneHTMLBuilder(Builder):
             parents = parents,
             prev = prev,
             next = next,
-            sourcename = sourcename,
-            last_updated = self.last_updated,
-            builder = self.name,
-            release = self.config['version'],
         )
 
         self.index_file(filename, doctree, title)
@@ -353,15 +358,6 @@ class StandaloneHTMLBuilder(Builder):
 
     def finish(self):
         self.msg('writing additional files...')
-        specialcontext = dict(
-            # used to create links to supporting files like stylesheets
-            pathto = relpath_to(self, self.get_target_uri('special.rst')),
-            parents = [],
-            len = len,
-            last_updated = self.last_updated,
-            builder = self.name,
-            release = self.config['version'],
-        )
 
         # the global general index
 
@@ -371,10 +367,12 @@ class StandaloneHTMLBuilder(Builder):
         for key, entries in self.env.index:
             indexcounts.append(sum(1 + len(subitems) for _, (_, subitems) in entries))
 
-        genindexcontext = specialcontext.copy()
-        genindexcontext['genindexentries'] = self.env.index
-        genindexcontext['genindexcounts'] = indexcounts
-        genindexcontext['current_page_name'] = 'genindex'
+        genindexcontext = dict(
+            genindexentries = self.env.index,
+            genindexcounts = indexcounts,
+            current_page_name = 'genindex',
+            pathto = relpath_to(self, self.get_target_uri('genindex.rst')),
+        )
         self.handle_file('genindex.rst', genindexcontext)
 
         # the global module index
@@ -386,21 +384,29 @@ class StandaloneHTMLBuilder(Builder):
              for (mn, (fn, sy, pl)) in self.env.modules.iteritems()),
             key=lambda x: x[0].lower()))
 
-        modindexcontext = specialcontext.copy()
-        modindexcontext['modindexentries'] = modules
-        modindexcontext['current_page_name'] = 'modindex'
+        modindexcontext = dict(
+            modindexentries = modules,
+            current_page_name = 'modindex',
+            pathto = relpath_to(self, self.get_target_uri('modindex.rst')),
+        )
         self.handle_file('modindex.rst', modindexcontext)
 
         # the index page
-        specialcontext['current_page_name'] = 'index'
-        self.handle_file('index.rst', specialcontext)
+        indexcontext = dict(
+            pathto = relpath_to(self, self.get_target_uri('index.rst')),
+            current_page_name = 'index',
+        )
+        self.handle_file('index.rst', indexcontext)
 
         # the search page
-        specialcontext['current_page_name'] = 'search'
-        self.handle_file('search.rst', specialcontext)
+        searchcontext = dict(
+            pathto = relpath_to(self, self.get_target_uri('search.rst')),
+            current_page_name = 'search',
+        )
+        self.handle_file('search.rst', searchcontext)
 
         # dump the search index
-        self.dump_index()
+        self.handle_finish()
 
         if not self.options.nostyle:
             self.msg('copying style files...')
@@ -438,24 +444,22 @@ class StandaloneHTMLBuilder(Builder):
                                   category, title, doctree)
 
     def handle_file(self, filename, context):
-        output = self.page_template.render(context)
+        ctx = self.globalcontext.copy()
+        ctx.update(context)
+        output = self.page_template.render(ctx)
         outfilename = path.join(self.outdir, filename[:-4] + '.html')
         ensuredir(path.dirname(outfilename)) # normally different from self.outdir
         try:
-            fp = None
-            fp = codecs.open(outfilename, 'w', 'utf-8')
-            fp.write(output)
+            with codecs.open(outfilename, 'w', 'utf-8') as fp:
+                fp.write(output)
         except (IOError, OSError), err:
             print >>self.warning_stream, "Error writing file %s: %s" % (outfilename, err)
-        finally:
-            if fp:
-                fp.close()
-        if 'sourcename' in context:
+        if context.get('sourcename'):
             # copy the source file for the "show source" link
             shutil.copyfile(path.join(self.srcdir, filename),
                             path.join(self.outdir, context['sourcename']))
 
-    def dump_index(self):
+    def handle_finish(self):
         if self.indexer is not None:
             self.msg('dumping search index...')
             f = open(path.join(self.outdir, 'searchindex.json'), 'w')
@@ -508,18 +512,22 @@ class WebHTMLBuilder(StandaloneHTMLBuilder):
     def handle_file(self, filename, context):
         outfilename = path.join(self.outdir, filename[:-4] + '.fpickle')
         ensuredir(path.dirname(outfilename))
-        fp = open(outfilename, 'wb')
         context.pop('pathto', None) # can't be pickled
-        pickle.dump(context, fp, 2)
-        fp.close()
+        with file(outfilename, 'wb') as fp:
+            pickle.dump(context, fp, 2)
 
         # if there is a source file, copy the source file for the "show source" link
-        if 'sourcename' in context:
+        if context.get('sourcename'):
             source_name = path.join(self.outdir, 'sources', context['sourcename'])
             ensuredir(path.dirname(source_name))
             shutil.copyfile(path.join(self.srcdir, filename), source_name)
 
-    def dump_index(self):
+    def handle_finish(self):
+        # dump the global context
+        outfilename = path.join(self.outdir, 'globalcontext.pickle')
+        with file(outfilename, 'wb') as fp:
+            pickle.dump(self.globalcontext, fp, 2)
+
         if self.indexer is not None:
             self.msg('dumping search index...')
             f = open(path.join(self.outdir, 'searchindex.pickle'), 'w')
