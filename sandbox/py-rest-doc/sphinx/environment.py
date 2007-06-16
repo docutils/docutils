@@ -748,10 +748,9 @@ class BuildEnvironment:
 
     def get_real_filename(self, filename):
         """
-        Pass this function a filename without .rst extension to
-        get the real filename. This also resolves the special
-        `index.rst` files. If the file does not exist the return
-        value will be `None`.
+        Pass this function a filename without .rst extension to get the real
+        filename. This also resolves the special `index.rst` files. If the file
+        does not exist the return value will be `None`.
         """
         for rstname in filename + '.rst', filename + path.sep + 'index.rst':
             if rstname in self.all_files:

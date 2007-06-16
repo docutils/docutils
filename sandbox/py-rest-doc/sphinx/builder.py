@@ -267,6 +267,18 @@ class StandaloneHTMLBuilder(Builder):
         # this one is just included by the others
         self.templates.pop('layout')
 
+    def render_partial(self, node):
+        """Utility: Render a lone doctree node."""
+        doc = new_document('foo')
+        doc.append(node)
+        return publish_parts(
+            doc,
+            source_class=DocTreeInput,
+            reader=doctree.Reader(),
+            writer=HTMLWriter(self.config),
+            settings_overrides={'output_encoding': 'unicode'}
+        )
+
     def get_target_uri(self, source_filename):
         return source_filename[:-4] + '.html'
 
@@ -333,19 +345,39 @@ class StandaloneHTMLBuilder(Builder):
             sourcename = sourcename,
             last_updated = self.last_updated,
             builder = self.name,
-            release = self.config['version']
+            release = self.config['version'],
         )
 
-        self.handle_file(filename, doctree, context)
+        self.index_file(filename, doctree, title)
+        self.handle_file(filename, context)
 
     def finish(self):
-        # calculate some things used in the templates
+        self.msg('writing additional files...')
+        specialcontext = dict(
+            # used to create links to supporting files like stylesheets
+            pathto = relpath_to(self, self.get_target_uri('special.rst')),
+            parents = [],
+            len = len,
+            last_updated = self.last_updated,
+            builder = self.name,
+            release = self.config['version'],
+        )
+
+        # the global general index
 
         # the total count of lines for each index letter, used to distribute
         # the entries into two columns
         indexcounts = []
         for key, entries in self.env.index:
             indexcounts.append(sum(1 + len(subitems) for _, (_, subitems) in entries))
+
+        genindexcontext = specialcontext.copy()
+        genindexcontext['genindexentries'] = self.env.index
+        genindexcontext['genindexcounts'] = indexcounts
+        genindexcontext['current_page_name'] = 'genindex'
+        self.handle_file('genindex.rst', genindexcontext)
+
+        # the global module index
 
         # the sorted list of all modules, for the global module index
         modules = list(sorted(
@@ -354,19 +386,21 @@ class StandaloneHTMLBuilder(Builder):
              for (mn, (fn, sy, pl)) in self.env.modules.iteritems()),
             key=lambda x: x[0].lower()))
 
-        specialcontext = dict(
-            # used to create links to supporting files like stylesheets
-            pathto = relpath_to(self, self.get_target_uri('special.rst')),
-            genindexentries = self.env.index,
-            genindexcounts = indexcounts,
-            modindexentries = modules,
-            parents = [],
-            len = len,
-            builder = self.name,
-            release = self.config['version'],
-        )
+        modindexcontext = specialcontext.copy()
+        modindexcontext['modindexentries'] = modules
+        modindexcontext['current_page_name'] = 'modindex'
+        self.handle_file('modindex.rst', modindexcontext)
 
-        self.handle_specials(specialcontext)
+        # the index page
+        specialcontext['current_page_name'] = 'index'
+        self.handle_file('index.rst', specialcontext)
+
+        # the search page
+        specialcontext['current_page_name'] = 'search'
+        self.handle_file('search.rst', specialcontext)
+
+        # dump the search index
+        self.dump_index()
 
         if not self.options.nostyle:
             self.msg('copying style files...')
@@ -395,15 +429,15 @@ class StandaloneHTMLBuilder(Builder):
             if path.getmtime(path.join(self.srcdir, filename)) > targetmtime:
                 yield filename
 
-    def handle_file(self, filename, doctree, context):
+    def index_file(self, filename, doctree, title):
         # only index pages with title
-        title = context['title']
         if self.indexer is not None and title:
             category = get_category(filename)
             if category is not None:
                 self.indexer.feed(self.get_target_uri(filename)[:-5], # strip '.html'
                                   category, title, doctree)
 
+    def handle_file(self, filename, context):
         output = self.page_template.render(context)
         outfilename = path.join(self.outdir, filename[:-4] + '.html')
         ensuredir(path.dirname(outfilename)) # normally different from self.outdir
@@ -416,38 +450,17 @@ class StandaloneHTMLBuilder(Builder):
         finally:
             if fp:
                 fp.close()
-        # copy the source file for the "show source" link
-        shutil.copyfile(path.join(self.srcdir, filename),
-                        path.join(self.outdir, context['sourcename']))
+        if 'sourcename' in context:
+            # copy the source file for the "show source" link
+            shutil.copyfile(path.join(self.srcdir, filename),
+                            path.join(self.outdir, context['sourcename']))
 
-    def handle_specials(self, templatecontext):
-        self.msg('writing additional files...', nonl=True)
-        for templatename, template in self.templates.iteritems():
-            self.msg(templatename, nobold=True, nonl=True)
-            f = codecs.open(path.join(self.outdir, templatename+'.html'), 'w', 'utf-8')
-            # current_page_name is used to display different content in the sidebar
-            templatecontext.update(current_page_name=templatename)
-            f.write(template.render(templatecontext))
-            f.close()
-        self.msg('')
-
+    def dump_index(self):
         if self.indexer is not None:
             self.msg('dumping search index...')
             f = open(path.join(self.outdir, 'searchindex.json'), 'w')
             self.indexer.dump(f, 'json')
             f.close()
-
-    def render_partial(self, node):
-        """Utility: Render a lone doctree node."""
-        doc = new_document('foo')
-        doc.append(node)
-        return publish_parts(
-            doc,
-            source_class=DocTreeInput,
-            reader=doctree.Reader(),
-            writer=HTMLWriter(self.config),
-            settings_overrides={'output_encoding': 'unicode'}
-        )
 
 
 class WebHTMLBuilder(StandaloneHTMLBuilder):
@@ -485,14 +498,14 @@ class WebHTMLBuilder(StandaloneHTMLBuilder):
             return source_filename[:-9] # up to /
         return source_filename[:-4] + '/'
 
-    def handle_file(self, filename, doctree, context):
+    def index_file(self, filename, doctree, title):
         # only index pages with title and category
-        title = context['title']
         if self.indexer is not None and title:
             category = get_category(filename)
             if category is not None:
                 self.indexer.feed(filename, category, title, doctree)
 
+    def handle_file(self, filename, context):
         outfilename = path.join(self.outdir, filename[:-4] + '.fpickle')
         ensuredir(path.dirname(outfilename))
         fp = open(outfilename, 'wb')
@@ -500,17 +513,13 @@ class WebHTMLBuilder(StandaloneHTMLBuilder):
         pickle.dump(context, fp, 2)
         fp.close()
 
-        # copy the source file for the "show source" link
-        source_name = path.join(self.outdir, 'sources', context['sourcename'])
-        ensuredir(path.dirname(source_name))
-        shutil.copyfile(path.join(self.srcdir, filename), source_name)
+        # if there is a source file, copy the source file for the "show source" link
+        if 'sourcename' in context:
+            source_name = path.join(self.outdir, 'sources', context['sourcename'])
+            ensuredir(path.dirname(source_name))
+            shutil.copyfile(path.join(self.srcdir, filename), source_name)
 
-    def handle_specials(self, specialcontext):
-        fp = open(path.join(self.outdir, 'specials.pickle'), 'wb')
-        specialcontext.pop('pathto', None) # can't be pickled
-        pickle.dump(specialcontext, fp, 2)
-        fp.close()
-
+    def dump_index(self):
         if self.indexer is not None:
             self.msg('dumping search index...')
             f = open(path.join(self.outdir, 'searchindex.pickle'), 'w')

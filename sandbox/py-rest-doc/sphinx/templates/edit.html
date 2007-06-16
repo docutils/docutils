@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
   <h1 id="suggest-changes-for-this-page">Suggest changes for this page</h1>
-  <form action="" method="post">
+  <form action="{{ submiturl }}" method="post">
     <div id="suggest-changes-box">
       <textarea name="contents">{{ contents|e }}</textarea>
       <dl>
