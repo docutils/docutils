@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<h1>Suggest changes for this page</h1>
+<form>
+  <p><textarea rows="50" style="width: 99%">{{ contents }}</textarea>
+  <p>Your name: <input type="text" name="name"></p>
+  <p>Your e-mail address: <input type="text" name="email"></p>
+  <p><input type="submit" value="Submit patch for review"></p>
+</form>
+
+{% endblock %}
