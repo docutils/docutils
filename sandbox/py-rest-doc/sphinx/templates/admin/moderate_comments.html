@@ -52,7 +52,7 @@
         <a href="{{ pathto(comment.url, true) }}">{{ comment.title|e }}</a>
         <span class="meta">by <a href="mailto:{{ comment.author_mail|e
         }}">{{ comment.author|e }}</a>{% if include_page
-        %} on <a href="{{ pathto('admin/moderate_comments/' +
+        %} on <a href="{{ pathto('@admin/moderate_comments/' +
         comment.associated_page) }}">{{ comment.associated_page }}</a{%
         endif %}</span>
       </td>
@@ -69,7 +69,7 @@
       {% if pages_with_comments %}
         <tr>
           <th colspan="4" class="recent_comments">
-            <a href="{{ pathto('admin/moderate_comments/recent_comments/', true)
+            <a href="{{ pathto('@admin/moderate_comments/recent_comments/', true)
               }}">Recent Comments</a>
             <span class="meta">(<a href="{{ pathto('index.rst')
               }}?feed=recent_comments">feed</a>)</span>
@@ -81,7 +81,7 @@
         {%- for page in pages_with_comments %}
           <tr>
             <th colspan="4">
-              <a href="{{ pathto('admin/moderate_comments/' + page.page_id) }}">{{ page.title|e }}</a>
+              <a href="{{ pathto('@admin/moderate_comments/' + page.page_id) }}">{{ page.title|e }}</a>
               <span class="meta">(<a href="{{ pathto(page.page_id) }}">view</a> |
               <a href="{{ pathto(page.page_id) }}?feed=comments">feed</a>)</span>
             </th>

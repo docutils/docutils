@@ -748,3 +748,7 @@ class NotFound(Exception):
     """
     Raise to display the 404 error page.
     """
+
+    def __init__(self, show_keyword_matches=False):
+        self.show_keyword_matches = show_keyword_matches
+        Exception.__init__(self, show_keyword_matches)
