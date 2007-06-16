@@ -1,12 +1,20 @@
 {% extends "layout.html" %}
 {% block body %}
-
-<h1>Suggest changes for this page</h1>
-<form>
-  <p><textarea rows="50" style="width: 99%">{{ contents }}</textarea>
-  <p>Your name: <input type="text" name="name"></p>
-  <p>Your e-mail address: <input type="text" name="email"></p>
-  <p><input type="submit" value="Submit patch for review"></p>
-</form>
-
+  <h1 id="suggest-changes-for-this-page">Suggest changes for this page</h1>
+  <form action="" method="post">
+    <div id="suggest-changes-box">
+      <textarea name="contents">{{ contents|e }}</textarea>
+      <dl>
+        <dt>Your name</dt>
+        <dd><input type="text" name="name"></dd>
+        <dt>Your e-mail address</dt>
+        <dd><input type="text" name="email"></dd>
+      </dl>
+      <div class="actions">
+        <input type="submit" value="Submit patch for review">
+        <input type="submit" name="preview" value="Preview changes">
+        <input type="submit" name="chancel" value="Cancel">
+      </div>
+    </div>
+  </form>
 {% endblock %}

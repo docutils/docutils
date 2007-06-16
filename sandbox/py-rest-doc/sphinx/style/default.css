@@ -334,6 +334,27 @@ div#comments div.error {
     font-weight: bold;
 }
 
+/* :::: SUGGEST CHANGES :::: */
+div#suggest-changes-box input, div#suggest-changes-box textarea {
+    border: 1px solid #ccc;
+    background-color: white;
+    color: black;
+}
+
+div#suggest-changes-box textarea {
+    width: 99%;
+    height: 400px;
+}
+
+div#suggest-changes-box div.actions {
+    border-top: 1px solid #aaa;
+    border-bottom: 1px solid #ccc;
+    background-color: #ddd;
+    margin: 10px -20px 0 -20px;
+    padding: 5px 0 5px 20px;
+}
+
+
 /* :::: INDEX PAGE :::: */
 
 table.contentstable {
