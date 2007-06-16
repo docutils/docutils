@@ -65,7 +65,7 @@ class DocumentationApplication(object):
         """
         page_id = self.env.get_real_filename(page)
         if page_id is None:
-            return self.get_keyword_matches(req)
+            raise NotFound()
         filename = path.join(self.data_root, 'sources', page_id)[:-3] + 'txt'
         with file(filename) as f:
             return Response(f.read(), mimetype='text/plain')
@@ -110,7 +110,7 @@ class DocumentationApplication(object):
         else:
             rstfilename = self.env.get_real_filename(url)
             if rstfilename is None:
-                raise NotFound()
+                raise NotFound(show_keyword_matches=True)
             comments = self.env.metadata[rstfilename].get('comments_enabled', True)
 
             # generate comments feed if wanted
@@ -205,6 +205,12 @@ class DocumentationApplication(object):
                           comment.parsed_comment_body, comment.pub_date)
         return Response(feed.generate(), mimetype='application/rss+xml')
 
+    def get_error_404(self, req):
+        """
+        Show a simple error 404 page.
+        """
+        return Response(render_template(req, 'not_found.html'))
+
     pretty_type = {
         'data': 'module data',
         'cfunction': 'C function',
@@ -214,7 +220,8 @@ class DocumentationApplication(object):
         'cvar': 'C variable',
     }
 
-    def get_keyword_matches(self, req, term=None, avoid_fuzzy=False):
+    def get_keyword_matches(self, req, term=None, avoid_fuzzy=False,
+                            is_error_page=False):
         """
         Find keyword matches. If there is an exact match, just redirect:
         http://docs.python.org/os.path.exists would automatically
@@ -255,11 +262,11 @@ class DocumentationApplication(object):
                     'type':         self.pretty_type.get(type, type),
                     'description':  desc,
                 })
-            return Response(render_template(req, 'not_found.html', {
+            return Response(render_template(req, 'keyword_not_found.html', {
                 'close_matches':        close_matches,
                 'good_matches_count':   good_matches,
                 'keyword':              term
-            }), status=404)
+            }), status=is_error_page and 404 or 200)
 
     known_designs = {
         'default':      ['default.css', 'pygments.css'],
@@ -308,50 +315,55 @@ class DocumentationApplication(object):
         req = Request(environ)
         url = req.path.strip('/') or 'index'
 
-        # require a trailing slash on GET requests
-        # this ensures nice looking urls and working relative
-        # links for cached resources.
-        if not req.path.endswith('/') and req.method == 'GET':
-            query = req.environ.get('QUERY_STRING', '')
-            if query:
-                query = '?' + query
-            resp = RedirectResponse(req.path + '/' + query)
-        # go to the search page. this is currently just a redirect
-        # to /q/ which is handled below
-        elif url == 'search':
-            resp = self.search(req)
-        # index page is special
-        elif url == 'index':
-            # alias for fuzzy search
-            if 'q' in req.args:
-                resp = RedirectResponse('q/%s/' % req.args['q'])
-            # feeds
-            elif req.args.get('feed') == 'recent_comments':
-                resp = self.get_recent_comments_feed(req)
-            # stylesheet
-            elif req.args.get('do') == 'stylesheet':
-                resp = self.get_user_stylesheet(req)
+        try:
+            # require a trailing slash on GET requests
+            # this ensures nice looking urls and working relative
+            # links for cached resources.
+            if not req.path.endswith('/') and req.method == 'GET':
+                query = req.environ.get('QUERY_STRING', '')
+                if query:
+                    query = '?' + query
+                resp = RedirectResponse(req.path + '/' + query)
+            # go to the search page. this is currently just a redirect
+            # to /q/ which is handled below
+            elif url == 'search':
+                resp = self.search(req)
+            # index page is special
+            elif url == 'index':
+                # alias for fuzzy search
+                if 'q' in req.args:
+                    resp = RedirectResponse('q/%s/' % req.args['q'])
+                # feeds
+                elif req.args.get('feed') == 'recent_comments':
+                    resp = self.get_recent_comments_feed(req)
+                # stylesheet
+                elif req.args.get('do') == 'stylesheet':
+                    resp = self.get_user_stylesheet(req)
+                else:
+                    resp = self.get_page(req, 'index')
+            # start the fuzzy search
+            elif url.startswith('q/'):
+                resp = self.get_keyword_matches(req, url[2:])
+            # source view
+            elif url.startswith('@source/'):
+                resp = self.show_source(req, url[8:])
+            # suggest changes view
+            elif url.startswith('@edit/'):
+                resp = self.suggest_changes(req, url[6:])
+            # dispatch requests to the admin panel
+            elif url == '@admin' or url.startswith('@admin/'):
+                resp = self.admin_panel.dispatch(req, url[7:])
+            # everything else is handled as page or fuzzy search
+            # if a page does not exist.
             else:
-                resp = self.get_page(req, 'index')
-        # start the fuzzy search
-        elif url.startswith('q/'):
-            resp = self.get_keyword_matches(req, url[2:])
-        # source view
-        elif url.startswith('@source/'):
-            resp = self.show_source(req, url[8:])
-        # suggest changes view
-        elif url.startswith('@edit/'):
-            resp = self.suggest_changes(req, url[6:])
-        # dispatch requests to the admin panel
-        elif url == '@admin' or url.startswith('@admin/'):
-            resp = self.admin_panel.dispatch(req, url[7:])
-        # everything else is handled as page or fuzzy search
-        # if a page does not exist.
-        else:
-            try:
                 resp = self.get_page(req, url)
-            except NotFound:
-                resp = self.get_keyword_matches(req)
+        # views can raise a NotFound exception to show an error page.
+        # Either a real not found page or a similar matches page.
+        except NotFound, e:
+            if e.show_keyword_matches:
+                resp = self.get_keyword_matches(req, is_error_page=True)
+            else:
+                resp = self.get_error_404(req)
         return resp(environ, start_response)
 
 

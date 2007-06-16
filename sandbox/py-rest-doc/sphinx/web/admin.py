@@ -9,7 +9,7 @@
     :license: Python license.
 """
 
-from .util import Response, RedirectResponse, render_template
+from .util import Response, RedirectResponse, NotFound, render_template
 from .database import Comment
 
 
@@ -40,7 +40,7 @@ class AdminPanel(object):
         if page == 'login':
             return self.do_login(req)
         elif not is_logged_in:
-            return RedirectResponse('admin/login/')
+            return RedirectResponse('@admin/login/')
         elif page == 'logout':
             return self.do_logout(req)
 
@@ -54,9 +54,9 @@ class AdminPanel(object):
         elif page.split('/')[0] == 'moderate_comments':
             return self.do_moderate_comments(req, page[18:])
 
-        # index page. all unhandled urls below admin go to the index.
+        # missing page
         elif page != '':
-            return RedirectResponse('admin/')
+            raise NotFound()
         return Response(render_template(req, 'admin/index.html', {
             'is_master_admin':      is_master_admin,
             'can_change_password':  can_change_password
@@ -67,7 +67,7 @@ class AdminPanel(object):
         Display login form and do the login procedure.
         """
         if req.user is not None:
-            return RedirectResponse('admin/')
+            return RedirectResponse('@admin/')
         login_failed = False
         if req.method == 'POST':
             if req.form.get('cancel'):
@@ -76,7 +76,7 @@ class AdminPanel(object):
             password = req.form.get('password')
             if self.userdb.check_password(username, password):
                 req.login(username)
-                return RedirectResponse('admin/')
+                return RedirectResponse('@admin/')
             login_failed = True
         return Response(render_template(req, 'admin/login.html', {
             'login_failed': login_failed
@@ -96,7 +96,7 @@ class AdminPanel(object):
         change_failed = change_successful = False
         if req.method == 'POST':
             if req.form.get('cancel'):
-                return RedirectResponse('admin/')
+                return RedirectResponse('@admin/')
             pw = req.form.get('pw1')
             if pw and pw == req.form.get('pw2'):
                 self.userdb.set_password(req.user, pw)
@@ -131,7 +131,7 @@ class AdminPanel(object):
                     user_privileges[name[11:]] = [x.strip() for x
                                                   in item.split(',')]
             if req.form.get('cancel'):
-                return RedirectResponse('admin/')
+                return RedirectResponse('@admin/')
             elif req.form.get('add_user'):
                 username = req.form.get('username')
                 if username:
@@ -144,7 +144,7 @@ class AdminPanel(object):
                 else:
                     add_user_mode = True
             elif req.form.get('aborted'):
-                return RedirectResponse('admin/manage_users/')
+                return RedirectResponse('@admin/manage_users/')
 
         users = {}
         for user in self.userdb.users:
@@ -171,7 +171,7 @@ class AdminPanel(object):
                     self.userdb.privileges[user].clear()
                     self.userdb.privileges[user].update(new_users[user])
             self.userdb.save()
-            return RedirectResponse('admin/manage_users/')
+            return RedirectResponse('@admin/manage_users/')
 
         return Response(render_template(req, 'admin/manage_users.html', {
             'users':                users,
@@ -211,7 +211,7 @@ class AdminPanel(object):
                 except ValueError:
                     pass
             if req.form.get('cancel'):
-                return RedirectResponse('admin/')
+                return RedirectResponse('@admin/')
             elif req.form.get('confirmed'):
                 for comment_id in to_delete:
                     try:
