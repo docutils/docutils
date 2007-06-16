@@ -77,9 +77,10 @@
             <ul class="this-page-menu">
               {% if builder == 'web' %}
                 {% if comments %}
-                  <li><a href="#comments">Page Comments ({{ comments|length }})</a></li>
+                  <li><a href="#comments">Comment ({{ comments|length }} so far)</a></li>
                 {% endif %}
-                <li><a href="{{ pathto('source/' + sourcename)|e }}">Show Source</a></li>
+                <li><a href="{{ pathto('@edit/' + sourcename)|e }}">Suggest Change</a></li>
+                <li><a href="{{ pathto('@source/' + sourcename)|e }}">Show Source</a></li>
               {% elif builder == 'html' %}
                 <li><a href="{{ pathto(sourcename, true)|e }}">Show Source</a></li>
               {% endif %}

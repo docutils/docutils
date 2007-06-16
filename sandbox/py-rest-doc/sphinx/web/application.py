@@ -70,6 +70,21 @@ class DocumentationApplication(object):
         with file(filename) as f:
             return Response(f.read(), mimetype='text/plain')
 
+    def suggest_changes(self, req, page):
+        """
+        Show a "suggest changes" form.
+        """
+        page_id = self.env.get_real_filename(page)
+        if page_id is None:
+            raise NotFound()
+        filename = path.join(self.data_root, 'sources', page_id)[:-3] + 'txt'
+        with file(filename) as f:
+            contents = f.read()
+
+        return Response(render_template(req, 'edit.html', dict(
+            contents=contents
+        )))
+
     def get_page(self, req, url):
         """
         Show the requested documentation page or raise an
@@ -322,11 +337,14 @@ class DocumentationApplication(object):
         elif url.startswith('q/'):
             resp = self.get_keyword_matches(req, url[2:])
         # source view
-        elif url.startswith('source/'):
-            resp = self.show_source(req, url[7:])
+        elif url.startswith('@source/'):
+            resp = self.show_source(req, url[8:])
+        # suggest changes view
+        elif url.startswith('@edit/'):
+            resp = self.suggest_changes(req, url[6:])
         # dispatch requests to the admin panel
-        elif url == 'admin' or url.startswith('admin/'):
-            resp = self.admin_panel.dispatch(req, url[6:])
+        elif url == '@admin' or url.startswith('@admin/'):
+            resp = self.admin_panel.dispatch(req, url[7:])
         # everything else is handled as page or fuzzy search
         # if a page does not exist.
         else:
