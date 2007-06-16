@@ -109,9 +109,7 @@ class DocumentationApplication(object):
             templatename = 'page.html'
 
             # default values for the comment form
-            title = comment_body = ''
-            author = req.session.get('author', '')
-            author_mail = req.session.get('author_mail', '')
+            title = comment_body = author = author_mail = ''
             form_error = None
             preview = None
 
@@ -141,10 +139,6 @@ class DocumentationApplication(object):
                         comment = Comment(rstfilename, title, author, author_mail,
                                           comment_body)
                         comment.save()
-                        req.session.update(
-                            author = author,
-                            author_mail = author_mail,
-                        )
                         return RedirectResponse(comment.url)
                 cache_possible = False
 
