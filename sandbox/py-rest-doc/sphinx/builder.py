@@ -243,7 +243,7 @@ class StandaloneHTMLBuilder(Builder):
     option_spec = Builder.option_spec
     option_spec.update({
         'nostyle': 'Don\'t copy style and script files',
-        'searchindex': 'Create a JSON search index for offline search',
+        'nosearchindex': 'Don\'t create a JSON search index for offline search',
     })
 
     def init(self):
@@ -283,7 +283,7 @@ class StandaloneHTMLBuilder(Builder):
         return source_filename[:-4] + '.html'
 
     def prepare_writing(self):
-        if self.options.searchindex:
+        if not self.options.nosearchindex:
             from .search import IndexBuilder
             self.indexer = IndexBuilder()
         else:
@@ -477,7 +477,7 @@ class WebHTMLBuilder(StandaloneHTMLBuilder):
     option_spec = Builder.option_spec
     option_spec.update({
         'nostyle': 'Don\'t copy style and script files',
-        'searchindex': 'Create a search index for the online search',
+        'nosearchindex': 'Don\'t create a search index for the online search',
     })
 
     def init(self):
