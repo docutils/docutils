@@ -82,8 +82,18 @@ class DocumentationApplication(object):
             contents = f.read()
 
         return Response(render_template(req, 'edit.html', dict(
-            contents=contents
+            contents=contents,
+            pagename=page,
+            submiturl=relative_uri('/@edit/'+page+'/', '/@submit/'+page),
         )))
+
+    def submit_changes(self, req, page):
+        author = req.args.get('name')
+        email = req.args.get('email')
+        contents = req.args.get('contents')
+
+        if not author or not email or not contents:
+            raise NotFound()
 
     def get_page(self, req, url):
         """
@@ -96,11 +106,10 @@ class DocumentationApplication(object):
             'on_index':         url == 'index'
         }
 
-        # these are special because they have a different context
-        # XXX: this distinction is probably a mess!
+        # these are special because they have different templates
         if url in self.special_urls:
             rstfilename = '@' + url  # only used as cache key
-            filename = path.join(self.data_root, 'specials.pickle')
+            filename = path.join(self.data_root, url + '.fpickle')
             with open(filename, 'rb') as f:
                 context.update(pickle.load(f))
             templatename = url + '.html'
@@ -342,16 +351,19 @@ class DocumentationApplication(object):
                 else:
                     resp = self.get_page(req, 'index')
             # start the fuzzy search
-            elif url.startswith('q/'):
+            elif url[:2] == 'q/':
                 resp = self.get_keyword_matches(req, url[2:])
             # source view
-            elif url.startswith('@source/'):
+            elif url[:8] == '@source/':
                 resp = self.show_source(req, url[8:])
             # suggest changes view
-            elif url.startswith('@edit/'):
+            elif url[:6] == '@edit/':
                 resp = self.suggest_changes(req, url[6:])
+            # suggest changes submit
+            elif url[:8] == '@submit/':
+                resp = self.submit_changes(req, url[8:])
             # dispatch requests to the admin panel
-            elif url == '@admin' or url.startswith('@admin/'):
+            elif url == '@admin' or url[:7] == '@admin/':
                 resp = self.admin_panel.dispatch(req, url[7:])
             # everything else is handled as page or fuzzy search
             # if a page does not exist.
