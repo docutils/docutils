@@ -266,7 +266,7 @@ class DocumentationApplication(object):
                 'close_matches':        close_matches,
                 'good_matches_count':   good_matches,
                 'keyword':              term
-            }), status=is_error_page and 404 or 200)
+            }), status=404 if is_error_page else 404)
 
     known_designs = {
         'default':      ['default.css', 'pygments.css'],
