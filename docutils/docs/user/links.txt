@@ -33,6 +33,14 @@ the box.
 
 * For Blogs (Weblogs), please see the `FAQ entry about Blogs`_.
 
+* py.rest from the Codespeak `py Lib scripts`_ converts
+  reStructuredText files to HTML and PDF (cleaning up the intermediate
+  latex files).  Similar to ``buildhtml.py``, it looks recursively for
+  .txt files in the given PATHS.
+
+* PyLit_ provides a plain but efficient tool for *literate programming
+  with reStructuredText*: a bidirectional text <--> code converter.
+
 * Pandoc_ is a document converter; it can read Markdown and (subsets
   of) reStructuredText, HTML, and LaTeX, and it can write Markdown,
   reStructuredText, HTML, LaTeX, RTF, DocBook XML, and S5.
@@ -131,6 +139,8 @@ code base.
 .. _Docutils: http://docutils.sourceforge.net/
 .. _FAQ entry about Wikis: http://docutils.sf.net/FAQ.html#are-there-any-wikis-that-use-restructuredtext-syntax
 .. _FAQ entry about Blogs: http://docutils.sf.net/FAQ.html#are-there-any-weblog-blog-projects-that-use-restructuredtext-syntax
+.. _py Lib scripts: http://codespeak.net/py/dist/bin.html
+.. _PyLit: http://pylit.berlios.de
 .. _Pandoc: http://sophos.berkeley.edu/macfarlane/pandoc/
 .. _restxsl: http://www.strangeGizmo.com/products/restxsl/
 .. _XSLT script: http://www.cesnet.cz/doc/techzpravy/2006/rngrest/
