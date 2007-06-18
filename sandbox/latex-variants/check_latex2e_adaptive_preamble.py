@@ -10,7 +10,7 @@
 Test script for the "latex2e_adaptive_preamble" writer
 """
 
-from docutils.core import publish_string
+from docutils.core import publish_string, publish_file
 
 from latex2e_adaptive_preamble import Writer
 
@@ -20,10 +20,6 @@ Title of the Document
 
 Subtitle
 -------------
-
-First section
-'''''''''''''
-
 """
 
 bibliographic_list = """\
@@ -44,6 +40,8 @@ bibliographic_list = """\
     reStructuredText construct.
 
 """             
+
+table_of_contents = '\n.. contents::\n'
 
 admonitions = """
 
@@ -129,27 +127,55 @@ this link should `trigger a system message`_ as it has no defined target.
 
 """
 
-
 # Sample input text::
-sample = "".join([
-                  title,
-                  bibliographic_list,
-                  admonitions,
-                  literal_block,
-                  line_block,
-                  table,
-                  system_message
-                 ])
 
-output = publish_string(sample, writer=Writer())
+internal_samples = "".join([
+                            title,
+                            bibliographic_list,
+                            table_of_contents,
+                            # admonitions,
+                            literal_block,
+                            # line_block,
+                            table,
+                            # system_message
+                           ])
 
-# print to stdout:
+# samples from the docutils svn data
+syntax_samples_dir = '../../docutils/test/functional/input/'
+syntax_sample_files = ['data/standard.txt',
+                       'data/table_colspan.txt',
+                       'data/table_rowspan.txt',
+                       # Tests for the LaTeX writer
+                       'data/latex2e.txt',
+                       'data/nonalphanumeric.txt',
+                       'data/unicode.txt',
+                       'data/custom_roles.txt',
+                       # 'data/errors.txt'
+                      ]
+    
+syntax_samples = '\n'.join([open(syntax_samples_dir+samplefile).read()
+                          for samplefile in syntax_sample_files])
 
-# * document tree (as pseudoxml rendering) for comparision
-# * html4trans output
 
-# print publish_string(sample, writer_name="pseudoxml")
-print output
+# Convert and Print
+# -----------------
+
+# Uncomment one of the following:
+
+# document tree (as pseudoxml rendering) for comparision
+# doctree = publish_string(sample, writer_name="pseudoxml")
+# output = publish_string(internal_samples, writer=Writer())
+
+output = publish_string(syntax_samples, writer=Writer())
+
+# # Replace image links
+output = output.replace('../../../docs/user/rst/images/',
+                        '../../../docutils/docs/user/rst/images/')
+
+
+# print doctree # document tree (as pseudoxml rendering) for comparision
+print output  # * html4trans output
+
 
 # save output to data sub-dir
 outfile = open("data/latex2e-adaptive-preamble-sample.tex", 'w')
