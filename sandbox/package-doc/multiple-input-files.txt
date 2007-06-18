@@ -265,17 +265,36 @@ changes in the directory structure cause a massive amount of changes
 in the reStructuredText files, because all the paths need to be
 updated.  This is not any worse than the current situation.  However,
 to improve maintainability it would be desirable to make the namespace
-of an often-referenced files known under a shorter name.  (This
-mechanism should be file-local; that is, the shorter namespace
-identifier should only be valid within the file where it is declared.)
-For instance, one could make "docs/ref/restructuredtext.txt" known as
-"spec" using one of the following syntax alternatives::
+of an often-referenced files known under a shorter name.  (The shorter
+namespace identifier should only be valid within the file where it is
+declared, and possibly sub-documents.)  For instance, one could make
+"docs/ref/restructuredtext.txt" known as "spec" using one of the
+following syntax alternatives::
 
     .. namespace:: spec = docs/ref/restructuredtext.txt
 
     .. namespace-alias:: spec = docs/ref/restructuredtext.txt
 
     .. alias:: spec = docs/ref/restructuredtext.txt
+
+    .. namespaces::
+
+       :spec: docs/ref/restructuredtext.txt
+
+Namespace aliases could also be used make one namespace refer to
+different physical files depending on the super-document.  Should
+namespace definitions in super-documents always override definitions
+in sub-documents?  (That will yield confusing results if the same
+namespace identifier is accidentally used with different meanings in a
+super-document and its sub-documents.)  An alternative is to add a
+:default: option to the "namespaces" directive (or add a second
+directive called "default-namespaces") so that the namespaces are only
+defined if they have not been defined in a super-document yet::
+
+    .. namespaces::
+       :default:
+
+       :spec: docs/ref/restructuredtext.txt
 
 
 Qualifier Syntax
