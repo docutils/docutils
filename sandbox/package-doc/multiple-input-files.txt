@@ -244,14 +244,17 @@ mutually exclusive.)  Since using only the file name would cause
 ambiguity, it is necessary to include its path in the namespace name.
 For instance, the file ``docs/dev/todo.txt`` could be referenced by
 the implicit namespace identifier ``docs/dev/todo.txt``; a reference
-would look like ```docs/dev/todo.txt -> large documents`_`` (see
-`Qualifier Syntax`_ below though).  Using paths relative to the
-current file makes it hard to move files or document parts.
-Therefore, we need to establish the notion of a *docset root* which
-path names are relative to.
+would look like ```<docs/dev/todo.txt> large documents`_``.  Using
+paths relative to the current file makes it hard to move files or
+document parts.  Therefore, we need to establish the notion of a
+*docset root* which path names are relative to.
 
-The docset root should be specified using a "docset-root" directive at
-the top of each sub-document that uses external named references.
+The docset root could be specified using a "docset-root" directive at
+the top of each sub-document that uses external named references.  On
+the other hand, perhaps we do not need to know the docset root until
+we process the compound document (in which case it can be implicitly
+derived from the location of the master file).  So let's wait with
+implementing a "docset-root" directive until the need arises.
 
 
 Namespace Aliases
