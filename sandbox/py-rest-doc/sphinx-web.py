@@ -7,34 +7,27 @@
     :license: Python license.
 """
 import sys
+import signal
 import getopt
 from wsgiref.simple_server import make_server
 
 from sphinx.web.application import make_app
 
-def main(argv):
-    opts, args = getopt.getopt(argv[1:], "dh")
-    opts = dict(opts)
-    if len(args) != 1 or '-h' in opts:
-        print 'usage: %s [-d] <doc_root>' % argv[0]
-        print ' -d: use werkzeug debugger if installed'
-        return 2
+try:
+    from werkzeug.debug import DebuggedApplication
+except ImportError:
+    DebuggedApplication = lambda x: x
 
-    debug = '-d' in opts
-    orig_app, app = make_app({
-        'data_root_path':   args[0],
-        'debug':            debug
-    })
+class Restart(Exception):
+    pass
 
-    if debug:
-        try:
-            from werkzeug.debug import DebuggedApplication
-        except ImportError:
-            pass
-        else:
-            app = DebuggedApplication(app, True)
+def raise_restart(*args):
+    raise Restart
 
-    # check if there is a superuser
+signal.signal(signal.SIGUSR1, raise_restart)
+
+def check_superuser(orig_app):
+    """Check if there is a superuser and create one if necessary."""
     if not orig_app.userdb.users:
         print 'Warning: you have no user database or no master "admin" account.'
         create = raw_input('Do you want to create an admin account now? [y/n] ')
@@ -50,12 +43,43 @@ def main(argv):
             orig_app.userdb.privileges['admin'].add('master')
             orig_app.userdb.save()
 
-    srv = make_server('localhost', 3000, app)
-    try:
-        print 'Running on http://%s:%d/' % srv.socket.getsockname()
-        srv.serve_forever()
-    except KeyboardInterrupt:
-        pass
+def main(argv):
+    opts, args = getopt.getopt(argv[1:], "dh")
+    opts = dict(opts)
+    if len(args) != 1 or '-h' in opts:
+        print 'usage: %s [-d] <doc_root>' % argv[0]
+        print ' -d: use werkzeug debugger if installed'
+        return 2
+
+    port = 3000
+    hostname = 'localhost'
+    if len(args) > 1:
+        hostname = args[1]
+        if len(args) > 2:
+            port = int(args[2])
+ 
+    debug = '-d' in opts
+
+    while True:
+        orig_app, app = make_app({
+            'data_root_path':   args[0],
+            'debug':            debug
+        })
+        check_superuser(orig_app)
+
+        if debug:
+            app = DebuggedApplication(app, True)
+
+        srv = make_server(hostname, port, app)
+        try:
+            print 'Running on http://%s:%d/' % srv.socket.getsockname()
+            srv.serve_forever()
+        except Restart:
+            print 'Got SIGUSR1, restarting...'
+            srv.server_close()
+            continue
+        except KeyboardInterrupt:
+            break
 
 
 if __name__ == '__main__':
