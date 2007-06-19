@@ -24,7 +24,7 @@ class Restart(Exception):
 def raise_restart(*args):
     raise Restart
 
-signal.signal(signal.SIGUSR1, raise_restart)
+signal.signal(signal.SIGQUIT, raise_restart)
 
 def check_superuser(orig_app):
     """Check if there is a superuser and create one if necessary."""
@@ -51,14 +51,13 @@ def main(argv):
         print ' -d: use werkzeug debugger if installed'
         return 2
 
+    debug = '-d' in opts
     port = 3000
     hostname = 'localhost'
     if len(args) > 1:
         hostname = args[1]
         if len(args) > 2:
             port = int(args[2])
- 
-    debug = '-d' in opts
 
     while True:
         orig_app, app = make_app({
@@ -75,7 +74,7 @@ def main(argv):
             print 'Running on http://%s:%d/' % srv.socket.getsockname()
             srv.serve_forever()
         except Restart:
-            print 'Got SIGUSR1, restarting...'
+            print 'Got SIGQUIT, restarting...'
             srv.server_close()
             continue
         except KeyboardInterrupt:
