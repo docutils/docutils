@@ -46,8 +46,8 @@ def check_superuser(orig_app):
 def main(argv):
     opts, args = getopt.getopt(argv[1:], "dh")
     opts = dict(opts)
-    if len(args) != 1 or '-h' in opts:
-        print 'usage: %s [-d] <doc_root>' % argv[0]
+    if not args or '-h' in opts:
+        print 'usage: %s [-d] <doc_root> [<hostname> [<port>]]' % argv[0]
         print ' -d: use werkzeug debugger if installed'
         return 2
 
