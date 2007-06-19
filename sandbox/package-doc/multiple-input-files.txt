@@ -271,30 +271,18 @@ declared, and possibly sub-documents.)  For instance, one could make
 "docs/ref/restructuredtext.txt" known as "spec" using one of the
 following syntax alternatives::
 
-    .. namespace:: spec = docs/ref/restructuredtext.txt
-
-    .. namespace-alias:: spec = docs/ref/restructuredtext.txt
-
-    .. alias:: spec = docs/ref/restructuredtext.txt
-
     .. namespaces::
 
        :spec: docs/ref/restructuredtext.txt
 
-Namespace aliases could also be used make one namespace refer to
-different physical files depending on the super-document.  Should
-namespace definitions in super-documents always override definitions
-in sub-documents?  (That will yield confusing results if the same
-namespace identifier is accidentally used with different meanings in a
-super-document and its sub-documents.)  An alternative is to add a
-:default: option to the "namespaces" directive (or add a second
-directive called "default-namespaces") so that the namespaces are only
-defined if they have not been defined in a super-document yet::
-
-    .. namespaces::
-       :default:
-
-       :spec: docs/ref/restructuredtext.txt
+Namespace aliases can also be used make one namespace refer to
+different physical files depending on the super-document.  Namespace
+definitions should therefore be inherited from super-documents to
+sub-documents.  The "namespaces" directive overrides namespace
+definitions inherited from super-documents, unless the *:inherit:*
+option is specified.  (The :inherit: option thus allows to provide
+default paths for namespace aliases, which can still be overridden in
+super-documents.)
 
 
 Qualifier Syntax
@@ -317,26 +305,6 @@ separator are stripped.
       `<namespace#> target`_
 
   The "#" emphasizes the namespace/fragment split.
-
-* Arrows::
-
-      `namespace -> target`_
-
-  This would also allow for namespace-less references; for instance,
-  after ".. namespace:: <- namespace" it could be possible to write::
-
-      `-> target`_
-
-  The arrow syntax may collide with existing target names.  (We could
-  give existing targets name priority though.  I.e., the reference
-  resolver checks whether "foo -> bar" is a valid local target name
-  before looking up target "bar" in namespace "foo".)
-
-  Alternatives for the arrow: ``-->``, or ``>>``.
-
-  Should there we whitespace around the arrow (yes/no/optional)?  It
-  looks more readable with whitespace, but omitting the whitespace
-  makes it terser.
 
 
 Implementation
