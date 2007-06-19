@@ -279,9 +279,6 @@ class StandaloneHTMLBuilder(Builder):
             settings_overrides={'output_encoding': 'unicode'}
         )
 
-    def get_target_uri(self, source_filename):
-        return source_filename[:-4] + '.html'
-
     def prepare_writing(self):
         if not self.options.nosearchindex:
             from .search import IndexBuilder
@@ -423,6 +420,9 @@ class StandaloneHTMLBuilder(Builder):
             f.close()
 
     # --------- these are overwritten by the Web builder
+
+    def get_target_uri(self, source_filename):
+        return source_filename[:-4] + '.html'
 
     def get_outdated_files(self):
         for filename in get_matching_files(

@@ -583,7 +583,7 @@ tt.descclassname {
     background-color: transparent;
 }
 
-tt.xref {
+tt.xref, a tt {
     background-color: transparent;
     font-weight: bold;
 }
