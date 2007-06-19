@@ -868,7 +868,6 @@ class RestWriter(object):
         'option': '',
         'pep': '',
         'program': '',
-        'regexp': '',
         'ref': '',
         'rfc': '',
         'token': '',
@@ -887,7 +886,7 @@ class RestWriter(object):
             self.curpar.append(self.simplecmd_mapping[cmdname])
             return
         content = node.args[0]
-        if cmdname in ('code', 'bfcode', 'samp', 'texttt'):
+        if cmdname in ('code', 'bfcode', 'samp', 'texttt', 'regexp'):
             self.visit_wrapped('``', self.get_textonly_node(content, 'code',
                                                             warn=1), '``', noescape=True)
         elif cmdname in ('emph', 'textit'):
