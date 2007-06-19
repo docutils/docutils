@@ -195,6 +195,7 @@ class MarkupParser(object):
                 paragraph.append(simple_formattings[token])
             elif token in ('text', 'escaped_code', 'code'):
                 if data:
+                    data = cgi.escape(data)
                     if token in ('escaped_code', 'code'):
                         data = '<tt>%s</tt>' % data
                     paragraph.append(data)
@@ -210,9 +211,9 @@ class MarkupParser(object):
                     nofollow = False
                 elif protocol == 'javascript':
                     href = href[11:]
-                paragraph.append('<a href="%s"%s>%s</a>' % (href,
+                paragraph.append('<a href="%s"%s>%s</a>' % (cgi.escape(href),
                                  ' rel="nofollow"' if nofollow else '',
-                                 caption))
+                                 cgi.escape(caption)))
             elif token == 'code_block':
                 result.append(highlight_block(data, 'python'))
                 new_paragraph()
