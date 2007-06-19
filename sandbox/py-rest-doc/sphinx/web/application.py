@@ -12,8 +12,11 @@
 from __future__ import with_statement
 
 import re
+import copy
+import heapq
 import cPickle as pickle
 from os import path
+from collections import defaultdict
 
 from .feed import Feed
 from .admin import AdminPanel
@@ -39,6 +42,7 @@ class DocumentationApplication(object):
 
     def __init__(self, conf):
         self.cache = {}
+        self.freqmodules = defaultdict(int)
         self.generated_stylesheets = {}
         self.data_root = conf['data_root_path']
         self.debug = conf['debug']
@@ -61,27 +65,29 @@ class DocumentationApplication(object):
             return RedirectResponse('')
         return RedirectResponse('q/%s/' % req.args['q'])
 
-    def show_source(self, req, page):
+    def get_page_source(self, page):
         """
-        Show the highlighted source for a given page.
+        Get the reST source of a page.
         """
         page_id = self.env.get_real_filename(page)
+        print page, page_id
         if page_id is None:
             raise NotFound()
         filename = path.join(self.data_root, 'sources', page_id)[:-3] + 'txt'
         with file(filename) as f:
-            return Response(f.read(), mimetype='text/plain')
+            return f.read()
+
+    def show_source(self, req, page):
+        """
+        Show the highlighted source for a given page.
+        """
+        return Response(self.get_page_source(page), mimetype='text/plain')
 
     def suggest_changes(self, req, page):
         """
         Show a "suggest changes" form.
         """
-        page_id = self.env.get_real_filename(page)
-        if page_id is None:
-            raise NotFound()
-        filename = path.join(self.data_root, 'sources', page_id)[:-3] + 'txt'
-        with file(filename) as f:
-            contents = f.read()
+        contents = self.get_page_source(page)
 
         return Response(render_template(req, 'edit.html', self.globalcontext, dict(
             contents=contents,
@@ -89,13 +95,62 @@ class DocumentationApplication(object):
             submiturl=relative_uri('/@edit/'+page+'/', '/@submit/'+page),
         )))
 
-    def submit_changes(self, req, page):
+    def preview_changes(self, req, page):
+        """
+        Preview suggested changes.
+        """
         author = req.args.get('name')
         email = req.args.get('email')
         contents = req.args.get('contents')
 
+        self.env2 = copy.deepcopy(self.env)
+        # TODO
+
+    def submit_changes(self, req, page):
+        """
+        Submit the suggested changes as a patch.
+        """
+        raise NotFound() # for now
+        if req.form.get('preview'):
+            return self.preview_changes(req, page)
+
+        author = req.form.get('name')
+        email = req.form.get('email')
+        contents = req.form.get('contents')
+        orig_contents = self.get_page_source(page)
+
         if not author or not email or not contents:
             raise NotFound()
+        # TODO
+
+    def get_module_index(self, req):
+        """
+        Get the module index or redirect to a module from the module index.
+        """
+        modname = req.args.get('mod')
+        if modname:
+            info = self.env.modules.get(modname)
+            if not info:
+                raise NotFound()
+            self.freqmodules[modname] += 1
+            return RedirectResponse(relative_uri(
+                '/modindex/', info[0][:-4] + '#module-' + modname))
+
+        context = {
+            'known_designs':    sorted(self.known_designs),
+            'on_index':         False,
+        }
+
+        filename = path.join(self.data_root, 'modindex.fpickle')
+        with open(filename, 'rb') as f:
+            context.update(pickle.load(f))
+
+        most_frequent = heapq.nlargest(30, self.freqmodules.iteritems(),
+                                       lambda x: x[1])
+        context['freqentries'] = sorted(x[0] for x in most_frequent)
+
+        return Response(render_template(req, 'modindex.html',
+                                        self.globalcontext, context))
 
     def get_page(self, req, url):
         """
@@ -335,10 +390,6 @@ class DocumentationApplication(object):
                 if query:
                     query = '?' + query
                 resp = RedirectResponse(req.path + '/' + query)
-            # go to the search page. this is currently just a redirect
-            # to /q/ which is handled below
-            elif url == 'search':
-                resp = self.search(req)
             # index page is special
             elif url == 'index':
                 # alias for fuzzy search
@@ -352,6 +403,13 @@ class DocumentationApplication(object):
                     resp = self.get_user_stylesheet(req)
                 else:
                     resp = self.get_page(req, 'index')
+            # go to the search page. this is currently just a redirect
+            # to /q/ which is handled below
+            elif url == 'search':
+                resp = self.search(req)
+            # module index page is special
+            elif url == 'modindex':
+                resp = self.get_module_index(req)
             # start the fuzzy search
             elif url[:2] == 'q/':
                 resp = self.get_keyword_matches(req, url[2:])
