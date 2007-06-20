@@ -6,12 +6,14 @@
    <h2>Frequently Accessed Modules</h2>
 
    <table width="100%" class="indextable"><tr><td width="33%" valign="top">
-   {% set collen = len(freqentries) // 3 + 1 %}
+   {% set collen = len(freqentries) // 3 %}
+   {% if collen == 0 %}{% set collen = 1 %}{% endif %}
    {% set numcol = 1 %}
    {% for modname in freqentries %}
      <a href="?mod={{ modname|e }}" title="{{ synopsis|e }}">
        <tt>{{ modname|e }}</tt></a>
       {% if platform %} <em>({{ platform }})</em>{% endif %}
+      <br>
       {% if numcol < 3 and loop.index % collen == 0 %}
       {% set numcol = numcol+1 %}
       </td><td width="33%" valign="top">
