@@ -113,10 +113,13 @@ def render_template(req, template_name, *contexts):
         context.update(ctx)
     tmpl = jinja_env.get_template(template_name)
 
+    path = req.path.lstrip('/')
+    if not path[-1:] == '/':
+        path += '/'
     def relative_path_to(otheruri, resource=False):
         if not resource:
             otheruri = get_target_uri(otheruri)
-        return relative_uri(req.path, otheruri)
+        return relative_uri(path, otheruri)
     context['pathto'] = relative_path_to
 
     # add it here a second time for templates that don't
