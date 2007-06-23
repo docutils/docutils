@@ -1,0 +1,31 @@
+Global TODO
+===========
+
+(order not significant)
+
+- write a HTML Help builder
+- write a "traditional" stylesheet
+- complete the "submit patch" functionality
+- think about database for comments
+- make comments per descitem possible
+- explore a "printable" builder (export to latex, most probably)
+- change the way how modules are added to "most viewed"
+- integrate standalone HOWTOs
+- modindex: only toplevel, then expand
+
+- lib-index: links to sects now in ref
+
+- discuss distribution
+
+done
+----
+
+- indicate version at the top
+- modindex: most used at top
+- cleanup env (names!) and work out export format
+- check if nested method and attribute directives are handled correctly
+- build option to strip () from function roles
+- move label target to preceding heading if first element
+- rethink nav structure
+- x-ref C function arguments and return types
+- change "member" to "attribute"/"attr"
