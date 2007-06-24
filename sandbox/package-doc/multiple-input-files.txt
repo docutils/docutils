@@ -195,11 +195,18 @@ Cross-References
 
 A major issue to think about is how to do **cross-references**
 (colloquially known as **xrefs**) between files.  Things like
-substitutions or role definitions should not be shared between files
+local references or substitutions should not be shared between files
 (their definitions can simply be loaded using the "include"
-directive).  However, sharing targets and thereby allowing
+directive).  However, sharing *external* targets and thereby allowing
 cross-references between files is one of the major features of
 an architecture that supports multiple input files.
+
+(Implementation note: For this to work, we need to apply transforms to
+sub-documents; basically, all transforms but the one resolving
+external references should be applied.  This means that a new reader
+instance must be created.  r5266 makes applying transforms to
+sub-documents possible by pulling the responsibility for applying
+transforms out of the Publisher.)
 
 Issues arise once we think about how to group target names into
 namespaces.  Unfortunately, simply putting all targets into a global,
