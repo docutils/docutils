@@ -120,7 +120,7 @@ class DocumentationApplication(object):
         # XXX: validate args
 
         handle, pathname = tempfile.mkstemp()
-        os.write(handle, contents)
+        os.write(handle, contents.encode('utf-8'))
         os.close(handle)
 
         warning_stream = StringIO.StringIO()
