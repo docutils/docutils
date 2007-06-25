@@ -65,7 +65,8 @@ def main(argv):
         return app
 
     if os.environ.get('RUN_MAIN') != 'true':
-        print '* Sphinx %s - Python documentation web application' % sphinx.__version__
+        print '* Sphinx %s- Python documentation web application' % \
+              sphinx.__version__.replace('$', '').replace('Revision:', 'rev.')
         if debug:
             print '* Running in debug mode'
 
