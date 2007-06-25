@@ -482,8 +482,9 @@ class BuildEnvironment:
         doctree.reporter = Reporter(filename, 2, 4, stream=self.warning_stream)
         return doctree
 
-    def get_and_resolve_doctree(self, filename, builder):
-        doctree = self.get_doctree(filename)
+    def get_and_resolve_doctree(self, filename, builder, doctree=None):
+        if doctree is None:
+            doctree = self.get_doctree(filename)
 
         # resolve all pending cross-references
         self.resolve_references(doctree, filename, builder)
