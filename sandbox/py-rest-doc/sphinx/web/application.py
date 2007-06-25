@@ -40,6 +40,11 @@ _mail_re = re.compile(r'^([a-zA-Z0-9_\.\-])+\@'
                       r'(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,})+$')
 
 
+class MockBuilder(object):
+    def get_relative_uri(self, from_, to):
+        return ''
+
+
 class DocumentationApplication(object):
     """
     Serves the documentation.
@@ -123,6 +128,7 @@ class DocumentationApplication(object):
         destination = StringOutput(encoding='utf-8')
         writer = HTMLWriter(env2.config)
         doctree = env2.read_file(page_id, pathname, save_parsed=False)
+        doctree = env2.get_and_resolve_doctree(page_id, MockBuilder(), doctree)
         doctree.settings = OptionParser(defaults=env2.settings,
                                         components=(writer,)).get_default_values()
         doctree.reporter = Reporter(page_id, 2, 4, stream=warning_stream)
