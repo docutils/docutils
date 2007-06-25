@@ -17,6 +17,7 @@ import copy
 import heapq
 import tempfile
 import cPickle as pickle
+import cStringIO as StringIO
 from os import path
 from collections import defaultdict
 
@@ -32,6 +33,7 @@ from ..util import relative_uri, shorten_result
 from ..writer import HTMLWriter
 
 from docutils.io import StringOutput
+from docutils.utils import Reporter
 from docutils.frontend import OptionParser
 
 _mail_re = re.compile(r'^([a-zA-Z0-9_\.\-])+\@'
@@ -116,16 +118,28 @@ class DocumentationApplication(object):
         os.write(handle, contents)
         os.close(handle)
 
+        warning_stream = StringIO.StringIO()
         env2 = copy.deepcopy(self.env)
         destination = StringOutput(encoding='utf-8')
+        writer = HTMLWriter(env2.config)
         doctree = env2.read_file(page_id, pathname, save_parsed=False)
         doctree.settings = OptionParser(defaults=env2.settings,
                                         components=(writer,)).get_default_values()
-        writer = HTMLWriter(env2.config)
+        doctree.reporter = Reporter(page_id, 2, 4, stream=warning_stream)
         output = writer.write(doctree, destination)
         writer.assemble_parts()
 
-        return Response(writer.parts['fragment'])
+        return Response(render_template(req, 'preview.html',
+                                        self.globalcontext,
+                                        dict(
+            contents=contents,
+            rendered=writer.parts['fragment'],
+            author=author,
+            email=email,
+            pagename=page,
+            submiturl=relative_uri('/@submit/'+page+'/', '/@submit/'+page),
+            warnings=warning_stream.getvalue().splitlines()
+        )))
 
     def submit_changes(self, req, page):
         """

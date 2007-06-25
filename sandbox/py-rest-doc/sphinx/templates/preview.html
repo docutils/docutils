@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% set title = "Preview" %}
+{% block body %}
+  <h1>Preview</h1>
+  <div style="margin: 20px; background-color: #eee">
+    {{ rendered }}
+  </div>
+{% if warnings %}
+  <h1>Warnings</h1>
+  <p>You must fix these warnings before you can submit your patch.</p>
+  <ul>
+    {% for warning in warnings %}
+    <li>{{ warning }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+  <h1 id="suggest-changes-for-this-page">Edit suggested changes</h1>
+  <form action="{{ submiturl }}" method="post">
+    <div id="suggest-changes-box">
+      <textarea name="contents">{{ contents|e }}</textarea>
+      <dl>
+        <dt>Your name</dt>
+        <dd><input type="text" name="name" value="{{ author }}"></dd>
+        <dt>Your e-mail address</dt>
+        <dd><input type="text" name="email" value="{{ email }}"></dd>
+      </dl>
+      <div class="actions">
+        <input type="submit" value="Submit patch for review">
+        <input type="submit" name="preview" value="Preview changes">
+        <input type="submit" name="cancel" value="Cancel">
+      </div>
+    </div>
+  </form>
+{% endblock %}
