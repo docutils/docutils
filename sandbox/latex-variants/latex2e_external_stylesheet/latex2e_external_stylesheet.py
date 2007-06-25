@@ -583,16 +583,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.table_stack = []
         self.active_table = Table('longtable',settings.table_style)
 
-        # HACK.  Should have more sophisticated typearea handling.
-        # TODO: do this in the style-sheet? How?
-        if settings.documentclass.find('scr') == -1:
-            self.typearea = ['\\usepackage[DIV12]{typearea}\n']
-        else:
-            if self.d_options.find('DIV') == -1 and self.d_options.find('BCOR') == -1:
-                self.typearea = ['\\typearea{12}\n']
-            else:
-                self.typearea = []
-        
         if self.latex_encoding.startswith('utf8'):
             input_encoding = ['\\usepackage{ucs}\n',
                               '\\usepackage[utf8x]{inputenc}\n']
@@ -606,10 +596,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.latex_head % (self.d_options,self.settings.documentclass),
             self.generator,
             '\n']           
-        self.head_prefix.extend(
-            input_encoding
-            + self.typearea
-            + [
+        self.head_prefix.extend(input_encoding + [
             '\\usepackage{babel}\n',
             '\\usepackage{color}\n',
             '\\usepackage{tabularx}\n',  # for the docinfo
