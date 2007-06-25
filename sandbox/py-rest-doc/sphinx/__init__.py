@@ -16,6 +16,8 @@ from os import path
 from .builder import builders
 from .console import nocolor
 
+__version__ = '$Revision$'
+
 
 def usage(argv, msg=None):
     if msg:

@@ -6,25 +6,19 @@
     :copyright: 2007 by Armin Ronacher.
     :license: Python license.
 """
+import os
 import sys
 import signal
 import getopt
-from wsgiref.simple_server import make_server
 
-from sphinx.web.application import make_app
+import sphinx
+from sphinx.web.application import setup_app
+from sphinx.web.serve import run_simple
 
 try:
     from werkzeug.debug import DebuggedApplication
 except ImportError:
-    DebuggedApplication = lambda x: x
-
-class Restart(Exception):
-    pass
-
-def raise_restart(*args):
-    raise Restart
-
-signal.signal(signal.SIGQUIT, raise_restart)
+    DebuggedApplication = lambda x, y: x
 
 def check_superuser(orig_app):
     """Check if there is a superuser and create one if necessary."""
@@ -51,16 +45,16 @@ def main(argv):
         print ' -d: use werkzeug debugger if installed'
         return 2
 
-    debug = '-d' in opts
     port = 3000
     hostname = 'localhost'
     if len(args) > 1:
         hostname = args[1]
         if len(args) > 2:
             port = int(args[2])
+    debug = ('-d' in opts) or (hostname == 'localhost')
 
-    while True:
-        orig_app, app = make_app({
+    def make_app():
+        orig_app, app = setup_app({
             'data_root_path':   args[0],
             'debug':            debug
         })
@@ -68,17 +62,14 @@ def main(argv):
 
         if debug:
             app = DebuggedApplication(app, True)
+        return app
 
-        srv = make_server(hostname, port, app)
-        try:
-            print 'Running on http://%s:%d/' % srv.socket.getsockname()
-            srv.serve_forever()
-        except Restart:
-            print 'Got SIGQUIT, restarting...'
-            srv.server_close()
-            continue
-        except KeyboardInterrupt:
-            break
+    if os.environ.get('RUN_MAIN') != 'true':
+        print '* Sphinx %s - Python documentation web application' % sphinx.__version__
+        if debug:
+            print '* Running in debug mode'
+
+    run_simple(hostname, port, make_app, use_reloader=debug)
 
 
 if __name__ == '__main__':
