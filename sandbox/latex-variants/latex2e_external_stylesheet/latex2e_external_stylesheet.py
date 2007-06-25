@@ -71,6 +71,9 @@ class Writer(writers.Writer):
           'directory.  Overrides --stylesheet.',
           ['--stylesheet-path'],
           {'metavar': '<file>', 'overrides': 'stylesheet'}),
+         ('Some LaTeX code to append to the preamble',
+          ['--preamble-attachment'],
+          {'default': ''}),
          ('Table of contents by docutils (default) or LaTeX. LaTeX (writer) '
           'supports only one ToC per document, but docutils does not know of '
           'pagenumbers. LaTeX table of contents also means LaTeX generates '
@@ -92,9 +95,6 @@ class Writer(writers.Writer):
           ['--use-latex-abstract'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
-         ('Color of any hyperlinks embedded in text '
-          '(default: "blue", "0" to disable).',
-          ['--hyperlink-color'], {'default': 'blue'}),
          ('Enable compound enumerators for nested enumerated lists '
           '(e.g. "1.2.a.ii").  Default: disabled.',
           ['--compound-enumerators'],
@@ -130,12 +130,6 @@ class Writer(writers.Writer):
           ['--table-style'],
           {'choices': ['standard', 'booktabs','nolines'], 'default': 'standard',
            'metavar': '<format>'}),
-         ('LaTeX graphicx package option. '
-          'Possible values are "dvips", "pdftex". "auto" includes LaTeX code '
-          'to use "pdftex" if processing with pdf(la)tex and dvips otherwise. '
-          'Default is no option.',
-          ['--graphicx-option'],
-          {'default': ''}),
          ('LaTeX font encoding. '
           'Possible values are "T1", "OT1", "" or some other fontenc option. '
           'The font encoding influences available symbols, e.g. "<<" as one '
@@ -559,6 +553,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self._reference_label = settings.reference_label
         self.compound_enumerators = settings.compound_enumerators
         self.font_encoding = settings.font_encoding
+        self.preamble_attachment = settings.preamble_attachment
         self.section_prefix_for_enumerators = (
             settings.section_prefix_for_enumerators)
         self.section_enumerator_separator = (
@@ -590,7 +585,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             input_encoding = ['\\usepackage[%s]{inputenc}\n' 
                               % self.latex_encoding]
 
-        # `head_prefix` is the LaTeX preamble. 
+        # `head_prefix` is the LaTeX preamble
         # This are the documents first lines, starting with document class.
         self.head_prefix = [
             self.latex_head % (self.d_options,self.settings.documentclass),
@@ -620,8 +615,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # TODO: embedd (between \makeatletter \makeatother) if set to do so
         self.head_prefix.append(self.stylesheet % (stylesheet))
         
+        # Append code provided on the command line (or as config setting)
+        if self.preamble_attachment:
+            self.head_prefix.extend(['% Local Configuration\n',
+                                     '% -------------------\n',
+                                     '\n',
+                                     self.preamble_attachment + '\n',
+                                    '\n'])
+        
         if True: # maybe check for pdf
-            self.pdfinfo = [ ]
+            self.pdfinfo = []
             self.pdfauthor = None
             # pdftitle, pdfsubject, pdfauthor, pdfkeywords, 
             # pdfcreator, pdfproducer
@@ -866,6 +869,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.pdfinfo is not None and self.pdfauthor:
             self.pdfinfo.append('pdfauthor={%s}' % self.pdfauthor)
         if self.pdfinfo:
+            # TODO: provide dummy \hypersetup command if hyperref is not used?
             pdfinfo = '\\hypersetup{\n' + ',\n'.join(self.pdfinfo) + '\n}\n'
         else:
             pdfinfo = ''
