@@ -538,5 +538,5 @@ class WebHTMLBuilder(StandaloneHTMLBuilder):
 builders = {
     'html': StandaloneHTMLBuilder,
     'web': WebHTMLBuilder,
-#    'latex': LatexBuilder,
+#    'hhp': HTMLHelpBuilder,
 }

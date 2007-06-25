@@ -286,14 +286,17 @@ class BuildEnvironment:
 
     # --------- SINGLE FILE BUILDING -------------------------------------------
 
-    def read_file(self, filename):
-        """Parse a file and add/update inventory entries for the doctree."""
+    def read_file(self, filename, src_path=None, save_parsed=True):
+        """Parse a file and add/update inventory entries for the doctree.
+        If srcpath is given, read from a different source file."""
         # remove all inventory entries for that file
         self.clear_file(filename)
 
+        if src_path is None:
+            src_path = path.join(self.srcdir, filename)
+
         self.filename = filename
-        filesystem_filename = path.join(self.srcdir, filename)
-        doctree = publish_doctree(None, filesystem_filename, FileInput,
+        doctree = publish_doctree(None, src_path, FileInput,
                                   settings_overrides=self.settings,
                                   reader=MyStandaloneReader())
         self.process_metadata(filename, doctree)
@@ -302,9 +305,9 @@ class BuildEnvironment:
         self.build_toc_from(filename, doctree)
 
         # calculate the MD5 of the file at time of build
-        with file(filesystem_filename, 'rb') as f:
+        with file(src_path, 'rb') as f:
             md5 = hashlib.md5(f.read()).digest()
-        self.all_files[filename] = (path.getmtime(filesystem_filename), md5)
+        self.all_files[filename] = (path.getmtime(src_path), md5)
 
         # make it picklable
         doctree.reporter = None
@@ -312,15 +315,18 @@ class BuildEnvironment:
         doctree.settings.env = None
         doctree.settings.warning_stream = None
 
-        # save the parsed doctree
-        doctree_filename = filesystem_filename[:-3] + 'doctree'
-        with file(doctree_filename, 'wb') as f:
-            pickle.dump(doctree, f, pickle.HIGHEST_PROTOCOL)
-
         # cleanup
         self.filename = None
         self.currmodule = None
         self.currclass = None
+
+        if save_parsed:
+            # save the parsed doctree
+            doctree_filename = src_path[:-3] + 'doctree'
+            with file(doctree_filename, 'wb') as f:
+                pickle.dump(doctree, f, pickle.HIGHEST_PROTOCOL)
+        else:
+            return doctree
 
     def process_metadata(self, filename, doctree):
         """

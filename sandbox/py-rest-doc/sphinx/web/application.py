@@ -11,9 +11,11 @@
 """
 from __future__ import with_statement
 
+import os
 import re
 import copy
 import heapq
+import tempfile
 import cPickle as pickle
 from os import path
 from collections import defaultdict
@@ -27,7 +29,10 @@ from .util import Request, Response, RedirectResponse, SharedDataMiddleware, \
      NotFound, render_template, get_target_uri
 from ..search import SearchFrontend
 from ..util import relative_uri, shorten_result
+from ..writer import HTMLWriter
 
+from docutils.io import StringOutput
+from docutils.frontend import OptionParser
 
 _mail_re = re.compile(r'^([a-zA-Z0-9_\.\-])+\@'
                       r'(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,})+$')
@@ -70,7 +75,6 @@ class DocumentationApplication(object):
         Get the reST source of a page.
         """
         page_id = self.env.get_real_filename(page)
-        print page, page_id
         if page_id is None:
             raise NotFound()
         filename = path.join(self.data_root, 'sources', page_id)[:-3] + 'txt'
@@ -99,20 +103,37 @@ class DocumentationApplication(object):
         """
         Preview suggested changes.
         """
-        author = req.args.get('name')
-        email = req.args.get('email')
-        contents = req.args.get('contents')
+        page_id = self.env.get_real_filename(page)
+        if page_id is None:
+            raise NotFound()
+        author = req.form.get('name')
+        email = req.form.get('email')
+        contents = req.form.get('contents')
 
-        self.env2 = copy.deepcopy(self.env)
-        # TODO
+        # XXX: validate args
+
+        handle, pathname = tempfile.mkstemp()
+        os.write(handle, contents)
+        os.close(handle)
+
+        env2 = copy.deepcopy(self.env)
+        destination = StringOutput(encoding='utf-8')
+        doctree = env2.read_file(page_id, pathname, save_parsed=False)
+        doctree.settings = OptionParser(defaults=env2.settings,
+                                        components=(writer,)).get_default_values()
+        writer = HTMLWriter(env2.config)
+        output = writer.write(doctree, destination)
+        writer.assemble_parts()
+
+        return Response(writer.parts['fragment'])
 
     def submit_changes(self, req, page):
         """
         Submit the suggested changes as a patch.
         """
-        raise NotFound() # for now
         if req.form.get('preview'):
             return self.preview_changes(req, page)
+        raise NotFound() # for now
 
         author = req.form.get('name')
         email = req.form.get('email')
@@ -439,7 +460,7 @@ class DocumentationApplication(object):
         return resp(environ, start_response)
 
 
-def make_app(conf):
+def setup_app(conf):
     """
     Create the WSGI application based on a configuration dict.
     Handled configuration values so far:
