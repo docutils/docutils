@@ -52,6 +52,10 @@ includes:
 
        .. |<base-file>.| replace:: <document-title>
 
+6. If -W xref-role-targets is specified, then inline targets that are
+   defined through an interpreted text target role are included in the
+   index.
+
 This writer uses the following output definitions:
 
 -W appendix=<string>     String to use for an appendix reference when
@@ -75,6 +79,10 @@ This writer uses the following output definitions:
                          xref-sections=1 (default "Section").
 -W sprintf=<string>      Specify an sprintf string for formatting the
                          output definitions (default is "%s").
+-W xref-role-targets=<0|1>
+                         Output cross-references for non-empty
+                         internal targets created from interpreted
+                         text roles (default is 0).
 -W xref-sections=<0|1>   Output cross-reference for section titles
                          (default is 0).
 -W xref-targets=<0|1>    Output cross-reference for internal targets
@@ -86,22 +94,25 @@ This writer uses the following output definitions:
 sub BEGIN = {
     # My -W flags
     use vars qw($appendix $chapter $file_suffix $filename_ext $file_path
-		$section $sprintf $xref_sections $xref_targets);
+		$section $sprintf $xref_role_targets
+                $xref_sections $xref_targets);
 
     # Run-time globals
     use vars qw($BASE_FILE $OUT_FILE %TARGET_NAMES @TARGETS $XREF_STRS);
 
     # Defaults for -W flags
-    $appendix = "Appendix" unless defined $appendix;
-    $chapter = "Chapter" unless defined $chapter;
-    $file_suffix = 'html' unless defined $file_suffix;
-    $filename_ext = '' unless defined $filename_ext;
-    $file_path = "" unless defined $file_path;
+    $appendix          = 'Appendix' unless defined $appendix;
+    $chapter           = 'Chapter'  unless defined $chapter;
+    $file_suffix       = 'html'     unless defined $file_suffix;
+    $filename_ext      = ''         unless defined $filename_ext;
+    $file_path         = ''         unless defined $file_path;
+    $section           = 'Section'  unless defined $section;
+    $sprintf           = "%s"       unless defined $sprintf;
+    $xref_role_targets = 0          unless defined $xref_role_targets;
+    $xref_sections     = 0          unless defined $xref_sections;
+    $xref_targets      = 1          unless defined $xref_targets;
+
     $file_path .= "/" if ($file_path && $file_path !~ /\/$/);
-    $section = "Section" unless defined $section;
-    $sprintf = "%s" unless defined $sprintf;
-    $xref_sections = 0 unless defined $xref_sections;
-    $xref_targets = 1 unless defined $xref_targets;
 }
 
 sub exportableDef {
@@ -179,7 +190,8 @@ phase PREPROCESS {
     sub target = {
 	my ($dom, $str) = @_;
 	my $attr = $dom->{attr};
-	if (!$attr->{refuri} && !$attr->{anonymous}) {
+	if (!$attr->{refuri} && !$attr->{anonymous} &&
+	    (!$attr->{role} || $xref_role_targets)) {
 	    $attr->{names} = $attr->{dupnames}
 	        if defined $attr->{dupnames} && !defined $attr->{names};
 	    my @names = grep(!$TARGET_NAMES{$_},
@@ -237,7 +249,7 @@ phase PROCESS {
 	    $title =~ s/^((.*?)(\..*?)?)[\xa0\xc2]+/ /;
 	    my ($number, $prefix, $suffix) = ($1, $2, $3);
 	    my $ref = ! defined $number ? $title :
-		$suffix ne '' ? "$section $number" :
+		defined $suffix ? "$section $number" :
 		$prefix =~ /\d$/ ?"$chapter $number" : "$appendix $number";
 	    $XREF_STRS .= ".. |$BASE_FILE.$name| replace:: $ref\n";
 	}
