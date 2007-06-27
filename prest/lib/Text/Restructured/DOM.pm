@@ -69,6 +69,15 @@ sub append : method {
 }
 
 # INSTANCE METHOD.
+# Returns the child with index n in the contents (0-based)
+# Arguments: n
+# Returns: child DOM object or undef
+sub child : method {
+    my ($dom, $n) = @_;
+    return $dom->{content}[$n];
+}
+
+# INSTANCE METHOD.
 # Returns the content objects the DOM object has
 # Arguments: None
 # Returns: Array of content DOM objects
