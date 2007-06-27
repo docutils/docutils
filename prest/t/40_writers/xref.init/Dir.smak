@@ -13,6 +13,7 @@
     %PREST_FILE_FLAGS =
 	(index01 => qq(-W short_titles=0 @idxtests),
 	 index02 => "@idxtests",
+	 index03 => qq(-W doc_titles=0 @idxtests),
 	 toc01 => qq(-W symbol='=' -W top_in_list @idxtests),
 	 toc02 => qq(-W symbol='=' -W exclude_top @idxtests),
 	 toc03 => qq(-W symbol='=' @idxtests),
