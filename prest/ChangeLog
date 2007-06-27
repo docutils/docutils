@@ -5,6 +5,41 @@ Release Notes
 
 .. contents::
 
+Release 0.3.31
+--------------
+ReStructuredText parsing:
+
+* Added a "target" role that allows separation of inline target tags
+  from the text that is displayed.
+* Fixed a bug where, if two items in an enumerated list occurred with
+  no blank line between them and a third item was separated by a blank
+  line, the third item was put into a separate list.
+
+Directive 'perl':
+
+* Exported the following new global variables: ``$DIRECTIVE`` and
+  ``$PARSER``.
+
+Writer 'html':
+
+* Mark a single paragraph in a compound as both class "compound-first"
+  and "compound-last".
+* Fixed a bug where a class attribute on a field list did not
+  propagate to the output.
+* Fixed a bug where an align attribute on a table did not propagate to
+  the output.
+
+Writer 'index':
+
+* Implemented the '-W doc-titles' and '-W index-role-targets' options.
+* Output nothing instead of an empty table if there are no index
+  entries.
+
+Writer 'xref':
+
+* Added the ``-W xref-role-targets`` option.
+* Allowed the suffix to be an empty string.
+
 Release 0.3.30
 --------------
 * Fixed problem with find command in Makefile.PL that used a Linuxism.
@@ -59,7 +94,7 @@ Release 0.3.24
 Release 0.3.23
 --------------
 * Fixed the help to parse as reStructuredText.
-* Execute evals in Text::Restructured::Writer::Eval instead of Eval_::.
+* Execute evals in ``Text::Restructured::Writer::Eval`` instead of ``Eval_::``.
 * Initialize some of the opt variables to avoid warnings if not driven
   by prest.
 
