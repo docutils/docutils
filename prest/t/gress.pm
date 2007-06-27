@@ -7,7 +7,7 @@ use Test::More;
 use FindBin;
 
 use lib "$FindBin::RealBin/../../tbin";
-use Slay::Makefile;
+use Slay::Makefile 0.02;
 
 # $Id$
 
@@ -135,20 +135,18 @@ sub do_tests {
 	plan(skip_all => "$error") if $?;
     }
 
-    my %opts;
+    my %opts = (strict => 1) ;
     $opts{debug} = 1 if $ENV{MKDBG};
     my $sm = Slay::Makefile->new(\%opts);
-    $sm->parse($makefile);
+    my $errs = $sm->parse("../../Common.smak");
+    die join "\n", @$errs if @$errs;
     # Run the pretest target, if any
     eval { $sm->make('pretest') };
     $sm->maker->check_targets('test') unless @ARGV;
 
     # Get list of targets
-    #    N.B.: there should be a way to do this without looking
-    #    under the skirts of Slay::Maker.
-    my ($target, $rule, $deps, $matches) = @{$sm->maker->{QUEUE}} ?
-	@{$sm->maker->{QUEUE}[-1]} : ();
-    my @tests = @ARGV ? @ARGV : defined $target && $deps ? @$deps : () ;
+    my ($rule, $deps, $matches) = $sm->maker->get_rule_info('test');
+    my @tests = @ARGV ? @ARGV : defined $rule && $deps ? @$deps : () ;
     plan tests => 0+@tests;
   TEST:
     foreach my $test (@tests) {
