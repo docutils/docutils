@@ -703,7 +703,8 @@ background color.</p>
 </pre>
 <p class="compound-last">Compound 2, this is a test.</p>
 </div>
-<div class="compound">Compound 3, only consisting of one paragraph.</div>
+<div class="compound"><p class="compound-first compound-last">Compound 3, only consisting of one paragraph.</p>
+</div>
 <div class="compound">
 <pre class="compound-first literal-block">Compound 4.
 This one starts with a literal block.
