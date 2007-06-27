@@ -302,6 +302,7 @@ pretest: { @PRETESTS }
     # Default version of PREST_FLAGS
     $PREST_FLAGS = q(-D source='test data' -D xformoff='.*' -D align=0)
 	unless defined $PREST_FLAGS;
+    $PREST_FLAGS .= q( -D no_line_directives) if $ENV{DEBUG};
     # Default version of PREST_WRT_FLAGS for dom
     $PREST_WRT_FLAGS{dom} = '-W nobackn' unless defined $PREST_WRT_FLAGS{dom};
 }
@@ -406,8 +407,9 @@ find_oks:
 		     $PREST_SUITE_FLAGS, $PREST_DIR_FLAGS, 
 		     $PREST_FILE_FLAGS{$m0});
 	    push @flags, "$m0.rst" if -f "$m0.rst";
-	    my $redir = $matches->[2] ? '' : '2>&1' ;
+	    my $redir    = $matches->[2] ? '' : '2>&1' ;
 	    my $postproc = $POSTPROC_FILE{$m0} || '';
+	    my $redirect = $ENV{DEBUG} ? '' : "> $target";
 	    execute "$prest_cmd -w $writer @flags $redir $postproc |
-                     grep -v 'Wide character'> $target";
+                     grep -v 'Wide character'$redirect";
 	}
