@@ -1,0 +1,32 @@
+<document source="test data">
+    <paragraph>
+        Here is a 
+        <target classes="target" ids="abc" names="abc" role="target">
+            target
+         that I can refer to as 
+        <reference name="abc" refname="abc">
+            abc
+        .
+        Here is an 
+        <target classes="target" ids="def" names="def" role="target">
+        invisible target that I can refer to as
+        <reference name="invisible target" refuri="#def">
+            invisible target
+        <target ids="invisible-target" names="invisible target" refuri="#def">
+         or 
+        <reference name="def" refname="def">
+            def
+        .
+    <paragraph>
+        A 
+        <target classes="another-target" ids="another-target-role" names="another-target role" role="another-target">
+        target with a different role.
+    <paragraph>
+        There is another 
+        <target classes="target" ids="ghi" names="ghi" role="target">
+            target
+         with the same physical text,
+        but which I can refer to as 
+        <reference name="ghi" refname="ghi">
+            ghi
+        .
