@@ -1,0 +1,11 @@
+<document source="enumlist01.rst">
+    <enumerated_list enumtype="arabic" prefix="" suffix=".">
+        <list_item>
+            <paragraph>
+                First item.
+        <list_item>
+            <paragraph>
+                Second item.
+        <list_item>
+            <paragraph>
+                Back to your regularly-scheduled list.
