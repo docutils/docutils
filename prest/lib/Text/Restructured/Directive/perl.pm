@@ -40,10 +40,15 @@ use within the perl code:
    The name of the source file containing the perl directive.
 ``$LINENO``
    The line number of the perl directive within $SOURCE.
+``$DIRECTIVE``
+   The literal text of the perl directive.
 ``@INCLUDES``
-   Array of [filename, linenumber] pairs of files which have included this one
+   Array of [filename, linenumber] pairs of files which have included this one.
 ``$opt_<x>``
    The ``<x>`` option from the command line.
+``$PARSER``
+   The Text::Restructured parser object to allow text parsing within a
+   perl directive.
 ``$TOP_FILE``
    The name of the top-level file.
 ``$VERSION``
@@ -141,7 +146,7 @@ sub main {
 	foreach (keys %Text::Restructured::) {
 	    local *opt = $Text::Restructured::{$_};
 	    no strict 'refs';
-	    *{"Perl::Safe::Text::Restructured::$_"} = \&{"Text::Restructured::$_"} if defined &{"Text::Restructured::$_"};
+	    *{"Perl::Safe::Text::Restructured::$_"} = \*{"Text::Restructured::$_"};
 	}
 	foreach (keys %Text::Restructured::DOM::) {
 	    local *opt = $Text::Restructured::DOM::{$_};
@@ -162,13 +167,35 @@ sub main {
 	     qq(Error executing "-D perl" option: $err.), $exp)
 	    if $@;
     }
-    $Perl::Safe::SOURCE = $source;
-    $Perl::Safe::LINENO = $lineno;
-    $Perl::Safe::TOP_FILE = $parser->{TOP_FILE};
-    @Perl::Safe::INCLUDES = @Text::Restructured::INCLUDES;
-    my @text = $Perl::safe->reval($code);
+    my @text;
     my $newsource = qq($name directive at $source, line $lineno);
-    my $err = $@ =~ /trapped by/ ? "$@Run with -D trusted if you believe the code is safe" : $@;
+    my $in_safe = 0;
+    my $i=0;
+    while (my ($subr) = (caller($i++))[3]) {
+	if ($subr eq 'Safe::reval') {
+	    $in_safe = 1;
+	    last;
+	}
+    }
+    if ($in_safe) {
+	# We're already in the safe box: just eval
+	local $main::SOURCE    = $source;
+	local $main::LINENO    = $lineno;
+	local $main::DIRECTIVE = $lit;
+	local $main::PARSER    = $parser;
+	@text = eval "package main; $code";
+    }
+    else {
+	$Perl::Safe::SOURCE    = $source;
+	$Perl::Safe::LINENO    = $lineno;
+	$Perl::Safe::DIRECTIVE = $lit;
+	$Perl::Safe::TOP_FILE  = $parser->{TOP_FILE};
+	$Perl::Safe::PARSER    = $parser;
+	@Perl::Safe::INCLUDES  = @Text::Restructured::INCLUDES;
+	@text = $Perl::safe->reval($code);
+    }
+    my $err = $@ =~ /trapped by/ ?
+	"$@Run with -D trusted if you believe the code is safe" : $@;
     return $parser->system_message
 	(4, $source, $lineno,
 	 qq(Error executing "$name" directive: $err.), $lit)
