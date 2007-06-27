@@ -1307,13 +1307,20 @@ The "perl" directive defines the following global variables:
    The name of the source file containing the perl directive.
 ``$LINENO``
    The line number of the perl directive within ``$SOURCE``.
-``TOP_FILE``
-   The top-level file being processed.
+``$DIRECTIVE``
+   The literal text of the perl directive.
 ``@INCLUDES``
    Array of reference to array of [file name, line number] pairs that
    have included the current file.
 ``$opt_<x>`` or ``%opt_<x>``
    The ``<x>`` option from the command line.
+``$PARSER``
+   The Text::Restructured parser object to allow text parsing within a
+   perl directive.
+``$TOP_FILE``
+   The top-level file being processed.
+``$VERSION``
+   The version of prest.
 
 The following defines are processed by the "perl" directive:
 
