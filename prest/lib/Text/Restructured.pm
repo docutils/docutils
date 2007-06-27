@@ -6,7 +6,7 @@
 package Text::Restructured;
 
 # N.B.: keep version in quotes so trailing 0's are not lost
-$VERSION = '0.003030';
+$VERSION = '0.003031';
 
 # This package does parsing of reStructuredText files
 
@@ -247,6 +247,31 @@ BEGIN {
 		  text =>"RFC %s",
 		  check=>\&Text::Restructured::Role::RFC,
 		},
+	      target     =>{
+		  tag  => 'target',
+		  attr =>{
+		      ids  => sub {
+			  my ($parser, $attr, $text) = @_;
+			  my $target = $text=~s/(?:\A| )<(.*)>$// ? $1 : $text;
+			  [$parser->NormalizeId($target)];
+		      },
+		      names=> sub {
+			  my ($parser, $attr, $text) = @_;
+			  my $target = $text=~s/(?:\A| )<(.*)>$// ? $1 : $text;
+			  [$parser->NormalizeName($target)];
+		      },
+		      role => sub {
+			  my ($parser, $attr, $text, $role) = @_;
+			  $role;
+		      },
+		      classes => sub { ['target'] },
+		  },
+		  text => sub {
+		      my ($parser, $text) = @_;
+		      $text =~ s/(?:\A| )<(.*)>$//; # Remove the target
+		      $text;
+		  },
+	      },
 	      'title-reference'=>{tag=>'title_reference'},
 	      title      =>{alias=>'title-reference'},
 	      t          =>{alias=>'title-reference'},
@@ -438,7 +463,7 @@ sub Coalesce : method {
     my $p;
     my ($enumtype, $enumval, $enumprefix, $enumsuffix) = ('') x 4;
     for ($p=0; $p <= 2 && $p < @$paras; $p++) {
-#print STDERR "[",join("][",@{$paras}[0..2]),"]\n";
+# print STDERR "[",join("][",@{$paras}[0..2]),"]\n";
 	# Pull out the part of the paragraph prior to a blank line
 	my @split = split /^(\s*\n)/, $paras->[$p], 2;
 	my ($pre_p, $post_p) = @split > 1 ? @split :
@@ -517,7 +542,7 @@ sub Coalesce : method {
 		}
 	    }
 	    push (@enum_list, $first) if $first ne '';
-#print "$p: {\n",map("[$_]\n", @enum_list),"}\n";
+# print STDERR "$p: {\n",map("[$_]\n", @enum_list),"}\n";
 	    # Check any enumerated lists for unexpected indent
 	    my $prev_paras = '';
 	    my $enum;
@@ -622,11 +647,12 @@ sub Coalesce : method {
 	      ||
 	      # Consecutive enumerated lists
 	      ($paras->[$p-2] =~ /^$ENUM .*\n(?=\Z|\n| |$ENUM)/o &&
-#do {print "$p: $paras->[$p-2]~~~~~~$paras->[$p]========"; 1; } &&
+# do {print STDERR "$p: $paras->[$p-2]~~~~~~$paras->[$p]========"; 1; } &&
 	       do {
 		   my ($prefix, $index, $suffix) =
 		       map defined $_ ? $_ : '', ($1, $2, $3);
 		   my $type = $self->EnumType($index);
+		   # Compute information from the first list item in para
 		   if (($type ne $enumtype && $type ne '#') ||
 		       $prefix ne $enumprefix ||
 		       $suffix ne $enumsuffix) {
@@ -637,9 +663,15 @@ sub Coalesce : method {
 		       $enumval = $self->EnumVal($index, $type);
 		       $enumval = 1 if $enumval eq '#';
 		   }
+		   # Now possibly update the value using the last list item
+		   if ($paras->[$p-2] =~ /.*^$ENUM/mos) {
+		       my $index = $2;
+		       my $val = $self->EnumVal($index, $enumtype);
+		       $enumval = $val if $val ne '#';
+		   }
 		   ($paras->[$p] =~ /^   / ||
 		    $paras->[$p] =~ /^$ENUM .*\n(?=\Z|\n| |$ENUM)/o &&
-#do { print "$prefix-$enumtype-$enumval-$suffix vs $1-$enumtype-$2-$3\n"; 1; } &&
+# do { print STDERR "$prefix-$enumtype-$enumval-$suffix vs $1-$enumtype-$2-$3\n"; 1; } &&
 		    do {
 			my $val = $self->EnumVal($2, $enumtype);
 			$val = $enumval + 1 if $val eq '#';
@@ -837,9 +869,9 @@ sub Directive : method {
 		 (4, $source, $lineno,
 		  qq(Error processing directive "$dname": $@), $lit))
 		 if $@;
-	    my @doms = grep(ref($_) eq $DOM, @dir);
+	    my @doms = grep(ref($_) =~ /$DOM$/o, @dir);
 	    push(@unprocessed,
-		 map(split(/^(\s*\n)+/m, $_),grep(ref($_) ne $DOM, @dir)));
+		 map(split(/^(\s*\n)+/m, $_),grep(ref($_) !~ /$DOM$/o, @dir)));
 	    if (@doms >= 1 && $doms[0]{tag} eq 'system_message' || @dir == 0)
 	    {
 		push(@dom, @doms);
@@ -1248,8 +1280,8 @@ sub Inline : method {
 	    my %attr;
 	    if ($MARK_TAG_START{$start} =~ /interpreted/ &&
 		$pending =~ s/:([-\w\.]+):$//) {
-		$attr{role} = $1;
-		$attr{position} = 'prefix'; 
+		$attr{_role} = $1;
+		$attr{_position} = 'prefix'; 
 	    }
 
 	    $lineno += $pending =~ tr/\n//;
@@ -1271,10 +1303,10 @@ sub Inline : method {
 	    }
 	    if ($tag eq 'interpreted' && $text =~ s/^:([-\w\.]+)://) {
 		my $role = $1;
-		if (defined $attr{role}) {
+		if (defined $attr{_role}) {
 		    # We have something problematic here
 		    my ($dom,$refid,$id) =
-			$self->problematic(":$attr{role}:`$mid`:$role:");
+			$self->problematic(":$attr{_role}:`$mid`:$role:");
 		    $parent->append($dom);
 		    my $err = $self->system_message
 			(2, $source, $lineno,
@@ -1295,15 +1327,15 @@ sub Inline : method {
 		    last;
 		}
 		else {
-		    $attr{role} = $role;
-		    $attr{position} = 'suffix';
+		    $attr{_role} = $role;
+		    $attr{_position} = 'suffix';
 		}
 	    }
 	    elsif ($tag =~ /reference/) {
-		if (defined $attr{role}) {
+		if (defined $attr{_role}) {
 		    # We have something problematic here
 		    my ($dom,$refid,$id) =
-			$self->problematic(":$attr{role}:`$mid$end");
+			$self->problematic(":$attr{_role}:`$mid$end");
 		    $parent->append($dom);
 		    my $err = $self->system_message
 			(2, $source, $lineno,
@@ -1389,19 +1421,19 @@ sub Inline : method {
 	    my $was_interpreted;
 	    my $suffix;
 	    if ($tag eq 'interpreted') {
-		$lit = $attr{position} eq 'prefix' ?
-		    ":$attr{role}:$lit" : "$lit:$attr{role}:"
-		    if defined $attr{role};
-		$attr{role} = $self->{MY_DEFAULT_ROLE}
-		if ! defined $attr{role};
-		if (defined $self->{MY_ROLES}{$attr{role}}) {
-		    my $role = $self->{MY_ROLES}{$attr{role}};
+		$lit = $attr{_position} eq 'prefix' ?
+		    ":$attr{_role}:$lit" : "$lit:$attr{_role}:"
+		    if defined $attr{_role};
+		$attr{_role} = $self->{MY_DEFAULT_ROLE}
+		if ! defined $attr{_role};
+		if (defined $self->{MY_ROLES}{$attr{_role}}) {
+		    my $role = $self->{MY_ROLES}{$attr{_role}};
 		    $role = $self->{MY_ROLES}{$role->{alias}}
   			while defined $role->{alias};
 		    my @errs = &{$role->{check}}($self, $mid, $lit, $parent,
-						 $source, $lineno, $attr{role})
+						 $source, $lineno, $attr{_role})
 			if defined $role->{check};
-		    delete $attr{position};
+		    delete $attr{_position};
 		    if (@errs) {
 			push @problems, @errs;
 			last;
@@ -1413,11 +1445,14 @@ sub Inline : method {
 				ref($role->{attr}{$attr}) eq 'ARRAY' ?
 				$role->{attr}{$attr} :
 				ref($role->{attr}{$attr}) eq 'CODE' ?
-				&{$role->{attr}{$attr}}($self, $attr, $mid):
+				&{$role->{attr}{$attr}}($self, $attr, $mid,
+							$attr{_role}):
 				sprintf $role->{attr}{$attr}, $mid;
 			}
 		    }
-		    $mid = sprintf $role->{text}, $mid
+		    $mid = ref($role->{text}) eq 'CODE' ?
+			&{$role->{text}}($self, $mid, $attr{_role}) :
+			sprintf $role->{text}, $mid
 			if defined $role->{text};
 		    my $options = $role->{options};
 		    if ($options && $options->{prefix} &&
@@ -1441,7 +1476,7 @@ sub Inline : method {
 		    # We have something problematic here
 		    my ($dom,$refid,$id) = $self->problematic($lit);
 		    $parent->append($dom);
-		    push @problems, $self->UnknownRole($attr{role}, $source, $lineno, '',
+		    push @problems, $self->UnknownRole($attr{_role}, $source, $lineno, '',
 						       backrefs=>[ $id ],
 						       ids=>[ $refid ]);
 		    last;
@@ -1451,9 +1486,9 @@ sub Inline : method {
 	    $dom->{source} = $source;
 	    $dom->{lineno} = $lineno;
 	    $dom->{lit} = $lit;
-	    if ($attr{role}) {
-		$dom->{role} = $attr{role};
-		delete $dom->{attr}{role};
+	    if ($attr{_role}) {
+		$dom->{role} = $attr{_role};
+		delete $dom->{attr}{_role};
 	    }
 	    if ($tag eq 'target') {
 		my $err = $self->RegisterName($dom, $source, $lineno);
@@ -1463,13 +1498,13 @@ sub Inline : method {
 	    $parent->append($suffix) if $suffix;
 	    if ($tag =~ /^(literal)$/ && ! $was_interpreted || $implicit ||
 		$tag eq 'raw' ||
-		(defined $attr{role} &&
-		 $self->{MY_ROLES}{$attr{role}}{attr}{raw}) ||
+		(defined $attr{_role} &&
+		 $self->{MY_ROLES}{$attr{_role}}{attr}{raw}) ||
 		! $self->{opt}{D}{nest_inline}) {
 		$mid = RemoveBackslashes($mid)
 		    if $tag !~ /^(literal|raw)$/ &&
-		    !(defined $attr{role} &&
-		      $self->{MY_ROLES}{$attr{role}}{attr}{raw});
+		    !(defined $attr{_role} &&
+		      $self->{MY_ROLES}{$attr{_role}}{attr}{raw});
 		$dom->append($DOM->newPCDATA($mid))
 		    if $mid ne '';
 	    }
@@ -1728,7 +1763,7 @@ sub LineBlock : method {
 	    $prev =~ s/^$LINE_BLOCK$spaces/|/gm;
 	    my ($prevproc, @prevdom) =
 		$self->LineBlock($prev, $source, $lineno+$lines);
-	    $dom->append(grep ref $_ eq $DOM, @prevdom);
+	    $dom->append(grep ref($_) =~ /$DOM$/o, @prevdom);
 	}	    
 	$lines += $prev =~ tr/\n//;
 	$processed .= $prev;
@@ -1759,7 +1794,7 @@ sub LineBlock : method {
 	    $nest =~ s/^$LINE_BLOCK$spaces/|/gm;
 	    my ($nestproc, @nestdom) =
 		$self->LineBlock($nest, $source, $lineno+$lines);
-	    $dom->append(grep(ref $_ eq $DOM, @nestdom));
+	    $dom->append(grep(ref($_) =~ /$DOM$/o, @nestdom));
 	    $lines += $nest =~ tr/\n//;
 	    $processed .= $nest;
 	}
@@ -1956,29 +1991,29 @@ sub Paragraphs : method {
 	    my @result;
 	    ($para, $parent, @result) = $self->Explicit($parent, $para,
 							$source, $lineno);
-	    push(@dom, grep(ref($_) eq $DOM, @result));
-	    unshift(@para, grep(ref($_) ne $DOM, @result));
+	    push(@dom, grep(ref($_) =~ /$DOM$/o, @result));
+	    unshift(@para, grep(ref($_) !~ /$DOM$/o, @result));
 	}
 	# Check for bulleted lists
 	elsif ($para =~ /^($BULLETS)(?: |\n)/o) {
 	    my @result;
 	    ($para, @result) = $self->BulletList($para, $source, $lineno);
-	    push(@dom, grep(ref($_) eq $DOM, @result));
-	    unshift(@para, grep(ref($_) ne $DOM, @result));
+	    push(@dom, grep(ref($_) =~ /$DOM$/o, @result));
+	    unshift(@para, grep(ref($_) !~ /$DOM$/o, @result));
 	}
 	# Check for line blocks
 	elsif ($para =~ /^($LINE_BLOCK)(?: |\n)/o) {
 	    my @result;
 	    ($para, @result) = $self->LineBlock($para, $source, $lineno);
-	    push(@dom, grep(ref($_) eq $DOM, @result));
-	    unshift(@para, grep(ref($_) ne $DOM, @result));
+	    push(@dom, grep(ref($_) =~ /$DOM$/o, @result));
+	    unshift(@para, grep(ref($_) !~ /$DOM$/o, @result));
 	}
 	# Check for enumerated lists
 	elsif ($para =~ /^$ENUM .*\n(?=\Z|\n| |$ENUM)/o) {
 	    my @result;
 	    ($para, @result) = $self->EnumList($para, $source, $lineno);
-	    push(@dom, grep(ref($_) eq $DOM, @result));
-	    unshift(@para, grep(ref($_) ne $DOM, @result));
+	    push(@dom, grep(ref($_) =~ /$DOM$/o, @result));
+	    unshift(@para, grep(ref($_) !~ /$DOM$/o, @result));
 	}
 	# Check for doctest blocks
 	elsif ($para =~ /^>>> /) {
@@ -1990,15 +2025,15 @@ sub Paragraphs : method {
 	elsif ($para =~ /^$FIELD_LIST/o) {
 	    my @result;
 	    ($para, @result) = $self->FieldList($para, $source, $lineno);
-	    push(@dom, grep(ref($_) eq $DOM, @result));
-	    unshift(@para, grep(ref($_) ne $DOM, @result));
+	    push(@dom, grep(ref($_) =~ /$DOM$/o, @result));
+	    unshift(@para, grep(ref($_) !~ /$DOM$/o, @result));
 	}
 	# Check for option lists
 	elsif ($para =~ /^$OPTION_LIST/o) {
 	    my @result;
 	    ($para, @result) = $self->OptionList($para, $source, $lineno);
-	    push(@dom, grep(ref($_) eq $DOM, @result));
-	    unshift(@para, grep(ref($_) ne $DOM, @result));
+	    push(@dom, grep(ref($_) =~ /$DOM$/o, @result));
+	    unshift(@para, grep(ref($_) !~ /$DOM$/o, @result));
 	}
 	# Check for tables
 	elsif ($para =~ /^(=+( +=+)+|[+](-+[+])+) *\n/ &&
@@ -2080,8 +2115,8 @@ sub Paragraphs : method {
 	elsif ($para =~ /^(\S.*)\n( +)/) {
 	    my @result;
 	    ($para, @result) = $self->DefinitionList($para, $source, $lineno);
-	    push(@dom, grep(ref($_) eq $DOM, @result));
-	    unshift(@para, grep(ref($_) ne $DOM, @result));
+	    push(@dom, grep(ref($_) =~ /$DOM$/o, @result));
+	    unshift(@para, grep(ref($_) !~ /$DOM$/o, @result));
 	}
 	# Check for transitions 
 	elsif ($para =~ /^(($SEC_CHARS)\2\2\2+)$/o) {
@@ -3082,7 +3117,7 @@ sub admonition {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
 
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno);
-    return $dhash if ref($dhash) eq $DOM;
+    return $dhash if ref($dhash) =~ /$DOM$/o;
     my $content = $dhash->{content} ne '' ? $dhash->{content} :
 	$dhash->{args};
     return $parser->system_message
@@ -3116,7 +3151,7 @@ sub ascii_mathml {
     my @optlist = qw(mstyle);
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
 				\@optlist);
-    return $dhash if ref($dhash) eq $DOM;
+    return $dhash if ref($dhash) =~ /$DOM$/o;
     my($args, $options, $content) = map($dhash->{$_},
 					qw(args options content));
     foreach my $optname (qw(mstyle)) {
@@ -3169,7 +3204,7 @@ sub class {
     my @optlist = ();
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
 				\@optlist, '1+');
-    return $dhash if ref($dhash) eq $DOM;
+    return $dhash if ref($dhash) =~ /$DOM$/o;
 
     return $parser->system_message
 	(3, $source, $lineno,
@@ -3200,7 +3235,7 @@ sub compound {
     my @optlist = qw(class);
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
 				\@optlist);
-    return $dhash if ref($dhash) eq $DOM;
+    return $dhash if ref($dhash) =~ /$DOM$/o;
     my($content, $args, $options) =
 	map($dhash->{$_}, qw(content args options));
     return system_msg
@@ -3232,7 +3267,7 @@ sub contents {
     my @optlist = qw(depth local backlinks);
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno, 
 				\@optlist);
-    return $dhash if ref($dhash) eq $DOM;
+    return $dhash if ref($dhash) =~ /$DOM$/o;
 
     return $parser->system_message
 	(3, $source, $lineno,
@@ -3303,7 +3338,7 @@ sub contents {
 sub decoration {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno, []);
-    return $dhash if ref($dhash) eq $DOM;
+    return $dhash if ref($dhash) =~ /$DOM$/o;
     return system_msg
 	($parser, $name, 3, $source, $lineno,
 	 'no arguments permitted; blank line required before content block.',
@@ -3350,7 +3385,7 @@ sub decoration {
 sub default_role {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno, []);
-    return $dhash if ref($dhash) eq $DOM;
+    return $dhash if ref($dhash) =~ /$DOM$/o;
     return system_msg($parser, $name, 3, $source, $lineno,
 		      'no content block permitted.', $lit)
 	if $dhash->{content} ne '';
@@ -3371,7 +3406,7 @@ sub default_role {
 sub figure {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno);
-    return $dhash if ref($dhash) eq $DOM;
+    return $dhash if ref($dhash) =~ /$DOM$/o;
     my($content, $content_lineno, $options) =
 	map($dhash->{$_}, qw(content content_lineno options));
 
@@ -3456,7 +3491,7 @@ sub image {
 		   @extra_opts);
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
 				\@optlist, '1+');
-    return $dhash if ref($dhash) eq $DOM;
+    return $dhash if ref($dhash) =~ /$DOM$/o;
     my($args, $content, $options) =
 	map($dhash->{$_}, qw(args content options));
 
@@ -3559,7 +3594,7 @@ sub include {
     my @optlist = qw(literal encoding);
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
 				\@optlist);
-    return $dhash if ref($dhash) eq $DOM;
+    return $dhash if ref($dhash) =~ /$DOM$/o;
     my($args, $options) = map($dhash->{$_}, qw(args options));
 
     my @exts = split(/:/, $parser->{opt}{D}{include_ext});
@@ -3619,7 +3654,7 @@ sub line_block {
     my @optlist = qw(class);
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
 				\@optlist, 0);
-    return $dhash if ref($dhash) eq $DOM;
+    return $dhash if ref($dhash) =~ /$DOM$/o;
     my($args, $content, $content_lineno, $options) =
 	map($dhash->{$_}, qw(args content content_lineno options));
     return $parser->system_message
@@ -3633,7 +3668,7 @@ sub line_block {
 	# Devel::Cover branch 0 1 Defensive programming
 	$lb->{attr}{classes} = [ $options->{class} ] if $lb;
     }
-    return grep(ref $_ eq $DOM, @doms);
+    return grep(ref($_) =~ /$DOM$/o, @doms);
 }
 
 # Built-in handler for meta directives.
@@ -3726,7 +3761,7 @@ sub parsed_literal {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
     my $dhash =
 	parse_directive($parser, $dtext, $lit, $source, $lineno, [], 0);
-    return $dhash if ref($dhash) eq $DOM;
+    return $dhash if ref($dhash) =~ /$DOM$/o;
     my($args, $content, $content_lineno, $options) =
 	map($dhash->{$_}, qw(args content content_lineno options));
     return $parser->system_message
@@ -3751,7 +3786,7 @@ sub raw {
     my @optlist = qw(file head url);
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
 				\@optlist, '1+');
-    return $dhash if ref($dhash) eq $DOM;
+    return $dhash if ref($dhash) =~ /$DOM$/o;
     my($args, $content, $options) =
 	map($dhash->{$_}, qw(args content options));
 
@@ -3806,7 +3841,7 @@ sub raw {
 sub replace {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno, []);
-    return $dhash if ref($dhash) eq $DOM;
+    return $dhash if ref($dhash) =~ /$DOM$/o;
     my($args, $content) = map($dhash->{$_}, qw(args content));
 
     my $fake = $DOM->new('fake');
@@ -3848,7 +3883,7 @@ sub role {
     my @optlist = qw(class format prefix suffix);
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
 				\@optlist, '1+');
-    return $dhash if ref($dhash) eq $DOM;
+    return $dhash if ref($dhash) =~ /$DOM$/o;
 
     my($args, $options) =
 	map($dhash->{$_}, qw(args options));
@@ -3883,7 +3918,7 @@ sub sectnum {
     my @optlist = qw(depth prefix prefix-title start suffix);
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
 				\@optlist, 0);
-    return $dhash if ref($dhash) eq $DOM;
+    return $dhash if ref($dhash) =~ /$DOM$/o;
     my($args, $content, $options) =
 	map($dhash->{$_}, qw(args content options));
 
@@ -3914,7 +3949,7 @@ sub rubric {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno, [],
 				'1+');
-    return $dhash if ref($dhash) eq $DOM;
+    return $dhash if ref($dhash) =~ /$DOM$/o;
 
     (my $args = $dhash->{args}) =~ s/\n/ /g;
 
@@ -3937,7 +3972,7 @@ sub sidebar {
     my @optlist = qw(subtitle);
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
 				\@optlist, '1+');
-    return $dhash if ref($dhash) eq $DOM;
+    return $dhash if ref($dhash) =~ /$DOM$/o;
     my($args, $content, $options, $content_lineno) =
 	map($dhash->{$_}, qw(args content options content_lineno));
 
@@ -3980,7 +4015,7 @@ sub table {
 	if $name eq 'list-table';
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
 				\@optlist);
-    return $dhash if ref($dhash) eq $DOM;
+    return $dhash if ref($dhash) =~ /$DOM$/o;
     my($args, $content, $content_lineno, $options) =
 	map($dhash->{$_}, qw(args content content_lineno options));
 
@@ -4013,7 +4048,7 @@ sub table {
     }
 
     my $title = $args;
-    if ($title !~ /^(..)?$/) {
+    if ($title !~ /^(\.\.)?$/) {
 	my $titledom = $DOM->new('title');
 	my $fake = $DOM->new('fake');
 	$parser->Paragraphs($fake, $title, $source, $lineno);
@@ -4290,7 +4325,7 @@ sub target_notes {
     my @optlist = qw(class);
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
 				\@optlist, 0);
-    return $dhash if ref($dhash) eq $DOM;
+    return $dhash if ref($dhash) =~ /$DOM$/o;
     my($args, $content, $content_lineno, $options) =
 	map($dhash->{$_}, qw(args content content_lineno options));
     return system_msg($parser, $name, 3, $source, $lineno,
@@ -4312,7 +4347,7 @@ sub target_notes {
 sub test_directive {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno);
-    return $dhash if ref($dhash) eq $DOM;
+    return $dhash if ref($dhash) =~ /$DOM$/o;
     my($dname, $args, $content, $options) =
 	map($dhash->{$_}, qw(name args content options));
 
@@ -4343,7 +4378,7 @@ sub title {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno, [],
 				'1+');
-    return $dhash if ref($dhash) eq $DOM;
+    return $dhash if ref($dhash) =~ /$DOM$/o;
     my $args = $dhash->{args};
     return system_msg($parser, $name, 3, $source, $lineno,
 		      "no content permitted.", $dtext)
@@ -4361,7 +4396,7 @@ sub topic {
     my @arglist = qw(class);
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
 				\@arglist, '1+');
-    return $dhash if ref($dhash) eq $DOM;
+    return $dhash if ref($dhash) =~ /$DOM$/o;
     my($args, $content, $content_lineno) =
 	map($dhash->{$_}, qw(args content content_lineno));
 
@@ -4388,7 +4423,7 @@ sub unicode {
     my @optlist = qw(trim ltrim rtrim);
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
 				\@optlist, '1+');
-    return $dhash if ref($dhash) eq $DOM;
+    return $dhash if ref($dhash) =~ /$DOM$/o;
     my($args, $content, $options) =
 	map($dhash->{$_}, qw(args content options));
 
