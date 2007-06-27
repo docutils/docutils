@@ -216,6 +216,7 @@ t/40_writers/xref.init/idxtest3.rst
 t/40_writers/xref.init/idxtest4
 t/40_writers/xref.init/index01.idx
 t/40_writers/xref.init/index02.idx
+t/40_writers/xref.init/index03.idx
 t/40_writers/xref.init/smiley.gif
 t/40_writers/xref.init/tests.pl
 t/40_writers/xref.init/toc01.toc
@@ -301,6 +302,8 @@ t/60_new/roles.init/mathml01.rst
 t/60_new/roles.init/mathml02.dom
 t/60_new/roles.init/mathml02.rst
 t/60_new/roles.init/skip.pl
+t/60_new/roles.init/target01.dom
+t/60_new/roles.init/target01.rst
 t/70_plugins/code_block.init/code01.dom
 t/70_plugins/code_block.init/code01.rst
 t/70_plugins/code_block.init/code02.dom
@@ -838,6 +841,8 @@ t/90_bugs/parse.init/defotherlist.rst
 t/90_bugs/parse.init/Dir.smak
 t/90_bugs/parse.init/embeduri.dom
 t/90_bugs/parse.init/embeduri.rst
+t/90_bugs/parse.init/enumlist01.dom
+t/90_bugs/parse.init/enumlist01.rst
 t/90_bugs/parse.init/fakerefinref.dom
 t/90_bugs/parse.init/fakerefinref.rst
 t/90_bugs/parse.init/fakerefintrp.dom
