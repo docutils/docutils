@@ -8,6 +8,9 @@ eval "%CFG = (" . `cat $FindBin::RealBin/../config.log` . ")";
 my @ARGS = ("-I$FindBin::RealBin/../blib/lib",
 	    "$FindBin::RealBin/../blib/script/prest",
 	    @ARGV);
-unshift @ARGS, '-d' if $ENV{DEBUG};
+if ($ENV{DEBUG}) {
+    unshift @ARGS, '-d' ;
+    push @ARGS, qw(-D no_line_directives);
+}
 
 exec $CFG{perl},@ARGS;
