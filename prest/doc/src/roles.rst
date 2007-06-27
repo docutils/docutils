@@ -203,6 +203,29 @@ Implements subscripts.
 Implements superscripts.  See the tip in `:subscript:`_ above.
 
 
+``:target:``
+============
+
+:Aliases: None
+:DTD Element: target
+:Customization:
+    :Options: class_.
+    :Content: None.
+
+Creates an inline target whose name can be different from the string
+contents, unlike with a standard inline target.
+
+The interpreted text string can have the string contents followed by
+the target name in angle brackets ("<...>") as follows::
+
+  Here is a :target:`target <abc>` that I can refer to as abc_.
+
+The visible content can even be empty.  This form can be used to create an
+invisible target::
+
+  Here is an :target:`<abc>` invisible target that I can refer to as
+  `invisible target <#abc>`_.
+
 ``:title-reference:``
 =====================
 
