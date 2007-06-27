@@ -1,1 +1,1 @@
-.. perl:: ".. include:: .\./.\./ReleaseNotes.txt"
+.. perl:: ".. include:: .\./.\./ChangeLog"
