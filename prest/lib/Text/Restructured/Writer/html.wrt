@@ -580,6 +580,10 @@ phase PREPROCESS {
 		unshift @{$paras[$i]{attr}{classes}}, $c;
 	    }
 	}
+	elsif (@paras) {
+	    unshift @{$paras[0]{attr}{classes}},
+	    'compound-first', 'compound-last';
+	}
 	# Turn myself into a div
 	$dom->{tag} = 'div';
 	push @{$dom->{attr}{classes}}, 'compound';
@@ -919,8 +923,11 @@ phase PROCESS {
     sub field_list = { # PROCESS
 	my ($dom, $str) = @_;
 	my (@list1, @list2);
+	push @{$dom->{attr}{classes}}, qw(docutils field-list);
+	$dom->{_html}{attr} = { qw(frame void   rules none) };
+	my $attrlist = GetAttr($dom);
 	push(@list1,
-	     qq(<table class="docutils field-list" frame="void" rules="none">\n),
+	     qq(<table$attrlist>\n),
 	     qq(<col class="field-name" />\n),
 	     qq(<col class="field-body" />\n),
 	     qq(<tbody valign="top">\n)
@@ -1024,6 +1031,8 @@ EOS
 	my $tattr = $dom->{table_attr} || '';
 	%{$dom->{_html}{attr}} = ($tattr =~ /(\w+)(?:=(\S+))?/g,
 				  $tattr =~ /(\w+)="(.*?)"/g);
+	$dom->{_html}{attr}{align} = $dom->{attr}{align}
+	    if $dom->{attr}{align};
 	if ($dom->{_html}{attr}{class}) {
 	    push @{$dom->{attr}{classes}}, $dom->{_html}{attr}{class};
 	    delete $dom->{_html}{attr}{class};
