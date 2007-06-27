@@ -7,30 +7,33 @@
 =pod
 =begin reST
 =begin Description
-This writer dumps index entries from one or more input files out
-in reST format. An index is either an inline internal target or an
-indirect target that points to an inline internal target.  The
-index writer sorts indices from all input files and put them into
-a table. Each row of the table contains an index entry and the
-location of the entry in the html version of the source file. An
-entry is also a reference to the definition in the corresponding
-html file.
+This writer dumps index entries from one or more input files out in
+reST format. An index is either a non-empty (ones created using the
+"target" role are empty) inline internal target or an indirect target
+that points to an inline internal target.  The index writer sorts
+indices from all input files and put them into a table. Each row of
+the table contains an index entry and the location of the entry in the
+html version of the source file. An entry is also a reference to the
+definition in the corresponding html file.
 
 This writer uses the following output defines:
 
--W file-suffix=<suffix>    Specify a file suffix to be used for
-                           the html version of the source files
-                           (default is "html").
--W filename-ext=<ext>      Specify an extension to the filename,
-                           (e.g. "_main") so the location of
-                           targets becomes <file><ext>.<suffix>
-                           (default is "").
--W output-header=<0|1>     Specify that a title and contents header
-                           should be output (default is 1).    
--W short-titles=<0|1>      Specify that short titles should be used
-                           in the index (default is 1).
--W title-underline=<char>  Specify the underline character to use
-                           for the title in the header (default is '*').
+-W doc-titles=<0|1>          Put the document title in the index (default is 1).
+-W file-suffix=<suffix>      Specify a file suffix to be used for
+			     the html version of the source files
+			     (default is "html").
+-W filename-ext=<ext>        Specify an extension to the filename,
+			     (e.g. "_main") so the location of
+			     targets becomes <file><ext>.<suffix>
+			     (default is "").
+-W index-role-targets=<0|1>  Specifies whether targets originating from an
+                             interpreted text role should be indexed (default
+                             is 0).    
+-W output-header=<0|1>       Output a title and contents header (default is 1).
+-W short-titles=<0|1>        Use short titles (no section titles)
+                             in the index (default is 1).
+-W title-underline=<char>    Specify the underline character to use
+                             for the title in the header (default is '*').
 =end Description
 =end reST
 =cut
@@ -47,8 +50,9 @@ This writer uses the following output defines:
 
 sub BEGIN = {
     # My -W flags
-    use vars qw($file_suffix $filename_ext $output_header $short_titles
-		$title_underline);
+    use vars qw($doc_titles $file_suffix $filename_ext
+		$index_role_targets $output_header
+		$short_titles $title_underline);
 
     # Static globals
     use vars qw(%START);
@@ -98,7 +102,7 @@ sub END {
 	}
 	$header .= "\n";
     }
-    print $header, $table, "\n", $targets;
+    print $header, $table, "\n", $targets if $targets;
 }
 
 sub QuoteStart {
@@ -184,7 +188,7 @@ phase PROCESS = {
     sub target = {
 	my ($dom, $str) = @_;
 	# inline target if $str is defined
-	if ($str) {
+	if ($str && ($index_role_targets || ! $dom->{attr}{role})) {
 	    $dom->{_index}{inline} = 1;
 	    $str =~ s/ </ \\</g;
 	    $dom->{_index}{refname} = $str;
@@ -222,22 +226,25 @@ phase PROCESS = {
 
     # Store all index entries in the global array.
     sub document = {
-	my ($dom, $str) = @_;
+	my ($dom, $str)     = @_;
 	collectTargets($dom, "");
-	$file_suffix = 'html' unless defined $file_suffix;
-	$filename_ext = '' unless defined $filename_ext;
-	$output_header = 1 unless defined $output_header;
-	$short_titles = 1 unless defined $short_titles;
-	$title_underline = '*' unless defined $title_underline;
-	my $fileName = $dom->{attr}{source};
+	$doc_titles         = 1      unless defined $doc_titles;
+	$file_suffix        = 'html' unless defined $file_suffix;
+	$filename_ext       = ''     unless defined $filename_ext;
+	$index_role_targets = 0      unless defined $index_role_targets;
+	$output_header      = 1      unless defined $output_header;
+	$short_titles       = 1      unless defined $short_titles;
+	$title_underline    = '*'    unless defined $title_underline;
+	my $fileName        = $dom->{attr}{source};
 	$fileName .= "$filename_ext.$file_suffix"
 	    if $fileName !~ s/\.[^\.\/]*$/$filename_ext\.$file_suffix/o;
 	my $title = $str ? $str : $fileName;
 	my ($tname, $tdom);
 	foreach (keys %INLINE_TARGETS) {
 	    my $tdom = $INLINE_TARGETS{$_};
-	    my $loc = ($tdom->{section} && $title ne $tdom->{section})?
-		"$title: $tdom->{section}" : $title;
+	    my $loc = ($tdom->{section} && $title ne $tdom->{section}) ?
+		($doc_titles ? "$title: $tdom->{section}" : $tdom->{section} )
+		: $title;
 	    $loc =~ s/(:\s*(\d+\.)*\d+\.?).*/$1/ if $short_titles;
 	    $loc =~ s/([\`\_\*\|\\])/\\$1/go;
 	    push @ALL_TARGETS, [$tdom->{_index}{refname},
@@ -256,8 +263,9 @@ phase PROCESS = {
 	    my $target = $INLINE_TARGETS{$tdom->{attr}{refid}};
 	    next if ! defined $target;
 	    my $loc = (defined $target->{section} && $target->{section} ne ''
-		       && $title ne $target->{section})? 
-		"$title: $target->{section}" : $title;
+		       && $title ne $target->{section}) ? 
+		       ($doc_titles ? "$title: $target->{section}" :
+			$target->{section}) : $title;
 	    $loc =~ s/(:\s*(\d+\.)*\d+\.?).*/$1/ if $short_titles;
 	    $loc =~ s/([\`\_\*\|\\])/\\$1/go;
 	    # Have to reparse the 'lit' in order to get the name with
