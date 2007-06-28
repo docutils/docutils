@@ -70,9 +70,13 @@ Other Sandbox Projects
 * code-block-directive_ contains documentation, reasoning and experimental
   code for support of syntax highlight in docutils.
   
+* latex-variants_ is a place to try out and discuss variants of the
+  latex2e writer.
+
 
 For other sandbox projects, please see the `Docutils Link List`_.
 
 .. _code-block-directive: code-block-directive
+.. _latex-variants: latex-variants
 
 .. _Docutils Link List: http://docutils.sf.net/docs/user/links.html
