@@ -9,9 +9,6 @@
 % Copy this file and change or create your own and include this one.
 % Changes in this file (or a copy hereof) will overwrite latex-writer defaults.
 
-% Generated files should process well standalone too. However, the layout 
-% might be unsatisfactory.
-
 % announce this file as a latex package 
 % (good style, improves e.g. error reports)
 \ProvidesPackage{docutils-latexe2e}
@@ -32,7 +29,7 @@
  \RequirePackage[pdftex]{graphicx}
 \fi
 \RequirePackage{amsmath}
-\RequirePackage{typearea}  % Calculation of page layout (the koma-script way)
+\RequirePackage{typearea}  % page layout (cf. section Layout Settings)
 \RequirePackage[latin1]{inputenc}
 \RequirePackage{tabularx}  % for the docinfo
 \RequirePackage{longtable}
@@ -40,7 +37,7 @@
 % (TODO: fallback definitions for \toprule, \midrule, \bottomrule)
 
 
-% LaTeX objects defined by Docutils
+% LaTeX Objects Defined by Docutils
 % =================================
 
 % Length variables
@@ -105,7 +102,7 @@
 \newcommand{\titlereference}[1]{\textsl{#1}}
 
 
-% Layout settings
+% Layout Settings
 % ===============
 
 % Page layout with package typearea from koma-script
@@ -146,8 +143,8 @@
 % Results in less hyphenation.
 \sloppy
 
-% Examples/Templates for customization
-% ====================================
+% Examples/Templates for customisation
+% ------------------------------------
 
 % Do section number display
 % -------------------------
