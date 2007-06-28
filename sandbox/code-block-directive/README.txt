@@ -25,13 +25,15 @@ See `syntax-highlight.html`_ for the full picture.
    front end for reStructuredText -> HTML conversion supporting the
    "code-block" directive.
 
+data_
+   Style sheets
+
 docs_
    Documentation, concepts, discussion, examples...
    
-   
 tools_
-   Style sheets, alternative (legacy) front ends, script for interactive
-   testing.
+   Alternative (legacy) front ends, 
+   script for interactive testing.
 
 
 .. References
@@ -42,6 +44,7 @@ tools_
 .. _pygments_code_block_directive-bunt.py.html: 
      docs/pygments_code_block_directive-bunt.py.html
 .. _rst2html-highlight: rst2html-highlight
+.. _data: data
 .. _docs: docs
 .. _tools: tools
 .. _syntax-highlight.html: docs/syntax-highlight.html

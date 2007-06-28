@@ -17,9 +17,8 @@
 /* This stylesheet provides syntax highlight for documents generated with a */
 /* pygments_ enhanced reStructured Text -> html converter. */
 
-/* import the default docutils style sheet */
+/* Import the default docutils style sheet */
 /* --------------------------------------- */
-
 /* :: */
 
 @import url("/stylesheets/html4css1.css");         
@@ -28,7 +27,7 @@
 /* --------------------- */
 
 /* Content copied from the `html4css1.css` rule for literal blocks. */
-/* Selector adapted to the output of Pygments_. */
+/* Selector adapted to the output of Pygments_. :: */
 
 div.highlight {
   margin-left: 2em ;
@@ -102,14 +101,13 @@ div.highlight {
 .vi { color: #B8860B } /* Name.Variable.Instance */
 .il { color: #666666 } /* Literal.Number.Integer.Long */
 
-/* .. _pygments:  http://pygments.org/  */
+/* .. _pygments:  http://pygments.org/ */
 
 </style>
 </head>
 <body>
 <div class="document" id="example-for-syntax-highlight-with-pygments">
 <h1 class="title">Example for syntax highlight with Pygments</h1>
-<!-- # -*- rst-mode -*- -->
 <p>Translate this document to HTML with a pygments enhanced frontend:</p>
 <pre class="literal-block">
 rst2html-pygments --stylesheet=pygments-default.css
@@ -119,7 +117,14 @@ rst2html-pygments --stylesheet=pygments-default.css
 rst2latex-pygments --stylesheet=pygments-default.sty
 </pre>
 <p>to gain syntax highlight in the output.</p>
-<!-- Run the doctests with ``pylit - -doctest for-else-test.py``. -->
+<p>Convert between text &lt;-&gt; code source formats with:</p>
+<pre class="literal-block">
+pylit --code-block-marker='.. code-block:: python'
+</pre>
+<p>Run the doctests with:</p>
+<pre class="literal-block">
+pylit --doctest for-else-test.py
+</pre>
 <div class="section">
 <h1><a id="for-else-test" name="for-else-test">for-else-test</a></h1>
 <p>Test the flow in a <cite>for</cite> loop with <cite>else</cite> statement.</p>
@@ -134,7 +139,8 @@ rst2latex-pygments --stylesheet=pygments-default.sty
 </pre></div>
 <p>Now test it:</p>
 <p>The first test runs as I expect: iterator empty -&gt; else clause applies:</p>
-<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">loop1</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+<div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="nb">execfile</span><span class="p">(</span><span class="s">&#39;for-else-test.py&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">loop1</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
 <span class="go">iterable empty</span>
 <span class="go">Ende</span>
 </pre></div>
@@ -172,7 +178,7 @@ the loop. Let's try</p>
 </div>
 <div class="footer">
 <hr class="footer" />
-Generated on: 2007-05-29.
+Generated on: 2007-06-21.
 
 </div>
 </body>

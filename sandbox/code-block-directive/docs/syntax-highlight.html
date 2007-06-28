@@ -5,7 +5,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <meta name="generator" content="Docutils 0.4.1: http://docutils.sourceforge.net/" />
 <title>Syntax Highlight</title>
-<link rel="stylesheet" href="../../../../../lib/python2.4/site-packages/docutils/writers/html4css1/html4css1.css" type="text/css" />
+<link rel="stylesheet" href="/usr/lib/python2.4/site-packages/docutils/writers/html4css1/html4css1.css" type="text/css" />
 </head>
 <body>
 <div class="document" id="syntax-highlight">
@@ -20,7 +20,7 @@
 </ul>
 </li>
 <li><a class="reference" href="#proposal-for-a-code-block-directive-in-docutils" id="id12" name="id12">3&nbsp;&nbsp;&nbsp;Proposal for a code-block directive in docutils</a><ul class="auto-toc">
-<li><a class="reference" href="#parsing" id="id13" name="id13">3.1&nbsp;&nbsp;&nbsp;Parsing</a></li>
+<li><a class="reference" href="#reading" id="id13" name="id13">3.1&nbsp;&nbsp;&nbsp;Reading</a></li>
 <li><a class="reference" href="#writing" id="id14" name="id14">3.2&nbsp;&nbsp;&nbsp;Writing</a></li>
 <li><a class="reference" href="#todo" id="id15" name="id15">3.3&nbsp;&nbsp;&nbsp;TODO</a></li>
 </ul>
@@ -162,9 +162,9 @@ pylit.py.)</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field"><th class="field-name">CSS stylesheet:</th><td class="field-body"><a class="reference" href="../tools/pygments-default.css">pygments-default.css</a></td>
+<tr class="field"><th class="field-name">CSS stylesheet:</th><td class="field-body"><a class="reference" href="../data/pygments-default.css">pygments-default.css</a></td>
 </tr>
-<tr class="field"><th class="field-name">LaTeX style:</th><td class="field-body"><a class="reference" href="../tools/pygments-default.sty">pygments-default.sty</a></td>
+<tr class="field"><th class="field-name">LaTeX style:</th><td class="field-body"><a class="reference" href="../data/pygments-default.sty">pygments-default.sty</a></td>
 </tr>
 </tbody>
 </table>
@@ -208,13 +208,13 @@ fixed-width font) if <tt class="docutils literal"><span class="pre">import</span
 </blockquote>
 <p>Implemented 2007-06-08.</p>
 <div class="section">
-<h2><a class="toc-backref" href="#id13" id="parsing" name="parsing">3.1&nbsp;&nbsp;&nbsp;Parsing</a></h2>
+<h2><a class="toc-backref" href="#id13" id="reading" name="reading">3.1&nbsp;&nbsp;&nbsp;Reading</a></h2>
 <p>Felix Wiemann provided a <a class="reference" href="http://article.gmane.org/gmane.text.docutils.user/3689">proof of concept</a> script that utilizes the
 <a class="reference" href="http://pygments.org/">pygments</a> parser to parse a source code string and store the result in
 the document tree.</p>
-<p>This concept is used in <a class="reference" href="pygments_code_block_directive.py.html">pygments_code_block_directive</a>, (source:
-<a class="reference" href="../pygments_code_block_directive.py">pygments_code_block_directive.py</a>), to define and register a &quot;code-block&quot;
-directive.</p>
+<p>This concept is used in <a class="reference" href="../pygments_code_block_directive.py">pygments_code_block_directive.py</a>, (HTML rendering
+of the literate code: <a class="reference" href="pygments_code_block_directive-bunt.py.html">pygments_code_block_directive</a>), to define
+and register a &quot;code-block&quot; directive.</p>
 <ul class="simple">
 <li>The <cite>DocutilsInterface</cite> class uses <a class="reference" href="http://pygments.org/">pygments</a> to parse the content of the
 directive and classify the tokens using short CSS class names identical to
@@ -237,7 +237,7 @@ use it or to pass it on.</p>
 <ul class="simple">
 <li>The <a class="reference" href="../tools/rst2html-highlight">rst2html-highlight</a> front end registers the &quot;code-block&quot; directive and
 converts an input file to html.</li>
-<li>Styling is done with the adapted CSS style sheet <a class="reference" href="../tools/pygments-default.css">pygments-default.css</a>
+<li>Styling is done with the adapted CSS style sheet <a class="reference" href="../data/pygments-default.css">pygments-default.css</a>
 based on docutils' default stylesheet and the output of
 <tt class="docutils literal"><span class="pre">pygmentize</span> <span class="pre">-S</span> <span class="pre">default</span> <span class="pre">-f</span> <span class="pre">html</span></tt>.</li>
 <li>The result looks like <a class="reference" href="myfunction.py.html">myfunction.py.html</a>.</li>
@@ -410,7 +410,7 @@ docutils</a>. It would need</p>
 <div class="footer">
 <hr class="footer" />
 <a class="reference" href="syntax-highlight.txt">View document source</a>.
-Generated on: 2007-06-08.
+Generated on: 2007-06-28.
 
 </div>
 </body>

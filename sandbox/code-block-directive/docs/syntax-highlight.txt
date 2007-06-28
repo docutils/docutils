@@ -178,16 +178,16 @@ On  7.06.07, David Goodger wrote:
 Implemented 2007-06-08.
 
 
-Parsing
+Reading
 """""""
 
 Felix Wiemann provided a `proof of concept`_ script that utilizes the
 pygments_ parser to parse a source code string and store the result in
 the document tree.
 
-This concept is used in `pygments_code_block_directive`_, (source:
-`pygments_code_block_directive.py`_), to define and register a "code-block"
-directive.
+This concept is used in `pygments_code_block_directive.py`_, (HTML rendering
+of the literate code: `pygments_code_block_directive`_), to define
+and register a "code-block" directive.
 
 * The `DocutilsInterface` class uses pygments_ to parse the content of the
   directive and classify the tokens using short CSS class names identical to
@@ -257,7 +257,7 @@ TODO
 .. _proof of concept:
      http://article.gmane.org/gmane.text.docutils.user/3689
 .. _pygments_code_block_directive.py: ../pygments_code_block_directive.py
-.. _pygments_code_block_directive: pygments_code_block_directive.py.html
+.. _pygments_code_block_directive: pygments_code_block_directive-bunt.py.html
 .. _pygments_docutils_interface.py: pygments_docutils_interface.py
 .. _myfunction.py.txt: myfunction.py.txt
 .. _myfunction.py.xml: myfunction.py.xml
@@ -267,7 +267,7 @@ TODO
 .. _myfunction.py.newlatex2e.tex: myfunction.py.newlatex2e.tex
 .. _myfunction.py.newlatex2e.pdf: myfunction.py.newlatex2e.pdf
 .. _rst2html-highlight: ../tools/rst2html-highlight
-.. _pygments-long.css: ../tools/pygments-long.css
+.. _pygments-long.css: ../data/pygments-long.css
 
 
 
@@ -437,6 +437,6 @@ docutils`_. It would need
 .. _for-else-test.py.txt: for-else-test.py.txt
 .. _for-else-test.py.tex: for-else-test.py.tex
 .. _for-else-test.py.pdf: for-else-test.py.pdf
-.. _pygments-default.css: ../tools/pygments-default.css
-.. _pygments-default.sty: ../tools/pygments-default.sty
+.. _pygments-default.css: ../data/pygments-default.css
+.. _pygments-default.sty: ../data/pygments-default.sty
 
