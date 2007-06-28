@@ -1,44 +1,56 @@
 #!/usr/bin/env python
 
-# Author: Guenter Milde
-# Contact: 
-# Revision: $Revision$
-# Date: $Date$
-# Copyright: Licensed under the Academic Free License version 1.2
+# :Author: Guenter Milde
+# :Contact: milde users.berlios.de
+# :Revision: $Revision$
+# :Date: $Date$
+# :Copyright: Licensed under the Academic Free License version 1.2
+# 
+# ::
 
 """
-Test script for the "latex2e_external_stylesheet" writer
+Test script for "latex2e_external_stylesheet" writer
 """
 
-# prepend parent dir to the PYTHONPATH
-import sys, os.path
-sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
-
+import imp, sys, os.path
 
 from docutils.core import publish_string, publish_file
 
+# Prepend parent dir to the PYTHONPATH and import writer module::
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 from latex2e_external_stylesheet import Writer
+
+# Import a small set of rst syntax samples
 import textsamples
 
-# Sample input text
-# =================
 
-# Customise by (un) commenting parts::
+# Customisable Settings
+# =====================
+# 
+# Customise by (un)commenting appropriate lines
 
 # Quick test samples
-internal_samples = "".join([
-                            textsamples.title,
-                            textsamples.bibliographic_list,
-                            textsamples.table_of_contents,
-                            # textsamples.admonitions,
-                            textsamples.literal_block,
-                            textsamples.line_block,
-                            textsamples.table,
-                            # textsamples.system_message
-                           ])
+# ------------------
+# ::
 
-# samples from the docutils svn data
+internal_samples = [
+                    textsamples.title,
+                    textsamples.bibliographic_list,
+                    textsamples.table_of_contents,
+                    #textsamples.admonitions,
+                    textsamples.literal_block,
+                    textsamples.line_block,
+                    textsamples.table,
+                    #textsamples.system_message
+                   ]
+
+# Samples from the docutils svn data
+# ----------------------------------
+# ::
+
 syntax_samples_dir = '../../../docutils/test/functional/input/'
+
 syntax_sample_files = ['data/standard.txt',
                        'data/table_colspan.txt',
                        'data/table_rowspan.txt',
@@ -47,52 +59,66 @@ syntax_sample_files = ['data/standard.txt',
                        'data/nonalphanumeric.txt',
                        'data/unicode.txt',
                        'data/custom_roles.txt',
-                       # 'data/errors.txt'
+                       #'data/errors.txt'
                       ]
-    
-syntax_samples = '\n'.join([open(syntax_samples_dir+samplefile).read()
-                          for samplefile in syntax_sample_files])
+
+# read coice of syntax samples
+syntax_samples = [open(syntax_samples_dir+samplefile).read()
+                  for samplefile in syntax_sample_files]
 
 
-# Customise Settings
-# ==================
-
-# Quick test or full text: (un)comment the right line::
+# Quick test or full text
+# -----------------------
+# ::
 
 samples = internal_samples  # quick test of some selected samples
-# samples = syntax_samples  # (takes longer, includes intended errors)
+#samples = syntax_samples  # (takes longer, includes intended errors)
 
+# Configuration settings
+# ----------------------
+# ::
 
-# path to the style sheet::
 overrides = {'stylesheet': '../latex2e_external_stylesheet/docutils-latex2e',
              #'stylesheet': 'empty',
+             'embed_stylesheet': True,
              'preamble_attachment': '% local config LaTeX code',
             }
 
+# Path of output file
+# -------------------
+# ::
+  
+outpath = "../data/latex2e-external-stylesheet-sample.tex"
 
 # Convert and Print
-# -----------------
+# =================
 
+# Join samples to string::
 
-# Document tree (as pseudoxml rendering) for comparision
-# (Uncomment to activate)::
+sample_string = '\n'.join(samples)
 
-# doctree = publish_string(sample, writer_name="pseudoxml")
+# Document tree (as pseudoxml rendering) for comparision::
+
+## Uncomment to activate:
+# doctree = publish_string(sample_string, writer_name="pseudoxml")
 # print doctree 
 
-# Convert to LaTeX
-output = publish_string(samples, 
+# Convert to LaTeX::
+
+output = publish_string(sample_string, 
                         settings_overrides=overrides,
                         writer=Writer())
 
+# Replace image links::
 
-# Replace image links
 output = output.replace('../../../docs/user/rst/images/',
                         '../../../docutils/docs/user/rst/images/')
 
+# Print and save::
+
 print output
-# save output to data sub-dir
-outfile = open("../data/latex2e-external-stylesheet-sample.tex", 'w')
+
+outfile = open(outpath, 'w')
 outfile.write(output)
 
 
