@@ -1,0 +1,183 @@
+.. -*- rst-mode -*-
+
+Syntax highlight with the ``listings.sty`` LaTeX package
+========================================================
+
+.. contents::
+.. sectnum::
+
+The `listings`_ LaTeX package provides highly customisable and advanced
+syntax highlight, though only for LaTeX (and LaTeX derived PS|PDF). 
+
+State of the art
+----------------
+
+Using listings_ for syntax highlight is currently not
+possible with the standard latex writer output. 
+
+Support for the use of listings_ with docutils is an issue that must be
+settled separate from the 
+`proposal for a code-block directive in docutils`_. 
+It would need 
+
+* a new, specialized docutils latex writer, or
+* a new option (and behaviour) to the existing latex writer.
+
+
+Workarounds
+~~~~~~~~~~~
+
+Ideas for using the current latex2e writer together with
+``listings.sty``.
+
+Run rst2latex with ``--use-verbatim-when-possible`` and do:
+
+post-processing:
+  use a post-processing filter to replace all
+  occurrences of {verbatim} with {lstlisting}.
+
+redefine "verbatim":
+  Idea: Use a stylesheet to redefine the "verbatim" environment::
+  
+    \usepackage{listings}
+    \lstset{language=Python}
+    % redefine verbatim as lstlisting:
+    \renewenvironment{verbatim}{\begin{lstlisting}}{\end{lstlisting}}
+  
+  **Fails**, as "verbatim" is a very special environment looking for a
+  literal occurrence of ``end{verbatim}``.
+
+use fancyvrb_: 
+  It is possible to re-define "verbatim" in a stylesheet with the `fancyvrb`
+  package, e.g.::
+  
+    \usepackage{fancyvrb}
+    \DefineVerbatimEnvironment{verbatim}{Verbatim}{frame=lines}
+  
+  `fancyvrb` fails in some cases (if the latex writer puts something behind
+  ``\end{verbatim}`` without line-break).
+  
+  One can use the listings package to render a "Verbatim" environment with
+  ::
+  
+    \lstset{language=Python, fancyvrb=true}
+  
+  However this did not work in my test__ with ``listings 2004/10/17 1.4`` and
+  ``fancyvrb 1998/07/17``. While listings renders both, "Verbatim" and
+  re-defined "verbatim" blocks, it does not highlight the Python syntax
+  (only marks whitespace in strings).
+  
+__ literal-blocks.pdf
+
+Alternative latex writer
+------------------------
+
+Considerations and documentation for a latex writer variant with support for
+syntax highlight with ``listings.sty``.
+
+Status
+~~~~~~
+
+``latex2e-listings.py``
+
+:2007-06-28: In preparation, no code written yet.
+
+"literal-environment" configuration setting
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+As re-defining verbatim-like environments in a LaTeX stylesheet is at least
+tricky (and at most impossible), it might be desirable to define a
+"literal-environment" config setting for the latex writer as Alan Isaac
+proposed in docutils-users
+(http://article.gmane.org/gmane.text.docutils.user/3325 and
+http://article.gmane.org/gmane.text.docutils.user/3327 ).
+
+The setting would define, which environment is used for typesetting
+literal-blocks (and with which arguments).
+
+Some considerations about the implementation:
+  
+* The implementation must consider that "verbatim"-like environments
+  clash with literal-blocks containing inline elements and 
+  
+  - use a fall-back non-verbatim environment (e.g. `alltt`), or
+  
+  - 'flatten' the literal-block doctree node
+  
+  in this case.
+
+* class arguments of the literal-block node should overwrite the default
+  language given in the config setting.
+  
+Another idea by Alan Isaac:
+
+  Suppose I have a literal inclusion that produces the document tree node
+  ``<literal_block source="myfile.py" xml:space="preserve">`` Would you find
+  it reasonable for the LaTeX writer to simply note the source-file
+  extension and based on this to use the lstlistings environment, setting
+  the language to Python? This seems good to me and would be my first
+  choice.
+
+
+LaTeX environments for literal blocks
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A list of candidate environments
+  
+===========  ========================  =================================== 
+Environment  Escaping                  Required Packages
+===========  ========================  =================================== 
+verbatim     no
+Verbatim     no                        fancyvrb_
+verbatimtab  no                        moreverb_
+listing      no                        moreverb_
+lstlisting   no                        listings_
+alltt        '\\', '{' and '}'         alltt_     (standard package)
+quote        whitespace and 
+             special chars
+===========  ========================  ===================================
+
+The `fancyvrb` environments ("Verbatim", "BVerbatim", ...) do not
+necessarily need to be supported by this setting. Their use can be 
+defined in a stylesheet with ``\DefineVerbatimEnvironment`` (see above
+section Workarounds_). However, the latex writer should always place
+``\begin(verbatim)`` and ``\end(verbatim)`` on a line of its own.
+
+Some of the above packages provide commands for verbatim file input.
+The ``:literal:`` option of the "include" directive should translate to:
+
+===========  ========================  =================================== 
+Environment  Input Command             Required Packages
+===========  ========================  =================================== 
+verbatim     verbatiminput             verbatim_
+Verbatim     Verbatiminput             fancyvrb_
+verbatimtab  verbatimtabinput          moreverb_
+listing      listinginput              moreverb_
+lstlisting   lstlistinginput           listings_
+alltt        input in alltt            alltt_
+             environment
+quote        input
+===========  ========================  ===================================
+
+
+
+.. References
+   ----------
+   
+.. _docutils: http://docutils.sourceforge.net/ 
+.. _rest2web: http://www.voidspace.org.uk/python/rest2web/
+.. _pygments: http://pygments.org/ 
+.. _listings: 
+   http://www.ctan.org/tex-archive/help/Catalogue/entries/listings.html
+.. _fancyvrb: 
+   http://www.ctan.org/tex-archive/help/Catalogue/entries/fancyvrb.html
+.. _alltt: 
+   http://www.ctan.org/tex-archive/help/Catalogue/entries/alltt.html
+.. _moreverb: 
+   http://www.ctan.org/tex-archive/help/Catalogue/entries/moreverb.html
+.. _verbatim: 
+   http://www.ctan.org/tex-archive/help/Catalogue/entries/verbatim.html
+.. _Docutils Document Tree:
+   http://docutils.sf.net/docs/ref/doctree.html#classes
+.. _proposal for a code-block directive in docutils:
+   http://docutils.sourceforge.net/sandbox/code-block-directive/docs/syntax-highlight.html

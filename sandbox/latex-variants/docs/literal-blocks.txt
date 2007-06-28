@@ -1,0 +1,110 @@
+.. -*- rst-mode -*-
+
+.. translate to LaTeX with 
+    
+    rst2latex --use-verbatim-when-possible --stylesheet=uselistings.tex
+
+Comparing blocks
+================
+
+A sample text to compare several types of block elements
+
+
+Literal Blocks
+--------------
+
+The following syntax variants all translate to a "literal-block" docutils
+doctree element.
+
+A paragraph containing only two colons (``::``) indicates that the following
+indented or **consistently** quoted text is a literal block.
+
+Indented literal block
+~~~~~~~~~~~~~~~~~~~~~~
+
+::
+
+  Whitespace, newlines, blank lines, and
+  all kinds of markup (like *this* or
+  \this) is preserved by literal blocks.
+
+
+Quoted literal block
+~~~~~~~~~~~~~~~~~~~~
+
+::
+
+>> Great idea!
+>
+> Why didn't I think of that?
+
+You just did!  ;-)
+
+
+Parsed Literal Block
+~~~~~~~~~~~~~~~~~~~~
+
+The "parsed-literal" directive starts a parsed "literal-block".
+
+.. parsed-literal::
+
+  Whitespace, newlines, blank lines, are preserved, but
+  all kinds of markup (like *this* or
+  \this) is **not** preserved but converted to inline elements
+  by parsed literal blocks.
+
+
+Doctest Blocks
+--------------
+
+Doctest exemples are read into the doctree element: "doctest-block".
+(This could change as a "literal-block" will do as well.)
+
+>>> print 'this is a Doctest block'
+this is a Doctest block
+
+
+Line blocks
+-----------
+
+Line blocks are useful for addresses,
+verse, and adornment-free lists.
+
+| Each new line begins with a
+| vertical bar ("|").
+|     Line breaks and initial indents
+|     are preserved.
+| Continuation lines are wrapped
+  portions of long lines; they begin
+  with spaces in place of vertical bars.
+| last line  
+
+
+Line Block directive
+~~~~~~~~~~~~~~~~~~~~
+
+The "line-block" directive is deprecated. Use the line block syntax instead.
+
+.. line-block::
+
+        Lend us a couple of bob till Thursday.
+        I'm absolutely skint.
+        But I'm expecting a postal order and I can pay you back
+            as soon as it comes.
+        Love, Ewan.
+
+
+Special characters in a literal block
+-------------------------------------
+
+
+In LaTeX, many characters have a special meaning ::
+
+  The squares of $\sin(x)$ and $\cos(x)$ equals one:
+  
+  $$
+     \sin^2(x) + \cos^2(x) = 1
+  $$
+  
+and need escaping in a literal block if no verbatim environment is
+used.

@@ -1,0 +1,44 @@
+\documentclass{article}
+\usepackage{listings}
+\usepackage{fancyvrb}
+% \lstset{language=Python}
+\lstset{fancyvrb=true, language=Python}
+
+\begin{document}
+
+\section*{listings bugreport}
+
+The ``listings.pdf`` documentation says one can use the listings package to
+render a "Verbatim" environment with
+
+\begin{verbatim}
+    \lstset{language=Python, fancyvrb=true}
+\end{verbatim}
+
+However this did not work in my test with ``listings 2004/10/17 1.4`` and
+``fancyvrb 1998/07/17`` .
+
+While listings renders "Verbatim" blocks, it does not
+highlight the Python syntax (only marks whitespace in strings).
+
+A literal block with Python code and ``lstlisting``
+
+\begin{lstlisting}
+import sys
+
+text = "hello world"
+print text
+sys.exit()
+\end{lstlisting}
+
+A literal block with Python code and ''Verbatim``
+
+\begin{Verbatim}
+import sys
+
+text = "hello world"
+print text
+sys.exit()
+\end{Verbatim}
+
+\end{document}

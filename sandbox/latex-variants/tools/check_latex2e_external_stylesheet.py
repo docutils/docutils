@@ -59,12 +59,15 @@ syntax_samples = '\n'.join([open(syntax_samples_dir+samplefile).read()
 
 # Quick test or full text: (un)comment the right line::
 
-# samples = internal_samples
-samples = syntax_samples  # (takes longer, includes intended errors)
+samples = internal_samples  # quick test of some selected samples
+# samples = syntax_samples  # (takes longer, includes intended errors)
 
 
 # path to the style sheet::
-overrides = {'stylesheet': '../latex2e_external_stylesheet/docutils-latex2e'}
+overrides = {'stylesheet': '../latex2e_external_stylesheet/docutils-latex2e',
+             #'stylesheet': 'empty',
+             'preamble_attachment': '% local config LaTeX code',
+            }
 
 
 # Convert and Print

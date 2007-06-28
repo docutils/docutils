@@ -1,0 +1,257 @@
+\documentclass[10pt,a4paper,english]{article}
+\usepackage{babel}
+\usepackage{ae}
+\usepackage{aeguill}
+\usepackage{shortvrb}
+\usepackage[latin1]{inputenc}
+\usepackage{tabularx}
+\usepackage{longtable}
+\setlength{\extrarowheight}{2pt}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{multirow}
+\usepackage{ifthen}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
+\usepackage[DIV12]{typearea}
+%% generator Docutils: http://docutils.sourceforge.net/
+\newlength{\admonitionwidth}
+\setlength{\admonitionwidth}{0.9\textwidth}
+\newlength{\docinfowidth}
+\setlength{\docinfowidth}{0.9\textwidth}
+\newlength{\locallinewidth}
+\newcommand{\optionlistlabel}[1]{\bf #1 \hfill}
+\newenvironment{optionlist}[1]
+{\begin{list}{}
+  {\setlength{\labelwidth}{#1}
+   \setlength{\rightmargin}{1cm}
+   \setlength{\leftmargin}{\rightmargin}
+   \addtolength{\leftmargin}{\labelwidth}
+   \addtolength{\leftmargin}{\labelsep}
+   \renewcommand{\makelabel}{\optionlistlabel}}
+}{\end{list}}
+\newlength{\lineblockindentation}
+\setlength{\lineblockindentation}{2.5em}
+\newenvironment{lineblock}[1]
+{\begin{list}{}
+  {\setlength{\partopsep}{\parskip}
+   \addtolength{\partopsep}{\baselineskip}
+   \topsep0pt\itemsep0.15\baselineskip\parsep0pt
+   \leftmargin#1}
+ \raggedright}
+{\end{list}}
+% begin: floats for footnotes tweaking.
+\setlength{\floatsep}{0.5em}
+\setlength{\textfloatsep}{\fill}
+\addtolength{\textfloatsep}{3em}
+\renewcommand{\textfraction}{0.5}
+\renewcommand{\topfraction}{0.5}
+\renewcommand{\bottomfraction}{0.5}
+\setcounter{totalnumber}{50}
+\setcounter{topnumber}{50}
+\setcounter{bottomnumber}{50}
+% end floats for footnotes
+% some commands, that could be overwritten in the style file.
+\newcommand{\rubric}[1]{\subsection*{~\hfill {\it #1} \hfill ~}}
+\newcommand{\titlereference}[1]{\textsl{#1}}
+% end of "some commands"
+\input{uselistings.tex}
+\title{Comparing blocks}
+\author{}
+\date{}
+\hypersetup{
+pdftitle={Comparing blocks}
+}
+\raggedbottom
+\begin{document}
+\maketitle
+
+
+\setlength{\locallinewidth}{\linewidth}
+% -*- rst-mode -*- 
+% translate to LaTeX with
+% 
+% rst2latex --use-verbatim-when-possible --stylesheet=uselistings.sty 
+
+A sample text to compare several types of block elements
+
+
+%___________________________________________________________________________
+
+\hypertarget{literal-blocks}{}
+\pdfbookmark[0]{Literal Blocks}{literal-blocks}
+\section*{Literal Blocks}
+
+The following syntax variants all translate to a ``literal-block'' docutils
+doctree element.
+
+A paragraph containing only two colons (\texttt{::}) indicates that the following
+indented or \textbf{consistently} quoted text is a literal block.
+
+
+%___________________________________________________________________________
+
+\hypertarget{indented-literal-block}{}
+\pdfbookmark[1]{Indented literal block}{indented-literal-block}
+\subsection*{Indented literal block}
+\begin{quote}\begin{Verbatim}
+Whitespace, newlines, blank lines, and
+all kinds of markup (like *this* or
+\this) is preserved by literal blocks.
+\end{Verbatim}
+\end{quote}
+
+
+A literal block with Python code and ``lstlisting``
+
+\begin{quote}
+\begin{lstlisting}
+import sys
+
+text = "hello world"
+print text
+sys.exit()
+\end{lstlisting}
+\end{quote}
+
+A literal block with Python code and ''Verbatim``
+
+\begin{quote}
+\begin{Verbatim}
+import sys
+
+text = "hello world"
+print text
+sys.exit()
+\end{Verbatim}
+\end{quote}
+
+A literal block with Python code and ''verbatim``
+
+\begin{quote}
+\begin{verbatim}
+import sys
+
+text = "hello world"
+print text
+sys.exit()
+\end{verbatim}
+\end{quote}
+
+
+%___________________________________________________________________________
+
+\hypertarget{quoted-literal-block}{}
+\pdfbookmark[1]{Quoted literal block}{quoted-literal-block}
+\subsection*{Quoted literal block}
+\begin{quote}\begin{Verbatim}
+>> Great idea!
+>
+> Why didn't I think of	that?
+\end{Verbatim}
+\end{quote}
+
+You just did!  ;-)
+
+
+%___________________________________________________________________________
+
+\hypertarget{parsed-literal-block}{}
+\pdfbookmark[1]{Parsed Literal Block}{parsed-literal-block}
+\subsection*{Parsed Literal Block}
+
+The ``parsed-literal'' directive starts a parsed ``literal-block''.
+\begin{quote}{\ttfamily \raggedright \noindent
+Whitespace,~newlines,~blank~lines,~are~preserved,~but~\\
+all~kinds~of~markup~(like~\emph{this}~or~\\
+this)~is~\textbf{not}~preserved~but~converted~to~inline~elements~\\
+by~parsed~literal~blocks.
+}\end{quote}
+
+
+%___________________________________________________________________________
+
+\hypertarget{doctest-blocks}{}
+\pdfbookmark[0]{Doctest Blocks}{doctest-blocks}
+\section*{Doctest Blocks}
+
+Doctest exemples are read into the doctree element: ``doctest-block''.
+(This might change in future, as a ``literal-block'' works as well.)
+\begin{Verbatim}
+>>> print 'this is a Doctest block'
+this is a Doctest block
+\end{Verbatim}
+
+
+%___________________________________________________________________________
+
+\hypertarget{line-blocks}{}
+\pdfbookmark[0]{Line blocks}{line-blocks}
+\section*{Line blocks}
+
+Line blocks are useful for addresses,
+verse, and adornment-free lists.
+
+\begin{lineblock}{0em}
+\item[] Each new line begins with a
+\item[] vertical bar (``{\textbar}'').
+\item[]
+\begin{lineblock}{\lineblockindentation}
+\item[] Line breaks and initial indents
+\item[] are preserved.
+\end{lineblock}
+\item[] Continuation lines are wrapped
+portions of long lines; they begin
+with spaces in place of vertical bars.
+\item[] last line
+\end{lineblock}
+
+
+%___________________________________________________________________________
+
+\hypertarget{line-block-directive}{}
+\pdfbookmark[1]{Line Block directive}{line-block-directive}
+\subsection*{Line Block directive}
+
+The ``line-block'' directive is deprecated. Use the line block syntax instead.
+
+\begin{lineblock}{0em}
+\item[] Lend us a couple of bob till Thursday.
+\item[] I'm absolutely skint.
+\item[] But I'm expecting a postal order and I can pay you back
+\item[]
+\begin{lineblock}{\lineblockindentation}
+\item[] as soon as it comes.
+\end{lineblock}
+\item[] Love, Ewan.
+\end{lineblock}
+
+
+%___________________________________________________________________________
+
+\hypertarget{special-characters-in-a-literal-block}{}
+\pdfbookmark[0]{Special characters in a literal block}{special-characters-in-a-literal-block}
+\section*{Special characters in a literal block}
+
+In LaTeX, many characters have a special meaning
+\begin{quote}
+\begin{literalblock}
+The squares of $\sin(x)$ and $\cos(x)$ equals one:
+
+$$
+   \sin^2(x) + \cos^2(x) = 1
+$$
+\end{literalblock}
+\end{quote}
+
+and need escaping in a literal block if no verbatim environment is
+used.
+
+\begin{center}\small
+
+Generated on: 2007-04-24.
+
+
+\end{center}
+
+\end{document}

@@ -103,6 +103,9 @@ indentation.
 
 table = """
 
+A Table
+-------
+
 === ===
 ABC DEF
 --- ---
