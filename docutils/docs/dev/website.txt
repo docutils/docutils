@@ -14,22 +14,13 @@ hourly cron job on shell.berlios.de (by user "leawiemann").  The
 script will process any .txt file which is newer than the
 corresponding .html file in the project's web directory on
 shell.berlios.de (``/home/groups/docutils/htdocs/aux/htdocs/``) and
-upload the changes to the web site at SourceForge.  For a new .txt
-file, just SSH to ``<username>@shell.berlios.de`` and ::
+upload the changes to the web site at SourceForge.
 
-    cd /home/groups/docutils/htdocs/aux/htdocs/
-    touch filename.html
-    chmod g+w filename.html
-    sleep 1
-    touch filename.txt
+Please **do not** add any generated .html files to the Docutils
+repository.  They will be generated automatically after a one-time
+setup (`described below`__).
 
-The script will take care of the rest within an hour.  Thereafter
-whenever the .txt file is modified (checked in to SVN), the .html will
-be regenerated automatically.
-
-After adding directories to SVN, allow the script to run once to
-create the directories in the filesystem before preparing for HTML
-processing as described above.
+__ `Adding .txt Files`_
 
 The docutils-update__ script is located at
 ``sandbox/infrastructure/docutils-update``.
@@ -40,6 +31,42 @@ If you want to share files via the web, you can upload them using the
 uploaddocutils.sh__ script (``sandbox/wiemann/uploaddocutils.sh``).
 
 __ http://docutils.sf.net/sandbox/wiemann/uploaddocutils.sh
+
+
+Adding Directories
+==================
+
+After adding directories to SVN, allow the update script to run once
+to create the directories in the filesystem before preparing for HTML
+processing as described below.
+
+
+Adding .txt Files
+=================
+
+For a new .txt file, just SSH to ``<username>@shell.berlios.de`` and
+::
+
+    cd /home/groups/docutils/htdocs/aux/htdocs/
+    cd [path to your file's subdirectory]
+    touch filename.html
+    chmod g+w filename.html
+    sleep 1
+    touch filename.txt
+
+The script will take care of the rest within an hour.  Thereafter
+whenever the .txt file is modified (checked in to SVN), the .html will
+be regenerated automatically.
+
+
+Renoving Files & Directories
+============================
+
+Removing files and directories from SVN will not trigger their removal
+from the web site.  Files and directories must be manually removed
+from both berlios.de (under
+``/home/groups/docutils/htdocs/aux/htdocs/``) and from sourceforge.net
+(under ``/home/groups/d/do/docutils/htdocs/``).
 
 
 ..
