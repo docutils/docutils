@@ -13,22 +13,22 @@ latex2e writer.
 
 Latex writer variants could be:
 
-* enhancements or improvements of the "standard" latex writer
+* enhancements or improvements of the "standard" latex writer, or
 
-* development of custom latex writers for special needs. 
+* custom latex writers for special needs.
 
+See the `directory listing`__ for already existing writer variants.
+Generally, writer specific documentation is placed in the respective writer
+source. The `<docs>`_ dir contains more generic documentation.
+__ .
 
 See also the latex-writer related projects 
 
-* `dkuhlman/Docs`_,
-* `docpy-writer`_,
-* `jensj/latexmath`_,
-* `latex_directive`_, and
-* `verse-writer`_.
-  
-.. _dkuhlman/Docs:    ../dkuhlman/Docs   
-.. _docpy-writer:     ../docpy-writer    
-.. _jensj/latexmath:  ../jensj/latexmath 
-.. _latex_directive:  ../latex_directive 
-.. _verse-writer:     ../verse-writer    
+.. `<an_anonymous_relative_link>`__
+
+* `<../dkuhlman/Docs>`__,
+* `<../docpy-writer>`__,
+* `<../jensj/latex_math>`__,
+* `<../latex_directive>`__, and
+* `<../verse-writer>`__.
   
