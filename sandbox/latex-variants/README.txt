@@ -17,10 +17,11 @@ Latex writer variants could be:
 
 * custom latex writers for special needs.
 
-See the `directory listing`__ for already existing writer variants.
+See the `directory listing`_ for already existing writer variants.
 Generally, writer specific documentation is placed in the respective writer
 source. The `<docs>`_ dir contains more generic documentation.
-__ .
+
+.. _directory listing: .
 
 See also the latex-writer related projects 
 
