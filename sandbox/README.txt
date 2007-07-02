@@ -15,7 +15,11 @@ subdirectory (suggested name: SourceForge ID, or given name + family
 initial), but project directories are recommended over personal directories,
 which discourage collaboration. 
 
-For more information, please see the `Docutils Project Policies`_.
+For more information, please see the `Docutils Project Policies`_. The
+Sandbox_ is mirrored at the Docutils web site, so the `Docutils Web Site`_
+documentation applies as well.
+
+
 
 .. This link gives readers a way to *go to* the sandbox:
 .. _Sandbox: ./
@@ -23,6 +27,7 @@ For more information, please see the `Docutils Project Policies`_.
 .. _Docutils: http://docutils.sourceforge.net/
 .. _Docutils Project Policies:
    http://docutils.sourceforge.net/docs/dev/policies.html#the-sandbox
+.. _Docutils Web Site: http://docutils.sourceforge.net/docs/dev/website.html
 
 
 Sandbox Projects
