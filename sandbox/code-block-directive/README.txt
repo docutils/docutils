@@ -19,7 +19,7 @@ See `syntax-highlight.html`_ for the full picture.
    code-block directive using the Pygments_  syntax highlighter. 
    
    colourful literal code (maybe outdated):
-   `pygments_code_block_directive-bunt.py.html`_
+   `pygments_code_block_directive-bunt.py.htm`_
 
 `rst2html-highlight`_ 
    front end for reStructuredText -> HTML conversion supporting the
@@ -41,8 +41,8 @@ tools_
 .. _pygments: http://pygments.org/
 
 .. _pygments_code_block_directive.py: pygments_code_block_directive.py
-.. _pygments_code_block_directive-bunt.py.html: 
-     docs/pygments_code_block_directive-bunt.py.html
+.. _pygments_code_block_directive-bunt.py.htm:
+     docs/pygments_code_block_directive-bunt.py.htm
 .. _rst2html-highlight: rst2html-highlight
 .. _data: data
 .. _docs: docs
