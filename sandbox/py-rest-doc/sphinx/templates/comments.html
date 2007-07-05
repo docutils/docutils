@@ -1,0 +1,71 @@
+{# this template is included by page.html #}
+    <h3>Comments</h3>
+    {% for comment in comments %}
+      <div class="comment" id="comment-{{ comment.comment_id }}">
+        <h4>{{ comment.title|e }}</h5>
+        {{ comment.parsed_comment_body }}
+        <p class="meta">by {{ comment.author|e }}, written on
+          {{ comment.pub_date|datetimeformat }} |
+          <a href="#comment-{{ comment.comment_id }}">#</a></p>
+      </div>
+    {% else %}
+      <div class="comment">
+        There are no user contributed notes for this page. Use the
+        form below to attach your comment to this page.
+      </div>
+    {% endfor %}
+    {% if preview %}
+      <h4>Preview &mdash; Your Comment</h4>
+      <div class="comment">
+        <h4>{{ preview.title|e }}</h5>
+        {{ preview.parsed_comment_body }}
+        <p class="meta">by {{ preview.author|e }}, written on
+        {{ preview.pub_date|datetimeformat }} |
+        <a href="#">#</a></p>
+      </div>
+    {% endif %}
+
+    {% if comments_enabled %}
+      <div class="new-comment-box">
+        <h4 id="comments-new-comment">New Comment</h4>
+        {% if comments_form.error %}
+          <div class="error">{{ comments_form.error|e }}</div>
+        {% endif %}
+        <form action="#comments-new-comment" method="post">
+          <dl>
+            <dt>Name</dt>
+            <dd><input type="text" size="24" name="author" value="{{ comments_form.author|e(true) }}"></dd>
+            <dt>E-Mail</dt>
+            <dd><input type="text" size="24" name="author_mail" value="{{ comments_form.author_mail|e(true) }}"></dd>
+            <dt>Comment Title</dt>
+            <dd><input type="text" size="36" name="title" value="{{ comments_form.title|e(true) }}"></dd>
+          </dl>
+          <input name="homepage" id="homepage">
+          <textarea name="comment_body" rows="7" cols="50">{{ comments_form.comment_body|e }}</textarea>
+          <div class="help">
+            <p>
+              <strong>You can format a comment using the
+              following syntax elements provided:</strong>
+            </p>
+            <p>
+              `code` / ``code too`` / **strong** /
+              *emphasized* / !!!important!!! /
+              [[link_target Link Title]] /
+              [[link_target_only]] / &lt;code&gt;code block with
+              syntax highlighting&lt;/code&gt; / &lt;quote&gt;some
+              quoted text&lt;/quote&gt;.
+            </p>
+            <p>
+              HTML is not supported, relative link targets are treated as
+              quicklinks and code blocks that start with "&gt;&gt;&gt;" are
+              highlighted as interactive python sessions.
+            </p>
+          </div>
+          <div class="actions">
+            <input type="reset" value="Reset Form">
+            <input type="submit" value="Submit Comment">
+            <input type="submit" name="preview" value="Preview">
+          </div>
+        </form>
+      </div>
+    {% endif %}
