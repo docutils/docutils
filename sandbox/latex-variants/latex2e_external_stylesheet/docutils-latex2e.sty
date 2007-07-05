@@ -20,7 +20,6 @@
 \RequirePackage{ifthen}
 \RequirePackage{hyperref}
 \RequirePackage{ae}
-\RequirePackage{aeguill}
 \RequirePackage{color}
 % TODO: rewrite with LaTeX syntax \ifthenelse{test}{<then block>}{<else block>}
 \ifx\pdftexversion\undefined
@@ -33,9 +32,11 @@
 \RequirePackage[latin1]{inputenc}
 \RequirePackage{tabularx}  % for the docinfo
 \RequirePackage{longtable}
-% \RequirePackage{booktabs}  % clean table layout 
-% (TODO: fallback definitions for \toprule, \midrule, \bottomrule)
 
+% \RequirePackage{multirow} % span columns, non-standard (texlive-latex-extra)
+% \RequirePackage{aeguill}  % non-standard (texlive-lang-french)
+% \RequirePackage{booktabs} % clean table layout, non standard (texlive-latex-recommended)
+% (TODO: fallback definitions for \toprule, \midrule, \bottomrule)
 
 % LaTeX Objects Defined by Docutils
 % =================================
