@@ -47,6 +47,7 @@ for _lexer in lexers.values():
 
 fmter = HtmlFormatter(style=PythonDocStyle)
 
+
 def highlight_block(source, lang):
     if lang == 'python':
         if source.startswith('>>>'):

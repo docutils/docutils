@@ -14,7 +14,9 @@ from __future__ import with_statement
 import os
 import re
 import copy
+import time
 import heapq
+import difflib
 import tempfile
 import cPickle as pickle
 import cStringIO as StringIO
@@ -86,19 +88,19 @@ class DocumentationApplication(object):
             raise NotFound()
         filename = path.join(self.data_root, 'sources', page_id)[:-3] + 'txt'
         with file(filename) as f:
-            return f.read()
+            return page_id, f.read()
 
     def show_source(self, req, page):
         """
         Show the highlighted source for a given page.
         """
-        return Response(self.get_page_source(page), mimetype='text/plain')
+        return Response(self.get_page_source(page)[1], mimetype='text/plain')
 
     def suggest_changes(self, req, page):
         """
         Show a "suggest changes" form.
         """
-        contents = self.get_page_source(page)
+        contents = self.get_page_source(page)[1]
 
         return Response(render_template(req, 'edit.html', self.globalcontext, dict(
             contents=contents,
@@ -106,19 +108,10 @@ class DocumentationApplication(object):
             submiturl=relative_uri('/@edit/'+page+'/', '/@submit/'+page),
         )))
 
-    def preview_changes(self, req, page):
+    def _generate_preview(self, page_id, contents):
         """
-        Preview suggested changes.
+        Generate a preview for suggested changes.
         """
-        page_id = self.env.get_real_filename(page)
-        if page_id is None:
-            raise NotFound()
-        author = req.form.get('name')
-        email = req.form.get('email')
-        contents = req.form.get('contents')
-
-        # XXX: validate args
-
         handle, pathname = tempfile.mkstemp()
         os.write(handle, contents.encode('utf-8'))
         os.close(handle)
@@ -134,35 +127,58 @@ class DocumentationApplication(object):
         doctree.reporter = Reporter(page_id, 2, 4, stream=warning_stream)
         output = writer.write(doctree, destination)
         writer.assemble_parts()
-
-        return Response(render_template(req, 'preview.html',
-                                        self.globalcontext,
-                                        dict(
-            contents=contents,
-            rendered=writer.parts['fragment'],
-            author=author,
-            email=email,
-            pagename=page,
-            submiturl=relative_uri('/@submit/'+page+'/', '/@submit/'+page),
-            warnings=warning_stream.getvalue().splitlines()
-        )))
+        return writer.parts['fragment']
 
     def submit_changes(self, req, page):
         """
         Submit the suggested changes as a patch.
         """
-        if req.form.get('preview'):
-            return self.preview_changes(req, page)
-        raise NotFound() # for now
-
+        if req.method != 'POST':
+            # only available via POST
+            raise NotFound()
+        if req.form.get('cancel'):
+            # handle cancel requests directly
+            return RedirectResponse(page)
+        # raises NotFound if page doesn't exist
+        page_id, orig_contents = self.get_page_source(page)
         author = req.form.get('name')
         email = req.form.get('email')
         contents = req.form.get('contents')
-        orig_contents = self.get_page_source(page)
+        fields = (author, email, contents)
 
-        if not author or not email or not contents:
-            raise NotFound()
-        # TODO
+        form_error = None
+        rendered = None
+
+        if not all(fields):
+            form_error = 'You have to fill out all fields.'
+        elif not _mail_re.search(email):
+            form_error = 'You have to provide a valid mail address.'
+        elif req.form.get('homepage') or self.antispam.is_spam(fields):
+            form_error = 'Your text contains blocked URLs or words.'
+        else:
+            if req.form.get('preview'):
+                rendered = self._generate_preview(page_id, contents)
+
+            else:
+                contents = contents.splitlines()
+                orig_contents = orig_contents.splitlines()
+                diffname = 'suggestion on %s by %s <%s>' % (time.asctime(),
+                                                            author, email)
+                diff = difflib.unified_diff(orig_contents, contents, n=3,
+                                            fromfile=page_id, tofile=diffname,
+                                            lineterm='')
+                return Response('<pre>'+'\n'.join(diff))
+
+        return Response(render_template(req, 'edit.html', self.globalcontext, dict(
+            contents=contents,
+            author=author,
+            email=email,
+            pagename=page,
+            form_error=form_error,
+            rendered=rendered,
+            submiturl=relative_uri('/@edit/'+page+'/', '/@submit/'+page),
+        )))
+
 
     def get_module_index(self, req):
         """

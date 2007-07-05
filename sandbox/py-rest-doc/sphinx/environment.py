@@ -697,6 +697,10 @@ class BuildEnvironment:
         elif type == 'exc' and '.' not in name and \
              'exceptions.' + name in self.descrefs:
             newname = 'exceptions.' + name
+        # special case: object methods
+        elif type in ('func', 'meth') and '.' not in name and \
+             'object.' + name in self.descrefs:
+            newname = 'object.' + name
         else:
             return None, None
         return newname, self.descrefs[newname]
@@ -719,6 +723,16 @@ class BuildEnvironment:
         if keyword in self.descrefs:
             filename, ref_type = self.descrefs[keyword]
             return ref_type, filename, keyword
+        # special cases
+        if '.' not in keyword:
+            # exceptions are documented in the exceptions module
+            if 'exceptions.'+keyword in self.descrefs:
+                filename, ref_type = self.descrefs['exceptions.'+keyword]
+                return ref_type, filename, 'exceptions.'+keyword
+            # special methods are documented as object methods
+            if 'object.'+keyword in self.descrefs:
+                filename, ref_type = self.descrefs['object.'+keyword]
+                return ref_type, filename, 'object.'+keyword
 
         if avoid_fuzzy:
             return

@@ -62,6 +62,7 @@ from __future__ import with_statement
 
 import re
 import StringIO
+import textwrap
 
 WIDTH = 80
 INDENT = 3
@@ -85,8 +86,6 @@ from .filenamemap import includes_mapping
 
 class WriterError(Exception):
     pass
-
-sws_re = re.compile('^\s*')
 
 
 class Indenter(object):
@@ -664,7 +663,8 @@ class RestWriter(object):
                 return
             self.write_directive('include', newname, spabove=True)
         elif cmdname == 'centerline':
-            self.write_directive('centered', '', node.args[0])
+            self.write_directive('centered', self.get_node_text(node.args[0]),
+                                 spabove=True, spbelow=True)
         elif cmdname == 'XX' 'X':
             self.visit_wrapped(r'**\*\*** ', node.args[0], ' **\*\***')
         else:
@@ -694,7 +694,7 @@ class RestWriter(object):
         with self.indented():
             if isinstance(node.content, TextNode):
                 # verbatim
-                lines = text(node.content).lstrip('\n').split('\n')
+                lines = textwrap.dedent(text(node.content).lstrip('\n')).split('\n')
                 if not lines:
                     return
             else:
@@ -704,9 +704,8 @@ class RestWriter(object):
             # discard leading blank links
             while not lines[0].strip():
                 del lines[0]
-            ilen = sws_re.match(lines[0]).end()
             for line in lines:
-                self.write(line[ilen:])
+                self.write(line)
 
     note_re = re.compile('^\(\d\)$')
 

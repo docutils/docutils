@@ -176,42 +176,23 @@ ul.keywordmatches li.goodmatch a {
 
 /* :::: COMMENTS :::: */
 div#comments {
-    background-color: #051d27;
+    background-color: #ccc;
     margin: 20px -20px -30px -20px;
     padding: 0 0 1px 0;
 }
 
 div#comments h3 {
-    background-color: #092835;
+    background-color: #aaa;
     border-bottom: 1px solid #09232e;
-    color: white;
+    color: #333;
     margin: 0 0 20px 0;
-}
-
-div#comments div.comment {
-    margin: 10px 10px 10px 20px;
-    padding: 10px;
-    border: 1px solid #0f3646;
-    background-color: #09232e;
-    color: #eee;
-}
-
-div#comments div.comment p {
-    margin: 5px 0 5px 0;
-}
-
-div#comments div.comment p.meta {
-    font-style: italic;
-    color: #ccc;
-    text-align: right;
-    margin: -5px 0 -5px 0;
 }
 
 div#comments h4 {
     margin: 30px 0 20px 0;
-    background-color: #092835;
+    background-color: #aaa;
     border-bottom: 1px solid #09232e;
-    color: white;
+    color: #333;
 }
 
 div#comments form {
@@ -220,7 +201,7 @@ div#comments form {
 }
 
 div#comments form dl {
-    color: white;
+    color: #333;
 }
 
 div#comments form dt {
@@ -235,10 +216,11 @@ div#comments textarea {
 }
 
 div#comments div.help {
-    padding: 10px 10px 0 10px;
-    margin: 10px 20px 10px 0;
-    background-color: #0e3241;
-    color: white;
+    /*padding: 10px 10px 0 10px;*/
+    margin: 20px 20px 10px 0;
+    background-color: #ccc;
+    color: #333;
+    /*border: 1px solid #05171e;*/
 }
 
 div#comments div.help p {
@@ -247,8 +229,8 @@ div#comments div.help p {
 }
 
 div#comments div.actions {
-    border-top: 1px solid #05171e;
-    background-color: #09232e;
+    /*border-top: 1px solid #05171e;*/
+    background-color: #aaa;
     margin: 10px 0 0 -20px;
     padding: 5px 0 5px 20px;
 }
@@ -256,8 +238,8 @@ div#comments div.actions {
 div#comments input, div#comments textarea {
     font-family: 'Bitstream Vera Sans', 'Arial', sans-serif;
     font-size: 13px;
-    color: white;
-    background-color: #05171e;
+    color: black;
+    background-color: #aaa;
     border: 1px solid #092835;
 }
 
@@ -270,47 +252,45 @@ div#comments input[type="submit"] {
     cursor: pointer;
     font-weight: bold;
     padding: 2px;
+    margin: 5px 5px 5px 0;
+    background-color: #666;
+    color: white;
 }
 
-div#comments div.preview {
-    margin: 10px 20px 10px 0;
+div#comments div.comment {
+    margin: 10px 10px 10px 20px;
     padding: 10px;
     border: 1px solid #0f3646;
-    background-color: #05171e;
+    background-color: #aaa;
+    color: #333;
 }
 
-div#comments div.preview div.comment {
-    margin: 0;
+div#comments div.comment p {
+    margin: 5px 0 5px 0;
 }
 
-div#comments div.preview h4 {
-    margin: -10px -10px 10px -10px;
-    padding: 3px;
-    font-size: 20px;
-    background-color: #
-    color: white;
+div#comments div.comment p.meta {
+    font-style: italic;
+    color: #444;
+    text-align: right;
+    margin: -5px 0 -5px 0;
 }
 
 div#comments div.comment h4 {
     margin: -10px -10px 5px -10px;
     padding: 3px;
-    font-size: 16px;
-    background-color: #0e3241;
-    border-bottom: 1px solid #0f3646;
+    font-size: 15px;
+    background-color: #888;
     color: white;
+    border: 0;
+    /*border-bottom: 1px solid #0f3646;*/
 }
 
 div#comments div.comment pre,
 div#comments div.comment tt {
-    background-color: #ccc;
+    background-color: #ddd;
     color: #111;
     border: none;
-}
-
-div#comments em.important {
-    color: #d00;
-    font-weight: bold;
-    font-style: normal;
 }
 
 div#comments div.comment a {
@@ -321,16 +301,23 @@ div#comments div.comment a {
 div#comments div.comment blockquote {
     margin: 10px;
     padding: 10px;
-    border: 1px solid #0f3646;
-    background-color: #071c25;
+    border-left: 1px solid #0f3646;
+    /*border: 1px solid #0f3646;
+    background-color: #071c25;*/
+}
+
+div#comments em.important {
+    color: #d00;
+    font-weight: bold;
+    font-style: normal;
 }
 
 div#comments div.error {
     margin: 5px 20px 0 20px;
     padding: 5px;
-    border: 2px solid #05171e;
+    /*border: 2px solid #05171e;
     background-color: #092835;
-    color: white;
+    color: white;*/
     font-weight: bold;
 }
 

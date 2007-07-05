@@ -468,11 +468,14 @@ directives.register_directive('toctree', toctree_directive)
 
 def centered_directive(name, arguments, options, content, lineno,
                        content_offset, block_text, state, state_machine):
+    if not arguments:
+        return []
     subnode = addnodes.centered()
-    state.nested_parse(content, content_offset, subnode)
-    return [subnode]
+    inodes, messages = state.inline_text(arguments[0], lineno)
+    subnode.extend(inodes)
+    return [subnode] + messages
 
-centered_directive.content = 1
+centered_directive.arguments = (1, 0, 0)
 directives.register_directive('centered', centered_directive)
 
 
