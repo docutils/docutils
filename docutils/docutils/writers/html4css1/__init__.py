@@ -1167,12 +1167,11 @@ class HTMLTranslator(nodes.NodeVisitor):
             if child is node:
                 break
             return 0
+        parent_length = len([n for n in node.parent if not isinstance(
+            n, (nodes.Invisible, nodes.label))])
         if ( self.compact_simple
              or self.compact_field_list
-             or (self.compact_p
-                 and (len(node.parent) == 1
-                      or len(node.parent) == 2
-                      and isinstance(node.parent[0], nodes.label)))):
+             or self.compact_p and parent_length == 1):
             return 1
         return 0
 
