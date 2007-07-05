@@ -12,7 +12,7 @@
 Test script for "latex2e_external_stylesheet" writer
 """
 
-import imp, sys, os.path
+import sys, os.path
 
 from docutils.core import publish_string, publish_file
 
