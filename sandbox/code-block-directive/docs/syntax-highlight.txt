@@ -127,7 +127,7 @@ Example
 
 Python script:
   :text source: `for-else-test.py.txt`_
-  :HTML:   `for-else-test.py.html`_
+  :HTML:   `for-else-test.py.htm`_
   :LaTeX:  `for-else-test.py.tex`_
   :PDF:    `for-else-test.py.pdf`_
 
@@ -433,7 +433,7 @@ docutils`_. It would need
 .. _rst2html-pygments: ../tools/rst2html-pygments
 .. _rst2latex-pygments: ../tools/rst2latex-pygments
 .. _for-else-test:
-.. _for-else-test.py.html: for-else-test.py.html
+.. _for-else-test.py.htm: for-else-test.py.htm
 .. _for-else-test.py.txt: for-else-test.py.txt
 .. _for-else-test.py.tex: for-else-test.py.tex
 .. _for-else-test.py.pdf: for-else-test.py.pdf
