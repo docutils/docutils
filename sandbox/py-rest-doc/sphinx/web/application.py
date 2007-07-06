@@ -143,8 +143,9 @@ class DocumentationApplication(object):
         page_id, orig_contents = self.get_page_source(page)
         author = req.form.get('name')
         email = req.form.get('email')
+        summary = req.form.get('summary')
         contents = req.form.get('contents')
-        fields = (author, email, contents)
+        fields = (author, email, summary, contents)
 
         form_error = None
         rendered = None
@@ -152,7 +153,7 @@ class DocumentationApplication(object):
         if not all(fields):
             form_error = 'You have to fill out all fields.'
         elif not _mail_re.search(email):
-            form_error = 'You have to provide a valid mail address.'
+            form_error = 'You have to provide a valid e-mail address.'
         elif req.form.get('homepage') or self.antispam.is_spam(fields):
             form_error = 'Your text contains blocked URLs or words.'
         else:
@@ -173,6 +174,7 @@ class DocumentationApplication(object):
             contents=contents,
             author=author,
             email=email,
+            summary=summary,
             pagename=page,
             form_error=form_error,
             rendered=rendered,
@@ -269,9 +271,10 @@ class DocumentationApplication(object):
                     if not all(fields):
                         form_error = 'You have to fill out all fields.'
                     elif _mail_re.search(author_mail) is None:
-                        form_error = 'You have to provide a valid mail address.'
+                        form_error = 'You have to provide a valid e-mail address.'
                     elif len(comment_body) < 20:
-                        form_error = 'You comment is too short.'
+                        form_error = 'You comment is too short ' \
+                                     '(must have at least 20 characters).'
                     else:
                         self.cache.pop(rstfilename, None)
                         comment = Comment(rstfilename, title, author, author_mail,
