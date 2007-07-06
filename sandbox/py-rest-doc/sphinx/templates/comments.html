@@ -28,19 +28,21 @@
     {% if comments_enabled %}
       <div class="new-comment-box">
         <h4 id="comments-new-comment">New Comment</h4>
-        {% if comments_form.error %}
-          <div class="error">{{ comments_form.error|e }}</div>
-        {% endif %}
         <form action="#comments-new-comment" method="post">
+          {% if comments_form.error %}
+            <div class="error">{{ comments_form.error|e }}</div>
+          {% endif %}
+          <p>Note: you can also <a href="{{ pathto('@edit/' + sourcename)|e }}">suggest
+            changes</a> to the official documentation text.</p>
           <dl>
-            <dt>Name</dt>
+            <dt>Name:</dt>
             <dd><input type="text" size="24" name="author" value="{{ comments_form.author|e(true) }}"></dd>
-            <dt>E-Mail</dt>
+            <dt>E-Mail Address:</dt>
             <dd><input type="text" size="24" name="author_mail" value="{{ comments_form.author_mail|e(true) }}"></dd>
-            <dt>Comment Title</dt>
+            <dt>Comment Title:</dt>
             <dd><input type="text" size="36" name="title" value="{{ comments_form.title|e(true) }}"></dd>
           </dl>
-          <input name="homepage" id="homepage">
+          <input type="text" size="12" name="homepage" id="homepage">
           <textarea name="comment_body" rows="7" cols="50">{{ comments_form.comment_body|e }}</textarea>
           <div class="help">
             <p>

@@ -4,8 +4,10 @@
 {% block body %}
 {% if rendered %}
   <h1>Preview</h1>
-  <div style="margin: 20px; background-color: #eee">
-    {{ rendered }}
+  <div class="preview">
+    <div class="previewwrapper">
+      {{ rendered }}
+    </div>
   </div>
   {% if warnings %}
   <h1>Warnings</h1>
@@ -20,16 +22,19 @@
   <h1 id="suggest-changes-for-this-page">Suggest changes for this page</h1>
   <form action="{{ submiturl }}" method="post">
     <div id="suggest-changes-box">
+      <textarea name="contents">{{ contents|e }}</textarea>
       {% if form_error %}
       <div class="error">{{ form_error|e }}</div>
       {% endif %}
-      <textarea name="contents">{{ contents|e }}</textarea>
       <dl>
-        <dt>Your name</dt>
-        <dd><input type="text" name="name" value="{{ author }}"></dd>
-        <dt>Your e-mail address</dt>
-        <dd><input type="text" name="email" value="{{ email }}"></dd>
+        <dt>Name:</dt>
+        <dd><input type="text" size="24" name="name" value="{{ author }}"></dd>
+        <dt>E-mail Address:</dt>
+        <dd><input type="text" size="24" name="email" value="{{ email }}"></dd>
+        <dt>Summary of the change:</dt>
+        <dd><input type="text" size="48" name="summary" value="{{ summary }}"></dd>
       </dl>
+      <input type="text" name="homepage" size="12" id="homepage">
       <div class="actions">
         <input type="submit" value="Submit patch for review">
         <input type="submit" name="preview" value="Preview changes">
