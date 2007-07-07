@@ -120,11 +120,12 @@ class DocumentationApplication(object):
         """
         Show a "suggest changes" form.
         """
-        contents = self.get_page_source(page)[1]
+        page_id, contents = self.get_page_source(page)
 
         return Response(render_template(req, 'edit.html', self.globalcontext, dict(
             contents=contents,
             pagename=page,
+            doctitle=self.globalcontext['titles'].get(page_id) or 'this page',
             submiturl=relative_uri('/@edit/'+page+'/', '/@submit/'+page),
         )))
 
@@ -416,7 +417,8 @@ class DocumentationApplication(object):
 
     known_designs = {
         'default':      ['default.css', 'pygments.css'],
-        'rightsidebar': ['default.css', 'rightsidebar.css', 'pygments.css']
+        'rightsidebar': ['default.css', 'rightsidebar.css', 'pygments.css'],
+        'stickysidebar': ['default.css', 'stickysidebar.css', 'pygments.css'],
     }
 
     def get_user_stylesheet(self, req):

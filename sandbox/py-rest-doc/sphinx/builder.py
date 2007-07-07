@@ -305,6 +305,7 @@ class StandaloneHTMLBuilder(Builder):
             release = self.config['version'],
             parents = [],
             len = len,
+            titles = {},
         )
 
     def write_file(self, filename, doctree):
@@ -337,6 +338,7 @@ class StandaloneHTMLBuilder(Builder):
             title = self.render_partial(title)['title']
         else:
             title = ''
+        self.globalcontext['titles'][filename] = title
         sourcename = filename[:-4] + '.txt'
         context = dict(
             title = title,
