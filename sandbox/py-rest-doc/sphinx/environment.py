@@ -10,6 +10,7 @@
 """
 from __future__ import with_statement
 
+import time
 import heapq
 import hashlib
 import difflib
@@ -71,12 +72,16 @@ class DefaultSubstitutions(Transform):
     default_priority = 210
 
     def apply(self):
+        config = self.document.settings.env.config
         # only handle those not otherwise defined in the document
         to_handle = default_substitutions - set(self.document.substitution_defs)
         for ref in self.document.traverse(nodes.substitution_reference):
             refname = ref['refname']
             if refname in to_handle:
-                text = self.document.settings.env.config.get(refname, '')
+                text = config.get(refname, '')
+                if refname == 'today' and not text:
+                    # special handling: can also specify a strftime format
+                    text = time.strftime(config.get('today_fmt', '%B %d, %Y'))
                 ref.replace_self(nodes.Text(text, text))
 
 
