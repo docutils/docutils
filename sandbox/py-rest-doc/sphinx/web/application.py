@@ -18,6 +18,7 @@ import time
 import heapq
 import difflib
 import tempfile
+import threading
 import cPickle as pickle
 import cStringIO as StringIO
 from os import path
@@ -25,14 +26,16 @@ from collections import defaultdict
 
 from .feed import Feed
 from .admin import AdminPanel
+from .userdb import UserDatabase
 from .antispam import AntiSpam
 from .database import connect, set_connection, Comment
-from .userdb import UserDatabase
 from .util import Request, Response, RedirectResponse, SharedDataMiddleware, \
      NotFound, render_template, get_target_uri
-from ..search import SearchFrontend
+
 from ..util import relative_uri, shorten_result
+from ..search import SearchFrontend
 from ..writer import HTMLWriter
+from ..builder import LAST_BUILD_FILENAME, ENV_PICKLE_FILENAME
 
 from docutils.io import StringOutput
 from docutils.utils import Reporter
@@ -40,6 +43,8 @@ from docutils.frontend import OptionParser
 
 _mail_re = re.compile(r'^([a-zA-Z0-9_\.\-])+\@'
                       r'(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,})+$')
+
+env_lock = threading.Lock()
 
 
 class MockBuilder(object):
@@ -60,16 +65,31 @@ class DocumentationApplication(object):
         self.generated_stylesheets = {}
         self.data_root = conf['data_root_path']
         self.debug = conf['debug']
-        with file(path.join(self.data_root, 'environment.pickle')) as f:
-            self.env = pickle.load(f)
-        with file(path.join(self.data_root, 'globalcontext.pickle')) as f:
-            self.globalcontext = pickle.load(f)
-        with file(path.join(self.data_root, 'searchindex.pickle')) as f:
-            self.search_frontend = SearchFrontend(pickle.load(f))
+        self.buildfile = path.join(self.data_root, LAST_BUILD_FILENAME)
+        self.buildmtime = -1
+        self.load_env(0)
         self.db_con = connect(path.join(self.data_root, 'sphinx.db'))
         self.antispam = AntiSpam(path.join(self.data_root, 'bad_content'))
         self.userdb = UserDatabase(path.join(self.data_root, 'docusers'))
         self.admin_panel = AdminPanel(self)
+
+    def load_env(self, new_mtime):
+        env_lock.acquire()
+        try:
+            if self.buildmtime == new_mtime:
+                # happens if another thread already reloaded the env
+                return
+            print "* Loading the environment..."
+            with file(path.join(self.data_root, ENV_PICKLE_FILENAME)) as f:
+                self.env = pickle.load(f)
+            with file(path.join(self.data_root, 'globalcontext.pickle')) as f:
+                self.globalcontext = pickle.load(f)
+            with file(path.join(self.data_root, 'searchindex.pickle')) as f:
+                self.search_frontend = SearchFrontend(pickle.load(f))
+            self.buildmtime = path.getmtime(self.buildfile)
+            self.cache.clear()
+        finally:
+            env_lock.release()
 
     def search(self, req):
         """
@@ -440,6 +460,11 @@ class DocumentationApplication(object):
         set_connection(self.db_con)
         req = Request(environ)
         url = req.path.strip('/') or 'index'
+
+        # check if the environment was updated
+        new_mtime = path.getmtime(self.buildfile)
+        if self.buildmtime != new_mtime:
+            self.load_env(new_mtime)
 
         try:
             # require a trailing slash on GET requests

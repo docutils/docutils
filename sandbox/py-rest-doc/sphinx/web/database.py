@@ -3,9 +3,6 @@
     sphinx.web.database
     ~~~~~~~~~~~~~~~~~~~
 
-    The models of the MVC thing we don't really use. Currently
-    just used for comments.
-
     The database connections are thread local. To set the connection
     for a thread use the `set_connection` function provided. The
     `connect` method automatically sets up new tables and returns a

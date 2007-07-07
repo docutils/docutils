@@ -6,12 +6,14 @@
 # that aren't pickleable (module imports are okay, they're removed automatically).
 #
 
-import time
-
-# The default replacements for |version|, |release| and |today|.
+# The default replacements for |version| and |release|.
 version = '2.6'
 release = '2.6a0'
-today = time.strftime('%B %d, %Y')
+# There are two options for replacing |today|: either, you set today to some
+# non-false value, then it is used:
+today = ''
+# Else, today_fmt is used as the format for a strftime call.
+today_fmt = '%B %d, %Y'
 
 # List of files that shouldn't be included in the build.
 unused_files = [

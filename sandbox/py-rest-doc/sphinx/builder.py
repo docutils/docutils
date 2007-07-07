@@ -38,6 +38,7 @@ from . import roles
 from . import directives
 
 ENV_PICKLE_FILENAME = 'environment.pickle'
+LAST_BUILD_FILENAME = 'last_build'
 
 # Helper objects
 
@@ -533,6 +534,9 @@ class WebHTMLBuilder(StandaloneHTMLBuilder):
             f = open(path.join(self.outdir, 'searchindex.pickle'), 'w')
             self.indexer.dump(f, 'pickle')
             f.close()
+        # touch 'last build' file, used by the web application to determine
+        # when to reload its environment and clear the cache
+        open(path.join(self.outdir, LAST_BUILD_FILENAME), 'w').close()
 
 
 builders = {

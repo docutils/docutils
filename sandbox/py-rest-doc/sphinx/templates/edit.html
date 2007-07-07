@@ -20,9 +20,16 @@
   {% endif %}
 {% endif %}
   <h1 id="suggest-changes-for-this-page">Suggest changes for this page</h1>
+{% if not rendered %}
+  <p>Here you can edit the source of this page and submit the results as a patch
+    to the Python documentation team.  If you want to read more about the markup
+    language used, read
+    <a href="{{ pathto('documenting/index.rst') }}">Documenting Python</a>.</p>
+{% endif %}
   <form action="{{ submiturl }}" method="post">
     <div id="suggest-changes-box">
       <textarea name="contents">{{ contents|e }}</textarea>
+      {# XXX: shortcuts to make the edit area larger/smaller #}
       {% if form_error %}
       <div class="error">{{ form_error|e }}</div>
       {% endif %}
@@ -38,6 +45,7 @@
       <div class="actions">
         <input type="submit" value="Submit patch for review">
         <input type="submit" name="preview" value="Preview changes">
+        <input type="reset" value="Reset form">
         <input type="submit" name="cancel" value="Cancel">
       </div>
     </div>
