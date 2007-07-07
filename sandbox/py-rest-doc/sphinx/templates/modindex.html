@@ -30,7 +30,7 @@
    {% set collen = len(modindexentries) // 3 %}
    {% set numcol = 1 %}
    {% for modname, (filename, synopsis, platform)  in modindexentries %}
-      <a href="?mod={{ modname|e }}" title="{{ synopsis|e }}"><tt>{{ modname|e }}</tt></a>
+      <a href="{{ filename }}" title="{{ synopsis|e }}"><tt>{{ modname|e }}</tt></a>
       {% if platform %} <em>({{ platform }})</em>{% endif %}
       <br>
       {% if numcol < 3 and loop.index % collen == 0 %}
