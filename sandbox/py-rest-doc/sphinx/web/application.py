@@ -212,7 +212,6 @@ class DocumentationApplication(object):
             info = self.env.modules.get(modname)
             if not info:
                 raise NotFound()
-            self.freqmodules[modname] += 1
             return RedirectResponse(relative_uri(
                 '/modindex/', info[0][:-4] + '#module-' + modname))
 
@@ -257,6 +256,11 @@ class DocumentationApplication(object):
             rstfilename = self.env.get_real_filename(url)
             if rstfilename is None:
                 raise NotFound(show_keyword_matches=True)
+            # increment view count of all modules on that page
+            for modname in self.env.filemodules.get(rstfilename, ()):
+                print modname
+                self.freqmodules[modname] += 1
+            # comments enabled?
             comments = self.env.metadata[rstfilename].get('comments_enabled', True)
 
             # generate comments feed if wanted

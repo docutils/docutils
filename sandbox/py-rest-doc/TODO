@@ -9,7 +9,6 @@ Global TODO
 - think about database for comments
 - make comments per descitem possible
 - explore a "printable" builder (export to latex, most probably)
-- change the way how modules are added to "most viewed"
 - integrate standalone HOWTOs
 - modindex: only toplevel, then expand
 
@@ -22,6 +21,7 @@ done
 
 - indicate version at the top
 - modindex: most used at top
+- change the way how modules are added to "most viewed"
 - cleanup env (names!) and work out export format
 - check if nested method and attribute directives are handled correctly
 - build option to strip () from function roles
