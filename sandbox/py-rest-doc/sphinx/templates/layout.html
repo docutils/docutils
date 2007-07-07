@@ -52,12 +52,17 @@
     </div>
     <div class="document">
       <div class="documentwrapper">
-        <div class="body">
-          <div class="bodywrapper">
+        {% if builder != 'htmlhelp' %}
+        <div class="bodywrapper">
+        {% endif %}
+          <div class="body">
             {% block body %}{% endblock %}
           </div>
+        {% if builder != 'htmlhelp' %}
         </div>
+        {% endif %}
       </div>
+      {% if builder != 'htmlhelp' %}
       <div class="sidebar">
         <div class="sidebarwrapper">
           {% if display_toc %}
@@ -117,6 +122,7 @@
           {% endif %}
         </div>
       </div>
+      {% endif %}
       <div class="clearer"></div>
     </div>
     <div class="footer">
