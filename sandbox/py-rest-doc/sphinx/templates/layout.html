@@ -96,9 +96,9 @@
             </p>
           {% endif %}
           {% if current_page_name != "search" %}
-            <h3>Quick search</h3>
+            <h3>{{ builder == 'web' and 'Keyword' or 'Quick' }} search</h3>
             <form class="search" action="{{ pathto('search.rst') }}" method="get">
-              <input type="text" name="q">
+              <input type="text" name="q"> <input type="submit" value="Go">
               <input type="hidden" name="check_keywords" value="yes">
               <input type="hidden" name="area" value="default">
             </form>
