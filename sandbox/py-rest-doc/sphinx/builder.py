@@ -30,6 +30,7 @@ from .util import (get_matching_files, attrdict, status_iterator,
                    ensuredir, get_category, relative_uri)
 from .writer import HTMLWriter
 from .console import bold, purple, green
+from .htmlhelp import build_hhx
 from .environment import BuildEnvironment
 from .highlighting import get_stylesheet
 
@@ -405,9 +406,6 @@ class StandaloneHTMLBuilder(Builder):
         )
         self.handle_file('search.rst', searchcontext)
 
-        # dump the search index
-        self.handle_finish()
-
         if not self.options.nostyle:
             self.msg('copying style files...')
             # copy style files
@@ -421,6 +419,9 @@ class StandaloneHTMLBuilder(Builder):
             f = open(path.join(self.outdir, 'style', 'pygments.css'), 'w')
             f.write(get_stylesheet())
             f.close()
+
+        # dump the search index
+        self.handle_finish()
 
     # --------- these are overwritten by the Web builder
 
@@ -541,8 +542,24 @@ class WebHTMLBuilder(StandaloneHTMLBuilder):
         open(path.join(self.outdir, LAST_BUILD_FILENAME), 'w').close()
 
 
+class HTMLHelpBuilder(StandaloneHTMLBuilder):
+    """
+    Builder that also outputs HTML help project, contents and index files.
+    Adapted from the original Doc/tools/prechm.py.
+    """
+    name = 'htmlhelp'
+
+    option_spec = Builder.option_spec
+    option_spec.update({
+        'outname': 'Output file base name (default "pydoc")'
+    })
+
+    def handle_finish(self):
+        build_hhx(self, self.outdir, self.options.get('outname') or 'pydoc')
+
+
 builders = {
     'html': StandaloneHTMLBuilder,
     'web': WebHTMLBuilder,
-#    'hhp': HTMLHelpBuilder,
+    'htmlhelp': HTMLHelpBuilder,
 }

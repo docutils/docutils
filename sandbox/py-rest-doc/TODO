@@ -3,7 +3,6 @@ Global TODO
 
 (order not significant)
 
-- write a HTML Help builder
 - write a "traditional" stylesheet
 - complete the "submit patch" functionality
 - think about database for comments
@@ -19,6 +18,7 @@ Global TODO
 done
 ----
 
+- write a HTML Help builder
 - indicate version at the top
 - modindex: most used at top
 - change the way how modules are added to "most viewed"

@@ -22,12 +22,12 @@ div.documentwrapper {
     width: 100%;
 }
 
-div.body {
-    background-color: white;
+div.bodywrapper {
     margin: 0 0 0 230px;
 }
 
-div.bodywrapper {
+div.body {
+    background-color: white;
     padding: 0 20px 30px 20px;
 }
 
