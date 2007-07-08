@@ -12,6 +12,7 @@
 from __future__ import with_statement
 
 import os
+import cgi
 from os import path
 
 from docutils import nodes
@@ -116,32 +117,6 @@ was  will  with
 """.split()
 
 
-# # Convenience class to hold info about "a book" in HTMLHelp terms == a doc
-# # directory in Python terms.
-# class Book:
-#     def __init__(self, directory, title, firstpage, contentpage=None, indexpage=None):
-#         self.directory   = directory
-#         self.title       = title
-#         #self.firstpage   = addhtml(firstpage)
-#         #self.contentpage = addhtml(contentpage)
-#         #self.indexpage   = addhtml(indexpage)
-
-# books = [
-#     Book('.', 'Main page', 'index'),
-#     Book('.', 'Global Module Index', 'modindex'),
-#     Book('whatsnew', "What's New", 'index', 'contents'),
-#     Book('tutorial', 'Tutorial', 'tut', 'node2'),
-#     Book('modules', 'Library Reference', 'lib', 'contents', 'genindex'),
-#     Book('reference', 'Language Reference', 'ref', 'contents', 'genindex'),
-#     Book('macmodules', 'Macintosh Reference', 'mac', 'contents', 'genindex'),
-#     Book('extending', 'Extending and Embedding', 'ext', 'contents'),
-#     Book('c-api', 'Python/C API', 'api', 'contents', 'genindex'),
-#     Book('documenting', 'Documenting Python', 'doc', 'contents'),
-#     Book('install', 'Installing Python Modules', 'inst', 'index'),
-#     Book('distutils', 'Distributing Python Modules', 'dist', 'index', 'genindex'),
-# ]
-
-
 def build_hhx(builder, outdir, outname):
     builder.msg('dumping stopword list...')
     with open(path.join(outdir, outname+'.stp'), 'w') as f:
@@ -164,17 +139,18 @@ def build_hhx(builder, outdir, outname):
     with open(path.join(outdir, outname+'.hhc'), 'w') as f:
         f.write(contents_header)
         # special books
-        f.write('<LI>\n' + object_sitemap % ('Main page', 'index.html'))
-        f.write('<LI>\n' + object_sitemap % ('Global Module Index', 'modindex.html'))
+        f.write('<LI> ' + object_sitemap % ('Main page', 'index.html'))
+        f.write('<LI> ' + object_sitemap % ('Global Module Index', 'modindex.html'))
         # the TOC
         toc = builder.env.get_and_resolve_doctree('contents.rst', builder)
         def write_toc(node, ullevel=0):
             if isinstance(node, nodes.list_item):
-                f.write('<LI>\n')
+                f.write('<LI> ')
                 for subnode in node:
                     write_toc(subnode, ullevel)
             elif isinstance(node, nodes.reference):
-                f.write(object_sitemap % (node.astext(), node['refuri']))
+                f.write(object_sitemap % (cgi.escape(node.astext()),
+                                          node['refuri']))
             elif isinstance(node, nodes.bullet_list):
                 if ullevel != 0:
                     f.write('<UL>\n')
@@ -198,7 +174,7 @@ def build_hhx(builder, outdir, outname):
         def write_index(title, refs, subitems):
             if refs:
                 f.write('<LI> ')
-                f.write(object_sitemap % (title, refs[0]))
+                f.write(object_sitemap % (cgi.escape(title), refs[0]))
                 for ref in refs[1:]:
                     f.write(object_sitemap % ('[Link]', ref))
             if subitems:

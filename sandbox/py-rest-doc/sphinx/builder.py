@@ -32,7 +32,7 @@ from .writer import HTMLWriter
 from .console import bold, purple, green
 from .htmlhelp import build_hhx
 from .environment import BuildEnvironment
-from .highlighting import get_stylesheet
+from .highlighting import pygments, get_stylesheet
 
 # side effect: registers roles and directives
 from . import roles
@@ -248,6 +248,8 @@ class StandaloneHTMLBuilder(Builder):
         'nosearchindex': 'Don\'t create a JSON search index for offline search',
     })
 
+    copysource = True
+
     def init(self):
         """Load templates."""
         # lazily import this, maybe other builders won't need it
@@ -263,11 +265,6 @@ class StandaloneHTMLBuilder(Builder):
         for fname in os.listdir(templates_path):
             if fname.endswith('.html'):
                 self.templates[fname[:-5]] = jinja_env.get_template(fname)
-
-        # this one is used for all reST pages
-        self.page_template = self.templates.pop('page')
-        # this one is just included by the others
-        self.templates.pop('layout')
 
     def render_partial(self, node):
         """Utility: Render a lone doctree node."""
@@ -374,7 +371,7 @@ class StandaloneHTMLBuilder(Builder):
             current_page_name = 'genindex',
             pathto = relpath_to(self, self.get_target_uri('genindex.rst')),
         )
-        self.handle_file('genindex.rst', genindexcontext)
+        self.handle_file('genindex.rst', genindexcontext, 'genindex')
 
         # the global module index
 
@@ -390,21 +387,21 @@ class StandaloneHTMLBuilder(Builder):
             current_page_name = 'modindex',
             pathto = relpath_to(self, self.get_target_uri('modindex.rst')),
         )
-        self.handle_file('modindex.rst', modindexcontext)
+        self.handle_file('modindex.rst', modindexcontext, 'modindex')
 
         # the index page
         indexcontext = dict(
             pathto = relpath_to(self, self.get_target_uri('index.rst')),
             current_page_name = 'index',
         )
-        self.handle_file('index.rst', indexcontext)
+        self.handle_file('index.rst', indexcontext, 'index')
 
         # the search page
         searchcontext = dict(
             pathto = relpath_to(self, self.get_target_uri('search.rst')),
             current_page_name = 'search',
         )
-        self.handle_file('search.rst', searchcontext)
+        self.handle_file('search.rst', searchcontext, 'search')
 
         if not self.options.nostyle:
             self.msg('copying style files...')
@@ -417,7 +414,8 @@ class StandaloneHTMLBuilder(Builder):
                                     path.join(self.outdir, 'style', filename))
             # add pygments style file
             f = open(path.join(self.outdir, 'style', 'pygments.css'), 'w')
-            f.write(get_stylesheet())
+            if pygments:
+                f.write(get_stylesheet())
             f.close()
 
         # dump the search index
@@ -447,10 +445,10 @@ class StandaloneHTMLBuilder(Builder):
                 self.indexer.feed(self.get_target_uri(filename)[:-5], # strip '.html'
                                   category, title, doctree)
 
-    def handle_file(self, filename, context):
+    def handle_file(self, filename, context, templatename='page'):
         ctx = self.globalcontext.copy()
         ctx.update(context)
-        output = self.page_template.render(ctx)
+        output = self.templates[templatename].render(ctx)
         outfilename = path.join(self.outdir, filename[:-4] + '.html')
         ensuredir(path.dirname(outfilename)) # normally different from self.outdir
         try:
@@ -458,7 +456,7 @@ class StandaloneHTMLBuilder(Builder):
                 fp.write(output)
         except (IOError, OSError), err:
             print >>self.warning_stream, "Error writing file %s: %s" % (outfilename, err)
-        if context.get('sourcename'):
+        if self.copysource and context.get('sourcename'):
             # copy the source file for the "show source" link
             shutil.copyfile(path.join(self.srcdir, filename),
                             path.join(self.outdir, context['sourcename']))
@@ -513,7 +511,7 @@ class WebHTMLBuilder(StandaloneHTMLBuilder):
             if category is not None:
                 self.indexer.feed(filename, category, title, doctree)
 
-    def handle_file(self, filename, context):
+    def handle_file(self, filename, context, templatename='page'):
         outfilename = path.join(self.outdir, filename[:-4] + '.fpickle')
         ensuredir(path.dirname(outfilename))
         context.pop('pathto', None) # can't be pickled
@@ -544,7 +542,7 @@ class WebHTMLBuilder(StandaloneHTMLBuilder):
 
 class HTMLHelpBuilder(StandaloneHTMLBuilder):
     """
-    Builder that also outputs HTML help project, contents and index files.
+    Builder that also outputs Windows HTML help project, contents and index files.
     Adapted from the original Doc/tools/prechm.py.
     """
     name = 'htmlhelp'
@@ -553,6 +551,9 @@ class HTMLHelpBuilder(StandaloneHTMLBuilder):
     option_spec.update({
         'outname': 'Output file base name (default "pydoc")'
     })
+
+    # don't copy the reST source
+    copysource = False
 
     def handle_finish(self):
         build_hhx(self, self.outdir, self.options.get('outname') or 'pydoc')
