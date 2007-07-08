@@ -209,6 +209,7 @@ class Builder(object):
             for filename in filenames:
                 for tocfilename in self.env.files_to_rebuild.get(filename, []):
                     filenames_set.add(tocfilename)
+            filenames_set.add('contents.rst')
         else:
             # build all
             filenames_set = set(self.env.all_files)
@@ -538,6 +539,10 @@ class WebHTMLBuilder(StandaloneHTMLBuilder):
         # touch 'last build' file, used by the web application to determine
         # when to reload its environment and clear the cache
         open(path.join(self.outdir, LAST_BUILD_FILENAME), 'w').close()
+        # copy configuration file if not present
+        if not path.isfile(path.join(self.outdir, 'webconf.py')):
+            shutil.copyfile(path.join(path.dirname(__file__), 'web', 'webconf.py'),
+                            path.join(self.outdir, 'webconf.py'))
 
 
 class HTMLHelpBuilder(StandaloneHTMLBuilder):

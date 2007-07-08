@@ -25,6 +25,7 @@ from os import path
 from collections import defaultdict
 
 from .feed import Feed
+from .mail import Email
 from .admin import AdminPanel
 from .userdb import UserDatabase
 from .antispam import AntiSpam
@@ -47,6 +48,16 @@ _mail_re = re.compile(r'^([a-zA-Z0-9_\.\-])+\@'
 env_lock = threading.Lock()
 
 
+PATCH_MESSAGE = '''\
+A new documentation patch has been submitted.
+  Author:  %(author)s <%(email)s>
+  Date:    %(asctime)s
+  Page:    %(page_id)s
+  Summary: %(summary)s
+
+'''
+
+
 class MockBuilder(object):
     def get_relative_uri(self, from_, to):
         return ''
@@ -59,12 +70,12 @@ class DocumentationApplication(object):
 
     special_urls = set(['index', 'genindex', 'modindex'])
 
-    def __init__(self, conf):
+    def __init__(self, config):
         self.cache = {}
         self.freqmodules = defaultdict(int)
         self.generated_stylesheets = {}
-        self.data_root = conf['data_root_path']
-        self.debug = conf['debug']
+        self.config = config
+        self.data_root = config['data_root_path']
         self.buildfile = path.join(self.data_root, LAST_BUILD_FILENAME)
         self.buildmtime = -1
         self.load_env(0)
@@ -182,14 +193,34 @@ class DocumentationApplication(object):
                 rendered = self._generate_preview(page_id, contents)
 
             else:
+                asctime = time.asctime()
                 contents = contents.splitlines()
                 orig_contents = orig_contents.splitlines()
-                diffname = 'suggestion on %s by %s <%s>' % (time.asctime(),
-                                                            author, email)
+                diffname = 'suggestion on %s by %s <%s>' % (asctime, author, email)
                 diff = difflib.unified_diff(orig_contents, contents, n=3,
                                             fromfile=page_id, tofile=diffname,
                                             lineterm='')
-                return Response('<pre>'+'\n'.join(diff))
+                diff_text = '\n'.join(diff)
+                try:
+                    mail = Email(
+                        self.config['patch_mail_from'], 'Python Documentation Patches',
+                        self.config['patch_mail_to'], '',
+                        'Patch for %s by %s' % (page_id, author),
+                        PATCH_MESSAGE % locals(),
+                        self.config['patch_mail_smtp'],
+                    )
+                    mail.attachments.add_string('patch.diff', diff_text, 'text/x-diff')
+                    mail.send()
+                except:
+                    import traceback
+                    traceback.print_exc()
+                    
+                    # XXX: how to report?
+                    pass
+                return Response(render_template(req, 'submitted.html',
+                                                self.globalcontext, dict(
+                    backlink=relative_uri('/@submit/'+page+'/', page+'/')
+                )))
 
         return Response(render_template(req, 'edit.html', self.globalcontext, dict(
             contents=contents,
@@ -449,7 +480,7 @@ class DocumentationApplication(object):
                 with file(path.join(self.data_root, 'style', filename)) as f:
                     stylesheet.append(f.read())
             stylesheet = '\n'.join(stylesheet)
-            if not self.debug:
+            if not self.config.get('debug'):
                 self.generated_stylesheets[style] = stylesheet
 
         if req.args.get('admin') == 'yes':
@@ -530,7 +561,25 @@ class DocumentationApplication(object):
         return resp(environ, start_response)
 
 
-def setup_app(conf):
+def _check_superuser(app):
+    """Check if there is a superuser and create one if necessary."""
+    if not app.userdb.users:
+        print 'Warning: you have no user database or no master "admin" account.'
+        create = raw_input('Do you want to create an admin account now? [y/n] ')
+        if not create or create.lower().startswith('y'):
+            import getpass
+            print 'Creating "admin" user.'
+            pw1 = getpass.getpass('Enter password: ')
+            pw2 = getpass.getpass('Enter password again: ')
+            if pw1 != pw2:
+                print 'Error: Passwords don\'t match.'
+                sys.exit(1)
+            app.userdb.set_password('admin', pw1)
+            app.userdb.privileges['admin'].add('master')
+            app.userdb.save()
+
+
+def setup_app(config, check_superuser=False):
     """
     Create the WSGI application based on a configuration dict.
     Handled configuration values so far:
@@ -539,8 +588,10 @@ def setup_app(conf):
         the folder containing the documentation data as generated
         by sphinx with the web builder.
     """
-    orig_app = DocumentationApplication(conf)
-    app = SharedDataMiddleware(orig_app, {
-        '/style':   path.join(conf['data_root_path'], 'style')
+    app = DocumentationApplication(config)
+    if check_superuser:
+        _check_superuser(app)
+    app = SharedDataMiddleware(app, {
+        '/style':   path.join(config['data_root_path'], 'style')
     })
-    return orig_app, app
+    return app
