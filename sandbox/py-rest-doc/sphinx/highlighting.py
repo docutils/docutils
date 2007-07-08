@@ -13,6 +13,7 @@ import cgi
 from collections import defaultdict
 
 try:
+    import pygments
     from pygments import highlight
     from pygments.lexers import PythonLexer, PythonConsoleLexer, CLexer, \
          TextLexer, RstLexer

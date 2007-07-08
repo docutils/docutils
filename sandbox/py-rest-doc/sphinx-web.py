@@ -20,46 +20,29 @@ try:
 except ImportError:
     DebuggedApplication = lambda x, y: x
 
-def check_superuser(orig_app):
-    """Check if there is a superuser and create one if necessary."""
-    if not orig_app.userdb.users:
-        print 'Warning: you have no user database or no master "admin" account.'
-        create = raw_input('Do you want to create an admin account now? [y/n] ')
-        if not create or create.lower().startswith('y'):
-            import getpass
-            print 'Creating "admin" user.'
-            pw1 = getpass.getpass('Enter password: ')
-            pw2 = getpass.getpass('Enter password again: ')
-            if pw1 != pw2:
-                print 'Error: Passwords don\'t match.'
-                sys.exit(1)
-            orig_app.userdb.set_password('admin', pw1)
-            orig_app.userdb.privileges['admin'].add('master')
-            orig_app.userdb.save()
 
 def main(argv):
-    opts, args = getopt.getopt(argv[1:], "dh")
+    opts, args = getopt.getopt(argv[1:], "dhf:")
     opts = dict(opts)
-    if not args or '-h' in opts:
-        print 'usage: %s [-d] <doc_root> [<hostname> [<port>]]' % argv[0]
-        print ' -d: use werkzeug debugger if installed'
+    if len(args) != 1 or '-h' in opts:
+        print 'usage: %s [-d] [-f cfg.py] <doc_root>' % argv[0]
+        print ' -d: debug mode, use werkzeug debugger if installed'
+        print ' -f: use "cfg.py" file instead of doc_root/webconf.py'
         return 2
 
-    port = 3000
-    hostname = 'localhost'
-    if len(args) > 1:
-        hostname = args[1]
-        if len(args) > 2:
-            port = int(args[2])
+    conffile = opts.get('-f', os.path.join(args[0], 'webconf.py'))
+    config = {}
+    execfile(conffile, config)
+
+    port = config.get('listen_port', 3000)
+    hostname = config.get('listen_addr', 'localhost')
     debug = ('-d' in opts) or (hostname == 'localhost')
 
-    def make_app():
-        orig_app, app = setup_app({
-            'data_root_path':   args[0],
-            'debug':            debug
-        })
-        check_superuser(orig_app)
+    config['data_root_path'] = args[0]
+    config['debug'] = debug
 
+    def make_app():
+        app = setup_app(config, check_superuser=True)
         if debug:
             app = DebuggedApplication(app, True)
         return app
