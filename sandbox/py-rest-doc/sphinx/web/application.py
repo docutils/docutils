@@ -289,7 +289,6 @@ class DocumentationApplication(object):
                 raise NotFound(show_keyword_matches=True)
             # increment view count of all modules on that page
             for modname in self.env.filemodules.get(rstfilename, ()):
-                print modname
                 self.freqmodules[modname] += 1
             # comments enabled?
             comments = self.env.metadata[rstfilename].get('comments_enabled', True)

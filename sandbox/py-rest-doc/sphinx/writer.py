@@ -210,6 +210,13 @@ class SmartyPantsHTMLTranslator(HTMLTranslator):
         finally:
             self.no_smarty -= 1
 
+    def visit_productionlist(self, node):
+        self.no_smarty += 1
+        try:
+            HTMLTranslator.visit_productionlist(self, node)
+        finally:
+            self.no_smarty -= 1
+
     def encode(self, text):
         text = HTMLTranslator.encode(self, text)
         if self.no_smarty <= 0:

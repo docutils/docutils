@@ -183,14 +183,6 @@ div.actions {
     margin: 10px -20px 0 -20px;
     padding: 5px 0 5px 20px;
 }
-/*
-div#comments div.actions {
-    border-top: 1px solid #05171e;
-    background-color: #aaa;
-    margin: 10px 0 0 -20px;
-    padding: 5px 0 5px 20px;
-}
-*/
 
 form dl {
     color: #333;
@@ -222,7 +214,7 @@ div.error {
 /* :::: COMMENTS :::: */
 div#comments {
     background-color: #ccc;
-    margin: 20px -20px -30px -20px;
+    margin: 40px -20px -30px -20px;
     padding: 0 0 1px 0;
 }
 
@@ -386,6 +378,21 @@ table.indextable td {
 table.indextable dl, table.indextable dd {
     margin-top: 0;
     margin-bottom: 0;
+}
+
+table.indextable tr.pcap {
+    height: 10px;
+}
+
+table.indextable tr.cap {
+    margin-top: 10px;
+    background-color: #f2f2f2;
+}
+
+img.toggler {
+    margin-right: 3px;
+    margin-top: 3px;
+    cursor: pointer;
 }
 
 /* :::: GLOBAL STYLES :::: */

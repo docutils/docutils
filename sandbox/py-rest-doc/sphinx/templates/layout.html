@@ -8,13 +8,13 @@
     {%- if builder == 'web' %}
       <link rel="stylesheet" href="{{ pathto('index.rst') }}?do=stylesheet{%
       if in_admin_panel %}&admin=yes{% endif %}" type="text/css">
+      {%- for link, type, title in page_links %}
+      <link rel="alternate" type="{{ type|e(true) }}" title="{{ title|e(true) }}" href="{{ link|e(true) }}">
+      {%- endfor %}
     {%- else %}
       <link rel="stylesheet" href="{{ pathto('style/default.css', 1) }}" type="text/css">
       <link rel="stylesheet" href="{{ pathto('style/pygments.css', 1) }}" type="text/css">
     {%- endif %}
-    {%- for link, type, title in page_links %}
-      <link rel="alternate" type="{{ type|e(true) }}" title="{{ title|e(true) }}" href="{{ link|e(true) }}">
-    {%- endfor %}
     <script type="text/javascript" src="{{ pathto('style/jquery.js', 1) }}"></script>
     <script type="text/javascript" src="{{ pathto('style/doctools.js', 1) }}"></script>
     <link rel="author" title="About these documents" href="{{ pathto('about.rst') }}">

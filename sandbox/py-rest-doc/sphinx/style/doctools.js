@@ -323,6 +323,7 @@ var Documentation = {
     }
 
     this.highlightSearchWords();
+    $('img[@class=toggler]').click();
   },
 
   /**
@@ -372,6 +373,16 @@ var Documentation = {
           attr('title', 'Permalink to this definition').
           appendTo(this);
     });
+  },
+
+  toggle : function(ths, idnum) {
+        $('tr[@class^=cg-'+idnum+']').toggle();
+        var src = $(ths).attr('src');
+        if (src.substr(-9) == 'minus.png') {
+            $(ths).attr('src', src.substr(0, src.length-9) + 'plus.png');
+        } else {
+            $(ths).attr('src', src.substr(0, src.length-8) + 'minus.png');
+        }
   },
 
   /**

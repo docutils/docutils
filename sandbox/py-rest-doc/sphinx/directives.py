@@ -14,7 +14,7 @@ import string
 from os import path
 
 from docutils import nodes
-from docutils.parsers.rst import directives
+from docutils.parsers.rst import directives, roles
 from docutils.parsers.rst.directives import admonitions
 
 from . import addnodes
@@ -379,6 +379,9 @@ def productionlist_directive(name, arguments, options, content, lineno,
     node = addnodes.productionlist()
     messages = []
     i = 0
+
+    # use token as the default role while in production list
+    roles._roles[''] = roles._role_registry['token']
     for rule in arguments[0].split('\n'):
         if i == 0 and ':' not in rule:
             # production group
@@ -400,6 +403,7 @@ def productionlist_directive(name, arguments, options, content, lineno,
         subnode.extend(inodes)
         messages.extend(imessages)
         node.append(subnode)
+    del roles._roles['']
     return [node] + messages
 
 productionlist_directive.content = 0
