@@ -7,16 +7,15 @@ Global TODO
 - think about database for comments
 - make comments per descitem possible
 - explore a "printable" builder (export to latex, most probably)
-- modindex: only toplevel, then expand
 - think about default role
-
+- a way to map old URLs to new URLs?
 - lib-index: links to sections now in ref
-
-- discuss distribution
+- distribution modalities
 
 done
 ----
 
+- modindex: one column; only toplevel, then expand
 - complete the "submit patch" functionality
 - write a HTML Help builder
 - indicate version at the top

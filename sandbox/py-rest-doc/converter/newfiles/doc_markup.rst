@@ -635,11 +635,11 @@ the definition of the symbol.  There is this directive:
 
    Blank lines are not allowed within ``productionlist`` directive arguments.
 
-   The definition can contain token names which are marked with the ``token``
-   role -- this generates cross-references to the productions of these tokens.
-   Note that vertical bars used to indicate alternatives must be escaped
-   with backslashes because otherwise they would indicate a substitution reference
-   to the reST parser.
+   The definition can contain token names which are marked as interpreted text
+   (e.g. ``sum ::= `integer` "+" `integer```) -- this generates cross-references
+   to the productions of these tokens.  Note that vertical bars used to indicate
+   alternatives must be escaped with backslashes because otherwise they would
+   indicate a substitution reference to the reST parser.
 
 
 .. XXX describe optional first parameter 

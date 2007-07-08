@@ -583,7 +583,8 @@ class RestWriter(object):
             if cmdname == 'declaremodule':
                 self.sectionmeta.modname = text(node.args[2])
             elif cmdname == 'modulesynopsis':
-                self.sectionmeta.synopsis = self.get_node_text(node.args[0], wrap=True)
+                self.sectionmeta.synopsis = self.get_node_text(
+                    self.get_textonly_node(node.args[0], warn=0), wrap=True)
             elif cmdname == 'moduleauthor':
                 email = text(node.args[1])
                 self.sectionmeta.modauthors.append(
@@ -846,6 +847,7 @@ class RestWriter(object):
         'method': 'meth',
         'module': 'mod',
         'programopt': 'option',
+        # these mean: no change
         'cdata': '',
         'class': '',
         'command': '',
@@ -869,7 +871,6 @@ class RestWriter(object):
         'program': '',
         'ref': '',
         'rfc': '',
-        'token': '',
     }
 
     # do not warn about nested inline markup in these roles
@@ -896,7 +897,8 @@ class RestWriter(object):
                                                             warn=1), '**')
         elif cmdname in ('b', 'textrm', 'email'):
             self.visit_node(content)
-        elif cmdname == 'var':
+        elif cmdname in ('var', 'token'):
+            # \token appears in productionlists only
             self.visit_wrapped('`', self.get_textonly_node(content, 'var',
                                                            warn=1), '`')
         elif cmdname == 'ref':

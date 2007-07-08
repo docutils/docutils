@@ -381,14 +381,36 @@ class StandaloneHTMLBuilder(Builder):
         # the global module index
 
         # the sorted list of all modules, for the global module index
-        modules = list(sorted(
-            ((mn, (self.get_relative_uri('modindex.rst', fn) +
-                   '#module-' + mn, sy, pl))
-             for (mn, (fn, sy, pl)) in self.env.modules.iteritems()),
-            key=lambda x: x[0].lower()))
+        modules = sorted(((mn, (self.get_relative_uri('modindex.rst', fn) +
+                                '#module-' + mn, sy, pl))
+                          for (mn, (fn, sy, pl)) in self.env.modules.iteritems()),
+                         key=lambda x: x[0].lower())
+        # sort out collapsable modules
+        modindexentries = []
+        pmn = ''
+        cg = 0 # collapse group
+        fl = '' # first letter
+        for mn, (fn, sy, pl) in modules:
+            if fl != mn[0].lower() and mn[0] != '_':
+                modindexentries.append(['', False, 0, False, mn[0].upper(), '', ''])
+            tn = mn.partition('.')[0]
+            if tn != mn:
+                # submodule
+                if pmn == tn:
+                    # first submodule - make parent collapsable
+                    modindexentries[-1][1] = True
+                elif not pmn.startswith(tn):
+                    # submodule without parent in list, add dummy entry
+                    cg += 1
+                    modindexentries.append([tn, True, cg, False, '', '', ''])
+            else:
+                cg += 1
+            modindexentries.append([mn, False, cg, (tn != mn), fn, sy, pl])
+            pmn = mn
+            fl = mn[0].lower()
 
         modindexcontext = dict(
-            modindexentries = modules,
+            modindexentries = modindexentries,
             current_page_name = 'modindex',
             pathto = relpath_to(self, self.get_target_uri('modindex.rst')),
         )

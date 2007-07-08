@@ -27,19 +27,25 @@
    <p>Some module names are followed by an annotation indicating what platform
      they are available on.</p>
 
-   {# XXX: add "show synopsis" link #}
-   <table width="100%" class="indextable"><tr><td width="33%" valign="top">
-   {%- set collen = len(modindexentries) // 3 %}
-   {%- set numcol = 1 %}
-   {%- for modname, (filename, synopsis, platform)  in modindexentries %}
-      <a href="{{ filename }}" title="{{ synopsis|e }}"><tt>{{ modname|e }}</tt></a>
-      {%- if platform %} <em>({{ platform }})</em>{% endif -%}
-      <br>
-      {%- if numcol < 3 and loop.index % collen == 0 %}
-      {%- set numcol = numcol+1 %}
-      </td><td width="33%" valign="top">
-      {%- endif %}
-   {%- endfor %}
-   </td></tr></table>
+   <table width="100%" class="indextable" cellspacing="0" cellpadding="2">
+   {%- for modname, collapse, cgroup, indent, fname, synops, pform in modindexentries %}
+   {%- if not modname -%}
+   <tr class="pcap"><td></td><td>&nbsp;</td><td></td></tr>
+   <tr class="cap"><td></td><td><strong>{{ fname }}</strong></td><td></td></tr>
+   {%- else -%}
+   <tr{% if indent %} class="cg-{{ cgroup }}"{% endif %}>
+     <td>{% if collapse -%}
+       <img src="{{ pathto('style/minus.png', 1) }}"
+            class="toggler" onclick="Documentation.toggle(this, {{ cgroup }})">
+         {%- endif %}</td>
+     <td>{% if indent %}&nbsp;&nbsp;&nbsp;{% endif %}
+     {% if fname %}<a href="{{ fname }}">{% endif -%}
+     <tt class="xref">{{ modname|e }}</tt>
+     {%- if fname %}</a>{% endif %}
+   {%- if pform %} <em>({{ pform }})</em>{% endif -%}
+   </td><td><em>{{ synops|e }}</em></td></tr>
+   {%- endif -%}
+   {% endfor %}
+   </table>
 
 {% endblock %}

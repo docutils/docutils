@@ -155,7 +155,7 @@ simplecmd_mapping = {
     'backslash': '\\\\',
     'tilde': '~',
     'copyright': u'\N{COPYRIGHT SIGN}',
-    # \e is inside \code and therefore not escaped.
+    # \e is mostly inside \code and therefore not escaped.
     'e': '\\',
     'infinity': u'\N{INFINITY}',
     'plusminus': u'\N{PLUS-MINUS SIGN}',
