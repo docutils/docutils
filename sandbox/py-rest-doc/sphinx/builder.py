@@ -79,6 +79,8 @@ class Builder(object):
                  status_stream=None, warning_stream=None):
         self.srcdir = srcdirname
         self.outdir = outdirname
+        if not path.isdir(path.join(outdirname, '.doctrees')):
+            os.mkdir(path.join(outdirname, '.doctrees'))
 
         self.options = attrdict(options)
         self.validate_options()
@@ -149,9 +151,11 @@ class Builder(object):
                 self.msg('done', nobold=True)
             except Exception, err:
                 self.msg('failed: %s' % err, nobold=True)
-                self.env = BuildEnvironment(self.srcdir)
+                self.env = BuildEnvironment(self.srcdir,
+                                            path.join(self.outdir, '.doctrees'))
         else:
-            self.env = BuildEnvironment(self.srcdir)
+            self.env = BuildEnvironment(self.srcdir,
+                                        path.join(self.outdir, '.doctrees'))
 
     def build_all(self):
         """Build all source files."""

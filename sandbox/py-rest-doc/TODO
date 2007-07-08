@@ -4,20 +4,20 @@ Global TODO
 (order not significant)
 
 - write a "traditional" stylesheet
-- complete the "submit patch" functionality
 - think about database for comments
 - make comments per descitem possible
 - explore a "printable" builder (export to latex, most probably)
-- integrate standalone HOWTOs
 - modindex: only toplevel, then expand
+- think about default role
 
-- lib-index: links to sects now in ref
+- lib-index: links to sections now in ref
 
 - discuss distribution
 
 done
 ----
 
+- complete the "submit patch" functionality
 - write a HTML Help builder
 - indicate version at the top
 - modindex: most used at top
