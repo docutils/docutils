@@ -431,13 +431,13 @@ class BuildEnvironment:
                     anchorname = ''
                 else:
                     anchorname = '#' + subnode['ids'][0]
+                numentries[0] += 1
                 reference = nodes.reference('', '', refuri=filename,
                                             anchorname=anchorname,
                                             *nodetext)
                 para = addnodes.compact_paragraph('', '', reference)
                 item = nodes.list_item('', para)
                 item += build_toc(subnode)
-                numentries[0] += 1
                 entries.append(item)
             if entries:
                 return nodes.bullet_list('', *entries)
