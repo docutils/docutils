@@ -323,7 +323,18 @@ var Documentation = {
     }
 
     this.highlightSearchWords();
-    $('img.toggler').click();
+
+    // modindex toggle buttons
+    $('img.toggler').click(function(){
+            var src = $(this).attr('src');
+            var idnum = $(this).attr('id').substr(7);
+            $('tr.cg-'+idnum).toggle();
+            if (src.substr(-9) == 'minus.png') {
+                $(this).attr('src', src.substr(0, src.length-9) + 'plus.png');
+            } else {
+                $(this).attr('src', src.substr(0, src.length-8) + 'minus.png');
+            }
+        }).css('display', '').click();
   },
 
   /**
@@ -373,16 +384,6 @@ var Documentation = {
           attr('title', 'Permalink to this definition').
           appendTo(this);
     });
-  },
-
-  toggleModentry : function(ths, idnum) {
-        $('tr.cg-'+idnum).toggle();
-        var src = $(ths).attr('src');
-        if (src.substr(-9) == 'minus.png') {
-            $(ths).attr('src', src.substr(0, src.length-9) + 'plus.png');
-        } else {
-            $(ths).attr('src', src.substr(0, src.length-8) + 'minus.png');
-        }
   },
 
   /**
