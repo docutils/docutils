@@ -7,7 +7,7 @@ Global TODO
 - think about database for comments
 - make comments per descitem possible
 - explore a "printable" builder (export to latex, most probably)
-- think about default role
+- think about the default role
 - a way to map old URLs to new URLs?
 - lib-index: links to sections now in ref
 - distribution modalities

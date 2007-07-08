@@ -36,7 +36,7 @@
    <tr{% if indent %} class="cg-{{ cgroup }}"{% endif %}>
      <td>{% if collapse -%}
        <img src="{{ pathto('style/minus.png', 1) }}"
-            class="toggler" onclick="Documentation.toggle(this, {{ cgroup }})">
+            class="toggler" onclick="Documentation.toggleModentry(this, {{ cgroup }})">
          {%- endif %}</td>
      <td>{% if indent %}&nbsp;&nbsp;&nbsp;{% endif %}
      {% if fname %}<a href="{{ fname }}">{% endif -%}

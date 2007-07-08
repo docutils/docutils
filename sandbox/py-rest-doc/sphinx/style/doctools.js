@@ -323,7 +323,7 @@ var Documentation = {
     }
 
     this.highlightSearchWords();
-    $('img[@class=toggler]').click();
+    $('img.toggler').click();
   },
 
   /**
@@ -375,8 +375,8 @@ var Documentation = {
     });
   },
 
-  toggle : function(ths, idnum) {
-        $('tr[@class^=cg-'+idnum+']').toggle();
+  toggleModentry : function(ths, idnum) {
+        $('tr.cg-'+idnum).toggle();
         var src = $(ths).attr('src');
         if (src.substr(-9) == 'minus.png') {
             $(ths).attr('src', src.substr(0, src.length-9) + 'plus.png');
