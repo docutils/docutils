@@ -3,7 +3,7 @@
     sphinx.json
     ~~~~~~~~~~~
 
-    Minimal JSON Module That Generates Small Dumps.
+    Minimal JSON module that generates small dumps.
 
     This is not fully JSON compliant but enough for the searchindex.
     And the generated files are smaller than the simplejson ones.
