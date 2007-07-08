@@ -10,6 +10,7 @@
 """
 from __future__ import with_statement
 
+import os
 import time
 import heapq
 import hashlib
@@ -153,7 +154,8 @@ class BuildEnvironment:
 
     # --------- ENVIRONMENT INITIALIZATION -------------------------------------
 
-    def __init__(self, srcdir):
+    def __init__(self, srcdir, doctreedir):
+        self.doctreedir = doctreedir
         self.srcdir = srcdir
         self.config = {}
 
@@ -257,7 +259,8 @@ class BuildEnvironment:
                     changed.append(filename)
                 else:
                     # if the doctree file is not there, rebuild
-                    if not path.isfile(path.join(self.srcdir, filename[:-3] + 'doctree')):
+                    if not path.isfile(path.join(self.doctreedir,
+                                                 filename[:-3] + 'doctree')):
                         changed.append(filename)
                         continue
                     mtime, md5 = self.all_files[filename]
@@ -327,7 +330,10 @@ class BuildEnvironment:
 
         if save_parsed:
             # save the parsed doctree
-            doctree_filename = src_path[:-3] + 'doctree'
+            doctree_filename = path.join(self.doctreedir, filename[:-3] + 'doctree')
+            dirname = path.dirname(doctree_filename)
+            if not path.isdir(dirname):
+                os.makedirs(dirname)
             with file(doctree_filename, 'wb') as f:
                 pickle.dump(doctree, f, pickle.HIGHEST_PROTOCOL)
         else:
@@ -481,7 +487,7 @@ class BuildEnvironment:
 
     def get_doctree(self, filename):
         """Read the doctree for a file from the pickle and return it."""
-        doctree_filename = path.join(self.srcdir, filename[:-3] + 'doctree')
+        doctree_filename = path.join(self.doctreedir, filename[:-3] + 'doctree')
         with file(doctree_filename, 'rb') as f:
             doctree = pickle.load(f)
         doctree.reporter = Reporter(filename, 2, 4, stream=self.warning_stream)

@@ -475,7 +475,7 @@ def centered_directive(name, arguments, options, content, lineno,
     subnode.extend(inodes)
     return [subnode] + messages
 
-centered_directive.arguments = (1, 0, 0)
+centered_directive.arguments = (1, 0, 1)
 directives.register_directive('centered', centered_directive)
 
 
