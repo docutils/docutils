@@ -73,6 +73,7 @@ class DocumentationApplication(object):
     def __init__(self, config):
         self.cache = {}
         self.freqmodules = defaultdict(int)
+        self.last_most_frequent = []
         self.generated_stylesheets = {}
         self.config = config
         self.data_root = config['data_root_path']
@@ -214,7 +215,6 @@ class DocumentationApplication(object):
                 except:
                     import traceback
                     traceback.print_exc()
-                    
                     # XXX: how to report?
                     pass
                 return Response(render_template(req, 'submitted.html',
@@ -251,16 +251,23 @@ class DocumentationApplication(object):
             'on_index':         False,
         }
 
-        filename = path.join(self.data_root, 'modindex.fpickle')
-        with open(filename, 'rb') as f:
-            context.update(pickle.load(f))
-
         most_frequent = heapq.nlargest(30, self.freqmodules.iteritems(),
                                        lambda x: x[1])
-        context['freqentries'] = sorted(x[0] for x in most_frequent)
+        most_frequent = sorted(x[0] for x in most_frequent)
 
-        return Response(render_template(req, 'modindex.html',
-                                        self.globalcontext, context))
+        if most_frequent != self.last_most_frequent or \
+               '_modindex' not in self.cache:
+            filename = path.join(self.data_root, 'modindex.fpickle')
+            with open(filename, 'rb') as f:
+                context.update(pickle.load(f))
+            context['freqentries'] = most_frequent
+            resp = render_template(req, 'modindex.html',
+                                   self.globalcontext, context)
+            self.cache['_modindex'] = resp
+            self.last_most_frequent = most_frequent
+        else:
+            resp = self.cache['_modindex']
+        return Response(resp)
 
     def get_page(self, req, url):
         """
