@@ -11,6 +11,7 @@ Global TODO
 - a way to map old URLs to new URLs?
 - lib-index: links to sections now in ref
 - distribution modalities
+- optionally have a contents tree view in the sidebar (AJAX based)
 
 done
 ----
