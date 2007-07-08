@@ -8,7 +8,6 @@
 """
 import os
 import sys
-import signal
 import getopt
 
 import sphinx

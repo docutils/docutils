@@ -14,15 +14,6 @@ import os
 import sys
 import time
 import thread
-import signal
-
-class Restart(Exception):
-    pass
-
-def raise_restart(*args):
-    raise Restart
-
-signal.signal(signal.SIGQUIT, raise_restart)
 
 
 def reloader_loop(extra_files):
