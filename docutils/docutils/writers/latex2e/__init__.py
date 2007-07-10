@@ -1744,7 +1744,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_literal_block(self, node):
         if self.verbatim:
-            self.body.append('\n\\end{verbatim}')
+            self.body.append('\n\\end{verbatim}\n')
             self.verbatim = 0
         else:
             self.body.append('\n}')
