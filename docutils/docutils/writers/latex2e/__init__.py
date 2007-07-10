@@ -364,7 +364,7 @@ class DocumentClass:
 
         sections = [ 'section', 'subsection', 'subsubsection', 
                      'paragraph', 'subparagraph' ]
-        if self.document_class in ('book', 'report', 'scrartcl', 'scrbook'):
+        if self.document_class in ('book', 'report', 'scrreprt', 'scrbook'):
             sections.insert(0, 'chapter')
         if self._with_part:
             sections.insert(0, 'part')
