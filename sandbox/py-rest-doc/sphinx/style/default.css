@@ -447,6 +447,11 @@ img.toggler {
 
 /* :::: GLOBAL STYLES :::: */
 
+p.subhead {
+    font-weight: bold;
+    margin-top: 20px;
+}
+
 a {
     color: #355f7c;
     text-decoration: none;

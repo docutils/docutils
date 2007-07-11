@@ -46,6 +46,10 @@
         {%- if prev %}
           <li class="right"><a href="{{ prev.link|e }}" title="{{ prev.title|striptags }}">previous</a> |</li>
         {%- endif %}
+        {%- if builder == 'web' %}
+          <li class="right"><a href="{{ pathto('settings.rst') }}"
+                               title="Customize your viewing settings">settings</a> |</li>
+        {%- endif %}
         <li><a href="{{ pathto('index.rst') }}">Python v{{ release }} Documentation</a> &raquo;</li>
         {%- for parent in parents %}
           <li><a href="{{ parent.link|e }}">{{ parent.title }}</a> &raquo;</li>
