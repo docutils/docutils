@@ -236,6 +236,7 @@ div.nocommentmarker {
 
 div.inlinecomments {
     margin-left: 10px;
+    margin-bottom: 5px;
     background-color: #eee;
     border: 1px solid #ccc;
     padding: 5px;
