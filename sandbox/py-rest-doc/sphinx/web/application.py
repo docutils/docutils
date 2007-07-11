@@ -69,10 +69,13 @@ known_designs = {
                       Display the sidebar on the left and don\'t scroll it
                       with the content. This can cause parts of the content to
                       become inaccessible when the table of contents is too long.'''),
-
 }
 
-
+comments_methods = {
+    'in': 'Show all comments inline.',
+    'bot': 'Show all comments at the page bottom.',
+    'no': 'Don\'t show comments at all.',
+}
 
 
 class MockBuilder(object):
@@ -251,6 +254,30 @@ class DocumentationApplication(object):
         )))
 
 
+    def get_settings_page(self, req):
+        """
+        Handle the settings page.
+        """
+        if req.method == 'POST':
+            new_style = req.form.get('design')
+            if new_style and new_style in known_designs:
+                req.session['design'] = new_style
+            new_comments = req.form.get('comments')
+            if new_comments and new_comments in comments_methods:
+                req.session['comments'] = new_comments
+
+        context = {
+            'known_designs':    sorted(known_designs.iteritems()),
+            'comments_methods': comments_methods.items(),
+            'on_index':         False,
+            'curdesign':        req.session.get('design') or 'default',
+            'curcomments':      req.session.get('comments') or 'in',
+        }
+
+        return Response(render_template(req, 'settings.html',
+                                        self.globalcontext, context))
+
+
     def get_module_index(self, req):
         """
         Get the module index or redirect to a module from the module index.
@@ -329,11 +356,8 @@ class DocumentationApplication(object):
         if url in self.special_urls:
             page_id = '@' + url  # only used as cache key
             filename = path.join(self.data_root, url + '.fpickle')
-            if os.path.isfile(filename):
-                with open(filename, 'rb') as f:
-                    context.update(pickle.load(f))
-            else:
-                cache_possible = False
+            with open(filename, 'rb') as f:
+                context.update(pickle.load(f))
             templatename = url + '.html'
             comments = False
 
@@ -518,12 +542,6 @@ class DocumentationApplication(object):
         if style not in known_designs:
             style = 'default'
 
-        new_style = req.args.get('new_design')
-        if new_style:
-            if new_style in known_designs:
-                req.session['design'] = new_style
-            return RedirectResponse('')
-
         if style in self.generated_stylesheets:
             stylesheet = self.generated_stylesheets[style]
         else:
@@ -583,6 +601,8 @@ class DocumentationApplication(object):
             # to /q/ which is handled below
             elif url == 'search':
                 resp = self.search(req)
+            elif url == 'settings':
+                resp = self.get_settings_page(req)
             # module index page is special
             elif url == 'modindex':
                 resp = self.get_module_index(req)
