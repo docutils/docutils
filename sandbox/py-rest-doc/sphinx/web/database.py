@@ -32,7 +32,7 @@ def connect(path):
     # create tables that do not exist.
     for table in tables:
         try:
-            con.execute('select * from %s;' % table)
+            con.execute('select * from %s limit 1;' % table)
         except sqlite3.OperationalError:
             con.execute(tables[table])
 
