@@ -2986,7 +2986,14 @@ Turning on `rst-mode' calls the normal hooks `text-mode-hook' and
 		    (point-max))
 		 nil
 		 (list 0 rst-literal-face 'append)))))
-     )))
+
+    ;; `Doctest Blocks`_
+    (append
+     (list
+      (concat re-bol "\\(>>>\\|\\.\\.\\.\\)\\(.+\\)")
+      (list 1 rst-block-face)
+      (list 2 rst-literal-face)))
+    )))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Indented blocks
