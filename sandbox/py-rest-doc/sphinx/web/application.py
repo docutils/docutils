@@ -258,6 +258,15 @@ class DocumentationApplication(object):
         """
         Handle the settings page.
         """
+        referer = req.environ.get('HTTP_REFERER') or ''
+        if referer:
+            rel_referer = referer.lstrip(
+                req.environ['wsgi.url_scheme'] + '://' + req.environ['HTTP_HOST'])
+            if rel_referer == referer:
+                referer = ''
+            else:
+                referer = rel_referer
+
         if req.method == 'POST':
             new_style = req.form.get('design')
             if new_style and new_style in known_designs:
@@ -265,6 +274,10 @@ class DocumentationApplication(object):
             new_comments = req.form.get('comments')
             if new_comments and new_comments in comments_methods:
                 req.session['comments'] = new_comments
+            if req.form.get('goback') and req.form.get('referer'):
+                return RedirectResponse(req.form['referer'])
+            # else display the same page again
+            referer = ''
 
         context = {
             'known_designs':    sorted(known_designs.iteritems()),
@@ -272,6 +285,7 @@ class DocumentationApplication(object):
             'on_index':         False,
             'curdesign':        req.session.get('design') or 'default',
             'curcomments':      req.session.get('comments') or 'in',
+            'referer':          referer,
         }
 
         return Response(render_template(req, 'settings.html',
