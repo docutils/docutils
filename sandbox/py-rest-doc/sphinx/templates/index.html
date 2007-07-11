@@ -7,10 +7,11 @@
 {% block body %}
   <h1>Python Documentation</h1>
   <p>
-    Welcome in the Python Documentation.
+    Welcome! This is the documentation for Python
+    {{ release }}{% if last_updated %}, last updated {{ last_updated }}{% endif %}.
   </p>
 
-  <p style="margin-top: 20px"><strong>Parts of the documentation:</strong></p>
+  <p><strong>Parts of the documentation:</strong></p>
   <table class="contentstable" align="center"><tr>
     <td width="50%">
       <p class="biglink"><a class="biglink" href="{{ pathto("whatsnew/2.6.rst") }}">What's new in Python 2.6?</a><br>
@@ -37,7 +38,7 @@
     </td></tr>
   </table>
 
-  <p style="margin-top: 20px"><strong>Indices and tables:</strong></p>
+  <p><strong>Indices and tables:</strong></p>
   <table class="contentstable" align="center"><tr>
     <td width="50%">
       <p class="biglink"><a class="biglink" href="{{ pathto("modindex.rst") }}">Global Module Index</a><br>
@@ -52,7 +53,7 @@
     </td></tr>
   </table>
 
-  <p style="margin-top: 20px"><strong>Meta information:</strong></p>
+  <p><strong>Meta information:</strong></p>
   <table class="contentstable" align="center"><tr>
     <td width="50%">
       <p class="biglink"><a class="biglink" href="{{ pathto("bugs.rst") }}">Reporting bugs</a></p>

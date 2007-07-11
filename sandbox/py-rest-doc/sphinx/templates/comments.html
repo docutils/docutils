@@ -2,7 +2,7 @@
     <h3>Comments</h3>
     {% for comment in comments %}
       <div class="comment" id="comment-{{ comment.comment_id }}">
-        <h4>{{ comment.title|e }}</h5>
+        <h4>{{ comment.title|e }}</h4>
         {{ comment.parsed_comment_body }}
         <p class="meta">by {{ comment.author|e }}, written on
           {{ comment.pub_date|datetimeformat }} |
@@ -17,7 +17,7 @@
     {% if preview %}
       <h4>Preview &mdash; Your Comment</h4>
       <div class="comment">
-        <h4>{{ preview.title|e }}</h5>
+        <h4>{{ preview.title|e }}</h4>
         {{ preview.parsed_comment_body }}
         <p class="meta">by {{ preview.author|e }}, written on
         {{ preview.pub_date|datetimeformat }} |
@@ -41,6 +41,8 @@
             <dd><input type="text" size="24" name="author_mail" value="{{ comments_form.author_mail|e(true) }}"></dd>
             <dt>Comment Title:</dt>
             <dd><input type="text" size="36" name="title" value="{{ comments_form.title|e(true) }}"></dd>
+            <dt>Descname (XXX to be removed):</dt>
+            <dd><input type="text" size="36" name="descname" value=""></dd>
           </dl>
           <input type="text" size="12" name="homepage" id="homepage">
           <textarea name="comment_body" rows="7" cols="50">{{ comments_form.comment_body|e }}</textarea>
