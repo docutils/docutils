@@ -59,6 +59,21 @@ A new documentation patch has been submitted.
 
 '''
 
+known_designs = {
+    'default':      (['default.css', 'pygments.css'],
+                     'The default design, with the sidebar on the left side.'),
+    'rightsidebar': (['default.css', 'rightsidebar.css', 'pygments.css'],
+                     'Display the sidebar on the right side.'),
+    'stickysidebar': (['default.css', 'stickysidebar.css', 'pygments.css'],
+                      '''\
+                      Display the sidebar on the left and don\'t scroll it
+                      with the content. This can cause parts of the content to
+                      become inaccessible when the table of contents is too long.'''),
+
+}
+
+
+
 
 class MockBuilder(object):
     def get_relative_uri(self, from_, to):
@@ -70,7 +85,7 @@ class DocumentationApplication(object):
     Serves the documentation.
     """
 
-    special_urls = set(['index', 'genindex', 'modindex'])
+    special_urls = set(['index', 'genindex', 'modindex', 'settings'])
 
     def __init__(self, config):
         self.cache = blackhole_dict() if config['debug'] else {}
@@ -249,7 +264,7 @@ class DocumentationApplication(object):
                 '/modindex/', info[0][:-4] + '#module-' + modname))
 
         context = {
-            'known_designs':    sorted(self.known_designs),
+            'known_designs':    sorted(known_designs.iteritems()),
             'on_index':         False,
         }
 
@@ -304,16 +319,21 @@ class DocumentationApplication(object):
         """
         cache_possible = True
         context = {
-            'known_designs':    sorted(self.known_designs),
-            'on_index':         url == 'index'
+            'known_designs':    sorted(known_designs.iteritems()),
+            'on_index':         url == 'index',
+            'curdesign':        req.session.get('design') or 'default',
+            'curcomments':      req.session.get('comments') or 'in',
         }
 
         # these are special because they have different templates
         if url in self.special_urls:
             page_id = '@' + url  # only used as cache key
             filename = path.join(self.data_root, url + '.fpickle')
-            with open(filename, 'rb') as f:
-                context.update(pickle.load(f))
+            if os.path.isfile(filename):
+                with open(filename, 'rb') as f:
+                    context.update(pickle.load(f))
+            else:
+                cache_possible = False
             templatename = url + '.html'
             comments = False
 
@@ -488,12 +508,6 @@ class DocumentationApplication(object):
                 'keyword':              term
             }, self.globalcontext), status=404 if is_error_page else 404)
 
-    known_designs = {
-        'default':      ['default.css', 'pygments.css'],
-        'rightsidebar': ['default.css', 'rightsidebar.css', 'pygments.css'],
-        'stickysidebar': ['default.css', 'stickysidebar.css', 'pygments.css'],
-    }
-
     def get_user_stylesheet(self, req):
         """
         Stylesheets are exchangeable. Handle them here and
@@ -501,12 +515,12 @@ class DocumentationApplication(object):
         and on the client side for 1 hour but not if in debug mode.
         """
         style = req.session.get('design')
-        if style not in self.known_designs:
+        if style not in known_designs:
             style = 'default'
 
         new_style = req.args.get('new_design')
         if new_style:
-            if new_style in self.known_designs:
+            if new_style in known_designs:
                 req.session['design'] = new_style
             return RedirectResponse('')
 
@@ -514,7 +528,7 @@ class DocumentationApplication(object):
             stylesheet = self.generated_stylesheets[style]
         else:
             stylesheet = []
-            for filename in self.known_designs[style]:
+            for filename in known_designs[style][0]:
                 with file(path.join(self.data_root, 'style', filename)) as f:
                     stylesheet.append(f.read())
             stylesheet = '\n'.join(stylesheet)
