@@ -2744,8 +2744,8 @@ Turning on `rst-mode' calls the normal hooks `text-mode-hook' and
     ;; jit-lock-mode replaced lazy-lock-mode in GNU Emacs 22
     (let ((jit-or-lazy-lock-mode
            (cond
-            ((fboundp 'jit-lock-mode) 'jit-lock-mode)
             ((fboundp 'lazy-lock-mode) 'lazy-lock-mode)
+            ((fboundp 'jit-lock-mode) 'jit-lock-mode)
             ;; if neither lazy-lock nor jit-lock is supported,
             ;; tell user and disable rst-mode-lazy
             (t (when rst-mode-lazy
@@ -2757,13 +2757,13 @@ Turning on `rst-mode' calls the normal hooks `text-mode-hook' and
        ((or (not font-lock-support-mode) ;; No support mode set (but required)
 	    (symbolp font-lock-support-mode)) ;; or a fixed mode for all
 	(setq font-lock-support-mode
-	      (list (cons 'rst-mode (and rst-mode-lazy 'jit-or-lazy-lock-mode))
+	      (list (cons 'rst-mode (and rst-mode-lazy jit-or-lazy-lock-mode))
 		    (cons t font-lock-support-mode))))
        ((and (listp font-lock-support-mode)
 	     (not (assoc 'rst-mode font-lock-support-mode)))
 	;; A list of modes missing rst-mode
 	(setq font-lock-support-mode
-	      (append '((cons 'rst-mode (and rst-mode-lazy 'jit-or-lazy-lock-mode)))
+	      (append '((cons 'rst-mode (and rst-mode-lazy jit-or-lazy-lock-mode)))
 		      font-lock-support-mode))))))
 
   ;; Names and hooks
