@@ -130,6 +130,11 @@ def render_template(req, template_name, *contexts):
     return tmpl.render(context)
 
 
+def render_simple_template(template_name, context):
+    tmpl = jinja_env.get_template(template_name)
+    return tmpl.render(context)
+
+
 class lazy_property(object):
     """
     Descriptor implementing a "lazy property", i.e. the function
@@ -757,3 +762,8 @@ class NotFound(Exception):
     def __init__(self, show_keyword_matches=False):
         self.show_keyword_matches = show_keyword_matches
         Exception.__init__(self, show_keyword_matches)
+
+
+class blackhole_dict(dict):
+    def __setitem__(self, key, value):
+        pass

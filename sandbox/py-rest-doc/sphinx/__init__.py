@@ -40,14 +40,14 @@ def main(argv):
         opts, args = getopt.getopt(argv[1:], 'ub:O:N')
         srcdirname = path.abspath(args[0])
         if not path.isdir(srcdirname):
-            print >>sys.stderr, 'Cannot find source directory.'
+            print >>sys.stderr, 'Error: Cannot find source directory.'
             return 1
         if not path.isfile(path.join(srcdirname, 'conf.py')):
-            print >>sys.stderr, 'Source directory doesn\'t contain conf.py file.'
+            print >>sys.stderr, 'Error: Source directory doesn\'t contain conf.py file.'
             return 1
         outdirname = path.abspath(args[1])
         if not path.isdir(outdirname):
-            print >>sys.stderr, 'Cannot find output directory.'
+            print >>sys.stderr, 'Error: Cannot find output directory.'
             return 1
     except (IndexError, getopt.error):
         usage(argv)

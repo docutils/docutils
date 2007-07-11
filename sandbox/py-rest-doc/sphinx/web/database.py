@@ -57,6 +57,7 @@ tables = {
         create table comments (
             comment_id integer primary key,
             associated_page varchar(200),
+            associated_name varchar(200),
             title varchar(120),
             author varchar(200),
             author_mail varchar(250),
@@ -71,10 +72,11 @@ class Comment(object):
     Represents one comment.
     """
 
-    def __init__(self, associated_page, title, author, author_mail,
-                 comment_body, pub_date=None):
+    def __init__(self, associated_page, associated_name, title, author,
+                 author_mail, comment_body, pub_date=None):
         self.comment_id = None
         self.associated_page = associated_page
+        self.associated_name = associated_name
         self.title = title
         if pub_date is None:
             pub_date = datetime.utcnow()
@@ -101,17 +103,19 @@ class Comment(object):
         Save the comment and use the cursor provided.
         """
         cur = get_cursor()
-        args = (self.associated_page, self.title, self.author,
-                self.author_mail, self.comment_body, self.pub_date)
+        args = (self.associated_page, self.associated_name, self.title,
+                self.author, self.author_mail, self.comment_body, self.pub_date)
         if self.comment_id is None:
-            cur.execute('''insert into comments (associated_page, title,
+            cur.execute('''insert into comments (associated_page, associated_name,
+                                                 title,
                                                  author, author_mail,
                                                  comment_body, pub_date)
-                                  values (?, ?, ?, ?, ?, ?)''', args)
+                                  values (?, ?, ?, ?, ?, ?, ?)''', args)
             self.comment_id = cur.lastrowid
         else:
             args += (self.comment_id,)
             cur.execute('''update comments set associated_page=?,
+                                  associated_name=?,
                                   title=?, author=?,
                                   author_mail=?, comment_body=?,
                                   pub_date=? where comment_id = ?''', args)
@@ -145,7 +149,7 @@ class Comment(object):
     def get_for_page(associated_page, reverse=False):
         cur = get_cursor()
         cur.execute('''select * from comments where associated_page = ?
-                    order by comment_id %s''' % ('desc' if reverse else 'asc'),
+                    order by associated_name, comment_id %s''' % ('desc' if reverse else 'asc'),
                     (associated_page,))
         try:
             return [Comment._make_comment(row) for row in cur]
@@ -178,8 +182,9 @@ class Comment(object):
         return pages
 
     def __repr__(self):
-        return '<Comment by %r on %r (%s)>' % (
+        return '<Comment by %r on %r:%r (%s)>' % (
             self.author,
             self.associated_page,
+            self.associated_name,
             self.comment_id or 'not saved'
         )

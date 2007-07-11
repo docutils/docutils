@@ -209,6 +209,56 @@ div.error {
     font-weight: bold;
 }
 
+/* :::: INLINE COMMENTS :::: */
+
+div.inlinecommentswrapper {
+    float: right;
+    max-width: 40%;
+}
+
+div.commentmarker {
+    float: right;
+    background-image: url(style/comment.png);
+    background-repeat: no-repeat;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    padding-top: 3px;
+}
+
+div.nocommentmarker {
+    float: right;
+    background-image: url(style/nocomment.png);
+    background-repeat: no-repeat;
+    width: 25px;
+    height: 25px;
+}
+
+div.inlinecomments {
+    margin-left: 10px;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    padding: 5px;
+}
+
+div.inlinecomment {
+    border-top: 1px solid #ccc;
+    padding-top: 5px;
+    margin-top: 5px;
+}
+
+.inlinecomments p {
+    margin: 5px 0 5px 0;
+}
+
+.inlinecomments .head {
+    font-weight: bold;
+}
+
+.inlinecomments .meta {
+    font-style: italic;
+}
+
 
 /* :::: COMMENTS :::: */
 div#comments {
@@ -539,6 +589,7 @@ table.footnote td, table.footnote th {
 
 dl {
     margin-bottom: 15px;
+    clear: both;
 }
 
 dd p {

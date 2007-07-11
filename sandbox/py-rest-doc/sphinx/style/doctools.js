@@ -335,6 +335,15 @@ var Documentation = {
                 $(this).attr('src', src.substr(0, src.length-8) + 'minus.png');
             }
         }).css('display', '').click();
+
+    // inline comments
+    $('.inlinecomments').hide();
+    $('.commentmarker').css('cursor', 'pointer').click(function(){
+            $(this).next().toggle();
+        });
+    $('.nocommentmarker').css('cursor', 'pointer').click(function(){
+            // write comment 
+        });
   },
 
   /**

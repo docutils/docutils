@@ -22,6 +22,7 @@ import threading
 import cPickle as pickle
 import cStringIO as StringIO
 from os import path
+from itertools import groupby
 from collections import defaultdict
 
 from .feed import Feed
@@ -31,7 +32,8 @@ from .userdb import UserDatabase
 from .antispam import AntiSpam
 from .database import connect, set_connection, Comment
 from .util import Request, Response, RedirectResponse, SharedDataMiddleware, \
-     NotFound, render_template, get_target_uri
+     NotFound, render_template, render_simple_template, get_target_uri, \
+     blackhole_dict
 
 from ..util import relative_uri, shorten_result
 from ..search import SearchFrontend
@@ -71,7 +73,7 @@ class DocumentationApplication(object):
     special_urls = set(['index', 'genindex', 'modindex'])
 
     def __init__(self, config):
-        self.cache = {}
+        self.cache = blackhole_dict() if config['debug'] else {}
         self.freqmodules = defaultdict(int)
         self.last_most_frequent = []
         self.generated_stylesheets = {}
@@ -269,6 +271,32 @@ class DocumentationApplication(object):
             resp = self.cache['_modindex']
         return Response(resp)
 
+    def handle_comments(self, page_id, context):
+        """
+        Insert inline comments into a page body.
+        """
+        if 'body' not in context:
+            return None
+
+        tx = context['body']
+        all_comments = Comment.get_for_page(page_id)
+        global_comments = []
+        for name, comments in groupby(all_comments, lambda x: x.associated_name):
+            if not name:
+                global_comments = list(comments)
+                continue
+            tx = re.sub('<!--#%s#-->' % name,
+                        render_simple_template('inlinecomments.html',
+                                               {'comments' : list(comments),
+                                                'id' : name}),
+                        tx)
+        tx = re.sub('<!--#([^#]*)#-->',
+                    (lambda match: render_simple_template('inlinecomments.html',
+                                                          {'id': match.group(1)})),
+                    tx)
+        context['body'] = tx
+        return global_comments
+
     def get_page(self, req, url):
         """
         Show the requested documentation page or raise an
@@ -282,7 +310,7 @@ class DocumentationApplication(object):
 
         # these are special because they have different templates
         if url in self.special_urls:
-            rstfilename = '@' + url  # only used as cache key
+            page_id = '@' + url  # only used as cache key
             filename = path.join(self.data_root, url + '.fpickle')
             with open(filename, 'rb') as f:
                 context.update(pickle.load(f))
@@ -291,21 +319,21 @@ class DocumentationApplication(object):
 
         # it's a normal page (or a 404)
         else:
-            rstfilename = self.env.get_real_filename(url)
-            if rstfilename is None:
+            page_id = self.env.get_real_filename(url)
+            if page_id is None:
                 raise NotFound(show_keyword_matches=True)
             # increment view count of all modules on that page
-            for modname in self.env.filemodules.get(rstfilename, ()):
+            for modname in self.env.filemodules.get(page_id, ()):
                 self.freqmodules[modname] += 1
             # comments enabled?
-            comments = self.env.metadata[rstfilename].get('comments_enabled', True)
+            comments = self.env.metadata[page_id].get('comments_enabled', True)
 
             # generate comments feed if wanted
             if comments and req.args.get('feed') == 'comments':
-                return self.get_comments_feed(req, url, rstfilename)
+                return self.get_comments_feed(req, url, page_id)
 
             # else load the page
-            filename = path.join(self.data_root, rstfilename[:-3] + 'fpickle')
+            filename = path.join(self.data_root, page_id[:-3] + 'fpickle')
             with open(filename, 'rb') as f:
                 context.update(pickle.load(f))
             templatename = 'page.html'
@@ -324,7 +352,7 @@ class DocumentationApplication(object):
                 fields = (title, author, author_mail, comment_body)
 
                 if req.form.get('preview'):
-                    preview = Comment(rstfilename, title, author, author_mail,
+                    preview = Comment(page_id, title, author, author_mail,
                                       comment_body)
                 # 'homepage' is a forbidden field to thwart bots
                 elif req.form.get('homepage') or self.antispam.is_spam(fields):
@@ -338,8 +366,10 @@ class DocumentationApplication(object):
                         form_error = 'You comment is too short ' \
                                      '(must have at least 20 characters).'
                     else:
-                        self.cache.pop(rstfilename, None)
-                        comment = Comment(rstfilename, title, author, author_mail,
+                        self.cache.pop(page_id, None)
+                        # XXX
+                        comment = Comment(page_id, req.form.get('descname'),
+                                          title, author, author_mail,
                                           comment_body)
                         comment.save()
                         return RedirectResponse(comment.url)
@@ -347,7 +377,6 @@ class DocumentationApplication(object):
 
             context.update(
                 comments_enabled = comments,
-                comments = Comment.get_for_page(rstfilename),
                 preview = preview,
                 comments_form = {
                     'title':         title,
@@ -358,27 +387,30 @@ class DocumentationApplication(object):
                 },
             )
 
+            context['comments'] = self.handle_comments(page_id, context)
+
         # if the form validation failed, the cache is used so that
         # we can put error messages and defaults to the page.
+        # XXX: caching disabled for now
         if cache_possible:
             try:
-                filename, mtime, text = self.cache[rstfilename]
+                filename, mtime, text = self.cache[page_id]
             except KeyError:
                 pass
             else:
                 if path.getmtime(filename) == mtime:
                     return Response(text)
             text = render_template(req, templatename, self.globalcontext, context)
-            self.cache[rstfilename] = (filename, path.getmtime(filename), text)
+            self.cache[page_id] = (filename, path.getmtime(filename), text)
         else:
             text = render_template(req, templatename, self.globalcontext, context)
         return Response(text)
 
-    def get_comments_feed(self, req, url, rstfilename):
+    def get_comments_feed(self, req, url, page_id):
         # XXX: nice title instead of "url"
         feed = Feed(req, 'Comments for "%s"' % url, 'List of comments for '
                     'the topic "%s"' % url, url)
-        for comment in Comment.get_for_page(rstfilename):
+        for comment in Comment.get_for_page(page_id):
             feed.add_item(comment.title, comment.author, comment.url,
                           comment.parsed_comment_body, comment.pub_date)
         return Response(feed.generate(), mimetype='application/rss+xml')
@@ -510,10 +542,12 @@ class DocumentationApplication(object):
             self.load_env(new_mtime)
 
         try:
+            if req.path == 'favicon.ico':
+                resp = self.get_error_404()
             # require a trailing slash on GET requests
             # this ensures nice looking urls and working relative
             # links for cached resources.
-            if not req.path.endswith('/') and req.method == 'GET':
+            elif not req.path.endswith('/') and req.method == 'GET':
                 query = req.environ.get('QUERY_STRING', '')
                 if query:
                     query = '?' + query
