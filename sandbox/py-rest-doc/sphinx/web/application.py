@@ -33,7 +33,7 @@ from .antispam import AntiSpam
 from .database import connect, set_connection, Comment
 from .util import Request, Response, RedirectResponse, SharedDataMiddleware, \
      NotFound, render_template, render_simple_template, get_target_uri, \
-     blackhole_dict
+     blackhole_dict, get_base_uri
 
 from ..util import relative_uri, shorten_result
 from ..search import SearchFrontend
@@ -260,12 +260,11 @@ class DocumentationApplication(object):
         """
         referer = req.environ.get('HTTP_REFERER') or ''
         if referer:
-            rel_referer = referer.lstrip(
-                req.environ['wsgi.url_scheme'] + '://' + req.environ['HTTP_HOST'])
-            if rel_referer == referer:
+            base = get_base_uri(req.environ)
+            if not referer.startswith(base):
                 referer = ''
             else:
-                referer = rel_referer
+                referer = referer[len(base):]
 
         if req.method == 'POST':
             new_style = req.form.get('design')
