@@ -691,6 +691,18 @@ class Response(object):
             else:
                 yield str(item)
 
+def get_base_uri(environ):
+    url = environ['wsgi.url_scheme'] + '://'
+    if 'HTTP_HOST' in environ:
+        url += environ['HTTP_HOST']
+    else:
+        url += environ['SERVER_NAME']
+        if (environ['wsgi.url_scheme'], environ['SERVER_PORT']) not \
+               in (('https', '443'), ('http', '80')):
+            url += ':' + environ['SERVER_PORT']
+    url += urllib.quote(environ.get('SCRIPT_INFO', '').rstrip('/'))
+    return url
+
 
 class RedirectResponse(Response):
 
@@ -701,17 +713,7 @@ class RedirectResponse(Response):
         super(RedirectResponse, self).__init__('Moved...', status=code)
 
     def __call__(self, environ, start_response):
-        url = environ['wsgi.url_scheme'] + '://'
-        if 'HTTP_HOST' in environ:
-            url += environ['HTTP_HOST']
-        else:
-            url += environ['SERVER_NAME']
-            if (environ['wsgi.url_scheme'], environ['SERVER_PORT']) not \
-               in (('https', '443'), ('http', '80')):
-                url += ':' + environ['SERVER_PORT']
-
-        url += urllib.quote(environ.get('SCRIPT_INFO', '').rstrip('/'))
-        url += self.target_url
+        url = get_base_uri(environ) + self.target_url
 
         self.headers['Location'] = url
         return super(RedirectResponse, self).__call__(environ, start_response)
