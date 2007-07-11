@@ -8,30 +8,25 @@
   </p>
 
 {# XXX: stylesheet descriptions #}
-  <form action="{{ pathto('settings.rst') }}" method="get">
-    <p class="subhead">Select your stylesheet</p>
+  <form action="{{ pathto('settings.rst') }}" method="post">
+    <p class="subhead">Select your stylesheet:</p>
     <p>
       {%- for design, (foo, descr) in known_designs %}
-      <input type="radio" name="new_design" value="{{ design }}" id="stylesheet-{{ design }}"
+      <input type="radio" name="design" value="{{ design }}" id="stylesheet-{{ design }}"
              {% if curdesign == design %}checked="checked"{% endif %}>
         <label for="stylesheet-{{ design }}">{{ descr }}</label><br>
       {%- endfor %}
     </p>
 
-    <p class="subhead">Select how you want to view comments</p>
+    <p class="subhead">Select how you want to view comments:</p>
     <p>
-      <input type="radio" name="comments" value="in" id="comments-in"
-             {% if curcomments == "in" %}checked="checked"{% endif %}>
-        <label for="comments-in">Show all comments inline.</label><br>
-      <input type="radio" name="comments" value="bot" id="comments-bot"
-             {% if curcomments == "bot" %}checked="checked"{% endif %}>
-        <label for="comments-bot">Show all comments at the pages' bottom.</label><br>
-      <input type="radio" name="comments" value="no" id="comments-no"
-             {% if curcomments == "no" %}checked="checked"{% endif %}>
-        <label for="comments-no">Don't show comments at all.</label><br>
+      {%- for meth, descr in comments_methods %}
+      <input type="radio" name="comments" value="{{ meth }}" id="comments-{{ meth }}"
+             {% if curcomments == meth %}checked="checked"{% endif %}>
+        <label for="comments-{{ meth }}">{{ descr }}</label><br>
+      {%- endfor %}
     </p>
     <p><input type="submit" value="Save"></p>
-    <input type="hidden" name="do" value="commentsopt">
-   </form>
+  </form>
 
 {% endblock %}
