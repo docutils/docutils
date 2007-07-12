@@ -1,16 +1,17 @@
 Global TODO
 ===========
 
-(order not significant)
-
-- write a "traditional" stylesheet
-- think about database for comments
+- write new Makefile
+  * automatic version info
+  * find out how to handle refcount data
+- equivalent to indfix.py, listmodules, ACKS?
 - make comments per descitem possible
 - explore a "printable" builder (export to latex, most probably)
 - think about the default role
 - a way to map old URLs to new URLs?
 - lib-index: links to sections now in ref
-- distribution modalities
+- write a "traditional" stylesheet
+- think about database for comments
 - optionally have a contents tree view in the sidebar (AJAX based)
 
 done

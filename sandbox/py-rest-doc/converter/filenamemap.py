@@ -400,6 +400,7 @@ _mapping = {
 
     'inst': {
         '__newname__': 'install',
+        '__defaulthighlightlang__': 'none',
         'inst': 'index',
     },
 
@@ -441,6 +442,7 @@ for dir, files in _mapping.iteritems():
 # new directories to create
 dirs_to_make = [
     'c-api',
+    'data',
     'distutils',
     'documenting',
     'extending',
@@ -495,6 +497,7 @@ newfiles_mapping = {
 
 # copy files from the old doc tree
 copyfiles_mapping = {
+    'api/refcounts.dat': 'data',
     'lib/email-*.py': 'includes',
     'lib/minidom-example.py': 'includes',
     'lib/tzinfo-examples.py': 'includes',
