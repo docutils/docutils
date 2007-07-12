@@ -9,13 +9,14 @@ Global TODO
 - think about the default role
 - a way to map old URLs to new URLs?
 - lib-index: links to sections now in ref
-- write a "traditional" stylesheet
 - think about database for comments
 - optionally have a contents tree view in the sidebar (AJAX based)
 
 done
 ----
 
+- write a "traditional" stylesheet
+- add refcount functionality
 - modindex: one column; only toplevel, then expand
 - complete the "submit patch" functionality
 - write a HTML Help builder
