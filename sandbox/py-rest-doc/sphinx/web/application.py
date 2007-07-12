@@ -602,6 +602,11 @@ class DocumentationApplication(object):
                 resp = RedirectResponse(req.path + '/' + query)
             # index page is special
             elif url == 'index':
+                # presets for settings
+                if req.args.get('design') and req.args['design'] in known_designs:
+                    req.session['design'] = req.args['design']
+                if req.args.get('comments') and req.args['comments'] in comments_methods:
+                    req.session['comments'] = req.args['comments']
                 # alias for fuzzy search
                 if 'q' in req.args:
                     resp = RedirectResponse('q/%s/' % req.args['q'])
