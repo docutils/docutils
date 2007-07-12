@@ -268,8 +268,13 @@ class DocumentationApplication(object):
                 referer = ''
             else:
                 referer = referer[len(base):]
+                referer = referer.rpartition('?')[0] or referer
 
         if req.method == 'POST':
+            if req.form.get('cancel'):
+                if req.form.get('referer'):
+                    return RedirectResponse(req.form['referer'])
+                return RedirectResponse('')
             new_style = req.form.get('design')
             if new_style and new_style in known_designs:
                 req.session['design'] = new_style
