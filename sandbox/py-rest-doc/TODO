@@ -3,7 +3,6 @@ Global TODO
 
 - write new Makefile
   * automatic version info
-  * find out how to handle refcount data
 - equivalent to indfix.py, listmodules, ACKS?
 - make comments per descitem possible
 - explore a "printable" builder (export to latex, most probably)

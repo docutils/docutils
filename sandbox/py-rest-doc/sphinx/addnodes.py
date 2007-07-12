@@ -22,6 +22,9 @@ class desc_parameterlist(nodes.Part, nodes.Inline, nodes.TextElement): pass
 class desc_parameter(nodes.Part, nodes.Inline, nodes.TextElement): pass
 class desc_optional(nodes.Part, nodes.Inline, nodes.TextElement): pass
 
+# refcount annotation
+class refcount(nodes.emphasis): pass
+
 # \versionadded, \versionchanged, \deprecated
 class versionmodified(nodes.Admonition, nodes.TextElement): pass
 

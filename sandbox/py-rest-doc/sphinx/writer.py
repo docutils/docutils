@@ -93,6 +93,11 @@ class HTMLTranslator(BaseTranslator):
     def depart_desc_content(self, node):
         self.body.append('</dd>')
 
+    def visit_refcount(self, node):
+        self.body.append(self.starttag(node, 'em', '', CLASS='refcount'))
+    def depart_refcount(self, node):
+        self.body.append('</em>')
+
     def visit_versionmodified(self, node):
         self.body.append(self.starttag(node, 'p'))
         text = version_text[node['type']] % node['version']
