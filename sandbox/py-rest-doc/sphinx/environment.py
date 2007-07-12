@@ -31,6 +31,7 @@ from docutils.transforms.universal import FilterMessages
 
 from . import addnodes
 from .util import get_matching_files
+from .refcounting import Refcounts
 
 default_settings = {
     'embed_stylesheet': False,
@@ -159,6 +160,10 @@ class BuildEnvironment:
         self.srcdir = srcdir
         self.config = {}
 
+        # read the refcounts file
+        self.refcounts = Refcounts.fromfile(
+            path.join(self.srcdir, 'data', 'refcounts.dat'))
+
         # the docutils settings for building
         self.settings = default_settings.copy()
         self.settings['env'] = self
@@ -286,6 +291,10 @@ class BuildEnvironment:
         # clear all files no longer present
         for filename in removed:
             self.clear_file(filename)
+
+        # re-read the refcount file
+        self.refcounts = Refcounts.fromfile(
+            path.join(self.srcdir, 'data', 'refcounts.dat'))
 
         # read all new and changed files
         for filename in changed:
@@ -494,6 +503,8 @@ class BuildEnvironment:
         return doctree
 
     def get_and_resolve_doctree(self, filename, builder, doctree=None):
+        """Read the doctree from the pickle, resolve cross-references and
+           toctrees and return it."""
         if doctree is None:
             doctree = self.get_doctree(filename)
 

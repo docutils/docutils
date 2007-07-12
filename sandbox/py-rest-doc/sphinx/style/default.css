@@ -612,6 +612,10 @@ dd {
     margin-left: 30px;
 }
 
+.refcount {
+    color: #060;
+}
+
 dt:target,
 .highlight {
     background-color: #fbe54e;
