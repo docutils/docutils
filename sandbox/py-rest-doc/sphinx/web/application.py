@@ -69,6 +69,9 @@ known_designs = {
                       Display the sidebar on the left and don\'t scroll it
                       with the content. This can cause parts of the content to
                       become inaccessible when the table of contents is too long.'''),
+    'traditional': (['traditional.css'],
+                    '''\
+                    A design similar to the old documentation style.'''),
 }
 
 comments_methods = {
