@@ -26,7 +26,7 @@ div.body {
 
 div.sidebarwrapper {
     border: 1px solid #99ccff;
-    padding: 0 10px 10px 10px;
+    padding: 10px;
     margin: 10px 15px 0 0;
 }
 
@@ -69,12 +69,42 @@ div.related ul {
 
 div.related li {
     display: inline;
+    font-weight: bold;
 }
 
 div.related li.right {
     float: right;
     margin-right: 5px;
 }
+
+/* ::: SIDEBAR :::: */
+div.sidebar h3 {
+    margin: 0;
+}
+
+div.sidebar h4 {
+    margin: 5px 0 0 0;
+}
+
+div.sidebar p.topless {
+    margin: 5px 10px 10px 10px;
+}
+
+div.sidebar ul {
+    margin: 10px;
+    margin-left: 15px;
+    padding: 0;
+}
+
+div.sidebar ul ul {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+div.sidebar form {
+    margin-top: 10px;
+}
+
 
 /* :::: SEARCH :::: */
 ul.search {
@@ -435,7 +465,6 @@ a.headerlink:hover {
 
 div.body p, div.body dd, div.body li {
     text-align: justify;
-    line-height: 130%;
 }
 
 div.body td {

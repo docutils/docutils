@@ -14,7 +14,7 @@
       {%- for design, (foo, descr) in known_designs %}
       <input type="radio" name="design" value="{{ design }}" id="stylesheet-{{ design }}"
              {% if curdesign == design %}checked="checked"{% endif %}>
-        <label for="stylesheet-{{ design }}">{{ descr }}</label><br>
+        <label for="stylesheet-{{ design }}">{{ design }} &mdash; {{ descr }}</label><br>
       {%- endfor %}
     </p>
 
@@ -27,8 +27,10 @@
       {%- endfor %}
     </p>
     <input type="hidden" name="referer" value="{{ referer|e}}">
-    <p><input type="submit" name="goback" value="Save and back to last page">&nbsp;&nbsp;
-      <input type="submit" value="Save"></p>
+    <p><input type="submit" value="Save">&nbsp;&nbsp;
+      <input type="submit" name="goback" value="Save and back to last page">&nbsp;&nbsp;
+      <input type="submit" name="cancel" value="Cancel and back to last page">&nbsp;&nbsp;
+    </p>
   </form>
 
 {% endblock %}
