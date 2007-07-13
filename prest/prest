@@ -113,7 +113,7 @@ sub main {
     my $rst_parser;
     push @ARGV, '-' unless @ARGV;
     foreach $TOP_FILE (@ARGV) {
-	open F,$TOP_FILE;
+	open F,$TOP_FILE or die "Cannot open $TOP_FILE";
 	my @doc = <F>;
 	close F;
 	my $dom;
@@ -142,16 +142,6 @@ sub EncodingList {
     use Encode;
     @encodings = Encode->encodings();
     return join(', ', @encodings);
-}
-
-# Returns the first defined value in an array.
-# Argument: array
-# Returns: value
-sub FirstDefined {
-    foreach (@_) {
-	return $_ if defined $_;
-    }
-    return;
 }
 
 # Gets list of writers
