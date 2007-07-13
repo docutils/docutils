@@ -1,0 +1,24 @@
+.. _xreftest.non-anonymous target tests: xreftest.html#non-anonymous-target-tests
+.. |xreftest.non-anonymous target tests| replace:: Non-Anonymous Target Tests
+
+.. _xreftest.direct targets: xreftest.html#direct-targets
+.. |xreftest.direct targets| replace:: Direct Targets
+
+.. _xreftest.direct target tests: xreftest.html#direct-target-tests
+.. |xreftest.direct target tests| replace:: Direct Target Tests
+
+.. _xreftest.indirect target tests: xreftest.html#indirect-target-tests
+.. |xreftest.indirect target tests| replace:: Indirect Target Tests
+
+.. _xreftest.anonymous target tests: xreftest.html#anonymous-target-tests
+.. |xreftest.anonymous target tests| replace:: Anonymous Target Tests
+
+.. _xreftest.other tests: xreftest.html#other-tests
+.. |xreftest.other tests| replace:: Other Tests
+
+.. _xreftest.xref writer tests: xreftest.html#xref-writer-tests
+.. |xreftest.xref writer tests| replace:: Xref Writer Tests
+
+.. _xreftest.: xreftest.html
+.. |xreftest.| replace:: A Chapter Title
+

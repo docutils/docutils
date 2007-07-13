@@ -3,9 +3,15 @@
 Introduction
 ************
 
-This is a test file for the index writer for reStructuredText.
-An _`index entry` is either an _`inline target`, or an _`indirect target`
-pointing to an inline target.
+.. role:: index(target)
+
+This is a test file for the index writer for reStructuredText.  An
+_`index entry` is either an _`inline target`, a :target:`target role`,
+or an _`indirect target` pointing to one of the above.  A
+:target:`target role <different tag>` can have a `different tag`_ from
+the visible text or can even be :target:`<invisible>` unseen.  It should
+be possible to define an :index:`index role` that works like the
+default target role, which can even be :index:`<unseen>` invisible.
 
 .. _overview:
 
@@ -13,6 +19,7 @@ Overview of reStructuredText
 ============================
 
 .. _indirect2: `indirect target`_
+.. _indirect to target role: `invisible`_
 
 What is _`reStructuredText`? Find the answer 
 `here <http://docutils.sourceforge.net/rst.html>`_.

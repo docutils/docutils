@@ -1,0 +1,16 @@
+.. _xreftest.non-anonymous target tests: xreftest.html#non-anonymous-target-tests
+.. |xreftest.non-anonymous target tests| replace:: Section A.1.1.1
+.. _xreftest.direct targets: xreftest.html#direct-targets
+.. |xreftest.direct targets| replace:: Section A.1.1.2
+.. _xreftest.direct target tests: xreftest.html#direct-target-tests
+.. |xreftest.direct target tests| replace:: Section A.1.1
+.. _xreftest.indirect target tests: xreftest.html#indirect-target-tests
+.. |xreftest.indirect target tests| replace:: Section A.1.2
+.. _xreftest.anonymous target tests: xreftest.html#anonymous-target-tests
+.. |xreftest.anonymous target tests| replace:: Section A.1.3
+.. _xreftest.other tests: xreftest.html#other-tests
+.. |xreftest.other tests| replace:: Section A.1.4
+.. _xreftest.xref writer tests: xreftest.html#xref-writer-tests
+.. |xreftest.xref writer tests| replace:: Section A.1
+.. _xreftest.: xreftest.html
+.. |xreftest.| replace:: Atodiad A

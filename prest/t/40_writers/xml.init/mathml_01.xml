@@ -1,0 +1,8 @@
+<document source="mathml_01.rst">
+<comment xml:space="preserve">
+Test xml generation with mathml
+</comment>
+<paragraph>
+<math title="E = mc^2" xmlns="&mathml;"><mstyle displaystyle="true"><mi>E</mi><mo>=</mo><mi>m</mi><msup><mi>c</mi><mn>2</mn></msup></mstyle></math>
+</paragraph>
+</document>
