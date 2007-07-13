@@ -119,6 +119,7 @@ If set, runs Slay::Makefile in debug mode.
 sub do_tests {
     my ($makefile) = @_;
     my $base = $FindBin::RealBin;
+    my $lib = "$base/../../blib/lib";
     my ($myname) =  $FindBin::RealScript =~ /(.*)\.tt?$/;
     chdir $base;
     die "Error: No init directory for this test\n" unless -d "$myname.init";
@@ -131,7 +132,7 @@ sub do_tests {
 
     # Check to see if we need to skip all tests
     if (-f "skip.pl") {
-	chomp (my $error = `$^X -I $base/blib/lib skip.pl 2>&1`);
+	chomp (my $error = `$^X -I $lib skip.pl 2>&1`);
 	plan(skip_all => "$error") if $?;
     }
 
@@ -153,7 +154,7 @@ sub do_tests {
 	(my $base_test = $test) =~ s/\. .*? \z//x;
 	if (-f "$base_test.skip.pl") {
 	    # Check whether we need to skip this file
-	    chomp (my $error = `$^X -I$base/blib/lib $base_test.skip.pl 2>&1`);
+	    chomp (my $error = `$^X -I$lib $base_test.skip.pl 2>&1`);
 	  SKIP:
 	    {
 		skip($error, 1) if $?;
