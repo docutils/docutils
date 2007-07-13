@@ -1,8 +1,22 @@
+=================
+A Chapter Title
+=================
+
+.. perl::
+
+   $title_prefix ? << "END" : ''
+   .. sectnum::
+      :prefix-title:
+      :prefix: $title_prefix
+   END
+
 .. The following block contains definitions of external targets. Some of them
    are explicit and some are defined through substitutions.
 
-This is a simple test file for |xrefwrt|_. The |xrefwrt|_ is part of trip_,
-a parser and writer for |rst| written in Perl_.
+.. role:: xref(target)
+
+This is a :target:`simple test` file for |xrefwrt|_. The |xrefwrt|_ is
+part of trip_, a :xref:`parser` and :xref:`writer` for |rst| written in Perl_.
 
 .. |xrefwrt| replace:: the xref writer for |rst|
 .. _xrefwrt: ../../../../../src/writers/xref.wrt
