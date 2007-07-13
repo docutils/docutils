@@ -165,7 +165,7 @@ WriteMakefile(
     MAN1PODS       => {},
     MAN3PODS       => {},
     PREREQ_PM      => { 'Text::ASCIIMathML'=>0,
-			'Slay::Makefile'=>0.02,
+			'Slay::Makefile'=>0.03,
 			}, # e.g., Module::Name => 1.1
     PL_FILES       => {'lib/Text/Restructured/PrestConfig.pm.PL' =>
 		       'lib/Text/Restructured/PrestConfig.pm'},
