@@ -9,7 +9,8 @@
     :license: Python license.
 """
 
-from .util import Response, RedirectResponse, NotFound, render_template
+from .util import render_template
+from .wsgiutil import Response, RedirectResponse, NotFound
 from .database import Comment
 
 

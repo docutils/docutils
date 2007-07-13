@@ -1,20 +1,28 @@
 {# rendered for inline comments -#}
 <div class="inlinecommentswrapper">
-{%- if comments %}
-<div class="commentmarker" id="ilc-{{ id }}" title="Comments">{{ comments|length }}</div>
-<div class="inlinecomments">
-  <div class="head">Comments &mdash; <a href="#">write new</a></div>
-  {%- for comment in comments %}
-  <div class="inlinecomment" id="comment-{{ comment.comment_id }}">
-    <div class="head">{{ comment.title|e }}</div>
-    {{ comment.parsed_comment_body }}
-    <div class="meta">by {{ comment.author|e }}, written on
-    {{ comment.pub_date|datetimeformat }} |
-    <a href="#comment-{{ comment.comment_id }}">#</a></div>
-  </div>
-  {%- endfor %}
-</div>
+{%- if mode == 'bottom' %}
+  {%- if comments %}
+  <a href="#comment-{{ comments[0].comment_id }}">
+    <div class="commentmarker" title="Comments">&nbsp;</div>
+  </a>
+  {%- endif %}
 {%- else %}
-<div class="nocommentmarker" id="ilc-{{ id }}" title="Write a comment">&nbsp;</div>
+  {%- if comments %}
+  <div class="commentmarker" id="ilc-{{ id }}" title="Comments">{{ comments|length }}</div>
+  <div class="inlinecomments">
+    <div class="head">Comments &mdash; <a href="#">write new</a></div>
+    {%- for comment in comments %}
+    <div class="inlinecomment" id="comment-{{ comment.comment_id }}">
+      <div class="head">{{ comment.title|e }}</div>
+      {{ comment.parsed_comment_body }}
+      <div class="meta">by {{ comment.author|e }}, written on
+      {{ comment.pub_date|datetimeformat }} |
+      <a href="#comment-{{ comment.comment_id }}">#</a></div>
+    </div>
+    {%- endfor %}
+  </div>
+  {%- else %}
+  <div class="nocommentmarker" id="ilc-{{ id }}" title="Write a comment">&nbsp;</div>
+  {%- endif %}
 {%- endif %}
 </div>

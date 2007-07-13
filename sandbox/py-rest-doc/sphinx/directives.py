@@ -295,6 +295,7 @@ def desc_directive(desctype, arguments, options, content, lineno,
             if fullname not in state.document.ids:
                 signode['names'].append(fullname)
                 signode['ids'].append(fullname)
+                signode['first'] = (not names)
                 state.document.note_explicit_target(signode)
                 env.note_descref(fullname, desctype)
             names.append(name)

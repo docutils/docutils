@@ -1,15 +1,7 @@
 {% extends "layout.html" %}
 {% set page_links = [
-  ('?feed=comments', 'application/rss+xml', 'Page Comments')
+  (pathto('@rss/' + sourcename), 'application/rss+xml', 'Page Comments'),
 ] %}
 {% block body %}
   {{ body }}
-
-  {% if builder == "web" %}
-  <div id="comments">
-  {% if comments_enabled or comments %}
-    {% include 'comments.html' %}
-  {% endif %}
-  </div>
-  {% endif %}
 {% endblock %}

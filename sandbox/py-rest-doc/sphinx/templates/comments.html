@@ -1,8 +1,11 @@
-{# this template is included by page.html #}
+  <div id="comments">
     <h3>Comments</h3>
     {% for comment in comments %}
       <div class="comment" id="comment-{{ comment.comment_id }}">
-        <h4>{{ comment.title|e }}</h4>
+        <h4>{{ comment.title|e }}
+        {%- if comment.associated_name %} &mdash; for
+        <a href="#{{ comment.associated_name }}">
+        <strong>{{ comment.associated_name }}</strong></a>{% endif %}</h4>
         {{ comment.parsed_comment_body }}
         <p class="meta">by {{ comment.author|e }}, written on
           {{ comment.pub_date|datetimeformat }} |
@@ -10,8 +13,7 @@
       </div>
     {% else %}
       <div class="comment">
-        There are no user contributed notes for this page. Use the
-        form below to attach your comment to this page.
+        There are no user contributed notes for this page.
       </div>
     {% endfor %}
     {% if preview %}
@@ -25,51 +27,50 @@
       </div>
     {% endif %}
 
-    {% if comments_enabled %}
-      <div class="new-comment-box">
-        <h4 id="comments-new-comment">New Comment</h4>
-        <form action="#comments-new-comment" method="post">
-          {% if comments_form.error %}
-            <div class="error">{{ comments_form.error|e }}</div>
-          {% endif %}
-          <p>Note: you can also <a href="{{ pathto('@edit/' + sourcename)|e }}">suggest
-            changes</a> to the official documentation text.</p>
-          <dl>
-            <dt>Name:</dt>
-            <dd><input type="text" size="24" name="author" value="{{ comments_form.author|e(true) }}"></dd>
-            <dt>E-Mail Address:</dt>
-            <dd><input type="text" size="24" name="author_mail" value="{{ comments_form.author_mail|e(true) }}"></dd>
-            <dt>Comment Title:</dt>
-            <dd><input type="text" size="36" name="title" value="{{ comments_form.title|e(true) }}"></dd>
-            <dt>Descname (XXX to be removed):</dt>
-            <dd><input type="text" size="36" name="descname" value=""></dd>
-          </dl>
-          <input type="text" size="12" name="homepage" id="homepage">
-          <textarea name="comment_body" rows="7" cols="50">{{ comments_form.comment_body|e }}</textarea>
-          <div class="help">
-            <p>
-              <strong>You can format a comment using the
-              following syntax elements provided:</strong>
-            </p>
-            <p>
-              `code` / ``code too`` / **strong** /
-              *emphasized* / !!!important!!! /
-              [[link_target Link Title]] /
-              [[link_target_only]] / &lt;code&gt;code block with
-              syntax highlighting&lt;/code&gt; / &lt;quote&gt;some
-              quoted text&lt;/quote&gt;.
-            </p>
-            <p>
-              HTML is not supported, relative link targets are treated as
-              quicklinks and code blocks that start with "&gt;&gt;&gt;" are
-              highlighted as interactive python sessions.
-            </p>
-          </div>
-          <div class="actions">
-            <input type="submit" value="Submit comment">
-            <input type="submit" name="preview" value="Preview">
-            <input type="reset" value="Reset form">
-          </div>
-        </form>
-      </div>
-    {% endif %}
+    <div class="new-comment-box" id="new-comment-box" style="display: none">
+      <h4 id="comments-new-comment">New Comment</h4>
+      <form action="#comments-new-comment" method="post">
+        {% if comments_form.error %}
+        <div class="error">{{ comments_form.error|e }}</div>
+        {% endif %}
+        <p>Note: you can also <a href="{{ pathto('@edit/' + sourcename)|e }}">suggest
+        changes</a> to the official documentation text.</p>
+        <dl>
+          <dt>Name:</dt>
+          <dd><input type="text" size="24" name="author" value="{{ comments_form.author|e(true) }}"></dd>
+          <dt>E-Mail Address:</dt>
+          <dd><input type="text" size="24" name="author_mail" value="{{ comments_form.author_mail|e(true) }}"></dd>
+          <dt>Comment Title:</dt>
+          <dd><input type="text" size="36" name="title" value="{{ comments_form.title|e(true) }}"></dd>
+          <dt>Descname (XXX to be removed):</dt>
+          <dd><input type="text" size="36" name="descname" value=""></dd>
+        </dl>
+        <input type="text" size="12" name="homepage" id="homepage">
+        <textarea name="comment_body" rows="7" cols="50">{{ comments_form.comment_body|e }}</textarea>
+        <div class="help">
+          <p>
+            <strong>You can format a comment using the
+            following syntax elements provided:</strong>
+          </p>
+          <p>
+            `code` / ``code too`` / **strong** /
+            *emphasized* / !!!important!!! /
+            [[link_target Link Title]] /
+            [[link_target_only]] / &lt;code&gt;code block with
+            syntax highlighting&lt;/code&gt; / &lt;quote&gt;some
+            quoted text&lt;/quote&gt;.
+          </p>
+          <p>
+            HTML is not supported, relative link targets are treated as
+            quicklinks and code blocks that start with "&gt;&gt;&gt;" are
+            highlighted as interactive python sessions.
+          </p>
+        </div>
+        <div class="actions">
+          <input type="submit" value="Submit comment">
+          <input type="submit" name="preview" value="Preview">
+          <input type="reset" value="Reset form">
+        </div>
+      </form>
+    </div>
+  </div>
