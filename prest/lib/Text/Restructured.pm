@@ -6,7 +6,7 @@
 package Text::Restructured;
 
 # N.B.: keep version in quotes so trailing 0's are not lost
-$VERSION = '0.003031';
+$VERSION = '0.003032';
 
 # This package does parsing of reStructuredText files
 
@@ -258,7 +258,7 @@ BEGIN {
 		      names=> sub {
 			  my ($parser, $attr, $text) = @_;
 			  my $target = $text=~s/(?:\A| )<(.*)>$// ? $1 : $text;
-			  [$parser->NormalizeName($target)];
+			  [$parser->NormalizeName($target, 'keepcase')];
 		      },
 		      role => sub {
 			  my ($parser, $attr, $text, $role) = @_;
@@ -827,7 +827,7 @@ sub Directive : method {
     my $dname = $directive;
     $directive =~ tr/[A-Z].-/[a-z]__/;
 #print STDERR "[$pre][$directive][$body]\n";
-    my $subst = $parent->{tag} eq 'substitution_definition' ?
+    my $subst = $parent->tag eq 'substitution_definition' ?
 	$parent->{attr}{names}[0] : '';
     
     if ($dtext eq "\n") {
@@ -860,7 +860,7 @@ sub Directive : method {
 	    return 1, \@dom, [$lit] if defined $DIRECTIVES{$directive};
 	}
 	if ( defined $DIRECTIVES{$directive}) {
-	    my $mylit = $parent->{tag} eq 'substitution_definition' ? $dtext :
+	    my $mylit = $parent->tag eq 'substitution_definition' ? $dtext :
 		$lit;
 	    my @dir = eval {
 		&{$DIRECTIVES{$directive}}
@@ -872,7 +872,7 @@ sub Directive : method {
 	    my @doms = grep(ref($_) =~ /$DOM$/o, @dir);
 	    push(@unprocessed,
 		 map(split(/^(\s*\n)+/m, $_),grep(ref($_) !~ /$DOM$/o, @dir)));
-	    if (@doms >= 1 && $doms[0]{tag} eq 'system_message' || @dir == 0)
+	    if (@doms >= 1 && $doms[0]->tag eq 'system_message' || @dir == 0)
 	    {
 		push(@dom, @doms);
 		push(@dom, $self->system_message
@@ -882,7 +882,7 @@ sub Directive : method {
 	    }
 	    else {
 		$parent->append(@doms);
-		if ($parent->{tag} eq 'substitution_definition') {
+		if ($parent->tag eq 'substitution_definition') {
 		    my $err = $self->RegisterName($parent, $source, $lineno);
 		    push (@dom, $err) if $err;
 		}
@@ -1143,7 +1143,7 @@ sub Explicit : method {
 	unshift(@unp, @$unp);
 	$processed = '' if @$unp && $unp->[0] eq $para;
 	$new_parent = $self->{SEC_DOM}[-1]
-	    if $parent->{tag} =~ /^(document|section)$/;
+	    if $parent->tag =~ /^(document|section)$/;
     }
     else {
 	# It's a comment
@@ -1169,7 +1169,7 @@ sub Explicit : method {
     }
     # Annote the dom object with source, lineno, and lit
     foreach (@dom) {
-	if ($_->{tag} ne 'system_message') {
+	if ($_->tag ne 'system_message') {
 	    $_->{source} = $source;
 	    $_->{lineno} = $lineno;
 	    $_->{lit} = $processed;
@@ -1928,7 +1928,7 @@ sub Paragraphs : method {
     
     my $processed;
     my $exp_literal = 0; # Are we expecting a literal block
-    my $doc_sec = $parent->{tag} eq 'section' ? "Section" :
+    my $doc_sec = $parent->tag eq 'section' ? "Section" :
 	"Document or section";
     my $para;
     my $new_literal = 0; # Will we expect a literal block next time
@@ -2065,7 +2065,7 @@ sub Paragraphs : method {
 	    else {
 		# Check for an attribution
 		my $attr = $1
-		    if ($dom->{tag} eq 'block_quote' &&
+		    if ($dom->tag eq 'block_quote' &&
 			$para =~ s/\n(?:---?|\\u2014)(?!-) *(.*(\n( *).*(\n\2\S.*)*)?\Z)/\n/m);
 		$self->Paragraphs($dom, $para, $source, $lineno);
 		if (defined $attr) {
@@ -2120,14 +2120,14 @@ sub Paragraphs : method {
 	}
 	# Check for transitions 
 	elsif ($para =~ /^(($SEC_CHARS)\2\2\2+)$/o) {
-	    if ($parent->{tag} !~ /^(document|section|entry)$/) {
+	    if ($parent->tag !~ /^(document|section|entry)$/) {
 		push(@dom, $self->system_message
 		     (4, $source, $lineno,
 		      "Unexpected section title or transition.", $para));
 	    }
 	    else {
-		my $last_sibling = $parent->num_contents() ?
-		    $parent->{content}[-1] : {};
+		my $last_sibling = $parent->num_contents ?
+		    $parent->last : {};
 		my $transition = $DOM->new('transition');
 		push(@dom, $transition);
 		$transition->{source} = $source;
@@ -2147,8 +2147,8 @@ sub Paragraphs : method {
 	    if ($para ne "") {
 		push(@dom,($p, $self->Inline($p, $para, $source, $lineno)));
 		# Clean up trailing whitespace
-		$p->{content}[-1]{text} =~ s/ +$//
-		    if defined $p->{content}[-1]{text};
+		$p->last->{text} =~ s/ +$//
+		    if defined $p->last->{text};
 	    }
 	}
 	if ($exp_literal && ! $got_literal) {
@@ -2259,7 +2259,7 @@ sub RegisterName : method {
     my $name = lc $casename;
     push(@{$self->{ANONYMOUS_TARGETS}}, $dom) if $dom->{attr}{anonymous};
 
-    my $tag = $dom->{tag};
+    my $tag = $dom->tag;
     if ($tag =~ /^(footnote|substitution|citation)/) {
 	$self->{REFERENCE_DOM}{$tag}{$casename} = 
 	    $self->{REFERENCE_DOM}{"$tag.lc"}{$name} = $dom
@@ -2280,7 +2280,7 @@ sub RegisterName : method {
     foreach $target (@{$self->{TARGET_NAME}{$space}{$name}}) {
 	next if $name eq '' || defined $target->{attr}{names} &&
 	    $target->{attr}{names}[0] ne $casename;
-	my $ttag = $target->{tag};
+	my $ttag = $target->tag;
 	$tags{$ttag}++;
 	if ($tag =~ /substitution/) {
 	    $level = 3;
@@ -2359,7 +2359,7 @@ sub ReregisterName : method {
     }
 
     if ($olddom->{attr}{names}) {
-	my $tag = $olddom->{tag};
+	my $tag = $olddom->tag;
 	my $space = $NAMESPACE{$tag} || 'target';
 	foreach my $casename (@{$olddom->{attr}{names}}) {
 	    my $name = lc $casename;
@@ -2423,7 +2423,7 @@ sub SectionBreaks : method {
     my $err = 1;
 
     # Check for errors
-    if ($parent->{tag} !~ /^(document|section)$/) {
+    if ($parent->tag !~ /^(document|section)$/) {
 	return ('', $text)
 	    if $line eq 'under' && length($under) < $MIN_SEC_LEN;
 	if ($line eq 'over' && length($over) < $MIN_SEC_LEN) {
@@ -2542,7 +2542,7 @@ sub SectionBreaks : method {
 	    my $ttext = '';
 	    $titledom->Recurse(sub {
 		my ($dom) = @_;
-		$ttext .= $dom->{text} if $dom->{tag} eq '#PCDATA';
+		$ttext .= $dom->{text} if $dom->tag eq '#PCDATA';
 	    });
 	    my $id = $self->NormalizeId($ttext, 1);
 	    my $name = $self->NormalizeName($ttext);
@@ -2782,7 +2782,7 @@ sub SimpleTable : method {
 				      "Blank line required after table.");
 	    my $fake = $DOM->new('fake');
 	    $self->Paragraphs($fake, $rest, $source, $lineno);
-	    return ($dom, $err, $fake->contents());
+	    return ($dom, $err, $fake->contents);
 	}
 	else {
 	    return $self->system_message
@@ -3166,7 +3166,7 @@ sub ascii_mathml {
 	 qq(Cannot have both argument and content.), $lit)
 	if $args !~ /^$/ && $content !~ /^$/;
 
-    my $subst = $parent->{tag} eq 'substitution_definition';
+    my $subst = $parent->tag eq 'substitution_definition';
     my $text = "$args$content";
     if (! $parser->{_MathML}) {
 	eval "use Text::ASCIIMathML";
@@ -3273,7 +3273,7 @@ sub contents {
 	(3, $source, $lineno,
 	 qq(The "contents" directive may not be used within topics or body elements.),
 	 $lit)
-	if $parent->{tag} !~ /^(section|document|sidebar)$/;
+	if $parent->tag !~ /^(section|document|sidebar)$/;
 
     my($args, $options) =
 	map($dhash->{$_}, qw(args options));
@@ -3291,7 +3291,7 @@ sub contents {
 	$parser->Paragraphs($fake, $ttext, $source, $lineno);
 	my $last = $fake->last;
 	$title->append($last->contents)
-	    if $fake->num_contents == 1 && $last->{tag} eq 'paragraph';
+	    if $fake->num_contents == 1 && $last->tag eq 'paragraph';
 	$topic->append($title);
     }
     
@@ -3347,12 +3347,12 @@ sub decoration {
 
     my $topdom = $parser->{TOPDOM};
     # See if there's already the right kind of block under <decoration>
-    my $dec = $topdom->{content}[0];
-    if (! defined $dec || $dec->{tag} ne 'decoration') {
+    my $dec = $topdom->first;
+    if (! defined $dec || $dec->tag ne 'decoration') {
 	$dec = $DOM->new('decoration');
 	$topdom->prepend($dec);
     }
-    my ($block) = grep $_->{tag} eq $name, $dec->contents();
+    my ($block) = grep $_->tag eq $name, $dec->contents;
     if (! defined $block) {
 	$block = $DOM->new($name);
 	if ($name eq 'header') {
@@ -3423,7 +3423,7 @@ sub figure {
     my %myopts = (figwidth=>'width', figclass=>'@classes', align=>'align');
     my $image = image($parser, $name, $parent, $source, $lineno, $dline,
 		      $lit, keys %myopts);
-    return $image if $image->{tag} eq 'system_message';
+    return $image if $image->tag eq 'system_message';
 
     my @dom;
     my $figure = $DOM->new(lc $name);
@@ -3460,8 +3460,8 @@ sub figure {
 	my $fake = $DOM->new('fake');
 	$parser->Paragraphs($fake, $caption, $source, $content_lineno);
 	my $last = $fake->last();
-	if ($fake->num_contents() == 1 && $last->{tag} eq 'paragraph') {
-	    $capdom->append($last->contents());
+	if ($fake->num_contents == 1 && $last->tag eq 'paragraph') {
+	    $capdom->append($last->contents);
 	    $figure->append($capdom);
 	}
 	else {
@@ -3508,7 +3508,7 @@ sub image {
  	return $err if $err;
     }
     if (defined (my $align = $options->{align})) {
-	my $in_subst = $parent->{tag} eq 'substitution_definition';
+	my $in_subst = $parent->tag eq 'substitution_definition';
 	my @svals = qw(top middle bottom);
 	my @ovals = qw(left center right);
 	my @vals = $in_subst ? @svals : @ovals;
@@ -3546,7 +3546,7 @@ sub image {
     my %attr;
     my $alt = '';
     $alt = $parent->{attr}{names}[0]
-    if $parent->{tag} eq 'substitution_definition';
+    if $parent->tag eq 'substitution_definition';
     $attr{alt} = $alt if $alt ne '';
     delete $options->{$_} foreach (@extra_opts);
 
@@ -3664,7 +3664,7 @@ sub line_block {
     $content =~ s/^/| /gm;
     my ($proc, @doms) = $parser->LineBlock($content, $source, $content_lineno);
     if ($options->{class}) {
-	my ($lb) = grep($_->{tag} eq 'line_block', @doms);
+	my ($lb) = grep($_->tag eq 'line_block', @doms);
 	# Devel::Cover branch 0 1 Defensive programming
 	$lb->{attr}{classes} = [ $options->{class} ] if $lb;
     }
@@ -3853,22 +3853,22 @@ sub replace {
     return $parser->system_message(3, $source, $lineno,
 				   qq(Invalid context: the "$name" directive can only be used within a substitution definition.),
 				   $lit)
-	unless $parent->{tag} eq 'substitution_definition';
+	unless $parent->tag eq 'substitution_definition';
     $parser->Paragraphs($fake, $text, $source, $lineno);
     my $last = $fake->last();
-    if ($fake->num_contents() == 1 && $last->{tag} =~ 'paragraph') {
-	my $content = $fake->{content}[0];
-	my $contents = $content->{content};
-	if (@$contents && $contents->[-1]{tag} eq '#PCDATA') {
-	    chomp $contents->[-1]{text};
+    if ($fake->num_contents == 1 && $last->tag =~ 'paragraph') {
+	my $content = $fake->first;
+	my $child_last = $fake->first->last;
+	if ($child_last && $child_last->tag eq '#PCDATA') {
+	    chomp $child_last->{text};
 	}
-	return $last->contents();
+	return $last->contents;
     }
     else {
 	# This wasn't a simple paragraph
 	return 
-	    grep($_->{tag} eq 'system_message' && do {
-		delete $_->{attr}{backrefs}; 1}, $fake->contents()),
+	    grep($_->tag eq 'system_message' && do {
+		delete $_->{attr}{backrefs}; 1}, $fake->contents),
 	    $parser->system_message(3, $source, $lineno,
 				    qq(Error in "$name" directive: may contain a single paragraph only.));
     }
@@ -3982,11 +3982,11 @@ sub sidebar {
 	(3, $source, $lineno,
 	 qq(The "$name" directive may not be used within a sidebar element.),
 	 $lit)
-	if $parent->{tag} eq 'sidebar';
+	if $parent->tag eq 'sidebar';
     return $parser->system_message(3, $source, $lineno,
 				   qq(The "$name" directive may not be used within topics or body elements.),
 				   $lit)
-	unless $parent->{tag} =~ /section|document/;
+	unless $parent->tag =~ /section|document/;
 
     my $sb = $DOM->new($name);
     my $title = $DOM->new('title');
@@ -4052,10 +4052,10 @@ sub table {
 	my $titledom = $DOM->new('title');
 	my $fake = $DOM->new('fake');
 	$parser->Paragraphs($fake, $title, $source, $lineno);
-	push @dom, grep($_->{tag} ne 'paragraph', $fake->contents());
-	my @paras = grep($_->{tag} eq 'paragraph', $fake->contents());
-	if (@paras == 1 && $paras[0]{tag} eq 'paragraph') {
- 	    $titledom->append($paras[0]->contents());
+	push @dom, grep($_->tag ne 'paragraph', $fake->contents);
+	my @paras = grep($_->tag eq 'paragraph', $fake->contents);
+	if (@paras == 1 && $paras[0]->tag eq 'paragraph') {
+ 	    $titledom->append($paras[0]->contents);
  	    $table->append($titledom);
  	}
 	else {
@@ -4250,7 +4250,7 @@ sub table {
 	    if $content eq '';
 	my $fake = $DOM->new('fake');
 	$parser->Paragraphs($fake, $content, $source, $content_lineno);
-	$table->append($fake->{content}[0]->contents());
+	$table->append($fake->first->contents);
     }
     return @dom;
 }
@@ -4296,21 +4296,21 @@ sub ParseListTable {
     my $fake = $DOM->new('fake');
     $parser->Paragraphs($fake, $string, $source, $lineno);
     my $cols = 0;
-    my $bl1 = $fake->{content}[0];
+    my $bl1 = $fake->first;
     return "exactly one bullet list expected"
-	if $bl1->{tag} ne 'bullet_list' ||
-	grep($_->{tag} eq 'bullet_list', $fake->contents()) > 1;
-    for (my $row=0; $row < $bl1->num_contents(); $row++) {
-	my $li1 = $bl1->{content}[$row];
-	my $bl2 = $li1->{content}[0];
+	if $bl1->tag ne 'bullet_list' ||
+	grep($_->tag eq 'bullet_list', $fake->contents) > 1;
+    for (my $row=0; $row < $bl1->num_contents; $row++) {
+	my $li1 = $bl1->child($row);
+	my $bl2 = $li1->first;
 	return "two-level bullet list expected, but row @{[$row+1]} does not contain a second-level bullet list"
-	    unless $li1->{tag} eq 'list_item' && $bl2->{tag} eq 'bullet_list';
-	return "uniform two-level bullet list expected, but row @{[$row+1]} does not contain the same number of items as row 1 (@{[$bl2->num_contents()]} vs $cols)"
-	    if $row > 0 && $bl2->num_contents() ne $cols;
- 	for (my $col=0; $col < $bl2->num_contents(); $col++) {
-	    push @{$rows[$row]}, $bl2->{content}[$col]{content};
+	    unless $li1->tag eq 'list_item' && $bl2->tag eq 'bullet_list';
+	return "uniform two-level bullet list expected, but row @{[$row+1]} does not contain the same number of items as row 1 (@{[$bl2->num_contents]} vs $cols)"
+	    if $row > 0 && $bl2->num_contents ne $cols;
+ 	for (my $col=0; $col < $bl2->num_contents; $col++) {
+	    push @{$rows[$row]}, $bl2->child($col)->{content};
  	}
-	$cols = $bl2->contents() if $row eq 0;
+	$cols = $bl2->contents if $row eq 0;
 	
     }
     return \@rows;
@@ -4432,7 +4432,7 @@ sub unicode {
     return $parser->system_message(3, $source, $lineno,
 				   qq(Invalid context: the "$name" directive can only be used within a substitution definition.),
 				   $lit)
-	unless $parent->{tag} eq 'substitution_definition';
+	unless $parent->tag eq 'substitution_definition';
 
     # Remove comments
     $text =~ s/\s*\.\..*//;
