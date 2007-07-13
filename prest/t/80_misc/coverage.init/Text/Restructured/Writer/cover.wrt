@@ -5,6 +5,7 @@ sub BEGIN {
 }
 
 sub nullroutine {
+    my $a = 1;
 }
 
 phase BAD {
@@ -35,6 +36,7 @@ phase POST {
 
 phase PRE {
     sub paragraph {
+        nullroutine();
 	push @EVENTS, "PRE paragraph";
     }
 }

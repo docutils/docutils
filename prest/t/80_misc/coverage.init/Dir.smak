@@ -19,6 +19,7 @@
 	 badwrt4 => q(-w bad4),
 	 dom => q(-D trusted),
 	 html => q(-D generator=0),
+	 image01 => q(-D image-exts=.fig=.png,.abc=.gif),
 	 nowrt => q(-w nosuchwriter),
 	 restructured => q(-D xformoff='Decorations'),
 	 transforms => q(-D xformoff='Decorations'),
@@ -29,3 +30,36 @@
     # Don't define "-W nobackn"
     $PREST_WRT_FLAGS{dom} = '';
 }
+
+# find_oks:
+# 	{
+# 	    @OKS = <*.rst>;
+# 	    map s/\.rst/.ok/, @OKS;
+# 	    push @OKS, 'dom_direct.ok';
+# 	}
+
+# The following is not used, but illustrates a proof of concept
+dom_direct.ok:
+	{
+	    my($maker, $target) = @_;
+	    use vars qw($LIB);
+	    eval 'use lib $LIB; use Text::Restructured::DOM;';
+	    my $d1 = Text::Restructured::DOM->new('literal_block');
+	    my $d2 = Text::Restructured::DOM->new('literal');
+	    my %tests =
+		('$d1->is_body_elt'       => 1,
+		 '$d1->is_inline_elt'     => 0,
+		 '$d1->takes_inline_elts' => 1,
+		 '$d2->is_body_elt'       => 0,
+		 '$d2->is_inline_elt'     => 1,
+		 '$d2->takes_inline_elts' => 0,
+		 );
+	    my @mismatches;
+	    foreach (sort keys %tests) {
+		push @mismatches, "Failed $_" unless eval($_) == $tests{$_};
+		push @mismatches, "$_: $@" if $@;
+	    }
+	    open T, ">$target" or die "Cannot write $target";
+	    print T @mismatches;
+	    close T;
+	}
