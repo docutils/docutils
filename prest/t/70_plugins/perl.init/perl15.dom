@@ -1,0 +1,25 @@
+<document source="test data">
+    <comment xml:space="preserve">
+        Tests perl directive with the :file: option
+    <system_message level="1" line="3" source="test data" type="INFO">
+        <paragraph>
+            No directive entry for "perl" in module "Text::Restructured::Directive".
+            Trying "perl" as canonical directive name.
+    <paragraph>
+        We have a winner!
+    <system_message level="3" line="6" source="test data" type="ERROR">
+        <paragraph>
+            Error in "perl" directive:
+            Cannot have both :file: and content.
+        <literal_block xml:space="preserve">
+            .. perl::
+               :file: perl15.prl
+            \n\
+               Cannot have :file: and content.
+    <system_message level="3" line="11" source="test data" type="ERROR">
+        <paragraph>
+            Error in "perl" directive:
+            Cannot open file "nosuchfile".
+        <literal_block xml:space="preserve">
+            .. perl::
+               :file: nosuchfile
