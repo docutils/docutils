@@ -123,17 +123,17 @@ sub main {
 	if $@;
     return '' unless $val;
     my $newsource = qq($name directive at $source, line $lineno);
-    if ($parent->{tag} eq 'substitution_definition') {
+    if ($parent->tag eq 'substitution_definition') {
 	my @doms;
 	my $fake = new Text::Restructured::DOM('fake');
 	$parser->Paragraphs($fake, $content, $newsource, 1);
 	my $last = $fake->last();
-	if (@{$fake->{content}} == 1 && $last->{tag} eq 'paragraph') {
-	    chomp $last->{content}[-1]{text} if $last->{content}[-1]{text};
-	    return @{$last->{content}};
+	if ($fake->contents == 1 && $last->tag eq 'paragraph') {
+	    chomp $last->last->{text} if $last->last->{text};
+	    return $last->contents;
 	}
-	push(@doms, grep($_->{tag} eq 'system_message' && do {
-	    delete $_->{attr}{backrefs}; 1}, @{$fake->{content}}));
+	push @doms, map(do {delete $_->{attr}{backrefs}; $_},
+			grep($_->tag eq 'system_message', $fake->contents));
 	push @doms, $parser->system_message(3, $source, $lineno,
 					    qq(Error in "$name" directive within substitution definition: may contain a single paragraph only.));
 	return @doms;

@@ -139,7 +139,7 @@ EOS
 	$lb->append($DOM->newPCDATA($text));
 	return $lb;
     }
-    elsif ($parent->{tag} eq 'substitution_definition') {
+    elsif ($parent->tag eq 'substitution_definition') {
 	chomp $text;
 	return $DOM->newPCDATA($text);
     }

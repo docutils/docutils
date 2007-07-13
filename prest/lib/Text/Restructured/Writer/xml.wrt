@@ -60,7 +60,7 @@ phase PROCESS {
 			 quote_attr(@{$dom->{attr}{$_}}) :
 			 quote_attr($dom->{attr}{$_})),
 			sort keys %{$dom->{attr}})) : '';
-	my $tag = $dom->{tag};
+	my $tag = $dom->tag;
 	return $str eq '' ? "<$tag$attr/>\n" : "<$tag$attr>\n$str</$tag>\n";
     }
 }
