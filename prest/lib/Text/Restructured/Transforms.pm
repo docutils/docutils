@@ -84,7 +84,7 @@ sub Filter{
     if ("'$parser->{opt}{w}'" eq $details->{format} ||
 	$parser->{opt}{w} eq 'dom') {
 	my $nodes = $details->{nodes};
-	return $DOM->new($nodes->{tag}, %{$nodes->{attr}});
+	return $DOM->new($nodes->tag, %{$nodes->{attr}});
     }
     return;
 }
@@ -108,21 +108,21 @@ sub process_docinfo {
     my ($dom, $parser) = @_;
 
      # Create a docinfo if needed
-    my @field_lists = grep($_->{tag} eq 'field_list', $dom->contents());
+    my @field_lists = grep($_->tag eq 'field_list', $dom->contents);
     my %element_seen;
     if (@field_lists) {
 	my $fl = $field_lists[0];
-	my @content = $fl->contents();
+	my @content = $fl->contents;
 	# Modify the field list in situ
-	$fl->{tag} = 'docinfo';
+	$fl->tag('docinfo');
 	$fl->replace();
 	my $docinfo = $fl;
 	my $field;
 	my @postdocinfo; # Things to be added to content list after docinfo
 	foreach $field (@content) {
-	    my $fn = $field->{content}[0];
-	    my $fb = $field->{content}[1];
-	    my $name = $fn->{content}[0]{text};
+	    my $fn = $field->first;
+	    my $fb = $field->child(1);
+	    my $name = $fn->first->{text};
 	    my $origname = $name;
 	    $name =~ tr/A-Z/a-z/;
 	    my $tname = $name;
@@ -141,10 +141,10 @@ sub process_docinfo {
 		    my $title = $DOM->new('title');
 		    $topic->append($title);
 		    $title->append($DOM->newPCDATA($tname));
-		    $topic->append($fb->contents());
+		    $topic->append($fb->contents);
 		    push(@postdocinfo, $topic);
 		}
-		elsif ($fb->num_contents() < 1) {
+		elsif ($fb->num_contents < 1) {
 		    $fb->append
 			($parser->system_message(2, $field->{source},
 					     $field->{lineno},
@@ -153,19 +153,19 @@ sub process_docinfo {
 		}
 		elsif ($name eq 'authors') {
 		    my $bib = $DOM->new($name);
-		    my @contents = $fb->{content}[0]->contents();
+		    my @contents = $fb->first->contents;
 		    # There are three cases: bullet_lists,
 		    # multiple paragraphs, and string.
-		    if (($fb->num_contents() == 1 &&
-			 ($fb->{content}[0]{tag} !~
+		    if (($fb->num_contents == 1 &&
+			 ($fb->first->tag !~
 			  /paragraph|bullet_list/ ||
-			  $fb->{content}[0]{tag} eq 'bullet_list' &&
-			  grep($_->num_contents() != 1 ||
-			       $_->{content}[0]{tag} ne 'paragraph',
-			       $fb->{content}[0]->contents()))
+			  $fb->first->tag eq 'bullet_list' &&
+			  grep($_->num_contents != 1 ||
+			       $_->first->tag ne 'paragraph',
+			       $fb->first->contents))
 			 ) ||
-			($fb->num_contents() > 1 &&
-			 grep($_->{tag} ne 'paragraph', $fb->contents()))
+			($fb->num_contents > 1 &&
+			 grep($_->tag ne 'paragraph', $fb->contents))
 			) {
 			$fb->append
 			    ($parser->system_message(2, $field->{source},
@@ -173,20 +173,20 @@ sub process_docinfo {
 						 qq(Bibliographic field "Authors" incompatible with extraction: it must contain either a single paragraph (with authors separated by one of ";,"), multiple paragraphs (one per author), or a bullet list with one paragraph (one author) per item.)));
 			$docinfo->append($field);
 		    }
-		    elsif ($fb->num_contents() > 1) {
+		    elsif ($fb->num_contents > 1) {
 			# Multiple paragraphs
-			foreach ($fb->contents()) {
+			foreach ($fb->contents) {
 			    my $author = $DOM->new('author');
 			    $bib->append($author);
-			    $author->append($_->contents());
+			    $author->append($_->contents);
 			}
 		    }
-		    elsif ($fb->{content}[0]{tag} eq 'bullet_list') {
-			my $bl = $fb->{content}[0];
-			foreach ($bl->contents()) {
+		    elsif ($fb->first->tag eq 'bullet_list') {
+			my $bl = $fb->first;
+			foreach ($bl->contents) {
 			    my $author = $DOM->new('author');
 			    $bib->append($author);
-			    $author->append($_->{content}[0]->contents());
+			    $author->append($_->first->contents);
 			}
 		    }
 		    else {
@@ -194,7 +194,7 @@ sub process_docinfo {
 			$fb->Recurse(sub {
 			    my ($dom) = @_;
 			    $text .= $dom->{text}
-			    if $dom->{tag} eq '#PCDATA';
+			    if $dom->tag eq '#PCDATA';
 			});
 			my @authors = $text =~ /;/ ?
 			    split(/\s*;\s*/, $text) :
@@ -205,21 +205,21 @@ sub process_docinfo {
 			    $author->append($DOM->newPCDATA($_));
 			}
 		    }
-		    if ($bib->num_contents() == 1) {
-			$docinfo->append($bib->{content}[0]);
+		    if ($bib->num_contents == 1) {
+			$docinfo->append($bib->first);
 		    }
-		    elsif ($bib->num_contents() > 1) {
+		    elsif ($bib->num_contents > 1) {
 			$docinfo->append($bib);
 		    }
 		}
-		elsif ($fb->num_contents() > 1) {
+		elsif ($fb->num_contents > 1) {
 		    $fb->append
 			($parser->system_message(2, $field->{source},
 					     $field->{lineno},
 					     qq(Cannot extract compound bibliographic field "$origname".)));
 		    $docinfo->append($field);
 		}
-		elsif ($fb->{content}[0]{tag} ne 'paragraph') {
+		elsif ($fb->first->tag ne 'paragraph') {
 		    $fb->append
 			($parser->system_message(2, $field->{source},
 					     $field->{lineno},
@@ -231,7 +231,7 @@ sub process_docinfo {
 		    %{$bib->{attr}} = (%Text::Restructured::XML_SPACE)
 			if $name =~ /^address$/i;
 		    $docinfo->append($bib);
-		    my @contents = $fb->{content}[0]->contents();
+		    my @contents = $fb->first->contents;
 		    my $pcdata = $contents[0];
 		    $pcdata->{text} =~ s/\$\w+:\s*(.+?)(?:,v)?\s\$/$1/g
 			if defined $pcdata->{text};
@@ -248,12 +248,12 @@ sub process_docinfo {
 	my $i;
 	my $docinfo_seen = 0;
 	my @new_content;  
-	for ($i=0; $i < $dom->num_contents(); $i++) {
-	    my $c = $dom->{content}[$i];
-	    if ($docinfo_seen || $c->{tag} =~ /^((sub)?title|decoration)$/) {
+	for ($i=0; $i < $dom->num_contents; $i++) {
+	    my $c = $dom->child($i);
+	    if ($docinfo_seen || $c->tag =~ /^((sub)?title|decoration)$/) {
 		push @new_content, $c;
 	    }
-	    elsif ($c->{tag} eq 'docinfo') {
+	    elsif ($c->tag eq 'docinfo') {
 		$docinfo_seen = 1;
 		push @new_content, $c, @postdocinfo;
 	    }
@@ -277,7 +277,7 @@ sub DocInfo {
     $level = $level || 0;
     process_docinfo($dom, $parser);
     if ($level < ($parser->{opt}{D}{docinfo_levels} || 0)) {
-	my @sections = grep($_->{tag} eq 'section', $dom->contents());
+	my @sections = grep($_->tag eq 'section', $dom->contents);
 	foreach my $section (@sections) {
 	    process_docinfo($section, $parser);
 	}
@@ -308,7 +308,7 @@ sub SectionSubTitle {
     $topdom->Reshape
 	(sub {
 	     my($dom) = @_;
-	     if ($dom->{tag} eq 'section') {
+	     if ($dom->tag eq 'section') {
 		 create_title($dom, $parser, 1);
 	     }
 	     return $dom;
@@ -324,23 +324,23 @@ sub SectionSubTitle {
 sub create_title {
     my ($dom, $parser) = @_;
     # If the document has one section, coalesce it with the DOM
-    my @sections = grep($_->{tag} eq 'section', $dom->contents());
+    my @sections = grep($_->tag eq 'section', $dom->contents);
     
     if (@sections == 1 && ($parser->{opt}{D}{keep_title_section} ||
-			   !grep($_->{tag} !~
+			   !grep($_->tag !~
 				 /^(section|comment|system_message|target|substitution_definition|title|decoration)$/,
-				 $dom->contents()))) {
+				 $dom->contents))) {
 	my $sec = $sections[0];
 	push @{$sec->{attr}{classes}}, 'title'
 	    if $parser->{opt}{D}{keep_title_section};
-	my @non_sections = grep($_->{tag} !~ /^(?:section|title)$/,
-				$dom->contents());
-	my ($prev_title) = grep $_->{tag} eq 'title', $dom->contents();
+	my @non_sections = grep($_->tag !~ /^(?:section|title)$/,
+				$dom->contents);
+	my ($prev_title) = grep $_->tag eq 'title', $dom->contents;
 	# Get the title text
 	my $ttext = '';
-	$sec->{content}[0]->Recurse(sub {
+	$sec->first->Recurse(sub {
 	    my ($dom) = @_;
-	    $ttext .= $dom->{text} if $dom->{tag} eq '#PCDATA';
+	    $ttext .= $dom->{text} if $dom->tag eq '#PCDATA';
 	});
 	chomp $ttext;
 	my $dom_ids = $dom->{attr}{ids};
@@ -352,37 +352,37 @@ sub create_title {
 	if ($parser->{opt}{D}{keep_title_section} && ! defined $prev_title) {
 	    # Don't duplicate ids from the section if we keep the section
 	    delete $dom->{attr}{ids};
-	    my $title = $sec->{content}[0];
+	    my $title = $sec->first;
 	    $dom->prepend($title);
 	}
 	else {
-	    $dom->{content} = $sec->{content};
+	    $dom->replace($sec->contents);
 	    $dom->splice(1, 0, @non_sections);
 
 	    if (defined $prev_title) {
-		my $subtitle = $dom->{content}[0];
-		$subtitle->{tag} = 'subtitle';
+		my $subtitle = $dom->first;
+		$subtitle->tag('subtitle');
 		$subtitle->{attr}{ids} = [ $parser->NormalizeId($ttext) ];
 		$subtitle->{attr}{names} = [ $parser->NormalizeName($ttext) ];
 		$dom->prepend($prev_title);
 	    }
 	    else {
 		# Check for a subtitle
-		my @sections = grep($_->{tag} eq 'section', $dom->contents());
+		my @sections = grep($_->tag eq 'section', $dom->contents);
 		if (@sections == 1 &&
-		    !grep($_->{tag} !~
+		    !grep($_->tag !~
 			  /^(section|comment|system_message|target|substitution_definition|title|decoration)$/,
-				 $dom->contents())) {
+				 $dom->contents)) {
 		    my $sec = $sections[0];
 		    my $title = $sec->splice(0, 1);
-		    my @non_sections = grep($_->{tag} !~ /^(section|title)$/,
-					    $dom->contents());
+		    my @non_sections = grep($_->tag !~ /^(section|title)$/,
+					    $dom->contents);
 		    $sec->prepend(@non_sections);
-		    $title->{tag} = 'subtitle';
+		    $title->tag('subtitle');
 		    $title->{attr} = $sec->{attr};
-		    $dom->replace(grep($_->{tag} eq 'title',
-				       $dom->contents()));
-		    $dom->append($title, $sec->contents());
+		    $dom->replace(grep($_->tag eq 'title',
+				       $dom->contents));
+		    $dom->append($title, $sec->contents);
 		}
 	    }
 	}
@@ -405,7 +405,7 @@ sub Pending {
     $topdom->Recurse
 	(sub {
 	     my($dom) = @_;
-	     push @pendings, $dom if $dom->{tag} eq 'pending';
+	     push @pendings, $dom if $dom->tag eq 'pending';
 	 });
     # Sort them by priority
     @pendings = sort {
@@ -453,7 +453,7 @@ sub Class {
     my ($dom, $parser, $details) = @_;
 
     my $next = $dom->next('comment|substitution_definition|target|system_message|pending');
-    my $tag = $next->{tag} if defined $next;
+    my $tag = $next->tag if defined $next;
     if (defined $tag && $tag =~ /^(?:paragraph|.*_list|section|.*_block|block_quote|table|figure|raw)$/) {
 	# It's a classable tag
 	push @{$next->{attr}{classes}}, split(/\s+/, $details->{class});
@@ -486,7 +486,7 @@ sub Contents {
 	(sub {
 	     my($dom, $when) = @_;
 
-	     if ($dom->{tag} eq 'section' && $dom ne $start) {
+	     if ($dom->tag eq 'section' && $dom ne $start) {
 		 $depth-- if $when eq 'post';
 		 if (! defined $details->{depth} ||
 		     $depth < $details->{depth}) {
@@ -497,8 +497,8 @@ sub Contents {
 			 $li = $DOM->new('list_item'); #, ids=>$id);
 			 $bl->append($li);
 			 if ($backlinks !~ /none/i &&
-			     $dom->{content}[0]{content}[0]{tag} ne 'reference') {
-			     $dom->{content}[0]{attr}{refid} =
+			     $dom->first->first->tag ne 'reference') {
+			     $dom->first->{attr}{refid} =
 				 ($backlinks =~ /top/i) ? $contid : $id;
 			 }
 			 my $para = $DOM->new('paragraph');
@@ -507,10 +507,10 @@ sub Contents {
 					   refid=>$dom->{attr}{ids}[0]);
 			 $para->append($ref);
 			 my @contents;  # Used in the closure of the sub
-			 $dom->{content}[0]->Recurse
+			 $dom->first->Recurse
 			     (sub {
 				  my ($dom, $when) = @_;
-				  my $tag = $dom->{tag};
+				  my $tag = $dom->tag;
 				  if ($tag =~ /^(?:title|(footnote|citation)_reference|interpreted|problematic|reference|target)$/) {
 				      # Ignore
 				  }
@@ -530,12 +530,12 @@ sub Contents {
 			      , 'both');
 			 $ref->append(@contents);
 			 $bl->{attr}{classes} = ['auto-toc']
-			     if ($dom->{content}[0]{content}[0]{tag}
+			     if ($dom->first->first->tag
 				 eq 'generated');
 		     }
 
 		     # Check to see if I have any nested sections
-		     if (grep($_->{tag} eq 'section',$dom->contents())
+		     if (grep($_->tag eq 'section', $dom->contents)
 			 && (! defined $details->{depth} ||
 			     $depth < $details->{depth}-1)) {
 			 if ($when eq 'pre') {
@@ -556,7 +556,7 @@ sub Contents {
 	 , 'both') ;
 
     # Need to remove all traces of ourselves if the bullet list is empty
-    if ($bl->num_contents() == 0) {
+    if ($bl->num_contents == 0) {
 	$start->splice(0, 1);
 	return;
     }
@@ -570,7 +570,7 @@ sub Sectnum {
     my ($dom, $parser, $details) = @_;
 
     my $startdom = $dom;
-    while ($startdom->{tag} ne 'section' && $startdom->{tag} ne 'document') {
+    while ($startdom->tag ne 'section' && $startdom->tag ne 'document') {
 	$startdom = $startdom->parent;
     }
     # First process the table of contents topic if it exists
@@ -584,7 +584,7 @@ sub Sectnum {
 	    $startdom->{attr}{title} if defined $startdom->{attr}{title};
 	my $gen = $DOM->new('generated', classes=>['sectnum']);
 	$gen->append($DOM->newPCDATA($prefix . ("\xa0"x3)));
-	$startdom->{content}[0]->prepend($gen);
+	$startdom->first->prepend($gen);
     }
 
     # Next process the sections recursively
@@ -593,11 +593,11 @@ sub Sectnum {
 	(sub {
 	     my($dom, $when) = @_;
 	     return 0 if $dom eq $startdom;
-	     if ($dom->{tag} eq 'section') {
+	     if ($dom->tag eq 'section') {
 		 if ($when eq 'pre') {
 		     if (! defined $details->{depth} ||
 			 @list <= $details->{depth}) {
-			 my $title = $dom->{content}[0];
+			 my $title = $dom->first;
 			 $title->{attr}{auto} = 1;
 			 $list[-1]++;
 			 my $gen = $DOM->new('generated', classes=>['sectnum']);
@@ -645,7 +645,7 @@ sub AutoFootnotes {
     $dom->Recurse
 	(sub {
 	     my($dom) = @_;
-	     my $tag = $dom->{tag};
+	     my $tag = $dom->tag;
 	     if ($tag eq 'footnote') {
 		 if ($dom->{attr}{auto}) {
 		     my $label = $DOM->new('label');
@@ -700,14 +700,14 @@ sub IndTargets {
 	     my($dom) = @_;
 
 	     my $parent = $dom->parent();
-	     my $tag = $dom->{tag};
+	     my $tag = $dom->tag;
 	     if ($tag eq 'target' && ! $dom->{forward}) {
 		 my (%seen, %ind);
 		 my $ignores = 'comment|substitution_definition|system_message|pending|image';
 		 my $next = $dom;
 		 my @chain;
-		 while ($next->{tag} eq 'target' &&
-			$next->parent()->{tag} ne 'paragraph' &&
+		 while ($next->tag eq 'target' &&
+			$next->parent()->tag ne 'paragraph' &&
 			(defined $next->{attr}{refname} ||
 			 ! grep(/ref(uri|id)/, keys %{$next->{attr}}))) {
 		     # This is either an indirect target or a bare target
@@ -756,7 +756,7 @@ sub IndTargets {
 			 $seen{$next} = $next;
 			 $next = $next->next($ignores);
 			 return $dom unless $next;
-			 while ($next->{tag} eq 'target' &&
+			 while ($next->tag eq 'target' &&
 				! grep(/ref(name|uri|id)/, keys %{$next->{attr}}))
 			 {
 			     $seen{$next} = $next;
@@ -768,7 +768,7 @@ sub IndTargets {
 			     $next = $next->next($ignores);
 			     return $dom unless $next;
 			 }
-			 if ($next->{tag} =~ /^(section|paragraph|target|reference)$/) {
+			 if ($next->tag =~ /^(section|paragraph|target|reference)$/) {
 			     push @{$next->{attr}{ids}}, @ids;
 			     push @{$next->{attr}{names}}, @names
 				 if @names;
@@ -824,7 +824,7 @@ sub IndTargets {
 		     }
 		 }
 
-		 if ($next->{tag} eq 'target' &&
+		 if ($next->tag eq 'target' &&
 		     defined $next->{attr}{refuri}) {
 		     foreach my $prev (keys %seen) {
 			 my $prevdom = $seen{$prev};
@@ -841,8 +841,8 @@ sub IndTargets {
 		     }
 		     return $dom;
 		 }
-		 return $dom if $next->{tag} =~ /^(footnote|citation)$/;
-		 if ($next->{tag} =~ /^(section|paragraph|target|topic)$/
+		 return $dom if $next->tag =~ /^(footnote|citation)$/;
+		 if ($next->tag =~ /^(section|paragraph|target|topic)$/
 		     || defined $next->{attr}{refid}) {
 		     my $dest = defined $next->{attr}{refid} ?
 			 $next->{forward} : $next;
@@ -884,7 +884,7 @@ sub CitationReferences {
     $cr = sub {
 	my($dom) = @_;
 
-	my $tag = $dom->{tag};
+	my $tag = $dom->tag;
 	if ($tag =~ /^(?:(citation|substitution)_reference)$/) { 
 	    my $what = $1 eq 'citation' ? $1 :
 		'substitution_definition';
@@ -910,19 +910,19 @@ sub CitationReferences {
 		if ($target->{attr}{ltrim} || $target->{attr}{rtrim}) {
 		    my $parent = $dom->parent();
 		    my $idx = $parent->index($dom);
-		    $parent->{content}[$idx-1]{text} =~ s/ *$//
+		    $parent->child($idx-1)->{text} =~ s/ *$//
 			if $target->{attr}{ltrim} && $idx > 0 &&
-			$parent->{content}[$idx-1]{tag} eq '#PCDATA';
-		    $parent->{content}[$idx+1]{text} =~ s/^ *//
+			$parent->child($idx-1)->tag eq '#PCDATA';
+		    $parent->child($idx+1)->{text} =~ s/^ *//
 			if $target->{attr}{rtrim} &&
-			$idx < $parent->num_contents() &&
-			$parent->{content}[$idx+1]{tag} eq '#PCDATA';
+			$idx < $parent->num_contents &&
+			$parent->child($idx+1)->tag eq '#PCDATA';
 		}
-		my @content= $target->contents();
+		my @content= $target->contents;
 		my $i;
 		for ($i=0; $i<@content; $i++) {
 		    splice(@content, $i, 1, &$cr($content[$i]))
-			   if $content[$i]{tag} eq 'substitution_reference';
+			   if $content[$i]->tag eq 'substitution_reference';
 		}
 		return @content;
 	    }
@@ -948,7 +948,7 @@ sub FootnoteReferences {
     $dom->Reshape
 	(sub {
 	     my($dom) = @_;
-	     my $tag = $dom->{tag};
+	     my $tag = $dom->tag;
 	     if ($tag eq 'footnote_reference' && !$dom->{resolved}) {
 		 my $name =
 		     $dom->{attr}{names} && defined $dom->{attr}{names}[0] ||
@@ -976,7 +976,7 @@ sub FootnoteReferences {
 		     return $prob;
 		 }
 		 if ($dom->{attr}{auto}) {
-		     my $name = $footnote->{content}[0]{content}[0]{text};
+		     my $name = $footnote->first->first->{text};
 		     $dom->append($DOM->newPCDATA($name));
 		 }
 		 delete $dom->{attr}{refname};
@@ -1000,7 +1000,7 @@ sub MarkReferenced {
     $dom->Recurse
 	(sub {
 	     my($dom) = @_;
-	     my $tag = $dom->{tag};
+	     my $tag = $dom->tag;
 	     if (defined $dom->{attr}{refname}) {
 		 my $target;
 		 my $name = $dom->{attr}{refname};
@@ -1030,7 +1030,7 @@ sub References {
 	(sub {
 	     my($dom) = @_;
 	     $anonymous_refs++
-		 if ($dom->{tag} eq 'reference' && $dom->{attr}{anonymous});
+		 if ($dom->tag eq 'reference' && $dom->{attr}{anonymous});
 	     return 0;
 	 }
 	 , 'pre');
@@ -1042,7 +1042,7 @@ sub References {
     $dom->Reshape
 	(sub {
 	     my($dom) = @_;
-	     my $tag = $dom->{tag};
+	     my $tag = $dom->tag;
 	     if ($tag eq 'reference' && ! defined $dom->{attr}{refuri} &&
 		 ! defined $dom->{attr}{refid}) {
 		 my $target;
@@ -1098,7 +1098,7 @@ sub References {
 		     }
 		     my $dest = $target->{forward} || $target;
 		     # Devel::Cover branch 3 1 Defensive programming
-		     if ($dest->{tag} eq 'target' &&
+		     if ($dest->tag eq 'target' &&
 			 defined $dest->{attr}{refuri}) {
 			 $target->{type} = "External"
 			     unless defined $target->{type};
@@ -1159,7 +1159,7 @@ sub Unreferenced {
     $dom->Reshape
 	(sub {
 	     my($dom) = @_;
-	     my $tag = $dom->{tag};
+	     my $tag = $dom->tag;
 	     if ($tag eq 'target' && ! $dom->{referenced} &&
 		 ! $dom->{attr}{anonymous} && ! $dom->{attr}{dupnames}) {
 		 my $name =
@@ -1192,7 +1192,7 @@ sub TargetNotes {
     $topdom->Recurse
 	(sub {
 	     my($dom) = @_;
-	     my $tag = $dom->{tag};
+	     my $tag = $dom->tag;
 	     push (@targets, $dom)
 		 if $tag eq 'target' && defined $dom->{attr}{refuri};
 	     return 0;
@@ -1222,7 +1222,7 @@ sub TargetNotes {
     $topdom->Reshape
 	(sub {
 	     my($dom) = @_;
-	     my $tag = $dom->{tag};
+	     my $tag = $dom->tag;
 	     if ($tag eq 'reference' &&
 		 defined $dom->{attr}{refname} &&
 		 defined $footnotes{$dom->{attr}{refname}}) {
@@ -1254,9 +1254,9 @@ BEGIN {
 sub Decorations {
     my ($topdom, $parser) = @_;
 
-    my ($dec) = grep $_->{tag} eq 'decoration', $topdom->contents();
-    return if defined $dec && ($dec->{content}[0]{tag} eq 'footer' ||
-			       $dec->num_contents() > 1);
+    my ($dec) = grep $_->tag eq 'decoration', $topdom->contents;
+    return if defined $dec && ($dec->first->tag eq 'footer' ||
+			       $dec->num_contents > 1);
     my $para = $DOM->new('paragraph');
     my $source_link =
 	defined $parser->{opt}{D}{source_link} ?
@@ -1300,7 +1300,7 @@ sub Decorations {
 		      $DOM->newPCDATA(" source.\n"));
     }
 
-    if ($para->num_contents()) {
+    if ($para->num_contents) {
 	my $dec = $DOM->new('decoration');
 	my $footer = $DOM->new('footer');
 	$dec->append($footer);
@@ -1308,8 +1308,8 @@ sub Decorations {
 	# Decoration needs to be appended before the document model
 	# starts, i.e., after the latest of title or subtitle.
 	my $i;
-	for ($i=0; $i<$topdom->num_contents(); $i++) {
-	    if ($topdom->{content}[$i]{tag} !~ /title|docinfo/) {
+	for ($i=0; $i<$topdom->num_contents; $i++) {
+	    if ($topdom->child($i)->tag !~ /title|docinfo/) {
 		$topdom->splice($i, 0, $dec);
 		last;
 	    }
@@ -1326,9 +1326,9 @@ sub EmptyTopics {
     $dom->Reshape
 	(sub {
 	     my($dom) = @_;
-	     return if $dom->{tag} eq 'topic' &&
-		 ($dom->num_contents() == 0 ||
-		  $dom->{content}[-1]{tag} eq 'title');
+	     return if $dom->tag eq 'topic' &&
+		 ($dom->num_contents == 0 ||
+		  $dom->child(-1)->tag eq 'title');
 	     return $dom;
 	 });
 }
@@ -1345,9 +1345,9 @@ sub Messages {
 	(sub {
 	     my($dom) = @_;
 	     push (@SYSTEM_MESSAGES, $dom)
-		 if ($dom->{tag} eq 'system_message' &&
+		 if ($dom->tag eq 'system_message' &&
 		     $dom->{attr}{level} >= $parser->{opt}{D}{report});
-	     return $dom->{tag} ne 'system_message' ? ($dom) : ();
+	     return $dom->tag ne 'system_message' ? ($dom) : ();
 	 }
 	 );
 
@@ -1373,7 +1373,7 @@ sub ScoopMessages {
     $dom->Reshape
 	(sub {
 	     my($dom) = @_;
-	     if ($dom->{tag} eq 'system_message') {
+	     if ($dom->tag eq 'system_message') {
 		 if (defined $dom->{attr}{ids}) {
 		     push(@SYSTEM_MESSAGES, $dom);
 		     return;
@@ -1396,7 +1396,7 @@ sub Transitions {
     $dom->Reshape
 	(sub {
 	     my($dom) = @_;
-	     if ($dom->{tag} eq 'transition') {
+	     if ($dom->tag eq 'transition') {
 		 my $domparent = $dom->parent();
 		 my $idx = $domparent->index($dom);
 		 my @doms;
@@ -1404,7 +1404,7 @@ sub Transitions {
 		     (3, $dom->{source}, $dom->{lineno},
 		      "Document or section may not begin with a transition.")
 		     if $idx == 0 ||
-		     $idx == 1 && $domparent->{content}[0]{tag} eq 'title';
+		     $idx == 1 && $domparent->first->tag eq 'title';
 		 my $next = $dom->next();
 		 if ($next && ($next->parent() || 'NONE') != $domparent) {
 		     $next->{transition} = $dom;
@@ -1416,7 +1416,7 @@ sub Transitions {
 			 (3, $dom->{source}, $dom->{lineno},
 			  "Document may not end with a transition.");
 		 }
-		 elsif ($next->{tag} eq 'transition') {
+		 elsif ($next->tag eq 'transition') {
 		     push @doms, $parser->system_message
 			 (3, $next->{source}, $next->{lineno},
 			  "At least one body element must separate transitions; adjacent transitions are not allowed.");

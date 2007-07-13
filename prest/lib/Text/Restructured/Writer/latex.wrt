@@ -144,37 +144,37 @@ phase MARK = {
 	    (
 	     sub {
 		 my ($dom, $when, $info) = @_;
-		 if ($dom->{tag} eq 'section') {
+		 if ($dom->tag eq 'section') {
 		     if ($when eq 'pre') {
 			 $dom->{nest} = $info->{nest};
 			 $info->{nest}++;
 		     }
 		     else { $info->{nest}--; }
 		 }
-		 elsif ($dom->{tag} eq 'enumerated_list') {
+		 elsif ($dom->tag eq 'enumerated_list') {
 		     if ($when eq 'pre') {
 			 $info->{enum}++;
 			 $dom->{nest} = $info->{enum};
 		     }
 		     else { $info->{enum}--; }
 		 }
-		 elsif ($dom->{tag} eq 'bullet_list') {
+		 elsif ($dom->tag eq 'bullet_list') {
 		     if ($when eq 'pre') {
 			 $info->{bullet}++;
 			 $dom->{nest} = $info->{bullet};
 		     }
 		     else { $info->{bullet}--; }
 		 }
-		 elsif ($dom->{tag} eq 'footnote') {
+		 elsif ($dom->tag eq 'footnote') {
 		     $info->{foot} += $when eq 'pre' ? 1 : -1;
 		 }
-		 elsif ($dom->{tag} eq 'footnote_reference') {
+		 elsif ($dom->tag eq 'footnote_reference') {
 		     $dom->{infootnote} = $info->{foot};
 		 }
-		 elsif ($dom->{tag} =~ /literal|doctest/) {
+		 elsif ($dom->tag =~ /literal|doctest/) {
 		     $info->{lit} += $when eq 'pre' ? 1 : -1;
 		 }
-		 elsif ($dom->{tag} eq '#PCDATA') {
+		 elsif ($dom->tag eq '#PCDATA') {
 		     $dom->{inliteral} = $info->{lit};
 		 }
 		 return 0;
@@ -191,7 +191,7 @@ phase PREPROCESS = {
 	my $parent = $dom->parent();
 	$_ = $dom->{text};
 	if (! $dom->{inliteral} &&
-	    $parent->{tag} !~ /raw|option_string/) {
+	    $parent->tag !~ /raw|option_string/) {
 	    # Do some substitutions
 	    # Do this one first...
 	    s/([\\{}])/$1 eq "\\" ? "{\\tt\\symbol{92}}" : "\\$1"/ge;
@@ -218,8 +218,8 @@ phase PREPROCESS = {
 # 	my ($dom, $str) = @_;
 
 # 	# Remove title from contents
-# 	if ($dom->{content}[0]{tag} eq 'title') {
-# 	    my $titledom = shift @{$dom->{content}};
+# 	if ($dom->first->tag eq 'title') {
+# 	    my $titledom = shift $dom->contents;
 # 	    $dom->{title} = $titledom->{val};
 # 	    chomp $dom->{title};
 # 	}
@@ -234,13 +234,13 @@ phase PREPROCESS = {
 	my ($dom, $str) = @_;
 	my $d;
 	while ($d = shift @{$dom->{content}}) {
-	    if ($d->{tag} eq 'image') {
+	    if ($d->tag eq 'image') {
 		$dom->{image} = $d->{image};
 	    }
-	    elsif ($d->{tag} eq 'caption') {
+	    elsif ($d->tag eq 'caption') {
 		$dom->{caption} = $d;
 	    }
-	    elsif ($d->{tag} eq 'legend') {
+	    elsif ($d->tag eq 'legend') {
 		$dom->{legend} = $d;
 	    }
 	}
@@ -282,7 +282,7 @@ phase PREPROCESS = {
 	my ($dom, $str) = @_;
 	my @newcontents;
 	foreach (@{$dom->{content}}) {
-	    if ($_->{tag} eq 'colspec') {
+	    if ($_->tag eq 'colspec') {
 		my $colwidth = $_->{attr}{colwidth};
 		$dom->{totwidth} += $colwidth;
 		push @{$dom->{colwidths}}, $colwidth;
@@ -319,15 +319,15 @@ phase PREPROCESS = {
 	my $footnote = $dom->{resolved};
 	if (defined $footnote && ! $footnote->{'.latexref'}) {
 	    my @content = @{$footnote->{content}};
-	    shift @content if $content[0]{tag} eq 'label';
+	    shift @content if $content[0]->tag eq 'label';
 	    @{$dom->{content}} = @content;
 	    $footnote->{'.latexref'} = 1;
 	}
 	# May need to trim trailing spaces from predecessor
 	my $parent = $dom->parent();
 	my $indx = $parent->index($dom);
-	if ($indx > 0 && $parent->{content}[$indx-1]{tag} eq '#PCDATA') {
-	    $parent->{content}[$indx-1]{val} =~ s/ *$//;
+	if ($indx > 0 && $parent->child($indx-1)->tag eq '#PCDATA') {
+	    $parent->child($indx-1)->{val} =~ s/ *$//;
 	}
 	return;
     }
@@ -337,7 +337,7 @@ phase PREPROCESS = {
 
 	push @CITATIONS, $dom;
 	# Remove label from contents
-	if ($dom->{content}[0]{tag} eq 'label') {
+	if ($dom->first->tag eq 'label') {
 	    my $labeldom = shift @{$dom->{content}};
 	    $dom->{label} = $labeldom->{val};
 	    chomp $dom->{label};
@@ -349,9 +349,9 @@ phase PREPROCESS = {
 	my ($dom, $str) = @_;
 
 	$dom->{title} = shift @{$dom->{content}}
-	if $dom->{content}[0]{tag} eq 'title';
+	if $dom->first->tag eq 'title';
 	$dom->{subtitle} = shift @{$dom->{content}}
-	if $dom->{content}[0]{tag} eq 'subtitle';
+	if $dom->first->tag eq 'subtitle';
 	return;
     }
 
@@ -381,13 +381,13 @@ phase PREPROCESS = {
 	unshift @SECTION_LEVELS, 'chapter' unless $documentclass eq 'article';
 
 	# Grab the document's title
-	if ($dom->{content}[0]{tag} eq 'title') {
+	if ($dom->first->tag eq 'title') {
 	    my $titledom = shift @{$dom->{content}};
 	    $TITLE = $titledom->{val};
 	    chomp $TITLE;
 	}
 	# Grab the subtitle if it exists
-	if ($dom->{content}[0]{tag} eq 'subtitle') {
+	if ($dom->first->tag eq 'subtitle') {
 	    my $titledom = shift @{$dom->{content}};
 	    $SUBTITLE .= $titledom->{val};
 	    chomp $SUBTITLE;
@@ -417,7 +417,7 @@ phase PROCESS = {
 	my $section = $SECTION_LEVELS[$nest > @SECTION_LEVELS ?
 				      $#SECTION_LEVELS : $nest];
 	# Remove title from contents
-	if ($dom->{content}[0]{tag} eq 'title') {
+	if ($dom->first->tag eq 'title') {
 	    my $titledom = shift @{$dom->{content}};
 	    $dom->{title} = $titledom->{val};
 	    chomp $dom->{title};
@@ -440,8 +440,8 @@ phase PROCESS = {
 	my %docinfo;
 	my @fields;
 	foreach $child (@{$dom->{content}}) {
-	    if ($child->{tag} ne 'field') {
-		$docinfo{$child->{tag}} = $child->{val};
+	    if ($child->tag ne 'field') {
+		$docinfo{$child->tag} = $child->{val};
 	    }
 	    else {
 		push @fields, $child->{val};
@@ -471,7 +471,7 @@ phase PROCESS = {
 
     sub date = { # PROCESS
 	my ($dom, $str) = @_;
-	($DATE) = $dom->{content}[0]{text} =~ m!(\d+[-/]\d+[-/]\d+)!;
+	($DATE) = $dom->first->{text} =~ m!(\d+[-/]\d+[-/]\d+)!;
 	return;
     }
 
@@ -480,7 +480,7 @@ phase PROCESS = {
 
 	my $parent = $dom->parent();
 	chomp $str;
-	if ($parent->{tag} eq 'topic') {
+	if ($parent->tag eq 'topic') {
 	    $parent->{title} = $str;
 	    return;
 	}
@@ -497,7 +497,7 @@ phase PROCESS = {
     sub status|revision|version = { # PROCESS
 	my ($dom, $str) = @_;
 	chomp $str;
-	my $tag = $dom->{tag};
+	my $tag = $dom->tag;
 	substr($tag,0,1) =~ tr/a-z/A-Z/;
 	return "\\stylefieldname{$tag} $str";
     }
@@ -512,13 +512,14 @@ phase PROCESS = {
 	my ($dom, $str) = @_;
 
 	my $parent = $dom->parent();
-	my $val = $dom->{content}[1]{val};
+	my $val = $dom->child(1)->{val};
 	chomp $val;
 	$val =~ s/\n\n/\\\\\n/g;
-	return "\\item[\\stylefieldname{$dom->{content}[0]{val}}] $val"
-	    if $parent->{tag} eq 'field_list';
+	my $fieldname = $dom->first->{val};
+	return "\\item[\\stylefieldname{$fieldname}] $val"
+	    if $parent->tag eq 'field_list';
 #return;
-	return "\\stylefieldname{$dom->{content}[0]{val}} $val";
+	return "\\stylefieldname{$fieldname} $val";
     }
 
     sub field_name = { # PROCESS
@@ -589,7 +590,7 @@ phase PROCESS = {
 	my ($dom, $str) = @_;
 
 	my $parent = $dom->parent();
-	my $list_type = $parent->{tag};
+	my $list_type = $parent->tag;
 	return "\\item $str";
     }
 
@@ -661,10 +662,10 @@ phase PROCESS = {
 	my ($dom, $str) = @_;
 	my ($term, $classifier, $definition) = ('') x 3;
 	foreach (@{$dom->{content}}) {
-	    if ($_->{tag} eq 'term') {
+	    if ($_->tag eq 'term') {
 		$term = $_->{val};
 	    }
-	    elsif ($_->{tag} eq 'classifier') {
+	    elsif ($_->tag eq 'classifier') {
 		$classifier = $_->{val};
 	    }
 	    else {
@@ -833,7 +834,7 @@ EOS
 
     sub attention|caution|danger|error|hint|important|note|tip|warning { # PROCESS
  	my ($dom, $str) = @_;
-	my $title = $dom->{tag};
+	my $title = $dom->tag;
 	substr($title,0,1) =~ tr/a-z/A-Z/;
 	$str .= "\n" unless $str =~ /\n$/;
 	my @list = ("\n\\noindent\\fbox{\\parbox{\\columnwidth}{\n",
@@ -1030,9 +1031,9 @@ EOS
 	my ($dom, $str) = @_;
 #	$str =~ s/(.)\n(?!\n)/$1\\\\\n/g;
 	$str =~ s/^( +)/'~' x length($1)/gem;
-	my ($pl_start, $pl_end) = $dom->{tag} eq 'parsed_literal' ?
+	my ($pl_start, $pl_end) = $dom->tag eq 'parsed_literal' ?
 	    ('{\tt ','}') : ('', '') ;
-	$str =~ s/([_\#])/\\$1/g if $dom->{tag} eq 'parsed_literal';
+	$str =~ s/([_\#])/\\$1/g if $dom->tag eq 'parsed_literal';
 	$str =~ s/\n/\\\\\n/g;
 	my @line_block = ("\\begin{verse}$pl_start\n",
 			  $str,
@@ -1098,8 +1099,8 @@ EOS
 	my $ind_file = $dom->{TOP_FILE};
 	$ind_file =~ s|\.[^/]+$|.idx|;
 	my $decoration;
-	if ($dom->{content}[0]{tag} eq 'decoration') {
-	    $decoration = $dom->{content}[0]{val};
+	if ($dom->first->tag eq 'decoration') {
+	    $decoration = $dom->first->{val};
 	    shift @{$dom->{content}};
 	    $str = join('', map($_->{val}, @{$dom->{content}}));
 	}
@@ -1140,8 +1141,8 @@ EOS
     sub .* = { # PROCESS
 	my ($dom, $str) = @_;
 	use vars qw(%PRINTED);
-	Warn("no handler for tag $dom->{tag}")
-	    unless $PRINTED{$dom->{tag}}++;
+	Warn("no handler for tag ${\$dom->tag}")
+	    unless $PRINTED{$dom->tag}++;
 	return $str;
     }
 }

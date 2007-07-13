@@ -89,6 +89,6 @@ phase PROCESS {
 		$internal .= "$spaces  $key:$string";
 	    }
 	}
-	return "<$dom->{tag}$attr>\n$str$internal";
+	return "<${\$dom->tag}$attr>\n$str$internal";
     }
 }
