@@ -203,6 +203,8 @@ t/40_writers/latex.init/test.stderr
 t/40_writers/latex.init/title.eps
 t/40_writers/Suite.smak
 t/40_writers/xml.init/Dir.smak
+t/40_writers/xml.init/mathml_01.rst
+t/40_writers/xml.init/mathml_01.xml
 t/40_writers/xml.init/noattrvalue.rst
 t/40_writers/xml.init/noattrvalue.xml
 t/40_writers/xml.init/standalone.myxml
@@ -217,6 +219,8 @@ t/40_writers/xref.init/idxtest4
 t/40_writers/xref.init/index01.idx
 t/40_writers/xref.init/index02.idx
 t/40_writers/xref.init/index03.idx
+t/40_writers/xref.init/index04.idx
+t/40_writers/xref.init/index05.idx
 t/40_writers/xref.init/smiley.gif
 t/40_writers/xref.init/tests.pl
 t/40_writers/xref.init/toc01.toc
@@ -240,6 +244,11 @@ t/40_writers/xref.init/xref04.xref
 t/40_writers/xref.init/xref05.xref
 t/40_writers/xref.init/xref06.stderr
 t/40_writers/xref.init/xref06.xref
+t/40_writers/xref.init/xref07.xref
+t/40_writers/xref.init/xref08.xref
+t/40_writers/xref.init/xref09.xref
+t/40_writers/xref.init/xref10.xref
+t/40_writers/xref.init/xref11.xref
 t/40_writers/xref.init/xreftest.rst
 t/60_new/directives.init/Dir.smak
 t/60_new/directives.init/mathml01.dom
@@ -412,6 +421,11 @@ t/70_plugins/perl.init/perl13.dom
 t/70_plugins/perl.init/perl13.rst
 t/70_plugins/perl.init/perl14.dom
 t/70_plugins/perl.init/perl14.rst
+t/70_plugins/perl.init/perl15.dom
+t/70_plugins/perl.init/perl15.prl
+t/70_plugins/perl.init/perl15.rst
+t/70_plugins/perl.init/perl16.dom
+t/70_plugins/perl.init/perl16.rst
 t/70_plugins/perl.init/perl4.dom
 t/70_plugins/perl.init/skip.pl
 t/70_plugins/perl.init/trusted01.dom
@@ -504,6 +518,8 @@ t/80_misc/coverage.init/dom.rst
 t/80_misc/coverage.init/html.myhtml
 t/80_misc/coverage.init/html.rst
 t/80_misc/coverage.init/html.stderr
+t/80_misc/coverage.init/image01.dom
+t/80_misc/coverage.init/image01.rst
 t/80_misc/coverage.init/indtarget.dom
 t/80_misc/coverage.init/indtarget.rst
 t/80_misc/coverage.init/mathml01.dom
@@ -739,6 +755,8 @@ t/80_misc/html.init/embed-stylesheet7.rst
 t/80_misc/html.init/embed-stylesheet7.stderr
 t/80_misc/html.init/entryattr.myhtml
 t/80_misc/html.init/entryattr.rst
+t/80_misc/html.init/enumeration_list_01.myhtml
+t/80_misc/html.init/enumeration_list_01.rst
 t/80_misc/html.init/filedefaultcss/Text/Restructured/mydefault.css
 t/80_misc/html.init/filedefaultcss/Text/Restructured/PrestConfig.pm
 t/80_misc/html.init/footnotes_01.myhtml
@@ -747,6 +765,8 @@ t/80_misc/html.init/footnotes_02.myhtml
 t/80_misc/html.init/footnotes_02.rst
 t/80_misc/html.init/httpdefaultcss/Text/Restructured/mydefault.css
 t/80_misc/html.init/httpdefaultcss/Text/Restructured/PrestConfig.pm
+t/80_misc/html.init/image_01.myhtml
+t/80_misc/html.init/image_01.rst
 t/80_misc/html.init/limits.myhtml
 t/80_misc/html.init/limits.rst
 t/80_misc/html.init/line_block_01.myhtml
@@ -756,10 +776,14 @@ t/80_misc/html.init/link-target1.rst
 t/80_misc/html.init/literalinliteral.myhtml
 t/80_misc/html.init/literalinliteral.rst
 t/80_misc/html.init/local.css
+t/80_misc/html.init/mathml_01.myhtml
+t/80_misc/html.init/mathml_01.rst
 t/80_misc/html.init/nodefaultcss/Text/Restructured/default.css
 t/80_misc/html.init/nodefaultcss/Text/Restructured/PrestConfig.pm
 t/80_misc/html.init/parsed-literal_01.myhtml
 t/80_misc/html.init/parsed-literal_01.rst
+t/80_misc/html.init/raw_01.myhtml
+t/80_misc/html.init/raw_01.rst
 t/80_misc/html.init/references_01.myhtml
 t/80_misc/html.init/references_01.rst
 t/80_misc/html.init/stylesheet1.myhtml
@@ -804,8 +828,12 @@ t/80_misc/transforms.init/decorations_01.rst
 t/80_misc/transforms.init/decorations_02.dom
 t/80_misc/transforms.init/decorations_02.rst
 t/80_misc/transforms.init/Dir.smak
+t/80_misc/transforms.init/docinfo_01.dom
+t/80_misc/transforms.init/docinfo_01.rst
 t/80_misc/transforms.init/docurl/Text/Restructured/PrestConfig.pm
 t/80_misc/transforms.init/nodocurl/Text/Restructured/PrestConfig.pm
+t/80_misc/transforms.init/sectnum_01.dom
+t/80_misc/transforms.init/sectnum_01.rst
 t/80_misc/transforms.init/targets_01.dom
 t/80_misc/transforms.init/targets_01.rst
 t/90_bugs/dom.init/alt.mydom
