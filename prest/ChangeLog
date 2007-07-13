@@ -5,6 +5,41 @@ Release Notes
 
 .. contents::
 
+Release 0.3.32
+--------------
+prest script:
+
+* Generated a fatal error if an input file cannot be opened.
+
+ReStructuredText parsing:
+
+* The target role now keeps the case of the target in creating its
+  name.
+
+Writer 'html':
+
+* Process the :class: option on images.
+* If the "-W image-exts" option is used (it's actually deprecated in
+  favor of "-D image-exts"), the default alt attribute now also uses
+  the substituted extension.
+
+Writer 'index':
+
+* Improved help text.
+* Added "-W index-indirect-targets" option.
+* Added "-W index-role-target" option.
+
+Writer 'xref':
+
+* Added a "-W xref-role-target" option to specify which target role
+  (if any) should be used for cross references.
+* The "-W xref-role-targets" option has been removed.
+
+In general:
+
+* Recoded to remove most dependencies on internal structure of DOM
+  objects outside of DOM.pm.
+
 Release 0.3.31
 --------------
 ReStructuredText parsing:
