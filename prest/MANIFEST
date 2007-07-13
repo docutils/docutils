@@ -424,6 +424,7 @@ t/70_plugins/perl.init/perl14.rst
 t/70_plugins/perl.init/perl15.dom
 t/70_plugins/perl.init/perl15.prl
 t/70_plugins/perl.init/perl15.rst
+t/70_plugins/perl.init/perl15.skip.pl
 t/70_plugins/perl.init/perl16.dom
 t/70_plugins/perl.init/perl16.rst
 t/70_plugins/perl.init/perl4.dom
