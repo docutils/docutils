@@ -141,10 +141,11 @@ EOPROLOG2
 sub Default {
     my ($dom, $str) = @_;
     my $attr = GetAttr($dom);
+    my $tag = $dom->tag;
     if (($dom->{attr}{'xml:space'} || '') eq 'preserve') {
-	$str = qq(<pre class="$dom->{tag}">$str</pre>\n\n);
+	$str = qq(<pre class="$tag">$str</pre>\n\n);
     }
-    my $newstr = "<$dom->{tag}$attr>$str</$dom->{tag}>";
+    my $newstr = "<$tag$attr>$str</$tag>";
     # Annotate the DOM with our content string
     $dom->{_html}{str} = $str;
     return $newstr;
@@ -192,8 +193,8 @@ sub GetAttr {
 sub Paras {
     my ($dom) = @_;
 
-    grep($_->{tag} !~ /^(comment|target|substitution_definition)$/,
-	 $dom->contents());
+    grep($_->tag !~ /^(comment|target|substitution_definition)$/,
+	 $dom->contents);
 }
 
 # Encodes HTML-specific characters
@@ -235,8 +236,8 @@ phase PREPROCESS {
 
     sub \#PCDATA = { # PREPROCESS
 	my ($dom) = @_;
-	my $parent = $dom->parent();
-        return $parent->{tag} eq 'raw' ? $dom->{text} :
+	my $parent = $dom->parent;
+        return $parent->tag eq 'raw' ? $dom->{text} :
 	    EncodeHTML($dom->{text});
     }
 
@@ -247,10 +248,10 @@ phase PREPROCESS {
 	$dom->Recurse
 	    (sub {
 		my ($dom, $when) = @_;
-		if ($dom->{tag} eq 'section') {
+		if ($dom->tag eq 'section') {
 		    $nesting += $when eq 'pre' ? 1 : -1;
 		}
-		elsif ($dom->{tag} eq 'title') {
+		elsif ($dom->tag eq 'title') {
 		    $dom->{_html}{nesting} = $nesting;
 		}
 		return 0;
@@ -268,7 +269,7 @@ phase PREPROCESS {
 	# Flatten Authors if it exists
 	$dom->Reshape(sub {
 	    my ($dom) = @_;
-	    return $dom->contents() if ($dom->{tag} eq 'authors');
+	    return $dom->contents if ($dom->tag eq 'authors');
 	    return $dom;
 	});
 	
@@ -282,7 +283,7 @@ phase PREPROCESS {
 	$headstr =~ s/\n/ /g;
 	# Remove any HTML tags within it
 	$headstr =~ s/<[^>]*>//g;
-	push (@HEAD_INFO, [$dom->{tag}, $headstr]);
+	push (@HEAD_INFO, [$dom->tag, $headstr]);
 	return $str;
     }
 
@@ -315,14 +316,14 @@ phase PREPROCESS {
 	sub PreprocessLiteral {
 	    my ($dom) = @_;
 	    my $child;
-	    foreach $child ($dom->contents()) {
-		if ($child->{tag} eq '#PCDATA') {
+	    foreach $child ($dom->contents) {
+		if ($child->tag eq '#PCDATA') {
 		    my $str = $child->{val};
 		    $str =~ s|(\s+)|</span>$1<span class="pre">|g;
 		    $str =~ s/( +) /("&nbsp;" x length($1)) . " "/ge;
 		    $child->{val} = qq(<span class="pre">$str</span>);
 		}
-		elsif ($child->{tag} eq 'literal') {
+		elsif ($child->tag eq 'literal') {
 		    $child->{_html}{txt} = $child->{lit};
 		}
 		else {
@@ -337,14 +338,14 @@ phase PREPROCESS {
 	# Go through the children recursively
 	my $s = TraverseLiteral($dom);
 	# Get rid of my children
-	$dom->replace();
+	$dom->replace;
 	
 	return $s;
         sub TraverseLiteral {
 	    my ($dom) = @_;
 	    my $str;
 	    my $child;
-	    foreach $child ($dom->contents()) {
+	    foreach $child ($dom->contents) {
 		$str .= EncodeHTML($child->{text});
 	    }
 	    return $str;
@@ -355,10 +356,9 @@ phase PREPROCESS {
 	my ($dom, $str) = @_;
 
 	# Compute whether we're simple or not
-	my $content = $dom->{content};
 	my @children = Paras($dom);
-	pop @children if @children && $children[0]{tag} eq 'paragraph' &&
-	    $children[-1]{tag} =~ /_list$/ && $children[-1]{_html}{simple};
+	pop @children if @children && $children[0]->tag eq 'paragraph' &&
+	    $children[-1]->tag =~ /_list$/ && $children[-1]{_html}{simple};
 	$dom->{_html}{simple} = (@children < 2);
 	return Default($dom, $str);
     }
@@ -375,12 +375,12 @@ phase PREPROCESS {
 
     sub (?:bullet|enumerated)_list = { # PREPROCESS
 	my ($dom, $str) = @_;
-	my $parent = $dom->parent();
+	my $parent = $dom->parent;
 
 	# I'm simple if all my list_item children are simple.
 	$dom->{_html}{simple} = 1;
 	my $li;
-	foreach $li ($dom->contents()) {
+	foreach $li ($dom->contents) {
 	    if (! $li->{_html}{simple}) {
 		$dom->{_html}{simple} = 0;
 		last;
@@ -389,9 +389,9 @@ phase PREPROCESS {
 
 	# IF I'm not simple, neither are my list_item children
 	if (! $dom->{_html}{simple}) {
- 	    foreach $li ($dom->contents()) {
+ 	    foreach $li ($dom->contents) {
  		$li->{_html}{simple} = 0;
-		push @{$li->{content}[0]{attr}{classes}},'first';
+		push @{$li->first->{attr}{classes}},'first';
 	    }
 	}
 	return Default($dom, $str);
@@ -405,13 +405,13 @@ phase PREPROCESS {
 	    %ADM_TITLES = ('Danger'=>'!DANGER!', 'Caution'=>'Caution!',
 			   'Attention'=>'Attention!');
 	}
-	my $tag = ucfirst $dom->{tag};
+	my $tag = ucfirst $dom->tag;
 	my $label = $ADM_TITLES{$tag} || $tag;
 	my $para = $DOM->new('paragraph',
 			     classes=>[qw(first admonition-title)]);
 	$para->append($DOM->newPCDATA($label));
 	$dom->prepend($para);
-	push @{$dom->{content}[-1]{attr}{classes}}, 'last';
+	push @{$dom->last->{attr}{classes}}, 'last';
 	return;
     }
 
@@ -423,18 +423,18 @@ phase PREPROCESS {
 	# Need to turn our title into a paragraph and myself into a div
 	my $para = $DOM->new('paragraph',
 			   classes=>[qw(first admonition-title)]);
-	$para->append($dom->{content}[0]->contents());
+	$para->append($dom->first->contents);
 	$dom->splice(0, 1, $para);
 	push @{$paras[-1]{attr}{classes}}, 'last';
-	$dom->{tag} = 'div';
+	$dom->tag('div');
     }
 
     sub footnote|citation = { # PREPROCESS
 	my ($dom, $str) = @_;
 	# Get the label out of our first child's child
 	# Devel::Cover branch 0 1 First child is always label
-	if ($dom->{content}[0]{tag} eq 'label') {
-	    my $label = $dom->{content}[0]{_html}{str};
+	if ($dom->first->tag eq 'label') {
+	    my $label = $dom->first->{_html}{str};
 	    chomp $label;
 	    $dom->{_html}{label} = $label;
 	    # Delete the label that is our first child
@@ -453,21 +453,21 @@ phase PREPROCESS {
 
 	# Need to trim a preceding space if using superscript
 	if ($footnote_references eq 'superscript') {
-	    my $parent = $dom->parent();
+	    my $parent = $dom->parent;
 	    my $index = $parent->index($dom);
-	    $parent->{content}[$index-1]{val} =~ s/ +$//
+	    $parent->child($index-1)->{val} =~ s/ +$//
 		if $index > 0 &&
-		$parent->{content}[$index-1]{tag} eq '#PCDATA';
+		$parent->child($index-1)->tag eq '#PCDATA';
 	}
     }
 
     sub definition_list_item = { # PREPROCESS
 	my ($dom, $str) = @_;
 	# Need to restructure the classifiers under the term
-	my @classifiers = grep($_->{tag} eq 'classifier', $dom->contents());
+	my @classifiers = grep($_->tag eq 'classifier', $dom->contents);
 	if (@classifiers) {
 	    $dom->splice(1, 0+@classifiers);
-	    $dom->{content}[0]->append(@classifiers);
+	    $dom->first->append(@classifiers);
 	}
 	return;
     }
@@ -475,20 +475,20 @@ phase PREPROCESS {
     sub table = { # PREPROCESS
 	my ($dom, $str) = @_;
 	# Turn a title into a caption
-	$dom->{content}[0]{tag} = 'caption'
-	    if $dom->{content}[0]{tag} eq 'title';
+	$dom->first->tag('caption')
+	    if $dom->first->tag eq 'title';
     }
 
     sub colspec = { # PREPROCESS
 	my ($dom, $str) = @_;
 	# Add the "stub" class to all the entries of my column if I'm stub
 	if ($dom->{attr}{stub}) {
-	    my $parent = $dom->parent();
+	    my $parent = $dom->parent;
 	    my $indx = $parent->index($dom);
-	    foreach my $cont ($parent->contents()) {
-		next if $cont->{tag} eq 'colspec';
-		foreach my $row ($cont->contents()) {
-		    push @{$row->{content}[$indx]{attr}{classes}}, 'stub';
+	    foreach my $cont ($parent->contents) {
+		next if $cont->tag eq 'colspec';
+		foreach my $row ($cont->contents) {
+		    push @{$row->child($indx)->{attr}{classes}}, 'stub';
 		}
 		
 	    }
@@ -499,8 +499,8 @@ phase PREPROCESS {
     sub thead = { # PREPROCESS
 	my ($dom, $str) = @_;
 	# Add the "head" class to each entry of each row
-	foreach my $row ($dom->contents()) {
-	    foreach my $entry ($row->contents()) {
+	foreach my $row ($dom->contents) {
+	    foreach my $entry ($row->contents) {
 		unshift @{$entry->{attr}{classes}}, 'head';
 	    }
 	}
@@ -513,21 +513,13 @@ phase PREPROCESS {
 	# body elements.
 	my $ancest = $writer->Ancestors;
 	my $parent = $ancest->[-1];
-#	my $parent = $dom->parent();
+#	my $parent = $dom->parent;
 	return unless $parent->takes_body_elts;
 	my $indx = $parent->index($dom);
 	my @classes = ('image');
-	# ??? It either goes directly above me, or if I am
-	# the only child of a reference, above the reference. ???
 	push @classes, @{$dom->{attr}{classes}} if $dom->{attr}{classes};
-	if ($parent->{tag} eq 'reference' && $parent->num_contents() == 1) {
-	    my $pparent = $parent->parent();
-	    $indx = $pparent->index($parent);
-	    $parent = $pparent;
-	    push @classes, 'image-reference';
-	}
 	my $div = $DOM->new('div', classes=>\@classes);
-	$div->append($parent->{content}[$indx]);
+	$div->append($parent->child($indx));
 	$parent->splice($indx, 1, $div);
     }
 
@@ -541,13 +533,13 @@ phase PREPROCESS {
 
 	my @paras = Paras($dom);
 	# Turn any title or subtitle into paragraphs
-	foreach my $child ($dom->contents()) {
-	    if ($child->{tag} eq 'title') {
-		$child->{tag} = 'paragraph';
+	foreach my $child ($dom->contents) {
+	    if ($child->tag eq 'title') {
+		$child->tag('paragraph');
 		push @{$child->{attr}{classes}}, qw(first sidebar-title);
 	    }
-	    elsif ($child->{tag} eq 'subtitle') {
-		$child->{tag} = 'paragraph';
+	    elsif ($child->tag eq 'subtitle') {
+		$child->tag('paragraph');
 		push @{$child->{attr}{classes}}, 'sidebar-subtitle';
 	    }
 	    else {
@@ -556,7 +548,7 @@ phase PREPROCESS {
 	}
 	push @{$paras[-1]{attr}{classes}}, 'last';
 	# Turn myself into a div
-	$dom->{tag} = 'div';
+	$dom->tag('div');
 	push @{$dom->{attr}{classes}}, 'sidebar';
 
 	return;
@@ -565,7 +557,7 @@ phase PREPROCESS {
     sub rubric = { # PREPROCESS
 	my ($dom, $str) = @_;
 	# Turn myself into a paragraph
-	$dom->{tag} = 'paragraph';
+	$dom->tag('paragraph');
 	$dom->{attr}{classes} = [ 'rubric' ];
 	return;
     }
@@ -585,7 +577,7 @@ phase PREPROCESS {
 	    'compound-first', 'compound-last';
 	}
 	# Turn myself into a div
-	$dom->{tag} = 'div';
+	$dom->tag('div');
 	push @{$dom->{attr}{classes}}, 'compound';
 	return;
     }
@@ -605,7 +597,7 @@ EOS
 
     sub .* = { # PREPROCESS
 	my ($dom, $str) = @_;
-	$USED_DEFAULT{$dom->{tag}} = 1;
+	$USED_DEFAULT{$dom->tag} = 1;
 	return Default($dom, $str);
     }
 }
@@ -616,8 +608,8 @@ phase PROCESS {
     sub paragraph = { # PROCESS
 	my ($dom, $str) = @_;
 
-	my $parent = $dom->parent();
-	my $p_tag = $parent->{tag};
+	my $parent = $dom->parent;
+	my $p_tag = $parent->tag;
 	my $index = $parent->index($dom);
 	my @paras = Paras($parent);
 	chomp $str;
@@ -644,7 +636,7 @@ phase PROCESS {
     sub (?:doctest|literal)_block = { # PROCESS
 	my ($dom, $str) = @_;
 	my @class = $dom->{attr}{classes} ? @{$dom->{attr}{classes}} : ();
-	my $class = $dom->{tag};
+	my $class = $dom->tag;
 	$class =~ s/_/-/;
 	push(@class, $class);
 	my $attr = qq( class=") . join(' ',@class) . qq(");
@@ -653,9 +645,8 @@ phase PROCESS {
 
     sub attention|caution|danger|error|hint|important|note|tip|warning = { # PROCESS
 	my ($dom, $str) = @_;
-	my $tag = $dom->{tag};
-	substr($tag, 0, 1) =~ tr/[a-z]/[A-Z]/;
-	return qq(<div class="$dom->{tag}">\n$str</div>\n);
+	my $tag = $dom->tag;
+	return qq(<div class="$tag">\n$str</div>\n);
     }
 
     # These just need to return their string
@@ -667,8 +658,8 @@ phase PROCESS {
     sub title = { # PROCESS
 	my ($dom, $str) = @_;
 
-	my $parent = $dom->parent();
-	my $p_tag = $parent->{tag} || '';
+	my $parent = $dom->parent;
+	my $p_tag = $parent->tag || '';
 	my $tag;
 	my $tag_attr = '';
 	my %a_attr;
@@ -679,7 +670,7 @@ phase PROCESS {
 	    if $parent->{attr}{classes} &&
 	    $parent->{attr}{classes}[0] eq 'contents';
 	    $tag = "p";
-	    $dom->{tag} = 'paragraph';
+	    $dom->tag('paragraph');
 	    $tag_attr = qq( class="$p_tag-title first");
 	}
 	elsif ($parent->{attr}{classes}[0] || '' eq 'system-messages') {
@@ -707,7 +698,7 @@ phase PROCESS {
 	use vars qw(%LIST_TAGS);
 	BEGIN { %LIST_TAGS = ('bullet_list'=>'ul', 'enumerated_list'=>'ol',
 			      'definition_list'=>'dl'); }
-	my $tag = $LIST_TAGS{$dom->{tag}};
+	my $tag = $LIST_TAGS{$dom->tag};
 	my $attr = $dom->{attr};
 	$dom->{attr}{classes} = [] if !$dom->{attr}{classes};
 	my $class = $dom->{attr}{classes};
@@ -752,8 +743,8 @@ phase PROCESS {
 	BEGIN {
 	    %TAG_TRANSLATE = qw(emphasis em subscript sub superscript sup);
 	}
-	$dom->{tag} = defined $TAG_TRANSLATE{$dom->{tag}} ?
-	    $TAG_TRANSLATE{$dom->{tag}} : $dom->{tag};
+	$dom->tag(defined $TAG_TRANSLATE{$dom->tag} ?
+		  $TAG_TRANSLATE{$dom->tag} : $dom->tag);
 	chomp $str;
 	return Default($dom, $str);
     }
@@ -779,7 +770,7 @@ phase PROCESS {
     sub footnote_reference = { # PROCESS
 	my ($dom, $str) = @_;
 
-	my $parent = $dom->parent();
+	my $parent = $dom->parent;
 	my %attr;
 	$attr{class} = "footnote-reference";
 	my $ref = $attr{href} = "#$dom->{attr}{refid}" if $dom->{attr}{refid};
@@ -827,7 +818,7 @@ phase PROCESS {
 	    "#$dom->{attr}{refid}" : undef;
 	my @class = $dom->{attr}{classes} ?
 	    @{$dom->{attr}{classes}} : ();
-	push(@class, $dom->{tag});
+	push(@class, $dom->tag);
 	my $class = join(' ',@class);
 	my %attr = ('class'=>"$class");
 	if ($cloak_email_addresses && $ref =~ /^mailto:/) {
@@ -856,7 +847,7 @@ phase PROCESS {
 	my @class = $dom->{attr}{classes} ?
 	    @{$dom->{attr}{classes}} : ();
 	push @class, 'docutils';
-	push @class, $dom->{tag};
+	push @class, $dom->tag;
 	my $class = qq(class=") . join(' ',@class) . qq(");
 	push(@list1, qq(<table $class frame="void" id="$dom->{attr}{ids}[0]" rules="none">\n));
 	unshift(@list2, qq(</table>\n));
@@ -899,8 +890,8 @@ phase PROCESS {
 
     sub comment = { # PROCESS
 	my ($dom, $str) = @_;
-	my $text = join('',map($_->{tag} eq '#PCDATA' ? $_->{text} : "",
-			       $dom->contents()));
+	my $text = join('',map($_->tag eq '#PCDATA' ? $_->{text} : "",
+			       $dom->contents));
 	chomp $text;
 	$text =~ s/--/- -/g;
 	return qq(<!-- $text -->\n);
@@ -946,7 +937,7 @@ phase PROCESS {
 
     sub field = { # PROCESS
 	my ($dom, $str) = @_;
-	my %fields = map(($_->{tag}, $_->{val}), $dom->contents());
+	my %fields = map(($_->tag, $_->{val}), $dom->contents);
 	my @str;
 	my $fieldname = $fields{field_name};
  	# Back-convert HTML codes to figure out how long fieldargs is
@@ -989,8 +980,8 @@ EOS
     sub option_group = { # PROCESS
 	my ($dom, $str) = @_;
 
-	my $parent = $dom->parent();
-	my $val = join(', ', map($_->{val}, $dom->contents()));
+	my $parent = $dom->parent;
+	my $val = join(', ', map($_->{val}, $dom->contents));
 	# Figure out what the raw text is
 	my $raw = $val;
 	$raw =~ s/<[^>]*>//g;
@@ -1020,7 +1011,7 @@ EOS
     sub description = { # PROCESS
 	my ($dom, $str) = @_;
 
-	my $parent = $dom->parent();
+	my $parent = $dom->parent;
 	my $append = ($parent->{_html}{colspan} || 0) == 2 ?
 	    qq(</tr>\n<tr><td>&nbsp;</td>) : '';
 	return qq($append<td>$str</td>);
@@ -1044,10 +1035,10 @@ EOS
     sub tgroup = { # PROCESS
 	my ($dom, $str) = @_;
 	my $cols = $dom->{attr}{cols};
-	my $rest = join('', map($dom->{content}[$_]{val},
-				$cols .. ($dom->num_contents()-1)));
+	my $rest = join('', map($dom->child($_)->{val},
+				$cols .. ($dom->num_contents-1)));
 	return $rest unless $colspecs;
-	my @colwidths = map($dom->{content}[$_]{attr}{colwidth},
+	my @colwidths = map($dom->child($_)->{attr}{colwidth},
 			    0 .. $cols-1);
 	my $total = 0;
 	grep($total += $_, @colwidths);
@@ -1112,12 +1103,13 @@ EOS
 	my ($dom, $str) = @_;
 
 	my $attr = $dom->{attr};
-	my $alt = defined $attr->{alt} ? $attr->{alt} : $attr->{uri};
-	my $hattr = $dom->{_html}{attr} = {};
-	@$hattr{qw(alt src)} = ($alt, $attr->{uri});
+	my $uri = $attr->{uri};
 	if ($IMAGE_EXT_RE) {
-	    $hattr->{src} =~ s/($IMAGE_EXT_RE)$/$IMAGE_EXTS{$1}/o;
+	    $uri =~ s/($IMAGE_EXT_RE)$/$IMAGE_EXTS{$1}/o;
 	}
+	my $alt = defined $attr->{alt} ? $attr->{alt} : $uri;
+	my $hattr = $dom->{_html}{attr} = {};
+	@$hattr{qw(alt src)} = ($alt, $uri);
  	my @attr_out = qw(height width align usemap);
 	foreach (@attr_out) {
 	    $hattr->{$_} = $attr->{$_} if defined $attr->{$_};
@@ -1141,8 +1133,8 @@ EOS
     sub caption = { # PROCESS
 	my ($dom, $str) = @_;
 	chomp $str;
-	my $parent = $dom->parent();
-	return $parent->{tag} eq 'table' ? qq(<caption>$str</caption>\n) :
+	my $parent = $dom->parent;
+	return $parent->tag eq 'table' ? qq(<caption>$str</caption>\n) :
 	    qq(<p class="caption">$str</p>\n);
     }
 
@@ -1173,7 +1165,7 @@ EOS
     sub system_message = { # PROCESS
 	my ($dom, $str) = @_;
 
-	my $parent = $dom->parent();
+	my $parent = $dom->parent;
 	my $attr = $dom->{attr};
 	my $backlink = $attr->{backrefs} ?
 	    '; <em>backrefs ' .
@@ -1195,15 +1187,15 @@ EOS
     sub raw = { # PROCESS
 	my ($dom) = @_;
 	return unless $dom->{attr}{format} =~ /\bhtml\b/;
-	my $s = $dom->{content}[0]{text};
+	my $s = $dom->first->{text};
 	chomp $s;
 	if ($dom->{attr}{head}) {
 	    push @HEAD, "$s\n";
 	    return;
 	}
 	return $s unless $dom->{attr}{classes};
-	my $parent = $dom->parent();
-	my $tag = $parent->{tag} =~ /section|document/ ? 'div' : 'span';
+	my $parent = $dom->parent;
+	my $tag = $parent->tag =~ /section|document/ ? 'div' : 'span';
 	my $attr = GetAttr($dom);
 	return qq(<$tag$attr>$s</$tag>);
     }
@@ -1233,13 +1225,13 @@ EOS
 	      qq(<meta name="generator" content="$dom->{TOOL_ID}" />\n))
 	    unless defined $writer->{opt}{D}{generator} &&
 	    $writer->{opt}{D}{generator} eq 0;
-	my $title = $dom->num_contents() &&
-	    $dom->{content}[0]{tag} eq 'title' ?
-	    $dom->{content}[0]{_html}{str} : $dom->{attr}{title} || '';
+	my $title = $dom->num_contents &&
+	    $dom->first->tag eq 'title' ?
+	    $dom->first->{_html}{str} : $dom->{attr}{title} || '';
 	chomp $title;
-	my $subtitle = $dom->num_contents() > 1 &&
-	    $dom->{content}[1]{tag} eq 'subtitle' ?
-	    $dom->{content}[1]{_html}{str} : '';
+	my $subtitle = $dom->num_contents > 1 &&
+	    $dom->child(1)->tag eq 'subtitle' ?
+	    $dom->child(1)->{_html}{str} : '';
 	chomp $subtitle;
 	push (@{$head->[0]}, "<title>$title</title>\n") if $title ne '';
 	push (@{$head->[0]},
@@ -1287,11 +1279,11 @@ EOS
 	unshift (@{$body->[1]}, qq(</div>\n));
 	push (@{$body->[0]}, qq(<h1 class="title">$title</h1>\n))
 	    if $title ne '' && ! $writer->{opt}{D}{keep_title_section};
-	my $id = $dom->num_contents() > 1 &&
-	    $dom->{content}[1]{attr}{ids} ?
-	    qq( id="$dom->{content}[1]{attr}{ids}[0]") : '';
+	my $id = $dom->num_contents > 1 &&
+	    $dom->child(1)->{attr}{ids} ?
+	    qq( id="${\$dom->child(1)->{attr}{ids}[0]}") : '';
 	if ($subtitle ne '') {
-	    my $stdom = $dom->{content}[1];
+	    my $stdom = $dom->child(1);
 	    push @{$body->[0]}, map(qq(<span id="$_"></span>),
 				    @{$stdom->{attr}{ids}}
 				    [1 .. $#{$stdom->{attr}{ids}}])
@@ -1301,8 +1293,8 @@ EOS
 
 	# Next go through all the contents
 	my $content;
-	foreach $content ($dom->contents()) {
-	    next if $content->{tag} =~ /title$/;
+	foreach $content ($dom->contents) {
+	    next if $content->tag =~ /title$/;
 	    push (@{$body->[0]}, $content->{val});
 	}
 
@@ -1352,7 +1344,7 @@ EOS
 
     sub author|contact|organization|date|status|revision|version|copyright = { # PROCESS
 	my ($dom, $str) = @_;
-	my $label = $dom->{tag};
+	my $label = $dom->tag;
 	substr($label,0,1) =~ tr/[a-z]/[A-Z]/;
 	chomp $str;
 	return qq(<tr><th class="docinfo-name">$label:</th>\n<td>$str</td></tr>\n);
@@ -1376,7 +1368,7 @@ EOS
 
     sub div = { # PROCESS
 	my ($dom, $str) = @_;
-	my $nl = $dom->num_contents() > 1 ? "\n" : '';
+	my $nl = $dom->num_contents > 1 ? "\n" : '';
 	return qq(<div class="@{$dom->{attr}{classes}}">$nl$str</div>\n);
     }
 
@@ -1396,10 +1388,10 @@ EOS
 
     sub .* = { # PROCESS
 	my ($dom, $str) = @_;
-	if ($USED_DEFAULT{$dom->{tag}}) {
+	if ($USED_DEFAULT{$dom->tag}) {
 	    print STDERR
-		"Warning: Used default handler for type $dom->{tag}\n";
-	    $USED_DEFAULT{$dom->{tag}} = 0;
+		"Warning: Used default handler for type ${\$dom->tag}\n";
+	    $USED_DEFAULT{$dom->tag} = 0;
 	}
 	return $dom->{val};
     }
