@@ -1,0 +1,20 @@
+<document ids="my-title" names="my title" source="test data" title="My Title">
+    <title>
+        My Title
+    <docinfo>
+        <author>
+            Hari Kari
+    <comment xml:space="preserve">
+        Test docinfo blocks in subsections
+    <section ids="a-subsection" names="a subsection">
+        <title>
+            A Subsection
+        <docinfo>
+            <author>
+                Larry Parry
+    <section ids="another-subsection" names="another subsection">
+        <title>
+            Another Subsection
+        <docinfo>
+            <author>
+                Gary Scarry
