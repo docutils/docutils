@@ -79,10 +79,11 @@ This writer uses the following output definitions:
                          xref-sections=1 (default "Section").
 -W sprintf=<string>      Specify an sprintf string for formatting the
                          output definitions (default is "%s").
--W xref-role-targets=<0|1>
+-W xref-role-target[=<name>]
                          Output cross-references for non-empty
                          internal targets created from interpreted
-                         text roles (default is 0).
+                         text roles (default is 0, or if specified
+                         with no name, 'target').
 -W xref-sections=<0|1>   Output cross-reference for section titles
                          (default is 0).
 -W xref-targets=<0|1>    Output cross-reference for internal targets
@@ -94,7 +95,7 @@ This writer uses the following output definitions:
 sub BEGIN = {
     # My -W flags
     use vars qw($appendix $chapter $file_suffix $filename_ext $file_path
-		$section $sprintf $xref_role_targets
+		$section $sprintf $xref_role_target
                 $xref_sections $xref_targets);
 
     # Run-time globals
@@ -108,7 +109,8 @@ sub BEGIN = {
     $file_path         = ''         unless defined $file_path;
     $section           = 'Section'  unless defined $section;
     $sprintf           = "%s"       unless defined $sprintf;
-    $xref_role_targets = 0          unless defined $xref_role_targets;
+    $xref_role_target  = 0          unless defined $xref_role_target;
+    $xref_role_target  = 'target'   if $xref_role_target eq 1;
     $xref_sections     = 0          unless defined $xref_sections;
     $xref_targets      = 1          unless defined $xref_targets;
 
@@ -123,7 +125,7 @@ sub exportableDef {
     my @contents = $dom->contents();
     $dom->{_xref}{exportable} = "true";
     foreach my $child (@contents) {
-	my $ctag = $child->{tag};
+	my $ctag = $child->tag;
 	if ($ctag eq 'target' ||
 	    $ctag eq 'footnote_reference' ||
 	    $ctag eq 'problematic' ||
@@ -191,7 +193,7 @@ phase PREPROCESS {
 	my ($dom, $str) = @_;
 	my $attr = $dom->{attr};
 	if (!$attr->{refuri} && !$attr->{anonymous} &&
-	    (!$attr->{role} || $xref_role_targets)) {
+	    (!$attr->{role} || $attr->{role} eq $xref_role_target)) {
 	    $attr->{names} = $attr->{dupnames}
 	        if defined $attr->{dupnames} && !defined $attr->{names};
 	    my @names = grep(!$TARGET_NAMES{$_},
@@ -220,10 +222,10 @@ phase PROCESS {
 	if ($xref_sections) {
 	    $XREF_STRS .= ".. _$BASE_FILE.: $file_path$OUT_FILE\n";
 	    my $title = '';
-	    $dom->{content}[0]->Recurse(sub {
+	    $dom->first->Recurse(sub {
 		my ($dom) = @_;
-		$title .= $dom->{text} if $dom->{tag} eq '#PCDATA';
-	    }) if $dom->{content}[0]{tag} eq 'title';
+		$title .= $dom->{text} if $dom->tag eq '#PCDATA';
+	    }) if $dom->first->tag eq 'title';
             $title = $dom->{attr}{title} || '' unless $title;
 	    $title =~ s/^(.*?)\.?[\xa0\xc2]+/ /;
 	    my ($number) = ($1);
@@ -242,9 +244,9 @@ phase PROCESS {
 	    $XREF_STRS .= (".. _$BASE_FILE.$name: $file_path$OUT_FILE#" .
 			   Text::Restructured::NormalizeId(0, $name) . "\n");
 	    my $title = '';
-	    $dom->{content}[0]->Recurse(sub {
+	    $dom->first->Recurse(sub {
 		my ($dom) = @_;
-		$title .= $dom->{text} if $dom->{tag} eq '#PCDATA';
+		$title .= $dom->{text} if $dom->tag eq '#PCDATA';
 	    });
 	    $title =~ s/^((.*?)(\..*?)?)[\xa0\xc2]+/ /;
 	    my ($number, $prefix, $suffix) = ($1, $2, $3);
