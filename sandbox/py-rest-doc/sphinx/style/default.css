@@ -282,17 +282,17 @@ div#comments h4 {
     color: #333;
 }
 
-div#comments form {
+div#new-comment-box form {
     display: block;
     margin: 0 0 0 20px;
 }
 
-div#comments textarea {
+div#new-comment-box textarea {
     width: 98%;
     height: 160px;
 }
 
-div#comments div.help {
+div#new-comment-box div.help {
     /*padding: 10px 10px 0 10px;*/
     margin: 20px 20px 10px 0;
     background-color: #ccc;
@@ -300,12 +300,12 @@ div#comments div.help {
     /*border: 1px solid #05171e;*/
 }
 
-div#comments div.help p {
+div#new-comment-box div.help p {
     margin: 0;
     padding: 0 0 10px 0;
 }
 
-div#comments input, div#comments textarea {
+div#new-comment-box input, div#new-comment-box textarea {
     font-family: 'Bitstream Vera Sans', 'Arial', sans-serif;
     font-size: 13px;
     color: black;
@@ -313,8 +313,8 @@ div#comments input, div#comments textarea {
     border: 1px solid #092835;
 }
 
-div#comments input[type="reset"],
-div#comments input[type="submit"] {
+div#new-comment-box input[type="reset"],
+div#new-comment-box input[type="submit"] {
     cursor: pointer;
     font-weight: bold;
     padding: 2px;

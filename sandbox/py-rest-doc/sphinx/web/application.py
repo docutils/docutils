@@ -27,13 +27,14 @@ from collections import defaultdict
 
 from .feed import Feed
 from .mail import Email
+from .util import render_template, render_simple_template, get_target_uri, \
+     blackhole_dict, striptags
 from .admin import AdminPanel
 from .userdb import UserDatabase
 from .antispam import AntiSpam
 from .database import connect, set_connection, Comment
-from .util import Request, Response, RedirectResponse, SharedDataMiddleware, \
-     NotFound, render_template, render_simple_template, get_target_uri, \
-     blackhole_dict, get_base_uri
+from .wsgiutil import Request, Response, RedirectResponse, \
+     SharedDataMiddleware, NotFound, get_base_uri
 
 from ..util import relative_uri, shorten_result
 from ..search import SearchFrontend
@@ -75,9 +76,9 @@ known_designs = {
 }
 
 comments_methods = {
-    'in': 'Show all comments inline.',
-    'bot': 'Show all comments at the page bottom.',
-    'no': 'Don\'t show comments at all.',
+    'inline': 'Show all comments inline.',
+    'bottom': 'Show all comments at the page bottom.',
+    'none': 'Don\'t show comments at all.',
 }
 
 
@@ -86,12 +87,34 @@ class MockBuilder(object):
         return ''
 
 
+class NoCache(Exception):
+    pass
+
+
+def cached(inner):
+    """
+    Response caching system.
+    """
+    def caching_function(self, *args, **kwds):
+        gen = inner(self, *args, **kwds)
+        try:
+            cache_id = gen.next()
+        except NoCache, nc:
+            return nc.args[0]
+        try:
+            text = self.cache[cache_id]
+            gen.close()
+        except KeyError:
+            text = gen.next()
+            self.cache[cache_id] = text
+        return Response(text)
+    return caching_function
+
+
 class DocumentationApplication(object):
     """
     Serves the documentation.
     """
-
-    special_urls = set(['index', 'genindex', 'modindex', 'settings'])
 
     def __init__(self, config):
         self.cache = blackhole_dict() if config['debug'] else {}
@@ -107,6 +130,7 @@ class DocumentationApplication(object):
         self.antispam = AntiSpam(path.join(self.data_root, 'bad_content'))
         self.userdb = UserDatabase(path.join(self.data_root, 'docusers'))
         self.admin_panel = AdminPanel(self)
+
 
     def load_env(self, new_mtime):
         env_lock.acquire()
@@ -126,6 +150,7 @@ class DocumentationApplication(object):
         finally:
             env_lock.release()
 
+
     def search(self, req):
         """
         Search the database. Currently just a keyword based search.
@@ -133,6 +158,7 @@ class DocumentationApplication(object):
         if not req.args.get('q'):
             return RedirectResponse('')
         return RedirectResponse('q/%s/' % req.args['q'])
+
 
     def get_page_source(self, page):
         """
@@ -145,11 +171,13 @@ class DocumentationApplication(object):
         with file(filename) as f:
             return page_id, f.read()
 
+
     def show_source(self, req, page):
         """
         Show the highlighted source for a given page.
         """
         return Response(self.get_page_source(page)[1], mimetype='text/plain')
+
 
     def suggest_changes(self, req, page):
         """
@@ -184,6 +212,7 @@ class DocumentationApplication(object):
         output = writer.write(doctree, destination)
         writer.assemble_parts()
         return writer.parts['fragment']
+
 
     def submit_changes(self, req, page):
         """
@@ -289,9 +318,8 @@ class DocumentationApplication(object):
         context = {
             'known_designs':    sorted(known_designs.iteritems()),
             'comments_methods': comments_methods.items(),
-            'on_index':         False,
             'curdesign':        req.session.get('design') or 'default',
-            'curcomments':      req.session.get('comments') or 'in',
+            'curcomments':      req.session.get('comments') or 'inline',
             'referer':          referer,
         }
 
@@ -299,42 +327,84 @@ class DocumentationApplication(object):
                                         self.globalcontext, context))
 
 
+    @cached
     def get_module_index(self, req):
         """
         Get the module index or redirect to a module from the module index.
         """
         modname = req.args.get('mod')
         if modname:
+            # XXX: from freqentries, handle better!
             info = self.env.modules.get(modname)
             if not info:
                 raise NotFound()
-            return RedirectResponse(relative_uri(
-                '/modindex/', info[0][:-4] + '#module-' + modname))
-
-        context = {
-            'known_designs':    sorted(known_designs.iteritems()),
-            'on_index':         False,
-        }
+            raise NoCache(RedirectResponse(relative_uri(
+                '/modindex/', info[0][:-4] + '#module-' + modname)))
 
         most_frequent = heapq.nlargest(30, self.freqmodules.iteritems(),
                                        lambda x: x[1])
         most_frequent = sorted(x[0] for x in most_frequent)
 
-        if most_frequent != self.last_most_frequent or \
-               '_modindex' not in self.cache:
-            filename = path.join(self.data_root, 'modindex.fpickle')
-            with open(filename, 'rb') as f:
-                context.update(pickle.load(f))
-            context['freqentries'] = most_frequent
-            resp = render_template(req, 'modindex.html',
-                                   self.globalcontext, context)
-            self.cache['_modindex'] = resp
-            self.last_most_frequent = most_frequent
-        else:
-            resp = self.cache['_modindex']
-        return Response(resp)
+        if most_frequent != self.last_most_frequent:
+            self.cache.pop('@modindex', None)
+        yield '@modindex'
 
-    def handle_comments(self, page_id, context):
+        filename = path.join(self.data_root, 'modindex.fpickle')
+        with open(filename, 'rb') as f:
+            context = pickle.load(f)
+        context['freqentries'] = most_frequent
+        yield render_template(req, 'modindex.html',
+                               self.globalcontext, context)
+
+
+    def handle_new_comment(self, req, context, page_id):
+        # default values for the comment form
+        title = comment_body = author = author_mail = ''
+        form_error = None
+        preview = None
+
+        title = req.form.get('title', '').strip()
+        author = req.form.get('author', '').strip()
+        author_mail = req.form.get('author_mail', '')
+        comment_body = req.form.get('comment_body', '')
+        fields = (title, author, author_mail, comment_body)
+
+        if req.form.get('preview'):
+            preview = Comment(page_id, title, author, author_mail,
+                              comment_body)
+        # 'homepage' is a forbidden field to thwart bots
+        elif req.form.get('homepage') or self.antispam.is_spam(fields):
+            form_error = 'Your text contains blocked URLs or words.'
+        else:
+            if not all(fields):
+                form_error = 'You have to fill out all fields.'
+            elif _mail_re.search(author_mail) is None:
+                form_error = 'You have to provide a valid e-mail address.'
+            elif len(comment_body) < 20:
+                form_error = 'You comment is too short ' \
+                             '(must have at least 20 characters).'
+            else:
+                self.cache.pop(page_id, None)
+                # XXX
+                comment = Comment(page_id, req.form.get('descname'),
+                                  title, author, author_mail,
+                                  comment_body)
+                comment.save()
+                return RedirectResponse(comment.url)
+
+        context.update(
+            preview = preview,
+            comments_form = {
+                'title':         title,
+                'author':        author,
+                'author_mail':   author_mail,
+                'comment_body':  comment_body,
+                'error':         form_error,
+            },
+        )
+
+
+    def _insert_comments(self, page_id, context, mode):
         """
         Insert inline comments into a page body.
         """
@@ -346,155 +416,107 @@ class DocumentationApplication(object):
         global_comments = []
         for name, comments in groupby(all_comments, lambda x: x.associated_name):
             if not name:
-                global_comments = list(comments)
+                global_comments.extend(comments)
+                continue
+            comments = list(comments)
+            if not comments:
                 continue
             tx = re.sub('<!--#%s#-->' % name,
                         render_simple_template('inlinecomments.html',
-                                               {'comments' : list(comments),
-                                                'id' : name}),
+                                               {'comments' : comments,
+                                                'id' : name,
+                                                'mode': mode,
+                                                }),
                         tx)
-        tx = re.sub('<!--#([^#]*)#-->',
-                    (lambda match: render_simple_template('inlinecomments.html',
-                                                          {'id': match.group(1)})),
-                    tx)
+            if mode == 'bottom':
+                global_comments.extend(comments)
+        if mode == 'inline':
+            # replace all markers for items without comments
+            tx = re.sub('<!--#([^#]*)#-->',
+                        (lambda match:
+                         render_simple_template('inlinecomments.html',
+                                                {'id': match.group(1)})),
+                        tx)
+        if global_comments:
+            tx += render_simple_template('comments.html',
+                                         {'comments': global_comments})
         context['body'] = tx
-        return global_comments
 
+
+    @cached
     def get_page(self, req, url):
         """
         Show the requested documentation page or raise an
         `NotFound` exception to display a page with close matches.
         """
-        cache_possible = True
-        context = {
-            'known_designs':    sorted(known_designs.iteritems()),
-            'on_index':         url == 'index',
-            'curdesign':        req.session.get('design') or 'default',
-            'curcomments':      req.session.get('comments') or 'in',
-        }
+        page_id = self.env.get_real_filename(url)
+        if page_id is None:
+            raise NotFound(show_keyword_matches=True)
+        # increment view count of all modules on that page
+        for modname in self.env.filemodules.get(page_id, ()):
+            self.freqmodules[modname] += 1
+        # comments enabled?
+        comments = self.env.metadata[page_id].get('comments_enabled', True)
 
-        # these are special because they have different templates
-        if url in self.special_urls:
-            page_id = '@' + url  # only used as cache key
-            filename = path.join(self.data_root, url + '.fpickle')
-            with open(filename, 'rb') as f:
-                context.update(pickle.load(f))
-            templatename = url + '.html'
-            comments = False
+        # do form validation and comment saving if the request method is POST.
+        # XXX different URLs
+        if comments and req.method == 'POST':
+            resp = self.handle_new_comment(req, context, page_id)
+            if resp:
+                # may be a redirecting response
+                return
 
-        # it's a normal page (or a 404)
+        # how does the user want to view comments?
+        commentmode = req.session.get('comments', 'inline') if comments else ''
+
+        # there must be different cache entries per comment mode
+        yield page_id + '|' + commentmode
+
+        # cache miss; load the page and render it
+        filename = path.join(self.data_root, page_id[:-3] + 'fpickle')
+        with open(filename, 'rb') as f:
+            context = pickle.load(f)
+
+        # add comments to paqe text
+        if commentmode != 'none':
+            self._insert_comments(page_id, context, commentmode)
+
+        yield render_template(req, 'page.html', self.globalcontext, context)
+
+
+    @cached
+    def get_special_page(self, req, name):
+        yield '@'+name
+        filename = path.join(self.data_root, name + '.fpickle')
+        with open(filename, 'rb') as f:
+            context = pickle.load(f)
+        yield render_template(req, name+'.html',
+                              self.globalcontext, context)
+
+
+    def comments_feed(self, req, url):
+        if url == 'recent':
+            feed = Feed(req, 'Recent Comments', 'Recent Comments', '')
+            for comment in Comment.get_recent():
+                feed.add_item(comment.title, comment.author, comment.url,
+                              comment.parsed_comment_body, comment.pub_date)
         else:
             page_id = self.env.get_real_filename(url)
-            if page_id is None:
-                raise NotFound(show_keyword_matches=True)
-            # increment view count of all modules on that page
-            for modname in self.env.filemodules.get(page_id, ()):
-                self.freqmodules[modname] += 1
-            # comments enabled?
-            comments = self.env.metadata[page_id].get('comments_enabled', True)
-
-            # generate comments feed if wanted
-            if comments and req.args.get('feed') == 'comments':
-                return self.get_comments_feed(req, url, page_id)
-
-            # else load the page
-            filename = path.join(self.data_root, page_id[:-3] + 'fpickle')
-            with open(filename, 'rb') as f:
-                context.update(pickle.load(f))
-            templatename = 'page.html'
-
-            # default values for the comment form
-            title = comment_body = author = author_mail = ''
-            form_error = None
-            preview = None
-
-            # do form validation and comment saving if the request method is POST.
-            if comments and req.method == 'POST':
-                title = req.form.get('title', '').strip()
-                author = req.form.get('author', '').strip()
-                author_mail = req.form.get('author_mail', '')
-                comment_body = req.form.get('comment_body', '')
-                fields = (title, author, author_mail, comment_body)
-
-                if req.form.get('preview'):
-                    preview = Comment(page_id, title, author, author_mail,
-                                      comment_body)
-                # 'homepage' is a forbidden field to thwart bots
-                elif req.form.get('homepage') or self.antispam.is_spam(fields):
-                    form_error = 'Your text contains blocked URLs or words.'
-                else:
-                    if not all(fields):
-                        form_error = 'You have to fill out all fields.'
-                    elif _mail_re.search(author_mail) is None:
-                        form_error = 'You have to provide a valid e-mail address.'
-                    elif len(comment_body) < 20:
-                        form_error = 'You comment is too short ' \
-                                     '(must have at least 20 characters).'
-                    else:
-                        self.cache.pop(page_id, None)
-                        # XXX
-                        comment = Comment(page_id, req.form.get('descname'),
-                                          title, author, author_mail,
-                                          comment_body)
-                        comment.save()
-                        return RedirectResponse(comment.url)
-                cache_possible = False
-
-            context.update(
-                comments_enabled = comments,
-                preview = preview,
-                comments_form = {
-                    'title':         title,
-                    'author':        author,
-                    'author_mail':   author_mail,
-                    'comment_body':  comment_body,
-                    'error':         form_error,
-                },
-            )
-
-            context['comments'] = self.handle_comments(page_id, context)
-
-        # if the form validation failed, the cache is used so that
-        # we can put error messages and defaults to the page.
-        # XXX: caching disabled for now
-        if cache_possible:
-            try:
-                filename, mtime, text = self.cache[page_id]
-            except KeyError:
-                pass
-            else:
-                if path.getmtime(filename) == mtime:
-                    return Response(text)
-            text = render_template(req, templatename, self.globalcontext, context)
-            self.cache[page_id] = (filename, path.getmtime(filename), text)
-        else:
-            text = render_template(req, templatename, self.globalcontext, context)
-        return Response(text)
-
-    def get_comments_feed(self, req, url, page_id):
-        # XXX: nice title instead of "url"
-        feed = Feed(req, 'Comments for "%s"' % url, 'List of comments for '
-                    'the topic "%s"' % url, url)
-        for comment in Comment.get_for_page(page_id):
-            feed.add_item(comment.title, comment.author, comment.url,
-                          comment.parsed_comment_body, comment.pub_date)
+            doctitle = striptags(self.globalcontext['titles'].get(page_id, url))
+            feed = Feed(req, 'Comments for "%s"' % doctitle,
+                        'List of comments for the topic "%s"' % doctitle, url)
+            for comment in Comment.get_for_page(page_id):
+                feed.add_item(comment.title, comment.author, comment.url,
+                              comment.parsed_comment_body, comment.pub_date)
         return Response(feed.generate(), mimetype='application/rss+xml')
 
-    def get_recent_comments_feed(self, req):
-        """
-        Get the feed of recent comments.
-        """
-        feed = Feed(req, 'Recent Comments', 'Recent Comments', '')
-        for comment in Comment.get_recent():
-            feed.add_item(comment.title, comment.author, comment.url,
-                          comment.parsed_comment_body, comment.pub_date)
-        return Response(feed.generate(), mimetype='application/rss+xml')
 
     def get_error_404(self, req):
         """
         Show a simple error 404 page.
         """
         return Response(render_template(req, 'not_found.html', self.globalcontext))
+
 
     pretty_type = {
         'data': 'module data',
@@ -553,6 +575,7 @@ class DocumentationApplication(object):
                 'keyword':              term
             }, self.globalcontext), status=404 if is_error_page else 404)
 
+
     def get_user_stylesheet(self, req):
         """
         Stylesheets are exchangeable. Handle them here and
@@ -596,15 +619,14 @@ class DocumentationApplication(object):
 
         try:
             if req.path == 'favicon.ico':
+                # TODO: change this to real favicon?
                 resp = self.get_error_404()
             # require a trailing slash on GET requests
             # this ensures nice looking urls and working relative
             # links for cached resources.
             elif not req.path.endswith('/') and req.method == 'GET':
                 query = req.environ.get('QUERY_STRING', '')
-                if query:
-                    query = '?' + query
-                resp = RedirectResponse(req.path + '/' + query)
+                resp = RedirectResponse(req.path + '/' + (query and '?'+query))
             # index page is special
             elif url == 'index':
                 # presets for settings
@@ -615,38 +637,44 @@ class DocumentationApplication(object):
                 # alias for fuzzy search
                 if 'q' in req.args:
                     resp = RedirectResponse('q/%s/' % req.args['q'])
-                # feeds
-                elif req.args.get('feed') == 'recent_comments':
-                    resp = self.get_recent_comments_feed(req)
                 # stylesheet
                 elif req.args.get('do') == 'stylesheet':
                     resp = self.get_user_stylesheet(req)
                 else:
-                    resp = self.get_page(req, 'index')
-            # go to the search page. this is currently just a redirect
-            # to /q/ which is handled below
+                    resp = self.get_special_page(req, 'index')
+            # go to the search page
+            # XXX: this is currently just a redirect to /q/ which is handled below
             elif url == 'search':
                 resp = self.search(req)
+            # settings page cannot be cached
             elif url == 'settings':
                 resp = self.get_settings_page(req)
             # module index page is special
             elif url == 'modindex':
                 resp = self.get_module_index(req)
+            # genindex page is special too
+            elif url == 'genindex':
+                resp = self.get_special_page(req, 'genindex')
             # start the fuzzy search
             elif url[:2] == 'q/':
                 resp = self.get_keyword_matches(req, url[2:])
-            # source view
-            elif url[:8] == '@source/':
-                resp = self.show_source(req, url[8:])
-            # suggest changes view
-            elif url[:6] == '@edit/':
-                resp = self.suggest_changes(req, url[6:])
-            # suggest changes submit
-            elif url[:8] == '@submit/':
-                resp = self.submit_changes(req, url[8:])
-            # dispatch requests to the admin panel
-            elif url == '@admin' or url[:7] == '@admin/':
-                resp = self.admin_panel.dispatch(req, url[7:])
+            # special URLs
+            elif url[0] == '@':
+                # source view
+                if url[:8] == '@source/':
+                    resp = self.show_source(req, url[8:])
+                # suggest changes view
+                elif url[:6] == '@edit/':
+                    resp = self.suggest_changes(req, url[6:])
+                # suggest changes submit
+                elif url[:8] == '@submit/':
+                    resp = self.submit_changes(req, url[8:])
+                # comments RSS feed
+                elif url[:5] == '@rss/':
+                    resp = self.comments_feed(req, url[5:])
+                # dispatch requests to the admin panel
+                elif url == '@admin' or url[:7] == '@admin/':
+                    resp = self.admin_panel.dispatch(req, url[7:])
             # everything else is handled as page or fuzzy search
             # if a page does not exist.
             else:
