@@ -82,9 +82,23 @@ sub child : method {
 # Arguments: None
 # Returns: Array of content DOM objects
 sub contents : method {
-    my ($dom, @doms) = @_;
+    my ($dom) = @_;
 
     return @{$dom->{content}};
+}
+
+# INSTANCE METHOD.
+# Returns the first DOM in the contents of a DOM.
+# Arguments: None
+# Returns: first DOM object (or undefined)
+sub first : method {
+    my ($dom) = @_;
+
+    my $first;
+    if (@{$dom->{content}}) {
+	$first = $dom->{content}[0];
+    }
+    return $first;
 }
 
 # INSTANCE METHOD.
@@ -293,12 +307,13 @@ sub substitute : method {
 
 # INSTANCE METHOD.
 # Returns the tag of a DOM object
-# Arguments: None
+# Arguments: Optional new tag value
 # Returns: Tag
 sub tag : method {
-    my($dom) = @_;
+    my($dom, $new_tag) = @_;
 
-    $dom->{tag};
+    $dom->{tag} = $new_tag if defined $new_tag;
+    return $dom->{tag};
 }
 
 # Parses text that is in DOM (pseudo-XML) format.
@@ -414,7 +429,7 @@ my (%takes_body_elts, %takes_inline_elts, %is_body_elt, %is_inline_elt);
 # Returns: True if the DOM object can take body elements in its contents
 sub takes_body_elts : method {
     my ($dom) = @_;
-    return $takes_body_elts{$dom->tag};
+    return $takes_body_elts{$dom->tag} || 0;
 }
 
 # INSTANCE METHOD.
@@ -422,7 +437,7 @@ sub takes_body_elts : method {
 # Returns: True if the DOM object can take inline elements in its contents
 sub takes_inline_elts : method {
     my ($dom) = @_;
-    return $takes_inline_elts{$dom->tag};
+    return $takes_inline_elts{$dom->tag} || 0;
 }
 
 # INSTANCE METHOD.
@@ -430,7 +445,7 @@ sub takes_inline_elts : method {
 # Returns: True if the DOM object is a body element
 sub is_body_elt : method {
     my ($dom) = @_;
-    return $is_body_elt{$dom->tag};
+    return $is_body_elt{$dom->tag} || 0;
 }
 
 # INSTANCE METHOD.
@@ -438,7 +453,7 @@ sub is_body_elt : method {
 # Returns: True if the DOM object is an inline element
 sub is_inline_elt : method {
     my ($dom) = @_;
-    return $is_inline_elt{$dom->tag};
+    return $is_inline_elt{$dom->tag} || 0;
 }
 
 }
