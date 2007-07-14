@@ -10,6 +10,7 @@
 """
 from __future__ import with_statement
 
+import re
 import os
 import time
 import heapq
@@ -622,7 +623,7 @@ class BuildEnvironment:
             if newnode:
                 node.replace_self(newnode)
 
-    def create_index(self, builder):
+    def create_index(self, builder, _fixre=re.compile(r'(.*) ([(][^()]*[)])')):
         """Create the real index from the collected index entries."""
         new = {}
 
@@ -667,9 +668,38 @@ class BuildEnvironment:
 
         newlist = new.items()
         newlist.sort(key=lambda t: t[0].lower())
+
+        # fixup entries: transform
+        #   func() (in module foo)
+        #   func() (in module bar)
+        # into
+        #   func()
+        #     (in module foo)
+        #     (in module bar)
+        oldkey = ''
+        oldsubitems = None
+        i = 0
+        while i < len(newlist):
+            key, (targets, subitems) = newlist[i]
+            # cannot move if it hassubitems; structure gets too complex
+            if not subitems:
+                m = _fixre.match(key)
+                if m:
+                    if oldkey == m.group(1):
+                        # prefixes match: add entry as subitem of the previous entry
+                        oldsubitems.setdefault(m.group(2), [[], {}])[0].extend(targets)
+                        del newlist[i]
+                        continue
+                    oldkey = m.group(1)
+                else:
+                    oldkey = key
+            oldsubitems = subitems
+            i += 1
+
+        # group the entries by letter
         def keyfunc((k, v), ltrs=uppercase+'_'):
-            # hack: mutate the subitems dicts to a list
-            v[1] = list(sorted((si, se) for (si, (se, void)) in v[1].iteritems()))
+            # hack: mutate the subitems dicts to a list in the keyfunc
+            v[1] = sorted((si, se) for (si, (se, void)) in v[1].iteritems())
             # now calculate the key
             letter = k[0].upper()
             if letter in ltrs:
