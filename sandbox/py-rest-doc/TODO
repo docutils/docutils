@@ -3,7 +3,7 @@ Global TODO
 
 - write new Makefile
   * automatic version info
-- equivalent to indfix.py, listmodules, ACKS?
+- equivalent to listmodules?
 - make comments per descitem possible
 - explore a "printable" builder (export to latex, most probably)
 - think about the default role
@@ -15,6 +15,7 @@ Global TODO
 done
 ----
 
+- fixup index entries that only differ in "(in foo)" annotations
 - a way to map old URLs to new URLs
 - write a "traditional" stylesheet
 - add refcount functionality
