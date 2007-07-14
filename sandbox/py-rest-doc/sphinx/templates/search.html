@@ -1,5 +1,8 @@
 {% extends "layout.html" %}
 {% set title = 'Search Documentation' %}
+{% block header %}
+    <script type="text/javascript" src="{{ pathto('style/searchtools.js', 1) }}"></script>
+{% endblock %}
 {% block body %}
   <h1 id="search-documentation">Search Documentation</h1>
   <p>
@@ -54,11 +57,4 @@
     </ul>
   {% endif %}
   </div>
-  {% if builder == 'html' %}
-    <script type="text/javascript">
-      $(document).ready(function() {
-        Documentation.Search.init();
-      });
-    </script>
-  {% endif %}
 {% endblock %}
