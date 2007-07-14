@@ -8,7 +8,6 @@ Global TODO
 - explore a "printable" builder (export to latex, most probably)
 - think about the default role
 - add search via Xapian?
-- a way to map old URLs to new URLs?
 - lib-index: links to sections now in ref
 - think about database for comments
 - optionally have a contents tree view in the sidebar (AJAX based)
@@ -16,6 +15,7 @@ Global TODO
 done
 ----
 
+- a way to map old URLs to new URLs
 - write a "traditional" stylesheet
 - add refcount functionality
 - modindex: one column; only toplevel, then expand

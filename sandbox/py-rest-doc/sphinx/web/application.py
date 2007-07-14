@@ -31,6 +31,7 @@ from .util import render_template, render_simple_template, get_target_uri, \
      blackhole_dict, striptags
 from .admin import AdminPanel
 from .userdb import UserDatabase
+from .oldurls import handle_html_url
 from .antispam import AntiSpam
 from .database import connect, set_connection, Comment
 from .wsgiutil import Request, Response, RedirectResponse, \
@@ -87,9 +88,7 @@ class MockBuilder(object):
         return ''
 
 
-class NoCache(Exception):
-    pass
-
+NoCache = object()
 
 def cached(inner):
     """
@@ -97,10 +96,14 @@ def cached(inner):
     """
     def caching_function(self, *args, **kwds):
         gen = inner(self, *args, **kwds)
-        try:
-            cache_id = gen.next()
-        except NoCache, nc:
-            return nc.args[0]
+        cache_id = gen.next()
+        if cache_id is NoCache:
+            response = gen.next()
+            gen.close()
+            if isinstance(response, Response):
+                return response
+            else:
+                return Response(response)
         try:
             text = self.cache[cache_id]
             gen.close()
@@ -338,8 +341,9 @@ class DocumentationApplication(object):
             info = self.env.modules.get(modname)
             if not info:
                 raise NotFound()
-            raise NoCache(RedirectResponse(relative_uri(
-                '/modindex/', info[0][:-4] + '#module-' + modname)))
+            yield NoCache
+            yield RedirectResponse(relative_uri(
+                '/modindex/', info[0][:-4] + '#module-' + modname))
 
         most_frequent = heapq.nlargest(30, self.freqmodules.iteritems(),
                                        lambda x: x[1])
@@ -358,6 +362,7 @@ class DocumentationApplication(object):
 
 
     def handle_new_comment(self, req, context, page_id):
+        # XXX
         # default values for the comment form
         title = comment_body = author = author_mail = ''
         form_error = None
@@ -384,8 +389,9 @@ class DocumentationApplication(object):
                 form_error = 'You comment is too short ' \
                              '(must have at least 20 characters).'
             else:
-                self.cache.pop(page_id, None)
-                # XXX
+                # '|none' can stay since it doesn't include comments
+                self.cache.pop(page_id+'|inline', None)
+                self.cache.pop(page_id+'|bottom', None)
                 comment = Comment(page_id, req.form.get('descname'),
                                   title, author, author_mail,
                                   comment_body)
@@ -406,10 +412,10 @@ class DocumentationApplication(object):
 
     def _insert_comments(self, page_id, context, mode):
         """
-        Insert inline comments into a page body.
+        Insert inline comments into a page context.
         """
         if 'body' not in context:
-            return None
+            return
 
         tx = context['body']
         all_comments = Comment.get_for_page(page_id)
@@ -469,8 +475,13 @@ class DocumentationApplication(object):
         # how does the user want to view comments?
         commentmode = req.session.get('comments', 'inline') if comments else ''
 
-        # there must be different cache entries per comment mode
-        yield page_id + '|' + commentmode
+        # show "old URL" message? -> no caching possible
+        oldurl = req.args.get('oldurl')
+        if oldurl:
+            yield NoCache
+        else:
+            # there must be different cache entries per comment mode
+            yield page_id + '|' + commentmode
 
         # cache miss; load the page and render it
         filename = path.join(self.data_root, page_id[:-3] + 'fpickle')
@@ -481,7 +492,8 @@ class DocumentationApplication(object):
         if commentmode != 'none':
             self._insert_comments(page_id, context, commentmode)
 
-        yield render_template(req, 'page.html', self.globalcontext, context)
+        yield render_template(req, 'page.html', self.globalcontext, context,
+                              {'oldurl': oldurl})
 
 
     @cached
@@ -621,12 +633,16 @@ class DocumentationApplication(object):
             if req.path == 'favicon.ico':
                 # TODO: change this to real favicon?
                 resp = self.get_error_404()
-            # require a trailing slash on GET requests
-            # this ensures nice looking urls and working relative
-            # links for cached resources.
             elif not req.path.endswith('/') and req.method == 'GET':
-                query = req.environ.get('QUERY_STRING', '')
-                resp = RedirectResponse(req.path + '/' + (query and '?'+query))
+                # may be an old URL
+                if url.endswith('.html'):
+                    resp = handle_html_url(self, url)
+                else:
+                    # else, require a trailing slash on GET requests
+                    # this ensures nice looking urls and working relative
+                    # links for cached resources.
+                    query = req.environ.get('QUERY_STRING', '')
+                    resp = RedirectResponse(req.path + '/' + (query and '?'+query))
             # index page is special
             elif url == 'index':
                 # presets for settings
