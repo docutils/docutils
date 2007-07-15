@@ -284,9 +284,14 @@ class BuildEnvironment:
     def update(self, config):
         """
         (Re-)read all files new or changed since last update.
-        Yields filenames as it processes them.
+        Yields a summary and then filenames as it processes them.
         """
         removed, changed = self.get_outdated_files(config)
+        msg = '%s removed, %s changed' % (len(removed), len(changed))
+        if self.config != config:
+            msg = '[config changed] ' + msg
+        yield msg
+
         self.config = config
 
         # clear all files no longer present

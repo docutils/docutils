@@ -6,8 +6,10 @@
 # that aren't pickleable (module imports are okay, they're removed automatically).
 #
 
-# The default replacements for |version| and |release|.
+# The default replacements for |version| and |release|:
+# The short X.Y version.
 version = '2.6'
+# The full version, including alpha/beta/rc tags.
 release = '2.6a0'
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:
