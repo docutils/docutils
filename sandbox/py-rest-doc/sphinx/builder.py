@@ -76,7 +76,8 @@ class Builder(object):
     }
 
     def __init__(self, srcdirname, outdirname, options, env=None,
-                 status_stream=None, warning_stream=None):
+                 status_stream=None, warning_stream=None,
+                 confoverrides=None):
         self.srcdir = srcdirname
         self.outdir = outdirname
         if not path.isdir(path.join(outdirname, '.doctrees')):
@@ -95,6 +96,8 @@ class Builder(object):
         for key, val in self.config.items():
             if isinstance(val, types.ModuleType):
                 del self.config[key]
+        if confoverrides:
+            self.config.update(confoverrides)
 
         self.status_stream = status_stream or sys.stdout
         self.warning_stream = warning_stream or sys.stderr
@@ -189,8 +192,10 @@ class Builder(object):
 
         # while reading, collect all warnings from docutils
         with collect_env_warnings(self):
-            self.msg('reading, updating environment...')
-            for filename in self.env.update(self.config):
+            self.msg('reading, updating environment:', nonl=1)
+            iterator = self.env.update(self.config)
+            self.msg(iterator.next(), nobold=1)
+            for filename in iterator:
                 self.msg(purple(filename), nonl=1, nobold=1)
             self.msg()
 
@@ -305,7 +310,7 @@ class StandaloneHTMLBuilder(Builder):
         self.globalcontext = dict(
             last_updated = self.last_updated,
             builder = self.name,
-            release = self.config['version'],
+            release = self.config['release'],
             parents = [],
             len = len,
             titles = {},
@@ -503,7 +508,7 @@ class WebHTMLBuilder(StandaloneHTMLBuilder):
     name = 'web'
 
     # doesn't use the standalone specific options
-    option_spec = Builder.option_spec
+    option_spec = Builder.option_spec.copy()
     option_spec.update({
         'nostyle': 'Don\'t copy style and script files',
         'nosearchindex': 'Don\'t create a search index for the online search',
@@ -578,7 +583,7 @@ class HTMLHelpBuilder(StandaloneHTMLBuilder):
     """
     name = 'htmlhelp'
 
-    option_spec = Builder.option_spec
+    option_spec = Builder.option_spec.copy()
     option_spec.update({
         'outname': 'Output file base name (default "pydoc")'
     })

@@ -33,6 +33,8 @@ today : string
    output.  Normally, this is today's date and has the format ``April 14,
    2007``.
 
+XXX today_fmt
+
 unused_file : list of strings
    A list of reST filenames that are to be disregarded during building.  This
    could be docs for temporarily disabled modules or documentation that's not
@@ -41,6 +43,10 @@ unused_file : list of strings
 last_updated_format : string
    If this is not an empty string, it will be given to ``time.strftime()`` and
    written to each generated output file after "last updated on:".
+
+use_smartypants : bool
+   If true, use SmartyPants to convert quotes and dashes to the typographically
+   correct entities.
 
 strip_trailing_parentheses : bool
    If true, trailing parentheses will be stripped from ``:func:`` etc.
