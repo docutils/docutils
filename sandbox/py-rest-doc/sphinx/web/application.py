@@ -350,9 +350,8 @@ class DocumentationApplication(object):
         most_frequent = sorted(x[0] for x in most_frequent)
 
         if most_frequent != self.last_most_frequent:
-            yield NoCache
-        else:
-            yield '@modindex'
+            self.cache.pop('@modindex', None)
+        yield '@modindex'
 
         filename = path.join(self.data_root, 'modindex.fpickle')
         with open(filename, 'rb') as f:
