@@ -336,16 +336,6 @@ class DocumentationApplication(object):
         """
         Get the module index or redirect to a module from the module index.
         """
-        modname = req.args.get('mod')
-        if modname:
-            # XXX: from freqentries, handle better!
-            info = self.env.modules.get(modname)
-            if not info:
-                raise NotFound()
-            yield NoCache
-            yield RedirectResponse(relative_uri(
-                '/modindex/', info[0][:-4] + '#module-' + modname))
-
         most_frequent = heapq.nlargest(30, self.freqmodules.iteritems(),
                                        lambda x: x[1])
         most_frequent = [{
@@ -449,9 +439,8 @@ class DocumentationApplication(object):
                          render_simple_template('inlinecomments.html',
                                                 {'id': match.group(1)})),
                         tx)
-        if global_comments:
-            tx += render_simple_template('comments.html',
-                                         {'comments': global_comments})
+        tx += render_simple_template('comments.html',
+                                     {'comments': global_comments})
         context['body'] = tx
 
 

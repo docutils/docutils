@@ -77,10 +77,10 @@ class HTMLTranslator(BaseTranslator):
             self.body.append(', ')
         else:
             self.first_param = 0
-        if not node.has_key('noemph'):
+        if not node.hasattr('noemph'):
             self.body.append('<em>')
     def depart_desc_parameter(self, node):
-        if not node.has_key('noemph'):
+        if not node.hasattr('noemph'):
             self.body.append('</em>')
 
     def visit_desc_optional(self, node):

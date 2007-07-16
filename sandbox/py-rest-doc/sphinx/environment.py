@@ -550,7 +550,7 @@ class BuildEnvironment:
         # set the target paths in the toctrees (they are not known
         # at TOC generation time)
         for node in doctree.traverse(nodes.reference):
-            if node.has_key('anchorname'):
+            if node.hasattr('anchorname'):
                 # a TOC reference
                 node['refuri'] = builder.get_relative_uri(
                     filename, node['refuri']) + node['anchorname']
