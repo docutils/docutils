@@ -16,6 +16,7 @@ import re
 import copy
 import time
 import heapq
+import math
 import difflib
 import tempfile
 import threading
@@ -347,7 +348,11 @@ class DocumentationApplication(object):
 
         most_frequent = heapq.nlargest(30, self.freqmodules.iteritems(),
                                        lambda x: x[1])
-        most_frequent = sorted(x[0] for x in most_frequent)
+        most_frequent = [{
+            'name':         x[0],
+            'size':         100 + math.log(x[1] or 1) * 20,
+            'count':        x[1]
+        } for x in sorted(most_frequent)]
 
         if most_frequent != self.last_most_frequent:
             self.cache.pop('@modindex', None)
@@ -692,6 +697,8 @@ class DocumentationApplication(object):
                 # dispatch requests to the admin panel
                 elif url == '@admin' or url[:7] == '@admin/':
                     resp = self.admin_panel.dispatch(req, url[7:])
+                else:
+                    raise NotFound()
             # everything else is handled as page or fuzzy search
             # if a page does not exist.
             else:
