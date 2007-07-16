@@ -350,13 +350,15 @@ class DocumentationApplication(object):
         most_frequent = sorted(x[0] for x in most_frequent)
 
         if most_frequent != self.last_most_frequent:
-            self.cache.pop('@modindex', None)
-        yield '@modindex'
+            yield NoCache
+        else:
+            yield '@modindex'
 
         filename = path.join(self.data_root, 'modindex.fpickle')
         with open(filename, 'rb') as f:
             context = pickle.load(f)
         context['freqentries'] = most_frequent
+        self.last_most_frequent = most_frequent
         yield render_template(req, 'modindex.html',
                                self.globalcontext, context)
 
