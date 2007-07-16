@@ -263,7 +263,7 @@ class StandaloneHTMLBuilder(Builder):
     def init(self):
         """Load templates."""
         # lazily import this, maybe other builders won't need it
-        from jinja import Environment, FileSystemLoader
+        from .jinja import Environment, FileSystemLoader
 
         # load templates
         self.templates = {}

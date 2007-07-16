@@ -271,6 +271,7 @@ def desc_directive(desctype, arguments, options, content, lineno,
         # and add a reference target for it
         sig = sig.strip()
         signode = addnodes.desc_signature(sig, '')
+        signode['first'] = False
         node.append(signode)
         try:
             if desctype in ('function', 'data', 'class', 'exception',
