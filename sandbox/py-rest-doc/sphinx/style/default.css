@@ -147,6 +147,17 @@ div.sidebar input {
     font-size: 1em;
 }
 
+/* :::: MODULE CLOUD :::: */
+div.modulecloud {
+    padding: 10px 20px 10px 20px;
+    font-size: 110%;
+    line-height: 180%;
+}
+
+div.modulecloud a {
+    padding: 0 5px 0 5px;
+}
+
 /* :::: SEARCH :::: */
 ul.search {
     margin: 10px 0 0 20px;
@@ -258,6 +269,17 @@ div.inlinecomment {
 
 .inlinecomments .meta {
     font-style: italic;
+}
+
+div.commentwindow {
+    position: absolute;
+    left: 400px;
+    top: 200px;
+    width: 400px;
+    height: 300px;
+    background-color: #333;
+    border: 1px solid black;
+    display: none;
 }
 
 
