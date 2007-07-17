@@ -19,10 +19,10 @@ close OUT;
 __END__
 package Text::Restructured::PrestConfig;
 
-$DEFAULTCSS = "${CONFIG{defaultcss}}";
-$SAFE_PERL = "${^X}";
-$TAINT = "${CONFIG{taint}}";
-$VERSION = "${CONFIG{version}}";
-$DOCURL = "${CONFIG{docurl}}";
+$DEFAULTCSS = q[${CONFIG{defaultcss}}];
+$SAFE_PERL = q[${^X}];
+$TAINT = q[${CONFIG{taint}}];
+$VERSION = q[${CONFIG{version}}];
+$DOCURL = q[${CONFIG{docurl}}];
 
 1;
