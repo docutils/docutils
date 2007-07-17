@@ -112,11 +112,11 @@ sub main {
 
     $args =~ s/\n/ /g;
     my $code = << "EOS";
-my \$text = `\Q$args\E 2>/tmp/$$`;
-open ERR, "/tmp/$$";
+my \$text = `\Q$args\E 2>$$.stderr`;
+open ERR, "$$.stderr";
 my \$errmsg = <ERR>;
 close ERR;
-unlink "/tmp/$$";
+unlink "$$.stderr";
 (\$text, \$?, \$errmsg)
 EOS
     my ($text, $syserr, $errmsg) = $Perl::safe->reval($code);
