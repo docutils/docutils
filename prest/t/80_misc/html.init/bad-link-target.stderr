@@ -1,1 +1,1 @@
-Error: /export/home/nodine/tools/prest/blib/lib/Text/Restructured/Writer/html.wrt, line 230: Cannot parse link target 1/0: Illegal division by zero at (eval 108) line 1.
+Error: /export/home/nodine/tools/prest/blib/lib/Text/Restructured/Writer/html.wrt, line 244: Cannot parse link target 1/: syntax error at (eval 101) line 1, at EOF

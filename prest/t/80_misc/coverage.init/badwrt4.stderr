@@ -1,1 +1,1 @@
-Error: ./Text/Restructured/Writer/bad4.wrt, line 1: Illegal division by zero at ./Text/Restructured/Writer/bad4.wrt line 3.
+Error: ./Text/Restructured/Writer/bad4.wrt, line 1: syntax error at ./Text/Restructured/Writer/bad4.wrt line 3, at EOF
