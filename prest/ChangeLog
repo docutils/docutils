@@ -5,6 +5,17 @@ Release Notes
 
 .. contents::
 
+Release 0.3.33
+--------------
+
+There were no functional changes in this release.
+
+* Fixed some tests and expects to be compatible with perl 5.9.5.
+* Modified Makefile.PL hopefully to be compatible with more versions
+  of make.
+* Changed the way the system plug-in directive gets the message from 
+  STDERR so that it will hopefully be compatible with more systems.
+
 Release 0.3.32
 --------------
 prest script:

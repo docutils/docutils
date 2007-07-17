@@ -12,7 +12,7 @@
     %PREST_FILE_FLAGS =
 	(attribution1 => q(-W attribution=parens -W html-prolog=1 -W embed-stylesheet -W stylesheet=none),
 	 attribution2 => q(-W attribution=none -W body-attr='bgcolor=red'),
-	 'bad-link-target' => q(-W link-target='1/0'),
+	 'bad-link-target' => q(-W link-target='1/'),
 	 'cloak-email' => q(-W cloak-email-addresses),
 	 colspecs => q(-W colspecs=0),
 	 entryattr => q(-D entry-attr='class="latin" bgcolor=blue' -D align),
