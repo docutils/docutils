@@ -8,25 +8,50 @@ to reStructuredText.
 What you need to know
 ---------------------
 
-As prerequisites, you need Pygments >= 0.8 and Jinja >= 1.1, easily
-installable from PyPI. The former is used as the highlighter, the latter
-is the templating engine for HTML output.
+This project uses Python 2.5 features, so you'll need a working Python
+2.5 setup.
+
+If you want code highlighting, you need Pygments >= 0.8, easily
+installable from PyPI.  Jinja, the template engine, is included as a
+SVN external.
+
+For the rest of this document, let's assume that you have a Python
+checkout (you need the 2.6 line, i.e. the trunk) in ~/devel/python and
+this checkout in the current directory.
 
 To convert the LaTeX doc to reST, create a target directory for the
-reST sources and run ::
+reST sources and run the converter script::
 
-   python convert.py /path/to/checkout/Doc /path/to/rest/dir
+   mkdir sources
+   python convert.py ~/devel/python/Doc sources
 
-This will convert all LaTeX sources to reST files in the target directory.
+This will convert all LaTeX sources to reST files in the ``sources``
+directory.
 
-Note: the ``inst`` document ("Installing Python Modules") is only
+Note: the ``inst.tex`` document ("Installing Python Modules") is only
 convertable after applying the patch in ``etc/inst.diff``.
+
+The ``sources`` directory contains a ``conf.py`` file which contains
+general configuration for the build process, such as the Python
+version that should be shown, or the date format for "last updated on"
+notes.
+
+
+Building the HTML version
+-------------------------
 
 Then, create a target directory and run ::
 
-   python sphinx-build.py /path/to/rest/dir /path/to/target/dir
+   mkdir build-html
+   python sphinx-build.py -b html sources build-html
 
-This will create HTML files in the target directory.
+This will create HTML files in the ``build-html`` directory.
+
+The ``build-html`` directory will also contain a ``.doctrees``
+directory, which caches pickles containing the docutils doctrees for
+all source files, as well as an ``environment.pickle`` file that
+collects all meta-information and data that's needed to
+cross-reference the sources and generate indices.
 
 
 Running the online (web) version
@@ -34,22 +59,18 @@ Running the online (web) version
 
 First, you need to build the source with the "web" builder::
 
-   python sphinx-build.py -b web /path/to/rest/dir /path/to/target/dir
+   mkdir build-web
+   python sphinx-build.py -b web sources build-web
 
 This will create files with pickled contents for the web application
 in the target directory.
 
 Then, you can run ::
 
-   python sphinx-web.py /path/to/target/dir
+   python sphinx-web.py build-web
 
-which will serve the documentation using wsgiref on localhost:3000.
+which will start a webserver using wsgiref on ``localhost:3000``.  The
+web application has a configuration file ``build-web/webconf.py``,
+where you can configure the server and port for the application as
+well as different other settings specific to the web app.
 
-
-Things That Should Be Improved
-------------------------------
-
--  Offline and online search work completely different. The
-   keywords are just searched from the sidebar and other
-   incompatibilities. It's also questionable if a text search
-   like the current implementation makes sense for the documentation.
