@@ -191,7 +191,7 @@ sub MY::postamble {
     return <<'MAKE_FRAG';
 FIXIN = $(PERLRUNINST) insertperl.pl
 
-$(INST_SCRIPT)/prest : blib/lib/Text/Restructured/PrestConfig.pm
+$(INST_SCRIPT)/prest : lib/Text/Restructured/PrestConfig.pm
 
 .PHONY: doc
 doc ::
