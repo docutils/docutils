@@ -14,7 +14,7 @@ import re
 from os import path
 
 from ..util import relative_uri
-from ..jinja import Environment, FileSystemLoader
+from .._jinja import Environment, FileSystemLoader
 
 
 def get_target_uri(source_filename):
