@@ -440,7 +440,7 @@ span.linkdescr {
     padding-top: 5px;
 }
 
-/* :::: GENINDEX STYLES :::: */
+/* :::: INDEX STYLES :::: */
 
 table.indextable td {
     text-align: left;
@@ -465,6 +465,10 @@ img.toggler {
     margin-right: 3px;
     margin-top: 3px;
     cursor: pointer;
+}
+
+form.pfform {
+    margin: 10px 0 20px 0;
 }
 
 /* :::: GLOBAL STYLES :::: */
