@@ -14,8 +14,15 @@
 
    <h2>All Modules</h2>
 {% endif %}
-   <p>Some module names are followed by an annotation indicating what platform
-     they are available on.</p>
+   <form class="pfform" action="" method="get">
+     Show modules only available on these platforms:<br>
+     {% for pl in platforms -%}
+     <input type="checkbox" name="pf" value="{{ pl }}" id="pl-{{ pl }}"
+            {%- if pl in showpf %} checked="checked"{% endif %}>
+     <label for="pl-{{ pl }}">{{ pl }}</label>
+     {% endfor %}
+     <input type="submit" value="Apply">
+   </form>
 
    <table width="100%" class="indextable" cellspacing="0" cellpadding="2">
    {%- for modname, collapse, cgroup, indent, fname, synops, pform in modindexentries %}
@@ -32,7 +39,7 @@
      {% if fname %}<a href="{{ fname }}">{% endif -%}
      <tt class="xref">{{ modname|e }}</tt>
      {%- if fname %}</a>{% endif %}
-   {%- if pform %} <em>({{ pform }})</em>{% endif -%}
+   {%- if pform[0] %} <em>({{ pform|join(', ') }})</em>{% endif -%}
    </td><td><em>{{ synops|e }}</em></td></tr>
    {%- endif -%}
    {% endfor %}

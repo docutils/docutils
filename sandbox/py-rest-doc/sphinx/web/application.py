@@ -344,14 +344,37 @@ class DocumentationApplication(object):
             'count':        x[1]
         } for x in sorted(most_frequent)]
 
-        if most_frequent != self.last_most_frequent:
-            self.cache.pop('@modindex', None)
-        yield '@modindex'
+        showpf = None
+        newpf = req.args.get('pf')
+        sesspf = req.session.get('pf')
+        if newpf or sesspf:
+            yield NoCache
+            if newpf:
+                req.session['pf'] = showpf = req.args.getlist('pf')
+            else:
+                showpf = sesspf
+        else:
+            if most_frequent != self.last_most_frequent:
+                self.cache.pop('@modindex', None)
+            yield '@modindex'
 
         filename = path.join(self.data_root, 'modindex.fpickle')
         with open(filename, 'rb') as f:
             context = pickle.load(f)
+        if showpf:
+            entries = context['modindexentries']
+            i = 0
+            while i < len(entries):
+                if entries[i][6]:
+                    for pform in entries[i][6]:
+                        if pform in showpf:
+                            break
+                    else:
+                        del entries[i]
+                        continue
+                i += 1
         context['freqentries'] = most_frequent
+        context['showpf'] = showpf or context['platforms']
         self.last_most_frequent = most_frequent
         yield render_template(req, 'modindex.html',
                                self.globalcontext, context)
