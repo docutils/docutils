@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-    sphinx.jinja
-    ~~~~~~~~~~~~
+    sphinx._jinja
+    ~~~~~~~~~~~~~
 
     Jinja glue.
 
@@ -13,6 +13,6 @@ from __future__ import absolute_import
 import sys
 from os import path
 
-sys.path.insert(0, path.join(path.dirname(__file__), 'jinja'))
+sys.path.insert(0, path.dirname(__file__))
 
 from jinja import Environment, FileSystemLoader
