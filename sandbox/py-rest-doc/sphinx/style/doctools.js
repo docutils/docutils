@@ -172,7 +172,7 @@ var Documentation = {
    * make the url absolute
    */
   makeURL : function(relativeURL) {
-    return DOCUMENTATION_OPTIONS.URL_ROOT + relativeURL;
+    return DOCUMENTATION_OPTIONS.URL_ROOT + '/' + relativeURL;
   },
 
   /**
@@ -182,8 +182,8 @@ var Documentation = {
     var openWindows = {};
 
     var Window = function(sectionID) {
-      var url = Documentation.makeURL('@comments/' + DOCUMENTATION_OPTIONS.SOURCE
-        + '/?target=' + $.urlencode(sectionID) + '&mode=plain');
+      this.url = Documentation.makeURL('@comments/' + DOCUMENTATION_OPTIONS.SOURCE
+        + '/?target=' + $.urlencode(sectionID) + '&mode=ajax');
       this.sectionID = sectionID;
 
       this.root = $('<div class="commentwindow"></div>');
@@ -197,8 +197,37 @@ var Documentation = {
       });
 
       this.root.fadeIn('slow');
-      this.body.load(url);
+      this.updateView();
     };
+
+    Window.prototype.updateView = function(data) {
+      var self = this;
+      function update(data) {
+        self.body.html(data.body);
+        $('form', self.body).submit(function() {
+          self.onFormSubmit(this);
+          return false;
+        });
+      }
+
+      if (typeof data == 'undefined')
+        $.getJSON(this.url, function(json) { update(json); });
+      else
+        update(data);
+    }
+
+    Window.prototype.getFormValue = function(name) {
+      return $('input[@name="' + name + '"]')[0].value;
+    }
+
+    Window.prototype.onFormSubmit = function(form) {
+      $.post(this.url, {
+        author:         this.getFormValue('author'),
+        author_mail:    this.getFormValue('author_mail'),
+        title:          this.getFormValue('title'),
+        comment_body:   this.getFormValue('comment_body')
+      }, function(data) { this.updateView(data); });
+    }
 
     Window.prototype.close = function() {
       delete openWindows[this.sectionID];

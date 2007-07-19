@@ -275,8 +275,8 @@ div.commentwindow {
     position: absolute;
     left: 400px;
     top: 200px;
-    width: 400px;
-    height: 300px;
+    width: 600px;
+    height: 600px;
     background-color: #333;
     border: 1px solid black;
     display: none;

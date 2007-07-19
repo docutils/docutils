@@ -36,7 +36,7 @@ from .oldurls import handle_html_url
 from .antispam import AntiSpam
 from .database import connect, set_connection, Comment
 from .wsgiutil import Request, Response, RedirectResponse, \
-     SharedDataMiddleware, NotFound, get_base_uri
+     JSONResponse, SharedDataMiddleware, NotFound, get_base_uri
 
 from ..util import relative_uri, shorten_result
 from ..search import SearchFrontend
@@ -379,55 +379,70 @@ class DocumentationApplication(object):
         yield render_template(req, 'modindex.html',
                                self.globalcontext, context)
 
+    def show_comment_form(self, req, page_id):
+        """
+        Show the "new comment" form.
+        """
+        ajax_mode = req.args.get('mode') == 'ajax'
+        target = req.args.get('target')
+        page_comment_mode = not target
 
-    def handle_new_comment(self, req, context, page_id):
-        # XXX
-        # default values for the comment form
-        title = comment_body = author = author_mail = ''
-        form_error = None
-        preview = None
-
+        form_error = preview = None
         title = req.form.get('title', '').strip()
         author = req.form.get('author', '').strip()
         author_mail = req.form.get('author_mail', '')
         comment_body = req.form.get('comment_body', '')
         fields = (title, author, author_mail, comment_body)
 
-        if req.form.get('preview'):
-            preview = Comment(page_id, title, author, author_mail,
-                              comment_body)
-        # 'homepage' is a forbidden field to thwart bots
-        elif req.form.get('homepage') or self.antispam.is_spam(fields):
-            form_error = 'Your text contains blocked URLs or words.'
-        else:
-            if not all(fields):
-                form_error = 'You have to fill out all fields.'
-            elif _mail_re.search(author_mail) is None:
-                form_error = 'You have to provide a valid e-mail address.'
-            elif len(comment_body) < 20:
-                form_error = 'You comment is too short ' \
-                             '(must have at least 20 characters).'
-            else:
-                # '|none' can stay since it doesn't include comments
-                self.cache.pop(page_id+'|inline', None)
-                self.cache.pop(page_id+'|bottom', None)
-                comment = Comment(page_id, req.form.get('descname'),
-                                  title, author, author_mail,
+        if req.method == 'POST':
+            if req.form.get('preview'):
+                preview = Comment(page_id, title, author, author_mail,
                                   comment_body)
-                comment.save()
-                return RedirectResponse(comment.url)
+            # 'homepage' is a forbidden field to thwart bots
+            elif req.form.get('homepage') or self.antispam.is_spam(fields):
+                form_error = 'Your text contains blocked URLs or words.'
+            else:
+                if not all(fields):
+                    form_error = 'You have to fill out all fields.'
+                elif _mail_re.search(author_mail) is None:
+                    form_error = 'You have to provide a valid e-mail address.'
+                elif len(comment_body) < 20:
+                    form_error = 'You comment is too short ' \
+                                 '(must have at least 20 characters).'
+                else:
+                    # '|none' can stay since it doesn't include comments
+                    self.cache.pop(page_id+'|inline', None)
+                    self.cache.pop(page_id+'|bottom', None)
+                    comment = Comment(page_id, target,
+                                      title, author, author_mail,
+                                      comment_body)
+                    comment.save()
+                    if ajax_mode:
+                        return JSONResponse({'posted': True, 'error': False})
+                    return RedirectResponse(comment.url)
 
-        context.update(
-            preview = preview,
-            comments_form = {
-                'title':         title,
-                'author':        author,
-                'author_mail':   author_mail,
-                'comment_body':  comment_body,
-                'error':         form_error,
-            },
-        )
+        output = render_template(req, '_commentform.html', {
+            'ajax_mode':    ajax_mode,
+            'preview':      preview,
+            'comments_form': {
+                'target':       target,
+                'title':        title,
+                'author':       author,
+                'author_mail':  author_mail,
+                'comment_body': comment_body,
+                'error':        form_error
+            }
+        })
 
+        if ajax_mode:
+            return JSONResponse({
+                'body':         output,
+                'error':        bool(form_error),
+                'posted':       False
+            })
+        return Response(render_template(req, 'commentform.html', {
+            'form':     output
+        }))
 
     def _insert_comments(self, page_id, context, mode):
         """
@@ -481,14 +496,6 @@ class DocumentationApplication(object):
             self.freqmodules[modname] += 1
         # comments enabled?
         comments = self.env.metadata[page_id].get('comments_enabled', True)
-
-        # do form validation and comment saving if the request method is POST.
-        # XXX different URLs
-        if comments and req.method == 'POST':
-            resp = self.handle_new_comment(req, context, page_id)
-            if resp:
-                # may be a redirecting response
-                return
 
         # how does the user want to view comments?
         commentmode = req.session.get('comments', 'inline') if comments else ''
@@ -703,6 +710,9 @@ class DocumentationApplication(object):
                 # suggest changes submit
                 elif url[:8] == '@submit/':
                     resp = self.submit_changes(req, url[8:])
+                # show that comment form
+                elif url[:10] == '@comments/':
+                    resp = self.show_comment_form(req, url[10:])
                 # comments RSS feed
                 elif url[:5] == '@rss/':
                     resp = self.comments_feed(req, url[5:])
