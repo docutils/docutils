@@ -24,6 +24,7 @@ from datetime import datetime
 from cStringIO import StringIO
 
 from .util import lazy_property
+from .json import dump_json
 
 
 HTTP_STATUS_CODES = {
@@ -638,9 +639,15 @@ class RedirectResponse(Response):
 
     def __call__(self, environ, start_response):
         url = get_base_uri(environ) + self.target_url
-
         self.headers['Location'] = url
         return super(RedirectResponse, self).__call__(environ, start_response)
+
+
+class JSONResponse(Response):
+
+    def __init__(self, data):
+        assert not isinstance(data, list), 'list unsafe for json dumping'
+        super(JSONResponse, self).__init__(dump_json(data), mimetype='text/javascript')
 
 
 class SharedDataMiddleware(object):
