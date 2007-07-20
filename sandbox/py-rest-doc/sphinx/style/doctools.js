@@ -176,13 +176,27 @@ var Documentation = {
   },
 
   /**
+   * get the current relative url
+   */
+  getCurrentURL : function() {
+    var path = document.location.pathname;
+    var parts = path.split(/\//);
+    $.each(DOCUMENTATION_OPTIONS.URL_ROOT.split(/\//), function() {
+      if (this == '..')
+        parts.pop();
+    });
+    var url = parts.join('/');
+    return path.substring(url.lastIndexOf('/') + 1, path.length - 1);
+  },
+
+  /**
    * class that represents the comment window
    */
   CommentWindow : (function() {
     var openWindows = {};
 
     var Window = function(sectionID) {
-      this.url = Documentation.makeURL('@comments/' + DOCUMENTATION_OPTIONS.SOURCE
+      this.url = Documentation.makeURL('@comments/' + Documentation.getCurrentURL()
         + '/?target=' + $.urlencode(sectionID) + '&mode=ajax');
       this.sectionID = sectionID;
 
@@ -203,8 +217,13 @@ var Documentation = {
     Window.prototype.updateView = function(data) {
       var self = this;
       function update(data) {
+        if (data.posted)
+          alert("POSTED!!!!!1111");
+        else if (data.error)
+          alert("FORM ERRROR!!!!!!!!1111one one one");
         self.body.html(data.body);
-        $('form', self.body).submit(function() {
+        console.debug(data);
+        $('form', self.body).bind("submit", function() {
           self.onFormSubmit(this);
           return false;
         });
@@ -213,20 +232,26 @@ var Documentation = {
       if (typeof data == 'undefined')
         $.getJSON(this.url, function(json) { update(json); });
       else
-        update(data);
+        $.ajax({
+          url:      this.url,
+          type:     'POST',
+          dataType: 'json',
+          data:     data,
+          success:  function(json) { update(json); }
+        });
     }
 
     Window.prototype.getFormValue = function(name) {
-      return $('input[@name="' + name + '"]')[0].value;
+      return $('*[@name="' + name + '"]', this.body)[0].value;
     }
 
     Window.prototype.onFormSubmit = function(form) {
-      $.post(this.url, {
+      this.updateView({
         author:         this.getFormValue('author'),
         author_mail:    this.getFormValue('author_mail'),
         title:          this.getFormValue('title'),
         comment_body:   this.getFormValue('comment_body')
-      }, function(data) { this.updateView(data); });
+      });
     }
 
     Window.prototype.close = function() {

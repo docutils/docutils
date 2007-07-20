@@ -1,8 +1,7 @@
-  <form action="#comments-new-comment" method="post">
+<form action="?target={{ comments_form.target|e(true) }}" method="post">
     {% if comments_form.error %}
     <div class="error">{{ comments_form.error|e }}</div>
     {% endif %}
-    <input type="hidden" name="target" value="{{ comments_form.target|e(true) }}">
     <p>Note: you can also <a href="{{ pathto('@edit/' + sourcename)|e }}">suggest
     changes</a> to the official documentation text.</p>
     <dl>

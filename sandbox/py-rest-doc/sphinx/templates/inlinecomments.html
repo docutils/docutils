@@ -10,7 +10,7 @@
   {%- if comments %}
   <div class="commentmarker" id="ilc-{{ id }}" title="Comments">{{ comments|length }}</div>
   <div class="inlinecomments">
-    <div class="head">Comments &mdash; <a href="#">write new</a></div>
+    <div class="head">Comments &mdash; <a href="#" onclick="Documentation.CommentWindow.openFor('{{ id }}')">write new</a></div>
     {%- for comment in comments %}
     <div class="inlinecomment" id="comment-{{ comment.comment_id }}">
       <div class="head">{{ comment.title|e }}</div>

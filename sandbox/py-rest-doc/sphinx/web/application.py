@@ -379,10 +379,11 @@ class DocumentationApplication(object):
         yield render_template(req, 'modindex.html',
                                self.globalcontext, context)
 
-    def show_comment_form(self, req, page_id):
+    def show_comment_form(self, req, page):
         """
         Show the "new comment" form.
         """
+        page_id = self.env.get_real_filename(page)
         ajax_mode = req.args.get('mode') == 'ajax'
         target = req.args.get('target')
         page_comment_mode = not target
@@ -411,8 +412,8 @@ class DocumentationApplication(object):
                                  '(must have at least 20 characters).'
                 else:
                     # '|none' can stay since it doesn't include comments
-                    self.cache.pop(page_id+'|inline', None)
-                    self.cache.pop(page_id+'|bottom', None)
+                    self.cache.pop(page_id + '|inline', None)
+                    self.cache.pop(page_id + '|bottom', None)
                     comment = Comment(page_id, target,
                                       title, author, author_mail,
                                       comment_body)
