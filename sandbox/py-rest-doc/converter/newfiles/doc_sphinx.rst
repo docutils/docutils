@@ -28,12 +28,14 @@ version : string
    This consists only of the major and minor version parts, e.g. ``2.5``, even
    for version 2.5.1.
 
-today : string
-   A string that contains the date that should be written to the documentation
-   output.  Normally, this is today's date and has the format ``April 14,
-   2007``.
+today_fmt : string
+   A ``strftime`` format that is used to format a replacement for the
+   ``|today|`` reST substitution.
 
-XXX today_fmt
+today : string
+   A string that can contain a date that should be written to the documentation
+   output literally.  If this is nonzero, it is used instead of
+   ``strftime(today_fmt)``.
 
 unused_file : list of strings
    A list of reST filenames that are to be disregarded during building.  This
