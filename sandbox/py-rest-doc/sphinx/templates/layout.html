@@ -8,7 +8,6 @@
     {%- if builder == 'web' %}
     <link rel="stylesheet" href="{{ pathto('index.rst') }}?do=stylesheet{%
       if in_admin_panel %}&admin=yes{% endif %}" type="text/css">
-    <link rel="stylesheet" href="{{ pathto('style/thickbox.css', 1) }}" type="text/css">
     {%- for link, type, title in page_links %}
     <link rel="alternate" type="{{ type|e(true) }}" title="{{ title|e(true) }}" href="{{ link|e(true) }}">
     {%- endfor %}

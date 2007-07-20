@@ -643,8 +643,9 @@ class BuildEnvironment:
                                 + '#' + tid)
 
         for fn, entries in self.indexentries.iteritems():
+            # new entry types must be listed in directives.py!
             for type, string, tid, alias in entries:
-                if type in ('single', 'ssingle'):
+                if type == 'single':
                     entry, _, subentry = string.partition('!')
                     add_entry(entry, subentry)
                 elif type == 'pair':
@@ -656,13 +657,14 @@ class BuildEnvironment:
                     add_entry(first, second+' '+third)
                     add_entry(second, third+', '+first)
                     add_entry(third, first+' '+second)
-                elif type == 'quadruple':
-                    first, second, third, fourth = \
-                           map(lambda x: x.strip(), string.split(';', 3))
-                    add_entry(first, '%s %s %s' % (second, third, fourth))
-                    add_entry(second, '%s %s, %s' % (third, fourth, first))
-                    add_entry(third, '%s, %s %s' % (fourth, first, second))
-                    add_entry(fourth, '%s %s %s' % (first, second, third))
+# this is a bit ridiculous...
+#                 elif type == 'quadruple':
+#                     first, second, third, fourth = \
+#                            map(lambda x: x.strip(), string.split(';', 3))
+#                     add_entry(first, '%s %s %s' % (second, third, fourth))
+#                     add_entry(second, '%s %s, %s' % (third, fourth, first))
+#                     add_entry(third, '%s, %s %s' % (fourth, first, second))
+#                     add_entry(fourth, '%s %s %s' % (first, second, third))
                 elif type in ('module', 'keyword', 'operator', 'object',
                               'exception', 'statement'):
                     add_entry(string, type)
@@ -670,6 +672,9 @@ class BuildEnvironment:
                 elif type == 'builtin':
                     add_entry(string, 'built-in function')
                     add_entry('built-in function', string)
+                else:
+                    print >>self.warning_stream, \
+                          "unknown index entry type %r in %s" % (type, fn)
 
         newlist = new.items()
         newlist.sort(key=lambda t: t[0].lower())
