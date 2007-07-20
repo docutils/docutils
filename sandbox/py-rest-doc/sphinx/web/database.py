@@ -87,7 +87,10 @@ class Comment(object):
 
     @property
     def url(self):
-        return '%s#comment-%s' % (self.associated_page[:-4], self.comment_id)
+        return '%s#comment-%s' % (
+            self.associated_page[:-4],
+            self.comment_id
+        )
 
     @property
     def parsed_comment_body(self):
