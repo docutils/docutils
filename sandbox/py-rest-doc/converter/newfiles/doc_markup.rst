@@ -346,10 +346,6 @@ to objects:
    The name of a grammar token (used in the reference manual to create links
    between production displays).
 
-.. _doc-ref-role:
-
-.. XXX: describe "ref"
-
 ---------
 
 The following roles don't do anything special except formatting the text
@@ -478,6 +474,32 @@ The following roles generate external links:
 
 Note that there are no special roles for including hyperlinks as you can use
 the standard reST markup for that purpose.
+
+
+.. _doc-ref-role:
+
+Cross-linking markup
+--------------------
+
+To support cross-referencing to arbitrary sections in the documentation, the
+standard reST labels are "abused" a bit:  Every label must precede a section
+title; and every label name must be unique throughout the entire documentation
+source.
+
+You can then reference to these sections using the ``:ref:`label-name``` role.
+
+Example::
+
+   .. _my-reference-label:
+
+   Section to cross-reference
+   --------------------------
+
+   This is the text of the section.
+
+   It refers to the section itself, see :ref:`my-reference-label`.
+
+The ``:ref:`` invocation is replaced with the section title.
 
 
 Paragraph-level markup
@@ -613,7 +635,44 @@ tables of contents.  The ``toctree`` directive is the central element.
 Index-generating markup
 -----------------------
 
-XXX
+Sphinx automatically creates index entries from all information units (like
+functions, classes or attributes) like discussed before.
+
+However, there is also an explicit directive available, to make the index more
+comprehensive and enable index entries in documents where information is not
+mainly contained in information units, such as the language reference.
+
+The directive is ``index`` and contains one or more index entries.  Each entry
+consists of a type and a value, separated by a colon.
+
+For example::
+
+   .. index::
+      single: execution!context
+      module: __main__
+      module: sys
+      triple: module; search; path
+
+This directive contains five entries, which will be converted to entries in the
+generated index which link to the exact location of the index statement (or, in
+case of offline media, the corresponding page number).
+
+The possible entry types are:
+
+single
+   Creates a single index entry.  Can be made a subentry by separating the
+   subentry text with a semicolon (this is also used below to describe what
+   entries are created).
+pair
+   ``pair: loop; statement`` is a shortcut that creates two index entries,
+   namely ``loop; statement`` and ``statement; loop``.
+triple
+   Likewise, ``triple: module; search; path`` is a shortcut that creates three
+   index entries, which are ``module; search path``, ``search; path, module`` and
+    ``path; module search``.
+module, keyword, operator, object, exception, statement, builtin
+   These all create two index entries.  For example, ``module: hashlib`` creates
+   the entries ``module; hashlib`` and ``hashlib; module``.
 
 
 Grammar production displays

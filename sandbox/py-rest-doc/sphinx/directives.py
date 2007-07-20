@@ -21,6 +21,11 @@ from . import addnodes
 
 # ------ index markup --------------------------------------------------------------
 
+entrytypes = [
+    'single', 'pair', 'triple', 'quadruple',
+    'module', 'keyword', 'operator', 'object', 'exception', 'statement', 'builtin',
+]
+
 def index_directive(name, arguments, options, content, lineno,
                     content_offset, block_text, state, state_machine):
     arguments = arguments[0].split('\n')

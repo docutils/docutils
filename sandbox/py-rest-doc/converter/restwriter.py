@@ -276,6 +276,7 @@ class RestWriter(object):
                 if ';' in textarg:
                     raise WriterError("semicolon in index args: " + textarg)
                 textarg += subitem
+                textarg = textarg.replace('!', '; ')
                 textargs.append(textarg)
             return '%s: %s' % (self.indexentry_mapping[cmdname],
                                '; '.join(textarg for textarg in textargs
