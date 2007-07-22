@@ -6,7 +6,7 @@
     Utility functions for Sphinx.
 
     :copyright: 2007 by Georg Brandl.
-    :license: BSD license.
+    :license: Python license.
 """
 
 import os

@@ -6,7 +6,7 @@
     Builder classes for different output formats.
 
     :copyright: 2007 by Georg Brandl.
-    :license: BSD license.
+    :license: Python license.
 """
 from __future__ import with_statement
 

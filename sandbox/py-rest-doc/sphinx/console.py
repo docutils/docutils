@@ -7,7 +7,7 @@
 
     :copyright: 1998-2004 by the Gentoo Foundation.
     :copyright: 2006-2007 by Georg Brandl.
-    :license: GNU GPL.
+    :license: Python license.
 """
 
 esc_seq = "\x1b["
