@@ -4,15 +4,12 @@
 
    <h1 id="global-module-index">Global Module Index</h1>
 {% if builder == 'web' and freqentries %}
-   <h2>Most Popular Modules</h2>
-
+   <p>Most popular modules:</p>
    <div class="modulecloud">
    {%- for module in freqentries %}
      <a href="../q/{{ module.name|e }}/" style="font-size: {{ module.size }}%">{{ module.name|e }}</a>
    {%- endfor %}
    </div>
-
-   <h2>All Modules</h2>
 {% endif %}
    <form class="pfform" action="" method="get">
      Show modules only available on these platforms:<br>
