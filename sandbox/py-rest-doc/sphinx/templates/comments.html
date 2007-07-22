@@ -3,7 +3,7 @@
     {% for comment in comments %}
       <div class="comment" id="comment-{{ comment.comment_id }}">
         <h4>{{ comment.title|e }}
-        {%- if comment.associated_name %} &mdash; for
+        {%- if comment.associated_name %} &mdash; on
         <a href="#{{ comment.associated_name }}">{{-
           comment.associated_name }}</a>{% endif %}</h4>
         <div class="text">{{ comment.parsed_comment_body }}</div>

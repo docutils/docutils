@@ -307,6 +307,10 @@ div#comments div.comment h4 {
     margin: 0;
 }
 
+div#comments div.comment h4 a {
+    color: #d5f4f4;
+}
+
 div.inlinecomments div.comment div.text,
 div.commentwindow div.comment div.text,
 div#comments div.comment div.text {
