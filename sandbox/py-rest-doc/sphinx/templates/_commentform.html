@@ -14,6 +14,18 @@
     </dl>
     <input type="text" size="12" name="homepage" id="homepage">
     <textarea name="comment_body" rows="7" cols="50">{{ comments_form.comment_body|e }}</textarea>
+    {% if preview %}
+    <div class="preview">
+      <h4>Preview</h4>
+      <div class="comment">
+        <h4>{{ preview.title|e or '&nbsp;' }}</h4>
+        <div class="text">{{ preview.parsed_comment_body or '&nbsp;' }}</div>
+        <div class="meta">by {{ preview.author|e }}, written on
+        {{ preview.pub_date|datetimeformat }} |
+        <a href="#">#</a></div>
+      </div>
+    </div>
+    {% endif %}
     <div class="actions">
       <input type="submit" value="Submit comment">
       <input type="submit" name="preview" value="Preview">

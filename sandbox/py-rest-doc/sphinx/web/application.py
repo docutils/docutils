@@ -397,7 +397,7 @@ class DocumentationApplication(object):
 
         if req.method == 'POST':
             if req.form.get('preview'):
-                preview = Comment(page_id, title, author, author_mail,
+                preview = Comment(page_id, target, title, author, author_mail,
                                   comment_body)
             # 'homepage' is a forbidden field to thwart bots
             elif req.form.get('homepage') or self.antispam.is_spam(fields):
@@ -484,11 +484,10 @@ class DocumentationApplication(object):
                              'comment_url': comment_url
                          },)),
                         tx)
-        elif mode != 'none':
-            tx += render_template(req, 'comments.html', {
-                'comments':         global_comments,
-                'comment_url':      comment_url
-            })
+        tx += render_template(req, 'comments.html', {
+            'comments':         global_comments,
+            'comment_url':      comment_url
+        })
         context['body'] = tx
 
 

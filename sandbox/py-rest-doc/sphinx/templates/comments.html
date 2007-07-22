@@ -4,26 +4,19 @@
       <div class="comment" id="comment-{{ comment.comment_id }}">
         <h4>{{ comment.title|e }}
         {%- if comment.associated_name %} &mdash; for
-        <a href="#{{ comment.associated_name }}">
-        <strong>{{ comment.associated_name }}</strong></a>{% endif %}</h4>
-        {{ comment.parsed_comment_body }}
-        <p class="meta">by {{ comment.author|e }}, written on
+        <a href="#{{ comment.associated_name }}">{{-
+          comment.associated_name }}</a>{% endif %}</h4>
+        <div class="text">{{ comment.parsed_comment_body }}</div>
+        <div class="meta">by {{ comment.author|e }}, written on
           {{ comment.pub_date|datetimeformat }} |
-          <a href="#comment-{{ comment.comment_id }}">#</a></p>
+          <a href="#comment-{{ comment.comment_id }}">#</a></div>
       </div>
     {% else %}
-      <div class="comment">
+      <div class="nocomments">
         There are no user contributed notes for this page.
       </div>
     {% endfor %}
-    {% if preview %}
-      <h4>Preview &mdash; Your Comment</h4>
-      <div class="comment">
-        <h4>{{ preview.title|e }}</h4>
-        {{ preview.parsed_comment_body }}
-        <p class="meta">by {{ preview.author|e }}, written on
-        {{ preview.pub_date|datetimeformat }} |
-        <a href="#">#</a></p>
-      </div>
-    {% endif %}
+    <div class="actions">
+      <a class="newcomment" href="{{ pathto(comment_url, 1)|e }}">add comment to page</a>
+    </div>
   </div>
