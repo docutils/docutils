@@ -419,7 +419,8 @@ class DocumentationApplication(object):
                                       comment_body)
                     comment.save()
                     if ajax_mode:
-                        return JSONResponse({'posted': True, 'error': False})
+                        return JSONResponse({'posted': True, 'error': False,
+                                             'commentID': comment.comment_id})
                     return RedirectResponse(comment.url)
 
         output = render_template(req, '_commentform.html', {
@@ -445,13 +446,15 @@ class DocumentationApplication(object):
             'form':     output
         }))
 
-    def _insert_comments(self, page_id, context, mode):
+    def _insert_comments(self, req, url, context, mode):
         """
         Insert inline comments into a page context.
         """
         if 'body' not in context:
             return
 
+        comment_url = '@comments/%s/' % url
+        page_id = self.env.get_real_filename(url)
         tx = context['body']
         all_comments = Comment.get_for_page(page_id)
         global_comments = []
@@ -463,11 +466,11 @@ class DocumentationApplication(object):
             if not comments:
                 continue
             tx = re.sub('<!--#%s#-->' % name,
-                        render_simple_template('inlinecomments.html',
-                                               {'comments' : comments,
-                                                'id' : name,
-                                                'mode': mode,
-                                                }),
+                        render_template(req, 'inlinecomments.html', {
+                            'comments':     comments,
+                            'id':           name,
+                            'comment_url':  comment_url,
+                            'mode':         mode}),
                         tx)
             if mode == 'bottom':
                 global_comments.extend(comments)
@@ -475,11 +478,17 @@ class DocumentationApplication(object):
             # replace all markers for items without comments
             tx = re.sub('<!--#([^#]*)#-->',
                         (lambda match:
-                         render_simple_template('inlinecomments.html',
-                                                {'id': match.group(1)})),
+                         render_template(req, 'inlinecomments.html', {
+                             'id':          match.group(1),
+                             'mode':        'inline',
+                             'comment_url': comment_url
+                         },)),
                         tx)
-        tx += render_simple_template('comments.html',
-                                     {'comments': global_comments})
+        elif mode != 'none':
+            tx += render_template(req, 'comments.html', {
+                'comments':         global_comments,
+                'comment_url':      comment_url
+            })
         context['body'] = tx
 
 
@@ -516,7 +525,7 @@ class DocumentationApplication(object):
 
         # add comments to paqe text
         if commentmode != 'none':
-            self._insert_comments(page_id, context, commentmode)
+            self._insert_comments(req, url, context, commentmode)
 
         yield render_template(req, 'page.html', self.globalcontext, context,
                               {'oldurl': oldurl})

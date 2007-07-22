@@ -1,3 +1,5 @@
+/// XXX: make it cross browser
+
 /**
  * make the code below compatible with browsers without
  * an installed firebug like debugger
@@ -27,8 +29,10 @@ jQuery.urlencode = encodeURIComponent;
  * current request. Multiple values per key are supported,
  * it will always return arrays of strings for the value parts.
  */
-jQuery.getQueryParameters = function() {
-  var parts = document.location.search.substring(1).split('&');
+jQuery.getQueryParameters = function(s) {
+  if (typeof s == 'undefined')
+    s = document.location.search;
+  var parts = s.substr(s.indexOf('?') + 1).split('&');
   var result = {};
   for (var i = 0; i < parts.length; i++) {
     var tmp = parts[i].split('=', 2);
@@ -88,35 +92,13 @@ jQuery.fn.highlightText = function(text, className) {
  * Small JavaScript module for the documentation.
  */
 var Documentation = {
+
   init : function() {
     this.addContextElements();
-
-    // fix firefox anchor bug
-    if (document.location.hash && $.browser.mozilla)
-       window.setTimeout(function() {
-         document.location.href += '';
-       }, 10);
+    this.fixFirefoxAnchorBug();
     this.highlightSearchWords();
-
-    // modindex toggle buttons
-    $('img.toggler').click(function() {
-      var src = $(this).attr('src');
-      var idnum = $(this).attr('id').substr(7);
-      console.log($('tr.cg-' + idnum).toggle());
-      if (src.substr(-9) == 'minus.png')
-        $(this).attr('src', src.substr(0, src.length-9) + 'plus.png');
-      else
-        $(this).attr('src', src.substr(0, src.length-8) + 'minus.png');
-    }).css('display', '').click();
-
-    // inline comments
-    $('.inlinecomments').hide();
-    $('.commentmarker').css('cursor', 'pointer').click(function() {
-      $(this).next().toggle();
-    });
-    $('.nocommentmarker').css('cursor', 'pointer').click(function() {
-      Documentation.CommentWindow.openFor(this.id.substr(4));
-    });
+    this.initModIndex();
+    this.initComments();
   },
 
   /**
@@ -140,6 +122,16 @@ var Documentation = {
   },
 
   /**
+   * workaround a firefox stupidity
+   */
+  fixFirefoxAnchorBug : function() {
+    if (document.location.hash && $.browser.mozilla)
+      window.setTimeout(function() {
+        document.location.href += '';
+      }, 10);
+  },
+
+  /**
    * highlight the search words provided in the url in the text
    */
   highlightSearchWords : function() {
@@ -152,20 +144,78 @@ var Documentation = {
           body.highlightText(this.toLowerCase(), 'highlight');
         });
       }, 10);
-      $('<li class="highlight-link"><a href="javascript:Document.' +
+      $('<li class="highlight-link"><a href="javascript:Documentation.' +
         'hideSearchWords()">Hide Search Matches</a></li>')
           .appendTo($('.sidebar .this-page-menu'));
     }
   },
+
+  /**
+   * init the modindex toggle buttons
+   */
+  initModIndex : function() {
+    $('img.toggler').click(function() {
+      var src = $(this).attr('src');
+      var idnum = $(this).attr('id').substr(7);
+      console.log($('tr.cg-' + idnum).toggle());
+      if (src.substr(-9) == 'minus.png')
+        $(this).attr('src', src.substr(0, src.length-9) + 'plus.png');
+      else
+        $(this).attr('src', src.substr(0, src.length-8) + 'minus.png');
+    }).css('display', '').click();
+  },
   
+  /**
+   * init the inline comments
+   */
+  initComments : function() {
+    $('.inlinecomments div.actions').each(function() {
+      this.innerHTML += ' | ';
+      $(this).append($('<a href="#">hide comments</a>').click(function() {
+        $(this).parent().parent().toggle();
+        return false;
+      }));
+    });
+    $('.inlinecomments .comments').hide();
+    $('.inlinecomments a.bubble').each(function() {
+      $(this).click($(this).is('.emptybubble') ? function() {
+          var params = $.getQueryParameters(this.href);
+          Documentation.newComment(params.target[0]);
+          return false;
+        } : function() {
+          $('.comments', $(this).parent().parent()[0]).toggle();
+          return false;
+      });
+    });
+
+    /* if a comment as directly adressed show it */
+    if (document.location.hash.match(/^#comment-/))
+      $('.inlinecomments .comments ' + document.location.hash)
+        .parent().toggle();
+  },
+
   /**
    * helper function to hide the search marks again
    */
   hideSearchWords : function() {
     $('.sidebar .this-page-menu li.highlight-link').fadeOut(300);
-    $('span.highlight').each(function() {
-      this.className = '';
-    });
+    $('span.highlight').removeClass('highlight');
+  },
+
+  /**
+   * show the comment window for a certain id or the whole page.
+   */
+  newComment : function(id) {
+    Documentation.CommentWindow.openFor(id || '');
+  },
+
+  /**
+   * write a new comment from within a comment view box
+   */
+  newCommentFromBox : function(link) {
+    var params = $.getQueryParameters(link.href);
+    $(link).parent().parent().fadeOut('slow');
+    this.newComment(params.target);
   },
 
   /**
@@ -203,13 +253,17 @@ var Documentation = {
       this.root = $('<div class="commentwindow"></div>');
       this.root.appendTo($('body'));
       this.title = $('<h3>New Comment</h3>').appendTo(this.root);
-      this.body = $('<div class="body">please wait...</div>').appendTo(this.root);
+      this.body = $('<div class="form">please wait...</div>').appendTo(this.root);
       this.resizeHandle = $('<div class="resizehandle"></div>').appendTo(this.root);
 
       this.root.Draggable({
         handle:       this.title[0],
       });
 
+      this.root.css({
+        left:         window.innerWidth / 2 - $(this.root).width() / 2,
+        top:          window.scrollY + (window.innerHeight / 2 - 150)
+      });
       this.root.fadeIn('slow');
       this.updateView();
     };
@@ -217,16 +271,27 @@ var Documentation = {
     Window.prototype.updateView = function(data) {
       var self = this;
       function update(data) {
-        if (data.posted)
-          alert("POSTED!!!!!1111");
-        else if (data.error)
-          alert("FORM ERRROR!!!!!!!!1111one one one");
-        self.body.html(data.body);
-        console.debug(data);
-        $('form', self.body).bind("submit", function() {
-          self.onFormSubmit(this);
-          return false;
-        });
+        if (data.posted) {
+          document.location.hash = '#comment-' + data.commentID;
+          document.location.reload();
+        }
+        else {
+          self.body.html(data.body);
+          $('div.actions', self.body).append($('<input>')
+            .attr('type', 'button')
+            .attr('value', 'Close')
+            .click(function() { self.close(); })
+          )
+          $('form', self.body).bind("submit", function() {
+            self.onFormSubmit(this);
+            return false;
+          });
+
+          if (data.error) {
+            self.root.Highlight(1000, '#aadee1');
+            $('div.error', self.root).slideDown(500);
+          }
+        }
       }
 
       if (typeof data == 'undefined')
@@ -255,9 +320,10 @@ var Documentation = {
     }
 
     Window.prototype.close = function() {
+      var self = this;
       delete openWindows[this.sectionID];
       this.root.fadeOut('slow', function() {
-        this.root.remove();
+        self.root.remove();
       });
     }
 
