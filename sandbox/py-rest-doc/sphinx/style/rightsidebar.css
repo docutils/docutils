@@ -7,6 +7,10 @@ div.sidebar {
     float: right;
 }
 
-div.body {
+div.bodywrapper {
     margin: 0 230px 0 0;
+}
+
+div.inlinecomments {
+    right: 250px;
 }
