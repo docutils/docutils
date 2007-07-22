@@ -19,17 +19,20 @@ For the rest of this document, let's assume that you have a Python
 checkout (you need the 2.6 line, i.e. the trunk) in ~/devel/python and
 this checkout in the current directory.
 
-To convert the LaTeX doc to reST, create a target directory for the
-reST sources and run the converter script::
+To convert the LaTeX doc to reST, you first have to apply the patch in
+``etc/inst.diff`` to the ``inst/inst.tex`` LaTeX file in the Python
+checkout::
+
+   patch -d ~/devel/python/Doc -p0 < etc/inst.diff
+
+Then, create a target directory for the reST sources and run the
+converter script::
 
    mkdir sources
    python convert.py ~/devel/python/Doc sources
 
 This will convert all LaTeX sources to reST files in the ``sources``
 directory.
-
-Note: the ``inst.tex`` document ("Installing Python Modules") is only
-convertable after applying the patch in ``etc/inst.diff``.
 
 The ``sources`` directory contains a ``conf.py`` file which contains
 general configuration for the build process, such as the Python
