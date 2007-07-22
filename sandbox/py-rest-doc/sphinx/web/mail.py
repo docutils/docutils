@@ -7,7 +7,7 @@
 
     :copyright: 2004-2007 by Gerold Penz.
                 2007 by Georg Brandl.
-    :license: LGPL
+    :license: Python license.
 """
 
 import os.path

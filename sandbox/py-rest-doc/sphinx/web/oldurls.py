@@ -6,7 +6,7 @@
     Handle old URLs gracefully.
 
     :copyright: 2007 by Georg Brandl.
-    :license: BSD license.
+    :license: Python license.
 """
 
 import re

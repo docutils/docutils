@@ -101,6 +101,7 @@ def cached(inner):
         if cache_id is NoCache:
             response = gen.next()
             gen.close()
+            # this could also return a RedirectResponse...
             if isinstance(response, Response):
                 return response
             else:
