@@ -187,8 +187,10 @@ var Documentation = {
           return false;
       });
     });
-
-    /* if a comment as directly adressed show it */
+    $('#comments div.actions a.newcomment').click(function() {
+      Documentation.newComment();
+      return false;
+    });
     if (document.location.hash.match(/^#comment-/))
       $('.inlinecomments .comments ' + document.location.hash)
         .parent().toggle();
@@ -281,9 +283,12 @@ var Documentation = {
             .attr('type', 'button')
             .attr('value', 'Close')
             .click(function() { self.close(); })
-          )
+          );
+          $('div.actions input[@name="preview"]')
+            .attr('type', 'button')
+            .click(function() { self.submitForm($('form', self.body)[0], true); });
           $('form', self.body).bind("submit", function() {
-            self.onFormSubmit(this);
+            self.submitForm(this);
             return false;
           });
 
@@ -310,12 +315,13 @@ var Documentation = {
       return $('*[@name="' + name + '"]', this.body)[0].value;
     }
 
-    Window.prototype.onFormSubmit = function(form) {
+    Window.prototype.submitForm = function(form, previewMode) {
       this.updateView({
-        author:         this.getFormValue('author'),
-        author_mail:    this.getFormValue('author_mail'),
-        title:          this.getFormValue('title'),
-        comment_body:   this.getFormValue('comment_body')
+        author:         form.author.value,
+        author_mail:    form.author_mail.value,
+        title:          form.title.value,
+        comment_body:   form.comment_body.value,
+        preview:        previewMode ? 'yes' : ''
       });
     }
 

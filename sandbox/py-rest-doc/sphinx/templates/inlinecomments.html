@@ -18,7 +18,7 @@
   </div>
   {%- if comments %}
   <div class="comments">
-    <h2>Comments</h2>
+    <h3>Comments</h3>
     <div class="actions"><a href="{{ pathto(comment_url, 1) }}?target={{
         id }}" onclick="Documentation.newCommentFromBox(this); return false">write new comment</a></div>
     {%- for comment in comments %}

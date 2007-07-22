@@ -188,10 +188,10 @@ ul.keywordmatches li.goodmatch a {
 /* :::: COMMON FORM STYLES :::: */
 
 div.actions {
-    border-top: 1px solid #aaa;
-    background-color: #ddd;
-    margin: 10px 0 0 -20px;
-    padding: 5px 0 5px 20px;
+    padding: 5px 10px 5px 10px;
+    border-top: 1px solid #cbe7e5;
+    border-bottom: 1px solid #cbe7e5;
+    background-color: #e0f6f4;
 }
 
 form dl {
@@ -214,9 +214,6 @@ div.error {
     margin: 5px 20px 0 0;
     padding: 5px;
     border: 1px solid #d00;
-    /*border: 2px solid #05171e;
-    background-color: #092835;
-    color: white;*/
     font-weight: bold;
 }
 
@@ -266,7 +263,17 @@ div.inlinecomments div.comments {
     z-index: 150;
 }
 
-div.inlinecomments div.comments h2 {
+div#comments {
+    border: 1px solid #2eabb0;
+}
+
+div#comments div.nocomments {
+    padding: 10px;
+    font-weight: bold;
+}
+
+div.inlinecomments div.comments h3,
+div#comments h3 {
     margin: 0;
     padding: 0;
     background-color: #2eabb0;
@@ -278,26 +285,38 @@ div.inlinecomments div.comments h2 {
 div.inlinecomments div.comments div.actions {
     padding: 4px;
     margin: 0;
-    border: none;
-    border-bottom: 1px solid #cbe7e5;
-    background-color: #e0f6f4;
+    border-top: none;
 }
 
-div.inlinecomments div.comment h4 {
+div#comments div.comment {
+    margin: 10px;
+    border: 1px solid #2eabb0;
+}
+
+div.inlinecomments div.comment h4,
+div.commentwindow div.comment h4,
+div#comments div.comment h4 {
     margin: 10px 0 0 0;
-    padding: 0;
     background-color: #2eabb0;
     color: white;
     border: none;
     padding: 1px 4px 1px 4px;
 }
 
-div.inlinecomments div.comment div.text {
+div#comments div.comment h4 {
+    margin: 0;
+}
+
+div.inlinecomments div.comment div.text,
+div.commentwindow div.comment div.text,
+div#comments div.comment div.text {
     margin: -5px 0 -5px 0;
     padding: 0 10px 0 10px;
 }
 
-div.inlinecomments div.comment div.meta {
+div.inlinecomments div.comment div.meta,
+div.commentwindow div.comment div.meta,
+div#comments div.comment div.meta {
     text-align: right;
     padding: 2px 10px 2px 0;
     font-size: 95%;
@@ -317,7 +336,6 @@ div.commentwindow {
 
 div.commentwindow h3 {
     margin: 0;
-    padding: 0;
     background-color: #2eabb0;
     color: white;
     border: none;
@@ -330,8 +348,6 @@ div.commentwindow div.actions {
     margin: 10px -10px 0 -10px;
     padding: 4px 10px 4px 10px;
     color: #538893;
-    border-top: 1px solid #cbe7e5;
-    background-color: #e0f6f4;
 }
 
 div.commentwindow div.actions input {
@@ -362,121 +378,27 @@ div.commentwindow div.form textarea {
     width: 99%;
 }
 
-/* :::: COMMENTS :::: */
-div#comments {
-    background-color: #ccc;
-    margin: 40px -20px -30px -20px;
-    padding: 0 0 1px 0;
+div.commentwindow div.preview {
+    margin: 10px 0 10px 0;
+    background-color: #70d0d4;
+    padding: 0 1px 1px 25px;
 }
 
-div#comments h3 {
-    background-color: #aaa;
-    border-bottom: 1px solid #09232e;
-    color: #333;
-    margin: 0 0 20px 0;
-}
-
-div#comments h4 {
-    margin: 30px 0 20px 0;
-    background-color: #aaa;
-    border-bottom: 1px solid #09232e;
-    color: #333;
-}
-
-div#new-comment-box form {
-    display: block;
-    margin: 0 0 0 20px;
-}
-
-div#new-comment-box textarea {
-    width: 98%;
-    height: 160px;
-}
-
-div#new-comment-box div.help {
-    /*padding: 10px 10px 0 10px;*/
-    margin: 20px 20px 10px 0;
-    background-color: #ccc;
-    color: #333;
-    /*border: 1px solid #05171e;*/
-}
-
-div#new-comment-box div.help p {
-    margin: 0;
-    padding: 0 0 10px 0;
-}
-
-div#new-comment-box input, div#new-comment-box textarea {
-    font-family: 'Bitstream Vera Sans', 'Arial', sans-serif;
-    font-size: 13px;
-    color: black;
-    background-color: #aaa;
-    border: 1px solid #092835;
-}
-
-div#new-comment-box input[type="reset"],
-div#new-comment-box input[type="submit"] {
-    cursor: pointer;
-    font-weight: bold;
-    padding: 2px;
-    margin: 5px 5px 5px 0;
-    background-color: #666;
+div.commentwindow div.preview h4 {
+    margin: 0 0 -5px -20px;
+    padding: 4px 0 0 4px;
     color: white;
+    font-size: 18px;
 }
 
-div#comments div.comment {
-    margin: 10px 10px 10px 20px;
-    padding: 10px;
-    border: 1px solid #0f3646;
-    background-color: #aaa;
-    color: #333;
+div.commentwindow div.preview div.comment {
+    background-color: #f2fbfd;
 }
 
-div#comments div.comment p {
-    margin: 5px 0 5px 0;
-}
-
-div#comments div.comment p.meta {
-    font-style: italic;
-    color: #444;
-    text-align: right;
-    margin: -5px 0 -5px 0;
-}
-
-div#comments div.comment h4 {
-    margin: -10px -10px 5px -10px;
-    padding: 3px;
-    font-size: 15px;
-    background-color: #888;
-    color: white;
-    border: 0;
-    /*border-bottom: 1px solid #0f3646;*/
-}
-
-div#comments div.comment pre,
-div#comments div.comment tt {
-    background-color: #ddd;
-    color: #111;
-    border: none;
-}
-
-div#comments div.comment a {
-    color: #fff;
-    text-decoration: underline;
-}
-
-div#comments div.comment blockquote {
-    margin: 10px;
-    padding: 10px;
-    border-left: 1px solid #0f3646;
-    /*border: 1px solid #0f3646;
-    background-color: #071c25;*/
-}
-
-div#comments em.important {
-    color: #d00;
-    font-weight: bold;
-    font-style: normal;
+div.commentwindow div.preview div.comment h4 {
+    margin: 10px 0 0 0!important;
+    padding: 1px 4px 1px 4px!important;
+    font-size: 16px;
 }
 
 /* :::: SUGGEST CHANGES :::: */
