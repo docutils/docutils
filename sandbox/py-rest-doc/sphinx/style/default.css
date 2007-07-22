@@ -222,7 +222,6 @@ div.error {
 div.inlinecomments {
     position: absolute;
     right: 20px;
-    z-index: 100;
 }
 
 div.inlinecomments a.bubble {
@@ -257,7 +256,8 @@ div.inlinecomments a.bubble:hover {
 div.inlinecomments div.comments {
     float: right;
     margin: 25px 5px 0 0;
-    max-width: 30em;
+    max-width: 50em;
+    min-width: 30em;
     border: 1px solid #2eabb0;
     background-color: #f2fbfd;
     z-index: 150;
