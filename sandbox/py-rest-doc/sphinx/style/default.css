@@ -222,12 +222,14 @@ div.error {
 
 /* :::: INLINE COMMENTS :::: */
 
-div.inlinecommentswrapper {
-    float: right;
-    max-width: 40%;
+div.inlinecomments {
+    position: absolute;
+    right: 20px;
+    z-index: 100;
 }
 
-div.commentmarker {
+div.inlinecomments a.bubble {
+    display: block;
     float: right;
     background-image: url(style/comment.png);
     background-repeat: no-repeat;
@@ -235,53 +237,130 @@ div.commentmarker {
     height: 25px;
     text-align: center;
     padding-top: 3px;
-}
-
-div.nocommentmarker {
-    float: right;
-    background-image: url(style/nocomment.png);
-    background-repeat: no-repeat;
-    width: 25px;
-    height: 25px;
-}
-
-div.inlinecomments {
-    margin-left: 10px;
-    margin-bottom: 5px;
-    background-color: #eee;
-    border: 1px solid #ccc;
-    padding: 5px;
-}
-
-div.inlinecomment {
-    border-top: 1px solid #ccc;
-    padding-top: 5px;
-    margin-top: 5px;
-}
-
-.inlinecomments p {
-    margin: 5px 0 5px 0;
-}
-
-.inlinecomments .head {
+    font-size: 12px;
+    line-height: 14px;
     font-weight: bold;
+    color: black;
 }
 
-.inlinecomments .meta {
-    font-style: italic;
+div.inlinecomments a.bubble span {
+    display: none;
+}
+
+div.inlinecomments a.emptybubble {
+    background-image: url(style/nocomment.png);
+}
+
+div.inlinecomments a.bubble:hover {
+    background-image: url(style/hovercomment.png);
+    text-decoration: none;
+    color: #3ca0a4;
+}
+
+div.inlinecomments div.comments {
+    float: right;
+    margin: 25px 5px 0 0;
+    max-width: 30em;
+    border: 1px solid #2eabb0;
+    background-color: #f2fbfd;
+    z-index: 150;
+}
+
+div.inlinecomments div.comments h2 {
+    margin: 0;
+    padding: 0;
+    background-color: #2eabb0;
+    color: white;
+    border: none;
+    padding: 3px;
+}
+
+div.inlinecomments div.comments div.actions {
+    padding: 4px;
+    margin: 0;
+    border: none;
+    border-bottom: 1px solid #cbe7e5;
+    background-color: #e0f6f4;
+}
+
+div.inlinecomments div.comment h4 {
+    margin: 10px 0 0 0;
+    padding: 0;
+    background-color: #2eabb0;
+    color: white;
+    border: none;
+    padding: 1px 4px 1px 4px;
+}
+
+div.inlinecomments div.comment div.text {
+    margin: -5px 0 -5px 0;
+    padding: 0 10px 0 10px;
+}
+
+div.inlinecomments div.comment div.meta {
+    text-align: right;
+    padding: 2px 10px 2px 0;
+    font-size: 95%;
+    color: #538893;
+    border-top: 1px solid #cbe7e5;
+    background-color: #e0f6f4;
 }
 
 div.commentwindow {
     position: absolute;
-    left: 400px;
-    top: 200px;
-    width: 600px;
-    height: 600px;
-    background-color: #333;
-    border: 1px solid black;
+    width: 500px;
+    border: 1px solid #cbe7e5;
+    background-color: #f2fbfd;
+    display: none;
+    z-index: 130;
+}
+
+div.commentwindow h3 {
+    margin: 0;
+    padding: 0;
+    background-color: #2eabb0;
+    color: white;
+    border: none;
+    padding: 5px;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+div.commentwindow div.actions {
+    margin: 10px -10px 0 -10px;
+    padding: 4px 10px 4px 10px;
+    color: #538893;
+    border-top: 1px solid #cbe7e5;
+    background-color: #e0f6f4;
+}
+
+div.commentwindow div.actions input {
+    border: 1px solid #2eabb0;
+    background-color: white;
+    color: #135355;
+    cursor: pointer;
+}
+
+div.commentwindow div.form {
+    padding: 0 10px 0 10px;
+}
+
+div.commentwindow div.form input,
+div.commentwindow div.form textarea {
+    border: 1px solid #3c9ea2;
+    background-color: white;
+    color: black;
+}
+
+div.commentwindow div.error {
+    margin: 10px 5px 10px 5px;
+    background-color: #fbe5dc;
     display: none;
 }
 
+div.commentwindow div.form textarea {
+    width: 99%;
+}
 
 /* :::: COMMENTS :::: */
 div#comments {
