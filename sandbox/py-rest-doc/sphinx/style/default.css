@@ -149,9 +149,12 @@ div.sidebar input {
 
 /* :::: MODULE CLOUD :::: */
 div.modulecloud {
-    padding: 10px 20px 10px 20px;
+    margin: -5px 10px 5px 10px;
+    padding: 10px;
     font-size: 110%;
-    line-height: 180%;
+    line-height: 160%;
+    border: 1px solid #cbe7e5;
+    background-color: #f2fbfd;
 }
 
 div.modulecloud a {
