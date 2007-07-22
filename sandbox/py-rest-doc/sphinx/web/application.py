@@ -390,8 +390,14 @@ class DocumentationApplication(object):
 
         form_error = preview = None
         title = req.form.get('title', '').strip()
-        author = req.form.get('author', '').strip()
-        author_mail = req.form.get('author_mail', '')
+        if 'author' in req.form:
+            author = req.form['author']
+        else:
+            author = req.session.get('author', '')
+        if 'author_mail' in req.form:
+            author_mail = req.form['author_mail']
+        else:
+            author_mail = req.session.get('author_mail', '')
         comment_body = req.form.get('comment_body', '')
         fields = (title, author, author_mail, comment_body)
 
@@ -418,6 +424,8 @@ class DocumentationApplication(object):
                                       title, author, author_mail,
                                       comment_body)
                     comment.save()
+                    req.session['author'] = author
+                    req.session['author_mail'] = author_mail
                     if ajax_mode:
                         return JSONResponse({'posted': True, 'error': False,
                                              'commentID': comment.comment_id})
@@ -426,6 +434,7 @@ class DocumentationApplication(object):
         output = render_template(req, '_commentform.html', {
             'ajax_mode':    ajax_mode,
             'preview':      preview,
+            'suggest_url':  '@edit/%s/' % page,
             'comments_form': {
                 'target':       target,
                 'title':        title,

@@ -2,7 +2,7 @@
     {% if comments_form.error %}
     <div class="error">{{ comments_form.error|e }}</div>
     {% endif %}
-    <p>Note: you can also <a href="{{ pathto('@edit/' + sourcename)|e }}">suggest
+    <p>Note: you can also <a href="{{ pathto(suggest_url, 1)|e }}">suggest
     changes</a> to the official documentation text.</p>
     <dl>
       <dt>Name:</dt>
