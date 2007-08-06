@@ -27,19 +27,28 @@ from docutils.parsers import rst
 
 WhichElementTree = ''
 try:
+    # 1. Try to use lxml.
     from lxml import etree
     #print '*** using lxml'
     WhichElementTree = 'lxml'
 except ImportError, e:
     try:
+        # 2. Try to use a version of ElementTree installed as a separate
+        #    product.
         from elementtree import ElementTree as etree
         #print '*** using ElementTree'
         WhichElementTree = 'elementtree'
     except ImportError, e:
-        print '***'
-        print '*** Error: Must install either ElementTree or lxml.'
-        print '***'
-        raise
+        try:
+            # 3. Try to use ElementTree from the Python standard library.
+            from xml.etree import ElementTree as etree
+            WhichElementTree = 'elementtree'
+        except ImportError, e:
+            print '***'
+            print '*** Error: Must install either ElementTree or lxml or'
+            print '***   a version of Python containing ElementTree.'
+            print '***'
+            raise
 
 try:
     import pygments
@@ -292,27 +301,29 @@ MIME_TYPE = 'application/vnd.oasis.opendocument.text'
 # Classes
 #
 
-#
-# Class to control syntax highlighting.
-class SyntaxHighlight(rst.Directive):
-    required_arguments = 1
-    optional_arguments = 0
+# Does this version of Docutils has Directive support?
+if hasattr(rst, 'Directive'):
     #
-    # See visit_field for code that processes the node created here.
-    def run(self):
-        arguments = ' '.join(self.arguments)
-        paragraph = nodes.paragraph(arguments, arguments)
-        field_body = nodes.field_body()
-        field_body += paragraph
-        paragraph = nodes.paragraph('syntaxhighlight', 'syntaxhighlight')
-        field_name = nodes.field_name()
-        field_name += paragraph
-        field = nodes.field()
-        field += field_name
-        field += field_body
-        return [field]
-
-rst.directives.register_directive('sourcecode', SyntaxHighlight)
+    # Class to control syntax highlighting.
+    class SyntaxHighlight(rst.Directive):
+        required_arguments = 1
+        optional_arguments = 0
+        #
+        # See visit_field for code that processes the node created here.
+        def run(self):
+            arguments = ' '.join(self.arguments)
+            paragraph = nodes.paragraph(arguments, arguments)
+            field_body = nodes.field_body()
+            field_body += paragraph
+            paragraph = nodes.paragraph('syntaxhighlight', 'syntaxhighlight')
+            field_name = nodes.field_name()
+            field_name += paragraph
+            field = nodes.field()
+            field += field_name
+            field += field_body
+            return [field]
+    
+    rst.directives.register_directive('sourcecode', SyntaxHighlight)
 
 #
 # Register directives defined in a module named "odtwriter_plugins".
@@ -679,17 +690,17 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             master_el = root_el.find(path)
             if not master_el:
                 return content
-            el1 = etree.SubElement(master_el, 'style:master-page', attrib={
+            el1 = SubElement(master_el, 'style:master-page', attrib={
                 'style:name': 'Standard',
                 'style:page-layout-name': 'pm1',
                 })
             if len(self.header_content) > 0:
-                el2 = etree.SubElement(el1, 'style:header')
+                el2 = SubElement(el1, 'style:header')
                 for el in self.header_content:
                     el.attrib['text:style-name'] = 'rststyle-header'
                     el2.append(el)
             if len(self.footer_content) > 0:
-                el2 = etree.SubElement(el1, 'style:footer')
+                el2 = SubElement(el1, 'style:footer')
                 for el in self.footer_content:
                     el.attrib['text:style-name'] = 'rststyle-footer'
                     el2.append(el)
@@ -1163,7 +1174,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 el1 = self.footnote_dict[id]
                 break
         if el1 is not None:
-            el2 = etree.SubElement(el1, 'text:note-body')
+            el2 = SubElement(el1, 'text:note-body')
             self.paragraph_style_stack.append('rststyle-footnote')
             self.set_current_element(el2)
             self.footnote_found = True
@@ -1186,7 +1197,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             })
         child = node.children[0]
         label = child.astext()
-        el2 = etree.SubElement(el1, 'text:note-citation', attrib={
+        el2 = SubElement(el1, 'text:note-citation', attrib={
             'text:label': label,
             })
         el2.text = label
@@ -1308,6 +1319,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             'fo:padding': '0cm',
             'fo:border': 'none',
             }
+        #ipshell('At generate_figure')
         el2 = SubElement(el1,
             'style:graphic-properties', attrib=attrib)
         # Add the content
@@ -1372,6 +1384,10 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             'draw:image-opacity': '100%',
             'draw:color-mode': 'standard',
             }
+        #ipshell('At generate_image')
+        # If we are inside a table, add a no-wrap style.
+        if self.is_in_table(node):
+            attrib['style:wrap'] = 'none'
         el2 = SubElement(el1,
             'style:graphic-properties', attrib=attrib)
         # Add the content.
@@ -1425,6 +1441,14 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def depart_image(self, node):
         pass
+
+    def is_in_table(self, node):
+        node1 = node.parent
+        while node1:
+            if isinstance(node1, docutils.nodes.entry):
+                return True
+            node1 = node1.parent
+        return False
 
     def visit_line(self, node):
         #ipshell('At visit_line')

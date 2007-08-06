@@ -41,6 +41,16 @@ History
 2007/03/14 -- Version 1.0d
 --------------------------
 
+Fix so that rst.Directive class is not used for older versions of
+Docutils.  They do not implement that class.
+
+Fix so that if ElementTree is in the standard Python library,
+odtwriter will also look for it there.
+
+
+2007/03/14 -- Version 1.0d
+--------------------------
+
 Added support for highlights block/directive.
 
 Fixed styles in highlights, epigraphs, and blockquotes.  Bullet and

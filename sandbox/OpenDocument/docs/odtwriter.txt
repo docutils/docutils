@@ -7,7 +7,7 @@ Odtwriter for Docutils
     http://www.rexx.com/~dkuhlman
 
 :revision: 1.0d
-:date: March 13, 2007
+:date: Aug. 3, 2007
 
 :copyright: Copyright (c) 2006 Dave Kuhlman.  All Rights Reserved.
     This software is subject to the provisions of the MIT License
@@ -72,14 +72,19 @@ Requirements
 
 - A sufficiently recent version of Docutils.
 
-- Either of the following:
+- One of the following:
 
-  - ElementTree -- See: http://effbot.org/zone/element-index.htm
+  - Lxml -- See: http://codespeak.net/lxml/.
 
-  - Lxml -- See: http://codespeak.net/lxml/
+  - ElementTree -- See: http://effbot.org/zone/element-index.htm.
 
-  ``odtwriter`` will try first to use Lxml, and if it is not
-  installed will use ElementTree.
+  - ElementTree from that Python standard library -- Python 2.5 and
+    later comes with ElementTree included.
+
+  ``odtwriter`` will try first to use Lxml; if that fails, it will
+  try to use a separately installed version of ElementTree; and if
+  that fails, it will try to use ElementTree from the standard
+  library.
 
 - Optional -- `Pygments`_ is required for syntax highlighting of
   code in literal blocks.  See section `Syntax highlighting`_.
@@ -429,6 +434,10 @@ table of contents.   That feature is under menu item::
 
 Syntax highlighting
 -------------------
+
+**Note:** Syntax highlighting uses the Docutils class
+``docutils.parsers.rst.Directive``.  Therefore, it requires a very
+recent version of Docutils, specifically version 0.5 or later.
 
 ``odtwriter`` can add Python syntax highlighting to code in
 literal code blocks.  In order to activate this, do both of the
