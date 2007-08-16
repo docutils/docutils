@@ -943,7 +943,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_container(self, node):
         styles = node.attributes.get('classes', ())
-        #ipshell('At visit_container 1')
         if len(styles) > 0:
             self.paragraph_style_stack.append(styles[0])
 
@@ -1778,6 +1777,24 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def depart_revision(self, node):
         pass
 
+    def visit_rubric(self, node):
+        style_name = 'rststyle-rubric'
+        classes = node.get('classes')
+        if classes:
+            class1 = classes[0]
+            if class1:
+                style_name = class1
+        el = SubElement(self.current_element, 'text:h', attrib = {
+            #'text:outline-level': '%d' % section_level,
+            #'text:style-name': 'Heading_20_%d' % section_level,
+            'text:style-name': style_name,
+            })
+        text = node.astext()
+        el.text = self.encode(text)
+
+    def depart_rubric(self, node):
+        pass
+
     def visit_section(self, node, move_ids=1):
         #ipshell('At visit_section')
         self.section_level += 1
@@ -2019,7 +2036,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_topic(self, node):
         #ipshell('At visit_topic')
-        #import pdb; pdb.set_trace()
         if 'classes' in node.attributes:
             if 'contents' in node.attributes['classes']:
                 el = self.append_child('text:p', attrib={
@@ -2053,4 +2069,78 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def depart_transition(self, node):
         pass
+
+    #
+    # Admonitions
+    #
+    def visit_warning(self, node):
+        self.generate_admonition(node, 'warning')
+
+    def depart_warning(self, node):
+        self.paragraph_style_stack.pop()
+
+    def visit_attention(self, node):
+        self.generate_admonition(node, 'attention')
+
+    depart_attention = depart_warning
+
+    def visit_caution(self, node):
+        self.generate_admonition(node, 'caution')
+
+    depart_caution = depart_warning
+
+    def visit_danger(self, node):
+        self.generate_admonition(node, 'danger')
+
+    depart_danger = depart_warning
+
+    def visit_error(self, node):
+        self.generate_admonition(node, 'error')
+
+    depart_error = depart_warning
+
+    def visit_hint(self, node):
+        self.generate_admonition(node, 'hint')
+
+    depart_hint = depart_warning
+
+    def visit_important(self, node):
+        self.generate_admonition(node, 'important')
+
+    depart_important = depart_warning
+
+    def visit_note(self, node):
+        self.generate_admonition(node, 'note')
+
+    depart_note = depart_warning
+
+    def visit_tip(self, node):
+        self.generate_admonition(node, 'tip')
+
+    depart_tip = depart_warning
+
+    def visit_admonition(self, node):
+        #import pdb; pdb.set_trace()
+        title = None
+        for child in node.children:
+            if child.tagname == 'title':
+                title = child.astext()
+        if title is None:
+            classes1 = node.get('classes')
+            if classes1:
+                title = classes1[0]
+        self.generate_admonition(node, 'generic', title)
+
+    depart_admonition = depart_warning
+
+    def generate_admonition(self, node, label, title=None):
+        el1 = SubElement(self.current_element, 'text:p', attrib = {
+            'text:style-name': 'rststyle-admon-%s-hdr' % (label, ),
+            })
+        if title:
+            el1.text = title
+        else:
+            el1.text = '%s!' % (label.capitalize(), )
+        s1 = 'rststyle-admon-%s-body' % (label, )
+        self.paragraph_style_stack.append(s1)
 
