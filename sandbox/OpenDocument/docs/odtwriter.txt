@@ -6,8 +6,8 @@ Odtwriter for Docutils
 :address: dkuhlman@rexx.com
     http://www.rexx.com/~dkuhlman
 
-:revision: 1.0d
-:date: Aug. 3, 2007
+:revision: 1.0e
+:date: Aug. 16, 2007
 
 :copyright: Copyright (c) 2006 Dave Kuhlman.  All Rights Reserved.
     This software is subject to the provisions of the MIT License
@@ -395,6 +395,90 @@ rststyle-tocenumlist
     Lists in the table of contents when section numbering is on.
 
 
+Admonition styles
+~~~~~~~~~~~~~~~~~
+
+rststyle-admon-attention-hdr
+    The style for the attention admonition header/title.
+
+rststyle-admon-attention-body
+    The style for the attention admonition body/paragraph.
+
+rststyle-admon-caution-hdr
+    The style for the caution admonition header/title.
+
+rststyle-admon-caution-body
+    The style for the caution admonition body/paragraph.
+
+rststyle-admon-danger-hdr
+    The style for the  admonition header/title.
+
+rststyle-admon-danger-body
+    The style for the danger admonition body/paragraph.
+
+rststyle-admon-error-hdr
+    The style for the error admonition header/title.
+
+rststyle-admon-error-body
+    The style for the error admonition body/paragraph.
+
+rststyle-admon-hint-hdr
+    The style for the hint admonition header/title.
+
+rststyle-admon-hint-body
+    The style for the hint admonition body/paragraph.
+
+rststyle-admon-hint-hdr
+    The style for the hint admonition header/title.
+
+rststyle-admon-hint-body
+    The style for the hint admonition body/paragraph.
+
+rststyle-admon-important-hdr
+    The style for the important admonition header/title.
+
+rststyle-admon-important-body
+    The style for the important admonition body/paragraph.
+
+rststyle-admon-note-hdr
+    The style for the note admonition header/title.
+
+rststyle-admon-note-hdr
+    The style for the note admonition header/title.
+
+rststyle-admon-tip-body
+    The style for the tip admonition body/paragraph.
+
+rststyle-admon-tip-hdr
+    The style for the tip admonition header/title.
+
+rststyle-admon-warning-body
+    The style for the warning admonition body/paragraph.
+
+rststyle-admon-warning-hdr
+    The style for the warning admonition header/title.
+
+rststyle-admon-generic-body
+    The style for the generic admonition body/paragraph.
+
+rststyle-admon-generic-hdr
+    The style for the generic admonition header/title.
+
+
+Rubric style
+~~~~~~~~~~~~
+
+rststyle-rubric
+    The style for the text in a rubric directive.
+
+The rubric directive recognizes a "class" option.  If entered,
+odtwriter uses the value of that option instead of the
+``rststyle-rubric`` style.  Here is an example which which attaches
+the ``rststyle-heading1`` style to the generated rubric::
+
+    .. rubric:: This is my first rubric
+       :class: rststyle-heading1
+
 
 
 
@@ -568,6 +652,19 @@ To define a paragraph style, use the following menu item::
     Format --> Styles and Formatting
 
 Then, click on the Paragraph Styles button.
+
+The following example attaches the ``rststyle-heading2`` style (a
+predefined style) to each paragraph/line in the container::
+
+    .. container:: rststyle-heading2
+
+       Line 1 of container.
+
+       Line 2 of container.
+
+You could also define a new style (for example, in your
+``styles.odt``) and reference that in a ``container`` directive.
+
 
 
 The table directive
