@@ -295,23 +295,12 @@ super-documents.)
 Qualifier Syntax
 ----------------
 
-Note that in all of the examples below, the reference text comes out
-as "target", i.e. the namespace identifier and the decoration or
-separator are stripped.
+Angled brackets::
 
-* Angled brackets::
+    `<namespace> target`_
 
-      `<namespace> target`_
-
-  This is similar to the syntax for embedded URI's (```target
-  <URI>`_``).  It fits well into the existing syntax, but may be
-  confusing at the same time.
-
-* Angled brackets with hash sign::
-
-      `<namespace#> target`_
-
-  The "#" emphasizes the namespace/fragment split.
+This is similar to the syntax for embedded URI's (```target
+<URI>`_``).  It fits well into the existing syntax.
 
 
 Implementation
