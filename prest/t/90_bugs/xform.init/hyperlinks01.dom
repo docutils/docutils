@@ -1,0 +1,8 @@
+<document source="hyperlinks01.rst">
+    <target refid="inline">
+    <target ids="indirect cascaded" names="indirect cascaded" refid="inline">
+    <paragraph>
+        It is possible to specify the following 
+        <target ids="inline" names="inline">
+            inline
+        .
