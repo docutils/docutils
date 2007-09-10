@@ -16,7 +16,6 @@
 \input{docsize}
 \frenchspacing
 \begin{document}
-\newsavebox{\liti}\begin{lrbox}{\liti}\verbÙ-->Ù\end{lrbox}
 \begin{verse}{\tt 
 Hey!\\
 ~~{\bf this~is~some~bold~text\\
@@ -56,8 +55,6 @@ due~to~some~ancient~injury?\\
 Singing...\\
 \end{verse}
 
-
-Look here \usebox{\liti}: wow!
 \begin{verse}{\tt 
 main~\{\\
 ~~{\bf //~Your~code~here}\\
