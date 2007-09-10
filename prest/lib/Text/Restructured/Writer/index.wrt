@@ -308,7 +308,7 @@ phase PROCESS = {
 	# Used in closure of collectTargets
 	%INLINE_TARGETS = ();
 	@INDIRECT_TARGETS = ();
-	undef;
+	return undef;
 
 	# A recursive subroutine to collect all inline internal targets 
 	# and indirect targets.
@@ -339,6 +339,7 @@ phase PROCESS = {
 	my ($dom, $str, $writer) = @_;
 	# Handle all the interpreted roles
 	return unless exists $Text::Restructured::ROLES{$dom->tag};
+	return if $dom->tag eq 'raw' && $dom->{attr}{format} !~ /\bindex\b/;
 	return QuoteStart($dom, ":${\$dom->tag}:`$str`", $writer);
     }
 }
