@@ -5,6 +5,29 @@ Release Notes
 
 .. contents::
 
+Release 0.3.34
+--------------
+
+reStructuredText transforms:
+
+* Fixed a bug with hyperlink resolution when a chained target went to
+  an indirect target to an internal target.
+
+Writer 'index':
+
+* Fixed a bug in dealing with raw DOM objects.
+
+Writer 'latex':
+
+* Fixed bugs in line blocks
+* Fixed bugs in parsed literals
+* Fixed a bug where a paragraph ending in an interpreted text item did
+  not result in a new paragraph
+* Fixed a bug with processing quotes around marked up text
+* Fixed a bug with special characters in options
+* Added support for outputting mathml to latex (requires
+  Text::ASCIIMathML 0.4 or later)
+
 Release 0.3.33
 --------------
 
