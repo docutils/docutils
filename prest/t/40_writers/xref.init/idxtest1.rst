@@ -1,4 +1,14 @@
 .. sectnum::
+.. raw:: html
+
+   <style type="text/css">
+   @media screen {
+      .target  { color:darkgreen }
+
+      div.document {
+         width: 40em;
+      }
+   }
 
 Introduction
 ************
