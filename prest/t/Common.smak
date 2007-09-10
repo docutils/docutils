@@ -343,7 +343,7 @@ find_oks:
 	{
             my($maker, $target, $deps, $matches) = @_;
 	    my $prog = $deps->[0] =~ /\.df/ ? 'diff' : "$PERL $TBIN/diffre";
-	    execute "$prog @$deps > $target";
+	    execute "$prog @$deps[0..1] > $target";
 	}
 
 # Make a straight diff file
@@ -387,8 +387,11 @@ find_oks:
 	    my @deps;
 	    # Make the .rst file a dependency if it exists (it usually does)
 	    push @deps, "$matches->[0].rst" if -f "$matches->[0].rst";
-	    push(@deps, "$SCRIPT/prest",
-		 "$LIB/Text/Restructured/Writer/$writer.wrt");
+	    # Add the prest script and perl modules to the dependencies
+	    push @deps, ("$SCRIPT/prest",
+			 "$LIB/Text/Restructured/Writer/$writer.wrt");
+	    push @deps, (<$LIB/Text/*.pm>, <$LIB/Text/Restructured/*.pm>,
+			 <$LIB/Text/Restructured/Directive/*.pm>);
 	    @deps
 	}
 	# ---- ACTIONS ----
