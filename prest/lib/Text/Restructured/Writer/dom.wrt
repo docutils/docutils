@@ -35,7 +35,10 @@ sub BEGIN {
 # Returns an equal sign and a quoted attribute from a list of attribute values
 sub quote_attr {
     my (@attr) = @_;
-    s/([<>\"])/&$QUOTE{$1};/g foreach (@attr);
+    foreach (@attr) {
+	s/([<>\"])/&$QUOTE{$1};/g;
+	s/([\x00-\x09\x0b-\x1f\x7f-\xff\x{0100}-\x{ffff}])/sprintf '\u%04x', ord $1/ge;
+    }
     qq(="@attr");
 }
 
