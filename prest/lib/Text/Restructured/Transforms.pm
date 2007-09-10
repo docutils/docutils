@@ -856,10 +856,11 @@ sub IndTargets {
 			     delete $_->{attr}{refname};
 			 }
 			 else {
-			     my $refid =
-				 ($_->{attr}{ids} && $_->{attr}{ids}[0] ||
-				  $_->{attr}{names} && $_->{attr}{names}[0]);
-			     $_->{attr}{refid} = $refid;
+ 			     my $new_refid =
+ 				 ($_->{attr}{ids} && $_->{attr}{ids}[0] ||
+ 				  $_->{attr}{names} && $_->{attr}{names}[0] ||
+				  $refid);
+			     $_->{attr}{refid} = $new_refid;
 			     delete $_->{attr}{ids};
 			     delete $_->{attr}{names};
 			 }
