@@ -85,7 +85,8 @@ A paragraph.
 Paragraphs contain text and may contain inline markup: {\em emphasis},
 {\bf strong emphasis}, \usebox{\liti}, standalone hyperlinks
 (http://www.python.org), external hyperlinks (Python\footnote[6]{
-http://www.python.org/}), internal
+http://www.python.org/
+}), internal
 cross-references (example), external hyperlinks with embedded URIs
 (Python web site), footnote references
 (manually numbered\footnote[1]{
@@ -124,6 +125,7 @@ Let's test wrapping and whitespace significance in inline literals:
 \usebox{\litiv}\\
 \usebox{\litv}\\
 \usebox{\litvi}
+
 If the \usebox{\litvii} option was supplied, there should be a
 live link to PEP 258 here.
 
@@ -242,7 +244,7 @@ regardless of where it starts.
 Multiple options are an ``option group''.
 \item \hspace{-\tabcolsep}\begin{tabular}[t]{l}\styleoption{-v}{}\\\styleoption{--verbose}{}\end{tabular} \\ 
 Commonly-seen: short \& long options.
-\item \hspace{-\tabcolsep}\begin{tabular}[t]{l}\styleoption{-1}{file}\\\styleoption{--one}{file}\\\styleoption{--two}{file}\end{tabular} \\ 
+\item \hspace{-\tabcolsep}\begin{tabular}[t]{l}\styleoption{\ensuremath{-1}}{file}\\\styleoption{--one}{file}\\\styleoption{--two}{file}\end{tabular} \\ 
 Multiple options with arguments.
 \item \styleoption{/V}{} \\ 
 DOS/VMS-style options too
@@ -336,7 +338,8 @@ body row 4
 body row 5
 } & \multicolumn{2}{p{0.3929\dimen1}|}{
 Cells may also be
-empty: \usebox{\litviii}} &  \\ \hline
+empty: \usebox{\litviii}
+} &  \\ \hline
 \end{tabular}
 \par\noindent\dimen1=\columnwidth
 \advance\dimen1 -6\tabcolsep
@@ -392,7 +395,7 @@ This footnote shows the next symbol in the sequence.
 Here's an unreferenced footnote, with a reference to a
 nonexistent footnote: \footnotemark[5].
 }\footnotetext[5]{
-Here's a footnote with the ten deadly characters \#\$\%\&\_\{\}\symbol{126}\symbol{94}{\tt\symbol{92}} in it.
+Here's a footnote with the ten deadly characters \#\$\%\&\_\{\}\~\textasciicircum \ensuremath{\backslash} in it.
 }
 \subsection{Citations}
 \begin{thebibliography}{1}
@@ -415,7 +418,7 @@ Section headers are implicit targets, referred to by name. See
 Targets, which is a subsection of Body Elements.
 
 Explicit external targets are interpolated into references such as
-"Python\footnotemark[6]``.
+``Python\footnotemark[6]''.
 
 Targets may be indirect and anonymous.  Thus this phrase may also
 refer to the Targets section.
@@ -564,47 +567,53 @@ background color.
 
 Take it away, Eric the Orchestra Leader!
 \begin{verse}
-A one, two, a one two three four\\\\
-~\\\\
-Half a bee, philosophically,\\\\
-\begin{verse}\\
-must, {\em ipso facto}, half not be.\\\\\\
-\end{verse}\\
-But half the bee has got to be,\\\\
-\begin{verse}\\
-{\em vis a vis} its entity.  D'you see?\\\\\\
-~\\\\\\
-\end{verse}\\
-But can a bee be said to be\\\\
-\begin{verse}\\
-or not to be an entire bee,\\\\\\
-\begin{verse}\\\\
-when half the bee is not a bee,\\\\\\\\
-\begin{verse}\\\\\\
-due to some ancient injury?\\\\\\\\\\
-~\\\\\\\\\\
-\end{verse}\\\\\\
-\end{verse}\\\\
-\end{verse}\\
-Singing...\\\\
+A~one,~two,~a~one~two~three~four\\
+\vspace{\baselineskip}
+Half~a~bee,~philosophically,\\
+\begin{verse}
+must,~{\em ipso~facto},~half~not~be.\\
 \end{verse}
+
+But~half~the~bee~has~got~to~be,\\
+\begin{verse}
+{\em vis~a~vis}~its~entity.~~D'you~see?\\
+\vspace{\baselineskip}
+\end{verse}
+
+But~can~a~bee~be~said~to~be\\
+\begin{verse}
+or~not~to~be~an~entire~bee,\\
+\begin{verse}
+when~half~the~bee~is~not~a~bee,\\
+\begin{verse}
+due~to~some~ancient~injury?\\
+\vspace{\baselineskip}
+\end{verse}
+
+\end{verse}
+
+\end{verse}
+
+Singing...\\
+\end{verse}
+
 
 \subsubsection{Parsed Literal}
 
 Play it again, Eric the Orchestra Leader!
 \begin{verse}{\tt 
-A one, two, a one two three four\\
-\\
-Half a bee, philosophically,\\
-~~~~must, {\em ipso facto}, half not be.\\
-But half the bee has got to be,\\
-~~~~{\em vis a vis} its entity.  D'you see?\\
-\\
-But can a bee be said to be\\
-~~~~or not to be an entire bee,\\
-~~~~~~~~when half the bee is not a bee,\\
-~~~~~~~~~~~~due to some ancient injury?\\
-\\
+A~one,~two,~a~one~two~three~four
+
+Half~a~bee,~philosophically,\\
+~~~~must,~{\em ipso~facto},~half~not~be.\\
+But~half~the~bee~has~got~to~be,\\
+~~~~{\em vis~a~vis}~its~entity.~~D'you~see?
+
+But~can~a~bee~be~said~to~be\\
+~~~~or~not~to~be~an~entire~bee,\\
+~~~~~~~~when~half~the~bee~is~not~a~bee,\\
+~~~~~~~~~~~~due~to~some~ancient~injury?
+
 Singing...\\
 }\end{verse}
 
