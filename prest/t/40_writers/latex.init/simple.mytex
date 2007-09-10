@@ -16,10 +16,52 @@
 \input{docsize}
 \frenchspacing
 \begin{document}
+\newsavebox{\liti}\begin{lrbox}{\liti}\verbÙ-->Ù\end{lrbox}
 \begin{verse}{\tt 
 Hey!\\
-~~{\bf this is some bold text\\
-~~that spans two lines} and\\
-~~this is {\bf some more bold text\\
-~~spanning two lines}}\end{verse}
+~~{\bf this~is~some~bold~text\\
+~~that~spans~two~lines}~and\\
+~~this~is~{\bf some~more~bold~text\\
+~~spanning~two~lines}}\end{verse}
+
+Take it away, Eric the Orchestra Leader!
+\begin{verse}
+A~one,~two,~a~one~two~three~four\\
+\vspace{\baselineskip}
+Half~a~bee,~philosophically,\\
+\begin{verse}
+must,~{\em ipso~facto},~half~not~be.\\
+\end{verse}
+
+But~half~the~bee~has~got~to~be,\\
+\begin{verse}
+{\em vis~a~vis}~its~entity.~~D'you~see?\\
+\vspace{\baselineskip}
+\end{verse}
+
+But~can~a~bee~be~said~to~be\\
+\begin{verse}
+or~not~to~be~an~entire~bee,\\
+\begin{verse}
+when~half~the~bee~is~not~a~bee,\\
+\begin{verse}
+due~to~some~ancient~injury?\\
+\vspace{\baselineskip}
+\end{verse}
+
+\end{verse}
+
+\end{verse}
+
+Singing...\\
+\end{verse}
+
+
+Look here \usebox{\liti}: wow!
+\begin{verse}{\tt 
+main~\{\\
+~~{\bf //~Your~code~here}\\
+~~{\em int}~my\_var~=~1;\\
+\}\\
+}\end{verse}
 \end{document}
