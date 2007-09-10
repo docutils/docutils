@@ -24,8 +24,6 @@ Take it away, Eric the Orchestra Leader!
 
    Singing...
 
-Look here ``-->``: wow!
-
 .. code-block:: c
 
    main {
