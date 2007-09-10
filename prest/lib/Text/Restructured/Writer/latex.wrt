@@ -130,6 +130,28 @@ sub BEGIN {
     @FOOTNOTE_SYMBOLS{@footnote_symbols} = (1 .. @footnote_symbols);
 }
 
+# Makes a string safe by quoting special characters
+sub ProtectString {
+    $_ = $_[0];
+
+    # Do some substitutions
+    # Do this one first...
+    s/([\\{}])/$1 eq "\\" ? '\ensuremath{\backslash}' : "\\$1"/ge;
+
+    s/([\$&%\#_~])/\\$1/g;
+    s/(\^)/\\textasciicircum /g;
+    s/ <= / \\ensuremath{\\leq} /g;
+    s/ >= / \\ensuremath{\\geq} /g;
+    s/([<>])/\\ensuremath{$1}/g;
+    s/ == / \\ensuremath{=} /g;
+    s/ != / \\ensuremath{\\neq} /g;
+    s/(-\d+)/\\ensuremath{$1}/g;
+    s/(\S)\"/$1\'\'/g;
+    s/\"(\S)/\`\`$1/g;
+
+    return $_;
+}
+
 sub Warn {
     print STDERR "latex writer: Warning: $_[0]\n";
 }
@@ -171,7 +193,7 @@ phase MARK = {
 		 elsif ($dom->tag eq 'footnote_reference') {
 		     $dom->{infootnote} = $info->{foot};
 		 }
-		 elsif ($dom->tag =~ /literal|doctest/) {
+		 elsif ($dom->tag =~ /^(literal|doctest)/) {
 		     $info->{lit} += $when eq 'pre' ? 1 : -1;
 		 }
 		 elsif ($dom->tag eq '#PCDATA') {
@@ -192,20 +214,10 @@ phase PREPROCESS = {
 	$_ = $dom->{text};
 	if (! $dom->{inliteral} &&
 	    $parent->tag !~ /raw|option_string/) {
-	    # Do some substitutions
-	    # Do this one first...
-	    s/([\\{}])/$1 eq "\\" ? "{\\tt\\symbol{92}}" : "\\$1"/ge;
-
- 	    s/([\$&%\#_])/\\$1/g;
- 	    s/([~^])/\\symbol{$SYMBOLS{$1}}/g;
- 	    s/ <= / \\ensuremath{\\leq} /g;
- 	    s/ >= / \\ensuremath{\\geq} /g;
- 	    s/([<>])/\\ensuremath{$1}/g;
- 	    s/ == / \\ensuremath{=} /g;
- 	    s/ != / \\ensuremath{\\neq} /g;
- 	    s/(-\d+)/\\ensuremath{$1}/g;
- 	    s/(\S)\"/$1\'\'/g;
- 	    s/\"(\S)/\`\`$1/g;
+	    s/^\"/\'\'/ if $index > 0;
+	    s/\"$/\`\`/ if $index < $parent->num_contents - 1;
+	    $_ = ProtectString($_);
+	    my $index = $parent->index($dom);
 	}
 	return $_;
 
@@ -547,6 +559,7 @@ phase PROCESS = {
 
     sub paragraph = { # PROCESS
 	my ($dom, $str) = @_;
+	$str .= "\n" unless $str =~ /\n$/;
 	return "\n$str";
     }
 
@@ -725,7 +738,7 @@ phase PROCESS = {
     sub option { # PROCESS
 	my ($dom, $str) = @_;
 	my @vals = map($_->{val},@{$dom->{content}});
-	my $opt = shift @vals;
+	my $opt = ProtectString(shift @vals);
 	my $args = join ' ', @vals;
 	return "\\styleoption{$opt}{$args}";
     }
@@ -1027,29 +1040,37 @@ EOS
 	return $str;
     }
 
-    sub line_block|parsed_literal = { # PROCESS
+    sub parsed_literal = { # PROCESS
 	my ($dom, $str) = @_;
-#	$str =~ s/(.)\n(?!\n)/$1\\\\\n/g;
-	$str =~ s/^( +)/'~' x length($1)/gem;
-	my ($pl_start, $pl_end) = $dom->tag eq 'parsed_literal' ?
-	    ('{\tt ','}') : ('', '') ;
-	$str =~ s/([_\#])/\\$1/g if $dom->tag eq 'parsed_literal';
-	$str =~ s/\n/\\\\\n/g;
-	my @line_block = ("\\begin{verse}$pl_start\n",
+	$str =~ s/(.)\n(?!\n)/$1\\\\\n/g;
+	$str =~ s/ /~/g;
+	$str =~ s/(\\[a-z]\w+)~/$1 /gi;
+	my @verse = ("\\begin{verse}{\\tt \n",
 			  $str,
-			  "$pl_end\\end{verse}\n");
-	return join '', @line_block;
+			  "}\\end{verse}\n");
+	return join '', @verse;
+    }
+
+    sub line_block = { # PROCESS
+	my ($dom, $str) = @_;
+	my @verse = ("\\begin{verse}\n",
+			  $str,
+			  "\\end{verse}\n\n");
+	return join '', @verse;
     }
 
     sub line { #PROCESS
 	my ($dom, $str) = @_;
 	if ($str eq '') {
-	    $str = " \\\\\n";
+	    $str = "\\vspace{\\baselineskip}";
 	}
 	else {
-	    $str =~ s/$/\\\\/;
+	    chomp $str;
+	    $str =~ s/ /~/g;
+	    $str =~ s/(\\\w+)~/$1 /g;
+	    $str = "$str\\\\";
 	}
-	return $str;
+	return "$str\n";
     }
 
     sub sidebar = { # PROCESS
@@ -1136,6 +1157,12 @@ EOS
 		   "\\end{document}\n",
 		   );
 	return join '', grep defined $_, @doc;
+    }
+
+    sub mathml = { # PROCESS
+	my ($dom, $str) = @_;
+	@PACKAGES{qw(dsfont amssymb)} = 1;
+	return $dom->{attr}{mathml} ? $dom->{attr}{mathml}->latex : $str;
     }
 
     sub .* = { # PROCESS
