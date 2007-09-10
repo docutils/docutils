@@ -23,6 +23,7 @@
 /CVS/
 \.svn/
 .*\.dir
+.*\.run
 ^doc/src/latest/.*_files
 
 # Specific directories
