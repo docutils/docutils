@@ -195,6 +195,9 @@ t/40_writers/html.init/standalone.stderr
 t/40_writers/latex.init/biohazard.eps
 t/40_writers/latex.init/Dir.smak
 t/40_writers/latex.init/docsize.tex
+t/40_writers/latex.init/math.mytex
+t/40_writers/latex.init/math.rst
+t/40_writers/latex.init/math.skip.pl
 t/40_writers/latex.init/simple.mytex
 t/40_writers/latex.init/simple.rst
 t/40_writers/latex.init/test.mytex
@@ -941,12 +944,13 @@ t/90_bugs/Suite.smak
 t/90_bugs/xform.init/badsubtitle.mydom
 t/90_bugs/xform.init/badsubtitle.rst
 t/90_bugs/xform.init/Dir.smak
+t/90_bugs/xform.init/hyperlinks01.dom
+t/90_bugs/xform.init/hyperlinks01.rst
 t/90_bugs/xml.init/alt.rst
 t/90_bugs/xml.init/alt.xml
 t/90_bugs/xref.init/capsubst.rst
 t/90_bugs/xref.init/capsubst.xref
 t/Common.smak
-t/gress.pm
 t/Makefile
 tbin/diffre
 tbin/extract_tests

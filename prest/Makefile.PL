@@ -120,11 +120,7 @@ my ($make) = grep -x $_, map("$_/gmake", @path), map("$_/make", @path);
 #### Write out all the .t files
 my $generic_t = << 'EOS';
 #!/usr/local/bin/perl5.8.8
-
-use FindBin;
-
-use lib "$FindBin::RealBin/..";
-use gress;
+use Slay::Makefile::Gress qw(do_tests);
 do_tests('../../Common.smak');
 EOS
 
@@ -165,7 +161,7 @@ WriteMakefile(
     MAN1PODS       => {},
     MAN3PODS       => {},
     PREREQ_PM      => { 'Text::ASCIIMathML'=>0.5,
-			'Slay::Makefile'=>0.03,
+			'Slay::Makefile::Gress'=>0,
 			}, # e.g., Module::Name => 1.1
     PL_FILES       => {'lib/Text/Restructured/PrestConfig.pm.PL' =>
 		       'lib/Text/Restructured/PrestConfig.pm'},
