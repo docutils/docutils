@@ -171,7 +171,7 @@ WriteMakefile(
 #    PM_FILTER      =>  qq($^X -pe "END{print qq{our \\044VERSION=$Version\\;\\n}}"),
 #    FIXIN          => 'cp',
     test           => { TESTS => join ' ',@TESTS },
-    clean          => { FILES =>(join(' ', (@TESTS, map(/(.*)\.t$/ && "$1.dir",
+    clean          => { FILES =>(join(' ', (@TESTS, map(/(.*)\.t$/ && "$1.run",
 							@TESTS))) .
 				 q[ t/Common.mk lib/Text/Restructured/PrestConfig.pm]) },
     dist           => { COMPRESS => 'gzip', SUFFIX => '.gz' },
