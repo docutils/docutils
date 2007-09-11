@@ -55,10 +55,4 @@ due~to~some~ancient~injury?\\
 Singing...\\
 \end{verse}
 
-\begin{verse}{\tt 
-main~\{\\
-~~{\bf //~Your~code~here}\\
-~~{\em int}~my\_var~=~1;\\
-\}\\
-}\end{verse}
 \end{document}

@@ -24,9 +24,3 @@ Take it away, Eric the Orchestra Leader!
 
    Singing...
 
-.. code-block:: c
-
-   main {
-     // Your code here
-     int my_var = 1;
-   }
