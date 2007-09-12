@@ -5,6 +5,32 @@ Release Notes
 
 .. contents::
 
+Release 0.3.36
+--------------
+
+Directive 'code-block':
+
+* Allow the 'states' executable to be found anywhere on the path, but
+  check standard locations first.
+
+Writer 'latex':
+
+* Sort the dependent \usepackage modules so that there is a canonical
+  order for regression testing
+
+Writer 'index':
+
+* Sort the inline targets so that there is a canonical order for
+  regression testing
+
+Release 0.3.35
+--------------
+
+There were no functional changes in this release.
+
+Fixed the latex simple test not to use a code-block directive, which
+compiles differently on different machines.
+
 Release 0.3.34
 --------------
 
