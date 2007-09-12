@@ -1,5 +1,9 @@
+use Text::Restructured::PrestConfig;
+
 # Make sure states can be run
-my @path = split /:/, $ENV{PATH};
+my @path = qw(/bin /usr/bin /usr/local/bin);
+push @path, split /:/, $ENV{PATH}
+  if $Text::Restructured::PrestConfig::TAINT eq 'No';
 my ($states) = grep -x "$_/states", @path;
 die "no states executable on path" unless $states;
 
