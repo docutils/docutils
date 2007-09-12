@@ -1144,7 +1144,7 @@ EOS
 		   "\\newcommand{\\styletitle}[2]{#1\\ifEq{#2}{}\\else:\\\\ {\\Large #2}\\fi}\n",
 		   "\\newcommand{\\styletopictitle}[1]{{\\bf #1}}\n",
 		   map("\\input{$_}\n",@inputs),
-		   map("\\usepackage{$_}\n",keys %PACKAGES),
+		   map("\\usepackage{$_}\n", sort keys %PACKAGES),
 		   $DOCINFO,
 		   "\\frenchspacing\n",
 		   $index ? "\\makeindex\n" : '',
