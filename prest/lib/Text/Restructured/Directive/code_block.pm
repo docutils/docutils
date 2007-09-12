@@ -92,7 +92,7 @@ sub main {
 	if $options->{file} && $content !~ /^$/;
 
     my ($states_bin) = grep -x "$_/states",
-	qw(/bin /usr/bin /usr/local/bin);
+       qw(/bin /usr/bin /usr/local/bin), split(/:/, $ENV{PATH});
     my $subdir = 'Text/Restructured/Directive';
     my $st_name = $parser->{opt}{D}{code_block_states_file} ||
 	"$subdir/rst.st";
