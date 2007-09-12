@@ -266,7 +266,7 @@ phase PROCESS = {
 	    if $fileName !~ s/\.[^\.\/]*$/$filename_ext\.$file_suffix/o;
 	my $title = $str ? $str : $fileName;
 	my ($tname, $tdom);
-	foreach (keys %INLINE_TARGETS) {
+	foreach (sort keys %INLINE_TARGETS) {
 	    my $tdom = $INLINE_TARGETS{$_};
 	    my $loc = ($tdom->{section} && $title ne $tdom->{section}) ?
 		($doc_titles ? "$title: $tdom->{section}" : $tdom->{section} )
