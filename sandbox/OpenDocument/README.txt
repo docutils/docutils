@@ -38,7 +38,12 @@ For more information on Docutils, see: http://docutils.sourceforge.net/
 History
 =======
 
-2007/03/14 -- Version 1.0d
+2007/10/01 -- Version 1.0e, again
+
+A significant improvement to the content generated for literal
+blocks thanks to a patch from Johan Holmberg.
+
+2007/03/14 -- Version 1.0e
 --------------------------
 
 Fix so that rst.Directive class is not used for older versions of

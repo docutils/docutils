@@ -1539,11 +1539,16 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             source = escape_cdata(source)
         lines = source.split('\n')
         lines1 = ['<wrappertag1 xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0">']
-        for line in lines:
-            line = self.fill_line(line)
-            s3 = ODFTranslator.wrapper1 % (line, )
-            s3 = s3.replace("&#10;", "\n")
-            lines1.append(s3)
+
+        my_lines = []
+        for my_line in lines:
+            my_line = self.fill_line(my_line)
+            my_line = my_line.replace("&#10;", "\n")
+            my_lines.append(my_line)
+        my_lines_str = '<text:line-break/>'.join(my_lines)
+        my_lines_str2 = ODFTranslator.wrapper1 % (my_lines_str, )
+        lines1.append(my_lines_str2)
+
         lines1.append('</wrappertag1>')
         s1 = ''.join(lines1)
         el1 = etree.fromstring(s1)
