@@ -4,7 +4,7 @@ from distutils.core import setup
 
 
 setup(name="odtwriter",
-    version="1.0e",
+    version="1.1a",
     description="convert rst to ODF/odt.",
     author="Dave Kuhlman",
     author_email="dkuhlman@rexx.com",
