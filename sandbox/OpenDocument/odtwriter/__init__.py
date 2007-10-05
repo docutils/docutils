@@ -33,15 +33,15 @@ try:
     WhichElementTree = 'lxml'
 except ImportError, e:
     try:
-        # 2. Try to use a version of ElementTree installed as a separate
-        #    product.
-        from elementtree import ElementTree as etree
+        # 2. Try to use ElementTree from the Python standard library.
+        from xml.etree import ElementTree as etree
         #print '*** using ElementTree'
         WhichElementTree = 'elementtree'
     except ImportError, e:
         try:
-            # 3. Try to use ElementTree from the Python standard library.
-            from xml.etree import ElementTree as etree
+            # 3. Try to use a version of ElementTree installed as a separate
+            #    product.
+            from elementtree import ElementTree as etree
             WhichElementTree = 'elementtree'
         except ImportError, e:
             print '***'
@@ -168,48 +168,6 @@ if WhichElementTree == 'elementtree':
         def getparent(self):
             return self.parent
 
-#
-# Functions
-#
-
-#
-# ElementTree support functions.
-# In order to be able to get the parent of elements, must use these
-#   instead of the functions with same name provided by ElementTree.
-#
-def Element(tag, attrib=None):
-    if attrib is None:
-        attrib = {}
-    if WhichElementTree == 'lxml':
-        el = etree.Element(tag, attrib)
-    else:
-        el = _ElementInterfaceWrapper(tag, attrib)
-    return el
-
-def SubElement(parent, tag, attrib=None):
-    if attrib is None:
-        attrib = {}
-    if WhichElementTree == 'lxml':
-        el = etree.SubElement(parent, tag, attrib)
-    else:
-        el = _ElementInterfaceWrapper(tag, attrib)
-        parent.append(el)
-        el.setparent(parent)
-    return el
-
-def ToString(et):
-    outstream = StringIO.StringIO()
-    et.write(outstream)
-    s1 = outstream.getvalue()
-    outstream.close()
-    return s1
-
-def escape_cdata(text):
-    text = text.replace("&", "&amp;")
-    text = text.replace("<", "&lt;")
-    text = text.replace(">", "&gt;")
-    return text
-
 
 #
 # Constants and globals
@@ -230,7 +188,78 @@ GENERATOR_DESC = 'Docutils.org/odtwriter'
 
 NAME_SPACE_1 = 'urn:oasis:names:tc:opendocument:xmlns:office:1.0'
 
-CONTENT_NAMESPACE_DICT = {
+CONTENT_NAMESPACE_DICT = CNSD = {
+#    'office:version': '1.0',
+    'chart': 'urn:oasis:names:tc:opendocument:xmlns:chart:1.0',
+    'dc': 'http://purl.org/dc/elements/1.1/',
+    'dom': 'http://www.w3.org/2001/xml-events',
+    'dr3d': 'urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0',
+    'draw': 'urn:oasis:names:tc:opendocument:xmlns:drawing:1.0',
+    'fo': 'urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0',
+    'form': 'urn:oasis:names:tc:opendocument:xmlns:form:1.0',
+    'math': 'http://www.w3.org/1998/Math/MathML',
+    'meta': 'urn:oasis:names:tc:opendocument:xmlns:meta:1.0',
+    'number': 'urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0',
+    'office': NAME_SPACE_1,
+    'ooo': 'http://openoffice.org/2004/office',
+    'oooc': 'http://openoffice.org/2004/calc',
+    'ooow': 'http://openoffice.org/2004/writer',
+    'script': 'urn:oasis:names:tc:opendocument:xmlns:script:1.0',
+    'style': 'urn:oasis:names:tc:opendocument:xmlns:style:1.0',
+    'svg': 'urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0',
+    'table': 'urn:oasis:names:tc:opendocument:xmlns:table:1.0',
+    'text': 'urn:oasis:names:tc:opendocument:xmlns:text:1.0',
+    'xforms': 'http://www.w3.org/2002/xforms',
+    'xlink': 'http://www.w3.org/1999/xlink',
+    'xsd': 'http://www.w3.org/2001/XMLSchema',
+    'xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+    }
+
+STYLES_NAMESPACE_DICT = SNSD = {
+#    'office:version': '1.0',
+    'chart': 'urn:oasis:names:tc:opendocument:xmlns:chart:1.0',
+    'dc': 'http://purl.org/dc/elements/1.1/',
+    'dom': 'http://www.w3.org/2001/xml-events',
+    'dr3d': 'urn:oasis:names:tc:opendocument:xmlns:dr3d:1.0',
+    'draw': 'urn:oasis:names:tc:opendocument:xmlns:drawing:1.0',
+    'fo': 'urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0',
+    'form': 'urn:oasis:names:tc:opendocument:xmlns:form:1.0',
+    'math': 'http://www.w3.org/1998/Math/MathML',
+    'meta': 'urn:oasis:names:tc:opendocument:xmlns:meta:1.0',
+    'number': 'urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0',
+    'office': NAME_SPACE_1,
+    'ooo': 'http://openoffice.org/2004/office',
+    'oooc': 'http://openoffice.org/2004/calc',
+    'ooow': 'http://openoffice.org/2004/writer',
+    'script': 'urn:oasis:names:tc:opendocument:xmlns:script:1.0',
+    'style': 'urn:oasis:names:tc:opendocument:xmlns:style:1.0',
+    'svg': 'urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0',
+    'table': 'urn:oasis:names:tc:opendocument:xmlns:table:1.0',
+    'text': 'urn:oasis:names:tc:opendocument:xmlns:text:1.0',
+    'xlink': 'http://www.w3.org/1999/xlink',
+    }
+
+MANIFEST_NAMESPACE_DICT = MANNSD = {
+    'manifest': 'urn:oasis:names:tc:opendocument:xmlns:manifest:1.0',
+}
+
+META_NAMESPACE_DICT = METNSD = {
+#    'office:version': '1.0',
+    'dc': 'http://purl.org/dc/elements/1.1/',
+    'meta': 'urn:oasis:names:tc:opendocument:xmlns:meta:1.0',
+    'office': NAME_SPACE_1,
+    'ooo': 'http://openoffice.org/2004/office',
+    'xlink': 'http://www.w3.org/1999/xlink',
+}
+
+MIME_TYPE = 'application/vnd.oasis.opendocument.text'
+
+
+#
+# Attribute dictionaries for use with ElementTree (not lxml), which
+#   does not support use of nsmap parameter on Element() and SubElement().
+
+CONTENT_NAMESPACE_ATTRIB = {
     'office:version': '1.0',
     'xmlns:chart': 'urn:oasis:names:tc:opendocument:xmlns:chart:1.0',
     'xmlns:dc': 'http://purl.org/dc/elements/1.1/',
@@ -257,7 +286,7 @@ CONTENT_NAMESPACE_DICT = {
     'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance',
     }
 
-STYLES_NAMESPACE_DICT = {
+STYLES_NAMESPACE_ATTRIB = {
     'office:version': '1.0',
     'xmlns:chart': 'urn:oasis:names:tc:opendocument:xmlns:chart:1.0',
     'xmlns:dc': 'http://purl.org/dc/elements/1.1/',
@@ -281,11 +310,11 @@ STYLES_NAMESPACE_DICT = {
     'xmlns:xlink': 'http://www.w3.org/1999/xlink',
     }
 
-MANIFEST_NAMESPACE_DICT = {
+MANIFEST_NAMESPACE_ATTRIB = {
     'xmlns:manifest': 'urn:oasis:names:tc:opendocument:xmlns:manifest:1.0',
 }
 
-META_NAMESPACE_DICT = {
+META_NAMESPACE_ATTRIB = {
     'office:version': '1.0',
     'xmlns:dc': 'http://purl.org/dc/elements/1.1/',
     'xmlns:meta': 'urn:oasis:names:tc:opendocument:xmlns:meta:1.0',
@@ -294,7 +323,68 @@ META_NAMESPACE_DICT = {
     'xmlns:xlink': 'http://www.w3.org/1999/xlink',
 }
 
-MIME_TYPE = 'application/vnd.oasis.opendocument.text'
+
+#
+# Functions
+#
+
+#
+# ElementTree support functions.
+# In order to be able to get the parent of elements, must use these
+#   instead of the functions with same name provided by ElementTree.
+#
+def Element(tag, attrib=None, nsmap=None, nsdict=CNSD):
+    if attrib is None:
+        attrib = {}
+    tag, attrib = fix_ns(tag, attrib, nsdict)
+    if WhichElementTree == 'lxml':
+        el = etree.Element(tag, attrib, nsmap=nsmap)
+    else:
+        el = _ElementInterfaceWrapper(tag, attrib)
+    return el
+
+def SubElement(parent, tag, attrib=None, nsmap=None, nsdict=CNSD):
+    if attrib is None:
+        attrib = {}
+    tag, attrib = fix_ns(tag, attrib, nsdict)
+    if WhichElementTree == 'lxml':
+        el = etree.SubElement(parent, tag, attrib, nsmap=nsmap)
+    else:
+        el = _ElementInterfaceWrapper(tag, attrib)
+        parent.append(el)
+        el.setparent(parent)
+    return el
+
+def fix_ns(tag, attrib, nsdict):
+    nstag = add_ns(tag, nsdict)
+    nsattrib = {}
+    for key, val in attrib.iteritems():
+        nskey = add_ns(key, nsdict)
+        nsattrib[nskey] = val
+    return nstag, nsattrib
+
+def add_ns(tag, nsdict=CNSD):
+    if WhichElementTree == 'lxml':
+        nstag, name = tag.split(':')
+        ns = nsdict.get(nstag)
+        if ns is None:
+            raise RuntimeError, 'Invalid namespace prefix: %s' % nstag
+        tag = '{%s}%s' % (ns, name,)
+        #print '*** tag: "%s"' % tag
+    return tag
+
+def ToString(et):
+    outstream = StringIO.StringIO()
+    et.write(outstream)
+    s1 = outstream.getvalue()
+    outstream.close()
+    return s1
+
+def escape_cdata(text):
+    text = text.replace("&", "&amp;")
+    text = text.replace("<", "&lt;")
+    text = text.replace(">", "&gt;")
+    return text
 
 
 #
@@ -576,54 +666,71 @@ class Writer(writers.Writer):
         pass
 
     def create_manifest(self):
-        root = Element('manifest:manifest',
-            attrib=MANIFEST_NAMESPACE_DICT)
+        if WhichElementTree == 'lxml':
+            root = Element('manifest:manifest',
+                nsmap=MANIFEST_NAMESPACE_DICT,
+                nsdict=MANIFEST_NAMESPACE_DICT,
+                )
+        else:
+            root = Element('manifest:manifest',
+                attrib=MANIFEST_NAMESPACE_ATTRIB,
+                nsdict=MANIFEST_NAMESPACE_DICT,
+                )
         doc = etree.ElementTree(root)
         SubElement(root, 'manifest:file-entry', attrib={
             'manifest:media-type': 'application/vnd.oasis.opendocument.text',
             'manifest:full-path': '/',
-            })
+            }, nsdict=MANNSD)
         SubElement(root, 'manifest:file-entry', attrib={
             'manifest:media-type': 'text/xml',
             'manifest:full-path': 'content.xml',
-            })
+            }, nsdict=MANNSD)
         SubElement(root, 'manifest:file-entry', attrib={
             'manifest:media-type': 'text/xml',
             'manifest:full-path': 'styles.xml',
-            })
+            }, nsdict=MANNSD)
         SubElement(root, 'manifest:file-entry', attrib={
             'manifest:media-type': 'text/xml',
             'manifest:full-path': 'meta.xml',
-            })
+            }, nsdict=MANNSD)
         s1 = ToString(doc)
         doc = minidom.parseString(s1)
         s1 = doc.toprettyxml('  ')
         return s1
 
     def create_meta(self):
-        root = Element('office:document-meta', attrib=META_NAMESPACE_DICT)
+        if WhichElementTree == 'lxml':
+            root = Element('office:document-meta',
+                nsmap=META_NAMESPACE_DICT,
+                nsdict=META_NAMESPACE_DICT,
+                )
+        else:
+            root = Element('office:document-meta',
+                attrib=META_NAMESPACE_ATTRIB,
+                nsdict=META_NAMESPACE_DICT,
+                )
         doc = etree.ElementTree(root)
-        root = SubElement(root, 'office:meta')
-        el1 = SubElement(root, 'meta:generator')
+        root = SubElement(root, 'office:meta', nsdict=METNSD)
+        el1 = SubElement(root, 'meta:generator', nsdict=METNSD)
         el1.text = 'Docutils/rst2odf.py/%s' % (VERSION, )
         s1 = os.environ.get('USER', '')
-        el1 = SubElement(root, 'meta:initial-creator')
+        el1 = SubElement(root, 'meta:initial-creator', nsdict=METNSD)
         el1.text = s1
         s2 = time.strftime('%Y-%m-%dT%H:%M:%S', time.localtime())
-        el1 = SubElement(root, 'meta:creation-date')
+        el1 = SubElement(root, 'meta:creation-date', nsdict=METNSD)
         el1.text = s2
-        el1 = SubElement(root, 'dc:creator')
+        el1 = SubElement(root, 'dc:creator', nsdict=METNSD)
         el1.text = s1
-        el1 = SubElement(root, 'dc:date')
+        el1 = SubElement(root, 'dc:date', nsdict=METNSD)
         el1.text = s2
-        el1 = SubElement(root, 'dc:language')
+        el1 = SubElement(root, 'dc:language', nsdict=METNSD)
         el1.text = 'en-US'
-        el1 = SubElement(root, 'meta:editing-cycles')
+        el1 = SubElement(root, 'meta:editing-cycles', nsdict=METNSD)
         el1.text = '1'
-        el1 = SubElement(root, 'meta:editing-duration')
+        el1 = SubElement(root, 'meta:editing-duration', nsdict=METNSD)
         el1.text = 'PT00M01S'
         title = self.visitor.get_title()
-        el1 = SubElement(root, 'dc:title')
+        el1 = SubElement(root, 'dc:title', nsdict=METNSD)
         if title:
             el1.text = title
         else:
@@ -644,9 +751,16 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.section_level = 0
         self.section_count = 0
         # Create ElementTree content and styles documents.
-        root = Element(
-            'office:document-content', CONTENT_NAMESPACE_DICT
-            )
+        if WhichElementTree == 'lxml':
+            root = Element(
+                'office:document-content',
+                nsmap=CONTENT_NAMESPACE_DICT,
+                )
+        else:
+            root = Element(
+                'office:document-content',
+                attrib=CONTENT_NAMESPACE_ATTRIB,
+                )
         self.content_tree = etree.ElementTree(element=root)
         self.current_element = root
         SubElement(root, 'office:scripts')
@@ -656,10 +770,19 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         el = SubElement(root, 'office:body')
         el = SubElement(el, 'office:text')
         self.current_element = el
-        root = Element(
-            'office:document-styles', STYLES_NAMESPACE_DICT
-            )
-        self.styles_tree = etree.ElementTree(element=root)
+# test styles
+##        if WhichElementTree == 'lxml':
+##            root = Element(
+##                'office:document-styles',
+##                nsmap=STYLES_NAMESPACE_DICT,
+##                nsdict=STYLES_NAMESPACE_DICT,
+##                )
+##        else:
+##            root = Element('office:document-styles',
+##                attrib=STYLES_NAMESPACE_ATTRIB,
+##                nsdict=STYLES_NAMESPACE_DICT,
+##                )
+##        self.styles_tree = etree.ElementTree(element=root)
         self.paragraph_style_stack = ['rststyle-textbody', ]
         self.list_style_stack = []
         self.omit = False
@@ -684,31 +807,46 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.footnote_found = False
 
     def add_header_footer(self, content):
-        if len(self.header_content) > 0 or len(self.footer_content) > 0:
-            root_el = etree.fromstring(content)
-            path = '{%s}master-styles' % (NAME_SPACE_1, )
-            master_el = root_el.find(path)
-            if not master_el:
-                return content
-            el1 = SubElement(master_el, 'style:master-page', attrib={
-                'style:name': 'Standard',
-                'style:page-layout-name': 'pm1',
-                })
-            if len(self.header_content) > 0:
-                el2 = SubElement(el1, 'style:header')
-                for el in self.header_content:
-                    el.attrib['text:style-name'] = 'rststyle-header'
-                    el2.append(el)
-            if len(self.footer_content) > 0:
-                el2 = SubElement(el1, 'style:footer')
-                for el in self.footer_content:
-                    el.attrib['text:style-name'] = 'rststyle-footer'
-                    el2.append(el)
-            new_tree = etree.ElementTree(root_el)
-            new_content = ToString(new_tree)
-            return new_content
-        else:
+        if len(self.header_content) <= 0 and len(self.footer_content) <= 0:
             return content
+        root_el = etree.fromstring(content)
+        path = '{%s}master-styles' % (NAME_SPACE_1, )
+        master_el = root_el.find(path)
+        if master_el is None:
+            return content
+        path = '{%s}master-page' % (SNSD['style'], )
+        master_el = master_el.find(path)
+        if master_el is None:
+            return content
+        el1 = master_el
+        if len(self.header_content) > 0:
+            if WhichElementTree == 'lxml':
+                el2 = SubElement(el1, 'style:header', nsdict=SNSD)
+            else:
+                el2 = SubElement(el1, 'style:header',
+                    attrib=STYLES_NAMESPACE_ATTRIB,
+                    nsdict=STYLES_NAMESPACE_DICT,
+                    )
+            for el in self.header_content:
+                attrkey = add_ns('text:style-name', nsdict=SNSD)
+                el.attrib[attrkey] = 'rststyle-header'
+                el2.append(el)
+        if len(self.footer_content) > 0:
+            if WhichElementTree == 'lxml':
+                el2 = SubElement(el1, 'style:footer', nsdict=SNSD)
+            else:
+                el2 = SubElement(el1, 'style:footer',
+                    attrib=STYLES_NAMESPACE_ATTRIB,
+                    nsdict=STYLES_NAMESPACE_DICT,
+                    )
+            for el in self.footer_content:
+                attrkey = add_ns('text:style-name', nsdict=SNSD)
+                el.attrib[attrkey] = 'rststyle-footer'
+                el2.append(el)
+        #new_tree = etree.ElementTree(root_el)
+        #new_content = ToString(new_tree)
+        new_content = etree.tostring(root_el)
+        return new_content
 
     def astext(self):
         root = self.content_tree.getroot()
@@ -719,11 +857,12 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def content_astext(self):
         return self.astext()
 
-    def styles_astext(self):
-        root = self.styles_tree.getroot()
-        et = etree.ElementTree(root)
-        s1 = ToString(et)
-        return s1
+# test styles
+##    def styles_astext(self):
+##        root = self.styles_tree.getroot()
+##        et = etree.ElementTree(root)
+##        s1 = ToString(et)
+##        return s1
 
     def set_title(self, title): self.title = title
     def get_title(self): return self.title
@@ -1246,7 +1385,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             self.generate_figure(node, source, destination)
         else:
             el1 = SubElement(self.current_element, 'text:p',
-            attrib={'text:style-name': 'rststyle-textbody'})
+                attrib={'text:style-name': 'rststyle-textbody'})
             self.generate_image(node, source, destination, el1)
 
     def generate_figure(self, node, source, destination):
@@ -1294,7 +1433,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             'style:parent-style-name': 'Frame',
             }
         el1 = SubElement(self.automatic_styles, 
-            'style:style', attrib=attrib)
+            'style:style', attrib=attrib, nsdict=SNSD)
         halign = 'center'
         valign = 'top'
         if 'align' in node.attributes:
@@ -1320,7 +1459,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             }
         #ipshell('At generate_figure')
         el2 = SubElement(el1,
-            'style:graphic-properties', attrib=attrib)
+            'style:graphic-properties', attrib=attrib, nsdict=SNSD)
         # Add the content
         attrib = {'text:style-name': 'rststyle-textbody'}
         el1 = SubElement(self.current_element, 'text:p', attrib=attrib)
@@ -1355,7 +1494,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             'style:parent-style-name': 'Graphics',
             }
         el1 = SubElement(self.automatic_styles, 
-            'style:style', attrib=attrib)
+            'style:style', attrib=attrib, nsdict=SNSD)
         halign = 'center'
         valign = 'top'
         if 'align' in node.attributes:
@@ -1388,7 +1527,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         if self.is_in_table(node):
             attrib['style:wrap'] = 'none'
         el2 = SubElement(el1,
-            'style:graphic-properties', attrib=attrib)
+            'style:graphic-properties', attrib=attrib, nsdict=SNSD)
         # Add the content.
         #el = SubElement(current_element, 'text:p',
         #    attrib={'text:style-name': 'rststyle-textbody'})
@@ -1578,56 +1717,56 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             self.optiontablestyles_generated = True
             el = SubElement(self.automatic_styles, 'style:style', attrib={
                 'style:name': table_name,
-                'style:family': 'table'})
+                'style:family': 'table'}, nsdict=SNSD)
             el1 = SubElement(el, 'style:table-properties', attrib={
                 'style:width': '17.59cm',
                 'table:align': 'left',
-                'style:shadow': 'none'})
+                'style:shadow': 'none'}, nsdict=SNSD)
             el = SubElement(self.automatic_styles, 'style:style', attrib={
                 'style:name': '%s.A' % table_name,
-                'style:family': 'table-column'})
+                'style:family': 'table-column'}, nsdict=SNSD)
             el1 = SubElement(el, 'style:table-column-properties', attrib={
-                'style:column-width': '4.999cm'})
+                'style:column-width': '4.999cm'}, nsdict=SNSD)
             el = SubElement(self.automatic_styles, 'style:style', attrib={
                 'style:name': '%s.B' % table_name,
-                'style:family': 'table-column'})
+                'style:family': 'table-column'}, nsdict=SNSD)
             el1 = SubElement(el, 'style:table-column-properties', attrib={
-                'style:column-width': '12.587cm'})
+                'style:column-width': '12.587cm'}, nsdict=SNSD)
             el = SubElement(self.automatic_styles, 'style:style', attrib={
                 'style:name': '%s.A1' % table_name,
-                'style:family': 'table-cell'})
+                'style:family': 'table-cell'}, nsdict=SNSD)
             el1 = SubElement(el, 'style:table-cell-properties', attrib={
                 'fo:background-color': 'transparent',
                 'fo:padding': '0.097cm',
                 'fo:border-left': '0.035cm solid #000000',
                 'fo:border-right': 'none',
                 'fo:border-top': '0.035cm solid #000000',
-                'fo:border-bottom': '0.035cm solid #000000'})
-            el2 = SubElement(el1, 'style:background-image')
+                'fo:border-bottom': '0.035cm solid #000000'}, nsdict=SNSD)
+            el2 = SubElement(el1, 'style:background-image', nsdict=SNSD)
             el = SubElement(self.automatic_styles, 'style:style', attrib={
                 'style:name': '%s.B1' % table_name,
-                'style:family': 'table-cell'})
+                'style:family': 'table-cell'}, nsdict=SNSD)
             el1 = SubElement(el, 'style:table-cell-properties', attrib={
                 'fo:padding': '0.097cm',
-                'fo:border': '0.035cm solid #000000'})
+                'fo:border': '0.035cm solid #000000'}, nsdict=SNSD)
             el = SubElement(self.automatic_styles, 'style:style', attrib={
                 'style:name': '%s.A2' % table_name,
-                'style:family': 'table-cell'})
+                'style:family': 'table-cell'}, nsdict=SNSD)
             el1 = SubElement(el, 'style:table-cell-properties', attrib={
                 'fo:padding': '0.097cm',
                 'fo:border-left': '0.035cm solid #000000',
                 'fo:border-right': 'none',
                 'fo:border-top': 'none',
-                'fo:border-bottom': '0.035cm solid #000000'})
+                'fo:border-bottom': '0.035cm solid #000000'}, nsdict=SNSD)
             el = SubElement(self.automatic_styles, 'style:style', attrib={
                 'style:name': '%s.B2' % table_name,
-                'style:family': 'table-cell'})
+                'style:family': 'table-cell'}, nsdict=SNSD)
             el1 = SubElement(el, 'style:table-cell-properties', attrib={
                 'fo:padding': '0.097cm',
                 'fo:border-left': '0.035cm solid #000000',
                 'fo:border-right': '0.035cm solid #000000',
                 'fo:border-top': 'none',
-                'fo:border-bottom': '0.035cm solid #000000'})
+                'fo:border-bottom': '0.035cm solid #000000'}, nsdict=SNSD)
         #
         # Generate table data
         el = self.append_child('table:table', attrib={
@@ -1846,17 +1985,17 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         el1 = SubElement(self.automatic_styles, 'style:style', attrib={
             'style:name': '%s' % table_name,
             'style:family': 'table',
-            })
+            }, nsdict=SNSD)
         el1_1 = SubElement(el1, 'style:table-properties', attrib={
             #'style:width': '17.59cm',
             'table:align': 'margins',
-            })
+            }, nsdict=SNSD)
         # We use a single cell style for all cells in this table.
         # That's probably not correct, but seems to work.
         el2 = SubElement(self.automatic_styles, 'style:style', attrib={
             'style:name': '%s.A1' % table_name,
             'style:family': 'table-cell',
-            })
+            }, nsdict=SNSD)
         line_style1 = '0.%03dcm solid #000000' % self.settings.table_border_thickness
         el2_1 = SubElement(el2, 'style:table-cell-properties', attrib={
             'fo:padding': '0.049cm',
@@ -1864,7 +2003,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             'fo:border-right': line_style1,
             'fo:border-top': line_style1,
             'fo:border-bottom': line_style1,
-            })
+            }, nsdict=SNSD)
         title = None
         for child in node.children:
             if child.tagname == 'title':
@@ -1889,8 +2028,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def depart_table(self, node):
         #self.trace_depart_node(node)
         #ipshell('At depart_table')
-        self.current_table_style.attrib['style:width'] = \
-            '%dcm' % self.table_width
+        attribkey = add_ns('style:width', nsdict=SNSD)
+        attribval = '%dcm' % self.table_width
+        self.current_table_style.attrib[attribkey] = attribval
         self.set_to_parent()
 
     def visit_tgroup(self, node):
@@ -1913,9 +2053,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         el1 = SubElement(self.automatic_styles, 'style:style', attrib={
             'style:name': colspec_name,
             'style:family': 'table-column',
-            })
+            }, nsdict=SNSD)
         el1_1 = SubElement(el1, 'style:table-column-properties', attrib={
-            'style:column-width': '%dcm' % colwidth })
+            'style:column-width': '%dcm' % colwidth }, nsdict=SNSD)
         el2 = self.append_child('table:table-column', attrib={
             'table:style-name': colspec_name,
             })
@@ -1959,14 +2099,15 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             TableStylePrefix, self.table_count, chr(self.column_count),)
         cellspec_name = '%s%d.A1' % (
             TableStylePrefix, self.table_count,)
-        el1 = self.append_child('table:table-cell', attrib={
+        attrib={
             'table:style-name': cellspec_name,
             'office:value-type': 'string',
-            })
+            }
         morecols = node.get('morecols', 0)
         if morecols > 0:
-            el1.attrib['table:number-columns-spanned'] = '%d' % (morecols + 1,)
+            attrib['table:number-columns-spanned'] = '%d' % (morecols + 1,)
             self.column_count += morecols
+        el1 = self.append_child('table:table-cell', attrib=attrib)
         self.set_current_element(el1)
 
     def depart_entry(self, node):
