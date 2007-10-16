@@ -1,0 +1,12 @@
+.. -*- rst-mode -*-
+
+Syntax highlight with the ``listings.sty`` LaTeX package
+========================================================
+
+A test snippet in Python::
+
+   # a loop with a famous program
+   for i in range(3):
+       print "hello"
+       
+Ende.       
