@@ -78,9 +78,10 @@ syntax highlight with ``listings.sty``.
 Status
 ~~~~~~
 
-``latex2e-listings.py``
+`latex2e-listings.py`_
 
 :2007-06-28: In preparation, no code written yet.
+:2007-10-15: First draft
 
 "literal-environment" configuration setting
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -169,6 +170,7 @@ quote        input
 .. _pygments: http://pygments.org/ 
 .. _listings: 
    http://www.ctan.org/tex-archive/help/Catalogue/entries/listings.html
+.. _latex2e_listings.py: ../latex2e_listings/latex2e_listings.py   
 .. _fancyvrb: 
    http://www.ctan.org/tex-archive/help/Catalogue/entries/fancyvrb.html
 .. _alltt: 
