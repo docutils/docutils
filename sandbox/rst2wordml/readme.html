@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.5: http://docutils.sourceforge.net/" />
+<title>rst2wordml</title>
+<style type="text/css">
+
+/*
+:Author: Jay Kint
+:Contact: bilbo@hobbit-hole.org
+:Date: $Date$
+:Revision: $Revision$
+:Copyright: This stylesheet has been placed in the public domain.
+
+Cascading sheet to mimic that of "Practical Common Lisp", a clean and
+readable stylesheet.
+*/
+
+/* @import url(html4css.css) */
+
+div.document {
+  margin: 1in 1in;
+  font-size: 12pt;
+}
+
+.title {
+  text-align: center;
+  font-size: 24pt;
+}
+
+h1 {
+  font-size: 18pt;
+}
+
+h2 {
+  font-size: 14pt;
+}
+
+div.footer {
+  font-size: 8pt;
+}
+
+table.footnote {
+  font-size: 10pt;
+  line-height: 1.5;
+  margin: 0px 0px 13px 0px;
+}
+
+td.label {
+  font-size: 8pt;
+}
+
+p { line-height: 1.5; }
+
+.literal {
+  font-size: 9pt;
+}
+
+td p {
+  margin: 0 0 13px 0;
+}
+
+td p.last {
+  margin: 0 0 0 0;
+}
+
+blockquote {  line-height: 1.5; font-size: 90%;  }
+h1, h2, h3, h4, h5, h6 { font-family: Helvetica; }
+li { padding-top: 6pt; }
+
+</style>
+</head>
+<body>
+<div class="document" id="rst2wordml">
+<h1 class="title">rst2wordml</h1>
+
+<p><a class="reference external" href="http://s3.amazonaws.com/hobbit-hole/rst2wordml.zip">rst2wordml</a> is a <a class="reference external" href="http://docutils.sf.net/rst">reStructuredText</a> (reST) to <a class="reference external" href="http://www.microsoft.com">WordprocessingML</a> (WordML) converter.</p>
+<p>You can use rst2wordml to convert reST text files to WordML.  The resulting WordML file may then be loaded
+into MS Word 2003 or later.  You can then edit, save, or print it as any format that MS Word supports, such as
+PDF.</p>
+<div class="section" id="installation">
+<h1>Installation</h1>
+<p>Docutils should already be installed before installing rst2wordml.  This guide assumes that Python is
+installed at C:\Python25 and that Docutils has been installed in its default location,
+C:\Python25\Libs\site-packages\docutils.</p>
+<p>rst2wordml consists of 2 .py files and a template.xml file:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="27%" />
+<col width="73%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head"><strong>File</strong></th>
+<th class="head"><strong>Location</strong></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>docutils_wordml.py</td>
+<td>C:\Python25\Lib\site-packages\docutils\writers</td>
+</tr>
+<tr><td>rst2wordml.py</td>
+<td>C:\Python25\Scripts</td>
+</tr>
+<tr><td>template.xml</td>
+<td>Wherever the .rst file(s) to convert are.</td>
+</tr>
+</tbody>
+</table>
+<p>The template.xml file is used by rst2wordml to give default styles and formatting options to its output.  See
+<a class="reference internal" href="#options">Options</a> for information on custom template files.</p>
+</div>
+<div class="section" id="features">
+<h1>Features</h1>
+<p>Currently not all the features supported by reST are converted by the rst2wordml converter.  Here is a list of
+features and their level of support:</p>
+<ul class="simple">
+<li><strong>Impl</strong> means a feature is already implemented.</li>
+<li><strong>Unknown</strong> means a feature might work but hasn't been tested.</li>
+<li><strong>Next</strong> means that it should be coming in the near future.</li>
+<li><strong>None</strong> means that I have no intention of supporting this feature, although I will take patches to support
+the feature.</li>
+</ul>
+<table border="1" class="docutils">
+<colgroup>
+<col width="51%" />
+<col width="11%" />
+<col width="15%" />
+<col width="11%" />
+<col width="11%" />
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head"><strong>Feature</strong></th>
+<th class="head"><strong>Impl</strong></th>
+<th class="head"><strong>Unknown</strong></th>
+<th class="head"><strong>Next</strong></th>
+<th class="head"><strong>None</strong></th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>Paragraphs</td>
+<td>X</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>Inline markup (bold and italic)</td>
+<td>X</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>Hyperlinks</td>
+<td>X</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>Inline literals</td>
+<td>X</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>Bullet Lists</td>
+<td>X</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>Enumerated Lists</td>
+<td>X</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>Definition Lists</td>
+<td>X</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>Field Lists</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>X</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>Option Lists</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>X</td>
+</tr>
+<tr><td>Literal Blocks</td>
+<td>X</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>Line Blocks</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>X</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>Block Quotes</td>
+<td>X</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>Doctest Blocks</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>X</td>
+</tr>
+<tr><td>Tables</td>
+<td>X</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>Images <a class="footnote-reference" href="#id3" id="id1">[1]</a></td>
+<td>X</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>Footnotes <a class="footnote-reference" href="#id4" id="id2">[2]</a></td>
+<td>X</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>Citations</td>
+<td>X</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>Directives</td>
+<td>&nbsp;</td>
+<td>X</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>Substitutions</td>
+<td>X</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr><td>Comments</td>
+<td>X</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<p>This table isn't necessarily exhaustive, though I did go through the specification to come up with this list.</p>
+</div>
+<div class="section" id="options">
+<h1>Options</h1>
+<p>For now rst2wordml only supports a single option, --template=&lt;template xml file&gt;.  The default is a file
+called template.xml.  See <a class="reference internal" href="#implementation">Implementation</a> for information how to create a template file of your own if
+template.xml doesn't meet your needs.</p>
+</div>
+<div class="section" id="unit-tests">
+<h1>Unit Tests</h1>
+<p>Included in this release are the beginnings of unit tests, included in the test subdirectory.  Each test
+stands on its own as a script and uses doctest to generate a document from the default template.xml file.  To
+run each test, just type python &lt;test name&gt;.  If the test generates no output, it passed.</p>
+</div>
+<div class="section" id="implementation">
+<h1>Implementation</h1>
+<p>There really is no magic to the implementation of rst2wordml.  The good folks at docutils have factored reST
+into a nice set of classes.  To format a new output type for a reST doc, one only need create a new subclass
+of Writer class, which I did in the docutils_wordml.py file.</p>
+<p>Also, rst2wordml.py is a simple front end for instantiating the conversion process from the command line.</p>
+<p>rst2wordml uses a template file similar in concept to the CSS file used by the HTML converter.  The template
+file contains the default formatting properties for items such as styles, tables, and lists.  It is
+theoretically easy to create a new look for your documents by opening template.xml in MS Word, adjusting the
+styles and then saving the file.  Unfortunately, theory doesn't apply here.</p>
+<p>If you open template.xml, you'll perhaps notice buried in all the XML, three unique tags not supported by
+WordML: &lt;w:rest&gt;, &lt;w:rstlists&gt;, and &lt;w:rstlistdefs&gt;.  These are used by rst2wordml to insert generated data.
+Otherwise, the generated output is identical to the template.xml file.</p>
+<p>The template file should contain the styles Normal, DefaultParagraphFont, Heading 1, Heading 2, Heading 3,
+LiteralBlock, Endnote Text, and Endnote Reference.  Also, list styles for bullet lists and enumerated lists
+need to be included.</p>
+<p>If you should wish to create your own template.xml file, the easiest thing to do is create a document in MS
+Word with these styles and save it out as WordML.  Next, open it in a text editor, and look for the places
+where the special tags appear in the original template.xml and place the same tags in your file.</p>
+</div>
+<div class="section" id="literate-programming-with-rest">
+<h1>Literate Programming with reST</h1>
+<p>One of the reasons that I started writing this converter was to help me document one of the (other) projects
+I'm working on.  As I was writing the docs for that project, I was consistently copying and pasting code
+samples into literal blocks.  Of course, as the code changed, so did the amount of work keeping it in sync
+with the docs.  Literate programming seemed to provide exactly what I needed, code and docs together.</p>
+<p>I had seen literate programming used in the book <a class="reference external" href="http://www.amazon.com/Physically-Based-Rendering-Implementation-Interactive/dp/012553180X/ref=pd_bbs_sr_1/103-3091427-3166253?ie=UTF8">Physically Based Rendering</a> and I thought it would be cool
+to have the ability to write documentation and code in a single file.  After looking at some of the literate
+programming tools, I found <a class="reference external" href="http://pylit.berlios.de/index.html">PyLit</a>, a <em>semi-literate programming</em> module that works with reST.  reST has
+everything I need in a markup without having to really learn a markup language.  PyLit can do the code
+extraction, rst2html does the conversion to web pages, and rst2wordml can convert to Word files, from which I
+can easily make printed copoies or even create PDF files.</p>
+<table class="docutils footnote" frame="void" id="id3" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Images are centered and the dimensions are extracted if the Python Imaging Library is installed.
+Otherwise they must be supplied by the author or they default to 100x100.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id4" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id2">[2]</a></td><td>Footnotes in rst2wordml are implemented as end notes to better match the output of the HTML converter.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</body>
+</html>
