@@ -1,0 +1,563 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?mso-application progid="Word.Document"?>
+<w:wordDocument xmlns:w="http://schemas.microsoft.com/office/word/2003/wordml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:sl="http://schemas.microsoft.com/schemaLibrary/2003/core" xmlns:aml="http://schemas.microsoft.com/aml/2001/core" xmlns:wx="http://schemas.microsoft.com/office/word/2003/auxHint" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882" xmlns:wsp="http://schemas.microsoft.com/office/word/2003/wordml/sp2" w:macrosPresent="no" w:embeddedObjPresent="no" w:ocxPresent="no" xml:space="preserve">
+  <w:ignoreElements w:val="http://schemas.microsoft.com/office/word/2003/wordml/sp2"/>
+  <w:fonts>
+    <w:defaultFonts w:ascii="Times New Roman" w:fareast="Times New Roman" w:h-ansi="Times New Roman" w:cs="Times New Roman"/>
+    <w:font w:name="Wingdings">
+      <w:panose-1 w:val="05000000000000000000"/>
+      <w:charset w:val="02"/>
+      <w:family w:val="Auto"/>
+      <w:pitch w:val="variable"/>
+      <w:sig w:usb-0="00000000" w:usb-1="10000000" w:usb-2="00000000" w:usb-3="00000000" w:csb-0="80000000" w:csb-1="00000000"/>
+    </w:font>
+  </w:fonts>
+  <w:lists>
+    <w:listDef w:listDefId="0">
+      <w:plt w:val="HybridMultilevel"/>
+      <w:tmpl w:val="9C26005E"/>
+      <w:lvl w:ilvl="0" w:tplc="0409000F">
+        <w:start w:val="1"/>
+        <w:lvlText w:val="%1."/>
+        <w:lvlJc w:val="left"/>
+        <w:pPr>
+          <w:tabs>
+            <w:tab w:val="list" w:pos="720"/>
+          </w:tabs>
+          <w:ind w:left="720" w:hanging="360"/>
+        </w:pPr>
+      </w:lvl>
+      <w:lvl w:ilvl="1" w:tplc="04090019">
+        <w:start w:val="1"/>
+        <w:nfc w:val="4"/>
+        <w:lvlText w:val="%2."/>
+        <w:lvlJc w:val="left"/>
+        <w:pPr>
+          <w:tabs>
+            <w:tab w:val="list" w:pos="1440"/>
+          </w:tabs>
+          <w:ind w:left="1440" w:hanging="360"/>
+        </w:pPr>
+      </w:lvl>
+      <w:lvl w:ilvl="2" w:tplc="0409001B">
+        <w:start w:val="1"/>
+        <w:nfc w:val="2"/>
+        <w:lvlText w:val="%3."/>
+        <w:lvlJc w:val="right"/>
+        <w:pPr>
+          <w:tabs>
+            <w:tab w:val="list" w:pos="2160"/>
+          </w:tabs>
+          <w:ind w:left="2160" w:hanging="180"/>
+        </w:pPr>
+      </w:lvl>
+      <w:lvl w:ilvl="3" w:tplc="0409000F">
+        <w:start w:val="1"/>
+        <w:lvlText w:val="%4."/>
+        <w:lvlJc w:val="left"/>
+        <w:pPr>
+          <w:tabs>
+            <w:tab w:val="list" w:pos="2880"/>
+          </w:tabs>
+          <w:ind w:left="2880" w:hanging="360"/>
+        </w:pPr>
+      </w:lvl>
+      <w:lvl w:ilvl="4" w:tplc="04090019">
+        <w:start w:val="1"/>
+        <w:nfc w:val="4"/>
+        <w:lvlText w:val="%5."/>
+        <w:lvlJc w:val="left"/>
+        <w:pPr>
+          <w:tabs>
+            <w:tab w:val="list" w:pos="3600"/>
+          </w:tabs>
+          <w:ind w:left="3600" w:hanging="360"/>
+        </w:pPr>
+      </w:lvl>
+      <w:lvl w:ilvl="5" w:tplc="0409001B">
+        <w:start w:val="1"/>
+        <w:nfc w:val="2"/>
+        <w:lvlText w:val="%6."/>
+        <w:lvlJc w:val="right"/>
+        <w:pPr>
+          <w:tabs>
+            <w:tab w:val="list" w:pos="4320"/>
+          </w:tabs>
+          <w:ind w:left="4320" w:hanging="180"/>
+        </w:pPr>
+      </w:lvl>
+      <w:lvl w:ilvl="6" w:tplc="0409000F">
+        <w:start w:val="1"/>
+        <w:lvlText w:val="%7."/>
+        <w:lvlJc w:val="left"/>
+        <w:pPr>
+          <w:tabs>
+            <w:tab w:val="list" w:pos="5040"/>
+          </w:tabs>
+          <w:ind w:left="5040" w:hanging="360"/>
+        </w:pPr>
+      </w:lvl>
+      <w:lvl w:ilvl="7" w:tplc="04090019">
+        <w:start w:val="1"/>
+        <w:nfc w:val="4"/>
+        <w:lvlText w:val="%8."/>
+        <w:lvlJc w:val="left"/>
+        <w:pPr>
+          <w:tabs>
+            <w:tab w:val="list" w:pos="5760"/>
+          </w:tabs>
+          <w:ind w:left="5760" w:hanging="360"/>
+        </w:pPr>
+      </w:lvl>
+      <w:lvl w:ilvl="8" w:tplc="0409001B" w:tentative="on">
+        <w:start w:val="1"/>
+        <w:nfc w:val="2"/>
+        <w:lvlText w:val="%9."/>
+        <w:lvlJc w:val="right"/>
+        <w:pPr>
+          <w:tabs>
+            <w:tab w:val="list" w:pos="6480"/>
+          </w:tabs>
+          <w:ind w:left="6480" w:hanging="180"/>
+        </w:pPr>
+      </w:lvl>
+    </w:listDef>
+    <w:listDef w:listDefId="1">
+      <w:plt w:val="HybridMultilevel"/>
+      <w:tmpl w:val="6DBC60EA"/>
+      <w:lvl w:ilvl="0" w:tplc="04090001">
+        <w:start w:val="1"/>
+        <w:nfc w:val="23"/>
+        <w:lvlText w:val=""/>
+        <w:lvlJc w:val="left"/>
+        <w:pPr>
+          <w:tabs>
+            <w:tab w:val="list" w:pos="720"/>
+          </w:tabs>
+          <w:ind w:left="720" w:hanging="360"/>
+        </w:pPr>
+        <w:rPr>
+          <w:rFonts w:ascii="Symbol" w:h-ansi="Symbol" w:hint="default"/>
+        </w:rPr>
+      </w:lvl>
+      <w:lvl w:ilvl="1" w:tplc="04090003">
+        <w:start w:val="1"/>
+        <w:nfc w:val="23"/>
+        <w:lvlText w:val="o"/>
+        <w:lvlJc w:val="left"/>
+        <w:pPr>
+          <w:tabs>
+            <w:tab w:val="list" w:pos="1440"/>
+          </w:tabs>
+          <w:ind w:left="1440" w:hanging="360"/>
+        </w:pPr>
+        <w:rPr>
+          <w:rFonts w:ascii="Courier New" w:h-ansi="Courier New" w:cs="Courier New" w:hint="default"/>
+        </w:rPr>
+      </w:lvl>
+      <w:lvl w:ilvl="2" w:tplc="04090005">
+        <w:start w:val="1"/>
+        <w:nfc w:val="23"/>
+        <w:lvlText w:val=""/>
+        <w:lvlJc w:val="left"/>
+        <w:pPr>
+          <w:tabs>
+            <w:tab w:val="list" w:pos="2160"/>
+          </w:tabs>
+          <w:ind w:left="2160" w:hanging="360"/>
+        </w:pPr>
+        <w:rPr>
+          <w:rFonts w:ascii="Wingdings" w:h-ansi="Wingdings" w:hint="default"/>
+        </w:rPr>
+      </w:lvl>
+      <w:lvl w:ilvl="3" w:tplc="04090001">
+        <w:start w:val="1"/>
+        <w:nfc w:val="23"/>
+        <w:lvlText w:val=""/>
+        <w:lvlJc w:val="left"/>
+        <w:pPr>
+          <w:tabs>
+            <w:tab w:val="list" w:pos="2880"/>
+          </w:tabs>
+          <w:ind w:left="2880" w:hanging="360"/>
+        </w:pPr>
+        <w:rPr>
+          <w:rFonts w:ascii="Symbol" w:h-ansi="Symbol" w:hint="default"/>
+        </w:rPr>
+      </w:lvl>
+      <w:lvl w:ilvl="4" w:tplc="04090003">
+        <w:start w:val="1"/>
+        <w:nfc w:val="23"/>
+        <w:lvlText w:val="o"/>
+        <w:lvlJc w:val="left"/>
+        <w:pPr>
+          <w:tabs>
+            <w:tab w:val="list" w:pos="3600"/>
+          </w:tabs>
+          <w:ind w:left="3600" w:hanging="360"/>
+        </w:pPr>
+        <w:rPr>
+          <w:rFonts w:ascii="Courier New" w:h-ansi="Courier New" w:cs="Courier New" w:hint="default"/>
+        </w:rPr>
+      </w:lvl>
+      <w:lvl w:ilvl="5" w:tplc="04090005">
+        <w:start w:val="1"/>
+        <w:nfc w:val="23"/>
+        <w:lvlText w:val=""/>
+        <w:lvlJc w:val="left"/>
+        <w:pPr>
+          <w:tabs>
+            <w:tab w:val="list" w:pos="4320"/>
+          </w:tabs>
+          <w:ind w:left="4320" w:hanging="360"/>
+        </w:pPr>
+        <w:rPr>
+          <w:rFonts w:ascii="Wingdings" w:h-ansi="Wingdings" w:hint="default"/>
+        </w:rPr>
+      </w:lvl>
+      <w:lvl w:ilvl="6" w:tplc="04090001">
+        <w:start w:val="1"/>
+        <w:nfc w:val="23"/>
+        <w:lvlText w:val=""/>
+        <w:lvlJc w:val="left"/>
+        <w:pPr>
+          <w:tabs>
+            <w:tab w:val="list" w:pos="5040"/>
+          </w:tabs>
+          <w:ind w:left="5040" w:hanging="360"/>
+        </w:pPr>
+        <w:rPr>
+          <w:rFonts w:ascii="Symbol" w:h-ansi="Symbol" w:hint="default"/>
+        </w:rPr>
+      </w:lvl>
+      <w:lvl w:ilvl="7" w:tplc="04090003">
+        <w:start w:val="1"/>
+        <w:nfc w:val="23"/>
+        <w:lvlText w:val="o"/>
+        <w:lvlJc w:val="left"/>
+        <w:pPr>
+          <w:tabs>
+            <w:tab w:val="list" w:pos="5760"/>
+          </w:tabs>
+          <w:ind w:left="5760" w:hanging="360"/>
+        </w:pPr>
+        <w:rPr>
+          <w:rFonts w:ascii="Courier New" w:h-ansi="Courier New" w:cs="Courier New" w:hint="default"/>
+        </w:rPr>
+      </w:lvl>
+      <w:lvl w:ilvl="8" w:tplc="04090005">
+        <w:start w:val="1"/>
+        <w:nfc w:val="23"/>
+        <w:lvlText w:val=""/>
+        <w:lvlJc w:val="left"/>
+        <w:pPr>
+          <w:tabs>
+            <w:tab w:val="list" w:pos="6480"/>
+          </w:tabs>
+          <w:ind w:left="6480" w:hanging="360"/>
+        </w:pPr>
+        <w:rPr>
+          <w:rFonts w:ascii="Wingdings" w:h-ansi="Wingdings" w:hint="default"/>
+        </w:rPr>
+      </w:lvl>
+    </w:listDef>
+    <w:rstlistdefs />
+    <w:rstlists />
+  </w:lists>
+  <w:styles>
+    <w:versionOfBuiltInStylenames w:val="4"/>
+    <w:latentStyles w:defLockedState="off" w:latentStyleCount="156"/>
+    <w:style w:type="paragraph" w:default="on" w:styleId="Normal">
+      <w:name w:val="Normal"/>
+      <w:pPr>
+        <w:spacing w:after="120"/>
+      </w:pPr>
+      <w:rPr>
+        <wx:font wx:val="Times New Roman"/>
+        <w:sz-cs w:val="24"/>
+        <w:lang w:val="EN-US" w:fareast="EN-US" w:bidi="AR-SA"/>
+      </w:rPr>
+    </w:style>
+    <w:style w:type="character" w:styleId="Hyperlink">
+      <w:name w:val="Hyperlink"/>
+      <w:basedOn w:val="DefaultParagraphFont"/>
+      <w:rPr>
+        <w:color w:val="0000FF"/>
+        <w:u w:val="single"/>
+      </w:rPr>
+    </w:style>
+    <w:style w:type="paragraph" w:styleId="LiteralBlock">
+      <w:name w:val="LiteralBlock"/>
+      <w:basedOn w:val="Normal"/>
+      <w:next w:val="Normal"/>
+      <w:pPr>
+        <w:pStyle w:val="LiteralBlock"/>
+        <w:ind w:left="720" w:right="720"/>
+      </w:pPr>
+      <w:rPr>
+        <w:rFonts w:ascii="Courier New" w:h-ansi="Courier New"/>
+        <wx:font wx:val="Courier New"/><w:sz w:val="20"/>
+      </w:rPr>
+    </w:style>
+    <w:style w:type="paragraph" w:styleId="Heading1">
+      <w:name w:val="heading 1"/>
+      <wx:uiName wx:val="Heading 1"/>
+      <w:basedOn w:val="Normal"/>
+      <w:next w:val="Normal"/>
+      <w:pPr>
+        <w:pStyle w:val="Heading1"/>
+        <w:keepNext/>
+        <w:spacing w:before="240" w:after="60"/>
+        <w:outlineLvl w:val="0"/>
+      </w:pPr>
+      <w:rPr>
+        <w:rFonts w:ascii="Arial" w:h-ansi="Arial" w:cs="Arial"/>
+        <wx:font wx:val="Arial"/>
+        <w:b/>
+        <w:b-cs/>
+        <w:kern w:val="32"/>
+        <w:sz w:val="32"/>
+        <w:sz-cs w:val="32"/>
+      </w:rPr>
+    </w:style>
+    <w:style w:type="paragraph" w:styleId="Heading2">
+      <w:name w:val="heading 2"/>
+      <wx:uiName wx:val="Heading 2"/>
+      <w:basedOn w:val="Normal"/>
+      <w:next w:val="Normal"/>
+      <w:pPr>
+        <w:pStyle w:val="Heading2"/>
+        <w:keepNext/>
+        <w:spacing w:before="240" w:after="60"/>
+        <w:outlineLvl w:val="1"/>
+      </w:pPr>
+      <w:rPr>
+        <w:rFonts w:ascii="Arial" w:h-ansi="Arial" w:cs="Arial"/>
+        <wx:font wx:val="Arial"/>
+        <w:b/>
+        <w:b-cs/>
+        <w:i/>
+        <w:i-cs/>
+        <w:sz w:val="28"/>
+        <w:sz-cs w:val="28"/>
+      </w:rPr>
+    </w:style>
+    <w:style w:type="paragraph" w:styleId="Heading3">
+      <w:name w:val="heading 3"/>
+      <wx:uiName wx:val="Heading 3"/>
+      <w:basedOn w:val="Normal"/>
+      <w:next w:val="Normal"/>
+      <w:pPr>
+        <w:pStyle w:val="Heading3"/>
+        <w:keepNext/>
+        <w:spacing w:before="240" w:after="60"/>
+        <w:outlineLvl w:val="2"/>
+      </w:pPr>
+      <w:rPr>
+        <w:rFonts w:ascii="Arial" w:h-ansi="Arial" w:cs="Arial"/>
+        <wx:font wx:val="Arial"/>
+        <w:b/>
+        <w:b-cs/>
+        <w:sz w:val="26"/>
+        <w:sz-cs w:val="26"/>
+      </w:rPr>
+    </w:style>
+    <w:style w:type="character" w:default="on" w:styleId="DefaultParagraphFont">
+      <w:name w:val="Default Paragraph Font"/>
+      <w:semiHidden/>
+    </w:style>
+    <w:style w:type="table" w:default="on" w:styleId="TableNormal">
+      <w:name w:val="Normal Table"/>
+      <wx:uiName wx:val="Table Normal"/>
+      <w:semiHidden/>
+      <w:rPr>
+        <wx:font wx:val="Times New Roman"/>
+      </w:rPr>
+      <w:tblPr>
+        <w:tblInd w:w="0" w:type="dxa"/>
+        <w:tblCellMar>
+          <w:top w:w="0" w:type="dxa"/>
+          <w:left w:w="108" w:type="dxa"/>
+          <w:bottom w:w="0" w:type="dxa"/>
+          <w:right w:w="108" w:type="dxa"/>
+        </w:tblCellMar>
+      </w:tblPr>
+    </w:style>
+    <w:style w:type="list" w:default="on" w:styleId="NoList">
+      <w:name w:val="No List"/>
+      <w:semiHidden/>
+    </w:style>
+    <w:style w:type="character" w:styleId="Literal">
+      <w:name w:val="Literal"/>
+      <w:basedOn w:val="DefaultParagraphFont"/>
+      <w:rPr>
+        <w:rFonts w:ascii="Courier New" w:h-ansi="Courier New"/>
+      </w:rPr>
+    </w:style>
+    <w:style w:type="paragraph" w:styleId="EndnoteText">
+      <w:name w:val="endnote text"/>
+      <wx:uiName wx:val="Endnote Text"/>
+      <w:basedOn w:val="Normal"/>
+      <w:semiHidden/>
+      <w:pPr>
+        <w:pStyle w:val="EndnoteText"/>
+      </w:pPr>
+      <w:rPr>
+        <wx:font wx:val="Times New Roman"/>
+        <w:sz w:val="20"/>
+        <w:sz-cs w:val="20"/>
+      </w:rPr>
+    </w:style>
+    <w:style w:type="character" w:styleId="EndnoteReference">
+      <w:name w:val="endnote reference"/>
+      <wx:uiName wx:val="Endnote Reference"/>
+      <w:basedOn w:val="DefaultParagraphFont"/>
+      <w:semiHidden/>
+      <w:rPr>
+        <w:vertAlign w:val="superscript"/>
+      </w:rPr>
+    </w:style>
+    <w:style w:type="paragraph" w:styleId="AuthorName">
+      <w:name w:val="AuthorName"/>
+      <w:basedOn w:val="Normal"/>
+      <w:next w:val="Normal"/>
+      <w:pPr>
+        <w:pStyle w:val="AuthorName"/>
+        <w:spacing w:before="240" w:after="240"/>
+        <w:jc w:val="center"/>
+      </w:pPr>
+      <w:rPr>
+        <w:b/>
+      </w:rPr>
+    </w:style>
+    <w:style w:type="paragraph" w:styleId="AuthorContact">
+      <w:name w:val="AuthorContact"/>
+      <w:basedOn w:val="Normal"/>
+      <w:next w:val="Normal"/>
+      <w:pPr>
+        <w:pStyle w:val="AuthorContact"/>
+        <w:spacing w:before="240" w:after="240"/>
+        <w:jc w:val="center"/>
+      </w:pPr>
+      <w:rPr>
+        <wx:font wx:val="Times New Roman"/>
+        <w:b/>
+      </w:rPr>
+    </w:style>
+    <w:style w:type="paragraph" w:styleId="BibliographMatter">
+      <w:name w:val="BibliographMatter"/>
+      <w:basedOn w:val="Normal"/>
+      <w:next w:val="Normal"/>
+      <w:pPr>
+        <w:pStyle w:val="BibliographMatter"/>
+        <w:spacing w:before="240" w:after="240"/>
+        <w:jc w:val="center"/>
+      </w:pPr>
+      <w:rPr>
+        <w:b/>
+      </w:rPr>
+    </w:style>
+    <w:style w:type="paragraph" w:styleId="DefinitionTerm">
+      <w:name w:val="DefinitionTerm"/>
+      <w:basedOn w:val="Normal"/>
+      <w:next w:val="Normal"/>
+      <w:pPr>
+        <w:pStyle w:val="DefinitionTerm"/>
+      </w:pPr>
+      <w:rPr>
+        <w:b />
+      </w:rPr>
+    </w:style>
+    <w:style w:type="paragraph" w:styleId="Definition">
+      <w:name w:val="Definition"/>
+      <w:basedOn w:val="Normal"/>
+      <w:next w:val="Normal"/>
+      <w:pPr>
+        <w:pStyle w:val="Definition"/>
+      </w:pPr>
+    </w:style>
+    <w:style w:type="character" w:styleId="CitationReference">
+      <w:name w:val="CitationReference"/>
+      <w:basedOn w:val="DefaultParagraphFont"/>
+    </w:style>
+    <w:style w:type="paragraph" w:styleId="Topic">
+        <w:name w:val="Topic"/>
+        <w:basedOn w:val="Normal"/>
+        <w:next w:val="Normal"/>
+        <w:pPr>
+            <w:pStyle w:val="Topic"/>
+            <w:ind w:left="1440" w:right="1440"/>
+            <w:jc w:val="both"/>
+        </w:pPr>
+    </w:style>
+  </w:styles>
+  <w:docPr>
+    <w:view w:val="print"/>
+    <w:zoom w:percent="100"/>
+    <w:doNotEmbedSystemFonts/>
+    <w:proofState w:spelling="clean" w:grammar="clean"/>
+    <w:attachedTemplate w:val=""/>
+    <w:defaultTabStop w:val="720"/>
+    <w:punctuationKerning/>
+    <w:characterSpacingControl w:val="DontCompress"/>
+    <w:optimizeForBrowser/>
+    <w:validateAgainstSchema/>
+    <w:saveInvalidXML w:val="off"/>
+    <w:ignoreMixedContent w:val="off"/>
+    <w:alwaysShowPlaceholderText w:val="off"/>
+    <w:compat>
+      <w:breakWrappedTables/>
+      <w:snapToGridInCell/>
+      <w:wrapTextWithPunct/>
+      <w:useAsianBreakRules/>
+      <w:useWord2002TableStyleRules/>
+    </w:compat>
+    <w:footnotePr>
+      <w:footnote w:type="separator">
+        <w:p>
+          <w:r>
+            <w:separator/>
+          </w:r>
+        </w:p>
+      </w:footnote>
+      <w:footnote w:type="continuation-separator">
+        <w:p>
+          <w:r>
+            <w:continuationSeparator/>
+          </w:r>
+        </w:p>
+      </w:footnote>
+    </w:footnotePr>
+    <w:endnotePr>
+      <w:numFmt w:val="decimal"/>
+      <w:endnote w:type="separator">
+        <w:p>
+          <w:r>
+            <w:separator/>
+          </w:r>
+        </w:p>
+      </w:endnote>
+      <w:endnote w:type="continuation-separator">
+        <w:p>
+          <w:r>
+            <w:continuationSeparator/>
+          </w:r>
+        </w:p>
+      </w:endnote>
+    </w:endnotePr>
+  </w:docPr>
+<w:body>
+<wx:sect>
+<w:rest />
+<w:sectPr>
+  <w:endnotePr>
+    <w:numFmt w:val="decimal"/>
+  </w:endnotePr>
+  <w:pgSz w:w="12240" w:h="15840"/>
+  <w:pgMar w:top="1440" w:right="1800" w:bottom="1440" w:left="1800" w:header="720" w:footer="720" w:gutter="0"/>
+  <w:cols w:space="720"/>
+  <w:docGrid w:line-pitch="360"/>
+</w:sectPr>
+</wx:sect>
+</w:body>
+</w:wordDocument>

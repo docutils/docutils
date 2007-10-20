@@ -1,0 +1,2131 @@
+<w:wordDocument xmlns:wsp="http://schemas.microsoft.com/office/word/2003/wordml/sp2" xmlns:sl="http://schemas.microsoft.com/schemaLibrary/2003/core" w:embeddedObjPresent="no" xmlns:w="http://schemas.microsoft.com/office/word/2003/wordml" xmlns:v="urn:schemas-microsoft-com:vml" xml:space="preserve" w:ocxPresent="no" xmlns:w10="urn:schemas-microsoft-com:office:word" w:macrosPresent="no" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:dt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882" xmlns:aml="http://schemas.microsoft.com/aml/2001/core" xmlns:wx="http://schemas.microsoft.com/office/word/2003/auxHint" >
+  <w:ignoreElements w:val="http://schemas.microsoft.com/office/word/2003/wordml/sp2" ></w:ignoreElements>
+  <w:fonts >
+    <w:defaultFonts w:h-ansi="Times New Roman" w:fareast="Times New Roman" w:cs="Times New Roman" w:ascii="Times New Roman" ></w:defaultFonts>
+    <w:font w:name="Wingdings" >
+      <w:panose-1 w:val="05000000000000000000" ></w:panose-1>
+      <w:charset w:val="02" ></w:charset>
+      <w:family w:val="Auto" ></w:family>
+      <w:pitch w:val="variable" ></w:pitch>
+      <w:sig w:csb-1="00000000" w:csb-0="80000000" w:usb-3="00000000" w:usb-2="00000000" w:usb-1="10000000" w:usb-0="00000000" ></w:sig>
+    </w:font>
+  </w:fonts>
+  <w:lists >
+    <w:listDef w:listDefId="0" >
+      <w:plt w:val="HybridMultilevel" ></w:plt>
+      <w:tmpl w:val="9C26005E" ></w:tmpl>
+      <w:lvl w:ilvl="0" w:tplc="0409000F" >
+        <w:start w:val="1" ></w:start>
+        <w:lvlText w:val="%1." ></w:lvlText>
+        <w:lvlJc w:val="left" ></w:lvlJc>
+        <w:pPr >
+          <w:tabs >
+            <w:tab w:val="list" w:pos="720" ></w:tab>
+          </w:tabs>
+          <w:ind w:hanging="360" w:left="720" ></w:ind>
+        </w:pPr>
+      </w:lvl>
+      <w:lvl w:ilvl="1" w:tplc="04090019" >
+        <w:start w:val="1" ></w:start>
+        <w:nfc w:val="4" ></w:nfc>
+        <w:lvlText w:val="%2." ></w:lvlText>
+        <w:lvlJc w:val="left" ></w:lvlJc>
+        <w:pPr >
+          <w:tabs >
+            <w:tab w:val="list" w:pos="1440" ></w:tab>
+          </w:tabs>
+          <w:ind w:hanging="360" w:left="1440" ></w:ind>
+        </w:pPr>
+      </w:lvl>
+      <w:lvl w:ilvl="2" w:tplc="0409001B" >
+        <w:start w:val="1" ></w:start>
+        <w:nfc w:val="2" ></w:nfc>
+        <w:lvlText w:val="%3." ></w:lvlText>
+        <w:lvlJc w:val="right" ></w:lvlJc>
+        <w:pPr >
+          <w:tabs >
+            <w:tab w:val="list" w:pos="2160" ></w:tab>
+          </w:tabs>
+          <w:ind w:hanging="180" w:left="2160" ></w:ind>
+        </w:pPr>
+      </w:lvl>
+      <w:lvl w:ilvl="3" w:tplc="0409000F" >
+        <w:start w:val="1" ></w:start>
+        <w:lvlText w:val="%4." ></w:lvlText>
+        <w:lvlJc w:val="left" ></w:lvlJc>
+        <w:pPr >
+          <w:tabs >
+            <w:tab w:val="list" w:pos="2880" ></w:tab>
+          </w:tabs>
+          <w:ind w:hanging="360" w:left="2880" ></w:ind>
+        </w:pPr>
+      </w:lvl>
+      <w:lvl w:ilvl="4" w:tplc="04090019" >
+        <w:start w:val="1" ></w:start>
+        <w:nfc w:val="4" ></w:nfc>
+        <w:lvlText w:val="%5." ></w:lvlText>
+        <w:lvlJc w:val="left" ></w:lvlJc>
+        <w:pPr >
+          <w:tabs >
+            <w:tab w:val="list" w:pos="3600" ></w:tab>
+          </w:tabs>
+          <w:ind w:hanging="360" w:left="3600" ></w:ind>
+        </w:pPr>
+      </w:lvl>
+      <w:lvl w:ilvl="5" w:tplc="0409001B" >
+        <w:start w:val="1" ></w:start>
+        <w:nfc w:val="2" ></w:nfc>
+        <w:lvlText w:val="%6." ></w:lvlText>
+        <w:lvlJc w:val="right" ></w:lvlJc>
+        <w:pPr >
+          <w:tabs >
+            <w:tab w:val="list" w:pos="4320" ></w:tab>
+          </w:tabs>
+          <w:ind w:hanging="180" w:left="4320" ></w:ind>
+        </w:pPr>
+      </w:lvl>
+      <w:lvl w:ilvl="6" w:tplc="0409000F" >
+        <w:start w:val="1" ></w:start>
+        <w:lvlText w:val="%7." ></w:lvlText>
+        <w:lvlJc w:val="left" ></w:lvlJc>
+        <w:pPr >
+          <w:tabs >
+            <w:tab w:val="list" w:pos="5040" ></w:tab>
+          </w:tabs>
+          <w:ind w:hanging="360" w:left="5040" ></w:ind>
+        </w:pPr>
+      </w:lvl>
+      <w:lvl w:ilvl="7" w:tplc="04090019" >
+        <w:start w:val="1" ></w:start>
+        <w:nfc w:val="4" ></w:nfc>
+        <w:lvlText w:val="%8." ></w:lvlText>
+        <w:lvlJc w:val="left" ></w:lvlJc>
+        <w:pPr >
+          <w:tabs >
+            <w:tab w:val="list" w:pos="5760" ></w:tab>
+          </w:tabs>
+          <w:ind w:hanging="360" w:left="5760" ></w:ind>
+        </w:pPr>
+      </w:lvl>
+      <w:lvl w:ilvl="8" w:tentative="on" w:tplc="0409001B" >
+        <w:start w:val="1" ></w:start>
+        <w:nfc w:val="2" ></w:nfc>
+        <w:lvlText w:val="%9." ></w:lvlText>
+        <w:lvlJc w:val="right" ></w:lvlJc>
+        <w:pPr >
+          <w:tabs >
+            <w:tab w:val="list" w:pos="6480" ></w:tab>
+          </w:tabs>
+          <w:ind w:hanging="180" w:left="6480" ></w:ind>
+        </w:pPr>
+      </w:lvl>
+    </w:listDef>
+    <w:listDef w:listDefId="1" >
+      <w:plt w:val="HybridMultilevel" ></w:plt>
+      <w:tmpl w:val="6DBC60EA" ></w:tmpl>
+      <w:lvl w:ilvl="0" w:tplc="04090001" >
+        <w:start w:val="1" ></w:start>
+        <w:nfc w:val="23" ></w:nfc>
+        <w:lvlText w:val="" ></w:lvlText>
+        <w:lvlJc w:val="left" ></w:lvlJc>
+        <w:pPr >
+          <w:tabs >
+            <w:tab w:val="list" w:pos="720" ></w:tab>
+          </w:tabs>
+          <w:ind w:hanging="360" w:left="720" ></w:ind>
+        </w:pPr>
+        <w:rPr >
+          <w:rFonts w:h-ansi="Symbol" w:hint="default" w:ascii="Symbol" ></w:rFonts>
+        </w:rPr>
+      </w:lvl>
+      <w:lvl w:ilvl="1" w:tplc="04090003" >
+        <w:start w:val="1" ></w:start>
+        <w:nfc w:val="23" ></w:nfc>
+        <w:lvlText w:val="o" ></w:lvlText>
+        <w:lvlJc w:val="left" ></w:lvlJc>
+        <w:pPr >
+          <w:tabs >
+            <w:tab w:val="list" w:pos="1440" ></w:tab>
+          </w:tabs>
+          <w:ind w:hanging="360" w:left="1440" ></w:ind>
+        </w:pPr>
+        <w:rPr >
+          <w:rFonts w:h-ansi="Courier New" w:cs="Courier New" w:hint="default" w:ascii="Courier New" ></w:rFonts>
+        </w:rPr>
+      </w:lvl>
+      <w:lvl w:ilvl="2" w:tplc="04090005" >
+        <w:start w:val="1" ></w:start>
+        <w:nfc w:val="23" ></w:nfc>
+        <w:lvlText w:val="" ></w:lvlText>
+        <w:lvlJc w:val="left" ></w:lvlJc>
+        <w:pPr >
+          <w:tabs >
+            <w:tab w:val="list" w:pos="2160" ></w:tab>
+          </w:tabs>
+          <w:ind w:hanging="360" w:left="2160" ></w:ind>
+        </w:pPr>
+        <w:rPr >
+          <w:rFonts w:h-ansi="Wingdings" w:hint="default" w:ascii="Wingdings" ></w:rFonts>
+        </w:rPr>
+      </w:lvl>
+      <w:lvl w:ilvl="3" w:tplc="04090001" >
+        <w:start w:val="1" ></w:start>
+        <w:nfc w:val="23" ></w:nfc>
+        <w:lvlText w:val="" ></w:lvlText>
+        <w:lvlJc w:val="left" ></w:lvlJc>
+        <w:pPr >
+          <w:tabs >
+            <w:tab w:val="list" w:pos="2880" ></w:tab>
+          </w:tabs>
+          <w:ind w:hanging="360" w:left="2880" ></w:ind>
+        </w:pPr>
+        <w:rPr >
+          <w:rFonts w:h-ansi="Symbol" w:hint="default" w:ascii="Symbol" ></w:rFonts>
+        </w:rPr>
+      </w:lvl>
+      <w:lvl w:ilvl="4" w:tplc="04090003" >
+        <w:start w:val="1" ></w:start>
+        <w:nfc w:val="23" ></w:nfc>
+        <w:lvlText w:val="o" ></w:lvlText>
+        <w:lvlJc w:val="left" ></w:lvlJc>
+        <w:pPr >
+          <w:tabs >
+            <w:tab w:val="list" w:pos="3600" ></w:tab>
+          </w:tabs>
+          <w:ind w:hanging="360" w:left="3600" ></w:ind>
+        </w:pPr>
+        <w:rPr >
+          <w:rFonts w:h-ansi="Courier New" w:cs="Courier New" w:hint="default" w:ascii="Courier New" ></w:rFonts>
+        </w:rPr>
+      </w:lvl>
+      <w:lvl w:ilvl="5" w:tplc="04090005" >
+        <w:start w:val="1" ></w:start>
+        <w:nfc w:val="23" ></w:nfc>
+        <w:lvlText w:val="" ></w:lvlText>
+        <w:lvlJc w:val="left" ></w:lvlJc>
+        <w:pPr >
+          <w:tabs >
+            <w:tab w:val="list" w:pos="4320" ></w:tab>
+          </w:tabs>
+          <w:ind w:hanging="360" w:left="4320" ></w:ind>
+        </w:pPr>
+        <w:rPr >
+          <w:rFonts w:h-ansi="Wingdings" w:hint="default" w:ascii="Wingdings" ></w:rFonts>
+        </w:rPr>
+      </w:lvl>
+      <w:lvl w:ilvl="6" w:tplc="04090001" >
+        <w:start w:val="1" ></w:start>
+        <w:nfc w:val="23" ></w:nfc>
+        <w:lvlText w:val="" ></w:lvlText>
+        <w:lvlJc w:val="left" ></w:lvlJc>
+        <w:pPr >
+          <w:tabs >
+            <w:tab w:val="list" w:pos="5040" ></w:tab>
+          </w:tabs>
+          <w:ind w:hanging="360" w:left="5040" ></w:ind>
+        </w:pPr>
+        <w:rPr >
+          <w:rFonts w:h-ansi="Symbol" w:hint="default" w:ascii="Symbol" ></w:rFonts>
+        </w:rPr>
+      </w:lvl>
+      <w:lvl w:ilvl="7" w:tplc="04090003" >
+        <w:start w:val="1" ></w:start>
+        <w:nfc w:val="23" ></w:nfc>
+        <w:lvlText w:val="o" ></w:lvlText>
+        <w:lvlJc w:val="left" ></w:lvlJc>
+        <w:pPr >
+          <w:tabs >
+            <w:tab w:val="list" w:pos="5760" ></w:tab>
+          </w:tabs>
+          <w:ind w:hanging="360" w:left="5760" ></w:ind>
+        </w:pPr>
+        <w:rPr >
+          <w:rFonts w:h-ansi="Courier New" w:cs="Courier New" w:hint="default" w:ascii="Courier New" ></w:rFonts>
+        </w:rPr>
+      </w:lvl>
+      <w:lvl w:ilvl="8" w:tplc="04090005" >
+        <w:start w:val="1" ></w:start>
+        <w:nfc w:val="23" ></w:nfc>
+        <w:lvlText w:val="" ></w:lvlText>
+        <w:lvlJc w:val="left" ></w:lvlJc>
+        <w:pPr >
+          <w:tabs >
+            <w:tab w:val="list" w:pos="6480" ></w:tab>
+          </w:tabs>
+          <w:ind w:hanging="360" w:left="6480" ></w:ind>
+        </w:pPr>
+        <w:rPr >
+          <w:rFonts w:h-ansi="Wingdings" w:hint="default" w:ascii="Wingdings" ></w:rFonts>
+        </w:rPr>
+      </w:lvl>
+    </w:listDef>
+    
+    <w:list w:ilfo="1">
+  <w:ilst w:val="1">
+  </w:ilst>
+</w:list>
+
+  </w:lists>
+  <w:styles >
+    <w:versionOfBuiltInStylenames w:val="4" ></w:versionOfBuiltInStylenames>
+    <w:latentStyles w:latentStyleCount="156" w:defLockedState="off" ></w:latentStyles>
+    <w:style w:styleId="Normal" w:type="paragraph" w:default="on" >
+      <w:name w:val="Normal" ></w:name>
+      <w:pPr >
+        <w:spacing w:after="120" ></w:spacing>
+      </w:pPr>
+      <w:rPr >
+        <wx:font wx:val="Times New Roman" ></wx:font>
+        <w:sz-cs w:val="24" ></w:sz-cs>
+        <w:lang w:val="EN-US" w:fareast="EN-US" w:bidi="AR-SA" ></w:lang>
+      </w:rPr>
+    </w:style>
+    <w:style w:styleId="Hyperlink" w:type="character" >
+      <w:name w:val="Hyperlink" ></w:name>
+      <w:basedOn w:val="DefaultParagraphFont" ></w:basedOn>
+      <w:rPr >
+        <w:color w:val="0000FF" ></w:color>
+        <w:u w:val="single" ></w:u>
+      </w:rPr>
+    </w:style>
+    <w:style w:styleId="LiteralBlock" w:type="paragraph" >
+      <w:name w:val="LiteralBlock" ></w:name>
+      <w:basedOn w:val="Normal" ></w:basedOn>
+      <w:next w:val="Normal" ></w:next>
+      <w:pPr >
+        <w:pStyle w:val="LiteralBlock" ></w:pStyle>
+        <w:ind w:right="720" w:left="720" ></w:ind>
+      </w:pPr>
+      <w:rPr >
+        <w:rFonts w:h-ansi="Courier New" w:ascii="Courier New" ></w:rFonts>
+        <wx:font wx:val="Courier New" ></wx:font><w:sz w:val="20" ></w:sz>
+      </w:rPr>
+    </w:style>
+    <w:style w:styleId="Heading1" w:type="paragraph" >
+      <w:name w:val="heading 1" ></w:name>
+      <wx:uiName wx:val="Heading 1" ></wx:uiName>
+      <w:basedOn w:val="Normal" ></w:basedOn>
+      <w:next w:val="Normal" ></w:next>
+      <w:pPr >
+        <w:pStyle w:val="Heading1" ></w:pStyle>
+        <w:keepNext ></w:keepNext>
+        <w:spacing w:before="240" w:after="60" ></w:spacing>
+        <w:outlineLvl w:val="0" ></w:outlineLvl>
+      </w:pPr>
+      <w:rPr >
+        <w:rFonts w:h-ansi="Arial" w:cs="Arial" w:ascii="Arial" ></w:rFonts>
+        <wx:font wx:val="Arial" ></wx:font>
+        <w:b ></w:b>
+        <w:b-cs ></w:b-cs>
+        <w:kern w:val="32" ></w:kern>
+        <w:sz w:val="32" ></w:sz>
+        <w:sz-cs w:val="32" ></w:sz-cs>
+      </w:rPr>
+    </w:style>
+    <w:style w:styleId="Heading2" w:type="paragraph" >
+      <w:name w:val="heading 2" ></w:name>
+      <wx:uiName wx:val="Heading 2" ></wx:uiName>
+      <w:basedOn w:val="Normal" ></w:basedOn>
+      <w:next w:val="Normal" ></w:next>
+      <w:pPr >
+        <w:pStyle w:val="Heading2" ></w:pStyle>
+        <w:keepNext ></w:keepNext>
+        <w:spacing w:before="240" w:after="60" ></w:spacing>
+        <w:outlineLvl w:val="1" ></w:outlineLvl>
+      </w:pPr>
+      <w:rPr >
+        <w:rFonts w:h-ansi="Arial" w:cs="Arial" w:ascii="Arial" ></w:rFonts>
+        <wx:font wx:val="Arial" ></wx:font>
+        <w:b ></w:b>
+        <w:b-cs ></w:b-cs>
+        <w:i ></w:i>
+        <w:i-cs ></w:i-cs>
+        <w:sz w:val="28" ></w:sz>
+        <w:sz-cs w:val="28" ></w:sz-cs>
+      </w:rPr>
+    </w:style>
+    <w:style w:styleId="Heading3" w:type="paragraph" >
+      <w:name w:val="heading 3" ></w:name>
+      <wx:uiName wx:val="Heading 3" ></wx:uiName>
+      <w:basedOn w:val="Normal" ></w:basedOn>
+      <w:next w:val="Normal" ></w:next>
+      <w:pPr >
+        <w:pStyle w:val="Heading3" ></w:pStyle>
+        <w:keepNext ></w:keepNext>
+        <w:spacing w:before="240" w:after="60" ></w:spacing>
+        <w:outlineLvl w:val="2" ></w:outlineLvl>
+      </w:pPr>
+      <w:rPr >
+        <w:rFonts w:h-ansi="Arial" w:cs="Arial" w:ascii="Arial" ></w:rFonts>
+        <wx:font wx:val="Arial" ></wx:font>
+        <w:b ></w:b>
+        <w:b-cs ></w:b-cs>
+        <w:sz w:val="26" ></w:sz>
+        <w:sz-cs w:val="26" ></w:sz-cs>
+      </w:rPr>
+    </w:style>
+    <w:style w:styleId="DefaultParagraphFont" w:type="character" w:default="on" >
+      <w:name w:val="Default Paragraph Font" ></w:name>
+      <w:semiHidden ></w:semiHidden>
+    </w:style>
+    <w:style w:styleId="TableNormal" w:type="table" w:default="on" >
+      <w:name w:val="Normal Table" ></w:name>
+      <wx:uiName wx:val="Table Normal" ></wx:uiName>
+      <w:semiHidden ></w:semiHidden>
+      <w:rPr >
+        <wx:font wx:val="Times New Roman" ></wx:font>
+      </w:rPr>
+      <w:tblPr >
+        <w:tblInd w:w="0" w:type="dxa" ></w:tblInd>
+        <w:tblCellMar >
+          <w:top w:w="0" w:type="dxa" ></w:top>
+          <w:left w:w="108" w:type="dxa" ></w:left>
+          <w:bottom w:w="0" w:type="dxa" ></w:bottom>
+          <w:right w:w="108" w:type="dxa" ></w:right>
+        </w:tblCellMar>
+      </w:tblPr>
+    </w:style>
+    <w:style w:styleId="NoList" w:type="list" w:default="on" >
+      <w:name w:val="No List" ></w:name>
+      <w:semiHidden ></w:semiHidden>
+    </w:style>
+    <w:style w:styleId="Literal" w:type="character" >
+      <w:name w:val="Literal" ></w:name>
+      <w:basedOn w:val="DefaultParagraphFont" ></w:basedOn>
+      <w:rPr >
+        <w:rFonts w:h-ansi="Courier New" w:ascii="Courier New" ></w:rFonts>
+      </w:rPr>
+    </w:style>
+    <w:style w:styleId="EndnoteText" w:type="paragraph" >
+      <w:name w:val="endnote text" ></w:name>
+      <wx:uiName wx:val="Endnote Text" ></wx:uiName>
+      <w:basedOn w:val="Normal" ></w:basedOn>
+      <w:semiHidden ></w:semiHidden>
+      <w:pPr >
+        <w:pStyle w:val="EndnoteText" ></w:pStyle>
+      </w:pPr>
+      <w:rPr >
+        <wx:font wx:val="Times New Roman" ></wx:font>
+        <w:sz w:val="20" ></w:sz>
+        <w:sz-cs w:val="20" ></w:sz-cs>
+      </w:rPr>
+    </w:style>
+    <w:style w:styleId="EndnoteReference" w:type="character" >
+      <w:name w:val="endnote reference" ></w:name>
+      <wx:uiName wx:val="Endnote Reference" ></wx:uiName>
+      <w:basedOn w:val="DefaultParagraphFont" ></w:basedOn>
+      <w:semiHidden ></w:semiHidden>
+      <w:rPr >
+        <w:vertAlign w:val="superscript" ></w:vertAlign>
+      </w:rPr>
+    </w:style>
+    <w:style w:styleId="AuthorName" w:type="paragraph" >
+      <w:name w:val="AuthorName" ></w:name>
+      <w:basedOn w:val="Normal" ></w:basedOn>
+      <w:next w:val="Normal" ></w:next>
+      <w:pPr >
+        <w:pStyle w:val="AuthorName" ></w:pStyle>
+        <w:spacing w:before="240" w:after="240" ></w:spacing>
+        <w:jc w:val="center" ></w:jc>
+      </w:pPr>
+      <w:rPr >
+        <w:b ></w:b>
+      </w:rPr>
+    </w:style>
+    <w:style w:styleId="AuthorContact" w:type="paragraph" >
+      <w:name w:val="AuthorContact" ></w:name>
+      <w:basedOn w:val="Normal" ></w:basedOn>
+      <w:next w:val="Normal" ></w:next>
+      <w:pPr >
+        <w:pStyle w:val="AuthorContact" ></w:pStyle>
+        <w:spacing w:before="240" w:after="240" ></w:spacing>
+        <w:jc w:val="center" ></w:jc>
+      </w:pPr>
+      <w:rPr >
+        <wx:font wx:val="Times New Roman" ></wx:font>
+        <w:b ></w:b>
+      </w:rPr>
+    </w:style>
+    <w:style w:styleId="BibliographMatter" w:type="paragraph" >
+      <w:name w:val="BibliographMatter" ></w:name>
+      <w:basedOn w:val="Normal" ></w:basedOn>
+      <w:next w:val="Normal" ></w:next>
+      <w:pPr >
+        <w:pStyle w:val="BibliographMatter" ></w:pStyle>
+        <w:spacing w:before="240" w:after="240" ></w:spacing>
+        <w:jc w:val="center" ></w:jc>
+      </w:pPr>
+      <w:rPr >
+        <w:b ></w:b>
+      </w:rPr>
+    </w:style>
+    <w:style w:styleId="DefinitionTerm" w:type="paragraph" >
+      <w:name w:val="DefinitionTerm" ></w:name>
+      <w:basedOn w:val="Normal" ></w:basedOn>
+      <w:next w:val="Normal" ></w:next>
+      <w:pPr >
+        <w:pStyle w:val="DefinitionTerm" ></w:pStyle>
+      </w:pPr>
+      <w:rPr >
+        <w:b ></w:b>
+      </w:rPr>
+    </w:style>
+    <w:style w:styleId="Definition" w:type="paragraph" >
+      <w:name w:val="Definition" ></w:name>
+      <w:basedOn w:val="Normal" ></w:basedOn>
+      <w:next w:val="Normal" ></w:next>
+      <w:pPr >
+        <w:pStyle w:val="Definition" ></w:pStyle>
+      </w:pPr>
+    </w:style>
+    <w:style w:styleId="CitationReference" w:type="character" >
+      <w:name w:val="CitationReference" ></w:name>
+      <w:basedOn w:val="DefaultParagraphFont" ></w:basedOn>
+    </w:style>
+    <w:style w:styleId="Topic" w:type="paragraph" >
+        <w:name w:val="Topic" ></w:name>
+        <w:basedOn w:val="Normal" ></w:basedOn>
+        <w:next w:val="Normal" ></w:next>
+        <w:pPr >
+            <w:pStyle w:val="Topic" ></w:pStyle>
+            <w:ind w:right="1440" w:left="1440" ></w:ind>
+            <w:jc w:val="both" ></w:jc>
+        </w:pPr>
+    </w:style>
+  </w:styles>
+  <w:docPr >
+    <w:view w:val="print" ></w:view>
+    <w:zoom w:percent="100" ></w:zoom>
+    <w:doNotEmbedSystemFonts ></w:doNotEmbedSystemFonts>
+    <w:proofState w:grammar="clean" w:spelling="clean" ></w:proofState>
+    <w:attachedTemplate w:val="" ></w:attachedTemplate>
+    <w:defaultTabStop w:val="720" ></w:defaultTabStop>
+    <w:punctuationKerning ></w:punctuationKerning>
+    <w:characterSpacingControl w:val="DontCompress" ></w:characterSpacingControl>
+    <w:optimizeForBrowser ></w:optimizeForBrowser>
+    <w:validateAgainstSchema ></w:validateAgainstSchema>
+    <w:saveInvalidXML w:val="off" ></w:saveInvalidXML>
+    <w:ignoreMixedContent w:val="off" ></w:ignoreMixedContent>
+    <w:alwaysShowPlaceholderText w:val="off" ></w:alwaysShowPlaceholderText>
+    <w:compat >
+      <w:breakWrappedTables ></w:breakWrappedTables>
+      <w:snapToGridInCell ></w:snapToGridInCell>
+      <w:wrapTextWithPunct ></w:wrapTextWithPunct>
+      <w:useAsianBreakRules ></w:useAsianBreakRules>
+      <w:useWord2002TableStyleRules ></w:useWord2002TableStyleRules>
+    </w:compat>
+    <w:footnotePr >
+      <w:footnote w:type="separator" >
+        <w:p >
+          <w:r >
+            <w:separator ></w:separator>
+          </w:r>
+        </w:p>
+      </w:footnote>
+      <w:footnote w:type="continuation-separator" >
+        <w:p >
+          <w:r >
+            <w:continuationSeparator ></w:continuationSeparator>
+          </w:r>
+        </w:p>
+      </w:footnote>
+    </w:footnotePr>
+    <w:endnotePr >
+      <w:numFmt w:val="decimal" ></w:numFmt>
+      <w:endnote w:type="separator" >
+        <w:p >
+          <w:r >
+            <w:separator ></w:separator>
+          </w:r>
+        </w:p>
+      </w:endnote>
+      <w:endnote w:type="continuation-separator" >
+        <w:p >
+          <w:r >
+            <w:continuationSeparator ></w:continuationSeparator>
+          </w:r>
+        </w:p>
+      </w:endnote>
+    </w:endnotePr>
+  </w:docPr>
+<w:body >
+<wx:sect >
+<w:p>
+  <w:pPr>
+    <w:pStyle w:val="Heading1">
+    </w:pStyle>
+  </w:pPr>
+  <w:r>
+    <w:t>rst2wordml</w:t>
+  </w:r>
+</w:p>
+<w:p>
+  <w:hlink w:dest="http://s3.amazonaws.com/hobbit-hole/rst2wordml.zip">
+    <w:r>
+      <w:rPr>
+        <w:rStyle w:val="Hyperlink">
+        </w:rStyle>
+      </w:rPr>
+      <w:t>rst2wordml</w:t>
+    </w:r>
+  </w:hlink>
+  <w:r>
+    <w:t> is a </w:t>
+  </w:r>
+  <w:hlink w:dest="http://docutils.sf.net/rst">
+    <w:r>
+      <w:rPr>
+        <w:rStyle w:val="Hyperlink">
+        </w:rStyle>
+      </w:rPr>
+      <w:t>reStructuredText</w:t>
+    </w:r>
+  </w:hlink>
+  <w:r>
+    <w:t> (reST) to </w:t>
+  </w:r>
+  <w:hlink w:dest="http://www.microsoft.com">
+    <w:r>
+      <w:rPr>
+        <w:rStyle w:val="Hyperlink">
+        </w:rStyle>
+      </w:rPr>
+      <w:t>WordprocessingML</w:t>
+    </w:r>
+  </w:hlink>
+  <w:r>
+    <w:t> (WordML) converter.</w:t>
+  </w:r>
+</w:p>
+<w:p>
+  <w:r>
+    <w:t>You can use rst2wordml to convert reST text files to WordML.  The resulting WordML file may then be loaded into MS Word 2003 or later.  You can then edit, save, or print it as any format that MS Word supports, such as PDF.</w:t>
+  </w:r>
+</w:p>
+<aml:annotation aml:id="1001" w:name="installation" w:type="Word.Bookmark.Start">
+</aml:annotation>
+<aml:annotation aml:id="1001" w:name="installation" w:type="Word.Bookmark.End">
+</aml:annotation>
+<w:p>
+  <w:pPr>
+    <w:pStyle w:val="Heading2">
+    </w:pStyle>
+  </w:pPr>
+  <w:r>
+    <w:t>Installation</w:t>
+  </w:r>
+</w:p>
+<w:p>
+  <w:r>
+    <w:t>Docutils should already be installed before installing rst2wordml.  This guide assumes that Python is installed at C:\Python25 and that Docutils has been installed in its default location, C:\Python25\Libs\site-packages\docutils.</w:t>
+  </w:r>
+</w:p>
+<w:p>
+  <w:r>
+    <w:t>rst2wordml consists of 2 .py files and a template.xml file:</w:t>
+  </w:r>
+</w:p>
+<w:tbl>
+  <w:tblPr>
+    <w:tblStyle w:val="Normal">
+    </w:tblStyle>
+    <w:tblW w:type="pct" w:w="5000">
+    </w:tblW>
+    <w:tblBorders>
+      <w:top w:space="0" w:val="single" wx:bdrwidth="10" w:sz="4" w:color="auto">
+      </w:top>
+      <w:left w:space="0" w:val="single" wx:bdrwidth="10" w:sz="4" w:color="auto">
+      </w:left>
+      <w:bottom w:space="0" w:val="single" wx:bdrwidth="10" w:sz="4" w:color="auto">
+      </w:bottom>
+      <w:right w:space="0" w:val="single" wx:bdrwidth="10" w:sz="4" w:color="auto">
+      </w:right>
+      <w:insideH w:space="0" w:val="single" wx:bdrwidth="15" w:sz="6" w:color="auto">
+      </w:insideH>
+      <w:insideV w:space="0" w:val="single" wx:bdrwidth="15" w:sz="6" w:color="auto">
+      </w:insideV>
+    </w:tblBorders>
+    <w:tblLook w:val="000001e0">
+    </w:tblLook>
+  </w:tblPr>
+  <w:tr>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="27">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:rPr>
+            <w:b>
+            </w:b>
+          </w:rPr>
+          <w:t>File</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="73">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:rPr>
+            <w:b>
+            </w:b>
+          </w:rPr>
+          <w:t>Location</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+  </w:tr>
+  <w:tr>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="27">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>docutils_wordml.py</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="73">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>C:\Python25\Lib\site-packages\docutils\writers</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+  </w:tr>
+  <w:tr>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="27">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>rst2wordml.py</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="73">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>C:\Python25\Scripts</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+  </w:tr>
+  <w:tr>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="27">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>template.xml</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="73">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>Wherever the .rst file(s) to convert are.</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+  </w:tr>
+</w:tbl>
+<w:p>
+</w:p>
+<w:p>
+  <w:r>
+    <w:t>The template.xml file is used by rst2wordml to give default styles and formatting options to its output.  See </w:t>
+  </w:r>
+  <w:hlink w:bookmark="options">
+    <w:r>
+      <w:rPr>
+        <w:rStyle w:val="Hyperlink">
+        </w:rStyle>
+      </w:rPr>
+      <w:t>Options</w:t>
+    </w:r>
+  </w:hlink>
+  <w:r>
+    <w:t> for information on custom template files.</w:t>
+  </w:r>
+</w:p>
+<aml:annotation aml:id="1002" w:name="features" w:type="Word.Bookmark.Start">
+</aml:annotation>
+<aml:annotation aml:id="1002" w:name="features" w:type="Word.Bookmark.End">
+</aml:annotation>
+<w:p>
+  <w:pPr>
+    <w:pStyle w:val="Heading2">
+    </w:pStyle>
+  </w:pPr>
+  <w:r>
+    <w:t>Features</w:t>
+  </w:r>
+</w:p>
+<w:p>
+  <w:r>
+    <w:t>Currently not all the features supported by reST are converted by the rst2wordml converter.  Here is a list of features and their level of support:</w:t>
+  </w:r>
+</w:p>
+<w:p>
+  <w:pPr>
+  </w:pPr>
+  <w:r>
+    <w:rPr>
+      <w:b>
+      </w:b>
+    </w:rPr>
+    <w:t>Impl</w:t>
+  </w:r>
+  <w:r>
+    <w:t> means a feature is already implemented.</w:t>
+  </w:r>
+</w:p>
+<w:p>
+  <w:pPr>
+  </w:pPr>
+  <w:r>
+    <w:rPr>
+      <w:b>
+      </w:b>
+    </w:rPr>
+    <w:t>Unknown</w:t>
+  </w:r>
+  <w:r>
+    <w:t> means a feature might work but hasn't been tested.</w:t>
+  </w:r>
+</w:p>
+<w:p>
+  <w:pPr>
+  </w:pPr>
+  <w:r>
+    <w:rPr>
+      <w:b>
+      </w:b>
+    </w:rPr>
+    <w:t>Next</w:t>
+  </w:r>
+  <w:r>
+    <w:t> means that it should be coming in the near future.</w:t>
+  </w:r>
+</w:p>
+<w:p>
+  <w:pPr>
+  </w:pPr>
+  <w:r>
+    <w:rPr>
+      <w:b>
+      </w:b>
+    </w:rPr>
+    <w:t>None</w:t>
+  </w:r>
+  <w:r>
+    <w:t> means that I have no intention of supporting this feature, although I will take patches to support the feature.</w:t>
+  </w:r>
+</w:p>
+<w:tbl>
+  <w:tblPr>
+    <w:tblStyle w:val="Normal">
+    </w:tblStyle>
+    <w:tblW w:type="pct" w:w="5000">
+    </w:tblW>
+    <w:tblBorders>
+      <w:top w:space="0" w:val="single" wx:bdrwidth="10" w:sz="4" w:color="auto">
+      </w:top>
+      <w:left w:space="0" w:val="single" wx:bdrwidth="10" w:sz="4" w:color="auto">
+      </w:left>
+      <w:bottom w:space="0" w:val="single" wx:bdrwidth="10" w:sz="4" w:color="auto">
+      </w:bottom>
+      <w:right w:space="0" w:val="single" wx:bdrwidth="10" w:sz="4" w:color="auto">
+      </w:right>
+      <w:insideH w:space="0" w:val="single" wx:bdrwidth="15" w:sz="6" w:color="auto">
+      </w:insideH>
+      <w:insideV w:space="0" w:val="single" wx:bdrwidth="15" w:sz="6" w:color="auto">
+      </w:insideV>
+    </w:tblBorders>
+    <w:tblLook w:val="000001e0">
+    </w:tblLook>
+  </w:tblPr>
+  <w:tr>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="51">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:rPr>
+            <w:b>
+            </w:b>
+          </w:rPr>
+          <w:t>Feature</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:rPr>
+            <w:b>
+            </w:b>
+          </w:rPr>
+          <w:t>Impl</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="15">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:rPr>
+            <w:b>
+            </w:b>
+          </w:rPr>
+          <w:t>Unknown</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:rPr>
+            <w:b>
+            </w:b>
+          </w:rPr>
+          <w:t>Next</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:rPr>
+            <w:b>
+            </w:b>
+          </w:rPr>
+          <w:t>None</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+  </w:tr>
+  <w:tr>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="51">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>Paragraphs</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>X</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="15">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+  </w:tr>
+  <w:tr>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="51">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>Inline markup (bold and italic)</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>X</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="15">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+  </w:tr>
+  <w:tr>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="51">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>Hyperlinks</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>X</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="15">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+  </w:tr>
+  <w:tr>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="51">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>Inline literals</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>X</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="15">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+  </w:tr>
+  <w:tr>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="51">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>Bullet Lists</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>X</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="15">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+  </w:tr>
+  <w:tr>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="51">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>Enumerated Lists</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>X</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="15">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+  </w:tr>
+  <w:tr>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="51">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>Definition Lists</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>X</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="15">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+  </w:tr>
+  <w:tr>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="51">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>Field Lists</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="15">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>X</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+  </w:tr>
+  <w:tr>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="51">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>Option Lists</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="15">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>X</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+  </w:tr>
+  <w:tr>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="51">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>Literal Blocks</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>X</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="15">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+  </w:tr>
+  <w:tr>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="51">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>Line Blocks</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="15">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>X</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+  </w:tr>
+  <w:tr>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="51">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>Block Quotes</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>X</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="15">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+  </w:tr>
+  <w:tr>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="51">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>Doctest Blocks</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="15">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>X</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+  </w:tr>
+  <w:tr>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="51">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>Tables</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>X</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="15">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+  </w:tr>
+  <w:tr>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="51">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>Images </w:t>
+        </w:r>
+        <w:r>
+          <w:rPr>
+            <w:rStyle w:val="EndnoteReference">
+            </w:rStyle>
+          </w:rPr>
+          <w:endnote>
+            <w:p>
+              <w:pPr>
+                <w:pStyle w:val="EndnoteText">
+                </w:pStyle>
+              </w:pPr>
+              <w:r>
+                <w:rPr>
+                  <w:rStyle w:val="EndnoteReference">
+                  </w:rStyle>
+                </w:rPr>
+                <w:endnoteRef>
+                </w:endnoteRef>
+              </w:r>
+              <w:r>
+                <w:t>Images are centered and the dimensions are extracted if the Python Imaging Library is installed. Otherwise they must be supplied by the author or they default to 100x100.</w:t>
+              </w:r>
+            </w:p>
+          </w:endnote>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>X</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="15">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+  </w:tr>
+  <w:tr>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="51">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>Footnotes </w:t>
+        </w:r>
+        <w:r>
+          <w:rPr>
+            <w:rStyle w:val="EndnoteReference">
+            </w:rStyle>
+          </w:rPr>
+          <w:endnote>
+            <w:p>
+              <w:pPr>
+                <w:pStyle w:val="EndnoteText">
+                </w:pStyle>
+              </w:pPr>
+              <w:r>
+                <w:rPr>
+                  <w:rStyle w:val="EndnoteReference">
+                  </w:rStyle>
+                </w:rPr>
+                <w:endnoteRef>
+                </w:endnoteRef>
+              </w:r>
+              <w:r>
+                <w:t>Footnotes in rst2wordml are implemented as end notes to better match the output of the HTML converter.</w:t>
+              </w:r>
+            </w:p>
+          </w:endnote>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>X</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="15">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+  </w:tr>
+  <w:tr>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="51">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>Citations</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>X</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="15">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+  </w:tr>
+  <w:tr>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="51">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>Directives</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="15">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>X</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+  </w:tr>
+  <w:tr>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="51">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>Substitutions</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>X</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="15">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+  </w:tr>
+  <w:tr>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="51">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>Comments</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+        <w:r>
+          <w:t>X</w:t>
+        </w:r>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="15">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+    <w:tc>
+      <w:tcPr>
+        <w:tcW w:type="pct" w="11">
+        </w:tcW>
+      </w:tcPr>
+      <w:p>
+      </w:p>
+    </w:tc>
+  </w:tr>
+</w:tbl>
+<w:p>
+</w:p>
+<w:p>
+  <w:r>
+    <w:t>This table isn't necessarily exhaustive, though I did go through the specification to come up with this list.</w:t>
+  </w:r>
+</w:p>
+<aml:annotation aml:id="1003" w:name="options" w:type="Word.Bookmark.Start">
+</aml:annotation>
+<aml:annotation aml:id="1003" w:name="options" w:type="Word.Bookmark.End">
+</aml:annotation>
+<w:p>
+  <w:pPr>
+    <w:pStyle w:val="Heading2">
+    </w:pStyle>
+  </w:pPr>
+  <w:r>
+    <w:t>Options</w:t>
+  </w:r>
+</w:p>
+<w:p>
+  <w:r>
+    <w:t>For now rst2wordml only supports a single option, --template=&lt;template xml file&gt;.  The default is a file called template.xml.  See </w:t>
+  </w:r>
+  <w:hlink w:bookmark="implementation">
+    <w:r>
+      <w:rPr>
+        <w:rStyle w:val="Hyperlink">
+        </w:rStyle>
+      </w:rPr>
+      <w:t>Implementation</w:t>
+    </w:r>
+  </w:hlink>
+  <w:r>
+    <w:t> for information how to create a template file of your own if template.xml doesn't meet your needs.</w:t>
+  </w:r>
+</w:p>
+<aml:annotation aml:id="1004" w:name="unit-tests" w:type="Word.Bookmark.Start">
+</aml:annotation>
+<aml:annotation aml:id="1004" w:name="unit-tests" w:type="Word.Bookmark.End">
+</aml:annotation>
+<w:p>
+  <w:pPr>
+    <w:pStyle w:val="Heading2">
+    </w:pStyle>
+  </w:pPr>
+  <w:r>
+    <w:t>Unit Tests</w:t>
+  </w:r>
+</w:p>
+<w:p>
+  <w:r>
+    <w:t>Included in this release are the beginnings of unit tests, included in the test subdirectory.  Each test stands on its own as a script and uses doctest to generate a document from the default template.xml file.  To run each test, just type python &lt;test name&gt;.  If the test generates no output, it passed.</w:t>
+  </w:r>
+</w:p>
+<aml:annotation aml:id="1005" w:name="implementation" w:type="Word.Bookmark.Start">
+</aml:annotation>
+<aml:annotation aml:id="1005" w:name="implementation" w:type="Word.Bookmark.End">
+</aml:annotation>
+<w:p>
+  <w:pPr>
+    <w:pStyle w:val="Heading2">
+    </w:pStyle>
+  </w:pPr>
+  <w:r>
+    <w:t>Implementation</w:t>
+  </w:r>
+</w:p>
+<w:p>
+  <w:r>
+    <w:t>There really is no magic to the implementation of rst2wordml.  The good folks at docutils have factored reST into a nice set of classes.  To format a new output type for a reST doc, one only need create a new subclass of Writer class, which I did in the docutils_wordml.py file.</w:t>
+  </w:r>
+</w:p>
+<w:p>
+  <w:r>
+    <w:t>Also, rst2wordml.py is a simple front end for instantiating the conversion process from the command line.</w:t>
+  </w:r>
+</w:p>
+<w:p>
+  <w:r>
+    <w:t>rst2wordml uses a template file similar in concept to the CSS file used by the HTML converter.  The template file contains the default formatting properties for items such as styles, tables, and lists.  It is theoretically easy to create a new look for your documents by opening template.xml in MS Word, adjusting the styles and then saving the file.  Unfortunately, theory doesn't apply here.</w:t>
+  </w:r>
+</w:p>
+<w:p>
+  <w:r>
+    <w:t>If you open template.xml, you'll perhaps notice buried in all the XML, three unique tags not supported by WordML: &lt;w:rest&gt;, &lt;w:rstlists&gt;, and &lt;w:rstlistdefs&gt;.  These are used by rst2wordml to insert generated data. Otherwise, the generated output is identical to the template.xml file.</w:t>
+  </w:r>
+</w:p>
+<w:p>
+  <w:r>
+    <w:t>The template file should contain the styles Normal, DefaultParagraphFont, Heading 1, Heading 2, Heading 3, LiteralBlock, Endnote Text, and Endnote Reference.  Also, list styles for bullet lists and enumerated lists need to be included.</w:t>
+  </w:r>
+</w:p>
+<w:p>
+  <w:r>
+    <w:t>If you should wish to create your own template.xml file, the easiest thing to do is create a document in MS Word with these styles and save it out as WordML.  Next, open it in a text editor, and look for the places where the special tags appear in the original template.xml and place the same tags in your file.</w:t>
+  </w:r>
+</w:p>
+<aml:annotation aml:id="1006" w:name="literate-programming-with-rest" w:type="Word.Bookmark.Start">
+</aml:annotation>
+<aml:annotation aml:id="1006" w:name="literate-programming-with-rest" w:type="Word.Bookmark.End">
+</aml:annotation>
+<w:p>
+  <w:pPr>
+    <w:pStyle w:val="Heading2">
+    </w:pStyle>
+  </w:pPr>
+  <w:r>
+    <w:t>Literate Programming with reST</w:t>
+  </w:r>
+</w:p>
+<w:p>
+  <w:r>
+    <w:t>One of the reasons that I started writing this converter was to help me document one of the (other) projects I'm working on.  As I was writing the docs for that project, I was consistently copying and pasting code samples into literal blocks.  Of course, as the code changed, so did the amount of work keeping it in sync with the docs.  Literate programming seemed to provide exactly what I needed, code and docs together.</w:t>
+  </w:r>
+</w:p>
+<w:p>
+  <w:r>
+    <w:t>I had seen literate programming used in the book </w:t>
+  </w:r>
+  <w:hlink w:dest="http://www.amazon.com/Physically-Based-Rendering-Implementation-Interactive/dp/012553180X/ref=pd_bbs_sr_1/103-3091427-3166253?ie=UTF8">
+    <w:r>
+      <w:rPr>
+        <w:rStyle w:val="Hyperlink">
+        </w:rStyle>
+      </w:rPr>
+      <w:t>Physically Based Rendering</w:t>
+    </w:r>
+  </w:hlink>
+  <w:r>
+    <w:t> and I thought it would be cool to have the ability to write documentation and code in a single file.  After looking at some of the literate programming tools, I found </w:t>
+  </w:r>
+  <w:hlink w:dest="http://pylit.berlios.de/index.html">
+    <w:r>
+      <w:rPr>
+        <w:rStyle w:val="Hyperlink">
+        </w:rStyle>
+      </w:rPr>
+      <w:t>PyLit</w:t>
+    </w:r>
+  </w:hlink>
+  <w:r>
+    <w:t>, a </w:t>
+  </w:r>
+  <w:r>
+    <w:rPr>
+      <w:i>
+      </w:i>
+    </w:rPr>
+    <w:t>semi-literate programming</w:t>
+  </w:r>
+  <w:r>
+    <w:t> module that works with reST.  reST has everything I need in a markup without having to really learn a markup language.  PyLit can do the code extraction, rst2html does the conversion to web pages, and rst2wordml can convert to Word files, from which I can easily make printed copoies or even create PDF files.</w:t>
+  </w:r>
+</w:p>
+<w:p>
+</w:p>
+<w:p>
+</w:p>
+
+<w:sectPr >
+  <w:endnotePr >
+    <w:numFmt w:val="decimal" ></w:numFmt>
+  </w:endnotePr>
+  <w:pgSz w:w="12240" w:h="15840" ></w:pgSz>
+  <w:pgMar w:header="720" w:gutter="0" w:right="1800" w:top="1440" w:bottom="1440" w:footer="720" w:left="1800" ></w:pgMar>
+  <w:cols w:space="720" ></w:cols>
+  <w:docGrid w:line-pitch="360" ></w:docGrid>
+</w:sectPr>
+</wx:sect>
+</w:body>
+</w:wordDocument>

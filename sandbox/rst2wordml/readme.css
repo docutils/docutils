@@ -1,0 +1,62 @@
+/*
+:Author: Jay Kint
+:Contact: bilbo@hobbit-hole.org
+:Date: $Date$
+:Revision: $Revision$
+:Copyright: This stylesheet has been placed in the public domain.
+
+Cascading sheet to mimic that of "Practical Common Lisp", a clean and
+readable stylesheet.
+*/
+
+/* @import url(html4css.css) */
+
+div.document {
+  margin: 1in 1in;
+  font-size: 12pt;
+}
+
+.title {
+  text-align: center;
+  font-size: 24pt;
+}
+
+h1 {
+  font-size: 18pt;
+}
+
+h2 {
+  font-size: 14pt;
+}
+
+div.footer {
+  font-size: 8pt;
+}
+
+table.footnote {
+  font-size: 10pt;
+  line-height: 1.5;
+  margin: 0px 0px 13px 0px;
+}
+
+td.label {
+  font-size: 8pt;
+}
+
+p { line-height: 1.5; }
+
+.literal {
+  font-size: 9pt;
+}
+
+td p {
+  margin: 0 0 13px 0;
+}
+
+td p.last {
+  margin: 0 0 0 0;
+}
+
+blockquote {  line-height: 1.5; font-size: 90%;  }
+h1, h2, h3, h4, h5, h6 { font-family: Helvetica; }
+li { padding-top: 6pt; }
