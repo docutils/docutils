@@ -106,6 +106,36 @@ block directive`_).
 `code-block` directive proposal
 -------------------------------
 
+Syntax
+""""""
+
+This is the first draft for the definition analogue to other directives in 
+``directives.txt``. Comments welcome.
+
+:Directive Type: "code-block"
+:Doctree Element: literal_block
+:Directive Arguments: One or more, optional (class names).
+:Directive Options: None.
+:Directive Content: Becomes the body of the literal block.
+
+Unlike an ordinary literal block, the "code-block" directive constructs a
+literal block where the text is parsed as source code and syntax highlight
+rules for `language` are applied. If syntax rules for `language` are not
+known to docutils, it is rendered like an ordinary literal block.
+
+For example, the following snipped is parsed and marked up as python source 
+code. The actual rendering depends on the style-sheet. ::
+
+  .. code-block:: python
+
+    def my_function():
+        "just a test"
+        print 8/2
+
+If the language argument is missing, a default language should be used.
+Additional arguments might be used and e.g. passed to the pygments_ parser
+or (as class arguments) the output document.
+
 
 Reading
 """""""
