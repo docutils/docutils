@@ -116,6 +116,7 @@ Changes Since 0.4
 
 * docutils/writers/latex2e/__init__.py:
 
+  - Move usepackage hyperref after stylesheet inclusion.
   - Fix: scrartcl does not have chapter but scrreprt.
   - Add newline after ``\end{verbatim}``.
   - Merge smaller differences from latex2e_adaptive_preamble.
