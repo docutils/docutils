@@ -47,16 +47,16 @@ Lists
   1. and a nested 
   2. enumeration
 
-     - BUG this line is bold
-	 - bullets
+     - some line 
+     - bullets
 
   3. a third
   4. a third
   5. a third
 
      a. alphabetically BUG not recognized as list start
-	 b. betacarotin
-	 c. grammar
+     b. betacarotin
+     c. grammar
 
   6. a third
   7. a third
@@ -66,7 +66,7 @@ Lists
 
 7. dont start with 1
 9. dont increment by 1
-13. bad at all.
+13. does not work.
 
 Field lists
 -----------
