@@ -101,7 +101,6 @@ Problems
   advised to avoid if possible.
 * Images
 * Equations
-* nested list entries sometimes get bold. RST problem
 * RST problem "-d #  option " breaks
 * enumerated lists with more than 9 
 * line blocks in tables have too much new lines.
