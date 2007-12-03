@@ -1,9 +1,12 @@
+#!/usr/bin/env make
+
+EMACS=/usr/bin/emacs-23-unicode
 
 runtests:
-	emacs-21 --batch -l tests-basic.el
-	emacs-21 --batch -l tests-adjust-section.el
+	$(EMACS) --batch -l tests-basic.el
+	$(EMACS) --batch -l tests-adjust-section.el
 
 runtests-emacs-cvs:
-	emacs --script tests-basic.el
-	emacs --script tests-adjust-section.el
+	$(EMACS) --script tests-basic.el
+	$(EMACS) --script tests-adjust-section.el
 

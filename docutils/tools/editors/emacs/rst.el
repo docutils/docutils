@@ -156,8 +156,6 @@
 ;;   below one below the last section decoration level preceding the
 ;;   cursor.  We need to fix that.
 
-
-
 ;;; TODO LIST
 
 ;; rst-toc-insert features
@@ -355,6 +353,13 @@ is for which (pred elem) is true)"
 
     st)
   "Syntax table used while in `rst-mode'.")
+
+
+(defcustom rst-mode-hook nil
+  "Hook run when Rst Mode is turned on. The hook for Text Mode is run before
+  this one."
+  :group 'rst
+  :type '(hook))
 
 
 ;;;###autoload
@@ -2544,17 +2549,8 @@ set the empty lines too."
 
 
 
-
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Customization:
-
-(defcustom rst-mode-hook nil
-  "Hook run when Rst Mode is turned on. The hook for Text Mode is run before
-  this one."
-  :group 'rst
-  :type '(hook))
+;;; Customization for font-lock support:
 
 (defcustom rst-mode-lazy t
   "*If non-nil Rst Mode font-locks comment, literal blocks, and section titles
@@ -2566,6 +2562,8 @@ If nil comments and literal blocks are font-locked only on the line they start.
 The value of this variable is used when Rst Mode is turned on."
   :group 'rst
   :type '(boolean))
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
