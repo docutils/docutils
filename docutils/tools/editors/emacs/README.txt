@@ -8,13 +8,14 @@
 
 This directory contains the following Emacs lisp package files:
 
-* rst.el: Emacs support for reStructuredText_.  This file contains
+* rst.el: Emacs support for reStructuredText_.  This file contains a
+  major mode that provides:
 
   * Section decoration/adornment creation and updating (M. Blais);
   * Table-of-contents mode and insertion (M. Blais);
   * Font-lock syntax highlighting (S. Merten);
   * Some handy editing functions (D. Goodger).
-  * Some functions for converting documents from emacs (M. Blais).  
+  * Some functions for converting rest documents from within emacs (M. Blais).  
 
 * tests subdirectory: automated tests for some of the features in rst.el.
   Please make sure the tests pass if you change the LISP code.  Just type "make"
