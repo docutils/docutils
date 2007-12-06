@@ -5,8 +5,6 @@
 ;; Authors: Martin Blais <blais@furius.ca>,
 ;;          Stefan Merten <smerten@oekonux.de>,
 ;;          David Goodger <goodger@python.org>
-;; Revision: $Revision$
-;; Date: $Date$
 
 ;; This program is free software; you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License version 2,
@@ -25,15 +23,10 @@
 ;;; Commentary:
 
 ;; This package provides major mode rst-mode, which supports documents marked up
-;; using the reStructuredText format.
-
-;;; Description
-
-;; This package provides support for documents marked up using the
-;; reStructuredText format. Support includes font locking as well as some
-;; convenience functions for editing. It does this by defining a Emacs major
-;; mode: rst-mode (ReST). This mode is derived from text-mode (and inherits much
-;; of it). This package also contains:
+;; using the reStructuredText format. Support includes font locking as well as
+;; some convenience functions for editing. It does this by defining a Emacs
+;; major mode: rst-mode (ReST). This mode is derived from text-mode (and
+;; inherits much of it). This package also contains:
 ;;
 ;; - Functions to automatically adjust and cycle the section underline
 ;;   decorations;
@@ -215,7 +208,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Define some generic support functions.
 
-(require 'cl)
+;; (require 'cl) FIXME, do we really need this? RMS doesn't like it.
 
 ;; Generic Filter function.
 (unless (fboundp 'filter)
@@ -362,6 +355,18 @@ is for which (pred elem) is true)"
   :type '(hook))
 
 
+(defcustom rst-mode-lazy t
+  "*If non-nil Rst Mode font-locks comment, literal blocks, and section titles
+correctly. Because this is really slow it switches on Lazy Lock Mode
+automatically. You may increase Lazy Lock Defer Time for reasonable results.
+
+If nil comments and literal blocks are font-locked only on the line they start.
+
+The value of this variable is used when Rst Mode is turned on."
+  :group 'rst
+  :type '(boolean))
+
+
 ;;;###autoload
 (define-derived-mode rst-mode text-mode "ReST"
   :abbrev-table rst-mode-abbrev-table
@@ -380,7 +385,6 @@ Turning on `rst-mode' calls the normal hooks `text-mode-hook' and
 `rst-mode-hook'. This mode also supports font-lock highlighting.
 You may customize `rst-mode-lazy' to toggle font-locking of
 blocks."
-  (interactive)
 
   (set (make-local-variable 'paragraph-separate) paragraph-start)
   (set (make-local-variable 'paragraph-start) 
@@ -389,7 +393,7 @@ blocks."
   (set (make-local-variable 'adaptive-fill-mode) t)
 
   ;; The details of the following comment setup is important because it affects
-  ;; auto-fill, and it is pretty comment in running text to have an ellipsis
+  ;; auto-fill, and it is pretty common in running text to have an ellipsis
   ;; ("...") which trips because of the rest comment syntax (".. ").
   (set (make-local-variable 'comment-start) ".. ")
   (set (make-local-variable 'comment-start-skip) "^\\.\\. ")
@@ -410,8 +414,8 @@ blocks."
     ;; jit-lock-mode replaced lazy-lock-mode in GNU Emacs 22
     (let ((jit-or-lazy-lock-mode
            (cond
-            ((fboundp 'lazy-lock-mode) 'lazy-lock-mode)
             ((fboundp 'jit-lock-mode) 'jit-lock-mode)
+            ((fboundp 'lazy-lock-mode) 'lazy-lock-mode)
             ;; if neither lazy-lock nor jit-lock is supported,
             ;; tell user and disable rst-mode-lazy
             (t (when rst-mode-lazy
@@ -429,8 +433,8 @@ blocks."
 	     (not (assoc 'rst-mode font-lock-support-mode)))
 	;; A list of modes missing rst-mode
 	(setq font-lock-support-mode
-	      (append '((cons 'rst-mode (and rst-mode-lazy jit-or-lazy-lock-mode)))
-		      font-lock-support-mode))))))
+	      (cons (cons 'rst-mode (and rst-mode-lazy jit-or-lazy-lock-mode))
+		    font-lock-support-mode))))))
 
   )
 
@@ -670,9 +674,7 @@ requested decoration."
 
   (interactive)
   (let (marker
-        len
-        ec
-        (c ?-))
+        len)
 
       (end-of-line)
       (setq marker (point-marker))
@@ -766,7 +768,7 @@ function to remove redundancies and inconsistencies."
         (curline 1))
     ;; Iterate over all the section titles/decorations in the file.
     (save-excursion
-      (beginning-of-buffer)
+      (goto-char (point-min))
       (while (< (point) (buffer-end 1))
         (if (rst-line-homogeneous-nodent-p)
             (progn
@@ -805,14 +807,12 @@ list element should be unique."
   (let ((hierarchy-alist (list)))
     (dolist (x decorations)
       (let ((char (car x))
-            (style (cadr x))
-            (indent (caddr x)))
+            (style (cadr x)))
         (unless (assoc (cons char style) hierarchy-alist)
-	  (setq hierarchy-alist
-		(append hierarchy-alist
-			(list (cons (cons char style) x)))) )
+	  (push (cons (cons char style) x) hierarchy-alist))
         ))
-    (mapcar 'cdr hierarchy-alist)
+    
+    (mapcar 'cdr (nreverse hierarchy-alist))
     ))
 
 
@@ -920,7 +920,7 @@ previous and next decorations is returned."
     ))
 
 
-(defun rst-decoration-complete-p (deco &optional point)
+(defun rst-decoration-complete-p (deco)
   "Return true if the decoration DECO around POINT is complete."
   ;; Note: we assume that the detection of the overline as being the underline
   ;; of a preceding title has already been detected, and has been eliminated
@@ -970,8 +970,7 @@ REVERSE-DIRECTION is used to reverse the cycling order."
      ;; Search for next decoration.
      (cadr
       (let ((cur (if reverse-direction rotdecos
-                   (reverse rotdecos)))
-            found)
+                   (reverse rotdecos))))
         (while (and cur
                     (not (and (eq char (caar cur))
                               (eq style (cadar cur)))))
@@ -1400,18 +1399,17 @@ DECORATIONS."
         (dolist (x decorations)
           (insert (format "\nSection Level %d" level))
           (apply 'rst-update-section x)
-          (end-of-buffer)
+          (goto-char (point-max))
           (insert "\n")
           (incf level)
           ))
     )))
 
-(defun rst-straighten-decorations (&optional buffer)
-  "Redo all the decorations in the given buffer BUFFER.
+(defun rst-straighten-decorations ()
+  "Redo all the decorations in the current buffer.
 This is done using our preferred set of decorations.  This can be
 used, for example, when using somebody else's copy of a document,
-in order to adapt it to our preferred style.  If no buffer is
-specified, the default buffer is used."
+in order to adapt it to our preferred style."
   (interactive)
   (save-excursion
     (let* ((alldecos (rst-find-all-decorations))
@@ -1440,10 +1438,9 @@ specified, the default buffer is used."
     )))
 
 
-(defun rst-straighten-deco-spacing (&optional buffer)
-  "Adjust the spacing before and after decorations in the entire BUFFER.
-The spacing will be 'standard'.  If no buffer is specified, the
-default buffer is used."
+(defun rst-straighten-deco-spacing ()
+  "Adjust the spacing before and after decorations in the entire current.
+The spacing will be 'standard'."
   (interactive)
   (save-excursion
     (let* ((alldecos (rst-find-all-decorations)))
@@ -1541,10 +1538,8 @@ adjust.  If bullets are found on levels beyond the
 
 (defun rst-rstrip (str)
   "Strips the whitespace at the end of string STR."
-  (let ((tmp))
-    (string-match "[ \t\n]*\\'" str)
-    (substring str 0 (match-beginning 0))
-    ))
+  (string-match "[ \t\n]*\\'" str)
+  (substring str 0 (match-beginning 0)))
 
 (defun rst-get-stripped-line ()
   "Return the line at cursor, stripped from whitespace."
@@ -1571,8 +1566,7 @@ Conceptually, the nil nodes--i.e.  those which have no title--are
 to be considered as being the same line as their first non-nil
 child.  This has advantages later in processing the graph."
 
-  (let* (thelist
-         (hier (rst-get-hierarchy alldecos))
+  (let* ((hier (rst-get-hierarchy alldecos))
          (levels (make-hash-table :test 'equal :size 10))
          lines)
 
@@ -1756,8 +1750,7 @@ align."
   ;; Note: we do child numbering from the parent, so we start number the
   ;; children one level before we print them.
   (let ((do-print (> level 0))
-        (count 1)
-        b)
+        (count 1))
     (when do-print
       (insert indent)
       (let ((b (point)))
@@ -1865,10 +1858,14 @@ Delete that region.  Return t if found and the cursor is left after the comment.
 Updates the inserted TOC if present.  You can use this in your
 file-write hook to always make it up-to-date automatically."
   (interactive)
-  (save-excursion
-    (if (rst-toc-insert-find-delete-contents)
-        (progn (insert "\n    ")
-               (rst-toc-insert))) )
+  (let ((p (point)))
+    (save-excursion
+      (when (rst-toc-insert-find-delete-contents)
+        (insert "\n    ")
+	(rst-toc-insert)
+	))
+    ;; Somehow save-excursion does not really work well.
+    (goto-char p))
   ;; Note: always return nil, because this may be used as a hook.
   )
 
@@ -2077,7 +2074,6 @@ EVENT is the input event."
 
          (cur alldecos)
          (idx 0)
-         line
          )
 
     ;; Find the index of the "next" decoration w.r.t. to the current line.
@@ -2097,7 +2093,7 @@ EVENT is the input event."
     ;; boundaries.
     (if (and cur (>= idx 0))
         (goto-line (car cur))
-      (if (> offset 0) (end-of-buffer) (beginning-of-buffer)))
+      (if (> offset 0) (goto-char (point-max)) (goto-char (point-min))))
     ))
 
 (defun rst-backward-section ()
@@ -2547,24 +2543,7 @@ set the empty lines too."
      )))
 
 
-
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;; Customization for font-lock support:
-
-(defcustom rst-mode-lazy t
-  "*If non-nil Rst Mode font-locks comment, literal blocks, and section titles
-correctly. Because this is really slow it switches on Lazy Lock Mode
-automatically. You may increase Lazy Lock Defer Time for reasonable results.
-
-If nil comments and literal blocks are font-locked only on the line they start.
-
-The value of this variable is used when Rst Mode is turned on."
-  :group 'rst
-  :type '(boolean))
-
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (require 'font-lock)
@@ -2745,6 +2724,10 @@ details check the Rst Faces Defaults group."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Font lock
 
+(defvar rst-use-char-classes
+  (string-match "[[:alpha:]]" "b")
+  "Non-nil if we can use the character classes in our regexps.")
+
 (defun rst-font-lock-keywords-function ()
   "Returns keywords to highlight in rst mode according to current settings."
   ;; The reST-links in the comments below all relate to sections in
@@ -2790,12 +2773,8 @@ details check the Rst Faces Defaults group."
 	 ;; characters because otherwise explicit markup start would be
 	 ;; recognized
 	 (re-ado2 (concat "^\\(\\(["
-			  (if (or
-			       (< emacs-major-version 21)
-			       (save-match-data
-				 (string-match "XEmacs\\|Lucid" emacs-version)))
-			      "^\\w \t\x00-\x1F"
-			    "^[:word:][:space:][:cntrl:]")
+			  (if rst-use-char-classes
+			      "^[:word:][:space:][:cntrl:]" "^\\w \t\x00-\x1F")
 			  "]\\)\\2\\2+\\)" re-hws "*$"))
 	 )
     (list
@@ -2964,6 +2943,8 @@ details check the Rst Faces Defaults group."
       (list 1 rst-block-face)
       (list 2 rst-literal-face)))
     )))
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Indented blocks
@@ -3400,8 +3381,7 @@ column is used (fill-column vs. end of previous/next line)."
 
 
 (defun rst-portable-mark-active-p ()
-  "A portable (GNU, Xemacs) function that returns true if the
-mark is active."
+  "A portable function that returns non-nil if the mark is active."
   (or
    (and (fboundp 'region-active-p)
 	(region-active-p) (region-exists-p))
