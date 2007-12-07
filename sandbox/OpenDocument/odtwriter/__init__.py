@@ -395,25 +395,51 @@ def escape_cdata(text):
 if hasattr(rst, 'Directive'):
     #
     # Class to control syntax highlighting.
-    class SyntaxHighlight(rst.Directive):
+##    class SyntaxHighlight(rst.Directive):
+##        required_arguments = 1
+##        optional_arguments = 0
+##        #
+##        # See visit_field for code that processes the node created here.
+##        def run(self):
+##            arguments = ' '.join(self.arguments)
+##            paragraph = nodes.paragraph(arguments, arguments)
+##            field_body = nodes.field_body()
+##            field_body += paragraph
+##            paragraph = nodes.paragraph('syntaxhighlight', 'syntaxhighlight')
+##            field_name = nodes.field_name()
+##            field_name += paragraph
+##            field = nodes.field()
+##            field += field_name
+##            field += field_body
+##            return [field]
+##    
+##    rst.directives.register_directive('sourcecode', SyntaxHighlight)
+
+    class SyntaxHighlightCodeBlock(rst.Directive):
         required_arguments = 1
         optional_arguments = 0
+        has_content = True
         #
-        # See visit_field for code that processes the node created here.
+        # See visit_literal_block for code that processes the node 
+        #   created here.
         def run(self):
-            arguments = ' '.join(self.arguments)
-            paragraph = nodes.paragraph(arguments, arguments)
-            field_body = nodes.field_body()
-            field_body += paragraph
-            paragraph = nodes.paragraph('syntaxhighlight', 'syntaxhighlight')
-            field_name = nodes.field_name()
-            field_name += paragraph
-            field = nodes.field()
-            field += field_name
-            field += field_body
-            return [field]
-    
-    rst.directives.register_directive('sourcecode', SyntaxHighlight)
+            language = self.arguments[0]
+            code_block = nodes.literal_block(classes=["code-block", language],
+                language=language)
+            lines = self.content
+            content = '\n'.join(lines)
+            text_node = nodes.Text(content)
+            code_block.append(text_node)
+            # Mark this node for high-lighting so that visit_literal_block
+            #   will be able to hight-light those produced here and
+            #   *not* high-light regular literal blocks (:: in reST).
+            code_block['hilight'] = True
+            #import pdb; pdb.set_trace()
+            return [code_block]
+
+    rst.directives.register_directive('sourcecode', SyntaxHighlightCodeBlock)
+    rst.directives.register_directive('code', SyntaxHighlightCodeBlock)
+
 
 #
 # Register directives defined in a module named "odtwriter_plugins".
@@ -794,6 +820,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.field_element = None
         self.title = None
         self.image_count = 0
+        self.image_style_count = 0
+        self.image_dict = {}
         self.embedded_file_list = []
         self.syntaxhighlighting = 1
         self.syntaxhighlight_lexer = 'python'
@@ -805,6 +833,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.in_table_of_contents = False
         self.footnote_dict = {}
         self.footnote_found = False
+        self.in_paragraph = False
 
     def add_header_footer(self, content):
         if len(self.header_content) <= 0 and len(self.footer_content) <= 0:
@@ -1241,22 +1270,23 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.in_footer = False
 
     def visit_field(self, node):
-        # Note that the syntaxhighlight directive produces this field node.
-        # See class SyntaxHighlight, above.
-        #ipshell('At visit_field')
-        children = node.children
-        if len(children) == 2:
-            name = children[0].astext()
-            if name == 'syntaxhighlight':
-                body = children[1].astext()
-                args = body.split()
-                if args[0] == 'on':
-                    self.syntaxhighlighting = 1
-                elif args[0] == 'off':
-                    self.syntaxhighlighting = 0
-                else:
-                    self.syntaxhighlight_lexer = args[0]
-                raise nodes.SkipChildren()
+        pass
+##        # Note that the syntaxhighlight directive produces this field node.
+##        # See class SyntaxHighlight, above.
+##        #ipshell('At visit_field')
+##        children = node.children
+##        if len(children) == 2:
+##            name = children[0].astext()
+##            if name == 'syntaxhighlight':
+##                body = children[1].astext()
+##                args = body.split()
+##                if args[0] == 'on':
+##                    self.syntaxhighlighting = 1
+##                elif args[0] == 'off':
+##                    self.syntaxhighlighting = 0
+##                else:
+##                    self.syntaxhighlight_lexer = args[0]
+##                raise nodes.SkipChildren()
 
     def depart_field(self, node):
         pass
@@ -1376,16 +1406,24 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 return
         else:
             return
-        filename = os.path.split(source)[1]
-        destination = 'Pictures/1%08x%s' % (self.image_count, filename, )
-        spec = (source, destination,)
-        self.embedded_file_list.append(spec)
+        if source in self.image_dict:
+            filename, destination = self.image_dict[source]
+        else:
+            self.image_count += 1
+            filename = os.path.split(source)[1]
+            destination = 'Pictures/1%08x%s' % (self.image_count, filename, )
+            spec = (source, destination,)
+            self.embedded_file_list.append(spec)
+            self.image_dict[source] = (filename, destination,)
         # Is this a figure (containing an image) or just a plain image?
         if isinstance(node.parent, docutils.nodes.figure):
             self.generate_figure(node, source, destination)
         else:
-            el1 = SubElement(self.current_element, 'text:p',
-                attrib={'text:style-name': 'rststyle-textbody'})
+            if self.in_paragraph:
+                el1 = self.current_element
+            else:
+                el1 = SubElement(self.current_element, 'text:p',
+                    attrib={'text:style-name': 'rststyle-textbody'})
             self.generate_image(node, source, destination, el1)
 
     def generate_figure(self, node, source, destination):
@@ -1393,8 +1431,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         for node1 in node.parent.children:
             if node1.tagname == 'caption':
                 caption = node1.astext()
-        self.image_count += 1
-        style_name = 'rstframestyle%d' % self.image_count
+        self.image_style_count += 1
+        style_name = 'rstframestyle%d' % self.image_style_count
         if 'scale' in node.attributes:
             try:
                 scale = int(node.attributes['scale'])
@@ -1485,8 +1523,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             el2.tail = caption
 
     def generate_image(self, node, source, destination, current_element):
-        self.image_count += 1
-        style_name = 'rstframestyle%d' % self.image_count
+        #ipshell('At generate_image')
+        self.image_style_count += 1
+        style_name = 'rstframestyle%d' % self.image_style_count
         # Add the style.
         attrib = {
             'style:name': style_name,
@@ -1640,11 +1679,10 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 count = len(pad) * 8
         return count
 
-    def _add_syntax_highlighting(self, insource):
-        #print '(_add_syntax_highlighting) using lexer: %s' % self.syntaxhighlight_lexer
-        lexer = pygments.lexers.get_lexer_by_name(
-            self.syntaxhighlight_lexer, stripall=True)
-        if self.syntaxhighlight_lexer in ('latex', 'tex'):
+    def _add_syntax_highlighting(self, insource, language):
+        #print '(_add_syntax_highlighting) using lexer: %s' % (language, )
+        lexer = pygments.lexers.get_lexer_by_name(language, stripall=True)
+        if language in ('latex', 'tex'):
             fmtr = OdtPygmentsLaTeXFormatter()
         else:
             fmtr = OdtPygmentsProgFormatter()
@@ -1670,10 +1708,13 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_literal_block(self, node):
         #ipshell('At visit_literal_block')
+        #import pdb; pdb.set_trace()
         source = node.astext()
-        if pygments and self.settings.add_syntax_highlighting and \
-            self.syntaxhighlighting:
-            source = self._add_syntax_highlighting(source)
+        if (pygments and 
+            self.settings.add_syntax_highlighting and
+            node.get('hilight', False)):
+            language = node.get('language', 'python')
+            source = self._add_syntax_highlighting(source, language)
         else:
             source = escape_cdata(source)
         lines = source.split('\n')
@@ -1687,7 +1728,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         my_lines_str = '<text:line-break/>'.join(my_lines)
         my_lines_str2 = ODFTranslator.wrapper1 % (my_lines_str, )
         lines1.append(my_lines_str2)
-
         lines1.append('</wrappertag1>')
         s1 = ''.join(lines1)
         el1 = etree.fromstring(s1)
@@ -1851,6 +1891,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def visit_paragraph(self, node):
         #ipshell('At visit_paragraph')
         #self.trace_visit_node(node)
+        self.in_paragraph = True
         if self.omit:
             return
         if self.in_header:
@@ -1870,6 +1911,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def depart_paragraph(self, node):
         #ipshell('At depart_paragraph')
         #self.trace_depart_node(node)
+        self.in_paragraph = False
         if self.omit:
             return
         self.set_to_parent()
@@ -1964,6 +2006,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_substitution_definition(self, node):
         #ipshell('At visit_substitution_definition')
+        raise nodes.SkipChildren()
         pass
 
     def depart_substitution_definition(self, node):
