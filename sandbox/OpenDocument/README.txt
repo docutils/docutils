@@ -38,6 +38,18 @@ For more information on Docutils, see: http://docutils.sourceforge.net/
 History
 =======
 
+2007/12/07 -- Version 1.1a
+--------------------------
+
+Fixes to sourcecode highlighting.
+
+Fixes to images:
+
+- Eliminated storing the same image multiple times in the .odt file.
+
+- Fix to images defined in image substitution definitions.
+
+
 2007/10/05 -- Version 1.1a
 --------------------------
 

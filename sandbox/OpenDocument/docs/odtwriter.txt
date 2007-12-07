@@ -523,20 +523,34 @@ Syntax highlighting
 ``docutils.parsers.rst.Directive``.  Therefore, it requires a very
 recent version of Docutils, specifically version 0.5 or later.
 
-``odtwriter`` can add Python syntax highlighting to code in
-literal code blocks.  In order to activate this, do both of the
-following: (1) install Pygments and (2) use the command line flag
-``--add-syntax-highlighting``.  Example::
+``odtwriter`` can add Python syntax highlighting to code in code
+blocks.  In order to activate this, do all of the following:
 
-    $ rst2odt.py -g --add-syntax-highlight test.txt test.odt
+1. Install Pygments and ...
 
-**Caution:** When ``odtwriter`` does syntax highlighting, by
-default, it applies a Python lexer and Python syntax highlighting.
-If you have literal code blocks that contain code which is *not*
-Python code, then you likely to want either (1) to use the
-``.. sourcecode::`` directive to change the language/lexer or to
-turn off highlighting across sections of your document or (2) to
-*not* use the ``--add-syntax-highlighting`` flag.
+2. Use the command line flag ``--add-syntax-highlighting``.
+   Example::
+
+       $ rst2odt.py -g --add-syntax-highlight test.txt test.odt
+
+   and ...
+
+3. In your reST (.txt) file, include code to which syntax
+   highlighting is to be applied inside a ``sourcecode`` directive,
+   for example::
+
+       .. sourcecode:: lexer-language
+
+           def test():
+               print 'hi'
+               return 'something'
+
+   where ``lexer-language`` is the programming language, for example
+   "python", "java", etc.  See the Pygments documentation for a list
+   of lexers/languages supported by Pygments:
+   `Available lexers --
+   http://pygments.org/docs/lexers/
+   <http://pygments.org/docs/lexers/>`_
 
 You can find Pygments here: `Pygments`_.
 
