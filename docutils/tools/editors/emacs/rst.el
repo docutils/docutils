@@ -389,8 +389,10 @@ blocks."
   (set (make-local-variable 'paragraph-separate) paragraph-start)
   (set (make-local-variable 'paragraph-start) 
        "\f\\|>*[ \t]*$\\|>*[ \t]*[-+*] \\|>*[ \t]*[0-9#]+\\. ")
-  (set (make-local-variable 'indent-line-function) 'indent-relative-maybe)
   (set (make-local-variable 'adaptive-fill-mode) t)
+
+  ;; FIXME: No need to reset this.
+  ;; (set (make-local-variable 'indent-line-function) 'indent-relative)
 
   ;; The details of the following comment setup is important because it affects
   ;; auto-fill, and it is pretty common in running text to have an ellipsis
@@ -1015,7 +1017,10 @@ b. a negative numerical argument, which generally inverts the
    prefix for example."
   (interactive)
 
-  (let* ( ;; Parse the positive and negative prefix arguments.
+  (let* (;; Save our original position on the current line.
+	 (origpt (set-marker (make-marker) (point)))
+
+	 ;; Parse the positive and negative prefix arguments.
          (reverse-direction
           (and current-prefix-arg
                (< (prefix-numeric-value current-prefix-arg) 0)))
@@ -1030,6 +1035,9 @@ b. a negative numerical argument, which generally inverts the
 
     ;; Run the hooks to run after adjusting.
     (run-hooks 'rst-adjust-hook)
+
+    ;; Make sure to reset the cursor position properly after we're done.
+    (goto-char origpt)
 
     ))
 
@@ -2097,7 +2105,8 @@ EVENT is the input event."
     ))
 
 (defun rst-backward-section ()
-  "Like rst-forward-section, except move back one title."
+  "Like rst-forward-section, except move back one title.
+With a prefix argument, move backward by a page."
   (interactive)
   (rst-forward-section -1))
 
