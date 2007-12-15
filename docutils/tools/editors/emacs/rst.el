@@ -1780,7 +1780,7 @@ align."
       (setq indent
 	    (cond
 	     ((eq rst-toc-insert-style 'plain)
-	      (concat indent rst-toc-indent))
+              (concat indent (make-string rst-toc-indent ? )))
 
 	     ((eq rst-toc-insert-style 'fixed)
 	      (concat indent (make-string rst-toc-indent ? )))
