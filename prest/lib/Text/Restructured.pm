@@ -6,7 +6,7 @@
 package Text::Restructured;
 
 # N.B.: keep version in quotes so trailing 0's are not lost
-$VERSION = '0.003036';
+$VERSION = '0.003037';
 
 # This package does parsing of reStructuredText files
 
@@ -72,6 +72,9 @@ Defines for reStructuredText parser
 -D raw-enabled[=<0|1>]
                    Allows raw directives to be processed, which may
                    be a potential security hole.  Default is 1.
+-D relax-citation-characters[=<0|1>]
+		   Allows any non-whitespace characters to be used in
+		   a citation or citation reference.
 -D report=<level>  Set verbosity threshold; report system messages
                    at or higher than <level> (by name or number:
                    "info" or "1", warning/2, error/3, severe/4; 
@@ -136,13 +139,16 @@ Defines for reStructuredText parser
 #     ``MY_DEFAULT_ROLE``:  The current name of the default role
 #                        for the current document.  Initially
 #                        ``title_reference``.
+#     ``MY_CITE_CHARS``: The set of characters allowed in a citation.
+#                        Initially ``[\w.-]``, but changes to ``[^\s\]]``
+#                        if -D relax-citation-characters is true.
 
 use strict;
 
 # Initialized (read-only) global variables
 use vars qw($BULLETS $EMAIL $ENUM $ENUM_INDEX $FIELD_LIST $LINE_BLOCK
 	    $MARK_END_TRAILER $MARK_START $MIN_SEC_LEN $OPTION
-	    $OPTION_LIST $SECTION_HEADER $SEC_CHARS %DIRECTIVES
+	    $OPTION_LIST $SECTION_HEADER $SEC_CHARS $CITE_CHARS %DIRECTIVES
 	    %ERROR_LEVELS %IMPLICIT_SCHEME %LEFT_BRACE %MARK_END
 	    %MARK_TAG %MARK_TAG_START %MATCH_BRACE %ROLES
 	    $DEFAULT_ROLE %XML_SPACE %DEFAULTS
@@ -152,6 +158,7 @@ BEGIN {
     use Text::Restructured::URIre;
     # Note: all of scalars are read-only
     *DOM = \"Text::Restructured::DOM";  #";/
+    *CITE_CHARS = \'[\w.-]';    #';
     *SEC_CHARS = \'[^a-zA-Z0-9\s]';  #';
     *SECTION_HEADER = \"(((?!$SEC_CHARS+\\n(?:\\n|\\Z))(?!::\\n|(?:(?:\\.\\.|__)\\n(?:   |\\.\\.[ \\n]|__[ \\n]|\\n)))($SEC_CHARS)\\3+)\\n(.*\\n)?(($SEC_CHARS)\\6+\\n)?|^(?!(?:\\.\\.|__)(?: .*)?\\n(?:\.\.|__)[ \\n])(\\S.*\\n)(($SEC_CHARS)\\9+)\\n)";  #";
     *BULLETS = \'[-*+]';  #';
@@ -276,22 +283,27 @@ BEGIN {
 	      title      =>{alias=>'title-reference'},
 	      t          =>{alias=>'title-reference'},
 	      'ascii-mathml'=>{alias=>'mathml'},
+	      'mathml-display'=>{alias=>'mathml'},
+	      'mathml-inline'=>{alias=>'mathml'},
 	      mathml     =>{
 		  tag =>'mathml',
 		  attr=>{mathml=>sub {
-		      my ($parser, $attr, $text) = @_;
+		      my ($parser, $attr, $text, $role) = @_;
 		      if (! $parser->{_MathML}) {
 			  eval "use Text::ASCIIMathML";
 			  $parser->{_MathML} = new Text::ASCIIMathML
 			      unless $@;
 		      }
+		      my @mstyle;
+		      @mstyle = @{$parser->{opt}{D}{mstyle}}
+		      if $parser->{opt}{D}{mstyle};
+		      unshift @mstyle,
+			  (displaystyle => $1 eq 'display' ? 'true' : 'false')
+			  if $role =~ /mathml-(.*)/;
 		      return $parser->{_MathML} ?
 			  $parser->{_MathML}->TextToMathMLTree
 			  ($text, [title=>$text, xmlns=>"&mathml;"],
-			   [$parser->{opt}{D}{mstyle} ?
-			    @{$parser->{opt}{D}{mstyle}} : ()]) :
-			   '';
-		      
+			   [@mstyle]) : '';
 		  },
 		     'raw'=>1},
 	      },
@@ -368,6 +380,8 @@ sub init : method {
     delete $self->{ALL_TARGET_NAMES};
     $self->{TOPDOM} = $doc;
     $self->{TOP_FILE} = $filename;
+    $self->{CITE_CHARS} = $self->{opt}{D}{relax_citation_characters} ?
+	'[^\s\]]' : $CITE_CHARS;
 
     # Handle the Perl include path
     my $perl_inc = join(':', @INC);
@@ -706,15 +720,17 @@ sub Coalesce : method {
 }
 
 # Defines a new role, optionally based upon an existing role
-# Arguments: new role name, optional old role name, optional option key/values
+# Arguments: new role name, optional old role name, optional additional
+#            key/values
 # Returns: possible error message
 sub DefineRole : method {
-    my ($self, $role, $tag, %options) = @_;
+    my ($self, $role, $tag, %info) = @_;
 
     $tag = 'inline' unless defined $tag;
+    my $options = $info{options};
     return qq(cannot make "$role" into a class name.)
 	unless $role =~ /[a-z][-\w\.]*/i;
-    my $class = defined $options{class} ? $options{class} : $role;
+    my $class = defined $options->{class} ? $options->{class} : $role;
     return qq(invalid option value: (option: "class"; value: '$class')\ncannot make "$class" into a class name.)
 	unless $class =~ /[a-z][-\w\.]*/i;
     # Default all options, etc. from the base tag
@@ -722,17 +738,19 @@ sub DefineRole : method {
     $self->{MY_ROLES}{$role}{tag} = $self->{MY_ROLES}{$tag}{tag};
     $self->{MY_ROLES}{$role}{attr}{classes} = [ $class ];
     # Process format, prefix and suffix options
-    if (defined $options{format}) {
-	$self->{MY_ROLES}{$role}{attr}{format} = $options{format};
-	delete $options{format};
+    if (defined $options->{format}) {
+	$self->{MY_ROLES}{$role}{attr}{format} = $options->{format};
+	delete $options->{format};
     }
-    $options{prefix} = $self->HashifyFieldList($options{prefix})
-	if $options{prefix};
-    $options{suffix} = $self->HashifyFieldList($options{suffix})
-	if $options{suffix};
+    $options->{prefix} = $self->HashifyFieldList($options->{prefix})
+	if $options->{prefix};
+    $options->{suffix} = $self->HashifyFieldList($options->{suffix})
+	if $options->{suffix};
     # Merge any local options with the options of the underlying class
-    @{$self->{MY_ROLES}{$role}{options}}{keys %options} =
-	values %options if %options;
+    @{$self->{MY_ROLES}{$role}{options}}{keys %$options} =
+	values %$options if %$options;
+    delete $info{options};
+    @{$self->{MY_ROLES}{$role}}{keys %info} = values %info if %info;
     return;
 }
 
@@ -851,12 +869,18 @@ sub Directive : method {
 		 (1, $source, $lineno,
 		  qq(No directive entry for "$dname" in module "Text::Restructured::Directive".\nTrying "$dname" as canonical directive name.)));
 	    eval("use Text::Restructured::Directive::$directive");
-	    if ($@ && $@ !~ /in \@INC/) {
+	    if ($@ && $@ !~ /$directive.pm in \@INC/) {
 		push(@dom, $self->system_message
 		     (4, $source, $lineno,
 		      qq(Error compiling "$directive": $@)));
 		return 1, \@dom, [];
 	    }
+	    my $init = "Text::Restructured::Directive::${directive}::init";
+	    eval { push @dom, (\&$init)->($self, $source, $lineno)
+		       if defined &$init };
+	    push(@dom, $self->system_message
+		 (4, $source, $lineno,
+		  qq(Error running "$init": $@))) if $@;
 	    return 1, \@dom, [$lit] if defined $DIRECTIVES{$directive};
 	}
 	if ( defined $DIRECTIVES{$directive}) {
@@ -1029,7 +1053,7 @@ sub Explicit : method {
     }
     $processed = $para;
 
-    $para =~ /^(?:\.\.|(__))(?: (?:\[((?:[\#*])?[\w.-]*)\] *|\|(?! )([^\|]*\S)\| *|(_.*:.*)|([\w\.-]+\s*::.*))?)?(.*)/s;
+    $para =~ /^(?:\.\.|(__))(?: (?:\[((?:[\#*])?$self->{CITE_CHARS}*)\] *|\|(?! )([^\|]*\S)\| *|(_.*:.*)|([\w.-]+\s*::.*))?)?(.*)/si;
     my ($anon, $footnote, $subst, $target, $dir, $next) =
 	($1, $2, $3, $4, $5, $6);
     my $btext = $next
@@ -1426,36 +1450,50 @@ sub Inline : method {
 		    if defined $attr{_role};
 		$attr{_role} = $self->{MY_DEFAULT_ROLE}
 		if ! defined $attr{_role};
+		if (! defined $self->{MY_ROLES}{$attr{_role}}) {
+		    # See if we can find a plug-in Directive that defines it
+		    (my $role = $attr{_role}) =~ tr/./_/;
+		    eval("use Text::Restructured::Directive::$role");
+		    if ($@ && $@ !~ /Can\'t locate .* in \@INC/) {
+			push(@problems, $self->system_message
+			     (4, $source, $lineno,
+			      qq(Error compiling "$role": $@)));
+			last;
+		    }
+		    my $init = "Text::Restructured::Directive::${role}::init";
+		    (\&$init)->($self) if defined &$init;
+		}
 		if (defined $self->{MY_ROLES}{$attr{_role}}) {
-		    my $role = $self->{MY_ROLES}{$attr{_role}};
-		    $role = $self->{MY_ROLES}{$role->{alias}}
-  			while defined $role->{alias};
-		    my @errs = &{$role->{check}}($self, $mid, $lit, $parent,
+		    my $role_r = $self->{MY_ROLES}{$attr{_role}};
+		    $role_r = $self->{MY_ROLES}{$role_r->{alias}}
+  			while defined $role_r->{alias};
+		    my @errs = &{$role_r->{check}}($self, $mid, $lit, $parent,
 						 $source, $lineno, $attr{_role})
-			if defined $role->{check};
+			if defined $role_r->{check};
 		    delete $attr{_position};
 		    if (@errs) {
 			push @problems, @errs;
 			last;
 		    }
-		    $tag = $role->{tag};
-		    if (defined $role->{attr}) {
-			foreach my $attr (keys %{$role->{attr}}) {
+		    $tag = $role_r->{tag};
+		    if (defined $role_r->{attr}) {
+			foreach my $attr (keys %{$role_r->{attr}}) {
 			    $attr{$attr} =
-				ref($role->{attr}{$attr}) eq 'ARRAY' ?
-				$role->{attr}{$attr} :
-				ref($role->{attr}{$attr}) eq 'CODE' ?
-				&{$role->{attr}{$attr}}($self, $attr, $mid,
+				ref($role_r->{attr}{$attr}) eq 'ARRAY' ?
+				$role_r->{attr}{$attr} :
+				ref($role_r->{attr}{$attr}) eq 'CODE' ?
+				&{$role_r->{attr}{$attr}}($self, $attr, $mid,
 							$attr{_role}):
-				sprintf $role->{attr}{$attr}, $mid;
+				sprintf $role_r->{attr}{$attr}, $mid;
 			}
 		    }
-		    $mid = ref($role->{text}) eq 'CODE' ?
-			&{$role->{text}}($self, $mid, $attr{_role}) :
-			sprintf $role->{text}, $mid
-			if defined $role->{text};
-		    my $options = $role->{options};
-		    if ($options && $options->{prefix} &&
+		    $mid = ref($role_r->{text}) eq 'CODE' ?
+			&{$role_r->{text}}($self, $mid, $attr{_role},
+					   $source, $lineno) :
+			sprintf $role_r->{text}, $mid
+			if defined $role_r->{text};
+		    my $options = $role_r->{options} || {};
+		    if ($options->{prefix} &&
 			defined (my $pfx =
 				 ($options->{prefix}{$self->{opt}{w}} ||
 				  $options->{prefix}{default}))) {
@@ -1463,12 +1501,16 @@ sub Inline : method {
 			$raw->append($DOM->newPCDATA($pfx));
 			$parent->append($raw);
 		    }
-		    if ($options && $options->{suffix} &&
+		    if ($options->{suffix} &&
 			defined (my $sfx =
 				 ($options->{suffix}{$self->{opt}{w}} ||
 				  $options->{suffix}{default}))) {
 			$suffix = $DOM->new('raw', format=>$self->{opt}{w});
 			$suffix->append($DOM->newPCDATA($sfx));
+		    }
+		    if ($options->{reparse}) {
+			$text = "$mid$text";
+			next;
 		    }
 		    $was_interpreted = 1;
 		}
@@ -1620,7 +1662,7 @@ sub InlineFindEnd : method {
 #print STDERR "$lineno: #$start#$next#$end#$s[-1]\n";
 	if (("$start$end" =~ /^_/ && $start ne '_`' &&
 	     ($next =~ /([\._-])\1/ || $next =~ /[\`\]]$/)) ||
-	    ($start eq '[' && $next !~ /^(?=.)[\#\*]?[\w\.-]*$/)) {
+	    ($start eq '[' && $next !~ /^(?=.)[\#\*]?$self->{CITE_CHARS}*$/)) {
 	    $mid = "$next$end";
 	    $text = $after;
 	    last;
@@ -2148,7 +2190,7 @@ sub Paragraphs : method {
 		push(@dom,($p, $self->Inline($p, $para, $source, $lineno)));
 		# Clean up trailing whitespace
 		$p->last->{text} =~ s/ +$//
-		    if defined $p->last->{text};
+		    if defined $p->last && exists $p->last->{text};
 	    }
 	}
 	if ($exp_literal && ! $got_literal) {
@@ -3181,10 +3223,11 @@ sub ascii_mathml {
 			 %{$parser->HashifyFieldList($options->{mstyle})} :
 			 ()),
 			);
+	my @mstyle_attr = map(($_, $mstyle{$_}), sort keys %mstyle);
 	$math->{attr}{mathml} = $parser->{_MathML}->TextToMathMLTree
 	    ($text, [title=>$text, xmlns=>"&mathml;"],
 	     [($parser->{opt}{D}{mstyle} ?
-	       @{$parser->{opt}{D}{mstyle}} : ()), %mstyle]);
+	       @{$parser->{opt}{D}{mstyle}} : ()), @mstyle_attr]);
 	return if ! defined $math->{attr}{mathml};
 	$math->append($pcdata);
     }
@@ -3898,7 +3941,7 @@ sub role {
 					 $opt, $source, $lineno, $lit);
 	return $err if $err;
     }
-    my $msg = $parser->DefineRole($role, $tag, %$options);
+    my $msg = $parser->DefineRole($role, $tag, options => {%$options});
     $msg = $msg =~ /invalid/i ?
 	qq(Error in "$name" directive:\n$msg) :
 	qq(Invalid argument for "$name" directive:\n$msg)
