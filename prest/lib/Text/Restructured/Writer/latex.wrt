@@ -16,6 +16,13 @@ It uses the following output defines:
 -W caption=<after|before>
                          Specify that a figure caption should appear
                          after or before the figure (default is "after").
+-W chapter[=0|1]         Specify that the top-level sections should be
+                         \chapter (default is 0 if documentclass is
+                         "article" and 1 otherwise).
+-W cloak-email-addresses[=<0|1>]
+                         Enables cloaking of email addresses to keep
+                         spambots from harvesting email addresses.
+                         Default is 0.
 -W documentclass=<text>  Specify documentclass for the output
                          (default is "article").
 -W documentclass-opts=<text>
@@ -70,6 +77,8 @@ commands are
 \\stylelegendtitle
    Argument: the word "Legend".  Default is boldface followed
    by a colon.
+\\styleliteralblock
+   Argument: none, but encloses a verbatim section.  Default is null.
 \\styleoption
    Arguments: the option string, the option argument(s) (may be
    null). Default is teletype option string followed by
@@ -101,7 +110,8 @@ the definition.
 
 sub BEGIN {
     # My -W flags
-    use vars qw($caption $documentclass $documentclass_opts $footer
+    use vars qw($caption $chapter $cloak_email_addresses
+		$documentclass $documentclass_opts $footer
 		$footnote_links $image_ext $index $inputs
 		$max_unwrapped_colsize $sidebar);
 
@@ -109,15 +119,16 @@ sub BEGIN {
     use vars qw(%ENUMS @ROMAN @ROMANS %FOOTNOTE_SYMBOLS %SYMBOLS);
 
     # Run-time globals
-    use vars qw(@SECTION_LEVELS @AUTHORS $DATE $DOCINFO $SUBTITLE
-		$TITLE @LITBOXES @CITATIONS %SYSTEM_MESSAGE
-		%PACKAGES $BEGIN_DONE); 
+    use vars qw(@SECTION_LEVELS @AUTHORS $DATE $DOCINFO $PREAMBLE
+		$SUBTITLE $TITLE @LITBOXES @CITATIONS %SYSTEM_MESSAGE
+		%PACKAGES $BEGIN_DONE);
 
     # Defaults for -W arguments
     $documentclass = 'article' unless defined $documentclass;
     $documentclass_opts = '' unless defined $documentclass_opts;
     $max_unwrapped_colsize = 8 unless defined $max_unwrapped_colsize;
     $caption = 'after' unless defined $caption;
+    $cloak_email_addresses = '' unless defined $cloak_email_addresses;
     $sidebar = 'float' unless defined $sidebar;
     $footer = 0 unless defined $footer;
     $footnote_links = 0 unless defined $footnote_links;
@@ -145,7 +156,8 @@ sub ProtectString {
     s/([<>])/\\ensuremath{$1}/g;
     s/ == / \\ensuremath{=} /g;
     s/ != / \\ensuremath{\\neq} /g;
-    s/(-\d+)/\\ensuremath{$1}/g;
+    s/(\A|\s)(-\d+)/$1\\ensuremath{$2}/g;
+    s/(\s)\'/$1\`/gm;
     s/(\S)\"/$1\'\'/g;
     s/\"(\S)/\`\`$1/g;
 
@@ -385,12 +397,21 @@ phase PREPROCESS = {
 	return "$str";
     }
 
+    sub raw = { # PREPROCESS
+	my ($dom, $str) = @_;
+	return unless $dom->{attr}{format} =~ /\blatex\b/;
+	chomp $str;
+	return $str;
+    }
+
     sub document = { # PREPROCESS
 	my ($dom, $str) = @_;
 
 	@SECTION_LEVELS = 
 	    qw(section subsection subsubsection paragraph subparagraph);
-	unshift @SECTION_LEVELS, 'chapter' unless $documentclass eq 'article';
+	unshift @SECTION_LEVELS, 'chapter'
+	    unless ($documentclass eq 'article' ||
+		    defined $chapter && $chapter == 0) ;
 
 	# Grab the document's title
 	if ($dom->first->tag eq 'title') {
@@ -781,18 +802,14 @@ EOS
 	return "\\ensuremath{_{$str}}";
     }
 
-    sub raw = { # PROCESS
-	my ($dom, $str) = @_;
-	return unless $dom->{attr}{format} =~ /\blatex\b/;
-	chomp $str;
-	my $uri = $footnote_links && defined $dom->{attr}{refuri} ?
-	    "\\renewcommand{\\thefootnote}{\\alph{footnote}}\\footnote{$dom->{attr}{refuri}}\\renewcommand{\\thefootnote}{\\arabic{footnote}}" : '';
-	return "$str$uri";
-    }
-
     sub reference = { # PROCESS
 	my ($dom, $str) = @_;
 	chomp $str;
+	if ($cloak_email_addresses &&
+	    ($dom->{attr}{refuri} || '') =~ /^mailto:/) {
+	    $str =~ s/\./\\raisebox{-.2em}{\$\\cdot\$}/g;
+	    $str =~ s/(\@)/\$$1\$/g;
+	}
 	my $uri = $footnote_links && defined $dom->{attr}{refuri} ?
 	    "\\renewcommand{\\thefootnote}{\\alph{footnote}}\\footnote{$dom->{attr}{refuri}}\\renewcommand{\\thefootnote}{\\arabic{footnote}}" : '';
 	return "$str$uri";
@@ -810,7 +827,7 @@ EOS
 
     sub (?:doctest|literal)_block = { # PROCESS
 	my ($dom, $str) = @_;
-	return "\\begin{verbatim}\n$str\\end{verbatim}\n";
+	return "{\\styleliteralblock\\begin{verbatim}\n$str\\end{verbatim}}\n";
     }
 
     sub literal = { # PROCESS
@@ -1045,7 +1062,7 @@ EOS
 	$str =~ s/(.)\n(?!\n)/$1\\\\\n/g;
 	$str =~ s/ /~/g;
 	$str =~ s/(\\[a-z]\w+)~/$1 /gi;
-	my @verse = ("\\begin{verse}{\\tt \n",
+	my @verse = ("\\begin{verse}{\\tt\\styleliteralblock\n",
 			  $str,
 			  "}\\end{verse}\n");
 	return join '', @verse;
@@ -1114,6 +1131,19 @@ EOS
 	    : '';
     }
 
+    sub raw = { # PROCESS
+	my ($dom, $str) = @_;
+	return unless $dom->{attr}{format} =~ /\blatex\b/;
+	chomp $str;
+	my $uri = $footnote_links && defined $dom->{attr}{refuri} ?
+	    "\\renewcommand{\\thefootnote}{\\alph{footnote}}\\footnote{$dom->{attr}{refuri}}\\renewcommand{\\thefootnote}{\\arabic{footnote}}" : '';
+	if ($dom->{attr}{head}) {
+	    $PREAMBLE .= "$str$uri\n";
+	    return;
+	}
+	return "$str$uri";
+    }
+
     sub document = { # PROCESS
 	my ($dom, $str) = @_;
 	my @inputs = split(',',$inputs);
@@ -1138,6 +1168,7 @@ EOS
 #		   "\\newcommand{\\styledocinfo}[1]{\\parbox{\\textwidth}{\\center #1}}\n",
 		   "\\newcommand{\\stylefieldname}[1]{{\\bf #1:}}\n",
 		   "\\newcommand{\\stylelegendtitle}[1]{{\\bf #1:}}\n",
+		   "\\newcommand{\\styleliteralblock}[0]{}\n",
 		   "\\newcommand{\\styleoption}[2]{{\\tt #1}\\ifEq{#2}{}\\else ~{\\it #2}\\fi}\n",
 		   "\\newcommand{\\stylesidebartitles}[2]{\\begin{center}{\\bf #1}\\end{center}\\ifEq{#2}{}\\else\\begin{center}{\\it #2}\\end{center}}\n",
 		   "\\newcommand{\\styleterm}[2]{{\\it #1\\ifEq{#2}{}\\else: #2\\fi}}\n",
@@ -1146,6 +1177,7 @@ EOS
 		   map("\\input{$_}\n",@inputs),
 		   map("\\usepackage{$_}\n", sort keys %PACKAGES),
 		   $DOCINFO,
+		   $PREAMBLE,
 		   "\\frenchspacing\n",
 		   $index ? "\\makeindex\n" : '',
 		   "\\begin{document}\n",
@@ -1169,7 +1201,7 @@ EOS
 	my ($dom, $str) = @_;
 	use vars qw(%PRINTED);
 	Warn("no handler for tag ${\$dom->tag}")
-	    unless $PRINTED{$dom->tag}++;
+	    unless defined $dom->{val} || $PRINTED{$dom->tag}++;
 	return $str;
     }
 }
