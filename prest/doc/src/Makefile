@@ -21,7 +21,7 @@ XREF_WRITER := $(wildcard $(PREST_LIB)/Writer/xref.wrt)
 HTML_FLAGS = -D source-link=0 \
 	-W footnote-references=brackets -W field-limit=20 \
 	-W cloak-email-addresses
-XREF_FLAGS = -w xref
+XREF_FLAGS = -w xref -W xref-sections
 PREST_CMD = $(PERL) -I ../../blib/lib $(PREST_BIN)/prest
 HTMLDIFF = $(TOOLS_DIR)/htmldiff.prl
 HTMLDIFF_CMD = $(PERL) $(HTMLDIFF) -p '$(PERL) $(DIFFRE_DIR)/diffre -r "id\d+"' \
@@ -81,3 +81,5 @@ $(DEST_DIR)/prest_internals.html:	$(PERLSYNOPSIS) $(PM_FILES)
 $(DEST_DIR)/prest_extend.html:	prest_internals.xref
 
 $(DEST_DIR)/prest_releases.html: ../../ChangeLog
+
+$(DEST_DIR)/roles.html:	prest_extend.xref
