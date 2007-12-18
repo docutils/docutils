@@ -13,3 +13,4 @@ The following directive insertes the literal text of an error message.
    :lenient:
 
 A paragraph.
+
