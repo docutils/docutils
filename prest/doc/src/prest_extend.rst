@@ -16,7 +16,7 @@ How to Extend Prest
 
 This document explains how to write new modules to extend prest.  There
 are two principal mechanisms by which prest can be extended: adding new
-plug-in directives and adding new writers.  For either of these tasks,
+plug-in directives/roles and adding new writers.  For either of these tasks,
 the programmer should be familiar with the DOM_ data structure and the
 `DOM.pm`_ subroutines.
 
@@ -35,9 +35,14 @@ and `Text::Restructured::Paragraphs`_.
 
 A plug-in directive can be added by creating a Perl module with the
 same name as the directive (with a ".pm" extension, of course).  The
-Perl module must have a BEGIN block which registers the routine to
-call to process the directive using
-`Text::Restructured::Directive::handle_directive`_.
+Perl module should have an ``init`` routine which registers the
+routine to call to process the directive using
+`Text::Restructured::Directive::handle_directive`_ (though this call
+can also be in a BEGIN block).  The ``init`` routine is called with
+the arguments ``($parser, $source, $lineno)``, where
+``$parser`` is the ``Text::Restructured`` object, ``$source`` is the
+name of the file containing the directive,, and ``$lineno`` is the
+line number within ``$source``.
 
 As an example from the ``if`` plug-in directive,
 
@@ -102,6 +107,18 @@ help documentation from the ``if`` directive:
 
    The help text should parse correctly as reStructuredText, since it
    is passed through prest to create the web documentation.
+
+Adding New Roles
+---------------------
+
+A plug-in role can be added by creating a Perl module with the same
+name as the role (with a ".pm" extension, of course).  The Perl module
+should have an ``init`` routine which registers the role using the
+parser's `Text::Restructured::DefineRole`_ method.  The ``init``
+routine is called with the arguments ``($parser, $source, $lineno)``,
+where ``$parser`` is the ``Text::Restructured`` object, ``$source`` is
+the name of the file containing the directive,, and ``$lineno`` is the
+line number within ``$source``.
 
 Adding New Writers
 ------------------
