@@ -8,6 +8,7 @@
 \newcommand{\styledocinfo}[1]{\setbox0\hbox{\parbox{.7\textwidth}{\global\dimen255=\baselineskip #1}}\ifdim \ht0 < \dimen255 \centerline{\hbox{#1}}\else\copy0 \fi }
 \newcommand{\stylefieldname}[1]{{\bf #1:}}
 \newcommand{\stylelegendtitle}[1]{{\bf #1:}}
+\newcommand{\styleliteralblock}[0]{}
 \newcommand{\styleoption}[2]{{\tt #1}\ifEq{#2}{}\else ~{\it #2}\fi}
 \newcommand{\stylesidebartitles}[2]{\begin{center}{\bf #1}\end{center}\ifEq{#2}{}\else\begin{center}{\it #2}\end{center}}
 \newcommand{\styleterm}[2]{{\it #1\ifEq{#2}{}\else: #2\fi}}
@@ -16,7 +17,7 @@
 \input{docsize}
 \frenchspacing
 \begin{document}
-\begin{verse}{\tt 
+\begin{verse}{\tt\styleliteralblock
 Hey!\\
 ~~{\bf this~is~some~bold~text\\
 ~~that~spans~two~lines}~and\\
