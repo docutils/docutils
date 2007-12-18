@@ -121,7 +121,7 @@ my ($make) = grep -x $_, map("$_/gmake", @path), map("$_/make", @path);
 my $generic_t = << 'EOS';
 #!/usr/local/bin/perl5.8.8
 use Slay::Makefile::Gress qw(do_tests);
-do_tests('../../Common.smak');
+do_tests('../../Common.smak', @ARGV);
 EOS
 
 my @TESTS;
@@ -162,6 +162,7 @@ WriteMakefile(
     MAN3PODS       => {},
     PREREQ_PM      => { 'Text::ASCIIMathML'=>0.5,
 			'Slay::Makefile::Gress'=>0,
+			'Safe::World'=>0,
 			}, # e.g., Module::Name => 1.1
     PL_FILES       => {'lib/Text/Restructured/PrestConfig.pm.PL' =>
 		       'lib/Text/Restructured/PrestConfig.pm'},
