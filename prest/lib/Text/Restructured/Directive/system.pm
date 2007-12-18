@@ -41,9 +41,10 @@ The following defines are processed by the system directive:
 
 BEGIN {
     Text::Restructured::Directive::handle_directive
-	('system', \&Text::Restructured::Directive::system::main);
+	(system => \&Text::Restructured::Directive::system::main);
 }
 
+use Text::Restructured::Directive::perl;
 use vars qw($DOM);
 BEGIN {
     *DOM = "Text::Restructured::DOM";
@@ -65,51 +66,7 @@ sub main {
 	($parser, $name, 3, $source, $lineno, "Argument(s) required.", $lit)
 	if $args =~ /^$/;
 
-    if (! $Perl::safe) {
-	# Create a safe compartment for the Perl to run
-	use Safe;
-	$Perl::safe = new Safe "Perl::Safe";
-	# Grant privileges to the safe if -D trusted specified
-	$Perl::safe->mask(Safe::empty_opset()) if $parser->{opt}{D}{trusted};
-	# Share $opt_ variables, $^A to $^Z, %ENV, STDIN, STDOUT, STDERR,
-	# VERSION
-	my @vars = grep(/^[\x00-\x1f]|^(ENV|STD(IN|OUT|ERR)|VERSION)\Z/,
-			keys %main::);
-	foreach (@vars) {
-	    local *var = $main::{$_};
-	    *{"Perl::Safe::$_"} = *var;
-	}
-	# Share $opt_ variables
- 	foreach (keys %{$parser->{opt}}) {
-	    my $opt = $parser->{opt}{$_};
-	    if (ref $opt eq 'ARRAY') {
-		*{"Perl::Safe::opt_$_"} = \@$opt;
-	    }
-	    elsif (ref $opt eq 'HASH') {
-		*{"Perl::Safe::opt_$_"} = \%$opt;
-	    }
-	    else {
-		*{"Perl::Safe::opt_$_"} = \$opt;
-	    }
- 	}
-	# Share RST and DOM subroutines
-	foreach (keys %Text::Restructured::) {
-	    local *opt = $Text::Restructured::{$_};
-	    no strict 'refs';
-	    *{"Perl::Safe::Text::Restructured::$_"} =
-		\&{"Text::Restructured::$_"}
-	    if defined &{"Text::Restructured::$_"};
-	}
-	foreach (keys %Text::Restructured::DOM::) {
-	    local *opt = $Text::Restructured::DOM::{$_};
-	    no strict 'refs';
-	    *{"Perl::Safe::Text::Restructured::DOM::$_"} =
-		\&{"Text::Restructured::DOM::$_"}
-	    if defined &{"Text::Restructured::DOM::$_"};
-	}
-    }
-    $Perl::Safe::TOP_FILE = $parser->{TOP_FILE};
-
+    Text::Restructured::Directive::perl::create_safe($parser, $source, $lineno);
     $args =~ s/\n/ /g;
     my $code = << "EOS";
 my \$text = `\Q$args\E 2>$$.stderr`;
@@ -119,7 +76,10 @@ close ERR;
 unlink "$$.stderr";
 (\$text, \$?, \$errmsg)
 EOS
-    my ($text, $syserr, $errmsg) = $Perl::safe->reval($code);
+    $Perl::safe_world->block_stderr;
+    my ($text, $syserr, $errmsg) =
+      Text::Restructured::Directive::perl::evaluate_code
+         ($parser, $code, $source, $lineno, $lit);
     $text = '' unless defined $text;
     my $err = $@ =~ /trapped by/ ? "$@Run with -D trusted if you believe the code is safe" : $@;
     return $parser->system_message(4, $source, $lineno,

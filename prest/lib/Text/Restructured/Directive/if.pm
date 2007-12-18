@@ -37,9 +37,15 @@ the following defines:
 =end reST
 =cut
 
-BEGIN {
+use Text::Restructured::Directive::perl;
+
+sub init {
+    my ($parser, $source, $lineno) = @_;
+
     Text::Restructured::Directive::handle_directive
-	('if', \&Text::Restructured::Directive::if::main);
+	(if => \&Text::Restructured::Directive::if::main);
+    Text::Restructured::Directive::perl::create_safe
+	($parser, $source, $lineno);
 }
 
 # Plug-in handler for if directives.
@@ -58,64 +64,9 @@ sub main {
 	($parser, $name, 3, $source, $lineno,
 	 qq(The $name directive must have content.), $lit)
 	if $content =~ /^$/;
-    if (! $Perl::safe) {
-	# Create a safe compartment for the Perl to run
-	use Safe;
-	$Perl::safe = new Safe "Perl::Safe";
-	# Grant privileges to the safe if -D trusted specified
-	$Perl::safe->mask(Safe::empty_opset()) if $parser->{opt}{D}{trusted};
-	# Share $opt_ variables, $^A to $^Z, %ENV, STDIN, STDOUT, STDERR,
-	# VERSION
-	my @vars = grep(/^[\x00-\x1f]|^(ENV|STD(IN|OUT|ERR)|VERSION)\Z/,
-			keys %main::);
-	foreach (@vars) {
-	    local *var = $main::{$_};
-	    *{"Perl::Safe::$_"} = *var;
-	}
-	# Share $opt_ variables
- 	foreach (keys %{$parser->{opt}}) {
-	    my $opt = $parser->{opt}{$_};
-	    if (ref $opt eq 'ARRAY') {
-		*{"Perl::Safe::opt_$_"} = \@$opt;
-	    }
-	    elsif (ref $opt eq 'HASH') {
-		*{"Perl::Safe::opt_$_"} = \%$opt;
-	    }
-	    else {
-		*{"Perl::Safe::opt_$_"} = \$opt;
-	    }
- 	}
-	# Share RST and DOM subroutines
-	foreach (keys %Text::Restructured::) {
-	    local *opt = $Text::Restructured::{$_};
-	    no strict 'refs';
-	    *{"Perl::Safe::Text::Restructured::$_"} = \&{"Text::Restructured::$_"} if defined &{"Text::Restructured::$_"};
-	}
-	foreach (keys %Text::Restructured::DOM::) {
-	    local *opt = $Text::Restructured::DOM::{$_};
-	    no strict 'refs';
-	    *{"Perl::Safe::Text::Restructured::DOM::$_"} =
-		\&{"Text::Restructured::DOM::$_"}
-	    if defined &{"Text::Restructured::DOM::$_"};
-	}
-    }
-    $Perl::Safe::SOURCE = $source;
-    $Perl::Safe::LINENO = $lineno;
-    $Perl::Safe::TOP_FILE = $parser->{TOP_FILE};
-    @Perl::Safe::INCLUDES = @Text::Restructured::INCLUDES;
 
-    if (defined $parser->{opt}{D}{perl}) {
-	my $exp = $parser->{opt}{D}{perl};
-	$Perl::safe->reval($exp);
-	delete $parser->{opt}{D}{perl};
-	my $err = $@ =~ /trapped by/ ? "$@Run with -D trusted if you believe the code is safe" : $@;
-	return $parser->system_message
-	    (4, $source, $lineno,
-	     qq(Error executing "-D perl" option: $err.),$exp)
-	    if $@;
-    }
-
-    my $val = $Perl::safe->reval("$args");
+    my $val = Text::Restructured::Directive::perl::evaluate_code
+        ($parser, $args, $source, $lineno, $lit);
     my $err = $@ =~ /trapped by/ ? "$@Run with -D trusted if you believe the code is safe" : $@;
     return $parser->system_message
 	(4, $source, $lineno,
