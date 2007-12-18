@@ -335,7 +335,7 @@ In addition to "class_", the following option is recognized:
 ``ascii-mathml``
 ================
 
-:Aliases: ``:mathml:``
+:Aliases: ``:mathml:`` ``:mathml-display:`` ``:mathml-inline:``
 :DTD Element: mathml
 :Customization:
     :Options: class_, format
@@ -350,4 +350,34 @@ the `ascii-mathml`_ document for further details.
    or ``.xml``; the markup is not processed for files with extension
    ``.html`` or ``.htm``.
 
-.. ascii-mathml:: ascii-mathml.xhtml
+The ``:mathml-display:`` and ``:mathml-inline:`` roles force the
+generated mathml to use inline and display styles, respectively.
+
+--------------
+Plug-in Roles
+--------------
+
+It is possible for plug-ins to define code to do specialized roles.
+The following roles are provided by the standard released plug-ins.
+For more information on how to write plug-ins to define roles, see
+|prest_extend.adding new roles|_.
+
+``perl``
+================
+
+:Aliases: None
+:DTD Element: varies: text gets re-parsed
+:Customization:
+    :Options: none
+    :Content: None
+
+The ``perl`` role evaluates its text as perl code and returns the
+result, which gets re-parsed.  For example::
+
+  Did you know that 12345*54321 is :perl:`12345*54321`?
+
+comes out as
+
+  Did you know that 12345*54321 is :perl:`12345*54321`?
+
+.. include:: prest_extend.xref
