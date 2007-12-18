@@ -45,7 +45,10 @@ use within the perl code:
 ``@INCLUDES``
    Array of [filename, linenumber] pairs of files which have included this one.
 ``$opt_<x>``
-   The ``<x>`` option from the command line.
+   The ``<x>`` option from the command line.  Changing one of these 
+   variables has no effect upon the parser.  If you need to change one
+   of the -D options to affect subsequent parsing, use
+   ``$PARSER->{opt}{D}{option}``.
 ``$PARSER``
    The Text::Restructured parser object to allow text parsing within a
    perl directive.

@@ -135,7 +135,7 @@ Defines for reStructuredText parser
 #     ``MY_ROLES``:      Hash reference whose keys are the role names that are
 #                        currently defined for the current document
 #                        (it gets reset between documents) and whose
-#                        values are Role definition hash references.
+#                        value is a `Role definition hash reference`_.
 #     ``MY_DEFAULT_ROLE``:  The current name of the default role
 #                        for the current document.  Initially
 #                        ``title_reference``.
@@ -721,7 +721,7 @@ sub Coalesce : method {
 
 # Defines a new role, optionally based upon an existing role
 # Arguments: new role name, optional old role name, optional additional
-#            key/values
+#            key/values for the `role definition hash reference`_.
 # Returns: possible error message
 sub DefineRole : method {
     my ($self, $role, $tag, %info) = @_;
@@ -3137,19 +3137,28 @@ BEGIN {
 #     has keys (all are optional except tag):
 #       ``tag``:            the tag used for a DOM object using the
 #                           role (required)
-#       ``attr``:           reference to hash whose keys are attribute
-#                           names and whose values are sprintf strings
-#                           that are called with interpreted text
-#       ``text``:           sprintf string called with the interpreted
-#                           text to produce the final text string
 #       ``alias``:          name of another role for which this is a
 #                           synonym
+#       ``attr``:           reference to hash whose keys are attribute
+#                           names and whose values are sprintf strings
+#                           or subroutine references that are called 
+#                           with interpreted text
 #       ``check``:          reference to subroutine to call to check
 #                           validity of the interpreted text. The
 #                           arguments to the routine are (interpreted
 #                           text, literal of interpreted/role
 #                           combination, DOM object for future parent,
 #                           source file name, line number).
+#       ``reparse``:        a boolean indicating that the text
+#                           returned by the ``text`` option should be
+#                           re-parsed as reStructuredText
+#       ``raw``:            a boolean indicating that the interpreted
+#                           text content is to be considered raw text
+#                           and is not to undergo any reStructuredText
+#                           parsing
+#       ``text``:           sprintf string or subroutine reference
+#                           called with the interpreted text to
+#                           produce the final text string
 
 # Built-in handler for admonition directives.
 # Arguments: parser, directive name, parent, source, line number,
