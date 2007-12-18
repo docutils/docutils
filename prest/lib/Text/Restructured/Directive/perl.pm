@@ -75,21 +75,32 @@ The following defines are processed by the perl directive:
 =end reST
 =cut
 
-BEGIN {
-    Text::Restructured::Directive::handle_directive
-	('perl', \&Text::Restructured::Directive::perl::main);
-}
-
 use vars qw($DOM);
 BEGIN {
     *DOM = "Text::Restructured::DOM";
 }
 
+# Plug-in handler for perl role
+# Arguments: parser object, source, lineno
+sub init {
+    my ($parser, $source, $lineno) = @_;
+
+    # Define the perl directive
+    Text::Restructured::Directive::handle_directive
+	(perl => \&Text::Restructured::Directive::perl::directive);
+    # Define the perl role
+    $parser->DefineRole(perl    => undef,
+			text    => \&Text::Restructured::Directive::perl::role,
+			options => { reparse => 1 },
+			);
+    create_safe($parser, $source, $lineno);
+}
+
 # Plug-in handler for perl directives.
-# Arguments: directive name, parent, source, line number, directive text, 
-#            literal text
+# Arguments: parser object, directive name, parent, source, line number,
+#            directive text, literal text
 # Returns: array of DOM objects
-sub main {
+sub directive {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
     print STDERR "Debug: $name: $source, $lineno\n" if $parser->{opt}{d} >= 3;
     my @optlist = qw(file lenient literal);
@@ -115,92 +126,17 @@ sub main {
 	close FILE;
     }
     
-    if (! $Perl::safe) {
-	# Create a safe compartment for the Perl to run
-	use Safe;
-	$Perl::safe = new Safe "Perl::Safe";
-	# Grant privileges to the safe if -D trusted specified
-	$Perl::safe->mask(Safe::empty_opset()) if $parser->{opt}{D}{trusted};
-	# Share $opt_ variables, $^A to $^Z, %ENV, STDIN, STDOUT, STDERR,
-	# VERSION
-	my @vars = grep(/^[\x00-\x1f]|^(ENV|STD(IN|OUT|ERR)|VERSION)\Z/,
-			keys %main::);
-	foreach (@vars) {
-	    local *var = $main::{$_};
-	    *{"Perl::Safe::$_"} = *var;
-	}
-	# Share $opt_ variables
- 	foreach (keys %{$parser->{opt}}) {
-	    my $opt = $parser->{opt}{$_};
-	    if (ref $opt eq 'ARRAY') {
-		*{"Perl::Safe::opt_$_"} = \@$opt;
-	    }
-	    elsif (ref $opt eq 'HASH') {
-		*{"Perl::Safe::opt_$_"} = \%$opt;
-	    }
-	    else {
-		*{"Perl::Safe::opt_$_"} = \$opt;
-	    }
- 	}
-	# Share RST and DOM subroutines
-	foreach (keys %Text::Restructured::) {
-	    local *opt = $Text::Restructured::{$_};
-	    no strict 'refs';
-	    *{"Perl::Safe::Text::Restructured::$_"} = \*{"Text::Restructured::$_"};
-	}
-	foreach (keys %Text::Restructured::DOM::) {
-	    local *opt = $Text::Restructured::DOM::{$_};
-	    no strict 'refs';
-	    *{"Perl::Safe::Text::Restructured::DOM::$_"} =
-		\&{"Text::Restructured::DOM::$_"}
-	    if defined &{"Text::Restructured::DOM::$_"};
-	}
-    }
-    
-    if (defined $parser->{opt}{D}{perl}) {
-	my $exp = $parser->{opt}{D}{perl};
-	$Perl::safe->reval($exp);
-	delete $parser->{opt}{D}{perl};
-	my $err = $@ =~ /trapped by/ ? "$@Run with -D trusted if you believe the code is safe" : $@;
-	return $parser->system_message
-	    (4, $source, $lineno,
-	     qq(Error executing "-D perl" option: $err.), $exp)
-	    if $@;
-    }
-    my @text;
-    my $newsource = qq($name directive at $source, line $lineno);
-    my $in_safe = 0;
-    my $i=0;
-    while (my ($subr) = (caller($i++))[3]) {
-	if ($subr eq 'Safe::reval') {
-	    $in_safe = 1;
-	    last;
-	}
-    }
-    if ($in_safe) {
-	# We're already in the safe box: just eval
-	local $main::SOURCE    = $source;
-	local $main::LINENO    = $lineno;
-	local $main::DIRECTIVE = $lit;
-	local $main::PARSER    = $parser;
-	@text = eval "package main; $code";
-    }
-    else {
-	$Perl::Safe::SOURCE    = $source;
-	$Perl::Safe::LINENO    = $lineno;
-	$Perl::Safe::DIRECTIVE = $lit;
-	$Perl::Safe::TOP_FILE  = $parser->{TOP_FILE};
-	$Perl::Safe::PARSER    = $parser;
-	@Perl::Safe::INCLUDES  = @Text::Restructured::INCLUDES;
-	@text = $Perl::safe->reval($code);
-    }
+    my @text = evaluate_code($parser, $code, $source, $lineno, $lit);
     my $err = $@ =~ /trapped by/ ?
 	"$@Run with -D trusted if you believe the code is safe" : $@;
     return $parser->system_message
 	(4, $source, $lineno,
 	 qq(Error executing "$name" directive: $err.), $lit)
 	if $@ && ! defined $options->{lenient};
+
     push @text, $@ if $@;
+    my $newsource = qq($name directive at $source, line $lineno);
+
     if (defined $options->{literal}) {
 	my $text = join('',@text);
 	if ($text !~ /^$/) {
@@ -256,6 +192,98 @@ sub main {
     }
 
     return;
+}
+
+# Plug-in handler for perl role text.
+# Arguments: parser object, text, role name, source, line number,
+# Returns: array of DOM objects
+sub role {
+    my ($parser, $code, $role, $source, $lineno) = @_;
+
+    my @text = evaluate_code($parser, $code, $source, $lineno);
+    return join '',@text;
+}
+
+# Creates the perl Safe area to execute code in and initializes it with
+# any -D perl arguments.
+# Arguments: Text::Restructured object
+# Returns: None
+# Sets globals: $Perl::safe
+sub create_safe {
+    my ($parser, $source, $lineno) = @_;
+
+    if (! $Perl::safe_world) {
+	# Create a safe world to run the Perl code in
+	use Safe::World;
+	$Perl::safe_world = Safe::World->new(flush=>1, root=>'Perl::Safe');
+	$Perl::safe_world->block_stderr;
+	# Grant privileges to the safe if -D trusted is specified
+	$Perl::safe_world->op_permit_only(':default');
+	$Perl::safe_world->op_deny_only() if $parser->{opt}{D}{trusted};
+	# Share $opt_ variables, $^A to $^Z, %ENV, VERSION
+	$Perl::safe_world->set('%ENV', \%ENV);
+	my @vars = grep(/^[\x00-\x1f]|^(VERSION)\Z/,
+			keys %main::);
+	foreach (@vars) {
+	    $Perl::safe_world->set("\$$_", ${$_});
+	}
+	# Share $opt_ variables
+ 	foreach (keys %{$parser->{opt}}) {
+	    my $opt = $parser->{opt}{$_};
+	    my $type =
+		ref $opt eq 'ARRAY' ? '@' : ref $opt eq 'HASH' ? '%' : '$';
+	    $Perl::safe_world->set("${type}opt_$_", $opt);
+ 	}
+	# Share RST and DOM subroutines
+	foreach my $pm (qw(Text::Restructured Text::Restructured::DOM)) {
+	    no strict 'refs';
+	    foreach (keys %{"${pm}::"}) {
+		local *opt = ${"${pm}::"}{$_};
+		*{"Perl::Safe::${pm}::$_"} = \*{"${pm}::$_"};
+	    }
+	}
+	if (defined $parser->{opt}{D}{perl}) {
+	    my $exp = $parser->{opt}{D}{perl};
+	    $Perl::safe_world->eval($exp);
+	    delete $parser->{opt}{D}{perl};
+	    my $err = $@ =~ /trapped by/ ? "$@Run with -D trusted if you believe the code is safe" : $@;
+	    return $parser->system_message
+		(4, $source, $lineno,
+		 qq(Error executing "-D perl" option: $err.), $exp)
+		if $@;
+	}
+    }
+
+    return;
+}
+
+# Evaluates a code string within the Perl Safe box
+# Arguments: Text::Restructured object, code string,
+#            source, line number, literal text (if a directive)
+# Returns: Array of whatever the code returns
+# Side-effects: Sets $@
+sub evaluate_code {
+    my ($parser, $code, $source, $lineno, $lit) = @_;
+
+    my @text;
+    if ($main::SAFEWORLD) {
+	# We're already in the safe box: just eval
+	local $main::SOURCE    = $source;
+	local $main::LINENO    = $lineno;
+	local $main::DIRECTIVE = $lit;
+	local $main::PARSER    = $parser;
+	return eval "package main; $code";
+    }
+    else {
+	$Perl::safe_world->set_vars
+	    ('$SOURCE'    => $source,
+	     '$LINENO'    => $lineno,
+	     '$DIRECTIVE' => $lit,
+	     '$TOP_FILE'  => $parser->{TOP_FILE},
+	     '$PARSER'    => $parser,
+	     '@INCLUDES'  => \@Text::Restructured::INCLUDES);
+	return $Perl::safe_world->eval($code);
+    }
 }
 
 1;
