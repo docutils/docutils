@@ -223,7 +223,10 @@ sub DoEval : method {
     }
     $subname =~ s/\W/_/g;
     my $sub = "package Text::Restructured::Writer::Eval;sub $subname {\n $str}";
-    my $line_directive = defined $self->{opt}{D}{no_line_directives} ? "" :
+    # Turn off line directives if -D no_line_directives or running 
+    # under debugger
+    my $line_directive =
+	defined $self->{opt}{D}{no_line_directives} || $^P & 0x10 ? "" :
 	qq(\#line $lineno "$file"\n);
     my $val = eval("$line_directive$sub");
     die "Error: $line: $@" if $@;
