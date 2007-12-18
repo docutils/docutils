@@ -1,7 +1,7 @@
 Test Disabling Alignment in Simple Tables
 ------------------------------------------
 
-.. perl:: $main::opt_D{'align'}=0; "";
+.. perl:: $main::PARSER->{opt}{D}{'align'}=0; "";
 
 =========== ============= ============= =============
 ..	      **Average**                **Comment**

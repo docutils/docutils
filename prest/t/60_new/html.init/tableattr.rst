@@ -11,7 +11,7 @@ Piano   Music Store
 
 The following simple table should get created with no attributes.
 
-.. perl:: $main::opt_D{table_attr} = "";
+.. perl:: $main::PARSER->{opt}{D}{table_attr} = "";
 
 ======= ============
 Bach    Prelude in C
@@ -22,7 +22,7 @@ Holst   The Planets
 The following grid table should get created with a border 10, a pink
 background, and no wrapping.
 
-.. perl:: $main::opt_D{table_attr} = 'border="10" nowrap bgcolor="pink"';""
+.. perl:: $main::PARSER->{opt}{D}{table_attr} = 'border="10" nowrap bgcolor="pink"';""
 
 +---+----------------------------------------------------------------------------------------------------------------------------------------------+
 | 1 | WHEN in the Course of human Events, it becomes necessary for one People to dissolve the Political Bands which have connected them with       |
