@@ -5,6 +5,33 @@ Release Notes
 
 .. contents::
 
+Release 0.3.37
+--------------
+
+reStructuredText parsing:
+
+* Added "-D relax-citation-characters" option.
+* Added roles "mathml-display" and "mathml-inline" to force
+  display/inline mode.
+* Role name is now passed in as fourth argument to role attribute
+  subroutines.
+* DefineRole now allows defining other info about the role than just
+  its options.
+* Plug-in directives can now have an init routine that gets called to
+  define and initialize them.
+* Plug-ins can now define roles as well as directives.
+* Roles can now define a reparse option which will cause the output to
+  be reparsed as reStructuredText.
+
+Writer 'latex':
+
+* Added "-W chapter" and "-W cloak-email-addresses" options.
+* Added a new '\styleliteralblock' style command.
+* Fixed a problem with inferring minus signs.
+* Fixed a problem with converting opening single quotes.
+* Fixed handling of raw latex.
+
+
 Release 0.3.36
 --------------
 

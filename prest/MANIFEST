@@ -431,6 +431,10 @@ t/70_plugins/perl.init/perl15.skip.pl
 t/70_plugins/perl.init/perl16.dom
 t/70_plugins/perl.init/perl16.rst
 t/70_plugins/perl.init/perl4.dom
+t/70_plugins/perl.init/role01.dom
+t/70_plugins/perl.init/role01.rst
+t/70_plugins/perl.init/role02.dom
+t/70_plugins/perl.init/role02.rst
 t/70_plugins/perl.init/skip.pl
 t/70_plugins/perl.init/trusted01.dom
 t/70_plugins/perl.init/trusted01.r
