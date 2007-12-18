@@ -8,6 +8,7 @@
 \newcommand{\styledocinfo}[1]{\setbox0\hbox{\parbox{.7\textwidth}{\global\dimen255=\baselineskip #1}}\ifdim \ht0 < \dimen255 \centerline{\hbox{#1}}\else\copy0 \fi }
 \newcommand{\stylefieldname}[1]{{\bf #1:}}
 \newcommand{\stylelegendtitle}[1]{{\bf #1:}}
+\newcommand{\styleliteralblock}[0]{}
 \newcommand{\styleoption}[2]{{\tt #1}\ifEq{#2}{}\else ~{\it #2}\fi}
 \newcommand{\stylesidebartitles}[2]{\begin{center}{\bf #1}\end{center}\ifEq{#2}{}\else\begin{center}{\it #2}\end{center}}
 \newcommand{\styleterm}[2]{{\it #1\ifEq{#2}{}\else: #2\fi}}
@@ -258,12 +259,12 @@ description.
 
 Literal blocks are indented, and indicated with a double-colon (''::'')
 at the end of the preceding paragraph (right here \usebox{\litviii}):
-\begin{verbatim}
+{\styleliteralblock\begin{verbatim}
 if literal_block:
     text = 'is left as-is'
     spaces_and_linebreaks = 'are preserved'
     markup_processing = None
-\end{verbatim}
+\end{verbatim}}
 
 \subsection{Block Quotes}
 
@@ -278,12 +279,12 @@ This theory, that is mine, is mine.
 \end{quote}
 
 \subsection{Doctest Blocks}
-\begin{verbatim}
+{\styleliteralblock\begin{verbatim}
 >>> print 'Python-specific usage examples; begun with ">>>"'
 Python-specific usage examples; begun with ">>>"
 >>> print '(cut and pasted from interactive Python sessions)'
 (cut and pasted from interactive Python sessions)
-\end{verbatim}
+\end{verbatim}}
 
 \subsection{Tables}
 
@@ -430,8 +431,8 @@ error.
 \subsubsection{Duplicate Target Names}
 
 Duplicate names in section headers or other implicit targets will
-generate ``info'' (level\ensuremath{-1}) system messages.  Duplicate names in
-explicit targets will generate ``warning'' (level\ensuremath{-2}) system messages.
+generate ``info'' (level-1) system messages.  Duplicate names in
+explicit targets will generate ``warning'' (level-2) system messages.
 
 \subsubsection{Duplicate Target Names}
 
@@ -469,7 +470,7 @@ A figure directive:
 
 re
  & \multicolumn{1}{p{0.7966\dimen1}|}{
-Revised, revisited, based on 're' module.
+Revised, revisited, based on `re' module.
 } \\ \hline
 \multicolumn{1}{|p{0.2034\dimen1}|}{
 Structured
@@ -601,7 +602,7 @@ Singing...\\
 \subsubsection{Parsed Literal}
 
 Play it again, Eric the Orchestra Leader!
-\begin{verse}{\tt 
+\begin{verse}{\tt\styleliteralblock
 A~one,~two,~a~one~two~three~four
 
 Half~a~bee,~philosophically,\\
