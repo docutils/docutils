@@ -224,7 +224,7 @@ sub create_safe {
 	$Perl::safe_world->op_permit_only(':default');
 	$Perl::safe_world->op_deny_only() if $parser->{opt}{D}{trusted};
 	# Share $opt_ variables, $^A to $^Z, %ENV, VERSION
-	$Perl::safe_world->set('%ENV', \%ENV);
+	$Perl::safe_world->share_vars('main' => ['%ENV']);
 	my @vars = grep(/^[\x00-\x1f]|^(VERSION)\Z/,
 			keys %main::);
 	foreach (@vars) {
