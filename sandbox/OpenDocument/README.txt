@@ -38,6 +38,13 @@ For more information on Docutils, see: http://docutils.sourceforge.net/
 History
 =======
 
+2007/12/19 -- Version 1.1a
+--------------------------
+
+Minor fixes for images.  But, we still cannot position an image
+correctly *within* a paragraph.
+
+
 2007/12/07 -- Version 1.1a
 --------------------------
 
