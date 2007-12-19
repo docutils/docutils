@@ -1534,8 +1534,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             }
         el1 = SubElement(self.automatic_styles, 
             'style:style', attrib=attrib, nsdict=SNSD)
-        halign = 'center'
-        valign = 'top'
+        halign = None
+        valign = None
         if 'align' in node.attributes:
             align = node.attributes['align'].split()
             for val in align:
@@ -1546,8 +1546,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         attrib = {
             'style:vertical-pos': 'top',
             'style:vertical-rel': 'paragraph',
-            'style:horizontal-pos': halign,
-            'style:vertical-pos': valign,
+            #'style:horizontal-pos': halign,
+            #'style:vertical-pos': valign,
             'style:horizontal-rel': 'paragraph',
             'style:mirror': 'none',
             'fo:clip': 'rect(0cm 0cm 0cm 0cm)',
@@ -1561,6 +1561,10 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             'draw:image-opacity': '100%',
             'draw:color-mode': 'standard',
             }
+        if halign is not None:
+            attrib['style:horizontal-pos'] = halign
+        if valign is not None:
+            attrib['style:vertical-pos'] = valign
         #ipshell('At generate_image')
         # If we are inside a table, add a no-wrap style.
         if self.is_in_table(node):
@@ -1573,15 +1577,19 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         attrib={
             'draw:style-name': style_name,
             'draw:name': 'graphics2',
-            'text:anchor-type': 'paragraph',
+            #'text:anchor-type': 'paragraph',
             #'svg:width': '%fcm' % (width, ),
             #'svg:height': '%fcm' % (height, ),
             'draw:z-index': '1',
             }
+        if isinstance(node.parent, nodes.TextElement):
+            attrib['text:anchor-type'] = 'char'
+        else:
+            attrib['text:anchor-type'] = 'paragraph'
         if 'scale' in node.attributes:
             try:
                 scale = int(node.attributes['scale'])
-                if scale < 1 or scale > 100:
+                if scale < 1: # or scale > 100:
                     raise ValueError
                 scale = scale * 0.01
             except ValueError, e:
