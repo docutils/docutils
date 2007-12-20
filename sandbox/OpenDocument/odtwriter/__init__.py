@@ -1992,6 +1992,10 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             'xlink:type': 'simple',
             })
         self.set_current_element(el)
+        if (self.in_table_of_contents and
+            len(node.children) >= 1 and
+            isinstance(node.children[0], docutils.nodes.generated)):
+            node.remove(node.children[0])
 
     def depart_reference(self, node):
         #self.trace_depart_node(node)
