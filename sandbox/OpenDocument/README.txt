@@ -38,6 +38,13 @@ For more information on Docutils, see: http://docutils.sourceforge.net/
 History
 =======
 
+2007/12/20 -- Version 1.1a, again
+---------------------------------
+
+Removed extra numbers in table of contents and section titles when
+the sectnum directive is used.
+
+
 2007/12/20 -- Version 1.1a
 --------------------------
 
@@ -53,6 +60,7 @@ document title gets rststyle-heading1 and top level sections get
 rststyle-heading2.  Basically, section heading levels are bumped up
 by 1. (2) The command line flag --title is now implemented.  It
 overrides the document title in the source document if present.
+
 
 2007/12/19 -- Version 1.1a
 --------------------------
