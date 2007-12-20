@@ -38,6 +38,22 @@ For more information on Docutils, see: http://docutils.sourceforge.net/
 History
 =======
 
+2007/12/20 -- Version 1.1a
+--------------------------
+
+Another image fix -- If PIL is installed and if the height and
+width of an image are not specified in an image directive and if
+the scale is specified in an image, then odtwriter attempts to use
+PIL/Image to determine the size (height, width) of the image before
+scaling.
+
+Document title: (1) The document title and top level section
+headings were both being given style rststyle-heading1.  Now,
+document title gets rststyle-heading1 and top level sections get
+rststyle-heading2.  Basically, section heading levels are bumped up
+by 1. (2) The command line flag --title is now implemented.  It
+overrides the document title in the source document if present.
+
 2007/12/19 -- Version 1.1a
 --------------------------
 

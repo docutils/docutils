@@ -142,6 +142,12 @@ try:
 except ImportError, e:
     pygments = None
 
+#
+# Is the PIL imaging library installed?
+try:
+    import Image
+except ImportError, exp:
+    Image = None
 
 ##from IPython.Shell import IPShellEmbed
 ##args = ['-pdb', '-pi1', 'In <\\#>: ', '-pi2', '   .\\D.: ',
@@ -621,6 +627,7 @@ class Writer(writers.Writer):
         self.settings = self.document.settings
         self.visitor = self.translator_class(self.document)
         self.document.walkabout(self.visitor)
+        self.visitor.add_doc_title()
         self.assemble_my_parts()
         self.output = self.parts['whole']
 
@@ -774,7 +781,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         #nodes.SparseNodeVisitor.__init__(self, document)
         nodes.GenericNodeVisitor.__init__(self, document)
         self.settings = document.settings
-        self.section_level = 0
+        self.section_level = 1
         self.section_count = 0
         # Create ElementTree content and styles documents.
         if WhichElementTree == 'lxml':
@@ -796,6 +803,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         el = SubElement(root, 'office:body')
         el = SubElement(el, 'office:text')
         self.current_element = el
+        self.body_text_element = el
 # test styles
 ##        if WhichElementTree == 'lxml':
 ##            root = Element(
@@ -834,6 +842,19 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.footnote_dict = {}
         self.footnote_found = False
         self.in_paragraph = False
+        self.found_doc_title = False
+
+    def add_doc_title(self):
+        text = self.settings.title
+        if text:
+            self.title = text
+            if not self.found_doc_title:
+                el = Element('text:h', attrib = {
+                    'text:outline-level': '1',
+                    'text:style-name': 'rststyle-heading1',
+                    })
+                el.text = text
+                self.body_text_element.insert(0, el)
 
     def add_header_footer(self, content):
         if len(self.header_content) <= 0 and len(self.footer_content) <= 0:
@@ -1615,6 +1636,22 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             except ValueError, e:
                 print 'Error: Invalid height for image: "%s"' % (
                     node.attributes['height'], )
+        if ('scale' in node.attributes and
+            ('width' not in node.attributes or
+            'height' not in node.attributes)):
+            if Image is not None:
+                if source in self.image_dict:
+                    filename, destination = self.image_dict[source]
+                    imageobj = Image.open(filename, 'r')
+                    width, height = imageobj.size
+                    width = width * (35.278 / 1000.0)
+                    width *= scale
+                    attrib['svg:width'] = '%.2fcm' % (width, )
+                    height = height * (35.278 / 1000.0)
+                    height *= scale
+                    attrib['svg:height'] = '%.2fcm' % (height, )
+            else:
+                raise RuntimeError, 'image has scale and no height/width and PIL not installed'
         el1 = SubElement(current_element, 'draw:frame', attrib=attrib)
         el2 = SubElement(el1, 'draw:image', attrib={
             'xlink:href': '%s' % (destination, ),
@@ -2206,15 +2243,19 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             #el1.text = text.decode('latin-1').encode('utf-8')
             el1.text = self.encode(text)
         elif isinstance(node.parent, docutils.nodes.document):
+            if self.settings.title:
+                text = self.settings.title
+            else:
+                text = node.astext()
             el1 = SubElement(self.current_element, 'text:h', attrib = {
                 'text:outline-level': '1',
                 'text:style-name': 'rststyle-heading1',
                 })
-            text = node.astext()
             # encode/decode
             #text = text.decode('latin-1').encode('utf-8')
             el1.text = text
             self.title = text
+            self.found_doc_title = True
 
     def depart_title(self, node):
         pass
