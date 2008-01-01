@@ -131,6 +131,9 @@ Docutils version 0.3.7
 necessarily reflect all new features which became part of Docutils
 since that version.
 
+Check the big comment at the beginning of the file to find out what
+needs consideration.
+
 ToDos
 =====
 
