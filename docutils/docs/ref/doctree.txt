@@ -764,7 +764,7 @@ Content Model
 
     ``bullet`` is used to record the style of bullet from the input
     data.  In documents processed from reStructuredText_, it contains
-    one of "-", "+", or "*".  It may be ignored in processing.
+    one of "-", "+", or "".  It may be ignored in processing.
 
 :Parameter Entities:
     The `%body.elements;`_ parameter entity directly includes
