@@ -2222,13 +2222,17 @@ Replacement text
     especially if it may need to change later.  A short example is
     unavoidably contrived::
 
-        |RST| is a little annoying to type over and over, especially
+        |RST|_ is a little annoying to type over and over, especially
         when writing about |RST| itself, and spelling out the
         bicapitalized word |RST| every time isn't really necessary for
         |RST| source readability.
 
-        .. |RST| replace:: reStructuredText_
-        .. _reStructuredText: http://docutils.sourceforge.net/rst.html
+        .. |RST| replace:: reStructuredText
+        .. _RST: http://docutils.sourceforge.net/rst.html
+
+    Note the trailing underscore in the first use of a substitution
+    reference.  This indicates a reference to the corresponding
+    hyperlink target.
 
     Substitution is also appropriate when the replacement text cannot
     be represented using other inline constructs, or is obtrusively
