@@ -203,6 +203,8 @@ be readable as plaintext, and most operating systems already associate
 require that users alter their OS settings, which is something that
 many users will not be willing or able to do.
 
+Also see `What's the official MIME type for reStructuredText data?`_
+
 
 Are there any reStructuredText editor extensions?
 -------------------------------------------------
@@ -913,6 +915,20 @@ ask `Beni Cherniavsky`__ directly or the `Docutils-users`_ mailing
 list.
 
 __ mailto:cben@users.sf.net
+
+
+What's the official MIME type for reStructuredText data?
+--------------------------------------------------------
+
+While there is no registered MIME type for reStructuredText, the
+"official unofficial" standard MIME type is "text/x-rst".  This was
+invented for the build system for PEPs (Python Enhancement Proposals),
+and it's used by the python.org web site build system.
+
+(The "x-" prefix means it's an unregistered MIME type.)
+
+Also see `What's the standard filename extension for a
+reStructuredText file?`_
 
 
 HTML Writer
