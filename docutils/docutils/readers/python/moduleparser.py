@@ -53,78 +53,78 @@ The module parser will produce this module documentation tree::
         <docstring lineno="5">
             Additional docstring
         <attribute lineno="7">
-	    <object_name>
-	        __docformat__
+        <object_name>
+            __docformat__
             <expression_value lineno="7">
                 'reStructuredText'
         <attribute lineno="9">
-	    <object_name>
-	        a
+        <object_name>
+            a
             <expression_value lineno="9">
                 1
             <docstring lineno="10">
                 Attribute docstring
         <class_section lineno="12">
-	    <object_name>
-	        C
+        <object_name>
+            C
             <class_base>
-	        Super
+            Super
             <docstring lineno="12">
                 C's docstring
             <attribute lineno="16">
-	        <object_name>
-		    class_attribute
+            <object_name>
+            class_attribute
                 <expression_value lineno="16">
                     1
                 <docstring lineno="17">
                     class_attribute's docstring
             <method_section lineno="19">
-	        <object_name>
-		    __init__
+            <object_name>
+            __init__
                 <docstring lineno="19">
                     __init__'s docstring
                 <parameter_list lineno="19">
                     <parameter lineno="19">
-		        <object_name>
-			    self
+                <object_name>
+                self
                     <parameter lineno="19">
-		        <object_name>
-			    text
+                <object_name>
+                text
                         <parameter_default lineno="19">
                             None
                 <attribute lineno="22">
-		    <object_name>
-		        self.instance_attribute
+            <object_name>
+                self.instance_attribute
                     <expression_value lineno="22">
                         (text * 7 + ' whaddyaknow')
                     <docstring lineno="24">
                         instance_attribute's docstring
         <function_section lineno="27">
-	    <object_name>
-	        f
+        <object_name>
+            f
             <docstring lineno="27">
                 f's docstring
             <parameter_list lineno="27">
                 <parameter lineno="27">
-		    <object_name>
-		        x
+            <object_name>
+                x
                     <comment>
                         # parameter x
                 <parameter lineno="27">
-		    <object_name>
-		        y
+            <object_name>
+                y
                     <parameter_default lineno="27">
                         a * 5
                     <comment>
                         # parameter y
                 <parameter excess_positional="1" lineno="27">
-		    <object_name>
-		        args
+            <object_name>
+                args
                     <comment>
                         # parameter args
         <attribute lineno="33">
-	    <object_name>
-	        f.function_attribute
+        <object_name>
+            f.function_attribute
             <expression_value lineno="33">
                 1
             <docstring lineno="34">
