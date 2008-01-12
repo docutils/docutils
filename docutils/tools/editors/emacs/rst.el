@@ -208,7 +208,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Define some generic support functions.
 
-;; (require 'cl) FIXME, do we really need this? RMS doesn't like it.
+(require 'cl) ;; We need this for destructuring-bind below.
 
 ;; Generic Filter function.
 (unless (fboundp 'filter)
@@ -321,6 +321,8 @@ is for which (pred elem) is true)"
   '(
     ("contents" ".. contents::\n..\n   " nil 0)
     ("con" ".. contents::\n..\n   " nil 0)
+    ("cont" "[...]" nil 0)
+    ("skip" "[...]" nil 0)
     ;; FIXME: Add footnotes, links, and more.
     ))
 
@@ -2446,13 +2448,6 @@ of each paragraph only."
 	  ,body-alternative)
 
 	))))
-
-
-(destructuring-bind ((beg end &optional parabegin leftmost isleft) &rest body)
-;;    '((1 2) a b c)
-    '((1 2 3) a b c)
-  (print (list beg end parabegin leftmost isleft body)))
-
 
 
 (defmacro rst-iterate-leftmost-paragraphs-2 (spec &rest body)
