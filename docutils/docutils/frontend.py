@@ -359,12 +359,14 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
           ['--leave-comments'],
           {'action': 'store_false', 'dest': 'strip_comments'}),
          ('Remove all elements with classes="<class>" from the document tree. '
+          'Warning: potentially dangerous; use with caution. '
           '(Multiple-use option.)',
           ['--strip-elements-with-class'],
           {'action': 'append', 'dest': 'strip_elements_with_classes',
            'metavar': '<class>', 'validator': validate_strip_class}),
          ('Remove all classes="<class>" attributes from elements in the '
-          'document tree. (Multiple-use option.)',
+          'document tree. Warning: potentially dangerous; use with caution. '
+          '(Multiple-use option.)',
           ['--strip-class'],
           {'action': 'append', 'dest': 'strip_classes',
            'metavar': '<class>', 'validator': validate_strip_class}),
