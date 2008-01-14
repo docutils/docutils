@@ -37,12 +37,12 @@ else:
 null_bytes_code = """
 import csv
 import cStringIO
-csv_data = open('%s', 'rb').read().decode('latin-1')
+csv_data = open('%s', 'rb').read()
 csv_file = cStringIO.StringIO(csv_data)
 reader = csv.reader(csv_file)
 reader.next()
 """ % utf_16_csv
-null_bytes_exception = DocutilsTestSupport.exception_data(null_bytes_code)[1][0]
+null_bytes_exception = DocutilsTestSupport.exception_data(null_bytes_code)[0]
 
 totest = {}
 
