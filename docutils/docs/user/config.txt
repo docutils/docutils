@@ -404,6 +404,8 @@ _`strip_classes`
     List of "classes" attribute values to remove from all elements in
     the document tree.
 
+    .. WARNING:: Potentially dangerous; use with caution.
+
     Default: disabled (None).  Option: ``--strip-class``.
 
 _`strip_comments`
@@ -415,6 +417,8 @@ _`strip_comments`
 _`strip_elements_with_classes`
     List of "classes" attribute values; matching elements to be
     removed from the document tree.
+
+    .. WARNING:: Potentially dangerous; use with caution.
 
     Default: disabled (None).  Option: ``--strip-element-with-class``.
 
