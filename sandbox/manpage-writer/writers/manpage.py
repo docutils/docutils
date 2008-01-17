@@ -82,8 +82,9 @@ class Table:
         self._coldefs = []
     def new_row(self):
         self._rows.append([])
-    def append_cell(self, text):
-        self._rows[-1].append(text)
+    def append_cell(self, cell_lines):
+        """cell_lines is an array of lines"""
+        self._rows[-1].append(cell_lines)
         if len(self._coldefs) < len(self._rows[-1]):
             self._coldefs.append('l')
     def astext(self):
@@ -94,20 +95,16 @@ class Table:
             # row = array of cells. cell = array of lines.
             # line above 
             text += '_\n'
-            nr_of_cells = len(row)
-            ln_cnt = -1
-            while ln_cnt < 10: # safety belt
-                ln_cnt += 1
+            max_lns_in_cell = 0
+            for cell in row:
+                max_lns_in_cell = max(len(cell), max_lns_in_cell)
+            for ln_cnt in range(max_lns_in_cell):
                 line = []
-                last_line = 1 
                 for cell in row:
                     if len(cell) > ln_cnt:
                         line.append(cell[ln_cnt])
-                        last_line = 0 
                     else:
                         line.append(" ")
-                if last_line:
-                    break
                 text += self._tab_char.join(line) + '\n'
         text += '_\n'
         text += '.TE\n'
@@ -165,6 +162,7 @@ class Translator(nodes.NodeVisitor):
                 'reference' : ('', ''),
                 'strong' : ('\n.B ', ''),
                 'term' : ('\n.B ', '\n'),
+                'title_reference' : ('\n.I ', '\n'),
                     }
         # TODO dont specify the newline before a dot-command, but ensure
         # check it is there.
@@ -470,23 +468,6 @@ class Translator(nodes.NodeVisitor):
         # BUG entries have to be on one line separated by tab force it.
         self.context.append(len(self.body))
         self._in_entry = 1
-        return
-        if isinstance(node.parent.parent, nodes.thead):
-            tagname = 'th'
-        else:
-            tagname = 'td'
-        atts = {}
-        if node.has_key('morerows'):
-            atts['rowspan'] = node['morerows'] + 1
-        if node.has_key('morecols'):
-            atts['colspan'] = node['morecols'] + 1
-        self.body.append(self.starttag(node, tagname, '', **atts))
-        self.context.append('</%s>\n' % tagname.lower())
-        if len(node) == 0:              # empty cell
-            self.body.append('&nbsp;')
-        else:
-            node[0].set_class('first')
-            node[-1].set_class('last')
 
     def depart_entry(self, node):
         start = self.context.pop()
@@ -539,15 +520,12 @@ class Translator(nodes.NodeVisitor):
 
     def visit_figure(self, node):
         raise NotImplementedError, node.astext()
-        self.body.append(self.starttag(node, 'div', CLASS='figure'))
 
     def depart_figure(self, node):
         raise NotImplementedError, node.astext()
-        self.body.append('</div>\n')
 
     def visit_footer(self, node):
         raise NotImplementedError, node.astext()
-        self.context.append(len(self.body))
 
     def depart_footer(self, node):
         raise NotImplementedError, node.astext()
@@ -964,12 +942,11 @@ class Translator(nodes.NodeVisitor):
         self.body.append('\n')
 
     def visit_title_reference(self, node):
-        raise NotImplementedError, node.astext()
-        self.body.append(self.starttag(node, 'cite', ''))
+        """inline citation reference"""
+        self.body.append(self.defs['title_reference'][0])
 
     def depart_title_reference(self, node):
-        raise NotImplementedError, node.astext()
-        self.body.append('</cite>')
+        self.body.append(self.defs['title_reference'][1])
 
     def visit_topic(self, node):
         self.body.append(self.comment('topic: '+node.astext()))
