@@ -712,7 +712,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         assert not self.context, 'len(context) = %s' % len(self.context)
 
     def visit_emphasis(self, node):
-        self.body.append('<em>')
+        self.body.append(self.starttag(node, 'em', ''))
 
     def depart_emphasis(self, node):
         self.body.append('</em>')
@@ -1278,7 +1278,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item()
 
     def visit_strong(self, node):
-        self.body.append('<strong>')
+        self.body.append(self.starttag(node, 'strong', ''))
 
     def depart_strong(self, node):
         self.body.append('</strong>')
