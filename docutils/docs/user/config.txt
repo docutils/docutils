@@ -411,7 +411,7 @@ _`strip_classes`
 _`strip_comments`
     Enable the removal of comment elements from the document tree.
 
-    Default: disabled (None).  Options: ``--strip-comment``,
+    Default: disabled (None).  Options: ``--strip-comments``,
     ``--leave-comments``.
 
 _`strip_elements_with_classes`
