@@ -322,7 +322,8 @@ is for which (pred elem) is true)"
     ("contents" ".. contents::\n..\n   " nil 0)
     ("con" ".. contents::\n..\n   " nil 0)
     ("cont" "[...]" nil 0)
-    ("skip" "[...]" nil 0)
+    ("skip" "\n\n[...]\n\n  " nil 0)
+    ("seq" "\n\n[...]\n\n  " nil 0)
     ;; FIXME: Add footnotes, links, and more.
     ))
 
@@ -441,6 +442,31 @@ blocks."
 		    font-lock-support-mode))))))
 
   )
+
+
+;;;###autoload
+(define-minor-mode rst-minor-mode
+  "ReST Minor Mode.
+Toggle ReST minor mode.
+With no argument, this command toggles the mode.
+Non-null prefix argument turns on the mode.
+Null prefix argument turns off the mode.
+
+When ReST minor mode is enabled, the ReST mode
+keybindings are installed on top of the major
+mode bindings. Use this for modes derived from
+text-mode, like mail-mode.."
+ ;; The initial value.
+ nil
+ ;; The indicator for the mode line.
+ " ReST"
+ ;; The minor mode bindings.
+ rst-mode-map
+ :group 'rst)
+
+;; FIXME: can I somehow install these too?
+;;  :abbrev-table rst-mode-abbrev-table
+;;  :syntax-table rst-mode-syntax-table
 
 
 
@@ -3386,11 +3412,9 @@ column is used (fill-column vs. end of previous/next line)."
 
 (defun rst-portable-mark-active-p ()
   "A portable function that returns non-nil if the mark is active."
-  (or
-   (and (fboundp 'region-active-p)
-	(region-active-p) (region-exists-p))
-   (and (boundp 'transient-mark-mode)
-	transient-mark-mode mark-active)))
+  (cond
+   ((fboundp 'region-active-p) (region-active-p))
+   ((boundp 'transient-mark-mode) transient-mark-mode mark-active)))
 
 
 
