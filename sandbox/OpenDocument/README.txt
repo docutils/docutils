@@ -38,6 +38,15 @@ For more information on Docutils, see: http://docutils.sourceforge.net/
 History
 =======
 
+2008/01/06 -- Version 1.1a, again
+---------------------------------
+
+Fixes to figures and images -- The caption on a figure is
+displayed below the image in a space that is the same width as the
+image.  Also did some clean-up to the code that determines the
+size of images and the code that generates them.
+
+
 2007/12/20 -- Version 1.1a, again
 ---------------------------------
 
