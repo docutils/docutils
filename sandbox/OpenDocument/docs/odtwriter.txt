@@ -7,11 +7,12 @@ Odtwriter for Docutils
     http://www.rexx.com/~dkuhlman
 
 :revision: 1.1a
-:date: Oct. 5, 2007
+:date: Jan. 6, 2008
 
 :copyright: Copyright (c) 2006 Dave Kuhlman.  All Rights Reserved.
     This software is subject to the provisions of the MIT License
-    http://www.opensource.org/licenses/mit-license.php.
+    http://www.opensource.org/licenses/mit-license.php, an Open
+    Source license.
 
 :abstract: This document describes the Docutils odtwriter.
 
@@ -35,8 +36,9 @@ can learn more about the ODF format here:
 
 You should be able to open documents (.odt files) generated with
 ``rst2odt.py`` in ``OpenOffice/oowriter``.  I use OpenOffice version
-2.0 in my testing.
+2.3 in my testing.
 
+You can learn more about Docutils and reST here: `Docutils`_
 
 How to Install It
 =================
@@ -70,7 +72,7 @@ Requirements
 
 - Python
 
-- A sufficiently recent version of Docutils.
+- A sufficiently recent version of `Docutils`_.
 
 - One of the following:
 
@@ -86,8 +88,13 @@ Requirements
   that fails, it will try to use ElementTree from the standard
   library.
 
-- Optional -- `Pygments`_ is required for syntax highlighting of
-  code in literal blocks.  See section `Syntax highlighting`_.
+- Optional -- `Pygments`_ is required if you want syntax
+  highlighting of code in literal blocks.  See section `Syntax
+  highlighting`_.
+
+- Optional -- `Python Imaging Library`_ (PIL) is required if on an
+  image or figure directive, you specify ``scale`` but not ``width``
+  and ``height``.  See section `Images and figures`_.
 
 
 Installation
@@ -711,11 +718,39 @@ See `Paragraph styles`_.
 
 
 
+Images and figures
+------------------
+
+If on the image or the figure directive you provide the scale option
+but do not provide the width and height options, then ``odtwriter``
+will attempt to determine the size of the image using the `Python
+Imaging Library`_ (PIL).  If ``odtwriter`` cannot find and import
+Python Imaging Library, it will raise an exception.  If this
+ocurrs, you can fix it by doing one of the following:
+
+- Install the Python Imaging Library or
+
+- Remove the ``scale`` option or
+
+- Add both the ``width`` and the ``height`` options.
+
+So, the rule is: if on any image or figure, you specify scale but
+not both width and height, you must install the `Python Imaging
+Library`_ library.
+
+For more information about PIL, see: `Python Imaging Library`_.
+
+
+
 
 .. _`Pygments`:
     http://pygments.pocoo.org/
 
+.. _`Docutils`:
+    http://docutils.sourceforge.net/
 
+.. _`Python Imaging Library`:
+    http://www.pythonware.com/products/pil/
 
 
 .. Configuration for Emacs

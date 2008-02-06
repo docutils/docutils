@@ -149,12 +149,12 @@ try:
 except ImportError, exp:
     Image = None
 
-##from IPython.Shell import IPShellEmbed
-##args = ['-pdb', '-pi1', 'In <\\#>: ', '-pi2', '   .\\D.: ',
-##    '-po', 'Out<\\#>: ', '-nosep']
-##ipshell = IPShellEmbed(args,
-##    banner = 'Entering IPython.  Press Ctrl-D to exit.',
-##    exit_msg = 'Leaving Interpreter, back to program.')
+from IPython.Shell import IPShellEmbed
+args = ['-pdb', '-pi1', 'In <\\#>: ', '-pi2', '   .\\D.: ',
+    '-po', 'Out<\\#>: ', '-nosep']
+ipshell = IPShellEmbed(args,
+    banner = 'Entering IPython.  Press Ctrl-D to exit.',
+    exit_msg = 'Leaving Interpreter, back to program.')
 
 
 #
@@ -1435,29 +1435,70 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             destination = 'Pictures/1%08x%s' % (self.image_count, filename, )
             spec = (source, destination,)
             self.embedded_file_list.append(spec)
-            self.image_dict[source] = (filename, destination,)
+            self.image_dict[source] = (source, destination,)
         # Is this a figure (containing an image) or just a plain image?
-        if isinstance(node.parent, docutils.nodes.figure):
-            self.generate_figure(node, source, destination)
+        if self.in_paragraph:
+            el1 = self.current_element
         else:
-            if self.in_paragraph:
-                el1 = self.current_element
-            else:
-                el1 = SubElement(self.current_element, 'text:p',
-                    attrib={'text:style-name': 'rststyle-textbody'})
-            self.generate_image(node, source, destination, el1)
+            el1 = SubElement(self.current_element, 'text:p',
+                attrib={'text:style-name': 'rststyle-textbody'})
+        el2 = el1
+        if isinstance(node.parent, docutils.nodes.figure):
+            el3, el4, caption = self.generate_figure(node, source,
+                destination, el2)
+            attrib = {
+                'draw:blue': '0%',
+                'draw:color-inversion': 'false',
+                'draw:color-mode': 'standard',
+                'draw:contrast': '0%',
+                'draw:gamma': '100%',
+                'draw:green': '0%',
+                'draw:image-opacity': '100%',
+                'draw:luminance': '0%',
+                'draw:red': '0%',
+                'fo:border': 'none',
+                'fo:clip': 'rect(0in 0in 0in 0in)',
+                'fo:margin-bottom': '0in',
+                'fo:margin-left': '0in',
+                'fo:margin-right': '0in',
+                'fo:margin-top': '0in',
+                'fo:padding': '0in',
+                'style:horizontal-pos': 'from-left',
+                'style:horizontal-rel': 'paragraph-content',
+                'style:mirror': 'none',
+                'style:run-through': 'foreground',
+                'style:shadow': 'none',
+                'style:vertical-pos': 'from-top',
+                'style:vertical-rel': 'paragraph-content',
+                'style:wrap': 'none',
+                 }
+            el5, width = self.generate_image(node, source, destination,
+                el4, attrib)
+            if caption is not None:
+                el5.tail = caption
+        else:   #if isinstance(node.parent, docutils.nodes.image):
+            el3 = self.generate_image(node, source, destination, el2)
 
-    def generate_figure(self, node, source, destination):
-        caption = None
-        for node1 in node.parent.children:
-            if node1.tagname == 'caption':
-                caption = node1.astext()
-        self.image_style_count += 1
-        style_name = 'rstframestyle%d' % self.image_style_count
+    def depart_image(self, node):
+        pass
+
+    def get_image_width_height(self, node, attr, scale):
+        size = None
+        if attr in node.attributes:
+            try:
+                size = int(node.attributes[attr])
+                size *= 35.278 / 1000.0
+                size *= scale
+            except ValueError, e:
+                print 'Error: Invalid %s for image: "%s"' % (
+                    attr, node.attributes[attr], )
+        return size
+
+    def get_image_scale(self, node):
         if 'scale' in node.attributes:
             try:
                 scale = int(node.attributes['scale'])
-                if scale < 1 or scale > 100:
+                if scale < 1: # or scale > 100:
                     raise ValueError
                 scale = scale * 0.01
             except ValueError, e:
@@ -1465,26 +1506,68 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                     node.attributes['scale'], )
         else:
             scale = 1.0
-        width = None
-        if 'width' in node.attributes:
-            try:
-                width = int(node.attributes['width'])
-                width = width * (35.278 / 1000.0)
-                width *= scale
-                #attrib['svg:width'] = '%.2fcm' % (width, )
-            except ValueError, e:
-                print 'Error: Invalid width for image: "%s"' % (
-                    node.attributes['width'], )
-        height = None
-        if 'height' in node.attributes:
-            try:
-                height = int(node.attributes['height'])
-                height = height * (35.278 / 1000.0)
-                height *= scale
-                #attrib['svg:height'] = '%.2fcm' % (height, )
-            except ValueError, e:
-                print 'Error: Invalid height for image: "%s"' % (
-                    node.attributes['height'], )
+        return scale
+
+    def get_image_scale_width_height(self, node, source):
+        scale = self.get_image_scale(node)
+        width = self.get_image_width_height(node, 'width', scale)
+        height = self.get_image_width_height(node, 'height', scale)
+        if ('scale' in node.attributes and
+            ('width' not in node.attributes or
+            'height' not in node.attributes)):
+            if Image is not None:
+                if source in self.image_dict:
+                    filename, destination = self.image_dict[source]
+                    imageobj = Image.open(filename, 'r')
+                    width, height = imageobj.size
+                    width = width * (35.278 / 1000.0)
+                    width *= scale
+                    height = height * (35.278 / 1000.0)
+                    height *= scale
+            else:
+                raise RuntimeError, 'image has scale and no height/width and PIL not installed'
+        return scale, width, height
+
+    def generate_figure(self, node, source, destination, current_element):
+        #ipshell('At generate_figure')
+        caption = None
+        scale, width, height = self.get_image_scale_width_height(node, source)
+        for node1 in node.parent.children:
+            if node1.tagname == 'caption':
+                caption = node1.astext()
+        self.image_style_count += 1
+        #
+        # Add the style for the caption.
+        if caption is not None:
+            attrib = {
+                'style:class': 'extra',
+                'style:family': 'paragraph',
+                'style:name': 'Caption',
+                'style:parent-style-name': 'Standard',
+                }
+            el1 = SubElement(self.automatic_styles, 'style:style',
+                attrib=attrib, nsdict=SNSD)
+            attrib = {
+                'fo:margin-bottom': '0.0835in',
+                'fo:margin-top': '0.0835in',
+                'text:line-number': '0',
+                'text:number-lines': 'false',
+                }
+            el2 = SubElement(el1, 'style:paragraph-properties', 
+                attrib=attrib, nsdict=SNSD)
+            attrib = {
+                'fo:font-size': '12pt',
+                'fo:font-style': 'italic',
+                'style:font-name': 'Times',
+                'style:font-name-complex': 'Lucidasans1',
+                'style:font-size-asian': '12pt',
+                'style:font-size-complex': '12pt',
+                'style:font-style-asian': 'italic',
+                'style:font-style-complex': 'italic',
+                }
+            el2 = SubElement(el1, 'style:text-properties', 
+                attrib=attrib, nsdict=SNSD)
+        style_name = 'rstframestyle%d' % self.image_style_count
         # Add the styles
         attrib = {
             'style:name': style_name,
@@ -1516,12 +1599,11 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             'fo:padding': '0cm',
             'fo:border': 'none',
             }
-        #ipshell('At generate_figure')
         el2 = SubElement(el1,
             'style:graphic-properties', attrib=attrib, nsdict=SNSD)
-        # Add the content
-        attrib = {'text:style-name': 'rststyle-textbody'}
-        el1 = SubElement(self.current_element, 'text:p', attrib=attrib)
+        # Add the content wrapper.
+##        attrib = {'text:style-name': 'rststyle-textbody'}
+##        el1 = SubElement(self.current_element, 'text:p', attrib=attrib)
         attrib = {
             'draw:style-name': style_name,
             'draw:name': 'Frame1',
@@ -1530,21 +1612,21 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             }
         if width is not None:
             attrib['svg:width'] = '%.2fcm' % (width, )
-        el1 = SubElement(el1, 'draw:frame', attrib=attrib)
+        el3 = SubElement(current_element, 'draw:frame', attrib=attrib)
         attrib = {}
-        if height is not None:
-            attrib['fo:min-height'] = '%.2fcm' % (height, )
-        el1 = SubElement(el1, 'draw:text-box', attrib=attrib)
-        attrib = {'text:style-name': 'rststyle-caption', }
-        el1 = SubElement(el1, 'text:p', attrib=attrib)
-        # Add the image (frame) inside the figure/caption frame.
-        #ipshell('At visit_image #1')
-        el2 = self.generate_image(node, source, destination, el1)
-        if caption:
-            el2.tail = caption
+        el4 = SubElement(el3, 'draw:text-box', attrib=attrib)
+        attrib = {
+            'text:style-name': 'rststyle-caption',
+            }
+        el5 = SubElement(el4, 'text:p', attrib=attrib)
+##        if caption is not None:
+##            el3.tail = caption
+        return el3, el5, caption
 
-    def generate_image(self, node, source, destination, current_element):
+    def generate_image(self, node, source, destination, current_element,
         #ipshell('At generate_image')
+        frame_attrs=None):
+        scale, width, height = self.get_image_scale_width_height(node, source)
         self.image_style_count += 1
         style_name = 'rstframestyle%d' % self.image_style_count
         # Add the style.
@@ -1564,24 +1646,27 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                     halign = val
                 elif val in ('top', 'middle', 'bottom'):
                     valign = val
-        attrib = {
-            'style:vertical-pos': 'top',
-            'style:vertical-rel': 'paragraph',
-            #'style:horizontal-pos': halign,
-            #'style:vertical-pos': valign,
-            'style:horizontal-rel': 'paragraph',
-            'style:mirror': 'none',
-            'fo:clip': 'rect(0cm 0cm 0cm 0cm)',
-            'draw:luminance': '0%',
-            'draw:contrast': '0%',
-            'draw:red': '0%',
-            'draw:green': '0%',
-            'draw:blue': '0%',
-            'draw:gamma': '100%',
-            'draw:color-inversion': 'false',
-            'draw:image-opacity': '100%',
-            'draw:color-mode': 'standard',
-            }
+        if frame_attrs is None:
+            attrib = {
+                'style:vertical-pos': 'top',
+                'style:vertical-rel': 'paragraph',
+                #'style:horizontal-pos': halign,
+                #'style:vertical-pos': valign,
+                'style:horizontal-rel': 'paragraph',
+                'style:mirror': 'none',
+                'fo:clip': 'rect(0cm 0cm 0cm 0cm)',
+                'draw:luminance': '0%',
+                'draw:contrast': '0%',
+                'draw:red': '0%',
+                'draw:green': '0%',
+                'draw:blue': '0%',
+                'draw:gamma': '100%',
+                'draw:color-inversion': 'false',
+                'draw:image-opacity': '100%',
+                'draw:color-mode': 'standard',
+                }
+        else:
+            attrib = frame_attrs
         if halign is not None:
             attrib['style:horizontal-pos'] = halign
         if valign is not None:
@@ -1607,51 +1692,10 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             attrib['text:anchor-type'] = 'char'
         else:
             attrib['text:anchor-type'] = 'paragraph'
-        if 'scale' in node.attributes:
-            try:
-                scale = int(node.attributes['scale'])
-                if scale < 1: # or scale > 100:
-                    raise ValueError
-                scale = scale * 0.01
-            except ValueError, e:
-                print 'Error: Invalid scale for image: "%s"' % (
-                    node.attributes['scale'], )
-        else:
-            scale = 1.0
-        if 'width' in node.attributes:
-            try:
-                width = int(node.attributes['width'])
-                width = width * (35.278 / 1000.0)
-                width *= scale
-                attrib['svg:width'] = '%.2fcm' % (width, )
-            except ValueError, e:
-                print 'Error: Invalid width for image: "%s"' % (
-                    node.attributes['width'], )
-        if 'height' in node.attributes:
-            try:
-                height = int(node.attributes['height'])
-                height = height * (35.278 / 1000.0)
-                height *= scale
-                attrib['svg:height'] = '%.2fcm' % (height, )
-            except ValueError, e:
-                print 'Error: Invalid height for image: "%s"' % (
-                    node.attributes['height'], )
-        if ('scale' in node.attributes and
-            ('width' not in node.attributes or
-            'height' not in node.attributes)):
-            if Image is not None:
-                if source in self.image_dict:
-                    filename, destination = self.image_dict[source]
-                    imageobj = Image.open(filename, 'r')
-                    width, height = imageobj.size
-                    width = width * (35.278 / 1000.0)
-                    width *= scale
-                    attrib['svg:width'] = '%.2fcm' % (width, )
-                    height = height * (35.278 / 1000.0)
-                    height *= scale
-                    attrib['svg:height'] = '%.2fcm' % (height, )
-            else:
-                raise RuntimeError, 'image has scale and no height/width and PIL not installed'
+        if width is not None:
+            attrib['svg:width'] = '%.2fcm' % (width, )
+        if height is not None:
+            attrib['svg:height'] = '%.2fcm' % (height, )
         el1 = SubElement(current_element, 'draw:frame', attrib=attrib)
         el2 = SubElement(el1, 'draw:image', attrib={
             'xlink:href': '%s' % (destination, ),
@@ -1659,10 +1703,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             'xlink:show': 'embed',
             'xlink:actuate': 'onLoad',
             })
-        return el1
-
-    def depart_image(self, node):
-        pass
+        return el1, width
 
     def is_in_table(self, node):
         node1 = node.parent
