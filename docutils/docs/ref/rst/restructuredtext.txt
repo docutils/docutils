@@ -378,11 +378,11 @@ Reference Names
 ===============
 
 Simple reference names are single words consisting of alphanumerics
-plus isolated (no two adjacent) internal hyphens, underscores, and
-periods; no whitespace or other characters are allowed.  Footnote
-labels (Footnotes_ & `Footnote References`_), citation labels
-(Citations_ & `Citation References`_), `interpreted text`_ roles, and
-some `hyperlink references`_ use the simple reference name syntax.
+plus isolated (no two adjacent) internal hyphens, underscores, 
+periods, colons and plus signs; no whitespace or other characters are 
+allowed.  Footnote labels (Footnotes_ & `Footnote References`_), citation 
+labels (Citations_ & `Citation References`_), `interpreted text`_ roles, 
+and some `hyperlink references`_ use the simple reference name syntax.
 
 Reference names using punctuation or whose names are phrases (two or
 more space-separated words) are called "phrase-references".
