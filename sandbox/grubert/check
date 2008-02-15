@@ -18,7 +18,7 @@ for F in `ls $REF_DIR/*.txt*.$EXT` ; do
 	if test $? -gt 0 ; then
 		less $TMPF
 		if [ "$CREATE" == "1" ] ; then
-			mv $F $F.ref
+			cp $F $F.ref
 		fi
 	fi
 done
