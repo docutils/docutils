@@ -87,6 +87,23 @@ totest = {}
 totest_latex_toc = {}
 totest_latex_citations = {}
 
+totest['url_chars'] = [
+["http://nowhere/url_with%28parens%29",
+latex_head + """\
+\\title{}
+\\author{}
+\\date{}
+\\raggedbottom
+\\begin{document}
+
+\\setlength{\\locallinewidth}{\\linewidth}
+
+\\href{http://nowhere/url_with\\%28parens\\%29}{http://nowhere/url{\\_}with{\\%}28parens{\\%}29}
+
+\\end{document}
+"""],
+]
+
 totest['table_of_contents'] = [
 # input
 ["""\
