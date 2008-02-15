@@ -1858,7 +1858,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             href = hash_char + self.document.nameids[node['refname']]
         else:
             raise AssertionError('Unknown reference.')
-        self.body.append('\\href{%s}{' % href)
+        self.body.append('\\href{%s}{' % href.replace("%", "\\%"))
         if self._reference_label and not node.has_key('refuri'):
             self.body.append('\\%s{%s}}' % (self._reference_label,
                         href.replace(hash_char, '')))
