@@ -46,6 +46,7 @@ Changes Since 0.4
 
 * docutils/parsers/rst/states.py:
 
+  - Allow ``+`` and ``:`` in reference names.
   - Unquoted targets beginning with an underscore (``.. __target:
     URI``) are no longer accepted.
   - Added support for multiple attributions in a physical block quote
