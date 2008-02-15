@@ -512,8 +512,8 @@ class Inliner:
     non_whitespace_before = r'(?<![ \n])'
     non_whitespace_escape_before = r'(?<![ \n\x00])'
     non_whitespace_after = r'(?![ \n])'
-    # Alphanumerics with isolated internal [-._] chars (i.e. not 2 together):
-    simplename = r'(?:(?!_)\w)+(?:[-._](?:(?!_)\w)+)*'
+    # Alphanumerics with isolated internal [-._+:] chars (i.e. not 2 together):
+    simplename = r'(?:(?!_)\w)+(?:[-._+:](?:(?!_)\w)+)*'
     # Valid URI characters (see RFC 2396 & RFC 2732);
     # final \x00 allows backslash escapes in URIs:
     uric = r"""[-_.!~*'()[\];/:@&=+$,%a-zA-Z0-9\x00]"""

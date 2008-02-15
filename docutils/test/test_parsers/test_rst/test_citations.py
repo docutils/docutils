@@ -137,6 +137,10 @@ isolated internals : ``.-_``.
 .. [citation-withdot] one hyphen
 
 .. [citation_withunderscore] one underscore
+
+.. [citation:with:colons] two colons
+
+.. [citation+withplus] one plus
 """,
 """<document source="test data">
     <paragraph>
@@ -159,6 +163,16 @@ isolated internals : ``.-_``.
             citation_withunderscore
         <paragraph>
             one underscore
+    <citation ids="citation-with-colons" names="citation:with:colons">
+        <label>
+            citation:with:colons
+        <paragraph>
+            two colons
+    <citation ids="citation-withplus" names="citation+withplus">
+        <label>
+            citation+withplus
+        <paragraph>
+            one plus
 """],
 ]
 
