@@ -1,0 +1,142 @@
+Index: docutils/writers/html4css1/__init__.py
+===================================================================
+--- docutils/writers/html4css1/__init__.py	(revision 5506)
++++ docutils/writers/html4css1/__init__.py	(working copy)
+@@ -150,8 +150,20 @@
+         writers.Writer.__init__(self)
+         self.translator_class = HTMLTranslator
+ 
++    def set_external_ids(self, extids):
++        """Set a mapping of node IDs to URIs.  Useful for replacing internal
++        references with external ones (it adds support for chunked HTML).
++        The mapping is not used by the writer itself, but the translator
++        object:  If it has a method called ``set_external_ids``, the mapping
++        will be passed to it.
++        """
++        self.external_ids = extids
++
+     def translate(self):
+         self.visitor = visitor = self.translator_class(self.document)
++        if callable(getattr(visitor, 'set_external_ids', None))\
++           and hasattr(self, 'external_ids'):
++            visitor.set_external_ids(self.external_ids)
+         self.document.walkabout(visitor)
+         for attr in self.visitor_attributes:
+             setattr(self, attr, getattr(visitor, attr))
+@@ -298,6 +310,30 @@
+         self.in_mailto = 0
+         self.author_in_authors = None
+ 
++        # Mapping of IDs to URIs, set by set_external_ids(), and used by
++        # get_href().
++        self.external_ids = {}
++
++    def set_external_ids(self, extids):
++        """Set a mapping of IDs to URIs.  Useful for replacing internal
++        references with external ones.
++        """
++        self.external_ids = extids
++
++    def get_href(self, id):
++        """Return the node ID as a string suitable for the "href" HTML
++        attribute.  This is usually just ``'#' + id``, but it can also be an
++        URI if the ID is in the mapping set by the ``set_external_ids()``
++        method.  In any case, you don't need to add the '#' character to the
++        string---this method takes care of it.
++
++        *Use this method whenever you need to construct an "href" from an ID.*
++        """
++        try:
++            return self.external_ids[id]
++        except KeyError:
++            return '#' + id
++
+     def astext(self):
+         return ''.join(self.head_prefix + self.head
+                        + self.stylesheet + self.body_prefix
+@@ -549,7 +585,7 @@
+                          '</tbody>\n</table>\n')
+ 
+     def visit_citation_reference(self, node):
+-        href = '#' + node['refid']
++        href = self.get_href(node['refid'])
+         self.body.append(self.starttag(
+             node, 'a', '[', CLASS='citation-reference', href=href))
+ 
+@@ -879,13 +915,13 @@
+             if len(backrefs) == 1:
+                 self.context.append('')
+                 self.context.append('</a>')
+-                self.context.append('<a class="fn-backref" href="#%s">'
+-                                    % backrefs[0])
++                self.context.append('<a class="fn-backref" href="%s">'
++                                    % self.get_href(backrefs[0]))
+             else:
+                 i = 1
+                 for backref in backrefs:
+-                    backlinks.append('<a class="fn-backref" href="#%s">%s</a>'
+-                                     % (backref, i))
++                    backlinks.append('<a class="fn-backref" href="%s">%s</a>'
++                                     % (self.get_href(backref), i))
+                     i += 1
+                 self.context.append('<em>(%s)</em> ' % ', '.join(backlinks))
+                 self.context += ['', '']
+@@ -905,7 +941,7 @@
+                          '</tbody>\n</table>\n')
+ 
+     def visit_footnote_reference(self, node):
+-        href = '#' + node['refid']
++        href = self.get_href(node['refid'])
+         format = self.settings.footnote_references
+         if format == 'brackets':
+             suffix = '['
+@@ -1187,7 +1223,7 @@
+ 
+     def visit_problematic(self, node):
+         if node.hasattr('refid'):
+-            self.body.append('<a href="#%s">' % node['refid'])
++            self.body.append('<a href="%s">' % self.get_href(node['refid']))
+             self.context.append('</a>')
+         else:
+             self.context.append('')
+@@ -1220,8 +1256,11 @@
+         else:
+             assert node.has_key('refid'), \
+                    'References must have "refuri" or "refid" attribute.'
+-            atts['href'] = '#' + node['refid']
+-            atts['class'] += ' internal'
++            atts['href'] = self.get_href(node['refid'])
++            if atts['href'].startswith('#'):
++                atts['class'] += ' internal'
++            else:
++                atts['class'] += ' external'
+         if not isinstance(node.parent, nodes.TextElement):
+             assert len(node) == 1 and isinstance(node[0], nodes.image)
+             atts['class'] += ' image-reference'
+@@ -1334,13 +1373,14 @@
+         if len(node['backrefs']):
+             backrefs = node['backrefs']
+             if len(backrefs) == 1:
+-                backref_text = ('; <em><a href="#%s">backlink</a></em>'
+-                                % backrefs[0])
++                backref_text = ('; <em><a href="%s">backlink</a></em>'
++                                % self.get_href(backrefs[0]))
+             else:
+                 i = 1
+                 backlinks = []
+                 for backref in backrefs:
+-                    backlinks.append('<a href="#%s">%s</a>' % (backref, i))
++                    backlinks.append('<a href="%s">%s</a>'
++                                     % (self.get_href(backref), i))
+                     i += 1
+                 backref_text = ('; <em>backlinks: %s</em>'
+                                 % ', '.join(backlinks))
+@@ -1445,7 +1485,7 @@
+             atts = {}
+             if node.hasattr('refid'):
+                 atts['class'] = 'toc-backref'
+-                atts['href'] = '#' + node['refid']
++                atts['href'] = self.get_href(node['refid'])
+             if atts:
+                 self.body.append(self.starttag({}, 'a', '', **atts))
+                 close_tag = '</a></h%s>\n' % (h_level)
