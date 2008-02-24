@@ -201,6 +201,17 @@ def attval(text):
     text = text.replace('\f', ' ')
     return text
 
+def validate_basename(setting, value, option_parser, config_parser=None,
+                      config_section=None):
+    if os.sep in value:
+        raise ValueError('"%s" cannot appear in value' % os.sep)
+
+    stripped = value.strip()
+    if not value or not stripped:
+        raise ValueError('value must not be an empty '
+                         '(or whitespace-only) string')
+    return stripped
+
 
 class ChunkerError(Exception):
     """Base class for exceptions thrown by the chunker."""
@@ -217,18 +228,6 @@ class UnsupportedWriterError(ChunkerError):
     have a ``set_external_ids()`` method.
     """
     pass
-
-
-def validate_basename(setting, value, option_parser, config_parser=None,
-                      config_section=None):
-    if os.sep in value:
-        raise ValueError('"%s" cannot appear in value' % os.sep)
-
-    stripped = value.strip()
-    if not value or not stripped:
-        raise ValueError('value must not be an empty '
-                         '(or whitespace-only) string')
-    return stripped
 
 
 class ChunkedHTMLWriter(writers.Writer):
@@ -962,7 +961,7 @@ def main():
         'For chunked HTML output, <destination> is the filename of the '
         'root chunk.  The other chunks are written to the same directory '
         'as the root chunk, but their names are generated from the value '
-        'given to the --config-sect-filename option.  It is an error to use '
+        'given to the --chunk-basename option.  It is an error to use '
         'stdout as <destination> if there is more than one chunk to write.'
         )
     publish_cmdline(writer=ChunkedHTMLWriter(), description=desc)
