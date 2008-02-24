@@ -80,7 +80,6 @@ __docformat__ = 'reStructuredText'
 
 import os
 import re
-import string
 import sys
 from types import *
 
@@ -97,21 +96,21 @@ except AttributeError:
     # Use sys.getdefaultencoding() instead...
     _filesystemencoding = sys.getdefaultencoding()
 
-#if sys.version_info()[:3] < (2, 4, 0):
-#    try:
-#        True
-#    except NameError:
-#        True = 1
-#        False = 0
-#
-#    class set:
-#        # Minimal set type for older Python versions.
-#        def __init__(self, iterable):
-#            self._map = dict([(n, 1) for n in iterable])
-#        def add(self, item):
-#            self._map[item] = 1
-#        def __contains__(self, item):
-#            return item in self._map
+try:
+    True
+except NameError:
+    True = 1
+    False = 0
+
+if sys.version_info[:3] < (2, 4, 0):
+    class set:
+        # Minimal set type for older Python versions.
+        def __init__(self, iterable):
+            self._map = dict([(n, 1) for n in iterable])
+        def add(self, item):
+            self._map[item] = 1
+        def __contains__(self, item):
+            return item in self._map
 
 
 _quote_re = re.compile('[^a-zA-Z0-9/_.-]')
@@ -220,54 +219,16 @@ class UnsupportedWriterError(ChunkerError):
     pass
 
 
-class StringTemplate(string.Template):
-    """A template string that validates its template against a list of
-    supported placeholders.  It raises ValueError for invalid templates, and
-    KeyError for unknown placeholders.
+def validate_basename(setting, value, option_parser, config_parser=None,
+                      config_section=None):
+    if os.sep in value:
+        raise ValueError('"%s" cannot appear in value' % os.sep)
 
-    Examples::
-        
-        StringTemplate('chunk-$chunk.html', ['id', 'chunk'])    --> OK
-        StringTemplate('chunk-${id.html', ['id'])               --> ValueError
-        StringTemplate('chunk-$chunk.html', ['id'])             --> KeyError
-    """
-
-    def __init__(self, template, placeholders):
-        string.Template.__init__(self, template)
-        self.substitute(dict([(v, '') for v in placeholders]))
-
-
-class FilenameTemplateValidator:
-    """A class for validating filename templates from the command line.  It
-    takes a list of strings, where each string is the name of a placeholder
-    that can be used in the template.
-
-    The instance can be used as a validator by
-    ``docutils.frontend.OptionParser`` or derived classes.
-    """
-
-    def __init__(self, placeholders):
-        self.placeholders = placeholders
-
-    def __call__(self, setting, value, option_parser, config_parser=None,
-                 config_section=None):
-        if os.sep in value:
-            raise ValueError('"%s" cannot appear in value' % os.sep)
-
-        stripped = value.strip()
-        if not value or not stripped:
-            raise ValueError('value must not be an empty '
-                             '(or whitespace-only) string')
-        
-        try:
-            StringTemplate(value, self.placeholders)
-        except KeyError, err:
-            raise LookupError('unknown placeholder in value: %s' % str(err))
-        except ValueError:
-            # raised for invalid placeholder syntax
-            raise
-
-        return stripped
+    stripped = value.strip()
+    if not value or not stripped:
+        raise ValueError('value must not be an empty '
+                         '(or whitespace-only) string')
+    return stripped
 
 
 class ChunkedHTMLWriter(writers.Writer):
@@ -276,10 +237,7 @@ class ChunkedHTMLWriter(writers.Writer):
     default_chunker_root_filename = 'index.html'
 
     # Default filename for sections
-    default_chunker_sect_filename = '$id.html'
-
-    # Valid placeholders in the section filename
-    sect_filename_placeholders = ['chunk', 'id', 'sectnum']
+    default_chunk_basename = '%i.html'
 
     config_section = 'html chunker'
     # XXX: Do I need to set dependencies?
@@ -295,16 +253,14 @@ class ChunkedHTMLWriter(writers.Writer):
            'validator': frontend.validate_nonnegative_int}),
          ('Specify the base filename for sections.  Use any of the following '
           'placeholders in the name: '
-          '$id (the ID value of the chunk node), '
-          '$chunk (the chunk number, zero-based, zero-padded), and '
-          '$sectnum (the section number, each component zero-padded).  '
-          'You can also put them inside braces to protect them from letters, '
-          'digits and underscores that are not part of the placeholder '
-          '(for example, ${chunk}blabla.html).  '
-          'The default is "%s".' % default_chunker_sect_filename,
-          ['--chunker-sect-filename'],
-          {'default': default_chunker_sect_filename, 'metavar': '<name>',
-           'validator': FilenameTemplateValidator(sect_filename_placeholders)}),
+          '%%i (the ID value of the chunk node), '
+          '%%n (the chunk number, zero-based, zero-padded), '
+          '%%s (the section number, each component zero-padded), and '
+          '%%%% (the %% character).  '
+          'The default is "%s".' % default_chunk_basename,
+          ['--chunk-basename'],
+          {'default': default_chunk_basename, 'metavar': '<name>',
+           'validator': validate_basename}),
          ('Specify which node ID to use for the $id placeholder in section '
           'filenames.  The value is a number (the index of the ID), where 0 '
           'means the auto-generated ID, 1 means the 1st user-defined, 2 means '
@@ -503,6 +459,7 @@ class HTMLChunker:
         visitor.chunktree.setup_navlinks()
         return visitor.chunktree
 
+
     def generate_filenames(self):
         """Generate filenames for the chunks."""
         chunktree = self.chunktree
@@ -514,7 +471,6 @@ class HTMLChunker:
 
         chunk_filenames = set([chunktree.filename])
 
-        sect_template = string.Template(self.settings.chunker_sect_filename)
         idnum = self.settings.chunker_select_id
         sectnum_sep = self.settings.chunker_sectnum_sep
 
@@ -525,27 +481,35 @@ class HTMLChunker:
         # Remove the root chunk, it already has a filename
         del chunk_list[0]
 
-        for chunk in chunk_list:
-            try:
-                # Use -idnum, because user-defined IDs are in reverse order.
-                node_id = chunk.node['ids'][-idnum]
-            except IndexError:
-                try:
-                    node_id = chunk.node['ids'][0]
-                except IndexError:
-                    # We *need* the ID.  Create one.
-                    node_id = self.document.set_id(chunk.node)
-            
-            sectnum = sections[chunk.node].get_sectnum_str()
-            filename = sect_template.substitute(
-                    id=node_id,
-                    chunk=('%%0%dd' % chunknum_digits) % chunk.number,
-                    sectnum=sectnum_sep.join(sectnum))
+        def generate_filename(chunk, rx=re.compile('%([ins%])')):
+            def replace(m):
+                s = m.group(1)
+                if s == 'i':
+                    try:
+                        # Use -idnum, because user-defined IDs are in reverse
+                        # order.
+                        return chunk.node['ids'][-idnum]
+                    except IndexError:
+                        try:
+                            return chunk.node['ids'][0]
+                        except IndexError:
+                            # We *need* the ID.  Create one.
+                            return self.document.set_id(chunk.node)
+                if s == 'n':
+                    return ('%%0%dd' % chunknum_digits) % chunk.number
+                if s == 's':
+                    sectnum = sections[chunk.node].get_sectnum_str()
+                    return sectnum_sep.join(sectnum)
+                if s == '%':
+                    return '%'
+                return s
+            return rx.sub(replace, self.settings.chunk_basename)
 
+        for chunk in chunk_list:
+            filename = generate_filename(chunk)
             if filename in chunk_filenames:
                 raise DupFilenameError('Filename "%s" is already used for '
                                        'a chunk.' % filename)
-            
             chunk.filename = filename
             chunk.quoted_filename = quote_filename(chunk.filename)
             chunk_filenames.add(filename)
