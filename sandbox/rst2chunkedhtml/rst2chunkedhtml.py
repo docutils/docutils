@@ -322,15 +322,28 @@ class ChunkedHTMLWriter(writers.Writer):
             destdir = os.path.dirname(settings._destination)
             root_filename = os.path.basename(settings._destination)
 
-        chunker = HTMLChunker(self.document, self.writer_class, destdir,
-                              root_filename, destination, self.nav_callback)
+        chunker = HTMLChunker(document, self.writer_class, root_filename,
+                              destination, self.nav_callback)
 
         chunks = chunker.chunk()
-        self.output = chunker.write_chunk(chunks.pop(0))
+        number_of_chunks = len(chunks)
+        self.output = chunker.convert_chunk(chunks[0])
         output = destination.write(self.output)
 
         for c in chunks:
-            chunker.write_chunk(c)
+            destpath = os.path.join(destdir, c.filename)
+            if settings.chunker_progress and root_filename:
+                n = ('%%%dd' % len(str(number_of_chunks))) % (c.number + 1)
+                print 'Writing chunk %s of %d: %s'\
+                      % (n, number_of_chunks, destpath)
+            if not c.is_root():
+                out = chunker.convert_chunk(c)
+                f = io.FileOutput(destination=None,
+                        destination_path=destpath,
+                        encoding=settings.output_encoding,
+                        error_handler=settings.output_encoding_error_handler)
+                f.write(out)
+                f.close()
 
         return output
 
@@ -341,14 +354,13 @@ class ChunkedHTMLWriter(writers.Writer):
 class HTMLChunker:
     """This class creates chunked HTML output from a document tree."""
 
-    def __init__(self, document, writer_class, destdir, root_filename,
-                 root_destination, nav_callback):
+    def __init__(self, document, writer_class, root_filename, root_destination,
+                 nav_callback):
         """Arguments:
 
         * `document`: The document tree.
         * `writer_class`: A writer class that will be instantiated for each
           chunk to create the HTML output for that chunk.
-        * `destdir`: The directory to write the chunks to.
         * `root_filename`: The file name of the root chunk.
         * `root_destination`: The destination to write the root chunk to.  This
           is an io.{File,String}Output instance.
@@ -357,18 +369,15 @@ class HTMLChunker:
         """
         self.document = document
         self.writer_class = writer_class
-        self.destdir = destdir
         self.root_filename = root_filename
         self.root_destination = root_destination
         self.nav_callback = nav_callback
-
         self.settings = document.settings
 
     def chunk(self):
         """Chunk the document and return the list of chunks.  The chunks can be
-        converted to HTML and written to files after this call by passing them
-        one by one to the ``write_chunk()`` method.  (But note that the root
-        chunk must be written by the caller.)
+        converted to HTML after this call by passing them one by one to the
+        ``convert_chunk()`` method.
         """
         self.sections = self.collect_sections()
         self.chunktree = self.build_chunktree()
@@ -384,7 +393,6 @@ class HTMLChunker:
         #end if self.chunktree.children
 
         self.generate_filenames()
-
         self.chunktree.detach_nodes()
         self.relocate_meta_nodes()
 
@@ -513,35 +521,14 @@ class HTMLChunker:
             chunk.quoted_filename = quote_filename(chunk.filename)
             chunk_filenames.add(filename)
 
-    def write_chunk(self, chunk):
-        """Convert the chunk to HTML.  If `chunk` is the root chunk, return
-        the HTML output (it is the caller's responsibility to write it to a
-        file), otherwise write the output to a file.
-        """
+    def convert_chunk(self, chunk):
+        """Convert the chunk to HTML and return the HTML output."""
         doctree = self.create_subdocument(chunk)
-        self.writer = writer = self.writer_class()
+        writer = self.writer_class()
         writer.set_external_ids(self.collect_external_ids(chunk))
         writer.write(doctree, io.NullOutput())
         writer.assemble_parts()
-        output = self.assemble_html_output(chunk, writer.parts)
-        del self.writer
-
-        destpath = os.path.join(self.destdir, chunk.filename)
-
-        if self.settings.chunker_progress and self.root_filename:
-            n = ('%%%dd' % len(str(self.number_of_chunks))) % (chunk.number + 1)
-            print 'Writing chunk %s of %d: %s'\
-                  % (n, self.number_of_chunks, destpath)
-
-        if chunk.is_root():
-            return output
-
-        f = io.FileOutput(destination=None,
-                destination_path=destpath,
-                encoding=self.settings.output_encoding,
-                error_handler=self.settings.output_encoding_error_handler)
-        f.write(output)
-        f.close()
+        return self.assemble_html_output(chunk, writer.parts)
 
     def collect_external_ids(self, chunk):
         """Resolve external references in the chunk, and return a mapping of
