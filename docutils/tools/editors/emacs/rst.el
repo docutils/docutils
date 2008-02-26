@@ -419,8 +419,8 @@ blocks."
     ;; jit-lock-mode replaced lazy-lock-mode in GNU Emacs 22
     (let ((jit-or-lazy-lock-mode
            (cond
-            ((fboundp 'jit-lock-mode) 'jit-lock-mode)
             ((fboundp 'lazy-lock-mode) 'lazy-lock-mode)
+            ((fboundp 'jit-lock-mode) 'jit-lock-mode)
             ;; if neither lazy-lock nor jit-lock is supported,
             ;; tell user and disable rst-mode-lazy
             (t (when rst-mode-lazy
