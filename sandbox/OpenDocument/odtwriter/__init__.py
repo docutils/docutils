@@ -149,12 +149,12 @@ try:
 except ImportError, exp:
     Image = None
 
-from IPython.Shell import IPShellEmbed
-args = ['-pdb', '-pi1', 'In <\\#>: ', '-pi2', '   .\\D.: ',
-    '-po', 'Out<\\#>: ', '-nosep']
-ipshell = IPShellEmbed(args,
-    banner = 'Entering IPython.  Press Ctrl-D to exit.',
-    exit_msg = 'Leaving Interpreter, back to program.')
+##from IPython.Shell import IPShellEmbed
+##args = ['-pdb', '-pi1', 'In <\\#>: ', '-pi2', '   .\\D.: ',
+##    '-po', 'Out<\\#>: ', '-nosep']
+##ipshell = IPShellEmbed(args,
+##    banner = 'Entering IPython.  Press Ctrl-D to exit.',
+##    exit_msg = 'Leaving Interpreter, back to program.')
 
 
 #
