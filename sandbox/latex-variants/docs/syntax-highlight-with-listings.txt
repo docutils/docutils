@@ -72,19 +72,37 @@ __ literal-blocks.pdf
 Alternative latex writer
 ------------------------
 
-Considerations and documentation for a latex writer variant with support for
-syntax highlight with ``listings.sty``.
+`latex2e_listings`_ 
+  Sample implementation of a latex writer variant with
+  support for syntax highlight with ``listings.sty``: 
 
-Status
-~~~~~~
+Usage
+~~~~~
+A possible usage scenario is:
 
-`latex2e-listings.py`_
+#. Place `latex2e_listings.py`_ in your PYTHONPATH.
+#. Place `rst2latex2e_listings.py`_ in your PATH.
+#. Place `listings-options.sty`_ in your TEXPATH or the pwd and configure to
+   your needs.
+#. Run ``rst2latex2e_listings.py`` with option 
+   ``--stylesheet=listings-options.sty`` on your rst document.
 
+Literal blocks will be typeset with listings.sty, see the example:
+`test.txt`, `test.tex`, `test.pdf`.
+
+.. _latex2e_listings: ../latex2e_listings/
+.. _latex2e_listings.py: ../latex2e_listings/latex2e_listings.py
+.. _rst2latex2e_listings.py: ../latex2e_listings/rst2latex2e_listings.py
+.. _listings-options.sty: ../latex2e_listings/listings-options.sty
+
+Changelog
+~~~~~~~~~
 :2007-06-28: In preparation, no code written yet.
-:2007-10-15: First draft
+:2007-10-15: First draft, works for me.
+:2008-02-29: Basic usage information.
 
 "literal-environment" configuration setting
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------------------------
 
 As re-defining verbatim-like environments in a LaTeX stylesheet is at least
 tricky (and at most impossible), it might be desirable to define a
@@ -170,7 +188,6 @@ quote        input
 .. _pygments: http://pygments.org/ 
 .. _listings: 
    http://www.ctan.org/tex-archive/help/Catalogue/entries/listings.html
-.. _latex2e_listings.py: ../latex2e_listings/latex2e_listings.py   
 .. _fancyvrb: 
    http://www.ctan.org/tex-archive/help/Catalogue/entries/fancyvrb.html
 .. _alltt: 
