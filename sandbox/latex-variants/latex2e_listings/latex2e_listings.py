@@ -153,45 +153,18 @@ class LaTeXTranslator(latex2e.LaTeXTranslator):
     """
     This LaTeX writer has been customized to use the `lstlisting` 
     environment for literal blocks.
+    
+    You almost certainly want to use a style-sheet with it.
     """
     
-    # Arguments, override in the wrapper script
-    
-    # Package loading and settings.
-    # TODO: set in style-sheet.
-    literal_block_package = "\n".join(
-    [
-     # default is lstlistings of the listings package
-     r"\usepackage{listings}",
-     # settings can be appended, e.g. 
-     #     no special string spaces:
-     r"\lstset{showstringspaces=false}",
-     # ... line numbers:
-     # r"\lstset{numbers=left, numberstyle=\tiny, stepnumber=2, numbersep=5pt}",
-     # ... frames around listings:
-     # r"\lstset{frame=single}
-     # ... and the default language of the code blocks
-     r"\lstset{language=Python}",  # our favourite
-     # r"\lstset language={}",  # no syntax highlight
-     # pre-load the language
-     r"\lstloadlanguages{Python}" #  comma separated list of languages
-    ]) + "\n"
-    
+    # Package loading
+    literal_block_package = "\\RequirePackage{listings}\n"
     # argument to the ``\begin{}`` ``\end{}`` pair
     literal_block_environment = "lstlisting"
-    # TODO: make this a command line option
-    
+    # TODO: make this a command line option and a dictionary
+    # until then, override in the wrapper script
+
     def __init__(self, document):
-        # ae package is outdated and aeguill is exotic (in texlive)
-        #
-        # if self.font_encoding == '':
-        #     fontenc_header = "\n".join([
-        #                                 r"\usepackage{mathptmx}",
-        #                                 r"\usepackage[scaled=0.92]{helvet}",
-        #                                 r"\usepackage{courier}"
-        #                                ])
-        # TODO: how to insert this into the header?
-        
         latex2e.LaTeXTranslator.__init__(self, document)
         self.head_prefix.append(self.literal_block_package)
     
@@ -249,7 +222,7 @@ class LaTeXTranslator(latex2e.LaTeXTranslator):
     def depart_literal_block(self, node):
         self.verbatim = 0
         self.insert_none_breaking_blanks = 0
-        self.literal_block = 0
+        self.literal_block = 0 
         self.body.append(self.context.pop())
 
 
