@@ -85,6 +85,12 @@ REFF="$OUTF.ref"
 $CMD --use-verbatim-when-possible $2 $3 $INF > $OUTF
 do_diff $REFF $OUTF 
 
+INF="test/tables.txt"
+OUTF="$INF-literal-block-env.tex"
+REFF="$OUTF.ref"
+$CMD --literal-block-env="lstlisting[language=Python]" $2 $3 $INF > $OUTF
+do_diff $REFF $OUTF 
+
 # table-style
 for TABSTYLE in "" standard booktabs nolines ; do
   for INF in `ls test/tables.txt` ; do
@@ -122,6 +128,13 @@ do_diff $REFF $OUTF
 CMD="$BASE_CMD --documentclass=book"
 INF=test/docinfo.txt
 OUTF="$INF-book.tex"
+REFF="$OUTF.ref"
+$CMD $INF > $OUTF
+do_diff $REFF $OUTF 
+
+CMD="$BASE_CMD --documentclass=custom"
+INF=test/docinfo.txt
+OUTF="$INF-custom.tex"
 REFF="$OUTF.ref"
 $CMD $INF > $OUTF
 do_diff $REFF $OUTF 
