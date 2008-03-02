@@ -116,6 +116,10 @@ class Writer(writers.Writer):
           'for compound enumerated lists.  Default is "-".',
           ['--section-enumerator-separator'],
           {'default': '-', 'metavar': '<char>'}),
+         ('When possibile, use the specified environment for literal-blocks. '
+          'Default is to always use the mbox environment.',
+          ['--literal-block-env'],
+          {'default': '', }),
          ('When possibile, use verbatim for literal-blocks. '
           'Default is to always use the mbox environment.',
           ['--use-verbatim-when-possible'],
@@ -723,6 +727,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.head_prefix.append( self.linking % (
                     self.colorlinks, self.hyperlink_color, self.hyperlink_color))
 
+        # 
+        if self.settings.literal_block_env != '':
+            self.settings.use_verbatim_when_possible = True
         if self.linking: # and maybe check for pdf
             self.pdfinfo = [ ]
             self.pdfauthor = None
@@ -959,6 +966,18 @@ class LaTeXTranslator(nodes.NodeVisitor):
             text = self.unicode_to_latex(text)
             text = self.ensure_math(text)
         return text
+
+    def literal_block_env(self, begin_or_end):
+        env = 'verbatim'
+        opt = ''
+        if self.settings.literal_block_env != '':
+            (none, env, opt, none) = re.split("(\w+)(.*)",
+                                        self.settings.literal_block_env)
+        if begin_or_end == 'begin':
+            return '\\begin{%s}%s\n' % (env, opt)
+        return '\n\\end{%s}\n' % (env, )
+
+        
 
     def attval(self, text,
                whitespace=re.compile('[\n\r\t\v\f]')):
@@ -1739,7 +1758,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
               # in case of a parsed-literal containing just a "**bold**" word:
               and isinstance(node[0], nodes.Text)):
             self.verbatim = 1
-            self.body.append('\\begin{verbatim}\n')
+            self.body.append(self.literal_block_env('begin'))
         else:
             self.literal_block = 1
             self.insert_none_breaking_blanks = 1
@@ -1749,7 +1768,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_literal_block(self, node):
         if self.verbatim:
-            self.body.append('\n\\end{verbatim}\n')
+            self.body.append(self.literal_block_env('end'))
             self.verbatim = 0
         else:
             self.body.append('\n}')

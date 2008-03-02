@@ -117,6 +117,7 @@ Changes Since 0.4
 
 * docutils/writers/latex2e/__init__.py:
 
+  - Add ``--literal-block-env``
   - Fix: escaping ``%`` in href urls.
   - Move usepackage hyperref after stylesheet inclusion.
   - Fix: scrartcl does not have chapter but scrreprt.
