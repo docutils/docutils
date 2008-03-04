@@ -1,0 +1,58 @@
+%
+% settings for the lstlistings package (see docu in listings.pdf)
+% ===============================================================
+
+\RequirePackage{listings}
+\RequirePackage{parskip}
+\RequirePackage{mathptmx}
+
+% default language
+% ----------------
+
+\lstset{language=Python}  % our favourite
+% \lstset language={}",  % no syntax highlight
+% pre-load the language
+\lstloadlanguages{Python} %  comma separated list of languages
+
+% Style
+% -----
+
+\lstset{%basicstyle=\ttfamily    % print whole listing in tt
+% \lstset{basicstyle=\small}       % print whole listing small
+  % keywordstyle=\sffamily\bfseries,
+  identifierstyle=\ttfamily,          % object names
+  % commentstyle=\color{white}, % white comments
+  % stringstyle=\ttfamily,      % typewriter type for strings
+}
+
+% no special string spaces:
+\lstset{showstringspaces=false}
+% \lstset{showspaces=true,
+%         showtabs=true,
+%         tab=\rightarrowfill}
+
+% line numbers:
+% \lstset{numbers=left, numberstyle=\tiny, stepnumber=2, numbersep=5pt}
+
+% frames around listings:
+% \lstset{frame=single}
+
+
+% handling extended characters in listings.
+% extendedchars=true 
+% extendedchars=false 
+
+% Column alignment
+% ----------------
+
+% columns=[ c|l|r ] <alignment>   default: [c]fixed
+%
+%  <alignment> in [fixed, flexible, spaceflexible, or fullflexible]
+% The optional c, l, or r controls the horizontal orientation of smallest
+% output units (keywords, identifiers, etc.).
+%
+% basewidth={ fixed , flexible mode }    default: {0.6em,0.45em}
+% sets the width of a single character box for fixed and flexible column mode
+% (both to the same value or individually).
+
+\lstset{columns=fullflexible, basewidth={0.5em,0.4em}}
