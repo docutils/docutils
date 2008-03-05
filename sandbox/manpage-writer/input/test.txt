@@ -19,8 +19,10 @@ generate unix manpages from reStructured text
 SYNOPSIS
 ========
 
--o x   an option
--b     another
+``rst2man`` ``--help``
+
+``rst2man`` [ OPTIONS ] [ SOURCE [ *destination* ] ]
+
 
 DESCRIPTION
 ===========
@@ -29,6 +31,19 @@ Run it and examine output.
 
 OPTIONS
 =======
+
+-o x   an option
+-b     another
+
+For all other options see ``--help``.
+
+
+EXAMPLES
+===========
+
+:rst2man.py xml-schema-catalog.rst xml-schema-catalog.man:
+    create a manpage from xml-schema-catalog.rst
+
 
 Character formatting
 --------------------
@@ -62,11 +77,18 @@ Lists
   7. a third
   8. a third
   9. a third
-  10. a BUG indentation must be 3 if there are more than 
+  10. a BUG indentation must be 3 if there are more than nine
+      enumerated items (or there are larger numbers)
 
 7. dont start with 1
+
 9. dont increment by 1
+
 13. does not work.
+
+This paragraph must not be indented with the text the last list-item,
+but start at the left margin of the numbers.
+
 
 Field lists
 -----------
@@ -113,6 +135,7 @@ other
 
 inline references `ref something` .
 
+
 FILES
 =====
 
@@ -122,6 +145,16 @@ SEE ALSO
 ========
 
 `docutils <http://docutils.sourceforge.net>`__
+
+``rst2xml``\(dummy)
+
+More information can be found about 
+
+* xml-schema-catalog at
+  http://xml-schema-catalog.origo.ethz.ch/
+
+And see the stars at the sky!
+
 
 BUGS
 ====

@@ -152,17 +152,20 @@ class Translator(nodes.NodeVisitor):
         # what to output on : visit, depart
         self.defs = {
                 'definition' : ('', ''),
-                'definition_list' : ('', ''),
+                'definition_list' : ('', '.TP 0\n'),
                 'definition_list_item' : ('\n.TP', ''),
                 'description' : ('\n', ''),
                 'field_name' : ('\n.TP\n.B ', '\n'),
+                'literal' : ('\\fB', '\\fP'),
                 'literal_block' : ('\n.nf\n', '\n.fi\n'),
-                'option_list' : ('', ''),
+                'option_list' : ('', '.TP 0\n'),
                 'option_list_item' : ('\n.TP', ''),
-                'reference' : ('', ''),
-                'strong' : ('\n.B ', ''),
+                'reference' : (r'\fI\%', r'\fP'),
+                #'target'   : (r'\fI\%', r'\fP'),
+                'emphasis': ('\\fI', '\\fP'),
+                'strong' : ('\\fB', '\\fP'),
                 'term' : ('\n.B ', '\n'),
-                'title_reference' : ('\n.I ', '\n'),
+                'title_reference' : ('\\fI', '\\fP'),
                     }
         # TODO dont specify the newline before a dot-command, but ensure
         # check it is there.
@@ -228,9 +231,9 @@ class Translator(nodes.NodeVisitor):
             self.body.append('\n.RS %d' % self._list_char[-2].get_width())
 
     def list_end(self):
-        self._list_char.pop()
         if len(self._list_char) > 0:
             self.body.append('\n.RE\n')
+        self._list_char.pop()
 
 
     def header(self):
@@ -442,7 +445,7 @@ class Translator(nodes.NodeVisitor):
         self.body.append('\n</pre>\n')
 
     def visit_document(self, node):
-        self.body.append(self.comment(self.document_start))
+        self.body.append(self.comment(self.document_start).lstrip())
         # writing header is postboned
         self.header_written = 0
 
@@ -459,10 +462,10 @@ class Translator(nodes.NodeVisitor):
                         % (time.strftime('%Y-%m-%d %H:%M')) ) )
 
     def visit_emphasis(self, node):
-        self.body.append('\n.I ')
+        self.body.append(self.defs['emphasis'][0])
 
     def depart_emphasis(self, node):
-        self.body.append('\n')
+        self.body.append(self.defs['emphasis'][1])
 
     def visit_entry(self, node):
         # BUG entries have to be on one line separated by tab force it.
@@ -681,10 +684,10 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def visit_literal(self, node):
-        self.body.append(self.comment('visit_literal'))
+        self.body.append(self.defs['literal'][0])
 
     def depart_literal(self, node):
-        self.body.append(self.comment('depart_literal'))
+        self.body.append(self.defs['literal'][1])
 
     def visit_literal_block(self, node):
         self.body.append(self.defs['literal_block'][0])
@@ -805,7 +808,7 @@ class Translator(nodes.NodeVisitor):
         raise nodes.SkipNode
 
     def visit_reference(self, node):
-        """E.g. email address."""
+        """E.g. link or email address."""
         self.body.append(self.defs['reference'][0])
 
     def depart_reference(self, node):
@@ -882,9 +885,12 @@ class Translator(nodes.NodeVisitor):
 
     def visit_target(self, node):
         self.body.append(self.comment('visit_target'))
+        #self.body.append(self.defs['target'][0])
+        #self.body.append(node['refuri'])
 
     def depart_target(self, node):
         self.body.append(self.comment('depart_target'))
+        #self.body.append(self.defs['target'][1])
 
     def visit_tbody(self, node):
         pass
