@@ -1,0 +1,1 @@
+../../../docutils/test/functional/input/compact_lists.txt

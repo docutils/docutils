@@ -114,7 +114,7 @@ Change log
   - 2008-03-05: patch from htgoebel
 
                 * Support formats for literal
-                * references are not typeset in italics (or what ever the
+                * references are now typeset in italics (or what ever the
                   renderer uses as italic font)
                 * corrected output for emphasis
                 * corrected dedenting after (bullet-, enum-, definition-,
