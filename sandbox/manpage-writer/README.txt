@@ -111,6 +111,17 @@ Change log
 
 * writers/manpage.py:
 
+  - 2008-03-05: patch from htgoebel
+
+                * Support formats for literal
+                * references are not typeset in italics (or what ever the
+                  renderer uses as italic font)
+                * corrected output for emphasis
+                * corrected dedenting after (bullet-, enum-, definition-,
+                  option-) lists
+                * leading whitespace is removed from document, thus eg the
+                  tool 'file' detects the correct file-type
+
   - 2008-01-17: make title_references italic. Experimental table support.
   - 2007-06-01: Enforce we have a TH.
   - 2006-12-11: Add field name.
