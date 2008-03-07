@@ -12,7 +12,7 @@ HTML writer for lightweight browsers
 Motivation
 ==========
 
-The HTML Writer module, docutils/writers/html4css1.py produces XHTML
+The HTML Writer module, `docutils.writers.html4css1` produces XHTML
 compatible with the XHTML 1.0 specification.  Correct rendering of the HTML
 produced depends on the CSS support of the browser.  Browsers without full
 CSS support (lightweight browsers, older browsers, text-only browsers, help
@@ -95,16 +95,17 @@ Installation
 ============
 
 Place `rst2html_trans.py`_ in the binary PATH and `html4trans.py`_ in the
-PYTHONPATH (or in the directory from where you start ``rst2html_trans.py``).
+PYTHONPATH or in the working directory 
+(from where you start ``rst2html_trans.py``).
 
 Usage
 =====
 
-Identically to the standard ``rst2html`` front end:: 
+Similar to the standard ``rst2html`` front end:: 
   
   rst2html_trans.py [options] [<source> [<destination>]]
   
-Also see the full usage_ text.
+The full usage_ text can be obtained with the ``--help`` option.
 
 Links
 =====
