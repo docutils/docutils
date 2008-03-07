@@ -73,22 +73,17 @@ Doing without CSS styling comes at a cost.
 Files
 ========
 
-* `html4trans.py`_ 
-  Simple Hypertext Markup Language document tree Writer.
-   
+* `<html4trans.py>`_ Simple Hypertext Markup Language document tree Writer.
 
 * `rst2html_trans.py`_
   Front end to the Docutils Publisher, producing HTML not requiring
   a CSS stylesheet.
 
-* `test_html4trans.py`_
-  Test output & debugging script.
+* `<docs>`_ Documentation
 
-* docs_
-  Documentation
+* `<tools>`_ Front-end and debugging scripts
    
-* data_
-  Input and output samples.
+* `<data>`_ sample documents
 
 
 Installation
@@ -124,10 +119,7 @@ Links
 
 .. _html4trans:
 .. _html4trans.py: html4trans.py
-.. _rst2html_trans.py: rst2html_trans.py
-.. _test_html4trans.py: test_html4trans.py
-.. _docs: docs
-.. _data: data
+.. _rst2html_trans.py: tools/rst2html_trans.py
 .. _usage: docs/usage.html
 
 .. _dillo: http://www.dillo.org
