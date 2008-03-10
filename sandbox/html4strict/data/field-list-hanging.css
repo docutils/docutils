@@ -1,0 +1,35 @@
+/* field-list-hanging.css
+
+:Author: Guenter Milde
+
+Alternative style sheet for formatting of field-lists. 
+
+This stylesheet formats definition lists with a hanging indent.
+(Like the LaTeX description list)
+
+This stylesheet uses CSS 2.0 commands 
+See http://en.selfhtml.org/css/eigenschaften/positionierung.htm
+
+*/
+
+/* new definition list layout rules */
+
+dt.field-name {
+    float:   left;
+    font-weight: bold;
+    padding-right: 0.5em ;
+    /* The following might be needed in older browsers */
+    /* width:   9.5em; */
+    /* clear:   both; */
+    }
+dt.field-name:after {
+  content: ":"; }    
+
+dd.field-body {                  
+  margin-left 10em;      
+  }                      
+
+
+/* import the default stylesheet of the html4strict writer */
+@import url(html4css2.css);
+

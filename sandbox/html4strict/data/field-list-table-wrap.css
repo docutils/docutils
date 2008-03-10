@@ -1,0 +1,38 @@
+/* field-list-tablelike.css
+
+:Author: Guenter Milde
+
+Style sheet variant for html4strict output
+
+This stylesheet formats definition lists similar to a table with 2 columns
+truncating field-names that are too long.
+
+This stylesheet uses CSS 2.0 commands,
+see http://en.selfhtml.org/css/eigenschaften/positionierung.htm.
+*/
+
+/* import the default stylesheet */
+@import url(html4css2.css);
+
+/* new definition list layout rules for field-list child elements*/
+
+dt.field-name {
+   font-weight: bold;
+   clear:   both;
+   /* with firefox 2.0.0.12, this does not prevent the next field-body from
+      floating beside a wrapped field-name :-( 
+      white-space: nowrap; ist not really a solution, is it?*/
+   float:   left;
+   width:   9.5em;   /* This corresponds to the --field-name-limit option */
+   overflow: hidden; /* truncate too long field names */
+  }
+
+dt.field-name:after {
+  content: ":"; }    
+
+dd.field-body {
+  padding-left: 0.5em;
+  margin-left: 10em;
+  }
+
+

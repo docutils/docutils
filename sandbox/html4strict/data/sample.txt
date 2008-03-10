@@ -1,0 +1,87 @@
+..                     -*- rst-mode -*-
+
+==================
+html4strict-sample
+==================
+
+:Author: G\. Milde
+:Authors: Doe, Jane; Doe-Moeller, John
+:Address: Humboldring 9
+	  D 01189 Dresden
+:Organization: This is the longest `docinfo` special field name.
+:Abstract: Sample text demonstrating the features of the html4strict writer.
+
+	   See the `docs <../docs>`_ dir for layout variants.
+
+Table without hard-coded border
+===============================
+
+Simple table with borders\  [#]_:
+
+=====  =====  ======
+   Inputs     Output
+------------  ------
+  A      B    A or B
+=====  =====  ======
+False  False  False
+True   False  True
+False  True   True
+True   True   True
+=====  =====  ======
+
+Borderless table:
+
+.. class:: borderless
+
+=====  =====  ======
+   Inputs     Output
+------------  ------
+  A      B    A or B
+=====  =====  ======
+False  False  False
+True   False  True
+False  True   True
+True   True   True
+=====  =====  ======
+
+.. [#] However, other doctree elements using a table for layout should not be
+       given a border.
+
+Field lists as special definition lists
+=======================================
+
+The html4strict writer exports field lists as definition lists (with class
+`docutils field-list`) and uses CSS to render it "field-list-like".
+
+The various style sheets in the ``sandbox/html4strict/data/`` dir provide
+styling examples.
+
+Field list example
+-------------------
+
+This list demonstrates the alternatives for the display of field lists
+highlighting problems with the handling of long field names:
+
+:The field name:   and value
+:this field name:  is considered "long" in the html table rendering.
+      	    	   by the html4css1 with the default setting of --field-name-limit=14
+
+		   Therefore, it spans 2 table columns and the field body is
+		   pushed to the next line (you can suppress this behaviour
+		   with the ``--field-name-limit=0`` option).
+
+:iiiiiiiiiiiiiii:  a field name that is considered "long" by html4css1
+		   with the default setting of `field-name-limit: 14`.
+
+:MMMMMMMMMMMMMM:   a field name that is actually longer than the previous
+		   one but regarded "short" by html4css1.
+
+:an absolutely very long field name:
+		   will be broken at white space in some CSS layout variants.
+
+:an-absolutely-very-long-field-name:
+		   with no white space must be handled in a pleasant way.
+
+:last item:	   true love lasts forever and forever and forever and
+      		   forever and even longer and so on...
+

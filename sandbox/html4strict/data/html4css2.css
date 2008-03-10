@@ -1,0 +1,89 @@
+/* html4css2.css
+
+:Author: Guenter Milde
+
+Style sheet for formatting of reStructuredText converted with the html4strict writer
+
+This stylesheet uses the CSS 2.0 commands  ``float``, ``clear`` implemented
+since
+
+* Netscape 4.0 
+* MS IE 4.0 
+* Opera 5.12 
+* Mozilla Firefox 1 
+* Konqueror 3.3 
+* Safari 1.2
+
+and ``min-width``, implemented since   
+
+* Netscape 6.0
+* Opera 5.12
+* Mozilla Firefox 1
+* Konqueror 3.3
+* Safari 1.2
+
+but not in
+
+* MS IE 6.0 :-(
+
+See `<http://en.selfhtml.org/css/eigenschaften/positionierung.htm>`__.
+
+This stylesheet formats definition lists similar to the "listings" environment
+in LaTeX's KOMA-script classes.
+*/
+
+
+/* import the default stylesheet */
+@import url(html4css1.css);
+
+/* borders for "normal" tables */
+table.table {
+   border-style: outset;
+   border-width:thin;
+   }
+   
+table.table td, table.table th {
+   border-style: inset;
+   border-width:thin;
+   }
+
+/* no borders for "borderless" tables */
+table.table.borderless, table.table.borderless * {
+  border-style: none; 
+  }
+
+/* docinfo lists */
+dl.docinfo {
+   margin: 2em 4em; 
+   }
+
+dl.docinfo > dt.field-name {
+   min-width: 7.5em;
+   padding-right: 0.5em ;
+   /* overflow: hidden; */
+  }
+
+dl.docinfo > dd.field-body {
+  margin-left: 8em;   /* column sep = margin-left - dt.width */
+  }
+
+/* field list (as special definition list) */
+dt.field-name {
+   font-weight: bold;
+   clear:   both;
+   float:   left;
+   /* max-width: 9.5em; wrap long field names (but fails with non-breakable ones) */
+   padding-right: 0.5em ;
+   /* overflow: hidden; */
+  }
+/* add the colons to field names in the CSS */
+dt.field-name:after {
+  content: ":"; 
+  }
+  
+dd.field-body {
+  margin-left: 10em;  /* This corresponds to the --field-name-limit option */
+  }
+
+
+
