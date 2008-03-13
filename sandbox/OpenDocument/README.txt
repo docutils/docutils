@@ -38,6 +38,18 @@ For more information on Docutils, see: http://docutils.sourceforge.net/
 History
 =======
 
+
+2008/01/06 -- Version 1.2a
+--------------------------
+
+Added Stefan Merten's implementation of custom style names.
+
+A few miscellaneous fixes, e.g. some related to the Pygments
+source code highlighting.
+
+Added an empty/do-nothing implementation for the raw directive.
+
+
 2008/01/06 -- Version 1.1a, again
 ---------------------------------
 
