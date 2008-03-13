@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
 # $Id$
-# Author: David Goodger <goodger@python.org>
+# Author: Dave Kuhlman <dkuhlman@rexx.com>
 # Copyright: This module has been placed in the public domain.
 
 """
-A minimal front end to the Docutils Publisher, producing Docutils XML.
+A front end to the Docutils Publisher, producing OpenOffice documents.
 """
 
 import sys
@@ -21,8 +21,8 @@ from docutils import io
 from docutils.writers.odtwriter import Writer
 
 
-description = ('Generates Docutils-native XML from standalone '
-               'reStructuredText sources.  ' + default_description)
+description = ('Generates OpenDocument/OpenOffice/ODF documents from '
+               'standalone reStructuredText sources.  ' + default_description)
 
 
 class BinaryFileOutput(io.FileOutput):
