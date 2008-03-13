@@ -8,8 +8,8 @@ Odtwriter for Docutils
 :address: dkuhlman@rexx.com
     http://www.rexx.com/~dkuhlman
 
-:revision: 1.1a
-:date: Jan. 6, 2008
+:revision: 1.2a
+:date: Mar. 12, 2008
 
 :copyright: Copyright (c) 2006 Dave Kuhlman.  All Rights Reserved.
     This software is subject to the provisions of the MIT License
