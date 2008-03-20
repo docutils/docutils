@@ -9,7 +9,7 @@ Odtwriter for Docutils
     http://www.rexx.com/~dkuhlman
 
 :revision: 1.2a
-:date: Mar. 12, 2008
+:date: March 20, 2008
 
 :copyright: Copyright (c) 2006 Dave Kuhlman.  All Rights Reserved.
     This software is subject to the provisions of the MIT License
@@ -591,8 +591,8 @@ contain them, do the following:
 
 
 
-Hints and Suggestions
-=====================
+Hints and Suggestions and Features
+==================================
 
 Table of contents
 -----------------
@@ -824,6 +824,33 @@ Library`_ library.
 
 For more information about PIL, see: `Python Imaging Library`_.
 
+
+The raw directive
+-----------------
+
+The raw directive is supported.  Use output format type "odt".
+
+You will need to be careful about the formatting of the raw
+content.  In particular, introduced whitespace might be a problem.
+
+In order to produce content for the raw directive for use by
+``odtwriter``, you might want to extract the file ``content.xml``
+from a ``.odt`` file (using some Zip tool), and then clip, paste,
+and modify a selected bit of it.
+
+Here is an example::
+
+    .. raw:: odt
+
+        <text:p text:style-name="rststyle-textbody">Determining <text:span text:style-name="rststyle-emphasis">which</text:span> namespace a name is in is static.  It can be
+        determined by a lexical scan of the code.  If a variable is assigned a
+        value <text:span text:style-name="rststyle-emphasis">anywhere</text:span> in a scope (specifically within a function or method
+        body), then that variable is local to that scope.  If Python does not
+        find a variable in the local scope, then it looks next in the global
+        scope (also sometimes called the module scope) and then in the
+        built-ins scope.  But, the <text:span text:style-name="rststyle-inlineliteral">global</text:span> statement can be used to force
+        Python to find and use a global variable (a variable defined at top
+        level in a module) rather than create a local one.</text:p>
 
 
 Credits

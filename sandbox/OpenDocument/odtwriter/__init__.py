@@ -1508,21 +1508,25 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             self.current_element.text = ''
             self.set_to_parent()
             self.set_to_parent()
+            self.set_to_parent()
+            self.paragraph_style_stack.pop()
 
     def visit_footnote_reference(self, node):
         #ipshell('At visit_footnote_reference')
         id = node.attributes['refid']
+        children = self.current_element.getchildren()
+        if len(children) > 0:
+            if children[-1].tail and children[-1].tail[-1] == ' ':
+                children[-1].tail = children[-1].tail[:-1]
+        elif (self.current_element.text and
+            self.current_element.text[-1] == ' '):
+            self.current_element.text = self.current_element.text[:-1]
         el1 = self.append_child('text:note', attrib={
             'text:id': '%s' % (id, ),
             'text:note-class': 'footnote',
             })
-        child = node.children[0]
-        label = child.astext()
-        el2 = SubElement(el1, 'text:note-citation', attrib={
-            'text:label': label,
-            })
-        el2.text = label
         self.footnote_dict[id] = el1
+        raise nodes.SkipChildren()
 
     def depart_footnote_reference(self, node):
         #ipshell('At depart_footnote_reference')
@@ -2144,9 +2148,26 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         pass
 
     def visit_raw(self, node):
-        print '***'
-        print '*** Warning: raw directive not implemented.  Ignoring content.'
-        print '***'
+        #ipshell('At visit_raw')
+        if 'format' in node.attributes:
+            formats = node.attributes['format']
+            formatlist = formats.split()
+            if 'odt' in formatlist:
+                rawstr = node.astext()
+                #print '***'
+                #print '*** Warning: raw directive not implemented.  Ignoring content.'
+                #print '***'
+                #print rawstr
+                #print '***'
+                attrstr = ' '.join(['%s="%s"' % (k, v, )
+                    for k,v in CONTENT_NAMESPACE_ATTRIB.items()])
+                contentstr = '<stuff %s>%s</stuff>' % (attrstr, rawstr, )
+                content = etree.fromstring(contentstr)
+                elements = content.getchildren()
+                if len(elements) > 0:
+                    el1 = elements[0]
+                    self.current_element.append(el1)
+        raise nodes.SkipChildren()
 
     def depart_raw(self, node):
         pass
@@ -2239,7 +2260,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def visit_substitution_definition(self, node):
         #ipshell('At visit_substitution_definition')
         raise nodes.SkipChildren()
-        pass
 
     def depart_substitution_definition(self, node):
         #ipshell('At depart_substitution_definition')
