@@ -39,6 +39,19 @@ History
 =======
 
 
+2008/03/20 -- Version 1.2a, again
+---------------------------------
+
+Fix for footnotes -- Remove extra space between footnote reference
+and preceding text.
+
+Added support for the Docutils raw directive.  Raw XML content is
+now parsed to produce an ElementTree subtree which is inserted
+into the ODF content tree.  See the doc (section "The raw
+directive") for a few notes on using the raw directive with
+odtwriter.
+
+
 2008/01/06 -- Version 1.2a
 --------------------------
 
