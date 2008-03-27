@@ -53,9 +53,11 @@ class Publisher:
         """A `docutils.writers.Writer` instance."""
 
         for component in 'reader', 'parser', 'writer':
-            assert not isinstance(getattr(self, component), StringType), \
-                   ('passed string as "%s" parameter; use "%s_name" instead'
-                    % (getattr(self, component), component, component))
+            assert not isinstance(getattr(self, component), StringType), (
+                'passed string "%s" as "%s" parameter; pass an instance, '
+                'or use the "%s_name" parameter instead (in '
+                'docutils.core.publish_* convenience functions).'
+                % (getattr(self, component), component, component))
 
         self.source = source
         """The source of input data, a `docutils.io.Input` instance."""
