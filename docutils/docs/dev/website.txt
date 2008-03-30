@@ -10,11 +10,11 @@
 
 The Docutils web site, <http://docutils.sourceforge.net/>, is
 maintained automatically by the ``docutils-update`` script, run as an
-hourly cron job on shell.berlios.de (by user "leawiemann").  The
-script will process any .txt file which is newer than the
-corresponding .html file in the project's web directory on
-shell.berlios.de (``/home/groups/docutils/htdocs/aux/htdocs/``) and
-upload the changes to the web site at SourceForge.
+hourly cron job on shell.berlios.de (by user "wiemann").  The script
+will process any .txt file which is newer than the corresponding .html
+file in the project's web directory on shell.berlios.de
+(``/home/groups/docutils/htdocs/aux/htdocs/``) and upload the changes
+to the web site at SourceForge.
 
 Please **do not** add any generated .html files to the Docutils
 repository.  They will be generated automatically after a one-time
