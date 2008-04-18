@@ -38,11 +38,21 @@ For more information on Docutils, see: http://docutils.sourceforge.net/
 History
 =======
 
+2008/04/18 -- Version 1.2b
+--------------------------
+
+Increased maximum header levels.  Added new header styles
+rststyle-heading6 and rststyle-heading7 to styles.odt.
+
+Fixed bug related to lists inside of definition of a definition
+list.  Fixed handling of indentation levels.  Thanks to Stefan
+Merten for help with this.
+
 
 2008/03/20 -- Version 1.2a, again
 ---------------------------------
 
-Fix for footnotes -- Remove extra space between footnote reference
+Fix for footnotes -- Removed extra space between footnote reference
 and preceding text.
 
 Added support for the Docutils raw directive.  Raw XML content is
