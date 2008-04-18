@@ -8,8 +8,8 @@ Odtwriter for Docutils
 :address: dkuhlman@rexx.com
     http://www.rexx.com/~dkuhlman
 
-:revision: 1.2a
-:date: March 20, 2008
+:revision: 1.2b
+:date: April 17, 2008
 
 :copyright: Copyright (c) 2006 Dave Kuhlman.  All Rights Reserved.
     This software is subject to the provisions of the MIT License
@@ -51,8 +51,8 @@ Where to get it
 The source distribution of 
 ODF/ODT writer for Docutils 
 is here:
-`http://www.rexx.com/~dkuhlman/odtwriter-1.1a.tar.gz
-<http://www.rexx.com/~dkuhlman/odtwriter-1.1a.tar.gz>`_.
+`http://www.rexx.com/~dkuhlman/odtwriter-1.2b.tar.gz
+<http://www.rexx.com/~dkuhlman/odtwriter-1.2b.tar.gz>`_.
 
 ``odtwriter`` is also available via Subversion from
 the Docutils repository under

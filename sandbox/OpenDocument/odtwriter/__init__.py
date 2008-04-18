@@ -482,6 +482,23 @@ def register_plugin(name, klass):
 
 load_plugins()
 
+
+#
+# Information about the indentation level for lists nested inside
+#   other contexts, e.g. dictionary lists.
+class ListLevel(object):
+    def __init__(self, level, sibling_level=True, nested_level=True):
+        self.level = level
+        self.sibling_level = sibling_level
+        self.nested_level = nested_level
+    def set_sibling(self, sibling_level): self.sibling_level = sibling_level
+    def get_sibling(self): return self.sibling_level
+    def set_nested(self, nested_level): self.nested_level = nested_level
+    def get_nested(self): return self.nested_level
+    def set_level(self, level): self.level = level
+    def get_level(self): return self.level
+
+
 class Writer(writers.Writer):
 
     EXTENSION = '.odt'
@@ -923,7 +940,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 ##        self.styles_tree = etree.ElementTree(element=root)
         self.paragraph_style_stack = [self.rststyle('textbody'), ]
         self.list_style_stack = []
-        self.omit = False
         self.table_count = 0
         self.column_count = ord('A') - 1
         self.trace_level = -1
@@ -948,6 +964,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.pending_ids = [ ]
         self.in_paragraph = False
         self.found_doc_title = False
+        self.bumped_list_level_stack = []
 
     def add_doc_title(self):
         text = self.settings.title
@@ -1044,11 +1061,13 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     #
     # Utility methods
 
-    def append_child(self, tag, attrib=None):
+    def append_child(self, tag, attrib=None, parent=None):
+        if parent is None:
+            parent = self.current_element
         if attrib is None:
-            el = SubElement(self.current_element, tag)
+            el = SubElement(parent, tag)
         else:
-            el = SubElement(self.current_element, tag, attrib)
+            el = SubElement(parent, tag, attrib)
         return el
 
     def append_p(self, style, text=None):
@@ -1306,13 +1325,12 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         pass
 
     def visit_definition(self, node):
-        el = self.append_p('blockindent')
-        self.set_current_element(el)
-        self.omit = True
+        self.paragraph_style_stack.append(self.rststyle('blockindent'))
+        self.bumped_list_level_stack.append(ListLevel(1))
 
     def depart_definition(self, node):
-        self.set_to_parent()
-        self.omit = False
+        self.paragraph_style_stack.pop()
+        self.bumped_list_level_stack.pop()
 
     def visit_definition_list(self, node):
         pass
@@ -1373,27 +1391,28 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.set_to_parent()
 
     def visit_enumerated_list(self, node):
+        el1 = self.current_element
         if self.blockstyle == self.rststyle('blockquote'):
-            el = SubElement(self.current_element, 'text:list', attrib={
+            el2 = SubElement(el1, 'text:list', attrib={
                 'text:style-name': self.rststyle('blockquote-enumlist'),
                 })
             self.list_style_stack.append(self.rststyle('blockquote-enumitem'))
         elif self.blockstyle == self.rststyle('highlights'):
-            el = SubElement(self.current_element, 'text:list', attrib={
+            el2 = SubElement(el1, 'text:list', attrib={
                 'text:style-name': self.rststyle('highlights-enumlist'),
                 })
             self.list_style_stack.append(self.rststyle('highlights-enumitem'))
         elif self.blockstyle == self.rststyle('epigraph'):
-            el = SubElement(self.current_element, 'text:list', attrib={
+            el2 = SubElement(el1, 'text:list', attrib={
                 'text:style-name': self.rststyle('epigraph-enumlist'),
                 })
             self.list_style_stack.append(self.rststyle('epigraph-enumitem'))
         else:
-            el = SubElement(self.current_element, 'text:list', attrib={
+            el2 = SubElement(el1, 'text:list', attrib={
                 'text:style-name': self.rststyle('enumlist'),
                 })
             self.list_style_stack.append(self.rststyle('enumitem'))
-        self.set_current_element(el)
+        self.set_current_element(el2)
 
     def depart_enumerated_list(self, node):
         self.set_to_parent()
@@ -1401,13 +1420,33 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_list_item(self, node):
         #ipshell('At visit_list_item')
-        el = self.append_child('text:list-item')
+        el1 = self.append_child('text:list-item')
+        # If we are in a "bumped" list level, then wrap this
+        #   list in an outer lists in order to increase the
+        #   indentation level.
+        el3 = el1
+        if len(self.bumped_list_level_stack) > 0:
+            level_obj = self.bumped_list_level_stack[-1]
+            if level_obj.get_sibling():
+                level_obj.set_nested(False)
+                for level_obj1 in self.bumped_list_level_stack:
+                    for idx in range(level_obj1.get_level()):
+                        el2 = self.append_child('text:list', parent=el3)
+                        el3 = self.append_child('text:list-item', parent=el2)
         self.paragraph_style_stack.append(self.list_style_stack[-1])
-        self.set_current_element(el)
+        self.set_current_element(el3)
 
     def depart_list_item(self, node):
-        self.set_to_parent()
+        if len(self.bumped_list_level_stack) > 0:
+            level_obj = self.bumped_list_level_stack[-1]
+            if level_obj.get_sibling():
+                level_obj.set_nested(True)
+                for level_obj1 in self.bumped_list_level_stack:
+                    for idx in range(level_obj1.get_level()):
+                        self.set_to_parent()
+                        self.set_to_parent()
         self.paragraph_style_stack.pop()
+        self.set_to_parent()
 
     def visit_header(self, node):
         #ipshell('At visit_header')
@@ -1470,12 +1509,11 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def visit_field_body(self, node):
         #ipshell('At visit_field_body')
         #self.trace_visit_node(node)
-        el = self.append_p('blockindent', node.astext())
-        raise nodes.SkipChildren()
+        self.paragraph_style_stack.append(self.rststyle('blockindent'))
 
     def depart_field_body(self, node):
         #self.trace_depart_node(node)
-        pass
+        self.paragraph_style_stack.pop()
 
     def visit_figure(self, node):
         #ipshell('At visit_figure')
@@ -2113,8 +2151,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         #ipshell('At visit_paragraph')
         #self.trace_visit_node(node)
         self.in_paragraph = True
-        if self.omit:
-            return
         if self.in_header:
             el = self.append_p('header')
         elif self.in_footer:
@@ -2130,8 +2166,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         #ipshell('At depart_paragraph')
         #self.trace_depart_node(node)
         self.in_paragraph = False
-        if self.omit:
-            return
         self.set_to_parent()
         if self.in_header:
             self.header_content.append(self.current_element.getchildren()[-1])
@@ -2426,11 +2460,11 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         #ipshell('At visit_title')
         if isinstance(node.parent, docutils.nodes.section):
             section_level = self.section_level
-            if section_level > 5:
-                print 'Warning: Heading/section levels greater than 5 not supported.'
-                print '    Reducing to heading level 5 for heading:'
+            if section_level > 7:
+                print 'Warning: Heading/section levels greater than 7 not supported.'
+                print '    Reducing to heading level 7 for heading:'
                 print '    "%s"' % node.astext()
-                section_level = 5
+                section_level = 7
             el1 = self.append_child('text:h', attrib = {
                 'text:outline-level': '%d' % section_level,
                 #'text:style-name': 'Heading_20_%d' % section_level,
