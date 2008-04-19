@@ -256,6 +256,7 @@ is for which (pred elem) is true)"
     (define-key map [(control c) (control h)] 'rst-display-decorations-hierarchy)
     ;; Homogeneize the decorations in the document.
     (define-key map [(control c) (control s)] 'rst-straighten-decorations)
+;;    (define-key map [(control c) (control s)] 'rst-straighten-deco-spacing)
 
     ;;
     ;; Section Movement and Selection.
@@ -390,7 +391,7 @@ You may customize `rst-mode-lazy' to toggle font-locking of
 blocks."
 
   (set (make-local-variable 'paragraph-separate) paragraph-start)
-  (set (make-local-variable 'paragraph-start) 
+  (set (make-local-variable 'paragraph-start)
        "\f\\|>*[ \t]*$\\|>*[ \t]*[-+*] \\|>*[ \t]*[0-9#]+\\. ")
   (set (make-local-variable 'adaptive-fill-mode) t)
 
@@ -419,8 +420,8 @@ blocks."
     ;; jit-lock-mode replaced lazy-lock-mode in GNU Emacs 22
     (let ((jit-or-lazy-lock-mode
            (cond
-            ((fboundp 'lazy-lock-mode) 'lazy-lock-mode)
             ((fboundp 'jit-lock-mode) 'jit-lock-mode)
+            ((fboundp 'lazy-lock-mode) 'lazy-lock-mode)
             ;; if neither lazy-lock nor jit-lock is supported,
             ;; tell user and disable rst-mode-lazy
             (t (when rst-mode-lazy
@@ -841,7 +842,7 @@ list element should be unique."
         (unless (assoc (cons char style) hierarchy-alist)
 	  (push (cons (cons char style) x) hierarchy-alist))
         ))
-    
+
     (mapcar 'cdr (nreverse hierarchy-alist))
     ))
 
@@ -1072,6 +1073,12 @@ b. a negative numerical argument, which generally inverts the
 (defvar rst-adjust-hook nil
   "Hooks to be run after running `rst-adjust'.")
 
+(defvar rst-new-decoration-down nil
+  "If true, a new decoration being added will be initialized to
+  be one level down from the previous decoration. If nil, a new
+  decoration will be equal to the level of the previous
+  decoration.")
+
 (defun rst-adjust-decoration (&optional toggle-style reverse-direction)
 "Adjust/rotate the section decoration for the section title around point.
 
@@ -1282,7 +1289,8 @@ of the right hand fingers and the binding is unused in `text-mode'."
               (setq cur
                     (if prev
                         (if (not reverse-direction)
-                            (or (cadr (rst-get-decoration-match hier prev))
+                            (or (funcall (if rst-new-decoration-down 'cadr 'car)
+					 (rst-get-decoration-match hier prev))
                                 (rst-suggest-new-decoration hier prev))
                           prev)
                       (copy-list (car rst-preferred-decorations))
@@ -1474,15 +1482,24 @@ in order to adapt it to our preferred style."
     )))
 
 
+
+
 (defun rst-straighten-deco-spacing ()
-  "Adjust the spacing before and after decorations in the entire current.
-The spacing will be 'standard'."
+  "Adjust the spacing before and after decorations in the entire document.
+The spacing will be set to two blank lines before the first two
+section levels, and one blank line before any of the other
+section levels."
+;; FIXME: we need to take care of subtitle at some point.
   (interactive)
   (save-excursion
     (let* ((alldecos (rst-find-all-decorations)))
-      (dolist (deco alldecos)
-	;; Go to the appropriate position
-	(prin1 deco)
+
+      ;; Work the list from the end, so that we don't have to use markers to
+      ;; adjust for the changes in the document.
+      (dolist (deco (nreverse alldecos))
+	;; Go to the appropriate position.
+	(goto-line (car deco))
+	(insert "@\n")
 ;; FIXME: todo, we
 	)
     )))
