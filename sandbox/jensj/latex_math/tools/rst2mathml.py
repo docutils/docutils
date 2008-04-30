@@ -298,9 +298,11 @@ class mtext(math):
         return [self.text]
 
 
+#an obvious choice for dot is EE24 but it is less likely to be rendered
 over = {'tilde': '~',
         'hat': '^',
         'bar': '_',
+        'dot': u'\u0307',
         'vec': u'\u2192'}
 
 Greek = {
