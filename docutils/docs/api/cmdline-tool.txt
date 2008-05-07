@@ -55,7 +55,7 @@ We construct a description of the tool, for command-line help::
                    'reStructuredText sources.  ' + default_description)
 
 Now we call the Publisher convenience function, which takes over.
-Most of it's defaults are used ("standalone" Reader,
+Most of its defaults are used ("standalone" Reader,
 "reStructuredText" Parser, etc.).  The HTML Writer is chosen by name,
 and a description for command-line help is passed in::
 
