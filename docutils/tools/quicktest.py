@@ -21,7 +21,9 @@ from docutils.parsers.rst import Parser
 
 
 usage_header = """\
-quicktest.py: quickly test the restructuredtext parser.
+quicktest.py: Quickly test the reStructuredText parser.  This is not an
+interface to the full functionality of Docutils.  Use one of the ``rst2*.py``
+front-end tools instead.
 
 Usage::
 
