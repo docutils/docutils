@@ -69,7 +69,7 @@ Lists
   4. a third
   5. a third
 
-     a. alphabetically BUG not recognized as list start
+     a. alphabetically list
      b. betacarotin
      c. grammar
 
