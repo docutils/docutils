@@ -111,7 +111,12 @@ Change log
 
 * writers/manpage.py:
 
-  - 2008-05-15: indent alpha lists by 3.
+  - 2008-05-15: smaller things in lists
+
+                * arabic enums might start with other than "1".
+                * indentation of arabic lists depends on number of entries
+                  This should be with of largest number though.
+                * indent alpha lists by 3.
   - 2008-05-15: patch from htgoebel for nested intendation.
   - 2008-03-05: patch from htgoebel
 
