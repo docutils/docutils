@@ -240,8 +240,8 @@ class Translator(nodes.NodeVisitor):
         class enum_char:
             enum_style = {
                     'arabic'     : (3,1),
-                    'loweralpha' : (2,'a'),
-                    'upperalpha' : (2,'A'),
+                    'loweralpha' : (3,'a'),
+                    'upperalpha' : (3,'A'),
                     'lowerroman' : (5,'i'),
                     'upperroman' : (5,'I'),
                     'bullet'     : (2,'\\(bu'),
