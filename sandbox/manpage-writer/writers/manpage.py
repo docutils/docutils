@@ -275,7 +275,6 @@ class Translator(nodes.NodeVisitor):
             self.indent(self._list_char[-2].get_width())
         else:
             self.indent(self._list_char[-1].get_width())
-            #self.indent()
 
     def list_end(self):
         self.dedent()
@@ -458,11 +457,9 @@ class Translator(nodes.NodeVisitor):
 
     def visit_description(self, node):
         self.body.append(self.defs['description'][0])
-        #self.indent(OPTION_LIST_INDENT)
 
     def depart_description(self, node):
         self.body.append(self.defs['description'][1])
-        #self.dedent()
 
     def visit_docinfo(self, node):
         self._in_docinfo = 1
@@ -554,20 +551,16 @@ class Translator(nodes.NodeVisitor):
             raise nodes.SkipNode
 
     def depart_field_body(self, node):
-        #self.body.append(self.comment('depart_field_body'))
         pass
 
     def visit_field_list(self, node):
-        #self.body.append(self.comment('visit_field_list'))
         self.indent(FIELD_LIST_INDENT)
 
     def depart_field_list(self, node):
-        #self.body.append(self.comment('depart_field_list %r' % self._indent))
         self.dedent('depart_field_list')
         
 
     def visit_field_name(self, node):
-        #self.body.append(self.comment('visit_field_name'))
         if self._in_docinfo:
             self._field_name = node.astext()
             raise nodes.SkipNode
@@ -575,7 +568,6 @@ class Translator(nodes.NodeVisitor):
             self.body.append(self.defs['field_name'][0])
 
     def depart_field_name(self, node):
-        #self.body.append(self.comment('depart_field_name'))
         self.body.append(self.defs['field_name'][1])
 
     def visit_figure(self, node):
@@ -874,7 +866,7 @@ class Translator(nodes.NodeVisitor):
     def visit_raw(self, node):
         if node.get('format') == 'manpage':
             self.body.append(node.astext())
-        # Keep non-HTML raw text out of output:
+        # Keep non-manpage raw text out of output:
         raise nodes.SkipNode
 
     def visit_reference(self, node):
