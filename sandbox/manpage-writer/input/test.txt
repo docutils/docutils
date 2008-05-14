@@ -77,7 +77,7 @@ Lists
   7. a third
   8. a third
   9. a third
-  10. a BUG indentation must be 3 if there are more than nine
+  10. bigger indentation if there are more than nine
       enumerated items (or there are larger numbers)
 
 7. dont start with 1

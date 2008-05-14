@@ -248,7 +248,16 @@ class Translator(nodes.NodeVisitor):
                     'emdash'     : (2,'\\(em'),
                      }
             def __init__(self, style):
-                self._style = self.enum_style[style]
+                if style == 'arabic':
+                    if node.has_key('start'):
+                        start = node['start']
+                    else:
+                        start = 1
+                    self._style = (
+                            len(str(len(node.children)))+2,
+                            start )
+                else:
+                    self._style = self.enum_style[style]
                 self._cnt = -1
             def next(self):
                 self._cnt += 1
