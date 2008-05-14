@@ -111,6 +111,7 @@ Change log
 
 * writers/manpage.py:
 
+  - 2008-05-15: patch from htgoebel for nested intendation.
   - 2008-03-05: patch from htgoebel
 
                 * Support formats for literal

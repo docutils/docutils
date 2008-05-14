@@ -55,6 +55,40 @@ from types import ListType
 import docutils
 from docutils import nodes, utils, writers, languages
 
+FIELD_LIST_INDENT = 7
+DEFINITION_LIST_INDENT = 7
+OPTION_LIST_INDENT = 7
+
+# Define two macros so man/roff can calculate the
+# indent/unindent margins by itself
+MACRO_DEF = (r"""
+.nr rst2man-indent-level 0
+.
+.de1 rstReportMargin
+\\$1 \\n[an-margin]
+level \\n[rst2man-indent-level]
+level magin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+-
+\\n[rst2man-indent0]
+\\n[rst2man-indent1]
+\\n[rst2man-indent2]
+..
+.de1 INDENT
+.\" .rstReportMargin pre:
+. RS \\$1
+. nr rst2man-indent\\n[rst2man-indent-level] \\n[an-margin]
+. nr rst2man-indent-level +1
+.\" .rstReportMargin post:
+..
+.de UNINDENT
+. RE
+.\" indent \\n[an-margin]
+.\" old: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.nr rst2man-indent-level -1
+.\" new: \\n[rst2man-indent\\n[rst2man-indent-level]]
+.in \\n[rst2man-indent\\n[rst2man-indent-level]]u
+..
+""")
 
 class Writer(writers.Writer):
 
@@ -148,18 +182,26 @@ class Translator(nodes.NodeVisitor):
         self.header_written = 0
         self.authors = []
         self.section_level = 0
+        self._indent = [0]
         # central definition of simple processing rules
         # what to output on : visit, depart
         self.defs = {
+                'indent' : ('.INDENT %.1f\n', '.UNINDENT\n'),
                 'definition' : ('', ''),
                 'definition_list' : ('', '.TP 0\n'),
                 'definition_list_item' : ('\n.TP', ''),
-                'description' : ('\n', ''),
+                #field_list
+                #field
                 'field_name' : ('\n.TP\n.B ', '\n'),
+                'field_body' : ('', '.RE\n', ),
                 'literal' : ('\\fB', '\\fP'),
                 'literal_block' : ('\n.nf\n', '\n.fi\n'),
-                'option_list' : ('', '.TP 0\n'),
+
+                #option_list
                 'option_list_item' : ('\n.TP', ''),
+                #option_group, option
+                'description' : ('\n', ''),
+                
                 'reference' : (r'\fI\%', r'\fP'),
                 #'target'   : (r'\fI\%', r'\fP'),
                 'emphasis': ('\\fI', '\\fP'),
@@ -220,6 +262,8 @@ class Translator(nodes.NodeVisitor):
                     return "%c." % (ord(self._style[1])+self._cnt)
             def get_width(self):
                 return self._style[0]
+            def __repr__(self):
+                return 'enum_style%r' % list(self._style)
 
         if node.has_key('enumtype'):
             self._list_char.append(enum_char(node['enumtype']))
@@ -228,13 +272,14 @@ class Translator(nodes.NodeVisitor):
         if len(self._list_char) > 1:
             # indent nested lists
             # BUG indentation depends on indentation of parent list.
-            self.body.append('\n.RS %d' % self._list_char[-2].get_width())
+            self.indent(self._list_char[-2].get_width())
+        else:
+            self.indent(self._list_char[-1].get_width())
+            #self.indent()
 
     def list_end(self):
-        if len(self._list_char) > 0:
-            self.body.append('\n.RE\n')
+        self.dedent()
         self._list_char.pop()
-
 
     def header(self):
         tmpl = (".TH %(title)s %(manual_section)s"
@@ -250,6 +295,7 @@ class Translator(nodes.NodeVisitor):
         if self.header_written:
             return
         self.body.append(self.header())
+        self.body.append(MACRO_DEF)
         self.header_written = 1
 
     def visit_address(self, node):
@@ -399,10 +445,10 @@ class Translator(nodes.NodeVisitor):
         self.body.append(self.defs['definition'][1])
 
     def visit_definition_list(self, node):
-        self.body.append(self.defs['definition_list'][0])
+        self.indent(DEFINITION_LIST_INDENT)
 
     def depart_definition_list(self, node):
-        self.body.append(self.defs['definition_list'][1])
+        self.dedent()
 
     def visit_definition_list_item(self, node):
         self.body.append(self.defs['definition_list_item'][0])
@@ -412,9 +458,11 @@ class Translator(nodes.NodeVisitor):
 
     def visit_description(self, node):
         self.body.append(self.defs['description'][0])
+        #self.indent(OPTION_LIST_INDENT)
 
     def depart_description(self, node):
         self.body.append(self.defs['description'][1])
+        #self.dedent()
 
     def visit_docinfo(self, node):
         self._in_docinfo = 1
@@ -491,27 +539,35 @@ class Translator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def visit_field(self, node):
+        #self.body.append(self.comment('visit_field'))
         pass
 
     def depart_field(self, node):
+        #self.body.append(self.comment('depart_field'))
         pass
 
     def visit_field_body(self, node):
+        #self.body.append(self.comment('visit_field_body'))
         if self._in_docinfo:
             self._docinfo[
                     self._field_name.lower().replace(" ","_")] = node.astext()
             raise nodes.SkipNode
 
     def depart_field_body(self, node):
-        self.body.append(self.comment('depart_field_body'))
+        #self.body.append(self.comment('depart_field_body'))
+        pass
 
     def visit_field_list(self, node):
-        self.body.append(self.comment('visit_field_list'))
+        #self.body.append(self.comment('visit_field_list'))
+        self.indent(FIELD_LIST_INDENT)
 
     def depart_field_list(self, node):
-        self.body.append(self.comment('depart_field_list'))
+        #self.body.append(self.comment('depart_field_list %r' % self._indent))
+        self.dedent('depart_field_list')
+        
 
     def visit_field_name(self, node):
+        #self.body.append(self.comment('visit_field_name'))
         if self._in_docinfo:
             self._field_name = node.astext()
             raise nodes.SkipNode
@@ -519,6 +575,7 @@ class Translator(nodes.NodeVisitor):
             self.body.append(self.defs['field_name'][0])
 
     def depart_field_name(self, node):
+        #self.body.append(self.comment('depart_field_name'))
         self.body.append(self.defs['field_name'][1])
 
     def visit_figure(self, node):
@@ -708,11 +765,24 @@ class Translator(nodes.NodeVisitor):
     def depart_note(self, node):
         self.depart_admonition()
 
+    def indent(self, by=0.5):
+        # if we are in a section ".SH" there already is a .RS
+        #self.body.append('\n[[debug: listchar: %r]]\n' % map(repr, self._list_char))
+        #self.body.append('\n[[debug: indent %r]]\n' % self._indent)
+        step = self._indent[-1]
+        self._indent.append(by)
+        self.body.append(self.defs['indent'][0] % step)
+
+    def dedent(self, name=''):
+        #self.body.append('\n[[debug: dedent %s %r]]\n' % (name, self._indent))
+        self._indent.pop()
+        self.body.append(self.defs['indent'][1])
+
     def visit_option_list(self, node):
-        self.body.append(self.defs['option_list'][0])
+        self.indent(OPTION_LIST_INDENT)
 
     def depart_option_list(self, node):
-        self.body.append(self.defs['option_list'][1])
+        self.dedent()
 
     def visit_option_list_item(self, node):
         # one item of the list
