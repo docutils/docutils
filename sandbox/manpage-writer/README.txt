@@ -113,6 +113,7 @@ Change log
 
   - 2008-05-15: smaller things in lists
 
+                * use ``.IP`` instead of ``.TP`` for lists
                 * arabic enums might start with other than "1".
                 * indentation of arabic lists depends on number of entries
                   This should be with of largest number though.
