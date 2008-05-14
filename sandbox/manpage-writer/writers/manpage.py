@@ -256,11 +256,13 @@ class Translator(nodes.NodeVisitor):
                     self._style = (
                             len(str(len(node.children)))+2,
                             start )
+                # BUG: fix start for alpha
                 else:
                     self._style = self.enum_style[style]
                 self._cnt = -1
             def next(self):
                 self._cnt += 1
+                # BUG add prefix postfix
                 try:
                     return "%d." % (self._style[1] + self._cnt)
                 except:
@@ -734,9 +736,10 @@ class Translator(nodes.NodeVisitor):
         self.body.append('\n.br\n')
 
     def visit_list_item(self, node):
-        self.body.append('\n.TP %d\n%s\n' % (
-                self._list_char[-1].get_width(),
-                self._list_char[-1].next(),) )
+        # man 7 man argues to use ".IP" instead of ".TP"
+        self.body.append('\n.IP %s %d\n' % (
+                self._list_char[-1].next(),
+                self._list_char[-1].get_width(),) )
 
     def depart_list_item(self, node):
         pass
