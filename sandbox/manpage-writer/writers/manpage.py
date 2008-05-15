@@ -831,9 +831,11 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def visit_option_argument(self, node):
-        self.context[-3] = '.BI'
-        if self.body[len(self.body)-1].endswith('='):
-            # a blank only means no blank in output
+        self.context[-3] = '.BI' # bold/italic alternate
+        if node['delimiter'] != ' ':
+            self.body.append('\\fn%s ' % node['delimiter'] )
+        elif self.body[len(self.body)-1].endswith('='):
+            # a blank only means no blank in output, just changing font
             self.body.append(' ')
         else:
             # backslash blank blank

@@ -111,6 +111,10 @@ Change log
 
 * writers/manpage.py:
 
+  - 2008-05-16: patch from htgoebel:
+                keep ``=`` in long options like ``--filename=FILENAME``
+
+  - 2008-05-15: smaller things in lists
   - 2008-05-15: smaller things in lists
 
                 * use ``.IP`` instead of ``.TP`` for lists
@@ -118,6 +122,7 @@ Change log
                 * indentation of arabic lists depends on number of entries
                   This should be with of largest number though.
                 * indent alpha lists by 3.
+
   - 2008-05-15: patch from htgoebel for nested intendation.
   - 2008-03-05: patch from htgoebel
 
