@@ -112,7 +112,9 @@ Change log
 * writers/manpage.py:
 
   - 2008-05-16: patch from htgoebel:
-                keep ``=`` in long options like ``--filename=FILENAME``
+
+                * keep ``=`` in long options like ``--filename=FILENAME``
+                * Support for blockqoutes.
 
   - 2008-05-15: smaller things in lists
   - 2008-05-15: smaller things in lists
