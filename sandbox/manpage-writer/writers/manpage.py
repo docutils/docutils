@@ -58,6 +58,7 @@ from docutils import nodes, utils, writers, languages
 FIELD_LIST_INDENT = 7
 DEFINITION_LIST_INDENT = 7
 OPTION_LIST_INDENT = 7
+BLOCKQOUTE_INDENT = 3.5
 
 # Define two macros so man/roff can calculate the
 # indent/unindent margins by itself
@@ -345,10 +346,16 @@ class Translator(nodes.NodeVisitor):
         self.body.append(self.comment('depart_authors'))
 
     def visit_block_quote(self, node):
-        self.body.append(self.comment('visit_block_quote'))
+        #self.body.append(self.comment('visit_block_quote'))
+        # BUG/HACK: indent alway uses the _last_ indention,
+        # thus we need two of them.
+        self.indent(BLOCKQOUTE_INDENT)
+        self.indent(0)
 
     def depart_block_quote(self, node):
-        self.body.append(self.comment('depart_block_quote'))
+        #self.body.append(self.comment('depart_block_quote'))
+        self.dedent()
+        self.dedent()
 
     def visit_bullet_list(self, node):
         self.list_start(node)
