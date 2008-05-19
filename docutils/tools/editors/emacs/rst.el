@@ -391,6 +391,7 @@ You may customize `rst-mode-lazy' to toggle font-locking of
 blocks."
 
   (set (make-local-variable 'paragraph-separate) paragraph-start)
+  (set (make-local-variable 'indent-line-function) 'indent-relative-maybe)
   (set (make-local-variable 'paragraph-start)
        "\f\\|>*[ \t]*$\\|>*[ \t]*[-+*] \\|>*[ \t]*[0-9#]+\\. ")
   (set (make-local-variable 'adaptive-fill-mode) t)
@@ -420,8 +421,8 @@ blocks."
     ;; jit-lock-mode replaced lazy-lock-mode in GNU Emacs 22
     (let ((jit-or-lazy-lock-mode
            (cond
-            ((fboundp 'jit-lock-mode) 'jit-lock-mode)
             ((fboundp 'lazy-lock-mode) 'lazy-lock-mode)
+            ((fboundp 'jit-lock-mode) 'jit-lock-mode)
             ;; if neither lazy-lock nor jit-lock is supported,
             ;; tell user and disable rst-mode-lazy
             (t (when rst-mode-lazy
