@@ -12,62 +12,12 @@ syntax highlight, though only for LaTeX (and LaTeX derived PS|PDF).
 State of the art
 ----------------
 
-Using listings_ for syntax highlight is currently not
-possible with the standard latex writer output. 
+Using listings_ for literal blocks is now possible with the standard latex
+writer with a new option ``--literal-block-env``.
 
-Support for the use of listings_ with docutils is an issue that must be
-settled separate from the 
-`proposal for a code-block directive in docutils`_. 
-It would need 
-
-* a new, specialized docutils latex writer, or
-* a new option (and behaviour) to the existing latex writer.
-
-
-Workarounds
-~~~~~~~~~~~
-
-Ideas for using the current latex2e writer together with
-``listings.sty``.
-
-Run rst2latex with ``--use-verbatim-when-possible`` and do:
-
-post-processing:
-  use a post-processing filter to replace all
-  occurrences of {verbatim} with {lstlisting}.
-
-redefine "verbatim":
-  Idea: Use a stylesheet to redefine the "verbatim" environment::
-  
-    \usepackage{listings}
-    \lstset{language=Python}
-    % redefine verbatim as lstlisting:
-    \renewenvironment{verbatim}{\begin{lstlisting}}{\end{lstlisting}}
-  
-  **Fails**, as "verbatim" is a very special environment looking for a
-  literal occurrence of ``end{verbatim}``.
-
-use fancyvrb_: 
-  It is possible to re-define "verbatim" in a stylesheet with the `fancyvrb`
-  package, e.g.::
-  
-    \usepackage{fancyvrb}
-    \DefineVerbatimEnvironment{verbatim}{Verbatim}{frame=lines}
-  
-  `fancyvrb` fails in some cases (if the latex writer puts something behind
-  ``\end{verbatim}`` without line-break).
-  
-  One can use the listings package to render a "Verbatim" environment with
-  ::
-  
-    \lstset{language=Python, fancyvrb=true}
-  
-  However this did not work in my test__ with ``listings 2004/10/17 1.4`` and
-  ``fancyvrb 1998/07/17``. While listings renders both, "Verbatim" and
-  re-defined "verbatim" blocks, it does not highlight the Python syntax
-  (only marks whitespace in strings).
-  
-__ literal-blocks.pdf
+The alternate latex writer uses a slightly different implementation and a
+shorter name for the option: ``--literal-env`` (as an *environment* is the
+latex counterpart of a *block element* in HTML or rst nomenclature).
 
 Alternative latex writer
 ------------------------
@@ -78,7 +28,8 @@ Alternative latex writer
 
 Usage
 ~~~~~
-A possible usage scenario is:
+
+A usage scenario is:
 
 #. Place `latex2e_listings.py`_ in your PYTHONPATH.
 #. Place `rst2latex2e_listings.py`_ in your PATH.
@@ -101,18 +52,11 @@ Changelog
 :2007-10-15: First draft, works for me.
 :2008-02-29: Basic usage information.
 
-"literal-environment" configuration setting
+"literal-env" configuration setting
 -------------------------------------------
 
-As re-defining verbatim-like environments in a LaTeX stylesheet is at least
-tricky (and at most impossible), it might be desirable to define a
-"literal-environment" config setting for the latex writer as Alan Isaac
-proposed in docutils-users
-(http://article.gmane.org/gmane.text.docutils.user/3325 and
-http://article.gmane.org/gmane.text.docutils.user/3327 ).
-
-The setting would define, which environment is used for typesetting
-literal-blocks (and with which arguments).
+The ``literal-enf`` config option defines, which environment is used for
+typesetting literal-blocks (and with which arguments).
 
 Some considerations about the implementation:
   
@@ -146,21 +90,21 @@ A list of candidate environments
 ===========  ========================  =================================== 
 Environment  Escaping                  Required Packages
 ===========  ========================  =================================== 
-verbatim     no
+verbatim     no			       None
 Verbatim     no                        fancyvrb_
 verbatimtab  no                        moreverb_
 listing      no                        moreverb_
 lstlisting   no                        listings_
 alltt        '\\', '{' and '}'         alltt_     (standard package)
-quote        whitespace and 
+None         whitespace and	       None 
              special chars
 ===========  ========================  ===================================
 
-The `fancyvrb` environments ("Verbatim", "BVerbatim", ...) do not
-necessarily need to be supported by this setting. Their use can be 
-defined in a stylesheet with ``\DefineVerbatimEnvironment`` (see above
-section Workarounds_). However, the latex writer should always place
-``\begin(verbatim)`` and ``\end(verbatim)`` on a line of its own.
+The environments from the fancyvrb_ package ("Verbatim", "BVerbatim", ...)
+do not necessarily need to be supported by this setting. Their use can be
+defined in a stylesheet with ``\DefineVerbatimEnvironment`` However, the
+latex writer must always place ``\begin(verbatim)`` and ``\end(verbatim)``
+on a line of its own.
 
 Some of the above packages provide commands for verbatim file input.
 The ``:literal:`` option of the "include" directive should translate to:
