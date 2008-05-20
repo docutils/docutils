@@ -140,8 +140,8 @@ Applications using docutils/reStructuredText, helper applications:
 
 * For Blogs (Weblogs), please see the `FAQ entry about Blogs`_.
 
-* PyLit_ provides a plain but efficient tool for *literate programming
-  with reStructuredText*: a bidirectional text <--> code converter.
+* PyLit_ provides a bidirectional text <--> code converter for *literate
+  programming with reStructuredText*.
 
 * Pandoc_ is a document converter; it can read Markdown and (subsets
   of) reStructuredText, HTML, and LaTeX, and it can write Markdown,
