@@ -29,39 +29,83 @@ Docutils.  All projects listed here are usable by end users in some
 way, however please do not expect all of them to run straight out of
 the box.
 
-* For Wikis, please see the `FAQ entry about Wikis`_.
+Editors
+~~~~~~~
 
-* For Blogs (Weblogs), please see the `FAQ entry about Blogs`_.
+Editors with reStructuredText support and docutils GUIs:
 
-* py.rest from the Codespeak `py Lib scripts`_ converts
+* Emacs `rst mode <http://docutils.sf.net/docutils/tools/editors/emacs>`__.
+
+* `reStructuredText syntax highlighting mode
+  <http://www.vim.org/scripts/script.php?script_id=973>`__  for vim.
+
+* `VST <http://skawina.eu.org/mikolaj/vst.html>`__ (Vim reStructured Text)
+  is a plugin for Vim7 with folding.
+
+* `rst mode <http://jedmodes.sf.net/mode/rst/>`__ for the 
+  `JED <http://www.jedsoft.org/jed/>`__ programmers editor
+
+* Gunnar Schwant's DocFactory_ is a wxPython GUI application for
+  Docutils.
+
+* ReSTedit_ by Bill Bumgarner is a Docutils GUI for Mac OS X.
+
+
+Export 
+~~~~~~
+
+Convert reStructuredText to other formats:
+
+* `rst2pdf.py <http://docutils.sf.net/sandbox/rst2pdf>`_ 
+  is a front end for the generation of PDF documents from a
+  reStructuredText source in one step cleaning up intermediate files.
+
+* **py.rest** from the Codespeak `py Lib scripts`_ converts
   reStructuredText files to HTML and PDF (cleaning up the intermediate
   latex files).  Similar to ``buildhtml.py``, it looks recursively for
   .txt files in the given PATHS.
 
-* PyLit_ provides a plain but efficient tool for *literate programming
-  with reStructuredText*: a bidirectional text <--> code converter.
+* odtwriter_ the Open Document Format writer developed by Dave Kuhlman
+  produces files that can be processed with OpenOffice and Abiword.
 
-* Pandoc_ is a document converter; it can read Markdown and (subsets
-  of) reStructuredText, HTML, and LaTeX, and it can write Markdown,
-  reStructuredText, HTML, LaTeX, RTF, DocBook XML, and S5.
+* restxsl_ by Michael Alyn Miller, lets you transform reStructuredText
+  documents into XML/XHTML files using XSLT stylesheets.
 
-* restxsl_, by Michael Alyn Miller, lets you transform
-  reStructuredText documents into XML/XHTML files using XSLT
-  stylesheets.
+* rst2ht_ by Oliver Rutherfurd, converts reStructuredText to an .ht
+  template, for use with ht2html_.
 
-* rest2web_, by Michael Foord, is a tool for creating web sites with
-  reStructuredText.
+* htmlnav_ by Gunnar Schwant, is an HTML writer which supports navigation
+  bars.
 
-* Ladislav Lhotka has written an `XSLT script`_ that enables
-  reStructuredText annotations to be included in RELAG NG XML schemas.
+* rst2chm_ by Oliver Rutherfurd, generates Microsoft HTML Help files from
+  reStructuredText files.
+
+* `html4strict <http://docutils.sf.net/sandbox/html4strict/>`__
+  produces XHTML that strictly conforms to the XHTML 1.0 specification.
+
+* `html4trans <http://docutils.sf.net/sandbox/html4trans/>`__
+  produces XHTML conforming to the version 1.0 Transitional DTD that
+  contains enough formatting information to be viewed by a lightweight HTML
+  browser without CSS support.
+
+* A `simple HTML writer`_ by Bill Bumgarner that doesn't rely on CSS
+  (stylesheets).
+
+* An `XSLT script`_ by Ladislav Lhotka enables reStructuredText annotations
+  to be included in RELAG NG XML schemas.
+
+* The Docutils interface to PythonPoint_
+  by Richard Jones produces PDF presentations using ReportLabs.
+
+* `ManPage Writer`_ by Engelbert Gruber.
   
-* ReSTedit_ by Bill Bumgarner is a Docutils GUI for Mac OS X.
+* `DocBook Writer`_ by Oliver Rutherfurd.
 
-* There is an `ASCII art to SVG converter`_ (aafigure), developed by
-  Chris Liechti.
 
-* Jens J. Mortensen developed `LaTeX math for reST`_, which writes to
-  LaTeX or to MathML.
+Import
+~~~~~~
+
+Convert other formats to reStructuredText:
 
 * sxw2rest_, by Trent W. Buck, converts StarOffice XML Writer (SXW)
   files to reStructuredText.
@@ -73,40 +117,48 @@ the box.
 * xhtml2rest_, written by Antonios Christofides, is a simple utility
   to convert XHTML to reStructuredText.
 
-* rst2ht_, by Oliver Rutherfurd, converts reStructuredText to an .ht
-  template, for use with ht2html_.
+Extensions
+~~~~~~~~~~
 
-* htmlnav_, by Gunnar Schwant, is an HTML writer which supports
-  navigation bars.
+Extend the reStructuredText syntax or the features of docutils.
+More extensions are in the `Docutils Sandbox`_.
 
-* rst2chm_, written by Oliver Rutherfurd, generates Microsoft HTML
-  Help files from reStructuredText files.
-
-* ZReST_, by Richard Jones, is a "ReStructuredText Document for Zope"
-  application that is complete and ready to install.
-
-* The Docutils interface to PythonPoint_, also by Richard Jones,
-  produces PDF presentations using ReportLabs.
-
-* Engelbert Gruber has begun a `ManPage Writer`_.
-
-* Oliver Rutherfurd has begun a `DocBook Writer`_.
-
-* Gunnar Schwant's DocFactory_ is a wxPython GUI application for
-  Docutils.
-
-* odtwriter_ Open Document Format writer is being developed by Dave
-  Kuhlman.
-
-* Bill Bumgarner has written a `simple HTML writer`_ that doesn't rely
-  on CSS (stylesheets).
+* Jens J. Mortensen developed `LaTeX math for reST`_, which writes to
+  LaTeX or to MathML.
 
 * Beni Cherniavsky has written a generic `preprocessing module`_ for
   roles and/or directives and built preprocessors for TeX math for
   both LaTeX and HTML output on top of it.
 
+
+Related Applications
+~~~~~~~~~~~~~~~~~~~~
+
+Applications using docutils/reStructuredText, helper applications:
+
+* For Wikis, please see the `FAQ entry about Wikis`_.
+
+* For Blogs (Weblogs), please see the `FAQ entry about Blogs`_.
+
+* PyLit_ provides a plain but efficient tool for *literate programming
+  with reStructuredText*: a bidirectional text <--> code converter.
+
+* Pandoc_ is a document converter; it can read Markdown and (subsets
+  of) reStructuredText, HTML, and LaTeX, and it can write Markdown,
+  reStructuredText, HTML, LaTeX, RTF, DocBook XML, and S5.
+
+* rest2web_, by Michael Foord, is a tool for creating web sites with
+  reStructuredText.
+
+* There is an `ASCII art to SVG converter`_ (aafigure), developed by
+  Chris Liechti.
+
+* ZReST_, by Richard Jones, is a "ReStructuredText Document for Zope"
+  application that is complete and ready to install.
+
 * Beni Cherniavsky maintains a Makefile_ for driving Docutils, hoping
   to handle everything one might do with Docutils.
+
 
 
 API Developers
