@@ -54,7 +54,7 @@ Configuration
 
 ``rst2pdf.py`` uses the "latex" writer for conversion from reStructuredText
 which is configured in the ``[latex2e writer]`` section of the configuration
-files. (See `Docutile Configuration`_)
+files. (See `Docutils Configuration`_)
 
 No configuration of the latex -> PDF conversion is currently possible
 (except changing the settings directly in the (well documented)
