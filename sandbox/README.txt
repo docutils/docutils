@@ -72,16 +72,15 @@ __ http://docs.python.org/doc/doc.html
 Other Sandbox Projects
 ----------------------
 
-* code-block-directive_ contains documentation, reasoning and experimental
-  code for support of syntax highlight in docutils.
+* `<code-block-directive>`_ contains documentation, reasoning and
+  experimental code for support of syntax highlight in docutils.
   
-* latex-variants_ is a place to try out and discuss variants of the
+* `<latex-variants>`_ is a place to try out and discuss variants of the
   latex2e writer.
 
+* `<rst2pdf>`_ is a front end for the generation of PDF documents from a
+  reStructuredText source in one step cleaning up intermediate files.
 
 For other sandbox projects, please see the `Docutils Link List`_.
-
-.. _code-block-directive: code-block-directive
-.. _latex-variants: latex-variants
 
 .. _Docutils Link List: http://docutils.sf.net/docs/user/links.html
