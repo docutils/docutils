@@ -47,6 +47,6 @@ Call the docutils publisher to render the input as html::
   publish_cmdline(writer_name='html', description=description)
   
 .. _docutils: http://docutils.sf.net/
-.. _pygments_code_block_directive.py: pygments_code_block_directive.py
+.. _pygments_code_block_directive: pygments_code_block_directive.py
 .. _pygments: http://pygments.org/
 .. _Using Pygments in ReST documents: http://pygments.org/docs/rstdirective/
