@@ -12,15 +12,6 @@ what-you-see-is-what-you-get plaintext markup language.
 
 ----------------------------------------------------------------------
 
-News
-====
-
-**2006-11-12**: `Deploying Docutils Securely`_ doc added to project.
-
-The `Docutils sprint`_ at `PyCon 2006`_ is over.  Results include
-dugui_ (a GUI for Docutils) and some work on `LaTeX math support`_,
-both awaiting completion.
-
 Overview
 ========
 
