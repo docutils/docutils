@@ -44,8 +44,8 @@ The only **requirement** for running Docutils is Python_ 2.2 or later.
 The compiler package can be found in the Tools/ directory of Python's
 source distribution.)
 
-Docutils is in active development and should be considered **highly
-experimental**.  APIs are subject to change at any time.
+Docutils is in active development and should be considered **experimental**.
+APIs are subject to change at any time.
 
 
 Download
