@@ -27,7 +27,7 @@ labels = {
       'copyright': u'Copyright',
       'dedication': u'Dedicat\u00F3ria',
       'abstract': u'Resumo',
-      'attention': u'Atten\u00E7\u00E3o!',
+      'attention': u'Aten\u00E7\u00E3o!',
       'caution': u'Cuidado!',
       'danger': u'PERIGO!',
       'error': u'Erro',
