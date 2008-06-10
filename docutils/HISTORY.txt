@@ -125,7 +125,7 @@ Changes Since 0.4
   - Merge smaller differences from latex2e_adaptive_preamble.
   - Add ``use-part-section``.
   - Put leavevmode before longtable to avoid having it moved before sub/pargraph.
-  - Using leavemode optoin_list no longer needs to check if parent
+  - Using leavemode option_list no longer needs to check if parent
     is a definition list.
   - Append ``\leavemode`` to definition list terms.
   - No longer write visit\_/depart_definition_list_item comments to
