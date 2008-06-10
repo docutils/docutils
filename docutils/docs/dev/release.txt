@@ -12,7 +12,7 @@
 
 
 Steps in boldface text are *not* covered by the release script at
-sandbox/wiemann/release.sh.  "Not covered" means that you aren't even
+sandbox/infrastructure/release.sh.  "Not covered" means that you aren't even
 reminded of them.
 
 .. Note:: This document does not cover branching and tagging, but the
