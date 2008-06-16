@@ -398,7 +398,10 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
                 and isinstance(node, docutils.nodes.bullet_list)
 
         _set_node_id(node, 'outline')
-        if node.get('class', '') == '': node['class'] = 'toc'
+
+        if _node_class( node ) is None:
+            _set_node_class( node, 'toc' )
+
         return _filter_tree(
               self._node_to_document(node)
             , _auto_toc_filter
@@ -607,14 +610,26 @@ class _toc_entry:
 
 
 def _is_toc_node( node ):
-    return _node_id( node ) == 'contents'    
+    return _node_class( node ) == 'contents'    
+
 
 def _node_id( node ):
     return node['ids'][0]
 
 
 def _set_node_id( node, id ):
-    node['ids'] = id
+    node['ids'] = [ id ]
+
+
+def _node_class( node ):
+    if len( node['classes'] ):
+        return node['classes'][0]
+
+    return None
+
+
+def _set_node_class( node, class_ ):
+    node['classes'] = [ class_ ]
 
 
 def _node_name( node ):
