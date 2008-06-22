@@ -31,6 +31,7 @@ Components:
 * LaTeX2e writer:
 
   - Better bibTeX citation support.
+  - Add ``--literal-block-env``
 
 * PEP writer:
 
