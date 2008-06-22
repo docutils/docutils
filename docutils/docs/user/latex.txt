@@ -128,7 +128,7 @@ line spacing           Is done with package *setspace*, which gives
                        for bigger linespacing.
 ---------------------  ------------------------------------------------
 use verbatim when      When possibile, use verbatim for literal-blocks.
-possible               Default is to always use the mbox environment.
+possible               Compatibility alias for "--literal-env=verbatim".
 
                        A literal-block element, when processed by a
                        docutils-writer might have it's origin in a

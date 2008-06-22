@@ -117,11 +117,11 @@ class Writer(writers.Writer):
           ['--section-enumerator-separator'],
           {'default': '-', 'metavar': '<char>'}),
          ('When possibile, use the specified environment for literal-blocks. '
-          'Default is to always use the mbox environment.',
+          'Default is quoting of whitespace and special chars.',
           ['--literal-block-env'],
           {'default': '', }),
          ('When possibile, use verbatim for literal-blocks. '
-          'Default is to always use the mbox environment.',
+          'Compatibility alias for "--literal-env=verbatim".',
           ['--use-verbatim-when-possible'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
@@ -952,6 +952,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # ! LaTeX Error: There's no line here to end.
             text = text.replace("\n", '~\\\\\n')
         elif self.mbox_newline:
+            # TODO dead code: remove after 0.5 release
             if self.literal_block:
                 closings = "}" * len(self.literal_block_stack)
                 openings = "".join(self.literal_block_stack)
