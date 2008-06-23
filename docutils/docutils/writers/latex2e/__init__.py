@@ -121,7 +121,7 @@ class Writer(writers.Writer):
           ['--literal-block-env'],
           {'default': '', }),
          ('When possibile, use verbatim for literal-blocks. '
-          'Compatibility alias for "--literal-env=verbatim".',
+          'Compatibility alias for "--literal-block-env=verbatim".',
           ['--use-verbatim-when-possible'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
