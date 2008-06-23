@@ -204,18 +204,33 @@ Unicode
 
 The generated LaTeX documents are in the input encoding per default. 
 
-If the source document is in utf-8 encoding (or
-``--output-encoding=utf-8`` is set), LaTeX needs unicode support
-(the ``ucs`` package). If this is not available, specify
-a different output-encoding, e.g. ``latin1``.
+* If the source document is in utf-8 encoding (or
+  ``--output-encoding=utf-8`` is set), LaTeX needs unicode support
+  (the ``ucs`` package). If this is not available, specify
+  a different output-encoding, e.g. ``latin1``.
 
-If LaTeX issues a Warning about unloaded/known characters adding ::
+* If LaTeX issues a Warning about unloaded/known characters adding ::
 
     \PreloadUnicodePage{n}
 
-where *n* is the unicode pagenumber, might help.
+  where *n* is the unicode pagenumber, might help.
 
-.. _LaTeX unicode: http://www.unruh.de/DniQ/latex/unicode/
+  .. _LaTeX unicode: http://www.unruh.de/DniQ/latex/unicode/
+
+* Unicode box drawing characters
+
+  - generate LaTeX code with ``--output-encoding=utf-8:strict``.
+
+  - In the latex file, edit the preamble to load "ucs" with "postscript"
+    option and also load the pstricks package::
+  
+        \usepackage{shortvrb}
+      - \usepackage{ucs}
+      + \usepackage[postscript]{ucs}
+      + \usepackage{pstricks}
+        \usepackage[utf8x]{inputenc}
+
+  - Convert to PDF with ``latex``, ``dvips``, and ``ps2pdf``.
 
 Table of figures
 ----------------
