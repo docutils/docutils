@@ -56,6 +56,7 @@ function set_ver()
     # Parameters: old_version new_version
     shopt -s extglob
     echo Determining list of files to be changed...
+    # BUG ls lists directories but does not descend
     files="docutils/__init__.py setup.py `$svn ls test/functional/expected/ | sed 's|^|test/functional/expected/|'`"
     echo "Now I'll change the version number to $2 in the following files:"
     echo $files
@@ -97,6 +98,9 @@ function usage()
     echo 'A maintenance branch called docutils-new_version will be created'
     echo 'if branch_version is given.  The version number inside the'
     echo 'maintenance branch will be set to branch_version.'
+    echo 
+    echo 'Access ssh,scp and sftp access to shell/frs.sourceforge.net'
+    echo 'must be configured.'
     exit 1
 }
 
@@ -106,7 +110,7 @@ function initialize()
         usage
     fi
     echo 'Initializing...'
-    python_versions='2.1 2.2 2.3 2.4'
+    python_versions='2.2 2.3 2.4 2.5'
     for py_ver in $python_versions; do
         echo -n "Checking for Python $py_ver (python$py_ver)... "
         if ! echo 'print "OK"' | python$py_ver; then
@@ -230,7 +234,7 @@ function test_tarball()
                 echo "Error: \"$site_packages\" does not exist."
                 exit 1
             fi
-            if -e "$site_packages/docutils-test"; then
+            if test -e "$site_packages/docutils-test"; then
                 echo "Error: \"$site_packages/docutils-test\" exists."
                 exit 1
             fi
@@ -257,7 +261,7 @@ function test_tarball()
     done
     run cd ../..
     echo "Cleaning up..."
-    run rm -rf tarball_test
+    confirm su -c "run rm -rf tarball_test"
     confirm su -c '
         for py_ver in '"$python_versions"'; do
             rm -rfv /usr{/local,}/lib/python$py_ver/site-packages/docutils{-test,}
@@ -270,8 +274,7 @@ function upload_tarball()
     # Assume we have the tarball in the working area.
     run cd "$working_area"
     # You may need to adjust the command line for clients other than tnftp.
-    (echo 'bin'; echo 'cd /incoming'; echo "put $tarball") | \
-        ftp ftp://anonymous:none@upload.sourceforge.net/
+	echo "put docutils-0.5.tar.gz" | sftp frs.sourceforge.net:uploads/
     echo 'Upload completed.'
 }
 
