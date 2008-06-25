@@ -43,7 +43,7 @@ Slide text.
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.5: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.6: http://docutils.sourceforge.net/" />
 <meta name="version" content="S5 1.1" />
 <title>Show Title</title>
 <link rel="stylesheet" href="../docutils/writers/html4css1/html4css1.css" type="text/css" />
@@ -108,7 +108,7 @@ We're just checking the settings
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.5: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.6: http://docutils.sourceforge.net/" />
 <meta name="version" content="S5 1.1" />
 <title>Bogus Slide Show</title>
 <link rel="stylesheet" href="../docutils/writers/html4css1/html4css1.css" type="text/css" />
