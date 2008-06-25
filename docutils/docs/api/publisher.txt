@@ -114,8 +114,7 @@ dictionary of document parts.  Dictionary keys are the names of parts,
 and values are Unicode strings.
 
 Each Writer component may publish a different set of document parts,
-described below.  Currently only the HTML Writer implements more than
-the "whole" part.
+described below.  Not all writers implement all parts.
 
 
 Parts Provided By All Writers
@@ -269,3 +268,26 @@ Parts Provided by the S5/HTML Writer
 ````````````````````````````````````
 
 The S5/HTML writer provides the same parts as the `HTML writer`_.
+
+Parts Provided by the LaTeX2e Writer
+````````````````````````````````````
+
+__`head_prefix`
+    ``parts['head_prefix']`` contains the LaTeX document class, package 
+    and stylesheet inclusion.
+
+__`head`
+    ``parts['head']`` currently is empty. 
+
+__`body_prefix`
+    ``parts['body_prefix']`` contains the LaTeX ``\begin{document}`` and
+    title page. 
+
+__`body`
+    ``parts['body']`` contains the LaTeX document content, less
+    the ``\begin{document}`` and ``\end{document}`` tags themselves.
+
+__`body_suffix`
+    ``parts['body_suffix']`` contains the LaTeX ``\end{document}``.
+    
+
