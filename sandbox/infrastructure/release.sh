@@ -75,6 +75,8 @@ function set_ver()
         set -e
     fi
     echo
+    echo 'CAUTION: please look at the diffs carefully, for wrongly'
+    echo ' replaced embedded numbers.'
     checkin "set version number to $2" $files
 }
 
@@ -484,6 +486,7 @@ initialize "$@"
 run_stage "$3"
 echo
 echo 'Finished.'
+echo 'Run alltests.py on svn version now.'
 
 # Local Variables:
 # indent-tabs-mode: nil

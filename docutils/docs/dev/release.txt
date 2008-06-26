@@ -147,6 +147,8 @@ reminded of them.
 * Update the web page (web/index.txt).
 
 * Run docutils-update on the server.
+
+* **Run alltests.py with svn version**
     
 * **Send announcement email to:**
 
