@@ -38,6 +38,30 @@ For more information on Docutils, see: http://docutils.sourceforge.net/
 History
 =======
 
+2008/07/03 -- Version 1.3a
+--------------------------
+
+Added support for the meta directive.  See docs.
+
+Added support for additional visit_/depart_ methods.
+
+Regularized some of the methods that generated fields: revision,
+version, date, address, contact, copyright, organization, etc.
+
+Added more control for control of paper size, thanks to Michael
+Schutte:
+
+1. __init__.py attempts to run paperconf.  If paperconf succeeds
+   and if the styles.odt file does not contain paper size, the size
+   is inserted into the styles.xml in the generated document.
+
+2. Added rst2odt_prepstyles.py script -- Drop page size
+   specifications from styles.xml in STYLE_FILE.odt.
+
+Added tools/rst2odt_prepstyles.py to the distribution.
+
+
+
 2008/04/18 -- Version 1.2b
 --------------------------
 

@@ -8,8 +8,11 @@ Odtwriter for Docutils
 :address: dkuhlman@rexx.com
     http://www.rexx.com/~dkuhlman
 
-:revision: 1.2b
-:date: April 17, 2008
+:revision: 1.2c
+:date: |date|
+
+.. |date| date:: %B %d, %Y
+
 
 :copyright: Copyright (c) 2006 Dave Kuhlman.  All Rights Reserved.
     This software is subject to the provisions of the MIT License
@@ -509,6 +512,34 @@ in the generated ``.odt``.   These styles have names prefixed with
     http://www.oasis-open.org/committees/tc_home.php?wg_abbrev=office
 
 
+Defining and using a custom stylesheet
+---------------------------------------
+
+You can create your own custom stylesheet.  Here is how:
+
+1. Make a copy of ``styles.xml``, which is in the distribution.
+
+2. Open your copy of ``styles.xml`` in ``oowriter``.  Modify styles
+   in that document.  Then, save it.
+
+3. When you run ``rst2odt.py``, use the ``--stylesheet=<URL>`` or
+   ``--stylesheet-path=<file>`` to use your custom stylesheet.  Run
+   ``rst2odt.py --help`` to learn more about these options.
+
+
+Why custom stylesheets
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Here are a few reasons and ideas:
+
+- The page size is stored in the style sheet.  The default page
+  size is ``Letter``.  You can change the page size (for example,
+  to ``A4``) in your custom stylesheet by opening it in
+  ``oowriter``, then clicking on menu: ``Format/Page...``, then
+  clicking on the ``Page`` tab.
+
+
+
 Defining and using custom style names
 -------------------------------------
 
@@ -614,10 +645,10 @@ Syntax highlighting
 ``docutils.parsers.rst.Directive``.  Therefore, it requires a very
 recent version of Docutils, specifically version 0.5 or later.
 
-``odtwriter`` can add Python syntax highlighting to code in code
+``odtwriter`` can add syntax highlighting to code in code
 blocks.  In order to activate this, do all of the following:
 
-1. Install Pygments and ...
+1. Install Pygments_ and ...
 
 2. Use the command line flag ``--add-syntax-highlighting``.
    Example::
@@ -628,22 +659,20 @@ blocks.  In order to activate this, do all of the following:
 
 3. In your reST (.txt) file, include code to which syntax
    highlighting is to be applied inside a ``sourcecode`` directive,
-   for example::
+   for example:
+  
+   .. parsed-literal::
 
-       .. sourcecode:: lexer-language
+       .. sourcecode:: *language*
 
            def test():
                print 'hi'
                return 'something'
 
-   where ``lexer-language`` is the programming language, for example
-   "python", "java", etc.  See the Pygments documentation for a list
-   of lexers/languages supported by Pygments:
-   `Available lexers --
-   http://pygments.org/docs/lexers/
-   <http://pygments.org/docs/lexers/>`_
-
-You can find Pygments here: `Pygments`_.
+   where *language* is the programming language, for example
+   "python", "java", etc.  See the 
+   `Pygments documentation`_ for a list of 
+   `languages supported by Pygments`_.
 
 The following styles are defined in styles.odt and are used for
 literal code blocks and syntax highlighting:
@@ -690,24 +719,27 @@ Controlling syntax highlighting within a document
 By default, when you use the ``--add-syntax-highlighting`` command
 line flag, syntax highlighting in literal blocks is on and the
 Python lexer is used.  You can change this within your reST document
-with the following directive::
+with the following directive:
 
-    .. sourcecode newstate
+.. parsed-literal::
+ 
+    .. sourcecode:: *newstate*
 
-or::
+or:
 
-    .. sourcecode lexer
+.. parsed-literal::
+
+    .. sourcecode:: *language*
 
 where:
 
 - *newstate* is either "on" or "off", which makes highlighting
   active or inactive.
 
-- *lexer* is the Pygments lexer to use.  Change the lexer to match
-  the language in literal code blocks.  *lexer* should be one of
-  *aliases* listed at `Pygments Available Lexers
-  <http://pygments.pocoo.org/docs/lexers/>`_, for example "python",
-  "pycon", "java", "cpp", "c", "perl", "javascript", etc.
+- *language* is the language in literal code blocks. It should be
+  one of the *"short names"* listed at Pygments' `Available
+  Lexers`_, for example "python", "pycon", "java", "cpp", "c",
+  "perl", "javascript", etc.
 
 Examples::
 
@@ -719,16 +751,25 @@ Examples::
 
 A few additional notes and hints:
 
-- The syntax highlighting state and language/lexer set by this
+- The syntax highlighting state and language set by this
   directive remain in effect until the next ``sourcecode`` directive
   is encountered in the reST document.
 
 - In order to turn syntax highlighting on (or off) and set the
-  lexer, you will need to use this directive twice.
+  language, you will need to use this directive twice.
 
-- Special note to Pythonistas, there is a separate lexer for
+- Special note to Pythonistas: there is a separate lexer for
   examples of code from the Python interactive prompt and console
   output or doctests.  The alias for that lexer is "pycon".
+
+.. _`Pygments documentation`:
+	http://pygments.org/docs/
+
+.. _`languages supported by Pygments`:
+	http://pygments.org/languages/
+
+.. _`Available Lexers`:
+	http://pygments.org/docs/lexers/
 
 
 The container directive
@@ -828,7 +869,7 @@ For more information about PIL, see: `Python Imaging Library`_.
 The raw directive
 -----------------
 
-The raw directive is supported.  Use output format type "odt".
+The ``raw`` directive is supported.  Use output format type "odt".
 
 You will need to be careful about the formatting of the raw
 content.  In particular, introduced whitespace might be a problem.
@@ -853,11 +894,80 @@ Here is an example::
         level in a module) rather than create a local one.</text:p>
 
 
+The meta directive
+------------------
+
+``odtwriter`` supports the ``meta`` directive.  Two fields are
+recognized: "keywords" and "description".  Here is an example::
+
+    .. meta::
+       :keywords: reStructuredText, docutils, formatting
+       :description lang=en: A reST document, contains formatted
+           text in a formatted style.
+
+To see the results of the ``meta`` directive in ``oowriter``,
+select menu item "File/Properties...", then click on the
+"Description" tab.
+
+
+Footnote references inside footnotes
+------------------------------------
+
+Not supported.
+
+Get a grip.  Be serious.  Try a dose of reality.
+
+``odtwriter`` ignores them.
+
+They cause ``oowriter`` to croak.
+
+
+Page size
+---------
+
+The default page size, in documents generated by ``odtwriter`` is
+``Letter``.  You can change this (for example to ``A4``) by using a
+custom stylesheet.  See `Defining and using a custom stylesheet`_
+for instructions on how to do this.
+
+On machines which support ``paperconf``, ``odtwriter`` can insert
+the default page size for your locale.  In order for this to work,
+the following conditions must be met:
+
+1. The program ``paperconf`` must be available on your system. 
+   ``odtwriter`` uses ``paperconf -s`` to obtain the paper size. 
+   See ``man paperconf`` for more information.
+
+2. The default page height and width must be removed from the
+   ``styles.odt`` used to generate the document.  A Python script
+   ``rst2odt_prepstyles.py`` is distributed with ``odtwriter`` and
+   is installed in the ``bin`` directory.  You can remove the page
+   height and width with something like the following::
+
+       $ rst2odt_prepstyles.py styles.odt
+
+.. warning:: If you edit your stylesheet in ``oowriter`` and then
+    save it, ``oowriter`` automatically inserts a page height and
+    width in the styles for that (stylesheet) document.  If that is
+    not the page size that you want and you want ``odtwriter`` to
+    insert a default page size using ``paperconf``, then you will
+    need to strip the page size from your stylesheet each time you
+    edit that stylesheet with ``oowriter``.
+
+
 Credits
 =======
 
 Stefan Merten designed and implemented the custom style names
 capability.  Thank you, Stefan.
+
+Michael Schutte supports the Debian GNU/Linux distribution of
+``odtwriter``.  Thank you, Michael, for providing and supporting
+the Debian package.
+
+Michael Schutte implemented the fix that enables ``odtwriter`` to
+pick up the default paper size on platforms where the program
+``paperconf`` is available.  Thank you.
 
 
 

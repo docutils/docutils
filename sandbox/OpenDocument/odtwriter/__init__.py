@@ -155,12 +155,12 @@ try:
 except ImportError, exp:
     Image = None
 
-##from IPython.Shell import IPShellEmbed
-##args = ['-pdb', '-pi1', 'In <\\#>: ', '-pi2', '   .\\D.: ',
-##    '-po', 'Out<\\#>: ', '-nosep']
-##ipshell = IPShellEmbed(args,
-##    banner = 'Entering IPython.  Press Ctrl-D to exit.',
-##    exit_msg = 'Leaving Interpreter, back to program.')
+## from IPython.Shell import IPShellEmbed
+## args = ['-pdb', '-pi1', 'In <\\#>: ', '-pi2', '   .\\D.: ',
+##     '-po', 'Out<\\#>: ', '-nosep']
+## ipshell = IPShellEmbed(args,
+##     banner = 'Entering IPython.  Press Ctrl-D to exit.',
+##     exit_msg = 'Leaving Interpreter, back to program.')
 
 
 #
@@ -483,6 +483,22 @@ def register_plugin(name, klass):
 load_plugins()
 
 
+WORD_SPLIT_PAT1 = re.compile(r'\b(\w*)\b\W*')
+
+def split_words(line):
+    # We need whitespace at the end of the string for our regexpr.
+    line += ' '
+    words = []
+    pos1 = 0
+    mo = WORD_SPLIT_PAT1.search(line, pos1)
+    while mo is not None:
+        word = mo.groups()[0]
+        words.append(word)
+        pos1 = mo.end()
+        mo = WORD_SPLIT_PAT1.search(line, pos1)
+    return words
+
+
 #
 # Information about the indentation level for lists nested inside
 #   other contexts, e.g. dictionary lists.
@@ -737,7 +753,7 @@ class Writer(writers.Writer):
             zfile.close()
         else:
             raise RuntimeError, 'stylesheet path must be ' + self.EXTENSION + ' or .xml file.'
-        s1 = self.visitor.add_header_footer(s1)
+        s1 = self.visitor.setup_page(s1)
         return s1
 
     def assemble_parts(self):
@@ -813,6 +829,17 @@ class Writer(writers.Writer):
             el1.text = title
         else:
             el1.text = '[no title]'
+        meta_dict = self.visitor.get_meta_dict()
+        keywordstr = meta_dict.get('keywords')
+        if keywordstr is not None:
+            keywords = split_words(keywordstr)
+            for keyword in keywords:
+                el1 = SubElement(root, 'meta:keyword', nsdict=METNSD)
+                el1.text = keyword
+        description = meta_dict.get('description')
+        if description is not None:
+            el1 = SubElement(root, 'dc:description', nsdict=METNSD)
+            el1.text = description
         s1 = ToString(doc)
         #doc = minidom.parseString(s1)
         #s1 = doc.toprettyxml('  ')
@@ -965,6 +992,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.in_paragraph = False
         self.found_doc_title = False
         self.bumped_list_level_stack = []
+        self.meta_dict = {}
+        self.in_footnote = False
 
     def add_doc_title(self):
         text = self.settings.title
@@ -994,18 +1023,45 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def generate_content_element(self, root):
         return SubElement(root, 'office:text')
 
-    def add_header_footer(self, content):
-        if len(self.header_content) <= 0 and len(self.footer_content) <= 0:
-            return content
+    def setup_page(self, content):
         root_el = etree.fromstring(content)
+        self.setup_paper(root_el)
+        if len(self.header_content) > 0 or len(self.footer_content) > 0:
+            self.add_header_footer(root_el)
+        new_content = etree.tostring(root_el)
+        return new_content
+
+    def setup_paper(self, root_el):
+        try:
+            fin = os.popen("paperconf -s")
+            w, h = map(float, fin.read().split())
+            fin.close()
+        except:
+            w, h = 612, 792     # default to Letter
+        def walk(el):
+            if el.tag == "{%s}page-layout-properties" % SNSD["style"] and \
+		    not el.attrib.has_key("{%s}page-width" % SNSD["fo"]):
+                el.attrib["{%s}page-width" % SNSD["fo"]] = "%.3fpt" % w
+                el.attrib["{%s}page-height" % SNSD["fo"]] = "%.3fpt" % h
+                el.attrib["{%s}margin-left" % SNSD["fo"]] = \
+                        el.attrib["{%s}margin-right" % SNSD["fo"]] = \
+                        "%.3fpt" % (.1 * w)
+                el.attrib["{%s}margin-top" % SNSD["fo"]] = \
+                        el.attrib["{%s}margin-bottom" % SNSD["fo"]] = \
+                        "%.3fpt" % (.1 * h)
+            else:
+                for subel in el.getchildren(): walk(subel)
+        walk(root_el)
+
+    def add_header_footer(self, root_el):
         path = '{%s}master-styles' % (NAME_SPACE_1, )
         master_el = root_el.find(path)
         if master_el is None:
-            return content
+            return
         path = '{%s}master-page' % (SNSD['style'], )
         master_el = master_el.find(path)
         if master_el is None:
-            return content
+            return
         el1 = master_el
         if len(self.header_content) > 0:
             if WhichElementTree == 'lxml':
@@ -1033,8 +1089,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 el2.append(el)
         #new_tree = etree.ElementTree(root_el)
         #new_content = ToString(new_tree)
-        new_content = etree.tostring(root_el)
-        return new_content
 
     def astext(self):
         root = self.content_tree.getroot()
@@ -1057,6 +1111,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def set_embedded_file_list(self, embedded_file_list):
         self.embedded_file_list = embedded_file_list
     def get_embedded_file_list(self): return self.embedded_file_list
+    def get_meta_dict(self): return self.meta_dict
 
     #
     # Utility methods
@@ -1096,6 +1151,14 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             attrib={'text:style-name': self.rststyle('strong')})
         el1.text = label
         el = self.append_p('blockindent')
+        return el
+
+    def generate_labeled_line(self, node, label):
+        el = self.append_p('textbody')
+        el1 = SubElement(el, 'text:span',
+            attrib={'text:style-name': self.rststyle('strong')})
+        el1.text = label
+        el1.tail = node.astext()
         return el
 
     def encode(self, text):
@@ -1170,6 +1233,10 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def depart_Text(self, node):
         pass
 
+    #
+    # Pre-defined fields
+    #
+    
     def visit_address(self, node):
         #ipshell('At visit_address')
         el = self.generate_labeled_block(node, 'Address: ')
@@ -1178,16 +1245,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def depart_address(self, node):
         self.set_to_parent()
 
-    def visit_attribution(self, node):
-        #ipshell('At visit_attribution')
-        el = self.append_p('attribution', node.astext())
-
-    def depart_attribution(self, node):
-        #ipshell('At depart_attribution')
-        pass
-
     def visit_author(self, node):
-        #self.trace_visit_node(node)
         if isinstance(node.parent, nodes.authors):
             el = self.append_p('blockindent')
         else:
@@ -1195,7 +1253,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.set_current_element(el)
 
     def depart_author(self, node):
-        #self.trace_depart_node(node)
         self.set_to_parent()
 
     def visit_authors(self, node):
@@ -1209,6 +1266,62 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def depart_authors(self, node):
         #self.trace_depart_node(node)
+        pass
+
+    def visit_contact(self, node):
+        el = self.generate_labeled_block(node, 'Contact: ')
+        self.set_current_element(el)
+
+    def depart_contact(self, node):
+        self.set_to_parent()
+
+    def visit_copyright(self, node):
+        el = self.generate_labeled_block(node, 'Copyright: ')
+        self.set_current_element(el)
+
+    def depart_copyright(self, node):
+        self.set_to_parent()
+
+    def visit_date(self, node):
+        self.generate_labeled_line(node, 'Date: ')
+
+    def depart_date(self, node):
+        pass
+
+    def visit_organization(self, node):
+        el = self.generate_labeled_block(node, 'Organization: ')
+        self.set_current_element(el)
+
+    def depart_organization(self, node):
+        self.set_to_parent()
+
+    def visit_status(self, node):
+        el = self.generate_labeled_block(node, 'Status: ')
+        self.set_current_element(el)
+
+    def depart_status(self, node):
+        self.set_to_parent()
+
+    def visit_revision(self, node):
+        self.generate_labeled_line(node, 'Revision: ')
+
+    def depart_revision(self, node):
+        pass
+
+    def visit_version(self, node):
+        el = self.generate_labeled_line(node, 'Version: ')
+        #self.set_current_element(el)
+
+    def depart_version(self, node):
+        #self.set_to_parent()
+        pass
+
+    def visit_attribution(self, node):
+        #ipshell('At visit_attribution')
+        el = self.append_p('attribution', node.astext())
+
+    def depart_attribution(self, node):
+        #ipshell('At depart_attribution')
         pass
 
     def visit_block_quote(self, node):
@@ -1295,23 +1408,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         styles = node.attributes.get('classes', ())
         if len(styles) > 0:
             self.paragraph_style_stack.pop()
-
-    def visit_copyright(self, node):
-        el = self.generate_labeled_block(node, 'Copyright: ')
-        self.set_current_element(el)
-
-    def depart_copyright(self, node):
-        self.set_to_parent()
-
-    def visit_date(self, node):
-        el = self.append_p('textbody')
-        el1 = SubElement(el, 'text:span',
-            attrib={'text:style-name': self.rststyle('strong')})
-        el1.text = 'Date: '
-        el1.tail = node.astext()
-
-    def depart_date(self, node):
-        pass
 
     def visit_decoration(self, node):
         #global DEBUG
@@ -1526,6 +1622,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_footnote(self, node):
         #ipshell('At visit_footnote')
+        self.in_footnote = True
         ids = node.attributes['ids']
         el1 = None
         for id in ids:
@@ -1542,6 +1639,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def depart_footnote(self, node):
         #ipshell('At depart_footnote')
+        self.in_footnote = False
         if self.footnote_found:
             self.current_element.text = ''
             self.set_to_parent()
@@ -1551,19 +1649,20 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_footnote_reference(self, node):
         #ipshell('At visit_footnote_reference')
-        id = node.attributes['refid']
-        children = self.current_element.getchildren()
-        if len(children) > 0:
-            if children[-1].tail and children[-1].tail[-1] == ' ':
-                children[-1].tail = children[-1].tail[:-1]
-        elif (self.current_element.text and
-            self.current_element.text[-1] == ' '):
-            self.current_element.text = self.current_element.text[:-1]
-        el1 = self.append_child('text:note', attrib={
-            'text:id': '%s' % (id, ),
-            'text:note-class': 'footnote',
-            })
-        self.footnote_dict[id] = el1
+        if not self.in_footnote:
+            id = node.attributes['refid']
+            children = self.current_element.getchildren()
+            if len(children) > 0:
+                if children[-1].tail and children[-1].tail[-1] == ' ':
+                    children[-1].tail = children[-1].tail[:-1]
+            elif (self.current_element.text and
+                self.current_element.text[-1] == ' '):
+                self.current_element.text = self.current_element.text[:-1]
+            el1 = self.append_child('text:note', attrib={
+                'text:id': '%s' % (id, ),
+                'text:note-class': 'footnote',
+                })
+            self.footnote_dict[id] = el1
         raise nodes.SkipChildren()
 
     def depart_footnote_reference(self, node):
@@ -1989,6 +2088,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         lines1.append(my_lines_str2)
         lines1.append('</wrappertag1>')
         s1 = ''.join(lines1)
+        if WhichElementTree != "lxml":
+            s1 = s1.encode("utf-8")
         el1 = etree.fromstring(s1)
         children = el1.getchildren()
         for child in children:
@@ -2000,15 +2101,17 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     visit_doctest_block = visit_literal_block
     depart_doctest_block = depart_literal_block
 
-    def show_message(self, msg):
-        #print '*** tagname: [[%s]] msg: %s' % (msg.starttag(), msg.astext(), )
-        #print '*** msg: %s' % (dir(msg), )
-        #print '*** msg.asdom(): %s' % (msg.asdom(), )
-        print '*** msg.astext(): %s' % (msg.astext(), )
+    def visit_meta(self, node):
+        #ipshell('At visit_meta')
+        name = node.attributes.get('name')
+        content = node.attributes.get('content')
+        if name is not None and content is not None:
+            self.meta_dict[name] = content
+
+    def depart_meta(self, node):
+        pass
 
     def visit_option_list(self, node):
-        #self.document.reporter.debug_flag = 1
-        #self.document.reporter.attach_observer(self.show_message)
         table_name = 'tableoption'
         #
         # Generate automatic styles
@@ -2188,23 +2291,30 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             formatlist = formats.split()
             if 'odt' in formatlist:
                 rawstr = node.astext()
-                #print '***'
-                #print '*** Warning: raw directive not implemented.  Ignoring content.'
-                #print '***'
-                #print rawstr
-                #print '***'
                 attrstr = ' '.join(['%s="%s"' % (k, v, )
                     for k,v in CONTENT_NAMESPACE_ATTRIB.items()])
                 contentstr = '<stuff %s>%s</stuff>' % (attrstr, rawstr, )
+                if WhichElementTree != "lxml":
+                    content = content.encode("utf-8")
                 content = etree.fromstring(contentstr)
                 elements = content.getchildren()
                 if len(elements) > 0:
                     el1 = elements[0]
-                    self.current_element.append(el1)
+                    if self.in_header:
+                        pass
+                    elif self.in_footer:
+                        pass
+                    else:
+                        self.current_element.append(el1)
         raise nodes.SkipChildren()
 
     def depart_raw(self, node):
-        pass
+        if self.in_header:
+            pass
+        elif self.in_footer:
+            pass
+        else:
+            pass
 
     def visit_reference(self, node):
         #self.trace_visit_node(node)
@@ -2237,16 +2347,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         #self.trace_depart_node(node)
         if node.has_key('refuri'):
             self.set_to_parent()
-
-    def visit_revision(self, node):
-        el = self.append_p('textbody')
-        el1 = SubElement(el, 'text:span',
-            attrib={'text:style-name': self.rststyle('strong')})
-        el1.text = 'Revision: '
-        el1.tail = node.astext()
-
-    def depart_revision(self, node):
-        pass
 
     def visit_rubric(self, node):
         style_name = self.rststyle('rubric')
