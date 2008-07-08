@@ -1398,6 +1398,13 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def depart_comment(self, node):
         pass
 
+    def visit_compound(self, node):
+        # The compound directive currently receives no special treatment.
+        pass
+
+    def depart_compound(self, node):
+        pass
+
     def visit_container(self, node):
         styles = node.attributes.get('classes', ())
         if len(styles) > 0:
@@ -1441,6 +1448,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         pass
 
     def visit_term(self, node):
+        #ipshell('At visit_term')
         el = self.append_p('textbody')
         el1 = SubElement(el, 'text:span',
             attrib={'text:style-name': self.rststyle('strong')})
@@ -1448,8 +1456,22 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.set_current_element(el1)
 
     def depart_term(self, node):
+        #ipshell('At depart_term')
         self.set_to_parent()
         self.set_to_parent()
+
+    def visit_classifier(self, node):
+        #ipshell('At visit_classifier')
+        els = self.current_element.getchildren()
+        if len(els) > 0:
+            el = els[-1]
+            el1 = SubElement(el, 'text:span',
+                attrib={'text:style-name': self.rststyle('emphasis')
+                })
+            el1.text = ' (%s)' % (node.astext(), )
+
+    def depart_classifier(self, node):
+        pass
 
     def visit_document(self, node):
         #ipshell('At visit_document')
@@ -1985,6 +2007,14 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 return True
             node1 = node1.parent
         return False
+
+    def visit_legend(self, node):
+        # Currently, the legend receives *no* special treatment.
+        #ipshell('At visit_legend')
+        pass
+
+    def depart_legend(self, node):
+        pass
 
     def visit_line(self, node):
         #ipshell('At visit_line')
@@ -2706,4 +2736,25 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             el1.text = '%s!' % (label.capitalize(), )
         s1 = self.rststyle('admon-%s-body', ( label, ))
         self.paragraph_style_stack.append(s1)
+
+    #
+    # Roles (e.g. subscript, superscript, strong, ...
+    #
+    def visit_subscript(self, node):
+        el = self.append_child('text:span', attrib={
+            'text:style-name': 'rststyle-subscript',
+            })
+        self.set_current_element(el)
+
+    def depart_subscript(self, node):
+        self.set_to_parent()
+
+    def visit_superscript(self, node):
+        el = self.append_child('text:span', attrib={
+            'text:style-name': 'rststyle-superscript',
+            })
+        self.set_current_element(el)
+
+    def depart_superscript(self, node):
+        self.set_to_parent()
 
