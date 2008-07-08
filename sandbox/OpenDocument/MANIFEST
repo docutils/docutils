@@ -5,6 +5,7 @@ MANIFEST
 odtwriter/__init__.py
 odtwriter/styles.odt
 tools/rst2odt.py
+tools/rst2odt_prepstyles.py
 docs/odtwriter.txt
 docs/odtwriter.html
 docs/odtwriter.odt

@@ -8,7 +8,7 @@ Odtwriter for Docutils
 :address: dkuhlman@rexx.com
     http://www.rexx.com/~dkuhlman
 
-:revision: 1.2c
+:revision: 1.3b
 :date: |date|
 
 .. |date| date:: %B %d, %Y
@@ -54,8 +54,8 @@ Where to get it
 The source distribution of 
 ODF/ODT writer for Docutils 
 is here:
-`http://www.rexx.com/~dkuhlman/odtwriter-1.2b.tar.gz
-<http://www.rexx.com/~dkuhlman/odtwriter-1.2b.tar.gz>`_.
+`http://www.rexx.com/~dkuhlman/odtwriter-1.3b.tar.gz
+<http://www.rexx.com/~dkuhlman/odtwriter-1.3b.tar.gz>`_.
 
 ``odtwriter`` is also available via Subversion from
 the Docutils repository under

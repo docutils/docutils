@@ -38,6 +38,14 @@ For more information on Docutils, see: http://docutils.sourceforge.net/
 History
 =======
 
+2008/07/08 -- Version 1.3b
+--------------------------
+
+Added support for sub-script and super-script (:sub: and :sup:).
+
+Added support for classifier on definition list terms.
+
+
 2008/07/03 -- Version 1.3a
 --------------------------
 
