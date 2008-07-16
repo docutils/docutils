@@ -241,6 +241,10 @@ is for which (pred elem) is true)"
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Mode definition.
 
+(defconst rst-use-unicode
+  (string-equal "\u0020" " ")
+  "Non-nil if we can use unicode characters.")
+
 ;; Key bindings.
 (defvar rst-mode-map
   (let ((map (make-sparse-keymap)))
@@ -347,6 +351,15 @@ is for which (pred elem) is true)"
     (modify-syntax-entry ?\\ "\\" st)
     (modify-syntax-entry ?| "." st)
     (modify-syntax-entry ?_ "." st)
+    (when rst-use-unicode
+      ;; Use strings because unicode literals are not understood before Emacs
+      ;; 22
+      (modify-syntax-entry (aref "\u00ab" 0) "." st)
+      (modify-syntax-entry (aref "\u00bb" 0) "." st)
+      (modify-syntax-entry (aref "\u2018" 0) "." st)
+      (modify-syntax-entry (aref "\u2019" 0) "." st)
+      (modify-syntax-entry (aref "\u201c" 0) "." st)
+      (modify-syntax-entry (aref "\u201d" 0) "." st))
 
     st)
   "Syntax table used while in `rst-mode'.")
@@ -2732,7 +2745,7 @@ details check the Rst Faces Defaults group."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Font lock
 
-(defvar rst-use-char-classes
+(defconst rst-use-char-classes
   (string-match "[[:alpha:]]" "b")
   "Non-nil if we can use the character classes in our regexps.")
 
@@ -2752,9 +2765,17 @@ details check the Rst Faces Defaults group."
 	 ;; explicit markup start
 	 (re-ems (concat re-emt re-hws "+"))
 	 ;; inline markup prefix
-	 (re-imp1 (concat "\\(^\\|" re-hws "\\|[-'\"([{</:]\\)"))
+	 (re-imp1 (concat "\\(^\\|" re-hws "\\|[-'\"([{<"
+			  (if rst-use-unicode
+			      "\u2018\u201c\u00ab\u2019"
+			    "")
+			  "/:]\\)"))
 	 ;; inline markup suffix
-	 (re-ims1 (concat "\\(" re-hws "\\|[]-'\")}>/:.,;!?\\]\\|$\\)"))
+	 (re-ims1 (concat "\\(" re-hws "\\|[]-'\")}>"
+			  (if rst-use-unicode
+			      "\u2019\u201d\u00bb"
+			    "")
+			  "/:.,;!?\\]\\|$\\)"))
 	 ;; symbol character
 	 (re-sym1 "\\(\\sw\\|\\s_\\)")
 	 ;; inline markup content begin
