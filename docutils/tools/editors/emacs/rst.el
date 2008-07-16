@@ -390,7 +390,10 @@ Turning on `rst-mode' calls the normal hooks `text-mode-hook' and
 `rst-mode-hook'. This mode also supports font-lock highlighting."
 
   (set (make-local-variable 'paragraph-separate) paragraph-start)
-  (set (make-local-variable 'indent-line-function) 'indent-relative-maybe)
+  (set (make-local-variable 'indent-line-function)
+       (if (<= emacs-major-version 21)
+	   'indent-relative-maybe
+	 'indent-relative))
   (set (make-local-variable 'paragraph-start)
        "\f\\|>*[ \t]*$\\|>*[ \t]*[-+*] \\|>*[ \t]*[0-9#]+\\. ")
   (set (make-local-variable 'adaptive-fill-mode) t)
