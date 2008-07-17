@@ -21,6 +21,9 @@ Changes Since 0.5
 
   - Added ``Element.__contains__`` method, for the in-operator.
 
+* docutils/writers/latex2e/__init__.py:
+
+  - Change: has_key for dictionaries (not Nodes) to in-operator.
 
 Release 0.5 (2008-06-25)
 ========================
