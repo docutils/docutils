@@ -175,7 +175,7 @@ class MiscTests(unittest.TestCase):
         node_class_names = []
         for x in dir(nodes):
             c = getattr(nodes, x)
-            if isinstance(c, ClassType) and issubclass(c, nodes.Node) \
+            if isinstance(c, (type, ClassType)) and issubclass(c, nodes.Node) \
                    and len(c.__bases__) > 1:
                 node_class_names.append(x)
         node_class_names.sort()
