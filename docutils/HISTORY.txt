@@ -17,6 +17,10 @@
 Changes Since 0.5
 =================
 
+* docutils/nodes.py:
+
+  - Added ``Element.__contains__`` method, for the in-operator.
+
 
 Release 0.5 (2008-06-25)
 ========================

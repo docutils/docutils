@@ -550,6 +550,9 @@ class Element(Node):
 
     has_key = hasattr
 
+    # support operator in
+    __contains__ = hasattr
+
     def append(self, item):
         self.setup_child(item)
         self.children.append(item)
