@@ -296,13 +296,13 @@ class Babel:
         return text.replace('"', self.double_quote_replacment)
 
     def get_language(self):
-        if self._ISO639_TO_BABEL.has_key(self.language):
+        if self.language in self._ISO639_TO_BABEL:
             return self._ISO639_TO_BABEL[self.language]
         else:
             # support dialects.
-            l = self.language.split("_")[0]
-            if self._ISO639_TO_BABEL.has_key(l):
-                return self._ISO639_TO_BABEL[l]
+            lang = self.language.split("_")[0]
+            if lang in self._ISO639_TO_BABEL:
+                return self._ISO639_TO_BABEL[lang]
         return None
 
 
@@ -428,7 +428,7 @@ class Table:
     def set(self,attr,value):
         self._attrs[attr] = value
     def get(self,attr):
-        if self._attrs.has_key(attr):
+        if attr in self._attrs:
             return self._attrs[attr]
         return None
     def get_vertical_bar(self):
@@ -831,7 +831,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 #"iso-8859-8": ""   # hebrew
                 #"iso-8859-10": ""   # latin6, more complete iso-8859-4
              }
-        if tr.has_key(docutils_encoding.lower()):
+        if docutils_encoding.lower() in tr:
             return tr[docutils_encoding.lower()]
         # convert: latin-1 and utf-8 and similar things
         return docutils_encoding.replace("_", "").replace("-", "").lower()
@@ -867,7 +867,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         return text
 
     def ensure_math(self, text):
-        if not self.__dict__.has_key('ensure_math_re'):
+        if not 'ensure_math_re' in self.__dict__:
             chars = {
                 # lnot,pm,twosuperior,threesuperior,mu,onesuperior,times,div
                 'latin1' : '\xac\xb1\xb2\xb3\xb5\xb9\xd7\xf7' ,
@@ -891,10 +891,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # compile the regexps once. do it here so one can see them.
         #
         # first the braces.
-        if not self.__dict__.has_key('encode_re_braces'):
+        if not 'encode_re_braces' in self.__dict__:
             self.encode_re_braces = re.compile(r'([{}])')
         text = self.encode_re_braces.sub(r'{\\\1}',text)
-        if not self.__dict__.has_key('encode_re_bslash'):
+        if not 'encode_re_bslash' in self.__dict__:
             # find backslash: except in the form '{\{}' or '{\}}'.
             self.encode_re_bslash = re.compile(r'(?<!{)(\\)(?![{}]})')
         # then the backslash: except in the form from line above:
@@ -1418,7 +1418,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         enum_type = "arabic"
         if node.has_key('enumtype'):
             enum_type = node['enumtype']
-        if enum_style.has_key(enum_type):
+        if enum_type in enum_style:
             enum_type = enum_style[enum_type]
 
         counter_name = "listcnt%d" % len(self._enumeration_counters)
