@@ -149,8 +149,9 @@ Project Files & Directories
 * docutils: The project source directory, installed as a Python
   package.
 
-* extras: Directory for third-party modules that Docutils depends on.
-  These are only installed if they're not already present.
+* extras: Directory for third-party modules that Docutils depends on
+  (roman.py, optparse.py, textwrap.py).  These are only installed if
+  they're not already present.
 
 * docs: The project documentation directory.  Read ``docs/index.txt``
   for an overview.
