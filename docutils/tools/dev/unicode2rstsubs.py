@@ -129,11 +129,11 @@ class CharacterEntitySetExtractor:
         set = self.entity_set_name(attributes['set'])
         if not set:
             return
-        if set not in self.sets:
+        if not self.sets.has_key(set):
             print 'bad set: %r' % set
             return
         entity = attributes['id']
-        assert (entity not in self.sets[set]
+        assert (not self.sets[set].has_key(entity)
                 or self.sets[set][entity] == self.charid), \
                 ('sets[%r][%r] == %r (!= %r)'
                  % (set, entity, self.sets[set][entity], self.charid))
