@@ -95,9 +95,9 @@ class FunctionalTestCase(DocutilsTestSupport.CustomTestCase):
         execfile(join_path(datadir, 'tests', '_default.py'), namespace)
         execfile(self.configfile, namespace)
         # Check for required settings:
-        assert 'test_source' in namespace,\
+        assert namespace.has_key('test_source'),\
                "No 'test_source' supplied in " + self.configfile
-        assert 'test_destination' in namespace,\
+        assert namespace.has_key('test_destination'),\
                "No 'test_destination' supplied in " + self.configfile
         # Set source_path and destination_path if not given:
         namespace.setdefault('source_path',
@@ -151,7 +151,7 @@ class FunctionalTestCase(DocutilsTestSupport.CustomTestCase):
             print >>sys.stderr, diff
             raise
         # Execute optional function containing extra tests:
-        if '_test_more' in namespace:
+        if namespace.has_key('_test_more'):
             namespace['_test_more'](join_path(datadir, 'expected'),
                                     join_path(datadir, 'output'),
                                     self, namespace)

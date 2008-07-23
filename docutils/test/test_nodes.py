@@ -91,7 +91,7 @@ class ElementTests(unittest.TestCase):
 
     def test_normal_attributes(self):
         element = nodes.Element()
-        self.assert_('foo' not in element)
+        self.assert_(not element.has_key('foo'))
         self.assertRaises(KeyError, element.__getitem__, 'foo')
         element['foo'] = 'sometext'
         self.assertEquals(element['foo'], 'sometext')

@@ -76,10 +76,10 @@ class LanguageTestCase(DocutilsTestSupport.CustomTestCase):
         missing  = []   # in ref but not in l.
         too_much = []   # in l but not in ref.
         for label in ref_dict.keys():
-            if label not in l_dict:
+            if not l_dict.has_key(label):
                 missing.append(label)
         for label in l_dict.keys():
-            if label not in ref_dict:
+            if not ref_dict.has_key(label):
                 too_much.append(label)
         return (missing, too_much)
 
@@ -140,7 +140,7 @@ class LanguageTestCase(DocutilsTestSupport.CustomTestCase):
         canonical.sort()
         canonical.remove('restructuredtext-test-directive')
         for name in canonical:
-            if name not in inverted:
+            if not inverted.has_key(name):
                 failures.append('"%s": translation missing' % name)
         if failures:
             text = ('Module docutils.parsers.rst.languages.%s:\n    %s'
@@ -175,7 +175,7 @@ class LanguageTestCase(DocutilsTestSupport.CustomTestCase):
         canonical.sort()
         canonical.remove('restructuredtext-unimplemented-role')
         for name in canonical:
-            if name not in inverted:
+            if not inverted.has_key(name):
                 failures.append('"%s": translation missing' % name)
         if failures:
             text = ('Module docutils.parsers.rst.languages.%s:\n    %s'
