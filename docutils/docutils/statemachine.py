@@ -377,7 +377,7 @@ class StateMachine:
             self.next_line(len(block) - 1)
             return block
         except UnexpectedIndentationError, error:
-            block, source, lineno = error
+            block, source, lineno = error.args
             self.next_line(len(block) - 1) # advance to last line of block
             raise
 
@@ -441,7 +441,7 @@ class StateMachine:
         added.
         """
         statename = state_class.__name__
-        if self.states.has_key(statename):
+        if statename in self.states:
             raise DuplicateStateError(statename)
         self.states[statename] = state_class(self, self.debug)
 
@@ -629,9 +629,9 @@ class State:
         Exceptions: `DuplicateTransitionError`, `UnknownTransitionError`.
         """
         for name in names:
-            if self.transitions.has_key(name):
+            if name in self.transitions:
                 raise DuplicateTransitionError(name)
-            if not transitions.has_key(name):
+            if name not in transitions:
                 raise UnknownTransitionError(name)
         self.transition_order[:0] = names
         self.transitions.update(transitions)
@@ -644,7 +644,7 @@ class State:
 
         Exception: `DuplicateTransitionError`.
         """
-        if self.transitions.has_key(name):
+        if name in self.transitions:
             raise DuplicateTransitionError(name)
         self.transition_order[:0] = [name]
         self.transitions[name] = transition

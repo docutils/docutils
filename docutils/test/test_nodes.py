@@ -39,6 +39,10 @@ class TextTests(unittest.TestCase):
     def test_pformat(self):
         self.assertEquals(self.text.pformat(), 'Line 1.\nLine 2.\n')
 
+    def test_asciirestriction(self):
+        self.assertRaises(UnicodeError, nodes.Text, 'hol%s' % chr(224))
+        # more specifically: UnicodeDecodeError since py2.3
+
 
 class ElementTests(unittest.TestCase):
 
@@ -91,7 +95,7 @@ class ElementTests(unittest.TestCase):
 
     def test_normal_attributes(self):
         element = nodes.Element()
-        self.assert_(not element.has_key('foo'))
+        self.assert_('foo' not in element)
         self.assertRaises(KeyError, element.__getitem__, 'foo')
         element['foo'] = 'sometext'
         self.assertEquals(element['foo'], 'sometext')

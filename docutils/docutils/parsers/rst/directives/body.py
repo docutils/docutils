@@ -39,7 +39,7 @@ class BasePseudoSection(Directive):
         textnodes, messages = self.state.inline_text(title_text, self.lineno)
         titles = [nodes.title(title_text, '', *textnodes)]
         # Sidebar uses this code.
-        if self.options.has_key('subtitle'):
+        if 'subtitle' in self.options:
             textnodes, more_messages = self.state.inline_text(
                 self.options['subtitle'], self.lineno)
             titles.append(nodes.subtitle(self.options['subtitle'], '',

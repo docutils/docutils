@@ -1,5 +1,5 @@
 # initialize with the settings & definitions from test 1:
-execfile('functional/tests/standalone_rst_s5_html_1.py')
+exec(open('functional/tests/standalone_rst_s5_html_1.py').read())
 
 # overrides specific to this test:
 test_destination = 'standalone_rst_s5_html_2.html'

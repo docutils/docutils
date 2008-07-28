@@ -80,7 +80,7 @@ class Contents(Transform):
 
     def apply(self):
         details = self.startnode.details
-        if details.has_key('local'):
+        if 'local' in details:
             startnode = self.startnode.parent.parent
             while not (isinstance(startnode, nodes.section)
                        or isinstance(startnode, nodes.document)):
@@ -89,7 +89,7 @@ class Contents(Transform):
         else:
             startnode = self.document
         self.toc_id = self.startnode.parent['ids'][0]
-        if details.has_key('backlinks'):
+        if 'backlinks' in details:
             self.backlinks = details['backlinks']
         else:
             self.backlinks = self.document.settings.toc_backlinks

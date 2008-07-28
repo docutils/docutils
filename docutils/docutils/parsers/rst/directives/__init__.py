@@ -76,7 +76,7 @@ def directive(directive_name, language_module, document):
     normname = directive_name.lower()
     messages = []
     msg_text = []
-    if _directives.has_key(normname):
+    if normname in _directives:
         return _directives[normname], messages
     canonicalname = None
     try:

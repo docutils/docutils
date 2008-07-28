@@ -86,7 +86,7 @@ class Include(Directive):
                 raise self.severe('Problem with "end-before" option of "%s" '
                                   'directive:\nText not found.' % self.name)
             include_text = include_text[:before_index]
-        if self.options.has_key('literal'):
+        if 'literal' in self.options:
             literal_block = nodes.literal_block(include_text, include_text,
                                                 source=path)
             literal_block.line = 1
@@ -120,20 +120,20 @@ class Raw(Directive):
     def run(self):
         if (not self.state.document.settings.raw_enabled
             or (not self.state.document.settings.file_insertion_enabled
-                and (self.options.has_key('file')
-                     or self.options.has_key('url')))):
+                and ('file' in self.options
+                     or 'url' in self.options))):
             raise self.warning('"%s" directive disabled.' % self.name)
         attributes = {'format': ' '.join(self.arguments[0].lower().split())}
         encoding = self.options.get(
             'encoding', self.state.document.settings.input_encoding)
         if self.content:
-            if self.options.has_key('file') or self.options.has_key('url'):
+            if 'file' in self.options or 'url' in self.options:
                 raise self.error(
                     '"%s" directive may not both specify an external file '
                     'and have content.' % self.name)
             text = '\n'.join(self.content)
-        elif self.options.has_key('file'):
-            if self.options.has_key('url'):
+        elif 'file' in self.options:
+            if 'url' in self.options:
                 raise self.error(
                     'The "file" and "url" options may not be simultaneously '
                     'specified for the "%s" directive.' % self.name)
@@ -159,7 +159,7 @@ class Raw(Directive):
                     'Problem with "%s" directive:\n%s: %s'
                     % (self.name, error.__class__.__name__, error))
             attributes['source'] = path
-        elif self.options.has_key('url'):
+        elif 'url' in self.options:
             source = self.options['url']
             # Do not import urllib2 at the top of the module because
             # it may fail due to broken SSL dependencies, and it takes
@@ -244,12 +244,12 @@ class Unicode(Directive):
                 'Invalid context: the "%s" directive can only be used within '
                 'a substitution definition.' % self.name)
         substitution_definition = self.state_machine.node
-        if self.options.has_key('trim'):
+        if 'trim' in self.options:
             substitution_definition.attributes['ltrim'] = 1
             substitution_definition.attributes['rtrim'] = 1
-        if self.options.has_key('ltrim'):
+        if 'ltrim' in self.options:
             substitution_definition.attributes['ltrim'] = 1
-        if self.options.has_key('rtrim'):
+        if 'rtrim' in self.options:
             substitution_definition.attributes['rtrim'] = 1
         codes = self.comment_pattern.split(self.arguments[0])[0].split()
         element = nodes.Element()
@@ -349,7 +349,7 @@ class Role(Directive):
                 nodes.literal_block(self.block_text, self.block_text),
                 line=self.lineno)
             return messages + [error]
-        if not options.has_key('class'):
+        if 'class' not in options:
             try:
                 options['class'] = directives.class_option(new_role_name)
             except ValueError, detail:
@@ -373,7 +373,7 @@ class DefaultRole(Directive):
 
     def run(self):
         if not self.arguments:
-            if roles._roles.has_key(''):
+            if '' in roles._roles:
                 # restore the "default" default role
                 del roles._roles['']
             return []

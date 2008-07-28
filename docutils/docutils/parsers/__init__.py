@@ -41,7 +41,7 @@ _parser_aliases = {
 def get_parser_class(parser_name):
     """Return the Parser class from the `parser_name` module."""
     parser_name = parser_name.lower()
-    if _parser_aliases.has_key(parser_name):
+    if parser_name in _parser_aliases:
         parser_name = _parser_aliases[parser_name]
     module = __import__(parser_name, globals(), locals())
     return module.Parser

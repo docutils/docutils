@@ -1124,9 +1124,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.inside_citation_reference_label = 1
         else:
             href = ''
-            if node.has_key('refid'):
+            if 'refid' in node:
                 href = node['refid']
-            elif node.has_key('refname'):
+            elif 'refname' in node:
                 href = self.document.nameids[node['refname']]
             self.body.append('[\\hyperlink{%s}{' % href)
 
@@ -1343,17 +1343,17 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # IN WORK BUG TODO HACK continues here
         # multirow in LaTeX simply will enlarge the cell over several rows
         # (the following n if n is positive, the former if negative).
-        if node.has_key('morerows') and node.has_key('morecols'):
+        if 'morerows' in node and 'morecols' in node:
             raise NotImplementedError('Cells that '
             'span multiple rows *and* columns are not supported, sorry.')
-        if node.has_key('morerows'):
+        if 'morerows' in node:
             count = node['morerows'] + 1
             self.active_table.set_rowspan(self.active_table.get_entry_number()-1,count)
             self.body.append('\\multirow{%d}{%s}{' % \
                     (count,self.active_table.get_column_width()))
             self.context.append('}')
             # BUG following rows must have empty cells.
-        elif node.has_key('morecols'):
+        elif 'morecols' in node:
             # the vertical bar before column is missing if it is the first column.
             # the one after always.
             if self.active_table.get_entry_number() == 1:
@@ -1401,10 +1401,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 'lowerroman':'roman',
                 'upperroman':'Roman' }
         enum_suffix = ""
-        if node.has_key('suffix'):
+        if 'suffix' in node:
             enum_suffix = node['suffix']
         enum_prefix = ""
-        if node.has_key('prefix'):
+        if 'prefix' in node:
             enum_prefix = node['prefix']
         if self.compound_enumerators:
             pref = ""
@@ -1416,7 +1416,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             for ctype, cname in self._enumeration_counters:
                 enum_prefix += '\\%s{%s}.' % (ctype, cname)
         enum_type = "arabic"
-        if node.has_key('enumtype'):
+        if 'enumtype' in node:
             enum_type = node['enumtype']
         if enum_type in enum_style:
             enum_type = enum_style[enum_type]
@@ -1436,7 +1436,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('{\n')
         self.body.append('\\usecounter{%s}\n' % counter_name)
         # set start after usecounter, because it initializes to zero.
-        if node.has_key('start'):
+        if 'start' in node:
             self.body.append('\\addtocounter{%s}{%d}\n' \
                     % (counter_name,node['start']-1))
         ## set rightmargin equal to leftmargin
@@ -1500,7 +1500,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append(':]')
 
     def visit_figure(self, node):
-        if (not node.attributes.has_key('align') or
+        if ('align' not in node.attributes or
             node.attributes['align'] == 'center'):
             # centering does not add vertical space like center.
             align = '\n\\centering'
@@ -1547,9 +1547,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append("\\footnotemark["+self.encode(node.astext())+"]")
             raise nodes.SkipNode
         href = ''
-        if node.has_key('refid'):
+        if 'refid' in node:
             href = node['refid']
-        elif node.has_key('refname'):
+        elif 'refname' in node:
             href = self.document.nameids[node['refname']]
         format = self.settings.footnote_references
         if format == 'brackets':
@@ -1633,18 +1633,18 @@ class LaTeXTranslator(nodes.NodeVisitor):
         post = []
         include_graphics_options = []
         inline = isinstance(node.parent, nodes.TextElement)
-        if attrs.has_key('scale'):
+        if 'scale' in attrs:
             # Could also be done with ``scale`` option to
             # ``\includegraphics``; doing it this way for consistency.
             pre.append('\\scalebox{%f}{' % (attrs['scale'] / 100.0,))
             post.append('}')
-        if attrs.has_key('width'):
+        if 'width' in attrs:
             include_graphics_options.append('width=%s' % (
                             self.latex_image_length(attrs['width']), ))
-        if attrs.has_key('height'):
+        if 'height' in attrs:
             include_graphics_options.append('height=%s' % (
                             self.latex_image_length(attrs['height']), ))
-        if attrs.has_key('align'):
+        if 'align' in attrs:
             align_prepost = {
                 # By default latex aligns the top of an image.
                 (1, 'top'): ('', ''),
@@ -1870,16 +1870,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # BUG: hash_char "#" is trouble some in LaTeX.
         # mbox and other environment do not like the '#'.
         hash_char = '\\#'
-        if node.has_key('refuri'):
+        if 'refuri' in node:
             href = node['refuri'].replace('#',hash_char)
-        elif node.has_key('refid'):
+        elif 'refid' in node:
             href = hash_char + node['refid']
-        elif node.has_key('refname'):
+        elif 'refname' in node:
             href = hash_char + self.document.nameids[node['refname']]
         else:
             raise AssertionError('Unknown reference.')
         self.body.append('\\href{%s}{' % href.replace("%", "\\%"))
-        if self._reference_label and not node.has_key('refuri'):
+        if self._reference_label and 'refuri' not in node:
             self.body.append('\\%s{%s}}' % (self._reference_label,
                         href.replace(hash_char, '')))
             raise nodes.SkipNode
@@ -1993,8 +1993,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_target(self, node):
         # BUG: why not (refuri or refid or refname) means not footnote ?
-        if not (node.has_key('refuri') or node.has_key('refid')
-                or node.has_key('refname')):
+        if not ('refuri' in node or 'refid' in node
+                or 'refname' in node):
             for id in node['ids']:
                 self.body.append('\\hypertarget{%s}{' % id)
             self.context.append('}' * len(node['ids']))

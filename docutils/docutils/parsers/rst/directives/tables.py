@@ -49,7 +49,7 @@ class Table(Directive):
         source = self.state_machine.get_source(self.lineno - 1)
         table_head = []
         max_header_cols = 0
-        if self.options.has_key('header'):   # separate table header in option
+        if 'header' in self.options:   # separate table header in option
             rows, max_header_cols = self.parse_csv_data_into_rows(
                 self.options['header'].split('\n'), self.HeaderDialect(),
                 source)
@@ -88,7 +88,7 @@ class Table(Directive):
                 raise SystemMessagePropagation(error)
 
     def get_column_widths(self, max_cols):
-        if self.options.has_key('widths'):
+        if 'widths' in self.options:
             col_widths = self.options['widths']
             if len(col_widths) != max_cols:
                 error = self.state_machine.reporter.error(
@@ -170,13 +170,13 @@ class CSVTable(Table):
             quoting = csv.QUOTE_MINIMAL
 
             def __init__(self, options):
-                if options.has_key('delim'):
+                if 'delim' in options:
                     self.delimiter = str(options['delim'])
-                if options.has_key('keepspace'):
+                if 'keepspace' in options:
                     self.skipinitialspace = False
-                if options.has_key('quote'):
+                if 'quote' in options:
                     self.quotechar = str(options['quote'])
-                if options.has_key('escape'):
+                if 'escape' in options:
                     self.doublequote = False
                     self.escapechar = str(options['escape'])
                 csv.Dialect.__init__(self)
@@ -206,8 +206,8 @@ class CSVTable(Table):
     def run(self):
         try:
             if (not self.state.document.settings.file_insertion_enabled
-                and (self.options.has_key('file')
-                     or self.options.has_key('url'))):
+                and ('file' in self.options
+                     or 'url' in self.options)):
                 warning = self.state_machine.reporter.warning(
                     'File and URL access deactivated; ignoring "%s" '
                     'directive.' % self.name, nodes.literal_block(
@@ -253,7 +253,7 @@ class CSVTable(Table):
             'encoding', self.state.document.settings.input_encoding)
         if self.content:
             # CSV data is from directive content.
-            if self.options.has_key('file') or self.options.has_key('url'):
+            if 'file' in self.options or 'url' in self.options:
                 error = self.state_machine.reporter.error(
                     '"%s" directive may not both specify an external file and'
                     ' have content.' % self.name, nodes.literal_block(
@@ -261,9 +261,9 @@ class CSVTable(Table):
                 raise SystemMessagePropagation(error)
             source = self.content.source(0)
             csv_data = self.content
-        elif self.options.has_key('file'):
+        elif 'file' in self.options:
             # CSV data is from an external file.
-            if self.options.has_key('url'):
+            if 'url' in self.options:
                 error = self.state_machine.reporter.error(
                       'The "file" and "url" options may not be simultaneously'
                       ' specified for the "%s" directive.' % self.name,
@@ -289,7 +289,7 @@ class CSVTable(Table):
                     % (self.name, error), nodes.literal_block(
                     self.block_text, self.block_text), line=self.lineno)
                 raise SystemMessagePropagation(severe)
-        elif self.options.has_key('url'):
+        elif 'url' in self.options:
             # CSV data is from a URL.
             # Do not import urllib2 at the top of the module because
             # it may fail due to broken SSL dependencies, and it takes

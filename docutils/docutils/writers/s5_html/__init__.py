@@ -251,7 +251,7 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
         """
         source = os.path.join(source_dir, name)
         dest = os.path.join(dest_dir, name)
-        if self.theme_files_copied.has_key(dest):
+        if dest in self.theme_files_copied:
             return 1
         else:
             self.theme_files_copied[dest] = 1

@@ -46,7 +46,7 @@ class Image(Directive):
                    'class': directives.class_option}
 
     def run(self):
-        if self.options.has_key('align'):
+        if 'align' in self.options:
             if isinstance(self.state, states.SubstitutionDef):
                 # Check for align_v_values.
                 if self.options['align'] not in self.align_v_values:
@@ -66,7 +66,7 @@ class Image(Directive):
         reference = directives.uri(self.arguments[0])
         self.options['uri'] = reference
         reference_node = None
-        if self.options.has_key('target'):
+        if 'target' in self.options:
             block = states.escape2null(
                 self.options['target']).splitlines()
             block = [line for line in block]

@@ -34,6 +34,6 @@ stats.sort_stats('time')
 stats.print_stats(40)
 
 try:
-    execfile(os.environ['PYTHONSTARTUP'])
+    exec(open(os.environ['PYTHONSTARTUP']).read())
 except:
     pass

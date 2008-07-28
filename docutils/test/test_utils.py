@@ -172,12 +172,14 @@ class ExtensionOptionTests(unittest.TestCase):
               nodes.field_body('', nodes.paragraph('', '2.0')))
         field_list += nodes.field(
               '', nodes.field_name('', 'cdef'),
-              nodes.field_body('', nodes.paragraph('', 'hol%s' % chr(224))))
+              nodes.field_body('', nodes.paragraph('',
+                  unicode('hol%s' % chr(224), 'iso-8859-1'))))
         field_list += nodes.field(
               '', nodes.field_name('', 'empty'), nodes.field_body())
         self.assertEquals(
               utils.extract_extension_options(field_list, self.optionspec),
-              {'a': 1, 'bbb': 2.0, 'cdef': ('hol%s' % chr(224)),
+              {'a': 1, 'bbb': 2.0,
+               'cdef': unicode('hol%s' % chr(224), 'iso-8859-1'),
                'empty': None})
         self.assertRaises(KeyError, utils.extract_extension_options,
                           field_list, {})

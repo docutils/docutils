@@ -37,7 +37,7 @@ pseudoxml_output = """\
                 Unknown target name: "nonexistent".
 """
 exposed_pseudoxml_output = """\
-<document ids="test-document" internal:refnames="{u\'nonexistent\': [<reference: <#text: u\'nonexistent\'>>]}" names="test\ document" source="<string>" title="Test Document">
+<document ids="test-document" internal:refnames="{u\'nonexistent\': [<reference: <#text: \'nonexistent\'>>]}" names="test\ document" source="<string>" title="Test Document">
     <title>
         Test Document
     <paragraph>

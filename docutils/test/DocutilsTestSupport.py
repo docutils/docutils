@@ -668,7 +668,7 @@ class WriterPublishTestCase(CustomTestCase, docutils.SettingsSpec):
     writer_name = '' # set in subclasses or constructor
 
     def __init__(self, *args, **kwargs):
-        if kwargs.has_key('writer_name'):
+        if 'writer_name' in kwargs:
             self.writer_name = kwargs['writer_name']
             del kwargs['writer_name']
         CustomTestCase.__init__(self, *args, **kwargs)

@@ -35,7 +35,7 @@ class BaseAdmonition(Directive):
                                                          self.lineno)
             admonition_node += nodes.title(title_text, '', *textnodes)
             admonition_node += messages
-            if self.options.has_key('class'):
+            if 'class' in self.options:
                 classes = self.options['class']
             else:
                 classes = ['admonition-' + nodes.make_id(title_text)]

@@ -385,7 +385,7 @@ u"""\
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Error in "image" directive:
-            invalid option value: (option: "align"; value: u\'\\xe4\')
+            invalid option value: (option: "align"; value: \'\\xe4\')
             "\xe4" unknown; choose from "top", "middle", "bottom", "left", "center", or "right".
         <literal_block xml:space="preserve">
             .. image:: picture.png
