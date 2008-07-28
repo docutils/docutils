@@ -562,11 +562,11 @@ u"""\
     <system_message level="4" line="1" source="test data" type="SEVERE">
         <paragraph>
             Problems with "csv-table" directive path:
-            [Errno 2] No such file or directory: 'bogus.csv'.
+            [Errno 2] No such file or directory: u'bogus.csv'.
         <literal_block xml:space="preserve">
             .. csv-table:: no such file
                :file: bogus.csv
-"""],
+"""], # note that this output is rewritten below for certain python versions
 ["""\
 .. csv-table:: bad URL
    :url: bogus.csv
@@ -1072,6 +1072,18 @@ totest['list-table'] = [
             .. list-table:: empty
 """],
 ]
+
+
+if csv:
+    # Rewrite csv tests that depend on the output of IOError as it is
+    # platform-dependent before python 2.4 for a unicode path.
+    # Here only needed for python 2.3 on non-windows
+    import sys
+    if sys.version_info < (2, 4) and not sys.platform.startswith('win'):
+        for i in range(len(totest['csv-table'])):
+            if totest['csv-table'][i][1].find("u'bogus.csv'") != -1:
+                totest['csv-table'][i][1] = totest['csv-table'][i][1].replace(
+                        "u'bogus.csv'", "'bogus.csv'")
 
 
 if __name__ == '__main__':

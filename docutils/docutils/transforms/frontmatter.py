@@ -388,7 +388,7 @@ class DocInfo(Transform):
             try:
                 name = field[0][0].astext()
                 normedname = nodes.fully_normalize_name(name)
-                if not (len(field) == 2 and bibliofields.has_key(normedname)
+                if not (len(field) == 2 and normedname in bibliofields
                         and self.check_empty_biblio_field(field, name)):
                     raise TransformError
                 canonical = bibliofields[normedname]

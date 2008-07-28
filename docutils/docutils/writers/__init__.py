@@ -127,7 +127,7 @@ _writer_aliases = {
 def get_writer_class(writer_name):
     """Return the Writer class from the `writer_name` module."""
     writer_name = writer_name.lower()
-    if _writer_aliases.has_key(writer_name):
+    if writer_name in _writer_aliases:
         writer_name = _writer_aliases[writer_name]
     module = __import__(writer_name, globals(), locals())
     return module.Writer

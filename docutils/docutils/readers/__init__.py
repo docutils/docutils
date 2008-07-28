@@ -101,7 +101,7 @@ _reader_aliases = {}
 def get_reader_class(reader_name):
     """Return the Reader class from the `reader_name` module."""
     reader_name = reader_name.lower()
-    if _reader_aliases.has_key(reader_name):
+    if reader_name in _reader_aliases:
         reader_name = _reader_aliases[reader_name]
     module = __import__(reader_name, globals(), locals())
     return module.Reader

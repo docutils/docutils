@@ -163,8 +163,6 @@ class SequenceMatcher:
         # b2j
         #      for x in b, b2j[x] is a list of the indices (into b)
         #      at which x appears; junk elements do not appear
-        # b2jhas
-        #      b2j.has_key
         # fullbcount
         #      for x in b, fullbcount[x] == the number of times x
         #      appears in b; only materialized if really needed (used
@@ -188,7 +186,7 @@ class SequenceMatcher:
         #      DON'T USE!  Only __chain_b uses this.  Use isbjunk.
         # isbjunk
         #      for x in b, isbjunk(x) == isjunk(x) but much faster;
-        #      it's really the has_key method of a hidden dict.
+        #      it's really the in operator of a hidden dict.
         #      DOES NOT WORK for x in a!
 
         self.isjunk = isjunk
@@ -285,10 +283,9 @@ class SequenceMatcher:
         # from the start.
         b = self.b
         self.b2j = b2j = {}
-        self.b2jhas = b2jhas = b2j.has_key
         for i in xrange(len(b)):
             elt = b[i]
-            if b2jhas(elt):
+            if elt in b2j:
                 b2j[elt].append(i)
             else:
                 b2j[elt] = [i]
@@ -304,12 +301,12 @@ class SequenceMatcher:
                     junkdict[elt] = 1   # value irrelevant; it's a set
                     del b2j[elt]
 
-        # Now for x in b, isjunk(x) == junkdict.has_key(x), but the
+        # Now for x in b, isjunk(x) == x in junkdict, but the
         # latter is much faster.  Note too that while there may be a
         # lot of junk in the sequence, the number of *unique* junk
         # elements is probably small.  So the memory burden of keeping
         # this dict alive is likely trivial compared to the size of b2j.
-        self.isbjunk = junkdict.has_key
+        self.isbjunk = lambda elt: elt in junkdict
 
     def find_longest_match(self, alo, ahi, blo, bhi):
         """Find longest matching block in a[alo:ahi] and b[blo:bhi].
@@ -528,8 +525,9 @@ class SequenceMatcher:
         1.0
         """
 
-        matches = reduce(lambda sum, triple: sum + triple[-1],
-                         self.get_matching_blocks(), 0)
+        matches = 0
+        for triple in self.get_matching_blocks():
+            matches += triple[-1]
         return 2.0 * matches / (len(self.a) + len(self.b))
 
     def quick_ratio(self):
@@ -550,9 +548,9 @@ class SequenceMatcher:
         # avail[x] is the number of times x appears in 'b' less the
         # number of times we've seen it in 'a' so far ... kinda
         avail = {}
-        availhas, matches = avail.has_key, 0
+        matches = 0
         for elt in self.a:
-            if availhas(elt):
+            if elt in avail:
                 numb = avail[elt]
             else:
                 numb = fullbcount.get(elt, 0)
@@ -603,9 +601,9 @@ def get_close_matches(word, possibilities, n=3, cutoff=0.6):
     """
 
     if not n >  0:
-        raise ValueError("n must be > 0: " + `n`)
+        raise ValueError("n must be > 0: " + repr(n))
     if not 0.0 <= cutoff <= 1.0:
-        raise ValueError("cutoff must be in [0.0, 1.0]: " + `cutoff`)
+        raise ValueError("cutoff must be in [0.0, 1.0]: " + repr(cutoff))
     result = []
     s = SequenceMatcher()
     s.set_seq2(word)
@@ -791,7 +789,7 @@ class Differ:
             elif tag == 'equal':
                 self._dump(' ', a, alo, ahi)
             else:
-                raise ValueError, 'unknown tag ' + `tag`
+                raise ValueError, 'unknown tag ' + repr(tag)
         results = self.results
         self.results = []
         return results
@@ -907,7 +905,7 @@ class Differ:
                     atags += ' ' * la
                     btags += ' ' * lb
                 else:
-                    raise ValueError, 'unknown tag ' + `tag`
+                    raise ValueError, 'unknown tag ' + repr(tag)
             self._qformat(aelt, belt, atags, btags)
         else:
             # the synch pair is identical

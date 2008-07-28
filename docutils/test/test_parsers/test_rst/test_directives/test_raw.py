@@ -122,12 +122,12 @@ Raw input file is UTF-16-encoded, and is not valid ASCII.
                :file: %s
                :encoding: ascii
 """ % utf_16_file_rel],
-["""\
+[unicode("""\
 .. raw:: html
    :encoding: utf-8
 
    Should the parser complain becau\xdfe there is no :file:?  BUG?
-""",
+""", 'iso-8859-1'),
 """\
 <document source="test data">
     <raw format="html" xml:space="preserve">
@@ -153,11 +153,11 @@ Raw input file is UTF-16-encoded, and is not valid ASCII.
     <system_message level="4" line="1" source="test data" type="SEVERE">
         <paragraph>
             Problems with "raw" directive path:
-            [Errno 2] No such file or directory: 'non-existent.file'.
+            [Errno 2] No such file or directory: u'non-existent.file'.
         <literal_block xml:space="preserve">
             .. raw:: html
                :file: non-existent.file
-"""],
+"""], # note that this output is rewritten below for certain python versions
 ]
 
 # Skip tests whose output contains "UnicodeDecodeError" if we are not
@@ -170,6 +170,16 @@ if sys.version_info < (2, 3):
                    "Python 2.3+ required for expected output." % i)
             # Assume we have only one of these tests.
             break
+
+# Rewrite tests that depend on the output of IOError as it is
+# platform-dependent before python 2.4 for a unicode path.
+if sys.version_info < (2, 4):
+    # remove the unicode repr u except for py2.3 on windows:
+    if not sys.platform.startswith('win') or sys.version_info < (2, 3):
+        for i in range(len(totest['raw'])):
+            if totest['raw'][i][1].find("u'non-existent.file'") != -1:
+                totest['raw'][i][1] = totest['raw'][i][1].replace(
+                        "u'non-existent.file'", "'non-existent.file'")
 
 
 if __name__ == '__main__':

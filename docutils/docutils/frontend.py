@@ -193,7 +193,7 @@ def make_paths_absolute(pathdict, keys, base_path=None):
     if base_path is None:
         base_path = os.getcwd()
     for key in keys:
-        if pathdict.has_key(key):
+        if key in pathdict:
             value = pathdict[key]
             if isinstance(value, types.ListType):
                 value = [make_one_path_absolute(base_path, path)
@@ -225,7 +225,7 @@ class Values(optparse.Values):
             other_dict = other_dict.__dict__
         other_dict = other_dict.copy()
         for setting in option_parser.lists.keys():
-            if (hasattr(self, setting) and other_dict.has_key(setting)):
+            if (hasattr(self, setting) and setting in other_dict):
                 value = getattr(self, setting)
                 if value:
                     value += other_dict[setting]
@@ -585,7 +585,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
                 continue
             for section in (tuple(component.config_section_dependencies or ())
                             + (component.config_section,)):
-                if applied.has_key(section):
+                if section in applied:
                     continue
                 applied[section] = 1
                 settings.update(parser.get_section(section), self)
@@ -699,7 +699,7 @@ Skipping "%s" configuration file.
         if not self.has_section('general'):
             self.add_section('general')
         for key, value in options.items():
-            if self.old_settings.has_key(key):
+            if key in self.old_settings:
                 section, setting = self.old_settings[key]
                 if not self.has_section(section):
                     self.add_section(section)

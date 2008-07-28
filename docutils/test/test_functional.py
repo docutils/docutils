@@ -92,12 +92,13 @@ class FunctionalTestCase(DocutilsTestSupport.CustomTestCase):
         namespace['settings_overrides'] = {'_disable_config': 1}
         # Read the variables set in the default config file and in
         # the current config file into namespace:
-        execfile(join_path(datadir, 'tests', '_default.py'), namespace)
-        execfile(self.configfile, namespace)
+        defaultpy = open(join_path(datadir, 'tests', '_default.py')).read()
+        exec(defaultpy, namespace)
+        exec(open(self.configfile).read(), namespace)
         # Check for required settings:
-        assert namespace.has_key('test_source'),\
+        assert 'test_source' in namespace,\
                "No 'test_source' supplied in " + self.configfile
-        assert namespace.has_key('test_destination'),\
+        assert 'test_destination' in namespace,\
                "No 'test_destination' supplied in " + self.configfile
         # Set source_path and destination_path if not given:
         namespace.setdefault('source_path',
@@ -151,7 +152,7 @@ class FunctionalTestCase(DocutilsTestSupport.CustomTestCase):
             print >>sys.stderr, diff
             raise
         # Execute optional function containing extra tests:
-        if namespace.has_key('_test_more'):
+        if '_test_more' in namespace:
             namespace['_test_more'](join_path(datadir, 'expected'),
                                     join_path(datadir, 'output'),
                                     self, namespace)

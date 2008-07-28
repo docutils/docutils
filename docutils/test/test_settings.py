@@ -92,8 +92,8 @@ class ConfigFileTests(unittest.TestCase):
 
     def compare_output(self, result, expected):
         """`result` and `expected` should both be dicts."""
-        self.assert_(result.has_key('record_dependencies'))
-        if not expected.has_key('record_dependencies'):
+        self.assert_('record_dependencies' in result)
+        if 'record_dependencies' not in expected:
             # Delete it if we don't want to test it.
             del result['record_dependencies']
         result = pprint.pformat(result) + '\n'

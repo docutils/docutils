@@ -27,7 +27,6 @@ import re
 import warnings
 from types import IntType, SliceType, StringType, UnicodeType, \
      TupleType, ListType, ClassType, TypeType
-from UserString import UserString
 
 
 # ==============================
@@ -62,11 +61,7 @@ class Node:
         return 1
 
     def __str__(self):
-        return self.__unicode__().encode('raw_unicode_escape')
-
-    def __unicode__(self):
-        # Override in subclass.
-        raise NotImplementedError
+        return unicode(self).encode('raw_unicode_escape')
 
     def asdom(self, dom=None):
         """Return a DOM **fragment** representation of this Node."""
@@ -273,7 +268,15 @@ class Node:
         except IndexError:
             return None
 
-class Text(Node, UserString):
+class reprunicode(unicode):
+    """
+    A class that removes the initial u from unicode's repr.
+    """
+
+    def __repr__(self):
+        return unicode.__repr__(self)[1:]
+
+class Text(Node, reprunicode):
 
     """
     Instances are terminal nodes (leaves) containing text only; no child
@@ -286,38 +289,44 @@ class Text(Node, UserString):
     children = ()
     """Text nodes have no children, and cannot have children."""
 
+    def __new__(cls, data, rawsource=None):
+        """Prevent the rawsource argument from propagating to str."""
+        return reprunicode.__new__(cls, data)
+    
     def __init__(self, data, rawsource=''):
-        UserString.__init__(self, data)
 
         self.rawsource = rawsource
         """The raw text from which this element was constructed."""
 
     def __repr__(self):
-        data = repr(self.data)
+        data = reprunicode.__repr__(self)
         if len(data) > 70:
-            data = repr(self.data[:64] + ' ...')
+            data = reprunicode.__repr__(self[:64] + ' ...')
         return '<%s: %s>' % (self.tagname, data)
 
-    def __len__(self):
-        return len(self.data)
-
     def shortrepr(self):
-        data = repr(self.data)
+        data = reprunicode.__repr__(self)
         if len(data) > 20:
-            data = repr(self.data[:16] + ' ...')
+            data = reprunicode.__repr__(self[:16] + ' ...')
         return '<%s: %s>' % (self.tagname, data)
 
     def _dom_node(self, domroot):
-        return domroot.createTextNode(self.data)
+        return domroot.createTextNode(unicode(self))
 
     def astext(self):
-        return self.data
+        return reprunicode(self)
 
-    def __unicode__(self):
-        return self.data
+    # Note about __unicode__: The implementation of __unicode__ here,
+    # and the one raising NotImplemented in the superclass Node had
+    # to be removed when changing Text to a subclass of unicode instead
+    # of UserString, since there is no way to delegate the __unicode__
+    # call to the superclass unicode:
+    # unicode itself does not have __unicode__ method to delegate to
+    # and calling unicode(self) or unicode.__new__ directly creates
+    # an infinite loop
 
     def copy(self):
-        return self.__class__(self.data)
+        return self.__class__(reprunicode(self), rawsource=self.rawsource)
 
     def deepcopy(self):
         return self.copy()
@@ -325,10 +334,19 @@ class Text(Node, UserString):
     def pformat(self, indent='    ', level=0):
         result = []
         indent = indent * level
-        for line in self.data.splitlines():
+        for line in self.splitlines():
             result.append(indent + line + '\n')
         return ''.join(result)
 
+    # rstrip and lstrip are used by substitution definitions where
+    # they are expected to return a Text instance, this was formerly
+    # taken care of by UserString. Note that then and now the
+    # rawsource member is lost.
+
+    def rstrip(self, chars=None):
+        return self.__class__(reprunicode.rstrip(self, chars))
+    def lstrip(self, chars=None):
+        return self.__class__(reprunicode.lstrip(self, chars))
 
 class Element(Node):
 
@@ -539,10 +557,10 @@ class Element(Node):
         return self.attributes.get(key, failobj)
 
     def hasattr(self, attr):
-        return self.attributes.has_key(attr)
+        return attr in self.attributes
 
     def delattr(self, attr):
-        if self.attributes.has_key(attr):
+        if attr in self.attributes:
             del self.attributes[attr]
 
     def setdefault(self, key, failobj=None):
@@ -933,18 +951,18 @@ class document(Root, Structural, Element):
 
     def set_id(self, node, msgnode=None):
         for id in node['ids']:
-            if self.ids.has_key(id) and self.ids[id] is not node:
+            if id in self.ids and self.ids[id] is not node:
                 msg = self.reporter.severe('Duplicate ID: "%s".' % id)
                 if msgnode != None:
                     msgnode += msg
         if not node['ids']:
             for name in node['names']:
                 id = self.settings.id_prefix + make_id(name)
-                if id and not self.ids.has_key(id):
+                if id and id not in self.ids:
                     break
             else:
                 id = ''
-                while not id or self.ids.has_key(id):
+                while not id or id in self.ids:
                     id = (self.settings.id_prefix +
                           self.settings.auto_id_prefix + str(self.id_start))
                     self.id_start += 1
@@ -985,7 +1003,7 @@ class document(Root, Structural, Element):
            The new target is invalidated regardless.
         """
         for name in node['names']:
-            if self.nameids.has_key(name):
+            if name in self.nameids:
                 self.set_duplicate_name_id(node, id, name, msgnode, explicit)
             else:
                 self.nameids[name] = id
@@ -1000,10 +1018,10 @@ class document(Root, Structural, Element):
                 level = 2
                 if old_id is not None:
                     old_node = self.ids[old_id]
-                    if node.has_key('refuri'):
+                    if 'refuri' in node:
                         refuri = node['refuri']
                         if old_node['names'] \
-                               and old_node.has_key('refuri') \
+                               and 'refuri' in old_node \
                                and old_node['refuri'] == refuri:
                             level = 1   # just inform if refuri's identical
                     if level > 1:
@@ -1034,7 +1052,7 @@ class document(Root, Structural, Element):
                 msgnode += msg
 
     def has_name(self, name):
-        return self.nameids.has_key(name)
+        return name in self.nameids
 
     # "note" here is an imperative verb: "take note of".
     def note_implicit_target(self, target, msgnode=None):
@@ -1094,7 +1112,7 @@ class document(Root, Structural, Element):
 
     def note_substitution_def(self, subdef, def_name, msgnode=None):
         name = whitespace_normalize_name(def_name)
-        if self.substitution_defs.has_key(name):
+        if name in self.substitution_defs:
             msg = self.reporter.error(
                   'Duplicate substitution definition name: "%s".' % name,
                   base_node=subdef)

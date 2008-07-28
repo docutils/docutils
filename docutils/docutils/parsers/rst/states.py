@@ -901,8 +901,8 @@ class Inliner:
         return self.reference(match, lineno, anonymous=1)
 
     def standalone_uri(self, match, lineno):
-        if not match.group('scheme') or urischemes.schemes.has_key(
-              match.group('scheme').lower()):
+        if (not match.group('scheme')
+                or match.group('scheme').lower() in urischemes.schemes):
             if match.group('email'):
                 addscheme = 'mailto:'
             else:
@@ -2249,7 +2249,8 @@ class Body(RSTState):
             if expmatch:
                 try:
                     return method(self, expmatch)
-                except MarkupError, (message, lineno): # never reached?
+                except MarkupError, error: # never reached?
+                    message, lineno = error.args
                     errors.append(self.reporter.warning(message, line=lineno))
                     break
         nodelist, blank_finish = self.comment(match)

@@ -240,7 +240,7 @@ class IndirectHyperlinks(Transform):
             del target.multiply_indirect
         if reftarget.hasattr('refuri'):
             target['refuri'] = reftarget['refuri']
-            if target.has_key('refid'):
+            if 'refid' in target:
                 del target['refid']
         elif reftarget.hasattr('refid'):
             target['refid'] = reftarget['refid']
@@ -257,7 +257,7 @@ class IndirectHyperlinks(Transform):
         target.resolved = 1
 
     def nonexistent_indirect_target(self, target):
-        if self.document.nameids.has_key(target['refname']):
+        if target['refname'] in self.document.nameids:
             self.indirect_target_error(target, 'which is a duplicate, and '
                                        'cannot be used as a unique reference')
         else:
@@ -505,7 +505,7 @@ class Footnotes(Transform):
             while 1:
                 label = str(startnum)
                 startnum += 1
-                if not self.document.nameids.has_key(label):
+                if label not in self.document.nameids:
                     break
             footnote.insert(0, nodes.label('', label))
             for name in footnote['names']:
@@ -600,12 +600,12 @@ class Footnotes(Transform):
         """
         for footnote in self.document.footnotes:
             for label in footnote['names']:
-                if self.document.footnote_refs.has_key(label):
+                if label in self.document.footnote_refs:
                     reflist = self.document.footnote_refs[label]
                     self.resolve_references(footnote, reflist)
         for citation in self.document.citations:
             for label in citation['names']:
-                if self.document.citation_refs.has_key(label):
+                if label in self.document.citation_refs:
                     reflist = self.document.citation_refs[label]
                     self.resolve_references(citation, reflist)
 
@@ -666,11 +666,11 @@ class Substitutions(Transform):
         for ref in subreflist:
             refname = ref['refname']
             key = None
-            if defs.has_key(refname):
+            if refname in defs:
                 key = refname
             else:
                 normed_name = refname.lower()
-                if normed.has_key(normed_name):
+                if normed_name in normed:
                     key = normed[normed_name]
             if key is None:
                 msg = self.document.reporter.error(
@@ -686,14 +686,14 @@ class Substitutions(Transform):
                 subdef = defs[key]
                 parent = ref.parent
                 index = parent.index(ref)
-                if  (subdef.attributes.has_key('ltrim')
-                     or subdef.attributes.has_key('trim')):
+                if  ('ltrim' in subdef.attributes
+                     or 'trim' in subdef.attributes):
                     if index > 0 and isinstance(parent[index - 1],
                                                 nodes.Text):
                         parent.replace(parent[index - 1],
                                        parent[index - 1].rstrip())
-                if  (subdef.attributes.has_key('rtrim')
-                     or subdef.attributes.has_key('trim')):
+                if  ('rtrim' in subdef.attributes
+                     or 'trim' in subdef.attributes):
                     if  (len(parent) > index + 1
                          and isinstance(parent[index + 1], nodes.Text)):
                         parent.replace(parent[index + 1],
@@ -764,7 +764,7 @@ class TargetNotes(Transform):
                 continue
             footnote = self.make_target_footnote(target['refuri'], refs,
                                                  notes)
-            if not notes.has_key(target['refuri']):
+            if target['refuri'] not in notes:
                 notes[target['refuri']] = footnote
                 nodelist.append(footnote)
         # Take care of anonymous references.
@@ -774,13 +774,13 @@ class TargetNotes(Transform):
             if ref.hasattr('refuri'):
                 footnote = self.make_target_footnote(ref['refuri'], [ref],
                                                      notes)
-                if not notes.has_key(ref['refuri']):
+                if ref['refuri'] not in notes:
                     notes[ref['refuri']] = footnote
                     nodelist.append(footnote)
         self.startnode.replace_self(nodelist)
 
     def make_target_footnote(self, refuri, refs, notes):
-        if notes.has_key(refuri):  # duplicate?
+        if refuri in notes:  # duplicate?
             footnote = notes[refuri]
             assert len(footnote['names']) == 1
             footnote_name = footnote['names'][0]
@@ -873,7 +873,7 @@ class DanglingReferencesVisitor(nodes.SparseNodeVisitor):
                 if resolver_function(node):
                     break
             else:
-                if self.document.nameids.has_key(refname):
+                if refname in self.document.nameids:
                     msg = self.document.reporter.error(
                         'Duplicate target name, cannot be used as a unique '
                         'reference: "%s".' % (node['refname']), base_node=node)

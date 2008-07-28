@@ -353,13 +353,13 @@ class HTMLTranslator(nodes.NodeVisitor):
         for (name, value) in attributes.items():
             atts[name.lower()] = value
         classes = node.get('classes', [])
-        if atts.has_key('class'):
+        if 'class' in atts:
             classes.append(atts['class'])
         if classes:
             atts['class'] = ' '.join(classes)
-        assert not atts.has_key('id')
+        assert 'id' not in atts
         ids.extend(node.get('ids', []))
-        if atts.has_key('ids'):
+        if 'ids' in atts:
             ids.extend(atts['ids'])
             del atts['ids']
         if ids:
@@ -731,9 +731,9 @@ class HTMLTranslator(nodes.NodeVisitor):
             tagname = 'td'
             del atts['class']
         node.parent.column += 1
-        if node.has_key('morerows'):
+        if 'morerows' in node:
             atts['rowspan'] = node['morerows'] + 1
-        if node.has_key('morecols'):
+        if 'morecols' in node:
             atts['colspan'] = node['morecols'] + 1
             node.parent.column += node['morecols']
         self.body.append(self.starttag(node, tagname, '', **atts))
@@ -752,9 +752,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         usable.
         """
         atts = {}
-        if node.has_key('start'):
+        if 'start' in node:
             atts['start'] = node['start']
-        if node.has_key('enumtype'):
+        if 'enumtype' in node:
             atts['class'] = node['enumtype']
         # @@@ To do: prefix, suffix. How? Change prefix/suffix to a
         # single "format" attribute? Use CSS2?
@@ -941,26 +941,26 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_image(self, node):
         atts = {}
         atts['src'] = node['uri']
-        if node.has_key('width'):
+        if 'width' in node:
             atts['width'] = node['width']
-        if node.has_key('height'):
+        if 'height' in node:
             atts['height'] = node['height']
-        if node.has_key('scale'):
-            if Image and not (node.has_key('width')
-                              and node.has_key('height')):
+        if 'scale' in node:
+            if Image and not ('width' in node
+                              and 'height' in node):
                 try:
                     im = Image.open(str(atts['src']))
                 except (IOError, # Source image can't be found or opened
                         UnicodeError):  # PIL doesn't like Unicode paths.
                     pass
                 else:
-                    if not atts.has_key('width'):
+                    if 'width' not in atts:
                         atts['width'] = str(im.size[0])
-                    if not atts.has_key('height'):
+                    if 'height' not in atts:
                         atts['height'] = str(im.size[1])
                     del im
             for att_name in 'width', 'height':
-                if atts.has_key(att_name):
+                if att_name in atts:
                     match = re.match(r'([0-9.]+)(\S*)$', atts[att_name])
                     assert match
                     atts[att_name] = '%s%s' % (
@@ -968,7 +968,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                         match.group(2))
         style = []
         for att_name in 'width', 'height':
-            if atts.has_key(att_name):
+            if att_name in atts:
                 if re.match(r'^[0-9.]+$', atts[att_name]):
                     # Interpret unitless values as pixels.
                     atts[att_name] += 'px'
@@ -984,7 +984,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             suffix = ''
         else:
             suffix = '\n'
-        if node.has_key('align'):
+        if 'align' in node:
             if node['align'] == 'center':
                 # "align" attribute is set in surrounding "div" element.
                 self.body.append('<div align="center" class="align-center">')
@@ -1210,7 +1210,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_reference(self, node):
         atts = {'class': 'reference'}
-        if node.has_key('refuri'):
+        if 'refuri' in node:
             atts['href'] = node['refuri']
             if ( self.settings.cloak_email_addresses
                  and atts['href'].startswith('mailto:')):
@@ -1218,7 +1218,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                 self.in_mailto = 1
             atts['class'] += ' external'
         else:
-            assert node.has_key('refid'), \
+            assert 'refid' in node, \
                    'References must have "refuri" or "refid" attribute.'
             atts['href'] = '#' + node['refid']
             atts['class'] += ' internal'
@@ -1364,8 +1364,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</table>\n')
 
     def visit_target(self, node):
-        if not (node.has_key('refuri') or node.has_key('refid')
-                or node.has_key('refname')):
+        if not ('refuri' in node or 'refid' in node
+                or 'refname' in node):
             self.body.append(self.starttag(node, 'span', '', CLASS='target'))
             self.context.append('</span>')
         else:

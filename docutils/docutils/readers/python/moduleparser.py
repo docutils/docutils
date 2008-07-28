@@ -525,14 +525,14 @@ class TokenParser:
     def note_token(self):
         if self.type == tokenize.NL:
             return
-        del_ws = self.del_ws_prefix.has_key(self.string)
-        append_ws = not self.no_ws_suffix.has_key(self.string)
-        if self.openers.has_key(self.string):
+        del_ws = self.string in self.del_ws_prefix
+        append_ws = self.string not in self.no_ws_suffix
+        if self.string in self.openers:
             self.stack.append(self.string)
             if (self._type == token.NAME
-                or self.closers.has_key(self._string)):
+                or self._string in self.closers):
                 del_ws = 1
-        elif self.closers.has_key(self.string):
+        elif self.string in self.closers:
             assert self.stack[-1] == self.closers[self.string]
             self.stack.pop()
         elif self.string == '`':

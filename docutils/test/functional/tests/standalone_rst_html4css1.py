@@ -1,4 +1,4 @@
-execfile('functional/tests/_standalone_rst_defaults.py')
+exec(open('functional/tests/_standalone_rst_defaults.py').read())
 
 # Source and destination file names.
 test_source = "standalone_rst_html4css1.txt"

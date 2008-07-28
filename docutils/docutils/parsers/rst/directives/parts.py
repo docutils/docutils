@@ -57,13 +57,13 @@ class Contents(Directive):
             title = nodes.title(title_text, '', *text_nodes)
         else:
             messages = []
-            if self.options.has_key('local'):
+            if 'local' in self.options:
                 title = None
             else:
                 title = nodes.title('', language.labels['contents'])
         topic = nodes.topic(classes=['contents'])
         topic['classes'] += self.options.get('class', [])
-        if self.options.has_key('local'):
+        if 'local' in self.options:
             topic['classes'].append('local')
         if title:
             name = title.astext()
