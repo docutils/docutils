@@ -30,6 +30,7 @@ Changes Since 0.5
 * docutils/writers/latex2e/__init__.py:
 
   - Change: has_key for dictionaries (not Nodes) to in-operator.
+  - Merge adjacent citations into one latex cite command.
 
 Release 0.5 (2008-06-25)
 ========================

@@ -249,6 +249,53 @@ The underscore is mishandled.
 ]
 
 
+totest_latex_citations['adjacent_citations'] = [
+# input
+["""\
+Two non-citations: [MeYou2007]_[YouMe2007]_.
+
+Need to be separated for grouping: [MeYou2007]_ [YouMe2007]_.
+
+Two spaces (or anything else) for no grouping: [MeYou2007]_  [YouMe2007]_.
+
+But a line break should work: [MeYou2007]_
+[YouMe2007]_.
+
+.. [MeYou2007] not.
+.. [YouMe2007] important.
+""",
+## # expected output
+latex_head + """\
+\\title{}
+\\author{}
+\\date{}
+\\raggedbottom
+\\begin{document}
+
+\\setlength{\\locallinewidth}{\\linewidth}
+
+Two non-citations: {[}MeYou2007{]}{\_}{[}YouMe2007{]}{\_}.
+
+Need to be separated for grouping: \cite{MeYou2007,YouMe2007}.
+
+Two spaces (or anything else) for no grouping: \cite{MeYou2007}  \cite{YouMe2007}.
+
+But a line break should work: \cite{MeYou2007,YouMe2007}.
+
+\\begin{thebibliography}{MeYou2007}
+\\bibitem[MeYou2007]{MeYou2007}{
+not.
+}
+\\bibitem[YouMe2007]{YouMe2007}{
+important.
+}
+\\end{thebibliography}
+
+\\end{document}
+"""],
+]
+
+
 totest['enumerated_lists'] = [
 # input
 ["""\

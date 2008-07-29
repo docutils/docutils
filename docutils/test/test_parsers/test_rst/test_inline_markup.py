@@ -637,6 +637,14 @@ totest['footnote_reference'] = [
     <paragraph>
         <footnote_reference auto="*" ids="id1">
 """],
+["""\
+Adjacent footnote refs are not possible: [*]_[#label]_ [#]_[2]_ [1]_[*]_
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Adjacent footnote refs are not possible: [*]_[#label]_ [#]_[2]_ [1]_[*]_
+"""],
 ]
 
 totest['citation_reference'] = [
@@ -667,6 +675,14 @@ totest['citation_reference'] = [
         <citation_reference ids="id4" refname="cit1">
             CIT1
          but not [CIT 1]_
+"""],
+["""\
+Adjacent citation refs are not possible: [citation]_[CIT1]_
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Adjacent citation refs are not possible: [citation]_[CIT1]_
 """],
 ]
 
