@@ -387,6 +387,10 @@ foot.
 If ``use-latex-citations`` is used a bibliography is inserted right at
 the end of the document. *This should be customizable*.
 
+If ``use-latex-citations`` is used adjacent citation references (separated
+only by a single space or a newline) are combined to a single citation
+group, i.e. ``[cite1]_ [cite2]_`` results in ``\cite{cite1,cite2}``.
+
 Tables
 ------
 

@@ -1120,8 +1120,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_citation_reference(self, node):
         if self._use_latex_citations:
-            self.body.append('\\cite{')
-            self.inside_citation_reference_label = 1
+            if not self.inside_citation_reference_label:
+                self.body.append('\\cite{')
+                self.inside_citation_reference_label = 1
+            else:
+                assert self.body[-1] in (' ', '\n'),\
+                        'unexpected non-whitespace while in reference label'
+                del self.body[-1]
         else:
             href = ''
             if 'refid' in node:
@@ -1132,8 +1137,20 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_citation_reference(self, node):
         if self._use_latex_citations:
-            self.body.append('}')
-            self.inside_citation_reference_label = 0
+            followup_citation = False
+            # check for a following citation separated by a space or newline
+            next_siblings = node.traverse(descend=0, siblings=1, include_self=0)
+            if len(next_siblings) > 1:
+                next = next_siblings[0]
+                if (isinstance(next, nodes.Text)
+                        and next.astext() in (' ', '\n')):
+                    if next_siblings[1].__class__ == node.__class__:
+                        followup_citation = True
+            if followup_citation:
+                self.body.append(',')
+            else:
+                self.body.append('}')
+                self.inside_citation_reference_label = 0
         else:
             self.body.append('}]')
 

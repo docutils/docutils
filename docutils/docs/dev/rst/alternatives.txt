@@ -1832,6 +1832,21 @@ ugly or confusing (depending on which alternative is chosen).
    Disadvantages: a bit ugly.
 
 
+Adjacent citation references
+============================
+
+A special case for inline markup was proposed and implemented:
+multiple citation references could be joined into one::
+
+   [cite1]_[cite2]_ instead of requiring [cite1]_ [cite2]_
+
+However, this was rejected as an unwarranted exception to the rules
+for inline markup.
+(The main motivation for the proposal, grouping citations in the latex writer,
+was implemented by recognising the second group in the example above and
+transforming it into ``\cite{cite1,cite2}``.)
+
+
 -----------------
  Not Implemented
 -----------------
