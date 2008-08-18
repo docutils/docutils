@@ -261,6 +261,8 @@ class Babel:
         'uk': 'ukrainian'
     }
 
+    nobr = '~'
+
     def __init__(self,lang):
         self.language = lang
         # pdflatex does not produce double quotes for ngerman in tt.
@@ -275,6 +277,11 @@ class Babel:
         else:
             self.quotes = ("``", "''")
         self.quote_index = 0
+        # for spanish ``~n`` must be ``~{}n``
+        if re.search('^es',self.language):
+            self.nobr = '~{}'
+        else:
+            self.nobr = '~'
 
     def next_quote(self):
         q = self.quotes[self.quote_index]
@@ -304,7 +311,6 @@ class Babel:
             if lang in self._ISO639_TO_BABEL:
                 return self._ISO639_TO_BABEL[lang]
         return None
-
 
 latex_headings = {
         'optionlist_environment' : [
@@ -637,6 +643,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.d_options = self.settings.documentoptions
         if self.babel.get_language():
             self.d_options += ',%s' % self.babel.get_language()
+        self.latex_equivalents[u'\u00A0'] = self.babel.nobr
 
         self.d_class = DocumentClass(settings.documentclass, 
                                      settings.use_part_section)
@@ -962,7 +969,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             text = text.replace("\n", "%s}\\\\\n\\mbox{%s" % (closings,openings))
         text = text.replace('[', '{[}').replace(']', '{]}')
         if self.insert_none_breaking_blanks:
-            text = text.replace(' ', '~')
+            text = text.replace(' ', self.babel.nobr)
         if self.latex_encoding != 'utf8':
             text = self.unicode_to_latex(text)
             text = self.ensure_math(text)
