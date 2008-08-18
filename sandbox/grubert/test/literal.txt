@@ -89,3 +89,8 @@ bracketts at line start and empty lines
    ]
    *messages continue...*
 
+in spanish ``~n`` is special, this requires special treatment for
+literal blocks ::
+
+   esto no anda
+
