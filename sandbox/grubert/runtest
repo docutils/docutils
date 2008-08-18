@@ -35,10 +35,15 @@ else
   FM=$1
 fi
 
+
 for INF in `ls test/$FM` ; do
   OUTF="$INF.tex"
   REFF="$OUTF.ref"
-  $CMD $2 $3 $INF > $OUTF
+  OPT=""
+  if [ $INF = "test/unicode-box.txt" ] ; then
+    OPT="-o  utf-8:strict"
+  fi
+  $CMD $OPT $2 $3 $INF > $OUTF
   do_diff $REFF $OUTF 
 done
 
@@ -224,18 +229,13 @@ do_diff $REFF $OUTF
 
 # use latex citations
 CMD="$BASE_CMD --use-latex-citations"
-INF=test/footnotes.txt
-OUTF="$INF-use-latex-citations.tex"
-REFF="$OUTF.ref"
-$CMD $INF > $OUTF
-do_diff $REFF $OUTF 
-
-# on a file without citations
-INF=test/no-citations.txt
-OUTF="$INF-use-latex-citations.tex"
-REFF="$OUTF.ref"
-$CMD $INF > $OUTF
-do_diff $REFF $OUTF 
+for F in footnotes.txt no-citations.txt citation_labels.txt ; do
+  INF=test/$F
+  OUTF="$INF-use-latex-citations.tex"
+  REFF="$OUTF.ref"
+  $CMD $INF > $OUTF
+  do_diff $REFF $OUTF 
+done
 
 # use bibtex
 INF=test/citations.txt
@@ -251,6 +251,15 @@ OUTF="$INF-use-verbatim-when-possible.tex"
 REFF="$OUTF.ref"
 $CMD $INF > $OUTF
 do_diff $REFF $OUTF 
+
+for L in en de es ; do
+    CMD="$BASE_CMD "
+    INF=test/literal.txt
+    OUTF="$INF-$L.tex"
+    REFF="$OUTF.ref"
+    $CMD --lang=$L $INF > $OUTF
+    do_diff $REFF $OUTF 
+done
 
 report
 echo "CHECK: toc with latex toc "
