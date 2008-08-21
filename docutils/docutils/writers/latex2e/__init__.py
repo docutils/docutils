@@ -394,7 +394,8 @@ class Table:
         * booktabs (requires booktabs latex package): only horizontal lines
         * nolines, borderless : no lines
     """
-    def __init__(self,latex_type,table_style):
+    def __init__(self,translator,latex_type,table_style):
+        self._translator = translator
         self._latex_type = latex_type
         self._table_style = table_style
         self._open = 0
@@ -403,6 +404,7 @@ class Table:
         self._col_width = []
         self._rowspan = []
         self.stubs = []
+        self._in_thead = 0
 
     def open(self):
         self._open = 1
@@ -502,8 +504,20 @@ class Table:
         """
         return "%.2f\\locallinewidth" % self._col_width[self._cell_in_row-1]
 
+    def get_caption(self):
+        if not self.caption:
+            return ""
+        if 1 == self._translator.thead_depth():
+            return '\\caption{%s}\\\\\n' % self.caption
+        return '\\caption[]{%s (... continued)}\\\\\n' % self.caption
+
+    def need_recurse(self):
+        if self._latex_type == 'longtable':
+            return 1 == self._translator.thead_depth()
+        return 0
+
     def visit_thead(self):
-        self._in_thead = 1
+        self._in_thead += 1
         if self._table_style == 'standard':
             return ['\\hline\n']
         elif self._table_style == 'booktabs':
@@ -516,9 +530,14 @@ class Table:
         if self._table_style == 'booktabs':
             a.append('\\midrule\n')
         if self._latex_type == 'longtable':
-            a.append('\\endhead\n')
+            if 1 == self._translator.thead_depth():
+                a.append('\\endfirsthead\n')
+            else:
+                a.append('\\endhead\n')
+                a.append('\\multicolumn{%d}{c}{\\hfill ... continued on next page} \\\\\n' % len(self._col_specs))
+                a.append('\\endfoot\n\\endlastfoot\n')
         # for longtable one could add firsthead, foot and lastfoot
-        self._in_thead = 0
+        self._in_thead -= 1
         return a
     def visit_row(self):
         self._cell_in_row = 0
@@ -649,7 +668,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                                      settings.use_part_section)
         # object for a table while proccessing.
         self.table_stack = []
-        self.active_table = Table('longtable',settings.table_style)
+        self.active_table = Table(self,'longtable',settings.table_style)
 
         # HACK.  Should have more sophisticated typearea handling.
         if settings.documentclass.find('scr') == -1:
@@ -2001,7 +2020,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.active_table.is_open():
             self.table_stack.append(self.active_table)
             # nesting longtable does not work (e.g. 2007-04-18)
-            self.active_table = Table('tabular',self.settings.table_style)
+            self.active_table = Table(self,'tabular',self.settings.table_style)
         self.active_table.open()
         for cl in node['classes']:
             self.active_table.set_table_style(cl)
@@ -2036,7 +2055,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # for tables without heads.
         if not self.active_table.get('preamble written'):
             self.visit_thead(None)
-            # self.depart_thead(None)
+            self.depart_thead(None)
 
     def depart_tbody(self, node):
         pass
@@ -2057,28 +2076,24 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_tgroup(self, node):
         pass
 
+    _thead_depth = 0
+    def thead_depth (self):
+        return self._thead_depth
+
     def visit_thead(self, node):
-        self.body.append('{%s}\n' % self.active_table.get_colspecs())
-        if self.active_table.caption:
-            self.body.append('\\caption{%s}\\\\\n' % self.active_table.caption)
-        self.active_table.set('preamble written',1)
-        # TODO longtable supports firsthead and lastfoot too.
+        self._thead_depth += 1
+        if 1 == self.thead_depth():
+            self.body.append('{%s}\n' % self.active_table.get_colspecs())
+            self.active_table.set('preamble written',1)
+        self.body.append(self.active_table.get_caption())
         self.body.extend(self.active_table.visit_thead())
 
     def depart_thead(self, node):
-        # the table header written should be on every page
-        # => \endhead
-        self.body.extend(self.active_table.depart_thead())
-        # and the firsthead => \endfirsthead
-        # BUG i want a "continued from previous page" on every not
-        # firsthead, but then we need the header twice.
-        #
-        # there is a \endfoot and \endlastfoot too.
-        # but we need the number of columns to
-        # self.body.append('\\multicolumn{%d}{c}{"..."}\n' % number_of_columns)
-        # self.body.append('\\hline\n\\endfoot\n')
-        # self.body.append('\\hline\n')
-        # self.body.append('\\endlastfoot\n')
+        if node is not None:
+            self.body.extend(self.active_table.depart_thead())
+            if self.active_table.need_recurse():
+                node.walkabout(self)
+        self._thead_depth -= 1
 
     def visit_tip(self, node):
         self.visit_admonition(node, 'tip')
