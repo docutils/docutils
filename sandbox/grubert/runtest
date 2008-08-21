@@ -35,7 +35,6 @@ else
   FM=$1
 fi
 
-
 for INF in `ls test/$FM` ; do
   OUTF="$INF.tex"
   REFF="$OUTF.ref"
@@ -258,6 +257,10 @@ for L in en de es ; do
     OUTF="$INF-$L.tex"
     REFF="$OUTF.ref"
     $CMD --lang=$L $INF > $OUTF
+    do_diff $REFF $OUTF 
+    OUTF="$INF-$L-verb.tex"
+    REFF="$OUTF.ref"
+    $CMD --use-verbatim-when-possible --language=$L $INF > $OUTF
     do_diff $REFF $OUTF 
 done
 
