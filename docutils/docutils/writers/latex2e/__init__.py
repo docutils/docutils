@@ -1689,10 +1689,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
                             self.latex_image_length(attrs['height']), ))
         if 'align' in attrs:
             align_prepost = {
-                # By default latex aligns the top of an image.
-                (1, 'top'): ('', ''),
+                # By default latex aligns the bottom of an image.
+                (1, 'bottom'): ('', ''),
                 (1, 'middle'): ('\\raisebox{-0.5\\height}{', '}'),
-                (1, 'bottom'): ('\\raisebox{-\\height}{', '}'),
+                (1, 'top'): ('\\raisebox{-\\height}{', '}'),
                 (0, 'center'): ('{\\hfill', '\\hfill}'),
                 # These 2 don't exactly do the right thing.  The image should
                 # be floated alongside the paragraph.  See
