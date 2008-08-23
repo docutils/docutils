@@ -27,6 +27,10 @@ Changes Since 0.5
 
   - Added ``Element.__contains__`` method, for the in-operator.
 
+* docutils/writers/newlatex2e/__init__.py:
+
+  - Apply [ 1612821 ] Double quotes in literal text in Italian/German
+
 * docutils/writers/latex2e/__init__.py:
 
   - Apply [ 1474017 ] image vertical alignment is reversed.
