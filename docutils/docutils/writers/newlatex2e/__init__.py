@@ -189,6 +189,15 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
             self.settings, os.path.join(os.getcwd(), 'dummy'))
         if self.user_stylesheet_path:
             self.settings.record_dependencies.add(self.user_stylesheet_path)
+
+        lang = self.settings.language_code or ''
+        if lang.startswith('de'):
+            self.double_quote_replacment = "{\\dq}"
+        elif lang.startswith('it'):
+            self.double_quote_replacment = r'{\char`\"}'
+        else:
+            self.double_quote_replacment = None
+
         self.write_header()
 
     def write_header(self):
@@ -322,6 +331,9 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
             # from the hyphenat package won't change that.
             text = text.replace('-', r'\mbox{-}')
             text = text.replace("'", r'{\DECtextliteralsinglequote}')
+            if self.double_quote_replacment is not None:
+                text = text.replace('"', self.double_quote_replacment)
+
             return text
         else:
             if not attval:
