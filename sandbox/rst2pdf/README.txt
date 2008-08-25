@@ -6,12 +6,12 @@
 rst2pdf README
 ==============
 
-`<rst2pdf.py>`_ is a PDF front-end for docutils that is compatible
-with the ``rst2*.py`` front ends of the docutils_ suite.
+`<rst2pdf.py>`_ is a PDF front-end for Docutils that is compatible
+with the ``rst2*.py`` front ends of the Docutils_ suite.
 It enables the generation of PDF documents from a reStructuredText source in
 one step cleaning up intermediate files.
 
-``rst2pdf.py`` is implemented as a combination of docutils' ``rst2latex.py``
+``rst2pdf.py`` is implemented as a combination of Docutils' ``rst2latex.py``
 by David Goodger and rubber_ by Emmanuel Beffara.
 
 Copyright: © 2008 Günter Milde
@@ -21,7 +21,7 @@ Copyright: © 2008 Günter Milde
 Requirements
 ------------
 
-docutils_
+Docutils_
   for the reStructuredText -> LaTeX conversion
 
 pdflatex and friends
@@ -34,12 +34,17 @@ rubber_
   running BibTeX to manage bibliographic references. Automatic execution of
   dvips to produce PostScript documents is also included, as well as usage
   of pdfLaTeX to produce PDF documents.
+  
+  Rubber packages exist for Debian, Gentoo, FreeBSD, NetBSD, Fink and
+  Darwin.
+
+  The current development version contains many bug fixes: `rubber snapshot`_
 
 Installation
 ------------
 
-Copy or link the file ``rst2pdf.py`` into a directory in the operating
-systems PATH for executable binaries.
+Copy the file rst2pdf.py_ into a directory in the operating
+system's PATH for executable binaries or create a link.
 
 Usage
 -----
@@ -56,23 +61,30 @@ Configuration
 which is configured in the ``[latex2e writer]`` section of the configuration
 files. (See `Docutils Configuration`_)
 
-No configuration of the latex -> PDF conversion is currently possible
-(except changing the settings directly in the (well documented)
-``rst2pdf.py`` file itself).
+Currently, the options for ``rubber`` are "hardcoded" in rst2pdf.py_.
+Therfore, the configuration of the LaTeX -> PDF conversion requires changing
+the settings directly in the (well documented) rst2pdf.py_ file.
 
 Troubleshooting
 ---------------
 
-In case of errors, try to export the document with ``rst2latex.py`` and
-convert to PDF "by hand" -- either with rubber or running pdflatex, bibtex,
-etc. the requested number of times. This should help to locate the error.
+In case of errors, reproduce the document-generating steps by hand to
+localise the problem:
 
-Send bugreports to the author or the docutils-users list.
+* export the document with ``rst2latex.py INFILE OUTFILE``
+
+* convert to PDF with ``rubber --pdf OUTFILE`` 
+  
+  If this fails, try ``pdflatex OUTFILE``
+
+Send bug reports to the author or the docutils-users list.
 
 .. References
 
-.. _docutils: http://docutils.sourceforge.net/
-.. _rubber: http://www.pps.jussieu.fr/~beffara/soft/rubber/
+.. _Docutils: http://docutils.sourceforge.net/
+.. old _rubber site: http://www.pps.jussieu.fr/~beffara/soft/rubber/
+.. _rubber: http://iml.univ-mrs.fr/~beffara/soft/rubber/
+.. _rubber snapshot: http://iml.univ-mrs.fr/~beffara/soft/rubber/rubber-20080323.tar.gz
 .. _Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
 
 .. _Docutils Configuration:
