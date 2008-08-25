@@ -153,6 +153,7 @@ donations, tasty treats, and related projects:
 * Edward Welbourne
 * Lea Wiemann
 * Anthony Williams
+* Robert Wojciechowicz
 * Ka-Ping Yee
 * Moshe Zadka
 * Shmuel Zeigerman
