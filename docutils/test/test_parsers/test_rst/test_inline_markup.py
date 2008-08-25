@@ -28,6 +28,47 @@ totest['emphasis'] = [
         <emphasis>
             emphasis
 """],
+[u"""\
+l'*emphasis* and l\u2019*emphasis* with apostrophe
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        l'
+        <emphasis>
+            emphasis
+         and l\u2019
+        <emphasis>
+            emphasis
+         with apostrophe
+"""],
+[u"""\
+quoted '*emphasis*', quoted "*emphasis*",
+quoted \u2018*emphasis*\u2019, quoted \u201c*emphasis*\u201d,
+quoted \xab*emphasis*\xbb
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        quoted '
+        <emphasis>
+            emphasis
+        ', quoted "
+        <emphasis>
+            emphasis
+        ",
+        quoted \u2018
+        <emphasis>
+            emphasis
+        \u2019, quoted \u201c
+        <emphasis>
+            emphasis
+        \u201d,
+        quoted \xab
+        <emphasis>
+            emphasis
+        \xbb
+"""],
 ["""\
 *emphasized sentence
 across lines*
@@ -123,6 +164,47 @@ totest['strong'] = [
         <strong>
             strong
 """],
+[u"""\
+l'**strong** and l\u2019**strong** with apostrophe
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        l'
+        <strong>
+            strong
+         and l\u2019
+        <strong>
+            strong
+         with apostrophe
+"""],
+[u"""\
+quoted '**strong**', quoted "**strong**",
+quoted \u2018**strong**\u2019, quoted \u201c**strong**\u201d,
+quoted \xab**strong**\xbb
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        quoted '
+        <strong>
+            strong
+        ', quoted "
+        <strong>
+            strong
+        ",
+        quoted \u2018
+        <strong>
+            strong
+        \u2019, quoted \u201c
+        <strong>
+            strong
+        \u201d,
+        quoted \xab
+        <strong>
+            strong
+        \xbb
+"""],
 ["""\
 (**strong**) but not (**) or '(** ' or x**2 or \\**kwargs or **
 
@@ -212,6 +294,71 @@ totest['literal'] = [
         <literal>
             literal\\
 """],
+[u"""\
+l'``literal`` and l\u2019``literal`` with apostrophe
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        l'
+        <literal>
+            literal
+         and l\u2019
+        <literal>
+            literal
+         with apostrophe
+"""],
+[u"""\
+quoted '``literal``', quoted "``literal``",
+quoted \u2018``literal``\u2019, quoted \u201c``literal``\u201d,
+quoted \xab``literal``\xbb
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        quoted '
+        <literal>
+            literal
+        ', quoted "
+        <literal>
+            literal
+        ",
+        quoted \u2018
+        <literal>
+            literal
+        \u2019, quoted \u201c
+        <literal>
+            literal
+        \u201d,
+        quoted \xab
+        <literal>
+            literal
+        \xbb
+"""],
+[u"""\
+``'literal'`` with quotes, ``"literal"`` with quotes,
+``\u2018literal\u2019`` with quotes, ``\u201cliteral\u201d`` with quotes,
+``\xabliteral\xbb`` with quotes
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        <literal>
+            'literal'
+         with quotes, 
+        <literal>
+            "literal"
+         with quotes,
+        <literal>
+            \u2018literal\u2019
+         with quotes, 
+        <literal>
+            \u201cliteral\u201d
+         with quotes,
+        <literal>
+            \xabliteral\xbb
+         with quotes
+"""],
 ["""\
 ``literal ``TeX quotes'' & \\backslash`` but not "``" or ``
 
@@ -281,6 +428,51 @@ ref_
         <reference name="ref" refname="ref">
             ref
 """],
+[u"""\
+l'ref_ and l\u2019ref_ with apostrophe
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        l'
+        <reference name="ref" refname="ref">
+            ref
+         and l\u2019
+        <reference name="ref" refname="ref">
+            ref
+         with apostrophe
+"""],
+[u"""\
+quoted 'ref_', quoted "ref_",
+quoted \u2018ref_\u2019, quoted \u201cref_\u201d,
+quoted \xabref_\xbb,
+but not 'ref ref'_, "ref ref"_, \u2018ref ref\u2019_,
+\u201cref ref\u201d_, or \xabref ref\xbb_
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        quoted '
+        <reference name="ref" refname="ref">
+            ref
+        ', quoted "
+        <reference name="ref" refname="ref">
+            ref
+        ",
+        quoted \u2018
+        <reference name="ref" refname="ref">
+            ref
+        \u2019, quoted \u201c
+        <reference name="ref" refname="ref">
+            ref
+        \u201d,
+        quoted \xab
+        <reference name="ref" refname="ref">
+            ref
+        \xbb,
+        but not 'ref ref'_, "ref ref"_, \u2018ref ref\u2019_,
+        \u201cref ref\u201d_, or \xabref ref\xbb_
+"""],
 ["""\
 ref__
 """,
@@ -289,6 +481,51 @@ ref__
     <paragraph>
         <reference anonymous="1" name="ref">
             ref
+"""],
+[u"""\
+l'ref__ and l\u2019ref__ with apostrophe
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        l'
+        <reference anonymous="1" name="ref">
+            ref
+         and l\u2019
+        <reference anonymous="1" name="ref">
+            ref
+         with apostrophe
+"""],
+[u"""\
+quoted 'ref__', quoted "ref__",
+quoted \u2018ref__\u2019, quoted \u201cref__\u201d,
+quoted \xabref__\xbb,
+but not 'ref ref'__, "ref ref"__, \u2018ref ref\u2019__,
+\u201cref ref\u201d__, or \xabref ref\xbb__
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        quoted '
+        <reference anonymous="1" name="ref">
+            ref
+        ', quoted "
+        <reference anonymous="1" name="ref">
+            ref
+        ",
+        quoted \u2018
+        <reference anonymous="1" name="ref">
+            ref
+        \u2019, quoted \u201c
+        <reference anonymous="1" name="ref">
+            ref
+        \u201d,
+        quoted \xab
+        <reference anonymous="1" name="ref">
+            ref
+        \xbb,
+        but not 'ref ref'__, "ref ref"__, \u2018ref ref\u2019__,
+        \u201cref ref\u201d__, or \xabref ref\xbb__
 """],
 ["""\
 ref_, r_, r_e-f_, -ref_, and anonymousref__,
@@ -326,6 +563,74 @@ totest['phrase_references'] = [
         <reference name="phrase reference" refname="phrase reference">
             phrase reference
 """],
+[u"""\
+l'`phrase reference`_ and l\u2019`phrase reference`_ with apostrophe
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        l'
+        <reference name="phrase reference" refname="phrase reference">
+            phrase reference
+         and l\u2019
+        <reference name="phrase reference" refname="phrase reference">
+            phrase reference
+         with apostrophe
+"""],
+[u"""\
+quoted '`phrase reference`_', quoted "`phrase reference`_",
+quoted \u2018`phrase reference`_\u2019,
+quoted \u201c`phrase reference`_\u201d,
+quoted \xab`phrase reference`_\xbb
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        quoted '
+        <reference name="phrase reference" refname="phrase reference">
+            phrase reference
+        ', quoted "
+        <reference name="phrase reference" refname="phrase reference">
+            phrase reference
+        ",
+        quoted \u2018
+        <reference name="phrase reference" refname="phrase reference">
+            phrase reference
+        \u2019,
+        quoted \u201c
+        <reference name="phrase reference" refname="phrase reference">
+            phrase reference
+        \u201d,
+        quoted \xab
+        <reference name="phrase reference" refname="phrase reference">
+            phrase reference
+        \xbb
+"""],
+[u"""\
+`'phrase reference'`_ with quotes, `"phrase reference"`_ with quotes,
+`\u2018phrase reference\u2019`_ with quotes,
+`\u201cphrase reference\u201d`_ with quotes,
+`\xabphrase reference\xbb`_ with quotes
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        <reference name="'phrase reference'" refname="'phrase reference'">
+            'phrase reference'
+         with quotes, 
+        <reference name=""phrase reference"" refname=""phrase reference"">
+            "phrase reference"
+         with quotes,
+        <reference name="\u2018phrase reference\u2019" refname="\u2018phrase reference\u2019">
+            \u2018phrase reference\u2019
+         with quotes,
+        <reference name="\u201cphrase reference\u201d" refname="\u201cphrase reference\u201d">
+            \u201cphrase reference\u201d
+         with quotes,
+        <reference name="\xabphrase reference\xbb" refname="\xabphrase reference\xbb">
+            \xabphrase reference\xbb
+         with quotes
+"""],
 ["""\
 `anonymous reference`__
 """,
@@ -334,6 +639,74 @@ totest['phrase_references'] = [
     <paragraph>
         <reference anonymous="1" name="anonymous reference">
             anonymous reference
+"""],
+[u"""\
+l'`anonymous reference`__ and l\u2019`anonymous reference`__ with apostrophe
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        l'
+        <reference anonymous="1" name="anonymous reference">
+            anonymous reference
+         and l\u2019
+        <reference anonymous="1" name="anonymous reference">
+            anonymous reference
+         with apostrophe
+"""],
+[u"""\
+quoted '`anonymous reference`__', quoted "`anonymous reference`__",
+quoted \u2018`anonymous reference`__\u2019,
+quoted \u201c`anonymous reference`__\u201d,
+quoted \xab`anonymous reference`__\xbb
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        quoted '
+        <reference anonymous="1" name="anonymous reference">
+            anonymous reference
+        ', quoted "
+        <reference anonymous="1" name="anonymous reference">
+            anonymous reference
+        ",
+        quoted \u2018
+        <reference anonymous="1" name="anonymous reference">
+            anonymous reference
+        \u2019,
+        quoted \u201c
+        <reference anonymous="1" name="anonymous reference">
+            anonymous reference
+        \u201d,
+        quoted \xab
+        <reference anonymous="1" name="anonymous reference">
+            anonymous reference
+        \xbb
+"""],
+[u"""\
+`'anonymous reference'`__ with quotes, `"anonymous reference"`__ with quotes,
+`\u2018anonymous reference\u2019`__ with quotes,
+`\u201canonymous reference\u201d`__ with quotes,
+`\xabanonymous reference\xbb`__ with quotes
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        <reference anonymous="1" name="'anonymous reference'">
+            'anonymous reference'
+         with quotes, 
+        <reference anonymous="1" name=""anonymous reference"">
+            "anonymous reference"
+         with quotes,
+        <reference anonymous="1" name="\u2018anonymous reference\u2019">
+            \u2018anonymous reference\u2019
+         with quotes,
+        <reference anonymous="1" name="\u201canonymous reference\u201d">
+            \u201canonymous reference\u201d
+         with quotes,
+        <reference anonymous="1" name="\xabanonymous reference\xbb">
+            \xabanonymous reference\xbb
+         with quotes
 """],
 ["""\
 `phrase reference
@@ -569,6 +942,71 @@ _`Here is  a    TaRgeT` with case and spacial difficulties.
         <target ids="here-is-a-target" names="here\ is\ a\ target">
             Here is  a    TaRgeT
          with case and spacial difficulties.
+"""],
+[u"""\
+l'_`target1` and l\u2019_`target2` with apostrophe
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        l'
+        <target ids="target1" names="target1">
+            target1
+         and l\u2019
+        <target ids="target2" names="target2">
+            target2
+         with apostrophe
+"""],
+[u"""\
+quoted '_`target1`', quoted "_`target2`",
+quoted \u2018_`target3`\u2019, quoted \u201c_`target4`\u201d,
+quoted \xab_`target5`\xbb
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        quoted '
+        <target ids="target1" names="target1">
+            target1
+        ', quoted "
+        <target ids="target2" names="target2">
+            target2
+        ",
+        quoted \u2018
+        <target ids="target3" names="target3">
+            target3
+        \u2019, quoted \u201c
+        <target ids="target4" names="target4">
+            target4
+        \u201d,
+        quoted \xab
+        <target ids="target5" names="target5">
+            target5
+        \xbb
+"""],
+[u"""\
+_`'target1'` with quotes, _`"target2"` with quotes,
+_`\u2018target3\u2019` with quotes, _`\u201ctarget4\u201d` with quotes,
+_`\xabtarget5\xbb` with quotes
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        <target ids="target1" names="'target1'">
+            'target1'
+         with quotes, 
+        <target ids="target2" names=""target2"">
+            "target2"
+         with quotes,
+        <target ids="target3" names="\u2018target3\u2019">
+            \u2018target3\u2019
+         with quotes, 
+        <target ids="target4" names="\u201ctarget4\u201d">
+            \u201ctarget4\u201d
+         with quotes,
+        <target ids="target5" names="\xabtarget5\xbb">
+            \xabtarget5\xbb
+         with quotes
 """],
 ["""\
 But this isn't a _target; targets require backquotes.
