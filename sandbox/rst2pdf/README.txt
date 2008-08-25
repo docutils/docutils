@@ -12,7 +12,7 @@ It enables the generation of PDF documents from a reStructuredText source in
 one step cleaning up intermediate files.
 
 ``rst2pdf.py`` is implemented as a combination of Docutils' ``rst2latex.py``
-by David Goodger and rubber_ by Emmanuel Beffara.
+and rubber_ by Emmanuel Beffara.
 
 Copyright: © 2008 Günter Milde
 	   Licensed under the `Apache License, Version 2.0`_
