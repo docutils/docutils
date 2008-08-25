@@ -98,6 +98,7 @@ donations, tasty treats, and related projects:
 * Mark McEahern
 * Vincent McIntyre
 * John F Meinel Jr
+* Ivan Mendez for Free Software Office of the University of A Coruña
 * Eric Meyer
 * Günter Milde
 * Skip Montanaro

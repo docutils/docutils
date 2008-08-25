@@ -22,6 +22,7 @@ Changes Since 0.5
   - Backwards-compatible changes to remove python2.6 -3 deprecation warnings
   - Text nodes now subclass unicode rather than UserString
     (which is gone in python 3.0)
+  - [ 1719345 ] Galician translation 
 
 * docutils/nodes.py:
 
