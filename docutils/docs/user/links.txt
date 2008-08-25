@@ -56,26 +56,51 @@ Export
 
 Convert reStructuredText to other formats:
 
-* `rst2pdf.py <http://docutils.sf.net/sandbox/rst2pdf>`_ 
-  is a front end for the generation of PDF documents from a
-  reStructuredText source in one step cleaning up intermediate files.
+PDF
+"""
+
+* `rst2pdf-pdflatex
+  <http://docutils.sourceforge.net/sandbox/blais/rst2pdf/>`_ by Martin Blais
+  is a minimal front end producing LaTeX, compiling the LaTeX file, getting
+  the produced output to the destination location and finally deleting all
+  the messy temporary files that this process generates.
+
+* `rst2pdf-rubber <http://docutils.sf.net/sandbox/rst2pdf/README.html>`_ is
+  a front end for the generation of PDF documents from a reStructuredText
+  source via LaTeX in one step cleaning up intermediate files. It uses the
+  `rubber <http://iml.univ-mrs.fr/~beffara/soft/rubber/>`_ Python wrapper
+  for LaTeX and friends.
+  
+* `rst2pdf-reportlab <http://rst2pdf.googlecode.com>`_ is a tool to go 
+  directly from restructured text to PDF, via `reportlab
+  <http://www.reportlab.org/rl_toolkit.html>`_. No LaTeX installation is
+  required.
 
 * **py.rest** from the Codespeak `py Lib scripts`_ converts
   reStructuredText files to HTML and PDF (cleaning up the intermediate
   latex files).  Similar to ``buildhtml.py``, it looks recursively for
   .txt files in the given PATHS.
 
+* The Docutils interface to PythonPoint_
+  by Richard Jones produces PDF presentations using ReportLabs.
+
+OpenOffice
+""""""""""
+
 * odtwriter_ the Open Document Format writer developed by Dave Kuhlman
   produces files that can be processed with OpenOffice and Abiword.
 
-* restxsl_ by Michael Alyn Miller, lets you transform reStructuredText
-  documents into XML/XHTML files using XSLT stylesheets.
+HTML variants
+"""""""""""""
 
 * rst2ht_ by Oliver Rutherfurd, converts reStructuredText to an .ht
   template, for use with ht2html_.
 
 * htmlnav_ by Gunnar Schwant, is an HTML writer which supports navigation
   bars.
+
+* rest2web_, by Michael Foord, is a tool for creating web sites with
+  reStructuredText.
 
 * rst2chm_ by Oliver Rutherfurd, generates Microsoft HTML Help files from
   reStructuredText files.
@@ -91,11 +116,14 @@ Convert reStructuredText to other formats:
 * A `simple HTML writer`_ by Bill Bumgarner that doesn't rely on CSS
   (stylesheets).
 
+Others
+""""""
+
+* restxsl_ by Michael Alyn Miller, lets you transform reStructuredText
+  documents into XML/XHTML files using XSLT stylesheets.
+
 * An `XSLT script`_ by Ladislav Lhotka enables reStructuredText annotations
   to be included in RELAG NG XML schemas.
-
-* The Docutils interface to PythonPoint_
-  by Richard Jones produces PDF presentations using ReportLabs.
 
 * `ManPage Writer`_ by Engelbert Gruber.
   
@@ -146,9 +174,6 @@ Applications using docutils/reStructuredText, helper applications:
 * Pandoc_ is a document converter; it can read Markdown and (subsets
   of) reStructuredText, HTML, and LaTeX, and it can write Markdown,
   reStructuredText, HTML, LaTeX, RTF, DocBook XML, and S5.
-
-* rest2web_, by Michael Foord, is a tool for creating web sites with
-  reStructuredText.
 
 * There is an `ASCII art to SVG converter`_ (aafigure), developed by
   Chris Liechti.
