@@ -28,6 +28,10 @@ Changes Since 0.5
 
   - Added ``Element.__contains__`` method, for the in-operator.
 
+* docutils/parsers/rst/states.py:
+
+  - Apply [ 1994493 ] Patch to support all kinds of quotes in inline markup
+
 * docutils/writers/newlatex2e/__init__.py:
 
   - Apply [ 1612821 ] Double quotes in literal text in Italian/German

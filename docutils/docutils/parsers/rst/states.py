@@ -504,8 +504,8 @@ class Inliner:
             processed += self.implicit_inline(remaining, lineno)
         return processed, messages
 
-    openers = '\'"([{<'
-    closers = '\'")]}>'
+    openers = u'\'"([{<\u2018\u201c\xab\u2019'
+    closers = u'\'")]}>\u2019\u201d\xbb'
     start_string_prefix = (r'((?<=^)|(?<=[-/: \n%s]))' % re.escape(openers))
     end_string_suffix = (r'((?=$)|(?=[-/:.,;!? \n\x00%s]))'
                          % re.escape(closers))
