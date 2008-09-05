@@ -378,10 +378,10 @@ Reference Names
 ===============
 
 Simple reference names are single words consisting of alphanumerics
-plus isolated (no two adjacent) internal hyphens, underscores, 
-periods, colons and plus signs; no whitespace or other characters are 
-allowed.  Footnote labels (Footnotes_ & `Footnote References`_), citation 
-labels (Citations_ & `Citation References`_), `interpreted text`_ roles, 
+plus isolated (no two adjacent) internal hyphens, underscores,
+periods, colons and plus signs; no whitespace or other characters are
+allowed.  Footnote labels (Footnotes_ & `Footnote References`_), citation
+labels (Citations_ & `Citation References`_), `interpreted text`_ roles,
 and some `hyperlink references`_ use the simple reference name syntax.
 
 Reference names using punctuation or whose names are phrases (two or
@@ -2365,24 +2365,32 @@ end-string will not be recognized or processed.
 
        ' " ( [ { < - / :
 
-   The following Unicode characters may also precede inline markup::
+   The following Unicode characters may also precede inline markup:
 
-       ‘ (U+2018, left single-quote)
-       “ (U+201C, left double-quote)
-       ’ (U+2019, apostrophe)
-       « (U+00AB, left guillemet, or double angle quotation mark)
-       ¡ (U+00A1, inverted exclamation mark)
-       ¿ (U+00BF, inverted question mark)
+       .. class:: borderless
+
+       ===  ==========================================================
+       ‘    (U+2018, left single-quote)
+       “    (U+201C, left double-quote)
+       ’    (U+2019, apostrophe)
+       «    (U+00AB, left guillemet, or double angle quotation mark)
+       ¡    (U+00A1, inverted exclamation mark)
+       ¿    (U+00BF, inverted question mark)
+       ===  ==========================================================
 
    The following Unicode characters are delimiters; they may precede
-   or follow inline markup::
+   or follow inline markup:
 
-       ‐ (U+2010, hyphen)
-       ‑ (U+2011, non-breaking hyphen)
-       ‒ (U+2012, figure dash)
-       – (U+2013, en dash)
-       — (U+2014, em dash)
-         (U+00A0, non-breaking space)
+       .. class:: borderless
+
+       ===  ==========================================================
+       ‐    (U+2010, hyphen)
+       ‑    (U+2011, non-breaking hyphen)
+       ‒    (U+2012, figure dash)
+       –    (U+2013, en dash)
+       —    (U+2014, em dash)
+       " "  (U+00A0, non-breaking space [between the quotes])
+       ===  ==========================================================
 
 2. Inline markup start-strings must be immediately followed by
    non-whitespace.
@@ -2395,11 +2403,15 @@ end-string will not be recognized or processed.
 
        ' " ) ] } > - / : . , ; ! ? \
 
-   The following Unicode characters may also precede inline markup::
+   The following Unicode characters may also precede inline markup:
 
-       ’ (U+2019, right single-quote, or apostrophe)
-       ” (U+201D, right double-quote)
-       » (U+00BB, right guillemet, or double angle quotation mark)
+       .. class:: borderless
+
+       ===  ==========================================================
+       ’    (U+2019, right single-quote, or apostrophe)
+       ”    (U+201D, right double-quote)
+       »    (U+00BB, right guillemet, or double angle quotation mark)
+       ===  ==========================================================
 
    The Unicode character delimiters listed in (1) may precede or
    follow inline markup.
