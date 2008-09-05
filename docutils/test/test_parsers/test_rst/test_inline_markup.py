@@ -42,33 +42,6 @@ u"""\
             emphasis
          with apostrophe
 """],
-[u"""\
-quoted '*emphasis*', quoted "*emphasis*",
-quoted \u2018*emphasis*\u2019, quoted \u201c*emphasis*\u201d,
-quoted \xab*emphasis*\xbb
-""",
-u"""\
-<document source="test data">
-    <paragraph>
-        quoted '
-        <emphasis>
-            emphasis
-        ', quoted "
-        <emphasis>
-            emphasis
-        ",
-        quoted \u2018
-        <emphasis>
-            emphasis
-        \u2019, quoted \u201c
-        <emphasis>
-            emphasis
-        \u201d,
-        quoted \xab
-        <emphasis>
-            emphasis
-        \xbb
-"""],
 ["""\
 *emphasized sentence
 across lines*
@@ -1367,6 +1340,70 @@ lines.
             u
         p
         with backslash-escaped whitespace, including newlines.
+"""],
+[u"""\
+quoted '*emphasis*', quoted "*emphasis*",
+quoted \u2018*emphasis*\u2019, quoted \u201c*emphasis*\u201d,
+quoted \xab*emphasis*\xbb
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        quoted '
+        <emphasis>
+            emphasis
+        ', quoted "
+        <emphasis>
+            emphasis
+        ",
+        quoted \u2018
+        <emphasis>
+            emphasis
+        \u2019, quoted \u201c
+        <emphasis>
+            emphasis
+        \u201d,
+        quoted \xab
+        <emphasis>
+            emphasis
+        \xbb
+"""],
+[u"""\
+text-*separated*\u2010*by*\u2011*various*\u2012*dashes*\u2013*and*\u2014*hyphens*.
+\u00bf*punctuation*? \u00a1*examples*!\u00a0*too*.
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        text-
+        <emphasis>
+            separated
+        \u2010
+        <emphasis>
+            by
+        \u2011
+        <emphasis>
+            various
+        \u2012
+        <emphasis>
+            dashes
+        \u2013
+        <emphasis>
+            and
+        \u2014
+        <emphasis>
+            hyphens
+        .
+        \xbf
+        <emphasis>
+            punctuation
+        ? \xa1
+        <emphasis>
+            examples
+        !\xa0
+        <emphasis>
+            too
+        .
 """],
 ]
 
