@@ -31,7 +31,9 @@ Changes Since 0.5
 
 * docutils/parsers/rst/states.py:
 
-  - Apply [ 1994493 ] Patch to support all kinds of quotes in inline markup
+  - Apply [ 1994493 ] Patch to support all kinds of quotes in inline markup.
+  - Added support for Unicode inline markup delimiters "‐ ‑ ‒ – —" and
+    " " (non-breaking space), and "¡ ¿" openers.
 
 * docutils/writers/newlatex2e/__init__.py:
 
@@ -44,6 +46,12 @@ Changes Since 0.5
   - Fix: for spanish ``~n`` is ``n`` with tilde above, change to ``~{}n``.
   - Change: has_key for dictionaries (not Nodes) to in-operator.
   - Merge adjacent citations into one latex cite command.
+
+* docs/ref/rst/restructuredtext.txt:
+
+  - Documented Unicode characters allowed as inline markup openers,
+    closers, and delimiters.
+
 
 Release 0.5 (2008-06-25)
 ========================
