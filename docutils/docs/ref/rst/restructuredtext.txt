@@ -2360,9 +2360,29 @@ follows.  If any of the conditions are not met, the start-string or
 end-string will not be recognized or processed.
 
 1. Inline markup start-strings must start a text block or be
-   immediately preceded by whitespace or one of::
+   immediately preceded by whitespace or one of the following ASCII
+   characters::
 
        ' " ( [ { < - / :
+
+   The following Unicode characters may also precede inline markup::
+
+       ‘ (U+2018, left single-quote)
+       “ (U+201C, left double-quote)
+       ’ (U+2019, apostrophe)
+       « (U+00AB, left guillemet, or double angle quotation mark)
+       ¡ (U+00A1, inverted exclamation mark)
+       ¿ (U+00BF, inverted question mark)
+
+   The following Unicode characters are delimiters; they may precede
+   or follow inline markup::
+
+       ‐ (U+2010, hyphen)
+       ‑ (U+2011, non-breaking hyphen)
+       ‒ (U+2012, figure dash)
+       – (U+2013, en dash)
+       — (U+2014, em dash)
+         (U+00A0, non-breaking space)
 
 2. Inline markup start-strings must be immediately followed by
    non-whitespace.
@@ -2371,9 +2391,18 @@ end-string will not be recognized or processed.
    non-whitespace.
 
 4. Inline markup end-strings must end a text block or be immediately
-   followed by whitespace or one of::
+   followed by whitespace or one of the following ASCII characters::
 
        ' " ) ] } > - / : . , ; ! ? \
+
+   The following Unicode characters may also precede inline markup::
+
+       ’ (U+2019, right single-quote, or apostrophe)
+       ” (U+201D, right double-quote)
+       » (U+00BB, right guillemet, or double angle quotation mark)
+
+   The Unicode character delimiters listed in (1) may precede or
+   follow inline markup.
 
 5. If an inline markup start-string is immediately preceded by a
    single or double quote, "(", "[", "{", or "<", it must not be
