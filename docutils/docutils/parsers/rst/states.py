@@ -504,11 +504,15 @@ class Inliner:
             processed += self.implicit_inline(remaining, lineno)
         return processed, messages
 
-    openers = u'\'"([{<\u2018\u201c\xab\u2019'
+    openers = u'\'"([{<\u2018\u201c\xab\u2019\u00a1\u00bf'
     closers = u'\'")]}>\u2019\u201d\xbb'
-    start_string_prefix = (r'((?<=^)|(?<=[-/: \n%s]))' % re.escape(openers))
-    end_string_suffix = (r'((?=$)|(?=[-/:.,;!? \n\x00%s]))'
-                         % re.escape(closers))
+    unicode_delimiters = u'\u2010\u2011\u2012\u2013\u2014\u00a0'
+    start_string_prefix = (r'((?<=^)|(?<=[-/: \n%s%s]))'
+                           % (re.escape(unicode_delimiters),
+                              re.escape(openers)))
+    end_string_suffix = (r'((?=$)|(?=[-/:.,;!? \n\x00%s%s]))'
+                         % (re.escape(unicode_delimiters),
+                            re.escape(closers)))
     non_whitespace_before = r'(?<![ \n])'
     non_whitespace_escape_before = r'(?<![ \n\x00])'
     non_whitespace_after = r'(?![ \n])'
