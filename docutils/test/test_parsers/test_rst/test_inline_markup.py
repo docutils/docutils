@@ -1405,6 +1405,29 @@ u"""\
             too
         .
 """],
+[u"""\
+None of these should be markup (matched openers & closers):
+
+\u2018*\u2019 \u201c*\u201d \xab*\xbb \u00bf*? \u00a1*!
+
+But this should:
+
+l\u2019*exception*.
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        None of these should be markup (matched openers & closers):
+    <paragraph>
+        \u2018*\u2019 \u201c*\u201d \xab*\xbb \xbf*? \xa1*!
+    <paragraph>
+        But this should:
+    <paragraph>
+        l\u2019
+        <emphasis>
+            exception
+        .
+"""],
 ]
 
 
