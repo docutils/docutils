@@ -60,10 +60,9 @@ PROBLEMS
 SEE ALSO
 ========
 
-`docutils <http://docutils.sourceforge.net>`__
-`linux man page howto <http://tldp.org/HOWTO/Man-Page/>`__
-
-and ``man man`` ``man 7 man ``
+* `docutils <http://docutils.sourceforge.net>`__
+* `linux man page howto <http://tldp.org/HOWTO/Man-Page/>`__
+* ``man man`` and ``man 7 man``
 
 BUGS
 ====
