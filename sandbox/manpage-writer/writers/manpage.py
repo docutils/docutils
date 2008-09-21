@@ -209,6 +209,8 @@ class Translator(nodes.NodeVisitor):
                 'strong' : ('\\fB', '\\fP'),
                 'term' : ('\n.B ', '\n'),
                 'title_reference' : ('\\fI', '\\fP'),
+
+                'problematic' : ('\n.nf\n', '\n.fi\n'),
                     }
         # TODO dont specify the newline before a dot-command, but ensure
         # check it is there.
@@ -870,19 +872,10 @@ class Translator(nodes.NodeVisitor):
             self.body.append('\n\n')
 
     def visit_problematic(self, node):
-        raise NotImplementedError, node.astext()
-        if node.hasattr('refid'):
-            self.body.append('<a href="#%s" name="%s">' % (node['refid'],
-                                                           node['id']))
-            self.context.append('</a>')
-        else:
-            self.context.append('')
-        self.body.append(self.starttag(node, 'span', '', CLASS='problematic'))
+        self.body.append(self.defs['problematic'][0])
 
     def depart_problematic(self, node):
-        raise NotImplementedError, node.astext()
-        self.body.append('</span>')
-        self.body.append(self.context.pop())
+        self.body.append(self.defs['problematic'][1])
 
     def visit_raw(self, node):
         if node.get('format') == 'manpage':

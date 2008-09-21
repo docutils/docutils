@@ -111,6 +111,7 @@ Change log
 
 * writers/manpage.py:
 
+  - 2008-09-21: implement ``problematic`` as line block.
   - 2008-05-16: patch from htgoebel:
 
                 * keep ``=`` in long options like ``--filename=FILENAME``
