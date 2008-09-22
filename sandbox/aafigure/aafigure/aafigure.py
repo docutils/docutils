@@ -893,7 +893,7 @@ if __name__ == '__main__':
             import pdf
             doc = pdf.PDFOutputVisitor(
                 file(output_name, 'wb'),
-                scale = options.scale*7,
+                scale = options.scale,
                 line_width = options.linewidth,
                 #~ debug = options.debug,
                 foreground = decode_color(options.foreground),
