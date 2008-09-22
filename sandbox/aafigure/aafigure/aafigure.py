@@ -277,6 +277,7 @@ class AsciiArtImage:
         ('>',  1,  0, '_standard_arrow'),
         ('<', -1,  0, '_standard_arrow'),
         ('^',  0, -1, '_standard_arrow'),
+        ('A',  0, -1, '_standard_arrow'),
         ('V',  0,  1, '_standard_arrow'),
         ('v',  0,  1, '_standard_arrow'),
         ('>', -1,  0, '_reversed_arrow'),
@@ -297,7 +298,7 @@ class AsciiArtImage:
         ('#',  0, -1, '_rectangular_head'),
         ('#',  0,  1, '_rectangular_head'),
     ]
-    ARROW_HEADS = list('<>Vv^oO#')
+    ARROW_HEADS = list('<>AVv^oO#')
 
     def get_arrow(self, character, dx, dy):
         """return arrow drawing function or None"""
@@ -792,7 +793,6 @@ class AsciiArtImage:
 if __name__ == '__main__':
     import pprint
     import svg
-    import pil
     import aa
     import optparse
 
@@ -889,7 +889,20 @@ if __name__ == '__main__':
                 fillcolor = decode_color(options.fill),
             )
             pilout.visit_image(aaimg)
+        elif options.type.lower() == 'pdf':
+            import pdf
+            doc = pdf.PDFOutputVisitor(
+                file(output_name, 'wb'),
+                scale = options.scale*7,
+                line_width = options.linewidth,
+                #~ debug = options.debug,
+                foreground = decode_color(options.foreground),
+                background = decode_color(options.background),
+                fillcolor = decode_color(options.fill),
+            )
+            doc.visit_image(aaimg)
         else:
+            import pil
             pilout = pil.PILOutputVisitor(
                 file(output_name, 'wb'),
                 scale = options.scale*7,
