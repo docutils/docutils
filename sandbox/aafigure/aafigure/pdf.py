@@ -12,12 +12,12 @@ from reportlab.graphics import renderPDF
 class PDFOutputVisitor:
     """Render a list of shapes as PDF vector image."""
     
-    def __init__(self, file_like, scale = 10, line_width=1,
+    def __init__(self, file_like, scale = 1, line_width=1,
                  foreground=(0,0,0), background=(255,255,255), fillcolor=(0,0,0)
         ):
         self.file_like = file_like
-        self.scale = scale
-        self.line_width = line_width
+        self.scale = 3.33*scale
+        self.line_width = 0.4*line_width
         self.foreground = foreground
         self.background = background
         self.fillcolor = fillcolor
@@ -35,11 +35,11 @@ class PDFOutputVisitor:
            the PDF file
         """
         self.aa_image = aa_image        #save for later XXX not optimal to do it here
-        self.width = (aa_image.width+1)*aa_image.nominal_size*aa_image.aspect_ratio
-        self.height = (aa_image.height+1)*aa_image.nominal_size
+        self.width = (aa_image.width)*aa_image.nominal_size*aa_image.aspect_ratio
+        self.height = (aa_image.height)*aa_image.nominal_size
         self.drawing = Drawing(self._num(self.width), self._num(self.height))
         self.visit_shapes(aa_image.shapes)
-        renderPDF.drawToFile(self.drawing, self.file_like, 'AAFigure')
+        renderPDF.drawToFile(self.drawing, self.file_like, '')
   
     def visit_shapes(self, shapes):
         for shape in shapes:
@@ -50,7 +50,7 @@ class PDFOutputVisitor:
             else:
                 print "WARNING: don't know how to handle shape %r" % shape
 
-    # - - - - - - SVG drawing helpers - - - - - - -
+    # - - - - - - PDF drawing helpers - - - - - - -
     def _line(self, x1, y1, x2, y2, thick):
         """Draw a line, coordinates given as four decimal numbers"""
         self.drawing.add(Line(
@@ -61,9 +61,7 @@ class PDFOutputVisitor:
         ))
 
     def _rectangle(self, x1, y1, x2, y2, style=''):
-        """Draw a rectange, coordinates given as four decimal numbers.
-           ``style`` is inserted in the SVG. It could be e.g. "fill:yellow"
-        """
+        """Draw a rectange, coordinates given as four decimal numbers."""
         if x1 > x2: x1, x2 = x2, x1
         if y1 > y2: y1, y2 = y2, y1
         self.drawing.add(Rect(
@@ -114,7 +112,7 @@ class PDFOutputVisitor:
         ))
 
     def visit_group(self, group):
-        #XXX add a group to the PDF file
+        #XXX could add a group to the PDF file
         self.visit_shapes(group.shapes)
 
 
