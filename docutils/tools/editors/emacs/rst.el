@@ -3203,7 +3203,9 @@ document with \\[rst-compile]."
     (latex . ("rst2latex.py" ".tex" nil))
     (newlatex . ("rst2newlatex.py" ".tex" nil))
     (pseudoxml . ("rst2pseudoxml.py" ".xml" nil))
-    (xml . ("rst2xml.py" ".xml" nil)))
+    (xml . ("rst2xml.py" ".xml" nil))
+    (pdf . ("rst2pdf.py" ".pdf" nil))
+    (s5 . ("rst2s5.py" ".xml" nil)))
   "An association list of the toolset to a list of the (command to use,
 extension of produced filename, options to the tool (nil or a
 string)) to be used for converting the document.")
@@ -3294,7 +3296,7 @@ of the entire buffer, if the region is not selected."
     (shell-command-on-region
      (if mark-active (region-beginning) (point-min))
      (if mark-active (region-end) (point-max))
-     "rst2pseudoxml.py"
+     (cadr (assq 'pseudoxml rst-compile-toolsets))
      standard-output)))
 
 (defvar rst-pdf-program "xpdf"
@@ -3304,7 +3306,8 @@ of the entire buffer, if the region is not selected."
   "Convert the document to a PDF file and launch a preview program."
   (interactive)
   (let* ((tmp-filename "/tmp/out.pdf")
-	 (command (format "rst2pdf.py %s %s && %s %s"
+	 (command (format "%s %s %s && %s %s"
+			  (cadr (assq 'pdf rst-compile-toolsets))
 			  buffer-file-name tmp-filename
 			  rst-pdf-program tmp-filename)))
     (start-process-shell-command "rst-pdf-preview" nil command)
@@ -3319,7 +3322,8 @@ of the entire buffer, if the region is not selected."
   "Convert the document to an S5 slide presentation and launch a preview program."
   (interactive)
   (let* ((tmp-filename "/tmp/slides.html")
-	 (command (format "rst2s5.py %s %s && %s %s"
+	 (command (format "%s %s %s && %s %s"
+			  (cadr (assq 's5 rst-compile-toolsets))
 			  buffer-file-name tmp-filename
 			  rst-slides-program tmp-filename)))
     (start-process-shell-command "rst-slides-preview" nil command)
