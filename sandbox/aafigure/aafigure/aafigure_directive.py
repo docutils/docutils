@@ -91,10 +91,12 @@ def AAFigureDirective(name, arguments, options, content, lineno,
             fillcolor = decode_color(options['fill']),
         )
         doc.visit_image(aaimg)
-        # Return an image directive.
-        image_options = {}
-        image_options['uri'] = os.path.basename(output_name)
-        result = [nodes.image(output_name, **image_options)]
+        # Return a link.
+        wrapper = nodes.generated()
+        wrapper.append(nodes.reference('', '%s (PDF)' % options['name'], 
+            refuri=os.path.basename(output_name)
+        ))
+        result = [wrapper]
     elif pil is not None:
         output_name = '%s.%s' % (options['name'], options['format'])
         pilout = pil.PILOutputVisitor(
