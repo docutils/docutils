@@ -40,6 +40,9 @@ Files:
 ``aa.py``
     ASCII art output backend. Intended for tests, not for the end user.
 
+``pdf.py``
+    PDF output backend. Depends on reportlab.
+
 ``pil.py``
     Bitmap output backend. Using PIL, it can write PNG, JPEG and more formats.
 

@@ -79,6 +79,22 @@ def AAFigureDirective(name, arguments, options, content, lineno,
             svgout.get_size_attrs()
         ), **attributes)]
         #~ result = [nodes.raw('', io.getvalue(), **attributes)]
+    elif options['format'] == 'pdf':
+        import pdf
+        output_name = options['name'] + '.pdf'
+        doc = pdf.PDFOutputVisitor(
+            file(output_name, 'wb'),
+            scale = options['scale'],
+            line_width = options['line_width'],
+            foreground = decode_color(options['foreground']),
+            background = decode_color(options['background']),
+            fillcolor = decode_color(options['fill']),
+        )
+        doc.visit_image(aaimg)
+        # Return an image directive.
+        image_options = {}
+        image_options['uri'] = os.path.basename(output_name)
+        result = [nodes.image(output_name, **image_options)]
     elif pil is not None:
         output_name = '%s.%s' % (options['name'], options['format'])
         pilout = pil.PILOutputVisitor(
