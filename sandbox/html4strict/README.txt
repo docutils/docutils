@@ -18,6 +18,7 @@ However, generated documents do not conform to the "strict" variant, as they
 contain some deprecated structures in order to ensure correct display with
 deficient browsers.
 
+
 Solution
 ========
 
