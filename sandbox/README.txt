@@ -4,10 +4,11 @@
  README: The Sandbox
 =====================
 
-The Sandbox_ is a place to play around, to try out and share ideas. It's a
-part of the Subversion repository but it isn't distributed as part of
-Docutils_ releases. 
-It's OK to make a mess in the sandbox! But please, play nice.
+The Sandbox is a place to play around, to try out and share ideas. The
+`sandbox/`_ directory is a part of the Subversion repository but it isn't
+distributed as part of Docutils_ releases.
+
+It's OK to make a mess in the Sandbox! But please, play nice.
 
 A project-specific subdirectory should be created for each new project. 
 Any developer who wants to play in the sandbox may create their own
@@ -20,9 +21,8 @@ Sandbox_ is mirrored at the Docutils web site, so the `Docutils Web Site`_
 documentation applies as well.
 
 
-
 .. This link gives readers a way to *go to* the sandbox:
-.. _Sandbox: ./
+.. _sandbox/: ./
 
 .. _Docutils: http://docutils.sourceforge.net/
 .. _Docutils Project Policies:
@@ -72,15 +72,15 @@ __ http://docs.python.org/doc/doc.html
 Other Sandbox Projects
 ----------------------
 
+See the `sandbox/`_ directory for a complete list.
+
+* Many Sandbox projects, are sorted into the `Docutils Link List`_.
+
 * `<code-block-directive>`_ contains documentation, reasoning and
   experimental code for support of syntax highlight in docutils.
   
 * `<latex-variants>`_ is a place to try out and discuss variants of the
   latex2e writer.
 
-* `<rst2pdf>`_ is a front end for the generation of PDF documents from a
-  reStructuredText source in one step cleaning up intermediate files.
-
-For other sandbox projects, please see the `Docutils Link List`_.
 
 .. _Docutils Link List: http://docutils.sf.net/docs/user/links.html
