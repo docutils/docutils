@@ -1,0 +1,26 @@
+#!/bin/bash
+# $Id$
+#
+# Expect list of htmlfiles freshen with rst2html if there is
+# a newer txt file besides.
+# Used to initialise a docutils-update upload directory.
+
+cat $1 | \
+while read F ; do
+    if test ${F: -4} == ".txt" ; then
+        TXT=$F
+        HTML=${F/\.txt/\.html}
+    elif test ${F: -5} == ".html" ; then
+        TXT=${F/\.html/\.txt}
+        HTML=$F
+    else
+        TXT=""
+    fi
+    if test -n "$TXT" ; then
+        if test -e "$TXT" -a "$TXT" -nt "$HTML" ; then
+            rst2html.py $TXT $HTML
+        fi
+    else
+        echo "Do not know what to do about: $F"
+    fi
+done
