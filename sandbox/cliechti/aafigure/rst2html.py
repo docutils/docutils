@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# vim: set fileencoding=utf-8 :
 
 # Author: David Goodger
 # Contact: goodger@users.sourceforge.net
