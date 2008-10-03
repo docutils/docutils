@@ -1,0 +1,131 @@
+#!/usr/bin/env python
+"""
+Extracts literal blocks from a ReST document and save them out to files.
+
+Each literal block can be typed by placing a string like ``#!<type>`` on the
+first line of the literal block. This can be done, for example, #to mark some
+literal blocks as SQL code. Literal blocks that are not typed are #associated to
+the type 'generic'.
+
+If you only want to output a specific type of literal block, you can decide
+which one to output by using the -t option. By default, only the generic blocks
+are output.
+
+.. note::
+
+   The author uses for multiple purposes, in a way that reminds him of literate
+   programming. For example, when designing a database schema, an interesting
+   use case is to include the schema in a document that describes the entities
+   in detail, with their intended purpose. The code itself goes in the literal
+   blocks. You can them easily extract the SQL string that contains all the SQL
+   data definitions to setup your database schema.
+
+Here is an example::
+
+  #!sql
+  CREATE TABLE price (
+
+    id SERIAL,
+    asset_id INTEGER REFERENCES asset(id),
+    date TIMESTAMP WITHOUT TIME ZONE,
+    price NUMERIC(16, 6),
+
+    PRIMARY KEY (id)
+  );
+
+If you run rst-literals on this text you will get only the literal block under
+#!sql.
+
+Blocks may also be named. If you mark it up like this::
+
+  #!sql price-table.sql
+  CREATE TABLE price (
+
+you can use the `` --save-named-blocks `` option to have the blocks extracted to
+corresponding files. Note that you may just use the name if you like::
+
+  #! example1.sql
+  CREATE TABLE price (
+
+
+
+"""
+__author__ = 'Martin Blais <blais@furius.ca>'
+
+# stdlib imports
+import sys, re
+
+# docutils imports
+from docutils import core, nodes
+
+
+class Visitor(nodes.SparseNodeVisitor):
+
+    def __init__(self, *args):
+        nodes.SparseNodeVisitor.__init__(self, *args)
+        self.chunks = []
+
+    def visit_literal_block(self, node):
+        text = node.astext()
+        mo = re.match(u'[ \t]*#!([^ \t]*)([ \t](.*))?\n', text)
+        if mo:
+            typ, name = mo.group(1, 3)
+            text = text[mo.end(3):]
+        else:
+            typ, name = 'generic', None
+
+        self.chunks.append( (typ, name, text) )
+
+def main():
+    import optparse
+    parser = optparse.OptionParser(__doc__.strip())
+
+    parser.add_option('-t', '--type', action='store',
+                      default='generic',
+                      help="Chunk type to extract")
+
+    parser.add_option('-s', '--save-named-blocks', action='store_true',
+                      help="Save all named blocks to files (in CWD).")
+
+    opts, args = parser.parse_args()
+
+    if len(args) != 1:
+        parser.error("You must specify a filename to process.")
+    fn, = args
+
+    text = open(fn).read()
+    document = core.publish_doctree(
+        source_path=fn,
+        source=text,
+        reader_name='standalone',
+        parser_name='restructuredtext',
+        settings_overrides={
+            'input_encoding': 'UTF-8',
+            }
+        )
+
+    v = Visitor(document)
+    document.walk(v)
+
+    for typ, name, text in v.chunks:
+        if opts.type and typ != opts.type:
+            continue
+        output_text(text, sys.stdout)
+
+    for typ, name, text in v.chunks:
+        if name and opts.save_named_blocks:
+            output_text(text, open(name, 'w'))
+
+            
+def output_text(text, ss):
+    "Write out the string 'text' as a block to stream 'ss')."
+    write = ss.write
+    write(text)
+    write('\n')
+    if text[-1] != '\n':
+        write('\n')
+
+
+if __name__ == '__main__':
+    main()
+
