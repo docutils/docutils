@@ -1,4 +1,7 @@
 #!/bin/sh
+#
+# Author: Engelbert Gruber <grubert@users.sf.net>
+# Copyright: This module has been placed in the public domain.
 
 IN_DIR=input
 OUT_DIR=output
