@@ -88,6 +88,8 @@ Pygments enhanced docutils front-ends
 Syntax highlight can be achieved by `front-end scripts`_ combining docutils and
 pygments.
 
+   "something users [will have to] put together themselves"
+
 Advantages:
   + Easy implementation with no changes to the stock docutils_. 
   + Separation of code blocks and ordinary literal blocks.
@@ -137,39 +139,25 @@ code. The actual rendering depends on the style-sheet. ::
         "just a test"
         print 8/2
 
-If the language argument is missing, a default language should be used.
-Additional arguments might be used and e.g. passed to the pygments_ parser
-or (as class arguments) the output document.
+If the language argument is missing, a (configurable) default language
+should be used. 
 
+Additional arguments might be used and e.g. passed to
+the pygments_ parser or (as class arguments) the output document.
+
+:number-lines: let pygments include line-numbers
+
+Include directive option
+"""""""""""""""""""""""
+
+The include directive should get a matching new option:
+
+code : language 
+  The entire included text is inserted into the document as if it were the
+  content of a code-block directive (useful for program listings).
 
 Implementation
 """"""""""""""
-
-Alternatives
-''''''''''''
-
-There are 2 alternatives for the implementation of a code-block directive:
-
-hight level markup
-   modeled on the ideas for the planned math-mode directive:
-   
-   * Store the content as-is in the doctree and tag it as source code of
-     lanugage `language` (i.e. store a literal-block element with
-     "code-block" and "`language`" classes).
-   
-   * Write according to the writers possibilities and user settings
-     (parse and mark-up by the writer (or backend) or render as
-     monospaced).
-
-low level markup:
-   result of the past discussion for the planned source-code directive:
-
-   * Parse the content while reading and store as "rich" literal block.
-     
-   * Write similar to a "parsed-literal" block. Styling via style-sheet
-     is possible.
-
-The following concept implements "low level markup".
 
 Reading
 '''''''
@@ -217,23 +205,26 @@ XML
   and `myfunction.py.pseudoxml`_
 
 LaTeX
-  Latex writers must be updated to handle the "rich" <literal_block> element
-  correct.
+  Latex writers must be fixed to handle the "rich" <literal_block> element
+  correct:
   
   * The "latex" writer currently fails to handle "classified" <inline>
     doctree elements. The output `myfunction.py.tex`_ contains undefined
     control sequences ``\docutilsroleNone``.
   
   * The "newlatex2e" writer produces a valid LaTeX document
-    (`myfunction.py.newlatex2e.tex`_). However the `pdflatex` output looks
-    mixed up a bit (`myfunction.py.newlatex2e.pdf`_). 
+    (`myfunction.py.newlatex2e.tex`_). However there is some garbage in the
+    `pdflatex` output (`myfunction.py.newlatex2e.pdf`_). 
     
-    The pygments-produced style file will not currently work with
-    "newlatex2e" output. 
-    
-  The "high level markup" alternative would be easier to implement in
-  LaTeX.
+  The pygments-produced LaTeX style file will not work with docutils' LaTeX
+  output. The writer(s) will need to 
   
+  a) be extended in order to convert the "classified" <inline> doctree
+     elements into LaTeX styling instructions, or
+     
+  b) reconstruct the original content and pass it to a ``lstlistings``
+     environment.
+    
 OpenOffice 
   The non-official "odtwriter" provides syntax highlight with
   pygments but uses a different syntax and implementation.
@@ -242,12 +233,21 @@ OpenOffice
 TODO
 """"
 
-* decide on "low level" or "high level" markup.
+1. Let the latex2e writer ignore unknown class arguments.
 
-* fix the "latex" writers (difficult for "low level markup" as LaTeX
-  has no concept of "object classes").
+2. Write functional test case and sample.
 
-* think about an interface for pygments' options (like "encoding" or
+3. Minimal implementation: 
+
+   * move the code from `pygments_code_block_directive.py`_ to "the right
+     place".
+     
+   * add the CSS rules to the default style-sheet (see pygments-default.css_)
+   
+4. Enable the latex2e writers to highlight code-blocks (more precise: to
+   write LaTeX code that lets the latex engine highlight them).
+
+5. Think about an interface for pygments' options (like "encoding" or
   "linenumbers").
 
 
