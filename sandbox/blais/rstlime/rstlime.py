@@ -219,6 +219,8 @@ class ExtractFields(nodes.SparseNodeVisitor, list):
 
     def visit_field_name(self, node):
         key = node.astext()
+        if not opts.raw:
+            key = key.split()[0] # Use just the first word of the field.
         self.key = key if opts.raw else sanitize_column(key)
 
     def visit_field_body(self, node):
@@ -319,7 +321,7 @@ def table2sql(table, tabledef):
     definition."""
     lines = ['CREATE TABLE %s (' % table]
     for colname, ctype in tabledef:
-        lines.append('  %s %s,' % (colname, sqltypes[ctype]))
+        lines.append('  "%s" %s,' % (colname, sqltypes[ctype]))
     lines[-1] = lines[-1][:-1]
 
     lines.append(');')
@@ -406,15 +408,17 @@ def db_get_table_columns(conn, table):
 #-------------------------------------------------------------------------------
 # Filling up the database.
 
-def store_entries(entries_list, dbmodel, conn):
+progress_count = 100
+
+def store_entries(entries_list, dbmodel, curs):
     """ Given a list of entries to be stored, try to store as much data as
     possible in the given database model."""
 
-    curs = conn.cursor()
+    logging.info("  ... dropping old data")
 
     # Drop the old data from this document from the previous tables.
-    tables = [x.table for x in entries_list]
-    sources = [x.source for x in entries_list]
+    tables = set(x.table for x in entries_list)
+    sources = set(x.source for x in entries_list)
     for table in tables:
         if table not in dbmodel:
             continue
@@ -423,7 +427,10 @@ def store_entries(entries_list, dbmodel, conn):
                          (source,))
 
     dbmodel = dict((k, dict(v)) for (k,v) in dbmodel.iteritems())
-    for e in entries_list:
+    for i, e in enumerate(entries_list):
+        if i > 0 and (i % progress_count) == 0:
+            logging.info("  ... progress: %d/%d" % (i, len(entries_list)))
+
         try:
             dbcols = dbmodel[e.table]
         except KeyError:
@@ -462,11 +469,9 @@ def store_entries(entries_list, dbmodel, conn):
             curs.execute("""
               INSERT INTO %s (%s) VALUES (%s)
               """ % (e.table,
-                     ','.join(outcols),
-                     ','.join(['%s'] * len(outvalues))),
+                     ', '.join('"%s"' % x for x in outcols),
+                     ', '.join(['%s'] * len(outvalues))),
                          outvalues)
-
-    conn.commit()
 
 
 #-------------------------------------------------------------------------------
@@ -612,11 +617,12 @@ def main():
     logging.info("Storing the data.")
 
     if not opts.raw:
-        # Sanitize the data.
+        logging.info("  ... sanitizing the data")
         sanitize_data(entries_list, sani_info)
 
     if opts.data:
         if isdb(opts.data):
+            logging.info("  ... writing to database")
             
             # Open a connection to the database.
             conn = dbapi.connect(**parse_dburi(opts.data))
@@ -625,7 +631,10 @@ def main():
                 dbmodel = db_get_model(conn)
 
                 # Store the entries as much as we can.
-                store_entries(entries_list, dbmodel, conn)
+
+                curs = conn.cursor()
+                store_entries(entries_list, dbmodel, curs)
+                conn.commit()
             finally:
                 conn.close()
 
