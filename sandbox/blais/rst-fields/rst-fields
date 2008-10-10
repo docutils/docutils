@@ -196,6 +196,15 @@ class FindData(nodes.SparseNodeVisitor):
             return
 
         fields = extract_fields(flist, self.document)
+
+        if opts.enclosing_section:
+            assert 'section' not in fields, fields
+            node_sec = find_enclosing_section(node)
+            i = node_sec.first_child_matching_class(nodes.title)
+            title = node_sec.children[i]
+            if title is not None:
+                fields.append( ('section', title.astext()) )
+
         source, line = utils.get_source_line(node)
         e = Entry(self.docid, table, fields,
                   '%s:%s' % (abspath(self.filename), line))
@@ -203,10 +212,16 @@ class FindData(nodes.SparseNodeVisitor):
 
         raise nodes.SkipNode()
 
+def find_enclosing_section(node):
+    """ Go up the tree until a section node is found. """
+    while node:
+        if isinstance(node, nodes.section):
+            return node
+        node = node.parent
+    
 def str2table(s):
     "Convert a string to a valid table name."
     return s.lower().replace(' ', '_')
-
 
 def extract_fields(node, document):
     "Return a list of (key, value) pairs from all underlying field_list's."
@@ -530,6 +545,9 @@ def main():
 
     parser.add_option('-v', '--verbose', action='store_true',
                       help="Turn on verbose output.")
+
+    parser.add_option('-e', '--enclosing-section', action='store_true',
+                      help="Add a field for enclosing sections to each entry.")
 
     global opts; opts, args = parser.parse_args()
     if not args:
