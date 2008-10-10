@@ -10,8 +10,8 @@ Entries look like this (all names are generic)::
     :authors: E.T. Jaynes, G. Larry Bretthorst
     :isbn: 978-0521592710
 
-You can the data stored in an existing database, or in a file. This program can
-also automatically infer a database schema from the data (and create the
+You can have the data stored in an existing database, or in a file. This program
+can also automatically infer a database schema from the data (and create the
 tables). If you only store the data in a database, only the fields defined in
 the schema will be stored (the others will be dropped). This allows you to
 create your database tables ahead of time, as you like, and to have only valid
@@ -140,7 +140,7 @@ def get_file_entries(fn):
         docid = dfields.get(u'id', None)
     if docid is None:
         docid = basename(fn)
-
+    
     # Obtain all the data from the document.
     v = FindData(fn, docid, document)
     document.walk(v)
@@ -560,9 +560,13 @@ def main():
         entries_by_document[docid] = entries
         entries_list.extend(entries)
 
+    if len(entries_list) == 0:
+        logging.info("No entries, exiting.")
+        sys.exit(1)
+
     # Make sure that the values have unique key names.
     uniquify_keys(entries_list)
-
+    
     #---------------------------------------------------------------------------
     logging.info("Inferring model (and read target model if necessary).")
 
@@ -595,13 +599,21 @@ def main():
             oss.write('\n')
         sqlcreate = oss.getvalue()
 
+
         if isdb(opts.schema):
             # Drop the tables and apply to the given database.
             conn = dbapi.connect(**parse_dburi(opts.schema))
             try:
                 curs = conn.cursor()
                 for table, _ in infmodel.iteritems():
-                    curs.execute("DROP TABLE %s" % table)
+                    try:
+                        curs.execute("DROP TABLE %s" % table)
+                    except dbapi.Error:
+                        conn.rollback()
+                        pass # Ignore "table does not exist" errors.
+                    else:
+                        conn.commit()
+
                 curs.execute(sqlcreate)
                 conn.commit()
             finally:
