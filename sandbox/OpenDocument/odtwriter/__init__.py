@@ -881,7 +881,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         'codeblock-keyword', 'codeblock-name', 'codeblock-number',
         'codeblock-operator', 'codeblock-string', 'emphasis', 'enumitem',
         'enumlist', 'epigraph', 'epigraph-bulletitem', 'epigraph-bulletlist',
-        'epigraph-enumitem', 'epigraph-enumlist', 'footer', 'footnote',
+        'epigraph-enumitem', 'epigraph-enumlist', 'footer',
+        'footnote', 'citation',
         'header', 'highlights', 'highlights-bulletitem',
         'highlights-bulletlist', 'highlights-enumitem', 'highlights-enumlist',
         'horizontalline', 'inlineliteral', 'lineblock', 'quotation', 'rubric',
@@ -1000,6 +1001,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.bumped_list_level_stack = []
         self.meta_dict = {}
         self.in_footnote = False
+        self.in_citation = None
 
     def add_doc_title(self):
         text = self.settings.title
@@ -1697,13 +1699,51 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         #ipshell('At depart_footnote_reference')
         pass
 
+    def visit_citation(self, node):
+        #ipshell('At visit_citation')
+        for id in node.attributes['ids']:
+            self.in_citation = id
+            break
+        self.paragraph_style_stack.append(self.rststyle('blockindent'))
+        self.bumped_list_level_stack.append(ListLevel(1))
+
+    def depart_citation(self, node):
+        #ipshell('At depart_citation')
+        self.in_citation = None
+        self.paragraph_style_stack.pop()
+        self.bumped_list_level_stack.pop()
+
+    def visit_citation_reference(self, node):
+        #ipshell('At visit_citation_reference')
+        id = node.attributes['refid']
+        el = self.append_child('text:reference-ref', attrib={
+            'text:ref-name': '%s' % (id, ),
+            'text:reference-format': 'text',
+            })
+        el.text = '['
+        self.set_current_element(el)
+
+    def depart_citation_reference(self, node):
+        #ipshell('At depart_citation_reference')
+        self.current_element.text += ']'
+        self.set_to_parent()
+
     def visit_label(self, node):
         #ipshell('At visit_label')
-        pass
+        if self.in_citation is not None:
+            el = self.append_p('textbody')
+            self.set_current_element(el)
+            el1 = self.append_child('text:reference-mark-start', attrib={
+                    'text:name': '%s' % (self.in_citation, ),
+                    })
 
     def depart_label(self, node):
         #ipshell('At depart_label')
-        pass
+        if self.in_citation is not None:
+            el = self.append_child('text:reference-mark-end', attrib={
+                    'text:name': '%s' % (self.in_citation, ),
+                    })
+            self.set_to_parent()
 
     def visit_generated(self, node):
         pass
