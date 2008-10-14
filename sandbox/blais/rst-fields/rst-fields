@@ -199,12 +199,15 @@ class FindData(nodes.SparseNodeVisitor):
 
         if opts.enclosing_section:
             assert 'section' not in fields, fields
+            section = ''
             node_sec = find_enclosing_section(node)
-            i = node_sec.first_child_matching_class(nodes.title)
-            title = node_sec.children[i]
-            if title is not None:
-                fields.append( ('section', title.astext()) )
-
+            if node_sec is not None:
+                i = node_sec.first_child_matching_class(nodes.title)
+                title = node_sec.children[i]
+                if title is not None:
+                    section = title.astext()
+            fields.append( ('section', section) )
+                    
         source, line = utils.get_source_line(node)
         e = Entry(self.docid, table, fields,
                   '%s:%s' % (abspath(self.filename), line))
