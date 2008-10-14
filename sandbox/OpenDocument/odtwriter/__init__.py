@@ -396,7 +396,13 @@ def escape_cdata(text):
     text = text.replace("&", "&amp;")
     text = text.replace("<", "&lt;")
     text = text.replace(">", "&gt;")
-    return text
+    ascii = ''
+    for char in text:
+      if ord(char) >= ord("\x7f"):
+          ascii += "&#x%X;" % ( ord(char), )
+      else:
+          ascii += char
+    return ascii
 
 
 #
@@ -929,7 +935,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                     print '***'
                     #raise RuntimeError, 'Unused style "%s"' % ( rststyle, )
                 self.format_map[rststyle] = format
-        self.section_level = 1
+        self.section_level = 0
         self.section_count = 0
         # Create ElementTree content and styles documents.
         if WhichElementTree == 'lxml':
