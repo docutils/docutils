@@ -1432,7 +1432,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def visit_container(self, node):
         styles = node.attributes.get('classes', ())
         if len(styles) > 0:
-            self.paragraph_style_stack.append(styles[0])
+            self.paragraph_style_stack.append(self.rststyle(styles[0]))
 
     def depart_container(self, node):
         #ipshell('At depart_container')
