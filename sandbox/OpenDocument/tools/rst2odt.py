@@ -18,7 +18,7 @@ except:
 from docutils.core import publish_cmdline, default_description, \
     Publisher, default_usage
 from docutils import io
-from docutils.writers.odtwriter import Writer
+from docutils.writers.odtwriter import Writer, Reader
 
 
 description = ('Generates OpenDocument/OpenOffice/ODF documents from '
@@ -78,5 +78,6 @@ def publish_cmdline_to_binary(reader=None, reader_name='standalone',
 
 
 writer = Writer()
-output = publish_cmdline_to_binary(writer=writer, description=description)
+reader = Reader()
+output = publish_cmdline_to_binary(reader=reader, writer=writer, description=description)
     

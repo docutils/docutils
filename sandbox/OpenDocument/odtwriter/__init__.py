@@ -23,6 +23,8 @@ import imp
 import docutils
 from docutils import frontend, nodes, utils, writers, languages
 from docutils.parsers import rst
+from docutils.readers import standalone
+from docutils.transforms import references
 
 
 WhichElementTree = ''
@@ -666,6 +668,16 @@ class Writer(writers.Writer):
             {'action': 'store_false',
                 'dest': 'create_sections',
                 'validator': frontend.validate_boolean}),
+        ('Create links. '
+            'Default is No.',
+            ['--create-links'],
+            {'default': False, 'action': 'store_true',
+                'validator': frontend.validate_boolean}),
+        ('Create no links.',
+            ['--no-create-links'],
+            {'action': 'store_false',
+                'dest': 'create_links',
+                'validator': frontend.validate_boolean}),
 ##        ('Specify a plugins/directives module (without .py). '
 ##            'Default: "%s"' % default_plugins_name,
 ##            ['--plugins-module-name'],
@@ -1142,9 +1154,10 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         return result
 
     def append_pending_ids(self, el):
-        for id in self.pending_ids:
-            SubElement(el, 'text:reference-mark', attrib={
-                    'text:name': id})
+        if self.settings.create_links:
+            for id in self.pending_ids:
+                SubElement(el, 'text:reference-mark', attrib={
+                        'text:name': id})
         self.pending_ids = [ ]
 
     def set_current_element(self, el):
@@ -1715,34 +1728,40 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_citation_reference(self, node):
         #ipshell('At visit_citation_reference')
-        id = node.attributes['refid']
-        el = self.append_child('text:reference-ref', attrib={
-            'text:ref-name': '%s' % (id, ),
-            'text:reference-format': 'text',
-            })
-        el.text = '['
-        self.set_current_element(el)
+        if self.settings.create_links:
+            id = node.attributes['refid']
+            el = self.append_child('text:reference-ref', attrib={
+                'text:ref-name': '%s' % (id, ),
+                'text:reference-format': 'text',
+                })
+            el.text = '['
+            self.set_current_element(el)
+        else:
+            self.current_element.text += '['
 
     def depart_citation_reference(self, node):
         #ipshell('At depart_citation_reference')
         self.current_element.text += ']'
-        self.set_to_parent()
+        if self.settings.create_links:
+            self.set_to_parent()
 
     def visit_label(self, node):
         #ipshell('At visit_label')
         if self.in_citation is not None:
             el = self.append_p('textbody')
             self.set_current_element(el)
-            el1 = self.append_child('text:reference-mark-start', attrib={
-                    'text:name': '%s' % (self.in_citation, ),
-                    })
+            if self.settings.create_links:
+                el1 = self.append_child('text:reference-mark-start', attrib={
+                        'text:name': '%s' % (self.in_citation, ),
+                        })
 
     def depart_label(self, node):
         #ipshell('At depart_label')
         if self.in_citation is not None:
-            el = self.append_child('text:reference-mark-end', attrib={
-                    'text:name': '%s' % (self.in_citation, ),
-                    })
+            if self.settings.create_links:
+                el = self.append_child('text:reference-mark-end', attrib={
+                        'text:name': '%s' % (self.in_citation, ),
+                        })
             self.set_to_parent()
 
     def visit_generated(self, node):
@@ -2395,24 +2414,26 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def visit_reference(self, node):
         #self.trace_visit_node(node)
         text = node.astext()
-        if node.has_key('refuri'):
-            href = node['refuri']
-            if ( self.settings.cloak_email_addresses
-                 and href.startswith('mailto:')):
-                href = self.cloak_mailto(href)
-            el = self.append_child('text:a', attrib={
-                'xlink:href': '%s' % href,
-                'xlink:type': 'simple',
-                })
-            self.set_current_element(el)
-        elif node.has_key('refid'):
-            href = node['refid']
-            el = self.append_child('text:reference-ref', attrib={
-                'text:ref-name': '%s' % href,
-                'text:reference-format': 'text',
-                })
-        else:
-            raise RuntimeError, 'References must have "refuri" or "refid" attribute.'
+        if self.settings.create_links:
+            if node.has_key('refuri'):
+                    href = node['refuri']
+                    if ( self.settings.cloak_email_addresses
+                         and href.startswith('mailto:')):
+                        href = self.cloak_mailto(href)
+                    el = self.append_child('text:a', attrib={
+                        'xlink:href': '%s' % href,
+                        'xlink:type': 'simple',
+                        })
+                    self.set_current_element(el)
+            elif node.has_key('refid'):
+                if self.settings.create_links:
+                    href = node['refid']
+                    el = self.append_child('text:reference-ref', attrib={
+                        'text:ref-name': '%s' % href,
+                        'text:reference-format': 'text',
+                        })
+            else:
+                raise RuntimeError, 'References must have "refuri" or "refid" attribute.'
         #print '(visit_reference) href: "%s"  text: "%s"' % (href, text, )
         if (self.in_table_of_contents and
             len(node.children) >= 1 and
@@ -2421,8 +2442,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def depart_reference(self, node):
         #self.trace_depart_node(node)
-        if node.has_key('refuri'):
-            self.set_to_parent()
+        if self.settings.create_links:
+            if node.has_key('refuri'):
+                self.set_to_parent()
 
     def visit_rubric(self, node):
         style_name = self.rststyle('rubric')
@@ -2804,3 +2826,14 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def depart_superscript(self, node):
         self.set_to_parent()
 
+
+# Use an own reader to modify transformations done.
+class Reader(standalone.Reader):
+
+    def get_transforms(self):
+        default = standalone.Reader.get_transforms(self)
+        if self.settings.create_links:
+            return default
+        return [ i
+                 for i in default
+                 if i is not references.DanglingReferences ]
