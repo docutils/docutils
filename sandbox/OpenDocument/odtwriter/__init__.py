@@ -899,11 +899,15 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         'highlights-bulletlist', 'highlights-enumitem', 'highlights-enumlist',
         'horizontalline', 'inlineliteral', 'lineblock', 'quotation', 'rubric',
         'strong', 'table-title', 'textbody', 'tocbulletlist', 'tocenumlist',
+        'title',
+        'subtitle',
         'heading1',
         'heading2',
         'heading3',
         'heading4',
         'heading5',
+        'heading6',
+        'heading7',
         'admon-attention-hdr',
         'admon-attention-body',
         'admon-caution-hdr',
@@ -1020,9 +1024,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         if text:
             self.title = text
             if not self.found_doc_title:
-                el = Element('text:h', attrib = {
-                    'text:outline-level': '1',
-                    'text:style-name': 'rststyle-heading1',
+                el = Element('text:p', attrib = {
+                    'text:style-name': self.rststyle('title'),
                     })
                 el.text = text
                 self.body_text_element.insert(0, el)
@@ -2654,7 +2657,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def depart_target(self, node):
         pass
 
-    def visit_title(self, node, move_ids=1):
+    def visit_title(self, node, move_ids=1, title_type='title'):
         #ipshell('At visit_title')
         if isinstance(node.parent, docutils.nodes.section):
             section_level = self.section_level
@@ -2674,9 +2677,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             #    text = self.settings.title
             #else:
             #    text = node.astext()
-            el1 = SubElement(self.current_element, 'text:h', attrib = {
-                'text:outline-level': '1',
-                'text:style-name': self.rststyle('heading%d', ( 1, )),
+            el1 = SubElement(self.current_element, 'text:p', attrib = {
+                'text:style-name': self.rststyle(title_type),
                 })
             self.append_pending_ids(el1)
             text = node.astext()
@@ -2689,8 +2691,11 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             isinstance(node.parent, docutils.nodes.document)):
             self.set_to_parent()
 
-    visit_subtitle = visit_title
-    depart_subtitle = depart_title
+    def visit_subtitle(self, node, move_ids=1):
+        self.visit_title(node, move_ids, title_type='subtitle')
+
+    def depart_subtitle(self, node):
+        self.depart_title(node)
     
     def visit_title_reference(self, node):
         #ipshell('At visit_title_reference')
