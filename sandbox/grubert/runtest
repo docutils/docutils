@@ -26,9 +26,10 @@ function report() {
   fi
 }
 
-BASE_CMD="../../docutils/tools/rst2latex.py --traceback --stylesheet= "
+BARE_CMD="../../docutils/tools/rst2latex.py --traceback "
+BASE_CMD="$BARE_CMD --stylesheet= "
 
-CMD=$BASE_CMD
+CMD="$BASE_CMD"
 if [ -z "$1" ] ; then
   FM="*.txt"
 else
@@ -50,6 +51,15 @@ if [ -n "$1" -a ! "$1" == "-" ] ; then
   report
   exit
 fi
+
+# stylesheet embedding
+INF=test/header.txt
+STF=test/dummy_stylesheet
+echo -e "% dummy stylesheet\n%  second line" > $STF
+OUTF="$INF-embed-stylsheet.tex"
+REFF="$OUTF.ref"
+$CMD --stylesheet-path=$STF --embed-stylesheet $2 $3 $INF > $OUTF
+do_diff $REFF $OUTF 
 
 INF=test/header.txt
 for GO in "" auto pdftex dvips,300dpi ; do
