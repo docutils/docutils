@@ -605,6 +605,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     # ---------
     
     latex_head = '\\documentclass[%s]{%s}\n'
+    # conditionally if no hyperref is used dont include
     linking = "\\ifthenelse{\\isundefined{\\hypersetup}}{\n" \
             +"\\usepackage[colorlinks=%s,linkcolor=%s,urlcolor=%s]{hyperref}\n" \
             +"}{}\n"
@@ -761,7 +762,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
             else:
                 self.head_prefix.append(self.stylesheet % (stylesheet))
         # hyperref after stylesheet
-        # TODO conditionally if no hyperref is used dont include
         self.head_prefix.append( self.linking % (
                     self.colorlinks, self.hyperlink_color, self.hyperlink_color))
 
