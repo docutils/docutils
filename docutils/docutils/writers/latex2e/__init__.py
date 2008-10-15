@@ -14,6 +14,7 @@ __docformat__ = 'reStructuredText'
 # convention deactivate code by two # e.g. ##.
 
 import sys
+import os
 import time
 import re
 import string
@@ -69,6 +70,12 @@ class Writer(writers.Writer):
           'directory.  Overrides --stylesheet.',
           ['--stylesheet-path'],
           {'metavar': '<file>', 'overrides': 'stylesheet'}),
+         ('Embed the stylesheet in the output LaTeX file.  The stylesheet '
+          'file must be accessible during processing (--stylesheet-path is '
+          'recommended).  This is not set by default.',
+          ['--embed-stylesheet'],
+          {'default': 0, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
          ('Table of contents by docutils (default) or LaTeX. LaTeX (writer) '
           'supports only one ToC per document, but docutils does not know of '
           'pagenumbers. LaTeX table of contents also means LaTeX generates '
@@ -746,8 +753,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
         ## stylesheet is last: so it might be possible to overwrite defaults.
         stylesheet = utils.get_stylesheet_reference(settings)
         if stylesheet:
-            settings.record_dependencies.add(stylesheet)
-            self.head_prefix.append(self.stylesheet % (stylesheet))
+            if settings.embed_stylesheet:
+                stylesheet = utils.get_stylesheet_reference(
+                    settings, os.path.join(os.getcwd(), 'dummy'))
+                settings.record_dependencies.add(stylesheet)
+                self.head_prefix.append(open(stylesheet).read())
+            else:
+                self.head_prefix.append(self.stylesheet % (stylesheet))
         # hyperref after stylesheet
         # TODO conditionally if no hyperref is used dont include
         self.head_prefix.append( self.linking % (
