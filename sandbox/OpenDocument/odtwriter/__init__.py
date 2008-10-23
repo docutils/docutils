@@ -157,12 +157,12 @@ try:
 except ImportError, exp:
     Image = None
 
-## from IPython.Shell import IPShellEmbed
-## args = ['-pdb', '-pi1', 'In <\\#>: ', '-pi2', '   .\\D.: ',
-##     '-po', 'Out<\\#>: ', '-nosep']
-## ipshell = IPShellEmbed(args,
-##     banner = 'Entering IPython.  Press Ctrl-D to exit.',
-##     exit_msg = 'Leaving Interpreter, back to program.')
+from IPython.Shell import IPShellEmbed
+args = ['-pdb', '-pi1', 'In <\\#>: ', '-pi2', '   .\\D.: ',
+        '-po', 'Out<\\#>: ', '-nosep']
+ipshell = IPShellEmbed(args,
+                       banner = 'Entering IPython.  Press Ctrl-D to exit.',
+                       exit_msg = 'Leaving Interpreter, back to program.')
 
 
 #
@@ -218,6 +218,8 @@ CONTENT_NAMESPACE_DICT = CNSD = {
     'ooo': 'http://openoffice.org/2004/office',
     'oooc': 'http://openoffice.org/2004/calc',
     'ooow': 'http://openoffice.org/2004/writer',
+    'presentation': 'urn:oasis:names:tc:opendocument:xmlns:presentation:1.0',
+    
     'script': 'urn:oasis:names:tc:opendocument:xmlns:script:1.0',
     'style': 'urn:oasis:names:tc:opendocument:xmlns:style:1.0',
     'svg': 'urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0',
@@ -242,6 +244,7 @@ STYLES_NAMESPACE_DICT = SNSD = {
     'meta': 'urn:oasis:names:tc:opendocument:xmlns:meta:1.0',
     'number': 'urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0',
     'office': NAME_SPACE_1,
+    'presentation': 'urn:oasis:names:tc:opendocument:xmlns:presentation:1.0',
     'ooo': 'http://openoffice.org/2004/office',
     'oooc': 'http://openoffice.org/2004/calc',
     'ooow': 'http://openoffice.org/2004/writer',
@@ -286,6 +289,7 @@ CONTENT_NAMESPACE_ATTRIB = {
     'xmlns:meta': 'urn:oasis:names:tc:opendocument:xmlns:meta:1.0',
     'xmlns:number': 'urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0',
     'xmlns:office': NAME_SPACE_1,
+    'xmlns:presentation': 'urn:oasis:names:tc:opendocument:xmlns:presentation:1.0',
     'xmlns:ooo': 'http://openoffice.org/2004/office',
     'xmlns:oooc': 'http://openoffice.org/2004/calc',
     'xmlns:ooow': 'http://openoffice.org/2004/writer',
@@ -313,6 +317,7 @@ STYLES_NAMESPACE_ATTRIB = {
     'xmlns:meta': 'urn:oasis:names:tc:opendocument:xmlns:meta:1.0',
     'xmlns:number': 'urn:oasis:names:tc:opendocument:xmlns:datastyle:1.0',
     'xmlns:office': NAME_SPACE_1,
+    'xmlns:presentation': 'urn:oasis:names:tc:opendocument:xmlns:presentation:1.0',
     'xmlns:ooo': 'http://openoffice.org/2004/office',
     'xmlns:oooc': 'http://openoffice.org/2004/calc',
     'xmlns:ooow': 'http://openoffice.org/2004/writer',
@@ -459,6 +464,7 @@ if hasattr(rst, 'Directive'):
 
     rst.directives.register_directive('sourcecode', SyntaxHighlightCodeBlock)
     rst.directives.register_directive('code', SyntaxHighlightCodeBlock)
+    rst.directives.register_directive('code-block', SyntaxHighlightCodeBlock)
 
 
 #
@@ -702,7 +708,6 @@ class Writer(writers.Writer):
         self.translator_class = ODFTranslator
 
     def translate(self):
-        #import pdb; pdb.set_trace()
         self.settings = self.document.settings
         self.visitor = self.translator_class(self.document)
         self.document.walkabout(self.visitor)
@@ -717,14 +722,17 @@ class Writer(writers.Writer):
         writers.Writer.assemble_parts(self)
         f = tempfile.NamedTemporaryFile()
         zfile = zipfile.ZipFile(f, 'w', zipfile.ZIP_DEFLATED)
-        self.write_zip_str(zfile, 'content.xml', self.visitor.content_astext())
-        self.write_zip_str(zfile, 'mimetype', MIME_TYPE)
+        content = self.visitor.content_astext()
+        self.write_zip_str(zfile, 'content.xml', content)
+        self.write_zip_str(zfile, 'mimetype', self.MIME_TYPE)
         s1 = self.create_manifest()
         self.write_zip_str(zfile, 'META-INF/manifest.xml', s1)
         s1 = self.create_meta()
         self.write_zip_str(zfile, 'meta.xml', s1)
         s1 = self.get_stylesheet()
         self.write_zip_str(zfile, 'styles.xml', s1)
+        s1 = self.get_settings()
+        self.write_zip_str(zfile, 'settings.xml', s1)
         self.store_embedded_files(zfile)
         zfile.close()
         f.seek(0)
@@ -754,6 +762,17 @@ class Writer(writers.Writer):
             except OSError, e:
                 print "Error: Can't open file %s." % (source, )
 
+    def get_settings(self):
+        """
+        modeled after get_stylesheet
+        """
+        stylespath = utils.get_stylesheet_reference(self.settings,
+                                                    os.path.join(os.getcwd(), 'dummy'))
+        zfile = zipfile.ZipFile(stylespath, 'r')
+        s1 = zfile.read('settings.xml')
+        zfile.close()
+        return s1
+
     def get_stylesheet(self):
         """Retrieve the stylesheet from either a .xml file or from
         a .odt (zip) file.  Return the content as a string.
@@ -770,7 +789,7 @@ class Writer(writers.Writer):
             s1 = zfile.read('styles.xml')
             zfile.close()
         else:
-            raise RuntimeError, 'stylesheet path must be ' + self.EXTENSION + ' or .xml file.'
+            raise RuntimeError, 'stylesheet path (%s) must be %s or .xml file' %(stylespath, self.EXTENSION)
         s1 = self.visitor.setup_page(s1)
         return s1
 
@@ -790,7 +809,7 @@ class Writer(writers.Writer):
                 )
         doc = etree.ElementTree(root)
         SubElement(root, 'manifest:file-entry', attrib={
-            'manifest:media-type': MIME_TYPE,
+            'manifest:media-type': self.MIME_TYPE,
             'manifest:full-path': '/',
             }, nsdict=MANNSD)
         SubElement(root, 'manifest:file-entry', attrib={
@@ -1796,7 +1815,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             self.image_count += 1
             filename = os.path.split(source)[1]
             destination = 'Pictures/1%08x%s' % (self.image_count, filename, )
-            spec = (source, destination,)
+            spec = (os.path.abspath(source), destination,)
+            
             self.embedded_file_list.append(spec)
             self.image_dict[source] = (source, destination,)
         # Is this a figure (containing an image) or just a plain image?
