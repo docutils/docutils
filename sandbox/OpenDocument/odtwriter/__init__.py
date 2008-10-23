@@ -20,6 +20,7 @@ import re
 import StringIO
 import inspect
 import imp
+import copy
 import docutils
 from docutils import frontend, nodes, utils, writers, languages
 from docutils.parsers import rst
@@ -31,13 +32,11 @@ WhichElementTree = ''
 try:
     # 1. Try to use lxml.
     from lxml import etree
-    #print '*** using lxml'
     WhichElementTree = 'lxml'
 except ImportError, e:
     try:
         # 2. Try to use ElementTree from the Python standard library.
         from xml.etree import ElementTree as etree
-        #print '*** using ElementTree'
         WhichElementTree = 'elementtree'
     except ImportError, e:
         try:
@@ -157,12 +156,19 @@ try:
 except ImportError, exp:
     Image = None
 
+## from IPython.Shell import IPShellEmbed
+## args = ['-pdb', '-pi1', 'In <\\#>: ', '-pi2', '   .\\D.: ',
+##         '-po', 'Out<\\#>: ', '-nosep']
+## ipshell = IPShellEmbed(args,
+##                        banner = 'Entering IPython.  Press Ctrl-D to exit.',
+##                        exit_msg = 'Leaving Interpreter, back to program.')
+
 from IPython.Shell import IPShellEmbed
 args = ['-pdb', '-pi1', 'In <\\#>: ', '-pi2', '   .\\D.: ',
-        '-po', 'Out<\\#>: ', '-nosep']
+    '-po', 'Out<\\#>: ', '-nosep']
 ipshell = IPShellEmbed(args,
-                       banner = 'Entering IPython.  Press Ctrl-D to exit.',
-                       exit_msg = 'Leaving Interpreter, back to program.')
+    banner = 'Entering IPython.  Press Ctrl-D to exit.',
+    exit_msg = 'Leaving Interpreter, back to program.')
 
 
 #
@@ -192,9 +198,6 @@ SPACES_PATTERN = re.compile(r'( +)')
 TABS_PATTERN = re.compile(r'(\t+)')
 FILL_PAT1 = re.compile(r'^ +')
 FILL_PAT2 = re.compile(r' {2,}')
-# Match a section number followed by 3 \xa0 bytes.
-# Note that we actually check for the class "auto-toc" instead.
-#SECTNUM_PAT = re.compile(r'^\d*(\.\d*)*\240\240\240')
 
 TableStylePrefix = 'Table'
 
@@ -389,7 +392,6 @@ def add_ns(tag, nsdict=CNSD):
         if ns is None:
             raise RuntimeError, 'Invalid namespace prefix: %s' % nstag
         tag = '{%s}%s' % (ns, name,)
-        #print '*** tag: "%s"' % tag
     return tag
 
 def ToString(et):
@@ -416,56 +418,34 @@ def escape_cdata(text):
 # Classes
 #
 
-# Does this version of Docutils has Directive support?
-if hasattr(rst, 'Directive'):
+#
+# Class to control syntax highlighting.
+class SyntaxHighlightCodeBlock(rst.Directive):
+    required_arguments = 1
+    optional_arguments = 0
+    has_content = True
     #
-    # Class to control syntax highlighting.
-##    class SyntaxHighlight(rst.Directive):
-##        required_arguments = 1
-##        optional_arguments = 0
-##        #
-##        # See visit_field for code that processes the node created here.
-##        def run(self):
-##            arguments = ' '.join(self.arguments)
-##            paragraph = nodes.paragraph(arguments, arguments)
-##            field_body = nodes.field_body()
-##            field_body += paragraph
-##            paragraph = nodes.paragraph('syntaxhighlight', 'syntaxhighlight')
-##            field_name = nodes.field_name()
-##            field_name += paragraph
-##            field = nodes.field()
-##            field += field_name
-##            field += field_body
-##            return [field]
-##    
-##    rst.directives.register_directive('sourcecode', SyntaxHighlight)
+    # See visit_literal_block for code that processes the node 
+    #   created here.
+    def run(self):
+        language = self.arguments[0]
+        code_block = nodes.literal_block(classes=["code-block", language],
+            language=language)
+        lines = self.content
+        content = '\n'.join(lines)
+        text_node = nodes.Text(content)
+        code_block.append(text_node)
+        # Mark this node for high-lighting so that visit_literal_block
+        #   will be able to hight-light those produced here and
+        #   *not* high-light regular literal blocks (:: in reST).
+        code_block['hilight'] = True
+        #import pdb; pdb.set_trace()
+        return [code_block]
 
-    class SyntaxHighlightCodeBlock(rst.Directive):
-        required_arguments = 1
-        optional_arguments = 0
-        has_content = True
-        #
-        # See visit_literal_block for code that processes the node 
-        #   created here.
-        def run(self):
-            language = self.arguments[0]
-            code_block = nodes.literal_block(classes=["code-block", language],
-                language=language)
-            lines = self.content
-            content = '\n'.join(lines)
-            text_node = nodes.Text(content)
-            code_block.append(text_node)
-            # Mark this node for high-lighting so that visit_literal_block
-            #   will be able to hight-light those produced here and
-            #   *not* high-light regular literal blocks (:: in reST).
-            code_block['hilight'] = True
-            #import pdb; pdb.set_trace()
-            return [code_block]
+rst.directives.register_directive('sourcecode', SyntaxHighlightCodeBlock)
+rst.directives.register_directive('code', SyntaxHighlightCodeBlock)
 
-    rst.directives.register_directive('sourcecode', SyntaxHighlightCodeBlock)
-    rst.directives.register_directive('code', SyntaxHighlightCodeBlock)
     rst.directives.register_directive('code-block', SyntaxHighlightCodeBlock)
-
 
 #
 # Register directives defined in a module named "odtwriter_plugins".
@@ -537,7 +517,6 @@ class Writer(writers.Writer):
     """Formats this writer supports."""
 
     default_stylesheet = 'styles' + EXTENSION
-##    default_plugins_name = 'docutils_plugins'
 
     default_stylesheet_path = utils.relative_path(
         os.path.join(os.getcwd(), 'dummy'),
@@ -548,80 +527,6 @@ class Writer(writers.Writer):
     default_template_path = utils.relative_path(
         os.path.join(os.getcwd(), 'dummy'),
         os.path.join(os.path.dirname(__file__), default_template))
-
-##    settings_spec = (
-##        'ODF-Specific Options',
-##        None,
-##        (('Specify the template file (UTF-8 encoded).  Default is "%s".'
-##          % default_template_path,
-##          ['--template'],
-##          {'default': default_template_path, 'metavar': '<file>'}),
-##        ('Specify a stylesheet URL, used verbatim.  Overrides '
-##          '--stylesheet-path.',
-##          ['--stylesheet'],
-##          {'metavar': '<URL>', 'overrides': 'stylesheet_path'}),
-##         ('Specify a stylesheet file, relative to the current working '
-##          'directory.  The path is adjusted relative to the output ODF '
-##          'file.  Overrides --stylesheet.  Default: "%s"'
-##          % default_stylesheet_path,
-##          ['--stylesheet-path'],
-##          {'metavar': '<file>', 'overrides': 'stylesheet',
-##           'default': default_stylesheet_path}),
-##         ('Specify the initial header level.  Default is 1 for "<h1>".  '
-##          'Does not affect document title & subtitle (see --no-doc-title).',
-##          ['--initial-header-level'],
-##          {'choices': '1 2 3 4 5 6'.split(), 'default': '1',
-##           'metavar': '<level>'}),
-##         ('Specify the maximum width (in characters) for one-column field '
-##          'names.  Longer field names will span an entire row of the table '
-##          'used to render the field list.  Default is 14 characters.  '
-##          'Use 0 for "no limit".',
-##          ['--field-name-limit'],
-##          {'default': 14, 'metavar': '<level>',
-##           'validator': frontend.validate_nonnegative_int}),
-##         ('Specify the maximum width (in characters) for options in option '
-##          'lists.  Longer options will span an entire row of the table used '
-##          'to render the option list.  Default is 14 characters.  '
-##          'Use 0 for "no limit".',
-##          ['--option-limit'],
-##          {'default': 14, 'metavar': '<level>',
-##           'validator': frontend.validate_nonnegative_int}),
-##         ('Format for footnote references: one of "superscript" or '
-##          '"brackets".  Default is "brackets".',
-##          ['--footnote-references'],
-##          {'choices': ['superscript', 'brackets'], 'default': 'brackets',
-##           'metavar': '<format>',
-##           'overrides': 'trim_footnote_reference_space'}),
-##         ('Format for block quote attributions: one of "dash" (em-dash '
-##          'prefix), "parentheses"/"parens", or "none".  Default is "dash".',
-##          ['--attribution'],
-##          {'choices': ['dash', 'parentheses', 'parens', 'none'],
-##           'default': 'dash', 'metavar': '<format>'}),
-##         ('Remove extra vertical whitespace between items of "simple" bullet '
-##          'lists and enumerated lists.  Default: enabled.',
-##          ['--compact-lists'],
-##          {'default': 1, 'action': 'store_true',
-##           'validator': frontend.validate_boolean}),
-##         ('Disable compact simple bullet and enumerated lists.',
-##          ['--no-compact-lists'],
-##          {'dest': 'compact_lists', 'action': 'store_false'}),
-##         ('Remove extra vertical whitespace between items of simple field '
-##          'lists.  Default: enabled.',
-##          ['--compact-field-lists'],
-##          {'default': 1, 'action': 'store_true',
-##           'validator': frontend.validate_boolean}),
-##         ('Disable compact simple field lists.',
-##          ['--no-compact-field-lists'],
-##          {'dest': 'compact_field_lists', 'action': 'store_false'}),
-##         ('Omit the XML declaration.  Use with caution.',
-##          ['--no-xml-declaration'],
-##          {'dest': 'xml_declaration', 'default': 1, 'action': 'store_false',
-##           'validator': frontend.validate_boolean}),
-##         ('Obfuscate email addresses to confuse harvesters while still '
-##          'keeping email links usable with standards-compliant browsers.',
-##          ['--cloak-email-addresses'],
-##          {'action': 'store_true', 'validator': frontend.validate_boolean}),
-##        ))
 
     settings_spec = (
         'ODF-Specific Options',
@@ -652,42 +557,57 @@ class Writer(writers.Writer):
         ('Obfuscate email addresses to confuse harvesters while still '
             'keeping email links usable with standards-compliant browsers.',
             ['--cloak-email-addresses'],
-            {'default': False, 'action': 'store_true',
+            {'default': False,
+                'action': 'store_true',
+                'dest': 'cloak_email_addresses',
+                'validator': frontend.validate_boolean}),
+        ('Do not obfuscate email addresses.',
+            ['--no-cloak-email-addresses'],
+            {'default': False,
+                'action': 'store_false',
+                'dest': 'cloak_email_addresses',
                 'validator': frontend.validate_boolean}),
         ('Specify the thickness of table borders in thousands of a cm.  '
             'Default is 35.',
             ['--table-border-thickness'],
             {'default': 35,
                 'validator': frontend.validate_nonnegative_int}),
-        ('Add syntax highlighting in literal code blocks.'
-            'Default is No.  Requires installation of Pygments.',
+        ('Add syntax highlighting in literal code blocks.',
             ['--add-syntax-highlighting'],
-            {'default': False, 'action': 'store_true',
+            {'default': False,
+                'action': 'store_true',
+                'dest': 'add_syntax_highlighting',
                 'validator': frontend.validate_boolean}),
-        ('Create sections for headers. '
-            'Default is Yes.',
+        ('Do not add syntax highlighting in literal code blocks. (default)',
+            ['--no-add-syntax-highlighting'],
+            {'default': False,
+                'action': 'store_false',
+                'dest': 'add_syntax_highlighting',
+                'validator': frontend.validate_boolean}),
+        ('Create sections for headers.  (default)',
             ['--create-sections'],
-            {'default': True, 'action': 'store_true',
-                'validator': frontend.validate_boolean}),
-        ('Create no sections for headers.',
-            ['--no-create-sections'],
-            {'action': 'store_false',
+            {'default': True, 
+                'action': 'store_true',
                 'dest': 'create_sections',
                 'validator': frontend.validate_boolean}),
-        ('Create links. '
-            'Default is No.',
-            ['--create-links'],
-            {'default': False, 'action': 'store_true',
+        ('Do not create sections for headers.',
+            ['--no-create-sections'],
+            {'default': True, 
+                'action': 'store_false',
+                'dest': 'create_sections',
                 'validator': frontend.validate_boolean}),
-        ('Create no links.',
-            ['--no-create-links'],
-            {'action': 'store_false',
+        ('Create links.',
+            ['--create-links'],
+            {'default': False,
+                'action': 'store_true',
                 'dest': 'create_links',
                 'validator': frontend.validate_boolean}),
-##        ('Specify a plugins/directives module (without .py). '
-##            'Default: "%s"' % default_plugins_name,
-##            ['--plugins-module-name'],
-##            {'default': default_plugins_name}),
+        ('Do not create links.  (default)',
+            ['--no-create-links'],
+            {'default': False,
+                'action': 'store_false',
+                'dest': 'create_links',
+                'validator': frontend.validate_boolean}),
         ))
 
     settings_defaults = {
@@ -886,24 +806,6 @@ class Writer(writers.Writer):
 
 class ODFTranslator(nodes.GenericNodeVisitor):
   
-##    used_styles = (
-##        'attribution', 'blockindent', 'blockquote', 'blockquote-bulletitem',
-##        'blockquote-bulletlist', 'blockquote-enumitem', 'blockquote-enumlist',
-##        'bulletitem', 'bulletlist', 'caption', 'centeredtextbody', 'codeblock',
-##        'codeblock-classname', 'codeblock-comment', 'codeblock-functionname',
-##        'codeblock-keyword', 'codeblock-name', 'codeblock-number',
-##        'codeblock-operator', 'codeblock-string', 'emphasis', 'enumitem',
-##        'enumlist', 'epigraph', 'epigraph-bulletitem', 'epigraph-bulletlist',
-##        'epigraph-enumitem', 'epigraph-enumlist', 'footer', 'footnote',
-##        'header', 'highlights', 'highlights-bulletitem',
-##        'highlights-bulletlist', 'highlights-enumitem', 'highlights-enumlist',
-##        'horizontalline', 'inlineliteral', 'lineblock', 'quotation', 'rubric',
-##        'strong', 'table-title', 'textbody', 'tocbulletlist', 'tocenumlist',
-##        'heading%d', 'admon-%s-hdr', 'admon-%s-body', 'tableoption',
-##        'tableoption.%c', 'tableoption.%c%d', 'Table%d', 'Table%d.%c',
-##        'Table%d.%c%d',
-##        )
-
     used_styles = (
         'attribution', 'blockindent', 'blockquote', 'blockquote-bulletitem',
         'blockquote-bulletlist', 'blockquote-enumitem', 'blockquote-enumlist',
@@ -916,7 +818,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         'footnote', 'citation',
         'header', 'highlights', 'highlights-bulletitem',
         'highlights-bulletlist', 'highlights-enumitem', 'highlights-enumlist',
-        'horizontalline', 'inlineliteral', 'lineblock', 'quotation', 'rubric',
+        'horizontalline', 'inlineliteral', 'quotation', 'rubric',
         'strong', 'table-title', 'textbody', 'tocbulletlist', 'tocenumlist',
         'title',
         'subtitle',
@@ -950,6 +852,12 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         'tableoption',
         'tableoption.%c', 'tableoption.%c%d', 'Table%d', 'Table%d.%c',
         'Table%d.%c%d',
+        'lineblock1',
+        'lineblock2',
+        'lineblock3',
+        'lineblock4',
+        'lineblock5',
+        'lineblock6',
         )
 
     def __init__(self, document):
@@ -962,7 +870,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
             parser = ConfigParser()
             parser.read(self.settings.odf_config_file)
-            for ( rststyle, format, ) in parser.items("Formats"):
+            for rststyle, format in parser.items("Formats"):
                 if rststyle not in self.used_styles:
                     print '***'
                     print ('*** Warning: Style "%s" '
@@ -994,19 +902,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         el = self.generate_content_element(el)
         self.current_element = el
         self.body_text_element = el
-# test styles
-##        if WhichElementTree == 'lxml':
-##            root = Element(
-##                'office:document-styles',
-##                nsmap=STYLES_NAMESPACE_DICT,
-##                nsdict=STYLES_NAMESPACE_DICT,
-##                )
-##        else:
-##            root = Element('office:document-styles',
-##                attrib=STYLES_NAMESPACE_ATTRIB,
-##                nsdict=STYLES_NAMESPACE_DICT,
-##                )
-##        self.styles_tree = etree.ElementTree(element=root)
         self.paragraph_style_stack = [self.rststyle('textbody'), ]
         self.list_style_stack = []
         self.table_count = 0
@@ -1028,15 +923,18 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.in_footer = False
         self.blockstyle = ''
         self.in_table_of_contents = False
-        self.footnote_dict = {}
-        self.footnote_found = False
+        self.footnote_ref_dict = {}
+        self.footnote_list = []
+        self.footnote_chars_idx = 0
+        self.footnote_level = 0
         self.pending_ids = [ ]
         self.in_paragraph = False
         self.found_doc_title = False
         self.bumped_list_level_stack = []
         self.meta_dict = {}
-        self.in_footnote = False
-        self.in_citation = None
+        self.line_block_level = 0
+        self.line_indent_level = 0
+        self.citation_id = None
 
     def add_doc_title(self):
         text = self.settings.title
@@ -1056,8 +954,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         If `parameters` is given `name` must contain a matching number of ``%`` and
         is used as a format expression with `parameters` as the value.
         """
-##        template = self.format_map.get(name, 'rststyle-%s' % name)
-##        return template % parameters
         name1 = name % parameters
         stylename = self.format_map.get(name1, 'rststyle-%s' % name1)
         return stylename
@@ -1082,7 +978,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             w, h = 612, 792     # default to Letter
         def walk(el):
             if el.tag == "{%s}page-layout-properties" % SNSD["style"] and \
-		    not el.attrib.has_key("{%s}page-width" % SNSD["fo"]):
+                    not el.attrib.has_key("{%s}page-width" % SNSD["fo"]):
                 el.attrib["{%s}page-width" % SNSD["fo"]] = "%.3fpt" % w
                 el.attrib["{%s}page-height" % SNSD["fo"]] = "%.3fpt" % h
                 el.attrib["{%s}margin-left" % SNSD["fo"]] = \
@@ -1141,19 +1037,43 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def content_astext(self):
         return self.astext()
 
-# test styles
-##    def styles_astext(self):
-##        root = self.styles_tree.getroot()
-##        et = etree.ElementTree(root)
-##        s1 = ToString(et)
-##        return s1
-
     def set_title(self, title): self.title = title
     def get_title(self): return self.title
     def set_embedded_file_list(self, embedded_file_list):
         self.embedded_file_list = embedded_file_list
     def get_embedded_file_list(self): return self.embedded_file_list
     def get_meta_dict(self): return self.meta_dict
+
+    def process_footnotes(self):
+        for node, el1 in self.footnote_list:
+            backrefs = node.attributes.get('backrefs', [])
+            first = True
+            for ref in backrefs:
+                el2 = self.footnote_ref_dict.get(ref)
+                if el2 is not None:
+                    if first:
+                        first = False
+                        el3 = copy.deepcopy(el1)
+                        el2.append(el3)
+                    else:
+                        children = el2.getchildren()
+                        if len(children) > 0: #  and 'id' in el2.attrib:
+                            child = children[0]
+                            ref1 = child.text
+                            attribkey = add_ns('text:id', nsdict=SNSD)
+                            id1 = el2.get(attribkey, 'footnote-error')
+                            if id1 is None:
+                                id1 = ''
+                            tag = add_ns('text:note-ref', nsdict=SNSD)
+                            el2.tag = tag
+                            el2.attrib.clear()
+                            attribkey = add_ns('text:note-class', nsdict=SNSD)
+                            el2.attrib[attribkey] = 'footnote'
+                            attribkey = add_ns('text:ref-name', nsdict=SNSD)
+                            el2.attrib[attribkey] = id1
+                            attribkey = add_ns('text:reference-format', nsdict=SNSD)
+                            el2.attrib[attribkey] = 'page'
+                            el2.text = ref1
 
     #
     # Utility methods
@@ -1262,7 +1182,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         # Are we in mixed content?  If so, add the text to the
         #   etree tail of the previous sibling element.
         if len(self.current_element.getchildren()) > 0:
-            #print '*** (visit_Text) 1. text: %s' % text
             if self.current_element.getchildren()[-1].tail:
                 self.current_element.getchildren()[-1].tail += text
             else:
@@ -1378,10 +1297,12 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         else:
             self.paragraph_style_stack.append(self.rststyle('blockquote'))
             self.blockstyle = self.rststyle('blockquote')
+        self.line_indent_level += 1
 
     def depart_block_quote(self, node):
         self.paragraph_style_stack.pop()
         self.blockstyle = ''
+        self.line_indent_level -= 1
 
     def visit_bullet_list(self, node):
         #ipshell('At visit_bullet_list')
@@ -1518,18 +1439,16 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_document(self, node):
         #ipshell('At visit_document')
-        #self.set_current_element(self.content_tree.getroot())
         pass
 
     def depart_document(self, node):
-        pass
+        self.process_footnotes()
 
     def visit_docinfo(self, node):
-        #self.document.reporter.debug_flag = 1
-        self.trace_visit_node(node)
+        #self.trace_visit_node(node)
         self.section_level += 1
         self.section_count += 1
-	if self.settings.create_sections:
+        if self.settings.create_sections:
             el = self.append_child('text:section', attrib={
                     'text:name': 'Section%d' % self.section_count,
                     'text:style-name': 'Sect%d' % self.section_level,
@@ -1537,10 +1456,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             self.set_current_element(el)
 
     def depart_docinfo(self, node):
-        #self.document.reporter.debug_flag = 0
-        self.trace_depart_node(node)
+        #self.trace_depart_node(node)
         self.section_level -= 1
-	if self.settings.create_sections:
+        if self.settings.create_sections:
             self.set_to_parent()
 
     def visit_emphasis(self, node):
@@ -1627,22 +1545,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_field(self, node):
         pass
-##        # Note that the syntaxhighlight directive produces this field node.
-##        # See class SyntaxHighlight, above.
-##        #ipshell('At visit_field')
-##        children = node.children
-##        if len(children) == 2:
-##            name = children[0].astext()
-##            if name == 'syntaxhighlight':
-##                body = children[1].astext()
-##                args = body.split()
-##                if args[0] == 'on':
-##                    self.syntaxhighlighting = 1
-##                elif args[0] == 'off':
-##                    self.syntaxhighlighting = 0
-##                else:
-##                    self.syntaxhighlight_lexer = args[0]
-##                raise nodes.SkipChildren()
 
     def depart_field(self, node):
         pass
@@ -1687,102 +1589,126 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_footnote(self, node):
         #ipshell('At visit_footnote')
-        self.in_footnote = True
-        ids = node.attributes['ids']
-        el1 = None
-        for id in ids:
-            if id in self.footnote_dict:
-                el1 = self.footnote_dict[id]
-                break
-        if el1 is not None:
-            el2 = SubElement(el1, 'text:note-body')
-            self.paragraph_style_stack.append(self.rststyle('footnote'))
-            self.set_current_element(el2)
-            self.footnote_found = True
+        self.footnote_level += 1
+        self.save_footnote_current = self.current_element
+        el1 = Element('text:note-body')
+        self.current_element = el1
+        self.footnote_list.append((node, el1))
+        if isinstance(node, docutils.nodes.citation):
+            self.paragraph_style_stack.append(self.rststyle('citation'))
         else:
-            self.footnote_found = False
+            self.paragraph_style_stack.append(self.rststyle('footnote'))
 
     def depart_footnote(self, node):
         #ipshell('At depart_footnote')
-        self.in_footnote = False
-        if self.footnote_found:
-            self.current_element.text = ''
-            self.set_to_parent()
-            self.set_to_parent()
-            self.set_to_parent()
-            self.paragraph_style_stack.pop()
+        self.paragraph_style_stack.pop()
+        self.current_element = self.save_footnote_current
+        self.footnote_level -= 1
+
+    footnote_chars = [
+        '*', '**', '***',
+        '++', '+++',
+        '##', '###',
+        '@@', '@@@',
+        ]
 
     def visit_footnote_reference(self, node):
         #ipshell('At visit_footnote_reference')
-        if not self.in_footnote:
-            id = node.attributes['refid']
-            children = self.current_element.getchildren()
-            if len(children) > 0:
-                if children[-1].tail and children[-1].tail[-1] == ' ':
-                    children[-1].tail = children[-1].tail[:-1]
-            elif (self.current_element.text and
-                self.current_element.text[-1] == ' '):
-                self.current_element.text = self.current_element.text[:-1]
+        if self.footnote_level <= 0:
+            id = node.attributes['ids'][0]
+            refid = node.attributes.get('refid')
+            if refid is None:
+                refid = ''
             el1 = self.append_child('text:note', attrib={
-                'text:id': '%s' % (id, ),
+                'text:id': '%s' % (refid, ),
                 'text:note-class': 'footnote',
                 })
-            self.footnote_dict[id] = el1
+            note_auto = str(node.attributes.get('auto', 1))
+            if isinstance(node, docutils.nodes.citation_reference):
+                citation = '[%s]' % node.astext()
+                el2 = SubElement(el1, 'text:note-citation', attrib={
+                    'text:label': citation,
+                    })
+                el2.text = citation
+            elif note_auto == '1':
+                el2 = SubElement(el1, 'text:note-citation')
+                el2.text = node.astext()
+            elif note_auto == '*':
+                if self.footnote_chars_idx >= len(
+                    ODFTranslator.footnote_chars):
+                    self.footnote_chars_idx = 0
+                footnote_char = ODFTranslator.footnote_chars[
+                    self.footnote_chars_idx]
+                self.footnote_chars_idx += 1
+                el2 = SubElement(el1, 'text:note-citation', attrib={
+                    'text:label': footnote_char,
+                    })
+                el2.text = footnote_char
+            self.footnote_ref_dict[id] = el1
         raise nodes.SkipChildren()
 
     def depart_footnote_reference(self, node):
         #ipshell('At depart_footnote_reference')
         pass
 
-    def visit_citation(self, node):
-        #ipshell('At visit_citation')
-        for id in node.attributes['ids']:
-            self.in_citation = id
-            break
-        self.paragraph_style_stack.append(self.rststyle('blockindent'))
-        self.bumped_list_level_stack.append(ListLevel(1))
+##     def visit_citation(self, node):
+##         #ipshell('At visit_citation')
+##         for id in node.attributes['ids']:
+##             self.citation_id = id
+##             break
+##         self.paragraph_style_stack.append(self.rststyle('blockindent'))
+##         self.bumped_list_level_stack.append(ListLevel(1))
+## 
+##     def depart_citation(self, node):
+##         #ipshell('At depart_citation')
+##         self.citation_id = None
+##         self.paragraph_style_stack.pop()
+##         self.bumped_list_level_stack.pop()
+## 
+##     def visit_citation_reference(self, node):
+##         ipshell('At visit_citation_reference')
+##         if self.settings.create_links:
+##             id = node.attributes['refid']
+##             el = self.append_child('text:reference-ref', attrib={
+##                 'text:ref-name': '%s' % (id, ),
+##                 'text:reference-format': 'text',
+##                 })
+##             el.text = '['
+##             self.set_current_element(el)
+##         else:
+##             self.current_element.text += '['
+## 
+##     def depart_citation_reference(self, node):
+##         #ipshell('At depart_citation_reference')
+##         self.current_element.text += ']'
+##         if self.settings.create_links:
+##             self.set_to_parent()
 
-    def depart_citation(self, node):
-        #ipshell('At depart_citation')
-        self.in_citation = None
-        self.paragraph_style_stack.pop()
-        self.bumped_list_level_stack.pop()
-
-    def visit_citation_reference(self, node):
-        #ipshell('At visit_citation_reference')
-        if self.settings.create_links:
-            id = node.attributes['refid']
-            el = self.append_child('text:reference-ref', attrib={
-                'text:ref-name': '%s' % (id, ),
-                'text:reference-format': 'text',
-                })
-            el.text = '['
-            self.set_current_element(el)
-        else:
-            self.current_element.text += '['
-
-    def depart_citation_reference(self, node):
-        #ipshell('At depart_citation_reference')
-        self.current_element.text += ']'
-        if self.settings.create_links:
-            self.set_to_parent()
+    visit_citation = visit_footnote
+    depart_citation = depart_footnote
+    visit_citation_reference = visit_footnote_reference
+    depart_citation_reference = depart_footnote_reference
 
     def visit_label(self, node):
         #ipshell('At visit_label')
-        if self.in_citation is not None:
+        if isinstance(node.parent, docutils.nodes.footnote):
+            raise nodes.SkipChildren()
+        elif self.citation_id is not None:
             el = self.append_p('textbody')
             self.set_current_element(el)
             if self.settings.create_links:
                 el1 = self.append_child('text:reference-mark-start', attrib={
-                        'text:name': '%s' % (self.in_citation, ),
+                        'text:name': '%s' % (self.citation_id, ),
                         })
 
     def depart_label(self, node):
         #ipshell('At depart_label')
-        if self.in_citation is not None:
+        if isinstance(node.parent, docutils.nodes.footnote):
+            pass
+        elif self.citation_id is not None:
             if self.settings.create_links:
                 el = self.append_child('text:reference-mark-end', attrib={
-                        'text:name': '%s' % (self.in_citation, ),
+                        'text:name': '%s' % (self.citation_id, ),
                         })
             self.set_to_parent()
 
@@ -1865,16 +1791,21 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def depart_image(self, node):
         pass
 
-    def get_image_width_height(self, node, attr, scale):
+    def get_image_width_height(self, node, attr):
         size = None
         if attr in node.attributes:
+            size = node.attributes[attr]
+            unit = size[-2:]
+            if unit.isalpha():
+                size = size[:-2]
+            else:
+                unit = 'px'
             try:
-                size = int(node.attributes[attr])
-                size *= 35.278 / 1000.0
-                size *= scale
+                size = float(size)
             except ValueError, e:
                 print 'Error: Invalid %s for image: "%s"' % (
-                    attr, node.attributes[attr], )
+                    attr, node.attributes[attr])
+            size = [size, unit]
         return size
 
     def get_image_scale(self, node):
@@ -1891,30 +1822,41 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             scale = 1.0
         return scale
 
-    def get_image_scale_width_height(self, node, source):
+    def get_image_scaled_width_height(self, node, source):
         scale = self.get_image_scale(node)
-        width = self.get_image_width_height(node, 'width', scale)
-        height = self.get_image_width_height(node, 'height', scale)
-        if ('scale' in node.attributes and
-            ('width' not in node.attributes or
-            'height' not in node.attributes)):
-            if Image is not None:
-                if source in self.image_dict:
-                    filename, destination = self.image_dict[source]
-                    imageobj = Image.open(filename, 'r')
-                    width, height = imageobj.size
-                    width = width * (35.278 / 1000.0)
-                    width *= scale
-                    height = height * (35.278 / 1000.0)
-                    height *= scale
-            else:
-                raise RuntimeError, 'image has scale and no height/width and PIL not installed'
-        return scale, width, height
+        width = self.get_image_width_height(node, 'width')
+        height = self.get_image_width_height(node, 'height')
+
+        dpi = (72, 72)
+        if Image is not None and source in self.image_dict:
+            filename, destination = self.image_dict[source]
+            imageobj = Image.open(filename, 'r')
+            dpi = imageobj.info.get('dpi', dpi)
+            # dpi information can be (xdpi, ydpi) or xydpi
+            try: iter(dpi)
+            except: dpi = (dpi, dpi)
+        else:
+            imageobj = None
+
+        if width is None or height is None:
+            if imageobj is None:
+                raise RuntimeError, 'image size not fully specified and PIL not installed'
+            if width is None: width = [imageobj.size[0], 'px']
+            if height is None: height = [imageobj.size[1], 'px']
+
+        width[0] *= scale
+        height[0] *= scale
+        if width[1] == 'px': width = [width[0] / dpi[0], 'in']
+        if height[1] == 'px': height = [height[0] / dpi[1], 'in']
+
+        width[0] = str(width[0])
+        height[0] = str(height[0])
+        return ''.join(width), ''.join(height)
 
     def generate_figure(self, node, source, destination, current_element):
         #ipshell('At generate_figure')
         caption = None
-        scale, width, height = self.get_image_scale_width_height(node, source)
+        width, height = self.get_image_scaled_width_height(node, source)
         for node1 in node.parent.children:
             if node1.tagname == 'caption':
                 caption = node1.astext()
@@ -1984,17 +1926,15 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             }
         el2 = SubElement(el1,
             'style:graphic-properties', attrib=attrib, nsdict=SNSD)
-        # Add the content wrapper.
-##        attrib = {'text:style-name': self.rststyle('textbody')}
-##        el1 = SubElement(self.current_element, 'text:p', attrib=attrib)
         attrib = {
             'draw:style-name': style_name,
             'draw:name': 'Frame1',
             'text:anchor-type': 'paragraph',
             'draw:z-index': '1',
             }
-        if width is not None:
-            attrib['svg:width'] = '%.2fcm' % (width, )
+        attrib['svg:width'] = width
+        # dbg
+        #attrib['svg:height'] = height
         el3 = SubElement(current_element, 'draw:frame', attrib=attrib)
         attrib = {}
         el4 = SubElement(el3, 'draw:text-box', attrib=attrib)
@@ -2002,14 +1942,12 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             'text:style-name': self.rststyle('caption'),
             }
         el5 = SubElement(el4, 'text:p', attrib=attrib)
-##        if caption is not None:
-##            el3.tail = caption
         return el3, el5, caption
 
     def generate_image(self, node, source, destination, current_element,
         #ipshell('At generate_image')
         frame_attrs=None):
-        scale, width, height = self.get_image_scale_width_height(node, source)
+        width, height = self.get_image_scaled_width_height(node, source)
         self.image_style_count += 1
         style_name = 'rstframestyle%d' % self.image_style_count
         # Add the style.
@@ -2075,10 +2013,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             attrib['text:anchor-type'] = 'char'
         else:
             attrib['text:anchor-type'] = 'paragraph'
-        if width is not None:
-            attrib['svg:width'] = '%.2fcm' % (width, )
-        if height is not None:
-            attrib['svg:height'] = '%.2fcm' % (height, )
+        attrib['svg:width'] = width
+        attrib['svg:height'] = height
         el1 = SubElement(current_element, 'draw:frame', attrib=attrib)
         el2 = SubElement(el1, 'draw:image', attrib={
             'xlink:href': '%s' % (destination, ),
@@ -2104,33 +2040,31 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def depart_legend(self, node):
         pass
 
-    def visit_line(self, node):
-        #ipshell('At visit_line')
-        pass
-
-    def depart_line(self, node):
-        #ipshell('At depart_line')
-        pass
-
     def visit_line_block(self, node):
         #ipshell('At visit_line_block')
-        s1 = node.astext()
-        lines = s1.split('\n')
-        el = self.append_p('lineblock', lines[0])
-        first = True
-        if len(lines) > 1:
-            for line in lines[1:]:
-                if line == '':
-                    if first:
-                        first = False
-                        continue
-                first = True
-                el1 = SubElement(el, 'text:line-break')
-                el1.tail = line
+        self.line_indent_level += 1
+        self.line_block_level += 1
 
     def depart_line_block(self, node):
         #ipshell('At depart_line_block')
-        pass
+        if self.line_block_level <= 1:
+            el1 = SubElement(self.current_element, 'text:p', attrib={
+                    'text:style-name': self.rststyle('lineblock1'),
+                    })
+        self.line_indent_level -= 1
+        self.line_block_level -= 1
+
+    def visit_line(self, node):
+        #ipshell('At visit_line')
+        style = 'lineblock%d' % self.line_indent_level
+        el1 = SubElement(self.current_element, 'text:p', attrib={
+                'text:style-name': self.rststyle(style),
+                })
+        self.current_element = el1
+
+    def depart_line(self, node):
+        #ipshell('At depart_line')
+        self.set_to_parent()
 
     def visit_literal(self, node):
         #ipshell('At visit_literal')
@@ -2155,7 +2089,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         return count
 
     def _add_syntax_highlighting(self, insource, language):
-        #print '(_add_syntax_highlighting) using lexer: %s' % (language, )
         lexer = pygments.lexers.get_lexer_by_name(language, stripall=True)
         if language in ('latex', 'tex'):
             fmtr = OdtPygmentsLaTeXFormatter(lambda name, parameters=():
@@ -2314,7 +2247,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.set_current_element(el)
 
     def depart_option_list(self, node):
-        #self.document.reporter.debug_flag = 0
         self.set_to_parent()
 
     def visit_option_list_item(self, node):
@@ -2413,7 +2345,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                     for k,v in CONTENT_NAMESPACE_ATTRIB.items()])
                 contentstr = '<stuff %s>%s</stuff>' % (attrstr, rawstr, )
                 if WhichElementTree != "lxml":
-                    content = content.encode("utf-8")
+                    contentstr = contentstr.encode("utf-8")
                 content = etree.fromstring(contentstr)
                 elements = content.getchildren()
                 if len(elements) > 0:
@@ -2457,7 +2389,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                         })
             else:
                 raise RuntimeError, 'References must have "refuri" or "refid" attribute.'
-        #print '(visit_reference) href: "%s"  text: "%s"' % (href, text, )
         if (self.in_table_of_contents and
             len(node.children) >= 1 and
             isinstance(node.children[0], docutils.nodes.generated)):
@@ -2491,7 +2422,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         #ipshell('At visit_section')
         self.section_level += 1
         self.section_count += 1
-	if self.settings.create_sections:
+        if self.settings.create_sections:
             el = self.append_child('text:section', attrib={
                 'text:name': 'Section%d' % self.section_count,
                 'text:style-name': 'Sect%d' % self.section_level,
@@ -2500,8 +2431,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def depart_section(self, node):
         self.section_level -= 1
-	if self.settings.create_sections:
-            self.set_to_parent()
+##      if self.settings.create_sections:
+##             self.set_to_parent()
 
     def visit_strong(self, node):
         #ipshell('At visit_strong')
@@ -2539,6 +2470,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         el1_1 = SubElement(el1, 'style:table-properties', attrib={
             #'style:width': '17.59cm',
             'table:align': 'margins',
+            'fo:margin-top': '0in',
+            'fo:margin-bottom': '0.10in',
             }, nsdict=SNSD)
         # We use a single cell style for all cells in this table.
         # That's probably not correct, but seems to work.

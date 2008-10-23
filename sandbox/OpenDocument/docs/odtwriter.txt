@@ -8,7 +8,7 @@ Odtwriter for Docutils
 :address: dkuhlman@rexx.com
     http://www.rexx.com/~dkuhlman
 
-:revision: 1.3b
+:revision: 1.3c
 :date: |date|
 
 .. |date| date:: %B %d, %Y
@@ -54,8 +54,8 @@ Where to get it
 The source distribution of 
 ODF/ODT writer for Docutils 
 is here:
-`http://www.rexx.com/~dkuhlman/odtwriter-1.3b.tar.gz
-<http://www.rexx.com/~dkuhlman/odtwriter-1.3b.tar.gz>`_.
+`http://www.rexx.com/~dkuhlman/odtwriter-1.3c.tar.gz
+<http://www.rexx.com/~dkuhlman/odtwriter-1.3c.tar.gz>`_.
 
 ``odtwriter`` is also available via Subversion from
 the Docutils repository under
@@ -145,19 +145,35 @@ The following command line flags are specific to ``odtwriter``:
                         Specify a stylesheet file, relative to the current
                         working directory.  The path is adjusted relative to
                         the output ODF file.  Overrides --stylesheet.
-                        Default: "/usr/local/lib/python2.5/site-
+                        Default: "/usr/local/lib/python2.6/site-
                         packages/docutils/writers/odtwriter/styles.odt"
+--odf-config-file=<file>
+                        Specify a configuration/mapping file relative to the
+                        current working directory for additional ODF options.
+                        In particular, this file may contain a section named
+                        "Formats" that maps default style names to names to be
+                        used in the resulting output file allowing for
+                        adhering to external standards. For more info and the
+                        format of the configuration/mapping file, see the
+                        odtwriter doc.
 --cloak-email-addresses
                         Obfuscate email addresses to confuse harvesters while
                         still keeping email links usable with standards-
                         compliant browsers.
+--no-cloak-email-addresses
+                        Do not obfuscate email addresses.
 --table-border-thickness=TABLE_BORDER_THICKNESS
                         Specify the thickness of table borders in thousands of
                         a cm.  Default is 35.
 --add-syntax-highlighting
-                        Add syntax highlighting in literal code
-                        blocks. Default is no. Requires installation of 
-                        Pygments.
+                        Add syntax highlighting in literal code blocks.
+--no-add-syntax-highlighting
+                        Do not add syntax highlighting in literal code blocks.
+                        (default)
+--create-sections       Create sections for headers.  (default)
+--no-create-sections    Do not create sections for headers.
+--create-links          Create links.
+--no-create-links       Do not create links.  (default)
 
 
 Styles
@@ -286,17 +302,9 @@ rststyle-footer
     (``--date`` and ``--time``), and view source link
     (``--source-link`` and ``--source-url=URL``).
 
-rststyle-footnote
-    The style for footnotes.  This style affects the footnote
-    content, not the footnote reference in the body of the document.
-
 rststyle-header
     The style for headers.  The header content originates from the
     ``..header::`` directive.
-
-rststyle-heading{1|2|3|4|5}
-    Headings (sub-titles).  Five levels of sub-headings are
-    provided: rststyle-heading1 through rststyle-heading5.
 
 rststyle-highlights
     The style for highlightss, for example, the body of an
@@ -319,11 +327,6 @@ rststyle-table-title
 rststyle-textbody
     Normal text.  The style for paragraphs.  Derived from the ``Text
     body`` style in ``oowriter``.
-
-rststyle-lineblock
-    The style for line blocks created either with the ``.. line-block::``
-    directive or with vertical bars.  Derived from the
-    ``rststyle-textbody`` style.
 
 
 Character styles
@@ -492,8 +495,6 @@ the ``rststyle-heading1`` style to the generated rubric::
        :class: rststyle-heading1
 
 
-
-
 Table styles
 ~~~~~~~~~~~~
 
@@ -510,6 +511,73 @@ in the generated ``.odt``.   These styles have names prefixed with
 
 .. _`OASIS Open Document Format for Office Applications (OpenDocument) TC`:
     http://www.oasis-open.org/committees/tc_home.php?wg_abbrev=office
+
+
+Line block styles
+~~~~~~~~~~~~~~~~~~
+
+The line block styles wrap the various nested levels of line
+blocks.  There is one line block style for each indent level.
+
+rststyle-lineblock1
+    Line block style for line block with no indent.
+
+rststyle-lineblock2
+    Line block style for line block indented 1 level.
+
+rststyle-lineblock3
+    Line block style for line block indented 2 levels.
+
+rststyle-lineblock4
+    Line block style for line block indented 3 levels.
+
+rststyle-lineblock5
+    Line block style for line block indented 4 levels.
+
+rststyle-lineblock6
+    Line block style for line block indented 5 levels.
+
+Notes:
+
+- ``odtwriter`` does not check for a maximum level of indents
+  within line blocks.  Therefore, you can define additional line
+  block styles for additional levels if you need them.  Define
+  these styles with the names ``rststyle-lineblock7``,
+  ``rststyle-lineblock8``, ...
+
+- Since the line block style is used to create indentation, a line
+  block that is inside a block quote will use
+  ``rststyle-lineblock2`` as its first level of indentation.
+
+
+Footnote and citation styles
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+rststyle-footnote
+    The style for footnotes.  This style affects the footnote
+    content, *not* the footnote reference in the body of the document.
+
+rststyle-citation
+    The style for citations.  This style affects the citation
+    content, *not* the citation reference in the body of the document. 
+    You might need to adjust the indentation in this style
+    depending on the length of the label used in your citations.
+
+Heading and title styles
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+rststyle-heading{1|2|3|4|5}
+    The styles for headings (section titles and sub-titles).  Five
+    levels of sub-headings are provided: rststyle-heading1 through
+    rststyle-heading5.
+
+rststyle-title
+    The style for the document title.
+
+rststyle-subtitle
+    The style for the document sub-title.
+
+
 
 
 Defining and using a custom stylesheet
