@@ -38,6 +38,28 @@ For more information on Docutils, see: http://docutils.sourceforge.net/
 History
 =======
 
+2008/10/23 -- Version 1.3c
+--------------------------
+
+Fixes for line blocks.  These are now indented correctly, I
+believe, even when inside a block quote.  There are new styles for
+line blocks (rststyle-lineblock1, ...).  See the doc.
+
+Fixes to footnotes.  Auto-numbered and auto-symbol footnotes seem
+to work correctly now.  There is a constant (footnote_chars)
+containing the symbols (*, **, ***, ++, etc).  
+
+Added support for citations.
+
+Fixed sections -- Now start at correct level.
+
+Added styles rststyle-title and rststyle-subtitle.
+
+Various source code clean-ups.
+
+Added style rststyle-footnote and rststyle-citation.
+
+
 2008/07/08 -- Version 1.3b
 --------------------------
 
