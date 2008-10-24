@@ -100,7 +100,7 @@ class Writer(odt.Writer):
         ('Create links. '
             'Default is No.',
             ['--create-links'],
-            {'default': False, 'action': 'store_true',
+            {'default': True, 'action': 'store_true',
                 'validator': frontend.validate_boolean}),
         ('Create no links.',
             ['--no-create-links'],
@@ -264,6 +264,14 @@ class ODPTranslator(odt.ODFTranslator):
         self.blockstyle = ''
         odt.ODFTranslator.depart_line_block(self, node)
         self.current_element = self.text_box
+
+    def visit_line(self, node):
+        if not self._in_p():
+            style = 'lineblock%d' % self.line_indent_level
+            el1 = odt.SubElement(self.current_element, 'text:p', attrib={
+                    'text:style-name': self.rststyle(style),
+                    })
+            self.current_element = el1
 
     def depart_line(self, node):
         self.append_child('text:line-break')
