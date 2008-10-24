@@ -163,12 +163,12 @@ except ImportError, exp:
 ##                        banner = 'Entering IPython.  Press Ctrl-D to exit.',
 ##                        exit_msg = 'Leaving Interpreter, back to program.')
 
-from IPython.Shell import IPShellEmbed
-args = ['-pdb', '-pi1', 'In <\\#>: ', '-pi2', '   .\\D.: ',
-    '-po', 'Out<\\#>: ', '-nosep']
-ipshell = IPShellEmbed(args,
-    banner = 'Entering IPython.  Press Ctrl-D to exit.',
-    exit_msg = 'Leaving Interpreter, back to program.')
+## from IPython.Shell import IPShellEmbed
+## args = ['-pdb', '-pi1', 'In <\\#>: ', '-pi2', '   .\\D.: ',
+##     '-po', 'Out<\\#>: ', '-nosep']
+## ipshell = IPShellEmbed(args,
+##     banner = 'Entering IPython.  Press Ctrl-D to exit.',
+##     exit_msg = 'Leaving Interpreter, back to program.')
 
 
 #
@@ -445,7 +445,7 @@ class SyntaxHighlightCodeBlock(rst.Directive):
 rst.directives.register_directive('sourcecode', SyntaxHighlightCodeBlock)
 rst.directives.register_directive('code', SyntaxHighlightCodeBlock)
 
-    rst.directives.register_directive('code-block', SyntaxHighlightCodeBlock)
+rst.directives.register_directive('code-block', SyntaxHighlightCodeBlock)
 
 #
 # Register directives defined in a module named "odtwriter_plugins".
