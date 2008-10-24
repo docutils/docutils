@@ -120,8 +120,9 @@ class Writer(odt.Writer):
         odt.Writer.translate(self)
         content = self.visitor.content_astext()
         fout  = open("/tmp/content.xml", 'w')
-        fout.write(pretty_xml(content))
-        print pretty_xml(content)
+        pretty = pretty_xml(content).encode('utf-8')
+        fout.write(pretty)
+        print pretty
 
 
 class ODPTranslator(odt.ODFTranslator):
@@ -133,9 +134,12 @@ class ODPTranslator(odt.ODFTranslator):
         """we reset on each section/slide"""
         self.text_box = None # only supporting one text box (inside frame) (not including title)
         self.page = None
+        self.handout_text = None
         self.in_enumerated_list = False
         self.in_bullet = False
         self.prev_stack = None
+        self.in_handout = False
+        self.in_comment = False
 
         # not a new one, but needs to be reset
         self.paragraph_style_stack = [self.rststyle('textbody'),]
@@ -227,7 +231,8 @@ class ODPTranslator(odt.ODFTranslator):
         return frame
 
 
-    def _create_frame(self, attrib=None):
+    def _create_frame(self, attrib=None, parent=None):
+        parent = parent or self.page
         attrib = attrib or {}
         frame = self.append_child('draw:frame',
                                   attrib=attrib,
@@ -249,9 +254,9 @@ class ODPTranslator(odt.ODFTranslator):
     def _manage_classes(self, node, called_from_para=False):
         """
         !!! I have right and big classes (from s5) that are currently ignored
+        also handout class
         """
-        return
-
+        pass
 
     def visit_line_block(self, node):
         if self.text_box is None:
@@ -283,11 +288,28 @@ class ODPTranslator(odt.ODFTranslator):
             self._create_text_area()
         odt.ODFTranslator.visit_block_quote(self, node)
 
+    def visit_container(self, node):
+        if not self.in_handout:
+            self.in_handout = 'handout' in node.attributes.get('classes', [])
+        odt.ODFTranslator.visit_container(self, node)
+
+    def depart_container(self, node):
+        self.in_handout = False
+        odt.ODFTranslator.depart_container(self, node)
+
     def visit_paragraph(self, node):
         if self.text_box is None:
             self._create_text_area()
+
+        if not self.in_handout:
+            self.in_handout = 'handout' in node.attributes.get('classes', [])
+
         odt.ODFTranslator.visit_paragraph(self, node)
         
+
+    def depart_paragraph(self, node):
+        self.in_handout = False
+        odt.ODFTranslator.depart_paragraph(self, node)
         
     def visit_literal_block(self, node):
         if self.text_box is None:
@@ -313,9 +335,20 @@ class ODPTranslator(odt.ODFTranslator):
         odt.ODFTranslator.visit_emphasis(self, node) 
     
     def visit_Text(self, node):
+        if self.in_comment:
+            return
+
         if not self._in_p():
             self.current_element = self.append_p("default")
+
+        prev_current = self.current_element
+        if self.in_handout:
+            self.create_handout_text()
+            self.current_element = self.handout_text
+
         odt.ODFTranslator.visit_Text(self, node)
+
+        self.current_element = prev_current
 
     def visit_enumerated_list(self, node):
         self.in_enumerated_list = True
@@ -353,12 +386,62 @@ class ODPTranslator(odt.ODFTranslator):
         #need an extra dosing here, for bug in lists
         self.set_to_parent()
 
+    
+
+    def create_handout_text(self):
+        if not self.handout_text is None:
+            return
+
+        preso_notes = self.append_child('presentation:notes',
+                                        attrib={'draw:style-name':'dp2'},
+                                        parent=self.page)
+        thumbnail = self.append_child('draw:page-thumbnail',
+                                      attrib={'draw:style-name':'gr1',
+                                              'draw:layer':'layout',
+                                              'svg:width':'13.968cm',
+                                              'svg:height':'10.476cm',
+                                              'svg:x':'3.81cm',
+                                              'svg:y':'2.123cm',
+                                              'draw:page-number':str(self.section_count),
+                                              'presentation:class':'page'},
+                                      
+                                      parent=preso_notes)
+        frame = self.append_child('draw:frame',
+                                  attrib={'presentation:style-name':'pr6',
+                                          'draw:text-style-name':'P5',
+                                          'draw:layer':'layout',
+                                          'svg:width':'17.271cm',
+                                          'svg:height':'12.322cm',
+                                          'svg:x':'2.159cm',
+                                          'svg:y':'13.271cm',
+                                          'presentation:class':'notes',
+                                          'presentation:placeholde':'true'},
+                                  parent=preso_notes)
+        text_box = self.append_child('draw:text-box', parent=frame)
+        p = self.append_child('text:p', parent=text_box)
+        self.handout_text = p
+        
+
+
     def set_to_parent(self, node=None):
         # setting to parent can be bad for presos
         if self.text_box and self.text_box == self.current_element:
             return
         odt.ODFTranslator.set_to_parent(self)
 
+
+    def visit_docinfo(self, node):
+        """!!! crashes OOo"""
+        pass
+    def depart_docinfo(self, node):
+        """!!! crashes OOo"""
+        pass
+
+    def visit_comment(self, node):
+        self.in_comment = True
+
+    def depart_comment(self, node):
+        self.in_comment = False
 
     @cwd_decorator
     def visit_image(self, node):
