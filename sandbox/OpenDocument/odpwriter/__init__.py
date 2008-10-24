@@ -23,7 +23,9 @@ def cwd_decorator(func):
                 found = arg
                 break
         if found:
-            os.chdir(os.path.dirname(arg))
+            directory = os.path.dirname(arg)
+            if directory:
+                os.chdir(directory)
         data = func(*args, **kw)
         os.chdir(cur_dir)        
         return data
