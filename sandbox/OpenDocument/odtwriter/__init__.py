@@ -1675,6 +1675,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 ##                 })
 ##             el.text = '['
 ##             self.set_current_element(el)
+##         elif self.current_element.text is None:
+##             self.current_element.text = '['
 ##         else:
 ##             self.current_element.text += '['
 ## 
