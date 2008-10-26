@@ -261,7 +261,7 @@ if test -n "$haschanges"; then
         fi
         echo '</urlset>'
     ) > sitemap
-    gzip sitemap
+    gzip -f sitemap
 fi
 
 # -------------------- Push changes to remote server. --------------------
