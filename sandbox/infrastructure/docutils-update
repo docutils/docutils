@@ -255,8 +255,11 @@ cp $sshdir/id_dsa $lockdir/id_dsa
 chmod 0600 $lockdir/id_dsa
 
 rm -f $htdocs_patchfile
-# Create new tarball.
 cd $htdocsdest
+# try to transfer with rsync
+rsync -e "$sshcommand" -r ./ web.sourceforge.net:$remotehtdocs
+
+# Create new tarball.
 tar cf $htdocs_new_tarball .
 
 # If there is no old tarball, we have to transmit the whole tarball.
