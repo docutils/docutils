@@ -163,13 +163,6 @@ except ImportError, exp:
 ##                        banner = 'Entering IPython.  Press Ctrl-D to exit.',
 ##                        exit_msg = 'Leaving Interpreter, back to program.')
 
-## from IPython.Shell import IPShellEmbed
-## args = ['-pdb', '-pi1', 'In <\\#>: ', '-pi2', '   .\\D.: ',
-##     '-po', 'Out<\\#>: ', '-nosep']
-## ipshell = IPShellEmbed(args,
-##     banner = 'Entering IPython.  Press Ctrl-D to exit.',
-##     exit_msg = 'Leaving Interpreter, back to program.')
-
 
 #
 # ElementTree does not support getparent method (lxml does).
@@ -272,7 +265,6 @@ META_NAMESPACE_DICT = METNSD = {
     'xlink': 'http://www.w3.org/1999/xlink',
 }
 
-MIME_TYPE = 'application/vnd.oasis.opendocument.text'
 
 
 #
@@ -625,6 +617,7 @@ class Writer(writers.Writer):
 
     def __init__(self):
         writers.Writer.__init__(self)
+        self.MIME_TYPE = 'application/vnd.oasis.opendocument.text'
         self.translator_class = ODFTranslator
 
     def translate(self):
@@ -2433,8 +2426,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def depart_section(self, node):
         self.section_level -= 1
-##      if self.settings.create_sections:
-##             self.set_to_parent()
+        if self.settings.create_sections:
+            self.set_to_parent()
 
     def visit_strong(self, node):
         #ipshell('At visit_strong')
