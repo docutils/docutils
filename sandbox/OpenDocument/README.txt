@@ -38,6 +38,15 @@ For more information on Docutils, see: http://docutils.sourceforge.net/
 History
 =======
 
+2008/10/28 -- Version 1.3d
+--------------------------
+
+Added command line flags --endnotes-end-doc and
+--no-endnotes-end-doc to place footnotes and citations at the end
+of the document instead of at the end of the page.  Generates
+endnotes instead of footnotes.
+
+
 2008/10/23 -- Version 1.3c
 --------------------------
 
