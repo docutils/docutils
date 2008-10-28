@@ -134,6 +134,7 @@ Examples::
 
     $ rst2odt.py --source-url=odtwriter.txt --generator --stylesheet-path=/myconfigs/styles.odt odtwriter.txt odtwriter.odt
 
+
 Command line flags
 ------------------
 
@@ -174,7 +175,11 @@ The following command line flags are specific to ``odtwriter``:
 --no-create-sections    Do not create sections for headers.
 --create-links          Create links.
 --no-create-links       Do not create links.  (default)
-
+--endnotes-end-doc      Generate endnotes at end of document, not footnotes at
+                        bottom of page.
+--no-endnotes-end-doc   Generate footnotes at bottom of page, not endnotes at
+                        end of document. (default)
+                                                                                                                        
 
 Styles
 ======
@@ -563,6 +568,7 @@ rststyle-citation
     You might need to adjust the indentation in this style
     depending on the length of the label used in your citations.
 
+
 Heading and title styles
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -901,14 +907,23 @@ table.  You can modify the appearance of the title by modifying the
 paragraph style ``rststyle-table-title``.
 
 
-Footnotes
----------
+Footnotes and citations
+-----------------------
 
-Footnotes are supported.
+Footnotes and citations are supported.
 
-There is an additional style ``rststyle-footnote`` for footnotes.
-See `Paragraph styles`_.
+There are additional styles ``rststyle-footnote`` and
+``rststyle-citation`` for footnotes and citations. See 
+`Footnote and citation styles`_.
 
+You may need to modify the citation style to fit the length of your
+citation references.
+
+Endnotes -- There are command line flags that control whether
+``odtwriter`` creates endnotes instead of footnotes.  Endnotes
+appear at the end of the document instead of at the bottom of the
+page.  See flags ``--endnotes-end-doc`` and
+``--no-endnotes-end-doc`` in section `Command line flags`_.
 
 
 Images and figures
