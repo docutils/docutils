@@ -600,6 +600,20 @@ class Writer(writers.Writer):
                 'action': 'store_false',
                 'dest': 'create_links',
                 'validator': frontend.validate_boolean}),
+        ('Generate endnotes at end of document, not footnotes '
+            'at bottom of page.',
+            ['--endnotes-end-doc'],
+            {'default': False,
+                'action': 'store_true',
+                'dest': 'endnotes_end_doc',
+                'validator': frontend.validate_boolean}),
+        ('Generate footnotes at bottom of page, not endnotes '
+            'at end of document. (default)',
+            ['--no-endnotes-end-doc'],
+            {'default': False,
+                'action': 'store_false',
+                'dest': 'endnotes_end_doc',
+                'validator': frontend.validate_boolean}),
         ))
 
     settings_defaults = {
@@ -1059,9 +1073,13 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                                 id1 = ''
                             tag = add_ns('text:note-ref', nsdict=SNSD)
                             el2.tag = tag
+                            if self.settings.endnotes_end_doc:
+                                note_class = 'endnote'
+                            else:
+                                note_class = 'footnote'
                             el2.attrib.clear()
                             attribkey = add_ns('text:note-class', nsdict=SNSD)
-                            el2.attrib[attribkey] = 'footnote'
+                            el2.attrib[attribkey] = note_class
                             attribkey = add_ns('text:ref-name', nsdict=SNSD)
                             el2.attrib[attribkey] = id1
                             attribkey = add_ns('text:reference-format', nsdict=SNSD)
@@ -1612,9 +1630,13 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             refid = node.attributes.get('refid')
             if refid is None:
                 refid = ''
+            if self.settings.endnotes_end_doc:
+                note_class = 'endnote'
+            else:
+                note_class = 'footnote'
             el1 = self.append_child('text:note', attrib={
                 'text:id': '%s' % (refid, ),
-                'text:note-class': 'footnote',
+                'text:note-class': note_class,
                 })
             note_auto = str(node.attributes.get('auto', 1))
             if isinstance(node, docutils.nodes.citation_reference):
