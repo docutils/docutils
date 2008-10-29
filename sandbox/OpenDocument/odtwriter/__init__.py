@@ -410,34 +410,36 @@ def escape_cdata(text):
 # Classes
 #
 
-#
-# Class to control syntax highlighting.
-class SyntaxHighlightCodeBlock(rst.Directive):
-    required_arguments = 1
-    optional_arguments = 0
-    has_content = True
+# Does this version of Docutils has Directive support?
+if hasattr(rst, 'Directive'):
     #
-    # See visit_literal_block for code that processes the node 
-    #   created here.
-    def run(self):
-        language = self.arguments[0]
-        code_block = nodes.literal_block(classes=["code-block", language],
-            language=language)
-        lines = self.content
-        content = '\n'.join(lines)
-        text_node = nodes.Text(content)
-        code_block.append(text_node)
-        # Mark this node for high-lighting so that visit_literal_block
-        #   will be able to hight-light those produced here and
-        #   *not* high-light regular literal blocks (:: in reST).
-        code_block['hilight'] = True
-        #import pdb; pdb.set_trace()
-        return [code_block]
+    # Class to control syntax highlighting.
+    class SyntaxHighlightCodeBlock(rst.Directive):
+        required_arguments = 1
+        optional_arguments = 0
+        has_content = True
+        #
+        # See visit_literal_block for code that processes the node 
+        #   created here.
+        def run(self):
+            language = self.arguments[0]
+            code_block = nodes.literal_block(classes=["code-block", language],
+                language=language)
+            lines = self.content
+            content = '\n'.join(lines)
+            text_node = nodes.Text(content)
+            code_block.append(text_node)
+            # Mark this node for high-lighting so that visit_literal_block
+            #   will be able to hight-light those produced here and
+            #   *not* high-light regular literal blocks (:: in reST).
+            code_block['hilight'] = True
+            #import pdb; pdb.set_trace()
+            return [code_block]
 
-rst.directives.register_directive('sourcecode', SyntaxHighlightCodeBlock)
-rst.directives.register_directive('code', SyntaxHighlightCodeBlock)
+    rst.directives.register_directive('sourcecode', SyntaxHighlightCodeBlock)
+    rst.directives.register_directive('code', SyntaxHighlightCodeBlock)
 
-rst.directives.register_directive('code-block', SyntaxHighlightCodeBlock)
+    rst.directives.register_directive('code-block', SyntaxHighlightCodeBlock)
 
 #
 # Register directives defined in a module named "odtwriter_plugins".
