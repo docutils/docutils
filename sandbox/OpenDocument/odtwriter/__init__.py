@@ -2673,7 +2673,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         #ipshell('At visit_title_reference')
         el = self.append_child('text:span', attrib={
             'text:style-name': self.rststyle('quotation')})
-        el.text = self.encode(node.astext())
 
     def depart_title_reference(self, node):
         pass
