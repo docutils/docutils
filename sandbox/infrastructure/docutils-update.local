@@ -1,11 +1,10 @@
 #! /bin/bash
 # $Id$
 #
-# This script is installed as a cron job to automatically update the
-# Docutils web site whenever the SVN files change.
+# This script updates the Docutils web site.
 # ATTENTION
 # Any .html document with a corresponding .txt file is regenerated 
-# whenever the .txt changes, but no .html will be generated else.
+# if the .txt has changed, but no new .html files will be generated.
 #
 # Options:
 #   -f    Do not give feedback.
@@ -23,6 +22,9 @@ set -e
 
 # make all newly created files group writeable
 umask 002
+
+# URL for SVN project checkout:
+svnurl=http://svn.berlios.de/svnroot/repos/docutils/trunk/docutils
 
 basedir=/home/groups/docutils/htdocs
 if [ ! -e $basedir ] ; then
@@ -117,7 +119,7 @@ if [ -e $lib ] ; then
 else
     test -d $pylib || mkdir -p $pylib
     cd $pylib
-    svn checkout http://svn.berlios.de/svnroot/repos/docutils/trunk/docutils
+    svn checkout $svnurl
 fi
 
 # -------------------- Snapshots: --------------------
