@@ -265,8 +265,6 @@ META_NAMESPACE_DICT = METNSD = {
     'xlink': 'http://www.w3.org/1999/xlink',
 }
 
-
-
 #
 # Attribute dictionaries for use with ElementTree (not lxml), which
 #   does not support use of nsmap parameter on Element() and SubElement().
@@ -505,6 +503,7 @@ class ListLevel(object):
 
 class Writer(writers.Writer):
 
+    MIME_TYPE = 'application/vnd.oasis.opendocument.text'
     EXTENSION = '.odt'
 
     supported = ('html', 'html4css1', 'xhtml')
@@ -633,7 +632,6 @@ class Writer(writers.Writer):
 
     def __init__(self):
         writers.Writer.__init__(self)
-        self.MIME_TYPE = 'application/vnd.oasis.opendocument.text'
         self.translator_class = ODFTranslator
 
     def translate(self):
