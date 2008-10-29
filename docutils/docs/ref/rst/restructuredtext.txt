@@ -1428,13 +1428,14 @@ A simple table begins with a top border of equals signs with one or
 more spaces at each column boundary (two or more spaces recommended).
 Regardless of spans, the top border *must* fully describe all table
 columns.  There must be at least two columns in the table (to
-differentiate it from section headers).  The last of the optional
-header rows is underlined with '=', again with spaces at column
-boundaries.  There may not be a blank line below the header row
-separator; it would be interpreted as the bottom border of the table.
-The bottom boundary of the table consists of '=' underlines, also with
-spaces at column boundaries.  For example, here is a truth table, a
-three-column table with one header row and four body rows::
+differentiate it from section headers).  The top border may be
+followed by header rows, and the last of the optional header rows is
+underlined with '=', again with spaces at column boundaries.  There
+may not be a blank line below the header row separator; it would be
+interpreted as the bottom border of the table.  The bottom boundary of
+the table consists of '=' underlines, also with spaces at column
+boundaries.  For example, here is a truth table, a three-column table
+with one header row and four body rows::
 
     =====  =====  =======
       A      B    A and B
@@ -1470,10 +1471,20 @@ starts a new row, except when there is a blank cell in the first
 column.  In that case, that line of text is parsed as a continuation
 line.  For this reason, cells in the first column of new rows (*not*
 continuation lines) *must* contain some text; blank cells would lead
-to a misinterpretation.  An empty comment ("..") is sufficient and
-will be omitted from the processed output (see Comments_ below).
-Also, this mechanism limits cells in the first column to only one line
-of text.  Use `grid tables`_ if this limitation is unacceptable.
+to a misinterpretation (but see the tip below).  Also, this mechanism
+limits cells in the first column to only one line of text.  Use `grid
+tables`_ if this limitation is unacceptable.
+
+.. Tip::
+
+   To start a new row in a simple table without text in the first
+   column in the processed output, use one of these:
+
+   * an empty comment (".."), which may be omitted from the processed
+     output (see Comments_ below)
+
+   * a backslash escape ("``\``") followed by a space (see `Escaping
+     Mechanism`_ above)
 
 Underlines of '-' may also be used to visually separate rows, even if
 there are no column spans.  This is especially useful in long tables,
@@ -1491,8 +1502,9 @@ text.
 
 The following example illustrates continuation lines (row 2 consists
 of two lines of text, and four lines for row 3), a blank line
-separating paragraphs (row 3, column 2), and text extending past the
-right edge of the table::
+separating paragraphs (row 3, column 2), text extending past the right
+edge of the table, and a new row which will have no text in the first
+column in the processed output (row 4)::
 
     =====  =====
     col 1  col 2
@@ -1504,6 +1516,7 @@ right edge of the table::
 
            - Second item in bullet
              list (row 3, column 2).
+    \      Row 4; column 1 will be empty.
     =====  =====
 
 
