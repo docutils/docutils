@@ -167,7 +167,7 @@ Migration from SourceForge.net
 
 Developers who had write-access for Docutils' CVS repository on
 SourceForge.net should `register with BerliOS`__ and send a message
-with their BerliOS user name to `Lea Wiemann`_.
+with their BerliOS user name to docutils-develop@lists.sourceforge.net.
 
 __ https://developer.berlios.de/account/register.php
 
