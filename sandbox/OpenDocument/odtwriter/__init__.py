@@ -978,7 +978,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def setup_paper(self, root_el):
         try:
-            fin = os.popen("paperconf -s")
+            fin = os.popen("paperconf -s 2> /dev/null")
             w, h = map(float, fin.read().split())
             fin.close()
         except:
