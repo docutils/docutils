@@ -17,7 +17,7 @@ for F in `ls $REF_DIR/*.txt*.$EXT` ; do
 	diff -s -u $F.ref $F > $TMPF
 	if test $? -gt 0 ; then
 		less $TMPF
-		if [ "$CREATE" == "1" ] ; then
+		if [ "$CREATE" = "1" ] ; then
 			cp $F $F.ref
 		fi
 	fi
