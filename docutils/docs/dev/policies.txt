@@ -217,8 +217,11 @@ developers to decide which mechanism to use for each case.
 Feature additions and API changes will be done in **feature
 branches**.  Feature branches will not be managed in any way.
 Frequent small checkins are encouraged here.  Feature branches must be
-discussed on the docutils-develop mailing list and reviewed before
+discussed on the `docutils-develop mailing list`_ and reviewed before
 being merged into the core.
+
+.. _docutils-develop mailing list:
+   http://lists.sourceforge.net/lists/listinfo/docutils-develop
 
 
 Review Criteria
