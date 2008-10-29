@@ -1666,45 +1666,45 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         #ipshell('At depart_footnote_reference')
         pass
 
-##     def visit_citation(self, node):
-##         #ipshell('At visit_citation')
-##         for id in node.attributes['ids']:
-##             self.citation_id = id
-##             break
-##         self.paragraph_style_stack.append(self.rststyle('blockindent'))
-##         self.bumped_list_level_stack.append(ListLevel(1))
-## 
-##     def depart_citation(self, node):
-##         #ipshell('At depart_citation')
-##         self.citation_id = None
-##         self.paragraph_style_stack.pop()
-##         self.bumped_list_level_stack.pop()
-## 
-##     def visit_citation_reference(self, node):
-##         ipshell('At visit_citation_reference')
-##         if self.settings.create_links:
-##             id = node.attributes['refid']
-##             el = self.append_child('text:reference-ref', attrib={
-##                 'text:ref-name': '%s' % (id, ),
-##                 'text:reference-format': 'text',
-##                 })
-##             el.text = '['
-##             self.set_current_element(el)
-##         elif self.current_element.text is None:
-##             self.current_element.text = '['
-##         else:
-##             self.current_element.text += '['
-## 
-##     def depart_citation_reference(self, node):
-##         #ipshell('At depart_citation_reference')
-##         self.current_element.text += ']'
-##         if self.settings.create_links:
-##             self.set_to_parent()
+    def visit_citation(self, node):
+        #ipshell('At visit_citation')
+        for id in node.attributes['ids']:
+            self.citation_id = id
+            break
+        self.paragraph_style_stack.append(self.rststyle('blockindent'))
+        self.bumped_list_level_stack.append(ListLevel(1))
 
-    visit_citation = visit_footnote
-    depart_citation = depart_footnote
-    visit_citation_reference = visit_footnote_reference
-    depart_citation_reference = depart_footnote_reference
+    def depart_citation(self, node):
+        #ipshell('At depart_citation')
+        self.citation_id = None
+        self.paragraph_style_stack.pop()
+        self.bumped_list_level_stack.pop()
+
+    def visit_citation_reference(self, node):
+        #ipshell('At visit_citation_reference')
+        if self.settings.create_links:
+            id = node.attributes['refid']
+            el = self.append_child('text:reference-ref', attrib={
+                'text:ref-name': '%s' % (id, ),
+                'text:reference-format': 'text',
+                })
+            el.text = '['
+            self.set_current_element(el)
+        elif self.current_element.text is None:
+            self.current_element.text = '['
+        else:
+            self.current_element.text += '['
+
+    def depart_citation_reference(self, node):
+        #ipshell('At depart_citation_reference')
+        self.current_element.text += ']'
+        if self.settings.create_links:
+            self.set_to_parent()
+
+#     visit_citation = visit_footnote
+#     depart_citation = depart_footnote
+#     visit_citation_reference = visit_footnote_reference
+#     depart_citation_reference = depart_footnote_reference
 
     def visit_label(self, node):
         #ipshell('At visit_label')
@@ -1713,6 +1713,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         elif self.citation_id is not None:
             el = self.append_p('textbody')
             self.set_current_element(el)
+            el.text = '['
             if self.settings.create_links:
                 el1 = self.append_child('text:reference-mark-start', attrib={
                         'text:name': '%s' % (self.citation_id, ),
@@ -1723,6 +1724,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         if isinstance(node.parent, docutils.nodes.footnote):
             pass
         elif self.citation_id is not None:
+            self.current_element.text += ']'
             if self.settings.create_links:
                 el = self.append_child('text:reference-mark-end', attrib={
                         'text:name': '%s' % (self.citation_id, ),
