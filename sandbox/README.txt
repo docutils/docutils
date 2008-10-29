@@ -4,7 +4,7 @@
  README: The Sandbox
 =====================
 
-The Sandbox is a place to play around, to try out and share ideas. The
+The Sandbox_ is a place to play around, to try out and share ideas. The
 `sandbox/`_ directory is a part of the Subversion repository but it isn't
 distributed as part of Docutils_ releases.
 
@@ -21,7 +21,8 @@ Sandbox_ is mirrored at the Docutils web site, so the `Docutils Web Site`_
 documentation applies as well.
 
 
-.. This link gives readers a way to *go to* the sandbox:
+.. These links give readers a way to *go to* the sandbox:
+.. _sandbox:
 .. _sandbox/: ./
 
 .. _Docutils: http://docutils.sourceforge.net/
