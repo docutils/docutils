@@ -1,5 +1,5 @@
 #! /bin/bash
-# $Id: docutils-update 4986 2007-03-03 19:01:24Z wiemann $
+# $Id$
 #
 # This script is installed as a cron job to automatically update the
 # Docutils web site whenever the SVN files change.
