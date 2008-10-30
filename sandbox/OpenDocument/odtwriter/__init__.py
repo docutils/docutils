@@ -1646,7 +1646,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                     })
                 el2.text = citation
             elif note_auto == '1':
-                el2 = SubElement(el1, 'text:note-citation')
+                el2 = SubElement(el1, 'text:note-citation', attrib={
+                    'text:label': node.astext(),
+                    })
                 el2.text = node.astext()
             elif note_auto == '*':
                 if self.footnote_chars_idx >= len(
@@ -2673,6 +2675,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         #ipshell('At visit_title_reference')
         el = self.append_child('text:span', attrib={
             'text:style-name': self.rststyle('quotation')})
+        el.text = self.encode(node.astext())
+        raise nodes.SkipChildren()
 
     def depart_title_reference(self, node):
         pass
