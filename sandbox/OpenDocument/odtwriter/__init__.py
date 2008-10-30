@@ -1472,9 +1472,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         if self.settings.create_sections:
             self.set_to_parent()
 
-    def visit_emphasis(self, node, stylename='emphasis'):
+    def visit_emphasis(self, node):
         el = SubElement(self.current_element, 'text:span',
-            attrib={'text:style-name': self.rststyle(stylename)})
+            attrib={'text:style-name': self.rststyle('emphasis')})
         self.set_current_element(el)
 
     def depart_emphasis(self, node):
