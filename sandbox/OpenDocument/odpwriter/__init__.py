@@ -347,6 +347,10 @@ class ODPTranslator(odt.ODFTranslator):
 
         odt.ODFTranslator.visit_emphasis(self, node, stylename=sname) 
     
+    def depart_emphasis(self, node):
+        self.text_stack.pop()
+        odt.ODFTranslator.depart_emphasis(self, node)
+
     def visit_Text(self, node):
         if self.in_comment:
             return
