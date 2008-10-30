@@ -1,11 +1,14 @@
 """
 Open Document Format (ODF) Writer for slides
 
+Todo:
+
+ move custom styles to child of automaticstyles in styles.xml
+
 """
 import os
 import sys
 from xml.dom import minidom
-import zipfile
 
 from docutils import utils, frontend
 
@@ -128,10 +131,13 @@ class Writer(odt.Writer):
 class ODPTranslator(odt.ODFTranslator):
     def __init__(self, document):
         odt.ODFTranslator.__init__(self, document)
+        self.styles_seen = {}
         self._reset_values()
+
 
     def _reset_values(self):
         """we reset on each section/slide"""
+        self.text_stack = [] # styles to apply to text
         self.text_box = None # only supporting one text box (inside frame) (not including title)
         self.page = None
         self.handout_text = None
@@ -208,7 +214,10 @@ class ODPTranslator(odt.ODFTranslator):
         """
         if self.page is None:
             self.visit_section(node)
-        self._create_text_frame(attrib={ "presentation:style-name":"pr1",
+        #style_name = 'pr1'
+        style_name = 'title2'
+        
+        self._create_text_frame(attrib={ "presentation:style-name":style_name,
                                     "draw:layer":"layout",
                                     "svg:width":"25.199cm",
                                     "svg:height":"3.256cm",
@@ -330,9 +339,13 @@ class ODPTranslator(odt.ODFTranslator):
         return False
          
     def visit_emphasis(self, node):
+        self.text_stack.append('bold')
         if not self._in_p():
-            self.current_element = self.append_p("default")
-        odt.ODFTranslator.visit_emphasis(self, node) 
+            self.current_element = self.append_p('emphasis')
+        
+        sname, pstyle, tstyle = generate_style(self, [], self.text_stack)
+
+        odt.ODFTranslator.visit_emphasis(self, node, stylename=sname) 
     
     def visit_Text(self, node):
         if self.in_comment:
@@ -347,6 +360,9 @@ class ODPTranslator(odt.ODFTranslator):
             self.current_element = self.handout_text
 
         odt.ODFTranslator.visit_Text(self, node)
+        
+        if self.in_handout:
+            self.append_child('text:line-break')
 
         self.current_element = prev_current
 
@@ -430,6 +446,15 @@ class ODPTranslator(odt.ODFTranslator):
         odt.ODFTranslator.set_to_parent(self)
 
 
+    def visit_date(self, node):
+        """!!! odt doesn't work, duplicates date"""
+        el = self.generate_labeled_block(node, 'Date: ')
+        self.set_current_element(el)
+
+    def depart_date(self, node):
+        self.set_to_parent()
+
+
     def visit_docinfo(self, node):
         """!!! crashes OOo"""
         pass
@@ -469,4 +494,83 @@ class ODPTranslator(odt.ODFTranslator):
         self.current_element = old
         self.in_paragraph = prev_para
 
+    def _add_style(self, name, parent_attr, child_tag=None,child_attr=None):
+        if name not in self.styles_seen:
+            self.styles_seen[name] = 1
+            e1 = odt.SubElement(self.automatic_styles, 'style:style',
+                                parent_attr)
+            if child_tag:
+                e1_1 = odt.SubElement(e1, child_tag,
+                                      child_attr)
 
+
+def flatten_stack(stack):
+    results = "_".join([x for x in stack])
+    results.replace(" ", "_")
+    return results
+
+def generate_style(translator, para_stack, text_stack):
+    """
+    given a translater, para_stack (stack of paragraph styles (can
+    have multiple by space delimiting) and text_stack, add the styles
+    to the automatic sytles portion of the translator and return a
+    tuple containing the paragraph and text style names.
+    
+    Following are text_stack items:
+    * bold
+    * italic
+    * normal
+    * underline
+    * font:name
+    * outline
+    * shadow
+    * color:color_name
+    * bgcolor:color_name (#cc32f5 or `transparent`)
+    * size:[huge|big|small|tiny]
+    """
+    
+    text_name = flatten_stack(text_stack)
+    text_attrs = {}
+    for items in text_stack:
+        # go in the order of items in the stack applying all of them
+        # if later items override previous ones, that's ok
+        for item in items.split():
+            if item == 'bold':
+                text_attrs['fo:font-weight'] = 'bold'
+                text_attrs['style:font-weight-asian'] = 'bold'
+                text_attrs['style:font-weight-complex'] = 'bold'
+            elif item == 'italic':
+                text_attrs['style:font-weight-asian'] = 'italic'
+            elif item == 'normal':
+                text_attrs['fo:font-weight'] = 'normal'
+                text_attrs['style:font-weight-asian'] = 'normal'
+                text_attrs['style:font-weight-complex'] = 'normal'
+            elif item.startswith('color:'):
+                text_attrs['fo:color'] = item.split(':')[1]
+            elif item.startswith('bgcolor:'):
+                text_attrs['fo:background-color'] = item.split(':')[1]
+            elif item == 'outline':
+                text_attrs['style:text-outline'] = 'true'
+            elif item == 'shadow':
+                text_attrs['fo:text-shadow'] = '1pt 1pt'
+            elif item.startswith('size:'):
+                size = item.split(':')[1]
+                if size == 'huge':
+                    text_attrs['fo:font-size'] = '66pt'
+                elif size == 'big':
+                    text_attrs['fo:font-size'] = '44pt'
+                elif size == 'normal':
+                    text_attrs['fo:font-size'] = '18pt'
+                elif size == 'small':
+                    text_attrs['fo:font-size'] = '12pt'
+                elif size == 'tiny':
+                    text_attrs['fo:font-size'] = '8pt'
+                
+    if text_name not in translator.styles_seen:
+        text_style = translator._add_style(text_name, 
+                                           {'style:name':translator.rststyle(text_name),
+                                            'style:family':'text'},
+                                           'style:text-properties',
+                                           text_attrs)
+
+    return text_name, None, text_style
