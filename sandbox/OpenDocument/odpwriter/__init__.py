@@ -161,7 +161,7 @@ class ODPTranslator(odt.ODFTranslator):
     def _reset_values(self):
         """we reset on each section/slide"""
         self.text_stack = [] # styles to apply to text
-        self.para_stack = [] # styles for paragraphs
+        self.para_stack = ['left'] # styles for paragraphs
         self.text_box = None # only supporting one text box (inside frame) (not including title)
         self.page = None
         self.handout_text = None
