@@ -16,7 +16,7 @@ Where to Find It
 ================
 
 odtwriter is available through SVN (Subversion).  It is under
-sandbox/dkuhlman/OpenDocument.  See:
+sandbox/OpenDocument.  See:
 
 - http://docutils.sourceforge.net/docs/dev/repository.html
 
