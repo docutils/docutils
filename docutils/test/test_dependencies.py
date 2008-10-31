@@ -60,17 +60,27 @@ class RecordDependenciesTests(unittest.TestCase):
         s = {'settings_overrides': {}}
         so = s['settings_overrides']
         so['embed_stylesheet'] = 0
-        stylesheet_path = os.path.join('data', 'stylesheet.txt')
+        # must use '/', not os.sep or os.path.join, because of URL handling
+        # (see docutils.utils.relative_path):
+        stylesheet_path = 'data/stylesheet.txt'
         so['stylesheet_path'] = stylesheet_path
         so['stylesheet'] = None
         s['writer_name'] = 'html'
-        self.assert_(stylesheet_path not in self.get_record(**s))
+        record = self.get_record(**s)
+        self.assert_(stylesheet_path not in record,
+                     '%r should not be in %r' % (stylesheet_path, record))
         so['embed_stylesheet'] = 1
-        self.assert_(stylesheet_path in self.get_record(**s))
+        record = self.get_record(**s)
+        self.assert_(stylesheet_path in record,
+                     '%r should be in %r' % (stylesheet_path, record))
         s['writer_name'] = 'latex'
-        self.assert_(stylesheet_path in self.get_record(**s))
+        record = self.get_record(**s)
+        self.assert_(stylesheet_path in record,
+                     '%r should be in %r' % (stylesheet_path, record))
         del so['embed_stylesheet']
-        self.assert_(stylesheet_path not in self.get_record(**s))
+        record = self.get_record(**s)
+        self.assert_(stylesheet_path not in record,
+                     '%r should not be in %r' % (stylesheet_path, record))
 
 
 if __name__ == '__main__':
