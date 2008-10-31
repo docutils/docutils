@@ -807,7 +807,8 @@ class HTMLTranslator(nodes.NodeVisitor):
                             if not isinstance(n, nodes.Invisible)]
                 if not (len(children) == 0 or
                         len(children) == 1 and
-                        isinstance(children[0], nodes.paragraph)):
+                        isinstance(children[0],
+                                   (nodes.paragraph, nodes.line_block))):
                     self.compact_field_list = 0
                     break
         self.body.append(self.starttag(node, 'table', frame='void',
