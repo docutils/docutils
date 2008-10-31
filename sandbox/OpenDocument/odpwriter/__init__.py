@@ -360,6 +360,8 @@ class ODPTranslator(odt.ODFTranslator):
         odt.ODFTranslator.visit_literal_block(self, node)
         
 
+
+        
     def _in_p(self):
         """
         Determine if we are already in a text:p, odp doesn't like
@@ -388,6 +390,19 @@ class ODPTranslator(odt.ODFTranslator):
         self.text_stack.pop()
         self.set_to_parent()
  
+    def visit_literal(self, node):
+        self.text_stack.append('pitch:fixed')
+        #ipshell('At visit_literal')
+        sname = generate_text_style(self, self.text_stack)
+        el = odt.SubElement(self.current_element, 'text:span',
+            attrib={'text:style-name': self.rststyle(sname)})
+        self.set_current_element(el)
+
+    def depart_literal(self, node):
+        self.text_stack.pop()
+        self.set_to_parent()
+   
+    
     def visit_emphasis(self, node):
         self.text_stack.append('bold')
         if not self._in_p():
@@ -608,6 +623,7 @@ def generate_text_style(translator, text_stack):
     * normal
     * underline
     * font:name
+    * pitch:fixed
     * outline
     * shadow
     * color:color_name
@@ -640,6 +656,9 @@ def generate_text_style(translator, text_stack):
                 text_attrs['style:text-outline'] = 'true'
             elif item == 'shadow':
                 text_attrs['fo:text-shadow'] = '1pt 1pt'
+            elif item.startswith('pitch:'):
+                text_attrs['style:font-pitch'] = item.split(':')[1]
+                text_attrs['fo:font-family'] = "'Courier New'"
             elif item.startswith('size:'):
                 size = item.split(':')[1]
                 if size == 'huge':
