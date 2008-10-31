@@ -42,8 +42,8 @@ test -d $htdocsdest || mkdir $htdocsdest
 # Where to create the snapshots (non-public).
 snapshotdir=$auxdir/snapshots
 test -d $snapshotdir || mkdir $snapshotdir
-# Where to publish the snapshots (public).
-snapshotdest=/home/groups/ftp/pub/docutils
+# # Where to publish the snapshots (public).
+# snapshotdest=/home/groups/ftp/pub/docutils
 bindir=$auxdir/bin
 test -d $bindir || mkdir $bindir
 
@@ -151,11 +151,13 @@ tar -cz $exclude -f $project-web-snapshot.tgz web
   tar -cz $exclude -f ../../docfactory-snapshot.tgz docfactory )
 
 # plant the snapshots
-if [ -d $snapshotdest ] ; then
-    mv -f *snapshot.tgz $snapshotdest
-else
-    echo "Skip snapshots, directory $snapshotdest does not exist"
-fi
+mv -f *snapshot.tgz $htdocsdest
+
+# if [ -d $snapshotdest ] ; then
+#     mv -f *snapshot.tgz $snapshotdest
+# else
+#     echo "Skip snapshots, directory $snapshotdest does not exist"
+# fi
 
 # revert and touch (to avoid updating the web site only because of the
 # changed timestamp)
