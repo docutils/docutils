@@ -380,6 +380,8 @@ class ODPTranslator(odt.ODFTranslator):
         for c in classes:
             if c in S5_COLORS:
                 text_classes.append('color:%s' % S5_COLORS[c])
+            elif c in ['huge', 'big', 'normal', 'small', 'tiny']:
+                text_classes.append('size:%s' % c)
         self.text_stack.append(' '.join(text_classes))
         sname = generate_text_style(self, self.text_stack)
         el = odt.SubElement(self.current_element, 'text:span',
@@ -666,11 +668,11 @@ def generate_text_style(translator, text_stack):
                 elif size == 'big':
                     text_attrs['fo:font-size'] = '44pt'
                 elif size == 'normal':
-                    text_attrs['fo:font-size'] = '18pt'
+                    text_attrs['fo:font-size'] = '28pt'
                 elif size == 'small':
-                    text_attrs['fo:font-size'] = '12pt'
+                    text_attrs['fo:font-size'] = '22pt'
                 elif size == 'tiny':
-                    text_attrs['fo:font-size'] = '8pt'
+                    text_attrs['fo:font-size'] = '18pt'
             
             
     if text_name not in translator.styles_seen:
