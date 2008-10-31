@@ -56,7 +56,7 @@ line blocks (rststyle-lineblock1, ...).  See the doc.
 
 Fixes to footnotes.  Auto-numbered and auto-symbol footnotes seem
 to work correctly now.  There is a constant (footnote_chars)
-containing the symbols (*, **, ***, ++, etc).  
+containing the symbols (\*, \**, \***, ++, etc).  
 
 Added support for citations.
 
@@ -82,7 +82,7 @@ Added support for classifier on definition list terms.
 
 Added support for the meta directive.  See docs.
 
-Added support for additional visit_/depart_ methods.
+Added support for additional ``visit_``/``depart_`` methods.
 
 Regularized some of the methods that generated fields: revision,
 version, date, address, contact, copyright, organization, etc.
