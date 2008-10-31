@@ -60,16 +60,17 @@ class RecordDependenciesTests(unittest.TestCase):
         s = {'settings_overrides': {}}
         so = s['settings_overrides']
         so['embed_stylesheet'] = 0
-        so['stylesheet_path'] = os.path.join('data', 'stylesheet.txt')
+        stylesheet_path = os.path.join('data', 'stylesheet.txt')
+        so['stylesheet_path'] = stylesheet_path
         so['stylesheet'] = None
         s['writer_name'] = 'html'
-        self.assert_(os.path.join('data', 'stylesheet.txt') not in
-                     self.get_record(**s))
+        self.assert_(stylesheet_path not in self.get_record(**s))
         so['embed_stylesheet'] = 1
-        self.assert_('data/stylesheet.txt' in self.get_record(**s))
-        del so['embed_stylesheet']
+        self.assert_(stylesheet_path in self.get_record(**s))
         s['writer_name'] = 'latex'
-        self.assert_('data/stylesheet.txt' in self.get_record(**s))
+        self.assert_(stylesheet_path in self.get_record(**s))
+        del so['embed_stylesheet']
+        self.assert_(stylesheet_path not in self.get_record(**s))
 
 
 if __name__ == '__main__':
