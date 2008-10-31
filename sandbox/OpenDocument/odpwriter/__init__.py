@@ -14,6 +14,29 @@ from docutils import utils, frontend
 
 import odtwriter as odt
 
+
+S5_COLORS = dict(
+    black='#000000',
+    gray='#545454',
+    silver='#c0c0c0',
+    white='#ffffff',
+    maroon='#b03060',
+    red='#ff0000',
+    magenta='#ff00ff',
+    fuchsia='#ff00ff',
+    pink='#ff1493',
+    orange='#ffa500',
+    yellow='#ffff00',
+    lime='#32cd32',
+    green='#00ff00',
+    olive='#6b8e23',
+    teal='#008080',
+    cyan='#00ffff',
+    aqua='#00ffff',
+    blue='#0000ff',
+    navy='#000080',
+    purple='#a020f0'
+)
 def cwd_decorator(func):
     """
     decorator to change cwd to directory containing rst for this function
@@ -138,6 +161,7 @@ class ODPTranslator(odt.ODFTranslator):
     def _reset_values(self):
         """we reset on each section/slide"""
         self.text_stack = [] # styles to apply to text
+        self.para_stack = [] # styles for paragraphs
         self.text_box = None # only supporting one text box (inside frame) (not including title)
         self.page = None
         self.handout_text = None
@@ -310,14 +334,24 @@ class ODPTranslator(odt.ODFTranslator):
         if self.text_box is None:
             self._create_text_area()
 
+        classes = node.attributes.get('classes', [])
         if not self.in_handout:
-            self.in_handout = 'handout' in node.attributes.get('classes', [])
+            self.in_handout = 'handout' in classes
+        self.para_stack.append(' '.join(classes))
 
-        odt.ODFTranslator.visit_paragraph(self, node)
+        ##odt.ODFTranslator.visit_paragraph(self, node)
+        #style_name = self.paragraph_style_stack[-1]
+        style_name = generate_paragraph_style(self, self.para_stack)
+        el = self.append_child('text:p',
+                               attrib={'text:style-name': self.rststyle(style_name)})
+        self.append_pending_ids(el)
+        self.set_current_element(el)
+
         
 
     def depart_paragraph(self, node):
         self.in_handout = False
+        self.para_stack.pop()
         odt.ODFTranslator.depart_paragraph(self, node)
         
     def visit_literal_block(self, node):
@@ -337,16 +371,35 @@ class ODPTranslator(odt.ODFTranslator):
                 return True
             node = node.parent
         return False
-         
+        
+    def visit_inline(self, node):
+        classes = node.attributes.get('classes', [])
+        text_classes = []
+        for c in classes:
+            if c in S5_COLORS:
+                text_classes.append('color:%s' % S5_COLORS[c])
+        self.text_stack.append(' '.join(text_classes))
+        sname = generate_text_style(self, self.text_stack)
+        el = odt.SubElement(self.current_element, 'text:span',
+                        attrib={'text:style-name': self.rststyle(sname)})
+        self.set_current_element(el)
+
+    def depart_inline(self, node):
+        self.text_stack.pop()
+        self.set_to_parent()
+ 
     def visit_emphasis(self, node):
         self.text_stack.append('bold')
         if not self._in_p():
             self.current_element = self.append_p('emphasis')
         
-        sname, pstyle, tstyle = generate_style(self, [], self.text_stack)
+        sname = generate_text_style(self, self.text_stack)
 
-        odt.ODFTranslator.visit_emphasis(self, node, stylename=sname) 
-    
+        ##odt.ODFTranslator.visit_emphasis(self, node, stylename=sname) 
+        el = odt.SubElement(self.current_element, 'text:span',
+                        attrib={'text:style-name': self.rststyle(sname)})
+        self.set_current_element(el)
+
     def depart_emphasis(self, node):
         self.text_stack.pop()
         odt.ODFTranslator.depart_emphasis(self, node)
@@ -513,12 +566,41 @@ def flatten_stack(stack):
     results.replace(" ", "_")
     return results
 
-def generate_style(translator, para_stack, text_stack):
+
+def generate_paragraph_style(translator, para_stack):
     """
-    given a translater, para_stack (stack of paragraph styles (can
-    have multiple by space delimiting) and text_stack, add the styles
-    to the automatic sytles portion of the translator and return a
-    tuple containing the paragraph and text style names.
+    para_stack may include:
+    * left, center, right
+    * block_indent
+
+    """
+    para_name = flatten_stack(para_stack)
+    para_attrs = {}
+    for items in para_stack:
+        for item in items.split():
+            if item == 'left':
+                para_attrs['fo:text-align'] = 'start'
+            elif item == 'center':
+                para_attrs['fo:text-align'] = 'center'
+            elif item == 'right':
+                para_attrs['fo:text-align'] = 'end'
+            elif item == 'block_indent':
+                para_attrs['fo:margin-left'] = '1.2cm'
+                para_attrs['fo:margin-right'] = '-0.9cm'
+
+    if para_name not in translator.styles_seen:
+        para_style = translator._add_style(para_name,
+                                           {'style:name':translator.rststyle(para_name),
+                                            'style:family':'paragraph'},
+                                           'style:paragraph-properties',
+                                           para_attrs)
+    return para_name
+
+def generate_text_style(translator, text_stack):
+    """
+    given a translater, and text_stack (stack of text styles (can have
+    multiple by space delimiting)), add the styles to the automatic
+    sytles portion of the translator and return style_name
     
     Following are text_stack items:
     * bold
@@ -532,7 +614,8 @@ def generate_style(translator, para_stack, text_stack):
     * bgcolor:color_name (#cc32f5 or `transparent`)
     * size:[huge|big|small|tiny]
     """
-    
+    color2hex = dict(black="black",
+                     gray="gray")
     text_name = flatten_stack(text_stack)
     text_attrs = {}
     for items in text_stack:
@@ -569,7 +652,8 @@ def generate_style(translator, para_stack, text_stack):
                     text_attrs['fo:font-size'] = '12pt'
                 elif size == 'tiny':
                     text_attrs['fo:font-size'] = '8pt'
-                
+            
+            
     if text_name not in translator.styles_seen:
         text_style = translator._add_style(text_name, 
                                            {'style:name':translator.rststyle(text_name),
@@ -577,4 +661,4 @@ def generate_style(translator, para_stack, text_stack):
                                            'style:text-properties',
                                            text_attrs)
 
-    return text_name, None, text_style
+    return text_name
