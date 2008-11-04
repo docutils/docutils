@@ -155,8 +155,8 @@ class ODPTranslator(odt.ODFTranslator):
     def __init__(self, document):
         odt.ODFTranslator.__init__(self, document)
         self.styles_seen = {}
+        self.footer_text = None # only one for the whole doc
         self._reset_values()
-
 
     def _reset_values(self):
         """we reset on each section/slide"""
@@ -165,11 +165,15 @@ class ODPTranslator(odt.ODFTranslator):
         self.text_box = None # only supporting one text box (inside frame) (not including title)
         self.page = None
         self.handout_text = None
+
         self.in_enumerated_list = False
         self.in_bullet = False
+        self.list_depth = 0
+        self.prev_current = None
         self.prev_stack = None
         self.in_handout = False
         self.in_comment = False
+        self.in_topic = False
 
         # not a new one, but needs to be reset
         self.paragraph_style_stack = [self.rststyle('textbody'),]
@@ -206,6 +210,16 @@ class ODPTranslator(odt.ODFTranslator):
                         'text:name': id})
         self.pending_ids = [ ]
 
+    def append_child(self, tag, attrib=None, parent=None, location=-1):
+        """
+        I want to be able to append children as the first item
+        """
+        child = odt.ODFTranslator.append_child(self, tag, attrib=attrib, parent=parent)
+        if location != -1:
+            parent.remove(child)
+            parent.insert(location, child)
+        return child
+
     def visit_document(self, node):
         print "DOC", node
 
@@ -213,12 +227,18 @@ class ODPTranslator(odt.ODFTranslator):
         self._reset_values()
         self.section_count += 1
         style_name = "dp1"
+        page_attrib={"draw:name":"page%d" % self.section_count,
+                "draw:style-name":style_name,
+                "draw:master-page-name":"Default",
+                "presentation:presentation-page-layout-name":"AL1T0"
+                }
+
+        if not self.footer_text is None:
+            # set footers
+
+            page_attrib['presentation:user-footer-name'] = 'ftr1'
         self.page = self.append_child('draw:page', 
-                                      attrib={"draw:name":"page%d" % self.section_count,
-                                              "draw:style-name":style_name,
-                                              "draw:master-page-name":"Default",
-                                              "presentation:presentation-page-layout-name":"AL1T0"
-                                              },
+                                      attrib=page_attrib,
                                       parent=self.body_text_element)
         self.append_child('office:forms',
                           attrib={"form:apply-design-mode":"false",
@@ -236,6 +256,9 @@ class ODPTranslator(odt.ODFTranslator):
         """
         text:h in super class crashes OOo!!!
         """
+        if self.in_topic: 
+            return
+
         if self.page is None:
             self.visit_section(node)
         #style_name = 'pr1'
@@ -251,6 +274,9 @@ class ODPTranslator(odt.ODFTranslator):
 
 
     def depart_title(self, node):
+        if self.in_topic: 
+            return
+
         self.current_element = self.page
         self.text_box = None
 
@@ -330,29 +356,68 @@ class ODPTranslator(odt.ODFTranslator):
         self.in_handout = False
         odt.ODFTranslator.depart_container(self, node)
 
+    def visit_footer(self, node):
+        #ipshell('At visit_footer')
+        self.in_footer = True
+        self.prev_current = self.current_element
+
+    def depart_footer(self, node):
+        #ipshell('At depart_footer')
+        self.in_footer = False
+        self.current_element = self.prev_current
+
     def visit_paragraph(self, node):
+        if self.in_topic: 
+            return
+
         if self.text_box is None:
             self._create_text_area()
+
+        if self.in_footer:
+            if self.footer_text is None:
+                self.create_footer_text()
+            self.current_element = self.footer_text
+            #return 
 
         classes = node.attributes.get('classes', [])
         if not self.in_handout:
             self.in_handout = 'handout' in classes
-        self.para_stack.append(' '.join(classes))
+
+        if not self.in_handout:
+
+            self.para_stack.append(' '.join(classes))
 
         ##odt.ODFTranslator.visit_paragraph(self, node)
         #style_name = self.paragraph_style_stack[-1]
-        style_name = generate_paragraph_style(self, self.para_stack)
-        el = self.append_child('text:p',
-                               attrib={'text:style-name': self.rststyle(style_name)})
-        self.append_pending_ids(el)
-        self.set_current_element(el)
+            style_name = generate_paragraph_style(self, self.para_stack)
+            el = self.append_child('text:p',
+                                   attrib={'text:style-name': self.rststyle(style_name)})
+            self.append_pending_ids(el)
+            self.set_current_element(el)
 
         
 
     def depart_paragraph(self, node):
-        self.in_handout = False
-        self.para_stack.pop()
+        if self.in_topic: 
+            return
+
+        if self.in_handout:
+            self.para_stack.pop()
+
         odt.ODFTranslator.depart_paragraph(self, node)
+        self.in_handout = False        
+
+    def visit_reference(self, node):
+        if self.in_topic: 
+            return
+        odt.ODFTranslator.visit_reference(self, node)
+
+    def depart_reference(self, node):
+        if self.in_topic: 
+            return
+        odt.ODFTranslator.depart_reference(self, node)
+
+    
         
     def visit_literal_block(self, node):
         if self.text_box is None:
@@ -373,6 +438,15 @@ class ODPTranslator(odt.ODFTranslator):
                 return True
             node = node.parent
         return False
+
+    def visit_topic(self, node):
+        """
+        s5 put's topics in handout....  Currently this isn't implemented
+        """
+        self.in_topic = True
+
+    def depart_topic(self, node):
+        self.in_topic = False
         
     def visit_inline(self, node):
         classes = node.attributes.get('classes', [])
@@ -448,6 +522,8 @@ class ODPTranslator(odt.ODFTranslator):
         odt.ODFTranslator.depart_enumerated_list(self, node)
 
     def visit_bullet_list(self, node):
+        if self.in_topic: 
+            return
         if self.text_box is None:
             self._create_text_area()
 
@@ -455,6 +531,9 @@ class ODPTranslator(odt.ODFTranslator):
 
 
     def depart_bullet_list(self, node):
+        if self.in_topic: 
+            return
+
         odt.ODFTranslator.depart_bullet_list(self, node)
         self.in_bullet = False
 
@@ -463,20 +542,50 @@ class ODPTranslator(odt.ODFTranslator):
         !!!odt bullet handling isn't correct
         doesn't put </text:list> around EVERY item
         """
+        if self.in_topic: 
+            return
+        self.list_depth += 1
         if self.in_bullet:
-            odt.ODFTranslator.visit_bullet_list(self, node)
+            ## odt.ODFTranslator.visit_bullet_list(self, node)
+            style = 'Default-outline-%d' % self.list_depth
+            el = odt.SubElement(self.current_element, 'text:list', attrib={
+                    'text:style-name': style,
+                    })
+
+            self.list_style_stack.append(self.rststyle('bulletitem'))
+            self.set_current_element(el)
         if self.in_enumerated_list:
             odt.ODFTranslator.visit_enumerated_list(self, node)
         
         odt.ODFTranslator.visit_list_item(self, node)
-
             
     def depart_list_item(self, node):
+        if self.in_topic: 
+            return
+        self.list_depth -= 1
         odt.ODFTranslator.depart_list_item(self, node)
         #need an extra dosing here, for bug in lists
         self.set_to_parent()
 
     
+    def create_footer_text(self):
+        if not self.footer_text is None:
+            return
+
+        self.footer_text = self.append_child('presentation:footer-decl',
+                                             attrib={'presentation:name':'ftr1'},
+                                             parent = self.body_text_element,
+                                             location=0)
+        self._add_style('style:style',
+                        {'style:name':'dp1',
+                         'style:family':'drawing-page'},
+                        'style:drawing-page-properties',
+                        {'presentation:display-footer':'true',
+                         'presentation:background-visible':'true',
+                         'presentation:background-objects-visible':'true',
+                         'presentation:display-page-number':'false',
+                         'presentation:display-date-time':'true'})
+
 
     def create_handout_text(self):
         if not self.handout_text is None:
@@ -568,7 +677,7 @@ class ODPTranslator(odt.ODFTranslator):
         self.current_element = old
         self.in_paragraph = prev_para
 
-    def _add_style(self, name, parent_attr, child_tag=None,child_attr=None):
+    def _add_style(self, name, parent_attr, child_tag=None, child_attr=None):
         if name not in self.styles_seen:
             self.styles_seen[name] = 1
             e1 = odt.SubElement(self.automatic_styles, 'style:style',
@@ -632,8 +741,6 @@ def generate_text_style(translator, text_stack):
     * bgcolor:color_name (#cc32f5 or `transparent`)
     * size:[huge|big|small|tiny]
     """
-    color2hex = dict(black="black",
-                     gray="gray")
     text_name = flatten_stack(text_stack)
     text_attrs = {}
     for items in text_stack:
