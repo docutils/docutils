@@ -12,7 +12,10 @@ latex2e writer. Latex writer variants in this project are
 
 #. enhancements or improvements of the latex2e writer, or
 
-#. `alternative latex writers`_ for special needs.
+#. alternative latex writers for special needs.
+
+.. contents:: 
+
 
 ``latex2e`` writer extensions
 *****************************
@@ -227,8 +230,9 @@ fallback definition.
 Implementations
 ***************
 
-Browse the SVN repository at berlios.de:
-http://svn.berlios.de/viewcvs/docutils/trunk/sandbox/latex-variants/
+Browse the `SVN repository at berlios.de`__
+
+__ http://svn.berlios.de/viewvc/docutils/trunk/sandbox/latex-variants/
 
 * The `docs` dir contains generic documentation and discussion.
 
