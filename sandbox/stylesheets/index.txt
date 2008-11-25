@@ -33,6 +33,16 @@ __ http://docutils.sf.net/docs/howto/html-stylesheets.html
 * `<voidspace.css>`_: Blue boxes around section headings, more
   borders, and somewhat more colorful than the default stylesheet.
 
+* `<transition-stars.css>`_: 
+  Example/Template for customising the transition__ element.
+  
+  Replaces the horizontal line with three stars as often seen in novels.
+
+__ http://docutils.sf.net/docs/ref/rst/restructuredtext.html#transitions
+
+
+.. References:
+
 .. _Docutils: http://docutils.sourceforge.net/
 .. _Docutils-users:
    http://docutils.sf.net/docs/user/mailing-lists.html#docutils-users
