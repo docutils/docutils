@@ -129,7 +129,9 @@ class DocumentClass(latex2e.DocumentClass):
 
             Level is 1,2,3..., as level 0 is the title."""
 
-        # TODO Level where sections become frames must be an option
+        # TODO Level where sections become frames must be an option - might be
+        # determined by a preprocessor, then it is also not fixed - might be
+        # driven by the first content under a section
         sections = [ 'section', "begin{frame}\n\\frametitle", ]
         if level <= len(sections):
             return sections[level-1]
@@ -142,7 +144,7 @@ class DocumentClass(latex2e.DocumentClass):
 
             Level is 1,2,3..., as level 0 is the title."""
 
-        # TODO Level where sections become frames must be an option
+        # TODO See above
         sections = [ '', "\n\\end{frame}\n", ]
         if level <= len(sections):
             return sections[level-1]
@@ -169,7 +171,8 @@ class BeamerTranslator(latex2e.LaTeXTranslator):
                                  '}\n',
                                  '\n',
                                  ))
-        # TODO Must be an option including the level where this happens
+        # TODO Must be an option including the level where this happens - must
+        # be present only if there is a toc
         self.head_prefix.extend(('\n',
                                  '\\AtBeginSection[]\n',
                                  '{\n',
@@ -184,6 +187,7 @@ class BeamerTranslator(latex2e.LaTeXTranslator):
 
     def visit_docinfo(self, node):
         self.docinfo = []
+        # TODO :Organization: should be handled as institute
 
     def depart_docinfo(self, node):
         self.docinfo = None
@@ -193,7 +197,8 @@ class BeamerTranslator(latex2e.LaTeXTranslator):
         self.topic_classes = node['classes']
         if 'contents' in node['classes']:
             # TODO Name of outline slide must be an option and could be the
-            # name given for the contents (is a `title` element)
+            # name given for the contents (is a `title` element) - might be
+            # determined by a preprocessor
             self.body.append( '\n\\begin{frame}\n  \\frametitle{Outline}\n  \\tableofcontents\n\\end{frame}')
             self.topic_classes = []
             raise nodes.SkipNode
@@ -248,3 +253,4 @@ class BeamerTranslator(latex2e.LaTeXTranslator):
         return ''.join(self.head_prefix + [head] + self.head + [pdfinfo]
                         + self.body_prefix  + self.body + self.body_suffix)
 
+# TODO Class `handout` must be suppressed - may be by a preprocessor
