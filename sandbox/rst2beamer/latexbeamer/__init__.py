@@ -4,13 +4,114 @@ LaTeX Beamer document tree Writer.
 
 __docformat__ = 'reStructuredText'
 
-from docutils import nodes
+from docutils import frontend, nodes
 from docutils.writers import latex2e
 
 class Writer(latex2e.Writer):
 
     supported = ('latexbeamer')
     """Formats this writer supports."""
+
+    settings_spec = (
+        'LaTeX Beamer Specific Options',
+        'The LaTeX "--output-encoding" default is "latin-1:strict".',
+        (('Specify document options.  Multiple options can be given, '
+          'separated by commas.  Default is no options.',
+          ['--documentoptions'],
+          {'default': '', }),
+         ('Use LaTeX footnotes. LaTeX supports only numbered footnotes (does it?). '
+          'Default: no, uses figures.',
+          ['--use-latex-footnotes'],
+          {'default': 0, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Format for footnote references: one of "superscript" or '
+          '"brackets".  Default is "superscript".',
+          ['--footnote-references'],
+          {'choices': ['superscript', 'brackets'], 'default': 'superscript',
+           'metavar': '<format>',
+           'overrides': 'trim_footnote_reference_space'}),
+         ('Use LaTeX citations. '
+          'Default: no, uses figures which might get mixed with images.',
+          ['--use-latex-citations'],
+          {'default': 0, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Format for block quote attributions: one of "dash" (em-dash '
+          'prefix), "parentheses"/"parens", or "none".  Default is "dash".',
+          ['--attribution'],
+          {'choices': ['dash', 'parentheses', 'parens', 'none'],
+           'default': 'dash', 'metavar': '<format>'}),
+         ('Specify a stylesheet file. The file will be "input" by latex in '
+          'the document header.  Default is no stylesheet ("").  '
+          'Overrides --stylesheet-path.',
+          ['--stylesheet'],
+          {'default': '', 'metavar': '<file>',
+           'overrides': 'stylesheet_path'}),
+         ('Specify a stylesheet file, relative to the current working '
+          'directory.  Overrides --stylesheet.',
+          ['--stylesheet-path'],
+          {'metavar': '<file>', 'overrides': 'stylesheet'}),
+         ('Table of contents by docutils (default) or latex. Latex (writer) '
+          'supports only one ToC per document, but docutils does not write '
+          'pagenumbers.',
+          ['--use-latex-toc'],
+          {'default': 0, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Color of any hyperlinks embedded in text '
+          '(default: "0" (disabled)).',
+          ['--hyperlink-color'], {'default': '0'}),
+         ('Enable compound enumerators for nested enumerated lists '
+          '(e.g. "1.2.a.ii").  Default: disabled.',
+          ['--compound-enumerators'],
+          {'default': None, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Disable compound enumerators for nested enumerated lists.  This is '
+          'the default.',
+          ['--no-compound-enumerators'],
+          {'action': 'store_false', 'dest': 'compound_enumerators'}),
+         ('Enable section ("." subsection ...) prefixes for compound '
+          'enumerators.  This has no effect without --compound-enumerators.  '
+          'Default: disabled.',
+          ['--section-prefix-for-enumerators'],
+          {'default': None, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Disable section prefixes for compound enumerators.  '
+          'This is the default.',
+          ['--no-section-prefix-for-enumerators'],
+          {'action': 'store_false', 'dest': 'section_prefix_for_enumerators'}),
+         ('Set the separator between section number and enumerator '
+          'for compound enumerated lists.  Default is "-".',
+          ['--section-enumerator-separator'],
+          {'default': '-', 'metavar': '<char>'}),
+         ('When possibile, use verbatim for literal-blocks. '
+          'Default is to always use the mbox environment.',
+          ['--use-verbatim-when-possible'],
+          {'default': 0, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Table style. "standard" with horizontal and vertical lines, '
+          '"booktabs" (LaTeX booktabs style) only horizontal lines '
+          'above and below the table and below the header or "nolines".  '
+          'Default: "standard"',
+          ['--table-style'],
+          {'choices': ['standard', 'booktabs','nolines'], 'default': 'standard',
+           'metavar': '<format>'}),
+         ('LaTeX graphicx package option. '
+          'Possible values are "dvips", "pdftex". "auto" includes LaTeX code '
+          'to use "pdftex" if processing with pdf(la)tex and dvips otherwise. '
+          'Default is no option.',
+          ['--graphicx-option'],
+          {'default': ''}),
+         ('LaTeX font encoding. '
+          'Possible values are "T1", "OT1", "" or some other fontenc option. '
+          'The font encoding influences available symbols, e.g. "<<" as one '
+          'character. Default is "" which leads to package "ae" (a T1 '
+          'emulation using CM fonts).',
+          ['--font-encoding'],
+          {'default': ''}),
+         ('LaTeX Beamer theme to use. '
+          'Default is JuanLesPins.',
+          ['--beamer-theme'],
+          {'default': 'JuanLesPins'})
+          ),)
 
     def __init__(self):
         latex2e.Writer.__init__(self)
@@ -41,7 +142,7 @@ class DocumentClass(latex2e.DocumentClass):
 
             Level is 1,2,3..., as level 0 is the title."""
 
-        # TODO Level where sections become frames are must be an option
+        # TODO Level where sections become frames must be an option
         sections = [ '', "\n\\end{frame}\n", ]
         if level <= len(sections):
             return sections[level-1]
@@ -51,24 +152,19 @@ class DocumentClass(latex2e.DocumentClass):
 class BeamerTranslator(latex2e.LaTeXTranslator):
 
     def __init__(self, document):
-        # TODO Should be done via explicit settings
         document.settings.documentclass = 'beamer'
-        # TODO Should be done via explicit settings - should be none but the
-        # language
-        document.settings.documentoptions = '10pt'
-        # TODO Should be done via explicit settings
         document.settings.use_latex_docinfo = 1
         latex2e.LaTeXTranslator.__init__(self, document)
         # TODO Should be done via explicit head_prefix
         self.head_prefix = [ line
                 for line in self.head_prefix
                 if 'typearea' not in line and 'hyperref' not in line ]
-        # TODO Theme must be an option
         # Montpellier, Warsaw, JuanLesPins, Darmstadt, Antibes
         self.head_prefix.extend(('\n',
                                  '\\mode<presentation>\n',
                                  '{\n',
-                                 '  \\usetheme{JuanLesPins}\n',
+                                 '  \\usetheme{%s}\n'
+                                 % ( document.settings.beamer_theme, ),
                                  '  \\setbeamercovered{transparent}\n',
                                  '}\n',
                                  '\n',
@@ -97,7 +193,7 @@ class BeamerTranslator(latex2e.LaTeXTranslator):
         self.topic_classes = node['classes']
         if 'contents' in node['classes']:
             # TODO Name of outline slide must be an option and could be the
-            # name given for the contents
+            # name given for the contents (is a `title` element)
             self.body.append( '\n\\begin{frame}\n  \\frametitle{Outline}\n  \\tableofcontents\n\\end{frame}')
             self.topic_classes = []
             raise nodes.SkipNode
