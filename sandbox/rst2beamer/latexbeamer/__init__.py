@@ -6,6 +6,8 @@ __docformat__ = 'reStructuredText'
 
 from docutils import frontend, nodes
 from docutils.writers import latex2e
+from docutils.readers import standalone
+from docutils.transforms import references, Transform, TransformError
 
 class Writer(latex2e.Writer):
 
@@ -253,4 +255,31 @@ class BeamerTranslator(latex2e.LaTeXTranslator):
         return ''.join(self.head_prefix + [head] + self.head + [pdfinfo]
                         + self.body_prefix  + self.body + self.body_suffix)
 
-# TODO Class `handout` must be suppressed - may be by a preprocessor
+# Use an own reader to modify transformations done.
+class Reader(standalone.Reader):
+
+    def get_transforms(self):
+        default = standalone.Reader.get_transforms(self)
+        return ([ i
+                  for i in default
+                  if i is not references.DanglingReferences ]
+                + [ RemoveClassHandout, ])
+
+class RemoveClassHandout(Transform):
+
+    """
+    Remove all elements with a given class attribute.
+    """
+
+    classToRemove = 'handout'
+
+    # Must be less than
+    # docutils.transforms.misc.ClassAttribute.default_priority
+    default_priority = 120
+
+    def apply(self):
+        for node in self.document.traverse(nodes.Element):
+            if node.has_key('classes'):
+                if self.classToRemove in node['classes']:
+                    if node.parent:
+                        node.parent.remove(node)

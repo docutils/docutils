@@ -18,8 +18,11 @@ except:
 
 from docutils.core import publish_cmdline, default_description
 
+from docutils.writers.latexbeamer import Writer, Reader
 
 description = ('Generates LaTeX Beamer documents from standalone reStructuredText '
                'sources.  ' + default_description)
 
-publish_cmdline(writer_name='latexbeamer', description=description)
+writer = Writer()
+reader = Reader()
+publish_cmdline(reader=reader, writer=writer, description=description)
