@@ -46,6 +46,8 @@ Added command line flags --endnotes-end-doc and
 of the document instead of at the end of the page.  Generates
 endnotes instead of footnotes.
 
+A fix to table generation.
+
 
 2008/10/23 -- Version 1.3c
 --------------------------

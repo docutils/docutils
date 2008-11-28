@@ -156,6 +156,8 @@ try:
 except ImportError, exp:
     Image = None
 
+## import warnings
+## warnings.warn('importing IPShellEmbed', UserWarning)
 ## from IPython.Shell import IPShellEmbed
 ## args = ['-pdb', '-pi1', 'In <\\#>: ', '-pi2', '   .\\D.: ',
 ##         '-po', 'Out<\\#>: ', '-nosep']
@@ -2602,6 +2604,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         if morecols > 0:
             attrib['table:number-columns-spanned'] = '%d' % (morecols + 1,)
             self.column_count += morecols
+        morerows = node.get('morerows', 0)
+        if morerows > 0:
+            attrib['table:number-rows-spanned'] = '%d' % (morerows + 1,)
         el1 = self.append_child('table:table-cell', attrib=attrib)
         self.set_current_element(el1)
 
