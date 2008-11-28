@@ -5,7 +5,7 @@ from setuptools import setup
 
 
 setup(name="odtwriter",
-    version="1.3c",
+    version="1.3d",
     description="convert rst to ODF/odt/odp.",
     author="Dave Kuhlman",
     author_email="dkuhlman@rexx.com",
