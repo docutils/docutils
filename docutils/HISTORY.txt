@@ -19,6 +19,7 @@ Changes Since 0.5
 
 * General:
 
+  - Prepare for python 3.0: minimize "types" module where possible.
   - Apply [ 1878977 ] make_id(): deaccent characters.
   - Backwards-compatible changes to remove python2.6 -3 deprecation warnings
   - Text nodes now subclass unicode rather than UserString

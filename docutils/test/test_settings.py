@@ -14,7 +14,6 @@ import docutils_difflib
 import pprint
 import warnings
 import unittest
-from types import StringType
 import DocutilsTestSupport              # must be imported before docutils
 from docutils import frontend, utils
 from docutils.writers import html4css1, pep_html

@@ -116,8 +116,7 @@ def loadTestModules(path, name='', packages=None):
                 continue
             if type(suite) == types.FunctionType:
                 testSuite.addTest(suite())
-            elif type(suite) == types.InstanceType \
-                  and isinstance(suite, unittest.TestSuite):
+            elif isinstance(suite, unittest.TestSuite):
                 testSuite.addTest(suite)
             else:
                 raise AssertionError, "don't understand suite (%s)" % mod

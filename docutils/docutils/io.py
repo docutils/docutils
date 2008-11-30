@@ -15,7 +15,6 @@ try:
 except:
     pass
 import re
-from types import UnicodeType
 from docutils import TransformSpec
 
 
@@ -67,10 +66,10 @@ class Input(TransformSpec):
             locale.setlocale(locale.LC_ALL, '')
         """
         if self.encoding and self.encoding.lower() == 'unicode':
-            assert isinstance(data, UnicodeType), (
+            assert isinstance(data, unicode), (
                 'input encoding is "unicode" '
                 'but input is not a unicode object')
-        if isinstance(data, UnicodeType):
+        if isinstance(data, unicode):
             # Accept unicode even if self.encoding != 'unicode'.
             return data
         if self.encoding:
@@ -187,11 +186,11 @@ class Output(TransformSpec):
 
     def encode(self, data):
         if self.encoding and self.encoding.lower() == 'unicode':
-            assert isinstance(data, UnicodeType), (
+            assert isinstance(data, unicode), (
                 'the encoding given is "unicode" but the output is not '
                 'a Unicode string')
             return data
-        if not isinstance(data, UnicodeType):
+        if not isinstance(data, unicode):
             # Non-unicode (e.g. binary) output.
             return data
         else:

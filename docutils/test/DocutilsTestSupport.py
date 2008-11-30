@@ -47,7 +47,6 @@ import re
 import inspect
 import traceback
 from pprint import pformat
-from types import UnicodeType, StringType
 
 testroot = os.path.abspath(os.path.dirname(__file__) or os.curdir)
 os.chdir(testroot)
@@ -190,11 +189,11 @@ class CustomTestCase(StandardTestCase):
 
     def compare_output(self, input, output, expected):
         """`input`, `output`, and `expected` should all be strings."""
-        if isinstance(input, UnicodeType):
+        if isinstance(input, unicode):
             input = input.encode('raw_unicode_escape')
-        if isinstance(output, UnicodeType):
+        if isinstance(output, unicode):
             output = output.encode('raw_unicode_escape')
-        if isinstance(expected, UnicodeType):
+        if isinstance(expected, unicode):
             expected = expected.encode('raw_unicode_escape')
         try:
             self.assertEquals(output, expected)
@@ -847,10 +846,10 @@ def _format_str(*args):
     return_tuple = []
     for i in args:
         r = repr(i)
-        if ( (isinstance(i, StringType) or isinstance(i, UnicodeType))
+        if ( (isinstance(i, str) or isinstance(i, unicode))
              and '\n' in i):
             stripped = ''
-            if isinstance(i, UnicodeType):
+            if isinstance(i, unicode):
                 # stripped = 'u' or 'U'
                 stripped = r[0]
                 r = r[1:]

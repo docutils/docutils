@@ -15,7 +15,6 @@ that language.
 import sys
 import os
 import re
-from types import UnicodeType
 import DocutilsTestSupport              # must be imported before docutils
 import docutils.languages
 import docutils.parsers.rst.languages
@@ -145,7 +144,7 @@ class LanguageTestCase(DocutilsTestSupport.CustomTestCase):
         if failures:
             text = ('Module docutils.parsers.rst.languages.%s:\n    %s'
                     % (self.language, '\n    '.join(failures)))
-            if type(text) == UnicodeType:
+            if type(text) is unicode:
                 text = text.encode('raw_unicode_escape')
             self.fail(text)
 
@@ -180,7 +179,7 @@ class LanguageTestCase(DocutilsTestSupport.CustomTestCase):
         if failures:
             text = ('Module docutils.parsers.rst.languages.%s:\n    %s'
                     % (self.language, '\n    '.join(failures)))
-            if type(text) == UnicodeType:
+            if type(text) is unicode:
                 text = text.encode('raw_unicode_escape')
             self.fail(text)
 

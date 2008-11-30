@@ -29,7 +29,6 @@ __docformat__ = 'reStructuredText'
 import os
 import os.path
 import sys
-import types
 import warnings
 import ConfigParser as CP
 import codecs
@@ -119,7 +118,7 @@ def validate_encoding_and_error_handler(
 
 def validate_boolean(setting, value, option_parser,
                      config_parser=None, config_section=None):
-    if isinstance(value, types.UnicodeType):
+    if isinstance(value, unicode):
         try:
             return option_parser.booleans[value.strip().lower()]
         except KeyError:
@@ -147,7 +146,7 @@ def validate_threshold(setting, value, option_parser,
 
 def validate_colon_separated_string_list(
     setting, value, option_parser, config_parser=None, config_section=None):
-    if isinstance(value, types.UnicodeType):
+    if isinstance(value, unicode):
         value = value.split(':')
     else:
         last = value.pop()
@@ -195,7 +194,7 @@ def make_paths_absolute(pathdict, keys, base_path=None):
     for key in keys:
         if key in pathdict:
             value = pathdict[key]
-            if isinstance(value, types.ListType):
+            if isinstance(value, list):
                 value = [make_one_path_absolute(base_path, path)
                          for path in value]
             elif value:
@@ -672,7 +671,7 @@ Skipping "%s" configuration file.
         """List of paths of configuration files read."""
 
     def read(self, filenames, option_parser):
-        if type(filenames) in (types.StringType, types.UnicodeType):
+        if type(filenames) in (str, unicode):
             filenames = [filenames]
         for filename in filenames:
             try:

@@ -11,10 +11,8 @@ __docformat__ = 'reStructuredText'
 import sys
 import os
 import os.path
-import types
 import warnings
 import unicodedata
-from types import StringType, UnicodeType
 from docutils import ApplicationError, DataError
 from docutils import nodes
 
@@ -110,12 +108,12 @@ class Reporter:
 
         if stream is None:
             stream = sys.stderr
-        elif type(stream) in (StringType, UnicodeType):
+        elif type(stream) in (str, unicode):
             # Leave stream untouched if it's ''.
             if stream != '':
-                if type(stream) == StringType:
+                if type(stream) == str:
                     stream = open(stream, 'w')
-                elif type(stream) == UnicodeType:
+                elif type(stream) == unicode:
                     stream = open(stream.encode(), 'w')
 
         self.stream = stream
@@ -508,7 +506,7 @@ east_asian_widths = {'W': 2,   # Wide
 column widths."""
 
 def east_asian_column_width(text):
-    if isinstance(text, types.UnicodeType):
+    if isinstance(text, unicode):
         total = 0
         for c in text:
             total += east_asian_widths[unicodedata.east_asian_width(c)]
