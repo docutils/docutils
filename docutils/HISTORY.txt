@@ -19,6 +19,7 @@ Changes Since 0.5
 
 * General:
 
+  - Prepare for python 3.0: Node.__nonzero__ returns True instead of 1.
   - Prepare for python 3.0: use os.walk instead os.path.walk.
   - Prepare for python 3.0: minimize "types" module where possible.
   - Apply [ 1878977 ] make_id(): deaccent characters.
