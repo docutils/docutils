@@ -181,7 +181,10 @@ class Builder:
         else:
             self.directories = [os.getcwd()]
         for directory in self.directories:
-            os.path.walk(directory, self.visit, recurse)
+            try:
+                os.path.walk(directory, self.visit, recurse)
+            except (AttributeError): # python2.2 does not have os.walk
+                os.path.walk(directory, self.visit, recurse)
 
     def visit(self, recurse, directory, names):
         settings = self.get_settings('', directory)

@@ -39,7 +39,19 @@ class FunctionalTestSuite(DocutilsTestSupport.CustomTestSuite):
         os.chdir(DocutilsTestSupport.testroot)
         self.clear_output_directory()
         self.added = 0
-        os.path.walk(join_path(datadir, 'tests'), self.walker, None)
+        try:
+            for root, dirs, files in os.walk(join_path(datadir, 'tests')):
+                # Process all config files among `names` in `dirname`. A config
+                # file is a Python file (*.py) which sets several variables.
+                for name in files:
+                    if name.endswith('.py') and not name.startswith('_'):
+                        config_file_full_path = join_path(root, name)
+                        self.addTestCase(FunctionalTestCase, 'test', None, None,
+                                         id=config_file_full_path,
+                                         configfile=config_file_full_path)
+                        self.added += 1
+        except (AttributeError): # python2.2 does not have os.walk
+            os.path.walk(join_path(datadir, 'tests'), self.walker, None)
         assert self.added, 'No functional tests found.'
 
     def clear_output_directory(self):
