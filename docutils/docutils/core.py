@@ -16,7 +16,6 @@ __docformat__ = 'reStructuredText'
 
 import sys
 import pprint
-from types import StringType
 from docutils import __version__, __version_details__, SettingsSpec
 from docutils import frontend, io, utils, readers, writers
 from docutils.frontend import OptionParser
@@ -53,7 +52,7 @@ class Publisher:
         """A `docutils.writers.Writer` instance."""
 
         for component in 'reader', 'parser', 'writer':
-            assert not isinstance(getattr(self, component), StringType), (
+            assert not isinstance(getattr(self, component), str), (
                 'passed string "%s" as "%s" parameter; pass an instance, '
                 'or use the "%s_name" parameter instead (in '
                 'docutils.core.publish_* convenience functions).'

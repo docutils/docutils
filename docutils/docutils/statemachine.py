@@ -1410,7 +1410,7 @@ class StringList(ViewList):
             return                      # new in Python 2.4
         for i in range(len(self.data)):
             line = self.data[i]
-            if isinstance(line, types.UnicodeType):
+            if isinstance(line, unicode):
                 new = []
                 for char in line:
                     new.append(char)

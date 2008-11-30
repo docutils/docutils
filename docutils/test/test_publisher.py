@@ -9,7 +9,6 @@ Test the `Publisher` facade and the ``publish_*`` convenience functions.
 """
 
 import pickle
-from types import StringType, DictType
 import DocutilsTestSupport              # must be imported before docutils
 import docutils
 from docutils import core, nodes, io
@@ -96,7 +95,7 @@ class PublishDoctreeTestCase(DocutilsTestSupport.StandardTestCase, docutils.Sett
            reader_name='doctree', source_class=io.DocTreeInput,
            source=doctree, source_path='test', writer_name='html',
            settings_spec=self)
-        self.assert_(isinstance(parts, DictType))
+        self.assert_(isinstance(parts, dict))
 
     def test_publish_pickle(self):
         # Test publishing a document tree with pickling and unpickling.
@@ -122,7 +121,7 @@ class PublishDoctreeTestCase(DocutilsTestSupport.StandardTestCase, docutils.Sett
         doctree.transformer = None
 
         doctree_pickled = pickle.dumps(doctree)
-        self.assert_(isinstance(doctree_pickled, StringType))
+        self.assert_(isinstance(doctree_pickled, str))
         del doctree
 
         # Unpickle the document.

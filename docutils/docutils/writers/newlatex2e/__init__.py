@@ -15,7 +15,6 @@ __docformat__ = 'reStructuredText'
 
 import re
 import os.path
-from types import ListType
 
 import docutils
 from docutils import nodes, writers, utils
@@ -659,7 +658,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
         numatts = 0
         pass_contents = self.pass_contents(node)
         for key, value in attlist:
-            if isinstance(value, ListType):
+            if isinstance(value, list):
                 self.append(r'\renewcommand{\DEVattrlen}{%s}' % len(value))
                 for i in range(len(value)):
                     self.append(r'\DECattr{%s}{%s}{%s}{%s}{' %
@@ -735,7 +734,7 @@ class LaTeXTranslator(nodes.SparseNodeVisitor):
                 self.append(r'\renewcommand{\DEVparent}{%s}'
                             % self.node_name(node.parent))
                 for name, value in node.attlist():
-                    if not isinstance(value, ListType) and not ':' in name:
+                    if not isinstance(value, list) and not ':' in name:
                         # For non-list and non-special (like
                         # 'xml:preserve') attributes, set
                         # \DEVcurrentN<nodename>A<attribute> to the

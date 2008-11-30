@@ -25,8 +25,7 @@ import sys
 import os
 import re
 import warnings
-from types import IntType, SliceType, StringType, UnicodeType, \
-     TupleType, ListType, ClassType, TypeType
+from types import ClassType, SliceType
 import unicodedata
 
 # ==============================
@@ -226,7 +225,7 @@ class Node:
             siblings=1
         # Check if `condition` is a class (check for TypeType for Python
         # implementations that use only new-style classes, like PyPy).
-        if isinstance(condition, (ClassType, TypeType)):
+        if isinstance(condition, (ClassType, type)):
             node_class = condition
             def condition(node, node_class=node_class):
                 return isinstance(node, node_class)
@@ -426,7 +425,7 @@ class Element(Node):
     def _dom_node(self, domroot):
         element = domroot.createElement(self.tagname)
         for attribute, value in self.attlist():
-            if isinstance(value, ListType):
+            if isinstance(value, list):
                 value = ' '.join([serial_escape('%s' % v) for v in value])
             element.setAttribute(attribute, '%s' % value)
         for child in self.children:
@@ -466,7 +465,7 @@ class Element(Node):
         for name, value in self.attlist():
             if value is None:           # boolean attribute
                 parts.append(name)
-            elif isinstance(value, ListType):
+            elif isinstance(value, list):
                 values = [serial_escape('%s' % v) for v in value]
                 parts.append('%s="%s"' % (name, ' '.join(values)))
             else:
@@ -485,9 +484,9 @@ class Element(Node):
         return len(self.children)
 
     def __getitem__(self, key):
-        if isinstance(key, UnicodeType) or isinstance(key, StringType):
+        if isinstance(key, unicode) or isinstance(key, str):
             return self.attributes[key]
-        elif isinstance(key, IntType):
+        elif isinstance(key, int):
             return self.children[key]
         elif isinstance(key, SliceType):
             assert key.step in (None, 1), 'cannot handle slice with stride'
@@ -497,9 +496,9 @@ class Element(Node):
                               'an attribute name string')
 
     def __setitem__(self, key, item):
-        if isinstance(key, UnicodeType) or isinstance(key, StringType):
+        if isinstance(key, unicode) or isinstance(key, str):
             self.attributes[str(key)] = item
-        elif isinstance(key, IntType):
+        elif isinstance(key, int):
             self.setup_child(item)
             self.children[key] = item
         elif isinstance(key, SliceType):
@@ -512,9 +511,9 @@ class Element(Node):
                               'an attribute name string')
 
     def __delitem__(self, key):
-        if isinstance(key, UnicodeType) or isinstance(key, StringType):
+        if isinstance(key, unicode) or isinstance(key, str):
             del self.attributes[key]
-        elif isinstance(key, IntType):
+        elif isinstance(key, int):
             del self.children[key]
         elif isinstance(key, SliceType):
             assert key.step in (None, 1), 'cannot handle slice with stride'
@@ -658,7 +657,7 @@ class Element(Node):
         - `start`: Initial index to check.
         - `end`: Initial index to *not* check.
         """
-        if not isinstance(childclass, TupleType):
+        if not isinstance(childclass, tuple):
             childclass = (childclass,)
         for index in range(start, min(len(self), end)):
             for c in childclass:
@@ -678,7 +677,7 @@ class Element(Node):
         - `start`: Initial index to check.
         - `end`: Initial index to *not* check.
         """
-        if not isinstance(childclass, TupleType):
+        if not isinstance(childclass, tuple):
             childclass = (childclass,)
         for index in range(start, min(len(self), end)):
             for c in childclass:
@@ -1411,7 +1410,7 @@ class pending(Special, Invisible, Element):
                 internals.append('%7s%s:' % ('', key))
                 internals.extend(['%9s%s' % ('', line)
                                   for line in value.pformat().splitlines()])
-            elif value and isinstance(value, ListType) \
+            elif value and isinstance(value, list) \
                   and isinstance(value[0], Node):
                 internals.append('%7s%s:' % ('', key))
                 for v in value:

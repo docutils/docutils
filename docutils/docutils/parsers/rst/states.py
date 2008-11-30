@@ -106,7 +106,7 @@ __docformat__ = 'reStructuredText'
 import sys
 import re
 import roman
-from types import TupleType, FunctionType, MethodType
+from types import FunctionType, MethodType
 from docutils import nodes, statemachine, utils, urischemes
 from docutils import ApplicationError, DataError
 from docutils.statemachine import StateMachineWS, StateWS
@@ -424,7 +424,7 @@ def build_regexp(definition, compile=1):
     name, prefix, suffix, parts = definition
     part_strings = []
     for part in parts:
-        if type(part) is TupleType:
+        if type(part) is tuple:
             part_strings.append(build_regexp(part, None))
         else:
             part_strings.append(part)

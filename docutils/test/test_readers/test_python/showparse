@@ -17,7 +17,6 @@ used for input.
 """
 
 import sys
-import types
 import parser
 import token
 import symbol
@@ -32,7 +31,7 @@ def name_elements(ast):
         name = names[ast[0]]
         ast[0] = '%s (%s)' % (name, ast[0])
     for node in ast[1:]:
-        if type(node) == types.ListType:
+        if type(node) is list:
             name_elements(node)
 
 if len(sys.argv) > 1:

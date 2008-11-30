@@ -19,7 +19,6 @@ import os
 import os.path
 import time
 import re
-from types import ListType
 try:
     import Image                        # check for the Python Imaging Library
 except ImportError:
@@ -384,7 +383,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             # value=None was used for boolean attributes without
             # value, but this isn't supported by XHTML.
             assert value is not None
-            if isinstance(value, ListType):
+            if isinstance(value, list):
                 values = [unicode(v) for v in value]
                 parts.append('%s="%s"' % (name.lower(),
                                           self.attval(' '.join(values))))

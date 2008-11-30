@@ -214,7 +214,6 @@ import tokenize
 import token
 from compiler.consts import OP_ASSIGN
 from compiler.visitor import ASTVisitor
-from types import StringType, UnicodeType, TupleType
 from docutils.readers.python import pynodes
 from docutils.nodes import Text
 
@@ -253,7 +252,7 @@ class DocstringVisitor(BaseVisitor):
 
     def visitConst(self, node):
         if self.documentable:
-            if type(node.value) in (StringType, UnicodeType):
+            if type(node.value) in (str, unicode):
                 self.documentable.append(make_docstring(node.value, node.lineno))
             else:
                 self.documentable = None
@@ -398,7 +397,7 @@ class FunctionVisitor(DocstringVisitor):
             node.lineno)
         #print >>sys.stderr, function_parameters
         for argname, default in zip(argnames, defaults):
-            if type(argname) is TupleType:
+            if type(argname) is tuple:
                 parameter = pynodes.parameter_tuple()
                 for tuplearg in argname:
                     parameter.append(make_parameter(tuplearg))
@@ -615,7 +614,7 @@ class TokenParser:
                     self._backquote = 0
                     self.note_token()
                 else:                   # ignore these tokens:
-                    assert (self.string in ('*', '**', '\n') 
+                    assert (self.string in ('*', '**', '\n')
                             or self.type == tokenize.COMMENT), (
                         'token=%r' % (self.token,))
             else:
@@ -737,7 +736,7 @@ def normalize_parameter_name(name):
     """
     Converts a tuple like ``('a', ('b', 'c'), 'd')`` into ``'(a, (b, c), d)'``
     """
-    if type(name) is TupleType:
+    if type(name) is tuple:
         return '(%s)' % ', '.join([normalize_parameter_name(n) for n in name])
     else:
         return name
