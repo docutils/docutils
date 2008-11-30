@@ -57,7 +57,7 @@ class Node:
         Use `len()` to check node length.  Use `None` to represent a boolean
         false value.
         """
-        return 1
+        return True
 
     def __str__(self):
         return unicode(self).encode('raw_unicode_escape')
