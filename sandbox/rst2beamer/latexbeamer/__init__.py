@@ -271,6 +271,7 @@ class RemoveClassHandout(Transform):
     Remove all elements with a given class attribute.
     """
 
+    # TODO This should be more generic
     classToRemove = 'handout'
 
     # Must be less than
