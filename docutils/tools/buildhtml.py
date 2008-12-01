@@ -182,8 +182,10 @@ class Builder:
             self.directories = [os.getcwd()]
         for directory in self.directories:
             try:
-                os.path.walk(directory, self.visit, recurse)
+                for root, dirs, files in os.walk(directory):
+                    self.visit(recurse, root, dirs+files)
             except (AttributeError): # python2.2 does not have os.walk
+                print "no os.walk"
                 os.path.walk(directory, self.visit, recurse)
 
     def visit(self, recurse, directory, names):
