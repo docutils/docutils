@@ -366,6 +366,20 @@ latex_headings = {
             ]
         }
 
+latex_headings['DUspan'] = r"""
+\makeatletter
+\providecommand{\DUspan}[2]{%
+  {% group ("span") to limit the scope of styling commands
+    \@for\node@class@name:=#1\do{%
+    \ifcsname docutilsrole\node@class@name\endcsname%
+      \csname docutilsrole\node@class@name\endcsname%
+    \fi%
+    }%
+    {#2}% node content
+  }% close "span"
+}  
+\makeatother"""
+
 class DocumentClass:
     """Details of a LaTeX document class."""
 
@@ -678,6 +692,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.table_stack = []
         self.active_table = Table(self,'longtable',settings.table_style)
 
+	# Fallback definitions for Docutils-specific commands
+        self.latex_fallbacks = {}
+
         # HACK.  Should have more sophisticated typearea handling.
         if settings.documentclass.find('scr') == -1:
             self.typearea = '\\usepackage[DIV12]{typearea}\n'
@@ -761,10 +778,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 self.head_prefix.append(open(stylesheet).read())
             else:
                 self.head_prefix.append(self.stylesheet % (stylesheet))
+                
+        # Fallback definitions for docutils-specific latex objects
+        required_fallbacks = self.latex_fallbacks.keys()
+        required_fallbacks.sort()
+        for key in required_fallbacks:
+            self.head_prefix.append(self.latex_fallbacks[key])
         # hyperref after stylesheet
         self.head_prefix.append( self.linking % (
                     self.colorlinks, self.hyperlink_color, self.hyperlink_color))
-
         # 
         if self.settings.literal_block_env != '':
             self.settings.use_verbatim_when_possible = True
@@ -781,7 +803,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # self.astext() adds \title{...} \author{...} \date{...}, even if the
         # "..." are empty strings.
         self.head = [ ]
-        # separate title, so we can appen subtitle.
+        # separate title, so we can append subtitle.
         self.title = ''
         # if use_latex_docinfo: collects lists of author/organization/contact/address lines
         self.author_stack = []
@@ -2207,14 +2229,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append('\n')
 
     def visit_inline(self, node): # titlereference
-        classes = node.get('classes', ['Unknown', ])
-        for cls in classes:
-            self.body.append( '\\docutilsrole%s{' % cls)
-        self.context.append('}'*len(classes))
-
+        # insert fallback definition
+        self.latex_fallbacks['inline'] = latex_headings['DUspan']
+        classes = node.get('classes', [])
+        self.body.append(r'\DUspan{%s}{' %','.join(classes))
+        
     def depart_inline(self, node):
-        self.body.append(self.context.pop())
-
+        self.body.append('}')
+        
     def visit_rubric(self, node):
         self.body.append('\\rubric{')
         self.context.append('}\n')
