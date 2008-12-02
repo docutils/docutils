@@ -37,7 +37,12 @@ It uses the following output defines:
                        Specify whether to keep information on prefixes
                        and suffixes of enumerated lists in the output;
                        can be used to specify styles based upon the prefix
-                       and suffix attributes.
+                       and suffix attributes.  Default is 0.
+-W field-colon[=<0|1>]
+                       Specify whether a field-name should be followed
+                       by a colon.  Such a colon can be supplied by a
+                       style sheet, but this option is retained for
+                       backward compatibility.  Default is 1.
 -W field-limit=<num>   Specify the maximum width (in characters) for
                        field names in field lists.  Longer fields will
                        span an entire row of the table used to render
@@ -89,12 +94,12 @@ It uses the following output defines:
 
 sub BEGIN = {
     # My -W flags
-   use vars qw($attribution $body_attr $body_only
-	       $cloak_email_addresses $colspecs $embed_stylesheet
-	       $enum_list_prefixes $field_limit $footnote_backlinks
-	       $footnote_references $html_prolog $image_exts
-	       $link_target $option_limit $stylesheet $stylesheet2
-	       $target_tag);
+    use vars qw($attribution $body_attr $body_only
+		$cloak_email_addresses $colspecs $embed_stylesheet
+		$enum_list_prefixes $field_colon $field_limit
+		$footnote_backlinks $footnote_references $html_prolog
+		$image_exts $link_target $option_limit $stylesheet
+		$stylesheet2 $target_tag);
 
     # Static globals
     use vars qw($DOM);
@@ -117,6 +122,7 @@ sub BEGIN = {
     my $embeddable = $stylesheet && $stylesheet !~ /^http:/;
     $embed_stylesheet =	$stylesheet =~ /^none$/ ||
 	$embed_stylesheet && $embeddable;
+    $field_colon = 1 unless defined $field_colon;
     $field_limit = 14 unless defined $field_limit;
     $footnote_backlinks = 1 unless defined $footnote_backlinks;
     $footnote_references = 'superscript'
@@ -205,9 +211,22 @@ sub EncodeHTML {
     $s =~ s/&/&amp;/g;
     $s =~ s/</&lt;/g;
     $s =~ s/>/&gt;/g;
+    # uncoverable statement count:2 note:Must be Devel::Cover bug
+    # uncoverable statement count:3 note:Must be Devel::Cover bug
+    # uncoverable statement count:4 note:Must be Devel::Cover bug
     $s =~ s/[\xa0\xc2]/&nbsp;/g;
 #    $s =~ s/\"/&quot;/g;   ######## FIX
     $s =~ s/\@/&\#64;/g;   ######## FIX
+    return $s;
+}
+
+# Removes markup that interferes with title display
+# Arguments: string
+# Returns: sanitized string
+sub SanitizeTitle {
+    my ($s) = @_;
+    chomp $s;
+    $s =~ s!</?\w.*?>!!g;
     return $s;
 }
 
@@ -218,6 +237,7 @@ phase FIXATTR {
 	my ($dom, $str) = @_;
 	my $attr;
 	foreach $attr (keys %{$dom->{attr}}) {
+	    # uncoverable branch false count:2 note:guards against bug
 	    if (ref($dom->{attr}{$attr}) eq 'ARRAY') {
 		@{$dom->{attr}{$attr}} =
 		    map(EncodeHTML($_), @{$dom->{attr}{$attr}});
@@ -432,7 +452,7 @@ phase PREPROCESS {
     sub footnote|citation = { # PREPROCESS
 	my ($dom, $str) = @_;
 	# Get the label out of our first child's child
-	# Devel::Cover branch 0 1 First child is always label
+	# uncoverable branch false note:First child is always label
 	if ($dom->first->tag eq 'label') {
 	    my $label = $dom->first->{_html}{str};
 	    chomp $label;
@@ -565,6 +585,7 @@ phase PREPROCESS {
     sub compound = { # PREPROCESS
 	my ($dom, $str) = @_;
 	my @paras = Paras($dom);
+	# uncoverable branch false count:2 note:Compound must have content
 	if (@paras > 1) {
 	    foreach (my $i=0; $i < @paras; $i++) {
 		my $c = $i == 0 ? 'compound-first' :
@@ -584,14 +605,21 @@ phase PREPROCESS {
 
     sub mathml = { # PREPROCESS
 	my ($dom, $str) = @_;
-	$DOCTYPE = << "EOS" if $dom->{attr}{mathml};
+	return $str unless $dom->{attr}{mathml};
+	$DOCTYPE = << "EOS";
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" 
                "http://www.w3.org/TR/MathML2/dtd/xhtml-math11-f.dtd" [
   <!ENTITY mathml "http://www.w3.org/1998/Math/MathML">
 ]>
 EOS
 	;
-	return $dom->{attr}{mathml} ? $dom->{attr}{mathml}->text : $str;
+	use HTML::Entities;
+	my $text = $dom->{attr}{mathml}->text;
+	# Fix up the HTML entities to be nicer
+	$text =~ s/(&\#x([\da-fA-F]+);)/
+	    # uncoverable branch true note:There should always be an entity
+	    $HTML::Entities::char2entity{chr(hex($2))} || $1/ge;
+	return $text;
     }
 
 
@@ -674,9 +702,6 @@ phase PROCESS {
 	    $tag_attr = qq( class="$p_tag-title first");
 	}
 	elsif ($parent->{attr}{classes}[0] || '' eq 'system-messages') {
-	    $tag_attr = qq( class="title")
-		if $p_tag eq 'section' &&
-		grep /^title$/, @{$parent->{attr}{classes}};
 	    $tag = "h$nesting";
 	}
 	else {
@@ -709,6 +734,7 @@ phase PROCESS {
 	if ($enum_list_prefixes) {
 	    $dom->{_html}{attr}{prefix} = $attr->{prefix}
 	    if $attr->{prefix};
+	    # uncoverable branch false note:Suffix required for enum list
 	    $dom->{_html}{attr}{suffix} = $attr->{suffix}
 	    if $attr->{suffix};
 	}
@@ -773,6 +799,7 @@ phase PROCESS {
 	my $parent = $dom->parent;
 	my %attr;
 	$attr{class} = "footnote-reference";
+	# uncoverable branch false note:Assert refid filled in
 	my $ref = $attr{href} = "#$dom->{attr}{refid}" if $dom->{attr}{refid};
 	$attr{name} = $attr{id} = $dom->{attr}{ids}[0];
 	my $target = &$TARGET_FRAME($ref);
@@ -854,7 +881,7 @@ phase PROCESS {
 	push(@list1, qq(<colgroup><col class="label" /><col /></colgroup>\n));
 	push(@list1, qq(<tbody valign="top">\n));
 	unshift(@list2, qq(</tbody>\n));
-	# Devel::Cover branch 0 1 html/label is always defined
+	# uncoverable branch false note:html/label is always defined
 	my $label = defined $dom->{_html}{label} ? $dom->{_html}{label} :
 	    $dom->{attr}{name};
 	my $backlinks;
@@ -890,6 +917,7 @@ phase PROCESS {
 
     sub comment = { # PROCESS
 	my ($dom, $str) = @_;
+	# uncoverable branch false note:All children are #PCDATA
 	my $text = join('',map($_->tag eq '#PCDATA' ? $_->{text} : "",
 			       $dom->contents));
 	chomp $text;
@@ -946,8 +974,9 @@ phase PROCESS {
 	    qq( colspan="2") : '';
 	my $tr = $colspan ? "</tr>\n" : '';
 	my $cr = $fields{field_body} =~ m|</p>$| ? "\n" : '';
+	my $colon = $field_colon ? ':' : '';
 	push(@str,
-	     qq(<tr class="field"><th class="field-name"$colspan>$fieldname:</th>$tr));
+	     qq(<tr class="field"><th class="field-name"$colspan>$fieldname$colon</th>$tr));
 	push(@str, $colspan ?
 	     qq(<tr><td>&nbsp;</td><td class="field-body">$fields{field_body}$cr</td>\n)
 	     : qq(<td class="field-body">$fields{field_body}$cr</td>\n)
@@ -1071,7 +1100,7 @@ EOS
 	my ($dom, $str) = @_;
 	my $attr = $dom->{attr};
 	my $eattr = $dom->{entry_attr} || '';
-	# Devel::Cover branch 0 1 there are no pass-thru attributes
+	# uncoverable branch false not:There are no pass-thru attributes
 	%{$dom->{_html}{attr}} =
 	    (map($_ eq 'morerows' ? ('rowspan'=>$attr->{$_}+1) :
 		 $_ eq 'morecols' ? ('colspan'=>$attr->{$_}+1) :
@@ -1228,11 +1257,11 @@ EOS
 	my $title = $dom->num_contents &&
 	    $dom->first->tag eq 'title' ?
 	    $dom->first->{_html}{str} : $dom->{attr}{title} || '';
-	chomp $title;
+	$title = SanitizeTitle($title);
 	my $subtitle = $dom->num_contents > 1 &&
 	    $dom->child(1)->tag eq 'subtitle' ?
 	    $dom->child(1)->{_html}{str} : '';
-	chomp $subtitle;
+	$subtitle = SanitizeTitle($subtitle);
 	push (@{$head->[0]}, "<title>$title</title>\n") if $title ne '';
 	push (@{$head->[0]},
 	      map(ref($_) ? qq(<meta name="$_->[0]" content="$_->[1]" />\n) :
