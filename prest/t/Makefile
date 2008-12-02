@@ -3,7 +3,6 @@
 # Text::Restructured package
 
 SOURCES := $(shell find ../blib -type f -and -not -name '.*')
-UNCOVERABLE = ../tbin/uncoverable
 PERL := $(shell perl -I../blib/lib -e 'use Text::Restructured::PrestConfig; print "$$Text::Restructured::PrestConfig::SAFE_PERL\n"')
 COVER = $(shell which cover)
 
@@ -17,15 +16,10 @@ cover_db/runs:	$(SOURCES)
 
 .PHONY:	cover cover_only
 
-cover:	.uncoverable cover_db/runs
+cover:	cover_db/runs
 	$(PERL) $(COVER)
 
-cover_only:  .uncoverable
+cover_only:
 	$(PERL) $(COVER)
-
-.uncoverable:	$(SOURCES) $(UNCOVERABLE)
-	-rm -f $@
-	mkdir -p cover_db
-	$(PERL) $(UNCOVERABLE) $(SOURCES)
 
 endif
