@@ -111,8 +111,8 @@ sub main {
 
     # Handle all the documents
     my $rst_parser;
-    push @ARGV, '-' unless @ARGV;
     foreach $TOP_FILE (@ARGV) {
+	# uncoverable branch true note:Bug in Devel::Cover
 	open F,$TOP_FILE or die "Cannot open $TOP_FILE";
 	my @doc = <F>;
 	close F;
@@ -129,8 +129,10 @@ sub main {
 	    $dom = $rst_parser->Parse($doc, $TOP_FILE);
 	}
 	# Now compute the output string
-	print $writer->ProcessDOM($dom);
+	eval { print $writer->ProcessDOM($dom); };
+	print STDERR $@ if $@;
     }
+    $^W = 0;			# Turn off warnings; we're done
 }
 
 # Gets list of encodings
@@ -164,7 +166,7 @@ sub Usage {
     my ($what) = @_;
     $what = "Usage" if ! $what;
     my $mark = $what eq 'Description' ? "($what|Usage)" : $what;
-    # Devel::Cover branch 0 1 Assert I can open myself
+    # uncoverable branch false not:Assert I can open myself
     if (open(ME,$0)) {
 	while (<ME>) {
 	    if ((/^=begin $mark/ .. /^=end $mark/) &&
@@ -182,11 +184,11 @@ sub Usage {
 	    my $use;
 	    foreach $use (@used) {
 		my @rst_dir = grep (-r "$_/$use.pm", @INC);
-		# Devel::Cover branch 0 1 Assert I can find my modules
+		# uncoverable branch false note:Assert I can find my modules
 		if (@rst_dir) {
 		    my $newline_done;
 		    my $file = "$rst_dir[0]/$use.pm";
-		    # Devel::Cover branch 0 0 Assert I can open my modules
+		    # uncoverable branch true note:Assert I can open my modules
 		    open(USE, $file) or die "Cannot open $file";
 		    while (<USE>) {
 			print "\n" unless $newline_done++;
@@ -206,7 +208,7 @@ sub Usage {
 		     glob "$dir/Text/Restructured/Directive/*.pm");
 	    }
 	    @directives = map($directives{$_}, sort keys %directives);
-	    # Devel::Cover branch 0 1 Assert I have directives
+	    # uncoverable branch false note:Assert I have directives
 	    print << 'EOS' if @directives;
 
 Descriptions of Plug-in Directives
@@ -215,10 +217,10 @@ EOS
 	    foreach my $directive (@directives) {
 		$directive =~ m|([^/]+)\.pm|;
 		my $fname = $1;
-		# Devel::Cover branch 0 0 Assert directive unique/readable
+		# uncoverable branch true note:Assert directive unique/readable
 		next if $used{$fname} || ! -r $directive;
 		my $output = 0;
-		# Devel::Cover branch 0 0 Assert I can open directives
+		# uncoverable branch true note:Assert I can open directives
 		open(DIRECTIVE, $directive) or die "Cannot open $directive";
 		while (<DIRECTIVE>) {
 		    if ((/^=begin $mark/ .. /^=end $mark/) &&
@@ -239,7 +241,7 @@ EOS
 		push(@writers, glob("$dir/Text/Restructured/Writer/*.wrt"));
 	    }
 	    my $writer;
-	    # Devel::Cover branch 0 1 Assert I have writers
+	    # uncoverable branch false note:Assert I have writers
 	    print << 'EOS' if @writers;
 
 Descriptions of Writers
@@ -251,7 +253,7 @@ EOS
 		my ($writer_name) = $writer =~ m|([^/]+)\.wrt$|;
 		next if $done_writer{$writer_name}++;
 		my $output = 0;
-		# Devel::Cover branch 0 0 Assert I can open writers
+		# uncoverable branch true note:Assert I can open writers
 		open(WRITER, $writer) or die "Cannot open $writer";
 		while (<WRITER>) {
 		    if ((/^=begin $mark/ .. /^=end $mark/) &&
@@ -270,7 +272,7 @@ EOS
 	}
     }
     else {
-	# Devel::Cover statement 0 0 guards internal error
+	# uncoverable statement note:Defensive programming
 	print STDERR "Usage not available.\n";
     }
     exit (1);
