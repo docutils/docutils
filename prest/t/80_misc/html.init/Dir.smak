@@ -6,6 +6,7 @@
     %PERL_FILE_FLAGS =
 	('embed-stylesheet1' => q(-Inodefaultcss),
 	 'embed-stylesheet3' => q(-Ifiledefaultcss),
+	 mathml_02 => q(-Inomathml),
 	 stylesheet2_2 => q(-Ifiledefaultcss),
 	 );
 
@@ -15,14 +16,16 @@
 	 'bad-link-target' => q(-W link-target='1/'),
 	 'cloak-email' => q(-W cloak-email-addresses),
 	 colspecs => q(-W colspecs=0),
-	 entryattr => q(-D entry-attr='class="latin" bgcolor=blue' -D align),
 	 'embed-stylesheet2' => q(-W embed-stylesheet),
 	 'embed-stylesheet3' => q(-W embed-stylesheet),
 	 'embed-stylesheet4' => q(-W embed-stylesheet -W stylesheet=local.css),
 	 'embed-stylesheet5' => q(-W embed-stylesheet -W stylesheet=file://local.css),
 	 'embed-stylesheet6' => q(-W embed-stylesheet -W stylesheet=http://default/local.css),
 	 'embed-stylesheet7' => q(-W embed-stylesheet -W stylesheet=nosuchfile.css),
+	 entryattr => q(-D entry-attr='class="latin" bgcolor=blue' -D align),
 	 enumeration_list_01 => q(-W enum-list-prefixes),
+	 error_section1 => q(-D xformoff='Decorations|References' -D keep-title-section),
+	 'field-colon1' => q(-W field-colon=0),
 	 footnotes_01 => q(-W footnote-backlinks=0 -W footnote-references=brackets),
 	 footnotes_02 => q(-W footnote-backlinks=0 -W footnote-references=superscript),
 	 image_01 => q(-W image-exts=.fig=.png),
