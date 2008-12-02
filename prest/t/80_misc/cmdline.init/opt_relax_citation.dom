@@ -1,0 +1,11 @@
+<document source="test data">
+    <paragraph>
+        This should be a citation reference: 
+        <citation_reference ids="id1" refname="abc:def">
+            abc:def
+        .
+    <citation ids="abcdef" names="abc:def">
+        <label>
+            abc:def
+        <paragraph>
+            A citation
