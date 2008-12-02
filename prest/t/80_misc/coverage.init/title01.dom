@@ -1,0 +1,23 @@
+<document source="test data">
+    <section ids="main-title" names="main title">
+        <title>
+            Main title
+        <section ids="subtitle-1" names="subtitle 1">
+            <title>
+                Subtitle 1
+            <section ids="sub-subtitle" names="sub-subtitle">
+                <title>
+                    Sub-subtitle
+    <section ids="another-main-title" names="another main title">
+        <title>
+            Another main title
+        <system_message level="3" line="15" source="test data" type="ERROR">
+            <paragraph>
+                Title level inconsistent:
+            <literal_block xml:space="preserve">
+                ~~~~~~~~~~~~~~~~~~
+                Inconsistent title
+                ~~~~~~~~~~~~~~~~~~
+        <section ids="inconsistent-title" names="inconsistent title">
+            <title>
+                Inconsistent title

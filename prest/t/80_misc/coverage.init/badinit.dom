@@ -1,0 +1,15 @@
+<document source="test data">
+    <system_message level="1" line="1" source="test data" type="INFO">
+        <paragraph>
+            No directive entry for "badinit" in module "Text::Restructured::Directive".
+            Trying "badinit" as canonical directive name.
+    <system_message level="4" line="1" source="test data" type="SEVERE">
+        <paragraph>
+            Error running "Text::Restructured::Directive::badinit::init": Cannot init at Text/Restructured/Directive/badinit.pm line 4.
+            \n\
+    <system_message level="3" line="1" source="test data" type="ERROR">
+        <paragraph>
+            Unknown directive type "badinit".
+        <literal_block xml:space="preserve">
+            .. badinit:: This file uses a plug-in directive with a bad
+               initialization routine.
