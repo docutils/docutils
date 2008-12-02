@@ -76,7 +76,7 @@ sub ParseSchema : method {
     die "Cannot find schema for writer $writer" unless @dirs;
     $file = "$dirs[0]/Text/Restructured/Writer/$file.wrt";
     no strict 'refs';
-    # Devel::Cover branch 0 0 Cannot force open failure
+    # uncoverable branch true note:Cannot force open failure
     open $newfile,$file or die "Cannot open writer file $file";
 
     my %phases;
@@ -228,6 +228,10 @@ sub DoEval : method {
     my $line_directive =
 	defined $self->{opt}{D}{no_line_directives} || $^P & 0x10 ? "" :
 	qq(\#line $lineno "$file"\n);
+    # uncoverable statement count:13
+    # uncoverable statement count:14
+    # uncoverable statement count:15
+    # uncoverable statement count:16
     my $val = eval("$line_directive$sub");
     die "Error: $line: $@" if $@;
     $self->{sub}{$subname} = \&{$Text::Restructured::Writer::Eval::{$subname}};
