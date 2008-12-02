@@ -31,12 +31,25 @@
     $PREST_WRT_FLAGS{dom} = '';
 }
 
-# find_oks:
-# 	{
-# 	    @OKS = <*.rst>;
-# 	    map s/\.rst/.ok/, @OKS;
-# 	    push @OKS, 'dom_direct.ok';
-# 	}
+test:	{ sort @OKS, qw(writer_direct.ok) }
+
+writer_direct.txt.out:
+	{
+	    BEGIN {
+		eval "use Devel::Cover qw(-db ../../cover_db -silent 1
+                              -summary 0 +ignore .*smak
+				)"
+			      if $ENV{COVER};
+	    }
+	    my($maker, $target) = @_;
+	    use vars qw($LIB);
+	    eval 'use lib $LIB; use Text::Restructured::DOM;';
+	    use Text::Restructured::Writer;
+	    my $writer = Text::Restructured::Writer->new(dom => {});
+	    open OUT, ">$target";
+	    printf OUT "%s\n", join(' ',sort keys %{$writer->{opt}});
+	    close OUT;
+	}
 
 # The following is not used, but illustrates a proof of concept
 dom_direct.ok:
