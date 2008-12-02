@@ -6,7 +6,7 @@
 package Text::Restructured;
 
 # N.B.: keep version in quotes so trailing 0's are not lost
-$VERSION = '0.003037';
+$VERSION = '0.003038';
 
 # This package does parsing of reStructuredText files
 
@@ -678,11 +678,10 @@ sub Coalesce : method {
 		       $enumval = 1 if $enumval eq '#';
 		   }
 		   # Now possibly update the value using the last list item
-		   if ($paras->[$p-2] =~ /.*^$ENUM/mos) {
-		       my $index = $2;
-		       my $val = $self->EnumVal($index, $enumtype);
-		       $enumval = $val if $val ne '#';
-		   }
+		   $paras->[$p-2] =~ /.*^$ENUM/mos;
+		   my $old_index = $2;
+		   my $val = $self->EnumVal($old_index, $enumtype);
+		   $enumval = $val if $val ne '#';
 		   ($paras->[$p] =~ /^   / ||
 		    $paras->[$p] =~ /^$ENUM .*\n(?=\Z|\n| |$ENUM)/o &&
 # do { print STDERR "$prefix-$enumtype-$enumval-$suffix vs $1-$enumtype-$2-$3\n"; 1; } &&
@@ -990,7 +989,7 @@ sub EnumType : method {
     my @matches = 
 	$index=~/^(?:([0-9]+)|([a-hj-z])|([A-HJ-Z])|([ivxlcdm]+)|([IVXLCDM]+))|(\#)$/;
     my @defs = grep(defined $matches[$_], 0 .. 5);
-    # Devel::Cover branch 0 1 assert defined $defs[0]
+    # uncoverable branch false note:assert defined $defs[0]
     my $type = defined $defs[0] ? $ENUM_STRINGS[$defs[0]] : 'error';
     return $type;
 }
@@ -1142,7 +1141,7 @@ sub Explicit : method {
 	    $uri =~ s/\n$spaces//g;
 	    $uri =~ s/\n   //g;
 	    chomp $uri;
-	    $uri =~ s/ *//g;
+	    $uri =~ s/(?!\\)(.) /$1/g;
 	    $uri =~ s/\\(.)/$1/g;
 	    if ($uri ne '') {
 		$uri = "mailto:$uri"
@@ -1390,7 +1389,8 @@ sub Inline : method {
 		my $embeduri = $2;
 		if ((defined $embeduri || $implicit) &&
 		    do {$uri = $implicit ? $mid : $embeduri;
-			$uri =~ s/\s//g;
+			$uri =~ s/\n */ /g;
+			$uri =~ s/(?!\\)(.) +/$1/g;
 			$uri =~ /^($Text::Restructured::URIre::URI_reference(\#\S+)?|(\#\S+)|$EMAIL)$/o}) {
 		    # Implicit references may pick up extra punctuation at
 		    # the end.
@@ -1452,7 +1452,7 @@ sub Inline : method {
 		if ! defined $attr{_role};
 		if (! defined $self->{MY_ROLES}{$attr{_role}}) {
 		    # See if we can find a plug-in Directive that defines it
-		    (my $role = $attr{_role}) =~ tr/./_/;
+		    (my $role = $attr{_role}) =~ s/[^\w]/_/g;
 		    eval("use Text::Restructured::Directive::$role");
 		    if ($@ && $@ !~ /Can\'t locate .* in \@INC/) {
 			push(@problems, $self->system_message
@@ -2113,6 +2113,7 @@ sub Paragraphs : method {
 		if (defined $attr) {
 		    my ($spaces) = $attr =~ /\n( *)/;
 		    # Devel::Cover branch 0 1 assert defined $spaces
+		    # uncoverable branch false note:assert defined $spaces
 		    $attr =~ s/^$spaces//gm if defined $spaces;
 		    my $attribution = $DOM->new('attribution');
 		    $dom->append($attribution);
@@ -2247,10 +2248,13 @@ sub Parse : method {
 	$t =~ s/\./::/g;
 	# Check the original transform path before giving up
 	# Devel::Cover branch 0 0 Anticipates user-defined transforms
+	# uncoverable branch true note:Anticipates user-defined transforms
 	($t = $transform) =~ s/\./::/g if ! defined &$t;
 	# Devel::Cover branch 0 0 Anticipates user-defined transforms
+	# uncoverable branch true note:Anticipates user-defined transforms
 	if (! defined &$t) {
 	    # Devel::Cover statement 0 0 Anticipates user-defined transforms
+	    # uncoverable statement note:Anticipates user-defined transforms
 	    $dom->append
 		($self->system_message
 		 (4, $source, 0,
@@ -2405,9 +2409,8 @@ sub ReregisterName : method {
 	my $space = $NAMESPACE{$tag} || 'target';
 	foreach my $casename (@{$olddom->{attr}{names}}) {
 	    my $name = lc $casename;
-
-	    # Devel::Cover +3 branch 0 1 All targets probably point to old DOM
 	    @{$self->{TARGET_NAME}{$space}{$name}} =
+	    # uncoverable branch false note:All targets probably point to old
 		map $_ eq $olddom ? $newdom : $_,
 		@{$self->{TARGET_NAME}{$space}{$name}};
 	    @{$self->{ALL_TARGET_NAMES}{$name}} =
@@ -3005,6 +3008,7 @@ sub Table : method {
 	$lastv = $v;
     }
     # Devel::Cover branch 0 1 Assert defined $row
+    # uncoverable branch false note:Assert defined $row
     $row->{row_attr} = $self->{opt}{D}{row_attr} if defined $row;
     return $dom;
 }
@@ -3034,7 +3038,8 @@ sub UnknownRole : method {
 sub DeepCopy {
     my($var) = @_;
     return $var if ref($var) eq '';
-    # Devel::COVER branch 3 1 
+    # Devel::COVER branch 3 1
+    # uncoverable branch true count:3 note:No scalar refs for now
     if ("$var" =~ /HASH/) {
 	my(%val);
 	@val{keys %$var} = map(DeepCopy($_),values %$var);
@@ -3360,6 +3365,7 @@ sub contents {
     foreach $opt (sort keys %$options) {
 	my $str = $options->{$opt};
 	# Devel::Cover branch 2 1 Defensive programming
+	# uncoverable branch false count:3 note:Defensive programming
 	if ($opt eq 'local') {
 	    return bad_option($parser, $name, $opt, $str, 3, $source, $lineno,
 			      qq(no argument is allowed; "$str" supplied.),
@@ -3501,6 +3507,7 @@ sub figure {
 	$caption = $s[0];
 	$legend = $s[2];
 	# Devel::Cover branch 0 1 Assert $legend ne ''
+	# uncoverable branch false note:Assert $legend ne ''
 	if ($legend ne '') {
 	    my $pre = "$s[0]$s[1]";
 	    $legend_lineno = $content_lineno + ($pre =~ s/(\n)/\n/g);
@@ -3718,6 +3725,7 @@ sub line_block {
     if ($options->{class}) {
 	my ($lb) = grep($_->tag eq 'line_block', @doms);
 	# Devel::Cover branch 0 1 Defensive programming
+	# uncoverable branch false note:Defensive programming
 	$lb->{attr}{classes} = [ $options->{class} ] if $lb;
     }
     return grep(ref($_) =~ /$DOM$/o, @doms);
@@ -4158,7 +4166,7 @@ sub table {
 			if $content =~ /\000/;
 		}
 		elsif ($encoding ne '') {
-		    use Encode qw(encode decode);
+		    eval "use Encode qw(encode decode)";
 		    $content = decode($encoding, $content);
 		}
 	    }
@@ -4178,6 +4186,9 @@ sub table {
 	    }
 	    elsif ($delim eq 'space') {
 		$delim = ' ';
+	    }
+	    elsif ($delim eq 'tab') {
+		$delim = "\t";
 	    }
 	    elsif ($delim =~ /^0x([\da-f]{2})/i) {
 		$delim = chr hex $1;
