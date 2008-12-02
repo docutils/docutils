@@ -1,0 +1,34 @@
+<document source="test data">
+    <table>
+        <tgroup cols="2">
+            <colspec colwidth="50">
+            <colspec colwidth="50">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Name
+                    <entry>
+                        <paragraph>
+                            Age
+                <row>
+                    <entry>
+                        <paragraph>
+                            Tommy
+                    <entry>
+                        <paragraph>
+                            8
+                <row>
+                    <entry>
+                        <paragraph>
+                            Billy
+                    <entry>
+                        <paragraph>
+                            9
+                <row>
+                    <entry>
+                        <paragraph>
+                            Tammy
+                    <entry>
+                        <paragraph>
+                            7
