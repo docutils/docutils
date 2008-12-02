@@ -1,0 +1,6 @@
+<document source="badchars.rst">
+    <system_message level="1" line="1" source="badchars.rst" type="INFO">
+        <paragraph>
+            No directive entry for "perl" in module "Text::Restructured::Directive".
+            Trying "perl" as canonical directive name.
+    <literal test="\u000b\u0080\u0110">
