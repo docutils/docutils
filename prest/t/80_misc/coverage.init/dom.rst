@@ -1,7 +1,7 @@
 .. perl::
-   my $dom = new Text::Restructured::DOM('literal_block');
+   my $dom = Text::Restructured::DOM->new('literal_block');
    die unless $dom->index($dom) == -1;
-   my $child = new Text::Restructured::DOM('literal');
+   my $child = Text::Restructured::DOM->new('literal');
    $dom->append($child);
    die if defined $child->next();
    die if defined $child->last();
@@ -20,4 +20,13 @@
    foreach (sort keys %tests) {
        die "Failed $_: $@" if eval($_) != $tests{$_} || $@;
    }
+   # Test creation of DOM with null tag
+   my $null_dom = Text::Restructured::DOM->new();
+   # Test substitute when I have no parent
+   $null_dom->substitute();
+   # Test substitute when I'm not in my parent
+   my $child = Text::Restructured::DOM->new('child');
+   $null_dom->append($child);
+   @{$null_dom->{content}} = ();  # Don't try this at home, kiddies
+   $child->substitute();
    return "Test was successful."
