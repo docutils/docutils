@@ -1,7 +1,7 @@
 <document source="test data">
     <table>
         <title>
-            File without explicit encoding
+            File with explicit encoding
         <tgroup cols="3">
             <colspec colwidth="33">
             <colspec colwidth="33">

@@ -1,3 +1,3 @@
-.. csv-table:: File without explicit encoding
+.. csv-table:: File with explicit encoding
    :file: table.csv
    :encoding: latin-1
