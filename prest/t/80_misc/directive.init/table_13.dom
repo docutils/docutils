@@ -1,0 +1,29 @@
+<document source="test data">
+    <table>
+        <title>
+            File with non-latin encoding
+        <tgroup cols="3">
+            <colspec colwidth="33">
+            <colspec colwidth="33">
+            <colspec colwidth="33">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Male
+                    <entry>
+                        <paragraph>
+                            2.01
+                    <entry>
+                        <paragraph>
+                            Wh\u00e4cky
+                <row>
+                    <entry>
+                        <paragraph>
+                            Female
+                    <entry>
+                        <paragraph>
+                            1.84
+                    <entry>
+                        <paragraph>
+                            Zany
