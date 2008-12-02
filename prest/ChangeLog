@@ -5,6 +5,51 @@ Release Notes
 
 .. contents::
 
+Release 0.3.38
+--------------
+
+General changes:
+
+* Updated coverability comments for more recent Devel::Cover versions.
+
+prest script:
+
+* Turn off warnings after finishing so that Devel::Cover doesn't cause
+  tests to fail
+
+reStructuredText parsing:
+
+* Delete spaces within URIs of targets and embedded URIs
+* Hopefully fixed a problem that was causing regression failures for
+  perl 5.9 and above
+* Fixed a problem that occurred if Encode module was not available
+* Added "tab" as a value for the :delim: option of the csv-table::
+  directive
+
+Writer 'html':
+
+* Added "-W field-colon' option
+* Use HTML::Entities to produce more readable output of mathml markup
+* Dead code removal
+* Fixed document title/subtitle not to hold markup characters
+
+Writer 'latex':
+
+* Added "-W author-skip" option
+* Added "-W omit-docinfo" option
+* Added "-W packages" option
+* Added ``\styleaddress`` to style an organization, address, or contact
+* Added ``\styleclassZZZ`` markup to allow style for class ZZZ
+* Ensure math environment for "|" character
+* Fixed a warning for a system message with no ids
+* Added handlers for inline and compound
+* Put the document's title/subtitle into the document's docinfo rather
+  than using global variables
+* Avoid a latex error for definition and option lists by putting an empty
+  ``\mbox{}`` between the term/classifier and the newline
+* Don't implement option group as a ``tabular`` environment
+* Have a table use a ``table`` environment if there is a title
+
 Release 0.3.37
 --------------
 
