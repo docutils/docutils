@@ -1,0 +1,12 @@
+Unquoted string "compile" may clash with future reserved word at Text/Restructured/Directive/badrole.pm line 3.
+<document source="test data">
+    <paragraph>
+        This file uses a \n\
+         that was supposed to be defined
+        in a plug-in.
+    <system_message level="4" line="1" source="test data" type="SEVERE">
+        <paragraph>
+            Error compiling "badrole": Can't locate object method "This" via package "does" (perhaps you forgot to load "does"?) at Text/Restructured/Directive/badrole.pm line 3.
+            Compilation failed in require at (eval 11) line 2.
+            BEGIN failed--compilation aborted at (eval 11) line 2.
+            \n\
