@@ -119,7 +119,7 @@ sub BEGIN = {
 
 sub exportableDef {
     my ($dom) = @_;
-    # Devel::Cover branch 0 0 It will probably never be defined
+    # uncoverable branch true note:It will probably never be defined
     return $dom->{_xref}{exportable}
     if defined $dom->{_xref}{exportable};
     my @contents = $dom->contents();
@@ -175,7 +175,7 @@ phase PREPROCESS {
 	# Note; the first name in {attr}{names} is the section name itself;
 	# any succeeding elements were attached by targets directed to the
 	# section.
-	# Devel::Cover branch 0 1 Expect always to have names
+	# uncoverable branch false note:Expect always to have names
 	my @names = @{$dom->{attr}{names}} if $dom->{attr}{names};
 	shift @names;
 	@names = grep(!$TARGET_NAMES{$_}, @names);
@@ -200,6 +200,7 @@ phase PREPROCESS {
 			     @{$dom->{attr}{names}}) if $dom->{attr}{names};
 	    my $refid = $attr->{refid};
 	    # Devel::Cover condition 0 2 NormalizeId is always true
+	    # uncoverable condition false note:NormalizeId is always true
 	    push @TARGETS, map
 		[$_, $refid || Text::Restructured::NormalizeId(0, $_)], @names;
 	    @TARGET_NAMES{@names} = (1) x @names;

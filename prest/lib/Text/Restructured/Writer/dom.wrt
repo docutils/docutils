@@ -37,6 +37,9 @@ sub quote_attr {
     my (@attr) = @_;
     foreach (@attr) {
 	s/([<>\"])/&$QUOTE{$1};/g;
+	# uncoverable statement count:3
+	# uncoverable statement count:4
+	# uncoverable statement count:5
 	s/([\x00-\x09\x0b-\x1f\x7f-\xff\x{0100}-\x{ffff}])/sprintf '\u%04x', ord $1/ge;
     }
     qq(="@attr");
@@ -63,6 +66,7 @@ phase PROCESS {
     sub .* = {
 	my ($dom, $str, $writer) = @_;
 	# Devel::Cover condition 0 0 $str should always be defined
+	# uncoverable condition left note:$str should always be defined
 	$str =~ s/^/    /mg if defined $str && $str ne '';
 	my $attr = defined $dom->{attr} ?
 	    join('',map(qq( $_) . (! defined $dom->{attr}{$_} ? '' :
@@ -72,6 +76,7 @@ phase PROCESS {
 			sort keys %{$dom->{attr}})) : '';
 	my $internal = '';
 	# Devel::Cover condition 0 1 internal defined implies non-empty hash
+	# uncoverable condition right note:internal defined => non-empty hash
 	if (defined $dom->{internal} && %{$dom->{internal}}) {
             my $int = $dom->{internal};
 	    $internal = "    .. internal attributes:\n";
