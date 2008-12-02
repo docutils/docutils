@@ -12,6 +12,14 @@
 <li>This is an</li>
 <li>enumeration list</li>
 </ol>
+<ol class="upperalpha simple" suffix=".">
+<li>This is a</li>
+<li>second enumeration list</li>
+</ol>
+<ol class="lowerroman simple" suffix=")">
+<li>This is a</li>
+<li>third enumeration list</li>
+</ol>
 </div>
 </body>
 </html>
