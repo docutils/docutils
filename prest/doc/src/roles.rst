@@ -202,30 +202,6 @@ Implements subscripts.
 
 Implements superscripts.  See the tip in `:subscript:`_ above.
 
-
-``:target:``
-============
-
-:Aliases: None
-:DTD Element: target
-:Customization:
-    :Options: class_.
-    :Content: None.
-
-Creates an inline target whose name can be different from the string
-contents, unlike with a standard inline target.
-
-The interpreted text string can have the string contents followed by
-the target name in angle brackets ("<...>") as follows::
-
-  Here is a :target:`target <abc>` that I can refer to as abc_.
-
-The visible content can even be empty.  This form can be used to create an
-invisible target::
-
-  Here is an :target:`<abc>` invisible target that I can refer to as
-  `invisible target <#abc>`_.
-
 ``:title-reference:``
 =====================
 
@@ -338,7 +314,7 @@ In addition to "class_", the following option is recognized:
 :Aliases: ``:mathml:`` ``:mathml-display:`` ``:mathml-inline:``
 :DTD Element: mathml
 :Customization:
-    :Options: class_, format
+    :Options: class_
     :Content: None
 
 The ``ascii-mathml`` role is used to provide markup for mathematical
@@ -352,6 +328,27 @@ the `ascii-mathml`_ document for further details.
 
 The ``:mathml-display:`` and ``:mathml-inline:`` roles force the
 generated mathml to use inline and display styles, respectively.
+
+``:target:``
+============
+
+:Aliases: None
+:DTD Element: target
+:Customization:
+    :Options: class_.
+    :Content: None.
+
+The ``:target:`` role creates an inline target that does not get
+entered into the symbol table of targets.  It uses the same "text
+<target>" syntax that is supported for inline references.  It allows
+the same text to be used as the anchor for multiple targets or even to
+have invisible targets.  For example, ::
+
+  Here is a :target:`target <abc>` that I can refer to as abc_.
+  Here is an :target:`<def>`\ invisible target that I can refer to as def_.
+
+  There is another :target:`target <ghi>` with the same physical text,
+  but which I can refer to as ghi_.
 
 --------------
 Plug-in Roles
