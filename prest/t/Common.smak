@@ -298,6 +298,7 @@ pretest: { @PRETESTS }
     push @flags, '-d' if $ENV{DEBUG};
     push @flags, '-MDevel::Cover=-db,../../cover_db,-silent,1,-summary,0'
 	if $ENV{COVER};
+    push @flags, q(-M-warnings) if $ENV{COVER};
     $PERL_FLAGS = "@flags";
     # Default version of PREST_FLAGS
     $PREST_FLAGS = q(-D source='test data' -D xformoff='.*' -D align=0)
@@ -333,7 +334,7 @@ find_oks:
 	    # the different writers xyz
 	    my @writers = grep(-f "$m.$_" || -f "$m.my$_" ||
 			       -f "$m.$_.re",
-			       @WRITERS, qw(tex idx));
+			       (@WRITERS, qw(tex idx txt)));
 	    my $writer = $writers[0];
 	    die "Cannot find expect file for $m" unless defined $writer;
 	    my $ext = -f "$m.r" || -f "$m.$writer.re" ? 're' : 'df';
