@@ -175,7 +175,7 @@ phase PROCESS = {
 	my ($dom, $str) = @_;
 
 	my $parent = $dom->parent();
-	# Devel::Cover branch 0 1 ids should always be set
+	# uncoverable branch false note:ids should always be set
 	push(@{$parent->{_toc}{subSections}}, 
 	     [$str, $dom->{attr}{ids}[0], $dom->{_toc}{subSections}])
 	    if $dom->{attr}{ids};

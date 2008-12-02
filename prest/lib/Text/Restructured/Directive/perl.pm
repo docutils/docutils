@@ -159,7 +159,7 @@ sub directive {
 		$parser->Paragraphs($fake, $text[0], $newsource, 1);
 		my $last = $fake->last;
 		if ($fake->contents == 1 && $last->tag eq 'paragraph') {
-		    # Devel::Cover branch 0 1 paragraph always has #PCDATA
+		    # uncoverable branch true note:paragraph always has #PCDATA
 		    chomp $last->last->{text}
 		    if defined $last->last->{text};
 		    return  $last->contents;
@@ -269,12 +269,18 @@ sub evaluate_code {
     my ($parser, $code, $source, $lineno, $lit) = @_;
 
     my @text;
+    # uncoverable branch true note:Coverage unavailable in safe_world
     if ($main::SAFEWORLD) {
 	# We're already in the safe box: just eval
+	# uncoverable statement note:Coverage unavailable in safe_world
 	local $main::SOURCE    = $source;
+	# uncoverable statement note:Coverage unavailable in safe_world
 	local $main::LINENO    = $lineno;
+	# uncoverable statement note:Coverage unavailable in safe_world
 	local $main::DIRECTIVE = $lit;
+	# uncoverable statement note:Coverage unavailable in safe_world
 	local $main::PARSER    = $parser;
+	# uncoverable statement note:Coverage unavailable in safe_world
 	return eval "package main; $code";
     }
     else {

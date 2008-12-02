@@ -189,9 +189,9 @@ phase PROCESS = {
     # characters generated at the end.
     sub generated = {
 	my ($dom, $str) = @_;
-	# Devel::Cover condition 0 1 First "classes" always "sectnum"
-	# Devel::Cover condition 0 0 Always has "classes" attr
-	# Devel::Cover branch 0 1 Guards against internal errors
+	# uncoverable condition left note:Always has "classes" attr
+	# uncoverable condition right note:First "classes" always "sectnum"
+	# uncoverable branch false note:Guards against internal errors
 	if ($dom->{attr}{classes} && $dom->{attr}{classes}[0] eq "sectnum") {
 	    $str =~ s/^(\d(\.\d)*).*/$1 /;
 	    return $str;
