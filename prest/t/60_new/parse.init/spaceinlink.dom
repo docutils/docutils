@@ -1,0 +1,15 @@
+<document source="test data">
+    <paragraph>
+        <reference anonymous="1" name="Two">
+            Two
+         
+        <reference anonymous="1" name="links">
+            links
+         
+        <reference name="embedded" refuri="SpacesRemovedHere">
+            embedded
+        
+        <reference name="embedded" refuri="Spaces Not Removed">
+            embedded
+    <target anonymous="1" ids="id1" refuri="SpacesRemovedHere">
+    <target anonymous="1" ids="id2" refuri="Spaces Not Removed">
