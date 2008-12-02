@@ -10,5 +10,11 @@
                 Trying "perl" as canonical directive name.
         <paragraph>
             It works.
+        <system_message level="4" line="1" source="perl directive at test data, line 9" type="SEVERE">
+            <paragraph>
+                Error executing "perl" directive: He dead at (eval 66) line 1.
+                .
+            <literal_block xml:space="preserve">
+                .. perl:: die "He dead"
         <paragraph>
             A paragraph.
