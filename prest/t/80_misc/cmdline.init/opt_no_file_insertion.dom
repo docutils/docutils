@@ -1,0 +1,25 @@
+<document source="test data">
+    <paragraph>
+        This include is not allowed:
+    <system_message level="2" line="3" source="test data" type="WARNING">
+        <paragraph>
+            "include" directive disabled.
+        <literal_block xml:space="preserve">
+            .. include:: no_opt_w.txt
+    <paragraph>
+        Neither is this raw directive:
+    <system_message level="2" line="7" source="test data" type="WARNING">
+        <paragraph>
+            "raw" directive disabled.
+        <literal_block xml:space="preserve">
+            .. raw:: html
+            
+               <br>
+    <paragraph>
+        Nor this csv-table directive:
+    <system_message level="2" line="13" source="test data" type="WARNING">
+        <paragraph>
+            "csv-table" directive :file: option disabled.
+        <literal_block xml:space="preserve">
+            .. csv-table::
+               :file: nosuchfile.txt
