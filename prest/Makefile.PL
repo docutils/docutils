@@ -163,6 +163,7 @@ WriteMakefile(
     PREREQ_PM      => { 'Text::ASCIIMathML'=>0.5,
 			'Slay::Makefile::Gress'=>0,
 			'Safe::World'=>0,
+			'HTML::Entities'=>0,
 			}, # e.g., Module::Name => 1.1
     PL_FILES       => {'lib/Text/Restructured/PrestConfig.pm.PL' =>
 		       'lib/Text/Restructured/PrestConfig.pm'},
