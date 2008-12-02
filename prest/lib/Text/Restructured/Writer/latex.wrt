@@ -13,6 +13,9 @@ becomes available.
 
 It uses the following output defines:
 
+-W author-skip=<text>
+                         The amount to skip after the author and before
+                         address/organization (default is "12pt").
 -W caption=<after|before>
                          Specify that a figure caption should appear
                          after or before the figure (default is "after").
@@ -49,6 +52,10 @@ It uses the following output defines:
                          natural width may be smaller. Setting it
                          too large may result in tables that
                          overflow the column boundary (default is 8).
+-W omit-docinfo=<regexp>
+                         Omit any docinfo section(s) that match the
+                         regular expression.
+-W packages=<list>       Specify comma-separated list of packages to \\use
 -W sidebar=<margin|float>
                          Whether a sidebar should be processed as
                          a paragraph in the margin or as a
@@ -69,8 +76,12 @@ commands are
 \\styleadmonitiontitle
    Argument: the title (type) of the admonition.  Default is
    centered boldface followed by a colon.
+\\styleaddress
+   Argument: an organization, address, or contact.  Default is normal.
 \\styleauthor
    Argument: an author.  Default is emphasized.
+\\styleclassZZZ
+   Argument: the contents of a compound directive with class ZZZ.
 \\stylefieldname
    Argument: the name of a field.  Default is boldface followed
    by a colon.
@@ -110,32 +121,35 @@ the definition.
 
 sub BEGIN {
     # My -W flags
-    use vars qw($caption $chapter $cloak_email_addresses
+    use vars qw($author_skip $caption $chapter $cloak_email_addresses
 		$documentclass $documentclass_opts $footer
 		$footnote_links $image_ext $index $inputs
-		$max_unwrapped_colsize $sidebar);
+		$max_unwrapped_colsize $omit_docinfo $packages $sidebar);
 
     # Static globals
     use vars qw(%ENUMS @ROMAN @ROMANS %FOOTNOTE_SYMBOLS %SYMBOLS);
 
     # Run-time globals
     use vars qw(@SECTION_LEVELS @AUTHORS $DATE $DOCINFO $PREAMBLE
-		$SUBTITLE $TITLE @LITBOXES @CITATIONS %SYSTEM_MESSAGE
-		%PACKAGES $BEGIN_DONE);
+		$SUBTITLE @LITBOXES @CITATIONS %SYSTEM_MESSAGE
+		%PACKAGES $BEGIN_DONE %COMPOUND_CLASSES);
 
     # Defaults for -W arguments
-    $documentclass = 'article' unless defined $documentclass;
-    $documentclass_opts = '' unless defined $documentclass_opts;
-    $max_unwrapped_colsize = 8 unless defined $max_unwrapped_colsize;
-    $caption = 'after' unless defined $caption;
-    $cloak_email_addresses = '' unless defined $cloak_email_addresses;
-    $sidebar = 'float' unless defined $sidebar;
-    $footer = 0 unless defined $footer;
-    $footnote_links = 0 unless defined $footnote_links;
-    $index = 0 unless defined $index;
-    $inputs = '' unless defined $inputs;
-    $image_ext = "eps" unless defined $image_ext;
+    $author_skip 	   = '12pt'    unless defined $author_skip;
+    $documentclass         = 'article' unless defined $documentclass;
+    $documentclass_opts    = ''        unless defined $documentclass_opts;
+    $max_unwrapped_colsize = 8         unless defined $max_unwrapped_colsize;
+    $caption               = 'after'   unless defined $caption;
+    $cloak_email_addresses = ''        unless defined $cloak_email_addresses;
+    $sidebar               = 'float'   unless defined $sidebar;
+    $footer                = 0         unless defined $footer;
+    $footnote_links        = 0         unless defined $footnote_links;
+    $index                 = 0         unless defined $index;
+    $inputs                = ''        unless defined $inputs;
+    $image_ext             = "eps"     unless defined $image_ext;
 
+    my @packages = split /,/, $packages if defined $packages;
+    $PACKAGES{$_} = 1 foreach @packages;
     my @footnote_symbols =
 	@docutils::transforms::references::FOOTNOTE_SYMBOLS;
     @FOOTNOTE_SYMBOLS{@footnote_symbols} = (1 .. @footnote_symbols);
@@ -153,7 +167,7 @@ sub ProtectString {
     s/(\^)/\\textasciicircum /g;
     s/ <= / \\ensuremath{\\leq} /g;
     s/ >= / \\ensuremath{\\geq} /g;
-    s/([<>])/\\ensuremath{$1}/g;
+    s/([<>|])/\\ensuremath{$1}/g;
     s/ == / \\ensuremath{=} /g;
     s/ != / \\ensuremath{\\neq} /g;
     s/(\A|\s)(-\d+)/$1\\ensuremath{$2}/g;
@@ -381,7 +395,8 @@ phase PREPROCESS = {
 
     sub system_message = { # PREPROCESS
 	my ($dom, $str) = @_;
-	$SYSTEM_MESSAGE{$dom->{attr}{ids}[0]} = $dom;
+	$SYSTEM_MESSAGE{$dom->{attr}{ids}[0]} = $dom
+	    if defined $dom->{attr}{ids}[0];
 	return "$dom->{attr}{type}: $str";
     }
 
@@ -397,9 +412,10 @@ phase PREPROCESS = {
 	return "$str";
     }
 
-    sub raw = { # PREPROCESS
+    sub raw|inline = { # PREPROCESS
 	my ($dom, $str) = @_;
-	return unless $dom->{attr}{format} =~ /\blatex\b/;
+	return unless $dom->{attr}{format} &&
+	    $dom->{attr}{format} =~ /\blatex\b/;
 	chomp $str;
 	return $str;
     }
@@ -413,18 +429,26 @@ phase PREPROCESS = {
 	    unless ($documentclass eq 'article' ||
 		    defined $chapter && $chapter == 0) ;
 
-	# Grab the document's title
+	# Put the document's title/subtitle under the document's docinfo
+	# (create the docinfo if it does not exist)
+	my $docinfo;
+	foreach (@{$dom->{content}}) {
+	    if ($_->tag eq 'docinfo') {
+		$docinfo = $_;
+		last;
+	    }
+	}
+	my $created_docinfo = ! $docinfo;
+	$docinfo ||= Text::Restructured::DOM->new('docinfo');
 	if ($dom->first->tag eq 'title') {
-	    my $titledom = shift @{$dom->{content}};
-	    $TITLE = $titledom->{val};
-	    chomp $TITLE;
+	    $docinfo->splice(0, 0, shift @{$dom->{content}});
+	    $dom->{_latex}{has_title} = 1;
 	}
 	# Grab the subtitle if it exists
-	if ($dom->first->tag eq 'subtitle') {
-	    my $titledom = shift @{$dom->{content}};
-	    $SUBTITLE .= $titledom->{val};
-	    chomp $SUBTITLE;
-	}
+	$docinfo->splice(1, 0, shift @{$dom->{content}})
+	    if $dom->first->tag eq 'subtitle';
+	$dom->splice(0, 0, $docinfo) if $created_docinfo;
+
 	return;
     }
 }
@@ -480,13 +504,17 @@ phase PROCESS = {
 		push @fields, $child->{val};
 	    }
 	}
-	my $st = $SUBTITLE || '';
-	$DOCINFO .= "\\title{\\styletitle{$TITLE}{$st}}\n" if $TITLE ne '';
+	my $title = $docinfo{title} || '';
+	chomp $title;
+	my $st    = $docinfo{subtitle} || '';
+	chomp $st;
+	$DOCINFO .= "\\title{\\styletitle{$title}{$st}}\n" if $title ne '';
 	my $authors = join(' \hfill ',map("\\styleauthor{$_}",@AUTHORS));
 	my @address = grep(defined $_,
 			   map($docinfo{$_},
 			       qw(organization address contact)));
-	my $address = join("\\\\\n",@address) if @address;
+	my $address = sprintf "\\styleaddress{%s}", join("\\\\\n",@address)
+	    if @address;
 	my @info = grep(defined $_,
 			map($docinfo{$_},
 			    qw(copyright status revision version)));
@@ -495,7 +523,9 @@ phase PROCESS = {
 			map("\\styledocinfo{$_}",
 			    @info,@fields))
 	    if @info+@fields;
-	my $author = join("\\\\[12pt]\n",
+	$author_skip .= 'pt' if $author_skip =~ /^\d+$/;
+	my $skip = $author_skip ? "[$author_skip]" : '';
+	my $author = join("\\\\$skip\n",
 			  grep(defined $_, ($authors, $address, $info)));
 	$DOCINFO .= "\\author{$author}\n" if $author;
 	$DOCINFO .= "\\date{$DATE}\n" if $DATE;
@@ -610,7 +640,7 @@ phase PROCESS = {
 	    return "\\styletopictitle{$dom->{title}} $str"
 	}
 	else {
-	    print STDERR "latex writer: Warning: unsupported type of topic: $class\n";
+	    Warn("unsupported type of topic: $class");
 	}
 	return;
     }
@@ -706,7 +736,7 @@ phase PROCESS = {
 		$definition = $_->{val};
 	    }
 	}
-	return "\\item \\styleterm{$term}{$classifier} \\\\ $definition";
+	return "\\item [\\styleterm{$term}{$classifier}] \\mbox{} \\\\ $definition";
     }
 
     sub definition_list { # PROCESS
@@ -743,14 +773,12 @@ phase PROCESS = {
 	my ($dom, $str) = @_;
 	my ($opt, $desc) = map($_->{val}, @{$dom->{content}});
 	chomp $desc;
-	return "\\item $opt \\\\ $desc\n";
+	return "\\item [$opt] \\mbox{} \\\\ $desc\n";
     }
 
     sub option_group { # PROCESS
 	my ($dom, $str) = @_;
-	$str = '\hspace{-\tabcolsep}\begin{tabular}[t]{l}' .
-	    join("\\\\", map($_->{val}, @{$dom->{content}}))
-	    . '\end{tabular}'
+	$str = join(', ', map($_->{val}, @{$dom->{content}}))
 	    if @{$dom->{content}} > 1;
 	return $str;
 #	return "\\styleoptstring{$str}";
@@ -771,7 +799,7 @@ phase PROCESS = {
     }
 
     # These pups just return whatever their contents returned
-    sub term|classifier|definition|option_string|description|entry|table|caption|legend|decoration { # PROCESS
+    sub term|classifier|definition|option_string|description|entry|caption|legend|decoration { # PROCESS
 	my ($dom, $str) = @_;
 	return $str;
     }
@@ -894,6 +922,21 @@ EOS
   	     "\\end{figure}\n",
   	     );
  	return join '', @figure;
+    }
+
+    sub table = { # PROCESS
+ 	my ($dom, $str) = @_;
+	# Create a table environment if there is a title
+	my %content;
+	$content{$_->tag} = $_ foreach $dom->contents;
+	my (@out1, @out2);
+	if ($content{title}) {
+	    @out1 = ("\\begin{table}\n",
+		     "\\center",
+		     "\\caption{$content{title}{val}}\n");
+	    @out2 = ("\\end{table}\n");
+	}
+	return join '', @out1, $content{tgroup}{val}, @out2;
     }
 
     sub tgroup = { # PROCESS
@@ -1051,7 +1094,7 @@ EOS
 	    
 	}
 	else {
-	    print STDERR "latex writer: Warning: unsupported role for interpreted text: $role\n";
+	    Warn("unsupported role for interpreted text: $role");
 	}
 	chomp $str;
 	return $str;
@@ -1076,7 +1119,7 @@ EOS
 	return join '', @verse;
     }
 
-    sub line { #PROCESS
+    sub line { # PROCESS
 	my ($dom, $str) = @_;
 	if ($str eq '') {
 	    $str = "\\vspace{\\baselineskip}";
@@ -1107,6 +1150,16 @@ EOS
 		       "$sb_end\n",
 		       );
 	return join '', @sidebar;
+    }
+
+    sub compound = { # PROCESS
+	my ($dom, $str) = @_;
+	my $class = $dom->{attr}{classes} ? $dom->{attr}{classes}[0] : '';
+	if ($class) {
+	    $COMPOUND_CLASSES{$class} = 1;
+	    return "\\styleclass$class\{$str}\n";
+	}
+	return $str;
     }
 
     sub problematic = { # PROCESS
@@ -1146,6 +1199,7 @@ EOS
 
     sub document = { # PROCESS
 	my ($dom, $str) = @_;
+
 	my @inputs = split(',',$inputs);
 	my $ind_file = $dom->{TOP_FILE};
 	$ind_file =~ s|\.[^/]+$|.idx|;
@@ -1162,8 +1216,11 @@ EOS
 		   "% Style definitions that can be overridden in a user\n",
 		   "% input file\n",
 		   "\\def\\ifEq#1#2{\\def\\testa{#1}\\def\\testb{#2}\\ifx\\testa\\testb}\n",
+		   "\\newcommand{\\styleaddress}[1]{#1}\n",
 		   "\\newcommand{\\styleadmonitiontitle}[1]{\\centerline{\\bf #1:}}\n",
 		   "\\newcommand{\\styleauthor}[1]{{\\em #1}}\n",
+		   map("\\newcommand{\\styleclass$_}[1]{#1}\n",
+		       sort keys %COMPOUND_CLASSES),
 		   "\\newcommand{\\styledocinfo}[1]{\\setbox0\\hbox{\\parbox{.7\\textwidth}{\\global\\dimen255=\\baselineskip #1}}\\ifdim \\ht0 < \\dimen255 \\centerline{\\hbox{#1}}\\else\\copy0 \\fi }\n",
 #		   "\\newcommand{\\styledocinfo}[1]{\\parbox{\\textwidth}{\\center #1}}\n",
 		   "\\newcommand{\\stylefieldname}[1]{{\\bf #1:}}\n",
@@ -1181,7 +1238,7 @@ EOS
 		   "\\frenchspacing\n",
 		   $index ? "\\makeindex\n" : '',
 		   "\\begin{document}\n",
-		   defined $TITLE && $TITLE ne '' ? "\\maketitle\n" : '',
+		   $dom->{_latex}{has_title} ? "\\maketitle\n" : '',
 		   join('',@LITBOXES),
 		   $str,
 		   $decoration,
