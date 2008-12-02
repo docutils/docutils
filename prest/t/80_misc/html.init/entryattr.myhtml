@@ -18,6 +18,20 @@
 </tr>
 </tbody>
 </table>
+<table border="1" class="docutils">
+<caption>A CSV table</caption>
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<tbody valign="top">
+<tr><td bgcolor="blue" class="latin">A</td>
+<td bgcolor="blue" class="latin">CSV</td>
+<td bgcolor="blue" class="latin">Table</td>
+</tr>
+</tbody>
+</table>
 </div>
 </body>
 </html>
