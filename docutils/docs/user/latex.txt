@@ -37,6 +37,7 @@ b. Use LaTeX as a typesetting system to produce the desired document structure
    ``rst2newlatex`` adds a lot of LaTeX macros and uses LaTeX as a typesetter
    without caring about producing readable LaTeX files.
 
+This documents describes the "latex2e" writer (``rst2latex``).
 
 Options
 =======
@@ -44,16 +45,26 @@ Options
 Configuration can be done in two ways:
 
 1. Options to the docutils tool: e.g. language selection.
+
 2. Options to LaTeX via a stylesheet file.
 
 The generated LaTeX documents should be kept processable by a standard
 LaTeX installation (if such a thing exists), therefore the document
 contains default settings. To allow *overwriting defaults* the stylesheet
-is included at last.
+is included after the default definitions.
+
+Some definitions are only needed with special rst constructs. Including
+defaults in every document would increase the documentsize without need.
+Instead, they are defined using ``\providecommand`` *after* the custom
+stylesheet and only if needed. The stylesheet can define alternative
+implementations with ``\newcommand`` (instead of ``\renewcommand``).
+By convention, these fallback definitions use the prefix ``\DU``.
 
 Run ``rst2latex.py --help`` to see the command-line options, or have look in
 config documentation.
 
+The follwing table shows ways to configure the layout in a LaTeX stylesheet
+file:
 
 =====================  ================================================
 Configuration Issue    Description
@@ -67,11 +78,15 @@ papersize              Default: a4paper. Paper geometry can be changed
                          legalpaper
                        * landscape, portrait, twoside.
 
-                       and a ton of other option setting margins.
+                       and a ton of other options for setting margins.
 
-                       An example::
+                       Example::
 
                          \geometry{a5paper,landscape}
+			 
+		       corresponds to the command line arg:: 
+		       
+		         --documentoptions=a5paper,landscape
 ---------------------  ------------------------------------------------
 paragraph indent       The default LaTeX behavior in most document classes
                        is the following: indent the first line in 
@@ -80,12 +95,11 @@ paragraph indent       The default LaTeX behavior in most document classes
                        subsubsection.
 
                        This is configurable.  For example, you could 
-                       use the following lines to set paragraph 
+                       use the following line to set paragraph 
                        indentation to zero but add a vertical space 
                        between paragraphs.::
 
-                         \setlength{\parindent}{0pt}
-                         \setlength{\parskip}{6pt plus 2pt minus 1pt}
+		         \usepackage{parskip}
 ---------------------  ------------------------------------------------
 admonitionwidth        The width for admonitions.
                        Default: 0.9*textwidth, this can be changed 
@@ -108,7 +122,7 @@ rubric style           The header contains the definition of a new
 
                        Default: subsection style italic.
 ---------------------  ------------------------------------------------
-line spacing           Is done with package *setspace*, which gives
+line spacing           Is set with package *setspace*, which gives
                        singlespace, onehalfspace and doublespace 
                        commands. To get documentwide double spacing, 
                        add this to your stylesheet ::
@@ -127,19 +141,24 @@ line spacing           Is done with package *setspace*, which gives
 
                        for bigger linespacing.
 ---------------------  ------------------------------------------------
-use verbatim when      When possibile, use verbatim for literal-blocks.
-possible               Compatibility alias for "--literal-env=verbatim".
+literal blocks         The command line option ``--literal-env`` allows
+	 	       the specification of the environment to use with
+		       literal blocks, e.g. ``--literal-env=verbatim``
+		       or ``--literal-env=lstlisting``.
+		       
+		       The environment is used for literal-blocks  
+		       when possibile:
 
-                       A literal-block element, when processed by a
-                       docutils-writer might have it's origin in a
-                       markup with "::" syntax or a 
-                       ".. parsed-literal::" directive.
-
-                       A LaTeX verbatim environment is only useable if
-                       there are no elements contained in the 
-                       literal-block.
+                         A literal-block element, when processed by a
+                         docutils-writer might have it's origin in a
+                         markup with "::" syntax or a 
+                         ".. parsed-literal::" directive.
+		         
+                         A LaTeX verbatim environment is only useable if
+                         there is no other markup contained in the 
+                         literal-block.
 ---------------------  ------------------------------------------------
-font selection         see below
+font selection         see chapter `Font selection`_ below
 =====================  ================================================
 
 PDF generation
@@ -159,39 +178,37 @@ latex dvips ps2pdf :
   Produce a dvi file with ``latex``, postscript with ``dvips`` and pdf with
   ``ps2pdf``.
 
-see next section for font selection.
+The Rubber_ utility can be used to automatically run LaTeX the required
+number of times.
+
+.. _Rubber: http://iml.univ-mrs.fr/~beffara/soft/rubber/
 
 
 Font selection
 --------------
 
-When generating pdf-files from LaTeX, use the pdflatex command, the files
-are a lot smaller if postscript fonts are used. This *was* fixed by putting 
-``\usepackage{times}`` into the stylesheet. 
+When generating pdf-files from LaTeX using the pdflatex command, the files
+are a lot smaller if postscript fonts are used. 
 
-It is said that the typewriter font in computer modern font, the default
-LaTeX font package, is too heavy compared to the others. There is a package
-or some commands too fix this, which i currently cannot find.
+The well known "Times/Helvetica/Courier" combination is achieved by::
 
-Some people diagnose a similar unbalance for the postscript fonts, the
-package to fix this is ``\usepackage{pslatex}``.
-pslatex in contrast to the standard LaTeX fonts has a bold typewriter font.
+  \usepackage{mathptmx}             % times for serif and math
+  \usepackage[scaled=.90]{helvet}   % helvetica for sans serif
+  \usepackage{courier}		    % courier for teletype (monospace)
 
-As ``times`` does not use the appropriate mathematical fonts and ``pslatex``
-does not work with T1 encodings one should use::
+See `Using common PostScript fonts with LaTeX`_ for details and alternatives.
 
-  \usepackage{mathptmx}
-  \usepackage[scaled=.90]{helvet}
-  \usepackage{courier}
-
-*font encoding* can be selected with option "font-encoding". Default
+*font encoding* can be selected with option ``--font-encoding``. Default
 uses package "ae" for old style font encoding use "OT1". 
+
+.. _Using common PostScript fonts with LaTeX:
+   http://dante.ctan.org/CTAN/macros/latex/required/psnfss/psnfss2e.pdf
 
 Hyphenation
 -----------
 
 The amount of hyphenation is influenced by ``\hyphenpenalty``, setting it to 
-10000 almost prevents hyphenation. As this produces lines with more spcea 
+10000 almost prevents hyphenation. As this produces lines with more space 
 between words one should increase LaTeX's ``\tolerance`` for this.
 
 E.g. try ::
@@ -316,7 +333,7 @@ Or setting formulas in LaTeX::
 
   .. raw:: latex
 
-     $$x^3 + 3x^2a + 3xa^2 + a^3,$$
+     \[x^3 + 3x^2a + 3xa^2 + a^3,\]
 
 
 Or making a colorbox: If someone wants to get a red background for a textblock,
@@ -342,8 +359,8 @@ reStructuredText do something like this::
 Custom title page
 -----------------
 
-Currently maketitle only shows the title and subtitle, date and author are shown 
-in the docinfo table.
+Currently maketitle only shows the title and subtitle, date and author are
+shown in the docinfo table.
 
 To change the titlepage layout, e.g. see fancyhdr, one must redefine the
 maketitle command in the stylesheet::
@@ -369,7 +386,7 @@ Lists
 
 Definitions in definition lists start on the same line as the term. Putting 
 ``\leavevmode`` after the term results in a new newline if the definition
-starts with a item list or similar.
+starts with a bullet list or similar.
 
 footnotes and citations
 -----------------------
@@ -401,8 +418,8 @@ Tables
              Table width is tried to fit in page even if it is wider than
              the assumed linewidth, still assumed linewidth is a hook. 
 
-* In tools.txt the option tables right column, there should be some more spacing
-  between the description and the next paragraph "Default:".
+* In tools.txt the option tables right column, there should be some more
+  spacing between the description and the next paragraph "Default:".
 
   Paragraph separation in tables is hairy. 
   see http://www.tex.ac.uk/cgi-bin/texfaq2html?label=struttab
@@ -466,7 +483,7 @@ Miscellaneous
     ``\appendix``, ``\makeindex``, ``\makeglossary`` and some such 
     for larger documents.
 
-* The indentional problematic error in docs/user/rst/demo.txt is not
+* The intentional problematic error in docs/user/rst/demo.txt is not
   referring anywhere.
 * Footnotes are not all on the same page (as in
   docs/user/rst/demo.txt) and do not link back and forth.
