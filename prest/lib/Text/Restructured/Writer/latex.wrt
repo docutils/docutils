@@ -127,7 +127,7 @@ sub BEGIN {
 		$max_unwrapped_colsize $omit_docinfo $packages $sidebar);
 
     # Static globals
-    use vars qw(%ENUMS @ROMAN @ROMANS %FOOTNOTE_SYMBOLS %SYMBOLS);
+    use vars qw(%ENUMS @ROMAN @ROMANS %FOOTNOTE_SYMBOLS);
 
     # Run-time globals
     use vars qw(@SECTION_LEVELS @AUTHORS $DATE $DOCINFO $PREAMBLE
@@ -150,9 +150,20 @@ sub BEGIN {
 
     my @packages = split /,/, $packages if defined $packages;
     $PACKAGES{$_} = 1 foreach @packages;
-    my @footnote_symbols =
-	@docutils::transforms::references::FOOTNOTE_SYMBOLS;
+    my @footnote_symbols = @Text::Restructured::docutils::transforms::references::FOOTNOTE_SYMBOLS;
     @FOOTNOTE_SYMBOLS{@footnote_symbols} = (1 .. @footnote_symbols);
+}
+
+# Converts a symbol-style footnote to its numeric equivalent
+# Inputs: label
+# Outputs: number or undef
+sub FootnoteSymbol {
+    my ($label) = @_;
+
+    $label =~ s/\\\#/\#/g;
+    my $sym = $FOOTNOTE_SYMBOLS{substr($label, 0, 1)};
+    return $sym ? ((keys %FOOTNOTE_SYMBOLS) * (length($label)-1) + $sym) :
+	undef;    
 }
 
 # Makes a string safe by quoting special characters
@@ -246,10 +257,6 @@ phase PREPROCESS = {
 	    my $index = $parent->index($dom);
 	}
 	return $_;
-
-	BEGIN {
-	    %SYMBOLS = ('~'=>126, '^'=>94);
-	}
     }
 
 #     sub section|topic = { # PREPROCESS
@@ -1045,9 +1052,8 @@ EOS
 
     sub footnote_reference = { # PROCESS
  	my ($dom, $str) = @_;
-#select STDERR;use PrintVar;PrintVar::PrintVar([$dom,$str]);print "\n";select STDOUT;
 	my $label = defined $dom->{label} ? $dom->{label}: '';
-	my $sym = $FOOTNOTE_SYMBOLS{$label};
+	my $sym = FootnoteSymbol($label);
 	$label = $sym if $sym;
 	my $footnote = $str ne '' ? "\\footnote[$label]{$str}" :
 	    "\\footnotemark[$label]";
@@ -1060,7 +1066,7 @@ EOS
  	my ($dom, $str) = @_;
 	return if $dom->{'.latexref'};
 	my $label = defined $dom->{label} ? $dom->{label} : '';
-	my $sym = $FOOTNOTE_SYMBOLS{$label};
+	my $sym = FootnoteSymbol($label);
 	return "\\renewcommand{\\thefootnote}{\\fnsymbol{footnote}}\\footnotetext[$sym]{$str}\\renewcommand{\\thefootnote}{\\arabic{footnote}}"
 	    if $sym;
 	return "\\footnotetext[$label]{$str}";
