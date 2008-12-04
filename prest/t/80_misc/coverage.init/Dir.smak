@@ -2,6 +2,8 @@
 {
     %PERL_FILE_FLAGS =
 	(baddirect => q(-I.),
+	 badinit => q(-I.),
+	 badrole => q(-I.),
 	 badwrt1 => q(-I.),
 	 badwrt2 => q(-I.),
 	 badwrt3 => q(-I.),
