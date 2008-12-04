@@ -49,6 +49,7 @@ Writer 'latex':
   ``\mbox{}`` between the term/classifier and the newline
 * Don't implement option group as a ``tabular`` environment
 * Have a table use a ``table`` environment if there is a title
+* Fixed the processing of auto-symbol footnotes.
 
 Release 0.3.37
 --------------
