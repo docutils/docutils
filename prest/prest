@@ -102,7 +102,9 @@ sub main {
     Usage() unless @ARGV;
 
     # May need to specify an encoding for STDOUT
-    binmode STDOUT, ":encoding($opt{e})" if $opt{e};
+    if (($opt{e} || '') =~ /(.+)/) { # Sanitize for -T flag
+	binmode STDOUT, ":encoding($1)" ;
+    }
 
     use Text::Restructured::Writer;
     my $writer = new Text::Restructured::Writer($opt{w}, \%opt);
