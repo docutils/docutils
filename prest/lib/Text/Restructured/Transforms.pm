@@ -626,13 +626,14 @@ BEGIN {
 }
 
 # Run-time global variables
-use vars qw($AUTO_FOOTNOTE_REF $LAST_AUTO_FOOTNOTE @AUTO_FOOTNOTES);
+use vars qw($AUTO_FOOTNOTE_REF $LAST_AUTO_FOOTNOTE @AUTO_FOOTNOTES
+	    @FOOTNOTE_SYMBOLS);
 
 # Create a closure for some "static" variables
 BEGIN {
-my @FOOTNOTE_SYMBOLS = ("*", chr 0x2020, chr 0x2021, chr 0xa7,
-			chr 0xb6, '#', chr 0x2660, chr 0x2665,
-			chr 0x2666, chr 0x2663);
+@FOOTNOTE_SYMBOLS = ("*", chr 0x2020, chr 0x2021, chr 0xa7,
+		     chr 0xb6, '#', chr 0x2660, chr 0x2665,
+		     chr 0x2666, chr 0x2663);
 my $NEXT_SYMBOL_FOOTNOTE = 0;
 
 # Processes a docutils.transforms.references.AutoFootnotes transform.
