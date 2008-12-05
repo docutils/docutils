@@ -1573,7 +1573,7 @@ class NodeVisitor:
 
         Raise an exception unless overridden.
         """
-        if  (node.document.settings.strict_visitor
+        if  (self.document.settings.strict_visitor
              or node.__class__.__name__ not in self.optional):
             raise NotImplementedError(
                 '%s visiting unknown node type: %s'
@@ -1585,7 +1585,7 @@ class NodeVisitor:
 
         Raise exception unless overridden.
         """
-        if  (node.document.settings.strict_visitor
+        if  (self.document.settings.strict_visitor
              or node.__class__.__name__ not in self.optional):
             raise NotImplementedError(
                 '%s departing unknown node type: %s'
