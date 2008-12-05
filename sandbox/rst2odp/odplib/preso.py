@@ -22,6 +22,7 @@ import Image
 
 DOC_CONTENT_ATTRIB = {
     'office:version': '1.0',
+    'xmlns:anim':'urn:oasis:names:tc:opendocument:xmlns:animation:1.0',
     'xmlns:chart': 'urn:oasis:names:tc:opendocument:xmlns:chart:1.0',
     'xmlns:dc': 'http://purl.org/dc/elements/1.1/',
     'xmlns:dom': 'http://www.w3.org/2001/xml-events',
@@ -38,6 +39,7 @@ DOC_CONTENT_ATTRIB = {
     'xmlns:oooc': 'http://openoffice.org/2004/calc',
     'xmlns:ooow': 'http://openoffice.org/2004/writer',
     'xmlns:script': 'urn:oasis:names:tc:opendocument:xmlns:script:1.0',
+    'xmlns:smil':'urn:oasis:names:tc:opendocument:xmlns:smil-compatible:1.0',
     'xmlns:style': 'urn:oasis:names:tc:opendocument:xmlns:style:1.0',
     'xmlns:svg': 'urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0',
     'xmlns:table': 'urn:oasis:names:tc:opendocument:xmlns:table:1.0',
@@ -87,6 +89,7 @@ class PrefixedWriter(et.ElementTree):
             encoding = "us-ascii"
         elif encoding != "utf-8" and encoding != "us-ascii":
             file.write("<?xml version='1.0' encoding='%s'?>\n" % encoding)
+        print "WRITING",  self._root
         self._write(file, self._root, encoding, NS2PREFIX)
         #self._write(file, self._root, encoding, {})
 
@@ -266,6 +269,42 @@ class Preso(object):
         self.slides[-1].footer = f
     
 
+class Animation(object):
+    ANIM_COUNT = 1
+    def __init__(self):
+        self.id = self._get_id()
+
+    def _get_id(self):
+        my_id = "id%d" % self.__class__.ANIM_COUNT
+        self.__class__.ANIM_COUNT += 1
+        return my_id
+
+    def get_node(self):
+        """   
+	    <anim:par smil:begin="next">
+	      <anim:par smil:begin="0s">
+		<anim:par smil:begin="0s" smil:fill="hold" presentation:node-type="on-click" presentation:preset-class="entrance" presentation:preset-id="ooo-entrance-appear">
+		  <anim:set smil:begin="0s" smil:dur="0.001s" smil:fill="hold" smil:targetElement="id1" anim:sub-item="text" smil:attributeName="visibility" smil:to="visible"/>
+		</anim:par>
+	      </anim:par>
+	    </anim:par>
+        """
+        par = el('anim:par', attrib={'smil:begin':'next'})
+        par2 = sub_el(par, 'anim:par', attrib={'smil:begin':'0s'})
+        par3 = sub_el(par2, 'anim:par', attrib={'smil:begin':'0s',
+                                                'smil:fill':'hold',
+                                                'presentation:node-type':'on-click',
+                                                'presentation:preset-class':'entrance',
+                                                'presentation:preset-id':'ooo-entrance-appear'})
+        anim_set = sub_el(par3, 'anim:set', attrib={'smil:begin':'0s',
+                                                    'smil:dur':'0.001s',
+                                                    'smil:fill':'hold',
+                                                    'smil:targetElement':self.id,
+                                                    'anim:sub-item':'text',
+                                                    'smil:attributeName':'visibility',
+                                                    'smil:to':'visible'})
+        return par
+
 class Picture(object):
     """
     Need to convert to use image scale::
@@ -326,7 +365,8 @@ class Slide(object):
         self.page_number = page_number
         self.bullet_list = None # current bullet list
         self.footer = None
-
+        self.animations = []
+        self.paragraph_attribs = {} # used to mark id's for animations
         self.page_number_listeners = [self]
 
         self.element_stack = [] # allow us to push pop
@@ -338,6 +378,15 @@ class Slide(object):
         self._page = None
 
         self._init_xml()
+
+    def start_animation(self, anim):
+        self.animations.append(anim)
+        self.paragraph_attribs['text:id'] = anim.id
+
+    def end_animation(self):
+        # jump out of text:p
+        self.parent_of('text:p')
+        del self.paragraph_attribs['text:id']
 
     def push_style(self, style):
         if self.cur_element is None:
@@ -415,6 +464,17 @@ class Slide(object):
     def get_node(self):
         """return etree Element representing this slide"""
         # already added title, text frames
+        # add animation chunks
+        if self.animations:
+            anim_par = el('anim:par', attrib={'presentation:node-type':'timing-root'})
+            self._page.append(anim_par)
+            anim_par.parent = self._page
+            anim_seq = sub_el(anim_par, 'anim:seq', attrib={'presentation:node-type':'main-sequence'})
+            for a in self.animations:
+                a_node = a.get_node()
+                anim_seq.append(a_node)
+                a_node.parent = anim_seq
+
         # add notes now (so they are last)
         if self.notes_frame:
             notes = self.notes_frame.get_node()
@@ -581,12 +641,16 @@ class MixedContent(object):
                 
         para = ParagraphStyle(**p_styles)     
 
-        if add_paragraph:
-            if not self._in_tag('text:p', {'text:style-name':para.name}):
+        if add_paragraph or self.slide.paragraph_attribs:
+            p_attrib = {'text:style-name':para.name}
+            p_attrib.update(self.slide.paragraph_attribs)
+            if not self._in_tag('text:p', p_attrib):
+                self.parent_of('text:p')
                 # Create paragraph style first
                 self.slide._preso.add_style(para)
-                self.add_node('text:p',  attrib={'text:style-name':para.name})
+                self.add_node('text:p', attrib=p_attrib)
 
+        # span is only necessary if style changes
         if add_text:
             if t_styles:
                 text = TextStyle(**t_styles)
@@ -594,9 +658,6 @@ class MixedContent(object):
                     # Create text style
                     self.slide._preso.add_style(text)
                     self.add_node('text:span', attrib={'text:style-name':text.name})
-            elif not self._in_tag('text:span'):
-                # make sure to have a span
-                self.add_node('text:span', attrib={})
 
     def write(self, text, add_p_style=True, add_t_style=True):
         """

@@ -259,7 +259,9 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         else:
             # indent one more
             self.bullet_list.indent()
-            
+        if 'incremental' in node.attributes.get('classes', []):
+            self.in_node['incremental'] = True 
+
     def depart_bullet_list(self, node):
         if self.at('topic'):
             return
@@ -270,15 +272,23 @@ class ODPTranslator(nodes.GenericNodeVisitor):
             self.cur_slide.pop_element()
         else:
             self.bullet_list.dedent()            
-    
+        if 'incremental' in node.attributes.get('classes', []):
+            self.in_node['incremental'] = False
+
+
     def visit_list_item(self, node):
         if self.at('topic'):
             return
+        if self.at('incremental'):
+            self.cur_slide.start_animation(preso.Animation())
         self.bullet_list.new_item()
 
     def depart_list_item(self, node):
         if self.at('topic'):
             return
+        if self.at('incremental'):
+            self.cur_slide.end_animation()
+
 
     visit_decoration = _dumb_visit
     depart_decoration = _dumb_depart
@@ -387,6 +397,8 @@ class ODPTranslator(nodes.GenericNodeVisitor):
             style = preso.TextStyle(**attribs)       
 
             self.cur_slide.push_style(style)
+        if 'incremental' in node.attributes.get('classes', []):
+            self.cur_slide.start_animation(preso.Animation())
 
     def depart_inline(self, node):
         # pop off the text:span
@@ -394,6 +406,8 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         if attribs:
             self.cur_slide.pop_style()
             self.cur_slide.pop_node()
+        if 'incremental' in node.attributes.get('classes', []):
+            self.cur_slide.end_animation()
 
     def visit_emphasis(self, node):
         attribs = {'fo:font-style':'italic'}
