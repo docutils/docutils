@@ -5,6 +5,11 @@ Release Notes
 
 .. contents::
 
+Release 0.3.39
+--------------
+
+Fixed a test that failed because it was not site-independent
+
 Release 0.3.38
 --------------
 
