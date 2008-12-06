@@ -52,11 +52,11 @@ class Writer(writers.Writer):
           % default_template_path,
           ['--template'],
           {'default': default_template_path, 'metavar': '<file>'}),
-        ('Specify a stylesheet URL, used verbatim.  Overrides '
+        ('Specify stylesheet URL(s), used verbatim.  Overrides '
           '--stylesheet-path.',
           ['--stylesheet'],
           {'metavar': '<URL>', 'overrides': 'stylesheet_path'}),
-         ('Specify a stylesheet file, relative to the current working '
+         ('Specify stylesheet file(s), relative to the current working '
           'directory.  The path is adjusted relative to the output HTML '
           'file.  Overrides --stylesheet.  Default: "%s"'
           % default_stylesheet_path,
@@ -253,18 +253,22 @@ class HTMLTranslator(nodes.NodeVisitor):
                                  self.head_prefix_template % (lcode, lcode)])
         self.html_prolog.append(self.doctype)
         self.head = self.meta[:]
-        stylesheet = utils.get_stylesheet_reference(settings)
+        
+        if settings.embed_stylesheet:
+            styledir = os.path.join(os.getcwd(), 'dummy')
+        else:
+            styledir = None
+        stylesheets = utils.get_stylesheet_reference(settings, styledir)
         self.stylesheet = []
-        if stylesheet:
+        for stylesheet in stylesheets.split(","):
             if settings.embed_stylesheet:
-                stylesheet = utils.get_stylesheet_reference(
-                    settings, os.path.join(os.getcwd(), 'dummy'))
                 settings.record_dependencies.add(stylesheet)
                 stylesheet_text = open(stylesheet).read()
-                self.stylesheet = [self.embedded_stylesheet % stylesheet_text]
+                self.stylesheet.append(self.embedded_stylesheet 
+                                       % stylesheet_text)
             else:
-                self.stylesheet = [self.stylesheet_link
-                                   % self.encode(stylesheet)]
+                self.stylesheet.append(self.stylesheet_link
+                                       % self.encode(stylesheet))
         self.body_prefix = ['</head>\n<body>\n']
         # document title, subtitle display
         self.body_pre_docinfo = []
