@@ -893,6 +893,7 @@ t/80_misc/prest.init/badfile.txt
 t/80_misc/prest.init/Dir.smak
 t/80_misc/prest.init/no_args.txt
 t/80_misc/prest.init/opt_e.html
+t/80_misc/prest.init/opt_e.r
 t/80_misc/prest.init/opt_e.rst
 t/80_misc/prest.init/opt_e.skip.pl
 t/80_misc/transforms.init/decorations_01.dom
