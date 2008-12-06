@@ -79,7 +79,7 @@ you need to indicate that the asterisk is not special.  You do this by
 placing a backslash just before it, like so "``\*``" (quickref__), or
 by enclosing it in double back-quotes (inline literals), like this::
 
-    ``\*``
+    ``*``
 
 __ quickref.html#escaping
 
