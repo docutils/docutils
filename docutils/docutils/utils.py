@@ -433,14 +433,16 @@ def relative_path(source, target):
 
 def get_stylesheet_reference(settings, relative_to=None):
     """
-    Retrieve a stylesheet reference from the settings object.
+    Retrieve stylesheet references from the settings object.
     """
     if settings.stylesheet_path:
         assert not settings.stylesheet, \
                'stylesheet and stylesheet_path are mutually exclusive.'
         if relative_to == None:
             relative_to = settings._destination
-        return relative_path(relative_to, settings.stylesheet_path)
+        sheets = [relative_path(relative_to, sheet)
+                  for sheet in settings.stylesheet_path.split(",")]
+        return ",".join(sheets)
     else:
         return settings.stylesheet
 
