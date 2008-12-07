@@ -18,6 +18,10 @@ __
 .. _master quick reference:
    http://docutils.sourceforge.net/docs/user/rst/quickref.html
 
+.. Note:: This document is an informal introduction to
+   reStructuredText.  The `What Next?`_ section below has links to
+   further resources, including a formal reference.
+
 
 Structure
 ---------
@@ -64,7 +68,7 @@ __ quickref.html#inline-markup
 
 Inside paragraphs and other bodies of text, you may additionally mark
 text for *italics* with "``*italics*``" or **bold** with
-"``**bold**``".
+"``**bold**``".  This is called "inline markup".
 
 If you want something to appear as a fixed-space literal, use
 "````double back-quotes````".  Note that no further fiddling is done
@@ -73,7 +77,8 @@ alone.
 
 If you find that you want to use one of the "special" characters in
 text, it will generally be OK -- reStructuredText is pretty smart.
-For example, this * asterisk is handled just fine.  If you actually
+For example, this lone asterisk * is handled just fine, as is the
+asterisk in this equation: 5*6=30.  If you actually
 want text \*surrounded by asterisks* to **not** be italicised, then
 you need to indicate that the asterisk is not special.  You do this by
 placing a backslash just before it, like so "``\*``" (quickref__), or
@@ -82,6 +87,14 @@ by enclosing it in double back-quotes (inline literals), like this::
     ``*``
 
 __ quickref.html#escaping
+
+.. Tip:: Think of inline markup as a form of (parentheses) and use it
+   the same way: immediately before and after the text being marked
+   up.  Inline markup by itself (surrounded by whitespace) or in the
+   middle of a word won't be recognized.  See the `markup spec`__ for
+   full details.
+
+__ ../../ref/rst/restructuredtext.html#inline-markup
 
 
 Lists
