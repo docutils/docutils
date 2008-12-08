@@ -434,19 +434,17 @@ def relative_path(source, target):
 def get_stylesheet_reference(settings, relative_to=None):
     """
     Retrieve stylesheet references from the settings object.
-    
-    Depracated. Use get_stylesheet_reference_list() instead to
-    enable specification of multiple stylesheets as comma separated
+
+    Deprecated. Use get_stylesheet_reference_list() instead to
+    enable specification of multiple stylesheets as a comma-separated
     list.
     """
     if settings.stylesheet_path:
-        assert not settings.stylesheet, \
-               'stylesheet and stylesheet_path are mutually exclusive.'
+        assert not settings.stylesheet, (
+            'stylesheet and stylesheet_path are mutually exclusive.')
         if relative_to == None:
             relative_to = settings._destination
-        sheets = [relative_path(relative_to, sheet)
-                  for sheet in settings.stylesheet_path.split(",")]
-        return ",".join(sheets)
+        return relative_path(relative_to, settings.stylesheet_path)
     else:
         return settings.stylesheet
 
@@ -455,8 +453,8 @@ def get_stylesheet_reference_list(settings, relative_to=None):
     Retrieve list of stylesheet references from the settings object.
     """
     if settings.stylesheet_path:
-        assert not settings.stylesheet, \
-               'stylesheet and stylesheet_path are mutually exclusive.'
+        assert not settings.stylesheet, (
+               'stylesheet and stylesheet_path are mutually exclusive.')
         if relative_to == None:
             relative_to = settings._destination
         return [relative_path(relative_to, sheet)
