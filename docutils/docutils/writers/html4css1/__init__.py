@@ -52,25 +52,25 @@ class Writer(writers.Writer):
           % default_template_path,
           ['--template'],
           {'default': default_template_path, 'metavar': '<file>'}),
-        ('Specify stylesheet URL(s), used verbatim.  Overrides '
-          '--stylesheet-path.',
+        ('Specify comma separated list of stylesheet URLs. '
+          ' Overrides previous --stylesheet and --stylesheet-path settings.',
           ['--stylesheet'],
           {'metavar': '<URL>', 'overrides': 'stylesheet_path'}),
-         ('Specify stylesheet file(s), relative to the current working '
-          'directory.  The path is adjusted relative to the output HTML '
-          'file.  Overrides --stylesheet.  Default: "%s"'
-          % default_stylesheet_path,
+         ('Like --stylesheet, '
+          ' but a relative path is converted from relative to the current '
+          'working directory to relative to the output HTML file. '
+          ' Default: "%s"' % default_stylesheet_path,
           ['--stylesheet-path'],
           {'metavar': '<file>', 'overrides': 'stylesheet',
            'default': default_stylesheet_path}),
-         ('Embed the stylesheet in the output HTML file.  The stylesheet '
-          'file must be accessible during processing (--stylesheet-path is '
+         ('Embed the stylesheet(s) in the output HTML file.  The stylesheet '
+          'files must be accessible during processing (--stylesheet-path is '
           'recommended).  This is the default.',
           ['--embed-stylesheet'],
           {'default': 1, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
-         ('Link to the stylesheet in the output HTML file.  Default: '
-          'embed the stylesheet, do not link to it.',
+         ('Link to the stylesheet(s) in the output HTML file. '
+          ' Default: embed stylesheets.',
           ['--link-stylesheet'],
           {'dest': 'embed_stylesheet', 'action': 'store_false'}),
          ('Specify the initial header level.  Default is 1 for "<h1>".  '
@@ -255,20 +255,18 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.head = self.meta[:]
         
         if settings.embed_stylesheet:
-            styledir = os.path.join(os.getcwd(), 'dummy')
-        else:
-            styledir = None
-        stylesheets = utils.get_stylesheet_reference(settings, styledir)
-        self.stylesheet = []
-        for stylesheet in stylesheets.split(","):
-            if settings.embed_stylesheet:
+            stylelib = os.path.join(os.getcwd(), 'dummy')
+            sheets = utils.get_stylesheet_reference_list(settings, stylelib)
+            self.stylesheet = []
+            for stylesheet in sheets:
                 settings.record_dependencies.add(stylesheet)
-                stylesheet_text = open(stylesheet).read()
                 self.stylesheet.append(self.embedded_stylesheet 
-                                       % stylesheet_text)
-            else:
-                self.stylesheet.append(self.stylesheet_link
-                                       % self.encode(stylesheet))
+                                       % open(stylesheet).read())
+        else:
+            sheets = utils.get_stylesheet_reference_list(settings)
+            self.stylesheet = [self.stylesheet_link % self.encode(stylesheet)
+                               for stylesheet in sheets]
+            
         self.body_prefix = ['</head>\n<body>\n']
         # document title, subtitle display
         self.body_pre_docinfo = []
