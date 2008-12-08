@@ -255,7 +255,7 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         self.bullet_depth += 1
         if not self.bullet_list:
             self.bullet_list = preso.OutlineList(self.cur_slide)
-            self.cur_slide.add_bullet_list(self.bullet_list)
+            self.cur_slide.add_list(self.bullet_list)
         else:
             # indent one more
             self.bullet_list.indent()
@@ -267,7 +267,6 @@ class ODPTranslator(nodes.GenericNodeVisitor):
             return
         self.bullet_depth -= 1
         if self.bullet_depth == 0:
-            #self.cur_slide.add_bullet_list(self.bullet_list)
             self.bullet_list = None
             self.cur_slide.pop_element()
         else:
@@ -562,8 +561,20 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         pass
 
     def visit_enumerated_list(self, node):
-        # !!! fixme
-        self.visit_bullet_list(node)
+        if self.at('topic'):
+            return
+        self.bullet_depth += 1
+        if not self.bullet_list:
+            import pdb; pdb.set_trace()
+
+            self.bullet_list = preso.NumberList(self.cur_slide)
+            self.cur_slide.add_list(self.bullet_list)
+        else:
+            # indent one more
+            self.bullet_list.indent()
+        if 'incremental' in node.attributes.get('classes', []):
+            self.in_node['incremental'] = True 
+
 
     def depart_enumerated_list(self, node):
         self.depart_bullet_list(node)
