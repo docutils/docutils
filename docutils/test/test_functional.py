@@ -136,8 +136,15 @@ class FunctionalTestCase(DocutilsTestSupport.CustomTestCase):
         # by publish_file):
         output = docutils.core.publish_file(**params)
         # Get the expected output *after* writing the actual output.
-        self.assert_(os.access(expected_path, os.R_OK),\
-                     'Cannot find expected output at\n' + expected_path)
+        no_expected = ('Cannot find expected output at %s\n' 
+                       'If the actual output is correct, move it'
+                       'to the expected/ dir and check it in:\n'
+                       '  mv %s %s\n'
+                       '  svn commit -m "<comment>" %s\n\n'
+                       % (expected_path,
+                          params['destination_path'], expected_path, expected_path)
+                      ) + output
+        self.assert_(os.access(expected_path, os.R_OK), no_expected)
         f = open(expected_path, 'rU')
         expected = f.read()
         f.close()
@@ -147,9 +154,11 @@ class FunctionalTestCase(DocutilsTestSupport.CustomTestCase):
                 'If the actual output is correct, please replace the\n'
                 'expected output and check it in to Subversion:\n'
                 '  mv %s %s\n'
+                '  svn add %s'
                 '  svn commit -m "<comment>" %s'
                 % (expected_path, params['destination_path'],
-                   params['destination_path'], expected_path, expected_path))
+                   params['destination_path'], expected_path, 
+                   expected_path, expected_path))
         try:
             self.assertEquals(output, expected, diff)
         except AssertionError:
