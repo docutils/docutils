@@ -515,13 +515,10 @@ class Slide(object):
         if self.cur_element is None:
             self.add_text_frame()
         self.push_element()
-        self.cur_element.node.attrib['presentation:class'] = 'outline'
         self.cur_element._text_box.append(bl.node)
         bl.node.parent = self.cur_element._text_box
         style = bl.style_name
         if style not in self._preso._styles_added:
-        #if 'default-list' not in self
-            #self._preso._styles_added['default-list'] = 1
             self._preso._styles_added[style] = 1
             self._preso._auto_styles.append(et.fromstring(bl.default_styles())[0])
         self.cur_element = bl
@@ -1035,6 +1032,7 @@ http://books.evc-cit.info/odbook/ch03.html#bulleted-numbered-lists-section
         self.level = 0
         self.style_file = 'auto_list.xml'
         self.style_name = 'default-list'
+        self.pending_styles = [ParagraphStyle(**{'text:enable-numbering':'true'})]
 
     def new_item(self, text=None):
         li = self._add_node(self.parents[-1], 'text:list-item', {})
