@@ -506,7 +506,7 @@ class Slide(object):
         self.cur_element = self.notes_frame
         return self.notes_frame
 
-    def add_bullet_list(self, bl):
+    def add_list(self, bl):
         """
         note that this pushes the cur_element, but doesn't pop it.
         You'll need to do that
@@ -518,8 +518,11 @@ class Slide(object):
         self.cur_element.node.attrib['presentation:class'] = 'outline'
         self.cur_element._text_box.append(bl.node)
         bl.node.parent = self.cur_element._text_box
-        if 'default-list' not in self._preso._styles_added:
-            self._preso._styles_added['default-list'] = 1
+        style = bl.style_name
+        if style not in self._preso._styles_added:
+        #if 'default-list' not in self
+            #self._preso._styles_added['default-list'] = 1
+            self._preso._styles_added[style] = 1
             self._preso._auto_styles.append(et.fromstring(bl.default_styles())[0])
         self.cur_element = bl
 
@@ -928,7 +931,7 @@ class ParagraphStyle(TextStyle):
     text_align = dict(
         START = 'start',
         END = 'end',
-        CENTER = 'center',
+        CENTER = 'center', 
         JUSTIFY = 'justify'
         )
         
@@ -1024,11 +1027,14 @@ http://books.evc-cit.info/odbook/ch03.html#bulleted-numbered-lists-section
 	    </text:list>
 	  </draw:text-box>
     """
-    def __init__(self, slide):
+    def __init__(self, slide, attrib=None):
         self._default_align = 'start'
-        MixedContent.__init__(self, slide, 'text:list', attrib={'text:style-name':'L2'})
+        self.attrib = attrib or {'text:style-name':'L2'}
+        MixedContent.__init__(self, slide, 'text:list', attrib=self.attrib)
         self.parents = [self.node]
         self.level = 0
+        self.style_file = 'auto_list.xml'
+        self.style_name = 'default-list'
 
     def new_item(self, text=None):
         li = self._add_node(self.parents[-1], 'text:list-item', {})
@@ -1049,8 +1055,15 @@ http://books.evc-cit.info/odbook/ch03.html#bulleted-numbered-lists-section
         self.cur_node = self.parents[-1]
 
     def default_styles(self):
-        filename =  os.path.join(DATA_DIR, 'auto_list.xml')
+        filename =  os.path.join(DATA_DIR, self.style_file)
         return open(filename).read()
+
+class NumberList(OutlineList):
+    def __init__(self, slide):
+        self.attrib = {'text:style-name':'L3'}
+        OutlineList.__init__(self, slide, self.attrib)
+        self.style_file = 'number_list.xml'
+        self.style_name = 'number-list'
 
 def _test():
     import doctest
