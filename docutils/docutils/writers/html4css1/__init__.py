@@ -53,13 +53,13 @@ class Writer(writers.Writer):
           ['--template'],
           {'default': default_template_path, 'metavar': '<file>'}),
         ('Specify comma separated list of stylesheet URLs. '
-          ' Overrides previous --stylesheet and --stylesheet-path settings.',
+          'Overrides previous --stylesheet and --stylesheet-path settings.',
           ['--stylesheet'],
           {'metavar': '<URL>', 'overrides': 'stylesheet_path'}),
          ('Like --stylesheet, '
-          ' but a relative path is converted from relative to the current '
+          'but a relative path is converted from relative to the current '
           'working directory to relative to the output HTML file. '
-          ' Default: "%s"' % default_stylesheet_path,
+          'Default: "%s"' % default_stylesheet_path,
           ['--stylesheet-path'],
           {'metavar': '<file>', 'overrides': 'stylesheet',
            'default': default_stylesheet_path}),
@@ -70,7 +70,7 @@ class Writer(writers.Writer):
           {'default': 1, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
          ('Link to the stylesheet(s) in the output HTML file. '
-          ' Default: embed stylesheets.',
+          'Default: embed stylesheets.',
           ['--link-stylesheet'],
           {'dest': 'embed_stylesheet', 'action': 'store_false'}),
          ('Specify the initial header level.  Default is 1 for "<h1>".  '
@@ -253,20 +253,20 @@ class HTMLTranslator(nodes.NodeVisitor):
                                  self.head_prefix_template % (lcode, lcode)])
         self.html_prolog.append(self.doctype)
         self.head = self.meta[:]
-        
+
         if settings.embed_stylesheet:
             stylelib = os.path.join(os.getcwd(), 'dummy')
             sheets = utils.get_stylesheet_reference_list(settings, stylelib)
             self.stylesheet = []
             for stylesheet in sheets:
                 settings.record_dependencies.add(stylesheet)
-                self.stylesheet.append(self.embedded_stylesheet 
+                self.stylesheet.append(self.embedded_stylesheet
                                        % open(stylesheet).read())
         else:
             sheets = utils.get_stylesheet_reference_list(settings)
             self.stylesheet = [self.stylesheet_link % self.encode(stylesheet)
                                for stylesheet in sheets]
-            
+
         self.body_prefix = ['</head>\n<body>\n']
         # document title, subtitle display
         self.body_pre_docinfo = []
