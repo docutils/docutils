@@ -565,8 +565,6 @@ class ODPTranslator(nodes.GenericNodeVisitor):
             return
         self.bullet_depth += 1
         if not self.bullet_list:
-            import pdb; pdb.set_trace()
-
             self.bullet_list = preso.NumberList(self.cur_slide)
             self.cur_slide.add_list(self.bullet_list)
         else:
