@@ -705,26 +705,33 @@ _`option_limit`
 .. _stylesheet [html4css1 writer]:
 
 stylesheet
-    CSS stylesheet URL, used verbatim.  Overrides the
-    "stylesheet_path" setting [#override]_.  Pass an empty string to
-    deactivate stylesheet inclusion.
+    A comma-separated list of CSS stylesheet URLs, used verbatim.
+    Overrides the "stylesheet_path" setting [#override]_.
+
+    Pass an empty string (to both "stylesheet" and "stylesheet_path")
+    to deactivate stylesheet inclusion.
 
     Default: None.  Options: ``--stylesheet``.
 
-    (Setting also defined for the `LaTeX Writer`__.)
+    This setting is also defined for the `LaTeX Writer`__.
 
     __ `stylesheet [latex2e writer]`_
 
 .. _stylesheet_path [html4css1 writer]:
 
 stylesheet_path
-    Path to CSS stylesheet [#pwd]_.  Overrides the "stylesheet" URL
-    setting [#override]_.  Path is adjusted relative to the output
-    HTML file.  Also defined for the `LaTeX Writer`__.
+    A comma-separated list of paths to CSS stylesheets [#pwd]_.
+    Overrides the "stylesheet" URL setting [#override]_.  The paths
+    are adjusted relative to the output HTML file.
+
+    Pass an empty string (to both "stylesheet" and "stylesheet_path")
+    to deactivate stylesheet inclusion.
 
     Default: "html4css1.css" in the docutils/writers/html4css1/
     directory (installed automatically; for the exact machine-specific
     path, use the ``--help`` option).  Options: ``--stylesheet-path``.
+
+    This setting is also defined for the `LaTeX Writer`__.
 
     __ `stylesheet_path [latex2e writer]`_
 
@@ -892,8 +899,8 @@ _`documentoptions`
 .. _stylesheet [latex2e writer]:
 
 stylesheet
-    Specify a stylesheet file.  Overrides stylesheet_path
-    [#override]_.  The file will be ``\input`` by latex in the
+    A comma-separated list of stylesheet files.  Overrides stylesheet_path
+    [#override]_.  The files will be ``\input`` by latex in the
     document header.  Also defined for the `HTML Writer`__.
 
     Default: no stylesheet ("").  Option: ``--stylesheet``.
@@ -903,8 +910,8 @@ stylesheet
 .. _stylesheet_path [latex2e writer]:
 
 stylesheet_path
-    Path to stylesheet [#pwd]_.  Overrides "stylesheet" setting
-    (``--stylesheet``) [#override]_.
+    A comma-separated list of paths to stylesheets [#pwd]_.  Overrides
+    the "stylesheet" setting (``--stylesheet``) [#override]_.
 
     Please note that you will have to run ``latex`` from the directory
     containing the output file; otherwise the stylesheet reference
