@@ -136,14 +136,15 @@ class FunctionalTestCase(DocutilsTestSupport.CustomTestCase):
         # by publish_file):
         output = docutils.core.publish_file(**params)
         # Get the expected output *after* writing the actual output.
-        no_expected = ('Cannot find expected output at %s\n' 
-                       'If the actual output is correct, move it'
+        no_expected = ('Cannot find expected output at %(exp)s\n' 
+                       'If the output in %(out)s \nis correct, move it'
                        'to the expected/ dir and check it in:\n'
-                       '  mv %s %s\n'
-                       '  svn commit -m "<comment>" %s\n\n'
-                       % (expected_path,
-                          params['destination_path'], expected_path, expected_path)
-                      ) + output
+                       '  mv %(out)s %(exp)s\n'
+                       '  svn add %(exp)s\n'
+                       '  svn commit -m "<comment>" %(exp)s\n'
+                       % {'exp':expected_path, 
+                          'out': params['destination_path']}
+                      )
         self.assert_(os.access(expected_path, os.R_OK), no_expected)
         f = open(expected_path, 'rU')
         expected = f.read()
