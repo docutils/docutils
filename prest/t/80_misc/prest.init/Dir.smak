@@ -1,5 +1,6 @@
 # -*-perl-*-
 {
+    $PREST_DIR_FLAGS = q(-W stylesheet=default.css);
     %POSTPROC_FILE =
 	();
 
