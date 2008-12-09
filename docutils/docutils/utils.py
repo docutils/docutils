@@ -585,17 +585,18 @@ class DependencyList:
         else:
             self.file = None
 
-    def add(self, filename):
+    def add(self, *filenames):
         """
         If the dependency `filename` has not already been added,
         append it to self.list and print it to self.file if self.file
         is not None.
         """
-        if not filename in self.list:
-            self.list.append(filename)
-            if self.file is not None:
-                print >>self.file, filename
-
+        for filename in filenames:
+            if not filename in self.list:
+                self.list.append(filename)
+                if self.file is not None:
+                    print >>self.file, filename
+    
     def close(self):
         """
         Close the output file.

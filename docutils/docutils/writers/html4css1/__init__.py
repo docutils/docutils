@@ -256,16 +256,15 @@ class HTMLTranslator(nodes.NodeVisitor):
 
         if settings.embed_stylesheet:
             stylelib = os.path.join(os.getcwd(), 'dummy')
-            sheets = utils.get_stylesheet_reference_list(settings, stylelib)
-            self.stylesheet = []
-            for stylesheet in sheets:
-                settings.record_dependencies.add(stylesheet)
-                self.stylesheet.append(self.embedded_stylesheet
-                                       % open(stylesheet).read())
+            styles = utils.get_stylesheet_reference_list(settings, stylelib)
+            settings.record_dependencies.add(*styles)
+            self.stylesheet = [self.embedded_stylesheet 
+                               % open(stylesheet).read()
+                               for stylesheet in styles]
         else:
-            sheets = utils.get_stylesheet_reference_list(settings)
+            styles = utils.get_stylesheet_reference_list(settings)
             self.stylesheet = [self.stylesheet_link % self.encode(stylesheet)
-                               for stylesheet in sheets]
+                               for stylesheet in styles]
 
         self.body_prefix = ['</head>\n<body>\n']
         # document title, subtitle display
