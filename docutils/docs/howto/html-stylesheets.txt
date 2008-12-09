@@ -11,8 +11,8 @@
 .. _Docutils: http://docutils.sourceforge.net/
 
 
-The look of Docutils' HTML output is customizable via a CSS
-stylesheet.  The default stylesheet is called ``html4css1.css`` and
+The look of Docutils' HTML output is customizable via CSS
+stylesheets.  The default stylesheet is called ``html4css1.css`` and
 can be found in the ``writers/html4css1/`` directory of the Docutils
 installation.  Use the command ``rst2html.py --help`` and look at the
 description of the ``--stylesheet-path`` command-line option for the
@@ -41,6 +41,7 @@ following template::
 
 For help on the CSS syntax, please see `the WDG's guide to Cascading
 Style Sheets`__ and, in particular, their `list of CSS1 properties`__.
+Another good reference site is http://selfhtml.org (German and French).
 
 __ http://www.htmlhelp.com/reference/css/
 __ http://www.htmlhelp.com/reference/css/all-properties.html
@@ -54,17 +55,28 @@ url(html4css1.css);``") because the definitions contained in the
 default stylesheet are required for correct rendering (margins,
 alignment, etc.).
 
+Alternatively, specify both, the default stylesheet and your stylesheet
+to the ``--stylesheet`` or ``--stylesheet-path`` command line option (or the
+corresponding settings in a configuration file), e.g. ::
+
+  rst2html.py --stylesheet=html4css1.css,transition-stars.css
+
+This is the preferable approach if you want to embed the stylesheet(s), as
+this ensures that an up-to-date version of ``html4css1.css`` is embedded.
+
 If you think your stylesheet is fancy and you would like to let others
-benefit from your efforts, you are encouraged to post the stylesheet
-to the Docutils-users_ mailing list.  We can upload it to the
-`Docutils repository`__ if you would like us to do so.
+benefit from your efforts, you are encouraged to post the stylesheet to the
+Docutils-users_ mailing list. It might find its place in the `stylesheet
+collection`_ in the Docutils Sandbox_.
 
 If you decide to share your stylesheet with other users of Docutils,
 please keep website-specific customizations not applicable to
 Docutils' HTML code in a separate stylesheet.
 
 .. _Docutils-users: ../user/mailing-lists.html#docutils-users
-__ http://docutils.sourceforge.net/sandbox/stylesheets/
+.. _stylesheet collection: 
+   http://docutils.sourceforge.net/sandbox/stylesheets/
+.. _sandbox: http://docutils.sourceforge.net/sandbox/
 
 
 ..
