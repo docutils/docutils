@@ -85,6 +85,28 @@ class FunctionalTestCase(DocutilsTestSupport.CustomTestCase):
 
     """Test case for one config file."""
 
+    no_expected_template = """\
+Cannot find expected output at %(exp)s
+If the output in %(out)s
+is correct, move it to the expected/ dir and check it in:
+
+  mv %(out)s %(exp)s
+  svn add %(exp)s
+  svn commit -m "<comment>" %(exp)s"""
+
+    expected_output_differs_template = """\
+The expected and actual output differs.
+Please compare the expected and actual output files:
+
+  diff %(exp)s %(out)s\n'
+
+If the actual output is correct, please replace the
+expected output and check it in:
+
+  mv %(out)s %(exp)s
+  svn add %(exp)s
+  svn commit -m "<comment>" %(exp)s"""
+
     def __init__(self, *args, **kwargs):
         """Set self.configfile, pass arguments to parent __init__."""
         self.configfile = kwargs['configfile']
@@ -136,30 +158,14 @@ class FunctionalTestCase(DocutilsTestSupport.CustomTestCase):
         # by publish_file):
         output = docutils.core.publish_file(**params)
         # Get the expected output *after* writing the actual output.
-        no_expected = ('Cannot find expected output at %(exp)s\n' 
-                       'If the output in %(out)s \nis correct, move it'
-                       'to the expected/ dir and check it in:\n'
-                       '  mv %(out)s %(exp)s\n'
-                       '  svn add %(exp)s\n'
-                       '  svn commit -m "<comment>" %(exp)s\n'
-                       % {'exp':expected_path, 
-                          'out': params['destination_path']}
-                      )
+        no_expected = self.no_expected_template % {
+            'exp': expected_path, 'out': params['destination_path']}
         self.assert_(os.access(expected_path, os.R_OK), no_expected)
         f = open(expected_path, 'rU')
         expected = f.read()
         f.close()
-        diff = ('The expected and actual output differs.\n'
-                'Please compare the expected and actual output files:\n'
-                '  diff %s %s\n'
-                'If the actual output is correct, please replace the\n'
-                'expected output and check it in to Subversion:\n'
-                '  mv %s %s\n'
-                '  svn add %s'
-                '  svn commit -m "<comment>" %s'
-                % (expected_path, params['destination_path'],
-                   params['destination_path'], expected_path, 
-                   expected_path, expected_path))
+        diff = self.expected_output_differs_template % {
+            'exp': expected_path, 'out': params['destination_path']}
         try:
             self.assertEquals(output, expected, diff)
         except AssertionError:
