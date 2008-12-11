@@ -660,7 +660,9 @@ _`compact_field_lists`
     Default: enabled (1).  Options: ``--compact-field-lists,
     --no-compact-field-lists``.
 
-_`embed_stylesheet`
+.. _embed_stylesheet [html4css1 writer]:
+
+embed_stylesheet
     Embed the stylesheet in the output HTML file.  The stylesheet file
     must be accessible during processing.
 
@@ -896,34 +898,54 @@ _`documentoptions`
 
     Default: "10pt,a4paper".  Option: ``--documentoptions``.
 
+.. _embed_stylesheet [latex2e writer]:
+
+embed_stylesheet
+    Embed the stylesheet in the output file.  The stylesheet file
+    must be accessible during processing.
+    Also defined for the `HTML Writer`__ (with different default).
+
+    Default: disabled.  Options: ``--embed-stylesheet,
+    --link-stylesheet``.
+
+    __ `embed_stylesheet [html4css1 writer]`_
+
 .. _stylesheet [latex2e writer]:
 
 stylesheet
-    A comma-separated list of stylesheet files.  Overrides stylesheet_path
-    [#override]_.  The files will be ``\input`` by latex in the
-    document header.  Also defined for the `HTML Writer`__.
+    A comma-separated list of style files. The file names (or paths)
+    will be used as arguments to ``\input`` in the document header. (With
+    `embed_stylesheet`__, their content will be inserted into the header
+    instead.) 
+    
+    Overrides previous stylesheet and stylesheet_path__ settings
+    [#override]_.  
+    Also defined for the `HTML Writer`__.
 
     Default: no stylesheet ("").  Option: ``--stylesheet``.
 
+    __ `embed_stylesheet [latex2e writer]`_
     __ `stylesheet [html4css1 writer]`_
+    __ `stylesheet_path [latex2e writer]`_
 
 .. _stylesheet_path [latex2e writer]:
 
 stylesheet_path
-    A comma-separated list of paths to stylesheets [#pwd]_.  Overrides
-    the "stylesheet" setting (``--stylesheet``) [#override]_.
+    Like stylesheet__, but the path is expanded relative to the working
+    directory [#pwd]_ , and rewritten to be relative to the output file (if
+    there is a common part in the given path and the output file path).
 
-    Please note that you will have to run ``latex`` from the directory
-    containing the output file; otherwise the stylesheet reference
-    will be invalid.
+    This means that you must run ``latex`` from the directory containing the
+    output file. It will also fail for style files that should be searched
+    by ``latex`` in the TEXINPUTS path; use stylesheet__ in this case. 
+    
+    Also defined for the `HTML Writer`__.
 
-    This setting is also defined for the `HTML Writer`__.
+    Default: no stylesheet ("").  Option: ``--stylesheet-path``.
 
-    Default: None.  Option: ``--stylesheet-path``.
-
+    __ `stylesheet [latex2e writer]`_
     __ `stylesheet_path [html4css1 writer]`_
-
-.. XXX Missing: embed_stylesheet
+    __ `stylesheet [latex2e writer]`_
 
 .. _footnote_references [latex2e writer]:
 
