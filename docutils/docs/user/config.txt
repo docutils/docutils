@@ -664,10 +664,16 @@ _`compact_field_lists`
 
 embed_stylesheet
     Embed the stylesheet in the output HTML file.  The stylesheet file
-    must be accessible during processing.
+    must specified by the stylesheet_path__ setting and must be
+    accessible during processing.
 
     Default: enabled.  Options: ``--embed-stylesheet,
     --link-stylesheet``.
+
+    This setting is also defined for the `LaTeX Writer`__.
+
+    __ `stylesheet_path [html4css1 writer]`_
+    __ `embed_stylesheet [latex2e writer]`_
 
 _`field_name_limit`
     The maximum width (in characters) for one-column field names.
@@ -916,17 +922,18 @@ stylesheet
     A comma-separated list of style files. The file names (or paths)
     will be used as arguments to ``\input`` in the document header. (With
     `embed_stylesheet`__, their content will be inserted into the header
-    instead.) 
-    
+    instead.)
+
     Overrides previous stylesheet and stylesheet_path__ settings
-    [#override]_.  
-    Also defined for the `HTML Writer`__.
+    [#override]_.
 
     Default: no stylesheet ("").  Option: ``--stylesheet``.
 
+    Also defined for the `HTML Writer`__.
+
     __ `embed_stylesheet [latex2e writer]`_
-    __ `stylesheet [html4css1 writer]`_
     __ `stylesheet_path [latex2e writer]`_
+    __ `stylesheet [html4css1 writer]`_
 
 .. _stylesheet_path [latex2e writer]:
 
@@ -937,15 +944,18 @@ stylesheet_path
 
     This means that you must run ``latex`` from the directory containing the
     output file. It will also fail for style files that should be searched
-    by ``latex`` in the TEXINPUTS path; use stylesheet__ in this case. 
-    
-    Also defined for the `HTML Writer`__.
+    by ``latex`` in the TEXINPUTS path; use stylesheet__ in this case.
+
+    Overrides previous "stylesheet" and "stylesheet_path" settings
+    [#override]_.
 
     Default: no stylesheet ("").  Option: ``--stylesheet-path``.
 
+    Also defined for the `HTML Writer`__.
+
+    __
     __ `stylesheet [latex2e writer]`_
     __ `stylesheet_path [html4css1 writer]`_
-    __ `stylesheet [latex2e writer]`_
 
 .. _footnote_references [latex2e writer]:
 
