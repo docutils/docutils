@@ -21,6 +21,15 @@ more detailed list of changes, please see the `Docutils History`_.
 Changes Since 0.5
 =================
 
+* HTML writer.
+
+  - ``--stylesheet`` and ``--stylesheet-path`` options now support a comma
+    separated list of stylesheets.
+    
+* LaTeX2e writer:
+
+  - Failsave implementation of custom roles. LaTeX compilation now ignores
+    unknown classes instead of aborting with an error.
 
 Release 0.5 (2008-06-25)
 ========================
