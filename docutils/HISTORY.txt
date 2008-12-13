@@ -39,6 +39,15 @@ Changes Since 0.5
   - Added support for Unicode inline markup delimiters "‐ ‑ ‒ – —" and
     " " (non-breaking space), and "¡ ¿" openers.
 
+* docutils/utils.py:
+  
+  - Added ``get_stylesheet_list`` function.
+
+* docutils/writers/html4css1/__init__.py:
+
+  - ``--stylesheet`` and ``--stylesheet-path`` options support a comma
+    separated list of stylesheets.
+
 * docutils/writers/newlatex2e/__init__.py:
 
   - Apply [ 1612821 ] Double quotes in literal text in Italian/German
@@ -51,6 +60,7 @@ Changes Since 0.5
   - Fix: for spanish ``~n`` is ``n`` with tilde above, change to ``~{}n``.
   - Change: has_key for dictionaries (not Nodes) to in-operator.
   - Merge adjacent citations into one latex cite command.
+  - Failsave implementation of custom roles.
 
 * docs/ref/rst/restructuredtext.txt:
 
