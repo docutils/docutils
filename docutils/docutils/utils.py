@@ -448,17 +448,24 @@ def get_stylesheet_reference(settings, relative_to=None):
     else:
         return settings.stylesheet
 
-def get_stylesheet_reference_list(settings, relative_to=None):
+# Return 'stylesheet' or 'stylesheet_path' arguments as list.
+#
+# The original settings arguments are kept unchanged: you can test
+# with e.g. ``if settings.stylesheet_path:``
+#
+# Differences to ``get_stylesheet_reference``:
+# * return value is a list
+# * no re-writing of the path (and therefore no optional argument)
+#   (if required, use ``utils.relative_path(source, target)``
+#   in the calling script)
+def get_stylesheet_list(settings):
     """
     Retrieve list of stylesheet references from the settings object.
     """
     if settings.stylesheet_path:
         assert not settings.stylesheet, (
                'stylesheet and stylesheet_path are mutually exclusive.')
-        if relative_to == None:
-            relative_to = settings._destination
-        return [relative_path(relative_to, sheet)
-                for sheet in settings.stylesheet_path.split(",")]
+        return settings.stylesheet_path.split(",")
     elif settings.stylesheet:
         return settings.stylesheet.split(",")
     else:
@@ -596,7 +603,7 @@ class DependencyList:
                 self.list.append(filename)
                 if self.file is not None:
                     print >>self.file, filename
-    
+
     def close(self):
         """
         Close the output file.

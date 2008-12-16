@@ -57,6 +57,19 @@
 \ifthenelse{\isundefined{\hypersetup}}{
 \usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
 }{}
+
+\makeatletter
+\providecommand{\DUspan}[2]{%
+  {% group ("span") to limit the scope of styling commands
+    \@for\node@class@name:=#1\do{%
+    \ifcsname docutilsrole\node@class@name\endcsname%
+      \csname docutilsrole\node@class@name\endcsname%
+    \fi%
+    }%
+    {#2}% node content
+  }% close "span"
+}  
+\makeatother
 \title{reStructuredText Test Document\\
 \large{Examples of Syntax Constructs}
 }

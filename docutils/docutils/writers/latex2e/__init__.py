@@ -60,22 +60,27 @@ class Writer(writers.Writer):
           ['--attribution'],
           {'choices': ['dash', 'parentheses', 'parens', 'none'],
            'default': 'dash', 'metavar': '<format>'}),
-         ('Specify a stylesheet file. The file will be "input" by latex in '
-          'the document header.  Default is no stylesheet ("").  '
-          'Overrides --stylesheet-path.',
+        ('Specify LaTeX packages/stylesheets. '
+         ' A style is referenced with \usepackage if extension is '
+         '".sty" or omitted and with \input else. '
+          ' Overrides previous --stylesheet and --stylesheet-path settings.',
           ['--stylesheet'],
           {'default': '', 'metavar': '<file>',
            'overrides': 'stylesheet_path'}),
-         ('Specify a stylesheet file, relative to the current working '
-          'directory.  Overrides --stylesheet.',
+         ('Like --stylesheet, but a relative path is converted from relative '
+          'to the current working directory to relative to the output file. ',
           ['--stylesheet-path'],
           {'metavar': '<file>', 'overrides': 'stylesheet'}),
          ('Embed the stylesheet in the output LaTeX file.  The stylesheet '
-          'file must be accessible during processing (--stylesheet-path is '
-          'recommended).  This is not set by default.',
+          'file must be accessible during processing. '
+          ' Default: link to stylesheets',
           ['--embed-stylesheet'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
+         ('Link to the stylesheet(s) in the output file. '
+          ' This is the default (if not changed in a config file).',
+          ['--link-stylesheet'],
+          {'dest': 'embed_stylesheet', 'action': 'store_false'}),
          ('Table of contents by docutils (default) or LaTeX. LaTeX (writer) '
           'supports only one ToC per document, but docutils does not know of '
           'pagenumbers. LaTeX table of contents also means LaTeX generates '
@@ -330,7 +335,7 @@ latex_headings = {
               '   \\addtolength{\\leftmargin}{\\labelwidth}\n'
               '   \\addtolength{\\leftmargin}{\\labelsep}\n'
               '   \\renewcommand{\\makelabel}{\\optionlistlabel}}\n'
-              '}{\\end{list}}\n',
+              '}{\\end{list}}'
               ],
         'lineblock_environment' : [
             '\\newlength{\\lineblockindentation}\n'
@@ -342,27 +347,27 @@ latex_headings = {
             '   \\topsep0pt\\itemsep0.15\\baselineskip\\parsep0pt\n'
             '   \\leftmargin#1}\n'
             ' \\raggedright}\n'
-            '{\\end{list}}\n'
+            '{\\end{list}}'
             ],
         'footnote_floats' : [
-            '% begin: floats for footnotes tweaking.\n',
-            '\\setlength{\\floatsep}{0.5em}\n',
-            '\\setlength{\\textfloatsep}{\\fill}\n',
-            '\\addtolength{\\textfloatsep}{3em}\n',
-            '\\renewcommand{\\textfraction}{0.5}\n',
-            '\\renewcommand{\\topfraction}{0.5}\n',
-            '\\renewcommand{\\bottomfraction}{0.5}\n',
-            '\\setcounter{totalnumber}{50}\n',
-            '\\setcounter{topnumber}{50}\n',
-            '\\setcounter{bottomnumber}{50}\n',
-            '% end floats for footnotes\n',
+            '% begin: floats for footnotes tweaking.',
+            '\\setlength{\\floatsep}{0.5em}',
+            '\\setlength{\\textfloatsep}{\\fill}',
+            '\\addtolength{\\textfloatsep}{3em}',
+            '\\renewcommand{\\textfraction}{0.5}',
+            '\\renewcommand{\\topfraction}{0.5}',
+            '\\renewcommand{\\bottomfraction}{0.5}',
+            '\\setcounter{totalnumber}{50}',
+            '\\setcounter{topnumber}{50}',
+            '\\setcounter{bottomnumber}{50}',
+            '% end floats for footnotes',
             ],
         'some_commands' : [
             '% some commands, that could be overwritten in the style file.\n'
             '\\newcommand{\\rubric}[1]'
             '{\\subsection*{~\\hfill {\\it #1} \\hfill ~}}\n'
             '\\newcommand{\\titlereference}[1]{\\textsl{#1}}\n'
-            '% end of "some commands"\n',
+            '% end of "some commands"',
             ]
         }
 
@@ -449,7 +454,7 @@ class Table:
 
     def used_packages(self):
         if self._table_style == 'booktabs':
-            return '\\usepackage{booktabs}\n'
+            return '\n\\usepackage{booktabs}'
         return ''
     def get_latex_type(self):
         return self._latex_type
@@ -618,14 +623,18 @@ class LaTeXTranslator(nodes.NodeVisitor):
     # Templates
     # ---------
     
-    latex_head = '\\documentclass[%s]{%s}\n'
+    latex_head = r'\documentclass[%s]{%s}'
     # conditionally if no hyperref is used dont include
-    linking = "\\ifthenelse{\\isundefined{\\hypersetup}}{\n" \
-            +"\\usepackage[colorlinks=%s,linkcolor=%s,urlcolor=%s]{hyperref}\n" \
-            +"}{}\n"
-    stylesheet = '\\input{%s}\n'
+    
+    linking = ('\ifthenelse{\isundefined{\hypersetup}}{' '\n'
+               r'\usepackage[colorlinks=%s,linkcolor=%s,'
+               'urlcolor=%s]{hyperref}\n'
+               '}{}'
+              )
+              
     # add a generated on day , machine by user using docutils version.
-    generator = '% generated by Docutils <http://docutils.sourceforge.net/>\n'
+    generator = '% generated by Docutils <http://docutils.sourceforge.net/>'
+    
     # Config setting defaults
     # -----------------------
 
@@ -697,101 +706,117 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         # HACK.  Should have more sophisticated typearea handling.
         if settings.documentclass.find('scr') == -1:
-            self.typearea = '\\usepackage[DIV12]{typearea}\n'
+            self.typearea = r'\usepackage[DIV12]{typearea}'
         else:
             if self.d_options.find('DIV') == -1 and self.d_options.find('BCOR') == -1:
-                self.typearea = '\\typearea{12}\n'
+                self.typearea = r'\typearea{12}'
             else:
                 self.typearea = ''
 
         if self.font_encoding == 'OT1':
             fontenc_header = ''
         elif self.font_encoding == '':
-            fontenc_header = '\\usepackage{ae}\n\\usepackage{aeguill}\n'
+            fontenc_header = '\\usepackage{ae}\n\\usepackage{aeguill}'
         else:
-            fontenc_header = '\\usepackage[%s]{fontenc}\n' % (self.font_encoding,)
+            fontenc_header = '\\usepackage[%s]{fontenc}' % (self.font_encoding,)
         if self.latex_encoding.startswith('utf8'):
-            input_encoding = '\\usepackage{ucs}\n\\usepackage[utf8x]{inputenc}\n'
+            input_encoding = '\\usepackage{ucs}\n\\usepackage[utf8x]{inputenc}'
         else:
-            input_encoding = '\\usepackage[%s]{inputenc}\n' % self.latex_encoding
+            input_encoding = '\\usepackage[%s]{inputenc}' % self.latex_encoding
         if self.settings.graphicx_option == '':
-            self.graphicx_package = '\\usepackage{graphicx}\n'
+            self.graphicx_package = '\\usepackage{graphicx}'
         elif self.settings.graphicx_option.lower() == 'auto':
             self.graphicx_package = '\n'.join(
-                ('%Check if we are compiling under latex or pdflatex',
-                 '\\ifx\\pdftexversion\\undefined',
-                 '  \\usepackage{graphicx}',
-                 '\\else',
-                 '  \\usepackage[pdftex]{graphicx}',
-                 '\\fi\n'))
+                (r'%Check if we are compiling under latex or pdflatex',
+                 r'\ifx\pdftexversion\undefined',
+                 r'  \usepackage{graphicx}',
+                 r'\else',
+                 r'  \usepackage[pdftex]{graphicx}',
+                 r'\fi'))
         else:
             self.graphicx_package = (
-                '\\usepackage[%s]{graphicx}\n' % self.settings.graphicx_option)
+                 r'\usepackage[%s]{graphicx}' % self.settings.graphicx_option)
+
+        # packages and/or stylesheets
+        # ---------------------------
+        self.stylesheets = ['% user specified packages and stylesheets:']
+        styles = utils.get_stylesheet_list(settings)
+        if settings.stylesheet_path and not(settings.embed_stylesheet):
+            styles = [utils.relative_path(settings._destination, sheet)
+                      for sheet in styles]
+        for sheet in styles:
+            (sheet_sans_ext, sheet_ext) = os.path.splitext(sheet)
+            if settings.embed_stylesheet:
+                if sheet_ext == "":        
+                    sheet += ".sty"   # add default extension for packages
+                settings.record_dependencies.add(sheet)
+                if sheet_ext in ["", ".sty"]: # wrap packages in \makeatletter, -other
+                    wrapper = '\n'.join([r'\makeatletter',
+                                         '%% embedded stylesheet: %s',
+                                         '%s',
+                                         r'\makeatother'
+                                        ])
+                else: 
+                    wrapper = '%% embedded stylesheet: %s\n%s'
+                self.stylesheets.append(wrapper % (sheet, open(sheet).read()))
+            else:
+                if sheet_ext in ["", ".sty"]:
+                    self.stylesheets.append(r'\usepackage{%s}' % sheet_sans_ext)
+                else:
+                    self.stylesheets.append(r'\input{%s}' % sheet)
+        if len(self.stylesheets) == 1:    # if there are no styles,
+            self.stylesheets = []         # remove comment line 
 
         self.head_prefix = [
               self.latex_head % (self.d_options,self.settings.documentclass),
-              '\\usepackage{babel}\n',     # language is in documents settings.
+              r'\usepackage{babel}',     # language is in documents settings.
               fontenc_header,
-              '\\usepackage{shortvrb}\n',  # allows verb in footnotes.
+              r'\usepackage{shortvrb}',  # allows verb in footnotes.
               input_encoding,
               # * tabularx: for docinfo, automatic width of columns, always on one page.
-              '\\usepackage{tabularx}\n',
-              '\\usepackage{longtable}\n',
-              self.active_table.used_packages(),
+              r'\usepackage{tabularx}',
+              r'\usepackage{longtable}'
+              + self.active_table.used_packages(),
               # possible other packages.
               # * fancyhdr
               # * ltxtable is a combination of tabularx and longtable (pagebreaks).
               #   but ??
               #
               # extra space between text in tables and the line above them
-              '\\setlength{\\extrarowheight}{2pt}\n',
-              '\\usepackage{amsmath}\n',   # what fore amsmath.
+              r'\setlength{\extrarowheight}{2pt}',
+              r'\usepackage{amsmath}',   # what fore amsmath.
               self.graphicx_package,
-              '\\usepackage{color}\n',
-              '\\usepackage{multirow}\n',
-              '\\usepackage{ifthen}\n',   # before hyperref!
+              r'\usepackage{color}',
+              r'\usepackage{multirow}',
+              r'\usepackage{ifthen}',   # before hyperref!
               self.typearea,
               self.generator,
               # latex lengths
-              '\\newlength{\\admonitionwidth}\n',
-              '\\setlength{\\admonitionwidth}{0.9\\textwidth}\n'
+              r'\newlength{\admonitionwidth}',
+              r'\setlength{\admonitionwidth}{0.9\textwidth}',
               # width for docinfo tablewidth
-              '\\newlength{\\docinfowidth}\n',
-              '\\setlength{\\docinfowidth}{0.9\\textwidth}\n'
+              r'\newlength{\docinfowidth}',
+              r'\setlength{\docinfowidth}{0.9\textwidth}',
               # linewidth of current environment, so tables are not wider
               # than the sidebar: using locallinewidth seems to defer evaluation
               # of linewidth, this is fixing it.
-              '\\newlength{\\locallinewidth}\n',
+              r'\newlength{\locallinewidth}',
               # will be set later.
               ]
         self.head_prefix.extend( latex_headings['optionlist_environment'] )
         self.head_prefix.extend( latex_headings['lineblock_environment'] )
         self.head_prefix.extend( latex_headings['footnote_floats'] )
         self.head_prefix.extend( latex_headings['some_commands'] )
-        ## stylesheet is last: so it might be possible to overwrite defaults.
-        stylesheet = utils.get_stylesheet_reference(settings)
-        if stylesheet:
-            if settings.embed_stylesheet:
-                stylesheet = utils.get_stylesheet_reference(
-                    settings, os.path.join(os.getcwd(), 'dummy'))
-                settings.record_dependencies.add(stylesheet)
-                self.head_prefix.append(open(stylesheet).read())
-            else:
-                self.head_prefix.append(self.stylesheet % (stylesheet))
-                
-        # Fallback definitions for docutils-specific latex objects
-        required_fallbacks = self.latex_fallbacks.keys()
-        required_fallbacks.sort()
-        for key in required_fallbacks:
-            self.head_prefix.append(self.latex_fallbacks[key])
+        self.head_prefix.extend( self.stylesheets )
         # hyperref after stylesheet
-        self.head_prefix.append( self.linking % (
-                    self.colorlinks, self.hyperlink_color, self.hyperlink_color))
+        self.head_prefix.append( self.linking % (self.colorlinks, 
+                                                 self.hyperlink_color, 
+                                                 self.hyperlink_color))
         # 
         if self.settings.literal_block_env != '':
             self.settings.use_verbatim_when_possible = True
         if self.linking: # and maybe check for pdf
-            self.pdfinfo = [ ]
+            self.pdfinfo = []
             self.pdfauthor = None
             # pdftitle, pdfsubject, pdfauthor, pdfkeywords, 
             # pdfcreator, pdfproducer
@@ -802,7 +827,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # latex article has its own handling of date and author, deactivate.
         # self.astext() adds \title{...} \author{...} \date{...}, even if the
         # "..." are empty strings.
-        self.head = [ ]
+        self.head = []
         # separate title, so we can append subtitle.
         self.title = ''
         # if use_latex_docinfo: collects lists of author/organization/contact/address lines
@@ -1046,19 +1071,28 @@ class LaTeXTranslator(nodes.NodeVisitor):
         return self.encode(whitespace.sub(' ', text))
 
     def astext(self):
+        """Assemble document parts and return as string"""
+        # Complete header with information gained from walkabout
         if self.pdfinfo is not None and self.pdfauthor:
             self.pdfinfo.append('pdfauthor={%s}' % self.pdfauthor)
         if self.pdfinfo:
-            pdfinfo = '\\hypersetup{\n' + ',\n'.join(self.pdfinfo) + '\n}\n'
+            pdfinfo = [r'\hypersetup{', 
+                       ',\n'.join(self.pdfinfo), 
+                       '}']
         else:
-            pdfinfo = ''
-        head = '\\title{%s}\n\\author{%s}\n\\date{%s}\n' % \
-               (self.title,
-                ' \\and\n'.join(['~\\\\\n'.join(author_lines)
-                                 for author_lines in self.author_stack]),
-                self.date)
-        return ''.join(self.head_prefix + [head] + self.head + [pdfinfo]
-                        + self.body_prefix  + self.body + self.body_suffix)
+            pdfinfo = []
+        title = [r'\title{%s}' % self.title,
+                r'\author{%s}' % ' \\and\n'.join(['~\\\\\n'.join(author_lines) 
+                                       for author_lines in self.author_stack]),
+                r'\date{%s}' % self.date]
+        # Fallback definitions for docutils-specific latex objects
+        required_fallbacks = self.latex_fallbacks.keys()
+        required_fallbacks.sort()
+        for key in required_fallbacks:
+            self.head_prefix.append(self.latex_fallbacks[key])
+        head = '\n'.join(self.head_prefix + title + self.head + pdfinfo)
+        body = ''.join(self.body_prefix  + self.body + self.body_suffix)
+        return head + '\n' + body
 
     def visit_Text(self, node):
         self.body.append(self.encode(node.astext()))
@@ -1298,15 +1332,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_docinfo(self, node):
-        self.docinfo = []
-        self.docinfo.append('%' + '_'*75 + '\n')
-        self.docinfo.append('\\begin{center}\n')
-        self.docinfo.append('\\begin{tabularx}{\\docinfowidth}{lX}\n')
+        self.docinfo = ['%' + '_'*75 + '\n',
+                        '\\begin{center}\n',
+                        '\\begin{tabularx}{\\docinfowidth}{lX}\n']
 
     def depart_docinfo(self, node):
         self.docinfo.append('\\end{tabularx}\n')
         self.docinfo.append('\\end{center}\n')
-        self.body = self.docinfo + self.body
+        self.body = self.docinfo + self.body # prepend to self.body
         # clear docinfo, so field names are no longer appended.
         self.docinfo = None
 
@@ -2231,6 +2264,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_inline(self, node): # titlereference
         # insert fallback definition
         self.latex_fallbacks['inline'] = latex_headings['DUspan']
+        # print repr(self), repr(self.latex_fallbacks)
         classes = node.get('classes', [])
         self.body.append(r'\DUspan{%s}{' %','.join(classes))
         
