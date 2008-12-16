@@ -253,19 +253,18 @@ class HTMLTranslator(nodes.NodeVisitor):
                                  self.head_prefix_template % (lcode, lcode)])
         self.html_prolog.append(self.doctype)
         self.head = self.meta[:]
-
+        # stylesheets
+        styles = utils.get_stylesheet_list(settings)
+        if settings.stylesheet_path and not(settings.embed_stylesheet):
+            styles = [utils.relative_path(settings._destination, sheet)
+                      for sheet in styles]
         if settings.embed_stylesheet:
-            stylelib = os.path.join(os.getcwd(), 'dummy')
-            styles = utils.get_stylesheet_reference_list(settings, stylelib)
             settings.record_dependencies.add(*styles)
-            self.stylesheet = [self.embedded_stylesheet 
-                               % open(stylesheet).read()
-                               for stylesheet in styles]
-        else:
-            styles = utils.get_stylesheet_reference_list(settings)
+            self.stylesheet = [self.embedded_stylesheet % open(sheet).read()
+                               for sheet in styles]
+        else: # link to stylesheets
             self.stylesheet = [self.stylesheet_link % self.encode(stylesheet)
                                for stylesheet in styles]
-
         self.body_prefix = ['</head>\n<body>\n']
         # document title, subtitle display
         self.body_pre_docinfo = []
