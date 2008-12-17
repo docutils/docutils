@@ -15,7 +15,7 @@ todo:
 
 * Image scaling
 * Support for background image per slide
-* Support for no title
-* Enumerated list
-* Simple animations
+* Support for no title (DONE transition directive)
+* Enumerated list (DONE)
+* Simple animations (DONE)
 * ???
