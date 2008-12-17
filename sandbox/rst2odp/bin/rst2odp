@@ -373,6 +373,13 @@ class ODPTranslator(nodes.GenericNodeVisitor):
     def depart_section(self, node):
         self._reset()
 
+    def visit_transition(self, node):
+        # hack to have titleless slides (transitions come in between sections)
+        self._reset()
+        self._init_slide(force=True)
+    
+    depart_transition = _dumb_depart
+
     def visit_literal(self, node):
         style = preso.TextStyle(**{
                 'fo:font-family':"Courier New",
@@ -498,6 +505,16 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         self.cur_slide.add_picture(p)
 
     def depart_image(self, node):
+        pass
+
+    visit_figure = _dumb_visit
+    depart_figure = _dumb_depart
+
+    def visit_caption(self, node):
+        #!!! fix
+        pass
+
+    def depart_caption(self, node):
         pass
 
     def visit_literal_block(self, node):
