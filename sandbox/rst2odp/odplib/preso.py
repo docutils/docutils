@@ -145,6 +145,7 @@ class Preso(object):
         self._presentation = sub_el(o_body, 'office:presentation')
 
     def get_data(self, style_file=None):
+        import pdb; pdb.set_trace()
         fd, filename = tempfile.mkstemp()
         zip_odp = self.to_file()
         if style_file:

@@ -15,11 +15,6 @@ from docutils.parsers import rst
 import odplib.preso as preso
 
 
-__version__ = "0.1"
-__author__ = "matt harrison"
-__email__ = "matthewharrison@gmail.com"
-  
-
 S5_COLORS = dict(
     black='#000000',
     gray='#545454',
