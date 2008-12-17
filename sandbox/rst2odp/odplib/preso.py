@@ -89,7 +89,6 @@ class PrefixedWriter(et.ElementTree):
             encoding = "us-ascii"
         elif encoding != "utf-8" and encoding != "us-ascii":
             file.write("<?xml version='1.0' encoding='%s'?>\n" % encoding)
-        print "WRITING",  self._root
         self._write(file, self._root, encoding, NS2PREFIX)
         #self._write(file, self._root, encoding, {})
 
@@ -145,7 +144,6 @@ class Preso(object):
         self._presentation = sub_el(o_body, 'office:presentation')
 
     def get_data(self, style_file=None):
-        import pdb; pdb.set_trace()
         fd, filename = tempfile.mkstemp()
         zip_odp = self.to_file()
         if style_file:
@@ -625,7 +623,7 @@ class MixedContent(object):
 
     def pop_node(self):
         if self.cur_node.parent == self.node:
-            print "CAN'T POP"
+            # Don't pop too far !!
             return
         if self.cur_node.parent is None:
             return
@@ -677,7 +675,8 @@ class MixedContent(object):
             # see  http://books.evc-cit.info/odbook/ch03.html#whitespace-section 
             if chunk == '' and not seen_space:
                 seen_space = True
-                continue
+                #chunk = ' '
+                #continue
                 # skip the first space
             elif chunk == '':
                 self.add_node('text:s', {})
@@ -687,17 +686,20 @@ class MixedContent(object):
                 seen_space = False
 
             children = self.cur_node.getchildren()
-            if self.cur_node.text and children:
+            #if self.cur_node.text and children:
+            if children:
                 child = children[-1]
-                if child.tail:
-                    chunk = ' ' + chunk
                 cur_text = child.tail or ''
+                if chunk == '' or (cur_text and cur_text[-1] != ' '):
+                    # need to put ONE space in for initial spaces
+                    # or in between chunks
+                    chunk = ' ' + chunk
                 child.tail = cur_text + chunk
             else:    
-                if self.cur_node.text:
-                    # add a space
-                    chunk = ' ' + chunk
                 cur_text = self.cur_node.text or ''
+                if chunk == '' or (cur_text and cur_text[-1] != ' '):
+                    # need to put a space in for initial spaces
+                    chunk = ' ' + chunk
                 self.cur_node.text = cur_text + chunk
 
 
