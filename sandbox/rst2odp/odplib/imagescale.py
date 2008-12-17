@@ -1,4 +1,4 @@
-import Image # from PIL
+from PIL import Image 
 
 CROP = 1 # Fit smallest side to screen (cuts off parts of image)
 FIT = 2 # Fit largest side (leaves black spaces)
