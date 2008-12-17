@@ -133,11 +133,13 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         nodes.GenericNodeVisitor.dispatch_departure(self, node)
 
     def default_visit(self, node):
-        print "NODE", node, node.tagname
+        if self.settings.report_level >= 3:
+            print "NODE", node, node.tagname
         raise NotImplementedError
 
     def default_departure(self, node):
-        print "NODE", node, node.tagname
+        if self.settings.report_level >= 3:
+            print "NODE", node, node.tagname
         raise NotImplementedError
 
 
@@ -147,7 +149,8 @@ class ODPTranslator(nodes.GenericNodeVisitor):
 
 
     def visit_document(self, node):
-        print "DOC", node
+        if self.settings.report_level >= 3:
+            print "DOC", node
     
     depart_document = _dumb_depart
 
