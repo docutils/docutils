@@ -670,14 +670,15 @@ class MixedContent(object):
 
         self._add_styles(add_p_style, add_t_style)
 
+        #if only spaces remove one, otherwise we add one too many
+        if text == ' '*len(text):
+            text = text[:-1]
+
         seen_space = False
         for chunk in text.split(' '): # deal with white space 
             # see  http://books.evc-cit.info/odbook/ch03.html#whitespace-section 
             if chunk == '' and not seen_space:
                 seen_space = True
-                #chunk = ' '
-                #continue
-                # skip the first space
             elif chunk == '':
                 self.add_node('text:s', {})
                 self.pop_node()
@@ -686,7 +687,6 @@ class MixedContent(object):
                 seen_space = False
 
             children = self.cur_node.getchildren()
-            #if self.cur_node.text and children:
             if children:
                 child = children[-1]
                 cur_text = child.tail or ''
