@@ -54,6 +54,7 @@ Changes Since 0.5
 
 * docutils/writers/latex2e/__init__.py:
 
+  - Add option ``--use-titlepage-env``.
   - Add option ``--embed-stylesheet``.
   - Apply [ 1474017 ] image vertical alignment is reversed.
   - Apply [ 2051599 ] multi-page tables in latex writer (from pabigot).
