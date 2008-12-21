@@ -53,14 +53,28 @@ if [ -n "$1" -a ! "$1" == "-" ] ; then
 fi
 
 # stylesheet embedding
+#
+# fail for no extension
 INF=test/header.txt
 STF=test/dummy_stylesheet
 echo -e "% dummy stylesheet\n%  second line" > $STF
-OUTF="$INF-embed-stylsheet.tex"
+OUTF="$INF-embed-stylesheet.err"
 REFF="$OUTF.ref"
-$CMD --stylesheet-path=$STF --embed-stylesheet $2 $3 $INF > $OUTF
-do_diff $REFF $OUTF 
-
+$CMD --stylesheet-path=$STF --embed-stylesheet $2 $3 $INF > $OUTF 2>&1
+do_diff $REFF $OUTF
+# embed for .inc
+mv $STF $STF.inc
+OUTF="$INF-embed-stylesheet.tex"
+REFF="$OUTF.ref"
+$CMD --stylesheet-path=$STF.inc --embed-stylesheet $2 $3 $INF > $OUTF 2>&1
+do_diff $REFF $OUTF
+# embed for .sty
+mv $STF.inc $STF.sty
+OUTF="$INF-embed-stylesheet-sty.tex"
+REFF="$OUTF.ref"
+$CMD --stylesheet-path=$STF.sty --embed-stylesheet $2 $3 $INF > $OUTF 2>&1
+do_diff $REFF $OUTF
+exit
 INF=test/header.txt
 for GO in "" auto pdftex dvips,300dpi ; do
     OUTF="$INF-graphicx-option-$GO.tex"
@@ -170,6 +184,14 @@ do_diff $REFF $OUTF
 CMD="$BASE_CMD --no-doc-title --no-doc-info"
 INF=test/docinfo.txt
 OUTF="$INF-no-title-info.tex"
+REFF="$OUTF.ref"
+$CMD $INF > $OUTF
+do_diff $REFF $OUTF 
+
+CMD="$BASE_CMD --use-titlepage-env"
+F=docinfo-2
+INF=test/$F.txt
+OUTF="$INF-use-titlepage-env.tex"
 REFF="$OUTF.ref"
 $CMD $INF > $OUTF
 do_diff $REFF $OUTF 
