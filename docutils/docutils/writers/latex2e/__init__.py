@@ -92,6 +92,10 @@ class Writer(writers.Writer):
           ['--use-part-section'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
+         ('Enclose titlepage in LaTeX titlepage environment.',
+          ['--use-titlepage-env'],
+          {'default': 0, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
          ('Let LaTeX print author and date, do not show it in docutils '
           'document info.',
           ['--use-latex-docinfo'],
@@ -1398,12 +1402,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_document(self, node):
         self.body_prefix.append('\\begin{document}\n')
+        if self.settings.use_titlepage_env:
+            self.body_prefix.append('\\begin{titlepage}\n')
         # titled document?
         if self.use_latex_docinfo or len(node) and isinstance(node[0], nodes.title):
             self.body_prefix.append('\\maketitle\n')
-            # alternative use titlepage environment.
-            # \begin{titlepage}
-            # ...
         self.body.append('\n\\setlength{\\locallinewidth}{\\linewidth}\n')
 
     def depart_document(self, node):
@@ -2193,6 +2196,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         if isinstance(node.parent, nodes.topic):
             # the table of contents.
+            if ('contents' in self.topic_classes
+            and self.settings.use_titlepage_env):
+                self.body.append('\\end{titlepage}\n')
             self.bookmark(node)
             if ('contents' in self.topic_classes
             and self.use_latex_toc):
