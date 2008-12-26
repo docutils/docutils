@@ -92,7 +92,9 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
                  'docutils.writers.pep_html',
                  'docutils.writers.s5_html',
                  'docutils.writers.latex2e',
-                 'docutils.writers.newlatex2e'],
+                 'docutils.writers.newlatex2e',
+                 'docutils.writers.odf_odt',
+                 ],
     'data_files': ([('docutils/parsers/rst/include',
                      glob.glob('docutils/parsers/rst/include/*.txt')),
                     ('docutils/writers/html4css1',
@@ -106,7 +108,10 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
                      ['docutils/writers/pep_html/pep.css',
                       'docutils/writers/pep_html/template.txt']),
                     ('docutils/writers/s5_html/themes',
-                     ['docutils/writers/s5_html/themes/README.txt']),]
+                     ['docutils/writers/s5_html/themes/README.txt']),
+                    ('docutils/writers/odf_odt',
+                     ['docutils/writers/odf_odt/styles.odt']),
+                     ]
                    + s5_theme_files),
     'scripts' : ['tools/rst2html.py',
                  'tools/rst2s5.py',
@@ -115,6 +120,7 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
                  'tools/rst2xml.py',
                  'tools/rst2pseudoxml.py',
                  'tools/rstpep2html.py',
+                 'tools/rst2odt.py',
                  ],}
 """Distutils setup parameters."""
 
