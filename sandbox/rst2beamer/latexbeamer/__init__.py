@@ -109,11 +109,22 @@ class Writer(latex2e.Writer):
           'emulation using CM fonts).',
           ['--font-encoding'],
           {'default': ''}),
+         # TODO Themes must be changeable by ``usecolortheme``,
+         # ``usefonttheme``, ``useinnertheme``, and ``useoutertheme``
+         # separately
          ('LaTeX Beamer theme to use. '
           'Default is JuanLesPins.',
           ['--beamer-theme'],
-          {'default': 'JuanLesPins'})
-          ),)
+          {'default': 'JuanLesPins'}),
+         ('Insert intermediate outline slides at a certain level. '
+          'Possible values are "section" and "subsection". '
+          'Default is no intermediate outline slides.',
+          ['--intermediate-outlines'],
+          {'choices': ['section', 'subsection',],
+           'default': ''}),
+         # TODO Some themes accept options which must be supported here as
+         # plain strings for those who know what they do
+         ),)
 
     def __init__(self):
         latex2e.Writer.__init__(self)
@@ -169,21 +180,32 @@ class BeamerTranslator(latex2e.LaTeXTranslator):
                                  '{\n',
                                  '  \\usetheme{%s}\n'
                                  % ( document.settings.beamer_theme, ),
+                                 # TODO Argument to `setbeamercovered` must be
+                                 # an option
                                  '  \\setbeamercovered{transparent}\n',
                                  '}\n',
                                  '\n',
                                  ))
-        # TODO Must be an option including the level where this happens - must
-        # be present only if there is a toc
-        self.head_prefix.extend(('\n',
-                                 '\\AtBeginSection[]\n',
-                                 '{\n',
-                                 '  \\begin{frame}<beamer>\n',
-                                 '    \\frametitle{Outline}\n',
-                                 '    \\tableofcontents[currentsection,currentsubsection]\n',
-                                 '  \\end{frame}\n',
-                                 '}\n',
-                                 ))
+        # TODO Name of outline slides should be the name given for the contents
+        # (is a `title` element) - might be determined by a preprocessor
+        document.settings.toc_title = 'Outline'
+        # TODO Must be present only if there is a toc
+        if document.settings.intermediate_outlines:
+            if document.settings.intermediate_outlines == 'section':
+                at_begin = 'AtBeginSection'
+                toc_option = 'currentsection'
+            else:
+                at_begin = 'AtBeginSubsection'
+                toc_option = 'currentsection,currentsubsection'
+            self.head_prefix.extend(('\n',
+                                     '\\%s[]\n' % ( at_begin, ),
+                                     '{\n',
+                                     '  \\begin{frame}<beamer>\n',
+                                     '    \\frametitle{%s}\n' % ( document.settings.toc_title, ),
+                                     '    \\tableofcontents[%s]\n' % ( toc_option, ),
+                                     '  \\end{frame}\n',
+                                     '}\n',
+                                     ))
         self.d_class = DocumentClass()
         self.subtitle = ''
 
@@ -198,10 +220,8 @@ class BeamerTranslator(latex2e.LaTeXTranslator):
     def visit_topic(self, node):
         self.topic_classes = node['classes']
         if 'contents' in node['classes']:
-            # TODO Name of outline slide must be an option and could be the
-            # name given for the contents (is a `title` element) - might be
-            # determined by a preprocessor
-            self.body.append( '\n\\begin{frame}\n  \\frametitle{Outline}\n  \\tableofcontents\n\\end{frame}')
+            self.body.append( '\n\\begin{frame}\n  \\frametitle{%s}\n  \\tableofcontents\n\\end{frame}'
+                              % ( self.document.settings.toc_title, ))
             self.topic_classes = []
             raise nodes.SkipNode
 
@@ -265,6 +285,7 @@ class Reader(standalone.Reader):
                   if i is not references.DanglingReferences ]
                 + [ RemoveClassHandout, ])
 
+# TODO Must be supported by the right beamer mode (see section 20.2)
 class RemoveClassHandout(Transform):
 
     """
@@ -284,3 +305,17 @@ class RemoveClassHandout(Transform):
                 if self.classToRemove in node['classes']:
                     if node.parent:
                         node.parent.remove(node)
+
+# TODO \pause needs to be supported as an inline element; the following works
+# but is ugly::
+#
+#   .. |p| raw:: latex
+#
+#      \pause
+
+# TODO \alert needs to be supported as a role - may be by translating from
+# **strong**
+
+# TODO \logo picture must be supported as an option
+
+# TODO \appendix must be supported as a directive
