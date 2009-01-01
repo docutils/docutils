@@ -1,6 +1,6 @@
 #!/usr/bin/env make
 
-EMACS=/usr/bin/emacs-23-unicode
+EMACS=/usr/bin/emacs
 
 runtests:
 	$(EMACS) --batch -l tests-basic.el

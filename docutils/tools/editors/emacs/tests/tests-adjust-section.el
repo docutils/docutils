@@ -820,11 +820,18 @@ Document Title2
 (add-to-list 'load-path "..")
 (load "rst.el")
 
-(progn
-  (regression-test-compare-expect-buffer
-   "Test interactive adjustment of sections."
-   rst-adjust-decoration-tests
-   (lambda ()
-     (call-interactively 'rst-adjust))
-   nil))
-
+(let (
+      ;; Note: the tests were originally developed when this value had a default
+      ;; of 't. We reset the default instead of fixing up all the tests (they're
+      ;; still valid and pretty much doing their work, it is arbitrary whether
+      ;; we test with one value or another for this variable).
+      (rst-new-decoration-down t)
+      )
+  (progn
+    (regression-test-compare-expect-buffer
+     "Test interactive adjustment of sections."
+     rst-adjust-decoration-tests
+     (lambda ()
+       (call-interactively 'rst-adjust))
+     nil))
+  )
