@@ -1861,7 +1861,7 @@ Delete that region.  Return t if found and the cursor is left after the comment.
   ;;      [more lines]
   ;;
   (let ((beg
-         (re-search-forward "^\\.\\. contents[ \t]*::\\(.*\\)\n\\.\\."
+         (re-search-forward "^\\.\\. contents[ \t]*::\\(.*\\)\n\\([ \t]+:\\w+:.*\n\\)*\\.\\."
                             nil t))
         last-real)
     (when beg
