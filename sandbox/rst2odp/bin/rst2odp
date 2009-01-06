@@ -181,6 +181,8 @@ class ODPTranslator(nodes.GenericNodeVisitor):
             pass
         elif self.at('reference'):
             pass
+        elif self.at('doctest_block'):
+            pass
         else:
             self.cur_slide.write(node.astext())
     depart_Text = _dumb_depart
@@ -226,6 +228,8 @@ class ODPTranslator(nodes.GenericNodeVisitor):
             return # block quote adds paragraph style
         elif not self.cur_slide.text_frames:
             self.cur_slide.add_text_frame()
+        elif self.at('doctest_block'):
+            pass
 
     def depart_paragraph(self, node):
         classes = node.attributes.get('classes', [])
@@ -504,7 +508,7 @@ class ODPTranslator(nodes.GenericNodeVisitor):
     @preso.cwd_decorator
     def visit_image(self, node):
         source = node.attributes['uri']
-        p = preso.Picture(os.path.abspath(source))
+        p = preso.Picture(os.path.abspath(source), **node.attributes)
         self.cur_slide.add_picture(p)
 
     def depart_image(self, node):
@@ -592,6 +596,13 @@ class ODPTranslator(nodes.GenericNodeVisitor):
     def depart_enumerated_list(self, node):
         self.depart_bullet_list(node)
 
+    def visit_doctest_block(self, node):
+        input = node.astext()
+        language = 'pycon'
+        self.cur_slide.add_code(input, language)
+
+    def depart_doctest_block(self, node):
+        pass
 
     def _get_text_attribs(self, node):
         classes = node.attributes.get('classes', [])
