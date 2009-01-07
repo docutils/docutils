@@ -343,6 +343,24 @@ class FileOutput(Output):
         self.opened = None
 
 
+class BinaryFileOutput(FileOutput):
+    """
+    A version of docutils.io.FileOutput which writes to a binary file.
+    """
+    def open(self):
+        try:
+            self.destination = open(self.destination_path, 'wb')
+        except IOError, error:
+            if not self.handle_io_errors:
+                raise
+            print >>sys.stderr, '%s: %s' % (error.__class__.__name__,
+                                            error)
+            print >>sys.stderr, ('Unable to open destination file for writing '
+                                 '(%r).  Exiting.' % self.destination_path)
+            sys.exit(1)
+        self.opened = 1
+
+
 class StringInput(Input):
 
     """

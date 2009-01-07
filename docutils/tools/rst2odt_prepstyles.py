@@ -1,4 +1,9 @@
 #!/usr/bin/env python
+
+# $Id$
+# Author: Dave Kuhlman <dkuhlman@rexx.com>
+# Copyright: This module has been placed in the public domain.
+
 """
 Fix a word-processor-generated styles.odt for odtwriter use: Drop page size
 specifications from styles.xml in STYLE_FILE.odt.

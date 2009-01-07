@@ -1,3 +1,6 @@
+# $Id$
+# Author: Dave Kuhlman <dkuhlman@rexx.com>
+# Copyright: This module has been placed in the public domain.
 
 """
 Open Document Format (ODF) Writer.
@@ -51,102 +54,14 @@ except ImportError, e:
             print '***'
             raise
 
+#
+# Import pygments and odtwriter pygments formatters if possible.
 try:
     import pygments
-    import pygments.formatter
     import pygments.lexers
-    class OdtPygmentsFormatter(pygments.formatter.Formatter):
-        def __init__(self, rststyle_function):
-            pygments.formatter.Formatter.__init__(self)
-            self.rststyle_function = rststyle_function
-
-        def rststyle(self, name, parameters=( )):
-            return self.rststyle_function(name, parameters)
-
-    class OdtPygmentsProgFormatter(OdtPygmentsFormatter):
-        def format(self, tokensource, outfile):
-            tokenclass = pygments.token.Token
-            for ttype, value in tokensource:
-                value = escape_cdata(value)
-                if ttype == tokenclass.Keyword:
-                    s2 = self.rststyle('codeblock-keyword')
-                    s1 = '<text:span text:style-name="%s">%s</text:span>' % \
-                        (s2, value, )
-                elif ttype == tokenclass.Literal.String:
-                    s2 = self.rststyle('codeblock-string')
-                    s1 = '<text:span text:style-name="%s">%s</text:span>' % \
-                        (s2, value, )
-                elif ttype in (
-                        tokenclass.Literal.Number.Integer,
-                        tokenclass.Literal.Number.Integer.Long,
-                        tokenclass.Literal.Number.Float,
-                        tokenclass.Literal.Number.Hex,
-                        tokenclass.Literal.Number.Oct,
-                        tokenclass.Literal.Number,
-                        ):
-                    s2 = self.rststyle('codeblock-number')
-                    s1 = '<text:span text:style-name="%s">%s</text:span>' % \
-                        (s2, value, )
-                elif ttype == tokenclass.Operator:
-                    s2 = self.rststyle('codeblock-operator')
-                    s1 = '<text:span text:style-name="%s">%s</text:span>' % \
-                        (s2, value, )
-                elif ttype == tokenclass.Comment:
-                    s2 = self.rststyle('codeblock-comment')
-                    s1 = '<text:span text:style-name="%s">%s</text:span>' % \
-                        (s2, value, )
-                elif ttype == tokenclass.Name.Class:
-                    s2 = self.rststyle('codeblock-classname')
-                    s1 = '<text:span text:style-name="%s">%s</text:span>' % \
-                        (s2, value, )
-                elif ttype == tokenclass.Name.Function:
-                    s2 = self.rststyle('codeblock-functionname')
-                    s1 = '<text:span text:style-name="%s">%s</text:span>' % \
-                        (s2, value, )
-                elif ttype == tokenclass.Name:
-                    s2 = self.rststyle('codeblock-name')
-                    s1 = '<text:span text:style-name="%s">%s</text:span>' % \
-                        (s2, value, )
-                else:
-                    s1 = value
-                outfile.write(s1)
-    class OdtPygmentsLaTeXFormatter(OdtPygmentsFormatter):
-        def format(self, tokensource, outfile):
-            tokenclass = pygments.token.Token
-            for ttype, value in tokensource:
-                value = escape_cdata(value)
-                if ttype == tokenclass.Keyword:
-                    s2 = self.rststyle('codeblock-keyword')
-                    s1 = '<text:span text:style-name="%s">%s</text:span>' % \
-                        (s2, value, )
-                elif ttype in (tokenclass.Literal.String,
-                        tokenclass.Literal.String.Backtick,
-                        ):
-                    s2 = self.rststyle('codeblock-string')
-                    s1 = '<text:span text:style-name="%s">%s</text:span>' % \
-                        (s2, value, )
-                elif ttype == tokenclass.Name.Attribute:
-                    s2 = self.rststyle('codeblock-operator')
-                    s1 = '<text:span text:style-name="%s">%s</text:span>' % \
-                        (s2, value, )
-                elif ttype == tokenclass.Comment:
-                    if value[-1] == '\n':
-                        s2 = self.rststyle('codeblock-comment')
-                        s1 = '<text:span text:style-name="%s">%s</text:span>\n' % \
-                            (s2, value[:-1], )
-                    else:
-                        s2 = self.rststyle('codeblock-comment')
-                        s1 = '<text:span text:style-name="%s">%s</text:span>' % \
-                            (s2, value, )
-                elif ttype == tokenclass.Name.Builtin:
-                    s2 = self.rststyle('codeblock-name')
-                    s1 = '<text:span text:style-name="%s">%s</text:span>' % \
-                        (s2, value, )
-                else:
-                    s1 = value
-                outfile.write(s1)
-
-except ImportError, e:
+    from pygmentsformatter import escape_cdata, OdtPygmentsProgFormatter, \
+        OdtPygmentsLaTeXFormatter
+except ImportError, exp:
     pygments = None
 
 #
@@ -393,82 +308,70 @@ def ToString(et):
     outstream.close()
     return s1
 
-def escape_cdata(text):
-    text = text.replace("&", "&amp;")
-    text = text.replace("<", "&lt;")
-    text = text.replace(">", "&gt;")
-    ascii = ''
-    for char in text:
-      if ord(char) >= ord("\x7f"):
-          ascii += "&#x%X;" % ( ord(char), )
-      else:
-          ascii += char
-    return ascii
-
 
 #
 # Classes
 #
 
-# Does this version of Docutils has Directive support?
-if hasattr(rst, 'Directive'):
-    #
-    # Class to control syntax highlighting.
-    class SyntaxHighlightCodeBlock(rst.Directive):
-        required_arguments = 1
-        optional_arguments = 0
-        has_content = True
-        #
-        # See visit_literal_block for code that processes the node 
-        #   created here.
-        def run(self):
-            language = self.arguments[0]
-            code_block = nodes.literal_block(classes=["code-block", language],
-                language=language)
-            lines = self.content
-            content = '\n'.join(lines)
-            text_node = nodes.Text(content)
-            code_block.append(text_node)
-            # Mark this node for high-lighting so that visit_literal_block
-            #   will be able to hight-light those produced here and
-            #   *not* high-light regular literal blocks (:: in reST).
-            code_block['hilight'] = True
-            #import pdb; pdb.set_trace()
-            return [code_block]
+## # Does this version of Docutils has Directive support?
+## if hasattr(rst, 'Directive'):
+##     #
+##     # Class to control syntax highlighting.
+##     class SyntaxHighlightCodeBlock(rst.Directive):
+##         required_arguments = 1
+##         optional_arguments = 0
+##         has_content = True
+##         #
+##         # See visit_literal_block for code that processes the node 
+##         #   created here.
+##         def run(self):
+##             language = self.arguments[0]
+##             code_block = nodes.literal_block(classes=["code-block", language],
+##                 language=language)
+##             lines = self.content
+##             content = '\n'.join(lines)
+##             text_node = nodes.Text(content)
+##             code_block.append(text_node)
+##             # Mark this node for high-lighting so that visit_literal_block
+##             #   will be able to hight-light those produced here and
+##             #   *not* high-light regular literal blocks (:: in reST).
+##             code_block['hilight'] = True
+##             #import pdb; pdb.set_trace()
+##             return [code_block]
+## 
+##     rst.directives.register_directive('sourcecode', SyntaxHighlightCodeBlock)
+##     rst.directives.register_directive('code', SyntaxHighlightCodeBlock)
+## 
+##     rst.directives.register_directive('code-block', SyntaxHighlightCodeBlock)
 
-    rst.directives.register_directive('sourcecode', SyntaxHighlightCodeBlock)
-    rst.directives.register_directive('code', SyntaxHighlightCodeBlock)
-
-    rst.directives.register_directive('code-block', SyntaxHighlightCodeBlock)
-
-#
-# Register directives defined in a module named "odtwriter_plugins".
-#
-def load_plugins():
-    plugin_mod = None
-    count = 0
-    try:
-        name = 'odtwriter_plugins'
-        fp, pathname, description = imp.find_module(name)
-        plugin_mod = imp.load_module(name, fp, pathname, description)
-        #import odtwriter_plugins
-        #plugin_mod = odtwriter_plugins
-    except ImportError, e:
-        pass
-    if plugin_mod is None:
-        return count
-    klasses = inspect.getmembers(plugin_mod, inspect.isclass)
-    for klass in klasses:
-        if register_plugin(*klass):
-            count += 1
-    return count
-
-def register_plugin(name, klass):
-    plugin_name = getattr(klass, 'plugin_name', None)
-    if plugin_name is not None:
-        rst.directives.register_directive(plugin_name, klass)
-
-load_plugins()
+## #
+## # Register directives defined in a module named "odtwriter_plugins".
+## #
+## def load_plugins():
+##     plugin_mod = None
+##     count = 0
+##     try:
+##         name = 'odtwriter_plugins'
+##         fp, pathname, description = imp.find_module(name)
+##         plugin_mod = imp.load_module(name, fp, pathname, description)
+##         #import odtwriter_plugins
+##         #plugin_mod = odtwriter_plugins
+##     except ImportError, e:
+##         pass
+##     if plugin_mod is None:
+##         return count
+##     klasses = inspect.getmembers(plugin_mod, inspect.isclass)
+##     for klass in klasses:
+##         if register_plugin(*klass):
+##             count += 1
+##     return count
+## 
+## def register_plugin(name, klass):
+##     plugin_name = getattr(klass, 'plugin_name', None)
+##     if plugin_name is not None:
+##         rst.directives.register_directive(plugin_name, klass)
+## 
+## load_plugins()
 
 
 WORD_SPLIT_PAT1 = re.compile(r'\b(\w*)\b\W*')
@@ -527,17 +430,13 @@ class Writer(writers.Writer):
         'ODF-Specific Options',
         None,
         (
-        ('Specify a stylesheet URL, used verbatim.  Overrides '
-            '--stylesheet-path.',
+        ('Specify a stylesheet.  '
+            'Default: "%s"' % default_stylesheet_path,
             ['--stylesheet'],
-            {'metavar': '<URL>', 'overrides': 'stylesheet_path'}),
-        ('Specify a stylesheet file, relative to the current working '
-            'directory.  The path is adjusted relative to the output ODF '
-            'file.  Overrides --stylesheet.  Default: "%s"'
-            % default_stylesheet_path,
-            ['--stylesheet-path'],
-            {'metavar': '<file>', 'overrides': 'stylesheet',
-                'default': default_stylesheet_path}),
+            {
+                'default': default_stylesheet_path,
+                'dest': 'stylesheet'
+                }),
         ('Specify a configuration/mapping file relative to the '
             'current working '
             'directory for additional ODF options.  '
@@ -574,7 +473,7 @@ class Writer(writers.Writer):
                 'dest': 'add_syntax_highlighting',
                 'validator': frontend.validate_boolean}),
         ('Do not add syntax highlighting in literal code blocks. (default)',
-            ['--no-add-syntax-highlighting'],
+            ['--no-syntax-highlighting'],
             {'default': False,
                 'action': 'store_false',
                 'dest': 'add_syntax_highlighting',
@@ -586,7 +485,7 @@ class Writer(writers.Writer):
                 'dest': 'create_sections',
                 'validator': frontend.validate_boolean}),
         ('Do not create sections for headers.',
-            ['--no-create-sections'],
+            ['--no-sections'],
             {'default': True, 
                 'action': 'store_false',
                 'dest': 'create_sections',
@@ -598,7 +497,7 @@ class Writer(writers.Writer):
                 'dest': 'create_links',
                 'validator': frontend.validate_boolean}),
         ('Do not create links.  (default)',
-            ['--no-create-links'],
+            ['--no-links'],
             {'default': False,
                 'action': 'store_false',
                 'dest': 'create_links',
@@ -617,7 +516,15 @@ class Writer(writers.Writer):
                 'action': 'store_false',
                 'dest': 'endnotes_end_doc',
                 'validator': frontend.validate_boolean}),
-        ))
+        ('Generate an oowriter table of contents, not '
+            'a list (default).',
+            ['--generate-oowriter-toc'],
+            {'default': False,
+                'action': 'store_true',
+                'dest': 'generate_oowriter_toc',
+                'validator': frontend.validate_boolean}),
+        )
+        )
 
     settings_defaults = {
         'output_encoding_error_handler': 'xmlcharrefreplace',
@@ -695,8 +602,7 @@ class Writer(writers.Writer):
         """
         modeled after get_stylesheet
         """
-        stylespath = utils.get_stylesheet_reference(self.settings,
-                                                    os.path.join(os.getcwd(), 'dummy'))
+        stylespath = self.settings.stylesheet
         zfile = zipfile.ZipFile(stylespath, 'r')
         s1 = zfile.read('settings.xml')
         zfile.close()
@@ -706,8 +612,7 @@ class Writer(writers.Writer):
         """Retrieve the stylesheet from either a .xml file or from
         a .odt (zip) file.  Return the content as a string.
         """
-        stylespath = utils.get_stylesheet_reference(self.settings,
-            os.path.join(os.getcwd(), 'dummy'))
+        stylespath = self.settings.stylesheet
         ext = os.path.splitext(stylespath)[1]
         if ext == '.xml':
             stylesfile = open(stylespath, 'r')
@@ -1320,17 +1225,20 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def visit_bullet_list(self, node):
         #ipshell('At visit_bullet_list')
         if self.in_table_of_contents:
-            if node.has_key('classes') and \
-                    'auto-toc' in node.attributes['classes']:
-                el = SubElement(self.current_element, 'text:list', attrib={
-                    'text:style-name': self.rststyle('tocenumlist'),
-                    })
-                self.list_style_stack.append(self.rststyle('enumitem'))
+            if self.settings.generate_oowriter_toc:
+                pass
             else:
-                el = SubElement(self.current_element, 'text:list', attrib={
-                    'text:style-name': self.rststyle('tocbulletlist'),
-                    })
-                self.list_style_stack.append(self.rststyle('bulletitem'))
+                if node.has_key('classes') and \
+                        'auto-toc' in node.attributes['classes']:
+                    el = SubElement(self.current_element, 'text:list', attrib={
+                        'text:style-name': self.rststyle('tocenumlist'),
+                        })
+                    self.list_style_stack.append(self.rststyle('enumitem'))
+                else:
+                    el = SubElement(self.current_element, 'text:list', attrib={
+                        'text:style-name': self.rststyle('tocbulletlist'),
+                        })
+                    self.list_style_stack.append(self.rststyle('bulletitem'))
         else:
             if self.blockstyle == self.rststyle('blockquote'):
                 el = SubElement(self.current_element, 'text:list', attrib={
@@ -2143,8 +2051,10 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             self.rststyle('codeblock'), )
         source = node.astext()
         if (pygments and 
-            self.settings.add_syntax_highlighting and
-            node.get('hilight', False)):
+            self.settings.add_syntax_highlighting 
+            #and
+            #node.get('hilight', False)
+            ):
             language = node.get('language', 'python')
             source = self._add_syntax_highlighting(source, language)
         else:
@@ -2690,11 +2600,26 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         #ipshell('At visit_topic')
         if 'classes' in node.attributes:
             if 'contents' in node.attributes['classes']:
-                el = self.append_p('horizontalline')
-                el = self.append_p('centeredtextbody')
-                el1 = SubElement(el, 'text:span',
-                    attrib={'text:style-name': self.rststyle('strong')})
-                el1.text = 'Contents'
+                if self.settings.generate_oowriter_toc:
+                    el1 = self.append_child('text:table-of-content', attrib={
+                        'text:name': 'Table of Contents1',
+                        'text:protected': 'true',
+                        'text:style-name': 'Sect1',
+                        })
+                    el2 = SubElement(el1, 'text:table-of-content-source', attrib={
+                        'text:outline-level': '10',
+                        })
+                    el3 =SubElement(el2, 'text:index-title-template', attrib={
+                        'text:style-name': 'Contents_20_Heading',
+                        })
+                    el3.text = 'Table of Contents'
+                    raise nodes.SkipChildren()
+                else:
+                    el = self.append_p('horizontalline')
+                    el = self.append_p('centeredtextbody')
+                    el1 = SubElement(el, 'text:span',
+                        attrib={'text:style-name': self.rststyle('strong')})
+                    el1.text = 'Contents'
                 self.in_table_of_contents = True
             elif 'abstract' in node.attributes['classes']:
                 el = self.append_p('horizontalline')
@@ -2707,7 +2632,10 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         #ipshell('At depart_topic')
         if 'classes' in node.attributes:
             if 'contents' in node.attributes['classes']:
-                el = self.append_p('horizontalline')
+                if self.settings.generate_oowriter_toc:
+                    pass
+                else:
+                    el = self.append_p('horizontalline')
                 self.in_table_of_contents = False
 
     def visit_transition(self, node):

@@ -502,6 +502,39 @@ def publish_from_doctree(document, destination_path=None,
     pub.set_destination(None, destination_path)
     return pub.publish(enable_exit_status=enable_exit_status)
 
+def publish_cmdline_to_binary(reader=None, reader_name='standalone',
+                    parser=None, parser_name='restructuredtext',
+                    writer=None, writer_name='pseudoxml',
+                    settings=None, settings_spec=None,
+                    settings_overrides=None, config_section=None,
+                    enable_exit_status=1, argv=None,
+                    usage=default_usage, description=default_description,
+                    destination=None, destination_class=io.BinaryFileOutput
+                    ):
+    """
+    Set up & run a `Publisher` for command-line-based file I/O (input and
+    output file paths taken automatically from the command line).  Return the
+    encoded string output also.
+
+    This is just like publish_cmdline, except that it uses
+    io.BinaryFileOutput instead of io.FileOutput.
+
+    Parameters: see `publish_programmatically` for the remainder.
+
+    - `argv`: Command-line argument list to use instead of ``sys.argv[1:]``.
+    - `usage`: Usage string, output if there's a problem parsing the command
+      line.
+    - `description`: Program description, output for the "--help" option
+      (along with command-line option descriptions).
+    """
+    pub = Publisher(reader, parser, writer, settings=settings,
+        destination_class=destination_class)
+    pub.set_components(reader_name, parser_name, writer_name)
+    output = pub.publish(
+        argv, usage, description, settings_spec, settings_overrides,
+        config_section=config_section, enable_exit_status=enable_exit_status)
+    return output
+
 def publish_programmatically(source_class, source, source_path,
                              destination_class, destination, destination_path,
                              reader, reader_name,

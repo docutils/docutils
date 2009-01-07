@@ -34,54 +34,18 @@ You should be able to open documents (.odt files) generated with
 You can learn more about Docutils and reST here: `Docutils`_
 
 
-How to Install It
-=================
-
-Where to get it
----------------
-
-``odtwriter`` is included in the standard Docutils distribution.
-
-You can find the last independent source distribution of
-ODF/ODT writer for Docutils here:
-`http://www.rexx.com/~dkuhlman/odtwriter-1.3d.tar.gz
-<http://www.rexx.com/~dkuhlman/odtwriter-1.3d.tar.gz>`_.
-
-``odtwriter`` is also available via Subversion from
-the Docutils repository under
-``docutils/sandbox/OpenDocument/``. The following will
-download Docutils including ``odtwriter`` and associated files into
-your current directory::
-
-    $ svn checkout svn://svn.berlios.de/docutils/trunk docutils
-
-For more information about access to the Docutils Subversion
-repository, see:
-http://docutils.sourceforge.net/docs/dev/repository.html.
-
-
 Requirements
-------------
+============
 
-``odtwriter`` requires:
+In addition to the Docutils standard requirements, ``odtwriter``
+requires:
 
-- Python
-
-- A sufficiently recent version of `Docutils`_.
-
-- One of the following:
-
-  - Lxml -- See: http://codespeak.net/lxml/.
-
-  - ElementTree -- See: http://effbot.org/zone/element-index.htm.
-
-  - ElementTree from that Python standard library -- Python 2.5 and
-    later comes with ElementTree included.
-
-  ``odtwriter`` will try first to use Lxml; if that fails, it will
-  try to use a separately installed version of ElementTree; and if
-  that fails, it will try to use ElementTree from the standard
-  library.
+- ElementTree or Lxml (http://codespeak.net/lxml/).  Python (version 2.5 or later) now includes
+  ElementTree (``xml.etree.ElementTree``).  However, ``odtwriter``
+  will use Lxml if it is installed.  ``odtwriter`` tries to import
+  (1) Lxml, and if that fails, (2) a separately installed
+  ElementTree, and if that fails, (3) ElementTree from the Python
+  standard library.
 
 - Optional -- `Pygments`_ is required if you want syntax
   highlighting of code in literal blocks.  See section `Syntax
@@ -91,19 +55,6 @@ Requirements
   image or figure directive, you specify ``scale`` but not ``width``
   and ``height``.  See section `Images and figures`_.
 
-
-Installation
-------------
-
-Install ``odtwriter`` with the standard Python installation
-commands::
-
-    $ python setup.py build
-    $ python setup.py install       # possibly as root
-
-This will install ``rst2odt.py`` in your ``bin`` directory and the
-odtwriter and the styles file under ``docutils/writers/odtwriter``
-within your Docutils installation.
 
 
 How to Use It
@@ -122,22 +73,17 @@ Examples::
 
     $ rst2odt.py -s -g python_comments.txt python_comments.odt
 
-    $ rst2odt.py --source-url=odtwriter.txt --generator --stylesheet-path=/myconfigs/styles.odt odtwriter.txt odtwriter.odt
+    $ rst2odt.py --source-url=odtwriter.txt --generator --stylesheet=/myconfigs/styles.odt odtwriter.txt odtwriter.odt
 
 
-Command line flags
-------------------
+Command line options
+--------------------
 
 The following command line flags are specific to ``odtwriter``:
 
---stylesheet=<URL>      Specify a stylesheet URL, used verbatim.  Overrides
-                        --stylesheet-path.
---stylesheet-path=<file>
-                        Specify a stylesheet file, relative to the current
-                        working directory.  The path is adjusted relative to
-                        the output ODF file.  Overrides --stylesheet.
-                        Default: "/usr/local/lib/python2.6/site-
-                        packages/docutils/writers/odtwriter/styles.odt"
+--stylesheet=<URL>      Specify a stylesheet URL, used verbatim. 
+                        Default: writers/odf_odt/styles.odt in the
+                        installation directory.
 --odf-config-file=<file>
                         Specify a configuration/mapping file relative to the
                         current working directory for additional ODF options.
@@ -158,13 +104,13 @@ The following command line flags are specific to ``odtwriter``:
                         a cm.  Default is 35.
 --add-syntax-highlighting
                         Add syntax highlighting in literal code blocks.
---no-add-syntax-highlighting
+--no-syntax-highlighting
                         Do not add syntax highlighting in literal code blocks.
                         (default)
 --create-sections       Create sections for headers.  (default)
---no-create-sections    Do not create sections for headers.
+--no-sections           Do not create sections for headers.
 --create-links          Create links.
---no-create-links       Do not create links.  (default)
+--no-links              Do not create links.  (default)
 --endnotes-end-doc      Generate endnotes at end of document, not footnotes at
                         bottom of page.
 --no-endnotes-end-doc   Generate footnotes at bottom of page, not endnotes at
@@ -174,8 +120,13 @@ The following command line flags are specific to ``odtwriter``:
 Styles
 ======
 
-``odtwriter`` uses a number of styles that are defined in the
-default ``styles.xml``.  This section describes those styles.
+``odtwriter`` uses a number of styles that are defined in
+``styles.xml`` in the default ``styles.odt``.  This section
+describes those styles.
+
+Note that with the ``--stylesheet`` command line option, you can
+use either ``styles.odt`` or ``styles.xml``, as described below. 
+Use of ``styles.odt`` is recommended over ``styles.xml``.
 
 You can modify the look of documents generated by ``odtwriter`` in
 several ways:
@@ -199,15 +150,15 @@ several ways:
 - Extract ``styles.xml`` from ``styles.odt`` using your favorite
   ``zip/unzip`` tool.  Then modify ``styles.xml`` with a text
   editor.  Now re-zip it back into your own ``styles.odt``, or use
-  it directly by specifying it with a command line flag.
-  **Hint:** If you intend to extract ``styles.xml`` from an
-  ``.odt`` file (and then "re-zip" it), you should turn off XML
-  optimization/compression in ``oowriter``.  In order to this in
-  ``oowriter``, use Tools --> Options... --> Load-Save --> General
-  and turn off "Size optimization for XML format".
+  it directly by specifying it with the ``--stylesheet`` command
+  line option.  **Hint:** If you intend to extract ``styles.xml``
+  from an ``.odt`` file (and then "re-zip" it), you should turn off
+  XML optimization/compression in ``oowriter``.  In order to this
+  in ``oowriter``, use Tools --> Options...  --> Load-Save -->
+  General and turn off "Size optimization for XML format".
 
-- Open an empty (or new) document in ``oowriter``.  Define the
-  styles described in this section.  Then, use that document (a
+- Open an empty (or new) document in ``oowriter``.  Define all of
+  the styles described in this section.  Then, use that document (a
   .odt file) as your stylesheet.  ``odtwriter`` will extract the
   ``styles.xml`` file from that document and insert it into the
   output document.
@@ -239,9 +190,9 @@ the styles used by ``odtwriter``.
 
 Notice that you can make a copy of file ``styles.odt``, modify it
 using ``oowriter``, and then use your copy with the
-``--stylesheet-path=<file>`` command line option.  Example::
+``--stylesheet=<file>`` command line option.  Example::
 
-    $ rst2odt.py --stylesheet-path=mystyles.odt test2.txt test2.odt
+    $ rst2odt.py --stylesheet=mystyles.odt test2.txt test2.odt
 
 
 Paragraph styles
@@ -581,14 +532,14 @@ Defining and using a custom stylesheet
 
 You can create your own custom stylesheet.  Here is how:
 
-1. Make a copy of ``styles.xml``, which is in the distribution.
+1. Make a copy of ``styles.odt``, which is in the distribution.
 
-2. Open your copy of ``styles.xml`` in ``oowriter``.  Modify styles
+2. Open your copy of ``styles.odt`` in ``oowriter``.  Modify styles
    in that document.  Then, save it.
 
-3. When you run ``rst2odt.py``, use the ``--stylesheet=<URL>`` or
-   ``--stylesheet-path=<file>`` to use your custom stylesheet.  Run
-   ``rst2odt.py --help`` to learn more about these options.
+3. When you run ``rst2odt.py``, use the ``--stylesheet`` command
+   line option to use your custom stylesheet.  Run ``rst2odt.py
+   --help`` to learn more about these options.
 
 
 Why custom stylesheets
@@ -679,10 +630,10 @@ contain them, do the following:
 
 4. When you run ``odtwriter``, specify the ``--odf-config-file``
    option.  You might also want to specify your styles document
-   using the ``--stylesheet-path`` option in order to include your
+   using the ``--stylesheet`` option in order to include your
    custom style definitions.  For example::
 
-       rst2odt.py --odf-config-file=mymappingfile.ini --stylesheet-path=mystyles.odt mydoc.txt mydoc.odt
+       rst2odt.py --odf-config-file=mymappingfile.ini --stylesheet=mystyles.odt mydoc.txt mydoc.odt
 
 
 
@@ -705,38 +656,15 @@ table of contents.   That feature is under menu item::
 Syntax highlighting
 -------------------
 
-**Note:** Syntax highlighting uses the Docutils class
-``docutils.parsers.rst.Directive``.  Therefore, it requires a very
-recent version of Docutils, specifically version 0.5 or later.
-
 ``odtwriter`` can add syntax highlighting to code in code
 blocks.  In order to activate this, do all of the following:
 
-1. Install Pygments_ and ...
+1. Install `Pygments`_ and ...
 
 2. Use the command line flag ``--add-syntax-highlighting``.
    Example::
 
-       $ rst2odt.py -g --add-syntax-highlight test.txt test.odt
-
-   and ...
-
-3. In your reST (.txt) file, include code to which syntax
-   highlighting is to be applied inside a ``sourcecode`` directive,
-   for example:
-  
-   .. parsed-literal::
-
-       .. sourcecode:: *language*
-
-           def test():
-               print 'hi'
-               return 'something'
-
-   where *language* is the programming language, for example
-   "python", "java", etc.  See the 
-   `Pygments documentation`_ for a list of 
-   `languages supported by Pygments`_.
+       $ rst2odt.py --add-syntax-highlight test.txt test.odt
 
 The following styles are defined in styles.odt and are used for
 literal code blocks and syntax highlighting:
@@ -776,64 +704,6 @@ button at the top of the Styles and Formatting window.  You may
 also need to select "All Styles" from the drop-down selection list
 at the bottom of the Styles and Formatting window.
 
-
-Controlling syntax highlighting within a document
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-By default, when you use the ``--add-syntax-highlighting`` command
-line flag, syntax highlighting in literal blocks is on and the
-Python lexer is used.  You can change this within your reST document
-with the following directive:
-
-.. parsed-literal::
- 
-    .. sourcecode:: *newstate*
-
-or:
-
-.. parsed-literal::
-
-    .. sourcecode:: *language*
-
-where:
-
-- *newstate* is either "on" or "off", which makes highlighting
-  active or inactive.
-
-- *language* is the language in literal code blocks. It should be
-  one of the *"short names"* listed at Pygments' `Available
-  Lexers`_, for example "python", "pycon", "java", "cpp", "c",
-  "perl", "javascript", etc.
-
-Examples::
-
-    .. sourcecode:: on
-    .. sourcecode:: python
-    .. sourcecode:: off
-    .. sourcecode:: java
-    .. sourcecode:: on
-
-A few additional notes and hints:
-
-- The syntax highlighting state and language set by this
-  directive remain in effect until the next ``sourcecode`` directive
-  is encountered in the reST document.
-
-- In order to turn syntax highlighting on (or off) and set the
-  language, you will need to use this directive twice.
-
-- Special note to Pythonistas: there is a separate lexer for
-  examples of code from the Python interactive prompt and console
-  output or doctests.  The alias for that lexer is "pycon".
-
-.. _`Pygments documentation`:
-	http://pygments.org/docs/
-
-.. _`languages supported by Pygments`:
-	http://pygments.org/languages/
-
-.. _`Available Lexers`:
-	http://pygments.org/docs/lexers/
 
 
 The container directive
@@ -913,7 +783,7 @@ Endnotes -- There are command line flags that control whether
 ``odtwriter`` creates endnotes instead of footnotes.  Endnotes
 appear at the end of the document instead of at the bottom of the
 page.  See flags ``--endnotes-end-doc`` and
-``--no-endnotes-end-doc`` in section `Command line flags`_.
+``--no-endnotes-end-doc`` in section `Command line options`_.
 
 
 Images and figures
@@ -1055,13 +925,5 @@ pick up the default paper size on platforms where the program
     http://www.pythonware.com/products/pil/
 
 
-.. Configuration for Emacs
-..
-   Local Variables:
-   mode: rst
-   indent-tabs-mode: nil
-   sentence-end-double-space: t
-   fill-column: 68
-   End:
 
 
