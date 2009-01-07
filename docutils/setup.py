@@ -121,6 +121,7 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
                  'tools/rst2pseudoxml.py',
                  'tools/rstpep2html.py',
                  'tools/rst2odt.py',
+                 'tools/rst2odt_prepstyles.py',
                  ],}
 """Distutils setup parameters."""
 
