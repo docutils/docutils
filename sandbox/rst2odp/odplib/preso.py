@@ -161,12 +161,11 @@ class Preso(object):
         content = odp.cat('content.xml')
         content_tree = et.fromstring(content)
         slides = content_tree.findall('{urn:oasis:names:tc:opendocument:xmlns:office:1.0}body/{urn:oasis:names:tc:opendocument:xmlns:office:1.0}presentation/{urn:oasis:names:tc:opendocument:xmlns:drawing:1.0}page')
-        slide_xml = None
-        for slide in slides:
-            name = slide.attrib.get('{urn:oasis:names:tc:opendocument:xmlns:drawing:1.0}name', None) 
-            if name in ['page%d' %page_num, 'Slide %d'%page_num]: 
-                slide_xml = slide
-                break
+        try:
+            slide_xml = slides[page_num - 1]
+        except IndexError, e:
+            print "Can't find page_num %d only %d slides" %(page_num, len(slides))
+            raise
         if slide_xml:
             self.slides.append(XMLSlide(self, slide_xml, odp))
 
