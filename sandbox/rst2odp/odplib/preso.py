@@ -58,6 +58,7 @@ for key, value in DOC_CONTENT_ATTRIB.items():
 TEXT_COUNT = 100
 DATA_DIR =  os.path.join(os.path.dirname(__file__), 'data')
 
+MONO_FONT = 'Courier New' # I like 'Envy Code R'
 
 def cwd_decorator(func):
     """
@@ -113,10 +114,18 @@ def to_xml(node):
     xml = fout.getvalue()
     return xml
 
-def pretty_xml(string_input):
+def pretty_xml(string_input, add_ns=False):
     """ pretty indent string_input """
+    if add_ns:
+        elem = '<foo '
+        for key, value in DOC_CONTENT_ATTRIB.items():
+            elem += ' %s="%s"' %(key, value)
+        string_input = elem + '>' + string_input + '</foo>'
     doc = minidom.parseString(string_input)
-    s1 = doc.toprettyxml('  ')
+    if add_ns:
+        s1 = doc.childNodes[0].childNodes[0].toprettyxml('  ')
+    else:
+        s1 = doc.toprettyxml('  ')
     return s1
 
 
@@ -325,11 +334,26 @@ class Picture(object):
     COUNT = 0
     CM_SCALE = 30.
 
-    def __init__(self, filepath):
+    def __init__(self, filepath, **kw):
         self.filepath = filepath
         image = Image.open(filepath)
         self.w, self.h = image.size
         self.internal_name = self._gen_name()
+        self.user_defined = {}
+        self._process_kw(kw)
+
+    def update_frame_attributes(self, attrib):
+        """ For positioning update the frame """
+        if 'align' in self.user_defined:
+            align = self.user_defined['align']
+            if 'top' in align:
+                attrib['style:vertical-pos'] = 'top'
+            if 'right' in align:
+                attrib['style:horizontal-pos'] = 'right'
+        return attrib
+
+    def _process_kw(self, kw):
+        self.user_defined = kw
 
     def _gen_name(self):
         ext = os.path.splitext(self.filepath)[1]
@@ -337,14 +361,25 @@ class Picture(object):
         Picture.COUNT += 1
         return name
     
-    def get_width(self, measurement):
-        if measurement == 'cm':
+    def get_width(self, measurement=None):
+        if measurement is None or measurement == 'cm':
+            measurement = 'cm'
             scale = Picture.CM_SCALE
+        if 'width' in self.user_defined:
+            return self.user_defined['width'] + 'pt'
+        if 'scale' in self.user_defined:
+            return '%spt' % (self.w * float(self.user_defined['scale'])/100)
         return str(self.w/scale)+measurement
 
-    def get_height(self, measurement):
+    def get_height(self, measurement=None):
+        if measurement is None:
+            measurement = 'cm'
         if measurement == 'cm':
             scale = Picture.CM_SCALE
+        if 'height' in self.user_defined:
+            return self.user_defined['height'] + 'pt'
+        if 'scale' in self.user_defined:
+            return '%spt' % (self.h * float(self.user_defined['scale'])/100)
         return str(self.h/scale)+measurement
 
 
@@ -372,6 +407,8 @@ class Slide(object):
         self.cur_element = None # if we write it could be to title,
                                 # text or notes (Subclass of
                                 # MixedContent)
+
+        self.insert_line_break = False
 
         # xml elements
         self._page = None
@@ -528,7 +565,8 @@ class Slide(object):
             self.add_text_frame()
         self.cur_element.write(text, **kw)
 
-    def add_node(self, node, attrib):
+    def add_node(self, node, attrib=None):
+        attrib = attrib or {}
         if self.cur_element is None:
             self.add_text_frame()
         self.cur_element.add_node(node, attrib)
@@ -549,18 +587,20 @@ class Slide(object):
 
 class MixedContent(object):
     def __init__(self, slide, name, attrib=None):
+        self._default_align = 'start'
         self.slide = slide
         if attrib is None:
             attrib = {}
         self.node = el(name, attrib)
         self.cur_node = self.node
         self.pending_styles = []
+        self.dirty = False # keep track if we have been written to
 
     def parent_of(self, name):
         """ 
         go to parent of node with name, and set as cur_node.  Useful
         for creating new paragraphs
-        """
+       """
         if not self._in_tag(name):
             return
         node = self.cur_node
@@ -575,8 +615,19 @@ class MixedContent(object):
         """
         return self._in_tag('text:p')
 
+    def _is_last_child(self, tagname, attributes=None):
+        """
+        Check if last child of cur_node is tagname with attributes
+        """
+        children = self.cur_node.getchildren()
+        if children:
+            result = self._is_node(tagname, attributes, node=children[-1])
+            return result
+        return False
+        
     def _is_node(self, tagname, attributes=None, node=None):
-        node = node or self.cur_node
+        if node is None:
+            node = self.cur_node
         if attributes:
             return node.tag == tagname and node.attrib == attributes
         else:
@@ -643,7 +694,10 @@ class MixedContent(object):
         if add_paragraph or self.slide.paragraph_attribs:
             p_attrib = {'text:style-name':para.name}
             p_attrib.update(self.slide.paragraph_attribs)
-            if not self._in_tag('text:p', p_attrib):
+            if self._is_last_child('text:p', p_attrib):
+                children = self.cur_node.getchildren()
+                self.cur_node = children[-1] 
+            elif not self._in_tag('text:p', p_attrib):
                 self.parent_of('text:p')
                 # Create paragraph style first
                 self.slide._preso.add_style(para)
@@ -658,6 +712,7 @@ class MixedContent(object):
                     self.slide._preso.add_style(text)
                     self.add_node('text:span', attrib={'text:style-name':text.name})
 
+
     def write(self, text, add_p_style=True, add_t_style=True):
         """
         see mixed content
@@ -667,6 +722,20 @@ class MixedContent(object):
         white spaces then dealing with the '' (empty strings) which
         would be the extra spaces
         """
+        if self.slide.insert_line_break:
+            # needs to be inside text:p
+            add_p = False
+            if not self._in_tag('text:p'):
+                # we can just add a text:p and no line-break
+                add_p = True
+                # Create paragraph style first
+                self.add_node('text:p')
+            else:
+                self.add_node('text:line-break')
+                self.pop_node()
+            self.slide.insert_line_break = False
+            if add_p:
+                self.pop_node()
 
         self._add_styles(add_p_style, add_t_style)
 
@@ -675,8 +744,14 @@ class MixedContent(object):
             text = text[:-1]
 
         seen_space = False
-        for chunk in text.split(' '): # deal with white space 
-            # see  http://books.evc-cit.info/odbook/ch03.html#whitespace-section 
+        for i, chunk in enumerate(text.split(' ')): # deal with white space 
+            children = self.cur_node.getchildren()
+            # if previous write ended with spaces deal with them
+            if chunk == '' and children and children[-1].tag == 'text:s' and not children[-1].tail:
+                seen_space = True
+                self.add_node('text:s', {})
+                self.pop_node()
+                continue
             if chunk == '' and not seen_space:
                 seen_space = True
             elif chunk == '':
@@ -686,22 +761,38 @@ class MixedContent(object):
             else:
                 seen_space = False
 
-            children = self.cur_node.getchildren()
+
             if children:
                 child = children[-1]
                 cur_text = child.tail or ''
-                if chunk == '' or (cur_text and cur_text[-1] != ' '):
+                #if chunk == '':
+                #if chunk == '' or (cur_text and cur_text[-1] != ' '):
+                if chunk == '' or (i !=0 and cur_text and cur_text[-1] != ' '):
                     # need to put ONE space in for initial spaces
                     # or in between chunks
                     chunk = ' ' + chunk
+                if chunk and cur_text and cur_text[-1] == ' ':
+                    # handle two spaces in between text
+                    self.add_node('text:s', {})
+                    self.pop_node()
                 child.tail = cur_text + chunk
             else:    
                 cur_text = self.cur_node.text or ''
-                if chunk == '' or (cur_text and cur_text[-1] != ' '):
+                #if chunk == '':
+                #if chunk == '' or (cur_text and cur_text[-1] != ' '):
+                if chunk == '' or (i != 0 and cur_text and cur_text[-1] != ' '):
                     # need to put a space in for initial spaces
                     chunk = ' ' + chunk
-                self.cur_node.text = cur_text + chunk
-
+                if chunk and cur_text and cur_text[-1] == ' ':
+                    # handle two spaces in between text
+                    self.add_node('text:s', {})
+                    self.pop_node()
+                    # we now have children add to tail
+                    children = self.cur_node.getchildren()
+                    children[-1].tail = chunk
+                else:
+                    self.cur_node.text = cur_text + chunk
+        self.dirty = True
 
 class Footer(MixedContent):
     def __init__(self, slide):
@@ -723,11 +814,12 @@ class PictureFrame(MixedContent):
             'presentation:style-name':'pr2',
             'draw:style-name':'gr2',
             'draw:layer':'layout',
-            'svg:width':picture.get_width('cm'),
-            'svg:height':picture.get_height('cm'),
+            'svg:width':picture.get_width(),
+            'svg:height':picture.get_height(),
             'svg:x':'1.4cm',
             'svg:y':'4.577cm',
             }
+        attrib = picture.update_frame_attributes(attrib)
         MixedContent.__init__(self, slide, 'draw:frame', attrib=attrib)
         
 
@@ -749,7 +841,7 @@ class TextFrame(MixedContent):
         self.text_styles = ['P1']
 
         self.cur_node = self._text_box
-        self._default_align = 'start'
+
 
     def to_xml(self):
         return to_xml(self.get_node())
@@ -949,17 +1041,25 @@ class OdtCodeFormatter(formatter.Formatter):
     def format(self, source, outfile):
         tclass = pygments.token.Token
         for ttype, value in source:
+            # getting ttype, values like (Token.Keyword.Namespace, u'')
+            if value == '':
+                continue
             style_attrib = self.get_style(ttype)
             tstyle = TextStyle(**style_attrib)
             self.writable.slide.push_style(tstyle)
-            parts = value.split('\n')
-            for part in parts[:-1]:
-                self.writable.write(part)
+            if value == '\n':
                 self.writable.add_node('text:line-break', {})
                 self.writable.pop_node()
-            self.writable.write(parts[-1])
+            else:
+                parts = value.split('\n')
+                for part in parts[:-1]:
+                    self.writable.write(part)
+                    self.writable.add_node('text:line-break', {})
+                    self.writable.pop_node()
+                self.writable.write(parts[-1])
             self.writable.slide.pop_style()
             self.writable.pop_node()
+
             
     def get_style(self, tokentype):
         while not self.style.styles_token(tokentype):
@@ -967,7 +1067,7 @@ class OdtCodeFormatter(formatter.Formatter):
         value = self.style.style_for_token(tokentype)
         # default to monospace
         results = {
-            'fo:font-family':"Courier New",
+            'fo:font-family':MONO_FONT,
             'style:font-family-generic':"swiss",
             'style:font-pitch':"fixed"}
         if value['color']:

@@ -7,6 +7,8 @@ Usually it is run like so
 
 rst2odp path/to/rstfile.rst output.odp
 
+(use --traceback -r 3 for debug)
+
 Styling is supported with the ``--template-file`` switch, just pass it
 an .otp file
 
