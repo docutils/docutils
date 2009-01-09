@@ -151,6 +151,24 @@ class Preso(object):
         self._auto_styles = sub_el(self._root, 'office:automatic-styles')
         o_body = sub_el(self._root, 'office:body')
         self._presentation = sub_el(o_body, 'office:presentation')
+        
+    def add_imported_auto_style(self, style_node):
+        self._auto_styles.append(style_node)
+        style_node.parent = self._auto_styles
+
+    def import_slide(self, preso_file, page_num):
+        odp = zipwrap.ZipWrap(preso_file)
+        content = odp.cat('content.xml')
+        content_tree = et.fromstring(content)
+        slides = content_tree.findall('{urn:oasis:names:tc:opendocument:xmlns:office:1.0}body/{urn:oasis:names:tc:opendocument:xmlns:office:1.0}presentation/{urn:oasis:names:tc:opendocument:xmlns:drawing:1.0}page')
+        slide_xml = None
+        for slide in slides:
+            name = slide.attrib.get('{urn:oasis:names:tc:opendocument:xmlns:drawing:1.0}name', None) 
+            if name in ['page%d' %page_num, 'Slide %d'%page_num]: 
+                slide_xml = slide
+                break
+        if slide_xml:
+            self.slides.append(XMLSlide(self, slide_xml, odp))
 
     def get_data(self, style_file=None):
         fd, filename = tempfile.mkstemp()
@@ -313,6 +331,19 @@ class Animation(object):
                                                     'smil:to':'visible'})
         return par
 
+                 
+class ImportedPicture(object):
+    """
+    Pictures used when importing slides
+    """
+    def __init__(self, name, data):
+        self.internal_name = name
+        self.data = data
+        
+    def get_data(self):
+        return self.data
+
+
 class Picture(object):
     """
     Need to convert to use image scale::
@@ -387,6 +418,74 @@ class Picture(object):
     def get_data(self):
         return open(self.filepath).read()
 
+class XMLSlide(object):
+    PREFIX = 'IMPORT%d-%s'
+    COUNT = 0
+    def __init__(self, preso, node, odp_zipwrap):
+        self.preso = preso
+        self.page_node = node
+        self.footer = None
+        self.mangled = self._mangle_name()
+        self._init(odp_zipwrap)
+
+    def page_num(self):
+        """ not an int, usually 'Slide 1' or 'page1' """
+        name = self.page_node.attrib.get('{urn:oasis:names:tc:opendocument:xmlns:drawing:1.0}name', None) 
+        return name
+
+    def _mangle_name(self):
+        name = self.PREFIX%(self.COUNT, self.page_num())
+        self.COUNT += 1
+        return name
+
+    def _init(self, odp_zipwrap):
+
+        # pull pictures out of slide
+        images = self.page_node.findall('*/{urn:oasis:names:tc:opendocument:xmlns:drawing:1.0}image')
+        for image in images:
+            path = image.attrib.get('{http://www.w3.org/1999/xlink}href')
+            data = odp_zipwrap.cat(path)
+            name = path.split('/')[1]
+            self.preso._pictures.append(ImportedPicture(name, data))
+
+        # pull styles out of content.xml (draw:style-name, draw:text-style-name, text:style-name)
+        styles_to_copy = {} #map of (attr_name, value) to value
+        attr_names = ['{urn:oasis:names:tc:opendocument:xmlns:drawing:1.0}style-name',
+                      '{urn:oasis:names:tc:opendocument:xmlns:drawing:1.0}text-style-name',
+                      '{urn:oasis:names:tc:opendocument:xmlns:text:1.0}style-name']
+        for node in self.page_node.getiterator():
+            for attr_name in attr_names:
+                style = node.attrib.get(attr_name, None)
+                if style:
+                    styles_to_copy[style] = attr_name
+                    # mangle name
+                    node.attrib[attr_name] = self.mangled + style
+
+        auto_attr_names = ['{urn:oasis:names:tc:opendocument:xmlns:style:1.0}name']
+        found = {}
+        # get content.xml automatic-styles
+        content = odp_zipwrap.cat('content.xml')
+        content_node = et.fromstring(content)
+        auto_node = content_node.findall('{urn:oasis:names:tc:opendocument:xmlns:office:1.0}automatic-styles')[0]
+
+        for node in auto_node.getchildren():
+            for attr_name in auto_attr_names:
+                attr_value = node.attrib.get(attr_name, None)
+                if  attr_value in styles_to_copy:
+                    found[attr_value] = 1
+                    # mangle name
+                    node.attrib[attr_name] = self.mangled + attr_value
+                    self.preso.add_imported_auto_style(node)
+        
+        
+        
+        
+
+    def get_node(self):
+        return self.page_node                               
+
+        
+                          
 class Slide(object):
     def __init__(self, preso, page_number=None):
         self.title_frame = None
