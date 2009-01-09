@@ -78,6 +78,10 @@ class Writer(writers.Writer):
              ['--template-file'],
              {'action': 'store',
               'dest': 'template_file'}),
+            ('Specify a monospace font to use ("Courier New" default)',
+             ['--mono-font'],
+             {'action': 'store',
+              'dest': 'mono_font'})
             )
         )
     def __init__(self):
@@ -97,6 +101,9 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         nodes.GenericNodeVisitor.__init__(self, document)
         self.settings = document.settings
         self.preso = preso.Preso()
+        
+        if self.settings.mono_font:
+            preso.MONO_FONT = self.settings.mono_font
 
         self.in_node = {} # map of tagname to True if we are in/under this
         self._reset()
@@ -230,6 +237,14 @@ class ODPTranslator(nodes.GenericNodeVisitor):
             self.cur_slide.add_text_frame()
         elif self.at('doctest_block'):
             pass
+        
+        # # add a line break if previous paragraph exist
+        # if self.cur_slide.text_frames:
+        #     bottom = self.cur_slide.text_frames[-1]
+            
+        #     if bottom.dirty:
+        #         bottom.add_node('text:line-break', {})
+        #         bottom.pop_node()
 
     def depart_paragraph(self, node):
         classes = node.attributes.get('classes', [])
@@ -317,6 +332,26 @@ class ODPTranslator(nodes.GenericNodeVisitor):
     def depart_date(self, node):
         self.depart_attribution(node)
 
+    def visit_field(self, node):
+        pass
+
+    def depart_field(self, node):
+        pass
+
+    def visit_field_name(self, node):
+        pass # maybe put this somewhere
+
+    def depart_field_name(self, node):
+        pass
+
+    def visit_field_body(self, node):
+        self.visit_attribution(node)
+
+    def depart_field_body(self, node):
+        self.depart_attribution(node)
+
+
+        
     def visit_comment(self, node):
         pass
     def depart_comment(self, node):
@@ -389,7 +424,7 @@ class ODPTranslator(nodes.GenericNodeVisitor):
 
     def visit_literal(self, node):
         style = preso.TextStyle(**{
-                'fo:font-family':"Courier New",
+                'fo:font-family':preso.MONO_FONT,
                 'style:font-family-generic':"swiss",
                 'style:font-pitch':"fixed"})
         self.cur_slide.push_style(style)
@@ -541,7 +576,7 @@ class ODPTranslator(nodes.GenericNodeVisitor):
             self.cur_slide.add_code(input, language)
         else:
             style = preso.TextStyle(**{
-                    'fo:font-family':"Courier New",
+                    'fo:font-family':preso.MONO_FONT,
                     'style:font-family-generic':"swiss",
                     'style:font-pitch':"fixed"})
             self.cur_slide.push_style(style)
@@ -597,11 +632,13 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         self.depart_bullet_list(node)
 
     def visit_doctest_block(self, node):
+        self.cur_slide.insert_line_break = True
         input = node.astext()
         language = 'pycon'
         self.cur_slide.add_code(input, language)
 
     def depart_doctest_block(self, node):
+        #self.cur_slide.insert_line_break = True
         pass
 
     def _get_text_attribs(self, node):
