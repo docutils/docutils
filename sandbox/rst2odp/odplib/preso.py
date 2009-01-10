@@ -218,12 +218,18 @@ class Preso(object):
 <manifest:manifest xmlns:manifest="urn:oasis:names:tc:opendocument:xmlns:manifest:1.0">
  <manifest:file-entry manifest:media-type="application/vnd.oasis.opendocument.presentation" manifest:full-path="/"/>
 """
-        for filename in zip.cat('/'):
+        files = zip.cat('/')
+        files.extend(zip.cat('/Pictures'))
+        for filename in files:
             filetype = ''
             if filename.endswith('.xml'):
                 filetype = 'text/xml'
             elif filename.endswith('.jpg'):
                 filetype = 'image/jpeg'
+            elif filename.endswith('.gif'):
+                filetype = 'image/gif'
+            elif filename.endswith('.png'):
+                filetype = 'image/png'
             elif filename == 'Configurations2/':
                 filetype = 'application/vnd.sun.xml.ui.configuration'
             
