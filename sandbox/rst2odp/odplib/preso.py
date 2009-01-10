@@ -134,6 +134,7 @@ class Preso(object):
 
     def __init__(self):
         self.slides = []
+        self.limit_pages = [] # can be list of page numbers (not indexes to export)
         self._pictures = [] # list of Picture instances
         self._footer_count = 0
         # xml elements 
@@ -260,6 +261,9 @@ class Preso(object):
 
     def to_xml(self):
         for i, slide in enumerate(self.slides):
+            if self.limit_pages and i+1 not in self.limit_pages:
+
+                continue
             if slide.footer:
                 footer_node = slide.footer.get_node()
                 self._presentation.append(footer_node)

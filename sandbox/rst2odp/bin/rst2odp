@@ -69,6 +69,24 @@ class SyntaxHighlightCodeBlock(rst.Directive):
 
 rst.directives.register_directive('code-block', SyntaxHighlightCodeBlock)
 
+class ImportNode(nodes.General, nodes.Inline, nodes.Element): pass
+
+class ImportSlideBlock(rst.Directive):
+    required_arguments = 2
+    optional_arguments = 0
+    has_content = False
+    node_class = ImportNode
+    #
+    # See visit_literal_block for code that processes the node 
+    #   created here.
+    def run(self):
+        odp_path = self.arguments[0]
+        page_num = self.arguments[1]
+        node = ImportNode(odp_path=odp_path, page_num=page_num)
+        return [node]
+
+rst.directives.register_directive('importslide', ImportSlideBlock)
+
 class Writer(writers.Writer):
     settings_spec = (
         'ODP Specific Options', # option group title
@@ -81,7 +99,11 @@ class Writer(writers.Writer):
             ('Specify a monospace font to use ("Courier New" default)',
              ['--mono-font'],
              {'action': 'store',
-              'dest': 'mono_font'})
+              'dest': 'mono_font'}),
+            ('Specify pages to export (2,3,9-10)',
+             ['--pages-to-output'],
+             {'action': 'store',
+              'dest': 'pages_to_output'})
             )
         )
     def __init__(self):
@@ -102,6 +124,9 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         self.settings = document.settings
         self.preso = preso.Preso()
         
+        if self.settings.pages_to_output:
+            self.preso.limit_pages = num_string_to_list(self.settings.pages_to_output)
+
         if self.settings.mono_font:
             preso.MONO_FONT = self.settings.mono_font
 
@@ -641,6 +666,11 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         #self.cur_slide.insert_line_break = True
         pass
 
+    def visit_importslide(self, node):
+        pass
+
+    
+
     def _get_text_attribs(self, node):
         classes = node.attributes.get('classes', [])
         attribs = {}
@@ -650,6 +680,33 @@ class ODPTranslator(nodes.GenericNodeVisitor):
             elif c in S5_SIZES:
                 attribs['fo:font-size'] = S5_SIZES[c]
         return attribs
+
+def num_string_to_list(numstr):
+    """
+    >>> num_string_to_list('2,5-7')
+    [2, 5, 6, 7]
+    >>> num_string_to_list('1')
+    [1]
+
+    """
+    nums = []
+    if ',' in numstr:
+        comma_delim = numstr.split(',')
+        for part in comma_delim:
+            if '-' in part:
+                start, end = [int(x) for x in part.split('-')]
+                for num in range(start, end+1):
+                    nums.append(num)
+            else:
+                nums.append(int(part))
+    elif '-' in numstr:
+        start, end = [int(x) for x in numstr.split('-')]
+        for num in range(start, end+1):
+            nums.append(num)
+    else:
+        nums.append(int(numstr))
+    return nums
+            
 
 class BinaryFileOutput(io.FileOutput):
     """
@@ -696,5 +753,12 @@ def main(prog_args):
                                enable_exit_status=enable_exit_status)
 
 
+def _test():
+    import doctest
+    doctest.testmod()
+
 if __name__ == "__main__":
-    sys.exit(main(sys.argv) or 0)
+    if '--doctest' in sys.argv:
+        _test()
+    else:
+        sys.exit(main(sys.argv) or 0)
