@@ -12,7 +12,7 @@ latex2e writer. Latex writer variants in this project are
 
 #. enhancements or improvements of the latex2e writer, or
 
-#. alternative latex writers for special needs.
+#. `alternative latex writers`_ for special needs.
 
 .. contents::
 
@@ -22,147 +22,102 @@ latex2e writer. Latex writer variants in this project are
 Questionnaire
 =============
 
-1. Do you use custom `LaTeX style sheets`_ with Docutils-generated LaTeX
-   files?
+#. Which `default font`_ do you prefer for the output?
 
-2. Would you prefer the style sheet to be a LaTeX package or inclusion?
+#. Which default `font encoding`_ do you prefer for the output?
 
-3. Did you ever use `custom roles`_ and realise that the exported
-   LaTeX code does not compile?
-
-4. Did you ever use `custom roles`_, ``myclass``, say, and define a
-   ``\docutilsrole<myclassname>`` LaTeX command for it?
-
-5. If YES, how important is backwards compatibility?
-   Would you update your style-sheets if the interface improves
-   significantly but non-compatible?
-
-6. Which `default font`_ do you prefer for the output?
-
-7. Which default `font encoding`_ do you prefer for the output?
-
-   Did you have problems with missing ``aeguill.sty`` package?
+   Did you experience problems with a missing ``aeguill.sty`` package?
    
    Did you have problems with Find or Export of words with
    non-ASCII chars (e.g. Umlauts) in the PDF reader (Acrobat, xpdf, ...)
 
+#. Would you use/configure a `configurable transition element`_?
+
+#. Does the latex2e writer need a `--stylesheet-path option`_?
+
+
 #. Feature wishes or ideas of improvement for the `latex2e` writer.
+
 
 Users of ``rst2latex2.py`` are encouraged to respond by mail to the
 docutils-users list.
 
+Implemented Changes
+===================
+
+Changes to the latex2e writer in the SVN version (but not in docutils 0.5).
+
+Custom roles
+------------
+
+New Feature: failsave implementation
+ As with classes to HTML objects, class arguments are silently ignored if
+ there is not styling rule for this class in a custom style sheet.
+
+TODO: Custom roles based on standard roles.
+
+Backwards compatibility
+~~~~~~~~~~~~~~~~~~~~~~~
+
+It is possible to define multiple class arguments for a custom role. These
+will be translated to
+
+  \DUspan{argA,argB}{<content>}
+
+which is (with the default definition of ``\DUspan``) equivalent to::
+
+  {\docutilsroleargA \docutilsroleargB{<content>}}
+  
+i.e. only the last styling command may take an argument.  
+
+This differs from the implementation in Docutils version up to 0.5, where
+the styling commands where nested like
+``\docutilsroleargA{\docutilsroleargB{<content>}}`` so that all of them
+could be defined as taking an argument.
+
+The drawback of this implementation was that documents with custom roles
+produced LaTeX errors if the styling macro definition was missing.
 
 LaTeX style sheets
-==================
+------------------
 
-Would you prefer the style sheet to be a LaTeX *package* or *inclusion*?
+New Feature: 
+  LaTeX packages can be used as ``--stylesheet`` argument without
+  restriction.
 
-  No preference for .sty or .tex.
-
-  Maybe it would be useful to have both stylesheets (``*.sty``) and tex
-  snippets.
-
-Comparison
-----------
-
-LaTeX package: ``<name>.sty``
-  Input with ``\usepackage{<name>}``, expects the file extension ``.sty``.
-
-  +2  Existing LaTeX packages can be used as --stylesheet argument.
-
-  +1  Command names can contain the char @ (no \makeatletter needed).
-
-  -1  Warnings, if home-made style sheets do not use the proper LaTeX
-      package commands.
-
-  +1  Clear distinction between self-contained, complete LaTeX
-      documents and style sheets (cf. ``*.html`` vs. ``*.css``).
-
-  -1  not backwards compatible.
-
-LaTeX inclusion: ``<name>.tex``
-  Input with ``\input{<name>}`` or ``\input{<name.tex>}``.
-  Expects file extension ".tex".
-
-  -1  Some existing LaTeX packages fail if given as ``--stylesheet`` argument
-      (as they must be called via \usepackage, e.g. in a home-made custom
-      style sheet).
-
-  -0  Command names with char @ must be wrapped in ``\makeatletter``
-      ``\makeatother``.
-
-  +1  Backwards compatible.
-
-Proposal
---------
-
-"intelligent" handling: use ``\usepackage`` if style sheet has ``.sty`` or no
-extension and ``\input`` else
+Implementation: 
+  Use ``\usepackage`` if style sheet has ``.sty`` or no
+  extension and ``\input`` else.
 
 Rationale:
   while ``\input`` works with extension as well as without extension,
   ``\usepackage`` expects the package name without extension. (The latex2e
   writer will drop a ``.sty`` extension to be more liberal.)
 
-::
-
-  if stylesheet:
-     (stylesheet, styleformat) = os.path.splitext(stylesheet)
-     if styleformat in ["", ".sty"]::
-         self.head_prefix.append(r"\usepackage{%s}" % (stylesheet))
-     else
-         self.head_prefix.append(r"\input{%s}" % (stylesheet))
-
-Examples::
-
-  rst2latex.py --stylesheet==mathptmx      # use mathptmx.sty package
-
-  rst2latex.py --stylesheet==mathptmx.sty  # use mathptmx.sty package
-
-  rst2latex.py --stylesheet==preamble.tex  # input preamble.tex
-
-  rst2latex.py --stylesheet==preamble.mystyle  # input preamble.mystyle
-
-Put this in a loop over all arguments, so that ::
-
-  rst2latex.py --stylesheet==mathptmx,parskip,preamble.tex
-
-uses packages `mathptmx` (Times fonts) and `parskip` (separate paragraphs by
-vertical white-space) as well as the tex snippet ``preamble.tex``
 
 Backwards compatibility
------------------------
+~~~~~~~~~~~~~~~~~~~~~~~
 
-Currently, if no filename extension is given in the ``stylesheet`` argument,
-``.tex`` is assumed (by latex).
+Up to Docutils 0.5, if no filename extension is given in the ``stylesheet``
+argument, ``.tex`` is assumed (by latex).
 
-This behaviour will change.
+Since Docutils 0.6, a stylesheet without filename extension is assumed to be
+a LaTeX package (``*.sty``) and referenced with the ``\usepackage`` command.
 
 Needed Action:
   Always specify the extension if you want the style sheet to be
   ``\input`` by LaTeX.
 
-Custom roles
-============
 
-Did you ever use custom roles and realise that the exported LaTeX code does
-not compile?
-
-  yes
-
-  I don't use custom roles, primarily because I'm afraid of such problems.
-
-If YES, how important is backwards compatibility? Would you update your
-style-sheets if the interface improves significantly but non-compatible?
-
-  I would update, but as I suggested in the other thread, I do not see any
-  advantage in using a shorter prefix than 'docutils'.
+Proposed Changes
+========================
 
 Default font
-============
+------------
 
 Which default font do you prefer for the output?
 
+Answers:
   By default, PDFLaTeX uses embedded computer modern family, which look good
   on paper but poor on LCDs (even if outlined, due to suboptimal hinting),
   and result in large PDFs.  rst2pdf uses the "standard" PDF fonts by
@@ -171,7 +126,7 @@ Which default font do you prefer for the output?
   smaller file size.
 
 Using different fonts (e.g. standard postscript fonts) can be achieved
-easily with the ``--stylesheet=times`` (or similar) command line option or
+easily with the ``--stylesheet=mathptmx`` (or similar) command line option or
 configuration setting or by choosing a font package in the style-sheet.
 
   Hmm, is this documented in and easy-to-discover place in the docutils /
@@ -182,7 +137,7 @@ Not yet.
 Font embedding must be configured in the LaTeX installation.
 
 Proposal
---------
+~~~~~~~~
 
 Use one of the Postscript default fonts supported by
 standard LaTeX (pp 10 and 11 of the `PSNFSS documentation`_)
@@ -207,26 +162,27 @@ Utopia
   overridden.
 
 Font encoding
-=============
+-------------
 
 In modern LaTeX distributions (MikTeX, TeXLive, teTeX) T1 encoded fonts
 belong to the "core" while the "ae" (and even more the "aeguill")
 workarounds are optional (and not always installed by default).
 
-"ae" uses the original 7-bit encoded CM fonts and combines additional
-(non-ASCII) characters. This can lead to suboptimal appearance and to
-problems if text shall be extracted from (or found in) the generated
-PDF document.
+"ae" uses the original 7-bit encoded CM fonts and combines accented
+characters from base char and accent glyph. This can lead to suboptimal
+appearance and to problems if text shall be extracted from (or found in) the
+generated PDF document.
 
 Proposal
---------
+~~~~~~~~
 
 Use the T1 font encoding as default.
 
 
 Adaptive preamble
-=================
+-----------------
 
+Problem:
   TeXlive is a large download, and in addition to the base package
   rst2latex also requires a bunch of extra .sty packages, even if they
   aren't used in the current document.
@@ -236,34 +192,200 @@ Solution:
   needed in the current document.
 
 Proposal
---------
+~~~~~~~~
 
-sample definitions and commands in a dictionary, e.g.::
+Collect definitions and commands in a dictionary.
 
-	# Fallback definitions for Docutils-specific commands
-        self.latex_fallbacks = {}
+Only write to the preamble if actually needed in the document.
 
-	...
-
-        # Fallback definitions for docutils-specific latex objects
-        required_fallbacks = self.latex_fallbacks.keys()
-        required_fallbacks.sort()
-        for key in required_fallbacks:
-            self.head_prefix.append(self.latex_fallbacks[key])
-
- 	...
-
-	def visit_inline(self, node): # titlereference
-        # insert fallback definition
-        self.latex_fallbacks['inline'] = latex_headings['DUspan']
-        classes = node.get('classes', [])
-        self.body.append(r'\DUspan{%s}{' %','.join(classes))
-
-Allow customising in a style sheet by use of ``\ProvideCommand`` for the
+Allow customising in a style sheet by use of ``\providecommand`` for the
 fallback definition.
 
-Implementations
-***************
+
+Configurable transition element
+-------------------------------
+
+By default, the `transition element`_ is rendered as a horizontal line.
+
+In novels, ofte the form of three stars or some ornamental is used.
+A simple vertical space is also common.
+
+Propsal
+~~~~~~~
+Use semantic markup with a ``\DUtransition`` command that can be
+customised in a style sheet.
+
+
+Table classes
+-------------
+
+Currently, table export uses a logic based on the relative width of the
+columns in the input to set the column width in the output.
+
+Formal (booktabs) vs. standard (fully bordered) tables can be chosen in the 
+configuration settings (only document wide).
+
+Tables without borders are possible with the ``borderless`` class argument
+like::
+
+   The following Unicode characters may also precede inline markup:
+
+       .. class:: borderless
+
+       ===  ==========================================================
+       ‘    (U+2018, left single-quote)
+       “    (U+201C, left double-quote)
+       ’    (U+2019, apostrophe)
+       «    (U+00AB, left guillemet, or double angle quotation mark)
+       ¡    (U+00A1, inverted exclamation mark)
+       ¿    (U+00BF, inverted question mark)
+       ===  ==========================================================
+
+Proposal
+~~~~~~~~
+
+Add more classes e.g. for column width set by latex, horizontal aligment.
+
+
+figure directive
+----------------
+
+Currently, the output of the functional test document
+"standalone_rst_latex.txt" gives errors of type::
+
+  ! Illegal unit of measure (pt inserted).
+
+for lines like::
+
+ \includegraphics[width=50]{../../../docs/user/rst/images/biohazard.png}
+
+resulting from::
+
+  .. figure:: ../../../docs/user/rst/images/biohazard.png
+     :width: 50
+
+
+
+On 13.01.09, David Goodger wrote::
+
+  > Is there a default length unit in Docutils?
+  
+  Screen pixels (px), which is more-or-less equivalent to pt.
+  
+  > What should it be for LaTeX?
+  
+  I think pt.
+  
+Proposal  
+~~~~~~~~
+
+Add "pt" if there is no length unit.
+
+
+--stylesheet-path option
+------------------------
+
+There are 2 use cases:
+
+1. files in the TEXINPUTS path ("installed", site-wide style files (standard
+   or local))
+
+   * specify only the filename
+   * include literally
+
+2. files outside the TEXINPUTS path (not installed, local style files)
+
+   * a relative path should be rewritten if the output document is in a
+     different dir than the pwd
+
+Currently, 1) is done with --stylesheet and 2) with --stylesheet-path.
+
+But:
+
+-1  having both ``--stylesheet`` and ``stylesheet-path`` makes things complicated:
+
+  Explaining the two options and their interaction to the user is
+  not straightforward.
+
+  This holds even more if you take into account the third related
+  option, ``--embed-stylesheet``.
+
+-1  it is impossible to have some paths rewritten and some not, as in e.g. ::
+
+      --stylesheet=mathpazo -stylesheet-path=mystyle.tex
+      
+    "mystyle.tex" would overwrite "mathpazo".
+
+Proposal
+~~~~~~~~
+
+Instead of two options, do "the right thing" based on simple rules, e.g:
+
+a) Use the established "package" vs. "custom style sheet" distinction:
+
+   Rewrite, if there is an filename extension and it is not ``.sty`` ::
+   
+     --stylesheet='mathpazo,mystyle.tex'
+    
+   will use 'mathpazo' verbatim and rewrite 'mystyle.tex'.
+
+   -1  will not work for latex packages in the pwd or outside the TEXINPUTS
+       path.
+
+b) rewrite only paths but not arguments without directory part::
+  
+     --stylesheet='mathpazo,./mystyle.sty'
+    
+   will use 'mathpazo' verbatim and rewrite './mystyle.sty'.
+   
+   +1  explicite and flexible
+   
+   +1  the common case (files in the TEXINPUTS path) is the most simple
+   
+   -1  need to document/learn special syntax
+   
+c) rewrite path if this prevents errors:
+
+   * Check for a given file (or relative path) relative to pwd and output dir.
+   * If it is available relative to pwd but not relative to the output dir,
+     rewrite the path.
+
+   +1  no need to explain any additional syntax
+   
+   +1  does "the right thing" in most usual cases
+   
+   -1  hidden automatism might lead to problems in corner cases
+
+   -1  mechanism depends on the availability of files at the time of the run,
+       which is harder to explain and less predictable than b)
+
+.. Use case:
+
+  A project with rst documents sorted into a hierarchy of sub-directories
+  and a common style file in the base dir or a sub dir::
+
+   . 
+   |_ base.txt
+   |_ style.tex
+   |_ docutils.conf
+   |_ A/
+   |  |_ a.txt
+   |  | ...
+   |_ B/
+      |_ b.txt
+
+
+  With the line ::
+ 
+   stylesheet-path: style.tex
+
+  in docutils.conf, all documents will get a valid link to the style file,
+  if the conversion is started from the base dir.
+
+
+
+Alternative latex writers
+*************************
 
 Browse the `SVN repository at berlios.de`__
 
@@ -274,8 +396,11 @@ __ http://svn.berlios.de/viewvc/docutils/trunk/sandbox/latex-variants/
   Writer specific documentation is placed in the respective "literate"
   source.
 
-latex2e branches
+latex2e variants
 ================
+
+Mainly of historic interest. The experiences gained with the alternative
+writers will go into the main latex2e writer.
 
 * `latex2e_external_stylesheet` replaces most of the generated preamble by
   a latex stylesheet.
@@ -291,7 +416,7 @@ latex2e branches
   This options allows e.g. to choose `lstlisting` from the ``listings.sty``
   LaTeX package. See also `<docs/syntax-highlight-with-listings.html>`_
 
-alternative latex writers
+other latex writers
 =========================
 
 Currently none.
@@ -307,5 +432,9 @@ related sandbox projects
 
 .. References
    ==========
+
 .. _PSNFSS documentation:
    http://dante.ctan.org/CTAN/macros/latex/required/psnfss/psnfss2e.pdf
+
+.. _transition element: 
+   http://docutils.sourceforge.net/docs/user/rst/quickref.html#transitions
