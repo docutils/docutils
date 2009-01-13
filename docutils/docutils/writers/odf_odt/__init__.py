@@ -34,8 +34,9 @@ from docutils.transforms import references
 WhichElementTree = ''
 try:
     # 1. Try to use lxml.
-    from lxml import etree
-    WhichElementTree = 'lxml'
+    #from lxml import etree
+    #WhichElementTree = 'lxml'
+    raise ImportError('Ignoring lxml')
 except ImportError, e:
     try:
         # 2. Try to use ElementTree from the Python standard library.

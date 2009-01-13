@@ -20,9 +20,9 @@ Instructions for adding a new test:
 3. Convert your input reST (.txt) file to an ODF (.odt) file using
    rst2odt.py.  Place this ODF (.odt) file in
    test/functional/expected.  Name this file odt_xxxx.odt.
-   You can also pass parameter save_output=True to method
+   You can also pass parameter save_output_name='filename' to method
    process_test() in order to produce expected output.
-   See variable TEMP_FILE_NAME for destination.
+   See and modify variable TEMP_FILE_PATH for destination.
 
 4. Run your test.  Your new test should pass.
 
@@ -31,6 +31,7 @@ Instructions for adding a new test:
 """
 
 import sys
+import os
 import StringIO
 import zipfile
 from xml.dom import minidom
@@ -43,14 +44,15 @@ import docutils.core
 
 #
 # Globals
-TEMP_FILE_NAME = '/tmp/odtwriter_expected.odt'
+TEMP_FILE_PATH = '/tmp'
 INPUT_PATH = 'functional/input/'
 EXPECTED_PATH = 'functional/expected/'
 
 
 class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
 
-    def process_test(self, input_filename, expected_filename, save_output=False):
+    def process_test(self, input_filename, expected_filename, 
+            save_output_name=None):
         # Test that xmlcharrefreplace is the default output encoding
         # error handler.
         input_file = open(INPUT_PATH + input_filename, 'r')
@@ -69,8 +71,9 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
 ##         msg = 'file length not equal: expected length: %d  actual length: %d' % (
 ##             len(expected), len(result), )
 ##         self.assertEqual(str(len(result)), str(len(expected)))
-        if save_output:
-            outfile = open(TEMP_FILE_NAME, 'w')
+        if save_output_name:
+            filename = '%s%s%s' % (TEMP_FILE_PATH, os.sep, save_output_name,)
+            outfile = open(filename, 'w')
             outfile.write(result)
             outfile.close()
         content1 = self.extract_file(result, 'content.xml')
@@ -111,10 +114,14 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
     #
 
     def test_odt_basic(self):
-        self.process_test('odt_basic.txt', 'odt_basic.odt')
+        self.process_test('odt_basic.txt', 'odt_basic.odt',
+            #save_output_name='odt_basic.odt'
+            )
 
     def test_odt_tables1(self):
-        self.process_test('odt_tables1.txt', 'odt_tables1.odt')
+        self.process_test('odt_tables1.txt', 'odt_tables1.odt',
+            #save_output_name='odt_tables1.odt'
+            )
 
     #
     # Template for new tests.
