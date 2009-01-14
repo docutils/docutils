@@ -1392,6 +1392,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.set_to_parent()
 
     def visit_enumerated_list(self, node):
+        #ipshell('At visit_enumerated_list')
         el1 = self.current_element
         if self.blockstyle == self.rststyle('blockquote'):
             el2 = SubElement(el1, 'text:list', attrib={
@@ -1409,8 +1410,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 })
             self.list_style_stack.append(self.rststyle('epigraph-enumitem'))
         else:
+            liststylename = 'enumlist-%s' % (node.get('enumtype', 'arabic'), )
             el2 = SubElement(el1, 'text:list', attrib={
-                'text:style-name': self.rststyle('enumlist'),
+                'text:style-name': self.rststyle(liststylename),
                 })
             self.list_style_stack.append(self.rststyle('enumitem'))
         self.set_current_element(el2)

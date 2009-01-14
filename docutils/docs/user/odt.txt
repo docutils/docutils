@@ -40,12 +40,8 @@ Requirements
 In addition to the Docutils standard requirements, ``odtwriter``
 requires:
 
-- ElementTree or Lxml (http://codespeak.net/lxml/).  Python (version 2.5 or later) now includes
-  ElementTree (``xml.etree.ElementTree``).  However, ``odtwriter``
-  will use Lxml if it is installed.  ``odtwriter`` tries to import
-  (1) Lxml, and if that fails, (2) a separately installed
-  ElementTree, and if that fails, (3) ElementTree from the Python
-  standard library.
+- ElementTree --  Python (version 2.5 or later) now includes
+  ElementTree (``xml.etree.ElementTree``).
 
 - Optional -- `Pygments`_ is required if you want syntax
   highlighting of code in literal blocks.  See section `Syntax
@@ -330,8 +326,20 @@ rststyle-blockquote-bulletlist
 rststyle-blockquote-enumlist
     Enumerated lists in block quotes.
 
-rststyle-enumlist
-    Enumerated lists (but not in the table of contents)
+rststyle-enumlist-arabic
+    Enumerated lists, arabic (but not in the table of contents)
+
+rststyle-enumlist-loweralpha
+    Enumerated lists, lower alpha (but not in the table of contents)
+
+rststyle-enumlist-lowerroman
+    Enumerated lists, lower roman (but not in the table of contents)
+
+rststyle-enumlist-upperalpha
+    Enumerated lists, upper alpha (but not in the table of contents)
+
+rststyle-enumlist-upperroman
+    Enumerated lists, upper roman (but not in the table of contents)
 
 rststyle-epigraph-bulletlist
     Bullet lists in epigraphs.  See the ``.. epigraph::``
