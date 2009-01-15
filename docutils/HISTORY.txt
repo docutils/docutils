@@ -61,7 +61,14 @@ Changes Since 0.5
   - Fix: for spanish ``~n`` is ``n`` with tilde above, change to ``~{}n``.
   - Change: has_key for dictionaries (not Nodes) to in-operator.
   - Merge adjacent citations into one latex cite command.
-  - Failsave implementation of custom roles.
+  - Failsave implementation of custom roles. LaTeX compilation now ignores
+    unknown classes instead of aborting with an error.
+  - Smaller document preamble: use fallback definitions, include only if
+    needed in the document.
+  - LaTeX packages can be used as ``--stylesheet`` arguments without
+    restriction. (A style sheet is now referenced with the ``\usepackage``
+    command, if it ends with ``.sty`` or has no extension.)
+    
 
 * docs/ref/rst/restructuredtext.txt:
 
