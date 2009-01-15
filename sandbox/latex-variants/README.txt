@@ -7,12 +7,9 @@ Latex Writer Variants
 :Author: Günter Milde <milde@users.berlios.de>
 :Date: $Date$
 
-This sandbox project is a place to try out and discuss variants of the
-latex2e writer. Latex writer variants in this project are
-
-#. enhancements or improvements of the latex2e writer, or
-
-#. `alternative latex writers`_ for special needs.
+This sandbox project is a place to try out and discuss 
+`latex2e writer extensions`_ and `alternative latex writers`_ 
+for special needs.
 
 .. contents::
 
@@ -24,17 +21,16 @@ Questionnaire
 
 #. Which `default font`_ do you prefer for the output?
 
-#. Which default `font encoding`_ do you prefer for the output?
-
-   Did you experience problems with a missing ``aeguill.sty`` package?
+#. Did you experience problems with a missing ``aeguill.sty`` package?
    
    Did you have problems with Find or Export of words with
    non-ASCII chars (e.g. Umlauts) in the PDF reader (Acrobat, xpdf, ...)
+   
+   Which `font encoding`_ do you prefer for the output?
 
 #. Would you use/configure a `configurable transition element`_?
 
 #. Does the latex2e writer need a `--stylesheet-path option`_?
-
 
 #. Feature wishes or ideas of improvement for the `latex2e` writer.
 
@@ -42,75 +38,11 @@ Questionnaire
 Users of ``rst2latex2.py`` are encouraged to respond by mail to the
 docutils-users list.
 
-Implemented Changes
-===================
-
-Changes to the latex2e writer in the SVN version (but not in docutils 0.5).
-
-Custom roles
-------------
-
-New Feature: failsave implementation
- As with classes to HTML objects, class arguments are silently ignored if
- there is not styling rule for this class in a custom style sheet.
-
-TODO: Custom roles based on standard roles.
-
-Backwards compatibility
-~~~~~~~~~~~~~~~~~~~~~~~
-
-It is possible to define multiple class arguments for a custom role. These
-will be translated to
-
-  \DUspan{argA,argB}{<content>}
-
-which is (with the default definition of ``\DUspan``) equivalent to::
-
-  {\docutilsroleargA \docutilsroleargB{<content>}}
-  
-i.e. only the last styling command may take an argument.  
-
-This differs from the implementation in Docutils version up to 0.5, where
-the styling commands where nested like
-``\docutilsroleargA{\docutilsroleargB{<content>}}`` so that all of them
-could be defined as taking an argument.
-
-The drawback of this implementation was that documents with custom roles
-produced LaTeX errors if the styling macro definition was missing.
-
-LaTeX style sheets
-------------------
-
-New Feature: 
-  LaTeX packages can be used as ``--stylesheet`` argument without
-  restriction.
-
-Implementation: 
-  Use ``\usepackage`` if style sheet has ``.sty`` or no
-  extension and ``\input`` else.
-
-Rationale:
-  while ``\input`` works with extension as well as without extension,
-  ``\usepackage`` expects the package name without extension. (The latex2e
-  writer will drop a ``.sty`` extension to be more liberal.)
-
-
-Backwards compatibility
-~~~~~~~~~~~~~~~~~~~~~~~
-
-Up to Docutils 0.5, if no filename extension is given in the ``stylesheet``
-argument, ``.tex`` is assumed (by latex).
-
-Since Docutils 0.6, a stylesheet without filename extension is assumed to be
-a LaTeX package (``*.sty``) and referenced with the ``\usepackage`` command.
-
-Needed Action:
-  Always specify the extension if you want the style sheet to be
-  ``\input`` by LaTeX.
-
-
 Proposed Changes
-========================
+================
+
+See also the notes in 
+http://docutils.sourceforge.net/docs/user/latex.html#problems
 
 Default font
 ------------
@@ -143,63 +75,62 @@ Use one of the Postscript default fonts supported by
 standard LaTeX (pp 10 and 11 of the `PSNFSS documentation`_)
 
 Bookman
-  -2 very very wide
+  -2  very very wide
 Charter
-  +0 nonspectacular
-  -1 no "Base35" font 
+  +0  nonspectacular
+  -1  no "Base35" font 
 New Century Schoolbook
-  -1 very wide
+  -1  very wide
 Palatino
-  +1 recommended by font experts
+  +1  recommended by font experts
+  +1  good LaTeX support including matching math fonts, small caps, old-style figures
 Times
-  ±0 used everywhere, 
-  -1 narrow (devised for multi-column layouts)
+  +1  'de facto standard'
+  -1  overused 
+  -1  narrow (devised for multi-column layouts)
 Utopia
-  +1 recommended by font experts
-  -1 no "Base35" font, not regarded as a "required" part of LaTeX any more.
+  +1  recommended by font experts
+  -1  no `Base35` font, no required part of LaTeX any more.
 
-* Implement as default stylesheet option, so it can be easily
-  overridden.
+Implement as default stylesheet option, so it can be easily overridden.
 
 Font encoding
 -------------
 
 In modern LaTeX distributions (MikTeX, TeXLive, teTeX) T1 encoded fonts
-belong to the "core" while the "ae" (and even more the "aeguill")
+belong to the "core" while the `ae` (and even more the `aeguill`)
 workarounds are optional (and not always installed by default).
 
-"ae" uses the original 7-bit encoded CM fonts and combines accented
+`ae` uses the original 7-bit encoded CM fonts and combines accented
 characters from base char and accent glyph. This can lead to suboptimal
 appearance and to problems if text shall be extracted from (or found in) the
 generated PDF document.
 
 Proposal
 ~~~~~~~~
-
 Use the T1 font encoding as default.
 
 
 Adaptive preamble
 -----------------
 
-Problem:
-  TeXlive is a large download, and in addition to the base package
-  rst2latex also requires a bunch of extra .sty packages, even if they
-  aren't used in the current document.
+TeXlive is a large download, and in addition to the base package rst2latex
+also requires a bunch of extra ``*.sty`` packages, even if they aren't used in
+the current document.
 
 Solution:
   include only package loading commands and definitions that are
   needed in the current document.
 
-Proposal
-~~~~~~~~
+Implemented:
+  `fallback definitions`_ for Docutils-specific constructs.
 
-Collect definitions and commands in a dictionary.
+TODO:
+  A similar ``LaTeXTranslator.latex_requirements`` dictionary for additions
+  needed *before* the custom style sheet (required packages and their
+  settings).
 
-Only write to the preamble if actually needed in the document.
-
-Allow customising in a style sheet by use of ``\providecommand`` for the
-fallback definition.
+  A functional test ``rst2latex2e_minimal.py``.
 
 
 Configurable transition element
@@ -275,6 +206,13 @@ On 13.01.09, David Goodger wrote::
   > What should it be for LaTeX?
   
   I think pt.
+  
+On 2009-01-13, Alan G Isaac wrote:
+
+  > Note that LaTeX has both pt and bp,
+  > and for this purpose I think bp is preferred.
+ 
+  
   
 Proposal  
 ~~~~~~~~
@@ -383,6 +321,113 @@ c) rewrite path if this prevents errors:
   if the conversion is started from the base dir.
 
 
+Image and figure directives
+---------------------------
+
+* Document graphics peculiarities, e.g. accepted formats.
+
+* should start a new paragraph. 
+
+.. compare the functional test result:
+   /home/milde/Code/Python/docutils-svn/docutils/test/functional/input/data/standard.txt
+   and /home/milde/Code/Python/docutils-svn/docutils/test/functional/output/standalone_rst_latex.tex
+
+* centered and aligned images with ``\centerline``, ``\flushleft``,
+  ``\flushright``.
+  
+* aligning a figure also aligns the legend *but not the caption*
+
+  What should be aligned? 
+  
+  Should the surrounding text wrap around the figure?
+
+
+Implemented Changes
+===================
+
+Changes to the latex2e writer in the SVN version (but not in docutils 0.5).
+
+Also see the `Docutils Release Notes`_ and the `Docutils History`_
+
+Custom roles
+------------
+
+New Feature: failsave implementation
+ As with classes to HTML objects, class arguments are silently ignored if
+ there is not styling rule for this class in a custom style sheet.
+
+TODO: Custom roles based on standard roles.
+
+Backwards compatibility
+~~~~~~~~~~~~~~~~~~~~~~~
+
+It is possible to define multiple class arguments for a custom role. These
+will be translated to
+
+  \DUspan{argA,argB}{<content>}
+
+which is (with the default definition of ``\DUspan``) equivalent to::
+
+  {\docutilsroleargA \docutilsroleargB{<content>}}
+  
+i.e. only the last styling command may take an argument.  
+
+This differs from the implementation in Docutils version up to 0.5, where
+the styling commands where nested like
+``\docutilsroleargA{\docutilsroleargB{<content>}}`` so that all of them
+could be defined as taking an argument.
+
+The drawback of the former implementation was that documents with custom
+roles produced LaTeX errors if the styling macro definition was missing.
+
+LaTeX style sheets
+------------------
+
+New Feature: 
+  LaTeX packages can be used as ``--stylesheet`` argument without
+  restriction.
+
+Implementation: 
+  Use ``\usepackage`` if style sheet ends with ``.sty`` or has no
+  extension and ``\input`` else.
+
+Rationale:
+  while ``\input`` works with extension as well as without extension,
+  ``\usepackage`` expects the package name without extension. (The latex2e
+  writer will drop a ``.sty`` extension.)
+
+
+Backwards compatibility
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Up to Docutils 0.5, if no filename extension is given in the ``stylesheet``
+argument, ``.tex`` is assumed (by latex).
+
+Since Docutils 0.6, a stylesheet without filename extension is assumed to be
+a LaTeX package (``*.sty``) and referenced with the ``\usepackage`` command.
+
+Needed Action:
+  Always specify the extension if you want the style sheet to be
+  ``\input`` by LaTeX.
+
+
+Fallback definitions
+--------------------
+
+Include only definitions that are needed in the
+current document.
+
+Implementation:
+  
+  The ``LaTeXTranslator.visit*`` functions store needed definitions and
+  commands in the dictionary ``LaTeXTranslator.latex_fallbacks``.
+
+  The fallbacks are defined with ``\providecommand``.
+  
+  The content of ``LaTeXTranslator.latex_fallbacks`` is written to the
+  preamble after the custom stylesheet reference/inclusion.  Customising in
+  a style sheet is possible with ``\newcommand``.
+
 
 Alternative latex writers
 *************************
@@ -435,6 +480,10 @@ related sandbox projects
 
 .. _PSNFSS documentation:
    http://dante.ctan.org/CTAN/macros/latex/required/psnfss/psnfss2e.pdf
-
 .. _transition element: 
    http://docutils.sourceforge.net/docs/user/rst/quickref.html#transitions
+.. _Docutils Release Notes:
+   http://docutils.sourceforge.net/RELEASE-NOTES.html
+.. _Docutils History:
+   http://docutils.sourceforge.net/HISTORY.html
+   
