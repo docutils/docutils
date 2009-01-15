@@ -28,8 +28,8 @@ Changes Since 0.5
     
 * LaTeX2e writer:
 
-  - Failsave implementation of custom roles. LaTeX compilation now ignores
-    unknown classes instead of aborting with an error.
+  - Support LaTeX packages as ``--stylesheet`` arguments.
+
 
 Release 0.5 (2008-06-25)
 ========================
