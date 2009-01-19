@@ -13,23 +13,11 @@ import pygments
 import pygments.formatter
 
 
-def escape_cdata(text):
-    text = text.replace("&", "&amp;")
-    text = text.replace("<", "&lt;")
-    text = text.replace(">", "&gt;")
-    ascii = ''
-    for char in text:
-      if ord(char) >= ord("\x7f"):
-          ascii += "&#x%X;" % ( ord(char), )
-      else:
-          ascii += char
-    return ascii
-
-
 class OdtPygmentsFormatter(pygments.formatter.Formatter):
-    def __init__(self, rststyle_function):
+    def __init__(self, rststyle_function, escape_function):
         pygments.formatter.Formatter.__init__(self)
         self.rststyle_function = rststyle_function
+        self.escape_function = escape_function
 
     def rststyle(self, name, parameters=( )):
         return self.rststyle_function(name, parameters)
@@ -39,7 +27,7 @@ class OdtPygmentsProgFormatter(OdtPygmentsFormatter):
     def format(self, tokensource, outfile):
         tokenclass = pygments.token.Token
         for ttype, value in tokensource:
-            value = escape_cdata(value)
+            value = self.escape_function(value)
             if ttype == tokenclass.Keyword:
                 s2 = self.rststyle('codeblock-keyword')
                 s1 = '<text:span text:style-name="%s">%s</text:span>' % \
@@ -88,7 +76,7 @@ class OdtPygmentsLaTeXFormatter(OdtPygmentsFormatter):
     def format(self, tokensource, outfile):
         tokenclass = pygments.token.Token
         for ttype, value in tokensource:
-            value = escape_cdata(value)
+            value = self.escape_function(value)
             if ttype == tokenclass.Keyword:
                 s2 = self.rststyle('codeblock-keyword')
                 s1 = '<text:span text:style-name="%s">%s</text:span>' % \

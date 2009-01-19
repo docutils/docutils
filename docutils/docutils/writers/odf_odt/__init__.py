@@ -60,7 +60,7 @@ except ImportError, e:
 try:
     import pygments
     import pygments.lexers
-    from pygmentsformatter import escape_cdata, OdtPygmentsProgFormatter, \
+    from pygmentsformatter import OdtPygmentsProgFormatter, \
         OdtPygmentsLaTeXFormatter
 except ImportError, exp:
     pygments = None
@@ -308,6 +308,19 @@ def ToString(et):
     s1 = outstream.getvalue()
     outstream.close()
     return s1
+
+
+def escape_cdata(text):
+    text = text.replace("&", "&amp;")
+    text = text.replace("<", "&lt;")
+    text = text.replace(">", "&gt;")
+    ascii = ''
+    for char in text:
+      if ord(char) >= ord("\x7f"):
+          ascii += "&#x%X;" % ( ord(char), )
+      else:
+          ascii += char
+    return ascii
 
 
 #
@@ -2026,10 +2039,12 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         lexer = pygments.lexers.get_lexer_by_name(language, stripall=True)
         if language in ('latex', 'tex'):
             fmtr = OdtPygmentsLaTeXFormatter(lambda name, parameters=():
-                self.rststyle(name, parameters))
+                self.rststyle(name, parameters),
+                escape_function=escape_cdata)
         else:
             fmtr = OdtPygmentsProgFormatter(lambda name, parameters=():
-                self.rststyle(name, parameters))
+                self.rststyle(name, parameters),
+                escape_function=escape_cdata)
         outsource = pygments.highlight(insource, lexer, fmtr)
         return outsource
 
