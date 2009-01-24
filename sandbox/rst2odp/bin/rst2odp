@@ -13,8 +13,8 @@ from docutils.core import Publisher, default_description, \
 from docutils.parsers import rst
 
 import odplib.preso as preso
-
-
+  
+  
 S5_COLORS = dict(
     black='#000000',
     gray='#545454',
@@ -23,7 +23,7 @@ S5_COLORS = dict(
     maroon='#b03060',
     red='#ff0000',
     magenta='#ff00ff',
-    fuchsia='#ff00ff',
+    fuchsia='#ff00ff', # FIX
     pink='#ff1493',
     orange='#ffa500',
     yellow='#ffff00',
@@ -32,7 +32,7 @@ S5_COLORS = dict(
     olive='#6b8e23',
     teal='#008080',
     cyan='#00ffff',
-    aqua='#00ffff',
+    aqua='#00ffff', # FIX
     blue='#0000ff',
     navy='#000080',
     purple='#a020f0'
@@ -166,7 +166,7 @@ class ODPTranslator(nodes.GenericNodeVisitor):
 
     def default_visit(self, node):
         if self.settings.report_level >= 3:
-            print "NODE", node, node.tagname
+            print "ERR! NODE", node, node.tagname
         raise NotImplementedError
 
     def default_departure(self, node):
@@ -215,14 +215,14 @@ class ODPTranslator(nodes.GenericNodeVisitor):
             pass
         elif self.at('doctest_block'):
             pass
+        elif self.at('field_name'):
+            pass
         else:
             self.cur_slide.write(node.astext())
     depart_Text = _dumb_depart
 
-    def visit_paragraph(self, node):
-        classes =  node.attributes.get('classes', [])
+    def _push_handout(self, classes):
         if 'handout' in classes:
-
             self.in_node['handout'] = True
             self.cur_slide.push_element()
             if not self.cur_slide.notes_frame:
@@ -231,6 +231,10 @@ class ODPTranslator(nodes.GenericNodeVisitor):
                 self.cur_slide.cur_element = self.cur_slide.notes_frame
                 self.cur_slide.add_node('text:line-break', {})
                 self.cur_slide.pop_node() # close line-break
+
+    def visit_paragraph(self, node):
+        classes =  node.attributes.get('classes', [])
+        self._push_handout(classes)
 
         if 'center' in classes:
             attribs = {'fo:text-align':'center', 
@@ -258,8 +262,6 @@ class ODPTranslator(nodes.GenericNodeVisitor):
             return
         elif self.at('block_quote'):
             return # block quote adds paragraph style
-        elif not self.cur_slide.text_frames:
-            self.cur_slide.add_text_frame()
         elif self.at('doctest_block'):
             pass
         
@@ -294,6 +296,11 @@ class ODPTranslator(nodes.GenericNodeVisitor):
     def visit_bullet_list(self, node):
         if self.at('topic'):
             return
+        classes =  node.attributes.get('classes', [])
+        #self._push_handout(classes)
+        if 'handout' in classes:
+            self._push_handout(classes)
+            
         self.bullet_depth += 1
         if not self.bullet_list:
             self.bullet_list = preso.OutlineList(self.cur_slide)
@@ -307,6 +314,12 @@ class ODPTranslator(nodes.GenericNodeVisitor):
     def depart_bullet_list(self, node):
         if self.at('topic'):
             return
+
+        classes = node.attributes.get('classes', [])
+        if 'handout' in classes:
+            self.in_node['handout'] = False
+            self.cur_slide.pop_element()
+            
         self.bullet_depth -= 1
         if self.bullet_depth == 0:
             self.bullet_list = None
@@ -349,12 +362,14 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         self.visit_attribution(node)
 
     def depart_author(self, node):
+        self.depart_line(node) # add new-line
         self.depart_attribution(node)
 
     def visit_date(self, node):
         self.visit_attribution(node)
 
     def depart_date(self, node):
+        self.depart_line(node) # add new-line
         self.depart_attribution(node)
 
     def visit_field(self, node):
@@ -397,6 +412,11 @@ class ODPTranslator(nodes.GenericNodeVisitor):
             return
         elif self.at('topic'):
             return
+        elif self.at('field_body'):
+            self.visit_attribution(node)
+            self.cur_slide.push_pending_node('text:a', {'xlink:href': '%s' % node['refuri'],
+                                                        'xlink:type': 'simple'})
+            self.cur_slide.write(node.astext()) #, add_p_style=False, add_t_style=False)
         else:
             # needs to be in a p
             # need to hack a bit, since .write usually inserts text:p and text:span
@@ -411,23 +431,18 @@ class ODPTranslator(nodes.GenericNodeVisitor):
             return
         elif self.at('topic'):
             return
+        elif self.at('field_body'):
+            self.depart_attribution(node)
+            self.cur_slide.parent_of('text:a')
         else:
             self.cur_slide.parent_of('text:a')
 
     def visit_container(self, node):
-        if not self.at('handout'):
-            self.in_node['handout'] = 'handout' in node.attributes.get('classes', [])
-        if self.at('handout'):
-            self.cur_slide.push_element()
-            if self.cur_slide.notes_frame is None:
-                self.cur_slide.add_notes_frame()
-            else:
-                self.cur_slide.cur_element = self.cur_slide.notes_frame
-                self.cur_slide.add_node('text:line-break', {})
-                self.cur_slide.pop_node() # close line-break
+        classes = node.attributes.get('classes', [])
+        self._push_handout(classes)
 
     def depart_container(self, node):
-        if self.at('handout'):
+        if self.in_node['handout']:
             self.cur_slide.pop_element()
             self.in_node['handout'] = False
 
@@ -512,7 +527,7 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         
     def visit_attribution(self, node):
         #jump out of current paragraph
-        self.cur_slide.parent_of('text:p')
+        ##self.cur_slide.parent_of('text:p')
         # right justify
         attribs = {'fo:text-align':'end',
                    'fo:margin-right':'.9cm'
@@ -567,6 +582,8 @@ class ODPTranslator(nodes.GenericNodeVisitor):
 
     @preso.cwd_decorator
     def visit_image(self, node):
+        classes = node.attributes.get('classes', [])
+
         source = node.attributes['uri']
         p = preso.Picture(os.path.abspath(source), **node.attributes)
         self.cur_slide.add_picture(p)

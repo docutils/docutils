@@ -19,6 +19,7 @@ import pygments
 from pygments import formatter, lexers
 import zipwrap
 import Image
+import imagescale
 
 DOC_CONTENT_ATTRIB = {
     'office:version': '1.0',
@@ -59,6 +60,9 @@ TEXT_COUNT = 100
 DATA_DIR =  os.path.join(os.path.dirname(__file__), 'data')
 
 MONO_FONT = 'Courier New' # I like 'Envy Code R'
+
+SLIDE_WIDTH = 30 # cm
+SLIDE_HEIGHT = 21 
 
 def cwd_decorator(func):
     """
@@ -219,7 +223,12 @@ class Preso(object):
  <manifest:file-entry manifest:media-type="application/vnd.oasis.opendocument.presentation" manifest:full-path="/"/>
 """
         files = zip.cat('/')
-        files.extend(zip.cat('/Pictures'))
+        try:
+            files.extend(zip.cat('/Pictures'))
+        except IOError, e:
+            # it's ok to not have pictures ;)
+            import pdb; pdb.set_trace()
+            pass
         for filename in files:
             filetype = ''
             if filename.endswith('.xml'):
@@ -384,6 +393,7 @@ class Picture(object):
 
     def update_frame_attributes(self, attrib):
         """ For positioning update the frame """
+            
         if 'align' in self.user_defined:
             align = self.user_defined['align']
             if 'top' in align:
@@ -401,6 +411,22 @@ class Picture(object):
         Picture.COUNT += 1
         return name
     
+    def get_xywh(self, measurement=None):
+        if measurement is None or measurement == 'cm':
+            measurement = 'cm'
+            scale = Picture.CM_SCALE
+        
+        DPCM = 1 # dots per cm
+        if 'crop' in self.user_defined.get('classes', []):
+            x,y,w,h = imagescale.adjust_crop(SLIDE_WIDTH*DPCM, SLIDE_HEIGHT*DPCM,self.w, self.h)
+        elif 'fit' in self.user_defined.get('classes', []):
+            x,y,w,h = imagescale.adjust_fit(SLIDE_WIDTH*DPCM, SLIDE_HEIGHT*DPCM,self.w, self.h)
+        elif 'fill' in self.user_defined.get('classes', []):
+            x,y,w,h = 0,0,SLIDE_WIDTH,SLIDE_HEIGHT
+        else:
+            x,y,w,h = 1.4, 4.6, self.get_width(), self.get_height()
+        return [str(foo)+measurement for foo in [x,y,w,h]]
+
     def get_width(self, measurement=None):
         if measurement is None or measurement == 'cm':
             measurement = 'cm'
@@ -409,7 +435,7 @@ class Picture(object):
             return self.user_defined['width'] + 'pt'
         if 'scale' in self.user_defined:
             return '%spt' % (self.w * float(self.user_defined['scale'])/100)
-        return str(self.w/scale)+measurement
+        return str(self.w/scale)
 
     def get_height(self, measurement=None):
         if measurement is None:
@@ -420,7 +446,7 @@ class Picture(object):
             return self.user_defined['height'] + 'pt'
         if 'scale' in self.user_defined:
             return '%spt' % (self.h * float(self.user_defined['scale'])/100)
-        return str(self.h/scale)+measurement
+        return str(self.h/scale)
 
 
 
@@ -530,7 +556,19 @@ class Slide(object):
     def end_animation(self):
         # jump out of text:p
         self.parent_of('text:p')
-        del self.paragraph_attribs['text:id']
+        if 'text:id' in self.paragraph_attribs:
+            del self.paragraph_attribs['text:id']
+
+    def push_pending_node(self, name, attr):
+        """
+        pending nodes are for affecting type, such as wrapping content
+        with text:a to make a hyperlink.  Anything in pending nodes
+        will be written before the actual text.
+        User needs to remember to pop out of it.
+        """
+        if self.cur_element is None:
+            self.add_text_frame()
+        self.cur_element.pending_nodes.append((name,attr))
 
     def push_style(self, style):
         if self.cur_element is None:
@@ -572,6 +610,8 @@ class Slide(object):
         node.parent = self._page
 
     def push_element(self):
+        """ element push/pop is used to remember previous cur_elem, since
+        lists might need to mess with that"""
         self.element_stack.append(self.cur_element)
 
     def pop_element(self):
@@ -702,6 +742,8 @@ class MixedContent(object):
         self.node = el(name, attrib)
         self.cur_node = self.node
         self.pending_styles = []
+        # store nodes that affect output (such as text:a)
+        self.pending_nodes = [] # typles of (name, attr)
         self.dirty = False # keep track if we have been written to
 
     def parent_of(self, name):
@@ -770,7 +812,17 @@ class MixedContent(object):
         self.cur_node.append(node)
         node.parent = self.cur_node
     
+    def _check_add_node(self, parent, name):
+        ''' Returns False if bad to make name a child of parent '''
+
+        if name == 'text:a':
+            if parent.tag == 'draw:text-box':
+                return False
+        return True
+        
     def _add_node(self, parent, name, attrib):
+        if not self._check_add_node(parent, name):
+            raise Exception, 'Bad child (%s) for %s)' %(name, parent.tag)
         new_node = sub_el(parent, name, attrib)
         return new_node
         
@@ -821,6 +873,11 @@ class MixedContent(object):
                     self.add_node('text:span', attrib={'text:style-name':text.name})
 
 
+    def _add_pending_nodes(self):
+        for node, attr in self.pending_nodes:
+            self.add_node(node, attr)
+            
+
     def write(self, text, add_p_style=True, add_t_style=True):
         """
         see mixed content
@@ -846,7 +903,7 @@ class MixedContent(object):
                 self.pop_node()
 
         self._add_styles(add_p_style, add_t_style)
-
+        self._add_pending_nodes()
         #if only spaces remove one, otherwise we add one too many
         if text == ' '*len(text):
             text = text[:-1]
@@ -918,14 +975,15 @@ class Footer(MixedContent):
 
 class PictureFrame(MixedContent):
     def __init__(self, slide, picture, attrib=None):
+        x,y,w,h = picture.get_xywh()
         attrib = attrib or {
             'presentation:style-name':'pr2',
             'draw:style-name':'gr2',
             'draw:layer':'layout',
-            'svg:width':picture.get_width(),
-            'svg:height':picture.get_height(),
-            'svg:x':'1.4cm',
-            'svg:y':'4.577cm',
+            'svg:width':w, #picture.get_width(),
+            'svg:height':h, #picture.get_height(),
+            'svg:x':x, #'1.4cm',
+            'svg:y':y, #'4.577cm',
             }
         attrib = picture.update_frame_attributes(attrib)
         MixedContent.__init__(self, slide, 'draw:frame', attrib=attrib)
