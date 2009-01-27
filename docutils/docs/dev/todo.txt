@@ -1894,7 +1894,13 @@ S5/HTML Writer
 LaTeX writer
 ============
 
-* Add an ``--embed-stylesheet`` (and ``--link-stylesheet``) option.
+See the Problems__ section in the latex writer documentation
+and discussion and proposals in the `latex-variants`_ sandbox project.
+
+__ http://docutils.sourceforge.net/docs/user/latex.html#problems
+
+.. _latex-variants:
+   http://docutils.sourceforge.net/sandbox/latex-variants/README.html
 
 
 Front-End Tools
