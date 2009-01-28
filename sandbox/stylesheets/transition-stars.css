@@ -1,31 +1,34 @@
 /* transiton-stars.css: Style a Docutils transition */
 /* :Author:    Günter Milde */
-/* :Copyright: © 2008 G. Milde */
-/*             This stylesheet is released under the GPL v. 2 or later */
+/* :Copyright: © 2008 Günter Milde. */
+/*             Released  without warranties or conditions of any kind */
+/*             under the terms of the Apache License, Version 2.0 */
+/* 	       http://www.apache.org/licenses/LICENSE-2.0 */
+/* :Id: $Id$ */
 
 /* Style sheet for use with Docutils */
 
-You can use this style as a template for customising  the transition
-element. 
+/* You can use this style as a template for customising  the transition */
+/* element. */
 
-/* extends the standard docutils style sheet */
-@import url("html4css1.css");
+/* Extends the standard docutils style sheet */
+/* @import url("html4css1.css"); */
 
 hr.docutils {
   /* make the hrule invisible but enable replacement string */
-    border-width: 0px; 
+    border-width: 0px;
   /* set the spacing */
     padding: 1.5ex;
     /* margin: 1.5ex; */ /* alternatie to padding */
   /* influence the horizontal alignment of the replacment text */
-    width: 30ex;      
+    width: 30ex;
 }
 
 /* Replacement string for the transition element */
 
 /* if your html document is in UTF-8 encoding, you can use */
 /* any Unicode string as replacement */
-/* comment out to get a void transition */
-hr.docutils:before { 
+/* comment out to render transition as a blank space */
+hr.docutils:before {
   content:"*    *    *"; /* uses non-breaking spaces */
 }
