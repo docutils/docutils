@@ -1730,9 +1730,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
             return width_str
         res = width_str
         amount, unit = match.groups()[:2]
-        if unit == "px":
-            # LaTeX does not know pixels but points
-            res = "%spt" % amount
+        # For LaTeX, a lenght without unit is an error.
+        # default to (DTP) points (1 bp = 1/72 in)
+        if unit == "":
+              res = "%sbp" % amount
         elif unit == "%":
             res = "%.3f\\linewidth" % (float(amount)/100.0)
         return res

@@ -7,8 +7,8 @@ Latex Writer Variants
 :Author: Günter Milde <milde@users.berlios.de>
 :Date: $Date$
 
-This sandbox project is a place to try out and discuss 
-`latex2e writer extensions`_ and `alternative latex writers`_ 
+This sandbox project is a place to try out and discuss
+`latex2e writer extensions`_ and `alternative latex writers`_
 for special needs.
 
 .. contents::
@@ -22,10 +22,10 @@ Questionnaire
 #. Which `default font`_ do you prefer for the output?
 
 #. Did you experience problems with a missing ``aeguill.sty`` package?
-   
+
    Did you have problems with Find or Export of words with
    non-ASCII chars (e.g. Umlauts) in the PDF reader (Acrobat, xpdf, ...)
-   
+
    Which `font encoding`_ do you prefer for the output?
 
 #. Would you use/configure a `configurable transition element`_?
@@ -41,7 +41,7 @@ docutils-users list.
 Proposed Changes
 ================
 
-See also the notes in 
+See also the notes in
 http://docutils.sourceforge.net/docs/user/latex.html#problems
 
 Default font
@@ -78,7 +78,7 @@ Bookman
   -2  very very wide
 Charter
   +0  nonspectacular
-  -1  no "Base35" font 
+  -1  no "Base35" font
 New Century Schoolbook
   -1  very wide
 Palatino
@@ -86,7 +86,7 @@ Palatino
   +1  good LaTeX support including matching math fonts, small caps, old-style figures
 Times
   +1  'de facto standard'
-  -1  overused 
+  -1  overused
   -1  narrow (devised for multi-column layouts)
 Utopia
   +1  recommended by font experts
@@ -153,7 +153,7 @@ Table classes
 Currently, table export uses a logic based on the relative width of the
 columns in the input to set the column width in the output.
 
-Formal (booktabs) vs. standard (fully bordered) tables can be chosen in the 
+Formal (booktabs) vs. standard (fully bordered) tables can be chosen in the
 configuration settings (only document wide).
 
 Tables without borders are possible with the ``borderless`` class argument
@@ -176,48 +176,6 @@ Proposal
 ~~~~~~~~
 
 Add more classes e.g. for column width set by latex, horizontal aligment.
-
-
-figure directive
-----------------
-
-Currently, the output of the functional test document
-"standalone_rst_latex.txt" gives errors of type::
-
-  ! Illegal unit of measure (pt inserted).
-
-for lines like::
-
- \includegraphics[width=50]{../../../docs/user/rst/images/biohazard.png}
-
-resulting from::
-
-  .. figure:: ../../../docs/user/rst/images/biohazard.png
-     :width: 50
-
-
-
-On 13.01.09, David Goodger wrote::
-
-  > Is there a default length unit in Docutils?
-  
-  Screen pixels (px), which is more-or-less equivalent to pt.
-  
-  > What should it be for LaTeX?
-  
-  I think pt.
-  
-On 2009-01-13, Alan G Isaac wrote:
-
-  > Note that LaTeX has both pt and bp,
-  > and for this purpose I think bp is preferred.
- 
-  
-  
-Proposal  
-~~~~~~~~
-
-Add "pt" if there is no length unit.
 
 
 --stylesheet-path option
@@ -251,7 +209,7 @@ But:
 -1  it is impossible to have some paths rewritten and some not, as in e.g. ::
 
       --stylesheet=mathpazo -stylesheet-path=mystyle.tex
-      
+
     "mystyle.tex" would overwrite "mathpazo".
 
 Proposal
@@ -262,26 +220,26 @@ Instead of two options, do "the right thing" based on simple rules, e.g:
 a) Use the established "package" vs. "custom style sheet" distinction:
 
    Rewrite, if there is an filename extension and it is not ``.sty`` ::
-   
+
      --stylesheet='mathpazo,mystyle.tex'
-    
+
    will use 'mathpazo' verbatim and rewrite 'mystyle.tex'.
 
    -1  will not work for latex packages in the pwd or outside the TEXINPUTS
        path.
 
 b) rewrite only paths but not arguments without directory part::
-  
+
      --stylesheet='mathpazo,./mystyle.sty'
-    
+
    will use 'mathpazo' verbatim and rewrite './mystyle.sty'.
-   
+
    +1  explicite and flexible
-   
+
    +1  the common case (files in the TEXINPUTS path) is the most simple
-   
+
    -1  need to document/learn special syntax
-   
+
 c) rewrite path if this prevents errors:
 
    * Check for a given file (or relative path) relative to pwd and output dir.
@@ -289,9 +247,9 @@ c) rewrite path if this prevents errors:
      rewrite the path.
 
    +1  no need to explain any additional syntax
-   
+
    +1  does "the right thing" in most usual cases
-   
+
    -1  hidden automatism might lead to problems in corner cases
 
    -1  mechanism depends on the availability of files at the time of the run,
@@ -302,7 +260,7 @@ c) rewrite path if this prevents errors:
   A project with rst documents sorted into a hierarchy of sub-directories
   and a common style file in the base dir or a sub dir::
 
-   . 
+   .
    |_ base.txt
    |_ style.tex
    |_ docutils.conf
@@ -314,7 +272,7 @@ c) rewrite path if this prevents errors:
 
 
   With the line ::
- 
+
    stylesheet-path: style.tex
 
   in docutils.conf, all documents will get a valid link to the style file,
@@ -326,7 +284,7 @@ Image and figure directives
 
 * Document graphics peculiarities, e.g. accepted formats.
 
-* should start a new paragraph. 
+* should start a new paragraph.
 
 .. compare the functional test result:
    /home/milde/Code/Python/docutils-svn/docutils/test/functional/input/data/standard.txt
@@ -334,18 +292,56 @@ Image and figure directives
 
 * centered and aligned images with ``\centerline``, ``\flushleft``,
   ``\flushright``.
-  
+
 * aligning a figure also aligns the legend *but not the caption*
 
-  What should be aligned? 
-  
+  What should be aligned?
+
   Should the surrounding text wrap around the figure?
+
+
+image width
+~~~~~~~~~~~
+
+#. add default unit if none given (to prevent LaTeX error)
+   a poll on docutils-users favoured ``bp`` (Big Point: 1 bp  = 1/72 in)
+
+#. Do not change ``px`` to ``pt``.
+
+  * ``px`` is a valid unit in pdftex since version 1.3.0 released on
+    2005-02-04:
+
+     1px defaults to 1bp (or 72dpi), but can be changed with the \pdfpxdimen
+     primitive::
+
+       \pdfpxdimen=1in % 1 dpi
+       \divide\pdfpxdimen by 96 % 96 dpi
+
+     --  http://www.tug.org/applications/pdftex/NEWS
+
+  * Modern TeX distributions use pdftex also for dvi generation
+    (i.e. ``latex`` actually calls ``pdftex`` with some options).
+
+  * Users of legacy TeX versions can be advised to strip the ``px``: while
+    HTML will default to pixels, LaTeX will use points (1/72 in) which
+    conforms to the ``pdftex`` default.
+
+Backwards compatibility
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Images with width specification in ``px`` come out slightly larger:
+
+  1 bp  = 1/72 in > 1 pt = 1/72.25 in
+
+Needed Action:
+  if this is an issue, add ``\pdfpxdimen=1pt`` to the style-sheet or as
+  raw latex.
 
 
 Implemented Changes
 ===================
 
-Changes to the latex2e writer in the SVN version (but not in docutils 0.5).
+Changes to the latex2e writer in the SVN version since docutils version 0.5.
 
 Also see the `Docutils Release Notes`_ and the `Docutils History`_
 
@@ -369,8 +365,8 @@ will be translated to
 which is (with the default definition of ``\DUspan``) equivalent to::
 
   {\docutilsroleargA \docutilsroleargB{<content>}}
-  
-i.e. only the last styling command may take an argument.  
+
+i.e. only the last styling command may take an argument.
 
 This differs from the implementation in Docutils version up to 0.5, where
 the styling commands where nested like
@@ -383,11 +379,11 @@ roles produced LaTeX errors if the styling macro definition was missing.
 LaTeX style sheets
 ------------------
 
-New Feature: 
+New Feature:
   LaTeX packages can be used as ``--stylesheet`` argument without
   restriction.
 
-Implementation: 
+Implementation:
   Use ``\usepackage`` if style sheet ends with ``.sty`` or has no
   extension and ``\input`` else.
 
@@ -418,15 +414,40 @@ Include only definitions that are needed in the
 current document.
 
 Implementation:
-  
+
   The ``LaTeXTranslator.visit*`` functions store needed definitions and
   commands in the dictionary ``LaTeXTranslator.latex_fallbacks``.
 
   The fallbacks are defined with ``\providecommand``.
-  
+
   The content of ``LaTeXTranslator.latex_fallbacks`` is written to the
   preamble after the custom stylesheet reference/inclusion.  Customising in
   a style sheet is possible with ``\newcommand``.
+
+
+Length units
+------------
+
+- Add ``bp`` to lenghts without unit (prevents LaTeX errors)
+
+- Do not convert ``px`` to ``pt`` (``px`` is supported by pdfTeX since
+  2005-02-04 as a configurable length unit)
+
+Backwards compatibility
+~~~~~~~~~~~~~~~~~~~~~~~
+
+If a length without unit is recognised by latex, it reports an error and add
+``pt``. The new default unit is ``bp`` (big points) which is slightly bigger,
+1 bp = 1.00374 pt.
+
+The unit ``px`` is not defined in "pure" LaTeX, but introduced by the
+`pdfTeX` converter on 2005-02-04. `pdfTeX` is used in all modern LaTeX
+distributions (since ca. 2006) also for conversion into DVI.
+
+Needed Action:
+  If updating LaTeX is not an option, just remove the ``px`` from the lengh
+  specification. HTML/CSS will default to ``px`` while the `latexe2` writer
+  will add the fallback unit ``bp``.
 
 
 Alternative latex writers
@@ -480,10 +501,9 @@ related sandbox projects
 
 .. _PSNFSS documentation:
    http://dante.ctan.org/CTAN/macros/latex/required/psnfss/psnfss2e.pdf
-.. _transition element: 
+.. _transition element:
    http://docutils.sourceforge.net/docs/user/rst/quickref.html#transitions
 .. _Docutils Release Notes:
    http://docutils.sourceforge.net/RELEASE-NOTES.html
 .. _Docutils History:
    http://docutils.sourceforge.net/HISTORY.html
-   
