@@ -29,6 +29,7 @@ Changes Since 0.5
 * LaTeX2e writer:
 
   - Support LaTeX packages as ``--stylesheet`` arguments.
+  - Add ``bp`` to lengths without unit; do not convert ``px`` to ``pt``.
 
 
 Release 0.5 (2008-06-25)

@@ -68,7 +68,9 @@ Changes Since 0.5
   - LaTeX packages can be used as ``--stylesheet`` arguments without
     restriction. (A style sheet is now referenced with the ``\usepackage``
     command, if it ends with ``.sty`` or has no extension.)
-    
+  - Add ``bp`` to lenghts without unit (prevents LaTex errors)
+  - Do not convert ``px`` to ``pt`` (``px`` is supported by pdfTeX since
+    2005-02-04 as a configurable length unit)
 
 * docs/ref/rst/restructuredtext.txt:
 

@@ -2,8 +2,8 @@
  Generating LaTeX with Docutils
 ================================
 
-:Author: Engelbert Gruber
-:Contact: grubert@users.sourceforge.net
+:Author: Engelbert Gruber, Günter Milde
+:Contact: docutils-users@lists.sourceforge.net
 :Revision: $Revision$
 :Date: $Date$
 :Copyright: This document has been placed in the public domain.
@@ -226,6 +226,25 @@ Example:
 
 .. _geometry manual:
    http://dante.ctan.org/CTAN/macros/latex/contrib/geometry/geometry.pdf
+
+
+length of a pixel (px)
+----------------------
+
+The length unit ``px`` stands for `pixel` and its value depends on the
+context:
+
+  :CSS:      defines 1 px = 1/96 in, i.e. 92 dots per inch (DPI)
+  :browsers: use the actual screen resolution (or what they think it is)
+	     (usually between 72 DPI and 100 DPI).
+  :pdftex:   defines 1px = 1bp = 1/72 in, i.e. 72 DPI
+
+It is possible to configure the conversion factor of ``px`` in a style sheet
+by changing the value of the `pxdimen` register, e.g.::
+
+       \pdfpxdimen=1in % 1 DPI
+       \divide\pdfpxdimen by 92 % 92 DPI
+
 
 paragraph indent
 ----------------
@@ -777,14 +796,25 @@ Wrapping text around figures is currently not supported.
 .. _wrapfig: http://dante.ctan.org/CTAN/help/Catalogue/entries/wrapfig.html
 
 
+Illegal unit ``px``
+-------------------
+
+The unit ``px`` is not defined in "pure" LaTeX, but introduced by the
+`pdfTeX` converter on 2005-02-04. `pdfTeX` is used in all modern LaTeX
+distributions (since ca. 2006) also for conversion into DVI.
+
+If updating LaTeX is not an option, just remove the ``px`` from the lengh
+specification. HTML/CSS will default to ``px`` while the `latexe2` writer
+will add the fallback unit ``bp``.
+
+
 Miscellaneous
 -------------
 
-* Selection of LaTeX fontsize configurable.
+* Selection of LaTeX fontsize configurable (needs an option).
 * Assumed reST linelength for table width setting configurable.
 * literal-block indentation configurable.
-* recognize LaTeX and replace by ``\LaTeX``.
-* Support embed-stylesheet.
+* recognize LaTeX and replace by ``\LaTeX`` (or not?).
 * Sidebar handling.
 * Pdfbookmark level 4 (and greater) does not work (might be settable but OTOH).
 * center subsection{Abstract} gives a LaTeX error here.
