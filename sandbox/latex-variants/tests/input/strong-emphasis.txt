@@ -1,0 +1,6 @@
+.. strong-emphasis.txt: Test the nesting of in-line markup.
+   -*- rst-mode -*-
+
+Ein kleiner Text mit *emphasis*, **strong**, and `interpreted` snippets.
+
+How do I achieve a ***strong emphasis***?

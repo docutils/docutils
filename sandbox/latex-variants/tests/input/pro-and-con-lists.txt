@@ -1,0 +1,49 @@
+Listing pros and cons
+*********************
+
+What is the most elegant way to compile a list of (dis-) advantages with
+rst?
+
+itemize:
+  + concise
+  + clear source
+  
+  - shows only dots in output
+
+classy itemize:
+  .. class:: advantages
+  
+  + clear source
+  + output can by styled with css
+  
+  .. class: disadvantages
+  
+  - no longer concise
+  - does not (currently) work with LaTeX export
+ 
+
+option list:
+  +1  concise
+  +1  clear source
+  -2  does not work reliably (needs number)
+  -1  less straightforward
+  -2  "abusing" special list type
+    
+line block:
+  | + works reliably, correct output
+  | - list items not aligned (+ wider than -)
+  | - rating "hidden" in source
+  | - no semantic markup (generic block for special list type)
+
+line block with U+2212 "minus sign":
+  | + works reliably, correct output
+  | + list items aligned (+ wider than -)
+  | − rating "hidden" in source
+  | − minus sign not easily input with most text editors
+  | − minus sign not distinguishable from '-' (HYPHEN-MINUS) in fixed
+      with fonts
+
+field list:
+  :+: aligned markers and items
+  :-: "ugly" source
+  :-: colon in output

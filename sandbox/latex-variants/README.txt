@@ -487,6 +487,15 @@ other latex writers
 
 Currently none.
 
+tests
+=====
+
+Test documents and unit tests highlighting problems with the LaTeX
+export and testing alternatives.
+
+
+See `<tests>`_
+
 related sandbox projects
 ========================
 
