@@ -1,0 +1,45 @@
+..                            -*- rst-mode -*-
+
+How to label and reference a "formal" figure with RST
+*****************************************************
+
+And now for something completely different.
+
+HTML optimized
+==============
+
+.. _mcicon:
+
+.. figure:: mc.png
+   
+   Figure 1: Midnight Commander icon
+   
+`Figure 1`_ shows an icon for the file manager `Midnight Commander`.
+
+LaTeX optimized
+================
+
+After defining two custom roles and their expansion in LaTeX, its possible
+to utilise LaTeX's reference mechanism.
+
+.. role:: ref
+
+.. role:: label
+
+.. raw::  latex
+
+  \renewcommand*{\docutilsroleref}{\ref}
+  \renewcommand*{\docutilsrolelabel}{\label}
+
+
+.. figure:: mc.png
+   :width: 100
+
+   :label:`mc` showsMidnight Commander icon enlarged 
+   
+Figure :ref:`mc` shows the icon for the file manager `Midnight
+Commander` enlarged to a width of 100 Pixel.
+
+.. References
+
+.. _Figure 1: mcicon_

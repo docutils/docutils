@@ -1,0 +1,95 @@
+Citation restrictions
+=====================
+
+The rigid restrictions on the allowed characters in a `citation label` (e.g.
+[Doe2006]_) prevent commonly used label styles (numbers, Author:year,
+havard). The citation labels do not conform to the style requested in most
+scientific journals..
+
+Workarounds
+===========
+
+A proposed workaround is using citation reference syntax within a
+`substitution reference`. (As convention, not enforced by reST.)
+
+Havard style citation references are by name and year.
+Depending on the context, they takes the form:
+
+  As |[Doe2007]_| pointed out, ...
+  
+  This is also summarized in |p[Doe2007]_|.
+
+The formatting of the citation could be done without use of the citation
+element. The citation for the following reference is formatted using
+the field list element.
+
+  |[Doe2010]_| updated his view ...
+ 
+This would be a "currently working workaround".
+
+
+References
+----------
+
+(The references section should ultimatively be inserted by a "Docutils
+Citation Preprocessor" that parses the text for citation references and
+looks them up in a bibliographic database.)
+
+.. [Doe2006] Doe, John, *A Useful Article*, *2006*
+
+
+.. |[Doe2007]_| replace:: `Doe (2007)`_
+
+.. _`Doe (2007)`: [Doe-2007]_
+
+.. |p[Doe2007]_| replace:: `(Doe 2007)`_
+
+.. _`(Doe 2007)`: [Doe-2007]_
+
+.. [Doe-2007] Doe, John, `Summary Article`, *2007*
+
+
+.. |[Doe2010]_| replace:: `Doe (2010)`_
+
+:_`Doe (2010)`: Doe, John, `Update of Article`, *2010*
+
+Problems
+========
+
+#. Label substitution only occures in the citation reference. The citation
+   label in the References_ section is not substituted and therefore does
+   not match the label in the text.
+   
+#. `Phrase references` would lift the restrictions on the allowed characters
+   in a label. However, even with `phrase references` for citations, the
+   square brackets around the Label in the References_ list violate the
+   Havard style.
+   
+#. There is no backlink from the citation to the citation reference in the
+   examples with substituted citation label.
+   
+   (Do we need this? How is the case of multiple references to a common
+   citation handled?)
+
+#. While a "true" citation is converted to html as::
+   
+     <a class="citation-reference" href="#doe2006" 
+        id="id1" name="id1">[Doe2006]</a>
+        
+   the substitution reference containing a citation references becomes::
+   
+     <a class="reference" href="#doe-2007">Doe (2007)</a>
+     
+   so that it is not marked as a citation reference. (Missing logical markup
+   preventing, e.g., a special layout by CSS stylesheets.)
+   
+   The "currently working workaround" misses the logical markup even for the
+   citation definition.
+   
+   (I suppose the docutils document tree will not count the `citation
+   reference in a substitution reference` as `citation reference` either.
+   
+   Even if the citation and substitution operations are orthogonal, oder
+   does matter as it determines the order in the document tree.)
+   
+   

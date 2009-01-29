@@ -1,0 +1,24 @@
+..                            -*- rst-mode -*-
+
+.. raw:: latex
+
+  %\renewcommand{\docutilsrolecustom}{\scshape}
+  \renewcommand{\docutilsrolecustom}{\textsc}
+
+The "role" directive dynamically creates a custom interpreted text
+role and registers it with the parser.  
+
+After declaring a role,
+
+.. role:: custom
+
+the document may use the new "custom" role for :custom:`interpreted text`.
+
+It is possible to set several class names, for example:
+
+.. role:: custom4
+   :class: special custom exceptional
+
+Special :custom4:`interpreted text`.
+
+
