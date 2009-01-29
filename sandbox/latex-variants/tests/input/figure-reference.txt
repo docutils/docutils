@@ -5,8 +5,8 @@ How to label and reference a "formal" figure with RST
 
 And now for something completely different.
 
-HTML optimized
-==============
+Handcrafted Figure numbering for HTML
+=====================================
 
 .. _mcicon:
 
@@ -16,8 +16,12 @@ HTML optimized
    
 `Figure 1`_ shows an icon for the file manager `Midnight Commander`.
 
-LaTeX optimized
-================
+The HTML output is OK, in the LaTeX->PDF output, the key ``Figure 1:`` is
+repeated.
+
+
+Label and Reference via LaTeX and custom roles
+===============================================
 
 After defining two custom roles and their expansion in LaTeX, its possible
 to utilise LaTeX's reference mechanism.
@@ -28,18 +32,28 @@ to utilise LaTeX's reference mechanism.
 
 .. raw::  latex
 
-  \renewcommand*{\docutilsroleref}{\ref}
-  \renewcommand*{\docutilsrolelabel}{\label}
+  \newcommand*{\docutilsroleref}{\ref}
+  \newcommand*{\docutilsrolelabel}{\label}
 
 
 .. figure:: mc.png
-   :width: 100
+   :width: 50
 
-   :label:`mc` showsMidnight Commander icon enlarged 
+   :label:`mc` Midnight Commander icon enlarged 
    
 Figure :ref:`mc` shows the icon for the file manager `Midnight
-Commander` enlarged to a width of 100 Pixel.
+Commander` enlarged to a width of 50 Pixel.
 
-.. References
+The LaTeX output is OK, the HTML output can be corrected with a custom style
+sheet:
+
+* Add the key ``Figure #:`` with ``:before`` pseudo class and automatic
+  numbering.
+  
+* Suppress the label with ``span.label{visibility: hidden;}``  
+
+* Replacing the reference with the correct number remains unsolved.
+
+.. List of figures
 
 .. _Figure 1: mcicon_

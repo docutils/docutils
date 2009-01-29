@@ -42,8 +42,12 @@ This can also be used to set several class names, for example:
 
 Special :custom4:`interpreted text`.
 
-rule names
+
+Rule names
 ==========
+
+Rule names are stored in the document tree and passed on to writers as class
+arguments.
 
 HTML
  allows any kind of `#CDATA`__ ass class argument.
@@ -80,7 +84,7 @@ LaTeX
   allows only letters in macro names that are used directly,
   Letters and hyphens are allowed if you use ``\csname ... \endcsname``
 
-Care must be taken to escape characters not allowed by LaTeX!
+  Care must be taken to escape characters not allowed by LaTeX.
 
 Test:
 
@@ -93,10 +97,9 @@ Results:
   * Dots '.' and underbars '_' are translated to a hyphen '-' by
     Docutils (also in HTML export)
     
-    .. note:: is this documented
+    .. note:: is this documented?
     
   * some class names cannot be used as LaTeX command name (hyphen,
     numbers), e.g. ``\docutilsrolemy-custom`` will result in an error
     
   * all resulting names work in ``\DUspan{classname}{content}``
-  

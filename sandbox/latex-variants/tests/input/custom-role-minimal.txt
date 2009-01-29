@@ -2,23 +2,22 @@
 
 .. raw:: latex
 
-  %\renewcommand{\docutilsrolecustom}{\scshape}
-  \renewcommand{\docutilsrolecustom}{\textsc}
+  \newcommand{\docutilsrolecustom}[1]{{\large #1}}
+  \makeatletter
+  \@namedef{docutilsrolemy-custom}{\textsc}
+  \@namedef{docutilsrolecustom2}{\textbf}
+  \makeatother
 
+  
 The "role" directive dynamically creates a custom interpreted text
 role and registers it with the parser.  
 
-After declaring a role,
+After declaring a role, the document may use the new "custom" role for
+`interpreted text`. It is possible to set several class names, for example:
 
 .. role:: custom
+   :class: custom custom2 my_custom custom.role
 
-the document may use the new "custom" role for :custom:`interpreted text`.
-
-It is possible to set several class names, for example:
-
-.. role:: custom4
-   :class: special custom exceptional
-
-Special :custom4:`interpreted text`.
+Big, large, small-caps :custom:`Interpreted Text` with a custom role.
 
 
