@@ -13,15 +13,15 @@ A proposed workaround is using citation reference syntax within a
 `substitution reference`. (As convention, not enforced by reST.)
 
 Havard style citation references are by name and year.
-Depending on the context, they takes the form:
+Depending on the context, they take the form:
 
   As |[Doe2007]_| pointed out, ...
   
   This is also summarized in |p[Doe2007]_|.
 
-The formatting of the citation could be done without use of the citation
-element. The citation for the following reference is formatted using
-the field list element.
+The formatting of the references_ list could be done without use of the
+citation element. The citation for the following reference is formatted
+using the field list element.
 
   |[Doe2010]_| updated his view ...
  
