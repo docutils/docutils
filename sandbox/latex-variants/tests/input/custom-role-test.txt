@@ -9,7 +9,7 @@ The "role" directive dynamically creates a custom interpreted text
 role and registers it with the parser.  This means that after
 declaring a role like this:
 
-.. role:: custom
+.. role:: Custom
 
 the document may use the new "custom" role:
 
@@ -42,7 +42,6 @@ This can also be used to set several class names, for example:
 
 Special :custom4:`interpreted text`.
 
-
 Rule names
 ==========
 
@@ -53,7 +52,6 @@ HTML
  allows any kind of `#CDATA`__ ass class argument.
 
 __ http://de.selfhtml.org/html/referenz/attribute.htm#cdata
-
 
 CSS
  * selecting class names with the dot-syntax
@@ -69,7 +67,7 @@ CSS
 
 .. [#] See http://de.selfhtml.org/css/formate/zentrale.htm#klassen
 
-Docutils 
+Docutils
   allows attribut type NMTOKENS in classes__:
 
   NMTOKENS
@@ -79,8 +77,7 @@ Docutils
 
 __ http://docutils.sourceforge.net/docs/ref/doctree.html#classes
 
-
-LaTeX 
+LaTeX
   allows only letters in macro names that are used directly,
   Letters and hyphens are allowed if you use ``\csname ... \endcsname``
 
@@ -89,17 +86,18 @@ LaTeX
 Test:
 
 .. role:: custom5
-   :class: custom5 custom.role my_custom custom-name 
+   :class: custom5 custom.role my_custom custom-name CustomRole
 
 Text with a :custom5:`special role`.
 
-Results: 
-  * Dots '.' and underbars '_' are translated to a hyphen '-' by
-    Docutils (also in HTML export)
-    
-    .. note:: is this documented?
-    
+Results:
+  * Accented characters, dots '.' and underbars '_' are translated to a
+    hyphen '-' by Docutils (also in HTML export), see
+    http://docutils.sf.net/docutils/docs/ref/rst/directives.html#class
+
+  * All class names are downcased (Why?) 
+  
   * some class names cannot be used as LaTeX command name (hyphen,
     numbers), e.g. ``\docutilsrolemy-custom`` will result in an error
-    
+
   * all resulting names work in ``\DUspan{classname}{content}``
