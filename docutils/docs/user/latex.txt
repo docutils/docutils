@@ -246,6 +246,19 @@ by changing the value of the `pxdimen` register, e.g.::
        \divide\pdfpxdimen by 92 % 92 DPI
 
 
+illegal unit ``px``:
+  The unit ``px`` is not defined in "pure" LaTeX, but introduced by the
+  `pdfTeX` converter on 2005-02-04. `pdfTeX` is used in all modern LaTeX
+  distributions (since ca. 2006) also for conversion into DVI.
+  
+  If you convert the LaTeX source with a legacy program, you might get the
+  error ``illegal unit px``
+
+  If updating LaTeX is not an option, just remove the ``px`` from the lengh
+  specification. HTML/CSS will default to ``px`` while the `latexe2` writer
+  will add the fallback unit ``bp``.
+
+
 paragraph indent
 ----------------
 
@@ -392,11 +405,13 @@ Example:
     http://dante.ctan.org/CTAN/macros/latex/contrib/listings/listings.pdf
 
 
-interpreted text roles
-----------------------
+custom interpreted text roles
+-----------------------------
 
 The rst `role directive`_ allows defining custom `text roles`_
-that mark parts of inline text (spans) with a class argument, e.g. ::
+that mark parts of inline text (spans) with a class argument.
+
+Example::
 
   .. role:: smallcaps
 
@@ -404,44 +419,61 @@ that mark parts of inline text (spans) with a class argument, e.g. ::
 
 This is transformed to the LaTeX code::
 
-  \DUspan{smallcaps}{Fourier} transformation
+  \DUrole{smallcaps}{Fourier} transformation
 
-with ``\DUspan`` defined in a way that a role with class "foo" will look for
-a styling command named ``\docutilsrolefoo``.
-For example the definition ::
+The fallback definition of ``\DUrole`` will look for a command named
+``\docutilsrolefoo``. The definition ::
 
-  \newcommand{\docutilsrolesmallcaps}{\scshape}
+  \newcommand{\docutilsrolesmallcaps}{\textsc}
 
 in the custom stylesheet will give the expected result (if the chosen font
 supports small caps).
 
-It is possible to define multiple class arguments for a custom role. These
-will be translated to
+It is also possible to specify an alternative definition of ``\DUrole`` in
+a style sheet.
 
-  \DUspan{argA,argB,argC}{<content>}
+Custom roles can have multiple class arguments, e.g. ::
 
-which is equivalent to::
+  .. role:: custom4
+     :class: argI argII arg_3
 
-  {\docutilsroleargA \docutilsroleargB \docutilsroleargC{<content>}}
+is translated to the nested commands::
 
-i.e. only the last styling command may take an argument.\ [#]_
+  \DUrole{argi}{\DUrole{argii}{\DUrole{arg-3}{<content>}}}
 
-To ensure that the order of class arguments is without effect (as in
-HTML/CSS), it is recommended to use only declarations, e.g. ``\scshape``
-instead of ``\textsc``, for the styling macros.
+* Role names and class arguments are are converted to conform to the regular
+  expression ``[a-z][-a-z0-9]*`` (see `class directive`_).
 
-It is also possible to specify an alternative definition of ``\DUspan`` in
-the style sheet.
+* Class arguments may contain numbers and hyphens, which need special
+  treatment in LaTeX command names. (The special command ``\@namedef`` can
+  help with the definition of corresponding commands.)
 
-.. [#] This differs from the implementation in Docutils version up to 0.5,
-   where the styling commands where nested like
-   ``\docutilsroleargA{\docutilsroleargB{<content>}}``.
+* In contrast to HTML/CSS, the order of the class arguments might matter.
+
+With the definitions::
+
+  \newcommand{\docutilsroleargi}[1]{\textsc}
+  \newcommand{\docutilsroleargii}[1]{{\large #1}}
+  \makeatletter
+  \@namedef{docutilsrolearg-3}{\textbf}
+  \makeatother
+
+in a style sheet\ [#]_ or as `raw LaTeX in the document source`_, 
+text styled with ``:custom4:`large bold small-caps``` will be typeset
+accordingly. 
+
+.. [#] Leave out the ``\makeatletter`` - ``\makeatother`` pair if the style
+   sheet is a LaTeX package (*.sty).
 
 .. _role directive:
    http://docutils.sourceforge.net/docs/ref/rst/directives.html#role
 
 .. _text roles:
    http://docutils.sourceforge.net/docs/ref/rst/roles.html
+
+.. _class directive:
+   http://docutils.sourceforge.net/docs/ref/rst/directives.html#class
+
 
 text font
 ---------
@@ -794,18 +826,6 @@ Wrapping text around figures is currently not supported.
 (Requires the `wrapfig`_ package.)
 
 .. _wrapfig: http://dante.ctan.org/CTAN/help/Catalogue/entries/wrapfig.html
-
-
-Illegal unit ``px``
--------------------
-
-The unit ``px`` is not defined in "pure" LaTeX, but introduced by the
-`pdfTeX` converter on 2005-02-04. `pdfTeX` is used in all modern LaTeX
-distributions (since ca. 2006) also for conversion into DVI.
-
-If updating LaTeX is not an option, just remove the ``px`` from the lengh
-specification. HTML/CSS will default to ``px`` while the `latexe2` writer
-will add the fallback unit ``bp``.
 
 
 Miscellaneous

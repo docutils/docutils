@@ -1,0 +1,28 @@
+Custom Roles in LaTeX
+---------------------
+
+* Role names and class arguments are are converted to conform to the regular
+  expression ``[a-z][-a-z0-9]*`` (all non-conforming characters are replaced
+  by a hyphen, all letters are downcased).
+
+  Class arguments may contain numbers and hyphens, which need special
+  treatment in LaTeX command names.
+
+  .. role:: custom4
+     :class: large custom4 small_caps custom.role custom\role
+
+  :custom4:`Interpreted Text`
+
+
+* With LaTeX, roles can be styled within the document using the `raw`
+  directive.
+
+  .. raw:: latex
+
+    \newcommand{\docutilsrolelarge}[1]{{\large #1}}
+    \makeatletter
+    \@namedef{docutilsrolesmall-caps}{\textsc}
+    \@namedef{docutilsrolecustom4}{\textbf}
+    \makeatother
+
+  :custom4:`Interpreted Text` in large, bold, small-caps.
