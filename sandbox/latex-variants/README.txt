@@ -350,31 +350,16 @@ Custom roles
 
 New Feature: failsave implementation
  As with classes to HTML objects, class arguments are silently ignored if
- there is not styling rule for this class in a custom style sheet.
+ there is no styling rule for this class in a custom style sheet.
 
 TODO: Custom roles based on standard roles.
 
 Backwards compatibility
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-It is possible to define multiple class arguments for a custom role. These
-will be translated to
-
-  \DUspan{argA,argB}{<content>}
-
-which is (with the default definition of ``\DUspan``) equivalent to::
-
-  {\docutilsroleargA \docutilsroleargB{<content>}}
-
-i.e. only the last styling command may take an argument.
-
-This differs from the implementation in Docutils version up to 0.5, where
-the styling commands where nested like
-``\docutilsroleargA{\docutilsroleargB{<content>}}`` so that all of them
-could be defined as taking an argument.
-
-The drawback of the former implementation was that documents with custom
-roles produced LaTeX errors if the styling macro definition was missing.
+SVN versions 5742 to 5861 contained an implementation that
+did not work with commands expecting an argument.
+The implementation from version 5862 is fully backwards compatible.
 
 LaTeX style sheets
 ------------------
@@ -390,7 +375,7 @@ Implementation:
 Rationale:
   while ``\input`` works with extension as well as without extension,
   ``\usepackage`` expects the package name without extension. (The latex2e
-  writer will drop a ``.sty`` extension.)
+  writer will strip a ``.sty`` extension.)
 
 
 Backwards compatibility
@@ -415,14 +400,14 @@ current document.
 
 Implementation:
 
-  The ``LaTeXTranslator.visit*`` functions store needed definitions and
+  The ``LaTeXTranslator.visit<node>`` functions store needed definitions and
   commands in the dictionary ``LaTeXTranslator.latex_fallbacks``.
 
   The fallbacks are defined with ``\providecommand``.
 
   The content of ``LaTeXTranslator.latex_fallbacks`` is written to the
-  preamble after the custom stylesheet reference/inclusion.  Customising in
-  a style sheet is possible with ``\newcommand``.
+  preamble *after* the custom stylesheet reference/inclusion.  Customising
+  in a style sheet is possible with ``\newcommand``.
 
 
 Length units
@@ -487,8 +472,8 @@ other latex writers
 
 Currently none.
 
-tests
-=====
+Tests
+*****
 
 Test documents and unit tests highlighting problems with the LaTeX
 export and testing alternatives.
@@ -496,8 +481,8 @@ export and testing alternatives.
 
 See `<tests>`_
 
-related sandbox projects
-========================
+Related sandbox projects
+************************
 
 * `<../dkuhlman/Docs>`__,
 * `<../docpy-writer>`__,
