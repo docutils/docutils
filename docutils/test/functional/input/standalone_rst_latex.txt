@@ -1,16 +1,24 @@
 .. include:: data/standard.txt
+.. the standalone_rst_html4css1.txt document includes this:
+    .. include:: data/header_footer.txt
+   Applicable for latex too? [GM]
 .. include:: data/table_colspan.txt
 .. include:: data/table_rowspan.txt
-
+.. include:: data/custom_roles.txt
 
 Tests for the LaTeX writer
 ==========================
 
-.. include:: data/latex2e.txt
+Test syntax elements which may cause trouble for the LaTeX writer but might
+not need to be tested with other writers (e.g. the HTML writer).
 
+.. include:: data/custom_roles_latex.txt
+.. include:: data/option_lists.txt
 .. include:: data/nonalphanumeric.txt
 .. include:: data/unicode.txt
-.. include:: data/custom_roles.txt
+.. unusual combinations (from newlatex, should we test them)
+   .. include:: data/latex.txt
+
+.. end of the special tests for the LaTeX writer
 
 .. include:: data/errors.txt
-

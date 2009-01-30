@@ -375,19 +375,15 @@ latex_headings = {
             ]
         }
 
-latex_headings['DUspan'] = r"""
-\makeatletter
-\providecommand{\DUspan}[2]{%
-  {% group ("span") to limit the scope of styling commands
-    \@for\node@class@name:=#1\do{%
-    \ifcsname docutilsrole\node@class@name\endcsname%
-      \csname docutilsrole\node@class@name\endcsname%
-    \fi%
-    }%
-    {#2}% node content
-  }% close "span"
-}
-\makeatother"""
+latex_headings['DUrole'] = r"""% Custom roles: 
+% \DUrole{NAME}{content} calls \docutilsroleNAME if it exists
+\providecommand{\DUrole}[2]{%
+  \ifcsname docutilsrole#1\endcsname%
+    \csname docutilsrole#1\endcsname{#2}%
+  \else%
+    #2%
+  \fi%
+}"""
 
 class DocumentClass:
     """Details of a LaTeX document class."""
@@ -2268,15 +2264,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             self.body.append('\n')
 
-    def visit_inline(self, node): # titlereference
+    def visit_inline(self, node): # <span>, i.e. custom roles
         # insert fallback definition
-        self.latex_fallbacks['inline'] = latex_headings['DUspan']
-        # print repr(self), repr(self.latex_fallbacks)
+        self.latex_fallbacks['inline'] = latex_headings['DUrole']
         classes = node.get('classes', [])
-        self.body.append(r'\DUspan{%s}{' %','.join(classes))
+        for cls in classes:
+            self.body.append(r'\DUrole{%s}{' % cls)
+        self.context.append('}' * (len(classes)))
 
     def depart_inline(self, node):
-        self.body.append('}')
+        self.body.append(self.context.pop())
 
     def visit_rubric(self, node):
         self.body.append('\\rubric{')

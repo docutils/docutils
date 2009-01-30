@@ -57,19 +57,15 @@
 \ifthenelse{\isundefined{\hypersetup}}{
 \usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
 }{}
-
-\makeatletter
-\providecommand{\DUspan}[2]{%
-  {% group ("span") to limit the scope of styling commands
-    \@for\node@class@name:=#1\do{%
-    \ifcsname docutilsrole\node@class@name\endcsname%
-      \csname docutilsrole\node@class@name\endcsname%
-    \fi%
-    }%
-    {#2}% node content
-  }% close "span"
+% Custom roles: 
+% \DUrole{NAME}{content} calls \docutilsroleNAME if it exists
+\providecommand{\DUrole}[2]{%
+  \ifcsname docutilsrole#1\endcsname%
+    \csname docutilsrole#1\endcsname{#2}%
+  \else%
+    #2%
+  \fi%
 }
-\makeatother
 \title{reStructuredText Test Document\\
 \large{Examples of Syntax Constructs}
 }
@@ -229,23 +225,23 @@ reStructuredText construct.
 
 \item {} \href{\#rowspanning-tables}{2.20~~~Rowspanning tables}
 
+\item {} \href{\#custom-roles}{2.21~~~Custom Roles}
+
 \end{list}
 
 \item {} \href{\#tests-for-the-latex-writer}{3~~~Tests for the LaTeX writer}
-
-\item {} \href{\#some-tests-for-the-latex2e-writer}{4~~~Some Tests for the LaTeX2e Writer}
-
-\item {} \href{\#id24}{5~~~Option lists}
 \begin{list}{}{}
-\item {} \href{\#monospaced-non-alphanumeric-characters}{5.1~~~Monospaced non-alphanumeric characters}
+\item {} \href{\#custom-roles-in-latex}{3.1~~~Custom Roles in LaTeX}
 
-\item {} \href{\#various-non-ascii-characters}{5.2~~~Various non-ASCII characters}
+\item {} \href{\#id24}{3.2~~~Option lists}
 
-\item {} \href{\#custom-roles}{5.3~~~Custom Roles}
+\item {} \href{\#monospaced-non-alphanumeric-characters}{3.3~~~Monospaced non-alphanumeric characters}
+
+\item {} \href{\#various-non-ascii-characters}{3.4~~~Various non-ASCII characters}
 
 \end{list}
 
-\item {} \href{\#error-handling}{6~~~Error Handling}
+\item {} \href{\#error-handling}{4~~~Error Handling}
 
 \end{list}
 
@@ -1313,6 +1309,9 @@ Fifth test in LaTeX.\\Line two.
 paragraph 1
 
 paragraph 2
+% the standalone_rst_html4css1.txt document includes this:
+%  .. include:: data/header_footer.txt
+% Applicable for latex too? [GM] 
 
 
 %___________________________________________________________________________
@@ -1460,31 +1459,81 @@ body row 3
 
 %___________________________________________________________________________
 
+\hypertarget{custom-roles}{}
+\pdfbookmark[1]{2.21~~~Custom Roles}{custom-roles}
+\subsection*{2.21~~~Custom Roles}
+\label{custom-roles}
+\begin{itemize}
+\item {} 
+A role based on an existing role.
+
+\texttt{one} \texttt{two} \texttt{three}
+
+\item {} 
+A new role.
+
+\DUrole{customnew}{one two three}
+
+\item {} 
+A role with class attribute.
+
+\DUrole{special}{interpreted text}
+
+\item {} 
+A role with class attribute.
+
+\DUrole{very}{\DUrole{special}{interpreted text}}
+
+\end{itemize}
+
+
+%___________________________________________________________________________
+
 \hypertarget{tests-for-the-latex-writer}{}
 \pdfbookmark[0]{3~~~Tests for the LaTeX writer}{tests-for-the-latex-writer}
 \section*{3~~~Tests for the LaTeX writer}
 \label{tests-for-the-latex-writer}
 
+Test syntax elements which may cause trouble for the LaTeX writer but might
+not need to be tested with other writers (e.g. the HTML writer).
+
 
 %___________________________________________________________________________
 
-\hypertarget{some-tests-for-the-latex2e-writer}{}
-\pdfbookmark[0]{4~~~Some Tests for the LaTeX2e Writer}{some-tests-for-the-latex2e-writer}
-\section*{4~~~Some Tests for the LaTeX2e Writer}
-\label{some-tests-for-the-latex2e-writer}
+\hypertarget{custom-roles-in-latex}{}
+\pdfbookmark[1]{3.1~~~Custom Roles in LaTeX}{custom-roles-in-latex}
+\subsection*{3.1~~~Custom Roles in LaTeX}
+\label{custom-roles-in-latex}
+\begin{itemize}
+\item {} 
+Role names and class arguments are are converted to conform to the regular
+expression \texttt{{[}a-z{]}{[}-a-z0-9{]}*} (all non-conforming characters are replaced
+by a hyphen, all letters are downcased).
 
-These tests have been written to exercise some unusual combinations of
-syntax elements which may cause trouble for the LaTeX writer but do
-not need to be tested with other writers (e.g. the HTML writer).
+Class arguments may contain numbers and hyphens, which need special
+treatment in LaTeX command names.
 
-This file is user by the standalone{\_}rst{\_}latex test.
+\DUrole{large}{\DUrole{custom4}{\DUrole{small-caps}{\DUrole{custom-role}{\DUrole{custom-role}{Interpreted Text}}}}}
+
+\item {} 
+With LaTeX, roles can be styled within the document using the \titlereference{raw}
+directive.
+\newcommand{\docutilsrolelarge}[1]{{\large #1}}
+\makeatletter
+\@namedef{docutilsrolesmall-caps}{\textsc}
+\@namedef{docutilsrolecustom4}{\textbf}
+\makeatother
+\DUrole{large}{\DUrole{custom4}{\DUrole{small-caps}{\DUrole{custom-role}{\DUrole{custom-role}{Interpreted Text}}}}} in large, bold, small-caps.
+
+\end{itemize}
+% This file is used by the standalone_rst_latex test. 
 
 
 %___________________________________________________________________________
 
 \hypertarget{id24}{}
-\pdfbookmark[0]{5~~~Option lists}{id24}
-\section*{5~~~Option lists}
+\pdfbookmark[1]{3.2~~~Option lists}{id24}
+\subsection*{3.2~~~Option lists}
 \label{id24}
 
 The LaTeX-2e description environment is used for definition lists.
@@ -1515,8 +1564,8 @@ verbose
 %___________________________________________________________________________
 
 \hypertarget{monospaced-non-alphanumeric-characters}{}
-\pdfbookmark[1]{5.1~~~Monospaced non-alphanumeric characters}{monospaced-non-alphanumeric-characters}
-\subsection*{5.1~~~Monospaced non-alphanumeric characters}
+\pdfbookmark[1]{3.3~~~Monospaced non-alphanumeric characters}{monospaced-non-alphanumeric-characters}
+\subsection*{3.3~~~Monospaced non-alphanumeric characters}
 \label{monospaced-non-alphanumeric-characters}
 
 These are all ASCII characters except a-zA-Z0-9 and space:
@@ -1534,8 +1583,8 @@ width as the third line.
 %___________________________________________________________________________
 
 \hypertarget{various-non-ascii-characters}{}
-\pdfbookmark[1]{5.2~~~Various non-ASCII characters}{various-non-ascii-characters}
-\subsection*{5.2~~~Various non-ASCII characters}
+\pdfbookmark[1]{3.4~~~Various non-ASCII characters}{various-non-ascii-characters}
+\subsection*{3.4~~~Various non-ASCII characters}
 \label{various-non-ascii-characters}
 
 \leavevmode
@@ -1649,43 +1698,16 @@ The following line should not be wrapped, because it uses
 non-breakable spaces:
 
 X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X
-
-
-%___________________________________________________________________________
-
-\hypertarget{custom-roles}{}
-\pdfbookmark[1]{5.3~~~Custom Roles}{custom-roles}
-\subsection*{5.3~~~Custom Roles}
-\label{custom-roles}
-\begin{itemize}
-\item {} 
-A role based on an existing role.
-
-\texttt{one} \texttt{two} \texttt{three}
-
-\item {} 
-A new role.
-
-\DUspan{customnew}{one two three}
-
-\item {} 
-A role with class attribute.
-
-\DUspan{special}{interpreted text}
-
-\item {} 
-A role with class attribute.
-
-\DUspan{very,special}{interpreted text}
-
-\end{itemize}
+% unusual combinations (from newlatex, should we test them)
+% .. include:: data/latex.txt 
+% end of the special tests for the LaTeX writer 
 
 
 %___________________________________________________________________________
 
 \hypertarget{error-handling}{}
-\pdfbookmark[0]{6~~~Error Handling}{error-handling}
-\section*{6~~~Error Handling}
+\pdfbookmark[0]{4~~~Error Handling}{error-handling}
+\section*{4~~~Error Handling}
 \label{error-handling}
 
 Any errors caught during processing will generate system messages.

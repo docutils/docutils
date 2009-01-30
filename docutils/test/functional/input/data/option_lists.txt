@@ -1,14 +1,7 @@
-Some Tests for the LaTeX2e Writer
-=================================
-
-These tests have been written to exercise some unusual combinations of
-syntax elements which may cause trouble for the LaTeX writer but do
-not need to be tested with other writers (e.g. the HTML writer).
-
-This file is user by the standalone_rst_latex test.
+.. This file is used by the standalone_rst_latex test.
 
 Option lists
-============
+------------
 
 The LaTeX-2e description environment is used for definition lists. 
 The definition is continued on the same line as the term, this should
