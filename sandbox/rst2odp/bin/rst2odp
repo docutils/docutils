@@ -274,6 +274,10 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         #         bottom.pop_node()
 
     def depart_paragraph(self, node):
+        # add newline
+        if not self.at('list_item'):
+            self.depart_line(node)
+
         classes = node.attributes.get('classes', [])
         if 'center' in classes or 'right' in classes:
             self.cur_slide.pop_node()
@@ -420,7 +424,7 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         else:
             # needs to be in a p
             # need to hack a bit, since .write usually inserts text:p and text:span
-            if not self.cur_slide.cur_element._in_p():
+            if not self.cur_slide.cur_element or not self.cur_slide.cur_element._in_p():
                 self.cur_slide.add_node('text:p', {})
             self.cur_slide.add_node('text:a', attrib={'xlink:href': '%s' % node['refuri'],
                                                       'xlink:type': 'simple'})
