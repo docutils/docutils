@@ -227,7 +227,6 @@ class Preso(object):
             files.extend(zip.cat('/Pictures'))
         except IOError, e:
             # it's ok to not have pictures ;)
-            import pdb; pdb.set_trace()
             pass
         for filename in files:
             filetype = ''
