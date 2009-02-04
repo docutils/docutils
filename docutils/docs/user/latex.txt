@@ -37,7 +37,8 @@ b. Use LaTeX as a typesetting system to produce the desired document
    ``rst2newlatex.py`` adds a lot of LaTeX macros and uses LaTeX as a
    typesetter without caring about producing readable LaTeX files.
 
-This documents describes the "latex2e" writer (``rst2latex.py``).
+This documents describes the `latex2e` writer called by the front end
+``rst2latex.py``.
 
 PDF generation
 ==============
@@ -45,20 +46,21 @@ PDF generation
 Most probably, LaTeX code is not the desired end-format of the document.
 LaTeX offers three ways to generate PDF documents from the LaTeX source:
 
-pdflatex :
+pdflatex
   Generates a PDF document directly from the LaTeX file. As always one
   might need to call it twice (thrice) to get internal references correct.
 
-latex dvipdfm :
-  Use ``latex`` to generate a DVI file and ``dvipdfm`` to produce a PDF file.
-  If you will take this approach, specify ``documentoptions=dvipdfm``.
+latex dvipdfm
+  Use ``latex`` to generate a DVI file and ``dvipdfm`` to produce a PDF
+  file. If you will take this approach, add ``dvipdfm`` to the
+  ``--documentoptions``.
 
-latex dvips ps2pdf :
+latex dvips ps2pdf
   Produce a DVI file with ``latex``, postscript with ``dvips`` and PDF with
   ``ps2pdf``.
 
-The Rubber_ utility can be used to automatically run LaTeX the required
-number of times and delete "spurious" files.
+The Rubber_ wrapper for LaTeX and friends can be used to automatically run
+all programs the required number of times and delete "spurious" files.
 
 .. _Rubber: http://iml.univ-mrs.fr/~beffara/soft/rubber/
 
@@ -66,17 +68,24 @@ number of times and delete "spurious" files.
 Configuration
 =============
 
-Configuration can be done in two ways:
+Configuration can be done in several ways:
 
-1. Options to the Docutils tool as command line option\ [#]_ or in
-   configuration files\ [#]_.
+1. `Configuration options`_ to the Docutils tool as command line option or
+   in configuration files.
 
 2. Via LaTeX packages or `custom style sheets`_.
 
-.. [#] Run ``rst2latex.py --help`` to see the available command-line
-   options.
+3. Via `raw LaTeX`_ in the document.
 
-.. [#] See `Docutils Configuration`_ for details about configuration files.
+Configuration options
+---------------------
+
+The LaTeX code generation can be configured via options to the Docutils
+latex writer:
+
+* Run ``rst2latex.py --help`` to see the available command-line options.
+
+* See `Docutils Configuration`_ for details about configuration files.
 
 .. _Docutils Configuration:
    http://docutils.sourceforge.net/docs/user/config.html
@@ -84,6 +93,9 @@ Configuration can be done in two ways:
 
 Custom style sheets
 -------------------
+
+Style sheets can be used to configure the look of the printout/PDF by
+(re-)defining LaTeX-commands and settings.
 
 Specifying style sheets
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -111,7 +123,7 @@ If the ``--embed-stylesheet`` option is set, the content of STYLESHEET
 is inserted instead.
 
 Examples
-""""""""
+~~~~~~~~
 
 * Times Roman fonts with `mathptmx` package::
 
@@ -131,44 +143,46 @@ Examples
 
   :mathptmx: Times fonts,
   :parskip:  separate paragraphs by increased lineskip,
-  :``preamble.tex``: custom style sheet::
+  :preamble.tex: custom style sheet::
 
     --stylesheet==mathptmx,parskip,preamble.tex
 
-Images
-======
+Raw LaTeX
+---------
 
-Images are included in LaTeX by the `graphicx` package. The supported
-image formats depend on the used driver (dvi, dvips, pdftex, ...).
+By means of the `raw directive`_ one can give commands directly to LaTeX.
 
-If pdf-image inclusion in pdf files fails, specify
-``--graphicx-option=pdftex`` or ``--graphicx-option=auto``.
+This can be both, styling and printing commands, as LaTeX (unlike HTML/CSS)
+uses one common language for content and style.
 
+This means that most of the example code for the style sheet will also work
+as raw LaTeX inside the document. An exception are commands that need to be
+given in the document preamble (e.g. package loading with ``\usepackage``,
+which can be done with the ``--style-sheet`` command line option instead).
 
-Raw LaTeX in the document source
-================================
+Examples
+~~~~~~~~
 
-By means of the reST-raw directive one can give commands directly to
-LaTeX, e.g. forcing a page break::
+Forcing a page break::
 
   .. raw:: latex
 
      \newpage
 
-
-Or setting formulas in LaTeX::
+Setting math in LaTeX::
 
   .. raw:: latex
 
      \[x^3 + 3x^2a + 3xa^2 + a^3,\]
 
+(Drawback: the formula will be invisible in other output formats.)
 
-Or making a colorbox: If someone wants to get a red background for a textblock,
-she/he can put \definecolor{bg}{rgb}{.9,0,0} into style.tex and in
-reStructuredText do something like this::
+Making a "colorbox": If someone wants to get a red background for a
+text block, she/he can define ``\definecolor{bg}{rgb}{.9,0,0}`` in a custom
+style sheet and in the document do something like this::
 
   |begincolorbox|
-  Nobody expects the spanish inquisition.
+  Nobody expects the Spanish inquisition.
   |endcolorbox|
 
   .. |begincolorbox| raw:: latex
@@ -183,122 +197,33 @@ reStructuredText do something like this::
      \\end{center}
 
 
-How to configure the ...
-========================
+.. _raw directive:
+   http://docutils.sourceforge.net/docs/ref/rst/directives.html#raw
 
-document class
---------------
-
-The LaTeX document class can be set using the
-``--documentclass=DOCUMENTCLASS`` option.
-It cannot be changed in a style sheet.
-
-Default:
-  article
-
-Some possibilities:
-  report, book, scrarticle, scrreport, scrbook, ...
-
-paper size
-----------
-
-Paper geometry can be changed using ``--documentoptions`` or
-``\geometry{OPTIONLIST}`` LaTeX commands in a style sheet.
-
-Default:
-  a4paper
-
-Some possibilities:
-
-* a4paper, b3paper, letterpaper, executivepaper, legalpaper
-* landscape, portrait, twoside.
-
-and lots of other options for setting margins (see the `geometry manual`_).
-
-Example:
-  LaTeX command::
-
-    \geometry{a5paper,landscape}
-
-  command line argument::
-
-    --documentoptions=a5paper,landscape
-
-.. _geometry manual:
-   http://dante.ctan.org/CTAN/macros/latex/contrib/geometry/geometry.pdf
-
-
-length of a pixel (px)
-----------------------
-
-The length unit ``px`` stands for `pixel` and its value depends on the
-context:
-
-  :CSS:      defines 1 px = 1/96 in, i.e. 92 dots per inch (DPI)
-  :browsers: use the actual screen resolution (or what they think it is)
-	     (usually between 72 DPI and 100 DPI).
-  :pdftex:   defines 1px = 1bp = 1/72 in, i.e. 72 DPI
-
-It is possible to configure the conversion factor of ``px`` in a style sheet
-by changing the value of the `pxdimen` register, e.g.::
-
-       \pdfpxdimen=1in % 1 DPI
-       \divide\pdfpxdimen by 92 % 92 DPI
-
-
-illegal unit ``px``:
-  The unit ``px`` is not defined in "pure" LaTeX, but introduced by the
-  `pdfTeX` converter on 2005-02-04. `pdfTeX` is used in all modern LaTeX
-  distributions (since ca. 2006) also for conversion into DVI.
-  
-  If you convert the LaTeX source with a legacy program, you might get the
-  error ``illegal unit px``
-
-  If updating LaTeX is not an option, just remove the ``px`` from the lengh
-  specification. HTML/CSS will default to ``px`` while the `latexe2` writer
-  will add the fallback unit ``bp``.
-
-
-paragraph indent
-----------------
-
-Default (in most document classes):
-  indent the first line in a paragraph unless it is the first line of a
-  chapter, section, subsection, or subsubsection.
-
-Example:
-  To set paragraph indentation to zero but add a vertical space between
-  paragraphs use the LaTeX command::
-
-    \usepackage{parskip}
-
-  or the command line argument::
-
-    --stylesheet=parskip
 
 Docutils special commands
 -------------------------
 
 The generated LaTeX documents should be kept processable by a standard LaTeX
 installation, therefore the document contains default settings. The
-stylesheet is included after the default definitions, so these definitions
-can be changed with ``\renewcommand`` in the stylesheet.
+style sheet is included after the default definitions, so these definitions
+can be changed with ``\renewcommand`` in the style sheet.
 
 Some definitions are only needed with special rst constructs. For these,
 fallback definitions are provided:
 
 * only if needed in the document,
 * using ``\providecommand``,
-* *after* the custom stylesheet.
+* *after* the custom style sheet.
 
 By convention, these fallback definitions use the prefix ``\DU``\ [#]_.
-The stylesheet can define alternative implementations with ``\newcommand``.
+The style sheet can define alternative implementations with ``\newcommand``.
 
 .. [#] for Documentation Utilities = Docutils
 
 
 admonition width
-----------------
+~~~~~~~~~~~~~~~~
 
 The width of admonitions.
 
@@ -311,9 +236,9 @@ Example:
     \setlength{\admonitionwidth}{0.7\textwidth}
 
 docinfo width
--------------
+~~~~~~~~~~~~~
 
-The width for the docinfo table.
+The width for the `docinfo` table.
 
 Default:
   ``0.9*textwidth``
@@ -324,7 +249,7 @@ Example:
   \setlength{\docinfowidth}{0.7\textwidth}
 
 rubric style
-------------
+~~~~~~~~~~~~
 
 How to lay out the "rubric" element.
 
@@ -342,95 +267,47 @@ Example:
   sets rubric to subsection style in red.
 
 
-line spacing
-------------
+Document elements
+-----------------
 
-Set with package `setspace`, which gives singlespace, onehalfspace and
-doublespace commands.
+images
+~~~~~~
 
-Example:
-  Alternatives to get document wide double spacing:
+Images are included in LaTeX by the `graphicx` package. The supported
+image formats depend on the used driver (dvi, dvips, pdftex, ...).
 
-  LaTeX commands ::
-
-    \usepackage{setspace}
-    \doublespacing
-
-  or ::
-
-    \linespread{1.55}
-
-  or add ``doublesp`` to the ``--documentoptions`` and e.g. ::
-
-    \setstretch{1.7}
-
-  for bigger linespacing.
-
-literal blocks
---------------
-
-The command line option ``--literal-env`` allows the specification of the
-environment to use with literal blocks, e.g. ``--literal-env=verbatim`` or
-``--literal-env=lstlisting``.
-
-The environment is used for literal-blocks when possible\ [#]_.
-
-Example:
-  The ``lstlisting`` environment is highly configurable (as documented in
-  listings.pdf_), for instance ::
-
-    \renewcommand{\ttdefault}{txtt}
-    \lstset{language=Python,
-            morekeywords=[1]{yield}
-    }
-    \lstloadlanguages{Python}
-    \lstset{
-      basicstyle=\ttfamily,
-      keywordstyle=\bfseries,
-      commentstyle=\rmfamily\itshape,
-      stringstyle=\slshape,
-    }
-    \lstset{showstringspaces=false}
-    \lstset{columns=fullflexible,
-    	 basewidth={0.5em,0.4em}}
-
-.. [#] A literal-block element, when processed by a Docutils writer might
-   have it's origin in a markup with "::" syntax or a ".. parsed-literal::"
-   directive.
-
-   A LaTeX verbatim environment is only usable if there is no other markup
-   contained in the literal-block.
-
-.. _listings.pdf:
-    http://dante.ctan.org/CTAN/macros/latex/contrib/listings/listings.pdf
+If PDF-image inclusion in PDF files fails, specify
+``--graphicx-option=pdftex`` or ``--graphicx-option=auto``.
 
 
 custom interpreted text roles
------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The rst `role directive`_ allows defining custom `text roles`_
 that mark parts of inline text (spans) with a class argument.
 
-Example::
+Example 1:
+  Typeset text in small caps::
 
-  .. role:: smallcaps
+    .. role:: smallcaps
 
-  :smallcaps:`Fourier` transformation
+    :smallcaps:`Fourier` transformation
 
-This is transformed to the LaTeX code::
+  This is transformed to the LaTeX code::
 
-  \DUrole{smallcaps}{Fourier} transformation
+    \DUrole{smallcaps}{Fourier} transformation
 
-The fallback definition of ``\DUrole`` will look for a command named
-``\docutilsrolefoo``. The definition ::
+  The fallback definition\ [#]_ of ``\DUrole`` will look for a command named
+  ``\docutilsrolesmallcaps``. The definition ::
 
-  \newcommand{\docutilsrolesmallcaps}{\textsc}
+    \newcommand{\docutilsrolesmallcaps}{\textsc}
 
-in the custom stylesheet will give the expected result (if the chosen font
-supports small caps).
+  in the custom style sheet will give the expected result (if the chosen font
+  supports small caps).
 
-It is also possible to specify an alternative definition of ``\DUrole`` in
-a style sheet.
+  .. [#] It is possible to specify an alternative definition of ``\DUrole``
+     in a style sheet.
+
 
 Custom roles can have multiple class arguments, e.g. ::
 
@@ -458,12 +335,13 @@ With the definitions::
   \@namedef{docutilsrolearg-3}{\textbf}
   \makeatother
 
-in a style sheet\ [#]_ or as `raw LaTeX in the document source`_, 
+in a style sheet\ [#]_ or as `raw LaTeX`_ in the document source,
 text styled with ``:custom4:`large bold small-caps``` will be typeset
-accordingly. 
+accordingly.
 
 .. [#] Leave out the ``\makeatletter`` - ``\makeatother`` pair if the style
-   sheet is a LaTeX package (*.sty).
+   sheet is a LaTeX package (``*.sty``).
+
 
 .. _role directive:
    http://docutils.sourceforge.net/docs/ref/rst/directives.html#role
@@ -475,8 +353,147 @@ accordingly.
    http://docutils.sourceforge.net/docs/ref/rst/directives.html#class
 
 
+literal blocks
+~~~~~~~~~~~~~~
+
+The command line option ``--literal-env`` allows the specification of the
+environment to use with literal blocks, e.g. ``--literal-env=verbatim`` or
+``--literal-env=lstlisting``.
+
+The environment is used for literal-blocks when possible\ [#]_.
+
+Example:
+  The ``lstlisting`` environment is highly configurable (as documented in
+  listings.pdf_), for instance ::
+
+    \renewcommand{\ttdefault}{txtt}
+    \lstset{language=Python,
+            morekeywords=[1]{yield}
+    }
+    \lstloadlanguages{Python}
+    \lstset{
+      basicstyle=\ttfamily,
+      keywordstyle=\bfseries,
+      commentstyle=\rmfamily\itshape,
+      stringstyle=\slshape,
+    }
+    \lstset{showstringspaces=false}
+    \lstset{columns=fullflexible,
+         basewidth={0.5em,0.4em}}
+
+.. [#] A literal-block element, when processed by a Docutils writer might
+   have it's origin in a markup with "::" syntax or a ".. parsed-literal::"
+   directive.
+
+   A LaTeX verbatim environment is only usable if there is no other markup
+   contained in the literal-block.
+
+.. _listings.pdf:
+    http://dante.ctan.org/CTAN/macros/latex/contrib/listings/listings.pdf
+
+list of figures/tables
+~~~~~~~~~~~~~~~~~~~~~~
+
+Docutils does not support lists of figures or tables.
+
+However, with LaTeX, they can be generated using `raw LaTeX`_ in the
+document source:
+
+* A list of figures with the LaTeX command ``postfixes``,
+* a list of tables by ``\listoftables``.
+
+Example:
+  ::
+
+    .. raw:: latex
+
+       \listoffigures
+
+
+
+How to configure the ...
+------------------------
+
+document class
+~~~~~~~~~~~~~~
+
+The LaTeX document class can be set using the
+``--documentclass=DOCUMENTCLASS`` option.
+It cannot be changed in a style sheet.
+
+Default:
+  article
+
+Some possibilities:
+  report, book, scrarticle, scrreport, scrbook, ...
+
+paper size
+~~~~~~~~~~
+
+Paper geometry can be changed using ``--documentoptions`` or
+``\geometry{OPTIONLIST}`` LaTeX commands in a style sheet.
+
+Default:
+  a4paper
+
+Some possibilities:
+
+* a4paper, b3paper, letterpaper, executivepaper, legalpaper
+* landscape, portrait, twoside.
+
+and lots of other options for setting margins (see the `geometry manual`_).
+
+Example:
+  LaTeX command::
+
+    \geometry{a5paper,landscape}
+
+  command line argument::
+
+    --documentoptions=a5paper,landscape
+
+.. _geometry manual:
+   http://dante.ctan.org/CTAN/macros/latex/contrib/geometry/geometry.pdf
+
+
+line spacing
+~~~~~~~~~~~~
+
+Set with package `setspace`, providing the ``\singlespacing``,
+``\onehalfspacing``, and ``\doublespacing`` commands, or (for small
+adjustments) with the LaTeX command ``\linespread``
+
+Examples:
+  Get document wide double spacing::
+
+    \usepackage{setspace}
+    \doublespacing
+
+  Increase line spacing by five percent for better readability::
+
+    \linespread{1.05}
+
+
+paragraph indent
+~~~~~~~~~~~~~~~~
+
+Default (in most document classes):
+  indent the first line in a paragraph unless it is the first line of a
+  chapter, section, subsection, or subsubsection.
+
+Example:
+  To set paragraph indentation to zero but add a vertical space between
+  load the `parskip` package with the command line argument::
+
+    --stylesheet=parskip
+
+  or in your style sheet with::
+
+    \usepackage{parskip}
+
+
 text font
----------
+~~~~~~~~~
 
 Unfortunately, LaTeX cannot use the fonts of the operating system directly
 [#]_ but needs specially installed fonts with additional supporting files.
@@ -486,31 +503,38 @@ range of fonts available for use with LaTeX.
 Default:
   Computer Modern (CM)
 
-Alternative fonts can be selected by specifying the corresponding LaTeX
-package or by changing the font-default macros.
-Packages can be specified as arguments to the ``--stylesheet`` option or in
-a custom style sheet. (Passing options to a package is only possible in the
-style sheet.)
+Alternative fonts can be selected by
 
-Example:
-  LaTeX code::
+a) specifying the corresponding LaTeX package or
+b) by changing the font-default macros.
 
-    \usepackage{lmodern} % LaTeX Modern, Type 1 variant of CM
+* Packages can be specified as arguments to the ``--stylesheet`` option or
+  in a custom style sheet.
+* Packages can be combined.
+* Passing options to a package is only possible in the style sheet.
 
-  command line argument::
+Examples:
+  * Use `LaTeX Modern`, a Type 1 variant of CM.
 
-    --stylesheet=lmodern
+    LaTeX code::
 
-  Packages can be combined. The ubiquitous "Times/Helvetica/Courier"
-  combination is achieved by::
+      \usepackage{lmodern}
 
-    \usepackage{mathptmx}             % times for serif and math
-    \usepackage[scaled=.90]{helvet}   % downscaled helvetica for sans serif
-    \usepackage{courier}	      % courier for teletype (monospace)
+    Command line argument::
 
-  Changing the font-default macros in a custom style sheet::
+      --stylesheet=lmodern
 
-    \renewcommand{\ttdefault}{txtt}
+  * The ubiquitous "Times/Helvetica/Courier"
+    combination is achieved by::
+
+      \usepackage{mathptmx}            % Times for serif and math
+      \usepackage[scaled=.90]{helvet}  % downscaled Helvetica for sans serif
+      \usepackage{courier}             % Courier for teletype (mono-space)
+
+  * Changing a font without using a package (the macros are ``\rmdefault``,
+    ``sfdefault`` and ``ttdefault``)::
+
+      \renewcommand{\ttdefault}{txtt}
 
 
 When generating PDF-files from LaTeX, the files can become smaller if
@@ -545,7 +569,7 @@ newcent      New Century  Avant Garde   Courier
 
 charter      Charter
 
-utopia	     Utopia
+utopia       Utopia
 ============ ============ ============= ============= ============
 
 Extended versions of the standard Postscript fonts including accented chars,
@@ -563,7 +587,7 @@ of, e.g., `TeX Live`_.
 .. _TeX Live: http://tug.org/texlive/
 
 text encoding
--------------
+~~~~~~~~~~~~~
 
 Default:
   The generated LaTeX documents are in the input encoding.
@@ -575,7 +599,7 @@ Example:
 
 * If the source document is in utf-8 encoding (or
   ``--output-encoding=utf-8`` is set), LaTeX needs Unicode support (the
-  `ucs` package). If this is not available, specify a different
+  `ucs` package). If this package is not available, specify a different
   output-encoding, e.g. ``latin1``.
 
 * If LaTeX issues a Warning about unloaded/unknown characters adding ::
@@ -603,14 +627,14 @@ Example:
 
 
 font encoding
--------------
+~~~~~~~~~~~~~
 
 The LaTeX font encoding can be selected with option ``--font-encoding``.
 
 Default:
-  OT1 with package "ae"
+  OT1 with package `ae`
 
-  "ae" uses the original 7-bit encoded CM fonts (the "OT1" encoding) and
+  `ae` uses the original 7-bit encoded CM fonts (the "OT1" encoding) and
   combines accented characters from base char and accent glyph. This can
   lead to suboptimal appearance and to problems if text shall be extracted
   from (or found in) the generated PDF document.
@@ -619,8 +643,8 @@ The recommended setting for Latin based scripts is "T1" together with a
 T1-encoded "Type 1" (vector) font:
 
   In up-to-date LaTeX distributions (MikTeX, `TeX Live`_) T1 encoded
-  standard postscript fonts belong to the `core` while the "ae" (and even
-  more the "aeguill") workarounds are optional (and not always installed by
+  standard postscript fonts belong to the `core` while the `ae` (and even
+  more the `aeguill`) workarounds are optional (and not always installed by
   default).
 
 Example:
@@ -633,11 +657,11 @@ Example:
 
 
 hyphenation
------------
+~~~~~~~~~~~
 
 The amount of hyphenation is influenced by ``\hyphenpenalty``, setting it to
 10000 almost prevents hyphenation. As this produces lines with more space
-between words one should increase LaTeX's ``\tolerance`` for this.
+between words one should increase Latex's ``\tolerance`` for this.
 
 Example:
   ::
@@ -645,11 +669,43 @@ Example:
     \hyphenpenalty=5000
     \tolerance=1000
 
+
+size of a pixel (length unit ``px``)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The length unit ``px`` stands for `pixel` and its value has varying
+definitions:
+
+  :pdftex:   defines 1px = 1bp = 1/72 in, i.e. 72 DPI
+  :CSS:      defines 1 px = 1/96 in, i.e. 92 dots per inch (DPI)
+  :browsers: use the actual screen resolution (or what they think it is)
+             (usually between 72 DPI and 100 DPI).
+
+It is possible to configure the conversion factor of ``px`` in a style sheet
+by changing the value of the `pxdimen` register, e.g.::
+
+       \pdfpxdimen=1in % 1 DPI
+       \divide\pdfpxdimen by 92 % 92 DPI
+
+
+Error ``illegal unit px``:
+  The unit ``px`` is not defined in "pure" LaTeX, but introduced by the
+  `pdfTeX` converter on 2005-02-04. `pdfTeX` is used in all modern LaTeX
+  distributions (since ca. 2006) also for conversion into DVI.
+
+  If you convert the LaTeX source with a legacy program, you might get the
+  error ``illegal unit px``.
+
+  If updating LaTeX is not an option, just remove the ``px`` from the length
+  specification. HTML/CSS will default to ``px`` while the `latexe2` writer
+  will add the fallback unit ``bp``.
+
+
 title page
-----------
+~~~~~~~~~~
 
 Currently the title page only shows the title and subtitle, date and author
-are shown in the "docinfo" table. To change the titlepage layout one must
+are shown in the `docinfo` table. To change the title-page layout one must
 redefine the ``\maketitle`` command in the stylesheet
 
 Example
@@ -670,7 +726,7 @@ The macro ``\@title`` contains the title.
 
 
 section numbering
------------------
+~~~~~~~~~~~~~~~~~
 
 The options ``--section-numbering`` and ``--use-latex-toc``, both
 influence section numbering.
@@ -686,8 +742,8 @@ influence section numbering.
   used LaTeX document class, usually to four levels.
 
 * If section numbering and LaTeX table of contents is used LaTeX and
-  Docutils will number sections. To switch off displaying of LaTeX's
-  numbers one has to add following lines to the stylesheet ::
+  Docutils will number sections. To switch off displaying of Latex's
+  numbers one has to add following lines to the style sheet ::
 
     % no section number display
     \makeatletter
@@ -700,7 +756,7 @@ influence section numbering.
   writers and page numbers in the table of contents.
 
 page numbering
---------------
+~~~~~~~~~~~~~~
 
 Example:
   Number pages by chapter
@@ -720,26 +776,13 @@ Example:
   See documentation for details and other possibilities.
 
 
-list of figures/tables
-----------------------
-
-Can be generated using `raw LaTeX in the document source`_:
-A list of figures with the LaTeX command ``listoffigures``,
-a list of tables by ``\listoftables``.
-
-Example:
-  ::
-
-    .. raw:: latex
-
-       \listoffigures
-
-
 Problems
 ========
 
-Open to be fixed or open to discussion. See also the discussion and
-proposals in the `latex-variants`_ sandbox project.
+Open to be fixed or open to discussion. 
+
+See also the discussion and proposals in the `latex-variants`_ sandbox
+project.
 
 .. _latex-variants:
    http://docutils.sourceforge.net/sandbox/latex-variants/README.html
@@ -873,3 +916,6 @@ Miscellaneous
 
 * Custom roles based on an existing role are currently not supported (i.e.
   the additional class argument is silently ignored by the latex2e writer).
+
+* Enable the choice between ``utf8`` (standard `fontenc`) and ``utf8x``
+  (`ucs`) text encoding.
