@@ -265,13 +265,6 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         elif self.at('doctest_block'):
             pass
         
-        # # add a line break if previous paragraph exist
-        # if self.cur_slide.text_frames:
-        #     bottom = self.cur_slide.text_frames[-1]
-            
-        #     if bottom.dirty:
-        #         bottom.add_node('text:line-break', {})
-        #         bottom.pop_node()
 
     def depart_paragraph(self, node):
         # add newline
@@ -301,7 +294,6 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         if self.at('topic'):
             return
         classes =  node.attributes.get('classes', [])
-        #self._push_handout(classes)
         if 'handout' in classes:
             self._push_handout(classes)
             
@@ -420,7 +412,7 @@ class ODPTranslator(nodes.GenericNodeVisitor):
             self.visit_attribution(node)
             self.cur_slide.push_pending_node('text:a', {'xlink:href': '%s' % node['refuri'],
                                                         'xlink:type': 'simple'})
-            self.cur_slide.write(node.astext()) #, add_p_style=False, add_t_style=False)
+            self.cur_slide.write(node.astext()) 
         else:
             # needs to be in a p
             # need to hack a bit, since .write usually inserts text:p and text:span
@@ -530,8 +522,6 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         self.cur_slide.pop_node()
         
     def visit_attribution(self, node):
-        #jump out of current paragraph
-        ##self.cur_slide.parent_of('text:p')
         # right justify
         attribs = {'fo:text-align':'end',
                    'fo:margin-right':'.9cm'
@@ -552,7 +542,6 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         self.cur_slide.pop_node()
 
     def visit_line_block(self, node):
-        # align right
         #jump out of current paragraph
         self.cur_slide.parent_of('text:p')
         # right justify
@@ -617,17 +606,17 @@ class ODPTranslator(nodes.GenericNodeVisitor):
             self.cur_slide.push_style(style)
 
         if attributes['classes'] and 'code-block' in attributes['classes']:
-            input = node.astext()
+            node_input = node.astext()
             language = node.attributes['language']
-            self.cur_slide.add_code(input, language)
+            self.cur_slide.add_code(node_input, language)
         else:
             style = preso.TextStyle(**{
                     'fo:font-family':preso.MONO_FONT,
                     'style:font-family-generic':"swiss",
                     'style:font-pitch':"fixed"})
             self.cur_slide.push_style(style)
-            input = node.astext()
-            chunks = input.split('\n')
+            node_input = node.astext()
+            chunks = node_input.split('\n')
             for chunk in chunks:
 
                 self.cur_slide.write(chunk)
@@ -678,13 +667,11 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         self.depart_bullet_list(node)
 
     def visit_doctest_block(self, node):
-        self.cur_slide.insert_line_break = True
-        input = node.astext()
+        node_input = node.astext()
         language = 'pycon'
-        self.cur_slide.add_code(input, language)
+        self.cur_slide.add_code(node_input, language)
 
     def depart_doctest_block(self, node):
-        #self.cur_slide.insert_line_break = True
         pass
 
     def visit_importslide(self, node):
