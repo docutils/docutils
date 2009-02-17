@@ -610,7 +610,7 @@ class Writer(writers.Writer):
                 destination1 = destination.decode('latin-1').encode('utf-8')
                 zfile.write(source, destination1, zipfile.ZIP_STORED)
             except OSError, e:
-                print "Error: Can't open file %s." % (source, )
+                self.document.reporter.warning("Error: Can't open file %s." % (source, ))
 
     def get_settings(self):
         """
@@ -800,11 +800,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             parser.read(self.settings.odf_config_file)
             for rststyle, format in parser.items("Formats"):
                 if rststyle not in self.used_styles:
-                    print '***'
-                    print ('*** Warning: Style "%s" '
+                    self.document.reporter.warning('Style "%s" '
                         'is not a style used by odtwriter.' % (
                         rststyle, ))
-                    print '***'
                     #raise RuntimeError, 'Unused style "%s"' % ( rststyle, )
                 self.format_map[rststyle] = format
         self.section_level = 0
@@ -1098,10 +1096,10 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def default_visit(self, node):
         #ipshell('At default_visit')
-        print 'missing visit_%s' % (node.tagname, )
+        self.document.reporter.warning('missing visit_%s' % (node.tagname, ))
 
     def default_departure(self, node):
-        print 'missing depart_%s' % (node.tagname, )
+        self.document.reporter.warning('missing depart_%s' % (node.tagname, ))
 
     def visit_Text(self, node):
         #ipshell('At visit_Text')
@@ -1678,7 +1676,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         if 'uri' in node.attributes:
             source = node.attributes['uri']
             if not self.check_file_exists(source):
-                print 'Error: Cannot find image file %s.' % (source, )
+                self.document.reporter.warning('Error: Cannot find image file %s.' % (source, ))
                 return
         else:
             return
@@ -1750,8 +1748,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             try:
                 size = float(size)
             except ValueError, e:
-                print 'Error: Invalid %s for image: "%s"' % (
-                    attr, node.attributes[attr])
+                self.document.reporter.warning('Error: Invalid %s for image: "%s"' % (
+                    attr, node.attributes[attr]))
             size = [size, unit]
         return size
 
@@ -1763,8 +1761,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                     raise ValueError
                 scale = scale * 0.01
             except ValueError, e:
-                print 'Error: Invalid scale for image: "%s"' % (
-                    node.attributes['scale'], )
+                self.document.reporter.warning('Error: Invalid scale for image: "%s"' % (
+                    node.attributes['scale'], ))
         else:
             scale = 1.0
         return scale
@@ -2569,9 +2567,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         if isinstance(node.parent, docutils.nodes.section):
             section_level = self.section_level
             if section_level > 7:
-                print 'Warning: Heading/section levels greater than 7 not supported.'
-                print '    Reducing to heading level 7 for heading:'
-                print '    "%s"' % node.astext()
+                self.document.reporter.warning('Warning: Heading/section levels greater than 7 not supported.')
+                self.document.reporter.warning('    Reducing to heading level 7 for heading: "%s"' % node.astext())
                 section_level = 7
             el1 = self.append_child('text:h', attrib = {
                 'text:outline-level': '%d' % section_level,
