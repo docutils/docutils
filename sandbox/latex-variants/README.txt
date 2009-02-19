@@ -58,21 +58,16 @@ Answers:
   smaller file size.
 
 Using different fonts (e.g. standard postscript fonts) can be achieved
-easily with the ``--stylesheet=mathptmx`` (or similar) command line option or
-configuration setting or by choosing a font package in the style-sheet.
-
-  Hmm, is this documented in and easy-to-discover place in the docutils /
-  rst2latex documentation?  I don't remember seeing it mentioned before.
-
-Not yet.
+easily by selecting a font package with the ``--stylesheet`` command line
+option or in a custom style-sheet.
 
 Font embedding must be configured in the LaTeX installation.
 
 Proposal
 ~~~~~~~~
 
-Use one of the Postscript default fonts supported by
-standard LaTeX (pp 10 and 11 of the `PSNFSS documentation`_)
+Use one of the Postscript default fonts supported by standard LaTeX (pages
+10 and 11 of the `PSNFSS documentation`_)
 
 Bookman
   -2  very very wide
@@ -94,29 +89,70 @@ Utopia
 
 Implement as default stylesheet option, so it can be easily overridden.
 
+   My vote is for Palatino.
+   --Matthew Leingang
+
+
 Font encoding
 -------------
 
-In modern LaTeX distributions (MikTeX, TeXLive, teTeX) T1 encoded fonts
-belong to the "core" while the `ae` (and even more the `aeguill`)
-workarounds are optional (and not always installed by default).
+The current handling of the "font-encoding" option mixes font-encoding and
+default-font settings by requiring the obsolete\ [#]_ `ae` and `aeguill`
+packages if the font encoding is set to the empty string (the default).
 
-`ae` uses the original 7-bit encoded CM fonts and combines accented
-characters from base char and accent glyph. This can lead to suboptimal
-appearance and to problems if text shall be extracted from (or found in) the
-generated PDF document.
+.. [#] The `ae` package sets the font encoding to T1 and selects the `ae`
+   fonts. `ae` fonts use the original 7-bit encoded CM fonts and combine
+   accented characters from base char and accent glyph. This can lead to
+   suboptimal appearance and to problems if text shall be extracted from (or
+   found in) the generated PDF document. It is therefore deprecated in the
+   LateX community.
+
 
 Proposal
 ~~~~~~~~
-Use the T1 font encoding as default.
+
+Do not mix font-encoding and font settings: do not load `ae` and `aeguill`
+unless explicitely required via the ``--stylesheet`` option.
+
+Advantage:
+  simpler implementation, easier to understand:
+
+  If not empty, the argument of font-encoding is passed as optional argument
+  to the `fontenc` package.
+
+Example:
+  ``--font-encoding=LGR,T1`` becomes ``\usepackage[LGR,T1]{fontenc}``
+  (Latin, Latin-1 Supplement, and Greek)
+
+
+Backwards compatibility
+~~~~~~~~~~~~~~~~~~~~~~~
+
+The following behaviour is new:
+
+:font-encoding = '':  do not load `ae` and `aeguill` packages, i.e. 
+	       	      * do not change font settings,
+		      * do not use the fontenc package 
+		        (implicitely loaded via `ae`),
+		      * use LaTeX default font encoding (OT1)
+:font-encoding = OT1: load `fontenc` with ``\usepackage[OT1]{fontenc}``
+
+Needed Action:
+  You get the old behaviour with ``--stylesheet=ae,aeguill``.
+
+  However, using `ae` is not recommended. A similar look (but better
+  implementation) can be achieved with the packages `lmodern`, `cmsuper`, or
+  `cmlgr` all providing Computer Modern look-alikes in vector format and T1
+  encoding, e.g. ``--font-encoding=T1 --stylesheet=lmodern``.
 
 
 Adaptive preamble
 -----------------
 
-TeXlive is a large download, and in addition to the base package rst2latex
-also requires a bunch of extra ``*.sty`` packages, even if they aren't used in
-the current document.
+User complaint:
+  TeXlive is a large download, and in addition to the base package rst2latex
+  also requires a bunch of extra ``*.sty`` packages, even if they aren't
+  used in the current document.
 
 Solution:
   include only package loading commands and definitions that are
@@ -129,8 +165,6 @@ TODO:
   A similar ``LaTeXTranslator.latex_requirements`` dictionary for additions
   needed *before* the custom style sheet (required packages and their
   settings).
-
-  A functional test ``rst2latex2e_minimal.py``.
 
 
 Configurable transition element
@@ -217,7 +251,7 @@ Proposal
 
 Instead of two options, do "the right thing" based on simple rules, e.g:
 
-a) Use the established "package" vs. "custom style sheet" distinction:
+a) Use the "package" vs. "custom style sheet" distinction:
 
    Rewrite, if there is an filename extension and it is not ``.sty`` ::
 
@@ -228,7 +262,7 @@ a) Use the established "package" vs. "custom style sheet" distinction:
    -1  will not work for latex packages in the pwd or outside the TEXINPUTS
        path.
 
-b) rewrite only paths but not arguments without directory part::
+b) rewrite paths that have a directory part::
 
      --stylesheet='mathpazo,./mystyle.sty'
 
