@@ -1479,10 +1479,19 @@ Class
 The "class" directive sets the "classes" attribute value on its content
 or on the first immediately following non-comment element [#]_.  For
 details of the "classes" attribute, see `its entry`__ in `The Docutils
-Document Tree`_.  The directive argument consists of one or more
-space-separated class names, which are converted to lowercase and all
-non-alphanumeric characters are converted to hyphens.  (For the
-rationale, see below.)
+Document Tree`_.
+
+The directive argument consists of one or more space-separated class
+names. The names are transformed to conform to the regular expression
+``[a-z](-?[a-z0-9]+)*`` by converting
+
+* alphabetic characters to lowercase,
+* accented characters to the base character,
+* non-alphanumeric characters to hyphens,
+* consecutive hyphens into one hyphen.
+
+For example "Rot-Gelb.Blau Grün:+2008" becomes "rot-gelb-blau grun-2008".
+(For the rationale_, see below.)
 
 __ ../doctree.html#classes
 
@@ -1534,10 +1543,13 @@ The text above is parsed and transformed into this doctree fragment::
    element (paragraphi, in this case) individually, instead of to the
    block quote as a whole.
 
+.. _rationale:
+
 .. topic:: Rationale for "classes" Attribute Value Conversion
 
+
     Docutils identifiers are converted to conform to the regular
-    expression ``[a-z](-?[a-z0-9]+)*``.  For CSS compatibility,
+    expression ``[a-z](-?[a-z0-9]+)*``.  For HTML + CSS compatibility,
     identifiers (the "classes" and "id" attributes) should have no
     underscores, colons, or periods.  Hyphens may be used.
 
@@ -1548,23 +1560,23 @@ The text above is parsed and transformed into this doctree fragment::
           hyphens ("-"), underscores ("_"), colons (":"), and periods
           (".").
 
-    - However the `CSS1 spec`_ defines identifiers based on the "name"
-      token, a tighter interpretation ("flex" tokenizer notation
-      below; "latin1" and "escape" 8-bit characters have been replaced
-      with XML entities)::
+    - The `CSS1 spec`_ defines identifiers based on the "name" token
+      ("flex" tokenizer notation below; "latin1" and "escape" 8-bit
+      characters have been replaced with XML entities)::
 
           unicode     \\[0-9a-f]{1,4}
           latin1      [&iexcl;-&yuml;]
           escape      {unicode}|\\[ -~&iexcl;-&yuml;]
-          nmchar      [-a-z0-9]|{latin1}|{escape}
+          nmchar      [-A-Za-z0-9]|{latin1}|{escape}
           name        {nmchar}+
 
-    The CSS1 "nmchar" rule does not include underscores ("_"), colons
-    (":"), or periods ("."), therefore "classes" and "id" attributes
-    should not contain these characters.  They should be replaced with
-    hyphens ("-").  Combined with HTML's requirements (the first
-    character must be a letter; no "unicode", "latin1", or "escape"
-    characters), this results in the ``[a-z](-?[a-z0-9]+)*`` pattern.
+    The CSS rule does not include underscores ("_"), colons (":"), or
+    periods ("."), therefore "classes" and "id" attributes should not
+    contain these characters.  Combined with HTML's requirements (the
+    first character must be a letter; no "unicode", "latin1", or
+    "escape" characters), this results in the regular expression
+    ``[A-Za-z][-A-Za-z0-9]*``. Docutils adds a normalisation by
+    downcasing and merge of consecutive hyphens.
 
     .. _HTML 4.01 spec: http://www.w3.org/TR/html401/
     .. _CSS1 spec: http://www.w3.org/TR/REC-CSS1

@@ -4433,7 +4433,11 @@ The ``bullet`` attribute is used in the bullet_list_ element.
 `Attribute type`_: ``NMTOKENS``.  Default value: none.
 
 The ``classes`` attribute is a list containing zero or more names used
-to classify an element.  The purpose of the attribute is to indicate
+to classify an element. The names are converted to conform to the
+regular expression ``[a-z](-?[a-z0-9]+)*`` (see the `"class"
+directive`_ description for details and rationale_).
+
+The purpose of the attribute is to indicate
 an "is-a" variant relationship, to allow an extensible way of defining
 sub-classes of existing elements.  It can be used to carry context
 forward between a Docutils Reader and Writer, when a custom structure
@@ -4448,6 +4452,8 @@ the attribute.
 ``classes`` is one of the `common attributes`_, shared by all Docutils
 elements.
 
+.. _"class" directive: rst/directives.html#class
+.. _rationale: rst/directives.html#rationale
 
 ``delimiter``
 =============
