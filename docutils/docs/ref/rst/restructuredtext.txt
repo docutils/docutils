@@ -2583,7 +2583,8 @@ literals`_, and `hyperlink references`_, we can add "title reference",
 we want.  Only pre-determined roles are recognized; unknown roles will
 generate errors.  A core set of standard roles is implemented in the
 reference parser; see `reStructuredText Interpreted Text Roles`_ for
-individual descriptions.  In addition, applications may support
+individual descriptions.  The role_ directive can be used to define
+custom interpreted text roles.  In addition, applications may support
 specialized roles.
 
 
@@ -2953,6 +2954,7 @@ Markup errors are handled according to the specification in `PEP
 .. _meta: directives.html#meta
 .. _figure: directives.html#figure
 .. _admonition: directives.html#admonitions
+.. _role: directives.html#custom-interpreted-text-roles
 .. _reStructuredText Directives: directives.html
 .. _reStructuredText Interpreted Text Roles: roles.html
 .. _RFC2396: http://www.rfc-editor.org/rfc/rfc2396.txt
