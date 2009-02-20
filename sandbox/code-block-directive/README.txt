@@ -4,34 +4,34 @@
 Proposal for a code-block directive in docutils
 ===============================================
 
-:Author: Guenter Milde <milde@users.berlios.de>
+:Author: Günter Milde
+:Contact: milde@users.berlios.de
 :Date: $Date$
-
 
 This sandbox project contains experimental code and documentation related to
 the proposal for syntax highlight of source code in docutils using a 
 "code-block" directive.
 
-See `syntax-highlight.html`_ for the full picture.
+See `<docs/syntax-highlight.html>`_ for a full description.
 
-`pygments_code_block_directive.py`_ 
-   Working example: defines and registers a
-   code-block directive using the Pygments_  syntax highlighter. 
-   
-   colourful literal code (maybe outdated):
-   `pygments_code_block_directive-bunt.py.htm`_
-
-`rst2html-highlight`_ 
+`<rst2html-highlight>`_ 
    front end for reStructuredText -> HTML conversion supporting the
    "code-block" directive.
 
-data_
+`<data>`_
    Style sheets
 
-docs_
+`<docs>`_
    Documentation, concepts, discussion, examples...
+
+   `<docs/pygments_code_block_directive.py>`_ 
+     Working example: defines and registers a
+     code-block directive using the Pygments_  syntax highlighter. 
+     
+   `<docs/pygments_code_block_directive-bunt.py.htm>`_
+     Colourful literal code (maybe outdated).
    
-tools_
+`<tools>`_
    Alternative (legacy) front ends, 
    script for interactive testing.
 
@@ -39,15 +39,6 @@ tools_
 .. References
 
 .. _pygments: http://pygments.org/
-
-.. _pygments_code_block_directive.py: pygments_code_block_directive.py
-.. _pygments_code_block_directive-bunt.py.htm:
-     docs/pygments_code_block_directive-bunt.py.htm
-.. _rst2html-highlight: rst2html-highlight
-.. _data: data
-.. _docs: docs
-.. _tools: tools
-.. _syntax-highlight.html: docs/syntax-highlight.html
 
 
 
