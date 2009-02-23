@@ -629,32 +629,29 @@ Example:
 font encoding
 ~~~~~~~~~~~~~
 
-The LaTeX font encoding can be selected with option ``--font-encoding``.
-
-Default:
-  OT1 with package `ae`
-
-  `ae` uses the original 7-bit encoded CM fonts (the "OT1" encoding) and
-  combines accented characters from base char and accent glyph. This can
-  lead to suboptimal appearance and to problems if text shall be extracted
-  from (or found in) the generated PDF document.
-
-The recommended setting for Latin based scripts is "T1" together with a
-T1-encoded "Type 1" (vector) font:
-
-  In up-to-date LaTeX distributions (MikTeX, `TeX Live`_) T1 encoded
-  standard postscript fonts belong to the `core` while the `ae` (and even
-  more the `aeguill`) workarounds are optional (and not always installed by
-  default).
+The `LaTeX font encoding`_ can be selected with option ``--font-encoding``.
 
 Example:
   ::
 
-    --font-encoding=T1 --stylesheet=mathpazo
+    --font-encoding=LGR,T1
+
+  inserts ``\usepackage[LGR,T1]{fontenc}`` (for characters in the Unicode
+  blocks Latin, Latin-1 Supplement, and Greek).
+
+Default: "" (empty string)
+  Do not use the fontenc package. LaTeX will default to 'OT1'.
+
+The recommended setting for Latin based scripts is "T1" together with a
+T1-encoded "Type 1" (vector) font, for example `Latin Modern`_::
+
+    --font-encoding=T1 --stylesheet=lmodern
 
 .. _LaTeX font encoding:
    http://dante.ctan.org/CTAN/macros/latex/doc/encguide.pdf
 
+.. _Latin Modern:
+   http://dante.ctan.org/CTAN/help/Catalogue/entries/lm.html
 
 hyphenation
 ~~~~~~~~~~~
@@ -779,7 +776,7 @@ Example:
 Problems
 ========
 
-Open to be fixed or open to discussion. 
+Open to be fixed or open to discussion.
 
 See also the discussion and proposals in the `latex-variants`_ sandbox
 project.

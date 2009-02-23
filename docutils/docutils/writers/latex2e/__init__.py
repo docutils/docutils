@@ -155,10 +155,9 @@ class Writer(writers.Writer):
           ['--graphicx-option'],
           {'default': ''}),
          ('LaTeX font encoding. '
-          'Possible values are "T1", "OT1", "" or some other fontenc option. '
-          'The font encoding influences available symbols, e.g. "<<" as one '
-          'character. Default is "" which leads to package "ae" (a T1 '
-          'emulation using CM fonts).',
+          'Possible values are "", "T1", "OT1", "LGR,T1" or any other '
+          'combination of options to the `fontenc` package. '
+          'Default is "" which does not load `fontenc`.',
           ['--font-encoding'],
           {'default': ''}),
          ('Per default the latex-writer puts the reference title into '
@@ -713,12 +712,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
             else:
                 self.typearea = ''
 
-        if self.font_encoding == 'OT1':
-            fontenc_header = ''
-        elif self.font_encoding == '':
-            fontenc_header = '\\usepackage{ae}\n\\usepackage{aeguill}'
+        if self.font_encoding == '':
+            fontenc_header = '%\\usepackage[OT1]{fontenc}'
         else:
-            fontenc_header = '\\usepackage[%s]{fontenc}' % (self.font_encoding,)
+            fontenc_header = '\\usepackage[%s]{fontenc}' % self.font_encoding
         if self.latex_encoding.startswith('utf8'):
             input_encoding = '\\usepackage{ucs}\n\\usepackage[utf8x]{inputenc}'
         else:

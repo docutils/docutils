@@ -1,7 +1,6 @@
 \documentclass[10pt,a4paper,english]{article}
 \usepackage{babel}
-\usepackage{ae}
-\usepackage{aeguill}
+%\usepackage[OT1]{fontenc}
 \usepackage{shortvrb}
 \usepackage[latin1]{inputenc}
 \usepackage{tabularx}
@@ -58,9 +57,9 @@
 \makeatletter
 % embedded stylesheet: data/spam.sty
 \ProvidesPackage{spam}
-[2008-12-09 v0.2 simple silly test package]
+[2008/12/09 v0.2 simple silly test package]
 \RequirePackage{parskip}
-\AtBeginDocument{\the\@ne{}\ spam spam wonderfull spam\\}
+\AtBeginDocument{\@percentchar\ spam spam wonderfull spam\\}
 
 \makeatother
 % embedded stylesheet: data/ham.tex
