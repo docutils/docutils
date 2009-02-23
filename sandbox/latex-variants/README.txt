@@ -93,59 +93,6 @@ Implement as default stylesheet option, so it can be easily overridden.
    --Matthew Leingang
 
 
-Font encoding
--------------
-
-The current handling of the "font-encoding" option mixes font-encoding and
-default-font settings by requiring the obsolete\ [#]_ `ae` and `aeguill`
-packages if the font encoding is set to the empty string (the default).
-
-.. [#] The `ae` package sets the font encoding to T1 and selects the `ae`
-   fonts. `ae` fonts use the original 7-bit encoded CM fonts and combine
-   accented characters from base char and accent glyph. This can lead to
-   suboptimal appearance and to problems if text shall be extracted from (or
-   found in) the generated PDF document. It is therefore deprecated in the
-   LateX community.
-
-
-Proposal
-~~~~~~~~
-
-Do not mix font-encoding and font settings: do not load `ae` and `aeguill`
-unless explicitely required via the ``--stylesheet`` option.
-
-Advantage:
-  simpler implementation, easier to understand:
-
-  If not empty, the argument of font-encoding is passed as optional argument
-  to the `fontenc` package.
-
-Example:
-  ``--font-encoding=LGR,T1`` becomes ``\usepackage[LGR,T1]{fontenc}``
-  (Latin, Latin-1 Supplement, and Greek)
-
-
-Backwards compatibility
-~~~~~~~~~~~~~~~~~~~~~~~
-
-The following behaviour is new:
-
-:font-encoding = '':  do not load `ae` and `aeguill` packages, i.e. 
-	       	      * do not change font settings,
-		      * do not use the fontenc package 
-		        (implicitely loaded via `ae`),
-		      * use LaTeX default font encoding (OT1)
-:font-encoding = OT1: load `fontenc` with ``\usepackage[OT1]{fontenc}``
-
-Needed Action:
-  You get the old behaviour with ``--stylesheet=ae,aeguill``.
-
-  However, using `ae` is not recommended. A similar look (but better
-  implementation) can be achieved with the packages `lmodern`, `cmsuper`, or
-  `cmlgr` all providing Computer Modern look-alikes in vector format and T1
-  encoding, e.g. ``--font-encoding=T1 --stylesheet=lmodern``.
-
-
 Adaptive preamble
 -----------------
 
@@ -379,6 +326,24 @@ Changes to the latex2e writer in the SVN version since docutils version 0.5.
 
 Also see the `Docutils Release Notes`_ and the `Docutils History`_
 
+.. Steps for uploading Changes:
+
+  * provide patch to latex2e/__init__.py
+  * get approvement from the latex writer maintainer (Engelbert Gruber)
+
+  * (add and) run functional tests::
+    
+       ../../docutils/test/test_functional.py
+  
+    + if output changed: test-compile and approve new output in
+      ../../docutils/test/functional/output/
+           
+  * fix documentation in ../../docutils/docs/user/latex.txt
+  
+  * add changes to ../../docutils/HISTORY.txt
+  
+  * add backwards-incompatible changes to ../../docutils/RELEASE-NOTES.txt
+    
 Custom roles
 ------------
 
@@ -467,6 +432,39 @@ Needed Action:
   If updating LaTeX is not an option, just remove the ``px`` from the lengh
   specification. HTML/CSS will default to ``px`` while the `latexe2` writer
   will add the fallback unit ``bp``.
+
+Font encoding
+-------------
+
+Do not mix font-encoding and font settings: do not load `ae` and `aeguill`
+unless explicitely required via the ``--stylesheet`` option.
+
+
+Example:
+  ``--font-encoding=LGR,T1`` becomes ``\usepackage[LGR,T1]{fontenc}``
+  (Latin, Latin-1 Supplement, and Greek)
+
+
+Backwards compatibility
+~~~~~~~~~~~~~~~~~~~~~~~
+
+The following behaviour is new:
+
+:font-encoding = '':  do not load `ae` and `aeguill` packages, i.e. 
+	       	      * do not change font settings,
+		      * do not use the fontenc package 
+		        (implicitely loaded via `ae`),
+		      * use LaTeX default font encoding (OT1)
+:font-encoding = OT1: load `fontenc` with ``\usepackage[OT1]{fontenc}``
+
+Needed Action:
+  You get the old behaviour with ``--stylesheet=ae,aeguill``.
+
+  However, using `ae` is not recommended. A similar look (but better
+  implementation) can be achieved with the packages `lmodern`, `cmsuper`, or
+  `cmlgr` all providing Computer Modern look-alikes in vector format and T1
+  encoding, e.g. ``--font-encoding=T1 --stylesheet=lmodern``.
+
 
 
 Alternative latex writers
