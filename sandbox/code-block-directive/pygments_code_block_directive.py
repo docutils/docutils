@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# :Author: a Pygments author|contributor; Felix Wiemann; Guenter Milde
+# :Author: the Pygments team; Felix Wiemann; Guenter Milde
 # :Date: $Date$
 # :Copyright: This module has been placed in the public domain.
 # 

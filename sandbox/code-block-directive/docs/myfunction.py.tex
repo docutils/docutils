@@ -56,7 +56,7 @@
 \newcommand{\titlereference}[1]{\textsl{#1}}
 % end of "some commands"
 % user specified packages and stylesheets:
-\usepackage{cmlgc}
+\usepackage{../data/pygments-docutilsroles}
 \ifthenelse{\isundefined{\hypersetup}}{
 \usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
 }{}
@@ -80,7 +80,9 @@
 This is a test of the new code-block directive:
 % Translate this document to HTML with a pygments enhanced frontend, e.g.
 % 
-% rst2html-highlight --stylesheet=pygments-default.css --link-stylesheet 
+% rst2html-highlight --stylesheet=../data/pygments-default.css --link-stylesheet
+% 
+% rst2latex-highlight --stylesheet=../data/pygments-docutileroles.sty 
 \begin{quote}{\ttfamily \raggedright \noindent
 \DUrole{k}{def}~\DUrole{nf}{my{\_}function}\DUrole{p}{():}~\\
 ~~~~\DUrole{s}{"just~a~test"}~\\

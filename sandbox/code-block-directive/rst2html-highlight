@@ -5,8 +5,8 @@
 # 
 # Docutils front-end with syntax highlight.
 #   
-# :Author: David Goodger, a Pygments author|contributor, Guenter Milde
-# :Date: $Date: $
+# :Author: David Goodger, the Pygments team, Günter Milde
+# :Date: $Date: 2008-05-22 08:42:52 +0200 (Do, 22. Mai 2008) $
 # :Copyright: This module has been placed in the public domain.
 # 
 # This is a merge of the docutils_ `rst2html` front end with an extension
@@ -24,6 +24,7 @@ Needs an adapted stylesheet
 
 # Requirements
 # ------------
+# 
 # ::  
 
 try:
@@ -46,6 +47,6 @@ description = __doc__ + default_description
 publish_cmdline(writer_name='html', description=description)
 
 # .. _docutils: http://docutils.sf.net/
-# .. _pygments_code_block_directive.py: pygments_code_block_directive.py
+# .. _pygments_code_block_directive: pygments_code_block_directive.py
 # .. _pygments: http://pygments.org/
 # .. _Using Pygments in ReST documents: http://pygments.org/docs/rstdirective/

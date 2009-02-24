@@ -1,28 +1,38 @@
+% pygments-default.sty
+% ********************
+% 
 % Stylesheet for pygments enhanced reStructured Text
 % ==================================================
-%
-% :Author:    Guenter Milde
-% :Copyright: 2007 G. Milde
-%             This stylesheet is released under the GPL v. 2 or later
-%
-% This stylesheet provides syntax highlight for documents generated with a
-% pygments_ enhanced reStructured Text -> html converter.
-%
-% This is an outdated style sheet for the legacy front end.
 % 
-% https://sourceforge.net/tracker/?func=detail&atid=422030&aid=2518379&group_id=38414 
-
+% :Author:    Günter Milde
+% :Contact:   milde@users.berlios.de
+% :Revision:  $Revision: 5534 $
+% :Date:      $Date: 2005-06-28$
+% :Copyright: © 2007, 2009 G. Milde,
+%             Released  without warranties or conditions of any kind
+%             under the terms of the Apache License, Version 2.0
+%             http://www.apache.org/licenses/LICENSE-2.0
+% 
+% This example style sheet provides syntax highlight for documents generated
+% with the legacy front end `rst2latex-pygments`..
+% 
+% (For the recommended front end `rst2latex-highlight` use
+% ``pygments-docutilesroles.sty``.)
+% 
 % Separate paragraphs by vertical space
 % -------------------------------------
+% 
+% This is not needed for syntax highlight, but usually a good idea for
+% documents with lots of source code.
+% ::
 
-\setlength{\parindent}{0em}
-\setlength{\parskip}{1ex}
+\usepackage{parskip}
 
 % Colour code blocks
 % ------------------
-%
-% Pygments_ has an option to generate stylesheets for html and latex.
-% The following code is generated with the command
+% 
+% Pygments has an option to generate stylesheets for html and latex.
+% The following code is based on the output of the command
 % `pygmentize -S default -f latex`::
 
 \usepackage{fancyvrb}
@@ -31,60 +41,60 @@
 \newcommand\at{@}
 \newcommand\lb{[}
 \newcommand\rb{]}
-\newcommand\Cba[1]{\textcolor[rgb]{0.67,0.13,1.00}{\textbf{#1}}}
-\newcommand\Caz[1]{\textcolor[rgb]{0.00,0.25,0.82}{#1}}
-\newcommand\Cay[1]{\textcolor[rgb]{0.67,0.13,1.00}{#1}}
-\newcommand\Cax[1]{\textcolor[rgb]{0.00,0.63,0.00}{#1}}
-\newcommand\Cbc[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
-\newcommand\Cas[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
-\newcommand\Car[1]{\textcolor[rgb]{0.72,0.53,0.04}{#1}}
-\newcommand\Caq[1]{\textcolor[rgb]{0.73,0.27,0.27}{\textit{#1}}}
-\newcommand\Cap[1]{\textcolor[rgb]{0.72,0.53,0.04}{#1}}
-\newcommand\Caw[1]{\textcolor[rgb]{0.67,0.13,1.00}{\textbf{#1}}}
-\newcommand\Cav[1]{\textcolor[rgb]{0.60,0.60,0.60}{\textbf{#1}}}
-\newcommand\Cau[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
-\newcommand\Cat[1]{\textcolor[rgb]{0.67,0.13,1.00}{\textbf{#1}}}
-\newcommand\Cak[1]{\textbf{#1}}
-\newcommand\Caj[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
-\newcommand\Cai[1]{\textcolor[rgb]{0.72,0.53,0.04}{#1}}
-\newcommand\Cah[1]{\textcolor[rgb]{0.63,0.63,0.00}{#1}}
-\newcommand\Cao[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
-\newcommand\Can[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
-\newcommand\Cam[1]{\textcolor[rgb]{0.73,0.40,0.13}{\textbf{#1}}}
-\newcommand\Cal[1]{\textcolor[rgb]{0.67,0.13,1.00}{\textbf{#1}}}
-\newcommand\Cac[1]{\textcolor[rgb]{0.73,0.27,0.27}{#1}}
-\newcommand\Cab[1]{\textit{#1}}
-\newcommand\Caa[1]{\textcolor[rgb]{0.50,0.50,0.50}{#1}}
-\newcommand\Cag[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
-\newcommand\Caf[1]{\textcolor[rgb]{0.00,0.53,0.00}{\textit{#1}}}
-\newcommand\Cae[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
-\newcommand\Cad[1]{\textcolor[rgb]{0.73,0.27,0.27}{#1}}
-\newcommand\Cbb[1]{\textcolor[rgb]{0.73,0.27,0.27}{#1}}
-\newcommand\CaZ[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
-\newcommand\CaY[1]{\textcolor[rgb]{0.00,0.00,0.50}{\textbf{#1}}}
-\newcommand\CaX[1]{\textcolor[rgb]{0.00,0.50,0.00}{\textbf{#1}}}
-\newcommand\Cbd[1]{\textcolor[rgb]{0.73,0.40,0.53}{\textbf{#1}}}
-\newcommand\Cbe[1]{\textcolor[rgb]{0.67,0.13,1.00}{\textbf{#1}}}
-\newcommand\CaS[1]{\textcolor[rgb]{0.82,0.25,0.23}{\textbf{#1}}}
-\newcommand\CaR[1]{\textcolor[rgb]{0.50,0.00,0.50}{\textbf{#1}}}
-\newcommand\CaQ[1]{\textcolor[rgb]{0.00,0.53,0.00}{\textit{#1}}}
-\newcommand\CaP[1]{\textcolor[rgb]{0.72,0.53,0.04}{#1}}
-\newcommand\CaW[1]{\textcolor[rgb]{0.73,0.27,0.27}{#1}}
-\newcommand\CaV[1]{\textcolor[rgb]{0.67,0.13,1.00}{#1}}
-\newcommand\CaU[1]{\textcolor[rgb]{0.73,0.27,0.27}{#1}}
-\newcommand\CaT[1]{\textcolor[rgb]{0.00,0.00,1.00}{\textbf{#1}}}
-\newcommand\CaK[1]{\textcolor[rgb]{0.00,0.53,0.00}{#1}}
-\newcommand\CaJ[1]{\textcolor[rgb]{0.67,0.13,1.00}{#1}}
-\newcommand\CaI[1]{\textcolor[rgb]{0.00,0.63,0.00}{#1}}
-\newcommand\CaH[1]{\textcolor[rgb]{0.73,0.27,0.27}{#1}}
-\newcommand\CaO[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
-\newcommand\CaN[1]{\textcolor[rgb]{0.73,0.27,0.27}{#1}}
-\newcommand\CaM[1]{\textcolor[rgb]{0.00,0.00,0.50}{\textbf{#1}}}
-\newcommand\CaL[1]{\textcolor[rgb]{0.00,0.00,1.00}{#1}}
-\newcommand\CaC[1]{\textcolor[rgb]{0.63,0.00,0.00}{#1}}
-\newcommand\CaB[1]{\textcolor[rgb]{0.00,0.53,0.00}{\textit{#1}}}
-\newcommand\CaA[1]{\textcolor[rgb]{0.67,0.13,1.00}{#1}}
-\newcommand\CaG[1]{\textcolor[rgb]{0.67,0.13,1.00}{\textbf{#1}}}
-\newcommand\CaF[1]{\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{#1}}
-\newcommand\CaE[1]{\textcolor[rgb]{0.72,0.53,0.04}{#1}}
-\newcommand\CaD[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}
+\newcommand\PYba[1]{\textcolor[rgb]{0.67,0.13,1.00}{\textbf{#1}}}
+\newcommand\PYaz[1]{\textcolor[rgb]{0.00,0.25,0.82}{#1}}
+\newcommand\PYay[1]{\textcolor[rgb]{0.67,0.13,1.00}{#1}}
+\newcommand\PYax[1]{\textcolor[rgb]{0.00,0.63,0.00}{#1}}
+\newcommand\PYbc[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand\PYas[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand\PYar[1]{\textcolor[rgb]{0.72,0.53,0.04}{#1}}
+\newcommand\PYaq[1]{\textcolor[rgb]{0.73,0.27,0.27}{\textit{#1}}}
+\newcommand\PYap[1]{\textcolor[rgb]{0.72,0.53,0.04}{#1}}
+\newcommand\PYaw[1]{\textcolor[rgb]{0.67,0.13,1.00}{\textbf{#1}}}
+\newcommand\PYav[1]{\textcolor[rgb]{0.60,0.60,0.60}{\textbf{#1}}}
+\newcommand\PYau[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand\PYat[1]{\textcolor[rgb]{0.67,0.13,1.00}{\textbf{#1}}}
+\newcommand\PYak[1]{\textbf{#1}}
+\newcommand\PYaj[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
+\newcommand\PYai[1]{\textcolor[rgb]{0.72,0.53,0.04}{#1}}
+\newcommand\PYah[1]{\textcolor[rgb]{0.63,0.63,0.00}{#1}}
+\newcommand\PYao[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
+\newcommand\PYan[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand\PYam[1]{\textcolor[rgb]{0.73,0.40,0.13}{\textbf{#1}}}
+\newcommand\PYal[1]{\textcolor[rgb]{0.67,0.13,1.00}{\textbf{#1}}}
+\newcommand\PYac[1]{\textcolor[rgb]{0.73,0.27,0.27}{#1}}
+\newcommand\PYab[1]{\textit{#1}}
+\newcommand\PYaa[1]{\textcolor[rgb]{0.50,0.50,0.50}{#1}}
+\newcommand\PYag[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand\PYaf[1]{\textcolor[rgb]{0.00,0.53,0.00}{\textit{#1}}}
+\newcommand\PYae[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand\PYad[1]{\textcolor[rgb]{0.73,0.27,0.27}{#1}}
+\newcommand\PYbb[1]{\textcolor[rgb]{0.73,0.27,0.27}{#1}}
+\newcommand\PYaZ[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand\PYaY[1]{\textcolor[rgb]{0.00,0.00,0.50}{\textbf{#1}}}
+\newcommand\PYaX[1]{\textcolor[rgb]{0.00,0.50,0.00}{\textbf{#1}}}
+\newcommand\PYbd[1]{\textcolor[rgb]{0.73,0.40,0.53}{\textbf{#1}}}
+\newcommand\PYbe[1]{\textcolor[rgb]{0.67,0.13,1.00}{\textbf{#1}}}
+\newcommand\PYaS[1]{\textcolor[rgb]{0.82,0.25,0.23}{\textbf{#1}}}
+\newcommand\PYaR[1]{\textcolor[rgb]{0.50,0.00,0.50}{\textbf{#1}}}
+\newcommand\PYaQ[1]{\textcolor[rgb]{0.00,0.53,0.00}{\textit{#1}}}
+\newcommand\PYaP[1]{\textcolor[rgb]{0.72,0.53,0.04}{#1}}
+\newcommand\PYaW[1]{\textcolor[rgb]{0.73,0.27,0.27}{#1}}
+\newcommand\PYaV[1]{\textcolor[rgb]{0.67,0.13,1.00}{#1}}
+\newcommand\PYaU[1]{\textcolor[rgb]{0.73,0.27,0.27}{#1}}
+\newcommand\PYaT[1]{\textcolor[rgb]{0.00,0.00,1.00}{\textbf{#1}}}
+\newcommand\PYaK[1]{\textcolor[rgb]{0.00,0.53,0.00}{#1}}
+\newcommand\PYaJ[1]{\textcolor[rgb]{0.67,0.13,1.00}{#1}}
+\newcommand\PYaI[1]{\textcolor[rgb]{0.00,0.63,0.00}{#1}}
+\newcommand\PYaH[1]{\textcolor[rgb]{0.73,0.27,0.27}{#1}}
+\newcommand\PYaO[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand\PYaN[1]{\textcolor[rgb]{0.73,0.27,0.27}{#1}}
+\newcommand\PYaM[1]{\textcolor[rgb]{0.00,0.00,0.50}{\textbf{#1}}}
+\newcommand\PYaL[1]{\textcolor[rgb]{0.00,0.00,1.00}{#1}}
+\newcommand\PYaC[1]{\textcolor[rgb]{0.63,0.00,0.00}{#1}}
+\newcommand\PYaB[1]{\textcolor[rgb]{0.00,0.53,0.00}{\textit{#1}}}
+\newcommand\PYaA[1]{\textcolor[rgb]{0.67,0.13,1.00}{#1}}
+\newcommand\PYaG[1]{\textcolor[rgb]{0.67,0.13,1.00}{\textbf{#1}}}
+\newcommand\PYaF[1]{\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{#1}}
+\newcommand\PYaE[1]{\textcolor[rgb]{0.72,0.53,0.04}{#1}}
+\newcommand\PYaD[1]{\textcolor[rgb]{1.00,0.00,0.00}{#1}}

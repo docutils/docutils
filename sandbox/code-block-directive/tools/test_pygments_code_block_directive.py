@@ -3,7 +3,7 @@
 
 # Test the parsing and formatting by pygments:
 
-# :Author: Felix Wiemann; Guenter Milde
+# :Author: Felix Wiemann; Günter Milde
 # :Date: $Date$
 # :Copyright: This module has been placed in the public domain.
 
@@ -11,6 +11,13 @@
 # ------------
 
 from docutils import nodes, utils, core
+
+# Prepend parent dir to the PYTHONPATH (This is a hack to get this test
+# working without installing the pygments_code_block_directive module.
+# Not needed if the module is installed in the PYTHONPATH)
+import sys
+sys.path.insert(0, '..')
+
 from pygments_code_block_directive import DocutilsInterface
 
 # Test data
@@ -51,7 +58,7 @@ for cls, value in DocutilsInterface(code_sample, language):
 # -----
 
 writer_names = ('html', 'pseudoxml', 'xml', 'latex', 'newlatex2e', 's5')
-for name in writer_names[2:3]:
+for name in writer_names[:]:
     print "\nusing writer %r\n" % name
     print core.publish_from_doctree(document, writer_name=name)
 
