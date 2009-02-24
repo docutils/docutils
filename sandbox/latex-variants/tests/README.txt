@@ -15,4 +15,3 @@ should run with `py.test`_ as well.
 
 .. _nose: http://somethingaboutorange.com/mrl/projects/nose/
 .. _py.test: http://codespeak.net/py/current/doc/test.html
-x

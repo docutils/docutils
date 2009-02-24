@@ -229,7 +229,7 @@ HTML
     based on docutils' default stylesheet and the output of
     ``pygmentize -S default -f html``.
 
-  The conversion of `myfunction.py.txt`_ looks like
+  The conversion of `<myfunction.py.txt>`_ looks like
   `<myfunction.py.htm>`_.
 
   The "s5" and "pep" writers are not tested yet.
@@ -243,7 +243,7 @@ XML
 LaTeX
   "latex2e" (SVN version) works out of the box.
 
-  * A style file, e.g. `pygments-docutilsroles.sty`_, is required to actually
+  * A style file, e.g. `<pygments-docutilsroles.sty>`_, is required to actually
     highlight the code in the output. (As with HTML, the pygments-produced
     style file will not work with docutils' output.)
 
