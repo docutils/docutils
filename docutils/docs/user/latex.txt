@@ -119,8 +119,19 @@ is used.
 
 It is possible to specify multiple style sheets (see examples below).
 
+.. note::
+  There is no need to specify a path, if your style files are installed
+  in the LATEX INPUT PATH.
+
+  To install a file in a modern TeX installation, you copy, move or link the
+  file into a directory under ``/usr/local/share/texmf/tex/latex/`` or
+  ``~/texmf/tex/latex/`` and run ``texhash``.
+
+
 If the ``--embed-stylesheet`` option is set, the content of STYLESHEET
-is inserted instead.
+is inserted instead. Currently, this fails if the file is not available via
+the given path without search in the LATEX INPUT PATH.
+
 
 Examples
 ~~~~~~~~
@@ -146,6 +157,17 @@ Examples
   :preamble.tex: custom style sheet::
 
     --stylesheet==mathptmx,parskip,preamble.tex
+
+Stylesheet Repository
+~~~~~~~~~~~~~~~~~~~~~
+
+There is a `repository of user-contributed style sheets`_ in the Docutils
+Sandbox_.
+
+.. _repository of user-contributed style sheets:
+   ../../../sandbox/stylesheets/
+.. _sandbox: ../../../sandbox/
+
 
 Raw LaTeX
 ---------
