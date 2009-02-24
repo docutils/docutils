@@ -451,10 +451,12 @@ Backwards compatibility
 The following behaviour is new:
 
 :font-encoding = '':  do not load `ae` and `aeguill` packages, i.e. 
-	       	      * do not change font settings,
-		      * do not use the fontenc package 
-		        (implicitely loaded via `ae`),
-		      * use LaTeX default font encoding (OT1)
+
+    * do not change font settings,
+    * do not use the fontenc package 
+      (implicitely loaded via `ae`),
+    * use LaTeX default font encoding (OT1)
+
 :font-encoding = OT1: load `fontenc` with ``\usepackage[OT1]{fontenc}``
 
 Needed Action:
