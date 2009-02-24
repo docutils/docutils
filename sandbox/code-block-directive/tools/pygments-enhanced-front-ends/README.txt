@@ -33,6 +33,10 @@ Disadvantages:
   - no "minimal" code block marker -- three additional lines per code block
 
 
+The disadvantages lead to the alternative implementation with the
+demonstrator front ends `rst2html-highlight`_ and `rst2latex-highlight`_.
+
+
 Example
 """""""
 
@@ -54,10 +58,12 @@ Stylesheets:
 
 .. _rst2html-pygments:    rst2html-pygments
 .. _rst2latex-pygments:   rst2latex-pygments
+.. _rst2html-highlight:    ../../rst2html-highlight
+.. _rst2latex-highlight:   ../../rst2latex-highlight
 .. _for-else-test:
 .. _for-else-test.py.htm: for-else-test.py.htm
 .. _for-else-test.py.txt: for-else-test.py.txt
 .. _for-else-test.py.tex: for-else-test.py.tex
 .. _for-else-test.py.pdf: for-else-test.py.pdf
-.. _pygments-default.css: ../data/pygments-default.css
-.. _pygments-default.sty: ../data/pygments-default.sty
+.. _pygments-default.css: ../../data/pygments-default.css
+.. _pygments-default.sty: ../../data/pygments-default.sty

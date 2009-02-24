@@ -1,0 +1,55 @@
+% Stylesheet for pygments enhanced reStructured Text
+% ==================================================
+% 
+% :Author:    Günter Milde
+% :Contact:   milde@users.berlios.de
+% :Revision:  $Revision: 5534 $
+% :Date:      $Date: 2005-06-28$
+% :Copyright: © 2007, 2009 G. Milde,
+%             Released  without warranties or conditions of any kind
+%             under the terms of the Apache License, Version 2.0
+%             http://www.apache.org/licenses/LICENSE-2.0
+% 
+% This example style sheet provides syntax highlight for documents generated
+% with the `rst2latex-highlight` pygments-enhanced Docutils front end.
+% 
+% 
+% Separate paragraphs by vertical space
+% -------------------------------------
+% 
+% This is not required for syntax highlight, but usually a good idea for
+% documents with lots of source code.
+% ::
+
+\usepackage{parskip}
+
+% Highlight code blocks
+% ---------------------
+% 
+% Pygments_ has an option to generate stylesheets for HTML and LaTeX.
+% However, the "kryptic" codes used for HTML and LaTeX differ, so that
+% the output of the command
+% `pygmentize -S default -f latex -O commandprefix=docutilsrole`
+% fails to work with rst2latex-highlight.
+% :: 
+
+% Colours with LaTeX
+\usepackage{color}
+
+% Courier monotype fonts with bold and italic variants
+\usepackage{courier}
+
+% keyword
+\newcommand\docutilsrolek[1]{\textcolor[rgb]{0.67,0.13,1.00}{\textbf{#1}}}
+% new function
+\newcommand\docutilsrolenf[1]{\textcolor[rgb]{0.00,0.25,0.82}{#1}}
+% punktuation
+\newcommand\docutilsrolep[1]{\textcolor[rgb]{0.72,0.53,0.04}{#1}}
+% string
+\newcommand\docutilsroles[1]{\textcolor[rgb]{0.40,0.40,0.40}{\textit{#1}}}
+% number
+\newcommand\docutilsrolemf[1]{\textcolor[rgb]{0.00,0.53,0.00}{#1}}
+% operator
+\newcommand\docutilsrolear[1]{\textcolor[rgb]{0.72,0.53,0.04}{#1}}
+
+% Incomplete!

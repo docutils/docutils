@@ -7,39 +7,42 @@ Proposal for a code-block directive in docutils
 :Author: Günter Milde
 :Contact: milde@users.berlios.de
 :Date: $Date$
+:Copyright: © 2007, 2009 G. Milde,
+            Released  without warranties or conditions of any kind
+            under the terms of the Apache License, Version 2.0
+            http://www.apache.org/licenses/LICENSE-2.0
 
 This sandbox project contains experimental code and documentation related to
-the proposal for syntax highlight of source code in docutils using a 
+the proposal for syntax highlight of source code in docutils using a
 "code-block" directive.
 
 See `<docs/syntax-highlight.html>`_ for a full description.
 
-`<rst2html-highlight>`_ 
+`<rst2html-highlight>`_
    front end for reStructuredText -> HTML conversion supporting the
    "code-block" directive.
 
+`<rst2latex-highlight>`_
+   front end for reStructuredText -> LaTeX conversion supporting the
+   "code-block" directive.
+
 `<data>`_
-   Style sheets
+   Style sheets.
 
 `<docs>`_
    Documentation, concepts, discussion, examples...
 
-   `<docs/pygments_code_block_directive.py>`_ 
-     Working example: defines and registers a
-     code-block directive using the Pygments_  syntax highlighter. 
-     
-   `<docs/pygments_code_block_directive-bunt.py.htm>`_
-     Colourful literal code (maybe outdated).
-   
-`<tools>`_
-   Alternative (legacy) front ends, 
-   script for interactive testing.
+`<pygments_code_block_directive.py>`_
+   Working example: defines and registers a
+   code-block directive using the Pygments_  syntax highlighter.
+
+`<tools/test_pygments_code_block_directive.py>`_
+   Script for interactive testing.
+
+`<tools/pygments-enhanced-front-ends/>`_
+   Legacy front ends,
 
 
 .. References
 
 .. _pygments: http://pygments.org/
-
-
-
-
