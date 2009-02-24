@@ -145,6 +145,12 @@ Convert other formats to reStructuredText:
 * xhtml2rest_, written by Antonios Christofides, is a simple utility
   to convert XHTML to reStructuredText.
 
+* Sphinx_ includes a LaTeX to Rst converter in its source code `SVN
+  repository`__ (trimmed to importing the old Python docs).
+
+__ http://svn.python.org/projects/doctools/converter/
+
+
 Extensions
 ~~~~~~~~~~
 
@@ -184,6 +190,15 @@ Applications using docutils/reStructuredText, helper applications:
 * Beni Cherniavsky maintains a Makefile_ for driving Docutils, hoping
   to handle everything one might do with Docutils.
 
+* The Sphinx_ Python Documentation Generator by Georg Brandl was originally
+  created to translate the new Python_ documentation, and it has excellent
+  support for the documentation of Python projects, but other documents can
+  be written with it too.
+  
+* If you are developing a Qt app, rst2qhc_ lets you generate the whole help
+  automatically from restructured text. That includes keywords, TOC,
+  multiple manuals per project, filters, project file, collection project
+  file, and more.
 
 
 API Developers
@@ -250,3 +265,6 @@ code base.
 .. _Nabu: http://furius.ca/nabu/
 .. _Writing an Extractor: http://furius.ca/nabu/doc/nabu-extractor.html
 .. _pickle writer: http://docutils.sf.net/sandbox/blais/pickle_writer/
+.. _Sphinx: http://sphinx.pocoo.org/
+.. _Python: http://www.python.org/
+.. _rst2qhc: http://rst2qhc.googlecode.com
