@@ -433,7 +433,7 @@ def relative_path(source, target):
 
 def get_stylesheet_reference(settings, relative_to=None):
     """
-    Retrieve stylesheet references from the settings object.
+    Retrieve a stylesheet reference from the settings object.
 
     Deprecated. Use get_stylesheet_reference_list() instead to
     enable specification of multiple stylesheets as a comma-separated
