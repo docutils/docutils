@@ -1,0 +1,117 @@
+% Settings for the listings package with Python
+% =============================================
+% 
+% :Author:    Günter Milde
+% :Contact:   milde@users.berlios.de
+% :Revision:  $Revision: 5534 $
+% :Date:      $Date: 2009-02-24$
+% :Copyright: © 2007, 2009 G. Milde,
+%             Released  without warranties or conditions of any kind
+%             under the terms of the Apache License, Version 2.0
+%             http://www.apache.org/licenses/LICENSE-2.0
+% 
+% To use this pass the 
+% ``--stylesheet=listings-python-options.sty --literal-block-env=lstlisting`` 
+% options to ``rst2latex.py``.
+% 
+% For full documentation see listings.pdf_.
+% 
+% Of course, we need to load the listings package itself::
+
+\RequirePackage{listings}
+
+% In a document with lots of lists and listings, separating paragraphs by
+% vertical seems appropriate::
+  
+\RequirePackage{parskip}
+
+% Font settings
+% ~~~~~~~~~~~~~
+% 
+% Textfont::
+
+% \RequirePackage{mathptmx} % Times
+\RequirePackage{mathpazo} % Palatino
+
+% We need a "rich" monospaced font. `txfonts`' typewriter font comes
+% with bold, slanted, and small-caps variants and without the problems of
+% `txfonts`' math fonts::
+
+\renewcommand{\ttdefault}{txtt}
+
+% Default language
+% ~~~~~~~~~~~~~~~~
+% ::
+
+%\lstset{language={}}
+ 
+% Highlight literal blocks as Python,
+% add missing keywords::
+
+\lstset{language=Python,
+        morekeywords=[1]{yield}
+}  
+
+% pre-load the language
+\lstloadlanguages{Python} %  comma separated list of languages
+
+
+% Style
+% ~~~~~
+% 
+% Typeface settings::
+
+\lstset{
+  basicstyle=\ttfamily,           % print whole listing in tt
+  % basicstyle=\ttfamily\small,   % and, maybe small    
+  keywordstyle=\bfseries,
+  % identifierstyle=\slshape,     % object names
+  commentstyle=\rmfamily\itshape, % italic comments
+  stringstyle=\slshape,           % strings
+}
+
+% Visible whitespace::
+  
+\lstset{showstringspaces=false}  % no visible spaces in strings
+%\lstset{showspaces=true,
+%        showtabs=true,
+%        tab=\rightarrowfill}
+
+% Line numbers::
+
+%\lstset{numbers=left, numberstyle=\tiny, stepnumber=2, numbersep=5pt}
+
+% Frames around listings::
+
+%\lstset{frame=single}
+
+
+% Extended characters in listings::
+
+%extendedchars=true 
+%extendedchars=false 
+
+% Column alignment 
+% ~~~~~~~~~~~~~~~~
+% 
+% (for typesetting with variable width fonts)
+% 
+% ``columns=[c|l|r] <alignment>``
+%   <alignment> in [fixed, flexible, spaceflexible, or fullflexible]
+%   The optional c, l, or r controls the horizontal orientation of smallest
+%   output units (keywords, identifiers, etc.).
+%   
+%   default: [c]fixed
+%   
+% ``basewidth={fixed, flexible}``
+%   sets the width of a single character box for fixed and flexible column
+%   mode (both to the same value or individually).
+% 
+%   default: {0.6em,0.45em}
+%   
+% ::
+
+\lstset{columns=fullflexible, basewidth={0.5em,0.4em}}
+
+% .. _listings.pdf: 
+%    ftp://dante.ctan.org/tex-archive/macros/latex/contrib/listings/listings.pdf

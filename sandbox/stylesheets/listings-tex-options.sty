@@ -1,0 +1,130 @@
+% Settings for the listings package with LaTeX 
+% ============================================
+% 
+% :Author:    Günter Milde
+% :Contact:   milde@users.berlios.de
+% :Revision:  $Revision: 5534 $
+% :Date:      $Date: 2005-06-28$
+% :Copyright: © 2007, 2009 G. Milde,
+%             Released  without warranties or conditions of any kind
+%             under the terms of the Apache License, Version 2.0
+%             http://www.apache.org/licenses/LICENSE-2.0
+% 
+% To use this pass the 
+% ``--stylesheet=listings-tex-options.sty --literal-block-env=lstlisting`` 
+% options to ``rst2latex.py``.
+% 
+% For full documentation see listings.pdf_.
+% 
+% Of course, we need to load the listings package itself::
+
+\RequirePackage{listings}
+
+% In a document with lots of lists and listings, separating paragraphs by
+% vertical seems appropriate::
+  
+\RequirePackage{parskip}
+
+% load hyperref with blue citation colour::
+
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]
+{hyperref}
+
+% In the References/Bibliography section, 
+% avoid holes in the title due to block alignment::
+
+\renewcommand{\titlereference}[1]{\raggedright\textsl{#1}}
+
+% Omit the auto-inserted "References" heading, to be compatible with HTML
+% output also if use latex references is set::
+
+\AtBeginDocument{\renewcommand{\refname}{\vspace{-2em}}}
+
+% Font settings
+% ~~~~~~~~~~~~~
+% 
+% Textfont::
+
+% \RequirePackage{mathptmx} % Times
+\RequirePackage{mathpazo} % Palatino
+
+% We need a "rich" monospaced font. `txfonts`' typewriter font comes
+% with bold, slanted, and small-caps variants and without the problems of
+% `txfonts`' math fonts::
+
+\renewcommand{\ttdefault}{txtt}
+
+% Default language
+% ~~~~~~~~~~~~~~~~
+% 
+% Highlight literal blocks as TeX::
+
+\lstset{language=[LaTeX]TeX}  
+
+% pre-load the language::
+
+\lstloadlanguages{[LaTeX]TeX} %  comma separated list of languages
+
+% Style
+% ~~~~~
+% 
+% Typeface settings::
+
+\lstset{
+  basicstyle=\ttfamily,           % print whole listing in tt
+  % basicstyle=\ttfamily\small,
+  keywordstyle={},                % do not highlight keywords
+  % identifierstyle=\slshape,     % macros that are not keywords, args
+  commentstyle=\rmfamily\itshape, % italic comments
+  % stringstyle=\ttfamily,        % typewriter type for strings
+  % texcsstyle=\slshape, 
+}
+
+% Visible whitespace::
+  
+\lstset{showstringspaces=false}  % no visible spaces in strings
+%\lstset{showspaces=true,
+%        showtabs=true,
+%        tab=\rightarrowfill}
+
+% Line numbers::
+
+%\lstset{numbers=left, numberstyle=\tiny, stepnumber=2, numbersep=5pt}
+
+% Frames around listings::
+
+%\lstset{frame=single}
+
+
+% Extended characters in listings::
+
+%extendedchars=true 
+%extendedchars=false 
+
+% Column alignment 
+% ~~~~~~~~~~~~~~~~
+% 
+% (for typesetting with variable width fonts)
+% 
+% ``columns=[c|l|r] <alignment>``
+%   <alignment> in [fixed, flexible, spaceflexible, or fullflexible]
+%   
+%   The optional c, l, or r controls the horizontal orientation of smallest
+%   output units (keywords, identifiers, etc.).
+%   
+%   default: [c]fixed
+%   
+% ``basewidth={fixed, flexible}``
+%   ..
+%   
+%   sets the width of a single character box for fixed and flexible column
+%   mode (both to the same value or individually).
+% 
+%   default: {0.6em,0.45em}
+%   
+% Free spacing for comments::
+
+\lstset{columns=fullflexible, basewidth={0.5em,0.4em}}
+
+% .. _listings.pdf: 
+%    ftp://dante.ctan.org/tex-archive/macros/latex/contrib/listings/listings.pdf

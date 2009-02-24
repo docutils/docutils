@@ -1,0 +1,22 @@
+/* transiton-stars.css: Style a Docutils transition */
+/* :Author:    Günter Milde */
+/* :Copyright: © 2008 Günter Milde. */
+/*             Released  without warranties or conditions of any kind */
+/*             under the terms of the Apache License, Version 2.0 */
+/* 	       http://www.apache.org/licenses/LICENSE-2.0 */
+/* :Id: $Id$ */
+
+/* Style sheet for use with Docutils */
+
+/* You can use this style as a template for customising  the transition */
+/* element. */
+
+/* Extends the standard docutils style sheet */
+
+/* Instead of modifying html4css1.css, you can convert your sources with: */
+/*   rst2html --stylesheet=/html4css1.css,/bold-definition-terms.css INFILE */
+/* to get bold face definition terms. */
+
+dl.docutils dt {
+  font-weight: bold }
+*/
