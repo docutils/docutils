@@ -2,7 +2,7 @@
  Docutils_ Stylesheets
 =======================
 
-:Author: Lea Wiemann
+:Author: Lea Wiemann and others
 :Contact: LeWiemann@gmail.com
 :Revision: $Revision$
 :Date: $Date$
@@ -28,18 +28,40 @@ HTML (CSS) Stylesheets
 Please see "`Writing HTML (CSS) Stylesheets for Docutils`__" on how to
 write your own CSS stylesheet for use with Docutils' HTML writer.
 
-__ http://docutils.sf.net/docs/howto/html-stylesheets.html
+__ ../../docutils/docs/howto/html-stylesheets.html
 
 * `<voidspace.css>`_: Blue boxes around section headings, more
   borders, and somewhat more colorful than the default stylesheet.
 
-* `<transition-stars.css>`_: 
+* `<transition-stars.css>`_:
   Example/Template for customising the transition__ element.
-  
+
   Replaces the horizontal line with three stars as often seen in novels.
 
-__ http://docutils.sf.net/docs/ref/rst/restructuredtext.html#transitions
+__ ../../docutils/docs/ref/rst/restructuredtext.html#transitions
 
+
+LaTeX Style Sheets
+==================
+
+See "`Generating LaTeX with Docutils`_" for details on usage and writing of
+LaTeX style sheets for the Docutils' "latex2e" writer.
+
+Hint: usage is simpler, if you copy (or link) the stye files into a
+directory in the LaTeX INPUT PATH, e.g., (on a modern TeX installation)
+``/usr/local/share/texmf/tex/latex/`` or ``~/texmf/tex/latex/`` und run
+``texhash``.
+
+* `<listings-python-options.sty>`_
+  Highlight literal blocks as python code. Use with the
+  ``--literal-block-env=lstlistings`` option.
+
+* `<listings-tex-options.sty>`_
+  Highlight literal blocks as (La)TeX code. Use with the
+  ``--literal-block-env=lstlistings`` option.
+
+.. _Generating LaTeX with Docutils:
+   ../../docutils/docs/user/latex.html
 
 .. References:
 
