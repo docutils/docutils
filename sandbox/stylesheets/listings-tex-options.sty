@@ -10,11 +10,22 @@
 %             under the terms of the Apache License, Version 2.0
 %             http://www.apache.org/licenses/LICENSE-2.0
 % 
-% To use this pass the 
-% ``--stylesheet=listings-tex-options.sty --literal-block-env=lstlisting`` 
-% options to ``rst2latex.py``.
+% Usage
+% ~~~~~
 % 
-% For full documentation see listings.pdf_.
+% For syntax highlight of literal blocks with the `listings` LaTeX package,
+% call ``rst2latex.py`` with the options
+% ``--stylesheet=listings-tex-options.sty --literal-block-env=lstlisting``.
+% 
+% Adapt the settings to your needs by either 
+% 
+% * modifying a copy of this file under a different name, or
+% * copy parts of this file into your custom style sheet.
+% 
+% See listings.pdf_ for configuration and usage of the listings package.
+% 
+% Implementation
+% ~~~~~~~~~~~~~~
 % 
 % Of course, we need to load the listings package itself::
 
@@ -27,7 +38,7 @@
 
 % load hyperref with blue citation colour::
 
-\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]
+\RequirePackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]
 {hyperref}
 
 % In the References/Bibliography section, 
@@ -43,16 +54,25 @@
 % Font settings
 % ~~~~~~~~~~~~~
 % 
-% Textfont::
+% Times, Helvetica, Courier::
 
-% \RequirePackage{mathptmx} % Times
-\RequirePackage{mathpazo} % Palatino
+%\RequirePackage{mathptmx}
+%\RequirePackage[scaled=.90]{helvet}  % scaled to fit Times
+%\RequirePackage{courier}
 
-% We need a "rich" monospaced font. `txfonts`' typewriter font comes
-% with bold, slanted, and small-caps variants and without the problems of
-% `txfonts`' math fonts::
+% Palatino, Helvetica, Courier::
 
-\renewcommand{\ttdefault}{txtt}
+\RequirePackage[sc]{mathpazo}         % with small caps
+% \RequirePackage[sc,osf]{mathpazo}   % with small caps and old style figures
+\RequirePackage[scaled=.95]{helvet}   % scaled to fit Palatino
+\RequirePackage{courier}
+
+% (The TX typewriter font comes with bold, slanted, and small-caps variants
+% and without the problems of `txfonts`' math fonts). However, `txfonts` is
+% a contributed package, not necessarily available::
+
+%\renewcommand{\ttdefault}{txtt}
+
 
 % Default language
 % ~~~~~~~~~~~~~~~~
