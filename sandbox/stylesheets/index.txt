@@ -52,22 +52,25 @@ directory in the LaTeX INPUT PATH, e.g., (on a modern TeX installation)
 ``/usr/local/share/texmf/tex/latex/`` or ``~/texmf/tex/latex/`` und run
 ``texhash``.
 
-* `<listings-python-options.sty>`_
+* `<times-helvetica-courier.sty>`_ and `<palatino-helvetica-courier.sty>`_:
+  Use Standard Postscript fonts with recommended settings.
+
+* `<listings-python-options.sty>`_:
   Highlight literal blocks as python code. Use with the
   ``--literal-block-env=lstlistings`` option.
 
-* `<listings-tex-options.sty>`_
+* `<listings-tex-options.sty>`_:
   Highlight literal blocks as (La)TeX code. Use with the
   ``--literal-block-env=lstlistings`` option.
 
-.. _Generating LaTeX with Docutils:
-   ../../docutils/docs/user/latex.html
-
-.. References:
+.. References
+   ==========
 
 .. _Docutils: http://docutils.sourceforge.net/
 .. _Docutils-users:
    http://docutils.sf.net/docs/user/mailing-lists.html#docutils-users
+.. _Generating LaTeX with Docutils:
+   ../../docutils/docs/user/latex.html
 
 
 
