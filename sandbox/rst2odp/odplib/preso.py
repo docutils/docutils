@@ -541,12 +541,20 @@ class Slide(object):
                                 # text or notes (Subclass of
                                 # MixedContent)
 
-        self.insert_line_break = False
+        self.insert_line_break = 0
 
         # xml elements
         self._page = None
 
         self._init_xml()
+
+    def insert_line_breaks(self):
+        """
+        If you want to write out existing line breaks, but don't have content to write 
+        call this
+        """
+        if self.cur_element:
+            self.cur_element.line_break()
 
     def start_animation(self, anim):
         self.animations.append(anim)
@@ -718,8 +726,6 @@ class Slide(object):
             self.add_text_frame()
         self.cur_element.add_node(node, attrib)
 
-    def add_p(self):
-        self.cur_element.add_p()
 
     def pop_node(self):
         self.cur_element.pop_node()
@@ -781,9 +787,6 @@ class MixedContent(object):
             return node.tag == tagname and node.attrib == attributes
         else:
             return node.tag == tagname
-
-    def _is_parent(self, tagname, attributes=None):
-        return self._is_node(tagname, attributes, self.cur_node.parent)
 
     def _in_tag(self, tagname, attributes=None):
         """
@@ -866,6 +869,13 @@ class MixedContent(object):
         if add_text:
             if t_styles:
                 text = TextStyle(**t_styles)
+                children = self.cur_node.getchildren()
+                if children:
+                    # if we already are using this text style, reuse the last one
+                    last = children[-1]
+                    if last.tag == 'text:span' and last.attrib['text:style-name'] == text.name:
+                        self.cur_node = children[-1]
+                        return 
                 if not self._is_node('text:span', {'text:style-name':text.name}):
                     # Create text style
                     self.slide._preso.add_style(text)
@@ -877,6 +887,22 @@ class MixedContent(object):
             self.add_node(node, attr)
             
 
+    def line_break(self):
+        """insert as many line breaks as the insert_line_break variable says
+        """
+        for i in range(self.slide.insert_line_break):
+            # needs to be inside text:p
+            if not self._in_tag('text:p'):
+                # we can just add a text:p and no line-break
+                # Create paragraph style first
+                self.add_node('text:p')
+            else:
+                self.add_node('text:line-break')
+            self.pop_node()
+
+        self.slide.insert_line_break = 0
+
+
     def write(self, text, add_p_style=True, add_t_style=True):
         """
         see mixed content
@@ -886,76 +912,59 @@ class MixedContent(object):
         white spaces then dealing with the '' (empty strings) which
         would be the extra spaces
         """
-        if self.slide.insert_line_break:
-            # needs to be inside text:p
-            add_p = False
-            if not self._in_tag('text:p'):
-                # we can just add a text:p and no line-break
-                add_p = True
-                # Create paragraph style first
-                self.add_node('text:p')
-            else:
-                self.add_node('text:line-break')
-                self.pop_node()
-            self.slide.insert_line_break = False
-            if add_p:
-                self.pop_node()
-
+        self.line_break()
         self._add_styles(add_p_style, add_t_style)
         self._add_pending_nodes()
-        #if only spaces remove one, otherwise we add one too many
-        if text == ' '*len(text):
-            text = text[:-1]
 
-        seen_space = False
-        for i, chunk in enumerate(text.split(' ')): # deal with white space 
-            children = self.cur_node.getchildren()
-            # if previous write ended with spaces deal with them
-            if chunk == '' and children and children[-1].tag == 'text:s' and not children[-1].tail:
-                seen_space = True
-                self.add_node('text:s', {})
-                self.pop_node()
+        spaces = []
+        for i, letter in enumerate(text): 
+            if letter == ' ':
+                spaces.append(letter)
                 continue
-            if chunk == '' and not seen_space:
-                seen_space = True
-            elif chunk == '':
-                self.add_node('text:s', {})
-                self.pop_node()
+            elif len(spaces) == 1:
+                self._write(' ')
+                self._write(letter)
+                spaces = []
                 continue
-            else:
-                seen_space = False
-
-
-            if children:
-                child = children[-1]
-                cur_text = child.tail or ''
-                #if chunk == '':
-                #if chunk == '' or (cur_text and cur_text[-1] != ' '):
-                if chunk == '' or (i !=0 and cur_text and cur_text[-1] != ' '):
-                    # need to put ONE space in for initial spaces
-                    # or in between chunks
-                    chunk = ' ' + chunk
-                if chunk and cur_text and cur_text[-1] == ' ':
-                    # handle two spaces in between text
-                    self.add_node('text:s', {})
-                    self.pop_node()
-                child.tail = cur_text + chunk
-            else:    
-                cur_text = self.cur_node.text or ''
-                #if chunk == '':
-                #if chunk == '' or (cur_text and cur_text[-1] != ' '):
-                if chunk == '' or (i != 0 and cur_text and cur_text[-1] != ' '):
-                    # need to put a space in for initial spaces
-                    chunk = ' ' + chunk
-                if chunk and cur_text and cur_text[-1] == ' ':
-                    # handle two spaces in between text
-                    self.add_node('text:s', {})
-                    self.pop_node()
-                    # we now have children add to tail
-                    children = self.cur_node.getchildren()
-                    children[-1].tail = chunk
+            elif spaces:
+                num_spaces = len(spaces) - 1
+                # write just a plain space at the start
+                self._write(' ')
+                if num_spaces > 1:
+                    # write the attrib only if more than one space
+                    self.add_node('text:s', {'text:c':str(num_spaces)})
                 else:
-                    self.cur_node.text = cur_text + chunk
+                    self.add_node('text:s')
+                self.pop_node()
+                self._write(letter)
+                spaces = []
+                continue
+            self._write(letter)
+
+        # might have dangling spaces
+        if len(spaces) == 1:
+            self._write(' ')
+        elif spaces:
+        #if spaces:
+            num_spaces = len(spaces) - 1
+            # write space
+            self._write(' ')
+            if num_spaces > 1:
+                self.add_node('text:s', {'text:c':str(num_spaces)})
+            else:
+                self.add_node('text:s')
+            self.pop_node()
+            
+
+    def _write(self, letter):
+        children = self.cur_node.getchildren()
+        if children:
+            child = children[-1]
+            cur_text = child.tail or ''
+            child.tail = cur_text + letter
+        else:    
+            cur_text = self.cur_node.text or ''
+            self.cur_node.text = cur_text + letter
         self.dirty = True
 
 class Footer(MixedContent):
@@ -1014,18 +1023,6 @@ class TextFrame(MixedContent):
     def _in_bullet(self):
         return self._in_tag('text:list')
 
-    def add_p(self):
-        if not self._in_p():
-            style = ParagraphStyle(**{'fo:text-align':self._default_align,
-                                      'fo:margin-left':'1.2cm',
-                                      'fo:margin-right':'-.9cm',})
-            self.slide.push_style(style)
-
-
-    def generate_style(self):
-        ''' return the current text style name and add any automatic styles
-        needed (not generated yet)'''
-        return self.text_styles[-1]
         
 class TitleFrame(TextFrame):
     def __init__(self, slide, attrib=None):
@@ -1213,14 +1210,14 @@ class OdtCodeFormatter(formatter.Formatter):
             tstyle = TextStyle(**style_attrib)
             self.writable.slide.push_style(tstyle)
             if value == '\n':
-                self.writable.add_node('text:line-break', {})
-                self.writable.pop_node()
+                self.writable.slide.insert_line_break = 1
+                self.writable.line_break()
             else:
                 parts = value.split('\n')
                 for part in parts[:-1]:
                     self.writable.write(part)
-                    self.writable.add_node('text:line-break', {})
-                    self.writable.pop_node()
+                    self.writable.slide.insert_line_break = 1
+                    self.writable.line_break()
                 self.writable.write(parts[-1])
             self.writable.slide.pop_style()
             self.writable.pop_node()
@@ -1296,6 +1293,9 @@ http://books.evc-cit.info/odbook/ch03.html#bulleted-numbered-lists-section
         self._default_align = 'start'
         self.attrib = attrib or {'text:style-name':'L2'}
         MixedContent.__init__(self, slide, 'text:list', attrib=self.attrib)
+        # if slide already has text insert line break
+        self.line_break()
+
         self.parents = [self.node]
         self.level = 0
         self.style_file = 'auto_list.xml'

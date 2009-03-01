@@ -229,8 +229,9 @@ class ODPTranslator(nodes.GenericNodeVisitor):
                 self.cur_slide.add_notes_frame()
             else:
                 self.cur_slide.cur_element = self.cur_slide.notes_frame
-                self.cur_slide.add_node('text:line-break', {})
-                self.cur_slide.pop_node() # close line-break
+                self.cur_slide.insert_line_break += 1
+                self.cur_slide.insert_line_breaks()
+
 
     def visit_paragraph(self, node):
         classes =  node.attributes.get('classes', [])
@@ -299,6 +300,8 @@ class ODPTranslator(nodes.GenericNodeVisitor):
             
         self.bullet_depth += 1
         if not self.bullet_list:
+            # start a new list
+            self.cur_slide.insert_line_breaks()
             self.bullet_list = preso.OutlineList(self.cur_slide)
             self.cur_slide.add_list(self.bullet_list)
         else:
@@ -318,8 +321,10 @@ class ODPTranslator(nodes.GenericNodeVisitor):
             
         self.bullet_depth -= 1
         if self.bullet_depth == 0:
+            # done with list
             self.bullet_list = None
             self.cur_slide.pop_element()
+            self.cur_slide.insert_line_break += 1
         else:
             self.bullet_list.dedent()            
         if 'incremental' in node.attributes.get('classes', []):
@@ -569,9 +574,7 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         pass
 
     def depart_line(self, node):
-
-        self.cur_slide.add_node('text:line-break', {})
-        self.cur_slide.pop_node()
+        self.cur_slide.insert_line_break += 1
 
     @preso.cwd_decorator
     def visit_image(self, node):
@@ -609,6 +612,9 @@ class ODPTranslator(nodes.GenericNodeVisitor):
             node_input = node.astext()
             language = node.attributes['language']
             self.cur_slide.add_code(node_input, language)
+            # insert a new line after
+            self.cur_slide.insert_line_break += 1
+
         else:
             style = preso.TextStyle(**{
                     'fo:font-family':preso.MONO_FONT,
@@ -618,10 +624,10 @@ class ODPTranslator(nodes.GenericNodeVisitor):
             node_input = node.astext()
             chunks = node_input.split('\n')
             for chunk in chunks:
-
                 self.cur_slide.write(chunk)
-                self.cur_slide.add_node('text:line-break', {})
-                self.cur_slide.pop_node()
+                self.cur_slide.insert_line_break += 1
+                self.cur_slide.insert_line_breaks()
+
 
 
     def depart_literal_block(self, node):
@@ -670,6 +676,9 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         node_input = node.astext()
         language = 'pycon'
         self.cur_slide.add_code(node_input, language)
+        # insert a new line after
+        self.cur_slide.insert_line_break += 1
+
 
     def depart_doctest_block(self, node):
         pass
