@@ -1,21 +1,44 @@
+% palatino-helvetica-courier.sty
+% ==============================
 % Recommended Font Settings for Palatino, Helvetica, and Courier
-% ==============================================================
+% --------------------------------------------------------------
 % 
-% :Author:    Günter Milde
-% :Contact:   milde@users.berlios.de
+% :Author:    Günter Milde <milde@users.berlios.de>
 % :Revision:  $Revision: 5534 $
 % :Date:      $Date: 2005-06-28$
-% :Copyright: © 2007, 2009 G. Milde,
+% :Copyright: © 2009 G. Milde,
 %             Released  without warranties or conditions of any kind
 %             under the terms of the Apache License, Version 2.0
 %             http://www.apache.org/licenses/LICENSE-2.0
 % 
+% To use the standard Postscript fonts in the combination `Palatino` -
+% `Helvetica` - `Courier` as document default, call this package with
 % 
-% Settings recommended by `l2tabu`_ and psnfss_ for the combination
-% Palatino, Helvetica, Courier::
+%   ``\usepackage{palatino-helvetica-courier}``
+%   
+% Options for number style:
+% 
+% :osf: old-style figures (default)
+% :lf:  lining figures
+% 
+% Implementation
+% ~~~~~~~~~~~~~~
+% 
+% Identification::
 
-%\RequirePackage[sc]{mathpazo}          % small caps
-\RequirePackage[sc,osf]{mathpazo}       % small caps and old style figures
+\ProvidesPackage{palatino-helvetica-courier}
+[2009/03/02 v0.1 Font Settings for Palatino, Helvetica, and Courier]
+
+% Options::
+
+\DeclareOption{osf}{\def\phc@mathpazo@options{sc,osf}}
+\DeclareOption{lf}{\def\phc@mathpazo@options{sc}}
+\ExecuteOptions{osf}
+\ProcessOptions*
+
+% Load font packages::
+
+\RequirePackage[\phc@mathpazo@options]{mathpazo}
 \RequirePackage[scaled=.95]{helvet}     % scaled to fit Palatino
 \RequirePackage{courier}
 
