@@ -1,8 +1,9 @@
+% times-helvetica-courier.sty
+% ===========================
 % Recommended Font Settings for Times, Helvetica, and Courier
-% ===========================================================
+% -----------------------------------------------------------
 % 
-% :Author:    Günter Milde
-% :Contact:   milde@users.berlios.de
+% :Author:    Günter Milde <milde@users.berlios.de>
 % :Revision:  $Revision: 5534 $
 % :Date:      $Date: 2005-06-28$
 % :Copyright: © 2009 G. Milde,
@@ -10,14 +11,31 @@
 %             under the terms of the Apache License, Version 2.0
 %             http://www.apache.org/licenses/LICENSE-2.0
 % 
+% Use the standard Postscript fonts in the combination 
+% `Times` - `Helvetica` - `Courier` as document default.
 % 
-% Settings recommended by `l2tabu`_ and psnfss_ for the combination
-% Times, Helvetica, Courier::
+% ::
+
+\ProvidesPackage{times-helvetica-courier}
+[2009/03/02 v0.1 Recommended Font Settings for Times, Helvetica, and Courier]
+
+
+% Usage of the `times` package is deprecated. With
+% 
+%   ``\usepackage{times-helvetica-courier}``
+%   
+% you get the settings recommended by `l2tabu`_ and psnfss_ for the
+% combination of Times, Helvetica, and Courier::
 
 \RequirePackage{mathptmx}
-\RequirePackage[scaled=.95]{helvet}     % scaled to fit Palatino
+\RequirePackage[scaled=.92]{helvet}     % scaled to fit Times
 \RequirePackage{courier}
 
+% Limitations
+% ~~~~~~~~~~~
+% 
+% * No bold math.
+% 
 % .. _l2tabu:
 %    http://dante.ctan.org/CTAN/help/Catalogue/entries/l2tabu.html
 % 
