@@ -38,6 +38,14 @@ For more information on Docutils, see: http://docutils.sourceforge.net/
 History
 =======
 
+2009/03/01
+---------------
+
+Improvements to images and figures -- (1) Images and figures not
+text wrapped by default.  (2) Added Docutils class "wrap" to force
+wrapping of images and figures.
+
+
 2008/10/28 -- Version 1.3d
 --------------------------
 
