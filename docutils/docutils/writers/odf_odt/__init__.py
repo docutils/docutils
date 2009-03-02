@@ -1860,7 +1860,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             'fo:margin-right': '0cm',
             'fo:margin-top': '0cm',
             'fo:margin-bottom': '0cm',
-            'style:wrap': 'dynamic',
+#           'style:wrap': 'dynamic', #vds
             'style:number-wrapped-paragraphs': 'no-limit',
             'style:vertical-pos': valign,
             'style:vertical-rel': 'paragraph',
@@ -1869,6 +1869,14 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             'fo:padding': '0cm',
             'fo:border': 'none',
             }
+        wrap = False
+        classes = node.parent.attributes.get('classes')
+        if classes and 'wrap' in classes:
+            wrap = True
+        if wrap:
+            attrib['style:wrap'] = 'dynamic'
+        else:
+            attrib['style:wrap'] = 'none'
         el2 = SubElement(el1,
             'style:graphic-properties', attrib=attrib, nsdict=SNSD)
         attrib = {
@@ -1937,6 +1945,16 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             attrib['style:horizontal-pos'] = halign
         if valign is not None:
             attrib['style:vertical-pos'] = valign
+        # If there is a classes/wrap directive or we are 
+        #   inside a table, add a no-wrap style.
+        wrap = False
+        classes = node.attributes.get('classes')
+        if classes and 'wrap' in classes:
+            wrap = True
+        if wrap:
+            attrib['style:wrap'] = 'dynamic'
+        else:
+            attrib['style:wrap'] = 'none'
         #ipshell('At generate_image')
         # If we are inside a table, add a no-wrap style.
         if self.is_in_table(node):
@@ -1955,7 +1973,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             'draw:z-index': '1',
             }
         if isinstance(node.parent, nodes.TextElement):
-            attrib['text:anchor-type'] = 'char'
+            attrib['text:anchor-type'] = 'as-char' #vds
         else:
             attrib['text:anchor-type'] = 'paragraph'
         attrib['svg:width'] = width

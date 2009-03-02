@@ -8,7 +8,8 @@ Odt Writer for Docutils
 :Date: $Date$
 :Copyright: This document has been placed in the public domain.
 
-:abstract: This document describes the Docutils odtwriter.
+:abstract: This document describes the Docutils odtwriter
+    (rst2odt.py).
 
 .. sectnum::
 
@@ -113,8 +114,8 @@ The following command line flags are specific to ``odtwriter``:
                         end of document. (default)
                                                                                                                         
 
-Styles
-======
+Styles and Classes
+==================
 
 ``odtwriter`` uses a number of styles that are defined in
 ``styles.xml`` in the default ``styles.odt``.  This section
@@ -642,6 +643,23 @@ contain them, do the following:
    custom style definitions.  For example::
 
        rst2odt.py --odf-config-file=mymappingfile.ini --stylesheet=mystyles.odt mydoc.txt mydoc.odt
+
+
+Classes
+-------
+
+``odtwriter`` uses the following Docutils class to provide additional
+control of the generation of ODF content:
+
+- Class ``wrap`` -- Use this to cause the wrapping of text around
+  an image.  The default is *not* to wrap text around images. 
+  Here is an example::
+
+      .. class:: wrap
+      .. image:: images/flower01.png
+          :alt: A bright yellow flower
+          :height: 55
+          :width: 60
 
 
 

@@ -311,6 +311,29 @@ This can be transformed with standard XML tools such as XSLT
 processors into arbitrary final forms.
 
 
+ODF/OpenOffice-Generating Tools
+===============================
+
+rst2odt.py
+----------
+
+:Reader: Standalone
+:Parser: reStructuredText
+:Writer: ODF/.odt
+
+The ``rst2odt.py`` front end reads standalone reStructuredText
+source files and produces ODF/.odt files that can be read, edited,
+printed, etc with OpenOffice ``oowriter``
+(http://www.openoffice.org/).  A stylesheet file is required.  A
+stylesheet file is an OpenOffice .odt file containing definitions
+of the styles required for ``rst2odt.py``.  You can learn more
+about how to use ``rst2odt.py``, the styles used ``rst2odt.py``,
+etc from `Odt Writer for Docutils <odt.html>`_.
+
+
+
+
+
 Testing/Debugging Tools
 =======================
 
