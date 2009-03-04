@@ -89,6 +89,8 @@ OpenOffice
 
 * odtwriter_ the Open Document Format writer developed by Dave Kuhlman
   produces files that can be processed with OpenOffice and Abiword.
+  In versions > 0.5, the odtwriter_ it is part of the Docutils_ core.
+
 
 HTML variants
 """""""""""""
@@ -258,7 +260,7 @@ code base.
 .. _ReportLabs/PDF Writer: http://docutils.sf.net/sandbox/dreamcatcher/rlpdf/
 .. _DocBook Writer: http://docutils.sf.net/sandbox/oliverr/docbook/
 .. _DocFactory: http://docutils.sf.net/sandbox/gschwant/docfactory/doc/
-.. _odtwriter: http://docutils.sf.net/sandbox/dkuhlman/OpenDocument/README.html
+.. _odtwriter: http://docutils.sf.net/docs/user/odt.html
 .. _simple HTML writer: http://docutils.sf.net/sandbox/bbum/DocArticle/
 .. _preprocessing module: http://docutils.sf.net/sandbox/cben/rolehack/
 .. _Makefile: http://docutils.sf.net/sandbox/cben/make/
