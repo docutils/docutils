@@ -10,11 +10,11 @@ distributed as part of Docutils_ releases.
 
 It's OK to make a mess in the Sandbox! But please, play nice.
 
-A project-specific subdirectory should be created for each new project. 
+A project-specific subdirectory should be created for each new project.
 Any developer who wants to play in the sandbox may create their own
 subdirectory (suggested name: SourceForge ID, or given name + family
 initial), but project directories are recommended over personal directories,
-which discourage collaboration. 
+which discourage collaboration.
 
 For more information, please see the `Docutils Project Policies`_. The
 Sandbox_ is mirrored at the Docutils web site, so the `Docutils Web Site`_
@@ -59,7 +59,7 @@ Some work has been done on enabling Docutils to write the
 __ http://docs.python.org/doc/doc.html
 
 * `Edward Loper's sandbox
-  <http://docutils.sf.net/sandbox/edloper/docpy/>`__.  The example 
+  <http://docutils.sf.net/sandbox/edloper/docpy/>`__.  The example
   "asyncore.rst" file was originally adapted by Steve Holden and Bill
   Sconce.
 
@@ -67,8 +67,21 @@ __ http://docs.python.org/doc/doc.html
   <http://docutils.sf.net/sandbox/dkuhlman/>`__ and `his homepage
   <http://www.rexx.com/~dkuhlman/rstpythonlatex_intro.html>`__.
 
-* `docpy-writer <http://docutils.sf.net/sandbox/docpy-writer/>`__ was 
+* `docpy-writer <http://docutils.sf.net/sandbox/docpy-writer/>`__ was
   used for ctypes documentation.
+
+Since Python 2.6, the markup used for the official `Python documentation`_
+is `reStructuredText`_, amended by custom directives. The Sphinx_ toolset is
+used to generate the HTML and LaTeX versions.
+
+.. _Python documentation: http://docs.python.org/
+.. _reStructuredText: http://docutils.sf.net/rst.html
+.. _Sphinx: http://sphinx.pocoo.org/
+
+.. Could we convert the `Documenting Python`_ section into an item in the
+   `Other Sandbox Projects`_ list, as it is obsoleted by the move to Sphinx?
+   [GM]
+
 
 Other Sandbox Projects
 ----------------------
@@ -79,9 +92,13 @@ See the `sandbox/`_ directory for a complete list.
 
 * `<code-block-directive>`_ contains documentation, reasoning and
   experimental code for support of syntax highlight in docutils.
-  
-* `<latex-variants>`_ is a place to try out and discuss variants of the
-  latex2e writer.
 
+* `<latex-variants>`_ is a place to try out and discuss improvements, fixes
+  and variants of the latex2e writer.
 
-.. _Docutils Link List: http://docutils.sf.net/docs/user/links.html
+* `LaTeX math for reST`_ by Jens J. Mortensen writes Math to
+  LaTeX or MathML.
+
+.. _Docutils Link List: ../docutils/docs/user/links.html
+.. _LaTeX math for reST:
+   http://docutils.sourceforge.net/sandbox/jensj/latex_math/
