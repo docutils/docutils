@@ -10,5 +10,5 @@ writer_name = "html4css1"
 # Settings
 # test for encoded attribute value:
 settings_overrides['stylesheet'] = ''
-settings_overrides['stylesheet_path'] = 'ham.css,path/to/spam.css,/eggs.css'
+settings_overrides['stylesheet_path'] = 'ham.css,path/to/spam.css'
 settings_overrides['embed_stylesheet'] = 0
