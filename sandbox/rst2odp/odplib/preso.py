@@ -873,7 +873,9 @@ class MixedContent(object):
                 if children:
                     # if we already are using this text style, reuse the last one
                     last = children[-1]
-                    if last.tag == 'text:span' and last.attrib['text:style-name'] == text.name:
+                    if last.tag == 'text:span' and \
+                      last.attrib['text:style-name'] == text.name and \
+                      last.tail is None: # if we have a tail, we can't reuse
                         self.cur_node = children[-1]
                         return 
                 if not self._is_node('text:span', {'text:style-name':text.name}):
@@ -942,13 +944,14 @@ class MixedContent(object):
             self._write(letter)
 
         # might have dangling spaces
-        if len(spaces) == 1:
-            self._write(' ')
-        elif spaces:
-        #if spaces:
-            num_spaces = len(spaces) - 1
+        # if len(spaces) == 1:
+        #     self._write(' ')
+        #elif spaces:
+        if spaces:
+            num_spaces = len(spaces)
+            ##num_spaces = len(spaces) - 1
             # write space
-            self._write(' ')
+            ##self._write(' ')
             if num_spaces > 1:
                 self.add_node('text:s', {'text:c':str(num_spaces)})
             else:
