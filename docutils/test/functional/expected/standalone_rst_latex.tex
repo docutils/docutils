@@ -56,7 +56,7 @@
 \ifthenelse{\isundefined{\hypersetup}}{
 \usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
 }{}
-% Custom roles: 
+% Custom roles:
 % \DUrole{NAME}{content} calls \docutilsroleNAME if it exists
 \providecommand{\DUrole}[2]{%
   \ifcsname docutilsrole#1\endcsname%
@@ -336,7 +336,7 @@ reference to the \href{\#doctitle}{doctitle} and the \href{\#subtitle}{subtitle}
 
 The default role for interpreted text is \titlereference{Title Reference}.  Here are
 some explicit interpreted text roles: a PEP reference (\href{http://www.python.org/dev/peps/pep-0287}{PEP 287}); an
-RFC reference (\href{http://www.faqs.org/rfcs/rfc2822.html}{RFC 2822}); a $_{subscript}$; a $^{superscript}$;
+RFC reference (\href{http://www.faqs.org/rfcs/rfc2822.html}{RFC 2822}); a $_{\mbox{\scriptsize subscript}}$; a $^{\mbox{\scriptsize superscript}}$;
 and explicit roles for \emph{standard} \textbf{inline}
 \texttt{markup}.
 % DO NOT RE-WRAP THE FOLLOWING PARAGRAPH! 
@@ -1466,7 +1466,7 @@ body row 3
 \item {} 
 A role based on an existing role.
 
-\texttt{one} \texttt{two} \texttt{three}
+\texttt{\DUrole{custom}{one}} \texttt{\DUrole{custom}{two}} \texttt{\DUrole{custom}{three}}
 
 \item {} 
 A new role.
@@ -1505,7 +1505,7 @@ not need to be tested with other writers (e.g. the HTML writer).
 \label{custom-roles-in-latex}
 \begin{itemize}
 \item {} 
-Role names and class arguments are are converted to conform to the regular
+Role names and class arguments are converted to conform to the regular
 expression \texttt{{[}a-z{]}{[}-a-z0-9{]}*} (all non-conforming characters are replaced
 by a hyphen, all letters are downcased).
 
@@ -1523,6 +1523,21 @@ directive.
 \@namedef{docutilsrolecustom4}{\textbf}
 \makeatother
 \DUrole{large}{\DUrole{custom4}{\DUrole{small-caps}{\DUrole{custom-role}{\DUrole{custom-role}{Interpreted Text}}}}} in large, bold, small-caps.
+
+\item {} 
+Custom roles can be based on standard roles:
+
+This is a \emph{\DUrole{custom-emphasis}{customized emphasis text role}}
+
+This is a \texttt{\DUrole{custom-literal}{customized literal text role}}
+
+This is a \textbf{\DUrole{custom-strong}{customized strong text role}}
+
+This is a $_{\mbox{\scriptsize \DUrole{custom-subscript}{customized subscript text role}}}$
+
+This is a $^{\mbox{\scriptsize \DUrole{custom-superscript}{customized superscript text role}}}$
+
+This is a \titlereference{\DUrole{custom-title-reference}{customized title-reference text role}}
 
 \end{itemize}
 % This file is used by the standalone_rst_latex test. 
