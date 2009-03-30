@@ -30,9 +30,9 @@ Changes Since 0.5
 
   - Support LaTeX packages as ``--stylesheet`` arguments.
   - Add ``bp`` to lengths without unit; do not convert ``px`` to ``pt``.
-  - Do not use 'fontenc', not the obsolete 'ae' and 'aeguill' packages
-    if font-encoding is set to the empty string (default).
-    LaTeX defaults to OT1 then.
+  - Do not use 'ae' and 'aeguill' packages if font-encoding is set to ''.
+  - Set sub- and superscript role argument as text not math.
+  - Support custom roles based on standard roles.
 
 
 Release 0.5 (2008-06-25)

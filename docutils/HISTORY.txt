@@ -63,6 +63,7 @@ Changes Since 0.5
   - Merge adjacent citations into one latex cite command.
   - Failsave implementation of custom roles. LaTeX compilation now ignores
     unknown classes instead of aborting with an error.
+  - Support custom roles based on standard roles.
   - Smaller document preamble: use fallback definitions, include only if
     needed in the document.
   - LaTeX packages can be used as ``--stylesheet`` arguments without
@@ -71,8 +72,10 @@ Changes Since 0.5
   - Add ``bp`` to lenghts without unit (prevents LaTex errors).
   - Do not convert ``px`` to ``pt`` (``px`` is supported by pdfTeX since
     2005-02-04 as a configurable length unit).
-  - Do not use the obsolete 'ae' and 'aeguill' packages
-    if font-encoding is set to '' (default).
+  - Do not use fontenc, nor the obsolete 'ae' and 'aeguill' packages
+    if font-encoding is set to ''. LaTeX defaults to OT1 then.
+  - Set sub- and superscript role argument in text mode not as math.
+    Use a custom role based on sub-/superscript if you want italic shape.
 
 * docs/ref/rst/restructuredtext.txt:
 

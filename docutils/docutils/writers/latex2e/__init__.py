@@ -374,7 +374,7 @@ latex_headings = {
             ]
         }
 
-latex_headings['DUrole'] = r"""% Custom roles: 
+latex_headings['DUrole'] = r"""% Custom roles:
 % \DUrole{NAME}{content} calls \docutilsroleNAME if it exists
 \providecommand{\DUrole}[2]{%
   \ifcsname docutilsrole#1\endcsname%
@@ -875,8 +875,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.literal_block = 0
         self.literal_block_stack = []
         self.literal = 0
-        # true when encoding in math mode
-        self.mathmode = 0
 
     def to_latex_encoding(self,docutils_encoding):
         """
@@ -985,9 +983,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         # then dollar
         text = text.replace("$", '{\\$}')
-        if not ( self.literal_block or self.literal or self.mathmode ):
-            # the vertical bar: in mathmode |,\vert or \mid
-            #   in textmode \textbar
+        if not ( self.literal_block or self.literal ):
             text = text.replace("|", '{\\textbar}')
             text = text.replace("<", '{\\textless}')
             text = text.replace(">", '{\\textgreater}')
@@ -1154,23 +1150,25 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             self.body.append( '\\end{itemize}\n' )
 
-    # Imperfect superscript/subscript handling: mathmode italicizes
-    # all letters by default.
     def visit_superscript(self, node):
-        self.body.append('$^{')
-        self.mathmode = 1
+        self.body.append(r'$^{\mbox{\scriptsize ')
+        if node.get('classes'):
+            self.visit_inline(node)
 
     def depart_superscript(self, node):
-        self.body.append('}$')
-        self.mathmode = 0
+        if node.get('classes'):
+            self.depart_inline(node)
+        self.body.append('}}$')
 
     def visit_subscript(self, node):
-        self.body.append('$_{')
-        self.mathmode = 1
+        self.body.append(r'$_{\mbox{\scriptsize ')
+        if node.get('classes'):
+            self.visit_inline(node)
 
     def depart_subscript(self, node):
-        self.body.append('}$')
-        self.mathmode = 0
+        if node.get('classes'):
+            self.depart_inline(node)
+        self.body.append('}}$')
 
     def visit_caption(self, node):
         self.body.append( '\\caption{' )
@@ -1186,8 +1184,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_title_reference(self, node):
         self.body.append( '\\titlereference{' )
+        if node.get('classes'):
+            self.visit_inline(node)
 
     def depart_title_reference(self, node):
+        if node.get('classes'):
+            self.depart_inline(node)
         self.body.append( '}' )
 
     def visit_citation(self, node):
@@ -1424,9 +1426,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_emphasis(self, node):
         self.body.append('\\emph{')
+        if node.get('classes'):
+            self.visit_inline(node)
         self.literal_block_stack.append('\\emph{')
 
     def depart_emphasis(self, node):
+        if node.get('classes'):
+            self.depart_inline(node)
         self.body.append('}')
         self.literal_block_stack.pop()
 
@@ -1830,8 +1836,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_literal(self, node):
         self.literal = 1
         self.body.append('\\texttt{')
+        if node.get('classes'):
+            self.visit_inline(node)
 
     def depart_literal(self, node):
+        if node.get('classes'):
+            self.depart_inline(node)
         self.body.append('}')
         self.literal = 0
 
@@ -2048,8 +2058,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_strong(self, node):
         self.body.append('\\textbf{')
         self.literal_block_stack.append('\\textbf{')
+        if node.get('classes'):
+            self.visit_inline(node)
 
     def depart_strong(self, node):
+        if node.get('classes'):
+            self.depart_inline(node)
         self.body.append('}')
         self.literal_block_stack.pop()
 
