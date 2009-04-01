@@ -10,6 +10,8 @@ Tests for images.py image directives.
 
 from __init__ import DocutilsTestSupport
 
+from docutils.nodes import reprunicode
+
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()
     s.generateTests(totest)
@@ -143,18 +145,18 @@ totest['images'] = [
 """],
 ["""\
 .. image:: picture.png
-   :scale: - 50
+   :scale: -50
 """,
 """\
 <document source="test data">
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Error in "image" directive:
-            invalid option value: (option: "scale"; value: '- 50')
+            invalid option value: (option: "scale"; value: '-50')
             negative value; must be positive or zero.
         <literal_block xml:space="preserve">
             .. image:: picture.png
-               :scale: - 50
+               :scale: -50
 """],
 ["""\
 .. image:: picture.png
@@ -170,7 +172,7 @@ totest['images'] = [
         <literal_block xml:space="preserve">
             .. image:: picture.png
                :scale:
-""" % DocutilsTestSupport.exception_data('int(None)')[1][0]],
+""" % DocutilsTestSupport.exception_data(int, None)[1][0]],
 ["""\
 .. image:: picture.png
    :scale 50
@@ -249,7 +251,7 @@ totest['images'] = [
         <literal_block xml:space="preserve">
             .. image:: picture.png
                :scale: fifty
-""" % DocutilsTestSupport.exception_data('int("fifty")')[1][0]],
+""" % DocutilsTestSupport.exception_data(int, "fifty")[1][0]],
 ["""\
 .. image:: picture.png
    :scale: 50
@@ -385,12 +387,12 @@ u"""\
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
             Error in "image" directive:
-            invalid option value: (option: "align"; value: \'\\xe4\')
+            invalid option value: (option: "align"; value: %s)
             "\xe4" unknown; choose from "top", "middle", "bottom", "left", "center", or "right".
         <literal_block xml:space="preserve">
             .. image:: picture.png
                :align: \xe4
-"""],
+""" % repr(reprunicode(u'\xe4'))],
 ["""
 .. image:: test.png
    :target: Uppercase_

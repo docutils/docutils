@@ -64,8 +64,8 @@ try:
     from docutils.parsers import rst
     from docutils.parsers.rst import states, tableparser, roles, languages
     from docutils.readers import standalone, pep
-    from docutils.readers.python import moduleparser
     from docutils.statemachine import StringList, string2lines
+    from docutils._compat import bytes
 except ImportError:
     # The importing module (usually __init__.py in one of the
     # subdirectories) may catch ImportErrors in order to detect the
@@ -191,10 +191,18 @@ class CustomTestCase(StandardTestCase):
         """`input`, `output`, and `expected` should all be strings."""
         if isinstance(input, unicode):
             input = input.encode('raw_unicode_escape')
-        if isinstance(output, unicode):
-            output = output.encode('raw_unicode_escape')
-        if isinstance(expected, unicode):
-            expected = expected.encode('raw_unicode_escape')
+        if sys.version_info > (3,):
+            # API difference: Python 3's node.__str__ doesn't escape
+            #assert expected is None or isinstance(expected, unicode)
+            if isinstance(expected, bytes):
+                expected = expected.decode('ascii')
+            if isinstance(output, bytes):
+                output = output.decode('ascii')
+        else:
+            if isinstance(expected, unicode):
+                expected = expected.encode('raw_unicode_escape')
+            if isinstance(output, unicode):
+                output = output.encode('raw_unicode_escape')
         try:
             self.assertEquals(output, expected)
         except AssertionError, error:
@@ -611,6 +619,12 @@ class PythonModuleParserTestCase(CustomTestCase):
     def test_parser(self):
         if self.run_in_debugger:
             pdb.set_trace()
+        try:
+            import compiler
+        except ImportError:
+            # skip on Python 3
+            return
+        from docutils.readers.python import moduleparser
         module = moduleparser.parse_module(self.input, 'test data').pformat()
         output = str(module)
         self.compare_output(self.input, output, self.expected)
@@ -618,6 +632,12 @@ class PythonModuleParserTestCase(CustomTestCase):
     def test_token_parser_rhs(self):
         if self.run_in_debugger:
             pdb.set_trace()
+        try:
+            import compiler
+        except ImportError:
+            # skip on Python 3
+            return
+        from docutils.readers.python import moduleparser
         tr = moduleparser.TokenParser(self.input)
         output = tr.rhs(1)
         self.compare_output(self.input, output, self.expected)
@@ -806,19 +826,19 @@ class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
         output = []
         for key in keys:
             output.append("%r: '''%s'''"
-                          % (key, parts[key].encode('raw_unicode_escape')))
+                          % (key, parts[key]))
             if output[-1].endswith("\n'''"):
                 output[-1] = output[-1][:-4] + "\\n'''"
         return '{' + ',\n '.join(output) + '}\n'
 
 
-def exception_data(code):
+def exception_data(func, *args, **kwds):
     """
-    Execute `code` and return the resulting exception, the exception arguments,
-    and the formatted exception string.
+    Execute `func(*args, **kwds)` and return the resulting exception, the
+    exception arguments, and the formatted exception string.
     """
     try:
-        exec(code)
+        func(*args, **kwds)
     except Exception, detail:
         return (detail, detail.args,
                 '%s: %s' % (detail.__class__.__name__, detail))
@@ -849,13 +869,15 @@ def _format_str(*args):
         if ( (isinstance(i, str) or isinstance(i, unicode))
              and '\n' in i):
             stripped = ''
-            if isinstance(i, unicode):
-                # stripped = 'u' or 'U'
+            if isinstance(i, unicode) and r.startswith('u'):
+                stripped = r[0]
+                r = r[1:]
+            elif isinstance(i, bytes) and r.startswith('b'):
                 stripped = r[0]
                 r = r[1:]
             # quote_char = "'" or '"'
             quote_char = r[0]
-            assert quote_char in ("'", '"')
+            assert quote_char in ("'", '"'), quote_char
             assert r[0] == r[-1]
             r = r[1:-1]
             r = (stripped + 3 * quote_char + '\\\n' +

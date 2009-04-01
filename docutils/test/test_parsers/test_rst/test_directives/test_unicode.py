@@ -17,7 +17,7 @@ def suite():
     return s
 
 unichr_exception = DocutilsTestSupport.exception_data(
-    'unichr(int("111111111111111111", 16))')[0]
+    unichr, int("111111111111111111", 16))[0]
 if isinstance(unichr_exception, OverflowError):
     unichr_exception_string = 'code too large (%s)' % unichr_exception
 else:
@@ -163,7 +163,7 @@ u"""\
         <literal_block xml:space="preserve">
             .. |too big for unicode| unicode:: 0x11111111
 """ % (unichr_exception_string,
-       DocutilsTestSupport.exception_data('unichr(int("11111111", 16))')[2])]
+       DocutilsTestSupport.exception_data(unichr, int("11111111", 16))[2])]
 ]
 
 

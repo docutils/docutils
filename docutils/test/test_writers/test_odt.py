@@ -41,6 +41,7 @@ from __init__ import DocutilsTestSupport
 
 import docutils
 import docutils.core
+from docutils._compat import BytesIO
 
 #
 # Globals
@@ -55,8 +56,8 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
             save_output_name=None):
         # Test that xmlcharrefreplace is the default output encoding
         # error handler.
-        input_file = open(INPUT_PATH + input_filename, 'r')
-        expected_file = open(EXPECTED_PATH + expected_filename, 'r')
+        input_file = open(INPUT_PATH + input_filename, 'rb')
+        expected_file = open(EXPECTED_PATH + expected_filename, 'rb')
         input = input_file.read()
         expected = expected_file.read()
         input_file.close()
@@ -83,7 +84,7 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
         self.assertEqual(content1, content2, msg)
 
     def extract_file(self, payload, filename):
-        payloadfile = StringIO.StringIO()
+        payloadfile = BytesIO()
         payloadfile.write(payload)
         payloadfile.seek(0)
         zfile = zipfile.ZipFile(payloadfile, 'r')

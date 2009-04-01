@@ -12,7 +12,7 @@ import os.path
 import sys
 from __init__ import DocutilsTestSupport
 from docutils.parsers.rst import states
-
+from docutils._compat import b
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()
@@ -292,7 +292,7 @@ Encoding:
 .. include:: %s
    :encoding: utf-16
 """ % utf_16_file_rel,
-u"""\
+b("""\
 <document source="test data">
     <paragraph>
         Encoding:
@@ -302,7 +302,7 @@ u"""\
         "Crunchy Frog", 1.49, "If we took the b\xf6nes out, it wouldn\\u2019t be
         crunchy, now would it?"
         "Gannet Ripple", 1.99, "\xbfOn a \\u03c3\\u03c4\\u03b9\\u03ba?"
-"""],
+""").decode('raw_unicode_escape')],
 ["""\
 Include file is UTF-16-encoded, and is not valid ASCII.
 
@@ -361,7 +361,7 @@ Standard include data file:
 
 .. include:: <isogrk4.txt>
 """,
-"""\
+b("""\
 <document source="test data">
     <paragraph>
         Standard include data file:
@@ -376,7 +376,7 @@ Standard include data file:
         \\u03dc
     <substitution_definition names="b.gammad">
         \\u03dd
-"""],
+""").decode('raw_unicode_escape')],
 ["""\
 Nonexistent standard include data file:
 
@@ -491,18 +491,6 @@ Error handling test; "end-before" error handling tested in previous test.
                :end-before: mork of ork
 """ % include13],
 ]
-
-
-# Skip tests whose output contains "UnicodeDecodeError" if we are not
-# using Python 2.3 or higher.
-if sys.version_info < (2, 3):
-    for i in range(len(totest['include'])):
-        if totest['include'][i][1].find('UnicodeDecodeError') != -1:
-            del totest['include'][i]
-            print ("Test totest['include'][%s] skipped; "
-                   "Python 2.3+ required for expected output." % i)
-            # Assume we have only one of these tests.
-            break
 
 
 if __name__ == '__main__':

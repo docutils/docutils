@@ -16,6 +16,7 @@ except:
     pass
 import re
 from docutils import TransformSpec
+from docutils._compat import b
 
 
 class Input(TransformSpec):
@@ -112,8 +113,9 @@ class Input(TransformSpec):
                 self.successful_encoding = enc
                 # Return decoded, removing BOMs.
                 return decoded.replace(u'\ufeff', u'')
-            except (UnicodeError, LookupError), error:
-                pass
+            except (UnicodeError, LookupError), tmperror:
+                error = tmperror  # working around Python 3 deleting the
+                                  # error variable after the except clause
         if error is not None:
             error_details = '\n(%s: %s)' % (error.__class__.__name__, error)
         raise UnicodeError(
@@ -122,12 +124,12 @@ class Input(TransformSpec):
             % (', '.join([repr(enc) for enc in encodings if enc]),
                error_details))
 
-    coding_slug = re.compile("coding[:=]\s*([-\w.]+)")
+    coding_slug = re.compile(b("coding[:=]\s*([-\w.]+)"))
     """Encoding declaration pattern."""
 
-    byte_order_marks = (('\xef\xbb\xbf', 'utf-8'),
-                        ('\xfe\xff', 'utf-16-be'),
-                        ('\xff\xfe', 'utf-16-le'),)
+    byte_order_marks = ((b('\xef\xbb\xbf'), 'utf-8'),
+                        (b('\xfe\xff'), 'utf-16-be'),
+                        (b('\xff\xfe'), 'utf-16-le'),)
     """Sequence of (start_bytes, encoding) tuples to for encoding detection.
     The first bytes of input data are checked against the start_bytes strings.
     A match indicates the given encoding."""
@@ -145,7 +147,7 @@ class Input(TransformSpec):
         for line in data.splitlines()[:2]:
             match = self.coding_slug.search(line)
             if match:
-                return match.group(1)
+                return match.group(1).decode('ascii')
         return None
 
 
@@ -194,27 +196,7 @@ class Output(TransformSpec):
             # Non-unicode (e.g. binary) output.
             return data
         else:
-            try:
-                return data.encode(self.encoding, self.error_handler)
-            except (LookupError, ValueError):
-                # LookupError is raised if there are unencodable chars
-                # in data and the error_handler isn't found. In old
-                # Python versions, ValueError is raised.
-                if self.error_handler == 'xmlcharrefreplace':
-                    # We are using xmlcharrefreplace with a Python
-                    # version that doesn't support it (2.1, 2.2, or
-                    # IronPython 1.0) so we emulate its behavior.
-                    return ''.join([self.xmlcharref_encode(char)
-                                    for char in data])
-                else:
-                    raise
-
-    def xmlcharref_encode(self, char):
-        """Emulate Python 2.3's 'xmlcharrefreplace' encoding error handler."""
-        try:
-            return char.encode(self.encoding, 'strict')
-        except UnicodeError:
-            return '&#%i;' % ord(char)
+            return data.encode(self.encoding, self.error_handler)
 
 
 class FileInput(Input):
@@ -243,7 +225,7 @@ class FileInput(Input):
         if source is None:
             if source_path:
                 try:
-                    self.source = open(source_path)
+                    self.source = open(source_path, 'rb')
                 except IOError, error:
                     if not handle_io_errors:
                         raise
@@ -315,7 +297,7 @@ class FileOutput(Output):
 
     def open(self):
         try:
-            self.destination = open(self.destination_path, 'w')
+            self.destination = open(self.destination_path, 'wb')
         except IOError, error:
             if not self.handle_io_errors:
                 raise

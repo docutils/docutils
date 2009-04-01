@@ -15,6 +15,7 @@ import warnings
 import unicodedata
 from docutils import ApplicationError, DataError
 from docutils import nodes
+from docutils._compat import b
 
 
 class SystemMessage(ApplicationError):
@@ -173,7 +174,8 @@ class Reporter:
         if self.stream and (level >= self.report_level
                             or self.debug_flag and level == self.DEBUG_LEVEL):
             msgtext = msg.astext().encode(self.encoding, self.error_handler)
-            print >>self.stream, msgtext
+            self.stream.write(msgtext)
+            self.stream.write(b('\n'))
         if level >= self.halt_level:
             raise SystemMessage(msg, level)
         if level > self.DEBUG_LEVEL or self.debug_flag:
