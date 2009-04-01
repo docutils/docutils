@@ -161,7 +161,7 @@ expected output and check it in:
         no_expected = self.no_expected_template % {
             'exp': expected_path, 'out': params['destination_path']}
         self.assert_(os.access(expected_path, os.R_OK), no_expected)
-        f = open(expected_path, 'rU')
+        f = open(expected_path, 'rb')
         expected = f.read()
         f.close()
         diff = self.expected_output_differs_template % {
@@ -172,8 +172,8 @@ expected output and check it in:
             if hasattr(difflib, 'unified_diff'):
                 # Generate diff if unified_diff available:
                 diff = ''.join(
-                    difflib.unified_diff(expected.splitlines(1),
-                                         output.splitlines(1),
+                    difflib.unified_diff(expected.decode('latin1').splitlines(1),
+                                         output.decode('latin1').splitlines(1),
                                          expected_path,
                                          params['destination_path']))
             print >>sys.stderr, '\n%s:' % (self,)

@@ -12,6 +12,7 @@ import pickle
 import DocutilsTestSupport              # must be imported before docutils
 import docutils
 from docutils import core, nodes, io
+from docutils._compat import b, bytes, u_prefix
 
 
 test_document = """\
@@ -20,7 +21,7 @@ Test Document
 
 This is a test document with a broken reference: nonexistent_
 """
-pseudoxml_output = """\
+pseudoxml_output = b("""\
 <document ids="test-document" names="test\ document" source="<string>" title="Test Document">
     <title>
         Test Document
@@ -34,9 +35,9 @@ pseudoxml_output = """\
         <system_message backrefs="id2" ids="id1" level="3" line="4" source="<string>" type="ERROR">
             <paragraph>
                 Unknown target name: "nonexistent".
-"""
-exposed_pseudoxml_output = """\
-<document ids="test-document" internal:refnames="{u\'nonexistent\': [<reference: <#text: \'nonexistent\'>>]}" names="test\ document" source="<string>" title="Test Document">
+""")
+exposed_pseudoxml_output = b("""\
+<document ids="test-document" internal:refnames="{%s\'nonexistent\': [<reference: <#text: \'nonexistent\'>>]}" names="test\ document" source="<string>" title="Test Document">
     <title>
         Test Document
     <paragraph>
@@ -49,7 +50,7 @@ exposed_pseudoxml_output = """\
         <system_message backrefs="id2" ids="id1" level="3" line="4" source="<string>" type="ERROR">
             <paragraph>
                 Unknown target name: "nonexistent".
-"""
+""" % u_prefix)
 
 
 class PublishDoctreeTestCase(DocutilsTestSupport.StandardTestCase, docutils.SettingsSpec):
@@ -121,7 +122,7 @@ class PublishDoctreeTestCase(DocutilsTestSupport.StandardTestCase, docutils.Sett
         doctree.transformer = None
 
         doctree_pickled = pickle.dumps(doctree)
-        self.assert_(isinstance(doctree_pickled, str))
+        self.assert_(isinstance(doctree_pickled, bytes))
         del doctree
 
         # Unpickle the document.

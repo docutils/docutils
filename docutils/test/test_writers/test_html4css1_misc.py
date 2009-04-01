@@ -10,6 +10,7 @@ Miscellaneous HTML writer tests.
 
 from __init__ import DocutilsTestSupport
 from docutils import core
+from docutils._compat import b
 
 
 class EncodingTestCase(DocutilsTestSupport.StandardTestCase):
@@ -22,11 +23,11 @@ class EncodingTestCase(DocutilsTestSupport.StandardTestCase):
             'stylesheet': '',
             '_disable_config': 1,}
         result = core.publish_string(
-            'EUR = \xe2\x82\xac', writer_name='html4css1',
+            b('EUR = \xe2\x82\xac'), writer_name='html4css1',
             settings_overrides=settings_overrides)
         # Encoding a euro sign with latin1 doesn't work, so the
-        # xmlcharrefreplcae handler is used.
-        self.assert_(result.find('EUR = &#8364;') != -1)
+        # xmlcharrefreplace handler is used.
+        self.assert_(result.find(b('EUR = &#8364;')) != -1)
 
 
 if __name__ == '__main__':

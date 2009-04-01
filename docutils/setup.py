@@ -6,26 +6,25 @@ import sys
 import os
 import glob
 try:
-    from distutils.core import setup
+    from distutils.core import setup, Command
+    from distutils.command.build import build
     from distutils.command.build_py import build_py
     from distutils.command.install_data import install_data
+    from distutils.util import convert_path
 except ImportError:
-    print 'Error: The "distutils" standard module, which is required for the '
-    print 'installation of Docutils, could not be found.  You may need to '
-    print 'install a package called "python-devel" (or similar) on your '
-    print 'system using your package manager.'
+    print ('Error: The "distutils" standard module, which is required for the ')
+    print ('installation of Docutils, could not be found.  You may need to ')
+    print ('install a package called "python-devel" (or similar) on your ')
+    print ('system using your package manager.')
     sys.exit(1)
 
-if sys.hexversion < 0x02030000:
-    # Hack for Python < 2.3.
-    # From <http://groups.google.de/groups?as_umsgid=f70e3538.0404141327.6cea58ca@posting.google.com>.
-    from distutils.command.install import INSTALL_SCHEMES
-    for scheme in INSTALL_SCHEMES.values():
-        scheme['data'] = scheme['purelib']
+try:
+    from distutils.command.build_py import build_py_2to3 as build_py
+except ImportError:
+    from distutils.command.build_py import build_py
 
 
 class smart_install_data(install_data):
-
     # Hack for Python > 2.3.
     # From <http://wiki.python.org/moin/DistutilsInstallDataScattered>,
     # by Pete Shinners.
@@ -36,24 +35,43 @@ class smart_install_data(install_data):
         self.install_dir = getattr(install_cmd, 'install_lib')
         return install_data.run(self)
 
+class build_data(Command):
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        build_py = self.get_finalized_command('build_py')
+        data_files = self.distribution.data_files
+        for f in data_files:
+            dir = convert_path(f[0])
+            dir = os.path.join(build_py.build_lib, dir)
+            self.mkpath(dir)
+            for data in f[1]:
+                data = convert_path(data)
+                self.copy_file(data, dir)
+
+# let our build_data run
+build.sub_commands.append(('build_data', lambda *a: True))
+
 
 def do_setup():
     kwargs = package_data.copy()
     extras = get_extras()
     if extras:
         kwargs['py_modules'] = extras
-    if sys.hexversion >= 0x02030000:    # Python 2.3
-        kwargs['classifiers'] = classifiers
-        # Install data files properly.  Note that we use a different
-        # hack for Python 2.2, which does not *always* work, though;
-        # see
-        # <http://article.gmane.org/gmane.text.docutils.user/2867>.
-        # So for Python 2.3+, we prefer this hack.
-        kwargs['cmdclass'] = {'install_data': smart_install_data}
-    else:
-        # Install data files properly.  (Another hack for Python 2.2
-        # is at the top of this file.)
-        kwargs['cmdclass'] = {'build_py': dual_build_py}
+    kwargs['classifiers'] = classifiers
+    # Install data files properly.  Note that we use a different
+    # hack for Python 2.2, which does not *always* work, though;
+    # see
+    # <http://article.gmane.org/gmane.text.docutils.user/2867>.
+    # So for Python 2.3+, we prefer this hack.
+    kwargs['cmdclass'] = {'install_data': smart_install_data,
+                          'build_py': build_py,
+                          'build_data': build_data}
     dist = setup(**kwargs)
     return dist
 
@@ -175,24 +193,6 @@ def get_extras():
         except (ImportError, AttributeError, ValueError):
             extras.append(module_name)
     return extras
-
-
-class dual_build_py(build_py):
-
-    """
-    This class allows the distribution of both packages *and* modules with one
-    call to `distutils.core.setup()` (necessary for pre-2.3 Python).  Thanks
-    to Thomas Heller.
-    """
-
-    def run(self):
-        if not self.py_modules and not self.packages:
-            return
-        if self.py_modules:
-            self.build_modules()
-        if self.packages:
-            self.build_packages()
-        self.byte_compile(self.get_outputs(include_bytecode=0))
 
 
 if __name__ == '__main__' :

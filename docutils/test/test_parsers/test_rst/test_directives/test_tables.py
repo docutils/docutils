@@ -11,11 +11,8 @@ Tests for tables.py directives.
 from __init__ import DocutilsTestSupport
 
 import os
-try:
-    import csv
-except ImportError:
-    csv = None
-
+import csv
+from docutils._compat import u_prefix
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()
@@ -28,21 +25,22 @@ utf_16_csv_rel = DocutilsTestSupport.utils.relative_path(None, utf_16_csv)
 empty_txt = os.path.join(mydir, 'empty.txt')
 
 unichr_exception = DocutilsTestSupport.exception_data(
-    'unichr(int("9999999999999", 16))')[0]
+    unichr, int("9999999999999", 16))[0]
 if isinstance(unichr_exception, OverflowError):
     unichr_exception_string = 'code too large (%s)' % unichr_exception
 else:
     unichr_exception_string = str(unichr_exception)
 
-null_bytes_code = """
-import csv
-import cStringIO
-csv_data = open('%s', 'rb').read()
-csv_file = cStringIO.StringIO(csv_data)
-reader = csv.reader(csv_file)
-reader.next()
-""" % utf_16_csv
-null_bytes_exception = DocutilsTestSupport.exception_data(null_bytes_code)[0]
+def null_bytes():
+    import csv
+    import codecs
+    import cStringIO
+    csv_data = codecs.open(utf_16_csv, 'r', 'latin1').read()
+    csv_file = cStringIO.StringIO(csv_data)
+    reader = csv.reader(csv_file)
+    reader.next()
+
+null_bytes_exception = DocutilsTestSupport.exception_data(null_bytes)[0]
 
 totest = {}
 
@@ -178,11 +176,7 @@ totest['table'] = [
 """],
 ]
 
-if not csv:
-    print ('Tests of "csv-table" directive skipped; '
-           'Python 2.3 or higher required.')
-else:
-    totest['csv-table'] = [
+totest['csv-table'] = [
 ["""\
 .. csv-table:: inline with integral header
    :widths: 10, 20, 30
@@ -562,11 +556,12 @@ u"""\
     <system_message level="4" line="1" source="test data" type="SEVERE">
         <paragraph>
             Problems with "csv-table" directive path:
-            [Errno 2] No such file or directory: u'bogus.csv'.
+            [Errno 2] No such file or directory: %s'bogus.csv'.
         <literal_block xml:space="preserve">
             .. csv-table:: no such file
                :file: bogus.csv
-"""], # note that this output is rewritten below for certain python versions
+""" % u_prefix],
+# note that this output is rewritten below for certain python versions
 ["""\
 .. csv-table:: bad URL
    :url: bogus.csv
@@ -631,7 +626,7 @@ u"""\
                :widths: 0 0 0
             \n\
                some, csv, data
-""" % DocutilsTestSupport.exception_data('int("y")')[1][0]],
+""" % DocutilsTestSupport.exception_data(int, "y")[1][0]],
 ["""\
 .. csv-table:: good delimiter
    :delim: /

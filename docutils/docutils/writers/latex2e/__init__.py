@@ -18,7 +18,6 @@ import os
 import time
 import re
 import string
-from types import ListType
 from docutils import frontend, nodes, languages, writers, utils
 from docutils.writers.newlatex2e import unicode_map
 
@@ -61,8 +60,8 @@ class Writer(writers.Writer):
           {'choices': ['dash', 'parentheses', 'parens', 'none'],
            'default': 'dash', 'metavar': '<format>'}),
         ('Specify LaTeX packages/stylesheets. '
-         ' A style is referenced with \usepackage if extension is '
-         '".sty" or omitted and with \input else. '
+         ' A style is referenced with \\usepackage if extension is '
+         '".sty" or omitted and with \\input else. '
           ' Overrides previous --stylesheet and --stylesheet-path settings.',
           ['--stylesheet'],
           {'default': '', 'metavar': '<file>',

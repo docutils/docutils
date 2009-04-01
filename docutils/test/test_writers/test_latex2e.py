@@ -10,6 +10,8 @@ Tests for latex2e writer.
 
 from __init__ import DocutilsTestSupport
 
+from docutils._compat import b
+
 def suite():
     settings = {'use_latex_toc': 0}
     s = DocutilsTestSupport.PublishTestSuite('latex', suite_settings=settings)
@@ -21,7 +23,7 @@ def suite():
     return s
 
 
-latex_head = R"""\documentclass[10pt,a4paper,english]{article}
+latex_head = b(R"""\documentclass[10pt,a4paper,english]{article}
 \usepackage{babel}
 %\usepackage[OT1]{fontenc}
 \usepackage{shortvrb}
@@ -79,7 +81,7 @@ latex_head = R"""\documentclass[10pt,a4paper,english]{article}
 \ifthenelse{\isundefined{\hypersetup}}{
 \usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
 }{}
-"""
+""")
 
 totest = {}
 totest_latex_toc = {}
@@ -87,7 +89,7 @@ totest_latex_citations = {}
 
 totest['url_chars'] = [
 ["http://nowhere/url_with%28parens%29",
-latex_head + """\
+latex_head + b("""\
 \\title{}
 \\author{}
 \\date{}
@@ -99,7 +101,7 @@ latex_head + """\
 \\href{http://nowhere/url_with\\%28parens\\%29}{http://nowhere/url{\\_}with{\\%}28parens{\\%}29}
 
 \\end{document}
-"""],
+""")],
 ]
 
 totest['table_of_contents'] = [
@@ -116,7 +118,7 @@ Title 2
 Paragraph 2.
 """,
 ## # expected output
-latex_head + """\
+latex_head + b("""\
 \\title{}
 \\author{}
 \\date{}
@@ -159,7 +161,7 @@ Paragraph 1.
 Paragraph 2.
 
 \\end{document}
-"""],
+""")],
 
 ]
 
@@ -177,7 +179,7 @@ Title 2
 Paragraph 2.
 """,
 ## # expected output
-latex_head + """\
+latex_head + b("""\
 \\title{}
 \\author{}
 \\date{}
@@ -211,7 +213,7 @@ Paragraph 1.
 Paragraph 2.
 
 \\end{document}
-"""],
+""")],
 
 ]
 
@@ -225,7 +227,7 @@ Just a test citation [my_cite2006]_.
    The underscore is mishandled.
 """,
 ## # expected output
-latex_head + """\
+latex_head + b("""\
 \\title{}
 \\author{}
 \\date{}
@@ -243,7 +245,7 @@ The underscore is mishandled.
 \\end{thebibliography}
 
 \\end{document}
-"""],
+""")],
 ]
 
 
@@ -263,7 +265,7 @@ But a line break should work: [MeYou2007]_
 .. [YouMe2007] important.
 """,
 ## # expected output
-latex_head + """\
+latex_head + b("""\
 \\title{}
 \\author{}
 \\date{}
@@ -290,7 +292,7 @@ important.
 \\end{thebibliography}
 
 \\end{document}
-"""],
+""")],
 ]
 
 
@@ -309,7 +311,7 @@ totest['enumerated_lists'] = [
   (II) in roman numerals.
 """,
 # expected output
-latex_head + """\
+latex_head + b("""\
 \\title{}
 \\author{}
 \\date{}
@@ -373,7 +375,7 @@ in roman numerals.
 \\end{quote}
 
 \\end{document}
-"""],
+""")],
 ]
 
 # BUG: need to test for quote replacing if language is de (ngerman).
@@ -399,7 +401,7 @@ the python interpreter running the test)::
 
 Inline ``literal "quotes"`` should be kept.
 """,
-latex_head + """\
+latex_head + b("""\
 \\title{}
 \\author{}
 \\date{}
@@ -426,7 +428,7 @@ should~get~"quotes"~and~\\emph{italics}.
 Inline \\texttt{literal "quotes"} should be kept.
 
 \\end{document}
-"""],
+""")],
 ]
 
 totest['table_caption'] = [
@@ -440,7 +442,7 @@ totest['table_caption'] = [
    |     |     |
    +-----+-----+
 """,
-latex_head + """\
+latex_head + b("""\
 \\title{}
 \\author{}
 \\date{}
@@ -460,7 +462,7 @@ latex_head + """\
 \\end{longtable}
 
 \\end{document}
-"""],
+""")],
 ]
 
 totest['table_class'] = [
@@ -475,7 +477,7 @@ totest['table_class'] = [
    |  3  |  4  |
    +-----+-----+
 """,
-latex_head + """\
+latex_head + b("""\
 \\title{}
 \\author{}
 \\date{}
@@ -499,7 +501,7 @@ latex_head + """\
 \\end{longtable}
 
 \\end{document}
-"""],
+""")],
 ]
 
 # In "\\\n[" the "[" needs to be protected (otherwise it will be seen as an option to "\\").
@@ -514,7 +516,7 @@ totest['brackett_protection'] = [
   the empty line gets tested too
   ]
 """,
-latex_head + """\
+latex_head + b("""\
 \\title{}
 \\author{}
 \\date{}
@@ -531,7 +533,7 @@ the~empty~line~gets~tested~too~\\\\
 }\\end{quote}
 
 \\end{document}
-"""],
+""")],
 ]
 
 totest['raw'] = [
@@ -549,7 +551,7 @@ A paragraph.
 Foo |sub|
 same paragraph.
 """,
-latex_head + """\
+latex_head + b("""\
 \\title{}
 \\author{}
 \\date{}
@@ -564,7 +566,7 @@ Foo (some raw text)
 same paragraph.
 
 \\end{document}
-"""],
+""")],
 ]
 
 if __name__ == '__main__':

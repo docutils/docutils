@@ -11,7 +11,7 @@ Tests for misc.py "raw" directive.
 import os.path
 import sys
 from __init__ import DocutilsTestSupport
-
+from docutils._compat import u_prefix, b
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()
@@ -92,7 +92,7 @@ totest['raw'] = [
    :file: %s
    :encoding: utf-16
 """ % utf_16_file_rel,
-"""\
+b("""\
 <document source="test data">
     <raw format="html" source="%s" xml:space="preserve">
         "Treat", "Quantity", "Description"
@@ -100,7 +100,7 @@ totest['raw'] = [
         "Crunchy Frog", 1.49, "If we took the b\xf6nes out, it wouldn\\u2019t be
         crunchy, now would it?"
         "Gannet Ripple", 1.99, "\xbfOn a \\u03c3\\u03c4\\u03b9\\u03ba?"
-""" % utf_16_file_rel],
+""" % utf_16_file_rel).decode('raw_unicode_escape')],
 ["""\
 Raw input file is UTF-16-encoded, and is not valid ASCII.
 
@@ -122,12 +122,12 @@ Raw input file is UTF-16-encoded, and is not valid ASCII.
                :file: %s
                :encoding: ascii
 """ % utf_16_file_rel],
-[unicode("""\
+[u"""\
 .. raw:: html
    :encoding: utf-8
 
    Should the parser complain becau\xdfe there is no :file:?  BUG?
-""", 'iso-8859-1'),
+""",
 """\
 <document source="test data">
     <raw format="html" xml:space="preserve">
@@ -153,23 +153,13 @@ Raw input file is UTF-16-encoded, and is not valid ASCII.
     <system_message level="4" line="1" source="test data" type="SEVERE">
         <paragraph>
             Problems with "raw" directive path:
-            [Errno 2] No such file or directory: u'non-existent.file'.
+            [Errno 2] No such file or directory: %s'non-existent.file'.
         <literal_block xml:space="preserve">
             .. raw:: html
                :file: non-existent.file
-"""], # note that this output is rewritten below for certain python versions
+""" % u_prefix],
+# note that this output is rewritten below for certain python versions
 ]
-
-# Skip tests whose output contains "UnicodeDecodeError" if we are not
-# using Python 2.3 or higher.
-if sys.version_info < (2, 3):
-    for i in range(len(totest['raw'])):
-        if totest['raw'][i][1].find('UnicodeDecodeError') != -1:
-            del totest['raw'][i]
-            print ("Test totest['raw'][%s] skipped; "
-                   "Python 2.3+ required for expected output." % i)
-            # Assume we have only one of these tests.
-            break
 
 # Rewrite tests that depend on the output of IOError as it is
 # platform-dependent before python 2.4 for a unicode path.

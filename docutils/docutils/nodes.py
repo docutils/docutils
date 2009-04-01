@@ -25,7 +25,7 @@ import sys
 import os
 import re
 import warnings
-from types import ClassType, SliceType
+import types
 import unicodedata
 
 # ==============================
@@ -59,8 +59,11 @@ class Node:
         """
         return True
 
-    def __str__(self):
-        return unicode(self).encode('raw_unicode_escape')
+    if sys.version_info < (3,):
+        # on 2.x, str(node) will be a byte string with Unicode
+        # characters > 255 escaped; on 3.x this is no longer necessary
+        def __str__(self):
+            return unicode(self).encode('raw_unicode_escape')
 
     def asdom(self, dom=None):
         """Return a DOM **fragment** representation of this Node."""
@@ -225,7 +228,7 @@ class Node:
             siblings=1
         # Check if `condition` is a class (check for TypeType for Python
         # implementations that use only new-style classes, like PyPy).
-        if isinstance(condition, (ClassType, type)):
+        if isinstance(condition, (types.ClassType, type)):
             node_class = condition
             def condition(node, node_class=node_class):
                 return isinstance(node, node_class)
@@ -267,13 +270,17 @@ class Node:
         except IndexError:
             return None
 
-class reprunicode(unicode):
-    """
-    A class that removes the initial u from unicode's repr.
-    """
+if sys.version_info < (3,):
+    class reprunicode(unicode):
+        """
+        A class that removes the initial u from unicode's repr.
+        """
 
-    def __repr__(self):
-        return unicode.__repr__(self)[1:]
+        def __repr__(self):
+            return unicode.__repr__(self)[1:]
+else:
+    reprunicode = unicode
+
 
 class Text(Node, reprunicode):
 
@@ -288,10 +295,17 @@ class Text(Node, reprunicode):
     children = ()
     """Text nodes have no children, and cannot have children."""
 
-    def __new__(cls, data, rawsource=None):
-        """Prevent the rawsource argument from propagating to str."""
-        return reprunicode.__new__(cls, data)
-    
+    if sys.version_info > (3,):
+        def __new__(cls, data, rawsource=None):
+            """Prevent the rawsource argument from propagating to str."""
+            if isinstance(data, bytes):
+                raise TypeError('expecting str data, not bytes')
+            return reprunicode.__new__(cls, data)
+    else:
+        def __new__(cls, data, rawsource=None):
+            """Prevent the rawsource argument from propagating to str."""
+            return reprunicode.__new__(cls, data)
+
     def __init__(self, data, rawsource=''):
 
         self.rawsource = rawsource
@@ -460,6 +474,10 @@ class Element(Node):
         else:
             return self.emptytag()
 
+    if sys.version_info > (3,):
+        # 2to3 doesn't convert __unicode__ to __str__
+        __str__ = __unicode__
+
     def starttag(self):
         parts = [self.tagname]
         for name, value in self.attlist():
@@ -484,11 +502,11 @@ class Element(Node):
         return len(self.children)
 
     def __getitem__(self, key):
-        if isinstance(key, unicode) or isinstance(key, str):
+        if isinstance(key, basestring):
             return self.attributes[key]
         elif isinstance(key, int):
             return self.children[key]
-        elif isinstance(key, SliceType):
+        elif isinstance(key, types.SliceType):
             assert key.step in (None, 1), 'cannot handle slice with stride'
             return self.children[key.start:key.stop]
         else:
@@ -496,12 +514,12 @@ class Element(Node):
                               'an attribute name string')
 
     def __setitem__(self, key, item):
-        if isinstance(key, unicode) or isinstance(key, str):
+        if isinstance(key, basestring):
             self.attributes[str(key)] = item
         elif isinstance(key, int):
             self.setup_child(item)
             self.children[key] = item
-        elif isinstance(key, SliceType):
+        elif isinstance(key, types.SliceType):
             assert key.step in (None, 1), 'cannot handle slice with stride'
             for node in item:
                 self.setup_child(node)
@@ -511,11 +529,11 @@ class Element(Node):
                               'an attribute name string')
 
     def __delitem__(self, key):
-        if isinstance(key, unicode) or isinstance(key, str):
+        if isinstance(key, basestring):
             del self.attributes[key]
         elif isinstance(key, int):
             del self.children[key]
-        elif isinstance(key, SliceType):
+        elif isinstance(key, types.SliceType):
             assert key.step in (None, 1), 'cannot handle slice with stride'
             del self.children[key.start:key.stop]
         else:
@@ -1789,17 +1807,11 @@ def make_id(string):
     id = string.lower()
     if not isinstance(id, unicode):
         id = id.decode()
-    try:
-        id = id.translate(_non_id_translate_digraphs)
-    except (NotImplementedError):
-        # unicode.translate(dict) does not support 1-n-mappings in Python 2.2
-        pass
+    id = id.translate(_non_id_translate_digraphs)
     id = id.translate(_non_id_translate)
-    try:
-        id = unicodedata.normalize('NFKD', id).encode('ASCII', 'ignore')
-    except (AttributeError):
-        # unicodedata.normalize not supported in Python 2.2
-        pass
+    # get rid of non-ascii characters
+    id = unicodedata.normalize('NFKD', id).\
+         encode('ASCII', 'ignore').decode('ASCII')
     # shrink runs of whitespace and replace by hyphen
     id = _non_id_chars.sub('-', ' '.join(id.split()))
     id = _non_id_at_ends.sub('', id)

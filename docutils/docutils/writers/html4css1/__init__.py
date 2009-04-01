@@ -157,7 +157,7 @@ class Writer(writers.Writer):
         self.output = self.apply_template()
 
     def apply_template(self):
-        template_file = open(self.document.settings.template)
+        template_file = open(self.document.settings.template, 'rb')
         template = unicode(template_file.read(), 'utf-8')
         template_file.close()
         subs = self.interpolation_dict()

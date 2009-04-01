@@ -11,15 +11,12 @@ __docformat__ = 'reStructuredText'
 
 import sys
 import os.path
+import csv
+
 from docutils import io, nodes, statemachine, utils
 from docutils.utils import SystemMessagePropagation
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives
-
-try:
-    import csv                          # new in Python 2.3
-except ImportError:
-    csv = None
 
 
 class Table(Directive):
@@ -156,52 +153,44 @@ class CSVTable(Table):
                    # char used to escape delim & quote as-needed:
                    'escape': directives.single_char_or_unicode,}
 
-    if csv:
+    class DocutilsDialect(csv.Dialect):
 
-        class DocutilsDialect(csv.Dialect):
+        """CSV dialect for `csv_table` directive."""
 
-            """CSV dialect for `csv_table` directive."""
+        delimiter = ','
+        quotechar = '"'
+        doublequote = True
+        skipinitialspace = True
+        lineterminator = '\n'
+        quoting = csv.QUOTE_MINIMAL
 
-            delimiter = ','
-            quotechar = '"'
-            doublequote = True
-            skipinitialspace = True
-            lineterminator = '\n'
-            quoting = csv.QUOTE_MINIMAL
-
-            def __init__(self, options):
-                if 'delim' in options:
-                    self.delimiter = str(options['delim'])
-                if 'keepspace' in options:
-                    self.skipinitialspace = False
-                if 'quote' in options:
-                    self.quotechar = str(options['quote'])
-                if 'escape' in options:
-                    self.doublequote = False
-                    self.escapechar = str(options['escape'])
-                csv.Dialect.__init__(self)
+        def __init__(self, options):
+            if 'delim' in options:
+                self.delimiter = str(options['delim'])
+            if 'keepspace' in options:
+                self.skipinitialspace = False
+            if 'quote' in options:
+                self.quotechar = str(options['quote'])
+            if 'escape' in options:
+                self.doublequote = False
+                self.escapechar = str(options['escape'])
+            csv.Dialect.__init__(self)
 
 
-        class HeaderDialect(csv.Dialect):
+    class HeaderDialect(csv.Dialect):
 
-            """CSV dialect to use for the "header" option data."""
+        """CSV dialect to use for the "header" option data."""
 
-            delimiter = ','
-            quotechar = '"'
-            escapechar = '\\'
-            doublequote = False
-            skipinitialspace = True
-            lineterminator = '\n'
-            quoting = csv.QUOTE_MINIMAL
+        delimiter = ','
+        quotechar = '"'
+        escapechar = '\\'
+        doublequote = False
+        skipinitialspace = True
+        lineterminator = '\n'
+        quoting = csv.QUOTE_MINIMAL
 
     def check_requirements(self):
-        if not csv:
-            error = self.state_machine.reporter.error(
-                'The "%s" directive is not compatible with this version of '
-                'Python (%s).  Requires the "csv" module, new in Python 2.3.'
-                % (self.name, sys.version.split()[0]), nodes.literal_block(
-                self.block_text, self.block_text), line=self.lineno)
-            raise SystemMessagePropagation(error)
+        pass
 
     def run(self):
         try:
@@ -318,10 +307,22 @@ class CSVTable(Table):
             raise SystemMessagePropagation(error)
         return csv_data, source
 
+    if sys.version_info < (3,):
+        # 2.x csv module doesn't do Unicode
+        def decode_from_csv(self, s):
+            return s.decode('utf-8')
+        def encode_for_csv(self, s):
+            return s.encode('utf-8')
+    else:
+        def decode_from_csv(self, s):
+            return s
+        def encode_for_csv(self, s):
+            return s
+
     def parse_csv_data_into_rows(self, csv_data, dialect, source):
         # csv.py doesn't do Unicode; encode temporarily as UTF-8
-        csv_reader = csv.reader([(line.encode('utf-8') + '\n')
-                                for line in csv_data],
+        csv_reader = csv.reader([self.encode_for_csv(line + '\n')
+                                 for line in csv_data],
                                 dialect=dialect)
         rows = []
         max_cols = 0
@@ -329,7 +330,7 @@ class CSVTable(Table):
             row_data = []
             for cell in row:
                 # decode UTF-8 back to Unicode
-                cell_text = unicode(cell, 'utf-8')
+                cell_text = self.decode_from_csv(cell)
                 cell_data = (0, 0, 0, statemachine.StringList(
                     cell_text.splitlines(), source=source))
                 row_data.append(cell_data)

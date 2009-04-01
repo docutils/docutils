@@ -155,7 +155,7 @@ totest['contents'] = [
         <literal_block xml:space="preserve">
             .. contents::
                :depth: two
-""" % DocutilsTestSupport.exception_data('int("two")')[1][0]],
+""" % DocutilsTestSupport.exception_data(int, "two")[1][0]],
 ["""\
 .. contents::
    :width: 2

@@ -9,10 +9,12 @@
 Test module for nodes.py.
 """
 
+import sys
 import unittest
-from types import ClassType
+import types
 import DocutilsTestSupport              # must be imported before docutils
 from DocutilsTestSupport import nodes, utils
+from docutils._compat import b
 
 debug = 0
 
@@ -21,7 +23,7 @@ class TextTests(unittest.TestCase):
 
     def setUp(self):
         self.text = nodes.Text('Line 1.\nLine 2.')
-        self.unicode_text = nodes.Text(unicode('Möhren', 'utf8'))
+        self.unicode_text = nodes.Text(u'Möhren')
 
     def test_repr(self):
         self.assertEquals(repr(self.text), r"<#text: 'Line 1.\nLine 2.'>")
@@ -30,7 +32,7 @@ class TextTests(unittest.TestCase):
         self.assertEquals(str(self.text), 'Line 1.\nLine 2.')
 
     def test_unicode(self):
-        self.assertEquals(unicode(self.unicode_text), unicode('Möhren', 'utf8'))
+        self.assertEquals(unicode(self.unicode_text), u'Möhren')
         self.assertEquals(str(self.unicode_text), 'M\xf6hren')
 
     def test_astext(self):
@@ -40,8 +42,12 @@ class TextTests(unittest.TestCase):
         self.assertEquals(self.text.pformat(), 'Line 1.\nLine 2.\n')
 
     def test_asciirestriction(self):
-        self.assertRaises(UnicodeError, nodes.Text, 'hol%s' % chr(224))
-        # more specifically: UnicodeDecodeError since py2.3
+        if sys.version_info < (3,):
+            self.assertRaises(UnicodeError, nodes.Text, b('hol%s' % chr(224)))
+            # more specifically: UnicodeDecodeError since py2.3
+        else:
+            # no bytes at all allowed
+            self.assertRaises(TypeError, nodes.Text, b('hol'))
 
 
 class ElementTests(unittest.TestCase):
@@ -63,7 +69,10 @@ class ElementTests(unittest.TestCase):
         del element['attr']
         element['mark'] = u'\u2022'
         self.assertEquals(repr(element), '<Element: >')
-        self.assertEquals(str(element), '<Element mark="\\u2022"/>')
+        if sys.version_info < (3,):
+            self.assertEquals(str(element), '<Element mark="\\u2022"/>')
+        else:
+            self.assertEquals(str(element), '<Element mark="\u2022"/>')
         dom = element.asdom()
         self.assertEquals(dom.toxml(), u'<Element mark="\u2022"/>')
         dom.unlink()
@@ -167,10 +176,8 @@ class ElementTests(unittest.TestCase):
         self.assertEquals(len(parent), 5)
 
     def test_unicode(self):
-        node = nodes.Element(u'Möhren', nodes.Text(unicode('Möhren', 'utf8'),
-                                                   unicode('Möhren', 'utf8')))
-        self.assertEquals(unicode(node), unicode('<Element>Möhren</Element>',
-                                                 'utf8'))
+        node = nodes.Element(u'Möhren', nodes.Text(u'Möhren', u'Möhren'))
+        self.assertEquals(unicode(node), u'<Element>Möhren</Element>')
 
 
 class MiscTests(unittest.TestCase):
@@ -179,8 +186,8 @@ class MiscTests(unittest.TestCase):
         node_class_names = []
         for x in dir(nodes):
             c = getattr(nodes, x)
-            if isinstance(c, (type, ClassType)) and issubclass(c, nodes.Node) \
-                   and len(c.__bases__) > 1:
+            if isinstance(c, (type, types.ClassType)) and \
+                   issubclass(c, nodes.Node) and len(c.__bases__) > 1:
                 node_class_names.append(x)
         node_class_names.sort()
         nodes.node_class_names.sort()

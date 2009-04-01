@@ -8,11 +8,12 @@
 Tests for basic functionality of parser classes.
 """
 
+import sys
 import unittest
 import DocutilsTestSupport              # must be imported before docutils
 import docutils
 from docutils import parsers, utils, frontend
-
+from docutils._compat import b
 
 
 class RstParserTests(unittest.TestCase):
@@ -23,8 +24,13 @@ class RstParserTests(unittest.TestCase):
         document = utils.new_document('test data', frontend.OptionParser(
                     components=(parser, )).get_default_values())
 
-        self.assertRaises(UnicodeError, # UnicodeDecodeError since py2.3
-                          parser.parse, 'hol%s' % chr(224), document)
+        if sys.version_info < (3,):
+            # supplying string input is supported, but only if ascii-decodable
+            self.assertRaises(UnicodeError, # UnicodeDecodeError since py2.3
+                              parser.parse, b('hol%s' % chr(224)), document)
+        else:
+            # input must be unicode at all times
+            self.assertRaises(TypeError, parser.parse, b('hol'), document)
 
 
 if __name__ == '__main__':

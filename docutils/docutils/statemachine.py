@@ -1119,7 +1119,7 @@ class ViewList:
             assert i.step in (None, 1),  'cannot handle slice with stride'
             return self.__class__(self.data[i.start:i.stop],
                                   items=self.items[i.start:i.stop],
-                                  parent=self, parent_offset=i.start)
+                                  parent=self, parent_offset=i.start or 0)
         else:
             return self.data[i]
 
@@ -1132,8 +1132,8 @@ class ViewList:
             self.items[i.start:i.stop] = item.items
             assert len(self.data) == len(self.items), 'data mismatch'
             if self.parent:
-                self.parent[i.start + self.parent_offset
-                            : i.stop + self.parent_offset] = item
+                self.parent[(i.start or 0) + self.parent_offset
+                            : (i.stop or len(self)) + self.parent_offset] = item
         else:
             self.data[i] = item
             if self.parent:
@@ -1150,8 +1150,8 @@ class ViewList:
             del self.data[i.start:i.stop]
             del self.items[i.start:i.stop]
             if self.parent:
-                del self.parent[i.start + self.parent_offset
-                                : i.stop + self.parent_offset]
+                del self.parent[(i.start or 0) + self.parent_offset
+                                : (i.stop or len(self)) + self.parent_offset]
 
     def __add__(self, other):
         if isinstance(other, ViewList):

@@ -9,14 +9,14 @@ Test module for utils.py.
 """
 
 import unittest
-import StringIO
 import sys
 from DocutilsTestSupport import utils, nodes
+from docutils._compat import BytesIO, b
 
 
 class ReporterTests(unittest.TestCase):
 
-    stream = StringIO.StringIO()
+    stream = BytesIO()
     reporter = utils.Reporter('test data', 2, 4, stream, 1)
 
     def setUp(self):
@@ -31,7 +31,7 @@ class ReporterTests(unittest.TestCase):
         debug output
 """)
         self.assertEquals(self.stream.getvalue(),
-                          'test data:: (DEBUG/0) debug output\n')
+                          b('test data:: (DEBUG/0) debug output\n'))
 
     def test_level1(self):
         sw = self.reporter.system_message(1, 'a little reminder')
@@ -40,7 +40,7 @@ class ReporterTests(unittest.TestCase):
     <paragraph>
         a little reminder
 """)
-        self.assertEquals(self.stream.getvalue(), '')
+        self.assertEquals(self.stream.getvalue(), b(''))
 
     def test_level2(self):
         sw = self.reporter.system_message(2, 'a warning')
@@ -50,7 +50,7 @@ class ReporterTests(unittest.TestCase):
         a warning
 """)
         self.assertEquals(self.stream.getvalue(),
-                          'test data:: (WARNING/2) a warning\n')
+                          b('test data:: (WARNING/2) a warning\n'))
 
     def test_level3(self):
         sw = self.reporter.system_message(3, 'an error')
@@ -60,18 +60,18 @@ class ReporterTests(unittest.TestCase):
         an error
 """)
         self.assertEquals(self.stream.getvalue(),
-                          'test data:: (ERROR/3) an error\n')
+                          b('test data:: (ERROR/3) an error\n'))
 
     def test_level4(self):
         self.assertRaises(utils.SystemMessage, self.reporter.system_message, 4,
                           'a severe error, raises an exception')
-        self.assertEquals(self.stream.getvalue(), 'test data:: (SEVERE/4) '
-                          'a severe error, raises an exception\n')
+        self.assertEquals(self.stream.getvalue(), b('test data:: (SEVERE/4) '
+                          'a severe error, raises an exception\n'))
 
 
 class QuietReporterTests(unittest.TestCase):
 
-    stream = StringIO.StringIO()
+    stream = BytesIO()
     reporter = utils.Reporter('test data', 5, 5, stream, 0)
 
     def setUp(self):
@@ -82,7 +82,7 @@ class QuietReporterTests(unittest.TestCase):
         sw = self.reporter.debug('a debug message')
         # None because debug is disabled.
         self.assertEquals(sw, None)
-        self.assertEquals(self.stream.getvalue(), '')
+        self.assertEquals(self.stream.getvalue(), b(''))
 
     def test_info(self):
         sw = self.reporter.info('an informational message')
@@ -91,7 +91,7 @@ class QuietReporterTests(unittest.TestCase):
     <paragraph>
         an informational message
 """)
-        self.assertEquals(self.stream.getvalue(), '')
+        self.assertEquals(self.stream.getvalue(), b(''))
 
     def test_warning(self):
         sw = self.reporter.warning('a warning')
@@ -100,7 +100,7 @@ class QuietReporterTests(unittest.TestCase):
     <paragraph>
         a warning
 """)
-        self.assertEquals(self.stream.getvalue(), '')
+        self.assertEquals(self.stream.getvalue(), b(''))
 
     def test_error(self):
         sw = self.reporter.error('an error')
@@ -109,7 +109,7 @@ class QuietReporterTests(unittest.TestCase):
     <paragraph>
         an error
 """)
-        self.assertEquals(self.stream.getvalue(), '')
+        self.assertEquals(self.stream.getvalue(), b(''))
 
     def test_severe(self):
         sw = self.reporter.severe('a severe error')
@@ -118,7 +118,7 @@ class QuietReporterTests(unittest.TestCase):
     <paragraph>
         a severe error
 """)
-        self.assertEquals(self.stream.getvalue(), '')
+        self.assertEquals(self.stream.getvalue(), b(''))
 
 
 class NameValueTests(unittest.TestCase):
@@ -173,13 +173,13 @@ class ExtensionOptionTests(unittest.TestCase):
         field_list += nodes.field(
               '', nodes.field_name('', 'cdef'),
               nodes.field_body('', nodes.paragraph('',
-                  unicode('hol%s' % chr(224), 'iso-8859-1'))))
+                  unicode(b('hol%s' % chr(224)), 'iso-8859-1'))))
         field_list += nodes.field(
               '', nodes.field_name('', 'empty'), nodes.field_body())
         self.assertEquals(
               utils.extract_extension_options(field_list, self.optionspec),
               {'a': 1, 'bbb': 2.0,
-               'cdef': unicode('hol%s' % chr(224), 'iso-8859-1'),
+               'cdef': unicode(b('hol%s' % chr(224)), 'iso-8859-1'),
                'empty': None})
         self.assertRaises(KeyError, utils.extract_extension_options,
                           field_list, {})
