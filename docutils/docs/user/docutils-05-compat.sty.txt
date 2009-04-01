@@ -1,0 +1,1 @@
+../../docutils/writers/latex2e/docutils-05-compat.sty.txt

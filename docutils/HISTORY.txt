@@ -52,7 +52,8 @@ Changes Since 0.5
 
   - Apply [ 1612821 ] Double quotes in literal text in Italian/German
 
-* docutils/writers/latex2e/__init__.py:
+* docutils/writers/latex2e/__init__.py (see also
+  `<docs/user/docutils-05-compat.sty.txt>`__) :
 
   - Add option ``--use-titlepage-env``.
   - Add option ``--embed-stylesheet``.
