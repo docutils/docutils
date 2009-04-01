@@ -186,6 +186,23 @@ class Node:
             visitor.dispatch_departure(self)
         return stop
 
+    def _fast_traverse(self, cls):
+        """Specialized traverse() that only supports instance checks."""
+        result = []
+        if isinstance(self, cls):
+            result.append(self)
+        for child in self.children:
+            result.extend(child._fast_traverse(cls))
+        return result
+
+    def _all_traverse(self):
+        """Specialized traverse() that doesn't check for a condition."""
+        result = []
+        result.append(self)
+        for child in self.children:
+            result.extend(child._all_traverse())
+        return result
+
     def traverse(self, condition=None,
                  include_self=1, descend=1, siblings=0, ascend=0):
         """
@@ -223,15 +240,22 @@ class Node:
 
             [<strong>, <#text: Foo>, <#text: Bar>, <reference>, <#text: Baz>]
         """
-        r = []
         if ascend:
             siblings=1
+        # Check for special argument combinations that allow using an
+        # optimized version of traverse()
+        if include_self and descend and not siblings:
+            if condition is None:
+                return self._all_traverse()
+            elif isinstance(condition, (types.ClassType, type)):
+                return self._fast_traverse(condition)
         # Check if `condition` is a class (check for TypeType for Python
         # implementations that use only new-style classes, like PyPy).
         if isinstance(condition, (types.ClassType, type)):
             node_class = condition
             def condition(node, node_class=node_class):
                 return isinstance(node, node_class)
+        r = []
         if include_self and (condition is None or condition(self)):
             r.append(self)
         if descend and len(self.children):
