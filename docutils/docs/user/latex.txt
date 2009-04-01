@@ -70,22 +70,25 @@ Configuration
 
 Configuration can be done in several ways:
 
-1. `Configuration options`_ to the Docutils tool as command line option or
-   in configuration files.
+1. `Configuration options`_ to the Docutils tool as command line option
+   or in configuration files,
 
-2. Via LaTeX packages or `custom style sheets`_.
+2. `custom style sheets`_ and LaTeX packages, as well as
 
-3. Via `raw LaTeX`_ in the document.
+3. `raw LaTeX`_ in the document.
 
 Configuration options
 ---------------------
 
 The LaTeX code generation can be configured via options to the Docutils
-latex writer:
+latex writer given as
 
-* Run ``rst2latex.py --help`` to see the available command-line options.
+command-line options
+  to the conversion command (run ``rst2latex.py --help`` to get a list of
+  available options), or
 
-* See `Docutils Configuration`_ for details about configuration files.
+configuration settings 
+  in a configuration file (see `Docutils Configuration`_ for details).
 
 .. _Docutils Configuration:
    http://docutils.sourceforge.net/docs/user/config.html
@@ -121,16 +124,11 @@ It is possible to specify multiple style sheets (see examples below).
 
 .. note::
   There is no need to specify a path, if your style files are installed
-  in the LATEX INPUT PATH.
-
-  To install a file in a modern TeX installation, you copy, move or link the
-  file into a directory under ``/usr/local/share/texmf/tex/latex/`` or
-  ``~/texmf/tex/latex/`` and run ``texhash``.
-
+  in the `TeX input path`_.
 
 If the ``--embed-stylesheet`` option is set, the content of STYLESHEET
 is inserted instead. Currently, this fails if the file is not available via
-the given path without search in the LATEX INPUT PATH.
+the given path (i.e. without search in the `TeX input path`_).
 
 
 Examples
@@ -163,6 +161,9 @@ Stylesheet Repository
 
 There is a `repository of user-contributed style sheets`_ in the Docutils
 Sandbox_.
+
+
+.. _TeX input path: http://www.tex.ac.uk/cgi-bin/texfaq2html?label=what-TDS
 
 .. _repository of user-contributed style sheets:
    ../../../sandbox/stylesheets/
@@ -308,6 +309,18 @@ custom interpreted text roles
 The rst `role directive`_ allows defining custom `text roles`_
 that mark parts of inline text (spans) with a class argument.
 
+* Role names and class arguments are are converted to conform to the regular
+  expression ``[a-z][-a-z0-9]*`` (see `class directive`_).
+
+* Class arguments may contain numbers and hyphens, which need special
+  treatment in LaTeX command names. (The special command ``\@namedef`` can
+  help with the definition of corresponding commands.)
+
+* Custom roles can have multiple class arguments
+
+  In contrast to HTML/CSS, the order of the class arguments might matter.
+
+
 Example 1:
   Typeset text in small caps::
 
@@ -319,51 +332,51 @@ Example 1:
 
     \DUrole{smallcaps}{Fourier} transformation
 
-  The fallback definition\ [#]_ of ``\DUrole`` will look for a command named
-  ``\docutilsrolesmallcaps``. The definition ::
+  The definition of ``\DUrole`` will look for a macro named
+  ``\docutilsrolesmallcaps``.\ [#]_ The definition ::
 
     \newcommand{\docutilsrolesmallcaps}{\textsc}
 
-  in the custom style sheet will give the expected result (if the chosen font
-  supports small caps).
+  as `raw LaTeX`_ or in the custom style sheet will give the expected result
+  (if the chosen font supports small caps).
 
   .. [#] It is possible to specify an alternative definition of ``\DUrole``
-     in a style sheet.
+     in a style sheet, see _`Docutils special commands`.
 
+Example 2:
+  Subscript text in normal size and *italic* shape::
+  
+  .. role:: sub(subscript)
+  
+  As "sub" inherits from the standard "subscript" role, the LaTeX macro only
+  needs to set the size and shape::
 
-Custom roles can have multiple class arguments, e.g. ::
+    \newcommand{\docutilsrolesub}{\normalsize\itshape}
 
-  .. role:: custom4
-     :class: argI argII arg_3
+Example 3:
+  A role with several classes and a converted class name::
+  
+    .. role:: custom4
+       :class: argI argII arg_3
 
-is translated to the nested commands::
+  is translated to the nested commands::
+  
+    \DUrole{argi}{\DUrole{argii}{\DUrole{arg-3}{<content>}}}
 
-  \DUrole{argi}{\DUrole{argii}{\DUrole{arg-3}{<content>}}}
-
-* Role names and class arguments are are converted to conform to the regular
-  expression ``[a-z][-a-z0-9]*`` (see `class directive`_).
-
-* Class arguments may contain numbers and hyphens, which need special
-  treatment in LaTeX command names. (The special command ``\@namedef`` can
-  help with the definition of corresponding commands.)
-
-* In contrast to HTML/CSS, the order of the class arguments might matter.
-
-With the definitions::
-
-  \newcommand{\docutilsroleargi}[1]{\textsc}
-  \newcommand{\docutilsroleargii}[1]{{\large #1}}
-  \makeatletter
-  \@namedef{docutilsrolearg-3}{\textbf}
-  \makeatother
-
-in a style sheet\ [#]_ or as `raw LaTeX`_ in the document source,
-text styled with ``:custom4:`large bold small-caps``` will be typeset
-accordingly.
+  With the definitions::
+  
+    \newcommand{\docutilsroleargi}[1]{\textsc}
+    \newcommand{\docutilsroleargii}[1]{{\large #1}}
+    \makeatletter
+    \@namedef{docutilsrolearg-3}{\textbf}
+    \makeatother
+  
+  in a style sheet\ [#]_ or as `raw LaTeX`_ in the document source,
+  text styled with ``:custom4:`large bold small-caps``` will be typeset
+  accordingly.
 
 .. [#] Leave out the ``\makeatletter`` - ``\makeatother`` pair if the style
    sheet is a LaTeX package (``*.sty``).
-
 
 .. _role directive:
    http://docutils.sourceforge.net/docs/ref/rst/directives.html#role
@@ -695,8 +708,8 @@ size of a pixel (length unit ``px``)
 The length unit ``px`` stands for `pixel` and its value has varying
 definitions:
 
-  :pdftex:   defines 1px = 1bp = 1/72 in, i.e. 72 DPI
-  :CSS:      defines 1 px = 1/96 in, i.e. 92 dots per inch (DPI)
+  :pdftex:   defines 1px = 1bp = 1/72 in, i.e. 72 DPI (dots per inch)
+  :CSS:      defines 1 px = 1/96 in, i.e. 92 DPI
   :browsers: use the actual screen resolution (or what they think it is)
              (usually between 72 DPI and 100 DPI).
 
@@ -793,6 +806,27 @@ Example:
     numbered B-1, B-2, ...
 
   See documentation for details and other possibilities.
+
+Changes
+=======
+
+The Docutils HISTORY_ lists all changes during the history of docutils.
+Changes since the last release (0.5) are summarized in the RELEASE-NOTES_
+and explained in detail in docutils-05-compat.sty.txt_
+
+
+Compatibility Style Sheet
+-------------------------
+
+docutils-05-compat.sty_ is a style sheet that provides some backwards
+compatibility (it is the LaTeX source version of docutils-05-compat.sty.txt_). 
+
+
+.. _HISTORY: ../../HISTORY.html
+.. _RELEASE-NOTES: ../../RELEASE-NOTES.html
+.. _docutils-05-compat.sty.txt: docutils-05-compat.sty.txt
+.. _docutils-05-compat.sty:
+   ../../docutils/writers/latex2e/docutils-05-compat.sty
 
 
 Problems
@@ -932,9 +966,6 @@ Miscellaneous
 
   failed experiments up to now: samepage, minipage, pagebreak 1 to 4 before
   the block.
-
-* Custom roles based on an existing role are currently not supported (i.e.
-  the additional class argument is silently ignored by the latex2e writer).
 
 * Enable the choice between ``utf8`` (standard `fontenc`) and ``utf8x``
   (`ucs`) text encoding.
