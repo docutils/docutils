@@ -37,6 +37,7 @@
 ./docs/user/rst/demo.html
 ./docs/user/rst/cheatsheet.html
 ./docs/user/config.html
+./docs/user/docutils-05-compat.sty.txt
 ./docs/user/latex.html
 ./docs/user/odt.html
 ./docs/user/tools.html
