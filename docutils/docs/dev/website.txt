@@ -67,7 +67,10 @@ When adding a new .txt file:
   where appropriate (sorted order).
 
 * Run the sandbox/infrastructure/update-htmlfiles shell script to
-  generate .html files.
+  generate .html files::
+
+      cd sandbox/infrastructure
+      update-htmlfiles htmlfiles.lst
 
 ..  .. old instructions, for cron job:
 
