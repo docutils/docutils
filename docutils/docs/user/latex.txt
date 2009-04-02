@@ -2,7 +2,7 @@
  Generating LaTeX with Docutils
 ================================
 
-:Author: Engelbert Gruber, Günter Milde
+:Author: Engelbert Gruber, Guenter Milde
 :Contact: docutils-users@lists.sourceforge.net
 :Revision: $Revision$
 :Date: $Date$
@@ -101,7 +101,7 @@ Style sheets can be used to configure the look of the printout/PDF by
 (re-)defining LaTeX-commands and settings.
 
 Specifying style sheets
-~~~~~~~~~~~~~~~~~~~~~~~~
+```````````````````````
 
 The option::
 
@@ -132,7 +132,7 @@ the given path (i.e. without search in the `TeX input path`_).
 
 
 Examples
-~~~~~~~~
+````````
 
 * Times Roman fonts with `mathptmx` package::
 
@@ -157,7 +157,7 @@ Examples
     --stylesheet==mathptmx,parskip,preamble.tex
 
 Stylesheet Repository
-~~~~~~~~~~~~~~~~~~~~~
+`````````````````````
 
 There is a `repository of user-contributed style sheets`_ in the Docutils
 Sandbox_.
@@ -184,7 +184,7 @@ given in the document preamble (e.g. package loading with ``\usepackage``,
 which can be done with the ``--style-sheet`` command line option instead).
 
 Examples
-~~~~~~~~
+````````
 
 Forcing a page break::
 
@@ -246,7 +246,7 @@ The style sheet can define alternative implementations with ``\newcommand``.
 
 
 admonition width
-~~~~~~~~~~~~~~~~
+````````````````
 
 The width of admonitions.
 
@@ -259,7 +259,7 @@ Example:
     \setlength{\admonitionwidth}{0.7\textwidth}
 
 docinfo width
-~~~~~~~~~~~~~
+`````````````
 
 The width for the `docinfo` table.
 
@@ -272,7 +272,7 @@ Example:
   \setlength{\docinfowidth}{0.7\textwidth}
 
 rubric style
-~~~~~~~~~~~~
+````````````
 
 How to lay out the "rubric" element.
 
@@ -294,7 +294,7 @@ Document elements
 -----------------
 
 images
-~~~~~~
+``````
 
 Images are included in LaTeX by the `graphicx` package. The supported
 image formats depend on the used driver (dvi, dvips, pdftex, ...).
@@ -304,7 +304,7 @@ If PDF-image inclusion in PDF files fails, specify
 
 
 custom interpreted text roles
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+`````````````````````````````
 
 The rst `role directive`_ allows defining custom `text roles`_
 that mark parts of inline text (spans) with a class argument.
@@ -389,7 +389,7 @@ Example 3:
 
 
 literal blocks
-~~~~~~~~~~~~~~
+``````````````
 
 The command line option ``--literal-env`` allows the specification of the
 environment to use with literal blocks, e.g. ``--literal-env=verbatim`` or
@@ -427,7 +427,7 @@ Example:
     http://dante.ctan.org/CTAN/macros/latex/contrib/listings/listings.pdf
 
 list of figures/tables
-~~~~~~~~~~~~~~~~~~~~~~
+``````````````````````
 
 Docutils does not support lists of figures or tables.
 
@@ -450,7 +450,7 @@ How to configure the ...
 ------------------------
 
 document class
-~~~~~~~~~~~~~~
+``````````````
 
 The LaTeX document class can be set using the
 ``--documentclass=DOCUMENTCLASS`` option.
@@ -463,7 +463,7 @@ Some possibilities:
   report, book, scrarticle, scrreport, scrbook, ...
 
 paper size
-~~~~~~~~~~
+``````````
 
 Paper geometry can be changed using ``--documentoptions`` or
 ``\geometry{OPTIONLIST}`` LaTeX commands in a style sheet.
@@ -492,7 +492,7 @@ Example:
 
 
 line spacing
-~~~~~~~~~~~~
+````````````
 
 Set with package `setspace`, providing the ``\singlespacing``,
 ``\onehalfspacing``, and ``\doublespacing`` commands, or (for small
@@ -510,7 +510,7 @@ Examples:
 
 
 paragraph indent
-~~~~~~~~~~~~~~~~
+````````````````
 
 Default (in most document classes):
   indent the first line in a paragraph unless it is the first line of a
@@ -528,7 +528,7 @@ Example:
 
 
 text font
-~~~~~~~~~
+`````````
 
 Unfortunately, LaTeX cannot use the fonts of the operating system directly
 [#]_ but needs specially installed fonts with additional supporting files.
@@ -622,7 +622,7 @@ of, e.g., `TeX Live`_.
 .. _TeX Live: http://tug.org/texlive/
 
 text encoding
-~~~~~~~~~~~~~
+`````````````
 
 Default:
   The generated LaTeX documents are in the input encoding.
@@ -662,7 +662,7 @@ Example:
 
 
 font encoding
-~~~~~~~~~~~~~
+`````````````
 
 The `LaTeX font encoding`_ can be selected with option ``--font-encoding``.
 
@@ -689,7 +689,7 @@ T1-encoded "Type 1" (vector) font, for example `Latin Modern`_::
    http://dante.ctan.org/CTAN/help/Catalogue/entries/lm.html
 
 hyphenation
-~~~~~~~~~~~
+```````````
 
 The amount of hyphenation is influenced by ``\hyphenpenalty``, setting it to
 10000 almost prevents hyphenation. As this produces lines with more space
@@ -703,7 +703,7 @@ Example:
 
 
 size of a pixel (length unit ``px``)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+````````````````````````````````````
 
 The length unit ``px`` stands for `pixel` and its value has varying
 definitions:
@@ -734,7 +734,7 @@ Error ``illegal unit px``:
 
 
 title page
-~~~~~~~~~~
+``````````
 
 Currently the title page only shows the title and subtitle, date and author
 are shown in the `docinfo` table. To change the title-page layout one must
@@ -758,7 +758,7 @@ The macro ``\@title`` contains the title.
 
 
 section numbering
-~~~~~~~~~~~~~~~~~
+`````````````````
 
 The options ``--section-numbering`` and ``--use-latex-toc``, both
 influence section numbering.
@@ -788,7 +788,7 @@ influence section numbering.
   writers and page numbers in the table of contents.
 
 page numbering
-~~~~~~~~~~~~~~
+``````````````
 
 Example:
   Number pages by chapter
@@ -905,7 +905,7 @@ Tables
 
 
 Notes
-~~~~~
+`````
 
 * table-style booktabs: booktabs.sty 1.00 does not work with longtable.
 * If default table-style is not booktabs, but the document contains a table
