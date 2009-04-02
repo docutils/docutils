@@ -63,8 +63,8 @@ Adding .txt Files
 
 When adding a new .txt file:
 
-* Edit sandbox/infrastructure/htmlfiles.lst, and add the .txt file
-  where appropriate (sorted order).
+* Edit sandbox/infrastructure/htmlfiles.lst, and add the .html file
+  corresponding to the new .txt file (please keep the sorted order).
 
 * Run the sandbox/infrastructure/update-htmlfiles shell script to
   generate .html files::
