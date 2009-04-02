@@ -1,9 +1,10 @@
-% Backwards compatibility settings for the Docutils latex2e writer
-% ================================================================
+% =================================================================
+%  Backwards compatibility settings for the Docutils latex2e writer
+% =================================================================
 % 
-% :Author:    Günter Milde
+% :Author:    Guenter Milde
 % :Contact:   milde@users.berlios.de
-% :Revision:  $Revision: 5534 $
+% :Revision:  $Revision: 5891 $
 % :Date:      $Date: 2009-02-24$
 % :Copyright: © 2007, 2009 G. Milde,
 %             Released  without warranties or conditions of any kind
@@ -22,7 +23,7 @@
 %    :depth: 2
 % 
 % Usage
-% -----
+% =====
 % 
 % To get an (almost) identic look for your old documents without further
 % configuration, place this file in the TEXINPUT path (e.g. the current work
@@ -31,10 +32,10 @@
 % 
 % 
 % Changes since 0.5
-% -----------------
+% =================
 % 
 % LaTeX style sheets
-% ~~~~~~~~~~~~~~~~~~
+% ------------------
 % 
 % New Feature:
 %   LaTeX packages can be used as ``--stylesheet`` argument without
@@ -51,7 +52,7 @@
 % 
 % 
 % Backwards compatibility
-% """""""""""""""""""""""
+% ```````````````````````
 % Up to Docutils 0.5, if no filename extension is given in the ``stylesheet``
 % argument, ``.tex`` is assumed (by latex).
 % 
@@ -64,7 +65,7 @@
 % 
 % 
 % Custom roles
-% ~~~~~~~~~~~~
+% ------------
 % 
 % New Feature: failsave implementation
 %  As with classes to HTML objects, class arguments are silently ignored if
@@ -77,14 +78,14 @@
 %  arguments to the node.
 % 
 % Backwards compatibility
-% """""""""""""""""""""""
+% ```````````````````````
 % SVN versions 5742 to 5861 contained an implementation that
 % did not work with commands expecting an argument.
 % The implementation from version 5862 is fully backwards compatible.
 % 
 % 
 % Length units
-% ~~~~~~~~~~~~
+% ------------
 % 
 % #. add default unit if none given (to prevent LaTeX error)
 %    a poll on docutils-users favoured ``bp`` (Big Point: 1 bp  = 1/72 in)
@@ -106,7 +107,7 @@
 %     (i.e. ``latex`` actually calls ``pdftex`` with some options).
 % 
 % Backwards compatibility
-% """""""""""""""""""""""
+% ```````````````````````
 % 
 % Images with width specification in ``px`` come out slightly (0.3 %) larger:
 % 
@@ -133,7 +134,7 @@
 % 
 % 
 % Font encoding
-% ~~~~~~~~~~~~~
+% -------------
 % 
 % * Do not mix font-encoding and font settings: do not load `ae` and `aeguill`
 %   unless explicitely required via the ``--stylesheet`` option.
@@ -145,7 +146,7 @@
 % 
 % 
 % Backwards compatibility
-% """""""""""""""""""""""
+% ```````````````````````
 % 
 % The following behaviour is new:
 % 
@@ -170,7 +171,7 @@
 % encoding, e.g. ``--font-encoding=T1 --stylesheet=lmodern``.
 % 
 % Sub- and superscript as text
-% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+% ----------------------------
 % 
 % * Set sub- and superscript role argument in text mode not as math.
 % 
@@ -179,7 +180,7 @@
 % 
 % 
 % Backwards compatibility
-% """""""""""""""""""""""
+% ```````````````````````
 % 
 % In math mode, Latin letters are typeset italic and whitespace is ignored.
 % 
