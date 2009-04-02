@@ -9,12 +9,22 @@
 :Copyright: This document has been placed in the public domain.
 
 The Docutils web site, <http://docutils.sourceforge.net/>, is
-maintained automatically by the ``docutils-update`` script, run as an
-hourly cron job on shell.berlios.de (by user "wiemann").  The script
+maintained by the ``docutils-update.local`` script, run by project 
+maintainers on their local machines.  The script
 will process any .txt file which is newer than the corresponding .html
 file in the project's web directory on shell.berlios.de
 (``/home/groups/docutils/htdocs/aux/htdocs/``) and upload the changes
 to the web site at SourceForge.
+
+..  .. old instructions, for cron job:
+
+    The Docutils web site, <http://docutils.sourceforge.net/>, is
+    maintained automatically by the ``docutils-update`` script, run as an
+    hourly cron job on shell.berlios.de (by user "wiemann").  The script
+    will process any .txt file which is newer than the corresponding .html
+    file in the project's web directory on shell.berlios.de
+    (``/home/groups/docutils/htdocs/aux/htdocs/``) and upload the changes
+    to the web site at SourceForge.
 
 Please **do not** add any generated .html files to the Docutils
 repository.  They will be generated automatically after a one-time
@@ -34,6 +44,12 @@ uploaddocutils.sh__ script
 __ http://docutils.sf.net/sandbox/infrastructure/uploaddocutils.sh
 
 
+Setting Up
+==========
+
+(TBA)
+
+
 Adding Directories
 ==================
 
@@ -45,19 +61,29 @@ processing as described below.
 Adding .txt Files
 =================
 
-For a new .txt file, just SSH to ``<username>@shell.berlios.de`` and
-::
+When adding a new .txt file:
 
-    cd /home/groups/docutils/htdocs/aux/htdocs/
-    cd [path to your file's subdirectory]
-    touch filename.html
-    chmod g+w filename.html
-    sleep 1
-    touch filename.txt
+* Edit sandbox/infrastructure/htmlfiles.lst, and add the .txt file
+  where appropriate (sorted order).
 
-The script will take care of the rest within an hour.  Thereafter
-whenever the .txt file is modified (checked in to SVN), the .html will
-be regenerated automatically.
+* Run the sandbox/infrastructure/update-htmlfiles shell script to
+  generate .html files.
+
+..  .. old instructions, for cron job:
+
+    For a new .txt file, just SSH to ``<username>@shell.berlios.de`` and
+    ::
+
+        cd /home/groups/docutils/htdocs/aux/htdocs/
+        cd [path to your file's subdirectory]
+        touch filename.html
+        chmod g+w filename.html
+        sleep 1
+        touch filename.txt
+
+    The script will take care of the rest within an hour.  Thereafter
+    whenever the .txt file is modified (checked in to SVN), the .html will
+    be regenerated automatically.
 
 
 Renoving Files & Directories
@@ -67,7 +93,8 @@ Removing files and directories from SVN will not trigger their removal
 from the web site.  Files and directories must be manually removed
 from both berlios.de (under
 ``/home/groups/docutils/htdocs/aux/htdocs/``) and from sourceforge.net
-(under ``/home/groups/d/do/docutils/htdocs/``).
+(under ``/home/groups/d/do/docutils/htdocs/``).  Also remove the files
+from sandbox/infrastructure/htmlfiles.lst.
 
 
 ..
