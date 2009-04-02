@@ -10,20 +10,23 @@
 %             under the terms of the Apache License, Version 2.0
 %             http://www.apache.org/licenses/LICENSE-2.0
 % 
-% ::
+% This file documents changes and provides a style for best possible
+% compatibility to the behaviour of the `latex2e` writer of Doctutils 
+% release 0.5 ::
 
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{latex2e-compat}
+\ProvidesPackage{docutils-05-compat}
 [2009/03/26 v0.1 compatibility with rst2latex from Docutils 0.5]
 
-% Documents changes and provides a compatibility to the behaviour of the
-% `latex2e` writer of Doctutils release 0.5
+% .. contents::   
+%    :depth: 2
 % 
 % Usage
 % -----
 % 
 % To get an (almost) identic look for your old documents without further
-% configuration, pass the
+% configuration, place this file in the TEXINPUT path (e.g. the current work
+% directory) and pass the
 % ``--stylesheet=latex2e-compat`` option to ``rst2latex.py``.
 % 
 % 
@@ -105,26 +108,29 @@
 % Backwards compatibility
 % """""""""""""""""""""""
 % 
-% Images with width specification in ``px`` or ``bp`` come out slightly
-% (0.3 %) larger:
+% Images with width specification in ``px`` come out slightly (0.3 %) larger:
 % 
-%   1 bp  = 1/72 in > 1 pt = 1/72.25 in
+%   1 px = 1 bp  = 1/72 in > 1 pt = 1/72.25 in
 % 
-% ::
+% This can be reset with ::
 
 \pdfpxdimen=1pt
 
-% This does not revert the change of lengths specified without unit, however
-% the 0.3 % change might be imperceptible in most cases.
+% It is impossible to revert the change of lengths specified without unit in a
+% style sheet, however the 0.3 % change will be imperceptible in most cases.
 % 
-% The unit ``px`` is not defined in "pure" LaTeX, but introduced by the
-% `pdfTeX` converter on 2005-02-04. `pdfTeX` is used in all modern LaTeX
-% distributions (since ca. 2006) also for conversion into DVI.
+% Error ``illegal unit px``:
+%   The unit ``px`` is not defined in "pure" LaTeX, but introduced by the
+%   `pdfTeX` converter on 2005-02-04. `pdfTeX` is used in all modern LaTeX
+%   distributions (since ca. 2006) also for conversion into DVI.
 % 
-% If updating LaTeX is not an option, just remove the ``px`` from the lengh
-% specification. HTML/CSS will default to ``px`` while the `latexe2` writer
-% will add the fallback unit ``bp``.
-%   
+%   If you convert the LaTeX source with a legacy program, you might get the
+%   error ``illegal unit px``.
+% 
+%   If updating LaTeX is not an option, just remove the ``px`` from the length
+%   specification. HTML/CSS will default to ``px`` while the `latexe2` writer
+%   will add the fallback unit ``bp``.
+% 
 % 
 % Font encoding
 % ~~~~~~~~~~~~~
@@ -156,8 +162,7 @@
 
 \@ifpackageloaded{fontenc}
   {}
-  {\RequirePackage{ae%,aeguill
-  }}
+  {\RequirePackage{ae,aeguill}}
 
 % However, using `ae` is not recommended. A similar look (but better
 % implementation) can be achieved with the packages `lmodern`, `cmsuper`, or

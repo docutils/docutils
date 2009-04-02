@@ -812,19 +812,19 @@ Changes
 
 The Docutils HISTORY_ lists all changes during the history of docutils.
 Changes since the last release (0.5) are summarized in the RELEASE-NOTES_
-and explained in detail in docutils-05-compat.sty.txt_
+and explained in detail in docutils-05-compat_
 
 
 Compatibility Style Sheet
 -------------------------
 
 docutils-05-compat.sty_ is a style sheet that provides some backwards
-compatibility (it is the LaTeX source version of docutils-05-compat.sty.txt_). 
+compatibility (it is the LaTeX source version of docutils-05-compat_). 
 
 
 .. _HISTORY: ../../HISTORY.html
 .. _RELEASE-NOTES: ../../RELEASE-NOTES.html
-.. _docutils-05-compat.sty.txt: docutils-05-compat.sty.txt
+.. _docutils-05-compat: docutils-05-compat.sty.html
 .. _docutils-05-compat.sty:
    ../../docutils/writers/latex2e/docutils-05-compat.sty
 
