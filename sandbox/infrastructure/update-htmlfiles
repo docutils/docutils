@@ -18,6 +18,7 @@ while read F ; do
     fi
     if test -n "$TXT" ; then
         if test -e "$TXT" -a "$TXT" -nt "$HTML" ; then
+            echo "Building $HTML from $TXT"
             rst2html.py $TXT $HTML
         fi
     else
