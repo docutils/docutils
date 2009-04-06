@@ -32,10 +32,10 @@ setup (`described below`__).
 
 __ `Adding .txt Files`_
 
-The docutils-update__ script is located at
-``sandbox/infrastructure/docutils-update``.
+The docutils-update.local__ script is located at
+``sandbox/infrastructure/docutils-update.local``.
 
-__ http://docutils.sf.net/sandbox/infrastructure/docutils-update
+__ http://docutils.sf.net/sandbox/infrastructure/docutils-update.local
 
 If you want to share files via the web, you can upload them using the
 uploaddocutils.sh__ script
@@ -50,27 +50,38 @@ Setting Up
 (TBA)
 
 
-Adding Directories
-==================
+.. .. not needed if one just adds the .html files to the list
+      Only the maintainer has to keep this in mind (until the 
+      update-htmlfiles script is incorporated into
+      docutils-update.local)
 
-After adding directories to SVN, allow the update script to run once
-to create the directories in the filesystem before preparing for HTML
-processing as described below.
+  Adding Directories
+  ==================
+
+  After adding directories to SVN, allow the update script to run once
+  to create the directories in the filesystem before preparing for HTML
+  processing as described below.
 
 
 Adding .txt Files
 =================
 
-When adding a new .txt file:
+When adding a new .txt file that should be converted to HTML:
 
 * Edit sandbox/infrastructure/htmlfiles.lst, and add the .html file
   corresponding to the new .txt file (please keep the sorted order).
 
-* Run the sandbox/infrastructure/update-htmlfiles shell script to
+* Commit the edited version to the SVN repository.
+
+.. .. instructions for the maintainer:
+
+  Run the sandbox/infrastructure/update-htmlfiles shell script to
   generate .html files::
 
-      cd sandbox/infrastructure
-      update-htmlfiles htmlfiles.lst
+      cd <DOCUTILS-ROOT>/docutils/
+      sandbox/infrastructure/update-htmlfiles sandbox/infrastructure/htmlfiles.lst
+
+  Maybe this should become part of docutils-update.local.
 
 ..  .. old instructions, for cron job:
 
@@ -89,13 +100,12 @@ When adding a new .txt file:
     be regenerated automatically.
 
 
-Renoving Files & Directories
+Removing Files & Directories
 ============================
 
 Removing files and directories from SVN will not trigger their removal
 from the web site.  Files and directories must be manually removed
-from both berlios.de (under
-``/home/groups/docutils/htdocs/aux/htdocs/``) and from sourceforge.net
+from sourceforge.net
 (under ``/home/groups/d/do/docutils/htdocs/``).  Also remove the files
 from sandbox/infrastructure/htmlfiles.lst.
 
