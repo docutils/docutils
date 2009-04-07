@@ -7,6 +7,10 @@ generate unix manpages from reStructured text
 ---------------------------------------------
 
 :Author: grubert@users.sourceforge.net
+:organization: humankind
+:Address: 123 Example Street
+          Example, EX  Canada
+          A1B 2C3
 :Date:   2006-10-22
 :Copyright: public domain
             Behave responsible.
