@@ -111,13 +111,15 @@ Change log
 
 * writers/manpage.py:
 
+  - 2009-04-07: implement ``address`` and ``organization`` as line block
+                in section ``AUTHOR``
+
   - 2008-09-21: implement ``problematic`` as line block.
   - 2008-05-16: patch from htgoebel:
 
                 * keep ``=`` in long options like ``--filename=FILENAME``
                 * Support for blockqoutes.
 
-  - 2008-05-15: smaller things in lists
   - 2008-05-15: smaller things in lists
 
                 * use ``.IP`` instead of ``.TP`` for lists

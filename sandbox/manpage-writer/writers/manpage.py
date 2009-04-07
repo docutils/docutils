@@ -211,6 +211,9 @@ class Translator(nodes.NodeVisitor):
                 'title_reference' : ('\\fI', '\\fP'),
 
                 'problematic' : ('\n.nf\n', '\n.fi\n'),
+                # docinfo fields.
+                'address' : ('\n.nf\n', '\n.fi\n'),
+                'organization' : ('\n.nf\n', '\n.fi\n'),
                     }
         # TODO dont specify the newline before a dot-command, but ensure
         # check it is there.
@@ -312,11 +315,11 @@ class Translator(nodes.NodeVisitor):
         self.header_written = 1
 
     def visit_address(self, node):
-        raise NotImplementedError, node.astext()
-        self.visit_docinfo_item(node, 'address', meta=None)
+        self._docinfo['address'] = node.astext()
+        raise nodes.SkipNode
 
     def depart_address(self, node):
-        self.depart_docinfo_item()
+        pass
 
     def visit_admonition(self, node, name):
         raise NotImplementedError, node.astext()
@@ -518,6 +521,14 @@ class Translator(nodes.NodeVisitor):
         if self._docinfo['author']:
             self.body.append('\n.SH AUTHOR\n%s\n' 
                     % self._docinfo['author'])
+        if 'organization' in self._docinfo:
+            self.body.append(self.defs['organization'][0])
+            self.body.append(self._docinfo['organization'])
+            self.body.append(self.defs['organization'][1])
+        if 'address' in self._docinfo:
+            self.body.append(self.defs['address'][0])
+            self.body.append(self._docinfo['address'])
+            self.body.append(self.defs['address'][1])
         if self._docinfo['copyright']:
             self.body.append('\n.SH COPYRIGHT\n%s\n' 
                     % self._docinfo['copyright'])
@@ -854,12 +865,11 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def visit_organization(self, node):
-        raise NotImplementedError, node.astext()
-        self.visit_docinfo_item(node, 'organization')
+        self._docinfo['organization'] = node.astext()
+        raise nodes.SkipNode
 
     def depart_organization(self, node):
-        raise NotImplementedError, node.astext()
-        self.depart_docinfo_item()
+        pass
 
     def visit_paragraph(self, node):
         # BUG every but the first paragraph in a list must be intended
