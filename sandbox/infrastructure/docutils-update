@@ -1,6 +1,15 @@
 #! /bin/bash
 # $Id$
 #
+# ATTENTION
+# ---------
+# This script is obsolete::
+
+echo "cron job is replaced by local updating (see doctils-update.local)"
+exit
+
+# Kept for reference:
+
 # This script is installed as a cron job to automatically update the
 # Docutils web site whenever the SVN files change.  Any .html document
 # with a corresponding .txt file is regenerated whenever the .txt
