@@ -2391,8 +2391,8 @@ end-string will not be recognized or processed.
        ¿    (U+00BF, inverted question mark)
        ===  ==========================================================
 
-   The following Unicode characters are delimiters; they may precede
-   or follow inline markup:
+   *Delimiters:* The following Unicode characters are delimiters; they
+   may precede or follow inline markup:
 
        .. class:: borderless
 
@@ -2416,7 +2416,7 @@ end-string will not be recognized or processed.
 
        ' " ) ] } > - / : . , ; ! ? \
 
-   The following Unicode characters may also precede inline markup:
+   The following Unicode characters may also follow inline markup:
 
        .. class:: borderless
 
@@ -2426,8 +2426,8 @@ end-string will not be recognized or processed.
        »    (U+00BB, right guillemet, or double angle quotation mark)
        ===  ==========================================================
 
-   The Unicode character delimiters listed in (1) may precede or
-   follow inline markup.
+   The Unicode character *delimiters* listed in (1) above may precede
+   or follow inline markup.
 
 5. If an inline markup start-string is immediately preceded by a
    single or double quote, "(", "[", "{", or "<", it must not be
