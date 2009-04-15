@@ -10,7 +10,7 @@ else
   FILES=$1
 fi
 
-CMD="python rst2man.py --traceback"
+CMD="python tools/rst2man.py --traceback"
 
 for IN_F in $IN_DIR/$FILES ; do
   BASE=`basename $IN_F`
