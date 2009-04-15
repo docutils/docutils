@@ -14,6 +14,12 @@ help to the user. Gnu does this with info-pages.
 Primary goal is to produce man pages to be viewed online, full nroff support
 with tables, equations and images is not on the list, is it ?
 
+Installation
+''''''''''''
+
+Copy ``rst2man.py`` into a directory in your path and ``writers/manpage.py``
+into the writers directory of your docutils installation.
+
 Module information
 ''''''''''''''''''
 
@@ -110,6 +116,9 @@ Change log
 
 
 * writers/manpage.py:
+
+  - 2009-04-15: move ``rst2man.py`` into ``tools`` subdirectory
+                Use writer_name in ``publish_cmdline``.
 
   - 2009-04-07: implement ``address`` and ``organization`` as line block
                 in section ``AUTHOR``
