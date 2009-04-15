@@ -19,8 +19,7 @@ except:
     pass
 
 from docutils.core import publish_cmdline, default_description
-from writers import manpage
 
-description = ("Generates plain man.  " + default_description)
+description = ("Generates plain manual documents.  " + default_description)
 
-publish_cmdline(writer=manpage.Writer(), description=description)
+publish_cmdline(writer_name='manpage', description=description)
