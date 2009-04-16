@@ -14,10 +14,13 @@ try:
 except:
     pass
 
-from docutils.core import publish_cmdline, default_description
-
+from docutils.core import publish_cmdline
 
 description = ('Generates LaTeX documents from standalone reStructuredText '
-               'sources.  ' + default_description)
+               'sources. '
+               'Reads from <source> (default is stdin) and writes to '
+               '<destination> (default is stdout).  See '
+               '<http://docutils.sourceforge.net/docs/user/latex.html> for '
+               'the full reference.')
 
 publish_cmdline(writer_name='latex', description=description)
