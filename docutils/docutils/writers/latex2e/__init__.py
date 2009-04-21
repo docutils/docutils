@@ -23,6 +23,14 @@ from docutils.writers.newlatex2e import unicode_map
 
 from docutils.transforms.references import DanglingReferencesVisitor
 
+# 2.3 compatibility:
+if sys.version_info < (2,4):
+    def sorted(seq):
+        """Return a sorted copy of `seq`"""
+        newseq = seq[:]
+        newseq.sort()
+        return newseq
+
 class Writer(writers.Writer):
 
     supported = ('latex','latex2e')
@@ -35,9 +43,9 @@ class Writer(writers.Writer):
           ['--documentclass'],
           {'default': 'article', }),
          ('Specify document options.  Multiple options can be given, '
-          'separated by commas.  Default is "10pt,a4paper".',
+          'separated by commas.  Default is "a4paper,DIV=12".',
           ['--documentoptions'],
-          {'default': '10pt,a4paper', }),
+          {'default': 'a4paper,DIV=12', }),
          ('Use LaTeX footnotes. LaTeX supports only numbered footnotes (does it?). '
           'Default: no, uses figures.',
           ['--use-latex-footnotes'],
@@ -100,7 +108,7 @@ class Writer(writers.Writer):
           ['--use-latex-docinfo'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
-         ('Use LaTeX abstract environment for the documents abstract.'
+         ('Use LaTeX abstract environment for the documents abstract. '
           'Per default the abstract is an unnumbered section.',
           ['--use-latex-abstract'],
           {'default': 0, 'action': 'store_true',
@@ -317,63 +325,44 @@ class Babel:
         return text.replace('"', self.double_quote_replacment)
 
     def get_language(self):
-        if self.language in self._ISO639_TO_BABEL:
-            return self._ISO639_TO_BABEL[self.language]
-        else:
-            # support dialects.
-            lang = self.language.split("_")[0]
-            if lang in self._ISO639_TO_BABEL:
-                return self._ISO639_TO_BABEL[lang]
-        return None
+        lang = self.language.split("_")[0]  # filter dialects
+        return self._ISO639_TO_BABEL.get(lang)
 
-latex_headings = {
-        'optionlist_environment' : [
-              '\\newcommand{\\optionlistlabel}[1]{\\bf #1 \\hfill}\n'
-              '\\newenvironment{optionlist}[1]\n'
-              '{\\begin{list}{}\n'
-              '  {\\setlength{\\labelwidth}{#1}\n'
-              '   \\setlength{\\rightmargin}{1cm}\n'
-              '   \\setlength{\\leftmargin}{\\rightmargin}\n'
-              '   \\addtolength{\\leftmargin}{\\labelwidth}\n'
-              '   \\addtolength{\\leftmargin}{\\labelsep}\n'
-              '   \\renewcommand{\\makelabel}{\\optionlistlabel}}\n'
-              '}{\\end{list}}'
-              ],
-        'lineblock_environment' : [
-            '\\newlength{\\lineblockindentation}\n'
-            '\\setlength{\\lineblockindentation}{2.5em}\n'
-            '\\newenvironment{lineblock}[1]\n'
-            '{\\begin{list}{}\n'
-            '  {\\setlength{\\partopsep}{\\parskip}\n'
-            '   \\addtolength{\\partopsep}{\\baselineskip}\n'
-            '   \\topsep0pt\\itemsep0.15\\baselineskip\\parsep0pt\n'
-            '   \\leftmargin#1}\n'
-            ' \\raggedright}\n'
-            '{\\end{list}}'
-            ],
-        'footnote_floats' : [
-            '% begin: floats for footnotes tweaking.',
-            '\\setlength{\\floatsep}{0.5em}',
-            '\\setlength{\\textfloatsep}{\\fill}',
-            '\\addtolength{\\textfloatsep}{3em}',
-            '\\renewcommand{\\textfraction}{0.5}',
-            '\\renewcommand{\\topfraction}{0.5}',
-            '\\renewcommand{\\bottomfraction}{0.5}',
-            '\\setcounter{totalnumber}{50}',
-            '\\setcounter{topnumber}{50}',
-            '\\setcounter{bottomnumber}{50}',
-            '% end floats for footnotes',
-            ],
-        'some_commands' : [
-            '% some commands, that could be overwritten in the style file.\n'
-            '\\newcommand{\\rubric}[1]'
-            '{\\subsection*{~\\hfill {\\it #1} \\hfill ~}}\n'
-            '\\newcommand{\\titlereference}[1]{\\textsl{#1}}\n'
-            '% end of "some commands"',
-            ]
-        }
+# Building blocks for the latex preamble
+#
+# (The package 'makecmds' would enable shorter definitions using the
+# \providelenght and \provideenvironment commands. However, it is pretty
+# non-standard (texlive-latex-extra).)
 
-latex_headings['DUrole'] = r"""% Custom roles:
+class PreambleCmds(object):
+   """Building blocks for the latex preamble"""
+   # inserted into the preamble if required in the document.
+   pass
+
+PreambleCmds.admonition = r"""% width of admonitions:
+\ifthenelse{\isundefined{\DUadmonitionwidth}}{
+  \newlength{\DUadmonitionwidth}
+  \setlength{\DUadmonitionwidth}{0.9\textwidth}
+}{}"""
+
+PreambleCmds.docinfo = r"""% width of docinfo table:
+\ifthenelse{\isundefined{\DUdocinfowidth}}{
+  \newlength{\DUdocinfowidth}
+  \setlength{\DUdocinfowidth}{0.9\textwidth}
+}{}"""
+
+PreambleCmds.footnote_floats = r"""% settings for footnotes as floats:
+\setlength{\floatsep}{0.5em}
+\setlength{\textfloatsep}{\fill}
+\addtolength{\textfloatsep}{3em}
+\renewcommand{\textfraction}{0.5}
+\renewcommand{\topfraction}{0.5}
+\renewcommand{\bottomfraction}{0.5}
+\setcounter{totalnumber}{50}
+\setcounter{topnumber}{50}
+\setcounter{bottomnumber}{50}"""
+
+PreambleCmds.inline = r"""% custom roles:
 % \DUrole{NAME}{content} calls \docutilsroleNAME if it exists
 \providecommand{\DUrole}[2]{%
   \ifcsname docutilsrole#1\endcsname%
@@ -382,6 +371,63 @@ latex_headings['DUrole'] = r"""% Custom roles:
     #2%
   \fi%
 }"""
+
+PreambleCmds.lineblock = r"""% lineblock environment:
+\ifthenelse{\isundefined{\DUlineblockindent}}{
+  \newlength{\DUlineblockindent}
+  \setlength{\DUlineblockindent}{2.5em}
+}{}
+\ifthenelse{\isundefined{\DUlineblock}}{
+  \newenvironment{DUlineblock}[1]
+  {\begin{list}{}
+    {\setlength{\partopsep}{\parskip}
+     \addtolength{\partopsep}{\baselineskip}
+     \topsep0pt\itemsep0.15\baselineskip\parsep0pt
+     \leftmargin#1}
+   \raggedright}
+  {\end{list}}
+}{}"""
+
+PreambleCmds.linking = r"""%% hyperref (PDF hyperlinks):
+\ifthenelse{\isundefined{\hypersetup}}{
+  \usepackage[colorlinks=%s,linkcolor=%s,urlcolor=%s]{hyperref}
+}{}"""
+
+PreambleCmds.optionlist = r"""% option list:
+\providecommand{\DUoptionlistlabel}[1]{\bf #1 \hfill}
+\ifthenelse{\isundefined{\DUoptionlistindent}}{
+  \newlength{\DUoptionlistindent}
+  \setlength{\DUoptionlistindent}{3cm}
+}{}
+\ifthenelse{\isundefined{\DUoptionlist}}{
+  \newenvironment{DUoptionlist}
+  {\begin{list}{}
+    {\setlength{\labelwidth}{\DUoptionlistindent}
+     \setlength{\rightmargin}{1cm}
+     \setlength{\leftmargin}{\rightmargin}
+     \addtolength{\leftmargin}{\labelwidth}
+     \addtolength{\leftmargin}{\labelsep}
+     \renewcommand{\makelabel}{\DUoptionlistlabel}}
+  }
+  {\end{list}}
+}{}"""
+
+PreambleCmds.rubric = r"""% rubric (an informal heading):
+\newcommand{\DUrubric}[1]{\subsection*{~\hfill {\it #1} \hfill ~}}"""
+
+PreambleCmds.table = r"""\usepackage{longtable}
+\usepackage{array}
+\setlength{\extrarowheight}{2pt}"""
+
+PreambleCmds.title = r"""
+%%%%%% Title metadata
+\title{%s}
+\author{%s}
+\date{%s}"""
+
+PreambleCmds.titlereference = r"""% title reference role:
+\newcommand{\DUroletitlereference}[1]{\textsl{#1}}"""
+
 
 class DocumentClass:
     """Details of a LaTeX document class."""
@@ -450,10 +496,6 @@ class Table:
             return
         self._table_style = table_style
 
-    def used_packages(self):
-        if self._table_style == 'booktabs':
-            return '\n\\usepackage{booktabs}'
-        return ''
     def get_latex_type(self):
         return self._latex_type
 
@@ -623,14 +665,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     latex_head = r'\documentclass[%s]{%s}'
     # conditionally if no hyperref is used dont include
+    linking = PreambleCmds.linking
 
-    linking = ('\ifthenelse{\isundefined{\hypersetup}}{' '\n'
-               r'\usepackage[colorlinks=%s,linkcolor=%s,'
-               'urlcolor=%s]{hyperref}\n'
-               '}{}'
-              )
-
-    # add a generated on day , machine by user using docutils version.
+    # TODO? add "generated on day, machine, by user using docutils version".
     generator = '% generated by Docutils <http://docutils.sourceforge.net/>'
 
     # Config setting defaults
@@ -677,7 +714,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.colorlinks = 'false'
         else:
             self.colorlinks = 'true'
-
+        if self.settings.literal_block_env != '':
+            self.settings.use_verbatim_when_possible = True
         if self.settings.use_bibtex:
             self.bibtex = self.settings.use_bibtex.split(",",1)
             # TODO avoid errors on not declared citations.
@@ -699,26 +737,23 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.table_stack = []
         self.active_table = Table(self,'longtable',settings.table_style)
 
-	# Fallback definitions for Docutils-specific commands
-        self.latex_fallbacks = {}
+        # Two dictionaries to collect document-specific  requirements.
+        # Values will be inserted
+        #  * in alphabetic order of their keys,
+        #  * only once, even if required multiple times.
+        self.latex_requirements = {} # inserted before style sheet
+        self.latex_fallbacks = {}    # inserted after style sheet
 
-        # HACK.  Should have more sophisticated typearea handling.
-        if settings.documentclass.find('scr') == -1:
-            self.typearea = r'\usepackage[DIV12]{typearea}'
-        else:
-            if self.d_options.find('DIV') == -1 and self.d_options.find('BCOR') == -1:
-                self.typearea = r'\typearea{12}'
-            else:
-                self.typearea = ''
+        # Page layout with typearea (if there are relevant document options).
+        if (settings.documentclass.find('scr') == -1
+            and (self.d_options.find('DIV') != -1
+                 or self.d_options.find('BCOR') != -1)):
+            self.latex_requirements['typearea'] = r'\usepackage{typearea}'
 
         if self.font_encoding == '':
             fontenc_header = '%\\usepackage[OT1]{fontenc}'
         else:
             fontenc_header = '\\usepackage[%s]{fontenc}' % self.font_encoding
-        if self.latex_encoding.startswith('utf8'):
-            input_encoding = '\\usepackage{ucs}\n\\usepackage[utf8x]{inputenc}'
-        else:
-            input_encoding = '\\usepackage[%s]{inputenc}' % self.latex_encoding
         if self.settings.graphicx_option == '':
             self.graphicx_package = '\\usepackage{graphicx}'
         elif self.settings.graphicx_option.lower() == 'auto':
@@ -735,7 +770,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         # packages and/or stylesheets
         # ---------------------------
-        self.stylesheets = ['% user specified packages and stylesheets:']
+        self.stylesheets = ['\n%%% User specified packages and stylesheets']
         styles = utils.get_stylesheet_list(settings)
         if settings.stylesheet_path and not(settings.embed_stylesheet):
             styles = [utils.relative_path(settings._destination, sheet)
@@ -760,57 +795,33 @@ class LaTeXTranslator(nodes.NodeVisitor):
                     self.stylesheets.append(r'\usepackage{%s}' % sheet_sans_ext)
                 else:
                     self.stylesheets.append(r'\input{%s}' % sheet)
-        if len(self.stylesheets) == 1:    # if there are no styles,
-            self.stylesheets = []         # remove comment line
+        ## if len(self.stylesheets) == 1:    # if there are no styles,
+        ##     self.stylesheets = []         # remove comment line
 
+        # Part of LaTeX preamble before style sheet(s)
         self.head_prefix = [
+              self.generator,
               self.latex_head % (self.d_options,self.settings.documentclass),
+              # Requirements
               r'\usepackage{babel}',     # language is in documents settings.
               fontenc_header,
-              r'\usepackage{shortvrb}',  # allows verb in footnotes.
-              input_encoding,
-              # * tabularx: for docinfo, automatic width of columns, always on one page.
-              r'\usepackage{tabularx}',
-              r'\usepackage{longtable}'
-              + self.active_table.used_packages(),
+              r'\usepackage[%s]{inputenc}' % self.latex_encoding,
+              r'\usepackage{ifthen}',
               # possible other packages.
               # * fancyhdr
               # * ltxtable is a combination of tabularx and longtable (pagebreaks).
               #   but ??
               #
-              # extra space between text in tables and the line above them
-              r'\setlength{\extrarowheight}{2pt}',
-              r'\usepackage{amsmath}',   # what fore amsmath.
-              self.graphicx_package,
-              r'\usepackage{color}',
-              r'\usepackage{multirow}',
-              r'\usepackage{ifthen}',   # before hyperref!
-              self.typearea,
-              self.generator,
-              # latex lengths
-              r'\newlength{\admonitionwidth}',
-              r'\setlength{\admonitionwidth}{0.9\textwidth}',
-              # width for docinfo tablewidth
-              r'\newlength{\docinfowidth}',
-              r'\setlength{\docinfowidth}{0.9\textwidth}',
               # linewidth of current environment, so tables are not wider
               # than the sidebar: using locallinewidth seems to defer evaluation
               # of linewidth, this is fixing it.
               r'\newlength{\locallinewidth}',
               # will be set later.
               ]
-        self.head_prefix.extend( latex_headings['optionlist_environment'] )
-        self.head_prefix.extend( latex_headings['lineblock_environment'] )
-        self.head_prefix.extend( latex_headings['footnote_floats'] )
-        self.head_prefix.extend( latex_headings['some_commands'] )
-        self.head_prefix.extend( self.stylesheets )
-        # hyperref after stylesheet
-        self.head_prefix.append( self.linking % (self.colorlinks,
-                                                 self.hyperlink_color,
-                                                 self.hyperlink_color))
-        #
-        if self.settings.literal_block_env != '':
-            self.settings.use_verbatim_when_possible = True
+
+        # Part of LaTeX preamble beginning with stylesheet
+        self.head = []
+        self.head += self.stylesheets
         if self.linking: # and maybe check for pdf
             self.pdfinfo = []
             self.pdfauthor = None
@@ -818,19 +829,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # pdfcreator, pdfproducer
         else:
             self.pdfinfo = None
-        # NOTE: Latex wants a date and an author, rst puts this into
-        #   docinfo, so normally we do not want latex author/date handling.
-        # latex article has its own handling of date and author, deactivate.
-        # self.astext() adds \title{...} \author{...} \date{...}, even if the
-        # "..." are empty strings.
-        self.head = []
+
+        # Title metadata: Title, Date, and Author(s)
         # separate title, so we can append subtitle.
         self.title = ''
         # if use_latex_docinfo: collects lists of author/organization/contact/address lines
         self.author_stack = []
+        # an empty string supresses the "auto-date" feature of \maketitle
         self.date = ''
 
-        self.body_prefix = ['\\raggedbottom\n']
+        self.body_prefix = ['\n%%% Body\n']
         self.body = []
         self.body_suffix = ['\n']
         self.section_level = 0
@@ -910,10 +918,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 #"iso-8859-8": ""   # hebrew
                 #"iso-8859-10": ""   # latin6, more complete iso-8859-4
              }
-        if docutils_encoding.lower() in tr:
-            return tr[docutils_encoding.lower()]
-        # convert: latin-1 and utf-8 and similar things
-        return docutils_encoding.replace("_", "").replace("-", "").lower()
+        encoding = docutils_encoding.lower()
+        if encoding in tr:
+            return tr[encoding]
+        # convert: latin-1, latin_1, utf-8 and similar things
+        encoding = encoding.replace("_", "").replace("-", "")
+        # strip the error handler
+        return encoding.split(':')[0]
 
     def language_label(self, docutil_label):
         return self.language.labels[docutil_label]
@@ -1064,25 +1075,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def astext(self):
         """Assemble document parts and return as string"""
-        # Complete header with information gained from walkabout
-        if self.pdfinfo is not None and self.pdfauthor:
-            self.pdfinfo.append('pdfauthor={%s}' % self.pdfauthor)
-        if self.pdfinfo:
-            pdfinfo = [r'\hypersetup{',
-                       ',\n'.join(self.pdfinfo),
-                       '}']
-        else:
-            pdfinfo = []
-        title = [r'\title{%s}' % self.title,
-                r'\author{%s}' % ' \\and\n'.join(['~\\\\\n'.join(author_lines)
-                                       for author_lines in self.author_stack]),
-                r'\date{%s}' % self.date]
-        # Fallback definitions for docutils-specific latex objects
-        required_fallbacks = self.latex_fallbacks.keys()
-        required_fallbacks.sort()
-        for key in required_fallbacks:
-            self.head_prefix.append(self.latex_fallbacks[key])
-        head = '\n'.join(self.head_prefix + title + self.head + pdfinfo)
+        head = '\n'.join(self.head_prefix + self.head)
         body = ''.join(self.body_prefix  + self.body + self.body_suffix)
         return head + '\n' + body
 
@@ -1099,8 +1092,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item(node)
 
     def visit_admonition(self, node, name=''):
+        self.latex_fallbacks['admonition'] = PreambleCmds.admonition
         self.body.append('\\begin{center}\\begin{sffamily}\n')
-        self.body.append('\\fbox{\\parbox{\\admonitionwidth}{\n')
+        self.body.append('\\fbox{\\parbox{\\DUadmonitionwidth}{\n')
         if name:
             self.body.append('\\textbf{\\large '+ self.language.labels[name] + '}\n');
         self.body.append('\\vspace{2mm}\n')
@@ -1182,7 +1176,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def visit_title_reference(self, node):
-        self.body.append( '\\titlereference{' )
+        self.latex_fallbacks['titlereference'] = (
+            PreambleCmds.titlereference)
+        self.body.append( '\\DUroletitlereference{' )
         if node.get('classes'):
             self.visit_inline(node)
 
@@ -1330,9 +1326,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_docinfo(self, node):
+        # tabularx: automatic width of columns, no page breaks allowed.
+        self.latex_requirements['tabularx'] = r'\usepackage{tabularx}'
+        self.latex_fallbacks['docinfo'] = PreambleCmds.docinfo
         self.docinfo = ['%' + '_'*75 + '\n',
                         '\\begin{center}\n',
-                        '\\begin{tabularx}{\\docinfowidth}{lX}\n']
+                        '\\begin{tabularx}{\\DUdocinfowidth}{lX}\n']
 
     def depart_docinfo(self, node):
         self.docinfo.append('\\end{tabularx}\n')
@@ -1399,11 +1398,42 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.settings.use_titlepage_env:
             self.body_prefix.append('\\begin{titlepage}\n')
         # titled document?
-        if self.use_latex_docinfo or len(node) and isinstance(node[0], nodes.title):
-            self.body_prefix.append('\\maketitle\n')
+        if (self.use_latex_docinfo or len(node)
+            and isinstance(node[0], nodes.title)):
+            self.body_prefix.append('\\maketitle\n\n')
         self.body.append('\n\\setlength{\\locallinewidth}{\\linewidth}\n')
 
     def depart_document(self, node):
+        # Complete header with information gained from walkabout
+        # a) conditional requirements (before style sheet)
+        self.head_prefix += [self.latex_requirements[key]
+                             for key in sorted(self.latex_requirements.keys())]
+	# b) coditional fallback definitions (after style sheet)
+        self.head.append(
+            '\n%%% Fallback definitions for Docutils-specific commands')
+        self.head += [self.latex_fallbacks[key]
+                      for key in sorted(self.latex_fallbacks.keys())]
+        # c) hyperlink setup and PDF metadata
+        self.head.append(self.linking % (self.colorlinks,
+                                         self.hyperlink_color,
+                                         self.hyperlink_color))
+        if self.pdfinfo is not None and self.pdfauthor:
+            self.pdfinfo.append('  pdfauthor={%s}' % self.pdfauthor)
+        if self.pdfinfo:
+            self.head += [r'\hypersetup{'] + self.pdfinfo + ['}']
+        # d) Title metadata
+        # NOTE: Docutils puts this into docinfo, so normally we do not want
+        #   LaTeX author/date handling (via \maketitle).
+        #   To deactivate it, self.astext() adds \title{...}, \author{...},
+        #   \date{...}, even if the"..." are empty strings.
+        if '\\maketitle\n\n' in self.body_prefix:
+            title = [PreambleCmds.title % (
+                     self.title,
+                     ' \\and\n'.join(['\\\\\n'.join(author_lines)
+                                     for author_lines in self.author_stack]),
+                     self.date)]
+            self.head += title
+        # Add bibliography
         # TODO insertion point of bibliography should none automatic.
         if self._use_latex_citations and len(self._bibitems)>0:
             if not self.bibtex:
@@ -1458,6 +1488,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             raise NotImplementedError('Cells that '
             'span multiple rows *and* columns are not supported, sorry.')
         if 'morerows' in node:
+            self.latex_requirements['multirow'] = r'\usepackage{multirow}'
             count = node['morerows'] + 1
             self.active_table.set_rowspan(self.active_table.get_entry_number()-1,count)
             self.body.append('\\multirow{%d}{%s}{' % \
@@ -1643,6 +1674,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append('\\footnotetext['+num+']')
             self.body.append('{')
         else:
+            # use key starting with ~ for sorting after small letters
+            self.latex_requirements['~footnote_floats'] = (
+                PreambleCmds.footnote_floats)
             self.body.append('\\begin{figure}[b]')
             for id in node['ids']:
                 self.body.append('\\hypertarget{%s}' % id)
@@ -1737,6 +1771,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         return res
 
     def visit_image(self, node):
+        self.latex_requirements['graphicx'] = self.graphicx_package
         attrs = node.attributes
         # Add image URI to dependency list, assuming that it's
         # referring to a local file.
@@ -1815,14 +1850,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('\n')
 
     def visit_line_block(self, node):
+    	self.latex_fallbacks['lineblock'] = PreambleCmds.lineblock
         if isinstance(node.parent, nodes.line_block):
-            self.body.append('\\item[] \n'
-                             '\\begin{lineblock}{\\lineblockindentation}\n')
+            self.body.append('\\item[]\n'
+                             '\\begin{DUlineblock}{\\DUlineblockindent}\n')
         else:
-            self.body.append('\n\\begin{lineblock}{0em}\n')
+            self.body.append('\n\\begin{DUlineblock}{0em}\n')
 
     def depart_line_block(self, node):
-        self.body.append('\\end{lineblock}\n')
+        self.body.append('\\end{DUlineblock}\n')
 
     def visit_list_item(self, node):
         # Append "{}" in case the next character is "[", which would break
@@ -1934,10 +1970,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('] ')
 
     def visit_option_list(self, node):
-        self.body.append('\\begin{optionlist}{3cm}\n')
+        self.latex_fallbacks['optionlist'] = PreambleCmds.optionlist
+        self.body.append('\\begin{DUoptionlist}\n')
 
     def depart_option_list(self, node):
-        self.body.append('\\end{optionlist}\n')
+        self.body.append('\\end{DUoptionlist}\n')
 
     def visit_option_list_item(self, node):
         pass
@@ -1972,6 +2009,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('\n')
 
     def visit_problematic(self, node):
+    	self.latex_requirements['color'] = r'\usepackage{color}'
         self.body.append('{\\color{red}\\bfseries{}')
 
     def depart_problematic(self, node):
@@ -2023,9 +2061,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_sidebar(self, node):
         # BUG:  this is just a hack to make sidebars render something
-        self.body.append('\n\\setlength{\\locallinewidth}{0.9\\admonitionwidth}\n')
+	self.latex_requirements['color'] = r'\usepackage{color}'
+        self.body.append('\n'
+                         r'\setlength{\locallinewidth}{0.9\DUadmonitionwidth}'
+                         '\n')
         self.body.append('\\begin{center}\\begin{sffamily}\n')
-        self.body.append('\\fbox{\\colorbox[gray]{0.80}{\\parbox{\\admonitionwidth}{\n')
+        self.body.append(r'\fbox{\colorbox[gray]{0.80}'
+                         r'{\parbox{\DUadmonitionwidth}{'
+                         '\n')
 
     def depart_sidebar(self, node):
         self.body.append('}}}\n') # end parbox colorbox fbox
@@ -2094,6 +2137,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('\n')
 
     def visit_table(self, node):
+        self.latex_requirements['table'] = PreambleCmds.table
         if self.active_table.is_open():
             self.table_stack.append(self.active_table)
             # nesting longtable does not work (e.g. 2007-04-18)
@@ -2101,6 +2145,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.active_table.open()
         for cl in node['classes']:
             self.active_table.set_table_style(cl)
+        if self.active_table._table_style == 'booktabs':
+            self.latex_requirements['booktabs'] = r'\usepackage{booktabs}'
         self.body.append('\n' + self.active_table.get_opening())
 
     def depart_table(self, node):
@@ -2234,7 +2280,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # document title
             self.title = self.encode(node.astext())
             if not self.pdfinfo == None:
-                self.pdfinfo.append( 'pdftitle={%s}' % self.encode(node.astext()) )
+                self.pdfinfo.append( '  pdftitle={%s},'
+                                    % self.encode(node.astext()) )
             raise nodes.SkipNode
         else:
             self.body.append('\n\n')
@@ -2250,7 +2297,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             section_name = self.d_class.section(self.section_level)
             self.body.append('\\%s%s{' % (section_name, section_star))
             # MAYBE postfix paragraph and subparagraph with \leavemode to
-            # ensure floatables stay in the section and text starts on a new line.
+            # ensure floats stay in the section and text starts on a new line.
             self.context.append('}\n')
 
     def depart_title(self, node):
@@ -2276,7 +2323,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_inline(self, node): # <span>, i.e. custom roles
         # insert fallback definition
-        self.latex_fallbacks['inline'] = latex_headings['DUrole']
+        self.latex_fallbacks['inline'] = PreambleCmds.inline
         classes = node.get('classes', [])
         for cls in classes:
             self.body.append(r'\DUrole{%s}{' % cls)
@@ -2286,7 +2333,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append(self.context.pop())
 
     def visit_rubric(self, node):
-        self.body.append('\\rubric{')
+        self.latex_fallbacks['rubric'] = PreambleCmds.rubric
+        self.body.append(r'\DUrubric{')
         self.context.append('}\n')
 
     def depart_rubric(self, node):

@@ -53,7 +53,7 @@ Changes Since 0.5
   - Apply [ 1612821 ] Double quotes in literal text in Italian/German
 
 * docutils/writers/latex2e/__init__.py (see also
-  `<docs/user/docutils-05-compat.sty.txt>`__) :
+  `<docs/user/docutils-05-compat.sty.html>`__) :
 
   - Add option ``--use-titlepage-env``.
   - Add option ``--embed-stylesheet``.
@@ -77,6 +77,8 @@ Changes Since 0.5
     if font-encoding is set to ''. LaTeX defaults to OT1 then.
   - Set sub- and superscript role argument in text mode not as math.
     Use a custom role based on sub-/superscript if you want italic shape.
+  - Shorter preamble and less dependencies: Load packages and define macros
+    only if required in the document.
 
 * docs/ref/rst/restructuredtext.txt:
 
