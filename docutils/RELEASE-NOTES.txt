@@ -33,6 +33,7 @@ Changes Since 0.5
   - Do not use 'ae' and 'aeguill' packages if font-encoding is set to ''.
   - Set sub- and superscript role argument as text not math.
   - Support custom roles based on standard roles.
+  - Load packages and define macros only if required in the document.
 
 
 Release 0.5 (2008-06-25)
