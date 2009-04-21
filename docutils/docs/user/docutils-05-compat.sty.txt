@@ -372,5 +372,3 @@ title reference role::
   \setcounter{topnumber}{50}
   \setcounter{bottomnumber}{50}
   % end floats for footnotes
-
-.. include:: docuils-05-compat2.sty.txt
