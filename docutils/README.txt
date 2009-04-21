@@ -1,6 +1,6 @@
-==================
- README: Docutils
-==================
+======================
+ README: Docutils 0.6
+======================
 
 :Author: David Goodger
 :Contact: goodger@python.org
@@ -21,8 +21,8 @@ complete details.
 
        http://www.python.org/
 
-   Python 2.2 or later [1]_ is required; Python 2.2.2 or later is
-   recommended.
+   Python 2.3 or later is required.  Docutils is compatible with
+   Python 3.
 
 2. Use the latest Docutils code.  Get the code from Subversion or from
    the snapshot:
@@ -107,16 +107,12 @@ sometimes daily.  (There's also the `Subversion repository`_.)
 Requirements
 ============
 
-To run the code, Python 2.2 or later [1]_ must already be installed.
-The latest release is recommended.  Python is available from
+To run the code, Python 2.3 or later must already be installed.
+Docutils is also compatible with Python 3.  Python is available from
 http://www.python.org/.
 
 The `Python Imaging Library`, or PIL, is used for some image
 manipulation operations if it is installed.
-
-.. [1] Python 2.1 may be used providing the compiler package is
-   installed.  The compiler package can be found in the Tools/
-   directory of Python 2.1's source distribution.
 
 .. _Python Imaging Library: http://www.pythonware.com/products/pil/
 .. _Optik: http://optik.sourceforge.net/

@@ -39,10 +39,9 @@ questions regarding how to extend Docutils, please feel free to ask on
 the Docutils-develop_ mailing list.  Please also consider **donating**
 to Docutils: |donate|.
 
-The only **requirement** for running Docutils is Python_ 2.2 or later.
-(Up to docutils-0.4 Python 2.1 may be used providing the compiler package
-is installed. The compiler package can be found in the Tools/ directory of
-Python's source distribution.)
+The only **requirement** for running Docutils is Python_ 2.3 or later.
+(For Docutils 0.5, Python 2.2.1+ is required.
+Up to Docutils 0.4, Python 2.1 is required.)
 
 Docutils is in active development and should be considered **experimental**.
 APIs are subject to change at any time.
@@ -55,6 +54,9 @@ We recommend that you use the latest **snapshot**,
 `<docutils-snapshot.tgz>`_.  The snapshots usually contain *more
 features* and *fewer bugs* than the "official" releases |---| they're
 not only for developers!
+
+The development/snapshot version of Docutils (0.6) is compatible with
+Python 3.
 
 The latest **release package** is `docutils-0.5.tgz`__.  It was
 released on 2008-06-25 and is mostly intended for distributors.  See
