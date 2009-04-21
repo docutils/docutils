@@ -24,7 +24,7 @@ Questionnaire
 #. Did you have problems with Find or Export of words with
    non-ASCII chars (e.g. Umlauts) in the PDF reader (Acrobat, xpdf, ...)
 
-   Which `font encoding`_ do you prefer for the output?
+   Which font encoding do you prefer for the output?
 
 #. Would you use/configure a `configurable transition element`_?
 
