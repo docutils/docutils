@@ -37,6 +37,8 @@ reminded of them.
   + docutils/setup.py
   + docutils/docutils/__init__.py
   + docutils/test/functional/expected/* ("Generator: Docutils X.Y.Z")
+  + docutils/README.txt
+  + web/index.txt
 
 * Close the "Changes Since ..." section in docutils/HISTORY.txt.
 
