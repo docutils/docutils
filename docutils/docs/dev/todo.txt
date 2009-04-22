@@ -1894,13 +1894,172 @@ S5/HTML Writer
 LaTeX writer
 ============
 
-See the Problems__ section in the latex writer documentation
-and discussion and proposals in the `latex-variants`_ sandbox project.
+Also see the Problems__ section in the latex writer documentation and
+discussion and proposals in the `latex-variants`_ sandbox project.
 
 __ http://docutils.sourceforge.net/docs/user/latex.html#problems
 
 .. _latex-variants:
    http://docutils.sourceforge.net/sandbox/latex-variants/README.html
+
+Generate clean and configurable LaTeX source
+----------------------------------------------
+
+LaTeX macros for Docutils-specific objects
+``````````````````````````````````````````
+
+:sidebar:    ``DUsidebar`` environment
+:transition: ``\DUtransition`` command
+:admonition: ``DUadmonition`` environment
+:field list: ``DUfieldlist`` environment
+:legend:     needed?
+:subtitle:   is there a native construct?
+
+LaTeX constructs and packages in stead of re-implementations
+````````````````````````````````````````````````````````````
+
+* ``alltt`` environment for literal block
+
+* find out and use the correct width parameter
+  instead of the ``\locallinewidth`` workaround.
+
+  * linewidth - width of a line in the local environment
+  * textwidth - the width of text on the page
+
+  Maybe always use linewidth ?
+
+  *Bug* inside a minipage a (e.g. Sidebar) the linewidth is
+        not changed, needs fix in docutils so that tables
+        are not too wide.
+
+        So we add ``\locallinewidth`` set it initially and
+        on entering sidebar and reset on exit.
+
+* footnotes
+  
+  + enable symbolic footnotes (parallel to numeric)
+  + document customization (links to howto and packages)
+  + find out how to link and backlink to footnotes with hyperref
+  + disable or properly support ``--footnote-references=bracket``.
+
+* enumeration environment
+
+* ``--use-latex`` »super option« that would set the following::
+
+      --use-latex-toc
+      --use-latex-docinfo
+      --use-latex-abstract
+      --use-latex-footnotes
+      --use-latex-citations
+
+   .. proposed by Alan G Isaac as ``--use-latex-when-possible``
+
+* center subsection{Abstract} gives a LaTeX error here.
+  ``! LaTeX Error: Something's wrong--perhaps a missing \item.``
+  Committed a HACK: centering by hfill.
+
+Default layout
+--------------
+  
+* Use italic instead of slanted for titlereference?
+
+* Let meta insert comment into header instead of document?
+
+* Insert system messages? Where? As comment or visible?
+
+* Definitions in definition lists start on the same line as the term.
+  Putting ``\leavevmode`` after the term results in a new newline if the
+  definition starts with a bullet list or similar.
+
+* Sidebar handling?
+
+* Use optionlist for docinfo, the table does only work for single page.
+
+Tables
+``````
+
+* Improve/simplify logic to set the column width in the output.
+
+* Assumed reST linelength for table width setting configurable.
+
+* Add more classes or options, e.g. for 
+
+  + column width set by latex, 
+  + horizontal aligment and rules.
+
+* Table heads and footer for longtable (firstpage lastpage ..)?
+
+
+Image and figure directives
+```````````````````````````
+
+* Document graphics peculiarities, e.g. accepted formats.
+
+* compare the test case in:
+  
+  + `<../../test/functional/input/data/standard.txt>`__
+  + `<../../test/functional/expected/standalone_rst_html4css1.html>`__
+  + `<../../test/functional/expected/standalone_rst_latex.tex>`__
+
+* Should image start a new paragraph?
+
+* Centered and aligned images with ``\centerline``, ``\flushleft``,
+  ``\flushright`` instead of environments (avoids spurious whitespace).
+
+* Aligning a figure also aligns the legend *but not the caption*
+
+  What should be aligned?
+
+  Should the surrounding text wrap around the figure?
+
+* Wrap text around figures with class "wrap".
+  Use the "wrapfig" (or other recommended) package.
+
+
+Missing features
+----------------
+
+* better citation support
+
+* bibliography directive: If ``use-latex-citations`` is used a bibliography
+  is inserted right at the end of the document. *This should be
+  customizable*.
+
+* Document errors are also too silent.
+ 
+  No link to system errors.
+ 
+  The intentional problematic error in docs/user/rst/demo.txt is not
+  referring anywhere. (still true?)
+  
+* Meta keywords into PDF ?
+
+
+template file
+`````````````
+
+Using a template file instead of hard-coded string literals for the
+sceleton of the exported LaTeX file would provide improved configurability.
+A power user could replace the template with a custom version,
+e.g. to overcome issues with order of package loading or supressing some
+parts.
+
+* Template Strings, ``from string import Template``, provide a suitable
+  syntax (shell-like $something substitution) but are new in version 2.4.
+
+  For 2.3 compatibility, %-substitution is needed, which is less readable
+  (and LaTeX' comment sign '%' must be escaped). 
+
+  -> provide a 2.3 compatibility implememtation?
+
+Unicode to LaTeX with ``unicodesymbols`` file from LyX
+``````````````````````````````````````````````````````
+
+The `LyX <http://www.lyx.org>`_ document processor has a comprehensive
+Unicode to LaTeX conversion feature with a file called ``unicodesymbols``
+that lists LaTeX counterparts for a wide range of Unicode characters.
+
+Use this in the LaTeXTranslator.unicode_to_latex() method.
 
 
 Front-End Tools
