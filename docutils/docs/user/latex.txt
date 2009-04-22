@@ -102,10 +102,9 @@ The option::
 
   --stylesheet=STYLESHEET
 
-references STYLESHEET using the command ``\usepackage{STYLESHEET}`` if
-STYLESHEET has no extension or the extension ``.sty`` (the extension will be
-dropped). With any other extension, the command ``\input{STYLESHEET}`` is
-used.
+references STYLESHEET using the command ``\usepackage`` if STYLESHEET has no
+extension or the extension ``.sty`` (the extension will be dropped). With
+any other extension, the command ``\input`` is used.
 
 It is possible to specify multiple style sheets (see examples below).
 
@@ -1013,11 +1012,14 @@ Problems
 
 Open to be fixed or open to discussion.
 
-See also the discussion and proposals in the `latex-variants`_ sandbox
-project.
+See also the entries in the `Docutils TODO list`_ and the discussion and
+proposals in the `latex-variants`_ sandbox project.
 
+.. _Docutils TODO list:
+   http://docutils.sourceforge.net/docs/dev/todo.html#latex-writer
 .. _latex-variants:
-   http://docutils.sourceforge.net/sandbox/latex-variants/README.html
+   ../../../sandbox/latex-variants/README.html
+
 
 Lists
 -----
@@ -1059,34 +1061,42 @@ Tables
 * In tools.txt the option tables right column, there should be some more
   spacing between the description and the next paragraph "Default:".
 
-  Paragraph separation in tables is hairy.
+* Paragraph separation in tables is hairy.
   see http://www.tex.ac.uk/cgi-bin/texfaq2html?label=struttab
 
   - The strut solution did not work.
   - setting extrarowheight added ad top of row not between paragraphs in
     a cell. ALTHOUGH i set it to 2pt because, text is too close to the topline.
   - baselineskip/stretch does not help.
+
 * Should there be two hlines after table head and on table end ?
+
 * Table: multicol cells are always {l}.
+
 * The contents of a rowspan cell do not influence table height.
   (multirow "feature", use a phantom or strut?)
-* The frame around a multirow cell in the last column is incomplete
-  (see functional test output standalone_rst_latex.tex)
-* Table cells with both multirow and multicolumn are currently not possible.
-* Table heads and footer for longtable (firstpage lastpage ..).
-* literal-blocks in table cells:
 
+* The frame around a multirow cell in the last column is incomplete
+  (see functional test output standalone_rst_latex.tex).
+  Actually, the writer inserts too many && in lines following the rowspan
+  (see `<../../../sandbox/latex-variants/tests/table-with-spans.txt>`__).
+
+* Table cells with both multirow and multicolumn are currently not possible.
+
+* literal-blocks in table cells:
   - If verbatim or flushleft is used one gets vertical space above and below.
   - This is bad for the topmost paragraph in a cell, therefore the writer
     uses raggedright.
   - Ragged right fails on followup paragraphs as the vertical space would be
     missing.
-* Use tabularx column type ``X`` and let latex decide width.
+
+* Use tabularx column type ``X`` and let LaTeX decide width.
+
 * csv-tables do not have a colwidth.
 
-* ``--table-style=booktabs``: `booktabs` version 1.00 does not work with
-  `longtable`. This is solved in newer versions (current is 2005/04/14
-  v1.61803).
+* ``--table-style=booktabs``, ``..class:: booktab``: `booktabs` version
+  1.00 does not work with `longtable`. This is solved in newer versions
+  (current is 2005/04/14 v1.61803).
 
 Figures
 -------
@@ -1099,18 +1109,16 @@ Wrapping text around figures is currently not supported.
 Miscellaneous
 -------------
 
-* Selection of LaTeX fontsize configurable (needs an option).
-* Assumed reST linelength for table width setting configurable.
-* literal-block indentation configurable.
+.. * Selection of LaTeX fontsize configurable (needs an option).
+   What is wrong with ``--documentoptions=12`` or so,
+   maybe combined with extsize or some other package? [GM]
+
 * recognize LaTeX and replace by ``\LaTeX`` (or not?).
-* Sidebar handling.
-* Pdfbookmark level 4 (and greater) does not work (might be settable but OTOH).
-* center subsection{Abstract} gives a LaTeX error here.
-  ``! LaTeX Error: Something's wrong--perhaps a missing \item.``
-  Committed a HACK: centering by hfill.
-* Document errors are also too silent.
-* Use optionlist for docinfo, the table does only work for single page.
-* Consider peter funk's hooks for TeXpert:
+
+* Pdfbookmark level 4 (and greater) does not work (might be settable but
+  complicated).
+
+* Consider peter funk's hooks for TeXpert (or use a `template file`__)?
 
   * Define his own document preamble (including the choice to
     choose his own documentclass.  That would make the ``--documentclass``
@@ -1120,24 +1128,35 @@ Miscellaneous
     Typical uses would be ``\tableofcontents``, ``\listoffigures`` and
     ``\appendix``, ``\makeindex``, ``\makeglossary`` and some such
     for larger documents.
-
-* The intentional problematic error in docs/user/rst/demo.txt is not
-  referring anywhere.
+    
 * Footnotes are not all on the same page (as in
   docs/user/rst/demo.txt) and do not link back and forth.
-* No link to system errors.
+
 * Hyperlinks are not hyphenated; this leads to bad spacing. See
   docs/user/rst/demo.txt 2.14 directives.
-* Meta keywords into PDF ?
+  
 * Pagestyle headings does not work, when sections are starred.
+
 * For additional docinfo items: the field_body is inserted as text, i.e. no
   markup is done.
+
 * Multiple author entries in docinfo (same thing as in html).
+  (already solved?)
 
-* keep literal-blocks together on a page, avoid pagebreaks.
+* Keep literal-blocks together on a page, avoid pagebreaks.
 
-  failed experiments up to now: samepage, minipage, pagebreak 1 to 4 before
+  Failed experiments up to now: samepage, minipage, pagebreak 1 to 4 before
   the block.
 
+  Should be possible with ``--literal-block-env==lstlistings``.
+  
 * Enable the choice between ``utf8`` (standard `fontenc`) and ``utf8x``
   (`ucs`) text encoding.
+
+* LaTeX does not support multiple tocs in one document.
+  (might be no limitation except for docutils documentation)
+
+  However, the "minitoc" latex package can produce per-chapter tocs in
+  book and report document classes.
+
+__ http://docutils.sourceforge.net/docs/dev/todo.html#template-file
