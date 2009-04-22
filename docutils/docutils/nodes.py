@@ -32,7 +32,7 @@ import unicodedata
 #  Functional Node Base Classes
 # ==============================
 
-class Node:
+class Node(object):
 
     """Abstract base class of nodes in a document tree."""
 
