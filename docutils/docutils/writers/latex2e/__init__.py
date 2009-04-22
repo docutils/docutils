@@ -2,9 +2,7 @@
 # Author: Engelbert Gruber <grubert@users.sourceforge.net>
 # Copyright: This module has been placed in the public domain.
 
-"""
-LaTeX2e document tree Writer.
-"""
+"""LaTeX2e document tree Writer."""
 
 __docformat__ = 'reStructuredText'
 
@@ -26,7 +24,7 @@ from docutils.transforms.references import DanglingReferencesVisitor
 # 2.3 compatibility:
 if sys.version_info < (2,4):
     def sorted(seq):
-        """Return a sorted copy of `seq`"""
+        """Return a sorted copy of `seq`."""
         newseq = seq[:]
         newseq.sort()
         return newseq
@@ -186,7 +184,7 @@ class Writer(writers.Writer):
     config_section = 'latex2e writer'
     config_section_dependencies = ('writers',)
 
-    visitor_attributes = ('head_prefix', 'head',
+    visitor_attributes = ('head_prefix', 'stylesheet', 'head',
             'body_prefix', 'body', 'body_suffix')
 
     output = None
@@ -207,33 +205,12 @@ class Writer(writers.Writer):
     def assemble_parts(self):
         writers.Writer.assemble_parts(self)
         for part in self.visitor_attributes:
-            self.parts[part] = ''.join(getattr(self, part))
+            if part.startswith('body'):
+                # body contains inline elements, so join without newline
+                self.parts[part] = ''.join(getattr(self, part))
+            else:
+                self.parts[part] = '\n'.join(getattr(self, part))
 
-
-"""
-Notes on LaTeX
---------------
-
-* LaTeX does not support multiple tocs in one document.
-  (might be no limitation except for docutils documentation)
-
-  The "minitoc" latex package can produce per-chapter tocs in
-  book and report document classes.
-
-* width
-
-  * linewidth - width of a line in the local environment
-  * textwidth - the width of text on the page
-
-  Maybe always use linewidth ?
-
-  *Bug* inside a minipage a (e.g. Sidebar) the linewidth is
-        not changed, needs fix in docutils so that tables
-        are not too wide.
-
-        So we add locallinewidth set it initially and
-        on entering sidebar and reset on exit.
-"""
 
 class Babel(object):
     """Language specifics for LaTeX."""
@@ -336,7 +313,7 @@ class Babel(object):
 # non-standard (texlive-latex-extra).)
 
 class PreambleCmds(object):
-   """Building blocks for the latex preamble"""
+   """Building blocks for the latex preamble."""
    # inserted into the preamble if required in the document.
    pass
 
@@ -449,10 +426,11 @@ class DocumentClass(object):
         self._with_part = with_part
 
     def section(self, level):
-        """ Return the section name at the given level for the specific
-            document class.
+        """Return the LaTeX section name for section `level`.
 
-            Level is 1,2,3..., as level 0 is the title."""
+        The name depends on the specific document class.
+        Level is 1,2,3..., as level 0 is the title. 
+        """
 
         sections = [ 'section', 'subsection', 'subsubsection',
                      'paragraph', 'subparagraph' ]
@@ -466,15 +444,16 @@ class DocumentClass(object):
             return sections[-1]
 
 class Table(object):
-    """ Manage a table while traversing.
-        Maybe change to a mixin defining the visit/departs, but then
-        class Table internal variables are in the Translator.
+    """Manage a table while traversing.
+    
+    Maybe change to a mixin defining the visit/departs, but then
+    class Table internal variables are in the Translator.
 
-        Table style might be
+    Table style might be
 
-        * standard: horizontal and vertical lines
-        * booktabs (requires booktabs latex package): only horizontal lines
-        * nolines, borderless : no lines
+    :standard: horizontal and vertical lines
+    :booktabs: only horizontal lines (requires "booktabs" LaTeX package)
+    :nolines: (or borderless) no lines
     """
     def __init__(self,translator,latex_type,table_style):
         self._translator = translator
@@ -543,8 +522,7 @@ class Table(object):
         self.stubs.append(node.attributes.get('stub'))
 
     def get_colspecs(self):
-        """
-        Return column specification for longtable.
+        """Return column specification for longtable.
 
         Assumes reST line length being 80 characters.
         Table width is hairy.
@@ -579,8 +557,7 @@ class Table(object):
         return latex_table_spec+bar
 
     def get_column_width(self):
-        """ return columnwidth for current cell (not multicell)
-        """
+        """Return columnwidth for current cell (not multicell)."""
         return '%.2f\\locallinewidth' % self._col_width[self._cell_in_row-1]
 
     def get_caption(self):
@@ -783,7 +760,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         # packages and/or stylesheets
         # ---------------------------
-        self.stylesheets = ['\n%%% User specified packages and stylesheets']
+        self.stylesheet = ['\n%%% User specified packages and stylesheets']
         # get list of style sheets from settings
         styles = utils.get_stylesheet_list(settings)
         # adapt path if --stylesheet_path is used
@@ -801,15 +778,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 else:
                     wrapper = '%% embedded stylesheet: %s\n%s'
                 settings.record_dependencies.add(sheet)
-                self.stylesheets.append(wrapper % (sheet, open(sheet).read()))
+                self.stylesheet.append(wrapper % (sheet, open(sheet).read()))
             else: # link to style sheet
                 if is_package:
-                    self.stylesheets.append(r'\usepackage{%s}' % base)
+                    self.stylesheet.append(r'\usepackage{%s}' % base)
                 else:
-                    self.stylesheets.append(r'\input{%s}' % sheet)
+                    self.stylesheet.append(r'\input{%s}' % sheet)
 
-        ## if len(self.stylesheets) == 1:    # if there are no styles,
-        ##     self.stylesheets = []         # remove comment line
+        ## if len(self.stylesheet) == 1:    # if there are no styles,
+        ##     self.stylesheet = []         # remove comment line
 
         # Part of LaTeX preamble before style sheet(s)
         self.head_prefix = [
@@ -832,9 +809,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
               # will be set later.
               ]
 
-        # Part of LaTeX preamble beginning with stylesheet
+        # Part of LaTeX preamble following the stylesheet
         self.head = []
-        self.head += self.stylesheets
         if self.linking: # and maybe check for pdf
             self.pdfinfo = []
             self.pdfauthor = []
@@ -852,9 +828,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # an empty string supresses the "auto-date" feature of \maketitle
         self.date = ''
 
-        self.body_prefix = ['\n%%% Body\n']
+        self.body_prefix = ['\n%%% Body\n\\begin{document}\n']
         self.body = []
-        self.body_suffix = ['\n']
+        self.body_suffix = ['\n\\end{document}\n']
         self.section_level = 0
         self.context = []
         self.topic_classes = []
@@ -896,8 +872,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.literal = 0
 
     def to_latex_encoding(self,docutils_encoding):
-        """
-        Translate docutils encoding name into latex's.
+        """Translate docutils encoding name into LaTeX's.
 
         Default method is remove "-" and "_" chars from docutils_encoding.
 
@@ -980,9 +955,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         return text
 
     def encode(self, text):
-        """
-        Encode special characters (``# $ % & ~ _ ^ \ { }``) in `text` & return
-        """
+        """Return text with special characters (``#$%&~_^\{}``) escaped."""
         # Escaping with a backslash does not help with backslashes, ~ and ^.
 
         #     < > are only available in math-mode or tt font. (really ?)
@@ -1075,8 +1048,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         return self.encode(whitespace.sub(' ', text))
 
     def astext(self):
-        """Assemble document parts and return as string"""
-        head = '\n'.join(self.head_prefix + self.head)
+        """Assemble document parts and return as string."""
+        head = '\n'.join(self.head_prefix + self.stylesheet + self.head)
         body = ''.join(self.body_prefix  + self.body + self.body_suffix)
         return head + '\n' + body
 
@@ -1392,7 +1365,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.verbatim = 0
 
     def visit_document(self, node):
-        self.body_prefix.append('\\begin{document}\n')
         if self.settings.use_titlepage_env:
             self.body_prefix.append('\\begin{titlepage}\n')
         # titled document?
@@ -1452,8 +1424,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 self.body.append('\n\\bibliographystyle{%s}\n' %
                                  self.bibtex[0])
                 self.body.append('\\bibliography{%s}\n' % self.bibtex[1])
-
-        self.body_suffix.append('\\end{document}\n')
 
     def visit_emphasis(self, node):
         self.body.append('\\emph{')
@@ -1884,8 +1854,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.literal = 0
 
     def visit_literal_block(self, node):
-        """
-        Render a literal-block.
+        """Render a literal-block.
 
         Literal blocks are used for '::'-prefixed literal-indented
         blocks of text, where the inline markup is not recognized,
@@ -1957,7 +1926,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.context[-1] += 1
 
     def visit_option_argument(self, node):
-        """The delimiter betweeen an option and its argument."""
+        """Append the delimiter betweeen an option and its argument to body."""
         self.body.append(node.get('delimiter', ' '))
 
     def depart_option_argument(self, node):
@@ -2218,8 +2187,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def bookmark(self, node):
-        """Append latex href and pdfbookmarks for titles.
-        """
+        """Append latex href and pdfbookmarks for titles."""
         if node.parent['ids']:
             self.body += ['\\hypertarget{%s}{}\n' % id
                           for id in node.parent['ids']]
@@ -2237,7 +2205,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                               for id in node.parent['ids']]
 
     def visit_title(self, node):
-        """Section and other titles."""
+        """Append section and other titles."""
 
         if isinstance(node.parent, nodes.topic):
             # the table of contents.
