@@ -46,7 +46,7 @@ class Writer(writers.Writer):
           'separated by commas.  Default is "a4paper,DIV=12".',
           ['--documentoptions'],
           {'default': 'a4paper,DIV=12', }),
-         ('Use LaTeX footnotes. LaTeX supports only numbered footnotes (does it?). '
+         ('Use LaTeX footnotes (currently supports only numbered footnotes). '
           'Default: no, uses figures.',
           ['--use-latex-footnotes'],
           {'default': 0, 'action': 'store_true',
@@ -121,12 +121,12 @@ class Writer(writers.Writer):
           ['--compound-enumerators'],
           {'default': None, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
-         ('Disable compound enumerators for nested enumerated lists.  This is '
-          'the default.',
+         ('Disable compound enumerators for nested enumerated lists. '
+          'This is the default.',
           ['--no-compound-enumerators'],
           {'action': 'store_false', 'dest': 'compound_enumerators'}),
          ('Enable section ("." subsection ...) prefixes for compound '
-          'enumerators.  This has no effect without --compound-enumerators.  '
+          'enumerators.  This has no effect without --compound-enumerators.'
           'Default: disabled.',
           ['--section-prefix-for-enumerators'],
           {'default': None, 'action': 'store_true',
@@ -153,7 +153,8 @@ class Writer(writers.Writer):
           'above and below the table and below the header or "nolines".  '
           'Default: "standard"',
           ['--table-style'],
-          {'choices': ['standard', 'booktabs','nolines'], 'default': 'standard',
+          {'choices': ['standard', 'booktabs','nolines'],
+           'default': 'standard',
            'metavar': '<format>'}),
          ('LaTeX graphicx package option. '
           'Possible values are "dvips", "pdftex". "auto" includes LaTeX code '
@@ -185,8 +186,8 @@ class Writer(writers.Writer):
     config_section = 'latex2e writer'
     config_section_dependencies = ('writers',)
 
-    visitor_attributes = ("head_prefix", "head",
-            "body_prefix", "body", "body_suffix")
+    visitor_attributes = ('head_prefix', 'head',
+            'body_prefix', 'body', 'body_suffix')
 
     output = None
     """Final translated form of `document`."""
@@ -234,7 +235,7 @@ Notes on LaTeX
         on entering sidebar and reset on exit.
 """
 
-class Babel:
+class Babel(object):
     """Language specifics for LaTeX."""
     # country code by a.schlock.
     # partly manually converted from iso and babel stuff, dialects and some
@@ -285,22 +286,22 @@ class Babel:
 
     nobr = '~'
 
-    def __init__(self,lang):
+    def __init__(self, lang):
         self.language = lang
         # pdflatex does not produce double quotes for ngerman in tt.
         self.double_quote_replacment = None
-        if re.search('^de',self.language):
+        if self.language.startswith('de'):
             #self.quotes = ("\"`", "\"'")
             self.quotes = ('{\\glqq}', '{\\grqq}')
-            self.double_quote_replacment = "{\\dq}"
-        elif re.search('^it',self.language):
-            self.quotes = ("``", "''")
+            self.double_quote_replacment = '{\\dq}'
+        if self.language.startswith('it'):
+            self.quotes = ('``', "''")
             self.double_quote_replacment = r'{\char`\"}'
         else:
-            self.quotes = ("``", "''")
+            self.quotes = ('``', "''")
         self.quote_index = 0
         # for spanish ``~n`` must be ``~{}n``
-        if re.search('^es',self.language):
+        if self.language.startswith('es'):
             self.nobr = '~{}'
         else:
             self.nobr = '~'
@@ -325,7 +326,7 @@ class Babel:
         return text.replace('"', self.double_quote_replacment)
 
     def get_language(self):
-        lang = self.language.split("_")[0]  # filter dialects
+        lang = self.language.split('_')[0]  # filter dialects
         return self._ISO639_TO_BABEL.get(lang)
 
 # Building blocks for the latex preamble
@@ -350,6 +351,11 @@ PreambleCmds.docinfo = r"""% width of docinfo table:
   \newlength{\DUdocinfowidth}
   \setlength{\DUdocinfowidth}{0.9\textwidth}
 }{}"""
+
+PreambleCmds.embedded_package_wrapper = r"""\makeatletter
+%% embedded stylesheet: %s
+%s
+\makeatother"""
 
 PreambleCmds.footnote_floats = r"""% settings for footnotes as floats:
 \setlength{\floatsep}{0.5em}
@@ -415,6 +421,12 @@ PreambleCmds.optionlist = r"""% option list:
 PreambleCmds.rubric = r"""% rubric (an informal heading):
 \newcommand{\DUrubric}[1]{\subsection*{~\hfill {\it #1} \hfill ~}}"""
 
+PreambleCmds.sidebar = r"""
+\setlength{\locallinewidth}{0.9\DUadmonitionwidth}
+\begin{center}\begin{sffamily}
+\fbox{\colorbox[gray]{0.80}{\parbox{\DUadmonitionwidth}{
+"""
+
 PreambleCmds.table = r"""\usepackage{longtable}
 \usepackage{array}
 \setlength{\extrarowheight}{2pt}"""
@@ -429,7 +441,7 @@ PreambleCmds.titlereference = r"""% title reference role:
 \newcommand{\DUroletitlereference}[1]{\textsl{#1}}"""
 
 
-class DocumentClass:
+class DocumentClass(object):
     """Details of a LaTeX document class."""
 
     def __init__(self, document_class, with_part=False):
@@ -453,7 +465,7 @@ class DocumentClass:
         else:
             return sections[-1]
 
-class Table:
+class Table(object):
     """ Manage a table while traversing.
         Maybe change to a mixin defining the visit/departs, but then
         class Table internal variables are in the Translator.
@@ -518,7 +530,7 @@ class Table:
             prefix = ''
         return '%s\\begin{%s}[c]' % (prefix, self._latex_type)
     def get_closing(self):
-        line = ""
+        line = ''
         if self._table_style == 'booktabs':
             line = '\\bottomrule\n'
         elif self._table_style == 'standard':
@@ -557,25 +569,26 @@ class Table:
         if total_width > 1.0:
             factor /= total_width
         bar = self.get_vertical_bar()
-        latex_table_spec = ""
+        latex_table_spec = ''
         for node in self._col_specs:
             colwidth = factor * float(node['colwidth']+1) / width
             self._col_width.append(colwidth+0.005)
             self._rowspan.append(0)
-            latex_table_spec += "%sp{%.3f\\locallinewidth}" % (bar,colwidth+0.005)
+            latex_table_spec += '%sp{%.3f\\locallinewidth}' % (bar,
+                                                               colwidth+0.005)
         return latex_table_spec+bar
 
     def get_column_width(self):
         """ return columnwidth for current cell (not multicell)
         """
-        return "%.2f\\locallinewidth" % self._col_width[self._cell_in_row-1]
+        return '%.2f\\locallinewidth' % self._col_width[self._cell_in_row-1]
 
     def get_caption(self):
         if not self.caption:
-            return ""
+            return ''
         if 1 == self._translator.thead_depth():
-            return '\\caption{%s}\\\\\n' % self.caption
-        return '\\caption[]{%s (... continued)}\\\\\n' % self.caption
+            return r'\caption{%s}\\' '\n' % self.caption
+        return r'\caption[]{%s (... continued)}\\' '\n' % self.caption
 
     def need_recurse(self):
         if self._latex_type == 'longtable':
@@ -600,8 +613,9 @@ class Table:
                 a.append('\\endfirsthead\n')
             else:
                 a.append('\\endhead\n')
-                a.append('\\multicolumn{%d}{c}{\\hfill ... continued on next page} \\\\\n' % len(self._col_specs))
-                a.append('\\endfoot\n\\endlastfoot\n')
+                a.append(r'\multicolumn{%d}{c}' % len(self._col_specs) +
+                         r'{\hfill ... continued on next page} \\')
+                a.append('\n\\endfoot\n\\endlastfoot\n')
         # for longtable one could add firsthead, foot and lastfoot
         self._in_thead -= 1
         return a
@@ -615,10 +629,8 @@ class Table:
                 self._rowspan[i] -= 1
 
         if self._table_style == 'standard':
-            rowspans = []
-            for i in range(len(self._rowspan)):
-                if (self._rowspan[i]<=0):
-                    rowspans.append(i+1)
+            rowspans = [i+1 for i in range(len(self._rowspan))
+                        if (self._rowspan[i]<=0)]
             if len(rowspans)==len(self._rowspan):
                 res.append('\\hline\n')
             else:
@@ -691,7 +703,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     section_enumerator_separator = '-'
 
     # default link color
-    hyperlink_color = "blue"
+    hyperlink_color = 'blue'
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
@@ -701,6 +713,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.use_latex_docinfo = settings.use_latex_docinfo
         self.use_latex_footnotes = settings.use_latex_footnotes
         self._use_latex_citations = settings.use_latex_citations
+        self.embed_stylesheet = settings.embed_stylesheet
         self._reference_label = settings.reference_label
         self.hyperlink_color = settings.hyperlink_color
         self.compound_enumerators = settings.compound_enumerators
@@ -717,7 +730,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.settings.literal_block_env != '':
             self.settings.use_verbatim_when_possible = True
         if self.settings.use_bibtex:
-            self.bibtex = self.settings.use_bibtex.split(",",1)
+            self.bibtex = self.settings.use_bibtex.split(',',1)
             # TODO avoid errors on not declared citations.
         else:
             self.bibtex = None
@@ -745,9 +758,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.latex_fallbacks = {}    # inserted after style sheet
 
         # Page layout with typearea (if there are relevant document options).
-        if (settings.documentclass.find('scr') == -1
-            and (self.d_options.find('DIV') != -1
-                 or self.d_options.find('BCOR') != -1)):
+        if (settings.documentclass.find('scr') == -1 and
+            (self.d_options.find('DIV') != -1 or
+             self.d_options.find('BCOR') != -1)):
             self.latex_requirements['typearea'] = r'\usepackage{typearea}'
 
         if self.font_encoding == '':
@@ -771,30 +784,30 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # packages and/or stylesheets
         # ---------------------------
         self.stylesheets = ['\n%%% User specified packages and stylesheets']
+        # get list of style sheets from settings
         styles = utils.get_stylesheet_list(settings)
-        if settings.stylesheet_path and not(settings.embed_stylesheet):
+        # adapt path if --stylesheet_path is used
+        if settings.stylesheet_path and not(self.embed_stylesheet):
             styles = [utils.relative_path(settings._destination, sheet)
                       for sheet in styles]
         for sheet in styles:
-            (sheet_sans_ext, sheet_ext) = os.path.splitext(sheet)
-            if settings.embed_stylesheet:
-                if sheet_ext == "":
-                    sheet += ".sty"   # add default extension for packages
-                settings.record_dependencies.add(sheet)
-                if sheet_ext in ["", ".sty"]: # wrap packages in \makeatletter, -other
-                    wrapper = '\n'.join([r'\makeatletter',
-                                         '%% embedded stylesheet: %s',
-                                         '%s',
-                                         r'\makeatother'
-                                        ])
+            (base, ext) = os.path.splitext(sheet)
+            is_package = ext in ['.sty', '']
+            if self.embed_stylesheet:
+                if is_package:
+                    sheet = base + '.sty' # adapt package name
+                    # wrap in \makeatletter, \makeatother
+                    wrapper = PreambleCmds.embedded_package_wrapper
                 else:
                     wrapper = '%% embedded stylesheet: %s\n%s'
+                settings.record_dependencies.add(sheet)
                 self.stylesheets.append(wrapper % (sheet, open(sheet).read()))
-            else:
-                if sheet_ext in ["", ".sty"]:
-                    self.stylesheets.append(r'\usepackage{%s}' % sheet_sans_ext)
+            else: # link to style sheet
+                if is_package:
+                    self.stylesheets.append(r'\usepackage{%s}' % base)
                 else:
                     self.stylesheets.append(r'\input{%s}' % sheet)
+
         ## if len(self.stylesheets) == 1:    # if there are no styles,
         ##     self.stylesheets = []         # remove comment line
 
@@ -809,12 +822,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
               r'\usepackage{ifthen}',
               # possible other packages.
               # * fancyhdr
-              # * ltxtable is a combination of tabularx and longtable (pagebreaks).
-              #   but ??
+              # * ltxtable is a combination of tabularx and longtable
+              #   (pagebreaks). but ??
               #
-              # linewidth of current environment, so tables are not wider
-              # than the sidebar: using locallinewidth seems to defer evaluation
-              # of linewidth, this is fixing it.
+              # linewidth of current environment, so tables are not wider than
+              # the sidebar: using locallinewidth seems to defer evaluation of
+              # linewidth, this is fixing it.
               r'\newlength{\locallinewidth}',
               # will be set later.
               ]
@@ -824,7 +837,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.head += self.stylesheets
         if self.linking: # and maybe check for pdf
             self.pdfinfo = []
-            self.pdfauthor = None
+            self.pdfauthor = []
             # pdftitle, pdfsubject, pdfauthor, pdfkeywords,
             # pdfcreator, pdfproducer
         else:
@@ -833,7 +846,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # Title metadata: Title, Date, and Author(s)
         # separate title, so we can append subtitle.
         self.title = ''
-        # if use_latex_docinfo: collects lists of author/organization/contact/address lines
+        # if use_latex_docinfo: collects lists of
+        # author/organization/contact/address lines
         self.author_stack = []
         # an empty string supresses the "auto-date" feature of \maketitle
         self.date = ''
@@ -855,8 +869,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.insert_none_breaking_blanks = 0
         # insert_newline: to tell encode to add latex newline.
         self.insert_newline = 0
-        # mbox_newline: to tell encode to add mbox and newline.
-        self.mbox_newline = 0
         # inside citation reference labels underscores dont need to be escaped.
         self.inside_citation_reference_label = 0
 
@@ -887,42 +899,42 @@ class LaTeXTranslator(nodes.NodeVisitor):
         """
         Translate docutils encoding name into latex's.
 
-        Default fallback method is remove "-" and "_" chars from docutils_encoding.
+        Default method is remove "-" and "_" chars from docutils_encoding.
 
         """
-        tr = {  "iso-8859-1": "latin1",     # west european
-                "iso-8859-2": "latin2",     # east european
-                "iso-8859-3": "latin3",     # esperanto, maltese
-                "iso-8859-4": "latin4",     # north european,scandinavian, baltic
-                "iso-8859-5": "iso88595",   # cyrillic (ISO)
-                "iso-8859-9": "latin5",     # turkish
-                "iso-8859-15": "latin9",    # latin9, update to latin1.
-                "mac_cyrillic": "maccyr",   # cyrillic (on Mac)
-                "windows-1251": "cp1251",   # cyrillic (on Windows)
-                "koi8-r": "koi8-r",         # cyrillic (Russian)
-                "koi8-u": "koi8-u",         # cyrillic (Ukrainian)
-                "windows-1250": "cp1250",   #
-                "windows-1252": "cp1252",   #
-                "us-ascii": "ascii",        # ASCII (US)
+        tr = {  'iso-8859-1': 'latin1',     # west european
+                'iso-8859-2': 'latin2',     # east european
+                'iso-8859-3': 'latin3',     # esperanto, maltese
+                'iso-8859-4': 'latin4',     # north european, scandinavian, baltic
+                'iso-8859-5': 'iso88595',   # cyrillic (ISO)
+                'iso-8859-9': 'latin5',     # turkish
+                'iso-8859-15': 'latin9',    # latin9, update to latin1.
+                'mac_cyrillic': 'maccyr',   # cyrillic (on Mac)
+                'windows-1251': 'cp1251',   # cyrillic (on Windows)
+                'koi8-r': 'koi8-r',         # cyrillic (Russian)
+                'koi8-u': 'koi8-u',         # cyrillic (Ukrainian)
+                'windows-1250': 'cp1250',   #
+                'windows-1252': 'cp1252',   #
+                'us-ascii': 'ascii',        # ASCII (US)
                 # unmatched encodings
-                #"": "applemac",
-                #"": "ansinew",  # windows 3.1 ansi
-                #"": "ascii",    # ASCII encoding for the range 32--127.
-                #"": "cp437",    # dos latine us
-                #"": "cp850",    # dos latin 1
-                #"": "cp852",    # dos latin 2
-                #"": "decmulti",
-                #"": "latin10",
-                #"iso-8859-6": ""   # arabic
-                #"iso-8859-7": ""   # greek
-                #"iso-8859-8": ""   # hebrew
-                #"iso-8859-10": ""   # latin6, more complete iso-8859-4
+                #'': 'applemac',
+                #'': 'ansinew',  # windows 3.1 ansi
+                #'': 'ascii',    # ASCII encoding for the range 32--127.
+                #'': 'cp437',    # dos latine us
+                #'': 'cp850',    # dos latin 1
+                #'': 'cp852',    # dos latin 2
+                #'': 'decmulti',
+                #'': 'latin10',
+                #'iso-8859-6': ''   # arabic
+                #'iso-8859-7': ''   # greek
+                #'iso-8859-8': ''   # hebrew
+                #'iso-8859-10': ''   # latin6, more complete iso-8859-4
              }
         encoding = docutils_encoding.lower()
         if encoding in tr:
             return tr[encoding]
         # convert: latin-1, latin_1, utf-8 and similar things
-        encoding = encoding.replace("_", "").replace("-", "")
+        encoding = encoding.replace('_', '').replace('-', '')
         # strip the error handler
         return encoding.split(':')[0]
 
@@ -992,26 +1004,26 @@ class LaTeXTranslator(nodes.NodeVisitor):
         text = self.encode_re_bslash.sub(r'{\\textbackslash}', text)
 
         # then dollar
-        text = text.replace("$", '{\\$}')
+        text = text.replace('$', '{\\$}')
         if not ( self.literal_block or self.literal ):
-            text = text.replace("|", '{\\textbar}')
-            text = text.replace("<", '{\\textless}')
-            text = text.replace(">", '{\\textgreater}')
+            text = text.replace('|', '{\\textbar}')
+            text = text.replace('<', '{\\textless}')
+            text = text.replace('>', '{\\textgreater}')
         # then
-        text = text.replace("&", '{\\&}')
+        text = text.replace('&', '{\\&}')
         # the ^:
         # * verb|^| does not work in mbox.
         # * mathmode has wedge. hat{~} would also work.
-        # text = text.replace("^", '{\\ensuremath{^\\wedge}}')
-        text = text.replace("^", '{\\textasciicircum}')
-        text = text.replace("%", '{\\%}')
-        text = text.replace("#", '{\\#}')
-        text = text.replace("~", '{\\textasciitilde}')
-        # Separate compound characters, e.g. "--" to "-{}-".  (The
+        # text = text.replace('^', '{\\ensuremath{^\\wedge}}')
+        text = text.replace('^', '{\\textasciicircum}')
+        text = text.replace('%', '{\\%}')
+        text = text.replace('#', '{\\#}')
+        text = text.replace('~', '{\\textasciitilde}')
+        # Separate compound characters, e.g. '--' to '-{}-'.  (The
         # actual separation is done later; see below.)
         separate_chars = '-'
         if self.literal_block or self.literal:
-            # In monospace-font, we also separate ",,", "``" and "''"
+            # In monospace-font, we also separate ',,', '``' and "''"
             # and some other characters which can't occur in
             # non-literal text.
             separate_chars += ',`\'"<>'
@@ -1030,24 +1042,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             text = self.babel.quote_quotes(text)
             if not self.inside_citation_reference_label:
-                text = text.replace("_", '{\\_}')
+                text = text.replace('_', '{\\_}')
         for char in separate_chars * 2:
             # Do it twice ("* 2") becaues otherwise we would replace
-            # "---" by "-{}--".
+            # '---' by '-{}--'.
             text = text.replace(char + char, char + '{}' + char)
         if self.insert_newline or self.literal_block:
             # Insert a blank before the newline, to avoid
             # ! LaTeX Error: There's no line here to end.
-            text = text.replace("\n", '~\\\\\n')
-        elif self.mbox_newline:
-            # TODO dead code: remove after 0.5 release
-            if self.literal_block:
-                closings = "}" * len(self.literal_block_stack)
-                openings = "".join(self.literal_block_stack)
-            else:
-                closings = ""
-                openings = ""
-            text = text.replace("\n", "%s}\\\\\n\\mbox{%s" % (closings,openings))
+            text = text.replace('\n', '~\\\\\n')
         text = text.replace('[', '{[}').replace(']', '{]}')
         if self.insert_none_breaking_blanks:
             text = text.replace(' ', self.babel.nobr)
@@ -1060,13 +1063,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
         env = 'verbatim'
         opt = ''
         if self.settings.literal_block_env != '':
-            (none, env, opt, none) = re.split("(\w+)(.*)",
+            (none, env, opt, none) = re.split('(\w+)(.*)',
                                         self.settings.literal_block_env)
         if begin_or_end == 'begin':
             return '\\begin{%s}%s\n' % (env, opt)
         return '\n\\end{%s}\n' % (env, )
-
-
 
     def attval(self, text,
                whitespace=re.compile('[\n\r\t\v\f]')):
@@ -1096,9 +1097,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('\\begin{center}\\begin{sffamily}\n')
         self.body.append('\\fbox{\\parbox{\\DUadmonitionwidth}{\n')
         if name:
-            self.body.append('\\textbf{\\large '+ self.language.labels[name] + '}\n');
+            self.body.append(r'\textbf{\large ' +
+                             self.language.labels[name] + '}\n');
         self.body.append('\\vspace{2mm}\n')
-
 
     def depart_admonition(self, node=None):
         self.body.append('}}\n') # end parbox fbox
@@ -1178,7 +1179,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_title_reference(self, node):
         self.latex_fallbacks['titlereference'] = (
             PreambleCmds.titlereference)
-        self.body.append( '\\DUroletitlereference{' )
+        self.body.append(r'\DUroletitlereference{')
         if node.get('classes'):
             self.visit_inline(node)
 
@@ -1192,9 +1193,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self._use_latex_citations:
             self.context.append(len(self.body))
         else:
-            self.body.append('\\begin{figure}[b]')
-            for id in node['ids']:
-                self.body.append('\\hypertarget{%s}' % id)
+            self.body.append(r'\begin{figure}[b]')
+            self.body += [r'\hypertarget{%s}' % id for id in node['ids']]
 
     def depart_citation(self, node):
         if self._use_latex_citations:
@@ -1209,7 +1209,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_citation_reference(self, node):
         if self._use_latex_citations:
             if not self.inside_citation_reference_label:
-                self.body.append('\\cite{')
+                self.body.append(r'\cite{')
                 self.inside_citation_reference_label = 1
             else:
                 assert self.body[-1] in (' ', '\n'),\
@@ -1227,11 +1227,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self._use_latex_citations:
             followup_citation = False
             # check for a following citation separated by a space or newline
-            next_siblings = node.traverse(descend=0, siblings=1, include_self=0)
+            next_siblings = node.traverse(descend=0, siblings=1,
+                                          include_self=0)
             if len(next_siblings) > 1:
                 next = next_siblings[0]
-                if (isinstance(next, nodes.Text)
-                        and next.astext() in (' ', '\n')):
+                if (isinstance(next, nodes.Text) and
+                    next.astext() in (' ', '\n')):
                     if next_siblings[1].__class__ == node.__class__:
                         followup_citation = True
             if followup_citation:
@@ -1342,16 +1343,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_docinfo_item(self, node, name):
         if name == 'author':
-            if not self.pdfinfo == None:
-                if not self.pdfauthor:
-                    self.pdfauthor = self.attval(node.astext())
-                else:
-                    self.pdfauthor += self.author_separator + self.attval(node.astext())
+            if self.pdfinfo is not None:
+                self.pdfauthor += [self.attval(node.astext())]
         if self.use_latex_docinfo:
             if name in ('author', 'organization', 'contact', 'address'):
                 # We attach these to the last author.  If any of them precedes
-                # the first author, put them in a separate "author" group (for
-                # no better semantics).
+                # the first author, put them in a separate "author" group
+                # (in lack of better semantics).
                 if name == 'author' or not self.author_stack:
                     self.author_stack.append([])
                 if name == 'address':   # newlines are meaningful
@@ -1398,8 +1396,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.settings.use_titlepage_env:
             self.body_prefix.append('\\begin{titlepage}\n')
         # titled document?
-        if (self.use_latex_docinfo or len(node)
-            and isinstance(node[0], nodes.title)):
+        if (self.use_latex_docinfo or len(node) and
+            isinstance(node[0], nodes.title)):
             self.body_prefix.append('\\maketitle\n\n')
         self.body.append('\n\\setlength{\\locallinewidth}{\\linewidth}\n')
 
@@ -1408,7 +1406,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # a) conditional requirements (before style sheet)
         self.head_prefix += [self.latex_requirements[key]
                              for key in sorted(self.latex_requirements.keys())]
-	# b) coditional fallback definitions (after style sheet)
+        # b) coditional fallback definitions (after style sheet)
         self.head.append(
             '\n%%% Fallback definitions for Docutils-specific commands')
         self.head += [self.latex_fallbacks[key]
@@ -1418,6 +1416,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                                          self.hyperlink_color,
                                          self.hyperlink_color))
         if self.pdfinfo is not None and self.pdfauthor:
+            self.pdfauthor = self.author_separator.join(self.pdfauthor)
             self.pdfinfo.append('  pdfauthor={%s}' % self.pdfauthor)
         if self.pdfinfo:
             self.head += [r'\hypersetup{'] + self.pdfinfo + ['}']
@@ -1437,18 +1436,21 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # TODO insertion point of bibliography should none automatic.
         if self._use_latex_citations and len(self._bibitems)>0:
             if not self.bibtex:
-                widest_label = ""
+                widest_label = ''
                 for bi in self._bibitems:
                     if len(widest_label)<len(bi[0]):
                         widest_label = bi[0]
-                self.body.append('\n\\begin{thebibliography}{%s}\n'%widest_label)
+                self.body.append('\n\\begin{thebibliography}{%s}\n' %
+                                 widest_label)
                 for bi in self._bibitems:
                     # cite_key: underscores must not be escaped
-                    cite_key = bi[0].replace(r"{\_}","_")
-                    self.body.append('\\bibitem[%s]{%s}{%s}\n' % (bi[0], cite_key, bi[1]))
+                    cite_key = bi[0].replace(r'{\_}','_')
+                    self.body.append('\\bibitem[%s]{%s}{%s}\n' %
+                                     (bi[0], cite_key, bi[1]))
                 self.body.append('\\end{thebibliography}\n')
             else:
-                self.body.append('\n\\bibliographystyle{%s}\n' % self.bibtex[0])
+                self.body.append('\n\\bibliographystyle{%s}\n' %
+                                 self.bibtex[0])
                 self.body.append('\\bibliography{%s}\n' % self.bibtex[1])
 
         self.body_suffix.append('\\end{document}\n')
@@ -1490,20 +1492,21 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if 'morerows' in node:
             self.latex_requirements['multirow'] = r'\usepackage{multirow}'
             count = node['morerows'] + 1
-            self.active_table.set_rowspan(self.active_table.get_entry_number()-1,count)
-            self.body.append('\\multirow{%d}{%s}{' % \
-                    (count,self.active_table.get_column_width()))
+            self.active_table.set_rowspan(
+                                self.active_table.get_entry_number()-1,count)
+            self.body.append('\\multirow{%d}{%s}{' %
+                             (count,self.active_table.get_column_width()))
             self.context.append('}')
             # BUG following rows must have empty cells.
         elif 'morecols' in node:
-            # the vertical bar before column is missing if it is the first column.
-            # the one after always.
+            # the vertical bar before column is missing if it is the first
+            # column. the one after always.
             if self.active_table.get_entry_number() == 1:
                 bar1 = self.active_table.get_vertical_bar()
             else:
                 bar1 = ''
             count = node['morecols'] + 1
-            self.body.append('\\multicolumn{%d}{%sl%s}{' % \
+            self.body.append('\\multicolumn{%d}{%sl%s}{' %
                     (count, bar1, self.active_table.get_vertical_bar()))
             self.context.append('}')
         else:
@@ -1542,14 +1545,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 'upperalpha':'Alph',
                 'lowerroman':'roman',
                 'upperroman':'Roman' }
-        enum_suffix = ""
+        enum_suffix = ''
         if 'suffix' in node:
             enum_suffix = node['suffix']
-        enum_prefix = ""
+        enum_prefix = ''
         if 'prefix' in node:
             enum_prefix = node['prefix']
         if self.compound_enumerators:
-            pref = ""
+            pref = ''
             if self.section_prefix_for_enumerators and self.section_level:
                 for i in range(self.section_level):
                     pref += '%d.' % self._section_number[i]
@@ -1557,13 +1560,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 enum_prefix += pref
             for ctype, cname in self._enumeration_counters:
                 enum_prefix += '\\%s{%s}.' % (ctype, cname)
-        enum_type = "arabic"
+        enum_type = 'arabic'
         if 'enumtype' in node:
             enum_type = node['enumtype']
         if enum_type in enum_style:
             enum_type = enum_style[enum_type]
 
-        counter_name = "listcnt%d" % len(self._enumeration_counters)
+        counter_name = 'listcnt%d' % len(self._enumeration_counters)
         self._enumeration_counters.append((enum_type, counter_name))
         # If we haven't used this counter name before, then create a
         # new counter; otherwise, reset & reuse the old counter.
@@ -1573,14 +1576,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             self.body.append('\\setcounter{%s}{0}\n' % counter_name)
 
-        self.body.append('\\begin{list}{%s\\%s{%s}%s}\n' % \
+        self.body.append('\\begin{list}{%s\\%s{%s}%s}\n' %
             (enum_prefix,enum_type,counter_name,enum_suffix))
         self.body.append('{\n')
         self.body.append('\\usecounter{%s}\n' % counter_name)
         # set start after usecounter, because it initializes to zero.
         if 'start' in node:
-            self.body.append('\\addtocounter{%s}{%d}\n' \
-                    % (counter_name,node['start']-1))
+            self.body.append('\\addtocounter{%s}{%d}\n' %
+                             (counter_name,node['start']-1))
         ## set rightmargin equal to leftmargin
         self.body.append('\\setlength{\\rightmargin}{\\leftmargin}\n')
         self.body.append('}\n')
@@ -1632,7 +1635,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_field_name(self, node):
         # BUG this duplicates docinfo_item
         if self.docinfo:
-            self.docinfo.append('\\textbf{%s}: &\n\t' % self.encode(node.astext()))
+            self.docinfo.append('\\textbf{%s}: &\n\t' %
+                                self.encode(node.astext()))
             raise nodes.SkipNode
         else:
             self.body.append('\\item [')
@@ -1662,8 +1666,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_footer(self, node):
         start = self.context.pop()
-        footer = (['\n\\begin{center}\small\n']
-                  + self.body[start:] + ['\n\\end{center}\n'])
+        footer = (['\n\\begin{center}\small\n'] +
+                  self.body[start:] + ['\n\\end{center}\n'])
         self.body_suffix[:0] = footer
         del self.body[start:]
 
@@ -1678,8 +1682,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.latex_requirements['~footnote_floats'] = (
                 PreambleCmds.footnote_floats)
             self.body.append('\\begin{figure}[b]')
-            for id in node['ids']:
-                self.body.append('\\hypertarget{%s}' % id)
+            self.body += [r'\hypertarget{%s}' % id for id in node['ids']]
 
     def depart_footnote(self, node):
         if self.use_latex_footnotes:
@@ -1689,7 +1692,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_footnote_reference(self, node):
         if self.use_latex_footnotes:
-            self.body.append("\\footnotemark["+self.encode(node.astext())+"]")
+            self.body.append('\\footnotemark['+self.encode(node.astext())+']')
             raise nodes.SkipNode
         href = ''
         if 'refid' in node:
@@ -1764,10 +1767,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         amount, unit = match.groups()[:2]
         # For LaTeX, a lenght without unit is an error.
         # default to (DTP) points (1 bp = 1/72 in)
-        if unit == "":
-              res = "%sbp" % amount
-        elif unit == "%":
-            res = "%.3f\\linewidth" % (float(amount)/100.0)
+        if unit == '':
+              res = '%sbp' % amount
+        elif unit == '%':
+            res = '%.3f\\linewidth' % (float(amount)/100.0)
         return res
 
     def visit_image(self, node):
@@ -1850,7 +1853,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('\n')
 
     def visit_line_block(self, node):
-    	self.latex_fallbacks['lineblock'] = PreambleCmds.lineblock
+        self.latex_fallbacks['lineblock'] = PreambleCmds.lineblock
         if isinstance(node.parent, nodes.line_block):
             self.body.append('\\item[]\n'
                              '\\begin{DUlineblock}{\\DUlineblockindent}\n')
@@ -1861,8 +1864,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('\\end{DUlineblock}\n')
 
     def visit_list_item(self, node):
-        # Append "{}" in case the next character is "[", which would break
-        # LaTeX's list environment (no numbering and the "[" is not printed).
+        # Append '{}' in case the next character is '[', which would break
+        # LaTeX's list environment (no numbering and the '[' is not printed).
         self.body.append('\\item {} ')
 
     def depart_list_item(self, node):
@@ -1884,7 +1887,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         """
         Render a literal-block.
 
-        Literal blocks are used for "::"-prefixed literal-indented
+        Literal blocks are used for '::'-prefixed literal-indented
         blocks of text, where the inline markup is not recognized,
         but are also the product of the parsed-literal directive,
         where the markup is respected.
@@ -1907,9 +1910,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             self.body.append('\n')
             self.context.append('\n')
-        if (self.settings.use_verbatim_when_possible and (len(node) == 1)
+        if (self.settings.use_verbatim_when_possible and (len(node) == 1) and
               # in case of a parsed-literal containing just a "**bold**" word:
-              and isinstance(node[0], nodes.Text)):
+            isinstance(node[0], nodes.Text)):
             self.verbatim = 1
             self.body.append(self.literal_block_env('begin'))
         else:
@@ -2009,7 +2012,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('\n')
 
     def visit_problematic(self, node):
-    	self.latex_requirements['color'] = r'\usepackage{color}'
+        self.latex_requirements['color'] = r'\usepackage{color}'
         self.body.append('{\\color{red}\\bfseries{}')
 
     def depart_problematic(self, node):
@@ -2021,8 +2024,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         raise nodes.SkipNode
 
     def visit_reference(self, node):
-        # BUG: hash_char "#" is trouble some in LaTeX.
-        # mbox and other environment do not like the '#'.
+        # BUG: hash_char '#' is troublesome in LaTeX.
+        # mbox and other environments do not like the '#'.
         hash_char = '\\#'
         if 'refuri' in node:
             href = node['refuri'].replace('#',hash_char)
@@ -2032,7 +2035,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             href = hash_char + self.document.nameids[node['refname']]
         else:
             raise AssertionError('Unknown reference.')
-        self.body.append('\\href{%s}{' % href.replace("%", "\\%"))
+        self.body.append('\\href{%s}{' % href.replace('%', '\\%'))
         if self._reference_label and 'refuri' not in node:
             self.body.append('\\%s{%s}}' % (self._reference_label,
                         href.replace(hash_char, '')))
@@ -2061,20 +2064,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_sidebar(self, node):
         # BUG:  this is just a hack to make sidebars render something
-	self.latex_requirements['color'] = r'\usepackage{color}'
-        self.body.append('\n'
-                         r'\setlength{\locallinewidth}{0.9\DUadmonitionwidth}'
-                         '\n')
-        self.body.append('\\begin{center}\\begin{sffamily}\n')
-        self.body.append(r'\fbox{\colorbox[gray]{0.80}'
-                         r'{\parbox{\DUadmonitionwidth}{'
-                         '\n')
+        self.latex_requirements['color'] = r'\usepackage{color}'
+        self.body.append(PreambleCmds.sidebar)
 
     def depart_sidebar(self, node):
         self.body.append('}}}\n') # end parbox colorbox fbox
         self.body.append('\\end{sffamily}\n\\end{center}\n');
         self.body.append('\n\\setlength{\\locallinewidth}{\\linewidth}\n')
-
 
     attribution_formats = {'dash': ('---', ''),
                            'parentheses': ('(', ')'),
@@ -2120,8 +2116,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append('~\\\\\n\\textbf{')
             self.context.append('}\n\\smallskip\n')
         elif isinstance(node.parent, nodes.document):
-            self.title = self.title + \
-                '\\\\\n\\large{%s}\n' % self.encode(node.astext())
+            self.title += '\\\\\n\\large{%s}\n' % self.encode(node.astext())
             raise nodes.SkipNode
         elif isinstance(node.parent, nodes.section):
             self.body.append('\\textbf{')
@@ -2143,8 +2138,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # nesting longtable does not work (e.g. 2007-04-18)
             self.active_table = Table(self,'tabular',self.settings.table_style)
         self.active_table.open()
-        for cl in node['classes']:
-            self.active_table.set_table_style(cl)
+        for cls in node['classes']:
+            self.active_table.set_table_style(cls)
         if self.active_table._table_style == 'booktabs':
             self.latex_requirements['booktabs'] = r'\usepackage{booktabs}'
         self.body.append('\n' + self.active_table.get_opening())
@@ -2159,13 +2154,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_target(self, node):
         # BUG: why not (refuri or refid or refname) means not footnote ?
-        if not ('refuri' in node or 'refid' in node
-                or 'refname' in node):
-            for id in node['ids']:
-                self.body.append('\\hypertarget{%s}{' % id)
+        if not ('refuri' in node or 'refid' in node or 'refname' in node):
+            self.body += [r'\hypertarget{%s}{' % id for id in node['ids']]
             self.context.append('}' * len(node['ids']))
-        elif node.get("refid"):
-            self.body.append('\\hypertarget{%s}{' % node.get("refid"))
+        elif node.get('refid'):
+            self.body.append('\\hypertarget{%s}{' % node.get('refid'))
             self.context.append('}')
         else:
             self.context.append('')
@@ -2187,8 +2180,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('\\item[{')
 
     def depart_term(self, node):
-        # definition list term.
-        # \leavevmode results in a line break if the term is followed by a item list.
+        # definition list term. \leavevmode results in a line break if the
+        # term is followed by an item list.
         self.body.append('}] \leavevmode ')
 
     def visit_tgroup(self, node):
@@ -2228,37 +2221,36 @@ class LaTeXTranslator(nodes.NodeVisitor):
         """Append latex href and pdfbookmarks for titles.
         """
         if node.parent['ids']:
-            for id in node.parent['ids']:
-                self.body.append('\\hypertarget{%s}{}\n' % id)
+            self.body += ['\\hypertarget{%s}{}\n' % id
+                          for id in node.parent['ids']]
             if not self.use_latex_toc:
-                # BUG level depends on style. pdflatex allows level 0 to 3
-                # ToC would be the only on level 0 so i choose to decrement the rest.
-                # "Table of contents" bookmark to see the ToC. To avoid this
-                # we set all zeroes to one.
+                # BUG level depends on style. pdflatex allows level 0 to 3.
+                # ToC would be the only on level 0 so i choose to decrement
+                # the rest. "Table of contents" bookmark to see the ToC. To
+                # avoid this we set all zeroes to one.
                 l = self.section_level
                 if l>0:
                     l = l-1
-                # pdftex does not like "_" subscripts in titles
+                # pdftex does not like '_' subscripts in titles
                 text = self.encode(node.astext())
-                for id in node.parent['ids']:
-                    self.body.append('\\pdfbookmark[%d]{%s}{%s}\n' % \
-                                     (l, text, id))
+                self.body += ['\\pdfbookmark[%d]{%s}{%s}\n' % (l, text, id)
+                              for id in node.parent['ids']]
 
     def visit_title(self, node):
         """Section and other titles."""
 
         if isinstance(node.parent, nodes.topic):
             # the table of contents.
-            if ('contents' in self.topic_classes
-            and self.settings.use_titlepage_env):
+            if ('contents' in self.topic_classes and
+                self.settings.use_titlepage_env):
                 self.body.append('\\end{titlepage}\n')
             self.bookmark(node)
-            if ('contents' in self.topic_classes
-            and self.use_latex_toc):
+            if ('contents' in self.topic_classes and
+                self.use_latex_toc):
                 self.body.append('\\renewcommand{\\contentsname}{')
                 self.context.append('}\n\\tableofcontents\n\n\\bigskip\n')
-            elif ('abstract' in self.topic_classes
-            and self.settings.use_latex_abstract):
+            elif ('abstract' in self.topic_classes and
+                  self.settings.use_latex_abstract):
                 raise nodes.SkipNode
             else: # or section titles before the table of contents.
                 # BUG: latex chokes on center environment with
@@ -2268,8 +2260,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 self.context.append('\\hfill ~}\n')
         # TODO: for admonition titles before the first section
         # either specify every possible node or ... ?
-        elif isinstance(node.parent, nodes.sidebar) \
-        or isinstance(node.parent, nodes.admonition):
+        elif (isinstance(node.parent, nodes.sidebar) or
+              isinstance(node.parent, nodes.admonition)):
             self.body.append('\\textbf{\\large ')
             self.context.append('}\n\\smallskip\n')
         elif isinstance(node.parent, nodes.table):
@@ -2280,8 +2272,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # document title
             self.title = self.encode(node.astext())
             if not self.pdfinfo == None:
-                self.pdfinfo.append( '  pdftitle={%s},'
-                                    % self.encode(node.astext()) )
+                self.pdfinfo.append('  pdftitle={%s},' %
+                                    self.encode(node.astext()) )
             raise nodes.SkipNode
         else:
             self.body.append('\n\n')
@@ -2290,9 +2282,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.bookmark(node)
 
             if self.use_latex_toc:
-                section_star = ""
+                section_star = ''
             else:
-                section_star = "*"
+                section_star = '*'
 
             section_name = self.d_class.section(self.section_level)
             self.body.append('\\%s%s{' % (section_name, section_star))
@@ -2302,18 +2294,17 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_title(self, node):
         self.body.append(self.context.pop())
-        for id in node.parent['ids']:
-            self.body.append('\\label{%s}\n' % id)
+        self.body += ['\\label{%s}\n' % id for id in node.parent['ids']]
 
     def visit_topic(self, node):
         self.topic_classes = node['classes']
-        if ('abstract' in self.topic_classes
-            and self.settings.use_latex_abstract):
+        if ('abstract' in self.topic_classes and
+            self.settings.use_latex_abstract):
             self.body.append('\\begin{abstract}\n')
 
     def depart_topic(self, node):
-        if ('abstract' in self.topic_classes
-            and self.settings.use_latex_abstract):
+        if ('abstract' in self.topic_classes and
+            self.settings.use_latex_abstract):
             self.body.append('\\end{abstract}\n')
         self.topic_classes = []
         if 'contents' in node['classes'] and self.use_latex_toc:
@@ -2325,8 +2316,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # insert fallback definition
         self.latex_fallbacks['inline'] = PreambleCmds.inline
         classes = node.get('classes', [])
-        for cls in classes:
-            self.body.append(r'\DUrole{%s}{' % cls)
+        self.body += [r'\DUrole{%s}{' % cls for cls in classes]
         self.context.append('}' * (len(classes)))
 
     def depart_inline(self, node):
@@ -2362,8 +2352,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def unimplemented_visit(self, node):
-        raise NotImplementedError('visiting unimplemented node type: %s'
-                                  % node.__class__.__name__)
+        raise NotImplementedError('visiting unimplemented node type: %s' %
+                                  node.__class__.__name__)
 
 #    def unknown_visit(self, node):
 #    def default_visit(self, node):
