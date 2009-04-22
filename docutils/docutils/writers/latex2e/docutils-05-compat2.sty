@@ -1,0 +1,63 @@
+% Renamed commands and environments
+% =================================
+% 
+% ..
+% 
+%   :Author:    Guenter Milde
+%   :Contact:   milde@users.berlios.de
+%   :Revision:  $Revision: 5892 $
+%   :Date:      $Date: 2009-02-24$
+%   :Copyright: © 2007, 2009 G. Milde,
+%               Released  without warranties or conditions of any kind
+%               under the terms of the Apache License, Version 2.0
+%               http://www.apache.org/licenses/LICENSE-2.0
+% 
+% Usage
+% -----
+% 
+% Include after custom styles.
+% 
+% ::
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{docutils-05-compat2}
+[2009/03/26 v0.1 compatibility with rst2latex from Docutils 0.5]
+  
+% Mappings
+% --------
+% 
+% The style sheet `docutils-05-compat2.sty` maps the old definitions
+% (or their custom variants) to the new interface:
+% 
+% admonition width ::
+
+\newlength{\DUadmonitionwidth}
+\setlength{\DUadmonitionwidth}{\admonitionwidth}
+  
+% docinfo width ::
+
+\newlength{\DUdocinfowidth}
+\setlength{\DUdocinfowidth}{\docinfowidth}
+  
+% line block ::
+
+\newlength{\DUlineblockindent}
+\setlength{\DUlineblockindent}{\lineblockindentation}
+\newenvironment{DUlineblock}[1]
+  {\begin{lineblock}{#1}}
+  {\end{lineblock}}
+  
+% option lists ::
+
+\newcommand{\DUoptionlistlabel}{\optionlistlabel}
+\newenvironment{DUoptionlist}
+  {\begin{optionlist}{3cm}}
+  {\end{optionlist}}
+  
+% rubric::
+
+\newcommand{\DUrubric}[1]{\rubric{#1}}
+  
+% title reference role::
+
+\newcommand{\DUroletitlereference}[1]{\titlereference{#1}}
