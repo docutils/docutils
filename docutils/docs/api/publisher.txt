@@ -273,19 +273,28 @@ Parts Provided by the LaTeX2e Writer
 ````````````````````````````````````
 
 __`head_prefix`
-    ``parts['head_prefix']`` contains the LaTeX document class, package 
-    and stylesheet inclusion.
+    ``parts['head_prefix']`` contains the first part of the LaTeX preamble:
+    LaTeX document class, required packages and setup before the stylesheet
+    inclusion.
+    
+__`stylesheet`
+    ``parts['stylesheet']`` contains the embedded stylesheet(s) or
+    stylesheet loading command(s).
 
 __`head`
-    ``parts['head']`` currently is empty. 
+    ``parts['head']`` contains the part of the LaTeX preamble following
+    the stylesheet(s): fallback definitions for Docutils-specific commands,
+    PDF hyperlink setup and title metadata (if present). 
 
 __`body_prefix`
     ``parts['body_prefix']`` contains the LaTeX ``\begin{document}`` and
-    title page. 
+    the title page or ``\maketitle`` (in titled documents). 
 
 __`body`
     ``parts['body']`` contains the LaTeX document content, less
-    the ``\begin{document}`` and ``\end{document}`` tags themselves.
+    the ``\begin{document}`` and ``\end{document}`` tags themselves, i.e.
+    the part that can be included into another LaTeX document body using
+    ``\input{}``.
 
 __`body_suffix`
     ``parts['body_suffix']`` contains the LaTeX ``\end{document}``.
