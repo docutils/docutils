@@ -1084,6 +1084,7 @@ Tables
 * Table cells with both multirow and multicolumn are currently not possible.
 
 * literal-blocks in table cells:
+
   - If verbatim or flushleft is used one gets vertical space above and below.
   - This is bad for the topmost paragraph in a cell, therefore the writer
     uses raggedright.
