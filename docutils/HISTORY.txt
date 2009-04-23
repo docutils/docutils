@@ -19,15 +19,22 @@ Changes Since 0.5
 
 * General:
 
-  - Prepare for python 3.0: Node.__nonzero__ returns True instead of 1.
-  - Prepare for python 3.0: use os.walk instead os.path.walk.
-  - Prepare for python 3.0: minimize "types" module where possible.
-  - Apply [ 1878977 ] make_id(): deaccent characters.
-  - Backwards-compatible changes to remove python2.6 -3 deprecation warnings
-  - Text nodes now subclass unicode rather than UserString
-    (which is gone in python 3.0)
+  - Docutils is now compatible with Python versions from 2.3 up to 3.0 (or
+    even 3.1?)
+  
+    + Node.__nonzero__ returns True instead of 1.
+    + use os.walk instead os.path.walk.
+    + minimize "types" module where possible.
+    + Backwards-compatible changes to remove python2.6 -3 deprecation warnings
+    + Text nodes now subclass unicode rather than UserString
+      (which is gone in python 3.0)
+    + 3.0 compatibility module docutils._compat
+    
+    + drop 2.2 compatibility workarounds
+      
   - Apply [ 1719345 ] Galician translation 
   - Apply [ 1905741 ] polish-translation
+  - Apply [ 1878977 ] make_id(): deaccent characters.
 
 * docutils/nodes.py:
 
