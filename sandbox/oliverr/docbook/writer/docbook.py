@@ -823,7 +823,7 @@ class DocBookTranslator(nodes.NodeVisitor):
     def visit_raw(self, node):
         if node.has_key('format') and node['format'] == 'docbook':
             self.body.append(node.astext())
-        raise node.SkipNode
+        raise nodes.SkipNode
 
     def visit_reference(self, node):
         atts = {}
