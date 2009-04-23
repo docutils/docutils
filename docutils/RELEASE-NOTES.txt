@@ -21,6 +21,11 @@ more detailed list of changes, please see the `Docutils History`_.
 Changes Since 0.5
 =================
 
+.. Note::
+
+   Docutils 0.5 is the last version supporting Python 2.2,
+   Docutils 0.6 requires Python 2.3 or newer (including Python 3).
+
 * HTML writer.
 
   - ``--stylesheet`` and ``--stylesheet-path`` options now support a comma
