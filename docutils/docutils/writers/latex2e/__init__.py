@@ -21,14 +21,6 @@ from docutils.writers.newlatex2e import unicode_map
 
 from docutils.transforms.references import DanglingReferencesVisitor
 
-# 2.3 compatibility:
-if sys.version_info < (2,4):
-    def sorted(seq):
-        """Return a sorted copy of `seq`."""
-        newseq = seq[:]
-        newseq.sort()
-        return newseq
-
 class Writer(writers.Writer):
 
     supported = ('latex','latex2e')
@@ -106,7 +98,7 @@ class Writer(writers.Writer):
           ['--use-latex-docinfo'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
-         ('Use LaTeX abstract environment for the documents abstract. '
+         ('Use LaTeX abstract environment for the document's abstract. '
           'Per default the abstract is an unnumbered section.',
           ['--use-latex-abstract'],
           {'default': 0, 'action': 'store_true',
@@ -140,7 +132,7 @@ class Writer(writers.Writer):
          ('When possibile, use the specified environment for literal-blocks. '
           'Default is quoting of whitespace and special chars.',
           ['--literal-block-env'],
-          {'default': '', }),
+          {'default': ''}),
          ('When possibile, use verbatim for literal-blocks. '
           'Compatibility alias for "--literal-block-env=verbatim".',
           ['--use-verbatim-when-possible'],
@@ -260,8 +252,8 @@ class Babel(object):
         'tr': 'turkish',
         'uk': 'ukrainian'
     }
-
-    nobr = '~'
+    # language dependent configuration code
+    setup = ''
 
     def __init__(self, lang):
         self.language = lang
@@ -279,9 +271,9 @@ class Babel(object):
         self.quote_index = 0
         # for spanish ``~n`` must be ``~{}n``
         if self.language.startswith('es'):
-            self.nobr = '~{}'
-        else:
-            self.nobr = '~'
+            # reset tilde ~ to their original meaning (nobreakspace):
+            self.setup = ('\n'
+                        r'\addto\shorthandsspanish{\spanishdeactivate{."~<>}}')
 
     def next_quote(self):
         q = self.quotes[self.quote_index]
@@ -307,15 +299,30 @@ class Babel(object):
         return self._ISO639_TO_BABEL.get(lang)
 
 # Building blocks for the latex preamble
+# --------------------------------------
+
+class SortableDict(dict):
+    """Dictionary with additional sorting methods"""
+
+    def sortedkeys(self):
+        """Return sorted list of keys"""
+        keys = self.keys()
+        keys.sort()
+        return keys
+
+    def sortedvalues(self):
+        """Return list of values sorted by keys"""
+        return [self[key] for key in self.sortedkeys()]
+
+# A container for LaTeX code snippets that can be
+# inserted into the preamble if required in the document.
 #
-# (The package 'makecmds' would enable shorter definitions using the
-# \providelenght and \provideenvironment commands. However, it is pretty
-# non-standard (texlive-latex-extra).)
+# .. The package 'makecmds' would enable shorter definitions using the
+#    \providelenght and \provideenvironment commands.
+#    However, it is prettynon-standard (texlive-latex-extra).
 
 class PreambleCmds(object):
-   """Building blocks for the latex preamble."""
-   # inserted into the preamble if required in the document.
-   pass
+    """Building blocks for the latex preamble."""
 
 PreambleCmds.admonition = r"""% width of admonitions:
 \ifthenelse{\isundefined{\DUadmonitionwidth}}{
@@ -429,7 +436,7 @@ class DocumentClass(object):
         """Return the LaTeX section name for section `level`.
 
         The name depends on the specific document class.
-        Level is 1,2,3..., as level 0 is the title. 
+        Level is 1,2,3..., as level 0 is the title.
         """
 
         sections = [ 'section', 'subsection', 'subsubsection',
@@ -445,7 +452,7 @@ class DocumentClass(object):
 
 class Table(object):
     """Manage a table while traversing.
-    
+
     Maybe change to a mixin defining the visit/departs, but then
     class Table internal variables are in the Translator.
 
@@ -704,8 +711,17 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.colorlinks = 'false'
         else:
             self.colorlinks = 'true'
-        if self.settings.literal_block_env != '':
-            self.settings.use_verbatim_when_possible = True
+        # literal blocks:
+        self.literal_block_env = ''
+        self.literal_block_options = ''
+        if settings.literal_block_env != '':
+            (none,
+             self.literal_block_env,
+             self.literal_block_options,
+             none ) = re.split('(\w+)(.*)', settings.literal_block_env)
+        elif settings.use_verbatim_when_possible:
+            self.literal_block_env = 'verbatim'
+        #
         if self.settings.use_bibtex:
             self.bibtex = self.settings.use_bibtex.split(',',1)
             # TODO avoid errors on not declared citations.
@@ -719,7 +735,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.d_options = self.settings.documentoptions
         if self.babel.get_language():
             self.d_options += ',%s' % self.babel.get_language()
-        self.latex_equivalents[u'\u00A0'] = self.babel.nobr
+        ##self.latex_equivalents[u'\u00A0'] = self.babel.nobr
 
         self.d_class = DocumentClass(settings.documentclass,
                                      settings.use_part_section)
@@ -727,18 +743,18 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.table_stack = []
         self.active_table = Table(self,'longtable',settings.table_style)
 
-        # Two dictionaries to collect document-specific  requirements.
+        # Two special dictionaries to collect document-specific requirements.
         # Values will be inserted
         #  * in alphabetic order of their keys,
         #  * only once, even if required multiple times.
-        self.latex_requirements = {} # inserted before style sheet
-        self.latex_fallbacks = {}    # inserted after style sheet
+        self.requirements = SortableDict() # inserted before style sheet
+        self.fallbacks = SortableDict()    # inserted after style sheet
 
         # Page layout with typearea (if there are relevant document options).
         if (settings.documentclass.find('scr') == -1 and
             (self.d_options.find('DIV') != -1 or
              self.d_options.find('BCOR') != -1)):
-            self.latex_requirements['typearea'] = r'\usepackage{typearea}'
+            self.requirements['typearea'] = r'\usepackage{typearea}'
 
         if self.font_encoding == '':
             fontenc_header = '%\\usepackage[OT1]{fontenc}'
@@ -793,7 +809,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
               self.generator,
               self.latex_head % (self.d_options,self.settings.documentclass),
               # Requirements
-              r'\usepackage{babel}',     # language is in documents settings.
+              # multi-language support (language is in document settings)
+              '\\usepackage{babel}%s' % self.babel.setup,
               fontenc_header,
               r'\usepackage[%s]{inputenc}' % self.latex_encoding,
               r'\usepackage{ifthen}',
@@ -1026,21 +1043,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
             text = text.replace('\n', '~\\\\\n')
         text = text.replace('[', '{[}').replace(']', '{]}')
         if self.insert_none_breaking_blanks:
-            text = text.replace(' ', self.babel.nobr)
+            text = text.replace(' ', '~')
         if self.latex_encoding != 'utf8':
             text = self.unicode_to_latex(text)
             text = self.ensure_math(text)
         return text
-
-    def literal_block_env(self, begin_or_end):
-        env = 'verbatim'
-        opt = ''
-        if self.settings.literal_block_env != '':
-            (none, env, opt, none) = re.split('(\w+)(.*)',
-                                        self.settings.literal_block_env)
-        if begin_or_end == 'begin':
-            return '\\begin{%s}%s\n' % (env, opt)
-        return '\n\\end{%s}\n' % (env, )
 
     def attval(self, text,
                whitespace=re.compile('[\n\r\t\v\f]')):
@@ -1066,7 +1073,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item(node)
 
     def visit_admonition(self, node, name=''):
-        self.latex_fallbacks['admonition'] = PreambleCmds.admonition
+        self.fallbacks['admonition'] = PreambleCmds.admonition
         self.body.append('\\begin{center}\\begin{sffamily}\n')
         self.body.append('\\fbox{\\parbox{\\DUadmonitionwidth}{\n')
         if name:
@@ -1150,8 +1157,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_admonition()
 
     def visit_title_reference(self, node):
-        self.latex_fallbacks['titlereference'] = (
-            PreambleCmds.titlereference)
+        self.fallbacks['titlereference'] = PreambleCmds.titlereference
         self.body.append(r'\DUroletitlereference{')
         if node.get('classes'):
             self.visit_inline(node)
@@ -1301,8 +1307,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_docinfo(self, node):
         # tabularx: automatic width of columns, no page breaks allowed.
-        self.latex_requirements['tabularx'] = r'\usepackage{tabularx}'
-        self.latex_fallbacks['docinfo'] = PreambleCmds.docinfo
+        self.requirements['tabularx'] = r'\usepackage{tabularx}'
+        self.fallbacks['docinfo'] = PreambleCmds.docinfo
         self.docinfo = ['%' + '_'*75 + '\n',
                         '\\begin{center}\n',
                         '\\begin{tabularx}{\\DUdocinfowidth}{lX}\n']
@@ -1376,13 +1382,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_document(self, node):
         # Complete header with information gained from walkabout
         # a) conditional requirements (before style sheet)
-        self.head_prefix += [self.latex_requirements[key]
-                             for key in sorted(self.latex_requirements.keys())]
+        self.head_prefix += self.requirements.sortedvalues()
         # b) coditional fallback definitions (after style sheet)
         self.head.append(
             '\n%%% Fallback definitions for Docutils-specific commands')
-        self.head += [self.latex_fallbacks[key]
-                      for key in sorted(self.latex_fallbacks.keys())]
+        self.head += self.fallbacks.sortedvalues()
         # c) hyperlink setup and PDF metadata
         self.head.append(self.linking % (self.colorlinks,
                                          self.hyperlink_color,
@@ -1460,7 +1464,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             raise NotImplementedError('Cells that '
             'span multiple rows *and* columns are not supported, sorry.')
         if 'morerows' in node:
-            self.latex_requirements['multirow'] = r'\usepackage{multirow}'
+            self.requirements['multirow'] = r'\usepackage{multirow}'
             count = node['morerows'] + 1
             self.active_table.set_rowspan(
                                 self.active_table.get_entry_number()-1,count)
@@ -1649,8 +1653,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append('{')
         else:
             # use key starting with ~ for sorting after small letters
-            self.latex_requirements['~footnote_floats'] = (
-                PreambleCmds.footnote_floats)
+            self.requirements['~footnote_floats'] = (
+                                            PreambleCmds.footnote_floats)
             self.body.append('\\begin{figure}[b]')
             self.body += [r'\hypertarget{%s}' % id for id in node['ids']]
 
@@ -1744,7 +1748,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         return res
 
     def visit_image(self, node):
-        self.latex_requirements['graphicx'] = self.graphicx_package
+        self.requirements['graphicx'] = self.graphicx_package
         attrs = node.attributes
         # Add image URI to dependency list, assuming that it's
         # referring to a local file.
@@ -1823,7 +1827,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('\n')
 
     def visit_line_block(self, node):
-        self.latex_fallbacks['lineblock'] = PreambleCmds.lineblock
+        self.fallbacks['lineblock'] = PreambleCmds.lineblock
         if isinstance(node.parent, nodes.line_block):
             self.body.append('\\item[]\n'
                              '\\begin{DUlineblock}{\\DUlineblockindent}\n')
@@ -1853,23 +1857,34 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('}')
         self.literal = 0
 
-    def visit_literal_block(self, node):
-        """Render a literal-block.
+    # Literal blocks are used for '::'-prefixed literal-indented
+    # blocks of text, where the inline markup is not recognized,
+    # but are also the product of the "parsed-literal" directive,
+    # where the markup is respected.
+    #
+    # In both cases, we want to use a typewriter/monospaced typeface.
+    # For "real" literal-blocks, we can use \verbatim, while for all
+    # the others we must use \mbox or \alltt.
+    #
+    # We can distinguish between the two kinds by the number of
+    # siblings that compose this node: if it is composed by a
+    # single element, it's either
+    # * a real one,
+    # * a parsed-literal that does not contain any markup, or
+    # * a parsed-literal containing just one markup construct.
+    def is_plaintext(self, node):
+        """Check whether a node can be typeset verbatim"""
+        return (len(node) == 1) and isinstance(node[0], nodes.Text)
 
-        Literal blocks are used for '::'-prefixed literal-indented
-        blocks of text, where the inline markup is not recognized,
-        but are also the product of the parsed-literal directive,
-        where the markup is respected.
-        """
-        # In both cases, we want to use a typewriter/monospaced typeface.
-        # For "real" literal-blocks, we can use \verbatim, while for all
-        # the others we must use \mbox.
-        #
-        # We can distinguish between the two kinds by the number of
-        # siblings that compose this node: if it is composed by a
-        # single element, it's surely either a real one or a
-        # parsed-literal that does not contain any markup.
-        #
+    def visit_literal_block(self, node):
+        """Render a literal block."""
+        # environments and packages to typeset literal blocks
+        packages = {'listing': r'\usepackage{moreverb}',
+                    'lstlisting': r'\usepackage{listings}',
+                    'Verbatim': r'\usepackage{fancyvrb}',
+                    '#verbatim': '',
+                    'verbatimtab': r'\usepackage{moreverb}'}
+
         if not self.active_table.is_open():
             # no quote inside tables, to avoid vertical space between
             # table border and literal block.
@@ -1879,27 +1894,25 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             self.body.append('\n')
             self.context.append('\n')
-        if (self.settings.use_verbatim_when_possible and (len(node) == 1) and
-              # in case of a parsed-literal containing just a "**bold**" word:
-            isinstance(node[0], nodes.Text)):
+        if self.literal_block_env != '' and self.is_plaintext(node):
+            self.requirements['literal_block'] = packages.get(
+                                                  self.literal_block_env, '')
             self.verbatim = 1
-            self.body.append(self.literal_block_env('begin'))
+            self.body.append('\\begin{%s}%s\n' % (self.literal_block_env,
+                                                  self.literal_block_options))
         else:
             self.literal_block = 1
             self.insert_none_breaking_blanks = 1
             self.body.append('{\\ttfamily \\raggedright \\noindent\n')
-            # * obey..: is from julien and never worked for me (grubert).
-            #   self.body.append('{\\obeylines\\obeyspaces\\ttfamily\n')
 
     def depart_literal_block(self, node):
         if self.verbatim:
-            self.body.append(self.literal_block_env('end'))
+            self.body.append('\n\\end{%s}\n' % self.literal_block_env)
             self.verbatim = 0
         else:
             self.body.append('\n}')
             self.insert_none_breaking_blanks = 0
             self.literal_block = 0
-            # obey end: self.body.append('}\n')
         self.body.append(self.context.pop())
 
     def visit_meta(self, node):
@@ -1942,7 +1955,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('] ')
 
     def visit_option_list(self, node):
-        self.latex_fallbacks['optionlist'] = PreambleCmds.optionlist
+        self.fallbacks['optionlist'] = PreambleCmds.optionlist
         self.body.append('\\begin{DUoptionlist}\n')
 
     def depart_option_list(self, node):
@@ -1981,7 +1994,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('\n')
 
     def visit_problematic(self, node):
-        self.latex_requirements['color'] = r'\usepackage{color}'
+        self.requirements['color'] = r'\usepackage{color}'
         self.body.append('{\\color{red}\\bfseries{}')
 
     def depart_problematic(self, node):
@@ -2033,7 +2046,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_sidebar(self, node):
         # BUG:  this is just a hack to make sidebars render something
-        self.latex_requirements['color'] = r'\usepackage{color}'
+        self.requirements['color'] = r'\usepackage{color}'
         self.body.append(PreambleCmds.sidebar)
 
     def depart_sidebar(self, node):
@@ -2101,7 +2114,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('\n')
 
     def visit_table(self, node):
-        self.latex_requirements['table'] = PreambleCmds.table
+        self.requirements['table'] = PreambleCmds.table
         if self.active_table.is_open():
             self.table_stack.append(self.active_table)
             # nesting longtable does not work (e.g. 2007-04-18)
@@ -2110,7 +2123,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         for cls in node['classes']:
             self.active_table.set_table_style(cls)
         if self.active_table._table_style == 'booktabs':
-            self.latex_requirements['booktabs'] = r'\usepackage{booktabs}'
+            self.requirements['booktabs'] = r'\usepackage{booktabs}'
         self.body.append('\n' + self.active_table.get_opening())
 
     def depart_table(self, node):
@@ -2282,7 +2295,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_inline(self, node): # <span>, i.e. custom roles
         # insert fallback definition
-        self.latex_fallbacks['inline'] = PreambleCmds.inline
+        self.fallbacks['inline'] = PreambleCmds.inline
         classes = node.get('classes', [])
         self.body += [r'\DUrole{%s}{' % cls for cls in classes]
         self.context.append('}' * (len(classes)))
@@ -2291,7 +2304,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append(self.context.pop())
 
     def visit_rubric(self, node):
-        self.latex_fallbacks['rubric'] = PreambleCmds.rubric
+        self.fallbacks['rubric'] = PreambleCmds.rubric
         self.body.append(r'\DUrubric{')
         self.context.append('}\n')
 
