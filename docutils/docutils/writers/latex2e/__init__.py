@@ -1,4 +1,4 @@
-# $Id$
+i# $Id$
 # Author: Engelbert Gruber <grubert@users.sourceforge.net>
 # Copyright: This module has been placed in the public domain.
 
@@ -2047,6 +2047,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_sidebar(self, node):
         # BUG:  this is just a hack to make sidebars render something
         self.requirements['color'] = r'\usepackage{color}'
+        # current implementation relies on \DUadmonitionwidth
+        self.fallbacks['admonition'] = PreambleCmds.admonition
         self.body.append(PreambleCmds.sidebar)
 
     def depart_sidebar(self, node):
