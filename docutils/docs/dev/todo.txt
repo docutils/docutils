@@ -1120,13 +1120,6 @@ __ rst/alternatives.html#or-not-to-do
 
       :Case Study\: Event Handling: This chapter will be dropped.
 
-* _`footnote spaces`:
-
-  When supplying the command line options
-  --footnote-references=brackets and --use-latex-footnotes with the
-  LaTeX writer (which might very well happen when using configuration
-  files), the spaces in front of footnote references aren't trimmed.
-
 * Enable grid _`tables inside XML comments`, where "--" ends comments.
   I see three implementation possibilities:
 
@@ -1339,7 +1332,7 @@ when used in a document.
                  :class: print-inline
 
     This acts like macros.  The directive contents will have to be
-    evaluated when referenced, not when defined.  
+    evaluated when referenced, not when defined.
 
     * Needs a better name?  "Macro", "substitution"?
     * What to do with directive arguments & options when the
@@ -1936,13 +1929,37 @@ LaTeX constructs and packages in stead of re-implementations
         on entering sidebar and reset on exit.
 
 * footnotes
-  
-  + enable symbolic footnotes (parallel to numeric)
-  + document customization (links to howto and packages)
-  + find out how to link and backlink to footnotes with hyperref
-  + disable or properly support ``--footnote-references=bracket``.
 
-* enumeration environment
+  + enable symbolic footnotes (parallel to numeric)
+
+  + document customization (links to howto and packages)
+
+  + find out how to link and backlink to footnotes with hyperref
+
+    The hyperref manual says:
+
+    :hyperfootnotes: Makes the footnote marks into hyperlinks to the
+		     footnote text. Easily broken ...
+
+    the hyperref README says:
+
+      The footnote support is rather limited. It is beyond the scope to use
+      \footnotemark and \footnotetext out of order or reusing \footnotemark.
+      Here you can either disable hyperref's footnote
+
+    And provides an example which is built on in `this thread
+    <http://www.latex-community.org/forum/viewtopic.php?f=5&t=2846>`__.
+
+  + disable or properly support ``--footnote-references=bracket``
+
+    When supplying the command line options --footnote-references=brackets
+    and --use-latex-footnotes with the LaTeX writer (which might very well
+    happen when using configuration files), the spaces in front of footnote
+    references aren't trimmed.
+
+* enumeration environment, field list
+
+  use mdwlist.sty from texlive-latex-recommended?
 
 * ``--use-latex`` »super option« that would set the following::
 
@@ -1960,7 +1977,7 @@ LaTeX constructs and packages in stead of re-implementations
 
 Default layout
 --------------
-  
+
 * Use italic instead of slanted for titlereference?
 
 * Let meta insert comment into header instead of document?
@@ -1982,9 +1999,9 @@ Tables
 
 * Assumed reST linelength for table width setting configurable.
 
-* Add more classes or options, e.g. for 
+* Add more classes or options, e.g. for
 
-  + column width set by latex, 
+  + column width set by latex,
   + horizontal aligment and rules.
 
 * Table heads and footer for longtable (firstpage lastpage ..)?
@@ -1996,7 +2013,7 @@ Image and figure directives
 * Document graphics peculiarities, e.g. accepted formats.
 
 * compare the test case in:
-  
+
   + `<../../test/functional/input/data/standard.txt>`__
   + `<../../test/functional/expected/standalone_rst_html4css1.html>`__
   + `<../../test/functional/expected/standalone_rst_latex.tex>`__
@@ -2026,12 +2043,12 @@ Missing features
   customizable*.
 
 * Document errors are also too silent.
- 
+
   No link to system errors.
- 
+
   The intentional problematic error in docs/user/rst/demo.txt is not
   referring anywhere. (still true?)
-  
+
 * Meta keywords into PDF ?
 
 
@@ -2048,7 +2065,7 @@ parts.
   syntax (shell-like $something substitution) but are new in version 2.4.
 
   For 2.3 compatibility, %-substitution is needed, which is less readable
-  (and LaTeX' comment sign '%' must be escaped). 
+  (and LaTeX' comment sign '%' must be escaped).
 
   -> provide a 2.3 compatibility implememtation?
 
