@@ -177,7 +177,7 @@ expected output and check it in:
                                          expected_path,
                                          params['destination_path']))
             print >>sys.stderr, '\n%s:' % (self,)
-            print >>sys.stderr, diff
+            print >>sys.stderr, diff.encode('ascii', 'replace')
             raise
         # Execute optional function containing extra tests:
         if '_test_more' in namespace:
