@@ -98,7 +98,7 @@ class Writer(writers.Writer):
           ['--use-latex-docinfo'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
-         ('Use LaTeX abstract environment for the document's abstract. '
+         ("Use LaTeX abstract environment for the document's abstract. "
           'Per default the abstract is an unnumbered section.',
           ['--use-latex-abstract'],
           {'default': 0, 'action': 'store_true',
