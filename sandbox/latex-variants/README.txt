@@ -26,8 +26,6 @@ Questionnaire
 
    Which font encoding do you prefer for the output?
 
-#. Would you use/configure a `configurable transition element`_?
-
 #. Does the latex2e writer need a `--stylesheet-path option`_?
 
 #. Feature wishes or ideas of improvement for the `latex2e` writer.
@@ -41,6 +39,9 @@ Proposed Changes
 
 See also the notes in
 http://docutils.sourceforge.net/docs/user/latex.html#problems
+and the TODO list in
+http://docutils.sourceforge.net/docs/dev/todo.html#latex-writer
+
 
 Default font
 ------------
@@ -68,53 +69,30 @@ Use one of the Postscript default fonts supported by standard LaTeX (pages
 10 and 11 of the `PSNFSS documentation`_)
 
 Bookman
-  -2  very very wide
+  | -2  very very wide
 Charter
-  +0  nonspectacular
-  -1  no "Base35" font
+  | +0  nonspectacular
+  | -1  no "Base35" font
 New Century Schoolbook
-  -1  very wide
+  | -1  very wide
 Palatino
-  +1  recommended by font experts
-  +1  good LaTeX support including matching math fonts, small caps, old-style figures
+  | +1  recommended by font experts
+  | +1  good LaTeX support including matching math fonts, small caps,
+    	old-style figures
+  | -1  bad rendering in xpdf viewer (auto-hinting leads to different
+        x-hight for different characters at some magnifications)
 Times
-  +1  'de facto standard'
-  -1  overused
-  -1  narrow (devised for multi-column layouts)
+  | +1  'de facto standard'
+  | -1  overused
+  | -1  narrow (devised for multi-column layouts)
 Utopia
-  +1  recommended by font experts
-  -1  no `Base35` font, no required part of LaTeX any more.
+  | +1  recommended by font experts
+  | -1  no `Base35` font, no required part of LaTeX any more.
 
 Implement as default stylesheet option, so it can be easily overridden.
 
    My vote is for Palatino.
    --Matthew Leingang
-
-
-Adaptive preamble
------------------
-
-User complaint:
-  TeXlive is a large download, and in addition to the base package rst2latex
-  also requires a bunch of extra ``*.sty`` packages, even if they aren't
-  used in the current document.
-
-Solution:
-  Keep to standard or widely used packages.
-  
-  Include only package loading commands and definitions that are
-  needed in the current document.
-  
-
-Implemented:
-  `fallback definitions`_ for Docutils-specific constructs.
-
-  A similar ``LaTeXTranslator.latex_requirements`` dictionary for additions
-  needed *before* the custom style sheet (required packages and their
-  settings).
-
-TODO
-  Add/Update unit-test for to_latex_encoding
 
 
 Configurable transition element
@@ -131,7 +109,7 @@ http://www.tug.org/pracjourn/2005-4/walden/
 The `memoir` class defines a ``\fancybreak`` that can be used like
 \fancybreak{$*\quad*\quad*$}
 
-.. 
+..
   \newcommand{\fancybreak}{\@ifstar{\@sfbreak}{\@fbreak}}
   \newcommand{\@fbreak}[1]{\par
     \penalty -100
@@ -149,42 +127,6 @@ The `memoir` class defines a ``\fancybreak`` that can be used like
   %%  \vskip -\onelineskip
     \@afterindenttrue
     \@afterheading}
-
-Propsal
-~~~~~~~
-Use semantic markup with a ``\DUtransition`` command that can be
-customised in a style sheet.
-
-
-Table classes
--------------
-
-Currently, table export uses a logic based on the relative width of the
-columns in the input to set the column width in the output.
-
-Formal (booktabs) vs. standard (fully bordered) tables can be chosen in the
-configuration settings (only document wide).
-
-Tables without borders are possible with the ``borderless`` class argument
-like::
-
-   The following Unicode characters may also precede inline markup:
-
-       .. class:: borderless
-
-       ===  ==========================================================
-       ‘    (U+2018, left single-quote)
-       “    (U+201C, left double-quote)
-       ’    (U+2019, apostrophe)
-       «    (U+00AB, left guillemet, or double angle quotation mark)
-       ¡    (U+00A1, inverted exclamation mark)
-       ¿    (U+00BF, inverted question mark)
-       ===  ==========================================================
-
-Proposal
-~~~~~~~~
-
-Add more classes e.g. for column width set by latex, horizontal aligment.
 
 
 --stylesheet-path option
@@ -288,80 +230,6 @@ c) rewrite path if this prevents errors:
   if the conversion is started from the base dir.
 
 
-Image and figure directives
----------------------------
-
-* Document graphics peculiarities, e.g. accepted formats.
-
-* should start a new paragraph.
-
-.. compare the functional test result:
-   /home/milde/Code/Python/docutils-svn/docutils/test/functional/input/data/standard.txt
-   and /home/milde/Code/Python/docutils-svn/docutils/test/functional/output/standalone_rst_latex.tex
-
-* centered and aligned images with ``\centerline``, ``\flushleft``,
-  ``\flushright``.
-
-* aligning a figure also aligns the legend *but not the caption*
-
-  What should be aligned?
-
-  Should the surrounding text wrap around the figure?
-
-Use a template file
--------------------
-
-Using a template file instead of hard-coded string literals for the
-sceleton of the exported LaTeX file would provide improved configurability.
-A power user could replace the template with a custom version,
-e.g. to overcome issues with order of package loading or ommiting critical
-parts.
-
-Template Strings, ``from string import Template``, provide a suitable syntax
-(shell like $something substitution) but are new in version 2.4.
-
-For 2.3 compatibility, %-substitution would be needed, which is
-sub-optimal as the percent sign is LaTeX' comment sign (and hence of
-valuable use in a template). Compare::
-
-   %% This file is generated by Docutils
-   \documentclass[%(documentoptions)s]{%(documentclass)s}
-   ...
-
-and::
-
-   % This file is generated by Docutils
-   \documentclass[$documentoptions]{$documentclass}
-   ...
-
-Wrap text around figures with class "wrap"
-------------------------------------------
-
-Like the `odtwriter`, `latex2e` should recognise::
-
- .. class:: wrap
-
-and use the "wrapfig" (or other recommended) package to wrap text around a
-figure.
-
-``--use-latex`` »super option«
-------------------------------
-
-On 2009-03-09, Alan G Isaac wrote:
-
- I am wondering if it would be helpful to have a
- ``--use-latex-when-possible``
- option that would set the following::
-
-      --use-latex-toc
-      --use-latex-docinfo
-      --use-latex-abstract
-      --use-latex-footnotes
-      --use-latex-citations
-
-I [GM] would rather propose the simpler name ``--use-latex``.
-
-
 Require only standard packages
 ------------------------------
 
@@ -370,15 +238,6 @@ not exist on the target system.
 
 .. \@ifpackageloaded{} \IfPackageExists{}
 
-
-Unicode to LaTeX with ``unicodesymbols`` file from LyX
-------------------------------------------------------
-
-The `LyX <http://www.lyx.org>`_ document processor has a comprehensive
-Unicode to LaTeX conversion feature with a file called ``unicodesymbols``
-that lists LaTeX counterparts for a wide range of Unicode characters.
-
-Use this in the LaTeXTranslator.unicode_to_latex() method.
 
 
 Bibliography directive
@@ -393,7 +252,7 @@ added by LaTeX which is possible with:
   From: Martin Scharrer <martin@scharrer-online.de>
   Subject: Re: Literaturverzeichnis ?berschrift entfernen
   Date: Sun, 22 Mar 2009 06:30:33 -0700 (PDT)
-  
+
   On Mar 21, 11:10?pm, Elfish26111...@gmail.com wrote:
   > Hallo,
   >
@@ -405,20 +264,20 @@ added by LaTeX which is possible with:
   >
   > habe ich bereits versucht. Aber wie gesagt den reservierten Platz in
   > der Überschrift behält er immernoch.
-  
+
   Die Ueberschrift ist denk ich mal ein '\chapter*{\bibname}' was du
   dann zu einem '\chapter*{}' machst.
   Die Loesung ist einfach das \chapter macro umzudefinieren:
-  
+
   \begingroup
   \renewcommand{\chapter}[2]{}
   % Literaturverzeichnis einbinden: ueber BibTeX oder manuell ...
   \endgroup
-  
+
   Wobei der '*' hier einfach als ein zusaetzliches Argument genommen
   wird.
   Dann braucht \bibname gar nicht mehr geaendert werden.
-  
+
   Gruesse,
   Martin
 
@@ -450,31 +309,15 @@ Also see the `Docutils Release Notes`_, the `Docutils History`_.
     + if output changed: test-compile and approve new output in
       ../../docutils/test/functional/output/
 
-  * fix documentation in ../../docutils/docs/user/latex.txt
+  * Documentation
 
-  * add changes to ../../docutils/HISTORY.txt
+    * remove from TODO list in ../../docutils/docs/dev/todo.txt
 
-  * add backwards-incompatible changes to ../../docutils/RELEASE-NOTES.txt
+    * describe new end-user features in ../../docutils/docs/user/latex.txt
 
-
-
-Fallback definitions
---------------------
-
-Include only definitions that are needed in the
-current document.
-
-Implementation:
-
-  The ``LaTeXTranslator.visit<node>`` functions store needed definitions and
-  commands in the dictionary ``LaTeXTranslator.latex_fallbacks``.
-
-  The fallbacks are defined with ``\providecommand``.
-
-  The content of ``LaTeXTranslator.latex_fallbacks`` is written to the
-  preamble *after* the custom stylesheet reference/inclusion.  Customising
-  in a style sheet is possible with ``\newcommand``.
-
+    * add backwards-incompatible changes to ../../docutils/RELEASE-NOTES.txt
+    * add summary of changes to ../../docutils/HISTORY.txt
+    * describe change in ../../docutils/docs/user/docutils-05-compat.sty.txt
 
 
 Alternative latex writers
@@ -531,6 +374,9 @@ Related sandbox projects
 .. _latex.html: ../../docutils/docs/user/latex.html
 .. _latex2e-compat:
    ../../docutils/docs/user/docutils-05-compat.sty.html
+
+.. _font encoding: ../../docutils/docs/user/latex.html#
+
 
 .. _PSNFSS documentation:
    http://dante.ctan.org/CTAN/macros/latex/required/psnfss/psnfss2e.pdf
