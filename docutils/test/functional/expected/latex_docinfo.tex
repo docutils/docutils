@@ -4,18 +4,18 @@
 %\usepackage[OT1]{fontenc}
 \usepackage[latin1]{inputenc}
 \usepackage{ifthen}
-\newlength{\locallinewidth}
 \usepackage{tabularx}
 \usepackage{typearea}
+% provide a length variable and set it
+\newcommand*{\DUprovidelength}[2]{
+  \ifthenelse{\isundefined{#1}}{\newlength{#1}\setlength{#1}{#2}}{}
+}
 
 %%% User specified packages and stylesheets
 
 %%% Fallback definitions for Docutils-specific commands
 % width of docinfo table:
-\ifthenelse{\isundefined{\DUdocinfowidth}}{
-  \newlength{\DUdocinfowidth}
-  \setlength{\DUdocinfowidth}{0.9\textwidth}
-}{}
+\DUprovidelength{\DUdocinfowidth}{0.9\textwidth}
 % hyperref (PDF hyperlinks):
 \ifthenelse{\isundefined{\hypersetup}}{
   \usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
@@ -47,7 +47,5 @@ South Barwell}
 \begin{tabularx}{\DUdocinfowidth}{lX}
 \end{tabularx}
 \end{center}
-
-\setlength{\locallinewidth}{\linewidth}
 
 \end{document}

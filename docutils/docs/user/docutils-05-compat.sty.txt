@@ -151,12 +151,12 @@ New feature:
   unless explicitely required via the ``--stylesheet`` option.
 
   :font-encoding = "":  do not load `ae` and `aeguill` packages, i.e.
-  
+
                         * do not change font settings,
                         * do not use the fontenc package
                           (implicitely loaded via `ae`),
                         * use LaTeX default font encoding (OT1)
-  
+
   :font-encoding = "OT1": load `fontenc` with ``\usepackage[OT1]{fontenc}``
 
 Example:
@@ -290,9 +290,34 @@ Set text and/or background colour, provide ``\colorbox``::
 
   \usepackage{color}
 
+Floats for footnotes settings
+`````````````````````````````
+
+Settings for the use of floats for footnotes are only included if
+
+* the option "use-latex-footnotes" is False, and
+* there is at least one footnote in the document.
+
+::
+
+  % begin: floats for footnotes tweaking.
+  \setlength{\floatsep}{0.5em}
+  \setlength{\textfloatsep}{\fill}
+  \addtolength{\textfloatsep}{3em}
+  \renewcommand{\textfraction}{0.5}
+  \renewcommand{\topfraction}{0.5}
+  \renewcommand{\bottomfraction}{0.5}
+  \setcounter{totalnumber}{50}
+  \setcounter{topnumber}{50}
+  \setcounter{bottomnumber}{50}
+  % end floats for footnotes
+
 
 Special lengths, commands, and environments
-```````````````````````````````````````````
+-------------------------------------------
+
+Renamed definitions (now conditional)
+`````````````````````````````````````
 
 The names for special doctree elements are now prefixed with ``DU``.
 
@@ -309,13 +334,11 @@ custom variants) to the new interface.
 
 admonition width
 ^^^^^^^^^^^^^^^^
-::
+The ``admonitionwith`` lenght is replaced by the more powerful
+``\DUadmonition`` (see `New Definitions`_)::
 
   \newlength{\admonitionwidth}
   \setlength{\admonitionwidth}{0.9\textwidth}
-
-  \newlength{\DUadmonitionwidth}
-  \AtBeginDocument{\setlength{\DUadmonitionwidth}{\admonitionwidth}}
 
 docinfo width
 ^^^^^^^^^^^^^
@@ -347,6 +370,14 @@ line block
   \newenvironment{DUlineblock}[1]
     {\begin{lineblock}{#1}}
     {\end{lineblock}}
+
+local line width
+^^^^^^^^^^^^^^^^
+
+The ``\locallinewidth`` length for internal use in tables is replaced
+by ``\DUtablewidth``. It was never intended for customization::
+
+  \newlength{\locallinewidth}
 
 option lists
 ^^^^^^^^^^^^
@@ -384,24 +415,26 @@ title reference role
 
   \newcommand{\DUroletitlereference}[1]{\titlereference{#1}}
 
-Floats for footnotes settings
-`````````````````````````````
 
-Settings for the use of floats for footnotes are only included if
+New definitions
+```````````````
 
-* the option "use-latex-footnotes" is False, and
-* there is at least one footnote in the document.
+New Feature:
+  Enable customization of some more Docutils elements with special commands
 
-::
+  :sidebar:    ``DUsidebar`` command (better environment?)
+  :transition: ``\DUtransition`` command
+  :admonition: ``DUadmonition`` environment (replacing ``\admonitionwidth``
+  :field list: ``DUfieldlist`` environment
 
-  % begin: floats for footnotes tweaking.
-  \setlength{\floatsep}{0.5em}
-  \setlength{\textfloatsep}{\fill}
-  \addtolength{\textfloatsep}{3em}
-  \renewcommand{\textfraction}{0.5}
-  \renewcommand{\topfraction}{0.5}
-  \renewcommand{\bottomfraction}{0.5}
-  \setcounter{totalnumber}{50}
-  \setcounter{topnumber}{50}
-  \setcounter{bottomnumber}{50}
-  % end floats for footnotes
+Backwards compatibility:
+  In most cases, the default definition corresponds to the previously used
+  construct. The following definitions restore the old behaviour in case of
+  changes.
+
+  Admonitions: (use the ``\admonitionwidth`` variable)::
+
+    \newcommand{\DUadmonition}[1]{%
+      \begin{center}
+        \fbox{\parbox{\admonitionwidth}{\sffamily #1}}
+      \end{center}
