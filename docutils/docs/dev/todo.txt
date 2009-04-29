@@ -1895,53 +1895,94 @@ __ http://docutils.sourceforge.net/docs/user/latex.html#problems
 .. _latex-variants:
    http://docutils.sourceforge.net/sandbox/latex-variants/README.html
 
+Bug fixes
+---------
+
+* A multirow cell in a table expects empty cells in the spanned rows while
+  the doctree contains only the remaining cells ("Exchange Table Model", see
+  docs/ref/soextblx.dtd).
+
+  Needs bookkeeping of "open" multirow cells (how many how long) and
+  insertion of additional '&'s.
+
+  See `<../../test/functional/input/data/latex.txt>`__
+
+* Aligning a figure also aligns the legend *but not the caption* nor a table
+  in the legend.
+
+
 Generate clean and configurable LaTeX source
 ----------------------------------------------
+
+* Check the generated source with package `nag`.
+
+* LaTeX code style (?)::
+
+   \item {}      -> \item % as '[' is already escaped
+   \item[{Term}] -> \item[Term]
+   \item [what:] -> \item[what:]
+   {\macro}      -> \macro{}
+   {\$}		 -> \$
+   {\&}		 -> \&
+   {\%}		 -> \%
+   {\#}          -> \#
+
 
 LaTeX macros for Docutils-specific objects
 ``````````````````````````````````````````
 
-:sidebar:    ``DUsidebar`` environment
-:transition: ``\DUtransition`` command
-:admonition: ``DUadmonition`` environment
-:field list: ``DUfieldlist`` environment
-:legend:     needed?
-:subtitle:   is there a native construct?
+:legend:     Conflict with flushright/flushleft for image alignment
+	     ``! LaTeX Error: There's no line here to end.``
+	     --> Re-try after fixing the alignment bug.
+
+:subtitle:   Is there a native construct?
+
+:admonitions: Provide separate commands for specific admonitions (error,
+	      note, ...)?
 
 LaTeX constructs and packages in stead of re-implementations
 ````````````````````````````````````````````````````````````
 
+Which packages do we want to use?
+
+a) only base packages:
+   * conservative, always present, few dependencies
+   * needs workarounds/hacks (reinventing the wheel) for advanced features
+
+b) base and "recommended" packages
+
+   (packages that should be in a "reasonably sized and reasonably modern
+   LaTeX installation like the `texlive-latex-recommended` Debian package,
+   say):
+
+   * no "fancy" or "exotic" dependencies
+   * some workarounds still required for newer packages
+
+c) state-of-the-art packages (recommendations from comp.text.tex)
+
+   * high dependencies, some packages might not be available in older
+     distributions
+   * cleanest possible LaTeX code, stable solution, no re-inventing of wheels.
+
 * ``alltt`` environment for literal block
 
-* find out and use the correct width parameter
-  instead of the ``\locallinewidth`` workaround.
-
-  * linewidth - width of a line in the local environment
-  * textwidth - the width of text on the page
-
-  Maybe always use linewidth ?
-
-  *Bug* inside a minipage a (e.g. Sidebar) the linewidth is
-        not changed, needs fix in docutils so that tables
-        are not too wide.
-
-        So we add ``\locallinewidth`` set it initially and
-        on entering sidebar and reset on exit.
+* Sub- and superscript with ``\textsubscript`` (needs
+  ``\usepackage{fixltx2e}``) and ``\textsuperscript``.
 
 * footnotes
 
   + enable symbolic footnotes (parallel to numeric)
 
-  + document customization (links to howto and packages)
+  + document customization (links to how-to and packages)
 
-  + find out how to link and backlink to footnotes with hyperref
+  + find out how to link and back-link to footnotes with `hyperref`
 
-    The hyperref manual says:
+    The `hyperref` manual says:
 
-    :hyperfootnotes: Makes the footnote marks into hyperlinks to the
-		     footnote text. Easily broken ...
+      hyperfootnotes: Makes the footnote marks into hyperlinks to the
+      footnote text. Easily broken ...
 
-    the hyperref README says:
+    the `hyperref` README says:
 
       The footnote support is rather limited. It is beyond the scope to use
       \footnotemark and \footnotetext out of order or reusing \footnotemark.
@@ -1959,9 +2000,10 @@ LaTeX constructs and packages in stead of re-implementations
 
 * enumeration environment, field list
 
-  use mdwlist.sty from texlive-latex-recommended?
+  use `mdwlist` from texlive-latex-recommended?
 
-* ``--use-latex`` »super option« that would set the following::
+* ``--use-latex-when-possible`` »super option« that would set the
+  following::
 
       --use-latex-toc
       --use-latex-docinfo
@@ -1969,42 +2011,96 @@ LaTeX constructs and packages in stead of re-implementations
       --use-latex-footnotes
       --use-latex-citations
 
-   .. proposed by Alan G Isaac as ``--use-latex-when-possible``
+   ?
 
-* center subsection{Abstract} gives a LaTeX error here.
-  ``! LaTeX Error: Something's wrong--perhaps a missing \item.``
-  Committed a HACK: centering by hfill.
+.. center subsection{Abstract} gives a LaTeX error here.
+   ``! LaTeX Error: Something's wrong--perhaps a missing \item.``
+   Committed a HACK: centring by ``\hfill``.
 
 Default layout
 --------------
 
-* Use italic instead of slanted for titlereference?
+* Always include `fixltx2e`_ ("visible" LaTeX bugfixes, ``\textsubscript``)
 
-* Let meta insert comment into header instead of document?
+* Which `default font`__ should we use for the output?
 
-* Insert system messages? Where? As comment or visible?
+  Proposal: Use one of the Postscript default fonts supported by standard
+  LaTeX (pages 10 and 11 of the `PSNFSS documentation`_), e.g. Times or
+  Palatino.
+
+* Use *italic* instead of `slanted` for titlereference?
+
+* Let `meta` directive insert comment into header instead of document?
+
+* More prominent system messages (use admonition?, red?)
+
+* Start a new paragraph after lists (as currently)
+  or continue (no blank line in source, no parindent in output)?
+  (Maybe continue if the `compound paragraph`_ directive is used?)
+
+* Indent/handle doctest blocks similar to literal blocks?
 
 * Definitions in definition lists start on the same line as the term.
   Putting ``\leavevmode`` after the term results in a new newline if the
   definition starts with a bullet list or similar.
 
-* Sidebar handling?
+* Sidebar handling (environment with `framed`, `marginnote`, `wrapfig`,
+  ...)?
 
-* Use optionlist for docinfo, the table does only work for single page.
+* Use optionlist for docinfo? The table does only work for single page.
+
+* Recognize LaTeX and replace by ``\LaTeX`` (or not?).
+
+* Keep literal-blocks together on a page, avoid pagebreaks.
+
+  Failed experiments up to now: samepage, minipage, pagebreak 1 to 4 before
+  the block.
+
+  Should be possible with ``--literal-block-env==lstlistings`` and some
+  configuration...
+
+
+__ ../../../sandbox/latex-variants/README.html#default-font
+
+.. _PSNFSS documentation:
+   http://dante.ctan.org/CTAN/macros/latex/required/psnfss/psnfss2e.pdf
+.. _compound paragraph:
+   ../ref/rst/directives.html#compound-paragraph
+.. _fixltx2e:
+   http://dante.ctan.org/CTAN/help/Catalogue/entries/fixltx2e.html
 
 Tables
 ``````
 
 * Improve/simplify logic to set the column width in the output.
 
-* Assumed reST linelength for table width setting configurable.
+  + Assumed reST line length for table width setting configurable.
+  + Maybe use `ltxtable` (a combination of `tabularx` (auto-width) and
+    `longtable` (page breaks))?
+
+  Use tabularx column type ``X`` and let LaTeX decide width?
+
+* csv-tables do not have a colwidth.
 
 * Add more classes or options, e.g. for
 
   + column width set by latex,
-  + horizontal aligment and rules.
+  + horizontal alignment and rules.
 
 * Table heads and footer for longtable (firstpage lastpage ..)?
+
+* In tools.txt the option tables right column, there should be some more
+  spacing between the description and the next paragraph "Default:".
+
+* Paragraph separation in tables is hairy.
+  see http://www.tex.ac.uk/cgi-bin/texfaq2html?label=struttab
+
+  - The strut solution did not work.
+  - setting extrarowheight added ad top of row not between paragraphs in
+    a cell. ALTHOUGH i set it to 2pt because, text is too close to the topline.
+  - baselineskip/stretch does not help.
+
+* Should there be two hlines after table head and on table end ?
 
 
 Image and figure directives
@@ -2018,19 +2114,14 @@ Image and figure directives
   + `<../../test/functional/expected/standalone_rst_html4css1.html>`__
   + `<../../test/functional/expected/standalone_rst_latex.tex>`__
 
-* Should image start a new paragraph?
+* Should image start a new paragraph? (Keep support for inlined images with
+  substitutions!)
 
-* Centered and aligned images with ``\centerline``, ``\flushleft``,
+* Centred and aligned images with ``\centerline``, ``\flushleft``,
   ``\flushright`` instead of environments (avoids spurious whitespace).
 
-* Aligning a figure also aligns the legend *but not the caption*
-
-  What should be aligned?
-
-  Should the surrounding text wrap around the figure?
-
 * Wrap text around figures with class "wrap".
-  Use the "wrapfig" (or other recommended) package.
+  Use `wrapfig` (or other recommended) package.
 
 
 Missing features
@@ -2042,23 +2133,44 @@ Missing features
   is inserted right at the end of the document. *This should be
   customizable*.
 
-* Document errors are also too silent.
+* Document errors are also too silent. (Use admonition/error?)
 
   No link to system errors.
 
-  The intentional problematic error in docs/user/rst/demo.txt is not
-  referring anywhere. (still true?)
-
 * Meta keywords into PDF ?
 
+* Multiple author entries in docinfo (same thing as in html).
+  (already solved?)
+
+* LaTeX does not support multiple tocs in one document
+  (might be no limitation except for docutils documentation).
+
+  The "minitoc" latex package can produce per-chapter tocs in
+  book and report document classes.
+
+* Hyperlinks are not hyphenated; this leads to bad spacing. See
+  docs/user/rst/demo.txt 2.14 directives.
+
+  --> Pass the right option to ``\hypersetup``
 
 template file
 `````````````
 
+* Consider peter funk's hooks for TeXpert (or use a template file)?
+
+  * Define his own document preamble (including the choice to
+    choose his own documentclass.  That would make the ``--documentclass``
+    option superfluous).  I suggest to call this option ``--preamble``
+  * Use two additional hooks to put additional stuff just behind the
+    ``\begin{document}`` and just before the ``\end{document}`` macros.
+    Typical uses would be ``\tableofcontents``, ``\listoffigures`` and
+    ``\appendix``, ``\makeindex``, ``\makeglossary`` and some such
+    for larger documents.
+
 Using a template file instead of hard-coded string literals for the
-sceleton of the exported LaTeX file would provide improved configurability.
+skeleton of the exported LaTeX file would provide improved configurability.
 A power user could replace the template with a custom version,
-e.g. to overcome issues with order of package loading or supressing some
+e.g. to overcome issues with order of package loading or suppressing some
 parts.
 
 * Template Strings, ``from string import Template``, provide a suitable
@@ -2067,7 +2179,7 @@ parts.
   For 2.3 compatibility, %-substitution is needed, which is less readable
   (and LaTeX' comment sign '%' must be escaped).
 
-  -> provide a 2.3 compatibility implememtation?
+  -> provide a 2.3 compatibility implementation?
 
 Unicode to LaTeX with ``unicodesymbols`` file from LyX
 ``````````````````````````````````````````````````````
@@ -2077,7 +2189,23 @@ Unicode to LaTeX conversion feature with a file called ``unicodesymbols``
 that lists LaTeX counterparts for a wide range of Unicode characters.
 
 Use this in the LaTeXTranslator.unicode_to_latex() method.
+Think of copyright issues!
 
+Allow choice between utf8 (standard) and utf8x (extended) encodings
+```````````````````````````````````````````````````````````````````
+
+* Allow the user to select *utf8* or *utf8x* LaTeX encoding. (Docutil's
+  output encoding becomes LaTeX's input encoding.)
+
+The `ucs` package provides extended support for UTF-8 encoding in LaTeX
+via the `inputenc`-option ``utf8x``.  It is, however, a non-standard
+extension and no longer developed.
+
+Ideas:
+  * Python has 4 names for the UTF-8 encoding (``utf_8, U8, UTF, utf8``)
+    give a special meaning to one of the aliases,
+
+  * scan "stylesheets" option and use ``utf8x`` if it contains ``ucs``
 
 Front-End Tools
 ===============

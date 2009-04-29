@@ -1,4 +1,4 @@
-i# $Id$
+# $Id$
 # Author: Engelbert Gruber <grubert@users.sourceforge.net>
 # Copyright: This module has been placed in the public domain.
 
@@ -324,22 +324,27 @@ class SortableDict(dict):
 class PreambleCmds(object):
     """Building blocks for the latex preamble."""
 
-PreambleCmds.admonition = r"""% width of admonitions:
-\ifthenelse{\isundefined{\DUadmonitionwidth}}{
-  \newlength{\DUadmonitionwidth}
-  \setlength{\DUadmonitionwidth}{0.9\textwidth}
-}{}"""
+PreambleCmds.admonition = r"""% admonitions (specially marked "topics")
+\providecommand{\DUadmonition}[1]{%
+  \begin{center}
+    \fbox{\parbox{0.9\textwidth}{\sffamily #1}}
+  \end{center}
+}"""
 
 PreambleCmds.docinfo = r"""% width of docinfo table:
-\ifthenelse{\isundefined{\DUdocinfowidth}}{
-  \newlength{\DUdocinfowidth}
-  \setlength{\DUdocinfowidth}{0.9\textwidth}
-}{}"""
+\DUprovidelength{\DUdocinfowidth}{0.9\textwidth}"""
 
 PreambleCmds.embedded_package_wrapper = r"""\makeatletter
 %% embedded stylesheet: %s
 %s
 \makeatother"""
+
+PreambleCmds.fieldlist = r"""% field list environment:
+\ifthenelse{\isundefined{\DUfieldlist}}{
+  \newenvironment{DUfieldlist}%
+    {\quote\description}
+    {\enddescription\endquote}
+}{}"""
 
 PreambleCmds.footnote_floats = r"""% settings for footnotes as floats:
 \setlength{\floatsep}{0.5em}
@@ -353,8 +358,8 @@ PreambleCmds.footnote_floats = r"""% settings for footnotes as floats:
 \setcounter{bottomnumber}{50}"""
 
 PreambleCmds.inline = r"""% custom roles:
-% \DUrole{NAME}{content} calls \docutilsroleNAME if it exists
-\providecommand{\DUrole}[2]{%
+% \DUrole{NAME} calls \docutilsroleNAME if it exists
+\providecommand*{\DUrole}[2]{%
   \ifcsname docutilsrole#1\endcsname%
     \csname docutilsrole#1\endcsname{#2}%
   \else%
@@ -362,20 +367,22 @@ PreambleCmds.inline = r"""% custom roles:
   \fi%
 }"""
 
-PreambleCmds.lineblock = r"""% lineblock environment:
-\ifthenelse{\isundefined{\DUlineblockindent}}{
-  \newlength{\DUlineblockindent}
-  \setlength{\DUlineblockindent}{2.5em}
-}{}
+PreambleCmds.legend = r"""% legend (extending a caption):
+\providecommand{\DUlegend}[1]{{\\small #1}}"""
+
+PreambleCmds.lineblock = r"""% line block environment:
+\DUprovidelength{\DUlineblockindent}{2.5em}
 \ifthenelse{\isundefined{\DUlineblock}}{
-  \newenvironment{DUlineblock}[1]
-  {\begin{list}{}
-    {\setlength{\partopsep}{\parskip}
-     \addtolength{\partopsep}{\baselineskip}
-     \topsep0pt\itemsep0.15\baselineskip\parsep0pt
-     \leftmargin#1}
-   \raggedright}
-  {\end{list}}
+  \newenvironment{DUlineblock}[1]{%
+    \list{}{\setlength{\partopsep}{\parskip}
+            \addtolength{\partopsep}{\baselineskip}
+            \setlength{\topsep}{0pt}
+            \setlength{\itemsep}{0.15\baselineskip}
+            \setlength{\parsep}{0pt}
+            \setlength{\leftmargin}{#1}}
+    \raggedright
+  }
+  {\endlist}
 }{}"""
 
 PreambleCmds.linking = r"""%% hyperref (PDF hyperlinks):
@@ -384,36 +391,40 @@ PreambleCmds.linking = r"""%% hyperref (PDF hyperlinks):
 }{}"""
 
 PreambleCmds.optionlist = r"""% option list:
-\providecommand{\DUoptionlistlabel}[1]{\bf #1 \hfill}
-\ifthenelse{\isundefined{\DUoptionlistindent}}{
-  \newlength{\DUoptionlistindent}
-  \setlength{\DUoptionlistindent}{3cm}
-}{}
+\providecommand*{\DUoptionlistlabel}[1]{\bf #1 \hfill}
+\DUprovidelength{\DUoptionlistindent}{3cm}
 \ifthenelse{\isundefined{\DUoptionlist}}{
-  \newenvironment{DUoptionlist}
-  {\begin{list}{}
-    {\setlength{\labelwidth}{\DUoptionlistindent}
-     \setlength{\rightmargin}{1cm}
-     \setlength{\leftmargin}{\rightmargin}
-     \addtolength{\leftmargin}{\labelwidth}
-     \addtolength{\leftmargin}{\labelsep}
-     \renewcommand{\makelabel}{\DUoptionlistlabel}}
+  \newenvironment{DUoptionlist}{%
+    \list{}{\setlength{\labelwidth}{\DUoptionlistindent}
+            \setlength{\rightmargin}{1cm}
+            \setlength{\leftmargin}{\rightmargin}
+            \addtolength{\leftmargin}{\labelwidth}
+            \addtolength{\leftmargin}{\labelsep}
+            \renewcommand{\makelabel}{\DUoptionlistlabel}}
   }
-  {\end{list}}
+  {\endlist}
 }{}"""
 
-PreambleCmds.rubric = r"""% rubric (an informal heading):
-\newcommand{\DUrubric}[1]{\subsection*{~\hfill {\it #1} \hfill ~}}"""
+PreambleCmds.providelenght = r"""% provide a length variable and set it
+\newcommand*{\DUprovidelength}[2]{
+  \ifthenelse{\isundefined{#1}}{\newlength{#1}\setlength{#1}{#2}}{}
+}"""
 
-PreambleCmds.sidebar = r"""
-\setlength{\locallinewidth}{0.9\DUadmonitionwidth}
-\begin{center}\begin{sffamily}
-\fbox{\colorbox[gray]{0.80}{\parbox{\DUadmonitionwidth}{
-"""
+PreambleCmds.rubric = r"""% rubric (an informal heading):
+\providecommand*{\DUrubric}[1]{\subsection*{~\hfill {\it #1} \hfill ~}}"""
+
+PreambleCmds.sidebar = r"""% sidebar (text outside the main text flow)
+\providecommand{\DUsidebar}[1]{%
+  \begin{center}
+    \sffamily
+    \fbox{\colorbox[gray]{0.80}{\parbox{0.9\textwidth}{#1}}}
+  \end{center}
+}"""
 
 PreambleCmds.table = r"""\usepackage{longtable}
 \usepackage{array}
-\setlength{\extrarowheight}{2pt}"""
+\setlength{\extrarowheight}{2pt}
+\newlength{\DUtablewidth} % internal use in tables"""
 
 PreambleCmds.title = r"""
 %%%%%% Title metadata
@@ -422,7 +433,13 @@ PreambleCmds.title = r"""
 \date{%s}"""
 
 PreambleCmds.titlereference = r"""% title reference role:
-\newcommand{\DUroletitlereference}[1]{\textsl{#1}}"""
+\providecommand*{\DUroletitlereference}[1]{\textsl{#1}}"""
+
+PreambleCmds.topictitle = r"""% title for "topics" (admonitions, sidebar)
+\providecommand*{\DUtopictitle}[1]{\textbf{\large #1}\smallskip}"""
+
+PreambleCmds.transition = r"""% transition ([fancy]break, anonymous section)
+\providecommand*{\DUtransition}{\hspace*{\fill}\hrulefill\hspace*{\fill}}"""
 
 
 class DocumentClass(object):
@@ -503,18 +520,22 @@ class Table(object):
         if attr in self._attrs:
             return self._attrs[attr]
         return None
+
     def get_vertical_bar(self):
         if self._table_style == 'standard':
             return '|'
         return ''
-    # horizontal lines are drawn below a row, because we.
+
+    # horizontal lines are drawn below a row,
     def get_opening(self):
         if self._latex_type == 'longtable':
             # otherwise longtable might move before paragraph and subparagraph
             prefix = '\\leavevmode\n'
         else:
             prefix = ''
-        return '%s\\begin{%s}[c]' % (prefix, self._latex_type)
+        prefix += '\setlength{\DUtablewidth}{\linewidth}'
+        return '%s\n\\begin{%s}[c]' % (prefix, self._latex_type)
+
     def get_closing(self):
         line = ''
         if self._table_style == 'booktabs':
@@ -559,13 +580,12 @@ class Table(object):
             colwidth = factor * float(node['colwidth']+1) / width
             self._col_width.append(colwidth+0.005)
             self._rowspan.append(0)
-            latex_table_spec += '%sp{%.3f\\locallinewidth}' % (bar,
-                                                               colwidth+0.005)
+            latex_table_spec += '%sp{%.3f\\DUtablewidth}' % (bar, colwidth+0.005)
         return latex_table_spec+bar
 
     def get_column_width(self):
         """Return columnwidth for current cell (not multicell)."""
-        return '%.2f\\locallinewidth' % self._col_width[self._cell_in_row-1]
+        return '%.2f\\DUtablewidth' % self._col_width[self._cell_in_row-1]
 
     def get_caption(self):
         if not self.caption:
@@ -814,17 +834,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
               fontenc_header,
               r'\usepackage[%s]{inputenc}' % self.latex_encoding,
               r'\usepackage{ifthen}',
-              # possible other packages.
-              # * fancyhdr
-              # * ltxtable is a combination of tabularx and longtable
-              #   (pagebreaks). but ??
-              #
-              # linewidth of current environment, so tables are not wider than
-              # the sidebar: using locallinewidth seems to defer evaluation of
-              # linewidth, this is fixing it.
-              r'\newlength{\locallinewidth}',
-              # will be set later.
-              ]
+              ## r'\usepackage{fixltx2e} % "visible" LaTeX bugfixes',
+              ] # custom requirements will be added later
 
         # Part of LaTeX preamble following the stylesheet
         self.head = []
@@ -938,10 +949,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         u'\u2013' : '{--}',
         u'\u2014' : '{---}',
         u'\u2018' : '`',
-        u'\u2019' : '\'',
+        u'\u2019' : "'",
         u'\u201A' : ',',
         u'\u201C' : '``',
-        u'\u201D' : '\'\'',
+        u'\u201D' : "''",
         u'\u201E' : ',,',
         u'\u2020' : '{\\dag}',
         u'\u2021' : '{\\ddag}',
@@ -973,42 +984,36 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def encode(self, text):
         """Return text with special characters (``#$%&~_^\{}``) escaped."""
-        # Escaping with a backslash does not help with backslashes, ~ and ^.
-
-        #     < > are only available in math-mode or tt font. (really ?)
-        #     $ starts math- mode.
-        # AND quotes
+        #   \ ~ ^ Escaping with a backslash does not help.
+        #   < >   are only available in math-mode or tt font. (really ?)
+        #   $     starts math- mode.
+        #   "     active in some languages (e.g. German) TODO!
         if self.verbatim:
             return text
         # compile the regexps once. do it here so one can see them.
         #
         # first the braces.
-        if not 'encode_re_braces' in self.__dict__:
+        if not hasattr(self, 'encode_re_braces'):
             self.encode_re_braces = re.compile(r'([{}])')
         text = self.encode_re_braces.sub(r'{\\\1}',text)
-        if not 'encode_re_bslash' in self.__dict__:
+        if not hasattr(self, 'encode_re_bslash'):
             # find backslash: except in the form '{\{}' or '{\}}'.
             self.encode_re_bslash = re.compile(r'(?<!{)(\\)(?![{}]})')
         # then the backslash: except in the form from line above:
         # either '{\{}' or '{\}}'.
         text = self.encode_re_bslash.sub(r'{\\textbackslash}', text)
-
-        # then dollar
+        # then dollar ...
         text = text.replace('$', '{\\$}')
+        text = text.replace('&', '{\\&}')
+        text = text.replace('%', '{\\%}')
+        text = text.replace('#', '{\\#}')
+        text = text.replace('^', '{\\textasciicircum}')
+        text = text.replace('~', '{\\textasciitilde}')
+        #
         if not ( self.literal_block or self.literal ):
             text = text.replace('|', '{\\textbar}')
             text = text.replace('<', '{\\textless}')
             text = text.replace('>', '{\\textgreater}')
-        # then
-        text = text.replace('&', '{\\&}')
-        # the ^:
-        # * verb|^| does not work in mbox.
-        # * mathmode has wedge. hat{~} would also work.
-        # text = text.replace('^', '{\\ensuremath{^\\wedge}}')
-        text = text.replace('^', '{\\textasciicircum}')
-        text = text.replace('%', '{\\%}')
-        text = text.replace('#', '{\\#}')
-        text = text.replace('~', '{\\textasciitilde}')
         # Separate compound characters, e.g. '--' to '-{}-'.  (The
         # actual separation is done later; see below.)
         separate_chars = '-'
@@ -1019,7 +1024,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             separate_chars += ',`\'"<>'
             # pdflatex does not produce doublequotes for ngerman.
             text = self.babel.double_quotes_in_tt(text)
-            if self.font_encoding == 'OT1':
+            if self.font_encoding in ['OT1', '']:
                 # We're using OT1 font-encoding and have to replace
                 # underscore by underlined blank, because this has
                 # correct width.
@@ -1074,16 +1079,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_admonition(self, node, name=''):
         self.fallbacks['admonition'] = PreambleCmds.admonition
-        self.body.append('\\begin{center}\\begin{sffamily}\n')
-        self.body.append('\\fbox{\\parbox{\\DUadmonitionwidth}{\n')
+        self.fallbacks['topictitle'] = PreambleCmds.topictitle
+        self.body.append('\\DUadmonition{')
         if name:
-            self.body.append(r'\textbf{\large ' +
-                             self.language.labels[name] + '}\n');
-        self.body.append('\\vspace{2mm}\n')
+            self.body.append('\\DUtopictitle{%s}\n' %
+                             self.language.labels[name]);
+        ## self.body.append('\\vspace{2mm}\n')
 
     def depart_admonition(self, node=None):
-        self.body.append('}}\n') # end parbox fbox
-        self.body.append('\\end{sffamily}\n\\end{center}\n');
+        self.body.append('}\n')
 
     def visit_attention(self, node):
         self.visit_admonition(node, 'attention')
@@ -1308,6 +1312,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_docinfo(self, node):
         # tabularx: automatic width of columns, no page breaks allowed.
         self.requirements['tabularx'] = r'\usepackage{tabularx}'
+        self.requirements['~providelenght'] = PreambleCmds.providelenght
         self.fallbacks['docinfo'] = PreambleCmds.docinfo
         self.docinfo = ['%' + '_'*75 + '\n',
                         '\\begin{center}\n',
@@ -1377,7 +1382,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if (self.use_latex_docinfo or len(node) and
             isinstance(node[0], nodes.title)):
             self.body_prefix.append('\\maketitle\n\n')
-        self.body.append('\n\\setlength{\\locallinewidth}{\\linewidth}\n')
 
     def depart_document(self, node):
         # Complete header with information gained from walkabout
@@ -1444,8 +1448,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_entry(self, node):
         self.active_table.visit_entry()
         # cell separation
+        # BUG: the following fails, with more than one multirow
+        # starting in the second column (or later) see
+        # ../../../test/functional/input/data/latex.txt
         if self.active_table.get_entry_number() == 1:
-            # if the firstrow is a multirow, this actually is the second row.
+            # if the first row is a multirow, this actually is the second row.
             # this gets hairy if rowspans follow each other.
             if self.active_table.get_rowspan(0):
                 count = 0
@@ -1455,8 +1462,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 self.active_table.visit_entry() # increment cell count
         else:
             self.body.append(' & ')
-
-        # multi{row,column}
+        # multirow, multicolumn
         # IN WORK BUG TODO HACK continues here
         # multirow in LaTeX simply will enlarge the cell over several rows
         # (the following n if n is positive, the former if negative).
@@ -1468,10 +1474,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
             count = node['morerows'] + 1
             self.active_table.set_rowspan(
                                 self.active_table.get_entry_number()-1,count)
-            self.body.append('\\multirow{%d}{%s}{' %
+            self.body.append('\\multirow{%d}{%s}{%%' %
                              (count,self.active_table.get_column_width()))
             self.context.append('}')
-            # BUG following rows must have empty cells.
         elif 'morecols' in node:
             # the vertical bar before column is missing if it is the first
             # column. the one after always.
@@ -1488,7 +1493,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         # header / not header
         if isinstance(node.parent.parent, nodes.thead):
-            self.body.append('\\textbf{')
+            self.body.append('\\textbf{%')
             self.context.append('}')
         elif self.active_table.is_stub_column():
             self.body.append('\\textbf{')
@@ -1597,14 +1602,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append( '\n' )
 
     def visit_field_list(self, node):
+        self.fallbacks['fieldlist'] = PreambleCmds.fieldlist
         if not self.docinfo:
-            self.body.append('\\begin{quote}\n')
-            self.body.append('\\begin{description}\n')
+            self.body.append('\\begin{DUfieldlist}\n')
 
     def depart_field_list(self, node):
         if not self.docinfo:
-            self.body.append('\\end{description}\n')
-            self.body.append('\\end{quote}\n')
+            self.body.append('\\end{DUfieldlist}\n')
 
     def visit_field_name(self, node):
         # BUG this duplicates docinfo_item
@@ -1815,6 +1819,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_literal(node)
 
     def visit_legend(self, node):
+        # DUlegend command incompatible with flush* aligning:
+        #   ! LaTeX Error: There's no line here to end.
+        ## self.fallbacks['legend'] = PreambleCmds.legend
+        ## self.body.append('\DUlegend{')
         self.body.append('{\\small ')
 
     def depart_legend(self, node):
@@ -1827,6 +1835,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('\n')
 
     def visit_line_block(self, node):
+        self.requirements['~providelenght'] = PreambleCmds.providelenght
         self.fallbacks['lineblock'] = PreambleCmds.lineblock
         if isinstance(node.parent, nodes.line_block):
             self.body.append('\\item[]\n'
@@ -1840,6 +1849,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_list_item(self, node):
         # Append '{}' in case the next character is '[', which would break
         # LaTeX's list environment (no numbering and the '[' is not printed).
+        # TODO: is this still needed?  We already protect '['.
         self.body.append('\\item {} ')
 
     def depart_list_item(self, node):
@@ -1882,7 +1892,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         packages = {'listing': r'\usepackage{moreverb}',
                     'lstlisting': r'\usepackage{listings}',
                     'Verbatim': r'\usepackage{fancyvrb}',
-                    '#verbatim': '',
+                    # 'verbatim': '',
                     'verbatimtab': r'\usepackage{moreverb}'}
 
         if not self.active_table.is_open():
@@ -1955,6 +1965,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('] ')
 
     def visit_option_list(self, node):
+        self.requirements['~providelenght'] = PreambleCmds.providelenght
         self.fallbacks['optionlist'] = PreambleCmds.optionlist
         self.body.append('\\begin{DUoptionlist}\n')
 
@@ -2045,16 +2056,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.section_level -= 1
 
     def visit_sidebar(self, node):
-        # BUG:  this is just a hack to make sidebars render something
+        # TODO: this is just a hack to make sidebars render something
+        # fallback definition requires the color package for background colour
         self.requirements['color'] = r'\usepackage{color}'
-        # current implementation relies on \DUadmonitionwidth
-        self.fallbacks['admonition'] = PreambleCmds.admonition
-        self.body.append(PreambleCmds.sidebar)
+        self.fallbacks['sidebar'] = PreambleCmds.sidebar
+        self.body.append('\n\\DUsidebar{\n')
 
     def depart_sidebar(self, node):
-        self.body.append('}}}\n') # end parbox colorbox fbox
-        self.body.append('\\end{sffamily}\n\\end{center}\n');
-        self.body.append('\n\\setlength{\\locallinewidth}{\\linewidth}\n')
+        self.body.append('}\n')
 
     attribution_formats = {'dash': ('---', ''),
                            'parentheses': ('(', ')'),
@@ -2245,8 +2254,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # either specify every possible node or ... ?
         elif (isinstance(node.parent, nodes.sidebar) or
               isinstance(node.parent, nodes.admonition)):
-            self.body.append('\\textbf{\\large ')
-            self.context.append('}\n\\smallskip\n')
+            self.fallbacks['topictitle'] = PreambleCmds.topictitle
+            self.body.append('\\DUtopictitle{')
+            self.context.append('}\n')
         elif isinstance(node.parent, nodes.table):
             # caption must be written after column spec
             self.active_table.caption = self.encode(node.astext())
@@ -2314,9 +2324,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append(self.context.pop())
 
     def visit_transition(self, node):
+        self.fallbacks['transition'] = PreambleCmds.transition
         self.body.append('\n\n')
-        self.body.append('%' + '_' * 75)
-        self.body.append('\n\\hspace*{\\fill}\\hrulefill\\hspace*{\\fill}')
+        self.body.append('%' + '_' * 75 + '\n')
+        self.body.append(r'\DUtransition')
         self.body.append('\n\n')
 
     def depart_transition(self, node):

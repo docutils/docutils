@@ -4,13 +4,13 @@
 %\usepackage[OT1]{fontenc}
 \usepackage[latin1]{inputenc}
 \usepackage{ifthen}
-\newlength{\locallinewidth}
 \usepackage{color}
 \usepackage{graphicx}
 \usepackage{multirow}
 \usepackage{longtable}
 \usepackage{array}
 \setlength{\extrarowheight}{2pt}
+\newlength{\DUtablewidth} % internal use in tables
 \usepackage{tabularx}
 \usepackage{typearea}
 % settings for footnotes as floats:
@@ -23,66 +23,80 @@
 \setcounter{totalnumber}{50}
 \setcounter{topnumber}{50}
 \setcounter{bottomnumber}{50}
+% provide a length variable and set it
+\newcommand*{\DUprovidelength}[2]{
+  \ifthenelse{\isundefined{#1}}{\newlength{#1}\setlength{#1}{#2}}{}
+}
 
 %%% User specified packages and stylesheets
 
 %%% Fallback definitions for Docutils-specific commands
-% width of admonitions:
-\ifthenelse{\isundefined{\DUadmonitionwidth}}{
-  \newlength{\DUadmonitionwidth}
-  \setlength{\DUadmonitionwidth}{0.9\textwidth}
-}{}
+% admonitions (specially marked "topics")
+\providecommand{\DUadmonition}[1]{%
+  \begin{center}
+    \fbox{\parbox{0.9\textwidth}{\sffamily #1}}
+  \end{center}
+}
 % width of docinfo table:
-\ifthenelse{\isundefined{\DUdocinfowidth}}{
-  \newlength{\DUdocinfowidth}
-  \setlength{\DUdocinfowidth}{0.9\textwidth}
+\DUprovidelength{\DUdocinfowidth}{0.9\textwidth}
+% field list environment:
+\ifthenelse{\isundefined{\DUfieldlist}}{
+  \newenvironment{DUfieldlist}%
+    {\quote\description}
+    {\enddescription\endquote}
 }{}
 % custom roles:
-% \DUrole{NAME}{content} calls \docutilsroleNAME if it exists
-\providecommand{\DUrole}[2]{%
+% \DUrole{NAME} calls \docutilsroleNAME if it exists
+\providecommand*{\DUrole}[2]{%
   \ifcsname docutilsrole#1\endcsname%
     \csname docutilsrole#1\endcsname{#2}%
   \else%
     #2%
   \fi%
 }
-% lineblock environment:
-\ifthenelse{\isundefined{\DUlineblockindent}}{
-  \newlength{\DUlineblockindent}
-  \setlength{\DUlineblockindent}{2.5em}
-}{}
+% line block environment:
+\DUprovidelength{\DUlineblockindent}{2.5em}
 \ifthenelse{\isundefined{\DUlineblock}}{
-  \newenvironment{DUlineblock}[1]
-  {\begin{list}{}
-    {\setlength{\partopsep}{\parskip}
-     \addtolength{\partopsep}{\baselineskip}
-     \topsep0pt\itemsep0.15\baselineskip\parsep0pt
-     \leftmargin#1}
-   \raggedright}
-  {\end{list}}
+  \newenvironment{DUlineblock}[1]{%
+    \list{}{\setlength{\partopsep}{\parskip}
+            \addtolength{\partopsep}{\baselineskip}
+            \setlength{\topsep}{0pt}
+            \setlength{\itemsep}{0.15\baselineskip}
+            \setlength{\parsep}{0pt}
+            \setlength{\leftmargin}{#1}}
+    \raggedright
+  }
+  {\endlist}
 }{}
 % option list:
-\providecommand{\DUoptionlistlabel}[1]{\bf #1 \hfill}
-\ifthenelse{\isundefined{\DUoptionlistindent}}{
-  \newlength{\DUoptionlistindent}
-  \setlength{\DUoptionlistindent}{3cm}
-}{}
+\providecommand*{\DUoptionlistlabel}[1]{\bf #1 \hfill}
+\DUprovidelength{\DUoptionlistindent}{3cm}
 \ifthenelse{\isundefined{\DUoptionlist}}{
-  \newenvironment{DUoptionlist}
-  {\begin{list}{}
-    {\setlength{\labelwidth}{\DUoptionlistindent}
-     \setlength{\rightmargin}{1cm}
-     \setlength{\leftmargin}{\rightmargin}
-     \addtolength{\leftmargin}{\labelwidth}
-     \addtolength{\leftmargin}{\labelsep}
-     \renewcommand{\makelabel}{\DUoptionlistlabel}}
+  \newenvironment{DUoptionlist}{%
+    \list{}{\setlength{\labelwidth}{\DUoptionlistindent}
+            \setlength{\rightmargin}{1cm}
+            \setlength{\leftmargin}{\rightmargin}
+            \addtolength{\leftmargin}{\labelwidth}
+            \addtolength{\leftmargin}{\labelsep}
+            \renewcommand{\makelabel}{\DUoptionlistlabel}}
   }
-  {\end{list}}
+  {\endlist}
 }{}
 % rubric (an informal heading):
-\newcommand{\DUrubric}[1]{\subsection*{~\hfill {\it #1} \hfill ~}}
+\providecommand*{\DUrubric}[1]{\subsection*{~\hfill {\it #1} \hfill ~}}
+% sidebar (text outside the main text flow)
+\providecommand{\DUsidebar}[1]{%
+  \begin{center}
+    \sffamily
+    \fbox{\colorbox[gray]{0.80}{\parbox{0.9\textwidth}{#1}}}
+  \end{center}
+}
 % title reference role:
-\newcommand{\DUroletitlereference}[1]{\textsl{#1}}
+\providecommand*{\DUroletitlereference}[1]{\textsl{#1}}
+% title for "topics" (admonitions, sidebar)
+\providecommand*{\DUtopictitle}[1]{\textbf{\large #1}\smallskip}
+% transition ([fancy]break, anonymous section)
+\providecommand*{\DUtransition}{\hspace*{\fill}\hrulefill\hspace*{\fill}}
 % hyperref (PDF hyperlinks):
 \ifthenelse{\isundefined{\hypersetup}}{
   \usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
@@ -147,8 +161,6 @@ desires. \\
 Like this. \\
 \end{tabularx}
 \end{center}
-
-\setlength{\locallinewidth}{\linewidth}
 
 
 \subsubsection*{~\hfill Dedication\hfill ~}
@@ -311,14 +323,14 @@ Here's a transition:
 
 
 %___________________________________________________________________________
-\hspace*{\fill}\hrulefill\hspace*{\fill}
+\DUtransition
 
 
 It divides the section.  Transitions may also occur between sections:
 
 
 %___________________________________________________________________________
-\hspace*{\fill}\hrulefill\hspace*{\fill}
+\DUtransition
 
 
 
@@ -563,8 +575,7 @@ Definition
 \pdfbookmark[1]{2.5~~~Field Lists}{field-lists}
 \subsection*{2.5~~~Field Lists}
 \label{field-lists}
-\begin{quote}
-\begin{description}
+\begin{DUfieldlist}
 \item [what:]
 Field lists map field names to field bodies, like database
 records.  They are often part of an extension syntax.  They are
@@ -584,8 +595,7 @@ about credits but just for ensuring that the class attribute
 doesn't get stripped away.)
 
 
-\end{description}
-\end{quote}
+\end{DUfieldlist}
 
 
 %___________________________________________________________________________
@@ -636,10 +646,10 @@ description.
 Literal blocks are indicated with a double-colon (``::'') at the end of
 the preceding paragraph (over there \texttt{-{}->}).  They can be indented:
 \begin{quote}{\ttfamily \raggedright \noindent
-if~literal{\_}block:~\\
+if~literal{\underline{~}}block:~\\
 ~~~~text~=~'is~left~as-is'~\\
-~~~~spaces{\_}and{\_}linebreaks~=~'are~preserved'~\\
-~~~~markup{\_}processing~=~None
+~~~~spaces{\underline{~}}and{\underline{~}}linebreaks~=~'are~preserved'~\\
+~~~~markup{\underline{~}}processing~=~None
 }\end{quote}
 
 Or they can be quoted without indentation:
@@ -941,7 +951,8 @@ A figure directive:
 \includegraphics[width=50bp]{../../../docs/user/rst/images/biohazard.png}
 \caption{A figure is an image with a caption and/or a legend:}{\small 
 \leavevmode
-\begin{longtable}[c]{|p{0.156\locallinewidth}|p{0.563\locallinewidth}|}
+\setlength{\DUtablewidth}{\linewidth}
+\begin{longtable}[c]{|p{0.156\DUtablewidth}|p{0.563\DUtablewidth}|}
 \hline
 
 re
@@ -1024,55 +1035,27 @@ An image 3 cm high:
 \pdfbookmark[2]{2.14.3~~~Admonitions}{admonitions}
 \subsubsection*{2.14.3~~~Admonitions}
 \label{admonitions}
-\begin{center}\begin{sffamily}
-\fbox{\parbox{\DUadmonitionwidth}{
-\textbf{\large Attention!}
-\vspace{2mm}
+\DUadmonition{\DUtopictitle{Attention!}
 
 Directives at large.
-}}
-\end{sffamily}
-\end{center}
-\begin{center}\begin{sffamily}
-\fbox{\parbox{\DUadmonitionwidth}{
-\textbf{\large Caution!}
-\vspace{2mm}
+}
+\DUadmonition{\DUtopictitle{Caution!}
 
 Don't take any wooden nickels.
-}}
-\end{sffamily}
-\end{center}
-\begin{center}\begin{sffamily}
-\fbox{\parbox{\DUadmonitionwidth}{
-\textbf{\large !DANGER!}
-\vspace{2mm}
+}
+\DUadmonition{\DUtopictitle{!DANGER!}
 
 Mad scientist at work!
-}}
-\end{sffamily}
-\end{center}
-\begin{center}\begin{sffamily}
-\fbox{\parbox{\DUadmonitionwidth}{
-\textbf{\large Error}
-\vspace{2mm}
+}
+\DUadmonition{\DUtopictitle{Error}
 
 Does not compute.
-}}
-\end{sffamily}
-\end{center}
-\begin{center}\begin{sffamily}
-\fbox{\parbox{\DUadmonitionwidth}{
-\textbf{\large Hint}
-\vspace{2mm}
+}
+\DUadmonition{\DUtopictitle{Hint}
 
 It's bigger than a bread box.
-}}
-\end{sffamily}
-\end{center}
-\begin{center}\begin{sffamily}
-\fbox{\parbox{\DUadmonitionwidth}{
-\textbf{\large Important}
-\vspace{2mm}
+}
+\DUadmonition{\DUtopictitle{Important}
 \begin{itemize}
 \item {} 
 Wash behind your ears.
@@ -1087,47 +1070,24 @@ Call your mother.
 Back up your data.
 
 \end{itemize}
-}}
-\end{sffamily}
-\end{center}
-\begin{center}\begin{sffamily}
-\fbox{\parbox{\DUadmonitionwidth}{
-\textbf{\large Note}
-\vspace{2mm}
+}
+\DUadmonition{\DUtopictitle{Note}
 
 This is a note.
-}}
-\end{sffamily}
-\end{center}
-\begin{center}\begin{sffamily}
-\fbox{\parbox{\DUadmonitionwidth}{
-\textbf{\large Tip}
-\vspace{2mm}
+}
+\DUadmonition{\DUtopictitle{Tip}
 
 15{\%} if the service is good.
-}}
-\end{sffamily}
-\end{center}
-\begin{center}\begin{sffamily}
-\fbox{\parbox{\DUadmonitionwidth}{
-\textbf{\large Warning}
-\vspace{2mm}
+}
+\DUadmonition{\DUtopictitle{Warning}
 
 Strong prose may provoke extreme mental exertion.
 Reader discretion is strongly advised.
-}}
-\end{sffamily}
-\end{center}
-\begin{center}\begin{sffamily}
-\fbox{\parbox{\DUadmonitionwidth}{
-\vspace{2mm}
-\textbf{\large And, by the way...}
-\smallskip
+}
+\DUadmonition{\DUtopictitle{And, by the way...}
 
 You can make up your own admonition too.
-}}
-\end{sffamily}
-\end{center}
+}
 
 
 %___________________________________________________________________________
@@ -1137,11 +1097,8 @@ You can make up your own admonition too.
 \subsubsection*{2.14.4~~~Topics, Sidebars, and Rubrics}
 \label{topics-sidebars-and-rubrics}
 
-\setlength{\locallinewidth}{0.9\DUadmonitionwidth}
-\begin{center}\begin{sffamily}
-\fbox{\colorbox[gray]{0.80}{\parbox{\DUadmonitionwidth}{
-\textbf{\large Sidebar Title}
-\smallskip
+\DUsidebar{
+\DUtopictitle{Sidebar Title}
 ~\\
 \textbf{Optional Subtitle}
 \smallskip
@@ -1152,11 +1109,7 @@ text.
 
 Sidebars often appears beside the main text with a border and
 background color.
-}}}
-\end{sffamily}
-\end{center}
-
-\setlength{\locallinewidth}{\linewidth}
+}
 \subsubsection*{~\hfill Topic Title\hfill ~}
 
 This is a topic.
@@ -1237,7 +1190,8 @@ Compound 5, block 3 (a paragraph).
 Compound 7, with a table inside:
 
 \leavevmode
-\begin{longtable}[c]{|p{0.249\locallinewidth}|p{0.249\locallinewidth}|p{0.249\locallinewidth}|}
+\setlength{\DUtablewidth}{\linewidth}
+\begin{longtable}[c]{|p{0.249\DUtablewidth}|p{0.249\DUtablewidth}|p{0.249\DUtablewidth}|}
 \hline
 
 Left cell, first
@@ -1349,35 +1303,36 @@ paragraph 2
 This table has a cell spanning two columns:
 
 \leavevmode
-\begin{longtable}[c]{|p{0.075\locallinewidth}|p{0.075\locallinewidth}|p{0.086\locallinewidth}|}
+\setlength{\DUtablewidth}{\linewidth}
+\begin{longtable}[c]{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|p{0.086\DUtablewidth}|}
 \hline
-\multicolumn{2}{|l|}{\textbf{
+\multicolumn{2}{|l|}{\textbf{%
 Inputs
-}} & \textbf{
+}} & \textbf{%
 Output
 } \\
 \hline
-\textbf{
+\textbf{%
 A
-} & \textbf{
+} & \textbf{%
 B
-} & \textbf{
+} & \textbf{%
 A or B
 } \\
 \hline
 \endfirsthead
 \hline
-\multicolumn{2}{|l|}{\textbf{
+\multicolumn{2}{|l|}{\textbf{%
 Inputs
-}} & \textbf{
+}} & \textbf{%
 Output
 } \\
 \hline
-\textbf{
+\textbf{%
 A
-} & \textbf{
+} & \textbf{%
 B
-} & \textbf{
+} & \textbf{%
 A or B
 } \\
 \hline
@@ -1430,25 +1385,26 @@ True
 Here's a table with cells spanning several rows:
 
 \leavevmode
-\begin{longtable}[c]{|p{0.296\locallinewidth}|p{0.156\locallinewidth}|p{0.226\locallinewidth}|}
+\setlength{\DUtablewidth}{\linewidth}
+\begin{longtable}[c]{|p{0.296\DUtablewidth}|p{0.156\DUtablewidth}|p{0.226\DUtablewidth}|}
 \hline
-\textbf{
+\textbf{%
 Header row, column 1
 (header rows optional)
-} & \textbf{
+} & \textbf{%
 Header 2
-} & \textbf{
+} & \textbf{%
 Header 3
 } \\
 \hline
 \endfirsthead
 \hline
-\textbf{
+\textbf{%
 Header row, column 1
 (header rows optional)
-} & \textbf{
+} & \textbf{%
 Header 2
-} & \textbf{
+} & \textbf{%
 Header 3
 } \\
 \hline
@@ -1466,10 +1422,10 @@ column 3
 \hline
 
 body row 2
- & \multirow{2}{0.16\locallinewidth}{
+ & \multirow{2}{0.16\DUtablewidth}{%
 Cells may
 span rows.
-} & \multirow{2}{0.23\locallinewidth}{
+} & \multirow{2}{0.23\DUtablewidth}{%
 Another
 rowspanning
 cell.
@@ -1612,7 +1568,7 @@ These are all ASCII characters except a-zA-Z0-9 and space:
 
 \texttt{!!!"{}"{}"{\#}{\#}{\#}{\$}{\$}{\$}{\%}{\%}{\%}{\&}{\&}{\&}'{}'{}'((()))***+++,{},{},-{}-{}-...///:::}
 
-\texttt{;;;<{}<{}<===>{}>{}>???@@@{[}{[}{[}{\textbackslash}{\textbackslash}{\textbackslash}{]}{]}{]}{\textasciicircum}{\textasciicircum}{\textasciicircum}{\_}{\_}{\_}`{}`{}`{\{}{\{}{\{}|||{\}}{\}}{\}}{\textasciitilde}{\textasciitilde}{\textasciitilde}}
+\texttt{;;;<{}<{}<===>{}>{}>???@@@{[}{[}{[}{\reflectbox{/}}{\reflectbox{/}}{\reflectbox{/}}{]}{]}{]}{\textasciicircum}{\textasciicircum}{\textasciicircum}{\underline{ }}{\underline{ }}{\underline{ }}`{}`{}`{\{}{\{}{\{}|||{\}}{\}}{\}}{\textasciitilde}{\textasciitilde}{\textasciitilde}}
 
 \texttt{xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}
 
@@ -1628,7 +1584,8 @@ width as the third line.
 \label{various-non-ascii-characters}
 
 \leavevmode
-\begin{longtable}[c]{|p{0.028\locallinewidth}|p{0.424\locallinewidth}|}
+\setlength{\DUtablewidth}{\linewidth}
+\begin{longtable}[c]{|p{0.028\DUtablewidth}|p{0.424\DUtablewidth}|}
 \hline
 
 ©

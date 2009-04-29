@@ -89,7 +89,7 @@ configuration settings
   in a configuration file (see `Docutils Configuration`_ for details).
 
 .. _Docutils Configuration:
-   http://docutils.sourceforge.net/docs/user/config.html
+   ../user/config.html
 
 
 Custom style sheets
@@ -196,7 +196,7 @@ Examples:
        \\end{center}
 
 .. _raw directive:
-   http://docutils.sourceforge.net/docs/ref/rst/directives.html#raw
+   ../ref/rst/directives.html#raw
 
 
 Docutils special LaTeX macros
@@ -230,22 +230,22 @@ admonitions
 Admonitions__ are specially marked "topics" that can appear anywhere an
 ordinary body element can.
 
-Default:
-  typeset in a frame using a sans-serif font.
-
-Length:
-  ``\DUadmonitionwidth``: the width of admonitions.
+Command:
+  ``\DUadmonition``
 
 Default:
-  90 % of text width: ``0.9\textwidth``
+  Typeset in a frame (90 % of text width) using a sans-serif font.
 
 Example:
-  set to 70% of text width::
+  use standard document font and 95 % of text widht::
 
-    \newlength{\DUadmonitionwidth}
-    \setlength{\DUadmonitionwidth}{0.7\textwidth}
+    \newcommand{\DUadmonition}[1]{%
+      \begin{center}
+        \fbox{\parbox{0.95\textwidth}{#1}}
+      \end{center}
+    }
 
-__ http://docutils.sourceforge.net/docs/ref/rst/directives.html#admonitions
+__ ../ref/rst/directives.html#admonitions
 
 custom interpreted text roles
 `````````````````````````````
@@ -280,49 +280,49 @@ Default:
 Examples:
 
 * Typeset text in small caps::
-  
+
     .. role:: smallcaps
-  
+
     :smallcaps:`Fourier` transformation
-  
+
   This is transformed to the LaTeX code::
-  
+
     \DUrole{smallcaps}{Fourier} transformation
-  
+
   The default definition of ``\DUrole`` will look for a macro named
   ``\docutilsrolesmallcaps``. The definition ::
-  
+
     \newcommand{\docutilsrolesmallcaps}{\textsc}
-  
+
   as `raw LaTeX`_ or in the custom style sheet will give the expected result
   (if the chosen font supports small caps).
-  
+
 * Subscript text in normal size and *italic* shape::
-  
+
   .. role:: sub(subscript)
-  
+
   As "sub" inherits from the standard "subscript" role, the LaTeX macro
   only needs to set the size and shape::
-  
+
     \newcommand{\docutilsrolesub}{\normalsize\itshape}
-  
+
 * A role with several classes and a converted class name::
-  
+
     .. role:: custom4
        :class: argI argII arg_3
-  
+
   is translated to the nested commands::
-  
+
     \DUrole{argi}{\DUrole{argii}{\DUrole{arg-3}{<content>}}}
-  
+
   With the definitions::
-  
+
     \newcommand{\docutilsroleargi}[1]{\textsc}
     \newcommand{\docutilsroleargii}[1]{{\large #1}}
     \makeatletter
     \@namedef{docutilsrolearg-3}{\textbf}
     \makeatother
-  
+
   in a style sheet\ [#]_ or as `raw LaTeX`_ in the document source,
   text styled with ``:custom4:`large bold small-caps``` will be typeset
   accordingly.
@@ -331,13 +331,13 @@ Examples:
    sheet is a LaTeX package (``*.sty``).
 
 .. _role directive:
-   http://docutils.sourceforge.net/docs/ref/rst/directives.html#role
+   ../ref/rst/directives.html#role
 
 .. _text roles:
-   http://docutils.sourceforge.net/docs/ref/rst/roles.html
+   ../ref/rst/roles.html
 
 .. _class directive:
-   http://docutils.sourceforge.net/docs/ref/rst/directives.html#class
+   ../ref/rst/directives.html#class
 
 definition lists
 `````````````````
@@ -359,7 +359,7 @@ Example:
 
     \renewcommand\descriptionlabel[1]{\hspace\labelsep \normalfont #1}
 
-__ http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#definition-lists
+__ ../ref/rst/restructuredtext.html#definition-lists
 
 
 document class
@@ -374,10 +374,10 @@ Option:
 
 Standard document classes:
   article, report, book
-  
+
 There are hundreds of alternative LaTeX document classes installed by modern
 LaTeX distributions, provided by publishers or available at CTAN_ e.g.
- 
+
 * scrarticle, scrreport, scrbook: KOMA-script_ classes
 * memoir_
 
@@ -386,7 +386,7 @@ The `TeX Catalogue`_ lists most of them.
 .. _CTAN: http://www.dante.de/ctan
 .. _KOMA-script:
    http://dante.ctan.org/CTAN/help/Catalogue/entries/koma-script.html
-.. _memoir:   
+.. _memoir:
    http://dante.ctan.org/CTAN/help/Catalogue/entries/memoir.html
 .. _TeX Catalogue:
    http://dante.ctan.org/CTAN/help/Catalogue/
@@ -418,7 +418,37 @@ Example:
     \newlength{\DUdocinfowidth}
     \setlength{\DUdocinfowidth}{0.7\textwidth}
 
-__ http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#bibliographic-fields
+__ ../ref/rst/restructuredtext.html#bibliographic-fields
+
+
+field lists
+```````````
+
+`Field lists`__ may be used as generic two-column table constructs in
+documents.
+
+Environment:
+   ``DUfieldlist``
+
+Default:
+   Indented description list.
+
+Example:
+   Use a description list customized with enumitem_::
+
+     \usepackage{enumitem}
+     \newenvironment{DUfieldlist}%
+       {\description[font=,style=sameline,leftmargin=8em]}
+       {\enddescription}
+     }
+
+   The `KOMA-script`_ classes provide a similar environment under the name
+   `labeling`.
+
+.. _enumitem:
+   http://dante.ctan.org/CTAN/macros/latex/contrib/enumitem/enumitem.pdf
+
+__ ../ref/rst/restructuredtext.html#field-lists
 
 
 font encoding
@@ -429,19 +459,21 @@ Option:
 --font-encoding=FONT_ENCODING
                         LaTeX font encoding. Possible values are "", "T1",
                         "OT1", "LGR,T1" or any other combination of options to
-                        the `fontenc`_ package. Default is "" which does not
-                        load `fontenc`.
+                        the `fontenc`_ package.
+
+Default
+  is "" which does not load `fontenc`.
 
 Examples:
-  
+
 * The recommended setting for Latin based scripts is "T1" together with a
   T1-encoded "Type 1" (vector) font, for example `Latin Modern`_::
 
     --font-encoding=T1 --stylesheet=lmodern
-    
+
 * Support for characters in the Unicode blocks Latin, Latin-1 Supplement,
   and Greek::
-  
+
     --font-encoding=LGR,T1
 
 .. _fontenc:
@@ -474,7 +506,7 @@ supported image formats depend on the used driver (dvi, dvips, pdftex, ...).
 If PDF-image inclusion in PDF files fails, specifying
 ``--graphicx-option=pdftex`` or ``--graphicx-option=auto`` might help.
 
-__ http://docutils.sourceforge.net/docs/ref/rst/directives.html#images
+__ ../ref/rst/directives.html#images
 
 
 line blocks
@@ -496,7 +528,7 @@ Example:
     \newlength{\DUlineblockindent}
     \setlength{\DUlineblockindent}{\parindent}
 
-__ http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#line-blocks
+__ ../ref/rst/restructuredtext.html#line-blocks
 
 line spacing
 ````````````
@@ -563,7 +595,7 @@ Example:
          basewidth={0.5em,0.4em}}
 
 
-__ http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#literal-blocks
+__ ../ref/rst/restructuredtext.html#literal-blocks
 
 .. _listings.pdf:
     http://dante.ctan.org/CTAN/macros/latex/contrib/listings/listings.pdf
@@ -605,7 +637,7 @@ Example:
 
     \newcommand{\DUoptionlistlabel}{\texttt{\textbf{#1}} \hfill}
 
-__ http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#option-lists
+__ ../ref/rst/restructuredtext.html#option-lists
 
 page layout
 ```````````
@@ -616,20 +648,20 @@ the `typearea` package by not including the ``DIV`` setting in the
 document options_.
 
 The ``DIV`` document option defines how "crowded" a page will be: larger
-values mean larger text area. 
+values mean larger text area.
 
     The typearea package even with option ``DIV=calc`` calculates a very
     generous text area. Many conservative typographers will state that the
     resulting line length is still excessive. The calculated DIV value may
     be found in the log file for the respective document. Thus one can
     select a smaller value easily after the first LaTeX run.
-    
+
     -- `KOMA-Script Guide`_
 
-Default: 
+Default:
   ``DIV=12`` (resulting in good paper use at the expense of unreadable long
-  lines). 
-  
+  lines).
+
   The `typearea` default for A4 paper and 10 pt fonts is ``DIV=8``.
 
 Examples:
@@ -740,7 +772,7 @@ Example:
 
     \newcommand{\DUrubric}[1]{\subsection*{{\color{red}#1}\hfill~}}
 
-__ http://docutils.sourceforge.net/docs/ref/rst/directives.html#rubric
+__ ../ref/rst/directives.html#rubric
 
 title reference role
 ````````````````````
@@ -759,11 +791,11 @@ Example:
     \newcommand{\DUroletitlereference}[1]{\texttt{\textbf{#1}}}
 
 .. _title reference:
-   http://docutils.sourceforge.net/docs/ref/rst/roles.html#title-reference
+   ../ref/rst/roles.html#title-reference
 .. _default role:
-   http://docutils.sourceforge.net/docs/ref/rst/directives.html#setting-the-default-interpreted-text-role
+   ../ref/rst/directives.html#setting-the-default-interpreted-text-role
 .. _interpreted text:
-   http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#interpreted-text
+   ../ref/rst/restructuredtext.html#interpreted-text
 
 
 text font
@@ -783,10 +815,10 @@ Alternative fonts can be selected by
 
 a) specifying the corresponding LaTeX package as arguments to the
    ``--stylesheet`` option or in a custom style sheet.
-   
+
    * Packages can be combined.
    * Passing options to a package is only possible in the style sheet.
-   
+
 b) changing the font-default macros.
 
 
@@ -927,6 +959,31 @@ Example:
 
 The macro ``\@title`` contains the title.
 
+transition element
+``````````````````
+
+Transitions__ are commonly seen in novels and short fiction, as a gap
+spanning one or more lines, marking text divisions or signaling changes in
+subject, time, point of view, or emphasis.
+
+
+Command:
+  ``\DUtransition``
+
+Default:
+  A horizontal line, 1/3 of text width
+
+Examples:
+  Use three stars::
+
+    \newcommand*{\DUtransition}{\centering{}*\ \ \ *\ \ \ *}
+
+  If paragraphs are separated by indentation, you can simply use a vertical
+  space::
+
+    \newcommand*{\DUtransition}{\vspace{2ex}}
+
+__ http://docutils.sf.net/docutils/docs/ref/rst/restructuredtext.html#transitions
 
 section numbering
 `````````````````
@@ -957,6 +1014,42 @@ influence section numbering.
 
   This enables to have the same section numbers as in other Docutils
   writers and page numbers in the table of contents.
+
+sidebar element
+```````````````
+
+Sidebars__ are like miniature, parallel documents that occur inside other
+documents, providing related or reference material. They can be likened to
+super-footnotes; their content is outside of the flow of the document's main
+text.
+
+Command:
+  ``DUsidebar``
+
+Default:
+  Box (similar to admonition) with grey background.
+  Sans-serif fonts.
+
+Examples:
+  Use a lighter background and standard document fonts::
+
+    \newcommand{\DUsidebar}[1]{%
+      \begin{center}
+        \fbox{\colorbox[gray]{0.95}{\parbox{0.9\textwidth}{#1}}}
+      \end{center}
+    }
+
+  Use margin notes with package marginnote_::
+
+    \usepackage{marginnote}
+    \newcommand{\DUsidebar}{\marginnote}
+
+  * Make sure the margin is wide enought to hold the note.
+  * This might fail with some constructs inside the `side bar`.
+
+__ http://docutils.sf.net/docutils/docs/ref/rst/directives.html#sidebar
+.. _marginnote:
+   http://dante.ctan.org/CTAN/macros/latex/contrib/marginnote/marginnote.pdf
 
 size of a pixel (length unit ``px``)
 ````````````````````````````````````
@@ -1016,32 +1109,29 @@ See also the entries in the `Docutils TODO list`_ and the discussion and
 proposals in the `latex-variants`_ sandbox project.
 
 .. _Docutils TODO list:
-   http://docutils.sourceforge.net/docs/dev/todo.html#latex-writer
+   ../dev/todo.html#latex-writer
 .. _latex-variants:
    ../../../sandbox/latex-variants/README.html
-
-
-Lists
------
-
-Definitions in definition lists start on the same line as the term. Putting
-``\leavevmode`` after the term results in a new newline if the definition
-starts with a bullet list or similar.
 
 Footnotes and citations
 -----------------------
 
-Initially both were implemented using figures, because hyperlinking back
-and forth seemed to be impossible. Later images were put into figures.
+Initially both were implemented using figure floats, because hyperlinking
+back and forth seemed to be impossible. Later the `figure` directive was
+added that puts images into figure floats.
 
-This results in footnotes images and figures possibly being mixed at page
-foot.
+This results in footnotes, citations, and figures possibly being mixed at
+page foot.
 
-* Use LaTeX footnotes and citations for printing or more complex layout.
-* Footnotes and citations done with figures might excell in hyperlink
-  support.
+Workaround:
+  Select footnote and citation handling with the ``use-latex-footnotes`` and
+  ``use-latex-citations`` options.
 
-If ``use-latex-citations`` is used a bibliography is inserted right at
+  * Use LaTeX footnotes and citations for printing or more complex layout.
+  * Footnotes and citations done with figures might excell in hyperlink
+    support.
+
+If ``use-latex-citations`` is used, a bibliography is inserted right at
 the end of the document. *This should be customizable*.
 
 If ``use-latex-citations`` is used adjacent citation references (separated
@@ -1058,28 +1148,12 @@ Tables
              Table width is tried to fit in page even if it is wider than
              the assumed linewidth, still assumed linewidth is a hook.
 
-* In tools.txt the option tables right column, there should be some more
-  spacing between the description and the next paragraph "Default:".
-
-* Paragraph separation in tables is hairy.
-  see http://www.tex.ac.uk/cgi-bin/texfaq2html?label=struttab
-
-  - The strut solution did not work.
-  - setting extrarowheight added ad top of row not between paragraphs in
-    a cell. ALTHOUGH i set it to 2pt because, text is too close to the topline.
-  - baselineskip/stretch does not help.
-
-* Should there be two hlines after table head and on table end ?
-
-* Table: multicol cells are always {l}.
+* Table: multicol cells are always left aligned.
 
 * The contents of a rowspan cell do not influence table height.
   (multirow "feature", use a phantom or strut?)
 
-* The frame around a multirow cell in the last column is incomplete
-  (see functional test output standalone_rst_latex.tex).
-  Actually, the writer inserts too many && in lines following the rowspan
-  (see `<../../../sandbox/latex-variants/tests/table-with-spans.txt>`__).
+* Multirow cells might mix up the following table rows (BUG__).
 
 * Table cells with both multirow and multicolumn are currently not possible.
 
@@ -1091,13 +1165,12 @@ Tables
   - Ragged right fails on followup paragraphs as the vertical space would be
     missing.
 
-* Use tabularx column type ``X`` and let LaTeX decide width.
-
-* csv-tables do not have a colwidth.
-
 * ``--table-style=booktabs``, ``..class:: booktab``: `booktabs` version
   1.00 does not work with `longtable`. This is solved in newer versions
   (current is 2005/04/14 v1.61803).
+
+__ ../dev/todo.html#bug-fixes
+
 
 Figures
 -------
@@ -1114,50 +1187,24 @@ Miscellaneous
    What is wrong with ``--documentoptions=12`` or so,
    maybe combined with extsize or some other package? [GM]
 
-* recognize LaTeX and replace by ``\LaTeX`` (or not?).
+   TODO: test and document
 
 * Pdfbookmark level 4 (and greater) does not work (might be settable but
   complicated).
 
-* Consider peter funk's hooks for TeXpert (or use a `template file`__)?
-
-  * Define his own document preamble (including the choice to
-    choose his own documentclass.  That would make the ``--documentclass``
-    option superfluous).  I suggest to call this option ``--preamble``
-  * Use two additional hooks to put additional stuff just behind the
-    ``\begin{document}`` and just before the ``\end{document}`` macros.
-    Typical uses would be ``\tableofcontents``, ``\listoffigures`` and
-    ``\appendix``, ``\makeindex``, ``\makeglossary`` and some such
-    for larger documents.
-    
 * Footnotes are not all on the same page (as in
   docs/user/rst/demo.txt) and do not link back and forth.
 
 * Hyperlinks are not hyphenated; this leads to bad spacing. See
   docs/user/rst/demo.txt 2.14 directives.
-  
+
 * Pagestyle headings does not work, when sections are starred.
 
 * For additional docinfo items: the field_body is inserted as text, i.e. no
   markup is done.
 
-* Multiple author entries in docinfo (same thing as in html).
-  (already solved?)
+* LaTeX does not support multiple tocs in one document
+  (might be no limitation except for docutils documentation).
 
-* Keep literal-blocks together on a page, avoid pagebreaks.
-
-  Failed experiments up to now: samepage, minipage, pagebreak 1 to 4 before
-  the block.
-
-  Should be possible with ``--literal-block-env==lstlistings``.
-  
-* Enable the choice between ``utf8`` (standard `fontenc`) and ``utf8x``
-  (`ucs`) text encoding.
-
-* LaTeX does not support multiple tocs in one document.
-  (might be no limitation except for docutils documentation)
-
-  However, the "minitoc" latex package can produce per-chapter tocs in
+  The "minitoc" latex package can produce per-chapter tocs in
   book and report document classes.
-
-__ http://docutils.sourceforge.net/docs/dev/todo.html#template-file

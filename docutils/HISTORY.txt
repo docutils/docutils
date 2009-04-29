@@ -21,7 +21,7 @@ Changes Since 0.5
 
   - Docutils is now compatible with Python versions from 2.3 up to 3.0 (or
     even 3.1?)
-  
+
     + Node.__nonzero__ returns True instead of 1.
     + use os.walk instead os.path.walk.
     + minimize "types" module where possible.
@@ -29,10 +29,10 @@ Changes Since 0.5
     + Text nodes now subclass unicode rather than UserString
       (which is gone in python 3.0)
     + 3.0 compatibility module docutils._compat
-    
+
     + drop 2.2 compatibility workarounds
-      
-  - Apply [ 1719345 ] Galician translation 
+
+  - Apply [ 1719345 ] Galician translation
   - Apply [ 1905741 ] polish-translation
   - Apply [ 1878977 ] make_id(): deaccent characters.
 
@@ -47,7 +47,7 @@ Changes Since 0.5
     " " (non-breaking space), and "¡ ¿" openers.
 
 * docutils/utils.py:
-  
+
   - Added ``get_stylesheet_list`` function.
 
 * docutils/writers/html4css1/__init__.py:
@@ -72,8 +72,6 @@ Changes Since 0.5
   - Failsave implementation of custom roles. LaTeX compilation now ignores
     unknown classes instead of aborting with an error.
   - Support custom roles based on standard roles.
-  - Smaller document preamble: use fallback definitions, include only if
-    needed in the document.
   - LaTeX packages can be used as ``--stylesheet`` arguments without
     restriction. (A style sheet is now referenced with the ``\usepackage``
     command, if it ends with ``.sty`` or has no extension.)
@@ -86,6 +84,8 @@ Changes Since 0.5
     Use a custom role based on sub-/superscript if you want italic shape.
   - Shorter preamble and less dependencies: Load packages and define macros
     only if required in the document.
+  - Use the name prefix ``DU`` for all Docutils specific LaTeX objects.
+  - New custom macros.
 
 * docs/ref/rst/restructuredtext.txt:
 
@@ -99,7 +99,7 @@ Release 0.5 (2008-06-25)
 * docutils/languages/he.py: Added to project: Hebrew mappings by
   Meir Kriheli.
 
-* docutils/parsers/rst/languages/he.py: Added to project: Hebrew 
+* docutils/parsers/rst/languages/he.py: Added to project: Hebrew
   mappings by Meir Kriheli.
 
 * docutils/frontend.py:
@@ -218,7 +218,7 @@ Release 0.5 (2008-06-25)
   - Put ensuremath around some latin1 chars.
   - Set ``usepackage[utf8x]{inputenc}`` for utf-8.
   - New option ``--use-bibtex=style,db1,db2``.
-  - New option ``--reference-label`` to allow usage of LaTeX ref for 
+  - New option ``--reference-label`` to allow usage of LaTeX ref for
     labels in section references.
   - Add a label after every section to support sectionnumbers as reference
     labels.
@@ -226,7 +226,7 @@ Release 0.5 (2008-06-25)
   - Remove inactive code for use_optionlist_for_option_list.
   - Remove latex comments from option_list output.
   - Fix: bug# 1612270 double qoutes in italian literal.
-  - Fix: output ``hypertarget{ node.get(refid) }{}`` from visit_target. 
+  - Fix: output ``hypertarget{ node.get(refid) }{}`` from visit_target.
   - Add option --use-latex-abstract.
   - Image width unit ``px`` is translated to ``pt``.
   - Add image height support.
@@ -383,7 +383,7 @@ Release 0.4 (2006-01-09)
 
 * docutils/parsers/rst/languages/ja.py: Added to project: Japanese
   mappings by David Goodger.
-  
+
 * docutils/parsers/rst/languages/zh_cn.py: Added to project:
   Simplified Chinese mappings by Panjunyong.
 
@@ -455,7 +455,7 @@ Release 0.4 (2006-01-09)
   - Made ``xmlcharrefreplace`` the default output encoding error
     handler.
 
-* docutils/writers/html4css1/: 
+* docutils/writers/html4css1/:
 
   - Added support for image width and height units.
   - Made ``xmlcharrefreplace`` the default output encoding error
