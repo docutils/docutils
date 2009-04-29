@@ -204,16 +204,20 @@ Image with 100% width:
 Rowspanning tables
 ------------------
 
-Several rowspanning cells in a table. 
+Several rowspanning cells in a table.
 
 .. Problem:
 
-   In LaTeX, if there are multirow cells, the "overwritten" cells need to be
-   defined as empty cells.
+   In the LaTeX `multicol` package, if there are multirow cells, the
+   "overwritten" cells need to be defined as empty cells.
 
-   However, visit_entry() is only called for the remaining cells, as HTML
-   expects only remaining cells. So the LaTeX writer needs bookkeeping
-   to write out the required number of extra '&'s.
+   Docutils (similarily to HTML) uses is the "Exchange Table Model" (also
+   known as CALS tables, see docs/ref/soextblx.dtd) which defines only the
+   remaining cells in a row "affected" by multirow cells.
+
+   Therefore, visit_entry() is only called for the remaining cells and the
+   LaTeX writer needs bookkeeping to write out the required number of extra
+   '&'s.
 
 .. class:: standard
 
@@ -244,5 +248,3 @@ Several rowspanning cells in a table.
 +-----------+            +-----------+
 | cell 13   |            | cell 43   |
 +-----------+------------+-----------+
-
-
