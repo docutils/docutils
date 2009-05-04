@@ -1910,6 +1910,17 @@ Bug fixes
 * Aligning a figure also aligns the legend *but not the caption* nor a table
   in the legend.
 
+  + Use tabular instead of longtable for tables in legends.
+
+  + Use `caption` package for caption alignment
+    (CTAN /macros/latex/contrib/caption,
+    Debian package texlive-latex-recommended).
+    Set alignment with ::
+
+      \captionsetup{justification=raggedleft,singlelinecheck=false}
+
+    For a single caption use this inside the figure environment.
+
 
 Generate clean and configurable LaTeX source
 ----------------------------------------------
@@ -1934,6 +1945,7 @@ LaTeX macros for Docutils-specific objects
 :legend:     Conflict with flushright/flushleft for image alignment
 	     ``! LaTeX Error: There's no line here to end.``
 	     --> Re-try after fixing the alignment bug.
+	     Try with raggedleft/raggedright.
 
 :subtitle:   Is there a native construct?
 
@@ -1998,6 +2010,14 @@ c) state-of-the-art packages (recommendations from comp.text.tex)
     happen when using configuration files), the spaces in front of footnote
     references aren't trimmed.
 
+  .. Footnote related packages (found with ``locate *foot*sty``)::
+
+       bigfoot.sty, eskdfootnote.sty, fixfoot.sty, footbib.sty,
+       footmisc.sty, footnpag.sty, mdwtools/footnote.sty,
+       ncctools/manyfoot.sty, ncctools/nccfoots.sty, pdfcolfoot.sty,
+       titlefoot.sty, yafoot/dblfnote.sty, yafoot/fnpos.sty,
+       yafoot/pfnote.sty
+
 * enumeration environment, field list
 
   use `mdwlist` from texlive-latex-recommended?
@@ -2028,7 +2048,7 @@ Default layout
   LaTeX (pages 10 and 11 of the `PSNFSS documentation`_), e.g. Times or
   Palatino.
 
-* Use *italic* instead of `slanted` for titlereference?
+* Use italic instead of slanted for titlereference?
 
 * Let `meta` directive insert comment into header instead of document?
 
@@ -2039,10 +2059,6 @@ Default layout
   (Maybe continue if the `compound paragraph`_ directive is used?)
 
 * Indent/handle doctest blocks similar to literal blocks?
-
-* Definitions in definition lists start on the same line as the term.
-  Putting ``\leavevmode`` after the term results in a new newline if the
-  definition starts with a bullet list or similar.
 
 * Sidebar handling (environment with `framed`, `marginnote`, `wrapfig`,
   ...)?
@@ -2059,6 +2075,8 @@ Default layout
   Should be possible with ``--literal-block-env==lstlistings`` and some
   configuration...
 
+* Use default font in admonitions and sidebar?  (HTML does not switch
+  the font either, users can change this redefining \DUadmonition)
 
 __ ../../../sandbox/latex-variants/README.html#default-font
 
@@ -2100,7 +2118,7 @@ Tables
     a cell. ALTHOUGH i set it to 2pt because, text is too close to the topline.
   - baselineskip/stretch does not help.
 
-* Should there be two hlines after table head and on table end ?
+* Should there be two hlines after table head and on table end?
 
 
 Image and figure directives
