@@ -318,8 +318,8 @@ class SortableDict(dict):
 # inserted into the preamble if required in the document.
 #
 # .. The package 'makecmds' would enable shorter definitions using the
-#    \providelenght and \provideenvironment commands.
-#    However, it is prettynon-standard (texlive-latex-extra).
+#    \providelength and \provideenvironment commands.
+#    However, it is pretty non-standard (texlive-latex-extra).
 
 class PreambleCmds(object):
     """Building blocks for the latex preamble."""
@@ -405,7 +405,7 @@ PreambleCmds.optionlist = r"""% option list:
   {\endlist}
 }{}"""
 
-PreambleCmds.providelenght = r"""% provide a length variable and set it
+PreambleCmds.providelength = r"""% provide a length variable and set it
 \newcommand*{\DUprovidelength}[2]{
   \ifthenelse{\isundefined{#1}}{\newlength{#1}\setlength{#1}{#2}}{}
 }"""
@@ -869,8 +869,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # ---------------
         # verbatim: to tell encode not to encode.
         self.verbatim = 0
-        # insert_newline: to tell encode to replace blanks by "~".
-        self.insert_none_breaking_blanks = 0
+        # insert_non_breaking_blanks: to tell encode to replace blanks by "~".
+        self.insert_non_breaking_blanks = 0
         # insert_newline: to tell encode to add latex newline.
         self.insert_newline = 0
         # inside citation reference labels underscores dont need to be escaped.
@@ -923,7 +923,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 #'': 'applemac',
                 #'': 'ansinew',  # windows 3.1 ansi
                 #'': 'ascii',    # ASCII encoding for the range 32--127.
-                #'': 'cp437',    # dos latine us
+                #'': 'cp437',    # dos latin us
                 #'': 'cp850',    # dos latin 1
                 #'': 'cp852',    # dos latin 2
                 #'': 'decmulti',
@@ -1047,7 +1047,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # ! LaTeX Error: There's no line here to end.
             text = text.replace('\n', '~\\\\\n')
         text = text.replace('[', '{[}').replace(']', '{]}')
-        if self.insert_none_breaking_blanks:
+        if self.insert_non_breaking_blanks:
             text = text.replace(' ', '~')
         if self.latex_encoding != 'utf8':
             text = self.unicode_to_latex(text)
@@ -1312,7 +1312,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_docinfo(self, node):
         # tabularx: automatic width of columns, no page breaks allowed.
         self.requirements['tabularx'] = r'\usepackage{tabularx}'
-        self.requirements['~providelenght'] = PreambleCmds.providelenght
+        self.requirements['~providelength'] = PreambleCmds.providelength
         self.fallbacks['docinfo'] = PreambleCmds.docinfo
         self.docinfo = ['%' + '_'*75 + '\n',
                         '\\begin{center}\n',
@@ -1743,7 +1743,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             return width_str
         res = width_str
         amount, unit = match.groups()[:2]
-        # For LaTeX, a lenght without unit is an error.
+        # For LaTeX, a length without unit is an error.
         # default to (DTP) points (1 bp = 1/72 in)
         if unit == '':
               res = '%sbp' % amount
@@ -1835,7 +1835,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('\n')
 
     def visit_line_block(self, node):
-        self.requirements['~providelenght'] = PreambleCmds.providelenght
+        self.requirements['~providelength'] = PreambleCmds.providelength
         self.fallbacks['lineblock'] = PreambleCmds.lineblock
         if isinstance(node.parent, nodes.line_block):
             self.body.append('\\item[]\n'
@@ -1912,7 +1912,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                                                   self.literal_block_options))
         else:
             self.literal_block = 1
-            self.insert_none_breaking_blanks = 1
+            self.insert_non_breaking_blanks = 1
             self.body.append('{\\ttfamily \\raggedright \\noindent\n')
 
     def depart_literal_block(self, node):
@@ -1921,7 +1921,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.verbatim = 0
         else:
             self.body.append('\n}')
-            self.insert_none_breaking_blanks = 0
+            self.insert_non_breaking_blanks = 0
             self.literal_block = 0
         self.body.append(self.context.pop())
 
@@ -1965,7 +1965,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('] ')
 
     def visit_option_list(self, node):
-        self.requirements['~providelenght'] = PreambleCmds.providelenght
+        self.requirements['~providelength'] = PreambleCmds.providelength
         self.fallbacks['optionlist'] = PreambleCmds.optionlist
         self.body.append('\\begin{DUoptionlist}\n')
 
