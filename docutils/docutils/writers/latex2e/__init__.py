@@ -9,7 +9,7 @@ __docformat__ = 'reStructuredText'
 # code contributions from several people included, thanks to all.
 # some named: David Abrahams, Julien Letessier, Lele Gaifax, and others.
 #
-# convention deactivate code by two # e.g. ##.
+# convention deactivate code by two # i.e. ##.
 
 import sys
 import os
@@ -252,24 +252,20 @@ class Babel(object):
         'tr': 'turkish',
         'uk': 'ukrainian'
     }
-    # language dependent configuration code
-    setup = ''
 
     def __init__(self, lang):
         self.language = lang
-        # pdflatex does not produce double quotes for ngerman in tt.
-        self.double_quote_replacment = None
+        self.quote_index = 0
+        self.quotes = ('``', "''")
+        self.setup = '' # language dependent configuration code
+        self.double_quote_replacment = None # " replacement in literal (tt)
+        # TODO: use \textquotedbl in OT1 font encoding
+        # double quotes are "active" in some languages (e.g. German).
         if self.language.startswith('de'):
-            #self.quotes = ("\"`", "\"'")
             self.quotes = ('{\\glqq}', '{\\grqq}')
             self.double_quote_replacment = '{\\dq}'
         if self.language.startswith('it'):
-            self.quotes = ('``', "''")
             self.double_quote_replacment = r'{\char`\"}'
-        else:
-            self.quotes = ('``', "''")
-        self.quote_index = 0
-        # for spanish ``~n`` must be ``~{}n``
         if self.language.startswith('es'):
             # reset tilde ~ to their original meaning (nobreakspace):
             self.setup = ('\n'
@@ -954,11 +950,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
         u'\u201C' : '``',
         u'\u201D' : "''",
         u'\u201E' : ',,',
-        u'\u2020' : '{\\dag}',
-        u'\u2021' : '{\\ddag}',
-        u'\u2026' : '{\\dots}',
-        u'\u2122' : '{\\texttrademark}',
-        u'\u21d4' : '{$\\Leftrightarrow$}',
+        u'\u2020' : '\\dag{}',
+        u'\u2021' : '\\ddag{}',
+        u'\u2026' : '\\dots{}',
+        u'\u2122' : '\\texttrademark{}',
+        u'\u21d4' : '$\\Leftrightarrow$',
         # greek alphabet ?
     }
 
@@ -972,48 +968,77 @@ class LaTeXTranslator(nodes.NodeVisitor):
         return text
 
     def ensure_math(self, text):
-        if not 'ensure_math_re' in self.__dict__:
-            chars = {
-                # lnot,pm,twosuperior,threesuperior,mu,onesuperior,times,div
-                'latin1' : '\xac\xb1\xb2\xb3\xb5\xb9\xd7\xf7' ,
-                # also latin5 and latin9
-                }
+        if not hasattr(self, 'ensure_math_re'):
+            chars = { # lnot,pm,twosuperior,threesuperior,mu,onesuperior,times,div
+                     'latin1' : '\xac\xb1\xb2\xb3\xb5\xb9\xd7\xf7' ,
+                     # TODO?: also latin5 and latin9
+                    }
             self.ensure_math_re = re.compile('([%s])' % chars['latin1'])
         text = self.ensure_math_re.sub(r'\\ensuremath{\1}', text)
         return text
 
     def encode(self, text):
-        """Return text with special characters (``#$%&~_^\{}``) escaped."""
-        #   \ ~ ^ Escaping with a backslash does not help.
-        #   < >   are only available in math-mode or tt font. (really ?)
-        #   $     starts math- mode.
-        #   "     active in some languages (e.g. German) TODO!
+        """Return text with special characters escaped.
+
+        Escape the ten special printing characters ``# $ % & ~ _ ^ \ { }``,
+        square brackets ``[ ]``, double quotes and (in OT1) ``< | >``.
+
+        Separate ``-`` (and more in literal text) to prevent input ligatures.
+        """
         if self.verbatim:
             return text
-        # compile the regexps once. do it here so one can see them.
+        # Bootstrapping: backslash and braces are also part of replacements
+        # 1. backslash (terminated below)
+        text = text.replace('\\', r'\textbackslash')
+        # 2. braces
+        text = text.replace('{', r'\{')
+        text = text.replace('}', r'\}')
+        # 3. terminate \textbackslash
+        text = text.replace('\\textbackslash', '\\textbackslash{}')
+        # 4. the remaining special printing characters
+        text = text.replace('#', r'\#')
+        text = text.replace('$', r'\$')
+        text = text.replace('%', r'\%')
+        text = text.replace('&', r'\&')
+        text = text.replace('~', r'\textasciitilde{}')
+        if not self.inside_citation_reference_label:
+            text = text.replace('_', r'\_')
+        text = text.replace('^', r'\textasciicircum{}')
+        # Square brackets
         #
-        # first the braces.
-        if not hasattr(self, 'encode_re_braces'):
-            self.encode_re_braces = re.compile(r'([{}])')
-        text = self.encode_re_braces.sub(r'{\\\1}',text)
-        if not hasattr(self, 'encode_re_bslash'):
-            # find backslash: except in the form '{\{}' or '{\}}'.
-            self.encode_re_bslash = re.compile(r'(?<!{)(\\)(?![{}]})')
-        # then the backslash: except in the form from line above:
-        # either '{\{}' or '{\}}'.
-        text = self.encode_re_bslash.sub(r'{\\textbackslash}', text)
-        # then dollar ...
-        text = text.replace('$', '{\\$}')
-        text = text.replace('&', '{\\&}')
-        text = text.replace('%', '{\\%}')
-        text = text.replace('#', '{\\#}')
-        text = text.replace('^', '{\\textasciicircum}')
-        text = text.replace('~', '{\\textasciitilde}')
+        #   \item and all the other commands with optional arguments check
+        #   if the token right after the macro name is an opening bracket.
+        #   In that case the contents between that bracket and the following
+        #   closing bracket on the same grouping level are taken as the
+        #   optional argument. What makes this unintuitive is the fact that
+        #   the square brackets aren't grouping characters themselves, so in
+        #   your last example \item[[...]] the optional argument consists of
+        #   [... (without the closing bracket).
         #
-        if not ( self.literal_block or self.literal ):
-            text = text.replace('|', '{\\textbar}')
-            text = text.replace('<', '{\\textless}')
-            text = text.replace('>', '{\\textgreater}')
+        # How to escape?
+        # Square brackets are ordinary chars and cannot be escaped with '\'
+        # -> put them in a group.  (Alternatively ensure that all macros
+        # with optional arguments are terminated with {} and text inside any
+        # optional argument is put in a group ``[{text}]``).
+        text = text.replace('[', '{[}')
+        text = text.replace(']', '{]}')
+        # Workarounds for OT1 font-encoding
+        if self.font_encoding in ['OT1', '']:
+            # * out-of-order characters in cmtt
+            if self.literal_block or self.literal:
+                # replace underscore by underlined blank, because this has
+                # correct width.
+                text = text.replace(r'\_', r'\underline{ }')
+                # the backslash doesn't work, so we use a mirrored slash.
+                # \reflectbox is provided by graphicx:
+                self.requirements['graphicx'] = self.graphicx_package
+                text = text.replace(r'\textbackslash', r'\reflectbox{/}')
+            # * ``< | >`` come out as different chars (except for cmtt):
+            else:
+                text = text.replace('|', '\\textbar{}')
+                text = text.replace('<', '\\textless{}')
+                text = text.replace('>', '\\textgreater{}')
+        #
         # Separate compound characters, e.g. '--' to '-{}-'.  (The
         # actual separation is done later; see below.)
         separate_chars = '-'
@@ -1022,31 +1047,19 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # and some other characters which can't occur in
             # non-literal text.
             separate_chars += ',`\'"<>'
-            # pdflatex does not produce doublequotes for ngerman.
+            # double quotes are "active characters" in some languages
             text = self.babel.double_quotes_in_tt(text)
-            if self.font_encoding in ['OT1', '']:
-                # We're using OT1 font-encoding and have to replace
-                # underscore by underlined blank, because this has
-                # correct width.
-                text = text.replace('_', '{\\underline{ }}')
-                # And the tt-backslash doesn't work in OT1, so we use
-                # a mirrored slash.
-                text = text.replace('\\textbackslash', '\\reflectbox{/}')
-            else:
-                text = text.replace('_', '{\\_}')
         else:
             text = self.babel.quote_quotes(text)
-            if not self.inside_citation_reference_label:
-                text = text.replace('_', '{\\_}')
         for char in separate_chars * 2:
-            # Do it twice ("* 2") becaues otherwise we would replace
+            # Do it twice ("* 2") because otherwise we would replace
             # '---' by '-{}--'.
             text = text.replace(char + char, char + '{}' + char)
         if self.insert_newline or self.literal_block:
             # Insert a blank before the newline, to avoid
             # ! LaTeX Error: There's no line here to end.
+            # TODO: add space only for blank lines
             text = text.replace('\n', '~\\\\\n')
-        text = text.replace('[', '{[}').replace(']', '{]}')
         if self.insert_non_breaking_blanks:
             text = text.replace(' ', '~')
         if self.latex_encoding != 'utf8':
@@ -1424,7 +1437,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                                  widest_label)
                 for bi in self._bibitems:
                     # cite_key: underscores must not be escaped
-                    cite_key = bi[0].replace(r'{\_}','_')
+                    cite_key = bi[0].replace(r'\_','_')
                     self.body.append('\\bibitem[%s]{%s}{%s}\n' %
                                      (bi[0], cite_key, bi[1]))
                 self.body.append('\\end{thebibliography}\n')
@@ -1617,7 +1630,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                                 self.encode(node.astext()))
             raise nodes.SkipNode
         else:
-            self.body.append('\\item [')
+            self.body.append('\\item[')
 
     def depart_field_name(self, node):
         if not self.docinfo:
@@ -1850,7 +1863,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # Append '{}' in case the next character is '[', which would break
         # LaTeX's list environment (no numbering and the '[' is not printed).
         # TODO: is this still needed?  We already protect '['.
-        self.body.append('\\item {} ')
+        self.body.append('\\item ')
 
     def depart_list_item(self, node):
         self.body.append('\n')
@@ -1956,7 +1969,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_option_group(self, node):
-        self.body.append('\\item [')
+        self.body.append('\\item[')
         # flag for first option
         self.context.append(0)
 
@@ -2170,12 +2183,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_term(self, node):
-        self.body.append('\\item[{')
+        self.body.append('\\item[')
 
     def depart_term(self, node):
         # definition list term. \leavevmode results in a line break if the
         # term is followed by an item list.
-        self.body.append('}] \leavevmode ')
+        self.body.append('] \leavevmode ')
 
     def visit_tgroup(self, node):
         #self.body.append(self.starttag(node, 'colgroup'))

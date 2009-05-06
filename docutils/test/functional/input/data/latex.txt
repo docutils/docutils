@@ -116,9 +116,11 @@ Nested Elements
           | line blocks
 :Last field: Last field.
 
-* * * * * * * * Deeply nested list.
+Too deeply nested lists fail. TODO: generate an error or provide a workaround.
 
-1. 2. 3. 4. 5. 6. 7. 8. Deeply nested list.
+.. * * * * * * * * Deeply nested list.
+
+.. 1. 2. 3. 4. 5. 6. 7. 8. Deeply nested list.
 
 +-----------------+
 | | Line block    |
@@ -192,13 +194,29 @@ Images
 
 Image with 20% width:
 
-.. image:: ../../../docs/user/rst/images/title.png
+.. image:: ../../../../docs/user/rst/images/title.png
    :width: 20%
 
 Image with 100% width:
 
-.. image:: ../../../docs/user/rst/images/title.png
+.. image:: ../../../../docs/user/rst/images/title.png
    :width: 100%
+
+
+Vertical alignment of inline images
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. |top| image:: ../../../../docs/user/rst/images/biohazard.png
+   :align: top
+
+.. |middle| image:: ../../../../docs/user/rst/images/biohazard.png
+   :align: middle
+
+.. |bottom| image:: ../../../../docs/user/rst/images/biohazard.png
+   :align: bottom
+
+A paragraph containing top |top|, middle |middle|, and bottom |bottom|
+aligned images.
 
 
 Rowspanning tables

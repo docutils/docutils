@@ -182,6 +182,20 @@ Backwards compatibility:
    or `cmlgr` all providing Computer Modern look-alikes in vector format and
    T1 encoding, e.g. ``--font-encoding=T1 --stylesheet=lmodern``.
 
+Cleaner LaTeX source
+--------------------
+
+* Remove redundant "double protection" from the encoding of the "special
+  printing characters" and square brackets, e.g. ``\%`` instead of ``{\%}``
+  and ::
+
+   \item {}      -> \item % as '[' is already escaped
+   \item[{Term}] -> \item[Term]
+   \item [what:] -> \item[what:]
+
+* Use conventional style for "named" macros, e.g. ``\dots{}`` instead of
+  ``{\dots}``
+
 Sub- and superscript as text
 ----------------------------
 
