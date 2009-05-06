@@ -1890,10 +1890,10 @@ LaTeX writer
 Also see the Problems__ section in the latex writer documentation and
 discussion and proposals in the `latex-variants`_ sandbox project.
 
-__ http://docutils.sourceforge.net/docs/user/latex.html#problems
+__ ../user/latex.html#problems
 
 .. _latex-variants:
-   http://docutils.sourceforge.net/sandbox/latex-variants/README.html
+   ../../../sandbox/latex-variants/README.html
 
 Bug fixes
 ---------
@@ -1921,23 +1921,19 @@ Bug fixes
 
     For a single caption use this inside the figure environment.
 
+    ``singlelinecheck=false`` in the preamble and justification in the
+    caption would allow configuring "singlelinecheck" in the style file.
+
+* An image directive with target URI does not start a new paragraph
+  (see first two image examples in standalone_rst_latex.tex).
+
+* Too deeply nested lists fail: generate an error or provide a workaround.
+
 
 Generate clean and configurable LaTeX source
 ----------------------------------------------
 
 * Check the generated source with package `nag`.
-
-* LaTeX code style (?)::
-
-   \item {}      -> \item % as '[' is already escaped
-   \item[{Term}] -> \item[Term]
-   \item [what:] -> \item[what:]
-   {\macro}      -> \macro{}
-   {\$}		 -> \$
-   {\&}		 -> \&
-   {\%}		 -> \%
-   {\#}          -> \#
-
 
 LaTeX macros for Docutils-specific objects
 ``````````````````````````````````````````
@@ -1957,29 +1953,20 @@ LaTeX constructs and packages in stead of re-implementations
 
 Which packages do we want to use?
 
-a) only base packages:
-   * conservative, always present, few dependencies
-   * needs workarounds/hacks (reinventing the wheel) for advanced features
+  + base and "recommended" packages
 
-b) base and "recommended" packages
+    (packages that should be in a "reasonably sized and reasonably modern
+    LaTeX installation like the `texlive-latex-recommended` Debian package,
+    say):
 
-   (packages that should be in a "reasonably sized and reasonably modern
-   LaTeX installation like the `texlive-latex-recommended` Debian package,
-   say):
+  + no "fancy" or "exotic" requirements
 
-   * no "fancy" or "exotic" dependencies
-   * some workarounds still required for newer packages
-
-c) state-of-the-art packages (recommendations from comp.text.tex)
-
-   * high dependencies, some packages might not be available in older
-     distributions
-   * cleanest possible LaTeX code, stable solution, no re-inventing of wheels.
-
-* ``alltt`` environment for literal block
+  + links to advanced packages and their use in latex.txt.
 
 * Sub- and superscript with ``\textsubscript`` (needs
   ``\usepackage{fixltx2e}``) and ``\textsuperscript``.
+
+* ``alltt`` environment for literal block.
 
 * footnotes
 
@@ -2033,7 +2020,7 @@ c) state-of-the-art packages (recommendations from comp.text.tex)
 
    ?
 
-.. center subsection{Abstract} gives a LaTeX error here.
+.. center subsection{Abstract} is not allowed
    ``! LaTeX Error: Something's wrong--perhaps a missing \item.``
    Committed a HACK: centring by ``\hfill``.
 
@@ -2077,6 +2064,12 @@ Default layout
 
 * Use default font in admonitions and sidebar?  (HTML does not switch
   the font either, users can change this redefining \DUadmonition)
+
+* Configurable `classifier` in description list?
+  \emph instead of bold as default?
+
+* Use teletype (literal) for  references without targets (currently
+   ``\color{red}\bfseries{}``)
 
 __ ../../../sandbox/latex-variants/README.html#default-font
 

@@ -86,6 +86,7 @@ Changes Since 0.5
     only if required in the document.
   - Use the name prefix ``DU`` for all Docutils specific LaTeX objects.
   - New custom macros.
+  - Simpler LaTeX encoding, e.g. "\%" instead of "{\%}".
 
 * docs/ref/rst/restructuredtext.txt:
 
