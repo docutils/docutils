@@ -101,6 +101,12 @@ Odtwriter_, experimental writer for Docutils OpenOffice export supports syntax
 Summary
 """""""
 
+On 2009-02-20, David Goodger wrote in docutils-devel
+
+   I'd like to see the extensions implemented in Bruce and Sphinx etc.
+   folded back into core Docutils eventually. Otherwise we'll end up with
+   incompatible systems.
+
 Pygments_ seems to be the most promising Docutils highlighter.
 
 For printed output and PDFs via LaTeX, the listings_ package is a viable
