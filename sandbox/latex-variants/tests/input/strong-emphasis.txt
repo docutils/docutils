@@ -9,10 +9,6 @@ Use a custom role.
 
 .. role:: verystrong(emphasis)
 
-
 Now I can achieve :verystrong:`very strong emphasis` by styling the
 resulting inline element in a custom style sheet.
-
-(Currently LaTeX does not support custom roles based on existing ones.
-This is a missing featre that will be added in the future...)
 

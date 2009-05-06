@@ -3,10 +3,12 @@
 # :Author: the Pygments team; Felix Wiemann; Guenter Milde
 # :Date: $Date$
 # :Copyright: This module has been placed in the public domain.
-# 
+#
 # This is a merge of `Using Pygments in ReST documents`_ from the pygments_
 # documentation, and a `proof of concept`_ by Felix Wiemann.
-# 
+#
+# .. class:: borderless
+#
 # ========== ===========================================================
 # 2007-06-01 Removed redundancy from class values.
 # 2007-06-04 Merge of successive tokens of same type
@@ -16,10 +18,10 @@
 #            allowing the use of pygments-produced style sheets.
 # 2007-06-07 Merge in the formatting of the parsed tokens
 #            (misnamed as docutils_formatter) as class DocutilsInterface
-# 2007-06-08 Failsave implementation (fallback to a standard literal block 
+# 2007-06-08 Failsave implementation (fallback to a standard literal block
 #            if pygments not found)
 # ========== ===========================================================
-# 
+#
 # ::
 
 """Define and register a code-block directive using pygments
@@ -42,7 +44,7 @@ except ImportError:
 
 # Customisation
 # -------------
-# 
+#
 # Do not insert inline nodes for the following tokens.
 # (You could add e.g. Token.Punctuation like ``['', 'p']``.) ::
 
@@ -50,25 +52,25 @@ unstyled_tokens = ['']
 
 # DocutilsInterface
 # -----------------
-# 
+#
 # This interface class combines code from
 # pygments.formatters.html and pygments.formatters.others.
-# 
+#
 # It does not require anything of docutils and could also become a part of
 # pygments::
 
 class DocutilsInterface(object):
     """Parse `code` string and yield "classified" tokens.
-    
+
     Arguments
-    
+
       code     -- string of source code to parse
       language -- formal language the code is written in.
-    
-    Merge subsequent tokens of the same token-type. 
-    
-    Yields the tokens as ``(ttype_class, value)`` tuples, 
-    where ttype_class is taken from pygments.token.STANDARD_TYPES and 
+
+    Merge subsequent tokens of the same token-type.
+
+    Yields the tokens as ``(ttype_class, value)`` tuples,
+    where ttype_class is taken from pygments.token.STANDARD_TYPES and
     corresponds to the class argument used in pygments html output.
 
     """
@@ -76,7 +78,7 @@ class DocutilsInterface(object):
     def __init__(self, code, language):
         self.code = code
         self.language = language
-        
+
     def lex(self):
         # Get lexer for language (use text as fallback)
         try:
@@ -85,8 +87,8 @@ class DocutilsInterface(object):
             # info: "no pygments lexer for %s, using 'text'"%self.language
             lexer = get_lexer_by_name('text')
         return pygments.lex(self.code, lexer)
-        
-            
+
+
     def join(self, tokens):
         """join subsequent tokens of same token-type
         """
@@ -107,7 +109,7 @@ class DocutilsInterface(object):
             tokens = self.lex()
         except IOError:
             print "INFO: Pygments lexer not found, using fallback"
-            # TODO: write message to INFO 
+            # TODO: write message to INFO
             yield ('', self.code)
             return
 
@@ -127,7 +129,7 @@ def code_block_directive(name, arguments, options, content, lineno,
     language = arguments[0]
     # create a literal block element and set class argument
     code_block = nodes.literal_block(classes=["code-block", language])
-    
+
     # parse content with pygments and add to code_block element
     for cls, value in DocutilsInterface(u'\n'.join(content), language):
         if cls in unstyled_tokens:
@@ -152,10 +154,10 @@ directives.register_directive('code-block', code_block_directive)
 # .. _Using Pygments in ReST documents: http://pygments.org/docs/rstdirective/
 # .. _proof of concept:
 #      http://article.gmane.org/gmane.text.docutils.user/3689
-# 
+#
 # Test output
 # -----------
-# 
+#
 # If called from the command line, call the docutils publisher to render the
 # input::
 
@@ -173,6 +175,3 @@ if __name__ == '__main__':
     # publish_cmdline(writer_name='html', description=description)
     # publish_cmdline(writer_name='latex', description=description)
     # publish_cmdline(writer_name='newlatex2e', description=description)
-    
-
-
