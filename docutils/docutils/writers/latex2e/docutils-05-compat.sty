@@ -4,7 +4,7 @@
 % 
 % :Author:    Guenter Milde
 % :Contact:   milde@users.berlios.de
-% :Revision:  $Revision: 5927 $
+% :Revision:  $Revision: 5934 $
 % :Date:      $Date: 2009-02-24$
 % :Copyright: © 2009 G. Milde,
 %             Released  without warranties or conditions of any kind
@@ -77,14 +77,14 @@
 % ------------
 % 
 % New Feature: failsave implementation
-%  As with classes to HTML objects, class arguments are silently ignored if
-%  there is no styling rule for this class in a custom style sheet.
+%   As with classes to HTML objects, class arguments are silently ignored if
+%   there is no styling rule for this class in a custom style sheet.
 % 
 % New Feature: custom roles based on standard roles
-%  As class support needs to be handled by the LaTeX writer, this feature was
-%  not present "automatically" (as in HTML). Modified visit/depart_*() methods
-%  for the standard roles now call visit/depart_inline() if there are class
-%  arguments to the node.
+%   As class support needs to be handled by the LaTeX writer, this feature was
+%   not present "automatically" (as in HTML). Modified visit/depart_*()
+%   methods for the standard roles now call visit/depart_inline() if there are
+%   class arguments to the node.
 % 
 % Backwards compatibility:
 %   SVN versions 5742 to 5861 contained an implementation that did not work
@@ -129,7 +129,8 @@
 %    without unit in a style sheet, however the 0.3 % change will be
 %    imperceptible in most cases.
 % 
-% Error ``illegal unit px``:
+% .. admonition:: Error ``illegal unit px``
+% 
 %   The unit ``px`` is not defined in "pure" LaTeX, but introduced by the
 %   `pdfTeX` converter on 2005-02-04. `pdfTeX` is used in all modern LaTeX
 %   distributions (since ca. 2006) also for conversion into DVI.
@@ -137,7 +138,6 @@
 %   If you convert the LaTeX source with a legacy program, you might get the
 %   error ``illegal unit px``.
 % 
-% .. tip::
 %   If updating LaTeX is not an option, just remove the ``px`` from the length
 %   specification. HTML/CSS will default to ``px`` while the `latexe2` writer
 %   will add the fallback unit ``bp``.
@@ -182,30 +182,56 @@
 %    or `cmlgr` all providing Computer Modern look-alikes in vector format and
 %    T1 encoding, e.g. ``--font-encoding=T1 --stylesheet=lmodern``.
 % 
+% Cleaner LaTeX source
+% --------------------
+% 
+% * Remove redundant "double protection" from the encoding of the "special
+%   printing characters" and square brackets, e.g. ``\%`` instead of ``{\%}``
+%   and ::
+
+%    \item {}      -> \item % as '[' is already escaped
+%    \item[{Term}] -> \item[Term]
+%    \item [what:] -> \item[what:]
+% 
+% * Use conventional style for "named" macros, e.g. ``\dots{}`` instead of
+%   ``{\dots}``
+% 
 % Sub- and superscript as text
 % ----------------------------
 % 
 % New feature:
 %   Set sub- and superscript role argument in text mode not as math.
 % 
-%   Wraps the role argument in ``$_{\mbox{\scriptsize <subscript text>}}$``
-%   or ``$^{\mbox{\scriptsize <superscript text>}}$``.
+%   Pass the role content to ``\textsubscript`` or ``\textsuperscript``.
 % 
 % Backwards compatibility:
-%   **None**
+%   The old implementation set the role content in Math mode, where
 % 
-%   In math mode, Latin letters are typeset italic and whitespace is ignored.
+%   * whitespace is ignored,
+%   * a different command set and font setting scheme is active,
+%   * Latin letters are typeset italic but numbers upright
 % 
-% .. tip:: To get italic subscripts, define and use in your document custom
-%    roles like ``.. role:: sub(subscript)`` and ``.. role::
-%    super(superscript)`` and define the "role commands"::
+%   Although it is possible to redefine ``\textsubscript`` and
+%   ``\textsuperscript`` to typeset the content in math-mode, this can lead to
+%   errors with certain input and is therefore not done in this style sheet.
+% 
+% .. tip:: To get italic subscripts, define and use in your document
+%    `custom roles`_ like ``.. role:: sub(subscript)`` and
+%    ``.. role:: super(superscript)`` and define the "role commands"::
 
 %      \newcommand{\docutilsrolesub}{\itshape}
 %      \newcommand{\docutilsrolesuper}{\itshape}
 % 
+%    Alternatively, if you want all sub- and superscripts in italic, redefine
+%    the macros::
+
+%      %% \let\DUsup\textsubscript
+%      %% \let\DUsuper\textsuperscript
+%      %% \renewcommand*{\textsubscript}{\DUsub\itshape}
+%      %% \renewcommand*{\textsuperscript}{\DUsuper\itshape}
+% 
 %    This is not fully backwards compatible, as it will also set numbers in
-%    italic shape and not ignore whitespace. However, switching to math-mode
-%    is insecure with some characters like '$'.
+%    italic shape and not ignore whitespace.
 % 
 % Page layout
 % -----------
@@ -316,6 +342,18 @@
 % Special lengths, commands, and environments
 % -------------------------------------------
 % 
+% Removed definitions
+% ```````````````````
+% 
+% admonition width
+% ^^^^^^^^^^^^^^^^
+% The ``admonitionwith`` lenght is replaced by the more powerful
+% ``\DUadmonition`` (see `New Definitions`_)::
+
+\newlength{\admonitionwidth}
+\setlength{\admonitionwidth}{0.9\textwidth}
+
+
 % Renamed definitions (now conditional)
 % `````````````````````````````````````
 % 
@@ -332,14 +370,6 @@
 % The following code provides the old definitions and maps them (or their
 % custom variants) to the new interface.
 % 
-% admonition width
-% ^^^^^^^^^^^^^^^^
-% The ``admonitionwith`` lenght is replaced by the more powerful
-% ``\DUadmonition`` (see `New Definitions`_)::
-
-\newlength{\admonitionwidth}
-\setlength{\admonitionwidth}{0.9\textwidth}
-
 % docinfo width
 % ^^^^^^^^^^^^^
 % ::
@@ -422,9 +452,9 @@
 % New Feature:
 %   Enable customization of some more Docutils elements with special commands
 % 
-%   :sidebar:    ``DUsidebar`` command (better environment?)
+%   :sidebar:    ``DUsidebar`` command
 %   :transition: ``\DUtransition`` command
-%   :admonition: ``DUadmonition`` environment (replacing ``\admonitionwidth``
+%   :admonition: ``DUadmonition`` environment (replacing ``\admonitionwidth``)
 %   :field list: ``DUfieldlist`` environment
 % 
 % Backwards compatibility:
@@ -432,10 +462,12 @@
 %   construct. The following definitions restore the old behaviour in case of
 %   changes.
 % 
-%   Admonitions: (use the ``\admonitionwidth`` variable)::
+% admonitions
+% ^^^^^^^^^^^
+% Use the old variable for `admonition width`_::
 
-  \newcommand{\DUadmonition}[1]{%
-    \begin{center}
-      \fbox{\parbox{\admonitionwidth}{\sffamily #1}}
-    \end{center}
-  }
+\newcommand{\DUadmonition}[1]{%
+  \begin{center}
+    \fbox{\parbox{\admonitionwidth}{\sffamily #1}}
+  \end{center}
+}

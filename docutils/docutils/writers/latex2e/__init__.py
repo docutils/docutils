@@ -824,13 +824,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.head_prefix = [
               self.generator,
               self.latex_head % (self.d_options,self.settings.documentclass),
-              # Requirements
+              ## '%%% Requirements',
               # multi-language support (language is in document settings)
               '\\usepackage{babel}%s' % self.babel.setup,
               fontenc_header,
               r'\usepackage[%s]{inputenc}' % self.latex_encoding,
               r'\usepackage{ifthen}',
-              ## r'\usepackage{fixltx2e} % "visible" LaTeX bugfixes',
+              r'\usepackage{fixltx2e} % fix LaTeX2e shortcomings',
               ] # custom requirements will be added later
 
         # Part of LaTeX preamble following the stylesheet
@@ -1142,24 +1142,24 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append( '\\end{itemize}\n' )
 
     def visit_superscript(self, node):
-        self.body.append(r'$^{\mbox{\scriptsize ')
+        self.body.append(r'\textsuperscript{')
         if node.get('classes'):
             self.visit_inline(node)
 
     def depart_superscript(self, node):
         if node.get('classes'):
             self.depart_inline(node)
-        self.body.append('}}$')
+        self.body.append('}')
 
     def visit_subscript(self, node):
-        self.body.append(r'$_{\mbox{\scriptsize ')
+        self.body.append(r'\textsubscript{') # requires `fixltx2e`
         if node.get('classes'):
             self.visit_inline(node)
 
     def depart_subscript(self, node):
         if node.get('classes'):
             self.depart_inline(node)
-        self.body.append('}}$')
+        self.body.append('}')
 
     def visit_caption(self, node):
         self.body.append( '\\caption{' )
@@ -1695,7 +1695,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             suffix = '['
             self.context.append(']')
         elif format == 'superscript':
-            suffix = '\\raisebox{.5em}[0em]{\\scriptsize'
+            suffix = r'\textsuperscript{'
             self.context.append('}')
         else:                           # shouldn't happen
             raise AssertionError('Illegal footnote reference format.')

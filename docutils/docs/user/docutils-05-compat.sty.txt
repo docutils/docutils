@@ -10,17 +10,16 @@
             Released  without warranties or conditions of any kind
             under the terms of the Apache License, Version 2.0
             http://www.apache.org/licenses/LICENSE-2.0
+:Abstract:  This file documents changes and provides a style for best
+	    possible compatibility to the behaviour of the `latex2e` 
+	    writer of Doctutils release 0.5.
 
 ::
 
   \NeedsTeXFormat{LaTeX2e}
   \ProvidesPackage{docutils-05-compat}
   [2009/03/26 v0.1 compatibility with rst2latex from Docutils 0.5]
-
-This file documents changes and provides a style for best possible
-compatibility to the behaviour of the `latex2e` writer of Doctutils
-release 0.5
-
+  
 .. contents::
    :depth: 3
 
@@ -68,7 +67,7 @@ Backwards compatibility:
   be a LaTeX package (``*.sty``) and referenced with the ``\usepackage``
   command.
 
-.. tip::
+.. important:: 
   Always specify the extension if you want the style sheet to be
   ``\input`` by LaTeX.
 
@@ -77,20 +76,19 @@ Custom roles
 ------------
 
 New Feature: failsave implementation
- As with classes to HTML objects, class arguments are silently ignored if
- there is no styling rule for this class in a custom style sheet.
+  As with classes to HTML objects, class arguments are silently ignored if
+  there is no styling rule for this class in a custom style sheet.
 
 New Feature: custom roles based on standard roles
- As class support needs to be handled by the LaTeX writer, this feature was
- not present "automatically" (as in HTML). Modified visit/depart_*() methods
- for the standard roles now call visit/depart_inline() if there are class
- arguments to the node.
+  As class support needs to be handled by the LaTeX writer, this feature was
+  not present "automatically" (as in HTML). Modified visit/depart_*()
+  methods for the standard roles now call visit/depart_inline() if there are
+  class arguments to the node.
 
-Backwards compatibility:
-  SVN versions 5742 to 5861 contained an implementation that did not work
-  with commands expecting an argument. The implementation from version 5862
-  is fully backwards compatible.
-
+Backwards compatibility: 
+  The implementation is fully backwards compatible. (SVN versions 5742 to
+  5861 contained an implementation that did not work with commands expecting
+  an argument.)
 
 Length units
 ------------
@@ -129,7 +127,8 @@ Backwards compatibility:
    without unit in a style sheet, however the 0.3 % change will be
    imperceptible in most cases.
 
-Error ``illegal unit px``:
+.. admonition:: Error ``illegal unit px``
+
   The unit ``px`` is not defined in "pure" LaTeX, but introduced by the
   `pdfTeX` converter on 2005-02-04. `pdfTeX` is used in all modern LaTeX
   distributions (since ca. 2006) also for conversion into DVI.
@@ -137,7 +136,6 @@ Error ``illegal unit px``:
   If you convert the LaTeX source with a legacy program, you might get the
   error ``illegal unit px``.
 
-.. tip::
   If updating LaTeX is not an option, just remove the ``px`` from the length
   specification. HTML/CSS will default to ``px`` while the `latexe2` writer
   will add the fallback unit ``bp``.
@@ -185,16 +183,16 @@ Backwards compatibility:
 Cleaner LaTeX source
 --------------------
 
-* Remove redundant "double protection" from the encoding of the "special
-  printing characters" and square brackets, e.g. ``\%`` instead of ``{\%}``
-  and ::
+New feature:
+  * Remove redundant "double protection" from the encoding of the "special
+    printing characters" and square brackets, e.g. ``\%`` instead of
+    ``{\%}``.
+  * Remove some spurious whitespace, e.g. ``\item [what:] -> \item[what:]``.
+  * Use conventional style for "named" macros, e.g. ``\dots{}`` instead of
+    ``{\dots}``
 
-   \item {}      -> \item % as '[' is already escaped
-   \item[{Term}] -> \item[Term]
-   \item [what:] -> \item[what:]
-
-* Use conventional style for "named" macros, e.g. ``\dots{}`` instead of
-  ``{\dots}``
+Backwards compatibility:
+  Changes do not affect the output.
 
 Sub- and superscript as text
 ----------------------------
@@ -202,24 +200,36 @@ Sub- and superscript as text
 New feature:
   Set sub- and superscript role argument in text mode not as math.
 
-  Wraps the role argument in ``$_{\mbox{\scriptsize <subscript text>}}$``
-  or ``$^{\mbox{\scriptsize <superscript text>}}$``.
+  Pass the role content to ``\textsubscript`` or ``\textsuperscript``.
 
 Backwards compatibility:
-  **None**
+  The old implementation set the role content in Math mode, where
 
-  In math mode, Latin letters are typeset italic and whitespace is ignored.
+  * whitespace is ignored,
+  * a different command set and font setting scheme is active,
+  * Latin letters are typeset italic but numbers upright.
 
-.. tip:: To get italic subscripts, define and use in your document custom
-   roles like ``.. role:: sub(subscript)`` and ``.. role::
-   super(superscript)`` and define the "role commands"::
+  Although it is possible to redefine ``\textsubscript`` and
+  ``\textsuperscript`` to typeset the content in math-mode, this can lead to
+  errors with certain input and is therefore not done in this style sheet.
+
+.. tip:: To get italic subscripts, define and use in your document
+   `custom roles`_ like ``.. role:: sub(subscript)`` and
+   ``.. role:: super(superscript)`` and define the "role commands"::
 
      \newcommand{\docutilsrolesub}{\itshape}
      \newcommand{\docutilsrolesuper}{\itshape}
 
+   Alternatively, if you want all sub- and superscripts in italic, redefine
+   the macros::
+
+     %% \let\DUsup\textsubscript
+     %% \let\DUsuper\textsuperscript
+     %% \renewcommand*{\textsubscript}{\DUsub\itshape}
+     %% \renewcommand*{\textsuperscript}{\DUsuper\itshape}
+
    This is not fully backwards compatible, as it will also set numbers in
-   italic shape and not ignore whitespace. However, switching to math-mode
-   is insecure with some characters like '$'.
+   italic shape and not ignore whitespace.
 
 Page layout
 -----------
@@ -261,7 +271,7 @@ with version 0.5::
 
   \usepackage{shortvrb}
   \usepackage{amsmath}
-
+  
 Packages that are conditionally loaded
 ``````````````````````````````````````
 
@@ -274,36 +284,36 @@ Tables
 Standard package for tables across several pages::
 
   \usepackage{longtable}
-
+  
 Extra space between text in tables and the line above them
 ('array' is implicitely loaded by 'tabularx', see below)::
 
   \usepackage{array}
   \setlength{\extrarowheight}{2pt}
-
+  
 Table cells spanning multiple rows::
 
   \usepackage{multirow}
-
+  
 Docinfo
 ^^^^^^^
 
-Tables with automatic width of columns, always on one page::
+One-page tables with auto-width columns::
 
   \usepackage{tabularx}
-
+  
 Images
 ^^^^^^
-::
+Include graphic files::
 
   \usepackage{graphicx}
-
+  
 Problematic, Sidebar
 ^^^^^^^^^^^^^^^^^^^^
-Set text and/or background colour, provide ``\colorbox``::
+Set text and/or background colour, coloured boxes with ``\colorbox``::
 
   \usepackage{color}
-
+  
 Floats for footnotes settings
 `````````````````````````````
 
@@ -325,11 +335,23 @@ Settings for the use of floats for footnotes are only included if
   \setcounter{topnumber}{50}
   \setcounter{bottomnumber}{50}
   % end floats for footnotes
-
-
+  
+  
 Special lengths, commands, and environments
 -------------------------------------------
 
+Removed definitions
+```````````````````
+
+admonition width
+^^^^^^^^^^^^^^^^
+The ``admonitionwith`` lenght is replaced by the more powerful
+``\DUadmonition`` (see `New Definitions`_)::
+
+  \newlength{\admonitionwidth}
+  \setlength{\admonitionwidth}{0.9\textwidth}
+  
+  
 Renamed definitions (now conditional)
 `````````````````````````````````````
 
@@ -346,24 +368,16 @@ Customization is done by an alternative definition in a style sheet with
 The following code provides the old definitions and maps them (or their
 custom variants) to the new interface.
 
-admonition width
-^^^^^^^^^^^^^^^^
-The ``admonitionwith`` lenght is replaced by the more powerful
-``\DUadmonition`` (see `New Definitions`_)::
-
-  \newlength{\admonitionwidth}
-  \setlength{\admonitionwidth}{0.9\textwidth}
-
 docinfo width
 ^^^^^^^^^^^^^
 ::
 
   \newlength{\docinfowidth}
   \setlength{\docinfowidth}{0.9\textwidth}
-
+  
   \newlength{\DUdocinfowidth}
   \AtBeginDocument{\setlength{\DUdocinfowidth}{\docinfowidth}}
-
+  
 line block
 ^^^^^^^^^^
 ::
@@ -378,13 +392,13 @@ line block
      \leftmargin#1}
    \raggedright}
   {\end{list}}
-
+  
   \newlength{\DUlineblockindent}
   \AtBeginDocument{\setlength{\DUlineblockindent}{\lineblockindentation}}
   \newenvironment{DUlineblock}[1]
     {\begin{lineblock}{#1}}
     {\end{lineblock}}
-
+  
 local line width
 ^^^^^^^^^^^^^^^^
 
@@ -392,7 +406,7 @@ The ``\locallinewidth`` length for internal use in tables is replaced
 by ``\DUtablewidth``. It was never intended for customization::
 
   \newlength{\locallinewidth}
-
+  
 option lists
 ^^^^^^^^^^^^
 ::
@@ -407,38 +421,38 @@ option lists
      \addtolength{\leftmargin}{\labelsep}
      \renewcommand{\makelabel}{\optionlistlabel}}
   }{\end{list}}
-
+  
   \newcommand{\DUoptionlistlabel}{\optionlistlabel}
   \newenvironment{DUoptionlist}
     {\begin{optionlist}{3cm}}
     {\end{optionlist}}
-
+  
 rubric
 ^^^^^^
 ::
 
   \newcommand{\rubric}[1]{\subsection*{~\hfill {\it #1} \hfill ~}}
-
+  
   \newcommand{\DUrubric}[1]{\rubric{#1}}
-
+  
 title reference role
 ^^^^^^^^^^^^^^^^^^^^
 ::
 
   \newcommand{\titlereference}[1]{\textsl{#1}}
-
+  
   \newcommand{\DUroletitlereference}[1]{\titlereference{#1}}
-
-
+  
+  
 New definitions
 ```````````````
 
 New Feature:
   Enable customization of some more Docutils elements with special commands
 
-  :sidebar:    ``DUsidebar`` command (better environment?)
+  :sidebar:    ``DUsidebar`` command
   :transition: ``\DUtransition`` command
-  :admonition: ``DUadmonition`` environment (replacing ``\admonitionwidth``
+  :admonition: ``DUadmonition`` environment (replacing ``\admonitionwidth``)
   :field list: ``DUfieldlist`` environment
 
 Backwards compatibility:
@@ -446,9 +460,12 @@ Backwards compatibility:
   construct. The following definitions restore the old behaviour in case of
   changes.
 
-  Admonitions: (use the ``\admonitionwidth`` variable)::
+admonitions
+^^^^^^^^^^^
+Use the old variable for `admonition width`_::
 
-    \newcommand{\DUadmonition}[1]{%
-      \begin{center}
-        \fbox{\parbox{\admonitionwidth}{\sffamily #1}}
-      \end{center}
+  \newcommand{\DUadmonition}[1]{%
+    \begin{center}
+      \fbox{\parbox{\admonitionwidth}{\sffamily #1}}
+    \end{center}
+  }
