@@ -966,7 +966,6 @@ Transitions__ are commonly seen in novels and short fiction, as a gap
 spanning one or more lines, marking text divisions or signaling changes in
 subject, time, point of view, or emphasis.
 
-
 Command:
   ``\DUtransition``
 
@@ -976,7 +975,9 @@ Default:
 Examples:
   Use three stars::
 
-    \newcommand*{\DUtransition}{\centering{}*\ \ \ *\ \ \ *}
+    \newcommand*{\DUtransition}{\centering{}*\quad*\quad*}
+
+  Alternatively use the more elaborated version in `transition-stars.sty`_.
 
   If paragraphs are separated by indentation, you can simply use a vertical
   space::
@@ -984,6 +985,8 @@ Examples:
     \newcommand*{\DUtransition}{\vspace{2ex}}
 
 __ http://docutils.sf.net/docutils/docs/ref/rst/restructuredtext.html#transitions
+
+.. _transition-stars.sty: ../../../sandbox/stylesheets/transition-stars.sty
 
 section numbering
 `````````````````
