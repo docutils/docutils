@@ -1,0 +1,57 @@
+% transiton-stars.sty
+% ===================
+% Style a Docutils transition
+% ---------------------------
+% 
+% :Author:    Günter Milde
+% :Revision:  $Revision: 5534 $
+% :Date:      $Date: 2009-05-07$
+% :Copyright: © 2009 Günter Milde.
+%             Released  without warranties or conditions of any kind
+%             under the terms of the Apache License, Version 2.0
+%             http://www.apache.org/licenses/LICENSE-2.0
+% 
+% LaTeX style sheet for use with Docutils::
+
+\ProvidesPackage{transition-stars}
+[2009/05/07 v0.1 starred transition element for docutils]
+
+
+% You can use this style as a template for customising  the transition
+% element in LaTeX.
+% 
+% Introduction
+% ~~~~~~~~~~~~
+% 
+% By default, the `transition element`_ is rendered as a horizontal line.
+% 
+% In novels, often the form of three stars or some ornamental is used.
+% A simple vertical space is also common.
+% 
+% An article about several variants implemented in LaTeX is available at
+% http://www.tug.org/pracjourn/2005-4/walden/ .
+% 
+% The `memoir` class defines a ``\fancybreak`` macro, that includes some
+% provision for page breaks and suppresses the indentation of the following
+% paragraph. It takes one argument, the characters marking the break. 
+% 
+% The following macro is a somewhat simplified version without
+% a starred version and with 1/2 baselineskip above and below.
+% ::
+
+\providecommand{\fancybreak}[1]{\par
+  \penalty -100
+  \vskip 0.5\baselineskip
+  \noindent\parbox{\linewidth}{\centering #1}\null
+  \penalty -20
+  %% \vskip -\onelineskip
+  \vskip 0.5\baselineskip
+  \@afterindentfalse
+  \@afterheading}
+
+% Now use this definition to configure ``DUtransition``::
+
+\newcommand{\DUtransition}{\fancybreak{*\quad*\quad*}}
+
+% .. _transition element:
+%    http://docutils.sourceforge.net/docs/user/rst/quickref.html#transitions

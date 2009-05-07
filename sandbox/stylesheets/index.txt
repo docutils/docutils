@@ -63,6 +63,12 @@ directory in the LaTeX INPUT PATH, e.g., (on a modern TeX installation)
   Highlight literal blocks as (La)TeX code. Use with the
   ``--literal-block-env=lstlistings`` option.
 
+* `<transition-stars.sty>`_:
+  Example/Template for customising the transition__ element.
+
+  Replaces the horizontal line with three stars as often seen in novels.
+
+
 .. References
    ==========
 
