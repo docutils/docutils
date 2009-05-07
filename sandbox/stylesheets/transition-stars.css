@@ -3,7 +3,7 @@
 /* :Copyright: © 2008 Günter Milde. */
 /*             Released  without warranties or conditions of any kind */
 /*             under the terms of the Apache License, Version 2.0 */
-/* 	       http://www.apache.org/licenses/LICENSE-2.0 */
+/*             http://www.apache.org/licenses/LICENSE-2.0 */
 /* :Id: $Id$ */
 
 /* Style sheet for use with Docutils */
@@ -13,6 +13,8 @@
 
 /* Extends the standard docutils style sheet */
 /* @import url("html4css1.css"); */
+
+/* :: */
 
 hr.docutils {
   /* make the hrule invisible but enable replacement string */
@@ -25,6 +27,8 @@ hr.docutils {
 }
 
 /* Replacement string for the transition element */
+
+/* :: */
 
 /* if your html document is in UTF-8 encoding, you can use */
 /* any Unicode string as replacement */

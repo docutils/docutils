@@ -95,40 +95,6 @@ Implement as default stylesheet option, so it can be easily overridden.
    --Matthew Leingang
 
 
-Configurable transition element
--------------------------------
-
-By default, the `transition element`_ is rendered as a horizontal line.
-
-In novels, often the form of three stars or some ornamental is used.
-A simple vertical space is also common.
-
-An article about several variants implemented in LaTeX is available at
-http://www.tug.org/pracjourn/2005-4/walden/
-
-The `memoir` class defines a ``\fancybreak`` that can be used like
-\fancybreak{$*\quad*\quad*$}
-
-..
-  \newcommand{\fancybreak}{\@ifstar{\@sfbreak}{\@fbreak}}
-  \newcommand{\@fbreak}[1]{\par
-    \penalty -100
-    \noindent\parbox{\linewidth}{\centering #1}%%\null
-    \par
-  %%  \penalty -20
-  %%  \vskip -\onelineskip
-    \@afterindentfalse
-    \@afterheading}
-  \newcommand{\@sfbreak}[1]{\par
-    \penalty -100
-    \noindent\parbox{\linewidth}{\centering #1}%%\null
-    \par
-  %%  \penalty -20
-  %%  \vskip -\onelineskip
-    \@afterindenttrue
-    \@afterheading}
-
-
 --stylesheet-path option
 ------------------------
 
@@ -149,7 +115,8 @@ Currently, 1) is done with --stylesheet and 2) with --stylesheet-path.
 
 But:
 
--1  having both ``--stylesheet`` and ``stylesheet-path`` makes things complicated:
+-1 having both ``--stylesheet`` and ``stylesheet-path`` makes things
+   complicated:
 
   Explaining the two options and their interaction to the user is
   not straightforward.
@@ -213,7 +180,7 @@ c) rewrite path if this prevents errors:
 
    .
    |_ base.txt
-   |_ style.tex
+   |_ mystyle.sty
    |_ docutils.conf
    |_ A/
    |  |_ a.txt
@@ -224,7 +191,7 @@ c) rewrite path if this prevents errors:
 
   With the line ::
 
-   stylesheet-path: style.tex
+   stylesheet-path: mystyle.sty
 
   in docutils.conf, all documents will get a valid link to the style file,
   if the conversion is started from the base dir.
@@ -332,21 +299,8 @@ __ http://svn.berlios.de/viewvc/docutils/trunk/sandbox/latex-variants/
   Writer specific documentation is placed in the respective "literate"
   source.
 
-latex2e variants
-================
-
-Mainly of historic interest. The experiences gained with the alternative
-writers will go into the main latex2e writer.
-
-* `latex2e_listings` provides an alternative implementation of the new
-  ``--literal-env`` option to select the environment for
-  typesetting literal blocks.
-
-  This options allows e.g. to choose `lstlisting` from the ``listings.sty``
-  LaTeX package. See also `<docs/syntax-highlight-with-listings.html>`_
-
 other latex writers
-=========================
+===================
 
 Currently none.
 
@@ -380,8 +334,6 @@ Related sandbox projects
 
 .. _PSNFSS documentation:
    http://dante.ctan.org/CTAN/macros/latex/required/psnfss/psnfss2e.pdf
-.. _transition element:
-   http://docutils.sourceforge.net/docs/user/rst/quickref.html#transitions
 .. _Docutils Release Notes:
    http://docutils.sourceforge.net/RELEASE-NOTES.html
 .. _Docutils History:
