@@ -1,6 +1,18 @@
 Character tests
 ===============
 
+
+The LaTeX Info pages lists under "2.18 Special Characters"
+
+  The following characters play a special role in LaTeX and are called
+  "special printing characters", or simply "special characters".
+
+                            # $ % & ~ _ ^ \ { }
+
+The special chars verbatim::
+
+                            # $ % & ~ _ ^ \ { }
+
 bracketts in lists
 ------------------
 
@@ -68,6 +80,28 @@ to remain two characters::
 
 non literal "<< -- >>".
 
+with context
+------------
+
+also *square brackets* [] and *spaces* (after
+macros) need special care. Compare the items in the following lists:
+
+* simple item
+* [bracketed] item
+
+simple
+  description term
+
+[bracketed]
+  description term
+
+The OT1 font-encoding misses some chars::
+
+   < | >
+   
+come out as
+
+   < | >   
 
   
 
