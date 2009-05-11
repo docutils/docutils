@@ -234,10 +234,10 @@
                                         Document Parts
                             <list_item>
                                 <paragraph>
-                                    <reference ids="id56" refid="images">
+                                    <reference ids="id56" refid="images-and-figures">
                                         <generated classes="sectnum">
                                             2.14.2   
-                                        Images
+                                        Images and Figures
                             <list_item>
                                 <paragraph>
                                     <reference ids="id57" refid="admonitions">
@@ -1084,10 +1084,10 @@
                                 Document Parts
                     <list_item>
                         <paragraph>
-                            <reference ids="id73" refid="images">
+                            <reference ids="id73" refid="images-and-figures">
                                 <generated classes="sectnum">
                                     2.14.2   
-                                Images
+                                Images and Figures
                     <list_item>
                         <paragraph>
                             <reference ids="id74" refid="admonitions">
@@ -1145,11 +1145,11 @@
                     <reference name="table of contents" refid="table-of-contents">
                         table of contents
                     ).
-            <section ids="images" names="images">
+            <section ids="images-and-figures" names="images\ and\ figures">
                 <title auto="1" refid="id73">
                     <generated classes="sectnum">
                         2.14.2   
-                    Images
+                    Images and Figures
                 <paragraph>
                     An image directive (also clickable -- a hyperlink reference):
                 <reference name="directives" refid="directives">
@@ -1167,14 +1167,44 @@
                     A left-aligned image:
                 <image align="left" uri="../../../docs/user/rst/images/biohazard.png">
                 <paragraph>
+                    This paragraph might flow around the image.
+                    If it does or not, depends on the output format and the viewer.
+                <paragraph>
                     A right-aligned image:
                 <image align="right" uri="../../../docs/user/rst/images/biohazard.png">
                 <paragraph>
-                    A figure directive:
-                <figure align="right" classes="figclass1 figclass2">
-                    <image alt="reStructuredText, the markup syntax" classes="class1 class2" uri="../../../docs/user/rst/images/biohazard.png" width="50">
+                    This paragraph might flow around the image.
+                    If it does or not, depends on the output format and the viewer.
+                <paragraph>
+                    For inline images see 
+                    <reference name="Substitution Definitions" refid="substitution-definitions">
+                        Substitution Definitions
+                    .
+                <paragraph>
+                    Image size:
+                <paragraph>
+                    An image 2 em wide:
+                <image uri="../../../docs/user/rst/images/biohazard.png" width="2em">
+                <paragraph>
+                    An image 2 em wide and 15 pixel high:
+                <image height="15px" uri="../../../docs/user/rst/images/biohazard.png" width="2em">
+                <paragraph>
+                    An image occupying 50% of the line width:
+                <image uri="../../../docs/user/rst/images/title.png" width="50%">
+                <paragraph>
+                    An image 2 cm high:
+                <image height="2cm" uri="../../../docs/user/rst/images/biohazard.png">
+                <paragraph>
+                    A 
+                    <emphasis>
+                        figure
+                     is an image with a caption and/or a legend.  With page-based output
+                    media, figures might float to a different position if this helps the page
+                    layout.
+                <figure classes="figclass1 figclass2">
+                    <image alt="reStructuredText, the markup syntax" classes="class1 class2" uri="../../../docs/user/rst/images/title.png" width="258">
                     <caption>
-                        A figure is an image with a caption and/or a legend:
+                        Plaintext markup syntax and parser system.
                     <legend>
                         <table>
                             <tgroup cols="2">
@@ -1204,15 +1234,23 @@
                                                 Well it is, isn't it?
                         <paragraph>
                             This paragraph is also part of the legend.
+                <paragraph>
+                    A left-aligned figure:
                 <figure align="left" classes="figclass1 figclass2">
                     <image alt="reStructuredText, the markup syntax" classes="class1 class2" uri="../../../docs/user/rst/images/biohazard.png" width="50">
                     <caption>
-                        A left-aligned figure.
+                        This is the caption.
                     <legend>
                         <paragraph>
                             This is the legend.
+                        <paragraph>
+                            The legend may consist of several paragraphs.
                 <paragraph>
-                    This paragraph might flow around the figure...
+                    This paragraph might flow around the figure if the 
+                    <literal>
+                        figwidth
+                    
+                    argument is set and smaller than the text width.
                 <paragraph>
                     A centered figure:
                 <figure align="center">
@@ -1225,10 +1263,14 @@
                         <paragraph>
                             The legend may consist of several paragraphs.
                 <paragraph>
-                    This paragraph might flow around the figure...
+                    This paragraph might flow around the figure if the 
+                    <literal>
+                        figwidth
+                    
+                    argument is set and smaller than the text width.
                 <paragraph>
-                    A left-aligned figure:
-                <figure align="left">
+                    A right-aligned figure:
+                <figure align="right">
                     <image uri="../../../docs/user/rst/images/biohazard.png" width="50">
                     <caption>
                         This is the caption.
@@ -1238,21 +1280,11 @@
                         <paragraph>
                             The legend may consist of several paragraphs.
                 <paragraph>
-                    This paragraph might flow around the figure...
-                <paragraph>
-                    Now widths:
-                <paragraph>
-                    An image 2 em wide:
-                <image uri="../../../docs/user/rst/images/biohazard.png" width="2em">
-                <paragraph>
-                    An image 2 em wide and 30 pixel high:
-                <image height="30px" uri="../../../docs/user/rst/images/biohazard.png" width="2em">
-                <paragraph>
-                    An image occupying 70% of the line width:
-                <image uri="../../../docs/user/rst/images/biohazard.png" width="70%">
-                <paragraph>
-                    An image 3 cm high:
-                <image height="3cm" uri="../../../docs/user/rst/images/biohazard.png">
+                    This paragraph might flow around the figure if the 
+                    <literal>
+                        figwidth
+                    
+                    argument is set and smaller than the text width.
             <section ids="admonitions" names="admonitions">
                 <title auto="1" refid="id74">
                     <generated classes="sectnum">
