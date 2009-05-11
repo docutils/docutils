@@ -223,9 +223,9 @@ The following options are recognized:
     symbol is required or allowed).  "100" means full-size, and is
     equivalent to omitting a "scale" option.
 
-    If no "height" or "width" options are specified, PIL [#PIL]_ may
-    be used to determine them, if PIL is installed and the image file
-    is available.
+    If no "height" or "width" options are specified, the `Python Imaging
+    Library`_ (PIL) may be used to determine them, if it is installed and
+    the image file is available.
 
 ``align`` : "top", "middle", "bottom", "left", "center", or "right"
     The alignment of the image, equivalent to the HTML ``<img>`` tag's
@@ -257,9 +257,11 @@ Figure
 :Directive Content: Interpreted as the figure caption and an optional
                     legend.
 
-A "figure" consists of image_ data (including `image options`_), an
-optional caption (a single paragraph), and an optional legend
-(arbitrary body elements)::
+A "figure" consists of image_ data (including `image options`_), an optional
+caption (a single paragraph), and an optional legend (arbitrary body
+elements). For page-based output media, figures might float to a different
+position if this helps the page layout.
+::
 
     .. figure:: picture.png
        :scale: 50
@@ -292,8 +294,8 @@ options are recognized:
 ``figwidth`` : integer or "image"
     The width of the figure in pixels, to limit the horizontal space
     used.  A special value of "image" is allowed, in which case the
-    included image's actual width is used (requires PIL [#PIL]_).  If
-    the image file is not found or the required software is
+    included image's actual width is used (requires the `Python Imaging
+    Library`_). If the image file is not found or the required software is
     unavailable, this option is ignored.
 
     Sets the "width" attribute of the "figure" doctree element.
@@ -324,8 +326,6 @@ options are recognized:
     The horizontal alignment of the figure, allowing the image to
     float and have the text flow around it.  The specific behavior
     depends upon the browser or rendering software used.
-
-.. [#PIL] `Python Imaging Library`_.
 
 .. _Python Imaging Library: http://www.pythonware.com/products/pil/
 
