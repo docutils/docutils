@@ -235,7 +235,7 @@ reStructuredText construct.
 \begin{list}{}{}
 \item \href{\#document-parts}{2.14.1~~~Document Parts}
 
-\item \href{\#images}{2.14.2~~~Images}
+\item \href{\#images-and-figures}{2.14.2~~~Images and Figures}
 
 \item \href{\#admonitions}{2.14.3~~~Admonitions}
 
@@ -889,7 +889,7 @@ this: {\color{red}\bfseries{}`Duplicate Target Names`\_}), an error is generated
 \begin{list}{}{}
 \item \href{\#document-parts}{2.14.1~~~Document Parts}
 
-\item \href{\#images}{2.14.2~~~Images}
+\item \href{\#images-and-figures}{2.14.2~~~Images and Figures}
 
 \item \href{\#admonitions}{2.14.3~~~Admonitions}
 
@@ -925,10 +925,10 @@ document (a document-wide \href{\#table-of-contents}{table of contents}).
 
 %___________________________________________________________________________
 
-\hypertarget{images}{}
-\pdfbookmark[2]{2.14.2~~~Images}{images}
-\subsubsection*{2.14.2~~~Images}
-\label{images}
+\hypertarget{images-and-figures}{}
+\pdfbookmark[2]{2.14.2~~~Images and Figures}{images-and-figures}
+\subsubsection*{2.14.2~~~Images and Figures}
+\label{images-and-figures}
 
 An image directive (also clickable -{}- a hyperlink reference):
 \href{\#directives}{\includegraphics{../../../docs/user/rst/images/title.png}}
@@ -944,15 +944,44 @@ A left-aligned image:
 
 {\includegraphics{../../../docs/user/rst/images/biohazard.png}\hfill}
 
+This paragraph might flow around the image.
+If it does or not, depends on the output format and the viewer.
+
 A right-aligned image:
 
 {\hfill\includegraphics{../../../docs/user/rst/images/biohazard.png}}
 
-A figure directive:
-\begin{figure}[htbp]\begin{flushright}
+This paragraph might flow around the image.
+If it does or not, depends on the output format and the viewer.
 
-\includegraphics[width=50bp]{../../../docs/user/rst/images/biohazard.png}
-\caption{A figure is an image with a caption and/or a legend:}{\small 
+For inline images see \href{\#substitution-definitions}{Substitution Definitions}.
+
+Image size:
+
+An image 2 em wide:
+
+\includegraphics[width=2em]{../../../docs/user/rst/images/biohazard.png}
+
+An image 2 em wide and 15 pixel high:
+
+\includegraphics[width=2em,height=15px]{../../../docs/user/rst/images/biohazard.png}
+
+An image occupying 50\% of the line width:
+
+\includegraphics[width=0.500\linewidth]{../../../docs/user/rst/images/title.png}
+
+An image 2 cm high:
+
+\includegraphics[height=2cm]{../../../docs/user/rst/images/biohazard.png}
+
+A \emph{figure} is an image with a caption and/or a legend.  With page-based output
+media, figures might float to a different position if this helps the page
+layout.
+\begin{figure}[htbp]
+\centering
+
+\includegraphics[width=258bp]{../../../docs/user/rst/images/title.png}
+\caption{Plaintext markup syntax and parser system.}{\small 
 \leavevmode
 \setlength{\DUtablewidth}{\linewidth}
 \begin{longtable}[c]{|p{0.156\DUtablewidth}|p{0.563\DUtablewidth}|}
@@ -978,15 +1007,20 @@ Well it is, isn't it?
 \end{longtable}
 
 This paragraph is also part of the legend.
-}\end{flushright}\end{figure}
+}\end{figure}
+
+A left-aligned figure:
 \begin{figure}[htbp]\begin{flushleft}
 
 \includegraphics[width=50bp]{../../../docs/user/rst/images/biohazard.png}
-\caption{A left-aligned figure.}{\small 
+\caption{This is the caption.}{\small 
 This is the legend.
+
+The legend may consist of several paragraphs.
 }\end{flushleft}\end{figure}
 
-This paragraph might flow around the figure...
+This paragraph might flow around the figure if the \texttt{figwidth}
+argument is set and smaller than the text width.
 
 A centered figure:
 \begin{figure}[htbp]
@@ -999,37 +1033,21 @@ This is the legend.
 The legend may consist of several paragraphs.
 }\end{figure}
 
-This paragraph might flow around the figure...
+This paragraph might flow around the figure if the \texttt{figwidth}
+argument is set and smaller than the text width.
 
-A left-aligned figure:
-\begin{figure}[htbp]\begin{flushleft}
+A right-aligned figure:
+\begin{figure}[htbp]\begin{flushright}
 
 \includegraphics[width=50bp]{../../../docs/user/rst/images/biohazard.png}
 \caption{This is the caption.}{\small 
 This is the legend.
 
 The legend may consist of several paragraphs.
-}\end{flushleft}\end{figure}
+}\end{flushright}\end{figure}
 
-This paragraph might flow around the figure...
-
-Now widths:
-
-An image 2 em wide:
-
-\includegraphics[width=2em]{../../../docs/user/rst/images/biohazard.png}
-
-An image 2 em wide and 30 pixel high:
-
-\includegraphics[width=2em,height=30px]{../../../docs/user/rst/images/biohazard.png}
-
-An image occupying 70\% of the line width:
-
-\includegraphics[width=0.700\linewidth]{../../../docs/user/rst/images/biohazard.png}
-
-An image 3 cm high:
-
-\includegraphics[height=3cm]{../../../docs/user/rst/images/biohazard.png}
+This paragraph might flow around the figure if the \texttt{figwidth}
+argument is set and smaller than the text width.
 
 
 %___________________________________________________________________________

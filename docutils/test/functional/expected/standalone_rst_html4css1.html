@@ -114,7 +114,7 @@ They are transformed from section titles after parsing. -->
 </li>
 <li><a class="reference internal" href="#directives" id="id54">2.14&nbsp;&nbsp;&nbsp;Directives</a><ul class="auto-toc">
 <li><a class="reference internal" href="#document-parts" id="id55">2.14.1&nbsp;&nbsp;&nbsp;Document Parts</a></li>
-<li><a class="reference internal" href="#images" id="id56">2.14.2&nbsp;&nbsp;&nbsp;Images</a></li>
+<li><a class="reference internal" href="#images-and-figures" id="id56">2.14.2&nbsp;&nbsp;&nbsp;Images and Figures</a></li>
 <li><a class="reference internal" href="#admonitions" id="id57">2.14.3&nbsp;&nbsp;&nbsp;Admonitions</a></li>
 <li><a class="reference internal" href="#topics-sidebars-and-rubrics" id="id58">2.14.4&nbsp;&nbsp;&nbsp;Topics, Sidebars, and Rubrics</a></li>
 <li><a class="reference internal" href="#target-footnotes" id="id59">2.14.5&nbsp;&nbsp;&nbsp;Target Footnotes</a></li>
@@ -525,7 +525,7 @@ this: <a href="#id87"><span class="problematic" id="id88">`Duplicate Target Name
 <div class="contents local topic" id="contents">
 <ul class="auto-toc simple">
 <li><a class="reference internal" href="#document-parts" id="id73">2.14.1&nbsp;&nbsp;&nbsp;Document Parts</a></li>
-<li><a class="reference internal" href="#images" id="id74">2.14.2&nbsp;&nbsp;&nbsp;Images</a></li>
+<li><a class="reference internal" href="#images-and-figures" id="id74">2.14.2&nbsp;&nbsp;&nbsp;Images and Figures</a></li>
 <li><a class="reference internal" href="#admonitions" id="id75">2.14.3&nbsp;&nbsp;&nbsp;Admonitions</a></li>
 <li><a class="reference internal" href="#topics-sidebars-and-rubrics" id="id76">2.14.4&nbsp;&nbsp;&nbsp;Topics, Sidebars, and Rubrics</a></li>
 <li><a class="reference internal" href="#target-footnotes" id="id77">2.14.5&nbsp;&nbsp;&nbsp;Target Footnotes</a></li>
@@ -543,8 +543,8 @@ others, please see
 (a local, untitled table of <a class="reference internal" href="#contents">contents</a>) and at the beginning of the
 document (a document-wide <a class="reference internal" href="#table-of-contents">table of contents</a>).</p>
 </div>
-<div class="section" id="images">
-<h3><a class="toc-backref" href="#id74">2.14.2&nbsp;&nbsp;&nbsp;Images</a></h3>
+<div class="section" id="images-and-figures">
+<h3><a class="toc-backref" href="#id74">2.14.2&nbsp;&nbsp;&nbsp;Images and Figures</a></h3>
 <p>An image directive (also clickable -- a hyperlink reference):</p>
 <a class="reference internal image-reference" href="#directives"><img alt="../../../docs/user/rst/images/title.png" class="class1 class2" src="../../../docs/user/rst/images/title.png" /></a>
 <p>Image with multiple IDs:</p>
@@ -553,12 +553,28 @@ document (a document-wide <a class="reference internal" href="#table-of-contents
 <div align="center" class="align-center"><img alt="../../../docs/user/rst/images/biohazard.png" class="align-center" src="../../../docs/user/rst/images/biohazard.png" /></div>
 <p>A left-aligned image:</p>
 <img align="left" alt="../../../docs/user/rst/images/biohazard.png" class="align-left" src="../../../docs/user/rst/images/biohazard.png" />
+<p>This paragraph might flow around the image.
+If it does or not, depends on the output format and the viewer.</p>
 <p>A right-aligned image:</p>
 <img align="right" alt="../../../docs/user/rst/images/biohazard.png" class="align-right" src="../../../docs/user/rst/images/biohazard.png" />
-<p>A figure directive:</p>
-<div align="right" class="figclass1 figclass2 figure">
-<img alt="reStructuredText, the markup syntax" class="class1 class2" src="../../../docs/user/rst/images/biohazard.png" style="width: 50px;" />
-<p class="caption">A figure is an image with a caption and/or a legend:</p>
+<p>This paragraph might flow around the image.
+If it does or not, depends on the output format and the viewer.</p>
+<p>For inline images see <a class="reference internal" href="#substitution-definitions">Substitution Definitions</a>.</p>
+<p>Image size:</p>
+<p>An image 2 em wide:</p>
+<img alt="../../../docs/user/rst/images/biohazard.png" src="../../../docs/user/rst/images/biohazard.png" style="width: 2em;" />
+<p>An image 2 em wide and 15 pixel high:</p>
+<img alt="../../../docs/user/rst/images/biohazard.png" src="../../../docs/user/rst/images/biohazard.png" style="width: 2em; height: 15px;" />
+<p>An image occupying 50% of the line width:</p>
+<img alt="../../../docs/user/rst/images/title.png" src="../../../docs/user/rst/images/title.png" style="width: 50%;" />
+<p>An image 2 cm high:</p>
+<img alt="../../../docs/user/rst/images/biohazard.png" src="../../../docs/user/rst/images/biohazard.png" style="height: 2cm;" />
+<p>A <em>figure</em> is an image with a caption and/or a legend.  With page-based output
+media, figures might float to a different position if this helps the page
+layout.</p>
+<div class="figclass1 figclass2 figure">
+<img alt="reStructuredText, the markup syntax" class="class1 class2" src="../../../docs/user/rst/images/title.png" style="width: 258px;" />
+<p class="caption">Plaintext markup syntax and parser system.</p>
 <div class="legend">
 <table border="1" class="docutils">
 <colgroup>
@@ -580,13 +596,17 @@ document (a document-wide <a class="reference internal" href="#table-of-contents
 <p>This paragraph is also part of the legend.</p>
 </div>
 </div>
+<p>A left-aligned figure:</p>
 <div align="left" class="figclass1 figclass2 figure">
 <img alt="reStructuredText, the markup syntax" class="class1 class2" src="../../../docs/user/rst/images/biohazard.png" style="width: 50px;" />
-<p class="caption">A left-aligned figure.</p>
+<p class="caption">This is the caption.</p>
 <div class="legend">
-This is the legend.</div>
+<p>This is the legend.</p>
+<p>The legend may consist of several paragraphs.</p>
 </div>
-<p>This paragraph might flow around the figure...</p>
+</div>
+<p>This paragraph might flow around the figure if the <tt class="docutils literal"><span class="pre">figwidth</span></tt>
+argument is set and smaller than the text width.</p>
 <p>A centered figure:</p>
 <div align="center" class="figure">
 <img alt="../../../docs/user/rst/images/biohazard.png" src="../../../docs/user/rst/images/biohazard.png" style="width: 50px;" />
@@ -596,9 +616,10 @@ This is the legend.</div>
 <p>The legend may consist of several paragraphs.</p>
 </div>
 </div>
-<p>This paragraph might flow around the figure...</p>
-<p>A left-aligned figure:</p>
-<div align="left" class="figure">
+<p>This paragraph might flow around the figure if the <tt class="docutils literal"><span class="pre">figwidth</span></tt>
+argument is set and smaller than the text width.</p>
+<p>A right-aligned figure:</p>
+<div align="right" class="figure">
 <img alt="../../../docs/user/rst/images/biohazard.png" src="../../../docs/user/rst/images/biohazard.png" style="width: 50px;" />
 <p class="caption">This is the caption.</p>
 <div class="legend">
@@ -606,16 +627,8 @@ This is the legend.</div>
 <p>The legend may consist of several paragraphs.</p>
 </div>
 </div>
-<p>This paragraph might flow around the figure...</p>
-<p>Now widths:</p>
-<p>An image 2 em wide:</p>
-<img alt="../../../docs/user/rst/images/biohazard.png" src="../../../docs/user/rst/images/biohazard.png" style="width: 2em;" />
-<p>An image 2 em wide and 30 pixel high:</p>
-<img alt="../../../docs/user/rst/images/biohazard.png" src="../../../docs/user/rst/images/biohazard.png" style="width: 2em; height: 30px;" />
-<p>An image occupying 70% of the line width:</p>
-<img alt="../../../docs/user/rst/images/biohazard.png" src="../../../docs/user/rst/images/biohazard.png" style="width: 70%;" />
-<p>An image 3 cm high:</p>
-<img alt="../../../docs/user/rst/images/biohazard.png" src="../../../docs/user/rst/images/biohazard.png" style="height: 3cm;" />
+<p>This paragraph might flow around the figure if the <tt class="docutils literal"><span class="pre">figwidth</span></tt>
+argument is set and smaller than the text width.</p>
 </div>
 <div class="section" id="admonitions">
 <h3><a class="toc-backref" href="#id75">2.14.3&nbsp;&nbsp;&nbsp;Admonitions</a></h3>
