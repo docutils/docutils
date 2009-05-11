@@ -247,6 +247,19 @@ Example:
 
 __ ../ref/rst/directives.html#admonitions
 
+
+caption numbering
+`````````````````
+
+The chngcntr_ package helps to configure the numbering of figure and table
+caption numberings. Some document classes (e.g. KOMA-script_) provide
+additional configuration. Also see the related `FAQ entry`__
+
+.. _chngcntr:
+   http://dante.ctan.org/CTAN/help/Catalogue/entries/chngcntr.html
+
+__ http://www.tex.ac.uk/cgi-bin/texfaq2html?label=running-nos
+
 custom interpreted text roles
 `````````````````````````````
 
@@ -495,18 +508,6 @@ Example:
 
     \hyphenpenalty=5000
     \tolerance=1000
-
-
-images
-``````
-
-Images__ are included in LaTeX with the help of the `graphicx` package. The
-supported image formats depend on the used driver (dvi, dvips, pdftex, ...).
-
-If PDF-image inclusion in PDF files fails, specifying
-``--graphicx-option=pdftex`` or ``--graphicx-option=auto`` might help.
-
-__ ../ref/rst/directives.html#images
 
 
 line blocks
@@ -1071,20 +1072,6 @@ Example:
        \pdfpxdimen=1in % 1 DPI
        \divide\pdfpxdimen by 92 % 92 DPI
 
-
-Error ``illegal unit px``:
-  The unit ``px`` is not defined in "pure" LaTeX, but introduced by the
-  `pdfTeX` converter on 2005-02-04. `pdfTeX` is used in all modern LaTeX
-  distributions (since ca. 2006) also for conversion into DVI format.
-
-  If you convert the LaTeX source with a legacy program, you might get the
-  error ``illegal unit px``.
-
-  If updating LaTeX is not an option, just remove the ``px`` from the length
-  specification. HTML/CSS will default to ``px`` while the `latexe2` writer
-  will add the fallback unit ``bp``.
-
-
 Changes
 =======
 
@@ -1106,6 +1093,40 @@ Changes
 Problems
 ========
 
+Troubleshooting
+---------------
+
+Error ``illegal unit px``
+`````````````````````````
+
+The unit ``px`` is not defined in "pure" LaTeX, but introduced by the
+`pdfTeX` converter on 2005-02-04. `pdfTeX` is used in all modern LaTeX
+distributions (since ca. 2006) also for conversion into DVI format.
+
+If you convert the LaTeX source with a legacy program, you might get the
+error ``illegal unit px``.
+
+If updating LaTeX is not an option, just remove the ``px`` from the length
+specification. HTML/CSS will default to ``px`` while the `latexe2` writer
+will add the fallback unit ``bp``.
+
+image inclusion
+```````````````
+
+Images__ are included in LaTeX with the help of the `graphicx` package. The
+supported image formats depend on the used driver (dvi, dvips, pdftex, ...).
+For details see the grfguide_.
+
+If PDF-image inclusion in PDF files fails, specifying
+``--graphicx-option=pdftex`` or ``--graphicx-option=auto`` might help.
+
+__ ../ref/rst/directives.html#images
+.. _grfguide:
+   http://dante.ctan.org/CTAN/macros/latex/required/graphics/grfguide.pdf
+
+Bugs and open issues
+--------------------
+
 Open to be fixed or open to discussion.
 
 See also the entries in the `Docutils TODO list`_ and the discussion and
@@ -1117,7 +1138,7 @@ proposals in the `latex-variants`_ sandbox project.
    ../../../sandbox/latex-variants/README.html
 
 Footnotes and citations
------------------------
+```````````````````````
 
 Initially both were implemented using figure floats, because hyperlinking
 back and forth seemed to be impossible. Later the `figure` directive was
@@ -1142,7 +1163,7 @@ only by a single space or a newline) are combined to a single citation
 group, i.e. ``[cite1]_ [cite2]_`` results in ``\cite{cite1,cite2}``.
 
 Tables
-------
+``````
 
 :Tablewidth: reST-documents line length is assumed to be 80 characters. The
              tablewidth is set relative to this value. If someone produces
@@ -1156,7 +1177,7 @@ Tables
 * The contents of a rowspan cell do not influence table height.
   (multirow "feature", use a phantom or strut?)
 
-* Multirow cells might mix up the following table rows (BUG__).
+* Multirow cells might mix up the following table rows.
 
 * Table cells with both multirow and multicolumn are currently not possible.
 
@@ -1172,19 +1193,20 @@ Tables
   1.00 does not work with `longtable`. This is solved in newer versions
   (current is 2005/04/14 v1.61803).
 
-__ ../dev/todo.html#bug-fixes
-
 
 Figures
--------
-Wrapping text around figures is currently not supported.
-(Requires the `wrapfig`_ package.)
+```````
+
+* Figure (and table) caption alignment of the documentclass overrides the
+  setting by the ``:align:`` argument.
+
+* Wrapping text around figures is currently not supported. (Requires the
+  `wrapfig`_ package.)
 
 .. _wrapfig: http://dante.ctan.org/CTAN/help/Catalogue/entries/wrapfig.html
 
-
 Miscellaneous
--------------
+`````````````
 
 .. * Selection of LaTeX fontsize configurable (needs an option).
    What is wrong with ``--documentoptions=12`` or so,
