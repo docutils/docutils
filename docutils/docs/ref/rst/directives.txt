@@ -947,7 +947,8 @@ The following options are recognized:
     explicit title is given, the table of contents will not be titled.
 
     .. note::
-       Local tables of content are ignored if not in a top-level section.
+       Local tables of content are currently ignored if not in a
+       top-level section.
 
 ``backlinks`` : "entry" or "top" or "none"
     Generate links from section headers back to the table of contents
