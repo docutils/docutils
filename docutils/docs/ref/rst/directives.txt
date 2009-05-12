@@ -946,6 +946,9 @@ The following options are recognized:
     subsections of the section in which the directive is given.  If no
     explicit title is given, the table of contents will not be titled.
 
+    .. note::
+       Local tables of content are ignored if not in a top-level section.
+
 ``backlinks`` : "entry" or "top" or "none"
     Generate links from section headers back to the table of contents
     entries, the table of contents itself, or generate no backlinks.
