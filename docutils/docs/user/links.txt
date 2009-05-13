@@ -13,7 +13,7 @@
 .. contents::
 
 This document contains links users of Docutils and reStructuredText
-may find useful, listed in no particular order.  Many of the project
+may find useful.  Many of the project
 listed here are hosted in the `Docutils Sandbox`_.  If you have
 something to publish, you can get write access, too!
 
@@ -21,16 +21,8 @@ The most current version of this link list can always be found at
 http://docutils.sourceforge.net/docs/user/links.html.
 
 
-Users
------
-
-This section contains links which are interesting for all users of
-Docutils.  All projects listed here are usable by end users in some
-way, however please do not expect all of them to run straight out of
-the box.
-
 Editors
-~~~~~~~
+-------
 
 Editors with reStructuredText support and docutils GUIs:
 
@@ -42,8 +34,8 @@ Editors with reStructuredText support and docutils GUIs:
 * `VST <http://skawina.eu.org/mikolaj/vst.html>`__ (Vim reStructured Text)
   is a plugin for Vim7 with folding.
 
-* `rst mode <http://jedmodes.sf.net/mode/rst/>`__ for the 
-  `JED <http://www.jedsoft.org/jed/>`__ programmers editor
+* `rst mode <http://jedmodes.sf.net/mode/rst/>`__ for the
+  `JED <http://www.jedsoft.org/jed/>`__ programmers editor.
 
 * Gunnar Schwant's DocFactory_ is a wxPython GUI application for
   Docutils.
@@ -51,27 +43,29 @@ Editors with reStructuredText support and docutils GUIs:
 * ReSTedit_ by Bill Bumgarner is a Docutils GUI for Mac OS X.
 
 
-Export 
-~~~~~~
+Export
+------
 
 Convert reStructuredText to other formats:
 
 PDF
-"""
+```
 
-* `rst2pdf-pdflatex
+* `rst2pdf (pdflatex)
   <http://docutils.sourceforge.net/sandbox/blais/rst2pdf/>`_ by Martin Blais
   is a minimal front end producing LaTeX, compiling the LaTeX file, getting
   the produced output to the destination location and finally deleting all
   the messy temporary files that this process generates.
 
-* `rst2pdf-rubber <http://docutils.sf.net/sandbox/rst2pdf/README.html>`_ is
+* `rst2pdf (rubber)
+  <http://docutils.sf.net/sandbox/rst2pdf/README.html>`_ is
   a front end for the generation of PDF documents from a reStructuredText
   source via LaTeX in one step cleaning up intermediate files. It uses the
   `rubber <http://iml.univ-mrs.fr/~beffara/soft/rubber/>`_ Python wrapper
   for LaTeX and friends.
-  
-* `rst2pdf-reportlab <http://rst2pdf.googlecode.com>`_ is a tool to go 
+
+* `rst2pdf (reportlab)
+  <http://rst2pdf.googlecode.com>`_ is a tool to go
   directly from restructured text to PDF, via `reportlab
   <http://www.reportlab.org/rl_toolkit.html>`_. No LaTeX installation is
   required.
@@ -85,15 +79,19 @@ PDF
   by Richard Jones produces PDF presentations using ReportLabs.
 
 OpenOffice
-""""""""""
+``````````
 
 * odtwriter_ the Open Document Format writer developed by Dave Kuhlman
   produces files that can be processed with OpenOffice and Abiword.
-  In versions > 0.5, the odtwriter_ it is part of the Docutils_ core.
+  Since version 0.5, the odtwriter_ it is part of the Docutils_ core.
 
 
 HTML variants
-"""""""""""""
+`````````````
+
+* The Sphinx_ Python Documentation Generator by Georg Brandl was originally
+  created to translate the Python_ documentation, and is now `used by
+  <http://sphinx.pocoo.org/examples.html>`__ a wide choice of projects.
 
 * rst2ht_ by Oliver Rutherfurd, converts reStructuredText to an .ht
   template, for use with ht2html_.
@@ -118,8 +116,12 @@ HTML variants
 * A `simple HTML writer`_ by Bill Bumgarner that doesn't rely on CSS
   (stylesheets).
 
+
 Others
-""""""
+``````
+
+* Pandoc_ is a document converter that can write Markdown, reStructuredText,
+  HTML, LaTeX, RTF, DocBook XML, and S5.
 
 * restxsl_ by Michael Alyn Miller, lets you transform reStructuredText
   documents into XML/XHTML files using XSLT stylesheets.
@@ -128,12 +130,21 @@ Others
   to be included in RELAG NG XML schemas.
 
 * `ManPage Writer`_ by Engelbert Gruber.
-  
+
 * `DocBook Writer`_ by Oliver Rutherfurd.
+
+* Nabu_, written by Martin Blais, is a publishing system which
+  extracts information from reStructuredText documents and stores it
+  in a database.  Python knowledge is required to write extractor
+  functions (see `Writing an Extractor`_) and to retrieve the data
+  from the database again.
+
+* The `pickle writer`_ by Martin Blais pickles the document tree to a binary
+  string. Later unpickling will allow you to publish with other Writers. .
 
 
 Import
-~~~~~~
+------
 
 Convert other formats to reStructuredText:
 
@@ -147,17 +158,28 @@ Convert other formats to reStructuredText:
 * xhtml2rest_, written by Antonios Christofides, is a simple utility
   to convert XHTML to reStructuredText.
 
-* Sphinx_ includes a LaTeX to Rst converter in its source code `SVN
-  repository`__ (trimmed to importing the old Python docs).
+* Sphinx_ includes a `LaTeX to Rst converter
+  <http://svn.python.org/projects/doctools/converter/>`__ in its source code
+  (trimmed to importing the old Python docs).
 
-__ http://svn.python.org/projects/doctools/converter/
+* Pandoc_ can read Markdown and (subsets of) HTML, and LaTeX and export to
+  (amongst others) reStructuredText.
+
+* PySource_, by Tony Ibbs, is an experimental Python source Reader.
+  There is some related code in David Goodger's sandbox
+  (pysource_reader_) and a `Python Source Reader`_ document.
 
 
 Extensions
-~~~~~~~~~~
+----------
 
-Extend the reStructuredText syntax or the features of docutils.
+Extend the reStructuredText syntax or the features of Docutils.
 More extensions are in the `Docutils Sandbox`_.
+
+* Sphinx_ extends the ReStructuredText syntax to better support the
+  documentation of Software projects (but other documents can be written
+  with it too). There are also various `Sphinx extensions
+  <http://sphinx.pocoo.org/extensions.html>`__.
 
 * Jens J. Mortensen developed `LaTeX math for reST`_, which writes to
   LaTeX or to MathML.
@@ -166,9 +188,18 @@ More extensions are in the `Docutils Sandbox`_.
   roles and/or directives and built preprocessors for TeX math for
   both LaTeX and HTML output on top of it.
 
+* Beni Cherniavsky maintains a Makefile_ for driving Docutils, hoping
+  to handle everything one might do with Docutils.
+
+* The `ASCII art to SVG converter`_ (aafigure) developed by
+  Chris Liechti can parse ASCII art images, embedded in reST documents and
+  output an image. This would mean that simple illustrations could be
+  embedded as ASCII art in the reST source and still look nice when
+  converted to e.g. HTML
+
 
 Related Applications
-~~~~~~~~~~~~~~~~~~~~
+--------------------
 
 Applications using docutils/reStructuredText, helper applications:
 
@@ -176,58 +207,23 @@ Applications using docutils/reStructuredText, helper applications:
 
 * For Blogs (Weblogs), please see the `FAQ entry about Blogs`_.
 
+* CMS Systems: Plone_ and Zope_.
+
+  ZReST_, by Richard Jones, is a "ReStructuredText Document for Zope_"
+  application that is complete and ready to install.
+
+* Trac_, a project management and bug/issue tracking system, supports
+  `using reStructuredText
+  <http://projects.edgewall.com/trac/wiki/WikiRestructuredText>`__ as an
+  alternative to wiki markup.
+
 * PyLit_ provides a bidirectional text <--> code converter for *literate
   programming with reStructuredText*.
 
-* Pandoc_ is a document converter; it can read Markdown and (subsets
-  of) reStructuredText, HTML, and LaTeX, and it can write Markdown,
-  reStructuredText, HTML, LaTeX, RTF, DocBook XML, and S5.
-
-* There is an `ASCII art to SVG converter`_ (aafigure), developed by
-  Chris Liechti.
-
-* ZReST_, by Richard Jones, is a "ReStructuredText Document for Zope"
-  application that is complete and ready to install.
-
-* Beni Cherniavsky maintains a Makefile_ for driving Docutils, hoping
-  to handle everything one might do with Docutils.
-
-* The Sphinx_ Python Documentation Generator by Georg Brandl was originally
-  created to translate the new Python_ documentation, and it has excellent
-  support for the documentation of Python projects, but other documents can
-  be written with it too.
-  
 * If you are developing a Qt app, rst2qhc_ lets you generate the whole help
   automatically from restructured text. That includes keywords, TOC,
   multiple manuals per project, filters, project file, collection project
   file, and more.
-
-
-API Developers
---------------
-
-This section contains links which are primarily interesting for
-developers who use the Docutils API from within their own
-applications.
-
-* Nabu_, written by Martin Blais, is a publishing system which
-  extracts information from reStructuredText documents and stores it
-  in a database.  Python knowledge is required to write extractor
-  functions (see `Writing an Extractor`_) and to retrieve the data
-  from the database again.
-
-* There is a `pickle writer`_, written by Martin Blais.
-
-
-Core Developers
----------------
-
-Links primarily interesting for developers who work with the Docutils
-code base.
-
-* PySource_, by Tony Ibbs, is an experimental Python source Reader.
-  There is some related code in David Goodger's sandbox
-  (pysource_reader_) and a `Python Source Reader`_ document.
 
 
 .. _Docutils: http://docutils.sourceforge.net/
@@ -270,3 +266,6 @@ code base.
 .. _Sphinx: http://sphinx.pocoo.org/
 .. _Python: http://www.python.org/
 .. _rst2qhc: http://rst2qhc.googlecode.com
+.. _Plone: http://plone.org/
+.. _Zope: http://www.zope.org/
+.. _Trac: http://trac.edgewall.org/
