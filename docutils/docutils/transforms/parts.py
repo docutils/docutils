@@ -71,7 +71,7 @@ class Contents(Transform):
     The depth may be specified.  Two-way references between the table of
     contents and section titles are generated (requires Writer support).
 
-    This transform requires a startnode, which which contains generation
+    This transform requires a startnode, which contains generation
     options and provides the location for the generated table of contents (the
     startnode is replaced by the table of contents "topic").
     """
