@@ -87,6 +87,7 @@ Changes Since 0.5
   - Use the name prefix ``DU`` for all Docutils specific LaTeX objects.
   - New custom macros.
   - Simpler LaTeX encoding, e.g. "\%" instead of "{\%}".
+  - Local tocs with `minitoc` (if 'use-latex-toc' is True).
 
 * docs/ref/rst/restructuredtext.txt:
 

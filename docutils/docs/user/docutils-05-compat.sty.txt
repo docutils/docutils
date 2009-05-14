@@ -11,8 +11,8 @@
             under the terms of the Apache License, Version 2.0
             http://www.apache.org/licenses/LICENSE-2.0
 :Abstract:  This file documents changes and provides a style for best
-	    possible compatibility to the behaviour of the `latex2e` 
-	    writer of Doctutils release 0.5.
+            possible compatibility to the behaviour of the `latex2e`
+            writer of Doctutils release 0.5.
 
 ::
 
@@ -67,7 +67,7 @@ Backwards compatibility:
   be a LaTeX package (``*.sty``) and referenced with the ``\usepackage``
   command.
 
-.. important:: 
+.. important::
   Always specify the extension if you want the style sheet to be
   ``\input`` by LaTeX.
 
@@ -85,7 +85,7 @@ New Feature: custom roles based on standard roles
   methods for the standard roles now call visit/depart_inline() if there are
   class arguments to the node.
 
-Backwards compatibility: 
+Backwards compatibility:
   The implementation is fully backwards compatible. (SVN versions 5742 to
   5861 contained an implementation that did not work with commands expecting
   an argument.)
@@ -255,6 +255,18 @@ Backwards compatibility:
   classes disabled via ::
 
     \raggedbottom
+
+Local tocs with `minitoc`
+`````````````````````````
+
+New feature:
+  If 'use-latex-toc' is set, local tables of content are typeset using the
+  'minitoc' package (instead of being ignored).
+
+Backwards compatibility:
+  Disable the creation of local ToCs (ignoring all special commands) by
+  replacing ``\usepackage{minitoc} with ``\usepackage{mtcoff}``.
+
 
 Shorter preamble
 ----------------

@@ -327,6 +327,10 @@ PreambleCmds.admonition = r"""% admonitions (specially marked "topics")
   \end{center}
 }"""
 
+## PreambleCmds.caption = r"""% configure caption layout
+## \usepackage{caption}
+## \captionsetup{singlelinecheck=false}% no exceptions for one-lined captions"""
+
 PreambleCmds.docinfo = r"""% width of docinfo table:
 \DUprovidelength{\DUdocinfowidth}{0.9\textwidth}"""
 
@@ -386,6 +390,9 @@ PreambleCmds.linking = r"""%% hyperref (PDF hyperlinks):
   \usepackage[colorlinks=%s,linkcolor=%s,urlcolor=%s]{hyperref}
 }{}"""
 
+PreambleCmds.minitoc = r"""%% local table of contents
+\usepackage{minitoc}"""
+
 PreambleCmds.optionlist = r"""% option list:
 \providecommand*{\DUoptionlistlabel}[1]{\bf #1 \hfill}
 \DUprovidelength{\DUoptionlistindent}{3cm}
@@ -444,6 +451,13 @@ class DocumentClass(object):
     def __init__(self, document_class, with_part=False):
         self.document_class = document_class
         self._with_part = with_part
+        self.sections = ['section', 'subsection', 'subsubsection',
+                         'paragraph', 'subparagraph']
+        if self.document_class in ('book', 'memoir', 'report',
+                                   'scrbook', 'scrreprt'):
+            self.sections.insert(0, 'chapter')
+        if self._with_part:
+            self.sections.insert(0, 'part')
 
     def section(self, level):
         """Return the LaTeX section name for section `level`.
@@ -452,16 +466,10 @@ class DocumentClass(object):
         Level is 1,2,3..., as level 0 is the title.
         """
 
-        sections = [ 'section', 'subsection', 'subsubsection',
-                     'paragraph', 'subparagraph' ]
-        if self.document_class in ('book', 'report', 'scrreprt', 'scrbook'):
-            sections.insert(0, 'chapter')
-        if self._with_part:
-            sections.insert(0, 'part')
-        if level <= len(sections):
-            return sections[level-1]
+        if level <= len(self.sections):
+            return self.sections[level-1]
         else:
-            return sections[-1]
+            return self.sections[-1]
 
 class Table(object):
     """Manage a table while traversing.
@@ -685,8 +693,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
     # Config setting defaults
     # -----------------------
 
+
     # use latex tableofcontents or let docutils do it.
-    use_latex_toc = 0
+    use_latex_toc = False
+    has_latex_toc = False # is there a toc in the doc (needed by minitoc)
 
     # TODO: use mixins for different implementations.
     # list environment for docinfo. else tabularx
@@ -1445,6 +1455,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 self.body.append('\n\\bibliographystyle{%s}\n' %
                                  self.bibtex[0])
                 self.body.append('\\bibliography{%s}\n' % self.bibtex[1])
+        # Make sure to generate a toc file if needed for local contents:
+        if 'minitoc' in self.requirements and not self.has_latex_toc:
+            self.body.append('\n\\faketableofcontents % for local ToCs\n')
 
     def visit_emphasis(self, node):
         self.body.append('\\emph{')
@@ -1637,6 +1650,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append(':]')
 
     def visit_figure(self, node):
+        # TODO: use LaTeX default alignment (left) (similar to HTML)
         if ('align' not in node.attributes or
             node.attributes['align'] == 'center'):
             # centering does not add vertical space like center.
@@ -1774,6 +1788,19 @@ class LaTeXTranslator(nodes.NodeVisitor):
         post = []
         include_graphics_options = []
         inline = isinstance(node.parent, nodes.TextElement)
+        align_prepost = {
+            # key == (<inline>, <align>)
+            # By default latex aligns the bottom of an image.
+            (1, 'bottom'): ('', ''),
+            (1, 'middle'): ('\\raisebox{-0.5\\height}{', '}'),
+            (1, 'top'): ('\\raisebox{-\\height}{', '}'),
+            (0, 'center'): ('{\\hfill', '\\hfill}'),
+            # According to the HTML standard
+            # http://www.w3.org/TR/html4/struct/objects.html#adef-align-IMG
+            # the image should be floated alongside the paragraph.
+            # However, this is not even honoured by all HTML browsers.
+            (0, 'left'): ('{', '\\hfill}'),
+            (0, 'right'): ('{\\hfill', '}'),}
         if 'scale' in attrs:
             # Could also be done with ``scale`` option to
             # ``\includegraphics``; doing it this way for consistency.
@@ -1786,17 +1813,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
             include_graphics_options.append('height=%s' % (
                             self.latex_image_length(attrs['height']), ))
         if 'align' in attrs:
-            align_prepost = {
-                # By default latex aligns the bottom of an image.
-                (1, 'bottom'): ('', ''),
-                (1, 'middle'): ('\\raisebox{-0.5\\height}{', '}'),
-                (1, 'top'): ('\\raisebox{-\\height}{', '}'),
-                (0, 'center'): ('{\\hfill', '\\hfill}'),
-                # These 2 don't exactly do the right thing.  The image should
-                # be floated alongside the paragraph.  See
-                # http://www.w3.org/TR/html4/struct/objects.html#adef-align-IMG
-                (0, 'left'): ('{', '\\hfill}'),
-                (0, 'right'): ('{\\hfill', '}'),}
             try:
                 pre.append(align_prepost[inline, attrs['align']][0])
                 post.append(align_prepost[inline, attrs['align']][1])
@@ -2244,8 +2260,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_title(self, node):
         """Append section and other titles."""
 
+	# Table of contents:
         if isinstance(node.parent, nodes.topic):
-            # the table of contents.
             if ('contents' in self.topic_classes and
                 self.settings.use_titlepage_env):
                 self.body.append('\\end{titlepage}\n')
@@ -2254,14 +2270,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 self.use_latex_toc):
                 self.body.append('\\renewcommand{\\contentsname}{')
                 self.context.append('}\n\\tableofcontents\n\n\\bigskip\n')
-            elif ('abstract' in self.topic_classes and
-                  self.settings.use_latex_abstract):
-                raise nodes.SkipNode
+                self.has_latex_toc = True
             else: # or section titles before the table of contents.
-                # BUG: latex chokes on center environment with
-                # "perhaps a missing item", therefore we use hfill.
+                # In LaTeX, alignment of sections is determined by the
+                # document class. Use \hfill as a workaround.
+                # TODO: keep standard alignment, use `sectsty` or `titlesec`?
                 self.body.append('\\subsubsection*{~\\hfill ')
-                # the closing brace for subsection.
                 self.context.append('\\hfill ~}\n')
         # TODO: for admonition titles before the first section
         # either specify every possible node or ... ?
@@ -2302,11 +2316,53 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append(self.context.pop())
         self.body += ['\\label{%s}\n' % id for id in node.parent['ids']]
 
+    def minitoc(self, node):
+        """Generate a local table of contents with LaTeX package minitoc"""
+        # title
+        if isinstance(node.next_node(), nodes.title):
+            toctitle = self.encode(node.pop(0).astext())
+        else: # no title
+            toctitle = ''
+        # name-prefix for current section level
+        section_name = self.d_class.section(self.section_level)
+        if section_name == 'part':
+            level = 'part'
+        elif section_name == 'chapter':
+            level = 'mini'
+        elif (section_name == 'section' and
+              'chapter' not in self.d_class.sections):
+            level = 'sect'
+        else: # minitoc only supports local toc in part- or top-level
+            warn = self.document.reporter.warning
+            warn('Skipping local ToC at %s level.\n' % section_name +
+                 '  Feature not supported with option "use-latex-toc"')
+            return
+        # Requirements/Setup
+        self.requirements['minitoc'] = PreambleCmds.minitoc
+        self.requirements['minitoc-%s' % level] = r'\do%stoc' % level
+        # depth: (Docutils defaults to unlimited depth)
+        depth = len(self.d_class.sections)
+        self.requirements['minitoc-%s-depth' % level] = (
+            r'\mtcsetdepth{%stoc}{%d}' % (level, depth))
+        # TODO: set the depth according to the :depth: argument
+        # Attention: Docutils stores a relative depth while minitoc
+        # expects an absolute depth!
+        ## self.body.append('\\setcounter{%stocdepth}{%d}' % (level, depth))
+        # title:
+        self.body.append('\\mtcsettitle{%stoc}{%s}\n' % (level, toctitle))
+        # the toc-generating command:
+        self.body.append('\\%stoc\n' % level)
+
     def visit_topic(self, node):
         self.topic_classes = node['classes']
-        if ('abstract' in self.topic_classes and
+        if (self.use_latex_toc and
+            'contents' in node['classes'] and 'local' in node['classes']):
+            self.minitoc(node)
+        elif ('abstract' in self.topic_classes and
             self.settings.use_latex_abstract):
-            self.body.append('\\begin{abstract}\n')
+            self.body.append('\\begin{abstract}')
+            if isinstance(node.next_node(), nodes.title):
+                node.pop(0) # dump title
 
     def depart_topic(self, node):
         if ('abstract' in self.topic_classes and
