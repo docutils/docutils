@@ -39,7 +39,8 @@ Changes Since 0.5
   - Set sub- and superscript role argument as text not math.
   - Support custom roles based on standard roles.
   - Load packages and define macros only if required in the document.
-  - Docutils specific LaTeX objects are now all prefixed with ``DU``
+  - Docutils specific LaTeX objects are now all prefixed with ``DU``.
+  - Local tocs with `minitoc` (if 'use-latex-toc' is True).
 
 
 Release 0.5 (2008-06-25)

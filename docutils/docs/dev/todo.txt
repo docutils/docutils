@@ -1909,22 +1909,12 @@ Bug fixes
 
   See `<../../test/functional/input/data/latex.txt>`__
 
-* Aligning a figure also aligns the legend *but not the caption* nor a table
-  in the legend.
+* The `align` argument of a figure directive aligns both, figure and legend
+  but *not* the caption nor a table in the legend.
 
-  + Use tabular instead of longtable for tables in legends.
+  + align the *figure* "en-bloc"
 
-  + Use `caption` package for caption alignment
-    (CTAN /macros/latex/contrib/caption,
-    Debian package texlive-latex-recommended).
-    Set alignment with ::
-
-      \captionsetup{justification=raggedleft,singlelinecheck=false}
-
-    For a single caption use this inside the figure environment.
-
-    ``singlelinecheck=false`` in the preamble and justification in the
-    caption would allow configuring "singlelinecheck" in the style file.
+  + Use tabular instead of longtable for tables in legends?
 
 * An image directive with target URI does not start a new paragraph
   (see first two image examples in standalone_rst_latex.tex).
@@ -1941,14 +1931,14 @@ LaTeX macros for Docutils-specific objects
 ``````````````````````````````````````````
 
 :legend:     Conflict with flushright/flushleft for image alignment
-	     ``! LaTeX Error: There's no line here to end.``
-	     --> Re-try after fixing the alignment bug.
-	     Try with raggedleft/raggedright.
+             ``! LaTeX Error: There's no line here to end.``
+             --> Re-try after fixing the alignment bug.
+             Try with raggedleft/raggedright.
 
 :subtitle:   Is there a native construct?
 
 :admonitions: Provide separate commands for specific admonitions (error,
-	      note, ...)?
+              note, ...)?
 
 LaTeX constructs and packages in stead of re-implementations
 ````````````````````````````````````````````````````````````
@@ -2024,10 +2014,28 @@ Which packages do we want to use?
    ``! LaTeX Error: Something's wrong--perhaps a missing \item.``
    Committed a HACK: centring by ``\hfill``.
 
+
+table of contents
+^^^^^^^^^^^^^^^^^
+
+Problem:
+  when I specify a :depth: to a contents directive, this value is used but
+  not preserved in the doctree.
+
+David wrote:
+
+  There is a setting, use_latex_toc. Unfortunately its implementation is
+  suboptimal. When use_latex_toc is True, the Docutils-generated ToC
+  shouldn't be built at all. It's a waste of time.
+
+  Instead, the docutils.transforms.parts.Contents transform should be
+  made aware of use_latex_toc, and do the right thing for LaTeX. Or the
+  LaTeX writer should override that transform and substitute a custom
+  version.
+
+
 Default layout
 --------------
-
-* Always include `fixltx2e`_ ("visible" LaTeX bugfixes, ``\textsubscript``)
 
 * Which `default font`__ should we use for the output?
 
@@ -2043,7 +2051,11 @@ Default layout
 
 * Start a new paragraph after lists (as currently)
   or continue (no blank line in source, no parindent in output)?
-  (Maybe continue if the `compound paragraph`_ directive is used?)
+
+  Overriding:
+
+  * continue if the `compound paragraph`_ directive is used, or
+  * force a new paragraph with an empty comment.
 
 * Indent/handle doctest blocks similar to literal blocks?
 
@@ -2067,9 +2079,6 @@ Default layout
 
 * Configurable `classifier` in description list?
   \emph instead of bold as default?
-
-* Use teletype (literal) for  references without targets (currently
-   ``\color{red}\bfseries{}``)
 
 __ ../../../sandbox/latex-variants/README.html#default-font
 
@@ -2125,13 +2134,12 @@ Image and figure directives
   + `<../../test/functional/expected/standalone_rst_html4css1.html>`__
   + `<../../test/functional/expected/standalone_rst_latex.tex>`__
 
-* Should image start a new paragraph? (Keep support for inlined images with
-  substitutions!)
+* Centred and aligned images in figures with ``\centerline``,
+  ``\flushleft``, ``\flushright`` instead of environments (avoids
+  spurious whitespace) (but see also the discussion about figure
+  alignment).
 
-* Centred and aligned images with ``\centerline``, ``\flushleft``,
-  ``\flushright`` instead of environments (avoids spurious whitespace).
-
-* Wrap text around figures with class "wrap".
+* Wrap text around figures/images with class "wrap"?
   Use `wrapfig` (or other recommended) package.
 
 
@@ -2152,12 +2160,6 @@ Missing features
 
 * Multiple author entries in docinfo (same thing as in html).
   (already solved?)
-
-* LaTeX does not support multiple tocs in one document
-  (might be no limitation except for docutils documentation).
-
-  The "minitoc" latex package can produce per-chapter tocs in
-  book and report document classes.
 
 * Hyperlinks are not hyphenated; this leads to bad spacing. See
   docs/user/rst/demo.txt 2.14 directives.
