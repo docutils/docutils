@@ -1919,7 +1919,8 @@ Bug fixes
 * An image directive with target URI does not start a new paragraph
   (see first two image examples in standalone_rst_latex.tex).
 
-* Too deeply nested lists fail: generate an error or provide a workaround.
+* Too deeply nested lists fail: generate an error, a warning or provide
+  a workaround?
 
 
 Generate clean and configurable LaTeX source
@@ -1937,8 +1938,28 @@ LaTeX macros for Docutils-specific objects
 
 :subtitle:   Is there a native construct?
 
-:admonitions: Provide separate commands for specific admonitions (error,
-              note, ...)?
+:admonitions: optional "type" argument::
+
+                \providecommand{\DUadmonition}[2][]{%
+  	        \ifcsname DU#1\endcsname%
+  		  \csname DU#1\endcsname{#2}%
+    		\else
+                    \begin{center}
+                      \fbox{\parbox{0.9\textwidth}{#2}}
+                    \end{center}
+  		\fi%
+                }
+
+	      Would allow individual restyling of e.g. Notes,
+	      e.g. with pdfcomment.sty__ or todonotes.sty.
+
+              Use a "type" argument also for ``\DUtopictitle``?
+	      (would allow red error etc.)
+
+:floats: Placement of figure and table floats with a new
+	 ``\DUfloatplacement`` parameter (currently hard-coded ``htbp``)?
+
+__ http://dante.ctan.org/CTAN/help/Catalogue/entries/pdfcomment.html
 
 LaTeX constructs and packages in stead of re-implementations
 ````````````````````````````````````````````````````````````
@@ -1951,7 +1972,11 @@ Which packages do we want to use?
     LaTeX installation like the `texlive-latex-recommended` Debian package,
     say):
 
-  + no "fancy" or "exotic" requirements
+  + No "fancy" or "exotic" requirements.
+
+    Or provide fallback solutions in case the required packages do not exist
+    on the target system? (Can be done with ``\@ifpackageloaded{}`` or
+    ``\IfPackageExists{}``.)
 
   + pointers to advanced packages and their use in the `latex writer
     documentation`_.
@@ -2074,9 +2099,6 @@ Default layout
   Should be possible with ``--literal-block-env==lstlistings`` and some
   configuration...
 
-* Use default font in admonitions and sidebar?  (HTML does not switch
-  the font either, users can change this redefining \DUadmonition)
-
 * Configurable `classifier` in description list?
   \emph instead of bold as default?
 
@@ -2148,10 +2170,6 @@ Missing features
 
 * better citation support
 
-* bibliography directive: If ``use-latex-citations`` is used a bibliography
-  is inserted right at the end of the document. *This should be
-  customizable*.
-
 * Document errors are also too silent. (Use admonition/error?)
 
   No link to system errors.
@@ -2165,6 +2183,17 @@ Missing features
   docs/user/rst/demo.txt 2.14 directives.
 
   --> Pass the right option to ``\hypersetup``
+
+
+bibliography directive
+``````````````````````
+
+If ``use-latex-citations`` is used a bibliography is inserted right at the
+end of the document. *This should be customizable*.
+
+Alan suggested a `bibliography` directive so that BibTeX references are not
+automatically placed at the end (and bibtex for HTML via ... can be supported)
+
 
 template file
 `````````````

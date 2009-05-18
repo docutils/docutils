@@ -234,14 +234,14 @@ Command:
   ``\DUadmonition``
 
 Default:
-  Typeset in a frame (90 % of text width) using a sans-serif font.
+  Typeset in a frame (90 % of text width).
 
 Example:
-  use standard document font and 95 % of text widht::
+  use sans-serif font and 95 % of text widht::
 
     \newcommand{\DUadmonition}[1]{%
       \begin{center}
-        \fbox{\parbox{0.95\textwidth}{#1}}
+        \fbox{\parbox{0.95\textwidth}{\textsf{#1}}}
       \end{center}
     }
 
@@ -1072,24 +1072,16 @@ Command:
 
 Default:
   Box (similar to admonition) with grey background.
-  Sans-serif fonts.
 
-Examples:
-  Use a lighter background and standard document fonts::
+Example:
+  Use margin notes ::
 
-    \newcommand{\DUsidebar}[1]{%
-      \begin{center}
-        \fbox{\colorbox[gray]{0.95}{\parbox{0.9\textwidth}{#1}}}
-      \end{center}
-    }
+    \newcommand{\DUsidebar}{\marginpar}
 
-  Use margin notes with package marginnote_::
-
-    \usepackage{marginnote}
-    \newcommand{\DUsidebar}{\marginnote}
-
-  * Make sure the margin is wide enought to hold the note.
-  * This might fail with some constructs inside the `side bar`.
+  * Make sure the margin is wide enough to hold the note.
+  * This might fail with some constructs inside the `side bar` and where
+    \marginpar cannot be used, e.g., inside floats, footnotes, or in frames
+    made with the framed package (see marginnote_).
 
 __ http://docutils.sf.net/docutils/docs/ref/rst/directives.html#sidebar
 .. _marginnote:

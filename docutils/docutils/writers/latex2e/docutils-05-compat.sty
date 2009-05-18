@@ -4,12 +4,15 @@
 % 
 % :Author:    Guenter Milde
 % :Contact:   milde@users.berlios.de
-% :Revision:  $Revision: 5934 $
+% :Revision:  $Revision: 5948 $
 % :Date:      $Date: 2009-02-24$
 % :Copyright: © 2009 G. Milde,
 %             Released  without warranties or conditions of any kind
 %             under the terms of the Apache License, Version 2.0
 %             http://www.apache.org/licenses/LICENSE-2.0
+% :Abstract:  This file documents changes and provides a style for best
+%             possible compatibility to the behaviour of the `latex2e`
+%             writer of Doctutils release 0.5.
 % 
 % ::
 
@@ -17,10 +20,6 @@
 \ProvidesPackage{docutils-05-compat}
 [2009/03/26 v0.1 compatibility with rst2latex from Docutils 0.5]
 
-% This file documents changes and provides a style for best possible
-% compatibility to the behaviour of the `latex2e` writer of Doctutils
-% release 0.5
-% 
 % .. contents::
 %    :depth: 3
 % 
@@ -68,7 +67,7 @@
 %   be a LaTeX package (``*.sty``) and referenced with the ``\usepackage``
 %   command.
 % 
-% .. tip::
+% .. important::
 %   Always specify the extension if you want the style sheet to be
 %   ``\input`` by LaTeX.
 % 
@@ -87,10 +86,9 @@
 %   class arguments to the node.
 % 
 % Backwards compatibility:
-%   SVN versions 5742 to 5861 contained an implementation that did not work
-%   with commands expecting an argument. The implementation from version 5862
-%   is fully backwards compatible.
-% 
+%   The implementation is fully backwards compatible. (SVN versions 5742 to
+%   5861 contained an implementation that did not work with commands expecting
+%   an argument.)
 % 
 % Length units
 % ------------
@@ -105,13 +103,13 @@
 %   * ``px`` is a valid unit in pdftex since version 1.3.0 released on
 %     2005-02-04:
 % 
-%      1px defaults to 1bp (or 72dpi), but can be changed with the \pdfpxdimen
-%      primitive::
+%       1px defaults to 1bp (or 72dpi), but can be changed with the
+%       ``\pdfpxdimen`` primitive.::
 
-%        \pdfpxdimen=1in % 1 dpi
-%        \divide\pdfpxdimen by 96 % 96 dpi
-% 
-%      --  http://www.tug.org/applications/pdftex/NEWS
+        \pdfpxdimen=1in % 1 dpi
+        \divide\pdfpxdimen by 96 % 96 dpi
+
+%       --  http://www.tug.org/applications/pdftex/NEWS
 % 
 %   * Modern TeX distributions use pdftex also for dvi generation
 %     (i.e. ``latex`` actually calls ``pdftex`` with some options).
@@ -123,8 +121,8 @@
 % 
 %   This can be reset with ::
 
-%     \pdfpxdimen=1pt
-% 
+  \pdfpxdimen=1pt
+
 % .. caution:: It is impossible to revert the change of lengths specified
 %    without unit in a style sheet, however the 0.3 % change will be
 %    imperceptible in most cases.
@@ -167,10 +165,10 @@
 % Backwards compatibility:
 %   Load the ae and aeguill packages if fontenc is not used::
 
-%     \@ifundefined{@ifl@ter@@}
-%       {\RequirePackage{ae,aeguill}}
-%       {}
-% 
+  \@ifundefined{@ifl@ter@@}
+    {\RequirePackage{ae,aeguill}}
+    {}
+
 % .. Why not ``\@ifpackageloaded{fontenc}``?
 % 
 %    'fontenc' disables the test to enable loading more than once with
@@ -185,16 +183,16 @@
 % Cleaner LaTeX source
 % --------------------
 % 
-% * Remove redundant "double protection" from the encoding of the "special
-%   printing characters" and square brackets, e.g. ``\%`` instead of ``{\%}``
-%   and ::
-
-%    \item {}      -> \item % as '[' is already escaped
-%    \item[{Term}] -> \item[Term]
-%    \item [what:] -> \item[what:]
+% New feature:
+%   * Remove redundant "double protection" from the encoding of the "special
+%     printing characters" and square brackets, e.g. ``\%`` instead of
+%     ``{\%}``.
+%   * Remove some spurious whitespace, e.g. ``\item [what:] -> \item[what:]``.
+%   * Use conventional style for "named" macros, e.g. ``\dots{}`` instead of
+%     ``{\dots}``
 % 
-% * Use conventional style for "named" macros, e.g. ``\dots{}`` instead of
-%   ``{\dots}``
+% Backwards compatibility:
+%   Changes do not affect the output.
 % 
 % Sub- and superscript as text
 % ----------------------------
@@ -209,7 +207,7 @@
 % 
 %   * whitespace is ignored,
 %   * a different command set and font setting scheme is active,
-%   * Latin letters are typeset italic but numbers upright
+%   * Latin letters are typeset italic but numbers upright.
 % 
 %   Although it is possible to redefine ``\textsubscript`` and
 %   ``\textsuperscript`` to typeset the content in math-mode, this can lead to
@@ -219,17 +217,17 @@
 %    `custom roles`_ like ``.. role:: sub(subscript)`` and
 %    ``.. role:: super(superscript)`` and define the "role commands"::
 
-%      \newcommand{\docutilsrolesub}{\itshape}
-%      \newcommand{\docutilsrolesuper}{\itshape}
-% 
+   \newcommand{\docutilsrolesub}{\itshape}
+   \newcommand{\docutilsrolesuper}{\itshape}
+
 %    Alternatively, if you want all sub- and superscripts in italic, redefine
 %    the macros::
 
-%      %% \let\DUsup\textsubscript
-%      %% \let\DUsuper\textsuperscript
-%      %% \renewcommand*{\textsubscript}{\DUsub\itshape}
-%      %% \renewcommand*{\textsuperscript}{\DUsuper\itshape}
-% 
+   %% \let\DUsup\textsubscript
+   %% \let\DUsuper\textsuperscript
+   %% \renewcommand*{\textsubscript}{\DUsub\itshape}
+   %% \renewcommand*{\textsuperscript}{\DUsuper\itshape}
+
 %    This is not fully backwards compatible, as it will also set numbers in
 %    italic shape and not ignore whitespace.
 % 
@@ -250,13 +248,35 @@
 %   Up to version 0.5, use of `typearea` and a DIV setting of 12 were
 %   hard-coded into the latex2e writer ::
 
-%     \usepackage{typearea}
-%     \typearea{12}
-% 
+  \usepackage{typearea}
+  \typearea{12}
+
 %   and the vertical alignment of lower boundary of the text area in book
 %   classes disabled via ::
 
-%     \raggedbottom
+  \raggedbottom
+
+% Local tocs with `minitoc`
+% `````````````````````````
+% 
+% New feature:
+%   If 'use-latex-toc' is set, local tables of content are typeset using the
+%   'minitoc' package (instead of being ignored).
+% 
+% Backwards compatibility:
+%   Disable the creation of local ToCs (ignoring all special commands) by
+%   replacing ``\usepackage{minitoc} with ``\usepackage{mtcoff}``.
+% 
+% Default font in admonitions and sidebar
+% ---------------------------------------
+% 
+% New feature:
+%   Use default font in admonitions and sidebar.
+% 
+% Backward compatibility:
+%   See the fallback definitions for admonitions_, `topic title`_ and
+%   `sidebar`_.
+% 
 % 
 % Shorter preamble
 % ----------------
@@ -300,19 +320,19 @@
 % Docinfo
 % ^^^^^^^
 % 
-% Tables with automatic width of columns, always on one page::
+% One-page tables with auto-width columns::
 
 \usepackage{tabularx}
 
 % Images
 % ^^^^^^
-% ::
+% Include graphic files::
 
 \usepackage{graphicx}
 
 % Problematic, Sidebar
 % ^^^^^^^^^^^^^^^^^^^^
-% Set text and/or background colour, provide ``\colorbox``::
+% Set text and/or background colour, coloured boxes with ``\colorbox``::
 
 \usepackage{color}
 
@@ -348,7 +368,7 @@
 % admonition width
 % ^^^^^^^^^^^^^^^^
 % The ``admonitionwith`` lenght is replaced by the more powerful
-% ``\DUadmonition`` (see `New Definitions`_)::
+% ``\DUadmonition`` command (see `New Definitions`_)::
 
 \newlength{\admonitionwidth}
 \setlength{\admonitionwidth}{0.9\textwidth}
@@ -452,10 +472,12 @@
 % New Feature:
 %   Enable customization of some more Docutils elements with special commands
 % 
-%   :sidebar:    ``DUsidebar`` command
-%   :transition: ``\DUtransition`` command
-%   :admonition: ``DUadmonition`` environment (replacing ``\admonitionwidth``)
-%   :field list: ``DUfieldlist`` environment
+%   :admonition: ``DUadmonition`` environment (replacing ``\admonitionwidth``),
+%   :field list: ``DUfieldlist`` environment,
+%   :sidebar:    ``\DUsidebar``, ``\DUsidebartitle``, and ``DUsidebarsubtitle``
+%                commands,
+%   :topic:      ``\DUtopictitle`` command,
+%   :transition: ``\DUtransition`` command.
 % 
 % Backwards compatibility:
 %   In most cases, the default definition corresponds to the previously used
@@ -464,10 +486,35 @@
 % 
 % admonitions
 % ^^^^^^^^^^^
-% Use the old variable for `admonition width`_::
+% Use sans-serif fonts and the old variable for `admonition width`_::
 
 \newcommand{\DUadmonition}[1]{%
   \begin{center}
     \fbox{\parbox{\admonitionwidth}{\sffamily #1}}
   \end{center}
 }
+
+
+% topic title
+% ^^^^^^^^^^^
+% Title for "topics" (admonitions, sidebar).
+% 
+% Larger font size::
+
+\providecommand*{\DUtopictitle}[1]{\textbf{\large #1}\smallskip}
+
+% sidebar
+% ^^^^^^^
+% Use sans-serif fonts and a darker shade of grey::
+
+\providecommand{\DUsidebar}[1]{%
+  \begin{center}
+    \sffamily
+    \fbox{\colorbox[gray]{0.80}{\parbox{0.9\textwidth}{#1}}}
+  \end{center}
+}
+
+% Bold sub-title::
+
+\providecommand*{\DUsidebarsubtitle}[1]{\hspace*{\fill}\\
+  \textbf{#1}\smallskip}

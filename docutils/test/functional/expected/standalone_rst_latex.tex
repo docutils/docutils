@@ -35,7 +35,7 @@
 % admonitions (specially marked "topics")
 \providecommand{\DUadmonition}[1]{%
   \begin{center}
-    \fbox{\parbox{0.9\textwidth}{\sffamily #1}}
+    \fbox{\parbox{0.9\textwidth}{#1}}
   \end{center}
 }
 % width of docinfo table:
@@ -84,18 +84,23 @@
   {\endlist}
 }{}
 % rubric (an informal heading):
-\providecommand*{\DUrubric}[1]{\subsection*{~\hfill {\it #1} \hfill ~}}
+\providecommand*{\DUrubric}[1]{%
+  \subsection*{\centering\textit{\textmd{#1}}}%
+}
 % sidebar (text outside the main text flow)
 \providecommand{\DUsidebar}[1]{%
   \begin{center}
-    \sffamily
     \fbox{\colorbox[gray]{0.80}{\parbox{0.9\textwidth}{#1}}}
   \end{center}
 }
+% sidebar sub-title
+\providecommand*{\DUsidebarsubtitle}[1]{\hspace*{\fill}\\\emph{#1}\smallskip}
+% sidebar title
+\providecommand*{\DUsidebartitle}{\DUtopictitle}
 % title reference role:
 \providecommand*{\DUroletitlereference}[1]{\textsl{#1}}
 % title for "topics" (admonitions, sidebar)
-\providecommand*{\DUtopictitle}[1]{\textbf{\large #1}\smallskip}
+\providecommand*{\DUtopictitle}[1]{\textbf{#1}\smallskip}
 % transition ([fancy]break, anonymous section)
 \providecommand*{\DUtransition}{\hspace*{\fill}\hrulefill\hspace*{\fill}}
 % hyperref (PDF hyperlinks):
@@ -945,14 +950,16 @@ A left-aligned image:
 {\includegraphics{../../../docs/user/rst/images/biohazard.png}\hfill}
 
 This paragraph might flow around the image.
-If it does or not, depends on the output format and the viewer.
+The specific behavior depends upon the style sheet and
+the browser or rendering software used.
 
 A right-aligned image:
 
 {\hfill\includegraphics{../../../docs/user/rst/images/biohazard.png}}
 
 This paragraph might flow around the image.
-If it does or not, depends on the output format and the viewer.
+The specific behavior depends upon the style sheet and
+the browser or rendering software used.
 
 For inline images see \href{\#substitution-definitions}{Substitution Definitions}.
 
@@ -1019,8 +1026,8 @@ This is the legend.
 The legend may consist of several paragraphs.
 }\end{flushleft}\end{figure}
 
-This paragraph might flow around the figure if the \texttt{figwidth}
-argument is set and smaller than the text width.
+This paragraph might flow around the figure. The specific behavior depends
+upon the style sheet and the browser or rendering software used.
 
 A centered figure:
 \begin{figure}[htbp]
@@ -1033,8 +1040,8 @@ This is the legend.
 The legend may consist of several paragraphs.
 }\end{figure}
 
-This paragraph might flow around the figure if the \texttt{figwidth}
-argument is set and smaller than the text width.
+This paragraph might flow around the figure. The specific behavior depends
+upon the style sheet and the browser or rendering software used.
 
 A right-aligned figure:
 \begin{figure}[htbp]\begin{flushright}
@@ -1046,8 +1053,8 @@ This is the legend.
 The legend may consist of several paragraphs.
 }\end{flushright}\end{figure}
 
-This paragraph might flow around the figure if the \texttt{figwidth}
-argument is set and smaller than the text width.
+This paragraph might flow around the figure. The specific behavior depends
+upon the style sheet and the browser or rendering software used.
 
 
 %___________________________________________________________________________
@@ -1119,10 +1126,8 @@ You can make up your own admonition too.
 \label{topics-sidebars-and-rubrics}
 
 \DUsidebar{
-\DUtopictitle{Sidebar Title}
-~\\
-\textbf{Optional Subtitle}
-\smallskip
+\DUsidebartitle{Sidebar Title}
+\DUsidebarsubtitle{Optional Subtitle}
 
 This is a sidebar.  It is for text outside the flow of the main
 text.

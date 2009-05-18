@@ -41,7 +41,7 @@ Changes Since 0.5
   - Load packages and define macros only if required in the document.
   - Docutils specific LaTeX objects are now all prefixed with ``DU``.
   - Local tocs with `minitoc` (if 'use-latex-toc' is True).
-
+  - Use default font in admonitions and sidebar.
 
 Release 0.5 (2008-06-25)
 ========================
