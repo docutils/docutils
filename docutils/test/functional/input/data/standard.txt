@@ -450,7 +450,8 @@ A left-aligned image:
    :align: left
 
 This paragraph might flow around the image.
-If it does or not, depends on the output format and the viewer.
+The specific behavior depends upon the style sheet and
+the browser or rendering software used.
 
 A right-aligned image:
 
@@ -458,7 +459,8 @@ A right-aligned image:
    :align: right
 
 This paragraph might flow around the image.
-If it does or not, depends on the output format and the viewer.
+The specific behavior depends upon the style sheet and
+the browser or rendering software used.
 
 For inline images see `Substitution Definitions`_.
 
@@ -522,8 +524,8 @@ A left-aligned figure:
 
    The legend may consist of several paragraphs.
 
-This paragraph might flow around the figure if the ``figwidth``
-argument is set and smaller than the text width.
+This paragraph might flow around the figure. The specific behavior depends
+upon the style sheet and the browser or rendering software used.
 
 A centered figure:
 
@@ -537,8 +539,8 @@ A centered figure:
 
    The legend may consist of several paragraphs.
 
-This paragraph might flow around the figure if the ``figwidth``
-argument is set and smaller than the text width.
+This paragraph might flow around the figure. The specific behavior depends
+upon the style sheet and the browser or rendering software used.
 
 A right-aligned figure:
 
@@ -552,8 +554,8 @@ A right-aligned figure:
 
    The legend may consist of several paragraphs.
 
-This paragraph might flow around the figure if the ``figwidth``
-argument is set and smaller than the text width.
+This paragraph might flow around the figure. The specific behavior depends
+upon the style sheet and the browser or rendering software used.
 
 
 Admonitions

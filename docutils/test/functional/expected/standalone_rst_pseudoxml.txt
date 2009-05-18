@@ -1168,13 +1168,15 @@
                 <image align="left" uri="../../../docs/user/rst/images/biohazard.png">
                 <paragraph>
                     This paragraph might flow around the image.
-                    If it does or not, depends on the output format and the viewer.
+                    The specific behavior depends upon the style sheet and
+                    the browser or rendering software used.
                 <paragraph>
                     A right-aligned image:
                 <image align="right" uri="../../../docs/user/rst/images/biohazard.png">
                 <paragraph>
                     This paragraph might flow around the image.
-                    If it does or not, depends on the output format and the viewer.
+                    The specific behavior depends upon the style sheet and
+                    the browser or rendering software used.
                 <paragraph>
                     For inline images see 
                     <reference name="Substitution Definitions" refid="substitution-definitions">
@@ -1246,11 +1248,8 @@
                         <paragraph>
                             The legend may consist of several paragraphs.
                 <paragraph>
-                    This paragraph might flow around the figure if the 
-                    <literal>
-                        figwidth
-                    
-                    argument is set and smaller than the text width.
+                    This paragraph might flow around the figure. The specific behavior depends
+                    upon the style sheet and the browser or rendering software used.
                 <paragraph>
                     A centered figure:
                 <figure align="center">
@@ -1263,11 +1262,8 @@
                         <paragraph>
                             The legend may consist of several paragraphs.
                 <paragraph>
-                    This paragraph might flow around the figure if the 
-                    <literal>
-                        figwidth
-                    
-                    argument is set and smaller than the text width.
+                    This paragraph might flow around the figure. The specific behavior depends
+                    upon the style sheet and the browser or rendering software used.
                 <paragraph>
                     A right-aligned figure:
                 <figure align="right">
@@ -1280,11 +1276,8 @@
                         <paragraph>
                             The legend may consist of several paragraphs.
                 <paragraph>
-                    This paragraph might flow around the figure if the 
-                    <literal>
-                        figwidth
-                    
-                    argument is set and smaller than the text width.
+                    This paragraph might flow around the figure. The specific behavior depends
+                    upon the style sheet and the browser or rendering software used.
             <section ids="admonitions" names="admonitions">
                 <title auto="1" refid="id74">
                     <generated classes="sectnum">
