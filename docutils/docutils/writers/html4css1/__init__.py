@@ -844,7 +844,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         if node.get('width'):
             atts['style'] = 'width: %spx' % node['width']
         if node.get('align'):
-            atts['align'] = node['align']
+            atts['class'] += " align-" + node['align']
         self.body.append(self.starttag(node, 'div', **atts))
 
     def depart_figure(self, node):
@@ -984,6 +984,8 @@ class HTMLTranslator(nodes.NodeVisitor):
             suffix = ''
         else:
             suffix = '\n'
+        if 'classes' in node and 'align-center' in node['classes']:
+            node['align'] = 'center'
         if 'align' in node:
             if node['align'] == 'center':
                 # "align" attribute is set in surrounding "div" element.
