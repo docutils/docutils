@@ -88,6 +88,7 @@ Changes Since 0.5
   - New custom macros.
   - Simpler LaTeX encoding, e.g. "\%" instead of "{\%}".
   - Local tocs with `minitoc` (if 'use-latex-toc' is True).
+  - Use default font in admonitions and sidebar.
 
 * docs/ref/rst/restructuredtext.txt:
 

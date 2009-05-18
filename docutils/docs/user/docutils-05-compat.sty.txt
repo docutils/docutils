@@ -19,7 +19,7 @@
   \NeedsTeXFormat{LaTeX2e}
   \ProvidesPackage{docutils-05-compat}
   [2009/03/26 v0.1 compatibility with rst2latex from Docutils 0.5]
-  
+
 .. contents::
    :depth: 3
 
@@ -103,13 +103,13 @@ Rationale:
   * ``px`` is a valid unit in pdftex since version 1.3.0 released on
     2005-02-04:
 
-     1px defaults to 1bp (or 72dpi), but can be changed with the \pdfpxdimen
-     primitive::
+      1px defaults to 1bp (or 72dpi), but can be changed with the
+      ``\pdfpxdimen`` primitive.::
 
-       \pdfpxdimen=1in % 1 dpi
-       \divide\pdfpxdimen by 96 % 96 dpi
+          \pdfpxdimen=1in % 1 dpi
+          \divide\pdfpxdimen by 96 % 96 dpi
 
-     --  http://www.tug.org/applications/pdftex/NEWS
+      --  http://www.tug.org/applications/pdftex/NEWS
 
   * Modern TeX distributions use pdftex also for dvi generation
     (i.e. ``latex`` actually calls ``pdftex`` with some options).
@@ -267,6 +267,16 @@ Backwards compatibility:
   Disable the creation of local ToCs (ignoring all special commands) by
   replacing ``\usepackage{minitoc} with ``\usepackage{mtcoff}``.
 
+Default font in admonitions and sidebar
+---------------------------------------
+
+New feature:
+  Use default font in admonitions and sidebar.
+
+Backward compatibility:
+  See the fallback definitions for admonitions_, `topic title`_ and
+  `sidebar`_.
+
 
 Shorter preamble
 ----------------
@@ -283,7 +293,7 @@ with version 0.5::
 
   \usepackage{shortvrb}
   \usepackage{amsmath}
-  
+
 Packages that are conditionally loaded
 ``````````````````````````````````````
 
@@ -296,36 +306,36 @@ Tables
 Standard package for tables across several pages::
 
   \usepackage{longtable}
-  
+
 Extra space between text in tables and the line above them
 ('array' is implicitely loaded by 'tabularx', see below)::
 
   \usepackage{array}
   \setlength{\extrarowheight}{2pt}
-  
+
 Table cells spanning multiple rows::
 
   \usepackage{multirow}
-  
+
 Docinfo
 ^^^^^^^
 
 One-page tables with auto-width columns::
 
   \usepackage{tabularx}
-  
+
 Images
 ^^^^^^
 Include graphic files::
 
   \usepackage{graphicx}
-  
+
 Problematic, Sidebar
 ^^^^^^^^^^^^^^^^^^^^
 Set text and/or background colour, coloured boxes with ``\colorbox``::
 
   \usepackage{color}
-  
+
 Floats for footnotes settings
 `````````````````````````````
 
@@ -347,8 +357,8 @@ Settings for the use of floats for footnotes are only included if
   \setcounter{topnumber}{50}
   \setcounter{bottomnumber}{50}
   % end floats for footnotes
-  
-  
+
+
 Special lengths, commands, and environments
 -------------------------------------------
 
@@ -358,12 +368,12 @@ Removed definitions
 admonition width
 ^^^^^^^^^^^^^^^^
 The ``admonitionwith`` lenght is replaced by the more powerful
-``\DUadmonition`` (see `New Definitions`_)::
+``\DUadmonition`` command (see `New Definitions`_)::
 
   \newlength{\admonitionwidth}
   \setlength{\admonitionwidth}{0.9\textwidth}
-  
-  
+
+
 Renamed definitions (now conditional)
 `````````````````````````````````````
 
@@ -386,10 +396,10 @@ docinfo width
 
   \newlength{\docinfowidth}
   \setlength{\docinfowidth}{0.9\textwidth}
-  
+
   \newlength{\DUdocinfowidth}
   \AtBeginDocument{\setlength{\DUdocinfowidth}{\docinfowidth}}
-  
+
 line block
 ^^^^^^^^^^
 ::
@@ -404,13 +414,13 @@ line block
      \leftmargin#1}
    \raggedright}
   {\end{list}}
-  
+
   \newlength{\DUlineblockindent}
   \AtBeginDocument{\setlength{\DUlineblockindent}{\lineblockindentation}}
   \newenvironment{DUlineblock}[1]
     {\begin{lineblock}{#1}}
     {\end{lineblock}}
-  
+
 local line width
 ^^^^^^^^^^^^^^^^
 
@@ -418,7 +428,7 @@ The ``\locallinewidth`` length for internal use in tables is replaced
 by ``\DUtablewidth``. It was never intended for customization::
 
   \newlength{\locallinewidth}
-  
+
 option lists
 ^^^^^^^^^^^^
 ::
@@ -433,39 +443,41 @@ option lists
      \addtolength{\leftmargin}{\labelsep}
      \renewcommand{\makelabel}{\optionlistlabel}}
   }{\end{list}}
-  
+
   \newcommand{\DUoptionlistlabel}{\optionlistlabel}
   \newenvironment{DUoptionlist}
     {\begin{optionlist}{3cm}}
     {\end{optionlist}}
-  
+
 rubric
 ^^^^^^
 ::
 
   \newcommand{\rubric}[1]{\subsection*{~\hfill {\it #1} \hfill ~}}
-  
+
   \newcommand{\DUrubric}[1]{\rubric{#1}}
-  
+
 title reference role
 ^^^^^^^^^^^^^^^^^^^^
 ::
 
   \newcommand{\titlereference}[1]{\textsl{#1}}
-  
+
   \newcommand{\DUroletitlereference}[1]{\titlereference{#1}}
-  
-  
+
+
 New definitions
 ```````````````
 
 New Feature:
   Enable customization of some more Docutils elements with special commands
 
-  :sidebar:    ``DUsidebar`` command
-  :transition: ``\DUtransition`` command
-  :admonition: ``DUadmonition`` environment (replacing ``\admonitionwidth``)
-  :field list: ``DUfieldlist`` environment
+  :admonition: ``DUadmonition`` environment (replacing ``\admonitionwidth``),
+  :field list: ``DUfieldlist`` environment,
+  :sidebar:    ``\DUsidebar``, ``\DUsidebartitle``, and ``DUsidebarsubtitle``
+               commands,
+  :topic:      ``\DUtopictitle`` command,
+  :transition: ``\DUtransition`` command.
 
 Backwards compatibility:
   In most cases, the default definition corresponds to the previously used
@@ -474,10 +486,35 @@ Backwards compatibility:
 
 admonitions
 ^^^^^^^^^^^
-Use the old variable for `admonition width`_::
+Use sans-serif fonts and the old variable for `admonition width`_::
 
   \newcommand{\DUadmonition}[1]{%
     \begin{center}
       \fbox{\parbox{\admonitionwidth}{\sffamily #1}}
     \end{center}
   }
+
+
+topic title
+^^^^^^^^^^^
+Title for "topics" (admonitions, sidebar).
+
+Larger font size::
+
+  \providecommand*{\DUtopictitle}[1]{\textbf{\large #1}\smallskip}
+
+sidebar
+^^^^^^^
+Use sans-serif fonts and a darker shade of grey::
+
+  \providecommand{\DUsidebar}[1]{%
+    \begin{center}
+      \sffamily
+      \fbox{\colorbox[gray]{0.80}{\parbox{0.9\textwidth}{#1}}}
+    \end{center}
+  }
+
+Bold sub-title::
+
+  \providecommand*{\DUsidebarsubtitle}[1]{\hspace*{\fill}\\
+    \textbf{#1}\smallskip}

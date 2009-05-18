@@ -323,7 +323,7 @@ class PreambleCmds(object):
 PreambleCmds.admonition = r"""% admonitions (specially marked "topics")
 \providecommand{\DUadmonition}[1]{%
   \begin{center}
-    \fbox{\parbox{0.9\textwidth}{\sffamily #1}}
+    \fbox{\parbox{0.9\textwidth}{#1}}
   \end{center}
 }"""
 
@@ -414,15 +414,22 @@ PreambleCmds.providelength = r"""% provide a length variable and set it
 }"""
 
 PreambleCmds.rubric = r"""% rubric (an informal heading):
-\providecommand*{\DUrubric}[1]{\subsection*{~\hfill {\it #1} \hfill ~}}"""
+\providecommand*{\DUrubric}[1]{%
+  \subsection*{\centering\textit{\textmd{#1}}}%
+}"""
 
 PreambleCmds.sidebar = r"""% sidebar (text outside the main text flow)
 \providecommand{\DUsidebar}[1]{%
   \begin{center}
-    \sffamily
     \fbox{\colorbox[gray]{0.80}{\parbox{0.9\textwidth}{#1}}}
   \end{center}
 }"""
+
+PreambleCmds.sidebartitle = r"""% sidebar title
+\providecommand*{\DUsidebartitle}{\DUtopictitle}"""
+
+PreambleCmds.sidebarsubtitle = r"""% sidebar sub-title
+\providecommand*{\DUsidebarsubtitle}[1]{\hspace*{\fill}\\\emph{#1}\smallskip}"""
 
 PreambleCmds.table = r"""\usepackage{longtable}
 \usepackage{array}
@@ -439,7 +446,7 @@ PreambleCmds.titlereference = r"""% title reference role:
 \providecommand*{\DUroletitlereference}[1]{\textsl{#1}}"""
 
 PreambleCmds.topictitle = r"""% title for "topics" (admonitions, sidebar)
-\providecommand*{\DUtopictitle}[1]{\textbf{\large #1}\smallskip}"""
+\providecommand*{\DUtopictitle}[1]{\textbf{#1}\smallskip}"""
 
 PreambleCmds.transition = r"""% transition ([fancy]break, anonymous section)
 \providecommand*{\DUtransition}{\hspace*{\fill}\hrulefill\hspace*{\fill}}"""
@@ -2135,8 +2142,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_subtitle(self, node):
         if isinstance(node.parent, nodes.sidebar):
-            self.body.append('~\\\\\n\\textbf{')
-            self.context.append('}\n\\smallskip\n')
+            self.fallbacks['sidebarsubtitle'] = PreambleCmds.sidebarsubtitle
+            self.body.append('\\DUsidebarsubtitle{')
+            self.context.append('}\n')
         elif isinstance(node.parent, nodes.document):
             self.title += '\\\\\n\\large{%s}\n' % self.encode(node.astext())
             raise nodes.SkipNode
@@ -2279,10 +2287,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 self.context.append('\\hfill ~}\n')
         # TODO: for admonition titles before the first section
         # either specify every possible node or ... ?
-        elif (isinstance(node.parent, nodes.sidebar) or
-              isinstance(node.parent, nodes.admonition)):
+        elif isinstance(node.parent, nodes.admonition):
             self.fallbacks['topictitle'] = PreambleCmds.topictitle
             self.body.append('\\DUtopictitle{')
+            self.context.append('}\n')
+        elif isinstance(node.parent, nodes.sidebar):
+            self.fallbacks['sidebartitle'] = PreambleCmds.sidebartitle
+            self.body.append('\\DUsidebartitle{')
             self.context.append('}\n')
         elif isinstance(node.parent, nodes.table):
             # caption must be written after column spec
