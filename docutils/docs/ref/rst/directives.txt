@@ -197,30 +197,24 @@ The following options are recognized:
     for visually impaired users.
 
 ``height`` : integer
-    The desired height of the image in pixels, used to reserve space
-    or scale the image vertically.  When the "scale" option is also
-    specified, they are combined.  For example, a height of 200 and a
-    scale of 50 is equivalent to a height of 100 with no scale.
-
-    New in Docutils 0.3.10: It is also possible to specify a `length
-    value`_.
+    The desired height of the image in pixels or as `length value`_.
+    Used to reserve space or scale the image vertically.  When the "scale"
+    option is also specified, they are combined.  For example, a height of
+    200 and a scale of 50 is equivalent to a height of 100 with no scale.
 
 ``width`` : integer
-    The width of the image in pixels, used to reserve space or scale
-    the image horizontally.  As with "height" above, when the "scale"
-    option is also specified, they are combined.
-
-    New in Docutils 0.3.10: It is also possible to specify a length_
-    or `percentage value`_ (which is relative to the current line
-    width).
+    The width of the image in pixels or as length_ or `percentage value`_
+    (relative to the current line width).
+    Used to reserve space or scale the image horizontally.  As with "height"
+    above, when the "scale" option is also specified, they are combined.
 
     .. _length:
     .. _length value: restructuredtext.html#length-units
     .. _percentage value: restructuredtext.html#percentage-units
 
 ``scale`` : integer
-    The uniform scaling factor of the image, a percentage (but no "%"
-    symbol is required or allowed).  "100" means full-size, and is
+    The uniform scaling factor of the image, an integer percentage
+    (the "%" symbol is optional).  "100" means full-size, and is
     equivalent to omitting a "scale" option.
 
     If no "height" or "width" options are specified, the `Python Imaging
@@ -288,12 +282,21 @@ legend.  To specify a legend without a caption, use an empty comment
 ("..") in place of the caption.
 
 The "figure" directive supports all of the options of the "image"
-directive (see `image options`_ above).  In addition, the following
-options are recognized:
+directive (see `image options`_ above). These options (except
+"align") are passed on to the contained image.
+
+``align`` : "left", "center", or "right"
+    The horizontal alignment of the figure, allowing the image to
+    float and have the text flow around it.  The specific behavior
+    depends upon the browser or rendering software used.
+
+In addition, the following options are recognized:
 
 ``figwidth`` : integer or "image"
-    The width of the figure in pixels, to limit the horizontal space
-    used.  A special value of "image" is allowed, in which case the
+    The width of the figure in pixels or as or as length_ or `percentage
+    value`_ (which is relative to the current line width). Limits the
+    horizontal space used by the figure.
+    A special value of "image" is allowed, in which case the
     included image's actual width is used (requires the `Python Imaging
     Library`_). If the image file is not found or the required software is
     unavailable, this option is ignored.
@@ -321,11 +324,6 @@ options are recognized:
 ``figclass`` : text
     Set a "classes" attribute value on the figure element.  See the
     class_ directive below.
-
-``align`` : "left", "center", or "right"
-    The horizontal alignment of the figure, allowing the image to
-    float and have the text flow around it.  The specific behavior
-    depends upon the browser or rendering software used.
 
 .. _Python Imaging Library: http://www.pythonware.com/products/pil/
 

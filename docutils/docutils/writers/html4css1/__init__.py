@@ -842,7 +842,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_figure(self, node):
         atts = {'class': 'figure'}
         if node.get('width'):
-            atts['style'] = 'width: %spx' % node['width']
+            atts['style'] = 'width: %s' % node['width']
         if node.get('align'):
             atts['class'] += " align-" + node['align']
         self.body.append(self.starttag(node, 'div', **atts))

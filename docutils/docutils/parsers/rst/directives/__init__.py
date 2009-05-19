@@ -204,6 +204,16 @@ def nonnegative_int(argument):
         raise ValueError('negative value; must be positive or zero')
     return value
 
+def percentage(argument):
+    """
+    Check for an integer percentage value with optional percent sign.
+    """
+    try:
+        argument = argument.rstrip(' %')
+    except AttributeError:
+        pass
+    return nonnegative_int(argument)
+
 length_units = ['em', 'ex', 'px', 'in', 'cm', 'mm', 'pt', 'pc']
 
 def get_measure(argument, units):
@@ -227,8 +237,26 @@ def get_measure(argument, units):
 def length_or_unitless(argument):
     return get_measure(argument, length_units + [''])
 
-def length_or_percentage_or_unitless(argument):
-    return get_measure(argument, length_units + ['%', ''])
+def length_or_percentage_or_unitless(argument, default=''):
+    """
+    Return normalized string of a length or percentage unit.
+
+    Add <default> if there is no unit. Raise ValueError if the argument is not
+    a positive measure of one of the valid CSS units (or without unit).
+
+    >>> length_or_percentage_or_unitless('3 pt')
+    '3pt'
+    >>> length_or_percentage_or_unitless('3%', 'em')
+    '3%'
+    >>> length_or_percentage_or_unitless('3')
+    '3'
+    >>> length_or_percentage_or_unitless('3', 'px')
+    '3px'
+    """
+    try:
+        return get_measure(argument, length_units + ['%'])
+    except ValueError:
+        return get_measure(argument, ['']) + default
 
 def class_option(argument):
     """
