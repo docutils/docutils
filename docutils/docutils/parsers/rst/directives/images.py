@@ -40,7 +40,7 @@ class Image(Directive):
     option_spec = {'alt': directives.unchanged,
                    'height': directives.length_or_unitless,
                    'width': directives.length_or_percentage_or_unitless,
-                   'scale': directives.nonnegative_int,
+                   'scale': directives.percentage,
                    'align': align,
                    'target': directives.unchanged_required,
                    'class': directives.class_option}
@@ -101,7 +101,7 @@ class Figure(Image):
         if argument.lower() == 'image':
             return 'image'
         else:
-            return directives.nonnegative_int(argument)
+            return directives.length_or_percentage_or_unitless(argument, 'px')
 
     option_spec = Image.option_spec.copy()
     option_spec['figwidth'] = figwidth_value
@@ -110,15 +110,9 @@ class Figure(Image):
     has_content = True
 
     def run(self):
-        figwidth = self.options.get('figwidth')
-        if figwidth:
-            del self.options['figwidth']
-        figclasses = self.options.get('figclass')
-        if figclasses:
-            del self.options['figclass']
-        align = self.options.get('align')
-        if align:
-            del self.options['align']
+        figwidth = self.options.pop('figwidth', None)
+        figclasses = self.options.pop('figclass', None)
+        align = self.options.pop('align', None)
         (image_node,) = Image.run(self)
         if isinstance(image_node, nodes.system_message):
             return [image_node]
