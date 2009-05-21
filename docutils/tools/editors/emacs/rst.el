@@ -1265,11 +1265,11 @@ of the right hand fingers and the binding is unused in `text-mode'."
               ;; Advance one level down.
               (setq cur
                     (if prev
-                        (if (not reverse-direction)
-                            (or (funcall (if rst-new-decoration-down 'cadr 'car)
-					 (rst-get-decoration-match hier prev))
-                                (rst-suggest-new-decoration hier prev))
-                          prev)
+                        (if (or (and rst-new-decoration-down reverse-direction)
+				(and (not rst-new-decoration-down) (not reverse-direction)))
+			    prev
+                            (or (cadr (rst-get-decoration-match hier prev))
+                                (rst-suggest-new-decoration hier prev)))
                       (copy-list (car rst-preferred-decorations))
                       ))
 
