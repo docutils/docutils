@@ -1,5 +1,5 @@
-"""
-PDF renderer.
+"""\
+PDF renderer for the aafigure package.
 
 (C) 2008 Chris Liechti <cliechti@gmx.net>
 """
@@ -12,7 +12,7 @@ from reportlab.graphics import renderPDF
 
 class PDFOutputVisitor:
     """Render a list of shapes as PDF vector image."""
-    
+
     def __init__(self, file_like, scale = 1, line_width=1,
                  foreground=(0,0,0), background=(255,255,255), fillcolor=(0,0,0)
         ):
@@ -24,7 +24,7 @@ class PDFOutputVisitor:
         self.fillcolor = fillcolor
 
     def _num(self, number):
-        """helper to format numbers with scale for pdf output"""
+        """helper to format numbers with scale for PDF output"""
         return number*self.scale
 
     def _color(self, color):
@@ -41,7 +41,7 @@ class PDFOutputVisitor:
         self.drawing = Drawing(self._num(self.width), self._num(self.height))
         self.visit_shapes(aa_image.shapes)
         renderPDF.drawToFile(self.drawing, self.file_like, '')
-  
+
     def visit_shapes(self, shapes):
         for shape in shapes:
             shape_name = shape.__class__.__name__.lower()
@@ -57,24 +57,24 @@ class PDFOutputVisitor:
         """Draw a line, coordinates given as four decimal numbers"""
         self.drawing.add(Line(
             self._num(x1),  self._num(self.height-y1),
-            self._num(x2),  self._num(self.height-y2), 
+            self._num(x2),  self._num(self.height-y2),
             strokeColor=self._color(self.foreground),
             strokeWidth=self.line_width*(1+0.5*bool(thick))
         ))
 
     def _rectangle(self, x1, y1, x2, y2, style=''):
-        """Draw a rectange, coordinates given as four decimal numbers."""
+        """Draw a rectangle, coordinates given as four decimal numbers."""
         if x1 > x2: x1, x2 = x2, x1
         if y1 > y2: y1, y2 = y2, y1
         self.drawing.add(Rect(
             self._num(x1),  self._num(self.height-y2),
-            self._num(x2-x1),  self._num(y2-y1), 
-            fillColor=self._color(self.fillcolor), 
+            self._num(x2-x1),  self._num(y2-y1),
+            fillColor=self._color(self.fillcolor),
             strokeWidth=self.line_width
         ))
 
     # - - - - - - visitor function for the different shape types - - - - - - -
-    
+
     def visit_point(self, point):
         self.drawing.add(Circle(
             self._num(point.x),  self._num(self.height-point.y),
@@ -114,7 +114,7 @@ class PDFOutputVisitor:
         ))
 
     def visit_group(self, group):
-        #XXX could add a group to the PDF file
+        # XXX could add a group to the PDF file
         self.visit_shapes(group.shapes)
 
 
