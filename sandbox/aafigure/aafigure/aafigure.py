@@ -874,7 +874,8 @@ if __name__ == '__main__':
 
     for filename in args:
         aaimg = AsciiArtImage(file(filename).read(), options.aspect)
-        print aaimg
+        if options.debug:
+            print aaimg
         aaimg.recognize()
 
         output_name = filename + '.' + options.type
