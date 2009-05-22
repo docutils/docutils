@@ -873,7 +873,7 @@ if __name__ == '__main__':
     #~ print aav
 
     for filename in args:
-        aaimg = AsciiArtImage(file(filename).read())
+        aaimg = AsciiArtImage(file(filename).read(), options.aspect)
         print aaimg
         aaimg.recognize()
 
