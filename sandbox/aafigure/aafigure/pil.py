@@ -1,5 +1,5 @@
-"""
-Bitmap renderer with the help of the Python Imaging Library.
+"""\
+Bitmap renderer for the aafigure package, using the Python Imaging Library.
 
 (C) 2006 Chris Liechti <cliechti@gmx.net>
 """

@@ -1,4 +1,4 @@
-"""
+"""\
 Simple ASCII output of the rendered image.
 Think of it as a low resolution black and white image.
 
@@ -11,14 +11,14 @@ class AsciiOutputVisitor:
     """Render a list of shapes as ASCII art.
        Scaled, think of it as a low resolution black and white image
     """
-    
+
     def __init__(self, scale=3):
         self.image = {}
         self.scale = scale
-    
+
     def visit_image(self, aa_image):
         self.visit_shapes(aa_image.shapes)
-    
+
     def visit_shapes(self, shapes):
         for shape in shapes:
             shape_name = shape.__class__.__name__.lower()
@@ -69,7 +69,7 @@ class AsciiOutputVisitor:
         for y in range(y1, y2):
             for x in range(x1, x2):
                 self.image[x,y] = '#'
-        
+
     def visit_label(self, label):
         x, y = label.position.x*self.scale, label.position.y*self.scale
         for character in label.text:
