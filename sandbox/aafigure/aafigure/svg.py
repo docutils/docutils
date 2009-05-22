@@ -4,6 +4,7 @@ SVG renderer.
 (C) 2006 Chris Liechti <cliechti@gmx.net>
 """
 
+import sys
 from xml.sax.saxutils import escape
 
 class SVGOutputVisitor:
@@ -77,7 +78,8 @@ class SVGOutputVisitor:
             if hasattr(self, visitor_name):
                 getattr(self, visitor_name)(shape)
             else:
-                print "WARNING: don't know how to handle shape %r" % shape
+                sys.stderr.write("WARNING: don't know how to handle shape %r\n"
+                    % shape)
 
     # - - - - - - SVG drawing helpers - - - - - - -
     def _line(self, x1, y1, x2, y2, thick):

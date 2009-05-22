@@ -4,6 +4,7 @@ PDF renderer.
 (C) 2008 Chris Liechti <cliechti@gmx.net>
 """
 
+import sys
 import reportlab
 from reportlab.lib import colors
 from reportlab.graphics.shapes import *
@@ -48,7 +49,8 @@ class PDFOutputVisitor:
             if hasattr(self, visitor_name):
                 getattr(self, visitor_name)(shape)
             else:
-                print "WARNING: don't know how to handle shape %r" % shape
+                sys.stderr.write("WARNING: don't know how to handle shape %r\n"
+                    % shape)
 
     # - - - - - - PDF drawing helpers - - - - - - -
     def _line(self, x1, y1, x2, y2, thick):
