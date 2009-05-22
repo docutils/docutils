@@ -817,6 +817,9 @@ if __name__ == '__main__':
     parser.add_option("-D", "--debug", dest="debug", action="store_true",
         help="enable debug outputs", default=False)
 
+    parser.add_option("-T", "--textual", dest="textual", action="store_true",
+        help="disable horizontal fill detection", default=False)
+
     parser.add_option("-s", "--scale", dest="scale", action="store", type='float',
         help="set scale", default=1)
 
@@ -873,7 +876,8 @@ if __name__ == '__main__':
     #~ print aav
 
     for filename in args:
-        aaimg = AsciiArtImage(file(filename).read(), options.aspect)
+        aaimg = AsciiArtImage(file(filename).read(), options.aspect,
+            options.textual)
         if options.debug:
             print aaimg
         aaimg.recognize()
