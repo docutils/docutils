@@ -26,7 +26,8 @@ class AsciiOutputVisitor:
             if hasattr(self, visitor_name):
                 getattr(self, visitor_name)(shape)
             else:
-                print "WARNING: don't know how to handle shape %r" % shape
+                sys.stderr.write("WARNING: don't know how to handle shape %r\n"
+                    % shape)
 
     def visit_group(self, group):
         self.visit_shapes(group.shapes)

@@ -791,6 +791,7 @@ class AsciiArtImage:
 
 
 if __name__ == '__main__':
+    import sys
     import pprint
     import svg
     import aa
@@ -879,7 +880,7 @@ if __name__ == '__main__':
         aaimg = AsciiArtImage(file(filename).read(), options.aspect,
             options.textual)
         if options.debug:
-            print aaimg
+            sys.stderr.write(str(aaimg) + '\n')
         aaimg.recognize()
 
         output_name = filename + '.' + options.type

@@ -4,7 +4,7 @@ Bitmap renderer with the help of the Python Imaging Library.
 (C) 2006 Chris Liechti <cliechti@gmx.net>
 """
 
-import Image, ImageDraw, ImageFont
+import sys, Image, ImageDraw, ImageFont
 
 class PILOutputVisitor:
     """Render a list of shapes as ASCII art.
@@ -56,7 +56,8 @@ class PILOutputVisitor:
             if hasattr(self, visitor_name):
                 getattr(self, visitor_name)(shape)
             else:
-                print "WARNING: don't know how to handle shape %r" % shape
+                sys.stderr.write("WARNING: don't know how to handle shape %r\n"
+                    % shape)
 
     def visit_group(self, group):
         self.visit_shapes(group.shapes)
