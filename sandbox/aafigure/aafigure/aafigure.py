@@ -809,9 +809,12 @@ if __name__ == '__main__':
         return r,g,b
 
     parser = optparse.OptionParser(
-        usage="%prog [options] file1 [file2 ...]"
+        usage="%prog [options] [file]"
     )
-    
+
+    parser.add_option("-o", "--output", dest="output", metavar="FILE",
+        help="write output to FILE")
+
     parser.add_option("-t", "--type", dest="type",
         help="filetype: png, jpg, svg", default='svg')
 
@@ -841,9 +844,13 @@ if __name__ == '__main__':
 
     (options, args) = parser.parse_args()
 
-    if len(args) < 1:
-        parser.error("filename required")
+    if len(args) > 1:
+        parser.error("too many arguments")
 
+    if args:
+        input = file(args[0])
+    else:
+        input = sys.stdin
 
     #~ def render(text):
         #~ """helper function for tests. scan the given image and create svg output"""
@@ -876,48 +883,49 @@ if __name__ == '__main__':
     #~ aav.visit(aaimg)
     #~ print aav
 
-    for filename in args:
-        aaimg = AsciiArtImage(file(filename).read(), options.aspect,
-            options.textual)
-        if options.debug:
-            sys.stderr.write(str(aaimg) + '\n')
-        aaimg.recognize()
+    aaimg = AsciiArtImage(input.read(), options.aspect, options.textual)
+    if options.debug:
+        sys.stderr.write(str(aaimg) + '\n')
+    aaimg.recognize()
 
-        output_name = filename + '.' + options.type
-        if options.type.lower() == 'svg':
-            pilout = svg.SVGOutputVisitor(
-                file(output_name, 'w'),
-                scale = options.scale*7,
-                line_width = options.linewidth,
-                #~ debug = options.debug,
-                foreground = decode_color(options.foreground),
-                background = decode_color(options.background),
-                fillcolor = decode_color(options.fill),
-            )
-            pilout.visit_image(aaimg)
-        elif options.type.lower() == 'pdf':
-            import pdf
-            doc = pdf.PDFOutputVisitor(
-                file(output_name, 'wb'),
-                scale = options.scale,
-                line_width = options.linewidth,
-                #~ debug = options.debug,
-                foreground = decode_color(options.foreground),
-                background = decode_color(options.background),
-                fillcolor = decode_color(options.fill),
-            )
-            doc.visit_image(aaimg)
-        else:
-            import pil
-            pilout = pil.PILOutputVisitor(
-                file(output_name, 'wb'),
-                scale = options.scale*7,
-                line_width = options.linewidth,
-                debug = options.debug,
-                file_type = options.type,
-                foreground = options.foreground,
-                background = options.background,
-                fillcolor = options.fill,
-            )
-            pilout.visit_image(aaimg)
+    if options.output:
+        output = file(options.output, 'wb')
+    else:
+        output = sys.stdout
+    if options.type.lower() == 'svg':
+        pilout = svg.SVGOutputVisitor(
+            output,
+            scale = options.scale*7,
+            line_width = options.linewidth,
+            #~ debug = options.debug,
+            foreground = decode_color(options.foreground),
+            background = decode_color(options.background),
+            fillcolor = decode_color(options.fill),
+        )
+        pilout.visit_image(aaimg)
+    elif options.type.lower() == 'pdf':
+        import pdf
+        doc = pdf.PDFOutputVisitor(
+            output,
+            scale = options.scale,
+            line_width = options.linewidth,
+            #~ debug = options.debug,
+            foreground = decode_color(options.foreground),
+            background = decode_color(options.background),
+            fillcolor = decode_color(options.fill),
+        )
+        doc.visit_image(aaimg)
+    else:
+        import pil
+        pilout = pil.PILOutputVisitor(
+            output,
+            scale = options.scale*7,
+            line_width = options.linewidth,
+            debug = options.debug,
+            file_type = options.type,
+            foreground = options.foreground,
+            background = options.background,
+            fillcolor = options.fill,
+        )
+        pilout.visit_image(aaimg)
 
