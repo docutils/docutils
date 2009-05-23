@@ -78,7 +78,7 @@ class AsciiOutputVisitor:
 
     def __str__(self):
         """return a cropped image"""
-        #find out size
+        # find out size
         min_x = min_y = sys.maxint
         max_x = max_y = -sys.maxint
         for x,y in self.image:
@@ -86,7 +86,7 @@ class AsciiOutputVisitor:
             max_x = max(max_x, x)
             min_y = min(min_y, y)
             max_y = max(max_y, y)
-        #render image to lines of text, fill unused fields with a dot
+        # render image to lines of text, fill unused fields with a dot
         result = []
         for y in range(min_y, max_y+1):
             line = []

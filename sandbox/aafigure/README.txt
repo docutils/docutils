@@ -111,7 +111,7 @@ The ``aafigure`` directive has the following options:
 
 - ``:aspect: <float>``  change aspect ratio. Effectively it is the width of the
   image that is multiplied by this factor. The default setting ``1`` is useful
-  when shapes must have the same look when drawn horizontaly or verticaly.
+  when shapes must have the same look when drawn horizontally or vertically.
   However, ``:aspect: 0.5`` looks more like the original ASCII and even smaller
   factors may be useful for timing diagrams and such. But there is a risk that
   text is cropped or is draw over an object beside it.
@@ -122,9 +122,9 @@ The ``aafigure`` directive has the following options:
 
 Lines
 -----
-The ``-`` and ``|`` are normaly used for lines. ``_`` can also be used. It is a
+The ``-`` and ``|`` are normally used for lines. ``_`` can also be used. It is a
 slightly longer line than the ``-`` and it's is drawn a bit lower. ``=`` gives
-a thicker line. The later two line types can only be drawn horizontaly.
+a thicker line. The later two line types can only be drawn horizontally.
 ::
 
   ---- |         ___ 
@@ -182,9 +182,9 @@ Arrow styles are::
 
 Boxes
 -----
-Boxes are automaticaly draw when the edges are made with ``+``, filled
+Boxes are automatically draw when the edges are made with ``+``, filled
 boxes are made with ``X`` (must be at least two units high or wide).
-It is also possibe to make rounded edges in two ways::
+It is also possible to make rounded edges in two ways::
 
     +-----+   XXX  /--\     --   |
     |     |   XXX  |  |    /    /
@@ -226,7 +226,7 @@ Complex shapes can be filled:
     CCCCC     C         dededede
      C  CCCC  CC        dededede
      CC    CCCCC        dededede
-                          
+
 Text
 ----
 The images may contain text too. There are different styles to enter text:
@@ -245,7 +245,7 @@ Bby default are repeated characters detected as fill::
 
 *quoted*
 
-Text between quotes has piority over any graphical meaning::
+Text between quotes has priority over any graphical meaning::
 
     "Hello World"  dd d
                       d
@@ -262,7 +262,7 @@ also treats ``-``, ``|`` etc as text.
 *textual option*
 
 The ``:textual:`` option disables horizontal fill detection. Fills are only
-detected when they are verticaly at least 2 charcacters high::
+detected when they are vertically at least 2 characters high::
 
     Hello World  dd d
                     d
@@ -292,25 +292,25 @@ TODO
 
 - Symbol detection: scan for predefined shapes in the ASCII image
   and output them as symbol from a library
-  
+
 - Symbol libraries for UML, flowchart, electronic schematics, ...
 
 - The way the image is embedded is a hack (inserting a tag trough a raw node...)
 
 - Search for ways to bring in color. Ideas:
-    
+
     - have an :option: to set color tags. Shapes that touch such a tag
       inhertit it's color. The tag would be visible in the ASCII source tough::
-        
+
         .. aafigure::
             :colortag: 1:red, 2:blue
-            
+
             1--->  --->2
-        
+
     - ``:color: x,y,color`` but counting coordinates is no so fun
-    
+
     drawback: both are complex to implement, searching for shapes that belong
-    together. it's also not always wanted that e.g. when a line touches a
+    together. It's also not always wanted that e.g. when a line touches a
     box, both have the same color
 
 - aafigure probably needs arguments like ``font-family``, ...
@@ -374,7 +374,7 @@ Flow chart
 ----------
 .. aafigure::
     :textual:
-    
+
         /---------\
         |  Start  |
         \----+----/
@@ -404,7 +404,7 @@ Flow chart
 
 UML
 ---
-No not realy, yet. But you get the idea.
+No not really, yet. But you get the idea.
 
 .. aafigure::
     :scale: 0.8
@@ -432,7 +432,7 @@ No not realy, yet. But you get the idea.
 
 .. aafigure::
     :scale: 0.8
-    
+
     +---------+         +---------+     +---------+
     |  Shape  |         |  Line   |     |  Point  |
     +---------+         +---------+   2 +---------+
@@ -494,7 +494,7 @@ It would be cool if it could display simple schematics.
 
 - Diodes OK
 
-- Caps not optimal. Too far appart in image, not very good recognisable in
+- Caps not optimal. Too far apart in image, not very good recognisable in
   ASCII. Space cannot be removed as the two ``+`` signs would be connected
   otherwise. The schematic below uses an other style.
 
@@ -506,7 +506,7 @@ Here is a complete circuit with different parts:
     :fill: #fff
     :scale: 0.8
     :textual:
-    
+
                          Q1  _  8MHz
                            || ||
                       +----+| |+----+
@@ -568,18 +568,18 @@ Here is one with descriptions:
         ______      _____       _..._       _____
     SCL       |    |     |     |     |     |
               |____|     |_____|     |_____|
-                                            
+
               ^    ^     ^     ^     ^     ^
-              |    |     |     |     |     |  
+              |    |     |     |     |     |
               | 'sh_in'  |  'sh_in'  |  'sh_in
-           'sh_out'   'sh_out'    'sh_out'  
-                                            
+           'sh_out'   'sh_out'    'sh_out'
+
                         SCL edge
 
 Statistical diagrams
 --------------------
 
-Benfords_ distribution of the sizes of files on my harddrive:
+Benfords_ distribution of the sizes of files on my hard drive:
 
 .. _Benfords: http://en.wikipedia.org/wiki/Benfords_law
 

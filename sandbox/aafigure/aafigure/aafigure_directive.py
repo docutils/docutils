@@ -29,7 +29,7 @@ def decode_color(color_string):
         else:
             raise ValueError('not a valid color: %r' % color_string)
     # XXX add a list of named colors
-    return r,g,b
+    return r, g, b
 
 
 def AAFigureDirective(name, arguments, options, content, lineno,
@@ -46,6 +46,7 @@ def AAFigureDirective(name, arguments, options, content, lineno,
     if not options.has_key('line_width'): options['line_width'] = 2
     if not options.has_key('format'): options['format'] = DEFAULT_FORMAT
     if not options.has_key('aspect'): options['aspect'] = 1
+    if not options.has_key('proportional'): options['proportional'] = False
     if not options.has_key('name'):
         options['name'] = 'aafigure-%i' % aafigure_counter
         aafigure_counter += 1
@@ -67,7 +68,8 @@ def AAFigureDirective(name, arguments, options, content, lineno,
             line_width = options['line_width'],
             foreground = decode_color(options['foreground']),
             background = decode_color(options['background']),
-            fillcolor = decode_color(options['fill'])
+            fillcolor = decode_color(options['fill']),
+            proportional = options['proportional'],
         )
         svgout.visit_image(aaimg)
         #~ svgout.visit(aaimg, xml_header = False)
@@ -89,6 +91,7 @@ def AAFigureDirective(name, arguments, options, content, lineno,
             foreground = decode_color(options['foreground']),
             background = decode_color(options['background']),
             fillcolor = decode_color(options['fill']),
+            proportional = options['proportional'],
         )
         doc.visit_image(aaimg)
         # Return a link.
@@ -108,6 +111,7 @@ def AAFigureDirective(name, arguments, options, content, lineno,
             foreground = decode_color(options['foreground']),
             background = decode_color(options['background']),
             fillcolor = decode_color(options['fill']),
+            proportional = options['proportional'],
         )
         try:
             pilout.visit_image(aaimg)
@@ -143,6 +147,7 @@ AAFigureDirective.options = {
     'fill': str,
     'aspect': float,
     'textual': flag,
+    'proportional': flag,
 }
 
 def register():
