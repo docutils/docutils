@@ -65,7 +65,7 @@ class Line:
 
 
 class Rectangle:
-    """Rectangle with to edge coordiantes."""
+    """Rectangle with two edge coordinates."""
     def __init__(self, p1, p2):
         self.p1 = point(p1)
         self.p2 = point(p2)
@@ -74,7 +74,7 @@ class Rectangle:
 
 
 class Circle:
-    """Rectangle with to edge coordiantes."""
+    """Circle with center coordinates and radius."""
     def __init__(self, center, radius):
         self.center = point(center)
         self.radius = radius
@@ -84,7 +84,7 @@ class Circle:
 
 
 class Label:
-    """A label at a position"""
+    """A text label at a position"""
     def __init__(self, position, text):
         self.position = position
         self.text = text
@@ -902,6 +902,13 @@ if __name__ == '__main__':
         default = 2
     )
 
+    parser.add_option("--proportional",
+        dest = "proportional",
+        action = "store_true",
+        help = "use proportional font instead of fixed width",
+        default = False
+    )
+
     parser.add_option("-f", "--foreground",
         dest = "foreground",
         action = "store",
@@ -982,6 +989,7 @@ if __name__ == '__main__':
             foreground = decode_color(options.foreground),
             background = decode_color(options.background),
             fillcolor = decode_color(options.fill),
+            proportional = options.proportional,
         )
         pilout.visit_image(aaimg)
     elif options.type.lower() == 'pdf':
@@ -994,8 +1002,16 @@ if __name__ == '__main__':
             foreground = decode_color(options.foreground),
             background = decode_color(options.background),
             fillcolor = decode_color(options.fill),
+            proportional = options.proportional,
         )
         doc.visit_image(aaimg)
+    elif options.type.lower() == 'ascii':
+        import aa
+        out = aa.AsciiOutputVisitor(
+            scale = options.scale,
+        )
+        out.visit_image(aaimg)
+        output.write(str(out))
     else:
         import pil
         pilout = pil.PILOutputVisitor(
@@ -1007,6 +1023,7 @@ if __name__ == '__main__':
             foreground = options.foreground,
             background = options.background,
             fillcolor = options.fill,
+            proportional = options.proportional,
         )
         pilout.visit_image(aaimg)
 

@@ -10,8 +10,9 @@ from xml.sax.saxutils import escape
 class SVGOutputVisitor:
     """Render a list of shapes as SVG image."""
 
-    def __init__(self, file_like, scale = 1, line_width=1, unit='',
-                 foreground=(0,0,0), background=(255,255,255), fillcolor=(0,0,0)
+    def __init__(self, file_like, scale = 1, line_width = 1, unit = '',
+                 foreground = (0 ,0, 0), background = (255, 255, 255), fillcolor = (0, 0, 0),
+                 proportional = False
         ):
         self.file_like = file_like
         self.scale = scale
@@ -21,6 +22,10 @@ class SVGOutputVisitor:
         self.background = background
         self.fillcolor = fillcolor
         self.indent = ''
+        if proportional:
+            self.font = 'sans-serif'
+        else:
+            self.font = 'monospace'
 
     def _num(self, number):
         """helper to format numbers with scale and unit for svg output"""
@@ -95,7 +100,7 @@ class SVGOutputVisitor:
             self._unit(self.line_width*(1+bool(thick)))))
 
     def _rectangle(self, x1, y1, x2, y2, style=''):
-        """Draw a rectange, coordinates given as four decimal numbers.
+        """Draw a rectangle, coordinates given as four decimal numbers.
            ``style`` is inserted in the SVG. It could be e.g. "fill:yellow"
         """
         if x1 > x2: x1, x2 = x2, x1
@@ -150,12 +155,13 @@ class SVGOutputVisitor:
     def visit_label(self, label):
         #  font-weight="bold"   style="stroke:%s"
         self.file_like.write("""\
-%s<text x="%s" y="%s" font-family="Arial,sans-serif" font-size="%s" style="fill:%s" >
+%s<text x="%s" y="%s" font-family="%s" font-size="%s" style="fill:%s" >
   %s
 %s</text>
 """ % (
         self.indent,
-        self._num(label.position.x), self._num(label.position.y-0.3), #XXX static offset not good in all situations
+        self._num(label.position.x), self._num(label.position.y-0.3), # XXX static offset not good in all situations
+        self.font,
         self._num(self.aa_image.nominal_size),
         self._color(self.foreground),
         escape(label.text.encode('utf8')),

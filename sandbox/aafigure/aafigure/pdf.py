@@ -13,8 +13,9 @@ from reportlab.graphics import renderPDF
 class PDFOutputVisitor:
     """Render a list of shapes as PDF vector image."""
 
-    def __init__(self, file_like, scale = 1, line_width=1,
-                 foreground=(0,0,0), background=(255,255,255), fillcolor=(0,0,0)
+    def __init__(self, file_like, scale = 1, line_width = 1,
+                 foreground=  (0, 0, 0), background = (255, 255, 255), fillcolor = (0, 0, 0),
+                 proportional = False
         ):
         self.file_like = file_like
         self.scale = 3.33*scale
@@ -22,6 +23,10 @@ class PDFOutputVisitor:
         self.foreground = foreground
         self.background = background
         self.fillcolor = fillcolor
+        if proportional:
+            self.font = 'Helvetica'
+        else:
+            self.font = 'Courier'
 
     def _num(self, number):
         """helper to format numbers with scale for PDF output"""
@@ -35,7 +40,7 @@ class PDFOutputVisitor:
         """Process the given ASCIIArtFigure and output the shapes in
            the PDF file
         """
-        self.aa_image = aa_image        #save for later XXX not optimal to do it here
+        self.aa_image = aa_image        # save for later XXX not optimal to do it here
         self.width = (aa_image.width)*aa_image.nominal_size*aa_image.aspect_ratio
         self.height = (aa_image.height)*aa_image.nominal_size
         self.drawing = Drawing(self._num(self.width), self._num(self.height))
@@ -109,7 +114,7 @@ class PDFOutputVisitor:
             self._num(label.position.x), self._num(self.height-label.position.y),
             label.text,
             fontSize=self._num(self.aa_image.nominal_size),
-            fontName='Helvetica',
+            fontName=self.font,
             fillColor=self._color(self.foreground),
         ))
 
