@@ -2905,6 +2905,11 @@ http://www.htmlhelp.com/reference/css/units.html#length.)
 
 The following are all valid length values: "1.5em", "20 mm", ".5in".
 
+Length values without unit are completed with a writer-dependent
+default (e.g. px with `html4css1`, pt with `latex2e`). See the writer
+specific documentation in the `user doc`__ for details.
+
+__ ../../user/
 
 Percentage Units
 ----------------
