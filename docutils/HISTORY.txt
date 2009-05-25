@@ -36,6 +36,11 @@ Changes Since 0.5
   - Apply [ 1905741 ] polish-translation
   - Apply [ 1878977 ] make_id(): deaccent characters.
 
+* reStructuredText:
+
+  - Allow length units for all length specifications.
+  - Allow percent sign in "scale" argument of "figure" and "image" directives.
+
 * docutils/nodes.py:
 
   - Added ``Element.__contains__`` method, for the in-operator.

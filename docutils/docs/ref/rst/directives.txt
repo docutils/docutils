@@ -183,9 +183,9 @@ Optionally, the image link block may contain a flat field list, the
 _`image options`.  For example::
 
     .. image:: picture.jpeg
-       :height: 100
-       :width: 200
-       :scale: 50
+       :height: 100px
+       :width: 200 px
+       :scale: 50 %
        :alt: alternate text
        :align: right
 
@@ -196,26 +196,23 @@ The following options are recognized:
     applications that cannot display images, or spoken by applications
     for visually impaired users.
 
-``height`` : integer
-    The desired height of the image in pixels or as `length value`_.
+``height`` : `length`_
+    The desired height of the image.
     Used to reserve space or scale the image vertically.  When the "scale"
     option is also specified, they are combined.  For example, a height of
-    200 and a scale of 50 is equivalent to a height of 100 with no scale.
+    200px and a scale of 50 is equivalent to a height of 100px with no scale.
 
-``width`` : integer
-    The width of the image in pixels or as length_ or `percentage value`_
-    (relative to the current line width).
+``width`` : `length`_ or `percentage`_ of the current line width
+    The width of the image.
     Used to reserve space or scale the image horizontally.  As with "height"
     above, when the "scale" option is also specified, they are combined.
 
-    .. _length:
-    .. _length value: restructuredtext.html#length-units
-    .. _percentage value: restructuredtext.html#percentage-units
+    .. _length: restructuredtext.html#length-units
+    .. _percentage: restructuredtext.html#percentage-units
 
-``scale`` : integer
-    The uniform scaling factor of the image, an integer percentage
-    (the "%" symbol is optional).  "100" means full-size, and is
-    equivalent to omitting a "scale" option.
+``scale`` : integer percentage (the "%" symbol is optional)
+    The uniform scaling factor of the image.  The default is "100 %", i.e.
+    no scaling.
 
     If no "height" or "width" options are specified, the `Python Imaging
     Library`_ (PIL) may be used to determine them, if it is installed and
@@ -258,7 +255,7 @@ position if this helps the page layout.
 ::
 
     .. figure:: picture.png
-       :scale: 50
+       :scale: 50 %
        :alt: map to buried treasure
 
        This is the caption of the figure (a simple paragraph).
@@ -292,10 +289,9 @@ directive (see `image options`_ above). These options (except
 
 In addition, the following options are recognized:
 
-``figwidth`` : integer or "image"
-    The width of the figure in pixels or as or as length_ or `percentage
-    value`_ (which is relative to the current line width). Limits the
-    horizontal space used by the figure.
+``figwidth`` : "image", length_, or percentage_ of current line width
+    The width of the figure.
+    Limits the horizontal space used by the figure.
     A special value of "image" is allowed, in which case the
     included image's actual width is used (requires the `Python Imaging
     Library`_). If the image file is not found or the required software is
