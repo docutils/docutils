@@ -10,7 +10,6 @@
 
 .. contents::
 
-
 Introduction
 ============
 
@@ -68,6 +67,119 @@ all programs the required number of times and delete "spurious" files.
 .. _Rubber: http://iml.univ-mrs.fr/~beffara/soft/rubber/
 
 
+Specialities of the LaTeX format
+================================
+
+Length units
+------------
+
+LaTeX knows about all the `length units`_ supported by Docutils plus the
+following less common units:
+
+:pt: typewriter's (or LaTeX) point (1 pt = 1/72.27 in)
+:dd: didôt (1 dd = 1238/1157 pt)
+:cc: cîcero (1 cc = 12 dd)
+:sp: scaled point (1sp = 1/65536pt)
+
+.. attention:: Different definitions of the unit point!
+
+   While the unit symbol **pt** in Docutils and CSS denotes the
+   "Postscript point" or "DTP point" (1pt=1/72in), the same unit is
+   called "big point" and written **bp** in LaTeX.
+
+   The `LaTeX point` (**pt**) is unknown to Docutils and 0.3 % smaller:
+
+       1 bp  = 1/72 in > 1 pt = 1/72.25 in
+
+   .. All lengths in the document with unit ``pt`` will be given the
+      unit ``bp`` in the LaTeX source by the LaTeX writer.
+
+   In `raw LaTeX`_ and `custom style sheets`_, the "DTP point" must be
+   specified as **bp**, while **pt** is interpreted as "LaTeX point".
+
+.. _length units: ../ref/rst/restructuredtext.html#length-units
+
+For more on lengths in LaTeX, see e.g.
+http://www.giss.nasa.gov/tools/latex/ltx-86.html.
+
+default length unit
+```````````````````
+
+The default length unit (added to length specifications without unit) is the
+"DTP point" ("bp" in LaTeX notification).
+
+size of a pixel (length unit ``px``)
+````````````````````````````````````
+
+The length unit ``px`` is a "relative length" whose "real" value depends on
+the "resolution" of the output device (usually specified in "dots per inch"
+(DPI):
+
+  :CSS:      px: pixels, relative to the viewing device:
+
+	     Pixel units are relative to the resolution of the viewing
+	     device, i.e., most often a computer display. If the pixel
+	     density of the output device is very different from that of a
+	     typical computer display, the user agent should rescale pixel
+	     values. It is recommended that the pixel unit refer to the
+	     whole number of device pixels that best approximates the
+	     reference pixel. It is recommended that the reference pixel be
+	     the visual angle of one pixel on a device with a pixel density
+	     of 96dpi and a distance from the reader of an arm's length. For
+	     a nominal arm's length of 28 inches, the visual angle is
+	     therefore about 0.0213 degrees.
+
+             For reading at arm's length, 1px thus corresponds to about 0.26
+	     mm (1/96 inch). When printed on a laser printer, meant for
+	     reading at a little less than arm's length (55 cm, 21 inches),
+	     1px is about 0.20 mm. On a 300 dots-per-inch (dpi) printer,
+	     that may be rounded up to 3 dots (0.25 mm); on a 600 dpi
+	     printer, it can be rounded to 5 dots.
+
+	     -- http://www.w3.org/TR/CSS2/syndata.html#length-units
+
+  :browsers: use the actual screen resolution (or what they think it is)
+             (usually between 72 DPI and 100 DPI).
+
+  :pdftex:   Generally, the resolution of the output device (printer,
+	     screen (for PDF-viewer) is not known.
+
+  	     Defaults to a resolution of 72 DPI, i.e. 1 px = 1/72 in.
+
+The latex writer keeps length values with unit px as relative, the
+"resolution" can be configured in a stylesheet or
+
+Example:
+  Set a resolution of 92 DPI::
+
+       \pdfpxdimen=1in % 1 DPI
+       \divide\pdfpxdimen by 92 % 92 DPI
+
+
+
+Docutils special LaTeX macros
+-----------------------------
+
+Some Docutils objects have no LaTeX counterpart, they will be typeset using
+a Docutils specific LaTeX macro. The specific commands, environments, and
+lengths allow layout changes from the `style sheet`_ or with `raw LaTeX`_.
+By convention, these special definitions use the prefix ``\DU``\ [#]_.
+
+The generated LaTeX documents should be kept processable by a standard LaTeX
+installation. Therefore fallback definitions are included after the custom
+style sheet, if the macro is needed in the document.
+
+* `Custom style sheets`_ can define alternative implementations with
+  ``\newcommand``, ``\newenvironment``, and ``\newlength`` plus
+  ``\setlength``.
+
+* Definitions with `raw LaTeX`_ are part of the document body. Use
+  ``\def``, ``\renewcommand`` or ``\renewenvironment``, and ``\setlength``.
+
+.. [#] for Documentation Utilities = Docutils
+
+
+
 Configuration
 =============
 
@@ -91,6 +203,7 @@ configuration settings
 .. _Docutils Configuration:
    ../user/config.html
 
+.. _style sheet:
 
 Custom style sheets
 -------------------
@@ -155,12 +268,12 @@ By means of the `raw directive`_ one can give commands directly to LaTeX.
 This can be both, styling and printing commands, as LaTeX (unlike HTML/CSS)
 uses one common language for content and style.
 
-This means that most of the example code for the style sheet will also work
-as raw LaTeX inside the document. An exception are commands that need to be
-given in the document preamble (e.g. package loading with ``\usepackage``,
-which can be done with the ``--style-sheet`` command line option instead).
-
 Examples:
+
+* Amost all examples for the `style sheet`_ will also work as raw LaTeX
+  inside the document. An exception are commands that need to be given in
+  the document preamble (e.g. package loading with ``\usepackage``, which
+  can be achieved with the ``--style-sheet`` command line option instead).
 
 * Forcing a page break::
 
@@ -178,7 +291,7 @@ Examples:
 
 * Making a "colorbox": If someone wants to get a red background for a
   text block, she/he can define ``\definecolor{bg}{rgb}{.9,0,0}`` in a custom
-  style sheet and in the document do something like this::
+  `style sheet`_ and in the document do something like this::
 
     |begincolorbox|
     Nobody expects the Spanish inquisition.
@@ -197,28 +310,6 @@ Examples:
 
 .. _raw directive:
    ../ref/rst/directives.html#raw
-
-
-Docutils special LaTeX macros
------------------------------
-
-Some Docutils objects have no LaTeX counterpart, they will be typeset using
-a Docutils specific LaTeX macro. The specific commands, environments, and
-lenghts allow layout changes from the style sheet. By convention, these
-special definitions use the prefix ``\DU``\ [#]_.
-
-The generated LaTeX documents should be kept processable by a standard LaTeX
-installation. Therefore fallback definitions are included after the custom
-style sheet, if the macro is needed in the document.
-
-* `Custom style sheets`_ can define alternative implementations with
-  ``\newcommand``, ``\newenvironment``, and ``\newlenght`` plus
-  ``\setlength``.
-
-* Definitions with `raw LaTeX`_ are part of the document body. Use
-  ``\def``, ``\renewcommand`` or ``\renewenvironment``, and ``\setlenght``.
-
-.. [#] for Documentation Utilities = Docutils
 
 
 How to configure the ...
@@ -320,8 +411,8 @@ Examples:
 
     \newcommand{\docutilsrolesmallcaps}{\textsc}
 
-  as `raw LaTeX`_ or in the custom style sheet will give the expected result
-  (if the chosen font supports small caps).
+  as `raw LaTeX`_ or in the custom `style sheet`_ will give the expected
+  result (if the chosen font supports small caps).
 
 * Subscript text in normal size and *italic* shape::
 
@@ -349,7 +440,7 @@ Examples:
     \@namedef{docutilsrolearg-3}{\textbf}
     \makeatother
 
-  in a style sheet\ [#]_ or as `raw LaTeX`_ in the document source,
+  in a `style sheet`_\ [#]_ or as `raw LaTeX`_ in the document source,
   text styled with ``:custom4:`large bold small-caps``` will be typeset
   accordingly.
 
@@ -391,7 +482,7 @@ __ ../ref/rst/restructuredtext.html#definition-lists
 document class
 ``````````````
 
-The LaTeX document class cannot be changed in a style sheet.
+The LaTeX document class cannot be changed in a `style sheet`_.
 
 Option:
 
@@ -436,10 +527,10 @@ Length:
   ``\DUdocinfowidth``: the width for the `docinfo` table.
 
 Default:
-  90 % of text width: ``0.9\textwidth``
+  90 % of text width: ``0.9\textwidth``
 
 Example:
-  set to 70% of text width::
+  set to 70 % of text width::
 
     \newlength{\DUdocinfowidth}
     \setlength{\DUdocinfowidth}{0.7\textwidth}
@@ -744,7 +835,7 @@ Examples:
 
     --documentoptions=a5paper,landscape
 
-* The same with LaTeX commands in the style sheet::
+* The same with LaTeX commands in the `style sheet`_::
 
     \usepackage{geometry}
     \geometry{a5paper,landscape}
@@ -764,7 +855,7 @@ Example:
 
     --stylesheet=parskip
 
-  or in your style sheet with::
+  or in your `style sheet`_ with::
 
     \usepackage{parskip}
 
@@ -855,7 +946,7 @@ Default:
 Alternative fonts can be selected by
 
 a) specifying the corresponding LaTeX package as arguments to the
-   ``--stylesheet`` option or in a custom style sheet.
+   ``--stylesheet`` option or in a custom `style sheet`_.
 
    * Packages can be combined.
    * Passing options to a package is only possible in the style sheet.
@@ -1047,7 +1138,7 @@ influence section numbering.
 
 * If section numbering and LaTeX table of contents is used LaTeX and
   Docutils will number sections. To switch off displaying of Latex's
-  numbers one has to add following lines to the style sheet ::
+  numbers one has to add following lines to the `style sheet`_ ::
 
     % no section number display
     \makeatletter
@@ -1087,23 +1178,6 @@ __ http://docutils.sf.net/docutils/docs/ref/rst/directives.html#sidebar
 .. _marginnote:
    http://dante.ctan.org/CTAN/macros/latex/contrib/marginnote/marginnote.pdf
 
-size of a pixel (length unit ``px``)
-````````````````````````````````````
-
-The length unit ``px`` stands for `pixel` and its value has varying
-definitions:
-
-  :pdftex:   defines 1px = 1bp = 1/72 in, i.e. 72 DPI (dots per inch)
-  :CSS:      defines 1 px = 1/96 in, i.e. 92 DPI
-  :browsers: use the actual screen resolution (or what they think it is)
-             (usually between 72 DPI and 100 DPI).
-
-Example:
-  Set a "resolution" of 92 dots per inch::
-
-       \pdfpxdimen=1in % 1 DPI
-       \divide\pdfpxdimen by 92 % 92 DPI
-
 Changes
 =======
 
@@ -1112,7 +1186,7 @@ Changes
 * Changes since the last release (0.5) are summarized in the RELEASE-NOTES_
   and explained in detail in docutils-05-compat_.
 
-* docutils-05-compat.sty_ is a style sheet that provides best possible
+* docutils-05-compat.sty_ is a `style sheet`_ that provides best possible
   backwards compatibility.
 
 .. _HISTORY: ../../HISTORY.html

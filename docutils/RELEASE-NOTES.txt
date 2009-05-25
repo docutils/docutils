@@ -26,11 +26,16 @@ Changes Since 0.5
    Docutils 0.5 is the last version supporting Python 2.2,
    Docutils 0.6 requires Python 2.3 or newer (including Python 3).
 
-* HTML writer.
+* reStructuredText:
+
+  - Allow length units for all length specifications.
+  - Allow percent sign in "scale" argument of "figure" and "image" directives.
+
+* HTML writer:
 
   - ``--stylesheet`` and ``--stylesheet-path`` options now support a comma
     separated list of stylesheets.
-    
+
 * LaTeX2e writer:
 
   - Support LaTeX packages as ``--stylesheet`` arguments.
