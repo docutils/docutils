@@ -55,6 +55,12 @@
     #2%
   \fi%
 }
+% legend environment:
+\ifthenelse{\isundefined{\DUlegend}}{
+  \newenvironment{DUlegend}%
+    {\small}
+    {}
+}{}
 % line block environment:
 \DUprovidelength{\DUlineblockindent}{2.5em}
 \ifthenelse{\isundefined{\DUlineblock}}{
@@ -943,7 +949,7 @@ Image with multiple IDs:
 
 A centered image:
 
-{\hfill\includegraphics{../../../docs/user/rst/images/biohazard.png}\hfill}
+\noindent\makebox[\textwidth][c]{\includegraphics{../../../docs/user/rst/images/biohazard.png}}
 
 A left-aligned image:
 
@@ -971,7 +977,7 @@ An image 2 em wide:
 
 An image 2 em wide and 15 pixel high:
 
-\includegraphics[width=2em,height=15px]{../../../docs/user/rst/images/biohazard.png}
+\includegraphics[height=15px,width=2em]{../../../docs/user/rst/images/biohazard.png}
 
 An image occupying 50\% of the line width:
 
@@ -985,10 +991,9 @@ A \emph{figure} is an image with a caption and/or a legend.  With page-based out
 media, figures might float to a different position if this helps the page
 layout.
 \begin{figure}[htbp]
-\centering
-
-\includegraphics[width=258bp]{../../../docs/user/rst/images/title.png}
-\caption{Plaintext markup syntax and parser system.}{\small 
+\noindent\makebox[\textwidth][c]{\includegraphics[width=258bp]{../../../docs/user/rst/images/title.png}}
+\caption{Plaintext markup syntax and parser system.}
+\begin{DUlegend}
 \leavevmode
 \setlength{\DUtablewidth}{\linewidth}
 \begin{longtable}[c]{|p{0.156\DUtablewidth}|p{0.563\DUtablewidth}|}
@@ -1014,44 +1019,47 @@ Well it is, isn't it?
 \end{longtable}
 
 This paragraph is also part of the legend.
-}\end{figure}
+\end{DUlegend}
+\end{figure}
 
 A left-aligned figure:
-\begin{figure}[htbp]\begin{flushleft}
-
-\includegraphics[width=50bp]{../../../docs/user/rst/images/biohazard.png}
-\caption{This is the caption.}{\small 
+\begin{figure}[htbp]
+\noindent\makebox[\textwidth][c]{\includegraphics[width=50bp]{../../../docs/user/rst/images/biohazard.png}}
+\caption{This is the caption.}
+\begin{DUlegend}
 This is the legend.
 
 The legend may consist of several paragraphs.
-}\end{flushleft}\end{figure}
+\end{DUlegend}
+\end{figure}
 
 This paragraph might flow around the figure. The specific behavior depends
 upon the style sheet and the browser or rendering software used.
 
 A centered figure:
 \begin{figure}[htbp]
-\centering
-
-\includegraphics[width=50bp]{../../../docs/user/rst/images/biohazard.png}
-\caption{This is the caption.}{\small 
+\noindent\makebox[\textwidth][c]{\includegraphics[width=50bp]{../../../docs/user/rst/images/biohazard.png}}
+\caption{This is the caption.}
+\begin{DUlegend}
 This is the legend.
 
 The legend may consist of several paragraphs.
-}\end{figure}
+\end{DUlegend}
+\end{figure}
 
 This paragraph might flow around the figure. The specific behavior depends
 upon the style sheet and the browser or rendering software used.
 
 A right-aligned figure:
-\begin{figure}[htbp]\begin{flushright}
-
-\includegraphics[width=50bp]{../../../docs/user/rst/images/biohazard.png}
-\caption{This is the caption.}{\small 
+\begin{figure}[htbp]
+\noindent\makebox[\textwidth][c]{\includegraphics[width=50bp]{../../../docs/user/rst/images/biohazard.png}}
+\caption{This is the caption.}
+\begin{DUlegend}
 This is the legend.
 
 The legend may consist of several paragraphs.
-}\end{flushright}\end{figure}
+\end{DUlegend}
+\end{figure}
 
 This paragraph might flow around the figure. The specific behavior depends
 upon the style sheet and the browser or rendering software used.
