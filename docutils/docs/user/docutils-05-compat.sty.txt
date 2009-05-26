@@ -109,7 +109,7 @@ Rationale:
           \pdfpxdimen=1in % 1 dpi
           \divide\pdfpxdimen by 96 % 96 dpi
 
-      --  http://www.tug.org/applications/pdftex/NEWS
+       --  http://www.tug.org/applications/pdftex/NEWS
 
   * Modern TeX distributions use pdftex also for dvi generation
     (i.e. ``latex`` actually calls ``pdftex`` with some options).
@@ -257,7 +257,7 @@ Backwards compatibility:
     \raggedbottom
 
 Local tocs with `minitoc`
-`````````````````````````
+-------------------------
 
 New feature:
   If 'use-latex-toc' is set, local tables of content are typeset using the
@@ -277,6 +277,41 @@ Backward compatibility:
   See the fallback definitions for admonitions_, `topic title`_ and
   `sidebar`_.
 
+
+Figure and image alignment
+--------------------------
+
+New features:
+
+a) Fix behaviour of 'align' argument to a figure (do not align figure
+   contents).
+
+   As the 'figwidth' argument is still ignored and the "natural width" of a
+   figure in LaTeX is 100% \textwidth, setting the 'align' argument of a
+   figure has currently no effect on the LaTeX output.
+
+b) Set default align of image in a figure to 'center'.
+
+c) Also center images that are wider than textwidth.
+
+d) Align images with class "align-[right|center|left]" (allows setting the
+   alignment of an image in a figure).
+
+
+Backwards compatibility:
+   There is no "automatic" way to reverse these changes via a style sheet.
+
+a) The alignment of the image can be set with the "align-left",
+   "align-center" and "align-right" class arguments.
+
+   As previously, the caption of a figure is aligned according to the
+   document class -- configurable with a style sheet using the "caption"
+   package.
+
+b) See a)
+
+c) Set the alignment of "oversized" images to "left" to get back the
+   old placement.
 
 Shorter preamble
 ----------------
@@ -473,9 +508,10 @@ New Feature:
   Enable customization of some more Docutils elements with special commands
 
   :admonition: ``DUadmonition`` environment (replacing ``\admonitionwidth``),
-  :field list: ``DUfieldlist`` environment,
-  :sidebar:    ``\DUsidebar``, ``\DUsidebartitle``, and ``DUsidebarsubtitle``
-               commands,
+  :field list: ``DUfieldlist``  environment,
+  :legend:     ``DUlegend``     environment,
+  :sidebar:    ``\DUsidebar``, ``\DUsidebartitle``, and
+  	       ``DUsidebarsubtitle`` commands,
   :topic:      ``\DUtopictitle`` command,
   :transition: ``\DUtransition`` command.
 

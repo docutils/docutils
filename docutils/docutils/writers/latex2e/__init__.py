@@ -346,6 +346,10 @@ PreambleCmds.fieldlist = r"""% field list environment:
     {\enddescription\endquote}
 }{}"""
 
+## # does not work:
+## PreambleCmds.float_placement = r"""% placement of figure floats
+## \providecommand{\DUfloatplacement}{htbp}"""
+
 PreambleCmds.footnote_floats = r"""% settings for footnotes as floats:
 \setlength{\floatsep}{0.5em}
 \setlength{\textfloatsep}{\fill}
@@ -367,8 +371,12 @@ PreambleCmds.inline = r"""% custom roles:
   \fi%
 }"""
 
-PreambleCmds.legend = r"""% legend (extending a caption):
-\providecommand{\DUlegend}[1]{{\\small #1}}"""
+PreambleCmds.legend = r"""% legend environment:
+\ifthenelse{\isundefined{\DUlegend}}{
+  \newenvironment{DUlegend}%
+    {\small}
+    {}
+}{}"""
 
 PreambleCmds.lineblock = r"""% line block environment:
 \DUprovidelength{\DUlineblockindent}{2.5em}
@@ -1079,9 +1087,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
             text = text.replace('\n', '~\\\\\n')
         if self.insert_non_breaking_blanks:
             text = text.replace(' ', '~')
-        if self.latex_encoding != 'utf8':
+        if not self.latex_encoding.startswith('utf8'):
             text = self.unicode_to_latex(text)
             text = self.ensure_math(text)
+        if self.latex_encoding == 'utf8':
+            # no-break space is not supported by (plain) utf8 input encoding
+            text = text.replace(u'\u00A0', '~')
+
         return text
 
     def attval(self, text,
@@ -1182,7 +1194,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append( '\\caption{' )
 
     def depart_caption(self, node):
-        self.body.append('}')
+        self.body.append('}\n')
 
     def visit_caution(self, node):
         self.visit_admonition(node, 'caution')
@@ -1657,18 +1669,23 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append(':]')
 
     def visit_figure(self, node):
-        # TODO: use LaTeX default alignment (left) (similar to HTML)
-        if ('align' not in node.attributes or
-            node.attributes['align'] == 'center'):
-            # centering does not add vertical space like center.
-            align = '\n\\centering'
-            align_end = ''
-        else:
-            # TODO non vertical space for other alignments.
-            align = '\\begin{flush%s}' % node.attributes['align']
-            align_end = '\\end{flush%s}' % node.attributes['align']
-        self.body.append( '\\begin{figure}[htbp]%s\n' % align )
-        self.context.append( '%s\\end{figure}\n' % align_end )
+        # ! the 'align' attribute should set "outer alignment" !
+        # For "inner alignment" use LaTeX default alignment (similar to HTML)
+        ## if ('align' not in node.attributes or
+        ##     node.attributes['align'] == 'center'):
+        ##     align = '\n\\centering'
+        ##     align_end = ''
+        ## else:
+        ##     # TODO non vertical space for other alignments.
+        ##     align = '\\begin{flush%s}' % node.attributes['align']
+        ##     align_end = '\\end{flush%s}' % node.attributes['align']
+        ## self.body.append( '\\begin{figure}[htbp]%s\n' % align )
+        ## self.context.append( '%s\\end{figure}\n' % align_end )
+        self.body.append('\\begin{figure}[htbp]')
+        ### does not work:
+        ## self.fallbacks['float_placement'] = PreambleCmds.float_placement
+        ## self.body.append('\\begin{figure}[\DUfloatplacement]')
+        self.context.append('\\end{figure}\n')
 
     def depart_figure(self, node):
         self.body.append( self.context.pop() )
@@ -1778,7 +1795,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         res = width_str
         amount, unit = match.groups()[:2]
         # For LaTeX, a length without unit is an error.
-        # default to (DTP) points (1 bp = 1/72 in)
+        # default to "DTP points" (1 bp = 1/72 in)
         if unit == '':
               res = '%sbp' % amount
         elif unit == '%':
@@ -1791,6 +1808,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # Add image URI to dependency list, assuming that it's
         # referring to a local file.
         self.settings.record_dependencies.add(attrs['uri'])
+        # alignment defaults:
+        if not 'align' in attrs:
+            # Set default align of image in a figure to 'center'
+            if isinstance(node.parent, nodes.figure):
+                attrs['align'] = 'center'
+            # query 'align-*' class argument
+            for cls in node.get('classes', ''):
+                if cls.startswith('align-'):
+                    attrs['align'] = cls.split('-')[1]
         pre = []                        # in reverse order
         post = []
         include_graphics_options = []
@@ -1798,44 +1824,42 @@ class LaTeXTranslator(nodes.NodeVisitor):
         align_prepost = {
             # key == (<inline>, <align>)
             # By default latex aligns the bottom of an image.
-            (1, 'bottom'): ('', ''),
-            (1, 'middle'): ('\\raisebox{-0.5\\height}{', '}'),
-            (1, 'top'): ('\\raisebox{-\\height}{', '}'),
-            (0, 'center'): ('{\\hfill', '\\hfill}'),
-            # According to the HTML standard
-            # http://www.w3.org/TR/html4/struct/objects.html#adef-align-IMG
-            # the image should be floated alongside the paragraph.
-            # However, this is not even honoured by all HTML browsers.
-            (0, 'left'): ('{', '\\hfill}'),
-            (0, 'right'): ('{\\hfill', '}'),}
-        if 'scale' in attrs:
-            # Could also be done with ``scale`` option to
-            # ``\includegraphics``; doing it this way for consistency.
-            pre.append('\\scalebox{%f}{' % (attrs['scale'] / 100.0,))
-            post.append('}')
-        if 'width' in attrs:
-            include_graphics_options.append('width=%s' % (
-                            self.latex_image_length(attrs['width']), ))
-        if 'height' in attrs:
-            include_graphics_options.append('height=%s' % (
-                            self.latex_image_length(attrs['height']), ))
+            (True, 'bottom'): ('', ''),
+            (True, 'middle'): (r'\raisebox{-0.5\height}{', '}'),
+            (True, 'top'):    (r'\raisebox{-\height}{', '}'),
+            (False, 'center'): (r'\noindent\makebox[\textwidth][c]{', '}'),
+            (False, 'left'):   ('{', r'\hfill}'),
+            (False, 'right'):  (r'{\hfill', '}'),}
         if 'align' in attrs:
             try:
                 pre.append(align_prepost[inline, attrs['align']][0])
                 post.append(align_prepost[inline, attrs['align']][1])
             except KeyError:
                 pass                    # XXX complain here?
+        if 'height' in attrs:
+            include_graphics_options.append('height=%s' %
+                            self.latex_image_length(attrs['height']))
+        if 'scale' in attrs:
+            include_graphics_options.append('scale=%f' %
+                                            (attrs['scale'] / 100.0))
+            ## # Could also be done with ``scale`` option to
+            ## # ``\includegraphics``; doing it this way for consistency.
+            ## pre.append('\\scalebox{%f}{' % (attrs['scale'] / 100.0,))
+            ## post.append('}')
+        if 'width' in attrs:
+            include_graphics_options.append('width=%s' %
+                            self.latex_image_length(attrs['width']))
         if not inline:
             pre.append('\n')
             post.append('\n')
         pre.reverse()
-        self.body.extend( pre )
+        self.body.extend(pre)
         options = ''
-        if len(include_graphics_options)>0:
+        if include_graphics_options:
             options = '[%s]' % (','.join(include_graphics_options))
-        self.body.append( '\\includegraphics%s{%s}' % (
-                            options, attrs['uri'] ) )
-        self.body.extend( post )
+        self.body.append('\\includegraphics%s{%s}' %
+                         (options, attrs['uri']))
+        self.body.extend(post)
 
     def depart_image(self, node):
         pass
@@ -1855,14 +1879,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_literal(node)
 
     def visit_legend(self, node):
-        # DUlegend command incompatible with flush* aligning:
-        #   ! LaTeX Error: There's no line here to end.
-        ## self.fallbacks['legend'] = PreambleCmds.legend
-        ## self.body.append('\DUlegend{')
-        self.body.append('{\\small ')
+        self.fallbacks['legend'] = PreambleCmds.legend
+        self.body.append('\\begin{DUlegend}')
 
     def depart_legend(self, node):
-        self.body.append('}')
+        self.body.append('\\end{DUlegend}\n')
 
     def visit_line(self, node):
         self.body.append('\item[] ')

@@ -81,21 +81,21 @@ following less common units:
 :cc: cîcero (1 cc = 12 dd)
 :sp: scaled point (1sp = 1/65536pt)
 
-.. attention:: Different definitions of the unit point!
+.. attention:: Different definitions of the unit "pt"!
 
-   While the unit symbol **pt** in Docutils and CSS denotes the
-   "Postscript point" or "DTP point" (1pt=1/72in), the same unit is
-   called "big point" and written **bp** in LaTeX.
+   * While the unit symbol "pt" in Docutils and CSS denotes the `Postscript
+     point` or `DTP point`.
+   * LaTeX uses "pt" for the `LaTeX point`, which is unknown to Docutils and
+     0.3 % smaller.
+   * The `DTP point` is available in LaTeX as "bp" (for "big point"):
 
-   The `LaTeX point` (**pt**) is unknown to Docutils and 0.3 % smaller:
+       1 pt = 1/72.25 in < 1 bp  = 1/72 in
 
-       1 bp  = 1/72 in > 1 pt = 1/72.25 in
+   .. All lengths in the document with unit "pt" will be given the
+      unit "bp" in the LaTeX source by the LaTeX writer.
 
-   .. All lengths in the document with unit ``pt`` will be given the
-      unit ``bp`` in the LaTeX source by the LaTeX writer.
-
-   In `raw LaTeX`_ and `custom style sheets`_, the "DTP point" must be
-   specified as **bp**, while **pt** is interpreted as "LaTeX point".
+   In `raw LaTeX`_ and `custom style sheets`_, the `DTP point` must be
+   specified as "bp", while "pt" is interpreted as `LaTeX point`.
 
 .. _length units: ../ref/rst/restructuredtext.html#length-units
 
@@ -155,6 +155,17 @@ Example:
        \pdfpxdimen=1in % 1 DPI
        \divide\pdfpxdimen by 92 % 92 DPI
 
+images
+------
+
+Images__ are included in LaTeX with the help of the `graphicx` package. The
+supported file formats depend on the used driver (latex, pdftex, xetex) and
+output format (DVI, PS, PDF).
+For details see the grfguide_.
+
+__ ../ref/rst/directives.html#images
+.. _grfguide:
+   http://dante.ctan.org/CTAN/macros/latex/required/graphics/grfguide.pdf
 
 
 Docutils special LaTeX macros
@@ -1219,16 +1230,8 @@ will add the fallback unit ``bp``.
 image inclusion
 ```````````````
 
-Images__ are included in LaTeX with the help of the `graphicx` package. The
-supported image formats depend on the used driver (dvi, dvips, pdftex, ...).
-For details see the grfguide_.
-
 If PDF-image inclusion in PDF files fails, specifying
 ``--graphicx-option=pdftex`` or ``--graphicx-option=auto`` might help.
-
-__ ../ref/rst/directives.html#images
-.. _grfguide:
-   http://dante.ctan.org/CTAN/macros/latex/required/graphics/grfguide.pdf
 
 Bugs and open issues
 --------------------

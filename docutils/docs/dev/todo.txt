@@ -1668,7 +1668,9 @@ Unimplemented Transforms
 
 * _`Footnote & Citation Gathering`
 
-  Collect and move footnotes & citations to the end of a document.
+  Collect and move footnotes & citations to the end of a document or the
+  place of a "footnotes" or "citations" directive
+  (see `<./ref/rst/directives.html>_`)
   (Separate transforms.)
 
 * _`Reference Merging`
@@ -1909,13 +1911,6 @@ Bug fixes
 
   See `<../../test/functional/input/data/latex.txt>`__
 
-* The `align` argument of a figure directive aligns both, figure and legend
-  but *not* the caption nor a table in the legend.
-
-  + align the *figure* "en-bloc"
-
-  + Use tabular instead of longtable for tables in legends?
-
 * An image directive with target URI does not start a new paragraph
   (see first two image examples in standalone_rst_latex.tex).
 
@@ -1930,11 +1925,6 @@ Generate clean and configurable LaTeX source
 
 LaTeX macros for Docutils-specific objects
 ``````````````````````````````````````````
-
-:legend:     Conflict with flushright/flushleft for image alignment
-             ``! LaTeX Error: There's no line here to end.``
-             --> Re-try after fixing the alignment bug.
-             Try with raggedleft/raggedright.
 
 :subtitle:   Is there a native construct?
 
@@ -1956,8 +1946,10 @@ LaTeX macros for Docutils-specific objects
               Use a "type" argument also for ``\DUtopictitle``?
 	      (would allow red error etc.)
 
-:floats: Placement of figure and table floats with a new
-	 ``\DUfloatplacement`` parameter (currently hard-coded ``htbp``)?
+* Placement of figure and table floats with a new
+  ``\DUfloatplacement`` parameter (default ``htbp``)
+  (does not expand inside the optional arg of figure).
+
 
 __ http://dante.ctan.org/CTAN/help/Catalogue/entries/pdfcomment.html
 
@@ -2129,6 +2121,12 @@ Tables
   + column width set by latex,
   + horizontal alignment and rules.
 
+* Use tabular instead of longtable for tables in legends or generally
+  inside a float?
+
+  Alternatively, default to tabular and use longtable only if specified
+  (analogue to booktable)?
+
 * Table heads and footer for longtable (firstpage lastpage ..)?
 
 * In tools.txt the option tables right column, there should be some more
@@ -2156,17 +2154,25 @@ Image and figure directives
   + `<../../test/functional/expected/standalone_rst_html4css1.html>`__
   + `<../../test/functional/expected/standalone_rst_latex.tex>`__
 
-* Centred and aligned images in figures with ``\centerline``,
-  ``\flushleft``, ``\flushright`` instead of environments (avoids
-  spurious whitespace) (but see also the discussion about figure
-  alignment).
+* According to the HTML standard
+  http://www.w3.org/TR/html4/struct/objects.html#adef-align-IMG a right- or
+  left-aligned image should be floated alongside the paragraph.
 
-* Wrap text around figures/images with class "wrap"?
+  + Use this default also for LaTeX?
+
+  + Wrap text around figures/images with class argument "wrap" (or "float")?
+
   Use `wrapfig` (or other recommended) package.
 
 
 Missing features
 ----------------
+
+* support "figwidth" argument for figures.
+
+  As the 'figwidth' argument is still ignored and the "natural width" of
+  a figure in LaTeX is 100% \textwidth, setting the 'align' argument has
+  currently no effect on the LaTeX output.
 
 * better citation support
 
@@ -2185,29 +2191,15 @@ Missing features
   --> Pass the right option to ``\hypersetup``
 
 
-bibliography directive
-``````````````````````
+* If ``use-latex-citations`` is used a bibliography is inserted right at the
+  end of the document.
 
-If ``use-latex-citations`` is used a bibliography is inserted right at the
-end of the document. *This should be customizable*.
-
-Alan suggested a `bibliography` directive so that BibTeX references are not
-automatically placed at the end (and bibtex for HTML via ... can be supported)
+  Put in place of the to-be-implemented "citations" directive
+  (see `Footnote & Citation Gathering`_).
 
 
 template file
 `````````````
-
-* Consider peter funk's hooks for TeXpert (or use a template file)?
-
-  * Define his own document preamble (including the choice to
-    choose his own documentclass.  That would make the ``--documentclass``
-    option superfluous).  I suggest to call this option ``--preamble``
-  * Use two additional hooks to put additional stuff just behind the
-    ``\begin{document}`` and just before the ``\end{document}`` macros.
-    Typical uses would be ``\tableofcontents``, ``\listoffigures`` and
-    ``\appendix``, ``\makeindex``, ``\makeglossary`` and some such
-    for larger documents.
 
 Using a template file instead of hard-coded string literals for the
 skeleton of the exported LaTeX file would provide improved configurability.
