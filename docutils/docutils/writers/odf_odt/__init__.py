@@ -530,10 +530,17 @@ class Writer(writers.Writer):
                 'action': 'store_false',
                 'dest': 'endnotes_end_doc',
                 'validator': frontend.validate_boolean}),
-        ('Generate an oowriter table of contents, not '
-            'a list (default).',
+        ('Generate a bullet list table of contents, not '
+            'an ODF/oowriter table of contents.',
+            ['--generate-list-toc'],
+            {'default': True,
+                'action': 'store_false',
+                'dest': 'generate_oowriter_toc',
+                'validator': frontend.validate_boolean}),
+        ('Generate an ODF/oowriter table of contents, not '
+            'a bullet list. (default)',
             ['--generate-oowriter-toc'],
-            {'default': False,
+            {'default': True,
                 'action': 'store_true',
                 'dest': 'generate_oowriter_toc',
                 'validator': frontend.validate_boolean}),
@@ -849,6 +856,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.in_footer = False
         self.blockstyle = ''
         self.in_table_of_contents = False
+        self.table_of_content_index_body = None
+        self.list_level = 0
         self.footnote_ref_dict = {}
         self.footnote_list = []
         self.footnote_chars_idx = 0
@@ -1236,6 +1245,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_bullet_list(self, node):
         #ipshell('At visit_bullet_list')
+        self.list_level +=1
         if self.in_table_of_contents:
             if self.settings.generate_oowriter_toc:
                 pass
@@ -1251,6 +1261,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                         'text:style-name': self.rststyle('tocbulletlist'),
                         })
                     self.list_style_stack.append(self.rststyle('bulletitem'))
+                self.set_current_element(el)
         else:
             if self.blockstyle == self.rststyle('blockquote'):
                 el = SubElement(self.current_element, 'text:list', attrib={
@@ -1272,11 +1283,19 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                     'text:style-name': self.rststyle('bulletlist'),
                     })
                 self.list_style_stack.append(self.rststyle('bulletitem'))
-        self.set_current_element(el)
+            self.set_current_element(el)
 
     def depart_bullet_list(self, node):
-        self.set_to_parent()
-        self.list_style_stack.pop()
+        if self.in_table_of_contents:
+            if self.settings.generate_oowriter_toc:
+                pass
+            else:
+                self.set_to_parent()
+                self.list_style_stack.pop()
+        else:
+            self.set_to_parent()
+            self.list_style_stack.pop()
+        self.list_level -=1
 
     def visit_caption(self, node):
         raise nodes.SkipChildren()
@@ -1434,33 +1453,48 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def visit_list_item(self, node):
         #ipshell('At visit_list_item')
-        el1 = self.append_child('text:list-item')
         # If we are in a "bumped" list level, then wrap this
         #   list in an outer lists in order to increase the
         #   indentation level.
-        el3 = el1
-        if len(self.bumped_list_level_stack) > 0:
-            level_obj = self.bumped_list_level_stack[-1]
-            if level_obj.get_sibling():
-                level_obj.set_nested(False)
-                for level_obj1 in self.bumped_list_level_stack:
-                    for idx in range(level_obj1.get_level()):
-                        el2 = self.append_child('text:list', parent=el3)
-                        el3 = self.append_child('text:list-item', parent=el2)
-        self.paragraph_style_stack.append(self.list_style_stack[-1])
-        self.set_current_element(el3)
+        if self.in_table_of_contents:
+            if self.settings.generate_oowriter_toc:
+                self.paragraph_style_stack.append(
+                    self.rststyle('contents-%d' % (self.list_level, )))
+            else:
+                el1 = self.append_child('text:list-item')
+                self.set_current_element(el1)
+        else:
+            el1 = self.append_child('text:list-item')
+            el3 = el1
+            if len(self.bumped_list_level_stack) > 0:
+                level_obj = self.bumped_list_level_stack[-1]
+                if level_obj.get_sibling():
+                    level_obj.set_nested(False)
+                    for level_obj1 in self.bumped_list_level_stack:
+                        for idx in range(level_obj1.get_level()):
+                            el2 = self.append_child('text:list', parent=el3)
+                            el3 = self.append_child('text:list-item', parent=el2)
+            self.paragraph_style_stack.append(self.list_style_stack[-1])
+            self.set_current_element(el3)
 
     def depart_list_item(self, node):
-        if len(self.bumped_list_level_stack) > 0:
-            level_obj = self.bumped_list_level_stack[-1]
-            if level_obj.get_sibling():
-                level_obj.set_nested(True)
-                for level_obj1 in self.bumped_list_level_stack:
-                    for idx in range(level_obj1.get_level()):
-                        self.set_to_parent()
-                        self.set_to_parent()
-        self.paragraph_style_stack.pop()
-        self.set_to_parent()
+        #ipshell('At depart_list_item')
+        if self.in_table_of_contents:
+            if self.settings.generate_oowriter_toc:
+                self.paragraph_style_stack.pop()
+            else:
+                self.set_to_parent()
+        else:
+            if len(self.bumped_list_level_stack) > 0:
+                level_obj = self.bumped_list_level_stack[-1]
+                if level_obj.get_sibling():
+                    level_obj.set_nested(True)
+                    for level_obj1 in self.bumped_list_level_stack:
+                        for idx in range(level_obj1.get_level()):
+                            self.set_to_parent()
+                            self.set_to_parent()
+            self.paragraph_style_stack.pop()
+            self.set_to_parent()
 
     def visit_header(self, node):
         #ipshell('At visit_header')
@@ -2629,6 +2663,20 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def depart_title_reference(self, node):
         pass
 
+    def generate_table_of_content_entry_template(self, el1):
+        for idx in range(1, 11):
+            el2 = SubElement(el1, 'text:table-of-content-entry-template', attrib={
+                'text:outline-level': "%d" % (idx, ),
+                'text:style-name': self.rststyle('contents-%d' % (idx, )),
+                })
+            el3 = SubElement(el2, 'text:index-entry-chapter')
+            el3 = SubElement(el2, 'text:index-entry-text')
+            el3 = SubElement(el2, 'text:index-entry-tab-stop', attrib={
+                'style:leader-char': ".",
+                'style:type': "right",
+                })
+            el3 = SubElement(el2, 'text:index-entry-page-number')
+                        
     def visit_topic(self, node):
         #ipshell('At visit_topic')
         if 'classes' in node.attributes:
@@ -2646,7 +2694,17 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                         'text:style-name': 'Contents_20_Heading',
                         })
                     el3.text = 'Table of Contents'
-                    raise nodes.SkipChildren()
+                    self.generate_table_of_content_entry_template(el2)
+                    el4 = SubElement(el1, 'text:index-body')
+                    el5 = SubElement(el4, 'text:index-title')
+                    el6 = SubElement(el5, 'text:p', attrib={
+                        'text:style-name': self.rststyle('contents-heading'),
+                        })
+                    el6.text = 'Table of Contents'
+                    self.save_current_element = self.current_element
+                    self.table_of_content_index_body = el4
+                    self.set_current_element(el4)
+                    #raise nodes.SkipChildren()
                 else:
                     el = self.append_p('horizontalline')
                     el = self.append_p('centeredtextbody')
@@ -2666,10 +2724,32 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         if 'classes' in node.attributes:
             if 'contents' in node.attributes['classes']:
                 if self.settings.generate_oowriter_toc:
-                    pass
+                    self.update_toc_page_numbers(self.table_of_content_index_body)
+                    self.set_current_element(self.save_current_element)
                 else:
                     el = self.append_p('horizontalline')
                 self.in_table_of_contents = False
+
+    def update_toc_page_numbers(self, el):
+        #ipshell('At update_toc_page_numbers')
+        collection = []
+        self.update_toc_collect(el, 0, collection)
+        self.update_toc_add_numbers(collection)
+
+    def update_toc_collect(self, el, level, collection):
+        collection.append((level, el))
+        level += 1
+        for child_el in el.getchildren():
+            if child_el.tag != 'text:index-body':
+                self.update_toc_collect(child_el, level, collection)
+
+    def update_toc_add_numbers(self, collection):
+        for level, el1 in collection:
+            if (el1.tag == 'text:p' and
+                el1.text != 'Table of Contents'):
+                el2 = SubElement(el1, 'text:tab')
+                el2.tail = '9999'
+
 
     def visit_transition(self, node):
         el = self.append_p('horizontalline')
