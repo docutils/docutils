@@ -112,6 +112,17 @@ The following command line flags are specific to ``odtwriter``:
                         bottom of page.
 --no-endnotes-end-doc   Generate footnotes at bottom of page, not endnotes at
                         end of document. (default)
+--generate-list-toc     Generate a bullet list table of contents, not an
+                        ODF/``oowriter`` table of contents.
+--generate-oowriter-toc
+                        Generate an ODF/``oowriter`` table of contents,
+                        not a bullet list.  (default) **Note:**
+                        ``odtwriter`` is not able to determine page
+                        numbers, so you will need to open the
+                        generated document in ``oowriter``, then
+                        right-click on the table of contents and
+                        select "Update" to insert page numbers.
+
                                                                                                                         
 
 Styles and Classes
@@ -669,14 +680,20 @@ Hints and Suggestions and Features
 Table of contents
 -----------------
 
-``odtwriter`` can generate an outline style table of contents.
-However, if you want an ``oowriter`` style table of contents along
-with the formatting control that ``oowriter`` gives you, then you
-may want to omit the ``.. contents::`` directive and, after
-generating your document, open it in ``oowriter`` and insert a
-table of contents.   That feature is under menu item::
+The ``..contents::`` directive causes ``odtwriter`` to generate
+either:
 
-    Insert --> Indexes and Tables --> Indexes and Tables
+1. A static, outline style table of contents, if the 
+   ``--generate-list-toc`` command line option is specified, or
+
+2. An ODF/``oowriter`` style table of contents containing
+   dynamically updated page numbers and with the formatting control
+   that ``oowriter`` gives you.  This is the default, or use the
+   command line option ``--generate-list-toc``.  **Note:**
+   ``odtwriter`` is not able to determine page numbers, so you will
+   need to open the generated document in ``oowriter``, then
+   right-click on the table of contents and select "Update" to
+   insert correct page numbers.
 
 
 Syntax highlighting
