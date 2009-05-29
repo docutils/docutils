@@ -346,10 +346,6 @@ PreambleCmds.fieldlist = r"""% field list environment:
     {\enddescription\endquote}
 }{}"""
 
-## # does not work:
-## PreambleCmds.float_placement = r"""% placement of figure floats
-## \providecommand{\DUfloatplacement}{htbp}"""
-
 PreambleCmds.footnote_floats = r"""% settings for footnotes as floats:
 \setlength{\floatsep}{0.5em}
 \setlength{\textfloatsep}{\fill}
@@ -1682,9 +1678,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         ## self.body.append( '\\begin{figure}[htbp]%s\n' % align )
         ## self.context.append( '%s\\end{figure}\n' % align_end )
         self.body.append('\\begin{figure}[htbp]')
-        ### does not work:
-        ## self.fallbacks['float_placement'] = PreambleCmds.float_placement
-        ## self.body.append('\\begin{figure}[\DUfloatplacement]')
         self.context.append('\\end{figure}\n')
 
     def depart_figure(self, node):
@@ -1787,20 +1780,19 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_hint(self, node):
         self.depart_admonition()
 
-    def latex_image_length(self, width_str):
-        match = re.match('(\d*\.?\d*)\s*(\S*)', width_str)
+    def to_latex_length(self, length_str):
+        """Convert string with rst lenght to LaTeX"""
+        match = re.match('(\d*\.?\d*)\s*(\S*)', length_str)
         if not match:
-            # fallback
-            return width_str
-        res = width_str
-        amount, unit = match.groups()[:2]
-        # For LaTeX, a length without unit is an error.
-        # default to "DTP points" (1 bp = 1/72 in)
-        if unit == '':
-              res = '%sbp' % amount
+            return length_str
+        value, unit = match.groups()[:2]
+        # no unit or "DTP" points (called 'bp' in TeX):
+        if unit in ('', 'pt'):
+            length_str = '%sbp' % value
+        # percentage: relate to current line width
         elif unit == '%':
-            res = '%.3f\\linewidth' % (float(amount)/100.0)
-        return res
+            length_str = '%.3f\\linewidth' % (float(value)/100.0)
+        return length_str
 
     def visit_image(self, node):
         self.requirements['graphicx'] = self.graphicx_package
@@ -1838,7 +1830,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 pass                    # XXX complain here?
         if 'height' in attrs:
             include_graphics_options.append('height=%s' %
-                            self.latex_image_length(attrs['height']))
+                            self.to_latex_length(attrs['height']))
         if 'scale' in attrs:
             include_graphics_options.append('scale=%f' %
                                             (attrs['scale'] / 100.0))
@@ -1848,7 +1840,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             ## post.append('}')
         if 'width' in attrs:
             include_graphics_options.append('width=%s' %
-                            self.latex_image_length(attrs['width']))
+                            self.to_latex_length(attrs['width']))
         if not inline:
             pre.append('\n')
             post.append('\n')
@@ -2401,10 +2393,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.settings.use_latex_abstract):
             self.body.append('\\end{abstract}\n')
         self.topic_classes = []
-        if 'contents' in node['classes'] and self.use_latex_toc:
-            pass
-        else:
-            self.body.append('\n')
+        self.body.append('\n')
 
     def visit_inline(self, node): # <span>, i.e. custom roles
         # insert fallback definition

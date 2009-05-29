@@ -83,16 +83,18 @@ following less common units:
 
 .. attention:: Different definitions of the unit "pt"!
 
-   * While the unit symbol "pt" in Docutils and CSS denotes the `Postscript
-     point` or `DTP point`.
+   * In Docutils (as well as CSS) the unit symbol "pt" denotes the
+     `Postscript point` or `DTP point`.
+
    * LaTeX uses "pt" for the `LaTeX point`, which is unknown to Docutils and
      0.3 % smaller.
-   * The `DTP point` is available in LaTeX as "bp" (for "big point"):
+
+   * The `DTP point` is available in LaTeX as "bp" (big point):
 
        1 pt = 1/72.25 in < 1 bp  = 1/72 in
 
-   .. All lengths in the document with unit "pt" will be given the
-      unit "bp" in the LaTeX source by the LaTeX writer.
+   Lengths specified in the document with unit "pt" will be written with
+   unit "bp" to the LaTeX source.
 
    In `raw LaTeX`_ and `custom style sheets`_, the `DTP point` must be
    specified as "bp", while "pt" is interpreted as `LaTeX point`.

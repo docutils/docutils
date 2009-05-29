@@ -40,6 +40,10 @@ Changes Since 0.5
 
   - Allow length units for all length specifications.
   - Allow percent sign in "scale" argument of "figure" and "image" directives.
+  - Bugfix: The "figalign" argument of a figure now works as intended
+    (aligning the figure, not its contents).
+  - Align images with class "align-[right|center|left]"
+    (allows setting the alignment of an image in a figure).
 
 * docutils/nodes.py:
 
@@ -71,7 +75,6 @@ Changes Since 0.5
   - Add option ``--embed-stylesheet``.
   - Apply [ 1474017 ] image vertical alignment is reversed.
   - Apply [ 2051599 ] multi-page tables in latex writer (from pabigot).
-  - Fix: for spanish ``~n`` is ``n`` with tilde above, change to ``~{}n``.
   - Change: has_key for dictionaries (not Nodes) to in-operator.
   - Merge adjacent citations into one latex cite command.
   - Failsave implementation of custom roles. LaTeX compilation now ignores
@@ -81,6 +84,7 @@ Changes Since 0.5
     restriction. (A style sheet is now referenced with the ``\usepackage``
     command, if it ends with ``.sty`` or has no extension.)
   - Add ``bp`` to lenghts without unit (prevents LaTex errors).
+  - Correctly write length unit ``pt`` as ``bp`` in LaTeX.
   - Do not convert ``px`` to ``pt`` (``px`` is supported by pdfTeX since
     2005-02-04 as a configurable length unit).
   - Do not use fontenc, nor the obsolete 'ae' and 'aeguill' packages
@@ -90,10 +94,11 @@ Changes Since 0.5
   - Shorter preamble and less dependencies: Load packages and define macros
     only if required in the document.
   - Use the name prefix ``DU`` for all Docutils specific LaTeX objects.
-  - New custom macros.
+  - New custom macros and environments.
   - Simpler LaTeX encoding, e.g. "\%" instead of "{\%}".
   - Local tocs with `minitoc` (if 'use-latex-toc' is True).
   - Use default font in admonitions and sidebar.
+  - Align of image in a figure defaults to 'center'.
 
 * docs/ref/rst/restructuredtext.txt:
 
