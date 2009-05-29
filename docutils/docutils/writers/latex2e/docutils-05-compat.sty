@@ -4,7 +4,7 @@
 % 
 % :Author:    Guenter Milde
 % :Contact:   milde@users.berlios.de
-% :Revision:  $Revision: 5948 $
+% :Revision:  $Revision: 5964 $
 % :Date:      $Date: 2009-02-24$
 % :Copyright: © 2009 G. Milde,
 %             Released  without warranties or conditions of any kind
@@ -94,25 +94,39 @@
 % ------------
 % 
 % New Features:
-%   #. add default unit if none given (to prevent LaTeX error)
-%      a poll on docutils-users favoured ``bp`` (Big Point: 1 bp  = 1/72 in)
+%   1. Add default unit if none given.
+%      A poll on docutils-users favoured ``bp`` (Big Point: 1 bp  = 1/72 in).
 % 
-%   #. Do not change ``px`` to ``pt``.
+%   2. Do not change ``px`` to ``pt``.
+% 
+%   3. Lengths specified in the document with unit "pt" will be written with
+%      unit "bp" to the LaTeX source.
 % 
 % Rationale:
-%   * ``px`` is a valid unit in pdftex since version 1.3.0 released on
-%     2005-02-04:
+%   1. prevent LaTeX error "missing unit".
 % 
-%       1px defaults to 1bp (or 72dpi), but can be changed with the
-%       ``\pdfpxdimen`` primitive.::
+%   2. ``px`` is a valid unit in pdftex since version 1.3.0 released on
+%      2005-02-04:
+% 
+%        1px defaults to 1bp (or 72dpi), but can be changed with the
+%        ``\pdfpxdimen`` primitive.::
 
         \pdfpxdimen=1in % 1 dpi
         \divide\pdfpxdimen by 96 % 96 dpi
 
-%       --  http://www.tug.org/applications/pdftex/NEWS
+%        --  http://www.tug.org/applications/pdftex/NEWS
 % 
-%   * Modern TeX distributions use pdftex also for dvi generation
-%     (i.e. ``latex`` actually calls ``pdftex`` with some options).
+%      Modern TeX distributions use pdftex also for dvi generation (i.e.
+%      ``latex`` actually calls ``pdftex`` with some options).
+% 
+%   3. In Docutils (as well as CSS) the unit symbol "pt" denotes the
+%      `Postscript point` or `DTP point` while LaTeX uses "pt" for the `LaTeX
+%      point`, which is unknown to Docutils and 0.3 % smaller.
+% 
+%      The `DTP point` is available in LaTeX as "bp" (big point):
+% 
+%        1 pt = 1/72.25 in < 1 bp  = 1/72 in
+% 
 % 
 % Backwards compatibility:
 %   Images with width specification in ``px`` come out slightly (0.3 %) larger:
@@ -123,8 +137,8 @@
 
   \pdfpxdimen=1pt
 
-% .. caution:: It is impossible to revert the change of lengths specified
-%    without unit in a style sheet, however the 0.3 % change will be
+% .. caution:: It is impossible to revert the change of lengths specified with
+%    "pt" or without unit in a style sheet, however the 0.3 % change will be
 %    imperceptible in most cases.
 % 
 % .. admonition:: Error ``illegal unit px``
@@ -257,7 +271,7 @@
   \raggedbottom
 
 % Local tocs with `minitoc`
-% `````````````````````````
+% -------------------------
 % 
 % New feature:
 %   If 'use-latex-toc' is set, local tables of content are typeset using the
@@ -277,6 +291,41 @@
 %   See the fallback definitions for admonitions_, `topic title`_ and
 %   `sidebar`_.
 % 
+% 
+% Figure and image alignment
+% --------------------------
+% 
+% New features:
+% 
+% a) Fix behaviour of 'align' argument to a figure (do not align figure
+%    contents).
+% 
+%    As the 'figwidth' argument is still ignored and the "natural width" of a
+%    figure in LaTeX is 100% \textwidth, setting the 'align' argument of a
+%    figure has currently no effect on the LaTeX output.
+% 
+% b) Set default align of image in a figure to 'center'.
+% 
+% c) Also center images that are wider than textwidth.
+% 
+% d) Align images with class "align-[right|center|left]" (allows setting the
+%    alignment of an image in a figure).
+% 
+% 
+% Backwards compatibility:
+%    There is no "automatic" way to reverse these changes via a style sheet.
+% 
+% a) The alignment of the image can be set with the "align-left",
+%    "align-center" and "align-right" class arguments.
+% 
+%    As previously, the caption of a figure is aligned according to the
+%    document class -- configurable with a style sheet using the "caption"
+%    package.
+% 
+% b) See a)
+% 
+% c) Set the alignment of "oversized" images to "left" to get back the
+%    old placement.
 % 
 % Shorter preamble
 % ----------------
@@ -473,9 +522,10 @@
 %   Enable customization of some more Docutils elements with special commands
 % 
 %   :admonition: ``DUadmonition`` environment (replacing ``\admonitionwidth``),
-%   :field list: ``DUfieldlist`` environment,
-%   :sidebar:    ``\DUsidebar``, ``\DUsidebartitle``, and ``DUsidebarsubtitle``
-%                commands,
+%   :field list: ``DUfieldlist``  environment,
+%   :legend:     ``DUlegend``     environment,
+%   :sidebar:    ``\DUsidebar``, ``\DUsidebartitle``, and
+%                ``DUsidebarsubtitle`` commands,
 %   :topic:      ``\DUtopictitle`` command,
 %   :transition: ``\DUtransition`` command.
 % 

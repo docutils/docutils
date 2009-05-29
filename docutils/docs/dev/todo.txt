@@ -1946,9 +1946,12 @@ LaTeX macros for Docutils-specific objects
               Use a "type" argument also for ``\DUtopictitle``?
 	      (would allow red error etc.)
 
-* Placement of figure and table floats with a new
-  ``\DUfloatplacement`` parameter (default ``htbp``)
-  (does not expand inside the optional arg of figure).
+* Configurable placement of figure and table floats.
+
+  Use ``\floatplacement`` from the `float` package:
+
+    The ``\floatplacement`` command resets the default placement specifier
+    of a class of floats. E.g., ``\floatplacement{figure}{tp}``.
 
 
 __ http://dante.ctan.org/CTAN/help/Catalogue/entries/pdfcomment.html
@@ -2197,6 +2200,15 @@ Missing features
   Put in place of the to-be-implemented "citations" directive
   (see `Footnote & Citation Gathering`_).
 
+* Provide a ``--default-dpi`` (or better named) option to set the size of a
+  pixel (lenght unit px)?
+
+  You can do this already with::
+
+       \pdfpxdimen=1in % 1 DPI
+       \divide\pdfpxdimen by 92 % 92 DPI
+
+  in a style sheet. So which should take precedence (or just leave it)?
 
 template file
 `````````````

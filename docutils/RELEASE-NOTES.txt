@@ -30,6 +30,10 @@ Changes Since 0.5
 
   - Allow length units for all length specifications.
   - Allow percent sign in "scale" argument of "figure" and "image" directives.
+  - Bugfix: The "figalign" argument of a figure now works as intended
+    (aligning the figure not its contents).
+  - Align images with class "align-[right|center|left]"
+    (allows setting the alignment of an image in a figure).
 
 * HTML writer:
 
@@ -39,7 +43,8 @@ Changes Since 0.5
 * LaTeX2e writer:
 
   - Support LaTeX packages as ``--stylesheet`` arguments.
-  - Add ``bp`` to lengths without unit; do not convert ``px`` to ``pt``.
+  - Use ``bp`` for lengths without unit or unit ``pt``,
+    do not convert ``px`` to ``pt``.
   - Do not use 'ae' and 'aeguill' packages if font-encoding is set to ''.
   - Set sub- and superscript role argument as text not math.
   - Support custom roles based on standard roles.
@@ -47,6 +52,7 @@ Changes Since 0.5
   - Docutils specific LaTeX objects are now all prefixed with ``DU``.
   - Local tocs with `minitoc` (if 'use-latex-toc' is True).
   - Use default font in admonitions and sidebar.
+  - Align of image in a figure defaults to 'center'.
 
 Release 0.5 (2008-06-25)
 ========================
