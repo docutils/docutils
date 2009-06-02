@@ -42,6 +42,38 @@ Usage
 Changes since 0.5
 =================
 
+Bugfixes
+--------
+
+
+* Newlines around targets and references prevent run-together paragraphs.
+
+  An image directive with hyperlink reference or target did not start a
+  new paragraph (e.g. the first two image examples in
+  standalone_rst_latex.tex).
+
+  Paragraphs were not separated if there was a (hyper) target definition
+  inbetween.
+
+* `Figure and image alignment`_ now conforms to the rst definition.
+
+
+Cleaner LaTeX source
+--------------------
+
+New features:
+  * Remove redundant "double protection" from the encoding of the "special
+    printing characters" and square brackets, e.g. ``\%`` instead of
+    ``{\%}``.
+  * Remove some spurious whitespace, e.g. ``\item [what:] -> \item[what:]``.
+  * Use conventional style for "named" macros, e.g. ``\dots{}`` instead of
+    ``{\dots}``
+
+Backwards compatibility:
+  Changes do not affect the output.
+
+
+
 LaTeX style sheets
 ------------------
 
@@ -194,20 +226,6 @@ Backwards compatibility:
    or `cmlgr` all providing Computer Modern look-alikes in vector format and
    T1 encoding, e.g. ``--font-encoding=T1 --stylesheet=lmodern``.
 
-Cleaner LaTeX source
---------------------
-
-New feature:
-  * Remove redundant "double protection" from the encoding of the "special
-    printing characters" and square brackets, e.g. ``\%`` instead of
-    ``{\%}``.
-  * Remove some spurious whitespace, e.g. ``\item [what:] -> \item[what:]``.
-  * Use conventional style for "named" macros, e.g. ``\dots{}`` instead of
-    ``{\dots}``
-
-Backwards compatibility:
-  Changes do not affect the output.
-
 Sub- and superscript as text
 ----------------------------
 
@@ -310,7 +328,6 @@ c) Also center images that are wider than textwidth.
 
 d) Align images with class "align-[right|center|left]" (allows setting the
    alignment of an image in a figure).
-
 
 Backwards compatibility:
    There is no "automatic" way to reverse these changes via a style sheet.
@@ -525,7 +542,7 @@ New Feature:
   :field list: ``DUfieldlist``  environment,
   :legend:     ``DUlegend``     environment,
   :sidebar:    ``\DUsidebar``, ``\DUsidebartitle``, and
-  	       ``DUsidebarsubtitle`` commands,
+               ``DUsidebarsubtitle`` commands,
   :topic:      ``\DUtopictitle`` command,
   :transition: ``\DUtransition`` command.
 

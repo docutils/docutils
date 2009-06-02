@@ -38,7 +38,9 @@ Changes Since 0.5
 
 * reStructuredText:
 
-  - Allow length units for all length specifications.
+  - Documented Unicode characters allowed as inline markup openers,
+    closers, and delimiters.
+  - Allow units for all length specifications.
   - Allow percent sign in "scale" argument of "figure" and "image" directives.
   - Bugfix: The "figalign" argument of a figure now works as intended
     (aligning the figure, not its contents).
@@ -99,11 +101,8 @@ Changes Since 0.5
   - Local tocs with `minitoc` (if 'use-latex-toc' is True).
   - Use default font in admonitions and sidebar.
   - Align of image in a figure defaults to 'center'.
-
-* docs/ref/rst/restructuredtext.txt:
-
-  - Documented Unicode characters allowed as inline markup openers,
-    closers, and delimiters.
+  - Bugfix: Newlines around targets and references prevent run-together
+    paragraphs.
 
 
 Release 0.5 (2008-06-25)
