@@ -207,6 +207,7 @@ class RSTState(StateWS):
     """
 
     nested_sm = NestedStateMachine
+    nested_sm_cache = []
 
     def __init__(self, state_machine, debug=0):
         self.nested_sm_kwargs = {'state_classes': state_classes,
@@ -255,16 +256,30 @@ class RSTState(StateWS):
         Create a new StateMachine rooted at `node` and run it over the input
         `block`.
         """
+        use_default = 0
         if state_machine_class is None:
             state_machine_class = self.nested_sm
+            use_default += 1
         if state_machine_kwargs is None:
             state_machine_kwargs = self.nested_sm_kwargs
+            use_default += 1
         block_length = len(block)
-        state_machine = state_machine_class(debug=self.debug,
-                                            **state_machine_kwargs)
+
+        state_machine = None
+        if use_default == 2:
+            try:
+                state_machine = self.nested_sm_cache.pop()
+            except IndexError:
+                pass
+        if not state_machine:
+            state_machine = state_machine_class(debug=self.debug,
+                                                **state_machine_kwargs)
         state_machine.run(block, input_offset, memo=self.memo,
                           node=node, match_titles=match_titles)
-        state_machine.unlink()
+        if use_default == 2:
+            self.nested_sm_cache.append(state_machine)
+        else:
+            state_machine.unlink()
         new_offset = state_machine.abs_line_offset()
         # No `block.parent` implies disconnected -- lines aren't in sync:
         if block.parent and (len(block) - block_length) != 0:
