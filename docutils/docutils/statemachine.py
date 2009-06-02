@@ -176,7 +176,7 @@ class StateMachine:
         self.states = None
 
     def run(self, input_lines, input_offset=0, context=None,
-            input_source=None):
+            input_source=None, initial_state=None):
         """
         Run the state machine on `input_lines`. Return results (a list).
 
@@ -196,6 +196,7 @@ class StateMachine:
           of the file.
         - `context`: application-specific storage.
         - `input_source`: name or path of source of `input_lines`.
+        - `initial_state`: name of initial state.
         """
         self.runtime_init()
         if isinstance(input_lines, StringList):
@@ -204,7 +205,7 @@ class StateMachine:
             self.input_lines = StringList(input_lines, source=input_source)
         self.input_offset = input_offset
         self.line_offset = -1
-        self.current_state = self.initial_state
+        self.current_state = initial_state or self.initial_state
         if self.debug:
             print >>sys.stderr, (
                 '\nStateMachine.run: input_lines (line_offset=%s):\n| %s'
@@ -410,7 +411,7 @@ class StateMachine:
                   % (state.__class__.__name__, transitions))
         for name in transitions:
             pattern, method, next_state = state.transitions[name]
-            match = self.match(pattern)
+            match = pattern.match(self.line)
             if match:
                 if self.debug:
                     print >>sys.stderr, (
@@ -424,14 +425,6 @@ class StateMachine:
                       '\nStateMachine.check_line: No match in state "%s".'
                       % state.__class__.__name__)
             return state.no_match(context, transitions)
-
-    def match(self, pattern):
-        """
-        Return the result of a regular expression match.
-
-        Parameter `pattern`: an `re` compiled regular expression.
-        """
-        return pattern.match(self.line)
 
     def add_state(self, state_class):
         """
