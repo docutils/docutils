@@ -1103,6 +1103,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
         body = ''.join(self.body_prefix  + self.body + self.body_suffix)
         return head + '\n' + body
 
+    # Tests
+    # -----
+
+    def is_inline(self, node):
+        """Check whether a node represents an inline element"""
+        return isinstance(node.parent, nodes.TextElement)
+
+    # Visitor methods
+    # ---------------
+
     def visit_Text(self, node):
         self.body.append(self.encode(node.astext()))
 
@@ -1278,7 +1288,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_comment(self, node):
         # Escape end of line by a new comment start in comment text.
-        self.body.append('%% %s \n' % node.astext().replace('\n', '\n% '))
+        self.body.append('%% %s\n' % node.astext().replace('\n', '\n% '))
         raise nodes.SkipNode
 
     def visit_compound(self, node):
@@ -1812,9 +1822,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pre = []                        # in reverse order
         post = []
         include_graphics_options = []
-        inline = isinstance(node.parent, nodes.TextElement)
+        is_inline = self.is_inline(node)
         align_prepost = {
-            # key == (<inline>, <align>)
+            # key == (<is_inline>, <align>)
             # By default latex aligns the bottom of an image.
             (True, 'bottom'): ('', ''),
             (True, 'middle'): (r'\raisebox{-0.5\height}{', '}'),
@@ -1824,8 +1834,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             (False, 'right'):  (r'{\hfill', '}'),}
         if 'align' in attrs:
             try:
-                pre.append(align_prepost[inline, attrs['align']][0])
-                post.append(align_prepost[inline, attrs['align']][1])
+                pre.append(align_prepost[is_inline, attrs['align']][0])
+                post.append(align_prepost[is_inline, attrs['align']][1])
             except KeyError:
                 pass                    # XXX complain here?
         if 'height' in attrs:
@@ -1841,7 +1851,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if 'width' in attrs:
             include_graphics_options.append('width=%s' %
                             self.to_latex_length(attrs['width']))
-        if not inline:
+        if not is_inline:
             pre.append('\n')
             post.append('\n')
         pre.reverse()
@@ -2070,13 +2080,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # mbox and other environments do not like the '#'.
         hash_char = '\\#'
         if 'refuri' in node:
-            href = node['refuri'].replace('#',hash_char)
+            href = node['refuri'].replace('#', hash_char)
         elif 'refid' in node:
             href = hash_char + node['refid']
         elif 'refname' in node:
             href = hash_char + self.document.nameids[node['refname']]
         else:
             raise AssertionError('Unknown reference.')
+        if not self.is_inline(node):
+            self.body.append('\n')
         self.body.append('\\href{%s}{' % href.replace('%', '\\%'))
         if self._reference_label and 'refuri' not in node:
             self.body.append('\\%s{%s}}' % (self._reference_label,
@@ -2085,6 +2097,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_reference(self, node):
         self.body.append('}')
+        if not self.is_inline(node):
+            self.body.append('\n')
 
     def visit_revision(self, node):
         self.visit_docinfo_item(node, 'revision')
@@ -2201,7 +2215,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body += [r'\hypertarget{%s}{' % id for id in node['ids']]
             self.context.append('}' * len(node['ids']))
         elif node.get('refid'):
-            self.body.append('\\hypertarget{%s}{' % node.get('refid'))
+            self.body.append('\n\\hypertarget{%s}{' % node.get('refid'))
             self.context.append('}')
         else:
             self.context.append('')

@@ -1911,9 +1911,6 @@ Bug fixes
 
   See `<../../test/functional/input/data/latex.txt>`__
 
-* An image directive with target URI does not start a new paragraph
-  (see first two image examples in standalone_rst_latex.tex).
-
 * Too deeply nested lists fail: generate an error, a warning or provide
   a workaround?
 

@@ -185,10 +185,12 @@ This is a test document, containing at least one example of each
 reStructuredText construct.
 
 % This is a comment. Note how any initial comments are moved by
-% transforms to after the document title, subtitle, and docinfo. 
+% transforms to after the document title, subtitle, and docinfo.
+
 \hypertarget{doctitle}{}% Above is the document title, and below is the subtitle.
-% They are transformed from section titles after parsing. 
-\hypertarget{subtitle}{}% bibliographic fields (which also require a transform): 
+% They are transformed from section titles after parsing.
+
+\hypertarget{subtitle}{}% bibliographic fields (which also require a transform):
 \hypertarget{table-of-contents}{}
 \pdfbookmark[0]{Table of Contents}{table-of-contents}
 \subsubsection*{~\hfill Table of Contents\hfill ~}
@@ -391,7 +393,7 @@ some explicit interpreted text roles: a PEP reference (\href{http://www.python.o
 RFC reference (\href{http://www.faqs.org/rfcs/rfc2822.html}{RFC 2822}); a \textsubscript{subscript}; a \textsuperscript{superscript};
 and explicit roles for \emph{standard} \textbf{inline}
 \texttt{markup}.
-% DO NOT RE-WRAP THE FOLLOWING PARAGRAPH! 
+% DO NOT RE-WRAP THE FOLLOWING PARAGRAPH!
 
 Let's test wrapping and whitespace significance in inline literals:
 \texttt{This is an example of -{}-inline-literal -{}-text, -{}-including some-{}-
@@ -446,7 +448,7 @@ Nested item 3.
 
 \item 
 This nested list should be compacted by the HTML writer.
-\hypertarget{target}{}% Even if this item contains a target and a comment. 
+\hypertarget{target}{}% Even if this item contains a target and a comment.
 
 \end{itemize}
 
@@ -803,6 +805,7 @@ Footnotes may be numbered, either manually (as in\textsuperscript{\hyperlink{id8
 automatically using a ``\#''-prefixed label.  This footnote has a
 label so it can be referred to from multiple places, both as a
 footnote reference (\textsuperscript{\hyperlink{label}{2}}) and as a \href{\#label}{hyperlink reference}.
+
 \hypertarget{label}{}\end{figure}
 \begin{figure}[b]\hypertarget{id12}$^{3}$
 This footnote is numbered automatically and anonymously using a
@@ -838,6 +841,7 @@ rendered separately and differently from footnotes.
 
 Here's a reference to the above, [\hyperlink{cit2002}{CIT2002}], and a {\color{red}\bfseries{}{[}nonexistent{]}\_}
 citation.
+
 \hypertarget{another-target}{}
 
 %___________________________________________________________________________
@@ -849,6 +853,7 @@ citation.
 \subsection*{2.13~~~Targets}
 \label{targets}
 \label{another-target}
+
 \hypertarget{example}{}
 This paragraph is pointed to by the explicit ``example'' target. A
 reference can be found under \href{\#inline-markup}{Inline Markup}, above. \href{\#inline-hyperlink-targets}{Inline
@@ -862,6 +867,7 @@ Explicit external targets are interpolated into references such as
 
 Targets may be indirect and anonymous.  Thus \href{\#id23}{this phrase} may also
 refer to the \href{\#id23}{Targets} section.
+
 \hypertarget{id23}{}
 Here's a {\color{red}\bfseries{}`hyperlink reference without a target`\_}, which generates an
 error.
@@ -942,9 +948,14 @@ document (a document-wide \href{\#table-of-contents}{table of contents}).
 \label{images-and-figures}
 
 An image directive (also clickable -{}- a hyperlink reference):
+
 \href{\#directives}{\includegraphics{../../../docs/user/rst/images/title.png}}
+
 Image with multiple IDs:
-\hypertarget{image-target-1}{}\hypertarget{image-target-2}{}\hypertarget{image-target-3}{}
+
+\hypertarget{image-target-1}{}
+\hypertarget{image-target-2}{}
+\hypertarget{image-target-3}{}
 \includegraphics{../../../docs/user/rst/images/title.png}
 
 A centered image:
@@ -1293,7 +1304,7 @@ Here's one:
 % 
 % Double-dashes -- "--" -- must be escaped somehow in HTML output.
 % 
-% Comments may contain non-ASCII characters: ä ö ü æ ø å 
+% Comments may contain non-ASCII characters: ä ö ü æ ø å
 
 (View the HTML source to see the comment.)
 
@@ -1324,7 +1335,7 @@ paragraph 1
 paragraph 2
 % the standalone_rst_html4css1.txt document includes this:
 %  .. include:: data/header_footer.txt
-% Applicable for latex too? [GM] 
+% Applicable for latex too? [GM]
 
 
 %___________________________________________________________________________
@@ -1556,7 +1567,7 @@ This is a \textsuperscript{\DUrole{custom-superscript}{customized superscript te
 This is a \DUroletitlereference{\DUrole{custom-title-reference}{customized title-reference text role}}
 
 \end{itemize}
-% This file is used by the standalone_rst_latex test. 
+% This file is used by the standalone_rst_latex test.
 
 
 %___________________________________________________________________________
@@ -1791,8 +1802,8 @@ greater-than and bar, \textless{} \textbar{} \textgreater{}, except for typewrit
 <~|~>
 }\end{quote}
 % unusual combinations (from newlatex, should we test them)
-% .. include:: data/latex.txt 
-% end of the special tests for the LaTeX writer 
+% .. include:: data/latex.txt
+% end of the special tests for the LaTeX writer
 
 
 %___________________________________________________________________________
@@ -1806,7 +1817,7 @@ Any errors caught during processing will generate system messages.
 
 There should be five messages in the following, auto-generated
 section, ``Docutils System Messages'':
-% section should be added by Docutils automatically 
+% section should be added by Docutils automatically
 
 
 %___________________________________________________________________________
