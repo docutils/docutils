@@ -1918,6 +1918,8 @@ Bug fixes
 Generate clean and configurable LaTeX source
 ----------------------------------------------
 
+* fix newlines (before \DUadmonition, non in depart_list_item(), ...)
+
 * Check the generated source with package `nag`.
 
 LaTeX macros for Docutils-specific objects
@@ -1942,6 +1944,9 @@ LaTeX macros for Docutils-specific objects
 
               Use a "type" argument also for ``\DUtopictitle``?
 	      (would allow red error etc.)
+
+
+:section titles: Custom command or package `hypbmsec`?
 
 * Configurable placement of figure and table floats.
 
@@ -2175,10 +2180,6 @@ Missing features
   currently no effect on the LaTeX output.
 
 * better citation support
-
-* Document errors are also too silent. (Use admonition/error?)
-
-  No link to system errors.
 
 * Meta keywords into PDF ?
 
