@@ -93,7 +93,7 @@ The ``aafigure`` directive has the following options:
 
 - ``:line_width: <float>``   change line with (svg only currently)
 
-- ``:line_format: <str>`` choose backend/output format: 'svg', 'png', all
+- ``:format: <str>`` choose backend/output format: 'svg', 'png', all
   bitmap formats that PIL supports can be used but only few make sense. Line
   drawings have a good compression and better quality when saved as PNG
   rather than a JPEG. The best quality will be achieved with SVG, tough not
