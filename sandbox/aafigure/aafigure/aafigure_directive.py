@@ -2,15 +2,9 @@
 Implement aafigure directive for docutils.
 """
 
-import os, sys, tempfile, popen2
+import os
 #~ import cStringIO
 import aafigure
-import svg
-try:
-    import pil
-except ImportError:
-    # no support for bitmaps when module is missing
-    pil = None
 
 from docutils import nodes
 from docutils.parsers.rst.directives import register_directive, flag
@@ -51,27 +45,16 @@ def AAFigureDirective(name, arguments, options, content, lineno,
         options['name'] = 'aafigure-%i' % aafigure_counter
         aafigure_counter += 1
 
-    aaimg = aafigure.AsciiArtImage(
-        text,
-        aspect_ratio = options['aspect'],
-        textual = options.has_key('textual')
-    )
-    aaimg.recognize()
+    output_name = options['name'] + '.' + options['format'].lower()
+    try:
+        aafigure.render(text, output_name, options)
+    except aafigure.UnsupportedFormatError, e:
+        result = [state_machine.reporter.error(str(e),
+            nodes.literal_block(block_text, block_text),
+            line=lineno
+        )]
 
     if options['format'] == 'svg':
-        output_name = options['name'] + '.svg'
-        #~ io = cStringIO.StringIO()
-        svgout = svg.SVGOutputVisitor(
-            file(output_name, 'w'),
-            #~ io,
-            scale = options['scale']*6,
-            line_width = options['line_width'],
-            foreground = decode_color(options['foreground']),
-            background = decode_color(options['background']),
-            fillcolor = decode_color(options['fill']),
-            proportional = options['proportional'],
-        )
-        svgout.visit_image(aaimg)
         #~ svgout.visit(aaimg, xml_header = False)
         # insert data into html using a raw node
         attributes = {'format': 'html'}
@@ -82,56 +65,17 @@ def AAFigureDirective(name, arguments, options, content, lineno,
         ), **attributes)]
         #~ result = [nodes.raw('', io.getvalue(), **attributes)]
     elif options['format'] == 'pdf':
-        import pdf
-        output_name = options['name'] + '.pdf'
-        doc = pdf.PDFOutputVisitor(
-            file(output_name, 'wb'),
-            scale = options['scale'],
-            line_width = options['line_width'],
-            foreground = decode_color(options['foreground']),
-            background = decode_color(options['background']),
-            fillcolor = decode_color(options['fill']),
-            proportional = options['proportional'],
-        )
-        doc.visit_image(aaimg)
         # Return a link.
         wrapper = nodes.generated()
         wrapper.append(nodes.reference('', '%s (PDF)' % options['name'],
             refuri=os.path.basename(output_name)
         ))
         result = [wrapper]
-    elif pil is not None:
-        output_name = '%s.%s' % (options['name'], options['format'])
-        pilout = pil.PILOutputVisitor(
-            file(output_name, 'wb'),
-            scale = options['scale']*7,
-            line_width = options['line_width'],
-            debug = True,
-            file_type = options['format'],
-            foreground = decode_color(options['foreground']),
-            background = decode_color(options['background']),
-            fillcolor = decode_color(options['fill']),
-            proportional = options['proportional'],
-        )
-        try:
-            pilout.visit_image(aaimg)
-        except KeyError:
-            result = [state_machine.reporter.error(
-                'No support for image format %r' % (options['format']),
-                nodes.literal_block(block_text, block_text),
-                line=lineno
-            )]
-        else:
-            # Return an image directive.
-            image_options = {}
-            image_options['uri'] = os.path.basename(output_name)
-            result = [nodes.image(output_name, **image_options)]
     else:
-        result = [state_machine.reporter.error(
-            'No support for image format %r (PIL not installed)' % (options['format']),
-            nodes.literal_block(block_text, block_text),
-            line=lineno
-        )]
+        # Return an image directive.
+        image_options = {}
+        image_options['uri'] = os.path.basename(output_name)
+        result = [nodes.image(output_name, **image_options)]
 
     return result
 
