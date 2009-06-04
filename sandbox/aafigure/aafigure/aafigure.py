@@ -195,6 +195,8 @@ class AsciiArtImage:
                         self.shapes.extend(self._follow_vertical_line(x, y))
                     elif character == '_':
                         self.shapes.extend(self._follow_lower_horizontal_line(x, y))
+                    elif character == '~':
+                        self.shapes.extend(self._follow_upper_horizontal_line(x, y))
                     elif character == '=':
                         self.shapes.extend(self._follow_horizontal_line(x, y, thick=True))
                     if character == '+':
@@ -585,6 +587,23 @@ class AsciiArtImage:
         # return the new shape object with arrows etc.
         p1 = complex(self.hcenter(start_x-1), self.bottom(y))
         p2 = complex(self.hcenter(end_x+1), self.bottom(y))
+        return [Line(p1, p2)]
+
+    def _follow_upper_horizontal_line(self, x, y):
+        """find a horizontal line, the line is aligned to the bottom and a bit
+           wider, so that it can be used for shapes like this:
+
+             |~~~|
+           ~~     ~~~
+        """
+        # follow line to the right
+        end_x, _, line_end_style = self._follow_line(x, y, dx=1, line_character='~', arrows=False)
+        # follow line to the left
+        start_x, _, line_start_style = self._follow_line(x, y, dx=-1, line_character='~', arrows=False)
+        self.tag([(x, y) for x in range(start_x, end_x+1)], CLASS_LINE)
+        # return the new shape object with arrows etc.
+        p1 = complex(self.hcenter(start_x-1), self.top(y))
+        p2 = complex(self.hcenter(end_x+1), self.top(y))
         return [Line(p1, p2)]
 
     def _follow_line(self, x, y, dx=0, dy=0, line_character=None, arrows=True):
