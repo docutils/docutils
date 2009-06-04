@@ -702,7 +702,7 @@ Parsed Literal Blocks
        This line is indented.  The next line is blank.
 
    Inline markup is supported, e.g. *emphasis*, **strong**, ``literal
-   text``, footnotes [1]_, _`targets`, and `references
+   text``, footnotes [1]_, _`hyperlink targets`, and `references
    <http://www.python.org/>`_.
 
 Substitution Definitions
