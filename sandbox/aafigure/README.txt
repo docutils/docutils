@@ -115,9 +115,12 @@ The ``aafigure`` directive has the following options:
   However, ``:aspect: 0.5`` looks more like the original ASCII and even smaller
   factors may be useful for timing diagrams and such. But there is a risk that
   text is cropped or is draw over an object beside it.
-  
+
   The stretching is done before drawing arrows or circles, so that they are
   still good looking.
+
+- ``:proportional: <flag>``  use a proportional font instead of a monospaced
+  one.
 
 
 Lines
