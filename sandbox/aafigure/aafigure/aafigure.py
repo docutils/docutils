@@ -16,6 +16,18 @@ CLASS_RECTANGLE = 'rect'
 CLASS_JOIN = 'join'
 CLASS_FIXED = 'fixed'
 
+DEFAULT_OPTIONS = dict(
+    background   = '#ffffff',
+    foreground   = '#000000',
+    line_width   = 2.0,
+    scale        = 1.0,
+    aspect       = 1.0,
+    format       = 'svg',
+    debug        = False,
+    textual      = False,
+    proportional = False,
+)
+
 # - - - - - - - - - - - - - - Shapes - - - - - - - - - - - - - - -
 def point(object):
     """return a Point instance.
@@ -848,24 +860,194 @@ class AsciiArtImage:
             self.tag([(x,y)], CLASS_JOIN)
         return group(result)
 
+class UnsupportedFormatError(Exception):
+    pass
 
-if __name__ == '__main__':
-    import sys
-    import pprint
-    import svg
-    import aa
-    import optparse
+def render(input, output=None, options=None):
+    """Render an ASCII art figure.
+
+    If ``input`` is a basestring subclass (str or unicode), the text contained
+    in ``input`` is rendered. If ``input is a file-like object, the text to
+    render is taken using ``input.read()``. If no ``output`` is specified, the
+    resulting rendered image is returned as a string. If output is a basestring
+    subclass, a file with the name of ``output`` contents is created and the
+    rendered image is saved there. If ``output`` is a file-like object,
+    ``output.write()`` is used to save the rendered image.
+
+    ``options`` are... optional. You can provide a dictionary with options.
+    Valid keys (and their defaults) are:
+
+    background <str>:
+        background color in the form ``#rgb`` or ``#rrggbb``, *not* for SVG
+        output (default: ``#000000``).
+
+    foreground <str>:
+        foreground color in the form ``#rgb`` or ``#rrggbb`` (default:
+        ``#ffffff``).
+
+    fill <str>:
+	fill color in the form ``#rgb`` or ``#rrggbb`` (default: same as
+	``foreground`` color).
+
+    line_width <float>:
+        change line with, SVG only currently (default: 2.0).
+
+    scale <float>:
+        enlarge or shrink image (default: 1.0).
+
+    aspect <float>:
+        change aspect ratio. Effectively it is the width of the image that is
+        multiplied by this factor. The default setting ``1`` is useful when
+        shapes must have the same look when drawn horizontally or vertically.
+        However, 0.5 looks more like the original ASCII and even smaller
+        factors may be useful for timing diagrams and such. But there is a risk
+        that text is cropped or is draw over an object beside it.
+
+        The stretching is done before drawing arrows or circles, so that they
+        are still good looking (default: 1.0).
+
+    format <str>:
+        choose backend/output format: 'svg', 'pdf', 'png' and all bitmap
+        formats that PIL supports can be used but only few make sense. Line
+        drawings have a good compression and better quality when saved as PNG
+        rather than a JPEG. The best quality will be achieved with SVG, tough
+        not all browsers support this vector image format at this time
+        (default: 'svg').
+
+    debug <bool>:
+        for now, it only prints the original ASCII art figure text (default:
+        False).
+
+    textual <bool>:
+        disables horizontal fill detection. Fills are only detected when they
+        are vertically at least 2 characters high (default: False).
+
+    proportional <bool>:
+        use a proportional font. Proportional fonts are general better looking
+        than monospace fonts but they can mess the figure if you need them to
+        look as similar as possible to the ASCII art (default: False).
+
+    This function can raise an UnsupportedFormatError exception if the
+    specified format is not supported.
+    """
 
     def decode_color(color_string):
         if color_string[0] == '#':          # HTML like color syntax
             if len(color_string) == 4:      # #rgb format
                 r,g,b = [int(c+c, 16) for c in color_string[1:]]
             elif len(color_string) == 7:      # #rrggbb format
-                r,g,b = [int(color_string[n:n+2], 16) for n in range(1, len(color_string), 2)]
+                r,g,b = [int(color_string[n:n+2], 16)
+                                for n in range(1, len(color_string), 2)]
             else:
                 raise ValueError('not a valid color: %r' % color_string)
         # XXX add a list of named colors
         return r,g,b
+
+    def merge(dst, src):
+        for (k, v) in src.items():
+            if k not in dst:
+                dst[k] = v
+
+    if options is None:
+        options = dict()
+
+    merge(options, DEFAULT_OPTIONS)
+    if 'fill' not in options or options['fill'] is None:
+        options['fill'] = options['foreground']
+
+    if hasattr(input, 'read'):
+        input = input.read()
+
+    aaimg = AsciiArtImage(input, options['aspect'], options['textual'])
+    if options['debug']:
+        sys.stderr.write(str(aaimg) + '\n')
+    aaimg.recognize()
+
+    close_output = False
+    return_output = False
+    if output is None:
+        import StringIO
+        output = StringIO.StringIO()
+        return_output = True
+    if isinstance(output, basestring):
+        output = file(output, 'wb')
+        close_output = True
+
+    if options['format'].lower() == 'svg':
+        import svg
+        svgout = svg.SVGOutputVisitor(
+            output,
+            scale = options['scale']*7,
+            line_width = options['line_width'],
+            foreground = decode_color(options['foreground']),
+            background = decode_color(options['background']),
+            fillcolor = decode_color(options['fill']),
+            proportional = options['proportional'],
+            #~ debug = options['debug'],
+        )
+        svgout.visit_image(aaimg)
+    elif options['format'].lower() == 'pdf':
+        try:
+            import pdf
+        except ImportError:
+            if close_output:
+                output.close()
+            raise UnsupportedFormatError('install reportlab to get PDF support')
+        doc = pdf.PDFOutputVisitor(
+            output,
+            scale = options['scale'],
+            line_width = options['line_width'],
+            foreground = decode_color(options['foreground']),
+            background = decode_color(options['background']),
+            fillcolor = decode_color(options['fill']),
+            proportional = options['proportional'],
+            #~ debug = options['debug'],
+        )
+        doc.visit_image(aaimg)
+    elif options['format'].lower() == 'ascii':
+        import aa
+        out = aa.AsciiOutputVisitor(
+            scale = options['scale'],
+        )
+        out.visit_image(aaimg)
+        output.write(str(out))
+    else:
+        try:
+            import pil
+        except ImportError:
+            if close_output:
+                output.close()
+            raise UnsupportedFormatError('install PIL to get bitmap formats '
+                    'support')
+        pilout = pil.PILOutputVisitor(
+            output,
+            scale = options['scale']*7,
+            line_width = options['line_width'],
+            foreground = decode_color(options['foreground']),
+            background = decode_color(options['background']),
+            fillcolor = decode_color(options['fill']),
+            proportional = options['proportional'],
+            file_type = options['format'],
+            #~ debug = options['debug'],
+        )
+        try:
+            pilout.visit_image(aaimg)
+        except KeyError:
+            if close_output:
+                output.close()
+            raise UnsupportedFormatError("PIL doesn't support image format %r" %
+                    options['format'])
+
+    if close_output:
+        output.close()
+
+    if return_output:
+        return output
+
+
+if __name__ == '__main__':
+    import sys
+    import optparse
 
     parser = optparse.OptionParser(
         usage = "%prog [options] [file]"
@@ -880,21 +1062,21 @@ if __name__ == '__main__':
     parser.add_option("-t", "--type",
         dest = "type",
         help = "filetype: png, jpg, svg",
-        default = 'svg'
+        default = DEFAULT_OPTIONS['format'],
     )
 
     parser.add_option("-D", "--debug",
         dest = "debug",
         action = "store_true",
         help = "enable debug outputs",
-        default = False
+        default = DEFAULT_OPTIONS['debug'],
     )
 
     parser.add_option("-T", "--textual",
         dest = "textual",
         action = "store_true",
         help = "disable horizontal fill detection",
-        default = False
+        default = DEFAULT_OPTIONS['textual'],
     )
 
     parser.add_option("-s", "--scale",
@@ -902,7 +1084,7 @@ if __name__ == '__main__':
         action = "store",
         type = 'float',
         help = "set scale",
-        default = 1
+        default = DEFAULT_OPTIONS['scale'],
     )
 
     parser.add_option("-a", "--aspect",
@@ -910,7 +1092,7 @@ if __name__ == '__main__':
         action = "store",
         type = 'float',
         help = "set aspect ratio",
-        default = 1
+        default = DEFAULT_OPTIONS['aspect'],
     )
 
     parser.add_option("-l", "--linewidth",
@@ -918,38 +1100,43 @@ if __name__ == '__main__':
         action = "store",
         type = 'float',
         help = "set width, svg only",
-        default = 2
+        default = DEFAULT_OPTIONS['line_width'],
     )
 
     parser.add_option("--proportional",
         dest = "proportional",
         action = "store_true",
         help = "use proportional font instead of fixed width",
-        default = False
+        default = DEFAULT_OPTIONS['proportional'],
     )
 
     parser.add_option("-f", "--foreground",
         dest = "foreground",
         action = "store",
         help = "foreground color default=%default",
-        default = '#000000'
+        default = DEFAULT_OPTIONS['foreground'],
     )
 
     parser.add_option("-x", "--fill",
         dest = "fill",
         action = "store",
-        help = "foreground color default=%default",
-        default = '#000000'
+        help = "foreground color default=foreground",
+        default = None,
     )
 
     parser.add_option("-b", "--background",
         dest = "background",
         action = "store",
         help = "foreground color default=%default",
-        default = '#ffffff'
+        default = DEFAULT_OPTIONS['background'],
     )
 
-    (options, args) = parser.parse_args()
+    class Values:
+        def as_dict(self):
+            return dict(((k, getattr(d,k)) for k in dir(d)
+                                                if not k.startswith('__')))
+    options = Values()
+    (options, args) = parser.parse_args(values=options)
 
     if len(args) > 1:
         parser.error("too many arguments")
@@ -959,8 +1146,9 @@ if __name__ == '__main__':
     else:
         input = sys.stdin
 
-    #~ def render(text):
+    #~ def render(text, output, options):
         #~ """helper function for tests. scan the given image and create svg output"""
+        #~ import pprint
         #~ aaimg = AsciiArtImage(text)
         #~ print text
         #~ aaimg.recognize()
@@ -990,59 +1178,10 @@ if __name__ == '__main__':
     #~ aav.visit(aaimg)
     #~ print aav
 
-    aaimg = AsciiArtImage(input.read(), options.aspect, options.textual)
-    if options.debug:
-        sys.stderr.write(str(aaimg) + '\n')
-    aaimg.recognize()
-
     if options.output:
         output = file(options.output, 'wb')
     else:
         output = sys.stdout
-    if options.type.lower() == 'svg':
-        pilout = svg.SVGOutputVisitor(
-            output,
-            scale = options.scale*7,
-            line_width = options.linewidth,
-            #~ debug = options.debug,
-            foreground = decode_color(options.foreground),
-            background = decode_color(options.background),
-            fillcolor = decode_color(options.fill),
-            proportional = options.proportional,
-        )
-        pilout.visit_image(aaimg)
-    elif options.type.lower() == 'pdf':
-        import pdf
-        doc = pdf.PDFOutputVisitor(
-            output,
-            scale = options.scale,
-            line_width = options.linewidth,
-            #~ debug = options.debug,
-            foreground = decode_color(options.foreground),
-            background = decode_color(options.background),
-            fillcolor = decode_color(options.fill),
-            proportional = options.proportional,
-        )
-        doc.visit_image(aaimg)
-    elif options.type.lower() == 'ascii':
-        import aa
-        out = aa.AsciiOutputVisitor(
-            scale = options.scale,
-        )
-        out.visit_image(aaimg)
-        output.write(str(out))
-    else:
-        import pil
-        pilout = pil.PILOutputVisitor(
-            output,
-            scale = options.scale*7,
-            line_width = options.linewidth,
-            debug = options.debug,
-            file_type = options.type,
-            foreground = options.foreground,
-            background = options.background,
-            fillcolor = options.fill,
-            proportional = options.proportional,
-        )
-        pilout.visit_image(aaimg)
+
+    render(input, output, options.as_dict())
 
