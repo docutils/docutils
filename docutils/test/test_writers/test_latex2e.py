@@ -104,7 +104,6 @@ latex_head_prefix + latex_requirements + latex_head + b(r"""
 \end{list}
 
 
-
 %___________________________________________________________________________
 
 \hypertarget{title-1}{}
