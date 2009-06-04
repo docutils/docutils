@@ -122,20 +122,21 @@ The ``aafigure`` directive has the following options:
 
 Lines
 -----
-The ``-`` and ``|`` are normally used for lines. ``_`` can also be used. It is a
-slightly longer line than the ``-`` and it's is drawn a bit lower. ``=`` gives
-a thicker line. The later two line types can only be drawn horizontally.
+The ``-`` and ``|`` are normally used for lines. ``_`` and ``~`` can also be
+used. They are slightly longer lines than the ``-``. ``_`` is drawn a bit
+lower and ``~`` a bit upper. ``=`` gives a thicker line. The later three line
+types can only be drawn horizontally.
 ::
 
-  ---- |         ___ 
-       | --  ___|     ===
-                     
+  ---- |         ___  ~~~|
+       | --  ___|        |    ===
+                         ~~~
 
 .. aafigure::
 
-  ---- |         ___ 
-       | --  ___|     ===
-                     
+  ---- |         ___  ~~~|
+       | --  ___|        |    ===
+                         ~~~
 
 It is also possible to draw diagonal lines. Their use is somewhat restricted
 tough. Not all cases work as expected.
