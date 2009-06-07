@@ -1177,8 +1177,9 @@ if __name__ == '__main__':
     #~ aav.visit(aaimg)
     #~ print aav
 
-    if options.output:
+    if hasattr(options, 'output'):
         output = file(options.output, 'wb')
+	delattr(options, 'output')
     else:
         output = sys.stdout
 
