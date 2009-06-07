@@ -47,22 +47,22 @@ def AAFigureDirective(name, arguments, options, content, lineno,
 
     output_name = options['name'] + '.' + options['format'].lower()
     try:
-        aafigure.render(text, output_name, options)
+        (visitor, output) = aafigure.render(text, output_name, options)
     except aafigure.UnsupportedFormatError, e:
         result = [state_machine.reporter.error(str(e),
             nodes.literal_block(block_text, block_text),
             line=lineno
         )]
+    output.close()
 
     if options['format'] == 'svg':
         #~ svgout.visit(aaimg, xml_header = False)
         # insert data into html using a raw node
         attributes = {'format': 'html'}
         #~ # result = [nodes.raw('', '<embed src="%s" %s type="image/svg+xml"/>' % (
-        result = [nodes.raw('', '<object type="image/svg+xml" data="%s" %s></object>' % (
-            output_name,
-            svgout.get_size_attrs()
-        ), **attributes)]
+        result = [nodes.raw('', '<object type="image/svg+xml" data="%s" %s>'
+                '</object>' % (output_name, visitor.get_size_attrs()),
+                **attributes)]
         #~ result = [nodes.raw('', io.getvalue(), **attributes)]
     elif options['format'] == 'pdf':
         # Return a link.

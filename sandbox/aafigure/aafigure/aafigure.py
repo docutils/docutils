@@ -874,6 +874,11 @@ def render(input, output=None, options=None):
     rendered image is saved there. If ``output`` is a file-like object,
     ``output.write()`` is used to save the rendered image.
 
+    This function returns a tuple ``(visitor, output)``, where ``visitor`` is
+    visitor instance that rendered the image and ``output`` is the image as
+    requested by the ``output`` parameter (a ``str`` if it was ``None``, or
+    a file-like object otherwise, which you should ``close()`` if needed).
+
     ``options`` are... optional. You can provide a dictionary with options.
     Valid keys (and their defaults) are:
 
@@ -964,18 +969,16 @@ def render(input, output=None, options=None):
     aaimg.recognize()
 
     close_output = False
-    return_output = False
     if output is None:
         import StringIO
         output = StringIO.StringIO()
-        return_output = True
     if isinstance(output, basestring):
         output = file(output, 'wb')
         close_output = True
 
     if options['format'].lower() == 'svg':
         import svg
-        svgout = svg.SVGOutputVisitor(
+        visitor = svg.SVGOutputVisitor(
             output,
             scale = options['scale']*7,
             line_width = options['line_width'],
@@ -985,7 +988,7 @@ def render(input, output=None, options=None):
             proportional = options['proportional'],
             #~ debug = options['debug'],
         )
-        svgout.visit_image(aaimg)
+        visitor.visit_image(aaimg)
     elif options['format'].lower() == 'pdf':
         try:
             import pdf
@@ -993,7 +996,7 @@ def render(input, output=None, options=None):
             if close_output:
                 output.close()
             raise UnsupportedFormatError('install reportlab to get PDF support')
-        doc = pdf.PDFOutputVisitor(
+        visitor = pdf.PDFOutputVisitor(
             output,
             scale = options['scale'],
             line_width = options['line_width'],
@@ -1003,14 +1006,14 @@ def render(input, output=None, options=None):
             proportional = options['proportional'],
             #~ debug = options['debug'],
         )
-        doc.visit_image(aaimg)
+        visitor.visit_image(aaimg)
     elif options['format'].lower() == 'ascii':
         import aa
-        out = aa.AsciiOutputVisitor(
+        visitor = aa.AsciiOutputVisitor(
             scale = options['scale'],
         )
-        out.visit_image(aaimg)
-        output.write(str(out))
+        visitor.visit_image(aaimg)
+        output.write(str(visitor))
     else:
         try:
             import pil
@@ -1019,7 +1022,7 @@ def render(input, output=None, options=None):
                 output.close()
             raise UnsupportedFormatError('install PIL to get bitmap formats '
                     'support')
-        pilout = pil.PILOutputVisitor(
+        visitor = pil.PILOutputVisitor(
             output,
             scale = options['scale']*7,
             line_width = options['line_width'],
@@ -1031,18 +1034,14 @@ def render(input, output=None, options=None):
             #~ debug = options['debug'],
         )
         try:
-            pilout.visit_image(aaimg)
+            visitor.visit_image(aaimg)
         except KeyError:
             if close_output:
                 output.close()
             raise UnsupportedFormatError("PIL doesn't support image format %r" %
                     options['format'])
 
-    if close_output:
-        output.close()
-
-    if return_output:
-        return output
+    return (visitor, output)
 
 
 if __name__ == '__main__':
@@ -1183,5 +1182,6 @@ if __name__ == '__main__':
     else:
         output = sys.stdout
 
-    render(input, output, options.as_dict())
+    (visitor, output) = render(input, output, options.as_dict())
+    output.close()
 
