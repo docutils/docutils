@@ -211,6 +211,8 @@ class AsciiArtImage:
                         self.shapes.extend(self._follow_upper_horizontal_line(x, y))
                     elif character == '=':
                         self.shapes.extend(self._follow_horizontal_line(x, y, thick=True))
+                    elif character in '\\/':
+                        self.shapes.extend(self._follow_rounded_edge(x, y))
                     if character == '+':
                         self.shapes.extend(self._plus_joiner(x, y))
                     #~ if character in self.FILL_CHARACTERS \
@@ -226,8 +228,6 @@ class AsciiArtImage:
                         else:
                             if (self.get(x+1,y) == character or self.get(x,y+1) == character):
                                 self.shapes.extend(self._follow_fill(character, x, y))
-                if character in '\\/':
-                    self.shapes.extend(self._follow_rounded_edge(x, y))
 
         #search for short strings too
         for y in range(self.height):
