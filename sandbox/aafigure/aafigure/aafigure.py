@@ -1132,8 +1132,8 @@ if __name__ == '__main__':
 
     class Values:
         def as_dict(self):
-            return dict(((k, getattr(d,k)) for k in dir(d)
-                                                if not k.startswith('__')))
+            return dict(((k, getattr(self,k)) for k in dir(self)
+                        if not k.startswith('__') and k != 'as_dict'))
     options = Values()
     (options, args) = parser.parse_args(values=options)
 
