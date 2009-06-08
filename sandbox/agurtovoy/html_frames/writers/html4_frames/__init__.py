@@ -159,11 +159,11 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
 
         if self.settings.no_frames:
             self.visitors = [self._page_translator(document, self.docframe)]
-            self.home_page = _toc_entry(_node_id(document), 'Front Page')
+            self.home_page = _toc_entry( self._chunk_id( document ), 'Front Page' )
             self.tocframe = self.docframe
         else:
             self.visitors = [self._page_translator(self._node_to_document(document), self.docframe)]
-            self.home_page = _toc_entry(_node_id(document), 'Front Page')
+            self.home_page = _toc_entry( self._chunk_id( document ), 'Front Page' )
 
         self.full_toc_page = _toc_entry('%s_toc' % self.page_files_dir, 'Full TOC')
         self.full_toc_page.up = self.home_page
@@ -207,9 +207,9 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
     def visit_section(self, node):
         self.section_level += 1
         if self.section_level <= self.max_chunk_level:
-            section_id = _node_id(node)
-            if self.page_subtoc.has_key(section_id):
-                node.append(self.page_subtoc[section_id])            
+            chunk_id = self._chunk_id( node )
+            if self.page_subtoc.has_key( chunk_id ):
+                node.append( self.page_subtoc[chunk_id] )            
 
             self.toc = self.toc.next
             self.visitors.append(self._page_translator(
@@ -234,13 +234,13 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
             self.active_visitor().body.append(self._footer_end())
             self._handle_depart_page(self.active_visitor(), node)
             visitor = self.visitors.pop()
-            self.pages[_node_id(node)] = visitor.astext()
+            self.pages[ self._chunk_id( node ) ] = visitor.astext()
 
         self.section_level -= 1
 
 
     def visit_topic(self, node):
-        if _is_toc_node( node ) and not self.in_home_page:
+        if self._is_toc_node( node ) and not self.in_home_page:
             self.toc_nav_builder = _toc_nav_builder(home=self.home_page)
             self.visitors.append(self._page_translator(
                   self._node_to_document(node)
@@ -257,7 +257,7 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
             self.active_visitor().visit_topic(node)
 
     def depart_topic(self, node):
-        if _is_toc_node( node ) and not self.in_home_page:
+        if self._is_toc_node( node ) and not self.in_home_page:
             self.toc_nav_builder = None
             if self.settings.no_frames:
                 self.active_visitor().body.append(self._footer_start())
@@ -281,8 +281,8 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
 
     def visit_bullet_list(self, node):
         if self._is_in_main_toc():
-            section_id = self.toc_nav_builder.last_visited.id
-            self.page_subtoc[section_id] = self._subtoc(node)
+            chunk_id = self.toc_nav_builder.last_visited.id
+            self.page_subtoc[chunk_id] = self._subtoc(node)
             self.toc_nav_builder.subsection()
             self.section_level += 1
             if self.section_level > self.max_chunk_level:
@@ -329,24 +329,25 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
                 
                 if len(sections) > self.max_chunk_level:
                     anchor = section_id
-                    section_id = _node_id(sections[self.max_chunk_level - 1])
+                    section_id = self._node_id( sections[self.max_chunk_level - 1] )
                 elif len(sections):
                     anchor = section_id
-                    section_id = _node_id(sections[-1])
+                    section_id = self._node_id( sections[-1] )
                 
                 # if it's a page, don't link to the page's title instead of just the page itself
                 if anchor == section_id or anchor.find('id') == 0: # or -> temporary hack!
                     anchor = None
             
+            chunk_id = self._make_chunk_id( section_id )
             self.active_visitor().body[-1] = self._replace_href(
-                  self._chunk_ref(self._active_chunk_id(), section_id, anchor)
+                  self._chunk_ref( self._active_chunk_id(), chunk_id, anchor )
                 , self.active_visitor().body[-1]
                 )
 
             if self._is_in_main_toc():
-                name = _node_name(node)
+                name = self._node_name(node)
                 if not name: name = node.astext()
-                self.toc_nav_builder.along(section_id, name)
+                self.toc_nav_builder.along( chunk_id, name )
     
 
     def depart_reference(self, node):
@@ -397,10 +398,10 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
             return  node != root \
                 and isinstance(node, docutils.nodes.bullet_list)
 
-        _set_node_id(node, 'outline')
+        self._set_node_id(node, 'outline')
 
-        if _node_class( node ) is None:
-            _set_node_class( node, 'toc' )
+        if self._node_class( node ) is None:
+            self._set_node_class( node, 'toc' )
 
         return _filter_tree(
               self._node_to_document(node)
@@ -503,6 +504,10 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
         return item
 
 
+    def _chunk_id( self, node ):
+        return self._make_chunk_id( self._node_id( node ) )
+
+
     def _chunk_ref(self, source_id, target_id, anchor=None):
         prefix = './'
         if self.settings.no_frames:
@@ -524,7 +529,12 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
 
 
     def _active_chunk_id(self):
-        return _node_id(self.active_visitor().document)
+        return self._chunk_id( self.active_visitor().document )
+
+
+    def _make_chunk_id( self, node_id ):
+        return node_id
+
 
     def _is_in_main_toc(self):
         return self.toc_nav_builder
@@ -532,6 +542,28 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
 
     def _handle_depart_page(self, translator, node):
         pass
+
+    def _is_toc_node( self, node ):
+        return self._node_class( node ) == 'contents'    
+
+    def _node_id( self, node ):
+        return node['ids'][0]
+
+    def _set_node_id( self, node, id ):
+        node['ids'] = [ id ]
+
+    def _node_class( self, node ):
+        if len( node['classes'] ):
+            return node['classes'][0]
+        return None
+
+    def _set_node_class( self, node, class_ ):
+        node['classes'] = [ class_ ]
+
+    def _node_name( self, node ):
+        if len( node['names'] ):
+            return node['names'][0]
+        return None
 
 
 def _setup_forwarding(visitor):
@@ -585,17 +617,17 @@ class _toc_nav_builder:
         parent.next = self.last_visited
         self.last_sibling = self.last_visited
 
-    def along(self, section_id, name):
+    def along( self, chunk_id, name ):
         last = self.last_visited
         if last.id:
-            self.last_visited = _toc_entry(section_id, name)
+            self.last_visited = _toc_entry( chunk_id, name )
             self.last_visited.prev = last
             self.last_visited.back = self.last_sibling
             self.last_visited.up = self.last_sibling.up
             last.next = self.last_sibling.along = self.last_visited
             self.last_sibling = self.last_visited
         else:
-            self.last_visited.id = section_id
+            self.last_visited.id = chunk_id
             self.last_visited.name = name
 
     def up(self):
@@ -607,33 +639,3 @@ class _toc_entry:
         self.id = id
         self.name = name
         self.prev = self.next = self.back = self.along = self.up = None
-
-
-def _is_toc_node( node ):
-    return _node_class( node ) == 'contents'    
-
-
-def _node_id( node ):
-    return node['ids'][0]
-
-
-def _set_node_id( node, id ):
-    node['ids'] = [ id ]
-
-
-def _node_class( node ):
-    if len( node['classes'] ):
-        return node['classes'][0]
-
-    return None
-
-
-def _set_node_class( node, class_ ):
-    node['classes'] = [ class_ ]
-
-
-def _node_name( node ):
-    if len( node['names'] ):
-        return node['names'][0]
-
-    return None
