@@ -891,8 +891,8 @@ def render(input, output=None, options=None):
         ``#ffffff``).
 
     fill <str>:
-	fill color in the form ``#rgb`` or ``#rrggbb`` (default: same as
-	``foreground`` color).
+        fill color in the form ``#rgb`` or ``#rrggbb`` (default: same as
+        ``foreground`` color).
 
     line_width <float>:
         change line with, SVG only currently (default: 2.0).
@@ -1044,7 +1044,8 @@ def render(input, output=None, options=None):
     return (visitor, output)
 
 
-if __name__ == '__main__':
+def main():
+    """implent an useful main for use as command line program"""
     import sys
     import optparse
 
@@ -1179,10 +1180,13 @@ if __name__ == '__main__':
 
     if hasattr(options, 'output'):
         output = file(options.output, 'wb')
-	delattr(options, 'output')
+        delattr(options, 'output')
     else:
         output = sys.stdout
 
     (visitor, output) = render(input, output, options.as_dict())
     output.close()
 
+# when module is run, run the command line tool
+if __name__ == '__main__':
+    main()
