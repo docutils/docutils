@@ -122,18 +122,19 @@
 }
 
 %%% Title metadata
-\title{reStructuredText Test Document\\ %
-  \hypertarget{examples-of-syntax-constructs}{}%
-  \hypertarget{subtitle}{}%
-  \large{Examples of Syntax Constructs}
-}
+\title{reStructuredText Test Document%
+  \phantomsection%
+  \label{restructuredtext-test-document}%
+  \label{doctitle}%
+  \\ % subtitle%
+  \large{Examples of Syntax Constructs}%
+  \label{examples-of-syntax-constructs}%
+  \label{subtitle}}
 \author{}
 \date{}
 
 %%% Body
 \begin{document}
-\hypertarget{restructuredtext-test-document}{}
-\hypertarget{doctitle}{}
 \maketitle
 
 %___________________________________________________________________________
@@ -197,128 +198,131 @@ reStructuredText construct.
 % They are transformed from section titles after parsing.
 
 % bibliographic fields (which also require a transform):
-\hypertarget{table-of-contents}{}
-\pdfbookmark[0]{Table of Contents}{table-of-contents}
-\subsubsection*{~\hfill Table of Contents\hfill ~}
-\label{table-of-contents}
+\subsubsection*{~\hfill Table of Contents\hfill ~%
+  \phantomsection%
+  \addcontentsline{toc}{section}{Table of Contents}%
+  \label{table-of-contents}%
+}
 \begin{list}{}{}
-\item \href{\#structural-elements}{1~~~Structural Elements}
+\item \hyperref[structural-elements]{1~~~Structural Elements}
 \begin{list}{}{}
-\item \href{\#section-title}{1.1~~~Section Title}
+\item \hyperref[section-title]{1.1~~~Section Title}
 
-\item \href{\#empty-section}{1.2~~~Empty Section}
+\item \hyperref[empty-section]{1.2~~~Empty Section}
 
-\item \href{\#transitions}{1.3~~~Transitions}
+\item \hyperref[transitions]{1.3~~~Transitions}
 
 \end{list}
 
-\item \href{\#body-elements}{2~~~Body Elements}
+\item \hyperref[body-elements]{2~~~Body Elements}
 \begin{list}{}{}
-\item \href{\#paragraphs}{2.1~~~Paragraphs}
+\item \hyperref[paragraphs]{2.1~~~Paragraphs}
 \begin{list}{}{}
-\item \href{\#inline-markup}{2.1.1~~~Inline Markup}
+\item \hyperref[inline-markup]{2.1.1~~~Inline Markup}
 
 \end{list}
 
-\item \href{\#bullet-lists}{2.2~~~Bullet Lists}
+\item \hyperref[bullet-lists]{2.2~~~Bullet Lists}
 
-\item \href{\#enumerated-lists}{2.3~~~Enumerated Lists}
+\item \hyperref[enumerated-lists]{2.3~~~Enumerated Lists}
 
-\item \href{\#definition-lists}{2.4~~~Definition Lists}
+\item \hyperref[definition-lists]{2.4~~~Definition Lists}
 
-\item \href{\#field-lists}{2.5~~~Field Lists}
+\item \hyperref[field-lists]{2.5~~~Field Lists}
 
-\item \href{\#option-lists}{2.6~~~Option Lists}
+\item \hyperref[option-lists]{2.6~~~Option Lists}
 
-\item \href{\#literal-blocks}{2.7~~~Literal Blocks}
+\item \hyperref[literal-blocks]{2.7~~~Literal Blocks}
 
-\item \href{\#line-blocks}{2.8~~~Line Blocks}
+\item \hyperref[line-blocks]{2.8~~~Line Blocks}
 
-\item \href{\#block-quotes}{2.9~~~Block Quotes}
+\item \hyperref[block-quotes]{2.9~~~Block Quotes}
 
-\item \href{\#doctest-blocks}{2.10~~~Doctest Blocks}
+\item \hyperref[doctest-blocks]{2.10~~~Doctest Blocks}
 
-\item \href{\#footnotes}{2.11~~~Footnotes}
+\item \hyperref[footnotes]{2.11~~~Footnotes}
 
-\item \href{\#citations}{2.12~~~Citations}
+\item \hyperref[citations]{2.12~~~Citations}
 
-\item \href{\#targets}{2.13~~~Targets}
+\item \hyperref[targets]{2.13~~~Targets}
 \begin{list}{}{}
-\item \href{\#duplicate-target-names}{2.13.1~~~Duplicate Target Names}
+\item \hyperref[duplicate-target-names]{2.13.1~~~Duplicate Target Names}
 
-\item \href{\#id21}{2.13.2~~~Duplicate Target Names}
+\item \hyperref[id21]{2.13.2~~~Duplicate Target Names}
 
 \end{list}
 
-\item \href{\#directives}{2.14~~~Directives}
+\item \hyperref[directives]{2.14~~~Directives}
 \begin{list}{}{}
-\item \href{\#document-parts}{2.14.1~~~Document Parts}
+\item \hyperref[document-parts]{2.14.1~~~Document Parts}
 
-\item \href{\#images-and-figures}{2.14.2~~~Images and Figures}
+\item \hyperref[images-and-figures]{2.14.2~~~Images and Figures}
 
-\item \href{\#admonitions}{2.14.3~~~Admonitions}
+\item \hyperref[admonitions]{2.14.3~~~Admonitions}
 
-\item \href{\#topics-sidebars-and-rubrics}{2.14.4~~~Topics, Sidebars, and Rubrics}
+\item \hyperref[topics-sidebars-and-rubrics]{2.14.4~~~Topics, Sidebars, and Rubrics}
 
-\item \href{\#target-footnotes}{2.14.5~~~Target Footnotes}
+\item \hyperref[target-footnotes]{2.14.5~~~Target Footnotes}
 
-\item \href{\#replacement-text}{2.14.6~~~Replacement Text}
+\item \hyperref[replacement-text]{2.14.6~~~Replacement Text}
 
-\item \href{\#compound-paragraph}{2.14.7~~~Compound Paragraph}
+\item \hyperref[compound-paragraph]{2.14.7~~~Compound Paragraph}
 
-\item \href{\#parsed-literal-blocks}{2.14.8~~~Parsed Literal Blocks}
-
-\end{list}
-
-\item \href{\#substitution-definitions}{2.15~~~Substitution Definitions}
-
-\item \href{\#comments}{2.16~~~Comments}
-
-\item \href{\#raw-text}{2.17~~~Raw text}
-
-\item \href{\#container}{2.18~~~Container}
-
-\item \href{\#colspanning-tables}{2.19~~~Colspanning tables}
-
-\item \href{\#rowspanning-tables}{2.20~~~Rowspanning tables}
-
-\item \href{\#custom-roles}{2.21~~~Custom Roles}
+\item \hyperref[parsed-literal-blocks]{2.14.8~~~Parsed Literal Blocks}
 
 \end{list}
 
-\item \href{\#tests-for-the-latex-writer}{3~~~Tests for the LaTeX writer}
+\item \hyperref[substitution-definitions]{2.15~~~Substitution Definitions}
+
+\item \hyperref[comments]{2.16~~~Comments}
+
+\item \hyperref[raw-text]{2.17~~~Raw text}
+
+\item \hyperref[container]{2.18~~~Container}
+
+\item \hyperref[colspanning-tables]{2.19~~~Colspanning tables}
+
+\item \hyperref[rowspanning-tables]{2.20~~~Rowspanning tables}
+
+\item \hyperref[custom-roles]{2.21~~~Custom Roles}
+
+\end{list}
+
+\item \hyperref[tests-for-the-latex-writer]{3~~~Tests for the LaTeX writer}
 \begin{list}{}{}
-\item \href{\#custom-roles-in-latex}{3.1~~~Custom Roles in LaTeX}
+\item \hyperref[custom-roles-in-latex]{3.1~~~Custom Roles in LaTeX}
 
-\item \href{\#id23}{3.2~~~Option lists}
+\item \hyperref[id23]{3.2~~~Option lists}
 
-\item \href{\#monospaced-non-alphanumeric-characters}{3.3~~~Monospaced non-alphanumeric characters}
+\item \hyperref[monospaced-non-alphanumeric-characters]{3.3~~~Monospaced non-alphanumeric characters}
 
-\item \href{\#various-non-ascii-characters}{3.4~~~Various non-ASCII characters}
+\item \hyperref[various-non-ascii-characters]{3.4~~~Various non-ASCII characters}
 
-\item \href{\#encoding-special-chars}{3.5~~~Encoding special chars}
+\item \hyperref[encoding-special-chars]{3.5~~~Encoding special chars}
 
 \end{list}
 
-\item \href{\#error-handling}{4~~~Error Handling}
+\item \hyperref[error-handling]{4~~~Error Handling}
 
 \end{list}
 
 
 %___________________________________________________________________________
 
-\hypertarget{structural-elements}{}
-\pdfbookmark[0]{1~~~Structural Elements}{structural-elements}
-\section*{1~~~Structural Elements}
-\label{structural-elements}
+\section*{1~~~Structural Elements%
+  \phantomsection%
+  \addcontentsline{toc}{section}{1~~~Structural Elements}%
+  \label{structural-elements}%
+}
 
 
 %___________________________________________________________________________
 
-\hypertarget{section-title}{}
-\pdfbookmark[1]{1.1~~~Section Title}{section-title}
-\subsection*{1.1~~~Section Title}
-\label{section-title}
+\subsection*{1.1~~~Section Title%
+  \phantomsection%
+  \addcontentsline{toc}{section}{1.1~~~Section Title}%
+  \label{section-title}%
+}
 \textbf{Section Subtitle}\vspace{0.2cm}
 
 \noindent 
@@ -327,18 +331,20 @@ That's it, the text just above this line.
 
 %___________________________________________________________________________
 
-\hypertarget{empty-section}{}
-\pdfbookmark[1]{1.2~~~Empty Section}{empty-section}
-\subsection*{1.2~~~Empty Section}
-\label{empty-section}
+\subsection*{1.2~~~Empty Section%
+  \phantomsection%
+  \addcontentsline{toc}{section}{1.2~~~Empty Section}%
+  \label{empty-section}%
+}
 
 
 %___________________________________________________________________________
 
-\hypertarget{transitions}{}
-\pdfbookmark[1]{1.3~~~Transitions}{transitions}
-\subsection*{1.3~~~Transitions}
-\label{transitions}
+\subsection*{1.3~~~Transitions%
+  \phantomsection%
+  \addcontentsline{toc}{section}{1.3~~~Transitions}%
+  \label{transitions}%
+}
 
 Here's a transition:
 
@@ -357,45 +363,46 @@ It divides the section.  Transitions may also occur between sections:
 
 %___________________________________________________________________________
 
-\hypertarget{body-elements}{}
-\pdfbookmark[0]{2~~~Body Elements}{body-elements}
-\section*{2~~~Body Elements}
-\label{body-elements}
+\section*{2~~~Body Elements%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2~~~Body Elements}%
+  \label{body-elements}%
+}
 
 
 %___________________________________________________________________________
 
-\hypertarget{paragraphs}{}
-\pdfbookmark[1]{2.1~~~Paragraphs}{paragraphs}
-\subsection*{2.1~~~Paragraphs}
-\label{paragraphs}
+\subsection*{2.1~~~Paragraphs%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.1~~~Paragraphs}%
+  \label{paragraphs}%
+}
 
 A paragraph.
 
 
 %___________________________________________________________________________
 
-\hypertarget{inline-markup}{}
-\pdfbookmark[2]{2.1.1~~~Inline Markup}{inline-markup}
-\subsubsection*{2.1.1~~~Inline Markup}
-\label{inline-markup}
+\subsubsection*{2.1.1~~~Inline Markup%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.1.1~~~Inline Markup}%
+  \label{inline-markup}%
+}
 
 Paragraphs contain text and may contain inline markup: \emph{emphasis},
 \textbf{strong emphasis}, \texttt{inline literals}, standalone hyperlinks
 (\href{http://www.python.org}{http://www.python.org}), external hyperlinks (\href{http://www.python.org/}{Python}\textsuperscript{\hyperlink{id26}{5}}), internal
-cross-references (\href{\#example}{example}), external hyperlinks with embedded URIs
+cross-references (\hyperref[example]{example}), external hyperlinks with embedded URIs
 (\href{http://www.python.org}{Python web site}), \href{http://www.python.org/}{anonymous hyperlink
 references}\textsuperscript{\hyperlink{id26}{5}} (\href{http://docutils.sourceforge.net/}{a second reference}\textsuperscript{\hyperlink{id31}{6}}), footnote references (manually
 numbered\textsuperscript{\hyperlink{id8}{1}}, anonymous auto-numbered\textsuperscript{\hyperlink{id12}{3}}, labeled auto-numbered\textsuperscript{\hyperlink{label}{2}}, or symbolic\textsuperscript{\hyperlink{id13}{*}}), citation references ([\hyperlink{cit2002}{CIT2002}]),
 substitution references (\includegraphics{../../../docs/user/rst/images/biohazard.png}), and %
-\raisebox{1em}{\hypertarget{inline-hyperlink-targets}{}}
-inline hyperlink targets
-(see \href{\#targets}{Targets} below for a reference back to here).  Character-level
+\phantomsection\label{inline-hyperlink-targets}inline hyperlink targets
+(see \hyperref[targets]{Targets} below for a reference back to here).  Character-level
 inline markup is also possible (although exceedingly ugly!) in \emph{re}\texttt{Structured}\emph{Text}.  Problems are indicated by %
-\raisebox{1em}{\hypertarget{id25}{}}\hyperlink{id24}{\textbf{\color{red}\textbar{}problematic\textbar{}}}
- text
+\raisebox{1em}{\hypertarget{id25}{}}\hyperlink{id24}{\textbf{\color{red}\textbar{}problematic\textbar{}}} text
 (generated by processing errors; this one is intentional).  Here is a
-reference to the \href{\#doctitle}{doctitle} and the \href{\#subtitle}{subtitle}.
+reference to the \hyperref[doctitle]{doctitle} and the \hyperref[subtitle]{subtitle}.
 
 The default role for interpreted text is \DUroletitlereference{Title Reference}.  Here are
 some explicit interpreted text roles: a PEP reference (\href{http://www.python.org/dev/peps/pep-0287}{PEP 287}); an
@@ -418,10 +425,11 @@ live link to PEP 258 here.
 
 %___________________________________________________________________________
 
-\hypertarget{bullet-lists}{}
-\pdfbookmark[1]{2.2~~~Bullet Lists}{bullet-lists}
-\subsection*{2.2~~~Bullet Lists}
-\label{bullet-lists}
+\subsection*{2.2~~~Bullet Lists%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.2~~~Bullet Lists}%
+  \label{bullet-lists}%
+}
 \begin{itemize}
 \item 
 A bullet list
@@ -459,8 +467,7 @@ Nested item 3.
 \item 
 This nested list should be compacted by the HTML writer.
 %
-\raisebox{1em}{\hypertarget{target}{}}
-
+\phantomsection\label{target}
 % Even if this item contains a target and a comment.
 
 \end{itemize}
@@ -470,10 +477,11 @@ This nested list should be compacted by the HTML writer.
 
 %___________________________________________________________________________
 
-\hypertarget{enumerated-lists}{}
-\pdfbookmark[1]{2.3~~~Enumerated Lists}{enumerated-lists}
-\subsection*{2.3~~~Enumerated Lists}
-\label{enumerated-lists}
+\subsection*{2.3~~~Enumerated Lists%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.3~~~Enumerated Lists}%
+  \label{enumerated-lists}%
+}
 \newcounter{listcnt0}
 \begin{list}{\arabic{listcnt0}.}
 {
@@ -573,10 +581,11 @@ iv
 
 %___________________________________________________________________________
 
-\hypertarget{definition-lists}{}
-\pdfbookmark[1]{2.4~~~Definition Lists}{definition-lists}
-\subsection*{2.4~~~Definition Lists}
-\label{definition-lists}
+\subsection*{2.4~~~Definition Lists%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.4~~~Definition Lists}%
+  \label{definition-lists}%
+}
 \begin{description}
 \item[Term] \leavevmode 
 Definition
@@ -600,10 +609,11 @@ Definition
 
 %___________________________________________________________________________
 
-\hypertarget{field-lists}{}
-\pdfbookmark[1]{2.5~~~Field Lists}{field-lists}
-\subsection*{2.5~~~Field Lists}
-\label{field-lists}
+\subsection*{2.5~~~Field Lists%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.5~~~Field Lists}%
+  \label{field-lists}%
+}
 \begin{DUfieldlist}
 \item[what:]
 Field lists map field names to field bodies, like database
@@ -629,10 +639,11 @@ doesn't get stripped away.)
 
 %___________________________________________________________________________
 
-\hypertarget{option-lists}{}
-\pdfbookmark[1]{2.6~~~Option Lists}{option-lists}
-\subsection*{2.6~~~Option Lists}
-\label{option-lists}
+\subsection*{2.6~~~Option Lists%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.6~~~Option Lists}%
+  \label{option-lists}%
+}
 
 For listing command-line options:
 \begin{DUoptionlist}
@@ -667,10 +678,11 @@ description.
 
 %___________________________________________________________________________
 
-\hypertarget{literal-blocks}{}
-\pdfbookmark[1]{2.7~~~Literal Blocks}{literal-blocks}
-\subsection*{2.7~~~Literal Blocks}
-\label{literal-blocks}
+\subsection*{2.7~~~Literal Blocks%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.7~~~Literal Blocks}%
+  \label{literal-blocks}%
+}
 
 Literal blocks are indicated with a double-colon (``::'') at the end of
 the preceding paragraph (over there \texttt{-{}->}).  They can be indented:
@@ -691,10 +703,11 @@ Or they can be quoted without indentation:
 
 %___________________________________________________________________________
 
-\hypertarget{line-blocks}{}
-\pdfbookmark[1]{2.8~~~Line Blocks}{line-blocks}
-\subsection*{2.8~~~Line Blocks}
-\label{line-blocks}
+\subsection*{2.8~~~Line Blocks%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.8~~~Line Blocks}%
+  \label{line-blocks}%
+}
 
 This section tests line blocks.  Line blocks are body elements which
 consist of lines and other line blocks.  Nested line blocks cause
@@ -769,10 +782,11 @@ Take it away, Eric the Orchestra Leader!
 
 %___________________________________________________________________________
 
-\hypertarget{block-quotes}{}
-\pdfbookmark[1]{2.9~~~Block Quotes}{block-quotes}
-\subsection*{2.9~~~Block Quotes}
-\label{block-quotes}
+\subsection*{2.9~~~Block Quotes%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.9~~~Block Quotes}%
+  \label{block-quotes}%
+}
 
 Block quotes consist of indented body elements:
 \begin{quote}
@@ -791,10 +805,11 @@ own it, and what it is too.
 
 %___________________________________________________________________________
 
-\hypertarget{doctest-blocks}{}
-\pdfbookmark[1]{2.10~~~Doctest Blocks}{doctest-blocks}
-\subsection*{2.10~~~Doctest Blocks}
-\label{doctest-blocks}
+\subsection*{2.10~~~Doctest Blocks%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.10~~~Doctest Blocks}%
+  \label{doctest-blocks}%
+}
 \begin{verbatim}>>> print 'Python-specific usage examples; begun with ">>>"'
 Python-specific usage examples; begun with ">>>"
 >>> print '(cut and pasted from interactive Python sessions)'
@@ -803,23 +818,24 @@ Python-specific usage examples; begun with ">>>"
 
 %___________________________________________________________________________
 
-\hypertarget{footnotes}{}
-\pdfbookmark[1]{2.11~~~Footnotes}{footnotes}
-\subsection*{2.11~~~Footnotes}
-\label{footnotes}
-\begin{figure}[b]\hypertarget{id8}$^{1}$
+\subsection*{2.11~~~Footnotes%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.11~~~Footnotes}%
+  \label{footnotes}%
+}
+\begin{figure}[b]\raisebox{1em}{\hypertarget{id8}{}}\phantomsection\label{id8}\textsuperscript{1}
 A footnote contains body elements, consistently indented by at
 least 3 spaces.
 
 This is the footnote's second paragraph.
 \end{figure}
-\begin{figure}[b]\hypertarget{label}$^{2}$
+\begin{figure}[b]\raisebox{1em}{\hypertarget{label}{}}\phantomsection\label{label}\textsuperscript{2}
 Footnotes may be numbered, either manually (as in\textsuperscript{\hyperlink{id8}{1}}) or
 automatically using a ``\#''-prefixed label.  This footnote has a
 label so it can be referred to from multiple places, both as a
-footnote reference (\textsuperscript{\hyperlink{label}{2}}) and as a \href{\#label}{hyperlink reference}.
+footnote reference (\textsuperscript{\hyperlink{label}{2}}) and as a \hyperref[label]{hyperlink reference}.
 \end{figure}
-\begin{figure}[b]\hypertarget{id12}$^{3}$
+\begin{figure}[b]\raisebox{1em}{\hypertarget{id12}{}}\phantomsection\label{id12}\textsuperscript{3}
 This footnote is numbered automatically and anonymously using a
 label of ``\#'' only.
 
@@ -827,29 +843,29 @@ This is the second paragraph.
 
 And this is the third paragraph.
 \end{figure}
-\begin{figure}[b]\hypertarget{id13}$^{*}$
+\begin{figure}[b]\raisebox{1em}{\hypertarget{id13}{}}\phantomsection\label{id13}\textsuperscript{*}
 Footnotes may also use symbols, specified with a ``*'' label.
 Here's a reference to the next footnote:\textsuperscript{\hyperlink{id15}{\dag{}}}.
 \end{figure}
-\begin{figure}[b]\hypertarget{id15}$^{\dag{}}$
+\begin{figure}[b]\raisebox{1em}{\hypertarget{id15}{}}\phantomsection\label{id15}\textsuperscript{\dag{}}
 This footnote shows the next symbol in the sequence.
 \end{figure}
-\begin{figure}[b]\hypertarget{id16}$^{4}$
+\begin{figure}[b]\raisebox{1em}{\hypertarget{id16}{}}\phantomsection\label{id16}\textsuperscript{4}
 Here's an unreferenced footnote, with a reference to a
 nonexistent footnote:%
 \raisebox{1em}{\hypertarget{id86}{}}%
-\raisebox{1em}{\hypertarget{id17}{}}\hyperlink{id85}{\textbf{\color{red}{[}5{]}\_}}
-.
+\raisebox{1em}{\hypertarget{id17}{}}\hyperlink{id85}{\textbf{\color{red}{[}5{]}\_}}.
 \end{figure}
 
 
 %___________________________________________________________________________
 
-\hypertarget{citations}{}
-\pdfbookmark[1]{2.12~~~Citations}{citations}
-\subsection*{2.12~~~Citations}
-\label{citations}
-\begin{figure}[b]\hypertarget{cit2002}[CIT2002]
+\subsection*{2.12~~~Citations%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.12~~~Citations}%
+  \label{citations}%
+}
+\begin{figure}[b]\raisebox{1em}{\hypertarget{cit2002}{}}[CIT2002]
 Citations are text-labeled footnotes. They may be
 rendered separately and differently from footnotes.
 \end{figure}
@@ -857,46 +873,44 @@ rendered separately and differently from footnotes.
 Here's a reference to the above, [\hyperlink{cit2002}{CIT2002}], and a %
 \raisebox{1em}{\hypertarget{id88}{}}%
 \raisebox{1em}{\hypertarget{id19}{}}\hyperlink{id87}{\textbf{\color{red}{[}nonexistent{]}\_}}
-
 citation.
 
 
 %___________________________________________________________________________
 
-\hypertarget{targets}{}
-\hypertarget{another-target}{}
-\pdfbookmark[1]{2.13~~~Targets}{targets}
-\pdfbookmark[1]{2.13~~~Targets}{another-target}
-\subsection*{2.13~~~Targets}
-\label{targets}
-\label{another-target}
+\subsection*{2.13~~~Targets%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.13~~~Targets}%
+  \label{targets}%
+  \label{another-target}%
+}
 
-\hypertarget{example}{}
+\phantomsection\label{example}
 This paragraph is pointed to by the explicit ``example'' target. A
-reference can be found under \href{\#inline-markup}{Inline Markup}, above. \href{\#inline-hyperlink-targets}{Inline
+reference can be found under \hyperref[inline-markup]{Inline Markup}, above. \hyperref[inline-hyperlink-targets]{Inline
 hyperlink targets} are also possible.
 
 Section headers are implicit targets, referred to by name. See
-\href{\#targets}{Targets}, which is a subsection of \href{\#body-elements}{Body Elements}.
+\hyperref[targets]{Targets}, which is a subsection of \hyperref[body-elements]{Body Elements}.
 
 Explicit external targets are interpolated into references such as
 ``\href{http://www.python.org/}{Python}\textsuperscript{\hyperlink{id26}{5}}''.
 
-Targets may be indirect and anonymous.  Thus \href{\#targets}{this phrase} may also
-refer to the \href{\#targets}{Targets} section.
+Targets may be indirect and anonymous.  Thus \hyperref[targets]{this phrase} may also
+refer to the \hyperref[targets]{Targets} section.
 
 Here's a %
-\raisebox{1em}{\hypertarget{id90}{}}\hyperlink{id89}{\textbf{\color{red}`hyperlink reference without a target`\_}}
-, which generates an
+\raisebox{1em}{\hypertarget{id90}{}}\hyperlink{id89}{\textbf{\color{red}`hyperlink reference without a target`\_}}, which generates an
 error.
 
 
 %___________________________________________________________________________
 
-\hypertarget{duplicate-target-names}{}
-\pdfbookmark[2]{2.13.1~~~Duplicate Target Names}{duplicate-target-names}
-\subsubsection*{2.13.1~~~Duplicate Target Names}
-\label{duplicate-target-names}
+\subsubsection*{2.13.1~~~Duplicate Target Names%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.13.1~~~Duplicate Target Names}%
+  \label{duplicate-target-names}%
+}
 
 Duplicate names in section headers or other implicit targets will
 generate ``info'' (level-1) system messages.  Duplicate names in
@@ -905,41 +919,41 @@ explicit targets will generate ``warning'' (level-2) system messages.
 
 %___________________________________________________________________________
 
-\hypertarget{id21}{}
-\pdfbookmark[2]{2.13.2~~~Duplicate Target Names}{id21}
-\subsubsection*{2.13.2~~~Duplicate Target Names}
-\label{id21}
+\subsubsection*{2.13.2~~~Duplicate Target Names%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.13.2~~~Duplicate Target Names}%
+  \label{id21}%
+}
 
 Since there are two ``Duplicate Target Names'' section headers, we
 cannot uniquely refer to either of them by name.  If we try to (like
 this: %
-\raisebox{1em}{\hypertarget{id92}{}}\hyperlink{id91}{\textbf{\color{red}`Duplicate Target Names`\_}}
-), an error is generated.
+\raisebox{1em}{\hypertarget{id92}{}}\hyperlink{id91}{\textbf{\color{red}`Duplicate Target Names`\_}}), an error is generated.
 
 
 %___________________________________________________________________________
 
-\hypertarget{directives}{}
-\pdfbookmark[1]{2.14~~~Directives}{directives}
-\subsection*{2.14~~~Directives}
-\label{directives}
-\hypertarget{contents}{}
-\begin{list}{}{}
-\item \href{\#document-parts}{2.14.1~~~Document Parts}
+\subsection*{2.14~~~Directives%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.14~~~Directives}%
+  \label{directives}%
+}
+\phantomsection\label{contents}\begin{list}{}{}
+\item \hyperref[document-parts]{2.14.1~~~Document Parts}
 
-\item \href{\#images-and-figures}{2.14.2~~~Images and Figures}
+\item \hyperref[images-and-figures]{2.14.2~~~Images and Figures}
 
-\item \href{\#admonitions}{2.14.3~~~Admonitions}
+\item \hyperref[admonitions]{2.14.3~~~Admonitions}
 
-\item \href{\#topics-sidebars-and-rubrics}{2.14.4~~~Topics, Sidebars, and Rubrics}
+\item \hyperref[topics-sidebars-and-rubrics]{2.14.4~~~Topics, Sidebars, and Rubrics}
 
-\item \href{\#target-footnotes}{2.14.5~~~Target Footnotes}
+\item \hyperref[target-footnotes]{2.14.5~~~Target Footnotes}
 
-\item \href{\#replacement-text}{2.14.6~~~Replacement Text}
+\item \hyperref[replacement-text]{2.14.6~~~Replacement Text}
 
-\item \href{\#compound-paragraph}{2.14.7~~~Compound Paragraph}
+\item \hyperref[compound-paragraph]{2.14.7~~~Compound Paragraph}
 
-\item \href{\#parsed-literal-blocks}{2.14.8~~~Parsed Literal Blocks}
+\item \hyperref[parsed-literal-blocks]{2.14.8~~~Parsed Literal Blocks}
 
 \end{list}
 
@@ -950,33 +964,34 @@ others, please see
 
 %___________________________________________________________________________
 
-\hypertarget{document-parts}{}
-\pdfbookmark[2]{2.14.1~~~Document Parts}{document-parts}
-\subsubsection*{2.14.1~~~Document Parts}
-\label{document-parts}
+\subsubsection*{2.14.1~~~Document Parts%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.14.1~~~Document Parts}%
+  \label{document-parts}%
+}
 
 An example of the ``contents'' directive can be seen above this section
-(a local, untitled table of \href{\#contents}{contents}) and at the beginning of the
-document (a document-wide \href{\#table-of-contents}{table of contents}).
+(a local, untitled table of \hyperref[contents]{contents}) and at the beginning of the
+document (a document-wide \hyperref[table-of-contents]{table of contents}).
 
 
 %___________________________________________________________________________
 
-\hypertarget{images-and-figures}{}
-\pdfbookmark[2]{2.14.2~~~Images and Figures}{images-and-figures}
-\subsubsection*{2.14.2~~~Images and Figures}
-\label{images-and-figures}
+\subsubsection*{2.14.2~~~Images and Figures%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.14.2~~~Images and Figures}%
+  \label{images-and-figures}%
+}
 
 An image directive (also clickable -{}- a hyperlink reference):
 
-\href{\#directives}{\includegraphics{../../../docs/user/rst/images/title.png}}
+\hyperref[directives]{\includegraphics{../../../docs/user/rst/images/title.png}}
 
 Image with multiple IDs:
 
-\hypertarget{image-target-1}{}
-\hypertarget{image-target-2}{}
-\hypertarget{image-target-3}{}
-\includegraphics{../../../docs/user/rst/images/title.png}
+\raisebox{1em}{\hypertarget{image-target-3}{}}%
+\raisebox{1em}{\hypertarget{image-target-2}{}}%
+\raisebox{1em}{\hypertarget{image-target-1}{}}\includegraphics{../../../docs/user/rst/images/title.png}
 
 A centered image:
 
@@ -998,7 +1013,7 @@ This paragraph might flow around the image.
 The specific behavior depends upon the style sheet and
 the browser or rendering software used.
 
-For inline images see \href{\#substitution-definitions}{Substitution Definitions}.
+For inline images see \hyperref[substitution-definitions]{Substitution Definitions}.
 
 Image size:
 
@@ -1098,10 +1113,11 @@ upon the style sheet and the browser or rendering software used.
 
 %___________________________________________________________________________
 
-\hypertarget{admonitions}{}
-\pdfbookmark[2]{2.14.3~~~Admonitions}{admonitions}
-\subsubsection*{2.14.3~~~Admonitions}
-\label{admonitions}
+\subsubsection*{2.14.3~~~Admonitions%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.14.3~~~Admonitions}%
+  \label{admonitions}%
+}
 \DUadmonition{\DUtopictitle{Attention!}
 
 Directives at large.
@@ -1159,10 +1175,11 @@ You can make up your own admonition too.
 
 %___________________________________________________________________________
 
-\hypertarget{topics-sidebars-and-rubrics}{}
-\pdfbookmark[2]{2.14.4~~~Topics, Sidebars, and Rubrics}{topics-sidebars-and-rubrics}
-\subsubsection*{2.14.4~~~Topics, Sidebars, and Rubrics}
-\label{topics-sidebars-and-rubrics}
+\subsubsection*{2.14.4~~~Topics, Sidebars, and Rubrics%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.14.4~~~Topics, Sidebars, and Rubrics}%
+  \label{topics-sidebars-and-rubrics}%
+}
 
 \DUsidebar{
 \DUsidebartitle{Sidebar Title}
@@ -1185,34 +1202,37 @@ This is a topic.
 
 %___________________________________________________________________________
 
-\hypertarget{target-footnotes}{}
-\pdfbookmark[2]{2.14.5~~~Target Footnotes}{target-footnotes}
-\subsubsection*{2.14.5~~~Target Footnotes}
-\label{target-footnotes}
-\begin{figure}[b]\hypertarget{id26}$^{5}$
+\subsubsection*{2.14.5~~~Target Footnotes%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.14.5~~~Target Footnotes}%
+  \label{target-footnotes}%
+}
+\begin{figure}[b]\raisebox{1em}{\hypertarget{id26}{}}\phantomsection\label{id26}\textsuperscript{5}
 \href{http://www.python.org/}{http://www.python.org/}
 \end{figure}
-\begin{figure}[b]\hypertarget{id31}$^{6}$
+\begin{figure}[b]\raisebox{1em}{\hypertarget{id31}{}}\phantomsection\label{id31}\textsuperscript{6}
 \href{http://docutils.sourceforge.net/}{http://docutils.sourceforge.net/}
 \end{figure}
 
 
 %___________________________________________________________________________
 
-\hypertarget{replacement-text}{}
-\pdfbookmark[2]{2.14.6~~~Replacement Text}{replacement-text}
-\subsubsection*{2.14.6~~~Replacement Text}
-\label{replacement-text}
+\subsubsection*{2.14.6~~~Replacement Text%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.14.6~~~Replacement Text}%
+  \label{replacement-text}%
+}
 
 I recommend you try \href{http://www.python.org/}{Python, \emph{the} best language around}\textsuperscript{\hyperlink{id26}{5}}.
 
 
 %___________________________________________________________________________
 
-\hypertarget{compound-paragraph}{}
-\pdfbookmark[2]{2.14.7~~~Compound Paragraph}{compound-paragraph}
-\subsubsection*{2.14.7~~~Compound Paragraph}
-\label{compound-paragraph}
+\subsubsection*{2.14.7~~~Compound Paragraph%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.14.7~~~Compound Paragraph}%
+  \label{compound-paragraph}%
+}
 
 Compound 1, paragraph 1.
 
@@ -1286,27 +1306,28 @@ Compound 7, another paragraph.
 
 %___________________________________________________________________________
 
-\hypertarget{parsed-literal-blocks}{}
-\pdfbookmark[2]{2.14.8~~~Parsed Literal Blocks}{parsed-literal-blocks}
-\subsubsection*{2.14.8~~~Parsed Literal Blocks}
-\label{parsed-literal-blocks}
+\subsubsection*{2.14.8~~~Parsed Literal Blocks%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.14.8~~~Parsed Literal Blocks}%
+  \label{parsed-literal-blocks}%
+}
 \begin{quote}{\ttfamily \raggedright \noindent
 This~is~a~parsed~literal~block.~\\
 ~~~~This~line~is~indented.~~The~next~line~is~blank.~\\
 ~\\
 Inline~markup~is~supported,~e.g.~\emph{emphasis},~\textbf{strong},~\texttt{literal~\\
 text},~footnotes\textsuperscript{\hyperlink{id8}{1}},~%
-\raisebox{1em}{\hypertarget{hyperlink-targets}{}}
-hyperlink~targets,~and~\href{http://www.python.org/}{references}.
+\phantomsection\label{hyperlink-targets}hyperlink~targets,~and~\href{http://www.python.org/}{references}.
 }\end{quote}
 
 
 %___________________________________________________________________________
 
-\hypertarget{substitution-definitions}{}
-\pdfbookmark[1]{2.15~~~Substitution Definitions}{substitution-definitions}
-\subsection*{2.15~~~Substitution Definitions}
-\label{substitution-definitions}
+\subsection*{2.15~~~Substitution Definitions%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.15~~~Substitution Definitions}%
+  \label{substitution-definitions}%
+}
 
 An inline image (\includegraphics{../../../docs/user/rst/images/biohazard.png}) example:
 
@@ -1315,10 +1336,11 @@ An inline image (\includegraphics{../../../docs/user/rst/images/biohazard.png}) 
 
 %___________________________________________________________________________
 
-\hypertarget{comments}{}
-\pdfbookmark[1]{2.16~~~Comments}{comments}
-\subsection*{2.16~~~Comments}
-\label{comments}
+\subsection*{2.16~~~Comments%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.16~~~Comments}%
+  \label{comments}%
+}
 
 Here's one:
 
@@ -1335,10 +1357,11 @@ Here's one:
 
 %___________________________________________________________________________
 
-\hypertarget{raw-text}{}
-\pdfbookmark[1]{2.17~~~Raw text}{raw-text}
-\subsection*{2.17~~~Raw text}
-\label{raw-text}
+\subsection*{2.17~~~Raw text%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.17~~~Raw text}%
+  \label{raw-text}%
+}
 
 This does not necessarily look nice, because there may be missing white space.
 
@@ -1349,10 +1372,11 @@ Fifth test in LaTeX.\\Line two.
 
 %___________________________________________________________________________
 
-\hypertarget{container}{}
-\pdfbookmark[1]{2.18~~~Container}{container}
-\subsection*{2.18~~~Container}
-\label{container}
+\subsection*{2.18~~~Container%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.18~~~Container}%
+  \label{container}%
+}
 
 paragraph 1
 
@@ -1365,10 +1389,11 @@ paragraph 2
 
 %___________________________________________________________________________
 
-\hypertarget{colspanning-tables}{}
-\pdfbookmark[1]{2.19~~~Colspanning tables}{colspanning-tables}
-\subsection*{2.19~~~Colspanning tables}
-\label{colspanning-tables}
+\subsection*{2.19~~~Colspanning tables%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.19~~~Colspanning tables}%
+  \label{colspanning-tables}%
+}
 
 This table has a cell spanning two columns:
 
@@ -1447,10 +1472,11 @@ True
 
 %___________________________________________________________________________
 
-\hypertarget{rowspanning-tables}{}
-\pdfbookmark[1]{2.20~~~Rowspanning tables}{rowspanning-tables}
-\subsection*{2.20~~~Rowspanning tables}
-\label{rowspanning-tables}
+\subsection*{2.20~~~Rowspanning tables%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.20~~~Rowspanning tables}%
+  \label{rowspanning-tables}%
+}
 
 Here's a table with cells spanning several rows:
 
@@ -1510,10 +1536,11 @@ body row 3
 
 %___________________________________________________________________________
 
-\hypertarget{custom-roles}{}
-\pdfbookmark[1]{2.21~~~Custom Roles}{custom-roles}
-\subsection*{2.21~~~Custom Roles}
-\label{custom-roles}
+\subsection*{2.21~~~Custom Roles%
+  \phantomsection%
+  \addcontentsline{toc}{section}{2.21~~~Custom Roles}%
+  \label{custom-roles}%
+}
 \begin{itemize}
 \item 
 A role based on an existing role.
@@ -1540,10 +1567,11 @@ A role with class attribute.
 
 %___________________________________________________________________________
 
-\hypertarget{tests-for-the-latex-writer}{}
-\pdfbookmark[0]{3~~~Tests for the LaTeX writer}{tests-for-the-latex-writer}
-\section*{3~~~Tests for the LaTeX writer}
-\label{tests-for-the-latex-writer}
+\section*{3~~~Tests for the LaTeX writer%
+  \phantomsection%
+  \addcontentsline{toc}{section}{3~~~Tests for the LaTeX writer}%
+  \label{tests-for-the-latex-writer}%
+}
 
 Test syntax elements which may cause trouble for the LaTeX writer but might
 not need to be tested with other writers (e.g. the HTML writer).
@@ -1551,10 +1579,11 @@ not need to be tested with other writers (e.g. the HTML writer).
 
 %___________________________________________________________________________
 
-\hypertarget{custom-roles-in-latex}{}
-\pdfbookmark[1]{3.1~~~Custom Roles in LaTeX}{custom-roles-in-latex}
-\subsection*{3.1~~~Custom Roles in LaTeX}
-\label{custom-roles-in-latex}
+\subsection*{3.1~~~Custom Roles in LaTeX%
+  \phantomsection%
+  \addcontentsline{toc}{section}{3.1~~~Custom Roles in LaTeX}%
+  \label{custom-roles-in-latex}%
+}
 \begin{itemize}
 \item 
 Role names and class arguments are converted to conform to the regular
@@ -1598,10 +1627,11 @@ This is a \DUroletitlereference{\DUrole{custom-title-reference}{customized title
 
 %___________________________________________________________________________
 
-\hypertarget{id23}{}
-\pdfbookmark[1]{3.2~~~Option lists}{id23}
-\subsection*{3.2~~~Option lists}
-\label{id23}
+\subsection*{3.2~~~Option lists%
+  \phantomsection%
+  \addcontentsline{toc}{section}{3.2~~~Option lists}%
+  \label{id23}%
+}
 
 The LaTeX-2e description environment is used for definition lists.
 The definition is continued on the same line as the term, this should
@@ -1630,10 +1660,11 @@ verbose
 
 %___________________________________________________________________________
 
-\hypertarget{monospaced-non-alphanumeric-characters}{}
-\pdfbookmark[1]{3.3~~~Monospaced non-alphanumeric characters}{monospaced-non-alphanumeric-characters}
-\subsection*{3.3~~~Monospaced non-alphanumeric characters}
-\label{monospaced-non-alphanumeric-characters}
+\subsection*{3.3~~~Monospaced non-alphanumeric characters%
+  \phantomsection%
+  \addcontentsline{toc}{section}{3.3~~~Monospaced non-alphanumeric characters}%
+  \label{monospaced-non-alphanumeric-characters}%
+}
 
 These are all ASCII characters except a-zA-Z0-9 and space:
 
@@ -1649,10 +1680,11 @@ width as the third line.
 
 %___________________________________________________________________________
 
-\hypertarget{various-non-ascii-characters}{}
-\pdfbookmark[1]{3.4~~~Various non-ASCII characters}{various-non-ascii-characters}
-\subsection*{3.4~~~Various non-ASCII characters}
-\label{various-non-ascii-characters}
+\subsection*{3.4~~~Various non-ASCII characters%
+  \phantomsection%
+  \addcontentsline{toc}{section}{3.4~~~Various non-ASCII characters}%
+  \label{various-non-ascii-characters}%
+}
 
 \leavevmode
 \setlength{\DUtablewidth}{\linewidth}
@@ -1770,10 +1802,11 @@ X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~
 
 %___________________________________________________________________________
 
-\hypertarget{encoding-special-chars}{}
-\pdfbookmark[1]{3.5~~~Encoding special chars}{encoding-special-chars}
-\subsection*{3.5~~~Encoding special chars}
-\label{encoding-special-chars}
+\subsection*{3.5~~~Encoding special chars%
+  \phantomsection%
+  \addcontentsline{toc}{section}{3.5~~~Encoding special chars}%
+  \label{encoding-special-chars}%
+}
 
 The LaTeX Info pages lists under ``2.18 Special Characters''
 \begin{quote}
@@ -1836,10 +1869,11 @@ greater-than and bar, \textless{} \textbar{} \textgreater{}, except for typewrit
 
 %___________________________________________________________________________
 
-\hypertarget{error-handling}{}
-\pdfbookmark[0]{4~~~Error Handling}{error-handling}
-\section*{4~~~Error Handling}
-\label{error-handling}
+\section*{4~~~Error Handling%
+  \phantomsection%
+  \addcontentsline{toc}{section}{4~~~Error Handling}%
+  \label{error-handling}%
+}
 
 Any errors caught during processing will generate system messages.
 
@@ -1851,37 +1885,40 @@ section, ``Docutils System Messages'':
 
 %___________________________________________________________________________
 
-\section*{\color{red}Docutils System Messages}
+\section*{\color{red}Docutils System Messages%
+  \phantomsection%
+  \addcontentsline{toc}{section}{Docutils System Messages}%
+}
 \DUadmonition{\DUtopictitle{System Message:}
-\hypertarget{id24}{}
+\raisebox{1em}{\hypertarget{id24}{}}
 ERROR/3 in functional/input/data/standard.txt, line~100
 
 \hyperlink{id25}{
 Undefined substitution referenced: ``problematic''.
 }}
 \DUadmonition{\DUtopictitle{System Message:}
-\hypertarget{id85}{}
+\raisebox{1em}{\hypertarget{id85}{}}
 ERROR/3 in functional/input/standalone\_rst\_latex.txt, line~359
 
 \hyperlink{id86}{
 Unknown target name: ``5''.
 }}
 \DUadmonition{\DUtopictitle{System Message:}
-\hypertarget{id87}{}
+\raisebox{1em}{\hypertarget{id87}{}}
 ERROR/3 in functional/input/data/standard.txt, line~368
 
 \hyperlink{id88}{
 Unknown target name: ``nonexistent''.
 }}
 \DUadmonition{\DUtopictitle{System Message:}
-\hypertarget{id89}{}
+\raisebox{1em}{\hypertarget{id89}{}}
 ERROR/3 in functional/input/data/standard.txt, line~395
 
 \hyperlink{id90}{
 Unknown target name: ``hyperlink reference without a target''.
 }}
 \DUadmonition{\DUtopictitle{System Message:}
-\hypertarget{id91}{}
+\raisebox{1em}{\hypertarget{id91}{}}
 ERROR/3 in functional/input/data/standard.txt, line~408
 
 \hyperlink{id92}{

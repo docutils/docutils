@@ -90,14 +90,15 @@ Paragraph 2.
 latex_head_prefix + latex_requirements + latex_head + b(r"""
 %%% Body
 \begin{document}
-\hypertarget{table-of-contents}{}
-\pdfbookmark[0]{Table of Contents}{table-of-contents}
-\subsubsection*{~\hfill Table of Contents\hfill ~}
-\label{table-of-contents}
+\subsubsection*{~\hfill Table of Contents\hfill ~%
+  \phantomsection%
+  \addcontentsline{toc}{section}{Table of Contents}%
+  \label{table-of-contents}%
+}
 \begin{list}{}{}
-\item \href{\#title-1}{Title 1}
+\item \hyperref[title-1]{Title 1}
 \begin{list}{}{}
-\item \href{\#title-2}{Title 2}
+\item \hyperref[title-2]{Title 2}
 
 \end{list}
 
@@ -106,20 +107,22 @@ latex_head_prefix + latex_requirements + latex_head + b(r"""
 
 %___________________________________________________________________________
 
-\hypertarget{title-1}{}
-\pdfbookmark[0]{Title 1}{title-1}
-\section*{Title 1}
-\label{title-1}
+\section*{Title 1%
+  \phantomsection%
+  \addcontentsline{toc}{section}{Title 1}%
+  \label{title-1}%
+}
 
 Paragraph 1.
 
 
 %___________________________________________________________________________
 
-\hypertarget{title-2}{}
-\pdfbookmark[1]{Title 2}{title-2}
-\subsection*{Title 2}
-\label{title-2}
+\subsection*{Title 2%
+  \phantomsection%
+  \addcontentsline{toc}{section}{Title 2}%
+  \label{title-2}%
+}
 
 Paragraph 2.
 

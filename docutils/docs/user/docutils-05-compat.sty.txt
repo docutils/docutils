@@ -59,6 +59,7 @@ Bugfixes
     rst source.
 
 * Fixed missing and spurious internal links/targets.
+  Internal links now take you to the correct place.
 
 * Verbose and linked system messages.
 

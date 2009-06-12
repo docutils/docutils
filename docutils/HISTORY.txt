@@ -103,6 +103,7 @@ Changes Since 0.5
   - Align of image in a figure defaults to 'center'.
   - Bugfix: Newlines around targets and references prevent run-together
     paragraphs.
+  - Fix internal hyperlinks.
 
 
 Release 0.5 (2008-06-25)
