@@ -4,7 +4,7 @@
 % 
 % :Author:    Guenter Milde
 % :Contact:   milde@users.berlios.de
-% :Revision:  $Revision: 5966 $
+% :Revision:  $Revision: 5969 $
 % :Date:      $Date: 2009-02-24$
 % :Copyright: © 2009 G. Milde,
 %             Released  without warranties or conditions of any kind
@@ -45,17 +45,28 @@
 % Bugfixes
 % --------
 % 
+% * Newlines around comments, targets and references prevent run-together
+%   paragraphs.
 % 
-% * Newlines around targets and references prevent run-together paragraphs.
+%   + An image directive with hyperlink reference or target did not start a
+%     new paragraph (e.g. the first two image examples in
+%     standalone_rst_latex.tex).
 % 
-%   An image directive with hyperlink reference or target did not start a
-%   new paragraph (e.g. the first two image examples in
-%   standalone_rst_latex.tex).
+%   + Paragraphs were not separated if there was a (hyper) target definition
+%     inbetween.
 % 
-%   Paragraphs were not separated if there was a (hyper) target definition
-%   inbetween.
+%   + Paragraphs did run together, if separated by a comment-paragraph in the
+%     rst source.
+% 
+% * Fixed missing and spurious internal links/targets.
+%   Internal links now take you to the correct place.
+% 
+% * Verbose and linked system messages.
 % 
 % * `Figure and image alignment`_ now conforms to the rst definition.
+% 
+% Backwards compatibility:
+%   "Bug for bug compatibility" is not provided.
 % 
 % 
 % Cleaner LaTeX source
@@ -581,7 +592,15 @@
   \end{center}
 }
 
-% Bold sub-title::
+% sidebar sub-title
+% ^^^^^^^^^^^^^^^^^
+% Bold instead of emphasized::
 
 \providecommand*{\DUsidebarsubtitle}[1]{\hspace*{\fill}\\
   \textbf{#1}\smallskip}
+
+% transition
+% ^^^^^^^^^^
+% Do not add vertical space after the transition. ::
+
+\providecommand*{\DUtransition}{\hspace*{\fill}\hrulefill\hspace*{\fill}}
