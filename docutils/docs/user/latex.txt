@@ -113,49 +113,42 @@ The default length unit (added to length specifications without unit) is the
 size of a pixel (length unit ``px``)
 ````````````````````````````````````
 
-The length unit ``px`` is a "relative length" whose "real" value depends on
-the "resolution" of the output device (usually specified in "dots per inch"
-(DPI):
+The length unit ``px`` is a "relative length" whose value depends on the
+*resolution* of the output device (usually specified in *dots per inch*
+(DPI). However, when producing a PDF, the resolution of the output device
+(printer, screen (for PDF-viewer) is generally not known.
 
-  :CSS:      px: pixels, relative to the viewing device:
+With pdftex, the "resolution" is a configuration setting.
 
-	     Pixel units are relative to the resolution of the viewing
-	     device, i.e., most often a computer display. If the pixel
-	     density of the output device is very different from that of a
-	     typical computer display, the user agent should rescale pixel
-	     values. It is recommended that the pixel unit refer to the
-	     whole number of device pixels that best approximates the
-	     reference pixel. It is recommended that the reference pixel be
-	     the visual angle of one pixel on a device with a pixel density
-	     of 96dpi and a distance from the reader of an arm's length. For
-	     a nominal arm's length of 28 inches, the visual angle is
-	     therefore about 0.0213 degrees.
+Default:
+  72 DPI, i.e. 1 px = 1/72 in.
 
-             For reading at arm's length, 1px thus corresponds to about 0.26
-	     mm (1/96 inch). When printed on a laser printer, meant for
-	     reading at a little less than arm's length (55 cm, 21 inches),
-	     1px is about 0.20 mm. On a 300 dots-per-inch (dpi) printer,
-	     that may be rounded up to 3 dots (0.25 mm); on a 600 dpi
-	     printer, it can be rounded to 5 dots.
+Why are my images too big?
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-	     -- http://www.w3.org/TR/CSS2/syndata.html#length-units
+HTML-browsers use the actual screen resolution (usually around
+100 DPI).
 
-  :browsers: use the actual screen resolution (or what they think it is)
-             (usually between 72 DPI and 100 DPI).
+The CSS specification suggests:
 
-  :pdftex:   Generally, the resolution of the output device (printer,
-	     screen (for PDF-viewer) is not known.
+  It is recommended that the reference pixel be the visual angle of one
+  pixel on a device with a pixel density of 96 DPI and a distance from the
+  reader of an arm's length.
 
-  	     Defaults to a resolution of 72 DPI, i.e. 1 px = 1/72 in.
+  -- http://www.w3.org/TR/CSS2/syndata.html#length-units
 
-The latex writer keeps length values with unit px as relative, the
-"resolution" can be configured in a stylesheet or
+This is why pixmap images without size specification or objects with a size
+specified in ``px`` tend to come too large in the PDF.
+
+Solution:
+  Specify the image size in fixed units (`pt``, ``cm``, ``in``) or
+  configure the "resolution" in a style sheet.
 
 Example:
-  Set a resolution of 92 DPI::
+  Set a resolution of 96 DPI::
 
        \pdfpxdimen=1in % 1 DPI
-       \divide\pdfpxdimen by 92 % 92 DPI
+       \divide\pdfpxdimen by 96 % 96 DPI
 
 images
 ------
@@ -760,52 +753,45 @@ __ ../ref/rst/restructuredtext.html#option-lists
 page layout
 ```````````
 
-By default, margin settings are determined by the `typearea`_ package which
-is part of the `KOMA-script`_ bundle.  It is possible to disable the use of
-the `typearea` package by not including the ``DIV`` setting in the
-document options_.
+By default, paper size and margin settings are determined by the document
+class.
 
-The ``DIV`` document option defines how "crowded" a page will be: larger
-values mean larger text area.
+The following packages help to configure the page layout:
 
-    The typearea package even with option ``DIV=calc`` calculates a very
-    generous text area. Many conservative typographers will state that the
-    resulting line length is still excessive. The calculated DIV value may
-    be found in the log file for the respective document. Thus one can
-    select a smaller value easily after the first LaTeX run.
+a) The `typearea`_ package (part of the `KOMA-script`_ bundle) calculates a
+   *good* page layout (based on rules and recommendations of typography
+   experts).
 
-    -- `KOMA-Script Guide`_
+   See the `KOMA-Script Guide`_ for details on what is a *good* layout and
+   how this is achieved.
 
-Default:
-  ``DIV=12`` (resulting in good paper use at the expense of unreadable long
-  lines).
-
-  The `typearea` default for A4 paper and 10 pt fonts is ``DIV=8``.
+b) The `geometry`_ package is recommended if you have to follow guidelines
+   with fixed values for the margins.
+   For details see the `geometry manual`_.
 
 Examples:
 
-* Let `typearea` choose a typografically sound value with
-  ``DIV=default`` or ``DIV=calc``::
+* Let `typearea` determine the type area with ``DIV=calc`` in the
+  document options_::
 
     --documentoptions='a4paper,DIV=calc'
 
-* Disable the `typearea` package loading with::
+  The ``DIV`` option can also be specified, like ``DIV=10``. It defines how
+  "crowded" a page will be: larger values mean larger text area (at the
+  expense of readability).
 
-    --documentoptions='a4paper'
-
-  and use the documentclass default or set margins in a stylesheet with
-  the `geometry` package::
+* Set margins in a stylesheet with the `geometry` package::
 
     \usepackage{geometry}
     \geometry{hmargin={3cm,0.8in},height=8in}
     \geometry{height=10in}.
 
-  For details see the `geometry manual`_.
-
 .. _typearea:
    http://dante.ctan.org/CTAN/help/Catalogue/entries/typearea.html
 .. _KOMA-Script Guide:
    http://dante.ctan.org/CTAN/macros/latex/contrib/koma-script/scrguien.pdf
+.. _geometry:
+   http://dante.ctan.org/CTAN/help/Catalogue/entries/geometry.html
 .. _geometry manual:
    http://dante.ctan.org/CTAN/macros/latex/contrib/geometry/geometry.pdf
 

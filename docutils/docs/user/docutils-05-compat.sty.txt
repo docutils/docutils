@@ -280,9 +280,6 @@ Page layout
 New features:
   * Margins are configurable via the ``DIV=...`` document option.
 
-  * It is possible to disable the use of the `typearea` package by not
-    including the ``DIV`` setting in the ``--documentoptions``.
-
   * The ``\raggedbottom`` setting is no longer inserted into the document. It
     is the default for article and report classes. If requested in combination
     with a book class, it can be given in a custom style sheet.

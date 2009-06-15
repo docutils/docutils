@@ -33,9 +33,9 @@ class Writer(writers.Writer):
           ['--documentclass'],
           {'default': 'article', }),
          ('Specify document options.  Multiple options can be given, '
-          'separated by commas.  Default is "a4paper,DIV=12".',
+          'separated by commas.  Default is "a4paper".',
           ['--documentoptions'],
-          {'default': 'a4paper,DIV=12', }),
+          {'default': 'a4paper', }),
          ('Use LaTeX footnotes (currently supports only numbered footnotes). '
           'Default: no, uses figures.',
           ['--use-latex-footnotes'],
