@@ -2204,7 +2204,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_system_message(self, node):
         self.requirements['color'] = r'\usepackage{color}'
         self.visit_admonition(node)
-        self.body.append('\\DUtopictitle{'System Message:'}\n')
+        self.body.append('\\DUtopictitle{System Message:}\n')
         self.append_hypertargets(node)
         try:
             line = ', line~%s' % node['line']
