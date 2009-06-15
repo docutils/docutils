@@ -1918,14 +1918,14 @@ Bug fixes
 Generate clean and configurable LaTeX source
 ----------------------------------------------
 
-* fix newlines (before \DUadmonition, non in depart_list_item(), ...)
-
 * Check the generated source with package `nag`.
 
 LaTeX macros for Docutils-specific objects
 ``````````````````````````````````````````
 
 :subtitle:   Is there a native construct?
+
+:section titles: Custom command or package `hypbmsec`?
 
 :admonitions: optional "type" argument::
 
@@ -1945,21 +1945,27 @@ LaTeX macros for Docutils-specific objects
               Use a "type" argument also for ``\DUtopictitle``?
 	      (would allow red error etc.)
 
-
-:section titles: Custom command or package `hypbmsec`?
-
-* Configurable placement of figure and table floats.
-
-  Use ``\floatplacement`` from the `float` package:
-
-    The ``\floatplacement`` command resets the default placement specifier
-    of a class of floats. E.g., ``\floatplacement{figure}{tp}``.
-
-
 __ http://dante.ctan.org/CTAN/help/Catalogue/entries/pdfcomment.html
 
-LaTeX constructs and packages in stead of re-implementations
-````````````````````````````````````````````````````````````
+
+Configurable placement of figure and table floats
+`````````````````````````````````````````````````
+
+* Use ``\floatplacement`` from the `float` package instead of
+  optional argument for the default.
+
+* Default to ``\floatplacement{figure}{H}`` (here definitely). This
+  corresponds most closely to the source and HTML placement (principle of
+  least surprise).
+
+* Special class argument like "placement-ht" to individually place figures?
+  ::
+
+    placement-<optional arg>  -> \figure[<optional arg>]{...}
+
+
+LaTeX constructs and packages instead of re-implementations
+```````````````````````````````````````````````````````````
 
 Which packages do we want to use?
 
@@ -2030,11 +2036,7 @@ Which packages do we want to use?
       --use-latex-footnotes
       --use-latex-citations
 
-   ?
-
-.. center subsection{Abstract} is not allowed
-   ``! LaTeX Error: Something's wrong--perhaps a missing \item.``
-   Committed a HACK: centring by ``\hfill``.
+   ? (My preference is to default to use-latex-* whenever possible [GM])
 
 
 table of contents
@@ -2165,7 +2167,8 @@ Image and figure directives
 
   + Use this default also for LaTeX?
 
-  + Wrap text around figures/images with class argument "wrap" (or "float")?
+  + Wrap text around figures/images with class argument "wrap"
+    (like the odt writer)?
 
   Use `wrapfig` (or other recommended) package.
 
@@ -2250,6 +2253,7 @@ Ideas:
     give a special meaning to one of the aliases,
 
   * scan "stylesheets" option and use ``utf8x`` if it contains ``ucs``
+
 
 Front-End Tools
 ===============
