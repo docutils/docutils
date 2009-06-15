@@ -104,6 +104,7 @@ Changes Since 0.5
   - Bugfix: Newlines around targets and references prevent run-together
     paragraphs.
   - Fix internal hyperlinks.
+  - Default type area defined in the document class (not by 'typearea').
 
 
 Release 0.5 (2008-06-25)

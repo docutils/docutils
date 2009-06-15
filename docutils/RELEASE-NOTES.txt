@@ -53,6 +53,7 @@ Changes Since 0.5
   - Local tocs with `minitoc` (if 'use-latex-toc' is True).
   - Use default font in admonitions and sidebar.
   - Align of image in a figure defaults to 'center'.
+  - Default type area defined in the document class (not by 'typearea').
 
 Release 0.5 (2008-06-25)
 ========================
