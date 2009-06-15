@@ -34,11 +34,11 @@ __ ../../docutils/docs/howto/html-stylesheets.html
   borders, and somewhat more colorful than the default stylesheet.
 
 * `<transition-stars.css>`_:
-  Example/Template for customising the transition__ element.
+  Example/Template for customising the transition_ element.
 
   Replaces the horizontal line with three stars as often seen in novels.
 
-__ ../../docutils/docs/ref/rst/restructuredtext.html#transitions
+.. _transition: ../../docutils/docs/ref/rst/restructuredtext.html#transitions
 
 
 LaTeX Style Sheets
@@ -64,7 +64,7 @@ directory in the LaTeX INPUT PATH, e.g., (on a modern TeX installation)
   ``--literal-block-env=lstlistings`` option.
 
 * `<transition-stars.sty>`_:
-  Example/Template for customising the transition__ element.
+  Example/Template for customising the transition_ element.
 
   Replaces the horizontal line with three stars as often seen in novels.
 
