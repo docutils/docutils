@@ -1130,7 +1130,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_admonition(self, node, name=''):
         self.fallbacks['admonition'] = PreambleCmds.admonition
         self.fallbacks['topictitle'] = PreambleCmds.topictitle
-        self.body.append('\\DUadmonition{')
+        self.body.append('\n\\DUadmonition{')
         if name:
             self.body.append('\\DUtopictitle{%s}\n' %
                              self.language.labels.get(name, name));
@@ -1159,24 +1159,24 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_block_quote(self, node):
-        self.body.append( '\\begin{quote}\n')
+        self.body.append( '%\n\\begin{quote}\n')
 
     def depart_block_quote(self, node):
-        self.body.append( '\\end{quote}\n')
+        self.body.append( '\n\\end{quote}\n')
 
     def visit_bullet_list(self, node):
         if 'contents' in self.topic_classes:
             if self.use_latex_toc:
                 raise nodes.SkipNode
-            self.body.append( '\\begin{list}{}{}\n' )
+            self.body.append( '%\n\\begin{list}{}{}\n' )
         else:
-            self.body.append( '\\begin{itemize}\n' )
+            self.body.append( '%\n\\begin{itemize}\n' )
 
     def depart_bullet_list(self, node):
         if 'contents' in self.topic_classes:
-            self.body.append( '\\end{list}\n' )
+            self.body.append( '\n\\end{list}\n' )
         else:
-            self.body.append( '\\end{itemize}\n' )
+            self.body.append( '\n\\end{itemize}\n' )
 
     def visit_superscript(self, node):
         self.body.append(r'\textsuperscript{')
@@ -1345,7 +1345,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('\n')
 
     def visit_definition_list(self, node):
-        self.body.append( '\\begin{description}\n' )
+        self.body.append( '%\n\\begin{description}\n' )
 
     def depart_definition_list(self, node):
         self.body.append( '\\end{description}\n' )
@@ -1357,7 +1357,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_description(self, node):
-        self.body.append( ' ' )
+        self.body.append(' ')
 
     def depart_description(self, node):
         pass
@@ -1467,7 +1467,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                      self.date)]
             self.head += title
         # Add bibliography
-        # TODO insertion point of bibliography should none automatic.
+        # TODO insertion point of bibliography should be configurable.
         if self._use_latex_citations and len(self._bibitems)>0:
             if not self.bibtex:
                 widest_label = ''
@@ -1656,12 +1656,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # BUG: what happens if not docinfo
 
     def depart_field_body(self, node):
-        self.body.append( '\n' )
+        pass
+        ## self.body.append( '\n' )
 
     def visit_field_list(self, node):
         self.fallbacks['fieldlist'] = PreambleCmds.fieldlist
         if not self.docinfo:
-            self.body.append('\\begin{DUfieldlist}\n')
+            self.body.append('%\n\\begin{DUfieldlist}\n')
 
     def depart_field_list(self, node):
         if not self.docinfo:
@@ -1917,12 +1918,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('\\end{DUlineblock}\n')
 
     def visit_list_item(self, node):
-        self.body.append('\\item ')
+        self.body.append('\n\\item ')
 
     def depart_list_item(self, node):
-        # TODO: pass (avoid spurious blank lines)
-        self.body.append('\n')
-        ## pass
+        pass
 
     def visit_literal(self, node):
         self.literal = 1
@@ -1968,8 +1967,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # no quote inside tables, to avoid vertical space between
             # table border and literal block.
             # BUG: fails if normal text preceeds the literal block.
-            self.body.append('\\begin{quote}')
-            self.context.append('\\end{quote}\n')
+            self.body.append('%\n\\begin{quote}')
+            self.context.append('\n\\end{quote}\n')
         else:
             self.body.append('\n')
             self.context.append('\n')
@@ -2025,7 +2024,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_option_group(self, node):
-        self.body.append('\\item[')
+        self.body.append('\n\\item[')
         # flag for first option
         self.context.append(0)
 
@@ -2036,10 +2035,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_option_list(self, node):
         self.requirements['~providelength'] = PreambleCmds.providelength
         self.fallbacks['optionlist'] = PreambleCmds.optionlist
-        self.body.append('\\begin{DUoptionlist}\n')
+        self.body.append('%\n\\begin{DUoptionlist}\n')
 
     def depart_option_list(self, node):
-        self.body.append('\\end{DUoptionlist}\n')
+        self.body.append('\n\\end{DUoptionlist}\n')
 
     def visit_option_list_item(self, node):
         pass
@@ -2062,13 +2061,18 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item(node)
 
     def visit_paragraph(self, node):
+        # no newline if the paragraph is first in a list item
+        if ((isinstance(node.parent, nodes.list_item) or
+             isinstance(node.parent, nodes.description)) and 
+            node is node.parent[0]):
+            return
         index = node.parent.index(node)
-        if not ('contents' in self.topic_classes or
-                (isinstance(node.parent, nodes.compound) and
-                 index > 0 and
-                 not isinstance(node.parent[index - 1], nodes.paragraph) and
-                 not isinstance(node.parent[index - 1], nodes.compound))):
-            self.body.append('\n')
+        if (isinstance(node.parent, nodes.compound) and
+            index > 0 and
+            not isinstance(node.parent[index - 1], nodes.paragraph) and
+            not isinstance(node.parent[index - 1], nodes.compound)):
+            return
+        self.body.append('\n')
         if node.get('ids'):
             self.body += self.labels(node) + ['\n']
 
@@ -2363,7 +2367,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 # TODO: user DUtopictitle:
                 # self.body.append('\n\\DUtopictitle{')
                 # self.context.append('}\n')
-                self.body.append('\\subsubsection*{~\\hfill ')
+                self.body.append('\n\\subsubsection*{~\\hfill ')
                 self.context.append('\\hfill ~}\n')
         # Admonition titles (render as topic title)
         elif isinstance(node.parent, nodes.admonition):
@@ -2412,7 +2416,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_title(self, node):
         self.body.append(self.context.pop())
-        # TODO: fix newlines
+        # too many newlines before paragraphs:
         ## self.body.append('\n')
 
     def minitoc(self, node):

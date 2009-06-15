@@ -182,9 +182,11 @@ Like this. \\
 \end{center}
 
 
+
 \subsubsection*{~\hfill Dedication\hfill ~}
 
 For Docutils users \& co-developers.
+
 \subsubsection*{~\hfill Abstract\hfill ~}
 
 This is a test document, containing at least one example of each
@@ -202,9 +204,13 @@ reStructuredText construct.
   \addcontentsline{toc}{section}{Table of Contents}%
   \label{table-of-contents}%
 }
+%
 \begin{list}{}{}
+
 \item \hyperref[structural-elements]{1~~~Structural Elements}
+%
 \begin{list}{}{}
+
 \item \hyperref[section-title]{1.1~~~Section Title}
 
 \item \hyperref[empty-section]{1.2~~~Empty Section}
@@ -214,9 +220,13 @@ reStructuredText construct.
 \end{list}
 
 \item \hyperref[body-elements]{2~~~Body Elements}
+%
 \begin{list}{}{}
+
 \item \hyperref[paragraphs]{2.1~~~Paragraphs}
+%
 \begin{list}{}{}
+
 \item \hyperref[inline-markup]{2.1.1~~~Inline Markup}
 
 \end{list}
@@ -244,7 +254,9 @@ reStructuredText construct.
 \item \hyperref[citations]{2.12~~~Citations}
 
 \item \hyperref[targets]{2.13~~~Targets}
+%
 \begin{list}{}{}
+
 \item \hyperref[duplicate-target-names]{2.13.1~~~Duplicate Target Names}
 
 \item \hyperref[id21]{2.13.2~~~Duplicate Target Names}
@@ -252,7 +264,9 @@ reStructuredText construct.
 \end{list}
 
 \item \hyperref[directives]{2.14~~~Directives}
+%
 \begin{list}{}{}
+
 \item \hyperref[document-parts]{2.14.1~~~Document Parts}
 
 \item \hyperref[images-and-figures]{2.14.2~~~Images and Figures}
@@ -288,7 +302,9 @@ reStructuredText construct.
 \end{list}
 
 \item \hyperref[tests-for-the-latex-writer]{3~~~Tests for the LaTeX writer}
+%
 \begin{list}{}{}
+
 \item \hyperref[custom-roles-in-latex]{3.1~~~Custom Roles in LaTeX}
 
 \item \hyperref[id23]{3.2~~~Option lists}
@@ -429,42 +445,40 @@ live link to PEP 258 here.
   \addcontentsline{toc}{section}{2.2~~~Bullet Lists}%
   \label{bullet-lists}%
 }
+%
 \begin{itemize}
-\item 
-A bullet list
-\begin{itemize}
-\item 
-Nested bullet list.
 
-\item 
-Nested item 2.
+\item A bullet list
+%
+\begin{itemize}
+
+\item Nested bullet list.
+
+\item Nested item 2.
 
 \end{itemize}
 
-\item 
-Item 2.
+\item Item 2.
 
 Paragraph 2 of item 2.
+%
 \begin{itemize}
-\item 
-Nested bullet list.
 
-\item 
-Nested item 2.
+\item Nested bullet list.
+
+\item Nested item 2.
+%
 \begin{itemize}
-\item 
-Third level.
 
-\item 
-Item 2.
+\item Third level.
+
+\item Item 2.
 
 \end{itemize}
 
-\item 
-Nested item 3.
+\item Nested item 3.
 
-\item 
-This nested list should be compacted by the HTML writer.
+\item This nested list should be compacted by the HTML writer.
 %
 \phantomsection\label{target}
 % Even if this item contains a target and a comment.
@@ -487,51 +501,46 @@ This nested list should be compacted by the HTML writer.
 \usecounter{listcnt0}
 \setlength{\rightmargin}{\leftmargin}
 }
-\item 
-Arabic numerals.
+
+\item Arabic numerals.
 \newcounter{listcnt1}
 \begin{list}{\alph{listcnt1})}
 {
 \usecounter{listcnt1}
 \setlength{\rightmargin}{\leftmargin}
 }
-\item 
-lower alpha)
+
+\item lower alpha)
 \newcounter{listcnt2}
 \begin{list}{(\roman{listcnt2})}
 {
 \usecounter{listcnt2}
 \setlength{\rightmargin}{\leftmargin}
 }
-\item 
-(lower roman)
+
+\item (lower roman)
 \newcounter{listcnt3}
 \begin{list}{\Alph{listcnt3}.}
 {
 \usecounter{listcnt3}
 \setlength{\rightmargin}{\leftmargin}
 }
-\item 
-upper alpha.
+
+\item upper alpha.
 \newcounter{listcnt4}
 \begin{list}{\Roman{listcnt4})}
 {
 \usecounter{listcnt4}
 \setlength{\rightmargin}{\leftmargin}
 }
-\item 
-upper roman)
 
+\item upper roman)
+\end{list}
+\end{list}
+\end{list}
 \end{list}
 
-\end{list}
-
-\end{list}
-
-\end{list}
-
-\item 
-Lists that don't start at 1:
+\item Lists that don't start at 1:
 \setcounter{listcnt1}{0}
 \begin{list}{\arabic{listcnt1}.}
 {
@@ -539,12 +548,10 @@ Lists that don't start at 1:
 \addtocounter{listcnt1}{2}
 \setlength{\rightmargin}{\leftmargin}
 }
-\item 
-Three
 
-\item 
-Four
+\item Three
 
+\item Four
 \end{list}
 \setcounter{listcnt1}{0}
 \begin{list}{\Alph{listcnt1}.}
@@ -553,12 +560,10 @@ Four
 \addtocounter{listcnt1}{2}
 \setlength{\rightmargin}{\leftmargin}
 }
-\item 
-C
 
-\item 
-D
+\item C
 
+\item D
 \end{list}
 \setcounter{listcnt1}{0}
 \begin{list}{\roman{listcnt1}.}
@@ -567,14 +572,11 @@ D
 \addtocounter{listcnt1}{2}
 \setlength{\rightmargin}{\leftmargin}
 }
-\item 
-iii
 
-\item 
-iv
+\item iii
 
+\item iv
 \end{list}
-
 \end{list}
 
 
@@ -585,6 +587,7 @@ iv
   \addcontentsline{toc}{section}{2.4~~~Definition Lists}%
   \label{definition-lists}%
 }
+%
 \begin{description}
 \item[Term] \leavevmode 
 Definition
@@ -613,12 +616,12 @@ Definition
   \addcontentsline{toc}{section}{2.5~~~Field Lists}%
   \label{field-lists}%
 }
+%
 \begin{DUfieldlist}
 \item[what:]
 Field lists map field names to field bodies, like database
 records.  They are often part of an extension syntax.  They are
 an unambiguous variant of RFC 2822 fields.
-
 
 \item[how arg1 arg2:]
 The field marker is a colon, the field name, and a colon.
@@ -626,12 +629,10 @@ The field marker is a colon, the field name, and a colon.
 The field body may contain one or more body elements, indented
 relative to the field marker.
 
-
 \item[credits:]
 This paragraph has the \DUroletitlereference{credits} class set.  (This is actually not
 about credits but just for ensuring that the class attribute
 doesn't get stripped away.)
-
 
 \end{DUfieldlist}
 
@@ -645,30 +646,32 @@ doesn't get stripped away.)
 }
 
 For listing command-line options:
+%
 \begin{DUoptionlist}
-\item[-a]  
-command-line option ``a''
-\item[-b file]  
-options can have arguments
+
+\item[-a]  command-line option ``a''
+
+\item[-b file]  options can have arguments
 and long descriptions
-\item[-{}-long]  
-options can be long also
-\item[-{}-input=file]  
-long options can also have
+
+\item[-{}-long]  options can be long also
+
+\item[-{}-input=file]  long options can also have
 arguments
-\item[-{}-very-long-option]  
-The description can also start on the next line.
+
+\item[-{}-very-long-option]  The description can also start on the next line.
 
 The description may contain multiple body elements,
 regardless of where it starts.
-\item[-x, -y, -z]  
-Multiple options are an ``option group''.
-\item[-v, -{}-verbose]  
-Commonly-seen: short \& long options.
-\item[-1 file, -{}-one=file, -{}-two file]  
-Multiple options with arguments.
-\item[/V]  
-DOS/VMS-style options too
+
+\item[-x, -y, -z]  Multiple options are an ``option group''.
+
+\item[-v, -{}-verbose]  Commonly-seen: short \& long options.
+
+\item[-1 file, -{}-one=file, -{}-two file]  Multiple options with arguments.
+
+\item[/V]  DOS/VMS-style options too
+
 \end{DUoptionlist}
 
 There must be at least two spaces between the option and the
@@ -685,19 +688,23 @@ description.
 
 Literal blocks are indicated with a double-colon (``::'') at the end of
 the preceding paragraph (over there \texttt{-{}->}).  They can be indented:
+%
 \begin{quote}{\ttfamily \raggedright \noindent
 if~literal\underline{~}block:~\\
 ~~~~text~=~'is~left~as-is'~\\
 ~~~~spaces\underline{~}and\underline{~}linebreaks~=~'are~preserved'~\\
 ~~~~markup\underline{~}processing~=~None
-}\end{quote}
+}
+\end{quote}
 
 Or they can be quoted without indentation:
+%
 \begin{quote}{\ttfamily \raggedright \noindent
 >{}>~Great~idea!~\\
 >~\\
 >~Why~didn't~I~think~of~that?
-}\end{quote}
+}
+\end{quote}
 
 
 %___________________________________________________________________________
@@ -744,6 +751,7 @@ Another line block, surrounded by paragraphs:
 \end{DUlineblock}
 
 Take it away, Eric the Orchestra Leader!
+%
 \begin{quote}
 
 \begin{DUlineblock}{0em}
@@ -776,6 +784,7 @@ Take it away, Eric the Orchestra Leader!
 \end{DUlineblock}
 \item[] Singing...
 \end{DUlineblock}
+
 \end{quote}
 
 
@@ -788,6 +797,7 @@ Take it away, Eric the Orchestra Leader!
 }
 
 Block quotes consist of indented body elements:
+%
 \begin{quote}
 
 My theory by A. Elk.  Brackets Miss, brackets.  This theory goes
@@ -799,6 +809,7 @@ own it, and what it is too.
 \begin{flushright}
 ---Anne Elk (Miss)
 \end{flushright}
+
 \end{quote}
 
 
@@ -937,7 +948,9 @@ this: %
   \addcontentsline{toc}{section}{2.14~~~Directives}%
   \label{directives}%
 }
-\phantomsection\label{contents}\begin{list}{}{}
+\phantomsection\label{contents}%
+\begin{list}{}{}
+
 \item \hyperref[document-parts]{2.14.1~~~Document Parts}
 
 \item \hyperref[images-and-figures]{2.14.2~~~Images and Figures}
@@ -1117,55 +1130,63 @@ upon the style sheet and the browser or rendering software used.
   \addcontentsline{toc}{section}{2.14.3~~~Admonitions}%
   \label{admonitions}%
 }
+
 \DUadmonition{\DUtopictitle{Attention!}
 
 Directives at large.
 }
+
 \DUadmonition{\DUtopictitle{Caution!}
 
 Don't take any wooden nickels.
 }
+
 \DUadmonition{\DUtopictitle{!DANGER!}
 
 Mad scientist at work!
 }
+
 \DUadmonition{\DUtopictitle{Error}
 
 Does not compute.
 }
+
 \DUadmonition{\DUtopictitle{Hint}
 
 It's bigger than a bread box.
 }
+
 \DUadmonition{\DUtopictitle{Important}
+%
 \begin{itemize}
-\item 
-Wash behind your ears.
 
-\item 
-Clean up your room.
+\item Wash behind your ears.
 
-\item 
-Call your mother.
+\item Clean up your room.
 
-\item 
-Back up your data.
+\item Call your mother.
+
+\item Back up your data.
 
 \end{itemize}
 }
+
 \DUadmonition{\DUtopictitle{Note}
 
 This is a note.
 }
+
 \DUadmonition{\DUtopictitle{Tip}
 
 15\% if the service is good.
 }
+
 \DUadmonition{\DUtopictitle{Warning}
 
 Strong prose may provoke extreme mental exertion.
 Reader discretion is strongly advised.
 }
+
 \DUadmonition{\DUtopictitle{And, by the way...}
 
 You can make up your own admonition too.
@@ -1192,6 +1213,7 @@ text.
 Sidebars often appears beside the main text with a border and
 background color.
 }
+
 \subsubsection*{~\hfill Topic Title\hfill ~}
 
 This is a topic.
@@ -1236,28 +1258,32 @@ I recommend you try \href{http://www.python.org/}{Python, \emph{the} best langua
 Compound 1, paragraph 1.
 
 Compound 1, paragraph 2.
+%
 \begin{itemize}
-\item 
-Compound 1, list item one.
 
-\item 
-Compound 1, list item two.
+\item Compound 1, list item one.
+
+\item Compound 1, list item two.
 
 \end{itemize}
 
 Another compound statement:
 
 Compound 2, a literal block:
+%
 \begin{quote}{\ttfamily \raggedright \noindent
 Compound~2,~literal.
-}\end{quote}
+}
+\end{quote}
 Compound 2, this is a test.
 
 Compound 3, only consisting of one paragraph.
+%
 \begin{quote}{\ttfamily \raggedright \noindent
 Compound~4.~\\
 This~one~starts~with~a~literal~block.
-}\end{quote}
+}
+\end{quote}
 Compound 4, a paragraph.
 
 Now something \emph{really} perverted -{}- a nested compound block.  This is
@@ -1310,6 +1336,7 @@ Compound 7, another paragraph.
   \addcontentsline{toc}{section}{2.14.8~~~Parsed Literal Blocks}%
   \label{parsed-literal-blocks}%
 }
+%
 \begin{quote}{\ttfamily \raggedright \noindent
 This~is~a~parsed~literal~block.~\\
 ~~~~This~line~is~indented.~~The~next~line~is~blank.~\\
@@ -1317,7 +1344,8 @@ This~is~a~parsed~literal~block.~\\
 Inline~markup~is~supported,~e.g.~\emph{emphasis},~\textbf{strong},~\texttt{literal~\\
 text},~footnotes\textsuperscript{\hyperlink{id8}{1}},~%
 \phantomsection\label{hyperlink-targets}hyperlink~targets,~and~\href{http://www.python.org/}{references}.
-}\end{quote}
+}
+\end{quote}
 
 
 %___________________________________________________________________________
@@ -1540,24 +1568,22 @@ body row 3
   \addcontentsline{toc}{section}{2.21~~~Custom Roles}%
   \label{custom-roles}%
 }
+%
 \begin{itemize}
-\item 
-A role based on an existing role.
+
+\item A role based on an existing role.
 
 \texttt{\DUrole{custom}{one}} \texttt{\DUrole{custom}{two}} \texttt{\DUrole{custom}{three}}
 
-\item 
-A new role.
+\item A new role.
 
 \DUrole{customnew}{one two three}
 
-\item 
-A role with class attribute.
+\item A role with class attribute.
 
 \DUrole{special}{interpreted text}
 
-\item 
-A role with class attribute.
+\item A role with class attribute.
 
 \DUrole{very}{\DUrole{special}{interpreted text}}
 
@@ -1583,9 +1609,10 @@ not need to be tested with other writers (e.g. the HTML writer).
   \addcontentsline{toc}{section}{3.1~~~Custom Roles in LaTeX}%
   \label{custom-roles-in-latex}%
 }
+%
 \begin{itemize}
-\item 
-Role names and class arguments are converted to conform to the regular
+
+\item Role names and class arguments are converted to conform to the regular
 expression \texttt{{[}a-z{]}{[}-a-z0-9{]}*} (all non-conforming characters are replaced
 by a hyphen, all letters are downcased).
 
@@ -1594,8 +1621,7 @@ treatment in LaTeX command names.
 
 \DUrole{large}{\DUrole{custom4}{\DUrole{small-caps}{\DUrole{custom-role}{\DUrole{custom-role}{Interpreted Text}}}}}
 
-\item 
-With LaTeX, roles can be styled within the document using the \DUroletitlereference{raw}
+\item With LaTeX, roles can be styled within the document using the \DUroletitlereference{raw}
 directive.
 \newcommand{\docutilsrolelarge}[1]{{\large #1}}
 \makeatletter
@@ -1604,8 +1630,7 @@ directive.
 \makeatother
 \DUrole{large}{\DUrole{custom4}{\DUrole{small-caps}{\DUrole{custom-role}{\DUrole{custom-role}{Interpreted Text}}}}} in large, bold, small-caps.
 
-\item 
-Custom roles can be based on standard roles:
+\item Custom roles can be based on standard roles:
 
 This is a \emph{\DUrole{custom-emphasis}{customized emphasis text role}}
 
@@ -1638,20 +1663,27 @@ not happen if a option-list is at the top of the definition.
 
 If the option list is not at the first element in the definition, it
 is contained in a quote
+%
 \begin{quote}
+%
 \begin{DUoptionlist}
-\item[-{}-help]  
-show help
-\item[-v]  
-verbose
+
+\item[-{}-help]  show help
+
+\item[-v]  verbose
+
 \end{DUoptionlist}
+
 \end{quote}
+%
 \begin{description}
-\item[In a definition list:] \leavevmode \begin{DUoptionlist}
-\item[-{}-help]  
-show help
-\item[-v]  
-verbose
+\item[In a definition list:] \leavevmode %
+\begin{DUoptionlist}
+
+\item[-{}-help]  show help
+
+\item[-v]  verbose
+
 \end{DUoptionlist}
 
 \end{description}
@@ -1808,22 +1840,29 @@ X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~
 }
 
 The LaTeX Info pages lists under ``2.18 Special Characters''
+%
 \begin{quote}
 
 The following characters play a special role in LaTeX and are called
 ``special printing characters'', or simply ``special characters''.
+%
 \begin{quote}
 
 \# \$ \% \& \textasciitilde{} \_ \textasciicircum{} \{ \}
+
 \end{quote}
+
 \end{quote}
 
 The special chars verbatim:
+%
 \begin{quote}{\ttfamily \raggedright \noindent
 \#~\$~\%~\&~\textasciitilde{}~\underline{~}~\textasciicircum{}~\reflectbox{/}{}~\{~\}
-}\end{quote}
+}
+\end{quote}
 
 However also \emph{square brackets} {[}{]} need special care.
+%
 \begin{quote}
 
 item and all the other commands with optional arguments check
@@ -1834,17 +1873,19 @@ optional argument. What makes this unintuitive is the fact that
 the square brackets aren't grouping characters themselves, so in
 your last example item{[}{[}...{]}{]} the optional argument consists of
 {[}... (without the closing bracket).
+
 \end{quote}
 
 Compare the items in the following lists:
+%
 \begin{itemize}
-\item 
-simple item
 
-\item 
-{[}bracketed{]} item
+\item simple item
+
+\item {[}bracketed{]} item
 
 \end{itemize}
+%
 \begin{description}
 \item[simple] \leavevmode 
 description term
@@ -1856,9 +1897,11 @@ description term
 
 The OT1 font-encoding has different characters for the less-than,
 greater-than and bar, \textless{} \textbar{} \textgreater{}, except for typewriter font \DUroletitlereference{cmtt}:
+%
 \begin{quote}{\ttfamily \raggedright \noindent
 <~|~>
-}\end{quote}
+}
+\end{quote}
 
 % unusual combinations (from newlatex, should we test them)
 % .. include:: data/latex.txt
@@ -1888,6 +1931,7 @@ section, ``Docutils System Messages'':
   \phantomsection%
   \addcontentsline{toc}{section}{Docutils System Messages}%
 }
+
 \DUadmonition{\DUtopictitle{System Message:}
 \raisebox{1em}{\hypertarget{id24}{}}
 ERROR/3 in functional/input/data/standard.txt, line~100
@@ -1895,6 +1939,7 @@ ERROR/3 in functional/input/data/standard.txt, line~100
 \hyperlink{id25}{
 Undefined substitution referenced: ``problematic''.
 }}
+
 \DUadmonition{\DUtopictitle{System Message:}
 \raisebox{1em}{\hypertarget{id85}{}}
 ERROR/3 in functional/input/standalone\_rst\_latex.txt, line~359
@@ -1902,6 +1947,7 @@ ERROR/3 in functional/input/standalone\_rst\_latex.txt, line~359
 \hyperlink{id86}{
 Unknown target name: ``5''.
 }}
+
 \DUadmonition{\DUtopictitle{System Message:}
 \raisebox{1em}{\hypertarget{id87}{}}
 ERROR/3 in functional/input/data/standard.txt, line~368
@@ -1909,6 +1955,7 @@ ERROR/3 in functional/input/data/standard.txt, line~368
 \hyperlink{id88}{
 Unknown target name: ``nonexistent''.
 }}
+
 \DUadmonition{\DUtopictitle{System Message:}
 \raisebox{1em}{\hypertarget{id89}{}}
 ERROR/3 in functional/input/data/standard.txt, line~395
@@ -1916,6 +1963,7 @@ ERROR/3 in functional/input/data/standard.txt, line~395
 \hyperlink{id90}{
 Unknown target name: ``hyperlink reference without a target''.
 }}
+
 \DUadmonition{\DUtopictitle{System Message:}
 \raisebox{1em}{\hypertarget{id91}{}}
 ERROR/3 in functional/input/data/standard.txt, line~408

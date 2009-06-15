@@ -92,9 +92,13 @@ latex_head_prefix + latex_requirements + latex_head + b(r"""
   \addcontentsline{toc}{section}{Table of Contents}%
   \label{table-of-contents}%
 }
+%
 \begin{list}{}{}
+
 \item \hyperref[title-1]{Title 1}
+%
 \begin{list}{}{}
+
 \item \hyperref[title-2]{Title 2}
 
 \end{list}
@@ -221,13 +225,12 @@ latex_head_prefix + latex_requirements + latex_head + b(r"""
 \usecounter{listcnt0}
 \setlength{\rightmargin}{\leftmargin}
 }
-\item 
-Item 1.
 
-\item 
-Second to the previous item this one will explain
+\item Item 1.
 
+\item Second to the previous item this one will explain
 \end{list}
+%
 \begin{quote}
 \setcounter{listcnt0}{0}
 \begin{list}{\alph{listcnt0})}
@@ -235,13 +238,12 @@ Second to the previous item this one will explain
 \usecounter{listcnt0}
 \setlength{\rightmargin}{\leftmargin}
 }
-\item 
-nothing.
 
-\item 
-or some other.
+\item nothing.
 
+\item or some other.
 \end{list}
+
 \end{quote}
 \setcounter{listcnt0}{0}
 \begin{list}{\arabic{listcnt0}.}
@@ -250,10 +252,10 @@ or some other.
 \addtocounter{listcnt0}{2}
 \setlength{\rightmargin}{\leftmargin}
 }
-\item 
-Third is
 
+\item Third is
 \end{list}
+%
 \begin{quote}
 \setcounter{listcnt0}{0}
 \begin{list}{(\Roman{listcnt0})}
@@ -261,13 +263,12 @@ Third is
 \usecounter{listcnt0}
 \setlength{\rightmargin}{\leftmargin}
 }
-\item 
-having pre and postfixes
 
-\item 
-in roman numerals.
+\item having pre and postfixes
 
+\item in roman numerals.
 \end{list}
+
 \end{quote}
 
 \end{document}
@@ -307,14 +308,18 @@ Expecting ``en'' here.
 Inside literal blocks quotes should be left untouched
 (use only two quotes in test code makes life easier for
 the python interpreter running the test):
+%
 \begin{quote}{\ttfamily \raggedright \noindent
 "{}"~\\
 This~is~left~"untouched"~also~*this*.~\\
 "{}"
-}\end{quote}
+}
+\end{quote}
+%
 \begin{quote}{\ttfamily \raggedright \noindent
 should~get~"quotes"~and~\emph{italics}.
-}\end{quote}
+}
+\end{quote}
 
 Inline \texttt{literal "quotes"} should be kept.
 
@@ -404,13 +409,15 @@ totest['brackett_protection'] = [
 latex_head_prefix + latex_requirements_graphicx + latex_head + b(r"""
 %%% Body
 \begin{document}
+%
 \begin{quote}{\ttfamily \raggedright \noindent
 something~before~to~get~a~end~of~line.~\\
 {[}~\\
 ~\\
 the~empty~line~gets~tested~too~\\
 {]}
-}\end{quote}
+}
+\end{quote}
 
 \end{document}
 """)],
