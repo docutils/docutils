@@ -6,6 +6,8 @@
 \usepackage{ifthen}
 \usepackage{fixltx2e} % fix LaTeX2e shortcomings
 \usepackage{color}
+\usepackage{float} % float configuration
+\floatplacement{figure}{H} % place figures here definitely
 \usepackage{graphicx}
 \usepackage{multirow}
 \usepackage{longtable}
@@ -1011,7 +1013,7 @@ A centered image:
 
 A left-aligned image:
 
-{\includegraphics{../../../docs/user/rst/images/biohazard.png}\hfill}
+\noindent{\includegraphics{../../../docs/user/rst/images/biohazard.png}\hfill}
 
 This paragraph might flow around the image.
 The specific behavior depends upon the style sheet and
@@ -1019,7 +1021,7 @@ the browser or rendering software used.
 
 A right-aligned image:
 
-{\hfill\includegraphics{../../../docs/user/rst/images/biohazard.png}}
+\noindent{\hfill\includegraphics{../../../docs/user/rst/images/biohazard.png}}
 
 This paragraph might flow around the image.
 The specific behavior depends upon the style sheet and
@@ -1048,7 +1050,7 @@ An image 2 cm high:
 A \emph{figure} is an image with a caption and/or a legend.  With page-based output
 media, figures might float to a different position if this helps the page
 layout.
-\begin{figure}[htbp]
+\begin{figure}
 \noindent\makebox[\textwidth][c]{\includegraphics[width=258bp]{../../../docs/user/rst/images/title.png}}
 \caption{Plaintext markup syntax and parser system.}
 \begin{DUlegend}
@@ -1081,7 +1083,7 @@ This paragraph is also part of the legend.
 \end{figure}
 
 A left-aligned figure:
-\begin{figure}[htbp]
+\begin{figure}
 \noindent\makebox[\textwidth][c]{\includegraphics[width=50bp]{../../../docs/user/rst/images/biohazard.png}}
 \caption{This is the caption.}
 \begin{DUlegend}
@@ -1095,7 +1097,7 @@ This paragraph might flow around the figure. The specific behavior depends
 upon the style sheet and the browser or rendering software used.
 
 A centered figure:
-\begin{figure}[htbp]
+\begin{figure}
 \noindent\makebox[\textwidth][c]{\includegraphics[width=50bp]{../../../docs/user/rst/images/biohazard.png}}
 \caption{This is the caption.}
 \begin{DUlegend}
@@ -1109,7 +1111,7 @@ This paragraph might flow around the figure. The specific behavior depends
 upon the style sheet and the browser or rendering software used.
 
 A right-aligned figure:
-\begin{figure}[htbp]
+\begin{figure}
 \noindent\makebox[\textwidth][c]{\includegraphics[width=50bp]{../../../docs/user/rst/images/biohazard.png}}
 \caption{This is the caption.}
 \begin{DUlegend}

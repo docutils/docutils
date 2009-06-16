@@ -1,10 +1,13 @@
 % ==================================================================
-%  Backwards compatibility settings for the Docutils latex2e writer
+%     Changes to the Docutils latex2e writer since version 0.5
 % ==================================================================
+% 
+% A backwards compatibility style sheet
+% *************************************
 % 
 % :Author:    Guenter Milde
 % :Contact:   milde@users.berlios.de
-% :Revision:  $Revision: 5981 $
+% :Revision:  $Revision: 5984 $
 % :Date:      $Date: 2009-02-24$
 % :Copyright: © 2009 G. Milde,
 %             Released  without warranties or conditions of any kind
@@ -318,6 +321,24 @@
 %   `sidebar`_.
 % 
 % 
+% Figure placement
+% ----------------
+% 
+% New feature:
+%   Use ``\floatplacement`` from the `float` package instead of
+%   "hard-coded" optional argument for the global setting.
+% 
+%   Default to ``\floatplacement{figure}{H}`` (here definitely). This
+%   corresponds most closely to the source and HTML placement (principle of
+%   least surprise).
+% 
+% Backwards compatibility:
+%   Set the global default back to the previous used value::
+
+  \usepackage{float}
+  \floatplacement{figure}{htbp} % here, top, bottom, extra-page
+
+
 % Figure and image alignment
 % --------------------------
 % 
@@ -442,12 +463,15 @@
 % admonition width
 % ^^^^^^^^^^^^^^^^
 % The ``admonitionwith`` lenght is replaced by the more powerful
-% ``\DUadmonition`` command (see `New Definitions`_)::
-
-\newlength{\admonitionwidth}
-\setlength{\admonitionwidth}{0.9\textwidth}
-
-
+% ``\DUadmonition`` command (see admonitions_).
+% 
+% Backwards compatibility:
+%   The default value (90 % of the textwidth) is unchanged.
+% 
+%   To configure the admonition width, you must redefine the ``DUadmonition``
+%   command instead of changing the ``admonitionwith`` length value.
+% 
+% 
 % Renamed definitions (now conditional)
 % `````````````````````````````````````
 % 
@@ -561,14 +585,13 @@
 % 
 % admonitions
 % ^^^^^^^^^^^
-% Use sans-serif fonts and the old variable for `admonition width`_::
+% Use sans-serif fonts::
 
 \newcommand{\DUadmonition}[1]{%
   \begin{center}
-    \fbox{\parbox{\admonitionwidth}{\sffamily #1}}
+    \fbox{\parbox{0.9\textwidth}{\sffamily #1}}
   \end{center}
 }
-
 
 % topic title
 % ^^^^^^^^^^^

@@ -574,6 +574,143 @@ Example:
 __ ../ref/rst/restructuredtext.html#field-lists
 
 
+figure placement
+````````````````
+
+Figure placement can be customized globally with the ``\floatplacement``
+command from the `float`_ package. See the `float package documentation`_
+for details.
+
+Default:
+  ``\floatplacement{figure}{H}`` (here definitely). This corresponds most
+  closely to the source and HTML placement (principle of least surprise).
+
+Examples:
+
+* Set the default back to the pre-0.6 value in a custom `style sheet`_::
+
+    \usepackage{float}
+    \floatplacement{figure}{htbp} % here, top, bottom, extra-page
+
+* Place the following figures at top or bottom with `raw LaTeX`_
+  in the document source::
+
+    .. raw:: latex
+
+        \floatplacement{figure}{tb}
+
+.. _float:
+   http://dante.ctan.org/CTAN/help/Catalogue/entries/float.html
+.. _float package documentation:
+   http://dante.ctan.org/CTAN/macros/latex/contrib/float/float.pdf
+
+font
+````
+
+The selected text font influences the *look*, the *feel*, and the
+*readability* of the document (see e.g.
+http://www.csarven.ca/web-typography).
+
+Unfortunately, LaTeX cannot use the fonts of the operating system directly
+[#]_ but needs specially installed fonts with additional supporting files.
+The `LaTeX Font Catalogue`_ provides information and examples for a wide
+range of fonts available for use with LaTeX.
+
+.. [#] XeTeX_ can, but is not (yet) supported by Docutils
+
+Default:
+  Computer Modern (CM)
+
+Alternative fonts can be selected by
+
+a) specifying the corresponding LaTeX package as arguments to the
+   ``--stylesheet`` option or in a custom `style sheet`_.
+
+   * Packages can be combined.
+   * Passing options to a package is only possible in the style sheet.
+
+b) changing the font-default macros.
+
+
+Examples:
+
+* Use `LaTeX Modern`, a Type 1 variant of CM.
+
+  LaTeX code::
+
+    \usepackage{lmodern}
+
+  Command line argument::
+
+    --stylesheet=lmodern
+
+* The ubiquitous "Times/Helvetica/Courier"
+  combination is achieved by the latex code::
+
+    \usepackage{mathptmx}            % Times for serif and math
+    \usepackage[scaled=.90]{helvet}  % downscaled Helvetica for sans serif
+    \usepackage{courier}             % Courier for teletype (mono-space)
+
+  or by the combination of the command line options::
+
+    --documentoptions="scaled=.90"
+    --stylesheet="mathptmx,helvet,courier"
+
+
+* Changing a font without using a package (the macros are ``\rmdefault``,
+  ``sfdefault`` and ``ttdefault``)::
+
+    \renewcommand{\ttdefault}{txtt}
+
+
+When generating PDF-files from LaTeX, the files can become smaller if
+standard Postscript fonts are used.
+
+The following table lists the font packages for standard Postscript fonts
+(see `Using common Postscript fonts with LaTeX`_ for details):
+
+
+============ ============ ============= ============= ============
+Package      Roman        Sans Serif    Typewriter    Math
+============ ============ ============= ============= ============
+(none)       CM Roman     CM Sans Serif CM Typewriter CM Math
+
+mathpazo     Palatino                                 Palatino
+
+mathptmx     Times                                    Times
+
+helvet                    Helvetica
+
+avant                     Avant Garde
+
+courier                                 Courier
+
+chancery     Zapf
+             Chancery
+
+bookman      Bookman      Avant Garde   Courier
+
+newcent      New Century  Avant Garde   Courier
+             Schoolbook
+
+charter      Charter
+
+utopia       Utopia
+============ ============ ============= ============= ============
+
+Extended versions of the standard Postscript fonts including accented chars,
+Greek and Cyrillic are available with the `TeX Gyre`_ bundle which is part
+of, e.g., `TeX Live`_.
+
+.. _XeTeX: http://scripts.sil.org/xetex
+.. _LaTeX Font Catalogue:
+   http://www.tug.dk/FontCatalogue/
+.. _TeX Gyre: http://www.gust.org.pl/projects/e-foundry/tex-gyre
+.. _Using common PostScript fonts with LaTeX:
+   http://dante.ctan.org/CTAN/macros/latex/required/psnfss/psnfss2e.pdf
+.. _TeX Live: http://tug.org/texlive/
+
+
 font encoding
 `````````````
 
@@ -928,102 +1065,6 @@ Example:
 .. _interpreted text:
    ../ref/rst/restructuredtext.html#interpreted-text
 
-
-text font
-`````````
-
-Unfortunately, LaTeX cannot use the fonts of the operating system directly
-[#]_ but needs specially installed fonts with additional supporting files.
-The `LaTeX Font Catalogue`_ provides information and examples for a wide
-range of fonts available for use with LaTeX.
-
-.. [#] XeTeX_ can, but is not (yet) supported by Docutils
-
-Default:
-  Computer Modern (CM)
-
-Alternative fonts can be selected by
-
-a) specifying the corresponding LaTeX package as arguments to the
-   ``--stylesheet`` option or in a custom `style sheet`_.
-
-   * Packages can be combined.
-   * Passing options to a package is only possible in the style sheet.
-
-b) changing the font-default macros.
-
-
-Examples:
-
-* Use `LaTeX Modern`, a Type 1 variant of CM.
-
-  LaTeX code::
-
-    \usepackage{lmodern}
-
-  Command line argument::
-
-    --stylesheet=lmodern
-
-* The ubiquitous "Times/Helvetica/Courier"
-  combination is achieved by::
-
-    \usepackage{mathptmx}            % Times for serif and math
-    \usepackage[scaled=.90]{helvet}  % downscaled Helvetica for sans serif
-    \usepackage{courier}             % Courier for teletype (mono-space)
-
-* Changing a font without using a package (the macros are ``\rmdefault``,
-  ``sfdefault`` and ``ttdefault``)::
-
-    \renewcommand{\ttdefault}{txtt}
-
-
-When generating PDF-files from LaTeX, the files can become smaller if
-standard Postscript fonts are used.
-
-The following table lists the font packages for standard Postscript fonts
-(see `Using common Postscript fonts with LaTeX`_ for details):
-
-
-============ ============ ============= ============= ============
-Package      Roman        Sans Serif    Typewriter    Math
-============ ============ ============= ============= ============
-(none)       CM Roman     CM Sans Serif CM Typewriter CM Math
-
-mathpazo     Palatino                                 Palatino
-
-mathptmx     Times                                    Times
-
-helvet                    Helvetica
-
-avant                     Avant Garde
-
-courier                                 Courier
-
-chancery     Zapf
-             Chancery
-
-bookman      Bookman      Avant Garde   Courier
-
-newcent      New Century  Avant Garde   Courier
-             Schoolbook
-
-charter      Charter
-
-utopia       Utopia
-============ ============ ============= ============= ============
-
-Extended versions of the standard Postscript fonts including accented chars,
-Greek and Cyrillic are available with the `TeX Gyre`_ bundle which is part
-of, e.g., `TeX Live`_.
-
-.. _XeTeX: http://scripts.sil.org/xetex
-.. _LaTeX Font Catalogue:
-   http://www.tug.dk/FontCatalogue/
-.. _TeX Gyre: http://www.gust.org.pl/projects/e-foundry/tex-gyre
-.. _Using common PostScript fonts with LaTeX:
-   http://dante.ctan.org/CTAN/macros/latex/required/psnfss/psnfss2e.pdf
-.. _TeX Live: http://tug.org/texlive/
 
 text encoding
 `````````````

@@ -1951,17 +1951,23 @@ __ http://dante.ctan.org/CTAN/help/Catalogue/entries/pdfcomment.html
 Configurable placement of figure and table floats
 `````````````````````````````````````````````````
 
-* Use ``\floatplacement`` from the `float` package instead of
-  optional argument for the default.
+* Special class argument to individually place figures?
 
-* Default to ``\floatplacement{figure}{H}`` (here definitely). This
-  corresponds most closely to the source and HTML placement (principle of
-  least surprise).
-
-* Special class argument like "placement-ht" to individually place figures?
-  ::
+  Either:
 
     placement-<optional arg>  -> \figure[<optional arg>]{...}
+
+  e.g. ``.. class::  placement-htb``,
+
+  or more verbose:
+
+  :H: place-here
+  :h: place-here-if-possible
+  :t: place-top
+  :b: place-bottom
+  :p: place-on-extra-page
+
+  e.g.: ``.. class:: place-here-if-possible place-top place-bottom``
 
 
 LaTeX constructs and packages instead of re-implementations
@@ -2067,6 +2073,14 @@ Default layout
   LaTeX (pages 10 and 11 of the `PSNFSS documentation`_), e.g. Times or
   Palatino.
 
+  In PDF 1.3 there are 14 standard fonts:
+
+    Times-Roman, Times-Bold, Times-Italic, Times-BoldItalic, Helvetica,
+    Helvetica-Bold, Helvetica-Oblique, Helvetica-BoldOblique, Courier,
+    Courier-Bold, Courier-Oblique, Courier-BoldOblique, Symbol, ZapfDingbats
+
+  The rest you need to embed.
+
 * Use italic instead of slanted for titlereference?
 
 * Let `meta` directive insert comment into header instead of document?
@@ -2132,7 +2146,7 @@ Tables
   inside a float?
 
   Alternatively, default to tabular and use longtable only if specified
-  (analogue to booktable)?
+  by config setting or class argument (analogue to booktable)?
 
 * Table heads and footer for longtable (firstpage lastpage ..)?
 
@@ -2149,6 +2163,11 @@ Tables
 
 * Should there be two hlines after table head and on table end?
 
+* Place titled tables in a float ('table' environment)?
+
+  The 'table', 'csv-table', and 'list-table' directives support an (optional)
+  table title. In analogy to the 'figure' directive this should map to a
+  table float.
 
 Image and figure directives
 ```````````````````````````
@@ -2194,6 +2213,8 @@ Missing features
 
   --> Pass the right option to ``\hypersetup``
 
+* Consider supporting the "compact" option and class argument (from
+  rst2html) as some lists look better compact and others need the space.
 
 * If ``use-latex-citations`` is used a bibliography is inserted right at the
   end of the document.
