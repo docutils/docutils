@@ -1,6 +1,9 @@
 ==================================================================
- Backwards compatibility settings for the Docutils latex2e writer
+    Changes to the Docutils latex2e writer since version 0.5
 ==================================================================
+
+A backwards compatibility style sheet
+*************************************
 
 :Author:    Guenter Milde
 :Contact:   milde@users.berlios.de
@@ -318,6 +321,24 @@ Backward compatibility:
   `sidebar`_.
 
 
+Figure placement
+----------------
+
+New feature:
+  Use ``\floatplacement`` from the `float` package instead of
+  "hard-coded" optional argument for the global setting.
+
+  Default to ``\floatplacement{figure}{H}`` (here definitely). This
+  corresponds most closely to the source and HTML placement (principle of
+  least surprise).
+
+Backwards compatibility:
+  Set the global default back to the previous used value::
+
+    \usepackage{float}
+    \floatplacement{figure}{htbp} % here, top, bottom, extra-page
+
+
 Figure and image alignment
 --------------------------
 
@@ -442,10 +463,13 @@ Removed definitions
 admonition width
 ^^^^^^^^^^^^^^^^
 The ``admonitionwith`` lenght is replaced by the more powerful
-``\DUadmonition`` command (see `New Definitions`_)::
+``\DUadmonition`` command (see admonitions_).
 
-  \newlength{\admonitionwidth}
-  \setlength{\admonitionwidth}{0.9\textwidth}
+Backwards compatibility:
+  The default value (90 % of the textwidth) is unchanged.
+
+  To configure the admonition width, you must redefine the ``DUadmonition``
+  command instead of changing the ``admonitionwith`` length value.
 
 
 Renamed definitions (now conditional)
@@ -561,14 +585,13 @@ Backwards compatibility:
 
 admonitions
 ^^^^^^^^^^^
-Use sans-serif fonts and the old variable for `admonition width`_::
+Use sans-serif fonts::
 
   \newcommand{\DUadmonition}[1]{%
     \begin{center}
-      \fbox{\parbox{\admonitionwidth}{\sffamily #1}}
+      \fbox{\parbox{0.9\textwidth}{\sffamily #1}}
     \end{center}
   }
-
 
 topic title
 ^^^^^^^^^^^

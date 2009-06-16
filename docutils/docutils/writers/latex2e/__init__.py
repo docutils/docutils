@@ -346,6 +346,9 @@ PreambleCmds.fieldlist = r"""% field list environment:
     {\enddescription\endquote}
 }{}"""
 
+PreambleCmds.float_settings = r"""\usepackage{float} % float configuration
+\floatplacement{figure}{H} % place figures here definitely"""
+
 PreambleCmds.footnote_floats = r"""% settings for footnotes as floats:
 \setlength{\floatsep}{0.5em}
 \setlength{\textfloatsep}{\fill}
@@ -1682,6 +1685,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append(':]')
 
     def visit_figure(self, node):
+        self.requirements['float_settings'] = PreambleCmds.float_settings
         # ! the 'align' attribute should set "outer alignment" !
         # For "inner alignment" use LaTeX default alignment (similar to HTML)
         ## if ('align' not in node.attributes or
@@ -1692,9 +1696,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         ##     # TODO non vertical space for other alignments.
         ##     align = '\\begin{flush%s}' % node.attributes['align']
         ##     align_end = '\\end{flush%s}' % node.attributes['align']
-        ## self.body.append( '\\begin{figure}[htbp]%s\n' % align )
+        ## self.body.append( '\\begin{figure}%s\n' % align )
         ## self.context.append( '%s\\end{figure}\n' % align_end )
-        self.body.append('\\begin{figure}[htbp]')
+        self.body.append('\\begin{figure}')
         self.context.append('\\end{figure}\n')
 
     def depart_figure(self, node):
@@ -1841,14 +1845,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
             (True, 'middle'): (r'\raisebox{-0.5\height}{', '}'),
             (True, 'top'):    (r'\raisebox{-\height}{', '}'),
             (False, 'center'): (r'\noindent\makebox[\textwidth][c]{', '}'),
-            (False, 'left'):   ('{', r'\hfill}'),
-            (False, 'right'):  (r'{\hfill', '}'),}
+            (False, 'left'):   (r'\noindent{', r'\hfill}'),
+            (False, 'right'):  (r'\noindent{\hfill', '}'),}
         if 'align' in attrs:
             try:
                 pre.append(align_prepost[is_inline, attrs['align']][0])
                 post.append(align_prepost[is_inline, attrs['align']][1])
             except KeyError:
-                pass                    # XXX complain here?
+                pass                    # TODO: warn?
         if 'height' in attrs:
             include_graphics_options.append('height=%s' %
                             self.to_latex_length(attrs['height']))

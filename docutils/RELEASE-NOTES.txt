@@ -54,6 +54,7 @@ Changes Since 0.5
   - Use default font in admonitions and sidebar.
   - Align of image in a figure defaults to 'center'.
   - Default type area defined in the document class (not by 'typearea').
+  - Float placement made configurable and changed to "here definitely".
 
 Release 0.5 (2008-06-25)
 ========================
