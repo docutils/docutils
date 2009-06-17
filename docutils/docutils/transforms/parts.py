@@ -79,6 +79,14 @@ class Contents(Transform):
     default_priority = 720
 
     def apply(self):
+        # build a contents list from the section headings?
+        # if False, the writer (or output software) builds the contents list
+        # Example: the LaTeX writer with option "use-latex-toc".
+        try:
+            build = not(self.document.settings.use_latex_toc)
+        except AttributeError:
+            build = True
+
         details = self.startnode.details
         if 'local' in details:
             startnode = self.startnode.parent.parent
@@ -93,11 +101,16 @@ class Contents(Transform):
             self.backlinks = details['backlinks']
         else:
             self.backlinks = self.document.settings.toc_backlinks
-        contents = self.build_contents(startnode)
-        if len(contents):
-            self.startnode.replace_self(contents)
+        if build:
+            contents = self.build_contents(startnode)
+            if len(contents):
+                self.startnode.replace_self(contents)
+            else:
+                self.startnode.parent.parent.remove(self.startnode.parent)
         else:
-            self.startnode.parent.parent.remove(self.startnode.parent)
+            # pass customization settings to the parent node
+            self.startnode.parent.attributes.update(details)
+            self.startnode.parent.remove(self.startnode)
 
     def build_contents(self, node, level=0):
         level += 1

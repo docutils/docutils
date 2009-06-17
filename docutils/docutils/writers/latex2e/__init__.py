@@ -186,6 +186,13 @@ class Writer(writers.Writer):
         writers.Writer.__init__(self)
         self.translator_class = LaTeXTranslator
 
+    # TODO: footnote collection transform
+    # Override parent method to add latex-specific transforms
+    ## def get_transforms(self):
+    ##    # call the parent class' method
+    ##    # return writers.Writer.get_transforms(self) + [footnotes.collect]
+    ##    return writers.Writer.get_transforms(self)
+     
     def translate(self):
         visitor = self.translator_class(self.document)
         self.document.walkabout(visitor)
@@ -1440,6 +1447,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             if node['ids']:
                 self.title += self.labels(node)
             self.body_prefix.append('\\maketitle\n\n')
+
     def depart_document(self, node):
         # Complete header with information gained from walkabout
         # a) conditional requirements (before style sheet)
@@ -2067,7 +2075,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_paragraph(self, node):
         # no newline if the paragraph is first in a list item
         if ((isinstance(node.parent, nodes.list_item) or
-             isinstance(node.parent, nodes.description)) and 
+             isinstance(node.parent, nodes.description)) and
             node is node.parent[0]):
             return
         index = node.parent.index(node)
@@ -2359,7 +2367,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 if self.settings.use_titlepage_env:
                     self.body.append('\\end{titlepage}\n')
                 if self.use_latex_toc:
-                    self.body.append('\\renewcommand{\\contentsname}{')
+                    self.body.append('\n\\renewcommand{\\contentsname}{')
                     self.context.append('}\n\\tableofcontents\n\n\\bigskip\n')
                     self.has_latex_toc = True
                 else:
@@ -2368,7 +2376,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                     self.body.append('\\subsubsection*{~\\hfill ')
                     self.context.append('\\hfill ~%s}\n' % self.bookmark(node))
             else: # other topic titles
-                # TODO: user DUtopictitle:
+                # TODO: use DUtopictitle:
                 # self.body.append('\n\\DUtopictitle{')
                 # self.context.append('}\n')
                 self.body.append('\n\\subsubsection*{~\\hfill ')
@@ -2433,12 +2441,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # name-prefix for current section level
         section_name = self.d_class.section(self.section_level)
         if section_name == 'part':
-            level = 'part'
+            minitoc_name = 'part'
         elif section_name == 'chapter':
-            level = 'mini'
+            minitoc_name = 'mini'
         elif (section_name == 'section' and
               'chapter' not in self.d_class.sections):
-            level = 'sect'
+            minitoc_name = 'sect'
         else: # minitoc only supports local toc in part- or top-level
             warn = self.document.reporter.warning
             warn('Skipping local ToC at %s level.\n' % section_name +
@@ -2446,19 +2454,28 @@ class LaTeXTranslator(nodes.NodeVisitor):
             return
         # Requirements/Setup
         self.requirements['minitoc'] = PreambleCmds.minitoc
-        self.requirements['minitoc-%s' % level] = r'\do%stoc' % level
+        self.requirements['minitoc-%s' %
+                          minitoc_name] = r'\do%stoc' % minitoc_name
         # depth: (Docutils defaults to unlimited depth)
-        depth = len(self.d_class.sections)
-        self.requirements['minitoc-%s-depth' % level] = (
-            r'\mtcsetdepth{%stoc}{%d}' % (level, depth))
+        max_depth = len(self.d_class.sections)
+        self.requirements['minitoc-%s-depth' % minitoc_name] = (
+            r'\mtcsetdepth{%stoc}{%d}' % (minitoc_name, max_depth))
         # TODO: set the depth according to the :depth: argument
         # Attention: Docutils stores a relative depth while minitoc
         # expects an absolute depth!
-        ## self.body.append('\\setcounter{%stocdepth}{%d}' % (level, depth))
+        offset = {'sect': 1, 'mini': 0, 'part': 0}
+        if 'chapter' in self.d_class.sections:
+            offset['part'] = -1
+        depth = node.get('depth', 0)
+        if depth:
+            # depth += self.section_level
+            self.body.append('\\setcounter{%stocdepth}{%d}' %
+                             (minitoc_name, depth + offset[minitoc_name]))
         # title:
-        self.body.append('\\mtcsettitle{%stoc}{%s}\n' % (level, toctitle))
+        self.body.append('\\mtcsettitle{%stoc}{%s}\n' %
+                         (minitoc_name, toctitle))
         # the toc-generating command:
-        self.body.append('\\%stoc\n' % level)
+        self.body.append('\\%stoc\n' % minitoc_name)
 
     def visit_topic(self, node):
         self.topic_classes = node['classes']

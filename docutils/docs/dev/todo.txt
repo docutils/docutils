@@ -2048,21 +2048,9 @@ Which packages do we want to use?
 table of contents
 ^^^^^^^^^^^^^^^^^
 
-Problem:
-  when I specify a :depth: to a contents directive, this value is used but
-  not preserved in the doctree.
-
-David wrote:
-
-  There is a setting, use_latex_toc. Unfortunately its implementation is
-  suboptimal. When use_latex_toc is True, the Docutils-generated ToC
-  shouldn't be built at all. It's a waste of time.
-
-  Instead, the docutils.transforms.parts.Contents transform should be
-  made aware of use_latex_toc, and do the right thing for LaTeX. Or the
-  LaTeX writer should override that transform and substitute a custom
-  version.
-
+* support non-numbered sections with use-latex-toc
+  (now easy because of the \addtocontents lines)
+* use-latex-doc by default?
 
 Default layout
 --------------
