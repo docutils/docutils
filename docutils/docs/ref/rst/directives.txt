@@ -961,13 +961,12 @@ Automatic Section Numbering
 :Directive Options: Possible.
 :Directive Content: None.
 
-The "sectnum" (or "section-autonumbering") directive configures the
-automatic numbering of sections and subsections in a document.
+The "sectnum" (or "section-autonumbering") directive automatically numbers
+sections and subsections in a document (if not disabled by the
+``--no-section-numbering`` command line option or the `sectnum_xform`_
+configuration setting).
 
-Automatic numbering of sections is turned on or off by the `sectnum_xform`_
-configuration setting or the ``--section-numbering``,
-``--no-section-numbering`` command line options. The default is to number
-sections. Section numbers are of the "multiple enumeration" form, where each
+Section numbers are of the "multiple enumeration" form, where each
 level has a number, separated by periods.  For example, the title of section
 1, subsection 2, subsubsection 3 would have "1.2.3" prefixed.
 
@@ -1003,6 +1002,7 @@ The following options are recognized:
     default is 1.
 
 .. _sectnum_xform: ../../user/config.html#sectnum-xform
+
 
 .. _header:
 .. _footer:
