@@ -299,7 +299,7 @@ class Babel(object):
 
     def get_language(self):
         lang = self.language.split('_')[0]  # filter dialects
-        return self._ISO639_TO_BABEL.get(lang)
+        return self._ISO639_TO_BABEL.get(lang, "")
 
 # Building blocks for the latex preamble
 # --------------------------------------
@@ -781,11 +781,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.language = languages.get_language(settings.language_code)
         self.babel = Babel(settings.language_code)
         self.author_separator = self.language.author_separators[0]
-        self.d_options = self.settings.documentoptions
-        if self.babel.get_language():
-            self.d_options += ',%s' % self.babel.get_language()
-        ##self.latex_equivalents[u'\u00A0'] = self.babel.nobr
-
+        self.d_options = [self.settings.documentoptions,
+                          self.babel.get_language()]
+        self.d_options = ','.join([opt for opt in self.d_options if opt])
         self.d_class = DocumentClass(settings.documentclass,
                                      settings.use_part_section)
         # object for a table while proccessing.
