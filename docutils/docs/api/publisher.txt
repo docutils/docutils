@@ -272,31 +272,29 @@ The S5/HTML writer provides the same parts as the `HTML writer`_.
 Parts Provided by the LaTeX2e Writer
 ````````````````````````````````````
 
-__`head_prefix`
+head_prefix
     ``parts['head_prefix']`` contains the first part of the LaTeX preamble:
     LaTeX document class, required packages and setup before the stylesheet
     inclusion.
-    
-__`stylesheet`
+
+stylesheet
     ``parts['stylesheet']`` contains the embedded stylesheet(s) or
     stylesheet loading command(s).
 
-__`head`
+head
     ``parts['head']`` contains the part of the LaTeX preamble following
     the stylesheet(s): fallback definitions for Docutils-specific commands,
-    PDF hyperlink setup and title metadata (if present). 
+    PDF hyperlink setup and title metadata (if present).
 
-__`body_prefix`
+body_prefix
     ``parts['body_prefix']`` contains the LaTeX ``\begin{document}`` and
-    the title page or ``\maketitle`` (in titled documents). 
+    the title page or ``\maketitle`` (in titled documents).
 
-__`body`
+body
     ``parts['body']`` contains the LaTeX document content, less
     the ``\begin{document}`` and ``\end{document}`` tags themselves, i.e.
     the part that can be included into another LaTeX document body using
     ``\input{}``.
 
-__`body_suffix`
+body_suffix
     ``parts['body_suffix']`` contains the LaTeX ``\end{document}``.
-    
-
