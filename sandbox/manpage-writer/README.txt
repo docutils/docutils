@@ -53,6 +53,11 @@ This means we have
 * a date "14 May 2001"
 * a version "2.3.19"
 
+References
+''''''''''
+
+man pages from section 7, ``man`` and ``man-pages``.
+
 Problems
 ''''''''
 
@@ -117,6 +122,7 @@ Change log
 
 * writers/manpage.py:
 
+  - 2009-06-22: page title in ``.TH`` in uppercase.
   - 2009-04-15: move ``rst2man.py`` into ``tools`` subdirectory
                 Use writer_name in ``publish_cmdline``.
 
