@@ -170,7 +170,8 @@ class Translator(nodes.NodeVisitor):
         # writing the header .TH and .SH NAME is postboned after
         # docinfo.
         self._docinfo = {
-                "title" : "", "subtitle" : "",
+                "title" : "", "title_upper": "",
+                "subtitle" : "",
                 "manual_section" : "", "manual_group" : "",
                 "author" : "", 
                 "date" : "", 
@@ -298,7 +299,7 @@ class Translator(nodes.NodeVisitor):
         self._list_char.pop()
 
     def header(self):
-        tmpl = (".TH %(title)s %(manual_section)s"
+        tmpl = (".TH %(title_upper)s %(manual_section)s"
                 " \"%(date)s\" \"%(version)s\" \"%(manual_group)s\"\n"
                 ".SH NAME\n"
                 "%(title)s \- %(subtitle)s\n")
@@ -307,7 +308,7 @@ class Translator(nodes.NodeVisitor):
     def append_header(self):
         """append header with .TH and .SH NAME"""
         # TODO before everything
-        # .TH title section date source manual
+        # .TH title_upper section date source manual
         if self.header_written:
             return
         self.body.append(self.header())
@@ -1022,8 +1023,9 @@ class Translator(nodes.NodeVisitor):
         elif isinstance(node.parent, nodes.admonition):
             self.body.append(self.comment('admonition-title'))
         elif self.section_level == 0:
-            # document title for .TH
             self._docinfo['title'] = node.astext()
+            # document title for .TH
+            self._docinfo['title_upper'] = node.astext().upper()
             raise nodes.SkipNode
         elif self.section_level == 1:
             self.body.append('\n.SH ')
