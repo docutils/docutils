@@ -84,6 +84,9 @@ Lists
   10. bigger indentation if there are more than nine
       enumerated items (or there are larger numbers)
 
+      a second paragraph that should be separated from the previous
+      one and not flowing into.
+
 7. dont start with 1
 
 9. dont increment by 1
@@ -93,6 +96,8 @@ Lists
 This paragraph must not be indented with the text the last list-item,
 but start at the left margin of the numbers.
 
+a second paragraph that should be separated from the previous
+one and not flowing into.
 
 Field lists
 -----------
