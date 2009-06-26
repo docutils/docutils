@@ -195,7 +195,7 @@ class Translator(nodes.NodeVisitor):
                 #field_list
                 #field
                 'field_name' : ('\n.TP\n.B ', '\n'),
-                'field_body' : ('', '.RE\n', ),
+                'field_body' : ('', '.RE\n'),
                 'literal' : ('\\fB', '\\fP'),
                 'literal_block' : ('\n.nf\n', '\n.fi\n'),
 
