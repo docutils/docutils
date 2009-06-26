@@ -277,11 +277,11 @@ class Babel(object):
         if self.language.startswith('es'):
             # reset tilde ~ to their original meaning (nobreakspace):
             self.setup = ('\n'
-                        r'\addto\shorthandsspanish{\spanishdeactivate{."~<>}}')
+                  r'\addto\shorthandsspanish{\spanishdeactivate{."~<>}}')
 
     def next_quote(self):
         q = self.quotes[self.quote_index]
-        self.quote_index = (self.quote_index+1)%2
+        self.quote_index = (self.quote_index+1) % 2
         return q
 
     def quote_quotes(self,text):
@@ -367,6 +367,14 @@ PreambleCmds.footnote_floats = r"""% settings for footnotes as floats:
 \setcounter{totalnumber}{50}
 \setcounter{topnumber}{50}
 \setcounter{bottomnumber}{50}"""
+
+PreambleCmds.graphicx_auto = r"""% Check output format
+\ifx\pdftexversion\undefined
+  \usepackage{graphicx}
+\else
+  \usepackage[pdftex]{graphicx}
+\fi'))"""
+
 
 PreambleCmds.inline = r"""% custom roles:
 % \DUrole{NAME} calls \docutilsroleNAME if it exists
@@ -805,23 +813,17 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.requirements['typearea'] = r'\usepackage{typearea}'
 
         if self.font_encoding == '':
-            fontenc_header = '%\\usepackage[OT1]{fontenc}'
+            fontenc_header = r'%\usepackage[OT1]{fontenc}'
         else:
-            fontenc_header = '\\usepackage[%s]{fontenc}' % self.font_encoding
+            fontenc_header = r'\usepackage[%s]{fontenc}' % self.font_encoding
 
         if self.settings.graphicx_option == '':
-            self.graphicx_package = '\\usepackage{graphicx}'
+            self.graphicx_package = r'\usepackage{graphicx}'
         elif self.settings.graphicx_option.lower() == 'auto':
-            self.graphicx_package = '\n'.join(
-                (r'%Check if we are compiling under latex or pdflatex',
-                 r'\ifx\pdftexversion\undefined',
-                 r'  \usepackage{graphicx}',
-                 r'\else',
-                 r'  \usepackage[pdftex]{graphicx}',
-                 r'\fi'))
+            self.graphicx_package = PreambleCmds.graphicx_auto
         else:
-            self.graphicx_package = (
-                 r'\usepackage[%s]{graphicx}' % self.settings.graphicx_option)
+            self.graphicx_package = (r'\usepackage[%s]{graphicx}' %
+                                     self.settings.graphicx_option)
 
         if self.use_latex_toc:
             # include all supported sections (also in PDF bookmarks)
@@ -1213,21 +1215,21 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_superscript(self, node):
         self.body.append(r'\textsuperscript{')
-        if node.get('classes'):
+        if node['classes']:
             self.visit_inline(node)
 
     def depart_superscript(self, node):
-        if node.get('classes'):
+        if node['classes']:
             self.depart_inline(node)
         self.body.append('}')
 
     def visit_subscript(self, node):
         self.body.append(r'\textsubscript{') # requires `fixltx2e`
-        if node.get('classes'):
+        if node['classes']:
             self.visit_inline(node)
 
     def depart_subscript(self, node):
-        if node.get('classes'):
+        if node['classes']:
             self.depart_inline(node)
         self.body.append('}')
 
@@ -1246,11 +1248,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_title_reference(self, node):
         self.fallbacks['titlereference'] = PreambleCmds.titlereference
         self.body.append(r'\DUroletitlereference{')
-        if node.get('classes'):
+        if node['classes']:
             self.visit_inline(node)
 
     def depart_title_reference(self, node):
-        if node.get('classes'):
+        if node['classes']:
             self.depart_inline(node)
         self.body.append( '}' )
 
@@ -1526,12 +1528,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_emphasis(self, node):
         self.body.append('\\emph{')
-        if node.get('classes'):
+        if node['classes']:
             self.visit_inline(node)
         self.literal_block_stack.append('\\emph{')
 
     def depart_emphasis(self, node):
-        if node.get('classes'):
+        if node['classes']:
             self.depart_inline(node)
         self.body.append('}')
         self.literal_block_stack.pop()
@@ -1963,11 +1965,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_literal(self, node):
         self.literal = 1
         self.body.append('\\texttt{')
-        if node.get('classes'):
+        if node['classes']:
             self.visit_inline(node)
 
     def depart_literal(self, node):
-        if node.get('classes'):
+        if node['classes']:
             self.depart_inline(node)
         self.body.append('}')
         self.literal = 0
@@ -2217,11 +2219,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_strong(self, node):
         self.body.append('\\textbf{')
         self.literal_block_stack.append('\\textbf{')
-        if node.get('classes'):
+        if node['classes']:
             self.visit_inline(node)
 
     def depart_strong(self, node):
-        if node.get('classes'):
+        if node['classes']:
             self.depart_inline(node)
         self.body.append('}')
         self.literal_block_stack.pop()
