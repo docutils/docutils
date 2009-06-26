@@ -1069,10 +1069,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
         #   [... (without the closing bracket).
         #
         # How to escape?
-        # Square brackets are ordinary chars and cannot be escaped with '\'
-        # -> put them in a group.  (Alternatively ensure that all macros
-        # with optional arguments are terminated with {} and text inside any
-        # optional argument is put in a group ``[{text}]``).
+        #
+        # Square brackets are ordinary chars and cannot be escaped with '\',
+        # so we put them in a group '{[}'. (Alternative: ensure that all
+        # macros with optional arguments are terminated with {} and text
+        # inside any optional argument is put in a group ``[{text}]``).
+        # Commands with optional args inside an optional arg must be put
+        # in a group, e.g. ``\item[{\hyperref[label]{text}}]``.
         text = text.replace('[', '{[}')
         text = text.replace(']', '{]}')
         # Workarounds for OT1 font-encoding
@@ -1706,11 +1709,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
                                 self.encode(node.astext()))
             raise nodes.SkipNode
         else:
-            self.body.append('\\item[')
+            # Commands with optional args inside an optional arg must be put
+            # in a group, e.g. ``\item[{\hyperref[label]{text}}]``.
+            self.body.append('\\item[{')
 
     def depart_field_name(self, node):
         if not self.docinfo:
-            self.body.append(':]')
+            self.body.append(':}]')
 
     def visit_figure(self, node):
         self.requirements['float_settings'] = PreambleCmds.float_settings
@@ -2333,12 +2338,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_term(self, node):
-        self.body.append('\\item[')
+        """definition list term"""
+        # Commands with optional args inside an optional arg must be put
+        # in a group, e.g. ``\item[{\hyperref[label]{text}}]``.
+        self.body.append('\\item[{')
 
     def depart_term(self, node):
-        # definition list term. \leavevmode results in a line break if the
+        # \leavevmode results in a line break if the
         # term is followed by an item list.
-        self.body.append('] \leavevmode ')
+        self.body.append('}] \leavevmode ')
 
     def visit_tgroup(self, node):
         #self.body.append(self.starttag(node, 'colgroup'))
