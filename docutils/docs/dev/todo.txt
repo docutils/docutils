@@ -1788,9 +1788,6 @@ HTML Writer
   omitting ``<p>`` tags.  List compacting would need to be done by
   adjusting CSS margins instead.
 
-* Add support for _`multiple stylesheets`.  See
-  <http://thread.gmane.org/gmane.text.docutils.cvs/4336>.
-
 * Idea for field-list rendering: hanging indent::
 
       Field name (bold): First paragraph of field body begins
@@ -1824,7 +1821,8 @@ PEP/HTML Writer
 * Remove the generic style information (duplicated from html4css1.css)
   from pep.css to avoid redundancy.
 
-  We need support for `multiple stylesheets`_ first, though.
+  Needs support for multiple stylesheets in the PEP writer
+  (is this inherited from HTML?).
 
 
 S5/HTML Writer
@@ -2045,15 +2043,10 @@ Which packages do we want to use?
    ? (My preference is to default to use-latex-* whenever possible [GM])
 
 
-table of contents
-^^^^^^^^^^^^^^^^^
-
-* support non-numbered sections with use-latex-toc
-  (now easy because of the \addtocontents lines)
-* use-latex-doc by default?
-
 Default layout
 --------------
+
+* use-latex-doc by default?
 
 * Which `default font`__ should we use for the output?
 
@@ -2183,11 +2176,17 @@ Image and figure directives
 Missing features
 ----------------
 
+* test and document selection of LaTeX fontsize. 
+  
+  Add font size in points to the document options, e.g.
+  ``--documentoptions=12``, use extsize or some other
+  package for values other than [10,11,12].
+
 * support "figwidth" argument for figures.
 
   As the 'figwidth' argument is still ignored and the "natural width" of
-  a figure in LaTeX is 100% \textwidth, setting the 'align' argument has
-  currently no effect on the LaTeX output.
+  a figure in LaTeX is 100 % of the text width, setting the 'align'
+  argument has currently no effect on the LaTeX output.
 
 * better citation support
 

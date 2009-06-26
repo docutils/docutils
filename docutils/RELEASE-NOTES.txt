@@ -50,7 +50,7 @@ Changes Since 0.5
   - Support custom roles based on standard roles.
   - Load packages and define macros only if required in the document.
   - Docutils specific LaTeX objects are now all prefixed with ``DU``.
-  - Local tocs with `minitoc` (if 'use-latex-toc' is True).
+  - Better conformance to Docutils specifications with "use_latex_toc".
   - Use default font in admonitions and sidebar.
   - Align of image in a figure defaults to 'center'.
   - Default type area defined in the document class (not by 'typearea').

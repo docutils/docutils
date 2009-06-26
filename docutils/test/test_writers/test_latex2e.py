@@ -18,6 +18,7 @@ def suite():
     s.generateTests(totest)
     settings['use_latex_toc'] = 1
     s.generateTests(totest_latex_toc)
+    settings['use_latex_toc'] = 0
     settings['use_latex_citations'] = 1
     s.generateTests(totest_latex_citations)
     return s
