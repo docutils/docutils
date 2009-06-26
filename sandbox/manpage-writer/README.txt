@@ -122,6 +122,7 @@ Change log
 
 * writers/manpage.py:
 
+  - 2009-06-26: patch from jarda to fix visit_strong. 
   - 2009-06-22: page title in ``.TH`` in uppercase.
   - 2009-04-15: move ``rst2man.py`` into ``tools`` subdirectory
                 Use writer_name in ``publish_cmdline``.
