@@ -927,7 +927,7 @@ class Translator(nodes.NodeVisitor):
         self.depart_docinfo_item()
 
     def visit_strong(self, node):
-        self.body.append(self.defs['strong'][1])
+        self.body.append(self.defs['strong'][0])
 
     def depart_strong(self, node):
         self.body.append(self.defs['strong'][1])
