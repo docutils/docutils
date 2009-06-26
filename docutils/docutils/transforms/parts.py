@@ -30,12 +30,25 @@ class SectNum(Transform):
     """Should be applied before `Contents`."""
 
     def apply(self):
+        try: # leave section numbering to the writer?
+            numbering_by_writer = self.document.settings.use_latex_toc
+        except AttributeError:
+            numbering_by_writer = False
+        #
         self.maxdepth = self.startnode.details.get('depth', sys.maxint)
         self.startvalue = self.startnode.details.get('start', 1)
         self.prefix = self.startnode.details.get('prefix', '')
         self.suffix = self.startnode.details.get('suffix', '')
         self.startnode.parent.remove(self.startnode)
-        if self.document.settings.sectnum_xform:
+        if numbering_by_writer:
+            if self.document.settings.sectnum_xform:
+                self.document.settings.sectnum_depth = self.maxdepth
+            else:
+                self.document.settings.sectnum_depth = 0
+            self.document.settings.sectnum_start = self.startvalue
+            self.document.settings.sectnum_prefix = self.prefix
+            self.document.settings.sectnum_suffix = self.suffix
+        elif self.document.settings.sectnum_xform:
             self.update_section_numbers(self.document)
 
     def update_section_numbers(self, node, prefix=(), depth=0):
@@ -79,14 +92,10 @@ class Contents(Transform):
     default_priority = 720
 
     def apply(self):
-        # build a contents list from the section headings?
-        # if False, the writer (or output software) builds the contents list
-        # Example: the LaTeX writer with option "use-latex-toc".
-        try:
-            build = not(self.document.settings.use_latex_toc)
+        try: # let the writer (or output software) build the contents list?
+            toc_by_writer = self.document.settings.use_latex_toc
         except AttributeError:
-            build = True
-
+            toc_by_writer = False
         details = self.startnode.details
         if 'local' in details:
             startnode = self.startnode.parent.parent
@@ -101,16 +110,16 @@ class Contents(Transform):
             self.backlinks = details['backlinks']
         else:
             self.backlinks = self.document.settings.toc_backlinks
-        if build:
+        if toc_by_writer:
+            # move customization settings to the parent node
+            self.startnode.parent.attributes.update(details)
+            self.startnode.parent.remove(self.startnode)
+        else:
             contents = self.build_contents(startnode)
             if len(contents):
                 self.startnode.replace_self(contents)
             else:
                 self.startnode.parent.parent.remove(self.startnode.parent)
-        else:
-            # pass customization settings to the parent node
-            self.startnode.parent.attributes.update(details)
-            self.startnode.parent.remove(self.startnode)
 
     def build_contents(self, node, level=0):
         level += 1

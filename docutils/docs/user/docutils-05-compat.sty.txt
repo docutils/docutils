@@ -299,8 +299,31 @@ Backwards compatibility:
 
     \raggedbottom
 
-Local tocs with `minitoc`
--------------------------
+Better conformance to Docutils specifications with "use_latex_toc"
+--------------------------------------------------------------------
+
+New feature:
+  Section numbering is done according to the Docutils specifications also
+  if 'use-latex-toc' is True:
+
+  * sections are only numbered if there is a "sectnum" directive in the
+    document and the "sectnum_xforms" config setting is True,
+
+  * The "depth" argument is respected and the default is set to to the
+    number of supported section levels.
+
+New features:
+  * The default "depth" of the LaTeX-created ToC is increased to the number
+    of supported section levels.
+  * The "depth" argument of the "contents" directive is respected.
+
+Backwards compatibility:
+  The previous behaviour was to use the document class default and cannot be
+  restored universally. The following resets it to the default values of the
+  default document class ("article")::
+
+    \setcounter{secnumdepth}{3}
+    \setcounter{tocdepth}{3}
 
 New feature:
   If 'use-latex-toc' is set, local tables of content are typeset using the

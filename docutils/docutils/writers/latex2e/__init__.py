@@ -16,10 +16,8 @@ import os
 import time
 import re
 import string
-from docutils import frontend, nodes, languages, writers, utils
+from docutils import frontend, nodes, languages, writers, utils, transforms
 from docutils.writers.newlatex2e import unicode_map
-
-from docutils.transforms.references import DanglingReferencesVisitor
 
 class Writer(writers.Writer):
 
@@ -78,10 +76,9 @@ class Writer(writers.Writer):
           ' This is the default (if not changed in a config file).',
           ['--link-stylesheet'],
           {'dest': 'embed_stylesheet', 'action': 'store_false'}),
-         ('Table of contents by docutils (default) or LaTeX. LaTeX (writer) '
-          'supports only one ToC per document, but docutils does not know of '
-          'pagenumbers. LaTeX table of contents also means LaTeX generates '
-          'sectionnumbers.',
+         ('Table of contents by Docutils (default) or LaTeX. '
+          '(Docutils does not know of pagenumbers.) '
+	  'With use_latex_toc, LaTeX also generates the section numbers.',
           ['--use-latex-toc'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
@@ -169,7 +166,9 @@ class Writer(writers.Writer):
           {'default': None, }),
           ),)
 
-    settings_defaults = {'output_encoding': 'latin-1'}
+    settings_defaults = {'output_encoding': 'latin-1',
+                         'sectnum_depth': 0 # updated by SectNum transform
+                        }
 
     relative_path_settings = ('stylesheet_path',)
 
@@ -186,13 +185,15 @@ class Writer(writers.Writer):
         writers.Writer.__init__(self)
         self.translator_class = LaTeXTranslator
 
-    # TODO: footnote collection transform
     # Override parent method to add latex-specific transforms
     ## def get_transforms(self):
     ##    # call the parent class' method
-    ##    # return writers.Writer.get_transforms(self) + [footnotes.collect]
-    ##    return writers.Writer.get_transforms(self)
-     
+    ##    transforms = writers.Writer.get_transforms(self)
+    ##    # print transforms
+    ##    # TODO: footnote collection transform
+    ##    # transforms.append(footnotes.collect)
+    ##    return transforms
+
     def translate(self):
         visitor = self.translator_class(self.document)
         self.document.walkabout(visitor)
@@ -494,6 +495,7 @@ class DocumentClass(object):
         else:
             return self.sections[-1]
 
+
 class Table(object):
     """Manage a table while traversing.
 
@@ -716,7 +718,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
     # Config setting defaults
     # -----------------------
 
-
     # use latex tableofcontents or let docutils do it.
     use_latex_toc = False
     has_latex_toc = False # is there a toc in the doc (needed by minitoc)
@@ -807,6 +808,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             fontenc_header = '%\\usepackage[OT1]{fontenc}'
         else:
             fontenc_header = '\\usepackage[%s]{fontenc}' % self.font_encoding
+
         if self.settings.graphicx_option == '':
             self.graphicx_package = '\\usepackage{graphicx}'
         elif self.settings.graphicx_option.lower() == 'auto':
@@ -820,6 +822,26 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             self.graphicx_package = (
                  r'\usepackage[%s]{graphicx}' % self.settings.graphicx_option)
+
+        if self.use_latex_toc:
+            # include all supported sections (also in PDF bookmarks)
+            self.requirements['tocdepth'] = (r'\setcounter{tocdepth}{%d}' %
+                                             len(self.d_class.sections))
+
+            # section numbering: TODO de-couple latex-toc and latex-sectnum?
+            # limit depth to supported section levels
+            sectnum_depth = min(self.settings.sectnum_depth,
+                                len(self.d_class.sections))
+            sectnum_setup = [r'\setcounter{secnumdepth}{%d}' % sectnum_depth]
+            if settings.sectnum_start != 1:
+                sectnum_setup.append(r'\setcounter{%s}{%d}' %
+                                     (self.d_class.sections[0],
+                                      settings.sectnum_start-1))
+            # currently ignored (use a stylesheet instead):
+            # settings.sectnum_prefix
+            # settings.sectnum_suffix
+            self.requirements['sectnum'] = '\n'.join(sectnum_setup)
+
 
         # packages and/or stylesheets
         # ---------------------------
@@ -1836,7 +1858,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             if isinstance(node.parent, nodes.figure):
                 attrs['align'] = 'center'
             # query 'align-*' class argument
-            for cls in node.get('classes', ''):
+            for cls in node['classes']:
                 if cls.startswith('align-'):
                     attrs['align'] = cls.split('-')[1]
         # pre- and postfix (prefix inserted in reverse order)
@@ -2003,13 +2025,21 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.literal_block = 0
         self.body.append(self.context.pop())
 
-    def visit_meta(self, node):
-        self.body.append('[visit_meta]\n')
-        # BUG maybe set keywords for pdf
-        ##self.head.append(self.starttag(node, 'meta', **node.attributes))
+    ## def visit_meta(self, node):
+    ##     self.body.append('[visit_meta]\n')
+        # TODO: set keywords for pdf?
+        # But:
+        #  The reStructuredText "meta" directive creates a "pending" node,
+        #  which contains knowledge that the embedded "meta" node can only
+        #  be handled by HTML-compatible writers. The "pending" node is
+        #  resolved by the docutils.transforms.components.Filter transform,
+        #  which checks that the calling writer supports HTML; if it doesn't,
+        #  the "pending" node (and enclosed "meta" node) is removed from the
+        #  document.
+        #  --- docutils/docs/peps/pep-0258.html#transformer
 
-    def depart_meta(self, node):
-        self.body.append('[depart_meta]\n')
+    ## def depart_meta(self, node):
+    ##     self.body.append('[depart_meta]\n')
 
     def visit_note(self, node):
         self.visit_admonition(node, 'note')
@@ -2365,7 +2395,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 if self.settings.use_titlepage_env:
                     self.body.append('\\end{titlepage}\n')
                 if self.use_latex_toc:
+                    tocdepth = node.parent.get('depth', 0)
+                    if tocdepth:
+                        self.body.append('\n\\setcounter{tocdepth}{%d}' %
+                                         tocdepth)
+                    # use the Docutils-provided title for the ToC
                     self.body.append('\n\\renewcommand{\\contentsname}{')
+                    # TODO: why a bigskip? (leave this to the style sheet)
                     self.context.append('}\n\\tableofcontents\n\n\\bigskip\n')
                     self.has_latex_toc = True
                 else:
@@ -2406,14 +2442,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append('%' + '_' * 75)
             self.body.append('\n\n')
 
+            section_name = self.d_class.section(self.section_level)
             # (latex)numbered or unnumbered sections:
-            if self.use_latex_toc:
+            if (self.use_latex_toc and
+                (self.section_level <= len(self.d_class.sections))):
                 section_star = ''
             else:
                 section_star = '*'
-
-            section_name = self.d_class.section(self.section_level)
-            self.body.append('\\%s%s{' % (section_name, section_star))
+            self.body.append(r'\%s%s{' % (section_name, section_star))
 
             # System messages heading in red:
             if ('system-messages' in node.parent['classes']):
@@ -2455,9 +2491,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.requirements['minitoc-%s' %
                           minitoc_name] = r'\do%stoc' % minitoc_name
         # depth: (Docutils defaults to unlimited depth)
-        max_depth = len(self.d_class.sections)
+        maxdepth = len(self.d_class.sections)
         self.requirements['minitoc-%s-depth' % minitoc_name] = (
-            r'\mtcsetdepth{%stoc}{%d}' % (minitoc_name, max_depth))
+            r'\mtcsetdepth{%stoc}{%d}' % (minitoc_name, maxdepth))
         # TODO: set the depth according to the :depth: argument
         # Attention: Docutils stores a relative depth while minitoc
         # expects an absolute depth!
@@ -2466,7 +2502,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
             offset['part'] = -1
         depth = node.get('depth', 0)
         if depth:
-            # depth += self.section_level
             self.body.append('\\setcounter{%stocdepth}{%d}' %
                              (minitoc_name, depth + offset[minitoc_name]))
         # title:
@@ -2497,9 +2532,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_inline(self, node): # <span>, i.e. custom roles
         # insert fallback definition
         self.fallbacks['inline'] = PreambleCmds.inline
-        classes = node.get('classes', [])
-        self.body += [r'\DUrole{%s}{' % cls for cls in classes]
-        self.context.append('}' * (len(classes)))
+        self.body += [r'\DUrole{%s}{' % cls for cls in node['classes']]
+        self.context.append('}' * (len(node['classes'])))
 
     def depart_inline(self, node):
         self.body.append(self.context.pop())
