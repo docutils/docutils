@@ -835,7 +835,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             sectnum_depth = min(self.settings.sectnum_depth,
                                 len(self.d_class.sections))
             sectnum_setup = [r'\setcounter{secnumdepth}{%d}' % sectnum_depth]
-            if settings.sectnum_start != 1:
+            if sectnum_depth and settings.sectnum_start != 1:
                 sectnum_setup.append(r'\setcounter{%s}{%d}' %
                                      (self.d_class.sections[0],
                                       settings.sectnum_start-1))
