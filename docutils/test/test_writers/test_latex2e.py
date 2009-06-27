@@ -133,7 +133,70 @@ Paragraph 2.
 
 ]
 
+totest_latex_toc['no_sectnum'] = [
+# input
+["""\
+.. contents::
 
+first section
+-------------
+""",
+## # expected output
+latex_head_prefix + latex_requirements + b(r"""\setcounter{secnumdepth}{0}
+\setcounter{tocdepth}{5}
+""") + latex_head + b(r"""
+%%% Body
+\begin{document}
+
+\renewcommand{\contentsname}{Contents}
+\tableofcontents
+
+\bigskip
+
+
+%___________________________________________________________________________
+
+\section{first section%
+  \label{first-section}%
+}
+
+\end{document}
+""")],
+]
+
+totest_latex_toc['sectnum'] = [
+# input
+["""\
+.. contents::
+.. sectnum::
+
+first section
+-------------
+""",
+## # expected output
+latex_head_prefix + latex_requirements + b(r"""\setcounter{secnumdepth}{5}
+\setcounter{tocdepth}{5}
+""") + latex_head + b(r"""
+%%% Body
+\begin{document}
+
+\renewcommand{\contentsname}{Contents}
+\tableofcontents
+
+\bigskip
+
+
+%___________________________________________________________________________
+
+\section{first section%
+  \label{first-section}%
+}
+
+\end{document}
+""")],
+]
+
+ 
 totest_latex_citations['citations_with_underscore'] = [
 # input
 ["""\
