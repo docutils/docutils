@@ -32,6 +32,8 @@ Changes Since 0.5
 
     + drop 2.2 compatibility workarounds
 
+  - OpenOffice export: ODT writer moved from sandbox to Doctutils core.
+
   - Apply [ 1719345 ] Galician translation
   - Apply [ 1905741 ] polish-translation
   - Apply [ 1878977 ] make_id(): deaccent characters.

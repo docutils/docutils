@@ -56,6 +56,10 @@ Changes Since 0.5
   - Default type area defined in the document class (not by 'typearea').
   - Float placement made configurable and changed to "here definitely".
 
+* ODT writer:
+
+  - moved from sandbox to Doctutils core.
+
 Release 0.5 (2008-06-25)
 ========================
 

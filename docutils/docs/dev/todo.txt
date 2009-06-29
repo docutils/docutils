@@ -1912,6 +1912,7 @@ Bug fixes
 * Too deeply nested lists fail: generate an error, a warning or provide
   a workaround?
 
+* Symbol footnotes fail with "use_latex_footnotes".
 
 Generate clean and configurable LaTeX source
 ----------------------------------------------
