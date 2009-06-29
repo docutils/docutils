@@ -312,9 +312,41 @@ class RemoveClassHandout(Transform):
 #   .. |p| raw:: latex
 #
 #      \pause
+#
+# It also is problematic because it ends up in an error if ``raw`` is disabled
+# - even when rendering HTML
+#
+# S5 solves this problem purely by classes and ::
+#
+#   .. role:: incremental
+#   .. default-role:: incremental
+#
+# in s5defs.txt. Semantics seems to be a \pause before the marked up text.
+# Unfortunately then the role is used and things like `*emphasis*` don't work.
+#
+# If there would be a class ``pause`` implemented by `latexbeamer` then
+# something like this could work::
+#
+#   .. |p| class:: pause
+#
+#   Pause |p| as much |p| as you like |p|
+#
+#   and where |p| you like |p|
+#
+#   and use *any* |p| other role flexibly.
+#
+# However, any element needs to be checked for the respective class then. A
+# construct like ::
+#
+#   .. class:: pause
+#
+#      * First point
+#
+#      * Second point
+#
+# Unfortunately this doesn't work :-( .
 
-# TODO \alert needs to be supported as a role - may be by translating from
-# **strong**
+# TODO *emphasis* must translate to bold text and **strong emphasis** to \alert
 
 # TODO \logo picture must be supported as an option
 
