@@ -21,7 +21,7 @@ class Writer(latex2e.Writer):
           'separated by commas.  Default is no options.',
           ['--documentoptions'],
           {'default': '', }),
-         ('Use LaTeX footnotes. LaTeX supports only numbered footnotes (does it?). '
+         ('Use LaTeX footnotes (currently supports only numbered footnotes). '
           'Default: no, uses figures.',
           ['--use-latex-footnotes'],
           {'default': 0, 'action': 'store_true',
@@ -42,20 +42,50 @@ class Writer(latex2e.Writer):
           ['--attribution'],
           {'choices': ['dash', 'parentheses', 'parens', 'none'],
            'default': 'dash', 'metavar': '<format>'}),
-         ('Specify a stylesheet file. The file will be "input" by latex in '
-          'the document header.  Default is no stylesheet ("").  '
-          'Overrides --stylesheet-path.',
+        ('Specify LaTeX packages/stylesheets. '
+         ' A style is referenced with \\usepackage if extension is '
+         '".sty" or omitted and with \\input else. '
+          ' Overrides previous --stylesheet and --stylesheet-path settings.',
           ['--stylesheet'],
           {'default': '', 'metavar': '<file>',
            'overrides': 'stylesheet_path'}),
-         ('Specify a stylesheet file, relative to the current working '
-          'directory.  Overrides --stylesheet.',
+         ('Like --stylesheet, but a relative path is converted from relative '
+          'to the current working directory to relative to the output file. ',
           ['--stylesheet-path'],
           {'metavar': '<file>', 'overrides': 'stylesheet'}),
-         ('Table of contents by docutils (default) or latex. Latex (writer) '
-          'supports only one ToC per document, but docutils does not write '
-          'pagenumbers.',
+         ('Embed the stylesheet in the output LaTeX file.  The stylesheet '
+          'file must be accessible during processing. '
+          ' Default: link to stylesheets',
+          ['--embed-stylesheet'],
+          {'default': 0, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Link to the stylesheet(s) in the output file. '
+          ' This is the default (if not changed in a config file).',
+          ['--link-stylesheet'],
+          {'dest': 'embed_stylesheet', 'action': 'store_false'}),
+         ('Table of contents by docutils (default) or LaTeX. LaTeX (writer) '
+          'supports only one ToC per document, but docutils does not know of '
+          'pagenumbers. LaTeX table of contents also means LaTeX generates '
+          'sectionnumbers.',
           ['--use-latex-toc'],
+          {'default': 0, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Add parts on top of the section hierarchy.',
+          ['--use-part-section'],
+          {'default': 0, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Enclose titlepage in LaTeX titlepage environment.',
+          ['--use-titlepage-env'],
+          {'default': 0, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Let LaTeX print author and date, do not show it in docutils '
+          'document info.',
+          ['--use-latex-docinfo'],
+          {'default': 0, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ("Use LaTeX abstract environment for the document's abstract. "
+          'Per default the abstract is an unnumbered section.',
+          ['--use-latex-abstract'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
          ('Color of any hyperlinks embedded in text '
@@ -66,12 +96,12 @@ class Writer(latex2e.Writer):
           ['--compound-enumerators'],
           {'default': None, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
-         ('Disable compound enumerators for nested enumerated lists.  This is '
-          'the default.',
+         ('Disable compound enumerators for nested enumerated lists. '
+          'This is the default.',
           ['--no-compound-enumerators'],
           {'action': 'store_false', 'dest': 'compound_enumerators'}),
          ('Enable section ("." subsection ...) prefixes for compound '
-          'enumerators.  This has no effect without --compound-enumerators.  '
+          'enumerators.  This has no effect without --compound-enumerators.'
           'Default: disabled.',
           ['--section-prefix-for-enumerators'],
           {'default': None, 'action': 'store_true',
@@ -84,8 +114,12 @@ class Writer(latex2e.Writer):
           'for compound enumerated lists.  Default is "-".',
           ['--section-enumerator-separator'],
           {'default': '-', 'metavar': '<char>'}),
+         ('When possibile, use the specified environment for literal-blocks. '
+          'Default is quoting of whitespace and special chars.',
+          ['--literal-block-env'],
+          {'default': ''}),
          ('When possibile, use verbatim for literal-blocks. '
-          'Default is to always use the mbox environment.',
+          'Compatibility alias for "--literal-block-env=verbatim".',
           ['--use-verbatim-when-possible'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
@@ -94,7 +128,8 @@ class Writer(latex2e.Writer):
           'above and below the table and below the header or "nolines".  '
           'Default: "standard"',
           ['--table-style'],
-          {'choices': ['standard', 'booktabs','nolines'], 'default': 'standard',
+          {'choices': ['standard', 'booktabs','nolines'],
+           'default': 'standard',
            'metavar': '<format>'}),
          ('LaTeX graphicx package option. '
           'Possible values are "dvips", "pdftex". "auto" includes LaTeX code '
@@ -103,12 +138,20 @@ class Writer(latex2e.Writer):
           ['--graphicx-option'],
           {'default': ''}),
          ('LaTeX font encoding. '
-          'Possible values are "T1", "OT1", "" or some other fontenc option. '
-          'The font encoding influences available symbols, e.g. "<<" as one '
-          'character. Default is "" which leads to package "ae" (a T1 '
-          'emulation using CM fonts).',
+          'Possible values are "", "T1", "OT1", "LGR,T1" or any other '
+          'combination of options to the `fontenc` package. '
+          'Default is "" which does not load `fontenc`.',
           ['--font-encoding'],
           {'default': ''}),
+         ('Per default the latex-writer puts the reference title into '
+          'hyperreferences. Specify "ref*" or "pageref*" to get the section '
+          'number or the page number.',
+          ['--reference-label'],
+          {'default': None, }),
+         ('Specify style and database for bibtex, for example '
+          '"--use-bibtex=mystyle,mydb1,mydb2".',
+          ['--use-bibtex'],
+          {'default': None, }),
          # TODO Themes must be changeable by ``usecolortheme``,
          # ``usefonttheme``, ``useinnertheme``, and ``useoutertheme``
          # separately
@@ -124,7 +167,7 @@ class Writer(latex2e.Writer):
            'default': ''}),
          # TODO Some themes accept options which must be supported here as
          # plain strings for those who know what they do
-         ),)
+          ),)
 
     def __init__(self):
         latex2e.Writer.__init__(self)
