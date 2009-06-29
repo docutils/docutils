@@ -70,17 +70,8 @@ class Writer(latex2e.Writer):
           ['--use-latex-toc'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
-         ('Add parts on top of the section hierarchy.',
-          ['--use-part-section'],
-          {'default': 0, 'action': 'store_true',
-           'validator': frontend.validate_boolean}),
          ('Enclose titlepage in LaTeX titlepage environment.',
           ['--use-titlepage-env'],
-          {'default': 0, 'action': 'store_true',
-           'validator': frontend.validate_boolean}),
-         ('Let LaTeX print author and date, do not show it in docutils '
-          'document info.',
-          ['--use-latex-docinfo'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
          ("Use LaTeX abstract environment for the document's abstract. "
@@ -211,24 +202,24 @@ class BeamerTranslator(latex2e.LaTeXTranslator):
 
     def __init__(self, document):
         document.settings.documentclass = 'beamer'
-        document.settings.use_latex_docinfo = 1
+        document.settings.use_latex_docinfo = True
+        document.settings.use_part_section = False
+        self.linking = "%% hyperrefs are done by Beamer (%s %s %s)"
+
         latex2e.LaTeXTranslator.__init__(self, document)
-        # TODO Should be done via explicit head_prefix
-        self.head_prefix = [ line
-                for line in self.head_prefix
-                if 'typearea' not in line and 'hyperref' not in line ]
+
+        # Undo some things we don't want here
+        if 'typearea' in self.requirements:
+            del self.requirements['typearea']
+
         # Montpellier, Warsaw, JuanLesPins, Darmstadt, Antibes
-        self.head_prefix.extend(('\n',
-                                 '\\mode<presentation>\n',
-                                 '{\n',
-                                 '  \\usetheme{%s}\n'
-                                 % ( document.settings.beamer_theme, ),
-                                 # TODO Argument to `setbeamercovered` must be
-                                 # an option
-                                 '  \\setbeamercovered{transparent}\n',
-                                 '}\n',
-                                 '\n',
-                                 ))
+        self.fallbacks['beamer00_mode'] = r"""
+\mode<presentation>
+{
+  \usetheme{%s}
+  \setbeamercovered{%s}\n',
+}""" % ( document.settings.beamer_theme, 'transparent', )
+        # TODO Argument to `setbeamercovered` must be an option
         # TODO Name of outline slides should be the name given for the contents
         # (is a `title` element) - might be determined by a preprocessor
         document.settings.toc_title = 'Outline'
@@ -240,15 +231,14 @@ class BeamerTranslator(latex2e.LaTeXTranslator):
             else:
                 at_begin = 'AtBeginSubsection'
                 toc_option = 'currentsection,currentsubsection'
-            self.head_prefix.extend(('\n',
-                                     '\\%s[]\n' % ( at_begin, ),
-                                     '{\n',
-                                     '  \\begin{frame}<beamer>\n',
-                                     '    \\frametitle{%s}\n' % ( document.settings.toc_title, ),
-                                     '    \\tableofcontents[%s]\n' % ( toc_option, ),
-                                     '  \\end{frame}\n',
-                                     '}\n',
-                                     ))
+            self.fallbacks['beamer10_intermediate_outlines'] = r"""
+\%s[]
+{
+  \begin{frame}<beamer>
+    \frametitle{%s}
+    \tableofcontents[%s]
+  \end{frame}
+}""" % ( at_begin,  document.settings.toc_title, toc_option )
         self.d_class = DocumentClass()
         self.subtitle = ''
 
@@ -303,20 +293,13 @@ class BeamerTranslator(latex2e.LaTeXTranslator):
         latex2e.LaTeXTranslator.depart_section(self, node)
 
     def astext(self):
-        if self.pdfinfo is not None:
-            if self.pdfauthor:
-                self.pdfinfo.append('pdfauthor={%s}' % self.pdfauthor)
-        if self.pdfinfo:
-            pdfinfo = '\\hypersetup{\n' + ',\n'.join(self.pdfinfo) + '\n}\n'
-        else:
-            pdfinfo = ''
-        head = '\\title{%s}\n\\subtitle{%s}\n\\author{%s}\n\\date{%s}\n' % \
-               (self.title, self.subtitle,
+        self.head_prefix.append('\\title{%s}' % ( self.title, ))
+        self.head_prefix.append('\\subtitle{%s}' % ( self.subtitle, ))
+        self.head_prefix.append('\\author{%s}' % (
                 ' \\and\n'.join(['~\\\\\n'.join(author_lines)
-                                 for author_lines in self.author_stack]),
-                self.date)
-        return ''.join(self.head_prefix + [head] + self.head + [pdfinfo]
-                        + self.body_prefix  + self.body + self.body_suffix)
+                                 for author_lines in self.author_stack]), ))
+        self.head_prefix.append('\\date{%s}' % ( self.date, ))
+        return latex2e.LaTeXTranslator.astext(self)
 
 # Use an own reader to modify transformations done.
 class Reader(standalone.Reader):
