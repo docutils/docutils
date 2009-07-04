@@ -8,6 +8,7 @@ from docutils import frontend, nodes
 from docutils.writers import latex2e
 from docutils.readers import standalone
 from docutils.transforms import references, Transform, TransformError
+from docutils.writers.latex2e import PreambleCmds
 
 class Writer(latex2e.Writer):
 
@@ -198,6 +199,22 @@ class DocumentClass(latex2e.DocumentClass):
         else:
             return sections[-1]
 
+PreambleCmds.beamer00_mode = r"""
+\mode<presentation>
+{
+  \usetheme{%s}
+  \setbeamercovered{%s}
+}"""
+
+PreambleCmds.beamer10_intermediate_outlines = r"""
+\%s[]
+{
+  \begin{frame}<beamer>
+    \frametitle{%s}
+    \tableofcontents[%s]
+  \end{frame}
+}"""
+
 class BeamerTranslator(latex2e.LaTeXTranslator):
 
     def __init__(self, document):
@@ -213,12 +230,9 @@ class BeamerTranslator(latex2e.LaTeXTranslator):
             del self.requirements['typearea']
 
         # Montpellier, Warsaw, JuanLesPins, Darmstadt, Antibes
-        self.fallbacks['beamer00_mode'] = r"""
-\mode<presentation>
-{
-  \usetheme{%s}
-  \setbeamercovered{%s}\n',
-}""" % ( document.settings.beamer_theme, 'transparent', )
+        self.fallbacks['beamer00_mode'] = (
+                PreambleCmds.beamer00_mode
+                % ( document.settings.beamer_theme, 'transparent', ))
         # TODO Argument to `setbeamercovered` must be an option
         # TODO Name of outline slides should be the name given for the contents
         # (is a `title` element) - might be determined by a preprocessor
@@ -231,14 +245,9 @@ class BeamerTranslator(latex2e.LaTeXTranslator):
             else:
                 at_begin = 'AtBeginSubsection'
                 toc_option = 'currentsection,currentsubsection'
-            self.fallbacks['beamer10_intermediate_outlines'] = r"""
-\%s[]
-{
-  \begin{frame}<beamer>
-    \frametitle{%s}
-    \tableofcontents[%s]
-  \end{frame}
-}""" % ( at_begin,  document.settings.toc_title, toc_option )
+            self.fallbacks['beamer10_intermediate_outlines'] =  (
+                    PreambleCmds.beamer10_intermediate_outlines
+                    % ( at_begin,  document.settings.toc_title, toc_option ))
         self.d_class = DocumentClass()
         self.subtitle = ''
 
@@ -311,7 +320,10 @@ class Reader(standalone.Reader):
                   if i is not references.DanglingReferences ]
                 + [ RemoveClassHandout, ])
 
-# TODO Must be supported by the right beamer mode (see section 20.2)
+# TODO Must be supported by the right beamer mode (see section 20.2 in Beamer
+# documentation)
+
+# TODO May be this could be done by some fixed `--strip-elements-with-class`
 class RemoveClassHandout(Transform):
 
     """
