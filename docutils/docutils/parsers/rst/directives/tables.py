@@ -309,14 +309,18 @@ class CSVTable(Table):
 
     if sys.version_info < (3,):
         # 2.x csv module doesn't do Unicode
-        def decode_from_csv(self, s):
+        @staticmethod
+        def decode_from_csv(s):
             return s.decode('utf-8')
-        def encode_for_csv(self, s):
+        @staticmethod
+        def encode_for_csv(s):
             return s.encode('utf-8')
     else:
-        def decode_from_csv(self, s):
+        @staticmethod
+        def decode_from_csv(s):
             return s
-        def encode_for_csv(self, s):
+        @staticmethod
+        def encode_for_csv(s):
             return s
 
     def parse_csv_data_into_rows(self, csv_data, dialect, source):
