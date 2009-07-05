@@ -13,6 +13,8 @@ from __init__ import DocutilsTestSupport
 import os
 import csv
 from docutils._compat import u_prefix
+from docutils.parsers.rst.directives import tables
+
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()
@@ -33,11 +35,10 @@ else:
 
 def null_bytes():
     import csv
-    import codecs
-    import cStringIO
-    csv_data = codecs.open(utf_16_csv, 'r', 'latin1').read()
-    csv_file = cStringIO.StringIO(csv_data)
-    reader = csv.reader(csv_file)
+    csv_data = open(utf_16_csv, 'rb').read()
+    csv_data = unicode(csv_data, 'latin1').splitlines()
+    reader = csv.reader([tables.CSVTable.encode_for_csv(line + '\n')
+                         for line in csv_data])
     reader.next()
 
 null_bytes_exception = DocutilsTestSupport.exception_data(null_bytes)[0]
