@@ -525,6 +525,13 @@ class Element(Node):
     def __len__(self):
         return len(self.children)
 
+    def __contains__(self, key):
+        # support both membership test for children and attributes
+        # (has_key is translated to "in" by 2to3)
+        if isinstance(key, basestring):
+            return key in self.attributes
+        return key in self.children
+
     def __getitem__(self, key):
         if isinstance(key, basestring):
             return self.attributes[key]
