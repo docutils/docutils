@@ -142,6 +142,19 @@ lorem ipsum lorem ipsum
 lorem ipsum lorem ipsum
 lorem ipsum lorem ipsum
 
+
+Literal
+-------
+
+some literal text ::
+
+  here now it starts 
+  and continues
+    indented
+  and back
+
+and a paragraph after the literal.
+
 raw
 ---
 
