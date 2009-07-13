@@ -31,7 +31,8 @@ All **discussion** about Docutils takes place on the `mailing lists`_.
 
 If you find a **bug**, please file a `bug report`_ or send email to
 the Docutils-users_ mailing list.  **Patch** submissions should be
-filed in the `patch tracker`_ or sent to Docutils-develop_.
+filed in the `patch tracker`_ (preferred) or sent to Docutils-develop_
+(where you will be asked to send them to the `patch tracker`_).
 
 We welcome all kinds of **contributions**.  There's a `To Do list`_
 full of interesting ideas awaiting a champion.  If you have any
