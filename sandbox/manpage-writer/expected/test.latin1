@@ -1,0 +1,243 @@
+RST2MAN(1)                      text processing                     RST2MAN(1)
+
+
+
+NNAAMMEE
+       rst2man - generate unix manpages from reStructured text
+
+
+
+
+SSYYNNOOPPSSIISS
+       rrsstt22mmaann ----hheellpp
+
+       rrsstt22mmaann [ OPTIONS ] [ SOURCE [ _d_e_s_t_i_n_a_t_i_o_n ] ]
+
+
+
+DDEESSCCRRIIPPTTIIOONN
+       Run it and examine output.
+
+
+
+OOPPTTIIOONNSS
+       --oo _x   an option
+
+
+
+       --bb     another
+
+       For all other options see ----hheellpp.
+
+
+
+EEXXAAMMPPLLEESS
+       rrsstt22mmaann..ppyy xxmmll--sscchheemmaa--ccaattaalloogg..rrsstt xxmmll--sscchheemmaa--ccaattaalloogg..mmaann
+              create a manpage from xml-schema-catalog.rst
+
+
+
+   CChhaarraacctteerr ffoorrmmaattttiinngg
+       _B_U_G The section title should be separated from the title above.
+
+       Test bboolldd or ssttrroonngg formatting.
+
+
+
+   LLiissttss
+       · bullet list
+
+
+
+       · and  a  longer  entry,  and a longer entry, and a longer entry, and a
+         longer entry, and a longer entry, and a longer entry,  and  a  longer
+         entry, and a longer entry,
+
+
+
+         1.  and a nested
+
+
+
+         2.  enumeration
+
+
+
+           · some line
+
+
+
+           · bullets
+
+
+
+         3.  a third
+
+
+
+         4.  a third
+
+
+
+         5.  a third
+
+
+
+           a. alphabetically list
+
+
+
+           b. betacarotin
+
+
+
+           c. grammar
+
+
+
+         6.  a third
+
+
+
+         7.  a third
+
+
+
+         8.  a third
+
+
+
+         9.  a third
+
+
+
+         10. bigger  indentation  if there are more than nine enumerated items
+             (or there are larger numbers)
+
+             a second paragraph that should be separated from the previous one
+             and not flowing into.
+
+
+
+       7. dont start with 1
+
+
+
+       9. dont increment by 1
+
+
+
+       13.
+          does not work.
+
+       This  paragraph  must not be indented with the text the last list-item,
+       but start at the left margin of the numbers.
+
+       a second paragraph that should be separated from the previous  one  and
+       not flowing into.
+
+
+
+   FFiieelldd lliissttss
+       ffiirrsstt  a short label and a short text
+
+
+
+       sseeccoonnddllyy aa lloonnggeerr llaabbeell
+              and  some  more text and some more text and some more text   and
+              some more text
+
+
+
+       ddeeffiinniittiioonn lliissttss
+              are also a valuable option and simple nonintrusive formatting
+
+
+
+       ddeeffiinniittiioonn ttoooo ::
+              with the colon.
+
+
+
+   TTaabblleess
+                                 +---------+-------+
+                                 |single   | frame |
+                                 +---------+-------+
+                                 |no table |       |
+                                 |header   |       |
+                                 +---------+-------+
+
+
+   lliinneebblloocckk
+       paul
+       tel. 12345
+       LA
+
+
+
+   rraaww
+       raw input to man
+
+   ootthheerr
+       inline references _r_e_f _s_o_m_e_t_h_i_n_g .
+
+
+
+FFIILLEESS
+       This is a file.
+
+
+
+SSEEEE AALLSSOO
+       _d_o_c_u_t_i_l_s
+
+       rrsstt22xxmmll(dummy)
+
+       More information can be found about
+
+
+
+       · xml-schema-catalog at _h_t_t_p_:_/_/_x_m_l_-_s_c_h_e_m_a_-_c_a_t_a_l_o_g_._o_r_i_g_o_._e_t_h_z_._c_h_/
+
+       And see the stars at the sky!
+
+
+
+BBUUGGSS
+       Numerous mapping problems.
+
+
+
+       1. Where do we get the manual section number from ? Commandline ?
+
+
+
+       2. docutils authors should be filled into section "AUTHORS".
+
+
+
+       3. be carefull with linebreaks in generated code.
+
+
+
+       4. list items.  bullets and enumerators.
+
+
+
+AAUUTTHHOORR
+       grubert@users.sourceforge.net
+
+       humankind
+
+       123 Example Street
+       Example, EX  Canada
+       A1B 2C3
+
+
+CCOOPPYYRRIIGGHHTT
+       public domain Behave responsible.
+
+
+
+
+0.0.1                             2009-06-22                        RST2MAN(1)
