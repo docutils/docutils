@@ -58,6 +58,14 @@ References
 
 man pages from section 7, ``man`` and ``man-pages``.
 
+NOTE: 
+
+  1. The macros only work when at line start.
+  2. But consecutive blank lines are megred by the viewer but not on printouts.
+
+  So try the rule start new lines in visit_ functions, but only if necessary.
+  E.g. ``field-names`` are already on a new line because of docutils structure.
+
 Problems
 ''''''''
 
@@ -103,6 +111,11 @@ Problems
     NAME
        man - program to view ...
 
+* new lines in general.
+
+  Consecutive blank lines are megred by the viewer but not on printouts.
+  So one has to be cautious.
+
 * line ends around email or web addresses in texts.
   How to distinguish something is inline or not ?
   
@@ -122,6 +135,7 @@ Change log
 
 * writers/manpage.py:
 
+  - 2009-07-13: patch from ben finney to reduce vertical spacing.
   - 2009-06-26: patch from jarda to fix visit_strong. 
   - 2009-06-22: page title in ``.TH`` in uppercase.
   - 2009-04-15: move ``rst2man.py`` into ``tools`` subdirectory

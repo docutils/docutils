@@ -41,8 +41,6 @@ by the command whatis or apropos.
 
 """
 
-# NOTE: the macros only work when at line start, so try the rule
-#       start new lines in visit_ functions.
 
 __docformat__ = 'reStructuredText'
 
@@ -191,16 +189,16 @@ class Translator(nodes.NodeVisitor):
                 'indent' : ('.INDENT %.1f\n', '.UNINDENT\n'),
                 'definition' : ('', ''),
                 'definition_list' : ('', '.TP 0\n'),
-                'definition_list_item' : ('\n.TP', ''),
+                'definition_list_item' : ('.TP', ''),
                 #field_list
                 #field
-                'field_name' : ('\n.TP\n.B ', '\n'),
+                'field_name' : ('.TP\n.B ', '\n'),
                 'field_body' : ('', '.RE\n'),
                 'literal' : ('\\fB', '\\fP'),
                 'literal_block' : ('\n.nf\n', '\n.fi\n'),
 
                 #option_list
-                'option_list_item' : ('\n.TP', ''),
+                'option_list_item' : ('.TP', ''),
                 #option_group, option
                 'description' : ('\n', ''),
                 
@@ -217,12 +215,15 @@ class Translator(nodes.NodeVisitor):
                 'organization' : ('\n.nf\n', '\n.fi\n'),
                     }
         # TODO dont specify the newline before a dot-command, but ensure
-        # check it is there.
+        # it is there.
 
     def comment_begin(self, text):
         """Return commented version of the passed text WITHOUT end of line/comment."""
-        prefix = '\n.\\" '
-        return prefix+prefix.join(text.split('\n'))
+        prefix = '.\\" '
+        out_text = ''.join(
+            (prefix + in_line + '\n')
+            for in_line in text.split('\n'))
+        return out_text
 
     def comment(self, text):
         """Return commented version of the passed text."""
@@ -520,7 +521,7 @@ class Translator(nodes.NodeVisitor):
 
     def depart_document(self, node):
         if self._docinfo['author']:
-            self.body.append('\n.SH AUTHOR\n%s\n' 
+            self.body.append('.SH AUTHOR\n%s\n' 
                     % self._docinfo['author'])
         if 'organization' in self._docinfo:
             self.body.append(self.defs['organization'][0])
@@ -531,7 +532,7 @@ class Translator(nodes.NodeVisitor):
             self.body.append(self._docinfo['address'])
             self.body.append(self.defs['address'][1])
         if self._docinfo['copyright']:
-            self.body.append('\n.SH COPYRIGHT\n%s\n' 
+            self.body.append('.SH COPYRIGHT\n%s\n' 
                     % self._docinfo['copyright'])
         self.body.append(
                 self.comment(
@@ -745,10 +746,10 @@ class Translator(nodes.NodeVisitor):
         self.body.append('</div>\n')
 
     def visit_line_block(self, node):
-        self.body.append('\n')
+        pass
 
     def depart_line_block(self, node):
-        self.body.append('\n')
+        self.body.append('\n')  # separate following paragraphs
 
     def visit_line(self, node):
         pass
@@ -758,6 +759,7 @@ class Translator(nodes.NodeVisitor):
 
     def visit_list_item(self, node):
         # man 7 man argues to use ".IP" instead of ".TP"
+        # BUG without leading newline the table in test.txt looks bad
         self.body.append('\n.IP %s %d\n' % (
                 self._list_char[-1].next(),
                 self._list_char[-1].get_width(),) )
@@ -890,7 +892,7 @@ class Translator(nodes.NodeVisitor):
 
     def visit_raw(self, node):
         if node.get('format') == 'manpage':
-            self.body.append(node.astext())
+            self.body.append(node.astext() + "\n")
         # Keep non-manpage raw text out of output:
         raise nodes.SkipNode
 
@@ -1028,9 +1030,9 @@ class Translator(nodes.NodeVisitor):
             self._docinfo['title_upper'] = node.astext().upper()
             raise nodes.SkipNode
         elif self.section_level == 1:
-            self.body.append('\n.SH ')
+            self.body.append('.SH ')
         else:
-            self.body.append('\n.SS ')
+            self.body.append('.SS ')
 
     def depart_title(self, node):
         self.body.append('\n')
