@@ -18,6 +18,8 @@ for IN_F in $IN_DIR/$FILES ; do
   $CMD $IN_F $OUT_DIR/$F_BASE.man
   if [ $? -eq 0 ] ; then
     diff -s -u $EXP_DIR/$F_BASE.man $OUT_DIR/$F_BASE.man
+    man -Tlatin1 $OUT_DIR/$F_BASE.man > $OUT_DIR/$F_BASE.latin1
+    diff -s -u $EXP_DIR/$F_BASE.latin1 $OUT_DIR/$F_BASE.latin1
   fi
 done
 
