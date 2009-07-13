@@ -58,6 +58,12 @@ Character formatting
 
 Test **bold** or **strong** formatting.
 
+Special characters: 
+
+* backslash: \\
+* hyphen: -
+* quotes: ' "
+
 Lists
 -----
 

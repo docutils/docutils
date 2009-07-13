@@ -237,7 +237,9 @@ class Translator(nodes.NodeVisitor):
         return ''.join(self.head + self.body + self.foot)
 
     def visit_Text(self, node):
-        text = node.astext().replace('-','\-')
+        text = node.astext()
+        text = text.replace('\\','\\e')
+        text = text.replace('-','\-')
         text = text.replace("'","\\'")
         self.body.append(text)
 

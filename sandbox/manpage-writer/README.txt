@@ -135,6 +135,7 @@ Change log
 
 * writers/manpage.py:
 
+  - 2009-07-13: patch from martin geisler to propper backslash escaping.
   - 2009-07-13: patch from ben finney to reduce vertical spacing.
   - 2009-06-26: patch from jarda to fix visit_strong. 
   - 2009-06-22: page title in ``.TH`` in uppercase.
