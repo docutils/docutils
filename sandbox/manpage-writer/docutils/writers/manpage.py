@@ -761,8 +761,7 @@ class Translator(nodes.NodeVisitor):
 
     def visit_list_item(self, node):
         # man 7 man argues to use ".IP" instead of ".TP"
-        # BUG without leading newline the table in test.txt looks bad
-        self.body.append('\n.IP %s %d\n' % (
+        self.body.append('.IP %s %d\n' % (
                 self._list_char[-1].next(),
                 self._list_char[-1].get_width(),) )
 
@@ -952,7 +951,6 @@ class Translator(nodes.NodeVisitor):
         #if node['level'] < self.document.reporter['writer'].report_level:
             # Level is too low to display:
         #    raise nodes.SkipNode
-        self.body.append('\.SH system-message\n')
         attr = {}
         backref_text = ''
         if node.hasattr('id'):

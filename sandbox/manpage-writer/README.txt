@@ -135,6 +135,8 @@ Change log
 
 * writers/manpage.py:
 
+  - 2009-07-13: Fix: system_message output (no heading necessary).
+  - 2009-07-13: patch from ben finney, remove blank line before list_item.
   - 2009-07-13: patch from martin geisler blank line after a literal block.
   - 2009-07-13: patch from martin geisler to propper backslash escaping.
   - 2009-07-13: patch from ben finney to reduce vertical spacing.
