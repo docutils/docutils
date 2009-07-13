@@ -12,9 +12,7 @@ DDEESSCCRRIIPPTTIIOONN
        After an option list:
 
 
-
        · a paragraph within the same section must be intented
-
 
 
        · a section header directly following the list must _n_o_t be intentend.
@@ -34,9 +32,7 @@ OOPPTTIIOONNSS
               This option does the following points:
 
 
-
               · one point
-
 
 
               · second point
@@ -51,9 +47,7 @@ OOPPTTIIOONNSS
               This option does the following points:
 
 
-
               · one point
-
 
 
               · second point
@@ -73,25 +67,20 @@ EEXXAAMMPPLLEESS
        is indented, as all text in man-pages. This is level 0.
 
 
-
        · Now let´s test nested lists.
 
          Line indented once. This is level 1.
 
 
-
          · Nested item1.
-
 
 
          · Nested item2.
 
 
-
          · Nested item3.
 
            Line for Nested item 3.
-
 
 
          · Nested item4.

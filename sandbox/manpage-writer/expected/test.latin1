@@ -41,13 +41,10 @@ EEXXAAMMPPLLEESS
        Special characters:
 
 
-
        · backslash: \
 
 
-
        · hyphen: -
-
 
 
        · quotes: ´ "
@@ -57,67 +54,51 @@ EEXXAAMMPPLLEESS
        · bullet list
 
 
-
        · and  a  longer  entry,  and a longer entry, and a longer entry, and a
          longer entry, and a longer entry, and a longer entry,  and  a  longer
          entry, and a longer entry,
 
 
-
          1.  and a nested
-
 
 
          2.  enumeration
 
 
-
            · some line
-
 
 
            · bullets
 
 
-
          3.  a third
-
 
 
          4.  a third
 
 
-
          5.  a third
-
 
 
            a. alphabetically list
 
 
-
            b. betacarotin
-
 
 
            c. grammar
 
 
-
          6.  a third
-
 
 
          7.  a third
 
 
-
          8.  a third
 
 
-
          9.  a third
-
 
 
          10. bigger  indentation  if there are more than nine enumerated items
@@ -127,13 +108,10 @@ EEXXAAMMPPLLEESS
              and not flowing into.
 
 
-
        7. dont start with 1
 
 
-
        9. dont increment by 1
-
 
 
        13.
@@ -210,7 +188,6 @@ SSEEEE AALLSSOO
        More information can be found about
 
 
-
        · xml-schema-catalog at _h_t_t_p_:_/_/_x_m_l_-_s_c_h_e_m_a_-_c_a_t_a_l_o_g_._o_r_i_g_o_._e_t_h_z_._c_h_/
 
        And see the stars at the sky!
@@ -220,17 +197,13 @@ BBUUGGSS
        Numerous mapping problems.
 
 
-
        1. Where do we get the manual section number from ? Commandline ?
-
 
 
        2. docutils authors should be filled into section "AUTHORS".
 
 
-
        3. be carefull with linebreaks in generated code.
-
 
 
        4. list items.  bullets and enumerators.
