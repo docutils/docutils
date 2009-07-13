@@ -1,0 +1,132 @@
+.. -*- mode: rst -*-
+
+===============
+OptionlistTest
+===============
+
+-----------------------------------------------------
+Test for correct intention/detention of option lists
+-----------------------------------------------------
+
+:Author: h.goebel@goebel-consult.de
+:Date:   2008-04-29
+:Copyright: public domain
+:Manual section: 1
+
+
+DESCRIPTION
+===========
+
+After an option list:
+
+- a paragraph within the same section must be intented
+
+- a section header directly following the list must *not* be
+  intentend.
+
+This file tests this.
+
+OPTIONS
+=======
+This line must be in indented.
+
+-o x   an option
+-b     another
+
+       This option does the following points:
+
+       * one point
+
+       * second point
+
+          --ccc     option lists may be nested, even if this is rarely
+	             used.
+
+
+-k     and even another
+
+       This option does the following points:
+
+       * one point
+
+       * second point
+
+For all other options see ``--help``. This line must be intented.
+
+
+MORE OPTIONS 
+=============
+
+-o x   an option
+-b     another
+
+
+EXAMPLES
+===========
+
+The "Examples" section header must not be intented. But this paragraph
+is indented, as all text in man-pages. This is level 0.
+
+* Now let's test nested lists. 
+
+  Line indented once. This is level 1.
+
+  * Nested item1.
+  * Nested item2.
+  * Nested item3.
+
+    Line for Nested item 3.
+
+  * Nested item4.
+ 
+  Paragraph at level 1. Same level as Line indented once.
+
+This paragraph should be at level 0. 
+
+
+DEFINITION LIST
+=================
+
+:term1:
+
+    Description of Term 1 Description of Term 1 Description of Term 1
+    Description of Term 1 Description of Term 1
+
+    Description of Term 1 Description of Term 1 Description of Term 1
+    Description of Term 1 Description of Term 1
+
+:term1111111111:
+
+    Description of Term 1 Description of Term 1 Description of Term 1
+    Description of Term 1 Description of Term 1
+
+    Description of Term 1 Description of Term 1 Description of Term 1
+    Description of Term 1 Description of Term 1
+
+
+:term2:    Description of Term 2
+
+    Description of Term 2 Description of Term 2 Description of Term 2
+    Description of Term 2 Description of Term 2
+
+    Description of Term 2 Description of Term 2 Description of Term 2
+    Description of Term 2 Description of Term 2
+   
+   :term22:       Defintions lists may be nested, thus this at level 1.
+
+         More Description of Term 22. More Description of Term 22.
+	 More Description of Term 22. More Description of Term 22.
+
+   :term23:       Defintions lists may be nested, thus this at level 1.
+
+   This para is indented to term2, thus should be at level 1.
+
+   This para is indented to term2, thus should be at level 1.
+
+:term3:       Defintions lists are not nested
+
+   More Description for term3.
+
+This paragraph should be at level 0. But the rst-manpage writer has a
+bug here. See the option list above.
+
