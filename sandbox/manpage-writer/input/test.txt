@@ -48,6 +48,8 @@ EXAMPLES
 :rst2man.py xml-schema-catalog.rst xml-schema-catalog.man:
     create a manpage from xml-schema-catalog.rst
 
+.. comments : lorem ipsum lorem ipsum
+   lorem ipsum lorem ipsum
 
 Character formatting
 --------------------
@@ -127,6 +129,12 @@ lineblock
 | paul
 | tel. 12345
 | LA
+
+A paragraph following the line block. 
+lorem ipsum lorem ipsum
+lorem ipsum lorem ipsum
+lorem ipsum lorem ipsum
+lorem ipsum lorem ipsum
 
 raw
 ---
