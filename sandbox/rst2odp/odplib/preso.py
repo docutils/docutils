@@ -900,7 +900,8 @@ class MixedContent(object):
                 self.add_node('text:p')
             else:
                 self.add_node('text:line-break')
-            self.pop_node()
+            if self.cur_node.parent.tag != 'text:p':
+                self.pop_node()
 
         self.slide.insert_line_break = 0
 
