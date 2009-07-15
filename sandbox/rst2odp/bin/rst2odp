@@ -100,6 +100,10 @@ class Writer(writers.Writer):
              ['--mono-font'],
              {'action': 'store',
               'dest': 'mono_font'}),
+            ('Specify a normal font to use ("Arial" default)',
+             ['--font'],
+             {'action': 'store',
+              'dest': 'font'}),
             ('Specify pages to export (2,3,9-10)',
              ['--pages-to-output'],
              {'action': 'store',
@@ -129,6 +133,9 @@ class ODPTranslator(nodes.GenericNodeVisitor):
 
         if self.settings.mono_font:
             preso.MONO_FONT = self.settings.mono_font
+            
+        if self.settings.font:
+            preso.NORMAL_FONT = self.settings.font
 
         self.in_node = {} # map of tagname to True if we are in/under this
         self._reset()

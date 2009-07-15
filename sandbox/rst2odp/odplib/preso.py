@@ -60,6 +60,7 @@ TEXT_COUNT = 100
 DATA_DIR =  os.path.join(os.path.dirname(__file__), 'data')
 
 MONO_FONT = 'Courier New' # I like 'Envy Code R'
+NORMAL_FONT = 'Arial'
 
 SLIDE_WIDTH = 30 # cm
 SLIDE_HEIGHT = 21 
@@ -271,7 +272,11 @@ class Preso(object):
 
     def styles_xml(self):
         filename = os.path.join(DATA_DIR, 'styles.xml')
-        return open(filename).read()
+        data = open(filename).read()
+        if NORMAL_FONT != 'Arial':
+            data = data.replace('fo:font-family="Arial"',
+                                'fo:font-family="%s"' %NORMAL_FONT)
+        return data
 
     def to_xml(self):
         for i, slide in enumerate(self.slides):
