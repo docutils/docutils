@@ -38,6 +38,8 @@ OPTIONS
 
 -o x   an option
 -b     another
+-f, --force
+       really do it
 
 For all other options see ``--help``.
 
