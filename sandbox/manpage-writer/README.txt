@@ -135,7 +135,8 @@ Change log
 
 * writers/manpage.py:
 
-  - 2009-07-16: add container handling (martin g).
+  - 2009-07-16: patches from martin g: add container handling, remove blank in
+                option_item
   - 2009-07-13: Fix: system_message output (no heading necessary).
   - 2009-07-13: patch from ben finney, remove blank line before list_item.
   - 2009-07-13: patch from martin geisler blank line after a literal block.
