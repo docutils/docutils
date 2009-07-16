@@ -171,6 +171,9 @@ other
 
 inline references `ref something` .
 
+.. container:: verbose
+
+   Contained verbose. Nothing special.
 
 FILES
 =====

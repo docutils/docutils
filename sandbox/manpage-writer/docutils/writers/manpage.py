@@ -418,6 +418,13 @@ class Translator(nodes.NodeVisitor):
     def depart_contact(self, node):
         self.depart_docinfo_item()
 
+    def visit_container(self, node):
+        # TODO: should we do anything for a generic container?
+        pass
+
+    def depart_container(self, node):
+        pass
+
     def visit_copyright(self, node):
         self._docinfo['copyright'] = node.astext()
         raise nodes.SkipNode
