@@ -479,12 +479,6 @@ class Translator(nodes.NodeVisitor):
 
     def visit_docinfo_item(self, node, name):
         self.body.append(self.comment('%s: ' % self.language.labels[name]))
-        if len(node):
-            return
-            if isinstance(node[0], nodes.Element):
-                node[0].set_class('first')
-            if isinstance(node[0], nodes.Element):
-                node[-1].set_class('last')
 
     def depart_docinfo_item(self):
         pass
@@ -781,7 +775,7 @@ class Translator(nodes.NodeVisitor):
     def visit_paragraph(self, node):
         # BUG every but the first paragraph in a list must be intended
         # TODO .PP or new line
-        return
+        pass
 
     def depart_paragraph(self, node):
         # TODO .PP or an empty line
