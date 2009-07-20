@@ -65,13 +65,13 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
         except ImportError, e:
             try:
                 # 2. Try to use ElementTree from the Python standard library.
-                from xml.etree import yyyyElementTree as etree
+                from xml.etree import ElementTree as etree
                 WhichElementTree = 'elementtree'
             except ImportError, e:
                 try:
                     # 3. Try to use a version of ElementTree installed as a separate
                     #    product.
-                    from elementtree import yyyyElementTree as etree
+                    from elementtree import ElementTree as etree
                     WhichElementTree = 'elementtree'
                 except ImportError, e:
                     s1 = '\nSkipped test of odf_odt writer.  ' \
