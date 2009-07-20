@@ -221,7 +221,8 @@ class Translator(nodes.NodeVisitor):
         # it is there.
 
     def comment_begin(self, text):
-        """Return commented version of the passed text WITHOUT end of line/comment."""
+        """Return commented version of the passed text WITHOUT end of
+        line/comment."""
         prefix = '.\\" '
         out_text = ''.join(
             (prefix + in_line + '\n')
@@ -252,42 +253,48 @@ class Translator(nodes.NodeVisitor):
     def list_start(self, node):
         class enum_char:
             enum_style = {
-                    'arabic'     : (3,1),
-                    'loweralpha' : (3,'a'),
-                    'upperalpha' : (3,'A'),
-                    'lowerroman' : (5,'i'),
-                    'upperroman' : (5,'I'),
-                    'bullet'     : (2,'\\(bu'),
-                    'emdash'     : (2,'\\(em'),
+                    'bullet'     : '\\(bu',
+                    'emdash'     : '\\(em',
                      }
+
             def __init__(self, style):
-                if style == 'arabic':
-                    if node.has_key('start'):
-                        start = node['start']
-                    else:
-                        start = 1
-                    self._style = (
-                            len(str(len(node.children)))+2,
-                            start )
-                # BUG: fix start for alpha
+                self._style = style
+                if node.has_key('start'):
+                    self._cnt = node['start'] - 1
                 else:
-                    self._style = self.enum_style[style]
-                self._cnt = -1
+                    self._cnt = 0
+                self._indent = 2
+                if style == 'arabic':
+                    # indentation depends on number of childrens
+                    # and start value.
+                    self._indent = len(str(len(node.children)))
+                    self._indent += len(str(self._cnt)) + 1
+                elif style == 'loweralpha':
+                    self._cnt += ord('a') - 1
+                    self._indent = 3
+                elif style == 'upperalpha':
+                    self._cnt += ord('A') - 1
+                    self._indent = 3
+
             def next(self):
+                if self._style == 'bullet':
+                    return self.enum_style[self._style]
+                elif self._style == 'emdash':
+                    return self.enum_style[self._style]
                 self._cnt += 1
                 # BUG add prefix postfix
-                try:
-                    return "%d." % (self._style[1] + self._cnt)
-                except:
-                    if self._style[1][0] == '\\':
-                        return self._style[1]
+                if self._style == 'arabic':
+                    return "%d." % self._cnt
+                elif self._style in ('loweralpha', 'upperalpha'):
+                    return "%c." % self._cnt
+                elif False:
                     # BUG romans dont work
                     # BUG alpha only a...z
                     return "%c." % (ord(self._style[1])+self._cnt)
             def get_width(self):
-                return self._style[0]
+                return self._indent
             def __repr__(self):
-                return 'enum_style%r' % list(self._style)
+                return 'enum_style-%s' % list(self._style)
 
         if node.has_key('enumtype'):
             self._list_char.append(enum_char(node['enumtype']))

@@ -96,6 +96,12 @@ EEXXAAMMPPLLEESS
          6.  a third
 
 
+           Y. the end
+
+
+           Z. yellow
+
+
          7.  a third
 
 
@@ -118,13 +124,12 @@ EEXXAAMMPPLLEESS
        9. dont increment by 1
 
 
-       13.
-          does not work.
+       13. Problematic: indentation does not match for nonconsecutive entries.
 
-       This  paragraph  must not be indented with the text the last list-item,
+       This paragraph must not be indented with the text the  last  list-item,
        but start at the left margin of the numbers.
 
-       a second paragraph that should be separated from the previous  one  and
+       a  second  paragraph that should be separated from the previous one and
        not flowing into.
 
 
@@ -133,7 +138,7 @@ EEXXAAMMPPLLEESS
 
 
        sseeccoonnddllyy aa lloonnggeerr llaabbeell
-              and  some  more text and some more text and some more text   and
+              and some more text and some more text and some more  text    and
               some more text
 
 
@@ -158,7 +163,7 @@ EEXXAAMMPPLLEESS
        tel. 12345
        LA
 
-       A paragraph following the line block.  lorem ipsum  lorem  ipsum  lorem
+       A  paragraph  following  the line block.  lorem ipsum lorem ipsum lorem
        ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
 
 
@@ -216,7 +221,7 @@ EEXXAAMMPPLLEESS
 
 
        Warning
-              Strong  prose  may provoke extreme mental exertion.  Reader dis-
+              Strong prose may provoke extreme mental exertion.   Reader  dis-
               cretion is strongly advised.
 
 
