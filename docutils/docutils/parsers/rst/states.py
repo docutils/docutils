@@ -1316,7 +1316,7 @@ class Body(RSTState):
         """
         Check validity based on the ordinal value and the second line.
 
-        Return true iff the ordinal is valid and the second line is blank,
+        Return true if the ordinal is valid and the second line is blank,
         indented, or starts with the next enumerator or an auto-enumerator.
         """
         if ordinal is None:
