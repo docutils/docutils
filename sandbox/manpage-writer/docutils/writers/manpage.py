@@ -52,6 +52,7 @@ from types import ListType
 
 import docutils
 from docutils import nodes, utils, writers, languages
+import roman
 
 FIELD_LIST_INDENT = 7
 DEFINITION_LIST_INDENT = 7
@@ -275,6 +276,8 @@ class Translator(nodes.NodeVisitor):
                 elif style == 'upperalpha':
                     self._cnt += ord('A') - 1
                     self._indent = 3
+                elif style.endswith('roman'):
+                    self._indent = 5
 
             def next(self):
                 if self._style == 'bullet':
@@ -282,15 +285,18 @@ class Translator(nodes.NodeVisitor):
                 elif self._style == 'emdash':
                     return self.enum_style[self._style]
                 self._cnt += 1
-                # BUG add prefix postfix
+                # TODO add prefix postfix
                 if self._style == 'arabic':
                     return "%d." % self._cnt
                 elif self._style in ('loweralpha', 'upperalpha'):
                     return "%c." % self._cnt
-                elif False:
-                    # BUG romans dont work
-                    # BUG alpha only a...z
-                    return "%c." % (ord(self._style[1])+self._cnt)
+                elif self._style.endswith('roman'):
+                    res = roman.toRoman(self._cnt) + '.'
+                    if self._style.startswith('upper'):
+                        return res.upper()
+                    return res.lower()
+                else:
+                    return "%d." % self._cnt
             def get_width(self):
                 return self._indent
             def __repr__(self):
