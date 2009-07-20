@@ -115,6 +115,9 @@ class Table:
         self._coldefs = []
     def new_row(self):
         self._rows.append([])
+    def append_separator(self, separator):
+        """Append the separator for table head."""
+        self._rows.append([separator])
     def append_cell(self, cell_lines):
         """cell_lines is an array of lines"""
         self._rows[-1].append(cell_lines)
@@ -325,17 +328,18 @@ class Translator(nodes.NodeVisitor):
     def depart_address(self, node):
         pass
 
-    def visit_admonition(self, node, name):
-        raise NotImplementedError, node.astext()
+    def visit_admonition(self, node, name=None):
+        if name:
+            self.body.append('.IP %s\n' %
+                        self.language.labels.get(name, name))
 
-    def depart_admonition(self):
-        raise NotImplementedError, node.astext()
+    def depart_admonition(self, node):
+        self.body.append('.RE\n')
 
     def visit_attention(self, node):
         self.visit_admonition(node, 'attention')
 
-    def depart_attention(self, node):
-        self.depart_admonition()
+    depart_attention = depart_admonition
 
     def visit_author(self, node):
         self._docinfo['author'] = node.astext()
@@ -377,8 +381,7 @@ class Translator(nodes.NodeVisitor):
     def visit_caution(self, node):
         self.visit_admonition(node, 'caution')
 
-    def depart_caution(self, node):
-        self.depart_admonition()
+    depart_caution = depart_admonition
 
     def visit_citation(self, node):
         raise NotImplementedError, node.astext()
@@ -432,8 +435,7 @@ class Translator(nodes.NodeVisitor):
     def visit_danger(self, node):
         self.visit_admonition(node, 'danger')
 
-    def depart_danger(self, node):
-        self.depart_admonition()
+    depart_danger = depart_admonition
 
     def visit_date(self, node):
         self._docinfo['date'] = node.astext()
@@ -540,8 +542,7 @@ class Translator(nodes.NodeVisitor):
     def visit_error(self, node):
         self.visit_admonition(node, 'error')
 
-    def depart_error(self, node):
-        self.depart_admonition()
+    depart_error = depart_admonition
 
     def visit_field(self, node):
         pass
@@ -617,8 +618,7 @@ class Translator(nodes.NodeVisitor):
     def visit_hint(self, node):
         self.visit_admonition(node, 'hint')
 
-    def depart_hint(self, node):
-        self.depart_admonition()
+    depart_hint = depart_admonition
 
     def visit_image(self, node):
         raise NotImplementedError, node.astext()
@@ -630,8 +630,7 @@ class Translator(nodes.NodeVisitor):
     def visit_important(self, node):
         self.visit_admonition(node, 'important')
 
-    def depart_important(self, node):
-        self.depart_admonition()
+    depart_important = depart_admonition
 
     def visit_label(self, node):
         raise NotImplementedError, node.astext()
@@ -687,8 +686,7 @@ class Translator(nodes.NodeVisitor):
     def visit_note(self, node):
         self.visit_admonition(node, 'note')
 
-    def depart_note(self, node):
-        self.depart_admonition()
+    depart_note = depart_admonition
 
     def indent(self, by=0.5):
         # if we are in a section ".SH" there already is a .RS
@@ -897,16 +895,17 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def visit_thead(self, node):
-        raise NotImplementedError, node.astext()
+        # MAYBE double line '='
+        pass
 
     def depart_thead(self, node):
-        raise NotImplementedError, node.astext()
+        # MAYBE double line '='
+        pass
 
     def visit_tip(self, node):
         self.visit_admonition(node, 'tip')
 
-    def depart_tip(self, node):
-        self.depart_admonition()
+    depart_tip = depart_admonition
 
     def visit_title(self, node):
         if isinstance(node.parent, nodes.topic):
@@ -914,7 +913,7 @@ class Translator(nodes.NodeVisitor):
         elif isinstance(node.parent, nodes.sidebar):
             self.body.append(self.comment('sidebar-title'))
         elif isinstance(node.parent, nodes.admonition):
-            self.body.append(self.comment('admonition-title'))
+            self.body.append('.IP "')
         elif self.section_level == 0:
             self._docinfo['title'] = node.astext()
             # document title for .TH
@@ -926,6 +925,8 @@ class Translator(nodes.NodeVisitor):
             self.body.append('.SS ')
 
     def depart_title(self, node):
+        if isinstance(node.parent, nodes.admonition):
+            self.body.append('"')
         self.body.append('\n')
 
     def visit_title_reference(self, node):
@@ -959,8 +960,7 @@ class Translator(nodes.NodeVisitor):
     def visit_warning(self, node):
         self.visit_admonition(node, 'warning')
 
-    def depart_warning(self, node):
-        self.depart_admonition()
+    depart_warning = depart_admonition
 
     def unimplemented_visit(self, node):
         raise NotImplementedError('visiting unimplemented node type: %s'

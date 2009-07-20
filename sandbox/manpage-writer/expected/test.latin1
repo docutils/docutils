@@ -176,6 +176,58 @@ EEXXAAMMPPLLEESS
    rraaww
        raw input to man
 
+   AAddmmoonniittiioonnss
+       Attention!
+              Directives at large.
+
+
+       Caution!
+              Don´t take any wooden nickels.
+
+
+       !DANGER!
+              Mad scientist at work!
+
+
+       Error  Does not compute.
+
+
+       Hint   It´s bigger than a bread box.
+
+
+       Important
+
+       · Wash behind your ears.
+
+
+       · Clean up your room.
+
+
+       · Call your mother.
+
+
+       · Back up your data.
+
+
+       Note   This is a note.
+
+
+       Tip    15% if the service is good.
+
+
+       Warning
+              Strong  prose  may provoke extreme mental exertion.  Reader dis-
+              cretion is strongly advised.
+
+
+       And, by the way...
+              You can make up your own admonition too.
+
+              With more than one paragraph.
+
+       Text after the admonition.
+
+
    ootthheerr
        inline references _r_e_f _s_o_m_e_t_h_i_n_g .
 
