@@ -175,7 +175,7 @@ class Translator(nodes.NodeVisitor):
                 "title" : "", "title_upper": "",
                 "subtitle" : "",
                 "manual_section" : "", "manual_group" : "",
-                "author" : "", 
+                "author" : [], 
                 "date" : "", 
                 "copyright" : "",
                 "version" : "",
@@ -215,8 +215,7 @@ class Translator(nodes.NodeVisitor):
 
                 'problematic' : ('\n.nf\n', '\n.fi\n'),
                 # docinfo fields.
-                'address' : ('\n.nf\n', '\n.fi\n'),
-                'organization' : ('\n.nf\n', '\n.fi\n'),
+                'docinfo_item' : ('\n.nf\n', '\n.fi\n'),
                     }
         # NOTE dont specify the newline before a dot-command, but ensure
         # it is there.
@@ -334,8 +333,7 @@ class Translator(nodes.NodeVisitor):
         self.header_written = 1
 
     def visit_address(self, node):
-        self._docinfo['address'] = node.astext()
-        raise nodes.SkipNode
+        self.visit_docinfo_item(node, 'address')
 
     def depart_address(self, node):
         pass
@@ -353,18 +351,26 @@ class Translator(nodes.NodeVisitor):
 
     depart_attention = depart_admonition
 
-    def visit_author(self, node):
-        self._docinfo['author'] = node.astext()
+    def visit_docinfo_item(self, node, name):
+        if name == 'author':
+            self._docinfo[name].append(node.astext())
+        else:
+            self._docinfo[name] = node.astext()
         raise nodes.SkipNode
 
-    def depart_author(self, node):
+    def depart_docinfo_item(self, node):
         pass
 
+    def visit_author(self, node):
+        self.visit_docinfo_item(node, 'author')
+
+    depart_author = depart_docinfo_item
+
     def visit_authors(self, node):
-        self.body.append(self.comment('visit_authors'))
+        pass
 
     def depart_authors(self, node):
-        self.body.append(self.comment('depart_authors'))
+        pass
 
     def visit_block_quote(self, node):
         # BUG/HACK: indent alway uses the _last_ indention,
@@ -428,8 +434,7 @@ class Translator(nodes.NodeVisitor):
     def visit_contact(self, node):
         self.visit_docinfo_item(node, 'contact')
 
-    def depart_contact(self, node):
-        self.depart_docinfo_item()
+    depart_contact = depart_docinfo_item
 
     def visit_container(self, node):
         pass
@@ -438,8 +443,7 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def visit_copyright(self, node):
-        self._docinfo['copyright'] = node.astext()
-        raise nodes.SkipNode
+        self.visit_docinfo_item(node, 'copyright')
 
     def visit_danger(self, node):
         self.visit_admonition(node, 'danger')
@@ -447,8 +451,7 @@ class Translator(nodes.NodeVisitor):
     depart_danger = depart_admonition
 
     def visit_date(self, node):
-        self._docinfo['date'] = node.astext()
-        raise nodes.SkipNode
+        self.visit_docinfo_item(node, 'date')
 
     def visit_decoration(self, node):
         pass
@@ -488,12 +491,6 @@ class Translator(nodes.NodeVisitor):
         # NOTE nothing should be written before this
         self.append_header()
 
-    def visit_docinfo_item(self, node, name):
-        self.body.append(self.comment('%s: ' % self.language.labels[name]))
-
-    def depart_docinfo_item(self):
-        pass
-
     def visit_doctest_block(self, node):
         raise NotImplementedError, node.astext()
 
@@ -509,15 +506,18 @@ class Translator(nodes.NodeVisitor):
     def depart_document(self, node):
         if self._docinfo['author']:
             self.body.append('.SH AUTHOR\n%s\n' 
-                    % self._docinfo['author'])
-        if 'organization' in self._docinfo:
-            self.body.append(self.defs['organization'][0])
-            self.body.append(self._docinfo['organization'])
-            self.body.append(self.defs['organization'][1])
-        if 'address' in self._docinfo:
-            self.body.append(self.defs['address'][0])
-            self.body.append(self._docinfo['address'])
-            self.body.append(self.defs['address'][1])
+                    % ', '.join(self._docinfo['author']))
+        labelled = ('contact')
+        for name in ('organization', 'address', 'contact'):
+            if name in self._docinfo:
+                if name in labelled:
+                    self.body.append("\n%s: %s\n" % (
+                                        self.language.labels.get(name, name),
+                                        self._docinfo[name]) )
+                else:
+                    self.body.append(self.defs['docinfo_item'][0])
+                    self.body.append(self._docinfo[name])
+                    self.body.append(self.defs['docinfo_item'][1])
         if self._docinfo['copyright']:
             self.body.append('.SH COPYRIGHT\n%s\n' 
                     % self._docinfo['copyright'])
@@ -771,8 +771,7 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def visit_organization(self, node):
-        self._docinfo['organization'] = node.astext()
-        raise nodes.SkipNode
+        self.visit_docinfo_item(node, 'organization')
 
     def depart_organization(self, node):
         pass
@@ -809,8 +808,7 @@ class Translator(nodes.NodeVisitor):
     def visit_revision(self, node):
         self.visit_docinfo_item(node, 'revision')
 
-    def depart_revision(self, node):
-        self.depart_docinfo_item()
+    depart_revision = depart_docinfo_item
 
     def visit_row(self, node):
         self._active_table.new_row()
@@ -826,10 +824,9 @@ class Translator(nodes.NodeVisitor):
 
     def visit_status(self, node):
         raise NotImplementedError, node.astext()
-        # self.visit_docinfo_item(node, 'status', meta=None)
 
     def depart_status(self, node):
-        self.depart_docinfo_item()
+        pass
 
     def visit_strong(self, node):
         self.body.append(self.defs['strong'][0])
@@ -845,8 +842,7 @@ class Translator(nodes.NodeVisitor):
         self.unimplemented_visit(node)
 
     def visit_subtitle(self, node):
-        self._docinfo["subtitle"] = node.astext()
-        raise nodes.SkipNode
+        self.visit_docinfo_item(node, 'subtitle')
 
     def visit_system_message(self, node):
         # TODO add report_level
@@ -957,8 +953,7 @@ class Translator(nodes.NodeVisitor):
         self.body.append('\n.ce 0\n.sp\n')
 
     def visit_version(self, node):
-        self._docinfo["version"] = node.astext()
-        raise nodes.SkipNode
+        self.visit_docinfo_item(node, 'version')
 
     def visit_warning(self, node):
         self.visit_admonition(node, 'warning')
