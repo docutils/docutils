@@ -114,13 +114,12 @@ Problems
 * new lines in general.
 
   Consecutive blank lines are megred by the viewer but not on printouts.
-  So one has to be cautious.
+  So one has to be cautious. This is most disturbing when printing 
+  postscript.
 
 * line ends around email or web addresses in texts.
   How to distinguish something is inline or not ?
   
-* Is one rst-document one manpage section or might there be more sections
-  contained.
 * Tables are possible in roff, via the external processor tbl. Although
   advised to avoid if possible.
 * Images
@@ -128,6 +127,7 @@ Problems
 * RST problem "-d #  option " breaks
 * enumerated lists with more than 9 
 * line blocks in tables have too much new lines.
+* Lists in admonitions are not intended.
 
 Change log
 ''''''''''
@@ -135,6 +135,7 @@ Change log
 
 * writers/manpage.py:
 
+  - 2009-07-20: Support admnitions.
   - 2009-07-16: patches from martin g: add container handling, remove blank in
                 option_item
   - 2009-07-13: Fix: system_message output (no heading necessary).
