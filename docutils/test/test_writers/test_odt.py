@@ -52,8 +52,41 @@ EXPECTED_PATH = 'functional/expected/'
 
 class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
 
+    #
+    # Check to see if we can import the needed XML library.
+    # Report failure if we cannot.
+    def check_import(self):
+        WhichElementTree = ''
+        try:
+            # 1. Try to use lxml.
+            #from lxml import etree
+            #WhichElementTree = 'lxml'
+            raise ImportError('Ignoring lxml')
+        except ImportError, e:
+            try:
+                # 2. Try to use ElementTree from the Python standard library.
+                from xml.etree import yyyyElementTree as etree
+                WhichElementTree = 'elementtree'
+            except ImportError, e:
+                try:
+                    # 3. Try to use a version of ElementTree installed as a separate
+                    #    product.
+                    from elementtree import yyyyElementTree as etree
+                    WhichElementTree = 'elementtree'
+                except ImportError, e:
+                    s1 = '\nSkipped test of odf_odt writer.  ' \
+                         'In order to test odf_odt writer ' \
+                         'must install either a version of Python containing ' \
+                         'ElementTree (Python version >=2.5) or ' \
+                         'install ElementTree.\n\n'
+                    #self.fail(s1)
+                    sys.stderr.write(s1)
+        return WhichElementTree
+
     def process_test(self, input_filename, expected_filename, 
             save_output_name=None):
+        if not self.check_import():
+            return
         # Test that xmlcharrefreplace is the default output encoding
         # error handler.
         input_file = open(INPUT_PATH + input_filename, 'rb')
