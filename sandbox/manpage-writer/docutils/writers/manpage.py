@@ -217,7 +217,7 @@ class Translator(nodes.NodeVisitor):
                 'address' : ('\n.nf\n', '\n.fi\n'),
                 'organization' : ('\n.nf\n', '\n.fi\n'),
                     }
-        # TODO dont specify the newline before a dot-command, but ensure
+        # NOTE dont specify the newline before a dot-command, but ensure
         # it is there.
 
     def comment_begin(self, text):
@@ -319,7 +319,7 @@ class Translator(nodes.NodeVisitor):
 
     def append_header(self):
         """append header with .TH and .SH NAME"""
-        # TODO before everything
+        # NOTE before everything
         # .TH title_upper section date source manual
         if self.header_written:
             return
@@ -426,7 +426,6 @@ class Translator(nodes.NodeVisitor):
         self.depart_docinfo_item()
 
     def visit_container(self, node):
-        # TODO: should we do anything for a generic container?
         pass
 
     def depart_container(self, node):
@@ -480,7 +479,7 @@ class Translator(nodes.NodeVisitor):
 
     def depart_docinfo(self, node):
         self._in_docinfo = None
-        # TODO nothing should be written before this
+        # NOTE nothing should be written before this
         self.append_header()
 
     def visit_docinfo_item(self, node, name):
@@ -773,12 +772,12 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def visit_paragraph(self, node):
-        # BUG every but the first paragraph in a list must be intended
-        # TODO .PP or new line
+        # NOTE every but the first paragraph in a list must be intended
         pass
 
     def depart_paragraph(self, node):
-        # TODO .PP or an empty line
+        # TODO no blank line for a paragraph in a list-item
+        # BUT for paragraphs followed by a pargraph.
         if not self._in_entry:
             self.body.append('\n\n')
 
