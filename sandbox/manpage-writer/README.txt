@@ -128,7 +128,6 @@ Problems
 * enumerated lists with more than 9 
 * line blocks in tables have too much new lines.
 * Lists in admonitions are not intended.
-* Roman enumerations are not supported.
 
 Change log
 ''''''''''
@@ -140,6 +139,7 @@ Change log
                 * admonitions.
                 * start values for alphabetic enumerations
                 * Fix: remove blank line before ``.TH``
+                * Roman enumerations.
   - 2009-07-16: patches from martin g: add container handling, remove blank in
                 option_item
   - 2009-07-13: Fix: system_message output (no heading necessary).
