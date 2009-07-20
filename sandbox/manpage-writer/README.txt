@@ -140,6 +140,7 @@ Change log
                 * start values for alphabetic enumerations
                 * Fix: remove blank line before ``.TH``
                 * Roman enumerations.
+                * Docinfo: contact, authors.
   - 2009-07-16: patches from martin g: add container handling, remove blank in
                 option_item
   - 2009-07-13: Fix: system_message output (no heading necessary).
