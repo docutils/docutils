@@ -361,7 +361,6 @@ class Translator(nodes.NodeVisitor):
         self.body.append(self.comment('depart_authors'))
 
     def visit_block_quote(self, node):
-        #self.body.append(self.comment('visit_block_quote'))
         # BUG/HACK: indent alway uses the _last_ indention,
         # thus we need two of them.
         self.indent(BLOCKQOUTE_INDENT)
@@ -381,8 +380,7 @@ class Translator(nodes.NodeVisitor):
         raise NotImplementedError, node.astext()
 
     def depart_caption(self, node):
-        raise NotImplementedError, node.astext()
-        self.body.append('</p>\n')
+        pass
 
     def visit_caution(self, node):
         self.visit_admonition(node, 'caution')
@@ -393,19 +391,19 @@ class Translator(nodes.NodeVisitor):
         raise NotImplementedError, node.astext()
 
     def depart_citation(self, node):
-        raise NotImplementedError, node.astext()
+        pass
 
     def visit_citation_reference(self, node):
         raise NotImplementedError, node.astext()
 
     def depart_citation_reference(self, node):
-        raise NotImplementedError, node.astext()
+        pass
 
     def visit_classifier(self, node):
         raise NotImplementedError, node.astext()
 
     def depart_classifier(self, node):
-        raise NotImplementedError, node.astext()
+        pass
 
     def visit_colspec(self, node):
         self.colspecs.append(node)
@@ -495,7 +493,7 @@ class Translator(nodes.NodeVisitor):
         raise NotImplementedError, node.astext()
 
     def depart_doctest_block(self, node):
-        raise NotImplementedError, node.astext()
+        pass
 
     def visit_document(self, node):
         # no blank line between comment and header.
@@ -587,13 +585,13 @@ class Translator(nodes.NodeVisitor):
         raise NotImplementedError, node.astext()
 
     def depart_figure(self, node):
-        raise NotImplementedError, node.astext()
+        pass
 
     def visit_footer(self, node):
         raise NotImplementedError, node.astext()
 
     def depart_footer(self, node):
-        raise NotImplementedError, node.astext()
+        pass
 
     def visit_footnote(self, node):
         raise NotImplementedError, node.astext()
@@ -602,13 +600,13 @@ class Translator(nodes.NodeVisitor):
         raise NotImplementedError, node.astext()
 
     def depart_footnote(self, node):
-        raise NotImplementedError, node.astext()
+        pass
 
     def visit_footnote_reference(self, node):
         raise NotImplementedError, node.astext()
 
     def depart_footnote_reference(self, node):
-        raise NotImplementedError, node.astext()
+        pass
 
     def visit_generated(self, node):
         pass
@@ -620,7 +618,7 @@ class Translator(nodes.NodeVisitor):
         raise NotImplementedError, node.astext()
 
     def depart_header(self, node):
-        raise NotImplementedError, node.astext()
+        pass
 
     def visit_hint(self, node):
         self.visit_admonition(node, 'hint')
@@ -631,7 +629,7 @@ class Translator(nodes.NodeVisitor):
         raise NotImplementedError, node.astext()
 
     def depart_image(self, node):
-        raise NotImplementedError, node.astext()
+        pass
         self.body.append(self.context.pop())
 
     def visit_important(self, node):
@@ -643,13 +641,13 @@ class Translator(nodes.NodeVisitor):
         raise NotImplementedError, node.astext()
 
     def depart_label(self, node):
-        raise NotImplementedError, node.astext()
+        pass
 
     def visit_legend(self, node):
         raise NotImplementedError, node.astext()
 
     def depart_legend(self, node):
-        raise NotImplementedError, node.astext()
+        pass
 
     def visit_line_block(self, node):
         pass
@@ -697,14 +695,11 @@ class Translator(nodes.NodeVisitor):
 
     def indent(self, by=0.5):
         # if we are in a section ".SH" there already is a .RS
-        #self.body.append('\n[[debug: listchar: %r]]\n' % map(repr, self._list_char))
-        #self.body.append('\n[[debug: indent %r]]\n' % self._indent)
         step = self._indent[-1]
         self._indent.append(by)
         self.body.append(self.defs['indent'][0] % step)
 
     def dedent(self, name=''):
-        #self.body.append('\n[[debug: dedent %s %r]]\n' % (name, self._indent))
         self._indent.pop()
         self.body.append(self.defs['indent'][1])
 
@@ -876,12 +871,9 @@ class Translator(nodes.NodeVisitor):
 
     def visit_target(self, node):
         self.body.append(self.comment('visit_target'))
-        #self.body.append(self.defs['target'][0])
-        #self.body.append(node['refuri'])
 
     def depart_target(self, node):
         self.body.append(self.comment('depart_target'))
-        #self.body.append(self.defs['target'][1])
 
     def visit_tbody(self, node):
         pass
@@ -948,7 +940,6 @@ class Translator(nodes.NodeVisitor):
         raise nodes.SkipNode
 
     def depart_topic(self, node):
-        ##self.topic_class = ''
         pass
 
     def visit_transition(self, node):
