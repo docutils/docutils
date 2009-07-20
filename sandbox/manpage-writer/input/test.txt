@@ -88,6 +88,10 @@ Lists
      c. grammar
 
   6. a third
+
+     Y. the end
+     Z. yellow
+
   7. a third
   8. a third
   9. a third
@@ -101,7 +105,7 @@ Lists
 
 9. dont increment by 1
 
-13. does not work.
+13. Problematic: indentation does not match for nonconsecutive entries.
 
 This paragraph must not be indented with the text the last list-item,
 but start at the left margin of the numbers.
