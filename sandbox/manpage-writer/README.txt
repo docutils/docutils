@@ -133,10 +133,13 @@ Problems
 Change log
 ''''''''''
 
-
 * writers/manpage.py:
 
-  - 2009-07-20: Support admonitions and alpha enumeration start values.
+  - 2009-07-20: cleanups and
+
+                * admonitions.
+                * start values for alphabetic enumerations
+                * Fix: remove blank line before ``.TH``
   - 2009-07-16: patches from martin g: add container handling, remove blank in
                 option_item
   - 2009-07-13: Fix: system_message output (no heading necessary).

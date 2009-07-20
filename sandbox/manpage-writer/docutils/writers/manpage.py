@@ -302,7 +302,6 @@ class Translator(nodes.NodeVisitor):
             self._list_char.append(enum_char('bullet'))
         if len(self._list_char) > 1:
             # indent nested lists
-            # BUG indentation depends on indentation of parent list.
             self.indent(self._list_char[-2].get_width())
         else:
             self.indent(self._list_char[-1].get_width())
@@ -499,7 +498,8 @@ class Translator(nodes.NodeVisitor):
         raise NotImplementedError, node.astext()
 
     def visit_document(self, node):
-        self.body.append(self.comment(self.document_start).lstrip())
+        # no blank line between comment and header.
+        self.body.append(self.comment(self.document_start).rstrip()+'\n')
         # writing header is postboned
         self.header_written = 0
 
