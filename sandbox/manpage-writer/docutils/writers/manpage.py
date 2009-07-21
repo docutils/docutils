@@ -183,6 +183,7 @@ class Translator(nodes.NodeVisitor):
         self._in_docinfo = None
         self._active_table = None
         self._in_entry = None
+        self._in_literal = False
         self.header_written = 0
         self.authors = []
         self.section_level = 0
@@ -248,6 +249,11 @@ class Translator(nodes.NodeVisitor):
         text = text.replace('\\','\\e')
         text = text.replace('-','\-')
         text = text.replace("'","\\'")
+        if self._in_literal:
+            # prevent interpretation of "." at line start
+            if text[0] == '.':
+                text = '\\&' + text
+            text = text.replace('\n.', '\n\\&.')
         self.body.append(text)
 
     def depart_Text(self, node):
@@ -686,8 +692,10 @@ class Translator(nodes.NodeVisitor):
 
     def visit_literal_block(self, node):
         self.body.append(self.defs['literal_block'][0])
+        self._in_literal = True
 
     def depart_literal_block(self, node):
+        self._in_literal = False
         self.body.append(self.defs['literal_block'][1])
 
     def visit_meta(self, node):

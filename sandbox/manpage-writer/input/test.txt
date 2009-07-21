@@ -161,6 +161,11 @@ some literal text ::
 
 and a paragraph after the literal.
 
+some special characters and roff formatting in literal::
+
+  .SS "." at line start
+  backslash "\"
+
 raw
 ---
 
