@@ -180,6 +180,7 @@ class Translator(nodes.NodeVisitor):
                 "copyright" : "",
                 "version" : "",
                     }
+        self._docinfo_keys = []     # a list to keep the sequence as in source
         self._in_docinfo = None
         self._active_table = None
         self._in_entry = None
@@ -218,8 +219,6 @@ class Translator(nodes.NodeVisitor):
                 'sidebar-title' : ('.SS ', ),
 
                 'problematic' : ('\n.nf\n', '\n.fi\n'),
-                # docinfo fields.
-                'docinfo_item' : ('\n.nf\n', '\n.fi\n'),
                     }
         # NOTE dont specify the newline before a dot-command, but ensure
         # it is there.
@@ -365,6 +364,7 @@ class Translator(nodes.NodeVisitor):
             self._docinfo[name].append(node.astext())
         else:
             self._docinfo[name] = node.astext()
+        self._docinfo_keys.append(name)
         raise nodes.SkipNode
 
     def depart_docinfo_item(self, node):
@@ -516,17 +516,24 @@ class Translator(nodes.NodeVisitor):
         if self._docinfo['author']:
             self.body.append('.SH AUTHOR\n%s\n' 
                     % ', '.join(self._docinfo['author']))
-        labelled = ('contact')
-        for name in ('organization', 'address', 'contact'):
-            if name in self._docinfo:
-                if name in labelled:
-                    self.body.append("\n%s: %s\n" % (
-                                        self.language.labels.get(name, name),
-                                        self._docinfo[name]) )
-                else:
-                    self.body.append(self.defs['docinfo_item'][0])
-                    self.body.append(self._docinfo[name])
-                    self.body.append(self.defs['docinfo_item'][1])
+        skip = ('author', 'copyright', 
+                'manual_group', 'manual_section', 
+                'subtitle',
+                'title', 'title_upper')
+        for name in self._docinfo_keys:
+            if name == 'address':
+                self.body.append("\n%s:\n%s%s.nf\n%s\n.fi\n%s%s" % (
+                                    self.language.labels.get(name, name),
+                                    self.defs['indent'][0] % 0,
+                                    self.defs['indent'][0] % BLOCKQOUTE_INDENT,
+                                    self._docinfo[name],
+                                    self.defs['indent'][1],
+                                    self.defs['indent'][1],
+                                    ) )
+            elif not name in skip:
+                self.body.append("\n%s: %s\n" % (
+                                    self.language.labels.get(name, name),
+                                    self._docinfo[name]) )
         if self._docinfo['copyright']:
             self.body.append('.SH COPYRIGHT\n%s\n' 
                     % self._docinfo['copyright'])
@@ -834,10 +841,9 @@ class Translator(nodes.NodeVisitor):
         self.section_level -= 1
 
     def visit_status(self, node):
-        raise NotImplementedError, node.astext()
+        self.visit_docinfo_item(node, 'status')
 
-    def depart_status(self, node):
-        pass
+    depart_status = depart_docinfo_item
 
     def visit_strong(self, node):
         self.body.append(self.defs['strong'][0])
