@@ -261,8 +261,9 @@ class ODPTranslator(nodes.GenericNodeVisitor):
             self.cur_slide.push_style(style)
         # text styles
         attribs = self._get_text_attribs(node)
+
         if attribs:
-            style = preso.TextStyle(**attribs)       
+            style = preso.TextStyle(**attribs)
             self.cur_slide.push_style(style)
         if self.bullet_list:
             pass
@@ -302,8 +303,13 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         if self.at('topic'):
             return
         classes =  node.attributes.get('classes', [])
+        attribs = self._get_text_attribs(node)
+        if attribs:
+            style = preso.TextStyle(**attribs)
+            self.cur_slide.push_style(style)
         if 'handout' in classes:
             self._push_handout(classes)
+
             
         self.bullet_depth += 1
         if not self.bullet_list:
