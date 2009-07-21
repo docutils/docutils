@@ -907,9 +907,9 @@ class Translator(nodes.NodeVisitor):
 
     def visit_title(self, node):
         if isinstance(node.parent, nodes.topic):
-            self.body.append(self.comment('topic-title'))
+            self.body.append('.SS ')
         elif isinstance(node.parent, nodes.sidebar):
-            self.body.append(self.comment('sidebar-title'))
+            self.document.reporter.warning('"sidebar-title" not supported')
         elif isinstance(node.parent, nodes.admonition):
             self.body.append('.IP "')
         elif self.section_level == 0:
@@ -935,8 +935,7 @@ class Translator(nodes.NodeVisitor):
         self.body.append(self.defs['title_reference'][1])
 
     def visit_topic(self, node):
-        self.body.append(self.comment('topic: '+node.astext()))
-        raise nodes.SkipNode
+        pass
 
     def depart_topic(self, node):
         pass
