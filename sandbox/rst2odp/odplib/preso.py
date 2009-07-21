@@ -540,6 +540,7 @@ class Slide(object):
         self.animations = []
         self.paragraph_attribs = {} # used to mark id's for animations
         self.page_number_listeners = [self]
+        self.pending_styles = []
 
         self.element_stack = [] # allow us to push pop
         self.cur_element = None # if we write it could be to title,
@@ -585,10 +586,10 @@ class Slide(object):
     def push_style(self, style):
         if self.cur_element is None:
             self.add_text_frame()
-        self.cur_element.pending_styles.append(style)
+        self.pending_styles.append(style)
     
     def pop_style(self):
-        self.cur_element.pending_styles.pop()
+        popped = self.pending_styles.pop()
 
     def add_code(self, code, language):
         if self.cur_element is None:
@@ -751,7 +752,6 @@ class MixedContent(object):
             attrib = {}
         self.node = el(name, attrib)
         self.cur_node = self.node
-        self.pending_styles = []
         # store nodes that affect output (such as text:a)
         self.pending_nodes = [] # typles of (name, attr)
         self.dirty = False # keep track if we have been written to
@@ -850,7 +850,7 @@ class MixedContent(object):
     def _add_styles(self, add_paragraph=True, add_text=True):
         p_styles = {'fo:text-align':self._default_align}
         t_styles = {}
-        for s in self.pending_styles:
+        for s in self.slide.pending_styles:
             if isinstance(s, ParagraphStyle):
                 p_styles.update(s.styles)
             elif isinstance(s, TextStyle):
@@ -871,22 +871,21 @@ class MixedContent(object):
                 self.add_node('text:p', attrib=p_attrib)
 
         # span is only necessary if style changes
-        if add_text:
-            if t_styles:
-                text = TextStyle(**t_styles)
-                children = self.cur_node.getchildren()
-                if children:
-                    # if we already are using this text style, reuse the last one
-                    last = children[-1]
-                    if last.tag == 'text:span' and \
-                      last.attrib['text:style-name'] == text.name and \
-                      last.tail is None: # if we have a tail, we can't reuse
-                        self.cur_node = children[-1]
-                        return 
-                if not self._is_node('text:span', {'text:style-name':text.name}):
-                    # Create text style
-                    self.slide._preso.add_style(text)
-                    self.add_node('text:span', attrib={'text:style-name':text.name})
+        if add_text and t_styles:
+            text = TextStyle(**t_styles)
+            children = self.cur_node.getchildren()
+            if children:
+                # if we already are using this text style, reuse the last one
+                last = children[-1]
+                if last.tag == 'text:span' and \
+                  last.attrib['text:style-name'] == text.name and \
+                  last.tail is None: # if we have a tail, we can't reuse
+                    self.cur_node = children[-1]
+                    return 
+            if not self._is_node('text:span', {'text:style-name':text.name}):
+                # Create text style
+                self.slide._preso.add_style(text)
+                self.add_node('text:span', attrib={'text:style-name':text.name})
 
 
     def _add_pending_nodes(self):
@@ -1309,7 +1308,7 @@ http://books.evc-cit.info/odbook/ch03.html#bulleted-numbered-lists-section
         self.level = 0
         self.style_file = 'auto_list.xml'
         self.style_name = 'default-list'
-        self.pending_styles = [ParagraphStyle(**{'text:enable-numbering':'true'})]
+        self.slide.pending_styles.append(ParagraphStyle(**{'text:enable-numbering':'true'}))
 
     def new_item(self, text=None):
         li = self._add_node(self.parents[-1], 'text:list-item', {})
