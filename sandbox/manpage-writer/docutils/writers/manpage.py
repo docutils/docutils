@@ -213,6 +213,9 @@ class Translator(nodes.NodeVisitor):
                 'term' : ('\n.B ', '\n'),
                 'title_reference' : ('\\fI', '\\fP'),
 
+                'topic-title' : ('.SS ', ),
+                'sidebar-title' : ('.SS ', ),
+
                 'problematic' : ('\n.nf\n', '\n.fi\n'),
                 # docinfo fields.
                 'docinfo_item' : ('\n.nf\n', '\n.fi\n'),
@@ -842,7 +845,16 @@ class Translator(nodes.NodeVisitor):
         self.unimplemented_visit(node)
 
     def visit_subtitle(self, node):
-        self.visit_docinfo_item(node, 'subtitle')
+        if isinstance(node.parent, nodes.sidebar):
+            self.body.append(self.defs['strong'][0])
+        elif isinstance(node.parent, nodes.document):
+            self.visit_docinfo_item(node, 'subtitle')
+        elif isinstance(node.parent, nodes.section):
+            self.body.append(self.defs['strong'][0])
+
+    def depart_subtitle(self, node):
+        # document subtitle calls SkipNode
+        self.body.append(self.defs['strong'][1]+'\n\n')
 
     def visit_system_message(self, node):
         # TODO add report_level
@@ -907,9 +919,9 @@ class Translator(nodes.NodeVisitor):
 
     def visit_title(self, node):
         if isinstance(node.parent, nodes.topic):
-            self.body.append('.SS ')
+            self.body.append(self.defs['topic-title'][0])
         elif isinstance(node.parent, nodes.sidebar):
-            self.document.reporter.warning('"sidebar-title" not supported')
+            self.body.append(self.defs['sidebar-title'][0])
         elif isinstance(node.parent, nodes.admonition):
             self.body.append('.IP "')
         elif self.section_level == 0:
@@ -938,6 +950,18 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def depart_topic(self, node):
+        pass
+
+    def visit_sidebar(self, node):
+        pass
+
+    def depart_sidebar(self, node):
+        pass
+
+    def visit_rubric(self, node):
+        pass
+
+    def depart_rubric(self, node):
         pass
 
     def visit_transition(self, node):

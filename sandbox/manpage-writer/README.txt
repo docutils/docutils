@@ -137,7 +137,7 @@ Change log
   - 2009-07-21: cleanups 
 
                 * skip targets.
-                * topics.
+                * topics, sidebar and rubric.
   - 2009-07-20: cleanups and
 
                 * admonitions.
