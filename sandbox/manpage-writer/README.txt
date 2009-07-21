@@ -63,7 +63,7 @@ NOTE:
   1. The macros only work when at line start.
   2. But consecutive blank lines are megred by the viewer but not on printouts.
 
-  So try the rule start new lines in visit_ functions, but only if necessary.
+  So try the rule start new lines in ``visit_``-functions, but only if necessary.
   E.g. ``field-names`` are already on a new line because of docutils structure.
 
 Problems
@@ -134,6 +134,9 @@ Change log
 
 * writers/manpage.py:
 
+  - 2009-07-21: cleanups 
+
+                * skip targets.
   - 2009-07-20: cleanups and
 
                 * admonitions.

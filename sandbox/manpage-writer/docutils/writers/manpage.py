@@ -871,10 +871,8 @@ class Translator(nodes.NodeVisitor):
         self._active_table = None
 
     def visit_target(self, node):
-        self.body.append(self.comment('visit_target'))
-
-    def depart_target(self, node):
-        self.body.append(self.comment('depart_target'))
+        # targets are in-document hyper targets, without any use for man-pages.
+        raise nodes.SkipNode
 
     def visit_tbody(self, node):
         pass
