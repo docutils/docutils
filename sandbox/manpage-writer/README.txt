@@ -138,6 +138,7 @@ Change log
 
                 * skip targets.
                 * topics, sidebar and rubric.
+                * Fix: protection of roff requests in literal-block.
   - 2009-07-20: cleanups and
 
                 * admonitions.

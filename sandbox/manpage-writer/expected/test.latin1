@@ -176,6 +176,11 @@ EEXXAAMMPPLLEESS
 
        and a paragraph after the literal.
 
+       some special characters and roff formatting in literal:
+
+       .SS "." at line start
+       backslash "\"
+
 
    rraaww
        raw input to man
