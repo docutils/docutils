@@ -137,6 +137,7 @@ Change log
   - 2009-07-21: cleanups 
 
                 * skip targets.
+                * topics.
   - 2009-07-20: cleanups and
 
                 * admonitions.
