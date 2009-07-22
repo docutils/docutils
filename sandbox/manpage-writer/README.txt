@@ -134,6 +134,8 @@ Change log
 
 * writers/manpage.py:
 
+  - 2009-07-22: replace all NotImplemented by warnings.
+
   - 2009-07-21: cleanups 
 
                 * skip targets.
