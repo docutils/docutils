@@ -398,7 +398,8 @@ class Translator(nodes.NodeVisitor):
         self.list_end()
 
     def visit_caption(self, node):
-        raise NotImplementedError, node.astext()
+        self.document.reporter.warning('"caption" not supported',
+                base_node=node)
 
     def depart_caption(self, node):
         pass
@@ -409,19 +410,22 @@ class Translator(nodes.NodeVisitor):
     depart_caution = depart_admonition
 
     def visit_citation(self, node):
-        raise NotImplementedError, node.astext()
+        self.document.reporter.warning('"citation" not supported',
+                base_node=node)
 
     def depart_citation(self, node):
         pass
 
     def visit_citation_reference(self, node):
-        raise NotImplementedError, node.astext()
+        self.document.reporter.warning('"citation_reference" not supported',
+                base_node=node)
 
     def depart_citation_reference(self, node):
         pass
 
     def visit_classifier(self, node):
-        raise NotImplementedError, node.astext()
+        self.document.reporter.warning('"classifier" not supported',
+                base_node=node)
 
     def depart_classifier(self, node):
         pass
@@ -449,6 +453,13 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def depart_container(self, node):
+        pass
+
+    def visit_compound(self, node):
+        self.document.reporter.warning('"compound" not supported',
+                base_node=node)
+
+    def depart_compound(self, node):
         pass
 
     def visit_copyright(self, node):
@@ -501,7 +512,8 @@ class Translator(nodes.NodeVisitor):
         self.append_header()
 
     def visit_doctest_block(self, node):
-        raise NotImplementedError, node.astext()
+        self.document.reporter.warning('"doctest_block" not supported',
+                base_node=node)
 
     def depart_doctest_block(self, node):
         pass
@@ -603,28 +615,33 @@ class Translator(nodes.NodeVisitor):
         self.body.append(self.defs['field_name'][1])
 
     def visit_figure(self, node):
-        raise NotImplementedError, node.astext()
+        self.document.reporter.warning('"figure" not supported',
+                base_node=node)
 
     def depart_figure(self, node):
         pass
 
     def visit_footer(self, node):
-        raise NotImplementedError, node.astext()
+        self.document.reporter.warning('"footer" not supported',
+                base_node=node)
 
     def depart_footer(self, node):
         pass
 
     def visit_footnote(self, node):
-        raise NotImplementedError, node.astext()
+        self.document.reporter.warning('"footnote" not supported',
+                base_node=node)
 
     def footnote_backrefs(self, node):
-        raise NotImplementedError, node.astext()
+        self.document.reporter.warning('"footnote_backrefs" not supported',
+                base_node=node)
 
     def depart_footnote(self, node):
         pass
 
     def visit_footnote_reference(self, node):
-        raise NotImplementedError, node.astext()
+        self.document.reporter.warning('"footnote_reference" not supported',
+                base_node=node)
 
     def depart_footnote_reference(self, node):
         pass
@@ -646,12 +663,33 @@ class Translator(nodes.NodeVisitor):
 
     depart_hint = depart_admonition
 
+    def visit_subscript(self, node):
+        self.document.reporter.warning('"subscript" not supported',
+                base_node=node)
+
+    def depart_subscript(self, node):
+        pass
+
+    def visit_superscript(self, node):
+        self.document.reporter.warning('"subscript" not supported',
+                base_node=node)
+
+    def depart_superscript(self, node):
+        pass
+
+    def visit_attribution(self, node):
+        self.document.reporter.warning('"attribution" not supported',
+                base_node=node)
+
+    def depart_attribution(self, node):
+        pass
+
     def visit_image(self, node):
-        raise NotImplementedError, node.astext()
+        self.document.reporter.warning('"image" not supported',
+                base_node=node)
 
     def depart_image(self, node):
         pass
-        self.body.append(self.context.pop())
 
     def visit_important(self, node):
         self.visit_admonition(node, 'important')
@@ -659,13 +697,15 @@ class Translator(nodes.NodeVisitor):
     depart_important = depart_admonition
 
     def visit_label(self, node):
-        raise NotImplementedError, node.astext()
+        self.document.reporter.warning('"label" not supported',
+                base_node=node)
 
     def depart_label(self, node):
         pass
 
     def visit_legend(self, node):
-        raise NotImplementedError, node.astext()
+        self.document.reporter.warning('"legend" not supported',
+                base_node=node)
 
     def depart_legend(self, node):
         pass
@@ -856,7 +896,8 @@ class Translator(nodes.NodeVisitor):
         raise nodes.SkipNode
 
     def visit_substitution_reference(self, node):
-        self.unimplemented_visit(node)
+        self.document.reporter.warning('"substitution_reference" not supported',
+                base_node=node)
 
     def visit_subtitle(self, node):
         if isinstance(node.parent, nodes.sidebar):
