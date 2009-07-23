@@ -133,6 +133,8 @@ Change log
 
   - 2009-07-23: Shrink vertical space a lot.
 
+    * in lists and the header
+
   - 2009-07-22: replace all NotImplemented by warnings.
 
   - 2009-07-21: cleanups 

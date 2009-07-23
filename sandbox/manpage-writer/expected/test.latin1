@@ -5,8 +5,6 @@ RST2MAN(1)                      text processing                     RST2MAN(1)
 NNAAMMEE
        rst2man - generate unix manpages from reStructured text
 
-
-
 SSYYNNOOPPSSIISS
        rrsstt22mmaann ----hheellpp
 
@@ -28,7 +26,6 @@ OOPPTTIIOONNSS
 EEXXAAMMPPLLEESS
        rrsstt22mmaann..ppyy xxmmll--sscchheemmaa--ccaattaalloogg..rrsstt xxmmll--sscchheemmaa--ccaattaalloogg..mmaann
               create a manpage from xml-schema-catalog.rst
-
 
    CChhaarraacctteerr ffoorrmmaattttiinngg
        _B_U_G The section title should be separated from the title above.
