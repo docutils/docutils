@@ -121,7 +121,10 @@ class Table:
         self._rows.append([separator])
     def append_cell(self, cell_lines):
         """cell_lines is an array of lines"""
-        self._rows[-1].append(cell_lines)
+        start = 0
+        if len(cell_lines)>0 and cell_lines[0] == '.sp\n':
+            start = 1
+        self._rows[-1].append(cell_lines[start:])
         if len(self._coldefs) < len(self._rows[-1]):
             self._coldefs.append('l')
     def astext(self):
@@ -191,22 +194,22 @@ class Translator(nodes.NodeVisitor):
         self._indent = [0]
         # central definition of simple processing rules
         # what to output on : visit, depart
+        # Do not use paragraph requests ``.PP`` because these set indentation.
+        # use ``.sp``. Remove superfluous ``.sp`` in ``astext``.
         self.defs = {
                 'indent' : ('.INDENT %.1f\n', '.UNINDENT\n'),
-                'definition' : ('', ''),
                 'definition_list' : ('', '.TP 0\n'),
-                'definition_list_item' : ('.TP', ''),
+                'definition_list_item' : ('.TP', '\n'),
                 #field_list
                 #field
                 'field_name' : ('.TP\n.B ', '\n'),
                 'field_body' : ('', '.RE\n'),
                 'literal' : ('\\fB', '\\fP'),
-                'literal_block' : ('.nf\n', '\n.fi\n\n'),
+                'literal_block' : ('.sp\n.nf\n', '\n.fi\n'),
 
                 #option_list
-                'option_list_item' : ('.TP', ''),
+                'option_list_item' : ('.TP\n', ''),
                 #option_group, option
-                'description' : ('\n', ''),
                 
                 'reference' : (r'\fI\%', r'\fP'),
                 #'target'   : (r'\fI\%', r'\fP'),
@@ -241,6 +244,21 @@ class Translator(nodes.NodeVisitor):
         if not self.header_written:
             # ensure we get a ".TH" as viewers require it.
             self.head.append(self.header())
+        # filter body
+        for i in xrange(len(self.body)-1,0,-1):
+            # remove superfluous vertical gaps.
+            if self.body[i] == '.sp\n':
+                if self.body[i-1][:4] in ('.BI ','.IP '):
+                    self.body[i] = '.\n'
+                elif (self.body[i-1][:3] == '.B ' and
+                    self.body[i-2][:4] == '.TP\n'):
+                    self.body[i] = '.\n'
+                elif (self.body[i-1] == '\n' and 
+                    self.body[i-2][0] != '.' and
+                    (self.body[i-3][:7] == '.TP\n.B '
+                        or self.body[i-3][:4] == '\n.B ')
+                     ):
+                    self.body[i] = '.\n'
         return ''.join(self.head + self.body + self.foot)
 
     def visit_Text(self, node):
@@ -376,6 +394,7 @@ class Translator(nodes.NodeVisitor):
     depart_author = depart_docinfo_item
 
     def visit_authors(self, node):
+        # _author is called anyway.
         pass
 
     def depart_authors(self, node):
@@ -480,10 +499,10 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def visit_definition(self, node):
-        self.body.append(self.defs['definition'][0])
+        pass
 
     def depart_definition(self, node):
-        self.body.append(self.defs['definition'][1])
+        pass
 
     def visit_definition_list(self, node):
         self.indent(DEFINITION_LIST_INDENT)
@@ -498,10 +517,10 @@ class Translator(nodes.NodeVisitor):
         self.body.append(self.defs['definition_list_item'][1])
 
     def visit_description(self, node):
-        self.body.append(self.defs['description'][0])
+        pass
 
     def depart_description(self, node):
-        self.body.append(self.defs['description'][1])
+        pass
 
     def visit_docinfo(self, node):
         self._in_docinfo = 1
@@ -794,7 +813,7 @@ class Translator(nodes.NodeVisitor):
         start_position = self.context.pop()
         text = self.body[start_position:]
         del self.body[start_position:]
-        self.body.append('\n%s%s' % (self.context.pop(), ''.join(text)))
+        self.body.append('%s%s\n' % (self.context.pop(), ''.join(text)))
 
     def visit_option(self, node):
         # each form of the option will be presented separately
@@ -835,14 +854,17 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def visit_paragraph(self, node):
-        # NOTE every but the first paragraph in a list must be intended
-        pass
+        # ``.PP`` : Start standard indented paragraph.
+        # ``.LP`` : Start block paragraph, all except the first.
+        # ``.P [type]``  : Start paragraph type. 
+        # NOTE dont use paragraph starts because they reset indentation.
+        self.body.append('.sp\n')
 
     def depart_paragraph(self, node):
         # TODO no blank line for a paragraph in a list-item
         # BUT for paragraphs followed by a pargraph.
         if not self._in_entry:
-            self.body.append('\n\n')
+            self.body.append('\n')
 
     def visit_problematic(self, node):
         self.body.append(self.defs['problematic'][0])
@@ -909,7 +931,7 @@ class Translator(nodes.NodeVisitor):
 
     def depart_subtitle(self, node):
         # document subtitle calls SkipNode
-        self.body.append(self.defs['strong'][1]+'\n\n')
+        self.body.append(self.defs['strong'][1]+'\n.PP\n')
 
     def visit_system_message(self, node):
         # TODO add report_level
@@ -924,11 +946,11 @@ class Translator(nodes.NodeVisitor):
             line = ', line %s' % node['line']
         else:
             line = ''
-        self.body.append('System Message: %s/%s (%s:%s)\n'
+        self.body.append('.IP "System Message: %s/%s (%s:%s)"\n'
                          % (node['type'], node['level'], node['source'], line))
 
     def depart_system_message(self, node):
-        self.body.append('\n')
+        pass
 
     def visit_table(self, node):
         self._active_table = Table()

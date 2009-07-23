@@ -10,84 +10,64 @@ NNAAMMEE
 DDEESSCCRRIIPPTTIIOONN
        After an option list:
 
-
        · a paragraph within the same section must be intented
-
 
        · a section header directly following the list must _n_o_t be intentend.
 
        This file tests this.
 
-
 OOPPTTIIOONNSS
        This line must be in indented.
 
-
        --oo _x   an option
-
 
        --bb     another
 
               This option does the following points:
 
-
               · one point
-
 
               · second point
 
-
                     ----cccccc  option  lists may be nested, even if this is rarely
                            used.
-
 
        --kk     and even another
 
               This option does the following points:
 
-
               · one point
-
 
               · second point
 
        For all other options see ----hheellpp. This line must be intented.
 
-
 MMOORREE OOPPTTIIOONNSS
        --oo _x   an option
 
-
        --bb     another
-
 
 EEXXAAMMPPLLEESS
        The "Examples" section header must not be intented. But this  paragraph
        is indented, as all text in man-pages. This is level 0.
 
-
        · Now let´s test nested lists.
 
          Line indented once. This is level 1.
 
-
          · Nested item1.
 
-
          · Nested item2.
-
 
          · Nested item3.
 
            Line for Nested item 3.
-
 
          · Nested item4.
 
          Paragraph at level 1. Same level as Line indented once.
 
        This paragraph should be at level 0.
-
 
 DDEEFFIINNIITTIIOONN LLIISSTT
        tteerrmm11  Description  of Term 1 Description of Term 1 Description of Term
@@ -96,14 +76,12 @@ DDEEFFIINNIITTIIOONN LLIISSTT
               Description of Term 1 Description of Term 1 Description of  Term
               1 Description of Term 1 Description of Term 1
 
-
        tteerrmm11111111111111111111
               Description  of Term 1 Description of Term 1 Description of Term
               1 Description of Term 1 Description of Term 1
 
               Description of Term 1 Description of Term 1 Description of  Term
               1 Description of Term 1 Description of Term 1
-
 
        tteerrmm22  Description of Term 2
 
@@ -113,12 +91,10 @@ DDEEFFIINNIITTIIOONN LLIISSTT
                   Description of Term 2 Description of Term 2  Description  of
                   Term 2 Description of Term 2 Description of Term 2
 
-
               tteerrmm2222 Defintions lists may be nested, thus this at level 1.
 
                      More Description of Term 22. More Description of Term 22.
                      More Description of Term 22. More Description of Term 22.
-
 
               tteerrmm2233 Defintions lists may be nested, thus this at level 1.
 
@@ -126,14 +102,12 @@ DDEEFFIINNIITTIIOONN LLIISSTT
 
               This para is indented to term2, thus should be at level 1.
 
-
        tteerrmm33  Defintions lists are not nested
 
               More Description for term3.
 
        This  paragraph  should be at level 0. But the rst-manpage writer has a
        bug here. See the option list above.
-
 
 AAUUTTHHOORR
        h.goebel@goebel-consult.de
