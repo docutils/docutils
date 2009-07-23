@@ -123,7 +123,6 @@ Problems
 * Tables are possible in roff, via the external processor tbl. Although
   advised to avoid if possible.
 * Images and equations are discouraged.
-* line blocks in tables have too much new lines.
 * Lists in admonitions are not intended.
 
 Change log
@@ -131,9 +130,10 @@ Change log
 
 * writers/manpage.py:
 
-  - 2009-07-23: Shrink vertical space a lot.
+  - 2009-07-23: 
 
-    * in lists and the header
+    * Shrink vertical space in lists and the header
+    * Table cells with more lines.
 
   - 2009-07-22: replace all NotImplemented by warnings.
 

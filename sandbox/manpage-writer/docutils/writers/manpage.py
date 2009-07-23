@@ -133,19 +133,13 @@ class Table:
         text += '|%s|.\n' % ('|'.join(self._coldefs))
         for row in self._rows:
             # row = array of cells. cell = array of lines.
-            # line above 
-            text += '_\n'
-            max_lns_in_cell = 0
+            text += '_\n'       # line above 
+            line = []
             for cell in row:
-                max_lns_in_cell = max(len(cell), max_lns_in_cell)
-            for ln_cnt in range(max_lns_in_cell):
-                line = []
-                for cell in row:
-                    if len(cell) > ln_cnt:
-                        line.append(cell[ln_cnt])
-                    else:
-                        line.append(" ")
-                text += self._tab_char.join(line) + '\n'
+                line.append(''.join(cell))
+            text += 'T{\n'
+            text += ('\nT}'+self._tab_char+'T{\n').join(line)
+            text += '\nT}\n'
         text += '_\n'
         text += '.TE\n'
         return text
@@ -186,7 +180,6 @@ class Translator(nodes.NodeVisitor):
         self._docinfo_keys = []     # a list to keep the sequence as in source
         self._in_docinfo = None
         self._active_table = None
-        self._in_entry = None
         self._in_literal = False
         self.header_written = 0
         self.authors = []
@@ -580,15 +573,19 @@ class Translator(nodes.NodeVisitor):
         self.body.append(self.defs['emphasis'][1])
 
     def visit_entry(self, node):
-        # HACK entries have to be on one line separated by tab force it.
+        # a cell in a table row
+        if 'morerows' in node:
+            self.document.reporter.warning('"table row spanning" not supported',
+                    base_node=node)
+        if 'morecols' in node:
+            self.document.reporter.warning('"table cell spanning" not supported',
+                    base_node=node)
         self.context.append(len(self.body))
-        self._in_entry = 1
 
     def depart_entry(self, node):
         start = self.context.pop()
         self._active_table.append_cell(self.body[start:])
         del self.body[start:]
-        self._in_entry = 0
 
     def visit_enumerated_list(self, node):
         self.list_start(node)
@@ -858,13 +855,11 @@ class Translator(nodes.NodeVisitor):
         # ``.LP`` : Start block paragraph, all except the first.
         # ``.P [type]``  : Start paragraph type. 
         # NOTE dont use paragraph starts because they reset indentation.
+        # ``.sp`` is only vertical space
         self.body.append('.sp\n')
 
     def depart_paragraph(self, node):
-        # TODO no blank line for a paragraph in a list-item
-        # BUT for paragraphs followed by a pargraph.
-        if not self._in_entry:
-            self.body.append('\n')
+        self.body.append('\n')
 
     def visit_problematic(self, node):
         self.body.append(self.defs['problematic'][0])

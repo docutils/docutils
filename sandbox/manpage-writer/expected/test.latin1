@@ -113,12 +113,13 @@ EEXXAAMMPPLLEESS
 
 
    TTaabblleess
-                                 +---------+-------+
-                                 |single   | frame |
-                                 +---------+-------+
-                                 |no table |       |
-                                 |header   |       |
-                                 +---------+-------+
+                              +----------------+-------+
+                              |single          | frame |
+                              |                |       |
+                              +----------------+-------+
+                              |no table header |       |
+                              |                |       |
+                              +----------------+-------+
 
    lliinneebblloocckk
        paul
