@@ -122,10 +122,7 @@ Problems
   
 * Tables are possible in roff, via the external processor tbl. Although
   advised to avoid if possible.
-* Images
-* Equations
-* RST problem "-d #  option " breaks
-* enumerated lists with more than 9 
+* Images and equations are discouraged.
 * line blocks in tables have too much new lines.
 * Lists in admonitions are not intended.
 
@@ -133,6 +130,8 @@ Change log
 ''''''''''
 
 * writers/manpage.py:
+
+  - 2009-07-23: Shrink vertical space a lot.
 
   - 2009-07-22: replace all NotImplemented by warnings.
 

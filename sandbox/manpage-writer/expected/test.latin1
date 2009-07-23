@@ -12,28 +12,22 @@ SSYYNNOOPPSSIISS
 
        rrsstt22mmaann [ OPTIONS ] [ SOURCE [ _d_e_s_t_i_n_a_t_i_o_n ] ]
 
-
 DDEESSCCRRIIPPTTIIOONN
        Run it and examine output.
-
 
 OOPPTTIIOONNSS
        --oo _x   an option
 
-
        --bb     another
-
 
        --ff,, ----ffoorrccee
               really do it
 
        For all other options see ----hheellpp.
 
-
 EEXXAAMMPPLLEESS
        rrsstt22mmaann..ppyy xxmmll--sscchheemmaa--ccaattaalloogg..rrsstt xxmmll--sscchheemmaa--ccaattaalloogg..mmaann
               create a manpage from xml-schema-catalog.rst
-
 
 
    CChhaarraacctteerr ffoorrmmaattttiinngg
@@ -43,72 +37,50 @@ EEXXAAMMPPLLEESS
 
        Special characters:
 
-
        · backslash: \
-
 
        · hyphen: -
 
-
        · quotes: ´ "
-
 
    LLiissttss
        · bullet list
-
 
        · and  a  longer  entry,  and a longer entry, and a longer entry, and a
          longer entry, and a longer entry, and a longer entry,  and  a  longer
          entry, and a longer entry,
 
-
          1.  and a nested
-
 
          2.  enumeration
 
-
            · some line
-
 
            · bullets
 
-
          3.  a third
-
 
          4.  a third
 
-
          5.  a third
-
 
            a. alphabetically list
 
-
            b. betacarotin
-
 
            c. grammar
 
-
          6.  a third
-
 
            Y. the end
 
-
            Z. yellow
-
 
          7.  a third
 
-
          8.  a third
 
-
          9.  a third
-
 
          10. bigger  indentation  if there are more than nine enumerated items
              (or there are larger numbers)
@@ -116,12 +88,9 @@ EEXXAAMMPPLLEESS
              a second paragraph that should be separated from the previous one
              and not flowing into.
 
-
        7. dont start with 1
 
-
        9. dont increment by 1
-
 
        13. Problematic: indentation does not match for nonconsecutive entries.
 
@@ -131,15 +100,12 @@ EEXXAAMMPPLLEESS
        a  second  paragraph that should be separated from the previous one and
        not flowing into.
 
-
    FFiieelldd lliissttss
        ffiirrsstt  a short label and a short text
-
 
        sseeccoonnddllyy aa lloonnggeerr llaabbeell
               and some more text and some more text and some more  text    and
               some more text
-
 
        ddeeffiinniittiioonn lliissttss
               are also a valuable option and simple nonintrusive formatting
@@ -162,9 +128,9 @@ EEXXAAMMPPLLEESS
        tel. 12345
        LA
 
+
        A  paragraph  following  the line block.  lorem ipsum lorem ipsum lorem
        ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-
 
    LLiitteerraall
        some literal text
@@ -181,7 +147,6 @@ EEXXAAMMPPLLEESS
        .SS "." at line start
        backslash "\"
 
-
    rraaww
        raw input to man
 
@@ -189,63 +154,49 @@ EEXXAAMMPPLLEESS
        Attention!
               Directives at large.
 
-
        Caution!
               Don´t take any wooden nickels.
-
 
        !DANGER!
               Mad scientist at work!
 
-
        Error  Does not compute.
 
-
        Hint   It´s bigger than a bread box.
-
 
        Important
 
        · Wash behind your ears.
 
-
        · Clean up your room.
-
 
        · Call your mother.
 
-
        · Back up your data.
-
 
        Note   This is a note.
 
-
        Tip    15% if the service is good.
-
 
        Warning
               Strong prose may provoke extreme mental exertion.   Reader  dis-
               cretion is strongly advised.
 
-
        And, by the way...
+
               You can make up your own admonition too.
 
               With more than one paragraph.
 
        Text after the admonition.
 
-
    ootthheerr
        inline references _r_e_f _s_o_m_e_t_h_i_n_g .
 
        Contained verbose. Nothing special.
 
-
 FFIILLEESS
        This is a file.
-
 
 SSEEEE AALLSSOO
        _d_o_c_u_t_i_l_s
@@ -254,27 +205,20 @@ SSEEEE AALLSSOO
 
        More information can be found about
 
-
        · xml-schema-catalog at _h_t_t_p_:_/_/_x_m_l_-_s_c_h_e_m_a_-_c_a_t_a_l_o_g_._o_r_i_g_o_._e_t_h_z_._c_h_/
 
        And see the stars at the sky!
 
-
 BBUUGGSS
        Numerous mapping problems.
 
-
        1. Where do we get the manual section number from ? Commandline ?
-
 
        2. docutils authors should be filled into section "AUTHORS".
 
-
        3. be carefull with linebreaks in generated code.
 
-
        4. list items.  bullets and enumerators.
-
 
 AAUUTTHHOORR
        grubert@users.sourceforge.net
