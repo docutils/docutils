@@ -61,7 +61,7 @@ BLOCKQOUTE_INDENT = 3.5
 
 # Define two macros so man/roff can calculate the
 # indent/unindent margins by itself
-MACRO_DEF = (r"""
+MACRO_DEF = (r""".
 .nr rst2man-indent-level 0
 .
 .de1 rstReportMargin
@@ -237,7 +237,7 @@ class Translator(nodes.NodeVisitor):
 
     def comment(self, text):
         """Return commented version of the passed text."""
-        return self.comment_begin(text)+'\n'
+        return self.comment_begin(text)+'.\n'
 
     def astext(self):
         """Return the final formatted document as a string."""
