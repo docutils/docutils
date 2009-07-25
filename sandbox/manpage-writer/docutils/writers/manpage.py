@@ -67,7 +67,7 @@ MACRO_DEF = (r""".
 .de1 rstReportMargin
 \\$1 \\n[an-margin]
 level \\n[rst2man-indent-level]
-level magin: \\n[rst2man-indent\\n[rst2man-indent-level]]
+level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 -
 \\n[rst2man-indent0]
 \\n[rst2man-indent1]
