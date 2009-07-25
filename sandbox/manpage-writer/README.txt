@@ -58,14 +58,6 @@ References
 
 man pages from section 7, ``man`` and ``man-pages``.
 
-NOTE: 
-
-  1. The macros only work when at line start.
-  2. But consecutive blank lines are megred by the viewer but not on printouts.
-
-  So try the rule start new lines in ``visit_``-functions, but only if necessary.
-  E.g. ``field-names`` are already on a new line because of docutils structure.
-
 Problems
 ''''''''
 
@@ -113,10 +105,30 @@ Problems
 
 * new lines in general.
 
-  Consecutive blank lines are megred by the viewer but not on printouts.
+  Consecutive blank lines are merged by the viewer but not on printouts.
   So one has to be cautious. This is most disturbing when printing 
   postscript.
 
+  NOTE: 
+
+    1. Roff requests only work when at line start.
+    2. But consecutive blank lines are merged by the viewer but not on 
+       printouts.
+
+    So try the rule start new lines in ``visit_``-functions, but only if 
+    necessary. E.g. ``field-names`` are already on a new line because of 
+    docutils structure.
+
+* Indentation, left margin:
+
+  The writer includes two macros ``.INDENT`` and ``.UNINDENT`` that
+  keep track of the indentation in roff-code, for line-blocks python
+  keeps track of it. WHAT should be the preferred way ?
+
+Open issues
+'''''''''''
+
+* nonproportial font for verbatim
 * line ends around email or web addresses in texts.
   How to distinguish something is inline or not ?
   
@@ -134,6 +146,7 @@ Change log
 
     * replace unicode non breaking space by roff equivalent (in case
       someone includes a table-of-contents)
+    * fix line-blocks.
 
   - 2009-07-23: 
 
