@@ -182,6 +182,7 @@ class Translator(nodes.NodeVisitor):
         self._active_table = None
         self._in_literal = False
         self.header_written = 0
+        self._line_block = 0
         self.authors = []
         self.section_level = 0
         self._indent = [0]
@@ -728,17 +729,27 @@ class Translator(nodes.NodeVisitor):
     def depart_legend(self, node):
         pass
 
+    # WHAT should we use .INDENT, .UNINDENT ?
     def visit_line_block(self, node):
-        pass
+        self._line_block += 1
+        if self._line_block == 1:
+            self.body.append('.nf\n')
+        else:
+            self.body.append('.in +2\n')
 
     def depart_line_block(self, node):
-        self.body.append('\n')  # separate following paragraphs
+        self._line_block -= 1
+        if self._line_block == 0:
+            self.body.append('.fi\n')
+            self.body.append('.sp\n')
+        else:
+            self.body.append('.in -2\n')
 
     def visit_line(self, node):
         pass
 
     def depart_line(self, node):
-        self.body.append('\n.br\n')
+        self.body.append('\n')
 
     def visit_list_item(self, node):
         # man 7 man argues to use ".IP" instead of ".TP"

@@ -145,6 +145,36 @@ EEXXAAMMPPLLEESS
        .SS "." at line start
        backslash "\"
 
+   LLiinnee bblloocckkss
+       This is a line block.  It ends with a blank line.
+         Each new line begins with a vertical bar ("|").
+         Line breaks and initial indents are preserved.
+       Continuation lines are wrapped portions of long lines;
+       they begin with a space in place of the vertical bar.
+         The left edge of a continuation line need not be aligned with
+         the left edge of the text above it.
+
+       This is a second line block.
+
+       Blank lines are permitted internally, but they must begin with a "|".
+
+
+       Take it away, Eric the Orchestra Leader!
+           A one, two, a one two three four
+
+           Half a bee, philosophically,
+             must, _i_p_s_o _f_a_c_t_o, half not be.
+           But half the bee has got to be,
+             _v_i_s _a _v_i_s its entity.  D´you see?
+
+           But can a bee be said to be
+             or not to be an entire bee,
+               when half the bee is not a bee,
+                 due to some ancient injury?
+
+           Singing...
+
+
    rraaww
        raw input to man
 
