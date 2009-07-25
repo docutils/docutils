@@ -125,6 +125,10 @@ Problems
   keep track of the indentation in roff-code, for line-blocks python
   keeps track of it. WHAT should be the preferred way ?
 
+  But standard macros like ``.PP`` might reset it.
+
+  Current indent is in register ``.i``.
+
 Open issues
 '''''''''''
 
