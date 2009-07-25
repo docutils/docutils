@@ -130,6 +130,11 @@ Change log
 
 * writers/manpage.py:
 
+  - 2009-07-25: 
+
+    * replace unicode non breaking space by roff equivalent (in case
+      someone includes a table-of-contents)
+
   - 2009-07-23: 
 
     * Shrink vertical space in lists and the header

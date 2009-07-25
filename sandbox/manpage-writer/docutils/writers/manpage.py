@@ -259,6 +259,8 @@ class Translator(nodes.NodeVisitor):
         text = text.replace('\\','\\e')
         text = text.replace('-','\-')
         text = text.replace("'","\\'")
+        # unicode
+        text = text.replace(u'\xa0', '\\ ')
         if self._in_literal:
             # prevent interpretation of "." at line start
             if text[0] == '.':
