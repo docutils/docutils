@@ -828,7 +828,7 @@ class Translator(nodes.NodeVisitor):
     def visit_option(self, node):
         # each form of the option will be presented separately
         if self.context[-1]>0:
-            self.body.append(',')
+            self.body.append(', ')
         if self.context[-3] == '.BI':
             self.body.append('\\')
         self.body.append(' ')
@@ -846,13 +846,13 @@ class Translator(nodes.NodeVisitor):
     def visit_option_argument(self, node):
         self.context[-3] = '.BI' # bold/italic alternate
         if node['delimiter'] != ' ':
-            self.body.append('\\fn%s ' % node['delimiter'] )
+            self.body.append('\\fB%s ' % node['delimiter'] )
         elif self.body[len(self.body)-1].endswith('='):
             # a blank only means no blank in output, just changing font
             self.body.append(' ')
         else:
-            # backslash blank blank
-            self.body.append('\\  ')
+            # blank backslash blank, switch font then a blank
+            self.body.append(' \\ ')
 
     def depart_option_argument(self, node):
         pass

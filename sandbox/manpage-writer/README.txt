@@ -151,6 +151,7 @@ Change log
     * replace unicode non breaking space by roff equivalent (in case
       someone includes a table-of-contents)
     * fix line-blocks.
+    * fix option formatting.
 
   - 2009-07-23: 
 
