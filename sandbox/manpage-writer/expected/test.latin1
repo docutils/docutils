@@ -6,9 +6,9 @@ NNAAMMEE
        rst2man - generate unix manpages from reStructured text
 
 SSYYNNOOPPSSIISS
-       rrsstt22mmaann ----hheellpp
+       rst2man --help
 
-       rrsstt22mmaann [ OPTIONS ] [ SOURCE [ _d_e_s_t_i_n_a_t_i_o_n ] ]
+       rst2man [ OPTIONS ] [ SOURCE [ _d_e_s_t_i_n_a_t_i_o_n ] ]
 
 DDEESSCCRRIIPPTTIIOONN
        Run it and examine output.
@@ -21,7 +21,7 @@ OOPPTTIIOONNSS
        --ff,, ----ffoorrccee
               really do it
 
-       For all other options see ----hheellpp.
+       For all other options see --help.
 
 EEXXAAMMPPLLEESS
        rrsstt22mmaann..ppyy xxmmll--sscchheemmaa--ccaattaalloogg..rrsstt xxmmll--sscchheemmaa--ccaattaalloogg..mmaann
@@ -227,7 +227,7 @@ FFIILLEESS
 SSEEEE AALLSSOO
        _d_o_c_u_t_i_l_s
 
-       rrsstt22xxmmll(dummy)
+       rst2xml(dummy)
 
        More information can be found about
 

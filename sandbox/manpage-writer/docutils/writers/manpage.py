@@ -205,8 +205,8 @@ class Translator(nodes.NodeVisitor):
                 #field
                 'field_name' : ('.TP\n.B ', '\n'),
                 'field_body' : ('', '.RE\n'),
-                'literal' : ('\\fB', '\\fP'),
-                'literal_block' : ('.sp\n.nf\n', '\n.fi\n'),
+                'literal' : ('\\fC', '\\fP'),
+                'literal_block' : ('.sp\n.nf\n.ft CW\n', '\n.ft P\n.fi\n'),
 
                 #option_list
                 'option_list_item' : ('.TP\n', ''),

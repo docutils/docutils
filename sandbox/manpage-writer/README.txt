@@ -150,6 +150,7 @@ Change log
 
     * Shrink trailing blanks lines in tables.
     * Footnotes and citations.
+    * Use ``CW`` (constant width) font for literal.
 
   - 2009-07-25: 
 
