@@ -268,7 +268,7 @@ class Translator(nodes.NodeVisitor):
 
     def deunicode(self, text):
         text = text.replace(u'\xa0', '\\ ')
-        text = text.replace(u'\u2020', '+')
+        text = text.replace(u'\u2020', '\\(dg')
         return text
 
     def visit_Text(self, node):
