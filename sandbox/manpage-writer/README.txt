@@ -140,7 +140,6 @@ Conventions
 Open issues
 '''''''''''
 
-* nonproportial font for verbatim
 * line ends around email or web addresses in texts.
   How to distinguish something is inline or not ?
   
@@ -158,7 +157,8 @@ Change log
 
     * Shrink trailing blanks lines in tables.
     * Footnotes and citations.
-    * Use ``CW`` (constant width) font for literal.
+    * Use ``C`` courier font for literal.
+    * Support sub/superscript, visible only in postscript output.
 
   - 2009-07-25: 
 
