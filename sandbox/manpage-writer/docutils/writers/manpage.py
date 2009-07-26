@@ -698,18 +698,16 @@ class Translator(nodes.NodeVisitor):
     depart_hint = depart_admonition
 
     def visit_subscript(self, node):
-        self.document.reporter.warning('"subscript" not supported',
-                base_node=node)
+        self.body.append('\\s-2\\d')
 
     def depart_subscript(self, node):
-        pass
+        self.body.append('\\u\\s0')
 
     def visit_superscript(self, node):
-        self.document.reporter.warning('"subscript" not supported',
-                base_node=node)
+        self.body.append('\\s-2\\u')
 
     def depart_superscript(self, node):
-        pass
+        self.body.append('\\d\\s0')
 
     def visit_attribution(self, node):
         self.document.reporter.warning('"attribution" not supported',
