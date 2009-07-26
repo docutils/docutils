@@ -146,6 +146,10 @@ Change log
 
 * writers/manpage.py:
 
+  - 2009-07-26: 
+
+    * Shrink trailing blanks lines in tables.
+
   - 2009-07-25: 
 
     * replace unicode non breaking space by roff equivalent (in case

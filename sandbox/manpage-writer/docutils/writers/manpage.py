@@ -127,6 +127,10 @@ class Table:
         self._rows[-1].append(cell_lines[start:])
         if len(self._coldefs) < len(self._rows[-1]):
             self._coldefs.append('l')
+    def _minimize_cell(self, cell_lines):
+        """Remove trailing blank and ``.sp`` lines"""
+        while (cell_lines and cell_lines[-1] in ('\n', '.sp\n')):
+            del cell_lines[-1]
     def astext(self):
         text = '.TS\n'
         text += ' '.join(self._options) + ';\n'
@@ -136,10 +140,13 @@ class Table:
             text += '_\n'       # line above 
             line = []
             for cell in row:
+                self._minimize_cell(cell)
                 line.append(''.join(cell))
+                if not line[-1].endswith('\n'):
+                    line[-1] += '\n'
             text += 'T{\n'
-            text += ('\nT}'+self._tab_char+'T{\n').join(line)
-            text += '\nT}\n'
+            text += ('T}'+self._tab_char+'T{\n').join(line)
+            text += 'T}\n'
         text += '_\n'
         text += '.TE\n'
         return text
