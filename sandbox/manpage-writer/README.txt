@@ -149,6 +149,7 @@ Change log
   - 2009-07-26: 
 
     * Shrink trailing blanks lines in tables.
+    * Footnotes and citations.
 
   - 2009-07-25: 
 

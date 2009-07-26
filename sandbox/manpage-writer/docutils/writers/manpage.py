@@ -262,13 +262,18 @@ class Translator(nodes.NodeVisitor):
                     self.body[i] = '.\n'
         return ''.join(self.head + self.body + self.foot)
 
+    def deunicode(self, text):
+        text = text.replace(u'\xa0', '\\ ')
+        text = text.replace(u'\u2020', '+')
+        return text
+
     def visit_Text(self, node):
         text = node.astext()
         text = text.replace('\\','\\e')
         text = text.replace('-','\-')
         text = text.replace("'","\\'")
         # unicode
-        text = text.replace(u'\xa0', '\\ ')
+        text = self.deunicode(text)
         if self._in_literal:
             # prevent interpretation of "." at line start
             if text[0] == '.':
@@ -432,18 +437,16 @@ class Translator(nodes.NodeVisitor):
     depart_caution = depart_admonition
 
     def visit_citation(self, node):
-        self.document.reporter.warning('"citation" not supported',
-                base_node=node)
+        num,text = node.astext().split(None,1)
+        num = num.strip()
+        self.body.append('.IP [%s] 5\n' % num)
 
     def depart_citation(self, node):
         pass
 
     def visit_citation_reference(self, node):
-        self.document.reporter.warning('"citation_reference" not supported',
-                base_node=node)
-
-    def depart_citation_reference(self, node):
-        pass
+        self.body.append('['+node.astext()+']')
+        raise nodes.SkipNode
 
     def visit_classifier(self, node):
         self.document.reporter.warning('"classifier" not supported',
@@ -655,19 +658,20 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def visit_footnote(self, node):
-        self.document.reporter.warning('"footnote" not supported',
-                base_node=node)
+        num,text = node.astext().split(None,1)
+        num = num.strip()
+        self.body.append('.IP [%s] 5\n' % self.deunicode(num))
+
+    def depart_footnote(self, node):
+        pass
 
     def footnote_backrefs(self, node):
         self.document.reporter.warning('"footnote_backrefs" not supported',
                 base_node=node)
 
-    def depart_footnote(self, node):
-        pass
-
     def visit_footnote_reference(self, node):
-        self.document.reporter.warning('"footnote_reference" not supported',
-                base_node=node)
+        self.body.append('['+self.deunicode(node.astext())+']')
+        raise nodes.SkipNode
 
     def depart_footnote_reference(self, node):
         pass
@@ -723,11 +727,16 @@ class Translator(nodes.NodeVisitor):
     depart_important = depart_admonition
 
     def visit_label(self, node):
-        self.document.reporter.warning('"label" not supported',
+        # footnote and citation
+        if (isinstance(node.parent, nodes.footnote)
+            or isinstance(node.parent, nodes.citation)):
+            raise nodes.SkipNode
+        self.document.reporter.warning('"unsupported "label"',
                 base_node=node)
+        self.body.append('[')
 
     def depart_label(self, node):
-        pass
+        self.body.append(']\n')
 
     def visit_legend(self, node):
         self.document.reporter.warning('"legend" not supported',
