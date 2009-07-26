@@ -41,7 +41,6 @@ by the command whatis or apropos.
 
 """
 
-
 __docformat__ = 'reStructuredText'
 
 import sys
@@ -197,6 +196,11 @@ class Translator(nodes.NodeVisitor):
         # what to output on : visit, depart
         # Do not use paragraph requests ``.PP`` because these set indentation.
         # use ``.sp``. Remove superfluous ``.sp`` in ``astext``.
+        #
+        # Fonts are put on a stack, the top one is used.
+        # ``.ft P`` or ``\\fP`` pop from stack.
+        # ``B`` bold, ``I`` italic, ``R`` roman should be available.
+        # Hopefully ``C`` courier too.
         self.defs = {
                 'indent' : ('.INDENT %.1f\n', '.UNINDENT\n'),
                 'definition_list' : ('', '.TP 0\n'),

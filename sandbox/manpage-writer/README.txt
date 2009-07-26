@@ -58,8 +58,10 @@ References
 
 man pages from section 7, ``man`` and ``man-pages``.
 
-Problems
-''''''''
+.. [LMHT] Linux Man Page Howto.
+
+Conventions
+'''''''''''
 
 * man pages have a special structure and organization. From the manpage 
   to *man* ::
@@ -98,11 +100,6 @@ Problems
     eral exclusive invocations as is shown in the SYNOPSIS  section  of  this
     manual page.
 
-* use title and subtitle to built ::
-
-    NAME
-       man - program to view ...
-
 * new lines in general.
 
   Consecutive blank lines are merged by the viewer but not on printouts.
@@ -128,6 +125,14 @@ Problems
   But standard macros like ``.PP`` might reset it.
 
   Current indent is in register ``.i``.
+
+* [LMHT]_ Filenames are always in italics, except in the SYNOPSIS section, use ::
+
+    .I /usr/include/stdio.h
+
+  and::
+
+    .B #include <stdio.h>
 
 Open issues
 '''''''''''
