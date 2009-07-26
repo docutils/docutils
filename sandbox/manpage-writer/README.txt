@@ -118,13 +118,16 @@ Conventions
 
 * Indentation, left margin:
 
-  The writer includes two macros ``.INDENT`` and ``.UNINDENT`` that
-  keep track of the indentation in roff-code, for line-blocks python
-  keeps track of it. WHAT should be the preferred way ?
+  - The writer includes two macros ``.INDENT`` and ``.UNINDENT`` that
+    keep track of the indentation in roff-code, for line-blocks python
+    keeps track of it. WHAT should be the preferred way ?
 
-  But standard macros like ``.PP`` might reset it.
+    But standard macros like ``.PP`` might reset it.
 
-  Current indent is in register ``.i``.
+  - Why do ``.RE`` and ``.RS`` not work?
+
+  Note:
+    Current indent is in register ``.i``.
 
 * [LMHT]_ Filenames are always in italics, except in the SYNOPSIS section, use ::
 
