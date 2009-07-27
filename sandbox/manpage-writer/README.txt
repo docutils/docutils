@@ -153,6 +153,11 @@ Change log
 
 * writers/manpage.py:
 
+  - 2009-07-27: 
+
+    * Images print *alt* and *uri*.
+    * Definition lists print also th eclassifier and are more compact.
+
   - 2009-07-26: 
 
     * Shrink trailing blanks lines in tables.
