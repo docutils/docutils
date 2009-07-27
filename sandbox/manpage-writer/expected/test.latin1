@@ -121,10 +121,17 @@ EEXXAAMMPPLLEESS
        ddeeffiinniittiioonn ttoooo ::
               with the colon.
 
+   DDoocctteesstt BBlloocckkss
+       >>> print ´Python-specific usage examples; begun with ">>>"´
+       Python-specific usage examples; begun with ">>>"
+       >>> print ´(cut and pasted from interactive Python sessions)´
+       (cut and pasted from interactive Python sessions)
+
    TTaabblleess
                               +----------------+-------+
                               |single          | frame |
                               +----------------+-------+
+
                               |no table header |       |
                               +----------------+-------+
 
