@@ -127,7 +127,9 @@ class Table:
         if len(self._coldefs) < len(self._rows[-1]):
             self._coldefs.append('l')
     def _minimize_cell(self, cell_lines):
-        """Remove trailing blank and ``.sp`` lines"""
+        """Remove leading and trailing blank and ``.sp`` lines"""
+        while (cell_lines and cell_lines[0] in ('\n', '.sp\n')):
+            del cell_lines[0]
         while (cell_lines and cell_lines[-1] in ('\n', '.sp\n')):
             del cell_lines[-1]
     def astext(self):
@@ -243,6 +245,11 @@ class Translator(nodes.NodeVisitor):
     def comment(self, text):
         """Return commented version of the passed text."""
         return self.comment_begin(text)+'.\n'
+
+    def ensure_eol(self):
+        """Ensure the last line in body is terminated by new line."""
+        if self.body[-1][-1] != '\n':
+            self.body.append('\n')
 
     def astext(self):
         """Return the final formatted document as a string."""
@@ -429,8 +436,7 @@ class Translator(nodes.NodeVisitor):
         self.list_end()
 
     def visit_caption(self, node):
-        self.document.reporter.warning('"caption" not supported',
-                base_node=node)
+        pass
 
     def depart_caption(self, node):
         pass
@@ -634,8 +640,7 @@ class Translator(nodes.NodeVisitor):
         self.indent(FIELD_LIST_INDENT)
 
     def depart_field_list(self, node):
-        self.dedent('depart_field_list')
-        
+        self.dedent()
 
     def visit_field_name(self, node):
         if self._in_docinfo:
@@ -648,11 +653,12 @@ class Translator(nodes.NodeVisitor):
         self.body.append(self.defs['field_name'][1])
 
     def visit_figure(self, node):
-        self.document.reporter.warning('"figure" not supported',
-                base_node=node)
+        self.indent(2.5)
+        self.indent(0)
 
     def depart_figure(self, node):
-        pass
+        self.dedent()
+        self.dedent()
 
     def visit_footer(self, node):
         self.document.reporter.warning('"footer" not supported',
@@ -745,8 +751,7 @@ class Translator(nodes.NodeVisitor):
         self.body.append(']\n')
 
     def visit_legend(self, node):
-        self.document.reporter.warning('"legend" not supported',
-                base_node=node)
+        pass
 
     def depart_legend(self, node):
         pass
@@ -813,7 +818,7 @@ class Translator(nodes.NodeVisitor):
         self._indent.append(by)
         self.body.append(self.defs['indent'][0] % step)
 
-    def dedent(self, name=''):
+    def dedent(self):
         self._indent.pop()
         self.body.append(self.defs['indent'][1])
 
@@ -891,8 +896,7 @@ class Translator(nodes.NodeVisitor):
         # ``.P [type]``  : Start paragraph type. 
         # NOTE dont use paragraph starts because they reset indentation.
         # ``.sp`` is only vertical space
-        if self.body[-1][-1] != '\n':
-            self.body.append('\n')
+        self.ensure_eol()
         self.body.append('.sp\n')
 
     def depart_paragraph(self, node):
@@ -988,6 +992,7 @@ class Translator(nodes.NodeVisitor):
         self._active_table = Table()
 
     def depart_table(self, node):
+        self.ensure_eol()
         self.body.append(self._active_table.astext())
         self._active_table = None
 
