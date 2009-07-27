@@ -204,7 +204,7 @@ class Translator(nodes.NodeVisitor):
         self.defs = {
                 'indent' : ('.INDENT %.1f\n', '.UNINDENT\n'),
                 'definition_list' : ('', '.TP 0\n'),
-                'definition_list_item' : ('.TP', '\n'),
+                'definition_list_item' : ('.TP', ''),
                 #field_list
                 #field
                 'field_name' : ('.TP\n.B ', '\n'),
@@ -719,9 +719,13 @@ class Translator(nodes.NodeVisitor):
     def visit_image(self, node):
         self.document.reporter.warning('"image" not supported',
                 base_node=node)
-
-    def depart_image(self, node):
-        pass
+        text = []
+        if 'alt' in node.attributes:
+            text.append(node.attributes['alt'])
+        if 'uri' in node.attributes:
+            text.append(node.attributes['uri'])
+        self.body.append('[image: %s]\n' % ('/'.join(text)))
+        raise nodes.SkipNode
 
     def visit_important(self, node):
         self.visit_admonition(node, 'important')
@@ -887,6 +891,8 @@ class Translator(nodes.NodeVisitor):
         # ``.P [type]``  : Start paragraph type. 
         # NOTE dont use paragraph starts because they reset indentation.
         # ``.sp`` is only vertical space
+        if self.body[-1][-1] != '\n':
+            self.body.append('\n')
         self.body.append('.sp\n')
 
     def depart_paragraph(self, node):

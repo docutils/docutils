@@ -113,6 +113,19 @@ but start at the left margin of the numbers.
 a second paragraph that should be separated from the previous
 one and not flowing into.
 
+Definition Lists
+----------------
+
+Term
+    Definition
+Term : classifier
+    Definition paragraph 1.
+
+    Definition paragraph 2.
+Term
+    Definition
+
+
 Field lists
 -----------
 

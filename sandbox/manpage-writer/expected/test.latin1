@@ -97,6 +97,17 @@ EEXXAAMMPPLLEESS
        a  second  paragraph that should be separated from the previous one and
        not flowing into.
 
+   DDeeffiinniittiioonn LLiissttss
+       TTeerrmm   Definition
+
+       TTeerrmm   classifier
+
+              Definition paragraph 1.
+
+              Definition paragraph 2.
+
+       TTeerrmm   Definition
+
    FFiieelldd lliissttss
        ffiirrsstt  a short label and a short text
 
@@ -107,10 +118,8 @@ EEXXAAMMPPLLEESS
        ddeeffiinniittiioonn lliissttss
               are also a valuable option and simple nonintrusive formatting
 
-
        ddeeffiinniittiioonn ttoooo ::
               with the colon.
-
 
    TTaabblleess
                               +----------------+-------+
