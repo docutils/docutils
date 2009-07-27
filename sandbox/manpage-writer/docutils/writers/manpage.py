@@ -459,8 +459,7 @@ class Translator(nodes.NodeVisitor):
         raise nodes.SkipNode
 
     def visit_classifier(self, node):
-        self.document.reporter.warning('"classifier" not supported',
-                base_node=node)
+        pass
 
     def depart_classifier(self, node):
         pass
@@ -491,8 +490,7 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def visit_compound(self, node):
-        self.document.reporter.warning('"compound" not supported',
-                base_node=node)
+        pass
 
     def depart_compound(self, node):
         pass
@@ -717,8 +715,7 @@ class Translator(nodes.NodeVisitor):
         self.body.append('\\d\\s0')
 
     def visit_attribution(self, node):
-        self.document.reporter.warning('"attribution" not supported',
-                base_node=node)
+        self.body.append('\\(em ')
 
     def depart_attribution(self, node):
         pass

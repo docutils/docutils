@@ -159,6 +159,8 @@ Change log
     * Definition lists print also th eclassifier and are more compact.
     * Figures.
     * Doctest Blocks.
+    * Classifiers and compound (do nothing).
+    * Attribution: prefix with emdash.
 
   - 2009-07-26: 
 
