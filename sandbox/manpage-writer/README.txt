@@ -158,6 +158,7 @@ Change log
     * Images print *alt* and *uri*.
     * Definition lists print also th eclassifier and are more compact.
     * Figures.
+    * Doctest Blocks.
 
   - 2009-07-26: 
 

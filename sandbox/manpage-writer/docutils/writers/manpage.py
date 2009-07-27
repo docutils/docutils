@@ -547,11 +547,12 @@ class Translator(nodes.NodeVisitor):
         self.append_header()
 
     def visit_doctest_block(self, node):
-        self.document.reporter.warning('"doctest_block" not supported',
-                base_node=node)
+        self.body.append(self.defs['literal_block'][0])
+        self._in_literal = True
 
     def depart_doctest_block(self, node):
-        pass
+        self._in_literal = False
+        self.body.append(self.defs['literal_block'][1])
 
     def visit_document(self, node):
         # no blank line between comment and header.
