@@ -156,11 +156,12 @@ Change log
   - 2009-07-28: 
 
     * Fix: attribution depart requires a new line.
+    * Vertical compacter content of table cells.
 
   - 2009-07-27: 
 
     * Images print *alt* and *uri*.
-    * Definition lists print also th eclassifier and are more compact.
+    * Definition lists print also the classifier and are more compact.
     * Figures.
     * Doctest Blocks.
     * Classifiers and compound (do nothing).
