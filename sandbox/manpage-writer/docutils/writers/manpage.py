@@ -132,24 +132,26 @@ class Table:
             del cell_lines[0]
         while (cell_lines and cell_lines[-1] in ('\n', '.sp\n')):
             del cell_lines[-1]
-    def astext(self):
-        text = '.TS\n'
-        text += ' '.join(self._options) + ';\n'
-        text += '|%s|.\n' % ('|'.join(self._coldefs))
+    def as_list(self):
+        text = ['.TS\n']
+        text.append(' '.join(self._options) + ';\n')
+        text.append('|%s|.\n' % ('|'.join(self._coldefs)))
         for row in self._rows:
             # row = array of cells. cell = array of lines.
-            text += '_\n'       # line above 
-            line = []
-            for cell in row:
+            text.append('_\n')       # line above 
+            text.append('T{\n')
+            for i in range(len(row)):
+                cell = row[i]
                 self._minimize_cell(cell)
-                line.append(''.join(cell))
-                if not line[-1].endswith('\n'):
-                    line[-1] += '\n'
-            text += 'T{\n'
-            text += ('T}'+self._tab_char+'T{\n').join(line)
-            text += 'T}\n'
-        text += '_\n'
-        text += '.TE\n'
+                text.extend(cell)
+                if not text[-1].endswith('\n'):
+                    text[-1] += '\n'
+                if i < len(row)-1:
+                    text.append('T}'+self._tab_char+'T{\n')
+                else:
+                    text.append('T}\n')
+        text.append('_\n')
+        text.append('.TE\n')
         return text
 
 class Translator(nodes.NodeVisitor):
@@ -991,7 +993,7 @@ class Translator(nodes.NodeVisitor):
 
     def depart_table(self, node):
         self.ensure_eol()
-        self.body.append(self._active_table.astext())
+        self.body.extend(self._active_table.as_list())
         self._active_table = None
 
     def visit_target(self, node):
