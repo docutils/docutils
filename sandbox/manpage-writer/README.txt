@@ -153,6 +153,10 @@ Change log
 
 * writers/manpage.py:
 
+  - 2009-07-28: 
+
+    * Fix: attribution depart requires a new line.
+
   - 2009-07-27: 
 
     * Images print *alt* and *uri*.
