@@ -244,27 +244,31 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         classes =  node.attributes.get('classes', [])
         self._push_handout(classes)
 
-        if 'center' in classes:
-            attribs = {'fo:text-align':'center', 
-                       'fo:margin-left':'1.2cm',
-                       'fo:margin-right':'-.9cm',
-                       }
-            style = preso.ParagraphStyle(**attribs)
-            self.cur_slide.push_style(style)
+        ## if 'center' in classes:
+        ##     attribs = {'fo:text-align':'center', 
+        ##                'fo:margin-left':'1.2cm',
+        ##                'fo:margin-right':'-.9cm',
+        ##                }
+        ##     style = preso.ParagraphStyle(**attribs)
+        ##     self.cur_slide.push_style(style)
 
-        elif 'left' in classes:
-            pass # default
-        elif 'right' in classes:
-            attribs = {'fo:text-align':'end',
-                       }
-            style = preso.ParagraphStyle(**attribs)
-            self.cur_slide.push_style(style)
+        ## elif 'left' in classes:
+        ##     pass # default
+        ## elif 'right' in classes:
+        ##     attribs = {'fo:text-align':'end',
+        ##                }
+        ##     style = preso.ParagraphStyle(**attribs)
+        ##     self.cur_slide.push_style(style)
+        p_attribs = self._get_para_attribs(node)
+        if p_attribs:
+            self.cur_slide.push_style(preso.ParagraphStyle(**p_attribs))
+            
         # text styles
         attribs = self._get_text_attribs(node)
-
         if attribs:
             style = preso.TextStyle(**attribs)
             self.cur_slide.push_style(style)
+            
         if self.bullet_list:
             pass
         elif self.at('topic'):
@@ -302,11 +306,16 @@ class ODPTranslator(nodes.GenericNodeVisitor):
     def visit_bullet_list(self, node):
         if self.at('topic'):
             return
-        classes =  node.attributes.get('classes', [])
+        p_attribs = self._get_para_attribs(node)
+        if p_attribs:
+            self.cur_slide.push_style(preso.ParagraphStyle(**p_attribs))
+
         attribs = self._get_text_attribs(node)
         if attribs:
             style = preso.TextStyle(**attribs)
             self.cur_slide.push_style(style)
+
+        classes =  node.attributes.get('classes', [])
         if 'handout' in classes:
             self._push_handout(classes)
 
@@ -562,12 +571,18 @@ class ODPTranslator(nodes.GenericNodeVisitor):
     def visit_line_block(self, node):
         #jump out of current paragraph
         self.cur_slide.parent_of('text:p')
-        # right justify
-        attribs = {'fo:text-align':'end',
-                   'fo:margin-right':'.9cm'
-                   }
-        style = preso.ParagraphStyle(**attribs)
-        self.cur_slide.push_style(style)
+
+        p_attribs = self._get_para_attribs(node)
+        if p_attribs:
+            self.cur_slide.push_style(preso.ParagraphStyle(**p_attribs))
+        else:    
+            # right justify
+            P_attribs = {'fo:text-align':'end',
+                       'fo:margin-right':'.9cm'
+                       }
+            style = preso.ParagraphStyle(**p_attribs)
+            self.cur_slide.push_style(preso.ParagraphStyle(**p_attribs))
+        #self.cur_slide.push_style(style)
         attribs = self._get_text_attribs(node)
         if attribs:
             style = preso.TextStyle(**attribs)       
@@ -576,7 +591,7 @@ class ODPTranslator(nodes.GenericNodeVisitor):
     def depart_line_block(self, node):
         attribs = self._get_text_attribs(node)
         if attribs:
-            self.cur_slide.pop_style()
+            #self.cur_slide.pop_style()
             self.cur_slide.pop_node()
         # pop off text:p
         self.cur_slide.pop_style()
@@ -700,6 +715,27 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         pass
 
     
+    def _get_para_attribs(self, node):
+        classes = node.attributes.get('classes', [])
+        attribs = {}
+        for c in classes:
+            if c == 'center':
+                attribs.update({'fo:text-align':'center', 
+                                'fo:margin-left':'1.2cm',
+                                'fo:margin-right':'.9cm',
+                                })
+            elif c == 'right':
+                attribs.update({'fo:text-align':'end',
+                                'fo:margin-right':'.9cm'
+                                })
+            elif c == 'left':
+                attribs.update({'fo:text-align':'start', 
+                                'fo:margin-left':'1.2cm',
+                                'fo:margin-right':'5.9cm',
+                                })
+                #pass # default
+        return attribs
+        
 
     def _get_text_attribs(self, node):
         classes = node.attributes.get('classes', [])
