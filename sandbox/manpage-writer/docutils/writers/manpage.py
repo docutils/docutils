@@ -718,7 +718,7 @@ class Translator(nodes.NodeVisitor):
         self.body.append('\\(em ')
 
     def depart_attribution(self, node):
-        pass
+        self.body.append('\n')
 
     def visit_image(self, node):
         self.document.reporter.warning('"image" not supported',
