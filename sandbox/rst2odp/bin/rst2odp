@@ -174,7 +174,8 @@ class ODPTranslator(nodes.GenericNodeVisitor):
     def default_visit(self, node):
         if self.settings.report_level >= 3:
             print "ERR! NODE", node, node.tagname
-        raise NotImplementedError
+        raise NotImplementedError('node is %r, tag is %s' % (node, node.tagname))
+
 
     def default_departure(self, node):
         if self.settings.report_level >= 3:
@@ -208,7 +209,9 @@ class ODPTranslator(nodes.GenericNodeVisitor):
             self.cur_slide.cur_element = None
         
     def visit_Text(self, node):
-        if self.bullet_list and not self.at('handout'): # !!!need to deal w/ bullets in handout
+        if self.at('reference'):
+            pass
+        elif self.bullet_list and not self.at('handout'): # !!!need to deal w/ bullets in handout
             self.bullet_list.write(node.astext())
         elif self.at('footer'):
             self.footer.write(node.astext())
@@ -303,6 +306,9 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         else:
             self.cur_slide.parent_of('text:p')
 
+    visit_definition = visit_paragraph
+    depart_definition = depart_paragraph
+
     def visit_bullet_list(self, node):
         if self.at('topic'):
             return
@@ -352,6 +358,9 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         if 'incremental' in node.attributes.get('classes', []):
             self.in_node['incremental'] = False
 
+    visit_definition_list = visit_bullet_list
+    depart_definition_list = depart_bullet_list
+
 
     def visit_list_item(self, node):
         if self.at('topic'):
@@ -365,6 +374,9 @@ class ODPTranslator(nodes.GenericNodeVisitor):
             return
         if self.at('incremental'):
             self.cur_slide.end_animation()
+
+    visit_definition_list_item = visit_list_item
+    depart_definition_list_item = depart_list_item
 
 
     visit_decoration = _dumb_visit
@@ -387,6 +399,9 @@ class ODPTranslator(nodes.GenericNodeVisitor):
     def depart_author(self, node):
         self.depart_line(node) # add new-line
         self.depart_attribution(node)
+
+    visit_copyright = visit_author
+    depart_copyright = depart_author
 
     def visit_date(self, node):
         self.visit_attribution(node)
@@ -412,8 +427,6 @@ class ODPTranslator(nodes.GenericNodeVisitor):
 
     def depart_field_body(self, node):
         self.depart_attribution(node)
-
-
         
     def visit_comment(self, node):
         pass
@@ -444,7 +457,14 @@ class ODPTranslator(nodes.GenericNodeVisitor):
             # needs to be in a p
             # need to hack a bit, since .write usually inserts text:p and text:span
             if not self.cur_slide.cur_element or not self.cur_slide.cur_element._in_p():
-                self.cur_slide.add_node('text:p', {})
+                #self.cur_slide.add_node('text:p', {})
+                # pyohio code
+                # we write an empty string since write() creates the paragraph
+                # we need, with the style needed to reset from a possible Title
+                # P0 style. This was most apparent when a link was first word
+                # in a section after a title.
+                self.cur_slide.write("")
+
             self.cur_slide.add_node('text:a', attrib={'xlink:href': '%s' % node['refuri'],
                                                       'xlink:type': 'simple'})
             self.cur_slide.write(node.astext(), add_p_style=False, add_t_style=False)
@@ -460,12 +480,20 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         else:
             self.cur_slide.parent_of('text:a')
 
+    def visit_target(self,node):
+        # Skip the target element since the <reference> of the target is
+        # responsible for writing out the content
+        pass
+    
+    def depart_target(self, node):
+        pass
+
     def visit_container(self, node):
         classes = node.attributes.get('classes', [])
         self._push_handout(classes)
 
     def depart_container(self, node):
-        if self.in_node['handout']:
+        if self.in_node.get('handout', False):
             self.cur_slide.pop_element()
             self.in_node['handout'] = False
 
@@ -534,6 +562,9 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         # pop off the text:span
         self.cur_slide.pop_style()
         self.cur_slide.pop_node()
+
+    visit_term = visit_strong
+    depart_term = depart_strong
 
     def visit_block_quote(self, node):
         attribs = {'fo:text-align':'start', 
