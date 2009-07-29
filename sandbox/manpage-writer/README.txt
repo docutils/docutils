@@ -155,6 +155,10 @@ Change log
 
   - 2009-07-28: 
 
+    * Cleanup roff definitions in defs.
+
+  - 2009-07-28: 
+
     * Fix: attribution depart requires a new line.
     * Vertical compacter content of table cells.
 
