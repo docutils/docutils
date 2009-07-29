@@ -207,21 +207,14 @@ class Translator(nodes.NodeVisitor):
         # Hopefully ``C`` courier too.
         self.defs = {
                 'indent' : ('.INDENT %.1f\n', '.UNINDENT\n'),
-                'definition_list' : ('', '.TP 0\n'),
                 'definition_list_item' : ('.TP', ''),
-                #field_list
-                #field
                 'field_name' : ('.TP\n.B ', '\n'),
-                'field_body' : ('', '.RE\n'),
                 'literal' : ('\\fC', '\\fP'),
                 'literal_block' : ('.sp\n.nf\n.ft C\n', '\n.ft P\n.fi\n'),
 
-                #option_list
                 'option_list_item' : ('.TP\n', ''),
-                #option_group, option
                 
                 'reference' : (r'\fI\%', r'\fP'),
-                #'target'   : (r'\fI\%', r'\fP'),
                 'emphasis': ('\\fI', '\\fP'),
                 'strong' : ('\\fB', '\\fP'),
                 'term' : ('\n.B ', '\n'),
@@ -839,7 +832,7 @@ class Translator(nodes.NodeVisitor):
         # as one option could have several forms it is a group
         # options without parameter bold only, .B, -v
         # options with parameter bold italic, .BI, -f file
-        
+        #
         # we do not know if .B or .BI
         self.context.append('.B')           # blind guess
         self.context.append(len(self.body)) # to be able to insert later
