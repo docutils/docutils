@@ -144,7 +144,7 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
 """Distutils setup parameters."""
 
 classifiers = [
-    'Development Status :: 3 - Alpha',
+    'Development Status :: 4 - Beta',
     'Environment :: Console',
     'Intended Audience :: End Users/Desktop',
     'Intended Audience :: Other Audience',
