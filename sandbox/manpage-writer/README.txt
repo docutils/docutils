@@ -153,6 +153,10 @@ Change log
 
 * writers/manpage.py:
 
+  - 2009-08-05:
+
+    * Do not print timestamp in trainling comment.
+
   - 2009-07-28: 
 
     * Cleanup roff definitions in defs.
