@@ -77,8 +77,7 @@ class Writer(writers.Writer):
           ['--link-stylesheet'],
           {'dest': 'embed_stylesheet', 'action': 'store_false'}),
          ('Table of contents by Docutils (default) or LaTeX. '
-          '(Docutils does not know of pagenumbers.) '
-	  'With use_latex_toc, LaTeX also generates the section numbers.',
+          '(Docutils does not know of pagenumbers.) ',
           ['--use-latex-toc'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
@@ -726,10 +725,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
     # Config setting defaults
     # -----------------------
 
-    # use latex tableofcontents or let docutils do it.
-    use_latex_toc = False
-    has_latex_toc = False # is there a toc in the doc (needed by minitoc)
-
     # TODO: use mixins for different implementations.
     # list environment for docinfo. else tabularx
     use_optionlist_for_docinfo = 0 # NOT YET IN USE
@@ -746,6 +741,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     # default link color
     hyperlink_color = 'blue'
+
+    # Bookkeeping:
+    has_latex_toc = False # is there a toc in the doc (needed by minitoc)
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
@@ -825,24 +823,34 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.graphicx_package = (r'\usepackage[%s]{graphicx}' %
                                      self.settings.graphicx_option)
 
-        if self.use_latex_toc:
-            # include all supported sections (also in PDF bookmarks)
-            self.requirements['tocdepth'] = (r'\setcounter{tocdepth}{%d}' %
-                                             len(self.d_class.sections))
+        # TODO: include all supported sections in toc and PDF bookmarks)?
+        ## if self.use_latex_toc:
+        ##    self.requirements['tocdepth'] = (r'\setcounter{tocdepth}{%d}' %
+        ##    				       len(self.d_class.sections))
 
-            # section numbering: TODO de-couple latex-toc and latex-sectnum?
-            # limit depth to supported section levels
-            sectnum_depth = min(self.settings.sectnum_depth,
-                                len(self.d_class.sections))
-            sectnum_setup = [r'\setcounter{secnumdepth}{%d}' % sectnum_depth]
-            if sectnum_depth and settings.sectnum_start != 1:
-                sectnum_setup.append(r'\setcounter{%s}{%d}' %
+        if not self.settings.sectnum_xform: # section numbering by LaTeX:
+            sectnum_cmds = []
+            # sectnum_depth:
+            #   0     no "sectnum" directive -> no section numbers
+            #   None  "sectnum" directive without depth arg -> LaTeX default
+            #   else  value of the "depth" argument -> limit to supported
+            #	      section levels
+            if settings.sectnum_depth is not None:
+                sectnum_depth = min(settings.sectnum_depth,
+                                    len(self.d_class.sections))
+                sectnum_cmds.append(r'\setcounter{secnumdepth}{%d}' %
+                                     sectnum_depth)
+            # start with specified number:
+            if (hasattr(settings, 'sectnum_start') and
+                settings.sectnum_start != 1):
+                sectnum_cmds.append(r'\setcounter{%s}{%d}' %
                                      (self.d_class.sections[0],
                                       settings.sectnum_start-1))
-            # currently ignored (use a stylesheet instead):
-            # settings.sectnum_prefix
-            # settings.sectnum_suffix
-            self.requirements['sectnum'] = '\n'.join(sectnum_setup)
+            # currently ignored (configure in a stylesheet):
+            ## settings.sectnum_prefix
+            ## settings.sectnum_suffix
+            if sectnum_cmds:
+                self.requirements['sectnum'] = '\n'.join(sectnum_cmds)
 
 
         # packages and/or stylesheets
@@ -1201,8 +1209,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_bullet_list(self, node):
         if 'contents' in self.topic_classes:
-            if self.use_latex_toc:
-                raise nodes.SkipNode
             self.body.append( '%\n\\begin{list}{}{}\n' )
         else:
             self.body.append( '%\n\\begin{itemize}\n' )
@@ -2386,8 +2392,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def bookmark(self, node):
         """Return label and pdfbookmark string for titles."""
         result = ['']
-        if not self.use_latex_toc:      # non-numbered section
-            # add to the toc (and hence pdfbookmarks)
+        if self.settings.sectnum_xform: # "starred" section cmd
+            # add to the toc and pdfbookmarks
             section_name = self.d_class.section(self.section_level >= 0 or 1)
             section_title = self.encode(node.astext())
             result.append(r'\phantomsection')
@@ -2453,11 +2459,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.body.append('\n\n')
 
             section_name = self.d_class.section(self.section_level)
-            # (latex)numbered or unnumbered sections:
-            if (self.use_latex_toc and
-                (self.section_level <= len(self.d_class.sections))):
-                section_star = ''
-            else:
+            # number sections?
+            section_star = '' # LaTeX numbered sections
+            if (# numbering by Docutils or unsupported level:
+                self.settings.sectnum_xform or
+                (self.section_level > len(self.d_class.sections))):
                 section_star = '*'
             self.body.append(r'\%s%s{' % (section_name, section_star))
 

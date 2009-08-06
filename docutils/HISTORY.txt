@@ -101,6 +101,9 @@ Changes Since 0.5
   - New custom macros and environments.
   - Simpler LaTeX encoding, e.g. "\%" instead of "{\%}".
   - Better conformance to Docutils specifications with "use_latex_toc".
+    Support for LaTeX generated ToC also with unnumbered sections.
+  - If 'sectnum_xform' is False, the 'sectnum' directive triggers
+    section numbering by LaTeX.
   - Use default font in admonitions and sidebar.
   - Align of image in a figure defaults to 'center'.
   - Bugfix: Newlines around targets and references prevent run-together

@@ -51,6 +51,8 @@ Changes Since 0.5
   - Load packages and define macros only if required in the document.
   - Docutils specific LaTeX objects are now all prefixed with ``DU``.
   - Better conformance to Docutils specifications with "use_latex_toc".
+  - If 'sectnum_xform' is False, the 'sectnum' directive triggers
+    section numbering by LaTeX.
   - Use default font in admonitions and sidebar.
   - Align of image in a figure defaults to 'center'.
   - Default type area defined in the document class (not by 'typearea').

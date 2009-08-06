@@ -30,26 +30,20 @@ class SectNum(Transform):
     """Should be applied before `Contents`."""
 
     def apply(self):
-        try: # leave section numbering to the writer?
-            numbering_by_writer = self.document.settings.use_latex_toc
-        except AttributeError:
-            numbering_by_writer = False
-        #
-        self.maxdepth = self.startnode.details.get('depth', sys.maxint)
+        self.maxdepth = self.startnode.details.get('depth', None)
         self.startvalue = self.startnode.details.get('start', 1)
         self.prefix = self.startnode.details.get('prefix', '')
         self.suffix = self.startnode.details.get('suffix', '')
         self.startnode.parent.remove(self.startnode)
-        if numbering_by_writer:
-            if self.document.settings.sectnum_xform:
-                self.document.settings.sectnum_depth = self.maxdepth
-            else:
-                self.document.settings.sectnum_depth = 0
+        if self.document.settings.sectnum_xform:
+            if self.maxdepth is None:
+                self.maxdepth = sys.maxint
+            self.update_section_numbers(self.document)
+        else: # store details for eventual section numbering by the writer
+            self.document.settings.sectnum_depth = self.maxdepth
             self.document.settings.sectnum_start = self.startvalue
             self.document.settings.sectnum_prefix = self.prefix
             self.document.settings.sectnum_suffix = self.suffix
-        elif self.document.settings.sectnum_xform:
-            self.update_section_numbers(self.document)
 
     def update_section_numbers(self, node, prefix=(), depth=0):
         depth += 1

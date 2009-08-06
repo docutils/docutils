@@ -19,6 +19,9 @@ def suite():
     settings['use_latex_toc'] = 1
     s.generateTests(totest_latex_toc)
     settings['use_latex_toc'] = 0
+    settings['sectnum_xform'] = 0
+    s.generateTests(totest_latex_sectnum)
+    settings['sectnum_xform'] = 1
     settings['use_latex_citations'] = 1
     s.generateTests(totest_latex_citations)
     return s
@@ -52,11 +55,12 @@ latex_requirements_table = b(r"""\usepackage{longtable}
 """)
 
 latex_requirements_graphicx = b("""\usepackage{graphicx}
-""") 
+""")
 
 
 totest = {}
 totest_latex_toc = {}
+totest_latex_sectnum = {}
 totest_latex_citations = {}
 
 totest['url_chars'] = [
@@ -142,9 +146,7 @@ first section
 -------------
 """,
 ## # expected output
-latex_head_prefix + latex_requirements + b(r"""\setcounter{secnumdepth}{0}
-\setcounter{tocdepth}{5}
-""") + latex_head + b(r"""
+latex_head_prefix + latex_requirements + latex_head + b(r"""
 %%% Body
 \begin{document}
 
@@ -156,7 +158,9 @@ latex_head_prefix + latex_requirements + b(r"""\setcounter{secnumdepth}{0}
 
 %___________________________________________________________________________
 
-\section{first section%
+\section*{first section%
+  \phantomsection%
+  \addcontentsline{toc}{section}{first section}%
   \label{first-section}%
 }
 
@@ -174,9 +178,7 @@ first section
 -------------
 """,
 ## # expected output
-latex_head_prefix + latex_requirements + b(r"""\setcounter{secnumdepth}{5}
-\setcounter{tocdepth}{5}
-""") + latex_head + b(r"""
+latex_head_prefix + latex_requirements + latex_head + b(r"""
 %%% Body
 \begin{document}
 
@@ -184,6 +186,36 @@ latex_head_prefix + latex_requirements + b(r"""\setcounter{secnumdepth}{5}
 \tableofcontents
 
 \bigskip
+
+
+%___________________________________________________________________________
+
+\section*{1~~~first section%
+  \phantomsection%
+  \addcontentsline{toc}{section}{1~~~first section}%
+  \label{first-section}%
+}
+
+\end{document}
+""")],
+]
+
+
+totest_latex_sectnum['no_sectnum'] = [
+# input
+["""\
+some text
+
+first section
+-------------
+""",
+## # expected output
+latex_head_prefix + latex_requirements + b(r"""\setcounter{secnumdepth}{0}
+""") + latex_head + b(r"""
+%%% Body
+\begin{document}
+
+some text
 
 
 %___________________________________________________________________________
@@ -196,7 +228,34 @@ latex_head_prefix + latex_requirements + b(r"""\setcounter{secnumdepth}{5}
 """)],
 ]
 
- 
+totest_latex_sectnum['sectnum'] = [
+# input
+["""\
+.. sectnum::
+
+some text
+
+first section
+-------------
+""",
+## # expected output
+latex_head_prefix + latex_requirements + latex_head + b(r"""
+%%% Body
+\begin{document}
+
+some text
+
+
+%___________________________________________________________________________
+
+\section{first section%
+  \label{first-section}%
+}
+
+\end{document}
+""")],
+]
+
 totest_latex_citations['citations_with_underscore'] = [
 # input
 ["""\

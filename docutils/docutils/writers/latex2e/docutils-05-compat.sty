@@ -7,7 +7,7 @@
 % 
 % :Author:    Guenter Milde
 % :Contact:   milde@users.berlios.de
-% :Revision:  $Revision: 5988 $
+% :Revision:  $Revision: 5998 $
 % :Date:      $Date: 2009-02-24$
 % :Copyright: © 2009 G. Milde,
 %             Released  without warranties or conditions of any kind
@@ -299,32 +299,38 @@
 
   \raggedbottom
 
-% Better conformance to Docutils specifications with "use_latex_toc"
-% --------------------------------------------------------------------
+
+% ToC and section numbers
+% -----------------------
+% 
+% Better conformance to Docutils specifications.
 % 
 % New feature:
-%   Section numbering is done according to the Docutils specifications also
-%   if 'use-latex-toc' is True:
+%   * The "depth" argument of the "contents" and "sectnum" directives is
+%     respected.
 % 
-%   * sections are only numbered if there is a "sectnum" directive in the
-%     document and the "sectnum_xforms" config setting is True,
+%   * section numbering independent of 'use-latex-toc':
 % 
-%   * The "depth" argument is respected and the default is set to to the
-%     number of supported section levels.
+%     + sections are only numbered if there is a "sectnum" directive in the
+%       document
 % 
-% New features:
-%   * The default "depth" of the LaTeX-created ToC is increased to the number
-%     of supported section levels.
-%   * The "depth" argument of the "contents" directive is respected.
+%     + section numbering by LaTeX if the "sectnum_xforms" config setting is
+%       False.
 % 
 % Backwards compatibility:
-%   The previous behaviour was to use the document class default and cannot be
-%   restored universally. The following resets it to the default values of the
-%   default document class ("article")::
+% 
+%   The previous behaviour was to always number sections if 'use-latex-toc' is
+%   true, using the document class defaults. It cannot be restored
+%   universally, the following code sets the default values of the "article"
+%   document class::
 
   \setcounter{secnumdepth}{3}
   \setcounter{tocdepth}{3}
 
+% .. TODO or not to do? (Back-compatibility problems)
+%   * The default "depth" of the LaTeX-created ToC and the LaTeX section
+%     numbering is increased to the number of supported section levels.
+% 
 % New feature:
 %   If 'use-latex-toc' is set, local tables of content are typeset using the
 %   'minitoc' package (instead of being ignored).
@@ -332,6 +338,7 @@
 % Backwards compatibility:
 %   Disable the creation of local ToCs (ignoring all special commands) by
 %   replacing ``\usepackage{minitoc} with ``\usepackage{mtcoff}``.
+% 
 % 
 % Default font in admonitions and sidebar
 % ---------------------------------------

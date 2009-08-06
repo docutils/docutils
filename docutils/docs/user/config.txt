@@ -373,9 +373,12 @@ _`report_level`
     --quiet, -q``.
 
 _`sectnum_xform`
-    Enable or disable the section numbering transform
-    (docutils.transforms.parts.SectNum) associated with the
-    `sectnum directive`_.
+    Enable or disable automatic section numbering by Docutils
+    (docutils.transforms.parts.SectNum) associated with the `sectnum
+    directive`_.
+
+    If disabled, section numbers might be added to the output by the
+    renderer (e.g. LaTeX or via a CSS style definition).
 
     Default: enabled (1).  Options: ``--section-numbering``,
     ``--no-section-numbering``.
