@@ -209,9 +209,7 @@ class ODPTranslator(nodes.GenericNodeVisitor):
             self.cur_slide.cur_element = None
         
     def visit_Text(self, node):
-        if self.at('reference'):
-            pass
-        elif self.bullet_list and not self.at('handout'): # !!!need to deal w/ bullets in handout
+        if self.bullet_list and not self.at('handout'): # !!!need to deal w/ bullets in handout
             self.bullet_list.write(node.astext())
         elif self.at('footer'):
             self.footer.write(node.astext())
@@ -222,7 +220,9 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         elif self.at('literal_block'):
             pass
         elif self.at('reference'):
-            pass
+            # FirstClown - if we have link text, we need to make sure the text
+            # doesn't get any styles applied or it sometimes doesn't show.
+            self.cur_slide.write(node.astext(), add_p_style=False, add_t_style=False)
         elif self.at('doctest_block'):
             pass
         elif self.at('field_name'):
@@ -467,7 +467,6 @@ class ODPTranslator(nodes.GenericNodeVisitor):
 
             self.cur_slide.add_node('text:a', attrib={'xlink:href': '%s' % node['refuri'],
                                                       'xlink:type': 'simple'})
-            self.cur_slide.write(node.astext(), add_p_style=False, add_t_style=False)
             
     def depart_reference(self, node):
         if node.has_key('refid'):
