@@ -1922,7 +1922,7 @@ Generate clean and configurable LaTeX source
 LaTeX macros for Docutils-specific objects
 ``````````````````````````````````````````
 
-:subtitle:   Is there a native construct?
+:subtitle:   Is there a package or native construct?
 
 :section titles: Custom command or package `hypbmsec`?
 
@@ -2047,8 +2047,6 @@ Which packages do we want to use?
 Default layout
 --------------
 
-* use-latex-doc by default?
-
 * Which `default font`__ should we use for the output?
 
   Proposal: Use one of the Postscript default fonts supported by standard
@@ -2083,8 +2081,6 @@ Default layout
   ...)?
 
 * Use optionlist for docinfo? The table does only work for single page.
-
-* Recognize LaTeX and replace by ``\LaTeX`` (or not?).
 
 * Keep literal-blocks together on a page, avoid pagebreaks.
 

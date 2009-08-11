@@ -145,8 +145,8 @@
 	David Goodger \\
 \textbf{Address}: &
 	{\raggedright
-123 Example Street~\\
-Example, EX  Canada~\\
+123 Example Street\\
+Example, EX  Canada\\
 A1B 2C3 } \\
 \textbf{Contact}: &
 	\href{mailto:goodger@python.org}{goodger@python.org} \\
@@ -337,7 +337,7 @@ reStructuredText construct.
 
 \subsection*{1.1~~~Section Title%
   \phantomsection%
-  \addcontentsline{toc}{section}{1.1~~~Section Title}%
+  \addcontentsline{toc}{subsection}{1.1~~~Section Title}%
   \label{section-title}%
 }
 \textbf{Section Subtitle}\vspace{0.2cm}
@@ -350,7 +350,7 @@ That's it, the text just above this line.
 
 \subsection*{1.2~~~Empty Section%
   \phantomsection%
-  \addcontentsline{toc}{section}{1.2~~~Empty Section}%
+  \addcontentsline{toc}{subsection}{1.2~~~Empty Section}%
   \label{empty-section}%
 }
 
@@ -359,7 +359,7 @@ That's it, the text just above this line.
 
 \subsection*{1.3~~~Transitions%
   \phantomsection%
-  \addcontentsline{toc}{section}{1.3~~~Transitions}%
+  \addcontentsline{toc}{subsection}{1.3~~~Transitions}%
   \label{transitions}%
 }
 
@@ -391,7 +391,7 @@ It divides the section.  Transitions may also occur between sections:
 
 \subsection*{2.1~~~Paragraphs%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.1~~~Paragraphs}%
+  \addcontentsline{toc}{subsection}{2.1~~~Paragraphs}%
   \label{paragraphs}%
 }
 
@@ -402,7 +402,7 @@ A paragraph.
 
 \subsubsection*{2.1.1~~~Inline Markup%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.1.1~~~Inline Markup}%
+  \addcontentsline{toc}{subsubsection}{2.1.1~~~Inline Markup}%
   \label{inline-markup}%
 }
 
@@ -444,7 +444,7 @@ live link to PEP 258 here.
 
 \subsection*{2.2~~~Bullet Lists%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.2~~~Bullet Lists}%
+  \addcontentsline{toc}{subsection}{2.2~~~Bullet Lists}%
   \label{bullet-lists}%
 }
 %
@@ -494,7 +494,7 @@ Paragraph 2 of item 2.
 
 \subsection*{2.3~~~Enumerated Lists%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.3~~~Enumerated Lists}%
+  \addcontentsline{toc}{subsection}{2.3~~~Enumerated Lists}%
   \label{enumerated-lists}%
 }
 \newcounter{listcnt0}
@@ -586,7 +586,7 @@ Paragraph 2 of item 2.
 
 \subsection*{2.4~~~Definition Lists%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.4~~~Definition Lists}%
+  \addcontentsline{toc}{subsection}{2.4~~~Definition Lists}%
   \label{definition-lists}%
 }
 %
@@ -615,7 +615,7 @@ Definition
 
 \subsection*{2.5~~~Field Lists%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.5~~~Field Lists}%
+  \addcontentsline{toc}{subsection}{2.5~~~Field Lists}%
   \label{field-lists}%
 }
 %
@@ -643,7 +643,7 @@ doesn't get stripped away.)
 
 \subsection*{2.6~~~Option Lists%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.6~~~Option Lists}%
+  \addcontentsline{toc}{subsection}{2.6~~~Option Lists}%
   \label{option-lists}%
 }
 
@@ -684,7 +684,7 @@ description.
 
 \subsection*{2.7~~~Literal Blocks%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.7~~~Literal Blocks}%
+  \addcontentsline{toc}{subsection}{2.7~~~Literal Blocks}%
   \label{literal-blocks}%
 }
 
@@ -692,9 +692,9 @@ Literal blocks are indicated with a double-colon (``::'') at the end of
 the preceding paragraph (over there \texttt{-{}->}).  They can be indented:
 %
 \begin{quote}{\ttfamily \raggedright \noindent
-if~literal\underline{~}block:~\\
-~~~~text~=~'is~left~as-is'~\\
-~~~~spaces\underline{~}and\underline{~}linebreaks~=~'are~preserved'~\\
+if~literal\underline{~}block:\\
+~~~~text~=~'is~left~as-is'\\
+~~~~spaces\underline{~}and\underline{~}linebreaks~=~'are~preserved'\\
 ~~~~markup\underline{~}processing~=~None
 }
 \end{quote}
@@ -702,8 +702,8 @@ if~literal\underline{~}block:~\\
 Or they can be quoted without indentation:
 %
 \begin{quote}{\ttfamily \raggedright \noindent
->{}>~Great~idea!~\\
->~\\
+>{}>~Great~idea!\\
+>\\
 >~Why~didn't~I~think~of~that?
 }
 \end{quote}
@@ -713,7 +713,7 @@ Or they can be quoted without indentation:
 
 \subsection*{2.8~~~Line Blocks%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.8~~~Line Blocks}%
+  \addcontentsline{toc}{subsection}{2.8~~~Line Blocks}%
   \label{line-blocks}%
 }
 
@@ -794,7 +794,7 @@ Take it away, Eric the Orchestra Leader!
 
 \subsection*{2.9~~~Block Quotes%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.9~~~Block Quotes}%
+  \addcontentsline{toc}{subsection}{2.9~~~Block Quotes}%
   \label{block-quotes}%
 }
 
@@ -819,7 +819,7 @@ own it, and what it is too.
 
 \subsection*{2.10~~~Doctest Blocks%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.10~~~Doctest Blocks}%
+  \addcontentsline{toc}{subsection}{2.10~~~Doctest Blocks}%
   \label{doctest-blocks}%
 }
 \begin{verbatim}>>> print 'Python-specific usage examples; begun with ">>>"'
@@ -832,7 +832,7 @@ Python-specific usage examples; begun with ">>>"
 
 \subsection*{2.11~~~Footnotes%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.11~~~Footnotes}%
+  \addcontentsline{toc}{subsection}{2.11~~~Footnotes}%
   \label{footnotes}%
 }
 \begin{figure}[b]\raisebox{1em}{\hypertarget{id8}{}}\phantomsection\label{id8}\textsuperscript{1}
@@ -874,7 +874,7 @@ nonexistent footnote:%
 
 \subsection*{2.12~~~Citations%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.12~~~Citations}%
+  \addcontentsline{toc}{subsection}{2.12~~~Citations}%
   \label{citations}%
 }
 \begin{figure}[b]\raisebox{1em}{\hypertarget{cit2002}{}}[CIT2002]
@@ -892,7 +892,7 @@ citation.
 
 \subsection*{2.13~~~Targets%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.13~~~Targets}%
+  \addcontentsline{toc}{subsection}{2.13~~~Targets}%
   \label{targets}%
   \label{another-target}%
 }
@@ -920,7 +920,7 @@ error.
 
 \subsubsection*{2.13.1~~~Duplicate Target Names%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.13.1~~~Duplicate Target Names}%
+  \addcontentsline{toc}{subsubsection}{2.13.1~~~Duplicate Target Names}%
   \label{duplicate-target-names}%
 }
 
@@ -933,7 +933,7 @@ explicit targets will generate ``warning'' (level-2) system messages.
 
 \subsubsection*{2.13.2~~~Duplicate Target Names%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.13.2~~~Duplicate Target Names}%
+  \addcontentsline{toc}{subsubsection}{2.13.2~~~Duplicate Target Names}%
   \label{id21}%
 }
 
@@ -947,7 +947,7 @@ this: %
 
 \subsection*{2.14~~~Directives%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.14~~~Directives}%
+  \addcontentsline{toc}{subsection}{2.14~~~Directives}%
   \label{directives}%
 }
 \phantomsection\label{contents}%
@@ -980,7 +980,7 @@ others, please see
 
 \subsubsection*{2.14.1~~~Document Parts%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.14.1~~~Document Parts}%
+  \addcontentsline{toc}{subsubsection}{2.14.1~~~Document Parts}%
   \label{document-parts}%
 }
 
@@ -993,7 +993,7 @@ document (a document-wide \hyperref[table-of-contents]{table of contents}).
 
 \subsubsection*{2.14.2~~~Images and Figures%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.14.2~~~Images and Figures}%
+  \addcontentsline{toc}{subsubsection}{2.14.2~~~Images and Figures}%
   \label{images-and-figures}%
 }
 
@@ -1129,7 +1129,7 @@ upon the style sheet and the browser or rendering software used.
 
 \subsubsection*{2.14.3~~~Admonitions%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.14.3~~~Admonitions}%
+  \addcontentsline{toc}{subsubsection}{2.14.3~~~Admonitions}%
   \label{admonitions}%
 }
 
@@ -1199,7 +1199,7 @@ You can make up your own admonition too.
 
 \subsubsection*{2.14.4~~~Topics, Sidebars, and Rubrics%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.14.4~~~Topics, Sidebars, and Rubrics}%
+  \addcontentsline{toc}{subsubsection}{2.14.4~~~Topics, Sidebars, and Rubrics}%
   \label{topics-sidebars-and-rubrics}%
 }
 
@@ -1227,7 +1227,7 @@ This is a topic.
 
 \subsubsection*{2.14.5~~~Target Footnotes%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.14.5~~~Target Footnotes}%
+  \addcontentsline{toc}{subsubsection}{2.14.5~~~Target Footnotes}%
   \label{target-footnotes}%
 }
 \begin{figure}[b]\raisebox{1em}{\hypertarget{id26}{}}\phantomsection\label{id26}\textsuperscript{5}
@@ -1242,7 +1242,7 @@ This is a topic.
 
 \subsubsection*{2.14.6~~~Replacement Text%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.14.6~~~Replacement Text}%
+  \addcontentsline{toc}{subsubsection}{2.14.6~~~Replacement Text}%
   \label{replacement-text}%
 }
 
@@ -1253,7 +1253,7 @@ I recommend you try \href{http://www.python.org/}{Python, \emph{the} best langua
 
 \subsubsection*{2.14.7~~~Compound Paragraph%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.14.7~~~Compound Paragraph}%
+  \addcontentsline{toc}{subsubsection}{2.14.7~~~Compound Paragraph}%
   \label{compound-paragraph}%
 }
 
@@ -1282,7 +1282,7 @@ Compound 2, this is a test.
 Compound 3, only consisting of one paragraph.
 %
 \begin{quote}{\ttfamily \raggedright \noindent
-Compound~4.~\\
+Compound~4.\\
 This~one~starts~with~a~literal~block.
 }
 \end{quote}
@@ -1335,15 +1335,15 @@ Compound 7, another paragraph.
 
 \subsubsection*{2.14.8~~~Parsed Literal Blocks%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.14.8~~~Parsed Literal Blocks}%
+  \addcontentsline{toc}{subsubsection}{2.14.8~~~Parsed Literal Blocks}%
   \label{parsed-literal-blocks}%
 }
 %
 \begin{quote}{\ttfamily \raggedright \noindent
-This~is~a~parsed~literal~block.~\\
-~~~~This~line~is~indented.~~The~next~line~is~blank.~\\
+This~is~a~parsed~literal~block.\\
+~~~~This~line~is~indented.~~The~next~line~is~blank.\\
 ~\\
-Inline~markup~is~supported,~e.g.~\emph{emphasis},~\textbf{strong},~\texttt{literal~\\
+Inline~markup~is~supported,~e.g.~\emph{emphasis},~\textbf{strong},~\texttt{literal\\
 text},~footnotes\textsuperscript{\hyperlink{id8}{1}},~%
 \phantomsection\label{hyperlink-targets}hyperlink~targets,~and~\href{http://www.python.org/}{references}.
 }
@@ -1354,7 +1354,7 @@ text},~footnotes\textsuperscript{\hyperlink{id8}{1}},~%
 
 \subsection*{2.15~~~Substitution Definitions%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.15~~~Substitution Definitions}%
+  \addcontentsline{toc}{subsection}{2.15~~~Substitution Definitions}%
   \label{substitution-definitions}%
 }
 
@@ -1367,7 +1367,7 @@ An inline image (\includegraphics{../../../docs/user/rst/images/biohazard.png}) 
 
 \subsection*{2.16~~~Comments%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.16~~~Comments}%
+  \addcontentsline{toc}{subsection}{2.16~~~Comments}%
   \label{comments}%
 }
 
@@ -1388,7 +1388,7 @@ Here's one:
 
 \subsection*{2.17~~~Raw text%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.17~~~Raw text}%
+  \addcontentsline{toc}{subsection}{2.17~~~Raw text}%
   \label{raw-text}%
 }
 
@@ -1403,7 +1403,7 @@ Fifth test in LaTeX.\\Line two.
 
 \subsection*{2.18~~~Container%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.18~~~Container}%
+  \addcontentsline{toc}{subsection}{2.18~~~Container}%
   \label{container}%
 }
 
@@ -1420,7 +1420,7 @@ paragraph 2
 
 \subsection*{2.19~~~Colspanning tables%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.19~~~Colspanning tables}%
+  \addcontentsline{toc}{subsection}{2.19~~~Colspanning tables}%
   \label{colspanning-tables}%
 }
 
@@ -1503,7 +1503,7 @@ True
 
 \subsection*{2.20~~~Rowspanning tables%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.20~~~Rowspanning tables}%
+  \addcontentsline{toc}{subsection}{2.20~~~Rowspanning tables}%
   \label{rowspanning-tables}%
 }
 
@@ -1567,7 +1567,7 @@ body row 3
 
 \subsection*{2.21~~~Custom Roles%
   \phantomsection%
-  \addcontentsline{toc}{section}{2.21~~~Custom Roles}%
+  \addcontentsline{toc}{subsection}{2.21~~~Custom Roles}%
   \label{custom-roles}%
 }
 %
@@ -1608,7 +1608,7 @@ not need to be tested with other writers (e.g. the HTML writer).
 
 \subsection*{3.1~~~Custom Roles in LaTeX%
   \phantomsection%
-  \addcontentsline{toc}{section}{3.1~~~Custom Roles in LaTeX}%
+  \addcontentsline{toc}{subsection}{3.1~~~Custom Roles in LaTeX}%
   \label{custom-roles-in-latex}%
 }
 %
@@ -1655,7 +1655,7 @@ This is a \DUroletitlereference{\DUrole{custom-title-reference}{customized title
 
 \subsection*{3.2~~~Option lists%
   \phantomsection%
-  \addcontentsline{toc}{section}{3.2~~~Option lists}%
+  \addcontentsline{toc}{subsection}{3.2~~~Option lists}%
   \label{id23}%
 }
 
@@ -1695,7 +1695,7 @@ is contained in a quote
 
 \subsection*{3.3~~~Monospaced non-alphanumeric characters%
   \phantomsection%
-  \addcontentsline{toc}{section}{3.3~~~Monospaced non-alphanumeric characters}%
+  \addcontentsline{toc}{subsection}{3.3~~~Monospaced non-alphanumeric characters}%
   \label{monospaced-non-alphanumeric-characters}%
 }
 
@@ -1715,7 +1715,7 @@ width as the third line.
 
 \subsection*{3.4~~~Various non-ASCII characters%
   \phantomsection%
-  \addcontentsline{toc}{section}{3.4~~~Various non-ASCII characters}%
+  \addcontentsline{toc}{subsection}{3.4~~~Various non-ASCII characters}%
   \label{various-non-ascii-characters}%
 }
 
@@ -1837,7 +1837,7 @@ X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~
 
 \subsection*{3.5~~~Encoding special chars%
   \phantomsection%
-  \addcontentsline{toc}{section}{3.5~~~Encoding special chars}%
+  \addcontentsline{toc}{subsection}{3.5~~~Encoding special chars}%
   \label{encoding-special-chars}%
 }
 

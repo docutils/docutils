@@ -126,7 +126,7 @@ Paragraph 1.
 
 \subsection*{Title 2%
   \phantomsection%
-  \addcontentsline{toc}{section}{Title 2}%
+  \addcontentsline{toc}{subsection}{Title 2}%
   \label{title-2}%
 }
 
@@ -153,7 +153,6 @@ latex_head_prefix + latex_requirements + latex_head + b(r"""
 \renewcommand{\contentsname}{Contents}
 \tableofcontents
 
-\bigskip
 
 
 %___________________________________________________________________________
@@ -185,7 +184,6 @@ latex_head_prefix + latex_requirements + latex_head + b(r"""
 \renewcommand{\contentsname}{Contents}
 \tableofcontents
 
-\bigskip
 
 
 %___________________________________________________________________________
@@ -433,8 +431,8 @@ Inside literal blocks quotes should be left untouched
 the python interpreter running the test):
 %
 \begin{quote}{\ttfamily \raggedright \noindent
-"{}"~\\
-This~is~left~"untouched"~also~*this*.~\\
+"{}"\\
+This~is~left~"untouched"~also~*this*.\\
 "{}"
 }
 \end{quote}
@@ -534,10 +532,10 @@ latex_head_prefix + latex_requirements_graphicx + latex_head + b(r"""
 \begin{document}
 %
 \begin{quote}{\ttfamily \raggedright \noindent
-something~before~to~get~a~end~of~line.~\\
-{[}~\\
+something~before~to~get~a~end~of~line.\\
+{[}\\
 ~\\
-the~empty~line~gets~tested~too~\\
+the~empty~line~gets~tested~too\\
 {]}
 }
 \end{quote}
