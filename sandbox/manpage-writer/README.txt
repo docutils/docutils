@@ -147,6 +147,11 @@ Open issues
   advised to avoid if possible.
 * Images and equations are discouraged.
 * Lists in admonitions are not intended.
+* Encoding declaration ``'\" t -*- coding: ISO-8859-1 -*-``
+  in first line.
+
+  BUT if UTF-8 is declared tables are no longer processed.
+  
 
 Change log
 ''''''''''
