@@ -153,6 +153,10 @@ Change log
 
 * writers/manpage.py:
 
+  - 2009-08-12:
+
+    * Replace accents and straight quote. BUG test.txt Table output is broken.
+
   - 2009-08-05:
 
     * Do not print timestamp in trainling comment.
