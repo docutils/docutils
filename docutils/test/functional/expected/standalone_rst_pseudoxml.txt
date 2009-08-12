@@ -1333,6 +1333,10 @@
                     <generated classes="sectnum">
                         2.14.4   
                     Topics, Sidebars, and Rubrics
+                <paragraph>
+                    <emphasis>
+                        Sidebars
+                     are like miniature, parallel documents.
                 <sidebar>
                     <title>
                         Sidebar Title
@@ -1344,15 +1348,33 @@
                     <rubric>
                         This is a rubric inside a sidebar
                     <paragraph>
-                        Sidebars often appears beside the main text with a border and
-                        background color.
+                        Sidebars often appear beside the main text with a border and a different
+                        background or font color.
+                <paragraph>
+                    A 
+                    <emphasis>
+                        topic
+                     is like a block quote with a title, or a self-contained section
+                    with no subsections.
                 <topic>
                     <title>
                         Topic Title
                     <paragraph>
                         This is a topic.
+                <paragraph>
+                    A 
+                    <emphasis>
+                        rubric
+                     is like an informal heading that doesn't correspond to the
+                    document's structure. It is typically highlighted in red (hence the name).
                 <rubric>
                     This is a rubric
+                <paragraph>
+                    Topics and rubrics can be used at places where a 
+                    <reference name="section title" refid="section-title">
+                        section title
+                     is not
+                    allowed (e.g. inside a directive).
             <section ids="target-footnotes" names="target\ footnotes">
                 <title auto="1" refid="id75">
                     <generated classes="sectnum">

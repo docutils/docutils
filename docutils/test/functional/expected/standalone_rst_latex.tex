@@ -1203,6 +1203,8 @@ You can make up your own admonition too.
   \label{topics-sidebars-and-rubrics}%
 }
 
+\emph{Sidebars} are like miniature, parallel documents.
+
 \DUsidebar{
 \DUsidebartitle{Sidebar Title}
 \DUsidebarsubtitle{Optional Subtitle}
@@ -1212,15 +1214,24 @@ text.
 
 \DUrubric{This is a rubric inside a sidebar}
 
-Sidebars often appears beside the main text with a border and
-background color.
+Sidebars often appear beside the main text with a border and a different
+background or font color.
 }
+
+A \emph{topic} is like a block quote with a title, or a self-contained section
+with no subsections.
 
 \subsubsection*{~\hfill Topic Title\hfill ~}
 
 This is a topic.
 
+A \emph{rubric} is like an informal heading that doesn't correspond to the
+document's structure. It is typically highlighted in red (hence the name).
+
 \DUrubric{This is a rubric}
+
+Topics and rubrics can be used at places where a \hyperref[section-title]{section title} is not
+allowed (e.g. inside a directive).
 
 
 %___________________________________________________________________________
