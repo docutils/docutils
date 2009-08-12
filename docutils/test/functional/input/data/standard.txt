@@ -595,6 +595,8 @@ Admonitions
 Topics, Sidebars, and Rubrics
 `````````````````````````````
 
+*Sidebars* are like miniature, parallel documents.
+
 .. sidebar:: Sidebar Title
    :subtitle: Optional Subtitle
 
@@ -603,14 +605,23 @@ Topics, Sidebars, and Rubrics
 
    .. rubric:: This is a rubric inside a sidebar
 
-   Sidebars often appears beside the main text with a border and
-   background color.
+   Sidebars often appear beside the main text with a border and a different
+   background or font color.
+
+A *topic* is like a block quote with a title, or a self-contained section
+with no subsections.
 
 .. topic:: Topic Title
 
    This is a topic.
 
+A *rubric* is like an informal heading that doesn't correspond to the
+document's structure. It is typically highlighted in red (hence the name).
+
 .. rubric:: This is a rubric
+
+Topics and rubrics can be used at places where a `section title`_ is not
+allowed (e.g. inside a directive).
 
 Target Footnotes
 ````````````````
