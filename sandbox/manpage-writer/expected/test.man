@@ -83,7 +83,10 @@ backslash: \e
 hyphen: \-
 .IP \(bu 2
 .
-quotes: \' "
+accents: \' \(ga
+.IP \(bu 2
+.
+quotes: \(aq "
 .UNINDENT
 .SS Lists
 .INDENT 0.0
@@ -223,9 +226,9 @@ with the colon.
 .sp
 .nf
 .ft C
->>> print \'Python\-specific usage examples; begun with ">>>"\'
+>>> print \(aqPython\-specific usage examples; begun with ">>>"\(aq
 Python\-specific usage examples; begun with ">>>"
->>> print \'(cut and pasted from interactive Python sessions)\'
+>>> print \(aq(cut and pasted from interactive Python sessions)\(aq
 (cut and pasted from interactive Python sessions)
 .ft P
 .fi
@@ -317,7 +320,7 @@ must, \fIipso facto\fP, half not be.
 .in -2
 But half the bee has got to be,
 .in +2
-\fIvis a vis\fP its entity.  D\'you see?
+\fIvis a vis\fP its entity.  D\(aqyou see?
 
 .in -2
 But can a bee be said to be
@@ -345,7 +348,7 @@ Directives at large.
 .RE
 .IP Caution!
 .
-Don\'t take any wooden nickels.
+Don\(aqt take any wooden nickels.
 .RE
 .IP !DANGER!
 .
@@ -357,7 +360,7 @@ Does not compute.
 .RE
 .IP Hint
 .
-It\'s bigger than a bread box.
+It\(aqs bigger than a bread box.
 .RE
 .IP Important
 .INDENT 0.0

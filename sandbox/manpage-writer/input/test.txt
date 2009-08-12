@@ -64,7 +64,8 @@ Special characters:
 
 * backslash: \\
 * hyphen: -
-* quotes: ' "
+* accents: ´ `
+* quotes: ' " 
 
 Lists
 -----

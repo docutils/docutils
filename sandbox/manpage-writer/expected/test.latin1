@@ -38,7 +38,9 @@ EEXXAAMMPPLLEESS
 
        · hyphen: -
 
-       · quotes: ´ "
+       · accents: ´ `
+
+       · quotes: ' "
 
    LLiissttss
        · bullet list
@@ -122,89 +124,88 @@ EEXXAAMMPPLLEESS
               with the colon.
 
    DDoocctteesstt BBlloocckkss
-       >>> print ´Python-specific usage examples; begun with ">>>"´
+       >>> print 'Python-specific usage examples; begun with ">>>"'
        Python-specific usage examples; begun with ">>>"
-       >>> print ´(cut and pasted from interactive Python sessions)´
+       >>> print '(cut and pasted from interactive Python sessions)'
        (cut and pasted from interactive Python sessions)
 
    TTaabblleess
+                              --------------------------
+                               single            frame
+                              --------------------------
+                               no table header
                               +----------------+-------+
-                              |single          | frame |
-                              +----------------+-------+
-
-                              |no table header |       |
-                              +----------------+-------+
-
-   lliinneebblloocckk
-       paul
-       tel. 12345
-       LA
-
-
-       A  paragraph  following  the line block.  lorem ipsum lorem ipsum lorem
-       ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-
-   LLiitteerraall
-       some literal text
-
-       here now it starts
-       and continues
-         indented
-       and back
-
-       and a paragraph after the literal.
-
-       some special characters and roff formatting in literal:
-
-       .SS "." at line start
-       backslash "\"
-
-   LLiinnee bblloocckkss
-       This is a line block.  It ends with a blank line.
-         Each new line begins with a vertical bar ("|").
-         Line breaks and initial indents are preserved.
-       Continuation lines are wrapped portions of long lines;
-       they begin with a space in place of the vertical bar.
-         The left edge of a continuation line need not be aligned with
-         the left edge of the text above it.
-
-       This is a second line block.
-
-       Blank lines are permitted internally, but they must begin with a "|".
-
-
-       Take it away, Eric the Orchestra Leader!
-           A one, two, a one two three four
-
-           Half a bee, philosophically,
-             must, _i_p_s_o _f_a_c_t_o, half not be.
-           But half the bee has got to be,
-             _v_i_s _a _v_i_s its entity.  D´you see?
-
-           But can a bee be said to be
-             or not to be an entire bee,
-               when half the bee is not a bee,
-                 due to some ancient injury?
-
-           Singing...
-
-
-   rraaww
-       raw input to man
-
-   AAddmmoonniittiioonnss
-       Attention!
-              Directives at large.
-
-       Caution!
-              Don´t take any wooden nickels.
+                              |                |       |
+   lliinneebblloocckk                  |                |       |
+       paul                   |                |       |
+       tel. 12345             |                |       |
+       LA                     |                |       |
+                              |                |       |
+                              |                |       |
+       A  paragraph  following| the line block.| lorem |ipsum lorem ipsum lorem
+       ipsum lorem ipsum lorem|ipsum lorem ipsu|m lorem |ipsum lorem ipsum
+                              |                |       |
+   LLiitteerraall                    |                |       |
+       some literal text      |                |       |
+                              |                |       |
+       here now it starts     |                |       |
+       and continues          |                |       |
+         indented             |                |       |
+       and back               |                |       |
+                              |                |       |
+       and a paragraph after t|he literal.      |       |
+                              |                |       |
+       some special characters|and roff formatt|ing in l|iteral:
+                              |                |       |
+       .SS "." at line start  |                |       |
+       backslash "\"          |                |       |
+                              |                |       |
+   LLiinnee bblloocckkss                |                |       |
+       This is a line block.  |It ends with a bl|ank line|.
+         Each new line begins |with a vertical b|ar ("|")|.
+         Line breaks and initi|al indents are pr|eserved.|
+       Continuation lines are |wrapped portions |of long |lines;
+       they begin with a space|in place of the |vertical|bar.
+         The left edge of a co|ntinuation line n|eed not |be aligned with
+         the left edge of the |text above it.   |       |
+                              |                |       |
+       This is a second line b|lock.            |       |
+                              |                |       |
+       Blank lines are permitt|ed internally, bu|t they m|ust begin with a "|".
+                              |                |       |
+                              |                |       |
+       Take it away, Eric the |Orchestra Leader!|       |
+           A one, two, a one t|wo three four    |       |
+                              |                |       |
+           Half a bee, philoso|phically,        |       |
+             must, _i_p_s_o _f_a_c_t_o,|half not be.    |       |
+           But half the bee ha|s got to be,     |       |
+             _v_i_s _a _v_i_s its ent|ity.  D'you see? |       |
+                              |                |       |
+           But can a bee be sa|id to be         |       |
+             or not to be an e|ntire bee,       |       |
+               when half the b|ee is not a bee, |       |
+                 due to some a|ncient injury?   |       |
+                              |                |       |
+           Singing...         |                |       |
+                              |                |       |
+                              |                |       |
+   rraaww                        |                |       |
+       raw input to man       |                |       |
+                              |                |       |
+   AAddmmoonniittiioonnss                |                |       |
+       Attention!             |                |       |
+              Directives at la|rge.             |       |
+                              |                |       |
+       Caution!               |                |       |
+              Don't take any wooden nickels.
 
        !DANGER!
               Mad scientist at work!
 
        Error  Does not compute.
 
-       Hint   It´s bigger than a bread box.
+       Hint   It's bigger than a bread box.
 
        Important
 

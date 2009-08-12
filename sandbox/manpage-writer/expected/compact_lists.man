@@ -62,7 +62,7 @@ There are multiple paragraphs in some items.
 .IP \(bu 2
 .
 However, the class="compact" setting will cause
-all first paragraph\'s <p> & </p> tags to be omitted.
+all first paragraph\(aqs <p> & </p> tags to be omitted.
 .IP \(bu 2
 .
 Items with multiple paragraphs will not appear changed.

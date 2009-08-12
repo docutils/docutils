@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # $Id$
 # Author: Engelbert Gruber <grubert@users.sourceforge.net>
 # Copyright: This module is put into the public domain.
@@ -276,8 +277,14 @@ class Translator(nodes.NodeVisitor):
     def visit_Text(self, node):
         text = node.astext()
         text = text.replace('\\','\\e')
-        text = text.replace('-','\-')
-        text = text.replace("'","\\'")
+        replace_pairs = [
+            (u'-', ur'\-'),
+            (u'\'', ur'\(aq'),
+            (u'´', ur'\''),
+            (u'`', ur'\(ga'),
+            ]
+        for (in_char, out_markup) in replace_pairs:
+            text = text.replace(in_char, out_markup)
         # unicode
         text = self.deunicode(text)
         if self._in_literal:
@@ -1090,4 +1097,4 @@ class Translator(nodes.NodeVisitor):
         raise NotImplementedError('visiting unimplemented node type: %s'
                                   % node.__class__.__name__)
 
-# vim: set et ts=4 ai :
+# vim: set fileencoding=utf-8 et ts=4 ai :

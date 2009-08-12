@@ -114,7 +114,7 @@ is indented, as all text in man\-pages. This is level 0.
 .INDENT 0.0
 .IP \(bu 2
 .
-Now let\'s test nested lists.
+Now let\(aqs test nested lists.
 .sp
 Line indented once. This is level 1.
 .INDENT 2.0

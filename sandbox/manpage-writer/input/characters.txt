@@ -1,0 +1,20 @@
+====================
+ special characters
+====================
+
+
+
+* accents:
+
+  - right: ´
+  - left: `
+
+* quotes: 
+
+  - straight: ' 
+  - double: " 
+  - single: ‘ ’
+  - double: “ ”
+
+Some text afterwards, test.txt ended with quotes test.
+
