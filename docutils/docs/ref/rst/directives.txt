@@ -1539,7 +1539,7 @@ The text above is parsed and transformed into this doctree fragment::
    the indented text to be parsed as a block quote.  Without the empty
    comment, the indented text would be interpreted as the "class"
    directive's content, and the classes would be applied to each
-   element (paragraphi, in this case) individually, instead of to the
+   element (paragraph, in this case) individually, instead of to the
    block quote as a whole.
 
 .. _rationale:
