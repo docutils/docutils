@@ -135,6 +135,7 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
                  'tools/rst2s5.py',
                  'tools/rst2latex.py',
                  'tools/rst2newlatex.py',
+                 'tools/rst2man.py',
                  'tools/rst2xml.py',
                  'tools/rst2pseudoxml.py',
                  'tools/rstpep2html.py',

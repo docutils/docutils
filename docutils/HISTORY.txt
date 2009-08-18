@@ -112,6 +112,9 @@ Changes Since 0.5
   - Default type area defined in the document class (not by 'typearea').
   - Float placement made configurable and changed to "here definitely".
 
+* docutils/writers/manpage.py
+
+* docutils/tools/rst2man.py
 
 Release 0.5 (2008-06-25)
 ========================
