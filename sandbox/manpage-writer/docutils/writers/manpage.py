@@ -164,8 +164,6 @@ class Translator(nodes.NodeVisitor):
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
         self.settings = settings = document.settings
-        print self.settings.input_encoding
-        print self.settings.output_encoding
         lcode = settings.language_code
         self.language = languages.get_language(lcode)
         self.head = []
