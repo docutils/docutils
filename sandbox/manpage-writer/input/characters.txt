@@ -2,7 +2,14 @@
  special characters
 ====================
 
+-----------------------
+test special characters
+-----------------------
 
+DESCRIPTION
+===========
+
+encodings are problematic as alway.
 
 * accents:
 
@@ -17,4 +24,5 @@
   - double: “ ”
 
 Some text afterwards, test.txt ended with quotes test.
-
+Unicode breaks the man processing chain. The display 
+ends with ``single:`` .

@@ -3,7 +3,10 @@ SPECIAL(CHARACTERS)                                        SPECIAL(CHARACTERS)
 
 
 NNAAMMEE
-       special characters -
+       special characters - test special characters
+
+DDEESSCCRRIIPPTTIIOONN
+       encodings are problematic as alway.
 
        +o accents:
 
