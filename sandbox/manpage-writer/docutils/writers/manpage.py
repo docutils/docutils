@@ -164,6 +164,8 @@ class Translator(nodes.NodeVisitor):
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
         self.settings = settings = document.settings
+        print self.settings.input_encoding
+        print self.settings.output_encoding
         lcode = settings.language_code
         self.language = languages.get_language(lcode)
         self.head = []
@@ -600,8 +602,8 @@ class Translator(nodes.NodeVisitor):
             self.document.reporter.warning('"table row spanning" not supported',
                     base_node=node)
         if 'morecols' in node:
-            self.document.reporter.warning('"table cell spanning" not supported',
-                    base_node=node)
+            self.document.reporter.warning(
+                    '"table cell spanning" not supported', base_node=node)
         self.context.append(len(self.body))
 
     def depart_entry(self, node):
