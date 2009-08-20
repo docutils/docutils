@@ -145,6 +145,8 @@ Conventions
 Open issues
 '''''''''''
 
+* How to typeset command/manpage names in text.
+* How to write long syntax lines.
 * line ends around email or web addresses in texts.
   How to distinguish something is inline or not ?
   
