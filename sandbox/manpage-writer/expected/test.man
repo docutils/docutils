@@ -457,8 +457,6 @@ A1B 2C3
 .UNINDENT
 
 Date: 2009-06-22
-
-Version: 0.0.1
 .SH COPYRIGHT
 public domain
 Behave responsible.
