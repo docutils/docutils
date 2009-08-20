@@ -567,7 +567,7 @@ class Translator(nodes.NodeVisitor):
         skip = ('author', 'copyright', 
                 'manual_group', 'manual_section', 
                 'subtitle',
-                'title', 'title_upper')
+                'title', 'title_upper', 'version')
         for name in self._docinfo_keys:
             if name == 'address':
                 self.body.append("\n%s:\n%s%s.nf\n%s\n.fi\n%s%s" % (

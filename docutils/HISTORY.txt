@@ -114,6 +114,8 @@ Changes Since 0.5
 
 * docutils/writers/manpage.py
 
+  - Do not print version at document end, this is done by the viewer.
+
 * docutils/tools/rst2man.py
 
 Release 0.5 (2008-06-25)
