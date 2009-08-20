@@ -159,13 +159,33 @@ Die folgenden Konventionen gelten fuer den Abschnitt SYNTAX und koennen
 fuer andere Abschnitte als Anleitung benutzt werden.
 .INDENT 0.0
 .INDENT 3.5
-.sp
-bold text        Literale Angaben wie in der Anzeige.
-italic text      Ersetzen durch passendes Argument.
-[\-abc]           Ein oder mehrere Argumente innerhalb der [ ] sind optional.
-\-a|\-b            Optionen, die durch | abgegrenzt sind, koennen nicht zusammen benutzt werden.
-Argument ...     Argument kann wiederholt werden.
-[Ausdruck] ...   gesamter Ausdruck innerhalb [ ] kann wiederholt werden.
+.INDENT 0.0
+.TP
+.B bold text
+.
+Literale Angaben wie in der Anzeige.
+.TP
+.B italic text
+.
+Ersetzen durch passendes Argument.
+.TP
+.B [\-abc]
+.
+Ein oder mehrere Argumente innerhalb der \fC[ ]\fP sind optional.
+.TP
+.B \-a|\-b
+.
+Optionen, die durch \fC|\fP abgegrenzt sind, koennen nicht zusammen
+benutzt werden.
+.TP
+.B Argument ...
+.
+Argument kann wiederholt werden.
+.TP
+.B [Ausdruck] ...
+.
+gesamter Ausdruck innerhalb \fC[ ]\fP kann wiederholt werden.
+.UNINDENT
 .UNINDENT
 .UNINDENT
 .sp
@@ -256,8 +276,6 @@ whatis oder apropos keine  Indexdatenbank  finden koennen,  versucht  es  die
 Information  aus  der whatis\-Datenbank zu beziehen.  Auch anwenderspezifische
 Manualhierarchien  werden  waehrend der Benutzung in Indexdatenbanken
 zusammengefasst.
-.INDENT 0.0
-.INDENT 3.5
 .sp
 Die  Hilfsprogramme  unterstuetzen komprimierte nroff\-Quelldateien, die
 normalerweise die Erweiterung .Z, .z oder  .gz  besitzen.  Jede  andere
@@ -278,8 +296,13 @@ es moeglich, Manualseiten der Landessprache zu verwalten, wenn sie  auf
 dem  System vorhanden sind. Um diese Unterstuetzung zu aktivieren, muss
 man entweder in  $LC_MESSAGES,  $LANG  oder  anderen  systemabhaengigen
 Umgebungsvariablen die gewuenschte Sprache einstellen. Die Sprache wird
-normalerweise in dem durch POSIX 1003.1 definierten  Format  angegeben:
+normalerweise in dem durch POSIX 1003.1 definierten Format angegeben:
+.sp
+.nf
+.ft C
 <Sprache>[_<Region>[.<Zeichensatz>[,<Version>]]]
+.ft P
+.fi
 .sp
 Wenn  die  angeforderte  Seite  in  der  locale vorhanden ist, wird sie
 anstelle der Standardseite (normalerweise in  amerikanischem  Englisch)
@@ -296,11 +319,7 @@ beiliegenden Dokumenten beschrieben. Einen umfassenden Einblick in  die
 mandb zugrundeliegenden Konzepte sind in der Dokumentation man\-db\-2.3 \-
 the database cached manual pager suite beschrieben.  Die  Dokumentation
 sollte auf denselben Server wie das mandb\- Paket selbst zu finden sein.
-.UNINDENT
-.UNINDENT
 .SH NORMALEINSTELLUNGEN
-.INDENT 0.0
-.INDENT 3.5
 .sp
 man sucht nach der gewueschten Manualseite in der Indexdatenbank.  Wenn
 die  Suche  fehlschlaegt, wird ein Konsistenztest durchgefuehrt, um die
@@ -328,7 +347,11 @@ gesetzt ist, wird die Anfangszeile der nroff\-Datei nach einer  Zeichen\-
 kette  fuer  den  Praeprozessor  untersucht. Eine solche Praeprozessor\-
 Zeichenkette muss folgendes Aussehen haben:
 .sp
-\(aq" <Zeichenkette>
+.nf
+.ft C
+\(aq\e" <Zeichenkette>
+.ft P
+.fi
 .sp
 wobei Zeichenkette jede Kombination von Buchstaben sein kann, die unter
 Option \-p weiter unten beschrieben sind.
@@ -338,20 +361,17 @@ tbl als Default verwendet.
 .sp
 Als primaerer Formatierer wird entweder nroff, troff  oder  groff  ges\-
 tartet.
-.UNINDENT
-.UNINDENT
 .SH OPTIONEN
 .sp
 Eine Argumentoption, die entweder in der Kommandozeile, in \fC$MANOPT\fP oder in
 beiden doppelt vorkommt , ist nicht schaedlich. Fuer  Optionen,  die ein
 Argument benötigen, überschreibt jedes Duplikat den vorhergehenden Wert.
 .INDENT 0.0
-.INDENT 3.5
-.INDENT 0.0
 .TP
 .B \-l,  \-\-local\-file
 .
-Aktiviert den lokalen Modus. Formatiert und zeigt lokale Manualdateien  an,  anstatt  die System\-Manualsammlung zu durchsuchen.
+Aktiviert den lokalen Modus. Formatiert und zeigt lokale Manualdateien
+an,  anstatt  die System\-Manualsammlung zu durchsuchen.
 Jedes Manualseiten\-Argument wird als nroff\-Quelle  im  richtigen
 Format  interpretiert. Komprimierte nroff\-Quelldateien mit einer
 unterstuetzten Kompressions\-Erweiterung werden  von  man  dekom\-
@@ -382,16 +402,16 @@ wieder ihren gewohnten Effekt.
 .TP
 .BI \-M \ Pfad, \ \-\-manpath\fB= Pfad
 .
-Ermoeglicht es, einen alternativen  Manualpfad  anzugeben.  Nor\-
-malerweise  verwendet  man dieselben Methoden wie in manpath, um
-den Suchpfad zu ermitteln. Diese Option ueberschreibt die  Umge\-
-bungsvariable $MANPATH.
+Ermoeglicht es, einen alternativen  Manualpfad  anzugeben.
+Normalerweise verwendet man dieselben Methoden wie in manpath, um
+den Suchpfad zu ermitteln. Diese Option ueberschreibt die
+Umgebungsvariable \fC$MANPATH\fP.
 .TP
 .BI \-P \ Pager, \ \-\-pager\fB= Pager
 .
 Gibt an, welcher Pager verwendet wird. Die Normaleinstellung ist
 pager\-s.   Diese  Option  ueberschreibt  die   Umgebungsvariable
-$PAGER  und wird nicht in Zusammenhang mit \-f oder \-k verwendet.
+\fC$PAGER\fP und wird nicht in Zusammenhang mit \-f oder \-k verwendet.
 .TP
 .BI \-r \ Prompt, \ \-\-prompt\fB= Prompt
 .
@@ -408,26 +428,31 @@ Manual page name(sec) line x,
 .sp
 wobei  name  die  Manualseite  bezeichnet,  die gerade angezeigt
 wird, sec der Abschnitt ist, in dem sie gefunden  wurde,  und  x
-die aktuelle Zeilennummer ist.  Diese Anzeige wird durch Verwen\-
-dung der Umgebungsvariable $LESS erreicht.   Man  beachte,  dass
-einzelne Bezeichnungen sich bei der Verwendung von landessprach\-
-lichen Meldungen aendern koennen.  Die Option \-r ermoeglicht es,
-durch  Angabe einer Formatierungszeichenkette, das Ausgabeformat
-selbst zu bestimmen. Wenn diese Zeichenkette  $MAN_PN  enthaelt,
-wird dieser Text durch den Namen der Manualseite gefolgt von der
-Abschnittsnummer in runden Klammern ersetzt.  Die  Zeichenkette,
-die im Normalfall verwendet wird ist:
+die aktuelle Zeilennummer ist.  Diese Anzeige wird durch
+Verwendung der Umgebungsvariable \fC$LESS\fP erreicht.
+Man beachte, dass einzelne Bezeichnungen sich bei der Verwendung
+von landessprachlichen Meldungen ändern koennen.  Die Option
+\fC\-r\fP ermöglicht es, durch  Angabe einer
+Formatierungszeichenkette, das Ausgabeformat selbst zu bestimmen.
+Wenn diese Zeichenkette \fC$MAN_PN\fP enthält, wird dieser Text
+durch den Namen der Manualseite gefolgt von der Abschnittsnummer
+in runden Klammern ersetzt.  Die  Zeichenkette, die im Normalfall
+verwendet wird ist:
 .sp
-Manualpage$MAN_PN?ltline%lt?L/%L.:
-byte%bB?s/%s..?(END):?pB %pB\e%..
+.nf
+.ft C
+\e Manual\e page\e \e$MAN_PN\e ?ltline\e %lt?L/%L.:
+byte\e %bB?s/%s..?\e (END):?pB %pB\e\e%..
+.ft P
+.fi
 .sp
 Die  zweizeilige  Darstellung  wurde nur der besseren Lesbarkeit
-wegen gewaehlt. Naehere Informationen liefert less(1).   Da  die
+wegen gewählt. Nähere Informationen liefert less(1).   Da  die
 Zeichenkette  zuerst  vom  Kommandointerpreter ausgewertet wird,
-muessen entsprechende Zeichen durch einen  Backslash  geschuetzt
-werden.  Weitere Optionen fuer less koennen nach einem geschuet\-
-zten $ am Ende der Zeichenkette hinzugefuegt werden. Der Default
-ist hier \-ix8.
+muessen entsprechende Zeichen durch einen  Backslash  geschützt
+werden.  Weitere Optionen für less koennen nach einem
+geschützten \fC$\fP am Ende der Zeichenkette hinzugefügt werden.
+Der Default ist hier \fC\-ix8\fP.
 .TP
 .BI \-S \ Liste, \ \-\-sections\fB= Liste
 .
@@ -455,45 +480,23 @@ Bei  dieser  Option werden keine Manualseiten angezeigt, sondern
 nur eine Menge von Diagnoseinformation.
 .TP
 .BI \-e \ Erweiterung, \ \-\-extension\fB= Erweiterung
-.INDENT 7.0
-.TP
-.B Einige Systeme enthalten grosse Pakete an Manualseiten,  wie
 .
+Einige Systeme enthalten grosse Pakete an Manualseiten,  wie
 z.B.  in dem Tcl Paket, die in die normalen Manualabschnitte
 integriert werden.  Um beispielsweise das Problem zweier
 unterschiedlicher Manualseiten mit gleichem Namen, wie exit(3),
 zu lösen, wurden früher alle Tcl Seiten dem Abschnitt l
 zugeordnet.  Dieses erwies sich als keine gute Lösung. Bei
 dieser Version von man ist es möglich, die Seiten in die richtigen
-.UNINDENT
-.IP "System Message: WARNING/2 (input/man-de.1.txt:, line 346)"
-.
-Definition list ends without a blank line; unexpected unindent.
-.sp
 Abschnitte einzuordnen und ihrem Seitennamen eine spezifische
 Erweiterung, hier z. B. exit(3tcl) anzuhängen.  Unter normalen
 Umständen zeigt man bevorzugt exit(3) gegenüber exit(3tcl) an.
 Um  dieses  Verhalten  umzukehren,  ist  man  die   Zeichenkette
 Erweiterung zu übergeben, die angibt, in welchem Paket die
-.IP "System Message: ERROR/3 (input/man-de.1.txt:, line 351)"
-.
-Unexpected indentation.
-.INDENT 7.0
-.INDENT 3.5
-.sp
 Manualseite zu finden ist. Im obigen  Fall  beschränkt man seine
-.UNINDENT
-.UNINDENT
-.IP "System Message: WARNING/2 (input/man-de.1.txt:, line 352)"
-.
-Block quote ends without a blank line; unexpected unindent.
-.INDENT 7.0
-.TP
-.B Suche  auf  Seiten  mit der Erweiterung \fC*tcl\fP, wenn es mit
-.sp
+Suche  auf  Seiten  mit der Erweiterung \fC*tcl\fP, wenn es mit
 \fC\-e tcl\fP aufgerufen wurde. Die Suche wird  dabei in allen
 Abschnitten durchgeführt.
-.UNINDENT
 .TP
 .B \-f,  \-\-whatis
 .
@@ -592,11 +595,7 @@ Zeigt einen Hilfstext an.
 .
 Zeigt Programmversion und Autor an.
 .UNINDENT
-.UNINDENT
-.UNINDENT
 .SH UMGEBUNG
-.INDENT 0.0
-.INDENT 3.5
 .INDENT 0.0
 .TP
 .B MANPATH
@@ -637,44 +636,32 @@ ichen,  die Teil eines Argumentes sind, muessen gequotet werden.
 .B LANG, LC_MESSAGES
 .
 Abhaengig von System und Implementation  werden  entweder  $LANG
-oder  $LC_MESSAGES  oder  beide  nach  der gegenwaertigen locale
+oder $LC_MESSAGES  oder  beide  nach  der gegenwaertigen locale
 Information  durchsucht.   man  wird   (wenn   moeglich)   seine
-Nachrichten in dieser locale anzeigen. Fuer Details siehe setlo\-
-cale(3).
-.UNINDENT
-.UNINDENT
+Nachrichten in dieser locale anzeigen. Fuer Details siehe
+setlocale(3).
 .UNINDENT
 .SH DATEIEN
 .INDENT 0.0
-.INDENT 3.5
-.INDENT 0.0
 .TP
-.B /etc/manpath.config
-.
+.B \fC/etc/manpath.config\fP
+.sp
 Die Manualkonfigurationsdatei.
 .TP
-.B /usr/.../man
-.
+.B \fC/usr/.../man\fP
+.sp
 Globale Manualhierarchien.
 .TP
-.B /var/catman/.../index.(bt|db|dir|pag)
-.
+.B \fC/var/catman/.../index.(bt|db|dir|pag)\fP
+.sp
 Die FSSTND complianten globalen Indexdatenbanken.
 .UNINDENT
-.UNINDENT
-.UNINDENT
 .SH SIEHE AUCH
-.INDENT 0.0
-.INDENT 3.5
 .sp
 mandb(8), manpath(1),  manpath(5),  apropos(1),  whatis(1),  catman(8),
 less(1),   nroff(1),   troff(1),  groff(1),  zsoelim(1),  setlocale(3),
 man(7), ascii(7), latin1(7).
-.UNINDENT
-.UNINDENT
 .SH FEHLER
-.INDENT 0.0
-.INDENT 3.5
 .sp
 Die Option \-t funktioniert  nur,  wenn  ein  troff\-aehnliches  Programm
 installiert ist.
@@ -685,29 +672,23 @@ mit mandb eine Indexdatenbank erzeugt wurde.
 Manualseiten, die die erweiterte Darstellung im  Zusammenhang  mit  der
 Option  \-e  unterstuetzen,  duerfen keinen Punkt beinhalten, denn sonst
 werden diese Seiten als fehlerhaft zurueckgewiesen.
-.UNINDENT
-.UNINDENT
 .SH GESCHICHTE
-.INDENT 0.0
-.INDENT 3.5
 .sp
-1990,   1991   \-   Originale   geschrieben   von    John    W.    Eaton
+1990, 1991 \- Originale geschrieben von John W. Eaton
 (\fI\%jwe@che.utexas.edu\fP).
 .sp
-23.  Dez.  1992:  Fehlerbereinigung  durch Rik Faith (\fI\%faith@cs.unc.edu\fP)
-unterstuetzt durch Willem Kasdorp (\fI\%wkasdo@nikhefk.nikef.nl\fP).
+23. Dez. 1992: Fehlerbereinigung  durch Rik Faith (\fI\%faith@cs.unc.edu\fP)
+unterstützt durch Willem Kasdorp (\fI\%wkasdo@nikhefk.nikef.nl\fP).
 .sp
-Zwischen dem 30. April 1994 und dem 23. Februar 2000 hat  Wilf  (G.Wil\-
-\fI\%ford@ee.surrey.ac.uk\fP)  unter  Mithilfe  von einigen wenigen engagierten
-Menschen dieses Paket entwickelt und weitergefuehrt.
+Zwischen dem 30. April 1994 und dem 23. Februar 2000 hat Wilf
+(\fI\%G.Wilford@ee.surrey.ac.uk\fP) unter Mithilfe von einigen wenigen
+engagierten Menschen dieses Paket entwickelt und weitergeführt.
 .sp
-Die deutsche UEbersetzung wurde von Anke  Steuernagel  (\fI\%a_steuer@infor\fP\-
-matik.uni\-kl.de) und Nils Magnus (\fI\%magnus@informatik.uni\-kl.de\fP) angefer\-
-tigt.
+Die deutsche Übersetzung wurde von Anke Steuernagel
+(\fI\%a_steuer@informatik.uni\-kl.de\fP) und Nils Magnus
+(\fI\%magnus@informatik.uni\-kl.de\fP) angefertigt.
 .sp
-Fuer persoenliche Wuerdigungen und Zusaetze siehe Quelltexte.
-.UNINDENT
-.UNINDENT
+Für persönliche Würdigungen und Zusätze siehe Quelltexte.
 .\" Generated by docutils manpage writer.
 .\" 
 .

@@ -78,13 +78,22 @@ BBEESSCCHHRREEIIBBUUNNGG
        Die folgenden Konventionen gelten fuer den Abschnitt SYNTAX und koennen
        fuer andere Abschnitte als Anleitung benutzt werden.
 
-           bold text        Literale Angaben wie in der Anzeige.  italic  text
-           Ersetzen  durch  passendes  Argument.   [-abc]            Ein  oder
-           mehrere  Argumente  innerhalb  der  [  ]  sind   optional.    -a|-b
-           Optionen,  die  durch  |  abgegrenzt  sind,  koennen nicht zusammen
-           benutzt werden.  Argument ...     Argument kann wiederholt  werden.
-           [Ausdruck]  ...    gesamter  Ausdruck innerhalb [ ] kann wiederholt
-           werden.
+           bboolldd tteexxtt
+                  Literale Angaben wie in der Anzeige.
+
+           iittaalliicc tteexxtt
+                  Ersetzen durch passendes Argument.
+
+           [[--aabbcc]] Ein oder mehrere Argumente innerhalb der [ ] sind  optional.
+
+           --aa||--bb  Optionen,  die durch | abgegrenzt sind, koennen nicht zusam‐
+                  men benutzt werden.
+
+           AArrgguummeenntt ......
+                  Argument kann wiederholt werden.
+
+           [[AAuussddrruucckk]] ......
+                  gesamter Ausdruck innerhalb [ ] kann wiederholt werden.
 
        Die   Befehls-  oder  Funktionsbeispiele  sind  Muster,  die  auf  alle
        moeglichen Aufrufe passen sollten. In manchen Faellen  ist  es  ratsam,
@@ -174,396 +183,358 @@ UUEEBBEERRSSIICCHHTT
        beziehen.  Auch anwenderspezifische Manualhierarchien  werden  waehrend
        der Benutzung in Indexdatenbanken zusammengefasst.
 
-           Die  Hilfsprogramme  unterstuetzen komprimierte nroff-Quelldateien,
-           die normalerweise die Erweiterung .Z, .z oder  .gz  besitzen.  Jede
-           andere Erweiterung  kann  unterstuetzt  werden, wenn sie zur UEber‐
-           setzungszeit bekannt ist. Als Default werden  alle  cat-Seiten  mit
-           gzip   komprimiert.  Jede  globale  Manualhierarchie  wie  /usr/man
-           oder /usr/X11R6/man kann jedes Verzeichnis  als  cat-Seiten-Hierar‐
-           chie   besitzen.    UEblicherweise  werden   cat-Seiten  unter  der
-           gleichen Hierarchie wie die  Manualseiten  gespeichert.  Allerdings
-           kann  es aus Gruenden, die im Linux File  System Standard  (FSSTND)
-           erlaeutert sind, besser sein, sie an anderer Stelle  zu  speichern.
-           Details,  wann  dies  der  Fall  ist, beschreibt  manpath(5).  Fuer
-           Details,  warum  dies empfohlen wird, siehe den Linux  File  System
-           Standard (FSSTND).
+       Die  Hilfsprogramme  unterstuetzen komprimierte nroff-Quelldateien, die
+       normalerweise die Erweiterung .Z, .z oder  .gz  besitzen.  Jede  andere
+       Erweiterung  kann  unterstuetzt  werden, wenn sie zur UEbersetzungszeit
+       bekannt ist. Als Default werden alle cat-Seiten mit  gzip  komprimiert.
+       Jede  globale  Manualhierarchie  wie  /usr/man oder /usr/X11R6/man kann
+       jedes Verzeichnis als cat-Seiten-Hierarchie  besitzen.   UEblicherweise
+       werden  cat-Seiten  unter  der gleichen Hierarchie wie die Manualseiten
+       gespeichert. Allerdings kann es aus Gruenden, die im Linux File  System
+       Standard  (FSSTND)  erlaeutert sind, besser sein, sie an anderer Stelle
+       zu speichern.  Details, wann dies der Fall ist, beschreibt  manpath(5).
+       Fuer  Details,  warum  dies empfohlen wird, siehe den Linux File System
+       Standard (FSSTND).
 
-           Dieses Paket unterstuetzt internationale Anpassungen (sog. NLS-Sup‐
-           port, Native  Language Support).  Durch  den  Gebrauch  von  locale
-           Funktionen  ist es moeglich, Manualseiten der Landessprache zu ver‐
-           walten, wenn sie  auf dem  System vorhanden sind. Um  diese  Unter‐
-           stuetzung zu aktivieren, muss man entweder in  $LC_MESSAGES,  $LANG
-           oder  anderen  systemabhaengigen Umgebungsvariablen die gewuenschte
-           Sprache  einstellen.  Die  Sprache  wird normalerweise in dem durch
-           POSIX      1003.1       definierten        Format        angegeben:
-           <Sprache>[_<Region>[.<Zeichensatz>[,<Version>]]]
+       Dieses Paket unterstuetzt internationale Anpassungen (sog. NLS-Support,
+       Native  Language Support). Durch den Gebrauch von locale Funktionen ist
+       es moeglich, Manualseiten der Landessprache zu verwalten, wenn sie  auf
+       dem  System vorhanden sind. Um diese Unterstuetzung zu aktivieren, muss
+       man entweder in  $LC_MESSAGES,  $LANG  oder  anderen  systemabhaengigen
+       Umgebungsvariablen die gewuenschte Sprache einstellen. Die Sprache wird
+       normalerweise in dem durch POSIX 1003.1 definierten Format angegeben:
 
-           Wenn  die  angeforderte  Seite  in  der  locale vorhanden ist, wird
-           sie anstelle der Standardseite  (normalerweise  in   amerikanischem
-           Englisch) angezeigt.  Darueber  hinaus  werden  auch Sammlungen von
-           landessprach- lichen Systemmeldungen unterstuetzt und auf  dieselbe
-           Weise aktiviert  - ebenfalls  unter  der  Vorraussetzung,  dass die
-           uebersetzten Meldungen vorliegen. Wer diese  Manualseiten  und  die
-           Ausgaben   der   Hilfsprogramme  gerne   in   seiner  Landessprache
-           haette, aber diese nicht vorfindet, ist aufgefordert,  eine  UEber‐
-           setzung   anzufertigen   und   sie    dem   Autor zuzusenden, damit
-           spaetere Versionen davon profitieren koennen.
+       <Sprache>[_<Region>[.<Zeichensatz>[,<Version>]]]
 
-           Die  anderen  Eigenschaften  und  Erweiterungen  von  man  sind  in
-           den beiliegenden Dokumenten beschrieben. Einen umfassenden Einblick
-           in  die mandb zugrundeliegenden Konzepte sind in der  Dokumentation
-           man-db-2.3  -  the  database cached manual pager suite beschrieben.
-           Die  Dokumentation sollte auf denselben Server wie das mandb- Paket
-           selbst zu finden sein.
+       Wenn  die  angeforderte  Seite  in  der  locale vorhanden ist, wird sie
+       anstelle der Standardseite (normalerweise in  amerikanischem  Englisch)
+       angezeigt.  Darueber  hinaus  werden  auch Sammlungen von landessprach-
+       lichen Systemmeldungen unterstuetzt und auf dieselbe Weise aktiviert  -
+       ebenfalls  unter  der  Vorraussetzung,  dass die uebersetzten Meldungen
+       vorliegen. Wer diese Manualseiten und die Ausgaben  der  Hilfsprogramme
+       gerne  in  seiner Landessprache haette, aber diese nicht vorfindet, ist
+       aufgefordert,  eine  UEbersetzung  anzufertigen  und  sie   dem   Autor
+       zuzusenden, damit spaetere Versionen davon profitieren koennen.
+
+       Die  anderen  Eigenschaften  und  Erweiterungen  von  man  sind  in den
+       beiliegenden Dokumenten beschrieben. Einen umfassenden Einblick in  die
+       mandb zugrundeliegenden Konzepte sind in der Dokumentation man-db-2.3 -
+       the database cached manual pager suite beschrieben.  Die  Dokumentation
+       sollte auf denselben Server wie das mandb- Paket selbst zu finden sein.
 
 NNOORRMMAALLEEIINNSSTTEELLLLUUNNGGEENN
-           man  sucht  nach der gewueschten Manualseite in der Indexdatenbank.
-           Wenn die  Suche  fehlschlaegt,  wird  ein  Konsistenztest  durchge‐
-           fuehrt,  um  die  korrekte Wiedergabe des Dateisystems zu  sichern.
-           Nachdem  die  Daten- banken  erzeugt wurden, ist  es  i.  A.  nicht
-           notwendig,  mandb zu starten, es sei denn, die Datenbank wurde ver‐
-           faelscht.
+       man sucht nach der gewueschten Manualseite in der Indexdatenbank.  Wenn
+       die  Suche  fehlschlaegt, wird ein Konsistenztest durchgefuehrt, um die
+       korrekte Wiedergabe des Dateisystems zu  sichern.  Nachdem  die  Daten-
+       banken  erzeugt wurden, ist es i. A. nicht notwendig, mandb zu starten,
+       es sei denn, die Datenbank wurde verfaelscht.
 
-           Wenn eine Manualseite gefunden  wurde,  wird  getestet,   ob   dazu
-           bereits  eine   vorformatierte  cat-Seite existiert und diese neuer
-           als die nroff- Datei ist.  In diesem Fall wird  die  vorformatierte
-           Datei   dekomprimiert  und   mit   einem   Browser  angezeigt.  Die
-           Auswahl des Browsers kann auf unterschiedliche Weise erfolgen (fuer
-           Details  siehe  -P   Option).   Wenn keine  cat-Seite gefunden wird
-           oder  wenn  sie  aelter  als  die  nroff-Datei  ist,    wird    die
-           nroff-Datei   durch   diverse   Programme   gefiltert  und entweder
-           sofort angezeigt oder  zuerst  als  komprimierte  cat-Datei  gespe-
-           ichert und dann angezeigt.
+       Wenn eine Manualseite gefunden wurde, wird getestet,  ob  dazu  bereits
+       eine  vorformatierte cat-Seite existiert und diese neuer als die nroff-
+       Datei ist.  In diesem Fall wird die vorformatierte Datei  dekomprimiert
+       und  mit  einem  Browser  angezeigt.  Die Auswahl des Browsers kann auf
+       unterschiedliche Weise erfolgen (fuer Details siehe -P  Option).   Wenn
+       keine  cat-Seite gefunden wird oder wenn sie aelter als die nroff-Datei
+       ist,  wird  die  nroff-Datei  durch  diverse  Programme  gefiltert  und
+       entweder sofort angezeigt oder zuerst als komprimierte cat-Datei gespe-
+       ichert und dann angezeigt.
 
-           Eine   cat-Datei  wird  erzeugt,  wenn  ein  relatives   cat-Verze‐
-           ichnis existiert und man dort das Schreibrecht hat.
+       Eine  cat-Datei  wird  erzeugt,  wenn  ein  relatives   cat-Verzeichnis
+       existiert und man dort das Schreibrecht hat.
 
-           Die  Filter  werden in mehreren Schritten zusammengestellt:  Zuerst
-           wird  die  Kommandozeilen-Option  -p   oder  die  Umgebungsvariable
-           $MANROFFSEQ untersucht.  Wenn -p nicht benutzt wird und  die  Umge‐
-           bungsvariable   nicht   gesetzt  ist,  wird  die  Anfangszeile  der
-           nroff-Datei nach einer  Zeichen- kette   fuer   den   Praeprozessor
-           untersucht.  Eine solche Praeprozessor- Zeichenkette muss folgendes
-           Aussehen haben:
+       Die  Filter  werden in mehreren Schritten zusammengestellt: Zuerst wird
+       die Kommandozeilen-Option -p  oder  die  Umgebungsvariable  $MANROFFSEQ
+       untersucht.  Wenn -p nicht benutzt wird und die Umgebungsvariable nicht
+       gesetzt ist, wird die Anfangszeile der nroff-Datei nach einer  Zeichen-
+       kette  fuer  den  Praeprozessor  untersucht. Eine solche Praeprozessor-
+       Zeichenkette muss folgendes Aussehen haben:
 
-           '" <Zeichenkette>
+       '\" <Zeichenkette>
 
-           wobei Zeichenkette jede Kombination von Buchstaben sein  kann,  die
-           unter Option -p weiter unten beschrieben sind.
+       wobei Zeichenkette jede Kombination von Buchstaben sein kann, die unter
+       Option -p weiter unten beschrieben sind.
 
-           Wenn   keine  der obigen Methoden eine Filter-Information enthaelt,
-           wird tbl als Default verwendet.
+       Wenn  keine  der obigen Methoden eine Filter-Information enthaelt, wird
+       tbl als Default verwendet.
 
-           Als primaerer Formatierer wird entweder nroff, troff   oder   groff
-           ges- tartet.
+       Als primaerer Formatierer wird entweder nroff, troff  oder  groff  ges-
+       tartet.
 
 OOPPTTIIOONNEENN
        Eine Argumentoption, die entweder in der Kommandozeile, in $MANOPT oder
        in beiden doppelt vorkommt , ist nicht schaedlich. Fuer  Optionen,  die
-       ein  Argument benötigen, überschreibt jedes Duplikat den vorhergehenden
+       ein Argument benötigen, überschreibt jedes Duplikat den  vorhergehenden
        Wert.
 
-           --ll,, ----llooccaall--ffiillee
-                  Aktiviert den lokalen Modus.  Formatiert  und  zeigt  lokale
-                  Manualdateien   an,   anstatt   die System-Manualsammlung zu
-                  durchsuchen.    Jedes   Manualseiten-Argument    wird    als
-                  nroff-Quelle   im  richtigen Format  interpretiert. Komprim‐
-                  ierte nroff-Quelldateien mit einer  unterstuetzten  Kompres‐
-                  sions-Erweiterung  werden   von  man  dekom- primiert, bevor
-                  sie ueber den ueblichen Filter angezeigt  werden.   Es  wird
-                  keine  cat-Datei erzeugt. Wenn eines  der  Argumente  - ist,
-                  wird die Eingabe von der Standardeingabe uebernommen.
+       --ll,, ----llooccaall--ffiillee
+              Aktiviert den lokalen Modus. Formatiert und zeigt lokale Manual‐
+              dateien an,  anstatt  die System-Manualsammlung zu  durchsuchen.
+              Jedes Manualseiten-Argument wird als nroff-Quelle  im  richtigen
+              Format  interpretiert. Komprimierte nroff-Quelldateien mit einer
+              unterstuetzten Kompressions-Erweiterung werden  von  man  dekom-
+              primiert, bevor sie ueber den ueblichen Filter angezeigt werden.
+              Es  wird  keine cat-Datei erzeugt. Wenn eines  der  Argumente  -
+              ist, wird die Eingabe von der Standardeingabe uebernommen.
 
-           --LL _l_o_c_a_l_e_, ----llooccaallee==_l_o_c_a_l_e
-                  Normalerweise  bestimmt  man  die  aktuelle   locale   durch
-                  einen  Aufruf  der  C  Funktion  setlocale  (3), die diverse
-                  Umgebungsvari- ablen, darunter u. U.  $LC_MESSAGES und $LANG
-                  untersucht.   Diese  Funktion  kann  dazu  verwendet werden,
-                  kurzzeitig den so  gefunde- nen  Wert   zu   ueberschreiben.
-                  Dazu  kann diese Option mit einer Zeichenkette, die die tem‐
-                  poraere locale enthaelt, angegeben wer- den.   Man  beachte,
-                  dass  dieser  Effekt erst beim konkreten Suchen der Seite in
-                  Erscheinung tritt. Daher werden  Ausgaben  wie   die  Hilfe‐
-                  seite immer in der urspruenglichen Sprache ausgegeben.
+       --LL _l_o_c_a_l_e_, ----llooccaallee==_l_o_c_a_l_e
+              Normalerweise  bestimmt  man  die  aktuelle  locale  durch einen
+              Aufruf der C Funktion setlocale (3), die diverse  Umgebungsvari-
+              ablen, darunter u. U.  $LC_MESSAGES und $LANG untersucht.  Diese
+              Funktion kann dazu verwendet werden, kurzzeitig den so  gefunde-
+              nen  Wert  zu  ueberschreiben.  Dazu kann diese Option mit einer
+              Zeichenkette, die die temporaere locale enthaelt, angegeben wer-
+              den.  Man beachte, dass dieser Effekt erst beim konkreten Suchen
+              der Seite in Erscheinung tritt. Daher werden  Ausgaben  wie  die
+              Hilfeseite immer in der urspruenglichen Sprache ausgegeben.
 
-           --DD,, ----ddeeffaauulltt
-                  Diese Option wird normalerweise nur als allererste angegeben
-                  und setzt das Verhalten von man in  allen  Belangen   wieder
-                  zum   Nor-  malverhalten   zurueck.  Der Zweck dieser Option
-                  ist es, Optionen wieder rueckgaengig zu machen, die  bereits
-                  in  der  Umgebungsvari-  able   $MANOPT   gesetzt sind. Alle
-                  Optionen,  die  -D  folgen,  haben  wieder  ihren  gewohnten
-                  Effekt.
+       --DD,, ----ddeeffaauulltt
+              Diese Option wird normalerweise nur als allererste angegeben und
+              setzt das Verhalten von man in allen Belangen  wieder  zum  Nor-
+              malverhalten  zurueck.  Der Zweck dieser Option ist es, Optionen
+              wieder rueckgaengig zu machen, die bereits in der Umgebungsvari-
+              able  $MANOPT  gesetzt sind. Alle Optionen, die -D folgen, haben
+              wieder ihren gewohnten Effekt.
 
-           --MM _P_f_a_d_, ----mmaannppaatthh==_P_f_a_d
-                  Ermoeglicht  es,  einen alternativen  Manualpfad  anzugeben.
-                  Nor- malerweise  verwendet  man dieselben  Methoden  wie  in
-                  manpath,  um  den Suchpfad zu ermitteln. Diese Option ueber‐
-                  schreibt die  Umge- bungsvariable $MANPATH.
+       --MM _P_f_a_d_, ----mmaannppaatthh==_P_f_a_d
+              Ermoeglicht es, einen alternativen  Manualpfad  anzugeben.  Nor‐
+              malerweise verwendet man dieselben Methoden wie in  manpath,  um
+              den  Suchpfad zu ermitteln. Diese Option ueberschreibt die Umge‐
+              bungsvariable $MANPATH.
 
-           --PP _P_a_g_e_r_, ----ppaaggeerr==_P_a_g_e_r
-                  Gibt an, welcher Pager verwendet wird. Die Normaleinstellung
-                  ist  pager-s.    Diese   Option   ueberschreibt  die   Umge‐
-                  bungsvariable $PAGER  und wird nicht in Zusammenhang mit  -f
-                  oder -k verwendet.
+       --PP _P_a_g_e_r_, ----ppaaggeerr==_P_a_g_e_r
+              Gibt an, welcher Pager verwendet wird. Die Normaleinstellung ist
+              pager-s.   Diese  Option  ueberschreibt  die   Umgebungsvariable
+              $PAGER und wird nicht in Zusammenhang mit -f oder -k  verwendet.
 
-           --rr _P_r_o_m_p_t_, ----pprroommpptt==_P_r_o_m_p_t
-                  Wenn  eine hinreichend neue Version von less als Pager  ver‐
-                  wendet wird, versucht man dort einige sinnvolle Optionen  zu
-                  setzen.  Die  Eingabeaufforderung in der letzten Zeile sieht
-                  in  dem  Fall  so aus:
+       --rr _P_r_o_m_p_t_, ----pprroommpptt==_P_r_o_m_p_t
+              Wenn eine hinreichend neue Version von less als Pager  verwendet
+              wird, versucht man dort einige sinnvolle Optionen zu setzen. Die
+              Eingabeaufforderung in der letzten Zeile sieht in  dem  Fall  so
+              aus:
 
-                     Manual page name(sec) line x,
+                  Manual page name(sec) line x,
 
-                  wobei   name   die   Manualseite   bezeichnet,   die  gerade
-                  angezeigt  wird,  sec der Abschnitt ist, in dem sie gefunden
-                  wurde,  und  x die aktuelle Zeilennummer ist.  Diese Anzeige
-                  wird  durch  Verwen-  dung der Umgebungsvariable $LESS erre‐
-                  icht.   Man  beachte,  dass einzelne Bezeichnungen sich  bei
-                  der  Verwendung  von  landessprach- lichen Meldungen aendern
-                  koennen.  Die Option -r ermoeglicht es, durch  Angabe  einer
-                  Formatierungszeichenkette,  das Ausgabeformat selbst zu bes‐
-                  timmen. Wenn diese  Zeichenkette   $MAN_PN   enthaelt,  wird
-                  dieser  Text durch den Namen der Manualseite gefolgt von der
-                  Abschnittsnummer in runden Klammern ersetzt.  Die   Zeichen‐
-                  kette, die im Normalfall verwendet wird ist:
+              wobei  name  die  Manualseite  bezeichnet,  die gerade angezeigt
+              wird, sec der Abschnitt ist, in dem sie gefunden  wurde,  und  x
+              die aktuelle Zeilennummer ist.  Diese Anzeige wird durch Verwen‐
+              dung  der  Umgebungsvariable  $LESS erreicht.  Man beachte, dass
+              einzelne Bezeichnungen sich bei der Verwendung von landessprach‐
+              lichen  Meldungen  ändern koennen.  Die Option -r ermöglicht es,
+              durch  Angabe einer Formatierungszeichenkette, das Ausgabeformat
+              selbst  zu  bestimmen.  Wenn diese Zeichenkette $MAN_PN enthält,
+              wird dieser Text durch den Namen der Manualseite gefolgt von der
+              Abschnittsnummer in runden Klammern ersetzt.  Die  Zeichenkette,
+              die im Normalfall verwendet wird ist:
 
-                  Manualpage$MAN_PN?ltline%lt?L/%L.:  byte%bB?s/%s..?(END):?pB
-                  %pB\%..
+              \ Manual\ page\ \$MAN_PN\ ?ltline\ %lt?L/%L.:
+              byte\ %bB?s/%s..?\ (END):?pB %pB\\%..
 
-                  Die  zweizeilige  Darstellung  wurde nur der  besseren  Les‐
-                  barkeit   wegen   gewaehlt.  Naehere  Informationen  liefert
-                  less(1).   Da  die Zeichenkette  zuerst  vom  Kommandointer‐
-                  preter ausgewertet wird, muessen entsprechende Zeichen durch
-                  einen  Backslash  geschuetzt werden.  Weitere Optionen  fuer
-                  less  koennen  nach  einem  geschuet-  zten  $  am  Ende der
-                  Zeichenkette hinzugefuegt werden. Der Default ist hier -ix8.
+              Die  zweizeilige  Darstellung  wurde nur der besseren Lesbarkeit
+              wegen  gewählt.  Nähere Informationen liefert less(1).   Da  die
+              Zeichenkette  zuerst  vom  Kommandointerpreter ausgewertet wird,
+              muessen  entsprechende Zeichen durch einen  Backslash  geschützt
+              werden.   Weitere  Optionen  für   less   koennen   nach   einem
+              geschützten  $ am Ende der Zeichenkette hinzugefügt werden.  Der
+              Default ist hier -ix8.
 
-           --SS _L_i_s_t_e_, ----sseeccttiioonnss==_L_i_s_t_e
-                  Eine     durch     Doppelpunkte     getrennte    Liste   von
-                  Abschnitten definiert bei Benutzung dieser Option die   Rei‐
-                  henfolge,   in   der die Abschnitte durchsucht werden. Diese
-                  Option ueberschreibt die Umgebungsvariable $MANSECT.
+       --SS _L_i_s_t_e_, ----sseeccttiioonnss==_L_i_s_t_e
+              Eine   durch   Doppelpunkte   getrennte  Liste  von  Abschnitten
+              definiert bei Benutzung dieser Option die  Reihenfolge,  in  der
+              die Abschnitte durchsucht werden. Diese Option ueberschreibt die
+              Umgebungsvariable $MANSECT.
 
-           --aa,, ----aallll
-                  Wird eine Manualseite in einem Abschnitt gefunden,  so  ter‐
-                  miniert  man    nach   Anzeige  dieser  Seite.  Wird  jedoch
-                  diese  Option angegeben, so werden alle  passenden   Manual‐
-                  seiten  nacheinander angezeigt.
+       --aa,, ----aallll
+              Wird eine Manualseite in einem Abschnitt gefunden, so terminiert
+              man   nach  Anzeige  dieser  Seite.  Wird  jedoch  diese  Option
+              angegeben, so werden alle  passenden  Manualseiten  nacheinander
+              angezeigt.
 
-           --cc,, ----ccaattmmaann
-                  Diese Option ueberprueft nur, ob die zur angegebenen Manual‐
-                  seite passende cat-Seite aktuell ist und erzeugt ggf.   eine
-                  neue.  Es wird dabei nichts angezeigt.
+       --cc,, ----ccaattmmaann
+              Diese Option ueberprueft nur, ob die zur angegebenen Manualseite
+              passende cat-Seite aktuell ist und erzeugt ggf.  eine  neue.  Es
+              wird dabei nichts angezeigt.
 
-           --dd,, ----ddeebbuugg
-                  Bei   dieser   Option  werden  keine Manualseiten angezeigt,
-                  sondern nur eine Menge von Diagnoseinformation.
+       --dd,, ----ddeebbuugg
+              Bei  dieser  Option werden keine Manualseiten angezeigt, sondern
+              nur eine Menge von Diagnoseinformation.
 
-           --ee _E_r_w_e_i_t_e_r_u_n_g_, ----eexxtteennssiioonn==_E_r_w_e_i_t_e_r_u_n_g
+       --ee _E_r_w_e_i_t_e_r_u_n_g_, ----eexxtteennssiioonn==_E_r_w_e_i_t_e_r_u_n_g
+              Einige  Systeme  enthalten  grosse  Pakete an Manualseiten,  wie
+              z.B.  in dem Tcl Paket, die  in  die  normalen  Manualabschnitte
+              integriert  werden.  Um beispielsweise das Problem zweier unter‐
+              schiedlicher Manualseiten mit gleichem Namen,  wie  exit(3),  zu
+              lösen, wurden früher alle Tcl Seiten dem Abschnitt l zugeordnet.
+              Dieses erwies sich als keine gute Lösung. Bei dieser Version von
+              man  ist  es  möglich,  die  Seiten  in die richtigen Abschnitte
+              einzuordnen und ihrem Seitennamen eine spezifische  Erweiterung,
+              hier  z.  B.  exit(3tcl)  anzuhängen.   Unter normalen Umständen
+              zeigt man bevorzugt exit(3) gegenüber exit(3tcl) an.  Um  dieses
+              Verhalten  umzukehren,  ist  man  die   Zeichenkette Erweiterung
+              zu übergeben, die angibt, in welchem Paket  die  Manualseite  zu
+              finden  ist.  Im  obigen   Fall  beschränkt man seine Suche  auf
+              Seiten  mit der Erweiterung *tcl, wenn es mit -e tcl  aufgerufen
+              wurde.  Die Suche wird  dabei in allen Abschnitten durchgeführt.
 
-                  EEiinniiggee SSyysstteemmee eenntthhaalltteenn ggrroossssee PPaakkeettee aann MMaannuuaallsseeiitteenn,, wwiiee
-                         z.B.  in dem Tcl Paket, die in die normalen Manualab‐
-                         schnitte  integriert  werden.   Um beispielsweise das
-                         Problem  zweier  unterschiedlicher  Manualseiten  mit
-                         gleichem  Namen, wie exit(3), zu lösen, wurden früher
-                         alle Tcl Seiten dem Abschnitt l  zugeordnet.   Dieses
-                         erwies sich als keine gute Lösung. Bei dieser Version
-                         von man ist es möglich, die Seiten in die richtigen
+       --ff,, ----wwhhaattiiss
+              Diese  Option  ist  das  AEquivalent  zu  whatis.   Es wird eine
+              Kurzbeschreibung der gewuenschten  Manualseite  angezeigt,  wenn
+              sie  gefunden  wurde.  Zu  Details  siehe whatis(1).  Mit dieser
+              Option ist nur eine Standardsuche  moeglich.  Verbesserte  Such-
+              moeglichkeiten bieten die Optionen von whatis.
 
-           System Message: WARNING/2 (input/man-de.1.txt:, line 346)
-                  Definition list ends without a blank line; unexpected  unin‐
-                  dent.
+       --kk,, ----aapprrooppooss
+              Diese  Option  ist  das  AEquivalent  zu apropos.  Es werden die
+              Kurzbeschreibungen zu allen Manualseiten  nach  dem  angegebenen
+              Stichwort  durchsucht.  Zu Details siehe apropos(1).  Mit dieser
+              Option ist nur eine Standardsuche  moeglich.  Verbesserte  Such-
+              moeglichkeiten bieten die Optionen von apropos.
 
-                  Abschnitte  einzuordnen und ihrem Seitennamen eine spezifis‐
-                  che Erweiterung, hier z. B.  exit(3tcl)  anzuhängen.   Unter
-                  normalen  Umständen  zeigt  man  bevorzugt exit(3) gegenüber
-                  exit(3tcl) an.  Um  dieses  Verhalten  umzukehren,  ist  man
-                  die    Zeichenkette Erweiterung zu übergeben, die angibt, in
-                  welchem Paket die
+       --mm SSyysstteemm[[,,......]],, ----ssyysstteemmss==SSyysstteemm[[,,......]]
+              Wenn  auch Manualseiten von einem anderen Betriebssystem instal-
+              liert sind, so kann auf sie mit dieser Option  zugegriffen  wer-
+              den.  Um  beispielsweise  die  Manualseiten  von NewOS zu durch-
+              suchen, muss -m NewOS angegeben werden.
 
-           System Message: ERROR/3 (input/man-de.1.txt:, line 351)
-                  Unexpected indentation.
+              Das angegebene System kann eine durch Kommata abgetrennte Aufza-
+              ehlung  von Betriebssystemnamen sein. Die normalen Seiten werden
+              durch den Betriebssystemnamen  man  angesprochen.  Diese  Option
+              ueberschreibt die Umgebungsvariable $SYSTEM.
 
-                     Manualseite zu finden ist. Im  obigen   Fall   beschränkt
-                     man seine
+       --pp _Z_e_i_c_h_e_n_k_e_t_t_e_, ----pprreepprroocceessssoorr==_Z_e_i_c_h_e_n_k_e_t_t_e
+              Diese Option gibt die Reihenfolge an, in der die Praeprozessoren
+              vor nroff  oder  troff/groff  abgearbeitet  werden.  Nicht  alle
+              Installationen   haben  notwendigerweise  alle  Praeprozessoren.
+              Einige der Praeprozessoren und die Zeichen, um sie zu repraesen-
+              tieren,  sind:  eqn (e), grap (g), pic (p), tbl (t), vgrind (v),
+              refer (r).  Diese  Option  ueberschreibt  die  Umgebungsvariable
+              $MANROFFSEQ.   Der  Praeprozessor  zsoelim wird immer als erster
+              gestartet.
 
-           System Message: WARNING/2 (input/man-de.1.txt:, line 352)
-                  Block  quote ends without a blank line; unexpected unindent.
+       --uu,, ----uuppddaattee
+              Die  Indexdatenbanken  werden  immer  waehrend   des   laufenden
+              Betriebes   auf   neuestem   Stand  gehalten,  was  insbesondere
+              bedeutet, dass mandb nicht benoetigt wird, um sie konsistent  zu
+              halten.  Wenn die ausgewaehlte Manualseite nicht im Index gefun-
+              den wurde oder die -a Option verwendet wurde,  macht  man  einen
+              Konsistenztest  auf  Verzeichnisebene,  um sicherzustellen, dass
+              der Index immer noch eine gueltige Repraesentation  der  Manual-
+              seiten  im  Dateisystem  darstellt.  Wenn dieser Test auf Inode-
+              Ebene  durchgefuehrt  werden  soll,  muss  man  die  Option   -u
+              benutzen.
 
-                  SSuucchhee aauuff SSeeiitteenn mmiitt ddeerr EErrwweeiitteerruunngg **ttccll,, wweennnn eess mmiitt
+       --tt,, ----ttrrooffff
+              Mit  dieser  Option wird groff -mandoc verwendet, um die Manual-
+              seite zu formatieren und an die Standardausgabe zu  liefern.  Im
+              Zusammenhang mit -T oder -Z ist diese Option nicht noetig.
 
-                         -e tcl aufgerufen wurde. Die  Suche  wird   dabei  in
-                         allen Abschnitten durchgeführt.
+       --TT FFoorrmmaatt,, ----ttrrooffff--ddeevviiccee [[==FFoorrmmaatt]]
+              Diese Option wird dazu verwendet, um das Ausgabeformat von groff
+              (oder moeglicherweise troff) zu aendern. Diese Option impliziert
+              die  Angabe von -t.  Verfuegbare Ausgabeformate (von Groff-1.17)
+              beinhalten dvi, latin1, ps, utf8, X75 und X100.
 
-           --ff,, ----wwhhaattiiss
-                  Diese   Option  ist  das  AEquivalent  zu  whatis.   Es wird
-                  eine   Kurzbeschreibung   der   gewuenschten     Manualseite
-                  angezeigt,   wenn  sie  gefunden  wurde.  Zu  Details  siehe
-                  whatis(1).  Mit dieser Option  ist  nur  eine  Standardsuche
-                  moeglich.   Verbesserte   Such-  moeglichkeiten  bieten  die
-                  Optionen von whatis.
+       --ZZ,, ----ddiittrrooffff
+              Das  traditionelle  troff  erzeugt   ditroff.    groff   startet
+              zunaechst  troff  und leitet danach dessen Ausgabe an einen fuer
+              das gewaehlte  Ausgabeformat  geeigneten  Postprozessor  weiter.
+              Wenn  groff  -mandoc  groff ist, zwingt diese Option groff dazu,
+              traditionelles troff zu emulieren und impliziert -t, andernfalls
+              wird es ignoriert.
 
-           --kk,, ----aapprrooppooss
-                  Diese  Option  ist  das  AEquivalent  zu apropos.  Es werden
-                  die  Kurzbeschreibungen  zu  allen  Manualseiten   nach  dem
-                  angegebenen Stichwort  durchsucht.  Zu Details  siehe  apro‐
-                  pos(1).   Mit  dieser  Option  ist  nur  eine  Standardsuche
-                  moeglich.   Verbesserte   Such-  moeglichkeiten  bieten  die
-                  Optionen von apropos.
+       --ww,, ----wwhheerree,, ----llooccaattiioonn
+              Zeigt  nicht  die Manualseiten, sondern die Position der Dateien
+              im Dateisystem an, die formatiert oder angezeigt  wuerden.  Wenn
+              die  Datei  eine  cat-Seite  ist, wird auch der Ort ihrer nroff-
+              Quelldatei angezeigt.
 
-           --mm SSyysstteemm[[,,......]],, ----ssyysstteemmss==SSyysstteemm[[,,......]]
-                  Wenn   auch  Manualseiten  von  einem anderen Betriebssystem
-                  instal- liert sind, so kann auf sie mit dieser Option  zuge‐
-                  griffen   wer-  den.   Um  beispielsweise  die  Manualseiten
-                  von NewOS zu durch- suchen, muss -m NewOS angegeben  werden.
+       --hh,, ----hheellpp
+              Zeigt einen Hilfstext an.
 
-                  Das  angegebene  System  kann eine durch Kommata abgetrennte
-                  Aufza- ehlung  von Betriebssystemnamen  sein.  Die  normalen
-                  Seiten  werden  durch  den  Betriebssystemnamen   man  ange‐
-                  sprochen.  Diese  Option ueberschreibt die Umgebungsvariable
-                  $SYSTEM.
-
-           --pp _Z_e_i_c_h_e_n_k_e_t_t_e_, ----pprreepprroocceessssoorr==_Z_e_i_c_h_e_n_k_e_t_t_e
-                  Diese Option gibt die Reihenfolge an, in der die Praeprozes‐
-                  soren vor nroff  oder   troff/groff   abgearbeitet   werden.
-                  Nicht   alle  Installationen   haben  notwendigerweise  alle
-                  Praeprozessoren.   Einige  der   Praeprozessoren   und   die
-                  Zeichen,  um sie zu repraesen- tieren,  sind:  eqn (e), grap
-                  (g), pic (p), tbl (t), vgrind (v), refer (r).  Diese  Option
-                  ueberschreibt   die   Umgebungsvariable  $MANROFFSEQ.    Der
-                  Praeprozessor  zsoelim wird immer als erster gestartet.
-
-           --uu,, ----uuppddaattee
-                  Die   Indexdatenbanken   werden    immer    waehrend     des
-                  laufenden Betriebes   auf   neuestem   Stand  gehalten,  was
-                  insbesondere bedeutet, dass mandb nicht benoetigt  wird,  um
-                  sie  konsistent   zu  halten.  Wenn die ausgewaehlte Manual‐
-                  seite nicht im Index gefun- den wurde  oder  die  -a  Option
-                  verwendet  wurde,   macht   man   einen  Konsistenztest  auf
-                  Verzeichnisebene,  um sicherzustellen, dass der Index  immer
-                  noch  eine gueltige Repraesentation  der  Manual- seiten  im
-                  Dateisystem  darstellt.  Wenn dieser Test auf  Inode-  Ebene
-                  durchgefuehrt   werden   soll,   muss  man  die  Option   -u
-                  benutzen.
-
-           --tt,, ----ttrrooffff
-                  Mit  dieser  Option wird groff  -mandoc  verwendet,  um  die
-                  Manual-  seite  zu formatieren und an die Standardausgabe zu
-                  liefern.  Im Zusammenhang mit -T oder -Z  ist  diese  Option
-                  nicht noetig.
-
-           --TT FFoorrmmaatt,, ----ttrrooffff--ddeevviiccee [[==FFoorrmmaatt]]
-                  Diese  Option  wird dazu verwendet, um das Ausgabeformat von
-                  groff (oder moeglicherweise troff) zu aendern. Diese  Option
-                  impliziert  die   Angabe von -t.  Verfuegbare Ausgabeformate
-                  (von Groff-1.17) beinhalten dvi, latin1, ps, utf8,  X75  und
-                  X100.
-
-           --ZZ,, ----ddiittrrooffff
-                  Das    traditionelle   troff   erzeugt    ditroff.     groff
-                  startet zunaechst  troff  und leitet danach  dessen  Ausgabe
-                  an  einen  fuer  das  gewaehlte   Ausgabeformat   geeigneten
-                  Postprozessor  weiter.  Wenn   groff   -mandoc   groff  ist,
-                  zwingt  diese  Option  groff  dazu,  traditionelles troff zu
-                  emulieren und impliziert -t, andernfalls wird es  ignoriert.
-
-           --ww,, ----wwhheerree,, ----llooccaattiioonn
-                  Zeigt   nicht   die  Manualseiten,  sondern die Position der
-                  Dateien im Dateisystem an,  die  formatiert  oder  angezeigt
-                  wuerden.   Wenn  die  Datei  eine  cat-Seite  ist, wird auch
-                  der Ort ihrer nroff- Quelldatei angezeigt.
-
-           --hh,, ----hheellpp
-                  Zeigt einen Hilfstext an.
-
-           --VV,, ----vveerrssiioonn
-                  Zeigt Programmversion und Autor an.
+       --VV,, ----vveerrssiioonn
+              Zeigt Programmversion und Autor an.
 
 UUMMGGEEBBUUNNGG
-           MMAANNPPAATTHH
-                  Wenn $MANPATH gesetzt ist, wird dessen Wert   als   Suchpfad
-                  fuer die Manualseiten benutzt.
+       MMAANNPPAATTHH
+              Wenn $MANPATH gesetzt ist, wird dessen Wert  als  Suchpfad  fuer
+              die Manualseiten benutzt.
 
-           MMAANNRROOFFFFSSEEQQ
-                  Wenn  $MANROFFSEQ  gesetzt ist, wird dessen Wert benutzt, um
-                  die Abfolge der  Praeprozessoren  zu  bestimmen,  die   jede
-                  Manualseite vor  nroff  oder troff durchlaeuft.  Als Default
-                  durchlaufen die Seiten den tbl (t) Praeprozessor.
+       MMAANNRROOFFFFSSEEQQ
+              Wenn  $MANROFFSEQ  gesetzt ist, wird dessen Wert benutzt, um die
+              Abfolge der Praeprozessoren zu bestimmen, die  jede  Manualseite
+              vor  nroff  oder troff durchlaeuft.  Als Default durchlaufen die
+              Seiten den tbl (t) Praeprozessor.
 
-           MMAANNSSEECCTT
-                  Wenn  der  Wert  von  $MANSECT   eine   durch   Doppelpunkte
-                  getrennte  Liste  von Abschnitten ist, wird dieser Wert dazu
-                  benutzt, um die zu durchsuchenden Abschnitte und deren  Rei‐
-                  henfolge zu bestimmen.
+       MMAANNSSEECCTT
+              Wenn der Wert von $MANSECT  eine  durch  Doppelpunkte  getrennte
+              Liste von Abschnitten ist, wird dieser Wert dazu benutzt, um die
+              zu durchsuchenden Abschnitte und deren Reihenfolge zu bestimmen.
 
-           PPAAGGEERR WWeennnn $$PPAAGGEERR ggeesseettzztt iisstt,, wwiirrdd ddiieesseess PPrrooggrraammmm zzuurr AAnnzzeeiiggee
-                  benutzt. Default ist pager -s.
+       PPAAGGEERR WWeennnn $$PPAAGGEERR ggeesseettzztt iisstt,, wwiirrdd ddiieesseess PPrrooggrraammmm zzuurr AAnnzzeeiiggee
+              benutzt. Default ist pager -s.
 
-           SSYYSSTTEEMM  WWeennnn  $$SSYYSSTTEEMM ggeesseettzztt iisstt,, hhaatt ddiieess ddeenn gglleeiicchheenn EEffffeekktt wwiiee
-           ddiiee
-                  Option   -m   System  wobei  System  als  Inhalt  der  Umge‐
-                  bungsvariable $SYSTEM benutzt wird.
+       SSYYSSTTEEMM WWeennnn $$SSYYSSTTEEMM ggeesseettzztt iisstt,, hhaatt ddiieess ddeenn gglleeiicchheenn EEffffeekktt wwiiee ddiiee
+              Option  -m  System wobei System als Inhalt der Umgebungsvariable
+              $SYSTEM benutzt wird.
 
-           MMAANNOOPPTT WWeennnn $$MMAANNOOPPTT ggeesseettzztt iisstt,, wwiirrdd ddeerr WWeerrtt ddiieesseerr VVaarriiaabblleenn vvoorr
-           ddeerr
-                  man  Kommandozeile  durchsucht  und  abgearbeitet. Wie  auch
-                  alle    anderen    Umgebungsvariablen,   die   als   Komman‐
-                  dozeilen-Optionen aus- gedrueckt  werden  koennen,  ist   es
-                  moeglich,   den   Inhalt von $MANOPT durch die Kommandozeile
-                  zu ueberschreiben.  Alle  Leerze-  ichen,   die  Teil  eines
-                  Argumentes sind, muessen gequotet werden.
+       MMAANNOOPPTT WWeennnn $$MMAANNOOPPTT ggeesseettzztt iisstt,, wwiirrdd ddeerr WWeerrtt ddiieesseerr VVaarriiaabblleenn vvoorr ddeerr
+              man  Kommandozeile  durchsucht  und  abgearbeitet. Wie auch alle
+              anderen Umgebungsvariablen, die als Kommandozeilen-Optionen aus-
+              gedrueckt  werden  koennen,  ist  es  moeglich,  den  Inhalt von
+              $MANOPT durch die Kommandozeile zu ueberschreiben.  Alle Leerze-
+              ichen,  die Teil eines Argumentes sind, muessen gequotet werden.
 
-           LLAANNGG,, LLCC__MMEESSSSAAGGEESS
-                  Abhaengig  von  System  und Implementation  werden  entweder
-                  $LANG oder  $LC_MESSAGES  oder  beide  nach  der  gegenwaer‐
-                  tigen  locale  Information   durchsucht.   man  wird   (wenn
-                  moeglich)   seine Nachrichten  in  dieser  locale  anzeigen.
-                  Fuer Details siehe setlo- cale(3).
+       LLAANNGG,, LLCC__MMEESSSSAAGGEESS
+              Abhaengig von System und Implementation  werden  entweder  $LANG
+              oder  $LC_MESSAGES  oder  beide  nach  der gegenwaertigen locale
+              Information  durchsucht.   man  wird   (wenn   moeglich)   seine
+              Nachrichten in dieser locale anzeigen. Fuer Details siehe setlo‐
+              cale(3).
 
 DDAATTEEIIEENN
-           //eettcc//mmaannppaatthh..ccoonnffiigg
-                  Die Manualkonfigurationsdatei.
+       //eettcc//mmaannppaatthh..ccoonnffiigg
 
-           //uussrr//......//mmaann
-                  Globale Manualhierarchien.
+              Die Manualkonfigurationsdatei.
 
-           //vvaarr//ccaattmmaann//......//iinnddeexx..((bbtt||ddbb||ddiirr||ppaagg))
-                  Die FSSTND complianten globalen Indexdatenbanken.
+       //uussrr//......//mmaann
+
+              Globale Manualhierarchien.
+
+       //vvaarr//ccaattmmaann//......//iinnddeexx..((bbtt||ddbb||ddiirr||ppaagg))
+
+              Die FSSTND complianten globalen Indexdatenbanken.
 
 SSIIEEHHEE AAUUCCHH
-           mandb(8),  manpath(1),   manpath(5),  apropos(1),  whatis(1),  cat‐
-           man(8), less(1),   nroff(1),    troff(1),   groff(1),   zsoelim(1),
-           setlocale(3), man(7), ascii(7), latin1(7).
+       mandb(8), manpath(1),  manpath(5),  apropos(1),  whatis(1),  catman(8),
+       less(1),   nroff(1),   troff(1),  groff(1),  zsoelim(1),  setlocale(3),
+       man(7), ascii(7), latin1(7).
 
 FFEEHHLLEERR
-           Die Option -t funktioniert  nur,  wenn  ein  troff-aehnliches  Pro‐
-           gramm installiert ist.
+       Die Option -t funktioniert  nur,  wenn  ein  troff-aehnliches  Programm
+       installiert ist.
 
-           Die  Option -e funktioniert momentan nur in Manualhierarchien, fuer
-           die mit mandb eine Indexdatenbank erzeugt wurde.
+       Die  Option -e funktioniert momentan nur in Manualhierarchien, fuer die
+       mit mandb eine Indexdatenbank erzeugt wurde.
 
-           Manualseiten,  die die erweiterte Darstellung im  Zusammenhang  mit
-           der Option  -e  unterstuetzen,  duerfen  keinen  Punkt  beinhalten,
-           denn sonst werden diese Seiten als fehlerhaft zurueckgewiesen.
+       Manualseiten, die die erweiterte Darstellung im  Zusammenhang  mit  der
+       Option  -e  unterstuetzen,  duerfen keinen Punkt beinhalten, denn sonst
+       werden diese Seiten als fehlerhaft zurueckgewiesen.
 
 GGEESSCCHHIICCHHTTEE
-           1990,    1991    -    Originale    geschrieben    von    John    W.
-           Eaton (_j_w_e_@_c_h_e_._u_t_e_x_a_s_._e_d_u).
+       1990,  1991  -   Originale   geschrieben   von   John   W.   Eaton   (‐
+       _j_w_e_@_c_h_e_._u_t_e_x_a_s_._e_d_u).
 
-           23.   Dez.   1992:    Fehlerbereinigung    durch   Rik   Faith   (‐
-           _f_a_i_t_h_@_c_s_._u_n_c_._e_d_u)    unterstuetzt    durch    Willem   Kasdorp   (‐
-           _w_k_a_s_d_o_@_n_i_k_h_e_f_k_._n_i_k_e_f_._n_l).
+       23.  Dez.  1992:  Fehlerbereinigung  durch Rik Faith (_f_a_i_t_h_@_c_s_._u_n_c_._e_d_u)
+       unterstützt durch Willem Kasdorp (_w_k_a_s_d_o_@_n_i_k_h_e_f_k_._n_i_k_e_f_._n_l).
 
-           Zwischen dem 30. April 1994 und dem  23.  Februar  2000  hat   Wilf
-           (G.Wil- _f_o_r_d_@_e_e_._s_u_r_r_e_y_._a_c_._u_k)  unter  Mithilfe  von einigen wenigen
-           engagierten Menschen dieses Paket entwickelt und weitergefuehrt.
+       Zwischen dem 30. April 1994 und  dem  23.  Februar  2000  hat  Wilf  (‐
+       _G_._W_i_l_f_o_r_d_@_e_e_._s_u_r_r_e_y_._a_c_._u_k)   unter   Mithilfe   von   einigen   wenigen
+       engagierten Menschen dieses Paket entwickelt und weitergeführt.
 
-           Die  deutsche  UEbersetzung  wurde  von   Anke    Steuernagel    (‐
-           _a___s_t_e_u_e_r_@_i_n_f_o_r-     matik.uni-kl.de)    und    Nils    Magnus    (‐
-           _m_a_g_n_u_s_@_i_n_f_o_r_m_a_t_i_k_._u_n_i_-_k_l_._d_e) angefer- tigt.
+       Die   deutsche   Übersetzung   wurde   von    Anke    Steuernagel    (‐
+       _a___s_t_e_u_e_r_@_i_n_f_o_r_m_a_t_i_k_._u_n_i_-_k_l_._d_e)       und       Nils      Magnus      (‐
+       _m_a_g_n_u_s_@_i_n_f_o_r_m_a_t_i_k_._u_n_i_-_k_l_._d_e) angefertigt.
 
-           Fuer persoenliche Wuerdigungen und Zusaetze siehe Quelltexte.
+       Für persönliche Würdigungen und Zusätze siehe Quelltexte.
 
 
 
