@@ -263,8 +263,8 @@
 %    `custom roles`_ like ``.. role:: sub(subscript)`` and
 %    ``.. role:: super(superscript)`` and define the "role commands"::
 
-   \newcommand{\docutilsrolesub}{\itshape}
-   \newcommand{\docutilsrolesuper}{\itshape}
+   \newcommand{\DUrolesub}{\itshape}
+   \newcommand{\DUrolesuper}{\itshape}
 
 %    Alternatively, if you want all sub- and superscripts in italic, redefine
 %    the macros::
@@ -579,18 +579,16 @@
 
 % rubric
 % ^^^^^^
-% ::
+% Now less prominent (not bold, normal size) restore with::
 
 \newcommand{\rubric}[1]{\subsection*{~\hfill {\it #1} \hfill ~}}
-
-\newcommand{\DUrubric}[1]{\rubric{#1}}
+\newcommand{\DUrubric}[2][class-arg]{\rubric{#2}}
 
 % title reference role
 % ^^^^^^^^^^^^^^^^^^^^
 % ::
 
 \newcommand{\titlereference}[1]{\textsl{#1}}
-
 \newcommand{\DUroletitlereference}[1]{\titlereference{#1}}
 
 
@@ -600,12 +598,12 @@
 % New Feature:
 %   Enable customization of some more Docutils elements with special commands
 % 
-%   :admonition: ``DUadmonition`` environment (replacing ``\admonitionwidth``),
+%   :admonition: ``DUadmonition`` command (replacing ``\admonitionwidth``),
 %   :field list: ``DUfieldlist``  environment,
 %   :legend:     ``DUlegend``     environment,
-%   :sidebar:    ``\DUsidebar``, ``\DUsidebartitle``, and
-%                ``DUsidebarsubtitle`` commands,
-%   :topic:      ``\DUtopictitle`` command,
+%   :sidebar:    ``\DUsidebar``, ``\DUtitle``, and
+%                ``DUsubtitle`` commands,
+%   :topic:      ``\DUtopic`` and ``\DUtitle`` commands,
 %   :transition: ``\DUtransition`` command.
 % 
 % Backwards compatibility:
@@ -617,9 +615,9 @@
 % ^^^^^^^^^^^
 % Use sans-serif fonts::
 
-\newcommand{\DUadmonition}[1]{%
+\newcommand{\DUadmonition}[2][class-arg]{%
   \begin{center}
-    \fbox{\parbox{0.9\textwidth}{\sffamily #1}}
+    \fbox{\parbox{0.9\textwidth}{\sffamily #2}}
   \end{center}
 }
 
@@ -629,16 +627,16 @@
 % 
 % Larger font size::
 
-\providecommand*{\DUtopictitle}[1]{\textbf{\large #1}\smallskip}
+\providecommand*{\DUtitletopic}[1]{\textbf{\large #1}\smallskip}
 
 % sidebar
 % ^^^^^^^
-% Use sans-serif fonts and a darker shade of grey::
+% Use sans-serif fonts, a frame, and a darker shade of grey::
 
-\providecommand{\DUsidebar}[1]{%
+\providecommand{\DUsidebar}[2][class-arg]{%
   \begin{center}
     \sffamily
-    \fbox{\colorbox[gray]{0.80}{\parbox{0.9\textwidth}{#1}}}
+    \fbox{\colorbox[gray]{0.80}{\parbox{0.9\textwidth}{#2}}}
   \end{center}
 }
 
@@ -646,11 +644,12 @@
 % ^^^^^^^^^^^^^^^^^
 % Bold instead of emphasized::
 
-\providecommand*{\DUsidebarsubtitle}[1]{\hspace*{\fill}\\
+\providecommand*{\DUsubtitlesidebar}[1]{\hspace*{\fill}\\
   \textbf{#1}\smallskip}
 
 % transition
 % ^^^^^^^^^^
 % Do not add vertical space after the transition. ::
 
-\providecommand*{\DUtransition}{\hspace*{\fill}\hrulefill\hspace*{\fill}}
+\providecommand*{\DUtransition}[1][class-arg]{%
+  \hspace*{\fill}\hrulefill\hspace*{\fill}}

@@ -6,17 +6,20 @@
 \usepackage{ifthen}
 \usepackage{fixltx2e} % fix LaTeX2e shortcomings
 \usepackage{tabularx}
-% provide a length variable and set it
-\newcommand*{\DUprovidelength}[2]{
-  \ifthenelse{\isundefined{#1}}{\newlength{#1}\setlength{#1}{#2}}{}
-}
 
 %%% User specified packages and stylesheets
 
 %%% Fallback definitions for Docutils-specific commands
-% width of docinfo table:
+
+% providelength (provide a length variable and set default, if it is new)
+\providecommand*{\DUprovidelength}[2]{
+  \ifthenelse{\isundefined{#1}}{\newlength{#1}\setlength{#1}{#2}}{}
+}
+
+% docinfo (width of docinfo table)
 \DUprovidelength{\DUdocinfowidth}{0.9\textwidth}
-% hyperref (PDF hyperlinks):
+
+% hyperref package (PDF hyperlinks):
 \ifthenelse{\isundefined{\hypersetup}}{
   \usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
 }{}

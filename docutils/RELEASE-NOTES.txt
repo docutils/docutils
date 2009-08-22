@@ -24,7 +24,7 @@ Changes Since 0.5
 .. Note::
 
    Docutils 0.5 is the last version supporting Python 2.2,
-   Docutils 0.6 requires Python 2.3 or newer (including Python 3).
+   Docutils 0.6 requires Python 2.3 or newer. Also works with Python 3.
 
 * reStructuredText:
 
@@ -49,18 +49,24 @@ Changes Since 0.5
   - Set sub- and superscript role argument as text not math.
   - Support custom roles based on standard roles.
   - Load packages and define macros only if required in the document.
-  - Docutils specific LaTeX objects are now all prefixed with ``DU``.
+  - All Docutils specific LaTeX macros are prefixed with ``DU``.
   - Better conformance to Docutils specifications with "use_latex_toc".
   - If 'sectnum_xform' is False, the 'sectnum' directive triggers
     section numbering by LaTeX.
   - Use default font in admonitions and sidebar.
   - Align of image in a figure defaults to 'center'.
-  - Default type area defined in the document class (not by 'typearea').
-  - Float placement made configurable and changed to "here definitely".
+  - Use class defaults for page margins ('typearea' now optional).
+  - Float placement made configurable, default changed to "here definitely".
+  - Typeset generic topic as "quote with title".
 
 * ODT writer:
 
   - moved from sandbox to Doctutils core.
+
+* manpage writer:
+
+  - moved from sandbox to Doctutils core.
+  
 
 Release 0.5 (2008-06-25)
 ========================

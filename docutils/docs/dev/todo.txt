@@ -1914,6 +1914,7 @@ Bug fixes
 
 * Symbol footnotes fail with "use_latex_footnotes".
 
+
 Generate clean and configurable LaTeX source
 ----------------------------------------------
 
@@ -1923,29 +1924,6 @@ LaTeX macros for Docutils-specific objects
 ``````````````````````````````````````````
 
 :subtitle:   Is there a package or native construct?
-
-:section titles: Custom command or package `hypbmsec`?
-
-:admonitions: optional "type" argument::
-
-                \providecommand{\DUadmonition}[2][]{%
-  	        \ifcsname DU#1\endcsname%
-  		  \csname DU#1\endcsname{#2}%
-    		\else
-                    \begin{center}
-                      \fbox{\parbox{0.9\textwidth}{#2}}
-                    \end{center}
-  		\fi%
-                }
-
-	      Would allow individual restyling of e.g. Notes,
-	      e.g. with pdfcomment.sty__ or todonotes.sty.
-
-              Use a "type" argument also for ``\DUtopictitle``?
-	      (would allow red error etc.)
-
-__ http://dante.ctan.org/CTAN/help/Catalogue/entries/pdfcomment.html
-
 
 Configurable placement of figure and table floats
 `````````````````````````````````````````````````
@@ -2062,10 +2040,6 @@ Default layout
   The rest you need to embed.
 
 * Use italic instead of slanted for titlereference?
-
-* Let `meta` directive insert comment into header instead of document?
-
-* More prominent system messages (use admonition?, red?)
 
 * Start a new paragraph after lists (as currently)
   or continue (no blank line in source, no parindent in output)?
@@ -2187,7 +2161,7 @@ Missing features
 
 * better citation support
 
-* Meta keywords into PDF ?
+* Let `meta` directive insert PDF-keywords into header?
 
 * Multiple author entries in docinfo (same thing as in html).
   (already solved?)

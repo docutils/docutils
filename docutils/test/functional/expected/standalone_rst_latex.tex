@@ -25,44 +25,67 @@
 \setcounter{totalnumber}{50}
 \setcounter{topnumber}{50}
 \setcounter{bottomnumber}{50}
-% provide a length variable and set it
-\newcommand*{\DUprovidelength}[2]{
-  \ifthenelse{\isundefined{#1}}{\newlength{#1}\setlength{#1}{#2}}{}
-}
 
 %%% User specified packages and stylesheets
 
 %%% Fallback definitions for Docutils-specific commands
-% admonitions (specially marked "topics")
-\providecommand{\DUadmonition}[1]{%
-  \begin{center}
-    \fbox{\parbox{0.9\textwidth}{#1}}
-  \end{center}
+
+% providelength (provide a length variable and set default, if it is new)
+\providecommand*{\DUprovidelength}[2]{
+  \ifthenelse{\isundefined{#1}}{\newlength{#1}\setlength{#1}{#2}}{}
 }
-% width of docinfo table:
+
+% abstract title
+\providecommand*{\DUtitleabstract}[1]{\centerline{\textbf{#1}}}
+
+% admonition (specially marked topic)
+\providecommand{\DUadmonition}[2][class-arg]{%
+  % try \DUadmonition#1{#2}:
+  \ifcsname DUadmonition#1\endcsname%
+    \csname DUadmonition#1\endcsname{#2}%
+  \else
+    \begin{center}
+      \fbox{\parbox{0.9\textwidth}{#2}}
+    \end{center}
+  \fi
+}
+
+% dedication topic
+\providecommand{\DUtopicdedication}[1]{\begin{center}#1\end{center}}
+
+% docinfo (width of docinfo table)
 \DUprovidelength{\DUdocinfowidth}{0.9\textwidth}
-% field list environment:
+
+% error admonition title
+\providecommand*{\DUtitleerror}[1]{\DUtitle{\color{red}#1}}
+
+% fieldlist environment
 \ifthenelse{\isundefined{\DUfieldlist}}{
   \newenvironment{DUfieldlist}%
     {\quote\description}
     {\enddescription\endquote}
 }{}
-% custom roles:
-% \DUrole{NAME} calls \docutilsroleNAME if it exists
+
+% inline markup (custom roles)
+% \DUrole{#1}{#2} tries \DUrole#1{#2}
 \providecommand*{\DUrole}[2]{%
-  \ifcsname docutilsrole#1\endcsname%
-    \csname docutilsrole#1\endcsname{#2}%
-  \else%
-    #2%
+  \ifcsname DUrole#1\endcsname%
+    \csname DUrole#1\endcsname{#2}%
+  \else% backwards compatibility: try \docutilsrole#1{#2}
+    \ifcsname docutilsrole#1\endcsname%
+      \csname docutilsrole#1\endcsname{#2}%
+    \else%
+      #2%
+    \fi%
   \fi%
 }
-% legend environment:
+
+% legend environment
 \ifthenelse{\isundefined{\DUlegend}}{
-  \newenvironment{DUlegend}%
-    {\small}
-    {}
+  \newenvironment{DUlegend}{\small}{}
 }{}
-% line block environment:
+
+% lineblock environment
 \DUprovidelength{\DUlineblockindent}{2.5em}
 \ifthenelse{\isundefined{\DUlineblock}}{
   \newenvironment{DUlineblock}[1]{%
@@ -76,7 +99,8 @@
   }
   {\endlist}
 }{}
-% option list:
+
+% optionlist environment
 \providecommand*{\DUoptionlistlabel}[1]{\bf #1 \hfill}
 \DUprovidelength{\DUoptionlistindent}{3cm}
 \ifthenelse{\isundefined{\DUoptionlist}}{
@@ -90,30 +114,50 @@
   }
   {\endlist}
 }{}
-% rubric (an informal heading):
-\providecommand*{\DUrubric}[1]{%
-  \subsection*{\centering\textit{\textmd{#1}}}%
-}
+
+% rubric (informal heading)
+\providecommand*{\DUrubric}[2][class-arg]{%
+  \subsubsection*{\centering\textit{\textmd{#2}}}}
+
 % sidebar (text outside the main text flow)
-\providecommand{\DUsidebar}[1]{%
+\providecommand{\DUsidebar}[2][class-arg]{%
   \begin{center}
-    \fbox{\colorbox[gray]{0.80}{\parbox{0.9\textwidth}{#1}}}
+    \colorbox[gray]{0.80}{\parbox{0.9\textwidth}{#2}}
   \end{center}
 }
-% sidebar sub-title
-\providecommand*{\DUsidebarsubtitle}[1]{\hspace*{\fill}\\\emph{#1}\smallskip}
-% sidebar title
-\providecommand*{\DUsidebartitle}{\DUtopictitle}
-% title reference role:
+
+% subtitle (for topic/sidebar)
+\providecommand*{\DUsubtitle}[2][class-arg]{\par\emph{#2}\smallskip}
+
+% title for topics, admonitions and sidebar
+\providecommand*{\DUtitle}[2][class-arg]{%
+  % call \DUtitle#1{#2} if it exists:
+  \ifcsname DUtitle#1\endcsname%
+    \csname DUtitle#1\endcsname{#2}%
+  \else
+    \smallskip\noindent\textbf{#2}\smallskip%
+  \fi
+}
+
+% titlereference role
 \providecommand*{\DUroletitlereference}[1]{\textsl{#1}}
-% title for "topics" (admonitions, sidebar)
-\providecommand*{\DUtopictitle}[1]{\textbf{#1}\smallskip}
-% transition ([fancy]break, anonymous section)
-\providecommand*{\DUtransition}{%
+
+% topic (quote with heading)
+\providecommand{\DUtopic}[2][class-arg]{%
+  \ifcsname DUtopic#1\endcsname%
+    \csname DUtopic#1\endcsname{#2}%
+  \else
+    \begin{quote}#2\end{quote}
+  \fi
+}
+
+% transition (break, fancybreak, anonymous section)
+\providecommand*{\DUtransition}[1][class-arg]{%
   \hspace*{\fill}\hrulefill\hspace*{\fill}
   \vskip 0.5\baselineskip
 }
-% hyperref (PDF hyperlinks):
+
+% hyperref package (PDF hyperlinks):
 \ifthenelse{\isundefined{\hypersetup}}{
   \usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
 }{}
@@ -185,14 +229,18 @@ Like this. \\
 
 
 
-\subsubsection*{~\hfill Dedication\hfill ~}
+\DUtopic[dedication]{
+\DUtitle[dedication]{Dedication}
 
 For Docutils users \& co-developers.
+}
 
-\subsubsection*{~\hfill Abstract\hfill ~}
+\DUtopic[abstract]{
+\DUtitle[abstract]{Abstract}
 
 This is a test document, containing at least one example of each
 reStructuredText construct.
+}
 
 % This is a comment. Note how any initial comments are moved by
 % transforms to after the document title, subtitle, and docinfo.
@@ -201,11 +249,10 @@ reStructuredText construct.
 % They are transformed from section titles after parsing.
 
 % bibliographic fields (which also require a transform):
-\subsubsection*{~\hfill Table of Contents\hfill ~%
-  \phantomsection%
-  \addcontentsline{toc}{section}{Table of Contents}%
-  \label{table-of-contents}%
-}
+
+\phantomsection\label{table-of-contents}
+\pdfbookmark[1]{Table of Contents}{table-of-contents}
+\DUtitle[contents]{Table of Contents}
 %
 \begin{list}{}{}
 
@@ -340,9 +387,8 @@ reStructuredText construct.
   \addcontentsline{toc}{subsection}{1.1~~~Section Title}%
   \label{section-title}%
 }
-\textbf{Section Subtitle}\vspace{0.2cm}
+\subsubsection*{Section Subtitle}
 
-\noindent 
 That's it, the text just above this line.
 
 
@@ -950,6 +996,7 @@ this: %
   \addcontentsline{toc}{subsection}{2.14~~~Directives}%
   \label{directives}%
 }
+
 \phantomsection\label{contents}%
 \begin{list}{}{}
 
@@ -1133,32 +1180,38 @@ upon the style sheet and the browser or rendering software used.
   \label{admonitions}%
 }
 
-\DUadmonition{\DUtopictitle{Attention!}
+\DUadmonition[attention]{
+\DUtitle[attention]{Attention!}
 
 Directives at large.
 }
 
-\DUadmonition{\DUtopictitle{Caution!}
+\DUadmonition[caution]{
+\DUtitle[caution]{Caution!}
 
 Don't take any wooden nickels.
 }
 
-\DUadmonition{\DUtopictitle{!DANGER!}
+\DUadmonition[danger]{
+\DUtitle[danger]{!DANGER!}
 
 Mad scientist at work!
 }
 
-\DUadmonition{\DUtopictitle{Error}
+\DUadmonition[error]{
+\DUtitle[error]{Error}
 
 Does not compute.
 }
 
-\DUadmonition{\DUtopictitle{Hint}
+\DUadmonition[hint]{
+\DUtitle[hint]{Hint}
 
 It's bigger than a bread box.
 }
 
-\DUadmonition{\DUtopictitle{Important}
+\DUadmonition[important]{
+\DUtitle[important]{Important}
 %
 \begin{itemize}
 
@@ -1173,23 +1226,27 @@ It's bigger than a bread box.
 \end{itemize}
 }
 
-\DUadmonition{\DUtopictitle{Note}
+\DUadmonition[note]{
+\DUtitle[note]{Note}
 
 This is a note.
 }
 
-\DUadmonition{\DUtopictitle{Tip}
+\DUadmonition[tip]{
+\DUtitle[tip]{Tip}
 
 15\% if the service is good.
 }
 
-\DUadmonition{\DUtopictitle{Warning}
+\DUadmonition[warning]{
+\DUtitle[warning]{Warning}
 
 Strong prose may provoke extreme mental exertion.
 Reader discretion is strongly advised.
 }
 
-\DUadmonition{\DUtopictitle{And, by the way...}
+\DUadmonition[admonition-and-by-the-way]{
+\DUtitle[admonition-and-by-the-way]{And, by the way...}
 
 You can make up your own admonition too.
 }
@@ -1206,8 +1263,9 @@ You can make up your own admonition too.
 \emph{Sidebars} are like miniature, parallel documents.
 
 \DUsidebar{
-\DUsidebartitle{Sidebar Title}
-\DUsidebarsubtitle{Optional Subtitle}
+\DUtitle[title]{Sidebar Title}
+
+\DUsubtitle[sidebar]{Optional Subtitle}
 
 This is a sidebar.  It is for text outside the flow of the main
 text.
@@ -1221,9 +1279,11 @@ background or font color.
 A \emph{topic} is like a block quote with a title, or a self-contained section
 with no subsections.
 
-\subsubsection*{~\hfill Topic Title\hfill ~}
+\DUtopic[]{
+\DUtitle[title]{Topic Title}
 
 This is a topic.
+}
 
 A \emph{rubric} is like an informal heading that doesn't correspond to the
 document's structure. It is typically highlighted in red (hence the name).
@@ -1945,41 +2005,51 @@ section, ``Docutils System Messages'':
   \addcontentsline{toc}{section}{Docutils System Messages}%
 }
 
-\DUadmonition{\DUtopictitle{System Message:}
+\DUadmonition[system-message]{
+\DUtitle[system-message]{system-message}
 \raisebox{1em}{\hypertarget{id24}{}}
-ERROR/3 in functional/input/data/standard.txt, line~100
+
+{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~100
 
 \hyperlink{id25}{
 Undefined substitution referenced: ``problematic''.
 }}
 
-\DUadmonition{\DUtopictitle{System Message:}
+\DUadmonition[system-message]{
+\DUtitle[system-message]{system-message}
 \raisebox{1em}{\hypertarget{id85}{}}
-ERROR/3 in functional/input/standalone\_rst\_latex.txt, line~359
+
+{\color{red}ERROR/3} in \texttt{functional/input/standalone\_rst\_latex.txt}, line~359
 
 \hyperlink{id86}{
 Unknown target name: ``5''.
 }}
 
-\DUadmonition{\DUtopictitle{System Message:}
+\DUadmonition[system-message]{
+\DUtitle[system-message]{system-message}
 \raisebox{1em}{\hypertarget{id87}{}}
-ERROR/3 in functional/input/data/standard.txt, line~368
+
+{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~368
 
 \hyperlink{id88}{
 Unknown target name: ``nonexistent''.
 }}
 
-\DUadmonition{\DUtopictitle{System Message:}
+\DUadmonition[system-message]{
+\DUtitle[system-message]{system-message}
 \raisebox{1em}{\hypertarget{id89}{}}
-ERROR/3 in functional/input/data/standard.txt, line~395
+
+{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~395
 
 \hyperlink{id90}{
 Unknown target name: ``hyperlink reference without a target''.
 }}
 
-\DUadmonition{\DUtopictitle{System Message:}
+\DUadmonition[system-message]{
+\DUtitle[system-message]{system-message}
 \raisebox{1em}{\hypertarget{id91}{}}
-ERROR/3 in functional/input/data/standard.txt, line~408
+
+{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~408
 
 \hyperlink{id92}{
 Duplicate target name, cannot be used as a unique reference: ``duplicate target names''.
