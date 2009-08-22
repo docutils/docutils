@@ -9,13 +9,15 @@
 :Copyright: This document has been placed in the public domain.
 
 .. contents::
+.. sectnum::
 
 Introduction
 ============
 
 Producing LaTeX code from reST input can be done in at least two ways:
 
-treat LaTeX as a document format (like HTML):
+1. treat LaTeX as a document format (like HTML):
+
    Transform the internal markup into corresponding LaTeX markup.
    For example, a section title would be written with the LaTeX section
    command: ``\section{this section title}``.
@@ -25,7 +27,8 @@ treat LaTeX as a document format (like HTML):
 
    If you prefer this approach, try ``rst2latex.py``.
 
-treat LaTeX as a page description format (like Postscript):
+2. treat LaTeX as a page description format (like Postscript):
+
    Use LaTeX as a typesetting system to produce the desired output
    without bothering with the usual LaTeX idioms for representing
    document structure information.
@@ -42,11 +45,11 @@ PDF generation
 ==============
 
 In many cases, LaTeX code is not the desired end-format of the document.
-LaTeX offers four ways to generate PDF documents from the LaTeX source:
+LaTeX offers (at least) four ways to generate PDF documents from the LaTeX
+source:
 
 pdflatex
-  Generates a PDF document directly from the LaTeX file. As always one
-  might need to call it twice (thrice) to get internal references correct.
+  Generates a PDF document directly from the LaTeX file.
 
 latex dvipdfm
   Use ``latex`` to generate a DVI file and ``dvipdfm`` to produce a PDF
@@ -61,13 +64,15 @@ xetex
   The `XeTeX`_ engine works with input files in UTF-8 encoding and system
   fonts. It is currently not supported by Docutils.
 
-The Rubber_ wrapper for LaTeX and friends can be used to automatically run
-all programs the required number of times and delete "spurious" files.
+You might need to call latex (or pdflatex/xelatex) twice (or even thrice) to
+get internal references correct. The Rubber_ wrapper for LaTeX and friends
+can be used to automatically run all programs the required number of times
+and delete "spurious" files.
 
 .. _Rubber: http://iml.univ-mrs.fr/~beffara/soft/rubber/
 
 
-Specialities of the LaTeX format
+Specialities of the LaTeX writer
 ================================
 
 Length units
@@ -101,8 +106,9 @@ following less common units:
 
 .. _length units: ../ref/rst/restructuredtext.html#length-units
 
-For more on lengths in LaTeX, see e.g.
-http://www.giss.nasa.gov/tools/latex/ltx-86.html.
+For more on lengths in LaTeX, see e.g. `Hypertext Help with LaTeX: Lengths`__
+
+__ http://www.giss.nasa.gov/tools/latex/ltx-86.html.
 
 default length unit
 ```````````````````
@@ -141,7 +147,7 @@ This is why pixmap images without size specification or objects with a size
 specified in ``px`` tend to come too large in the PDF.
 
 Solution:
-  Specify the image size in fixed units (`pt``, ``cm``, ``in``) or
+  Specify the image size in fixed units (``pt``, ``cm``, ``in``) or
   configure the "resolution" in a style sheet.
 
 Example:
@@ -150,7 +156,7 @@ Example:
        \pdfpxdimen=1in % 1 DPI
        \divide\pdfpxdimen by 96 % 96 DPI
 
-images
+Images
 ------
 
 Images__ are included in LaTeX with the help of the `graphicx` package. The
@@ -167,23 +173,28 @@ Docutils special LaTeX macros
 -----------------------------
 
 Some Docutils objects have no LaTeX counterpart, they will be typeset using
-a Docutils specific LaTeX macro. The specific commands, environments, and
-lengths allow layout changes from the `style sheet`_ or with `raw LaTeX`_.
-By convention, these special definitions use the prefix ``\DU``\ [#]_.
+a Docutils specific LaTeX *macro* (command, environment, or length) to allow
+layout changes from the `style sheet`_ or with `raw LaTeX`_. By convention,
+special macros use the prefix ``\DU``\ [#]_.
 
 The generated LaTeX documents should be kept processable by a standard LaTeX
 installation. Therefore fallback definitions are included after the custom
 style sheet, if the macro is needed in the document.
 
-* `Custom style sheets`_ can define alternative implementations with
+* Custom `style sheets`_ can define alternative implementations with
   ``\newcommand``, ``\newenvironment``, and ``\newlength`` plus
   ``\setlength``.
 
 * Definitions with `raw LaTeX`_ are part of the document body. Use
   ``\def``, ``\renewcommand`` or ``\renewenvironment``, and ``\setlength``.
 
-.. [#] for Documentation Utilities = Docutils
+See the test output standalone_rst_latex.tex_ for an example of all fallback
+definitions and their use in the document.
 
+.. _standalone_rst_latex.tex:
+   ../../test/functional/output/standalone_rst_latex.tex
+
+.. [#] DU for Documentation Utilities = Docutils
 
 
 Configuration
@@ -210,6 +221,7 @@ configuration settings
    ../user/config.html
 
 .. _style sheet:
+.. _style sheets:
 
 Custom style sheets
 -------------------
@@ -223,7 +235,7 @@ The option::
 
 references STYLESHEET using the command ``\usepackage`` if STYLESHEET has no
 extension or the extension ``.sty`` (the extension will be dropped). With
-any other extension, the command ``\input`` is used.
+any other extension, the LaTeX command ``\input`` is used.
 
 It is possible to specify multiple style sheets (see examples below).
 
@@ -236,6 +248,7 @@ is inserted instead. Currently, this fails if the file is not available via
 the given path (i.e. without search in the `TeX input path`_).
 
 Examples:
+  ..
 
 * Times Roman fonts with `mathptmx` package::
 
@@ -275,6 +288,7 @@ This can be both, styling and printing commands, as LaTeX (unlike HTML/CSS)
 uses one common language for content and style.
 
 Examples:
+  ..
 
 * Amost all examples for the `style sheet`_ will also work as raw LaTeX
   inside the document. An exception are commands that need to be given in
@@ -295,24 +309,7 @@ Examples:
 
   (Drawback: the formula will be invisible in other output formats.)
 
-* Making a "colorbox": If someone wants to get a red background for a
-  text block, she/he can define ``\definecolor{bg}{rgb}{.9,0,0}`` in a custom
-  `style sheet`_ and in the document do something like this::
-
-    |begincolorbox|
-    Nobody expects the Spanish inquisition.
-    |endcolorbox|
-
-    .. |begincolorbox| raw:: latex
-
-       \\begin{center}
-       \\colorbox{bg}{
-       \\parbox{0.985\\linewidth}{
-
-    .. |endcolorbox| raw:: latex
-
-       }}
-       \\end{center}
+* Defining a macro for a `custom role`_.
 
 .. _raw directive:
    ../ref/rst/directives.html#raw
@@ -327,23 +324,51 @@ admonitions
 Admonitions__ are specially marked "topics" that can appear anywhere an
 ordinary body element can.
 
+__ ../ref/rst/directives.html#admonitions
+
 Command:
   ``\DUadmonition``
 
 Default:
   Typeset in a frame (90 % of text width).
 
-Example:
-  use sans-serif font and 95 % of text widht::
+Examples:
+  ..
 
-    \newcommand{\DUadmonition}[1]{%
-      \begin{center}
-        \fbox{\parbox{0.95\textwidth}{\textsf{#1}}}
-      \end{center}
+
+* A lighter layout without the frame::
+
+    \newcommand{\DUadmonition}[2][class-arg]{%
+      % try \DUadmonition#1{#2}:
+      \ifcsname DUadmonition#1\endcsname%
+        \csname DUadmonition#1\endcsname{#2}%
+      \else
+        \begin{quote}
+          #2
+        \end{quote}
+      \fi
     }
 
-__ ../ref/rst/directives.html#admonitions
+The first part of this definition acts as a "dispatcher". This way it is
+possible to define a special handling of `specific admonitions`_ or based on
+the optional "class" argument.
 
+.. _specific admonitions:
+   ../ref/rst/directives.html#specific-admonitions
+
+Example:
+  layout ``.. note::`` as a margin note::
+
+    \newcommand{\DUadmonitionnote}[1]{\marginpar{#1}}
+
+  Make sure you have enought space to hold the note.
+  See also the marginnote_ and pdfcomment_ packages.
+
+The admonition title is typeset with the ``\DUtitle`` command which also
+takes a class argument. See `topic title`_
+
+
+.. _custom role:
 
 custom interpreted text roles
 `````````````````````````````
@@ -365,17 +390,18 @@ that mark parts of inline text (spans) with a class argument.
 Commands:
   ``\DUrole``: dispatcher command
 
-  ``\docutilsroleCLASSARGUMENT``\ [#]_: optional styling command
-
-.. [#] The prefix ``\docutilsrole...`` instead of ``\DUrole...`` in the
-   styling commands is kept for backwards compatibility.
+  ``\DUroleCLASSARGUMENT``: optional styling command
 
 Default:
   The definition of ``\DUrole{CLASSARGUMENT}{}`` calls the macro named
-  ``\docutilsroleCLASSARGUMENT{}`` if it is defined (but silently ignores
+  ``\DUroleCLASSARGUMENT{}``\ [#]_ if it is defined (but silently ignores
   this class argument if a corresponding macro is not defined).
 
+.. [#] For backwards compatibility, the prefix ``\docutilsrole...`` in the
+   styling commands also recognized.
+
 Examples:
+  ..
 
 * Typeset text in small caps::
 
@@ -387,10 +413,9 @@ Examples:
 
     \DUrole{smallcaps}{Fourier} transformation
 
-  The default definition of ``\DUrole`` will look for a macro named
-  ``\docutilsrolesmallcaps``. The definition ::
+  The definition ::
 
-    \newcommand{\docutilsrolesmallcaps}{\textsc}
+    \newcommand{\DUrolesmallcaps}{\textsc}
 
   as `raw LaTeX`_ or in the custom `style sheet`_ will give the expected
   result (if the chosen font supports small caps).
@@ -402,7 +427,7 @@ Examples:
   As "sub" inherits from the standard "subscript" role, the LaTeX macro
   only needs to set the size and shape::
 
-    \newcommand{\docutilsrolesub}{\normalsize\itshape}
+    \newcommand{\DUrolesub}{\normalsize\itshape}
 
 * A role with several classes and a converted class name::
 
@@ -415,10 +440,10 @@ Examples:
 
   With the definitions::
 
-    \newcommand{\docutilsroleargi}[1]{\textsc}
-    \newcommand{\docutilsroleargii}[1]{{\large #1}}
+    \newcommand{\DUroleargi}[1]{\textsc}
+    \newcommand{\DUroleargii}[1]{{\large #1}}
     \makeatletter
-    \@namedef{docutilsrolearg-3}{\textbf}
+    \@namedef{DUrolearg-3}{\textbf}
     \makeatother
 
   in a `style sheet`_\ [#]_ or as `raw LaTeX`_ in the document source,
@@ -476,18 +501,10 @@ Standard document classes:
 There are hundreds of alternative LaTeX document classes installed by modern
 LaTeX distributions, provided by publishers or available at CTAN_ e.g.
 
-* scrarticle, scrreport, scrbook: KOMA-script_ classes
+* scrartcl, scrrprt, scrbook: KOMA-script_ classes
 * memoir_
 
 The `TeX Catalogue`_ lists most of them.
-
-.. _CTAN: http://www.dante.de/ctan
-.. _KOMA-script:
-   http://dante.ctan.org/CTAN/help/Catalogue/entries/koma-script.html
-.. _memoir:
-   http://dante.ctan.org/CTAN/help/Catalogue/entries/memoir.html
-.. _TeX Catalogue:
-   http://dante.ctan.org/CTAN/help/Catalogue/
 
 
 document info
@@ -586,6 +603,8 @@ Default:
   closely to the source and HTML placement (principle of least surprise).
 
 Examples:
+  ..
+
 
 * Set the default back to the pre-0.6 value in a custom `style sheet`_::
 
@@ -629,10 +648,13 @@ a) specifying the corresponding LaTeX package as arguments to the
    * Packages can be combined.
    * Passing options to a package is only possible in the style sheet.
 
-b) changing the font-default macros.
+b) changing the font-default macros ``\rmdefault``, ``sfdefault`` and/or
+   ``ttdefault``.
 
 
 Examples:
+  ..
+
 
 * Use `LaTeX Modern`, a Type 1 variant of CM.
 
@@ -657,14 +679,15 @@ Examples:
     --stylesheet="mathptmx,helvet,courier"
 
 
-* Changing a font without using a package (the macros are ``\rmdefault``,
-  ``sfdefault`` and ``ttdefault``)::
+  .. hint::
+    When generating PDF-files from LaTeX, the files can become smaller if
+    this font combination is used as the fonts do not need to be embedded in
+    the document.
+
+* Use the teletype font from the txfonts_ package::
 
     \renewcommand{\ttdefault}{txtt}
 
-
-When generating PDF-files from LaTeX, the files can become smaller if
-standard Postscript fonts are used.
 
 The following table lists the font packages for standard Postscript fonts
 (see `Using common Postscript fonts with LaTeX`_ for details):
@@ -725,6 +748,8 @@ Default
   is "" which does not load `fontenc`.
 
 Examples:
+  ..
+
 
 * The recommended setting for Latin based scripts is "T1" together with a
   T1-encoded "Type 1" (vector) font, for example `Latin Modern`_::
@@ -788,6 +813,8 @@ Commands:
   package `setspace`
 
 Examples:
+  ..
+
 
 * Get document wide double spacing::
 
@@ -907,6 +934,8 @@ b) The `geometry`_ package is recommended if you have to follow guidelines
    For details see the `geometry manual`_.
 
 Examples:
+  ..
+
 
 * Let `typearea` determine the type area with ``DIV=calc`` in the
   document options_::
@@ -966,6 +995,8 @@ Some possibilities:
 * landscape, portrait, twoside.
 
 Examples:
+  ..
+
 
 * Choose A5 pager in landscape orientation with command line argument::
 
@@ -1006,12 +1037,13 @@ Command:
   ``\DUrubric``
 
 Default:
-  subsection style italic, centred
+  subsubsection style, italic, centred
 
 Example:
-  set rubric to subsection style, flushleft and red::
+  set flushleft and red::
 
-    \newcommand{\DUrubric}[1]{\subsection*{{\color{red}#1}\hfill~}}
+    \newcommand*{\DUrubric}[2][class-arg]{%
+       \subsubsection*{{\color{red}#1}\hfill}}
 
 __ ../ref/rst/directives.html#rubric
 
@@ -1046,21 +1078,93 @@ Command:
   ``DUsidebar``
 
 Default:
-  Box (similar to admonition) with grey background.
+  Box with grey background.
 
-Example:
-  Use margin notes ::
+Examples:
+  ..
 
-    \newcommand{\DUsidebar}{\marginpar}
+
+* Less space before the title::
+
+    \providecommand{\DUsidebar}[2]{%
+        \begin{center}
+          \colorbox[gray]{0.90}{\parbox{0.9\textwidth}{%
+            \smallskip\textbf{#1}\smallskip
+            #2}}
+        \end{center}
+    }
+
+* Use margin notes::
+
+    \newcommand{\DUsidebar}[2]{\marginpar{\flushleft \textbf{#1} #2}}
 
   * Make sure the margin is wide enough to hold the note.
-  * This might fail with some constructs inside the `side bar` and where
+  * This fails with some constructs inside the `side bar` and where
     \marginpar cannot be used, e.g., inside floats, footnotes, or in frames
     made with the framed package (see marginnote_).
 
 __ http://docutils.sf.net/docutils/docs/ref/rst/directives.html#sidebar
-.. _marginnote:
-   http://dante.ctan.org/CTAN/macros/latex/contrib/marginnote/marginnote.pdf
+
+
+topic element
+`````````````
+
+A topic_ is like a block quote with a title, or a self-contained section with
+no subsections.
+
+Topics and rubrics can be used at places where a `section title`_ is not
+allowed (e.g. inside a directive).
+
+Command:
+  ``DUtopic``
+
+Default:
+  "quote" environment
+
+Examples:
+  ..
+
+* If you generally prefer a "normal" section over a block quote, define::
+
+    \newcommand{\DUtopic}[2][class-arg]{%
+      \ifcsname DUtopic#1\endcsname%
+        \csname DUtopic#1\endcsname{#2}%
+      \else
+        #2
+      \fi
+    }
+
+* If you want a "normal" section for topics with class argument "noquote",
+  define::
+
+    \newcommand{\DUtopicnoquote}[1]{#1}
+
+.. _topic: ../ref/rst/directives.html#topic
+.. _section title: ../ref/rst/restructuredtext.html#sections
+
+topic title
+```````````
+
+The title of admonition, sidebar, and topic elements is defined in the
+``\DUtitle`` command, that also takes a "class" argument.
+
+Examples:
+  ..
+
+* You can get a centered and somewhat larger title for topcis with ::
+
+     \newcommand*{\DUtitletopic}[1]{\subsection*{\centering #1}
+
+* Use a right-pointing hand as title for the "attention" directive::
+
+    \usepackage{pifont}
+    \newcommand{\DUtitleattention}[1]{\ding{43}}
+
+  The title argument is "swallowed" by the command.
+  To have both, hand and title use::
+
+    \usepackage{pifont}
+    \newcommand{\DUtitleattention}[1]{\ding{43} #1}
 
 
 table of contents
@@ -1203,16 +1307,18 @@ Default:
   A horizontal line, 1/3 of text width
 
 Examples:
-  Use three stars::
+  ..
 
-    \newcommand*{\DUtransition}{\centering{}*\quad*\quad*}
+* Use three stars::
+
+    \newcommand*{\DUtransition}[1][class-arg]{\centering{}*\quad*\quad*}
 
   Alternatively use the more elaborated version in `transition-stars.sty`_.
 
-  If paragraphs are separated by indentation, you can simply use a vertical
+* If paragraphs are separated by indentation, you can simply use a vertical
   space::
 
-    \newcommand*{\DUtransition}{\vspace{2ex}}
+    \newcommand*{\DUtransition}[1][class-arg]{\vspace{2ex}}
 
 __ http://docutils.sf.net/docutils/docs/ref/rst/restructuredtext.html#transitions
 
@@ -1345,7 +1451,6 @@ Figures
 * Wrapping text around figures is currently not supported. (Requires the
   `wrapfig`_ package.)
 
-.. _wrapfig: http://dante.ctan.org/CTAN/help/Catalogue/entries/wrapfig.html
 
 Miscellaneous
 `````````````
@@ -1356,10 +1461,31 @@ Miscellaneous
 * Footnotes are not all on the same page (as in
   docs/user/rst/demo.txt) and do not link back and forth.
 
+  Until this is fixed, keep footnote mark and footnote text close together!
+
 * Hyperlinks are not hyphenated; this leads to bad spacing. See
   docs/user/rst/demo.txt 2.14 directives.
 
-* Pagestyle headings does not work, when sections are starred.
+* Pagestyle headings does not work, when sections are starred. Use LaTeX for
+  the section numbering with the options_ ``--no-section-numbers``
+  (command line) ``sectnum_xform: False`` (config file).
 
 * For additional docinfo items: the field_body is inserted as text, i.e. no
   markup is done.
+
+.. _CTAN: http://www.dante.de/ctan
+.. _TeX Catalogue:
+   http://www.ctan.org/tex-archive/help/Catalogue/
+
+.. _KOMA-script:
+   http://www.ctan.org/tex-archive/help/Catalogue/entries/koma-script.html
+.. _memoir:
+   http://www.ctan.org/tex-archive/help/Catalogue/entries/memoir.html
+.. _marginnote:
+   http://www.ctan.org/tex-archive/help/Catalogue/entries/marginnote.html
+.. _pdfcomment:
+   http://www.ctan.org/tex-archive/help/Catalogue/entries/pdfcomment.html
+.. _txfonts:
+   http://www.ctan.org/tex-archive/help/Catalogue/entries/txfonts.html
+.. _wrapfig:
+   http://www.ctan.org/tex-archive/help/Catalogue/entries/wrapfig.html

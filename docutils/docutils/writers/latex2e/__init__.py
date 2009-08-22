@@ -322,26 +322,50 @@ class SortableDict(dict):
 class PreambleCmds(object):
     """Building blocks for the latex preamble."""
 
-PreambleCmds.admonition = r"""% admonitions (specially marked "topics")
-\providecommand{\DUadmonition}[1]{%
-  \begin{center}
-    \fbox{\parbox{0.9\textwidth}{#1}}
-  \end{center}
+PreambleCmds.abstract = r"""
+% abstract title
+\providecommand*{\DUtitleabstract}[1]{\centerline{\textbf{#1}}}"""
+
+PreambleCmds.admonition = r"""
+% admonition (specially marked topic)
+\providecommand{\DUadmonition}[2][class-arg]{%
+  % try \DUadmonition#1{#2}:
+  \ifcsname DUadmonition#1\endcsname%
+    \csname DUadmonition#1\endcsname{#2}%
+  \else
+    \begin{center}
+      \fbox{\parbox{0.9\textwidth}{#2}}
+    \end{center}
+  \fi
 }"""
 
 ## PreambleCmds.caption = r"""% configure caption layout
 ## \usepackage{caption}
-## \captionsetup{singlelinecheck=false}% no exceptions for one-lined captions"""
+## \captionsetup{singlelinecheck=false}% no exceptions for one-liners"""
 
-PreambleCmds.docinfo = r"""% width of docinfo table:
+PreambleCmds.color = r"""\usepackage{color}"""
+
+PreambleCmds.docinfo = r"""
+% docinfo (width of docinfo table)
 \DUprovidelength{\DUdocinfowidth}{0.9\textwidth}"""
+# PreambleCmds.docinfo._requirements = 'providelength'
 
 PreambleCmds.embedded_package_wrapper = r"""\makeatletter
 %% embedded stylesheet: %s
 %s
 \makeatother"""
 
-PreambleCmds.fieldlist = r"""% field list environment:
+PreambleCmds.dedication = r"""
+% dedication topic
+\providecommand{\DUtopicdedication}[1]{\begin{center}#1\end{center}}"""
+
+PreambleCmds.error = r"""
+% error admonition title
+\providecommand*{\DUtitleerror}[1]{\DUtitle{\color{red}#1}}"""
+# PreambleCmds.errortitle._requirements = 'color'
+
+PreambleCmds.fieldlist = r"""
+% fieldlist environment
 \ifthenelse{\isundefined{\DUfieldlist}}{
   \newenvironment{DUfieldlist}%
     {\quote\description}
@@ -370,24 +394,29 @@ PreambleCmds.graphicx_auto = r"""% Check output format
 \fi'))"""
 
 
-PreambleCmds.inline = r"""% custom roles:
-% \DUrole{NAME} calls \docutilsroleNAME if it exists
+PreambleCmds.inline = r"""
+% inline markup (custom roles)
+% \DUrole{#1}{#2} tries \DUrole#1{#2}
 \providecommand*{\DUrole}[2]{%
-  \ifcsname docutilsrole#1\endcsname%
-    \csname docutilsrole#1\endcsname{#2}%
-  \else%
-    #2%
+  \ifcsname DUrole#1\endcsname%
+    \csname DUrole#1\endcsname{#2}%
+  \else% backwards compatibility: try \docutilsrole#1{#2}
+    \ifcsname docutilsrole#1\endcsname%
+      \csname docutilsrole#1\endcsname{#2}%
+    \else%
+      #2%
+    \fi%
   \fi%
 }"""
 
-PreambleCmds.legend = r"""% legend environment:
+PreambleCmds.legend = r"""
+% legend environment
 \ifthenelse{\isundefined{\DUlegend}}{
-  \newenvironment{DUlegend}%
-    {\small}
-    {}
+  \newenvironment{DUlegend}{\small}{}
 }{}"""
 
-PreambleCmds.lineblock = r"""% line block environment:
+PreambleCmds.lineblock = r"""
+% lineblock environment
 \DUprovidelength{\DUlineblockindent}{2.5em}
 \ifthenelse{\isundefined{\DUlineblock}}{
   \newenvironment{DUlineblock}[1]{%
@@ -401,8 +430,10 @@ PreambleCmds.lineblock = r"""% line block environment:
   }
   {\endlist}
 }{}"""
+# PreambleCmds.lineblock._requirements = 'providelength'
 
-PreambleCmds.linking = r"""%% hyperref (PDF hyperlinks):
+PreambleCmds.linking = r"""
+%% hyperref package (PDF hyperlinks):
 \ifthenelse{\isundefined{\hypersetup}}{
   \usepackage[colorlinks=%s,linkcolor=%s,urlcolor=%s]{hyperref}
 }{}"""
@@ -410,7 +441,8 @@ PreambleCmds.linking = r"""%% hyperref (PDF hyperlinks):
 PreambleCmds.minitoc = r"""%% local table of contents
 \usepackage{minitoc}"""
 
-PreambleCmds.optionlist = r"""% option list:
+PreambleCmds.optionlist = r"""
+% optionlist environment
 \providecommand*{\DUoptionlistlabel}[1]{\bf #1 \hfill}
 \DUprovidelength{\DUoptionlistindent}{3cm}
 \ifthenelse{\isundefined{\DUoptionlist}}{
@@ -424,52 +456,74 @@ PreambleCmds.optionlist = r"""% option list:
   }
   {\endlist}
 }{}"""
+# PreambleCmds.optionlist._requirements = 'providelength'
 
-PreambleCmds.providelength = r"""% provide a length variable and set it
-\newcommand*{\DUprovidelength}[2]{
+PreambleCmds.providelength = r"""
+% providelength (provide a length variable and set default, if it is new)
+\providecommand*{\DUprovidelength}[2]{
   \ifthenelse{\isundefined{#1}}{\newlength{#1}\setlength{#1}{#2}}{}
 }"""
 
-PreambleCmds.rubric = r"""% rubric (an informal heading):
-\providecommand*{\DUrubric}[1]{%
-  \subsection*{\centering\textit{\textmd{#1}}}%
-}"""
+PreambleCmds.rubric = r"""
+% rubric (informal heading)
+\providecommand*{\DUrubric}[2][class-arg]{%
+  \subsubsection*{\centering\textit{\textmd{#2}}}}"""
 
-PreambleCmds.sidebar = r"""% sidebar (text outside the main text flow)
-\providecommand{\DUsidebar}[1]{%
+PreambleCmds.sidebar = r"""
+% sidebar (text outside the main text flow)
+\providecommand{\DUsidebar}[2][class-arg]{%
   \begin{center}
-    \fbox{\colorbox[gray]{0.80}{\parbox{0.9\textwidth}{#1}}}
+    \colorbox[gray]{0.80}{\parbox{0.9\textwidth}{#2}}
   \end{center}
 }"""
 
-PreambleCmds.sidebartitle = r"""% sidebar title
-\providecommand*{\DUsidebartitle}{\DUtopictitle}"""
-
-PreambleCmds.sidebarsubtitle = r"""% sidebar sub-title
-\providecommand*{\DUsidebarsubtitle}[1]{\hspace*{\fill}\\\emph{#1}\smallskip}"""
+PreambleCmds.subtitle = r"""
+% subtitle (for topic/sidebar)
+\providecommand*{\DUsubtitle}[2][class-arg]{\par\emph{#2}\smallskip}"""
 
 PreambleCmds.table = r"""\usepackage{longtable}
 \usepackage{array}
 \setlength{\extrarowheight}{2pt}
 \newlength{\DUtablewidth} % internal use in tables"""
 
-PreambleCmds.title = r"""
+PreambleCmds.documenttitle = r"""
 %%%%%% Title metadata
 \title{%s}
 \author{%s}
 \date{%s}"""
 
-PreambleCmds.titlereference = r"""% title reference role:
+PreambleCmds.titlereference = r"""
+% titlereference role
 \providecommand*{\DUroletitlereference}[1]{\textsl{#1}}"""
 
-PreambleCmds.topictitle = r"""% title for "topics" (admonitions, sidebar)
-\providecommand*{\DUtopictitle}[1]{\textbf{#1}\smallskip}"""
+PreambleCmds.title = r"""
+% title for topics, admonitions and sidebar
+\providecommand*{\DUtitle}[2][class-arg]{%
+  % call \DUtitle#1{#2} if it exists:
+  \ifcsname DUtitle#1\endcsname%
+    \csname DUtitle#1\endcsname{#2}%
+  \else
+    \smallskip\noindent\textbf{#2}\smallskip%
+  \fi
+}"""
 
-PreambleCmds.transition = r"""% transition ([fancy]break, anonymous section)
-\providecommand*{\DUtransition}{%
+PreambleCmds.topic = r"""
+% topic (quote with heading)
+\providecommand{\DUtopic}[2][class-arg]{%
+  \ifcsname DUtopic#1\endcsname%
+    \csname DUtopic#1\endcsname{#2}%
+  \else
+    \begin{quote}#2\end{quote}
+  \fi
+}"""
+
+PreambleCmds.transition = r"""
+% transition (break, fancybreak, anonymous section)
+\providecommand*{\DUtransition}[1][class-arg]{%
   \hspace*{\fill}\hrulefill\hspace*{\fill}
   \vskip 0.5\baselineskip
 }"""
+
 
 class DocumentClass(object):
     """Details of a LaTeX document class."""
@@ -1166,20 +1220,23 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_address(self, node):
         self.depart_docinfo_item(node)
 
-    def visit_admonition(self, node, name=''):
+    def visit_admonition(self, node):
         self.fallbacks['admonition'] = PreambleCmds.admonition
-        self.fallbacks['topictitle'] = PreambleCmds.topictitle
-        self.body.append('\n\\DUadmonition{')
-        if name:
-            self.body.append('\\DUtopictitle{%s}\n' %
-                             self.language.labels.get(name, name));
-        ## self.body.append('\\vspace{2mm}\n')
+        if node.tagname is 'admonition':
+            classes = ','.join(node['classes'])
+            title = ''
+        else: # specific admonitions
+            self.fallbacks['title'] = PreambleCmds.title
+            classes = node.tagname.replace('_', '-')
+            title = '\\DUtitle[%s]{%s}\n' % (
+               classes, self.language.labels.get(classes, classes))
+        self.body.append('\n\\DUadmonition[%s]{\n%s' % (classes, title))
 
     def depart_admonition(self, node=None):
         self.body.append('}\n')
 
     def visit_attention(self, node):
-        self.visit_admonition(node, 'attention')
+        self.visit_admonition(node)
 
     def depart_attention(self, node):
         self.depart_admonition()
@@ -1204,13 +1261,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append( '\n\\end{quote}\n')
 
     def visit_bullet_list(self, node):
-        if 'contents' in self.topic_classes:
+        if self.is_toc_list:
             self.body.append( '%\n\\begin{list}{}{}\n' )
         else:
             self.body.append( '%\n\\begin{itemize}\n' )
 
     def depart_bullet_list(self, node):
-        if 'contents' in self.topic_classes:
+        if self.is_toc_list:
             self.body.append( '\n\\end{list}\n' )
         else:
             self.body.append( '\n\\end{itemize}\n' )
@@ -1242,7 +1299,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('}\n')
 
     def visit_caution(self, node):
-        self.visit_admonition(node, 'caution')
+        self.visit_admonition(node)
 
     def depart_caution(self, node):
         self.depart_admonition()
@@ -1358,7 +1415,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item(node)
 
     def visit_danger(self, node):
-        self.visit_admonition(node, 'danger')
+        self.visit_admonition(node)
 
     def depart_danger(self, node):
         self.depart_admonition()
@@ -1402,7 +1459,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_docinfo(self, node):
         # tabularx: automatic width of columns, no page breaks allowed.
         self.requirements['tabularx'] = r'\usepackage{tabularx}'
-        self.requirements['~providelength'] = PreambleCmds.providelength
+        self.fallbacks['_providelength'] = PreambleCmds.providelength
         self.fallbacks['docinfo'] = PreambleCmds.docinfo
         self.docinfo = ['%' + '_'*75 + '\n',
                         '\\begin{center}\n',
@@ -1498,7 +1555,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         #   To deactivate it, self.astext() adds \title{...}, \author{...},
         #   \date{...}, even if the"..." are empty strings.
         if '\\maketitle\n\n' in self.body_prefix:
-            title = [PreambleCmds.title % (
+            title = [PreambleCmds.documenttitle % (
                      '%\n  '.join(self.title),
                      ' \\and\n'.join(['\\\\\n'.join(author_lines)
                                      for author_lines in self.author_stack]),
@@ -1667,7 +1724,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self._enumeration_counters.pop()
 
     def visit_error(self, node):
-        self.visit_admonition(node, 'error')
+        self.fallbacks['error'] = PreambleCmds.error
+        self.visit_admonition(node)
 
     def depart_error(self, node):
         self.depart_admonition()
@@ -1836,7 +1894,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         del self.body[start:]
 
     def visit_hint(self, node):
-        self.visit_admonition(node, 'hint')
+        self.visit_admonition(node)
 
     def depart_hint(self, node):
         self.depart_admonition()
@@ -1920,7 +1978,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_important(self, node):
-        self.visit_admonition(node, 'important')
+        self.visit_admonition(node)
 
     def depart_important(self, node):
         self.depart_admonition()
@@ -1947,7 +2005,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('\n')
 
     def visit_line_block(self, node):
-        self.requirements['~providelength'] = PreambleCmds.providelength
+        self.fallbacks['_providelength'] = PreambleCmds.providelength
         self.fallbacks['lineblock'] = PreambleCmds.lineblock
         if isinstance(node.parent, nodes.line_block):
             self.body.append('\\item[]\n'
@@ -2051,7 +2109,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     ##     self.body.append('[depart_meta]\n')
 
     def visit_note(self, node):
-        self.visit_admonition(node, 'note')
+        self.visit_admonition(node)
 
     def depart_note(self, node):
         self.depart_admonition()
@@ -2082,7 +2140,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body.append('] ')
 
     def visit_option_list(self, node):
-        self.requirements['~providelength'] = PreambleCmds.providelength
+        self.fallbacks['_providelength'] = PreambleCmds.providelength
         self.fallbacks['optionlist'] = PreambleCmds.optionlist
         self.body.append('%\n\\begin{DUoptionlist}\n')
 
@@ -2189,8 +2247,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.section_level -= 1
 
     def visit_sidebar(self, node):
-        # fallback definition requires the color package for background colour
-        self.requirements['color'] = r'\usepackage{color}'
+        self.requirements['color'] = PreambleCmds.color
         self.fallbacks['sidebar'] = PreambleCmds.sidebar
         self.body.append('\n\\DUsidebar{\n')
 
@@ -2237,47 +2294,44 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.unimplemented_visit(node)
 
     def visit_subtitle(self, node):
-        if isinstance(node.parent, nodes.sidebar):
-            self.fallbacks['sidebarsubtitle'] = PreambleCmds.sidebarsubtitle
-            self.body.append('\\DUsidebarsubtitle{')
-            self.context.append('}\n')
-        elif isinstance(node.parent, nodes.document):
+        if isinstance(node.parent, nodes.document):
             self.title.append(r'\\ % subtitle')
             self.title.append(r'\large{%s}' % self.encode(node.astext()))
             self.title += self.labels(node, set_anchor=False)
             raise nodes.SkipNode
+        # Section subtitle -> always "starred": no number, not in ToC
         elif isinstance(node.parent, nodes.section):
-            # Section subtitle:
-            self.body.append('\\textbf{')
-            self.context.append('}\\vspace{0.2cm}\n\n\\noindent ')
+            self.body.append(r'\%s*{' %
+                             self.d_class.section(self.section_level + 1))
+        else:
+            self.fallbacks['subtitle'] = PreambleCmds.subtitle
+            self.body.append('\n\\DUsubtitle[%s]{' % node.parent.tagname)
 
     def depart_subtitle(self, node):
-        self.body.append(self.context.pop())
+        self.body.append('}\n')
 
     def visit_system_message(self, node):
-        self.requirements['color'] = r'\usepackage{color}'
-        self.visit_admonition(node)
-        self.body.append('\\DUtopictitle{System Message:}\n')
+        self.requirements['color'] = PreambleCmds.color
+        self.fallbacks['error'] = PreambleCmds.error
+        self.visit_admonition(node) # error or warning
         self.append_hypertargets(node)
         try:
             line = ', line~%s' % node['line']
         except KeyError:
             line = ''
-        self.body.append('\n%s/%s in %s%s\n' % (node['type'],
-                                                node['level'],
-                                                self.encode(node['source']),
-                                                line))
-        ## self.body.append(r'\color{red}\\')
+        self.body.append('\n\n{\color{red}%s/%s} in \\texttt{%s}%s\n' %
+                         (node['type'], node['level'],
+                          self.encode(node['source']), line))
         if len(node['backrefs']) == 1:
             self.body.append('\n\\hyperlink{%s}{' % node['backrefs'][0])
+            self.context.append('}')
+        else:
+            backrefs = ['\\hyperlink{%s}{%d}' % (href, i+1)
+                        for (i, href) in enumerate(node['backrefs'])]
+            self.context.append('backrefs: ' + ' '.join(backrefs))
 
     def depart_system_message(self, node):
-        if len(node['backrefs']) == 1:
-            self.body.append('}')
-        else:
-            self.body.append('backrefs: ')
-            self.body += ['\\hyperlink{%s}{%d}' % (href, i+1)
-                          for (i,href) in enumerate(node['backrefs'])]
+        self.body.append(self.context.pop())
         self.depart_admonition()
 
     def visit_table(self, node):
@@ -2380,7 +2434,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self._thead_depth -= 1
 
     def visit_tip(self, node):
-        self.visit_admonition(node, 'tip')
+        self.visit_admonition(node)
 
     def depart_tip(self, node):
         self.depart_admonition()
@@ -2400,107 +2454,72 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_title(self, node):
         """Append section and other titles."""
-        # Topic titles
-        if isinstance(node.parent, nodes.topic):
-            # Table of contents
-            if 'contents' in self.topic_classes:
-                if self.settings.use_titlepage_env:
-                    self.body.append('\\end{titlepage}\n')
-                if self.use_latex_toc:
-                    tocdepth = node.parent.get('depth', 0)
-                    if tocdepth:
-                        self.body.append('\n\\setcounter{tocdepth}{%d}' %
-                                         tocdepth)
-                    # use the Docutils-provided title for the ToC
-                    self.body.append('\n\\renewcommand{\\contentsname}{')
-                    self.context.append('}\n\\tableofcontents\n\n')
-                    self.has_latex_toc = True
-                else:
-                    # In LaTeX, alignment of sections is determined by the
-                    # document class. Use \hfill as a workaround.
-                    self.body.append('\\subsubsection*{~\\hfill ')
-                    self.context.append('\\hfill ~%s}\n' % self.bookmark(node))
-            else: # other topic titles
-                # TODO: use DUtopictitle:
-                # self.body.append('\n\\DUtopictitle{')
-                # self.context.append('}\n')
-                self.body.append('\n\\subsubsection*{~\\hfill ')
-                self.context.append('\\hfill ~}\n')
-        # Admonition titles (render as topic title)
-        elif isinstance(node.parent, nodes.admonition):
-            self.fallbacks['topictitle'] = PreambleCmds.topictitle
-            self.body.append('\\DUtopictitle{')
-            self.context.append('}\n')
-        elif isinstance(node.parent, nodes.sidebar):
-            self.fallbacks['sidebartitle'] = PreambleCmds.sidebartitle
-            self.body.append('\\DUsidebartitle{')
-            self.context.append('}\n')
-        # Table
-        elif isinstance(node.parent, nodes.table):
-            # caption must be written after column spec
-            self.active_table.caption = self.encode(node.astext())
-            raise nodes.SkipNode
         # Document title
-        elif self.section_level == 0:
+        if node.parent.tagname == 'document':
             self.title.insert(0, self.encode(node.astext()))
             if not self.pdfinfo == None:
                 self.pdfinfo.append('  pdftitle={%s},' %
                                     self.encode(node.astext()) )
+            raise nodes.SkipNode
+        # Topic titles (topic, admonition, sidebar)
+        elif (isinstance(node.parent, nodes.topic) or
+              isinstance(node.parent, nodes.admonition) or
+              isinstance(node.parent, nodes.sidebar)):
+            self.fallbacks['title'] = PreambleCmds.title
+            classes = ','.join(node.parent['classes'])
+            if not classes:
+                classes = node.tagname
+            self.body.append('\\DUtitle[%s]{' % classes)
+            self.context.append('}\n')
+        # Table caption
+        elif isinstance(node.parent, nodes.table):
+            # caption must be written after column spec
+            self.active_table.caption = self.encode(node.astext())
             raise nodes.SkipNode
         # Section title
         else:
             self.body.append('\n\n')
             self.body.append('%' + '_' * 75)
             self.body.append('\n\n')
-
+            #
             section_name = self.d_class.section(self.section_level)
             # number sections?
-            section_star = '' # LaTeX numbered sections
-            if (# numbering by Docutils or unsupported level:
-                self.settings.sectnum_xform or
-                (self.section_level > len(self.d_class.sections))):
+            if (self.settings.sectnum_xform # numbering by Docutils
+                or (self.section_level > len(self.d_class.sections))):
                 section_star = '*'
+            else: # LaTeX numbered sections
+                section_star = ''
             self.body.append(r'\%s%s{' % (section_name, section_star))
-
             # System messages heading in red:
             if ('system-messages' in node.parent['classes']):
-                self.requirements['color'] = r'\usepackage{color}'
+                self.requirements['color'] = PreambleCmds.color
                 self.body.append('\color{red}')
-
+            # label and ToC entry:
             self.context.append(self.bookmark(node) + '}\n')
             # MAYBE postfix paragraph and subparagraph with \leavemode to
             # ensure floats stay in the section and text starts on a new line.
 
     def depart_title(self, node):
         self.body.append(self.context.pop())
-        # too many newlines before paragraphs:
-        ## self.body.append('\n')
 
-    def minitoc(self, node):
+    def minitoc(self, title, depth):
         """Generate a local table of contents with LaTeX package minitoc"""
-        # title
-        if isinstance(node.next_node(), nodes.title):
-            toctitle = self.encode(node.pop(0).astext())
-        else: # no title
-            toctitle = ''
-        # name-prefix for current section level
         section_name = self.d_class.section(self.section_level)
-        if section_name == 'part':
-            minitoc_name = 'part'
-        elif section_name == 'chapter':
-            minitoc_name = 'mini'
-        elif (section_name == 'section' and
-              'chapter' not in self.d_class.sections):
-            minitoc_name = 'sect'
-        else: # minitoc only supports local toc in part- or top-level
+        # name-prefix for current section level
+        minitoc_names = {'part': 'part', 'chapter': 'mini'}
+        if 'chapter' not in self.d_class.sections:
+            minitoc_names['section'] = 'sect'
+        try:
+            minitoc_name = minitoc_names[section_name]
+        except KeyError: # minitoc only supports part- and toplevel
             warn = self.document.reporter.warning
             warn('Skipping local ToC at %s level.\n' % section_name +
                  '  Feature not supported with option "use-latex-toc"')
             return
         # Requirements/Setup
         self.requirements['minitoc'] = PreambleCmds.minitoc
-        self.requirements['minitoc-%s' %
-                          minitoc_name] = r'\do%stoc' % minitoc_name
+        self.requirements['minitoc-'+minitoc_name] = (r'\do%stoc' %
+                                                      minitoc_name)
         # depth: (Docutils defaults to unlimited depth)
         maxdepth = len(self.d_class.sections)
         self.requirements['minitoc-%s-depth' % minitoc_name] = (
@@ -2510,34 +2529,68 @@ class LaTeXTranslator(nodes.NodeVisitor):
         offset = {'sect': 1, 'mini': 0, 'part': 0}
         if 'chapter' in self.d_class.sections:
             offset['part'] = -1
-        depth = node.get('depth', 0)
         if depth:
             self.body.append('\\setcounter{%stocdepth}{%d}' %
                              (minitoc_name, depth + offset[minitoc_name]))
         # title:
-        self.body.append('\\mtcsettitle{%stoc}{%s}\n' %
-                         (minitoc_name, toctitle))
+        self.body.append('\\mtcsettitle{%stoc}{%s}\n' % (minitoc_name, title))
         # the toc-generating command:
         self.body.append('\\%stoc\n' % minitoc_name)
 
     def visit_topic(self, node):
-        self.topic_classes = node['classes']
-        if ('contents' in node['classes'] and 'local' in node['classes']):
-            if self.use_latex_toc:
-                self.minitoc(node)
-            elif not isinstance(node.next_node(), nodes.title):
-                self.body += self.labels(node)
-        elif ('abstract' in self.topic_classes and
-            self.settings.use_latex_abstract):
-            self.body.append('\\begin{abstract}')
+        # Topic nodes can be generic topic, abstract, dedication, or ToC
+        # table of contents:
+        if 'contents' in node['classes']:
+            self.body.append('\n')
+            self.body += self.labels(node)
+            if self.settings.use_titlepage_env:
+                # TODO: move this to a save place
+                # (what if the contents are at the end of the document?)
+                self.body.append('\\end{titlepage}\n')
+            # add contents to PDF bookmarks sidebar
             if isinstance(node.next_node(), nodes.title):
-                node.pop(0) # dump title
+                self.body.append('\n\\pdfbookmark[%d]{%s}{%s}\n' %
+                                 (self.section_level+1,
+                                  node.next_node().astext(),
+                                  node.get('ids', ['contents'])[0]
+                                 ))
+            if self.use_latex_toc:
+                title = ''
+                if isinstance(node.next_node(), nodes.title):
+                    title = self.encode(node.pop(0).astext())
+                depth = node.get('depth', 0)
+                if 'local' in node['classes']:
+                    self.minitoc(title, depth)
+                    self.context.append('')
+                    return
+                if depth:
+                    self.body.append('\\setcounter{tocdepth}{%d}\n' % depth)
+                if title != 'Contents':
+                    self.body.append('\\renewcommand{\\contentsname}{%s}\n'
+                                     % title)
+                self.body.append('\\tableofcontents\n\n')
+                self.has_latex_toc = True
+            else: # Docutils generated contents list
+                # set flag for visit_bullet_list() and visit_title()
+                self.is_toc_list = True
+            self.context.append('')
+        elif ('abstract' in node['classes'] and
+              self.settings.use_latex_abstract):
+            self.body.append('\\begin{abstract}')
+            self.context.append('\\end{abstract}\n')
+        else:
+            self.fallbacks['topic'] = PreambleCmds.topic
+            # special topics:
+            if 'abstract' in node['classes']:
+                self.fallbacks['abstract'] = PreambleCmds.abstract
+            if 'dedication' in node['classes']:
+                self.fallbacks['dedication'] = PreambleCmds.dedication
+            self.body.append('\n\\DUtopic[%s]{\n' % ','.join(node['classes']))
+            self.context.append('}\n')
 
     def depart_topic(self, node):
-        if ('abstract' in self.topic_classes and
-            self.settings.use_latex_abstract):
-            self.body.append('\\end{abstract}\n')
-        self.topic_classes = []
+        self.body.append(self.context.pop())
+        self.is_toc_list = False
 
     def visit_inline(self, node): # <span>, i.e. custom roles
         # insert fallback definition
@@ -2573,7 +2626,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item(node)
 
     def visit_warning(self, node):
-        self.visit_admonition(node, 'warning')
+        self.visit_admonition(node)
 
     def depart_warning(self, node):
         self.depart_admonition()

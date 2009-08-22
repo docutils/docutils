@@ -42,7 +42,29 @@ latex_head = b(r"""
 %%% User specified packages and stylesheets
 
 %%% Fallback definitions for Docutils-specific commands
-% hyperref (PDF hyperlinks):
+
+% hyperref package (PDF hyperlinks):
+\ifthenelse{\isundefined{\hypersetup}}{
+  \usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
+}{}
+""")
+
+latex_head_DUtitle = b(r"""
+%%% User specified packages and stylesheets
+
+%%% Fallback definitions for Docutils-specific commands
+
+% title for topics, admonitions and sidebar
+\providecommand*{\DUtitle}[2][class-arg]{%
+  % call \DUtitle#1{#2} if it exists:
+  \ifcsname DUtitle#1\endcsname%
+    \csname DUtitle#1\endcsname{#2}%
+  \else
+    \smallskip\noindent\textbf{#2}\smallskip%
+  \fi
+}
+
+% hyperref package (PDF hyperlinks):
 \ifthenelse{\isundefined{\hypersetup}}{
   \usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
 }{}
@@ -89,14 +111,13 @@ Title 2
 Paragraph 2.
 """,
 ## # expected output
-latex_head_prefix + latex_requirements + latex_head + b(r"""
+latex_head_prefix + latex_requirements + latex_head_DUtitle + b(r"""
 %%% Body
 \begin{document}
-\subsubsection*{~\hfill Table of Contents\hfill ~%
-  \phantomsection%
-  \addcontentsline{toc}{section}{Table of Contents}%
-  \label{table-of-contents}%
-}
+
+\phantomsection\label{table-of-contents}
+\pdfbookmark[1]{Table of Contents}{table-of-contents}
+\DUtitle[contents]{Table of Contents}
 %
 \begin{list}{}{}
 
@@ -150,7 +171,8 @@ latex_head_prefix + latex_requirements + latex_head + b(r"""
 %%% Body
 \begin{document}
 
-\renewcommand{\contentsname}{Contents}
+\phantomsection\label{contents}
+\pdfbookmark[1]{Contents}{contents}
 \tableofcontents
 
 
@@ -181,7 +203,8 @@ latex_head_prefix + latex_requirements + latex_head + b(r"""
 %%% Body
 \begin{document}
 
-\renewcommand{\contentsname}{Contents}
+\phantomsection\label{contents}
+\pdfbookmark[1]{Contents}{contents}
 \tableofcontents
 
 
