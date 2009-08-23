@@ -15,7 +15,12 @@ CMD="../../docutils/tools/rst2man.py --traceback"
 for IN_F in $IN_DIR/$FILES ; do
   BASE=`basename $IN_F`
   F_BASE=${BASE%.txt}
-  $CMD $IN_F $OUT_DIR/$F_BASE.man
+  if echo $F_BASE | grep -q -- '-de\.' ; then
+    OPT="-l de"
+  else
+    OPT=""
+  fi
+  $CMD $OPT $IN_F $OUT_DIR/$F_BASE.man
   if [ $? -eq 0 ] ; then
     diff -s -u $EXP_DIR/$F_BASE.man $OUT_DIR/$F_BASE.man
     for ENC in latin1 utf8 ascii ; do
