@@ -117,6 +117,8 @@ Changes Since 0.5
 * docutils/writers/manpage.py
 
   - Do not print version at document end, this is done by the viewer.
+  - Do not print date at document end, this is done by the viewer.
+  - Fix storage of docinfo fields for none standard fields.
 
 * docutils/tools/rst2man.py
 
