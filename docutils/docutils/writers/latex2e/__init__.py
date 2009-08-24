@@ -2573,6 +2573,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
               self.settings.use_latex_abstract):
             self.body.append('\\begin{abstract}')
             self.context.append('\\end{abstract}\n')
+            if isinstance(node.next_node(), nodes.title):
+                node.pop(0) # LaTeX provides its own title
         else:
             self.fallbacks['topic'] = PreambleCmds.topic
             # special topics:
