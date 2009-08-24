@@ -1,0 +1,14 @@
+======================
+english_manpage_sample
+======================
+
+-------------------
+manpage description
+-------------------
+
+:Date: 2009-08-24
+:Version: 0.5
+:Manual section: 1
+:Manual group: Example manpages
+
+Test document information processing.

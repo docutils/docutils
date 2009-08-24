@@ -1,6 +1,6 @@
 .\" Man page generated from reStructeredText.
 .
-.TH MAN 1 "" "2.5.1" "Manual Hilfsprogramme"
+.TH MAN 1 "2008-01-28" "2.5.1" "Manual Hilfsprogramme"
 .SH NAME
 man \- Programm zum Einsehen der Online-Manuale
 .
