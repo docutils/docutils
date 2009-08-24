@@ -455,8 +455,6 @@ A1B 2C3
 .fi
 .UNINDENT
 .UNINDENT
-
-Date: 2009-06-22
 .SH COPYRIGHT
 public domain
 Behave responsible.

@@ -1,0 +1,14 @@
+==========================
+deutsches_manpage_beispiel
+==========================
+
+--------------------
+manpage beschreibung
+--------------------
+
+:Datum: 2009-08-24
+:Version: 0.5
+:Manual section: 1
+:Manual group: Beispielmanpages
+
+Test document information Verarbeitung.
