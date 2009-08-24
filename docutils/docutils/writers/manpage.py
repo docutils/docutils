@@ -188,7 +188,8 @@ class Translator(nodes.NodeVisitor):
                 "copyright" : "",
                 "version" : "",
                     }
-        self._docinfo_keys = []     # a list to keep the sequence as in source
+        self._docinfo_keys = []     # a list to keep the sequence as in source.
+        self._docinfo_names = {}    # to get name from text not normalized.
         self._in_docinfo = None
         self._active_table = None
         self._in_literal = False
@@ -564,7 +565,7 @@ class Translator(nodes.NodeVisitor):
         if self._docinfo['author']:
             self.body.append('.SH AUTHOR\n%s\n' 
                     % ', '.join(self._docinfo['author']))
-        skip = ('author', 'copyright', 
+        skip = ('author', 'copyright', 'date',
                 'manual_group', 'manual_section', 
                 'subtitle',
                 'title', 'title_upper', 'version')
@@ -579,9 +580,11 @@ class Translator(nodes.NodeVisitor):
                                     self.defs['indent'][1],
                                     ) )
             elif not name in skip:
-                self.body.append("\n%s: %s\n" % (
-                                    self.language.labels.get(name, name),
-                                    self._docinfo[name]) )
+                if name in self._docinfo_names:
+                    label = self._docinfo_names[name]
+                else:
+                    label = self.language.labels.get(name, name)
+                self.body.append("\n%s: %s\n" % (label, self._docinfo[name]) )
         if self._docinfo['copyright']:
             self.body.append('.SH COPYRIGHT\n%s\n' 
                     % self._docinfo['copyright'])
@@ -628,8 +631,9 @@ class Translator(nodes.NodeVisitor):
 
     def visit_field_body(self, node):
         if self._in_docinfo:
-            self._docinfo[
-                    self._field_name.lower().replace(" ","_")] = node.astext()
+            name_normalized = self._field_name.lower().replace(" ","_")
+            self._docinfo_names[name_normalized] = self._field_name
+            self.visit_docinfo_item(node, name_normalized)
             raise nodes.SkipNode
 
     def depart_field_body(self, node):
