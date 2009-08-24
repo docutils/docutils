@@ -231,8 +231,8 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
         if self.section_level <= self.max_chunk_level:
             self.active_visitor().body.append(self._footer_start())
             self.active_visitor().body.append(self.active_visitor().nav_bar)
+            self.active_visitor().body.append(self._footer_content())
             self.active_visitor().body.append(self._footer_end())
-            self._handle_depart_page(self.active_visitor(), node)
             visitor = self.visitors.pop()
             self.pages[ self._chunk_id( node ) ] = visitor.astext()
 
@@ -265,7 +265,7 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
                 self.active_visitor().body.append(self._footer_end())
 
             tocframe_visitor = self.visitors.pop()
-            self.pages[self.full_toc_page.id] = tocframe_visitor.astext()
+            self.pages[self.full_toc_page.id] = self._toc_as_text( tocframe_visitor )
             self.in_home_page = 1            
                         
             home_page_toc = self.page_subtoc[self.home_page.id]
@@ -431,6 +431,9 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
     def _footer_start(self):
         return '\n<div class="footer-separator"></div>\n<table class="footer"><tr class="footer">'
        
+    def _footer_content(self):
+        return '' 
+
     def _footer_end(self):
         return '</tr></table>'
 
@@ -479,8 +482,8 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
     
     def _node_to_document(self, node):
         node.settings = self.settings.copy()
-        if not self.settings.dont_copy_stylesheet:
-            node.settings.stylesheet = '../%s' % self.settings.stylesheet
+        if not self.settings.embed_stylesheet and _is_uri_relative( self.settings.stylesheet_path ):
+            node.settings.stylesheet_path = '../%s' % self.settings.stylesheet_path
         node.reporter = self.reporter
         return node
 
@@ -540,11 +543,12 @@ class frame_pages_translator(docutils.nodes.NodeVisitor):
         return self.toc_nav_builder
 
 
-    def _handle_depart_page(self, translator, node):
-        pass
-
     def _is_toc_node( self, node ):
         return self._node_class( node ) == 'contents'    
+
+    def _toc_as_text( self, visitor ):
+        return visitor.astext() 
+
 
     def _node_id( self, node ):
         return node['ids'][0]
