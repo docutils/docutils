@@ -5,19 +5,10 @@
 \usepackage[latin1]{inputenc}
 \usepackage{ifthen}
 \usepackage{fixltx2e} % fix LaTeX2e shortcomings
-\usepackage{tabularx}
 
 %%% User specified packages and stylesheets
 
 %%% Fallback definitions for Docutils-specific commands
-
-% providelength (provide a length variable and set default, if it is new)
-\providecommand*{\DUprovidelength}[2]{
-  \ifthenelse{\isundefined{#1}}{\newlength{#1}\setlength{#1}{#2}}{}
-}
-
-% docinfo (width of docinfo table)
-\DUprovidelength{\DUdocinfowidth}{0.9\textwidth}
 
 % hyperref package (PDF hyperlinks):
 \ifthenelse{\isundefined{\hypersetup}}{
@@ -27,7 +18,10 @@
   pdfauthor={Foo Fred;Bar Barney}
 }
 
-%%% Title metadata
+%%% Body
+\begin{document}
+
+% Document title
 \title{}
 \author{Foo Fred\\
 Food Foomatics \& Friends\\
@@ -40,15 +34,6 @@ Bar-BQ Bar\\
 Barbara St 16\\
 South Barwell}
 \date{}
-
-%%% Body
-\begin{document}
 \maketitle
-
-%___________________________________________________________________________
-\begin{center}
-\begin{tabularx}{\DUdocinfowidth}{lX}
-\end{tabularx}
-\end{center}
 
 \end{document}
