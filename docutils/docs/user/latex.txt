@@ -166,8 +166,7 @@ For details see the grfguide_.
 
 __ ../ref/rst/directives.html#images
 .. _grfguide:
-   http://dante.ctan.org/CTAN/macros/latex/required/graphics/grfguide.pdf
-
+   http://ctan.org/get/macros/latex/required/graphics/grfguide.pdf
 
 Docutils special LaTeX macros
 -----------------------------
@@ -219,6 +218,7 @@ configuration settings
 
 .. _Docutils Configuration:
    ../user/config.html
+
 
 .. _style sheet:
 .. _style sheets:
@@ -367,6 +367,11 @@ Example:
 The admonition title is typeset with the ``\DUtitle`` command which also
 takes a class argument. See `topic title`_
 
+.. _marginnote:
+   http://www.ctan.org/tex-archive/help/Catalogue/entries/marginnote.html
+.. _pdfcomment:
+   http://www.ctan.org/tex-archive/help/Catalogue/entries/pdfcomment.html
+
 
 .. _custom role:
 
@@ -488,24 +493,27 @@ __ ../ref/rst/restructuredtext.html#definition-lists
 document class
 ``````````````
 
-The LaTeX document class cannot be changed in a `style sheet`_.
-
-Option:
-
---documentclass=DOCUMENTCLASS
-                        Specify documentclass.  Default is "article".
-
-Standard document classes:
-  article, report, book
-
-There are hundreds of alternative LaTeX document classes installed by modern
-LaTeX distributions, provided by publishers or available at CTAN_ e.g.
-
-* scrartcl, scrrprt, scrbook: KOMA-script_ classes
-* memoir_
-
+There are hundreds of LaTeX document classes installed by modern
+LaTeX distributions, provided by publishers, or available at CTAN_.
 The `TeX Catalogue`_ lists most of them.
 
+* article, report, book: standard document classes
+* scrartcl, scrrprt, scrbook: KOMA-script_ classes
+* memoir_: highly configurable class for larger documents
+
+The LaTeX document class cannot be changed in a style sheet but must be
+specified via configuration options_.
+
+Option:
+  --documentclass=DOCUMENTCLASS
+                        Specify documentclass.  Default is "article".
+
+.. _CTAN: http://www.dante.de/ctan
+.. _TeX Catalogue: http://texcatalogue.sarovar.org/
+.. _KOMA-script:
+   http://www.ctan.org/tex-archive/help/Catalogue/entries/koma-script.html
+.. _memoir:
+   http://www.ctan.org/tex-archive/help/Catalogue/entries/memoir.html
 
 document info
 `````````````
@@ -514,12 +522,11 @@ Content of the `bibliographic fields`__ at the top of a document.
 By default, docinfo items are typeset as a table.
 
 Options:
+  --use-latex-docinfo     Attach author and date to the document title
+  			  instead of the document info table.
 
---use-latex-docinfo     Let LaTeX print author and date, do not show it in
-                        docutils document info.
---use-latex-abstract    Use LaTeX abstract environment for the documents
-                        abstract. Per default the abstract is an unnumbered
-                        section.
+  --use-latex-abstract    Use LaTeX abstract environment for the documents
+                          abstract. Per default the abstract is a topic.
 
 Length:
   ``\DUdocinfowidth``: the width for the `docinfo` table.
@@ -535,6 +542,33 @@ Example:
 
 __ ../ref/rst/restructuredtext.html#bibliographic-fields
 
+
+document title
+``````````````
+
+A lone top-level section title is (usually) transformed to the document title
+(see `section structure`_).
+
+The format of the document title is defined by the document class. The
+"article" document class uses an in-page title and the "report" and "book"
+classes write a separate title page. See the `TeX FAQ`_ on how to customize
+the `style of document titles`_.
+
+The default title page shows only title and subtitle, date and author
+are shown in the `document info`_ table.
+
+Options:
+  --use-latex-docinfo     Attach author and date to the document title
+  			  instead of the document info table.
+  --use-titlepage-env     Put docinfo and abstract into the title page.
+
+.. note:: with the ``--use-titlepage-env`` option, a separate title page is
+   	  used also with the "abstract" document class.
+
+.. _section structure: rst/quickref.html#section-structure
+.. _TeX FAQ: http://www.tex.ac.uk/faq
+.. _style of document titles:
+   http://www.tex.ac.uk/cgi-bin/texfaq2html?label=titlsty
 
 field lists
 ```````````
@@ -561,7 +595,7 @@ Example:
    `labeling`.
 
 .. _enumitem:
-   http://dante.ctan.org/CTAN/macros/latex/contrib/enumitem/enumitem.pdf
+   http://ctan.org/get/macros/latex/contrib/enumitem/enumitem.pdf
 
 __ ../ref/rst/restructuredtext.html#field-lists
 
@@ -584,9 +618,9 @@ Example
     \captionsetup{justification=raggedleft,singlelinecheck=false}
 
 .. _caption:
-   http://dante.ctan.org/CTAN/help/Catalogue/entries/caption.html
+   http://texcatalogue.sarovar.org/entries/caption.html
 .. _chngcntr:
-   http://dante.ctan.org/CTAN/help/Catalogue/entries/chngcntr.html
+   http://texcatalogue.sarovar.org/entries/chngcntr.html
 __ http://www.tex.ac.uk/cgi-bin/texfaq2html?label=running-nos
 
 
@@ -619,9 +653,9 @@ Examples:
         \floatplacement{figure}{tb}
 
 .. _float:
-   http://dante.ctan.org/CTAN/help/Catalogue/entries/float.html
+   http://texcatalogue.sarovar.org/entries/float.html
 .. _float package documentation:
-   http://dante.ctan.org/CTAN/macros/latex/contrib/float/float.pdf
+   http://ctan.org/get/macros/latex/contrib/float/float.pdf
 
 font
 ````
@@ -655,7 +689,6 @@ b) changing the font-default macros ``\rmdefault``, ``sfdefault`` and/or
 Examples:
   ..
 
-
 * Use `LaTeX Modern`, a Type 1 variant of CM.
 
   LaTeX code::
@@ -678,7 +711,6 @@ Examples:
     --documentoptions="scaled=.90"
     --stylesheet="mathptmx,helvet,courier"
 
-
   .. hint::
     When generating PDF-files from LaTeX, the files can become smaller if
     this font combination is used as the fonts do not need to be embedded in
@@ -687,7 +719,6 @@ Examples:
 * Use the teletype font from the txfonts_ package::
 
     \renewcommand{\ttdefault}{txtt}
-
 
 The following table lists the font packages for standard Postscript fonts
 (see `Using common Postscript fonts with LaTeX`_ for details):
@@ -730,8 +761,10 @@ of, e.g., `TeX Live`_.
    http://www.tug.dk/FontCatalogue/
 .. _TeX Gyre: http://www.gust.org.pl/projects/e-foundry/tex-gyre
 .. _Using common PostScript fonts with LaTeX:
-   http://dante.ctan.org/CTAN/macros/latex/required/psnfss/psnfss2e.pdf
+   http://ctan.org/get/macros/latex/required/psnfss/psnfss2e.pdf
 .. _TeX Live: http://tug.org/texlive/
+.. _txfonts:
+   http://www.ctan.org/tex-archive/help/Catalogue/entries/txfonts.html
 
 
 font encoding
@@ -763,10 +796,10 @@ Examples:
 
 .. _fontenc:
 .. _LaTeX font encoding:
-   http://dante.ctan.org/CTAN/macros/latex/doc/encguide.pdf
+   http://ctan.org/get/macros/latex/doc/encguide.pdf
 
 .. _Latin Modern:
-   http://dante.ctan.org/CTAN/help/Catalogue/entries/lm.html
+   http://texcatalogue.sarovar.org/entries/lm.html
 
 hyphenation
 ```````````
@@ -873,7 +906,7 @@ Example:
 __ ../ref/rst/restructuredtext.html#literal-blocks
 
 .. _listings.pdf:
-    http://dante.ctan.org/CTAN/macros/latex/contrib/listings/listings.pdf
+    http://ctan.org/get/macros/latex/contrib/listings/listings.pdf
 
 list of figures/tables
 ``````````````````````
@@ -953,13 +986,13 @@ Examples:
     \geometry{height=10in}.
 
 .. _typearea:
-   http://dante.ctan.org/CTAN/help/Catalogue/entries/typearea.html
+   http://texcatalogue.sarovar.org/entries/typearea.html
 .. _KOMA-Script Guide:
-   http://dante.ctan.org/CTAN/macros/latex/contrib/koma-script/scrguien.pdf
+   http://ctan.org/get/macros/latex/contrib/koma-script/scrguien.pdf
 .. _geometry:
-   http://dante.ctan.org/CTAN/help/Catalogue/entries/geometry.html
+   http://texcatalogue.sarovar.org/entries/geometry.html
 .. _geometry manual:
-   http://dante.ctan.org/CTAN/macros/latex/contrib/geometry/geometry.pdf
+   http://ctan.org/get/macros/latex/contrib/geometry/geometry.pdf
 
 
 page numbering
@@ -974,9 +1007,9 @@ Example:
 
   See the `chappg documentation`_ for details.
 
-.. _chappg: http://dante.ctan.org/CTAN/help/Catalogue/entries/chappg.html
+.. _chappg: http://texcatalogue.sarovar.org/entries/chappg.html
 .. _chappg documentation:
-   http://dante.ctan.org/CTAN/macros/latex/contrib/chappg/chappg.pdf
+   http://ctan.org/get/macros/latex/contrib/chappg/chappg.pdf
 
 
 paper size
@@ -1200,8 +1233,8 @@ use_latex_toc_ configuration option to True:
 
 .. _use_latex_toc: ../user/config.html#use-latex-toc
 .. _contents directive: ../ref/rst/directives.html#contents
-.. _minitoc: http://dante.ctan.org/CTAN/help/Catalogue/entries/minitoc.html
-__ http://dante.ctan.org/CTAN/macros/latex/contrib/minitoc/minitoc.pdf
+.. _minitoc: http://texcatalogue.sarovar.org/entries/minitoc.html
+__ http://ctan.org/get/macros/latex/contrib/minitoc/minitoc.pdf
 
 
 title reference role
@@ -1267,31 +1300,6 @@ Example:
 
   - Convert to PDF with ``latex``, ``dvips``, and ``ps2pdf``.
 
-
-title page
-``````````
-
-.. TODO: find out and describe the state of the art
-
-Currently the title page only shows the title and subtitle, date and author
-are shown in the `docinfo` table. To change the title-page layout one must
-redefine the ``\maketitle`` command in the stylesheet
-
-Example:
- ::
-
-  \makeatletter
-  \renewcommand{\maketitle}{
-    \begin{titlepage}
-      \begin{center}
-      \textsf{TITLE \@title} \\
-      Date: \today
-      \end{center}
-    \end{titlepage}
-  }
-  \makeatother
-
-The macro ``\@title`` contains the title.
 
 transition element
 ``````````````````
@@ -1451,6 +1459,9 @@ Figures
 * Wrapping text around figures is currently not supported. (Requires the
   `wrapfig`_ package.)
 
+.. _wrapfig:
+   http://www.ctan.org/tex-archive/help/Catalogue/entries/wrapfig.html
+
 
 Miscellaneous
 `````````````
@@ -1468,24 +1479,4 @@ Miscellaneous
 
 * Pagestyle headings does not work, when sections are starred. Use LaTeX for
   the section numbering with the options_ ``--no-section-numbers``
-  (command line) ``sectnum_xform: False`` (config file).
-
-* For additional docinfo items: the field_body is inserted as text, i.e. no
-  markup is done.
-
-.. _CTAN: http://www.dante.de/ctan
-.. _TeX Catalogue:
-   http://www.ctan.org/tex-archive/help/Catalogue/
-
-.. _KOMA-script:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/koma-script.html
-.. _memoir:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/memoir.html
-.. _marginnote:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/marginnote.html
-.. _pdfcomment:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/pdfcomment.html
-.. _txfonts:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/txfonts.html
-.. _wrapfig:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/wrapfig.html
+  (command line) or ``sectnum_xform: False`` (config file).
