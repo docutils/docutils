@@ -85,17 +85,17 @@ class Writer(writers.Writer):
           ['--use-part-section'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
-         ('Enclose titlepage in LaTeX titlepage environment.',
+         ('Put docinfo and abstract into the title page.',
           ['--use-titlepage-env'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
-         ('Let LaTeX print author and date, do not show it in docutils '
-          'document info.',
+         ('Attach author and date to the document title '
+          'instead of the document info table.',
           ['--use-latex-docinfo'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
          ("Use LaTeX abstract environment for the document's abstract. "
-          'Per default the abstract is an unnumbered section.',
+          'Default: use a topic.',
           ['--use-latex-abstract'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
@@ -490,10 +490,12 @@ PreambleCmds.table = r"""\usepackage{longtable}
 \newlength{\DUtablewidth} % internal use in tables"""
 
 PreambleCmds.documenttitle = r"""
-%%%%%% Title metadata
+%% Document title
 \title{%s}
 \author{%s}
-\date{%s}"""
+\date{%s}
+\maketitle
+"""
 
 PreambleCmds.titlereference = r"""
 % titlereference role
@@ -983,6 +985,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.body_suffix = ['\n\\end{document}\n']
         self.context = []
 
+        # Where to collect the output of visitor methods
+        self.out = self.body
+
         # Stack of section counters so that we don't have to use_latex_toc.
         # This will grow and shrink as processing occurs.
         # Initialized for potential first-level sections.
@@ -998,7 +1003,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self._max_enumeration_counters = 0
 
         self._bibitems = []
-        self.docinfo = []
+        self.docinfo = [] # Docinfo + Dedication + Abstract
         self.literal_block_stack = []
 
 
@@ -1204,8 +1209,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         """Append hypertargets for all ids of `node`"""
         # hypertarget places the anchor at the target's baseline,
         # so we raise it explicitely
-        self.body.append('%\n'.join(['\\raisebox{1em}{\\hypertarget{%s}{}}' %
-                                     id for id in node['ids']]))
+        self.out.append('%\n'.join(['\\raisebox{1em}{\\hypertarget{%s}{}}' %
+                                    id for id in node['ids']]))
 
     def ids_to_labels(self, node, set_anchor=True):
         """Return list of label definitions for all ids of `node`
@@ -1222,7 +1227,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     # ---------------
 
     def visit_Text(self, node):
-        self.body.append(self.encode(node.astext()))
+        self.out.append(self.encode(node.astext()))
 
     def depart_Text(self, node):
         pass
@@ -1239,13 +1244,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
             classes = ','.join(node['classes'])
             title = ''
         else: # specific admonitions
+            self.fallbacks['title'] = PreambleCmds.title
             classes = node.tagname.replace('_', '-')
             title = '\\DUtitle[%s]{%s}\n' % (
                classes, self.language.labels.get(classes, classes))
-        self.body.append('\n\\DUadmonition[%s]{\n%s' % (classes, title))
+        self.out.append('\n\\DUadmonition[%s]{\n%s' % (classes, title))
 
     def depart_admonition(self, node=None):
-        self.body.append('}\n')
+        self.out.append('}\n')
 
     def visit_attention(self, node):
         self.visit_admonition(node)
@@ -1267,48 +1273,48 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_block_quote(self, node):
-        self.body.append( '%\n\\begin{quote}\n')
+        self.out.append( '%\n\\begin{quote}\n')
 
     def depart_block_quote(self, node):
-        self.body.append( '\n\\end{quote}\n')
+        self.out.append( '\n\\end{quote}\n')
 
     def visit_bullet_list(self, node):
         if self.is_toc_list:
-            self.body.append( '%\n\\begin{list}{}{}\n' )
+            self.out.append( '%\n\\begin{list}{}{}\n' )
         else:
-            self.body.append( '%\n\\begin{itemize}\n' )
+            self.out.append( '%\n\\begin{itemize}\n' )
 
     def depart_bullet_list(self, node):
         if self.is_toc_list:
-            self.body.append( '\n\\end{list}\n' )
+            self.out.append( '\n\\end{list}\n' )
         else:
-            self.body.append( '\n\\end{itemize}\n' )
+            self.out.append( '\n\\end{itemize}\n' )
 
     def visit_superscript(self, node):
-        self.body.append(r'\textsuperscript{')
+        self.out.append(r'\textsuperscript{')
         if node['classes']:
             self.visit_inline(node)
 
     def depart_superscript(self, node):
         if node['classes']:
             self.depart_inline(node)
-        self.body.append('}')
+        self.out.append('}')
 
     def visit_subscript(self, node):
-        self.body.append(r'\textsubscript{') # requires `fixltx2e`
+        self.out.append(r'\textsubscript{') # requires `fixltx2e`
         if node['classes']:
             self.visit_inline(node)
 
     def depart_subscript(self, node):
         if node['classes']:
             self.depart_inline(node)
-        self.body.append('}')
+        self.out.append('}')
 
     def visit_caption(self, node):
-        self.body.append( '\\caption{' )
+        self.out.append( '\\caption{' )
 
     def depart_caption(self, node):
-        self.body.append('}\n')
+        self.out.append('}\n')
 
     def visit_caution(self, node):
         self.visit_admonition(node)
@@ -1318,21 +1324,21 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_title_reference(self, node):
         self.fallbacks['titlereference'] = PreambleCmds.titlereference
-        self.body.append(r'\DUroletitlereference{')
+        self.out.append(r'\DUroletitlereference{')
         if node['classes']:
             self.visit_inline(node)
 
     def depart_title_reference(self, node):
         if node['classes']:
             self.depart_inline(node)
-        self.body.append( '}' )
+        self.out.append( '}' )
 
     def visit_citation(self, node):
         # TODO maybe use cite bibitems
         if self._use_latex_citations:
             self.context.append(len(self.body))
         else:
-            self.body.append(r'\begin{figure}[b]')
+            self.out.append(r'\begin{figure}[b]')
             self.append_hypertargets(node)
 
     def depart_citation(self, node):
@@ -1343,12 +1349,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
             del self.body[size:]
             self._bibitems.append([label, text])
         else:
-            self.body.append('\\end{figure}\n')
+            self.out.append('\\end{figure}\n')
 
     def visit_citation_reference(self, node):
         if self._use_latex_citations:
             if not self.inside_citation_reference_label:
-                self.body.append(r'\cite{')
+                self.out.append(r'\cite{')
                 self.inside_citation_reference_label = 1
             else:
                 assert self.body[-1] in (' ', '\n'),\
@@ -1360,7 +1366,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 href = node['refid']
             elif 'refname' in node:
                 href = self.document.nameids[node['refname']]
-            self.body.append('[\\hyperlink{%s}{' % href)
+            self.out.append('[\\hyperlink{%s}{' % href)
 
     def depart_citation_reference(self, node):
         if self._use_latex_citations:
@@ -1375,18 +1381,18 @@ class LaTeXTranslator(nodes.NodeVisitor):
                     if next_siblings[1].__class__ == node.__class__:
                         followup_citation = True
             if followup_citation:
-                self.body.append(',')
+                self.out.append(',')
             else:
-                self.body.append('}')
+                self.out.append('}')
                 self.inside_citation_reference_label = False
         else:
-            self.body.append('}]')
+            self.out.append('}]')
 
     def visit_classifier(self, node):
-        self.body.append( '(\\textbf{' )
+        self.out.append( '(\\textbf{' )
 
     def depart_classifier(self, node):
-        self.body.append( '})\n' )
+        self.out.append( '})\n' )
 
     def visit_colspec(self, node):
         self.active_table.visit_colspec(node)
@@ -1396,7 +1402,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_comment(self, node):
         # Precede every line with a comment sign, wrap in newlines
-        self.body.append('\n%% %s\n' % node.astext().replace('\n', '\n% '))
+        self.out.append('\n%% %s\n' % node.astext().replace('\n', '\n% '))
         raise nodes.SkipNode
 
     def depart_comment(self, node):
@@ -1439,6 +1445,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item(node)
 
     def visit_decoration(self, node):
+        # header and footer
         pass
 
     def depart_decoration(self, node):
@@ -1448,13 +1455,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def depart_definition(self, node):
-        self.body.append('\n')
+        self.out.append('\n')
 
     def visit_definition_list(self, node):
-        self.body.append( '%\n\\begin{description}\n' )
+        self.out.append( '%\n\\begin{description}\n' )
 
     def depart_definition_list(self, node):
-        self.body.append( '\\end{description}\n' )
+        self.out.append( '\\end{description}\n' )
 
     def visit_definition_list_item(self, node):
         pass
@@ -1463,26 +1470,29 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_description(self, node):
-        self.body.append(' ')
+        self.out.append(' ')
 
     def depart_description(self, node):
         pass
 
     def visit_docinfo(self, node):
-        # tabularx: automatic width of columns, no page breaks allowed.
-        self.requirements['tabularx'] = r'\usepackage{tabularx}'
-        self.fallbacks['_providelength'] = PreambleCmds.providelength
-        self.fallbacks['docinfo'] = PreambleCmds.docinfo
-        self.docinfo = ['%' + '_'*75 + '\n',
-                        '\\begin{center}\n',
-                        '\\begin{tabularx}{\\DUdocinfowidth}{lX}\n']
+        self.out = self.docinfo
+        self.out.append('\n% Docinfo\n'
+                        '\\begin{center}\n'
+                        '\\begin{tabularx}{\\DUdocinfowidth}{lX}\n')
 
     def depart_docinfo(self, node):
-        self.docinfo.append('\\end{tabularx}\n')
-        self.docinfo.append('\\end{center}\n')
-        self.body = self.docinfo + self.body # prepend to self.body
-        # clear docinfo, so field names are no longer appended.
-        self.docinfo = None
+        self.out = self.body
+        # Some itmes (e.g. author) end up at other places
+        if len(self.docinfo) == 1:
+            self.docinfo = []
+        else:
+            # tabularx: automatic width of columns, no page breaks allowed.
+            self.requirements['tabularx'] = r'\usepackage{tabularx}'
+            self.fallbacks['_providelength'] = PreambleCmds.providelength
+            self.fallbacks['docinfo'] = PreambleCmds.docinfo
+            self.docinfo.append('\\end{tabularx}\n'
+                                '\\end{center}\n')
 
     def visit_docinfo_item(self, node, name):
         if name == 'author':
@@ -1506,43 +1516,32 @@ class LaTeXTranslator(nodes.NodeVisitor):
             elif name == 'date':
                 self.date = self.attval(node.astext())
                 raise nodes.SkipNode
-        self.docinfo.append('\\textbf{%s}: &\n\t' % self.language_label(name))
+        self.out.append('\\textbf{%s}: &\n\t' % self.language_label(name))
         if name == 'address':
             self.insert_newline = 1
-            self.docinfo.append('{\\raggedright\n')
+            self.out.append('{\\raggedright\n')
             self.context.append(' } \\\\\n')
         else:
             self.context.append(' \\\\\n')
-        self.context.append(self.docinfo)
-        self.context.append(len(self.body))
 
     def depart_docinfo_item(self, node):
-        size = self.context.pop()
-        dest = self.context.pop()
-        tail = self.context.pop()
-        tail = self.body[size:] + [tail]
-        del self.body[size:]
-        dest.extend(tail)
+        self.out.append(self.context.pop())
         # for address we did set insert_newline
         self.insert_newline = False
 
     def visit_doctest_block(self, node):
-        self.body.append( '\\begin{verbatim}' )
+        self.out.append( '\\begin{verbatim}' )
         self.verbatim = 1
 
     def depart_doctest_block(self, node):
-        self.body.append( '\\end{verbatim}\n' )
+        self.out.append( '\\end{verbatim}\n' )
         self.verbatim = False
 
     def visit_document(self, node):
-        if self.settings.use_titlepage_env:
-            self.body_prefix.append('\\begin{titlepage}\n')
         # titled document?
         if (self.use_latex_docinfo or len(node) and
             isinstance(node[0], nodes.title)):
-            if node['ids']:
-                self.title += self.ids_to_labels(node)
-            self.body_prefix.append('\\maketitle\n\n')
+            self.title += self.ids_to_labels(node)
 
     def depart_document(self, node):
         # Complete header with information gained from walkabout
@@ -1561,19 +1560,27 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.pdfinfo.append('  pdfauthor={%s}' % self.pdfauthor)
         if self.pdfinfo:
             self.head += [r'\hypersetup{'] + self.pdfinfo + ['}']
-        # d) Title metadata
+        # Document title and bibliographic information
         # NOTE: Docutils puts this into docinfo, so normally we do not want
         #   LaTeX author/date handling (via \maketitle).
-        #   To deactivate it, self.astext() adds \title{...}, \author{...},
-        #   \date{...}, even if the"..." are empty strings.
-        if '\\maketitle\n\n' in self.body_prefix:
-            title = [PreambleCmds.documenttitle % (
-                     '%\n  '.join(self.title),
-                     ' \\and\n'.join(['\\\\\n'.join(author_lines)
-                                     for author_lines in self.author_stack]),
-                     self.date)]
-            self.head += title
-        # Add bibliography
+        #   To deactivate it, we add \title, \author, \date,
+        #   even if the arguments are empty strings.
+        if self.title or self.author_stack:
+            if self.settings.use_titlepage_env:
+                self.body_prefix.append('\\begin{titlepage}')
+            authors = ['\\\\\n'.join(author_entry)
+                       for author_entry in self.author_stack]
+            self.body_prefix.append(PreambleCmds.documenttitle %
+                                    ('%\n  '.join(self.title),
+                                     ' \\and\n'.join(authors),
+                                     self.date))
+        # docinfo might alse be given for a document without title
+        self.body_prefix += self.docinfo
+        if ((self.title or self.author_stack) and 
+            self.settings.use_titlepage_env):
+            self.body_prefix.append('\\thispagestyle{empty}\n'
+                                    '\\end{titlepage}')
+        # Bibliography
         # TODO insertion point of bibliography should be configurable.
         if self._use_latex_citations and len(self._bibitems)>0:
             if not self.bibtex:
@@ -1581,24 +1588,24 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 for bi in self._bibitems:
                     if len(widest_label)<len(bi[0]):
                         widest_label = bi[0]
-                self.body.append('\n\\begin{thebibliography}{%s}\n' %
+                self.out.append('\n\\begin{thebibliography}{%s}\n' %
                                  widest_label)
                 for bi in self._bibitems:
                     # cite_key: underscores must not be escaped
                     cite_key = bi[0].replace(r'\_','_')
-                    self.body.append('\\bibitem[%s]{%s}{%s}\n' %
+                    self.out.append('\\bibitem[%s]{%s}{%s}\n' %
                                      (bi[0], cite_key, bi[1]))
-                self.body.append('\\end{thebibliography}\n')
+                self.out.append('\\end{thebibliography}\n')
             else:
-                self.body.append('\n\\bibliographystyle{%s}\n' %
-                                 self.bibtex[0])
-                self.body.append('\\bibliography{%s}\n' % self.bibtex[1])
+                self.out.append('\n\\bibliographystyle{%s}\n' %
+                                self.bibtex[0])
+                self.out.append('\\bibliography{%s}\n' % self.bibtex[1])
         # Make sure to generate a toc file if needed for local contents:
         if 'minitoc' in self.requirements and not self.has_latex_toc:
-            self.body.append('\n\\faketableofcontents % for local ToCs\n')
+            self.out.append('\n\\faketableofcontents % for local ToCs\n')
 
     def visit_emphasis(self, node):
-        self.body.append('\\emph{')
+        self.out.append('\\emph{')
         if node['classes']:
             self.visit_inline(node)
         self.literal_block_stack.append('\\emph{')
@@ -1606,7 +1613,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_emphasis(self, node):
         if node['classes']:
             self.depart_inline(node)
-        self.body.append('}')
+        self.out.append('}')
         self.literal_block_stack.pop()
 
     def visit_entry(self, node):
@@ -1622,10 +1629,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 count = 0
                 while self.active_table.get_rowspan(count):
                     count += 1
-                    self.body.append(' & ')
+                    self.out.append(' & ')
                 self.active_table.visit_entry() # increment cell count
         else:
-            self.body.append(' & ')
+            self.out.append(' & ')
         # multirow, multicolumn
         # IN WORK BUG TODO HACK continues here
         # multirow in LaTeX simply will enlarge the cell over several rows
@@ -1638,8 +1645,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             count = node['morerows'] + 1
             self.active_table.set_rowspan(
                                 self.active_table.get_entry_number()-1,count)
-            self.body.append('\\multirow{%d}{%s}{%%' %
-                             (count,self.active_table.get_column_width()))
+            self.out.append('\\multirow{%d}{%s}{%%' %
+                            (count,self.active_table.get_column_width()))
             self.context.append('}')
         elif 'morecols' in node:
             # the vertical bar before column is missing if it is the first
@@ -1649,7 +1656,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             else:
                 bar1 = ''
             count = node['morecols'] + 1
-            self.body.append('\\multicolumn{%d}{%sl%s}{' %
+            self.out.append('\\multicolumn{%d}{%sl%s}{' %
                     (count, bar1, self.active_table.get_vertical_bar()))
             self.context.append('}')
         else:
@@ -1657,27 +1664,27 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         # header / not header
         if isinstance(node.parent.parent, nodes.thead):
-            self.body.append('\\textbf{%')
+            self.out.append('\\textbf{%')
             self.context.append('}')
         elif self.active_table.is_stub_column():
-            self.body.append('\\textbf{')
+            self.out.append('\\textbf{')
             self.context.append('}')
         else:
             self.context.append('')
 
     def depart_entry(self, node):
-        self.body.append(self.context.pop()) # header / not header
-        self.body.append(self.context.pop()) # multirow/column
+        self.out.append(self.context.pop()) # header / not header
+        self.out.append(self.context.pop()) # multirow/column
         # if following row is spanned from above.
         if self.active_table.get_rowspan(self.active_table.get_entry_number()):
-           self.body.append(' & ')
+           self.out.append(' & ')
            self.active_table.visit_entry() # increment cell count
 
     def visit_row(self, node):
         self.active_table.visit_row()
 
     def depart_row(self, node):
-        self.body.extend(self.active_table.depart_row())
+        self.out.extend(self.active_table.depart_row())
 
     def visit_enumerated_list(self, node):
         # We create our own enumeration list environment.
@@ -1715,24 +1722,24 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # new counter; otherwise, reset & reuse the old counter.
         if len(self._enumeration_counters) > self._max_enumeration_counters:
             self._max_enumeration_counters = len(self._enumeration_counters)
-            self.body.append('\\newcounter{%s}\n' % counter_name)
+            self.out.append('\\newcounter{%s}\n' % counter_name)
         else:
-            self.body.append('\\setcounter{%s}{0}\n' % counter_name)
+            self.out.append('\\setcounter{%s}{0}\n' % counter_name)
 
-        self.body.append('\\begin{list}{%s\\%s{%s}%s}\n' %
-            (enum_prefix,enum_type,counter_name,enum_suffix))
-        self.body.append('{\n')
-        self.body.append('\\usecounter{%s}\n' % counter_name)
+        self.out.append('\\begin{list}{%s\\%s{%s}%s}\n' %
+                        (enum_prefix,enum_type,counter_name,enum_suffix))
+        self.out.append('{\n')
+        self.out.append('\\usecounter{%s}\n' % counter_name)
         # set start after usecounter, because it initializes to zero.
         if 'start' in node:
-            self.body.append('\\addtocounter{%s}{%d}\n' %
-                             (counter_name,node['start']-1))
+            self.out.append('\\addtocounter{%s}{%d}\n' %
+                            (counter_name,node['start']-1))
         ## set rightmargin equal to leftmargin
-        self.body.append('\\setlength{\\rightmargin}{\\leftmargin}\n')
-        self.body.append('}\n')
+        self.out.append('\\setlength{\\rightmargin}{\\leftmargin}\n')
+        self.out.append('}\n')
 
     def depart_enumerated_list(self, node):
-        self.body.append('\\end{list}\n')
+        self.out.append('\\end{list}\n')
         self._enumeration_counters.pop()
 
     def visit_error(self, node):
@@ -1747,49 +1754,44 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def depart_field(self, node):
-        self.body.append('\n')
-        ##self.body.append('%[depart_field]\n')
+        self.out.append('\n')
+        ##self.out.append('%[depart_field]\n')
 
     def visit_field_argument(self, node):
-        self.body.append('%[visit_field_argument]\n')
+        self.out.append('%[visit_field_argument]\n')
 
     def depart_field_argument(self, node):
-        self.body.append('%[depart_field_argument]\n')
+        self.out.append('%[depart_field_argument]\n')
 
     def visit_field_body(self, node):
-        # BUG by attach as text we loose references.
-        if self.docinfo:
-            self.docinfo.append('%s \\\\\n' % self.encode(node.astext()))
-            raise nodes.SkipNode
-        # BUG: what happens if not docinfo
+        pass
 
     def depart_field_body(self, node):
-        pass
-        ## self.body.append( '\n' )
+        if self.out is self.docinfo:
+            self.out.append(r'\\')
 
     def visit_field_list(self, node):
         self.fallbacks['fieldlist'] = PreambleCmds.fieldlist
-        if not self.docinfo:
-            self.body.append('%\n\\begin{DUfieldlist}\n')
+        if self.out is not self.docinfo:
+            self.out.append('%\n\\begin{DUfieldlist}\n')
 
     def depart_field_list(self, node):
-        if not self.docinfo:
-            self.body.append('\\end{DUfieldlist}\n')
+        if self.out is not self.docinfo:
+            self.out.append('\\end{DUfieldlist}\n')
 
     def visit_field_name(self, node):
-        # BUG this duplicates docinfo_item
-        if self.docinfo:
-            self.docinfo.append('\\textbf{%s}: &\n\t' %
-                                self.encode(node.astext()))
-            raise nodes.SkipNode
+        if self.out is self.docinfo:
+            self.out.append('\\textbf{')
         else:
             # Commands with optional args inside an optional arg must be put
             # in a group, e.g. ``\item[{\hyperref[label]{text}}]``.
-            self.body.append('\\item[{')
+            self.out.append('\\item[{')
 
     def depart_field_name(self, node):
-        if not self.docinfo:
-            self.body.append(':}]')
+        if self.out is self.docinfo:
+            self.out.append('}: &')
+        else:
+            self.out.append(':}]')
 
     def visit_figure(self, node):
         self.requirements['float_settings'] = PreambleCmds.float_settings
@@ -1803,48 +1805,46 @@ class LaTeXTranslator(nodes.NodeVisitor):
         ##     # TODO non vertical space for other alignments.
         ##     align = '\\begin{flush%s}' % node.attributes['align']
         ##     align_end = '\\end{flush%s}' % node.attributes['align']
-        ## self.body.append( '\\begin{figure}%s\n' % align )
+        ## self.out.append( '\\begin{figure}%s\n' % align )
         ## self.context.append( '%s\\end{figure}\n' % align_end )
-        self.body.append('\\begin{figure}')
+        self.out.append('\\begin{figure}')
         self.context.append('\\end{figure}\n')
 
     def depart_figure(self, node):
-        self.body.append( self.context.pop() )
+        self.out.append(self.context.pop())
 
     def visit_footer(self, node):
-        self.context.append(len(self.body))
+        self.out = self.body_suffix
+        self.out.append('\n\\begin{center}\small\n')
 
     def depart_footer(self, node):
-        start = self.context.pop()
-        footer = (['\n\\begin{center}\small\n'] +
-                  self.body[start:] + ['\n\\end{center}\n'])
-        self.body_suffix[:0] = footer
-        del self.body[start:]
+        self.out.append('\n\\end{center}\n')
+        self.out = self.body
 
     def visit_footnote(self, node):
         if self.use_latex_footnotes:
             num,text = node.astext().split(None,1)
             num = self.encode(num.strip())
-            self.body.append('\\footnotetext['+num+']')
-            self.body.append('{')
+            self.out.append('\\footnotetext['+num+']')
+            self.out.append('{')
         else:
             # use key starting with ~ for sorting after small letters
             self.requirements['~footnote_floats'] = (
                                             PreambleCmds.footnote_floats)
-            self.body.append('\\begin{figure}[b]')
+            self.out.append('\\begin{figure}[b]')
             self.append_hypertargets(node)
             if node.get('id') == node.get('name'):  # explicite label
-                self.body += self.ids_to_labels(node)
+                self.out += self.ids_to_labels(node)
 
     def depart_footnote(self, node):
         if self.use_latex_footnotes:
-            self.body.append('}\n')
+            self.out.append('}\n')
         else:
-            self.body.append('\\end{figure}\n')
+            self.out.append('\\end{figure}\n')
 
     def visit_footnote_reference(self, node):
         if self.use_latex_footnotes:
-            self.body.append('\\footnotemark['+self.encode(node.astext())+']')
+            self.out.append('\\footnotemark['+self.encode(node.astext())+']')
             raise nodes.SkipNode
         href = ''
         if 'refid' in node:
@@ -1860,12 +1860,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.context.append('}')
         else:                           # shouldn't happen
             raise AssertionError('Illegal footnote reference format.')
-        self.body.append('%s\\hyperlink{%s}{' % (suffix,href))
+        self.out.append('%s\\hyperlink{%s}{' % (suffix,href))
 
     def depart_footnote_reference(self, node):
         if self.use_latex_footnotes:
             return
-        self.body.append('}%s' % self.context.pop())
+        self.out.append('}%s' % self.context.pop())
 
     # footnote/citation label
     def label_delim(self, node, bracket, superscript):
@@ -1873,13 +1873,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
             if self.use_latex_footnotes:
                 raise nodes.SkipNode
             if self.settings.footnote_references == 'brackets':
-                self.body.append(bracket)
+                self.out.append(bracket)
             else:
-                self.body.append(superscript)
+                self.out.append(superscript)
         else:
             assert isinstance(node.parent, nodes.citation)
             if not self._use_latex_citations:
-                self.body.append(bracket)
+                self.out.append(bracket)
 
     def visit_label(self, node):
         """footnote or citation label: in brackets or as superscript"""
@@ -1896,14 +1896,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_header(self, node):
-        self.context.append(len(self.body))
+        self.out = self.body_prefix
+        self.out.append('\n\\verb|begin_header|\n')
 
     def depart_header(self, node):
-        start = self.context.pop()
-        self.body_prefix.append('\n\\verb|begin_header|\n')
-        self.body_prefix.extend(self.body[start:])
-        self.body_prefix.append('\n\\verb|end_header|\n')
-        del self.body[start:]
+        self.out.append('\n\\verb|end_header|\n')
+        self.out = self.body
 
     def visit_hint(self, node):
         self.visit_admonition(node)
@@ -1977,14 +1975,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
             pre.append('\n')
             post.append('\n')
         pre.reverse()
-        self.body.extend(pre)
+        self.out.extend(pre)
         self.append_hypertargets(node)
         options = ''
         if include_graphics_options:
             options = '[%s]' % (','.join(include_graphics_options))
-        self.body.append('\\includegraphics%s{%s}' %
-                         (options, attrs['uri']))
-        self.body.extend(post)
+        self.out.append('\\includegraphics%s{%s}' % (options, attrs['uri']))
+        self.out.extend(post)
 
     def depart_image(self, node):
         pass
@@ -2005,38 +2002,38 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_legend(self, node):
         self.fallbacks['legend'] = PreambleCmds.legend
-        self.body.append('\\begin{DUlegend}')
+        self.out.append('\\begin{DUlegend}')
 
     def depart_legend(self, node):
-        self.body.append('\\end{DUlegend}\n')
+        self.out.append('\\end{DUlegend}\n')
 
     def visit_line(self, node):
-        self.body.append('\item[] ')
+        self.out.append('\item[] ')
 
     def depart_line(self, node):
-        self.body.append('\n')
+        self.out.append('\n')
 
     def visit_line_block(self, node):
         self.fallbacks['_providelength'] = PreambleCmds.providelength
         self.fallbacks['lineblock'] = PreambleCmds.lineblock
         if isinstance(node.parent, nodes.line_block):
-            self.body.append('\\item[]\n'
+            self.out.append('\\item[]\n'
                              '\\begin{DUlineblock}{\\DUlineblockindent}\n')
         else:
-            self.body.append('\n\\begin{DUlineblock}{0em}\n')
+            self.out.append('\n\\begin{DUlineblock}{0em}\n')
 
     def depart_line_block(self, node):
-        self.body.append('\\end{DUlineblock}\n')
+        self.out.append('\\end{DUlineblock}\n')
 
     def visit_list_item(self, node):
-        self.body.append('\n\\item ')
+        self.out.append('\n\\item ')
 
     def depart_list_item(self, node):
         pass
 
     def visit_literal(self, node):
         self.literal = True
-        self.body.append('\\texttt{')
+        self.out.append('\\texttt{')
         if node['classes']:
             self.visit_inline(node)
 
@@ -2044,7 +2041,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.literal = False
         if node['classes']:
             self.depart_inline(node)
-        self.body.append('}')
+        self.out.append('}')
 
     # Literal blocks are used for '::'-prefixed literal-indented
     # blocks of text, where the inline markup is not recognized,
@@ -2078,34 +2075,34 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # no quote inside tables, to avoid vertical space between
             # table border and literal block.
             # BUG: fails if normal text preceeds the literal block.
-            self.body.append('%\n\\begin{quote}')
+            self.out.append('%\n\\begin{quote}')
             self.context.append('\n\\end{quote}\n')
         else:
-            self.body.append('\n')
+            self.out.append('\n')
             self.context.append('\n')
         if self.literal_block_env != '' and self.is_plaintext(node):
             self.requirements['literal_block'] = packages.get(
                                                   self.literal_block_env, '')
             self.verbatim = 1
-            self.body.append('\\begin{%s}%s\n' % (self.literal_block_env,
-                                                  self.literal_block_options))
+            self.out.append('\\begin{%s}%s\n' % (self.literal_block_env,
+                                                 self.literal_block_options))
         else:
             self.literal_block = 1
             self.insert_non_breaking_blanks = 1
-            self.body.append('{\\ttfamily \\raggedright \\noindent\n')
+            self.out.append('{\\ttfamily \\raggedright \\noindent\n')
 
     def depart_literal_block(self, node):
         if self.verbatim:
-            self.body.append('\n\\end{%s}\n' % self.literal_block_env)
+            self.out.append('\n\\end{%s}\n' % self.literal_block_env)
             self.verbatim = False
         else:
-            self.body.append('\n}')
+            self.out.append('\n}')
             self.insert_non_breaking_blanks = False
             self.literal_block = False
-        self.body.append(self.context.pop())
+        self.out.append(self.context.pop())
 
     ## def visit_meta(self, node):
-    ##     self.body.append('[visit_meta]\n')
+    ##     self.out.append('[visit_meta]\n')
         # TODO: set keywords for pdf?
         # But:
         #  The reStructuredText "meta" directive creates a "pending" node,
@@ -2118,7 +2115,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         #  --- docutils/docs/peps/pep-0258.html#transformer
 
     ## def depart_meta(self, node):
-    ##     self.body.append('[depart_meta]\n')
+    ##     self.out.append('[depart_meta]\n')
 
     def visit_note(self, node):
         self.visit_admonition(node)
@@ -2129,7 +2126,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_option(self, node):
         if self.context[-1]:
             # this is not the first option
-            self.body.append(', ')
+            self.out.append(', ')
 
     def depart_option(self, node):
         # flag tha the first option is done.
@@ -2137,27 +2134,27 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_option_argument(self, node):
         """Append the delimiter betweeen an option and its argument to body."""
-        self.body.append(node.get('delimiter', ' '))
+        self.out.append(node.get('delimiter', ' '))
 
     def depart_option_argument(self, node):
         pass
 
     def visit_option_group(self, node):
-        self.body.append('\n\\item[')
+        self.out.append('\n\\item[')
         # flag for first option
         self.context.append(0)
 
     def depart_option_group(self, node):
         self.context.pop() # the flag
-        self.body.append('] ')
+        self.out.append('] ')
 
     def visit_option_list(self, node):
         self.fallbacks['_providelength'] = PreambleCmds.providelength
         self.fallbacks['optionlist'] = PreambleCmds.optionlist
-        self.body.append('%\n\\begin{DUoptionlist}\n')
+        self.out.append('%\n\\begin{DUoptionlist}\n')
 
     def depart_option_list(self, node):
-        self.body.append('\n\\end{DUoptionlist}\n')
+        self.out.append('\n\\end{DUoptionlist}\n')
 
     def visit_option_list_item(self, node):
         pass
@@ -2166,11 +2163,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_option_string(self, node):
-        ##self.body.append(self.starttag(node, 'span', '', CLASS='option'))
+        ##self.out.append(self.starttag(node, 'span', '', CLASS='option'))
         pass
 
     def depart_option_string(self, node):
-        ##self.body.append('</span>')
+        ##self.out.append('</span>')
         pass
 
     def visit_organization(self, node):
@@ -2191,25 +2188,25 @@ class LaTeXTranslator(nodes.NodeVisitor):
             not isinstance(node.parent[index - 1], nodes.paragraph) and
             not isinstance(node.parent[index - 1], nodes.compound)):
             return
-        self.body.append('\n')
+        self.out.append('\n')
         if node.get('ids'):
-            self.body += self.ids_to_labels(node) + ['\n']
+            self.out += self.ids_to_labels(node) + ['\n']
 
     def depart_paragraph(self, node):
-        self.body.append('\n')
+        self.out.append('\n')
 
     def visit_problematic(self, node):
         self.requirements['color'] = PreambleCmds.color
-        self.body.append('%\n')
+        self.out.append('%\n')
         self.append_hypertargets(node)
-        self.body.append(r'\hyperlink{%s}{\textbf{\color{red}' % node['refid'])
+        self.out.append(r'\hyperlink{%s}{\textbf{\color{red}' % node['refid'])
 
     def depart_problematic(self, node):
-        self.body.append('}}')
+        self.out.append('}}')
 
     def visit_raw(self, node):
         if 'latex' in node.get('format', '').split():
-            self.body.append(node.astext())
+            self.out.append(node.astext())
         raise nodes.SkipNode
 
     def visit_reference(self, node):
@@ -2218,7 +2215,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         hash_char = '\\#'
         if 'refuri' in node:
             href = node['refuri'].replace('#', hash_char)
-            self.body.append('\\href{%s}{' % href.replace('%', '\\%'))
+            self.out.append('\\href{%s}{' % href.replace('%', '\\%'))
             return
         if 'refid' in node:
             href = node['refid']
@@ -2227,18 +2224,18 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             raise AssertionError('Unknown reference.')
         if not self.is_inline(node):
-            self.body.append('\n')
+            self.out.append('\n')
 
-        self.body.append('\\hyperref[%s]{' % href)
+        self.out.append('\\hyperref[%s]{' % href)
         if self._reference_label and 'refuri' not in node:
-            self.body.append('\\%s{%s}}' % (self._reference_label,
+            self.out.append('\\%s{%s}}' % (self._reference_label,
                         href.replace(hash_char, '')))
             raise nodes.SkipNode
 
     def depart_reference(self, node):
-        self.body.append('}')
+        self.out.append('}')
         if not self.is_inline(node):
-            self.body.append('\n')
+            self.out.append('\n')
 
     def visit_revision(self, node):
         self.visit_docinfo_item(node, 'revision')
@@ -2261,10 +2258,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_sidebar(self, node):
         self.requirements['color'] = PreambleCmds.color
         self.fallbacks['sidebar'] = PreambleCmds.sidebar
-        self.body.append('\n\\DUsidebar{\n')
+        self.out.append('\n\\DUsidebar{\n')
 
     def depart_sidebar(self, node):
-        self.body.append('}\n')
+        self.out.append('}\n')
 
     attribution_formats = {'dash': ('---', ''),
                            'parentheses': ('(', ')'),
@@ -2273,13 +2270,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_attribution(self, node):
         prefix, suffix = self.attribution_formats[self.settings.attribution]
-        self.body.append('\n\\begin{flushright}\n')
-        self.body.append(prefix)
+        self.out.append('\n\\begin{flushright}\n')
+        self.out.append(prefix)
         self.context.append(suffix)
 
     def depart_attribution(self, node):
-        self.body.append(self.context.pop() + '\n')
-        self.body.append('\\end{flushright}\n')
+        self.out.append(self.context.pop() + '\n')
+        self.out.append('\\end{flushright}\n')
 
     def visit_status(self, node):
         self.visit_docinfo_item(node, 'status')
@@ -2288,7 +2285,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item(node)
 
     def visit_strong(self, node):
-        self.body.append('\\textbf{')
+        self.out.append('\\textbf{')
         self.literal_block_stack.append('\\textbf{')
         if node['classes']:
             self.visit_inline(node)
@@ -2296,7 +2293,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_strong(self, node):
         if node['classes']:
             self.depart_inline(node)
-        self.body.append('}')
+        self.out.append('}')
         self.literal_block_stack.pop()
 
     def visit_substitution_definition(self, node):
@@ -2313,14 +2310,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
             raise nodes.SkipNode
         # Section subtitle -> always "starred": no number, not in ToC
         elif isinstance(node.parent, nodes.section):
-            self.body.append(r'\%s*{' %
+            self.out.append(r'\%s*{' %
                              self.d_class.section(self.section_level + 1))
         else:
             self.fallbacks['subtitle'] = PreambleCmds.subtitle
-            self.body.append('\n\\DUsubtitle[%s]{' % node.parent.tagname)
+            self.out.append('\n\\DUsubtitle[%s]{' % node.parent.tagname)
 
     def depart_subtitle(self, node):
-        self.body.append('}\n')
+        self.out.append('}\n')
 
     def visit_system_message(self, node):
         self.requirements['color'] = PreambleCmds.color
@@ -2331,11 +2328,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
             line = ', line~%s' % node['line']
         except KeyError:
             line = ''
-        self.body.append('\n\n{\color{red}%s/%s} in \\texttt{%s}%s\n' %
+        self.out.append('\n\n{\color{red}%s/%s} in \\texttt{%s}%s\n' %
                          (node['type'], node['level'],
                           self.encode(node['source']), line))
         if len(node['backrefs']) == 1:
-            self.body.append('\n\\hyperlink{%s}{' % node['backrefs'][0])
+            self.out.append('\n\\hyperlink{%s}{' % node['backrefs'][0])
             self.context.append('}')
         else:
             backrefs = ['\\hyperlink{%s}{%d}' % (href, i+1)
@@ -2343,7 +2340,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.context.append('backrefs: ' + ' '.join(backrefs))
 
     def depart_system_message(self, node):
-        self.body.append(self.context.pop())
+        self.out.append(self.context.pop())
         self.depart_admonition()
 
     def visit_table(self, node):
@@ -2357,10 +2354,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.active_table.set_table_style(cls)
         if self.active_table._table_style == 'booktabs':
             self.requirements['booktabs'] = r'\usepackage{booktabs}'
-        self.body.append('\n' + self.active_table.get_opening())
+        self.out.append('\n' + self.active_table.get_opening())
 
     def depart_table(self, node):
-        self.body.append(self.active_table.get_closing() + '\n')
+        self.out.append(self.active_table.get_closing() + '\n')
         self.active_table.close()
         if len(self.table_stack)>0:
             self.active_table = self.table_stack.pop()
@@ -2372,10 +2369,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if ('refuri' in node       # external hyperlink
             or 'refid' in node     # resolved internal link
             or 'refname' in node): # unresolved internal link
-            ## self.body.append('%% %s\n' % node)   # for debugging
+            ## self.out.append('%% %s\n' % node)   # for debugging
             return
-        self.body.append('%\n')
-        self.body += self.ids_to_labels(node)
+        self.out.append('%\n')
+        self.out += self.ids_to_labels(node)
 
     def depart_target(self, node):
         pass
@@ -2394,15 +2391,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
         """definition list term"""
         # Commands with optional args inside an optional arg must be put
         # in a group, e.g. ``\item[{\hyperref[label]{text}}]``.
-        self.body.append('\\item[{')
+        self.out.append('\\item[{')
 
     def depart_term(self, node):
         # \leavevmode results in a line break if the
         # term is followed by an item list.
-        self.body.append('}] \leavevmode ')
+        self.out.append('}] \leavevmode ')
 
     def visit_tgroup(self, node):
-        #self.body.append(self.starttag(node, 'colgroup'))
+        #self.out.append(self.starttag(node, 'colgroup'))
         #self.context.append('</colgroup>\n')
         pass
 
@@ -2416,14 +2413,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_thead(self, node):
         self._thead_depth += 1
         if 1 == self.thead_depth():
-            self.body.append('{%s}\n' % self.active_table.get_colspecs())
+            self.out.append('{%s}\n' % self.active_table.get_colspecs())
             self.active_table.set('preamble written',1)
-        self.body.append(self.active_table.get_caption())
-        self.body.extend(self.active_table.visit_thead())
+        self.out.append(self.active_table.get_caption())
+        self.out.extend(self.active_table.visit_thead())
 
     def depart_thead(self, node):
         if node is not None:
-            self.body.extend(self.active_table.depart_thead())
+            self.out.extend(self.active_table.depart_thead())
             if self.active_table.need_recurse():
                 node.walkabout(self)
         self._thead_depth -= 1
@@ -2464,7 +2461,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             classes = ','.join(node.parent['classes'])
             if not classes:
                 classes = node.tagname
-            self.body.append('\\DUtitle[%s]{' % classes)
+            self.out.append('\\DUtitle[%s]{' % classes)
             self.context.append('}\n')
         # Table caption
         elif isinstance(node.parent, nodes.table):
@@ -2473,9 +2470,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
             raise nodes.SkipNode
         # Section title
         else:
-            self.body.append('\n\n')
-            self.body.append('%' + '_' * 75)
-            self.body.append('\n\n')
+            self.out.append('\n\n')
+            self.out.append('%' + '_' * 75)
+            self.out.append('\n\n')
             #
             section_name = self.d_class.section(self.section_level)
             # number sections?
@@ -2484,18 +2481,18 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 section_star = '*'
             else: # LaTeX numbered sections
                 section_star = ''
-            self.body.append(r'\%s%s{' % (section_name, section_star))
+            self.out.append(r'\%s%s{' % (section_name, section_star))
             # System messages heading in red:
             if ('system-messages' in node.parent['classes']):
                 self.requirements['color'] = PreambleCmds.color
-                self.body.append('\color{red}')
+                self.out.append('\color{red}')
             # label and ToC entry:
             self.context.append(self.bookmark(node) + '}\n')
             # MAYBE postfix paragraph and subparagraph with \leavemode to
             # ensure floats stay in the section and text starts on a new line.
 
     def depart_title(self, node):
-        self.body.append(self.context.pop())
+        self.out.append(self.context.pop())
 
     def minitoc(self, title, depth):
         """Generate a local table of contents with LaTeX package minitoc"""
@@ -2525,30 +2522,26 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if 'chapter' in self.d_class.sections:
             offset['part'] = -1
         if depth:
-            self.body.append('\\setcounter{%stocdepth}{%d}' %
+            self.out.append('\\setcounter{%stocdepth}{%d}' %
                              (minitoc_name, depth + offset[minitoc_name]))
         # title:
-        self.body.append('\\mtcsettitle{%stoc}{%s}\n' % (minitoc_name, title))
+        self.out.append('\\mtcsettitle{%stoc}{%s}\n' % (minitoc_name, title))
         # the toc-generating command:
-        self.body.append('\\%stoc\n' % minitoc_name)
+        self.out.append('\\%stoc\n' % minitoc_name)
 
     def visit_topic(self, node):
-        # Topic nodes can be generic topic, abstract, dedication, or ToC
+        # Topic nodes can be generic topic, abstract, dedication, or ToC.
         # table of contents:
         if 'contents' in node['classes']:
-            self.body.append('\n')
-            self.body += self.ids_to_labels(node)
-            if self.settings.use_titlepage_env:
-                # TODO: move this to a save place
-                # (what if the contents are at the end of the document?)
-                self.body.append('\\end{titlepage}\n')
+            self.out.append('\n')
+            self.out += self.ids_to_labels(node)
             # add contents to PDF bookmarks sidebar
             if isinstance(node.next_node(), nodes.title):
-                self.body.append('\n\\pdfbookmark[%d]{%s}{%s}\n' %
-                                 (self.section_level+1,
-                                  node.next_node().astext(),
-                                  node.get('ids', ['contents'])[0]
-                                 ))
+                self.out.append('\n\\pdfbookmark[%d]{%s}{%s}\n' %
+                                (self.section_level+1,
+                                 node.next_node().astext(),
+                                 node.get('ids', ['contents'])[0]
+                                ))
             if self.use_latex_toc:
                 title = ''
                 if isinstance(node.next_node(), nodes.title):
@@ -2559,11 +2552,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
                     self.context.append('')
                     return
                 if depth:
-                    self.body.append('\\setcounter{tocdepth}{%d}\n' % depth)
+                    self.out.append('\\setcounter{tocdepth}{%d}\n' % depth)
                 if title != 'Contents':
-                    self.body.append('\\renewcommand{\\contentsname}{%s}\n'
-                                     % title)
-                self.body.append('\\tableofcontents\n\n')
+                    self.out.append('\\renewcommand{\\contentsname}{%s}\n' %
+                                    title)
+                self.out.append('\\tableofcontents\n\n')
                 self.has_latex_toc = True
             else: # Docutils generated contents list
                 # set flag for visit_bullet_list() and visit_title()
@@ -2571,7 +2564,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.context.append('')
         elif ('abstract' in node['classes'] and
               self.settings.use_latex_abstract):
-            self.body.append('\\begin{abstract}')
+            self.out = self.docinfo
+            self.out.append('\\begin{abstract}')
             self.context.append('\\end{abstract}\n')
             if isinstance(node.next_node(), nodes.title):
                 node.pop(0) # LaTeX provides its own title
@@ -2580,38 +2574,41 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # special topics:
             if 'abstract' in node['classes']:
                 self.fallbacks['abstract'] = PreambleCmds.abstract
+                self.out = self.docinfo
             if 'dedication' in node['classes']:
                 self.fallbacks['dedication'] = PreambleCmds.dedication
-            self.body.append('\n\\DUtopic[%s]{\n' % ','.join(node['classes']))
+                self.out = self.docinfo
+            self.out.append('\n\\DUtopic[%s]{\n' % ','.join(node['classes']))
             self.context.append('}\n')
 
     def depart_topic(self, node):
-        self.body.append(self.context.pop())
+        self.out.append(self.context.pop())
         self.is_toc_list = False
+        self.out = self.body
 
     def visit_inline(self, node): # <span>, i.e. custom roles
         # insert fallback definition
         self.fallbacks['inline'] = PreambleCmds.inline
-        self.body += [r'\DUrole{%s}{' % cls for cls in node['classes']]
+        self.out += [r'\DUrole{%s}{' % cls for cls in node['classes']]
         self.context.append('}' * (len(node['classes'])))
 
     def depart_inline(self, node):
-        self.body.append(self.context.pop())
+        self.out.append(self.context.pop())
 
     def visit_rubric(self, node):
         self.fallbacks['rubric'] = PreambleCmds.rubric
-        self.body.append('\n\\DUrubric{')
+        self.out.append('\n\\DUrubric{')
         self.context.append('}\n')
 
     def depart_rubric(self, node):
-        self.body.append(self.context.pop())
+        self.out.append(self.context.pop())
 
     def visit_transition(self, node):
         self.fallbacks['transition'] = PreambleCmds.transition
-        self.body.append('\n\n')
-        self.body.append('%' + '_' * 75 + '\n')
-        self.body.append(r'\DUtransition')
-        self.body.append('\n\n')
+        self.out.append('\n\n')
+        self.out.append('%' + '_' * 75 + '\n')
+        self.out.append(r'\DUtransition')
+        self.out.append('\n\n')
 
     def depart_transition(self, node):
         pass

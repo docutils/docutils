@@ -166,7 +166,10 @@
   pdfauthor={David Goodger;Me;Myself;I}
 }
 
-%%% Title metadata
+%%% Body
+\begin{document}
+
+% Document title
 \title{reStructuredText Test Document%
   \phantomsection%
   \label{restructuredtext-test-document}%
@@ -177,12 +180,9 @@
   \label{subtitle}}
 \author{}
 \date{}
-
-%%% Body
-\begin{document}
 \maketitle
 
-%___________________________________________________________________________
+% Docinfo
 \begin{center}
 \begin{tabularx}{\DUdocinfowidth}{lX}
 \textbf{Author}: &
@@ -219,15 +219,15 @@ incorporate, collate, fold, staple, or mutilate it, or do
 anything else to it that your or anyone else's heart
 desires. \\
 \textbf{field name}: &
-	This is a ``generic bibliographic field''. \\
+This is a ``generic bibliographic field''.
+\\
 \textbf{field name ``2''}: &
-	Generic bibliographic fields may contain multiple body elements.
+Generic bibliographic fields may contain multiple body elements.
 
-Like this. \\
+Like this.
+\\
 \end{tabularx}
 \end{center}
-
-
 
 \DUtopic[dedication]{
 \DUtitle[dedication]{Dedication}
@@ -1482,9 +1482,8 @@ paragraph 1
 
 paragraph 2
 
-% the standalone_rst_html4css1.txt document includes this:
-%  .. include:: data/header_footer.txt
-% Applicable for latex too? [GM]
+% currently not implemented in LaTeX:
+% .. include:: data/header_footer.txt
 
 
 %___________________________________________________________________________
@@ -1976,10 +1975,10 @@ greater-than and bar, \textless{} \textbar{} \textgreater{}, except for typewrit
 }
 \end{quote}
 
-% unusual combinations (from newlatex, should we test them)
+% unusual combinations (from newlatex, for interactive testing)
 % .. include:: data/latex.txt
 
-% end of the special tests for the LaTeX writer
+% Preface for System Messages:
 
 
 %___________________________________________________________________________
