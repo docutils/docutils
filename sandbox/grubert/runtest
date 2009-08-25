@@ -189,12 +189,22 @@ $CMD $INF > $OUTF
 do_diff $REFF $OUTF 
 
 CMD="$BASE_CMD --use-titlepage-env"
-F=docinfo-2
-INF=test/$F.txt
-OUTF="$INF-use-titlepage-env.tex"
-REFF="$OUTF.ref"
-$CMD $INF > $OUTF
-do_diff $REFF $OUTF 
+for F in docinfo docinfo-1 docinfo-2 docinfo-3 ; do
+    INF=test/$F.txt
+    OUTF="$INF-use-titlepage-env.tex"
+    REFF="$OUTF.ref"
+    $CMD $INF > $OUTF
+    do_diff $REFF $OUTF 
+done
+
+CMD="$BASE_CMD --use-latex-abstract --use-titlepage-env"
+for F in docinfo-2 docinfo-3 ; do
+    INF=test/$F.txt
+    OUTF="$INF-use-titlepage-env-latexabstract.tex"
+    REFF="$OUTF.ref"
+    $CMD $INF > $OUTF
+    do_diff $REFF $OUTF 
+done
 
 CMD="$BASE_CMD --use-latex-abstract"
 F=docinfo-2
