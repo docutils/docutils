@@ -22,7 +22,7 @@ A backwards compatibility style sheet
   \NeedsTeXFormat{LaTeX2e}
   \ProvidesPackage{docutils-05-compat}
   [2009/03/26 v0.1 compatibility with rst2latex from Docutils 0.5]
-  
+
 .. contents::
    :depth: 3
 
@@ -159,7 +159,7 @@ Rationale:
 
           \pdfpxdimen=1in % 1 dpi
           \divide\pdfpxdimen by 96 % 96 dpi
-  
+
        --  http://www.tug.org/applications/pdftex/NEWS
 
      Modern TeX distributions use pdftex also for dvi generation (i.e.
@@ -182,7 +182,7 @@ Backwards compatibility:
   This can be reset with ::
 
     \pdfpxdimen=1pt
-  
+
 .. caution:: It is impossible to revert the change of lengths specified with
    "pt" or without unit in a style sheet, however the 0.3 % change will be
    imperceptible in most cases.
@@ -228,7 +228,7 @@ Backwards compatibility:
     \@ifundefined{@ifl@ter@@}
       {\RequirePackage{ae,aeguill}}
       {}
-  
+
 .. Why not ``\@ifpackageloaded{fontenc}``?
 
    'fontenc' disables the test to enable loading more than once with
@@ -265,7 +265,7 @@ Backwards compatibility:
 
      \newcommand{\DUrolesub}{\itshape}
      \newcommand{\DUrolesuper}{\itshape}
-  
+
    Alternatively, if you want all sub- and superscripts in italic, redefine
    the macros::
 
@@ -273,7 +273,7 @@ Backwards compatibility:
      %% \let\DUsuper\textsuperscript
      %% \renewcommand*{\textsubscript}{\DUsub\itshape}
      %% \renewcommand*{\textsuperscript}{\DUsuper\itshape}
-  
+
    This is not fully backwards compatible, as it will also set numbers in
    italic shape and not ignore whitespace.
 
@@ -293,13 +293,13 @@ Backwards compatibility:
 
     \usepackage{typearea}
     \typearea{12}
-  
+
   and the vertical alignment of lower boundary of the text area in book
   classes disabled via ::
 
     \raggedbottom
-  
-  
+
+
 ToC and section numbers
 -----------------------
 
@@ -326,7 +326,7 @@ Backwards compatibility:
 
     \setcounter{secnumdepth}{3}
     \setcounter{tocdepth}{3}
-  
+
 .. TODO or not to do? (Back-compatibility problems)
   * The default "depth" of the LaTeX-created ToC and the LaTeX section
     numbering is increased to the number of supported section levels.
@@ -367,8 +367,8 @@ Backwards compatibility:
 
     \usepackage{float}
     \floatplacement{figure}{htbp} % here, top, bottom, extra-page
-  
-  
+
+
 Figure and image alignment
 --------------------------
 
@@ -418,7 +418,7 @@ with version 0.5::
 
   \usepackage{shortvrb}
   \usepackage{amsmath}
-  
+
 Packages that are conditionally loaded
 ``````````````````````````````````````
 
@@ -431,36 +431,36 @@ Tables
 Standard package for tables across several pages::
 
   \usepackage{longtable}
-  
+
 Extra space between text in tables and the line above them
 ('array' is implicitely loaded by 'tabularx', see below)::
 
   \usepackage{array}
   \setlength{\extrarowheight}{2pt}
-  
+
 Table cells spanning multiple rows::
 
   \usepackage{multirow}
-  
+
 Docinfo
 ^^^^^^^
 
 One-page tables with auto-width columns::
 
   \usepackage{tabularx}
-  
+
 Images
 ^^^^^^
 Include graphic files::
 
   \usepackage{graphicx}
-  
+
 Problematic, Sidebar
 ^^^^^^^^^^^^^^^^^^^^
 Set text and/or background colour, coloured boxes with ``\colorbox``::
 
   \usepackage{color}
-  
+
 Floats for footnotes settings
 `````````````````````````````
 
@@ -482,8 +482,8 @@ Settings for the use of floats for footnotes are only included if
   \setcounter{topnumber}{50}
   \setcounter{bottomnumber}{50}
   % end floats for footnotes
-  
-  
+
+
 Special lengths, commands, and environments
 -------------------------------------------
 
@@ -524,10 +524,10 @@ docinfo width
 
   \newlength{\docinfowidth}
   \setlength{\docinfowidth}{0.9\textwidth}
-  
+
   \newlength{\DUdocinfowidth}
   \AtBeginDocument{\setlength{\DUdocinfowidth}{\docinfowidth}}
-  
+
 line block
 ^^^^^^^^^^
 ::
@@ -542,13 +542,13 @@ line block
      \leftmargin#1}
    \raggedright}
   {\end{list}}
-  
+
   \newlength{\DUlineblockindent}
   \AtBeginDocument{\setlength{\DUlineblockindent}{\lineblockindentation}}
   \newenvironment{DUlineblock}[1]
     {\begin{lineblock}{#1}}
     {\end{lineblock}}
-  
+
 local line width
 ^^^^^^^^^^^^^^^^
 
@@ -556,7 +556,7 @@ The ``\locallinewidth`` length for internal use in tables is replaced
 by ``\DUtablewidth``. It was never intended for customization::
 
   \newlength{\locallinewidth}
-  
+
 option lists
 ^^^^^^^^^^^^
 ::
@@ -571,27 +571,27 @@ option lists
      \addtolength{\leftmargin}{\labelsep}
      \renewcommand{\makelabel}{\optionlistlabel}}
   }{\end{list}}
-  
+
   \newcommand{\DUoptionlistlabel}{\optionlistlabel}
   \newenvironment{DUoptionlist}
     {\begin{optionlist}{3cm}}
     {\end{optionlist}}
-  
+
 rubric
 ^^^^^^
 Now less prominent (not bold, normal size) restore with::
 
   \newcommand{\rubric}[1]{\subsection*{~\hfill {\it #1} \hfill ~}}
   \newcommand{\DUrubric}[2][class-arg]{\rubric{#2}}
-  
+
 title reference role
 ^^^^^^^^^^^^^^^^^^^^
 ::
 
   \newcommand{\titlereference}[1]{\textsl{#1}}
   \newcommand{\DUroletitlereference}[1]{\titlereference{#1}}
-  
-  
+
+
 New definitions
 ```````````````
 
@@ -620,15 +620,17 @@ Use sans-serif fonts::
       \fbox{\parbox{0.9\textwidth}{\sffamily #2}}
     \end{center}
   }
-  
-topic title
-^^^^^^^^^^^
-Title for "topics" (admonitions, sidebar).
 
-Larger font size::
+dedication
+^^^^^^^^^^
+Do not center::
 
-  \providecommand*{\DUtitletopic}[1]{\textbf{\large #1}\smallskip}
-  
+  \newcommand{\DUtopicdedication}[1]{#1}
+
+But center the title::
+
+  \newcommand*{\DUtitlededication}[1]{\centerline{\textbf{#1}}}
+
 sidebar
 ^^^^^^^
 Use sans-serif fonts, a frame, and a darker shade of grey::
@@ -639,14 +641,34 @@ Use sans-serif fonts, a frame, and a darker shade of grey::
       \fbox{\colorbox[gray]{0.80}{\parbox{0.9\textwidth}{#2}}}
     \end{center}
   }
-  
+
 sidebar sub-title
 ^^^^^^^^^^^^^^^^^
 Bold instead of emphasized::
 
   \providecommand*{\DUsubtitlesidebar}[1]{\hspace*{\fill}\\
     \textbf{#1}\smallskip}
-  
+
+topic
+^^^^^
+No quote but normal text::
+
+  \newcommand{\DUtopic}[2][class-arg]{%
+    \ifcsname DUtopic#1\endcsname%
+      \csname DUtopic#1\endcsname{#2}%
+    \else
+      #2
+    \fi
+  }
+
+topic title
+^^^^^^^^^^^
+Title for "topics" (admonitions, sidebar).
+
+Larger font size::
+
+  \providecommand*{\DUtitletopic}[1]{\textbf{\large #1}\smallskip}
+
 transition
 ^^^^^^^^^^
 Do not add vertical space after the transition. ::
