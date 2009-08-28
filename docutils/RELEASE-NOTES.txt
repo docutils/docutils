@@ -58,6 +58,7 @@ Changes Since 0.5
   - Use class defaults for page margins ('typearea' now optional).
   - Float placement made configurable, default changed to "here definitely".
   - Typeset generic topic as "quote with title".
+  - Use template (file and configuration option).
 
 * ODT writer:
 
