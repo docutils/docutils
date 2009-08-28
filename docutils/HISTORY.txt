@@ -114,6 +114,7 @@ Changes Since 0.5
   - Float placement made configurable, default changed to "here definitely".
   - Typeset generic topic as "quote block with title".
   - More stable implementation of ``--use-titlepage-env``.
+  - Use template (file and configuration option).
 
 * docutils/writers/manpage.py
 

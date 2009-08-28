@@ -1060,7 +1060,8 @@ __ rst/alternatives.html#or-not-to-do
 * Add _`math markup`.  We should try for a general solution, that's
   applicable to any output format.  Using a standard, such as MathML_,
   would be best.  TeX (or itex_) would be acceptable as a *front-end*
-  to MathML.  See `the culmination of a relevant discussion
+  to MathML. An simpler, alternative input format is defined by
+  ASCIIMathML_. See `the culmination of a relevant discussion
   <http://article.gmane.org/gmane.text.docutils.user/118>`__.
 
   Both a directive and an interpreted text role will be necessary (for
@@ -1076,6 +1077,7 @@ __ rst/alternatives.html#or-not-to-do
 
   .. _MathML: http://www.w3.org/TR/MathML2/
   .. _itex: http://pear.math.pitt.edu/mathzilla/itex2mmlItex.html
+  .. _ASCIIMathML: http://www1.chapman.edu/~jipsen/mathml/asciimath.html
 
 * How about a syntax for alternative hyperlink behavior, such as "open
   in a new window" (as in HTML's ``<a target="_blank">``)?  Double
@@ -1909,21 +1911,19 @@ Bug fixes
 
   See `<../../test/functional/input/data/latex.txt>`__
 
-* Too deeply nested lists fail: generate an error, a warning or provide
-  a workaround?
+* Too deeply nested lists fail: generate a warning and provide
+  a workaround.
 
 * Symbol footnotes fail with "use_latex_footnotes".
+
+  For a possible fix see
+  http://help-csli.stanford.edu/tex/latex-footnotes.shtml
 
 
 Generate clean and configurable LaTeX source
 ----------------------------------------------
 
 * Check the generated source with package `nag`.
-
-LaTeX macros for Docutils-specific objects
-``````````````````````````````````````````
-
-:subtitle:   Is there a package or native construct?
 
 Configurable placement of figure and table floats
 `````````````````````````````````````````````````
@@ -1960,10 +1960,6 @@ Which packages do we want to use?
 
   + No "fancy" or "exotic" requirements.
 
-    Or provide fallback solutions in case the required packages do not exist
-    on the target system? (Can be done with ``\@ifpackageloaded{}`` or
-    ``\IfPackageExists{}``.)
-
   + pointers to advanced packages and their use in the `latex writer
     documentation`_.
 
@@ -1998,13 +1994,50 @@ Which packages do we want to use?
     happen when using configuration files), the spaces in front of footnote
     references aren't trimmed.
 
-  .. Footnote related packages (found with ``locate *foot*sty``)::
+  .. Footnote packages:
+  
+     :footmisc: texlive-latex-extra
+     :manyfoot: texlive-latex-extra
+     :bigfoot: texlive-latex-extra
+     :footnote: texlive-latex-recommended
+     :perpage: texlive-latex-extra
 
-       bigfoot.sty, eskdfootnote.sty, fixfoot.sty, footbib.sty,
-       footmisc.sty, footnpag.sty, mdwtools/footnote.sty,
-       ncctools/manyfoot.sty, ncctools/nccfoots.sty, pdfcolfoot.sty,
-       titlefoot.sty, yafoot/dblfnote.sty, yafoot/fnpos.sty,
-       yafoot/pfnote.sty
+  .. Footnote FAQs:
+
+     `Footnotes whose texts are identical
+     <http://www.tex.ac.uk/cgi-bin/texfaq2html?label=repfootnote>`__
+     
+     * label per hand or use footmisc
+
+     `More than one sequence of footnotes
+     <http://www.tex.ac.uk/cgi-bin/texfaq2html?label=multfoot>`__
+     (manyfoot, bigfoot)
+
+     `Footnotes in tables
+     <http://www.tex.ac.uk/cgi-bin/texfaq2html?label=footintab>`__
+
+     * `tabularx` and longtable allow footnotes.
+     * `footnote` provides an savenotes which collects all
+       footnotes and emits them at the end of the environment
+
+     `Footnotes in LaTeX section headings
+     <http://www.tex.ac.uk/cgi-bin/texfaq2html?label=ftnsect>`__
+
+     * Take advantage of the fact that the mandatory argument doesn\u2019t
+       \u2018move\u2019 if the optional argument is present::
+
+       	   \section[title] {title\footnote{title ftnt}}
+
+     * Use the footmisc package, with package option stable - this modifies
+       footnotes so that they softly and silently vanish away if used in a
+       moving argument.
+
+     `Footnotes numbered \u201cper page\u201d
+     <http://www.tex.ac.uk/cgi-bin/texfaq2html?label=footnpp>`__
+
+     * perpage provides a general mechanism for resetting counters per page
+     * footmisc provides a package option perpage
+
 
 * enumeration environment, field list
 
@@ -2066,6 +2099,11 @@ Default layout
 
 * Configurable `classifier` in description list?
   \emph instead of bold as default?
+
+* More space between title and subtitle? ::
+
+     -  \\ % subtitle%
+     +  \\[0.5em] % subtitle%
 
 __ ../../../sandbox/latex-variants/README.html#default-font
 
@@ -2147,8 +2185,8 @@ Image and figure directives
 Missing features
 ----------------
 
-* test and document selection of LaTeX fontsize. 
-  
+* test and document selection of LaTeX fontsize.
+
   Add font size in points to the document options, e.g.
   ``--documentoptions=12``, use extsize or some other
   package for values other than [10,11,12].
@@ -2179,33 +2217,6 @@ Missing features
 
   Put in place of the to-be-implemented "citations" directive
   (see `Footnote & Citation Gathering`_).
-
-* Provide a ``--default-dpi`` (or better named) option to set the size of a
-  pixel (lenght unit px)?
-
-  You can do this already with::
-
-       \pdfpxdimen=1in % 1 DPI
-       \divide\pdfpxdimen by 92 % 92 DPI
-
-  in a style sheet. So which should take precedence (or just leave it)?
-
-template file
-`````````````
-
-Using a template file instead of hard-coded string literals for the
-skeleton of the exported LaTeX file would provide improved configurability.
-A power user could replace the template with a custom version,
-e.g. to overcome issues with order of package loading or suppressing some
-parts.
-
-* Template Strings, ``from string import Template``, provide a suitable
-  syntax (shell-like $something substitution) but are new in version 2.4.
-
-  For 2.3 compatibility, %-substitution is needed, which is less readable
-  (and LaTeX' comment sign '%' must be escaped).
-
-  -> provide a 2.3 compatibility implementation?
 
 Unicode to LaTeX with ``unicodesymbols`` file from LyX
 ``````````````````````````````````````````````````````
