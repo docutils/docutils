@@ -16,7 +16,6 @@ import os
 import time
 import re
 import string
-import docutils
 from docutils import frontend, nodes, languages, writers, utils, transforms
 from docutils.writers.newlatex2e import unicode_map
 
@@ -209,7 +208,7 @@ class Writer(writers.Writer):
         visitor = self.translator_class(self.document)
         self.document.walkabout(visitor)
         # copy parts
-        for part in visitor_attributes:
+        for part in self.visitor_attributes:
             setattr(self, part, getattr(visitor, part))
         self.output = self.apply_template()
 
@@ -222,13 +221,12 @@ class Writer(writers.Writer):
                                      self.document.settings.template), 'rb')
         template = string.Template(file.read())
         file.close()
-        # create dictionary of substitutions
-        subs = self.assemble_parts()
-        subs['encoding'] = self.document.settings.output_encoding
-        subs['version'] = docutils.__version__
-        return template.substitute(subs)
+        # create dictionary of parts and insert in template
+        self.assemble_parts()
+        return template.substitute(self.parts)
 
     def assemble_parts(self):
+        """Assemble the `self.parts` dictionary or output fragments."""
         writers.Writer.assemble_parts(self)
         for part in self.visitor_attributes:
             if part.startswith('body'):
@@ -236,7 +234,6 @@ class Writer(writers.Writer):
                 self.parts[part] = ''.join(getattr(self, part))
             else:
                 self.parts[part] = '\n'.join(getattr(self, part))
-        return self.parts
 
 
 class Babel(object):
