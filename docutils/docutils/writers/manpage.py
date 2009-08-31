@@ -235,8 +235,8 @@ class Translator(nodes.NodeVisitor):
         line/comment."""
         prefix = '.\\" '
         out_text = ''.join(
-            (prefix + in_line + '\n')
-            for in_line in text.split('\n'))
+            [(prefix + in_line + '\n')
+            for in_line in text.split('\n')])
         return out_text
 
     def comment(self, text):
