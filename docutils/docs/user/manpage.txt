@@ -8,7 +8,7 @@
 :Copyright: This document has been placed in the public domain.
 
 This tries to explore the posibilities to generate man-pages from
-ReStructured text. Man pages are the way for unix systems to provide
+reStructuredText. Man pages are the way for Unix systems to provide
 help to the user. GNU does this with (TeX)info-pages.
 
 Module information
@@ -24,7 +24,7 @@ These informations are collected from title, subtitle and the docinfo.
 Also man pages have a defined set of sections, that are more or less
 mandatory, see References_.
 
-man pages look like ::
+man pages look like::
        
    man(1)     Man Pager Utils     man(1)
        
@@ -34,7 +34,7 @@ man pages look like ::
    SYNOPSIS
        man [-c|-w|-tZT device] [-adhu7V] [-m system[,...]] [-L locale]
      
-in roff formatting ::
+in roff formatting::
      
      .TH man 1 "14 May 2001" "2.3.19" "Manual pager utils"
      .SH NAME
@@ -65,7 +65,7 @@ Conventions
 '''''''''''
 
 * man pages have a special structure and organization. From the manpage 
-  to *man* ::
+  to *man*::
 
     The table below shows the section numbers of the manual followed  by  the
     types of pages they contain.
@@ -107,7 +107,7 @@ Conventions
   So one has to be cautious. This is most disturbing when printing 
   postscript.
 
-  NOTE: 
+  .. NOTE::
 
     1. Roff requests only work when at line start.
     2. But consecutive blank lines are merged by the viewer but not on 
@@ -127,11 +127,11 @@ Conventions
 
   - Why do ``.RE`` and ``.RS`` not work?
 
-  Note:
-    Current indent is in register ``.i``.
+  .. Note::
+     Current indent is in register ``.i``.
 
 * [LMHT]_ Filenames are always in italics, except in the SYNOPSIS section,
-  usse ::
+  use::
 
     .I /usr/include/stdio.h
 
@@ -140,14 +140,14 @@ Conventions
     .B #include <stdio.h>
 
 * Tables are possible, via the external processor tbl, although one should
-   avoid them.
+  avoid them.
 
 Open issues
 '''''''''''
 
 * How to typeset command/manpage names in text.
 * How to write long syntax lines.
-* line ends around email or web addresses in texts.
+* Line ends around email or web addresses in texts.
   How to distinguish something is inline or not ?
   
 * Images and equations are discouraged.
