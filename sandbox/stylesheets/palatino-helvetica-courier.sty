@@ -11,15 +11,22 @@
 %             under the terms of the Apache License, Version 2.0
 %             http://www.apache.org/licenses/LICENSE-2.0
 % 
-% To use the standard Postscript fonts in the combination `Palatino` -
-% `Helvetica` - `Courier` as document default, call this package with
+% Usage
+% ~~~~~
+% 
+% To use standard Postscript fonts in the combination `Palatino` - `Helvetica`
+% - `Courier` as document default, call this package with
 % 
 %   ``\usepackage{palatino-helvetica-courier}``
-%   
-% Options for number style:
+% 
+% Options:
 % 
 % :osf: old-style figures (default)
 % :lf:  lining figures
+% 
+% While `mathpazo` defaults to lining figures, this package defaults to
+% old-style figures and also calls `mathpazo` with the [sc] option for true
+% small caps.
 % 
 % Implementation
 % ~~~~~~~~~~~~~~
@@ -31,14 +38,14 @@
 
 % Options::
 
-\DeclareOption{osf}{\def\phc@mathpazo@options{sc,osf}}
-\DeclareOption{lf}{\def\phc@mathpazo@options{sc}}
+\DeclareOption{osf}{\newcommand{\phc@options}{sc,osf}}
+\DeclareOption{lf}{\newcommand{\phc@options}{sc}}
 \ExecuteOptions{osf}
 \ProcessOptions*
 
 % Load font packages::
 
-\RequirePackage[\phc@mathpazo@options]{mathpazo}
+\RequirePackage[\phc@options]{mathpazo}
 \RequirePackage[scaled=.95]{helvet}     % scaled to fit Palatino
 \RequirePackage{courier}
 
