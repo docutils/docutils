@@ -63,7 +63,7 @@ Changes Since 0.5
 
 * docutils/utils.py:
 
-  - Added ``get_stylesheet_list`` function.
+  - Add ``get_stylesheet_list`` function.
 
 * docutils/writers/html4css1/__init__.py:
 
@@ -77,7 +77,7 @@ Changes Since 0.5
 * docutils/writers/latex2e/__init__.py (see also
   `<docs/user/docutils-05-compat.sty.html>`__) :
 
-  - Add options ``--use-titlepage-env`` and ``--embed-stylesheet``.
+  - Add ``--embed-stylesheet`` option.
   - Apply [ 1474017 ] image vertical alignment is reversed.
   - Apply [ 2051599 ] multi-page tables in latex writer (from pabigot).
   - Change: has_key for dictionaries (not Nodes) to in-operator.
@@ -113,7 +113,6 @@ Changes Since 0.5
   - Use class defaults for page margins ('typearea' now optional).
   - Float placement made configurable, default changed to "here definitely".
   - Typeset generic topic as "quote block with title".
-  - More stable implementation of ``--use-titlepage-env``.
   - Use template (file and configuration option).
 
 * docutils/writers/manpage.py

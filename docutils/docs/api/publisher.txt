@@ -269,32 +269,79 @@ Parts Provided by the S5/HTML Writer
 
 The S5/HTML writer provides the same parts as the `HTML writer`_.
 
+
 Parts Provided by the LaTeX2e Writer
-````````````````````````````````````
+------------------------------------
+
+abstract
+    ``parts['abstract']`` contains the formatted content of the
+    'abstract' docinfo field.
+
+body
+    ``parts['body']`` contains the document's content. In other words, it
+    contains the entire document, except the document title, subtitle, and
+    docinfo.
+
+    This part can be included into another LaTeX document body using the
+    ``\input{}`` command.
+
+.. body_prefix
+    ``parts['body_prefix']`` contains the LaTeX ``\begin{document}``
+
+body_pre_docinfo
+    ``parts['body_pre_docinfo]`` contains title (and poss. subtitle) setup
+    and the ``\maketitle`` command.
+
+    With ``--use-latex-docinfo``, it also contains the 'author',
+    'organization', 'contact', 'address' and 'date' docinfo items.
+
+.. body_suffix
+    ``parts['body_suffix']`` contains the LaTeX ``\end{document}``.
+
+dedication
+    ``parts['dedication']`` contains the formatted content of the
+    'dedication' docinfo field.
+
+docinfo
+    ``parts['docinfo']`` contains the document bibliographic data, the
+    docinfo field list rendered as a table.
+
+    With ``--use-latex-docinfo`` 'author', 'organization', 'contact',
+    'address' and 'date' info is moved to the title metadata (included in
+    body_pre_docinfo).
+
+    'dedication' and 'abstract' are always moved to separate parts.
+
+.. footer
+    ``parts['footer']`` contains the document footer content, meant to
+    appear at the bottom of every printed page.
+    It is not used in the standard template but can be in a custom template
+    to define running heads/foots.
+
+fallbacks
+    ``parts['fallbacks']`` contains fallback definitions for
+    Docutils-specific commands and environments.
 
 head_prefix
-    ``parts['head_prefix']`` contains the first part of the LaTeX preamble:
-    LaTeX document class, required packages and setup before the stylesheet
-    inclusion.
+    ``parts['head_prefix']`` contains the declaration of
+    documentclass and document options.
+
+pdfsetup
+     ``parts['pdfsetup']`` contains the PDF properties
+     ("hyperref" package setup).
+
+requirements
+    ``parts['requirements']`` contains required packages and setup
+    before the stylesheet inclusion.
 
 stylesheet
     ``parts['stylesheet']`` contains the embedded stylesheet(s) or
     stylesheet loading command(s).
 
-head
-    ``parts['head']`` contains the part of the LaTeX preamble following
-    the stylesheet(s): fallback definitions for Docutils-specific commands,
-    PDF hyperlink setup and title metadata (if present).
+subtitle
+    ``parts['subtitle']`` contains the document subtitle text and any
+    inline markup.
 
-body_prefix
-    ``parts['body_prefix']`` contains the LaTeX ``\begin{document}`` and
-    the title page or ``\maketitle`` (in titled documents).
-
-body
-    ``parts['body']`` contains the LaTeX document content, less
-    the ``\begin{document}`` and ``\end{document}`` tags themselves, i.e.
-    the part that can be included into another LaTeX document body using
-    ``\input{}``.
-
-body_suffix
-    ``parts['body_suffix']`` contains the LaTeX ``\end{document}``.
+title
+    ``parts['title']`` contains the document title text and any inline
+    markup.
