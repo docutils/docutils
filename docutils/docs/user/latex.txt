@@ -201,7 +201,7 @@ Configuration
 
 Configuration can be done via configuration options_ to the Docutils tool,
 `custom style sheets`_ and LaTeX packages, as well as `raw LaTeX`_ in the
-document.
+document. Advanced configuration is possible with custom templates_.
 
 Options
 -------
@@ -229,7 +229,7 @@ Custom style sheets
 LaTeX style sheets can be used to configure the look of the printout/PDF by
 (re-)defining LaTeX-commands and settings.
 
-The option::
+The option ::
 
   --stylesheet=STYLESHEET
 
@@ -277,6 +277,30 @@ Stylesheet Repository
 .. _repository of user-contributed style sheets:
    ../../../sandbox/stylesheets/
 .. _sandbox: ../../../sandbox/
+
+
+Templates
+---------
+
+Some customizations require commands at places other than the insertion
+point of stylesheets or depend on the deletion/replacement of parts of the
+document. This can be done via a custom template. See the `publisher
+documentation`_ for a description of the document parts available in a
+template file.
+
+The ``--template`` option specifies the path to the template file. It is
+tried relative to the current working directory and to the latex writer's
+package sub-directory. The default value is 'default.tex'.
+
+In addition to the 'default.tex' template, the latex writer directory
+contains the alternative 'titlepage.tex'.
+
+Example:
+  Print a title page including docinfo, dedication, and abstract::
+
+    --template=titlepage.tex
+
+.. _publisher documentation: ../api/publisher.html
 
 
 Raw LaTeX

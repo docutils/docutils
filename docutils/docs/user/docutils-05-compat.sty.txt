@@ -68,6 +68,16 @@ Bugfixes
 
 * `Figure and image alignment`_ now conforms to the rst definition.
 
+* Put `header and footer directive`__ content in \DUheader respective
+  \DUfooter macros (ignored by the default style/template).
+
+  (They were put inside hard-coded markup at the top/bottom of the document
+  without an option to get them on every page.)
+
+__ ../ref/rst/directives.html#document-header-footer
+
+
+
 Backwards compatibility:
   "Bug for bug compatibility" is not provided.
 
@@ -116,6 +126,21 @@ Backwards compatibility:
 .. important::
   Always specify the extension if you want the style sheet to be
   ``\input`` by LaTeX.
+
+
+Templates
+---------
+
+New Feature:
+  Advanced configuration via custom templates.
+
+Implementation:
+  A ``--template`` option and config setting allows specification of a
+  template file.
+
+See the `LaTeX writer documentation`__ for details.
+
+__ latex.html#templates
 
 
 Custom roles

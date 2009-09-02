@@ -29,7 +29,7 @@ class Writer(writers.Writer):
     supported = ('latex','latex2e')
     """Formats this writer supports."""
 
-    default_template = 'template.tex'
+    default_template = 'default.tex'
     default_template_path = os.path.dirname(__file__)
 
     settings_spec = (
@@ -94,10 +94,6 @@ class Writer(writers.Writer):
            'validator': frontend.validate_boolean}),
          ('Add parts on top of the section hierarchy.',
           ['--use-part-section'],
-          {'default': 0, 'action': 'store_true',
-           'validator': frontend.validate_boolean}),
-         ('Put docinfo and abstract into the title page.',
-          ['--use-titlepage-env'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
          ('Attach author and date to the document title '
@@ -185,8 +181,10 @@ class Writer(writers.Writer):
     config_section = 'latex2e writer'
     config_section_dependencies = ('writers',)
 
-    visitor_attributes = ('head_prefix', 'stylesheet', 'head',
-                          'body_prefix', 'body', 'body_suffix')
+    head_parts = ('head_prefix', 'requirements', 'stylesheet',
+                  'fallbacks', 'pdfsetup', 'title', 'subtitle')
+    visitor_attributes = head_parts + ('body_pre_docinfo', 'docinfo',
+                                       'dedication', 'abstract', 'body')
 
     output = None
     """Final translated form of `document`."""
@@ -210,10 +208,7 @@ class Writer(writers.Writer):
         # copy parts
         for part in self.visitor_attributes:
             setattr(self, part, getattr(visitor, part))
-        self.output = self.apply_template()
-
-    def apply_template(self):
-        # Get template string from file
+        # get template string from file
         try:
             file = open(self.document.settings.template, 'rb')
         except IOError:
@@ -221,19 +216,22 @@ class Writer(writers.Writer):
                                      self.document.settings.template), 'rb')
         template = string.Template(file.read())
         file.close()
-        # create dictionary of parts and insert in template
-        self.assemble_parts()
-        return template.substitute(self.parts)
+        # fill template
+        self.assemble_parts() # create dictionary of parts
+        self.output = template.substitute(self.parts)
 
     def assemble_parts(self):
-        """Assemble the `self.parts` dictionary or output fragments."""
+        """Assemble the `self.parts` dictionary of output fragments."""
         writers.Writer.assemble_parts(self)
         for part in self.visitor_attributes:
-            if part.startswith('body'):
-                # body contains inline elements, so join without newline
-                self.parts[part] = ''.join(getattr(self, part))
+            lines = getattr(self, part)
+            if part in self.head_parts:
+                if lines:
+                    lines.append('') # to get a trailing newline
+                self.parts[part] = '\n'.join(lines)
             else:
-                self.parts[part] = '\n'.join(getattr(self, part))
+                # body contains inline elements, so join without newline
+                self.parts[part] = ''.join(lines)
 
 
 class Babel(object):
@@ -791,13 +789,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
     # to other packages, as done with babel.
     # Dummy settings might be taken from document settings
 
-    # Templates
-    # ---------
-
-    latex_head = r'\documentclass[%s]{%s}'
-    linking = PreambleCmds.linking # if false, hyperref is not loaded
-    # TODO: use a config value?
-
     # Config setting defaults
     # -----------------------
 
@@ -830,13 +821,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
     inside_citation_reference_label = False
     verbatim = False                   # do not encode
     insert_non_breaking_blanks = False # replace blanks by "~"
-    insert_newline = False     	       # add latex newline commands
-    literal = False 	  	       # teletype: replace underscores
+    insert_newline = False             # add latex newline commands
+    literal = False                    # teletype: replace underscores
     literal_block = False # inside literal block: no quote mangling
 
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
+        # Settings
+        # ~~~~~~~~
         self.settings = settings = document.settings
         self.latex_encoding = self.to_latex_encoding(settings.output_encoding)
         self.use_latex_toc = settings.use_latex_toc
@@ -852,11 +845,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
             settings.section_prefix_for_enumerators)
         self.section_enumerator_separator = (
             settings.section_enumerator_separator.replace('_', '\\_'))
-        if self.hyperlink_color == '0':
-            self.hyperlink_color = 'black'
-            self.colorlinks = 'false'
-        else:
-            self.colorlinks = 'true'
         # literal blocks:
         self.literal_block_env = ''
         self.literal_block_options = ''
@@ -873,8 +861,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # TODO avoid errors on not declared citations.
         else:
             self.bibtex = None
-        # language: labels, bibliographic_fields, and author_separators.
-        # to allow writing labes for specific languages.
+        # language:
+        # (labels, bibliographic_fields, and author_separators)
         self.language = languages.get_language(settings.language_code)
         self.babel = Babel(settings.language_code)
         self.author_separator = self.language.author_separators[0]
@@ -883,27 +871,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.d_options = ','.join([opt for opt in self.d_options if opt])
         self.d_class = DocumentClass(settings.documentclass,
                                      settings.use_part_section)
-        # object for a table while proccessing.
-        self.table_stack = []
-        self.active_table = Table(self,'longtable',settings.table_style)
-
-        # Two special dictionaries to collect document-specific requirements.
-        # Values will be inserted
-        #  * in alphabetic order of their keys,
-        #  * only once, even if required multiple times.
-        self.requirements = SortableDict() # inserted before style sheet
-        self.fallbacks = SortableDict()    # inserted after style sheet
-
-        # Page layout with typearea (if there are relevant document options).
-        if (settings.documentclass.find('scr') == -1 and
-            (self.d_options.find('DIV') != -1 or
-             self.d_options.find('BCOR') != -1)):
-            self.requirements['typearea'] = r'\usepackage{typearea}'
-
-        if self.font_encoding == '':
-            fontenc_header = r'%\usepackage[OT1]{fontenc}'
-        else:
-            fontenc_header = r'\usepackage[%s]{fontenc}' % self.font_encoding
 
         if self.settings.graphicx_option == '':
             self.graphicx_package = r'\usepackage{graphicx}'
@@ -913,40 +880,91 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.graphicx_package = (r'\usepackage[%s]{graphicx}' %
                                      self.settings.graphicx_option)
 
-        # include all supported sections in toc and PDF bookmarks
-        # (or use documentclass-default (as currently))?
-        ## if self.use_latex_toc:
-        ##    self.requirements['tocdepth'] = (r'\setcounter{tocdepth}{%d}' %
-        ##                                     len(self.d_class.sections))
 
-        if not self.settings.sectnum_xform: # section numbering by LaTeX:
-            sectnum_cmds = []
-            # sectnum_depth:
-            #   0     no "sectnum" directive -> no section numbers
-            #   None  "sectnum" directive without depth arg -> LaTeX default
-            #   else  value of the "depth" argument -> limit to supported
-            #         section levels
-            if settings.sectnum_depth is not None:
-                sectnum_depth = min(settings.sectnum_depth,
-                                    len(self.d_class.sections))
-                sectnum_cmds.append(r'\setcounter{secnumdepth}{%d}' %
-                                     sectnum_depth)
-            # start with specified number:
-            if (hasattr(settings, 'sectnum_start') and
-                settings.sectnum_start != 1):
-                sectnum_cmds.append(r'\setcounter{%s}{%d}' %
-                                     (self.d_class.sections[0],
-                                      settings.sectnum_start-1))
-            # currently ignored (configure in a stylesheet):
-            ## settings.sectnum_prefix
-            ## settings.sectnum_suffix
-            if sectnum_cmds:
-                self.requirements['sectnum'] = '\n'.join(sectnum_cmds)
+        # Output collection stacks
+        # ~~~~~~~~~~~~~~~~~~~~~~~~
 
-
-        # packages and/or stylesheets
-        # ---------------------------
+        # Document parts
+        self.head_prefix = [r'\documentclass[%s]{%s}' %
+                            (self.d_options, self.settings.documentclass)]
+        self.requirements = SortableDict() # made a list in depart_document()
         self.stylesheet = []
+        self.fallbacks = SortableDict() # made a list in depart_document()
+        self.pdfsetup = [] # PDF properties (hyperref package)
+        self.title = []
+        self.subtitle = []
+        ## self.body_prefix = ['\\begin{document}\n']
+        self.body_pre_docinfo = [] # title data and \maketitle
+        self.docinfo = []
+        self.dedication = []
+        self.abstract = []
+        self.body = []
+        ## self.body_suffix = ['\\end{document}\n']
+
+        # A heterogenous stack used in conjunction with the tree traversal.
+        # Make sure that the pops correspond to the pushes:
+        self.context = []
+
+        # Title metadata:
+        self.title_labels = []
+        self.subtitle_labels = []
+        # (if use_latex_docinfo: collects lists of
+        # author/organization/contact/address lines)
+        self.author_stack = []
+        # date (the default supresses the "auto-date" feature of \maketitle)
+        self.date = []
+
+        # PDF properties: pdftitle, pdfauthor
+        # TODO?: pdfcreator, pdfproducer, pdfsubject, pdfkeywords
+        self.pdfinfo = []
+        self.pdfauthor = []
+
+        # Stack of section counters so that we don't have to use_latex_toc.
+        # This will grow and shrink as processing occurs.
+        # Initialized for potential first-level sections.
+        self._section_number = [0]
+
+        # The current stack of enumerations so that we can expand
+        # them into a compound enumeration.
+        self._enumeration_counters = []
+        # The maximum number of enumeration counters we've used.
+        # If we go beyond this number, we need to create a new
+        # counter; otherwise, just reuse an old one.
+        self._max_enumeration_counters = 0
+
+        self._bibitems = []
+        self.literal_block_stack = []
+
+        # object for a table while proccessing.
+        self.table_stack = []
+        self.active_table = Table(self, 'longtable', settings.table_style)
+
+        # Where to collect the output of visitor methods (default: body)
+        self.out = self.body
+
+        # Process settings
+        # ~~~~~~~~~~~~~~~~
+
+        # persistent requirements
+        if self.font_encoding == '':
+            fontenc_header = r'%\usepackage[OT1]{fontenc}'
+        else:
+            fontenc_header = r'\usepackage[%s]{fontenc}' % self.font_encoding
+        self.requirements['_persistent'] = '\n'.join([
+              # multi-language support (language is in document settings)
+              '\\usepackage{babel}%s' % self.babel.setup,
+              fontenc_header,
+              r'\usepackage[%s]{inputenc}' % self.latex_encoding,
+              r'\usepackage{ifthen}',
+              r'\usepackage{fixltx2e} % fix LaTeX2e shortcomings',
+              ])
+        # page layout with typearea (if there are relevant document options).
+        if (settings.documentclass.find('scr') == -1 and
+            (self.d_options.find('DIV') != -1 or
+             self.d_options.find('BCOR') != -1)):
+            self.requirements['typearea'] = r'\usepackage{typearea}'
+
+        # Stylesheets
         # get list of style sheets from settings
         styles = utils.get_stylesheet_list(settings)
         # adapt path if --stylesheet_path is used
@@ -970,65 +988,42 @@ class LaTeXTranslator(nodes.NodeVisitor):
                     self.stylesheet.append(r'\usepackage{%s}' % base)
                 else:
                     self.stylesheet.append(r'\input{%s}' % sheet)
-        if self.stylesheet:
-            self.stylesheet.append('') # trailing blank line
 
-        # Part of LaTeX preamble before style sheet(s)
-        self.head_prefix = [
-              self.latex_head % (self.d_options,self.settings.documentclass),
-              ## '%%% Requirements',
-              # multi-language support (language is in document settings)
-              '\\usepackage{babel}%s' % self.babel.setup,
-              fontenc_header,
-              r'\usepackage[%s]{inputenc}' % self.latex_encoding,
-              r'\usepackage{ifthen}',
-              r'\usepackage{fixltx2e} % fix LaTeX2e shortcomings',
-              ] # custom requirements will be added later
-
-        # Part of LaTeX preamble following the stylesheet
-        self.head = []
-        if self.linking: # and maybe check for pdf
-            self.pdfinfo = []
-            self.pdfauthor = []
-            # pdftitle, pdfsubject, pdfauthor, pdfkeywords,
-            # pdfcreator, pdfproducer
+        # PDF setup
+        if self.hyperlink_color == '0':
+            self.hyperlink_color = 'black'
+            self.colorlinks = 'false'
         else:
-            self.pdfinfo = None
+            self.colorlinks = 'true'
 
-        # Title metadata: Title, Date, and Author(s)
-        # separate title, so we can append subtitle.
-        self.title = []
-        # if use_latex_docinfo: collects lists of
-        # author/organization/contact/address lines
-        self.author_stack = []
-        # an empty string supresses the "auto-date" feature of \maketitle
-        self.date = ''
+        # LaTeX Toc
+        # include all supported sections in toc and PDF bookmarks
+        # (or use documentclass-default (as currently))?
+        ## if self.use_latex_toc:
+        ##    self.requirements['tocdepth'] = (r'\setcounter{tocdepth}{%d}' %
+        ##                                     len(self.d_class.sections))
 
-        self.body_prefix = ['\\begin{document}\n']
-        self.body = []
-        self.body_suffix = ['\\end{document}']
-        self.context = []
-
-        # Where to collect the output of visitor methods
-        self.out = self.body
-
-        # Stack of section counters so that we don't have to use_latex_toc.
-        # This will grow and shrink as processing occurs.
-        # Initialized for potential first-level sections.
-        self._section_number = [0]
-
-        # The current stack of enumerations so that we can expand
-        # them into a compound enumeration.
-        self._enumeration_counters = []
-
-        # The maximum number of enumeration counters we've used.
-        # If we go beyond this number, we need to create a new
-        # counter; otherwise, just reuse an old one.
-        self._max_enumeration_counters = 0
-
-        self._bibitems = []
-        self.docinfo = [] # Docinfo + Dedication + Abstract
-        self.literal_block_stack = []
+        # LaTeX section numbering
+        if not self.settings.sectnum_xform: # section numbering by LaTeX:
+            # sectnum_depth:
+            #   None  "sectnum" directive without depth arg -> LaTeX default
+            #   0     no "sectnum" directive -> no section numbers
+            #   else  value of the "depth" argument -> limit to supported
+            #         section levels
+            if settings.sectnum_depth is not None:
+                sectnum_depth = min(settings.sectnum_depth,
+                                    len(self.d_class.sections))
+                self.requirements['sectnum_depth'] = (
+                    r'\setcounter{secnumdepth}{%d}' % sectnum_depth)
+            # start with specified number:
+            if (hasattr(settings, 'sectnum_start') and
+                settings.sectnum_start != 1):
+                self.requirements['sectnum_start'] = (
+                    r'\setcounter{%s}{%d}' % (self.d_class.sections[0],
+                                              settings.sectnum_start-1))
+            # currently ignored (configure in a stylesheet):
+            ## settings.sectnum_prefix
+            ## settings.sectnum_suffix
 
 
     # Auxiliary Methods
@@ -1219,11 +1214,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
         """Cleanse, encode, and return attribute value text."""
         return self.encode(whitespace.sub(' ', text))
 
-    def astext(self):
-        """Assemble document parts and return as string."""
-        head = '\n'.join(self.head_prefix + self.stylesheet + self.head)
-        body = ''.join(self.body_prefix  + self.body + self.body_suffix)
-        return head + '\n' + body
+    # TODO: is this used anywhere? (update or delete)
+    ## def astext(self):
+    ##     """Assemble document parts and return as string."""
+    ##     head = '\n'.join(self.head_prefix + self.stylesheet + self.head)
+    ##     body = ''.join(self.body_prefix  + self.body + self.body_suffix)
+    ##     return head + '\n' + body
 
     def is_inline(self, node):
         """Check whether a node represents an inline element"""
@@ -1519,8 +1515,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_docinfo_item(self, node, name):
         if name == 'author':
-            if self.pdfinfo is not None:
-                self.pdfauthor += [self.attval(node.astext())]
+            self.pdfauthor.append(self.attval(node.astext()))
         if self.use_latex_docinfo:
             if name in ('author', 'organization', 'contact', 'address'):
                 # We attach these to the last author.  If any of them precedes
@@ -1537,7 +1532,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 self.author_stack[-1].append(text)
                 raise nodes.SkipNode
             elif name == 'date':
-                self.date = self.attval(node.astext())
+                self.date.append(self.attval(node.astext()))
                 raise nodes.SkipNode
         self.out.append('\\textbf{%s}: &\n\t' % self.language_label(name))
         if name == 'address':
@@ -1564,44 +1559,42 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # titled document?
         if (self.use_latex_docinfo or len(node) and
             isinstance(node[0], nodes.title)):
-            self.title += self.ids_to_labels(node)
+            self.title_labels += self.ids_to_labels(node)
 
     def depart_document(self, node):
         # Complete header with information gained from walkabout
         # a) conditional requirements (before style sheet)
-        self.head_prefix += self.requirements.sortedvalues()
+        self.requirements = self.requirements.sortedvalues()
         # b) coditional fallback definitions (after style sheet)
-        self.head += self.fallbacks.sortedvalues()
-        # c) hyperlink setup and PDF metadata
-        self.head.append(self.linking % (self.colorlinks,
-                                         self.hyperlink_color,
-                                         self.hyperlink_color))
-        if self.pdfinfo is not None and self.pdfauthor:
-            self.pdfauthor = self.author_separator.join(self.pdfauthor)
-            self.pdfinfo.append('  pdfauthor={%s}' % self.pdfauthor)
+        self.fallbacks = self.fallbacks.sortedvalues()
+        # c) PDF properties
+        self.pdfsetup.append(PreambleCmds.linking % (self.colorlinks,
+                                                     self.hyperlink_color,
+                                                     self.hyperlink_color))
+        if self.pdfauthor:
+            authors = self.author_separator.join(self.pdfauthor)
+            self.pdfinfo.append('  pdfauthor={%s}' % authors)
         if self.pdfinfo:
-            self.head += [r'\hypersetup{'] + self.pdfinfo + ['}']
-        # Document title and bibliographic information
-        # NOTE: Docutils puts this into docinfo, so normally we do not want
-        #   LaTeX author/date handling (via \maketitle).
-        #   To deactivate it, we add \title, \author, \date,
-        #   even if the arguments are empty strings.
-        if self.title or self.author_stack:
-            if self.settings.use_titlepage_env:
-                self.body_prefix.append('\\begin{titlepage}')
+            self.pdfsetup += [r'\hypersetup{'] + self.pdfinfo + ['}']
+        # Complete body
+        # a) document title (part 'body_prefix'):
+        # NOTE: Docutils puts author/date into docinfo, so normally
+        #       we do not want LaTeX author/date handling (via \maketitle).
+        #       To deactivate it, we add \title, \author, \date,
+        #       even if the arguments are empty strings.
+        if self.title or self.author_stack or self.date:
             authors = ['\\\\\n'.join(author_entry)
                        for author_entry in self.author_stack]
-            self.body_prefix.append(PreambleCmds.documenttitle %
-                                    ('%\n  '.join(self.title),
-                                     ' \\and\n'.join(authors),
-                                     self.date))
-        # docinfo might alse be given for a document without title
-        self.body_prefix += self.docinfo
-        if ((self.title or self.author_stack) and
-            self.settings.use_titlepage_env):
-            self.body_prefix.append('\\thispagestyle{empty}\n'
-                                    '\\end{titlepage}')
-        # Bibliography
+            title = self.title + self.title_labels
+            if self.subtitle:
+                title += [r'\\ % subtitle',
+                             r'\large{%s}' % self.subtitle[0]
+                         ] + self.subtitle_labels
+            self.body_pre_docinfo.append(PreambleCmds.documenttitle % (
+                '%\n  '.join(title),
+                ' \\and\n'.join(authors),
+                ', '.join(self.date)))
+        # b) bibliography
         # TODO insertion point of bibliography should be configurable.
         if self._use_latex_citations and len(self._bibitems)>0:
             if not self.bibtex:
@@ -1621,7 +1614,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 self.out.append('\n\\bibliographystyle{%s}\n' %
                                 self.bibtex[0])
                 self.out.append('\\bibliography{%s}\n' % self.bibtex[1])
-        # Make sure to generate a toc file if needed for local contents:
+        # c) make sure to generate a toc file if needed for local contents:
         if 'minitoc' in self.requirements and not self.has_latex_toc:
             self.out.append('\n\\faketableofcontents % for local ToCs\n')
 
@@ -1792,8 +1785,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.out.append(r'\\')
 
     def visit_field_list(self, node):
-        self.fallbacks['fieldlist'] = PreambleCmds.fieldlist
         if self.out is not self.docinfo:
+            self.fallbacks['fieldlist'] = PreambleCmds.fieldlist
             self.out.append('%\n\\begin{DUfieldlist}\n')
 
     def depart_field_list(self, node):
@@ -1835,11 +1828,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out.append(self.context.pop())
 
     def visit_footer(self, node):
-        self.out = self.body_suffix
-        self.out.append('\n\\begin{center}\small\n')
+        self.out = self.requirements
+        self.out.append(r'\newcommand{\DUfooter}{')
 
     def depart_footer(self, node):
-        self.out.append('\n\\end{center}\n')
+        self.out.append('}')
         self.out = self.body
 
     def visit_footnote(self, node):
@@ -1926,11 +1919,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_header(self, node):
-        self.out = self.body_prefix
-        self.out.append('\n\\verb|begin_header|\n')
+        self.out = self.requirements
+        self.out.append(r'\newcommand{\DUheader}{')
 
     def depart_header(self, node):
-        self.out.append('\n\\verb|end_header|\n')
+        self.out.append('}')
         self.out = self.body
 
     def visit_hint(self, node):
@@ -2334,11 +2327,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_subtitle(self, node):
         if isinstance(node.parent, nodes.document):
-            self.title.append(r'\\ % subtitle')
-            self.title.append(r'\large{%s}' % self.encode(node.astext()))
-            self.title += self.ids_to_labels(node, set_anchor=False)
+            self.subtitle += [self.encode(node.astext())]
+            self.subtitle_labels += self.ids_to_labels(node, set_anchor=False)
             raise nodes.SkipNode
-        # Section subtitle -> always "starred": no number, not in ToC
+        # section subtitle: "starred" (no number, not in ToC)
         elif isinstance(node.parent, nodes.section):
             self.out.append(r'\%s*{' %
                              self.d_class.section(self.section_level + 1))
@@ -2478,10 +2470,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         """Append section and other titles."""
         # Document title
         if node.parent.tagname == 'document':
-            self.title.insert(0, self.encode(node.astext()))
-            if not self.pdfinfo == None:
-                self.pdfinfo.append('  pdftitle={%s},' %
-                                    self.encode(node.astext()) )
+            title = self.encode(node.astext())
+            self.title.append(title)
+            self.pdfinfo.append('  pdftitle={%s},' % title)
             raise nodes.SkipNode
         # Topic titles (topic, admonition, sidebar)
         elif (isinstance(node.parent, nodes.topic) or
@@ -2594,7 +2585,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.context.append('')
         elif ('abstract' in node['classes'] and
               self.settings.use_latex_abstract):
-            self.out = self.docinfo
+            self.out = self.abstract
             self.out.append('\\begin{abstract}')
             self.context.append('\\end{abstract}\n')
             if isinstance(node.next_node(), nodes.title):
@@ -2604,10 +2595,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # special topics:
             if 'abstract' in node['classes']:
                 self.fallbacks['abstract'] = PreambleCmds.abstract
-                self.out = self.docinfo
+                self.out = self.abstract
             if 'dedication' in node['classes']:
                 self.fallbacks['dedication'] = PreambleCmds.dedication
-                self.out = self.docinfo
+                self.out = self.dedication
             self.out.append('\n\\DUtopic[%s]{\n' % ','.join(node['classes']))
             self.context.append('}\n')
 
