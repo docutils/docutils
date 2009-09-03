@@ -64,6 +64,12 @@ Changes Since 0.5
 * docutils/utils.py:
 
   - Add ``get_stylesheet_list`` function.
+  - Apply [ 2834836 ] print info at halt
+
+* docutils/transforms/universal.py:
+
+  - Raise default priority of StripClasses to exclude stripped classes from
+    the ToC.
 
 * docutils/writers/html4css1/__init__.py:
 
