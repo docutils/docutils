@@ -7,7 +7,7 @@
 % 
 % :Author:    Guenter Milde
 % :Contact:   milde@users.berlios.de
-% :Revision:  $Revision: 5998 $
+% :Revision:  $Revision: 6111 $
 % :Date:      $Date: 2009-02-24$
 % :Copyright: © 2009 G. Milde,
 %             Released  without warranties or conditions of any kind
@@ -68,6 +68,27 @@
 % 
 % * `Figure and image alignment`_ now conforms to the rst definition.
 % 
+% * Put `header and footer directive`__ content in \DUheader respective
+%   \DUfooter macros (ignored by the default style/template).
+% 
+%   (They were put inside hard-coded markup at the top/bottom of the document
+%   without an option to get them on every page.)
+% 
+% __ ../ref/rst/directives.html#document-header-footer
+% 
+% * Render doctest blocks as literal blocks (fixes bug [1586058] doctest block
+%   nested in admonition). I.e.
+% 
+%   + indent doctest blocks by nesting in a quote environment. This is also
+%     the rendering by the HTML writer (html4css2.css).
+%   + apply the ``--literal-block-env`` setting also to doctest blocks.
+% 
+%   .. warning::
+%       (``--literal-block-env=verbatim`` and
+%       ``--literal-block-env=lstlistings`` fail with literal or doctest
+%       blocks nested in an admonition.
+% 
+% 
 % Backwards compatibility:
 %   "Bug for bug compatibility" is not provided.
 % 
@@ -116,6 +137,21 @@
 % .. important::
 %   Always specify the extension if you want the style sheet to be
 %   ``\input`` by LaTeX.
+% 
+% 
+% Templates
+% ---------
+% 
+% New Feature:
+%   Advanced configuration via custom templates.
+% 
+% Implementation:
+%   A ``--template`` option and config setting allows specification of a
+%   template file.
+% 
+% See the `LaTeX writer documentation`__ for details.
+% 
+% __ latex.html#templates
 % 
 % 
 % Custom roles
@@ -621,13 +657,15 @@
   \end{center}
 }
 
-% topic title
-% ^^^^^^^^^^^
-% Title for "topics" (admonitions, sidebar).
-% 
-% Larger font size::
+% dedication
+% ^^^^^^^^^^
+% Do not center::
 
-\providecommand*{\DUtitletopic}[1]{\textbf{\large #1}\smallskip}
+\newcommand{\DUtopicdedication}[1]{#1}
+
+% But center the title::
+
+\newcommand*{\DUtitlededication}[1]{\centerline{\textbf{#1}}}
 
 % sidebar
 % ^^^^^^^
@@ -646,6 +684,26 @@
 
 \providecommand*{\DUsubtitlesidebar}[1]{\hspace*{\fill}\\
   \textbf{#1}\smallskip}
+
+% topic
+% ^^^^^
+% No quote but normal text::
+
+\newcommand{\DUtopic}[2][class-arg]{%
+  \ifcsname DUtopic#1\endcsname%
+    \csname DUtopic#1\endcsname{#2}%
+  \else
+    #2
+  \fi
+}
+
+% topic title
+% ^^^^^^^^^^^
+% Title for "topics" (admonitions, sidebar).
+% 
+% Larger font size::
+
+\providecommand*{\DUtitletopic}[1]{\textbf{\large #1}\smallskip}
 
 % transition
 % ^^^^^^^^^^

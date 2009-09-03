@@ -1548,12 +1548,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.insert_newline = False
 
     def visit_doctest_block(self, node):
-        self.out.append( '\\begin{verbatim}' )
-        self.verbatim = 1
+        self.visit_literal_block(node)
 
     def depart_doctest_block(self, node):
-        self.out.append( '\\end{verbatim}\n' )
-        self.verbatim = False
+        self.depart_literal_block(node)
 
     def visit_document(self, node):
         # titled document?
