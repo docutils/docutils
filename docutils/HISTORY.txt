@@ -39,6 +39,7 @@ Changes Since 0.5
   - Apply [ 1719345 ] Galician translation
   - Apply [ 1905741 ] polish-translation
   - Apply [ 1878977 ] make_id(): deaccent characters.
+  - Apply [ 2029251 ] return nonzero when tests fail
 
 * reStructuredText:
 

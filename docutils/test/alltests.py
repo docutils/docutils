@@ -78,8 +78,9 @@ if __name__ == '__main__':
     print 'Working directory: %s' % os.getcwd()
     print 'Docutils package: %s' % os.path.dirname(docutils.__file__)
     sys.stdout.flush()
-    package_unittest.main(suite)
+    result = package_unittest.main(suite)
     #if package_unittest.verbosity > 1:
     #    print >>sys.stderr, pformat(suite) # check the test suite
     finish = time.time()
     print 'Elapsed time: %.3f seconds' % (finish - start)
+    sys.exit(result)
