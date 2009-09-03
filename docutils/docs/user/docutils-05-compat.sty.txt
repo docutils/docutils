@@ -76,6 +76,17 @@ Bugfixes
 
 __ ../ref/rst/directives.html#document-header-footer
 
+* Render doctest blocks as literal blocks (fixes bug [1586058] doctest block
+  nested in admonition). I.e.
+
+  + indent doctest blocks by nesting in a quote environment. This is also
+    the rendering by the HTML writer (html4css2.css).
+  + apply the ``--literal-block-env`` setting also to doctest blocks.
+
+  .. warning::
+      (``--literal-block-env=verbatim`` and
+      ``--literal-block-env=lstlistings`` fail with literal or doctest
+      blocks nested in an admonition.
 
 
 Backwards compatibility:

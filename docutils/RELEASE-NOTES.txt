@@ -59,6 +59,7 @@ Changes Since 0.5
   - Float placement made configurable, default changed to "here definitely".
   - Typeset generic topic as "quote with title".
   - Use template (file and configuration option).
+  - Render doctest blocks as literal blocks (indented).
 
 * ODT writer:
 

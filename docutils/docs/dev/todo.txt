@@ -1242,8 +1242,6 @@ when used in a document.
 
   - _`misc.include`:
 
-    - Option to select a range of lines?
-
     - Option to label lines?
 
     - How about an environment variable, say RSTINCLUDEPATH or
@@ -2023,8 +2021,8 @@ Which packages do we want to use?
      `Footnotes in LaTeX section headings
      <http://www.tex.ac.uk/cgi-bin/texfaq2html?label=ftnsect>`__
 
-     * Take advantage of the fact that the mandatory argument doesn\u2019t
-       \u2018move\u2019 if the optional argument is present::
+     * Take advantage of the fact that the mandatory argument doesn't
+       move if the optional argument is present::
 
        	   \section[title] {title\footnote{title ftnt}}
 
@@ -2038,7 +2036,6 @@ Which packages do we want to use?
      * perpage provides a general mechanism for resetting counters per page
      * footmisc provides a package option perpage
 
-
 * enumeration environment, field list
 
   use `mdwlist` from texlive-latex-recommended?
@@ -2046,6 +2043,7 @@ Which packages do we want to use?
 * ``--use-latex-when-possible`` »super option« that would set the
   following::
 
+      --no-section-numbering
       --use-latex-toc
       --use-latex-docinfo
       --use-latex-abstract
@@ -2081,8 +2079,6 @@ Default layout
 
   * continue if the `compound paragraph`_ directive is used, or
   * force a new paragraph with an empty comment.
-
-* Indent/handle doctest blocks similar to literal blocks?
 
 * Sidebar handling (environment with `framed`, `marginnote`, `wrapfig`,
   ...)?
