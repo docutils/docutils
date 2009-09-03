@@ -177,7 +177,7 @@ class StripClassesAndElements(Transform):
     attribute values in `self.document.settings.strip_classes`.
     """
 
-    default_priority = 750
+    default_priority = 420
 
     def apply(self):
         if not (self.document.settings.strip_elements_with_classes

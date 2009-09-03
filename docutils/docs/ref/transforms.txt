@@ -40,6 +40,8 @@ peps.Headers                    pep (r)                       360
 
 peps.Contents                   pep (r)                       380
 
+universal.StripClasses...       Writer (w)                    420
+
 references.AnonymousHyperlinks  standalone (r), pep (r)       440
 
 references.IndirectHyperlinks   standalone (r), pep (r)       460
@@ -64,8 +66,6 @@ parts.Contents                  "contents" (d/p),             720
                                 peps.Contents (t/p)
 
 universal.StripComments         Reader (r)                    740
-
-universal.StripClasses...       Writer (w)                    750
 
 peps.PEPZero                    peps.Headers (t/p)            760
 
