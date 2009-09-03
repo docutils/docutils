@@ -32,6 +32,8 @@ class Include(Directive):
     final_argument_whitespace = True
     option_spec = {'literal': directives.flag,
                    'encoding': directives.encoding,
+                   'start-line': int,
+                   'end-line': int,
                    'start-after': directives.unchanged_required,
                    'end-before': directives.unchanged_required}
 
@@ -62,8 +64,14 @@ class Include(Directive):
         except IOError, error:
             raise self.severe('Problems with "%s" directive path:\n%s: %s.'
                               % (self.name, error.__class__.__name__, error))
+        startline = self.options.get('start-line', None)
+        endline = self.options.get('end-line', None)
         try:
-            include_text = include_file.read()
+            if startline or (endline is not None):
+                include_lines = include_file.readlines()
+                include_text = ''.join(include_lines[startline:endline])
+            else:
+                include_text = include_file.read()
         except UnicodeError, error:
             raise self.severe(
                 'Problem with "%s" directive:\n%s: %s'

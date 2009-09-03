@@ -1370,6 +1370,14 @@ __ substitutions.html
 
 The following options are recognized:
 
+``start-line`` : first line to include
+    Only the content starting from this line will be included.
+    (As usual in Python, the first line has index 0 and negative values 
+    count from the end.)
+
+``end-line`` : last line to include
+    Only the content up to (but excluding) this line will be included.
+
 ``start-after`` : text to find in the external data file
     Only the content after the first occurrence of the specified text
     will be included.
@@ -1386,6 +1394,9 @@ The following options are recognized:
     The text encoding of the external data file.  Defaults to the
     document's encoding (if specified).
 
+Combining ``start/end-line`` and ``start-after/end-before`` is possible. The
+text markers will be searched in the specified lines (further limiting the
+included content).
 
 .. _raw:
 

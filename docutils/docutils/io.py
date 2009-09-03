@@ -255,6 +255,17 @@ class FileInput(Input):
                 self.close()
         return self.decode(data)
 
+    def readlines(self):
+        """
+        Return lines of a single file as list of Unicode strings.
+        """
+        try:
+            lines = self.source.readlines()
+        finally:
+            if self.autoclose:
+                self.close()
+        return [self.decode(line) for line in lines]
+
     def close(self):
         self.source.close()
 
