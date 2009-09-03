@@ -155,4 +155,4 @@ def main(suite=None):
         for s in suite:
             testRunner.run(s)
     else:
-        testRunner.run(suite)
+        return testRunner.run(suite)
