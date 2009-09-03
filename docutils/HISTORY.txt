@@ -61,6 +61,11 @@ Changes Since 0.5
   - Added support for Unicode inline markup delimiters "‐ ‑ ‒ – —" and
     " " (non-breaking space), and "¡ ¿" openers.
 
+* docutils/parsers/directives/misc.py:
+
+  - Added ``start-line`` and ``end-line`` options to ``include``
+    directive to select a range of lines
+
 * docutils/utils.py:
 
   - Add ``get_stylesheet_list`` function.

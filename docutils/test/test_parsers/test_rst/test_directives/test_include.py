@@ -394,6 +394,39 @@ Nonexistent standard include data file:
             .. include:: <nonexistent>
 """ % nonexistent_rel],
 ["""\
+Include start-line/end-line Test
+
+.. include:: %s
+   :start-line: 3
+   :end-line: 4
+""" % include2,
+"""\
+<document source="test data">
+    <paragraph>
+        Include start-line/end-line Test
+    <paragraph>
+        This file (include2.txt) is used by
+"""],
+["""\
+Include start-line/end-line + start-after Test
+
+.. include:: %s
+   :start-line: 2
+   :end-line: 5
+   :start-after: here
+
+Text search is limited to the specified lines.
+""" % include12,
+"""\
+<document source="test data">
+    <paragraph>
+        Include start-line/end-line + start-after Test
+    <paragraph>
+        In include12.txt (after "start here", before "stop here")
+    <paragraph>
+        Text search is limited to the specified lines.
+"""],
+["""\
 Include start-after/end-before Test
 
 .. include:: %s
