@@ -81,6 +81,8 @@ Changes Since 0.5
 
   - ``--stylesheet`` and ``--stylesheet-path`` options support a comma
     separated list of stylesheets.
+  - Address [ 1938891 ] Inline literal text creates "pre" span only when
+    needed to prevent inter-word line wraps.
 
 * docutils/writers/newlatex2e/__init__.py:
 
