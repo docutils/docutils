@@ -234,6 +234,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     stylesheet_link = '<link rel="stylesheet" href="%s" type="text/css" />\n'
     embedded_stylesheet = '<style type="text/css">\n\n%s\n</style>\n'
     words_and_spaces = re.compile(r'\S+| +|\n')
+    sollbruchstelle = re.compile(r'.+\W\W.+|[-?].+', re.U) # wrap point inside word
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
@@ -1054,9 +1055,13 @@ class HTMLTranslator(nodes.NodeVisitor):
         text = node.astext()
         for token in self.words_and_spaces.findall(text):
             if token.strip():
-                # Protect text like "--an-option" from bad line wrapping:
-                self.body.append('<span class="pre">%s</span>'
-                                 % self.encode(token))
+                # Protect text like "--an-option" and the regular expression
+                # ``[+]?(\d+(\.\d*)?|\.\d+)`` from bad line wrapping
+                if self.sollbruchstelle.search(token):
+                    self.body.append('<span class="pre">%s</span>'
+                                     % self.encode(token))
+                else:
+                    self.body.append(self.encode(token))
             elif token in ('\n', ' '):
                 # Allow breaks at whitespace:
                 self.body.append(token)

@@ -49,9 +49,9 @@ Simple String with *markup*
 Simple String with an even simpler ``inline literal``
 """,
 """\
-{'fragment': '''<p>Simple String with an even simpler <tt class="docutils literal"><span class="pre">inline</span> <span class="pre">literal</span></tt></p>\\n''',
+{'fragment': '''<p>Simple String with an even simpler <tt class="docutils literal">inline literal</tt></p>\\n''',
  'html_body': '''<div class="document">
-<p>Simple String with an even simpler <tt class="docutils literal"><span class="pre">inline</span> <span class="pre">literal</span></tt></p>
+<p>Simple String with an even simpler <tt class="docutils literal">inline literal</tt></p>
 </div>\\n''',
  'html_head': '''...<title></title>\\n'''}
 """],
@@ -211,9 +211,9 @@ Simple String with *markup*
 Simple String with an even simpler ``inline literal``
 """,
 """\
-{'fragment': '''<p>Simple String with an even simpler <tt class="docutils literal"><span class="pre">inline</span> <span class="pre">literal</span></tt></p>\\n''',
+{'fragment': '''<p>Simple String with an even simpler <tt class="docutils literal">inline literal</tt></p>\\n''',
  'html_body': '''<div class="document">
-<p>Simple String with an even simpler <tt class="docutils literal"><span class="pre">inline</span> <span class="pre">literal</span></tt></p>
+<p>Simple String with an even simpler <tt class="docutils literal">inline literal</tt></p>
 </div>\\n''',
  'html_head': '''...<title></title>\\n'''}
 """],
