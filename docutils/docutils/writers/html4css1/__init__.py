@@ -261,7 +261,8 @@ class HTMLTranslator(nodes.NodeVisitor):
                       for sheet in styles]
         if settings.embed_stylesheet:
             settings.record_dependencies.add(*styles)
-            self.stylesheet = [self.embedded_stylesheet % open(sheet).read()
+            self.stylesheet = [self.embedded_stylesheet %
+                               unicode(open(sheet).read(), 'utf-8')
                                for sheet in styles]
         else: # link to stylesheets
             self.stylesheet = [self.stylesheet_link % self.encode(stylesheet)

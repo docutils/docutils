@@ -27,7 +27,7 @@ Changes Since 0.5
     + minimize "types" module where possible.
     + Backwards-compatible changes to remove python2.6 -3 deprecation warnings
     + Text nodes now subclass unicode rather than UserString
-      (which is gone in python 3.0)
+      (which is gone in python 3.0).
     + 3.0 compatibility module docutils._compat
 
     + drop 2.2 compatibility workarounds
@@ -37,9 +37,10 @@ Changes Since 0.5
     core.
 
   - Apply [ 1719345 ] Galician translation
-  - Apply [ 1905741 ] polish-translation
+  - Apply [ 1905741 ] Polish translation
   - Apply [ 1878977 ] make_id(): deaccent characters.
-  - Apply [ 2029251 ] return nonzero when tests fail
+  - Apply [ 2029251 ] return nonzero when tests fail.
+  - Fix [ 1692788 ] allow UTF-8 in style sheets.
 
 * reStructuredText:
 
