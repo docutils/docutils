@@ -214,7 +214,7 @@ class Writer(writers.Writer):
         except IOError:
             file = open(os.path.join(os.path.dirname(__file__),
                                      self.document.settings.template), 'rb')
-        template = string.Template(file.read())
+        template = string.Template(unicode(file.read(), 'utf-8'))
         file.close()
         # fill template
         self.assemble_parts() # create dictionary of parts
@@ -982,7 +982,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 else:
                     wrapper = '%% embedded stylesheet: %s\n%s'
                 settings.record_dependencies.add(sheet)
-                self.stylesheet.append(wrapper % (sheet, open(sheet).read()))
+                self.stylesheet.append(wrapper %
+                            (sheet, unicode(open(sheet).read(), 'utf-8')))
             else: # link to style sheet
                 if is_package:
                     self.stylesheet.append(r'\usepackage{%s}' % base)
