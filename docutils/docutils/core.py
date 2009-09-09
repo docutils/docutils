@@ -251,7 +251,7 @@ class Publisher:
     def report_Exception(self, error):
         if isinstance(error, utils.SystemMessage):
             self.report_SystemMessage(error)
-        elif isinstance(error, UnicodeError):
+        elif isinstance(error, UnicodeEncodeError):
             self.report_UnicodeError(error)
         else:
             print >>sys.stderr, '%s: %s' % (error.__class__.__name__, error)
