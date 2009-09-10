@@ -294,6 +294,10 @@ def rfc_reference_role(role, rawtext, text, lineno, inliner,
 register_canonical_role('rfc-reference', rfc_reference_role)
 
 def raw_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
+    if not inliner.document.settings.raw_enabled:
+        msg = inliner.reporter.warning('raw (and derived) roles disabled')
+        prb = inliner.problematic(rawtext, rawtext, msg)
+        return [prb], [msg]
     if 'format' not in options:
         msg = inliner.reporter.error(
             'No format (Writer name) is associated with this role: "%s".\n'
