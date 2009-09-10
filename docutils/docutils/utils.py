@@ -70,7 +70,7 @@ class Reporter:
      SEVERE_LEVEL) = range(5)
 
     def __init__(self, source, report_level, halt_level, stream=None,
-                 debug=0, encoding='ascii', error_handler='replace'):
+                 debug=0, encoding=None, error_handler='replace'):
         """
         :Parameters:
             - `source`: The path to or description of the source data.
@@ -83,15 +83,12 @@ class Reporter:
               ``.write`` method), a string (file name, opened for writing),
               '' (empty string, for discarding all stream messages) or
               `None` (implies `sys.stderr`; default).
-            - `encoding`: The encoding for stderr output.
+            - `encoding`: The output encoding.
             - `error_handler`: The error handler for stderr output encoding.
         """
 
         self.source = source
         """The path to or description of the source data."""
-
-        self.encoding = encoding
-        """The character encoding for the stderr output."""
 
         self.error_handler = error_handler
         """The character encoding error handler."""
@@ -119,6 +116,15 @@ class Reporter:
 
         self.stream = stream
         """Where warning output is sent."""
+
+        if encoding is None:
+            try:
+                encoding = stream.encoding
+            except AttributeError:
+                pass
+
+        self.encoding = encoding or 'ascii'
+        """The output character encoding."""
 
         self.observers = []
         """List of bound methods or functions to call with each system_message
@@ -322,6 +328,25 @@ def assemble_option_dict(option_list, options_spec):
 class NameValueError(DataError): pass
 
 
+def decode_path(path):
+    """
+    Decode file/path string. Return `nodes.reprunicode` object.
+
+    Provides a conversion to unicode without the UnicodeDecode error of the
+    implicit 'ascii:strict' decoding.
+    """
+    # see also http://article.gmane.org/gmane.text.docutils.user/2905
+    try:
+        path = path.decode(sys.getfilesystemencoding(), 'strict')
+    except UnicodeDecodeError:
+        path = path.decode('utf-8', 'strict')
+        try:
+            path = path.decode(sys.getfilesystemencoding(), 'strict')
+        except UnicodeDecodeError:
+            path = path.decode('ascii', 'replace')
+    return nodes.reprunicode(path)
+
+
 def extract_name_value(line):
     """
     Return a list of (name, value) from a line of the form "name=value ...".
@@ -396,6 +421,7 @@ def new_document(source_path, settings=None):
     from docutils import frontend
     if settings is None:
         settings = frontend.OptionParser().get_default_values()
+    source_path = decode_path(source_path)
     reporter = new_reporter(source_path, settings)
     document = nodes.document(settings, reporter, source=source_path)
     document.note_source(source_path, -1)

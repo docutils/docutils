@@ -231,9 +231,9 @@ class FileInput(Input):
                         raise
                     print >>sys.stderr, '%s: %s' % (error.__class__.__name__,
                                                     error)
-                    print >>sys.stderr, (
-                        'Unable to open source file for reading (%r).  Exiting.'
-                        % source_path)
+                    print >>sys.stderr, ('Unable to open source file for '
+                                         "reading ('%s').  Exiting." %
+                                         source_path)
                     sys.exit(1)
             else:
                 self.source = sys.stdin
@@ -314,8 +314,8 @@ class FileOutput(Output):
                 raise
             print >>sys.stderr, '%s: %s' % (error.__class__.__name__,
                                             error)
-            print >>sys.stderr, ('Unable to open destination file for writing '
-                                 '(%r).  Exiting.' % self.destination_path)
+            print >>sys.stderr, ('Unable to open destination file for writing'
+                                 " ('%s').  Exiting." % self.destination_path)
             sys.exit(1)
         self.opened = 1
 
@@ -349,7 +349,7 @@ class BinaryFileOutput(FileOutput):
             print >>sys.stderr, '%s: %s' % (error.__class__.__name__,
                                             error)
             print >>sys.stderr, ('Unable to open destination file for writing '
-                                 '(%r).  Exiting.' % self.destination_path)
+                                 "('%s').  Exiting." % self.destination_path)
             sys.exit(1)
         self.opened = 1
 

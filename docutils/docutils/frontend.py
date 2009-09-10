@@ -79,7 +79,7 @@ def validate_encoding_error_handler(setting, value, option_parser,
                                     config_parser=None, config_section=None):
     try:
         codecs.lookup_error(value)
-    except AttributeError:              # prior to Python 2.3
+    except AttributeError:    # TODO: remove (only needed prior to Python 2.3)
         if value not in ('strict', 'ignore', 'replace', 'xmlcharrefreplace'):
             raise (LookupError(
                 'unknown encoding error handler: "%s" (choices: '
@@ -293,6 +293,13 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
               '0': 0, 'off': 0, 'no': 0, 'false': 0, '': 0}
     """Lookup table for boolean configuration file settings."""
 
+    try:
+        default_error_encoding = sys.stderr.encoding or 'ascii'
+    except AttributeError:
+        default_error_encoding = 'ascii'
+
+    # TODO: variable no longer needed since 'backslashreplace' is
+    # part of Python >= 2.3 (required since Docutils 0.6)
     if hasattr(codecs, 'backslashreplace_errors'):
         default_error_encoding_error_handler = 'backslashreplace'
     else:
@@ -344,11 +351,11 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
          ('Disable backlinks from footnotes and citations.',
           ['--no-footnote-backlinks'],
           {'dest': 'footnote_backlinks', 'action': 'store_false'}),
-         ('Enable section numbering.  (default)',
+         ('Enable section numbering by Docutils.  (default)',
           ['--section-numbering'],
           {'action': 'store_true', 'dest': 'sectnum_xform',
            'default': 1, 'validator': validate_boolean}),
-         ('Disable section numbering.',
+         ('Disable section numbering by Docutils.',
           ['--no-section-numbering'],
           {'action': 'store_false', 'dest': 'sectnum_xform'}),
          ('Remove comment elements from the document tree.',
@@ -421,14 +428,14 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
            'validator': validate_encoding_and_error_handler}),
          ('Specify error handler for unencodable output characters; '
           '"strict" (default), "ignore", "replace", '
-          '"xmlcharrefreplace", "backslashreplace" (Python 2.3+).',
+          '"xmlcharrefreplace", "backslashreplace".',
           ['--output-encoding-error-handler'],
           {'default': 'strict', 'validator': validate_encoding_error_handler}),
          ('Specify text encoding and error handler for error output.  '
-          'Default: ASCII:%s.'
-          % default_error_encoding_error_handler,
+          'Default: %s:%s.'
+          % (default_error_encoding, default_error_encoding_error_handler),
           ['--error-encoding', '-e'],
-          {'metavar': '<name[:handler]>', 'default': 'ascii',
+          {'metavar': '<name[:handler]>', 'default': default_error_encoding,
            'validator': validate_encoding_and_error_handler}),
          ('Specify the error handler for unencodable characters in '
           'error output.  Default: %s.'
