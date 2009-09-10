@@ -41,6 +41,7 @@ Changes Since 0.5
   - Apply [ 1878977 ] make_id(): deaccent characters.
   - Apply [ 2029251 ] return nonzero when tests fail.
   - Fix [ 1692788 ] allow UTF-8 in style sheets.
+  - Fix [ 2781629 ] support non-ASCII chars in file names.
 
 * reStructuredText:
 
