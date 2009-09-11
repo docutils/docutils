@@ -119,6 +119,10 @@ class Writer(writers.Writer):
          ('Disable compact simple field lists.',
           ['--no-compact-field-lists'],
           {'dest': 'compact_field_lists', 'action': 'store_false'}),
+         ('Added to standard table classes. '
+          'Defined styles: "borderless". Default: ""',
+          ['--table-style'],
+          {'default': ''}),
          ('Omit the XML declaration.  Use with caution.',
           ['--no-xml-declaration'],
           {'dest': 'xml_declaration', 'default': 1, 'action': 'store_false',
@@ -1366,8 +1370,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</div>\n')
 
     def visit_table(self, node):
+        classes = ' '.join(['docutils', self.settings.table_style]).strip()
         self.body.append(
-            self.starttag(node, 'table', CLASS='docutils', border="1"))
+            self.starttag(node, 'table', CLASS=classes, border="1"))
 
     def depart_table(self, node):
         self.body.append('</table>\n')

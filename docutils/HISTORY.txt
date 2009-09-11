@@ -88,6 +88,9 @@ Changes Since 0.5
   - Address [ 1938891 ] Inline literal text creates "pre" span only when
     needed to prevent inter-word line wraps.
   - Use `translate` method instead of repeated `replace` calls.
+  - Fix [ 1757105 ] New ``table-style`` option. Added to standard table
+    classes to allow CSS styling that does not interfere with other
+    table-using constructs (field lists, citations, ...).
 
 * docutils/writers/newlatex2e/__init__.py:
 
