@@ -308,7 +308,7 @@ class FileOutput(Output):
 
     def open(self):
         try:
-            self.destination = open(self.destination_path, 'wb')
+            self.destination = open(self.destination_path, 'w')
         except IOError, error:
             if not self.handle_io_errors:
                 raise
