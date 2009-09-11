@@ -144,10 +144,10 @@ class Writer(writers.Writer):
            'validator': frontend.validate_boolean}),
          ('Table style. "standard" with horizontal and vertical lines, '
           '"booktabs" (LaTeX booktabs style) only horizontal lines '
-          'above and below the table and below the header or "nolines".  '
+          'above and below the table and below the header or "borderless".  '
           'Default: "standard"',
           ['--table-style'],
-          {'choices': ['standard', 'booktabs','nolines'],
+          {'choices': ['standard', 'booktabs','nolines', 'borderless'],
            'default': 'standard',
            'metavar': '<format>'}),
          ('LaTeX graphicx package option. '
