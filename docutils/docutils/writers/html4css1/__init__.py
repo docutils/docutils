@@ -308,14 +308,15 @@ class HTMLTranslator(nodes.NodeVisitor):
     def encode(self, text):
         """Encode special characters in `text` & return."""
         # @@@ A codec to do these and all other HTML entities would be nice.
-        text = text.replace("&", "&amp;")
-        text = text.replace("<", "&lt;")
-        text = text.replace('"', "&quot;")
-        text = text.replace(">", "&gt;")
-        text = text.replace("@", "&#64;") # may thwart some address harvesters
-        # Replace the non-breaking space character with the HTML entity:
-        text = text.replace(u'\u00a0', "&nbsp;")
-        return text
+        text = unicode(text)
+        return text.translate({
+            ord('&'): u'&amp;',
+            ord('<'): u'&lt;',
+            ord('"'): u'&quot;',
+            ord('>'): u'&gt;',
+            ord('@'): u'&#64;', # may thwart some address harvesters
+            # TODO: convert non-breaking space only if needed?
+            0xa0: u'&nbsp;'}) # non-breaking space
 
     def cloak_mailto(self, uri):
         """Try to hide a mailto: URL from harvesters."""

@@ -43,6 +43,7 @@ Changes Since 0.5
   - Fix [ 1692788 ] allow UTF-8 in style sheets.
   - Fix [ 2781629 ] support non-ASCII chars in file names.
   - Apply [ 2845002 ] let ``--no-raw`` disable raw *roles* too.
+  - Fix [ 2831643 ] by renaming DirectiveError.message to DirectiveError.msg
 
 * reStructuredText:
 
@@ -86,6 +87,7 @@ Changes Since 0.5
     separated list of stylesheets.
   - Address [ 1938891 ] Inline literal text creates "pre" span only when
     needed to prevent inter-word line wraps.
+  - Use `translate` method instead of repeated `replace` calls.
 
 * docutils/writers/newlatex2e/__init__.py:
 
@@ -132,6 +134,7 @@ Changes Since 0.5
   - Typeset generic topic as "quote block with title".
   - Use template (file and configuration option).
   - Render doctest blocks as literal blocks (fixes [ 1586058 ]).
+  - Use .translate() instead of repeated .replace() calls.
 
 * docutils/writers/manpage.py
 

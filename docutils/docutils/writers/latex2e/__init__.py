@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 # $Id$
 # Author: Engelbert Gruber <grubert@users.sourceforge.net>
 # Copyright: This module has been placed in the public domain.
@@ -290,12 +291,12 @@ class Babel(object):
         self.setup = '' # language dependent configuration code
         # double quotes are "active" in some languages (e.g. German).
         # TODO: use \textquotedbl in OT1 font encoding?
-        self.literal_double_quote = '"'
+        self.literal_double_quote = u'"'
         if self.language.startswith('de'):
-            self.quotes = ('{\\glqq}', '\\grqq{}')
-            self.literal_double_quote = '\\dq{}'
+            self.quotes = (r'\glqq{}', r'\grqq{}')
+            self.literal_double_quote = ur'\dq{}'
         if self.language.startswith('it'):
-            self.literal_double_quote = r'{\char`\"}'
+            self.literal_double_quote = ur'{\char`\"}'
         if self.language.startswith('es'):
             # reset tilde ~ to the original binding (nobreakspace):
             self.setup = ('\n'
@@ -1075,139 +1076,125 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def language_label(self, docutil_label):
         return self.language.labels[docutil_label]
 
-    latex_equivalents = {
-        u'\u00A0' : '~',
-        u'\u2013' : '{--}',
-        u'\u2014' : '{---}',
-        u'\u2018' : '`',
-        u'\u2019' : "'",
-        u'\u201A' : ',',
-        u'\u201C' : '``',
-        u'\u201D' : "''",
-        u'\u201E' : ',,',
-        u'\u2020' : '\\dag{}',
-        u'\u2021' : '\\ddag{}',
-        u'\u2026' : '\\dots{}',
-        u'\u2122' : '\\texttrademark{}',
-        u'\u21d4' : '$\\Leftrightarrow$',
-        # greek alphabet ?
-    }
-
-    def unicode_to_latex(self,text):
-        # see LaTeX codec
-        # http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/252124
-        # Only some special chracters are translated, for documents with many
-        # utf-8 chars one should use the LaTeX unicode package.
-        for uchar in self.latex_equivalents.keys():
-            text = text.replace(uchar,self.latex_equivalents[uchar])
-        return text
-
     def ensure_math(self, text):
         if not hasattr(self, 'ensure_math_re'):
             chars = { # lnot,pm,twosuperior,threesuperior,mu,onesuperior,times,div
-                     'latin1' : '\xac\xb1\xb2\xb3\xb5\xb9\xd7\xf7' ,
-                     # TODO?: also latin5 and latin9
+                     'latin1' : '\xac\xb1\xb2\xb3\xb5\xb9\xd7\xf7' , # ¬±²³µ¹×÷
+                     # TODO?: use texcomp instead.
                     }
             self.ensure_math_re = re.compile('([%s])' % chars['latin1'])
         text = self.ensure_math_re.sub(r'\\ensuremath{\1}', text)
         return text
 
     def encode(self, text):
-        """Return text with special characters escaped.
+        """Return text with 'problematic' characters escaped.
 
         Escape the ten special printing characters ``# $ % & ~ _ ^ \ { }``,
         square brackets ``[ ]``, double quotes and (in OT1) ``< | >``.
 
         Separate ``-`` (and more in literal text) to prevent input ligatures.
+
+        Translate non-supported Unicode characters.
         """
         if self.verbatim:
             return text
-        # Bootstrapping: backslash and braces are also part of replacements
-        # 1. backslash (terminated below)
-        text = text.replace('\\', r'\textbackslash')
-        # 2. braces
-        text = text.replace('{', r'\{')
-        text = text.replace('}', r'\}')
-        # 3. terminate \textbackslash
-        text = text.replace('\\textbackslash', '\\textbackslash{}')
-        # 4. the remaining special printing characters
-        text = text.replace('#', r'\#')
-        text = text.replace('$', r'\$')
-        text = text.replace('%', r'\%')
-        text = text.replace('&', r'\&')
-        text = text.replace('~', r'\textasciitilde{}')
-        if not self.inside_citation_reference_label:
-            text = text.replace('_', r'\_')
-        text = text.replace('^', r'\textasciicircum{}')
-        # Square brackets
-        #
-        #   \item and all the other commands with optional arguments check
-        #   if the token right after the macro name is an opening bracket.
-        #   In that case the contents between that bracket and the following
-        #   closing bracket on the same grouping level are taken as the
-        #   optional argument. What makes this unintuitive is the fact that
-        #   the square brackets aren't grouping characters themselves, so in
-        #   your last example \item[[...]] the optional argument consists of
-        #   [... (without the closing bracket).
-        #
-        # How to escape?
-        #
+        # Separate compound characters, e.g. '--' to '-{}-'.
+        separate_chars = '-'
+        # In monospace-font, we also separate ',,', '``' and "''" and some
+        # other characters which can't occur in non-literal text.
+        if self.literal_block or self.literal:
+            separate_chars += ',`\'"<>'
+        # LaTeX encoding maps:
+        special_chars2latex = {
+            ord('#'): ur'\#',
+            ord('$'): ur'\$',
+            ord('%'): ur'\%',
+            ord('&'): ur'\&',
+            ord('~'): ur'\textasciitilde{}',
+            ord('_'): ur'\_',
+            ord('^'): ur'\textasciicircum{}',
+            ord('\\'): ur'\textbackslash{}',
+            ord('{'): ur'\{',
+            ord('}'): ur'\}',
         # Square brackets are ordinary chars and cannot be escaped with '\',
         # so we put them in a group '{[}'. (Alternative: ensure that all
         # macros with optional arguments are terminated with {} and text
         # inside any optional argument is put in a group ``[{text}]``).
         # Commands with optional args inside an optional arg must be put
         # in a group, e.g. ``\item[{\hyperref[label]{text}}]``.
-        text = text.replace('[', '{[}')
-        text = text.replace(']', '{]}')
+            ord('['): ur'{[}',
+            ord(']'): ur'{]}',
+        # Unicode chars that are not recognized by LaTeX's utf8 encoding
+            0x21d4: ur'$\Leftrightarrow$',
+            0x00A0: ur'~', # NO-BREAK SPACE
+        }
+        # Unicode chars that are recognized by LaTeX's utf8 encoding
+        unicode2latex = {
+            0x2013: ur'\textendash{}',
+            0x2014: ur'\textemdash{}',
+            0x2018: ur'`',
+            0x2019: ur"'",
+            0x201A: ur'\quotesinglbase{}', # SINGLE LOW-9 QUOTATION MARK
+            0x201C: ur'\textquotedblleft{}',
+            0x201D: ur'\textquotedblright{}',
+            0x201E: ur'\quotedblbase', # DOUBLE LOW-9 QUOTATION MARK
+            0x2020: ur'\dag{}',
+            0x2021: ur'\ddag{}',
+            0x2026: ur'\dots{}',
+            0x2122: ur'\texttrademark{}',
+            # TODO: greek alphabet ... ?
+            # see also LaTeX codec
+            # http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/252124
+            # and unimap.py from TeXML
+        }
+        # set up the translation table:
+        table = special_chars2latex
+        # keep the underscore in citation references
+        if self.inside_citation_reference_label:
+            del(table[ord('_')])
         # Workarounds for OT1 font-encoding
         if self.font_encoding in ['OT1', '']:
             # * out-of-order characters in cmtt
             if self.literal_block or self.literal:
-                # replace underscore by underlined blank, because this has
-                # correct width.
-                text = text.replace(r'\_', r'\underline{ }')
+                # replace underscore by underlined blank,
+                # because this has correct width.
+                table[ord('_')] = u'\\underline{~}'
                 # the backslash doesn't work, so we use a mirrored slash.
                 # \reflectbox is provided by graphicx:
                 self.requirements['graphicx'] = self.graphicx_package
-                text = text.replace(r'\textbackslash', r'\reflectbox{/}')
+                table[ord('\\')] = ur'\reflectbox{/}'
             # * ``< | >`` come out as different chars (except for cmtt):
             else:
-                text = text.replace('|', '\\textbar{}')
-                text = text.replace('<', '\\textless{}')
-                text = text.replace('>', '\\textgreater{}')
-        #
-        # Separate compound characters, e.g. '--' to '-{}-'.  (The
-        # actual separation is done later; see below.)
-        separate_chars = '-'
+                table[ord('|')] = ur'\textbar{}'
+                table[ord('<')] = ur'\textless{}'
+                table[ord('>')] = ur'\textgreater{}'
+        if self.insert_non_breaking_blanks:
+            table[ord(' ')] = ur'~'
         if self.literal_block or self.literal:
-            # In monospace-font, we also separate ',,', '``' and "''"
-            # and some other characters which can't occur in
-            # non-literal text.
-            separate_chars += ',`\'"<>'
             # double quotes are 'active' in some languages
-            text = text.replace('"', self.babel.literal_double_quote)
+            table[ord('"')] = self.babel.literal_double_quote
         else:
             text = self.babel.quote_quotes(text)
+        # Unicode chars:
+        if not self.latex_encoding.startswith('utf8'):
+            table.update(unicode2latex)
+
+        text = text.translate(table)
+
+        # Break up input ligatures
         for char in separate_chars * 2:
             # Do it twice ("* 2") because otherwise we would replace
             # '---' by '-{}--'.
             text = text.replace(char + char, char + '{}' + char)
+        # Literal line breaks (in address or literal blocks):
         if self.insert_newline or self.literal_block:
-            # Literal line breaks (in address or literal blocks):
             # for blank lines, insert a protected space, to avoid
             # ! LaTeX Error: There's no line here to end.
             textlines = [line + '~'*(not line.lstrip())
                          for line in text.split('\n')]
             text = '\\\\\n'.join(textlines)
-        if self.insert_non_breaking_blanks:
-            text = text.replace(' ', '~')
         if not self.latex_encoding.startswith('utf8'):
-            text = self.unicode_to_latex(text)
             text = self.ensure_math(text)
-        if self.latex_encoding == 'utf8':
-            # no-break space is not supported by (plain) utf8 input encoding
-            text = text.replace(u'\u00A0', '~')
         return text
 
     def attval(self, text,
@@ -1827,11 +1814,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out.append(self.context.pop())
 
     def visit_footer(self, node):
-        self.out = self.requirements
+        self.out = []
         self.out.append(r'\newcommand{\DUfooter}{')
 
     def depart_footer(self, node):
         self.out.append('}')
+        self.requirements['~footer'] = ''.join(self.out)
         self.out = self.body
 
     def visit_footnote(self, node):
@@ -1918,11 +1906,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_header(self, node):
-        self.out = self.requirements
+        self.out = []
         self.out.append(r'\newcommand{\DUheader}{')
 
     def depart_header(self, node):
         self.out.append('}')
+        self.requirements['~header'] = ''.join(self.out)
         self.out = self.body
 
     def visit_hint(self, node):
