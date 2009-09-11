@@ -63,8 +63,13 @@ class Include(Directive):
                                input_encoding_error_handler),
                 handle_io_errors=None)
         except IOError, error:
-            raise self.severe('Problems with "%s" directive path:\n%s: %s.'
-                              % (self.name, error.__class__.__name__, error))
+            raise self.severe('Problems with "%s" directive path:\n%s: %s.' %
+                        (self.name, error.__class__.__name__, str(error)))
+            # Hack: Since Python 2.6, ``'%s' % error`` returns a unicode
+            # object. IOError seems to miss a `__unicode__` method and the
+            # fallback `__repr__` does not report the file name. Explicitely
+            # converting to str fixes this::
+            #   print '%s\n%s\n%s\n' %(error, str(error), repr(error))
         startline = self.options.get('start-line', None)
         endline = self.options.get('end-line', None)
         try:
