@@ -175,7 +175,7 @@ class DirectiveError(Exception):
         """
         Exception.__init__(self)
         self.level = level
-        self.message = message
+        self.msg = message
 
 
 class Directive:
