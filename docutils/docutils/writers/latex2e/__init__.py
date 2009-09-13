@@ -402,6 +402,18 @@ PreambleCmds.fieldlist = r"""
 PreambleCmds.float_settings = r"""\usepackage{float} % float configuration
 \floatplacement{figure}{H} % place figures here definitely"""
 
+PreambleCmds.footnotes = r"""% numeric or symbol footnotes with hyperlinks
+\providecommand*{\DUfootnotemark}[3]{{%
+  \renewcommand{\thefootnote}{\csname #2\endcsname{footnote}}%
+  \hyperlink{#1}{\footnotemark[#3]}%
+}}
+\providecommand{\DUfootnotetext}[4]{{%
+  \renewcommand{\thefootnote}{%
+    \protect\raisebox{1em}{\protect\hypertarget{#1}{}}%
+    \csname #2\endcsname{footnote}}%
+  \footnotetext[#3]{#4}%
+}}"""
+
 PreambleCmds.footnote_floats = r"""% settings for footnotes as floats:
 \setlength{\floatsep}{0.5em}
 \setlength{\textfloatsep}{\fill}
@@ -816,6 +828,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     has_latex_toc = False # is there a toc in the doc? (needed by minitoc)
     is_toc_list = False   # is the current bullet_list a ToC?
     section_level = 0
+    footnotesymbols = ['*'] # footnote symbols in order of appearance
 
     # Flags to encode():
     # inside citation reference labels underscores dont need to be escaped
@@ -1208,6 +1221,20 @@ class LaTeXTranslator(nodes.NodeVisitor):
     ##     head = '\n'.join(self.head_prefix + self.stylesheet + self.head)
     ##     body = ''.join(self.body_prefix  + self.body + self.body_suffix)
     ##     return head + '\n' + body
+
+    def footnotesymbol_number(self, symbol):
+        """Return running number for a footnote symbol"""
+        try:
+            i = self.footnotesymbols.index(symbol) + 1
+        except ValueError:
+            self.footnotesymbols.append(symbol)
+            i = len(self.footnotesymbols)
+            if i % 9 == 0:
+                warn = self.document.reporter.warning
+                warn('symbol footnote ``[*]_``\n'
+                     'LaTeX supports only 9 different footnote symbols. '
+                     'Starting again with "*".')
+        return (i+1) % 9 or 9
 
     def is_inline(self, node):
         """Check whether a node represents an inline element"""
@@ -1824,14 +1851,21 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_footnote(self, node):
         if self.use_latex_footnotes:
+            self.fallbacks['footnotes'] = PreambleCmds.footnotes
             num,text = node.astext().split(None,1)
-            num = self.encode(num.strip())
-            self.out.append('\\footnotetext['+num+']')
-            self.out.append('{')
+            try:
+                i = int(num)
+                format = 'arabic'
+            except ValueError:
+                i = self.footnotesymbol_number(num)
+                format = 'fnsymbol'
+            self.out.append('%%\n\\DUfootnotetext{%s}{%s}{%d}{' %
+                            (node['ids'][0], format, i))
+            if node['ids'] == node['names']:
+                self.out += self.ids_to_labels(node)
         else:
             # use key starting with ~ for sorting after small letters
-            self.requirements['~footnote_floats'] = (
-                                            PreambleCmds.footnote_floats)
+            self.requirements['~fnt_floats'] = PreambleCmds.footnote_floats
             self.out.append('\\begin{figure}[b]')
             self.append_hypertargets(node)
             if node.get('id') == node.get('name'):  # explicite label
@@ -1844,7 +1878,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.out.append('\\end{figure}\n')
 
     def visit_footnote_reference(self, node):
+        href = ''
+        if 'refid' in node:
+            href = node['refid']
+        elif 'refname' in node:
+            href = self.document.nameids[node['refname']]
         if self.use_latex_footnotes:
+            self.fallbacks['footnotes'] = PreambleCmds.footnotes
             # TODO: insert footnote content at (or near) this place
             # print "footnote-ref to", node['refid']
             # footnotes = (self.document.footnotes +
@@ -1854,13 +1894,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
             #     # print footnote['ids']
             #     if node.get('refid', '') in footnote['ids']:
             #         print 'matches', footnote['ids']
-            self.out.append('\\footnotemark['+self.encode(node.astext())+']')
+            num = node.astext()
+            try:
+                i = int(num)
+                format = 'arabic'
+            except ValueError:
+                i = self.footnotesymbol_number(num)
+                format = 'fnsymbol'
+            self.out.append(r'\DUfootnotemark{%s}{%s}{%d}' %
+                            (href, format, i))
             raise nodes.SkipNode
-        href = ''
-        if 'refid' in node:
-            href = node['refid']
-        elif 'refname' in node:
-            href = self.document.nameids[node['refname']]
         format = self.settings.footnote_references
         if format == 'brackets':
             suffix = '['
