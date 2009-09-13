@@ -7,7 +7,7 @@
 % 
 % :Author:    Guenter Milde
 % :Contact:   milde@users.berlios.de
-% :Revision:  $Revision: 6111 $
+% :Revision:  $Revision: 6115 $
 % :Date:      $Date: 2009-02-24$
 % :Copyright: © 2009 G. Milde,
 %             Released  without warranties or conditions of any kind
@@ -88,6 +88,7 @@
 %       ``--literal-block-env=lstlistings`` fail with literal or doctest
 %       blocks nested in an admonition.
 % 
+% * Support symbol footnotes with ``--use-latex-footnotes``.
 % 
 % Backwards compatibility:
 %   "Bug for bug compatibility" is not provided.
@@ -641,6 +642,12 @@
 %                ``DUsubtitle`` commands,
 %   :topic:      ``\DUtopic`` and ``\DUtitle`` commands,
 %   :transition: ``\DUtransition`` command.
+% 
+%   Auxiliary LaTeX commands
+% 
+%   :footnotes: ``\DUfootnotemark`` and ``\DUfootnotetext`` commands with
+%               hyperlink support and choice of footnotemark format (symbol or
+%               numeric).
 % 
 % Backwards compatibility:
 %   In most cases, the default definition corresponds to the previously used
