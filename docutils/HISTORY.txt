@@ -138,7 +138,7 @@ Changes Since 0.5
   - Use template (file and configuration option).
   - Render doctest blocks as literal blocks (fixes [ 1586058 ]).
   - Use `translate` instead of repeated `replace` calls for text encoding.
-  - Hyperlinked footnote marks and support for symbol footnotes with
+  - Hyperlinked footnotes and support for symbol footnotes with
     ``--use-latex-footnotes``.
 
 * docutils/writers/manpage.py
