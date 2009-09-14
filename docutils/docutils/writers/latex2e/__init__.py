@@ -1202,7 +1202,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if not self.latex_encoding.startswith('utf8'):
             table.update(unicode_chars)
         # Unicode chars that require a feature/package to render
-        if all([unichr(ch) in text for ch in pifont_chars.keys()]):
+        if [ch for ch in pifont_chars.keys() if unichr(ch) in text]:
             self.requirements['pifont'] = '\\usepackage{pifont}'
             table.update(pifont_chars)
 
