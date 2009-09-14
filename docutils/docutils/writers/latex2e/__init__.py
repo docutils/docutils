@@ -43,8 +43,7 @@ class Writer(writers.Writer):
           'separated by commas.  Default is "a4paper".',
           ['--documentoptions'],
           {'default': 'a4paper', }),
-         ('Use LaTeX footnotes (currently supports only numbered footnotes). '
-          'Default: no, uses figures.',
+         ('Use LaTeX footnotes. Default: no, uses figures.',
           ['--use-latex-footnotes'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
@@ -403,15 +402,15 @@ PreambleCmds.float_settings = r"""\usepackage{float} % float configuration
 \floatplacement{figure}{H} % place figures here definitely"""
 
 PreambleCmds.footnotes = r"""% numeric or symbol footnotes with hyperlinks
-\providecommand*{\DUfootnotemark}[3]{{%
-  \renewcommand{\thefootnote}{\csname #2\endcsname{footnote}}%
-  \hyperlink{#1}{\footnotemark[#3]}%
-}}
+\providecommand*{\DUfootnotemark}[3]{%
+  \raisebox{1em}{\hypertarget{#1}{}}%
+  \hyperlink{#2}{\textsuperscript{#3}}%
+}
 \providecommand{\DUfootnotetext}[4]{{%
   \renewcommand{\thefootnote}{%
     \protect\raisebox{1em}{\protect\hypertarget{#1}{}}%
-    \csname #2\endcsname{footnote}}%
-  \footnotetext[#3]{#4}%
+    \protect\hyperlink{#2}{#3}}%
+  \footnotetext{#4}%
 }}"""
 
 PreambleCmds.footnote_floats = r"""% settings for footnotes as floats:
@@ -828,7 +827,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
     has_latex_toc = False # is there a toc in the doc? (needed by minitoc)
     is_toc_list = False   # is the current bullet_list a ToC?
     section_level = 0
-    footnotesymbols = ['*'] # footnote symbols in order of appearance
 
     # Flags to encode():
     # inside citation reference labels underscores dont need to be escaped
@@ -1118,7 +1116,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.literal_block or self.literal:
             separate_chars += ',`\'"<>'
         # LaTeX encoding maps:
-        special_chars2latex = {
+        special_chars = {
             ord('#'): ur'\#',
             ord('$'): ur'\$',
             ord('%'): ur'\%',
@@ -1136,13 +1134,18 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # Commands with optional args inside an optional arg must be put
         # in a group, e.g. ``\item[{\hyperref[label]{text}}]``.
             ord('['): ur'{[}',
-            ord(']'): ur'{]}',
+            ord(']'): ur'{]}'
+        }
         # Unicode chars that are not recognized by LaTeX's utf8 encoding
-            0x21d4: ur'$\Leftrightarrow$',
+        unsupported_unicode_chars = {
             0x00A0: ur'~', # NO-BREAK SPACE
+            0x21d4: ur'$\Leftrightarrow$',
+            # Docutils footnote symbols:
+            0x2660: ur'$\spadesuit$',
+            0x2663: ur'$\clubsuit$',
         }
         # Unicode chars that are recognized by LaTeX's utf8 encoding
-        unicode2latex = {
+        unicode_chars = {
             0x2013: ur'\textendash{}',
             0x2014: ur'\textemdash{}',
             0x2018: ur'`',
@@ -1155,13 +1158,19 @@ class LaTeXTranslator(nodes.NodeVisitor):
             0x2021: ur'\ddag{}',
             0x2026: ur'\dots{}',
             0x2122: ur'\texttrademark{}',
-            # TODO: greek alphabet ... ?
-            # see also LaTeX codec
-            # http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/252124
-            # and unimap.py from TeXML
         }
+        # Unicode chars that require a feature/package to render
+        pifont_chars = {
+            0x2665: ur'\ding{170}',     # black heartsuit
+            0x2666: ur'\ding{169}',     # black diamondsuit
+        }
+        # TODO: greek alphabet ... ?
+        # see also LaTeX codec
+        # http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/252124
+        # and unimap.py from TeXML
+
         # set up the translation table:
-        table = special_chars2latex
+        table = special_chars
         # keep the underscore in citation references
         if self.inside_citation_reference_label:
             del(table[ord('_')])
@@ -1189,8 +1198,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             text = self.babel.quote_quotes(text)
         # Unicode chars:
+        table.update(unsupported_unicode_chars)
         if not self.latex_encoding.startswith('utf8'):
-            table.update(unicode2latex)
+            table.update(unicode_chars)
+        # Unicode chars that require a feature/package to render
+        if all([unichr(ch) in text for ch in pifont_chars.keys()]):
+            self.requirements['pifont'] = '\\usepackage{pifont}'
+            table.update(pifont_chars)
 
         text = text.translate(table)
 
@@ -1221,20 +1235,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
     ##     head = '\n'.join(self.head_prefix + self.stylesheet + self.head)
     ##     body = ''.join(self.body_prefix  + self.body + self.body_suffix)
     ##     return head + '\n' + body
-
-    def footnotesymbol_number(self, symbol):
-        """Return running number for a footnote symbol"""
-        try:
-            i = self.footnotesymbols.index(symbol) + 1
-        except ValueError:
-            self.footnotesymbols.append(symbol)
-            i = len(self.footnotesymbols)
-            if i % 9 == 0:
-                warn = self.document.reporter.warning
-                warn('symbol footnote ``[*]_``\n'
-                     'LaTeX supports only 9 different footnote symbols. '
-                     'Starting again with "*".')
-        return (i+1) % 9 or 9
 
     def is_inline(self, node):
         """Check whether a node represents an inline element"""
@@ -1850,17 +1850,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out = self.body
 
     def visit_footnote(self, node):
+        try:
+            backref = node['backrefs'][0]
+        except IndexError:
+            backref = node['ids'][0] # no backref, use self-ref instead
         if self.use_latex_footnotes:
             self.fallbacks['footnotes'] = PreambleCmds.footnotes
             num,text = node.astext().split(None,1)
-            try:
-                i = int(num)
-                format = 'arabic'
-            except ValueError:
-                i = self.footnotesymbol_number(num)
-                format = 'fnsymbol'
-            self.out.append('%%\n\\DUfootnotetext{%s}{%s}{%d}{' %
-                            (node['ids'][0], format, i))
+            self.out.append('%%\n\\DUfootnotetext{%s}{%s}{%s}{' %
+                            (node['ids'][0], backref, self.encode(num)))
             if node['ids'] == node['names']:
                 self.out += self.ids_to_labels(node)
         else:
@@ -1883,8 +1881,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             href = node['refid']
         elif 'refname' in node:
             href = self.document.nameids[node['refname']]
-        if self.use_latex_footnotes:
-            self.fallbacks['footnotes'] = PreambleCmds.footnotes
+        # if self.use_latex_footnotes:
             # TODO: insert footnote content at (or near) this place
             # print "footnote-ref to", node['refid']
             # footnotes = (self.document.footnotes +
@@ -1894,31 +1891,20 @@ class LaTeXTranslator(nodes.NodeVisitor):
             #     # print footnote['ids']
             #     if node.get('refid', '') in footnote['ids']:
             #         print 'matches', footnote['ids']
-            num = node.astext()
-            try:
-                i = int(num)
-                format = 'arabic'
-            except ValueError:
-                i = self.footnotesymbol_number(num)
-                format = 'fnsymbol'
-            self.out.append(r'\DUfootnotemark{%s}{%s}{%d}' %
-                            (href, format, i))
-            raise nodes.SkipNode
         format = self.settings.footnote_references
         if format == 'brackets':
-            suffix = '['
-            self.context.append(']')
-        elif format == 'superscript':
-            suffix = r'\textsuperscript{'
+            self.append_hypertargets()
+            self.out.append('[%s\\hyperlink{%s}{' % (href))
+            self.context.append(']}')
+        else:
+            self.fallbacks['footnotes'] = PreambleCmds.footnotes
+            # TODO: second argument = backlink id
+            self.out.append(r'\DUfootnotemark{%s}{%s}{' % 
+                            (node['ids'][0], href))
             self.context.append('}')
-        else:                           # shouldn't happen
-            raise AssertionError('Illegal footnote reference format.')
-        self.out.append('%s\\hyperlink{%s}{' % (suffix,href))
 
     def depart_footnote_reference(self, node):
-        if self.use_latex_footnotes:
-            return
-        self.out.append('}%s' % self.context.pop())
+        self.out.append(self.context.pop())
 
     # footnote/citation label
     def label_delim(self, node, bracket, superscript):

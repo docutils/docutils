@@ -65,6 +65,17 @@
     {\quote\description}
     {\enddescription\endquote}
 }{}
+% numeric or symbol footnotes with hyperlinks
+\providecommand*{\DUfootnotemark}[3]{%
+  \raisebox{1em}{\hypertarget{#1}{}}%
+  \hyperlink{#2}{\textsuperscript{#3}}%
+}
+\providecommand{\DUfootnotetext}[4]{{%
+  \renewcommand{\thefootnote}{%
+    \protect\raisebox{1em}{\protect\hypertarget{#1}{}}%
+    \protect\hyperlink{#2}{#3}}%
+  \footnotetext{#4}%
+}}
 
 % inline markup (custom roles)
 % \DUrole{#1}{#2} tries \DUrole#1{#2}
@@ -454,11 +465,11 @@ A paragraph.
 
 Paragraphs contain text and may contain inline markup: \emph{emphasis},
 \textbf{strong emphasis}, \texttt{inline literals}, standalone hyperlinks
-(\href{http://www.python.org}{http://www.python.org}), external hyperlinks (\href{http://www.python.org/}{Python}\textsuperscript{\hyperlink{id26}{5}}), internal
+(\href{http://www.python.org}{http://www.python.org}), external hyperlinks (\href{http://www.python.org/}{Python}\DUfootnotemark{id27}{id26}{5}), internal
 cross-references (\hyperref[example]{example}), external hyperlinks with embedded URIs
 (\href{http://www.python.org}{Python web site}), \href{http://www.python.org/}{anonymous hyperlink
-references}\textsuperscript{\hyperlink{id26}{5}} (\href{http://docutils.sourceforge.net/}{a second reference}\textsuperscript{\hyperlink{id31}{6}}), footnote references (manually
-numbered\textsuperscript{\hyperlink{id8}{1}}, anonymous auto-numbered\textsuperscript{\hyperlink{id12}{3}}, labeled auto-numbered\textsuperscript{\hyperlink{label}{2}}, or symbolic\textsuperscript{\hyperlink{id13}{*}}), citation references ([\hyperlink{cit2002}{CIT2002}]),
+references}\DUfootnotemark{id30}{id26}{5} (\href{http://docutils.sourceforge.net/}{a second reference}\DUfootnotemark{id32}{id31}{6}), footnote references (manually
+numbered\DUfootnotemark{id1}{id8}{1}, anonymous auto-numbered\DUfootnotemark{id2}{id12}{3}, labeled auto-numbered\DUfootnotemark{id3}{label}{2}, or symbolic\DUfootnotemark{id4}{id13}{*}), citation references ([\hyperlink{cit2002}{CIT2002}]),
 substitution references (\includegraphics{../../../docs/user/rst/images/biohazard.png}), and %
 \phantomsection\label{inline-hyperlink-targets}inline hyperlink targets
 (see \hyperref[targets]{Targets} below for a reference back to here).  Character-level
@@ -892,10 +903,10 @@ least 3 spaces.
 This is the footnote's second paragraph.
 \end{figure}
 \begin{figure}[b]\raisebox{1em}{\hypertarget{label}{}}\phantomsection\label{label}\textsuperscript{2}
-Footnotes may be numbered, either manually (as in\textsuperscript{\hyperlink{id8}{1}}) or
+Footnotes may be numbered, either manually (as in\DUfootnotemark{id9}{id8}{1}) or
 automatically using a ``\#''-prefixed label.  This footnote has a
 label so it can be referred to from multiple places, both as a
-footnote reference (\textsuperscript{\hyperlink{label}{2}}) and as a \hyperref[label]{hyperlink reference}.
+footnote reference (\DUfootnotemark{id10}{label}{2}) and as a \hyperref[label]{hyperlink reference}.
 \end{figure}
 \begin{figure}[b]\raisebox{1em}{\hypertarget{id12}{}}\phantomsection\label{id12}\textsuperscript{3}
 This footnote is numbered automatically and anonymously using a
@@ -907,7 +918,7 @@ And this is the third paragraph.
 \end{figure}
 \begin{figure}[b]\raisebox{1em}{\hypertarget{id13}{}}\phantomsection\label{id13}\textsuperscript{*}
 Footnotes may also use symbols, specified with a ``*'' label.
-Here's a reference to the next footnote:\textsuperscript{\hyperlink{id15}{\dag{}}}.
+Here's a reference to the next footnote:\DUfootnotemark{id14}{id15}{\dag{}}.
 \end{figure}
 \begin{figure}[b]\raisebox{1em}{\hypertarget{id15}{}}\phantomsection\label{id15}\textsuperscript{\dag{}}
 This footnote shows the next symbol in the sequence.
@@ -956,7 +967,7 @@ Section headers are implicit targets, referred to by name. See
 \hyperref[targets]{Targets}, which is a subsection of \hyperref[body-elements]{Body Elements}.
 
 Explicit external targets are interpolated into references such as
-``\href{http://www.python.org/}{Python}\textsuperscript{\hyperlink{id26}{5}}''.
+``\href{http://www.python.org/}{Python}\DUfootnotemark{id28}{id26}{5}''.
 
 Targets may be indirect and anonymous.  Thus \hyperref[targets]{this phrase} may also
 refer to the \hyperref[targets]{Targets} section.
@@ -1321,7 +1332,7 @@ allowed (e.g. inside a directive).
   \label{replacement-text}%
 }
 
-I recommend you try \href{http://www.python.org/}{Python, \emph{the} best language around}\textsuperscript{\hyperlink{id26}{5}}.
+I recommend you try \href{http://www.python.org/}{Python, \emph{the} best language around}\DUfootnotemark{id29}{id26}{5}.
 
 
 %___________________________________________________________________________
@@ -1419,7 +1430,7 @@ This~is~a~parsed~literal~block.\\
 ~~~~This~line~is~indented.~~The~next~line~is~blank.\\
 ~\\
 Inline~markup~is~supported,~e.g.~\emph{emphasis},~\textbf{strong},~\texttt{literal\\
-text},~footnotes\textsuperscript{\hyperlink{id8}{1}},~%
+text},~footnotes\DUfootnotemark{id22}{id8}{1},~%
 \phantomsection\label{hyperlink-targets}hyperlink~targets,~and~\href{http://www.python.org/}{references}.
 }
 \end{quote}

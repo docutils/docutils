@@ -1964,11 +1964,8 @@ Which packages do we want to use?
 * footnotes
 
   + document customization (links to how-to and packages)
-  
-  + True footnotes with LaTeX auto-numbering? (as option?)
 
-  + Add back-links (analogue to the system message, but in the
-    \DUfootnotetext and \DUfootnotemark cmds).
+  + True footnotes with LaTeX auto-numbering? (as option?)
 
     The `hyperref` manual says:
 
