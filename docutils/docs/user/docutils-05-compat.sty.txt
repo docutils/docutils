@@ -88,7 +88,8 @@ __ ../ref/rst/directives.html#document-header-footer
       ``--literal-block-env=lstlistings`` fail with literal or doctest
       blocks nested in an admonition.
 
-* Support symbol footnotes with ``--use-latex-footnotes``.
+* Two-way hyperlinked footnotes and support for symbol footnotes and
+  ``--footnote-references=brackets`` with ``--use-latex-footnotes``.
 
 Backwards compatibility:
   "Bug for bug compatibility" is not provided.
@@ -642,12 +643,8 @@ New Feature:
                ``DUsubtitle`` commands,
   :topic:      ``\DUtopic`` and ``\DUtitle`` commands,
   :transition: ``\DUtransition`` command.
-
-  Auxiliary LaTeX commands
-
-  :footnotes: ``\DUfootnotemark`` and ``\DUfootnotetext`` commands with
-	      hyperlink support and choice of footnotemark format (symbol or
-	      numeric).
+  :footnotes:  ``\DUfootnotemark`` and ``\DUfootnotetext`` commands with
+	       hyperlink support using the Docutils-provided footnote label.
 
 Backwards compatibility:
   In most cases, the default definition corresponds to the previously used

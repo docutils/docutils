@@ -1967,26 +1967,19 @@ Which packages do we want to use?
 
   + True footnotes with LaTeX auto-numbering? (as option?)
 
-    The `hyperref` manual says:
+    Might need adaption and a separate counter for symbol footnotes.
+    
+    .. Quote:
 
-      hyperfootnotes: Makes the footnote marks into hyperlinks to the
-      footnote text. Easily broken ...
+     If the symbol you want is not one of the ones listed, you'll need to
+     redefine ``\@fnsymbol`` and add it, e.g. perhaps like::
 
-    the `hyperref` README says:
+      \def\@fnsymbol#1{\ifcase#1\hbox{}\or *\or \dagger\or \ddagger\or
+      \mathchar "278\or \mathchar "27B\or \|\or **\or \dagger\dagger \or
+      \ddagger\ddagger \or \mathchar"27C \else\@ctrerr\fi\relax}
 
-      The footnote support is rather limited. It is beyond the scope to use
-      \footnotemark and \footnotetext out of order or reusing \footnotemark.
-      Here you can either disable hyperref's footnote
-
-    And provides an example which is built on in `this thread
-    <http://www.latex-community.org/forum/viewtopic.php?f=5&t=2846>`__.
-
-  + disable or properly support ``--footnote-references=bracket``
-
-    When supplying the command line options --footnote-references=brackets
-    and --use-latex-footnotes with the LaTeX writer (which might very well
-    happen when using configuration files), the spaces in front of footnote
-    references aren't trimmed.
+     which would allow \symbolfootnote[10]{footnote} to have a club as its
+     mark.
 
   .. Footnote packages:
 
@@ -2026,7 +2019,7 @@ Which packages do we want to use?
        footnotes so that they softly and silently vanish away if used in a
        moving argument.
 
-     `Footnotes numbered \u201cper page\u201d
+     `Footnotes numbered per page
      <http://www.tex.ac.uk/cgi-bin/texfaq2html?label=footnpp>`__
 
      * perpage provides a general mechanism for resetting counters per page

@@ -1857,6 +1857,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.use_latex_footnotes:
             self.fallbacks['footnotes'] = PreambleCmds.footnotes
             num,text = node.astext().split(None,1)
+            if self.settings.footnote_references == 'brackets':
+                num = '[%s]' % num
             self.out.append('%%\n\\DUfootnotetext{%s}{%s}{%s}{' %
                             (node['ids'][0], backref, self.encode(num)))
             if node['ids'] == node['names']:
@@ -1893,8 +1895,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             #         print 'matches', footnote['ids']
         format = self.settings.footnote_references
         if format == 'brackets':
-            self.append_hypertargets()
-            self.out.append('[%s\\hyperlink{%s}{' % (href))
+            self.append_hypertargets(node)
+            self.out.append('\\hyperlink{%s}{[' % href)
             self.context.append(']}')
         else:
             self.fallbacks['footnotes'] = PreambleCmds.footnotes
