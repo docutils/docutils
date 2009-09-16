@@ -1989,7 +1989,7 @@ Which packages do we want to use?
     references aren't trimmed.
 
   .. Footnote packages:
-  
+
      :footmisc: texlive-latex-extra
      :manyfoot: texlive-latex-extra
      :bigfoot: texlive-latex-extra
@@ -2000,7 +2000,7 @@ Which packages do we want to use?
 
      `Footnotes whose texts are identical
      <http://www.tex.ac.uk/cgi-bin/texfaq2html?label=repfootnote>`__
-     
+
      * label per hand or use footmisc
 
      `More than one sequence of footnotes
@@ -2123,6 +2123,7 @@ Tables
 
   + column width set by latex,
   + horizontal alignment and rules.
+  + long table vs. tabular (see next item).
 
 * Use tabular instead of longtable for tables in legends or generally
   inside a float?
@@ -2177,12 +2178,6 @@ Image and figure directives
 Missing features
 ----------------
 
-* test and document selection of LaTeX fontsize.
-
-  Add font size in points to the document options, e.g.
-  ``--documentoptions=12``, use extsize or some other
-  package for values other than [10,11,12].
-
 * support "figwidth" argument for figures.
 
   As the 'figwidth' argument is still ignored and the "natural width" of
@@ -2235,6 +2230,8 @@ Ideas:
     give a special meaning to one of the aliases,
 
   * scan "stylesheets" option and use ``utf8x`` if it contains ``ucs``
+
+    -1 prevents passing of options to the "ucs" package.
 
 
 Front-End Tools

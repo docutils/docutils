@@ -825,6 +825,16 @@ Examples:
 .. _Latin Modern:
    http://texcatalogue.sarovar.org/entries/lm.html
 
+font size
+`````````
+
+Add font size in points to the document options, e.g.
+``--documentoptions=12``, use extsize_ or some other package for values
+other than [10,11,12].
+
+.. _extsize:
+   http://tug.ctan.org/cgi-bin/ctanPackageInformation.py?id=extsizes
+
 hyphenation
 ```````````
 
