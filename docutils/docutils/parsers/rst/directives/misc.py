@@ -15,7 +15,6 @@ from docutils.parsers.rst import Directive, convert_directive_function
 from docutils.parsers.rst import directives, roles, states
 from docutils.transforms import misc
 
-
 class Include(Directive):
 
     """
@@ -65,10 +64,11 @@ class Include(Directive):
         except IOError, error:
             raise self.severe('Problems with "%s" directive path:\n%s: %s.' %
                         (self.name, error.__class__.__name__, str(error)))
-            # Hack: Since Python 2.6, ``'%s' % error`` returns a unicode
-            # object. IOError seems to miss a `__unicode__` method and the
+            # Hack: Since Python 2.6, the string interpolation returns a
+            # unicode object if one of the supplied %s replacements is a
+            # unicode object. IOError has no `__unicode__` method and the
             # fallback `__repr__` does not report the file name. Explicitely
-            # converting to str fixes this::
+            # converting to str fixes this for now::
             #   print '%s\n%s\n%s\n' %(error, str(error), repr(error))
         startline = self.options.get('start-line', None)
         endline = self.options.get('end-line', None)
