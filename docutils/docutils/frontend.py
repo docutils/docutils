@@ -393,7 +393,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
                        'default': 4, 'metavar': '<level>',
                        'validator': validate_threshold}),
          ('Halt at the slightest problem.  Same as "--halt=info".',
-          ['--strict'], {'action': 'store_const', 'const': 'info',
+          ['--strict'], {'action': 'store_const', 'const': 1,
                          'dest': 'halt_level'}),
          ('Enable a non-zero exit status for non-halting system messages at '
           'or above <level>.  Default: 5 (disabled).',
