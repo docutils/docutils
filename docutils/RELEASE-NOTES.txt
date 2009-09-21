@@ -34,6 +34,9 @@ Changes Since 0.5
     (aligning the figure not its contents).
   - Align images with class "align-[right|center|left]"
     (allows setting the alignment of an image in a figure).
+  - Hard tabs in literal inclusions are replaced by spaces. This is
+    configurable via the new "tab-width" option of the "include" directive
+    (a negative tab-width prevents tab expansion).
 
 * HTML writer:
 

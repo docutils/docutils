@@ -31,6 +31,7 @@ class Include(Directive):
     final_argument_whitespace = True
     option_spec = {'literal': directives.flag,
                    'encoding': directives.encoding,
+                   'tab-width': int,
                    'start-line': int,
                    'end-line': int,
                    'start-after': directives.unchanged_required,
@@ -54,6 +55,8 @@ class Include(Directive):
         path = nodes.reprunicode(path)
         encoding = self.options.get(
             'encoding', self.state.document.settings.input_encoding)
+        tab_width = self.options.get(
+            'tab-width', self.state.document.settings.tab_width)
         try:
             self.state.document.settings.record_dependencies.add(path)
             include_file = io.FileInput(
@@ -101,13 +104,18 @@ class Include(Directive):
                                   'directive:\nText not found.' % self.name)
             include_text = include_text[:before_index]
         if 'literal' in self.options:
-            literal_block = nodes.literal_block(include_text, include_text,
+            # Convert tabs to spaces, if `tab_width` is positive.
+            if tab_width >= 0:
+                text = include_text.expandtabs(tab_width)
+            else:
+                text = include_text
+            literal_block = nodes.literal_block(include_text, text, 
                                                 source=path)
             literal_block.line = 1
             return [literal_block]
         else:
-            include_lines = statemachine.string2lines(include_text,
-                                                      convert_whitespace=1)
+            include_lines = statemachine.string2lines(
+                include_text, tab_width, convert_whitespace=1)
             self.state_machine.insert_input(include_lines, path)
             return []
 

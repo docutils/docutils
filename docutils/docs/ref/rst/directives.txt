@@ -1370,12 +1370,12 @@ __ substitutions.html
 
 The following options are recognized:
 
-``start-line`` : first line to include
+``start-line`` : integer
     Only the content starting from this line will be included.
-    (As usual in Python, the first line has index 0 and negative values 
+    (As usual in Python, the first line has index 0 and negative values
     count from the end.)
 
-``end-line`` : last line to include
+``end-line`` : integer
     Only the content up to (but excluding) this line will be included.
 
 ``start-after`` : text to find in the external data file
@@ -1392,11 +1392,22 @@ The following options are recognized:
 
 ``encoding`` : name of text encoding
     The text encoding of the external data file.  Defaults to the
-    document's encoding (if specified).
+    document's input_encoding_.
+
+    .. _input_encoding: ../../user/config.html#input-encoding
+
+``tab-width`` :  integer
+    Number of spaces for hard tab expansion.
+    A negative value prevents expansion of hard tabs. Defaults to the
+    tab_width_ configuration setting.
+
+    .. _tab_width: ../../user/config.html#tab-width
+
 
 Combining ``start/end-line`` and ``start-after/end-before`` is possible. The
 text markers will be searched in the specified lines (further limiting the
 included content).
+
 
 .. _raw:
 
