@@ -44,6 +44,7 @@ Changes Since 0.5
   - Fix [ 2781629 ] support non-ASCII chars in file names.
   - Apply [ 2845002 ] let ``--no-raw`` disable raw *roles* too.
   - Fix [ 2831643 ] by renaming DirectiveError.message to DirectiveError.msg
+  - Fix [ 2821266 ] --strict option works now like --halt=info.
 
 * reStructuredText:
 
@@ -68,8 +69,11 @@ Changes Since 0.5
 
 * docutils/parsers/directives/misc.py:
 
-  - Added ``start-line`` and ``end-line`` options to ``include``
-    directive to select a range of lines
+  - Added ``start-line`` and ``end-line`` options to "include"
+    directive to select a range of lines.
+  - Hard tabs in literal inclusions are replaced by spaces. This is
+    configurable via the new ``tab-width`` option of the "include" directive
+    (a negative tab-width prevents tab expansion).
 
 * docutils/utils.py:
 

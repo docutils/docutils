@@ -1303,9 +1303,6 @@ when used in a document.
     possible to enable ``file_insertion_enabled`` from within a
     document), and settings that only would have taken effect before
     the directive (like ``tab-width``) shouldn't be accessible either.
-    (How about changing ``tab-width`` before an ``include`` directive
-    though?  Or should ``include`` rather grow a ``tab-width``
-    option?)
 
     See this sub-thread:
     <http://thread.gmane.org/gmane.text.docutils.user/3620/focus=3649>

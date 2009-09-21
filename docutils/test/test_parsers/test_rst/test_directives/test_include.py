@@ -32,6 +32,7 @@ include11rel = DocutilsTestSupport.utils.relative_path(None, include11)
 include12 = os.path.join(mydir, 'include12.txt')
 include13 = os.path.join(mydir, 'include13.txt')
 include13rel = DocutilsTestSupport.utils.relative_path(None, include13)
+include_literal = os.path.join(mydir, 'include_literal.txt')
 utf_16_file = os.path.join(mydir, 'utf-16.csv')
 utf_16_file_rel = DocutilsTestSupport.utils.relative_path(None, utf_16_file)
 nonexistent = os.path.join(os.path.dirname(states.__file__),
@@ -523,6 +524,50 @@ Error handling test; "end-before" error handling tested in previous test.
                :start-after: bad string
                :end-before: mork of ork
 """ % include13],
+["""\
+TAB expansion with literal include:
+
+.. include:: %s
+   :literal:
+""" % include_literal,
+"""\
+<document source="test data">
+    <paragraph>
+        TAB expansion with literal include:
+    <literal_block source="%s" xml:space="preserve">
+        Literal included this should **not** be *marked* `up`.
+                <- leading raw tab.
+""" % include_literal],
+["""\
+Custom TAB expansion with literal include:
+
+.. include:: %s
+   :literal:
+   :tab-width: 2
+""" % include_literal,
+"""\
+<document source="test data">
+    <paragraph>
+        Custom TAB expansion with literal include:
+    <literal_block source="%s" xml:space="preserve">
+        Literal included this should **not** be *marked* `up`.
+          <- leading raw tab.
+""" % include_literal],
+["""\
+No TAB expansion with literal include:
+
+.. include:: %s
+   :literal:
+   :tab-width: -1
+""" % include_literal,
+"""\
+<document source="test data">
+    <paragraph>
+        No TAB expansion with literal include:
+    <literal_block source="%s" xml:space="preserve">
+        Literal included this should **not** be *marked* `up`.
+        \t<- leading raw tab.
+""" % include_literal],
 ]
 
 
