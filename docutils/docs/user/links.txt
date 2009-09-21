@@ -51,6 +51,12 @@ Convert reStructuredText to other formats:
 PDF
 ```
 
+* `rst2pdf (reportlab)
+  <http://rst2pdf.googlecode.com>`_ is a tool to go
+  directly from restructured text to PDF, via `reportlab
+  <http://www.reportlab.org/rl_toolkit.html>`_. No LaTeX installation is
+  required.
+
 * `rst2pdf (pdflatex)
   <http://docutils.sourceforge.net/sandbox/blais/rst2pdf/>`_ by Martin Blais
   is a minimal front end producing LaTeX, compiling the LaTeX file, getting
@@ -64,19 +70,10 @@ PDF
   `rubber <http://iml.univ-mrs.fr/~beffara/soft/rubber/>`_ Python wrapper
   for LaTeX and friends.
 
-* `rst2pdf (reportlab)
-  <http://rst2pdf.googlecode.com>`_ is a tool to go
-  directly from restructured text to PDF, via `reportlab
-  <http://www.reportlab.org/rl_toolkit.html>`_. No LaTeX installation is
-  required.
-
 * **py.rest** from the Codespeak `py Lib scripts`_ converts
   reStructuredText files to HTML and PDF (cleaning up the intermediate
   latex files).  Similar to ``buildhtml.py``, it looks recursively for
   .txt files in the given PATHS.
-
-* The Docutils interface to PythonPoint_
-  by Richard Jones produces PDF presentations using ReportLabs.
 
 OpenOffice
 ``````````
@@ -176,11 +173,6 @@ Extensions
 Extend the reStructuredText syntax or the features of Docutils.
 More extensions are in the `Docutils Sandbox`_.
 
-* Sphinx_ extends the ReStructuredText syntax to better support the
-  documentation of Software projects (but other documents can be written
-  with it too). There are also various `Sphinx extensions
-  <http://sphinx.pocoo.org/extensions.html>`__.
-
 * Jens J. Mortensen developed `LaTeX math for reST`_, which writes to
   LaTeX or to MathML.
 
@@ -201,16 +193,19 @@ More extensions are in the `Docutils Sandbox`_.
 Related Applications
 --------------------
 
-Applications using docutils/reStructuredText, helper applications:
+Applications using docutils/reStructuredText and helper applications.
 
 * For Wikis, please see the `FAQ entry about Wikis`_.
 
 * For Blogs (Weblogs), please see the `FAQ entry about Blogs`_.
 
-* CMS Systems: Plone_ and Zope_.
+Development
+```````````
 
-  ZReST_, by Richard Jones, is a "ReStructuredText Document for Zope_"
-  application that is complete and ready to install.
+* Sphinx_ extends the ReStructuredText syntax to better support the
+  documentation of Software projects (but other documents can be written
+  with it too). Since version 2.6, the `Python documentation`_ is based on 
+  reStructuredText and Sphinx.
 
 * Trac_, a project management and bug/issue tracking system, supports
   `using reStructuredText
@@ -225,6 +220,24 @@ Applications using docutils/reStructuredText, helper applications:
   multiple manuals per project, filters, project file, collection project
   file, and more.
 
+
+CMS Systems
+```````````
+
+* Plone_ and Zope_ both support reStructuredText markup.
+* ZReST_, by Richard Jones, is a "ReStructuredText Document for Zope_"
+  application that is complete and ready to install.
+
+Presentations
+`````````````
+
+* `native support for S5 <slide-shows.s5.html>`_;
+
+* The `PythonPoint interface`_ by Richard Jones produces PDF
+  presentations using ReportLabs' PythonPoint_.
+
+* InkSlide_ quick and easy presentations using Inkscape_. InkSlide uses
+  reStructuredText for markup, although it renders only a subset of rst. 
 
 .. _Docutils: http://docutils.sourceforge.net/
 .. _FAQ entry about Wikis: http://docutils.sf.net/FAQ.html#are-there-any-wikis-that-use-restructuredtext-syntax
@@ -243,6 +256,8 @@ Applications using docutils/reStructuredText, helper applications:
 .. _rst2ht: http://www.rutherfurd.net/articles/rst-ht2html.html
 .. _ht2html: http://ht2html.sourceforge.net/
 .. _htmlnav: http://docutils.sf.net/sandbox/gschwant/htmlnav/
+.. _Inkscape: http://inkscape.org/
+.. _InkSlide: http://wiki.inkscape.org/wiki/index.php/InkSlide
 .. _xhtml2rest: http://docutils.sf.net/sandbox/wiemann/xhtml2rest/
 .. _rst2chm: http://www.rutherfurd.net/software/rst2chm/
 .. _rest2web: http://www.voidspace.org.uk/python/rest2web/
@@ -251,7 +266,6 @@ Applications using docutils/reStructuredText, helper applications:
 .. _PySource: http://docutils.sf.net/sandbox/tibs/pysource/
 .. _pysource_reader: http://docutils.sf.net/sandbox/davidg/pysource_reader/
 .. _Python Source Reader: http://docutils.sf.net/docs/dev/pysource.html
-.. _PythonPoint: http://docutils.sf.net/sandbox/richard/pythonpoint/
 .. _Manpage Writer: http://docutils.sf.net/sandbox/manpage-writer/
 .. _ReportLabs/PDF Writer: http://docutils.sf.net/sandbox/dreamcatcher/rlpdf/
 .. _DocBook Writer: http://docutils.sf.net/sandbox/oliverr/docbook/
@@ -265,6 +279,9 @@ Applications using docutils/reStructuredText, helper applications:
 .. _pickle writer: http://docutils.sf.net/sandbox/blais/pickle_writer/
 .. _Sphinx: http://sphinx.pocoo.org/
 .. _Python: http://www.python.org/
+.. _Python documentation: http://docs.python.org/
+.. _PythonPoint: http://www.reportlab.org/python_point.html
+.. _PythonPoint interface: http://docutils.sf.net/sandbox/richard/pythonpoint/
 .. _rst2qhc: http://rst2qhc.googlecode.com
 .. _Plone: http://plone.org/
 .. _Zope: http://www.zope.org/
