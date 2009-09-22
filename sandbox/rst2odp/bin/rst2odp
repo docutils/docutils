@@ -744,7 +744,42 @@ class ODPTranslator(nodes.GenericNodeVisitor):
     def visit_importslide(self, node):
         pass
 
+
+    def visit_table(self, node):
+        table = preso.TableFrame(self.cur_slide)
+        self.cur_slide.add_table(table)
+
+    def depart_table(self, node):
+        self.cur_slide.pop_element()
+
+    def visit_row(self, node):
+        print "ROW"
+        self.cur_slide.cur_element.add_row()
+
+    def depart_row(self, node):
+        pass
+
+    def visit_entry(self, node):
+        print "CELL", node
+        self.cur_slide.cur_element.add_cell()
+
+    def depart_entry(self, node):
+        pass
     
+    visit_tgroup = _dumb_visit
+    depart_tgroup = _dumb_depart
+
+    visit_colspec = _dumb_visit
+    depart_colspec = _dumb_depart
+
+    visit_thead = _dumb_visit
+    depart_thead = _dumb_depart
+
+    visit_tbody = _dumb_visit
+    depart_tbody = _dumb_depart
+
+    
+        
     def _get_para_attribs(self, node):
         classes = node.attributes.get('classes', [])
         attribs = {}

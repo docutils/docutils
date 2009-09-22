@@ -720,6 +720,14 @@ class Slide(object):
             self._preso._auto_styles.append(et.fromstring(bl.default_styles())[0])
         self.cur_element = bl
 
+    def add_table(self, t):
+        """
+        remember to call pop_element after done with table
+        """
+        self.push_element()
+        self._page.append(t.node)
+        t.node.parent = self._page
+        self.cur_element = t
             
     def write(self, text, **kw):
         if self.cur_element is None:
@@ -838,6 +846,7 @@ class MixedContent(object):
             attrib = {}
         new_node = self._add_node(self.cur_node, node_name, attrib)
         self.cur_node = new_node
+        return self.cur_node
 
     def pop_node(self):
         if self.cur_node.parent == self.node:
@@ -1339,6 +1348,104 @@ class NumberList(OutlineList):
         self.style_file = 'number_list.xml'
         self.style_name = 'number-list'
 
+
+class TableFrame(MixedContent):
+    """
+    Tables look like this:
+    <draw:frame draw:style-name="standard" draw:layer="layout"
+                  svg:width="14.098cm" svg:height="1.943cm"
+                  svg:x="7.01cm" svg:y="10.44cm">
+        <table:table table:template-name="default"
+                     table:use-first-row-styles="true"
+                     table:use-banding-rows-styles="true">
+          <table:table-column table:style-name="co1"/>
+          <table:table-column table:style-name="co1"/>
+          <table:table-column table:style-name="co1"/>
+          <table:table-column table:style-name="co1"/>
+          <table:table-column table:style-name="co2"/>
+          <table:table-row table:style-name="ro1"
+                           table:default-cell-style-name="ce1">
+            <table:table-cell>
+              <text:p>Header
+              </text:p>
+            </table:table-cell>
+            <table:table-cell>
+              <text:p>2
+              </text:p>
+            </table:table-cell>
+            <table:table-cell>
+              <text:p>3
+              </text:p>
+            </table:table-cell>
+            <table:table-cell>
+              <text:p>4
+              </text:p>
+            </table:table-cell>
+            <table:table-cell>
+              <text:p>5
+              </text:p>
+            </table:table-cell>
+          </table:table-row>
+          <table:table-row table:style-name="ro1"
+                           table:default-cell-style-name="ce1">
+            <table:table-cell>
+              <text:p>row1
+              </text:p>
+            </table:table-cell>
+            <table:table-cell>
+              <text:p>2
+              </text:p>
+            </table:table-cell>
+            <table:table-cell>
+              <text:p>3
+              </text:p>
+            </table:table-cell>
+            <table:table-cell>
+              <text:p>4
+              </text:p>
+            </table:table-cell>
+            <table:table-cell>
+              <text:p>5
+              </text:p>
+            </table:table-cell>
+          </table:table-row>
+        </table:table>
+        <draw:image xlink:href="Pictures/TablePreview1.svm"
+        xlink:type="simple" xlink:show="embed"
+                    xlink:actuate="onLoad"/>
+      </draw:frame>
+    """
+    def __init__(self, slide, frame_attrib=None, table_attrib=None):
+        self.frame_attrib = frame_attrib or {'draw:style-name':'standard',
+                                             'draw:layer':'layout',
+                                             'svg:width':'25.199cm',#'14.098cm',
+                                             #'svg:height':'13.86cm', #'''1.943cm',
+                                             'svg:x':'1.4cm',
+                                             'svg:y':'147pt'#'24.577m'
+                                             }
+        MixedContent.__init__(self, slide, 'draw:frame', attrib=self.frame_attrib)
+
+        self.attrib = table_attrib or {'table:template-name':'default',
+                                 'table:use-first-row-styles':'true',
+                                 'table:use-banding-rows-styles':'true'}
+        self.table = self.add_node('table:table', attrib=self.attrib)
+        self.row = None
+        
+    def add_row(self, attrib=None):
+        # rows always go on the table:table elem
+        self.cur_node = self.table
+        attrib = attrib or {'table:style-name':'ro1',
+                            'table:default-cell-style-name':'ce1'}
+        self.add_node( 'table:table-row', attrib)
+        
+    def add_cell(self, attrib=None):
+        self.slide.insert_line_break = 0
+        if self._in_tag('table:table-cell'):
+            self.parent_of('table:table-cell')
+        elif not self._in_tag('table:table-row'):
+            self.add_row()
+        self.add_node('table:table-cell', attrib)
+        
 def _test():
     import doctest
     doctest.testmod()
