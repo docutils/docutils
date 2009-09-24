@@ -99,6 +99,6 @@ See the `sandbox/`_ directory for a complete list.
 * `LaTeX math for reST`_ by Jens J. Mortensen writes Math to
   LaTeX or MathML.
 
-.. _Docutils Link List: ../docutils/docs/user/links.html
+.. _Docutils Link List: http://docutils.sf.net/docs/user/links.html
 .. _LaTeX math for reST:
    http://docutils.sourceforge.net/sandbox/jensj/latex_math/
