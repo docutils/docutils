@@ -3,7 +3,7 @@
 """
 Object oriented lib to Open Office Presentations
 
-Copyright 2008 Matt Harrison
+Copyright 2008-2009 Matt Harrison
 Licensed under Apache License, Version 2.0 (current)
 """
 
@@ -914,6 +914,7 @@ class MixedContent(object):
                 self.add_node('text:p')
             else:
                 self.add_node('text:line-break')
+                self.pop_node()
             if self.cur_node.parent.tag != 'text:p':
                 self.pop_node()
 
