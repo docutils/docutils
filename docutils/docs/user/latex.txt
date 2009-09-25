@@ -981,6 +981,42 @@ Example:
 
 __ ../ref/rst/restructuredtext.html#option-lists
 
+page breaks
+```````````
+
+* Page breaks before top-level sections are the default with a
+  documentclass that provides "chapters", e.g.  "book", "memoir" or
+  "scrbook".
+
+* Redefining the \section or \section* command in a
+  style sheet is possible too.
+
+* `Raw latex`_ can be used::
+
+    .. raw:: latex
+
+      \newpage % hard pagebreak at exactly this position
+
+  or
+
+    .. raw:: latex
+
+      \pagebreak[2] % recommended page break after line end (precedence 1...4)
+
+* The transition element can be re-defined to produce a page break,
+  e.g.
+
+  in a style sheet::
+
+    \newcommand*{\DUtransition}{\pagebreak[4]}
+
+  or in the document::
+
+    .. raw:: latex
+
+      \renewcommand*{\DUtransition}{\pagebreak[4]}
+
+
 page layout
 ```````````
 
