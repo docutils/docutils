@@ -23,7 +23,8 @@ class Include(Directive):
     Content may be parsed by the parser, or included as a literal
     block.  The encoding of the included file can be specified.  Only
     a part of the given file argument may be included by specifying
-    text to match before and/or after the text to be used.
+    start and end line or text to match before and/or after the text
+    to be used.
     """
 
     required_arguments = 1

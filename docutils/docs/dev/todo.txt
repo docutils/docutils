@@ -1761,6 +1761,13 @@ Unimplemented Transforms
 
 * _`Index Generation`
 
+* _`Beautify`
+
+  Convert quotes and dashes to typographically correct entities.
+  Sphinx does this with ``smartypants.py``.
+
+  Use a generic version that replaces with Unicode chars and
+  let the writer replace these if required.
 
 HTML Writer
 ===========
@@ -1939,6 +1946,8 @@ Configurable placement of figure and table floats
 
   e.g.: ``.. class:: place-here-if-possible place-top place-bottom``
 
+  Maybe support both variants?
+
 
 LaTeX constructs and packages instead of re-implementations
 ```````````````````````````````````````````````````````````
@@ -1960,12 +1969,13 @@ Which packages do we want to use?
 
 * footnotes
 
-  + document customization (links to how-to and packages)
+  + True footnotes with LaTeX auto-numbering (as option ``--latex-footnotes``)
 
-  + True footnotes with LaTeX auto-numbering? (as option?)
+    - attach footnote text to footnote-symobol node
+    - write \footnote{<footnote text>}
+    - consider cases where LaTeX does not support footnotes
+      (inside tables, headings, ...)
 
-    Might need adaption and a separate counter for symbol footnotes.
-    
     .. Quote:
 
      If the symbol you want is not one of the ones listed, you'll need to
@@ -1977,6 +1987,8 @@ Which packages do we want to use?
 
      which would allow \symbolfootnote[10]{footnote} to have a club as its
      mark.
+
+  + document customization (links to how-to and packages)
 
   .. Footnote packages:
 
