@@ -164,11 +164,12 @@ class ODPTranslator(nodes.GenericNodeVisitor):
     def dispatch_visit(self, node):
         # Easier just to throw nodes I'm in in a dict, than keeping
         # state for each one
-        self.in_node[node.tagname] = True
+        count = self.in_node.setdefault(node.tagname, 0)
+        self.in_node[node.tagname] += 1
         nodes.GenericNodeVisitor.dispatch_visit(self, node)
 
     def dispatch_departure(self, node):
-        self.in_node[node.tagname] = False
+        self.in_node[node.tagname] -= 1
         nodes.GenericNodeVisitor.dispatch_departure(self, node)
 
     def default_visit(self, node):
@@ -195,19 +196,27 @@ class ODPTranslator(nodes.GenericNodeVisitor):
     depart_document = _dumb_depart
 
     def visit_title(self, node):
-        self._init_slide()
+        if self.at('section') < 2:
+            self._init_slide()
         if self.at('topic'):
             return
-        else:
+        elif self.at('sidebar'):
+            return
+        elif self.at('section') < 2:
             self.cur_slide.add_title_frame()
     
     def depart_title(self, node):
         if self.at('topic'):
             return
-        else:
+        elif self.at('sidebar'):
+            return
+        elif self.at('section') < 2:
             # not in a title element anymore
             self.cur_slide.cur_element = None
+        else:
+            pass
         
+            
     def visit_Text(self, node):
         if self.bullet_list and not self.at('handout'): # !!!need to deal w/ bullets in handout
             self.bullet_list.write(node.astext())
@@ -500,10 +509,15 @@ class ODPTranslator(nodes.GenericNodeVisitor):
     depart_substitution_definition = _dumb_depart
 
     def visit_section(self, node):
-        self._init_slide(force=True)
+
+        # first page has no section
+        if self.at('section') < 2:
+            # don't create slide for subsections
+            self._init_slide(force=True)
 
     def depart_section(self, node):
-        self._reset()
+        if self.at('section') < 1:
+            self._reset()
 
     def visit_transition(self, node):
         # hack to have titleless slides (transitions come in between sections)
@@ -552,6 +566,10 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         self.cur_slide.pop_style()
         self.cur_slide.pop_node()
 
+    visit_title_reference = visit_emphasis
+    depart_title_reference = depart_emphasis
+
+
     def visit_strong(self, node):
         attribs = {'fo:font-weight':'bold'}
         style = preso.TextStyle(**attribs)       
@@ -565,6 +583,26 @@ class ODPTranslator(nodes.GenericNodeVisitor):
     visit_term = visit_strong
     depart_term = depart_strong
 
+    def visit_superscript(self, node):
+        attribs = {'style:text-position':'super 58%'}
+        style = preso.TextStyle(**attribs)
+        self.cur_slide.push_style(style)
+
+    def depart_superscript(self, node):
+        # pop off the text:span
+        self.cur_slide.pop_style()
+        self.cur_slide.pop_node()
+        
+    def visit_subscript(self, node):
+        attribs = {'style:text-position':'sub 58%'}
+        style = preso.TextStyle(**attribs)
+        self.cur_slide.push_style(style)
+
+    def depart_subscript(self, node):
+        # pop off the text:span
+        self.cur_slide.pop_style()
+        self.cur_slide.pop_node()
+        
     def visit_block_quote(self, node):
         attribs = {'fo:text-align':'start', 
                    'fo:margin-left':'1.2cm',
@@ -706,12 +744,24 @@ class ODPTranslator(nodes.GenericNodeVisitor):
     def depart_footnote(self, node):
         pass
 
+    def visit_footnote_reference(self, node):
+        self.visit_superscript(node)
+        self.cur_slide.write('[')
+
+    def depart_footnote_reference(self, node):
+        self.cur_slide.write(']')
+        self.depart_superscript(node)
+
+    
     def visit_label(self, node):
         # part of footnote
-        pass
+        if self.at('footnote'):
+            self.cur_slide.write('[')
 
     def depart_label(self, node):
-        pass
+        if self.at('footnote'):
+            self.cur_slide.write('] ')
+
 
     def visit_enumerated_list(self, node):
         if self.at('topic'):
@@ -753,14 +803,12 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         self.cur_slide.pop_element()
 
     def visit_row(self, node):
-        print "ROW"
         self.cur_slide.cur_element.add_row()
 
     def depart_row(self, node):
         pass
 
     def visit_entry(self, node):
-        print "CELL", node
         self.cur_slide.cur_element.add_cell()
 
     def depart_entry(self, node):
@@ -778,7 +826,42 @@ class ODPTranslator(nodes.GenericNodeVisitor):
     visit_tbody = _dumb_visit
     depart_tbody = _dumb_depart
 
+    def visit_hint(self, node):
+        return self._visit_hint(node, 'Hint')
     
+    
+    def _visit_hint(self, node, name):
+        if self.cur_slide.text_frames:
+            # should adjust width of other frame
+            node = self.cur_slide.text_frames[-1].get_node()
+            node.attrib['svg:width'] = '12.296cm'
+        else:
+            self.cur_slide.add_text_frame()
+            
+        self.cur_slide.push_element()
+        #put the hint on the right side
+        attrib = {
+            'presentation:style-name':'pr2',
+            'draw:layer':'layout',
+            'svg:width':'12.296cm',
+            'svg:height':'13.86cm',
+            'svg:x':'14.311cm',
+            'svg:y':'4.577cm',
+            'presentation:class':'subtitle'
+        }
+        self.cur_slide.add_text_frame(attrib)
+        self.cur_slide.write(name)
+        self.cur_slide.insert_line_break = 2
+        self.cur_slide.insert_line_breaks()
+
+    def depart_hint(self, node):
+        self.cur_slide.pop_element()
+
+    def visit_sidebar(self, node):
+        return self._visit_hint(node, 'Sidebar')
+
+    depart_sidebar = depart_hint
+        
         
     def _get_para_attribs(self, node):
         classes = node.attributes.get('classes', [])

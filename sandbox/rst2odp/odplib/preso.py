@@ -681,8 +681,9 @@ class Slide(object):
             self._page.attrib['presentation:use-footer-name'] = self.footer.name
         return self._page
         
-    def add_text_frame(self):
-        self.text_frames.append(TextFrame(self))
+    def add_text_frame(self, attrib=None):
+        # should adjust width, x based on if existing boxes
+        self.text_frames.append(TextFrame(self, attrib))
         node = self.text_frames[-1].get_node()
         self._page.append(node)
         node.parent = self._page
