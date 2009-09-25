@@ -15,8 +15,10 @@ an .otp file
 todo:
 -----
 
-* Image scaling
-* Support for background image per slide
+* Fix enumerated lists separated by "\n..\n"
+* Auto resize textframes/(images too?) as they are added
+* Image scaling (DONE)
+* Support for background image per slide (DONE)
 * Support for no title (DONE transition directive)
 * Enumerated list (DONE)
 * Simple animations (DONE)
