@@ -169,16 +169,18 @@ class DirectiveError(Exception):
     instead!
     """
 
-    def __init__(self, level, message):
+    def __init__(self, level, message, source, line):
         """
         Initialize with message `message`.  `level` is a system message level.
         """
         Exception.__init__(self)
         self.level = level
         self.msg = message
+        self.source = source
+        self.line = line
 
 
-class Directive:
+class Directive(object):
 
     """
     Base class for reStructuredText directives.
@@ -313,7 +315,13 @@ class Directive:
         You'd often use self.error(message) instead, which will
         generate an ERROR-level directive error.
         """
-        return DirectiveError(level, message)
+        # source = self.state_machine.get_source(self.lineno - 1)
+        try:
+            (source, line) = self.state_machine.input_lines.info(self.lineno)
+        except IndexError:
+            source = self.state_machine.get_source(self.lineno - 1)
+            line = self.lineno
+        return DirectiveError(level, message, source, line)
 
     def debug(self, message):
         return self.directive_error(0, message)
