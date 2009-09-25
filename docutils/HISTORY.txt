@@ -45,6 +45,7 @@ Changes Since 0.5
   - Apply [ 2845002 ] let ``--no-raw`` disable raw *roles* too.
   - Fix [ 2831643 ] by renaming DirectiveError.message to DirectiveError.msg
   - Fix [ 2821266 ] --strict option works now like --halt=info.
+  - Fix [ 2788716 ] DirectiveError now correctly reports source and line.
 
 * reStructuredText:
 

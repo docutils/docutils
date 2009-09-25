@@ -26,6 +26,14 @@ Changes Since 0.5
    Docutils 0.5 is the last version supporting Python 2.2,
    Docutils 0.6 requires Python 2.3 or newer. Also works with Python 3.
 
+.. note::
+
+   The "newlatex" writer is orphaned.
+
+   The recommended way to generate PDF output is to use either the
+   LaTeX2e writer or one of the alternatives listed at
+   http://docutils.sourceforge.net/docs/user/links.html#pdf.
+
 * reStructuredText:
 
   - Allow length units for all length specifications.
@@ -71,7 +79,7 @@ Changes Since 0.5
 * manpage writer:
 
   - moved from sandbox to Doctutils core.
-  
+
 
 Release 0.5 (2008-06-25)
 ========================
