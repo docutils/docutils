@@ -619,13 +619,13 @@ class Table(object):
     def open(self):
         self._open = 1
         self._col_specs = []
-        self.caption = None
+        self.caption = []
         self._attrs = {}
         self._in_head = 0 # maybe context with search
     def close(self):
         self._open = 0
         self._col_specs = None
-        self.caption = None
+        self.caption = []
         self._attrs = {}
         self.stubs = []
     def is_open(self):
@@ -715,9 +715,10 @@ class Table(object):
     def get_caption(self):
         if not self.caption:
             return ''
+        caption = ''.join(self.caption)
         if 1 == self._translator.thead_depth():
-            return r'\caption{%s}\\' '\n' % self.caption
-        return r'\caption[]{%s (... continued)}\\' '\n' % self.caption
+            return r'\caption{%s}\\' '\n' % caption
+        return r'\caption[]{%s (... continued)}\\' '\n' % caption
 
     def need_recurse(self):
         if self._latex_type == 'longtable':
@@ -953,6 +954,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         # Where to collect the output of visitor methods (default: body)
         self.out = self.body
+        self.out_stack = []  # stack of output collectors
 
         # Process settings
         # ~~~~~~~~~~~~~~~~
@@ -1257,6 +1259,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
             labels.insert(0, '\\phantomsection')
         return labels
 
+    def push_output_collector(self, new_out):
+        self.out_stack.append(self.out)
+        self.out = new_out
+
+    def pop_output_collector(self):
+        self.out = self.out_stack.pop()
 
     # Visitor methods
     # ---------------
@@ -1511,10 +1519,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_docinfo(self, node):
-        self.out = self.docinfo
+        self.push_output_collector(self.docinfo)
 
     def depart_docinfo(self, node):
-        self.out = self.body
+        self.pop_output_collector()
         # Some itmes (e.g. author) end up at other places
         if self.docinfo:
             # tabularx: automatic width of columns, no page breaks allowed.
@@ -1841,13 +1849,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out.append(self.context.pop())
 
     def visit_footer(self, node):
-        self.out = []
+        self.push_output_collector([])
         self.out.append(r'\newcommand{\DUfooter}{')
 
     def depart_footer(self, node):
         self.out.append('}')
         self.requirements['~footer'] = ''.join(self.out)
-        self.out = self.body
+        self.pop_output_collector()
 
     def visit_footnote(self, node):
         try:
@@ -1901,7 +1909,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             self.fallbacks['footnotes'] = PreambleCmds.footnotes
             # TODO: second argument = backlink id
-            self.out.append(r'\DUfootnotemark{%s}{%s}{' % 
+            self.out.append(r'\DUfootnotemark{%s}{%s}{' %
                             (node['ids'][0], href))
             self.context.append('}')
 
@@ -1937,13 +1945,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass
 
     def visit_header(self, node):
-        self.out = []
+        self.push_output_collector([])
         self.out.append(r'\newcommand{\DUheader}{')
 
     def depart_header(self, node):
         self.out.append('}')
         self.requirements['~header'] = ''.join(self.out)
-        self.out = self.body
+        self.pop_output_collector()
 
     def visit_hint(self, node):
         self.visit_admonition(node)
@@ -2125,7 +2133,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.literal_block_env != '' and self.is_plaintext(node):
             self.requirements['literal_block'] = packages.get(
                                                   self.literal_block_env, '')
-            self.verbatim = 1
+            self.verbatim = True
             self.out.append('\\begin{%s}%s\n' % (self.literal_block_env,
                                                  self.literal_block_options))
         else:
@@ -2247,9 +2255,17 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out.append('}}')
 
     def visit_raw(self, node):
-        if 'latex' in node.get('format', '').split():
-            self.out.append(node.astext())
-        raise nodes.SkipNode
+        if not 'latex' in node.get('format', '').split():
+            raise nodes.SkipNode
+        if node['classes']:
+            self.visit_inline(node)
+        # append "as-is" skipping any LaTeX-encoding
+        self.verbatim = True
+
+    def depart_raw(self, node):
+        self.verbatim = False
+        if node['classes']:
+            self.depart_inline(node)
 
     def visit_reference(self, node):
         # BUG: hash_char '#' is troublesome in LaTeX.
@@ -2413,7 +2429,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
             ## self.out.append('%% %s\n' % node)   # for debugging
             return
         self.out.append('%\n')
-        self.out += self.ids_to_labels(node)
+        # do we need an anchor (\phantomsection)?
+        set_anchor = not(isinstance(node.parent, nodes.caption) or
+                         isinstance(node.parent, nodes.title))
+        # TODO: where else can/must we omit the \phantomsection?
+        self.out += self.ids_to_labels(node, set_anchor)
 
     def depart_target(self, node):
         pass
@@ -2505,9 +2525,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.context.append('}\n')
         # Table caption
         elif isinstance(node.parent, nodes.table):
-            # caption must be written after column spec
-            self.active_table.caption = self.encode(node.astext())
-            raise nodes.SkipNode
+            self.push_output_collector(self.active_table.caption)
+            self.context.append('')
         # Section title
         else:
             self.out.append('\n\n')
@@ -2533,6 +2552,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_title(self, node):
         self.out.append(self.context.pop())
+        if isinstance(node.parent, nodes.table):
+            self.pop_output_collector()
 
     def minitoc(self, title, depth):
         """Generate a local table of contents with LaTeX package minitoc"""
@@ -2604,7 +2625,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.context.append('')
         elif ('abstract' in node['classes'] and
               self.settings.use_latex_abstract):
-            self.out = self.abstract
+            self.push_output_collector(self.abstract)
             self.out.append('\\begin{abstract}')
             self.context.append('\\end{abstract}\n')
             if isinstance(node.next_node(), nodes.title):
@@ -2614,17 +2635,19 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # special topics:
             if 'abstract' in node['classes']:
                 self.fallbacks['abstract'] = PreambleCmds.abstract
-                self.out = self.abstract
+            self.push_output_collector(self.abstract)
             if 'dedication' in node['classes']:
                 self.fallbacks['dedication'] = PreambleCmds.dedication
-                self.out = self.dedication
+                self.push_output_collector(self.dedication)
             self.out.append('\n\\DUtopic[%s]{\n' % ','.join(node['classes']))
             self.context.append('}\n')
 
     def depart_topic(self, node):
         self.out.append(self.context.pop())
         self.is_toc_list = False
-        self.out = self.body
+        if ('abstract' in node['classes'] or
+            'dedication' in node['classes']):
+            self.pop_output_collector()
 
     def visit_inline(self, node): # <span>, i.e. custom roles
         # insert fallback definition

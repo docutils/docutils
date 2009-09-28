@@ -375,6 +375,8 @@ reStructuredText construct.
 
 \item \hyperref[encoding-special-chars]{3.5~~~Encoding special chars}
 
+\item \hyperref[hyperlinks-and-targets]{3.6~~~Hyperlinks and -targets}
+
 \end{list}
 
 \item \hyperref[error-handling]{4~~~Error Handling}
@@ -926,8 +928,8 @@ This footnote shows the next symbol in the sequence.
 \begin{figure}[b]\raisebox{1em}{\hypertarget{id16}{}}\phantomsection\label{id16}\textsuperscript{4}
 Here's an unreferenced footnote, with a reference to a
 nonexistent footnote:%
-\raisebox{1em}{\hypertarget{id86}{}}%
-\raisebox{1em}{\hypertarget{id17}{}}\hyperlink{id85}{\textbf{\color{red}{[}5{]}\_}}.
+\raisebox{1em}{\hypertarget{id87}{}}%
+\raisebox{1em}{\hypertarget{id17}{}}\hyperlink{id86}{\textbf{\color{red}{[}5{]}\_}}.
 \end{figure}
 
 
@@ -944,8 +946,8 @@ rendered separately and differently from footnotes.
 \end{figure}
 
 Here's a reference to the above, [\hyperlink{cit2002}{CIT2002}], and a %
-\raisebox{1em}{\hypertarget{id88}{}}%
-\raisebox{1em}{\hypertarget{id19}{}}\hyperlink{id87}{\textbf{\color{red}{[}nonexistent{]}\_}}
+\raisebox{1em}{\hypertarget{id89}{}}%
+\raisebox{1em}{\hypertarget{id19}{}}\hyperlink{id88}{\textbf{\color{red}{[}nonexistent{]}\_}}
 citation.
 
 
@@ -973,7 +975,7 @@ Targets may be indirect and anonymous.  Thus \hyperref[targets]{this phrase} may
 refer to the \hyperref[targets]{Targets} section.
 
 Here's a %
-\raisebox{1em}{\hypertarget{id90}{}}\hyperlink{id89}{\textbf{\color{red}`hyperlink reference without a target`\_}}, which generates an
+\raisebox{1em}{\hypertarget{id91}{}}\hyperlink{id90}{\textbf{\color{red}`hyperlink reference without a target`\_}}, which generates an
 error.
 
 
@@ -1001,7 +1003,7 @@ explicit targets will generate ``warning'' (level-2) system messages.
 Since there are two ``Duplicate Target Names'' section headers, we
 cannot uniquely refer to either of them by name.  If we try to (like
 this: %
-\raisebox{1em}{\hypertarget{id92}{}}\hyperlink{id91}{\textbf{\color{red}`Duplicate Target Names`\_}}), an error is generated.
+\raisebox{1em}{\hypertarget{id93}{}}\hyperlink{id92}{\textbf{\color{red}`Duplicate Target Names`\_}}), an error is generated.
 
 
 %___________________________________________________________________________
@@ -1481,8 +1483,8 @@ Here's one:
 This does not necessarily look nice, because there may be missing white space.
 
 It's just there to freeze the behavior.
-A test.Second test.Another test with myclass set.
-This is the fourth test with myrawroleclass set.
+A test.Second test.\DUrole{myclass}{Another test with myclass set.}
+This is the \DUrole{myrawroleclass}{fourth test} with myrawroleclass set.
 Fifth test in LaTeX.\\Line two.
 
 %___________________________________________________________________________
@@ -1990,6 +1992,49 @@ greater-than and bar, \textless{} \textbar{} \textgreater{}, except for typewrit
 }
 \end{quote}
 
+
+%___________________________________________________________________________
+
+\subsection*{3.6~~~Hyperlinks and -targets%
+  \phantomsection%
+  \addcontentsline{toc}{subsection}{3.6~~~Hyperlinks and -targets}%
+  \label{hyperlinks-and-targets}%
+}
+
+In LaTeX, we must set an explicit anchor (\texttt{\reflectbox{/}phantomsection}) for a
+%
+\phantomsection\label{hypertarget-in-plain-text}hypertarget in plain text but not in a table or figure caption:
+
+\leavevmode
+\setlength{\DUtablewidth}{\linewidth}
+\begin{longtable}[c]{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
+\caption{Table with %
+\label{hypertarget-in-table-title}hypertarget in table title.}\\
+\hline
+
+False
+ & 
+True
+ & 
+None
+ \\
+\hline
+\end{longtable}
+\begin{figure}
+\noindent\makebox[\textwidth][c]{\includegraphics{../../../docs/user/rst/images/biohazard.png}}
+\caption{Figure with %
+\label{hypertarget-in-figure-caption}hypertarget in figure caption.}
+\begin{DUlegend}
+Legend with %
+\phantomsection\label{hypertarget-in-figure-legend}hypertarget in figure legend.
+\end{DUlegend}
+\end{figure}
+
+See \hyperref[hypertarget-in-plain-text]{hypertarget in plain text},
+\hyperref[hypertarget-in-table-title]{hypertarget in table title},
+\hyperref[hypertarget-in-figure-caption]{hypertarget in figure caption}, and
+\hyperref[hypertarget-in-figure-legend]{hypertarget in figure legend},
+
 % unusual combinations (from newlatex, for interactive testing)
 % .. include:: data/latex.txt
 
@@ -2031,41 +2076,41 @@ Undefined substitution referenced: ``problematic''.
 
 \DUadmonition[system-message]{
 \DUtitle[system-message]{system-message}
-\raisebox{1em}{\hypertarget{id85}{}}
+\raisebox{1em}{\hypertarget{id86}{}}
 
 {\color{red}ERROR/3} in \texttt{functional/input/standalone\_rst\_latex.txt}, line~359
 
-\hyperlink{id86}{
+\hyperlink{id87}{
 Unknown target name: ``5''.
 }}
 
 \DUadmonition[system-message]{
 \DUtitle[system-message]{system-message}
-\raisebox{1em}{\hypertarget{id87}{}}
+\raisebox{1em}{\hypertarget{id88}{}}
 
 {\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~368
 
-\hyperlink{id88}{
+\hyperlink{id89}{
 Unknown target name: ``nonexistent''.
 }}
 
 \DUadmonition[system-message]{
 \DUtitle[system-message]{system-message}
-\raisebox{1em}{\hypertarget{id89}{}}
+\raisebox{1em}{\hypertarget{id90}{}}
 
 {\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~395
 
-\hyperlink{id90}{
+\hyperlink{id91}{
 Unknown target name: ``hyperlink reference without a target''.
 }}
 
 \DUadmonition[system-message]{
 \DUtitle[system-message]{system-message}
-\raisebox{1em}{\hypertarget{id91}{}}
+\raisebox{1em}{\hypertarget{id92}{}}
 
 {\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~408
 
-\hyperlink{id92}{
+\hyperlink{id93}{
 Duplicate target name, cannot be used as a unique reference: ``duplicate target names''.
 }}
 
