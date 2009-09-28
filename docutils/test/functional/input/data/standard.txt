@@ -56,6 +56,10 @@
    :description lang=en: A test document, containing at least one
        example of each reStructuredText construct.
 
+.. raw:: latex
+
+   \pagebreak[4] % start ToC on new page
+
 .. contents:: Table of Contents
 .. section-numbering::
 
