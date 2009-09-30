@@ -1141,6 +1141,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # Unicode chars that are not recognized by LaTeX's utf8 encoding
         unsupported_unicode_chars = {
             0x00A0: ur'~', # NO-BREAK SPACE
+	    0x00AD: ur'\-', # SOFT HYPHEN
             0x21d4: ur'$\Leftrightarrow$',
             # Docutils footnote symbols:
             0x2660: ur'$\spadesuit$',
