@@ -319,12 +319,6 @@ Examples:
   the document preamble (e.g. package loading with ``\usepackage``, which
   can be achieved with the ``--style-sheet`` command line option instead).
 
-* Forcing a page break::
-
-    .. raw:: latex
-
-       \newpage
-
 * Math formula::
 
     .. raw:: latex
@@ -334,6 +328,9 @@ Examples:
   (Drawback: the formula will be invisible in other output formats.)
 
 * Defining a macro for a `custom role`_.
+
+* Forcing `page breaks`_.
+
 
 .. _raw directive:
    ../ref/rst/directives.html#raw
@@ -835,6 +832,32 @@ other than [10,11,12].
 .. _extsize:
    http://tug.ctan.org/cgi-bin/ctanPackageInformation.py?id=extsizes
 
+
+footnotes
+`````````
+
+With the ``--use-latex-footnotes`` option, footnotes are set with
+Docutils-specific variants of the standard ``\footnotemark`` and
+``\footnotetext`` commands. Thus you can configure the appearance and
+placement by alternative definitions of ``\DUfootnotemark`` and
+``\DUfootnotetext`` in a custom `style sheet`_.
+
+Example:
+  place the footnote text where it appears in the source document (instead
+  of at the page bottom). This can be used to get the effect of endnotes
+  (needs the hanging_ package)::
+
+     \usepackage{hanging}
+     \newcommand{\DUfootnotetext}[4]{%
+       \par\noindent\raisebox{1em}{\hypertarget{#1}{}}%
+       \hyperlink{#2}{#3}%
+       \hangpara{\parindent}{1}#4%
+     }
+
+.. _hanging:
+   http://www.ctan.org/tex-archive/help/Catalogue/entries/hanging.html
+
+
 hyphenation
 ```````````
 
@@ -847,6 +870,26 @@ Example:
 
     \hyphenpenalty=5000
     \tolerance=1000
+
+
+hyperlinks
+``````````
+
+Hyperlinks are realized using the hyperref_ package.
+To reduce incompatibilities, this package is loaded last, *after* the
+style sheets (if not already loaded).
+
+However, you can load hyperref with custom options (or before a package that
+requires its presence) in a custom `style sheet`_, e.g.::
+
+  \usepackage[colorlinks=true,linkcolor=green,urlcolor=blue]{hyperref}
+
+To suppress the hyper-linking completely (e.g. for printing or to avoid
+incompatibilities), load the "nohyperref" package that comes with the
+"hyperref" bundle::
+
+  \usepackage{nohyperref}
+  %\usepackage{url} % uncomment if you need the \url command
 
 
 line blocks
@@ -1426,6 +1469,40 @@ Problems
 
 Troubleshooting
 ---------------
+
+non-breaking hyperlinks
+```````````````````````
+
+If you convert with ``latex`` (as opposed to ``pdflatex``), the breakurl_
+package can help. (For details, see the `Link text doesn’t break at end
+line`_ FAQ entry).
+
+.. _breakurl:
+   http://www.ctan.org/tex-archive/help/Catalogue/entries/breakurl.html
+
+.. _Link text doesn’t break at end line:
+   http://www.tex.ac.uk/cgi-bin/texfaq2html?label=breaklinks
+
+If you need long URLs in the running text, you can define a "url" rule that
+calls the ``\url`` command provided by hyperref_ (with typesetting done by
+url_)::
+
+  .. role:: url(literal)
+
+  .. raw:: latex
+
+    \newcommand*{\DUroleurl}{\url}
+
+.. attention::
+
+   The content of the role will not become a link in the HTML output!
+
+.. _hyperref:
+   http://www.ctan.org/tex-archive/help/Catalogue/entries/hyperref.html
+
+.. _url:
+   http://www.ctan.org/tex-archive/help/Catalogue/entries/url.html
+
 
 Error ``illegal unit px``
 `````````````````````````

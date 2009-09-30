@@ -2196,7 +2196,8 @@ Missing features
 * Hyperlinks are not hyphenated; this leads to bad spacing. See
   docs/user/rst/demo.txt 2.14 directives.
 
-  --> Pass the right option to ``\hypersetup``
+  See the thread "LaTeX writer: trouble with URLs" at docutils-devel
+  and http://www.tex.ac.uk/cgi-bin/texfaq2html?label=breaklinks
 
 * Consider supporting the "compact" option and class argument (from
   rst2html) as some lists look better compact and others need the space.
