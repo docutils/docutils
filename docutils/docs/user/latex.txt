@@ -877,20 +877,28 @@ hyperlinks
 
 Hyperlinks are realized using the hyperref_ package.
 To reduce incompatibilities, this package is loaded last, *after* the
-style sheets (if not already loaded).
-
+style sheets.
 However, you can load hyperref with custom options (or before a package that
-requires its presence) in a custom `style sheet`_, e.g.::
+requires its presence) in a custom `style sheet`_, e.g. ::
 
   \usepackage[colorlinks=true,linkcolor=green,urlcolor=blue]{hyperref}
 
+and it will not be loaded again.
+
+See also `non-breaking hyperlinks`_.
+
+disable hyperlinks
+^^^^^^^^^^^^^^^^^^
+
 To suppress the hyper-linking completely (e.g. for printing or to avoid
-incompatibilities), load the "nohyperref" package that comes with the
-"hyperref" bundle::
+clashes with other packages), load the "nohyperref" package that comes with
+the "hyperref" bundle::
 
   \usepackage{nohyperref}
   %\usepackage{url} % uncomment if you need the \url command
 
+.. _hyperref:
+   http://www.ctan.org/tex-archive/help/Catalogue/entries/hyperref.html
 
 line blocks
 ```````````
@@ -1473,9 +1481,29 @@ Troubleshooting
 non-breaking hyperlinks
 ```````````````````````
 
-If you convert with ``latex`` (as opposed to ``pdflatex``), the breakurl_
-package can help. (For details, see the `Link text doesn’t break at end
-line`_ FAQ entry).
+If you convert with ``latex`` (as opposed to ``pdflatex``), hyperlinks will
+not wrap and sometimes stick into the margin.
+
+Wrong:
+  ::
+     \usepackage[breaklinks=true]{hyperref}
+
+  "breaklinks" is an internal option that indicates whether the chosen
+  driver can handle broken links.
+
+Right:
+  Use one of the following:
+
+  a) compile with ``pdflatex``,
+
+  b) compile with ``latex`` followed by ``dvipdfm`` and call hyperref with
+     the option ``driver=dvipdf``, or
+
+  c) use the package breakurl_.
+
+  d) (for printout) `disable hyperlinks`_ using the package "nohyperref"
+
+See also the `Link text doesn’t break at end line`_ FAQ entry.
 
 .. _breakurl:
    http://www.ctan.org/tex-archive/help/Catalogue/entries/breakurl.html
@@ -1496,9 +1524,6 @@ url_)::
 .. attention::
 
    The content of the role will not become a link in the HTML output!
-
-.. _hyperref:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/hyperref.html
 
 .. _url:
    http://www.ctan.org/tex-archive/help/Catalogue/entries/url.html
