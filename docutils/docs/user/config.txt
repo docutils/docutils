@@ -672,11 +672,10 @@ embed_stylesheet
     Embed the stylesheet in the output HTML file.  The stylesheet file
     must specified by the stylesheet_path__ setting and must be
     accessible during processing.
+    Also defined for the `LaTeX Writer`__.
 
     Default: enabled.  Options: ``--embed-stylesheet,
     --link-stylesheet``.
-
-    This setting is also defined for the `LaTeX Writer`__.
 
     __ `stylesheet_path [html4css1 writer]`_
     __ `embed_stylesheet [latex2e writer]`_
@@ -720,41 +719,44 @@ _`option_limit`
 
 stylesheet
     A comma-separated list of CSS stylesheet URLs, used verbatim.
-    Overrides the "stylesheet_path" setting [#override]_.
+    Also defined for the `LaTeX Writer`__.
 
-    Pass an empty string (to both "stylesheet" and "stylesheet_path")
-    to deactivate stylesheet inclusion.
+    Overrides also stylesheet-path__. [#override]_
 
     Default: None.  Options: ``--stylesheet``.
 
-    This setting is also defined for the `LaTeX Writer`__.
-
+    __ `stylesheet_path [html4css1 writer]`_
     __ `stylesheet [latex2e writer]`_
 
 .. _stylesheet_path [html4css1 writer]:
 
 stylesheet_path
-    A comma-separated list of paths to CSS stylesheets [#pwd]_.
-    Overrides the "stylesheet" URL setting [#override]_.  The paths
-    are adjusted relative to the output HTML file.
+    A comma-separated list of paths [#pwd]_ to CSS stylesheets.
+    If embed_stylesheet__ is False, paths are rewritten relative to the
+    output HTML file. Also defined for the `LaTeX Writer`__.
 
-    Pass an empty string (to both "stylesheet" and "stylesheet_path")
-    to deactivate stylesheet inclusion.
+    Also overrides "stylesheet". [#override]_
+    Pass an empty string (to either "stylesheet" or "stylesheet_path") to
+    deactivate stylesheet inclusion.
 
     Default: "html4css1.css" in the docutils/writers/html4css1/
     directory (installed automatically; for the exact machine-specific
     path, use the ``--help`` option).  Options: ``--stylesheet-path``.
 
-    This setting is also defined for the `LaTeX Writer`__.
-
+    __ `embed_stylesheet [html4css1 writer]`_
     __ `stylesheet_path [latex2e writer]`_
 
-_`template`
+.. _template [html4css1 writer]:
+
+template
     Path to template file, which must be encoded in UTF-8 [#pwd]_.
+    Also defined for the `LaTeX Writer`__.
 
     Default: "template.txt" in the docutils/writers/html4css1/
     directory (installed automatically; for the exact machine-specific
     path, use the ``--help`` option).  Options: ``--template``.
+
+    __ `template [latex2e writer]`_
 
 .. _xml_declaration [html4css1 writer]:
 
@@ -842,15 +844,15 @@ _`theme`
     Name of an installed S5 theme, to be copied into a ``ui/<theme>``
     subdirectory, beside the destination file (output HTML).  Note
     that existing theme files will not be overwritten; the existing
-    theme directory you must be deleted manually.  Overrides the
-    "theme_url_" setting [#override]_.
+    theme directory must be deleted manually.
+    Also overrides the "theme_url_" setting. [#override]_
 
     Default: "default".  Option: ``--theme``.
 
 _`theme_url`
     The URL of an S5 theme directory.  The destination file (output
-    HTML) will link to this theme; nothing will be copied.  Overrides
-    the "theme_" setting [#override]_.
+    HTML) will link to this theme; nothing will be copied.  Also overrides
+    the "theme_" setting. [#override]_
 
     Default: None.  Option: ``--theme-url``.
 
@@ -913,9 +915,9 @@ _`documentoptions`
 .. _embed_stylesheet [latex2e writer]:
 
 embed_stylesheet
-    Embed the stylesheet in the output file.  The stylesheet file
-    must be accessible during processing.
-    Also defined for the `HTML Writer`__ (with different default).
+    Embed the stylesheet(s) in the header of the output file.  The
+    stylesheets must be accessible during processing. Also defined for
+    the `HTML Writer`__ (with different default).
 
     Default: disabled.  Options: ``--embed-stylesheet,
     --link-stylesheet``.
@@ -925,43 +927,52 @@ embed_stylesheet
 .. _stylesheet [latex2e writer]:
 
 stylesheet
-    A comma-separated list of style files. The file names (or paths)
-    will be used as arguments to ``\input`` in the document header. (With
-    `embed_stylesheet`__, their content will be inserted into the header
-    instead.)
+    A comma-separated list of style files.
+    Also defined for the `HTML Writer`__.
 
-    Overrides previous stylesheet and stylesheet_path__ settings
-    [#override]_.
+    Overrides also stylesheet_path__. [#override]_
+
+    If `embed_stylesheet`__ is False (default), the stylesheet files are
+    referenced with ``\usepackage`` (extension ``.sty`` or no extension) or
+    ``\input`` (any other extension).
 
     Default: no stylesheet ("").  Option: ``--stylesheet``.
 
-    Also defined for the `HTML Writer`__.
 
-    __ `embed_stylesheet [latex2e writer]`_
     __ `stylesheet_path [latex2e writer]`_
+    __ `embed_stylesheet [latex2e writer]`_
     __ `stylesheet [html4css1 writer]`_
 
 .. _stylesheet_path [latex2e writer]:
 
 stylesheet_path
-    Like stylesheet__, but the path is expanded relative to the working
-    directory [#pwd]_ , and rewritten to be relative to the output file (if
-    there is a common part in the given path and the output file path).
+    Similar to stylesheet__, however paths [#pwd]_ are rewritten relative to
+    the output file (if there is a common part in the given path and the
+    output file path). Also defined for the `HTML Writer`__.
 
-    This means that you must run ``latex`` from the directory containing the
-    output file. It will also fail for style files that should be searched
-    by ``latex`` in the TEXINPUTS path; use stylesheet__ in this case.
+    Run ``latex`` from the directory containing the output file. Fails for
+    files in the TEXINPUTS path; use stylesheet__ in this case.
 
-    Overrides previous "stylesheet" and "stylesheet_path" settings
-    [#override]_.
+    Also overrides stylesheet__. [#override]_
 
     Default: no stylesheet ("").  Option: ``--stylesheet-path``.
 
-    Also defined for the `HTML Writer`__.
-
-    __
     __ `stylesheet [latex2e writer]`_
     __ `stylesheet_path [html4css1 writer]`_
+    __
+    __ `stylesheet [latex2e writer]`_
+
+.. _template [latex2e writer]:
+
+template
+    Path to template file, which must be encoded in UTF-8 [#pwd]_.
+    Also defined for the `HTML Writer`__.
+
+    Default: "default.tex" in the docutils/writers/latex2e/
+    directory (installed automatically; for the exact machine-specific
+    path, use the ``--help`` option).  Options: ``--template``.
+
+    __ `template [html4css1 writer]`_
 
 .. _footnote_references [latex2e writer]:
 
@@ -970,7 +981,7 @@ footnote_references
     "brackets".  Also defined for the `HTML Writer`__.
 
     Overrides [#override]_ trim_footnote_reference_space_, if
-    applicable. [#footnote_space]_
+    applicable [#footnote_space]_.
 
     Default: "superscript".  Option: ``--footnote-references``.
 
