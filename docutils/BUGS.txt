@@ -177,6 +177,9 @@ Also see the `SourceForge Bug Tracker`_.
     too?  Add a set_info method?  To what?)  There's a test in
     test/test_parsers/test_rst/test_directives/test_include.py.
 
+    This is partially fixed in the commit on 2009-09-25, although the
+    commented-out test case in the abovementioned file does still fail.
+
   - Some line numbers in elements are not being set properly
     (explicitly), just implicitly/automatically.  See rev. 1.74 of
     docutils/parsers/rst/states.py for an example of how to set.
@@ -336,14 +339,6 @@ Also see the `SourceForge Bug Tracker`_.
 
 * <reference> elements have a "name" attribute, not "names".  The
   attribute should be "names"; this is an inconsistency.
-
-* Setting the _`halt level` should implicitly set the report level to
-  at most the halt level; otherwise Docutils might halt without
-  providing a descriptive error message::
-
-      ~ $ rst2pseudoxml.py --halt=1 --no-traceback
-      2. foo
-      Exiting due to level-1 (INFO) system message.
 
 
 ..

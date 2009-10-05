@@ -56,16 +56,15 @@ class Writer(writers.Writer):
           'Overrides previous --stylesheet and --stylesheet-path settings.',
           ['--stylesheet'],
           {'metavar': '<URL>', 'overrides': 'stylesheet_path'}),
-         ('Like --stylesheet, '
-          'but a relative path is converted from relative to the current '
-          'working directory to relative to the output HTML file. '
+         ('Specify comma separated list of stylesheet paths. '
+          'With --link-stylesheet, '
+          'the path is rewritten relative to the output HTML file. '
           'Default: "%s"' % default_stylesheet_path,
           ['--stylesheet-path'],
           {'metavar': '<file>', 'overrides': 'stylesheet',
            'default': default_stylesheet_path}),
          ('Embed the stylesheet(s) in the output HTML file.  The stylesheet '
-          'files must be accessible during processing (--stylesheet-path is '
-          'recommended).  This is the default.',
+          'files must be accessible during processing. This is the default.',
           ['--embed-stylesheet'],
           {'default': 1, 'action': 'store_true',
            'validator': frontend.validate_boolean}),

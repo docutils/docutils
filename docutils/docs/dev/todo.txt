@@ -1919,6 +1919,11 @@ Bug fixes
 * Too deeply nested lists fail: generate a warning and provide
   a workaround.
 
+Simplifications
+---------------
+
+* Use the Admonitions transform from writer_aux.py to "normalize" special
+  admonitions.
 
 Generate clean and configurable LaTeX source
 ----------------------------------------------
@@ -2235,6 +2240,98 @@ Ideas:
   * scan "stylesheets" option and use ``utf8x`` if it contains ``ucs``
 
     -1 prevents passing of options to the "ucs" package.
+
+
+wrapping URLs
+`````````````
+
+Use \url to typeset URLs. With hyperref,
+
+*    \nolinkurl    is an alias for the url package's \url
+*    \url          is equivalent to \href{URL}{\nolinkurl{URL}}.
+
+I don't think we need special support for the 'deception' case
+`NAME <URL1>`_ with NAME != URL1 and NAME a valid URL.
+
+Detection
+^^^^^^^^^
+
+* Test <reference> nodes for ``node[refuri] == node.astext()``
+
+* Apply also to the content of the "uri-reference" role (once it is
+  implemented).
+
+(Do we need an additional test with Docutils' default detection mechanism
+states.Inliner.patterns.uri ?)
+
+
+Layout/Font
+^^^^^^^^^^^
+
+We could ensure the same look as currently (normal text font for URLs) with
+``\urlstyle{same}``, but I would stick to the LaTeX default and document the
+configuration options.
+
+Fragility
+^^^^^^^^^
+
+   The "\url" command is fragile, and its argument is likely to be very
+   fragile, but a defined-url is robust:
+
+As \url is a very special, ``verb``-like command, escaping does not work.
+
+Instead, we need to check the conditions:
+
+   If the argument contains any "%", "#", or "^^", or ends with "\", it
+   can't be used in the argument to another command. The argument must not
+   contain unbalanced braces.
+
+and if they are not met, define a url-command in the preamble, say ::
+
+    \urldef{\fragileURLi}\nolinkurl{myself%node@gateway.net}   or
+    \urldef{\fragileURLi}\nolinkurl|myself%node@gateway.net|
+
+and in the document insert ::
+
+     \href{myself%node@gateway.net}{\fragileURLi}
+
+This can be done using the "latex_requirements" mechanism.
+
+add-stylesheet option
+`````````````````````
+
+From http://article.gmane.org/gmane.text.docutils.devel/3429/
+
+The problem is that since we have a default value, we have to
+differentiate between adding another stylesheet and replacing the
+default.  I suggest that the existing --stylesheet & --stylesheet-path
+options keep their semantics to replace the existing settings.  We
+could introduce new --add-stylesheet & --add-stylesheet-path options,
+which accumulate; further --stylesheet/--stylesheet-path options would
+clear these lists.  The stylesheet or stylesheet_path setting (only
+one may be set), plus the added_stylesheets and added_stylesheet_paths
+settings, describe the combined styles.
+
+For example, this run will have only one custom stylesheet:
+
+    rstpep2html.py --stylesheet-path custom.css ...
+
+This run will use the default stylesheet, and the custom one:
+
+    rstpep2html.py --add-stylesheet-path custom.css ...
+
+This run will use the default stylesheet, a custom local stylesheet,
+and an external stylesheet:
+
+    rstpep2html.py --add-stylesheet-path custom.css \
+        --add-stylesheet http://www.example.org/external.css ...
+
+This run will use only the second custom stylesheet:
+
+    rstpep2html.py --add-stylesheet-path custom.css \
+        --stylesheet-path second.css ...
+
+
 
 
 Front-End Tools
