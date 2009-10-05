@@ -41,7 +41,7 @@ for INF in `ls test/$FM` ; do
   REFF="$OUTF.ref"
   OPT=""
   if [ $INF = "test/unicode-box.txt" ] ; then
-    OPT="-o  utf-8:strict"
+    OPT="-o utf-8:strict"
   fi
   $CMD $OPT $2 $3 $INF > $OUTF
   do_diff $REFF $OUTF 
