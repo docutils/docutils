@@ -91,6 +91,11 @@ __ ../ref/rst/directives.html#document-header-footer
 * Two-way hyperlinked footnotes and support for symbol footnotes and
   ``--footnote-references=brackets`` with ``--use-latex-footnotes``.
 
+* The packages `fixltx2e` (providing LaTeX patches and the \textsubscript
+  command) and `cmap` (including character maps in the generated PDF for
+  better search and copy-and-paste operations) are now always loaded
+  (configurable with custom templates_).
+
 Backwards compatibility:
   "Bug for bug compatibility" is not provided.
 
@@ -108,7 +113,6 @@ New features:
 
 Backwards compatibility:
   Changes do not affect the output.
-
 
 
 LaTeX style sheets
@@ -243,10 +247,11 @@ Font encoding
 -------------
 
 New feature:
-  Do not mix font-encoding and font settings: do not load `ae` and `aeguill`
-  unless explicitely required via the ``--stylesheet`` option.
+  Do not mix font-encoding and font settings: do not load the obsolete
+  `ae` and `aeguill` packages unless explicitely required via the
+  ``--stylesheet`` option.
 
-  :font-encoding = "":  do not load `ae` and `aeguill` packages, i.e.
+  :font-encoding = "":  do not load `ae` and `aeguill`, i.e.
 
                         * do not change font settings,
                         * do not use the fontenc package
@@ -456,6 +461,7 @@ with version 0.5::
 
   \usepackage{shortvrb}
   \usepackage{amsmath}
+
 
 Packages that are conditionally loaded
 ``````````````````````````````````````

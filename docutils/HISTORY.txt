@@ -141,6 +141,8 @@ Changes Since 0.5
   - Float placement made configurable, default changed to "here definitely".
   - Typeset generic topic as "quote block with title".
   - Use template (file and configuration option).
+  - In the default template, load cmap.sty (fix text extraction in PDF) and
+    fixltx2e.sty (LaTeX patches, \textsubscript).
   - Render doctest blocks as literal blocks (fixes [ 1586058 ]).
   - Use `translate` instead of repeated `replace` calls for text encoding.
   - Hyperlinked footnotes and support for symbol footnotes and

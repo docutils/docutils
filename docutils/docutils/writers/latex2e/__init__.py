@@ -374,7 +374,7 @@ PreambleCmds.color = r"""\usepackage{color}"""
 PreambleCmds.docinfo = r"""
 % docinfo (width of docinfo table)
 \DUprovidelength{\DUdocinfowidth}{0.9\textwidth}"""
-# PreambleCmds.docinfo._requirements = 'providelength'
+# PreambleCmds.docinfo._depends = 'providelength'
 
 PreambleCmds.embedded_package_wrapper = r"""\makeatletter
 %% embedded stylesheet: %s
@@ -388,7 +388,7 @@ PreambleCmds.dedication = r"""
 PreambleCmds.error = r"""
 % error admonition title
 \providecommand*{\DUtitleerror}[1]{\DUtitle{\color{red}#1}}"""
-# PreambleCmds.errortitle._requirements = 'color'
+# PreambleCmds.errortitle._depends = 'color'
 
 PreambleCmds.fieldlist = r"""
 % fieldlist environment
@@ -406,12 +406,14 @@ PreambleCmds.footnotes = r"""% numeric or symbol footnotes with hyperlinks
   \raisebox{1em}{\hypertarget{#1}{}}%
   \hyperlink{#2}{\textsuperscript{#3}}%
 }
-\providecommand{\DUfootnotetext}[4]{{%
+\providecommand{\DUfootnotetext}[4]{%
+  \begingroup%
   \renewcommand{\thefootnote}{%
     \protect\raisebox{1em}{\protect\hypertarget{#1}{}}%
     \protect\hyperlink{#2}{#3}}%
   \footnotetext{#4}%
-}}"""
+  \endgroup%
+}"""
 
 PreambleCmds.footnote_floats = r"""% settings for footnotes as floats:
 \setlength{\floatsep}{0.5em}
@@ -468,10 +470,10 @@ PreambleCmds.lineblock = r"""
   }
   {\endlist}
 }{}"""
-# PreambleCmds.lineblock._requirements = 'providelength'
+# PreambleCmds.lineblock._depends = 'providelength'
 
 PreambleCmds.linking = r"""
-%% hyperref package (PDF hyperlinks):
+%% hyperlinks:
 \ifthenelse{\isundefined{\hypersetup}}{
   \usepackage[colorlinks=%s,linkcolor=%s,urlcolor=%s]{hyperref}
 }{}"""
@@ -494,7 +496,7 @@ PreambleCmds.optionlist = r"""
   }
   {\endlist}
 }{}"""
-# PreambleCmds.optionlist._requirements = 'providelength'
+# PreambleCmds.optionlist._depends = 'providelength'
 
 PreambleCmds.providelength = r"""
 % providelength (provide a length variable and set default, if it is new)
@@ -970,7 +972,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
               fontenc_header,
               r'\usepackage[%s]{inputenc}' % self.latex_encoding,
               r'\usepackage{ifthen}',
-              r'\usepackage{fixltx2e} % fix LaTeX2e shortcomings',
               ])
         # page layout with typearea (if there are relevant document options).
         if (settings.documentclass.find('scr') == -1 and
