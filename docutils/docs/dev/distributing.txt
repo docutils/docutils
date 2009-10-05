@@ -28,27 +28,16 @@ Dependencies
 
 Docutils has the following dependencies:
 
-* Python 2.1 or later is required.  While the compiler package from
-  the Tools/ directory of Python's source distribution must be
-  installed for the test suite to pass with Python 2.1, the
-  functionality available to end users should be available without the
-  compiler package as well.  So just use ">= Python 2.1" in the
+* Python 2.3 or later is required.  Use ">= Python 2.3" in the
   dependencies.
 
 * Docutils may optionally make use of the PIL (`Python Imaging
   Library`_).  If PIL is present, it is automatically detected by
   Docutils.
 
-* There are three files in the ``extras/`` directory of the Docutils
-  distribution, ``optparse.py``, ``textwrap.py``, and ``roman.py``.
-  For Python 2.1/2.2, all of them must be installed (into the
-  ``site-packages/`` directory).  Python 2.3 and later versions have
-  ``textwrap`` and ``optparse`` included in the standard library, so
-  only ``roman.py`` is required here; installing the other files won't
-  hurt, though.
-
-  These files are automatically installed by the setup script (when
-  calling "python setup.py install").
+* There is one file in the ``extras/`` directory of the Docutils
+  distribution, ``roman.py``. It is automatically installed by the setup
+  script (when calling "python setup.py install").
 
 .. _Python Imaging Library: http://www.pythonware.com/products/pil/
 

@@ -174,9 +174,7 @@ classifiers = [
 """Trove classifiers for the Distutils "register" command;
 Python 2.3 and up."""
 
-extra_modules = [('optparse', '1.4.1', None),
-                 ('textwrap', None, None),
-                 ('roman', '1.4', ['toRoman', 'fromRoman',
+extra_modules = [('roman', '1.4', ['toRoman', 'fromRoman',
                                    'InvalidRomanNumeralError'])]
 """Third-party modules to install if they're not already present.
 List of (module name, minimum __version__ string, [attribute names])."""

@@ -19,8 +19,8 @@ Changes Since 0.5
 
 * General:
 
-  - Docutils is now compatible with Python versions from 2.3 up to 3.0 (or
-    even 3.1?)
+  - Docutils is now compatible with Python versions from 2.3 up to 2.6
+    and convertible to 3.1 code.
 
     + Node.__nonzero__ returns True instead of 1.
     + use os.walk instead os.path.walk.
@@ -30,7 +30,9 @@ Changes Since 0.5
       (which is gone in python 3.0).
     + 3.0 compatibility module docutils._compat
 
-    + drop 2.2 compatibility workarounds
+    + Drop 2.2 compatibility workarounds.
+    + Drop extras/optparse.py and extras/textwrap.py
+      (stdlib modules since 2.3).
 
   - OpenOffice export: ODT writer moved from sandbox to Doctutils core.
   - Unix man page export: manpage writer moved from sandbox to Doctutils

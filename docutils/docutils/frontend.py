@@ -35,12 +35,8 @@ import codecs
 import docutils
 import docutils.utils
 import docutils.nodes
-try:
-    import optparse
-    from optparse import SUPPRESS_HELP
-except ImportError:
-    import optik as optparse
-    from optik import SUPPRESS_HELP
+import optparse
+from optparse import SUPPRESS_HELP
 
 
 def store_multiple(option, opt, value, parser, *args, **kwargs):
