@@ -478,10 +478,6 @@ Docutils Package Structure
   installed only if they're not already present in the Python
   installation.
 
-  - ``extras/optparse.py`` and ``extras/textwrap.py`` provide
-    option parsing and command-line help; from Greg Ward's
-    http://optik.sf.net/ project, included for convenience.
-
   - ``extras/roman.py`` contains Roman numeral conversion routines.
 
 

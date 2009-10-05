@@ -146,7 +146,7 @@ Project Files & Directories
   package.
 
 * extras: Directory for third-party modules that Docutils depends on
-  (roman.py, optparse.py, textwrap.py).  These are only installed if
+  (roman.py).  These are only installed if
   they're not already present.
 
 * docs: The project documentation directory.  Read ``docs/index.txt``
