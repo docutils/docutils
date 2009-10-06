@@ -48,6 +48,7 @@ Changes Since 0.5
   - Fix [ 2831643 ] by renaming DirectiveError.message to DirectiveError.msg
   - Fix [ 2821266 ] --strict option works now like --halt=info.
   - Fix [ 2788716 ] DirectiveError now correctly reports source and line.
+  - Fix [ 1627229 ] hyperlink references in substitutions.
 
 * reStructuredText:
 

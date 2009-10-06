@@ -11,7 +11,15 @@
 <div class="document">
 
 
-<p>simple input</p>
+<p>Test the interaction of transforms.references.Substitutions and
+transforms.references.ExternalLinks.</p>
+<p><a class="reference external" href="http://docutils.sourceforge.net/rst.html">reStructuredText</a> is cool!</p>
+<p>There is a preferred alternative:</p>
+<p><a class="reference external" href="http://docutils.sourceforge.net/rst.html">reStructuredText</a> is cool!</p>
+<p>This only works for the case where the entire substitution is a
+reference, not when the reference is embedded as part of the
+substitution:</p>
+<p>unstructured <a class="reference external" href="http://docutils.sourceforge.net/rst.html">reStructuredText</a> is uncool!</p>
 </div>
 </body>
 </html>
