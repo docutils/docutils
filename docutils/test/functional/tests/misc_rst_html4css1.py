@@ -1,5 +1,5 @@
 # Source and destination file names.
-test_source = "simple.txt"
+test_source = "link_in_substitution.txt"
 test_destination = "misc_rst_html4css1.html"
 
 # Keyword parameters passed to publish_file.

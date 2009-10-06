@@ -730,6 +730,11 @@ class Substitutions(Transform):
                         ref.replace_self(prb)
                 else:
                     ref.replace_self(subdef_copy.children)
+                    # register refname of the replacment node(s)
+                    # (needed for resolution of references)
+                    for node in subdef_copy.children:
+                        if isinstance(node, nodes.Referential):
+                            self.document.note_refname(node)
 
 
 class TargetNotes(Transform):
