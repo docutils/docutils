@@ -21,8 +21,7 @@ complete details.
 
        http://www.python.org/
 
-   Python 2.3 or later is required.  Docutils is compatible with
-   Python 3.
+   Docutils is compatible with Python versions from 2.3 up to 2.6.
 
 2. Use the latest Docutils code.  Get the code from Subversion or from
    the snapshot:
@@ -108,7 +107,7 @@ Requirements
 ============
 
 To run the code, Python 2.3 or later must already be installed.
-Docutils is also compatible with Python 3.  Python is available from
+Python is available from
 http://www.python.org/.
 
 The `Python Imaging Library`, or PIL, is used for some image
