@@ -50,6 +50,8 @@ Changes Since 0.5
   - Fix [ 2788716 ] DirectiveError now correctly reports source and line.
   - Fix [ 1627229 ] hyperlink references in substitutions.
 
+  - The "newlatex" writer is orphaned.
+
 * reStructuredText:
 
   - Documented Unicode characters allowed as inline markup openers,
@@ -150,6 +152,13 @@ Changes Since 0.5
   - Use `translate` instead of repeated `replace` calls for text encoding.
   - Hyperlinked footnotes and support for symbol footnotes and
     ``--footnote-references=brackets`` with ``--use-latex-footnotes``.
+  - Complete pairs of binary options
+    (``--figure-footnotes, --figure-citations, --link-stylesheet``,
+     ``--use-docutils-toc, --use-docutils-docinfo, --topic-abstract``)
+  - New defaults:
+    - font-encoding: "T1" (formerly implicitely set by 'ae').
+    - use-latex-toc: true (ToC with page numbers).
+    - use-latex-footnotes: true (no mixup with figures).
 
 * docutils/writers/manpage.py
 

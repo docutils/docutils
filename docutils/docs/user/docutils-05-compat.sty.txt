@@ -29,8 +29,8 @@ A backwards compatibility style sheet
 Usage
 =====
 
-* To get an (almost) identic look for your old documents without further
-  configuration, place ``docutils-05-compat.sty`` in the TEXINPUT path (e.g.
+* To get an (almost) identic look for your old documents,
+  place ``docutils-05-compat.sty`` in the TEXINPUT path (e.g.
   the current work directory) and pass the
   ``--stylesheet=docutils-05-compat`` option to ``rst2latex.py``.
 
@@ -98,6 +98,25 @@ __ ../ref/rst/directives.html#document-header-footer
 
 Backwards compatibility:
   "Bug for bug compatibility" is not provided.
+
+
+New configuration setting defaults
+----------------------------------
+
+- font-encoding: "T1" (formerly implicitely set by 'ae').
+- use-latex-toc: true (ToC with page numbers).
+- use-latex-footnotes: true (no mixup with figures).
+
+Backwards compatibility:
+  Reset to the former defaults with:
+
+  | font-encoding: ''
+  | use-latex-toc: False
+  | use-latex-footnotes: False
+
+  (in the config file) or the command line options:
+
+    ``--figure-footnotes --use-docutils-toc  --font-encoding=''``
 
 
 Cleaner LaTeX source
@@ -266,17 +285,7 @@ Example:
 
 
 Backwards compatibility:
-  Load the ae and aeguill packages if fontenc is not used::
-
-    \@ifundefined{@ifl@ter@@}
-      {\RequirePackage{ae,aeguill}}
-      {}
-
-.. Why not ``\@ifpackageloaded{fontenc}``?
-
-   'fontenc' disables the test to enable loading more than once with
-   different options. ``\@ifl@ter@@`` seems to be the only control sequence
-   that survives
+  Load the ae and aeguill packages if fontenc is not used.
 
 .. tip:: Using `ae` is not recommended. A similar look (but better
    implementation) can be achieved with the packages `lmodern`, `cmsuper`,

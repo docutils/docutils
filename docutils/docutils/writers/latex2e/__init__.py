@@ -43,9 +43,13 @@ class Writer(writers.Writer):
           'separated by commas.  Default is "a4paper".',
           ['--documentoptions'],
           {'default': 'a4paper', }),
-         ('Use LaTeX footnotes. Default: no, uses figures.',
+         ('Use LaTeX footnotes. (default)',
           ['--use-latex-footnotes'],
-          {'default': 0, 'action': 'store_true',
+          {'default': 1, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Use figure floats for footnote text.',
+          ['--figure-footnotes'],
+          {'dest': 'use_latex_footnotes', 'action': 'store_false',
            'validator': frontend.validate_boolean}),
          ('Format for footnote references: one of "superscript" or '
           '"brackets".  Default is "superscript".',
@@ -53,10 +57,14 @@ class Writer(writers.Writer):
           {'choices': ['superscript', 'brackets'], 'default': 'superscript',
            'metavar': '<format>',
            'overrides': 'trim_footnote_reference_space'}),
-         ('Use LaTeX citations. '
-          'Default: no, uses figures which might get mixed with images.',
+         ('Use \\cite command for citations. ',
           ['--use-latex-citations'],
           {'default': 0, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Use figure floats for citations '
+          '(might get mixed with real figures). (default)',
+          ['--figure-citations'],
+          {'dest': 'use_latex_citations', 'action': 'store_false',
            'validator': frontend.validate_boolean}),
          ('Format for block quote attributions: one of "dash" (em-dash '
           'prefix), "parentheses"/"parens", or "none".  Default is "dash".',
@@ -70,39 +78,46 @@ class Writer(writers.Writer):
           ['--stylesheet'],
           {'default': '', 'metavar': '<file>',
            'overrides': 'stylesheet_path'}),
-         ('Like --stylesheet, but a relative path is converted from relative '
-          'to the current working directory to relative to the output file. ',
+         ('Like --stylesheet, but the path is rewritten '
+          'relative to the output file. ',
           ['--stylesheet-path'],
           {'metavar': '<file>', 'overrides': 'stylesheet'}),
-         ('Embed the stylesheet in the output LaTeX file.  The stylesheet '
-          'file must be accessible during processing. '
-          'Default: link to stylesheets',
+         ('Link to the stylesheet(s) in the output file. (default)',
+          ['--link-stylesheet'],
+          {'dest': 'embed_stylesheet', 'action': 'store_false'}),
+         ('Embed the stylesheet(s) in the output file. '
+          'Stylesheets must be accessible during processing. ',
           ['--embed-stylesheet'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
-         ('Link to the stylesheet(s) in the output file. '
-          ' This is the default (if not changed in a config file).',
-          ['--link-stylesheet'],
-          {'dest': 'embed_stylesheet', 'action': 'store_false'}),
          ('Specify the template file. Default: "%s".' % default_template,
           ['--template'],
           {'default': default_template, 'metavar': '<file>'}),
-         ('Table of contents by Docutils (default) or LaTeX. '
-          '(Docutils does not know of pagenumbers.) ',
+         ('Table of contents by LaTeX. (default) ',
           ['--use-latex-toc'],
-          {'default': 0, 'action': 'store_true',
+          {'default': 1, 'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Table of contents by Docutils (without page numbers). ',
+          ['--use-docutils-toc'],
+          {'dest': 'use_latex_toc', 'action': 'store_false',
            'validator': frontend.validate_boolean}),
          ('Add parts on top of the section hierarchy.',
           ['--use-part-section'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
-         ('Attach author and date to the document title '
-          'instead of the document info table.',
+         ('Attach author and date to the document info table. (default) ',
+          ['--use-docutils-docinfo'],
+          {'dest': 'use_latex_docinfo', 'action': 'store_false',
+           'validator': frontend.validate_boolean}),
+         ('Attach author and date to the document title.',
           ['--use-latex-docinfo'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
-         ("Use LaTeX abstract environment for the document's abstract. "
-          'Default: use a topic.',
+         ("Typeset abstract as topic. (default)",
+          ['--topic-abstract'],
+          {'dest': 'use_latex_abstract', 'action': 'store_false',
+           'validator': frontend.validate_boolean}),
+         ("Use LaTeX abstract environment for the document's abstract. ",
           ['--use-latex-abstract'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
@@ -156,11 +171,10 @@ class Writer(writers.Writer):
           ['--graphicx-option'],
           {'default': ''}),
          ('LaTeX font encoding. '
-          'Possible values are "", "T1", "OT1", "LGR,T1" or any other '
-          'combination of options to the `fontenc` package. '
-          'Default is "" which does not load `fontenc`.',
+          'Possible values are "", "T1" (default), "OT1", "LGR,T1" or '
+          'any other combination of options to the `fontenc` package. ',
           ['--font-encoding'],
-          {'default': ''}),
+          {'default': 'T1'}),
          ('Per default the latex-writer puts the reference title into '
           'hyperreferences. Specify "ref*" or "pageref*" to get the section '
           'number or the page number.',

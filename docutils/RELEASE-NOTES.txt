@@ -23,8 +23,10 @@ Changes Since 0.5
 
 .. Note::
 
-   Docutils 0.5 is the last version supporting Python 2.2,
-   Docutils 0.6 requires Python 2.3 or newer. Also works with Python 3.
+   Docutils 0.5 is the last version supporting Python 2.2.
+
+   Docutils 0.6 is compatible with Python versions from 2.3 up to 2.6
+   and convertible to 3.1 code.
 
 .. note::
 
@@ -53,6 +55,13 @@ Changes Since 0.5
 
 * LaTeX2e writer:
 
+  - New defaults:
+    - font-encoding: "T1" (formerly implicitely set by 'ae').
+    - use-latex-toc: true (ToC with page numbers).
+    - use-latex-footnotes: true (no mixup with figures).
+    - Float placement defaults to "here definitely" (configurable).
+    - Align of image in a figure defaults to 'center'.
+    - Use class defaults for page margins ('typearea' now optional).
   - Support LaTeX packages as ``--stylesheet`` arguments.
   - Use ``bp`` for lengths without unit or unit ``pt``,
     do not convert ``px`` to ``pt``.
@@ -65,9 +74,6 @@ Changes Since 0.5
   - If 'sectnum_xform' is False, the 'sectnum' directive triggers
     section numbering by LaTeX.
   - Use default font in admonitions and sidebar.
-  - Align of image in a figure defaults to 'center'.
-  - Use class defaults for page margins ('typearea' now optional).
-  - Float placement made configurable, default changed to "here definitely".
   - Typeset generic topic as "quote with title".
   - Use template (file and configuration option).
   - Render doctest blocks as literal blocks (indented).
