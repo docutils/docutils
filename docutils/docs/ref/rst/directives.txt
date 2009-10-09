@@ -725,14 +725,6 @@ CSV Table
    a potential security holes.  They can be disabled with the
    "file_insertion_enabled_" runtime setting.
 
-.. Note::
-
-   The "csv-table" directive requires the ``csv.py`` module of the
-   Python standard library, which was added in Python 2.3.  It will
-   not work with earlier versions of Python.  Using the "csv-table"
-   directive in a document will make the document **incompatible**
-   with systems using Python 2.1 or 2.2.
-
 (New in Docutils 0.3.4)
 
 The "csv-table" directive is used to create a table from CSV
