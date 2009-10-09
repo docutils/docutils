@@ -55,7 +55,7 @@ sys.path.insert(0, testroot)
 sys.path.append(os.path.normpath(os.path.join(testroot, '..', 'extras')))
 
 try:
-    import docutils_difflib
+    import difflib
     import package_unittest
     import docutils
     import docutils.core
@@ -140,7 +140,7 @@ class CustomTestCase(StandardTestCase):
     see the compare_output method and the parameter list of __init__.
     """
 
-    compare = docutils_difflib.Differ().compare
+    compare = difflib.Differ().compare
     """Comparison method shared by all subclasses."""
 
     def __init__(self, method_name, input, expected, id, run_in_debugger=0,

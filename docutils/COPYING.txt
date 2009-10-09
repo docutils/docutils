@@ -76,16 +76,6 @@ The exceptions to the `Public Domain Dedication`_ above are:
 
   __ licenses/python-2-1-1.txt
 
-* test/docutils_difflib.py, copyright by the Python Software
-  Foundation, released under the `Python 2.2 license`_ (`local
-  copy`__).  This file is included for compatibility with Python
-  versions less than 2.2.  (It's only used to report test failures
-  anyhow; it isn't installed anywhere.  The included file is a
-  pre-generator version of the difflib.py module included in Python
-  2.2.)
-
-  __ licenses/python-2-2.txt
-
 * tools/editors/emacs/rst.el, copyright by Martin Blais, Stefan
   Merten, and David Goodger, released under the `GNU General Public
   License`_ (`local copy`__).
@@ -104,8 +94,6 @@ licenses_ directory.
 
 .. _licenses: licenses/
 .. _Python 2.1.1 license: http://www.python.org/2.1.1/license.html
-.. _Python 2.2 license: http://www.python.org/2.2/license.html
-.. _Python 2.3 license: http://www.python.org/2.3/license.html
 .. _GNU General Public License: http://www.gnu.org/copyleft/gpl.html
 .. _OSI-approved: http://opensource.org/licenses/
 .. _GPL-compatible: http://www.gnu.org/philosophy/license-list.html
