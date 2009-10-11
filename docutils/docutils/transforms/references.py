@@ -734,7 +734,10 @@ class Substitutions(Transform):
                     # (needed for resolution of references)
                     for node in subdef_copy.children:
                         if isinstance(node, nodes.Referential):
-                            self.document.note_refname(node)
+                            # HACK: verify refname attribute exists.
+                            # Test with docs/dev/todo.txt, see. |donate|
+                            if 'refname' in node:
+                                self.document.note_refname(node)
 
 
 class TargetNotes(Transform):
