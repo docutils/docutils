@@ -154,7 +154,7 @@ Release 0.6 (2009-10-11)
     ``--footnote-references=brackets`` with ``--use-latex-footnotes``.
   - Complete pairs of binary options
     (``--figure-footnotes, --figure-citations, --link-stylesheet``,
-     ``--use-docutils-toc, --use-docutils-docinfo, --topic-abstract``)
+    ``--use-docutils-toc, --use-docutils-docinfo, --topic-abstract``)
   - New defaults:
     - font-encoding: "T1" (formerly implicitely set by 'ae').
     - use-latex-toc: true (ToC with page numbers).
