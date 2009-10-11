@@ -32,7 +32,8 @@ reminded of them.
 * Change ``__version_details__`` in docutils/docutils/__init__.py to
   "release" (from "repository").
 
-* Bump the _`version number` in the following files:
+* Check the _`version number` in the following files, should be already 
+  correct:
 
   + docutils/setup.py
   + docutils/docutils/__init__.py
