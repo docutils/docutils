@@ -9,6 +9,8 @@ The LaTeX Info pages lists under "2.18 Special Characters"
 
                             # $ % & ~ _ ^ \ { }
 
+  Note: the backslash will not be displayed, it is a ``\`` to the blank.
+
 The special chars verbatim::
 
                             # $ % & ~ _ ^ \ { }
