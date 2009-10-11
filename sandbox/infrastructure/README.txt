@@ -21,6 +21,14 @@ Overview:
     maintenance branch.
 
 :`<docutils-update>`_: The script that updates the `web site`_.
+    Executed on berlios, by user wiemann.
+
+    Attention: The cron job is executed, but the script is
+        doing nothing, because of the way to access sourceforge 
+        changed.
+
+:`<docutils-update.local>`_: The script to update the `web site`_
+    from a developer machine. *The* current way of to go.
 
 :`<fsfsbackup.sh>`_: Backup (mirror) an FSFS Subversion repository via
     SSH.  Used to backup the `Docutils Subversion repository`_.
@@ -29,6 +37,11 @@ Overview:
 
 :`<uploaddocutils.sh>`_: Upload files to http://docutils.sf.net/tmp/
     using ``scp``, inserting the current date in the file name.
+
+:`<update-htmlfiles>`_: Used to initialise a docutils-update upload directory.
+    Generating html-files from txt-files first time.
+
+:`<htmlfiles.lst>`_: The list of files for ``update-htmlfiles``.
 
 .. _Docutils: http://docutils.sourceforge.net/
 .. _Docutils check-in mailing list:
