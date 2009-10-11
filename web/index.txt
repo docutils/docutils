@@ -56,16 +56,15 @@ We recommend that you use the latest **snapshot**,
 features* and *fewer bugs* than the "official" releases |---| they're
 not only for developers!
 
-The development/snapshot version of Docutils (0.6) is compatible with
-Python 3.
+From version 0.6 Docutils is compatible with Python 3, but requires 2to3.
 
-The latest **release package** is `docutils-0.5.tgz`__.  It was
-released on 2008-06-25 and is mostly intended for distributors.  See
+The latest **release package** is `docutils-0.6.tgz`__.  It was
+released on 2009-10-11 and is mostly intended for distributors.  See
 the `release notes`_ for a list of changes since the previous release
-(0.4).
+(0.5).
 
-__ http://prdownloads.sourceforge.net/docutils/docutils-0.5.tar.gz?download
-.. _release notes: RELEASE-NOTES.html#release-0-5-2008-06-25
+__ http://prdownloads.sourceforge.net/docutils/docutils-0.6.tar.gz?download
+.. _release notes: RELEASE-NOTES.html#release-0-6-2009-10-11
 
 More snapshots:
 
