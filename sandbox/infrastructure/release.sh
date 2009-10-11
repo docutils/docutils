@@ -260,6 +260,7 @@ function test_tarball()
             exit 1
         fi
         confirm su -c "python$py_ver -u \"$site_packages/docutils-test/alltests.py\""
+        # BUG shell script exits after alltests.py
     done
     run cd ../..
     echo "Cleaning up..."
@@ -276,7 +277,9 @@ function upload_tarball()
     # Assume we have the tarball in the working area.
     run cd "$working_area"
     # You may need to adjust the command line for clients other than tnftp.
-	echo "put docutils-0.5.tar.gz" | sftp frs.sourceforge.net:uploads/
+	# BUG this changed: echo "put docutils-$new_ver.tar.gz" | sftp frs.sourceforge.net:uploads/
+	# upload releasenotes too
+	echo "use sftp to put the file into /home/frs/project/d/do/docutils/docutils/$new_ver"
     echo 'Upload completed.'
 }
 
@@ -289,6 +292,10 @@ function upload_htdocs()
     run cd htdocs
     confirm tar xzvf "../$tarball"
     run cd docutils-"$new_ver"/tools/
+    # BUG no docutils installation left.
+    # BUG and it breaks on test/functional/input/standalone_rst_newlatex.txt:
+    #     1020: (SEVERE/4) Title level inconsistent
+    #     because this is an include file.
     confirm ./buildhtml.py ..
     run cd ..
     echo '$ find -name test -type d -prune -o -name \*.css -print0 \
@@ -298,6 +305,15 @@ function upload_htdocs()
         -o -name \*.html -print0 -o -name \*.txt -print0 \
         | tar -cjvf docutils-docs.tar.bz2 -T - --null
     echo 'Upload the tarball to your home directory on SF.net...'
+    # BUG: hostname changed to web.sourceforge.net
+    # BUG: we do not have shell access.
+    # Try::
+    #  mkdir $new_ver
+    #  cd $new_ver
+    #  tar xjvf ../docutils-docs.tar.bz2
+	#  cd ..
+	#  chmod -R g+rw $new_ver
+	#  scp -r -p -C $new_ver web.sourceforge.net:/home/groups/d/do/docutils/htdocs
     confirm scp docutils-docs.tar.bz2 shell.sourceforge.net:
     echo
     echo 'Unpack the tarball on SF.net...'
@@ -416,6 +432,7 @@ function stage_2()
         echo 'Now go to https://sourceforge.net/project/admin/editpackages.php?group_id=38414'
         echo 'and follow the instructions at'
         echo 'http://docutils.sf.net/docs/dev/release.html#file-release-system'
+        echo 'BUG find your way.'
         echo
         echo 'Then press enter.'
         read
@@ -423,6 +440,7 @@ function stage_2()
     run cd $working_area
     echo 'Downloading the tarball to verify its integrity.'
     while true; do
+	    # BUG path is wrong. project admin filemanager shows md5sum
         confirm wget http://osdn.dl.sourceforge.net/sourceforge/docutils/"$tarball"
         echo 'Was the download successful?'
         echo 'If yes, press enter to continue, otherwise enter anything to repeat'
