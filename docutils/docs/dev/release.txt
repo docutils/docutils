@@ -168,10 +168,11 @@ reminded of them.
 * **Add a SourceForge News item, with title "Docutils X.Y.Z released"
   and containing the release tarball's download URL.**
 
-* **Register with FreshMeat.** (Add a `new release`__ for the
+  BUG: not found 2009-10-12.
+
+* **Register with FreshMeat.** (Add a new release for the
   `Docutils project`__).
 
-  __ http://freshmeat.net/add-release/48702/
   __ http://freshmeat.net/projects/docutils/
 
 
