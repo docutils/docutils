@@ -279,6 +279,7 @@ function upload_tarball()
     # You may need to adjust the command line for clients other than tnftp.
 	# BUG this changed: echo "put docutils-$new_ver.tar.gz" | sftp frs.sourceforge.net:uploads/
 	# upload releasenotes too
+    # upload via sftp should work, but might not show up on project feed.
 	echo "use sftp to put the file into /home/frs/project/d/do/docutils/docutils/$new_ver"
     echo 'Upload completed.'
 }
