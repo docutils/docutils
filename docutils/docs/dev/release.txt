@@ -120,7 +120,11 @@ reminded of them.
       ftp> put docutils-X.Y.Z.tar.gz
 
 * Access the _`file release system` on SourceForge (Admin
-  interface).  Fill in the fields:
+  interface).  
+
+  Not found 2009-10-11 for release 0.6.
+
+  Fill in the fields:
 
       :Package ID:      docutils
       :Release Name:    <use release number only, e.g. 0.3>
