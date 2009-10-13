@@ -427,7 +427,7 @@ General
 
 * Rationalize Writer settings (HTML/LaTeX/PEP) -- share settings.
 
-* Merge docs/user/latex.txt info into tools.txt and config.txt.
+* Merge docs/user/latex.txt info into tools.txt and config.txt?
 
 * Add an "--include file" command-line option (config setting too?),
   equivalent to ".. include:: file" as the first line of the doc text?
@@ -496,6 +496,8 @@ General
 
       [dest_file index.html]
       ...
+
+  Or rather allow settings configuration from the rst source file?
 
 * The "validator" support added to OptionParser is very similar to
   "traits_" in SciPy_.  Perhaps something could be done with them?
@@ -975,13 +977,6 @@ __ rst/alternatives.html#or-not-to-do
   Tony Ibbs spoke out against this idea (2002-06-14 Doc-SIG thread
   "docutils feedback").
 
-* The "doctest" element should go away.  The construct could simply be
-  a front-end to generic literal blocks.  We could immediately (in
-  0.4, or 0.5) remove the doctest node from the doctree, but leave the
-  syntax in reST.  The reST parser could represent doctest blocks as
-  literal blocks with a class attribute.  The syntax could be left in
-  reST for a set period of time.
-
 * Add support for pragma (syntax-altering) directives.
 
   Some pragma directives could be local-scope unless explicitly
@@ -1063,32 +1058,37 @@ __ rst/alternatives.html#or-not-to-do
 * Add _`math markup`.  We should try for a general solution, that's
   applicable to any output format.  Using a standard, such as MathML_,
   would be best.  TeX (or itex_) would be acceptable as a *front-end*
-  to MathML. An simpler, alternative input format is defined by
-  ASCIIMathML_. See `the culmination of a relevant discussion
+  to MathML. A simpler, alternative input format is defined by
+  ASCIIMathML_ and Microsoft's `Linear Format Math`_.
+  See `the culmination of a relevant discussion
   <http://article.gmane.org/gmane.text.docutils.user/118>`__.
+
+  Build on existing extensions (`latex_math`_, `math support in Sphinx`_).
 
   Both a directive and an interpreted text role will be necessary (for
   each markup).  Directive example::
 
-      .. itex::
+      .. math::
+
          \alpha_t(i) = P(O_1, O_2, \dots O_t, q_t = S_i \lambda)
 
   The same thing inline::
 
-      The equation in question is :itex:`\alpha_t(i) = P(O_1, O_2,
+      The equation in question is :math:`\alpha_t(i) = P(O_1, O_2,
       \dots O_t, q_t = S_i \lambda)`.
 
+  .. _latex_math: ../../../sandbox/jensj/latex_math/
+  .. _Math support in Sphinx: http://sphinx.pocoo.org/ext/math.html
   .. _MathML: http://www.w3.org/TR/MathML2/
   .. _itex: http://pear.math.pitt.edu/mathzilla/itex2mmlItex.html
   .. _ASCIIMathML: http://www1.chapman.edu/~jipsen/mathml/asciimath.html
+  .. _Linear Format Math:
+     http://www.unicode.org/notes/tn28/UTN28-PlainTextMath-v2.pdf
+
+
 
 * How about a syntax for alternative hyperlink behavior, such as "open
-  in a new window" (as in HTML's ``<a target="_blank">``)?  Double
-  angle brackets might work for inline targets::
-
-      The `reference docs <<url>>`__ may be handy.
-
-  But what about explicit targets?
+  in a new window" (as in HTML's ``<a target="_blank">``)?
 
   The MoinMoin wiki uses a caret ("^") at the beginning of the URL
   ("^" is not a legal URI character).  That could work for both inline
@@ -1663,6 +1663,26 @@ any knowledge of the Python-Reader origin of these elements.
     and collected (via a "glossary" directive perhaps) at one point.
 
 
+Doctree pruning
+---------------
+
+The number of doctree nodes can be reduced by "normalizing" some related
+nodes. This makes the document model and the writers somewhat simpler.
+
+* The "doctest" element should go away.  The construct could simply be
+  a front-end to generic literal blocks.  We could immediately (in 0.7)
+  remove the doctest node from the doctree, but leave the
+  syntax in reST.  The reST parser could represent doctest blocks as
+  literal blocks with a class attribute.  The syntax could be left in
+  reST (for a set period of time?).
+
+* Always use _`transforms.writer_aux.Admonitions` to "normalize" special
+  admonitions (note, hint, warning, ...). There is no need to keep them in
+  the doctree specification.
+
+  Keep the special admonition directives in reStructuredText syntax?
+
+
 Unimplemented Transforms
 ========================
 
@@ -1929,12 +1949,6 @@ Bug fixes
 
 * An enumerated list in the docinfo fails (\newcounter definition inside
   tabularx).
-
-Simplifications
----------------
-
-* Use the Admonitions transform from writer_aux.py to "normalize" special
-  admonitions.
 
 Generate clean and configurable LaTeX source
 ----------------------------------------------

@@ -17,6 +17,10 @@
 Changes Since 0.6
 =================
 
+* docutils/writers/latex2e/__init__.py
+
+  - use `transforms.writer_aux.Admonitions` to "normalize" special
+    admonitions.
 
 Release 0.6 (2009-10-11)
 ========================

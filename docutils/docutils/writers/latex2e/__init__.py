@@ -208,13 +208,16 @@ class Writer(writers.Writer):
         self.translator_class = LaTeXTranslator
 
     # Override parent method to add latex-specific transforms
-    ## def get_transforms(self):
-    ##    # call the parent class' method
-    ##    transforms = writers.Writer.get_transforms(self)
-    ##    # print transforms
-    ##    # TODO: footnote collection transform
-    ##    # transforms.append(footnotes.collect)
-    ##    return transforms
+    def get_transforms(self):
+       # call the parent class' method
+       transform_list = writers.Writer.get_transforms(self)
+       # print transform_list
+       # Convert specific admonitions to generic one
+       transform_list.append(transforms.writer_aux.Admonitions)
+       # TODO: footnote collection transform
+       # transform_list.append(footnotes.collect)
+       return transform_list
+
 
     def translate(self):
         visitor = self.translator_class(self.document)
@@ -1299,24 +1302,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_admonition(self, node):
         self.fallbacks['admonition'] = PreambleCmds.admonition
-        if node.tagname is 'admonition':
-            classes = ','.join(node['classes'])
-            title = ''
-        else: # specific admonitions
-            self.fallbacks['title'] = PreambleCmds.title
-            classes = node.tagname.replace('_', '-')
-            title = '\\DUtitle[%s]{%s}\n' % (
-               classes, self.language.labels.get(classes, classes))
-        self.out.append('\n\\DUadmonition[%s]{\n%s' % (classes, title))
+        if 'error' in node['classes']:
+            self.fallbacks['error'] = PreambleCmds.error
+        # strip the generic 'admonition' from the list of classes
+        node['classes'] = [cls for cls in node['classes']
+                           if cls != 'admonition']
+        self.out.append('\n\\DUadmonition[%s]{\n' % ','.join(node['classes']))
 
     def depart_admonition(self, node=None):
         self.out.append('}\n')
-
-    def visit_attention(self, node):
-        self.visit_admonition(node)
-
-    def depart_attention(self, node):
-        self.depart_admonition()
 
     def visit_author(self, node):
         self.visit_docinfo_item(node, 'author')
@@ -1374,12 +1368,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_caption(self, node):
         self.out.append('}\n')
-
-    def visit_caution(self, node):
-        self.visit_admonition(node)
-
-    def depart_caution(self, node):
-        self.depart_admonition()
 
     def visit_title_reference(self, node):
         self.fallbacks['titlereference'] = PreambleCmds.titlereference
@@ -1490,12 +1478,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_copyright(self, node):
         self.depart_docinfo_item(node)
-
-    def visit_danger(self, node):
-        self.visit_admonition(node)
-
-    def depart_danger(self, node):
-        self.depart_admonition()
 
     def visit_date(self, node):
         self.visit_docinfo_item(node, 'date')
@@ -1793,13 +1775,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out.append('\\end{list}\n')
         self._enumeration_counters.pop()
 
-    def visit_error(self, node):
-        self.fallbacks['error'] = PreambleCmds.error
-        self.visit_admonition(node)
-
-    def depart_error(self, node):
-        self.depart_admonition()
-
     def visit_field(self, node):
         # real output is done in siblings: _argument, _body, _name
         pass
@@ -1969,12 +1944,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.requirements['~header'] = ''.join(self.out)
         self.pop_output_collector()
 
-    def visit_hint(self, node):
-        self.visit_admonition(node)
-
-    def depart_hint(self, node):
-        self.depart_admonition()
-
     def to_latex_length(self, length_str):
         """Convert string with rst lenght to LaTeX"""
         match = re.match('(\d*\.?\d*)\s*(\S*)', length_str)
@@ -2051,12 +2020,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_image(self, node):
         pass
-
-    def visit_important(self, node):
-        self.visit_admonition(node)
-
-    def depart_important(self, node):
-        self.depart_admonition()
 
     def visit_interpreted(self, node):
         # @@@ Incomplete, pending a proper implementation on the
@@ -2182,12 +2145,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     ## def depart_meta(self, node):
     ##     self.out.append('[depart_meta]\n')
-
-    def visit_note(self, node):
-        self.visit_admonition(node)
-
-    def depart_note(self, node):
-        self.depart_admonition()
 
     def visit_option(self, node):
         if self.context[-1]:
@@ -2394,8 +2351,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_system_message(self, node):
         self.requirements['color'] = PreambleCmds.color
-        self.fallbacks['error'] = PreambleCmds.error
-        self.visit_admonition(node) # error or warning
+        self.fallbacks['title'] = PreambleCmds.title
+        node['classes'] = ['system-message']
+        self.visit_admonition(node)
+        self.out.append('\\DUtitle[system-message]{system-message}\n')
         self.append_hypertargets(node)
         try:
             line = ', line~%s' % node['line']
@@ -2501,12 +2460,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
             if self.active_table.need_recurse():
                 node.walkabout(self)
         self._thead_depth -= 1
-
-    def visit_tip(self, node):
-        self.visit_admonition(node)
-
-    def depart_tip(self, node):
-        self.depart_admonition()
 
     def bookmark(self, node):
         """Return label and pdfbookmark string for titles."""
@@ -2697,12 +2650,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_version(self, node):
         self.depart_docinfo_item(node)
-
-    def visit_warning(self, node):
-        self.visit_admonition(node)
-
-    def depart_warning(self, node):
-        self.depart_admonition()
 
     def unimplemented_visit(self, node):
         raise NotImplementedError('visiting unimplemented node type: %s' %
