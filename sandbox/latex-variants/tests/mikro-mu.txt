@@ -7,3 +7,9 @@ used for the SI-Prefix Mikro (= 10e-6) vanishes or is written in
 kursive:
 
 A layer of 2 µm is just 2/1000000 m thick.
+
+Workaround: 
+  use utf8x encoding (ucs package) (this inserts an *italic* mu while the
+  micro sign must be upright)
+TODO: 
+  replacements using textcomp (see writers/latex2e/__init__.py)

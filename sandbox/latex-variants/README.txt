@@ -16,6 +16,45 @@ for special needs.
 ``latex2e`` writer extensions
 *****************************
 
+.. Steps for uploading Changes:
+
+  * pepare patch to ../../docutils/docutils/writers/latex2e/__init__.py
+
+  * (add and) run functional and unit- tests::
+
+       ../../docutils/test/test_functional.py
+       ../../docutils/test/test_writers/test_latex2e.py
+
+    or all at once::
+
+       cd ../../docutils/test/
+       ./alltests.py
+
+    + if output changed: test-compile and approve new output in
+      ../../docutils/test/functional/output/
+
+    More (informal) tests are in::
+
+      ../../docutils/test/functional/input/data/latex.txt
+      ../grubert/test
+      ~/Texte/Test/Docutils
+
+  * Documentation
+
+    * remove from TODO list in ../../docutils/docs/dev/todo.txt
+      or the BUGS in ../../docutils/BUGS.txt
+
+    * describe new end-user features in ../../docutils/docs/user/latex.txt
+    * describe new settings in ../../docutils/docs/user/config.txt
+
+    * add backwards-incompatible changes to ../../docutils/RELEASE-NOTES.txt
+    * add summary of changes to ../../docutils/HISTORY.txt
+    * describe change in ../../docutils/docs/user/docutils-05-compat.sty.txt
+      (convert to style sheet and test with
+      ../../docutils/docutils/writers/latex2e/05-compatibility-test.txt
+
+  * Commit and announce.
+
 Questionnaire
 =============
 
@@ -257,34 +296,6 @@ Changes to the latex2e writer in the SVN version since docutils version 0.5
 are documented in the compatibility style sheet latex2e-compat_.
 
 Also see the `Docutils Release Notes`_, the `Docutils History`_.
-
-.. Steps for uploading Changes:
-
-  * provide patch to latex2e/__init__.py
-  * get approvement from the latex writer maintainer (Engelbert Gruber)
-
-  * (add and) run functional and unit- tests::
-
-       ../../docutils/test/test_functional.py
-       ../../docutils/test/test_writers/test_latex2e.py
-
-    or all at once::
-
-       cd ../../docutils/test/
-       ./alltests.py
-
-    + if output changed: test-compile and approve new output in
-      ../../docutils/test/functional/output/
-
-  * Documentation
-
-    * remove from TODO list in ../../docutils/docs/dev/todo.txt
-
-    * describe new end-user features in ../../docutils/docs/user/latex.txt
-
-    * add backwards-incompatible changes to ../../docutils/RELEASE-NOTES.txt
-    * add summary of changes to ../../docutils/HISTORY.txt
-    * describe change in ../../docutils/docs/user/docutils-05-compat.sty.txt
 
 
 Alternative latex writers
