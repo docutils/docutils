@@ -3,13 +3,14 @@
 Informal tests
 ================
 
-The `<input>`_ directory contains test documents highlighting
+This directory contains test documents highlighting
 problems with the LaTeX export and for testing alternatives.
+
 
 Unit test scripts
 =================
 
-The test scripts are developed with (and for) the nose_ test framework but
+Unit test scripts are developed with (and for) the nose_ test framework but
 should run with `py.test`_ as well.
 
 
