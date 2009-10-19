@@ -914,8 +914,7 @@ _`hyperlink_color`
     Default: "blue".  Option: ``--hyperlink-color``.
 
 _`documentclass`
-    Specify latex documentclass, *but* beaware that books have chapters
-    articles not.
+    Specify latex documentclass.
 
     Default: "article".  Option: ``--documentclass``.
 
@@ -928,10 +927,12 @@ _`documentoptions`
 _`font_encoding`
     Specify LaTeX font encoding. Multiple options can be given, separated
     by commas. Possible values are "", "T1", "OT1", "LGR,T1" or any other
-    combination of options to the `fontenc` package.
+    combination of `LaTeX font encodings`_.
 
     Default: "T1".  Option: ``--font-encoding``.
 
+    .. _LaTeX font encodings:
+       http://tug.ctan.org/tex-archive/macros/latex/doc/encguide.pdf
 
 .. _embed_stylesheet [latex2e writer]:
 
@@ -1025,6 +1026,20 @@ _`compound_enumerators`
 
     Default: disabled (None).  Options: ``--compound-enumerators``,
     ``--no-compound-enumerators``.
+
+_`literal_block_env`
+    When possibile\ [#]_, use the specified environment for literal-blocks.
+
+    Default: "" (quoting of whitespace and special chars)
+    Option: ``--literal-block-env``
+
+   .. [#] A literal-block element, when processed by a Docutils writer might
+      have it's origin in a markup with "::" syntax or a "..
+      parsed-literal::" directive.
+
+      A LaTeX verbatim environment is only usable if there is no other
+      markup contained in the literal-block.
+
 
 _`section_prefix_for_enumerators`
     Enable or disable section ("." subsection ...) prefixes for
