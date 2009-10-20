@@ -22,6 +22,11 @@ Changes Since 0.6
   - use `transforms.writer_aux.Admonitions` to "normalize" special
     admonitions.
 
+* docutils/nodes.py
+
+  - Fix: encoding ``'ascii'`` must be lowercase to prevent problems for
+    turkish locale.
+
 Release 0.6 (2009-10-11)
 ========================
 
