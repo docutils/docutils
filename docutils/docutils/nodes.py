@@ -1840,9 +1840,10 @@ def make_id(string):
         id = id.decode()
     id = id.translate(_non_id_translate_digraphs)
     id = id.translate(_non_id_translate)
-    # get rid of non-ascii characters
+    # get rid of non-ascii characters.
+    # 'ascii' lowercase to prevent problems with turkish locale.
     id = unicodedata.normalize('NFKD', id).\
-         encode('ASCII', 'ignore').decode('ASCII')
+         encode('ascii', 'ignore').decode('ascii')
     # shrink runs of whitespace and replace by hyphen
     id = _non_id_chars.sub('-', ' '.join(id.split()))
     id = _non_id_at_ends.sub('', id)
