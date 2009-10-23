@@ -493,6 +493,7 @@ PreambleCmds.linking = r"""
 %% hyperlinks:
 \ifthenelse{\isundefined{\hypersetup}}{
   \usepackage[colorlinks=%s,linkcolor=%s,urlcolor=%s]{hyperref}
+  \urlstyle{same} %% normal text font (alternatives: tt, rm, sf)
 }{}"""
 
 PreambleCmds.minitoc = r"""%% local table of contents
@@ -1185,6 +1186,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
             0x2665: ur'\ding{170}',     # black heartsuit
             0x2666: ur'\ding{169}',     # black diamondsuit
         }
+        # TODO: replacements using textcomp
+        ## textcomp_chars = {
+	##     0x00B5: ur'\textmu{}', # MICRO SIGN
+	## }
         # TODO: greek alphabet ... ?
         # see also LaTeX codec
         # http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/252124
@@ -2240,14 +2245,37 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if node['classes']:
             self.depart_inline(node)
 
+    def has_unbalanced_braces(self, string):
+        level = 0
+        for ch in string:
+            if ch == '{':
+                level += 1
+            if ch == '}':
+                level -= 1
+            if level < 0:
+                return True
+        return level != 0
+
     def visit_reference(self, node):
-        # BUG: hash_char '#' is troublesome in LaTeX.
-        # mbox and other environments do not like the '#'.
-        hash_char = '\\#'
+        # We need to escape #, \, and % if we use the URL in a command.
+        special_chars = {ord('#'): ur'\#',
+                         ord('%'): ur'\%',
+                         ord('\\'): ur'\\',
+                        }
+        # external reference (URL)
         if 'refuri' in node:
-            href = node['refuri'].replace('#', hash_char)
-            self.out.append('\\href{%s}{' % href.replace('%', '\\%'))
+            href = unicode(node['refuri']).translate(special_chars)
+            # problematic chars double caret and unbalanced braces:
+            if href.find('^^') != -1 or self.has_unbalanced_braces(href):
+                self.document.reporter.error(
+                    'External link "%s" not supported by LaTeX.\n'
+		    ' (Must not contain "^^" or unbalanced braces.)' % href)
+            if node['refuri'] == node.astext():
+                self.out.append(r'\url{%s}' % href)
+                raise nodes.SkipNode
+            self.out.append(r'\href{%s}{' % href)
             return
+        # internal reference
         if 'refid' in node:
             href = node['refid']
         elif 'refname' in node:
@@ -2256,11 +2284,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
             raise AssertionError('Unknown reference.')
         if not self.is_inline(node):
             self.out.append('\n')
-
         self.out.append('\\hyperref[%s]{' % href)
-        if self._reference_label and 'refuri' not in node:
-            self.out.append('\\%s{%s}}' % (self._reference_label,
-                        href.replace(hash_char, '')))
+        if self._reference_label:
+            self.out.append('\\%s{%s}}' %
+                            (self._reference_label, href.replace('#', '')))
             raise nodes.SkipNode
 
     def depart_reference(self, node):

@@ -17,6 +17,7 @@ not need to be tested with other writers (e.g. the HTML writer).
 .. include:: data/unicode.txt
 .. include:: data/latex_encoding.txt
 .. include:: data/hyperlinking.txt
+.. include:: data/urls.txt
 .. unusual combinations (from newlatex, for interactive testing)
    .. include:: data/latex.txt
 
