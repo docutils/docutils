@@ -53,15 +53,15 @@ In many cases, LaTeX code is not the desired end-format of the document.
 LaTeX offers (at least) four ways to generate PDF documents from the LaTeX
 source:
 
-pdflatex
+_`pdflatex`
   Generates a PDF document directly from the LaTeX file.
 
-latex dvipdfm
+_`latex + dvipdfm`
   Use ``latex`` to generate a DVI file and ``dvipdfm`` to produce a PDF
   file. If you take this approach, add ``dvipdfm`` to the
-  ``--documentoptions``.
+  _documentoptions.
 
-latex dvips ps2pdf
+latex + dvips + ps2pdf
   Produce a DVI file with ``latex``, postscript with ``dvips`` and PDF with
   ``ps2pdf``.
 
@@ -74,6 +74,7 @@ get internal references correct. The Rubber_ wrapper for LaTeX and friends
 can be used to automatically run all programs the required number of times
 and delete "spurious" files.
 
+.. _documentoptions: ../user/config.html#documentoptions
 .. _Rubber: http://iml.univ-mrs.fr/~beffara/soft/rubber/
 
 
@@ -312,7 +313,7 @@ Example:
 Raw LaTeX
 ---------
 
-By means of the `raw directive`_ or derived `custom roles`_, one can give
+By means of the `raw directive`_ or a derived `custom role`_, one can give
 commands directly to LaTeX.
 
 These can be both, styling as well as printing commands, as LaTeX (unlike
@@ -878,15 +879,31 @@ Example:
 hyperlinks
 ``````````
 
-Hyperlinks are realized using the hyperref_ package.
-To reduce incompatibilities, this package is loaded last, *after* the
-style sheets.
+Hyperlinks are realized using the hyperref_ package. As it re-defines many
+standard LaTeX macros, this package is loaded last, *after* the style
+sheets.
+
 However, you can load hyperref with custom options (or before a package that
-requires its presence) in a custom `style sheet`_, e.g. ::
+requires its presence) in a `style sheet`_, e.g. ::
 
   \usepackage[colorlinks=true,linkcolor=green,urlcolor=blue]{hyperref}
 
 and it will not be loaded again.
+
+URLs are typeset with the "url" package (loaded implicitely by "hyperref").
+The font of URLs can be defined with the ``\urlstyle`` command. Valid
+arguments are
+
+:same:  normal text font, Docutils default,
+:tt:    teletype (monospaced), LaTeX default,
+:rm:    roman,
+:sf:    sans serif
+
+Example:
+  use the LaTeX default (monospaced fonts for URLs)::
+
+   \usepackage{url}
+   \urlstyle{tt}
 
 See also `non-breaking hyperlinks`_.
 
@@ -1343,7 +1360,7 @@ With use-latex-toc (default since release 0.6):
 .. _minitoc:
    http://www.ctan.org/tex-archive/help/Catalogue/entries/minitoc.html
 .. _minitoc documentation:
-__ http://ctan.org/get/macros/latex/contrib/minitoc/minitoc.pdf
+   http://ctan.org/get/macros/latex/contrib/minitoc/minitoc.pdf
 
 
 title reference role
@@ -1389,11 +1406,11 @@ LaTeX comes with two packages for UTF-8 support,
 
 :utf8:  by the standard `inputenc`_ package with only limited coverage
         (mainly accented chars, only few non-alphabetic symbols, no Greek or
-	Cyrillic).
+        Cyrillic).
 
 :utf8x: supported by the `ucs`_ package covers a wider range of Unicode
-	characters than does "utf8".  It is, however, a non-standard
-	extension and no longer developed.
+        characters than does "utf8".  It is, however, a non-standard
+        extension and no longer developed.
 
 Currently (in version 0.6), "utf8" is used if the output-encoding is
 any of "utf_8", "U8", "UTF", or "utf8".
@@ -1491,19 +1508,18 @@ Wrong:
      \usepackage[breaklinks=true]{hyperref}
 
   "breaklinks" is an internal option that indicates whether the chosen
-  driver can handle broken links.
+  driver can handle split links. (It might work to *disable* link breaking.)
 
 Right:
   Use one of the following:
 
-  a) compile with ``pdflatex``,
+  a) compile with pdflatex_,
 
-  b) compile with ``latex`` followed by ``dvipdfm`` and call hyperref with
-     the option ``driver=dvipdf``, or
+  b) compile with `latex + dvipdfm`_,
 
-  c) use the package breakurl_.
+  c) use the package breakurl_,
 
-  d) (for printout) `disable hyperlinks`_ using the package "nohyperref"
+  d) (for printout) `disable hyperlinks`_ using the package "nohyperref".
 
 See also the `Link text doesn’t break at end line`_ FAQ entry.
 

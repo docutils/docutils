@@ -19,8 +19,10 @@ Changes Since 0.6
 
 * docutils/writers/latex2e/__init__.py
 
-  - use `transforms.writer_aux.Admonitions` to "normalize" special
+  - Use `transforms.writer_aux.Admonitions` to "normalize" special
     admonitions.
+  - Use the ``\url`` command for URLs (breaks long URLs instead of
+    writing into the margin).
 
 * docutils/nodes.py
 

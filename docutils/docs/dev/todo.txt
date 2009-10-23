@@ -2029,6 +2029,10 @@ Which packages do we want to use?
      :bigfoot: texlive-latex-extra
      :footnote: texlive-latex-recommended
      :perpage: texlive-latex-extra
+     :ftnxtra: new on CTAN
+	       fixes the issue of footnote inside \caption{},
+	       tabular environment and \section{} like commands.
+
 
   .. Footnote FAQs:
 
@@ -2263,70 +2267,38 @@ Ideas:
     -1 prevents passing of options to the "ucs" package.
 
 
-wrapping URLs
-`````````````
+problematic URLs
+````````````````
 
-Hyperlinks are not hyphenated; this leads to bad spacing. See
-docs/user/rst/demo.txt 2.14 directives.
+* ^^ LaTeX's special syntax for characters results in "strange" replacements
+  (both with \href and \url).
 
-See the thread "LaTeX writer: trouble with URLs" at docutils-devel and
-http://www.tex.ac.uk/cgi-bin/texfaq2html?label=breaklinks
+  `file with ^^ <../strange^^name>`__:
+  `<../strange^^name>`__
 
-Use \url to typeset URLs. With hyperref,
+* Unbalanced braces, { or }, will fail (both with \href and \url)::
 
-*    \nolinkurl    is an alias for the url package's \url
-*    \url          is equivalent to \href{URL}{\nolinkurl{URL}}.
+    `file with { <../strange{name>`__
+    `<../strange{name>`__
 
-I don't think we need special support for the 'deception' case
-`NAME <URL1>`_ with NAME != URL1 and NAME a valid URL.
+Currently, a warning is written to the error output stream.
 
-Detection
-^^^^^^^^^
+For correct printing, we can
 
-* Test <reference> nodes for ``node[refuri] == node.astext()``
-
-* Apply also to the content of the "uri-reference" role (once it is
-  implemented).
-
-(Do we need an additional test with Docutils' default detection mechanism
-states.Inliner.patterns.uri ?)
-
-
-Layout/Font
-^^^^^^^^^^^
-
-We could ensure the same look as currently (normal text font for URLs) with
-``\urlstyle{same}``, but I would stick to the LaTeX default and document the
-configuration options.
-
-Fragility
-^^^^^^^^^
-
-   The "\url" command is fragile, and its argument is likely to be very
-   fragile, but a defined-url is robust:
-
-As \url is a very special, ``verb``-like command, escaping does not always
-work.
-
-We need to check the conditions:
-
-   If the argument contains any "%", "#", or "^^", or ends with "\", it
-   can't be used in the argument to another command. The argument must not
-   contain unbalanced braces.
-
-Escaping works for # and %::
-
-   \footnote{siehe \url{http://www.w3.org/XML/Schema\#dev}}
-   \footnote{siehe \url{http://example.org/Schema\%dev}}
-
-For "^^", we can define a url-command in the preamble ::
+* use the \href command with "normal" escaped name argument, or
+* define a url-command in the preamble ::
 
     \urldef{\fragileURLi}\nolinkurl{myself%node@gateway.net}
 
-but need to find a way to insert it as href argument, as the following fails
-::
+but need to find a way to insert it as href argument.
+
+The following fails::
 
     \href{http://www.w3.org/XML/Schema^^dev}{\fragileURLi}
+
+Use %-replacement like http://nowhere/url_with%28parens%29 ?
+
+-> does not work for file paths (with pdflatex and xpdf).
 
 
 add-stylesheet option

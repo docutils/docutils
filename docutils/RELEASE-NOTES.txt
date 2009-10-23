@@ -21,6 +21,11 @@ more detailed list of changes, please see the `Docutils History`_.
 Changes Since 0.6
 =================
 
+* LaTeX2e writer:
+
+  - Use the ``\url`` command for URLs (breaks long URLs instead of writing
+    into the margin).
+
 
 Release 0.6 (2009-10-11)
 ========================
