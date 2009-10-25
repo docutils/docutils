@@ -78,10 +78,10 @@ class Include(Directive):
         endline = self.options.get('end-line', None)
         try:
             if startline or (endline is not None):
-                include_lines = include_file.readlines()
-                include_text = ''.join(include_lines[startline:endline])
+                lines = include_file.readlines()
+                rawtext = ''.join(lines[startline:endline])
             else:
-                include_text = include_file.read()
+                rawtext = include_file.read()
         except UnicodeError, error:
             raise self.severe(
                 'Problem with "%s" directive:\n%s: %s'
@@ -90,33 +90,32 @@ class Include(Directive):
         # and no restrictions on matching inside lines vs. line boundaries
         after_text = self.options.get('start-after', None)
         if after_text:
-            # skip content in include_text before *and incl.* a matching text
-            after_index = include_text.find(after_text)
+            # skip content in rawtext before *and incl.* a matching text
+            after_index = rawtext.find(after_text)
             if after_index < 0:
                 raise self.severe('Problem with "start-after" option of "%s" '
                                   'directive:\nText not found.' % self.name)
-            include_text = include_text[after_index + len(after_text):]
+            rawtext = rawtext[after_index + len(after_text):]
         before_text = self.options.get('end-before', None)
         if before_text:
-            # skip content in include_text after *and incl.* a matching text
-            before_index = include_text.find(before_text)
+            # skip content in rawtext after *and incl.* a matching text
+            before_index = rawtext.find(before_text)
             if before_index < 0:
                 raise self.severe('Problem with "end-before" option of "%s" '
                                   'directive:\nText not found.' % self.name)
-            include_text = include_text[:before_index]
+            rawtext = rawtext[:before_index]
         if 'literal' in self.options:
             # Convert tabs to spaces, if `tab_width` is positive.
             if tab_width >= 0:
-                text = include_text.expandtabs(tab_width)
+                text = rawtext.expandtabs(tab_width)
             else:
-                text = include_text
-            literal_block = nodes.literal_block(include_text, text, 
-                                                source=path)
+                text = rawtext
+            literal_block = nodes.literal_block(rawtext, text, source=path)
             literal_block.line = 1
             return [literal_block]
         else:
             include_lines = statemachine.string2lines(
-                include_text, tab_width, convert_whitespace=1)
+                rawtext, tab_width, convert_whitespace=1)
             self.state_machine.insert_input(include_lines, path)
             return []
 
