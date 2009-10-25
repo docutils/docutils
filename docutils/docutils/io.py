@@ -207,7 +207,7 @@ class FileInput(Input):
 
     def __init__(self, source=None, source_path=None,
                  encoding=None, error_handler='strict',
-                 autoclose=1, handle_io_errors=1):
+                 autoclose=1, handle_io_errors=1, mode='rU'):
         """
         :Parameters:
             - `source`: either a file-like object (which is read directly), or
@@ -218,6 +218,9 @@ class FileInput(Input):
             - `autoclose`: close automatically after read (boolean); always
               false if `sys.stdin` is the source.
             - `handle_io_errors`: summarize I/O errors here, and exit?
+            - `mode`: how the file is to be opened (see standard function
+              `open`). The default 'rU' provides universal newline support
+              for text files.
         """
         Input.__init__(self, source, source_path, encoding, error_handler)
         self.autoclose = autoclose
@@ -225,7 +228,7 @@ class FileInput(Input):
         if source is None:
             if source_path:
                 try:
-                    self.source = open(source_path, 'rb')
+                    self.source = open(source_path, mode)
                 except IOError, error:
                     if not handle_io_errors:
                         raise
