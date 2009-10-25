@@ -25,6 +25,7 @@ Changes Since 0.6
 
   - Use the ``\url`` command for URLs (breaks long URLs instead of writing
     into the margin).
+  - Preserve runs of spaces in 'inline literals'.
 
 
 Release 0.6 (2009-10-11)

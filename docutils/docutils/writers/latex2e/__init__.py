@@ -855,8 +855,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     verbatim = False                   # do not encode
     insert_non_breaking_blanks = False # replace blanks by "~"
     insert_newline = False             # add latex newline commands
-    literal = False                    # teletype: replace underscores
-    literal_block = False # inside literal block: no quote mangling
+    literal = False                    # literal text (block or inline)
 
 
     def __init__(self, document):
@@ -966,7 +965,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self._max_enumeration_counters = 0
 
         self._bibitems = []
-        self.literal_block_stack = []
 
         # object for a table while proccessing.
         self.table_stack = []
@@ -1134,7 +1132,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         separate_chars = '-'
         # In monospace-font, we also separate ',,', '``' and "''" and some
         # other characters which can't occur in non-literal text.
-        if self.literal_block or self.literal:
+        if self.literal:
             separate_chars += ',`\'"<>'
         # LaTeX encoding maps:
         special_chars = {
@@ -1161,6 +1159,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         unsupported_unicode_chars = {
             0x00A0: ur'~', # NO-BREAK SPACE
 	    0x00AD: ur'\-', # SOFT HYPHEN
+	    0x2011: ur'\hbox{-}', # NON-BREAKING HYPHEN
             0x21d4: ur'$\Leftrightarrow$',
             # Docutils footnote symbols:
             0x2660: ur'$\spadesuit$',
@@ -1203,7 +1202,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # Workarounds for OT1 font-encoding
         if self.font_encoding in ['OT1', '']:
             # * out-of-order characters in cmtt
-            if self.literal_block or self.literal:
+            if self.literal:
                 # replace underscore by underlined blank,
                 # because this has correct width.
                 table[ord('_')] = u'\\underline{~}'
@@ -1218,7 +1217,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 table[ord('>')] = ur'\textgreater{}'
         if self.insert_non_breaking_blanks:
             table[ord(' ')] = ur'~'
-        if self.literal_block or self.literal:
+        if self.literal:
             # double quotes are 'active' in some languages
             table[ord('"')] = self.babel.literal_double_quote
         else:
@@ -1240,12 +1239,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # '---' by '-{}--'.
             text = text.replace(char + char, char + '{}' + char)
         # Literal line breaks (in address or literal blocks):
-        if self.insert_newline or self.literal_block:
+        if self.insert_newline:
             # for blank lines, insert a protected space, to avoid
             # ! LaTeX Error: There's no line here to end.
             textlines = [line + '~'*(not line.lstrip())
                          for line in text.split('\n')]
             text = '\\\\\n'.join(textlines)
+        if self.literal and not self.insert_non_breaking_blanks:
+            # preserve runs of spaces but allow wrapping
+            text = text.replace('  ', ' ~')
         if not self.latex_encoding.startswith('utf8'):
             text = self.ensure_math(text)
         return text
@@ -1646,13 +1648,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out.append('\\emph{')
         if node['classes']:
             self.visit_inline(node)
-        self.literal_block_stack.append('\\emph{')
 
     def depart_emphasis(self, node):
         if node['classes']:
             self.depart_inline(node)
         self.out.append('}')
-        self.literal_block_stack.pop()
 
     def visit_entry(self, node):
         self.active_table.visit_entry()
@@ -2121,8 +2121,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.out.append('\\begin{%s}%s\n' % (self.literal_block_env,
                                                  self.literal_block_options))
         else:
-            self.literal_block = 1
-            self.insert_non_breaking_blanks = 1
+            self.literal = True
+            self.insert_newline = True
+            self.insert_non_breaking_blanks = True
             self.out.append('{\\ttfamily \\raggedright \\noindent\n')
 
     def depart_literal_block(self, node):
@@ -2132,7 +2133,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             self.out.append('\n}')
             self.insert_non_breaking_blanks = False
-            self.literal_block = False
+            self.insert_newline = False
+            self.literal = False
         self.out.append(self.context.pop())
 
     ## def visit_meta(self, node):
@@ -2344,7 +2346,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_strong(self, node):
         self.out.append('\\textbf{')
-        self.literal_block_stack.append('\\textbf{')
         if node['classes']:
             self.visit_inline(node)
 
@@ -2352,7 +2353,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if node['classes']:
             self.depart_inline(node)
         self.out.append('}')
-        self.literal_block_stack.pop()
 
     def visit_substitution_definition(self, node):
         raise nodes.SkipNode

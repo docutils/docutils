@@ -23,6 +23,9 @@ Changes Since 0.6
     admonitions.
   - Use the ``\url`` command for URLs (breaks long URLs instead of
     writing into the margin).
+  - Preserve runs of spaces in `inline literals`__.
+
+__ docs/ref/restructuredtext.html#inline-literals
 
 * docutils/nodes.py
 
