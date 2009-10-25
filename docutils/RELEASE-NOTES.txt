@@ -21,12 +21,18 @@ more detailed list of changes, please see the `Docutils History`_.
 Changes Since 0.6
 =================
 
+Components:
+
 * LaTeX2e writer:
 
   - Use the ``\url`` command for URLs (breaks long URLs instead of writing
     into the margin).
   - Preserve runs of spaces in 'inline literals'.
 
+General:
+
+* io.FileInput opens files as text files with universal newline support
+  (mode "rU", configurable with the new optional argument "mode").
 
 Release 0.6 (2009-10-11)
 ========================

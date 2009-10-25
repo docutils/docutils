@@ -537,6 +537,10 @@ TAB expansion with literal include:
     <literal_block source="%s" xml:space="preserve">
         Literal included this should **not** be *marked* `up`.
                 <- leading raw tab.
+        
+        Newlines
+        are
+        normalized.
 """ % include_literal],
 ["""\
 Custom TAB expansion with literal include:
@@ -552,6 +556,10 @@ Custom TAB expansion with literal include:
     <literal_block source="%s" xml:space="preserve">
         Literal included this should **not** be *marked* `up`.
           <- leading raw tab.
+        
+        Newlines
+        are
+        normalized.
 """ % include_literal],
 ["""\
 No TAB expansion with literal include:
@@ -567,6 +575,10 @@ No TAB expansion with literal include:
     <literal_block source="%s" xml:space="preserve">
         Literal included this should **not** be *marked* `up`.
         \t<- leading raw tab.
+        
+        Newlines
+        are
+        normalized.
 """ % include_literal],
 ]
 
