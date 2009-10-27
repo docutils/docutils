@@ -1257,6 +1257,13 @@ when used in a document.
           .. include::
              :url: http://www.example.org/inclusion.txt
 
+    - Strip blank lines from begin and end of a literal included file or
+      file section. This would correspond to the way a literal block is
+      handled.
+
+      As nodes.literal_block expects (and we have) the text as a string
+      (rather than a list of lines), using a regexp seems the way.
+
   - _`misc.raw`: add a "destination" option to the "raw" directive? ::
 
         .. raw:: html
@@ -2192,8 +2199,6 @@ Tables
 
 Image and figure directives
 ```````````````````````````
-
-* Document graphics peculiarities, e.g. accepted formats.
 
 * compare the test case in:
 
