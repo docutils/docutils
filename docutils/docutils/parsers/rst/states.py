@@ -423,9 +423,12 @@ class RSTState(StateWS):
         return self.inliner.parse(text, lineno, self.memo, self.parent)
 
     def unindent_warning(self, node_name):
-        return self.reporter.warning(
-            '%s ends without a blank line; unexpected unindent.' % node_name,
-            line=(self.state_machine.abs_line_number() + 1))
+        # the actual problem is one line below the current line
+        spot = self.state_machine.get_source_spot()
+        spot['line'] += 1
+        return self.reporter.warning('%s ends without a blank line; '
+                                     'unexpected unindent.' % node_name,
+                                     **spot)
 
 
 def build_regexp(definition, compile=1):
@@ -1930,6 +1933,7 @@ class Body(RSTState):
     def substitution_def(self, match):
         pattern = self.explicit.patterns.substitution
         lineno = self.state_machine.abs_line_number()
+        spot = self.state_machine.get_source_spot()
         block, indent, offset, blank_finish = \
               self.state_machine.get_first_known_indented(match.end(),
                                                           strip_indent=0)
@@ -1960,7 +1964,7 @@ class Body(RSTState):
         if not block:
             msg = self.reporter.warning(
                 'Substitution definition "%s" missing contents.' % subname,
-                nodes.literal_block(blocktext, blocktext), line=lineno)
+                nodes.literal_block(blocktext, blocktext), **spot)
             return [msg], blank_finish
         block[0] = block[0].strip()
         substitution_node['names'].append(
@@ -1981,14 +1985,12 @@ class Body(RSTState):
                 pformat = nodes.literal_block('', node.pformat().rstrip())
                 msg = self.reporter.error(
                     'Substitution definition contains illegal element:',
-                    pformat, nodes.literal_block(blocktext, blocktext),
-                    line=lineno)
+                    pformat, nodes.literal_block(blocktext, blocktext), **spot)
                 return [msg], blank_finish
         if len(substitution_node) == 0:
             msg = self.reporter.warning(
-                  'Substitution definition "%s" empty or invalid.'
-                  % subname,
-                  nodes.literal_block(blocktext, blocktext), line=lineno)
+                  'Substitution definition "%s" empty or invalid.' % subname,
+                  nodes.literal_block(blocktext, blocktext), **spot)
             return [msg], blank_finish
         self.document.note_substitution_def(
             substitution_node, subname, self.parent)
@@ -2062,9 +2064,8 @@ class Body(RSTState):
             result = directive_instance.run()
         except docutils.parsers.rst.DirectiveError, error:
             msg_node = self.reporter.system_message(error.level, error.msg,
-                                        source=error.source, line=error.line)
+                                                    **error.spot)
             msg_node += nodes.literal_block(block_text, block_text)
-            msg_node['line'] = lineno
             result = [msg_node]
         assert isinstance(result, list), \
                'Directive "%s" must return a list of nodes.' % type_name
@@ -2761,7 +2762,7 @@ class Text(RSTState):
                 if len(parts) == 1:
                     node_list[-1] += node
                 else:
-                    
+
                     node_list[-1] += nodes.Text(parts[0].rstrip())
                     for part in parts[1:]:
                         classifier_node = nodes.classifier('', part)

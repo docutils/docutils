@@ -3,5 +3,8 @@
 hi
 -----
 
+  indent
+error
+
 hi
 -----

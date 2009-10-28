@@ -324,27 +324,44 @@ Include file is UTF-16-encoded, and is not valid ASCII.
                :encoding: ascii
 """ % utf_16_file_rel],
 # @@@ BUG with errors reported with incorrect "source" & "line":
-# ["""\
-# Testing bad charent includes:
-#
-# .. include:: %s
-# """ % include10,
-# """\
-# <document source="test data">
-#     <paragraph>
-#         Testing bad charent includes:
-#     <system_message level="3" line="1" source="%s" type="ERROR">
-#         <paragraph>
-#             Invalid character code: 0xFFFFFFFFF
-#             int() literal too large: FFFFFFFFF
-#         <literal_block xml:space="preserve">
-#             unicode:: 0xFFFFFFFFF
-#     <system_message level="2" line="1" source="%s" type="WARNING">
-#         <paragraph>
-#             Substitution definition "bad" empty or invalid.
-#         <literal_block xml:space="preserve">
-#             .. |bad| unicode:: 0xFFFFFFFFF
-# """ % (include10rel, include10rel)],
+["""\
+Testing bad charent includes:
+
+.. include:: %s
+""" % include10,
+"""\
+<document source="test data">
+    <paragraph>
+        Testing bad charent includes:
+    <system_message level="3" line="1" source="%s" type="ERROR">
+        <paragraph>
+            Invalid character code: 0xFFFFFFFFF
+            ValueError: unichr() arg not in range(0x110000) (wide Python build)
+        <literal_block xml:space="preserve">
+            unicode:: 0xFFFFFFFFF
+    <system_message level="2" line="1" source="%s" type="WARNING">
+        <paragraph>
+            Substitution definition "bad" empty or invalid.
+        <literal_block xml:space="preserve">
+            .. |bad| unicode:: 0xFFFFFFFFF
+    <section dupnames="hi" ids="hi">
+        <title>
+            hi
+        <block_quote>
+            <paragraph>
+                indent
+        <system_message level="2" line="7" source="%s" type="WARNING">
+            <paragraph>
+                Block quote ends without a blank line; unexpected unindent.
+        <paragraph>
+            error
+    <section dupnames="hi" ids="id1">
+        <title>
+            hi
+        <system_message backrefs="id1" level="1" line="10" source="%s" type="INFO">
+            <paragraph>
+                Duplicate implicit target name: "hi".
+""" % (include10rel, include10rel, include10rel, include10rel)],
 ["""\
 Include file with whitespace in the path:
 
