@@ -17,6 +17,10 @@
 Changes Since 0.6
 =================
 
+* General:
+
+  - (partially) Fix reporting for problems in included files.
+
 * docutils/io.py
 
   - FileInput opens files as text files with universal newline support

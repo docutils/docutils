@@ -348,6 +348,15 @@ class StateMachine:
         """Return source of line at absolute line offset `line_offset`."""
         return self.input_lines.source(line_offset - self.input_offset)
 
+    def get_source_spot(self, line_offset=None):
+        """Return dict with source position of current or given line"""
+        if line_offset is None:
+            line_offset = self.line_offset
+        else:
+            line_offset -= self.input_offset
+        (source, offset) = self.input_lines.info(line_offset)
+        return {'source': source, 'line': offset + 1}
+
     def abs_line_offset(self):
         """Return line offset of current line, from beginning of file."""
         return self.line_offset + self.input_offset
@@ -358,9 +367,9 @@ class StateMachine:
 
     def insert_input(self, input_lines, source):
         self.input_lines.insert(self.line_offset + 1, '',
-                                source='internal padding')
+                                source='internal padding after ' + source)
         self.input_lines.insert(self.line_offset + 1, '',
-                                source='internal padding')
+                                source='internal padding before '+ source)
         self.input_lines.insert(self.line_offset + 2,
                                 StringList(input_lines, source))
 
@@ -757,7 +766,7 @@ class StateMachineWS(StateMachine):
     `StateMachine` subclass specialized for whitespace recognition.
 
     There are three methods provided for extracting indented text blocks:
-    
+
     - `get_indented()`: use when the indent is unknown.
     - `get_known_indented()`: use when the indent is known for all lines.
     - `get_first_known_indented()`: use when only the first line's indent is
@@ -1046,7 +1055,7 @@ class ViewList:
     child and parent lists can be broken by calling `disconnect()` on the
     child list.
 
-    Also, ViewList objects keep track of the source & offset of each item. 
+    Also, ViewList objects keep track of the source & offset of each item.
     This information is accessible via the `source()`, `offset()`, and
     `info()` methods.
     """
@@ -1103,9 +1112,8 @@ class ViewList:
     def __len__(self): return len(self.data)
 
     # The __getitem__()/__setitem__() methods check whether the index
-    # is a slice first, since native list objects start supporting
-    # them directly in Python 2.3 (no exception is raised when
-    # indexing a list with a slice object; they just work).
+    # is a slice first, since indexing a native list with a slice object
+    # just works.
 
     def __getitem__(self, i):
         if isinstance(i, types.SliceType):
