@@ -2041,6 +2041,7 @@ class Body(RSTState):
             from docutils.parsers.rst import convert_directive_function
             directive = convert_directive_function(directive)
         lineno = self.state_machine.abs_line_number()
+        spot = self.state_machine.get_source_spot()
         initial_line_offset = self.state_machine.line_offset
         indented, indent, line_offset, blank_finish \
                   = self.state_machine.get_first_known_indented(match.end(),
@@ -2064,7 +2065,7 @@ class Body(RSTState):
             result = directive_instance.run()
         except docutils.parsers.rst.DirectiveError, error:
             msg_node = self.reporter.system_message(error.level, error.msg,
-                                                    **error.spot)
+                                                    **spot)
             msg_node += nodes.literal_block(block_text, block_text)
             result = [msg_node]
         assert isinstance(result, list), \
