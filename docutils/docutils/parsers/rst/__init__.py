@@ -169,14 +169,11 @@ class DirectiveError(Exception):
     instead!
     """
 
-    def __init__(self, level, message, spot):
-        """
-        Initialize with `message`, system message `level`, and error `spot`
-        """
+    def __init__(self, level, message):
+        """Set error `message` and `level`"""
         Exception.__init__(self)
         self.level = level
         self.msg = message
-        self.spot = spot
 
 
 class Directive(object):
@@ -314,8 +311,7 @@ class Directive(object):
         You'd often use self.error(message) instead, which will
         generate an ERROR-level directive error.
         """
-        spot = self.state_machine.get_source_spot(self.lineno - 1)
-        return DirectiveError(level, message, spot)
+        return DirectiveError(level, message)
 
     def debug(self, message):
         return self.directive_error(0, message)
