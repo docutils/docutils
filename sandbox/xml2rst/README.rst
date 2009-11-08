@@ -38,7 +38,7 @@ instructions how to do this.
 Copyright and license
 ---------------------
 
-Copyright (C) 2005, 2006 by Stefan Merten and David Priest
+Copyright (C) 2005, 2006, 2009 by Stefan Merten and David Priest
 
 License is GPL_ v2 or later.
 
@@ -101,11 +101,7 @@ changed sometimes.
 However, the coverage of Docutils features of ``xml2rst`` is pretty
 good. A few minor features are not supported:
 
-* ``.. contents:: :local:``
-
 * Fully minimized style for literal blocks
-
-* ``<raw>`` element as inline element
 
 * Substitution references for ``replace::`` substitutions
 
@@ -123,16 +119,6 @@ For a roundtrip try::
 -----------
 Development
 -----------
-
-Docutils version 0.3.7
-======================
-
-`xml2rst` has been developed for Docutils v0.3.7. It does not
-necessarily reflect all new features which became part of Docutils
-since that version.
-
-Check the big comment at the beginning of the file to find out what
-needs consideration.
 
 ToDos
 =====
