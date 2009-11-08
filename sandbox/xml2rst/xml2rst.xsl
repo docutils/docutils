@@ -9,7 +9,7 @@
 ]>
 
 <!--
-     Copyright (C) 2005, 2006 Stefan Merten, David Priest
+     Copyright (C) 2005, 2006, 2009 Stefan Merten, David Priest
 
      xml2rst.xsl is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -30,46 +30,13 @@
 <!-- ********************************************************************** -->
 <!-- ********************************************************************** -->
 
-<!-- TODO: This is tested with Docutils 0.3.7 - an update to 0.4 is needed.
-
-     From HISTORY.txt:
-
-     0.4
-
-     - Added a "container" element.
-
-       Part of `compound_body_elements`.
-
-       Comes from `.. container::` directive.
-
-     0.3.9
-
-     - Eliminated and replaced all uses of the old string attributes
-       ``id``, ``name``, ``dupname`` and ``class`` with references to the
-       new list attributes ``ids``, ``names``, ``dupnames`` and
-       ``classes`` throughout the whole source tree.
-
-       Could eventually be done by XML entities like "@id | @ids".
-
-       ``dupname`` is not used.
-
-       ``id`` appears only as ``@id`` or ``'id'``.
-
-       ``name`` appears only as ``@name`` or ``'name'``.
-
-     From DTD diff:
-
-     - ``figure`` has attribute "align (left | center | right) #IMPLIED"
-
-     - ``image`` has attribute "align (top | middle | bottom | left | center | right) #IMPLIED"
+<!-- These elements in the DTD need support:
 
      - ``colspec`` has attribute "stub %yesorno; #IMPLIED"
 
      - ``document`` has attribute "title CDATA #IMPLIED"
 
        Probably rendered by the `.. title::` directive
-
-     - ``reference`` has attribute "name CDATA #IMPLIED"
 
      -->
 
@@ -143,7 +110,7 @@ data: Data elements used by the stylesheet
 
   <xsl:variable
       name="compound_body_elements"
-      select="'*admonition*attention*block_quote*bullet_list*caution*citation*compound*danger*definition_list*enumerated_list*error*field_list*figure*footnote*hint*important*line_block*note*option_list*system_message*table*tip*warning*'"/>
+      select="'*admonition*attention*block_quote*bullet_list*caution*citation*compound*danger*definition_list*enumerated_list*error*field_list*figure*footnote*hint*important*line_block*note*option_list*system_message*table*tip*warning*container*'"/>
 
   <xsl:variable
       name="body_elements"
@@ -171,7 +138,7 @@ data: Data elements used by the stylesheet
 
   <xsl:variable
       name="directives"
-      select="'*admonition*attention*caution*comment*danger*error*footnote*hint*important*note*tip*warning*image*figure*topic*sidebar*rubric*meta*raw*citation*compound*substitution_definition*'"/>
+      select="'*admonition*attention*caution*comment*danger*error*footnote*hint*important*note*tip*warning*image*figure*topic*sidebar*rubric*meta*raw*citation*compound*substitution_definition*container*'"/>
 
   <xsl:variable
       name="titled_elements"
@@ -192,8 +159,8 @@ data: Data elements used by the stylesheet
   Content Model: ((title, subtitle?)?, docinfo?, decoration?,
   %structure.model;)
 
-  Attributes:    The document element contains only the common attributes: id, 
-  name, dupname, source, and class.
+  Attributes:    The document element contains only the common attributes: ids,
+  names, dupnames, source, and classes.
 
   Depending on the source of the data and the stage of processing, the 
   "document" may not initially contain a "title". A document title is not 
@@ -207,7 +174,7 @@ data: Data elements used by the stylesheet
   <xsl:template
       match="document">
     <xsl:if
-	test="//generated[@class = 'sectnum']">
+	test="//generated[@classes = 'sectnum']">
       <xsl:text>.. section-numbering::</xsl:text>
       &tEOL;
       &tCR;
@@ -225,8 +192,8 @@ data: Data elements used by the stylesheet
 
   <!--
   Content Model: (title, %structure.model;)
-  Attributes:    The section element contains only the common attributes: id,
-  name, dupname, source, and class.
+  Attributes:    The section element contains only the common attributes: ids,
+  names, dupnames, source, and classes.
   -->
   <!-- == structural_element -->
   <xsl:template
@@ -240,7 +207,7 @@ data: Data elements used by the stylesheet
 
   <!-- == structural_element -->
   <xsl:template
-      match="section[@class = 'system-messages']"/>
+      match="section[@classes = 'system-messages']"/>
   <!-- Ignore system messages completely -->
   <!-- This should be really in `generated' -->
 
@@ -248,8 +215,8 @@ data: Data elements used by the stylesheet
 
   <!--
   Content Model: (title, subtitle?, (%body.elements;)+)
-  Attributes:    The sidebar element contains only the common attributes: id,
-  name, dupname, source, and class.
+  Attributes:    The sidebar element contains only the common attributes: ids,
+  names, dupnames, source, and classes.
   -->
   <!-- == structural_element == directive -->
   <xsl:template
@@ -287,8 +254,8 @@ data: Data elements used by the stylesheet
 
   <!--
   Content Model: (title?, (%body.elements;)+)
-  Attributes:    The topic element contains only the common attributes: id,
-  name, dupname, source, and class.
+  Attributes:    The topic element contains only the common attributes: ids,
+  names, dupnames, source, and classes.
   -->
   <!-- == structural_element == directive -->
   <xsl:template
@@ -307,24 +274,57 @@ data: Data elements used by the stylesheet
 
   <!-- == structural_element == directive -->
   <xsl:template
-      match="topic[starts-with(@class, 'contents')]">
+      match="topic[starts-with(@classes, 'contents')]">
     <xsl:call-template
 	name="u:BandI"/>
     <xsl:text>.. contents:: </xsl:text>
     <xsl:apply-templates
 	select="title"/>
-    <!-- TODO: Does not generate `:local:' and it is hard to give a
-         heuristic for it (if in a `section'?) -->
     &tEOL;
     <xsl:call-template
 	name="u:params">
       <xsl:with-param
 	  name="params"
-	  select="@*[name() != 'id' and name() != 'name' and name() != 'class']"/>
+	  select="@*[name() != 'ids' and name() != 'names' and name() != 'classes']"/>
     </xsl:call-template>
     <xsl:variable
+	name="isLocal"
+	select="substring-before(@classes, ' local')"/>
+    <xsl:variable
+	name="realClassesLocal"
+	select="normalize-space(substring-after(@classes, 'contents'))"/>
+    <xsl:variable
+	name="realClassesNode">
+      <xsl:choose>
+	<xsl:when
+	    test="$isLocal">
+	  <xsl:value-of
+	      select="normalize-space(substring-before($realClassesLocal, 'local'))"/>
+	</xsl:when>
+	<xsl:otherwise>
+	  <xsl:value-of
+	      select="$realClassesLocal"/>
+	</xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    <xsl:variable
 	name="realClasses"
-	select="normalize-space(substring-after(@class, 'contents'))"/>
+	select="string($realClassesNode)"/>
+    <xsl:if
+	test="$isLocal">
+      <xsl:call-template
+	  name="u:param">
+	<xsl:with-param
+	    name="name"
+	    select="'local'"/>
+	<xsl:with-param
+	    name="value"
+	    select="''"/>
+	<xsl:with-param
+	    name="ancestors"
+	    select="ancestor-or-self::*"/>
+      </xsl:call-template>
+    </xsl:if>
     <xsl:if
 	test="$realClasses">
       <xsl:call-template
@@ -346,7 +346,7 @@ data: Data elements used by the stylesheet
 
   <!-- == structural_element == directive -->
   <xsl:template
-      match="topic[@class='dedication' or @class='abstract']">
+      match="topic[@classes='dedication' or @classes='abstract']">
     <xsl:call-template
 	name="u:BandI"/>
     <xsl:text>:</xsl:text>
@@ -363,7 +363,7 @@ data: Data elements used by the stylesheet
   <!--
   Content Model: (title, (%body.elements;)+)
   Attributes:    The admonition element contains only the common attributes:
-  id, name, dupname, source, and class.
+  ids, names, dupnames, source, and classes.
   -->
   <!-- == compound_body_element == directive -->
   <xsl:template
@@ -375,7 +375,11 @@ data: Data elements used by the stylesheet
 	select="title"/>
     &tEOL;
     <xsl:call-template
-	name="u:params"/>
+	name="u:params">
+      <xsl:with-param
+	  name="params"
+	  select="@*[name() != 'classes' or not(starts-with(., 'admonition-'))]"/>
+    </xsl:call-template>
     <xsl:call-template
 	name="u:indent"/>
     <xsl:apply-templates
@@ -386,8 +390,8 @@ data: Data elements used by the stylesheet
 
   <!--
   Content Model: (%body.elements;)+
-  Attributes:    The note element contains only the common attributes: id,
-  name, dupname, source, and class.
+  Attributes:    The note element contains only the common attributes: ids,
+  names, dupnames, source, and classes.
   -->
   <!-- == compound_body_element == directive -->
   <xsl:template
@@ -404,7 +408,7 @@ data: Data elements used by the stylesheet
 	name="u:params">
       <xsl:with-param
 	  name="params"
-	  select="@*[name() != 'class']"/>
+	  select="@*[name() != 'classes']"/>
     </xsl:call-template>
     <xsl:apply-templates/>
   </xsl:template>
@@ -414,7 +418,7 @@ data: Data elements used by the stylesheet
   <!--
   Content Model: (header?, footer?)
   Attributes:    The decoration element contains only the common attributes:
-  id, name, dupname, source, and class.
+  ids, names, dupnames, source, and classes.
 
   Although the content model doesn't specifically require contents, no empty 
   decoration elements are ever created.
@@ -425,14 +429,14 @@ data: Data elements used by the stylesheet
     <xsl:apply-templates/>
   </xsl:template>
 
-  <!-- TODO: To be rendered as `.. header::` directive -->
+  <!-- TODO To be rendered as `.. header::` directive -->
   <!-- == decorative_element -->
   <xsl:template
       match="//document/decoration/header">
     <xsl:apply-templates/>
   </xsl:template>
 
-  <!-- TODO: To be rendered as `.. footer::` directive -->
+  <!-- TODO To be rendered as `.. footer::` directive -->
   <!-- == decorative_element -->
   <xsl:template
       match="//document/decoration/footer">
@@ -443,8 +447,8 @@ data: Data elements used by the stylesheet
 
   <!--
   Content Model: (%bibliographic.elements;)+
-  Attributes:    The docinfo element contains only the common attributes: id,
-  name, dupname, source, and class.
+  Attributes:    The docinfo element contains only the common attributes: ids,
+  names, dupnames, source, and classes.
   -->
   <!-- == structural_subelement -->
   <xsl:template
@@ -460,8 +464,8 @@ data: Data elements used by the stylesheet
 
   <!--
   Content Model: ((author, organization?, address?, contact?)+)
-  Attributes:    The authors element contains only the common attributes: id,
-  name, dupname, source, and class.
+  Attributes:    The authors element contains only the common attributes: ids,
+  names, dupnames, source, and classes.
 
   In reStructuredText, multiple author's names are separated with semicolons 
   (";") or commas (","); semicolons take precedence. There is currently no way 
@@ -485,8 +489,8 @@ data: Data elements used by the stylesheet
 
   <!--
   Content Model: %text.model;
-  Attributes:    All docinfo elements contains the common attributes (id, name,
-  dupname, source, and class)
+  Attributes:    All docinfo elements contains the common attributes (ids,
+  names, dupnames, source, and classes)
 	      Some docinfo elements also have xml:space.
   -->
   <xsl:template
@@ -501,8 +505,8 @@ data: Data elements used by the stylesheet
 
   <!--
   Content Model: (field_name, field_body)
-  Attributes:    The field element contains only the common attributes: id,
-  name, dupname, source, and class.
+  Attributes:    The field element contains only the common attributes: ids,
+  names, dupnames, source, and classes.
   -->
   <!-- == bibliographic_element -->
   <xsl:template
@@ -515,8 +519,8 @@ data: Data elements used by the stylesheet
 
   <!--
   Content Model: %text.model;
-  Attributes:    All docinfo elements contains the common attributes (id, name,
-  dupname, source, and class)
+  Attributes:    All docinfo elements contains the common attributes (ids,
+  names, dupnames, source, and classes)
 	      Some docinfo elements also have xml:space.
   -->
   <!-- == bibliographic_element == folding_element -->
@@ -539,7 +543,7 @@ data: Data elements used by the stylesheet
   <!--
   Content Model: EMPTY
   Attributes:    The transition element contains only the common attributes:
-  id, name, dupname, source, and class.
+  ids, names, dupnames, source, and classes.
   -->
   <!-- == structural_subelement -->
   <xsl:template
@@ -551,7 +555,7 @@ data: Data elements used by the stylesheet
     &tEOL;
     <!-- Add a required blank line after unless class follows immediately -->
     <xsl:if
-	test="not(following-sibling::*[1]/@class)">
+	test="not(following-sibling::*[1]/@classes)">
       &tCR;
     </xsl:if>
   </xsl:template>
@@ -564,8 +568,8 @@ data: Data elements used by the stylesheet
   other titles will appear within sections.
 
   Content Model: %text.model;
-  Attributes:    The title element contains the common attributes (id, name, 
-  dupname, source, and class), plus refid and auto.
+  Attributes:    The title element contains the common attributes (ids, names, 
+  dupnames, source, and classes), plus refid and auto.
       refid is used as a backlink to a table of contents entry.
       auto is used to indicate (with value "1") that the title has been
   numbered automatically.
@@ -616,8 +620,8 @@ data: Data elements used by the stylesheet
   Title Underlines are defined by their position within the tree.
 
   Content Model: %text.model;
-  Attributes:    The title element contains the common attributes (id, name, 
-  dupname, source, and class), plus refid and auto.
+  Attributes:    The title element contains the common attributes (ids, names, 
+  dupnames, source, and classes), plus refid and auto.
       refid is used as a backlink to a table of contents entry.
       auto is used to indicate (with value "1") that the title has been
   numbered automatically.
@@ -664,7 +668,7 @@ data: Data elements used by the stylesheet
     </xsl:call-template>
     <!-- Add a blank line after unless structure follows immediately -->
     <xsl:if
-	test="not(contains(concat($structural_elements, $compound_body_elements), concat('*', name(following-sibling::*[1]), '*')) or following-sibling::*[1]/@class)">
+	test="not(contains(concat($structural_elements, $compound_body_elements), concat('*', name(following-sibling::*[1]), '*')) or following-sibling::*[1]/@classes)">
       &tCR;
     </xsl:if>
   </xsl:template>
@@ -673,8 +677,8 @@ data: Data elements used by the stylesheet
 
   <!--
   Content Model: %text.model;
-  Attributes:    The title element contains the common attributes (id, name, 
-  dupname, source, and class), plus refid and auto.
+  Attributes:    The title element contains the common attributes (ids, names, 
+  dupnames, source, and classes), plus refid and auto.
       refid is used as a backlink to a table of contents entry.
       auto is used to indicate (with value "1") that the title has been
   numbered automatically.
@@ -700,8 +704,8 @@ data: Data elements used by the stylesheet
   other titles will appear within sections.
 
   Content Model: %text.model;
-  Attributes:    The subtitle element contains only the common attributes: id, 
-  name, dupname, source, and class.
+  Attributes:    The subtitle element contains only the common attributes:
+  ids, names, dupnames, source, and classes.
   -->
   <!-- == structural_subelement -->
   <xsl:template
@@ -749,8 +753,8 @@ data: Data elements used by the stylesheet
 
   <!--
   Content Model: %text.model;
-  Attributes:    The subtitle element contains only the common attributes: id, 
-  name, dupname, source, and class.
+  Attributes:    The subtitle element contains only the common attributes: ids,
+  names, dupnames, source, and classes.
   -->
   <!-- == structural_subelement -->
   <xsl:template
@@ -769,8 +773,8 @@ data: Data elements used by the stylesheet
 
   <!--
   Content Model: %text.model;
-  Attributes:    The comment element contains only the common attributes: id,
-  name, dupname, source, and class.
+  Attributes:    The comment element contains only the common attributes: ids,
+  names, dupnames, source, and classes.
   -->
   <!-- == simple_body_element == folding_element == directive -->
   <xsl:template
@@ -790,8 +794,8 @@ data: Data elements used by the stylesheet
 
   <!--
   Content Model: %text.model;
-  Attributes:    The doctest_block element contains the common attributes (id, 
-  name, dupname, source, and class), plus xml:space.
+  Attributes:    The doctest_block element contains the common attributes (ids,
+  names, dupnames, source, and classes), plus xml:space.
   -->
   <!-- == simple_body_element -->
   <xsl:template
@@ -839,9 +843,9 @@ data: Data elements used by the stylesheet
 	<xsl:choose>
 	  <xsl:when
 	      test="parent::figure">
-	    <!-- `@class' is special because it is in the parent -->
+	    <!-- `@classes' is special because it is in the parent -->
 	    <xsl:if
-		test="../@class">
+		test="../@classes">
 	      <xsl:call-template
 		  name="u:param">
 		<xsl:with-param
@@ -849,7 +853,23 @@ data: Data elements used by the stylesheet
 		    select="'figclass'"/>
 		<xsl:with-param
 		    name="value"
-		    select="../@class"/>
+		    select="../@classes"/>
+		<xsl:with-param
+		    name="ancestors"
+		    select="ancestor::*"/>
+	      </xsl:call-template>
+	    </xsl:if>
+	    <!-- `@align' is special because it is in the parent -->
+	    <xsl:if
+		test="../@align">
+	      <xsl:call-template
+		  name="u:param">
+		<xsl:with-param
+		    name="name"
+		    select="'align'"/>
+		<xsl:with-param
+		    name="value"
+		    select="../@align"/>
 		<xsl:with-param
 		    name="ancestors"
 		    select="ancestor::*"/>
@@ -875,7 +895,11 @@ data: Data elements used by the stylesheet
 	  </xsl:when>
 	  <xsl:otherwise>
 	    <xsl:call-template
-		name="u:params"/>
+		name="u:params">
+	      <xsl:with-param
+		  name="params"
+		  select="@*[name() != 'ids' and name() != 'names']"/>
+	    </xsl:call-template>
 	  </xsl:otherwise>
 	</xsl:choose>
 	<xsl:if
@@ -921,8 +945,8 @@ data: Data elements used by the stylesheet
 
   <!--
   Content Model: (line_block | line)+
-  Attributes:    The line_block element contains the common attributes (id, 
-  name, dupname, source, and class), plus xml:space.
+  Attributes:    The line_block element contains the common attributes (ids, 
+  names, dupnames, source, and classes), plus xml:space.
   -->
   <!-- == compound_body_element -->
   <xsl:template
@@ -944,8 +968,8 @@ data: Data elements used by the stylesheet
 
   <!--
   Content Model: %text.model;
-  Attributes:    The line element contains the common attributes (id, 
-  name, dupname, source, and class).
+  Attributes:    The line element contains the common attributes (ids, 
+  names, dupnames, source, and classes).
   -->
   <!-- == simple_body_subelement == folding_element -->
   <xsl:template
@@ -1000,24 +1024,37 @@ data: Data elements used by the stylesheet
 
   <!--
   Content Model: %text.model;
-  Attributes:    The literal_block element contains the common attributes (id, 
-  name, dupname, source, and class), plus xml:space.
+  Attributes:    The literal_block element contains the common attributes (ids,
+  names, dupnames, source, and classes), plus xml:space.
   -->
   <!-- == simple_body_element == directive -->
   <xsl:template
       match="literal_block">
-    <!-- TODO: Support for the `.. parsed-literal::` directive would be
-         nice -->
-    <xsl:call-template
-	name="u:outputClass"/>
-    <!-- TODO: Support for the (fully) minimized style would be nice but
-         is difficult to accomplish because there is a linefeed
-         already when we arrive here :-( -->
-    <xsl:call-template
-	name="u:BandI"/>
-    <xsl:text>::</xsl:text>
-    &tEOL;
-    &tCR;
+    <xsl:choose>
+      <xsl:when
+	  test=".//*[contains($inline_elements, concat('*', name(), '*'))]">
+	<!-- If it contains inline elements this is a parsed-literal -->
+	<xsl:call-template
+	    name="u:BandI"/>
+	<xsl:text>.. parsed-literal::</xsl:text>
+	&tEOL;
+	<xsl:call-template
+	    name="u:params"/>
+	&tCR;
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:call-template
+	    name="u:outputClass"/>
+	<!-- TODO Support for the (fully) minimized style would be nice but
+	          is difficult to accomplish because there is a linefeed
+	          already when we arrive here :-( -->
+	<xsl:call-template
+	    name="u:BandI"/>
+	<xsl:text>::</xsl:text>
+	&tEOL;
+	&tCR;
+      </xsl:otherwise>
+    </xsl:choose>
     <xsl:variable
 	name="isQuotedLiteral">
       <xsl:call-template
@@ -1108,8 +1145,8 @@ data: Data elements used by the stylesheet
 
   <!--
   Content Model: %text.model;
-  Attributes:    The paragraph element contains only the common attributes: id,
-  name, dupname, source, and class.
+  Attributes:    The paragraph element contains only the common attributes:
+  ids, names, dupnames, source, and classes.
   -->
   <!-- == simple_body_element == folding_element -->
   <xsl:template
@@ -1136,8 +1173,8 @@ data: Data elements used by the stylesheet
 	  name="u:indent"/>
     </xsl:if>
     <xsl:if
-	test="@class">
-      <!-- This paragraph has a class attribute - always needs newline and
+	test="@classes">
+      <!-- This paragraph has a classes attribute - always needs newline and
            indent -->
       <xsl:call-template
 	  name="u:outputClass">
@@ -1169,29 +1206,44 @@ data: Data elements used by the stylesheet
   <!-- == simple_body_element == inline_element == directive -->
   <xsl:template
       match="raw">
-    <!-- TODO: Use as inline element is not reflected (if is really an
-         inline element) -->
-    <xsl:call-template
-	name="u:BandI"/>
-    <xsl:text>.. raw:: </xsl:text>
-    <xsl:value-of
-	select="@format"/>
-    &tEOL;
-    <xsl:call-template
-	name="u:params">
-      <xsl:with-param
-	  name="params"
-	  select="@*[name() != 'format']"/>
-    </xsl:call-template>
-    &tCR;
-    <xsl:call-template
-	name="u:indent">
-      <xsl:with-param
-	  name="ancestors"
-	  select="ancestor-or-self::*"/>
-    </xsl:call-template>
-    <xsl:apply-templates/>
-    &tEOL;
+    <xsl:choose>
+      <xsl:when
+	  test="contains($inline_containers, concat('*', name(..), '*'))">
+	<!-- Used as a custom role -->
+	<!-- TODO `role' directives must be generated for user-defined raw
+	          roles. -->
+	<!-- The name of the custom role is not contained in the input -->
+	<xsl:text>:RAW-ROLE:`</xsl:text>
+	<xsl:apply-templates/>
+	<xsl:text>`</xsl:text>
+      </xsl:when>
+      <xsl:otherwise>
+	<!-- A directive -->
+	<xsl:call-template
+	    name="u:outputClass"/>
+	<xsl:call-template
+	    name="u:BandI"/>
+	<xsl:text>.. raw:: </xsl:text>
+	<xsl:value-of
+	    select="@format"/>
+	&tEOL;
+	<xsl:call-template
+	    name="u:params">
+	  <xsl:with-param
+	      name="params"
+	      select="@*[name() != 'format' and name() != 'classes']"/>
+	</xsl:call-template>
+	&tCR;
+	<xsl:call-template
+	    name="u:indent">
+	  <xsl:with-param
+	      name="ancestors"
+	      select="ancestor-or-self::*"/>
+	</xsl:call-template>
+	<xsl:apply-templates/>
+	&tEOL;
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <!-- ******************************************************************** -->
@@ -1228,6 +1280,24 @@ data: Data elements used by the stylesheet
 
   <!-- ******************************************************************** -->
 
+  <!-- == compound_body_element == directive -->
+  <xsl:template
+      match="container">
+    <xsl:call-template
+	name="u:BandI"/>
+    <xsl:text>.. container::</xsl:text>
+    <xsl:if
+	test="@classes">
+      &tSP;
+      <xsl:value-of
+	  select="@classes"/>
+    </xsl:if>
+    &tEOL;
+    <xsl:apply-templates/>
+  </xsl:template>
+
+  <!-- ******************************************************************** -->
+
   <!-- == simple_body_element == directive -->
   <xsl:template
       match="substitution_definition">
@@ -1240,16 +1310,16 @@ data: Data elements used by the stylesheet
     <xsl:variable
 	name="prefix">
       <xsl:text>.. |</xsl:text>
-      <xsl:value-of
-	  select="@name"/>
+      <xsl:call-template
+	  name="u:outputNames"/>
       <xsl:text>| </xsl:text>
     </xsl:variable>
     <xsl:choose>
       <xsl:when
 	  test="$isReplace">
-      <!-- TODO: Substitution references for replace can not be found because
-           they are not marked as such; embedding them in `generated'
-           would be nice -->
+      <!-- TODO Substitution references for replace can not be found because
+	        they are not marked as such; embedding them in `generated'
+                would be nice -->
 	<xsl:call-template
 	    name="u:outputFolding">
 	  <xsl:with-param
@@ -1273,18 +1343,18 @@ data: Data elements used by the stylesheet
   <!--
   Content Model: ((%body.elements;)+, attribution?)
   Attributes:    The block_quote element contains only the common attributes:
-  id, name, dupname, source, and class.
+  ids, names, dupnames, source, and classes.
   -->
   <!-- == compound_body_element -->
   <xsl:template
       match="block_quote">
     <xsl:if
-	test="@class = 'epigraph' or @class = 'highlights' or @class = 'pull-quote'">
+	test="@classes = 'epigraph' or @classes = 'highlights' or @classes = 'pull-quote'">
       <xsl:call-template
 	  name="u:BandI"/>
       <xsl:text>.. </xsl:text>
       <xsl:value-of
-	  select="@class"/>
+	  select="@classes"/>
       <xsl:text>::</xsl:text>
       &tEOL;
       <xsl:call-template
@@ -1368,6 +1438,8 @@ data: Data elements used by the stylesheet
 
   <!-- ******************************************************************** -->
 
+  <!-- TODO Footnotes should continue on line of definition -->
+
   <!-- user-numbered footnotes lack @auto -->
   <!-- == compound_body_element == directive -->
   <xsl:template
@@ -1385,7 +1457,7 @@ data: Data elements used by the stylesheet
   </xsl:template>
 
   <!-- autonumbered footnotes have @auto -->
-  <!-- if the target footnote_reference@name matches its label, it was not a
+  <!-- if the target footnote_reference@names matches its label, it was not a
        numbered-name footnote -->
   <!-- == compound_body_element == directive -->
   <xsl:template
@@ -1396,9 +1468,9 @@ data: Data elements used by the stylesheet
 	name="u:BandI"/>
     <xsl:text>.. [#</xsl:text>
     <xsl:if
-	test="@name = @id">
-      <xsl:value-of
-	  select="@name"/>
+	test="@names = @ids">
+      <xsl:call-template
+	  name="u:outputNames"/>
     </xsl:if>
     <xsl:text>] </xsl:text>
     <xsl:apply-templates
@@ -1420,14 +1492,14 @@ data: Data elements used by the stylesheet
 
   <!-- == compound_body_element == directive -->
   <xsl:template
-      match="footnote[starts-with(@name, 'target_note: ')]">
+      match="footnote[starts-with(@names, 'TARGET_NOTE:\ ')]">
     <!-- This is not a footnote but a hint for a directive -->
     <xsl:if
-	test="generate-id(//footnote[starts-with(@name, 'target_note: ')][1]) = generate-id(.)">
+	test="generate-id(//footnote[starts-with(@names, 'TARGET_NOTE:\ ')][1]) = generate-id(.)">
       <!-- Only for the first one -->
       <xsl:call-template
 	  name="u:BandI"/>
-      <!-- TODO: May have a `class` attribute -->
+      <!-- TODO May have a `classes` attribute -->
       <xsl:text>.. target-notes::</xsl:text>
       &tEOL;
     </xsl:if>
@@ -1443,8 +1515,8 @@ data: Data elements used by the stylesheet
 
   <!--
   Content Model: (list_item +)
-  Attributes:    The bullet_list element contains the common attributes (id,
-  name, dupname, source, and class), plus bullet.
+  Attributes:    The bullet_list element contains the common attributes (ids,
+  names, dupnames, source, and classes), plus bullet.
       bullet is used to record the style of bullet from the input data.
       In documents processed from reStructuredText, it contains one of "-",
   "+", or "*". It may be ignored in processing.
@@ -1463,7 +1535,7 @@ data: Data elements used by the stylesheet
   <!--
   Content Model: (definition_list_item +)
   Attributes:    The definition_list element contains only the common
-  attributes: id, name, dupname, source, and class.
+  attributes: ids, names, dupnames, source, and classes.
   -->
   <!-- == compound_body_element -->
   <xsl:template
@@ -1478,7 +1550,7 @@ data: Data elements used by the stylesheet
   <!--
   Content Model: (term, classifier?, definition)
   Attributes:    The definition_list_item element contains only the common 
-  attributes: id, name, dupname, source, and class.
+  attributes: ids, names, dupnames, source, and classes.
   -->
   <!-- == compound_body_subelement -->
   <xsl:template
@@ -1494,8 +1566,8 @@ data: Data elements used by the stylesheet
 
   <!--
   Content Model: %text.model;
-  Attributes:    The term element contains only the common attributes: id,
-  name, dupname, source, and class.
+  Attributes:    The term element contains only the common attributes: ids,
+  names, dupnames, source, and classes.
   -->
   <!-- == simple_body_subelement -->
   <xsl:template
@@ -1508,7 +1580,7 @@ data: Data elements used by the stylesheet
   <!--
   Content Model: %text.model;
   Attributes:    The classifier element contains only the common attributes:
-  id, name, dupname, source, and class.
+  ids, names, dupnames, source, and classes.
   -->
   <!-- == simple_body_subelement -->
   <xsl:template
@@ -1522,7 +1594,7 @@ data: Data elements used by the stylesheet
   <!--
   Content Model: (%body.elements;)+
   Attributes:    The definition element contains only the common attributes:
-  id, name, dupname, source, and class.
+  ids, names, dupnames, source, and classes.
   -->
   <!-- == compound_body_subelement -->
   <xsl:template
@@ -1537,7 +1609,7 @@ data: Data elements used by the stylesheet
   <!--
   Content Model: (list_item +)
   Attributes:    The enumerated_list element contains the common attributes
-  (id, name, dupname, source, and class), plus enumtype, prefix, suffix, and
+  (ids, names, dupnames, source, and classes), plus enumtype, prefix, suffix, and
   start.
       enumtype is used to record the intended enumeration sequence, one
   of "arabic" (1, 2, 3, ...), "loweralpha" (a, b, c, ..., z), "upperalpha" (A,
@@ -1569,7 +1641,7 @@ data: Data elements used by the stylesheet
   <!--
   Content Model: (field +)
   Attributes:    The field_list element contains only the common attributes:
-  id, name, dupname, source, and class.
+  ids, names, dupnames, source, and classes.
   -->
   <!-- == compound_body_element -->
   <xsl:template
@@ -1583,8 +1655,8 @@ data: Data elements used by the stylesheet
 
   <!--
   Content Model: (field_name, field_body)
-  Attributes:    The field element contains only the common attributes: id,
-  name, dupname, source, and class.
+  Attributes:    The field element contains only the common attributes: ids,
+  names, dupnames, source, and classes.
   -->
   <!-- == compound_body_subelement -->
   <xsl:template
@@ -1601,7 +1673,7 @@ data: Data elements used by the stylesheet
   <!--
   Content Model: %text.model;
   Attributes:    The field_name element contains only the common attributes:
-  id, name, dupname, source, and class.
+  ids, names, dupnames, source, and classes.
   -->
   <!-- == simple_body_subelement -->
   <xsl:template
@@ -1617,7 +1689,7 @@ data: Data elements used by the stylesheet
   <!--
   Content Model: (%body.elements;)*
   Attributes:    The field_body element contains only the common attributes:
-  id, name, dupname, source, and class.
+  ids, names, dupnames, source, and classes.
   -->
   <!-- == compound_body_subelement -->
   <xsl:template
@@ -1632,7 +1704,7 @@ data: Data elements used by the stylesheet
   <!--
   Content Model: (option_list_item +)
   Attributes:    The option_list element contains only the common attributes:
-  id, name, dupname, source, and class.
+  ids, names, dupnames, source, and classes.
   -->
   <!-- == compound_body_element -->
   <xsl:template
@@ -1649,7 +1721,7 @@ data: Data elements used by the stylesheet
   <!--
   Content Model: (option_group, description)
   Attributes:    The option_list_item element contains only the common
-  attributes: id, name, dupname, source, and class.
+  attributes: ids, names, dupnames, source, and classes.
   -->
   <!-- == compound_body_subelement -->
   <xsl:template
@@ -1666,7 +1738,7 @@ data: Data elements used by the stylesheet
   <!--
   Content Model: (option_group, description)
   Attributes:    The option_group element contains only the common attributes:
-  id, name, dupname, source, and class.
+  ids, names, dupnames, source, and classes.
   -->
   <!-- == compound_body_subelement -->
   <xsl:template
@@ -1679,8 +1751,8 @@ data: Data elements used by the stylesheet
 
   <!--
   Content Model: (option_string, option_argument *)
-  Attributes:    The option element contains only the common attributes: id,
-  name, dupname, source, and class.
+  Attributes:    The option element contains only the common attributes: ids,
+  names, dupnames, source, and classes.
   -->
   <!-- == compound_body_subelement -->
   <xsl:template
@@ -1701,7 +1773,7 @@ data: Data elements used by the stylesheet
   <!--
   Content Model: (#PCDATA)
   Attributes:    The option_string element contains only the common attributes:
-  id, name, dupname, source, and class.
+  ids, names, dupnames, source, and classes.
   -->
   <!-- == simple_body_subelement -->
   <xsl:template
@@ -1714,7 +1786,7 @@ data: Data elements used by the stylesheet
   <!--
   Content Model: (#PCDATA)
   Attributes:    The option_argument element contains the common attributes
-  (id,  name, dupname, source, and class), plus delimiter.
+  (ids,  names, dupnames, source, and classes), plus delimiter.
       delimiter contains the text preceding the option_argument:
   either the text separating it from the option_string (typically
   either "=" or " ")
@@ -1733,7 +1805,7 @@ data: Data elements used by the stylesheet
   <!--
   Content Model: (%body.elements;)+
   Attributes:    The description element contains only the common attributes:
-  id, name, dupname, source, and class.
+  ids, names, dupnames, source, and classes.
   -->
   <!-- == compound_body_subelement -->
   <xsl:template
@@ -1748,8 +1820,8 @@ data: Data elements used by the stylesheet
 
   <!--
   Content Model: (%body.elements;)+
-  Attributes:    The list_item element contains only the common attributes: id,
-  name, dupname, source, and class
+  Attributes:    The list_item element contains only the common attributes:
+  ids, names, dupnames, source, and classes
 
   BULLET LIST
       bullet is used to record the style of bullet from the input data.
@@ -1926,7 +1998,7 @@ data: Data elements used by the stylesheet
 	<xsl:value-of
 	    select="substring('ABCDEFGHIJKLMNOPQRSTZUVWXYZ', $ordinal, 1)"/>
       </xsl:when>
-      <!-- TODO: Support for counting roman numbers -->
+      <!-- TODO Support for counting roman numbers -->
       <xsl:when
 	  test="$enumType = 'lowerroman'">
 	<xsl:text>i</xsl:text>
@@ -1957,8 +2029,8 @@ data: Data elements used by the stylesheet
 	select="tgroup"/>
     <xsl:if
 	test="title">
-      <!-- TODO: A table title must be rendered by using the `.. table::'
-                 directive -->
+      <!-- TODO A table title must be rendered by using the `.. table::'
+                directive -->
       <xsl:call-template
 	  name="u:BandI"/>
       <xsl:apply-templates
@@ -2169,7 +2241,7 @@ data: Data elements used by the stylesheet
   <!-- == compound_body_subelement -->
   <xsl:template
       match="entry">
-    <!-- TODO: `class` attribute needs support -->
+    <!-- TODO `classes` attribute needs support -->
     <!-- This is called in two ways; if $currentLine = 0 all physical lines
          of this entry must be output; if $currentLine > 0 the physical line
          with exactly this number shall be output -->
@@ -2480,7 +2552,7 @@ data: Data elements used by the stylesheet
   </xsl:template>
 
   <!-- automatically numbered footnotes have @auto -->
-  <!-- if @name is different from label content, it is a named footnote -->
+  <!-- if @names is different from label content, it is a named footnote -->
   <!-- == inline_element -->
   <xsl:template
       match="footnote_reference[@auto='1']">
@@ -2488,7 +2560,7 @@ data: Data elements used by the stylesheet
 	name="ref"
 	select="@refid"/>
     <xsl:if
-	test="not(starts-with(//footnote[@id=$ref]/@name, 'target_note: '))">
+	test="not(starts-with(//footnote[@ids=$ref]/@names, 'TARGET_NOTE:\ '))">
       <!-- Not a generated footnote reference for a `.. target-notes::';
            such footnote reference and the preceding space should be
            embedded in `generated'! -->
@@ -2496,9 +2568,13 @@ data: Data elements used by the stylesheet
 	  name="u:bkslshEscPre"/>
       <xsl:text>[#</xsl:text>
       <xsl:if
-	  test="//footnote[@id=$ref]/@name != //footnote[@id=$ref]/label">
-	<xsl:value-of
-	    select="//footnote[@id=$ref]/@name"/>
+	  test="//footnote[@ids=$ref]/@names != //footnote[@ids=$ref]/label">
+	<xsl:call-template
+	    name="u:outputNames">
+	  <xsl:with-param
+	      name="names"
+	      select="//footnote[@ids=$ref]/@names"/>
+	</xsl:call-template>
       </xsl:if>
       <xsl:text>]_</xsl:text>
       <xsl:call-template
@@ -2538,7 +2614,7 @@ data: Data elements used by the stylesheet
 
   <!-- Attribute combinations found in `standard' text and other examples:
        @refuri = standalone hyperlink
-       @id @refid = TOC, probably all in <generated>
+       @ids @refid = TOC, probably all in <generated>
        @name @refuri with matching <target> in document = named external hyperlink _
        @name @refuri immediately followed by matching <target> = named embedded URI _
        @name @refuri with no matching <target> in document = anonymous embedded URI __
@@ -2548,8 +2624,8 @@ data: Data elements used by the stylesheet
        @name @refid image = clickable image to internal reference _
        @refuri image = clickable image to standalone hyperlink
 
-       A target matches if target/@name is equal to the lower cased, whitespace
-       normalized reference/@name
+       A target matches if target/@names contains the lower cased, whitespace
+       quoted reference/@name
   -->
 
   <!-- Standalone hyperlink -->
@@ -2590,8 +2666,17 @@ data: Data elements used by the stylesheet
 	name="normalized"
 	select="translate(normalize-space(@name), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')"/>
     <xsl:variable
+	name="quoted">
+      <xsl:call-template
+	  name="u:quoteWhite">
+	<xsl:with-param
+	    name="string"
+	    select="$normalized"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:variable
 	name="matching"
-	select="//target[@name = $normalized]"/>
+	select="//target[contains(@names, $quoted)]"/>
     <xsl:call-template
 	name="u:inlineReference">
       <xsl:with-param
@@ -2691,25 +2776,6 @@ data: Data elements used by the stylesheet
 	</xsl:call-template>
       </xsl:when>
       <xsl:when
-	  test="@name">
-	<!-- A target directive -->
-	<xsl:call-template
-	    name="u:outputClass"/>
-	<xsl:call-template
-	    name="u:BandI"/>
-	<xsl:text>.. _</xsl:text>
-	<xsl:value-of
-	    select="@name"/>
-	<xsl:text>:</xsl:text>
-	<xsl:if
-	    test="@refuri">
-	  <xsl:text> </xsl:text>
-	  <xsl:value-of
-	      select="@refuri"/>
-	</xsl:if>
-	&tEOL;
-      </xsl:when>
-      <xsl:when
 	  test="@anonymous">
 	<!-- An anonymous target directive -->
 	<xsl:call-template
@@ -2720,8 +2786,8 @@ data: Data elements used by the stylesheet
 	<xsl:choose>
 	  <xsl:when
 	      test="@refid">
-	    <xsl:value-of
-		select="@refid"/>
+	    <xsl:call-template
+		name="u:outputNamesRefid"/>
 	    <xsl:text>_</xsl:text>
 	  </xsl:when>
 	  <xsl:when
@@ -2730,6 +2796,34 @@ data: Data elements used by the stylesheet
 		select="@refuri"/>
 	  </xsl:when>
 	</xsl:choose>
+	&tEOL;
+      </xsl:when>
+      <xsl:when
+	  test="@names | @refid">
+	<!-- A target directive -->
+	<xsl:call-template
+	    name="u:outputClass"/>
+	<xsl:call-template
+	    name="u:BandI"/>
+	<xsl:text>.. _</xsl:text>
+	<xsl:choose>
+	  <xsl:when
+	      test="@refid">
+	    <xsl:call-template
+		name="u:outputNamesRefid"/>
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <xsl:call-template
+		name="u:outputNames"/>
+	  </xsl:otherwise>
+	</xsl:choose>
+	<xsl:text>:</xsl:text>
+	<xsl:if
+	    test="@refuri">
+	  <xsl:text> </xsl:text>
+	  <xsl:value-of
+	      select="@refuri"/>
+	</xsl:if>
 	&tEOL;
       </xsl:when>
       <xsl:otherwise>
@@ -2765,13 +2859,13 @@ data: Data elements used by the stylesheet
   <!-- == inline_element -->
   <xsl:template
       match="inline">
-    <!-- TODO: `role' directives must be generated for plain and derived
-         user-defined roles. -->
+    <!-- TODO `role' directives must be generated for plain and derived
+              user-defined roles. -->
     <xsl:call-template
 	name="u:bkslshEscPre"/>
     <xsl:text>:</xsl:text>
     <xsl:value-of
-	select="@class"/>
+	select="@classes"/>
     <xsl:text>:`</xsl:text>
     <xsl:apply-templates/>
     <xsl:text>`</xsl:text>
@@ -2781,7 +2875,7 @@ data: Data elements used by the stylesheet
 
   <!-- ******************************************************************** -->
 
-  <!-- TODO: `meta` directive must be implemented. -->
+  <!-- TODO `meta` directive must be implemented. -->
 
   <!-- ******************************************************************** -->
 
@@ -2927,6 +3021,9 @@ data: Data elements used by the stylesheet
     <node
 	name="attribution"
 	indent="3"/>
+    <node
+	name="line"
+	indent="2"/>
   </data:lookup>
 
   <!-- Do indent according to ancestor -->
@@ -2947,6 +3044,10 @@ data: Data elements used by the stylesheet
 	    test="contains($directives, concat('*', $this, '*'))">
 	  <xsl:call-template
 	      name="u:repeat">
+	    <!-- TODO Indentation of lines after some directives must be
+	              indented to align with the directive instead of a
+	              fixed indentation; however, this is rather complicated
+	              since identation for parameters should be fixed -->
 	    <xsl:with-param
 		name="length"
 		select="3"/>
@@ -3088,7 +3189,7 @@ data: Data elements used by the stylesheet
     </xsl:param>
     <xsl:variable
 	name="string">
-      <!-- TODO: Whitespace count of inline literals must be preserved -->
+      <!-- TODO Whitespace count of inline literals must be preserved -->
       <xsl:apply-templates/>
     </xsl:variable>
     <!-- Always output prefix with all trailing and leading spaces -->
@@ -3156,8 +3257,9 @@ data: Data elements used by the stylesheet
     <xsl:param
 	name="indent"/>
     <!-- Current output column -->
-    <!-- TODO: This is not a correct assumption for field definitions where
-         the field name effectively determines the column of the first line -->
+    <!-- TODO This is not a correct assumption for field definitions where
+              the field name effectively determines the column of the first
+              line -->
     <xsl:param
 	name="cursorColumn"
 	select="string-length($indent)"/>
@@ -3168,7 +3270,7 @@ data: Data elements used by the stylesheet
     <xsl:variable
 	name="firstWord">
       <xsl:choose>
-	<!-- TODO: Quoted spaces must not end a word -->
+	<!-- TODO Quoted spaces must not end a word -->
 	<xsl:when
 	    test="contains($string, ' ')">
 	  <xsl:value-of
@@ -3302,11 +3404,23 @@ data: Data elements used by the stylesheet
 	  select="$ancestors"/>
     </xsl:call-template>
     <xsl:text>:</xsl:text>
-    <xsl:value-of
-	select="$name"/>
-    <xsl:text>: </xsl:text>
-    <xsl:value-of
-	select="$value"/>
+    <xsl:choose>
+      <xsl:when
+	  test="$name = 'classes'">
+	<xsl:text>class</xsl:text>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:value-of
+	    select="$name"/>
+      </xsl:otherwise>
+    </xsl:choose>
+    <xsl:text>:</xsl:text>
+    <xsl:if
+	test="$value">
+      <xsl:text> </xsl:text>
+      <xsl:value-of
+	  select="$value"/>
+    </xsl:if>
     &tEOL;
   </xsl:template>
 
@@ -3547,11 +3661,11 @@ data: Data elements used by the stylesheet
   <!-- ******************************************************************** -->
 
   <!-- Output a class directive for the directly following element. -->
-  <!-- TODO: A class directive can also be used as a container putting the
-       respective attribute to its content; however, this is not reflected
-       in XML - you'd need to check a sequence of elements whether they all
-       have the same attribute; furthermore class settings for block quotes
-       needs to be treated special -->
+  <!-- TODO A class directive can also be used as a container putting the
+	    respective attribute to its content; however, this is not
+	    reflected in XML - you'd need to check a sequence of elements
+	    whether they all have the same attribute; furthermore class
+	    settings for block quotes needs to be treated special -->
   <xsl:template
       name="u:outputClass">
     <!-- Blank line already output? -->
@@ -3567,7 +3681,7 @@ data: Data elements used by the stylesheet
 	name="blankAfter"
 	select="false()"/>
     <xsl:if
-	test="@class">
+	test="@classes">
       <xsl:if
 	  test="not($alreadyBlanked)">
 	<xsl:call-template
@@ -3580,13 +3694,306 @@ data: Data elements used by the stylesheet
       </xsl:if>
       <xsl:text>.. class:: </xsl:text>
       <xsl:value-of
-	  select="@class"/>
+	  select="@classes"/>
       &tEOL;
       <xsl:if
 	  test="$blankAfter">
 	&tCR;
       </xsl:if>
     </xsl:if>
+  </xsl:template>
+
+  <!-- ******************************************************************** -->
+
+  <!-- Output a string with backslashed stripped -->
+  <xsl:template
+      name="u:outputUnbackslashed">
+    <xsl:param
+	name="string"/>
+    <xsl:choose>
+      <xsl:when
+	  test="not(contains($string, '\'))">
+	<xsl:value-of
+	    select="$string"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:value-of
+	    select="substring-before($string, '\')"/>
+	<xsl:call-template
+	    name="u:outputUnbackslashed">
+	  <xsl:with-param
+	      name="string"
+	      select="substring-after($string, '\')"/>
+	</xsl:call-template>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <!-- Returns a name at an index -->
+  <xsl:template
+      name="u:name4Index">
+    <xsl:param
+	name="names"/>
+    <xsl:param
+	name="index"/>
+    <xsl:param
+	name="name0"
+	select="''"/>
+    <xsl:choose>
+      <xsl:when
+	  test="not(contains($names, ' '))">
+	<xsl:choose>
+	  <xsl:when
+	      test="not($index)">
+	    <xsl:value-of
+		select="concat($name0, $names)"/>
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <!-- No string with this index -->
+	    <xsl:value-of
+		select="''"/>
+	  </xsl:otherwise>
+	</xsl:choose>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:variable
+	    name="before"
+	    select="substring-before($names, ' ')"/>
+	<xsl:choose>
+	  <xsl:when
+	      test="substring($before, string-length($before)) = '\'">
+	    <!-- Quoted space found -->
+	    <xsl:call-template
+		name="u:name4Index">
+	      <xsl:with-param
+		  name="names"
+		  select="substring-after($names, ' ')"/>
+	      <xsl:with-param
+		  name="index"
+		  select="$index"/>
+	      <xsl:with-param
+		  name="name0"
+		  select="concat($name0, $before, ' ')"/>
+	    </xsl:call-template>
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <!-- Separating space found -->
+	    <xsl:choose>
+	      <xsl:when
+		  test="not($index)">
+		<xsl:value-of
+		    select="concat($name0, $before)"/>
+	      </xsl:when>
+	      <xsl:otherwise>
+		<xsl:call-template
+		    name="u:name4Index">
+		  <xsl:with-param
+		      name="names"
+		      select="substring-after($names, ' ')"/>
+		  <xsl:with-param
+		      name="index"
+		      select="$index - 1"/>
+		</xsl:call-template>
+	      </xsl:otherwise>
+	    </xsl:choose>
+	  </xsl:otherwise>
+	</xsl:choose>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <!-- Output a names attribute at index considering quoted spaces. -->
+  <xsl:template
+      name="u:outputNames">
+    <!-- Blank line already output? -->
+    <xsl:param
+	name="names"
+	select="@names"/>
+    <xsl:param
+	name="index"
+	select="0"/>
+    <xsl:variable
+	name="name">
+      <xsl:call-template
+	  name="u:name4Index">
+	<xsl:with-param
+	    name="names"
+	    select="$names"/>
+	<xsl:with-param
+	    name="index"
+	    select="$index"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:call-template
+	name="u:outputUnbackslashed">
+      <xsl:with-param
+	  name="string"
+	  select="$name"/>
+    </xsl:call-template>
+  </xsl:template>
+
+  <!-- ******************************************************************** -->
+
+  <!-- Finds an id in a list and returns its index or empty string if not
+       contained exactly. -->
+  <xsl:template
+      name="u:findId">
+    <xsl:param
+	name="list"/>
+    <xsl:param
+	name="id"/>
+    <xsl:param
+	name="index"
+	select="0"/>
+    <xsl:choose>
+      <xsl:when
+	  test="$list = ''">
+	<xsl:value-of
+	    select="''"/>
+      </xsl:when>
+      <xsl:when
+	  test="$list = $id or starts-with($list, concat($id, ' '))">
+	<xsl:value-of
+	    select="$index"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:call-template
+	    name="u:findId">
+	  <xsl:with-param
+	      name="list"
+	      select="substring-after($list, ' ')"/>
+	  <xsl:with-param
+	      name="id"
+	      select="$id"/>
+	  <xsl:with-param
+	      name="index"
+	      select="$index + 1"/>
+	</xsl:call-template>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <!-- In a number of elements find the one containing exactly id and return
+       the index of the element as well as the index of the id -->
+  <xsl:template
+      name="u:findRefElem">
+    <xsl:param
+	name="possibleElems"/>
+    <xsl:param
+	name="id"/>
+    <!-- XSLT is 1-based -->
+    <xsl:param
+	name="elemIndex"
+	select="1"/>
+    <xsl:variable
+	name="elem"
+	select="$possibleElems[1]"/>
+    <xsl:choose>
+      <!-- No more elements - return empty string -->
+      <xsl:when
+	  test="not($possibleElems)">
+	<xsl:value-of
+	    select="''"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<!-- Check whether the first element contains the id -->
+	<xsl:variable
+	    name="fnd">
+	  <xsl:call-template
+	      name="u:findId">
+	    <xsl:with-param
+		name="list"
+		select="$elem/@ids"/>
+	    <xsl:with-param
+		name="id"
+		select="$id"/>
+	  </xsl:call-template>
+	</xsl:variable>
+	<xsl:choose>
+	  <xsl:when
+	      test="$fnd != ''">
+	    <xsl:value-of
+		select="concat($elemIndex, ' ', $fnd)"/>
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <xsl:call-template
+		name="u:findRefElem">
+	      <xsl:with-param
+		  name="possibleElems"
+		  select="$possibleElems[position() != 1]"/>
+	      <xsl:with-param
+		  name="id"
+		  select="$id"/>
+	      <xsl:with-param
+		  name="elemIndex"
+		  select="$elemIndex + 1"/>
+	    </xsl:call-template>
+	  </xsl:otherwise>
+	</xsl:choose>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
+  <!-- Output a names attribute for a refid. -->
+  <xsl:template
+      name="u:outputNamesRefid">
+    <xsl:param
+	name="refid"
+	select="@refid"/>
+    <!-- Determine all possible elements which might be referred -->
+    <xsl:variable
+	name="possibleElems"
+	select="//*[contains(@ids, $refid)]"/>
+    <xsl:variable
+	name="refElem_index">
+      <xsl:call-template
+	  name="u:findRefElem">
+	<xsl:with-param
+	    name="possibleElems"
+	    select="$possibleElems"/>
+	<xsl:with-param
+	    name="id"
+	    select="$refid"/>
+      </xsl:call-template>
+    </xsl:variable>
+    <xsl:call-template
+	name="u:outputNames">
+      <xsl:with-param
+	  name="names"
+	  select="$possibleElems[position() = substring-before($refElem_index, ' ')]/@names"/>
+      <xsl:with-param
+	  name="index"
+	  select="number(substring-after($refElem_index, ' '))"/>
+    </xsl:call-template>
+  </xsl:template>
+
+  <!-- ******************************************************************** -->
+
+  <!-- Output a string with each space character quoted -->
+  <xsl:template
+      name="u:quoteWhite">
+    <xsl:param
+	name="string"/>
+    <xsl:variable
+	name="head"
+	select="substring-before($string, ' ')"/>
+    <xsl:choose>
+      <xsl:when
+	  test="$head = ''">
+	<xsl:value-of
+	    select="$string"/>
+      </xsl:when>
+      <xsl:otherwise>
+	<xsl:value-of
+	    select="concat($head, '\ ')"/>
+	<xsl:call-template
+	    name="u:quoteWhite">
+	  <xsl:with-param
+	      name="string"
+	      select="substring-after($string, ' ')"/>
+	</xsl:call-template>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <!-- ******************************************************************** -->
@@ -3688,17 +4095,15 @@ good. A few minor features are not supported:
 
 =over 4
 
-=item * .. contents:: :local:
-
 =item * Fully minimized style for literal blocks
-
-=item * <raw> element as inline element
 
 =item * Substitution references for C<replace::> substitutions
 
 =item * Counting roman numbers in enumerated lists
 
 =item * Special table types like C<list-table::> and C<csv-table::>
+
+=item * Custom role definitions
 
 =back
 
