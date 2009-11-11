@@ -22,6 +22,7 @@ Also exports the following functions:
   `validate_threshold`, `validate_colon_separated_string_list`,
   `validate_dependency_file`.
 * `make_paths_absolute`.
+* SettingSpec manipulation: `filter_settings_spec`.
 """
 
 __docformat__ = 'reStructuredText'
@@ -200,6 +201,24 @@ def make_paths_absolute(pathdict, keys, base_path=None):
 def make_one_path_absolute(base_path, path):
     return os.path.abspath(os.path.join(base_path, path))
 
+def filter_settings_spec(settings_spec, *exclude):
+    """Return a copy of `setting_spec` excluding the specified settings.
+
+    `setting_spec` is a tuple of configuration settings with a structure
+    described for docutils.SettingsSpec.settings_spec.
+
+    The optional arguments are 'lists of option strings' of the
+    to-be-excluded options, e.g. ``['-Q', '--quux'], ['spam']``.
+
+    This can be used for components that share most but not all of the
+    settings. (See the html4strict writer for an example.)
+    """
+    settings = list(settings_spec)
+    for i in range(2, len(settings), 3):
+        settings[i] = tuple([option for option in settings[i]
+                             if option[1] not in exclude])
+    return tuple(settings)
+
 
 class Values(optparse.Values):
 
@@ -294,12 +313,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
     except AttributeError:
         default_error_encoding = 'ascii'
 
-    # TODO: variable no longer needed since 'backslashreplace' is
-    # part of Python >= 2.3 (required since Docutils 0.6)
-    if hasattr(codecs, 'backslashreplace_errors'):
-        default_error_encoding_error_handler = 'backslashreplace'
-    else:
-        default_error_encoding_error_handler = 'replace'
+    default_error_encoding_error_handler = 'backslashreplace'
 
     settings_spec = (
         'General Docutils Options',
