@@ -56,26 +56,34 @@ source:
 _`pdflatex`
   Generates a PDF document directly from the LaTeX file.
 
-_`latex + dvipdfm`
-  Use ``latex`` to generate a DVI file and ``dvipdfm`` to produce a PDF
-  file. If you take this approach, add ``dvipdfm`` to the
+_`latex + dvipdfmx`
+  Use ``latex`` to generate a DVI file and ``dvipdfmx`` to produce a PDF
+  file. If you take this approach, add ``dvipdfmx`` to the
   _documentoptions.
 
-latex + dvips + ps2pdf
+_`latex` + dvips + ps2pdf
   Produce a DVI file with ``latex``, postscript with ``dvips`` and PDF with
   ``ps2pdf``.
 
-xetex
-  The `XeTeX`_ engine works with input files in UTF-8 encoding and system
+_`xetex`
+  The `XeTeX`__ engine works with input files in UTF-8 encoding and system
   fonts. It is currently not supported by Docutils.
 
 You need to call latex (or pdflatex/xelatex) twice (or even three times) to
-get internal references correct. The Rubber_ wrapper for LaTeX and friends
-can be used to automatically run all programs the required number of times
-and delete "spurious" files.
+get internal references correct.
 
 .. _documentoptions: ../user/config.html#documentoptions
-.. _Rubber: http://iml.univ-mrs.fr/~beffara/soft/rubber/
+__ http://scripts.sil.org/xetex
+
+
+_`rubber`
+  The Rubber__ wrapper for LaTeX and friends can be used to automatically
+  run all programs the required number of times and delete "spurious" files.
+  This includes processing bibliographic references or indices, as well as
+  compilation or conversion of figures.
+
+__ http://iml.univ-mrs.fr/~beffara/soft/rubber/
+
 
 
 Specialities of the LaTeX writer
@@ -166,12 +174,19 @@ Images
 ------
 
 Images__ are included in LaTeX with the help of the `graphicx` package. The
-supported file formats depend on the used driver (latex, pdftex, xetex) and
-output format (DVI, PS, PDF).
-For details see the grfguide_.
+supported file formats depend on the used driver:
+
+* Standard latex_ can include **only EPS** graphics, no other format.
+* `latex + dvipdfmx`_ works with EPS and JPG (include 'dvipdfmx' in the
+  documentoptions_ and add 'bmpsize' to the stylesheet_ setting).
+* pdflatex_ and xetex_ work with PNG, JPG, or PDF, but **not EPS**.
+
+For details see grfguide.pdf_.
+
+The Rubber_ wrapper can be used for automatic image conversion.
 
 __ ../ref/rst/directives.html#images
-.. _grfguide:
+.. _grfguide.pdf:
    http://ctan.org/get/macros/latex/required/graphics/grfguide.pdf
 
 Docutils special LaTeX macros
@@ -630,7 +645,7 @@ Example:
    `labeling`.
 
 .. _enumitem:
-   http://ctan.org/get/macros/latex/contrib/enumitem/enumitem.pdf
+   http://www.ctan.org/tex-archive/help/Catalogue/entries/enumitem.html
 
 __ ../ref/rst/restructuredtext.html#field-lists
 
@@ -664,14 +679,15 @@ figure placement
 ````````````````
 
 Figures_ might be typeset at the place of definition (default) or "float"
-to a suitable place at the top or bottom of a page.
+to a suitable place at the top or bottom of a page. This is implemented
+using the float_ package.
 
 Command:
   ``\floatplacement``
 
 The placement setting is valid from the point of definition until the next
-``\floatplacement`` command or the end of the document. See the `float
-package documentation`_ for details.
+``\floatplacement`` command or the end of the document. See float.pdf_ for
+details.
 
 Default:
   ``\floatplacement{figure}{H}`` (here definitely). This corresponds most
@@ -693,7 +709,9 @@ Example 2:
         \floatplacement{figure}{tb}
 
 .. _figures: ../ref/rst/directives.html#figure
-.. _float package documentation:
+.. _float:
+   http://www.ctan.org/tex-archive/help/Catalogue/entries/float.html
+.. _float.pdf:
    http://ctan.org/get/macros/latex/contrib/float/float.pdf
 
 
@@ -703,6 +721,9 @@ font
 The selected text font influences the *look*, the *feel*,
 and the *readability* of the document (see e.g.
 http://www.csarven.ca/web-typography).
+
+Selecting a suitable font also solves the problem with `bad looking PDF
+output`_.
 
 Unfortunately, LaTeX cannot use the fonts of the operating system directly
 [#]_ but needs specially installed fonts with additional supporting files.
@@ -795,7 +816,6 @@ Extended versions of the standard Postscript fonts including accented chars,
 Greek and Cyrillic are available with the `TeX Gyre`_ bundle which is part
 of, e.g., `TeX Live`_.
 
-.. _XeTeX: http://scripts.sil.org/xetex
 .. _LaTeX Font Catalogue:
    http://www.tug.dk/FontCatalogue/
 .. _TeX Gyre: http://www.gust.org.pl/projects/e-foundry/tex-gyre
@@ -809,21 +829,42 @@ of, e.g., `TeX Live`_.
 font encoding
 `````````````
 
+LaTeX font encodings are described in detail in the encguide_ which is
+part of the LaTeX base documentation.
+
 Option: font-encoding_
   ``--font-encoding=FONT_ENCODING``
 
 Default:
   "T1"
 
-Example:
+Example 1:
+  Use the (obsolete) LaTeX default encoding "OT1"::
+
+    --font-encoding=OT1
+
+  or (without loading the fontenc_ package)::
+
+    --font-encoding=""
+
+  This will improve the look on screen with the default Computer Modern
+  fonts at the expense of problems with `search and text extraction`_
+  The recommended workaround is to select a T1-encoded "Type 1" (vector)
+  font, for example `Latin Modern`_
+
+Example 2:
   Support for characters in the Unicode blocks Latin, Latin-1 Supplement,
   and Greek together with a T1-encoded "Type 1" (vector) font, for example
   `Latin Modern`_::
 
     --font-encoding=LGR,T1 --stylesheet=lmodern
 
+.. _encguide:
+   http://mirror.ctan.org/macros/latex/doc/encguide.pdf
 .. _font-encoding:
    ../user/config.html#font-encoding
+.. _fontenc:
+   http://www.ctan.org/tex-archive/help/Catalogue/entries/fontenc.html
 .. _Latin Modern:
    http://www.ctan.org/tex-archive/help/Catalogue/entries/lm.html
 
@@ -1485,6 +1526,23 @@ Problems
 Troubleshooting
 ---------------
 
+Bad looking PDF output
+``````````````````````
+
+  What I am looking for when I try Docutils is if the PDF files I can get
+  are of high quality. Unfortunaltely that never is the case.
+
+  So am I just stupid or is there a way to get really high quality pdf from
+  Docutils?
+
+Make sure the default font is not a bitmap font. Unfortunately, the
+default font is a bitmap font. You must change it.
+
+There is `Latin Modern`_ if you like the look of the standard font on paper,
+but want nice pdf. Or select something else like Times, Palatino, ... via
+configuration options_ to the Docutils tool. See font_ and font-encoding_.
+
+
 footnote mark and text at different pages
 `````````````````````````````````````````
 
@@ -1515,7 +1573,7 @@ Right:
 
   a) compile with pdflatex_,
 
-  b) compile with `latex + dvipdfm`_,
+  b) compile with `latex + dvipdfmx`_,
 
   c) use the package breakurl_,
 
@@ -1551,6 +1609,15 @@ image inclusion
 If PDF-image inclusion in PDF files fails, specifying
 ``--graphicx-option=pdftex`` or ``--graphicx-option=auto`` might help.
 
+Search and text extraction
+``````````````````````````
+
+Search for text that contains characters outside the ASCII range (e.g.
+umlauts) might fail.  See font_, `font encoding`_ and `Searching PDF files`_
+for background information.
+
+.. _Searching PDF files:
+   http://www.tex.ac.uk/cgi-bin/texfaq2html?label=srchpdf
 
 Unicode box drawing characters
 ```````````````````````````````
