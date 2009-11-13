@@ -1,13 +1,13 @@
-/* field-list-tablelike.css
+/* field-list-table1.css
 
 :Author: Guenter Milde
 
-style sheet for alternative formatting of field-lists. 
+style sheet for alternative formatting of field-lists.
 
 This stylesheet formats definition lists similar to a table with 2 columns
-with truncating of long file names.
+with truncating of long field names.
 
-This stylesheet uses CSS 2.0 commands 
+This stylesheet uses CSS 2.0 commands
 See http://en.selfhtml.org/css/eigenschaften/positionierung.htm
 */
 
@@ -26,10 +26,8 @@ dt.field-name {
    overflow: hidden;
   }
 dt.field-name:after {
-  content: ":"; }    
+  content: ":"; }
 
 dd.field-body {
   margin-left: 10em;   /* column sep = margin-left - dt.width */
   }
-
-

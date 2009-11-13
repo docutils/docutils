@@ -2,7 +2,7 @@
 
 :Author: Guenter Milde
 
-Alternative style sheet for formatting of field-lists. 
+Optional style sheet for the HTML4strict writer. 
 
 This stylesheet formats definition lists with a hanging indent.
 (Like the LaTeX description list)
@@ -28,8 +28,4 @@ dt.field-name:after {
 dd.field-body {                  
   margin-left 10em;      
   }                      
-
-
-/* import the default stylesheet of the html4strict writer */
-@import url(html4css2.css);
 

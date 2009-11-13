@@ -1,13 +1,14 @@
 #!/usr/bin/env python
-
-# Author: Guenter Milde
-# Contact: 
+# -*- coding: utf8 -*-
+# :Copyright: © 2005, 2009 Günter Milde.
+#             Released  without warranties or conditions of any kind
+#             under the terms of the Apache License, Version 2.0
+# 	      http://www.apache.org/licenses/LICENSE-2.0
 # Revision: $Revision$
 # Date: $Date$
-# Copyright: Licensed under the Academic Free License version 1.2
 
 """
-A minimal front end to the Docutils Publisher, producing HTML relying on
+A minimal front end to the Docutils Publisher, producing (X)HTML relying on
 a css stylesheet.
 """
 
@@ -19,13 +20,13 @@ except:
 
 from docutils.core import publish_cmdline, default_description
 
-# Prepend parent dir to the PYTHONPATH
-# (This is a hack to get rst2html_trans.py working without install,
-#  not needed if the html4trans.py module is installed in the PYTHONPATH)
-import sys
-sys.path.insert(0, '..')
+# Import the html4strict writer from either the canonical place for a
+# Docutils writer or anywhere in the PYTHONPATH::
 
-from html4strict import Writer
+try:
+    from docutils.writers.html4strict import Writer
+except ImportError:
+    from html4strict import Writer
 
 description = ('Generates (X)HTML documents from standalone reStructuredText '
                'sources that fully rely on a CSS2 stylesheet '

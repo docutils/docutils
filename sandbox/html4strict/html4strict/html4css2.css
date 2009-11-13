@@ -1,0 +1,145 @@
+/* html4css2.css: Cascading style sheet for Docutils' html4strict writer.
+
+:Author: Günter Milde
+:Copyright: © 2009 Günter Milde.
+            Released  without warranties or conditions of any kind
+            under the terms of the Apache License, Version 2.0
+	    http://www.apache.org/licenses/LICENSE-2.0
+
+This stylesheet uses the CSS 2.1 elements which are supported by up-to-date
+versions of the most popular browsers.
+*/
+
+
+/* Special definition lists
+   ------------------------
+
+Format docinfo and definition lists similar to the "listings" environment
+in LaTeX's KOMA-script classes */
+
+dl.docinfo {
+  margin: 2em 4em;
+}
+
+dl.docinfo > dt.field-name {
+  min-width: 7.5em;
+  padding-right: 0.5em ;
+  /* overflow: hidden; */
+}
+
+dl.docinfo > dd.field-body {
+  margin-left: 8em;   /* column sep = margin-left - dt.width */
+}
+
+/* field list (as special definition list) */
+dt.field-name {
+   font-weight: bold;
+   clear:   both;
+   float:   left;
+   padding-right: 0.5em ;
+   /* wrap long field names (fails with non-breakable ones): */
+   /* max-width: 9.5em; 
+   /* truncate too long fiels names: */
+   /* overflow: hidden; */
+}
+
+/* add the colons to field names in the CSS */
+dt.field-name:after {
+  content: ":";
+}
+
+/* This corresponds to the --field-name-limit option */
+dd.field-body { margin-left: 10em; }
+
+
+/* Using counters to replace the deprecated start attribute
+   --------------------------------------------------------
+
+   make sure the resulting list resembles the list-style 'outside'
+   with a hanging indent 
+   */
+
+/* New ordered list: reset counter, suppress the default label */
+ol { 
+  counter-reset: item; 
+  list-style-type: none  ! important; 
+}
+
+/* Set the negative indent of the list label as feature of the list item */
+ol > li { text-indent: -2.5em; }
+
+/* Let the item content start next to the label and without indent */
+ol > li > p { 
+  display: inline-block;
+  text-indent: 0em;
+}
+
+/* However, subsequent paragraphs are to be set as nested block elements */
+ol > li > p + p { 
+  display: block;
+  margin-top: 0em;
+}
+
+/* The label: 
+     * increment and typeset counter(s),
+     * display next to the content (top aligned),
+     * right-align the label */     
+ol > li:before {
+  counter-increment: item;
+  content: counter(item) ".";
+  display: inline-block;
+  vertical-align: top;
+  width: 2em;
+  padding-right: 0.5em;
+  text-align: right;
+}
+
+/* default separator variants */
+ol.loweralpha > li:before {
+  content: counter(item, lower-alpha) ")";
+}
+ol.upperalpha  > li:before {
+  content: counter(item, upper-alpha) ".";
+}
+ol.lowerroman  > li:before {
+  content: "(" counter(item, lower-roman) ")";
+}
+ol.upperroman  > li:before {
+  content: counter(item, upper-roman) ")";
+}
+/* nested counters (1, 1.1, 1.1.1, etc) */
+ol.nested > li:before {
+  content: counters(item, ".") ".";
+}
+
+/* TODO: prefix, suffix? */
+
+
+/* Table styling 
+   -------------
+*/
+
+/* borders for "normal" tables */
+table.table {
+  border-style: outset;
+  border-width: thin;
+}
+
+table.table td, table.table th {
+  border-style: inset;
+  border-width: thin;
+}
+
+/* no borders for "borderless" tables */
+table.table.borderless, table.table.borderless * {
+  border-style: none;
+}
+
+/* whitespace and line-wrapping in inline literals 
+   -----------------------------------------------
+   
+possible values: normal, nowrap, pre, pre-wrap, pre-line */
+   
+tt.docutils.literal {
+  white-space: pre-wrap;
+}
