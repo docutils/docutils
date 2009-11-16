@@ -1867,6 +1867,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
                             (node['ids'][0], backref, self.encode(num)))
             if node['ids'] == node['names']:
                 self.out += self.ids_to_labels(node)
+            # mask newline to prevent spurious whitespace:
+            self.out.append('%')
         else:
             # use key starting with ~ for sorting after small letters
             self.requirements['~fnt_floats'] = PreambleCmds.footnote_floats
