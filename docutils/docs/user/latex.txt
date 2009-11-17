@@ -212,7 +212,7 @@ See the test output standalone_rst_latex.tex_ for an example of the fallback
 definitions and their use in the document.
 
 .. _standalone_rst_latex.tex:
-   ../../test/functional/output/standalone_rst_latex.tex
+   ../../test/functional/expected/standalone_rst_latex.tex
 
 .. [#] DU for Documentation Utilities = Docutils
 
@@ -223,6 +223,8 @@ Configuration
 Configuration can be done via configuration options_ to the Docutils tool,
 `custom style sheets`_ and LaTeX packages, as well as `raw LaTeX`_ in the
 document. Advanced configuration is possible with custom templates_.
+
+.. _option:
 
 Options
 -------
@@ -719,37 +721,158 @@ font
 ````
 
 The selected text font influences the *look*, the *feel*,
-and the *readability* of the document (see e.g.
+and the *readability* of the document (cf.
 http://www.csarven.ca/web-typography).
-
-Selecting a suitable font also solves the problem with `bad looking PDF
-output`_.
-
-Unfortunately, LaTeX cannot use the fonts of the operating system directly
-[#]_ but needs specially installed fonts with additional supporting files.
-The `LaTeX Font Catalogue`_ provides information and examples for a wide
-range of fonts available for use with LaTeX.
-
-.. [#] XeTeX_ can, but is not (yet) supported by Docutils
+Selecting a suitable font also solves the problem with `bad looking
+PDF output`_.
 
 Default:
   Computer Modern (CM)
 
 Alternative fonts can be selected by
 
-a) specifying the corresponding LaTeX package as arguments to the
-   ``--stylesheet`` option or in a custom `style sheet`_.
+a) specifying the corresponding LaTeX package(s) as argument to the
+   ``--stylesheet`` option_ or in a custom `style sheet`_.
 
-   * Packages can be combined.
-   * Passing options to a package is only possible in the style sheet.
+   * packages can be combined,
+   * passing options to a package is only possible in the style sheet.
 
-b) changing the font-default macros ``\rmdefault``, ``sfdefault`` and/or
-   ``ttdefault``.
+b) changing the font-default macros ``\rmdefault``, ``\sfdefault`` and/or
+   ``\ttdefault`` in a custom `style sheet`_ or `raw LaTeX`_.
+
+choice of suitable fonts
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Unfortunately, LaTeX cannot use the fonts of the operating system directly
+[#]_ but needs specially installed fonts with additional supporting files.
+
+.. [#] XeTeX_ can, but is not (yet) supported by Docutils
+
+The `LaTeX Font Catalogue`_ provides information and examples for a wide
+range of fonts available for use with LaTeX. Here is just a selection:
+
+
+a) The `Latin Modern`_ fonts are extended outline versions of CM.
+   
+   +1  simple invocation:  ``--stylesheet=lmodern``
+   
+   +1  (almost) no visible change to the "look and feel":
+   
+       +1  generally accepted as high quality CM replacement
+       +1  including optical sizes   
+       +1  best possible math support
+       +1  works/looks nice with CM compatible extensions
+       -1  modern types are hard to read at low (screen) resolutions.
+   
+   -2  not part of a minimal standard TeX installation
+   
+       -1  might not work out-of-the-box
+       -1  large additional download (ca. 12 ... 17 MB)
+   
+b) CM-Super_ is another outline CM replacement.
+   
+   +1  simple invocation: some LaTeX distributions even use CM-Super
+       automatically instead of CM if it is installed.
+   
+   +1  (almost) no visible change to the "look and feel"
+   
+       -1  said to be of inferior quality compared to LM.       
+   
+   -2  not part of a minimal standard TeX installation, 
+   
+       -1  even bigger download size than LM.
+
+c) `Bera`_ (Bitstream Vera)
+
+   +1  simple invocation:  ``--stylesheet=bera``
+   
+   +1  optimized for on-screen viewing with full hinting instructions
+   
+   -2  not part of a minimal standard TeX installation
+ 
+d) PSNFSS_ Postscript fonts
+
+   +1  part of every standard TeX installation
+   
+   +1  smaller PDF/Postscript document size if standard fonts are not
+       embedded
+
+   -1  restricted set of glyphs in the free versions [#]_
+   
+   -1  different fonts for roman, sans-serif and typewriter fonts.
+   
+   -1  invocation somewhat more complex, as several packages are
+       required for a complete font set, sometimes including package
+       options.
+       
+   Roman (serif) PSNFSS fonts:
+
+   Bookman
+     good legibility but very wide.
+     
+   Charter
+     +0  bread-and-butter type optimized for printing on low-resolution
+     	 printers
+     -1  not in the *Base35* PostScript core font set.
+
+   New Century Schoolbook
+     good legibility but very wide.
+     
+   Palatino
+     +1  recommended by font experts
+     +1  good LaTeX support including matching math fonts, small caps,
+     	   old-style figures
+     -1  bad rendering in xpdf viewer (auto-hinting leads to different
+         x-hight for different characters at some magnifications)
+	   
+   Times
+     +1  the serif `standard Type 1 font`_ in PDF, 
+     -1  overused and quite narrow (devised for multi-column layouts).
+     
+   Utopia
+     +1  recommended by font experts
+     -1  no *Base35* font and not a required part of LaTeX any more.
+
+
+  .. table:: Font packages for standard Postscript fonts 
+     	     (cf. `Using common Postscript fonts with LaTeX`_)
+     
+     ========= ============ ============= ============= =========
+     Package   Roman        Sans Serif    Typewriter    Math
+     ========= ============ ============= ============= =========
+     (none)    CM Roman     CM Sans Serif CM Typewriter CM Math
+     
+     mathpazo  Palatino                                 Palatino
+     
+     mathptmx  Times                                    Times
+     
+     helvet                 Helvetica
+     
+     avant                  Avant Garde
+     
+     courier                              Courier
+     
+     chancery  Zapf
+               Chancery
+     
+     bookman   Bookman      Avant Garde   Courier
+     
+     newcent   New Century  Avant Garde   Courier
+               Schoolbook
+     
+     charter   Charter
+     
+     utopia    Utopia
+     ========= ============ ============= ============= =========
+
+.. [#] Extended versions of the standard Postscript fonts including
+       accented chars, Greek and Cyrillic as well as real small-caps
+       and old-style numbers are available with the `TeX Gyre`_ bundle
+       which is part of, e.g., `TeX Live`_.
+
 
 Example 1:
-  Use `LaTeX Modern`, a Type 1 variant of CM.
-
-  LaTeX code::
+  Use `Latin Modern`_. LaTeX code::
 
     \usepackage{lmodern}
 
@@ -759,7 +882,7 @@ Example 1:
 
 Example 2:
   The ubiquitous "Times/Helvetica/Courier"
-  combination is achieved by the latex code::
+  combination is achieved by the LaTeX code [#]_::
 
     \usepackage{mathptmx}            % Times for serif and math
     \usepackage[scaled=.90]{helvet}  % downscaled Helvetica for sans serif
@@ -770,61 +893,34 @@ Example 2:
     --documentoptions="scaled=.90"
     --stylesheet="mathptmx,helvet,courier"
 
-  .. hint::
-    When generating PDF-files from LaTeX, the files can become smaller if
-    this font combination is used as the fonts do not need to be embedded in
-    the document.
+.. [#] When generating PDF-files from LaTeX, the files can become
+   smaller if this font combination is used as the fonts do not need
+   to be embedded in the document.
 
 Example 3:
-  Use the teletype font from the txfonts_ package::
+  Use the teletype font from the txfonts_ package. As there is no
+  package for this, we re-define the font macro with the LaTeX code::
 
     \renewcommand{\ttdefault}{txtt}
 
-The following table lists the font packages for standard Postscript fonts
-(see `Using common Postscript fonts with LaTeX`_ for details):
-
-
-============ ============ ============= ============= ============
-Package      Roman        Sans Serif    Typewriter    Math
-============ ============ ============= ============= ============
-(none)       CM Roman     CM Sans Serif CM Typewriter CM Math
-
-mathpazo     Palatino                                 Palatino
-
-mathptmx     Times                                    Times
-
-helvet                    Helvetica
-
-avant                     Avant Garde
-
-courier                                 Courier
-
-chancery     Zapf
-             Chancery
-
-bookman      Bookman      Avant Garde   Courier
-
-newcent      New Century  Avant Garde   Courier
-             Schoolbook
-
-charter      Charter
-
-utopia       Utopia
-============ ============ ============= ============= ============
-
-Extended versions of the standard Postscript fonts including accented chars,
-Greek and Cyrillic are available with the `TeX Gyre`_ bundle which is part
-of, e.g., `TeX Live`_.
-
 .. _LaTeX Font Catalogue:
    http://www.tug.dk/FontCatalogue/
+.. _Latin Modern:
+   http://www.ctan.org/tex-archive/help/Catalogue/entries/lm.html
+.. _CM-Super:
+   http://www.ctan.org/tex-archive/help/Catalogue/entries/cm-super.html
+.. _bera:   
+   http://www.ctan.org/tex-archive/help/Catalogue/entries/bera.html
 .. _TeX Gyre: http://www.gust.org.pl/projects/e-foundry/tex-gyre
+.. _PSNFSS:
+   http://www.ctan.org/tex-archive/help/Catalogue/entries/psnfss.html
 .. _Using common PostScript fonts with LaTeX:
    http://ctan.org/get/macros/latex/required/psnfss/psnfss2e.pdf
 .. _TeX Live: http://tug.org/texlive/
 .. _txfonts:
    http://www.ctan.org/tex-archive/help/Catalogue/entries/txfonts.html
-
+.. _standard type 1 font:   
+   http://en.wikipedia.org/wiki/PDF#Standard_Type_1_Fonts
 
 font encoding
 `````````````
@@ -865,8 +961,7 @@ Example 2:
    ../user/config.html#font-encoding
 .. _fontenc:
    http://www.ctan.org/tex-archive/help/Catalogue/entries/fontenc.html
-.. _Latin Modern:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/lm.html
+
 
 font size
 `````````
@@ -1613,8 +1708,8 @@ Search and text extraction
 ``````````````````````````
 
 Search for text that contains characters outside the ASCII range (e.g.
-umlauts) might fail.  See font_, `font encoding`_ and `Searching PDF files`_
-for background information.
+umlauts) might fail.  See font_ and `font encoding`_ (as well as
+`Searching PDF files`_ for background information).
 
 .. _Searching PDF files:
    http://www.tex.ac.uk/cgi-bin/texfaq2html?label=srchpdf
