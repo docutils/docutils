@@ -325,21 +325,21 @@ Include file is UTF-16-encoded, and is not valid ASCII.
 """ % utf_16_file_rel],
 # @@@ BUG with errors reported with incorrect "source" & "line":
 ["""\
-Testing bad charent includes:
+Testing errors in included file:
 
 .. include:: %s
 """ % include10,
 """\
 <document source="test data">
     <paragraph>
-        Testing bad charent includes:
-    <system_message level="3" line="1" source="%s" type="ERROR">
+        Testing errors in included file:
+    <system_message level="3" line="1" source="%(source)s" type="ERROR">
         <paragraph>
             Invalid character code: 0xFFFFFFFFF
             ValueError: unichr() arg not in range(0x110000) (wide Python build)
         <literal_block xml:space="preserve">
             unicode:: 0xFFFFFFFFF
-    <system_message level="2" line="1" source="%s" type="WARNING">
+    <system_message level="2" line="1" source="%(source)s" type="WARNING">
         <paragraph>
             Substitution definition "bad" empty or invalid.
         <literal_block xml:space="preserve">
@@ -350,7 +350,7 @@ Testing bad charent includes:
         <block_quote>
             <paragraph>
                 indent
-        <system_message level="2" line="7" source="%s" type="WARNING">
+        <system_message level="2" line="7" source="%(source)s" type="WARNING">
             <paragraph>
                 Block quote ends without a blank line; unexpected unindent.
         <paragraph>
@@ -358,10 +358,91 @@ Testing bad charent includes:
     <section dupnames="hi" ids="id1">
         <title>
             hi
-        <system_message backrefs="id1" level="1" line="10" source="%s" type="INFO">
+        <system_message backrefs="id1" level="1" line="10" source="%(source)s" type="INFO">
             <paragraph>
                 Duplicate implicit target name: "hi".
-""" % (include10rel, include10rel, include10rel, include10rel)],
+        <system_message level="4" line="12" source="%(source)s" type="SEVERE">
+            <paragraph>
+                Problems with "include" directive path:
+                IOError: [Errno 2] No such file or directory: '%(nonexistent)s'.
+            <literal_block xml:space="preserve">
+                .. include:: <nonexistent>
+        <system_message level="3" line="14" source="%(source)s" type="ERROR">
+            <paragraph>
+                Content block expected for the "note" directive; none found.
+            <literal_block xml:space="preserve">
+                .. note::
+        <system_message level="3" line="16" source="%(source)s" type="ERROR">
+            <paragraph>
+                Content block expected for the "admonition" directive; none found.
+            <literal_block xml:space="preserve">
+                .. admonition::
+                   without title
+        <system_message level="3" line="19" source="%(source)s" type="ERROR">
+            <paragraph>
+                Content block expected for the "epigraph" directive; none found.
+            <literal_block xml:space="preserve">
+                .. epigraph::
+        <system_message level="3" line="21" source="%(source)s" type="ERROR">
+            <paragraph>
+                Content block expected for the "highlights" directive; none found.
+            <literal_block xml:space="preserve">
+                .. highlights::
+        <system_message level="3" line="23" source="%(source)s" type="ERROR">
+            <paragraph>
+                Content block expected for the "pull-quote" directive; none found.
+            <literal_block xml:space="preserve">
+                .. pull-quote::
+        <system_message level="3" line="25" source="%(source)s" type="ERROR">
+            <paragraph>
+                Invalid context: the "date" directive can only be used within a substitution definition.
+            <literal_block xml:space="preserve">
+                .. date::
+        <paragraph>
+            not a
+            definition list:
+        <system_message level="3" line="29" source="%(source)s" type="ERROR">
+            <paragraph>
+                Unexpected indentation.
+        <block_quote>
+            <paragraph>
+                as a term may only be one line long.
+        <paragraph>
+            A sample of problems still reported with wrong line-nr and source
+        <comment xml:space="preserve">
+            .. admonition::
+            
+               without title and content following a blank line
+            
+            :unknown-role:`role` and *unbalanced `inline **markup
+            
+            .. unknown:: directive
+            
+            :PEP:`-1`
+            
+            A literal block::
+                with no blank line above.
+            
+            ::
+            
+            > A literal block.
+            $ with inconsistent quoting.
+            
+            section underline too short
+            -----
+            
+            ==============  ======
+            A simple table  cell 2
+            ==============  ======
+            No blank line after table.
+            
+            ==============  ======
+            A simple table  with
+            no bottom       border
+""" % {'source': include10rel, 'nonexistent': nonexistent_rel,
+       'unichr_exception':
+       DocutilsTestSupport.exception_data(unichr, int("0xFFFFFFFFF", 16))[2]
+      }],
 ["""\
 Include file with whitespace in the path:
 
