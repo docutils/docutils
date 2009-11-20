@@ -753,115 +753,115 @@ range of fonts available for use with LaTeX. Here is just a selection:
 
 
 a) The `Latin Modern`_ fonts are extended outline versions of CM.
-   
+
    +1  simple invocation:  ``--stylesheet=lmodern``
-   
+
    +1  (almost) no visible change to the "look and feel":
-   
+
        +1  generally accepted as high quality CM replacement
-       +1  including optical sizes   
+       +1  including optical sizes
        +1  best possible math support
        +1  works/looks nice with CM compatible extensions
        -1  modern types are hard to read at low (screen) resolutions.
-   
+
    -2  not part of a minimal standard TeX installation
-   
+
        -1  might not work out-of-the-box
        -1  large additional download (ca. 12 ... 17 MB)
-   
+
 b) CM-Super_ is another outline CM replacement.
-   
+
    +1  simple invocation: some LaTeX distributions even use CM-Super
        automatically instead of CM if it is installed.
-   
+
    +1  (almost) no visible change to the "look and feel"
-   
-       -1  said to be of inferior quality compared to LM.       
-   
-   -2  not part of a minimal standard TeX installation, 
-   
+
+       -1  said to be of inferior quality compared to LM.
+
+   -2  not part of a minimal standard TeX installation,
+
        -1  even bigger download size than LM.
 
 c) `Bera`_ (Bitstream Vera)
 
    +1  simple invocation:  ``--stylesheet=bera``
-   
+
    +1  optimized for on-screen viewing with full hinting instructions
-   
+
    -2  not part of a minimal standard TeX installation
- 
+
 d) PSNFSS_ Postscript fonts
 
    +1  part of every standard TeX installation
-   
+
    +1  smaller PDF/Postscript document size if standard fonts are not
        embedded
 
    -1  restricted set of glyphs in the free versions [#]_
-   
+
    -1  different fonts for roman, sans-serif and typewriter fonts.
-   
+
    -1  invocation somewhat more complex, as several packages are
        required for a complete font set, sometimes including package
        options.
-       
+
    Roman (serif) PSNFSS fonts:
 
    Bookman
      good legibility but very wide.
-     
+
    Charter
      +0  bread-and-butter type optimized for printing on low-resolution
-     	 printers
+         printers
      -1  not in the *Base35* PostScript core font set.
 
    New Century Schoolbook
      good legibility but very wide.
-     
+
    Palatino
      +1  recommended by font experts
      +1  good LaTeX support including matching math fonts, small caps,
-     	   old-style figures
+           old-style figures
      -1  bad rendering in xpdf viewer (auto-hinting leads to different
          x-hight for different characters at some magnifications)
-	   
+
    Times
-     +1  the serif `standard Type 1 font`_ in PDF, 
+     +1  the serif `standard Type 1 font`_ in PDF,
      -1  overused and quite narrow (devised for multi-column layouts).
-     
+
    Utopia
      +1  recommended by font experts
      -1  no *Base35* font and not a required part of LaTeX any more.
 
 
-  .. table:: Font packages for standard Postscript fonts 
-     	     (cf. `Using common Postscript fonts with LaTeX`_)
-     
+  .. table:: Font packages for standard Postscript fonts
+             (cf. `Using common Postscript fonts with LaTeX`_)
+
      ========= ============ ============= ============= =========
      Package   Roman        Sans Serif    Typewriter    Math
      ========= ============ ============= ============= =========
      (none)    CM Roman     CM Sans Serif CM Typewriter CM Math
-     
+
      mathpazo  Palatino                                 Palatino
-     
+
      mathptmx  Times                                    Times
-     
+
      helvet                 Helvetica
-     
+
      avant                  Avant Garde
-     
+
      courier                              Courier
-     
+
      chancery  Zapf
                Chancery
-     
+
      bookman   Bookman      Avant Garde   Courier
-     
+
      newcent   New Century  Avant Garde   Courier
                Schoolbook
-     
+
      charter   Charter
-     
+
      utopia    Utopia
      ========= ============ ============= ============= =========
 
@@ -909,7 +909,7 @@ Example 3:
    http://www.ctan.org/tex-archive/help/Catalogue/entries/lm.html
 .. _CM-Super:
    http://www.ctan.org/tex-archive/help/Catalogue/entries/cm-super.html
-.. _bera:   
+.. _bera:
    http://www.ctan.org/tex-archive/help/Catalogue/entries/bera.html
 .. _TeX Gyre: http://www.gust.org.pl/projects/e-foundry/tex-gyre
 .. _PSNFSS:
@@ -919,7 +919,7 @@ Example 3:
 .. _TeX Live: http://tug.org/texlive/
 .. _txfonts:
    http://www.ctan.org/tex-archive/help/Catalogue/entries/txfonts.html
-.. _standard type 1 font:   
+.. _standard type 1 font:
    http://en.wikipedia.org/wiki/PDF#Standard_Type_1_Fonts
 
 font encoding
@@ -973,16 +973,49 @@ extsizes_ for values other than [10,11,12].
 .. _extsizes:
    http://www.ctan.org/tex-archive/help/Catalogue/entries/extsizes.html
 
+
 footnotes
 `````````
 
-With the ``--use-latex-footnotes`` option, footnotes are set with
-Docutils-specific variants of the standard ``\footnotemark`` and
-``\footnotetext`` commands. Thus you can configure the appearance and
-placement by alternative definitions of ``\DUfootnotemark`` and
-``\DUfootnotetext`` in a custom `style sheet`_.
+By default, footnotes are set with Docutils-specific wrappers around
+the standard ``\footnotemark`` and ``\footnotetext`` commands.  You
+can configure the footnote layout similar to standard LaTeX footnotes
+in a custom `style sheet`_.
 
-Example:
+Further configuration is possible by alternative definitions of
+``\DUfootnotemark`` and ``\DUfootnotetext``
+
+
+Example 1:
+  Set footnote text with a hanging indent.
+
+  * This is the default with KOMA-script_ classes, e.g::
+
+      --documentclass=scrartcl
+
+    (for further configuration, see the `KOMA-script Guide`_),
+
+  * with package footmisc_::
+
+      \usepackage[hang]{footmisc}
+      \setlength{\footnotemargin}{0em}
+
+    (play with the ``\footnotemargin`` setting),
+
+  * redefine ``\DUfootnotetext`` inserting `\hangindent`::
+
+      \newcommand{\DUfootnotetext}[4]{%
+        \begingroup%
+        \renewcommand{\thefootnote}{%
+          \protect\raisebox{1em}{\protect\hypertarget{#1}{}}%
+          \protect\hyperlink{#2}{#3}}%
+          \footnotetext{\hangindent=2em #4}%
+        \endgroup%
+      }
+
+    (adapt the ``\hangindent`` value).
+
+Example 2:
   place the footnote text where it appears in the source document (instead
   of at the page bottom). This can be used to get the effect of endnotes
   (needs the hanging_ package)::
@@ -994,6 +1027,8 @@ Example:
        \hangpara{\parindent}{1}#4%
      }
 
+.. _footmisc:
+   http://www.ctan.org/tex-archive/help/Catalogue/entries/footmisc.html
 .. _hanging:
    http://www.ctan.org/tex-archive/help/Catalogue/entries/hanging.html
 
@@ -1024,7 +1059,6 @@ requires its presence) in a `style sheet`_, e.g. ::
 
   \usepackage[colorlinks=true,linkcolor=green,urlcolor=blue]{hyperref}
 
-and it will not be loaded again.
 
 URLs are typeset with the "url" package (loaded implicitely by "hyperref").
 The font of URLs can be defined with the ``\urlstyle`` command. Valid
@@ -1755,7 +1789,7 @@ This results in footnotes, citations, and figures possibly being mixed at
 page foot.
 
 Workaround:
-  Select footnote and citation handling with the use-latex-footnotes_ and
+  Select footnote and citation handling with the docutils-footnotes_ and
   use-latex-citations_ options.
 
 If ``use-latex-citations`` is used, a bibliography is inserted right at
@@ -1766,7 +1800,7 @@ only by a single space or a newline) are combined to a single citation
 group, i.e. ``[cite1]_ [cite2]_`` results in ``\cite{cite1,cite2}``.
 The appearance in the output can be configured in a `style sheet`_.
 
-.. _use-latex-footnotes: ../user/config.html#use-latex-footnotes
+.. _docutils-footnotes: ../user/config.html#docutils-footnotes
 .. _use-latex-citations: ../user/config.html#use-latex-citations
 
 

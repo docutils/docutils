@@ -43,13 +43,17 @@ class Writer(writers.Writer):
           'separated by commas.  Default is "a4paper".',
           ['--documentoptions'],
           {'default': 'a4paper', }),
-         ('Use LaTeX footnotes. (default)',
-          ['--use-latex-footnotes'],
-          {'default': 1, 'action': 'store_true',
+         ('Footnotes with numbers/symbols by Docutils. (default)',
+          ['--docutils-footnotes'],
+          {'default': True, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
-         ('Use figure floats for footnote text.',
+         ('Alias for --docutils-footnotes (deprecated)',
+          ['--use-latex-footnotes'],
+          {'action': 'store_true',
+           'validator': frontend.validate_boolean}),
+         ('Use figure floats for footnote text (deprecated)',
           ['--figure-footnotes'],
-          {'dest': 'use_latex_footnotes', 'action': 'store_false',
+          {'action': 'store_true',
            'validator': frontend.validate_boolean}),
          ('Format for footnote references: one of "superscript" or '
           '"brackets".  Default is "superscript".',
@@ -340,8 +344,11 @@ class Babel(object):
 # --------------------------------------
 
 class SortableDict(dict):
-    """Dictionary with additional sorting methods"""
+    """Dictionary with additional sorting methods
 
+    Tip: use key starting with with '_' for sorting before small letters
+    	 and with '~' for sorting after small letters.
+    """
     def sortedkeys(self):
         """Return sorted list of keys"""
         keys = self.keys()
@@ -860,13 +867,17 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
+        # Reporter
+        # ~~~~~~~~
+        self.warn = self.document.reporter.warning
+        self.error = self.document.reporter.error
+
         # Settings
         # ~~~~~~~~
         self.settings = settings = document.settings
         self.latex_encoding = self.to_latex_encoding(settings.output_encoding)
         self.use_latex_toc = settings.use_latex_toc
         self.use_latex_docinfo = settings.use_latex_docinfo
-        self.use_latex_footnotes = settings.use_latex_footnotes
         self._use_latex_citations = settings.use_latex_citations
         self.embed_stylesheet = settings.embed_stylesheet
         self._reference_label = settings.reference_label
@@ -903,7 +914,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.d_options = ','.join([opt for opt in self.d_options if opt])
         self.d_class = DocumentClass(settings.documentclass,
                                      settings.use_part_section)
-
+        # graphic package options:
         if self.settings.graphicx_option == '':
             self.graphicx_package = r'\usepackage{graphicx}'
         elif self.settings.graphicx_option.lower() == 'auto':
@@ -911,7 +922,18 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             self.graphicx_package = (r'\usepackage[%s]{graphicx}' %
                                      self.settings.graphicx_option)
-
+        # footnotes:
+        self.docutils_footnotes = settings.docutils_footnotes
+        if settings.use_latex_footnotes:
+            self.docutils_footnotes = True
+            self.warn('`use_latex_footnotes` is deprecated. '
+                      'The setting has been renamed to `docutils_footnotes` '
+		      'and the alias will be removed in a future version.')
+        self.figure_footnotes = settings.figure_footnotes
+        if self.figure_footnotes:
+            self.docutils_footnotes = True
+            self.warn('The "figure footnotes" workaround/setting is strongly '
+                      'deprecated and will be removed in a future version.')
 
         # Output collection stacks
         # ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1392,6 +1414,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self._use_latex_citations:
             self.context.append(len(self.body))
         else:
+            # TODO: do we need these?
+            ## self.requirements['~fnt_floats'] = PreambleCmds.footnote_floats
             self.out.append(r'\begin{figure}[b]')
             self.append_hypertargets(node)
 
@@ -1858,7 +1882,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
             backref = node['backrefs'][0]
         except IndexError:
             backref = node['ids'][0] # no backref, use self-ref instead
-        if self.use_latex_footnotes:
+        if self.settings.figure_footnotes:
+            self.requirements['~fnt_floats'] = PreambleCmds.footnote_floats
+            self.out.append('\\begin{figure}[b]')
+            self.append_hypertargets(node)
+            if node.get('id') == node.get('name'):  # explicite label
+                self.out += self.ids_to_labels(node)
+        elif self.docutils_footnotes:
             self.fallbacks['footnotes'] = PreambleCmds.footnotes
             num,text = node.astext().split(None,1)
             if self.settings.footnote_references == 'brackets':
@@ -1869,19 +1899,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 self.out += self.ids_to_labels(node)
             # mask newline to prevent spurious whitespace:
             self.out.append('%')
-        else:
-            # use key starting with ~ for sorting after small letters
-            self.requirements['~fnt_floats'] = PreambleCmds.footnote_floats
-            self.out.append('\\begin{figure}[b]')
-            self.append_hypertargets(node)
-            if node.get('id') == node.get('name'):  # explicite label
-                self.out += self.ids_to_labels(node)
+        ## else:  # TODO: "real" LaTeX \footnote{}s
 
     def depart_footnote(self, node):
-        if self.use_latex_footnotes:
-            self.out.append('}\n')
-        else:
+        if self.figure_footnotes:
             self.out.append('\\end{figure}\n')
+        else:
+            self.out.append('}\n')
 
     def visit_footnote_reference(self, node):
         href = ''
@@ -1889,7 +1913,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             href = node['refid']
         elif 'refname' in node:
             href = self.document.nameids[node['refname']]
-        # if self.use_latex_footnotes:
+        # if not self.docutils_footnotes:
             # TODO: insert footnote content at (or near) this place
             # print "footnote-ref to", node['refid']
             # footnotes = (self.document.footnotes +
@@ -1906,7 +1930,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.context.append(']}')
         else:
             self.fallbacks['footnotes'] = PreambleCmds.footnotes
-            # TODO: second argument = backlink id
             self.out.append(r'\DUfootnotemark{%s}{%s}{' %
                             (node['ids'][0], href))
             self.context.append('}')
@@ -1917,7 +1940,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     # footnote/citation label
     def label_delim(self, node, bracket, superscript):
         if isinstance(node.parent, nodes.footnote):
-            if self.use_latex_footnotes:
+            if not self.figure_footnotes:
                 raise nodes.SkipNode
             if self.settings.footnote_references == 'brackets':
                 self.out.append(bracket)
@@ -2271,7 +2294,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             href = unicode(node['refuri']).translate(special_chars)
             # problematic chars double caret and unbalanced braces:
             if href.find('^^') != -1 or self.has_unbalanced_braces(href):
-                self.document.reporter.error(
+                self.error(
                     'External link "%s" not supported by LaTeX.\n'
 		    ' (Must not contain "^^" or unbalanced braces.)' % href)
             if node['refuri'] == node.astext():
@@ -2563,9 +2586,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         try:
             minitoc_name = minitoc_names[section_name]
         except KeyError: # minitoc only supports part- and toplevel
-            warn = self.document.reporter.warning
-            warn('Skipping local ToC at %s level.\n' % section_name +
-                 '  Feature not supported with option "use-latex-toc"')
+            self.warn('Skipping local ToC at %s level.\n' % section_name +
+                      '  Feature not supported with option "use-latex-toc"')
             return
         # Requirements/Setup
         self.requirements['minitoc'] = PreambleCmds.minitoc
