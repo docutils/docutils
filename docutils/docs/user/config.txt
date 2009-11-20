@@ -888,14 +888,27 @@ _`use_latex_docinfo`
 
     Default: off.  Options: ``--use-latex-docinfo, --use-docutils-docinfo``
 
+_`docutils_footnotes`
+    Use the Docutils-specific macros ``\DUfootnote`` and
+    ``\DUfootnotetext`` for footnotes.
+
+    Default: on.  Option: ``--docutils-footnotes``.
+
 _`use_latex_footnotes`
-    Use \DUfootnote and \DUfootnotetext for footnotes instead of the
-    deprecated simulation with figure-floats.
+    Backwards-compatibility alias for docutils_footnotes_ (deprecated).
 
-    *Note* this will change to use the \footnote command and footnote
-    numbering by LaTeX in the future.
+    *Note*: the planned new option _`latex_footnotes` will use the
+    ``\footnote`` command and footnote numbering by LaTeX.
 
-    Default: on.  Options: ``--use-latex-footnotes, --figure-footnotes``.
+_`figure_footnotes`
+    Typeset footnote text in a figure float.
+    This may lead to footnotes, citations, and figures being
+    mixed at page foot.
+
+    *Deprecated:* This setting will be removed in a future Docutils
+    version.
+
+    Default: off.  Option: ``--figure-footnotes``.
 
 _`use_latex_citations`
     Use \cite for citations instead of a simulation with figure-floats.

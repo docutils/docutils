@@ -33,8 +33,11 @@ Changes Since 0.6
   - Use the ``\url`` command for URLs (breaks long URLs instead of
     writing into the margin).
   - Preserve runs of spaces in `inline literals`__.
+  - Deprecate ``figure_footnotes`` setting.
+  - Rename ``use_latex_footnotes`` setting to `docutils_footnotes`__.
 
 __ docs/ref/restructuredtext.html#inline-literals
+__ docs/user/config.html#docutils-footnotes
 
 * docutils/nodes.py
 

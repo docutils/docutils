@@ -2027,19 +2027,22 @@ Which packages do we want to use?
      which would allow \symbolfootnote[10]{footnote} to have a club as its
      mark.
 
-  + document customization (links to how-to and packages)
+  + document customization (links to how-to and packages):
 
   .. Footnote packages:
 
-     :footmisc: texlive-latex-extra
+     :footnote: texlive-latex-recommended % savenotes environment
+     :footmisc: texlive-latex-extra	  % formatting options
      :manyfoot: texlive-latex-extra
      :bigfoot: texlive-latex-extra
-     :footnote: texlive-latex-recommended
      :perpage: texlive-latex-extra
      :ftnxtra: new on CTAN
 	       fixes the issue of footnote inside \caption{},
 	       tabular environment and \section{} like commands.
 
+
+     German tutorial:
+     http://www2.informatik.hu-berlin.de/~ahamann/studies/footnotes.pdf
 
   .. Footnote FAQs:
 
@@ -2050,14 +2053,15 @@ Which packages do we want to use?
 
      `More than one sequence of footnotes
      <http://www.tex.ac.uk/cgi-bin/texfaq2html?label=multfoot>`__
-     (manyfoot, bigfoot)
+
+     * manyfoot, bigfoot
 
      `Footnotes in tables
      <http://www.tex.ac.uk/cgi-bin/texfaq2html?label=footintab>`__
 
      * `tabularx` and longtable allow footnotes.
-     * `footnote` provides an savenotes which collects all
-       footnotes and emits them at the end of the environment
+     * `footnote` provides a "savenotes" environment which collects all
+       footnotes and emits them at ``end{savenotes}``
 
      `Footnotes in LaTeX section headings
      <http://www.tex.ac.uk/cgi-bin/texfaq2html?label=ftnsect>`__
@@ -2070,6 +2074,8 @@ Which packages do we want to use?
      * Use the footmisc package, with package option stable - this modifies
        footnotes so that they softly and silently vanish away if used in a
        moving argument.
+
+     * Use ftnxtra.
 
      `Footnotes numbered per page
      <http://www.tex.ac.uk/cgi-bin/texfaq2html?label=footnpp>`__
@@ -2124,7 +2130,7 @@ Default layout
 * Sidebar handling (environment with `framed`, `marginnote`, `wrapfig`,
   ...)?
 
-* Use optionlist for docinfo? The table does only work for single page.
+* Use optionlist for docinfo?
 
 * Keep literal-blocks together on a page, avoid pagebreaks.
 
@@ -2133,9 +2139,6 @@ Default layout
 
   Should be possible with ``--literal-block-env==lstlistings`` and some
   configuration...
-
-* Configurable `classifier` in description list?
-  \emph instead of bold as default?
 
 * More space between title and subtitle? ::
 
@@ -2237,21 +2240,23 @@ Missing features
 * Consider supporting the "compact" option and class argument (from
   rst2html) as some lists look better compact and others need the space.
 
-* If ``use-latex-citations`` is used a bibliography is inserted right at the
+* If ``use-latex-citations`` is used, a bibliography is inserted right at the
   end of the document.
 
   Put in place of the to-be-implemented "citations" directive
   (see `Footnote & Citation Gathering`_).
 
-Unicode to LaTeX with ``unicodesymbols`` file from LyX
-``````````````````````````````````````````````````````
+Unicode to LaTeX
+````````````````
 
 The `LyX <http://www.lyx.org>`_ document processor has a comprehensive
 Unicode to LaTeX conversion feature with a file called ``unicodesymbols``
 that lists LaTeX counterparts for a wide range of Unicode characters.
 
-Use this in the LaTeXTranslator.unicode_to_latex() method.
-Think of copyright issues!
+* Use this in the LaTeXTranslator?
+  Think of copyright issues!
+
+* The "ucs" package has many translations in ...doc/latex/ucs/config/
 
 Allow choice between utf8 (standard) and utf8x (extended) encodings
 ```````````````````````````````````````````````````````````````````

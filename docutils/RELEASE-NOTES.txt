@@ -28,6 +28,11 @@ Components:
   - Use the ``\url`` command for URLs (breaks long URLs instead of writing
     into the margin).
   - Preserve runs of spaces in 'inline literals'.
+  - Deprecate ``figure_footnotes`` setting.
+  - Rename ``use_latex_footnotes`` setting to `docutils_footnotes`__.
+
+__ docs/user/config.html#docutils-footnotes
+
 
 General:
 
