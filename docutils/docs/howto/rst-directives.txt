@@ -395,7 +395,7 @@ early version of the image directive class::
         has_content = False
 
         def run(self):
-            reference = directives.uri(arguments[0])
+            reference = directives.uri(self.arguments[0])
             self.options['uri'] = reference
             image_node = nodes.image(rawsource=self.block_text,
                                      **self.options)
