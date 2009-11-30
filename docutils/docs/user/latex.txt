@@ -14,7 +14,23 @@
 Introduction
 ============
 
-Producing LaTeX code from reST input can be done in at least two ways:
+This document covers topics specific to Docutils' LaTeX__ export.  For
+an introduction to LaTeX see, e.g., `LaTeX2e for authors`_. There exists
+a wide selecton of `LaTeX Documentation on the net`_ and
+`books on LaTeX and related topics`_.
+
+
+__ http://www.latex-project.org/
+.. _LaTeX2e for authors:
+   http://www.latex-project.org/guides/usrguide.pdf
+.. _LaTeX Documentation on the net:
+   http://www.latex-project.org/guides/
+.. _books on LaTeX and related topics:
+   http://www.latex-project.org/guides/books.html
+
+
+There are two approaches to typeset documents from reStructuredText
+sources via LaTeX:
 
 1. treat LaTeX as a document format (like HTML):
 
@@ -23,33 +39,125 @@ Producing LaTeX code from reST input can be done in at least two ways:
    command: ``\section{this section title}``.
 
    This keeps the document structure and semantic markup produing a readable
-   LaTeX file, but may require hacking around bugs/features in LaTeX.
+   LaTeX file, but may require hacking around Docutils — LaTeX
+   incompatibilities.
 
-   As with HTML, styling is mostly done via style sheets (called `styles` or
-   `packages` in LaTeX)
+   As with HTML, styling is mostly done via style sheets or
+   `LaTeX packages`_.
 
    If you prefer this approach, try the `latex2e` writer.
 
 2. treat LaTeX as a page description format (like Postscript):
 
    Use LaTeX as a typesetting system to produce the desired output
-   without bothering with the usual LaTeX idioms for representing
-   document structure information.
-   This will work around Docutils-incompatible features and bugs in LaTeX
-   but it produces a hard to read LaTeX file. Styling is done via options to
+   without representing document structure in the LaTeX source. This
+   will work around Docutils-incompatible features in LaTeX but
+   produces a hard to read LaTeX file. Styling is done via options to
    the latex writer.
 
-   The orphaned `newlatex` writer (``rst2newlatex.py``) adds a lot of LaTeX
-   macros and uses LaTeX as a typesetter without caring about producing
-   readable/stylable LaTeX files.
+   The (orphaned) `newlatex` writer (``rst2newlatex.py``) uses LaTeX as
+   a typesetter without caring about producing readable/stylable LaTeX
+   files.
 
-This documents describes the `latex2e` writer called by the front end
-``rst2latex.py``.
+This documents describes the first approach used by the `latex2e`
+writer.
+
+
+LaTeX
+=====
+
+Unlike HTML/CSS, LaTeX provides one common language for markup and
+style definitions. Separation of content and style is realized by
+collecting style definitions in the documentclass_, `LaTeX packages`_,
+or the document preamble.
+
+LaTeX packages
+--------------
+
+LaTeX packages (similar to Python modules or C libraries) provide
+means to extend or modify the LaTeX language by redefining macros or
+providing new ones. There is a *huge* selection of packages (standard
+as well as user contributed) coming with your TeX distribution or
+available at CTAN_ (see the `TeX Catalogue`_).
+
+.. _CTAN: http://www.ctan.org
+.. _TeX Catalogue: http://texcatalogue.sarovar.org/
+.. _stylesheet:
+   ../user/config.html#stylesheet-latex2e-writer
+.. _TeX input path:
+   http://www.tex.ac.uk/cgi-bin/texfaq2html?label=what-TDS
+
+
+Docutils special LaTeX macros
+-----------------------------
+
+Some Docutils objects have no LaTeX counterpart, they will be typeset using
+a Docutils specific LaTeX *macro* (command, environment, or length) to allow
+layout changes from the `style sheet`_ or with `raw LaTeX`_. By convention,
+special macros use the prefix ``\DU``\ [#]_.
+
+The generated LaTeX documents should be kept processable by a standard LaTeX
+installation. Therefore fallback definitions are included after the `custom
+style sheets`_, if a macro is required in the document.
+
+* Custom `style sheets`_ can define alternative implementations with
+  ``\newcommand``, ``\newenvironment``, and ``\newlength`` followed by
+  ``\setlength``.
+
+* Definitions with `raw LaTeX`_ are part of the document body. Use
+  ``\def``, ``\renewcommand`` or ``\renewenvironment``, and ``\setlength``.
+
+See the test output standalone_rst_latex.tex_ for an example of the fallback
+definitions and their use in the document.
+
+.. _standalone_rst_latex.tex:
+   ../../test/functional/expected/standalone_rst_latex.tex
+
+.. [#] DU for Documentation Utilities = Docutils
+
+
+Length units
+------------
+
+LaTeX supports all `length units`_ defined for Docutils plus the
+following less common units:
+
+:pt: typewriter's (or LaTeX) point (1 pt = 1/72.27 in)
+:dd: didôt (1 dd = 1238/1157 pt)
+:cc: cîcero (1 cc = 12 dd)
+:sp: scaled point (1sp = 1/65536pt)
+
+.. attention:: Different definitions of the unit "pt"!
+
+   * In Docutils (as well as CSS) the unit symbol "pt" denotes the
+     `Postscript point` or `DTP point`.
+
+   * LaTeX uses "pt" for the `LaTeX point`, which is unknown to Docutils and
+     0.3 % smaller.
+
+   * The `DTP point` is available in LaTeX as "bp" (big point):
+
+       1 pt = 1/72.25 in < 1 bp  = 1/72 in
+
+   Lengths specified in the document with unit "pt" will be given the
+   unit "bp" in the LaTeX source.
+
+   In `raw LaTeX`_ and `custom style sheets`_, the `DTP point` must be
+   specified as "bp", while "pt" is interpreted as `LaTeX point`.
+
+The default length unit (added by Docutils to length specifications
+without unit) is the "DTP point".
+
+For more on lengths in LaTeX, see e.g. `Hypertext Help with LaTeX: Lengths`__
+
+.. _length units: ../ref/rst/restructuredtext.html#length-units
+__ http://www.giss.nasa.gov/tools/latex/ltx-86.html.
+
 
 PDF generation
 ==============
 
-In many cases, LaTeX code is not the desired end-format of the document.
+In most cases, LaTeX code is not the desired end-format of the document.
 LaTeX offers (at least) four ways to generate PDF documents from the LaTeX
 source:
 
@@ -85,152 +193,25 @@ _`rubber`
 __ http://iml.univ-mrs.fr/~beffara/soft/rubber/
 
 
-
-Specialities of the LaTeX writer
-================================
-
-Length units
-------------
-
-LaTeX knows about all the `length units`_ supported by Docutils plus the
-following less common units:
-
-:pt: typewriter's (or LaTeX) point (1 pt = 1/72.27 in)
-:dd: didôt (1 dd = 1238/1157 pt)
-:cc: cîcero (1 cc = 12 dd)
-:sp: scaled point (1sp = 1/65536pt)
-
-.. attention:: Different definitions of the unit "pt"!
-
-   * In Docutils (as well as CSS) the unit symbol "pt" denotes the
-     `Postscript point` or `DTP point`.
-
-   * LaTeX uses "pt" for the `LaTeX point`, which is unknown to Docutils and
-     0.3 % smaller.
-
-   * The `DTP point` is available in LaTeX as "bp" (big point):
-
-       1 pt = 1/72.25 in < 1 bp  = 1/72 in
-
-   Lengths specified in the document with unit "pt" will be written with
-   unit "bp" to the LaTeX source.
-
-   In `raw LaTeX`_ and `custom style sheets`_, the `DTP point` must be
-   specified as "bp", while "pt" is interpreted as `LaTeX point`.
-
-.. _length units: ../ref/rst/restructuredtext.html#length-units
-
-For more on lengths in LaTeX, see e.g. `Hypertext Help with LaTeX: Lengths`__
-
-__ http://www.giss.nasa.gov/tools/latex/ltx-86.html.
-
-default length unit
-```````````````````
-
-The default length unit (added to length specifications without unit) is the
-"DTP point" (1/72 inch, "bp" in LaTeX notification).
-
-size of a pixel (length unit ``px``)
-````````````````````````````````````
-
-The length unit ``px`` is a "relative length" whose value depends on the
-*resolution* of the output device (usually specified in *dots per inch*
-(DPI). However, when producing a PDF, the resolution of the output device
-(printer, screen (for PDF-viewer)) is generally not known.
-
-With pdftex, the "resolution" is a configuration setting.
-
-Default:
-  72 DPI, i.e. 1 px = 1/72 in.
-
-Why are my images too big?
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-HTML-browsers use the actual screen resolution (usually around
-100 DPI).
-
-The CSS specification suggests:
-
-  It is recommended that the reference pixel be the visual angle of one
-  pixel on a device with a pixel density of 96 DPI and a distance from the
-  reader of an arm's length.
-
-  -- http://www.w3.org/TR/CSS2/syndata.html#length-units
-
-This is why pixmap images without size specification or objects with a size
-specified in ``px`` tend to come too large in the PDF.
-
-Solution:
-  Specify the image size in fixed units (``pt``, ``cm``, ``in``) or
-  configure the "resolution" in a style sheet.
-
-Example:
-  Set a resolution of 96 DPI::
-
-       \pdfpxdimen=1in % 1 DPI
-       \divide\pdfpxdimen by 96 % 96 DPI
-
-Images
-------
-
-Images__ are included in LaTeX with the help of the `graphicx` package. The
-supported file formats depend on the used driver:
-
-* Standard latex_ can include **only EPS** graphics, no other format.
-* `latex + dvipdfmx`_ works with EPS and JPG (include 'dvipdfmx' in the
-  documentoptions_ and add 'bmpsize' to the stylesheet_ setting).
-* pdflatex_ and xetex_ work with PNG, JPG, or PDF, but **not EPS**.
-
-For details see grfguide.pdf_.
-
-The Rubber_ wrapper can be used for automatic image conversion.
-
-__ ../ref/rst/directives.html#images
-.. _grfguide.pdf:
-   http://ctan.org/get/macros/latex/required/graphics/grfguide.pdf
-
-Docutils special LaTeX macros
------------------------------
-
-Some Docutils objects have no LaTeX counterpart, they will be typeset using
-a Docutils specific LaTeX *macro* (command, environment, or length) to allow
-layout changes from the `style sheet`_ or with `raw LaTeX`_. By convention,
-special macros use the prefix ``\DU``\ [#]_.
-
-The generated LaTeX documents should be kept processable by a standard LaTeX
-installation. Therefore fallback definitions are included after the `custom
-style sheets`_, if a macro is required in the document.
-
-* Custom `style sheets`_ can define alternative implementations with
-  ``\newcommand``, ``\newenvironment``, and ``\newlength`` followed by
-  ``\setlength``.
-
-* Definitions with `raw LaTeX`_ are part of the document body. Use
-  ``\def``, ``\renewcommand`` or ``\renewenvironment``, and ``\setlength``.
-
-See the test output standalone_rst_latex.tex_ for an example of the fallback
-definitions and their use in the document.
-
-.. _standalone_rst_latex.tex:
-   ../../test/functional/expected/standalone_rst_latex.tex
-
-.. [#] DU for Documentation Utilities = Docutils
-
-
 Configuration
 =============
 
-Configuration can be done via configuration options_ to the Docutils tool,
-`custom style sheets`_ and LaTeX packages, as well as `raw LaTeX`_ in the
-document. Advanced configuration is possible with custom templates_.
+The LaTeX code generation can be configured via
+
+* configuration options_ to the Docutils writer,
+* `LaTeX packages`_,
+* custom LaTeX code in
+  + `style sheets`_,
+  + the `LaTeX preamble`_
+  + the document body (`raw LaTeX`_), or
+  + custom templates_.
 
 .. _option:
 
 Options
 -------
 
-The LaTeX code generation can be configured via options to the Docutils
-latex writer given as
+Options to the Docutils LaTeX writer are specified as
 
 command-line options
   to the conversion command (run ``rst2latex.py --help`` to get a list of
@@ -244,63 +225,84 @@ configuration settings
 
 
 .. _style sheet:
-.. _style sheets:
+.. _custom style sheets:
 
-Custom style sheets
--------------------
+Style sheets
+------------
 
-LaTeX style sheets can be used to configure the look of the printout/PDF by
-(re-)defining LaTeX-commands and settings.
+A common way of LaTeX customization is the preparation of custom style
+sheets, either as simple files with LaTeX code snippets or as home-made
+`LaTeX packages`_ (see the clsguide_ for an introduction on LaTeX
+package writing).
 
-Option: stylesheet_
-  ``--stylesheet=STYLESHEET``
+Options:
+  stylesheet_
 
-This references STYLESHEET using the command ``\usepackage`` if STYLESHEET
-has no extension or the extension ``.sty`` (the extension will be dropped).
-With any other extension, the LaTeX command ``\input`` is used.
+  It is possible to specify multiple style sheets and mix `LaTeX
+  packages`_ with `custom style sheets`_.
 
-It is possible to specify multiple style sheets (see examples below).
-
-.. note::
-  There is no need to specify a path, if your style files are installed
-  in the `TeX input path`_.
-
-If the ``--embed-stylesheet`` option is set, the content of every STYLESHEET
-is inserted instead. Currently, this fails if the file is not available via
-the given path (i.e. without search in the `TeX input path`_).
+You cannot specify package options with the stylesheet_ setting. If
+you need to pass options to the package, use the ``\usepackage``
+command in the `LaTeX preamble`_ or a custom style sheet.
 
 Example 1:
-  Times Roman fonts with `mathptmx` package::
+  Select Latin Modern fonts with the `lmodern` package::
 
-    --stylesheet==mathptmx
-
-  or ::
-
-    --stylesheet==mathptmx.sty
+    --stylesheet=lmodern
 
 Example 2:
-  Input ``preamble.tex``::
+  Use the `preamble.tex` home-made custom style sheet together with
+  the package `kerkis` (Bookman fonts)::
 
-   --stylesheet==preamble.tex
+    --stylesheet=kerkis,preamble.tex
 
 Example 3:
-  Use three style sheets: `mathptmx` Times fonts,
-  `parskip`  separate paragraphs by vertical space,
-  `preamble.tex` home-made custom style sheet::
+  Select Palatino fonts with old-style numbers and true small-caps
+  with the LaTeX command ::
 
-    --stylesheet==mathptmx,parskip,preamble.tex
+    \usepackage[osf,sc]{mathpazo}
+
+  in the `LaTeX preamble`_ or `custom style sheets`_.
 
 Stylesheet Repository
-  There is a `repository of user-contributed style
-  sheets`_ in the Docutils Sandbox_.
+  There is a `repository of user-contributed style sheets`_ in the
+  Docutils Sandbox_.
 
-.. _stylesheet:
-   ../user/config.html#stylesheet-latex2e-writer
-.. _TeX input path:
-   http://www.tex.ac.uk/cgi-bin/texfaq2html?label=what-TDS
+.. _clsguide:
+   http://tug.ctan.org/tex-archive/macros/latex/doc/clsguide.pdf
+.. _embed-stylesheet:
+   ../user/config.html#embed-stylesheet-latex2e-writer
 .. _repository of user-contributed style sheets:
    ../../../sandbox/stylesheets/
 .. _sandbox: ../../../sandbox/
+
+
+LaTeX preamble
+--------------
+
+Configuration by LaTeX code in the document preamble is also possible
+without a separate stylesheet. This way, packages can be loaded with
+options or commands re-defined without the need to create a separate
+file (new in Docutils 0.7).
+
+Option:
+  latex-preamble_
+
+Default:
+  Load the `PDF standard fonts`_ (Times, Helvetica, Courier)
+
+Example:
+  To use the better looking ``txtt`` font for monospaced text define the
+  latex-preamble_ setting in a configuration file::
+
+     latex-preamble: \renewcommand{\ttdefault}{txtt}
+     		     \usepackage{mathptmx}          % Times
+		     \usepackage[scaled=.92]{helvet}  % Helvetica
+
+.. _latex-preamble:
+   ../user/config.html#latex-preamble
+.. _PDF standard fonts:
+   http://en.wikipedia.org/wiki/PDF#Standard_Type_1_Fonts
 
 
 Templates
@@ -312,8 +314,8 @@ document. This can be done via a custom template. See the `publisher
 documentation`_ for a description of the document parts available in a
 template file.
 
-Option: template_
-  ``--template=TEMPLATE``
+Option:
+  template_
 
 In addition to the 'default.tex' template, the latex writer directory
 contains the alternative 'titlepage.tex'.
@@ -330,11 +332,9 @@ Example:
 Raw LaTeX
 ---------
 
-By means of the `raw directive`_ or a derived `custom role`_, one can give
-commands directly to LaTeX.
-
-These can be both, styling as well as printing commands, as LaTeX (unlike
-HTML/CSS) uses one common language for content and style.
+By means of the `raw directive`_ or a derived `custom role`_, one can
+give commands directly to LaTeX. These can be both, styling as well as
+printing commands.
 
 Example:
   Math formula::
@@ -345,14 +345,12 @@ Example:
 
   (Drawback: the formula will be invisible in other output formats.)
 
-
-Amost all examples for the `style sheet`_ also work as raw LaTeX inside
-the document. An exception are commands that need to be given in the
-document preamble (e.g. package loading with ``\usepackage``, which can be
-achieved with the ``--style-sheet`` command line option instead).
-
-Remember to use *re-defining* commands for customizing `Docutils special
-LaTeX macros`_ with raw LaTeX.
+Most LaTeX code examples also work as raw LaTeX inside the document.
+An exception are commands that need to be given in the document
+preamble (e.g. package loading with ``\usepackage``, which can be
+achieved with the ``--style-sheet`` or ``--latex-preamble`` command
+line options instead). Remember to use *re-defining* commands for
+customizing `Docutils special LaTeX macros`_ with raw LaTeX.
 
 Example:
   Define the transition command as page break::
@@ -369,11 +367,12 @@ See also:
    ../ref/rst/directives.html#raw
 
 
+
 How to configure the ...
-------------------------
+========================
 
 admonitions
-```````````
+-----------
 
 Admonitions__ are specially marked "topics" that can appear anywhere an
 ordinary body element can.
@@ -427,7 +426,7 @@ Example 2:
 .. _custom role:
 
 custom interpreted text roles
-`````````````````````````````
+-----------------------------
 
 The rst `role directive`_ allows defining custom `text roles`_
 that mark parts of inline text (spans) with a class argument.
@@ -519,7 +518,7 @@ Example 3:
    ../ref/rst/directives.html#class
 
 definition lists
-`````````````````
+----------------
 
 ReStructuredText `definition lists`__ correspond to HTML ``<dl>`` list
 objects.
@@ -542,7 +541,7 @@ __ ../ref/rst/restructuredtext.html#definition-lists
 
 
 document class
-``````````````
+--------------
 
 There are hundreds of LaTeX document classes installed by modern
 LaTeX distributions, provided by publishers, or available at CTAN_.
@@ -553,11 +552,9 @@ Popular document classes:
   * scrartcl, scrrprt, scrbook: KOMA-script_ classes
   * memoir_: highly configurable class for larger documents
 
-Option: documentclass_
-  ``--documentclass=DOCUMENTCLASS``
+Option:
+  documentclass_
 
-.. _CTAN: http://www.dante.de/ctan
-.. _TeX Catalogue: http://www.ctan.org/tex-archive/help/Catalogue/index.html
 .. _KOMA-script:
    http://www.ctan.org/tex-archive/help/Catalogue/entries/koma-script.html
 .. _memoir:
@@ -567,14 +564,13 @@ Option: documentclass_
 
 
 document info
-`````````````
+-------------
 
 Content of the `bibliographic fields`__ at the top of a document.
 By default, docinfo items are typeset as a table.
 
-Options: use-latex-docinfo_, use-latex-abstract_
-  ``--use-latex-docinfo`` or ``--use-docutils-docinfo``,
-  ``--use-latex-abstract`` or ``--topic-abstract``
+Options:
+  use-latex-docinfo_, use-latex-abstract_
 
 Length:
   ``\DUdocinfowidth``: the width for the `docinfo` table.
@@ -597,7 +593,7 @@ __ ../ref/rst/restructuredtext.html#bibliographic-fields
 
 
 document title
-``````````````
+--------------
 
 A lone top-level section title is (usually) transformed to the document title
 (see `section structure`_).
@@ -610,8 +606,8 @@ the `style of document titles`_.
 The default title page shows only title and subtitle, date and author
 are shown in the `document info`_ table.
 
-Options: use-latex-docinfo_
-  ``--use-latex-docinfo``
+Options:
+  use-latex-docinfo_
 
   ``--template=titlepage.tex`` Put docinfo and abstract into the title page.
   A separate title page is used also with the "abstract" document class.
@@ -623,7 +619,7 @@ Options: use-latex-docinfo_
 
 
 field lists
-```````````
+-----------
 
 `Field lists`__ may be used as generic two-column table constructs in
 documents.
@@ -653,7 +649,7 @@ __ ../ref/rst/restructuredtext.html#field-lists
 
 
 figure and table captions
-`````````````````````````
+-------------------------
 
 The caption_ package provides many ways to customise the captions in
 floating environments like figure and table.
@@ -678,7 +674,7 @@ __ http://www.tex.ac.uk/cgi-bin/texfaq2html?label=running-nos
 
 
 figure placement
-````````````````
+----------------
 
 Figures_ might be typeset at the place of definition (default) or "float"
 to a suitable place at the top or bottom of a page. This is implemented
@@ -718,7 +714,7 @@ Example 2:
 
 
 font
-````
+----
 
 The selected text font influences the *look*, the *feel*,
 and the *readability* of the document (cf.
@@ -727,21 +723,24 @@ Selecting a suitable font also solves the problem with `bad looking
 PDF output`_.
 
 Default:
-  Computer Modern (CM)
+  `PDF standard fonts`_ (Times, Helvetica, Courier)
+  (since Docutils 0.7)
 
 Alternative fonts can be selected by
 
 a) specifying the corresponding LaTeX package(s) as argument to the
-   ``--stylesheet`` option_ or in a custom `style sheet`_.
+   stylesheet_ option_ or with the ``\usepackage`` LaTeX command.
 
    * packages can be combined,
-   * passing options to a package is only possible in the style sheet.
+   * passing options to a package is only possible in a `style sheet`_
+     or the `LaTeX preamble`_.
 
-b) changing the font-default macros ``\rmdefault``, ``\sfdefault`` and/or
-   ``\ttdefault`` in a custom `style sheet`_ or `raw LaTeX`_.
+b) changing the font-default macros ``\rmdefault``, ``\sfdefault``
+   and/or ``\ttdefault`` in a custom `style sheet`_, the `LaTeX
+   preamble`_ or `raw LaTeX`_.
 
 choice of suitable fonts
-^^^^^^^^^^^^^^^^^^^^^^^^
+````````````````````````
 
 Unfortunately, LaTeX cannot use the fonts of the operating system directly
 [#]_ but needs specially installed fonts with additional supporting files.
@@ -751,17 +750,17 @@ Unfortunately, LaTeX cannot use the fonts of the operating system directly
 The `LaTeX Font Catalogue`_ provides information and examples for a wide
 range of fonts available for use with LaTeX. Here is just a selection:
 
-
-a) The `Latin Modern`_ fonts are extended outline versions of CM.
+a) The `Latin Modern`_ (LM) fonts are extended outline versions of the
+   standard TeX font Computer Modern (CM).
 
    +1  simple invocation:  ``--stylesheet=lmodern``
 
-   +1  (almost) no visible change to the "look and feel":
+   +1  keeps the traditional TeX "look and feel":
 
-       +1  generally accepted as high quality CM replacement
-       +1  including optical sizes
-       +1  best possible math support
-       +1  works/looks nice with CM compatible extensions
+       +1  generally accepted as high quality CM replacement,
+       +1  comprehensive math support,
+       +1  including optical sizes,
+       +1  compatible with extensions made to match CM,
        -1  modern types are hard to read at low (screen) resolutions.
 
    -2  not part of a minimal standard TeX installation
@@ -771,22 +770,19 @@ a) The `Latin Modern`_ fonts are extended outline versions of CM.
 
 b) CM-Super_ is another outline CM replacement.
 
-   +1  simple invocation: some LaTeX distributions even use CM-Super
+   +1  simple invocation: modern LaTeX distributions use CM-Super
        automatically instead of CM if it is installed.
 
-   +1  (almost) no visible change to the "look and feel"
-
-       -1  said to be of inferior quality compared to LM.
+   -1  said to be of inferior quality compared to LM.
 
    -2  not part of a minimal standard TeX installation,
-
-       -1  even bigger download size than LM.
+       even bigger download size than Latin Modern.
 
 c) `Bera`_ (Bitstream Vera)
 
    +1  simple invocation:  ``--stylesheet=bera``
 
-   +1  optimized for on-screen viewing with full hinting instructions
+   +1  optimized for on-screen viewing with goot hinting
 
    -2  not part of a minimal standard TeX installation
 
@@ -811,9 +807,8 @@ d) PSNFSS_ Postscript fonts
      good legibility but very wide.
 
    Charter
-     +0  bread-and-butter type optimized for printing on low-resolution
-         printers
-     -1  not in the *Base35* PostScript core font set.
+     bread-and-butter type optimized for printing on low-resolution
+     printers
 
    New Century Schoolbook
      good legibility but very wide.
@@ -824,18 +819,18 @@ d) PSNFSS_ Postscript fonts
            old-style figures
      -1  bad rendering in xpdf viewer (auto-hinting leads to different
          x-hight for different characters at some magnifications)
+	 (this is fixed in recent versions).
 
    Times
-     +1  the serif `standard Type 1 font`_ in PDF,
+     +1  the serif `PDF Standard Font`_,
      -1  overused and quite narrow (devised for multi-column layouts).
 
    Utopia
-     +1  recommended by font experts
-     -1  no *Base35* font and not a required part of LaTeX any more.
+     recommended by font experts
 
 
-  .. table:: Font packages for standard Postscript fonts
-             (cf. `Using common Postscript fonts with LaTeX`_)
+   .. table:: Font packages for standard Postscript fonts
+              (cf. `Using common Postscript fonts with LaTeX`_)
 
      ========= ============ ============= ============= =========
      Package   Roman        Sans Serif    Typewriter    Math
@@ -881,21 +876,22 @@ Example 1:
     --stylesheet=lmodern
 
 Example 2:
-  The ubiquitous "Times/Helvetica/Courier"
-  combination is achieved by the LaTeX code [#]_::
+  The _`Times/Helvetica/Courier` `PDF standard fonts`_ are
+  selected by the LaTeX code [#]_::
 
     \usepackage{mathptmx}            % Times for serif and math
     \usepackage[scaled=.90]{helvet}  % downscaled Helvetica for sans serif
     \usepackage{courier}             % Courier for teletype (mono-space)
 
-  or by the combination of the command line options::
+  Since Docutils 0.7, this is the default value of the
+  `latex-preamble`_ option.
 
-    --documentoptions="scaled=.90"
-    --stylesheet="mathptmx,helvet,courier"
+.. [#] When generating PDF-files from LaTeX, the `PDF standard
+   fonts`_ do not need to be embedded in the document. While this
+   results in smaller files, the actually used fonts on screen and in
+   print might differ! (For details see, e.g., the testflow_ package
+   documentation.)
 
-.. [#] When generating PDF-files from LaTeX, the files can become
-   smaller if this font combination is used as the fonts do not need
-   to be embedded in the document.
 
 Example 3:
   Use the teletype font from the txfonts_ package. As there is no
@@ -919,17 +915,19 @@ Example 3:
 .. _TeX Live: http://tug.org/texlive/
 .. _txfonts:
    http://www.ctan.org/tex-archive/help/Catalogue/entries/txfonts.html
-.. _standard type 1 font:
+.. _PDF Standard Font:
    http://en.wikipedia.org/wiki/PDF#Standard_Type_1_Fonts
+.. _testflow:
+   http://www.tex.ac.uk/tex-archive/help/Catalogue/entries/testflow.html
 
 font encoding
-`````````````
+-------------
 
 LaTeX font encodings are described in detail in the encguide_ which is
 part of the LaTeX base documentation.
 
-Option: font-encoding_
-  ``--font-encoding=FONT_ENCODING``
+Option:
+  font-encoding_
 
 Default:
   "T1"
@@ -964,7 +962,7 @@ Example 2:
 
 
 font size
-`````````
+---------
 
 Add font size in points to the document options, e.g.
 ``--documentoptions=12``, use e.g. the document classes provided by
@@ -975,7 +973,7 @@ extsizes_ for values other than [10,11,12].
 
 
 footnotes
-`````````
+---------
 
 By default, footnotes are set with Docutils-specific wrappers around
 the standard ``\footnotemark`` and ``\footnotetext`` commands.  You
@@ -1034,7 +1032,7 @@ Example 2:
 
 
 hyphenation
-```````````
+-----------
 
 The amount of hyphenation is influenced by ``\hyphenpenalty``, setting it to
 10000 almost prevents hyphenation. As this produces lines with more space
@@ -1048,17 +1046,17 @@ Example:
 
 
 hyperlinks
-``````````
+----------
 
 Hyperlinks are realized using the hyperref_ package. As it re-defines many
 standard LaTeX macros, this package is loaded last, *after* the style
 sheets.
 
-However, you can load hyperref with custom options (or before a package that
-requires its presence) in a `style sheet`_, e.g. ::
+However, you can load hyperref with custom options (or before a
+package that requires its presence) in a `style sheet`_ or the `LaTeX
+preamble`_, e.g. ::
 
   \usepackage[colorlinks=true,linkcolor=green,urlcolor=blue]{hyperref}
-
 
 URLs are typeset with the "url" package (loaded implicitely by "hyperref").
 The font of URLs can be defined with the ``\urlstyle`` command. Valid
@@ -1078,25 +1076,24 @@ Example:
 See also `non-breaking hyperlinks`_.
 
 disable hyperlinks
-^^^^^^^^^^^^^^^^^^
+``````````````````
 
 To suppress the hyper-linking completely (e.g. for printing or to avoid
 clashes with other packages), load the "nohyperref" package that comes with
 the "hyperref" bundle.
 
 Option:
-  ``stylesheet=nohyperref``
+  ``--stylesheet=nohyperref,url``
 
 LaTeX code::
 
-  \usepackage{nohyperref}
-  %\usepackage{url} % uncomment if you need the \url command
+  \usepackage{nohyperref,url}
 
 .. _hyperref:
    http://www.ctan.org/tex-archive/help/Catalogue/entries/hyperref.html
 
 line blocks
-```````````
+-----------
 
 In `line blocks`__, newlines and leading whitespace are respected.
 
@@ -1119,7 +1116,7 @@ __ ../ref/rst/restructuredtext.html#line-blocks
 
 
 line spacing
-````````````
+------------
 
 Commands:
   ``\linespread``: for small adjustments
@@ -1140,12 +1137,13 @@ Example 2:
 
 
 literal blocks
-``````````````
+--------------
 
 No markup processing is done within a `literal block`__. It is left as-is,
 and is typically rendered in a monospaced typeface
 
-Option: literal-block-env_
+Option:
+  literal-block-env_
 
 Example:
 
@@ -1175,7 +1173,7 @@ __ ../ref/rst/restructuredtext.html#literal-blocks
 
 
 list of figures/tables
-``````````````````````
+----------------------
 
 Docutils does not support lists of figures or tables.
 
@@ -1196,7 +1194,7 @@ Example:
 
 
 option list
-```````````
+-----------
 
 `Option lists`__ are two-column lists of command-line options and
 descriptions, documenting a program's options.
@@ -1216,7 +1214,7 @@ __ ../ref/rst/restructuredtext.html#option-lists
 
 
 page breaks
-```````````
+-----------
 
 * Page breaks before top-level sections are the default with a
   documentclass that provides "chapters", e.g.  "book", "memoir" or
@@ -1236,15 +1234,14 @@ Commands
 
 
 Example:
-  Define the transition command as page break
-  in a style sheet ::
+  Define the transition command as page break with the LaTeX code::
 
     \newcommand*{\DUtransition}{\pagebreak[4]}
 
-  (with `raw LaTeX`_ use ``\renewcommand``).
+  (use ``\renewcommand`` with `raw LaTeX`_).
 
 page layout
-```````````
+-----------
 
 By default, paper size and margin settings are determined by the document
 class.
@@ -1273,7 +1270,7 @@ Example 1:
   expense of readability).
 
 Example 2:
-  Set margins in a stylesheet with the geometry_ package::
+  LaTeX code to set margins with the geometry_ package::
 
     \usepackage{geometry}
     \geometry{hmargin={3cm,0.8in},height=8in}
@@ -1290,7 +1287,7 @@ Example 2:
 
 
 page numbering
-``````````````
+--------------
 
 Example:
   Number pages by chapter (using the chappg_ package)::
@@ -1306,13 +1303,15 @@ Example:
 
 
 paper size
-``````````
+----------
 
 Paper geometry can be changed using ``--documentoptions`` or with the
 `geometry`_ package.
 
-Command:
-  ``\geometry{OPTIONLIST}``
+LaTeX code::
+
+  \usepackage{geometry}
+  \geometry{OPTIONLIST}
 
 Default:
   a4paper
@@ -1335,7 +1334,7 @@ Example:
   For details see the `geometry manual`_.
 
 paragraph indent
-````````````````
+----------------
 
 Default (in most document classes):
   Indent the first line in a paragraph unless it is the first line of a
@@ -1353,7 +1352,7 @@ Example:
 
 
 rubric
-``````
+------
 
 A rubric__ is like an informal heading that doesn't correspond to the
 document's structure.
@@ -1374,7 +1373,7 @@ __ ../ref/rst/directives.html#rubric
 
 
 section numbering
-`````````````````
+-----------------
 
 Sections are numbered if there is a `sectnum directive`_ in the document.
 
@@ -1395,7 +1394,7 @@ and can be configured in a LaTeX `style sheet`_, e.g.::
 
 
 sidebar
-```````
+-------
 
 Sidebars__ are like miniature, parallel documents that occur inside other
 documents, providing related or reference material. They can be likened to
@@ -1431,9 +1430,28 @@ Example 2:
 
 __ http://docutils.sf.net/docutils/docs/ref/rst/directives.html#sidebar
 
+size of a pixel
+---------------
+
+The length unit ``px`` is a "relative length" whose value depends on the
+*resolution* of the output device (usually specified in *dots per inch*
+(DPI). However, when producing a PDF, the resolution of the output device
+(printer, screen (for PDF-viewer)) is generally not known.
+
+With pdftex, the "resolution" is a configuration setting.
+
+Default:
+  72 DPI, i.e. 1 px = 1/72 in.
+
+Example:
+  Set a resolution of 96 DPI with the LaTeX code::
+
+    \pdfpxdimen=1in % 1 DPI
+    \divide\pdfpxdimen by 96 % 96 DPI
+
 
 topic element
-`````````````
+-------------
 
 A topic_ is like a block quote with a title, or a self-contained section with
 no subsections.
@@ -1469,7 +1487,7 @@ Example 2:
 
 
 topic title
-```````````
+-----------
 
 The titles of admonitions_, sidebar_, and `topic element`_ are defined with
 the ``\DUtitle`` command that also takes a "class" argument.
@@ -1493,7 +1511,7 @@ Example 2:
 
 
 table of contents
-`````````````````
+-----------------
 
 A `contents directive`_ is replaced by a table of contents (ToC).
 
@@ -1534,7 +1552,7 @@ With use-latex-toc (default since release 0.6):
 
 
 title reference role
-````````````````````
+--------------------
 
 `Title reference`_ is the default `default role`_ for `interpreted text`_.
 
@@ -1558,7 +1576,7 @@ Example:
 
 
 text encoding
-`````````````
+-------------
 
 The encoding of the LaTeX source file, i.e.
 Docutils' *output* encoding becomes the LaTeX *input* encoding.
@@ -1601,7 +1619,7 @@ any of "utf_8", "U8", "UTF", or "utf8".
 
 
 transition element
-``````````````````
+------------------
 
 Transitions__ are commonly seen in novels and short fiction, as a gap
 spanning one or more lines, marking text divisions or signaling changes in
@@ -1717,6 +1735,50 @@ See also the `Link text doesn’t break at end line`_ FAQ entry.
    http://www.tex.ac.uk/cgi-bin/texfaq2html?label=breaklinks
 
 
+image inclusion
+```````````````
+
+Images__ are included in LaTeX with the help of the `graphicx` package. The
+supported file formats depend on the used driver:
+
+* Standard latex_ can include **only EPS** graphics, no other format.
+* `latex + dvipdfmx`_ works with EPS and JPG (add 'dvipdfmx' to the
+  documentoptions_ and 'bmpsize' to the stylesheet_ setting).
+* pdflatex_ and xetex_ work with PNG, JPG, or PDF, but **not EPS**.
+
+If PDF-image inclusion in PDF files fails, specifying
+``--graphicx-option=pdftex`` or ``--graphicx-option=auto`` might help.
+
+For details see grfguide.pdf_.
+
+The Rubber_ wrapper can be used for automatic image conversion.
+
+__ ../ref/rst/directives.html#images
+.. _grfguide.pdf:
+   http://ctan.org/get/macros/latex/required/graphics/grfguide.pdf
+
+
+Why are my images too big?
+``````````````````````````
+
+HTML-browsers use the actual screen resolution (usually around
+100 DPI).
+
+The CSS specification suggests:
+
+  It is recommended that the reference pixel be the visual angle of one
+  pixel on a device with a pixel density of 96 DPI and a distance from the
+  reader of an arm's length.
+
+  -- http://www.w3.org/TR/CSS2/syndata.html#length-units
+
+This is why pixmap images without size specification or objects with a size
+specified in ``px`` tend to come too large in the PDF.
+
+Solution:
+  Specify the image size in fixed units (``pt``, ``cm``, ``in``) or
+  configure the `size of a pixel`_ (length unit px).
+
 Error ``illegal unit px``
 `````````````````````````
 
@@ -1731,12 +1793,6 @@ If updating LaTeX is not an option, just remove the "px" from the length
 specification. HTML/CSS will default to "px" while the `latexe2` writer
 will add the fallback unit "bp".
 
-
-image inclusion
-```````````````
-
-If PDF-image inclusion in PDF files fails, specifying
-``--graphicx-option=pdftex`` or ``--graphicx-option=auto`` might help.
 
 Search and text extraction
 ``````````````````````````

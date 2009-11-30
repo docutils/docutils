@@ -283,17 +283,10 @@ reStructuredText file "``test.txt``" into LaTeX::
     rst2latex.py test.txt test.tex
 
 The output file "``test.tex``" should then be processed with ``latex``
-or ``pdflatex`` to get a typeset document.
+or ``pdflatex`` to get a document in DVI, PostScript or PDF format for
+printing or on-screen viewing.
 
-Some limitations and difference apply:
-
-- GIF, JPG and PNG images are not handled, when processed with
-  ``latex``; use ``pdflatex`` instead.
-- Only the Latin-1 output encoding has been tested up to now (Latin-1
-  has been made the default output encoding for LaTeX).
-- The optional stylesheet file allows the inclusion of special packages 
-  or overwriting default settings for LaTeX.
-- Not all constructs are possible, see `Generating LaTeX with Docutils`_.
+For details see `Generating LaTeX with Docutils`_.
 
 
 XML-Generating Tools
