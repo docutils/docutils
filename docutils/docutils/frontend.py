@@ -202,9 +202,9 @@ def make_one_path_absolute(base_path, path):
     return os.path.abspath(os.path.join(base_path, path))
 
 def filter_settings_spec(settings_spec, *exclude, **replace):
-    """Return a copy of `setting_spec` excluding/replacing some settings.
+    """Return a copy of `settings_spec` excluding/replacing some settings.
 
-    `setting_spec` is a tuple of configuration settings with a structure
+    `settings_spec` is a tuple of configuration settings with a structure
     described for docutils.SettingsSpec.settings_spec.
 
     Optional positional arguments are names of to-be-excluded settings.
