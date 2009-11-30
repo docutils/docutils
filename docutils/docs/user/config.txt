@@ -951,8 +951,10 @@ _`font_encoding`
 
 embed_stylesheet
     Embed the stylesheet(s) in the header of the output file.  The
-    stylesheets must be accessible during processing. Also defined for
-    the `HTML Writer`__ (with default *on*).
+    stylesheets must be accessible during processing.  Currently, this
+    fails if the file is not available via the given path (i.e. the
+    file is *not* searched in the `TeX input path`_).
+    Also defined for the `HTML Writer`__ (with default *on*).
 
     Default: off.  Options: ``--embed-stylesheet, --link-stylesheet``.
 
@@ -970,12 +972,16 @@ stylesheet
     referenced with ``\usepackage`` (extension ``.sty`` or no extension) or
     ``\input`` (any other extension).
 
-    Default: no stylesheet ("").  Option: ``--stylesheet``.
+    LaTeX will search the specified files in the `TeX input path`_.
 
+    Default: no stylesheet ("").  Option: ``--stylesheet``.
 
     __ `stylesheet_path [latex2e writer]`_
     __ `embed_stylesheet [latex2e writer]`_
     __ `stylesheet [html4css1 writer]`_
+    .. _TeX input path:
+       http://www.tex.ac.uk/cgi-bin/texfaq2html?label=what-TDS
+
 
 .. _stylesheet_path [latex2e writer]:
 
@@ -995,6 +1001,22 @@ stylesheet_path
     __ `stylesheet_path [html4css1 writer]`_
     __
     __ `stylesheet [latex2e writer]`_
+
+
+_`latex_preamble`
+    LaTeX code that will be inserted in the document preamble.
+    Can be used to load packages with options or (re-) define LaTeX
+    macros without writing a custom style file (new in Docutils 0.7).
+
+    Default: Load the "PDF standard fonts" (Times, Helvetica,
+    Courier)::
+
+      \usepackage{mathptmx} % Times
+      \usepackage[scaled=.90]{helvet}
+      \usepackage{courier}
+
+    Option: ``--latex-preamble``
+
 
 .. _template [latex2e writer]:
 

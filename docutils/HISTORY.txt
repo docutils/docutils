@@ -35,6 +35,8 @@ Changes Since 0.6
   - Preserve runs of spaces in `inline literals`__.
   - Deprecate ``figure_footnotes`` setting.
   - Rename ``use_latex_footnotes`` setting to `docutils_footnotes`__.
+  - New ``latex_preamble`` setting.
+  - PDF standard fonts (Times/Helvetica/Courier) as default.
 
 __ docs/ref/restructuredtext.html#inline-literals
 __ docs/user/config.html#docutils-footnotes

@@ -33,6 +33,10 @@ class Writer(writers.Writer):
     default_template = 'default.tex'
     default_template_path = os.path.dirname(__file__)
 
+    default_preamble = '\n'.join([r'% PDF Standard Fonts',
+                                  r'\usepackage{mathptmx} % Times',
+                                  r'\usepackage[scaled=.90]{helvet}',
+                                  r'\usepackage{courier}'])
     settings_spec = (
         'LaTeX-Specific Options',
         'The LaTeX "--output-encoding" default is "latin-1:strict".',
@@ -94,6 +98,10 @@ class Writer(writers.Writer):
           ['--embed-stylesheet'],
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
+         ('Customization by LaTeX code in the preamble. '
+          'Default: select PDF standard fonts (Times, Helvetica, Courier).',
+          ['--latex-preamble'],
+          {'default': default_preamble}),
          ('Specify the template file. Default: "%s".' % default_template,
           ['--template'],
           {'default': default_template, 'metavar': '<file>'}),
@@ -199,8 +207,8 @@ class Writer(writers.Writer):
     config_section = 'latex2e writer'
     config_section_dependencies = ('writers',)
 
-    head_parts = ('head_prefix', 'requirements', 'stylesheet',
-                  'fallbacks', 'pdfsetup', 'title', 'subtitle')
+    head_parts = ('head_prefix', 'requirements', 'latex_preamble',
+                  'stylesheet', 'fallbacks', 'pdfsetup', 'title', 'subtitle')
     visitor_attributes = head_parts + ('body_pre_docinfo', 'docinfo',
                                        'dedication', 'abstract', 'body')
 
@@ -942,6 +950,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.head_prefix = [r'\documentclass[%s]{%s}' %
                             (self.d_options, self.settings.documentclass)]
         self.requirements = SortableDict() # made a list in depart_document()
+        self.latex_preamble = [settings.latex_preamble]
         self.stylesheet = []
         self.fallbacks = SortableDict() # made a list in depart_document()
         self.pdfsetup = [] # PDF properties (hyperref package)

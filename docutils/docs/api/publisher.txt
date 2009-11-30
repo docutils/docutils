@@ -312,12 +312,6 @@ docinfo
 
     'dedication' and 'abstract' are always moved to separate parts.
 
-.. footer
-    ``parts['footer']`` contains the document footer content, meant to
-    appear at the bottom of every printed page.
-    It is not used in the standard template but can be in a custom template
-    to define running heads/foots.
-
 fallbacks
     ``parts['fallbacks']`` contains fallback definitions for
     Docutils-specific commands and environments.
@@ -325,6 +319,10 @@ fallbacks
 head_prefix
     ``parts['head_prefix']`` contains the declaration of
     documentclass and document options.
+
+latex_preamble
+    ``parts['latex_preamble']`` contains the argument of the
+    ``--latex-preamble`` option.
 
 pdfsetup
      ``parts['pdfsetup']`` contains the PDF properties
