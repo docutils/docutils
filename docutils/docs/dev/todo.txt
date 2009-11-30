@@ -2103,20 +2103,6 @@ Which packages do we want to use?
 Default layout
 --------------
 
-* Which `default font`__ should we use for the output?
-
-  Proposal: Use one of the Postscript default fonts supported by standard
-  LaTeX (pages 10 and 11 of the `PSNFSS documentation`_), e.g. Times or
-  Palatino.
-
-  In PDF 1.3 there are 14 standard fonts:
-
-    Times-Roman, Times-Bold, Times-Italic, Times-BoldItalic, Helvetica,
-    Helvetica-Bold, Helvetica-Oblique, Helvetica-BoldOblique, Courier,
-    Courier-Bold, Courier-Oblique, Courier-BoldOblique, Symbol, ZapfDingbats
-
-  The rest you need to embed.
-
 * Use italic instead of slanted for titlereference?
 
 * Start a new paragraph after lists (as currently)
