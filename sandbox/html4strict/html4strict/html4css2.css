@@ -17,6 +17,8 @@ versions of the most popular browsers.
 Format docinfo and definition lists similar to the "listings" environment
 in LaTeX's KOMA-script classes */
 
+cite {font-style: inherit;}
+
 dl.docinfo {
   margin: 2em 4em;
 }
@@ -38,7 +40,7 @@ dt.field-name {
    float:   left;
    padding-right: 0.5em ;
    /* wrap long field names (fails with non-breakable ones): */
-   /* max-width: 9.5em; 
+   /* max-width: 9.5em;
    /* truncate too long fiels names: */
    /* overflow: hidden; */
 }
@@ -49,41 +51,41 @@ dt.field-name:after {
 }
 
 /* This corresponds to the --field-name-limit option */
-dd.field-body { margin-left: 10em; }
+dd.field-body {margin-left: 10em;}
 
 
 /* Using counters to replace the deprecated start attribute
    --------------------------------------------------------
 
    make sure the resulting list resembles the list-style 'outside'
-   with a hanging indent 
+   with a hanging indent
    */
 
 /* New ordered list: reset counter, suppress the default label */
-ol { 
-  counter-reset: item; 
-  list-style-type: none  ! important; 
+ol {
+  counter-reset: item;
+  list-style-type: none  ! important;
 }
 
 /* Set the negative indent of the list label as feature of the list item */
-ol > li { text-indent: -2.5em; }
+ol > li {text-indent: -2.5em;}
 
 /* Let the item content start next to the label and without indent */
-ol > li > p { 
+ol > li > p {
   display: inline-block;
   text-indent: 0em;
 }
 
 /* However, subsequent paragraphs are to be set as nested block elements */
-ol > li > p + p { 
+ol > li > p + p {
   display: block;
   margin-top: 0em;
 }
 
-/* The label: 
+/* The label:
      * increment and typeset counter(s),
      * display next to the content (top aligned),
-     * right-align the label */     
+     * right-align the label */
 ol > li:before {
   counter-increment: item;
   content: counter(item) ".";
@@ -115,7 +117,7 @@ ol.nested > li:before {
 /* TODO: prefix, suffix? */
 
 
-/* Table styling 
+/* Table styling
    -------------
 */
 
@@ -135,11 +137,11 @@ table.table.borderless, table.table.borderless * {
   border-style: none;
 }
 
-/* whitespace and line-wrapping in inline literals 
+/* whitespace and line-wrapping in inline literals
    -----------------------------------------------
-   
+
 possible values: normal, nowrap, pre, pre-wrap, pre-line */
-   
+
 tt.docutils.literal {
   white-space: pre-wrap;
 }

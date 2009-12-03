@@ -46,8 +46,8 @@ class Writer(html4css1.Writer):
     config_section = 'html4strict writer'
 
     settings_spec = frontend.filter_settings_spec(
-        html4css1.Writer.settings_spec, 
-        'field_name_limit', 
+        html4css1.Writer.settings_spec,
+        'field_name_limit',
         stylesheet_path = (
             'Specify comma separated list of stylesheet paths. '
 	    'With --link-stylesheet, '
@@ -70,6 +70,22 @@ class HTMLTranslator(html4css1.HTMLTranslator):
     doctype = ('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" '
                '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n')
 
+    # TODO: References (citations) as list instead of table
+
+    # tag citation references with <cite>
+
+    def visit_citation_reference(self, node):
+        href = '#' + node['refid']
+        self.body.append('<cite>')
+        self.body.append(self.starttag(
+            node, 'a', '[', CLASS='citation-reference', href=href))
+
+    def depart_citation_reference(self, node):
+        self.body.append(']</a></cite>')
+
+    # enumerated lists
+    # ----------------
+    #
     # The 'start' attribute does not conform to HTML4/XHTML1 Strict
     # (it will resurface in HTML5)
     def visit_enumerated_list(self, node):
@@ -151,7 +167,7 @@ class HTMLTranslator(html4css1.HTMLTranslator):
     def depart_docinfo_item(self):
         self.body.append('</dd>\n')
 
-    # Attribute "align" can not be used for <img> and <div> element
+    # Attribute "align" cannot be used for <img> and <div> element
     # ---------------------------------------------------------------
 
     # TODO: could the "align" attribute be stripped also in html4css1?
