@@ -171,11 +171,11 @@ Ersetzen durch passendes Argument.
 .TP
 .B [\-abc]
 .
-Ein oder mehrere Argumente innerhalb der \fC[ ]\fP sind optional.
+Ein oder mehrere Argumente innerhalb der \fB[ ]\fP sind optional.
 .TP
 .B \-a|\-b
 .
-Optionen, die durch \fC|\fP abgegrenzt sind, koennen nicht zusammen
+Optionen, die durch \fB|\fP abgegrenzt sind, koennen nicht zusammen
 benutzt werden.
 .TP
 .B Argument ...
@@ -184,7 +184,7 @@ Argument kann wiederholt werden.
 .TP
 .B [Ausdruck] ...
 .
-gesamter Ausdruck innerhalb \fC[ ]\fP kann wiederholt werden.
+gesamter Ausdruck innerhalb \fB[ ]\fP kann wiederholt werden.
 .UNINDENT
 .UNINDENT
 .UNINDENT
@@ -196,17 +196,17 @@ im SYNTAX Abschnitt dieser Manualseite gezeigt ist.
 .SH BEISPIELE
 .INDENT 0.0
 .TP
-.B \fCman ls\fP
+.B \fBman ls\fP
 .sp
 zeigt die Manualseite fuer das Programm ls an.
 .TP
-.B \fCman \-a intro\fP
+.B \fBman \-a intro\fP
 .sp
 zeigt alle vorhandenen intro Manualseiten an.  Mit  (q)uit  ist  es
 moeglich,    das   aufeinanderfolgendende   Anzeigen   der   Seiten
 abzubrechen oder mit (s)kip eine Seite zu ueberspringen.
 .TP
-.B \fCman \-t alias | lpr \-Pps\fP
+.B \fBman \-t alias | lpr \-Pps\fP
 .sp
 Formatiert die Manualseite, die sich  auf  alias  bezieht,  in  das
 Default  troff  oder groff Format und schickt es an den Drucker ps.
@@ -216,7 +216,7 @@ es von einem Postscriptdrucker gedruckt werden  kann.   man  \-\-help
 sollte  zu  bestimmen  helfen,  welcher  Prozessor an die \-t Option
 gebunden ist.
 .TP
-.B \fCman \-l \-Tdvi ./foo.1x.gz > ./foo.1x.dvi\fP
+.B \fBman \-l \-Tdvi ./foo.1x.gz > ./foo.1x.dvi\fP
 .sp
 Dieser  Befehl  formatiert   die   komprimierte   nroff\-Manualseite
 ./foo.1x.gz  in  eine  device  independent (dvi) Datei. Diese Datei
@@ -226,12 +226,12 @@ Option die Ausgabe unformatiert an die Standardausgabe schickt. Die
 Ausgabe  kann mit einem Programm wie xdvi betrachtet oder mit einem
 Programm wie dvips in Postscript weiterverarbeitet werden.
 .TP
-.B \fCman \-k printf\fP
+.B \fBman \-k printf\fP
 .sp
 Sucht die Kurzbeschreibungen und die  Namen  der  Manualseiten  zum
 Schluesselwort printf und gibt alle Treffer aus.
 .TP
-.B \fCman \-f smail\fP
+.B \fBman \-f smail\fP
 .sp
 Sucht  die  Manualseiten, die sich auf smail beziehen und gibt alle
 gefundenen Kurzbeschreibungen aus.
@@ -245,15 +245,15 @@ Verhaltensweisen und  Operationen  sind  weiter unten beschrieben.
 .sp
 Um die Arbeitsweise von man zu  bestimmen,  werden  verschiedene
 Umgebungsvariablen benutzt.  Mit dieser Version ist es moeglich, die Variable
-\fC$MANOPT\fP auf einen Ausdruck im Kommandozeilenformat zu  setzen.  Es gibt
-folgende  Ausnahme:  Da  jede Option  in \fC$MANOPT\fP von Leerzeichen
+\fB$MANOPT\fP auf einen Ausdruck im Kommandozeilenformat zu  setzen.  Es gibt
+folgende  Ausnahme:  Da  jede Option  in \fB$MANOPT\fP von Leerzeichen
 eingeschlossen ist, muessen  Leerzeichen,  die Teil eines  Argumentes sind,
 gequotet  werden.  man bearbeitet diese Variable vor der eigenen Kommandozeile.
 Die Optionen, die ein Argument benoetigen, koennen durch die gleichen  Optionen
 in der Kommandozeile ueberschrieben werden.  Um alle Optionen zurueckzusetzen,
-die in \fC$MANOPT\fP gesetzt werden,  kann  \fC\-D\fP als  initiale
+die in \fB$MANOPT\fP gesetzt werden,  kann  \fB\-D\fP als  initiale
 Kommandozeilen\-Option angegeben werden.  Dies erlaubt man alle Optionen zu
-\fIueberschreiben\fP,  die  in  \fC$MANOPT\fP gesetzt  werden, obwohl  diese
+\fIueberschreiben\fP,  die  in  \fB$MANOPT\fP gesetzt  werden, obwohl  diese
 weiterhin gelten.  Damit wird die groesstmoegliche Flexibilität fuer  einen
 Benutzer  erzeugt, der man  auf  seine  eigenen Beduerfnisse  anpassen will,
 ohne zahllose Optionen bei der Suche einer Manualseite einzugeben.
@@ -363,7 +363,7 @@ Als primaerer Formatierer wird entweder nroff, troff  oder  groff  ges\-
 tartet.
 .SH OPTIONEN
 .sp
-Eine Argumentoption, die entweder in der Kommandozeile, in \fC$MANOPT\fP oder in
+Eine Argumentoption, die entweder in der Kommandozeile, in \fB$MANOPT\fP oder in
 beiden doppelt vorkommt , ist nicht schaedlich. Fuer  Optionen,  die ein
 Argument benötigen, überschreibt jedes Duplikat den vorhergehenden Wert.
 .INDENT 0.0
@@ -376,7 +376,7 @@ Jedes Manualseiten\-Argument wird als nroff\-Quelle  im  richtigen
 Format  interpretiert. Komprimierte nroff\-Quelldateien mit einer
 unterstuetzten Kompressions\-Erweiterung werden  von  man  dekom\-
 primiert, bevor sie ueber den ueblichen Filter angezeigt werden.
-Es wird keine cat\-Datei erzeugt. Wenn eines  der  Argumente  \fC\-\fP
+Es wird keine cat\-Datei erzeugt. Wenn eines  der  Argumente  \fB\-\fP
 ist, wird die Eingabe von der Standardeingabe uebernommen.
 .TP
 .BI \-L \ locale, \ \-\-locale\fB= locale
@@ -405,13 +405,13 @@ wieder ihren gewohnten Effekt.
 Ermoeglicht es, einen alternativen  Manualpfad  anzugeben.
 Normalerweise verwendet man dieselben Methoden wie in manpath, um
 den Suchpfad zu ermitteln. Diese Option ueberschreibt die
-Umgebungsvariable \fC$MANPATH\fP.
+Umgebungsvariable \fB$MANPATH\fP.
 .TP
 .BI \-P \ Pager, \ \-\-pager\fB= Pager
 .
 Gibt an, welcher Pager verwendet wird. Die Normaleinstellung ist
 pager\-s.   Diese  Option  ueberschreibt  die   Umgebungsvariable
-\fC$PAGER\fP und wird nicht in Zusammenhang mit \-f oder \-k verwendet.
+\fB$PAGER\fP und wird nicht in Zusammenhang mit \-f oder \-k verwendet.
 .TP
 .BI \-r \ Prompt, \ \-\-prompt\fB= Prompt
 .
@@ -429,12 +429,12 @@ Manual page name(sec) line x,
 wobei  name  die  Manualseite  bezeichnet,  die gerade angezeigt
 wird, sec der Abschnitt ist, in dem sie gefunden  wurde,  und  x
 die aktuelle Zeilennummer ist.  Diese Anzeige wird durch
-Verwendung der Umgebungsvariable \fC$LESS\fP erreicht.
+Verwendung der Umgebungsvariable \fB$LESS\fP erreicht.
 Man beachte, dass einzelne Bezeichnungen sich bei der Verwendung
 von landessprachlichen Meldungen ändern koennen.  Die Option
-\fC\-r\fP ermöglicht es, durch  Angabe einer
+\fB\-r\fP ermöglicht es, durch  Angabe einer
 Formatierungszeichenkette, das Ausgabeformat selbst zu bestimmen.
-Wenn diese Zeichenkette \fC$MAN_PN\fP enthält, wird dieser Text
+Wenn diese Zeichenkette \fB$MAN_PN\fP enthält, wird dieser Text
 durch den Namen der Manualseite gefolgt von der Abschnittsnummer
 in runden Klammern ersetzt.  Die  Zeichenkette, die im Normalfall
 verwendet wird ist:
@@ -451,8 +451,8 @@ wegen gewählt. Nähere Informationen liefert less(1).   Da  die
 Zeichenkette  zuerst  vom  Kommandointerpreter ausgewertet wird,
 muessen entsprechende Zeichen durch einen  Backslash  geschützt
 werden.  Weitere Optionen für less koennen nach einem
-geschützten \fC$\fP am Ende der Zeichenkette hinzugefügt werden.
-Der Default ist hier \fC\-ix8\fP.
+geschützten \fB$\fP am Ende der Zeichenkette hinzugefügt werden.
+Der Default ist hier \fB\-ix8\fP.
 .TP
 .BI \-S \ Liste, \ \-\-sections\fB= Liste
 .
@@ -494,8 +494,8 @@ Umständen zeigt man bevorzugt exit(3) gegenüber exit(3tcl) an.
 Um  dieses  Verhalten  umzukehren,  ist  man  die   Zeichenkette
 Erweiterung zu übergeben, die angibt, in welchem Paket die
 Manualseite zu finden ist. Im obigen  Fall  beschränkt man seine
-Suche  auf  Seiten  mit der Erweiterung \fC*tcl\fP, wenn es mit
-\fC\-e tcl\fP aufgerufen wurde. Die Suche wird  dabei in allen
+Suche  auf  Seiten  mit der Erweiterung \fB*tcl\fP, wenn es mit
+\fB\-e tcl\fP aufgerufen wurde. Die Suche wird  dabei in allen
 Abschnitten durchgeführt.
 .TP
 .B \-f,  \-\-whatis
@@ -644,15 +644,15 @@ setlocale(3).
 .SH DATEIEN
 .INDENT 0.0
 .TP
-.B \fC/etc/manpath.config\fP
+.B \fB/etc/manpath.config\fP
 .sp
 Die Manualkonfigurationsdatei.
 .TP
-.B \fC/usr/.../man\fP
+.B \fB/usr/.../man\fP
 .sp
 Globale Manualhierarchien.
 .TP
-.B \fC/var/catman/.../index.(bt|db|dir|pag)\fP
+.B \fB/var/catman/.../index.(bt|db|dir|pag)\fP
 .sp
 Die FSSTND complianten globalen Indexdatenbanken.
 .UNINDENT

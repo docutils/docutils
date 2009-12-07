@@ -84,16 +84,16 @@ BBEESSCCHHRREEIIBBUUNNGG
            iittaalliicc tteexxtt
                   Ersetzen durch passendes Argument.
 
-           [[--aabbcc]] Ein oder mehrere Argumente innerhalb der [ ] sind  optional.
+           [[--aabbcc]] Ein oder mehrere Argumente innerhalb der [[ ]] sind  optional.
 
-           --aa||--bb  Optionen,  die durch | abgegrenzt sind, koennen nicht zusam-
+           --aa||--bb  Optionen,  die durch || abgegrenzt sind, koennen nicht zusam-
                   men benutzt werden.
 
            AArrgguummeenntt ......
                   Argument kann wiederholt werden.
 
            [[AAuussddrruucckk]] ......
-                  gesamter Ausdruck innerhalb [ ] kann wiederholt werden.
+                  gesamter Ausdruck innerhalb [[ ]] kann wiederholt werden.
 
        Die   Befehls-  oder  Funktionsbeispiele  sind  Muster,  die  auf  alle
        moeglichen Aufrufe passen sollten. In manchen Faellen  ist  es  ratsam,
@@ -150,15 +150,15 @@ UUEEBBEERRSSIICCHHTT
 
        Um die Arbeitsweise von man zu  bestimmen,  werden  verschiedene  Umge-
        bungsvariablen  benutzt.  Mit dieser Version ist es moeglich, die Vari-
-       able $MANOPT auf einen Ausdruck im Kommandozeilenformat zu  setzen.  Es
-       gibt  folgende   Ausnahme:  Da  jede Option  in $MANOPT von Leerzeichen
+       able $$MMAANNOOPPTT auf einen Ausdruck im Kommandozeilenformat zu  setzen.  Es
+       gibt  folgende   Ausnahme:  Da  jede Option  in $$MMAANNOOPPTT von Leerzeichen
        eingeschlossen ist, muessen  Leerzeichen,  die Teil  eines   Argumentes
        sind,  gequotet  werden.  man bearbeitet diese Variable vor der eigenen
        Kommandozeile.  Die Optionen,  die  ein  Argument  benoetigen,  koennen
        durch  die  gleichen  Optionen in der Kommandozeile ueberschrieben wer-
-       den.  Um alle Optionen zurueckzusetzen, die in $MANOPT gesetzt  werden,
-       kann   -D  als   initiale Kommandozeilen-Option angegeben werden.  Dies
-       erlaubt man alle Optionen zu _u_e_b_e_r_s_c_h_r_e_i_b_e_n,  die  in  $MANOPT  gesetzt
+       den.  Um alle Optionen zurueckzusetzen, die in $$MMAANNOOPPTT gesetzt  werden,
+       kann   --DD  als   initiale Kommandozeilen-Option angegeben werden.  Dies
+       erlaubt man alle Optionen zu _u_e_b_e_r_s_c_h_r_e_i_b_e_n,  die  in  $$MMAANNOOPPTT  gesetzt
        werden,  obwohl   diese  weiterhin  gelten.   Damit  wird  die groesst-
        moegliche Flexibilität fuer  einen  Benutzer   erzeugt,  der  man   auf
        seine   eigenen Beduerfnisse  anpassen will, ohne zahllose Optionen bei
@@ -261,7 +261,7 @@ NNOORRMMAALLEEIINNSSTTEELLLLUUNNGGEENN
        tartet.
 
 OOPPTTIIOONNEENN
-       Eine Argumentoption, die entweder in der Kommandozeile, in $MANOPT oder
+       Eine Argumentoption, die entweder in der Kommandozeile, in $$MMAANNOOPPTT oder
        in beiden doppelt vorkommt , ist nicht schaedlich. Fuer  Optionen,  die
        ein Argument benötigen, überschreibt jedes Duplikat den  vorhergehenden
        Wert.
@@ -273,7 +273,7 @@ OOPPTTIIOONNEENN
               Format  interpretiert. Komprimierte nroff-Quelldateien mit einer
               unterstuetzten Kompressions-Erweiterung werden  von  man  dekom-
               primiert, bevor sie ueber den ueblichen Filter angezeigt werden.
-              Es  wird  keine cat-Datei erzeugt. Wenn eines  der  Argumente  -
+              Es  wird  keine cat-Datei erzeugt. Wenn eines  der  Argumente  --
               ist, wird die Eingabe von der Standardeingabe uebernommen.
 
        --LL _l_o_c_a_l_e_, ----llooccaallee==_l_o_c_a_l_e
@@ -299,12 +299,12 @@ OOPPTTIIOONNEENN
               Ermoeglicht es, einen alternativen  Manualpfad  anzugeben.  Nor-
               malerweise verwendet man dieselben Methoden wie in  manpath,  um
               den  Suchpfad zu ermitteln. Diese Option ueberschreibt die Umge-
-              bungsvariable $MANPATH.
+              bungsvariable $$MMAANNPPAATTHH.
 
        --PP _P_a_g_e_r_, ----ppaaggeerr==_P_a_g_e_r
               Gibt an, welcher Pager verwendet wird. Die Normaleinstellung ist
               pager-s.   Diese  Option  ueberschreibt  die   Umgebungsvariable
-              $PAGER und wird nicht in Zusammenhang mit -f oder -k  verwendet.
+              $$PPAAGGEERR und wird nicht in Zusammenhang mit -f oder -k  verwendet.
 
        --rr _P_r_o_m_p_t_, ----pprroommpptt==_P_r_o_m_p_t
               Wenn eine hinreichend neue Version von less als Pager  verwendet
@@ -317,11 +317,11 @@ OOPPTTIIOONNEENN
               wobei  name  die  Manualseite  bezeichnet,  die gerade angezeigt
               wird, sec der Abschnitt ist, in dem sie gefunden  wurde,  und  x
               die aktuelle Zeilennummer ist.  Diese Anzeige wird durch Verwen-
-              dung  der  Umgebungsvariable  $LESS erreicht.  Man beachte, dass
+              dung  der  Umgebungsvariable  $$LLEESSSS erreicht.  Man beachte, dass
               einzelne Bezeichnungen sich bei der Verwendung von landessprach-
-              lichen  Meldungen  ändern koennen.  Die Option -r ermöglicht es,
+              lichen  Meldungen  ändern koennen.  Die Option --rr ermöglicht es,
               durch  Angabe einer Formatierungszeichenkette, das Ausgabeformat
-              selbst  zu  bestimmen.  Wenn diese Zeichenkette $MAN_PN enthält,
+              selbst  zu  bestimmen.  Wenn diese Zeichenkette $$MMAANN__PPNN enthält,
               wird dieser Text durch den Namen der Manualseite gefolgt von der
               Abschnittsnummer in runden Klammern ersetzt.  Die  Zeichenkette,
               die im Normalfall verwendet wird ist:
@@ -334,8 +334,8 @@ OOPPTTIIOONNEENN
               Zeichenkette  zuerst  vom  Kommandointerpreter ausgewertet wird,
               muessen  entsprechende Zeichen durch einen  Backslash  geschützt
               werden.   Weitere  Optionen  für   less   koennen   nach   einem
-              geschützten  $ am Ende der Zeichenkette hinzugefügt werden.  Der
-              Default ist hier -ix8.
+              geschützten  $$ am Ende der Zeichenkette hinzugefügt werden.  Der
+              Default ist hier --iixx88.
 
        --SS _L_i_s_t_e_, ----sseeccttiioonnss==_L_i_s_t_e
               Eine   durch   Doppelpunkte   getrennte  Liste  von  Abschnitten
@@ -372,7 +372,7 @@ OOPPTTIIOONNEENN
               Verhalten  umzukehren,  ist  man  die   Zeichenkette Erweiterung
               zu übergeben, die angibt, in welchem Paket  die  Manualseite  zu
               finden  ist.  Im  obigen   Fall  beschränkt man seine Suche  auf
-              Seiten  mit der Erweiterung *tcl, wenn es mit -e tcl  aufgerufen
+              Seiten  mit der Erweiterung **ttccll, wenn es mit --ee ttccll  aufgerufen
               wurde.  Die Suche wird  dabei in allen Abschnitten durchgeführt.
 
        --ff,, ----wwhhaattiiss
