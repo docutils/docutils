@@ -99,7 +99,10 @@ OPTIONS
 --version, -V           Show this program's version number and exit.
 --help, -h              Show this help message and exit.
 
+Other Section
+=============
 
+With mixed case.
 """, 
         r""".\" Man page generated from reStructeredText.
 .
@@ -132,6 +135,9 @@ Show this program\(aqs version number and exit.
 .
 Show this help message and exit.
 .UNINDENT
+.SH Other Section
+.sp
+With mixed case.
 .SH AUTHOR
 someone@somewhere.net
 

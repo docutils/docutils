@@ -278,6 +278,11 @@ inline references `ref something` .
 
    Contained verbose. Nothing special.
 
+Top Section
+===========
+
+With mixed case
+
 FILES
 =====
 
