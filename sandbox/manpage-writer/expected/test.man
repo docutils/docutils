@@ -404,6 +404,9 @@ Text after the admonition.
 inline references \fIref something\fP .
 .sp
 Contained verbose. Nothing special.
+.SH Top Section
+.sp
+With mixed case
 .SH FILES
 .sp
 This is a file.
