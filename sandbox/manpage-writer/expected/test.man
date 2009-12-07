@@ -34,9 +34,9 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 .
 .SH SYNOPSIS
 .sp
-\fCrst2man\fP \fC\-\-help\fP
+\fBrst2man\fP \fB\-\-help\fP
 .sp
-\fCrst2man\fP [ OPTIONS ] [ SOURCE [ \fIdestination\fP ] ]
+\fBrst2man\fP [ OPTIONS ] [ SOURCE [ \fIdestination\fP ] ]
 .SH DESCRIPTION
 .sp
 Run it and examine output.
@@ -56,7 +56,7 @@ another
 really do it
 .UNINDENT
 .sp
-For all other options see \fC\-\-help\fP.
+For all other options see \fB\-\-help\fP.
 .SH EXAMPLES
 .INDENT 0.0
 .TP
@@ -411,7 +411,7 @@ This is a file.
 .sp
 \fI\%docutils\fP
 .sp
-\fCrst2xml\fP(dummy)
+\fBrst2xml\fP(dummy)
 .sp
 More information can be found about
 .INDENT 0.0

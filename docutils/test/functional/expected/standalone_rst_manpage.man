@@ -58,7 +58,7 @@ to man page requirements.
 For example a unix man page belongs into a numbered section, 1 is
 user commands, 8 contains administrator commands and the headlines
 of all manpages are collected into a database, queryable with the
-programm \fCapropos\fP, therefore the headline should contain a short
+programm \fBapropos\fP, therefore the headline should contain a short
 text describing into which group this command belongs.
 .sp
 These informations are collected from title, subtitle and the
@@ -89,7 +89,7 @@ None yet.
 \fI\%docutils\fP
 \fI\%linux man page howto\fP
 .sp
-and \fCman man\fP also \fCman 7 man\fP
+and \fBman man\fP also \fBman 7 man\fP
 .SH BUGS
 .INDENT 0.0
 .IP 1. 3

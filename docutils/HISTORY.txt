@@ -41,6 +41,10 @@ Changes Since 0.6
 __ docs/ref/restructuredtext.html#inline-literals
 __ docs/user/config.html#docutils-footnotes
 
+* docutils/writers/manpage.py
+
+  - Apply patch from mg: literal text should be bold in man-pages.
+
 * docutils/nodes.py
 
   - Fix: encoding ``'ascii'`` must be lowercase to prevent problems for
