@@ -99,7 +99,7 @@ OPTIONS
 --version, -V           Show this program's version number and exit.
 --help, -h              Show this help message and exit.
 
-Other Section
+OTHER SECTION
 =============
 
 With mixed case.
@@ -135,7 +135,7 @@ Show this program\(aqs version number and exit.
 .
 Show this help message and exit.
 .UNINDENT
-.SH Other Section
+.SH OTHER SECTION
 .sp
 With mixed case.
 .SH AUTHOR

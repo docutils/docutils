@@ -1046,7 +1046,8 @@ class Translator(nodes.NodeVisitor):
             self._docinfo['title_upper'] = node.astext().upper()
             raise nodes.SkipNode
         elif self.section_level == 1:
-            self.body.append('.SH ')
+            self.body.append('.SH %s\n' % self.deunicode(node.astext().upper()))
+            raise nodes.SkipNode
         else:
             self.body.append('.SS ')
 
