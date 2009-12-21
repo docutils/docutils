@@ -1793,8 +1793,8 @@ Unimplemented Transforms
   Convert quotes and dashes to typographically correct entities.
   Sphinx does this with ``smartypants.py``.
 
-  Use a generic version that replaces with Unicode chars and
-  let the writer replace these if required.
+  Write a generic version that uses Unicode chars
+  (let the writer replace these if required).
 
 HTML Writer
 ===========
@@ -1916,6 +1916,36 @@ S5/HTML Writer
     (synchronized, of course).  Also "Previous" link?  FF/Rew go to
     the beginning of the next/current parent section?  First/Last
     also?  Tape-player-style buttons like ``|<<  <<  <  >  >>  >>|``?
+
+Epub/HTML Writer
+================
+
+Add epub as an output format.
+
+Pack the output of a HTML writer and supporting files (e.g. images)
+into one single epub document.
+
+  epub is an open file format for ebooks based on HTML, specified by the
+  `International Digital Publishing Forum`_. Thus, documents in epub
+  format are suited to be read with `electronic reading devices`_. The
+  epub format comprises:
+
+  * `Open Publication Structure (OPS)
+    <http://www.idpf.org/2007/ops/OPS_2.0_final_spec.html>`_
+  * `Open Packaging Format (OPF)
+    <http://www.idpf.org/2007/opf/OPF_2.0_final_spec.html>`_
+  * `OEBPS Container Format (OCF)
+    <http://www.idpf.org/ocf/ocf1.0/download/ocf10.htm>`_
+
+  -- rst2epub_ README
+
+There is a project for epub support with sphinx providing a
+(hopefully) reusable framework.
+
+.. _rst2epub: http://bitbucket.org/wierob/rst2epub/
+.. _International Digital Publishing Forum: http://www.idpf.org/
+.. _electronic reading devices:
+   http://en.wikipedia.org/wiki/List_of_e-book_readers
 
 
 LaTeX writer
@@ -2131,8 +2161,6 @@ Default layout
      -  \\ % subtitle%
      +  \\[0.5em] % subtitle%
 
-__ ../../../sandbox/latex-variants/README.html#default-font
-
 .. _PSNFSS documentation:
    http://dante.ctan.org/CTAN/macros/latex/required/psnfss/psnfss2e.pdf
 .. _compound paragraph:
@@ -2243,6 +2271,10 @@ that lists LaTeX counterparts for a wide range of Unicode characters.
   Think of copyright issues!
 
 * The "ucs" package has many translations in ...doc/latex/ucs/config/
+
+* The bibstuff_ tool ships a `latex_codec` Python module!
+
+.. _bibstuff: http://code.google.com/p/bibstuff/
 
 Allow choice between utf8 (standard) and utf8x (extended) encodings
 ```````````````````````````````````````````````````````````````````
@@ -2378,6 +2410,7 @@ Front-End Tools
   initialize ``settings_spec`` in ``__init__`` or ``init_options``?
 
 * Disable common options that don't apply?
+  (This should now be easier with ``frontend.filter_settings_spec``.)
 
 * Add ``--section-numbering`` command line option.  The "sectnum"
   directive should override the ``--no-section-numbering`` command
