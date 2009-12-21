@@ -12,19 +12,6 @@ fi
 
 CMD="../../docutils/tools/rst2man.py --traceback"
 
-for L in "en" "de" ; do
-  for IN_F in $IN_DIR/docinfo-*.txt ; do
-    BASE=`basename $IN_F`
-    F_BASE=${BASE%.txt}
-    OPT="-l $L"
-    EXT="-l_$L"
-    $CMD $OPT $IN_F $OUT_DIR/$F_BASE$EXT.man
-    if [ $? -eq 0 ] ; then
-      diff -s -u $EXP_DIR/$F_BASE$EXT.man $OUT_DIR/$F_BASE$EXT.man
-    fi
-  done
-done
-
 for IN_F in $IN_DIR/$FILES ; do
   BASE=`basename $IN_F`
   F_BASE=${BASE%.txt}
@@ -43,6 +30,23 @@ for IN_F in $IN_DIR/$FILES ; do
       fi
     done
   fi
+done
+
+if [ -n "$1" ] ; then
+    exit
+fi
+
+for L in "en" "de" ; do
+  for IN_F in $IN_DIR/docinfo-*.txt ; do
+    BASE=`basename $IN_F`
+    F_BASE=${BASE%.txt}
+    OPT="-l $L"
+    EXT="-l_$L"
+    $CMD $OPT $IN_F $OUT_DIR/$F_BASE$EXT.man
+    if [ $? -eq 0 ] ; then
+      diff -s -u $EXP_DIR/$F_BASE$EXT.man $OUT_DIR/$F_BASE$EXT.man
+    fi
+  done
 done
 
 
