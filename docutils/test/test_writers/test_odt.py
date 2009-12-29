@@ -84,7 +84,7 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
         return WhichElementTree
 
     def process_test(self, input_filename, expected_filename, 
-            save_output_name=None):
+            save_output_name=None, settings_overrides=None):
         if not self.check_import():
             return
         # Test that xmlcharrefreplace is the default output encoding
@@ -95,8 +95,8 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
         expected = expected_file.read()
         input_file.close()
         expected_file.close()
-        settings_overrides={
-            }
+        if settings_overrides is None:
+            settings_overrides={ }
         result = docutils.core.publish_string(
             source=input,
             reader_name='standalone',
@@ -154,6 +154,16 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
 
     def test_odt_tables1(self):
         self.process_test('odt_tables1.txt', 'odt_tables1.odt',
+            #save_output_name='odt_tables1.odt'
+            )
+
+    def test_odt_custom_headfoot(self):
+        settings_overrides = {
+            'custom_header': 'Page %p% of %P%',
+            'custom_footer': 'Title: %t%  Date: %d3%  Time: %t4%',
+            }
+        self.process_test('odt_custom_headfoot.txt', 'odt_custom_headfoot.odt',
+            settings_overrides=settings_overrides,
             #save_output_name='odt_tables1.odt'
             )
 
