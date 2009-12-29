@@ -481,6 +481,20 @@ class Writer(writers.Writer):
                 'action': 'store_true',
                 'dest': 'generate_oowriter_toc',
                 'validator': frontend.validate_boolean}),
+        ('Specify the contents of an custom header line.  '
+            'See odf_odt writer documentation for details '
+            'about special field character sequences.',
+            ['--custom-odt-header'],
+            {   'default': '',
+                'dest': 'custom_header',
+                }),
+        ('Specify the contents of an custom footer line.  '
+            'See odf_odt writer documentation for details '
+            'about special field character sequences.',
+            ['--custom-odt-footer'],
+            {   'default': '',
+                'dest': 'custom_footer',
+                }),
         )
         )
 
@@ -806,6 +820,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.line_block_level = 0
         self.line_indent_level = 0
         self.citation_id = None
+        self.style_index = 0        # use to form unique style names
 
     def add_doc_title(self):
         text = self.settings.title
@@ -835,7 +850,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def setup_page(self, content):
         root_el = etree.fromstring(content)
         self.setup_paper(root_el)
-        if len(self.header_content) > 0 or len(self.footer_content) > 0:
+        if (len(self.header_content) > 0 or len(self.footer_content) > 0 or
+            self.settings.custom_header or self.settings.custom_footer):
             self.add_header_footer(root_el)
         new_content = etree.tostring(root_el)
         return new_content
@@ -863,6 +879,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         walk(root_el)
 
     def add_header_footer(self, root_el):
+        automatic_styles = root_el.find(
+            '{%s}automatic-styles' % SNSD['office'])
         path = '{%s}master-styles' % (NAME_SPACE_1, )
         master_el = root_el.find(path)
         if master_el is None:
@@ -872,7 +890,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         if master_el is None:
             return
         el1 = master_el
-        if len(self.header_content) > 0:
+        if self.header_content or self.settings.custom_header:
             if WhichElementTree == 'lxml':
                 el2 = SubElement(el1, 'style:header', nsdict=SNSD)
             else:
@@ -884,7 +902,10 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 attrkey = add_ns('text:style-name', nsdict=SNSD)
                 el.attrib[attrkey] = self.rststyle('header')
                 el2.append(el)
-        if len(self.footer_content) > 0:
+            if self.settings.custom_header:
+                elcustom = self.create_custom_headfoot(el2,
+                    self.settings.custom_header, 'header', automatic_styles)
+        if self.footer_content or self.settings.custom_footer:
             if WhichElementTree == 'lxml':
                 el2 = SubElement(el1, 'style:footer', nsdict=SNSD)
             else:
@@ -896,6 +917,304 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 attrkey = add_ns('text:style-name', nsdict=SNSD)
                 el.attrib[attrkey] = self.rststyle('footer')
                 el2.append(el)
+            if self.settings.custom_footer:
+                elcustom = self.create_custom_headfoot(el2,
+                    self.settings.custom_footer, 'footer', automatic_styles)
+
+    code_none, code_field, code_text = range(3)
+    field_pat = re.compile(r'%(..?)%')
+
+    def create_custom_headfoot(self, parent, text, style_name, automatic_styles):
+        current_element = None
+        field_iter = self.split_field_specifiers_iter(text)
+        for item in field_iter:
+            if item[0] == ODFTranslator.code_field:
+                if item[1] not in ('p', 'P', 
+                    't1', 't2', 't3', 't4',
+                    'd1', 'd2', 'd3', 'd4', 'd5',
+                    's', 't', 'a'):
+                    msg = 'bad field spec: %%%s%%' % (item[1], )
+                    raise RuntimeError, msg
+                if current_element is None:
+                    parent = SubElement(parent, 'text:p', attrib={
+                        'text:style-name': self.rststyle(style_name),
+                        })
+                el1 = self.make_field_element(parent,
+                    item[1], style_name, automatic_styles)
+                if el1 is None:
+                    msg = 'bad field spec: %%%s%%' % (item[1], )
+                    raise RuntimeError, msg
+                else:
+                    current_element = el1
+            else:
+                if current_element is None:
+                    parent = SubElement(parent, 'text:p', attrib={
+                        'text:style-name': self.rststyle(style_name),
+                        })
+                    parent.text = item[1]
+                else:
+                    current_element.tail = item[1]
+
+    def make_field_element(self, parent, text, style_name, automatic_styles):
+        if text == 'p':
+            el1 = SubElement(parent, 'text:page-number', attrib={
+                'text:style-name': self.rststyle(style_name),
+                'text:select-page': 'current',
+                })
+        elif text == 'P':
+            el1 = SubElement(parent, 'text:page-count', attrib={
+                'text:style-name': self.rststyle(style_name),
+                })
+        elif text == 't1':
+            self.style_index += 1
+            el1 = SubElement(parent, 'text:time', attrib={
+                'text:style-name': self.rststyle(style_name),
+                'text:fixed': 'true',
+                'style:data-style-name': 'rst-time-style-%d' % self.style_index,
+                })
+            el2 = SubElement(automatic_styles, 'number:time-style', attrib={
+                'style:name': 'rst-time-style-%d' % self.style_index,
+                'xmlns:number': SNSD['number'],
+                'xmlns:style': SNSD['style'],
+                    })
+            el3 = SubElement(el2, 'number:hours', attrib={
+                    'number:style': 'long',
+                    })
+            el3 = SubElement(el2, 'number:text')
+            el3.text = ':'
+            el3 = SubElement(el2, 'number:minutes', attrib={
+                    'number:style': 'long',
+                    })
+        elif text == 't2':
+            self.style_index += 1
+            el1 = SubElement(parent, 'text:time', attrib={
+                'text:style-name': self.rststyle(style_name),
+                'text:fixed': 'true',
+                'style:data-style-name': 'rst-time-style-%d' % self.style_index,
+                })
+            el2 = SubElement(automatic_styles, 'number:time-style', attrib={
+                'style:name': 'rst-time-style-%d' % self.style_index,
+                'xmlns:number': SNSD['number'],
+                'xmlns:style': SNSD['style'],
+                    })
+            el3 = SubElement(el2, 'number:hours', attrib={
+                    'number:style': 'long',
+                    })
+            el3 = SubElement(el2, 'number:text')
+            el3.text = ':'
+            el3 = SubElement(el2, 'number:minutes', attrib={
+                    'number:style': 'long',
+                    })
+            el3 = SubElement(el2, 'number:text')
+            el3.text = ':'
+            el3 = SubElement(el2, 'number:seconds', attrib={
+                    'number:style': 'long',
+                    })
+        elif text == 't3':
+            self.style_index += 1
+            el1 = SubElement(parent, 'text:time', attrib={
+                'text:style-name': self.rststyle(style_name),
+                'text:fixed': 'true',
+                'style:data-style-name': 'rst-time-style-%d' % self.style_index,
+                })
+            el2 = SubElement(automatic_styles, 'number:time-style', attrib={
+                'style:name': 'rst-time-style-%d' % self.style_index,
+                'xmlns:number': SNSD['number'],
+                'xmlns:style': SNSD['style'],
+                    })
+            el3 = SubElement(el2, 'number:hours', attrib={
+                    'number:style': 'long',
+                    })
+            el3 = SubElement(el2, 'number:text')
+            el3.text = ':'
+            el3 = SubElement(el2, 'number:minutes', attrib={
+                    'number:style': 'long',
+                    })
+            el3 = SubElement(el2, 'number:text')
+            el3.text = ' '
+            el3 = SubElement(el2, 'number:am-pm')
+        elif text == 't4':
+            self.style_index += 1
+            el1 = SubElement(parent, 'text:time', attrib={
+                'text:style-name': self.rststyle(style_name),
+                'text:fixed': 'true',
+                'style:data-style-name': 'rst-time-style-%d' % self.style_index,
+                })
+            el2 = SubElement(automatic_styles, 'number:time-style', attrib={
+                'style:name': 'rst-time-style-%d' % self.style_index,
+                'xmlns:number': SNSD['number'],
+                'xmlns:style': SNSD['style'],
+                    })
+            el3 = SubElement(el2, 'number:hours', attrib={
+                    'number:style': 'long',
+                    })
+            el3 = SubElement(el2, 'number:text')
+            el3.text = ':'
+            el3 = SubElement(el2, 'number:minutes', attrib={
+                    'number:style': 'long',
+                    })
+            el3 = SubElement(el2, 'number:text')
+            el3.text = ':'
+            el3 = SubElement(el2, 'number:seconds', attrib={
+                    'number:style': 'long',
+                    })
+            el3 = SubElement(el2, 'number:text')
+            el3.text = ' '
+            el3 = SubElement(el2, 'number:am-pm')
+        elif text == 'd1':
+            self.style_index += 1
+            el1 = SubElement(parent, 'text:date', attrib={
+                'text:style-name': self.rststyle(style_name),
+                'style:data-style-name': 'rst-date-style-%d' % self.style_index,
+                })
+            el2 = SubElement(automatic_styles, 'number:date-style', attrib={
+                'style:name': 'rst-date-style-%d' % self.style_index,
+                'number:automatic-order': 'true',
+                'xmlns:number': SNSD['number'],
+                'xmlns:style': SNSD['style'],
+                    })
+            el3 = SubElement(el2, 'number:month', attrib={
+                    'number:style': 'long',
+                    })
+            el3 = SubElement(el2, 'number:text')
+            el3.text = '/'
+            el3 = SubElement(el2, 'number:day', attrib={
+                    'number:style': 'long',
+                    })
+            el3 = SubElement(el2, 'number:text')
+            el3.text = '/'
+            el3 = SubElement(el2, 'number:year')
+        elif text == 'd2':
+            self.style_index += 1
+            el1 = SubElement(parent, 'text:date', attrib={
+                'text:style-name': self.rststyle(style_name),
+                'style:data-style-name': 'rst-date-style-%d' % self.style_index,
+                })
+            el2 = SubElement(automatic_styles, 'number:date-style', attrib={
+                'style:name': 'rst-date-style-%d' % self.style_index,
+                'number:automatic-order': 'true',
+                'xmlns:number': SNSD['number'],
+                'xmlns:style': SNSD['style'],
+                    })
+            el3 = SubElement(el2, 'number:month', attrib={
+                    'number:style': 'long',
+                    })
+            el3 = SubElement(el2, 'number:text')
+            el3.text = '/'
+            el3 = SubElement(el2, 'number:day', attrib={
+                    'number:style': 'long',
+                    })
+            el3 = SubElement(el2, 'number:text')
+            el3.text = '/'
+            el3 = SubElement(el2, 'number:year', attrib={
+                    'number:style': 'long',
+                    })
+        elif text == 'd3':
+            self.style_index += 1
+            el1 = SubElement(parent, 'text:date', attrib={
+                'text:style-name': self.rststyle(style_name),
+                'style:data-style-name': 'rst-date-style-%d' % self.style_index,
+                })
+            el2 = SubElement(automatic_styles, 'number:date-style', attrib={
+                'style:name': 'rst-date-style-%d' % self.style_index,
+                'number:automatic-order': 'true',
+                'xmlns:number': SNSD['number'],
+                'xmlns:style': SNSD['style'],
+                    })
+            el3 = SubElement(el2, 'number:month', attrib={
+                    'number:textual': 'true',
+                    })
+            el3 = SubElement(el2, 'number:text')
+            el3.text = ' '
+            el3 = SubElement(el2, 'number:day', attrib={
+                    })
+            el3 = SubElement(el2, 'number:text')
+            el3.text = ', '
+            el3 = SubElement(el2, 'number:year', attrib={
+                    'number:style': 'long',
+                    })
+        elif text == 'd4':
+            self.style_index += 1
+            el1 = SubElement(parent, 'text:date', attrib={
+                'text:style-name': self.rststyle(style_name),
+                'style:data-style-name': 'rst-date-style-%d' % self.style_index,
+                })
+            el2 = SubElement(automatic_styles, 'number:date-style', attrib={
+                'style:name': 'rst-date-style-%d' % self.style_index,
+                'number:automatic-order': 'true',
+                'xmlns:number': SNSD['number'],
+                'xmlns:style': SNSD['style'],
+                    })
+            el3 = SubElement(el2, 'number:month', attrib={
+                    'number:textual': 'true',
+                    'number:style': 'long',
+                    })
+            el3 = SubElement(el2, 'number:text')
+            el3.text = ' '
+            el3 = SubElement(el2, 'number:day', attrib={
+                    })
+            el3 = SubElement(el2, 'number:text')
+            el3.text = ', '
+            el3 = SubElement(el2, 'number:year', attrib={
+                    'number:style': 'long',
+                    })
+        elif text == 'd5':
+            self.style_index += 1
+            el1 = SubElement(parent, 'text:date', attrib={
+                'text:style-name': self.rststyle(style_name),
+                'style:data-style-name': 'rst-date-style-%d' % self.style_index,
+                })
+            el2 = SubElement(automatic_styles, 'number:date-style', attrib={
+                'style:name': 'rst-date-style-%d' % self.style_index,
+                'xmlns:number': SNSD['number'],
+                'xmlns:style': SNSD['style'],
+                    })
+            el3 = SubElement(el2, 'number:year', attrib={
+                    'number:style': 'long',
+                    })
+            el3 = SubElement(el2, 'number:text')
+            el3.text = '-'
+            el3 = SubElement(el2, 'number:month', attrib={
+                    'number:style': 'long',
+                    })
+            el3 = SubElement(el2, 'number:text')
+            el3.text = '-'
+            el3 = SubElement(el2, 'number:day', attrib={
+                    'number:style': 'long',
+                    })
+        elif text == 's':
+            el1 = SubElement(parent, 'text:subject', attrib={
+                'text:style-name': self.rststyle(style_name),
+                })
+        elif text == 't':
+            el1 = SubElement(parent, 'text:title', attrib={
+                'text:style-name': self.rststyle(style_name),
+                })
+        elif text == 'a':
+            el1 = SubElement(parent, 'text:author-name', attrib={
+                'text:fixed': 'false',
+                })
+        else:
+            el1 = None
+        return el1
+
+    def split_field_specifiers_iter(self, text):
+        pos1 = 0
+        pos_end = len(text)
+        while True:
+            mo = ODFTranslator.field_pat.search(text, pos1)
+            if mo:
+                pos2 = mo.start()
+                if pos2 > pos1:
+                    yield (ODFTranslator.code_text, text[pos1:pos2])
+                yield (ODFTranslator.code_field, mo.group(1))
+                pos1 = mo.end()
+            else:
+                break
+        trailing = text[pos1:]
+        if trailing:
+            yield (ODFTranslator.code_text, trailing)
+
 
     def astext(self):
         root = self.content_tree.getroot()
