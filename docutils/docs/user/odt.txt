@@ -122,6 +122,18 @@ The following command line flags are specific to ``odtwriter``:
                         generated document in ``oowriter``, then
                         right-click on the table of contents and
                         select "Update" to insert page numbers.
+--custom-odt-header=CUSTOM_HEADER
+                        Specify the contents of an custom header line.  See
+                        odf_odt writer documentation for details about special
+                        field character sequences.  See section
+                        `Custom header/footers: inserting page numbers, date, time, etc`_
+                        for details
+--custom-odt-footer=CUSTOM_FOOTER
+                        Specify the contents of an custom footer line.  See
+                        odf_odt writer documentation for details about special
+                        field character sequences.  See section
+                        `Custom header/footers: inserting page numbers, date, time, etc`_
+                        for details
 
                                                                                                                         
 
@@ -779,14 +791,16 @@ Then, click on the Paragraph Styles button.
 The following example attaches the ``rststyle-heading2`` style (a
 predefined style) to each paragraph/line in the container::
 
-    .. container:: rststyle-heading2
+    .. container:: heading2
 
        Line 1 of container.
 
        Line 2 of container.
 
 You could also define a new style (for example, in your
-``styles.odt``) and reference that in a ``container`` directive.
+``styles.odt``) and reference that in a ``container`` directive. 
+In order to do this, see section 
+`Defining and using custom style names`_.
 
 
 
@@ -939,6 +953,78 @@ the following conditions must be met:
     insert a default page size using ``paperconf``, then you will
     need to strip the page size from your stylesheet each time you
     edit that stylesheet with ``oowriter``.
+
+
+
+Custom header/footers: inserting page numbers, date, time, etc
+----------------------------------------------------------------
+
+You can specify custom headers and footers for your document from
+the command line.  These headers and footers can be used to insert
+fields such as the page number, page count, date, time, etc.  See
+below for a complete list.
+
+To insert a custom header or footer, use the "--custom-odt-header"
+or "--custom-odt-footer" command line options.  For example, the
+following inserts a footer containing the page number and page
+count::
+
+    $ rst2odt.py --custom-odt-footer="Page %p% of %P%" f1.txt f1.odt
+
+
+Field specifiers
+~~~~~~~~~~~~~~~~~~
+
+You can use the following field specifiers to insert ``oowriter``
+fields in your custom headers and footers:
+
+%p%
+    The current page number.
+
+%P%
+    The number of pages in the document.
+
+%d1%
+    The current date in format 12/31/99.
+
+%d2%
+    The current date in format 12/31/1999.
+
+%d3%
+    The current date in format Dec 31, 1999.
+
+%d4%
+    The current date in format December 31, 1999.
+
+%d5%
+    The current date in format 1999-12-31.
+
+%t1%
+    The current time in format 14:22.
+
+%t2%
+    The current time in format 14:22:33.
+
+%t3%
+    The current time in format 02:22 PM.
+
+%t4%
+    The current time in format 02:22:33 PM.
+
+%a%
+    The author of the document (actually the initial creator).
+
+%t%
+    The document title.
+
+%s%
+    The document subject.
+
+
+**Note:** The use of the above field specifiers in the body of your
+reStructuredText document is **not** supported, because these
+specifiers are not standard across Docutils writers.
+
 
 
 Credits
