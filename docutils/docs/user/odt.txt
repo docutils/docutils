@@ -61,7 +61,7 @@ Run it from the command line as follows::
 
     $ rst2odt.py myinput.txt myoutput.odt
 
-To see usage information and to learn about command line flags
+To see usage information and to learn about command line options
 that you can use, run the following::
 
     $ rst2odt.py --help
@@ -76,7 +76,7 @@ Examples::
 Command line options
 --------------------
 
-The following command line flags are specific to ``odtwriter``:
+The following command line options are specific to ``odtwriter``:
 
 --stylesheet=<URL>      Specify a stylesheet URL, used verbatim. 
                         Default: writers/odf_odt/styles.odt in the
@@ -716,7 +716,7 @@ blocks.  In order to activate this, do all of the following:
 
 1. Install `Pygments`_ and ...
 
-2. Use the command line flag ``--add-syntax-highlighting``.
+2. Use the command line option ``--add-syntax-highlighting``.
    Example::
 
        $ rst2odt.py --add-syntax-highlight test.txt test.odt
@@ -765,13 +765,15 @@ The container directive
 -----------------------
 
 There is limited support for the ``container`` directive.  The
-limitations are the following:
+limitations and rules for the container directive are the following:
 
-- Only the first class in the list of classes (arguments) is used
-  and
+- Only the first class in the list of classes (arguments) is used.
 
 - That class/style must be a paragraph style and not (for example) a
   character style.
+
+- The style/class given to the container directive will have a
+  "rststyle-" prefix in the odt file.
 
 So, for example::
 
@@ -779,10 +781,17 @@ So, for example::
 
         a block of text
 
-Only ``style-1`` is used; ``style-2`` and ``style-3`` are ignored.
-And, ``style-1`` must be a paragraph style.
+- Only ``style-1`` is used; ``style-2`` and ``style-3`` are ignored.
 
-To define a paragraph style, use the following menu item::
+- ``rststyle-style-1`` must be defined.  It should be an existing,
+  predefined style, or you should define it in your stylesheet
+  (``styles.odt`` or the argument to the ``--stylesheet`` command
+  line option).
+
+- ``rststyle-style-1`` must be a paragraph style.
+
+To define a paragraph style, use the following menu item in
+``oowriter``::
 
     Format --> Styles and Formatting
 
@@ -797,9 +806,8 @@ predefined style) to each paragraph/line in the container::
 
        Line 2 of container.
 
-You could also define a new style (for example, in your
-``styles.odt``) and reference that in a ``container`` directive. 
-In order to do this, see section 
+More information on how to define a new style (for example, in your
+``styles.odt``) can be found in section 
 `Defining and using custom style names`_.
 
 
@@ -836,7 +844,7 @@ There are additional styles ``rststyle-footnote`` and
 You may need to modify the citation style to fit the length of your
 citation references.
 
-Endnotes -- There are command line flags that control whether
+Endnotes -- There are command line options that control whether
 ``odtwriter`` creates endnotes instead of footnotes.  Endnotes
 appear at the end of the document instead of at the bottom of the
 page.  See flags ``--endnotes-end-doc`` and
