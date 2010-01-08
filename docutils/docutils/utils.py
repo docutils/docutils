@@ -343,6 +343,8 @@ def decode_path(path):
     # see also http://article.gmane.org/gmane.text.docutils.user/2905
     try:
         path = path.decode(sys.getfilesystemencoding(), 'strict')
+    except AttributeError: # default value None has no decode method
+        return nodes.reprunicode(path)
     except UnicodeDecodeError:
         path = path.decode('utf-8', 'strict')
         try:

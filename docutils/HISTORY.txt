@@ -26,6 +26,10 @@ Changes Since 0.6
   - FileInput opens files as text files with universal newline support
     (mode "rU", configurable with the new optional argument "mode").
 
+* docutils/utils.py
+
+  - Fix [ 2923723 ] let decode_path() tolerate path == None
+
 * docutils/writers/latex2e/__init__.py
 
   - Use `transforms.writer_aux.Admonitions` to "normalize" special
