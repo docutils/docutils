@@ -283,6 +283,11 @@ Top Section
 
 With mixed case
 
+Top section `b` c *d* e **f** g
+===============================
+
+with character formatting.
+
 FILES
 =====
 
