@@ -5,6 +5,17 @@ SPECIAL(CHARACTERS)                                        SPECIAL(CHARACTERS)
 NNAAMMEE
        special characters - test special characters
 
+SSEEEE AALLSSOO
+       In mercurial the following substitutions are in use:
+
+       .. |hg(1)| replace:: **hg**\ (1)
+       .. |hgrc(5)| replace:: **hgrc**\ (5)
+       .. |hgignore(5)| replace:: **hgignore**\ (5)
+
+       resulting in.
+
+       hhggiiggnnoorree_(_5_),, hhggrrcc_(_5_)
+
 DDEESSCCRRIIPPTTIIOONN
        encodings are problematic as alway.
 
