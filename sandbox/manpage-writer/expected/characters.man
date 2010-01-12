@@ -3,6 +3,21 @@
 special characters \- test special characters
 .\" Man page generated from reStructeredText.
 .
+.SH SEE ALSO
+.sp
+In mercurial the following substitutions are in use:
+.sp
+.nf
+.ft C
+\&.. |hg(1)| replace:: **hg**\e (1)
+\&.. |hgrc(5)| replace:: **hgrc**\e (5)
+\&.. |hgignore(5)| replace:: **hgignore**\e (5)
+.ft P
+.fi
+.sp
+resulting in.
+.sp
+\fI\%\fBhgignore\fP(5)\fP, \fI\%\fBhgrc\fP(5)\fP
 .SH DESCRIPTION
 .sp
 encodings are problematic as alway.
