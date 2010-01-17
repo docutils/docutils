@@ -92,7 +92,7 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 
 class Writer(writers.Writer):
 
-    supported = ('manpage')
+    supported = ('manpage',)
     """Formats this writer supports."""
 
     output = None
