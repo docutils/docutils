@@ -362,7 +362,7 @@ class Writer(writers.Writer):
     MIME_TYPE = 'application/vnd.oasis.opendocument.text'
     EXTENSION = '.odt'
 
-    supported = ('html', 'html4css1', 'xhtml')
+    supported = ('odt', )
     """Formats this writer supports."""
 
     default_stylesheet = 'styles' + EXTENSION
