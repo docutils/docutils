@@ -11,7 +11,7 @@ html4strict-sample
 :Organization: This is the longest `docinfo` special field name.
 :Abstract: Sample text demonstrating the features of the html4strict writer.
 
-	   See the `docs <../docs>`_ dir for layout variants.
+	   See also the test output "standalone_rst2html_strict"
 
 Table without hard-coded border
 ===============================
@@ -53,10 +53,9 @@ Field lists as special definition lists
 The html4strict writer exports field lists as definition lists (with class
 `docutils field-list`) and uses CSS to render it "field-list-like".
 
-The various style sheets in the ``sandbox/html4strict/data/`` dir provide
-styling examples.
+The style can be influenced by a special class argument.
 
-Field list example
+Field list examples
 -------------------
 
 This list demonstrates the alternatives for the display of field lists
@@ -76,12 +75,131 @@ highlighting problems with the handling of long field names:
 :MMMMMMMMMMMMMM:   a field name that is actually longer than the previous
 		   one but regarded "short" by html4css1.
 
-:an absolutely very long field name:
-		   will be broken at white space in some CSS layout variants.
+:a very long field name: sticks into the field body.
 
-:an-absolutely-very-long-field-name:
-		   with no white space must be handled in a pleasant way.
+:the next field name:  and field body should align. 
 
-:last item:	   true love lasts forever and forever and forever and
-      		   forever and even longer and so on...
+Start on new line after long field names
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. raw:: html
+
+   <style type="text/css"><!--
+      dl.classic { width: 100%; }
+      dl.classic > dt.field-name { }
+      dl.classic > dd.field-body {
+	 margin-left: 16%;
+      dl.classic > dd.field-body > p { width: 100%;
+      		   		       display: block }
+   --></style>
+
+.. class:: classic
+
+:class argument:   classic
+
+:Problem:	   Does not work (in Firefox). 
+:TODO:             fix or abadon the idea.
+
+:a very long field name: sticks into the field body.
+
+:the next field name:  and field body should align. 
+
+
+Wrap long field names
+~~~~~~~~~~~~~~~~~~~~~
+
+.. raw:: html
+
+   <style type="text/css"><!--
+      /* wrap long field names */
+      dl.wrap > dt.field-name { 
+        max-width: 9.5em;
+        /* border-top: 1px solid #999; */
+      }
+   --></style>
+
+.. class:: wrap
+
+:class argument:   wrap
+
+:Problems:	   Non-wrappable field names will overwrite the content.
+		   
+		   If the field name is wrapped but the field body
+		   just one line, following field-bodies "float up".
+
+:a_very_long_field_name:
+		   clashes with the body if it has no "break-points".
+
+:this very long field name: will wrap.
+
+:the next field name:  and field body should align. 
+
+--------------------------------------------------
+
+Second try:
+
+.. raw:: html
+
+   <style type="text/css"><!--
+      /* wrap long field names */
+      dl.wrap2 > dt.field-name {
+        float: none;
+        max-width: 9.5em;
+        /* border-top: 1px solid #999; */
+      }
+      dl.wrap2 > dd.field-body, dl.wrap2 {
+         display: inline-block;
+      }
+   --></style>
+
+.. class:: wrap2
+
+:class argument:   wrap2
+
+:Problems:	   Non-wrappable field names will overwrite the content.
+		   
+		   If the field name is wrapped but the field body
+		   just one line, following field-bodies "float up".
+
+:a_very_long_field_name:
+		   clashes with the body if it has no "break-points".
+
+:this very long field name: will wrap.
+
+:the next field name:  and field body should align. 
+
+
+Truncate long field names
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. raw:: html
+
+   <style type="text/css"><!--
+     /* truncate long field names: */
+     dl.truncate > dt.field-name {
+       max-width: 9.5em;
+       overflow: hidden;
+     }
+     dl.truncate > dd.field-body {
+       padding-left: 0.5em;
+     }
+   --></style>
+
+.. class:: truncate
+
+:Class argument:   'truncate'
+
+:The field name:   and value
+:this field name:  is considered "long" in the html table rendering.
+      	    	   by the html4css1 with the default setting of --field-name-limit=14
+
+		   Therefore, it spans 2 table columns and the field body is
+		   pushed to the next line (you can suppress this behaviour
+		   with the ``--field-name-limit=0`` option).
+
+:This very long field name: will be wrapped.
+
+:A_very_long_field_name: without break-point is truncated.
+
+:the next field name:  and field body should align. 
 

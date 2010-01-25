@@ -39,8 +39,11 @@ Objective
 * `Graceful Degradation
   <http://www.anybrowser.org/campaign/abdesign.html#degradability>`__
 
-* Best viewed with any (CSS2-conforming) HTML browser (tested with Firefox_,
-  Midori_, Konqueror_ and Opera_).
+* Best viewed with any (CSS2-conforming) HTML browser. [#]_ 
+
+.. [#] Tested with Firefox_, Midori_, Konqueror_ and Opera_. As Safari
+   and Google Chrome use the same rendering engine as Midori and
+   Konqueror (WebKit), they should work fine as well.
 
 .. _firefox: http://www.mozilla.com
 .. _opera: http://www.opera.com
@@ -267,6 +270,10 @@ TODO
 ----
 
 * Hanging indent for numbered section headings and ToC entries.
+
+* No tables for Footnotes and Citations
+  (for footnotes see http://www.archiva.net/footnote/index.htm and
+   http://www.xmlplease.com/footnotes
 
 * option-list as styled <dl> (remove ``--option-limit`` option).
 
