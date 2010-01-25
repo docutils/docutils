@@ -18,6 +18,7 @@ TODO: ensure the follwing is true for all output:
    layout design by cascading style sheets.
 """
 
+
 __docformat__ = 'reStructuredText'
 
 import os
@@ -71,17 +72,6 @@ class HTMLTranslator(html4css1.HTMLTranslator):
                '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n')
 
     # TODO: References (citations) as list instead of table
-
-    # tag citation references with <cite>
-
-    def visit_citation_reference(self, node):
-        href = '#' + node['refid']
-        self.body.append('<cite>')
-        self.body.append(self.starttag(
-            node, 'a', '[', CLASS='citation-reference', href=href))
-
-    def depart_citation_reference(self, node):
-        self.body.append(']</a></cite>')
 
     # enumerated lists
     # ----------------
