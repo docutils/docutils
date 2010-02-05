@@ -40,7 +40,8 @@ Changes Since 0.6
   - Deprecate ``figure_footnotes`` setting.
   - Rename ``use_latex_footnotes`` setting to `docutils_footnotes`__.
   - New ``latex_preamble`` setting.
-  - PDF standard fonts (Times/Helvetica/Courier) as default.
+  - Use PDF standard fonts (Times/Helvetica/Courier) as default.
+  - Fix hyperlink targets (labels) for images, figures, and tables.
 
 __ docs/ref/restructuredtext.html#inline-literals
 __ docs/user/config.html#docutils-footnotes
