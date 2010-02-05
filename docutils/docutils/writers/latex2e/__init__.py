@@ -1872,10 +1872,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
         ## self.out.append( '\\begin{figure}%s\n' % align )
         ## self.context.append( '%s\\end{figure}\n' % align_end )
         self.out.append('\\begin{figure}')
-        self.context.append('\\end{figure}\n')
+        if node.get('ids'):
+            self.out += ['\n'] + self.ids_to_labels(node)
 
     def depart_figure(self, node):
-        self.out.append(self.context.pop())
+        self.out.append('\\end{figure}\n')
 
     def visit_footer(self, node):
         self.push_output_collector([])
@@ -2016,20 +2017,21 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pre = []
         post = []
         include_graphics_options = []
-        is_inline = self.is_inline(node)
-        align_prepost = {
-            # key == (<is_inline>, <align>)
-            # By default latex aligns the bottom of an image.
-            (True, 'bottom'): ('', ''),
-            (True, 'middle'): (r'\raisebox{-0.5\height}{', '}'),
-            (True, 'top'):    (r'\raisebox{-\height}{', '}'),
-            (False, 'center'): (r'\noindent\makebox[\textwidth][c]{', '}'),
-            (False, 'left'):   (r'\noindent{', r'\hfill}'),
-            (False, 'right'):  (r'\noindent{\hfill', '}'),}
+        display_style = ('block-', 'inline-')[self.is_inline(node)]
+        align_codes = {
+            # inline images: by default latex aligns the bottom.
+            'bottom': ('', ''),
+            'middle': (r'\raisebox{-0.5\height}{', '}'),
+            'top':    (r'\raisebox{-\height}{', '}'),
+            # block level images:
+            'center': (r'\noindent\makebox[\textwidth][c]{', '}'),
+            'left':   (r'\noindent{', r'\hfill}'),
+            'right':  (r'\noindent{\hfill', '}'),}
         if 'align' in attrs:
             try:
-                pre.append(align_prepost[is_inline, attrs['align']][0])
-                post.append(align_prepost[is_inline, attrs['align']][1])
+                align_code = align_codes[attrs['align']]
+                pre.append(align_code[0])
+                post.append(align_code[1])
             except KeyError:
                 pass                    # TODO: warn?
         if 'height' in attrs:
@@ -2038,19 +2040,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if 'scale' in attrs:
             include_graphics_options.append('scale=%f' %
                                             (attrs['scale'] / 100.0))
-            ## # Could also be done with ``scale`` option to
-            ## # ``\includegraphics``; doing it this way for consistency.
-            ## pre.append('\\scalebox{%f}{' % (attrs['scale'] / 100.0,))
-            ## post.append('}')
         if 'width' in attrs:
             include_graphics_options.append('width=%s' %
                             self.to_latex_length(attrs['width']))
-        if not is_inline:
+        if not self.is_inline(node):
             pre.append('\n')
             post.append('\n')
         pre.reverse()
         self.out.extend(pre)
-        self.append_hypertargets(node)
         options = ''
         if include_graphics_options:
             options = '[%s]' % (','.join(include_graphics_options))
@@ -2058,7 +2055,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out.extend(post)
 
     def depart_image(self, node):
-        pass
+        if node.get('ids'):
+            self.out += self.ids_to_labels(node) + ['\n']
 
     def visit_interpreted(self, node):
         # @@@ Incomplete, pending a proper implementation on the
@@ -2456,6 +2454,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.active_table = self.table_stack.pop()
         else:
             self.active_table.set_table_style(self.settings.table_style)
+        # Insert hyperlabel after (long)table, as
+        # other places (beginning, caption) result in LaTeX errors.
+        if node.get('ids'):
+            self.out += self.ids_to_labels(node, set_anchor=False) + ['\n']
 
     def visit_target(self, node):
         # Skip indirect targets:

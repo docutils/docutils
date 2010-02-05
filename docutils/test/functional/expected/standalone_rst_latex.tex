@@ -937,9 +937,8 @@ An image directive (also clickable -{}- a hyperlink reference):
 
 Image with multiple IDs:
 
-\raisebox{1em}{\hypertarget{image-target-3}{}}%
-\raisebox{1em}{\hypertarget{image-target-2}{}}%
-\raisebox{1em}{\hypertarget{image-target-1}{}}\includegraphics{../../../docs/user/rst/images/title.png}
+\includegraphics{../../../docs/user/rst/images/title.png}
+\phantomsection\label{image-target-3}\label{image-target-2}\label{image-target-1}
 
 A centered image:
 
@@ -1879,7 +1878,8 @@ greater-than and bar, < | >, except for typewriter font \DUroletitlereference{cm
 
 In LaTeX, we must set an explicit anchor (\texttt{\textbackslash{}phantomsection}) for a
 %
-\phantomsection\label{hypertarget-in-plain-text}hypertarget in plain text but not in a table or figure caption:
+\phantomsection\label{hypertarget-in-plain-text}hypertarget in plain text or in a figure but not in a longtable or
+caption:
 
 \leavevmode
 \setlength{\DUtablewidth}{\linewidth}
@@ -1896,7 +1896,9 @@ None
  \\
 \hline
 \end{longtable}
+\label{table-label}
 \begin{figure}
+\phantomsection\label{figure-label}
 \noindent\makebox[\textwidth][c]{\includegraphics{../../../docs/user/rst/images/biohazard.png}}
 \caption{Figure with %
 \label{hypertarget-in-figure-caption}hypertarget in figure caption.}
@@ -1906,10 +1908,14 @@ Legend with %
 \end{DUlegend}
 \end{figure}
 
+\includegraphics{../../../docs/user/rst/images/biohazard.png}
+\phantomsection\label{image-label}
+
 See \hyperref[hypertarget-in-plain-text]{hypertarget in plain text},
-\hyperref[hypertarget-in-table-title]{hypertarget in table title},
-\hyperref[hypertarget-in-figure-caption]{hypertarget in figure caption}, and
-\hyperref[hypertarget-in-figure-legend]{hypertarget in figure legend},
+\hyperref[table-label]{table label}, \hyperref[hypertarget-in-table-title]{hypertarget in table title},
+\hyperref[figure-label]{figure label}, \hyperref[hypertarget-in-figure-caption]{hypertarget in figure caption},
+\hyperref[hypertarget-in-figure-legend]{hypertarget in figure legend}, and
+\hyperref[image-label]{image label}.
 
 
 %___________________________________________________________________________
