@@ -685,6 +685,49 @@ control of the generation of ODF content:
           :width: 60
 
 
+Roles
+-------
+
+You can use a Docutils custom interpreted text role to attach a
+character style to an inline area of text.  This capability also
+enables you to attach a new character style (with a new name) that
+you define yourself.  Do this by defining your role in a stylesheet
+as a character style with "rststyle-" prefixed to your role name,
+then use the ``role`` directive and inline markup to apply your
+role.
+
+In order to use this capability, do the following:
+
+- Define the character style for your custom role in a stylesheet
+  (a copy of ``styles.odt``) with the prefix "rststyle-". 
+  Remember: (1) If the name of your custom role is "pretty", then
+  define a character style named "rststyle-pretty".  (2) Define the
+  style as a *character* style, and *not*, for example as a
+  paragraph style.
+
+- Declare your role in the source reStructuredText document in a
+  ``role`` directive.  Example::
+
+      .. role:: pretty
+
+- Use inline markup to apply your role to text.  Example::
+
+      We have :pretty:`very nice` apples.
+
+Here is another example::
+
+    .. role:: fancy
+
+    Here is some :fancy:`pretty text` that looks fancy.
+
+For more on roles see:
+`Custom Interpreted Text Roles --
+http://docutils.sourceforge.net/docs/ref/rst/directives.html#custom-interpreted-text-roles
+<http://docutils.sourceforge.net/docs/ref/rst/directives.html#custom-interpreted-text-roles>`_.
+
+**Note:** The ability to base a role on another existing role is
+not supported by ``odtwriter``.
+
 
 Hints and Suggestions and Features
 ==================================

@@ -2216,10 +2216,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.line_block_level += 1
 
     def depart_line_block(self, node):
-        if self.line_block_level <= 1:
-            el1 = SubElement(self.current_element, 'text:p', attrib={
-                    'text:style-name': self.rststyle('lineblock1'),
-                    })
         self.line_indent_level -= 1
         self.line_block_level -= 1
 
@@ -2239,6 +2235,17 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.set_current_element(el)
 
     def depart_literal(self, node):
+        self.set_to_parent()
+
+    def visit_inline(self, node):
+        styles = node.attributes.get('classes', ())
+        if len(styles) > 0:
+            inline_style =  styles[0]
+        el = SubElement(self.current_element, 'text:span',
+            attrib={'text:style-name': self.rststyle(inline_style)})
+        self.set_current_element(el)
+
+    def depart_inline(self, node):
         self.set_to_parent()
 
     def _calculate_code_block_padding(self, line):
