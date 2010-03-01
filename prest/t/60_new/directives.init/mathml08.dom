@@ -1,0 +1,13 @@
+<document source="test data">
+    <paragraph>
+        Einstein derived the famous equation
+    <paragraph>
+        <math title="E=mc^2" xmlns="&mathml;" label="einstein"><mstyle displaystyle="true"><mi>E</mi><mo>=</mo><mi>m</mi><msup><mi>c</mi><mn>2</mn></msup></mstyle></math>
+        <substitution_definition names="einstein">
+            1
+    <paragraph>
+        As you can see in equation 
+        <substitution_reference refname="einstein">
+            einstein
+        , a little mass converts to a
+        large amount of energy.

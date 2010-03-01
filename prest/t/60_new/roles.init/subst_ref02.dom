@@ -1,0 +1,12 @@
+<document source="test data">
+    <substitution_definition names="mydef">
+        a substitution definition
+    <paragraph>
+        Now we can refer to 
+        <substitution_reference refname="mydef">
+            mydef
+         using a substitution reference or to
+        <substitution_reference ids="httpmy-url-com" names="http://my.url.com">
+            mydef
+         using a
+        substitution-reference role.

@@ -1,0 +1,41 @@
+<document source="test data">
+    <section ids="level-1" names="level 1">
+        <title auto="1">
+            <generated classes="sectnum">
+                I\u00a0\u00a0\u00a0
+            Level 1
+        <section ids="level-2" names="level 2">
+            <title auto="1">
+                <generated classes="sectnum">
+                    I.A\u00a0\u00a0\u00a0
+                Level 2
+            <section ids="level-3" names="level 3">
+                <title auto="1">
+                    <generated classes="sectnum">
+                        I.A.i\u00a0\u00a0\u00a0
+                    Level 3
+                <section ids="level-4" names="level 4">
+                    <title auto="1">
+                        <generated classes="sectnum">
+                            I.A.i.a\u00a0\u00a0\u00a0
+                        Level 4
+                    <section ids="level-5" names="level 5">
+                        <title auto="1">
+                            <generated classes="sectnum">
+                                I.A.i.a.(1)\u00a0\u00a0\u00a0
+                            Level 5
+                        <section ids="level-6" names="level 6">
+                            <title auto="1">
+                                <generated classes="sectnum">
+                                    I.A.i.a.(1).1\u00a0\u00a0\u00a0
+                                Level 6
+                    <section ids="another-level-5" names="another level 5">
+                        <title auto="1">
+                            <generated classes="sectnum">
+                                I.A.i.a.(2)\u00a0\u00a0\u00a0
+                            Another Level 5
+            <section ids="another-level-3" names="another level 3">
+                <title auto="1">
+                    <generated classes="sectnum">
+                        I.A.ii\u00a0\u00a0\u00a0
+                    Another Level 3

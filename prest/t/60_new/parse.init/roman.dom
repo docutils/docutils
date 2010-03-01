@@ -1,0 +1,15 @@
+<document source="test data">
+    <system_message level="1" line="1" source="test data" type="INFO">
+        <paragraph>
+            No directive entry for "perl" in module "Text::Restructured::Directive".
+            Trying "perl" as canonical directive name.
+    <paragraph>
+        xlix
+    <paragraph>
+        -1
+    <paragraph>
+        -1
+    <paragraph>
+        mmmmcmxcix
+    <paragraph>
+        -1
