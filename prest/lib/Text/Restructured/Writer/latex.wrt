@@ -132,10 +132,11 @@ sub BEGIN {
     # Run-time globals
     use vars qw(@SECTION_LEVELS @AUTHORS $DATE $DOCINFO $PREAMBLE
 		$SUBTITLE @LITBOXES @CITATIONS %SYSTEM_MESSAGE
-		%PACKAGES $BEGIN_DONE %COMPOUND_CLASSES);
+		%PACKAGES $BEGIN_DONE %COMPOUND_CLASSES %INLINE_CLASSES);
 
     # Defaults for -W arguments
     $author_skip 	   = '12pt'    unless defined $author_skip;
+    $author_skip           = $$author_skip if ref $author_skip eq 'SCALAR';
     $documentclass         = 'article' unless defined $documentclass;
     $documentclass_opts    = ''        unless defined $documentclass_opts;
     $max_unwrapped_colsize = 8         unless defined $max_unwrapped_colsize;
@@ -168,7 +169,8 @@ sub FootnoteSymbol {
 
 # Makes a string safe by quoting special characters
 sub ProtectString {
-    $_ = $_[0];
+    my ($string, $parsed_lit) = @_;
+    $_ = $string;
 
     # Do some substitutions
     # Do this one first...
@@ -176,17 +178,31 @@ sub ProtectString {
 
     s/([\$&%\#_~])/\\$1/g;
     s/(\^)/\\textasciicircum /g;
-    s/ <= / \\ensuremath{\\leq} /g;
-    s/ >= / \\ensuremath{\\geq} /g;
     s/([<>|])/\\ensuremath{$1}/g;
-    s/ == / \\ensuremath{=} /g;
-    s/ != / \\ensuremath{\\neq} /g;
-    s/(\A|\s)(-\d+)/$1\\ensuremath{$2}/g;
-    s/(\s)\'/$1\`/gm;
-    s/(\S)\"/$1\'\'/g;
-    s/\"(\S)/\`\`$1/g;
-
+    if (! $parsed_lit) {
+	s/ <= / \\ensuremath{\\leq} /g;
+	s/ >= / \\ensuremath{\\geq} /g;
+	s/ == / \\ensuremath{=} /g;
+	s/ != / \\ensuremath{\\neq} /g;
+	s/(\A|\s)(-\d+)/$1\\ensuremath{$2}/g;
+	s/(\s)\'/$1\`/gm;
+	s/(?![\(\[\{])(\S)\"/$1\'\'/g;  # Needs matching } to parse schema
+	s/\"(\S)/\`\`$1/g;
+    }
     return $_;
+}
+
+# Checks to see if the DOM has any associated classes with it, and if so,
+# generates a styling command around the string
+sub StyleClasses {
+    my ($dom, $str) = @_;
+    my $class = $dom->{attr}{classes} ? $dom->{attr}{classes}[0] : '';
+    $class =~ tr/a-zA-Z0-9//cd;
+    if ($class) {
+	$INLINE_CLASSES{$class} = 1;
+	return "\\styleinline$class\{$str}";
+    }
+    return $str;
 }
 
 sub Warn {
@@ -203,38 +219,43 @@ phase MARK = {
 	    (
 	     sub {
 		 my ($dom, $when, $info) = @_;
-		 if ($dom->tag eq 'section') {
+		 my $tag = $dom->tag;
+		 if ($tag eq 'section') {
 		     if ($when eq 'pre') {
 			 $dom->{nest} = $info->{nest};
 			 $info->{nest}++;
 		     }
 		     else { $info->{nest}--; }
 		 }
-		 elsif ($dom->tag eq 'enumerated_list') {
+		 elsif ($tag eq 'enumerated_list') {
 		     if ($when eq 'pre') {
 			 $info->{enum}++;
 			 $dom->{nest} = $info->{enum};
 		     }
 		     else { $info->{enum}--; }
 		 }
-		 elsif ($dom->tag eq 'bullet_list') {
+		 elsif ($tag eq 'bullet_list') {
 		     if ($when eq 'pre') {
 			 $info->{bullet}++;
 			 $dom->{nest} = $info->{bullet};
 		     }
 		     else { $info->{bullet}--; }
 		 }
-		 elsif ($dom->tag eq 'footnote') {
+		 elsif ($tag eq 'footnote') {
 		     $info->{foot} += $when eq 'pre' ? 1 : -1;
 		 }
-		 elsif ($dom->tag eq 'footnote_reference') {
+		 elsif ($tag eq 'footnote_reference') {
 		     $dom->{infootnote} = $info->{foot};
 		 }
-		 elsif ($dom->tag =~ /^(literal|doctest)/) {
+		 elsif ($tag =~ /^(literal|doctest)/) {
 		     $info->{lit} += $when eq 'pre' ? 1 : -1;
 		 }
-		 elsif ($dom->tag eq '#PCDATA') {
-		     $dom->{inliteral} = $info->{lit};
+		 elsif ($tag eq 'parsed_literal') {
+		     $info->{parsedlit} += $when eq 'pre' ? 1 : -1;
+		 }
+		 elsif ($tag eq '#PCDATA') {
+		     ($dom->{inliteral}) = 
+			 (grep($info->{$_}, qw(lit parsedlit)), 0);
 		 }
 		 return 0;
 	     }
@@ -251,10 +272,13 @@ phase PREPROCESS = {
 	$_ = $dom->{text};
 	if (! $dom->{inliteral} &&
 	    $parent->tag !~ /raw|option_string/) {
-	    s/^\"/\'\'/ if $index > 0;
-	    s/\"$/\`\`/ if $index < $parent->num_contents - 1;
+	    my $indx = $parent->index($dom);
+	    s/^\"/\'\'/ if $indx > 0;
+	    s/\"$/\`\`/ if $indx < $parent->num_contents - 1;
 	    $_ = ProtectString($_);
-	    my $index = $parent->index($dom);
+	}
+	elsif ($dom->{inliteral} eq 'parsedlit') {
+	    $_ = ProtectString($_, 'parsedlit');
 	}
 	return $_;
     }
@@ -279,6 +303,7 @@ phase PREPROCESS = {
 	my ($dom, $str) = @_;
 	my $d;
 	while ($d = shift @{$dom->{content}}) {
+	    # uncoverable branch false count:3 note:Defensive programming
 	    if ($d->tag eq 'image') {
 		$dom->{image} = $d->{image};
 	    }
@@ -307,7 +332,8 @@ phase PREPROCESS = {
 		if -r $uri && ! -r $local_uri;
 	    $uri = $local_uri if -r $local_uri;
 	}
-	my %attr = (map(($_,"$dom->{attr}{$_}" . (/[a-z]/ ? '' : 'pt')),
+	my %attr = (map(($_,"$dom->{attr}{$_}" .
+			 ($dom->{attr}{$_} =~ /[a-z]/ ? '' : 'pt')),
 			grep(defined $dom->{attr}{$_},
 			     qw(height width))),
 		    map(($_,$dom->{attr}{$_}/100),
@@ -364,6 +390,7 @@ phase PREPROCESS = {
 	my $footnote = $dom->{resolved};
 	if (defined $footnote && ! $footnote->{'.latexref'}) {
 	    my @content = @{$footnote->{content}};
+	    # uncoverable branch false note:Assert has label
 	    shift @content if $content[0]->tag eq 'label';
 	    @{$dom->{content}} = @content;
 	    $footnote->{'.latexref'} = 1;
@@ -382,6 +409,7 @@ phase PREPROCESS = {
 
 	push @CITATIONS, $dom;
 	# Remove label from contents
+	# uncoverable branch false note:Assert has label
 	if ($dom->first->tag eq 'label') {
 	    my $labeldom = shift @{$dom->{content}};
 	    $dom->{label} = $labeldom->{val};
@@ -394,9 +422,9 @@ phase PREPROCESS = {
 	my ($dom, $str) = @_;
 
 	$dom->{title} = shift @{$dom->{content}}
-	if $dom->first->tag eq 'title';
+	    if $dom->first->tag eq 'title';
 	$dom->{subtitle} = shift @{$dom->{content}}
-	if $dom->first->tag eq 'subtitle';
+	    if $dom->first->tag eq 'subtitle';
 	return;
     }
 
@@ -478,9 +506,10 @@ phase PROCESS = {
 	return if defined $dom->{attr}{classes} &&
 	    $dom->{attr}{classes}[0] eq 'system-messages';
 	my $nest = $dom->{nest};
-	my $section = $SECTION_LEVELS[$nest > @SECTION_LEVELS ?
+	my $section = $SECTION_LEVELS[$nest > $#SECTION_LEVELS ?
 				      $#SECTION_LEVELS : $nest];
 	# Remove title from contents
+	# uncoverable branch false note:Assert title is present
 	if ($dom->first->tag eq 'title') {
 	    my $titledom = shift @{$dom->{content}};
 	    $dom->{title} = $titledom->{val};
@@ -575,7 +604,7 @@ phase PROCESS = {
     sub address = { # PROCESS
 	my ($dom, $str) = @_;
 	my @lines = split(/\n/, $str);
-	return join "\\\\\n", @lines;;
+	return join "\\\\\n", @lines;
     }
 
     sub field = { # PROCESS
@@ -584,12 +613,13 @@ phase PROCESS = {
 	my $parent = $dom->parent();
 	my $val = $dom->child(1)->{val};
 	chomp $val;
-	$val =~ s/\n\n/\\\\\n/g;
+	$val =~ s/\n\n/\\\\\n/g if $parent->tag ne 'field_list';
 	my $fieldname = $dom->first->{val};
-	return "\\item[\\stylefieldname{$fieldname}] $val"
-	    if $parent->tag eq 'field_list';
-#return;
-	return "\\stylefieldname{$fieldname} $val";
+	chomp $fieldname;
+	$fieldname =~ s/^\n//;
+	return $parent->tag eq 'field_list' ?
+	    "\\item[\\stylefieldname{$fieldname}] $val\n" :
+	    "\\stylefieldname{$fieldname} $val";
     }
 
     sub field_name = { # PROCESS
@@ -612,6 +642,7 @@ phase PROCESS = {
     sub comment = { # PROCESS
 	my ($dom, $str) = @_;
 	$str =~ s/^/% /gm;
+	$str .= "\n" unless $str =~ /\n$/;
 	$str;
     }
 
@@ -643,13 +674,9 @@ phase PROCESS = {
 	elsif ($class eq 'contents') {
 	    return "\\tableofcontents\n";
 	}
-	elsif ($class eq '') {
-	    return "\\styletopictitle{$dom->{title}} $str"
-	}
-	else {
-	    Warn("unsupported type of topic: $class");
-	}
-	return;
+
+	Warn("unsupported type of topic: $class") if $class;
+	return "\\styletopictitle{$dom->{title}} $str"
     }
 
     sub citation_reference { # PROCESS
@@ -662,7 +689,8 @@ phase PROCESS = {
 
 	my $parent = $dom->parent();
 	my $list_type = $parent->tag;
-	return "\\item $str";
+	chomp $str;
+	return "\\item $str\n";
     }
 
     sub enumerated_list { # PROCESS
@@ -703,6 +731,7 @@ phase PROCESS = {
 	sub roman {
 	    my ($num) = @_;
 
+	    # uncoverable branch true note:Defensive programming
 	    return 0 if $num < 1 or $num > 3999;
 	    my @digits = reverse split(//,$num);
 	    return join('',
@@ -721,7 +750,6 @@ phase PROCESS = {
 	}
 	else {
 	    my $counter = "[\\labelitem$ROMAN[$dom->{nest}]]";
-	    $str .= "\n" unless $str =~ /\n$/;
 	    @list = ("\\begin{itemize}\n",
 		     $str,
 		     "\\end{itemize}\n");
@@ -741,9 +769,10 @@ phase PROCESS = {
 	    }
 	    else {
 		$definition = $_->{val};
+		chomp $definition;
 	    }
 	}
-	return "\\item [\\styleterm{$term}{$classifier}] \\mbox{} \\\\ $definition";
+	return "\\item [\\styleterm{$term}{$classifier}] \\mbox{} \\\\ $definition\n";
     }
 
     sub definition_list { # PROCESS
@@ -834,7 +863,12 @@ EOS
 
     sub subscript { # PROCESS
 	my ($dom, $str) = @_;
-	return "\\ensuremath{_{$str}}";
+	return StyleClasses($dom, "\\ensuremath{_{$str}}");
+    }
+
+    sub superscript { # PROCESS
+	my ($dom, $str) = @_;
+	return StyleClasses($dom, "\\ensuremath{^{$str}}");
     }
 
     sub reference = { # PROCESS
@@ -852,12 +886,12 @@ EOS
 
     sub emphasis|title_reference = { # PROCESS
 	my ($dom, $str) = @_;
-	return "{\\em $str}";
+	return StyleClasses($dom, "{\\em $str}");
     }
 
     sub strong = { # PROCESS
   	my ($dom, $str) = @_;
-  	return "{\\bf $str}";
+  	return StyleClasses($dom, "{\\bf $str}");
     }
 
     sub (?:doctest|literal)_block = { # PROCESS
@@ -902,7 +936,7 @@ EOS
 	my $title = $dom->tag;
 	substr($title,0,1) =~ tr/a-z/A-Z/;
 	$str .= "\n" unless $str =~ /\n$/;
-	my @list = ("\n\\noindent\\fbox{\\parbox{\\columnwidth}{\n",
+	my @list = ("\n\\noindent\\fbox{\\parbox{\\linewidth}{\n",
 		    "\\styleadmonitiontitle{$title}\n",
 		    $str,
 		    ,"}}\n",
@@ -917,33 +951,44 @@ EOS
 
     sub figure = { # PROCESS
  	my ($dom, $str) = @_;
-	my $image = defined $dom->{image} ? $dom->{image} : '';
+	my $image = $dom->{image} || '';
+	my $class = $dom->{attr}{classes} ? $dom->{attr}{classes}[0] : '';
+	my $env = $class || 'figure';
   	my @figure =
-  	    ("\\begin{figure}\n",
+  	    ("\\begin{$env}\n",
   	     defined $dom->{caption} && $caption eq 'before' ?
 	     "\\caption{$dom->{caption}{val}}\n" : '',
   	     "\\centerline{$image}\n",
 	     $dom->{legend} ? "\\stylelegendtitle{Legend}\n$dom->{legend}{val}" : '',
   	     defined $dom->{caption} && $caption ne 'before' ?
 	     "\\caption{$dom->{caption}{val}}\n" : '',
-  	     "\\end{figure}\n",
+  	     "\\end{$env}\n",
   	     );
  	return join '', @figure;
     }
 
     sub table = { # PROCESS
  	my ($dom, $str) = @_;
-	# Create a table environment if there is a title
-	my %content;
-	$content{$_->tag} = $_ foreach $dom->contents;
+	# Create a table/figure environment if there is a title
+	#my %content;
+	my @content = grep defined $_->{val}, $dom->contents;
+	my $title = $content[0]->tag eq 'title' ? shift @content : '';
+	my ($has_table) = grep $_->tag eq 'tgroup', @content;
+	my $env = $has_table ? 'table' : 'figure';
+	#$content{$_->tag} = $_ foreach $dom->contents;
 	my (@out1, @out2);
-	if ($content{title}) {
-	    @out1 = ("\\begin{table}\n",
-		     "\\center",
-		     "\\caption{$content{title}{val}}\n");
-	    @out2 = ("\\end{table}\n");
+	if ($title) {
+	    @out1 = ("\\begin{$env}\n",
+		     "\\center\n");
+	    @out2 = ("\\end{$env}\n");
+	    if ($caption eq 'before') {
+		push @out1, "\\caption{$title->{val}}\n";
+	    }
+	    else {
+		unshift @out2, "\\caption{$title->{val}}\n";
+	    }
 	}
-	return join '', @out1, $content{tgroup}{val}, @out2;
+	return join '', @out1, map($_->{val}, @content), @out2;
     }
 
     sub tgroup = { # PROCESS
@@ -978,6 +1023,7 @@ EOS
 	my @content = @{$dom->{content}};
 	my $borrows = $parent->{borrows} ;
 	my $borrowcols = $parent->{borrowcols} ;
+	# uncoverable branch false note:Parent produces borrows
 	my $cols = defined $borrows ? @$borrows : -1;
 	my $i;
 	my @entries;
@@ -1052,6 +1098,7 @@ EOS
 
     sub footnote_reference = { # PROCESS
  	my ($dom, $str) = @_;
+	# uncoverable branch false note:Assert has label
 	my $label = defined $dom->{label} ? $dom->{label}: '';
 	my $sym = FootnoteSymbol($label);
 	$label = $sym if $sym;
@@ -1065,6 +1112,7 @@ EOS
     sub footnote = { # PROCESS
  	my ($dom, $str) = @_;
 	return if $dom->{'.latexref'};
+	# uncoverable branch false note:Assert has label
 	my $label = defined $dom->{label} ? $dom->{label} : '';
 	my $sym = FootnoteSymbol($label);
 	return "\\renewcommand{\\thefootnote}{\\fnsymbol{footnote}}\\footnotetext[$sym]{$str}\\renewcommand{\\thefootnote}{\\arabic{footnote}}"
@@ -1093,22 +1141,12 @@ EOS
 	return "\\vspace{1em}\\hrule\\vspace{1em}\n\\par\\noindent";
     }
 
-    sub interpreted = { # PROCESS
-	my ($dom, $str) = @_;
-	my $role = $dom->{attr}{role};
-	if ($role eq 'index') {
-	    
-	}
-	else {
-	    Warn("unsupported role for interpreted text: $role");
-	}
-	chomp $str;
-	return $str;
-    }
-
     sub parsed_literal = { # PROCESS
 	my ($dom, $str) = @_;
-	$str =~ s/(.)\n(?!\n)/$1\\\\\n/g;
+	$str =~ s/^[ \t]+$//gm;
+	$str =~ s/(.)\n(?=(\n))?/
+	    "$1\\\\" . ($2 ? "[\\baselineskip]" : '') . "\n"/eg;
+	$str =~ s/^(?!\\end)(.)\n(?!\n)/$1\\\\\n/gm;
 	$str =~ s/ /~/g;
 	$str =~ s/(\\[a-z]\w+)~/$1 /gi;
 	my @verse = ("\\begin{verse}{\\tt\\styleliteralblock\n",
@@ -1145,17 +1183,19 @@ EOS
 	    ('\marginpar{\fbox{\parbox[t]{\marginparwidth}{', '}}}') :
 	    ('\begin{figure}\begin{center}\fbox{\fbox{\parbox{.8\columnwidth}{',
 	     '}}}\end{center}\end{figure}');
+	my ($title, $subtitle) = map $dom->{$_}{val} || '', qw(title subtitle);
 	my @sidebar = ("$sb_start\n",
-		       $dom->{title} ?
-		       "\\stylesidebartitles{$dom->{title}{val}}{$dom->{subtitle}{val}\\fi}\n" : "",
-#		       "\\begin{center}\\stylesidebartitles{$dom->{title}{val}}\\end{center}\n" : '',
-#		       $dom->{subtitle} ?
-#		       "\\begin{center}\\stylesidebarsubtitle{$dom->{subtitle}{val}}\\end{center}\n" : '',
-#		       $dom->{title} ? "\\vspace{6pt}\n": '',
+		       $title ne '' ?
+			"\\stylesidebartitles{$title}{$subtitle\\fi}\n" : '',
 		       $str,
 		       "$sb_end\n",
 		       );
 	return join '', @sidebar;
+    }
+
+    sub inline = { # PROCESS
+	my ($dom, $str) = @_;
+	return StyleClasses($dom, $str);
     }
 
     sub compound = { # PROCESS
@@ -1200,7 +1240,7 @@ EOS
 	    $PREAMBLE .= "$str$uri\n";
 	    return;
 	}
-	return "$str$uri";
+	return "$str$uri\n";
     }
 
     sub document = { # PROCESS
@@ -1210,6 +1250,8 @@ EOS
 	my $ind_file = $dom->{TOP_FILE};
 	$ind_file =~ s|\.[^/]+$|.idx|;
 	my $decoration;
+	# uncoverable branch false note:Assert PREPROCESS creates docinfo
+	shift @{$dom->{content}} if $dom->first->tag eq 'docinfo';
 	if ($dom->first->tag eq 'decoration') {
 	    $decoration = $dom->first->{val};
 	    shift @{$dom->{content}};
@@ -1227,6 +1269,8 @@ EOS
 		   "\\newcommand{\\styleauthor}[1]{{\\em #1}}\n",
 		   map("\\newcommand{\\styleclass$_}[1]{#1}\n",
 		       sort keys %COMPOUND_CLASSES),
+		   map("\\newcommand{\\styleinline$_}[1]{#1}\n",
+		       sort keys %INLINE_CLASSES),
 		   "\\newcommand{\\styledocinfo}[1]{\\setbox0\\hbox{\\parbox{.7\\textwidth}{\\global\\dimen255=\\baselineskip #1}}\\ifdim \\ht0 < \\dimen255 \\centerline{\\hbox{#1}}\\else\\copy0 \\fi }\n",
 #		   "\\newcommand{\\styledocinfo}[1]{\\parbox{\\textwidth}{\\center #1}}\n",
 		   "\\newcommand{\\stylefieldname}[1]{{\\bf #1:}}\n",
@@ -1257,7 +1301,19 @@ EOS
     sub mathml = { # PROCESS
 	my ($dom, $str) = @_;
 	@PACKAGES{qw(dsfont amssymb)} = 1;
-	return $dom->{attr}{mathml} ? $dom->{attr}{mathml}->latex : $str;
+	my $val = $dom->{attr}{mathml} ? $dom->{attr}{mathml}->latex : $str;
+	if ($dom->{attr}{mathml}) {
+	    my $label = $dom->{attr}{mathml}{attr}{label} ?
+		"\\label{$dom->{attr}{mathml}{attr}{label}}"
+		: '';
+	    my $mstyle = $dom->{attr}{mathml}->child(0);
+	    if ((my $env = $mstyle->{attr}{env}) || $label) {
+		$env ||= 'equation';
+		# Use a special environment
+		$val =~ s/^\$\$(.*)\$\$$/\\begin{$env}$label\n$1\n\\end{$env}\n/;
+	    }
+	}
+	return $val;
     }
 
     sub .* = { # PROCESS
