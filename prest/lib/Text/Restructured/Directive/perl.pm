@@ -42,9 +42,12 @@ use within the perl code:
    The line number of the perl directive within $SOURCE.
 ``$DIRECTIVE``
    The literal text of the perl directive.
+``$SUBSTITUTION``
+   The name of a substitution definition being defined by the perl
+   directive, or undefined if not within a substitution definition
 ``@INCLUDES``
    Array of [filename, linenumber] pairs of files which have included this one.
-``$opt_<x>``
+``$opt_<x>`` or ``$opt{x}``
    The ``<x>`` option from the command line.  Changing one of these 
    variables has no effect upon the parser.  If you need to change one
    of the -D options to affect subsequent parsing, use
@@ -128,8 +131,11 @@ sub directive {
 	$code = join '', <FILE>;
 	close FILE;
     }
-    
-    my @text = evaluate_code($parser, $code, $source, $lineno, $lit);
+
+    my $subst = $parent->tag eq 'substitution_definition' ?
+    $parent->{attr}{names}[0] : undef;
+
+    my @text = evaluate_code($parser, $code, $source, $lineno, $lit, $subst);
     my $err = $@ =~ /trapped by/ ?
 	"$@Run with -D trusted if you believe the code is safe" : $@;
     return $parser->system_message
@@ -159,8 +165,9 @@ sub directive {
 		$parser->Paragraphs($fake, $text[0], $newsource, 1);
 		my $last = $fake->last;
 		if ($fake->contents == 1 && $last->tag eq 'paragraph') {
-		    # uncoverable branch true note:paragraph always has #PCDATA
 		    chomp $last->last->{text}
+		    # uncoverable branch true note:paragraph always has #PCDATA
+		    # uncoverable branch true note:paragraph always has #PCDATA
 		    if defined $last->last->{text};
 		    return  $last->contents;
 		}
@@ -233,6 +240,7 @@ sub create_safe {
 	# Share $opt_ variables
  	foreach (keys %{$parser->{opt}}) {
 	    my $opt = $parser->{opt}{$_};
+	    # uncoverable branch true count:2 note:Currently no array opts
 	    my $type =
 		ref $opt eq 'ARRAY' ? '@' : ref $opt eq 'HASH' ? '%' : '$';
 	    $Perl::safe_world->set("${type}opt_$_", $opt);
@@ -262,11 +270,12 @@ sub create_safe {
 
 # Evaluates a code string within the Perl Safe box
 # Arguments: Text::Restructured object, code string,
-#            source, line number, literal text (if a directive)
+#            source, line number, literal text (if a directive),
+#            substition name (if within a substitution definition)
 # Returns: Array of whatever the code returns
 # Side-effects: Sets $@
 sub evaluate_code {
-    my ($parser, $code, $source, $lineno, $lit) = @_;
+    my ($parser, $code, $source, $lineno, $lit, $subst) = @_;
 
     my @text;
     # uncoverable branch true note:Coverage unavailable in safe_world
@@ -279,6 +288,8 @@ sub evaluate_code {
 	# uncoverable statement note:Coverage unavailable in safe_world
 	local $main::DIRECTIVE = $lit;
 	# uncoverable statement note:Coverage unavailable in safe_world
+	local $main::SUBSTITUTION = $subst;
+	# uncoverable statement note:Coverage unavailable in safe_world
 	local $main::PARSER    = $parser;
 	# uncoverable statement note:Coverage unavailable in safe_world
 	return eval "package main; $code";
@@ -288,6 +299,7 @@ sub evaluate_code {
 	    ('$SOURCE'    => $source,
 	     '$LINENO'    => $lineno,
 	     '$DIRECTIVE' => $lit,
+	     '$SUBSTITUTION' => $subst,
 	     '$TOP_FILE'  => $parser->{TOP_FILE},
 	     '$PARSER'    => $parser,
 	     '@INCLUDES'  => \@Text::Restructured::INCLUDES);
