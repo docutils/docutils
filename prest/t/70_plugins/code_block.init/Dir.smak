@@ -6,5 +6,6 @@
 	(code09 => q(-D code-block-states-file=nosuchfile.rst),
 	 code10 => q(-D code-block-states-file=nosuchfile.rst),
 	 code11 => q(-D code-block-states-file=nosuchfile.rst),
+	 code14 => q(-D code-block-states-file=nosuchfile.rst),
 	 );
 }

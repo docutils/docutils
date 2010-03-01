@@ -1,0 +1,6 @@
+<document source="title01.rst">
+    <comment xml:space="preserve">
+        this throws an error:
+    <section ids="\u00fcberschrift-1" names="\u00fcberschrift 1">
+        <title>
+            \u00dcberschrift 1
