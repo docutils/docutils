@@ -6,6 +6,9 @@
 */
 parsed_literal = 0;
 
+sub custom_face (on, face) { 
+}
+
 sub rst_faces ()
 {
   final_whitespace = "";
@@ -193,6 +196,13 @@ sub rst_faces ()
 	start_markup(type_face_font);
       else
 	end_markup("type-name");
+    }
+  sub custom_face (on, class)
+    {
+      if (on)
+	start_markup(font);
+      else
+	end_markup(class);
     }
 }
 
