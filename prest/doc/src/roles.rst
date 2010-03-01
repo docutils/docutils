@@ -350,6 +350,24 @@ have invisible targets.  For example, ::
   There is another :target:`target <ghi>` with the same physical text,
   but which I can refer to as ghi_.
 
+``:substitution-reference:``
+============================
+
+:Aliases: None
+:DTD Element: substitution_reference
+:Customization:
+    :Options: class_.
+    :Content: None.
+
+The ``:substitution-reference:`` role creates a reference to a
+substitution definition, with which it is substituted.
+entered into the symbol table of targets.  For example, ::
+
+  .. |mydef| replace:: a substitution definition
+
+  Now we can reference `mydef`:substitution-reference: using a
+  substitution-reference role.
+
 --------------
 Plug-in Roles
 --------------
