@@ -110,7 +110,7 @@ sub BEGIN = {
     $section           = 'Section'  unless defined $section;
     $sprintf           = "%s"       unless defined $sprintf;
     $xref_role_target  = 0          unless defined $xref_role_target;
-    $xref_role_target  = 'target'   if $xref_role_target eq 1;
+    $xref_role_target  = 'target'   if ref $xref_role_target eq 'SCALAR';
     $xref_sections     = 0          unless defined $xref_sections;
     $xref_targets      = 1          unless defined $xref_targets;
 
