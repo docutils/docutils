@@ -1,4 +1,4 @@
-# -*- makefile -*-
+# -*- perl -*-
 # A common SlayMakefile for executing tests
 # It is intended to be called from two levels lower in the directory
 # hierarchy using "slaymake -f ../../Common.smak <target>".
@@ -96,11 +96,12 @@ found.
 After determining which writer is appropriate, this target returns two
 dependencies, one of which will be the output of the writer
 (C<$1.xyz.out>), and the other of which is the file against which
-fault grading occurs.  If the expect file has extension C<.xyz.re> or
-if there exists a file C<$1.r>, then C<rediff> is used for fault
-grading, and the fault grading file is C<$1.xyz.re>.  Otherwise,
-C<diff> is used for fault grading and the fault grading file is
-C<$1.xyz.df>.
+fault grading occurs.  If the expect file has extension C<.xyz.re>,
+then C<rediff> is used for fault grading, and the fault grading file
+is C<$1.xyz.re>.  Otherwise, C<diff> is used for fault grading and 
+the fault grading file is C<$1.xyz.df>.  If a C<diff> fault grading
+fails, then the <$1.ok> target repeats the fault grading using
+C<rediff>.
 
 =item %.%.df
 
@@ -111,7 +112,7 @@ messages printed to STDERR become part of the fault grading.
 =item %.%.re
 
 If there was already a C<$1.$2.re> file, this rule does nothing.
-Otherwise, it was invoked because there was a C<$1.r> file.  It passes
+Otherwise, it was invoked because the straight C<diff> failed.  It passes
 C<$1.stderr>, if it exists, and the first of C<$1.my$2> or C<$1.$2> as
 arguments to the script C<re$2> (e.g., C<redom>), located in the
 C<tbin> directory.  The purpose of such a script is to elide with
@@ -343,8 +344,15 @@ find_oks:
 	# ---- ACTIONS ----
 	{
             my($maker, $target, $deps, $matches) = @_;
-	    my $prog = $deps->[0] =~ /\.df/ ? 'diff' : "$PERL $TBIN/diffre";
+	    my $is_diff = $deps->[0] =~ /\.df/;
+	    my $diffre = "$PERL $TBIN/diffre";
+	    my $prog = $is_diff ? 'diff' : $diffre;
 	    execute "$prog @$deps[0..1] > $target";
+	    if (! -z $target && $is_diff) {
+		$deps->[0] =~ s/\.df$/.re/;
+		$maker->make($deps->[0]);
+		execute "$diffre @$deps[0..1] > $target";
+	    }
 	}
 
 # Make a straight diff file
