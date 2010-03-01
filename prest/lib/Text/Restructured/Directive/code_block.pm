@@ -80,7 +80,7 @@ BEGIN {
 # Returns: array of DOM objects
 sub main {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
-    my @optlist = qw(color file level numbered);
+    my @optlist = qw(class color file level numbered);
     my $dhash = Text::Restructured::Directive::parse_directive
 	($parser, $dtext, $lit, $source, $lineno, \@optlist);
     my($args, $content, $content_lineno, $options) =
@@ -141,6 +141,8 @@ sub main {
 	    }
 	    @errs = $parser->Inline($pl, $markup, $source, $content_lineno);
 	}
+	$pl->{attr}{classes} = [ $options->{class} ]
+	    if defined $options->{class};
 	return $pl, @errs;
     }
 
@@ -162,6 +164,8 @@ sub main {
     }
     $content = numbered($content) if defined $options->{numbered};
     
+    $lb->{attr}{classes} = [ $options->{class} ]
+	if defined $options->{class};
     $lb->append($DOM->newPCDATA($content));
     return $lb;
 }
