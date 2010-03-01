@@ -294,6 +294,7 @@ pretest: { @PRETESTS }
     @WRITERS = grep(! $writer_seen{$_}++,
 		    grep(s|.*/([^/]+)\.wrt$|$1|, @writers));
     eval "use lib \$LIB; use Text::Restructured::PrestConfig;";
+
     my @flags;
     push @flags, '-T' if $Text::Restructured::PrestConfig::TAINT =~ /^y/i;
     push @flags, '-d' if $ENV{DEBUG};
