@@ -5,6 +5,57 @@ Release Notes
 
 .. contents::
 
+Release 0.3.41
+--------------
+
+prest application:
+
+* Made the -e option default to 'utf8' (instead of just claiming to do so)
+* Sped up reading of the file
+* Fixed the code that returns the list of available encodings for -h
+
+reStructuredText parsing:
+
+* There is a new built-in ``substitution-reference`` role
+* Custom roles based upon mathml-display will also appear in display style
+* Fixed a bug with parsing consecutive bulleted lists
+* Added ability to generate Roman numerals for enumeration lists
+* Keep class information on custom roles
+* Added ability to attach a label to a mathml equation that becomes
+  a substitution definition annotated with the equation number.
+* Added :format: option to the sectnum:: directive to allow Roman
+  numerals or letters as well as numbers at various levels of the numbering
+
+Plug-in directives:
+
+* The code-block:: directive allows a :class: option
+* The perl:: directive defines a $SUBSTITUTION variable giving the
+  name of any substitution definition being defined by the perl directive.
+
+Writer 'html':
+
+* Added support for the label of a mathml equation
+* Do a better job of propagating class information for parsed_literal
+* Convert the -e encoding to the right format for HTML.
+
+Writer 'latex':
+
+* Allow a stylesheet mechanism for styling classes of inline
+  elements.  For example, if you define a custom role ``myrole``, then
+  text using that role will appear with ``\styleinlinemyrole(...)``
+  around it.  There will be a null definition for the style which can
+  be overridden using ``\renewcommand{\styleinlinemyrole}{1}{#1}``.
+* Fixed parsed literals to be more literal than they were (e.g., don't
+  convert ``<=`` to a less-than-or-equal sign.)
+* Handle blank lines within parsed literals
+* Fixed the newlines around ``\item`` and ``\end{description}``
+* Fixed a bug where a comment could cause some actual text to
+  disappear because it didn't end with a newline
+* Added support for superscript and custom roles
+* Added support for a figure's class to be used as the name of the
+  latex environment
+* Added support for mathml labels
+
 Release 0.3.40
 --------------
 
