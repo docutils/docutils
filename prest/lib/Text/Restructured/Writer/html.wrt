@@ -619,6 +619,9 @@ EOS
 	$text =~ s/(&\#x([\da-fA-F]+);)/
 	    # uncoverable branch true note:There should always be an entity
 	    $HTML::Entities::char2entity{chr(hex($2))} || $1/ge;
+	if (my $label = $dom->{attr}{label}) {
+	    return qq(<table class="mathml" rules="none"><col width="100%"/><col width="0*"/><tr><td>$text</td><td align="right">($label)</td></tr></table>\n)
+	}
 	return $text;
     }
 
@@ -725,7 +728,7 @@ phase PROCESS {
 			      'definition_list'=>'dl'); }
 	my $tag = $LIST_TAGS{$dom->tag};
 	my $attr = $dom->{attr};
-	$dom->{attr}{classes} = [] if !$dom->{attr}{classes};
+	$dom->{attr}{classes} ||= [];
 	my $class = $dom->{attr}{classes};
 	push @$class, $attr->{enumtype} if $tag eq 'ol';
 	push @$class, 'docutils' if $tag eq 'dl';
@@ -1188,7 +1191,12 @@ EOS
 
     sub parsed_literal = { # PROCESS
 	my ($dom, $str) = @_;
-	return qq(<pre class="parsed-literal">$str</pre>\n);
+
+	my $attr = $dom->{attr};
+	$attr->{classes} ||= [];
+	push @{$attr->{classes}}, 'parsed-literal';
+	my $attrlist = GetAttr($dom);
+	return qq(<pre$attrlist>$str</pre>\n);
     }
 
     sub system_message = { # PROCESS
@@ -1239,6 +1247,7 @@ EOS
 
 	# Handle the prolog
 	my $enc = $writer->{opt}{e} || 'utf-8';
+	$enc =~ s/(utf)(\d+)/$1-$2/;
 	push @{$doc->[0]}, qq(<?xml version="1.0" encoding="$enc" ?>\n)
 	    unless $html_prolog;
 	push @{$doc->[0]}, $DOCTYPE;
