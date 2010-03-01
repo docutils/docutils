@@ -21,6 +21,7 @@ s!(\d{4})([-/])(\d{2})\2(\d{2})$timere!\\d{4}[-/\]\\d{2}\[-/\]\\d{2}$time!go;
 # Handle uppercase vs lowercase unicode
 s/(\\u)([\da-f]{4})/$1(?i)$2/ig;
 # Deal with revisions that may change
+s/(prest release )\d+(\\\.\d+)+/$1\\d+(\\.\\d+)+/;
 if ($AFTER_REVISION) {
     s/\d+(\\\.\d+)+/\\d+(\\.\\d+)+/;
     $AFTER_REVISION = 0;
@@ -42,5 +43,5 @@ s/(\bstates: )(.*)/$1($2|.*)/;
 # Handle -d output
 s!^.*(/Text/Restructured/Writer/dom\\\.wrt, line )\d+!.*$1\\d+!;
 # Handle line numbers in error messages
-s!\S+(/\S+\\\.(?:pm|wrt),? line )(\d+)!.*$1($2|\\d+)!g;
+s!\S+(/\S+\\\.(?:pm|wrt),? line )(\d+)(, <\w+> line \d+)?!.*$1($2|\\d+)(, <\\w+> line \\d+)?!g;
 
