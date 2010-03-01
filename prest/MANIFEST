@@ -324,10 +324,12 @@ t/60_new/latex.init/document-class.tex
 t/60_new/latex.init/enum01.rst
 t/60_new/latex.init/enum01.tex
 t/60_new/latex.init/figure01.rst
+t/60_new/latex.init/figure01.skip.pl
 t/60_new/latex.init/figure01.tex
 t/60_new/latex.init/figure02.rst
 t/60_new/latex.init/figure02.tex
 t/60_new/latex.init/figure03.rst
+t/60_new/latex.init/figure03.skip.pl
 t/60_new/latex.init/figure03.tex
 t/60_new/latex.init/foo.ps
 t/60_new/latex.init/footer01.rst
@@ -1087,6 +1089,7 @@ t/90_bugs/parse.init/tgtwhitespace.dom
 t/90_bugs/parse.init/tgtwhitespace.rst
 t/90_bugs/parse.init/title01.dom
 t/90_bugs/parse.init/title01.rst
+t/90_bugs/parse.init/title01.skip.pl
 t/90_bugs/parse.init/trailingspace.dom
 t/90_bugs/parse.init/trailingspace.rst
 t/90_bugs/Suite.smak
