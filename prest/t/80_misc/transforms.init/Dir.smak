@@ -10,6 +10,9 @@
     %PREST_FILE_FLAGS =
 	(decorations_01 => q(-D time=0 -D date=1 -D xformoff=Messages),
 	 decorations_02 => q(-D time=0 -D xformoff=Messages),
+	 decorations_03 => q(-D time=0 -D generator=0 \\
+			     -D source-url=http://mysite.com \\
+			     -D xformoff=Messages),
 	 docinfo_01     => q(-D docinfo-levels=1),
 	 );
 }

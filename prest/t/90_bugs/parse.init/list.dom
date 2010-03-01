@@ -1,0 +1,14 @@
+<document source="list.rst">
+    <paragraph>
+        <strong>
+            foo
+    <bullet_list bullet="*">
+        <list_item>
+            <paragraph>
+                etabliert der Beginn
+        <list_item>
+            <paragraph>
+                welche Details sind dazu geeignet?
+    <paragraph>
+        <strong>
+            bar

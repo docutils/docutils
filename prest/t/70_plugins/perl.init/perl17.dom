@@ -1,0 +1,21 @@
+<document source="test data">
+    <comment xml:space="preserve">
+        Tests many of the global variables defined within a perl directive
+    <system_message level="1" line="3" source="test data" type="INFO">
+        <paragraph>
+            No directive entry for "perl" in module "Text::Restructured::Directive".
+            Trying "perl" as canonical directive name.
+    <paragraph>
+        SOURCE = test data
+    <paragraph>
+        LINENO = 4
+    <paragraph>
+        DIRECTIVE = .. perl:: "DIRECTIVE = $DIRECTIVE"
+    <paragraph>
+        SUBSTITUTION =
+    <substitution_definition names="subst-name">
+        SUBSTITUTION = subst-name
+    <paragraph>
+        INCLUDES =
+    <paragraph>
+        TOP_FILE = perl17.rst

@@ -1,0 +1,46 @@
+/export/home/nodine/tools/prest/blib/lib/Text/Restructured/Writer/dom.wrt, line 23
+/export/home/nodine/tools/prest/blib/lib/Text/Restructured/Writer/dom.wrt, line 36
+/export/home/nodine/tools/prest/blib/lib/Text/Restructured/Writer/dom.wrt, line 49
+/export/home/nodine/tools/prest/blib/lib/Text/Restructured/Writer/dom.wrt, line 61
+/export/home/nodine/tools/prest/blib/lib/Text/Restructured/Writer/dom.wrt, line 66
+Debug: perl: test data, 3
+PROCESS: #PCDATA
+Test of the debug option.
+
+PROCESS: paragraph
+<paragraph>
+    Test of the debug option.
+
+PROCESS: #PCDATA
+No directive entry for "perl" in module "Text::Restructured::Directive".
+Trying "perl" as canonical directive name.
+
+PROCESS: paragraph
+<paragraph>
+    No directive entry for "perl" in module "Text::Restructured::Directive".
+    Trying "perl" as canonical directive name.
+
+PROCESS: system_message
+<system_message level="1" line="3" source="test data" type="INFO">
+    <paragraph>
+        No directive entry for "perl" in module "Text::Restructured::Directive".
+        Trying "perl" as canonical directive name.
+
+PROCESS: #PCDATA
+This text should appear.
+
+PROCESS: paragraph
+<paragraph>
+    This text should appear.
+
+PROCESS: document
+<document source="test data">
+    <paragraph>
+        Test of the debug option.
+    <system_message level="1" line="3" source="test data" type="INFO">
+        <paragraph>
+            No directive entry for "perl" in module "Text::Restructured::Directive".
+            Trying "perl" as canonical directive name.
+    <paragraph>
+        This text should appear.
+

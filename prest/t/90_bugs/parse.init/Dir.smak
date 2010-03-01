@@ -4,11 +4,12 @@
 
     %PREST_FILE_FLAGS =
 	(autofootnote => q(-D xformoff='Decorations|Unreferenced|CitationReferences|DocTitle|SectionSubTitle'),
-	 badinline => q(-D nestinline),
-	 fakerefinref => q(-D xformoff='.*'),
-	 litinref => q(-D xformoff='.*'),
-	 litref => q(-D xformoff='.*'),
-	 defotherlist => q(-D xformoff='.*'),
+	 badinline        => q(-D nestinline),
+	 fakerefinref     => q(-D xformoff='.*'),
+	 litinref         => q(-D xformoff='.*'),
+	 litref           => q(-D xformoff='.*'),
+	 defotherlist     => q(-D xformoff='.*'),
 	 tabalignmultipar => q(-D align),
+	 title01	  => q(-D xformoff='.*'),
 	 );
 }
