@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" 
+               "http://www.w3.org/TR/MathML2/dtd/xhtml-math11-f.dtd" [
+  <!ENTITY mathml "http://www.w3.org/1998/Math/MathML">
+]>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="default.css" type="text/css" />
+</head>
+<body>
+<div class="document">
+<p>Einstein derived the famous equation</p>
+<p><table class="mathml" rules="none"><col width="100%"/><col width="0*"/><tr><td><math title="E=mc^2" xmlns="&mathml;" label="einstein"><mstyle displaystyle="true"><mi>E</mi><mo>=</mo><mi>m</mi><msup><mi>c</mi><mn>2</mn></msup></mstyle></math></td><td align="right">(1)</td></tr></table></p>
+<p>As you can see in equation 1, a little mass converts to a
+large amount of energy.</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<document source="test data">
+    <substitution_definition names="mydef">
+        a substitution definition
+    <paragraph>
+        Now we can refer to 
+        a substitution definition
+         using a substitution reference or to
+        a substitution definition
+         using a substitution-reference role or
+        to 
+        <inline classes="custom">
+            a substitution definition
+         using a custom role based off
+        substitution-reference.

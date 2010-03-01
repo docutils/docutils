@@ -4,5 +4,7 @@
 	(mathml07 => q(-I.));
     
     %PREST_FILE_FLAGS = 
-	(mathml03 => q(-D mstyle='mathcolor=red,mathbackground=yellow'));
+	(mathml03  => q(-D mstyle='mathcolor=red,mathbackground=yellow'),
+	 sectnum01 => q(-D xformoff=Decorations),
+	 );
 }
