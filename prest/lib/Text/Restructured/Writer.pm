@@ -35,7 +35,7 @@ sub new {
     my $writer = bless { opt => { %$opt } }, $class;
     # Handle options processing
     foreach (keys %{$opt->{W}}) {
-	$writer->{opt}{W}{$_} = 1
+	$writer->{opt}{W}{$_} = \''  #'
 	    if defined $writer->{opt}{W}{$_} && $writer->{opt}{W}{$_} eq '';
     }
     # Initialize defined variables
@@ -46,6 +46,7 @@ sub new {
     }
     $writer->{opt}{d} ||= 0;
     $writer->{opt}{w} = $writer_name;
+    # uncoverable branch false note:prest initializes to empty hash reference
     $writer->{opt}{D} = {} unless $writer->{opt}{D};
     $writer->ParseSchema($writer_name);
     $writer->Precompile();
