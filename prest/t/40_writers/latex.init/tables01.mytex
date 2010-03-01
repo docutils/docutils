@@ -19,7 +19,8 @@
 \frenchspacing
 \begin{document}
 \begin{table}
-\center\caption{Truth table for ``not''}
+\center
+\caption{Truth table for ``not''}
 \par\noindent\dimen1=\columnwidth
 \advance\dimen1 -4\tabcolsep
 \begin{tabular}{|l|l|}
