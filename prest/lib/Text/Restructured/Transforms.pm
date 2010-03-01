@@ -563,6 +563,36 @@ sub Contents {
     return $bl, @errs;
 }
 
+# Formats a section number according to the given format
+# Arguments: reference to array of format strings, array reference
+sub _format_sectnum {
+    my ($format_ar, $list_ar) = @_;
+    my @formatted;
+    for (my $i=0; $i<@$list_ar; $i++) {
+	my $format = $format_ar->[$i] || 1;
+	my $elt    = $list_ar->[$i];
+	(my $form) = $format =~ /([IA1])/i;
+	my $formatted;
+	if ($form eq 'I') {
+	    my $rom = Text::Restructured::Int2Roman($elt);
+	    $formatted = "\U$rom"
+	}
+	elsif ($form eq 'i') {
+	    $formatted = Text::Restructured::Int2Roman($elt);
+	}
+	elsif ($form =~ /A/i) {
+	    $formatted = chr(ord($form)+$elt-1);
+	}
+	else {
+	    $formatted = $elt;
+	}
+	$format =~ s/$form/$formatted/;
+	push @formatted, $format;
+    }
+    
+    return join('.', @formatted);
+}
+
 # Processes a docutils.transforms.parts.Sectnum transform.
 # Auto-numbers the sections in the document.
 # Arguments: pending DOM, parser obj, details hash reference
@@ -577,6 +607,8 @@ sub Sectnum {
     my @list; # Used in closure of sub
     my $prefix = defined $details->{prefix} ? $details->{prefix} : '';
     my $suffix = defined $details->{suffix} ? $details->{suffix} : '';
+    my $format = $details->{format} || '';
+    my @format = split /\s+/, $format;
     my $start = $details->{start} || 1;
     my $prefix_title = defined $details->{'prefix-title'} ? 1 : 0;
     if ($prefix_title && $prefix ne '') {
@@ -601,8 +633,10 @@ sub Sectnum {
 			 $title->{attr}{auto} = 1;
 			 $list[-1]++;
 			 my $gen = $DOM->new('generated', classes=>['sectnum']);
-			 $gen->append($DOM->newPCDATA($prefix . join('.',@list)
-						    . $suffix . ("\xa0"x3)));
+			 $gen->append($DOM->newPCDATA($prefix .
+						      _format_sectnum(\@format,
+								      \@list)
+						      . $suffix . ("\xa0"x3)));
 			 $title->prepend($gen);
 		     }
 		     push(@list, 0);
@@ -724,8 +758,8 @@ sub IndTargets {
 			 {
 			     push @chain, $next;
 			     # Devel::Cover +2 branch 0 1 
-			     # uncoverable branch false note:Defensive programming
 			     my @targets =
+			     # uncoverable branch false note:Defensive programming
 				 @{$parser->{ALL_TARGET_NAMES}{$name}}
 			     if defined $parser->{ALL_TARGET_NAMES}{$name};
 			     $seen{$next} = $ind{$next} = $next;
@@ -921,11 +955,17 @@ sub CitationReferences {
 			$idx < $parent->num_contents &&
 			$parent->child($idx+1)->tag eq '#PCDATA';
 		}
-		my @content= $target->contents;
+		my @content = $target->contents;
 		my $i;
 		for ($i=0; $i<@content; $i++) {
 		    splice(@content, $i, 1, &$cr($content[$i]))
 			   if $content[$i]->tag eq 'substitution_reference';
+		}
+		if ($dom->{attr}{classes}) {
+		    my $inline = $DOM->new('inline',
+					   classes => $dom->{attr}{classes});
+		    $inline->append(@content);
+		    return $inline;
 		}
 		return @content;
 	    }
