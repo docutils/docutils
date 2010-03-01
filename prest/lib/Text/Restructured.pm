@@ -6,7 +6,7 @@
 package Text::Restructured;
 
 # N.B.: keep version in quotes so trailing 0's are not lost
-$VERSION = '0.003040';
+$VERSION = '0.003041';
 
 # This package does parsing of reStructuredText files
 
@@ -279,6 +279,26 @@ BEGIN {
 		      $text;
 		  },
 	      },
+	      'substitution-reference'=>{
+		  tag=>'substitution_reference',
+		  attr =>{
+		      ids  => sub {
+			  my ($parser, $attr, $text) = @_;
+			  my $target = $text=~s/(?:\A| )<(.*)>$// ? $1 : $text;
+			  [$parser->NormalizeId($target)];
+		      },
+		      names=> sub {
+			  my ($parser, $attr, $text) = @_;
+			  my $target = $text=~s/(?:\A| )<(.*)>$// ? $1 : $text;
+			  [$parser->NormalizeName($target, 'keepcase')];
+		      },
+		  },
+		  text => sub {
+		      my ($parser, $text) = @_;
+		      $text =~ s/(?:\A| )<(.*)>$//; # Remove the target
+		      $text;
+		  },
+	      },
 	      'title-reference'=>{tag=>'title_reference'},
 	      title      =>{alias=>'title-reference'},
 	      t          =>{alias=>'title-reference'},
@@ -299,10 +319,12 @@ BEGIN {
 		      if $parser->{opt}{D}{mstyle};
 		      unshift @mstyle,
 			  (displaystyle => $1 eq 'display' ? 'true' : 'false')
-			  if $role =~ /mathml-(.*)/;
+			  if $role =~ /mathml-(.*)/
+			  || ($parser->{MY_ROLES}{$role}{base} || '')
+			  =~ /mathml-(.*)/;
 		      return $parser->{_MathML} ?
 			  $parser->{_MathML}->TextToMathMLTree
-			  ($text, [title=>$text, xmlns=>"&mathml;"],
+			  ($text, [title=>$text, xmlns=>"&mathml;", role=>$role],
 			   [@mstyle]) : '';
 		  },
 		     'raw'=>1},
@@ -657,7 +679,7 @@ sub Coalesce : method {
 	      ||
 	      # Consecutive bulleted lists
 	      ($paras->[$p-2] =~ /^($BULLETS)(?: |\n)/o &&
-	       $paras->[$p] =~ /^(?:[$1]| )/)
+	       $paras->[$p] =~ /^(?:[$1](?: |\n)| )/)
 	      ||
 	      # Consecutive enumerated lists
 	      ($paras->[$p-2] =~ /^$ENUM .*\n(?=\Z|\n| |$ENUM)/o &&
@@ -736,6 +758,7 @@ sub DefineRole : method {
     $self->{MY_ROLES}{$role} = DeepCopy($self->{MY_ROLES}{$tag});
     $self->{MY_ROLES}{$role}{tag} = $self->{MY_ROLES}{$tag}{tag};
     $self->{MY_ROLES}{$role}{attr}{classes} = [ $class ];
+    $self->{MY_ROLES}{$role}{base} = $tag;
     # Process format, prefix and suffix options
     if (defined $options->{format}) {
 	$self->{MY_ROLES}{$role}{attr}{format} = $options->{format};
@@ -1000,6 +1023,13 @@ BEGIN {
 my %ALPHA_INDEX;
 @ALPHA_INDEX{'a' .. 'z'} = (1 .. 26);
 my %ROMAN_VALS = (i=>1, v=>5, x=>10, l=>50, c=>100, d=>500, m=>1000);
+my %ROMAN_SYMS = (0 => '', 1=>'i', 2=>'ii', 3=>'iii', 4=>'iv',
+		  5=>'v', 6=>'vi', 7=>'vii', 8=>'viii', 9=>'ix',
+		  10=>'x', 20=>'xx', 30=>'xxx', 40=>'xl', 50=>'l',
+		  60=>'lx', 70=>'lxx', 80=>'lxxx', 90=>'xc',
+		  100=>'c', 200=>'cc', 300=>'ccc', 400=>'cd', 500=>'d',
+		  600=>'dc', 700=>'dcc', 800=>'dccc', 900=>'cm',
+		  1000=>'m', 2000=>'mm', 3000=>'mmm', 4000=>'mmmm');
 
 # Given an index of an enumerated and the enumeration type, returns the
 # index value.
@@ -1016,9 +1046,33 @@ sub EnumVal : method {
     return defined $ALPHA_INDEX{$index} ? $ALPHA_INDEX{$index} : -1
 	if $enumtype =~ /alpha/;
     # Now left with roman numerals
-    return -1 if $index !~ /^m{0,4}(?:dc{0,3}|c[dm]|c{0,3})?(?:lx{0,3}|x[lc]|x{0,3})?(?:vi{0,3}|i[vx]|i{0,3})?$/;
+    return Roman2Int($index);
+}
+
+# Converts an integer to a Roman numeral
+# Arguments: integer
+# Returns: Roman numeral string, or -1
+sub Int2Roman {
+    my ($int) = @_;
+
+    return -1 if $int <= 0 || $int >= 5000;
+    my $roman = '';
+    my (@digits) = split //, $int;
+    for (my $i=0; $i<@digits; $i++) {
+	$roman .= $ROMAN_SYMS{$digits[$i] . ('0' x ($#digits - $i))};
+    }
+    return $roman;
+}
+
+# Converts Roman numerals to an integer
+# Arguments: Roman numeral string
+# Returns: integer, or -1 if not validly formatted roman numeral
+sub Roman2Int {
+    my ($roman) = @_;
+
+    return -1 if $roman !~ /^m{0,4}(?:dc{0,3}|c[dm]|c{0,3})?(?:lx{0,3}|x[lc]|x{0,3})?(?:vi{0,3}|i[vx]|i{0,3})?$/;
     my $val = 0;
-    my @chars = split(//, $index);
+    my @chars = split(//, $roman);
     while (@chars) {
 	my $charval = $ROMAN_VALS{shift @chars};
 	if (@chars == 0 || $charval >= $ROMAN_VALS{$chars[0]}) {
@@ -1465,8 +1519,11 @@ sub Inline : method {
 		}
 		if (defined $self->{MY_ROLES}{$attr{_role}}) {
 		    my $role_r = $self->{MY_ROLES}{$attr{_role}};
+		    my $orig_role_r = $role_r;
 		    $role_r = $self->{MY_ROLES}{$role_r->{alias}}
   			while defined $role_r->{alias};
+		    $attr{classes} = [ $orig_role_r->{options}{class} ]
+		        if $orig_role_r->{options}{class};
 		    my @errs = &{$role_r->{check}}($self, $mid, $lit, $parent,
 						 $source, $lineno, $attr{_role})
 			if defined $role_r->{check};
@@ -3204,7 +3261,7 @@ sub admonition {
 # Returns: array of DOM objects
 sub ascii_mathml {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
-    my @optlist = qw(mstyle);
+    my @optlist = qw(label mstyle);
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
 				\@optlist);
     return $dhash if ref($dhash) =~ /$DOM$/o;
@@ -3231,6 +3288,7 @@ sub ascii_mathml {
     chomp $text;
     my $pcdata = $DOM->newPCDATA("$text\n");
     my $math = $parser->{_MathML} ? $DOM->new('mathml') : $pcdata;
+    my $label_sub;
     if ($parser->{_MathML}) {
 	my %mstyle = (($subst ? () : (displaystyle=>'true')),
 			($options->{mstyle} ?
@@ -3238,17 +3296,30 @@ sub ascii_mathml {
 			 ()),
 			);
 	my @mstyle_attr = map(($_, $mstyle{$_}), sort keys %mstyle);
+	my $label = $options->{label};
 	$math->{attr}{mathml} = $parser->{_MathML}->TextToMathMLTree
-	    ($text, [title=>$text, xmlns=>"&mathml;"],
+	    ($text, [title=>$text, xmlns=>"&mathml;",
+		     $label ? (label=>$label) : ()],
 	     [($parser->{opt}{D}{mstyle} ?
 	       @{$parser->{opt}{D}{mstyle}} : ()), @mstyle_attr]);
 	return if ! defined $math->{attr}{mathml};
 	$math->append($pcdata);
+	if ($label) {
+	    $label_sub = 
+		$DOM->new('substitution_definition',
+			  names=>[$parser->NormalizeName($label, 'keepcase')]);
+	    my $counter = ++$parser->{TOPDOM}{equation};
+	    my $pcdata = $DOM->newPCDATA($counter);
+	    my $err = $parser->RegisterName($label_sub, $source, $lineno);
+	    $label_sub->append($pcdata);
+	    $math->{attr}{label} = $counter;
+	}
     }
     return $math if $subst;
 
     my $para = $DOM->new('paragraph');
     $para->append($math);
+    $para->append($label_sub) if $label_sub;
     return $para;
 }
 
@@ -3975,7 +4046,7 @@ sub role {
 # Returns: array of DOM objects
 sub sectnum {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
-    my @optlist = qw(depth prefix prefix-title start suffix);
+    my @optlist = qw(depth format prefix prefix-title start suffix);
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
 				\@optlist, 0);
     return $dhash if ref($dhash) =~ /$DOM$/o;
