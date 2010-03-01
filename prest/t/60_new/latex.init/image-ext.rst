@@ -1,0 +1,1 @@
+.. figure:: foo.gif

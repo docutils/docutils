@@ -1,0 +1,22 @@
+\documentclass{manual}
+\usepackage{latexsym}
+% Style definitions that can be overridden in a user
+% input file
+\def\ifEq#1#2{\def\testa{#1}\def\testb{#2}\ifx\testa\testb}
+\newcommand{\styleaddress}[1]{#1}
+\newcommand{\styleadmonitiontitle}[1]{\centerline{\bf #1:}}
+\newcommand{\styleauthor}[1]{{\em #1}}
+\newcommand{\styledocinfo}[1]{\setbox0\hbox{\parbox{.7\textwidth}{\global\dimen255=\baselineskip #1}}\ifdim \ht0 < \dimen255 \centerline{\hbox{#1}}\else\copy0 \fi }
+\newcommand{\stylefieldname}[1]{{\bf #1:}}
+\newcommand{\stylelegendtitle}[1]{{\bf #1:}}
+\newcommand{\styleliteralblock}[0]{}
+\newcommand{\styleoption}[2]{{\tt #1}\ifEq{#2}{}\else ~{\it #2}\fi}
+\newcommand{\stylesidebartitles}[2]{\begin{center}{\bf #1}\end{center}\ifEq{#2}{}\else\begin{center}{\it #2}\end{center}}
+\newcommand{\styleterm}[2]{{\it #1\ifEq{#2}{}\else: #2\fi}}
+\newcommand{\styletitle}[2]{#1\ifEq{#2}{}\else:\\ {\Large #2}\fi}
+\newcommand{\styletopictitle}[1]{{\bf #1}}
+\frenchspacing
+\begin{document}
+
+A dull document.
+\end{document}
