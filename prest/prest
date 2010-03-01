@@ -26,7 +26,7 @@ Usage: ${TOOL_NAME} [options] file(s)
 Options:
   -d             Print debugging info on STDERR.  May be used multiple
                  times to get more information.
-  -e <encoding>  Specifies an encoding to use for output (default 'utf8')
+  -e <encoding>  Specifies an encoding to use for I/O (default 'utf8')
   -h             Print full usage help
   -w <writer>    Process the writer schema from <writer>.wrt (default 'html')
   -D var[=val]   Define a variable that affects parsing (may be multiple)
@@ -91,7 +91,7 @@ BEGIN {
 sub main {
     use Getopt::Long;
     # Set default option values
-    my %opt = (w=>'html', d=>0, D=>{});
+    my %opt = (w=>'html', d=>0, D=>{}, e=>'utf8');
 
     # Parse options
     Getopt::Long::config('no_ignore_case');
@@ -116,10 +116,11 @@ sub main {
     foreach $TOP_FILE (@ARGV) {
 	# uncoverable branch true note:Bug in Devel::Cover
 	open F,$TOP_FILE or die "Cannot open $TOP_FILE";
-	my @doc = <F>;
-	close F;
-	my $dom;
-	my $doc = join '', @doc;
+	if (($opt{e} || '') =~ /(.+)/) { # Sanitize for -T flag
+	    binmode F, ":encoding($1)" ;
+	}
+ 	my $dom;
+	my $doc = do { local $/; <F> };
 	if ($doc =~ /^<document/) {
 	    # We have a DOM for input rather than an reST file
 	    $dom = Text::Restructured::DOM::Parse($doc, \%opt);
@@ -144,7 +145,7 @@ sub EncodingList {
     my @encodings;
 
     use Encode;
-    @encodings = Encode->encodings();
+    @encodings = Encode->encodings(':all');
     return join(', ', @encodings);
 }
 
