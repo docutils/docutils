@@ -582,7 +582,11 @@ overridden by means of the directive options.
 
 .. _AsciiMathML: ascii-mathml.xhtml
 
-The following option is recognized:
+The following options are recognized:
+
+``label``  : name
+    Specifies to attach a label to a mathml equation that becomes
+    a substitution definition of name annotated with the equation number.
 
 ``mstyle`` : field list text
     The field list gives a set of key/value pairs for the `mstyle
@@ -934,6 +938,28 @@ The following options are recognized:
     The number of section levels that are numbered by this directive.
     The default is unlimited depth.
 
+``format`` : string
+    A space-separated list of number formats to use for each level of
+    hierarchy, where each of the number formats contains one of the
+    following:
+
+    ``i``
+       Lowercase Roman numerals
+    ``I``
+       Uppercase Roman numerals
+    ``a``
+       Lowercase alphabetic
+    ``A``
+       Uppercase alphabetic
+    ``1``
+       Arabic numeral
+
+    Any missing format item defaults to ``1``.  For example, the
+    string ``I A (i)`` formats top-level section numbers using uppercase
+    Roman numerals, the second level using uppercase alphabetic, the
+    third using lowercase Roman numerals in parentheses and the rest
+    using Arabic numerals.
+
 ``prefix`` : string
     An arbitrary string that is prefixed to the automatically
     generated section numbers.  It may be something like "3.2.", which
@@ -1272,7 +1298,7 @@ The "if" directive defines the following global variables:
 ``@INCLUDES``
    Array of reference to array of [file name, line number] pairs that
    have included the current file.
-``$opt_<x>`` or ``%opt_<x>``
+``$opt_<x>`` or ``$opt{x}``
    The ``<x>`` option from the command line.
 
 The "if" directive processes the following define:
@@ -1309,10 +1335,13 @@ The "perl" directive defines the following global variables:
    The line number of the perl directive within ``$SOURCE``.
 ``$DIRECTIVE``
    The literal text of the perl directive.
+``$SUBSTITUTION``
+   The name of a substitution definition being defined by the perl
+   directive, or undefined if not within a substitution definition
 ``@INCLUDES``
    Array of reference to array of [file name, line number] pairs that
    have included the current file.
-``$opt_<x>`` or ``%opt_<x>``
+``$opt_<x>`` or ``$opt{x}``
    The ``<x>`` option from the command line.
 ``$PARSER``
    The Text::Restructured parser object to allow text parsing within a
@@ -1461,6 +1490,9 @@ The following options are recognized:
 
 ``:file: <filename>``
   Reads the code sample from a file rather than using the content block.
+
+``:class: <name>``
+  Associates the name as a class of the code block.
 
 ``:color:``
   Specifies that "color" markup should be done.  What this actually
