@@ -60,12 +60,13 @@ sub newPCDATA {
 # INSTANCE METHOD.
 # Appends to the contents of a DOM object.
 # Arguments: DOM objects to append
-# Returns: The new number of contents
+# Returns: The DOM object
 sub append : method {
     my ($dom, @doms) = @_;
 
     @PARENT{@doms} = ($dom) x @doms;
     push @{$dom->{content}}, @doms;
+    return $dom;
 }
 
 # INSTANCE METHOD.
@@ -329,8 +330,7 @@ sub Parse {
     my $main;
     my @text = split /\n/, $text;
     foreach (@text) {
-	/(\s*).*/;
-	my $spaces = $1;
+	my ($spaces) = /^(\s*)/;
 	my $indent = length($spaces);
 	if (@stack > 0) {
 	    my $i;
