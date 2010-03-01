@@ -240,8 +240,11 @@ span.section-subtitle {
   /* font-size relative to parent (h1..h6 element) */
   font-size: 80% }
 
+/* Uncomment (and remove this text!) to get a vertical bar on the left side of
+   citation entries.
 table.citation {
   border-left: solid thin gray }
+*/
 
 table.docinfo {
   margin: 2em 4em }
