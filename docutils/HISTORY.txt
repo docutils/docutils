@@ -30,6 +30,10 @@ Changes Since 0.6
 
   - Fix [ 2923723 ] let decode_path() tolerate path == None
 
+* docutils/writers/html4css1/__init__.py
+
+  - Support SVG images (thanks to Stefan Rank).
+
 * docutils/writers/latex2e/__init__.py
 
   - Use `transforms.writer_aux.Admonitions` to "normalize" special

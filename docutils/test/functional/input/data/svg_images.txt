@@ -1,0 +1,68 @@
+SVG Images
+----------
+
+Scalable vector graphics (SVG) images are not supported by all backends.
+Rendering depends partially on the backend, especially if the size is
+not explicitely given.
+
+Whether an SVG image is scaled or clipped/padded cannot be set in the
+containing HTML. It depends on the viewport declaration inside its
+root <svg> element.
+
+.. image:: ../../../docs/user/rst/images/biohazard-scaling.svg
+   :height: 1 em
+   :align: left
+
+A scaling image 1 em high, left aligned.
+
+.. image:: ../../../docs/user/rst/images/biohazard-scaling.svg
+   :target: Directives_
+   :width: 5 mm
+   :align: right
+
+A scaling image 5 mm wide, right aligned, with hyperlink reference:
+
+.. image:: ../../../docs/user/rst/images/title-scaling.svg
+   :width: 50%
+   :align: left
+
+A scaling image occupying 50% of the line width (scales with the
+browser window):
+
+.. image:: ../../../docs/user/rst/images/title-scaling.svg
+   :width: 50 %
+   :height: 15 px
+   :align: left
+
+A scaling image occupying 50% of the line width and 15 pixel high
+(this SVG image keeps the aspect ratio):
+
+
+.. |inline-svg| image:: ../../../docs/user/rst/images/biohazard-scaling.svg
+   :height: 0.8 em
+
+An inline image |inline-svg| scaled to match the text size.
+
+.. image:: ../../../docs/user/rst/images/biohazard.svg
+   :width: 4 cm
+   :height: 2 em
+   :align: left
+
+A fixed-size image in a  4 cm x 2 em box.
+
+.. image:: ../../../docs/user/rst/images/title.svg
+   :width: 50%
+   :height: 15 px
+   :align: left
+
+A fixed-size image in a box 50% the line width and 15 pixle high.
+
+SVG image in a figure:
+
+.. figure:: ../../../docs/user/rst/images/title.svg
+   :alt: reStructuredText, the markup syntax
+   :width:  290 px
+   :height:  28 px
+
+   This is the caption.
+

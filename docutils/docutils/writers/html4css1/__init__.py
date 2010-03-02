@@ -946,7 +946,13 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_image(self, node):
         atts = {}
-        atts['src'] = node['uri']
+        uri = node['uri']
+        issvg = uri.lower().endswith('.svg')
+        if issvg:
+            atts['data'] = uri
+            atts['type'] = 'image/svg+xml'
+        else:
+            atts['src'] = uri
         if 'width' in node:
             atts['width'] = node['width']
         if 'height' in node:
@@ -955,7 +961,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             if Image and not ('width' in node
                               and 'height' in node):
                 try:
-                    im = Image.open(str(atts['src']))
+                    im = Image.open(str(uri))
                 except (IOError, # Source image can't be found or opened
                         UnicodeError):  # PIL doesn't like Unicode paths.
                     pass
@@ -982,7 +988,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                 del atts[att_name]
         if style:
             atts['style'] = ' '.join(style)
-        atts['alt'] = node.get('alt', atts['src'])
+        atts['alt'] = node.get('alt', uri)
         if (isinstance(node.parent, nodes.TextElement) or
             (isinstance(node.parent, nodes.reference) and
              not isinstance(node.parent.parent, nodes.TextElement))):
@@ -1005,7 +1011,12 @@ class HTMLTranslator(nodes.NodeVisitor):
             atts['class'] = 'align-%s' % node['align']
         else:
             self.context.append('')
-        self.body.append(self.emptytag(node, 'img', suffix, **atts))
+        if issvg:
+            # do NOT use an empty tag: incorrect rendering in browsers
+            self.body.append(self.starttag(node, 'object', suffix, **atts) +
+                             atts['alt'] + '</object>' + suffix)
+        else:
+            self.body.append(self.emptytag(node, 'img', suffix, **atts))
 
     def depart_image(self, node):
         self.body.append(self.context.pop())

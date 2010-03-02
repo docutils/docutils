@@ -148,17 +148,17 @@ h2.subtitle {
 hr.docutils {
   width: 75% }
 
-img.align-left, .figure.align-left{
+img.align-left, .figure.align-left, object.align-left {
   clear: left ;
   float: left ;
   margin-right: 1em }
 
-img.align-right, .figure.align-right {
+img.align-right, .figure.align-right, object.align-right {
   clear: right ;
   float: right ;
   margin-left: 1em }
 
-img.align-center, .figure.align-center {
+img.align-center, .figure.align-center, object.align-center {
   display: block;
   margin-left: auto;
   margin-right: auto;
