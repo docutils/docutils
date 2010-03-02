@@ -1240,8 +1240,8 @@
                             This paragraph is also part of the legend.
                 <paragraph>
                     A left-aligned figure:
-                <figure align="left" classes="figclass1 figclass2">
-                    <image alt="reStructuredText, the markup syntax" classes="class1 class2" uri="../../../docs/user/rst/images/biohazard.png" width="50">
+                <figure align="left" classes="figclass1 figclass2" width="70%">
+                    <image alt="reStructuredText, the markup syntax" classes="class1 class2" uri="../../../docs/user/rst/images/biohazard.png" width="40px">
                     <caption>
                         This is the caption.
                     <legend>
@@ -1250,12 +1250,14 @@
                         <paragraph>
                             The legend may consist of several paragraphs.
                 <paragraph>
-                    This paragraph might flow around the figure. The specific behavior depends
-                    upon the style sheet and the browser or rendering software used.
+                    This paragraph might flow around the figure.
+                <paragraph>
+                    The specific behavior depends upon the style sheet and the browser or
+                    rendering software used.
                 <paragraph>
                     A centered figure:
                 <figure align="center">
-                    <image uri="../../../docs/user/rst/images/biohazard.png" width="50">
+                    <image uri="../../../docs/user/rst/images/biohazard.png" width="40px">
                     <caption>
                         This is the caption.
                     <legend>
@@ -1264,12 +1266,14 @@
                         <paragraph>
                             The legend may consist of several paragraphs.
                 <paragraph>
-                    This paragraph might flow around the figure. The specific behavior depends
-                    upon the style sheet and the browser or rendering software used.
+                    This paragraph might flow around the figure.
+                <paragraph>
+                    The specific behavior depends upon the style sheet and the browser or
+                    rendering software used.
                 <paragraph>
                     A right-aligned figure:
                 <figure align="right">
-                    <image uri="../../../docs/user/rst/images/biohazard.png" width="50">
+                    <image uri="../../../docs/user/rst/images/biohazard.png" width="40px">
                     <caption>
                         This is the caption.
                     <legend>

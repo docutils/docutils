@@ -32,7 +32,7 @@ Changes Since 0.6
 
 * docutils/writers/html4css1/__init__.py
 
-  - Support SVG images (thanks to Stefan Rank).
+  - Support SVG and SWF images (thanks to Stefan Rank).
 
 * docutils/writers/latex2e/__init__.py
 

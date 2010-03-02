@@ -520,7 +520,8 @@ A left-aligned figure:
    :class: class1 class2
    :alt: reStructuredText, the markup syntax
    :align: left
-   :width: 50
+   :width: 40 px
+   :figwidth: 70 %
 
    This is the caption.
 
@@ -528,14 +529,16 @@ A left-aligned figure:
 
    The legend may consist of several paragraphs.
 
-This paragraph might flow around the figure. The specific behavior depends
-upon the style sheet and the browser or rendering software used.
+This paragraph might flow around the figure. 
+
+The specific behavior depends upon the style sheet and the browser or
+rendering software used.
 
 A centered figure:
 
 .. figure:: ../../../docs/user/rst/images/biohazard.png
    :align: center
-   :width: 50
+   :width: 40 px
 
    This is the caption.
 
@@ -543,14 +546,16 @@ A centered figure:
 
    The legend may consist of several paragraphs.
 
-This paragraph might flow around the figure. The specific behavior depends
-upon the style sheet and the browser or rendering software used.
+This paragraph might flow around the figure.
+
+The specific behavior depends upon the style sheet and the browser or
+rendering software used.
 
 A right-aligned figure:
 
 .. figure:: ../../../docs/user/rst/images/biohazard.png
    :align: right
-   :width: 50
+   :width: 40 px
 
    This is the caption.
 

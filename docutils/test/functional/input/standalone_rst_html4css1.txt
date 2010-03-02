@@ -6,4 +6,5 @@
 .. include:: data/list_table.txt
 .. include:: data/custom_roles.txt
 .. include:: data/svg_images.txt
+.. include:: data/swf_images.txt
 .. include:: data/errors.txt

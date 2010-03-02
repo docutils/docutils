@@ -947,19 +947,23 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_image(self, node):
         atts = {}
         uri = node['uri']
-        issvg = uri.lower().endswith('.svg')
-        if issvg:
+        # place SVG and SWF images in an <object> element
+        types = {'.svg': 'image/svg+xml',
+                 '.swf': 'application/x-shockwave-flash'}
+        ext = os.path.splitext(uri)[1].lower()
+        if ext in ('.svg', '.swf'):
             atts['data'] = uri
-            atts['type'] = 'image/svg+xml'
+            atts['type'] = types[ext]
         else:
             atts['src'] = uri
+            atts['alt'] = node.get('alt', uri)
+	# image size
         if 'width' in node:
             atts['width'] = node['width']
         if 'height' in node:
             atts['height'] = node['height']
         if 'scale' in node:
-            if Image and not ('width' in node
-                              and 'height' in node):
+            if Image and not ('width' in node and 'height' in node):
                 try:
                     im = Image.open(str(uri))
                 except (IOError, # Source image can't be found or opened
@@ -988,7 +992,6 @@ class HTMLTranslator(nodes.NodeVisitor):
                 del atts[att_name]
         if style:
             atts['style'] = ' '.join(style)
-        atts['alt'] = node.get('alt', uri)
         if (isinstance(node.parent, nodes.TextElement) or
             (isinstance(node.parent, nodes.reference) and
              not isinstance(node.parent.parent, nodes.TextElement))):
@@ -1011,10 +1014,10 @@ class HTMLTranslator(nodes.NodeVisitor):
             atts['class'] = 'align-%s' % node['align']
         else:
             self.context.append('')
-        if issvg:
+        if ext in ('.svg', '.swf'): # place in an object element,
             # do NOT use an empty tag: incorrect rendering in browsers
             self.body.append(self.starttag(node, 'object', suffix, **atts) +
-                             atts['alt'] + '</object>' + suffix)
+                             node.get('alt', uri) + '</object>' + suffix)
         else:
             self.body.append(self.emptytag(node, 'img', suffix, **atts))
 
