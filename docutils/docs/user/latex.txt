@@ -1056,7 +1056,7 @@ However, you can load hyperref with custom options (or before a
 package that requires its presence) in a `style sheet`_ or the `LaTeX
 preamble`_, e.g. ::
 
-  \usepackage[colorlinks=true,linkcolor=green,urlcolor=blue]{hyperref}
+  \usepackage[unicode,colorlinks=true,linkcolor=green]{hyperref}
 
 URLs are typeset with the "url" package (loaded implicitely by "hyperref").
 The font of URLs can be defined with the ``\urlstyle`` command. Valid
@@ -1068,10 +1068,12 @@ arguments are
 :sf:    sans serif
 
 Example:
-  use the LaTeX default (monospaced fonts for URLs)::
+  Custom loading of the hyperref package also switches to
+  the LaTeX default (monospaced fonts for URLs). Reset to use the text
+  font::
 
-   \usepackage{url}
-   \urlstyle{tt}
+   \usepackage[unicode,colorlinks=true,linkcolor=green]{hyperref}
+   \urlstyle{same}
 
 See also `non-breaking hyperlinks`_.
 

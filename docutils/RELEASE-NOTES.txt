@@ -32,9 +32,11 @@ Components:
   - Rename ``use_latex_footnotes`` setting to `docutils_footnotes`__.
   - New ``latex_preamble`` setting.
   - PDF standard fonts (Times/Helvetica/Courier) as default.
+  - `hyperref` package called with ``unicode`` option (see the
+    `hyperref config tips`__ for how to override).
 
 __ docs/user/config.html#docutils-footnotes
-
+__ docs/user/latex.html#hyperlinks
 
 General:
 
