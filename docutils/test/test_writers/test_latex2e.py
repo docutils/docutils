@@ -49,10 +49,10 @@ $fallbacks$pdfsetup
 parts = dict(
 head_prefix = r"""\documentclass[a4paper,english]{article}
 """,
-requirements = r"""\usepackage{babel}
-\usepackage[T1]{fontenc}
+requirements = r"""\usepackage[T1]{fontenc}
 \usepackage[latin1]{inputenc}
 \usepackage{ifthen}
+\usepackage{babel}
 """,
 latex_preamble = r"""% PDF Standard Fonts
 \usepackage{mathptmx} % Times
