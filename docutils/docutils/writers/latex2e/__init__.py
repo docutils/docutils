@@ -1014,11 +1014,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
         else:
             fontenc_header = r'\usepackage[%s]{fontenc}' % self.font_encoding
         self.requirements['_persistent'] = '\n'.join([
-              # multi-language support (language is in document settings)
-              '\\usepackage{babel}%s' % self.babel.setup,
               fontenc_header,
               r'\usepackage[%s]{inputenc}' % self.latex_encoding,
               r'\usepackage{ifthen}',
+              # multi-language support (language is in document settings)
+              '\\usepackage{babel}%s' % self.babel.setup,
               ])
         # page layout with typearea (if there are relevant document options).
         if (settings.documentclass.find('scr') == -1 and
