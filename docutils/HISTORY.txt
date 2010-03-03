@@ -47,6 +47,7 @@ Changes Since 0.6
   - Use PDF standard fonts (Times/Helvetica/Courier) as default.
   - Fix hyperlink targets (labels) for images, figures, and tables.
   - Apply [ 2961988 ] Load babel after inputenc and fontenc.
+  - Apply [ 2961991 ] Call hyperref with unicode option.
 
 __ docs/ref/restructuredtext.html#inline-literals
 __ docs/user/config.html#docutils-footnotes

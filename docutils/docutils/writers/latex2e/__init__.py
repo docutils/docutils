@@ -507,7 +507,7 @@ PreambleCmds.lineblock = r"""
 PreambleCmds.linking = r"""
 %% hyperlinks:
 \ifthenelse{\isundefined{\hypersetup}}{
-  \usepackage[colorlinks=%s,linkcolor=%s,urlcolor=%s]{hyperref}
+  \usepackage[unicode,colorlinks=%s,linkcolor=%s,urlcolor=%s]{hyperref}
   \urlstyle{same} %% normal text font (alternatives: tt, rm, sf)
 }{}"""
 
