@@ -1698,7 +1698,39 @@ Unimplemented Transforms
   Collect and move footnotes & citations to the end of a document or the
   place of a "footnotes" or "citations" directive
   (see `<./ref/rst/directives.html>_`)
-  (Separate transforms.)
+
+  Footnotes:
+    Collect all footnotes that are referenced in the document before the
+    directive (and after an eventually preceding ``.. footnotes::``
+    directive) and insert at this place.
+
+    Allows "endnotes" at a configurable place.
+
+  Citations:
+    Collect citations that are referenced ...
+
+    Citations can be:
+
+    a) defined in the document as citation elements
+
+    b) auto-generated from entries in a bibliographic database.
+
+       + based on bibstuff_?
+       + also have a look at
+        
+	 * CrossTeX_, a backwards-compatible, improved bibtex
+	   re-implementation in Python (including HTML export).
+	   (development stalled since 2 years)
+	   
+         * Pybtex_,a drop-in replacement for BibTeX written in Python.
+	 
+	   * BibTeX styles & (experimental) pythonic style API.
+	   * Database in BibTeX, BibTeXML and YAML formats.
+	   * full Unicode support.
+	   * Write to TeX, HTML and plain text.
+
+    * Automatically insert a "References" heading?
+
 
 * _`Reference Merging`
 
@@ -1951,8 +1983,7 @@ There is a project for epub support with sphinx providing a
 LaTeX writer
 ============
 
-Also see the Problems__ section in the `latex writer documentation`_ and
-discussion and proposals in the `latex-variants`_ sandbox project.
+Also see the Problems__ section in the `latex writer documentation`_.
 
 __ ../user/latex.html#problems
 
@@ -2115,7 +2146,10 @@ Which packages do we want to use?
 
 * enumeration environment, field list
 
-  use `mdwlist` from texlive-latex-recommended?
+  * use `mdwlist` from texlive-latex-recommended?
+  
+  * use `eqlist` (texlive-latex-extra) for field-lists?
+  
 
 * ``--use-latex-when-possible`` »super option« that would set the
   following::
@@ -2244,7 +2278,6 @@ Missing features
   a figure in LaTeX is 100 % of the text width, setting the 'align'
   argument has currently no effect on the LaTeX output.
 
-* better citation support
 
 * Let `meta` directive insert PDF-keywords into header?
 
@@ -2254,11 +2287,15 @@ Missing features
 * Consider supporting the "compact" option and class argument (from
   rst2html) as some lists look better compact and others need the space.
 
+* Better citation support
+  (see `Footnote & Citation Gathering`_).
+
 * If ``use-latex-citations`` is used, a bibliography is inserted right at the
   end of the document.
 
   Put in place of the to-be-implemented "citations" directive
   (see `Footnote & Citation Gathering`_).
+
 
 Unicode to LaTeX
 ````````````````
@@ -2287,12 +2324,11 @@ via the `inputenc`-option ``utf8x``.  It is, however, a non-standard
 extension and no longer developed.
 
 Ideas:
-  * Python has 4 names for the UTF-8 encoding (``utf_8, U8, UTF, utf8``)
-    give a special meaning to one of the aliases,
+  a) Python has 4 names for the UTF-8 encoding (``utf_8, U8, UTF, utf8``)
+     give a special meaning to one of the aliases,
 
-  * scan "stylesheets" option and use ``utf8x`` if it contains ``ucs``
-
-    -1 prevents passing of options to the "ucs" package.
+  b) scan "stylesheets" and "latex-preamble" options and use ``utf8x``
+     if it contains ``ucs``
 
 
 problematic URLs

@@ -25,7 +25,6 @@ except ImportError:
 
 
 class smart_install_data(install_data):
-    # Hack for Python > 2.3.
     # From <http://wiki.python.org/moin/DistutilsInstallDataScattered>,
     # by Pete Shinners.
 
@@ -64,11 +63,7 @@ def do_setup():
     if extras:
         kwargs['py_modules'] = extras
     kwargs['classifiers'] = classifiers
-    # Install data files properly.  Note that we use a different
-    # hack for Python 2.2, which does not *always* work, though;
-    # see
-    # <http://article.gmane.org/gmane.text.docutils.user/2867>.
-    # So for Python 2.3+, we prefer this hack.
+    # Install data files properly.
     kwargs['cmdclass'] = {'install_data': smart_install_data,
                           'build_py': build_py,
                           'build_data': build_data}
@@ -132,7 +127,9 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
                      ['docutils/writers/odf_odt/styles.odt']),
                      ]
                    + s5_theme_files),
-    'scripts' : ['tools/rst2html.py',
+    'scripts' : ['tools/buildhtml.py',
+                 'tools/rst_quicktest.py',
+                 'tools/rst2html.py',
                  'tools/rst2s5.py',
                  'tools/rst2latex.py',
                  'tools/rst2newlatex.py',
