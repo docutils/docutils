@@ -221,6 +221,37 @@ following:
        <path_to_python.exe>\python setup.py install
 
 
+Install for Python 3
+--------------------
+
+.. From: Georg Brandl <g.brandl <at> gmx.net>
+   Subject: Ported docutils to Python 3
+   Newsgroups: gmane.text.docutils.devel
+   Date: 2009-04-01
+
+   I've just committed a somewhat larger patch that ports docutils to Python 3.
+   If you want to use docutils under Python 3, here is how to do it:
+
+* Get a build of the Python 3.1 branch (3.0 release won't work, but you don't
+  want to use it anyway).
+
+* Run python3 setup.py build -- this, in addition to copying the sources to
+  build/lib, will also convert them using 2to3 to Python 3-compatible code.
+  This takes quite some time the first time, but it works incrementally, so
+  if you change one file it will only reconvert that file the next time you
+  run setup.py build.
+
+* Run python3 tests/alltests3.py -- this will copy and convert the test suite
+  to build/lib/test and run it.  This is incremental like the setup.py build.
+
+Note that you can still run the test suite with Python 2 with the normal
+python tests/alltests.py.
+
+.. So if you make a change, it would be nice if you, in addition to
+   testing with Python 2, also tested with Python 3.  If you run into
+   problems with the test suite under 3, feel free to mail me.
+
+
 Usage
 =====
 
