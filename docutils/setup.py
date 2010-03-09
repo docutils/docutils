@@ -61,7 +61,7 @@ def do_setup():
     kwargs = package_data.copy()
     extras = get_extras()
     if extras:
-        kwargs['py_modules'] = extras
+        kwargs['py_modules'] += extras
     kwargs['classifiers'] = classifiers
     # Install data files properly.
     kwargs['cmdclass'] = {'install_data': smart_install_data,
@@ -90,7 +90,9 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
     'author_email': 'goodger@python.org',
     'license': 'public domain, Python, BSD, GPL (see COPYING.txt)',
     'platforms': 'OS-independent',
-    'package_dir': {'docutils': 'docutils', '': 'extras'},
+    'package_dir': {'docutils': 'docutils',
+                    '': 'extras',
+                    'docutils.tools': 'tools'},
     'packages': ['docutils',
                  'docutils.languages',
                  'docutils.parsers',
@@ -108,6 +110,11 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
                  'docutils.writers.newlatex2e',
                  'docutils.writers.odf_odt',
                  ],
+    'py_modules': [# should setup.py install the developer tools?
+                   # Spurious warning ``package init file 'tools/__init__.py' not found``
+                   'docutils.tools.buildhtml',
+                   'docutils.tools.quicktest',
+                  ],
     'data_files': ([('docutils/parsers/rst/include',
                      glob.glob('docutils/parsers/rst/include/*.txt')),
                     ('docutils/writers/html4css1',
@@ -127,9 +134,7 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
                      ['docutils/writers/odf_odt/styles.odt']),
                      ]
                    + s5_theme_files),
-    'scripts' : ['tools/buildhtml.py',
-                 'tools/rst_quicktest.py',
-                 'tools/rst2html.py',
+    'scripts' : ['tools/rst2html.py',
                  'tools/rst2s5.py',
                  'tools/rst2latex.py',
                  'tools/rst2newlatex.py',

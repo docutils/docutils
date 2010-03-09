@@ -21,13 +21,13 @@ from docutils.parsers.rst import Parser
 
 
 usage_header = """\
-rst_quicktest.py: Quickly test the reStructuredText parser.  This is not an
+quicktest.py: Quickly test the reStructuredText parser.  This is not an
 interface to the full functionality of Docutils.  Use one of the ``rst2*.py``
 front-end tools instead.
 
 Usage::
 
-    rst_quicktest.py [options] [<source> [<destination>]]
+    quicktest.py [options] [<source> [<destination>]]
 
 ``source`` is the name of the file to use as input (default is stdin).
 ``destination`` is the name of the file to create as output (default is
@@ -142,7 +142,7 @@ def posixGetArgs(argv):
             usage()
             sys.exit()
         elif o in ['-V', '--version']:
-            print >>sys.stderr, ('rst_quicktest.py (Docutils %s [%s])'
+            print >>sys.stderr, ('quicktest.py (Docutils %s [%s])'
                                  % (docutils.__version__,
                                     docutils.__version_details__))
             sys.exit()
