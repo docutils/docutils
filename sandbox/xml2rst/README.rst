@@ -82,6 +82,11 @@ For a roundtrip try::
 Development
 ===========
 
+Tests
+-----
+
+There are test suites in ``tests.tgz``. Use filterunit_ to run tests.
+
 ToDos
 -----
 
@@ -109,3 +114,5 @@ with ``TODO`` which contain things which should be done.
 .. _xsltproc: http://xmlsoft.org/XSLT/xsltproc2.html
 
 .. _lxml: http://codespeak.net/lxml/
+
+.. _filterunit: http://www.merten-home.de/FreeSoftware/filterunit/
