@@ -3639,7 +3639,7 @@ where a converter to Docutils XML already exists.
 
 The following options are supported. They are XSLT parameters for the
 whole script and must be given to the XSLT processor by the respective
-option (xsltproc: B<--param> or B<--stringparam>).
+option (xsltproc: B<- -param> or B<- -stringparam>).
 
 =over 4
 
