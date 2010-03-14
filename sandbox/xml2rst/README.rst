@@ -4,20 +4,50 @@ xml2rst
 
 .. contents::
 
-----------------
 What is xml2rst?
-----------------
+================
 
 `xml2rst` is a tool to generate reStructuredText_ syntax back from
 `Docutils XML`_ input. This way one can create XML files using
 `Docutils XML`_ from some other format (such as ODF_) and then
 transform them to reStructuredText_.
 
-It is currently implemented as an XSLT_ stylesheet.
+.. _flavor:
 
-------------
+It is currently implemented as an XSLT_ stylesheet coming in three
+flavors:
+
+1. ``xml2rst.xsl``
+
+   This version uses EXSLT_ and should be functionally equivalent to
+   the old version. Because using EXSLT_ this version needs EXSLT_
+   capable XSLT_ processors such as xsltproc_ [#deb-xsltproc]_.
+
+   This version is currently maintained.
+
+   .. [#deb-xsltproc] Under Debian based operating systems try
+      ``apt-get install xsltproc``
+
+2. ``xml2rst.py``
+
+   This script uses ``xml2rst.xsl`` but through the XSLT_ engine
+   available through the lxml_ package [#deb-lxml]_.
+
+   .. [#deb-lxml] Under Debian based operating systems try ``apt-get
+      install python-lxml``
+
+3. ``xml2rst-noexslt.xsl``
+
+   This version can be processed with every XSLT_ processor like
+   Xalan_ [#deb-xalan]_.
+
+   This version is no longer maintained, though.
+
+   .. [#deb-xalan] Under Debian based operating systems try ``apt-get
+      install xalan``
+
 Availability
-------------
+============
 
 `xml2rst` is available through the `Docutils Subversion repository`_
 as part of the Docutils sandbox at
@@ -26,105 +56,37 @@ http://svn.berlios.de/viewcvs/docutils/trunk/sandbox/xml2rst
 Moreover you can fetch it directly from the current maintainer at
 http://www.merten-home.de/FreeSoftware/xml2rst/
 
-------------
 Installation
-------------
+============
 
-`xml2rst` needs no special installation. Just use it with your
-favorite XSLT processor such as Xalan_. Check Synopsis_ for
-instructions how to do this.
+Depending on the flavor_ you choose you need to install certain
+packages to run `xml2rst`. If using an XSLT_ processor try ``perldoc
+xml2rst.xsl`` for instructions how to run it. If using the script try
+``perldoc xml2rst.py``.
 
----------------------
 Copyright and license
----------------------
+=====================
 
-Copyright (C) 2005, 2006, 2009 by Stefan Merten and David Priest
+Copyright (C) 2005, 2006 by Stefan Merten and David Priest
+Copyright (C) 2009, 2010 by Stefan Merten
 
 License is GPL_ v2 or later.
-
--------------
-Documentation
--------------
-
-Synopsis
-========
-
-``Xalan`` `docutils.xml` ``xml2rst.xsl``
-
-``testXSLT`` ``-xsl`` ``xml2rst.xsl`` ``-in`` `docutils.xml`
-
-Options
-=======
-
-The following options are supported. They are XSLT parameters for the
-whole script and must be given to the XSLT processor by the respective
-option (Xalan: ``-p``, testXSLT: ``-param``).
-
--param ``adornment`` `adornment_configuration`
-  Configures title markup to use so different styles can be requested
-  easily.
-
-  The value of the parameter must be a string made up of a sequence of
-  character pairs. The first character of a pair is "o" (overline) or
-  "u" (underline) and the second character is the character to use for
-  the markup.
-
-  The first and the second character pair is used for document title
-  and subtitle, the following pairs are used for section titles where
-  the third pair is used for the top level section title.
-
-  Defaults to ``o=o-u=u-u~u:u.u``\ `````.
-
--param ``fold`` `folding_length`
-  Configures whether long text lines in paragraphs should be folded
-  and to which length. This option is for input not coming from reST
-  which may have no internal line feeds in plain text strings.
-
-  If folding is enabled text strings which are not in a linefeed
-  preserving context are first white-space normalized and then broken
-  according to the folding rules. Folding rules put out the first word
-  and continue to do so with the following words unless the next word
-  would cross the folding boundary. Words are delimited by
-  white-space.
-
-  Defaults to ``0``, i.e. no folding.
-
-Unsupported features
-====================
-
-It is generally not possible to create an exact reproduction of an
-original reStructuredText source from an intermediate XML file. The
-reason is that Docutils transports pretty much but not all information
-of the original source into the XML. Also the sequence of things is
-changed sometimes.
-
-However, the coverage of Docutils features of ``xml2rst`` is pretty
-good. A few minor features are not supported:
-
-* Fully minimized style for literal blocks
-
-* Substitution references for ``replace::`` substitutions
-
-* Counting roman numbers in enumerated lists
-
-* Special table types like ``list-table::`` and ``csv-table::``
 
 Example
 =======
 
 For a roundtrip try::
 
-  rst2xml your_file.rst | xalan -xsl xml2rst.xsl | diff - your_file.rst
+  rst2xml your_file.rst your_file.xml ; xml2rst.py your_file.xml | diff - your_file.rst
 
------------
 Development
------------
+===========
 
 ToDos
-=====
+-----
 
-The ``xml2rst.xsl`` contains a couple of comments marked with ``TODO``
-which contain things which should be done.
+``xml2rst.xsl`` and ``xml2rst.py`` contain a couple of comments marked
+with ``TODO`` which contain things which should be done.
 
 .. ############################################################################
 
@@ -136,8 +98,14 @@ which contain things which should be done.
 
 .. _Docutils Subversion repository: http://docutils.sourceforge.net/docs/dev/repository.html
 
-.. _Xalan: http://xalan.apache.org/
+.. _xalan: http://xalan.apache.org/
 
 .. _GPL: http://www.gnu.org/copyleft/gpl.html
 
 .. _ODF: http://www.oasis-open.org/committees/tc_home.php?wg_abbrev=office
+
+.. _EXSLT: http://www.exslt.org/
+
+.. _xsltproc: http://xmlsoft.org/XSLT/xsltproc2.html
+
+.. _lxml: http://codespeak.net/lxml/
