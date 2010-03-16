@@ -337,7 +337,7 @@ def decode_path(path):
     """
     Decode file/path string. Return `nodes.reprunicode` object.
 
-    Provides a conversion to unicode without the UnicodeDecode error of the
+    Convert to Unicode without the UnicodeDecode error of the
     implicit 'ascii:strict' decoding.
     """
     # see also http://article.gmane.org/gmane.text.docutils.user/2905
@@ -346,9 +346,8 @@ def decode_path(path):
     except AttributeError: # default value None has no decode method
         return nodes.reprunicode(path)
     except UnicodeDecodeError:
-        path = path.decode('utf-8', 'strict')
         try:
-            path = path.decode(sys.getfilesystemencoding(), 'strict')
+            path = path.decode('utf-8', 'strict')
         except UnicodeDecodeError:
             path = path.decode('ascii', 'replace')
     return nodes.reprunicode(path)
