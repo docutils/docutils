@@ -64,6 +64,12 @@ __ docs/user/config.html#docutils-footnotes
   - Fix: encoding ``'ascii'`` must be lowercase to prevent problems for
     turkish locale.
 
+* setup.py:
+
+  - Python 3 support: copy test/ and tools/ to the build-dir
+    and convert Python sources with 2to3.
+
+
 Release 0.6 (2009-10-11)
 ========================
 

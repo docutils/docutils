@@ -9,8 +9,12 @@ try:
     from distutils.core import setup, Command
     from distutils.command.build import build
     from distutils.command.build_py import build_py
+    if sys.version_info >= (3,):
+        from distutils.command.build_py import build_py_2to3
+        from distutils.util import copydir_run_2to3
     from distutils.command.install_data import install_data
     from distutils.util import convert_path
+    from distutils import log
 except ImportError:
     print ('Error: The "distutils" standard module, which is required for the ')
     print ('installation of Docutils, could not be found.  You may need to ')
@@ -18,10 +22,35 @@ except ImportError:
     print ('system using your package manager.')
     sys.exit(1)
 
-try:
-    from distutils.command.build_py import build_py_2to3 as build_py
-except ImportError:
-    from distutils.command.build_py import build_py
+
+if sys.version_info >= (3,):
+    # copy-convert auxiliary python sources
+    class copy_build_py_2to3(build_py_2to3):
+        """Copy/convert Python source files in given directories recursively.
+
+        Build py3k versions of the modules and packages. Also copy
+        'tools/' and 'test/' dirs and run 2to3 on *.py files.
+        """
+        manifest_in = """\
+        exclude *.pyc *~ .DS_Store
+        recursive-exclude * *.pyc *~ .DS_Store
+        recursive-exclude functional/output *
+        include functional/output/README.txt
+        prune .svn
+        prune */.svn
+        prune */*/.svn
+        prune */*/*/.svn
+        prune */*/*/*/.svn
+        prune */*/*/*/*/.svn
+        """
+        def run(self):
+            build_py_2to3.run(self)
+            print("copying aux dirs")
+            loglevel = log.set_threshold(log.ERROR)
+            for source in ['tools', 'test']:
+                dest = os.path.join(self.build_lib, source)
+                copydir_run_2to3(source, dest, template=self.manifest_in)
+            log.set_threshold(loglevel)
 
 
 class smart_install_data(install_data):
@@ -64,9 +93,13 @@ def do_setup():
         kwargs['py_modules'] += extras
     kwargs['classifiers'] = classifiers
     # Install data files properly.
-    kwargs['cmdclass'] = {'install_data': smart_install_data,
-                          'build_py': build_py,
-                          'build_data': build_data}
+    kwargs['cmdclass'] = {'build_data': build_data,
+                          'install_data': smart_install_data}
+    # Auto-convert surce code for Python 3
+    if sys.version_info >= (3,):
+        kwargs['cmdclass']['build_py'] = copy_build_py_2to3
+    else:
+        kwargs['cmdclass']['build_py'] = build_py
     dist = setup(**kwargs)
     return dist
 
@@ -110,11 +143,6 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
                  'docutils.writers.newlatex2e',
                  'docutils.writers.odf_odt',
                  ],
-    'py_modules': [# should setup.py install the developer tools?
-                   # Spurious warning ``package init file 'tools/__init__.py' not found``
-                   'docutils.tools.buildhtml',
-                   'docutils.tools.quicktest',
-                  ],
     'data_files': ([('docutils/parsers/rst/include',
                      glob.glob('docutils/parsers/rst/include/*.txt')),
                     ('docutils/writers/html4css1',
