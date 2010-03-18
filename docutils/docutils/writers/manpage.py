@@ -48,7 +48,6 @@ import sys
 import os
 import time
 import re
-from types import ListType
 
 import docutils
 from docutils import nodes, utils, writers, languages
