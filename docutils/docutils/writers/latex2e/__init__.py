@@ -17,7 +17,7 @@ import os
 import time
 import re
 import string
-from docutils import frontend, nodes, languages, writers, utils, transforms
+from docutils import frontend, nodes, languages, writers, utils, transforms, io
 from docutils.writers.newlatex2e import unicode_map
 
 # compatibility module for Python <= 2.4
@@ -1045,7 +1045,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                     wrapper = '%% embedded stylesheet: %s\n%s'
                 settings.record_dependencies.add(sheet)
                 self.stylesheet.append(wrapper %
-                            (sheet, unicode(open(sheet).read(), 'utf-8')))
+                    (sheet, io.FileInput(source_path=sheet, encoding='utf-8').read()))
             else: # link to style sheet
                 if is_package:
                     self.stylesheet.append(r'\usepackage{%s}' % base)
