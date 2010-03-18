@@ -35,6 +35,12 @@ include13rel = DocutilsTestSupport.utils.relative_path(None, include13)
 include_literal = os.path.join(mydir, 'include_literal.txt')
 utf_16_file = os.path.join(mydir, 'utf-16.csv')
 utf_16_file_rel = DocutilsTestSupport.utils.relative_path(None, utf_16_file)
+utf_16_error_str = ("UnicodeDecodeError: 'ascii' codec can't decode byte 0xfe "
+                    "in position 0: ordinal not in range(128)")
+if sys.version_info < (3,0):
+    utf_16_error_str = ("UnicodeError: Unable to decode input data.  "
+                        "Tried the following encodings: 'ascii'.\n"
+                        "            (%s)" % utf_16_error_str)
 nonexistent = os.path.join(os.path.dirname(states.__file__),
                            'include', 'nonexistent')
 nonexistent_rel = DocutilsTestSupport.utils.relative_path(
@@ -317,12 +323,11 @@ Include file is UTF-16-encoded, and is not valid ASCII.
     <system_message level="4" line="3" source="test data" type="SEVERE">
         <paragraph>
             Problem with "include" directive:
-            UnicodeError: Unable to decode input data.  Tried the following encodings: 'ascii'.
-            (UnicodeDecodeError: 'ascii' codec can't decode byte 0xfe in position 0: ordinal not in range(128))
+            %s
         <literal_block xml:space="preserve">
             .. include:: %s
                :encoding: ascii
-""" % utf_16_file_rel],
+""" % (utf_16_error_str, utf_16_file_rel)],
 # @@@ BUG with errors reported with incorrect "source" & "line":
 ["""\
 Testing errors in included file:
@@ -335,15 +340,15 @@ Testing errors in included file:
         Testing errors in included file:
     <system_message level="3" line="1" source="%(source)s" type="ERROR">
         <paragraph>
-            Invalid character code: 0xFFFFFFFFF
-            ValueError: unichr() arg not in range(0x110000) (wide Python build)
+            Invalid character code: 0x11111111
+            %(unichr_exception)s
         <literal_block xml:space="preserve">
-            unicode:: 0xFFFFFFFFF
+            unicode:: 0x11111111
     <system_message level="2" line="1" source="%(source)s" type="WARNING">
         <paragraph>
             Substitution definition "bad" empty or invalid.
         <literal_block xml:space="preserve">
-            .. |bad| unicode:: 0xFFFFFFFFF
+            .. |bad| unicode:: 0x11111111
     <section dupnames="hi" ids="hi">
         <title>
             hi
@@ -441,7 +446,7 @@ Testing errors in included file:
             no bottom       border
 """ % {'source': include10rel, 'nonexistent': nonexistent_rel,
        'unichr_exception':
-       DocutilsTestSupport.exception_data(unichr, int("0xFFFFFFFFF", 16))[2]
+       DocutilsTestSupport.exception_data(unichr, int("11111111", 16))[2]
       }],
 ["""\
 Include file with whitespace in the path:

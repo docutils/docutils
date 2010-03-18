@@ -1,4 +1,4 @@
-.. |bad| unicode:: 0xFFFFFFFFF
+.. |bad| unicode:: 0x11111111
 
 hi
 -----
