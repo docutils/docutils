@@ -15,6 +15,7 @@ try:
 except:
     pass
 import re
+import codecs
 from docutils import TransformSpec
 from docutils._compat import b
 
@@ -89,11 +90,6 @@ class Input(TransformSpec):
                 # data that *IS* UTF-8:
                 encodings = ['utf-8']
                 try:
-                    # for Python 2.2 compatibility
-                    encodings.append(locale.nl_langinfo(locale.CODESET))
-                except:
-                    pass
-                try:
                     encodings.append(locale.getlocale()[1])
                 except:
                     pass
@@ -127,10 +123,10 @@ class Input(TransformSpec):
     coding_slug = re.compile(b("coding[:=]\s*([-\w.]+)"))
     """Encoding declaration pattern."""
 
-    byte_order_marks = ((b('\xef\xbb\xbf'), 'utf-8'),
-                        (b('\xfe\xff'), 'utf-16-be'),
-                        (b('\xff\xfe'), 'utf-16-le'),)
-    """Sequence of (start_bytes, encoding) tuples to for encoding detection.
+    byte_order_marks = ((codecs.BOM_UTF8, 'utf-8'), # actually 'utf-8-sig'
+                        (codecs.BOM_UTF16_BE, 'utf-16-be'),
+                        (codecs.BOM_UTF16_LE, 'utf-16-le'),)
+    """Sequence of (start_bytes, encoding) tuples for encoding detection.
     The first bytes of input data are checked against the start_bytes strings.
     A match indicates the given encoding."""
 
@@ -227,8 +223,15 @@ class FileInput(Input):
         self.handle_io_errors = handle_io_errors
         if source is None:
             if source_path:
+                # Specify encoding in Python 3
+                if sys.version_info >= (3,0):
+                    kwargs = {'encoding': self.encoding,
+                              'errors': self.error_handler}
+                else:
+                    kwargs = {}
+
                 try:
-                    self.source = open(source_path, mode)
+                    self.source = open(source_path, mode, **kwargs)
                 except IOError, error:
                     if not handle_io_errors:
                         raise
@@ -310,8 +313,17 @@ class FileOutput(Output):
                 pass
 
     def open(self):
+        # Specify encoding in Python 3.
+        # (Do not use binary mode ('wb') as this prevents the
+        # conversion of newlines to the system specific default.)
+        if sys.version_info >= (3,0):
+            kwargs = {'encoding': self.encoding,
+                      'errors': self.error_handler}
+        else:
+            kwargs = {}
+
         try:
-            self.destination = open(self.destination_path, 'w')
+            self.destination = open(self.destination_path, 'w', **kwargs)
         except IOError, error:
             if not self.handle_io_errors:
                 raise
@@ -323,8 +335,14 @@ class FileOutput(Output):
         self.opened = 1
 
     def write(self, data):
-        """Encode `data`, write it to a single file, and return it."""
-        output = self.encode(data)
+        """Encode `data`, write it to a single file, and return it.
+
+        In Python 3, a (unicode) String is returned.
+        """
+        if sys.version_info >= (3,0):
+            output = data # in py3k, write expects a (Unicode) string
+        else:
+            output = self.encode(data)
         if not self.opened:
             self.open()
         try:

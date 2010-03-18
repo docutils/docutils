@@ -24,7 +24,7 @@ try:
 except ImportError:
     Image = None
 import docutils
-from docutils import frontend, nodes, utils, writers, languages
+from docutils import frontend, nodes, utils, writers, languages, io
 from docutils.transforms import writer_aux
 
 
@@ -265,8 +265,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         if settings.embed_stylesheet:
             settings.record_dependencies.add(*styles)
             self.stylesheet = [self.embedded_stylesheet %
-                               unicode(open(sheet).read(), 'utf-8')
-                               for sheet in styles]
+                io.FileInput(source_path=sheet, encoding='utf-8').read()
+                for sheet in styles]
         else: # link to stylesheets
             self.stylesheet = [self.stylesheet_link % self.encode(stylesheet)
                                for stylesheet in styles]
