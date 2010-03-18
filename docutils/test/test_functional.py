@@ -157,6 +157,14 @@ expected output and check it in:
         # Get output (automatically written to the output/ directory
         # by publish_file):
         output = docutils.core.publish_file(**params)
+        # ensure output is unicode
+        output_encoding = params.get('output_encoding', 'utf-8')
+        if sys.version_info < (3,0):
+            try:
+                output = output.decode(output_encoding)
+            except UnicodeDecodeError:
+                # failsafe (default for latex2e writer)
+                output = output.decode('latin1', 'replace')
         # Get the expected output *after* writing the actual output.
         no_expected = self.no_expected_template % {
             'exp': expected_path, 'out': params['destination_path']}
@@ -164,20 +172,23 @@ expected output and check it in:
         f = open(expected_path, 'rb')
         expected = f.read()
         f.close()
+        try:
+            expected = expected.decode(output_encoding)
+        except UnicodeDecodeError:
+            expected = expected.decode('latin1', 'replace')
+
         diff = self.expected_output_differs_template % {
             'exp': expected_path, 'out': params['destination_path']}
         try:
             self.assertEquals(output, expected, diff)
         except AssertionError:
-            if hasattr(difflib, 'unified_diff'):
-                # Generate diff if unified_diff available:
-                diff = ''.join(
-                    difflib.unified_diff(expected.decode('latin1').splitlines(1),
-                                         output.decode('latin1').splitlines(1),
-                                         expected_path,
-                                         params['destination_path']))
+            diff = ''.join(difflib.unified_diff(
+                expected.splitlines(True), output.splitlines(True),
+		expected_path, params['destination_path']))
+            if sys.version_info < (3,0):
+                diff = diff.encode('ascii', 'replace')
             print >>sys.stderr, '\n%s:' % (self,)
-            print >>sys.stderr, diff.encode('ascii', 'replace')
+            print >>sys.stderr, diff
             raise
         # Execute optional function containing extra tests:
         if '_test_more' in namespace:

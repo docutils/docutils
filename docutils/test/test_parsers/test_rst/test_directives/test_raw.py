@@ -22,6 +22,12 @@ mydir = 'test_parsers/test_rst/test_directives/'
 raw1 = os.path.join(mydir, 'raw1.txt')
 utf_16_file = os.path.join(mydir, 'utf-16.csv')
 utf_16_file_rel = DocutilsTestSupport.utils.relative_path(None, utf_16_file)
+utf_16_error_str = ("UnicodeDecodeError: 'ascii' codec can't decode byte 0xfe "
+                    "in position 0: ordinal not in range(128)")
+if sys.version_info < (3,0):
+    utf_16_error_str = ("UnicodeError: Unable to decode input data.  "
+                        "Tried the following encodings: 'ascii'.\n"
+                        "            (%s)" % utf_16_error_str)
 
 totest = {}
 
@@ -115,13 +121,12 @@ Raw input file is UTF-16-encoded, and is not valid ASCII.
     <system_message level="4" line="3" source="test data" type="SEVERE">
         <paragraph>
             Problem with "raw" directive:
-            UnicodeError: Unable to decode input data.  Tried the following encodings: \'ascii\'.
-            (UnicodeDecodeError: 'ascii' codec can't decode byte 0xfe in position 0: ordinal not in range(128))
+            %s
         <literal_block xml:space="preserve">
             .. raw:: html
                :file: %s
                :encoding: ascii
-""" % utf_16_file_rel],
+""" % (utf_16_error_str, utf_16_file_rel)],
 [u"""\
 .. raw:: html
    :encoding: utf-8
