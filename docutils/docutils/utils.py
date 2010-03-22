@@ -15,7 +15,7 @@ import warnings
 import unicodedata
 from docutils import ApplicationError, DataError
 from docutils import nodes
-from docutils._compat import b
+from docutils._compat import bytes
 
 
 class SystemMessage(ApplicationError):
@@ -70,7 +70,7 @@ class Reporter:
      SEVERE_LEVEL) = range(5)
 
     def __init__(self, source, report_level, halt_level, stream=None,
-                 debug=0, encoding=None, error_handler='replace'):
+                 debug=0, encoding=None, error_handler='backslashreplace'):
         """
         :Parameters:
             - `source`: The path to or description of the source data.
@@ -106,13 +106,12 @@ class Reporter:
 
         if stream is None:
             stream = sys.stderr
-        elif type(stream) in (str, unicode):
-            # Leave stream untouched if it's ''.
-            if stream != '':
-                if type(stream) == str:
-                    stream = open(stream, 'w')
-                elif type(stream) == unicode:
-                    stream = open(stream.encode(), 'w')
+        elif stream and type(stream) in (unicode, bytes):
+            # if `stream` is a file name, open it
+            if type(stream) is bytes:
+                stream = open(stream, 'w')
+            else:
+                stream = open(stream.encode(), 'w')
 
         self.stream = stream
         """Where warning output is sent."""
@@ -185,9 +184,12 @@ class Reporter:
         if self.stream and (level >= self.report_level
                             or self.debug_flag and level == self.DEBUG_LEVEL
                             or level >= self.halt_level):
-            msgtext = msg.astext().encode(self.encoding, self.error_handler)
-            self.stream.write(msgtext)
-            self.stream.write(b('\n'))
+            msgtext = msg.astext() + '\n'
+            try:
+                self.stream.write(msgtext)
+            except UnicodeEncodeError:
+                self.stream.write(msgtext.encode(self.encoding,
+                                                 self.error_handler))
         if level >= self.halt_level:
             raise SystemMessage(msg, level)
         if level > self.DEBUG_LEVEL or self.debug_flag:
