@@ -11,12 +11,15 @@ Test module for utils.py.
 import unittest
 import sys
 from DocutilsTestSupport import utils, nodes
-from docutils._compat import BytesIO, b
+if sys.version_info < (3,0):
+    from StringIO import StringIO
+else:
+    from io import StringIO
 
 
 class ReporterTests(unittest.TestCase):
 
-    stream = BytesIO()
+    stream = StringIO()
     reporter = utils.Reporter('test data', 2, 4, stream, 1)
 
     def setUp(self):
@@ -31,7 +34,7 @@ class ReporterTests(unittest.TestCase):
         debug output
 """)
         self.assertEquals(self.stream.getvalue(),
-                          b('test data:: (DEBUG/0) debug output\n'))
+                          'test data:: (DEBUG/0) debug output\n')
 
     def test_level1(self):
         sw = self.reporter.system_message(1, 'a little reminder')
@@ -40,7 +43,7 @@ class ReporterTests(unittest.TestCase):
     <paragraph>
         a little reminder
 """)
-        self.assertEquals(self.stream.getvalue(), b(''))
+        self.assertEquals(self.stream.getvalue(), '')
 
     def test_level2(self):
         sw = self.reporter.system_message(2, 'a warning')
@@ -50,7 +53,7 @@ class ReporterTests(unittest.TestCase):
         a warning
 """)
         self.assertEquals(self.stream.getvalue(),
-                          b('test data:: (WARNING/2) a warning\n'))
+                          'test data:: (WARNING/2) a warning\n')
 
     def test_level3(self):
         sw = self.reporter.system_message(3, 'an error')
@@ -60,18 +63,18 @@ class ReporterTests(unittest.TestCase):
         an error
 """)
         self.assertEquals(self.stream.getvalue(),
-                          b('test data:: (ERROR/3) an error\n'))
+                          'test data:: (ERROR/3) an error\n')
 
     def test_level4(self):
         self.assertRaises(utils.SystemMessage, self.reporter.system_message, 4,
                           'a severe error, raises an exception')
-        self.assertEquals(self.stream.getvalue(), b('test data:: (SEVERE/4) '
-                          'a severe error, raises an exception\n'))
+        self.assertEquals(self.stream.getvalue(), 'test data:: (SEVERE/4) '
+                          'a severe error, raises an exception\n')
 
 
 class QuietReporterTests(unittest.TestCase):
 
-    stream = BytesIO()
+    stream = StringIO()
     reporter = utils.Reporter('test data', 5, 5, stream, 0)
 
     def setUp(self):
@@ -82,7 +85,7 @@ class QuietReporterTests(unittest.TestCase):
         sw = self.reporter.debug('a debug message')
         # None because debug is disabled.
         self.assertEquals(sw, None)
-        self.assertEquals(self.stream.getvalue(), b(''))
+        self.assertEquals(self.stream.getvalue(), '')
 
     def test_info(self):
         sw = self.reporter.info('an informational message')
@@ -91,7 +94,7 @@ class QuietReporterTests(unittest.TestCase):
     <paragraph>
         an informational message
 """)
-        self.assertEquals(self.stream.getvalue(), b(''))
+        self.assertEquals(self.stream.getvalue(), '')
 
     def test_warning(self):
         sw = self.reporter.warning('a warning')
@@ -100,7 +103,7 @@ class QuietReporterTests(unittest.TestCase):
     <paragraph>
         a warning
 """)
-        self.assertEquals(self.stream.getvalue(), b(''))
+        self.assertEquals(self.stream.getvalue(), '')
 
     def test_error(self):
         sw = self.reporter.error('an error')
@@ -109,7 +112,7 @@ class QuietReporterTests(unittest.TestCase):
     <paragraph>
         an error
 """)
-        self.assertEquals(self.stream.getvalue(), b(''))
+        self.assertEquals(self.stream.getvalue(), '')
 
     def test_severe(self):
         sw = self.reporter.severe('a severe error')
@@ -118,7 +121,7 @@ class QuietReporterTests(unittest.TestCase):
     <paragraph>
         a severe error
 """)
-        self.assertEquals(self.stream.getvalue(), b(''))
+        self.assertEquals(self.stream.getvalue(), '')
 
 
 class NameValueTests(unittest.TestCase):
@@ -172,14 +175,13 @@ class ExtensionOptionTests(unittest.TestCase):
               nodes.field_body('', nodes.paragraph('', '2.0')))
         field_list += nodes.field(
               '', nodes.field_name('', 'cdef'),
-              nodes.field_body('', nodes.paragraph('',
-                  unicode(b('hol%s' % chr(224)), 'iso-8859-1'))))
+              nodes.field_body('', nodes.paragraph('', u'hol\u00e0')))
         field_list += nodes.field(
               '', nodes.field_name('', 'empty'), nodes.field_body())
         self.assertEquals(
               utils.extract_extension_options(field_list, self.optionspec),
               {'a': 1, 'bbb': 2.0,
-               'cdef': unicode(b('hol%s' % chr(224)), 'iso-8859-1'),
+               'cdef': u'hol\u00e0',
                'empty': None})
         self.assertRaises(KeyError, utils.extract_extension_options,
                           field_list, {})
