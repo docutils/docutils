@@ -2968,6 +2968,178 @@ state fortran
 
 
 /**
+ * Name: generic
+ * Description: Generic markup that uses -D defines to specify what to do
+ *
+ * Author: Mark Nodine
+ * Date: 19/3/10
+ */
+
+/* These are the constants to override to control the behavior */
+use_c_comments = 0;		/* Markup c-style comments? */
+use_line_comments = 0;		/* Markup line comments? */
+line_comment_string = "//";	/* String that begins line comments */
+use_dq_strings = 0;		/* Markup double-quoted strings? */
+use_sq_strings = 0;		/* Markup single-quoted strings? */
+use_bq_strings = 0;		/* Markup backtick-quoted strings? */
+use_pp_lines = 0;		/* Markup preprocessor lines */
+pp_char = "#";		   	/* String that begins preprocessor lines */
+use_keywords = 0;		/* Markup keywords? */
+keyword_string = "$a";		/* Keywords to be highlighted.  Words only. */
+use_types = 0;			/* Markup types? */
+type_string = "$a";		/* Types to be highlighted. */
+use_references = 0;		/* Markup references? */
+reference_string = "$a";	/* String for references */
+use_variables = 0;		/* Markup variables? */
+variable_string = "$a";		/* String for variable names */
+use_functions = 0;		/* Markup function definitions? */
+function_string = "^()([a-zA-Z_][a-zA-Z_0-9:~]*)([ \t]*\\()";
+                                /* String for function definitions.
+                                   Must have 3 parenthesized expressions. */
+function_format = "none function_name none";
+                                /* Format for each of the 3 expressions:
+				   each is one of "none", "type",
+				   "function_name", or "keyword" */
+
+sub format_string (format, string) {
+    if (strcmp(format, "none") == 0 || strcmp(string, "") == 0) {
+      language_print(string);
+      return;
+    }
+    if (strcmp(format, "function_name") == 0) {
+      function_name_face (true);
+      language_print(string);
+      function_name_face (false);
+      return;
+    }
+    if (strcmp(format, "type") == 0) {
+      type_face (true);
+      language_print(string);
+      type_face (false);
+      return;
+    }
+    if (strcmp(format, "keyword") == 0) {
+      keyword_face (true);
+      language_print(string);
+      keyword_face (false);
+      return;
+    }
+    panic("Unknown format style: ", format);
+}
+
+state generic
+{
+  BEGIN {
+    debug ("generic");
+
+    no_re = regexp("$a");	/* Can't match "a" after end of line... */
+    c_comment_re = use_c_comments ? /\/\*/ : no_re;
+    line_comment_re = use_line_comments ? regexp(line_comment_string) : no_re;
+    dq_string_re = use_dq_strings ? /\"/   : no_re;
+    sq_string_re = use_sq_strings ? /[\']/ : no_re;
+    bq_string_re = use_bq_strings ? /`/    : no_re;
+    pp_line_re   = use_pp_lines   ? regexp(concat("^[ \t]*", pp_char)) : no_re;
+    keyword_re   = use_keywords ? regexp(concat("\\b(",keyword_string,")\\b"))
+					   : no_re;
+    type_re      = use_types      ? regexp(type_string) : no_re;
+    reference_re = use_references ? regexp(reference_string) : no_re;
+    variable_re  = use_variables  ? regexp(variable_string) : no_re;
+    function_re  = use_functions  ? regexp(function_string) : no_re;
+    function_format_list = split(/[ ]+/, function_format);
+    header ();
+
+  }
+  END {
+    trailer ();
+  }
+
+  /* Comments. */
+  c_comment_re {
+    comment_face (true);
+    language_print ($0);
+    call (c_comment);
+    comment_face (false);
+  }
+  line_comment_re {
+    comment_face (true);
+    language_print ($0);
+    call (eat_one_line);
+    comment_face (false);
+  }
+
+  /* String constants. */
+  dq_string_re {
+    string_face (true);
+    language_print ($0);
+    call (perl_dquot_string);
+    string_face (false);
+  }
+  sq_string_re {
+    string_face (true);
+    language_print ($0);
+    call (perl_quot_string);
+    string_face (false);
+  }
+
+  /* Backquoted command string */
+  bq_string_re {
+    string_face (true);
+    language_print ($0);
+    call (perl_bquot_string);
+    string_face (false);
+  }
+
+  /* Pre-processor lines. */
+  pp_line_re {
+    language_print ($0);
+    call (c_ppline);
+  }
+
+  /*
+   * Function definitions
+   */
+function_re {
+    format_string(function_format_list[0], $1);
+    format_string(function_format_list[1], $2);
+    format_string(function_format_list[2], $3);
+  }
+
+  /* Keywords. */
+  keyword_re {
+    keyword_face (true);
+    language_print ($0);
+    keyword_face (false);
+  }
+
+  /* Types. */
+  type_re {
+    type_face (true);
+    language_print ($0);
+    type_face (false);
+  }
+
+  /* Reference. */
+  reference_re {
+    reference_face (true);
+    language_print ($0);
+    reference_face (false);
+  }
+
+  /* Variable. */
+  variable_re {
+    variable_name_face (true);
+    language_print ($0);
+    variable_name_face (false);
+  }
+
+
+  LANGUAGE_SPECIALS {
+    language_print ($0);
+  }
+}
+
+
+/**
  * Name: haskell
  * Description: Haskell programming language.
  *
