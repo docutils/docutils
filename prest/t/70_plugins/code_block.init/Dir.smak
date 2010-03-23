@@ -7,5 +7,7 @@
 	 code10 => q(-D code-block-states-file=nosuchfile.rst),
 	 code11 => q(-D code-block-states-file=nosuchfile.rst),
 	 code14 => q(-D code-block-states-file=nosuchfile.rst),
+	 code15 => q(-D code-block-states-file=mkfile.st \
+		     -D code-block-states-flags='-D specials="BIN_[A-Z]+"'),
 	 );
 }
