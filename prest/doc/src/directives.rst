@@ -1342,7 +1342,9 @@ The "perl" directive defines the following global variables:
    Array of reference to array of [file name, line number] pairs that
    have included the current file.
 ``$opt_<x>`` or ``$opt{x}``
-   The ``<x>`` option from the command line.
+   The ``<x>`` option from the command line.  You can change the ``-D``
+   options, possibly affecting subsequent parsing, by assigning to
+   ``$PARSER->{opt}{D}{option}``.
 ``$PARSER``
    The Text::Restructured parser object to allow text parsing within a
    perl directive.
@@ -1482,9 +1484,12 @@ is optional and specifies the source language of the code block.  If the code
 block is read from a file, the language will usually default
 correctly.  The following language specifications are recognized:
 
-  ada asm awk c changelog cpp elisp fortran haskell html idl java
-  javascript mail makefile nroff objc pascal perl postscript python
-  scheme sh states synopsys tcl vba verilog vhdl
+  ada asm awk c changelog cpp elisp fortran generic haskell html idl
+  java javascript mail makefile nroff objc pascal perl postscript
+  python scheme sh states synopsys tcl vba verilog vhdl
+
+The ``generic`` specification has markup that defaults to nothing, but
+is controllable using the ``:states-flags:`` option.
 
 The following options are recognized:
 
@@ -1519,6 +1524,16 @@ The following options are recognized:
 
 ``:numbered:``
   Number the lines of the code block.
+
+``:states-file:``
+  Specifies the name of a non-standard formatting file to be used by
+  the ``states`` program in doing markup.  If specified, overrides the
+  value of the ``-D code-block-states-file`` command-line option.
+
+``:states-flags:``
+  Specifies a set of additional flags to be passed to the ``states``
+  program when doing markup.  If specified, overrides the value of the
+  ``-D code-block-states-flags`` command-line option.
 
 .. _raw:
 
