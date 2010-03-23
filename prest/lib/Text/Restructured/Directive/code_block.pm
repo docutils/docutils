@@ -55,11 +55,14 @@ The directive has the following options:
 
 This directive also uses the following command-line definition:
 
-  -D code-block-states-file=<file>   The file to be passed to the states
-                                     program to specify how to do the
-                                     formatting.  Searches the perl include
-                                     path to find the file.  Default is
-                                     "Text/Restructured/Directive/rst.st".
+  -D code-block-states-file=<file>    The file to be passed to the states
+                                      program to specify how to do the
+                                      formatting.  Searches the perl include
+                                      path to find the file.  Default is
+                                      "Text/Restructured/Directive/rst.st".
+  -D code-block-states-flags=<flags>  A set of flags to be passed to the
+                                      states program to specify how to do the
+                                      formatting.  Default is "".
 =end Description
 =end reST
 =cut
@@ -80,7 +83,7 @@ BEGIN {
 # Returns: array of DOM objects
 sub main {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
-    my @optlist = qw(class color file level numbered);
+    my @optlist = qw(class color file level numbered states-file states-flags);
     my $dhash = Text::Restructured::Directive::parse_directive
 	($parser, $dtext, $lit, $source, $lineno, \@optlist);
     my($args, $content, $content_lineno, $options) =
@@ -94,8 +97,11 @@ sub main {
     my ($states_bin) = grep -x "$_/states",
        qw(/bin /usr/bin /usr/local/bin), split(/:/, $ENV{PATH});
     my $subdir = 'Text/Restructured/Directive';
-    my $st_name = $parser->{opt}{D}{code_block_states_file} ||
+    my $st_name = $options->{'states-file'} ||
+	$parser->{opt}{D}{code_block_states_file} ||
 	"$subdir/rst.st";
+    my $st_flags = $options->{'states-flags'} ||
+	$parser->{opt}{D}{code_block_states_flags} || '';
     my ($st_dir) = grep -r "$_/$st_name", ('.', @INC);
     $st_dir = '' unless defined $st_dir;
     my ($st) = grep -r $_, $st_name, "$st_dir/$st_name";
@@ -115,7 +121,7 @@ sub main {
 	push @args, "-D hl_level=$options->{level}"
 	    if defined $options->{level};
 	push @args, "-s $1" if $args =~ /^(\w+)$/;
-	my $cmd = "$states_bin/states @args -f $st $input_file 2>&1";
+	my $cmd = "$states_bin/states $st_flags @args -f $st $input_file 2>&1";
 	my $markup;
 	do {			# Make safe for -T flag
 	    local %ENV;
