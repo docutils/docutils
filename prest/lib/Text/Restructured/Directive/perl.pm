@@ -48,10 +48,10 @@ use within the perl code:
 ``@INCLUDES``
    Array of [filename, linenumber] pairs of files which have included this one.
 ``$opt_<x>`` or ``$opt{x}``
-   The ``<x>`` option from the command line.  Changing one of these 
-   variables has no effect upon the parser.  You can change the -D
-   options to affect subsequent parsing, by using
-   ``$PARSER->{opt}{D}{option}``.
+   The ``<x>`` option from the command line.  Changing one of these
+   variables has no effect upon the parser.  However, you can
+   effectively set the ``-D x=y`` option, possibly affecting
+   subsequent parsing, by assigning ``y`` to ``$PARSER->{opt}{D}{x}``.
 ``$PARSER``
    The Text::Restructured parser object to allow text parsing within a
    perl directive.
@@ -303,14 +303,7 @@ sub evaluate_code {
 	     '$TOP_FILE'  => $parser->{TOP_FILE},
 	     '$PARSER'    => $parser,
 	     '@INCLUDES'  => \@Text::Restructured::INCLUDES);
-	my @val = $Perl::safe_world->eval($code);
-	# Allow the code to modify opt_D
-	my %opt_D = $Perl::safe_world->get('%main::opt_D');
-	if (%opt_D) {
-	    $parser->{opt}{D} ||= {};
-	    %{$parser->{opt}{D}} = %opt_D;
-	}
-	return wantarray() ? @val : $val[0];
+	return $Perl::safe_world->eval($code);
     }
 }
 
