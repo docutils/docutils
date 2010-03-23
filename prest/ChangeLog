@@ -5,6 +5,34 @@ Release Notes
 
 .. contents::
 
+Release 0.3.42
+--------------
+
+reStructuredText parsing:
+
+* Fixed a bug where recursive substitution definitions caused an
+  infinite loop.
+* Fixed an issue that caused some tests to fail on systems that do not
+  have a ``convert`` program available.
+
+Plug-in directives:
+
+* Improved POD documentation of perl:: directive.
+
+* The code-block:: directive has a new ``-D code-block-states-flags``
+  flag to specify non-standard flags (such as defines) to the states
+  program while doing markup.
+
+* The code-block:: directive has new options ``:states-file:`` and
+  ``:states-flags:`` that perform the same function (and, if
+  specified, override the values of) the ``-D code-block-states-file``
+  and ``-D code-block-states-flags`` options on a per-code-block
+  basis.
+
+* The default states markup file has a new language definition
+  ``generic`` whose markup is controlled completely by ``-D
+  code-block-states-flags`` or ``:states-flags:``.
+
 Release 0.3.41
 --------------
 
