@@ -1,0 +1,25 @@
+<document source="test data">
+    <paragraph>
+        Another test of function markup.
+    <system_message level="1" line="3" source="test data" type="INFO">
+        <paragraph>
+            No directive entry for "code-block" in module "Text::Restructured::Directive".
+            Trying "code-block" as canonical directive name.
+    <parsed_literal xml:space="preserve">
+        <inline classes="keyword">
+            sub
+           \n\
+        <inline classes="function-name">
+            mysub
+         {
+          \n\
+        <inline classes="keyword">
+            return
+         \n\
+        <inline classes="keyword">
+            sub
+         { \n\
+        <inline classes="string">
+            "anonymous sub"
+         }
+        }
