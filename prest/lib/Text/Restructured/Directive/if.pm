@@ -15,7 +15,8 @@ package Text::Restructured::Directive::if;
 =begin Description
 Executes its argument as a perl expression and returns its
 content if the perl expression is true.  The content is
-interpreted as reStructuredText.  It has no options. It processes
+interpreted as reStructuredText.  It has no options. It has the same
+variables available to it as the ``perl::`` directive.  It processes
 the following defines:
 
 -D perl='perl-code'
