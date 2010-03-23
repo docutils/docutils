@@ -2,11 +2,11 @@ Test Specifying Row and Entry Attributes
 ----------------------------------------
 
 .. perl:: 
-   $main::opt_D{'rowattr'}='valign="top"'; "";
-   sub blue { $main::opt_D{'entryattr'} = 'bgcolor="blue"'; "" }
-   sub red { $main::opt_D{'entryattr'} = 'bgcolor="red"'; "" }
-   sub clear { delete $main::opt_D{'entryattr'}; "" }
-   sub bottom { $main::opt_D{'rowattr'}='valign="bottom"'; "" }
+   $PARSER->{opt}{D}{'rowattr'}='valign="top"'; "";
+   sub blue { $PARSER->{opt}{D}{'entryattr'} = 'bgcolor="blue"'; "" }
+   sub red { $PARSER->{opt}{D}{'entryattr'} = 'bgcolor="red"'; "" }
+   sub clear { delete $PARSER->{opt}{D}{'entryattr'}; "" }
+   sub bottom { $PARSER->{opt}{D}{'rowattr'}='valign="bottom"'; "" }
 
 =========== ============= ============= =============
 ..	      **Average**                **Comment**
