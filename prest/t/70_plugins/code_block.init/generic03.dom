@@ -1,0 +1,54 @@
+<document source="test data">
+    <paragraph>
+        Generic code with lots of markup
+    <system_message level="1" line="3" source="test data" type="INFO">
+        <paragraph>
+            No directive entry for "code-block" in module "Text::Restructured::Directive".
+            Trying "code-block" as canonical directive name.
+    <parsed_literal xml:space="preserve">
+        <inline classes="reference-name">
+            +include
+         \n\
+        <inline classes="string">
+            "funnyfile"
+        
+        <inline classes="comment">
+            /* This is a multi-line
+               c-comment
+             */
+        
+        <inline classes="comment">
+            # Single-line perl comment
+        
+        <inline classes="type-name">
+            addbit
+               \n\
+        <inline classes="function-name">
+            g1__0.cor
+         (
+        <inline classes="string">
+            "a string"
+        );
+        <inline classes="type-name">
+            addbit
+          \n\
+        <inline classes="function-name">
+            g1__1.cor
+         (
+        <inline classes="reference-name">
+            +abC_123
+        );
+        <inline classes="keyword">
+            while
+         ($a == 1 \n\
+        <inline classes="keyword">
+            or
+         $b == 2) {
+          message(
+        <inline classes="string">
+            'String'
+        ) < \n\
+        <inline classes="string">
+            `ls -l`
+        ;
+        } \n\

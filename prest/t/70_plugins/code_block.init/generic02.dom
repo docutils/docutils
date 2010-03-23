@@ -1,0 +1,29 @@
+<document source="test data">
+    <paragraph>
+        Generic code with default values
+    <system_message level="1" line="3" source="test data" type="INFO">
+        <paragraph>
+            No directive entry for "code-block" in module "Text::Restructured::Directive".
+            Trying "code-block" as canonical directive name.
+    <parsed_literal xml:space="preserve">
+        #
+        <inline classes="reference-name">
+            ifdef
+         \n\
+        <inline classes="variable-name">
+            FOO
+        
+        <inline classes="comment">
+            // A default function definition:
+        
+        void
+        <inline classes="function-name">
+            bar
+         (baz) {
+        }
+        #
+        <inline classes="reference-name">
+            endif
+         // \n\
+        <inline classes="variable-name">
+            FOO
