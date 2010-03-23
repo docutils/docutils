@@ -1342,9 +1342,10 @@ The "perl" directive defines the following global variables:
    Array of reference to array of [file name, line number] pairs that
    have included the current file.
 ``$opt_<x>`` or ``$opt{x}``
-   The ``<x>`` option from the command line.  You can change the ``-D``
-   options, possibly affecting subsequent parsing, by assigning to
-   ``$PARSER->{opt}{D}{option}``.
+   The ``<x>`` option from the command line.  Changing one of these
+   variables has no effect upon the parser.  However, you can
+   effectively set the ``-D x=y`` option, possibly affecting
+   subsequent parsing, by assigning ``y`` to ``$PARSER->{opt}{D}{x}``.
 ``$PARSER``
    The Text::Restructured parser object to allow text parsing within a
    perl directive.
