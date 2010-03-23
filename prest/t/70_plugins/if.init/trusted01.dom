@@ -28,10 +28,10 @@
             However, it is required for things like opening a file.
         <system_message level="4" line="18" source="test data" type="SEVERE">
             <paragraph>
-                Error executing "if" directive: 'open' trapped by operation mask at (eval 24) line 2.
+                Error executing "if" directive: open trapped by operation mask at (eval 66) line 2.
                 Run with -D trusted if you believe the code is safe.
             <literal_block xml:space="preserve">
-                .. if:: $main::opt_D{trusted} = 1; open F,"include1.txt"
+                .. if:: $main::PARSER->{opt}{D}{trusted} = 1; open F,"include1.txt"
                 \n\
                    This text should *not* appear, since it tries an unsafe operation.
         <paragraph>
@@ -41,7 +41,7 @@
              directive.
         <system_message level="4" line="24" source="test data" type="SEVERE">
             <paragraph>
-                Error executing "if" directive: 'open' trapped by operation mask at (eval 26) line 2.
+                Error executing "if" directive: open trapped by operation mask at (eval 72) line 2.
                 Run with -D trusted if you believe the code is safe.
             <literal_block xml:space="preserve">
                 .. if:: open F,"include1.txt"

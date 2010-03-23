@@ -5,7 +5,7 @@ Run with trusted=1.
 
 Trusted is not required for safe operations like the following.
 
-.. if:: $main::opt_w eq 'dom'
+.. if:: $opt_w eq 'dom'
 
    This text should appear, since we're using the 'dom' writer.
 
