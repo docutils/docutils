@@ -3,7 +3,7 @@ Perl Test
 
 Run with trusted=1.  Make sure we can't take away our privileges.
 
-.. perl:: $main::opt_D{'trusted'} = 0; "";
+.. perl:: $main::PARSER->{opt}{D}{trusted} = 0; "";
 
 Trusted is not required for safe operations like the following.
 
