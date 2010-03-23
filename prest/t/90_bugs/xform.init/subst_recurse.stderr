@@ -1,0 +1,2 @@
+subst_recurse.rst:1 (ERROR/3) Substitution of "ne" involved recursion.
+subst_recurse.rst:3 (ERROR/3) Substitution of "cd" involved recursion.
