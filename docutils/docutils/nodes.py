@@ -335,17 +335,14 @@ class Text(Node, reprunicode):
         self.rawsource = rawsource
         """The raw text from which this element was constructed."""
 
-    def __repr__(self):
-        data = reprunicode.__repr__(self)
-        if len(data) > 70:
-            data = reprunicode.__repr__(self[:64] + ' ...')
-        return '<%s: %s>' % (self.tagname, data)
+    def shortrepr(self, maxlen=18):
+        data = self
+        if len(data) > maxlen:
+            data = data[:maxlen-4] + ' ...'
+        return '<%s: %s>' % (self.tagname, repr(reprunicode(data)))
 
-    def shortrepr(self):
-        data = reprunicode.__repr__(self)
-        if len(data) > 20:
-            data = reprunicode.__repr__(self[:16] + ' ...')
-        return '<%s: %s>' % (self.tagname, data)
+    def __repr__(self):
+        return self.shortrepr(maxlen=68)
 
     def _dom_node(self, domroot):
         return domroot.createTextNode(unicode(self))

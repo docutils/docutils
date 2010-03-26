@@ -26,6 +26,10 @@ Changes Since 0.6
   - FileInput opens files as text files with universal newline support
     (mode "rU", configurable with the new optional argument "mode").
 
+* docutils/nodes.py
+
+  - Fix [ 2975987 ] repr(Text) failed with long string (Jeffrey C. Jacobs).
+
 * docutils/utils.py
 
   - Fix [ 2923723 ] let decode_path() tolerate path == None

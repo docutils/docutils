@@ -24,9 +24,15 @@ class TextTests(unittest.TestCase):
     def setUp(self):
         self.text = nodes.Text('Line 1.\nLine 2.')
         self.unicode_text = nodes.Text(u'Möhren')
+        self.longtext = nodes.Text('Mary had a little lamb whose '
+                                   'fleece was white as snow and '
+                                   'everwhere that Mary went the '
+                                   'lamb was sure to go.')
 
     def test_repr(self):
         self.assertEquals(repr(self.text), r"<#text: 'Line 1.\nLine 2.'>")
+        self.assertEquals(self.text.shortrepr(),
+                          r"<#text: 'Line 1.\nLine 2.'>")
 
     def test_str(self):
         self.assertEquals(str(self.text), 'Line 1.\nLine 2.')
@@ -43,12 +49,18 @@ class TextTests(unittest.TestCase):
 
     def test_asciirestriction(self):
         if sys.version_info < (3,):
-            self.assertRaises(UnicodeError, nodes.Text, b('hol%s' % chr(224)))
-            # more specifically: UnicodeDecodeError since py2.3
+            self.assertRaises(UnicodeDecodeError, nodes.Text,
+                              b('hol%s' % chr(224)))
         else:
             # no bytes at all allowed
             self.assertRaises(TypeError, nodes.Text, b('hol'))
 
+    def test_longrepr(self):
+        self.assertEquals(repr(self.longtext), r"<#text: 'Mary had a "
+                          r"little lamb whose fleece was white as snow "
+                          r"and everwh ...'>")
+        self.assertEquals(self.longtext.shortrepr(),
+                          r"<#text: 'Mary had a lit ...'>")
 
 class ElementTests(unittest.TestCase):
 
