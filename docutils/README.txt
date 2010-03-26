@@ -21,7 +21,9 @@ complete details.
 
        http://www.python.org/
 
-   Docutils is compatible with Python versions from 2.3 up to 2.6.
+   Docutils is compatible with Python versions from 2.3 up to 2.6 and
+   version 3.1. (Support for Python 3 is new and might still have some
+   issues.)
 
 2. Use the latest Docutils code.  Get the code from Subversion or from
    the snapshot:
@@ -31,13 +33,14 @@ complete details.
    See `Releases & Snapshots`_ below for details.
 
 3. Unpack the tarball in a temporary directory (**not** directly in
-   Python's ``site-packages``) and run ``install.py`` with admin
-   rights.  On Windows systems it may be sufficient to double-click
-   ``install.py``.  On Unix or Mac OS X, type::
+   Python's ``site-packages``) and run ``setup.py install`` or
+   ``install.py`` with admin rights.  On Windows systems it may be
+   sufficient to double-click ``install.py``.  On Unix or Mac OS X,
+   type::
 
         su
         (enter admin password)
-        ./install.py
+        ./setup.py install
 
    See Installation_ below for details.
 
@@ -200,7 +203,10 @@ GNU/Linux, BSDs, Unix, Mac OS X, etc.
    the complete path, such as /usr/local/bin/python.  You may need
    root permissions to complete this step.
 
-   You can also just run install.py; it does the same thing.
+   To install for a specific python version, use this version in the
+   setup call, e.g. ::
+
+       python3.1 setup.py install
 
 
 Windows
@@ -220,36 +226,23 @@ following:
 
        <path_to_python.exe>\python setup.py install
 
+   To install for a specific python version, specify the Python
+   executable for this version.
 
-Install for Python 3
---------------------
 
-.. From: Georg Brandl <g.brandl <at> gmx.net>
-   Subject: Ported docutils to Python 3
-   Newsgroups: gmane.text.docutils.devel
-   Date: 2009-04-01
+Python 3 peculiarities
+----------------------
 
-   I've just committed a somewhat larger patch that ports docutils to Python 3.
-   If you want to use docutils under Python 3, here is how to do it:
+If called from Python 3, setup.py, in addition to copying the sources
+to the right place, will also convert them using 2to3 to Python 3
+compatible code.
 
-* Get a build of the Python 3.1 branch (3.0 release won't work, but you don't
-  want to use it anyway).
-
-* Run python3 setup.py build -- this, in addition to copying the sources to
-  build/lib, will also convert them using 2to3 to Python 3-compatible code.
-  This takes quite some time the first time, but it works incrementally, so
-  if you change one file it will only reconvert that file the next time you
-  run setup.py build.
-
-* Run python3 tests/alltests3.py -- this will copy and convert the test suite
-  to build/lib/test and run it.  This is incremental like the setup.py build.
-
-Note that you can still run the test suite with Python 2 with the normal
-python tests/alltests.py.
-
-.. So if you make a change, it would be nice if you, in addition to
-   testing with Python 2, also tested with Python 3.  If you run into
-   problems with the test suite under 3, feel free to mail me.
+* If you want to test or develop Docutils, also run ``python3 setup.py
+  build``. This will generate Python 3 compatible sources, tests and
+  developer tools in the build directory.  Do changes on the Python 2
+  versions of the sources and re-run the build command. This works
+  incrementally, so if you change one file it will only reconvert that
+  file the next time you run setup.py build.
 
 
 Usage
@@ -275,9 +268,13 @@ Alternatively::
     tools/buildhtml.py --config=tools/docutils.conf          (Unix)
     python tools\buildhtml.py --config=tools\docutils.conf   (Windows)
 
+With Python 3, call::
+
+    build/<Python-3-subdir>/tools/buildhtml.py --config=tools/docutils.conf
+
 Some files may generate system messages (warnings and errors).  The
 ``docs/user/rst/demo.txt`` file (under the archive directory) contains
-5 intentional errors.  (They test the error reporting mechanism!)
+five intentional errors.  (They test the error reporting mechanism!)
 
 There are many front-end tools in the unpacked "tools" subdirectory.
 You may want to begin with the "rst2html.py" front-end tool.  Most
@@ -307,10 +304,16 @@ Under Windows, type::
     cd <archive_directory_path>\test
     python alltests.py
 
+For testing with Python 3 use the converted test suite::
+
+    cd <archive_directory_path>/build/<Python-3-subdir>/test
+    python alltests.py
+
+
 You should see a long line of periods, one for each test, and then a
 summary like this::
 
-    Ran 518 tests in 24.653s
+    Ran 1111 tests in 24.653s
 
     OK
     Elapsed time: 26.189 seconds
@@ -321,10 +324,11 @@ two times represents the time required to set up the tests (import
 modules, create data structures, etc.).
 
 If any of the tests fail, please `open a bug report`_, `send email`_,
-or post a message via the `web interface`_.  Please include all
-relevant output, information about your operating system, Python
-version, and Docutils version.  To see the Docutils version, use these
-commands in the shell::
+or post a message via the `web interface`_ (see `Bugs <BUGS.html>`_).
+Please include all relevant output, information about your operating
+system, Python version, and Docutils version.  To see the Docutils
+version, use one of the ``rst2*`` front ends or ``tools/quicktest.py``
+with the ``--version`` option, e.g.::
 
     cd ../tools
     ./quicktest.py --version
@@ -333,6 +337,9 @@ Windows users type these commands::
 
     cd ..\tools
     python quicktest.py --version
+
+Python 3 users must use ``build/<Python-3-subdir>/tools/quicktest.py``.
+
 
 .. _open a bug report:
    http://sourceforge.net/tracker/?group_id=38414&atid=422030
