@@ -269,6 +269,7 @@ command line used.""" % (__version__, __version_details__,
                                 utils.Reporter.levels[error.level]))
 
     def report_UnicodeError(self, error):
+        data = error.object[error.start:error.end]
         sys.stderr.write(
             '%s: %s\n'
             '\n'
@@ -277,19 +278,9 @@ command line used.""" % (__version__, __version_details__,
             'Try setting "--output-encoding-error-handler" to\n'
             '\n'
             '* "xmlcharrefreplace" (for HTML & XML output);\n'
-            % (error.__class__.__name__, error,
-               self.settings.output_encoding))
-        try:
-            data = error.object[error.start:error.end]
-            sys.stderr.write(
-                '  the output will contain "%s" and should be usable.\n'
-                '* "backslashreplace" (for other output formats, Python 2.3+);\n'
-                '  look for "%s" in the output.\n'
-                % (data.encode('ascii', 'xmlcharrefreplace'),
-                   data.encode('ascii', 'backslashreplace')))
-        except AttributeError:
-            sys.stderr.write('  the output should be usable as-is.\n')
-        sys.stderr.write(
+            '  the output will contain "%s" and should be usable.\n'
+            '* "backslashreplace" (for other output formats);\n'
+            '  look for "%s" in the output.\n'
             '* "replace"; look for "?" in the output.\n'
             '\n'
             '"--output-encoding-error-handler" is currently set to "%s".\n'
@@ -300,7 +291,11 @@ command line used.""" % (__version__, __version_details__,
             'Include "--traceback" output, Docutils version (%s),\n'
             'Python version (%s), your OS type & version, and the\n'
             'command line used.\n'
-            % (self.settings.output_encoding_error_handler,
+            % (error.__class__.__name__, error,
+               self.settings.output_encoding,
+               data.encode('ascii', 'xmlcharrefreplace'),
+               data.encode('ascii', 'backslashreplace'),
+               self.settings.output_encoding_error_handler,
                __version__, sys.version.split()[0]))
 
 default_usage = '%prog [options] [<source> [<destination>]]'
