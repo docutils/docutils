@@ -1731,6 +1731,8 @@ Unimplemented Transforms
 
     * Automatically insert a "References" heading?
 
+.. _CrossTeX: http://www.cs.cornell.edu/people/egs/crosstex/
+.. _Pybtex:   http://pybtex.sourceforge.net/
 
 * _`Reference Merging`
 
