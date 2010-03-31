@@ -746,6 +746,20 @@ stylesheet_path
     __ `embed_stylesheet [html4css1 writer]`_
     __ `stylesheet_path [latex2e writer]`_
 
+.. _table_style [html4css1 writer]:
+
+table_style
+    Added to standard table classes to allow styling with CSS.
+    The default sylesheet defines:
+
+    borderless
+      no borders around the table.
+
+    .. TODO: booktabs
+               a line above and below the table and one after the head.
+
+    Default: "".  Option: ``--table-style``.
+
 .. _template [html4css1 writer]:
 
 template
@@ -1099,13 +1113,18 @@ _`section_enumerator_separator`
 
     Default: "-".  Option: ``--section-enumerator-separator``.
 
-_`table_style`
-    Specify the drawing of separation lines.
+.. _table_style [latex2e writer]:
 
-    - "standard" lines around and between cells.
-    - "booktabs" a line above and below the table and one after the
-      head.
-    - "nolines".
+table_style
+    Specify the drawing of separation lines.
+    Supported values:
+
+    standard
+      lines around and between cells.
+    booktabs
+      a line above and below the table and one after the head.
+    borderless
+      no lines.
 
     Default: "standard".  Option: ``--table-style``.
 
