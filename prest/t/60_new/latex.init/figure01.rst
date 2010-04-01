@@ -1,4 +1,4 @@
-.. figure:: foo.ps
+.. figure:: foo.xps
    :height: 24
    :width: 2.2in
 

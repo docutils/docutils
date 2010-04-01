@@ -14,7 +14,7 @@
                        => q(-W cloak-email-addresses),
          'document-class'
                        => q(-W documentclass=manual),
-	 figure02      => q(-W image-ext=ps),
+	 figure02      => q(-W image-ext=xps),
 	 footer01      => q(-D xformoff=1 -D time=0 -D generator=0 -W footer=1),
 	 footer02      => q(-D xformoff=1 -D time=0 -D generator=0),
 	 'footnote-links'
