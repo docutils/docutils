@@ -1,4 +1,4 @@
-.. figure:: foo.ps
+.. figure:: foo.xps
    :class: figure*
 
    This is a caption.
