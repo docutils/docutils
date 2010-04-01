@@ -1255,7 +1255,7 @@ EOS
 	if ($dom->first->tag eq 'decoration') {
 	    $decoration = $dom->first->{val};
 	    shift @{$dom->{content}};
-	    $str = join('', map($_->{val}, @{$dom->{content}}));
+	    $str = join('', map($_->{val} || '', @{$dom->{content}}));
 	}
 	my @doc = ("\\documentclass" . ($documentclass_opts ne '' ?
 					"[$documentclass_opts]" : '') .
