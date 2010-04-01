@@ -2999,7 +2999,8 @@ function_string = "^()([a-zA-Z_][a-zA-Z_0-9:~]*)([ \t]*\\()";
 function_format = "none function_name none";
                                 /* Format for each of the 3 expressions:
 				   each is one of "none", "type",
-				   "function_name", or "keyword" */
+				   "function_name", "keyword", "reference",
+				   or "variable" or a custom class. */
 
 sub format_string (format, string) {
     if (strcmp(format, "none") == 0 || strcmp(string, "") == 0) {
@@ -3024,7 +3025,21 @@ sub format_string (format, string) {
       keyword_face (false);
       return;
     }
-    panic("Unknown format style: ", format);
+    if (strcmp(format, "reference") == 0) {
+      reference_face (true);
+      language_print(string);
+      reference_face (false);
+      return;
+    }
+    if (strcmp(format, "variable") == 0) {
+      variable_name_face (true);
+      language_print(string);
+      variable_name_face (false);
+      return;
+    }
+    custom_face(1, format);
+    language_print(string);
+    custom_face(0, format);
 }
 
 state generic
@@ -3098,10 +3113,33 @@ state generic
   /*
    * Function definitions
    */
-function_re {
+  function_re {
     format_string(function_format_list[0], $1);
-    format_string(function_format_list[1], $2);
-    format_string(function_format_list[2], $3);
+    list_length = length(function_format_list);
+    if (list_length > 1) {
+      format_string(function_format_list[1], $2);
+      if (list_length > 2) {
+	format_string(function_format_list[2], $3);
+	if (list_length > 3) {
+	  format_string(function_format_list[3], $4);
+	  if (list_length > 4) {
+	    format_string(function_format_list[4], $5);
+	    if (list_length > 5) {
+	      format_string(function_format_list[5], $6);
+	      if (list_length > 6) {
+		format_string(function_format_list[6], $7);
+		if (list_length > 7) {
+		  format_string(function_format_list[7], $8);
+		  if (list_length > 8) {
+		    format_string(function_format_list[8], $9);
+		  }
+		}
+	      }
+	    }
+	  }
+	}
+      }
+    }
   }
 
   /* Keywords. */
@@ -3111,18 +3149,18 @@ function_re {
     keyword_face (false);
   }
 
-  /* Types. */
-  type_re {
-    type_face (true);
-    language_print ($0);
-    type_face (false);
-  }
-
   /* Reference. */
   reference_re {
     reference_face (true);
     language_print ($0);
     reference_face (false);
+  }
+
+  /* Types. */
+  type_re {
+    type_face (true);
+    language_print ($0);
+    type_face (false);
   }
 
   /* Variable. */
