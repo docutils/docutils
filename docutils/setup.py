@@ -90,7 +90,7 @@ def do_setup():
     kwargs = package_data.copy()
     extras = get_extras()
     if extras:
-        kwargs['py_modules'] += extras
+        kwargs['py_modules'] = extras
     kwargs['classifiers'] = classifiers
     # Install data files properly.
     kwargs['cmdclass'] = {'build_data': build_data,
