@@ -15,8 +15,8 @@ import os
 import sys
 import tempfile
 
-#import pygments
-#from pygments import formatter, lexers
+import pygments
+from pygments import formatter, lexers
 import zipwrap
 import Image
 import imagescale
@@ -1213,51 +1213,51 @@ class ParagraphStyle(TextStyle):
     PREFIX = 'P%d'
 
 
-# class OdtCodeFormatter(formatter.Formatter):  
-#     def __init__(self, writable, preso):
-#         formatter.Formatter.__init__(self)
-#         self.writable = writable
-#         self.preso = preso
+class OdtCodeFormatter(formatter.Formatter):  
+    def __init__(self, writable, preso):
+        formatter.Formatter.__init__(self)
+        self.writable = writable
+        self.preso = preso
 
-#     def format(self, source, outfile):
-#         tclass = pygments.token.Token
-#         for ttype, value in source:
-#             # getting ttype, values like (Token.Keyword.Namespace, u'')
-#             if value == '':
-#                 continue
-#             style_attrib = self.get_style(ttype)
-#             tstyle = TextStyle(**style_attrib)
-#             self.writable.slide.push_style(tstyle)
-#             if value == '\n':
-#                 self.writable.slide.insert_line_break = 1
-#                 self.writable.line_break()
-#             else:
-#                 parts = value.split('\n')
-#                 for part in parts[:-1]:
-#                     self.writable.write(part)
-#                     self.writable.slide.insert_line_break = 1
-#                     self.writable.line_break()
-#                 self.writable.write(parts[-1])
-#             self.writable.slide.pop_style()
-#             self.writable.pop_node()
+    def format(self, source, outfile):
+        tclass = pygments.token.Token
+        for ttype, value in source:
+            # getting ttype, values like (Token.Keyword.Namespace, u'')
+            if value == '':
+                continue
+            style_attrib = self.get_style(ttype)
+            tstyle = TextStyle(**style_attrib)
+            self.writable.slide.push_style(tstyle)
+            if value == '\n':
+                self.writable.slide.insert_line_break = 1
+                self.writable.line_break()
+            else:
+                parts = value.split('\n')
+                for part in parts[:-1]:
+                    self.writable.write(part)
+                    self.writable.slide.insert_line_break = 1
+                    self.writable.line_break()
+                self.writable.write(parts[-1])
+            self.writable.slide.pop_style()
+            self.writable.pop_node()
 
             
-#     def get_style(self, tokentype):
-#         while not self.style.styles_token(tokentype):
-#             tokentype = tokentype.parent
-#         value = self.style.style_for_token(tokentype)
-#         # default to monospace
-#         results = {
-#             'fo:font-family':MONO_FONT,
-#             'style:font-family-generic':"swiss",
-#             'style:font-pitch':"fixed"}
-#         if value['color']:
-#             results['fo:color'] = '#' + value['color']
-#         if value['bold']:
-#             results['fo:font-weight'] = 'bold'
-#         if value['italic']:
-#             results['fo:font-weight'] = 'italic'
-#         return results
+    def get_style(self, tokentype):
+        while not self.style.styles_token(tokentype):
+            tokentype = tokentype.parent
+        value = self.style.style_for_token(tokentype)
+        # default to monospace
+        results = {
+            'fo:font-family':MONO_FONT,
+            'style:font-family-generic':"swiss",
+            'style:font-pitch':"fixed"}
+        if value['color']:
+            results['fo:color'] = '#' + value['color']
+        if value['bold']:
+            results['fo:font-weight'] = 'bold'
+        if value['italic']:
+            results['fo:font-weight'] = 'italic'
+        return results
           
 
 class OutlineList(MixedContent):
