@@ -1879,18 +1879,18 @@
     <section classes="system-messages">
         <title>
             Docutils System Messages
-        <system_message backrefs="id24" ids="id23" level="3" line="104" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id24" ids="id23" level="3" line="102" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Undefined substitution referenced: "problematic".
-        <system_message backrefs="id80" ids="id79" level="3" line="363" source="functional/input/standalone_rst_pseudoxml.txt" type="ERROR">
+        <system_message backrefs="id80" ids="id79" level="3" line="361" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Unknown target name: "5".
-        <system_message backrefs="id82" ids="id81" level="3" line="372" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id82" ids="id81" level="3" line="370" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Unknown target name: "nonexistent".
-        <system_message backrefs="id84" ids="id83" level="3" line="399" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id84" ids="id83" level="3" line="397" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Unknown target name: "hyperlink reference without a target".
-        <system_message backrefs="id86" ids="id85" level="3" line="412" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id86" ids="id85" level="3" line="410" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Duplicate target name, cannot be used as a unique reference: "duplicate target names".
