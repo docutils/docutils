@@ -168,11 +168,11 @@ class Reporter:
         # print "System Message: ", self.levels[level],
         # print " source", unicode(attributes.get("source")).encode('utf8'),
         # print " line", attributes.get("line")
-        # print " spot", attributes.get("spot")
         if 'base_node' in kwargs:
             source, line = get_source_line(kwargs['base_node'])
+            # print " base_node:", attributes['base_node']
+            # print "provides source/line:", source, line
             del attributes['base_node']
-            # print " from base_node", source, line
             if source is not None:
                 attributes.setdefault('source', source)
             if line is not None:
