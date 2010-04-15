@@ -412,13 +412,51 @@ Testing errors in included file:
         <block_quote>
             <paragraph>
                 as a term may only be one line long.
+        <system_message level="3" line="31" source="%(source)s" type="ERROR">
+            <paragraph>
+                Error in "admonition" directive:
+                1 argument(s) required, 0 supplied.
+            <literal_block xml:space="preserve">
+                .. admonition::
+                
+                   without title and content following a blank line
+    <section ids="section-underline-too-short" names="section\ underline\ too\ short">
+        <title>
+            section underline too short
+        <system_message level="2" line="36" source="%(source)s" type="WARNING">
+            <paragraph>
+                Title underline too short.
+            <literal_block xml:space="preserve">
+                section underline too short
+                -----
+        <table>
+            <tgroup cols="2">
+                <colspec colwidth="14">
+                <colspec colwidth="6">
+                <thead>
+                    <row>
+                        <entry>
+                            <paragraph>
+                                A simple table
+                        <entry>
+                            <paragraph>
+                                cell 2
+                <tbody>
+                    <row>
+                        <entry>
+                            <paragraph>
+                                cell 3
+                        <entry>
+                            <paragraph>
+                                cell 4
+        <system_message level="2" line="43" source="%(source)s" type="WARNING">
+            <paragraph>
+                Blank line required after table.
         <paragraph>
-            A sample of problems still reported with wrong line-nr and source
+            No blank line after table.
+        <paragraph>
+            A sample of problems still reported with wrong line-nr or source
         <comment xml:space="preserve">
-            .. admonition::
-            
-               without title and content following a blank line
-            
             :unknown-role:`role` and *unbalanced `inline **markup
             
             .. unknown:: directive
@@ -432,14 +470,6 @@ Testing errors in included file:
             
             > A literal block.
             $ with inconsistent quoting.
-            
-            section underline too short
-            -----
-            
-            ==============  ======
-            A simple table  cell 2
-            ==============  ======
-            No blank line after table.
             
             ==============  ======
             A simple table  with

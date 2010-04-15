@@ -28,13 +28,24 @@ not a
 definition list:
   as a term may only be one line long.
 
-A sample of problems still reported with wrong line-nr and source
+.. admonition::
+
+   without title and content following a blank line
+
+section underline too short
+-----
+
+==============  ======
+A simple table  cell 2
+==============  ======
+cell 3          cell 4
+==============  ======
+No blank line after table.
+
+
+A sample of problems still reported with wrong line-nr or source
 
 ..
-   .. admonition::
-
-      without title and content following a blank line
-
    :unknown-role:`role` and *unbalanced `inline **markup
 
    .. unknown:: directive
@@ -43,20 +54,12 @@ A sample of problems still reported with wrong line-nr and source
 
    A literal block::
        with no blank line above.
-   
+
    ::
-   
+
    > A literal block.
    $ with inconsistent quoting.
 
-   section underline too short
-   -----
-
-   ==============  ======
-   A simple table  cell 2
-   ==============  ======
-   No blank line after table.
-   
    ==============  ======
    A simple table  with
    no bottom       border

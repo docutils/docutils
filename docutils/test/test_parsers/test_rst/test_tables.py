@@ -1193,14 +1193,14 @@ A table with  many row separators.
                         <paragraph>
                             1
                     <entry>
-                        <system_message level="4" line="20" source="test data" type="SEVERE">
+                        <system_message level="4" line="19" source="test data" type="SEVERE">
                             <paragraph>
                                 Unexpected section title.
                             <literal_block xml:space="preserve">
                                 Not a span
                                 -----------
                     <entry>
-                        <system_message level="4" line="20" source="test data" type="SEVERE">
+                        <system_message level="4" line="19" source="test data" type="SEVERE">
                             <paragraph>
                                 Unexpected section title.
                             <literal_block xml:space="preserve">

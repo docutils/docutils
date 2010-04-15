@@ -348,15 +348,6 @@ class StateMachine:
         """Return source of line at absolute line offset `line_offset`."""
         return self.input_lines.source(line_offset - self.input_offset)
 
-    def get_source_spot(self, line_offset=None):
-        """Return dict with source position of current or given line"""
-        if line_offset is None:
-            line_offset = self.line_offset
-        else:
-            line_offset -= self.input_offset
-        (source, offset) = self.input_lines.info(line_offset)
-        return {'source': source, 'line': offset + 1}
-
     def abs_line_offset(self):
         """Return line offset of current line, from beginning of file."""
         return self.line_offset + self.input_offset
@@ -364,6 +355,27 @@ class StateMachine:
     def abs_line_number(self):
         """Return line number of current line (counting from 1)."""
         return self.line_offset + self.input_offset + 1
+
+    def get_source_and_line(self, lineno=None):
+        """Return (source, line) tuple for current or given line number.
+
+        Looks up the source and line number in the `self.input_lines`
+        StringList instance to count for included source files.
+
+        If the optional argument `lineno` is given, convert it from a
+        "cumulative line number" (result of `abs_line_number()`) to the
+	corresponding (source, line) pair.
+        """
+        if lineno is None:
+            line_offset = self.line_offset
+        else:
+            line_offset = lineno - self.input_offset - 1
+        (src, offset) = self.input_lines.info(line_offset)
+        try:
+            srcline = offset + 1
+        except TypeError: # offset is None if `line_offset` is off the list
+            srcline = None
+        return (src, srcline)
 
     def insert_input(self, input_lines, source):
         self.input_lines.insert(self.line_offset + 1, '',
