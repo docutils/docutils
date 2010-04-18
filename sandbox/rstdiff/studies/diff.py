@@ -2,7 +2,13 @@
 
 from difflib import SequenceMatcher
 
-from hashable import HashableImpl
+from hashable import HashableNodeImpl
+
+from pprint import pprint
+
+import sys
+
+__docformat__ = 'reStructuredText'
 
 aI = ( 1, 2, 3, 5, 6, 7, )
 bI = ( 2, 3, 4, 8, 6 )
@@ -23,55 +29,27 @@ class TreeNode(object):
         self.tag = tag
         self.children = children
 
-class HashableTreeNodeImpl(HashableImpl):
-
-    """Consider only the root node (or include the children)."""
-    # TODO Needs a push/pop methods
-    rootOnly = False
+class HashableTreeNodeImpl(HashableNodeImpl):
 
     def __init__(self):
         super(self.__class__, self).__init__(TreeNode)
 
-    def impl__hash__(self, this):
-        rootHash = self.rootHash(this)
-        if self.rootOnly:
-            return rootHash
-        else:
-            return rootHash + self.childrenHash(this)
+    def rootHash(self, node):
+        return hash(node.tag)
 
-    def impl__eq__(self, this, other):
-        if not self.rootEq(this, other):
-            return False
-        if self.rootOnly:
-            return True
-        return self.childrenEq(this, other)
+    def childHash(self, node):
+        """Return a hash for the children only. Subclasses should override
+        this."""
+        return hash(node)
 
-    def rootHash(self, this):
-        """Return a hash for the root only."""
-        return hash(this.tag)
+    def rootEq(self, node, other):
+        return type(node) == type(other) and node.tag == other.tag
 
-    def childrenHash(self, this):
-        """Return a hash for the children only."""
-        return reduce(lambda x, y: x + y,
-                      [ hash(child)
-                        for child in this.children ], 0)
+    def childEq(self, node, other):
+        return node == other
 
-    def rootEq(self, this, other):
-        """True if the two nodes as roots are equal without considering their
-        children. This should be true if one node can be replaced by
-        the other and all changes can be represented without changing
-        the node itself."""
-        return type(this) == type(other) and this.tag == other.tag
-
-    def childrenEq(self, this, other):
-        """True if the children of the two nodes are equal without considering
-        the root features."""
-        if len(this.children) != len(other.children):
-            return False
-        for i in xrange(len(this.children)):
-            if not (this.children[i] == other.children[i]):
-                return False
-        return hashableImpl
+    def getChildren(self, node):
+        return node.children
 
 # To generate a diff tree:
 #
@@ -82,10 +60,10 @@ class HashableTreeNodeImpl(HashableImpl):
 # * ``replace`` opcodes need to be analyzed recursively to find a
 #   minimal set of changes
 
-def resolveDeepReplace(hashableImpl, opcodes, a, b):
+def resolveDeepReplace(hashableNodeImpl, opcodes, a, b):
     """Resolves ``replace`` elements in `opcodes` pertaining to `a` and
     `b`. Returns opcodes including nested elements for these cases.
-    `hashableImpl` is the `HashableImpl` used to control the hashable
+    `hashableNodeImpl` is the `HashableNodeImpl` used to control the hashable
     feature."""
     result = [ ]
     for i in xrange(len(opcodes)):
@@ -94,8 +72,7 @@ def resolveDeepReplace(hashableImpl, opcodes, a, b):
             result.append(opcodes[i])
             continue
         try:
-            savedRootOnly = hashableImpl.rootOnly
-            hashableImpl.rootOnly = True
+            hashableNodeImpl.pushRootOnly(True)
             sm = SequenceMatcher(None, a[aBeg:aEnd], b[bBeg:bEnd])
             rootOpcodes = sm.get_opcodes()
             for j in xrange(len(rootOpcodes)):
@@ -109,36 +86,37 @@ def resolveDeepReplace(hashableImpl, opcodes, a, b):
                         bIdx = bBeg + bSubBeg + k
                         result.append(('descend',
                                        aIdx, aIdx + 1, bIdx, bIdx + 1,
-                                       resolveRootEqual(hashableImpl,
+                                       resolveRootEqual(hashableNodeImpl,
                                                         a[aIdx], b[bIdx]), ))
         finally:
-            hashableImpl.rootOnly = savedRootOnly
+            hashableNodeImpl.popRootOnly()
     return result
 
-def resolveRootEqual(hashableImpl, aElem, bElem):
+def resolveRootEqual(hashableNodeImpl, aElem, bElem):
     """Considers children of `aElem` and `bElem` which have equal roots.
-    Returns opcodes for the children. `hashableImpl` is the
-    `HashableImpl` used to control the hashable feature."""
-    a = aElem.children
-    b = bElem.children
+    Returns opcodes for the children. `hashableNodeImpl` is the
+    `HashableNodeImpl` used to control the hashable feature."""
+    a = hashableNodeImpl.getChildren(aElem)
+    b = hashableNodeImpl.getChildren(bElem)
     try:
-        savedRootOnly = hashableImpl.rootOnly
-        hashableImpl.rootOnly = False
+        hashableNodeImpl.pushRootOnly(False)
         sm = SequenceMatcher(None, a, b)
         nestedOpcodes = sm.get_opcodes()
-        return resolveDeepReplace(hashableImpl, nestedOpcodes, a, b)
+        return resolveDeepReplace(hashableNodeImpl, nestedOpcodes, a, b)
     finally:
-        hashableImpl.rootOnly = savedRootOnly
+        hashableNodeImpl.popRootOnly()
 
-hashableImpl = HashableTreeNodeImpl()
+hashableNodeImpl = HashableTreeNodeImpl()
 
 aT = ( TreeNode('first'),
        TreeNode('second', (
             TreeNode('second.first'),
+            TreeNode('second.second'),
             )),
        TreeNode('third', (
             TreeNode(2),
             )),
+       TreeNode('fourth'),
        )
 
 bT = ( TreeNode('first'),
@@ -146,6 +124,7 @@ bT = ( TreeNode('first'),
             TreeNode('second.first', (
                     TreeNode('second.first.first'),
                     )),
+            TreeNode('second.second1'),
             TreeNode('second.second'),
             )),
        TreeNode('second1', (
@@ -154,12 +133,14 @@ bT = ( TreeNode('first'),
        TreeNode('third', (
             TreeNode(2),
             )),
-       TreeNode('fourth'),
+       TreeNode('fourth1'),
        )
 
 sm = SequenceMatcher(None, aT, bT)
 top = sm.get_opcodes()
-print(top)
+pprint(top)
 print('---')
 # Use a pseudo root
-print(resolveRootEqual(hashableImpl, TreeNode(None, aT), TreeNode(None, bT)))
+pprint(resolveRootEqual(hashableNodeImpl,
+                        TreeNode(None, aT), TreeNode(None, bT)),
+       sys.stdout, 2, 40, None)
