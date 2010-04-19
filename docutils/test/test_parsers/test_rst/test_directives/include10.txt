@@ -42,6 +42,16 @@ cell 3          cell 4
 ==============  ======
 No blank line after table.
 
+.. |empty| unicode::
+
+.. topic::
+
+.. rubric::
+.. rubric:: A rubric has no content
+
+.. _`target: No matching backquote.
+.. __malformed: no good
+
 
 A sample of problems still reported with wrong line-nr or source
 

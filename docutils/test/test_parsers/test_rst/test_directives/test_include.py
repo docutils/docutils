@@ -454,6 +454,41 @@ Testing errors in included file:
                 Blank line required after table.
         <paragraph>
             No blank line after table.
+        <system_message level="3" line="45" source="%(source)s" type="ERROR">
+            <paragraph>
+                Error in "unicode" directive:
+                1 argument(s) required, 0 supplied.
+            <literal_block xml:space="preserve">
+                unicode::
+        <system_message level="2" line="45" source="%(source)s" type="WARNING">
+            <paragraph>
+                Substitution definition "empty" empty or invalid.
+            <literal_block xml:space="preserve">
+                .. |empty| unicode::
+        <system_message level="3" line="47" source="%(source)s" type="ERROR">
+            <paragraph>
+                Error in "topic" directive:
+                1 argument(s) required, 0 supplied.
+            <literal_block xml:space="preserve">
+                .. topic::
+        <system_message level="3" line="49" source="%(source)s" type="ERROR">
+            <paragraph>
+                Error in "rubric" directive:
+                1 argument(s) required, 0 supplied.
+            <literal_block xml:space="preserve">
+                .. rubric::
+        <rubric>
+            A rubric has no content
+        <comment xml:space="preserve">
+            _`target: No matching backquote.
+        <system_message level="2" line="52" source="%(source)s" type="WARNING">
+            <paragraph>
+                malformed hyperlink target.
+        <comment xml:space="preserve">
+            __malformed: no good
+        <system_message level="2" line="53" source="%(source)s" type="WARNING">
+            <paragraph>
+                malformed hyperlink target.
         <paragraph>
             A sample of problems still reported with wrong line-nr or source
         <comment xml:space="preserve">
