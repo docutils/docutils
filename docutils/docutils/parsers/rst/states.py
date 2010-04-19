@@ -1434,10 +1434,11 @@ class Body(RSTState):
         optionlist = nodes.option_list()
         try:
             listitem, blank_finish = self.option_list_item(match)
-        except MarkupError, (message, lineno):
+        except MarkupError, error:
             # This shouldn't happen; pattern won't match.
-            msg = self.reporter.error(
-                'Invalid option list marker: %s' % message, line=lineno)
+            src, srcline = self.state_machine.get_source_and_line()
+            msg = self.reporter.error('Invalid option list marker: %s' %
+                str(error), source=src, line=srcline)
             self.parent += msg
             indented, indent, line_offset, blank_finish = \
                   self.state_machine.get_first_known_indented(match.end())
@@ -1514,8 +1515,7 @@ class Body(RSTState):
             else:
                 raise MarkupError(
                     'wrong number of option tokens (=%s), should be 1 or 2: '
-                    '"%s"' % (len(tokens), optionstring),
-                    self.state_machine.abs_line_number() + 1)
+                    '"%s"' % (len(tokens), optionstring))
         return optlist
 
     def doctest(self, match, context, next_state):
@@ -1877,7 +1877,7 @@ class Body(RSTState):
             try:
                 escaped += block[blockindex]
             except IndexError:
-                raise MarkupError('malformed hyperlink target.', lineno)
+                raise MarkupError('malformed hyperlink target.')
         del block[:blockindex]
         block[0] = (block[0] + ' ')[targetmatch.end()-len(escaped)-1:].strip()
         target = self.make_target(block, blocktext, lineno,
@@ -1944,7 +1944,6 @@ class Body(RSTState):
 
     def substitution_def(self, match):
         pattern = self.explicit.patterns.substitution
-        lineno = self.state_machine.abs_line_number()
         src, srcline = self.state_machine.get_source_and_line()
         block, indent, offset, blank_finish = \
               self.state_machine.get_first_known_indented(match.end(),
@@ -1961,8 +1960,7 @@ class Body(RSTState):
             try:
                 escaped = escaped + ' ' + escape2null(block[blockindex].strip())
             except IndexError:
-                raise MarkupError('malformed substitution definition.',
-                                  lineno)
+                raise MarkupError('malformed substitution definition.')
         del block[:blockindex]          # strip out the substitution marker
         block[0] = (block[0].strip() + ' ')[subdefmatch.end()-len(escaped)-1:-1]
         if not block[0]:
@@ -2288,8 +2286,10 @@ class Body(RSTState):
                 try:
                     return method(self, expmatch)
                 except MarkupError, error: # never reached?
-                    message, lineno = error.args
-                    errors.append(self.reporter.warning(message, line=lineno))
+                    message = ' '.join(error.args)
+                    src, srcline = self.state_machine.get_source_and_line()
+                    errors.append(self.reporter.warning(
+                                      message, source=src, line=srcline))
                     break
         nodelist, blank_finish = self.comment(match)
         return nodelist + errors, blank_finish
@@ -2512,7 +2512,7 @@ class OptionList(SpecializedBody):
         """Option list item."""
         try:
             option_list_item, blank_finish = self.option_list_item(match)
-        except MarkupError, (message, lineno):
+        except MarkupError:
             self.invalid_input()
         self.parent += option_list_item
         self.blank_finish = blank_finish
@@ -2902,7 +2902,7 @@ class Line(SpecializedText):
                 msg = self.reporter.severe(
                     'Missing matching underline for section title overline.',
                     nodes.literal_block(source, source),
-		    source=src, line=srcline-1)
+                    source=src, line=srcline-1)
                 self.parent += msg
                 return [], 'Body', []
         elif overline != underline:
@@ -2913,7 +2913,7 @@ class Line(SpecializedText):
                 msg = self.reporter.severe(
                       'Title overline & underline mismatch.',
                       nodes.literal_block(source, source),
-		      source=src, line=srcline-1)
+                      source=src, line=srcline-1)
                 self.parent += msg
                 return [], 'Body', []
         title = title.rstrip()
@@ -2926,7 +2926,7 @@ class Line(SpecializedText):
                 msg = self.reporter.warning(
                       'Title overline too short.',
                       nodes.literal_block(source, source),
-		      source=src, line=srcline-1)
+                      source=src, line=srcline-1)
                 messages.append(msg)
         style = (overline[0], underline[0])
         self.eofcheck = 0               # @@@ not sure this is correct
@@ -2946,7 +2946,7 @@ class Line(SpecializedText):
         msg = self.reporter.error(
               'Invalid section title or transition marker.',
               nodes.literal_block(blocktext, blocktext),
-	      source=src, line=srcline-1)
+              source=src, line=srcline-1)
         self.parent += msg
         return [], 'Body', []
 
@@ -2955,7 +2955,7 @@ class Line(SpecializedText):
         msg = self.reporter.info(
             'Possible incomplete section title.\nTreating the overline as '
             "ordinary text because it's so short.",
-		    source=src, line=srcline)
+                    source=src, line=srcline)
         self.parent += msg
         self.state_correction(context, lines)
 
