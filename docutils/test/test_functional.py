@@ -184,7 +184,7 @@ expected output and check it in:
         except AssertionError:
             diff = ''.join(difflib.unified_diff(
                 expected.splitlines(True), output.splitlines(True),
-		expected_path, params['destination_path']))
+                expected_path, params['destination_path']))
             if sys.version_info < (3,0):
                 diff = diff.encode('ascii', 'replace')
             print >>sys.stderr, '\n%s:' % (self,)
