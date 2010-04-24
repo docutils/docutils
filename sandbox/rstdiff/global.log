@@ -1,4 +1,119 @@
 **************************************
+Date: Sat Apr 24 15:19:06 CEST 2010
+Author: stefan
+Tag: rstdiff_1_16
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests
+In directory rosalu:/home/stefan/free/rstdiff/tests
+
+Modified Files:
+	rules.gmk 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple/source
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple/source
+
+Modified Files:
+	textOnly.rst 
+
+--------------------------------------
+Log Message:
+Corrected tests.
+**************************************
+Date: Sat Apr 24 12:40:06 CEST 2010
+Author: stefan
+Tag: rstdiff_1_15
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Added Files:
+	Makefile 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/studies
+In directory rosalu:/home/stefan/free/rstdiff/studies
+
+Added Files:
+	rstdiff.sh 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests
+In directory rosalu:/home/stefan/free/rstdiff/tests
+
+Added Files:
+	Makefile rules.gmk 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple
+
+Added Files:
+	Makefile filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple/input
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple/input
+
+Added Files:
+	textOnly.new.rst textOnly.old.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple/source
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple/source
+
+Added Files:
+	textOnly.rst 
+
+--------------------------------------
+Log Message:
+Added tests.
+**************************************
+Date: Sat Apr 24 12:31:27 CEST 2010
+Author: stefan
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple/input
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple/input
+
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple/source
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple/source
+
+
+--------------------------------------
+Log Message:
+Directory /home/stefan/vault/sm/rstdiff/tests/simple/input added to the repository
+
+Directory /home/stefan/vault/sm/rstdiff/tests/simple/source added to the repository
+**************************************
+Date: Sat Apr 24 12:30:37 CEST 2010
+Author: stefan
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple
+
+
+--------------------------------------
+Log Message:
+Directory /home/stefan/vault/sm/rstdiff/tests/simple added to the repository
+**************************************
+Date: Sat Apr 24 12:30:21 CEST 2010
+Author: stefan
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests
+In directory rosalu:/home/stefan/free/rstdiff/tests
+
+
+--------------------------------------
+Log Message:
+Directory /home/stefan/vault/sm/rstdiff/tests added to the repository
+**************************************
 Date: Sun Apr 18 12:45:06 CEST 2010
 Author: stefan
 Tag: rstdiff_1_14
