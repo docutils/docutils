@@ -1,4 +1,44 @@
 **************************************
+Date: Sun Apr 25 12:14:20 CEST 2010
+Author: stefan
+Tag: rstdiff_1_17
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/studies
+In directory rosalu:/home/stefan/free/rstdiff/studies
+
+Added Files:
+	coloring.css 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple/input
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple/input
+
+Modified Files:
+	textOnly.new.rst textOnly.old.rst 
+Added Files:
+	section.new.rst section.old.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple/source
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple/source
+
+Modified Files:
+	textOnly.rst 
+Added Files:
+	section.rst 
+
+--------------------------------------
+Log Message:
+Added tests.
+**************************************
 Date: Sat Apr 24 15:19:06 CEST 2010
 Author: stefan
 Tag: rstdiff_1_16

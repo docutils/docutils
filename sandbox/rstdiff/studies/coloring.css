@@ -1,0 +1,12 @@
+.change-added {
+  background: red }
+
+.change-deleted {
+  background: grey }
+
+.change-replacement {
+  background: red }
+
+.change-replaced {
+  background: grey }
+
