@@ -1,3 +1,5 @@
+An important addition.
+
 This is some text distributed in a couple of lines. Let's count to
-make things longer: one two three four five six seven eight nine ten
+fill three lines: one two three four five six seven eight nine ten
 eleven twelve.
