@@ -222,6 +222,11 @@ class RSTState(StateWS):
         self.inliner = memo.inliner
         self.document = memo.document
         self.parent = self.state_machine.node
+        # enable the reporter to determine source and source-line
+        if not hasattr(self.reporter, 'locator'):
+            self.reporter.locator = self.state_machine.get_source_and_line
+            # print "adding locator to reporter", self.state_machine.input_offset
+
 
     def goto_line(self, abs_line_offset):
         """
@@ -1715,11 +1720,12 @@ class Body(RSTState):
         block.replace(self.double_width_pad_char, '')
         data = '\n'.join(block)
         message = 'Malformed table.'
-        src, srcline = self.state_machine.get_source_and_line()
+        startline = self.state_machine.abs_line_number() - len(block) + 1
+        src, srcline = self.state_machine.get_source_and_line(startline)
         if detail:
             message += '\n' + detail
         error = self.reporter.error(message, nodes.literal_block(data, data),
-                                    source=src, line=srcline-len(block)+1)
+                                    source=src, line=srcline)
         return [error]
 
     def build_table(self, tabledata, tableline, stub_columns=0):
@@ -2766,7 +2772,8 @@ class Text(RSTState):
         if termline[0][-2:] == '::':
             definition += self.reporter.info(
                   'Blank line missing before literal block (after the "::")? '
-                  'Interpreted as a definition list item.', line=line_offset+1)
+                  'Interpreted as a definition list item.',
+                  source=src, line=srcline)
         self.nested_parse(indented, input_offset=line_offset, node=definition)
         return definitionlistitem, blank_finish
 
@@ -2990,14 +2997,18 @@ class QuotedLiteralBlock(RSTState):
 
     def eof(self, context):
         if context:
+            src, srcline = self.state_machine.get_source_and_line(
+                                                        self.initial_lineno)
             text = '\n'.join(context)
             literal_block = nodes.literal_block(text, text)
-            literal_block.line = self.initial_lineno
+            literal_block.source = src
+            literal_block.line = srcline
             self.parent += literal_block
         else:
             self.parent += self.reporter.warning(
                 'Literal block expected; none found.',
                 line=self.state_machine.abs_line_number())
+                # src not available, because statemachine.input_lines is empty
             self.state_machine.previous_line()
         self.parent += self.messages
         return []
@@ -3029,9 +3040,10 @@ class QuotedLiteralBlock(RSTState):
 
     def text(self, match, context, next_state):
         if context:
+            src, srcline = self.state_machine.get_source_and_line()
             self.messages.append(
                 self.reporter.error('Inconsistent literal block quoting.',
-                                    line=self.state_machine.abs_line_number()))
+                                    source=src, line=srcline))
             self.state_machine.previous_line()
         raise EOFError
 

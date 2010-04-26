@@ -362,26 +362,38 @@ class StateMachine:
         Looks up the source and line number in the `self.input_lines`
         StringList instance to count for included source files.
 
-        If the optional argument `lineno` is given, convert it from a
-        "cumulative line number" (result of `abs_line_number()`) to the
-	corresponding (source, line) pair.
+        If the optional argument `lineno` is given, convert it from an
+        absolute line number to the corresponding (source, line) pair.
         """
         if lineno is None:
-            line_offset = self.line_offset
+            offset = self.line_offset
         else:
-            line_offset = lineno - self.input_offset - 1
-        (src, offset) = self.input_lines.info(line_offset)
+            offset = lineno - self.input_offset - 1
         try:
-            srcline = offset + 1
-        except TypeError: # offset is None if `line_offset` is off the list
-            srcline = None
+            src, srcoffset = self.input_lines.info(offset)
+            srcline = srcoffset + 1
+        except (TypeError):
+            # line is None if index is "Just past the end"
+            src, line = self.get_source_and_line(offset + self.input_offset)
+            return src, line + 1
+        except (IndexError): # `offset` is off the list
+            src, srcline = None, None
+            # raise AssertionError('cannot find line %d in %s lines' %
+            #                      (offset, len(self.input_lines)))
+            #                      # list(self.input_lines.lines())))
+        # assert offset == srcoffset, str(self.input_lines)
+        # print "get_source_and_line(%s):" % lineno,
+        # print offset + 1, '->', src, srcline
+        # print self.input_lines
         return (src, srcline)
 
     def insert_input(self, input_lines, source):
         self.input_lines.insert(self.line_offset + 1, '',
-                                source='internal padding after ' + source)
+                                source='internal padding after '+source,
+                                offset=len(input_lines))
         self.input_lines.insert(self.line_offset + 1, '',
-                                source='internal padding before '+ source)
+                                source='internal padding before '+source,
+                                offset=-1)
         self.input_lines.insert(self.line_offset + 2,
                                 StringList(input_lines, source))
 
@@ -1305,6 +1317,16 @@ class ViewList:
     def disconnect(self):
         """Break link between this list and parent list."""
         self.parent = None
+
+    def xitems(self):
+        """Return iterator yielding (source, offset, value) tuples."""
+        for (value, (source, offset)) in zip(self.data, self.items):
+            yield (source, offset, value)
+
+    def pprint(self):
+        """Print the list in `grep` format (`source:offset:value` lines)"""
+        for line in self.xitems():
+            print "%s:%d:%s" % line
 
 
 class StringList(ViewList):

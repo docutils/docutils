@@ -109,11 +109,12 @@ class Transitions(Transform):
                     isinstance(node.parent, nodes.section))
             error = self.document.reporter.error(
                 'Document or section may not begin with a transition.',
-                line=node.line)
+                source=node.source, line=node.line)
         elif isinstance(node.parent[index - 1], nodes.transition):
             error = self.document.reporter.error(
                 'At least one body element must separate transitions; '
-                'adjacent transitions are not allowed.', line=node.line)
+                'adjacent transitions are not allowed.',
+                source=node.source, line=node.line)
         if error:
             # Insert before node and update index.
             node.parent.insert(index, error)

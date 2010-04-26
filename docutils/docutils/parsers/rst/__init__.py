@@ -231,7 +231,14 @@ class Directive(object):
 
     - ``content`` is a list of strings, the directive content line by line.
 
-    - ``lineno`` is the line number of the first line of the directive.
+    - ``lineno`` is the absolute line number of the first line
+      of the directive.
+
+    - ``src`` is the name (or path) of the rst source of the directive.
+
+    - ``srcline`` is the line number of the first line of the directive
+      in its source. It may differ from ``lineno``, if the main source
+      includes other sources with the ``.. include::`` directive.
 
     - ``content_offset`` is the line offset of the first line of the content from
       the beginning of the current input.  Used when initiating a nested parse.
@@ -293,6 +300,7 @@ class Directive(object):
         self.block_text = block_text
         self.state = state
         self.state_machine = state_machine
+        self.src, self.scrline = state_machine.get_source_and_line(lineno)
 
     def run(self):
         raise NotImplementedError('Must override run() is subclass.')

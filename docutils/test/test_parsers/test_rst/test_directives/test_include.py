@@ -489,26 +489,76 @@ Testing errors in included file:
         <system_message level="2" line="53" source="%(source)s" type="WARNING">
             <paragraph>
                 malformed hyperlink target.
-        <paragraph>
-            A sample of problems still reported with wrong line-nr or source
-        <comment xml:space="preserve">
-            :unknown-role:`role` and *unbalanced `inline **markup
-            
-            .. unknown:: directive
-            
-            :PEP:`-1`
-            
-            A literal block::
-                with no blank line above.
-            
-            ::
-            
+        <definition_list>
+            <definition_list_item>
+                <term>
+                    A literal block::
+                <definition>
+                    <system_message level="1" line="57" source="%(source)s" type="INFO">
+                        <paragraph>
+                            Blank line missing before literal block (after the "::")? Interpreted as a definition list item.
+                    <paragraph>
+                        with no blank line above.
+        <literal_block xml:space="preserve">
             > A literal block.
+        <system_message level="3" line="61" source="%(source)s" type="ERROR">
+            <paragraph>
+                Inconsistent literal block quoting.
+        <paragraph>
             $ with inconsistent quoting.
+        <paragraph>
+            <problematic ids="id3" refid="id2">
+                :unknown-role:`role`
             
-            ==============  ======
-            A simple table  with
-            no bottom       border
+            and 
+            <problematic ids="id5" refid="id4">
+                *
+            unbalanced
+            <problematic ids="id7" refid="id6">
+                `
+            inline
+            <problematic ids="id9" refid="id8">
+                **
+            markup
+        <system_message level="1" line="63" source="%(source)s" type="INFO">
+            <paragraph>
+                No role entry for "unknown-role" in module "docutils.parsers.rst.languages.en".
+                Trying "unknown-role" as canonical role name.
+        <system_message backrefs="id3" ids="id2" level="3" line="63" source="%(source)s" type="ERROR">
+            <paragraph>
+                Unknown interpreted text role "unknown-role".
+        <system_message backrefs="id5" ids="id4" level="2" line="63" source="%(source)s" type="WARNING">
+            <paragraph>
+                Inline emphasis start-string without end-string.
+        <system_message backrefs="id7" ids="id6" level="2" line="63" source="%(source)s" type="WARNING">
+            <paragraph>
+                Inline interpreted text or phrase reference start-string without end-string.
+        <system_message backrefs="id9" ids="id8" level="2" line="63" source="%(source)s" type="WARNING">
+            <paragraph>
+                Inline strong start-string without end-string.
+        <paragraph>
+            <problematic ids="id11" refid="id10">
+                :PEP:`-1`
+        <system_message backrefs="id11" ids="id10" level="3" line="68" source="%(source)s" type="ERROR">
+            <paragraph>
+                PEP number must be a number from 0 to 9999; "-1" is invalid.
+        <system_message level="1" line="66" source="%(source)s" type="INFO">
+            <paragraph>
+                No directive entry for "unknown" in module "docutils.parsers.rst.languages.en".
+                Trying "unknown" as canonical directive name.
+        <system_message level="3" line="70" source="%(source)s" type="ERROR">
+            <paragraph>
+                Unknown directive type "unknown".
+            <literal_block xml:space="preserve">
+                .. unknown:: directive (info still reported with wrong line)
+        <system_message level="3" line="72" source="%(source)s" type="ERROR">
+            <paragraph>
+                Malformed table.
+                No bottom table border found.
+            <literal_block xml:space="preserve">
+                ==============  ======
+                A simple table  with
+                no bottom       border
 """ % {'source': include10rel, 'nonexistent': nonexistent_rel,
        'unichr_exception':
        DocutilsTestSupport.exception_data(unichr, int("11111111", 16))[2]

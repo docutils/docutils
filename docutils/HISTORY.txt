@@ -19,7 +19,8 @@ Changes Since 0.6
 
 * General:
 
-  - (partially) Fix reporting for problems in included files.
+  - Fix [ 2881769 ] setup configuration.
+  - Fix [ 2788716 ] reporting problems in included files.
 
 * docutils/io.py
 
