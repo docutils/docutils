@@ -52,24 +52,23 @@ No blank line after table.
 .. _`target: No matching backquote.
 .. __malformed: no good
 
+A literal block::
+    with no blank line above.
 
-A sample of problems still reported with wrong line-nr or source
+::
 
-..
-   :unknown-role:`role` and *unbalanced `inline **markup
+> A literal block.
+$ with inconsistent quoting.
 
-   .. unknown:: directive
+:unknown-role:`role`
+and *unbalanced
+`inline
+**markup
 
-   :PEP:`-1`
+:PEP:`-1`
 
-   A literal block::
-       with no blank line above.
+.. unknown:: directive (info still reported with wrong line)
 
-   ::
-
-   > A literal block.
-   $ with inconsistent quoting.
-
-   ==============  ======
-   A simple table  with
-   no bottom       border
+==============  ======
+A simple table  with
+no bottom       border
