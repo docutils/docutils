@@ -957,7 +957,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         else:
             atts['src'] = uri
             atts['alt'] = node.get('alt', uri)
-	# image size
+        # image size
         if 'width' in node:
             atts['width'] = node['width']
         if 'height' in node:
@@ -999,21 +999,9 @@ class HTMLTranslator(nodes.NodeVisitor):
             suffix = ''
         else:
             suffix = '\n'
-        if 'classes' in node and 'align-center' in node['classes']:
-            node['align'] = 'center'
         if 'align' in node:
-            if node['align'] == 'center':
-                # "align" attribute is set in surrounding "div" element.
-                self.body.append('<div align="center" class="align-center">')
-                self.context.append('</div>\n')
-                suffix = ''
-            else:
-                # "align" attribute is set in "img" element.
-                atts['align'] = node['align']
-                self.context.append('')
             atts['class'] = 'align-%s' % node['align']
-        else:
-            self.context.append('')
+        self.context.append('')
         if ext in ('.svg', '.swf'): # place in an object element,
             # do NOT use an empty tag: incorrect rendering in browsers
             self.body.append(self.starttag(node, 'object', suffix, **atts) +
