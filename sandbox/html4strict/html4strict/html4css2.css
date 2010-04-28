@@ -104,6 +104,13 @@ ol > li > p + p {
   margin-top: 0;
 }
 
+/* other list types nested in an ol */
+ol > li > ul, ol > li > dl {
+/*   display: inline-block; */
+  text-indent: 0;
+}
+
+
 /* default separator variants */
 ol.loweralpha > li:before {
   content: counter(item, lower-alpha) ")";
@@ -118,7 +125,8 @@ ol.upperroman  > li:before {
   content: counter(item, upper-roman) ")";
 }
 /* nested counters (1, 1.1, 1.1.1, etc) */
-ol.nested  li:before {
+/* nested enumerated lists "inherit" the class attribute, other lists not */
+ol.nested > li:before, ol.nested  ol > li:before {
   content: counters(item, ".") " ";
 }
 
