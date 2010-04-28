@@ -38,6 +38,8 @@ Changes Since 0.6
 * docutils/writers/html4css1/__init__.py
 
   - Support SVG and SWF images (thanks to Stefan Rank).
+  - Generate valid XHTML for centered images with targets.
+    Use CSS classes instead of "align" tags for image alignment.
 
 * docutils/writers/latex2e/__init__.py
 

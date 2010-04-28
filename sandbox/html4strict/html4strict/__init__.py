@@ -5,7 +5,7 @@
 # :Copyright: © 2005, 2009 Günter Milde.
 #             Released  without warranties or conditions of any kind
 #             under the terms of the Apache License, Version 2.0
-# 	      http://www.apache.org/licenses/LICENSE-2.0
+#             http://www.apache.org/licenses/LICENSE-2.0
 
 """
 Strict HyperText Markup Language document tree Writer.
@@ -51,7 +51,7 @@ class Writer(html4css1.Writer):
         'field_name_limit',
         stylesheet_path = (
             'Specify comma separated list of stylesheet paths. '
-	    'With --link-stylesheet, '
+            'With --link-stylesheet, '
             'the path is rewritten relative to the output HTML file. '
             'Default: "%s"' % default_stylesheet_path,
             ['--stylesheet-path'],
@@ -156,61 +156,6 @@ class HTMLTranslator(html4css1.HTMLTranslator):
 
     def depart_docinfo_item(self):
         self.body.append('</dd>\n')
-
-    # Attribute "align" cannot be used for <img> and <div> element
-    # ---------------------------------------------------------------
-
-    # TODO: could the "align" attribute be stripped also in html4css1?
-    def visit_image(self, node):
-        atts = {}
-        atts['src'] = node['uri']
-        if 'width' in node:
-            atts['width'] = node['width']
-        if 'height' in node:
-            atts['height'] = node['height']
-        if 'scale' in node:
-            if Image and not ('width' in node
-                              and 'height' in node):
-                try:
-                    im = Image.open(str(atts['src']))
-                except (IOError, # Source image can't be found or opened
-                        UnicodeError):  # PIL doesn't like Unicode paths.
-                    pass
-                else:
-                    if 'width' not in atts:
-                        atts['width'] = str(im.size[0])
-                    if 'height' not in atts:
-                        atts['height'] = str(im.size[1])
-                    del im
-            for att_name in 'width', 'height':
-                if att_name in atts:
-                    match = re.match(r'([0-9.]+)(\S*)$', atts[att_name])
-                    assert match
-                    atts[att_name] = '%s%s' % (
-                        float(match.group(1)) * (float(node['scale']) / 100),
-                        match.group(2))
-        style = []
-        for att_name in 'width', 'height':
-            if att_name in atts:
-                if re.match(r'^[0-9.]+$', atts[att_name]):
-                    # Interpret unitless values as pixels.
-                    atts[att_name] += 'px'
-                style.append('%s: %s;' % (att_name, atts[att_name]))
-                del atts[att_name]
-        if style:
-            atts['style'] = ' '.join(style)
-        atts['alt'] = node.get('alt', atts['src'])
-        if (isinstance(node.parent, nodes.TextElement) or
-            (isinstance(node.parent, nodes.reference) and
-             not isinstance(node.parent.parent, nodes.TextElement))):
-            # Inline context or surrounded by <a>...</a>.
-            suffix = ''
-        else:
-            suffix = '\n'
-        if 'align' in node:
-            atts['class'] = 'align-%s' % node['align']
-        self.context.append('')
-        self.body.append(self.emptytag(node, 'img', suffix, **atts))
 
 
     # Literal role pre-formatted

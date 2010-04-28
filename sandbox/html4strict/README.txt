@@ -261,8 +261,6 @@ Inline literal role pre-formatted
 Remove hard-coded formatting and deprecated arguments
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-* Attribute "align" not used for <img> and <div> element.
-
 * No hard-coded border setting in the table head.
 
 

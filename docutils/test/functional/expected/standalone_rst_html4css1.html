@@ -552,14 +552,14 @@ document (a document-wide <a class="reference internal" href="#table-of-contents
 <p>Image with multiple IDs:</p>
 <span id="image-target-2"></span><span id="image-target-1"></span><img alt="../../../docs/user/rst/images/title.png" id="image-target-3" src="../../../docs/user/rst/images/title.png" />
 <p>A centered image:</p>
-<div align="center" class="align-center"><img alt="../../../docs/user/rst/images/biohazard.png" class="align-center" src="../../../docs/user/rst/images/biohazard.png" /></div>
+<img alt="../../../docs/user/rst/images/biohazard.png" class="align-center" src="../../../docs/user/rst/images/biohazard.png" />
 <p>A left-aligned image:</p>
-<img align="left" alt="../../../docs/user/rst/images/biohazard.png" class="align-left" src="../../../docs/user/rst/images/biohazard.png" />
+<img alt="../../../docs/user/rst/images/biohazard.png" class="align-left" src="../../../docs/user/rst/images/biohazard.png" />
 <p>This paragraph might flow around the image.
 The specific behavior depends upon the style sheet and
 the browser or rendering software used.</p>
 <p>A right-aligned image:</p>
-<img align="right" alt="../../../docs/user/rst/images/biohazard.png" class="align-right" src="../../../docs/user/rst/images/biohazard.png" />
+<img alt="../../../docs/user/rst/images/biohazard.png" class="align-right" src="../../../docs/user/rst/images/biohazard.png" />
 <p>This paragraph might flow around the image.
 The specific behavior depends upon the style sheet and
 the browser or rendering software used.</p>
@@ -1014,7 +1014,7 @@ crunchy, now would it?</td>
 <p>Scalable vector graphics (SVG) images are not supported by all backends.
 Rendering depends partially on the backend, especially if the size is
 not explicitely given.</p>
-<object align="left" class="align-left" data="../../../docs/user/rst/images/title-scaling.svg" style="width: 50%;" type="image/svg+xml">
+<object class="align-left" data="../../../docs/user/rst/images/title-scaling.svg" style="width: 50%;" type="image/svg+xml">
 ../../../docs/user/rst/images/title-scaling.svg</object>
 <p>A scaling image occupying 50% of the line width (scales with the
 browser window).</p>
@@ -1022,20 +1022,19 @@ browser window).</p>
 containing HTML. It depends on the viewport declaration inside its
 root &lt;svg&gt; element.</p>
 <p>An inline SVG image <object data="../../../docs/user/rst/images/biohazard-scaling.svg" style="height: 0.8em;" type="image/svg+xml">inline-svg</object> scaled to a height of 0.8 em.</p>
-<object align="right" class="align-right" data="../../../docs/user/rst/images/title-scaling.svg" style="width: 50%; height: 1.2em;" type="image/svg+xml">
+<object class="align-right" data="../../../docs/user/rst/images/title-scaling.svg" style="width: 50%; height: 1.2em;" type="image/svg+xml">
 ../../../docs/user/rst/images/title-scaling.svg</object>
 <p>A scaling image occupying 50% of the line width and 1.2 em high,
 right aligned (this SVG image keeps the aspect ratio):</p>
-<object align="left" class="align-left" data="../../../docs/user/rst/images/biohazard-scaling.svg" style="height: 1em;" type="image/svg+xml">
+<object class="align-left" data="../../../docs/user/rst/images/biohazard-scaling.svg" style="height: 1em;" type="image/svg+xml">
 ../../../docs/user/rst/images/biohazard-scaling.svg</object>
 <p>A scaling image 1 em high, left aligned.</p>
 <p>A scaling image 5 mm x 5 mm, centered, with hyperlink reference:</p>
-<a class="reference internal image-reference" href="#directives"><div align="center" class="align-center"><object class="align-center" data="../../../docs/user/rst/images/biohazard-scaling.svg" style="width: 5mm; height: 5mm;" type="image/svg+xml">../../../docs/user/rst/images/biohazard-scaling.svg</object></div>
-</a>
-<object align="left" class="align-left" data="../../../docs/user/rst/images/biohazard.svg" style="width: 4cm; height: 2em;" type="image/svg+xml">
+<a class="reference internal image-reference" href="#directives"><object class="align-center" data="../../../docs/user/rst/images/biohazard-scaling.svg" style="width: 5mm; height: 5mm;" type="image/svg+xml">../../../docs/user/rst/images/biohazard-scaling.svg</object></a>
+<object class="align-left" data="../../../docs/user/rst/images/biohazard.svg" style="width: 4cm; height: 2em;" type="image/svg+xml">
 ../../../docs/user/rst/images/biohazard.svg</object>
 <p>A fixed-size image in a  4 cm x 2 em box.</p>
-<object align="left" class="align-left" data="../../../docs/user/rst/images/title.svg" style="width: 50%; height: 15px;" type="image/svg+xml">
+<object class="align-left" data="../../../docs/user/rst/images/title.svg" style="width: 50%; height: 15px;" type="image/svg+xml">
 ../../../docs/user/rst/images/title.svg</object>
 <p>A fixed-size image in a box 50% the line width and 15 pixle high.</p>
 <div class="figure">
@@ -1051,7 +1050,7 @@ support via a plugin. It is sometimes blocked due to privacy/security
 concerns.</p>
 <p>Images with extension <tt class="docutils literal">.swf</tt> are placed inside &lt;object&gt; elements.
 For complete control over display options use raw HTML.</p>
-<object align="left" class="align-left" data="../../../docs/user/rst/images/biohazard.swf" style="width: 4cm; height: 2em;" type="application/x-shockwave-flash">
+<object class="align-left" data="../../../docs/user/rst/images/biohazard.swf" style="width: 4cm; height: 2em;" type="application/x-shockwave-flash">
 [biohazard.swf]</object>
 <p>An SWF image in a  4 cm x 2 em box, left aligned.</p>
 <p>An inline SWF image <object data="../../../docs/user/rst/images/biohazard.swf" style="width: 0.8em; height: 0.8em;" type="application/x-shockwave-flash">inline-swf</object> scaled to 8.0 em x 0.8 em.</p>
