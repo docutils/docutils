@@ -130,15 +130,6 @@ Known Bugs
 
 Also see the `SourceForge Bug Tracker`_.
 
-* The HTML writer generates invalid XHTML for _`centered images with
-  targets`::
-
-      .. image:: example.png
-         :align: center
-         :target: http://docutils.sourceforge.net/
-
-  This results in ``<a><div><img /></div></a>``, which is invalid.
-
 * .. _error reporting:
 
   Calling rst2s5.py with a non-existent theme (``--theme
@@ -161,71 +152,6 @@ Also see the `SourceForge Bug Tracker`_.
 
   For details, see `this posting by Alan G. Isaac
   <http://article.gmane.org/gmane.text.docutils.user/1569>`_.
-
-* _`Line numbers` and "source" in system messages are inconsistent.
-
-  - In text inserted by the "include" directive, errors are often not
-    reported with the correct "source" or "line" numbers.
-
-    This is partially fixed in the commits from 2009-09-25 and 2009-10-28.
-    The test in test/test_parsers/test_rst/test_directives/test_include.py
-    works, but there are still plenty of system messages pointing to the
-    wrong spot.
-
-  - Perhaps all Reporter calls need "source" and "line" keyword arguments?
-
-    Alternatively, give `document.reporter` access to the state machine
-    instance `document.statemachine` and extract the "source" and "line"
-    info from `statemachine.input_lines`.
-    Except for special cases, there is even no need to call with "line":
-    During parsing, `document.statemachine` knows the current line number.
-    For system messages generated after the parsing is completed (i.e. by
-    transforms or the writer) "line" info must be present in the doctree
-    elements.
-
-  - Elements' .line assignments should be checked.  (Assign to .source
-    too?  Add a set_info method?  To what?)
-
-    The "source" (and line number in the source) could either be added
-    explicitely to the elements or determined from the “raw” line number by
-    `document.statemachine.get_source_spot`.
-
-  - Some line numbers in elements are not being set properly
-    (explicitly), just implicitly/automatically.  See rev. 1.74 of
-    docutils/parsers/rst/states.py for an example of how to set.
-
-  - The line numbers of definition list items are wrong::
-
-        $ rst2pseudoxml.py --expose-internal-attribute line
-        1
-          2
-          3
-
-        5
-          6
-          7
-
-        <document source="<stdin>">
-            <definition_list>
-                <definition_list_item internal:line="3">
-                    <term>
-                        1
-                    <definition>
-                        <paragraph internal:line="2">
-                            2
-                            3
-                <definition_list_item internal:line="6">
-                    <term>
-                        5
-                    <definition>
-                        <paragraph internal:line="6">
-                            6
-                            7
-
-* .. _none source:
-
-  Quite a few nodes are getting a "None" source attribute as well.  In
-  particular, see the bodies of definition lists.
 
 * Footnote label "5" should be "4" when processing the following
   input::
