@@ -695,7 +695,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     used_styles = (
         'attribution', 'blockindent', 'blockquote', 'blockquote-bulletitem',
         'blockquote-bulletlist', 'blockquote-enumitem', 'blockquote-enumlist',
-        'bulletitem', 'bulletlist', 'caption', 'centeredtextbody', 'codeblock',
+        'bulletitem', 'bulletlist',
+        'caption', 'legend',
+        'centeredtextbody', 'codeblock',
         'codeblock-classname', 'codeblock-comment', 'codeblock-functionname',
         'codeblock-keyword', 'codeblock-name', 'codeblock-number',
         'codeblock-operator', 'codeblock-string', 'emphasis', 'enumitem',
@@ -1910,7 +1912,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 attrib={'text:style-name': self.rststyle('textbody')})
         el2 = el1
         if isinstance(node.parent, docutils.nodes.figure):
-            el3, el4, caption = self.generate_figure(node, source,
+            el3, el4, el5, caption = self.generate_figure(node, source,
                 destination, el2)
             attrib = {
                 'draw:blue': '0%',
@@ -1938,10 +1940,10 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 'style:vertical-rel': 'paragraph-content',
                 'style:wrap': 'none',
                  }
-            el5, width = self.generate_image(node, source, destination,
-                el4, attrib)
+            el6, width = self.generate_image(node, source, destination,
+                el5, attrib)
             if caption is not None:
-                el5.tail = caption
+                el6.tail = caption
         else:   #if isinstance(node.parent, docutils.nodes.image):
             el3 = self.generate_image(node, source, destination, el2)
 
@@ -2111,7 +2113,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             'text:style-name': self.rststyle('caption'),
             }
         el5 = SubElement(el4, 'text:p', attrib=attrib)
-        return el3, el5, caption
+        return el3, el4, el5, caption
 
     def generate_image(self, node, source, destination, current_element,
         frame_attrs=None):
@@ -2205,11 +2207,18 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         return False
 
     def visit_legend(self, node):
-        # Currently, the legend receives *no* special treatment.
-        pass
+        if isinstance(node.parent, docutils.nodes.figure):
+            el1 = self.current_element[-1]
+            el1 = el1[0][0]
+            self.current_element = el1
+            self.paragraph_style_stack.append(self.rststyle('legend'))
 
     def depart_legend(self, node):
-        pass
+        if isinstance(node.parent, docutils.nodes.figure):
+            self.paragraph_style_stack.pop()
+            self.set_to_parent()
+            self.set_to_parent()
+            self.set_to_parent()
 
     def visit_line_block(self, node):
         self.line_indent_level += 1
