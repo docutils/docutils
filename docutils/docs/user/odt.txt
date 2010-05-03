@@ -241,6 +241,10 @@ rststyle-bodyindent
 rststyle-bulletitem
     An item in an bullet list.
 
+rststyle-caption
+    The caption in a figure or image.  Also see
+    ``rststyle-legend``.
+
 rststyle-codeblock
     Literal code blocks -- A block of example code.  Created with
     double colon ("::") followed by an indented block or with the
@@ -285,6 +289,10 @@ rststyle-highlights-enumitem
 
 rststyle-horizontalline
     A horizontal line, e.g. used for transitions.
+
+rststyle-legend
+    The legend in a figure.  See the Docutils figure directive.  Also
+    see ``rststyle-caption``.
 
 rststyle-table-title
     The style for titles of tables.  See section `The table
@@ -726,7 +734,7 @@ http://docutils.sourceforge.net/docs/ref/rst/directives.html#custom-interpreted-
 <http://docutils.sourceforge.net/docs/ref/rst/directives.html#custom-interpreted-text-roles>`_.
 
 **Note:** The ability to base a role on another existing role is
-not supported by ``odtwriter``.
+*not* supported by ``odtwriter``.
 
 
 Hints and Suggestions and Features
