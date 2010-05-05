@@ -943,7 +943,7 @@ Example 1:
 
   This will improve the look on screen with the default Computer Modern
   fonts at the expense of problems with `search and text extraction`_
-  The recommended workaround is to select a T1-encoded "Type 1" (vector)
+  The recommended way is to select a T1-encoded "Type 1" (vector)
   font, for example `Latin Modern`_
 
 Example 2:
@@ -1580,30 +1580,33 @@ Example:
 text encoding
 -------------
 
-The encoding of the LaTeX source file, i.e.
-Docutils' *output* encoding becomes the LaTeX *input* encoding.
+The encoding of the LaTeX source file is Docutils' *output* encoding
+but LaTeX' *input* encoding.
 
 Option: output-encoding_
     ``--output-encoding=OUTPUT-ENCODING``
 
 Default:
-  latin1
+  "utf8"
 
-  .. TODO: use the Docutils-wide default: output-encoding = input-encoding
+Example:
+  Encode the LaTeX source file with the ISO `latin-1` (west european)
+  8-bit encoding (the default in Docutils versions up to 0.6.)::
 
+    --output-encoding=latin-1
 
-LaTeX comes with two packages for UTF-8 support,
+Note:
+  LaTeX comes with two packages for UTF-8 support,
 
-:utf8:  by the standard `inputenc`_ package with only limited coverage
-        (mainly accented chars, only few non-alphabetic symbols, no Greek or
-        Cyrillic).
+  :utf8:  by the standard `inputenc`_ package with only limited coverage
+          (mainly accented chars, no Greekv).
 
-:utf8x: supported by the `ucs`_ package covers a wider range of Unicode
-        characters than does "utf8".  It is, however, a non-standard
-        extension and no longer developed.
+  :utf8x: supported by the `ucs`_ package covers a wider range of Unicode
+          characters than does "utf8".  It is, however, a non-standard
+          extension and no longer developed.
 
-Currently (in version 0.6), "utf8" is used if the output-encoding is
-any of "utf_8", "U8", "UTF", or "utf8".
+  Currently (in version 0.6), "utf8" is used if the output-encoding is
+  any of "utf_8", "U8", "UTF", or "utf8".
 
 .. with utf8x:
    If LaTeX issues a Warning about unloaded/unknown characters adding ::
@@ -1795,6 +1798,23 @@ If updating LaTeX is not an option, just remove the "px" from the length
 specification. HTML/CSS will default to "px" while the `latexe2` writer
 will add the fallback unit "bp".
 
+Error ``Symbol \textcurrency not provided`` ...
+```````````````````````````````````````````````
+
+The currency sign (\\u00a4) is not supported by all fonts (some have
+an Euro sign at its place). You might see an error like::
+
+    ! Package textcomp Error: Symbol \textcurrency not provided by
+    (textcomp)                font family ptm in TS1 encoding.
+    (textcomp)                Default family used instead.
+
+(which in case of font family "ptm" is a false positive). Add either
+
+:warn: turn the error in a warning, use the default symbol (bitmap), or
+:force,almostfull: use the symbol provided by the font at the users
+		     risk,
+
+to the document options or use a different font package.
 
 Search and text extraction
 ``````````````````````````
@@ -1806,21 +1826,34 @@ umlauts) might fail.  See font_ and `font encoding`_ (as well as
 .. _Searching PDF files:
    http://www.tex.ac.uk/cgi-bin/texfaq2html?label=srchpdf
 
-Unicode box drawing characters
-```````````````````````````````
+Unicode box drawing and block characters
+````````````````````````````````````````
 
-  - generate LaTeX code with ``--output-encoding=utf-8:strict``.
+- Generate LaTeX code with `output-encoding`_ "utf-8".
 
-  - In the latex file, edit the preamble to load "ucs" with "postscript"
-    option and also load the pstricks package::
+- Add the pmboxdraw_ package to the `style sheets`_.
+  (For shaded boxes also add the `color` package.)
+
+Unfortunately, this defines only a subset of the characters
+(see pmboxdraw.pdf_ for a list).
+
+Alternatively:
+
+- In the latex file, edit the preamble to load ucs_ with "postscript"
+  option and also load the pstricks package::
 
       - \usepackage[utf8]{inputenc}
       + \usepackage[postscript]{ucs}
       + \usepackage{pstricks}
       + \usepackage[utf8x]{inputenc}
 
-  - Convert to PDF with ``latex``, ``dvips``, and ``ps2pdf``.
+- Convert to PDF with ``latex``, ``dvips``, and ``ps2pdf``.
 
+.. _pmboxdraw:
+   http://www.ctan.org/tex-archive/help/Catalogue/entries/pmboxdraw.html
+
+.. _pmboxdraw.pdf:
+   http://www.ctan.org/tex-archive/macros/latex/contrib/oberdiek/pmboxdraw.pdf
 
 Bugs and open issues
 --------------------

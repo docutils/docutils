@@ -1,3 +1,4 @@
+# -*- coding: utf8 -*-
 #! /usr/bin/env python
 
 # $Id$
@@ -50,7 +51,7 @@ parts = dict(
 head_prefix = r"""\documentclass[a4paper,english]{article}
 """,
 requirements = r"""\usepackage[T1]{fontenc}
-\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage{ifthen}
 \usepackage{babel}
 """,
@@ -79,6 +80,10 @@ r"""\usepackage{longtable}
 \newlength{\DUtablewidth} % internal use in tables
 """))
 
+head_textcomp = head_template.substitute(
+    dict(parts, requirements = parts['requirements'] +
+r"""\usepackage{textcomp} % text symbol macros
+"""))
 
 totest = {}
 totest_latex_toc = {}
@@ -91,6 +96,15 @@ totest['url_chars'] = [
 ["http://nowhere/url_with%28parens%29",
 head + r"""
 \url{http://nowhere/url_with\%28parens\%29}
+
+\end{document}
+"""],
+]
+
+totest['textcomp'] = [
+["2 µm is just 2/1000000 m",
+head_textcomp + r"""
+2 µm is just 2/1000000 m
 
 \end{document}
 """],
