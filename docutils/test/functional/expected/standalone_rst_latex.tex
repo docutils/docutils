@@ -3,7 +3,7 @@
 \usepackage{fixltx2e} % LaTeX patches, \textsubscript
 \usepackage{cmap} % fix search and cut-and-paste in PDF
 \usepackage[T1]{fontenc}
-\usepackage[latin1]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage{ifthen}
 \usepackage{babel}
 \usepackage{color}
@@ -11,11 +11,13 @@
 \floatplacement{figure}{H} % place figures here definitely
 \usepackage{graphicx}
 \usepackage{multirow}
+\usepackage{pifont}
 \usepackage{longtable}
 \usepackage{array}
 \setlength{\extrarowheight}{2pt}
 \newlength{\DUtablewidth} % internal use in tables
 \usepackage{tabularx}
+\usepackage{textcomp} % text symbol macros
 
 %%% Custom LaTeX preamble
 % PDF Standard Fonts
@@ -808,10 +810,10 @@ And this is the third paragraph.
 %
 \DUfootnotetext{id13}{id4}{*}{%
 Footnotes may also use symbols, specified with a ``*'' label.
-Here's a reference to the next footnote:\DUfootnotemark{id14}{id15}{\dag{}}.
+Here's a reference to the next footnote:\DUfootnotemark{id14}{id15}{†}.
 }
 %
-\DUfootnotetext{id15}{id14}{\dag{}}{%
+\DUfootnotetext{id15}{id14}{†}{%
 This footnote shows the next symbol in the sequence.
 }
 %
@@ -1346,7 +1348,7 @@ Here's one:
 % 
 % Double-dashes -- "--" -- must be escaped somehow in HTML output.
 % 
-% Comments may contain non-ASCII characters: � � � � � �
+% Comments may contain non-ASCII characters: ä ö ü æ ø å
 
 (View the HTML source to see the comment.)
 
@@ -1679,108 +1681,110 @@ width as the third line.
 
 %___________________________________________________________________________
 
-\subsection*{3.4~~~Various non-ASCII characters%
+\subsection*{3.4~~~Non-ASCII characters%
   \phantomsection%
-  \addcontentsline{toc}{subsection}{3.4~~~Various non-ASCII characters}%
-  \label{various-non-ascii-characters}%
+  \addcontentsline{toc}{subsection}{3.4~~~Non-ASCII characters}%
+  \label{non-ascii-characters}%
 }
+
+Punctuation and footnote symbols
 
 \leavevmode
 \setlength{\DUtablewidth}{\linewidth}
 \begin{longtable}[c]{|p{0.028\DUtablewidth}|p{0.424\DUtablewidth}|}
 \hline
 
-�
- & 
-copyright sign
- \\
-\hline
-
-�
- & 
-registered sign
- \\
-\hline
-
-�
- & 
-left pointing guillemet
- \\
-\hline
-
-�
- & 
-right pointing guillemet
- \\
-\hline
-
-\textendash{}
+–
  & 
 en-dash
  \\
 \hline
 
-\textemdash{}
+—
  & 
 em-dash
  \\
 \hline
 
-`
+‘
  & 
 single turned comma quotation mark
  \\
 \hline
 
-'
+’
  & 
 single comma quotation mark
  \\
 \hline
 
-\quotesinglbase{}
+‚
  & 
 low single comma quotation mark
  \\
 \hline
 
-\textquotedblleft{}
+“
  & 
 double turned comma quotation mark
  \\
 \hline
 
-\textquotedblright{}
+”
  & 
 double comma quotation mark
  \\
 \hline
 
-\quotedblbase
+„
  & 
 low double comma quotation mark
  \\
 \hline
 
-\dag{}
+†
  & 
 dagger
  \\
 \hline
 
-\ddag{}
+‡
  & 
 double dagger
  \\
 \hline
 
-\dots{}
+\ding{169}
+ & 
+black diamond suit
+ \\
+\hline
+
+\ding{170}
+ & 
+black heart suit
+ \\
+\hline
+
+$\spadesuit$
+ & 
+black spade suit
+ \\
+\hline
+
+$\clubsuit$
+ & 
+black club suit
+ \\
+\hline
+
+…
  & 
 ellipsis
  \\
 \hline
 
-\texttrademark{}
+™
  & 
 trade mark sign
  \\
@@ -1793,10 +1797,306 @@ left-right double arrow
 \hline
 \end{longtable}
 
-The following line should not be wrapped, because it uses
-non-breakable spaces:
+The \DUroletitlereference{Latin-1 extended} Unicode block
+
+\leavevmode
+\setlength{\DUtablewidth}{\linewidth}
+\begin{longtable}[c]{|p{0.051\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|}
+\hline
+
+% 
+ & 
+0
+ & 
+1
+ & 
+2
+ & 
+3
+ & 
+4
+ & 
+5
+ & 
+6
+ & 
+7
+ & 
+8
+ & 
+9
+ \\
+\hline
+
+160
+ &  & 
+¡
+ & 
+¢
+ & 
+£
+ &  & 
+¥
+ & 
+¦
+ & 
+§
+ & 
+¨
+ & 
+©
+ \\
+\hline
+
+170
+ & 
+ª
+ & 
+«
+ & 
+¬
+ & 
+\-
+ & 
+®
+ & 
+¯
+ & 
+°
+ & 
+±
+ & 
+²
+ & 
+³
+ \\
+\hline
+
+180
+ & 
+´
+ & 
+µ
+ & 
+¶
+ & 
+·
+ & 
+¸
+ & 
+¹
+ & 
+º
+ & 
+»
+ & 
+¼
+ & 
+½
+ \\
+\hline
+
+190
+ & 
+¾
+ & 
+¿
+ & 
+À
+ & 
+Á
+ & 
+Â
+ & 
+Ã
+ & 
+Ä
+ & 
+Å
+ & 
+Æ
+ & 
+Ç
+ \\
+\hline
+
+200
+ & 
+È
+ & 
+É
+ & 
+Ê
+ & 
+Ë
+ & 
+Ì
+ & 
+Í
+ & 
+Î
+ & 
+Ï
+ & 
+Ð
+ & 
+Ñ
+ \\
+\hline
+
+210
+ & 
+Ò
+ & 
+Ó
+ & 
+Ô
+ & 
+Õ
+ & 
+Ö
+ & 
+×
+ & 
+Ø
+ & 
+Ù
+ & 
+Ú
+ & 
+Û
+ \\
+\hline
+
+220
+ & 
+Ü
+ & 
+Ý
+ & 
+Þ
+ & 
+ß
+ & 
+à
+ & 
+á
+ & 
+â
+ & 
+ã
+ & 
+ä
+ & 
+å
+ \\
+\hline
+
+230
+ & 
+æ
+ & 
+ç
+ & 
+è
+ & 
+é
+ & 
+ê
+ & 
+ë
+ & 
+ì
+ & 
+í
+ & 
+î
+ & 
+ï
+ \\
+\hline
+
+240
+ & 
+ð
+ & 
+ñ
+ & 
+ò
+ & 
+ó
+ & 
+ô
+ & 
+õ
+ & 
+ö
+ & 
+÷
+ & 
+ø
+ & 
+ù
+ \\
+\hline
+
+250
+ & 
+ú
+ & 
+û
+ & 
+ü
+ & 
+ý
+ & 
+þ
+ & 
+ÿ
+ &  &  &  &  \\
+\hline
+\end{longtable}
+%
+\begin{itemize}
+
+\item The following line should not be wrapped, because it uses
+no-break spaces (\textbackslash{}u00a0):
 
 X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X~X
+
+\item Line wrapping with/without breakpoints marked by soft hyphens
+(\textbackslash{}u00ad):
+
+pdn\-derd\-mdtd\-ri\-schpdn\-derd\-mdtd\-ri\-schpdn\-derd\-mdtd\-ri\-schpdn\-derd\-mdtd\-ri\-schpdn\-derd\-mdtd\-ri\-sch
+
+pdnderdmdtdrischpdnderdmdtdrischpdnderdmdtdrischpdnderdmdtdrischpdnderdmdtdrisch
+
+\item The currency sign (\textbackslash{}u00a4) is not supported by all fonts
+(some have an Euro sign at its place). You might see an error
+like:
+%
+\begin{quote}{\ttfamily \raggedright \noindent
+!~Package~textcomp~Error:~Symbol~\textbackslash{}textcurrency~not~provided~by\\
+(textcomp)~~~~~~~~~~~~~~~~font~family~ptm~in~TS1~encoding.\\
+(textcomp)~~~~~~~~~~~~~~~~Default~family~used~instead.
+}
+\end{quote}
+
+(which in case of font family ptm is a false positive). Add either
+%
+\begin{DUfieldlist}
+\item[{warn:}]
+turn the error in a warning, use the default symbol (bitmap), or
+
+\item[{force,almostfull:}]
+use the symbol provided by the font at the users
+risk,
+
+\end{DUfieldlist}
+
+to the document options or use a different font package.
+
+\end{itemize}
 
 
 %___________________________________________________________________________
@@ -1816,7 +2116,7 @@ The following characters play a special role in LaTeX and are called
 %
 \begin{quote}
 
-\# \$ \% \& \textasciitilde{} \_ \textasciicircum{} \{ \}
+\# \$ \% \& \textasciitilde{} \_ \textasciicircum{} \textbackslash{} \{ \}
 
 \end{quote}
 

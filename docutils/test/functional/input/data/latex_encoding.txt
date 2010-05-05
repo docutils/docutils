@@ -6,7 +6,7 @@ The LaTeX Info pages lists under "2.18 Special Characters"
   The following characters play a special role in LaTeX and are called
   "special printing characters", or simply "special characters".
 
-                            # $ % & ~ _ ^ \ { }
+                            # $ % & ~ _ ^ \\ { }
 
 The special chars verbatim::
 

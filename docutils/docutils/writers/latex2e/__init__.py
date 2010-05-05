@@ -17,8 +17,8 @@ import os
 import time
 import re
 import string
-from docutils import frontend, nodes, languages, writers, utils, transforms, io
-from docutils.writers.newlatex2e import unicode_map
+from docutils import frontend, nodes, languages, writers, utils, io
+from docutils.transforms import writer_aux
 
 # compatibility module for Python <= 2.4
 if not hasattr(string, 'Template'):
@@ -39,7 +39,7 @@ class Writer(writers.Writer):
                                   r'\usepackage{courier}'])
     settings_spec = (
         'LaTeX-Specific Options',
-        'The LaTeX "--output-encoding" default is "latin-1:strict".',
+        None,
         (('Specify documentclass.  Default is "article".',
           ['--documentclass'],
           {'default': 'article', }),
@@ -198,10 +198,8 @@ class Writer(writers.Writer):
           {'default': None, }),
           ),)
 
-    settings_defaults = {'output_encoding': 'latin-1',
-                         'sectnum_depth': 0 # updated by SectNum transform
+    settings_defaults = {'sectnum_depth': 0 # updated by SectNum transform
                         }
-
     relative_path_settings = ('stylesheet_path',)
 
     config_section = 'latex2e writer'
@@ -225,7 +223,7 @@ class Writer(writers.Writer):
        transform_list = writers.Writer.get_transforms(self)
        # print transform_list
        # Convert specific admonitions to generic one
-       transform_list.append(transforms.writer_aux.Admonitions)
+       transform_list.append(writer_aux.Admonitions)
        # TODO: footnote collection transform
        # transform_list.append(footnotes.collect)
        return transform_list
@@ -355,7 +353,7 @@ class SortableDict(dict):
     """Dictionary with additional sorting methods
 
     Tip: use key starting with with '_' for sorting before small letters
-    	 and with '~' for sorting after small letters.
+         and with '~' for sorting after small letters.
     """
     def sortedkeys(self):
         """Return sorted list of keys"""
@@ -559,6 +557,11 @@ PreambleCmds.table = r"""\usepackage{longtable}
 \setlength{\extrarowheight}{2pt}
 \newlength{\DUtablewidth} % internal use in tables"""
 
+# Options [force,almostfull] prevent spurious error messages, see
+# de.comp.text.tex/2005-12/msg01855
+PreambleCmds.textcomp = """\
+\\usepackage{textcomp} % text symbol macros"""
+
 PreambleCmds.documenttitle = r"""
 %% Document title
 \title{%s}
@@ -635,9 +638,10 @@ class Table(object):
 
     Table style might be
 
-    :standard: horizontal and vertical lines
-    :booktabs: only horizontal lines (requires "booktabs" LaTeX package)
-    :nolines: (or borderless) no lines
+    :standard:   horizontal and vertical lines
+    :booktabs:   only horizontal lines (requires "booktabs" LaTeX package)
+    :borderless: no borders around table cells
+    :nolines:    alias for borderless
     """
     def __init__(self,translator,latex_type,table_style):
         self._translator = translator
@@ -936,7 +940,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.docutils_footnotes = True
             self.warn('`use_latex_footnotes` is deprecated. '
                       'The setting has been renamed to `docutils_footnotes` '
-		      'and the alias will be removed in a future version.')
+                      'and the alias will be removed in a future version.')
         self.figure_footnotes = settings.figure_footnotes
         if self.figure_footnotes:
             self.docutils_footnotes = True
@@ -1008,19 +1012,23 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # Process settings
         # ~~~~~~~~~~~~~~~~
 
-        # persistent requirements
-        if self.font_encoding == '':
-            fontenc_header = r'%\usepackage[OT1]{fontenc}'
+        # Static requirements
+        # TeX font encoding
+        if self.font_encoding:
+            encodings = [r'\usepackage[%s]{fontenc}' % self.font_encoding]
         else:
-            fontenc_header = r'\usepackage[%s]{fontenc}' % self.font_encoding
-        self.requirements['_persistent'] = '\n'.join([
-              fontenc_header,
-              r'\usepackage[%s]{inputenc}' % self.latex_encoding,
+            encodings = [r'%\usepackage[OT1]{fontenc}'] # just a comment
+        # Docutils' output-encoding => TeX input encoding:
+        if self.latex_encoding != 'ascii':
+            encodings.append(r'\usepackage[%s]{inputenc}'
+                             % self.latex_encoding)
+        self.requirements['_static'] = '\n'.join(
+              encodings + [
               r'\usepackage{ifthen}',
-              # multi-language support (language is in document settings)
+              # multi-language support (language is in document options)
               '\\usepackage{babel}%s' % self.babel.setup,
               ])
-        # page layout with typearea (if there are relevant document options).
+        # page layout with typearea (if there are relevant document options)
         if (settings.documentclass.find('scr') == -1 and
             (self.d_options.find('DIV') != -1 or
              self.d_options.find('BCOR') != -1)):
@@ -1096,7 +1104,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         """Translate docutils encoding name into LaTeX's.
 
         Default method is remove "-" and "_" chars from docutils_encoding.
-
         """
         tr = {  'iso-8859-1': 'latin1',     # west european
                 'iso-8859-2': 'latin2',     # east european
@@ -1189,8 +1196,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # Unicode chars that are not recognized by LaTeX's utf8 encoding
         unsupported_unicode_chars = {
             0x00A0: ur'~', # NO-BREAK SPACE
-	    0x00AD: ur'\-', # SOFT HYPHEN
-	    0x2011: ur'\hbox{-}', # NON-BREAKING HYPHEN
+            0x00AD: ur'\-', # SOFT HYPHEN
+            #
+            0x2011: ur'\hbox{-}', # NON-BREAKING HYPHEN
             0x21d4: ur'$\Leftrightarrow$',
             # Docutils footnote symbols:
             0x2660: ur'$\spadesuit$',
@@ -1216,10 +1224,87 @@ class LaTeXTranslator(nodes.NodeVisitor):
             0x2665: ur'\ding{170}',     # black heartsuit
             0x2666: ur'\ding{169}',     # black diamondsuit
         }
-        # TODO: replacements using textcomp
-        ## textcomp_chars = {
-	##     0x00B5: ur'\textmu{}', # MICRO SIGN
-	## }
+        # recognized with 'utf8', if textcomp is loaded
+        textcomp_chars = {
+            # Latin-1 Supplement
+            0x00a2: ur'\textcent{}',          # ¢ CENT SIGN
+            0x00a4: ur'\textcurrency{}',      # ¤ CURRENCY SYMBOL
+            0x00a5: ur'\textyen{}',           # ¥ YEN SIGN
+            0x00a6: ur'\textbrokenbar{}',     # ¦ BROKEN BAR
+            0x00a7: ur'\textsection{}',       # § SECTION SIGN
+            0x00a8: ur'\textasciidieresis{}', # ¨ DIAERESIS
+            0x00a9: ur'\textcopyright{}',     # © COPYRIGHT SIGN
+            0x00aa: ur'\textordfeminine{}',   # ª FEMININE ORDINAL INDICATOR
+            0x00ac: ur'\textlnot{}',          # ¬ NOT SIGN
+            0x00ae: ur'\textregistered{}',    # ® REGISTERED SIGN
+            0x00af: ur'\textasciimacron{}',   # ¯ MACRON
+            0x00b0: ur'\textdegree{}',        # ° DEGREE SIGN
+            0x00b1: ur'\textpm{}',            # ± PLUS-MINUS SIGN
+            0x00b2: ur'\texttwosuperior{}',   # ² SUPERSCRIPT TWO
+            0x00b3: ur'\textthreesuperior{}', # ³ SUPERSCRIPT THREE
+            0x00b4: ur'\textasciiacute{}',    # ´ ACUTE ACCENT
+            0x00b5: ur'\textmu{}',            # µ MICRO SIGN
+            0x00b6: ur'\textparagraph{}',     # ¶ PILCROW SIGN # not equal to \textpilcrow
+            0x00b9: ur'\textonesuperior{}',   # ¹ SUPERSCRIPT ONE
+            0x00ba: ur'\textordmasculine{}',  # º MASCULINE ORDINAL INDICATOR
+            0x00bc: ur'\textonequarter{}',    # 1/4 FRACTION
+            0x00bd: ur'\textonehalf{}',       # 1/2 FRACTION
+            0x00be: ur'\textthreequarters{}', # 3/4 FRACTION
+            0x00d7: ur'\texttimes{}',         # × MULTIPLICATION SIGN
+            0x00f7: ur'\textdiv{}',           # ÷ DIVISION SIGN
+            #
+            0x0192: ur'\textflorin{}',        # LATIN SMALL LETTER F WITH HOOK
+            0x02b9: ur'\textasciiacute{}',    # MODIFIER LETTER PRIME
+            0x02ba: ur'\textacutedbl{}',      # MODIFIER LETTER DOUBLE PRIME
+            0x2016: ur'\textbardbl{}',        # DOUBLE VERTICAL LINE
+            0x2022: ur'\textbullet{}',        # BULLET
+            0x2030: ur'\textperthousand{}',   # PER MILLE SIGN
+            0x2031: ur'\textpertenthousand{}', # PER TEN THOUSAND SIGN
+            0x2032: ur'\textasciiacute{}',    # PRIME
+            0x2033: ur'\textacutedbl{}',      # DOUBLE PRIME
+            0x2035: ur'\textasciigrave{}',    # REVERSED PRIME
+            0x2036: ur'\textgravedbl{}',      # REVERSED DOUBLE PRIME
+            0x203b: ur'\textreferencemark{}', # REFERENCE MARK
+            0x203d: ur'\textinterrobang{}',   # INTERROBANG
+            0x2044: ur'\textfractionsolidus{}', # FRACTION SLASH
+            0x2045: ur'\textlquill{}',        # LEFT SQUARE BRACKET WITH QUILL
+            0x2046: ur'\textrquill{}',        # RIGHT SQUARE BRACKET WITH QUILL
+            0x2052: ur'\textdiscount{}',      # COMMERCIAL MINUS SIGN
+            0x20a1: ur'\textcolonmonetary{}', # COLON SIGN
+            0x20a3: ur'\textfrenchfranc{}',   # FRENCH FRANC SIGN
+            0x20a4: ur'\textlira{}',          # LIRA SIGN
+            0x20a6: ur'\textnaira{}',         # NAIRA SIGN
+            0x20a9: ur'\textwon{}',           # WON SIGN
+            0x20ab: ur'\textdong{}',          # DONG SIGN
+            0x20ac: ur'\texteuro{}',          # EURO SIGN
+            0x20b1: ur'\textpeso{}',          # PESO SIGN
+            0x20b2: ur'\textguarani{}',       # GUARANI SIGN
+            0x2103: ur'\textcelsius{}',       # DEGREE CELSIUS
+            0x2116: ur'\textnumero{}',        # NUMERO SIGN
+            0x2117: ur'\textcircledP{}',      # SOUND RECORDING COYRIGHT
+            0x211e: ur'\textrecipe{}',        # PRESCRIPTION TAKE
+            0x2120: ur'\textservicemark{}',   # SERVICE MARK
+            0x2122: ur'\texttrademark{}',     # TRADE MARK SIGN
+            0x2126: ur'\textohm{}',           # OHM SIGN
+            0x2127: ur'\textmho{}',           # INVERTED OHM SIGN
+            0x212e: ur'\textestimated{}',     # ESTIMATED SYMBOL
+            0x2190: ur'\textleftarrow{}',     # LEFTWARDS ARROW
+            0x2191: ur'\textuparrow{}',       # UPWARDS ARROW
+            0x2192: ur'\textrightarrow{}',    # RIGHTWARDS ARROW
+            0x2193: ur'\textdownarrow{}',     # DOWNWARDS ARROW
+            0x2212: ur'\textminus{}',         # MINUS SIGN
+            0x2217: ur'\textasteriskcentered{}', # ASTERISK OPERATOR
+            0x221a: ur'\textsurd{}',          # SQUARE ROOT
+            0x2422: ur'\textblank{}',         # BLANK SYMBOL
+            0x2423: ur'\textvisiblespace{}',  # OPEN BOX
+            0x25e6: ur'\textopenbullet{}',    # WHITE BULLET
+            0x25ef: ur'\textbigcircle{}',     # LARGE CIRCLE
+            0x266a: ur'\textmusicalnote{}',   # EIGHTH NOTE
+            0x26ad: ur'\textmarried{}',       # MARRIAGE SYMBOL
+            0x26ae: ur'\textdivorced{}',      # DIVORCE SYMBOL
+            0x27e8: ur'\textlangle{}',        # MATHEMATICAL LEFT ANGLE BRACKET
+            0x27e9: ur'\textrangle{}',        # MATHEMATICAL RIGHT ANGLE BRACKET
+        }
         # TODO: greek alphabet ... ?
         # see also LaTeX codec
         # http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/252124
@@ -1255,12 +1340,16 @@ class LaTeXTranslator(nodes.NodeVisitor):
             text = self.babel.quote_quotes(text)
         # Unicode chars:
         table.update(unsupported_unicode_chars)
+        table.update(pifont_chars)
         if not self.latex_encoding.startswith('utf8'):
             table.update(unicode_chars)
-        # Unicode chars that require a feature/package to render
-        if [ch for ch in pifont_chars.keys() if unichr(ch) in text]:
-            self.requirements['pifont'] = '\\usepackage{pifont}'
-            table.update(pifont_chars)
+            table.update(textcomp_chars)
+        # Characters that require a feature/package to render
+        for ch in text:
+            if ord(ch) in pifont_chars:
+                self.requirements['pifont'] = '\\usepackage{pifont}'
+            if ord(ch) in textcomp_chars:
+                self.requirements['textcomp'] = PreambleCmds.textcomp
 
         text = text.translate(table)
 
@@ -2280,6 +2369,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.depart_inline(node)
 
     def has_unbalanced_braces(self, string):
+        """Test whether there are unmatched '{' or '}' characters."""
         level = 0
         for ch in string:
             if ch == '{':
@@ -2303,7 +2393,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             if href.find('^^') != -1 or self.has_unbalanced_braces(href):
                 self.error(
                     'External link "%s" not supported by LaTeX.\n'
-		    ' (Must not contain "^^" or unbalanced braces.)' % href)
+                    ' (Must not contain "^^" or unbalanced braces.)' % href)
             if node['refuri'] == node.astext():
                 self.out.append(r'\url{%s}' % href)
                 raise nodes.SkipNode
@@ -2587,7 +2677,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if isinstance(node.parent, nodes.table):
             self.pop_output_collector()
 
-    def minitoc(self, title, depth):
+    def minitoc(self, node, title, depth):
         """Generate a local table of contents with LaTeX package minitoc"""
         section_name = self.d_class.section(self.section_level)
         # name-prefix for current section level
@@ -2598,7 +2688,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             minitoc_name = minitoc_names[section_name]
         except KeyError: # minitoc only supports part- and toplevel
             self.warn('Skipping local ToC at %s level.\n' % section_name +
-                      '  Feature not supported with option "use-latex-toc"')
+                      '  Feature not supported with option "use-latex-toc"',
+                      base_node=node)
             return
         # Requirements/Setup
         self.requirements['minitoc'] = PreambleCmds.minitoc
@@ -2640,7 +2731,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                     title = self.encode(node.pop(0).astext())
                 depth = node.get('depth', 0)
                 if 'local' in node['classes']:
-                    self.minitoc(title, depth)
+                    self.minitoc(title, node, depth)
                     self.context.append('')
                     return
                 if depth:
