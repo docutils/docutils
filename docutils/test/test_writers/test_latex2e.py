@@ -579,6 +579,50 @@ same paragraph.
 """],
 ]
 
+totest['title_with_inline_markup'] = [
+["""\
+This is the *Title*
+===================
+
+This is the *Subtitle*
+----------------------
+
+This is a *section title*
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This is the *document*.
+""",
+head_template.substitute(
+    dict(parts, pdfsetup = parts['pdfsetup'] + r"""\hypersetup{
+  pdftitle={This is the Title},
+}
+""")) + r"""
+% Document title
+\title{This is the \emph{Title}%
+  \phantomsection%
+  \label{this-is-the-title}%
+  \\ % subtitle%
+  \large{This is the \emph{Subtitle}}%
+  \label{this-is-the-subtitle}}
+\author{}
+\date{}
+\maketitle
+
+
+%___________________________________________________________________________
+
+\section*{This is a \emph{section title}%
+  \phantomsection%
+  \addcontentsline{toc}{section}{This is a section title}%
+  \label{this-is-a-section-title}%
+}
+
+This is the \emph{document}.
+
+\end{document}
+"""],
+]
+
 totest_stylesheet['two-styles'] = [
 # input
 ["""two stylesheet links in the header""",

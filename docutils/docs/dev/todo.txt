@@ -1084,7 +1084,7 @@ __ rst/alternatives.html#or-not-to-do
   .. _itex: http://pear.math.pitt.edu/mathzilla/itex2mmlItex.html
   .. _ASCIIMathML: http://www1.chapman.edu/~jipsen/mathml/asciimath.html
   .. _Unicode Nearly Plain Text Encoding of Mathematics:
-     http://www.unicode.org/notes/tn28/UTN28-PlainTextMath-v3.pdf
+     http://www.unicode.org/notes/tn28/
 
 
 
@@ -2334,6 +2334,14 @@ Image and figure directives
 
   Use `wrapfig` (or other recommended) package.
 
+* support more graphic formats (especially SVG, the only standard
+  vector format for HTML)
+
+  There is a `SWF package`_ at CTAN.
+
+.. _SWF package:
+   http://dante.ctan.org/tex-archive/macros/latex/contrib/flashmovie
+
 
 Missing features
 ----------------
@@ -2361,20 +2369,6 @@ Missing features
 
   Put in place of the to-be-implemented "citations" directive
   (see `Footnote & Citation Gathering`_).
-
-* The latex writer ignores any inline markup in document titles and
-  subtitles (but it respects it in section titles)::
-
-      This is the *Title*
-      ===================
-
-      This is the *Subtitle*
-      ----------------------
-
-      This is a *section title*
-      ~~~~~~~~~~~~~~~~~~~~~~~~~
-
-      This is the document.
 
 
 Unicode to LaTeX

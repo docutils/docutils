@@ -57,6 +57,7 @@ Changes Since 0.6
   - Apply [ 2961991 ] Call hyperref with unicode option.
   - Drop the special `output_encoding`_ default ("latin-1").
     The Docutils wide default (usually "UTF-8") is used instead.
+  - Render inline markup in document title and subtitle
 
 __ docs/ref/restructuredtext.html#inline-literals
 __ docs/user/config.html#docutils-footnotes

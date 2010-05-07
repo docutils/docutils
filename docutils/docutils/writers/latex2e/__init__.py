@@ -1733,10 +1733,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.title or self.author_stack or self.date:
             authors = ['\\\\\n'.join(author_entry)
                        for author_entry in self.author_stack]
-            title = self.title + self.title_labels
+            title = [''.join(self.title)] + self.title_labels
             if self.subtitle:
                 title += [r'\\ % subtitle',
-                             r'\large{%s}' % self.subtitle[0]
+                             r'\large{%s}' % ''.join(self.subtitle)
                          ] + self.subtitle_labels
             self.body_pre_docinfo.append(PreambleCmds.documenttitle % (
                 '%\n  '.join(title),
@@ -2484,9 +2484,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_subtitle(self, node):
         if isinstance(node.parent, nodes.document):
-            self.subtitle += [self.encode(node.astext())]
+            self.push_output_collector(self.subtitle)
             self.subtitle_labels += self.ids_to_labels(node, set_anchor=False)
-            raise nodes.SkipNode
         # section subtitle: "starred" (no number, not in ToC)
         elif isinstance(node.parent, nodes.section):
             self.out.append(r'\%s*{' %
@@ -2496,7 +2495,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.out.append('\n\\DUsubtitle[%s]{' % node.parent.tagname)
 
     def depart_subtitle(self, node):
-        self.out.append('}\n')
+        if isinstance(node.parent, nodes.document):
+            self.pop_output_collector()
+        else:
+            self.out.append('}\n')
 
     def visit_system_message(self, node):
         self.requirements['color'] = PreambleCmds.color
@@ -2631,10 +2633,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
         """Append section and other titles."""
         # Document title
         if node.parent.tagname == 'document':
-            title = self.encode(node.astext())
-            self.title.append(title)
-            self.pdfinfo.append('  pdftitle={%s},' % title)
-            raise nodes.SkipNode
+            self.push_output_collector(self.title)
+            self.context.append('')
+            self.pdfinfo.append('  pdftitle={%s},' %
+                                self.encode(node.astext()))
         # Topic titles (topic, admonition, sidebar)
         elif (isinstance(node.parent, nodes.topic) or
               isinstance(node.parent, nodes.admonition) or
@@ -2674,7 +2676,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_title(self, node):
         self.out.append(self.context.pop())
-        if isinstance(node.parent, nodes.table):
+        if (isinstance(node.parent, nodes.table) or
+            node.parent.tagname == 'document'):
             self.pop_output_collector()
 
     def minitoc(self, node, title, depth):
