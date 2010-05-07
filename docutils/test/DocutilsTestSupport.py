@@ -195,9 +195,9 @@ class CustomTestCase(StandardTestCase):
             # API difference: Python 3's node.__str__ doesn't escape
             #assert expected is None or isinstance(expected, unicode)
             if isinstance(expected, bytes):
-                expected = expected.decode('ascii')
+                expected = expected.decode('utf-8')
             if isinstance(output, bytes):
-                output = output.decode('ascii')
+                output = output.decode('utf-8')
         else:
             if isinstance(expected, unicode):
                 expected = expected.encode('raw_unicode_escape')
