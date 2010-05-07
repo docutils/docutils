@@ -710,7 +710,7 @@ Example 2:
 .. _float:
    http://mirror.ctan.org/help/Catalogue/entries/float.html
 .. _float.pdf:
-   http://ctan.org/get/macros/latex/contrib/float/float.pdf
+   http://mirror.ctan.org/macros/latex/contrib/float/float.pdf
 
 
 font
@@ -911,7 +911,7 @@ Example 3:
 .. _PSNFSS:
    http://mirror.ctan.org/help/Catalogue/entries/psnfss.html
 .. _Using common PostScript fonts with LaTeX:
-   http://ctan.org/get/macros/latex/required/psnfss/psnfss2e.pdf
+   http://mirror.ctan.org/macros/latex/required/psnfss/psnfss2e.pdf
 .. _TeX Live: http://tug.org/texlive/
 .. _txfonts:
    http://mirror.ctan.org/help/Catalogue/entries/txfonts.html
@@ -1171,7 +1171,7 @@ __ ../ref/rst/restructuredtext.html#literal-blocks
 .. _literal-block-env:
    ../user/config.html#literal-block-env
 .. _listings.pdf:
-    http://ctan.org/get/macros/latex/contrib/listings/listings.pdf
+    http://mirror.ctan.org/macros/latex/contrib/listings/listings.pdf
 
 
 list of figures/tables
@@ -1281,11 +1281,11 @@ Example 2:
 .. _typearea:
    http://mirror.ctan.org/help/Catalogue/entries/typearea.html
 .. _KOMA-Script Guide:
-   http://ctan.org/get/macros/latex/contrib/koma-script/scrguien.pdf
+   http://mirror.ctan.org/macros/latex/contrib/koma-script/scrguien.pdf
 .. _geometry:
    http://mirror.ctan.org/help/Catalogue/entries/geometry.html
 .. _geometry manual:
-   http://ctan.org/get/macros/latex/contrib/geometry/geometry.pdf
+   http://mirror.ctan.org/macros/latex/contrib/geometry/geometry.pdf
 
 
 page numbering
@@ -1301,7 +1301,7 @@ Example:
 .. _chappg:
    http://mirror.ctan.org/help/Catalogue/entries/chappg.html
 .. _chappg documentation:
-   http://ctan.org/get/macros/latex/contrib/chappg/chappg.pdf
+   http://mirror.ctan.org/macros/latex/contrib/chappg/chappg.pdf
 
 
 paper size
@@ -1550,7 +1550,7 @@ With use-latex-toc (default since release 0.6):
 .. _minitoc:
    http://mirror.ctan.org/help/Catalogue/entries/minitoc.html
 .. _minitoc documentation:
-   http://ctan.org/get/macros/latex/contrib/minitoc/minitoc.pdf
+   http://mirror.ctan.org/macros/latex/contrib/minitoc/minitoc.pdf
 
 
 title reference role
@@ -1760,7 +1760,7 @@ The Rubber_ wrapper can be used for automatic image conversion.
 
 __ ../ref/rst/directives.html#images
 .. _grfguide.pdf:
-   http://ctan.org/get/macros/latex/required/graphics/grfguide.pdf
+   http://mirror.ctan.org/macros/latex/required/graphics/grfguide.pdf
 
 
 Why are my images too big?
