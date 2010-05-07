@@ -10,10 +10,7 @@ Tests for PySource Reader functions.
 
 import unittest
 from __init__ import DocutilsTestSupport
-try:
-    from docutils.readers.python.moduleparser import trim_docstring
-except ImportError: # `compiler` module dropped from py3k
-    pass
+from docutils.readers.python.moduleparser import trim_docstring
 
 
 class MiscTests(unittest.TestCase):
