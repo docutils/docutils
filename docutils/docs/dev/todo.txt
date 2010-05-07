@@ -2262,11 +2262,11 @@ Default layout
      +  \\[0.5em] % subtitle%
 
 .. _PSNFSS documentation:
-   http://dante.ctan.org/CTAN/macros/latex/required/psnfss/psnfss2e.pdf
+   http://mirror.ctan.org/macros/latex/required/psnfss/psnfss2e.pdf
 .. _compound paragraph:
    ../ref/rst/directives.html#compound-paragraph
 .. _fixltx2e:
-   http://dante.ctan.org/CTAN/help/Catalogue/entries/fixltx2e.html
+   http://mirror.ctan.org/help/Catalogue/entries/fixltx2e.html
 
 Tables
 ``````
@@ -2340,7 +2340,7 @@ Image and figure directives
   There is a `SWF package`_ at CTAN.
 
 .. _SWF package:
-   http://dante.ctan.org/tex-archive/macros/latex/contrib/flashmovie
+   http://mirror.ctan.org/macros/latex/contrib/flashmovie
 
 
 Missing features

@@ -959,7 +959,7 @@ _`font_encoding`
     Default: "T1".  Option: ``--font-encoding``.
 
     .. _LaTeX font encodings:
-       http://tug.ctan.org/tex-archive/macros/latex/doc/encguide.pdf
+       http://mirror.ctan.org/macros/latex/doc/encguide.pdf
 
 .. _embed_stylesheet [latex2e writer]:
 

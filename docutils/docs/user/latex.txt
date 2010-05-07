@@ -269,7 +269,7 @@ Stylesheet Repository
   Docutils Sandbox_.
 
 .. _clsguide:
-   http://tug.ctan.org/tex-archive/macros/latex/doc/clsguide.pdf
+   http://mirror.ctan.org/macros/latex/doc/clsguide.pdf
 .. _embed-stylesheet:
    ../user/config.html#embed-stylesheet-latex2e-writer
 .. _repository of user-contributed style sheets:
@@ -418,9 +418,9 @@ Example 2:
   See also the marginnote_ and pdfcomment_ packages.
 
 .. _marginnote:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/marginnote.html
+   http://mirror.ctan.org/help/Catalogue/entries/marginnote.html
 .. _pdfcomment:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/pdfcomment.html
+   http://mirror.ctan.org/help/Catalogue/entries/pdfcomment.html
 
 
 .. _custom role:
@@ -556,9 +556,9 @@ Option:
   documentclass_
 
 .. _KOMA-script:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/koma-script.html
+   http://mirror.ctan.org/help/Catalogue/entries/koma-script.html
 .. _memoir:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/memoir.html
+   http://mirror.ctan.org/help/Catalogue/entries/memoir.html
 .. _documentclass:
    ../user/config.html#documentclass
 
@@ -643,7 +643,7 @@ Example:
    `labeling`.
 
 .. _enumitem:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/enumitem.html
+   http://mirror.ctan.org/help/Catalogue/entries/enumitem.html
 
 __ ../ref/rst/restructuredtext.html#field-lists
 
@@ -667,9 +667,9 @@ Example
     \captionsetup{justification=raggedleft,singlelinecheck=false}
 
 .. _caption:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/caption.html
+   http://mirror.ctan.org/help/Catalogue/entries/caption.html
 .. _chngcntr:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/chngcntr.html
+   http://mirror.ctan.org/help/Catalogue/entries/chngcntr.html
 __ http://www.tex.ac.uk/cgi-bin/texfaq2html?label=running-nos
 
 
@@ -708,7 +708,7 @@ Example 2:
 
 .. _figures: ../ref/rst/directives.html#figure
 .. _float:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/float.html
+   http://mirror.ctan.org/help/Catalogue/entries/float.html
 .. _float.pdf:
    http://ctan.org/get/macros/latex/contrib/float/float.pdf
 
@@ -902,19 +902,19 @@ Example 3:
 .. _LaTeX Font Catalogue:
    http://www.tug.dk/FontCatalogue/
 .. _Latin Modern:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/lm.html
+   http://mirror.ctan.org/help/Catalogue/entries/lm.html
 .. _CM-Super:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/cm-super.html
+   http://mirror.ctan.org/help/Catalogue/entries/cm-super.html
 .. _bera:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/bera.html
+   http://mirror.ctan.org/help/Catalogue/entries/bera.html
 .. _TeX Gyre: http://www.gust.org.pl/projects/e-foundry/tex-gyre
 .. _PSNFSS:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/psnfss.html
+   http://mirror.ctan.org/help/Catalogue/entries/psnfss.html
 .. _Using common PostScript fonts with LaTeX:
    http://ctan.org/get/macros/latex/required/psnfss/psnfss2e.pdf
 .. _TeX Live: http://tug.org/texlive/
 .. _txfonts:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/txfonts.html
+   http://mirror.ctan.org/help/Catalogue/entries/txfonts.html
 .. _PDF Standard Font:
    http://en.wikipedia.org/wiki/PDF#Standard_Type_1_Fonts
 .. _testflow:
@@ -958,7 +958,7 @@ Example 2:
 .. _font-encoding:
    ../user/config.html#font-encoding
 .. _fontenc:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/fontenc.html
+   http://mirror.ctan.org/help/Catalogue/entries/fontenc.html
 
 
 font size
@@ -969,7 +969,7 @@ Add font size in points to the document options, e.g.
 extsizes_ for values other than [10,11,12].
 
 .. _extsizes:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/extsizes.html
+   http://mirror.ctan.org/help/Catalogue/entries/extsizes.html
 
 
 footnotes
@@ -1026,9 +1026,9 @@ Example 2:
      }
 
 .. _footmisc:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/footmisc.html
+   http://mirror.ctan.org/help/Catalogue/entries/footmisc.html
 .. _hanging:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/hanging.html
+   http://mirror.ctan.org/help/Catalogue/entries/hanging.html
 
 
 hyphenation
@@ -1092,7 +1092,7 @@ LaTeX code::
   \usepackage{nohyperref,url}
 
 .. _hyperref:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/hyperref.html
+   http://mirror.ctan.org/help/Catalogue/entries/hyperref.html
 
 line blocks
 -----------
@@ -1279,11 +1279,11 @@ Example 2:
     \geometry{height=10in}.
 
 .. _typearea:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/typearea.html
+   http://mirror.ctan.org/help/Catalogue/entries/typearea.html
 .. _KOMA-Script Guide:
    http://ctan.org/get/macros/latex/contrib/koma-script/scrguien.pdf
 .. _geometry:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/geometry.html
+   http://mirror.ctan.org/help/Catalogue/entries/geometry.html
 .. _geometry manual:
    http://ctan.org/get/macros/latex/contrib/geometry/geometry.pdf
 
@@ -1299,7 +1299,7 @@ Example:
   See the `chappg documentation`_ for details.
 
 .. _chappg:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/chappg.html
+   http://mirror.ctan.org/help/Catalogue/entries/chappg.html
 .. _chappg documentation:
    http://ctan.org/get/macros/latex/contrib/chappg/chappg.pdf
 
@@ -1548,7 +1548,7 @@ With use-latex-toc (default since release 0.6):
 .. _use-latex-toc: ../user/config.html#use-latex-toc
 .. _contents directive: ../ref/rst/directives.html#contents
 .. _minitoc:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/minitoc.html
+   http://mirror.ctan.org/help/Catalogue/entries/minitoc.html
 .. _minitoc documentation:
    http://ctan.org/get/macros/latex/contrib/minitoc/minitoc.pdf
 
@@ -1618,9 +1618,9 @@ Note:
 .. _LaTeX Unicode: http://www.unruh.de/DniQ/latex/unicode/
 .. _output-encoding: ../user/config.html#output-encoding
 .. _inputenc:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/inputenc.html
+   http://mirror.ctan.org/help/Catalogue/entries/inputenc.html
 .. _ucs:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/unicode.html
+   http://mirror.ctan.org/help/Catalogue/entries/unicode.html
 
 
 transition element
@@ -1734,7 +1734,7 @@ Right:
 See also the `Link text doesn’t break at end line`_ FAQ entry.
 
 .. _breakurl:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/breakurl.html
+   http://mirror.ctan.org/help/Catalogue/entries/breakurl.html
 
 .. _Link text doesn’t break at end line:
    http://www.tex.ac.uk/cgi-bin/texfaq2html?label=breaklinks
@@ -1850,10 +1850,10 @@ Alternatively:
 - Convert to PDF with ``latex``, ``dvips``, and ``ps2pdf``.
 
 .. _pmboxdraw:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/pmboxdraw.html
+   http://mirror.ctan.org/help/Catalogue/entries/pmboxdraw.html
 
 .. _pmboxdraw.pdf:
-   http://www.ctan.org/tex-archive/macros/latex/contrib/oberdiek/pmboxdraw.pdf
+   http://mirror.ctan.org/macros/latex/contrib/oberdiek/pmboxdraw.pdf
 
 Bugs and open issues
 --------------------
@@ -1938,7 +1938,7 @@ Figures
   `wrapfig`_ package.)
 
 .. _wrapfig:
-   http://www.ctan.org/tex-archive/help/Catalogue/entries/wrapfig.html
+   http://mirror.ctan.org/help/Catalogue/entries/wrapfig.html
 
 
 Miscellaneous
