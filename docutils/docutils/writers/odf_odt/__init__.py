@@ -746,6 +746,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         'lineblock4',
         'lineblock5',
         'lineblock6',
+        'image', 'figureframe',
         )
 
     def __init__(self, document):
@@ -1914,32 +1915,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         if isinstance(node.parent, docutils.nodes.figure):
             el3, el4, el5, caption = self.generate_figure(node, source,
                 destination, el2)
-            attrib = {
-                'draw:blue': '0%',
-                'draw:color-inversion': 'false',
-                'draw:color-mode': 'standard',
-                'draw:contrast': '0%',
-                'draw:gamma': '100%',
-                'draw:green': '0%',
-                'draw:image-opacity': '100%',
-                'draw:luminance': '0%',
-                'draw:red': '0%',
-                'fo:border': 'none',
-                'fo:clip': 'rect(0in 0in 0in 0in)',
-                'fo:margin-bottom': '0in',
-                'fo:margin-left': '0in',
-                'fo:margin-right': '0in',
-                'fo:margin-top': '0in',
-                'fo:padding': '0in',
-                'style:horizontal-pos': 'from-left',
-                'style:horizontal-rel': 'paragraph-content',
-                'style:mirror': 'none',
-                'style:run-through': 'foreground',
-                'style:shadow': 'none',
-                'style:vertical-pos': 'from-top',
-                'style:vertical-rel': 'paragraph-content',
-                'style:wrap': 'none',
-                 }
+            attrib = {}
             el6, width = self.generate_image(node, source, destination,
                 el5, attrib)
             if caption is not None:
@@ -2060,7 +2036,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         attrib = {
             'style:name': style_name,
             'style:family': 'graphic',
-            'style:parent-style-name': 'Frame',
+            'style:parent-style-name': self.rststyle('figureframe'),
             }
         el1 = SubElement(self.automatic_styles, 
             'style:style', attrib=attrib, nsdict=SNSD)
@@ -2073,20 +2049,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                     halign = val
                 elif val in ('top', 'middle', 'bottom'):
                     valign = val
-        attrib = {
-            'fo:margin-left': '0cm',
-            'fo:margin-right': '0cm',
-            'fo:margin-top': '0cm',
-            'fo:margin-bottom': '0cm',
-#           'style:wrap': 'dynamic', #vds
-            'style:number-wrapped-paragraphs': 'no-limit',
-            'style:vertical-pos': valign,
-            'style:vertical-rel': 'paragraph',
-            'style:horizontal-pos': halign,
-            'style:horizontal-rel': 'paragraph',
-            'fo:padding': '0cm',
-            'fo:border': 'none',
-            }
+        attrib = {}
         wrap = False
         classes = node.parent.attributes.get('classes')
         if classes and 'wrap' in classes:
@@ -2101,7 +2064,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             'draw:style-name': style_name,
             'draw:name': 'Frame1',
             'text:anchor-type': 'paragraph',
-            'draw:z-index': '1',
+            'draw:z-index': '0',
             }
         attrib['svg:width'] = width
         # dbg
@@ -2124,7 +2087,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         attrib = {
             'style:name': style_name,
             'style:family': 'graphic',
-            'style:parent-style-name': 'Graphics',
+            'style:parent-style-name': self.rststyle('image'),
             }
         el1 = SubElement(self.automatic_styles, 
             'style:style', attrib=attrib, nsdict=SNSD)
