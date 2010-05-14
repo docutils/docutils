@@ -565,6 +565,17 @@ rststyle-subtitle
     The style for the document sub-title.
 
 
+Image and figure styles
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+rststyle-image
+    The style applied to an image, either an image by itself or an
+    image in a figure.
+
+rststyle-figureframe
+    The style applied to a figure (actually to the frame that
+    surrounds a figure).
+
 
 
 Defining and using a custom stylesheet
