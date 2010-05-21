@@ -1,62 +1,169 @@
-/* html4css2.css: Cascading style sheet for Docutils' html4strict writer.
+/* html4css2.css: Cascading style sheet for Docutils' html4strict writer.   */
+/*                                                                          */
+/* :Author: Günter Milde                                                    */
+/* :Copyright: © 2009 Günter Milde.                                         */
+/*             Released  without warranties or conditions of any kind       */
+/*             under the terms of the Apache License, Version 2.0           */
+/*          http://www.apache.org/licenses/LICENSE-2.0                      */
+/*                                                                          */
+/* This stylesheet supplements the Docutils standard style 'html4css1.css'. */
+/* It uses CSS 2.1 elements (supported by up-to-date versions of popular    */
+/* browsers).                                                               */
 
-:Author: Günter Milde
-:Copyright: © 2009 Günter Milde.
-            Released  without warranties or conditions of any kind
-            under the terms of the Apache License, Version 2.0
-	    http://www.apache.org/licenses/LICENSE-2.0
+/* General rules */
+/* ============= */
 
-This stylesheet supplements the Docutils standard style 'html4css1.css'.
-It uses CSS 2.1 elements (supported by up-to-date versions of popular
-browsers).
-*/
+body {
+  padding: 0 5%;
+  margin: 8px 0;
+  line-height:1.2;
+}
 
+div.document {
+  max-width: 40em; /* avoid long lines --> better reading */
+  margin: 0 auto;
+}
 
-/* Special definition lists
-   ========================
+/* separate items except for compact lists */
+dl > dd {
+  margin-bottom: 1em;
+}
+.compact li, .compact p, .compact ul, .compact ol
+dl.simple  > dd, .simple  li, .simple  p, .simple  ul, .simple  ol {
+  margin-bottom: 0;
+/*   background: magenta; */
+}
+dl.simple  > dd, dl.compact > dd { /* separate to be more specific */
+  margin-bottom: 0;
+/*   background: lightgreen; */
+}
 
-   * Docinfo and field list similar to the "listings" environment in LaTeX's
-     KOMA-script classes
-   * Footnotes and citations
-*/
+/* space around paragraphs */
+dl > dd p:first-child {
+  margin: 0;
+}
+dl > dd p:last-child {
+  margin-bottom: 0;
+/*   background: lightgreen; */
+}
+
+/* Sidebar */
+/* ------- */
+
+div.sidebar {
+  margin-right: -5%;
+}
+
+/* Special definition lists */
+/* ======================== */
 
 /* start definition term on the same line as the label */
-dt.field-name {
+
+dl.field-list > dt, dl.option-list > dt, dl.docinfo > dt,
+dl.footnote > dt, dl.citation > dt, dl.description > dt {
   clear: left;
   float: left;
   margin: 0;
   padding: 0;
   padding-right: 0.5em;
+}
+
+/* Definition list with the layout of a LaTeX `description` list */
+/* (bold label, continue on same line) */
+dl.description > dt {
   font-weight: bold;
 }
 
-/* field names bold, followed by a colon */
-dt.field-name:after { content: ":"; }
+/* Field Lists */
+
+/* field names: bold, followed by a colon */
+dl.field-list > dt, dl.docinfo > dt {
+  font-weight: bold;
+}
+dl.field-list > dt:after, dl.docinfo > dt:after {
+  content: ":";
+}
+
+/* Offset for field content (corresponds to the --field-name-limit option) */
+dl.field-list > dd {
+  margin-left:  8.5em;
+  padding-left: 0.5em;
+/* background: yellow; */
+}
+
+/* start field-body on a new line after long field names */
+dl.field-list > dd p {
+  width: 100%;
+/*   display: inline-block; */
+/*   background: yellow; */
+}
+
+dl.field-list > dd > p:first-child,
+dl.field-list > dd > ol:first-child,
+dl.field-list > dd > ul:first-child,
+dl.field-list > dd > dl:first-child {
+  display: inline-block;
+}
+
+/* field-list variants:: */
+
+/* example for custom field-name width */
+dl.field-list.narrow > dd {
+  margin-left: 5em;
+}
+
+/* start field-body on same line after long field names */
+dl.field-list.run-in > dd p {
+  display: block;
+}
+
+/* wrap or truncate long field names */
+dl.field-list.fix-labelwidth > dt {
+  width: 8em; /* set to dl.field-list > dd margin-left - padding-left */
+  overflow: hidden;
+}
+dl.field-list.fix-labelwidth > dd:after {
+  /* a "stopper" to prevent next dd floating up too far */
+  content: '';
+  display: block;
+  clear: left;
+}
 
 /* docinfo */
 
 dl.docinfo {
-  margin: 2em 4em;
+  margin: 2em 2em; /* setting from html4css1.css */
   padding-left: 0;
 }
 
-dl.docinfo > dd.field-body {
-  margin-left: 8em;   /* column sep = margin-left - dt.width */
+dl.docinfo > dd {
+  margin-left: 8em;
+/*   margin-bottom: 0.5em; */
 }
 
-/* field list */
+/* option list */
 
-/* Offset for field content (corresponds to the --field-name-limit option) */
-dd.field-body {
-  margin-left: 10em;
+dl.option-list {
+  margin-left: 1em;
+  padding-left: 0;
 }
 
+dl.option-list > dd {
+  margin-left: 8em;
+  /* margin-bottom: 0.5em; */
+}
+
+/* start description on a new line after long options */
+dl.option-list > dd p {
+  width: 100%;
+  display: inline-block;
+}
 
 /* footnotes */
 
-dl.footnotes {
+dl.footnote, dl.citation {
   /* line on the left */
-  padding-left: 0.2em;
+  padding-left: 1ex;
   border-left: solid;
   border-left-width: thin;
   /* border-color: black; */
@@ -78,7 +185,10 @@ ol {
 }
 
 /* Set the negative indent of the list label as feature of the list item */
-ol > li {text-indent: -2.5em;}
+ol > li {
+  text-indent: -40px; /* Mozillas default indent */
+  margin-bottom: 1em;
+}
 
 /* Label */
 ol > li:before {
@@ -89,27 +199,33 @@ ol > li:before {
   display: inline-block;
   text-align: right;
   vertical-align: top;
-  width: 2em;
-  padding-right: 0.5em;
+  /* sum must match ol>li {text-indent:} (40px is Mozillas default) */
+  width: 35px;
+  padding-right: 5px;
+/*   background: yellow; */
 }
 
-/* The list item's first paragraph starts next to the label, without indent */
-ol > li > p {
-  display: inline-block;
+/* objects nested in an ol */
+ol > li > p,
+ol > li > ol,
+ol > li > ul,
+ol > li > dl {
   text-indent: 0;
-}
-/* Subsequent paragraphs are set as nested block elements */
-ol > li > p + p {
-  display: block;
   margin-top: 0;
+  /* background: lightgreen; */
 }
 
-/* other list types nested in an ol */
-ol > li > ul, ol > li > dl {
-/*   display: inline-block; */
-  text-indent: 0;
+/* The list item's first line starts next to the label, without indent */
+ol > li > p:first-child,
+ol > li > ol:first-child,
+ol > li > ul:first-child,
+ol > li > dl:first-child {
+  display: inline-block;
+  /* background: lightblue; */
 }
-
+ol > li > p:last-child {
+  margin-bottom: 0;
+}
 
 /* default separator variants */
 ol.loweralpha > li:before {
@@ -133,11 +249,10 @@ ol.nested > li:before, ol.nested  ol > li:before {
 /* TODO: prefix, suffix? */
 
 /* smaller font for super- and subscripts */
-sub, sup {font-size: 70%;}
+/* sub, sup {font-size: 70%;} */ /* Mozilla default is `smaller` */
 
-/* Table styling
-   -------------
-*/
+/* Tables */
+/* ------ */
 
 /* borders for "normal" tables */
 table.table {

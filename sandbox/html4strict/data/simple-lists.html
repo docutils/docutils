@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.7: http://docutils.sourceforge.net/" />
+<title>Simple and complex lists</title>
+<link rel="stylesheet" href="../../../docutils/docutils/writers/html4strict/html4css1.css" type="text/css" />
+<link rel="stylesheet" href="../../../docutils/docutils/writers/html4strict/html4css2.css" type="text/css" />
+</head>
+<body>
+<div class="document" id="simple-and-complex-lists">
+<h1 class="title">Simple and complex lists</h1>
+
+<p>The <cite>html4css1.HTMLTranslator</cite> docstring says:</p>
+<blockquote>
+<p>This HTML writer has been optimized to produce visually compact
+lists (less vertical whitespace).  HTML's mixed content models
+allow list items to contain &quot;&lt;li&gt;&lt;p&gt;body elements&lt;/p&gt;&lt;/li&gt;&quot; or
+&quot;&lt;li&gt;just text&lt;/li&gt;&quot; or even &quot;&lt;li&gt;text&lt;p&gt;and body
+elements&lt;/p&gt;combined&lt;/li&gt;&quot;, each with different effects.  It would
+be best to stick with strict body elements in list items, but they
+affect vertical spacing in browsers (although they really
+shouldn't).</p>
+<p>Here is an outline of the optimization:</p>
+<ul>
+<li><p class="first">Check for and omit &lt;p&gt; tags in &quot;simple&quot; lists: list items
+contain either a single paragraph, a nested simple list, or a
+paragraph followed by a nested simple list.  This means that
+this list can be compact:</p>
+<blockquote>
+<ul class="simple">
+<li>Item 1.</li>
+<li>Item 2.</li>
+</ul>
+</blockquote>
+<p>But this list cannot be compact:</p>
+<blockquote>
+<ul>
+<li><p class="first">Item 1.</p>
+<p>This second paragraph forces space between list items.</p>
+</li>
+<li><p class="first">Item 2.</p>
+</li>
+</ul>
+</blockquote>
+</li>
+<li><p class="first">In non-list contexts, omit &lt;p&gt; tags on a paragraph if that
+paragraph is the only child of its parent (footnotes &amp; citations
+are allowed a label first).</p>
+</li>
+<li><p class="first">Regardless of the above, in definitions, table cells, field bodies,
+option descriptions, and list items, mark the first child with
+'class=&quot;first&quot;' and the last child with 'class=&quot;last&quot;'.  The stylesheet
+sets the margins (top &amp; bottom respectively) to 0 for these elements.</p>
+</li>
+</ul>
+<p>The <tt class="docutils literal">no_compact_lists</tt> setting (<tt class="docutils literal">--no-compact-lists</tt> command-line
+option) disables list whitespace optimization.</p>
+</blockquote>
+<p>In <cite>html4_strict</cite>, the algorithm to determine if a list is &quot;simple&quot;
+enough to be compacted includes field lists (in addition to ordered
+lists and unordered lists).</p>
+<style type="text/css"><!--
+dl.field-list > dd { margin-left:  40px;
+                     padding-left: 0;
+                     /* background: yellow; */
+                   }
+--></style><div class="section" id="simple-lists">
+<h1>Simple lists</h1>
+<ul class="simple">
+<li>This list is simple</li>
+<li>There should be no space beween items.</li>
+</ul>
+<ol class="simple">
+<li><p class="first">This list is simple</p>
+</li>
+<li><p class="first">There should be no space beween items.</p>
+</li>
+</ol>
+<dl class="field-list simple">
+<dt>l1</dt>
+<dd><p>This list is simple</p>
+</dd>
+<dt>l2</dt>
+<dd><p>There should be no space beween items.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="simple-nested-lists">
+<h1>Simple nested lists</h1>
+<ul class="simple">
+<li>This list is simple</li>
+<li><ul class="first">
+<li>There should be no space beween items.</li>
+</ul>
+</li>
+</ul>
+<ol class="simple">
+<li><p class="first">This list is simple</p>
+</li>
+<li><ul class="first simple">
+<li>There should be no space beween items.</li>
+<li>There should be no space beween items.</li>
+</ul>
+</li>
+</ol>
+<dl class="field-list simple">
+<dt>l1</dt>
+<dd><p>This list is simple</p>
+</dd>
+<dt>l2</dt>
+<dd><ul class="simple">
+<li>There should be no space beween items.</li>
+</ul>
+</dd>
+</dl>
+<ul class="simple">
+<li>This list is simple</li>
+<li><ol class="first arabic">
+<li>There should be no space beween items.</li>
+</ol>
+</li>
+</ul>
+<ol class="simple">
+<li><p class="first">This list is simple</p>
+</li>
+<li><ol class="first first simple">
+<li><p class="first">There should be no space beween items.</p>
+</li>
+</ol>
+</li>
+</ol>
+<dl class="field-list simple">
+<dt>l1</dt>
+<dd><p>This list is simple</p>
+</dd>
+<dt>l2</dt>
+<dd><ol class="simple">
+<li><p class="first">There should be no space beween items.</p>
+</li>
+</ol>
+</dd>
+</dl>
+<ul class="simple">
+<li>This list is simple</li>
+<li><dl class="first field-list simple">
+<dt>l1.1</dt>
+<dd>There should be no space beween items.</dd>
+</dl>
+</li>
+</ul>
+<ol class="simple">
+<li><p class="first">This list is simple</p>
+</li>
+<li><dl class="first field-list simple">
+<dt>l11</dt>
+<dd><p>There should be no space beween items.</p>
+</dd>
+</dl>
+</li>
+</ol>
+<dl class="field-list simple">
+<dt>l1</dt>
+<dd><p>This list is simple</p>
+</dd>
+<dt>l2</dt>
+<dd><dl class="field-list simple">
+<dt>l11</dt>
+<dd><p>There should be no space beween items.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<div class="section" id="combined-paragraph-and-list-in-a-list-item">
+<h2>Combined paragraph and list in a list item</h2>
+<ul class="simple">
+<li>This list is simple<ol class="arabic">
+<li>Enumeration in first item</li>
+<li>second enumeration item</li>
+</ol>
+</li>
+<li>There should be no space beween items.</li>
+</ul>
+<ol class="simple">
+<li><p class="first">This list is simple</p>
+<ol class="simple">
+<li><p class="first">Enumeration in first item</p>
+</li>
+<li><p class="first">second enumeration item</p>
+</li>
+</ol>
+</li>
+<li><p class="first">There should be no space beween items.</p>
+</li>
+</ol>
+<dl class="field-list simple">
+<dt>l1</dt>
+<dd><p>This list is simple</p>
+<ol class="simple">
+<li><p class="first">Enumeration in first item</p>
+</li>
+<li><p class="first">second enumeration item</p>
+</li>
+</ol>
+</dd>
+<dt>l2</dt>
+<dd><p>There should be no space beween items.</p>
+</dd>
+</dl>
+<ul class="simple">
+<li>This list is simple<ul>
+<li>Bullet list in first item</li>
+<li>Bullet list in first item</li>
+</ul>
+</li>
+<li>There should be no space beween items.</li>
+</ul>
+<ol class="simple">
+<li><p class="first">This list is simple</p>
+<ul class="simple">
+<li>Bullet list in first item</li>
+<li>Bullet list in first item</li>
+</ul>
+</li>
+<li><p class="first">There should be no space beween items.</p>
+</li>
+</ol>
+<dl class="field-list simple">
+<dt>l1</dt>
+<dd><p>This list is simple</p>
+<ul class="simple">
+<li>Bullet list in first item</li>
+<li>Bullet list in first item</li>
+</ul>
+</dd>
+<dt>l2</dt>
+<dd><p>There should be no space beween items.</p>
+</dd>
+</dl>
+<ul class="simple">
+<li>This list is simple<dl class="field-list simple">
+<dt>l11</dt>
+<dd>this item contains a field list.</dd>
+<dt>l12</dt>
+<dd>this item contains a field list.</dd>
+</dl>
+</li>
+<li>there should be no space beween items.</li>
+</ul>
+<ol class="simple">
+<li><p class="first">This list is simple</p>
+<dl class="field-list simple">
+<dt>l11</dt>
+<dd><p>this item contains a field list.</p>
+</dd>
+<dt>l12</dt>
+<dd><p>this item contains a field list.</p>
+</dd>
+</dl>
+</li>
+<li><p class="first">there should be no space beween items.</p>
+</li>
+</ol>
+<dl class="field-list simple">
+<dt>l1</dt>
+<dd><p>This list is simple</p>
+<dl class="field-list simple">
+<dt>l11</dt>
+<dd><p>this item contains a field list.</p>
+</dd>
+</dl>
+</dd>
+<dt>l2</dt>
+<dd><p>There should be no space beween items.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="complex-lists">
+<h2>Complex lists</h2>
+<ul>
+<li><p class="first">This list is not simple</p>
+</li>
+<li><p class="first">Watch the space beween items</p>
+<p>because of this paragraph</p>
+</li>
+</ul>
+<ol class="arabic">
+<li><p class="first">This list is not simple</p>
+</li>
+<li><p class="first">Watch the space beween items</p>
+<p>because of this paragraph</p>
+</li>
+</ol>
+<dl class="field-list">
+<dt>l1</dt>
+<dd><p>This list is not simple</p>
+</dd>
+<dt>l2</dt>
+<dd><p>Watch the space beween items</p>
+<p>because of this paragraph</p>
+</dd>
+</dl>
+<ul>
+<li><p class="first">This list is not simple</p>
+<p>second paragraph in first item</p>
+</li>
+<li><p class="first">Watch the space beween items.</p>
+</li>
+</ul>
+<ol class="arabic">
+<li><p class="first">This list is not simple</p>
+<p>second paragraph in first item</p>
+</li>
+<li><p class="first">Watch the space beween items.</p>
+</li>
+</ol>
+<dl class="field-list">
+<dt>l1</dt>
+<dd><p>This list is not simple</p>
+<p>second paragraph in first item</p>
+</dd>
+<dt>l2</dt>
+<dd><p>Watch the space beween items.</p>
+</dd>
+</dl>
+<ul>
+<li><p class="first">This list is not simple</p>
+</li>
+<li><ul class="first simple">
+<li>Watch the space beween items</li>
+</ul>
+<p>because of this paragraph</p>
+</li>
+</ul>
+<ol class="arabic">
+<li><p class="first">This list is not simple</p>
+</li>
+<li><ul class="first simple">
+<li>Watch the space beween items</li>
+</ul>
+<p>because of this paragraph</p>
+</li>
+</ol>
+<dl class="field-list">
+<dt>l1</dt>
+<dd><p>This list is not simple</p>
+</dd>
+<dt>l2</dt>
+<dd><ul class="simple">
+<li>Watch the space beween items</li>
+</ul>
+<p>because of this paragraph</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+</body>
+</html>

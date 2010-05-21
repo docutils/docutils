@@ -1,0 +1,235 @@
+Simple and complex lists
+------------------------
+
+The `html4css1.HTMLTranslator` docstring says:
+
+    This HTML writer has been optimized to produce visually compact
+    lists (less vertical whitespace).  HTML's mixed content models
+    allow list items to contain "<li><p>body elements</p></li>" or
+    "<li>just text</li>" or even "<li>text<p>and body
+    elements</p>combined</li>", each with different effects.  It would
+    be best to stick with strict body elements in list items, but they
+    affect vertical spacing in browsers (although they really
+    shouldn't).
+
+    Here is an outline of the optimization:
+
+    - Check for and omit <p> tags in "simple" lists: list items
+      contain either a single paragraph, a nested simple list, or a
+      paragraph followed by a nested simple list.  This means that
+      this list can be compact:
+
+          - Item 1.
+          - Item 2.
+
+      But this list cannot be compact:
+
+          - Item 1.
+
+            This second paragraph forces space between list items.
+
+          - Item 2.
+
+    - In non-list contexts, omit <p> tags on a paragraph if that
+      paragraph is the only child of its parent (footnotes & citations
+      are allowed a label first).
+
+    - Regardless of the above, in definitions, table cells, field bodies,
+      option descriptions, and list items, mark the first child with
+      'class="first"' and the last child with 'class="last"'.  The stylesheet
+      sets the margins (top & bottom respectively) to 0 for these elements.
+
+    The ``no_compact_lists`` setting (``--no-compact-lists`` command-line
+    option) disables list whitespace optimization.
+
+In `html4_strict`, the algorithm to determine if a list is "simple"
+enough to be compacted includes field lists (in addition to ordered
+lists and unordered lists).
+
+
+.. raw:: html
+
+   <style type="text/css"><!--
+   dl.field-list > dd { margin-left:  40px;
+   		        padding-left: 0;
+			/* background: yellow; */
+		      }
+   --></style>
+   
+
+
+Simple lists
+~~~~~~~~~~~~
+
+* This list is simple
+* There should be no space beween items.  
+
+#. This list is simple
+#. There should be no space beween items.  
+
+:l1: This list is simple
+:l2: There should be no space beween items.  
+
+Simple nested lists
+~~~~~~~~~~~~~~~~~~~
+
+* This list is simple
+* * There should be no space beween items.  
+
+#. This list is simple
+#. * There should be no space beween items.  
+   * There should be no space beween items.  
+
+:l1: This list is simple
+:l2: * There should be no space beween items.  
+
+* This list is simple
+* #. There should be no space beween items.  
+
+#. This list is simple
+#. #. There should be no space beween items.  
+
+:l1: This list is simple
+:l2: #. There should be no space beween items.  
+
+* This list is simple
+* :l1.1: There should be no space beween items.  
+
+#. This list is simple
+#. :l11: There should be no space beween items.  
+
+:l1: This list is simple
+:l2: :l11: There should be no space beween items.  
+
+Combined paragraph and list in a list item
+""""""""""""""""""""""""""""""""""""""""""
+
+* This list is simple
+
+  #. Enumeration in first item
+  #. second enumeration item
+  
+* There should be no space beween items.  
+
+
+#. This list is simple
+
+   #. Enumeration in first item
+   #. second enumeration item
+  
+#. There should be no space beween items.  
+
+:l1: This list is simple
+
+   #. Enumeration in first item
+   #. second enumeration item
+
+:l2: There should be no space beween items.  
+
+* This list is simple
+
+  * Bullet list in first item
+  * Bullet list in first item
+  
+* There should be no space beween items.  
+
+
+#. This list is simple
+
+   * Bullet list in first item
+   * Bullet list in first item
+  
+#. There should be no space beween items.  
+
+:l1: This list is simple
+
+     * Bullet list in first item
+     * Bullet list in first item
+
+:l2: There should be no space beween items.  
+
+
+* This list is simple
+
+  :l11: this item contains a field list.
+  :l12: this item contains a field list.
+  
+* there should be no space beween items.  
+
+#. This list is simple
+
+   :l11: this item contains a field list.
+   :l12: this item contains a field list.
+  
+#. there should be no space beween items.  
+
+
+:l1: This list is simple
+
+     :l11: this item contains a field list.
+
+:l2: There should be no space beween items.  
+
+
+Complex lists
+"""""""""""""
+
+* This list is not simple
+
+* Watch the space beween items
+
+  because of this paragraph
+
+
+#. This list is not simple
+
+#. Watch the space beween items
+
+   because of this paragraph
+
+:l1: This list is not simple
+
+:l2: Watch the space beween items
+
+     because of this paragraph
+
+
+* This list is not simple
+
+  second paragraph in first item
+  
+* Watch the space beween items.  
+
+
+#. This list is not simple
+
+   second paragraph in first item
+  
+#. Watch the space beween items.  
+
+:l1: This list is not simple
+
+     second paragraph in first item
+
+:l2: Watch the space beween items.  
+
+
+* This list is not simple
+
+* * Watch the space beween items
+
+  because of this paragraph
+
+
+#. This list is not simple
+
+#. * Watch the space beween items
+
+   because of this paragraph
+
+:l1: This list is not simple
+
+:l2: * Watch the space beween items
+
+     because of this paragraph
+
