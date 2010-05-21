@@ -9,7 +9,7 @@
   :Author: Günter Milde
   :Date: $Date$
 
-A HTML writer, generating *XHTML 1.0 Strict* for styling with CSS 2.1.
+A HTML writer, generating `XHTML 1.0 Strict` for styling with CSS 2.1.
 
 Introduction
 ============
@@ -27,6 +27,8 @@ but widespread browsers.
 
 Objective
 ----------
+
+Goals of the `strict html writer`:
 
 * Strict standards compliance.
 
@@ -69,13 +71,13 @@ Manifest
 
 * `<tools/>`_ with front-end rst2html_strict.py_.
 
-* `<data/>`_ additional style sheet examples and tests including the
-  XHTML-conforming `reStructuredText Test Document`_.
+* `<data/>`_ with a `reStructuredText Test Document`_.
 
 .. _writer module: html4strict/__init__.py
 .. _html4css2.css: html4strict/html4css2.css
 .. _rst2html_strict.py: tools/rst2html_strict.py
 .. _reStructuredText Test Document: data/standalone_rst_html4strict.html
+
 
 Installation
 ============
@@ -85,7 +87,7 @@ Installation
 
    * the ``docutils/writers/`` directory (alongside the standard
      writers), or
-   * the `Module Search Path`_.
+   * Python's `Module Search Path`_.
 
 2. Copy/Link the standard style sheet ``html4css1.css`` into this this
    directory.
@@ -132,10 +134,18 @@ Docinfo and field lists based on definition lists (instead of tables)
   - handling of long labels: truncate, wrap, ...,
   - label separator (default: ':').
 
+Footnotes and citations
+~~~~~~~~~~~~~~~~~~~~~~~
+
++ Based on definition lists.
+
++ Collect adjacent footnotes/citations in one list.
+
 Counter for enumerated lists
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-A counter for `enumerated lists`_ replaces the deprecated "start" attribute.
+A CSS counter for `enumerated lists`_ replaces the deprecated "start"
+attribute.
 
 .. _enumerated lists:
    ../../docutils/docs/ref/rst/restructuredtext.html#enumerated-lists
@@ -159,7 +169,7 @@ is that there is no direct mapping from the previous behaviour to CSS"
 [codelair]_.  `Taming Lists`_ did give valuable advise but no working
 complete solution.
 
-The advise is "Use 'HTML 4.01 Transitional' and keep the START
+The common advise is "Use 'HTML 4.01 Transitional' and keep the START
 attribute". [highdots]_, especially, since "There are arguments over
 whether the start attribute is presentational or not, and indeed HTML5
 has declared that it is no longer deprecated in the current working
@@ -254,8 +264,8 @@ Inline literal role pre-formatted
 
 + simpler implementation and simpler/clean HTML code
 
-+ white-space handling and line-wrapping in inline literals configurable with
-  the CSS.
++ white-space handling and line-wrapping in inline literals
+  configurable with the CSS stylesheet.
 
 
 Remove hard-coded formatting and deprecated arguments
@@ -268,12 +278,6 @@ TODO
 ----
 
 * Hanging indent for numbered section headings and ToC entries.
-
-* No tables for Footnotes and Citations
-  (for footnotes see http://www.archiva.net/footnote/index.htm and
-   http://www.xmlplease.com/footnotes
-
-* option-list as styled <dl> (remove ``--option-limit`` option).
 
 * search stylesheets along standard path if enclosed in <>
   (like the RST syntax for include files).
@@ -292,6 +296,10 @@ TODO
 * Move widely supported constructs to the html4css1 writer.
 
 * Number sections with CSS if sectnum_xform is False.
+
+* Footnotes and Citations (for footnotes see
+  http://www.archiva.net/footnote/index.htm and
+  http://www.xmlplease.com/footnotes
 
 
 Links
