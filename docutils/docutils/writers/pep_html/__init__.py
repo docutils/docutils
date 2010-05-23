@@ -84,7 +84,7 @@ class Writer(html4css1.Writer):
         try:
             subs['pepnum'] = '%04i' % int(self.pepnum)
         except ValueError:
-            subs['pepnum'] = pepnum
+            subs['pepnum'] = self.pepnum
         self.title = header[1][1].astext()
         subs['title'] = self.title
         subs['body'] = ''.join(
