@@ -1,0 +1,741 @@
+**************************************
+Date: Mon May 24 18:02:51 CEST 2010
+Author: stefan
+Tag: rst2gxl_1_35
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/options/expected
+In directory rosalu:/home/stefan/free/rst2gxl/tests/options/expected
+
+Added Files:
+	selectTable.gxl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/options/input
+In directory rosalu:/home/stefan/free/rst2gxl/tests/options/input
+
+Added Files:
+	selectTable.opt selectTable.rst 
+
+--------------------------------------
+Log Message:
+Added tests.
+**************************************
+Date: Mon May 24 17:54:35 CEST 2010
+Author: stefan
+Tag: rst2gxl_1_34
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/complex/expected
+In directory rosalu:/home/stefan/free/rst2gxl/tests/complex/expected
+
+Modified Files:
+	Glossar.gxl 
+
+--------------------------------------
+Log Message:
+Corrected tests.
+**************************************
+Date: Mon May 24 17:43:29 CEST 2010
+Author: stefan
+Tag: rst2gxl_1_33
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory rosalu:/home/stefan/free/rst2gxl
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Log Message:
+Implemented `--select-table`.
+**************************************
+Date: Fri Mar 26 22:09:13 CET 2010
+Author: stefan
+Tag: rst2gxl_1_32
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory paulla:/home/stefan/free/rst2gxl
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/complex/expected
+In directory paulla:/home/stefan/free/rst2gxl/tests/complex/expected
+
+Modified Files:
+	Glossar.gxl 
+
+--------------------------------------
+Log Message:
+Footnotes and citations are no longer considered. Edges with missing
+anchors are sorted out.
+**************************************
+Date: Fri Mar 26 21:47:38 CET 2010
+Author: stefan
+Tag: rst2gxl_1_31
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/complex/expected
+In directory paulla:/home/stefan/free/rst2gxl/tests/complex/expected
+
+Modified Files:
+	Glossar.gxl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/options/expected
+In directory paulla:/home/stefan/free/rst2gxl/tests/options/expected
+
+Added Files:
+	multiedgeSections.gxl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/options/input
+In directory paulla:/home/stefan/free/rst2gxl/tests/options/input
+
+Added Files:
+	multiedgeSections.opt multiedgeSections.rst 
+
+--------------------------------------
+Log Message:
+Added tests.
+**************************************
+Date: Fri Mar 26 21:40:13 CET 2010
+Author: stefan
+Tag: rst2gxl_1_30
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory paulla:/home/stefan/free/rst2gxl
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/complex/expected
+In directory paulla:/home/stefan/free/rst2gxl/tests/complex/expected
+
+Added Files:
+	Glossar.gxl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/simple/expected
+In directory paulla:/home/stefan/free/rst2gxl/tests/simple/expected
+
+Modified Files:
+	sections.gxl 
+
+--------------------------------------
+Log Message:
+Multiedges are removed by default.
+**************************************
+Date: Thu Mar 25 00:02:26 CET 2010
+Author: stefan
+Tag: rst2gxl_1_29
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory paulla:/home/stefan/free/rst2gxl
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Log Message:
+Debugging.
+**************************************
+Date: Wed Mar 24 23:56:27 CET 2010
+Author: stefan
+Tag: rst2gxl_1_28
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory paulla:/home/stefan/free/rst2gxl
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Log Message:
+Anchors in contents headers are recognized.
+**************************************
+Date: Wed Mar 24 23:40:40 CET 2010
+Author: stefan
+Tag: rst2gxl_1_27
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory paulla:/home/stefan/free/rst2gxl
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/simple/input
+In directory paulla:/home/stefan/free/rst2gxl/tests/simple/input
+
+Modified Files:
+	sections.rst 
+
+--------------------------------------
+Log Message:
+Table of contents is ignored.
+**************************************
+Date: Wed Mar 24 22:49:08 CET 2010
+Author: stefan
+Tag: rst2gxl_1_26
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/simple/expected
+In directory paulla:/home/stefan/free/rst2gxl/tests/simple/expected
+
+Added Files:
+	sections.gxl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/simple/input
+In directory paulla:/home/stefan/free/rst2gxl/tests/simple/input
+
+Added Files:
+	sections.rst 
+
+--------------------------------------
+Log Message:
+Added tests.
+**************************************
+Date: Wed Mar 24 22:40:29 CET 2010
+Author: stefan
+Tag: rst2gxl_1_25
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/simple/expected
+In directory paulla:/home/stefan/free/rst2gxl/tests/simple/expected
+
+Added Files:
+	invalid.gxl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/simple/input
+In directory paulla:/home/stefan/free/rst2gxl/tests/simple/input
+
+Added Files:
+	invalid.rst 
+
+--------------------------------------
+Log Message:
+Added tests.
+**************************************
+Date: Wed Mar 24 22:39:24 CET 2010
+Author: stefan
+Tag: rst2gxl_1_24
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/options
+In directory paulla:/home/stefan/free/rst2gxl/tests/options
+
+Added Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/options/expected
+In directory paulla:/home/stefan/free/rst2gxl/tests/options/expected
+
+Added Files:
+	reverseTable.gxl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/options/input
+In directory paulla:/home/stefan/free/rst2gxl/tests/options/input
+
+Added Files:
+	reverseTable.opt reverseTable.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/simple/expected
+In directory paulla:/home/stefan/free/rst2gxl/tests/simple/expected
+
+Modified Files:
+	table.gxl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/simple/input
+In directory paulla:/home/stefan/free/rst2gxl/tests/simple/input
+
+Modified Files:
+	table.rst 
+
+--------------------------------------
+Log Message:
+Added tests.
+**************************************
+Date: Wed Mar 24 22:29:59 CET 2010
+Author: stefan
+Tag: rst2gxl_1_23
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/simple/expected
+In directory paulla:/home/stefan/free/rst2gxl/tests/simple/expected
+
+Modified Files:
+	table.gxl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/simple/input
+In directory paulla:/home/stefan/free/rst2gxl/tests/simple/input
+
+Modified Files:
+	table.rst 
+
+--------------------------------------
+Log Message:
+Added tests.
+**************************************
+Date: Wed Mar 24 22:26:34 CET 2010
+Author: stefan
+Tag: rst2gxl_1_22
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/simple/expected
+In directory paulla:/home/stefan/free/rst2gxl/tests/simple/expected
+
+Added Files:
+	textOnly.gxl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/simple/input
+In directory paulla:/home/stefan/free/rst2gxl/tests/simple/input
+
+Modified Files:
+	table.rst 
+Added Files:
+	textOnly.rst 
+
+--------------------------------------
+Log Message:
+Added tests.
+**************************************
+Date: Wed Mar 24 22:07:04 CET 2010
+Author: stefan
+Tag: rst2gxl_1_21
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/complex
+In directory paulla:/home/stefan/free/rst2gxl/tests/complex
+
+Added Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/complex/input
+In directory paulla:/home/stefan/free/rst2gxl/tests/complex/input
+
+Added Files:
+	Glossar.rst 
+
+--------------------------------------
+Log Message:
+Added test input.
+**************************************
+Date: Wed Mar 24 22:03:08 CET 2010
+Author: stefan
+Tag: rst2gxl_1_20
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory paulla:/home/stefan/free/rst2gxl
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Log Message:
+First steps towards including sections.
+**************************************
+Date: Sun Mar 21 23:37:34 CET 2010
+Author: stefan
+Tag: rst2gxl_1_19
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory paulla:/home/stefan/free/rst2gxl
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Log Message:
+Added ``--reverse`` option.
+**************************************
+Date: Mon Mar 15 12:02:49 CET 2010
+Author: stefan
+Tag: rst2gxl_1_18
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory paulla:/home/stefan/free/rst2gxl
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/simple/expected
+In directory paulla:/home/stefan/free/rst2gxl/tests/simple/expected
+
+Modified Files:
+	simple.gxl 
+
+--------------------------------------
+Log Message:
+Edgemode is given.
+**************************************
+Date: Mon Mar 15 11:57:53 CET 2010
+Author: stefan
+Tag: rst2gxl_1_17
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory paulla:/home/stefan/free/rst2gxl
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Log Message:
+Targets of edges are named properly. Tests run.
+**************************************
+Date: Mon Mar 15 11:52:52 CET 2010
+Author: stefan
+Tag: rst2gxl_1_16
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory paulla:/home/stefan/free/rst2gxl
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/simple/expected
+In directory paulla:/home/stefan/free/rst2gxl/tests/simple/expected
+
+Modified Files:
+	simple.gxl 
+
+--------------------------------------
+Log Message:
+Node names are rendered more properly.
+**************************************
+Date: Mon Mar 15 11:16:56 CET 2010
+Author: stefan
+Tag: rst2gxl_1_15
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory paulla:/home/stefan/free/rst2gxl
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/simple/expected
+In directory paulla:/home/stefan/free/rst2gxl/tests/simple/expected
+
+Modified Files:
+	simple.gxl 
+
+--------------------------------------
+Log Message:
+`from` is generated. Tests run.
+**************************************
+Date: Mon Mar 15 11:07:15 CET 2010
+Author: stefan
+Tag: rst2gxl_1_14
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory paulla:/home/stefan/free/rst2gxl
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Log Message:
+Refactoring: Introduces ``Anchor`` and ``Reference``.
+**************************************
+Date: Sun Mar 14 21:03:42 CET 2010
+Author: stefan
+Tag: rst2gxl_1_13
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory rosalu:/home/stefan/free/rst2gxl
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Log Message:
+Refactoring: DOM is built afterwards.
+**************************************
+Date: Sat Mar 13 18:30:04 CET 2010
+Author: stefan
+Tag: rst2gxl_1_12
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory rosalu:/home/stefan/free/rst2gxl
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/simple
+In directory rosalu:/home/stefan/free/rst2gxl/tests/simple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Added option to create readable output. Normal output is without
+indents to end up with valid names.
+**************************************
+Date: Sat Mar 13 18:11:23 CET 2010
+Author: stefan
+Tag: rst2gxl_1_11
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory rosalu:/home/stefan/free/rst2gxl
+
+Removed Files:
+	rst2gxl.xsl 
+
+--------------------------------------
+Log Message:
+Removed XSLT.
+**************************************
+Date: Sat Mar 13 18:10:10 CET 2010
+Author: stefan
+Tag: rst2gxl_1_10
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory rosalu:/home/stefan/free/rst2gxl
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/simple
+In directory rosalu:/home/stefan/free/rst2gxl/tests/simple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/simple/expected
+In directory rosalu:/home/stefan/free/rst2gxl/tests/simple/expected
+
+Modified Files:
+	simple.gxl 
+
+--------------------------------------
+Log Message:
+Script has same functionality as XSLT.
+**************************************
+Date: Sat Mar 13 15:43:37 CET 2010
+Author: stefan
+Tag: rst2gxl_1_9
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory rosalu:/home/stefan/free/rst2gxl
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Log Message:
+Added first functionality.
+**************************************
+Date: Sat Mar 13 15:19:39 CET 2010
+Author: stefan
+Tag: rst2gxl_1_8
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory rosalu:/home/stefan/free/rst2gxl
+
+Modified Files:
+	rst2gxl.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/simple
+In directory rosalu:/home/stefan/free/rst2gxl/tests/simple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+First script code runs. No functionality yet.
+**************************************
+Date: Sat Mar 13 14:22:26 CET 2010
+Author: stefan
+Tag: rst2gxl_1_7
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests
+In directory rosalu:/home/stefan/free/rst2gxl/tests
+
+Removed Files:
+	Makefile rules.gmk 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/simple
+In directory rosalu:/home/stefan/free/rst2gxl/tests/simple
+
+Modified Files:
+	filterunit.cfg 
+Removed Files:
+	Makefile 
+
+--------------------------------------
+Log Message:
+Changed infrastucture to use script.
+**************************************
+Date: Sat Mar 13 14:14:31 CET 2010
+Author: stefan
+Tag: rst2gxl_1_6
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory rosalu:/home/stefan/free/rst2gxl
+
+Added Files:
+	rst2gxl.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/simple/expected
+In directory rosalu:/home/stefan/free/rst2gxl/tests/simple/expected
+
+Modified Files:
+	simple.gxl 
+
+--------------------------------------
+Log Message:
+Added basic Python script.
+**************************************
+Date: Fri Mar 12 20:13:32 CET 2010
+Author: stefan
+Tag: rst2gxl_1_5
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory paulla:/home/stefan/free/rst2gxl
+
+Modified Files:
+	rst2gxl.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/simple/expected
+In directory paulla:/home/stefan/free/rst2gxl/tests/simple/expected
+
+Modified Files:
+	simple.gxl 
+
+--------------------------------------
+Log Message:
+Fixed namespaces.
+
+Changed test to what is really expected.
+**************************************
+Date: Fri Mar 12 19:38:52 CET 2010
+Author: stefan
+Tag: rst2gxl_1_4
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory paulla:/home/stefan/free/rst2gxl
+
+Modified Files:
+	rst2gxl.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/simple/expected
+In directory paulla:/home/stefan/free/rst2gxl/tests/simple/expected
+
+Modified Files:
+	simple.gxl 
+
+--------------------------------------
+Log Message:
+Minor changes.
+**************************************
+Date: Fri Mar 12 19:28:36 CET 2010
+Author: stefan
+Tag: rst2gxl_1_3
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/simple/expected
+In directory paulla:/home/stefan/free/rst2gxl/tests/simple/expected
+
+Added Files:
+	simple.gxl 
+
+--------------------------------------
+Log Message:
+Added infrastructure.
+**************************************
+Date: Fri Mar 12 19:27:21 CET 2010
+Author: stefan
+Tag: rst2gxl_1_2
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory paulla:/home/stefan/free/rst2gxl
+
+Added Files:
+	Makefile rst2gxl.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests
+In directory paulla:/home/stefan/free/rst2gxl/tests
+
+Added Files:
+	Makefile rules.gmk 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/simple
+In directory paulla:/home/stefan/free/rst2gxl/tests/simple
+
+Added Files:
+	Makefile filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/simple/original
+In directory paulla:/home/stefan/free/rst2gxl/tests/simple/original
+
+Added Files:
+	simple.rst 
+
+--------------------------------------
+Log Message:
+Added infrastructure.
+**************************************
+Date: Fri Mar 12 19:08:12 CET 2010
+Author: stefan
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests
+In directory paulla:/home/stefan/free/rst2gxl/tests
+
+
+--------------------------------------
+Log Message:
+Directory /home/stefan/vault/sm/rst2gxl/tests added to the repository
+
