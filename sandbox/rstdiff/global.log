@@ -1,4 +1,165 @@
 **************************************
+Date: Mon May 24 12:52:09 CEST 2010
+Author: stefan
+Tag: rstdiff_1_25
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Completed infrastructure.
+**************************************
+Date: Sun May 23 13:55:05 CEST 2010
+Author: stefan
+Tag: rstdiff_1_24
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/treediff
+In directory rosalu:/home/stefan/free/rstdiff/treediff
+
+Modified Files:
+	__init__.py 
+
+--------------------------------------
+Log Message:
+First steps towards a hashable implementation for Docutils nodes.
+**************************************
+Date: Sun May 16 14:45:35 CEST 2010
+Author: stefan
+Tag: rstdiff_1_23
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/studies
+In directory rosalu:/home/stefan/free/rstdiff/studies
+
+Modified Files:
+	diff.py hashable.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/treediff
+In directory rosalu:/home/stefan/free/rstdiff/treediff
+
+Added Files:
+	__init__.py 
+
+--------------------------------------
+Log Message:
+Moved core of the studies to real package.
+**************************************
+Date: Sun May 16 14:44:48 CEST 2010
+Author: stefan
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/treediff
+In directory rosalu:/home/stefan/free/rstdiff/treediff
+
+
+--------------------------------------
+Log Message:
+Directory /home/stefan/vault/sm/rstdiff/treediff added to the repository
+**************************************
+Date: Thu May 13 14:32:49 CEST 2010
+Author: stefan
+Tag: rstdiff_1_22
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Writer is configured properly.
+**************************************
+Date: Sun May  9 14:38:14 CEST 2010
+Author: stefan
+Tag: rstdiff_1_21
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Input files are parsed.
+**************************************
+Date: Sun May  9 14:22:11 CEST 2010
+Author: stefan
+Tag: rstdiff_1_20
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Command line processing ok.
+**************************************
+Date: Sun May  9 10:25:10 CEST 2010
+Author: stefan
+Tag: rstdiff_1_19
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Added Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/studies
+In directory rosalu:/home/stefan/free/rstdiff/studies
+
+Modified Files:
+	diff.py 
+
+--------------------------------------
+Log Message:
+Added `rstdiff.py`.
+**************************************
+Date: Sat May  8 12:56:02 CEST 2010
+Author: stefan
+Tag: rstdiff_1_18
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/studies
+In directory rosalu:/home/stefan/free/rstdiff/studies
+
+Modified Files:
+	diff.py 
+
+--------------------------------------
+Log Message:
+Continued studies. There is a class `TreeMatcher` similar to
+`SequenceMatcher`.
+**************************************
 Date: Sun Apr 25 12:14:20 CEST 2010
 Author: stefan
 Tag: rstdiff_1_17

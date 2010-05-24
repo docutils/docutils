@@ -2,11 +2,11 @@
 
 from difflib import SequenceMatcher
 
-from hashable import HashableNodeImpl
-
 from pprint import pprint
 
 import sys
+
+from treediff import TreeMatcher, HashableNodeImpl
 
 __docformat__ = 'reStructuredText'
 
@@ -21,6 +21,7 @@ sm = SequenceMatcher(None, aI, bI)
 # print(sm.get_opcodes()) # The way to go
 
 class TreeNode(object):
+    """An example tree node to play with."""
 
     tag = None
     children = ( )
@@ -30,6 +31,7 @@ class TreeNode(object):
         self.children = children
 
 class HashableTreeNodeImpl(HashableNodeImpl):
+    """A `HashableNodeImpl` for `TreeNode`."""
 
     def __init__(self):
         super(self.__class__, self).__init__(TreeNode)
@@ -38,8 +40,6 @@ class HashableTreeNodeImpl(HashableNodeImpl):
         return hash(node.tag)
 
     def childHash(self, node):
-        """Return a hash for the children only. Subclasses should override
-        this."""
         return hash(node)
 
     def rootEq(self, node, other):
@@ -50,61 +50,6 @@ class HashableTreeNodeImpl(HashableNodeImpl):
 
     def getChildren(self, node):
         return node.children
-
-# To generate a diff tree:
-#
-# * ``equal`` opcodes need a copy
-#
-# * ``insert`` and ``delete`` opcodes must be processed as such
-#
-# * ``replace`` opcodes need to be analyzed recursively to find a
-#   minimal set of changes
-
-def resolveDeepReplace(hashableNodeImpl, opcodes, a, b):
-    """Resolves ``replace`` elements in `opcodes` pertaining to `a` and
-    `b`. Returns opcodes including nested elements for these cases.
-    `hashableNodeImpl` is the `HashableNodeImpl` used to control the hashable
-    feature."""
-    result = [ ]
-    for i in xrange(len(opcodes)):
-        ( opcode, aBeg, aEnd, bBeg, bEnd ) = opcodes[i]
-        if opcode != 'replace':
-            result.append(opcodes[i])
-            continue
-        try:
-            hashableNodeImpl.pushRootOnly(True)
-            sm = SequenceMatcher(None, a[aBeg:aEnd], b[bBeg:bEnd])
-            rootOpcodes = sm.get_opcodes()
-            for j in xrange(len(rootOpcodes)):
-                ( subOpcode, aSubBeg, aSubEnd, bSubBeg, bSubEnd ) = rootOpcodes[j]
-                if subOpcode != 'equal':
-                    result.append(( subOpcode, aBeg + aSubBeg, aBeg + aSubEnd,
-                                    bBeg + bSubBeg, bBeg + bSubEnd, ))
-                else:
-                    for k in xrange(aSubEnd - aSubBeg):
-                        aIdx = aBeg + aSubBeg + k
-                        bIdx = bBeg + bSubBeg + k
-                        result.append(('descend',
-                                       aIdx, aIdx + 1, bIdx, bIdx + 1,
-                                       resolveRootEqual(hashableNodeImpl,
-                                                        a[aIdx], b[bIdx]), ))
-        finally:
-            hashableNodeImpl.popRootOnly()
-    return result
-
-def resolveRootEqual(hashableNodeImpl, aElem, bElem):
-    """Considers children of `aElem` and `bElem` which have equal roots.
-    Returns opcodes for the children. `hashableNodeImpl` is the
-    `HashableNodeImpl` used to control the hashable feature."""
-    a = hashableNodeImpl.getChildren(aElem)
-    b = hashableNodeImpl.getChildren(bElem)
-    try:
-        hashableNodeImpl.pushRootOnly(False)
-        sm = SequenceMatcher(None, a, b)
-        nestedOpcodes = sm.get_opcodes()
-        return resolveDeepReplace(hashableNodeImpl, nestedOpcodes, a, b)
-    finally:
-        hashableNodeImpl.popRootOnly()
 
 hashableNodeImpl = HashableTreeNodeImpl()
 
@@ -140,7 +85,22 @@ sm = SequenceMatcher(None, aT, bT)
 top = sm.get_opcodes()
 pprint(top)
 print('---')
-# Use a pseudo root
-pprint(resolveRootEqual(hashableNodeImpl,
-                        TreeNode(None, aT), TreeNode(None, bT)),
+
+# Use a pseudo root with different root nodes.
+pprint(TreeMatcher(hashableNodeImpl,
+                   TreeNode('a', aT), TreeNode('b', bT)).get_opcodes(),
        sys.stdout, 2, 40, None)
+
+# Use a pseudo root with equal root nodes.
+pprint(TreeMatcher(hashableNodeImpl,
+                   TreeNode(None, aT), TreeNode(None, bT)).get_opcodes(),
+       sys.stdout, 2, 40, None)
+
+# To generate a diff tree:
+#
+# * ``equal`` opcodes need a copy
+#
+# * ``insert`` and ``delete`` opcodes must be processed as such
+#
+# * ``replace`` opcodes need to be analyzed recursively to find a
+#   minimal set of changes
