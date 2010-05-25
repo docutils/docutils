@@ -5,11 +5,13 @@
             The Strict HTML Writer
 =====================================================
 
-..
-  :Author: Günter Milde
-  :Date: $Date$
 
-A HTML writer, generating `XHTML 1.0 Strict` for styling with CSS 2.1.
+:Author: Günter Milde
+:Date: $Date$
+:Abstract: A HTML writer, generating `XHTML 1.0 Strict` for styling
+	   with CSS 2.1.
+
+.. contents::
 
 Introduction
 ============
@@ -41,7 +43,7 @@ Goals of the `strict html writer`:
 * `Graceful Degradation
   <http://www.anybrowser.org/campaign/abdesign.html#degradability>`__
 
-* Best viewed with any (CSS2-conforming) HTML browser. [#]_ 
+* Best viewed with any (CSS2-conforming) HTML browser. [#]_
 
 .. [#] Tested with Firefox_, Midori_, Konqueror_ and Opera_. As Safari
    and Google Chrome use the same rendering engine as Midori and
@@ -66,24 +68,27 @@ This writer is for you, if you
 Manifest
 --------
 
-* `<html4strict/>`_ with the `writer module`_ and the additional
-  style sheet for CSS2-conforming HTML browsers html4css2.css_.
+* `<html4strict/>`_
 
-* `<tools/>`_ with front-end rst2html_strict.py_.
+  * `<html4strict/__init__.py>`_: writer module
+  * `<html4strict/html4css2.css>`_: additional CSS style sheet
 
-* `<data/>`_ with a `reStructuredText Test Document`_.
+* `<tools/>`_
 
-.. _writer module: html4strict/__init__.py
-.. _html4css2.css: html4strict/html4css2.css
-.. _rst2html_strict.py: tools/rst2html_strict.py
-.. _reStructuredText Test Document: data/standalone_rst_html4strict.html
+  * `<tools/rst2html_strict.py>`_: front end
 
+* `<data/>`_
+
+  * `<data/standalone_rst_html4strict.html>`_,
+  * `<data/standalone_rst_html4strict.txt>`_: reStructuredText Test Document
+  * `<simple-lists.html>`_,
+  * `<simple-lists.txt>`_: test the list compactation algorithm.
 
 Installation
 ============
 
-1. Copy/Link/Move the `html4strict/`_ directory (including its contents)
-   either into
+1. Copy/Link/Move the `<html4strict/>`_ directory (including its
+   contents) either into
 
    * the ``docutils/writers/`` directory (alongside the standard
      writers), or
@@ -92,7 +97,7 @@ Installation
 2. Copy/Link the standard style sheet ``html4css1.css`` into this this
    directory.
 
-3. Copy/Link/Move `rst2html_strict.py`_ into the binary PATH.
+3. Copy/Link/Move `<tools/rst2html_strict.py>`_ into the binary PATH.
 
 .. _Module Search Path:
    http://docs.python.org/tutorial/modules.html#the-module-search-path
@@ -106,17 +111,17 @@ Command line use::
 
 The full usage text can be obtained with the ``--help`` option.
 
-For an example of programmatic use, see rst2html_strict.py_.
+For an example of programmatic use, see `<tools/rst2html_strict.py>`_.
 
 
 Implementation
 ==============
 
-The `writer module`_ subclasses the ``html4css1.Writer`` and
-``html4css1.HTMLTranslator`` classes. Some methods are overwritten to remove
-deprecated HTML constructs or hard coded formatting.
+The writer module subclasses the ``html4css1.Writer`` and
+``html4css1.HTMLTranslator`` classes. Some methods are overwritten to
+remove deprecated HTML constructs or hard coded formatting.
 
-The `html4css2.css`_ style sheet extends the standard layout for
+The html4css2.css style sheet extends the standard layout for
 CSS2-conforming Html browsers.
 
 
@@ -276,6 +281,11 @@ Remove hard-coded formatting and deprecated arguments
 
 TODO
 ----
+
+* The first list in the test `2.3. Enumerated Lists` should be
+  compact.
+
+* Compact Docinfo?
 
 * Hanging indent for numbered section headings and ToC entries.
 
