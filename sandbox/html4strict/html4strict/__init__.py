@@ -157,14 +157,16 @@ class HTMLTranslator(html4css1.HTMLTranslator):
     def visit_enumerated_list(self, node):
         atts = {}
         if 'start' in node:
-            atts['style'] = 'counter-reset: item %d;' % (node['start'] - 1)
+            atts['style'] = 'counter-reset: item %d;' % (
+                                                node['start'] - 1)
+        classes = node.setdefault('classes', [])
         if 'enumtype' in node:
-            atts['class'] = node['enumtype']
-        # @@@ To do: prefix, suffix.
+            classes.append(node['enumtype'])
+        if self.is_compactable(node) and not self.compact_simple:
+            classes.append('simple')
+        # @@@ To do: prefix, suffix. (?)
         self.context.append((self.compact_simple, self.compact_p))
         self.compact_p = False
-        if self.is_compactable(node) and not self.compact_simple:
-            atts['class'] = ' '.join(node.get('classes', []) + ['simple'])
         self.body.append(self.starttag(node, 'ol', **atts))
 
     # field-list
@@ -299,10 +301,6 @@ class HTMLTranslator(html4css1.HTMLTranslator):
 
     def visit_description(self, node):
         self.body.append(self.starttag(node, 'dd', ''))
-        self.set_class_on_child(node, 'first', 0)
-        option = node.parent
-        if (option.parent.index(option) == len(option.parent) - 1):
-            self.set_class_on_child(node, 'last', -1)
 
     def depart_description(self, node):
         self.body.append('</dd>\n')

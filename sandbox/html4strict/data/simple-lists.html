@@ -5,8 +5,596 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="Docutils 0.7: http://docutils.sourceforge.net/" />
 <title>Simple and complex lists</title>
-<link rel="stylesheet" href="../../../docutils/docutils/writers/html4strict/html4css1.css" type="text/css" />
-<link rel="stylesheet" href="../../../docutils/docutils/writers/html4strict/html4css2.css" type="text/css" />
+<style type="text/css">
+
+/*
+:Author: David Goodger (goodger@python.org)
+:Id: $Id$
+:Copyright: This stylesheet has been placed in the public domain.
+
+Default cascading style sheet for the HTML output of Docutils.
+
+See http://docutils.sf.net/docs/howto/html-stylesheets.html for how to
+customize this style sheet.
+*/
+
+/* used to remove borders from tables and images */
+.borderless, table.borderless td, table.borderless th {
+  border: 0 }
+
+table.borderless td, table.borderless th {
+  /* Override padding for "table.docutils td" with "! important".
+     The right padding separates the table cells. */
+  padding: 0 0.5em 0 0 ! important }
+
+.first {
+  /* Override more specific margin styles with "! important". */
+  margin-top: 0 ! important }
+
+.last, .with-subtitle {
+  margin-bottom: 0 ! important }
+
+.hidden {
+  display: none }
+
+a.toc-backref {
+  text-decoration: none ;
+  color: black }
+
+blockquote.epigraph {
+  margin: 2em 5em ; }
+
+dl.docutils dd {
+  margin-bottom: 0.5em }
+
+object[type="image/svg+xml"], object[type="application/x-shockwave-flash"] {
+  overflow: hidden;
+}
+
+/* Uncomment (and remove this text!) to get bold-faced definition list terms
+dl.docutils dt {
+  font-weight: bold }
+*/
+
+div.abstract {
+  margin: 2em 5em }
+
+div.abstract p.topic-title {
+  font-weight: bold ;
+  text-align: center }
+
+div.admonition, div.attention, div.caution, div.danger, div.error,
+div.hint, div.important, div.note, div.tip, div.warning {
+  margin: 2em ;
+  border: medium outset ;
+  padding: 1em }
+
+div.admonition p.admonition-title, div.hint p.admonition-title,
+div.important p.admonition-title, div.note p.admonition-title,
+div.tip p.admonition-title {
+  font-weight: bold ;
+  font-family: sans-serif }
+
+div.attention p.admonition-title, div.caution p.admonition-title,
+div.danger p.admonition-title, div.error p.admonition-title,
+div.warning p.admonition-title {
+  color: red ;
+  font-weight: bold ;
+  font-family: sans-serif }
+
+/* Uncomment (and remove this text!) to get reduced vertical space in
+   compound paragraphs.
+div.compound .compound-first, div.compound .compound-middle {
+  margin-bottom: 0.5em }
+
+div.compound .compound-last, div.compound .compound-middle {
+  margin-top: 0.5em }
+*/
+
+div.dedication {
+  margin: 2em 5em ;
+  text-align: center ;
+  font-style: italic }
+
+div.dedication p.topic-title {
+  font-weight: bold ;
+  font-style: normal }
+
+div.figure {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+div.footer, div.header {
+  clear: both;
+  font-size: smaller }
+
+div.line-block {
+  display: block ;
+  margin-top: 1em ;
+  margin-bottom: 1em }
+
+div.line-block div.line-block {
+  margin-top: 0 ;
+  margin-bottom: 0 ;
+  margin-left: 1.5em }
+
+div.sidebar {
+  margin: 0 0 0.5em 1em ;
+  border: medium outset ;
+  padding: 1em ;
+  background-color: #ffffee ;
+  width: 40% ;
+  float: right ;
+  clear: right }
+
+div.sidebar p.rubric {
+  font-family: sans-serif ;
+  font-size: medium }
+
+div.system-messages {
+  margin: 5em }
+
+div.system-messages h1 {
+  color: red }
+
+div.system-message {
+  border: medium outset ;
+  padding: 1em }
+
+div.system-message p.system-message-title {
+  color: red ;
+  font-weight: bold }
+
+div.topic {
+  margin: 2em }
+
+h1.section-subtitle, h2.section-subtitle, h3.section-subtitle,
+h4.section-subtitle, h5.section-subtitle, h6.section-subtitle {
+  margin-top: 0.4em }
+
+h1.title {
+  text-align: center }
+
+h2.subtitle {
+  text-align: center }
+
+hr.docutils {
+  width: 75% }
+
+img.align-left, .figure.align-left, object.align-left {
+  clear: left ;
+  float: left ;
+  margin-right: 1em }
+
+img.align-right, .figure.align-right, object.align-right {
+  clear: right ;
+  float: right ;
+  margin-left: 1em }
+
+img.align-center, .figure.align-center, object.align-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.align-left {
+  text-align: left }
+
+.align-center {
+  clear: both ;
+  text-align: center }
+
+.align-right {
+  text-align: right }
+
+/* reset inner alignment in figures */
+div.align-right {
+  text-align: left }
+
+/* div.align-center * { */
+/*   text-align: left } */
+
+ol.simple, ul.simple {
+  margin-bottom: 1em }
+
+ol.arabic {
+  list-style: decimal }
+
+ol.loweralpha {
+  list-style: lower-alpha }
+
+ol.upperalpha {
+  list-style: upper-alpha }
+
+ol.lowerroman {
+  list-style: lower-roman }
+
+ol.upperroman {
+  list-style: upper-roman }
+
+p.attribution {
+  text-align: right ;
+  margin-left: 50% }
+
+p.caption {
+  font-style: italic }
+
+p.credits {
+  font-style: italic ;
+  font-size: smaller }
+
+p.label {
+  white-space: nowrap }
+
+p.rubric {
+  font-weight: bold ;
+  font-size: larger ;
+  color: maroon ;
+  text-align: center }
+
+p.sidebar-title {
+  font-family: sans-serif ;
+  font-weight: bold ;
+  font-size: larger }
+
+p.sidebar-subtitle {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+p.topic-title {
+  font-weight: bold }
+
+pre.address {
+  margin-bottom: 0 ;
+  margin-top: 0 ;
+  font: inherit }
+
+pre.literal-block, pre.doctest-block {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+span.classifier {
+  font-family: sans-serif ;
+  font-style: oblique }
+
+span.classifier-delimiter {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+span.interpreted {
+  font-family: sans-serif }
+
+span.option {
+  white-space: nowrap }
+
+span.pre {
+  white-space: pre }
+
+span.problematic {
+  color: red }
+
+span.section-subtitle {
+  /* font-size relative to parent (h1..h6 element) */
+  font-size: 80% }
+
+table.citation {
+  border-left: solid 1px gray;
+  margin-left: 1px }
+
+table.docinfo {
+  margin: 2em 4em }
+
+table.docutils {
+  margin-top: 0.5em ;
+  margin-bottom: 0.5em }
+
+table.footnote {
+  border-left: solid 1px black;
+  margin-left: 1px }
+
+table.docutils td, table.docutils th,
+table.docinfo td, table.docinfo th {
+  padding-left: 0.5em ;
+  padding-right: 0.5em ;
+  vertical-align: top }
+
+table.docutils th.field-name, table.docinfo th.docinfo-name {
+  font-weight: bold ;
+  text-align: left ;
+  white-space: nowrap ;
+  padding-left: 0 }
+
+h1 tt.docutils, h2 tt.docutils, h3 tt.docutils,
+h4 tt.docutils, h5 tt.docutils, h6 tt.docutils {
+  font-size: 100% }
+
+ul.auto-toc {
+  list-style-type: none }
+
+</style>
+<style type="text/css">
+
+/* html4css2.css: Cascading style sheet for Docutils' html4strict writer.   */
+/*                                                                          */
+/* :Author: Günter Milde                                                    */
+/* :Copyright: © 2009 Günter Milde.                                         */
+/*             Released  without warranties or conditions of any kind       */
+/*             under the terms of the Apache License, Version 2.0           */
+/*          http://www.apache.org/licenses/LICENSE-2.0                      */
+/*                                                                          */
+/* This stylesheet supplements the Docutils standard style 'html4css1.css'. */
+/* It uses CSS 2.1 elements (supported by up-to-date versions of popular    */
+/* browsers).                                                               */
+
+/* General rules */
+/* ============= */
+
+body {
+  padding: 0 5%;
+  margin: 8px 0;
+  line-height:1.2;
+}
+
+div.document {
+  max-width: 40em; /* avoid long lines --> better reading */
+  margin: 0 auto;
+}
+
+/* separate items except for compact lists */
+dl > dd {
+  margin-bottom: 1em;
+}
+.compact li, .compact p, .compact ul, .compact ol
+dl.simple  > dd, .simple  li, .simple  p, .simple  ul, .simple  ol {
+  margin-bottom: 0;
+/*   background: magenta; */
+}
+dl.simple  > dd, dl.compact > dd { /* separate to be more specific */
+  margin-bottom: 0;
+/*   background: lightgreen; */
+}
+
+/* space around paragraphs */
+dl > dd p:first-child {
+  margin: 0;
+}
+dl > dd p:last-child {
+  margin-bottom: 0;
+/*   background: lightgreen; */
+}
+
+/* Sidebar */
+/* ------- */
+
+div.sidebar {
+  margin-right: -5%;
+}
+
+/* Special definition lists */
+/* ======================== */
+
+/* start definition term on the same line as the label */
+
+dl.field-list > dt, dl.option-list > dt, dl.docinfo > dt,
+dl.footnote > dt, dl.citation > dt, dl.description > dt {
+  clear: left;
+  float: left;
+  margin: 0;
+  padding: 0;
+  padding-right: 0.5em;
+}
+
+/* Definition list with the layout of a LaTeX `description` list */
+/* (bold label, continue on same line) */
+dl.description > dt {
+  font-weight: bold;
+}
+
+/* Field Lists */
+
+/* field names: bold, followed by a colon */
+dl.field-list > dt, dl.docinfo > dt {
+  font-weight: bold;
+}
+dl.field-list > dt:after, dl.docinfo > dt:after {
+  content: ":";
+}
+
+/* Offset for field content (corresponds to the --field-name-limit option) */
+dl.field-list > dd {
+  margin-left:  8.5em;
+  padding-left: 0.5em;
+/* background: yellow; */
+}
+
+/* start field-body on a new line after long field names */
+dl.field-list > dd p {
+  width: 100%;
+/*   display: inline-block; */
+/*   background: yellow; */
+}
+
+dl.field-list > dd > p:first-child,
+dl.field-list > dd > ol:first-child,
+dl.field-list > dd > ul:first-child,
+dl.field-list > dd > dl:first-child {
+  display: inline-block;
+}
+
+/* field-list variants:: */
+
+/* example for custom field-name width */
+dl.field-list.narrow > dd {
+  margin-left: 5em;
+}
+
+/* start field-body on same line after long field names */
+dl.field-list.run-in > dd p {
+  display: block;
+}
+
+/* wrap or truncate long field names */
+dl.field-list.fix-labelwidth > dt {
+  width: 8em; /* set to dl.field-list > dd margin-left - padding-left */
+  overflow: hidden;
+}
+dl.field-list.fix-labelwidth > dd:after {
+  /* a "stopper" to prevent next dd floating up too far */
+  content: '';
+  display: block;
+  clear: left;
+}
+
+/* docinfo */
+
+dl.docinfo {
+  margin: 2em 2em; /* setting from html4css1.css */
+  padding-left: 0;
+}
+
+dl.docinfo > dd {
+  margin-left: 8em;
+/*   margin-bottom: 0.5em; */
+}
+
+/* option list */
+
+dl.option-list {
+  margin-left: 1em;
+  padding-left: 0;
+}
+
+dl.option-list > dd {
+  margin-left: 8em;
+  /* margin-bottom: 0.5em; */
+}
+
+/* start description on a new line after long options */
+dl.option-list > dd p {
+  width: 100%;
+  display: inline-block;
+}
+
+/* footnotes */
+
+dl.footnote, dl.citation {
+  /* line on the left */
+  padding-left: 1ex;
+  border-left: solid;
+  border-left-width: thin;
+  /* border-color: black; */
+}
+
+
+/*
+Ordered List (Enumeration)
+--------------------------
+
+Use counters to replace the deprecated start attribute. Make sure the
+resulting list resembles the list-style 'outside' with a hanging indent.
+*/
+
+/* New ordered list: reset counter, suppress the default label */
+ol {
+  counter-reset: item;
+  list-style-type: none  ! important;
+}
+
+/* Set the negative indent of the list label as feature of the list item */
+ol > li {
+  text-indent: -40px; /* Mozillas default indent */
+  margin-bottom: 1em;
+}
+
+/* Label */
+ol > li:before {
+  /* increment and typeset counter(s), */
+  counter-increment: item;
+  content: counter(item) ".";
+  /* display next to the content (aligned top-right), */
+  display: inline-block;
+  text-align: right;
+  vertical-align: top;
+  /* sum must match ol>li {text-indent:} (40px is Mozillas default) */
+  width: 35px;
+  padding-right: 5px;
+/*   background: yellow; */
+}
+
+/* objects nested in an ol */
+ol > li > p,
+ol > li > ol,
+ol > li > ul,
+ol > li > dl {
+  text-indent: 0;
+  margin-top: 0;
+  /* background: lightgreen; */
+}
+
+/* The list item's first line starts next to the label, without indent */
+ol > li > p:first-child,
+ol > li > ol:first-child,
+ol > li > ul:first-child,
+ol > li > dl:first-child {
+  display: inline-block;
+  /* background: lightblue; */
+}
+ol > li > p:last-child {
+  margin-bottom: 0;
+}
+
+/* default separator variants */
+ol.loweralpha > li:before {
+  content: counter(item, lower-alpha) ")";
+}
+ol.upperalpha  > li:before {
+  content: counter(item, upper-alpha) ".";
+}
+ol.lowerroman  > li:before {
+  content: "(" counter(item, lower-roman) ")";
+}
+ol.upperroman  > li:before {
+  content: counter(item, upper-roman) ")";
+}
+/* nested counters (1, 1.1, 1.1.1, etc) */
+/* nested enumerated lists "inherit" the class attribute, other lists not */
+ol.nested > li:before, ol.nested  ol > li:before {
+  content: counters(item, ".") " ";
+}
+
+/* TODO: prefix, suffix? */
+
+/* smaller font for super- and subscripts */
+/* sub, sup {font-size: 70%;} */ /* Mozilla default is `smaller` */
+
+/* Tables */
+/* ------ */
+
+/* borders for "normal" tables */
+table.table {
+  border-style: outset;
+  border-width: thin;
+}
+
+table.table td, table.table th {
+  border-style: inset;
+  border-width: thin;
+}
+
+/* no borders for "borderless" tables */
+table.table.borderless, table.table.borderless * {
+  border-style: none;
+}
+
+/* whitespace and line-wrapping in inline literals
+   -----------------------------------------------
+*/
+/* possible values: normal, nowrap, pre, pre-wrap, pre-line */
+tt.docutils.literal {
+  white-space: pre-wrap;
+}
+
+</style>
 </head>
 <body>
 <div class="document" id="simple-and-complex-lists">
@@ -72,7 +660,7 @@ dl.field-list > dd { margin-left:  40px;
 <li>This list is simple</li>
 <li>There should be no space beween items.</li>
 </ul>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p class="first">This list is simple</p>
 </li>
 <li><p class="first">There should be no space beween items.</p>
@@ -96,7 +684,7 @@ dl.field-list > dd { margin-left:  40px;
 </ul>
 </li>
 </ul>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p class="first">This list is simple</p>
 </li>
 <li><ul class="first simple">
@@ -122,10 +710,10 @@ dl.field-list > dd { margin-left:  40px;
 </ol>
 </li>
 </ul>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p class="first">This list is simple</p>
 </li>
-<li><ol class="first first simple">
+<li><ol class="first arabic simple">
 <li><p class="first">There should be no space beween items.</p>
 </li>
 </ol>
@@ -136,7 +724,7 @@ dl.field-list > dd { margin-left:  40px;
 <dd><p>This list is simple</p>
 </dd>
 <dt>l2</dt>
-<dd><ol class="simple">
+<dd><ol class="arabic simple">
 <li><p class="first">There should be no space beween items.</p>
 </li>
 </ol>
@@ -150,7 +738,7 @@ dl.field-list > dd { margin-left:  40px;
 </dl>
 </li>
 </ul>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p class="first">This list is simple</p>
 </li>
 <li><dl class="first field-list simple">
@@ -182,9 +770,9 @@ dl.field-list > dd { margin-left:  40px;
 </li>
 <li>There should be no space beween items.</li>
 </ul>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p class="first">This list is simple</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p class="first">Enumeration in first item</p>
 </li>
 <li><p class="first">second enumeration item</p>
@@ -197,7 +785,7 @@ dl.field-list > dd { margin-left:  40px;
 <dl class="field-list simple">
 <dt>l1</dt>
 <dd><p>This list is simple</p>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p class="first">Enumeration in first item</p>
 </li>
 <li><p class="first">second enumeration item</p>
@@ -216,7 +804,7 @@ dl.field-list > dd { margin-left:  40px;
 </li>
 <li>There should be no space beween items.</li>
 </ul>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p class="first">This list is simple</p>
 <ul class="simple">
 <li>Bullet list in first item</li>
@@ -248,7 +836,7 @@ dl.field-list > dd { margin-left:  40px;
 </li>
 <li>there should be no space beween items.</li>
 </ul>
-<ol class="simple">
+<ol class="arabic simple">
 <li><p class="first">This list is simple</p>
 <dl class="field-list simple">
 <dt>l11</dt>
