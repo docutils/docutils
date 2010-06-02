@@ -1,1 +1,0 @@
-/home/milde/Code/Python/docutils-svn/docutils/test/functional/input/standalone_rst_html4strict.txt
