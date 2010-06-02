@@ -76,6 +76,7 @@ class HTMLTranslator(html4css1.HTMLTranslator):
     # docstring and the SimpleListChecker class at the end of this file).
 
     def is_compactable(self, node):
+        # print "is_compactable %s ?" % node.__class__,
         # explicite class arguments have precedence
         if 'compact' in node['classes']:
             # print "explicitely compact"
@@ -91,6 +92,7 @@ class HTMLTranslator(html4css1.HTMLTranslator):
         if (isinstance(node, nodes.enumerated_list) or
             isinstance(node, nodes.bullet_list)
            ) and not self.settings.compact_lists:
+            # print "`compact-lists` is False"
             return False
         # more special cases:
         if (self.compact_simple or self.topic_classes == ['contents']):
@@ -101,8 +103,10 @@ class HTMLTranslator(html4css1.HTMLTranslator):
         try:
             node.walk(visitor)
         except nodes.NodeFound:
+            # print "complex node"
             return False
         else:
+            # print "simple list"
             return True
 
 
@@ -131,7 +135,10 @@ class HTMLTranslator(html4css1.HTMLTranslator):
     # use definition list instead of table
 
     def visit_docinfo(self, node):
-        self.body.append(self.starttag(node, 'dl', CLASS='docinfo'))
+        classes = 'docinfo'
+        if (self.is_compactable(node)):
+            classes += ' simple'
+        self.body.append(self.starttag(node, 'dl', CLASS=classes))
 
     def depart_docinfo(self, node):
         self.body.append('</dl>\n')
@@ -180,9 +187,7 @@ class HTMLTranslator(html4css1.HTMLTranslator):
         self.compact_field_list, self.compact_p = False, False
         #
         classes = 'field-list'
-        if ('compact' not in node['classes'] and
-            self.is_compactable(node)):
-            # print node.__class__, "is simple"
+        if (self.is_compactable(node)):
             classes += ' simple'
         self.body.append(self.starttag(node, 'dl', CLASS=classes))
 
@@ -321,12 +326,19 @@ class SimpleListChecker(html4css1.SimpleListChecker):
     Here "simple" means a list item containing nothing other than a single
     paragraph, a simple list, or a paragraph followed by a simple list.
 
-    This version also checks for simple field lists.
+    This version also checks for simple field lists and docinfo.
     """
     # # debugging: copy of parent methods with `print` calls
     # def default_visit(self, node):
-    #     # print "found", node.__class__
+    #     print "found", node.__class__, "in", node.parent.__class__
     #     raise nodes.NodeFound
+
+    def _pass_node(self, node):
+        pass
+
+    def _simple_node(self, node):
+        # nodes that are never complex (can contain only inline nodes)
+        raise nodes.SkipNode
 
     def visit_list_item(self, node):
         # print "visiting list item", node.__class__
@@ -344,17 +356,28 @@ class SimpleListChecker(html4css1.SimpleListChecker):
         if len(children) <= 1:
             return
         else:
+            # print "found", child.__class__, "in", node.__class__
             raise nodes.NodeFound
 
-    def visit_field_list(self, node):
-        pass
+    # Docinfo nodes:
+    visit_docinfo = _pass_node
+    visit_author = _simple_node
+    visit_authors = visit_list_item
+    visit_address = visit_list_item
+    visit_contact = _pass_node
+    visit_copyright = _simple_node
+    visit_date = _simple_node
+    visit_organization = _simple_node
+    visit_status = _simple_node
+    visit_version = visit_list_item
 
-    def visit_field(self, node):
-        pass
-
+    # Field list items
+    visit_field_list = _pass_node
+    visit_field = _pass_node
     # the field body corresponds to a list item
     # visit_field_body = html4css1.SimpleListChecker.visit_list_item
     visit_field_body = visit_list_item
-
-    #
     visit_field_name = html4css1.SimpleListChecker.invisible_visit
+
+    # Inline nodes
+    visit_Text = _pass_node
