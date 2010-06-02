@@ -135,9 +135,10 @@ Docinfo and field lists based on definition lists (instead of tables)
 
 + Enables CSS styling for:
 
-  - label width (obsoleting the ``--field-name-limit`` option),
-  - handling of long labels: truncate, wrap, ...,
-  - label separator (default: ':').
+  - label width (obsoleting the ``--field-name-limit`` option)
+  - handling of long labels: truncate, wrap, ...
+  - label separator (default: ':')
+  - compact vs. open list
 
 Footnotes and citations
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -276,7 +277,20 @@ Inline literal role pre-formatted
 Remove hard-coded formatting and deprecated arguments
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-* No hard-coded border setting in the table head.
++ No hard-coded border setting in the table head.
+
+
+SimpleListChecker also checks field-lists and docinfo
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Unified test if a list is compactable:
+
++ cleaner code
+
++ also works for nesting field-list in enumeration/bullet-list and
+  vice versa
+
++ also test docinfo, as a field may contain more than one paragraph
 
 
 TODO
@@ -284,8 +298,6 @@ TODO
 
 * The first list in the test `2.3. Enumerated Lists` should be
   compact.
-
-* Compact Docinfo?
 
 * Hanging indent for numbered section headings and ToC entries.
 
