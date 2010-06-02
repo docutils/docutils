@@ -83,8 +83,4 @@ if __name__ == '__main__':
     #    print >>sys.stderr, pformat(suite) # check the test suite
     finish = time.time()
     print 'Elapsed time: %.3f seconds' % (finish - start)
-    if result.errors or result.failures:
-        # return test result object to enable processing in programmatic use
-        sys.exit(result)
-    else: # no problems, exit with zero
-        sys.exit()
+    sys.exit(not result.wasSuccessful())
