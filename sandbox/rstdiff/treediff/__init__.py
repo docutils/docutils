@@ -240,8 +240,8 @@ is only a 'replace' of one tree by the other.
             sm = SequenceMatcher(None, [ self.a, ], [ self.b, ])
             rootOpcodes = sm.get_opcodes()
             if rootOpcodes[0][0] == 'equal':
-                return ( 'descend', 0, 1, 0, 1,
-                         self._resolveRootEqual(self.a, self.b), )
+                return [ ( 'descend', 0, 1, 0, 1,
+                           self._resolveRootEqual(self.a, self.b), ) ]
             else:
                 return rootOpcodes
         finally:
