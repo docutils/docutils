@@ -35,9 +35,9 @@ import os, re, sys
 import docutils
 from docutils import frontend, writers, nodes, SettingsSpec
 from docutils.core import Publisher
-from docutils.utils import SystemMessage, Reporter, new_reporter
+from docutils.utils import SystemMessage, Reporter, new_reporter, new_document
 from docutils.frontend import OptionParser, make_paths_absolute
-from docutils.nodes import Node
+from docutils.nodes import Node, Text
 
 from treediff import TreeMatcher, HashableNodeImpl
 
@@ -128,8 +128,10 @@ class OptionParser3Args(OptionParser):
 ###############################################################################
 # Hashable
 
-class HashableDocutilsNodeImpl(HashableNodeImpl):
-    """Implements equality for a docutils `Node`."""
+class DocutilsDispatcher(HashableNodeImpl): 
+    """Implements hashable for a docutils `Node` and supports construction."""
+
+    debug = False
 
     def __init__(self):
         super(self.__class__, self).__init__(Node)
@@ -138,16 +140,22 @@ class HashableDocutilsNodeImpl(HashableNodeImpl):
         """Dispatch a call of type `function` for the class of `node` using
         arguments `node` and `args`. Default is to dispatch for imaginary class
         "UNKNOWN"."""
+        pat = "%s_%%s" % ( function, )
         try:
-            method = getattr(self,
-                             "%s_%s" % ( function, node.__class__.__name__, ))
+            name = pat % ( node.__class__.__name__, )
+            method = getattr(self, name)
         except AttributeError:
-            method = getattr(self,
-                             "%s_%s" % ( function, "UNKNOWN", ))
+            name = pat % ( 'UNKNOWN', )
+            method = getattr(self, name)
+        if self.debug:
+            print("*** %s(%s)"
+                  % ( name, ", ".join([ arg.__class__.__name__
+                                        for arg in ( node, ) + args ]), ))
         return method(node, *args)
 
     ###########################################################################
-    # Implementation of abstract methods
+    ###########################################################################
+    # Implementation of abstract methods for `HashableNodeImpl`
 
     def rootHash(self, node):
         """Return a hash for the root only. Subclasses must override
@@ -205,7 +213,164 @@ class HashableDocutilsNodeImpl(HashableNodeImpl):
         return node.children
 
     ###########################################################################
+    ###########################################################################
+    # Merging
+
+    def copyRoot(self, node):
+        """Copy `node` as root and return it."""
+        return self.dispatchClass('copyRoot', node)
+
+    def copyRoot_UNKNOWN(self, node):
+        return node.copy()
+
+    def addChild(self, root, child):
+        """Add `child` to `root`."""
+        return self.dispatchClass('addChild', root, child)
+
+    def addChild_UNKNOWN(self, root, child):
+        root.append(child)
+
+    def copyChild(self, node):
+        """Copy `node` as child and return it."""
+        return self.dispatchClass('copyChild', node)
+
+    def copyChild_UNKNOWN(self, node):
+        return node.deepcopy()
+
+    def mergeChildren(self, diffRoot, oldRoot, newRoot,
+                      command, oldRange, newRange):
+        """Add children to `diffRoot` merging children `oldRange` / `newRange`
+        of `oldRoot` / `newRoot` by `command`."""
+        if command == 'equal':
+            for old in oldRange:
+                self.addChild(diffRoot, self.copyChild(old))
+        else:
+            pass # TODO
+
+    ###########################################################################
+    ###########################################################################
+    # Helpers
+
+    def str2Words(self, str):
+        """Returns a list of words from a `str`."""
+        return str.split()
+
+    ###########################################################################
+    ###########################################################################
     # Real comparison
+
+    # The idea is like this: Each node has attributes which need to be
+    # compared as root and it has attributes which need to be compared
+    # as child. This is different for every node type.
+    #
+    # Similarly each node type may need special methods for cloning
+    # and merging.
+
+    ###########################################################################
+    # Text
+
+    # `Text` has no attributes as root or child
+
+    def childHash_Text(self, node):
+        return hash(node.__class__)
+
+    def childEq_Text(self, node, other):
+        return False
+
+    def getChildren_Text(self, node):
+        return self.str2Words(node.astext())
+
+    # `Text` is immutable - unusable here
+
+    class MutableText(object):
+
+        _text = Text('')
+
+        def __getattr__(self, name):
+            return getattr(self._text, name)
+
+        def addStr(self, str):
+            if self._text.astext():
+                # TODO Replaces original whitespace sequences by a single space
+                self._text = Text("%s %s" % ( self.astext(), str, ))
+            else:
+                self._text = Text(str)
+
+    def copyRoot_Text(self, node):
+        return DocutilsDispatcher.MutableText()
+
+    def addChild_MutableText(self, root, child):
+        root.addStr(child)
+
+    ###########################################################################
+    # str / unicode
+
+    # Implements the word comparison
+
+    def rootHash_str(self, node):
+        return hash(node)
+
+    def rootEq_str(self, node, other):
+        return node == other
+
+    def childHash_str(self, node):
+        raise TypeError("`str` may not be hashed as child")
+
+    def childEq_str(self, node, other):
+        raise TypeError("`str` may not be compared as child")
+
+    def getChildren_str(self, node):
+        return ( )
+
+    getChildren_unicode = getChildren_str
+
+    def copyChild_str(self, node):
+        return node
+
+    copyChild_unicode = copyChild_str
+
+###############################################################################
+# Helpers for opcode tuples
+
+def getCommand(opcode):
+    """Return the command from an opcode tuple"""
+    return opcode[0]
+
+def getOldRange(opcode):
+    """Returns the range pertaining to an old list from an opcode tuple."""
+    return ( opcode[1], opcode[2], )
+
+def getNewRange(opcode):
+    """Returns the range pertaining to an new list from an opcode tuple."""
+    return ( opcode[3], opcode[4], )
+
+def getSubOpcodes(opcode):
+    """Return the sub-opcodes in case of `command` == 'descend' or 'None'."""
+    if opcode[0] != 'descend':
+        return None
+    return opcode[5]
+
+def resolveOpcode(opcode, oldList, newList):
+    """Resolves `opcode` pertaining to `oldList` and `newList`. Returns tuple
+    consisting of
+
+    command
+      Same as getCommand(opcode).
+
+    oldRange
+      The range of elements in `oldList` affected by the opcode.
+
+    newRange
+      The range of elements in `newList` affected by the opcode.
+
+    subOpcodes
+      Same as getSubOpcodes(opcode).
+    """
+    oldRange = getOldRange(opcode)
+    newRange = getNewRange(opcode)
+    return ( getCommand(opcode), oldList[oldRange[0]:oldRange[1]],
+             newList[newRange[0]:newRange[1]], getSubOpcodes(opcode))
+    
 
 ###############################################################################
 # Main
@@ -242,24 +407,62 @@ def readTree(pub, sourceName):
     pub.set_source(None, sourceName)
     return pub.reader.read(pub.source, pub.parser, pub.settings)
 
-def doDiff(pub, oldTree, newTree):
-    """Create a difference from `oldTree` to `newTree`. Returns the opcodes
-    necessary to transform `oldTree` to `newTree`."""
-    hashableNodeImpl = HashableDocutilsNodeImpl()
+def doDiff(hashableNodeImpl, oldTree, newTree):
+    """Create a difference from `oldTree` to `newTree` using
+    `hashableNodeImpl`. Returns the opcodes necessary to transform
+    `oldTree` to `newTree`."""
     matcher = TreeMatcher(hashableNodeImpl, oldTree, newTree)
     return matcher.get_opcodes()
+
+def buildDocument(oldTree, newTree, opcodes, settings):
+    """Returns a new document for the result of converting `oldTree` to
+    `newTree` using `opcodes` as description of changes."""
+    if (not isinstance(oldTree, docutils.nodes.document)
+        or not isinstance(newTree, docutils.nodes.document)):
+        raise TypeError("Roots of trees must be documents")
+    return new_document(u"%s => %s"
+                        % ( settings._old_source, settings._new_source, ),
+                        settings)
+
+def buildTree(dispatcher, diffRoot, opcodes, oldRoot, newRoot):
+    """Adds a new sub-tree under `diffRoot` converting children of
+    `oldRoot` to `newRoot` using `opcodes`."""
+    oldChildren = dispatcher.getChildren(oldRoot)
+    newChildren = dispatcher.getChildren(newRoot)
+    for opcode in opcodes:
+        ( command, oldRange, newRange,
+          subOpcodes, ) = resolveOpcode(opcode, oldChildren, newChildren)
+        if command == 'descend':
+            child = dispatcher.copyRoot(oldRange[0])
+            dispatcher.addChild(diffRoot, child)
+            buildTree(dispatcher, child,
+                      subOpcodes, oldRange[0], newRange[0])
+        else:
+            dispatcher.mergeChildren(diffRoot, oldRoot, newRoot,
+                                     command, oldRange, newRange)
 
 if __name__ == '__main__':
     pub = processCommandLine()
 
-    pub.set_destination(None, None)
-
     oldTree = readTree(pub, pub.settings._old_source)
     newTree = readTree(pub, pub.settings._new_source)
 
-    opcodes = doDiff(pub, oldTree, newTree)
+    dispatcher = DocutilsDispatcher()
+    opcodes = doDiff(dispatcher, oldTree, newTree)
+    if len(opcodes) != 1:
+        raise TypeError("Don't how to merge documents which are not rootEq")
+    if getCommand(opcodes[0]) != 'descend':
+        raise TypeError("Don't how to merge opcode of type %r"
+                        % ( getCommand(opcodes[0]), ))
 
-    from pprint import pprint
-    print(newTree)
-    print(oldTree)
-    pprint(opcodes, sys.stdout, 2, 40, None)
+    if False:
+        from pprint import pprint
+        print(oldTree.asdom().toprettyxml())
+        print(newTree.asdom().toprettyxml())
+        pprint(opcodes, sys.stdout, 2, 40, None)
+
+    diffDoc = buildDocument(oldTree, newTree, opcodes, pub.settings)
+    buildTree(dispatcher, diffDoc, getSubOpcodes(opcodes[0]), oldTree, newTree)
+
+    pub.set_destination()
+    pub.writer.write(diffDoc, pub.destination)

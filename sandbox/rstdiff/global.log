@@ -1,4 +1,168 @@
 **************************************
+Date: Sat Jun  5 23:14:48 CEST 2010
+Author: stefan
+Tag: rstdiff_1_33
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests
+In directory rosalu:/home/stefan/free/rstdiff/tests
+
+Modified Files:
+	rules.gmk 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Completed first step to tree generation. Added writer. First unit test
+runs.
+**************************************
+Date: Sat Jun  5 22:31:39 CEST 2010
+Author: stefan
+Tag: rstdiff_1_32
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Debugging.
+**************************************
+Date: Sat Jun  5 14:19:52 CEST 2010
+Author: stefan
+Tag: rstdiff_1_31
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Continued generation of output tree.
+**************************************
+Date: Sat Jun  5 11:59:39 CEST 2010
+Author: stefan
+Tag: rstdiff_1_30
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/treediff
+In directory rosalu:/home/stefan/free/rstdiff/treediff
+
+Modified Files:
+	__init__.py 
+
+--------------------------------------
+Log Message:
+Started implementation of building a result tree.
+**************************************
+Date: Thu Jun  3 13:04:41 CEST 2010
+Author: stefan
+Tag: rstdiff_1_29
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Started creation of result document.
+**************************************
+Date: Sun May 30 13:01:23 CEST 2010
+Author: stefan
+Tag: rstdiff_1_28
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Preparations for constructing.
+**************************************
+Date: Sun May 30 12:30:54 CEST 2010
+Author: stefan
+Tag: rstdiff_1_27
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Text is considered as sequence of words.
+**************************************
+Date: Sat May 29 15:28:43 CEST 2010
+Author: stefan
+Tag: rstdiff_1_26
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple/input
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple/input
+
+Added Files:
+	textDifferent.new.rst textDifferent.old.rst textEqual.new.rst 
+	textEqual.old.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple/source
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple/source
+
+Added Files:
+	textDifferent.rst textEqual.rst 
+
+--------------------------------------
+Log Message:
+Improvements and debugging.
+**************************************
 Date: Mon May 24 12:52:09 CEST 2010
 Author: stefan
 Tag: rstdiff_1_25
