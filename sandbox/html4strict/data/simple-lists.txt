@@ -55,51 +55,51 @@ lists and unordered lists).
 			/* background: yellow; */
 		      }
    --></style>
-   
+
 
 
 Simple lists
 ~~~~~~~~~~~~
 
 * This list is simple
-* There should be no space beween items.  
+* There should be no space beween items.
 
 #. This list is simple
-#. There should be no space beween items.  
+#. There should be no space beween items.
 
 :l1: This list is simple
-:l2: There should be no space beween items.  
+:l2: There should be no space beween items.
 
 Simple nested lists
 ~~~~~~~~~~~~~~~~~~~
 
 * This list is simple
-* * There should be no space beween items.  
+* * There should be no space beween items.
 
 #. This list is simple
-#. * There should be no space beween items.  
-   * There should be no space beween items.  
+#. * There should be no space beween items.
+   * There should be no space beween items.
 
 :l1: This list is simple
-:l2: * There should be no space beween items.  
+:l2: * There should be no space beween items.
 
 * This list is simple
-* #. There should be no space beween items.  
+* #. There should be no space beween items.
 
 #. This list is simple
-#. #. There should be no space beween items.  
+#. #. There should be no space beween items.
 
 :l1: This list is simple
-:l2: #. There should be no space beween items.  
+:l2: #. There should be no space beween items.
 
 * This list is simple
-* :l1.1: There should be no space beween items.  
+* :11: There should be no space beween items.
 
 #. This list is simple
-#. :l11: There should be no space beween items.  
+#. :11: There should be no space beween items.
 
 :l1: This list is simple
-:l2: :l11: There should be no space beween items.  
+:l2: :11: There should be no space beween items.
 
 Combined paragraph and list in a list item
 """"""""""""""""""""""""""""""""""""""""""
@@ -108,67 +108,67 @@ Combined paragraph and list in a list item
 
   #. Enumeration in first item
   #. second enumeration item
-  
-* There should be no space beween items.  
+
+* There should be no space beween items.
 
 
 #. This list is simple
 
    #. Enumeration in first item
    #. second enumeration item
-  
-#. There should be no space beween items.  
+
+#. There should be no space beween items.
 
 :l1: This list is simple
 
    #. Enumeration in first item
    #. second enumeration item
 
-:l2: There should be no space beween items.  
+:l2: There should be no space beween items.
 
 * This list is simple
 
   * Bullet list in first item
   * Bullet list in first item
-  
-* There should be no space beween items.  
+
+* There should be no space beween items.
 
 
 #. This list is simple
 
    * Bullet list in first item
    * Bullet list in first item
-  
-#. There should be no space beween items.  
+
+#. There should be no space beween items.
 
 :l1: This list is simple
 
      * Bullet list in first item
      * Bullet list in first item
 
-:l2: There should be no space beween items.  
+:l2: There should be no space beween items.
 
 
 * This list is simple
 
-  :l11: this item contains a field list.
-  :l12: this item contains a field list.
-  
-* there should be no space beween items.  
+  :11: this item contains a field list.
+  :12: this item contains a field list.
+
+* there should be no space beween items.
 
 #. This list is simple
 
-   :l11: this item contains a field list.
-   :l12: this item contains a field list.
-  
-#. there should be no space beween items.  
+   :11: this item contains a field list.
+   :12: this item contains a field list.
+
+#. there should be no space beween items.
 
 
 :l1: This list is simple
 
-     :l11: this item contains a field list.
+     :11: this item contains a field list.
 
-:l2: There should be no space beween items.  
+:l2: There should be no space beween items.
 
 
 Complex lists
@@ -178,58 +178,57 @@ Complex lists
 
 * Watch the space beween items
 
-  because of this paragraph
+  It is caused by this paragraph
 
 
 #. This list is not simple
 
 #. Watch the space beween items
 
-   because of this paragraph
+   It is caused by this paragraph
 
 :l1: This list is not simple
 
 :l2: Watch the space beween items
 
-     because of this paragraph
+     It is caused by this paragraph
 
 
 * This list is not simple
 
   second paragraph in first item
-  
-* Watch the space beween items.  
+
+* Watch the space beween items.
 
 
 #. This list is not simple
 
    second paragraph in first item
-  
-#. Watch the space beween items.  
+
+#. Watch the space beween items.
 
 :l1: This list is not simple
 
      second paragraph in first item
 
-:l2: Watch the space beween items.  
+:l2: Watch the space beween items.
 
 
 * This list is not simple
 
 * * Watch the space beween items
 
-  because of this paragraph
+  It is caused by this paragraph
 
 
 #. This list is not simple
 
 #. * Watch the space beween items
 
-   because of this paragraph
+   It is caused by this paragraph
 
 :l1: This list is not simple
 
 :l2: * Watch the space beween items
 
-     because of this paragraph
-
+     It is caused by this paragraph
