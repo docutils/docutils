@@ -124,7 +124,7 @@ class HTMLTranslator(html4css1.HTMLTranslator):
         self.footnote_backrefs(node)
 
     def depart_citation(self, node):
-        self.body.append('<dd>\n')
+        self.body.append('</dd>\n')
         if isinstance(node.next_node(), nodes.citation):
             self.body.append('<-- next citation -->')
         else:
