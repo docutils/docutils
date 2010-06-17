@@ -1141,12 +1141,12 @@ Support for other META attributes ("http-equiv", "scheme", "lang",
 
     .. meta::
        :description lang=en: An amusing story
-       :description lang=fr: Un histoire amusant
+       :description lang=fr: Une histoire amusante
 
 And their HTML equivalents::
 
     <meta name="description" lang="en" content="An amusing story">
-    <meta name="description" lang="fr" content="Un histoire amusant">
+    <meta name="description" lang="fr" content="Une histoire amusante">
 
 Some META tags use an "http-equiv" attribute instead of the "name"
 attribute.  To specify "http-equiv" META tags, simply omit the name::
