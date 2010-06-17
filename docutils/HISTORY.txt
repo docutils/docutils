@@ -55,7 +55,7 @@ Changes Since 0.6
   - Fix hyperlink targets (labels) for images, figures, and tables.
   - Apply [ 2961988 ] Load babel after inputenc and fontenc.
   - Apply [ 2961991 ] Call hyperref with unicode option.
-  - Drop the special `output_encoding`_ default ("latin-1").
+  - Drop the special `output_encoding`__ default ("latin-1").
     The Docutils wide default (usually "UTF-8") is used instead.
   - Render inline markup in document title and subtitle
 
