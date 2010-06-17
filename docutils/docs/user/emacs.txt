@@ -5,7 +5,7 @@
 ========================================
 
 :Author: Martin Blais <blais@furius.ca>
-:Date: 2007-12-03
+:Date: $Date$
 :Abstract:
 
     High-level description of the existing emacs support for editing
