@@ -56,6 +56,10 @@ reStructuredText_: ``rst.el``. This document describes the features it
 provides, and how to setup your emacs to use them and how to invoke
 them.
 
+``rst.el`` can be found in the ``tools/editors/emacs/`` directory of
+the snapshot or repository.  `A copy can also be downloaded here.
+<http://docutils.sourceforge.net/tools/editors/emacs/rst.el>`__
+
 
 Installation
 ============
@@ -63,7 +67,8 @@ Installation
 The emacs support is implemented as an Emacs major mode (``rst-mode``)
 provided by the ``rst.el`` emacs package. In order to use
 ``rst-mode``, you need to put the ``rst.el`` in a directory located in
-your emacs ``load-path``, and to load it with::
+your emacs ``load-path`` (use ``C-h v load-path`` to check), and load
+it with::
 
   (require 'rst)
 
