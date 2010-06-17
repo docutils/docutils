@@ -56,23 +56,39 @@ reStructuredText_: ``rst.el``. This document describes the features it
 provides, and how to setup your emacs to use them and how to invoke
 them.
 
-``rst.el`` can be found in the ``tools/editors/emacs/`` directory of
-the snapshot or repository.  `A copy can also be downloaded here.
-<http://docutils.sourceforge.net/tools/editors/emacs/rst.el>`__
-
 
 Installation
 ============
 
-The emacs support is implemented as an Emacs major mode (``rst-mode``)
-provided by the ``rst.el`` emacs package. In order to use
-``rst-mode``, you need to put the ``rst.el`` in a directory located in
-your emacs ``load-path`` (use ``C-h v load-path`` to check), and load
-it with::
+Emacs support for reStructuredText is implemented as an Emacs major
+mode (``rst-mode``) provided by the ``rst.el`` emacs package.
+
+For recent versions of Emacs, there's no need to install anything to
+get reST support; ``rst-mode`` is already available. So::
+
+   M-x rst-mode
+
+will work out of the box.  If this works for you, please skip to the
+Usage_ section.
+
+For older versions of Emacs, ``rst.el`` can be found in the
+``tools/editors/emacs/`` directory of the Docutils snapshot or
+repository.  `A copy can also be downloaded here.
+<http://docutils.sourceforge.net/tools/editors/emacs/rst.el>`__
+
+In order to use ``rst-mode``, you need to put the ``rst.el`` in a
+directory located in your emacs ``load-path`` (use ``C-h v load-path``
+to check).
+
+
+Usage
+=====
+
+Load rst-mode with::
 
   (require 'rst)
 
-To enable ``rst-mode``, simple type ``M-x rst-mode``. Alternatively,
+To enable ``rst-mode``, simply type ``M-x rst-mode``. Alternatively,
 you can modify ``auto-mode-alist`` to automatically turn it on
 whenever you visit reStructuredText_ documents::
 
@@ -116,6 +132,7 @@ constructs, but it contains the ability to recognize the section
 decorations and to build the hierarchy of the document. What we call
 section decorations or adornments are the underlines or under- and
 overlines used to mark a section title.
+
 
 Adjusting a Section Title
 -------------------------
