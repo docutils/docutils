@@ -37,10 +37,11 @@ from docutils import frontend, writers, nodes, SettingsSpec
 from docutils.core import Publisher
 from docutils.utils import SystemMessage, Reporter, new_reporter, new_document
 from docutils.frontend import OptionParser, make_paths_absolute
-from docutils.nodes import Node, Text
+from docutils.transforms import Transform
 
 from treediff import TreeMatcher, HashableNodeImpl
 
+###############################################################################
 ###############################################################################
 # Command line specification
 
@@ -126,6 +127,152 @@ class OptionParser3Args(OptionParser):
         return old_source, new_source, destination
 
 ###############################################################################
+###############################################################################
+# Helpers
+
+class Opcode(object):
+    """Encapsulates opcodes as returned by `TreeMatcher.get_opcodes()`"""
+
+    Replace = 'replace'
+    Delete = 'delete'
+    Insert = 'insert'
+    Equal = 'equal'
+    Descend = 'descend'
+
+    _tuple = None
+
+    def __init__(self, opcodeTuple):
+        """Initialize from a tuple returned by `TreeMatcher.get_opcodes()`"""
+        self._tuple = opcodeTuple
+
+    def getCommand(self):
+        """Return the command."""
+        return self._tuple[0]
+
+    def getOldRange(self):
+        """Returns the range pertaining to an old list."""
+        return ( self._tuple[1], self._tuple[2], )
+
+    def getNewRange(self):
+        """Returns the range pertaining to an new list."""
+        return ( self._tuple[3], self._tuple[4], )
+
+    def getSubOpcodes(self):
+        """Return the sub-opcodes in case of `command` == 'descend' or
+        `None`."""
+        if self._tuple[0] != self.Descend:
+            return None
+        return self._tuple[5]
+
+    def resolveOpcode(self, oldList, newList):
+        """Resolves opcode pertaining to `oldList` and `newList`. Returns tuple
+        consisting of
+
+        command
+          Same as self.getCommand().
+
+        oldRange
+          The range of elements in `oldList` affected by the opcode.
+
+        newRange
+          The range of elements in `newList` affected by the opcode.
+
+        subOpcodes
+          Same as self.getSubOpcodes().
+        """
+        oldRange = self.getOldRange()
+        newRange = self.getNewRange()
+        return ( self.getCommand(), oldList[oldRange[0]:oldRange[1]],
+                 newList[newRange[0]:newRange[1]], self.getSubOpcodes())
+
+###############################################################################
+###############################################################################
+# Additional docutils stuff
+
+###############################################################################
+# Node types
+
+class White(nodes.Text):
+    """A piece of text containing only whitespace."""
+
+    tagname = '#white'
+
+    """A regular expression matching strings for this class and returning
+    them as the first match."""
+    # TODO Could be subject to an option
+    re = '(\\s+)'
+
+class Word(nodes.Text):
+    """A piece of text containing exactly one word."""
+
+    tagname = '#word'
+
+    @staticmethod
+    def splitText(text):
+        """Splits text and returns a sequence of `Word` and `White`
+        objects. Returns an empty sequence for an empty `text`."""
+
+        subs = re.split(White.re, text.astext())
+        result = [ ]
+        if not subs:
+            return result
+        elif re.match(White.re, subs[0]):
+            ( current, next, ) = ( White, Word, )
+        else:
+            ( current, next, ) = ( Word, White, )
+        for sub in subs:
+            result.append(current(sub))
+            ( current, next, ) = ( next, current, )
+        return result
+
+###############################################################################
+# Transformers
+
+class Text2Words(Transform):
+    """Transforms a `Text` node into a sequence of `Word`/`White`."""
+
+    def apply(self):
+        self.document.walk(Text2WordsVisitor(self.document))
+
+class Text2WordsVisitor(nodes.SparseNodeVisitor):
+
+    def visit_Text(self, text):
+        words = Word.splitText(text)
+        if not words:
+            # An empty text
+            words = [ White(''), ]
+        text.parent.replace(text, words)
+
+class Words2Text(Transform):
+    """Transforms a sequence of `Word`/`White` into a `Text` node."""
+
+    def apply(self):
+        self.document.walk(Words2TextVisitor(self.document))
+
+class Words2TextVisitor(nodes.SparseNodeVisitor):
+
+    def visit_Word(self, word):
+        parent = word.parent
+        last = parent.index(word)
+        end = last + 1
+        if (len(parent) > end
+            and isinstance(parent[end], nodes.Text)):
+            # The visitor processes following children even if they are
+            # deleted - so work for last node of a sequence
+            return
+
+        first = last
+        while first > 0 and isinstance(parent[first - 1], nodes.Text):
+            first -= 1
+
+        text = nodes.Text(reduce(lambda s, node: s + node.astext(),
+                                 parent[first:end], ""))
+        parent[first:end] = ( text, )
+
+    visit_White = visit_Word
+
+###############################################################################
+###############################################################################
 # Hashable
 
 class DocutilsDispatcher(HashableNodeImpl): 
@@ -134,7 +281,7 @@ class DocutilsDispatcher(HashableNodeImpl):
     debug = False
 
     def __init__(self):
-        super(self.__class__, self).__init__(Node)
+        super(self.__class__, self).__init__(nodes.Node)
 
     def dispatchClass(self, function, node, *args):
         """Dispatch a call of type `function` for the class of `node` using
@@ -171,7 +318,8 @@ class DocutilsDispatcher(HashableNodeImpl):
         children. This should be true if one node can be replaced by
         the other and all changes can be represented without changing
         the node itself. Subclasses must override this."""
-        # Only nodes of the same class can be equal
+        # Only nodes of the same class can be equal - this assumption
+        # is used in many places
         if node.__class__ != other.__class__:
             return False
         return self.dispatchClass('rootEq', node, other)
@@ -194,7 +342,8 @@ class DocutilsDispatcher(HashableNodeImpl):
         ``True`` if the child features of the two nodes are equal
         without considering the root. Subclasses must override
         this."""
-        # Only nodes of the same class can be equal
+        # Only nodes of the same class can be equal - this assumption
+        # is used in many places
         # TODO Is this correct?
         if node.__class__ != other.__class__:
             return False
@@ -237,27 +386,80 @@ class DocutilsDispatcher(HashableNodeImpl):
     def copyChild_UNKNOWN(self, node):
         return node.deepcopy()
 
+    NewDelete = Opcode.Delete
+    NewInsert = Opcode.Insert
+    NewReplaced = 'replaced'
+    NewReplacement = 'replacement'
+
+    def copyChildren(self, head, tail, root, newType):
+        """Return a range of new nodes copied from [ `head` ] + `tail` under
+        `root`. `tail` are all the same class as `head`. Nodes are
+        created approproate to type `newType`."""
+        return self.dispatchClass('copyChildren', head, tail, root, newType)
+
+    def copyChildren_UNKNOWN(self, head, tail, root, newType):
+        return [ self.copyChild(child)
+                 for child in [ head, ] + tail ]
+
+    def copyRange(self, root, children, newType):
+        """Return a range of new nodes copied from `children` under `root`.
+        Nodes are created appropriate to type `newType`."""
+        result = [ ]
+        begin = 0
+        while begin < len(children):
+            first = children[begin]
+            end = begin + 1
+            while end < len(children):
+                last = children[end]
+                if not(first.__class__ == last.__class__
+                    or (isinstance(first, nodes.Text)
+                        and isinstance(last, nodes.Text))):
+                    break
+                end += 1
+            result.extend(self.copyChildren(first, children[begin + 1:end],
+                                            root, newType))
+            begin = end
+        return result
+
     def mergeChildren(self, diffRoot, oldRoot, newRoot,
                       command, oldRange, newRange):
         """Add children to `diffRoot` merging children `oldRange` / `newRange`
         of `oldRoot` / `newRoot` by `command`."""
-        if command == 'equal':
+        if command == Opcode.Equal:
             for old in oldRange:
                 self.addChild(diffRoot, self.copyChild(old))
+        elif command == Opcode.Insert or command == Opcode.Delete:
+            if command == Opcode.Insert:
+                srcRoot = newRoot
+                srcRange = newRange
+                newType = self.NewInsert
+            else:
+                srcRoot = oldRoot
+                srcRange = oldRange
+                newType = self.NewDelete
+            for newChild in self.copyRange(srcRoot, srcRange, newType):
+                self.addChild(diffRoot, newChild)
+        elif command == Opcode.Replace:
+            for newChild in self.copyRange(oldRoot, oldRange,
+                                           self.NewReplaced):
+                self.addChild(diffRoot, newChild)
+            for newChild in self.copyRange(newRoot, newRange,
+                                           self.NewReplacement):
+                self.addChild(diffRoot, newChild)
         else:
-            pass # TODO
+            raise TypeError("Unhandled command %r" % ( command, ))
 
     ###########################################################################
     ###########################################################################
     # Helpers
 
-    def str2Words(self, str):
-        """Returns a list of words from a `str`."""
-        return str.split()
+    def newType2Class(self, newType):
+        """Return a class name for `newType`."""
+        return "change-%s" % ( newType, )
 
     ###########################################################################
     ###########################################################################
-    # Real comparison
+    # Real comparison and merging
 
     # The idea is like this: Each node has attributes which need to be
     # compared as root and it has attributes which need to be compared
@@ -267,111 +469,45 @@ class DocutilsDispatcher(HashableNodeImpl):
     # and merging.
 
     ###########################################################################
-    # Text
+    # Text / Word / White
 
-    # `Text` has no attributes as root or child
+    def rootHash_Text(self, node):
+        return hash(node.astext())
 
-    def childHash_Text(self, node):
-        return hash(node.__class__)
+    rootHash_Word = rootHash_Text
 
-    def childEq_Text(self, node, other):
-        return False
+    def rootHash_White(self, node):
+        # Whitespace compares all equal
+        return hash('')
 
-    def getChildren_Text(self, node):
-        return self.str2Words(node.astext())
+    def rootEq_Text(self, node, other):
+        return node.astext() == other.astext()
 
-    # `Text` is immutable - unusable here
+    rootEq_Word = rootEq_Text
 
-    class MutableText(object):
+    def rootEq_White(self, node, other):
+        return True
 
-        _text = Text('')
+    # Text behaves the same as root or child
 
-        def __getattr__(self, name):
-            return getattr(self._text, name)
+    childHash_Text = rootHash_Text
+    childHash_Word = rootHash_Word
+    childHash_White = rootHash_White
 
-        def addStr(self, str):
-            if self._text.astext():
-                # TODO Replaces original whitespace sequences by a single space
-                self._text = Text("%s %s" % ( self.astext(), str, ))
-            else:
-                self._text = Text(str)
+    childEq_Text = rootEq_Text
+    childEq_Word = rootEq_Word
+    childEq_White = rootEq_White
 
-    def copyRoot_Text(self, node):
-        return DocutilsDispatcher.MutableText()
+    def copyChildren_Text(self, head, tail, root, newType):
+        inline = nodes.inline(classes=self.newType2Class(newType))
+        inline.extend([ head, ] + tail)
+        return [ inline, ]
 
-    def addChild_MutableText(self, root, child):
-        root.addStr(child)
-
-    ###########################################################################
-    # str / unicode
-
-    # Implements the word comparison
-
-    def rootHash_str(self, node):
-        return hash(node)
-
-    def rootEq_str(self, node, other):
-        return node == other
-
-    def childHash_str(self, node):
-        raise TypeError("`str` may not be hashed as child")
-
-    def childEq_str(self, node, other):
-        raise TypeError("`str` may not be compared as child")
-
-    def getChildren_str(self, node):
-        return ( )
-
-    getChildren_unicode = getChildren_str
-
-    def copyChild_str(self, node):
-        return node
-
-    copyChild_unicode = copyChild_str
+    # Sequences of Text are treated together
+    copyChildren_Word = copyChildren_Text
+    copyChildren_White = copyChildren_Text
 
 ###############################################################################
-# Helpers for opcode tuples
-
-def getCommand(opcode):
-    """Return the command from an opcode tuple"""
-    return opcode[0]
-
-def getOldRange(opcode):
-    """Returns the range pertaining to an old list from an opcode tuple."""
-    return ( opcode[1], opcode[2], )
-
-def getNewRange(opcode):
-    """Returns the range pertaining to an new list from an opcode tuple."""
-    return ( opcode[3], opcode[4], )
-
-def getSubOpcodes(opcode):
-    """Return the sub-opcodes in case of `command` == 'descend' or 'None'."""
-    if opcode[0] != 'descend':
-        return None
-    return opcode[5]
-
-def resolveOpcode(opcode, oldList, newList):
-    """Resolves `opcode` pertaining to `oldList` and `newList`. Returns tuple
-    consisting of
-
-    command
-      Same as getCommand(opcode).
-
-    oldRange
-      The range of elements in `oldList` affected by the opcode.
-
-    newRange
-      The range of elements in `newList` affected by the opcode.
-
-    subOpcodes
-      Same as getSubOpcodes(opcode).
-    """
-    oldRange = getOldRange(opcode)
-    newRange = getNewRange(opcode)
-    return ( getCommand(opcode), oldList[oldRange[0]:oldRange[1]],
-             newList[newRange[0]:newRange[1]], getSubOpcodes(opcode))
-    
-
 ###############################################################################
 # Main
 
@@ -431,8 +567,8 @@ def buildTree(dispatcher, diffRoot, opcodes, oldRoot, newRoot):
     newChildren = dispatcher.getChildren(newRoot)
     for opcode in opcodes:
         ( command, oldRange, newRange,
-          subOpcodes, ) = resolveOpcode(opcode, oldChildren, newChildren)
-        if command == 'descend':
+          subOpcodes, ) = Opcode(opcode).resolveOpcode(oldChildren, newChildren)
+        if command == Opcode.Descend:
             child = dispatcher.copyRoot(oldRange[0])
             dispatcher.addChild(diffRoot, child)
             buildTree(dispatcher, child,
@@ -441,28 +577,41 @@ def buildTree(dispatcher, diffRoot, opcodes, oldRoot, newRoot):
             dispatcher.mergeChildren(diffRoot, oldRoot, newRoot,
                                      command, oldRange, newRange)
 
-if __name__ == '__main__':
-    pub = processCommandLine()
-
-    oldTree = readTree(pub, pub.settings._old_source)
-    newTree = readTree(pub, pub.settings._new_source)
-
+def createDiff(oldTree, newTree):
+    """Create and return a diff document from `oldTree` to `newTree`."""
     dispatcher = DocutilsDispatcher()
+    #dispatcher.debug = True
     opcodes = doDiff(dispatcher, oldTree, newTree)
     if len(opcodes) != 1:
         raise TypeError("Don't how to merge documents which are not rootEq")
-    if getCommand(opcodes[0]) != 'descend':
+    opcode = Opcode(opcodes[0])
+    if opcode.getCommand() != Opcode.Descend:
         raise TypeError("Don't how to merge opcode of type %r"
-                        % ( getCommand(opcodes[0]), ))
+                        % ( opcode.getCommand(), ))
 
-    if False:
+    if dispatcher.debug:
         from pprint import pprint
         print(oldTree.asdom().toprettyxml())
         print(newTree.asdom().toprettyxml())
         pprint(opcodes, sys.stdout, 2, 40, None)
 
     diffDoc = buildDocument(oldTree, newTree, opcodes, pub.settings)
-    buildTree(dispatcher, diffDoc, getSubOpcodes(opcodes[0]), oldTree, newTree)
+    buildTree(dispatcher, diffDoc, opcode.getSubOpcodes(), oldTree, newTree)
+    return diffDoc
+
+if __name__ == '__main__':
+    pub = processCommandLine()
+
+    oldTree = readTree(pub, pub.settings._old_source)
+    newTree = readTree(pub, pub.settings._new_source)
+
+    # TODO Standard transformations should be run probably
+
+    Text2Words(oldTree).apply()
+    Text2Words(newTree).apply()
+
+    diffDoc = createDiff(oldTree, newTree)
+    Words2Text(diffDoc).apply()
 
     pub.set_destination()
     pub.writer.write(diffDoc, pub.destination)
