@@ -1,4 +1,122 @@
 **************************************
+Date: Sun Jun 20 11:34:24 CEST 2010
+Author: stefan
+Tag: rstdiff_1_40
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple/source
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple/source
+
+Modified Files:
+	textDifferent.rst 
+
+--------------------------------------
+Log Message:
+Refactoring: `Word`/`White` sequences are converted back to `Text` in
+the result.
+
+Unit tests run again.
+**************************************
+Date: Sat Jun 19 16:32:34 CEST 2010
+Author: stefan
+Tag: rstdiff_1_39
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Refactoring: `Text`, `Word` and `White` are merged correctly.
+**************************************
+Date: Sat Jun 19 16:10:05 CEST 2010
+Author: stefan
+Tag: rstdiff_1_38
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Refactoring: `Text` is replaced by `Word` and `White`.
+**************************************
+Date: Sat Jun 19 12:58:00 CEST 2010
+Author: stefan
+Tag: rstdiff_1_37
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Refactoring: First step towards replacing `Text` by `Word` and
+`White`.
+**************************************
+Date: Sun Jun 13 12:29:16 CEST 2010
+Author: stefan
+Tag: rstdiff_1_36
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Continued merging of text.
+**************************************
+Date: Sat Jun 12 14:53:33 CEST 2010
+Author: stefan
+Tag: rstdiff_1_35
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Continued merging of children.
+**************************************
+Date: Sat Jun 12 13:18:49 CEST 2010
+Author: stefan
+Tag: rstdiff_1_34
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Refactoring: New class `Opcode`.
+
+Continued merging of children.
+**************************************
 Date: Sat Jun  5 23:14:48 CEST 2010
 Author: stefan
 Tag: rstdiff_1_33
