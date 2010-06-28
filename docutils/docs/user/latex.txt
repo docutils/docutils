@@ -1596,10 +1596,10 @@ Example:
     --output-encoding=latin-1
 
 Note:
-  LaTeX comes with two packages for UTF-8 support,
+  LaTeX comes with two options for UTF-8 support,
 
   :utf8:  by the standard `inputenc`_ package with only limited coverage
-          (mainly accented chars, no Greekv).
+          (mainly accented chars, no Greek).
 
   :utf8x: supported by the `ucs`_ package covers a wider range of Unicode
           characters than does "utf8".  It is, however, a non-standard

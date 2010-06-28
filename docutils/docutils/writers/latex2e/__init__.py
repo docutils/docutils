@@ -20,7 +20,7 @@ import string
 from docutils import frontend, nodes, languages, writers, utils, io
 from docutils.transforms import writer_aux
 
-# compatibility module for Python <= 2.4
+# compatibility module for Python 2.3
 if not hasattr(string, 'Template'):
     import docutils._string_template_compat
     string.Template = docutils._string_template_compat.Template
@@ -1079,11 +1079,23 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # sectnum_depth:
             #   None  "sectnum" directive without depth arg -> LaTeX default
             #   0     no "sectnum" directive -> no section numbers
-            #   else  value of the "depth" argument -> limit to supported
-            #         section levels
+            #   else  value of the "depth" argument: translate to LaTeX level
+            #         -1  part    (0 with "article" document class)
+            #          0  chapter (missing in "article" document class)
+            #          1  section
+            #          2  subsection
+            #          3  subsubsection
+            #          4  paragraph
+            #          5  subparagraph
             if settings.sectnum_depth is not None:
+                # limit to supported levels
                 sectnum_depth = min(settings.sectnum_depth,
                                     len(self.d_class.sections))
+                # adjust to document class and use_part_section settings
+                if 'chapter' in  self.d_class.sections:
+                    sectnum_depth -= 1
+                if self.d_class.sections[0] == 'part':
+                    sectnum_depth -= 1
                 self.requirements['sectnum_depth'] = (
                     r'\setcounter{secnumdepth}{%d}' % sectnum_depth)
             # start with specified number:
@@ -1206,14 +1218,20 @@ class LaTeXTranslator(nodes.NodeVisitor):
         }
         # Unicode chars that are recognized by LaTeX's utf8 encoding
         unicode_chars = {
+            0x200C: ur'\textcompwordmark', # ZERO WIDTH NON-JOINER
             0x2013: ur'\textendash{}',
             0x2014: ur'\textemdash{}',
-            0x2018: ur'`',
-            0x2019: ur"'",
+            0x2018: ur'\textquoteleft{}',
+            0x2019: ur'\textquoteright{}',
             0x201A: ur'\quotesinglbase{}', # SINGLE LOW-9 QUOTATION MARK
             0x201C: ur'\textquotedblleft{}',
             0x201D: ur'\textquotedblright{}',
-            0x201E: ur'\quotedblbase', # DOUBLE LOW-9 QUOTATION MARK
+            0x201E: ur'\quotedblbase{}', # DOUBLE LOW-9 QUOTATION MARK
+            0x2030: ur'\textperthousand{}',   # PER MILLE SIGN
+            0x2031: ur'\textpertenthousand{}', # PER TEN THOUSAND SIGN
+            0x2039: ur'\guilsinglleft{}',
+            0x203A: ur'\guilsinglright{}',
+            0x2423: ur'\textvisiblespace{}',  # OPEN BOX
             0x2020: ur'\dag{}',
             0x2021: ur'\ddag{}',
             0x2026: ur'\dots{}',
@@ -1258,8 +1276,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
             0x02ba: ur'\textacutedbl{}',      # MODIFIER LETTER DOUBLE PRIME
             0x2016: ur'\textbardbl{}',        # DOUBLE VERTICAL LINE
             0x2022: ur'\textbullet{}',        # BULLET
-            0x2030: ur'\textperthousand{}',   # PER MILLE SIGN
-            0x2031: ur'\textpertenthousand{}', # PER TEN THOUSAND SIGN
             0x2032: ur'\textasciiacute{}',    # PRIME
             0x2033: ur'\textacutedbl{}',      # DOUBLE PRIME
             0x2035: ur'\textasciigrave{}',    # REVERSED PRIME
@@ -1296,7 +1312,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
             0x2217: ur'\textasteriskcentered{}', # ASTERISK OPERATOR
             0x221a: ur'\textsurd{}',          # SQUARE ROOT
             0x2422: ur'\textblank{}',         # BLANK SYMBOL
-            0x2423: ur'\textvisiblespace{}',  # OPEN BOX
             0x25e6: ur'\textopenbullet{}',    # WHITE BULLET
             0x25ef: ur'\textbigcircle{}',     # LARGE CIRCLE
             0x266a: ur'\textmusicalnote{}',   # EIGHTH NOTE
@@ -1510,7 +1525,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_citation(self, node):
         # TODO maybe use cite bibitems
         if self._use_latex_citations:
-            self.context.append(len(self.body))
+            self.push_output_collector([])
         else:
             # TODO: do we need these?
             ## self.requirements['~fnt_floats'] = PreambleCmds.footnote_floats
@@ -1519,11 +1534,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_citation(self, node):
         if self._use_latex_citations:
-            size = self.context.pop()
-            label = self.body[size]
-            text = ''.join(self.body[size+1:])
-            del self.body[size:]
+            label = self.out[0]
+            text = ''.join(self.out[1:])
             self._bibitems.append([label, text])
+            self.pop_output_collector()
         else:
             self.out.append('\\end{figure}\n')
 
@@ -2760,7 +2774,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # special topics:
             if 'abstract' in node['classes']:
                 self.fallbacks['abstract'] = PreambleCmds.abstract
-            self.push_output_collector(self.abstract)
+                self.push_output_collector(self.abstract)
             if 'dedication' in node['classes']:
                 self.fallbacks['dedication'] = PreambleCmds.dedication
                 self.push_output_collector(self.dedication)

@@ -57,7 +57,10 @@ Changes Since 0.6
   - Apply [ 2961991 ] Call hyperref with unicode option.
   - Drop the special `output_encoding`__ default ("latin-1").
     The Docutils wide default (usually "UTF-8") is used instead.
-  - Render inline markup in document title and subtitle
+  - Render inline markup in document title and subtitle.
+  - Fix numbering depth with LaTeX section numbering.
+  - Update Unicode -> LaTeX translations.
+  - Fix bug with topic directive (thanks to Alan G Isaac for reporting).
 
 __ docs/ref/restructuredtext.html#inline-literals
 __ docs/user/config.html#docutils-footnotes
