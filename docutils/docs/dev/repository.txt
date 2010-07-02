@@ -58,7 +58,7 @@ Web Access
 ~~~~~~~~~~
 
 The repository can be browsed and examined via the web at
-http://svn.berlios.de/viewcvs/docutils/.
+http://svn.berlios.de/viewvc/docutils/.
 
 
 Repository Access Methods
