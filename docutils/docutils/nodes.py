@@ -739,7 +739,7 @@ class Element(Node):
                         for child in self.children])
 
     def copy(self):
-        return self.__class__(**self.attributes)
+        return self.__class__(rawsource=self.rawsource, **self.attributes)
 
     def deepcopy(self):
         copy = self.copy()

@@ -457,15 +457,15 @@ class MiscTests(unittest.TestCase):
         # Shallow copy:
         e_copy = e.copy()
         self.assert_(e is not e_copy)
-        # Internal attributes (like `rawsource`) are not copied.
+        # Internal attributes (like `rawsource`) are also copied.
         self.assertEquals(e.rawsource, 'rawsource')
-        self.assertEquals(e_copy.rawsource, '')
+        self.assertEquals(e_copy.rawsource, e.rawsource)
         self.assertEquals(e_copy['att'], 'e')
         # Children are not copied.
         self.assertEquals(len(e_copy), 0)
         # Deep copy:
         e_deepcopy = e.deepcopy()
-        self.assertEquals(e_deepcopy.rawsource, '')
+        self.assertEquals(e_deepcopy.rawsource, e.rawsource)
         self.assertEquals(e_deepcopy['att'], 'e')
         # Children are copied recursively.
         self.assertEquals(e_deepcopy[0][0], grandchild)
