@@ -203,6 +203,7 @@ Use |sub| and |indirect1| and |sub| again (and |sub| one more time).
     <paragraph>
         Use \n\
         <problematic ids="id8" refid="id7">
+            |Sub|
          and \n\
         <problematic ids="id2" refid="id1">
             |indirect1|
