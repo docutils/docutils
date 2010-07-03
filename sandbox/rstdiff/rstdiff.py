@@ -377,8 +377,8 @@ class DocutilsDispatcher(HashableNodeImpl):
         return self.dispatchClass('childHash', node)
 
     def childHash_UNKNOWN(self, node):
-        # TODO Is this correct *and* good?
-        return hash(node.__class__)
+        # By default compare as a child by comparing children
+        return self.childrenHash(node)
 
     def childEq(self, node, other):
         """Returns equality of `node` and an `other` node as children.
@@ -387,7 +387,6 @@ class DocutilsDispatcher(HashableNodeImpl):
         this."""
         # Only nodes of the same class can be equal - this assumption
         # is used in many places
-        # TODO Is this correct?
         if node.__class__ != other.__class__:
             return False
         return self.dispatchClass('childEq', node, other)
