@@ -199,17 +199,22 @@ spirit to `difflib.SequenceMatcher'"""
     a = None
     b = None
     hashableNodeImpl = None
+    isJunk = None
 
-    def __init__(self, hashableNodeImpl, a, b):
+    def __init__(self, hashableNodeImpl, a, b, isJunk=None):
         """Construct a TreeMatcher for matching trees `a` and `b`.
 
 `a` and `b` must be the root nodes of two trees to be compared.
 `hashableNodeImpl` must be an implementation of `HashableNodeImpl`
-governing the comparison of the nodes in the trees."""
+governing the comparison of the nodes in the trees.
+
+If `isJunk` is given it must be a one-argument function returning
+`True` if the given argument should be considered as junk. """
 
         self.a = a
         self.b = b
         self.hashableNodeImpl = hashableNodeImpl
+        self.isJunk = isJunk
 
     def get_opcodes(self):
         """Return list of 5- or 6-tuples describing how to turn `a` into `b`.
@@ -237,7 +242,7 @@ is only a 'replace' of one tree by the other.
 
         self.hashableNodeImpl.pushRootOnly(True)
         try:
-            sm = SequenceMatcher(None, [ self.a, ], [ self.b, ])
+            sm = SequenceMatcher(self.isJunk, [ self.a, ], [ self.b, ])
             rootOpcodes = sm.get_opcodes()
             if rootOpcodes[0][0] == 'equal':
                 return [ ( 'descend', 0, 1, 0, 1,
@@ -254,7 +259,7 @@ is only a 'replace' of one tree by the other.
         b = self.hashableNodeImpl.getChildren(bElem)
         self.hashableNodeImpl.pushRootOnly(False)
         try:
-            sm = SequenceMatcher(None, a, b)
+            sm = SequenceMatcher(self.isJunk, a, b)
             nestedOpcodes = sm.get_opcodes()
             return self._resolveDeepReplace(nestedOpcodes, a, b)
         finally:
@@ -271,7 +276,7 @@ is only a 'replace' of one tree by the other.
                 continue
             self.hashableNodeImpl.pushRootOnly(True)
             try:
-                sm = SequenceMatcher(None, a[aBeg:aEnd], b[bBeg:bEnd])
+                sm = SequenceMatcher(self.isJunk, a[aBeg:aEnd], b[bBeg:bEnd])
                 rootOpcodes = sm.get_opcodes()
                 for j in xrange(len(rootOpcodes)):
                     ( subOpcode, aSubBeg, aSubEnd,

@@ -25,7 +25,7 @@
             Text in third section.
         </paragraph>
     </section>
-    <section classes="change-deleted" ids="obsolete-section" names="obsolete\ section">
+    <section classes="change-removed" ids="obsolete-section" names="obsolete\ section">
         <title>
             Obsolete section
         </title>
