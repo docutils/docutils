@@ -15,7 +15,7 @@ Third section
 
 Text in third section.
 
-.. class:: change-deleted
+.. class:: change-removed
 
 Obsolete section
 ================

@@ -1,4 +1,166 @@
 **************************************
+Date: Sat Jul  3 13:24:31 CEST 2010
+Author: stefan
+Tag: rstdiff_1_48
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Added comments.
+**************************************
+Date: Sat Jul  3 13:16:29 CEST 2010
+Author: stefan
+Tag: rstdiff_1_47
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Mergeable ranges of opcodes are merged.
+**************************************
+Date: Sat Jul  3 12:59:26 CEST 2010
+Author: stefan
+Tag: rstdiff_1_46
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Unit tests run again.
+**************************************
+Date: Sat Jul  3 12:49:55 CEST 2010
+Author: stefan
+Tag: rstdiff_1_45
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Opcodes are propagated to parents if possible.
+**************************************
+Date: Sat Jul  3 12:00:42 CEST 2010
+Author: stefan
+Tag: rstdiff_1_44
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple/source
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple/source
+
+Modified Files:
+	section.rst textOnly.rst 
+
+--------------------------------------
+Log Message:
+Improved class names.
+**************************************
+Date: Sat Jul  3 11:54:18 CEST 2010
+Author: stefan
+Tag: rstdiff_1_43
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple/source
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple/source
+
+Modified Files:
+	textOnly.rst 
+
+--------------------------------------
+Log Message:
+Classes are set for changed nodes.
+**************************************
+Date: Sat Jun 26 13:43:08 CEST 2010
+Author: stefan
+Tag: rstdiff_1_42
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple/source
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple/source
+
+Modified Files:
+	textOnly.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/treediff
+In directory rosalu:/home/stefan/free/rstdiff/treediff
+
+Modified Files:
+	__init__.py 
+
+--------------------------------------
+Log Message:
+White is treated as junk so replacement sequences are recognized.
+**************************************
+Date: Sat Jun 26 10:35:24 CEST 2010
+Author: stefan
+Tag: rstdiff_1_41
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple/input
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple/input
+
+Modified Files:
+	textOnly.new.rst textOnly.old.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple/source
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple/source
+
+Modified Files:
+	textOnly.rst 
+
+--------------------------------------
+Log Message:
+Debugging.
+**************************************
 Date: Sun Jun 20 11:34:24 CEST 2010
 Author: stefan
 Tag: rstdiff_1_40

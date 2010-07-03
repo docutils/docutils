@@ -5,19 +5,24 @@
         An important addition.
     </paragraph>
     <paragraph>
+        An anchor between changes.
+    </paragraph>
+    <paragraph>
         This is some text distributed in a couple of lines. Let's count to
 
         <inline classes="change-replaced">
             make things longer:
         </inline>
-         
         <inline classes="change-replacement">
             fill three lines:
         </inline>
          one two three four five six seven eight nine ten
 eleven twelve.
     </paragraph>
-    <paragraph classes="change-deleted">
+    <paragraph>
+        Another anchor.
+    </paragraph>
+    <paragraph classes="change-removed">
         Some obsolete add-on.
     </paragraph>
 </document>
