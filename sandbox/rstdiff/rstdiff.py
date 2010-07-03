@@ -336,7 +336,12 @@ class DocutilsDispatcher(HashableNodeImpl):
             print("*** %s(%s)"
                   % ( name, ", ".join([ arg.__class__.__name__
                                         for arg in ( node, ) + args ]), ))
-        return method(node, *args)
+            for arg in ( node, ) + args:
+                print("    %s" % ( arg, ))
+        result = method(node, *args)
+        if self.debug:
+            print("    %s" % ( result, ))
+        return result
 
     ###########################################################################
     ###########################################################################
@@ -388,8 +393,8 @@ class DocutilsDispatcher(HashableNodeImpl):
         return self.dispatchClass('childEq', node, other)
 
     def childEq_UNKNOWN(self, node, other):
-        # We don't know how to compare two nodes of same type as children
-        return False
+        # By default compare as a child by comparing children
+        return self.childrenEq(node, other)
 
     def getChildren(self, node):
         """Return the children of `node` as a list. Subclasses must override
@@ -661,19 +666,22 @@ def createDiff(oldTree, newTree):
     dispatcher = DocutilsDispatcher()
     #dispatcher.debug = True
     opcodes = doDiff(dispatcher, oldTree, newTree)
+    if dispatcher.debug:
+        from pprint import pprint
+        print(oldTree.asdom().toprettyxml())
+        print(newTree.asdom().toprettyxml())
+        pprint(opcodes, sys.stdout, 2, 40, None)
+        print("^^^ Before cleaning vvv After cleaning")
     cleanOpcodes(opcodes)
+    if dispatcher.debug:
+        from pprint import pprint
+        pprint(opcodes, sys.stdout, 2, 40, None)
     if len(opcodes) != 1:
         raise TypeError("Don't how to merge documents which are not rootEq")
     opcode = Opcode(opcodes[0])
     if opcode.getCommand() not in ( Opcode.Descend, Opcode.Equal, ):
         raise TypeError("Don't how to merge top level opcode of type %r"
                         % ( opcode.getCommand(), ))
-
-    if dispatcher.debug:
-        from pprint import pprint
-        print(oldTree.asdom().toprettyxml())
-        print(newTree.asdom().toprettyxml())
-        pprint(opcodes, sys.stdout, 2, 40, None)
 
     diffDoc = buildDocument(oldTree, newTree, opcodes, pub.settings)
     if opcode.getCommand() == Opcode.Equal:

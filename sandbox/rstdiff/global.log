@@ -1,4 +1,48 @@
 **************************************
+Date: Sat Jul  3 18:30:23 CEST 2010
+Author: stefan
+Tag: rstdiff_1_50
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Comparsion as child corrected. All unit tests run.
+**************************************
+Date: Sat Jul  3 18:09:59 CEST 2010
+Author: stefan
+Tag: rstdiff_1_49
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple/input
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple/input
+
+Modified Files:
+	section.new.rst section.old.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple/source
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple/source
+
+Modified Files:
+	section.rst 
+
+--------------------------------------
+Log Message:
+Improved debugging.
+**************************************
 Date: Sat Jul  3 13:24:31 CEST 2010
 Author: stefan
 Tag: rstdiff_1_48
