@@ -9,9 +9,9 @@
             This is text in the first section.
         </paragraph>
     </section>
-    <section classes="change-added" ids="second-section" names="second\ section">
+    <section classes="change-added" ids="section-two" names="section\ two">
         <title>
-            Second section
+            Section two
         </title>
         <paragraph>
             This was missing.
@@ -25,9 +25,17 @@
             Text in third section.
         </paragraph>
     </section>
-    <section classes="change-removed" ids="obsolete-section" names="obsolete\ section">
+    <section ids="anchor" names="anchor">
         <title>
-            Obsolete section
+            Anchor
+        </title>
+        <paragraph>
+            Don't reuse words!
+        </paragraph>
+    </section>
+    <section classes="change-removed" ids="obsolete-part" names="obsolete\ part">
+        <title>
+            Obsolete part
         </title>
         <paragraph>
             Obsolete text.

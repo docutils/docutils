@@ -5,8 +5,8 @@ This is text in the first section.
 
 .. class:: change-added
 
-Second section
-==============
+Section two
+===========
 
 This was missing.
 
@@ -15,10 +15,15 @@ Third section
 
 Text in third section.
 
+Anchor
+======
+
+Don't reuse words!
+
 .. class:: change-removed
 
-Obsolete section
-================
+Obsolete part
+=============
 
 Obsolete text.
 

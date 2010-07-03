@@ -8,8 +8,13 @@ Third section
 
 Text in third section.
 
-Obsolete section
-================
+Anchor
+======
+
+Don't reuse words!
+
+Obsolete part
+=============
 
 Obsolete text.
 

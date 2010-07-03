@@ -3,8 +3,8 @@ First section
 
 This is text in the first section.
 
-Second section
-==============
+Section two
+===========
 
 This was missing.
 
@@ -12,6 +12,11 @@ Third section
 =============
 
 Text in third section.
+
+Anchor
+======
+
+Don't reuse words!
 
 Fourth section
 ==============
