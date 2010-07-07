@@ -417,7 +417,7 @@ function stage_2()
         confirm svn cp "$svnurl" "$svnroot/tags/docutils-$new_ver/" -m "$log_prefix tagging released revision"
         echo "Uploading $tarball to SF.net."
         confirm upload_tarball
-        echo 'Now go to https://sourceforge.net/project/admin/editpackages.php?group_id=38414'
+        echo 'Now go to https://sourceforge.net/project/admin/explorer.php?group_id=38414'
         echo 'and follow the instructions at'
         echo 'http://docutils.sf.net/docs/dev/release.html#file-release-system'
         echo 'BUG find your way.'
