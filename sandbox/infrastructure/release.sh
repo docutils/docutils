@@ -297,7 +297,9 @@ function upload_htdocs()
     # BUG and it breaks on test/functional/input/standalone_rst_newlatex.txt:
     #     1020: (SEVERE/4) Title level inconsistent
     #     because this is an include file.
-    confirm ./buildhtml.py ..
+    # BUG --local .. still recurses into test
+    confirm ./buildhtml.py --prune=../test/functional/input \
+            --prune=../test/test_parsers/test_rst/test_directives ..
     run cd ..
     echo '$ find -name test -type d -prune -o -name \*.css -print0 \
         -o -name \*.html -print0 -o -name \*.txt -print0 \
