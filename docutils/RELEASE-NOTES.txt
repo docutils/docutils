@@ -26,6 +26,12 @@ Release 0.7 (2010-07-07)
 
 Components:
 
+* HTML writer:
+
+  - Support SVG and SWF images (thanks to Stefan Rank).
+  - Generate valid XHTML for centered images with targets.
+    Use CSS classes instead of "align" tags for image alignment.
+
 * LaTeX2e writer:
 
   - Use the ``\url`` command for URLs (breaks long URLs instead of writing
@@ -44,10 +50,20 @@ __ docs/user/config.html#docutils-footnotes
 __ docs/user/latex.html#hyperlinks
 __ docs/user/latex.html#output-encoding
 
+* manpage writer:
+
+  - Titles level 1, that is ``.SH``, always uppercase.
+  - Apply patch from mg: literal text should be bold in man-pages.
+
 General:
 
 * io.FileInput opens files as text files with universal newline support
   (mode "rU", configurable with the new optional argument "mode").
+
+* setup.py:
+
+  - Python 3 support: copy test/ and tools/ to the build-dir
+    and convert Python sources with 2to3.
 
 Release 0.6 (2009-10-11)
 ========================
