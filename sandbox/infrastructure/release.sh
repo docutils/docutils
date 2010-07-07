@@ -276,11 +276,11 @@ function upload_tarball()
 {
     # Assume we have the tarball in the working area.
     run cd "$working_area"
-    # You may need to adjust the command line for clients other than tnftp.
-	# BUG this changed: echo "put docutils-$new_ver.tar.gz" | sftp frs.sourceforge.net:uploads/
-	# upload releasenotes too
-    # upload via sftp should work, but might not show up on project feed.
-	echo "use sftp to put the file into /home/frs/project/d/do/docutils/docutils/$new_ver"
+    mkdir $new_ver
+    cp docutils-$new_ver.tar.gz $new_ver
+    cp docutils/RELEASE-NOTES.txt $new_ver
+    # BUG user grubert hardcoded
+    scp -r $new_ver grubert,docutils@frs.sourceforge.net:/home/frs/project/d/do/docutils/docutils/
     echo 'Upload completed.'
 }
 
