@@ -307,31 +307,16 @@ function upload_htdocs()
     find -name test -type d -prune -o -name \*.css -print0 \
         -o -name \*.html -print0 -o -name \*.txt -print0 \
         | tar -cjvf docutils-docs.tar.bz2 -T - --null
-    echo 'Upload the tarball to your home directory on SF.net...'
-    # BUG: hostname changed to web.sourceforge.net
-    # BUG: we do not have shell access.
-    # Try::
-    #  mkdir $new_ver
-    #  cd $new_ver
-    #  tar xjvf ../docutils-docs.tar.bz2
-	#  cd ..
-	#  chmod -R g+rw $new_ver
-	#  scp -r -p -C $new_ver web.sourceforge.net:/home/groups/d/do/docutils/htdocs
-    confirm scp docutils-docs.tar.bz2 shell.sourceforge.net:
-    echo
-    echo 'Unpack the tarball on SF.net...'
+    echo 'Upload docs to SF.net...'
     echo 'Press enter (or enter anything to skip).'
     read
     if [ ! "$REPLY" ]; then
-        ssh shell.sourceforge.net<<-EOF
-            set -x
-            umask 002
-            cd /home/groups/d/do/docutils/htdocs/
-            mkdir -m g+rwxs $new_ver
-            cd $new_ver
-            tar -xjvf ~/docutils-docs.tar.bz2
-            rm ~/docutils-docs.tar.bz2
-EOF
+       mkdir $new_ver
+       cd $new_ver
+       tar xjvf ../docutils-docs.tar.bz2
+	   cd ..
+	   chmod -R g+rw $new_ver
+	   scp -r -p -C $new_ver web.sourceforge.net:/home/groups/d/do/docutils/htdocs
     fi
 }
 
