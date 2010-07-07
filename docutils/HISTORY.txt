@@ -14,8 +14,11 @@
 .. contents::
 
 
-Changes Since 0.6
+Changes Since 0.7
 =================
+
+Release 0.7 (2010-07-07)
+========================
 
 * General:
 
