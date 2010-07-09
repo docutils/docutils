@@ -72,6 +72,9 @@ class SettingsSpec(docutils.SettingsSpec):
            'validator': frontend.validate_colon_separated_string_list}),
          ('Work silently (no progress messages).  Independent of "--quiet".',
           ['--silent'],
+          {'action': 'store_true', 'validator': frontend.validate_boolean}),
+         ('Do not process files, show files that would be processed.',
+          ['--dry-run'],
           {'action': 'store_true', 'validator': frontend.validate_boolean}),))
 
     relative_path_settings = ('prune',)
@@ -229,7 +232,8 @@ class Builder:
             print >>sys.stderr, '    ::: Processing:', name
             sys.stderr.flush()
         try:
-            core.publish_file(source_path=settings._source,
+            if not settings.dry_run:
+                core.publish_file(source_path=settings._source,
                               destination_path=settings._destination,
                               reader_name=pub_struct.reader_name,
                               parser_name='restructuredtext',
