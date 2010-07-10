@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+# $Id$
+# Author: engelbert gruber <grubert@users.sourceforge.net>
+# Copyright: This module has been placed in the public domain.
+
 """
 test buildhtml options, because ``--local`` is broken.
 
