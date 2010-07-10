@@ -184,16 +184,12 @@ class Builder:
         else:
             self.directories = [os.getcwd()]
         for directory in self.directories:
-            try:
-                for root, dirs, files in os.walk(directory):
-                    # os.walk by default this recurses down the tree,
-                    # influence by modifying dirs.
-                    if not recurse:
-                        del dirs[:]
-                    self.visit(root, dirs+files)
-            except (AttributeError): # python2.2 does not have os.walk 
-                print "no os.walk"
-                os.path.walk(directory, self.visit)
+            for root, dirs, files in os.walk(directory):
+                # os.walk by default this recurses down the tree,
+                # influence by modifying dirs.
+                if not recurse:
+                    del dirs[:]
+                self.visit(root, dirs+files)
 
     def visit(self, directory, names):
         settings = self.get_settings('', directory)
