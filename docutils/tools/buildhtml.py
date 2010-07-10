@@ -186,12 +186,16 @@ class Builder:
         for directory in self.directories:
             try:
                 for root, dirs, files in os.walk(directory):
-                    self.visit(recurse, root, dirs+files)
-            except (AttributeError): # python2.2 does not have os.walk
+                    # os.walk by default this recurses down the tree,
+                    # influence by modifying dirs.
+                    if not recurse:
+                        del dirs[:]
+                    self.visit(root, dirs+files)
+            except (AttributeError): # python2.2 does not have os.walk 
                 print "no os.walk"
-                os.path.walk(directory, self.visit, recurse)
+                os.path.walk(directory, self.visit)
 
-    def visit(self, recurse, directory, names):
+    def visit(self, directory, names):
         settings = self.get_settings('', directory)
         if settings.prune and (os.path.abspath(directory) in settings.prune):
             print >>sys.stderr, '/// ...Skipping directory (pruned):', directory
@@ -214,8 +218,6 @@ class Builder:
                 prune = self.process_txt(directory, name)
                 if prune:
                     break
-        if not recurse:
-            del names[:]
 
     def process_txt(self, directory, name):
         if name.startswith('pep-'):
