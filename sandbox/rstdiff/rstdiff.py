@@ -432,10 +432,7 @@ class DocutilsDispatcher(HashableNodeImpl):
         return self.dispatchClass('copyChild', node, newType)
 
     def copyChild_UNKNOWN(self, node, newType):
-        copy = node.deepcopy()
-        if newType:
-            copy['classes'].append(self.newType2Class(newType))
-        return copy
+        return self.setNewType(node.deepcopy(), newType)
 
     def copyChildren(self, head, tail, root, newType):
         """Return a range of new nodes copied from [ `head` ] + `tail` under
@@ -499,9 +496,11 @@ class DocutilsDispatcher(HashableNodeImpl):
     ###########################################################################
     # Helpers
 
-    def newType2Class(self, newType):
-        """Return a class name for `newType`."""
-        return "change-%s" % ( newType, )
+    def setNewType(self, node, newType):
+        """Set a class on `node` for `newType` if set. Returns `node`."""
+        if newType:
+            node['classes'].append("change-%s" % ( newType, ))
+        return node
 
     ###########################################################################
     ###########################################################################
@@ -547,7 +546,8 @@ class DocutilsDispatcher(HashableNodeImpl):
     childEq_White = rootEq_White
 
     def copyChildren_Text(self, head, tail, root, newType):
-        inline = nodes.inline(classes=self.newType2Class(newType))
+        inline = nodes.inline()
+        self.setNewType(inline, newType)
         inline.extend([ head, ] + tail)
         return [ inline, ]
 
@@ -582,6 +582,7 @@ def processCommandLine():
         new_reporter('<cmdline>',
                      pub.settings).severe("Internal error: Mismatch of pre-parsed (%r) and real (%r) writer"
                                           % ( preWriter, pub.settings.writer, ))
+    pub.set_destination()
     return pub
 
 def readTree(pub, sourceName):
@@ -589,7 +590,10 @@ def readTree(pub, sourceName):
     # Reset reader - just in case it keeps state from a previous invocation
     pub.set_reader('standalone', None, 'restructuredtext')
     pub.set_source(None, sourceName)
-    return pub.reader.read(pub.source, pub.parser, pub.settings)
+    pub.document = None
+    pub.document = pub.reader.read(pub.source, pub.parser, pub.settings)
+    pub.apply_transforms()
+    return pub.document
 
 def doDiff(hashableNodeImpl, oldTree, newTree):
     """Create a difference from `oldTree` to `newTree` using
@@ -697,13 +701,11 @@ if __name__ == '__main__':
     oldTree = readTree(pub, pub.settings._old_source)
     newTree = readTree(pub, pub.settings._new_source)
 
-    # TODO Standard transformations should be run probably
-
     Text2Words(oldTree).apply()
     Text2Words(newTree).apply()
 
     diffDoc = createDiff(oldTree, newTree)
     Words2Text(diffDoc).apply()
 
-    pub.set_destination()
     pub.writer.write(diffDoc, pub.destination)
+    pub.writer.assemble_parts()

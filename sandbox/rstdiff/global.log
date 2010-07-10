@@ -1,4 +1,95 @@
 **************************************
+Date: Fri Jul  9 19:53:45 CEST 2010
+Author: stefan
+Tag: rstdiff_1_55
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests
+In directory theowa:/home/stefan/free/rstdiff/tests
+
+Modified Files:
+	Makefile rules.gmk 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/html
+In directory theowa:/home/stefan/free/rstdiff/tests/html
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Errors fixed by using proper options. All tests run.
+**************************************
+Date: Fri Jul  9 19:45:11 CEST 2010
+Author: stefan
+Tag: rstdiff_1_54
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory theowa:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Standard transformations are applied. Fixes footnote and contents
+problem in HTML.
+**************************************
+Date: Fri Jul  9 19:16:34 CEST 2010
+Author: stefan
+Tag: rstdiff_1_53
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory theowa:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Debugging. Classes attribute in <inline> is set correct.
+**************************************
+Date: Fri Jul  9 19:03:48 CEST 2010
+Author: stefan
+Tag: rstdiff_1_52
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests
+In directory theowa:/home/stefan/free/rstdiff/tests
+
+Modified Files:
+	rules.gmk 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/html
+In directory theowa:/home/stefan/free/rstdiff/tests/html
+
+Added Files:
+	Makefile filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/html/input
+In directory theowa:/home/stefan/free/rstdiff/tests/html/input
+
+Added Files:
+	contents.new.rst contents.old.rst footnote.new.rst 
+	footnote.old.rst reference.new.rst reference.old.rst 
+	textDifferent.new.rst textDifferent.old.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/html/source
+In directory theowa:/home/stefan/free/rstdiff/tests/html/source
+
+Added Files:
+	contents.rst footnote.rst reference.rst textDifferent.rst 
+
+--------------------------------------
+Log Message:
+Added tests for HTML writer decovering errors. All these tests fail.
+**************************************
 Date: Sat Jul  3 18:42:26 CEST 2010
 Author: stefan
 Tag: rstdiff_1_51
