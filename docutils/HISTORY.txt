@@ -17,6 +17,10 @@
 Changes Since 0.7
 =================
 
+* tools/buildhtml.py:
+
+  -- Fix ``--local`` switch.
+
 Release 0.7 (2010-07-07)
 ========================
 
