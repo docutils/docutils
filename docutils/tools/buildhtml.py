@@ -58,12 +58,12 @@ class SettingsSpec(docutils.SettingsSpec):
            'validator': frontend.validate_boolean}),
          ('Do not scan subdirectories for files to process.',
           ['--local'], {'dest': 'recurse', 'action': 'store_false'}),
-         ('Do not process files in <directory>.  This option may be used '
+         ('BROKEN Do not process files in <directory>.  This option may be used '
           'more than once to specify multiple directories.',
           ['--prune'],
           {'metavar': '<directory>', 'action': 'append',
            'validator': frontend.validate_colon_separated_string_list}),
-         ('Recursively ignore files or directories matching any of the given '
+         ('BROKEN Recursively ignore files or directories matching any of the given '
           'wildcard (shell globbing) patterns (separated by colons).  '
           'Default: ".svn:CVS"',
           ['--ignore'],
@@ -189,9 +189,10 @@ class Builder:
                 # influence by modifying dirs.
                 if not recurse:
                     del dirs[:]
-                self.visit(root, dirs+files)
+                self.visit(root, files)
 
     def visit(self, directory, names):
+        # BUG prune and ignore do not work 
         settings = self.get_settings('', directory)
         if settings.prune and (os.path.abspath(directory) in settings.prune):
             print >>sys.stderr, '/// ...Skipping directory (pruned):', directory
