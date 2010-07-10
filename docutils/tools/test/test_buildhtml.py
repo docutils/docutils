@@ -84,8 +84,8 @@ class BuildHtmlTests(unittest.TestCase):
     def test_local(self):
         opts = "--dry-run --local "+ self.root
         dirs, files = process_and_return_filelist( opts )
-        self.assertEquals( len(dirs), 5)
-        self.assertEquals( len(files), 8)
+        self.assertEquals( len(dirs), 1)
+        self.assertEquals( files, [])
 
 if __name__ == '__main__':
     unittest.main()
