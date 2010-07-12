@@ -226,7 +226,7 @@ class Translator(nodes.NodeVisitor):
 
                 'problematic' : ('\n.nf\n', '\n.fi\n'),
                     }
-        # NOTE dont specify the newline before a dot-command, but ensure
+        # NOTE do not specify the newline before a dot-command, but ensure
         # it is there.
 
     def comment_begin(self, text):
@@ -761,6 +761,10 @@ class Translator(nodes.NodeVisitor):
     def visit_line_block(self, node):
         self._line_block += 1
         if self._line_block == 1:
+            # TODO: separate inline blocks from previous paragraphs
+            # see http://hg.intevation.org/mercurial/crew/rev/9c142ed9c405
+            # self.body.append('.sp\n')
+            # but it does not work for me.
             self.body.append('.nf\n')
         else:
             self.body.append('.in +2\n')
