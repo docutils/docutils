@@ -49,7 +49,7 @@ r'''head_prefix = """\
 
 head = """\
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.7: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils %(version)s: http://docutils.sourceforge.net/" />
 <title>Document Title</title>
 <meta name="author" content="Me" />"""
 
@@ -106,7 +106,7 @@ head_prefix = """\
 
 head = """\
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.7: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils %(version)s: http://docutils.sourceforge.net/" />
 <title>Document Title</title>
 <meta name="author" content="Me" />"""
 
@@ -175,7 +175,7 @@ footer text
 
 meta = """\
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.7: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils %(version)s: http://docutils.sourceforge.net/" />
 <meta name="author" content="Me" />"""
 
 
@@ -187,13 +187,13 @@ fragment = """\
 
 
 html_prolog = """\
-<?xml version="1.0" encoding="%s" ?>
+<?xml version="1.0" encoding="%%s" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">"""
 
 
 html_head = """\
-<meta http-equiv="Content-Type" content="text/html; charset=%s" />
-<meta name="generator" content="Docutils 0.7: http://docutils.sourceforge.net/" />
+<meta http-equiv="Content-Type" content="text/html; charset=%%s" />
+<meta name="generator" content="Docutils %(version)s: http://docutils.sourceforge.net/" />
 <title>Document Title</title>
 <meta name="author" content="Me" />"""
 
@@ -227,7 +227,7 @@ html_body = """\
 <hr class="footer" />
 footer text
 </div>"""
-''']
+''' % {'version': DocutilsTestSupport.docutils.__version__}]
 ]
 
 if __name__ == '__main__':
