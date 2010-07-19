@@ -21,6 +21,8 @@ def suite():
     s.generateTests(totest_2)
     return s
 
+interpolations = {'version': DocutilsTestSupport.docutils.__version__}
+
 totest_1 = {}
 totest_2 = {}
 
@@ -43,7 +45,7 @@ Slide text.
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.7: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils %(version)s: http://docutils.sourceforge.net/" />
 <meta name="version" content="S5 1.1" />
 <title>Show Title</title>
 <link rel="stylesheet" href="../docutils/writers/html4css1/html4css1.css" type="text/css" />
@@ -91,7 +93,7 @@ Slide text.
 </div>
 </body>
 </html>
-"""]
+""" % interpolations]
 ]
 
 totest_2['settings'] = [
@@ -108,7 +110,7 @@ We're just checking the settings
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.7: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils %(version)s: http://docutils.sourceforge.net/" />
 <meta name="version" content="S5 1.1" />
 <title>Bogus Slide Show</title>
 <link rel="stylesheet" href="../docutils/writers/html4css1/html4css1.css" type="text/css" />
@@ -151,7 +153,7 @@ We're just checking the settings
 </div>
 </body>
 </html>
-"""]
+""" % interpolations]
 ]
 
 if __name__ == '__main__':
