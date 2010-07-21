@@ -203,6 +203,11 @@ class CustomTestCase(StandardTestCase):
                 expected = expected.encode('raw_unicode_escape')
             if isinstance(output, unicode):
                 output = output.encode('raw_unicode_escape')
+        # Normalize line endings:
+        if expected:
+            expected = '\n'.join(expected.splitlines())
+        if output:
+            output = '\n'.join(output.splitlines())
         try:
             self.assertEquals(output, expected)
         except AssertionError, error:
