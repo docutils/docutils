@@ -165,12 +165,15 @@ expected output and check it in:
             except UnicodeDecodeError:
                 # failsafe (default for latex2e writer)
                 output = output.decode('latin1', 'replace')
+        # Normalize line endings:
+        output = '\n'.join(output.splitlines())
         # Get the expected output *after* writing the actual output.
         no_expected = self.no_expected_template % {
             'exp': expected_path, 'out': params['destination_path']}
         self.assert_(os.access(expected_path, os.R_OK), no_expected)
         f = open(expected_path, 'rb')
-        expected = f.read()
+        # Normalize line endings:
+        expected = '\n'.join(f.read().splitlines())
         f.close()
         try:
             expected = expected.decode(output_encoding)
