@@ -106,7 +106,10 @@ TABS_PATTERN = re.compile(r'(\t+)')
 FILL_PAT1 = re.compile(r'^ +')
 FILL_PAT2 = re.compile(r' {2,}')
 
-TableStylePrefix = 'Table'
+TABLESTYLEPREFIX = 'rststyle-table-'
+TABLENAMEDEFAULT = '%s0' % TABLESTYLEPREFIX
+TABLEPROPERTYNAMES = ('border', 'border-top', 'border-left',
+    'border-right', 'border-bottom', )
 
 GENERATOR_DESC = 'Docutils.org/odf_odt'
 
@@ -319,11 +322,6 @@ def escape_cdata(text):
     return ascii
 
 
-#
-# Classes
-#
-
-
 
 WORD_SPLIT_PAT1 = re.compile(r'\b(\w*)\b\W*')
 
@@ -340,6 +338,29 @@ def split_words(line):
         mo = WORD_SPLIT_PAT1.search(line, pos1)
     return words
 
+
+#
+# Classes
+#
+
+
+class TableStyle(object):
+    def __init__(self, border=None, backgroundcolor=None):
+        self.border = border
+        self.backgroundcolor = backgroundcolor
+    def get_border_(self):
+        return self.border_
+    def set_border_(self, border):
+        self.border_ = border
+    border = property(get_border_, set_border_)
+    def get_backgroundcolor_(self):
+        return self.backgroundcolor_
+    def set_backgroundcolor_(self, backgroundcolor):
+        self.backgroundcolor_ = backgroundcolor
+    backgroundcolor = property(get_backgroundcolor_, set_backgroundcolor_)
+
+BUILTIN_DEFAULT_TABLE_STYLE = TableStyle(
+    border = '0.0007in solid #000000')
 
 #
 # Information about the indentation level for lists nested inside
@@ -415,7 +436,7 @@ class Writer(writers.Writer):
         ('Specify the thickness of table borders in thousands of a cm.  '
             'Default is 35.',
             ['--table-border-thickness'],
-            {'default': 35,
+            {'default': None,
                 'validator': frontend.validate_nonnegative_int}),
         ('Add syntax highlighting in literal code blocks.',
             ['--add-syntax-highlighting'],
@@ -518,6 +539,7 @@ class Writer(writers.Writer):
     def translate(self):
         self.settings = self.document.settings
         self.visitor = self.translator_class(self.document)
+        self.visitor.retrieve_styles(self.EXTENSION)
         self.document.walkabout(self.visitor)
         self.visitor.add_doc_title()
         self.assemble_my_parts()
@@ -581,22 +603,10 @@ class Writer(writers.Writer):
         return s1
 
     def get_stylesheet(self):
-        """Retrieve the stylesheet from either a .xml file or from
-        a .odt (zip) file.  Return the content as a string.
+        """Get the stylesheet from the visitor.
+        Ask the visitor to setup the page.
         """
-        stylespath = self.settings.stylesheet
-        ext = os.path.splitext(stylespath)[1]
-        if ext == '.xml':
-            stylesfile = open(stylespath, 'r')
-            s1 = stylesfile.read()
-            stylesfile.close()
-        elif ext == self.EXTENSION:
-            zfile = zipfile.ZipFile(stylespath, 'r')
-            s1 = zfile.read('styles.xml')
-            zfile.close()
-        else:
-            raise RuntimeError, 'stylesheet path (%s) must be %s or .xml file' %(stylespath, self.EXTENSION)
-        s1 = self.visitor.setup_page(s1)
+        s1 = self.visitor.setup_page()
         return s1
 
     def assemble_parts(self):
@@ -824,6 +834,75 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.line_indent_level = 0
         self.citation_id = None
         self.style_index = 0        # use to form unique style names
+        self.str_stylesheet = ''
+        self.str_stylesheetcontent = ''
+        self.dom_stylesheet = None
+        self.table_styles = None
+
+    def get_str_stylesheet(self):
+        return self.str_stylesheet
+
+    def retrieve_styles(self, extension):
+        """Retrieve the stylesheet from either a .xml file or from
+        a .odt (zip) file.  Return the content as a string.
+        """
+        s2 = None
+        stylespath = self.settings.stylesheet
+        ext = os.path.splitext(stylespath)[1]
+        if ext == '.xml':
+            stylesfile = open(stylespath, 'r')
+            s1 = stylesfile.read()
+            stylesfile.close()
+        elif ext == extension:
+            zfile = zipfile.ZipFile(stylespath, 'r')
+            s1 = zfile.read('styles.xml')
+            s2 = zfile.read('content.xml')
+            zfile.close()
+        else:
+            raise RuntimeError, 'stylesheet path (%s) must be %s or .xml file' %(stylespath, extension)
+        self.str_stylesheet = s1
+        self.str_stylesheetcontent = s2
+        self.dom_stylesheet = etree.fromstring(self.str_stylesheet)
+        self.dom_stylesheetcontent = etree.fromstring(self.str_stylesheetcontent)
+        self.table_styles = self.extract_table_styles(s2)
+
+    def extract_table_styles(self, styles_str):
+        root = etree.fromstring(styles_str)
+        table_styles = {}
+        auto_styles = root.find(
+            '{%s}automatic-styles' % (CNSD['office'], ))
+        for stylenode in auto_styles:
+            name = stylenode.get('{%s}name' % (CNSD['style'], ))
+            tablename = name.split('.')[0]
+            family = stylenode.get('{%s}family' % (CNSD['style'], ))
+            if name.startswith(TABLESTYLEPREFIX):
+                tablestyle = table_styles.get(tablename)
+                if tablestyle is None:
+                    tablestyle = TableStyle()
+                    table_styles[tablename] = tablestyle
+                if family == 'table':
+                    properties = stylenode.find(
+                        '{%s}table-properties' % (CNSD['style'], ))
+                    property = properties.get('{%s}%s' % (CNSD['fo'],
+                        'background-color', ))
+                    if property is not None and property != 'none':
+                        tablestyle.backgroundcolor = property
+                elif family == 'table-cell':
+                    properties = stylenode.find(
+                        '{%s}table-cell-properties' % (CNSD['style'], ))
+                    if properties is not None:
+                        border = self.get_property(properties)
+                        if border is not None:
+                            tablestyle.border = border
+        return table_styles
+
+    def get_property(self, stylenode):
+        border = None
+        for propertyname in TABLEPROPERTYNAMES:
+            border = stylenode.get('{%s}%s' % (CNSD['fo'], propertyname, ))
+            if border is not None and border != 'none':
+                return border
+        return border
 
     def add_doc_title(self):
         text = self.settings.title
@@ -850,13 +929,12 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def generate_content_element(self, root):
         return SubElement(root, 'office:text')
 
-    def setup_page(self, content):
-        root_el = etree.fromstring(content)
-        self.setup_paper(root_el)
+    def setup_page(self):
+        self.setup_paper(self.dom_stylesheet)
         if (len(self.header_content) > 0 or len(self.footer_content) > 0 or
             self.settings.custom_header or self.settings.custom_footer):
-            self.add_header_footer(root_el)
-        new_content = etree.tostring(root_el)
+            self.add_header_footer(self.dom_stylesheet)
+        new_content = etree.tostring(self.dom_stylesheet)
         return new_content
 
     def setup_paper(self, root_el):
@@ -2604,20 +2682,70 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def depart_system_message(self, node):
         pass
 
+    def get_table_style(self, node):
+        table_style = None
+        table_name = None
+        use_predefined_table_style = False
+        str_classes = node.get('classes')
+        if str_classes is not None:
+            for str_class in str_classes:
+                if str_class.startswith(TABLESTYLEPREFIX):
+                    table_name = str_class
+                    use_predefined_table_style = True
+                    break
+        if table_name is not None:
+            table_style = self.table_styles.get(table_name)
+            if table_style is None:
+                # If we can't find the table style, issue warning
+                #   and use the default table style.
+                self.document.reporter.warning(
+                    'Can\'t find table style "%s".  Using default.' % (
+                    table_name, ))
+                table_name = TABLENAMEDEFAULT
+                table_style = self.table_styles.get(table_name)
+                if table_style is None:
+                    # If we can't find the default table style, issue a warning
+                    #   and use a built-in default style.
+                    self.document.reporter.warning(
+                        'Can\'t find default table style "%s".  Using built-in default.' % (
+                        table_name, ))
+                    table_style = BUILTIN_DEFAULT_TABLE_STYLE
+        else:
+            table_name = TABLENAMEDEFAULT
+            table_style = self.table_styles.get(table_name)
+            if table_style is None:
+                # If we can't find the default table style, issue a warning
+                #   and use a built-in default style.
+                self.document.reporter.warning(
+                    'Can\'t find default table style "%s".  Using built-in default.' % (
+                    table_name, ))
+                table_style = BUILTIN_DEFAULT_TABLE_STYLE
+        return table_style
+
     def visit_table(self, node):
         self.table_count += 1
-        table_name = '%s%%d' % TableStylePrefix
+        table_style = self.get_table_style(node)
+        table_name = '%s%%d' % TABLESTYLEPREFIX
         el1 = SubElement(self.automatic_styles, 'style:style', attrib={
             'style:name': self.rststyle(
                 '%s' % table_name, ( self.table_count, )),
             'style:family': 'table',
             }, nsdict=SNSD)
-        el1_1 = SubElement(el1, 'style:table-properties', attrib={
-            #'style:width': '17.59cm',
-            'table:align': 'margins',
-            'fo:margin-top': '0in',
-            'fo:margin-bottom': '0.10in',
-            }, nsdict=SNSD)
+        if table_style.backgroundcolor is None:
+            el1_1 = SubElement(el1, 'style:table-properties', attrib={
+                #'style:width': '17.59cm',
+                'table:align': 'margins',
+                'fo:margin-top': '0in',
+                'fo:margin-bottom': '0.10in',
+                }, nsdict=SNSD)
+        else:
+            el1_1 = SubElement(el1, 'style:table-properties', attrib={
+                #'style:width': '17.59cm',
+                'table:align': 'margins',
+                'fo:margin-top': '0in',
+                'fo:margin-bottom': '0.10in',
+                'fo:background-color': table_style.backgroundcolor,
+                }, nsdict=SNSD)
         # We use a single cell style for all cells in this table.
         # That's probably not correct, but seems to work.
         el2 = SubElement(self.automatic_styles, 'style:style', attrib={
@@ -2625,8 +2753,11 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                 '%s.%%c%%d' % table_name, ( self.table_count, 'A', 1, )),
             'style:family': 'table-cell',
             }, nsdict=SNSD)
-        line_style1 = '0.%03dcm solid #000000' % (
-            self.settings.table_border_thickness, )
+        thickness = self.settings.table_border_thickness
+        if thickness is None:
+            line_style1 = table_style.border
+        else:
+            line_style1 = '0.%03dcm solid #000000' % (thickness, )
         el2_1 = SubElement(el2, 'style:table-cell-properties', attrib={
             'fo:padding': '0.049cm',
             'fo:border-left': line_style1,
@@ -2668,7 +2799,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def visit_colspec(self, node):
         self.column_count += 1
         colspec_name = self.rststyle(
-            '%s%%d.%%s' % TableStylePrefix,
+            '%s%%d.%%s' % TABLESTYLEPREFIX,
             (self.table_count, chr(self.column_count), )
             )
         colwidth = node['colwidth']
@@ -2708,7 +2839,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def visit_entry(self, node):
         self.column_count += 1
         cellspec_name = self.rststyle(
-            '%s%%d.%%c%%d' % TableStylePrefix, 
+            '%s%%d.%%c%%d' % TABLESTYLEPREFIX, 
             (self.table_count, 'A', 1, )
             )
         attrib={
@@ -2943,7 +3074,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     depart_tip = depart_warning
 
     def visit_admonition(self, node):
-        #import pdb; pdb.set_trace()
         title = None
         for child in node.children:
             if child.tagname == 'title':
