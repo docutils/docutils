@@ -1,4 +1,387 @@
 **************************************
+Date: Sun Aug  1 12:36:44 CEST 2010
+Author: stefan
+Tag: rstdiff_1_70
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource/expected
+In directory rosalu:/home/stefan/free/rstdiff/tests/simpleNoSource/expected
+
+Modified Files:
+	onceOnly.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource/input
+In directory rosalu:/home/stefan/free/rstdiff/tests/simpleNoSource/input
+
+Modified Files:
+	onceOnly.new.rst onceOnly.old.rst 
+
+--------------------------------------
+Log Message:
+Continued tests.
+**************************************
+Date: Sat Jul 31 14:14:15 CEST 2010
+Author: stefan
+Tag: rstdiff_1_69
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource/expected
+In directory rosalu:/home/stefan/free/rstdiff/tests/simpleNoSource/expected
+
+Modified Files:
+	onceOnly.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource/input
+In directory rosalu:/home/stefan/free/rstdiff/tests/simpleNoSource/input
+
+Modified Files:
+	onceOnly.new.rst onceOnly.old.rst 
+
+--------------------------------------
+Log Message:
+Continued test.
+**************************************
+Date: Sat Jul 31 12:06:36 CEST 2010
+Author: stefan
+Tag: rstdiff_1_68
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Debugging.
+**************************************
+Date: Mon Jul 26 20:03:18 CEST 2010
+Author: stefan
+Tag: rstdiff_1_67
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory theowa:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Added comments.
+**************************************
+Date: Mon Jul 26 10:49:49 CEST 2010
+Author: stefan
+Tag: rstdiff_1_66
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory theowa:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Added comments.
+**************************************
+Date: Mon Jul 26 10:47:22 CEST 2010
+Author: stefan
+Tag: rstdiff_1_65
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource/expected
+In directory theowa:/home/stefan/free/rstdiff/tests/simpleNoSource/expected
+
+Modified Files:
+	pcdataOnly.xml 
+Added Files:
+	onceOnly.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource/input
+In directory theowa:/home/stefan/free/rstdiff/tests/simpleNoSource/input
+
+Modified Files:
+	pcdataOnly.new.rst pcdataOnly.old.rst 
+Added Files:
+	onceOnly.new.rst onceOnly.old.rst 
+
+--------------------------------------
+Log Message:
+Moved conflicting parts of #PCDATA only test to the once only test.
+Former test runs.
+**************************************
+Date: Mon Jul 26 09:43:33 CEST 2010
+Author: stefan
+Tag: rstdiff_1_64
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory theowa:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource/expected
+In directory theowa:/home/stefan/free/rstdiff/tests/simpleNoSource/expected
+
+Modified Files:
+	pcdataOnly.xml 
+
+--------------------------------------
+Log Message:
+Elements which may contain only #PCDATA propagate their inner changes
+up to the element itself. Existing tests don't run because they are
+mixed with another, still missing feature.
+**************************************
+Date: Sun Jul 25 14:59:35 CEST 2010
+Author: stefan
+Tag: rstdiff_1_63
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource/expected
+In directory rosalu:/home/stefan/free/rstdiff/tests/simpleNoSource/expected
+
+Modified Files:
+	references.xml 
+Added Files:
+	pcdataOnly.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource/input
+In directory rosalu:/home/stefan/free/rstdiff/tests/simpleNoSource/input
+
+Modified Files:
+	references.new.rst references.old.rst 
+Added Files:
+	pcdataOnly.new.rst pcdataOnly.old.rst 
+
+--------------------------------------
+Log Message:
+Moved failing test part to an own test.
+
+Added tests for changes in #PCDATA.
+**************************************
+Date: Sat Jul 24 20:09:00 CEST 2010
+Author: stefan
+Tag: rstdiff_1_62
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Code improvements.
+**************************************
+Date: Sat Jul 24 20:02:47 CEST 2010
+Author: stefan
+Tag: rstdiff_1_61
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple/input
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple/input
+
+Added Files:
+	attributes.new.rst attributes.old.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple/source
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple/source
+
+Added Files:
+	attributes.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource/expected
+In directory rosalu:/home/stefan/free/rstdiff/tests/simpleNoSource/expected
+
+Modified Files:
+	references.xml 
+Added Files:
+	attributesNoSource.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource/input
+In directory rosalu:/home/stefan/free/rstdiff/tests/simpleNoSource/input
+
+Added Files:
+	attributesNoSource.new.rst attributesNoSource.old.rst 
+
+--------------------------------------
+Log Message:
+Added tests. Debugging.
+**************************************
+Date: Sat Jul 24 15:39:07 CEST 2010
+Author: stefan
+Tag: rstdiff_1_60
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests
+In directory rosalu:/home/stefan/free/rstdiff/tests
+
+Modified Files:
+	Makefile rules.gmk 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleHtml
+In directory rosalu:/home/stefan/free/rstdiff/tests/simpleHtml
+
+Added Files:
+	Makefile filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Reusing simple tests for HTML.
+**************************************
+Date: Sat Jul 24 15:38:08 CEST 2010
+Author: stefan
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleHtml/expected
+In directory rosalu:/home/stefan/free/rstdiff/tests/simpleHtml/expected
+
+
+--------------------------------------
+Log Message:
+Directory /home/stefan/vault/sm/rstdiff/tests/simpleHtml/expected added to the repository
+**************************************
+Date: Sat Jul 24 15:37:54 CEST 2010
+Author: stefan
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleHtml
+In directory rosalu:/home/stefan/free/rstdiff/tests/simpleHtml
+
+
+--------------------------------------
+Log Message:
+Directory /home/stefan/vault/sm/rstdiff/tests/simpleHtml added to the repository
+**************************************
+Date: Sat Jul 24 15:03:06 CEST 2010
+Author: stefan
+Tag: rstdiff_1_59
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource
+In directory rosalu:/home/stefan/free/rstdiff/tests/simpleNoSource
+
+Added Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource/expected
+In directory rosalu:/home/stefan/free/rstdiff/tests/simpleNoSource/expected
+
+Added Files:
+	references.xml 
+
+--------------------------------------
+Log Message:
+Necessary attributes are considered.
+**************************************
+Date: Sun Jul 18 10:47:00 CEST 2010
+Author: stefan
+Tag: rstdiff_1_58
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple/input
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple/input
+
+Added Files:
+	references.new.rst references.old.rst 
+
+--------------------------------------
+Log Message:
+Added tests and todos.
+**************************************
+Date: Sun Jul 11 19:40:46 CEST 2010
+Author: stefan
+Tag: rstdiff_1_57
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Empty inlines are not generated.
+**************************************
+Date: Sun Jul 11 11:02:22 CEST 2010
+Author: stefan
+Tag: rstdiff_1_56
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/studies
+In directory rosalu:/home/stefan/free/rstdiff/studies
+
+Modified Files:
+	coloring.css 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple/input
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple/input
+
+Added Files:
+	inlineStyles.new.rst inlineStyles.old.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple/source
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple/source
+
+Added Files:
+	inlineStyles.rst 
+
+--------------------------------------
+Log Message:
+Added tests. Fails.
+**************************************
 Date: Fri Jul  9 19:53:45 CEST 2010
 Author: stefan
 Tag: rstdiff_1_55
