@@ -1,12 +1,12 @@
 .change-added {
-  background: red }
+  background: green }
 
 .change-deleted {
-  background: grey }
-
-.change-replacement {
   background: red }
 
+.change-replacement {
+  background: cyan }
+
 .change-replaced {
-  background: grey }
+  background: yellow }
 

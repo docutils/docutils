@@ -337,10 +337,10 @@ class DocutilsDispatcher(HashableNodeImpl):
                   % ( name, ", ".join([ arg.__class__.__name__
                                         for arg in ( node, ) + args ]), ))
             for arg in ( node, ) + args:
-                print("    %s" % ( arg, ))
+                print("    > %s" % ( arg, ))
         result = method(node, *args)
         if self.debug:
-            print("    %s" % ( result, ))
+            print("    < %s" % ( result, ))
         return result
 
     ###########################################################################
@@ -407,6 +407,7 @@ class DocutilsDispatcher(HashableNodeImpl):
     ###########################################################################
     # Merging
 
+    # TODO The resulting class names should be configurable
     NewDelete = 'removed'
     NewInsert = 'added'
     NewReplaced = 'replaced'
@@ -546,6 +547,9 @@ class DocutilsDispatcher(HashableNodeImpl):
     childEq_White = rootEq_White
 
     def copyChildren_Text(self, head, tail, root, newType):
+        if not tail and isinstance(head, nodes.Text) and not head.astext():
+            # Do not create empty inlines
+            return [ ]
         inline = nodes.inline()
         self.setNewType(inline, newType)
         inline.extend([ head, ] + tail)
@@ -554,6 +558,163 @@ class DocutilsDispatcher(HashableNodeImpl):
     # Sequences of Text are treated together
     copyChildren_Word = copyChildren_Text
     copyChildren_White = copyChildren_Text
+
+    ###########################################################################
+    # For some elements their attributes need to be considered to
+    # detect changes.
+
+    def attributeEq(self, node, other, attribute):
+        if (attribute in node) != (attribute in other):
+            return False
+        if not attribute in node:
+            return True
+        return node[attribute] == other[attribute]
+
+    ###########################################################################
+    # reference
+
+    def rootEq_reference(self, node, other):
+        return self.attributeEq(node, other, 'refuri')
+
+    ###########################################################################
+    # target
+
+    def rootEq_target(self, node, other):
+        return self.attributeEq(node, other, 'refuri')
+
+    ###########################################################################
+    # bullet_list
+
+    # TODO This is typically a minor change and should be requested by
+    # a special option
+
+    def attributeEq_bullet_list(self, node, other):
+        return self.attributeEq(node, other, 'bullet')
+
+    def rootEq_bullet_list(self, node, other):
+        return self.attributeEq_bullet_list(node, other)
+
+    def childEq_bullet_list(self, node, other):
+        return (self.attributeEq_bullet_list(node, other)
+                and self.childrenEq(node, other))
+
+    ###########################################################################
+    # enumerated_list
+
+    # TODO This is typically a minor change and should be requested by
+    # a special option
+
+    def attributeEq_enumerated_list(self, node, other):
+        return (self.attributeEq(node, other, 'enumtype')
+                and self.attributeEq(node, other, 'prefix')
+                and self.attributeEq(node, other, 'suffix')
+                and self.attributeEq(node, other, 'start'))
+
+    def rootEq_enumerated_list(self, node, other):
+        return self.attributeEq_enumerated_list(node, other)
+
+    def childEq_option_argument(self, node, other):
+        return (self.attributeEq_enumerated_list(node, other)
+                and self.childrenEq(node, other))
+
+    ###########################################################################
+    # image
+
+    def rootEq_image(self, node, other):
+        if node.__class__ != other.__class__:
+            return False
+        return self.attributeEq(node, other, 'uri')
+
+    ###########################################################################
+    # Some elements may contain only #PCDATA. They need to propagate
+    # changes in their children up to the element itself.
+
+    def rootEqWithChildren(self, node, other):
+        if node.__class__ != other.__class__:
+            return False
+        return self.childrenEq(node, other)
+
+    ###########################################################################
+    # comment
+
+    rootEq_comment = rootEqWithChildren
+
+    ###########################################################################
+    # literal
+
+    rootEq_literal = rootEqWithChildren
+
+    ###########################################################################
+    # option_string
+
+    rootEq_option_string = rootEqWithChildren
+
+    ###########################################################################
+    # label
+
+    # TODO This is typically a minor change and should be requested by
+    # a special option
+   
+    rootEq_label = rootEqWithChildren
+
+    ###########################################################################
+    # footnote_reference
+
+    # TODO This is typically a minor change and should be requested by
+    # a special option
+   
+    rootEq_footnote_reference = rootEqWithChildren
+
+    ###########################################################################
+    # citation_reference
+
+    # TODO This is typically a minor change and should be requested by
+    # a special option
+   
+    rootEq_citation_reference = rootEqWithChildren
+
+    ###########################################################################
+    # For some elements their attributes need to be considered to
+    # detect changes *and* they may contain only #PCDATA.
+
+    ###########################################################################
+    # option_argument
+
+    # TODO This is typically a minor change and should be requested by
+    # a special option
+   
+    def attributeEq_option_argument(self, node, other):
+        return self.attributeEq(node, other, 'delimiter')
+
+    def rootEq_option_argument(self, node, other):
+        return (self.attributeEq_option_argument(node, other)
+                and self.rootEqWithChildren(node, other))
+
+    def childEq_option_argument(self, node, other):
+        return (self.attributeEq_option_argument(node, other)
+                and self.childrenEq(node, other))
+
+    ###########################################################################
+
+    # TODO A change in certain elements must propagate the change up
+    # or down since they may occur only once. These elements are
+    # <title> (down), <subtitle> (down), <decoration> (down),
+    # <docinfo> (down), <transition>, <header> (down), <footer>
+    # (down), <info>, <term> (down), <definition> (down), <field_name>
+    # (down), <field_body> (down), <option_group> (down),
+    # <description> (down), <option_string> (up), <attribution>
+    # (down), <label> (up), <caption> (down), <legend> (down),
+    # <thead>, <tbody>, <entry> (down) (because otherwise the column
+    # count is wrong)
+    #
+    # However, only those need to be considered which may have
+    # replacing changes at all. Typically not the case for container
+    # elements.
+
+    # TODO Why are changes in text are propagated up? For instance
+    # <entry><paragraph>+</paragraph></entry> =>
+    # <entry><paragraph>++</paragraph></entry> becomes a change in the
+    # <entry>!
 
 ###############################################################################
 ###############################################################################
@@ -709,3 +870,5 @@ if __name__ == '__main__':
 
     pub.writer.write(diffDoc, pub.destination)
     pub.writer.assemble_parts()
+
+# TODO The CSS classes need to be set in a CSS stylesheet
