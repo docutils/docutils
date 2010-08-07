@@ -2754,6 +2754,10 @@ details check the Rst Faces Defaults group."
   (string-match "[[:alpha:]]" "b")
   "Non-nil if we can use the character classes in our regexps.")
 
+(defconst rst-max-inline-length
+  1000
+  "Maximum length of inline markup to recognize.")
+
 (defvar rst-font-lock-keywords
   ;; The reST-links in the comments below all relate to sections in
   ;; http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html
@@ -2788,18 +2792,21 @@ details check the Rst Faces Defaults group."
 
 	 ;; There seems to be a bug leading to error "Stack overflow in regexp
 	 ;; matcher" when "|" or "\\*" are the characters searched for
-	 (re-imendbeg
+	 (re-imendbegbeg
 	  (if (< emacs-major-version 21)
 	      "]"
 	    "\\]\\|\\\\."))
 	 ;; inline markup content end
-	 (re-imend (concat re-imendbeg "\\)*[^\t \\\\]\\)"))
+	 (re-imendbeg (concat re-imendbegbeg "\\)\\{0,"
+			   (format "%d" rst-max-inline-length)
+			   "\\}[^\t "))
+	 (re-imendend "\\\\]\\)")
 	 ;; inline markup content without asterisk
-	 (re-ima2 (concat re-imbeg2 "*" re-imend))
+	 (re-ima2 (concat re-imbeg2 "*" re-imendbeg "*" re-imendend))
 	 ;; inline markup content without backquote
-	 (re-imb2 (concat re-imbeg2 "`" re-imend))
+	 (re-imb2 (concat re-imbeg2 "`" re-imendbeg "`" re-imendend))
 	 ;; inline markup content without vertical bar
-	 (re-imv2 (concat re-imbeg2 "|" re-imend))
+	 (re-imv2 (concat re-imbeg2 "|" re-imendbeg "|" re-imendend))
 	 ;; Supported URI schemes
 	 (re-uris1 "\\(acap\\|cid\\|data\\|dav\\|fax\\|file\\|ftp\\|gopher\\|http\\|https\\|imap\\|ldap\\|mailto\\|mid\\|modem\\|news\\|nfs\\|nntp\\|pop\\|prospero\\|rtsp\\|service\\|sip\\|tel\\|telnet\\|tip\\|urn\\|vemmi\\|wais\\)")
 	 ;; Line starting with adornment and optional whitespace; complete
