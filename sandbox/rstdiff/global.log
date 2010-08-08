@@ -1,4 +1,79 @@
 **************************************
+Date: Sun Aug  8 14:23:27 CEST 2010
+Author: stefan
+Tag: rstdiff_1_74
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource/expected
+In directory rosalu:/home/stefan/free/rstdiff/tests/simpleNoSource/expected
+
+Modified Files:
+	onceOnly.xml 
+
+--------------------------------------
+Log Message:
+Added todos. Corrected tests to pass for now.
+**************************************
+Date: Sun Aug  8 11:34:50 CEST 2010
+Author: stefan
+Tag: rstdiff_1_73
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Once only elements do not propagate their changes up. This leads to
+sections not being replaced any more. Needs checking.
+**************************************
+Date: Sat Aug  7 11:46:06 CEST 2010
+Author: stefan
+Tag: rstdiff_1_72
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource/expected
+In directory rosalu:/home/stefan/free/rstdiff/tests/simpleNoSource/expected
+
+Modified Files:
+	onceOnly.xml 
+
+--------------------------------------
+Log Message:
+Changes in label and option_string are pulled up.
+**************************************
+Date: Fri Aug  6 00:24:15 CEST 2010
+Author: stefan
+Tag: rstdiff_1_71
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory theowa:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Debugging.
+**************************************
 Date: Sun Aug  1 12:36:44 CEST 2010
 Author: stefan
 Tag: rstdiff_1_70

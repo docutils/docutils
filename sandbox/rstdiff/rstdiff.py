@@ -484,6 +484,10 @@ class DocutilsDispatcher(HashableNodeImpl):
             for newChild in self.copyRange(srcRoot, srcRange, newType):
                 self.addChild(diffRoot, newChild)
         elif command == Opcode.Replace:
+            # TODO Replacement doubles elements. This needs to be
+            # reflected by creation of unique @ids for replaced
+            # elements. This needs to be reflected in referring @refid
+            # and @backrefs.
             for newChild in self.copyRange(oldRoot, oldRange,
                                            self.NewReplaced):
                 self.addChild(diffRoot, newChild)
@@ -613,7 +617,7 @@ class DocutilsDispatcher(HashableNodeImpl):
     def rootEq_enumerated_list(self, node, other):
         return self.attributeEq_enumerated_list(node, other)
 
-    def childEq_option_argument(self, node, other):
+    def childEq_enumerated_list(self, node, other):
         return (self.attributeEq_enumerated_list(node, other)
                 and self.childrenEq(node, other))
 
@@ -695,26 +699,49 @@ class DocutilsDispatcher(HashableNodeImpl):
                 and self.childrenEq(node, other))
 
     ###########################################################################
+    # A change in certain elements must propagate the change up since
+    # they may occur only once. Must be done by parents.
 
-    # TODO A change in certain elements must propagate the change up
-    # or down since they may occur only once. These elements are
-    # <title> (down), <subtitle> (down), <decoration> (down),
-    # <docinfo> (down), <transition>, <header> (down), <footer>
-    # (down), <info>, <term> (down), <definition> (down), <field_name>
-    # (down), <field_body> (down), <option_group> (down),
-    # <description> (down), <option_string> (up), <attribution>
-    # (down), <label> (up), <caption> (down), <legend> (down),
-    # <thead>, <tbody>, <entry> (down) (because otherwise the column
-    # count is wrong)
-    #
-    # However, only those need to be considered which may have
-    # replacing changes at all. Typically not the case for container
-    # elements.
+    # Checks whether `node` and `other` have both a node of type
+    # `childClass` and whether the first of thosee are equal.
+    def rootEqWithChild(self, node, other, childClass):
+        if node.__class__ != other.__class__:
+            return False
 
-    # TODO Why are changes in text are propagated up? For instance
-    # <entry><paragraph>+</paragraph></entry> =>
-    # <entry><paragraph>++</paragraph></entry> becomes a change in the
-    # <entry>!
+        nodeFound = None
+        for nodeChild in self.getChildren(node):
+            if isinstance(nodeChild, childClass):
+                nodeFound = nodeChild
+                break
+
+        otherFound = None
+        for otherChild in self.getChildren(other):
+            if isinstance(otherChild, childClass):
+                otherFound = otherChild
+                break
+
+        if nodeFound is None or otherFound is None:
+            return True
+
+        return self.childEq(nodeFound, otherFound)
+
+    ###########################################################################
+    # footnote
+
+    def rootEq_footnote(self, node, other):
+        return self.rootEqWithChild(node, other, nodes.label)
+
+    ###########################################################################
+    # citation
+
+    def rootEq_citation(self, node, other):
+        return self.rootEqWithChild(node, other, nodes.label)
+
+    ###########################################################################
+    # option
+
+    def rootEq_option(self, node, other):
+        return self.rootEqWithChild(node, other, nodes.option_string)
 
 ###############################################################################
 ###############################################################################
@@ -791,16 +818,33 @@ def buildTree(dispatcher, diffRoot, opcodes, oldRoot, newRoot):
             dispatcher.mergeChildren(diffRoot, oldRoot, newRoot,
                                      command, oldRange, newRange)
 
-def cleanOpcodes(opcodes):
-    """Replace some nasty results in `opcodes` by cleaner versions."""
+# A change in certain elements must not be propagated up since they
+# may occur only once
+replaceNotUp = ( nodes.title, nodes.subtitle, nodes.term, nodes.field_name,
+                 nodes.attribution, nodes.caption, # (%text.model)
+                 nodes.header, nodes.footer, nodes.definition,
+                 nodes.field_body, nodes.description, nodes.legend,
+                 nodes.entry, # (%body.elements;+) or (%body.elements;*)
+                 nodes.decoration, nodes.docinfo, nodes.transition,
+                 nodes.option_group, nodes.thead,
+                 nodes.tbody, # different content model
+                 )
+
+def cleanOpcodes(opcodes, dispatcher, oldList, newList):
+    """Replace some nasty results in `opcodes` by cleaner versions. Opcodes
+    create `newList` from `oldList`."""
     for i in range(len(opcodes)):
         opcode = Opcode(opcodes[i])
-        subOpcodes = opcode.getSubOpcodes()
+        ( command, oldRange, newRange, subOpcodes,
+          ) = opcode.resolveOpcode(oldList, newList)
         if not subOpcodes:
-            # Nothing to clean for flat opcodes
+            # Nothing to clean for flat or empty opcodes
             continue
 
-        cleanOpcodes(subOpcodes)
+        oldNode = oldRange[0]
+        newNode = newRange[0]
+        cleanOpcodes(subOpcodes, dispatcher, dispatcher.getChildren(oldNode),
+                     dispatcher.getChildren(newNode))
         j = 1
         while j < len(subOpcodes):
             prev = Opcode(subOpcodes[j - 1])
@@ -820,9 +864,24 @@ def cleanOpcodes(opcodes):
         opcode.setSubOpcodes(subOpcodes)
         if len(subOpcodes) == 1:
             subOpcode = Opcode(subOpcodes[0])
-            if subOpcode.getCommand() != Opcode.Descend:
-                # Propagate 1-element sequences up
-                opcode.setCommand(subOpcode.getCommand())
+            if (subOpcode.getCommand() != Opcode.Replace
+                or not reduce(lambda last, cls:
+                                  last or isinstance(oldNode, cls),
+                              replaceNotUp, False)):
+                # TODO If a section/title would propagate up the
+                # propagation needs to be done if all siblings would
+                # propagate, too; this way a section replacement
+                # should work again
+                #
+                # This applies to section/title, section/subtitle,
+                # definition_list_item/term, field/field_name,
+                # block_quote/attribution, figure/caption,
+                # definition_list_item/definition, field/field_body,
+                # option_list_item/description, figure/legend,
+                # option_list_item/option_group
+                if subOpcode.getCommand() != Opcode.Descend:
+                    # Propagate 1-element sequences up
+                    opcode.setCommand(subOpcode.getCommand())
         opcodes[i] = opcode.asTuple()
 
 def createDiff(oldTree, newTree):
@@ -836,7 +895,7 @@ def createDiff(oldTree, newTree):
         print(newTree.asdom().toprettyxml())
         pprint(opcodes, sys.stdout, 2, 40, None)
         print("^^^ Before cleaning vvv After cleaning")
-    cleanOpcodes(opcodes)
+    cleanOpcodes(opcodes, dispatcher, [ oldTree ], [ newTree ])
     if dispatcher.debug:
         from pprint import pprint
         pprint(opcodes, sys.stdout, 2, 40, None)
