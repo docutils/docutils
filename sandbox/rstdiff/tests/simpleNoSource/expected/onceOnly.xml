@@ -9,7 +9,7 @@
             Each TITLE may occur only once
         </inline>
     </title>
-    <subtitle classes="change-replaced" ids="a-document-subtitle subtitles-as-well" names="a\ document\ subtitle subtitles\ as\ well">
+    <subtitle ids="a-document-subtitle" names="a\ document\ subtitle">
         <inline classes="change-replaced">
             A document subtitle
         </inline>
@@ -17,26 +17,26 @@
             Subtitles as well
         </inline>
     </subtitle>
-    <decoration classes="change-replaced">
+    <decoration>
         <header>
-            <paragraph classes="change-replacement">
+            <paragraph classes="change-replaced">
                 The document header is once only.
             </paragraph>
-            <paragraph classes="change-replaced">
+            <paragraph classes="change-replacement">
                 All parts of decoration may occur singly.
             </paragraph>
         </header>
-        <footer>
-            <paragraph classes="change-removed">
+        <footer classes="change-removed">
+            <paragraph>
                 And the document footer.
             </paragraph>
         </footer>
     </decoration>
     <docinfo>
-        <author classes="change-removed">
+        <author classes="change-replaced">
             Stefan Merten
         </author>
-        <organization classes="change-added">
+        <organization classes="change-replacement">
             Should propagate to docinfo
         </organization>
     </docinfo>
@@ -50,14 +50,14 @@ up. These are the references of
             <citation_reference classes="change-replaced" ids="id1" refid="cita">
                 CITA
             </citation_reference>
-            <citation_reference classes="change-replacement" ids="id2" refid="citation">
+            <citation_reference classes="change-replacement" ids="id1" refid="citation">
                 CITATION
             </citation_reference>
              and footnotes 
-            <footnote_reference classes="change-replaced" ids="id3" refid="id4">
+            <footnote_reference classes="change-replaced" ids="id2" refid="id3">
                 1
             </footnote_reference>
-            <footnote_reference classes="change-replacement" ids="id5" refid="id6">
+            <footnote_reference classes="change-replacement" ids="id2" refid="id3">
                 2
             </footnote_reference>
             .
@@ -317,7 +317,7 @@ entry
                         The option_group and the description may also appear
 only once
                     </paragraph>
-                    <paragraph classes="change-replaced">
+                    <paragraph classes="change-replacement">
                         THE DESCRIPTION AS WELL AS THE OPTION_GROUP MUST BE SINGLE.
                     </paragraph>
                 </description>
@@ -331,15 +331,7 @@ only once
                 The label of a citation.
             </paragraph>
         </citation>
-        <citation backrefs="id2" classes="change-replacement" ids="citation" names="citation">
-            <label>
-                CITATION
-            </label>
-            <paragraph>
-                The label of a citation.
-            </paragraph>
-        </citation>
-        <footnote backrefs="id3" classes="change-replaced" ids="id4" names="1">
+        <footnote backrefs="id2" classes="change-replaced" ids="id3" names="1">
             <label>
                 1
             </label>
@@ -347,7 +339,15 @@ only once
                 The label of a footnote.
             </paragraph>
         </footnote>
-        <footnote backrefs="id5" classes="change-replacement" ids="id6" names="2">
+        <citation backrefs="id1" classes="change-replacement" ids="citation" names="citation">
+            <label>
+                CITATION
+            </label>
+            <paragraph>
+                The label of a citation.
+            </paragraph>
+        </citation>
+        <footnote backrefs="id2" classes="change-replacement" ids="id3" names="2">
             <label>
                 2
             </label>
