@@ -2748,7 +2748,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                     title = self.encode(node.pop(0).astext())
                 depth = node.get('depth', 0)
                 if 'local' in node['classes']:
-                    self.minitoc(title, node, depth)
+                    self.minitoc(node, title, depth)
                     self.context.append('')
                     return
                 if depth:
