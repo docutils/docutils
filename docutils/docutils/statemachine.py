@@ -1,4 +1,4 @@
-# $Id$
+ # $Id$
 # Author: David Goodger <goodger@python.org>
 # Copyright: This module has been placed in the public domain.
 
@@ -374,8 +374,8 @@ class StateMachine:
             srcline = srcoffset + 1
         except (TypeError):
             # line is None if index is "Just past the end"
-            src, line = self.get_source_and_line(offset + self.input_offset)
-            return src, line + 1
+            src, srcline = self.get_source_and_line(offset + self.input_offset)
+            return src, srcline + 1
         except (IndexError): # `offset` is off the list
             src, srcline = None, None
             # raise AssertionError('cannot find line %d in %s lines' %
