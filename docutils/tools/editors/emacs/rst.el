@@ -3280,10 +3280,10 @@ argument, select the alternative toolset."
                     (list command
                           (or options "")
                           (if conffile
-                              (concat "--config=\"" conffile "\"")
+                              (concat "--config=" (shell-quote-argument conffile))
                             "")
-                          bufname
-                          (concat outname extension))
+                          (shell-quote-argument bufname)
+                          (shell-quote-argument (concat outname extension)))
                     " "))
 
     ;; Invoke the compile command.
