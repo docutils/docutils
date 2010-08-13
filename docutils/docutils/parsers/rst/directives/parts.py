@@ -63,6 +63,10 @@ class Contents(Directive):
                 title = nodes.title('', language.labels['contents'])
         topic = nodes.topic(classes=['contents'])
         topic['classes'] += self.options.get('class', [])
+        # the latex2e writer needs source and line for a warning:
+        src, srcline = self.state_machine.get_source_and_line()
+        topic.source = src
+        topic.line = srcline - 1
         if 'local' in self.options:
             topic['classes'].append('local')
         if title:

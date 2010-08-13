@@ -19,7 +19,12 @@ Changes Since 0.7
 
 * tools/buildhtml.py:
 
-  -- Fix ``--local`` switch.
+  - Fix ``--local`` switch.
+
+* docutils/writers/latex2e/__init__.py
+
+  - Fix [ 3043986 ] AttributeError using :local: with table of content.
+
 
 Release 0.7 (2010-07-07)
 ========================
