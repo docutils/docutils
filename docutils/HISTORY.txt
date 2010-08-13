@@ -25,7 +25,12 @@ Changes Since 0.7
 
   - Fix [ 3043986 ] AttributeError using :local: with table of content.
 
+* tools/editors/emacs/rst.el:
 
+  - Fix [ 3001100 ] does not handle spaces in filenames
+    (thanks to Jakub Wilk)
+    
+    
 Release 0.7 (2010-07-07)
 ========================
 
