@@ -433,7 +433,15 @@ def new_document(source_path, settings=None):
         `source_path` : string
             The path to or description of the source text of the document.
         `settings` : optparse.Values object
-            Runtime settings.  If none provided, a default set will be used.
+            Runtime settings.  If none are provided, a default core set will
+            be used.  If you will use the document object with any Docutils
+            components, you must provide their default settings as well.  For
+            example, if parsing, at least provide the parser settings,
+            obtainable as follows::
+
+                settings = docutils.frontend.OptionParser(
+                    components=(docutils.parsers.rst.Parser,)
+                    ).get_default_values()
     """
     from docutils import frontend
     if settings is None:
