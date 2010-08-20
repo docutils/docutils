@@ -516,7 +516,7 @@ def get_stylesheet_list(settings):
     """
     Retrieve list of stylesheet references from the settings object.
     """
-    assert ( not (settings.stylesheet and settings.stylesheet_path), 
+    assert not (settings.stylesheet and settings.stylesheet_path), (
             'stylesheet and stylesheet_path are mutually exclusive.')
     if settings.stylesheet_path:
         sheets = settings.stylesheet_path.split(",")
