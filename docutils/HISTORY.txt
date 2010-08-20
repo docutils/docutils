@@ -29,7 +29,11 @@ Changes Since 0.7
 
   - Fix [ 3001100 ] does not handle spaces in filenames
     (thanks to Jakub Wilk)
-    
+
+* docutils/utils.py:
+
+  - strip whitespace from stylesheet arguments
+  
     
 Release 0.7 (2010-07-07)
 ========================

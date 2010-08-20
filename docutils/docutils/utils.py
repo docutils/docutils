@@ -516,14 +516,16 @@ def get_stylesheet_list(settings):
     """
     Retrieve list of stylesheet references from the settings object.
     """
+    assert ( not (settings.stylesheet and settings.stylesheet_path), 
+            'stylesheet and stylesheet_path are mutually exclusive.')
     if settings.stylesheet_path:
-        assert not settings.stylesheet, (
-               'stylesheet and stylesheet_path are mutually exclusive.')
-        return settings.stylesheet_path.split(",")
+        sheets = settings.stylesheet_path.split(",")
     elif settings.stylesheet:
-        return settings.stylesheet.split(",")
+        sheets = settings.stylesheet.split(",")
     else:
-        return []
+        sheets = []
+    # strip whitespace (frequently occuring in config files)
+    return [sheet.strip(u' \t\n\r') for sheet in sheets]
 
 def get_trim_footnote_ref_space(settings):
     """
