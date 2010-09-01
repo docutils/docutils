@@ -7,6 +7,8 @@
 
 :Date: $Date$
 
+.. Note:: "reStructuredText" is **ONE** word, *not two!*
+
 .. contents::
 
 reStructuredText is an easy-to-read, what-you-see-is-what-you-get
