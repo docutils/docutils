@@ -1,0 +1,6 @@
+Header
+	First
+		An http://www.example.com URL
+	Second
+		Deeper again and this one should also contain a line break in the original source
+			And deeper...
