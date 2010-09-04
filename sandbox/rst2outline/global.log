@@ -1,0 +1,173 @@
+**************************************
+Date: Wed Sep  1 23:32:29 CEST 2010
+Author: stefan
+Tag: rst2outline_1_7
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2outline
+In directory theowa:/home/stefan/free/rst2outline
+
+Modified Files:
+	rst2outline.py 
+
+--------------------------------------
+Log Message:
+Added todo.
+**************************************
+Date: Wed Sep  1 23:21:52 CEST 2010
+Author: stefan
+Tag: rst2outline_1_6
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2outline/tests/simple/expected
+In directory theowa:/home/stefan/free/rst2outline/tests/simple/expected
+
+Modified Files:
+	simple.txt 
+Added Files:
+	inline.txt 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2outline/tests/simple/input
+In directory theowa:/home/stefan/free/rst2outline/tests/simple/input
+
+Modified Files:
+	simple.rst 
+Added Files:
+	inline.rst 
+
+--------------------------------------
+Log Message:
+Added test. Inline markup works.
+**************************************
+Date: Wed Sep  1 23:10:31 CEST 2010
+Author: stefan
+Tag: rst2outline_1_5
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2outline
+In directory theowa:/home/stefan/free/rst2outline
+
+Modified Files:
+	rst2outline.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2outline/tests/simple/expected
+In directory theowa:/home/stefan/free/rst2outline/tests/simple/expected
+
+Modified Files:
+	simple.txt 
+
+--------------------------------------
+Log Message:
+Refactoring.
+**************************************
+Date: Mon Aug 30 23:31:25 CEST 2010
+Author: stefan
+Tag: rst2outline_1_4
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2outline
+In directory theowa:/home/stefan/free/rst2outline
+
+Modified Files:
+	rst2outline.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2outline/tests/simple/input
+In directory theowa:/home/stefan/free/rst2outline/tests/simple/input
+
+Modified Files:
+	simple.rst 
+
+--------------------------------------
+Log Message:
+Completed code.
+**************************************
+Date: Mon Aug 30 23:17:33 CEST 2010
+Author: stefan
+Tag: rst2outline_1_3
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2outline/tests/simple
+In directory theowa:/home/stefan/free/rst2outline/tests/simple
+
+Added Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2outline/tests/simple/expected
+In directory theowa:/home/stefan/free/rst2outline/tests/simple/expected
+
+Added Files:
+	simple.txt 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2outline/tests/simple/input
+In directory theowa:/home/stefan/free/rst2outline/tests/simple/input
+
+Added Files:
+	simple.rst 
+
+--------------------------------------
+Log Message:
+Added test.
+**************************************
+Date: Mon Aug 30 23:13:40 CEST 2010
+Author: stefan
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2outline/tests/simple/input
+In directory theowa:/home/stefan/free/rst2outline/tests/simple/input
+
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2outline/tests/simple/expected
+In directory theowa:/home/stefan/free/rst2outline/tests/simple/expected
+
+
+--------------------------------------
+Log Message:
+Directory /home/stefan/vault/sm/rst2outline/tests/simple/input added to the repository
+
+Directory /home/stefan/vault/sm/rst2outline/tests/simple/expected added to the repository
+**************************************
+Date: Mon Aug 30 23:13:10 CEST 2010
+Author: stefan
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2outline/tests/simple
+In directory theowa:/home/stefan/free/rst2outline/tests/simple
+
+
+--------------------------------------
+Log Message:
+Directory /home/stefan/vault/sm/rst2outline/tests/simple added to the repository
+**************************************
+Date: Mon Aug 30 23:13:01 CEST 2010
+Author: stefan
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2outline/tests
+In directory theowa:/home/stefan/free/rst2outline/tests
+
+
+--------------------------------------
+Log Message:
+Directory /home/stefan/vault/sm/rst2outline/tests added to the repository
+**************************************
+Date: Mon Aug 30 23:12:48 CEST 2010
+Author: stefan
+Tag: rst2outline_1_2
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2outline
+In directory theowa:/home/stefan/free/rst2outline
+
+Added Files:
+	rst2outline.py 
+
+--------------------------------------
+Log Message:
+First code.
+
