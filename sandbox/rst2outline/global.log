@@ -1,4 +1,19 @@
 **************************************
+Date: Sat Sep  4 12:53:00 CEST 2010
+Author: stefan
+Tag: rst2outline_1_8
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2outline
+In directory rosalu:/home/stefan/free/rst2outline
+
+Added Files:
+	.cvsignore setup.py 
+
+--------------------------------------
+Log Message:
+Added `setup.py`.
+**************************************
 Date: Wed Sep  1 23:32:29 CEST 2010
 Author: stefan
 Tag: rst2outline_1_7
