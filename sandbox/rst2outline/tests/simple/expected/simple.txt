@@ -1,0 +1,11 @@
+Header
+	First
+		Level 2
+	Second
+		Deeper again and this one should also contain a line break in the original source
+			And deeper...
+			But this
+		Level 2 again
+		Once more
+	Third
+Another header
