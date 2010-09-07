@@ -315,8 +315,8 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         else:
             self.cur_slide.parent_of('text:p')
 
-    visit_definition = visit_paragraph
-    depart_definition = depart_paragraph
+    visit_definition = _dumb_visit
+    depart_definition = _dumb_depart
 
     def visit_bullet_list(self, node):
         if self.at('topic'):
@@ -334,11 +334,9 @@ class ODPTranslator(nodes.GenericNodeVisitor):
         if 'handout' in classes:
             self._push_handout(classes)
 
-            
         self.bullet_depth += 1
         if not self.bullet_list:
             # start a new list
-            self.cur_slide.insert_line_breaks()
             self.bullet_list = preso.OutlineList(self.cur_slide)
             self.cur_slide.add_list(self.bullet_list)
         else:

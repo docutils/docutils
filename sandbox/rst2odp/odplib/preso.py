@@ -182,6 +182,7 @@ class Preso(object):
             self.add_otp_style(zip_odp, style_file)
         zip_odp.zipit(filename)
         data = open(filename).read()
+        os.close(fd)
         os.remove(filename)
         return data
 
@@ -560,7 +561,8 @@ class Slide(object):
         call this
         """
         if self.cur_element:
-            self.cur_element.line_break()
+            #self.cur_element.line_break()
+            self.cur_element.write('')
 
     def start_animation(self, anim):
         self.animations.append(anim)
@@ -902,7 +904,6 @@ class MixedContent(object):
         for node, attr in self.pending_nodes:
             self.add_node(node, attr)
             
-
     def line_break(self):
         """insert as many line breaks as the insert_line_break variable says
         """
@@ -912,13 +913,16 @@ class MixedContent(object):
                 # we can just add a text:p and no line-break
                 # Create paragraph style first
                 self.add_node('text:p')
-            else:
-                self.add_node('text:line-break')
-                self.pop_node()
+            #else:
+            self.add_node('text:line-break')
+            self.pop_node()
+            if self.cur_node.tag == 'text:p':
+                return
             if self.cur_node.parent.tag != 'text:p':
                 self.pop_node()
 
         self.slide.insert_line_break = 0
+        
 
 
     def write(self, text, add_p_style=True, add_t_style=True):
@@ -930,8 +934,9 @@ class MixedContent(object):
         white spaces then dealing with the '' (empty strings) which
         would be the extra spaces
         """
-        self.line_break()
+
         self._add_styles(add_p_style, add_t_style)
+        self.line_break()
         self._add_pending_nodes()
 
         spaces = []
@@ -1218,10 +1223,16 @@ class OdtCodeFormatter(formatter.Formatter):
         formatter.Formatter.__init__(self)
         self.writable = writable
         self.preso = preso
-
+        self.seen = []
+        
     def format(self, source, outfile):
         tclass = pygments.token.Token
+        # push default style
+        default_style_attrib = self.get_style(tclass.Text)
+        self.writable.slide.push_style(TextStyle(**default_style_attrib))
+        
         for ttype, value in source:
+            self.seen.append(value)
             # getting ttype, values like (Token.Keyword.Namespace, u'')
             if value == '':
                 continue
@@ -1230,17 +1241,19 @@ class OdtCodeFormatter(formatter.Formatter):
             self.writable.slide.push_style(tstyle)
             if value == '\n':
                 self.writable.slide.insert_line_break = 1
-                self.writable.line_break()
+                self.writable.write('') # will insert break/formatting
             else:
                 parts = value.split('\n')
                 for part in parts[:-1]:
                     self.writable.write(part)
                     self.writable.slide.insert_line_break = 1
-                    self.writable.line_break()
+                    self.writable.write('') #insert break
                 self.writable.write(parts[-1])
-            self.writable.slide.pop_style()
-            self.writable.pop_node()
 
+            self.writable.slide.pop_style()
+            
+            self.writable.pop_node()
+        self.writable.slide.pop_style()
             
     def get_style(self, tokentype):
         while not self.style.styles_token(tokentype):
@@ -1312,9 +1325,7 @@ http://books.evc-cit.info/odbook/ch03.html#bulleted-numbered-lists-section
         self._default_align = 'start'
         self.attrib = attrib or {'text:style-name':'L2'}
         MixedContent.__init__(self, slide, 'text:list', attrib=self.attrib)
-        # if slide already has text insert line break
-        self.line_break()
-
+        self.slide.insert_line_break = 0
         self.parents = [self.node]
         self.level = 0
         self.style_file = 'auto_list.xml'
