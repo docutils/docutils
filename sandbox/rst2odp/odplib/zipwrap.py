@@ -74,6 +74,7 @@ class ZipWrap(object):
         """
         self.path = path
         self.src_dir = tempfile.mkdtemp()
+
         self.cleanup = True
         if os.path.exists(self.path):
             self._read_existing()
