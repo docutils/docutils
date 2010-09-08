@@ -15,8 +15,11 @@ import os
 import sys
 import tempfile
 
-import pygments
-from pygments import formatter, lexers
+try:
+    import pygments
+    from pygments import formatter, lexers
+except:
+    print 'Could not import pygments code highlighting will not work'
 import zipwrap
 import Image
 import imagescale
