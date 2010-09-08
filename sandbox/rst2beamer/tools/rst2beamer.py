@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
-# Author: David Goodger
-# Contact: goodger@users.sourceforge.net
+# Author: Stefan Merten
+# Contact:
 # Revision: $Revision$
 # Date: $Date$
 # Copyright: This module has been placed in the public domain.
