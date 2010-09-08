@@ -615,7 +615,7 @@ class Slide(object):
         """
         # pictures should be added the the draw:frame element
         self.pic_frame = PictureFrame(self, p)
-        self.pic_frame.add_node('draw:image', attrib={'xlink:href':os.path.join('Pictures', p.internal_name),
+        self.pic_frame.add_node('draw:image', attrib={'xlink:href': 'Pictures/' + p.internal_name,
                                                       'xlink:type':'simple',
                                                       'xlink:show':'embed',
                                                       'xlink:actuate':'onLoad' })
