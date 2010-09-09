@@ -1006,6 +1006,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     field_pat = re.compile(r'%(..?)%')
 
     def create_custom_headfoot(self, parent, text, style_name, automatic_styles):
+        parent = SubElement(parent, 'text:p', attrib={
+            'text:style-name': self.rststyle(style_name),
+            })
         current_element = None
         field_iter = self.split_field_specifiers_iter(text)
         for item in field_iter:
@@ -1016,10 +1019,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                     's', 't', 'a'):
                     msg = 'bad field spec: %%%s%%' % (item[1], )
                     raise RuntimeError, msg
-                if current_element is None:
-                    parent = SubElement(parent, 'text:p', attrib={
-                        'text:style-name': self.rststyle(style_name),
-                        })
                 el1 = self.make_field_element(parent,
                     item[1], style_name, automatic_styles)
                 if el1 is None:
@@ -1029,9 +1028,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                     current_element = el1
             else:
                 if current_element is None:
-                    parent = SubElement(parent, 'text:p', attrib={
-                        'text:style-name': self.rststyle(style_name),
-                        })
                     parent.text = item[1]
                 else:
                     current_element.tail = item[1]
@@ -1039,12 +1035,12 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def make_field_element(self, parent, text, style_name, automatic_styles):
         if text == 'p':
             el1 = SubElement(parent, 'text:page-number', attrib={
-                'text:style-name': self.rststyle(style_name),
+                #'text:style-name': self.rststyle(style_name),
                 'text:select-page': 'current',
                 })
         elif text == 'P':
             el1 = SubElement(parent, 'text:page-count', attrib={
-                'text:style-name': self.rststyle(style_name),
+                #'text:style-name': self.rststyle(style_name),
                 })
         elif text == 't1':
             self.style_index += 1
