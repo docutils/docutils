@@ -5,11 +5,10 @@
             The Strict HTML Writer
 =====================================================
 
-
 :Author: Günter Milde
 :Date: $Date$
 :Abstract: A HTML writer, generating `XHTML 1.0 Strict` for styling
-	   with CSS 2.1.
+           with CSS 2.1.
 
 .. contents::
 
@@ -34,6 +33,8 @@ Goals of the `strict html writer`:
 
 * Strict standards compliance.
 
+* Generate good looking, readable, and accessible documents.
+
 * Clear distinction of content and layout:
 
   + Clean HTML output without "hard-coded" visual markup,
@@ -44,6 +45,10 @@ Goals of the `strict html writer`:
   <http://www.anybrowser.org/campaign/abdesign.html#degradability>`__
 
 * Best viewed with any (CSS2-conforming) HTML browser. [#]_
+
+* Support scientific documents (numbering tables and figures, formal
+  tables, ...). Cf. [markschenk]_.
+
 
 .. [#] Tested with Firefox_, Midori_, Konqueror_ and Opera_. As Safari
    and Google Chrome use the same rendering engine as Midori and
@@ -140,6 +145,17 @@ Docinfo and field lists based on definition lists (instead of tables)
   - label separator (default: ':')
   - compact vs. open list
 
+Class arguments for docinfo items
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Items in the docinfo list are passed class arguments specifying
+their type to enable customization the docinfo layout.
+
+The default style sheet contains example definitions: author and date
+are typeset centered and without label, if they occur as first docinfo
+fields.
+
+
 Footnotes and citations
 ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -180,22 +196,6 @@ attribute". [highdots]_, especially, since "There are arguments over
 whether the start attribute is presentational or not, and indeed HTML5
 has declared that it is no longer deprecated in the current working
 drafts (at the time of writing)" [dev.opera]_.
-
-
-.. [tekkie]
-   http://tekkie.flashbit.net/css/replacement-for-deprecated-ol-li-start-value-html-attributes,
-   2009.
-.. [webjunction]
-   http://lists.webjunction.org/wjlists/web4lib/2001-September/026413.html,
-   2001.
-.. [codelair] http://www.doheth.co.uk/codelair/html-css/deprecated#start,
-   2007.
-.. [highdots]
-   http://www.highdots.com/forums/cascading-style-sheets/using-css-set-start-number-262555.html,
-   2008.
-.. [dev.opera]
-   http://dev.opera.com/articles/view/automatic-numbering-with-css-counters/,
-   2008.
 
 However, a reasonable replacement of 'outside'-styled ordered lists
 with CSS is possible:
@@ -274,11 +274,13 @@ Inline literal role pre-formatted
   configurable with the CSS stylesheet.
 
 
-Remove hard-coded formatting and deprecated arguments
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Table styling with CSS
+~~~~~~~~~~~~~~~~~~~~~~
 
 + No hard-coded border setting in the table head.
 
++ Pre-defined table styles selected by class arguments "borderless"
+  and "booktabs" matching the interpretation in the latex2e writer.
 
 SimpleListChecker also checks field-lists and docinfo
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -324,23 +326,39 @@ TODO
   http://www.xmlplease.com/footnotes
 
 
-Links
-=====
+References
+==========
 
-* `html4trans`_ is a similar sandbox project, a HTML writer producing XHTML
-  that contains enough formatting information to be viewed without a
-  cascading style sheet by a lightweight html browser (e.g. Dillo__ or the
-  console browser elinks__).
+.. [cmdline-tool]
+   `Inside A Docutils Command-Line Front-End Tool
+   <http://docutils.sourceforge.net/docs/api/cmdline-tool.html>`_
+.. [API]
+   `API Reference Material for Client-Developers
+   <http://docutils.sf.net/docs/index.html#api-api-reference-material-for-client-developers>`_
+.. [ilovetypography]
+   http://ilovetypography.com/2008/02/28/a-guide-to-web-typography/
+.. [webtypography]
+   http://webtypography.net/toc/
+.. [tekkie]
+   http://tekkie.flashbit.net/css/replacement-for-deprecated-ol-li-start-value-html-attributes,
+   2009.
+.. [webjunction]
+   http://lists.webjunction.org/wjlists/web4lib/2001-September/026413.html,
+   2001.
+.. [codelair] http://www.doheth.co.uk/codelair/html-css/deprecated#start,
+   2007.
+.. [highdots]
+   http://www.highdots.com/forums/cascading-style-sheets/using-css-set-start-number-262555.html,
+   2008.
+.. [dev.opera]
+   http://dev.opera.com/articles/view/automatic-numbering-with-css-counters/,
+   2008.
+.. [markschenk] `Publishing scientific documents with XHTML and CSS
+   <http://www.markschenk.com/cssexp/publication/article.xml>`__
 
-__ http://www.dillo.org
-__ http://elinks.cz
-
-* `Inside A Docutils Command-Line Front-End Tool`_
-  How to roll your own Docutils front end. (Also see the other
-  `API Reference Material for Client-Developers`_.)
-
-.. _html4trans: ../html4trans
-.. _Inside A Docutils Command-Line Front-End Tool:
-     http://docutils.sourceforge.net/docs/api/cmdline-tool.html
-.. _API Reference Material for Client-Developers:
-     http://docutils.sourceforge.net/docs/index.html#api-api-reference-material-for-client-developers
+`<../html4trans>`_
+  is a similar sandbox project, a HTML writer producing XHTML that
+  contains enough formatting information to be viewed without a
+  cascading style sheet by a lightweight html browser
+  (e.g. `Dillo <http://www.dillo.org>`__ or the console browser
+  `elinks <http://elinks.cz>`__).

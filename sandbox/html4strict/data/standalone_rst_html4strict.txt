@@ -63,14 +63,14 @@ characters" but the field name uses a proportional font.
 :The field name:  is typeset on the same line, unless it is "long".
 
 :this field name: is considered "long" in the html table rendering by
-		  the html4css1 writer with the default setting of
-		  ``--field-name-limit=14``.
+                  the html4css1 writer with the default setting of
+                  ``--field-name-limit=14``.
 
 :iiiiiiiiiiiiiii: a field name that is considered "long" by html4css1
-		  with the default setting of `field-name-limit: 14`.
+                  with the default setting of `field-name-limit: 14`.
 
 :MMMMMMMMMMMMMM: a field name that is actually longer than the
-		 previous one but regarded "short" by html4css1.
+                 previous one but regarded "short" by html4css1.
 
 With `html4strict`, the field list is typeset as CSS-styled `definition
 list`. The default layout is similar to the look with `html4css1`:
@@ -79,15 +79,15 @@ list`. The default layout is similar to the look with `html4css1`:
 
 :A long field name: sticks into the field body.
 
-		The field body is pushed to the next line (you can
-		suppress this behaviour with the `run-in`_ or
-		`fix-labelwidth`_ class arguments).
+                The field body is pushed to the next line (you can
+                suppress this behaviour with the `run-in`_ or
+                `fix-labelwidth`_ class arguments).
 
 :Customization: of the field name width is possible with CSS instead
-		of the `field-name-limit` configuration setting, for
-		example::
+                of the `field-name-limit` configuration setting, for
+                example::
 
-		    dl.field-list > dd { margin-left: 6em; }
+                    dl.field-list > dd { margin-left: 6em; }
 
 Styling with class arguments
 ````````````````````````````
@@ -101,9 +101,9 @@ arguments for alternative styles:
   :Feature: No additional space between list items.
 
   :Option: The ``--compact-field-lists`` command line option (and the
-	   corresponding configuration setting) set the `compact`
-	   class argument on all "simple" field lists, if not
-	   overridden with `open`.
+           corresponding configuration setting) set the `compact`
+           class argument on all "simple" field lists, if not
+           overridden with `open`.
 
   :Use:  For lists with short field body.
 
@@ -111,8 +111,8 @@ arguments for alternative styles:
   .. class:: open
 
   :Feature: Additional space between list items also in "simple" lists.
-  	    (Overrides the ``--compact-field-lists`` command line
-	    option and the corresponding configuration setting)
+            (Overrides the ``--compact-field-lists`` command line
+            option and the corresponding configuration setting)
 
   :Use: For "simple" lists that should keep the space between list items.
 
@@ -131,10 +131,10 @@ arguments for alternative styles:
   .. class:: run-in
 
   :Feature: Field body starts on the same line also after long field
-	    names.
+            names.
 
   :A long field name: sticks into the field body which continues on
-  			 the same line.
+                         the same line.
 
   :The next field name:  and field body should align.
 
@@ -144,22 +144,88 @@ arguments for alternative styles:
   .. class:: fix-labelwidth
 
   :Feature:  The width of the field name (label) is fixed. Long labels
-  	     wrap.
+             wrap.
 
   :Problem: Non-wrappable field names are truncated.
 
   :a_very_long_field_name:
-  	     is truncated if it can not wrap.
-
-  	     The generated colon wraps in some browsers (Midori).
+             is truncated if it can not wrap.
 
   :this long field name: will wrap.
 
   :the next field name:  and field body should align.
 
-	     .. If the field name is wrapped but the field body just
-		one line, following field bodies "float up" if not
-		prevented by a dummy dd:after element in the CSS.
+             .. If the field name is wrapped but the field body just
+                one line, following field bodies "float up" if not
+                prevented by a dummy dd:after element in the CSS.
+
+
+Tables
+------
+
+Numbered tables can be achieved with the "formal" class option
+
+.. table:: truth values
+   :class: numbered
+
+   ======= ======= ==========
+   A       B       A or B    
+   ======= ======= ==========
+   False   False   False     
+   True    False   True      
+   False   True    True      
+   True    True    True      
+   ======= ======= ==========
+
+Styling with class arguments
+````````````````````````````
+
+In addition to the *recognized class argument* "borderless",
+tables with the class argument "booktabs" will be rendered
+similar to the style from the booktabs_ LaTeX package.
+
+.. _booktabs:
+   http://tug.ctan.org/tex-archive/macros/latex/contrib/booktabs/booktabs.pdf
+
+.. class:: booktabs
+
+=====  =====  ======
+False  False  False
+True   False  True
+False  True   True
+True   True   True
+=====  =====  ======
+
+This table also uses the "align-left" class argument, to left-align
+the headers:
+
+.. class:: booktabs align-left
+
+=====  =====  =======
+  A      B    A or B
+=====  =====  =======
+False  False  False
+True   False  True
+False  True   True
+True   True   True
+=====  =====  =======
+
+
+Of course, also booktabs style tables can be numbered:
+
+.. table:: I/O values
+   :class: numbered booktabs
+
+   =====  =====  ======
+      Inputs     Output
+   ------------  ------
+     A      B    A or B
+   =====  =====  ======
+   False  False  False
+   True   False  True
+   False  True   True
+   True   True   True
+   =====  =====  ======
 
 
 .. include:: data/errors.txt

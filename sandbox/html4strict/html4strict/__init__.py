@@ -148,9 +148,9 @@ class HTMLTranslator(html4css1.HTMLTranslator):
             meta_tag = '<meta name="%s" content="%s" />\n' \
                        % (name, self.attval(node.astext()))
             self.add_meta(meta_tag)
-        self.body.append('<dt>%s</dt>\n'
-                         % self.language.labels[name])
-        self.body.append(self.starttag(node, 'dd', ''))
+        self.body.append('<dt class="%s">%s</dt>\n'
+                         % (name, self.language.labels[name]))
+        self.body.append(self.starttag(node, 'dd', '', CLASS=name))
 
     def depart_docinfo_item(self):
         self.body.append('</dd>\n')
@@ -236,18 +236,31 @@ class HTMLTranslator(html4css1.HTMLTranslator):
             self.body.append('</dl>\n')
 
     # footnote and citation label
+    def label_delim(self, node, bracket, superscript):
+        """put brackets around label?"""
+        if isinstance(node.parent, nodes.footnote):
+            if self.settings.footnote_references == 'brackets':
+                return bracket
+            else:
+                return superscript
+        else:
+            assert isinstance(node.parent, nodes.citation)
+            return bracket
+
     def visit_label(self, node):
         # Context added in footnote_backrefs.
-        self.body.append(self.starttag(node, 'dt', '%s[' % self.context.pop(),
-                                       CLASS='label'))
+        suffix = '%s%s' % (self.context.pop(),
+                           self.label_delim(node, '[', ''))
+        self.body.append(self.starttag(node, 'dt', suffix, CLASS='label'))
 
     def depart_label(self, node):
+        delim = self.label_delim(node, ']', '')
         # Context added in footnote_backrefs.
         backref = self.context.pop()
         text = self.context.pop()
         # <dd> starttag added in visit_footnote() / visit_citation()
         starttag = self.context.pop()
-        self.body.append(']%s</dt>\n%s%s' % (backref, starttag, text))
+        self.body.append('%s%s</dt>\n%s%s' % (delim, backref, starttag, text))
 
     # Literal role pre-formatted
     # --------------------------
@@ -314,9 +327,10 @@ class HTMLTranslator(html4css1.HTMLTranslator):
     # ----------------------------------------------
 
     def visit_table(self, node):
+        classes = [cls.strip(u' \t\n')
+                   for cls in self.settings.table_style.split(',')]
         self.body.append(
-            self.starttag(node, 'table', CLASS='docutils table'))
-
+            self.starttag(node, 'table', CLASS=' '.join(classes)))
 
 class SimpleListChecker(html4css1.SimpleListChecker):
 

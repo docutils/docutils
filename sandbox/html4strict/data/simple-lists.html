@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="Docutils 0.7: http://docutils.sourceforge.net/" />
+<meta name="generator" content="Docutils 0.8: http://docutils.sourceforge.net/" />
 <title>Simple and complex lists</title>
 <style type="text/css">
 
@@ -337,9 +337,11 @@ body {
   recommends "line-spacing that’s at least 140% of your text size" */
 }
 
+/* avoid long lines --> better reading */
+/* OTOH: lines should not be too short because of missing hyphenation, */
 div.document {
-  max-width: 40em; /* avoid long lines --> better reading */
-  margin: 0 auto;
+  max-width: 45em;
+  margin: auto;
 }
 
 /* separate items except for compact lists */
@@ -373,8 +375,7 @@ div.sidebar {
 /* Special definition lists */
 /* ======================== */
 
-/* start definition term on the same line as the label */
-
+/* bold definition term on the same line as the label */
 dl.field-list > dt, dl.option-list > dt, dl.docinfo > dt,
 dl.footnote > dt, dl.citation > dt, dl.description > dt {
   clear: left;
@@ -382,30 +383,27 @@ dl.footnote > dt, dl.citation > dt, dl.description > dt {
   margin: 0;
   padding: 0;
   padding-right: 0.5em;
-/*   background: yellow; */
-}
-
-/* Definition list with the layout of a LaTeX `description` list */
-/* (bold label, continue on same line) */
-dl.description > dt {
   font-weight: bold;
 }
+/* except for these */
+dl.option-list > dt, dl.footnote > dt {
+  font-weight: normal;
+}
+
+
 
 /* Field Lists */
+/* ----------- */
 
-/* field names: bold, followed by a colon */
-dl.field-list > dt, dl.docinfo > dt {
-  font-weight: bold;
-}
+/* field names followed by a colon */
 dl.field-list > dt:after, dl.docinfo > dt:after {
   content: ":";
 }
 
 /* Offset for field content (corresponds to the --field-name-limit option) */
 dl.field-list > dd {
-  margin-left:  8.5em;
+  margin-left:  9em; /* ca. 14 chars in the test examples */
   padding-left: 0.5em;
-/* background: yellow; */
 }
 
 /* start field-body on a new line after long field names */
@@ -416,8 +414,8 @@ dl.field-list > dd p {
 }
 
 dl.field-list > dd > p:first-child,
-dl.field-list > dd > ol:first-child,
-dl.field-list > dd > ul:first-child,
+/* dl.field-list > dd > ol:first-child, */
+/* dl.field-list > dd > ul:first-child, */
 dl.field-list > dd > dl:first-child {
   display: inline-block;
 }
@@ -448,14 +446,36 @@ dl.field-list.fix-labelwidth > dd:after {
 
 /* docinfo */
 
-dl.docinfo {
-  margin: 2em 2em; /* setting from html4css1.css */
-  padding-left: 0;
-}
-
 dl.docinfo > dd {
   margin-left: 8em;
 /*   margin-bottom: 0.5em; */
+}
+
+/* pretty-print date and author */
+dl.docinfo dt.author:first-child,
+dt.date:first-child + dd.date + dt.author  {
+  display: none;
+}
+dl.docinfo dt.author:first-child + dd,
+dt.date:first-child + dd.date + dt.author + dd {
+  margin-left: 0;
+  padding: 0 5%;
+  font-size: larger;
+  text-align: center;
+  padding-bottom: 1em;
+}
+
+dl.docinfo dt.date:first-child,
+dt.author:first-child + dd.author + dt.date {
+  display: none;
+}
+dl.docinfo dt.date:first-child + dd,
+dt.author:first-child + dd.author + dt.date + dd {
+  margin-left: 0;
+  padding: 0 5%;
+  font-weight: bold;
+  text-align: center;
+  padding-bottom: 1em;
 }
 
 /* option list */
@@ -482,7 +502,7 @@ a.footnote-reference, a.fn-backref {
   text-decoration: inherit; /* do not underline footnote links */
 }
 
-dl.footnote, dl.citation {
+dl.footnote {
   /* line on the left */
   padding-left: 1ex;
   border-left: solid;
@@ -508,7 +528,6 @@ ol {
 /* Set the negative indent of the list label as feature of the list item */
 ol > li {
   text-indent: -40px; /* Mozillas default indent */
-  margin-bottom: 1em;
 }
 
 /* Label */
@@ -569,24 +588,73 @@ ol.nested > li:before, ol.nested  ol > li:before {
 /* smaller font for super- and subscripts */
 /* sub, sup {font-size: 70%;} */ /* Mozilla default is `smaller` */
 
+
+/* Table of Contents */
+
+/* don't indent like a blockquote */
+div.topic.contents {
+  margin: 0;
+}
+/* div.topic.contents ul { */
+/*   list-style: none;	   */
+/*   }			   */
+
 /* Tables */
 /* ------ */
 
 /* borders for "normal" tables */
-table.table {
+table {
+  margin-top: 0.5em ;
+  margin-bottom: 0.5em;
   border-style: outset;
   border-width: thin;
+  /* border-collapse: collapse; */
 }
 
-table.table td, table.table th {
+td, th {
   border-style: inset;
   border-width: thin;
+  /* text-align: left; */
+  padding: 0 1ex;
 }
 
 /* no borders for "borderless" tables */
-table.table.borderless, table.table.borderless * {
+table.borderless, table.borderless * {
   border-style: none;
 }
+
+/* "booktabs" style (no vertical lines) */
+table.booktabs {
+  border: 0;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+
+table.booktabs * {
+  border: 0;
+}
+table.booktabs th {
+  border-bottom: thin solid;
+}
+
+table > caption {
+  text-align: left;
+/*   padding: 2em 0 1em 0; */
+}
+
+/* numbered tables and figures*/
+body {
+  counter-reset: table;
+/*   counter-reset: figure; */
+}
+
+table.numbered > caption:before {
+  counter-increment: table;
+  content: "Table " counter(table) ": ";
+  font-weight: bold;
+}
+
 
 /* whitespace and line-wrapping in inline literals
    -----------------------------------------------
@@ -939,7 +1007,20 @@ dl.field-list > dd { margin-left:  40px;
 <dt>l2</dt>
 <dd><ul class="simple">
 <li>Watch the space beween items</li>
+<li>Watch the space beween items</li>
 </ul>
+<p>It is caused by this paragraph</p>
+</dd>
+<dt>l1</dt>
+<dd><p>This list is not simple</p>
+</dd>
+<dt>l2</dt>
+<dd><ol class="arabic simple">
+<li><p class="first">Watch the space beween items</p>
+</li>
+<li><p class="first">Watch the space beween items</p>
+</li>
+</ol>
 <p>It is caused by this paragraph</p>
 </dd>
 </dl>
