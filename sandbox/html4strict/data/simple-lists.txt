@@ -51,9 +51,9 @@ lists and unordered lists).
 
    <style type="text/css"><!--
    dl.field-list > dd { margin-left:  40px;
-   		        padding-left: 0;
-			/* background: yellow; */
-		      }
+                        padding-left: 0;
+                        /* background: yellow; */
+                      }
    --></style>
 
 
@@ -230,5 +230,15 @@ Complex lists
 :l1: This list is not simple
 
 :l2: * Watch the space beween items
+
+     * Watch the space beween items
+
+     It is caused by this paragraph
+
+:l1: This list is not simple
+
+:l2: #. Watch the space beween items
+
+     #. Watch the space beween items
 
      It is caused by this paragraph
