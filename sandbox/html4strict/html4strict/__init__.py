@@ -262,23 +262,44 @@ class HTMLTranslator(html4css1.HTMLTranslator):
         starttag = self.context.pop()
         self.body.append('%s%s</dt>\n%s%s' % (delim, backref, starttag, text))
 
-    # Literal role pre-formatted
-    # --------------------------
 
-    # Setting tt.literal to {white-space: pre} (in the style sheet)  will
-    # protect text like "--an-option" or the regular expression
-    # ``[+]?(\d+(\.\d*)?|\.\d+)`` from bad line wrapping and protect runs of
-    # multiple spaces but allow clean HTML code (see bug #1938891)
-    #
-    # The wrapping can be configured with CSS (see ``html4css2.css``).
-    # Possible values: normal, nowrap, pre, pre-wrap, pre-line.
+    def visit_generated(self, node):
+        if 'sectnum' in node['classes']:
+            # get section number (strip trailing no-break-spaces)
+            sectnum = node.astext().rstrip(u' ')
+            # print sectnum.encode('utf-8')
+            self.body.append('<span class="sectnum">%s</span> '
+                                    % self.encode(sectnum))
+            # Content already processed:
+            raise nodes.SkipNode
+
+    def depart_generated(self, node):
+        pass
+
+
+    # Literal role
+    # ------------
 
     def visit_literal(self, node):
+        """Process text to prevent in-word line wrapping."""
         self.body.append(
-            self.starttag(node, 'tt', '', CLASS='docutils literal'))
-
-    def depart_literal(self, node):
+            self.starttag(node, 'tt', '', CLASS='literal'))
+        text = node.astext()
+        # remove hard line breaks (except if in a parsed-literal block)
+        if not isinstance(node.parent, nodes.literal_block):
+            text = text.replace('\n', ' ')
+        # Protect text like ``--an-option`` and the regular expression
+        # ``[+]?(\d+(\.\d*)?|\.\d+)`` from bad line wrapping
+        for token in self.words_and_spaces.findall(text):
+            if token.strip() and self.sollbruchstelle.search(token):
+                self.body.append('<span class="pre">%s</span>'
+                                    % self.encode(token))
+            else:
+                self.body.append(self.encode(token))
         self.body.append('</tt>')
+        # Content already processed:
+        raise nodes.SkipNode
+
 
     # option-list as definition list, styled with CSS
     # ----------------------------------------------
@@ -331,6 +352,7 @@ class HTMLTranslator(html4css1.HTMLTranslator):
                    for cls in self.settings.table_style.split(',')]
         self.body.append(
             self.starttag(node, 'table', CLASS=' '.join(classes)))
+
 
 class SimpleListChecker(html4css1.SimpleListChecker):
 
