@@ -3,6 +3,8 @@
 # quick latex writer test runner
 # $Id$
 
+echo "THIS is not updated in normal commits"
+
 CHECKS=0
 FAILS=0
 FAIL_QUEUE=""
