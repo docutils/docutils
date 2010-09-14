@@ -1,0 +1,6 @@
+recursive-include docs/examples *.rst *.pdf
+include docs/MANUAL.*
+include docs/HISTORY.txt
+include rst2beamer.py
+prune docs/DEVNOTES.txt
+prune docs/TODO.txt
