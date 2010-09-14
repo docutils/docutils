@@ -186,6 +186,15 @@ PreambleCmds.documenttitle = r"""
 \maketitle
 """
 
+docinfo_w_institute = r"""
+%% Document title
+\title[%s]{%s}
+\author[%s]{%s}
+\date{%s}
+\institute{%s}
+\maketitle
+"""
+
 ### IMPLEMENTATION ###
 
 ### UTILS
@@ -708,6 +717,8 @@ class BeamerTranslator (LaTeXTranslator):
     def __init__ (self, document):
         LaTeXTranslator.__init__ (self, document)
 
+        self.organization = None#used for Beamer title and possibly
+                                #header/footer.  Set from docinfo 
         # record the the settings for codeblocks
         self.cb_use_pygments = document.settings.cb_use_pygments
         self.cb_replace_tabs = document.settings.cb_replace_tabs
@@ -830,12 +841,17 @@ class BeamerTranslator (LaTeXTranslator):
                 title += [r'\\ % subtitle',
                              r'\large{%s}' % ''.join(self.subtitle)
                          ] + self.subtitle_labels
-            self.body_pre_docinfo.append(PreambleCmds.documenttitle % (
-                shorttitle,
-                '%\n  '.join(title),
-                shortauthor,
-                ' \\and\n'.join(authors),
-                ', '.join(self.date)))
+            docinfo_list = [shorttitle,
+                            '%\n  '.join(title),
+                            shortauthor,
+                            ' \\and\n'.join(authors),
+                            ', '.join(self.date)]
+            if self.organization is None:
+                docinfo_str = PreambleCmds.documenttitle % tuple(docinfo_list)
+            else:
+                docinfo_list.append(self.organization)
+                docinfo_str = docinfo_w_institute % tuple(docinfo_list)
+            self.body_pre_docinfo.append(docinfo_str)
         # b) bibliography
         # TODO insertion point of bibliography should be configurable.
         if self._use_latex_citations and len(self._bibitems)>0:
@@ -863,7 +879,41 @@ class BeamerTranslator (LaTeXTranslator):
 
 
     def visit_docinfo_item(self, node, name):
-        LaTeXTranslator.visit_docinfo_item(self, node, name)
+        print('name='+name)
+        print('node.astext='+node.astext())
+        if name == 'author':
+            self.pdfauthor.append(self.attval(node.astext()))
+        if self.use_latex_docinfo:
+            if name in ('author', 'contact', 'address'):
+                # We attach these to the last author.  If any of them precedes
+                # the first author, put them in a separate "author" group
+                # (in lack of better semantics).
+                if name == 'author' or not self.author_stack:
+                    self.author_stack.append([])
+                if name == 'address':   # newlines are meaningful
+                    self.insert_newline = 1
+                    text = self.encode(node.astext())
+                    self.insert_newline = False
+                else:
+                    text = self.attval(node.astext())
+                self.author_stack[-1].append(text)
+                raise nodes.SkipNode
+            elif name == 'date':
+                self.date.append(self.attval(node.astext()))
+                raise nodes.SkipNode
+            elif name == 'organization':
+                self.organization = node.astext()
+                raise nodes.SkipNode
+                
+        self.out.append('\\textbf{%s}: &\n\t' % self.language_label(name))
+        if name == 'address':
+            self.insert_newline = 1
+            self.out.append('{\\raggedright\n')
+            self.context.append(' } \\\\\n')
+        else:
+            self.context.append(' \\\\\n')
+        #LaTeXTranslator.visit_docinfo_item(self, node, name)
+        
 
     def latex_image_length(self, width_str):
         match = re.match('(\d*\.?\d*)\s*(\S*)', width_str)
