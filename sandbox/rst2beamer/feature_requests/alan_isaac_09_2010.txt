@@ -1,0 +1,72 @@
+On 9/7/2010 7:28 PM, Ryan Krauss wrote:
+>   I claim that our version
+> (PyPI) works and it still actively maintained (but I can prove neither
+> of those claims except that I am using rst2beamer for my lecture
+> presentations with docutils 0.6 I think).
+
+
+I have the latest from PyPI and current docutils.
+Here is a test document:
+https://subversion.american.edu/aisaac/misc/slides_test01.rst
+
+Below is the broken handling of the title, subtitle, author, and date.
+
+Cheers,
+Alan Isaac
+
+PS Would you and Paul-Michael please consider maintaining this in
+the sandbox?  With so few contributors, surely SVN should not be a burden?
+If it had been in the sandbox, I would have 1) found it more easily, and
+2)  just fixed this problem...
+
+
+
+Basic use:
+\title{%
+  \phantomsection%
+  \label{test-1-for-slides-writers}}
+\author{}
+\date{}
+\maketitle
+Test 1 for Slides WritersSubtitle\textbf{Author}: &
+       Au Thor \\
+\textbf{Date}: &
+       January 1, 2525 \\
+\item[{institution:}]
+Cu U
+
+
+With --use-latex-docinfo:
+
+\title{%
+  \phantomsection%
+  \label{test-1-for-slides-writers}}
+\author{Au Thor}
+\date{January 1, 2525}
+\maketitle
+Test 1 for Slides WritersSubtitle\item[{institution:}]
+Cu U
+
+
+
+Feature requests for Ryan and Paul-Michael:
+0. Fix docinfo handling (see above)
+1. rst2latex provides translation of unicode characters;
+   can you make direct use of this?  It is very
+   convenient.
+2. add a math directive.  Ideal would be to
+   use Jen's work in rst2latexmath, but just wrapping
+   the content in an equation environment would do for now.
+3. handle literal text like rst2latex does.  The
+   currently handling is a problem (e.g., leading
+   spaces disappear)
+4. don't add the ``fragile`` option to every frame.
+   Ideally you would test problematic content,
+   but until then handle this by having the author
+   tag the content as fragile with a ``class`` directive.
+
+5. don't make lists incremental by default;
+   in many presentation setting such incrementalism
+   is imo needless controlling (and thus "evil").
+   Rely on users to set an ``incremental`` class
+   when this is really needed.
