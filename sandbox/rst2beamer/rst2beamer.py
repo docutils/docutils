@@ -7,7 +7,7 @@ Beamer is a LaTeX document class for presentations. Via this script, ReST can
 be used to prepare slides. It can be called::
 
         rst2beamer.py infile.txt > outfile.tex
-        
+
 where ``infile.txt`` contains the rst and ``outfile.tex`` contains the
 Beamer-flavoured LaTeX.
 
@@ -46,8 +46,8 @@ from docutils.writers.latex2e import LaTeXTranslator, DocumentClass
 from docutils import nodes
 from docutils.nodes import fully_normalize_name as normalize_name
 from docutils.parsers.rst import directives, Directive
-
-
+from docutils import frontend
+from docutils.writers.latex2e import PreambleCmds
 ## CONSTANTS & DEFINES ###
 
 SHOWNOTES_FALSE = 'false'
@@ -96,7 +96,7 @@ BEAMER_SPEC =   (
                 'inside center environments.',
                 ['--centerfigs'],
                 {'default': True, }
-            ),                        
+            ),
             (
                 # TODO: this doesn't seem to do anything ...
                 'Specify document options. Multiple options can be given, '
@@ -104,6 +104,12 @@ BEAMER_SPEC =   (
                 ['--documentoptions'],
                 {'default': '', }
             ),
+##             (
+##                 'Attach author and date to the document title.',
+##                 ['--use-latex-docinfo'],
+##                 {'default': 1, 'action': 'store_true',
+##                  'validator': frontend.validate_boolean}
+##             ),
             (
                 "Print embedded notes along with the slides. Possible "
                     "arguments include 'false' (don't show), 'only' (show "
@@ -165,11 +171,20 @@ BEAMER_DEFAULTS = {
     'documentoptions': 't',#text is at the top of each slide rather than centered.  Changing to 'c' centers the text on each slide (vertically)
 }
 
+BEAMER_DEFAULT_OVERRIDES = {'use_latex_docinfo': 1}
+
 
 bool_strs = ['false','true','0','1']
 bool_vals = [False, True, False, True]
 bool_dict = dict (zip (bool_strs, bool_vals))
-    
+
+PreambleCmds.documenttitle = r"""
+%% Document title
+\title[%s]{%s}
+\author[%s]{%s}
+\date{%s}
+\maketitle
+"""
 
 ### IMPLEMENTATION ###
 
@@ -180,7 +195,7 @@ LEADING_SPACE_RE = re.compile ('^ +')
 def adjust_indent_spaces (strn, orig_width=8, new_width=3):
     """
     Adjust the leading space on a string so as to change the indent width.
-    
+
     :Parameters:
         strn
             The source string to change.
@@ -188,34 +203,34 @@ def adjust_indent_spaces (strn, orig_width=8, new_width=3):
             The expected width for an indent in the source string.
         new_width
             The new width to make an ident.
-            
+
     :Returns:
         The original string re-indented.
-    
+
     That takes strings that may be indented by a set number of spaces (or its
     multiple) and adjusts the indent for a new number of spaces. So if the
     expected indent width is 8 and the desired ident width is 3, a string has
     been indented by 16 spaces, will be changed to have a indent of 6.
-    
+
     For example::
-    
+
         >>> adjust_indent_spaces ('        foo')
         '   foo'
         >>> adjust_indent_spaces ('      foo', orig_width=2, new_width=1)
         '   foo'
-            
+
     This is useful where meaningful indent must be preserved (i.e. passed
     through) ReST, especially tabs when used in the literal environments. ReST
     transforms tabs-as-indents to 8 spaces, which leads to excessively spaced
     out text. This function can be used to adjust the indent step to a
     reasonable size.
-    
+
     .. note::
-    
+
         Excess spaces (those above and beyond a multiple of the original
         indent width) will be preserved. Only indenting spaces will be
         handled. Mixing tabs and spaces is - as always - a bad idea.
-    
+
     """
     ## Preconditions & preparation:
     assert (1 <= orig_width)
@@ -230,12 +245,12 @@ def adjust_indent_spaces (strn, orig_width=8, new_width=3):
         indent_depth = indent_cnt * orig_width
         strn = ' ' * indent_cnt * new_width + strn[indent_depth:]
     return strn
-    
-    
+
+
 def index (seq, f, fail=None):
     """
     Return the index of the first item in seq where f(item) is True.
-    
+
     :Parameters:
         seq
             A sequence or iterable
@@ -243,30 +258,30 @@ def index (seq, f, fail=None):
             A boolean function an element of `seq`, e.g. `lambda x: x==4`
         fail
             The value to return if no item is found in seq.
-            
+
     While this could be written in a neater fashion in Python 2.6, this method
     maintains compatiability with earlier version.
     """
     for index in (i for i in xrange (len (seq)) if f (seq[i])):
         return index
     return fail
-        
+
 
 def node_has_class (node, classes):
     """
     Does the node have one of these classes?
-    
+
     :Parameters:
         node
             A docutils node
         class
             A class name or list of class names.
-            
+
     :Returns:
         A boolean indicating membership.
-            
+
     A convenience function, largely for testing for the special class names
-    in containers. 
+    in containers.
     """
     ## Preconditions & preparation:
     # wrap single name in list
@@ -307,7 +322,7 @@ def node_lang_class (node):
 def wrap_children_in_columns (par_node, children, width=None):
     """
     Replace this node's children with columns containing the passed children.
-    
+
     :Parameters:
         par_node
             The node whose children are to be replaced.
@@ -366,16 +381,16 @@ def string_to_bool (stringin, default=True):
 def highlight_code (text, lang):
     """
     Syntax-highlight source code using Pygments.
-    
+
     :Parameters:
         text
             The code to be formatted.
         lang
             The language of the source code.
-            
+
     :Returns:
         A LaTeX formatted representation of the source code.
-    
+
     """
     ## Preconditions & preparation:
     from pygments import highlight
@@ -389,7 +404,7 @@ def highlight_code (text, lang):
 def get_lexer (text, lang):
     """
     Return the Pygments lexer for parsing this sourcecode.
-    
+
     :Parameters:
         text
             The sourcecode to be lexed for highlighting. This is analysed if
@@ -398,10 +413,10 @@ def get_lexer (text, lang):
             An abbreviation for the programming langauge of the code. Can be
             any 'name' accepted by Pygments, including 'none' (plain text) or
             'guess' (analyse the passed code for clues).
-    
+
     :Returns:
         A Pygments lexer.
-    
+
     """
     # TODO: what if source has errors?
     ## Preconditions & preparation:
@@ -421,11 +436,11 @@ def get_lexer (text, lang):
 
 ### NODES ###
 # Special nodes for marking up beamer layout
-    
+
 class columnset (nodes.container):
     """
     A group of columns to display on one slide.
-    
+
     Named as per docutils standards.
     """
     # NOTE: a simple container, has no attributes.
@@ -455,7 +470,7 @@ class CodeBlockDirective (Directive):
     """
     Directive for a code block with special highlighting or line numbering
     settings.
-    
+
     Unabashedly borrowed from the Sphinx source.
     """
     has_content = True
@@ -487,7 +502,7 @@ for name in ['code-block', 'sourcecode']:
 class SimpleColsDirective (Directive):
     """
     A directive that wraps all contained nodes in beamer columns.
-    
+
     Accept 'width' as an optional argument for total width of contained
     columns.
     """
@@ -529,11 +544,11 @@ class ColumnSetDirective (Directive):
     a single optional argument 'width' to determine the total width of
     columns on the page, expressed as a fraction of textwidth. If no width is
     given, it defaults to 0.90.
-    
+
     Contained columns may have an assigned width. If not, the remaining width
     is divided amongst them. Contained columns can 'overassign' width,
     provided all column widths are defined.
-    
+
     """
     required_arguments = 0
     optional_arguments = 1
@@ -590,7 +605,7 @@ for name in ['r2b-columnset', 'r2b_columnset']:
 class ColumnDirective (Directive):
     """
     A directive to explicitly create an individual column.
-    
+
     This can only be used within the columnset directive. It can takes a
     single optional argument 'width' to determine the column width on page.
     If no width is given, it is recorded as None and should be later assigned
@@ -628,7 +643,7 @@ for name in ['r2b-column', 'r2b_column']:
 class NoteDirective (Directive):
     """
     A directive to include notes within a beamer presentation.
-    
+
     """
     required_arguments = 0
     optional_arguments = 0
@@ -692,12 +707,12 @@ class BeamerTranslator (LaTeXTranslator):
 
     def __init__ (self, document):
         LaTeXTranslator.__init__ (self, document)
-        
+
         # record the the settings for codeblocks
         self.cb_use_pygments = document.settings.cb_use_pygments
         self.cb_replace_tabs = document.settings.cb_replace_tabs
         self.cb_default_lang = document.settings.cb_default_lang
-        
+
         self.head_prefix = [x for x in self.head_prefix
             if ('{typearea}' not in x)]
         #hyperref_posn = [i for i in range (len (self.head_prefix))
@@ -727,8 +742,8 @@ class BeamerTranslator (LaTeXTranslator):
                 '\\usepackage{fancyvrb}\n',
                 '\\usepackage{color}\n',
                 #LatexFormatter().get_style_defs(),
-            ])           
-        
+            ])
+
         # set appropriate header options for theming
         theme = document.settings.theme
         if theme:
@@ -748,14 +763,14 @@ class BeamerTranslator (LaTeXTranslator):
             if (shownotes == SHOWNOTES_LEFT):
                 notes_posn = 'left'
             elif (shownotes in SHOWNOTES_RIGHT):
-                notes_posn = 'right'                 
+                notes_posn = 'right'
             elif (shownotes == SHOWNOTES_TOP):
-                notes_posn = 'top'                 
+                notes_posn = 'top'
             elif (shownotes == SHOWNOTES_BOTTOM):
                 notes_posn = 'bottom'
             else:
                 # TODO: better error handling
-                assert False, "unrecognised option for shownotes '%s'" % shownotes      
+                assert False, "unrecognised option for shownotes '%s'" % shownotes
             option_str = 'show notes on second screen=%s' % notes_posn
         if use_pgfpages:
             self.head_prefix.append ('\\usepackage{pgfpages}\n')
@@ -767,7 +782,7 @@ class BeamerTranslator (LaTeXTranslator):
             self.head_prefix.extend ([
                 LatexFormatter().get_style_defs(),
             ])
-            
+
         self.overlay_bullets = string_to_bool (document.settings.overlaybullets, False)
         #using a False default because
         #True is the actual default.  If you are trying to pass in a value
@@ -778,10 +793,77 @@ class BeamerTranslator (LaTeXTranslator):
         self.in_column = False
         self.in_note = False
         self.frame_level = 0
-        
+
         # this fixes the hardcoded section titles in docutils 0.4
         self.d_class = DocumentClass ('article')
 
+
+    def depart_document(self, node):
+        # Complete header with information gained from walkabout
+        # a) conditional requirements (before style sheet)
+        self.requirements = self.requirements.sortedvalues()
+        # b) coditional fallback definitions (after style sheet)
+        self.fallbacks = self.fallbacks.sortedvalues()
+        # c) PDF properties
+        self.pdfsetup.append(PreambleCmds.linking % (self.colorlinks,
+                                                     self.hyperlink_color,
+                                                     self.hyperlink_color))
+        if self.pdfauthor:
+            authors = self.author_separator.join(self.pdfauthor)
+            self.pdfinfo.append('  pdfauthor={%s}' % authors)
+        if self.pdfinfo:
+            self.pdfsetup += [r'\hypersetup{'] + self.pdfinfo + ['}']
+        # Complete body
+        # a) document title (part 'body_prefix'):
+        # NOTE: Docutils puts author/date into docinfo, so normally
+        #       we do not want LaTeX author/date handling (via \maketitle).
+        #       To deactivate it, we add \title, \author, \date,
+        #       even if the arguments are empty strings.
+        if self.title or self.author_stack or self.date:
+            authors = ['\\\\\n'.join(author_entry)
+                       for author_entry in self.author_stack]
+            title = [''.join(self.title)] + self.title_labels
+            shorttitle = ''.join(self.title)
+            shortauthor = ''.join(self.pdfauthor)
+
+            if self.subtitle:
+                title += [r'\\ % subtitle',
+                             r'\large{%s}' % ''.join(self.subtitle)
+                         ] + self.subtitle_labels
+            self.body_pre_docinfo.append(PreambleCmds.documenttitle % (
+                shorttitle,
+                '%\n  '.join(title),
+                shortauthor,
+                ' \\and\n'.join(authors),
+                ', '.join(self.date)))
+        # b) bibliography
+        # TODO insertion point of bibliography should be configurable.
+        if self._use_latex_citations and len(self._bibitems)>0:
+            if not self.bibtex:
+                widest_label = ''
+                for bi in self._bibitems:
+                    if len(widest_label)<len(bi[0]):
+                        widest_label = bi[0]
+                self.out.append('\n\\begin{thebibliography}{%s}\n' %
+                                 widest_label)
+                for bi in self._bibitems:
+                    # cite_key: underscores must not be escaped
+                    cite_key = bi[0].replace(r'\_','_')
+                    self.out.append('\\bibitem[%s]{%s}{%s}\n' %
+                                     (bi[0], cite_key, bi[1]))
+                self.out.append('\\end{thebibliography}\n')
+            else:
+                self.out.append('\n\\bibliographystyle{%s}\n' %
+                                self.bibtex[0])
+                self.out.append('\\bibliography{%s}\n' % self.bibtex[1])
+        # c) make sure to generate a toc file if needed for local contents:
+        if 'minitoc' in self.requirements and not self.has_latex_toc:
+            self.out.append('\n\\faketableofcontents % for local ToCs\n')
+
+
+
+    def visit_docinfo_item(self, node, name):
+        LaTeXTranslator.visit_docinfo_item(self, node, name)
 
     def latex_image_length(self, width_str):
         match = re.match('(\d*\.?\d*)\s*(\S*)', width_str)
@@ -800,7 +882,7 @@ class BeamerTranslator (LaTeXTranslator):
 
     def visit_image(self, node):
         if self.centerfigs:
-            self.body.append('\\begin{center}\n')
+            self.out.append('\\begin{center}\n')
         attrs = node.attributes
         # Add image URI to dependency list, assuming that it's
         # referring to a local file.
@@ -844,22 +926,22 @@ class BeamerTranslator (LaTeXTranslator):
             pre.append('\n')
             post.append('\n')
         pre.reverse()
-        self.body.extend( pre )
+        self.out.extend( pre )
         options = ''
         if len(include_graphics_options)>0:
             options = '[%s]' % (','.join(include_graphics_options))
-        self.body.append( '\\includegraphics%s{%s}' % (
+        self.out.append( '\\includegraphics%s{%s}' % (
                             options, attrs['uri'] ) )
-        self.body.extend( post )
+        self.out.extend( post )
 
 
     def depart_image(self, node):
         if self.centerfigs:
-            self.body.append('\\end{center}\n')
+            self.out.append('\\end{center}\n')
 
 
-    def visit_Text (self, node):
-        self.body.append(self.encode(node.astext()))
+    ## def visit_Text (self, node):
+    ##     self.out.append(self.encode(node.astext()))
 
     def depart_Text(self, node):
         pass
@@ -876,9 +958,9 @@ class BeamerTranslator (LaTeXTranslator):
             if temp > self.frame_level:
                 self.frame_level = temp
         else:
-            self.body.append (self.begin_frametag())
+            self.out.append (self.begin_frametag())
         LaTeXTranslator.visit_section (self, node)
-            
+
 
     def bookmark (self, node):
         """I think beamer alread handles bookmarks well, so I
@@ -889,14 +971,14 @@ class BeamerTranslator (LaTeXTranslator):
         # Remove counter for potential subsections:
         LaTeXTranslator.depart_section (self, node)
         if (self.section_level == self.frame_level):#0
-            self.body.append (self.end_frametag())
-                    
+            self.out.append (self.end_frametag())
+
 
     def visit_title (self, node):
         if node.astext() == 'dummy':
             raise nodes.SkipNode
         if (self.section_level == self.frame_level+1):#1
-            self.body.append ('\\frametitle{%s}\n\n' % \
+            self.out.append ('\\frametitle{%s}\n\n' % \
                 self.encode(node.astext()))
             raise nodes.SkipNode
         else:
@@ -915,7 +997,7 @@ class BeamerTranslator (LaTeXTranslator):
         if (node_has_class (node, 'code-block') and self.cb_use_pygments):
             self.visit_codeblock (node)
         else:
-            self.body.append ('\\setbeamerfont{quote}{parent={}}\n')
+            self.out.append ('\\setbeamerfont{quote}{parent={}}\n')
             LaTeXTranslator.visit_literal_block (self, node)
 
     def depart_literal_block (self, node):
@@ -924,7 +1006,7 @@ class BeamerTranslator (LaTeXTranslator):
             self.visit_codeblock (node)
         else:
             LaTeXTranslator.depart_literal_block (self, node)
-            self.body.append ( '\\setbeamerfont{quote}{parent=quotation}\n' )
+            self.out.append ( '\\setbeamerfont{quote}{parent=quotation}\n' )
 
     def visit_codeblock (self, node):
         # was langauge argument defined on node?
@@ -942,9 +1024,9 @@ class BeamerTranslator (LaTeXTranslator):
                 new_width=self.cb_replace_tabs) for x in srccode.split ('\n'))
         # hilight the code
         hilite_code = highlight_code (srccode, lang)
-        self.body.append ('\n' + hilite_code + '\n')
+        self.out.append ('\n' + hilite_code + '\n')
         raise nodes.SkipNode
-        
+
     def depart_codeblock (self, node):
         pass
 
@@ -955,22 +1037,22 @@ class BeamerTranslator (LaTeXTranslator):
             ('contents' in self.topic_classes)):
             if self.use_latex_toc:
                 raise nodes.SkipNode
-            self.body.append( '\\begin{list}{}{}\n' )
+            self.out.append( '\\begin{list}{}{}\n' )
         else:
             begin_str = '\\begin{itemize}'
             if self.overlay_bullets:
                 begin_str += '[<+-| alert@+>]'
             begin_str += '\n'
-            self.body.append (begin_str) 
+            self.out.append (begin_str)
 
 
     def depart_bullet_list (self, node):
         # NOTE: see `visit_bullet_list`
         if (hasattr (self, 'topic_classes') and
             ('contents' in self.topic_classes)):
-            self.body.append( '\\end{list}\n' )
+            self.out.append( '\\end{list}\n' )
         else:
-            self.body.append( '\\end{itemize}\n' )
+            self.out.append( '\\end{itemize}\n' )
 
 ##         def latex_image_length(self, width_str):
 ##             if ('\\textheight' in width_str) or ('\\textwidth' in width_str):
@@ -986,42 +1068,42 @@ class BeamerTranslator (LaTeXTranslator):
         if ('contents' in getattr (self, 'topic_classes', [])):
             if self.use_latex_toc:
                 raise nodes.SkipNode
-            self.body.append( '\\begin{list}{}{}\n' )
+            self.out.append( '\\begin{list}{}{}\n' )
         else:
             begin_str = '\\begin{enumerate}'
             if self.overlay_bullets:
                 begin_str += '[<+-| alert@+>]'
             begin_str += '\n'
-            self.body.append(begin_str)
+            self.out.append(begin_str)
             if node.has_key('start'):
-                self.body.append('\\addtocounter{enumi}{%d}\n' \
+                self.out.append('\\addtocounter{enumi}{%d}\n' \
                                  % (node['start']-1))
             
 
     def depart_enumerated_list (self, node):
         if ('contents' in getattr (self, 'topic_classes', [])):
-            self.body.append ('\\end{list}\n')
+            self.out.append ('\\end{list}\n')
         else:
-            self.body.append ('\\end{enumerate}\n' )
+            self.out.append ('\\end{enumerate}\n' )
 
 
-    def astext (self):
-        if self.pdfinfo is not None and self.pdfauthor:
-            self.pdfinfo.append ('pdfauthor={%s}' % self.pdfauthor)
-        if self.pdfinfo:
-            pdfinfo = '\\hypersetup{\n' + ',\n'.join (self.pdfinfo) + '\n}\n'
-        else:
-            pdfinfo = ''
-        head = '\\title{%s}\n' % self.title
-        if self.auth_stack:
-            auth_head = '\\author{%s}\n' % ' \\and\n'.join (\
-                ['~\\\\\n'.join (auth_lines) for auth_lines in self.auth_stack])
-            head += auth_head
-        if self.date:
-            date_head = '\\date{%s}\n' % self.date
-            head += date_head
-        return ''.join (self.head_prefix + [head] + self.head + [pdfinfo]
-            + self.body_prefix  + self.body + self.body_suffix)
+##     def astext (self):
+##         if self.pdfinfo is not None and self.pdfauthor:
+##             self.pdfinfo.append ('pdfauthor={%s}' % self.pdfauthor)
+##         if self.pdfinfo:
+##             pdfinfo = '\\hypersetup{\n' + ',\n'.join (self.pdfinfo) + '\n}\n'
+##         else:
+##             pdfinfo = ''
+##         head = '\\title{%s}\n' % self.title
+##         if self.auth_stack:
+##             auth_head = '\\author{%s}\n' % ' \\and\n'.join (\
+##                 ['~\\\\\n'.join (auth_lines) for auth_lines in self.auth_stack])
+##             head += auth_head
+##         if self.date:
+##             date_head = '\\date{%s}\n' % self.date
+##             head += date_head
+##         return ''.join (self.head_prefix + [head] + self.head + [pdfinfo]
+##             + self.out_prefix  + self.out + self.out_suffix)
 
 
 ##     def visit_docinfo (self, node):
@@ -1038,30 +1120,30 @@ class BeamerTranslator (LaTeXTranslator):
         assert not self.in_columnset, \
             "already in column set, which cannot be nested"
         self.in_columnset = True
-        self.body.append ('\\begin{columns}[T]\n')
+        self.out.append ('\\begin{columns}[T]\n')
 
     def depart_columnset (self, node):
         assert self.in_columnset, "not in column set"
         self.in_columnset = False
-        self.body.append ('\\end{columns}\n')
+        self.out.append ('\\end{columns}\n')
 
     def visit_column (self, node):
         assert not self.in_column, "already in column, which cannot be nested"
         self.in_column = True
-        self.body.append ('\\column{%.2f\\textwidth}\n' % node.width)
+        self.out.append ('\\column{%.2f\\textwidth}\n' % node.width)
 
     def depart_column (self, node):
         self.in_column = False
-        self.body.append ('\n')
+        self.out.append ('\n')
 
     def visit_beamer_note (self, node):
         assert not self.in_note, "already in note, which cannot be nested"
         self.in_note = True
-        self.body.append ('\\note{\n')
+        self.out.append ('\\note{\n')
 
     def depart_beamer_note (self, node):
         self.in_note = False
-        self.body.append ('}\n')
+        self.out.append ('}\n')
 
     def visit_container (self, node):
         """
@@ -1081,7 +1163,7 @@ class BeamerTranslator (LaTeXTranslator):
 
     def depart_container (self, node):
         if (node_has_class (node, 'r2b-simplecolumns')):
-            self.depart_columnset (node) 
+            self.depart_columnset (node)
         elif (node_has_class (node, 'r2b-note')):
             self.depart_beamer_note (node)
         else:
@@ -1094,9 +1176,9 @@ class BeamerWriter (Latex2eWriter):
         A docutils writer that produces Beamer-flavoured LaTeX.
         """
         settings_spec = BEAMER_SPEC
-        settings_defaults = BEAMER_DEFAULTS
-
+        settings_default_overrides = BEAMER_DEFAULT_OVERRIDES
         def __init__(self):
+            self.settings_defaults.update(BEAMER_DEFAULTS)
             Latex2eWriter.__init__(self)
             self.translator_class = BeamerTranslator
 
@@ -1107,7 +1189,7 @@ class BeamerWriter (Latex2eWriter):
 def test_with_file (fpath, args=[]):
     """
     Call rst2beamer on the given file with the given args.
-    
+
     During development, it's handy to be able to easily call the writer from
     within Python. This is a convenience function that wraps the docutils
     functions to do so.
