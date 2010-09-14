@@ -16,4 +16,4 @@ To do
 
 * 20090810: The bullet overlay syntax can be made a lot simpler using a single optparse flag (e.g. ``--overlaybullets``). Also, the default behaviour should arguably be to *not* overlay bullets, but this will change the current default behaviour.
 
-* 20090810: Desperately need maths markup. Sphinx has a pngmath extension module which may be suitable. 
+* 20090810: Desperately need maths markup. Sphinx has a pngmath extension module which may be suitable. Alternatively, http://docutils.sourceforge.net/sandbox/jensj/latex_math/tools/
