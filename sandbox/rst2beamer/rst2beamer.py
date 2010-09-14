@@ -879,8 +879,6 @@ class BeamerTranslator (LaTeXTranslator):
 
 
     def visit_docinfo_item(self, node, name):
-        print('name='+name)
-        print('node.astext='+node.astext())
         if name == 'author':
             self.pdfauthor.append(self.attval(node.astext()))
         if self.use_latex_docinfo:
