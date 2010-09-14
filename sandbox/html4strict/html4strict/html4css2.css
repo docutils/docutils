@@ -273,18 +273,8 @@ ol.nested > li:before, ol.nested  ol > li:before {
 /* sub, sup {font-size: 70%;} */ /* Mozilla default is `smaller` */
 
 
-/* Table of Contents */
-
-/* don't indent like a blockquote */
-div.topic.contents {
-  margin: 0;
-}
-/* div.topic.contents ul { */
-/*   list-style: none;	   */
-/*   }			   */
-
 /* Tables */
-/* ------ */
+/* ====== */
 
 /* borders for "normal" tables */
 table {
@@ -344,6 +334,27 @@ table.numbered > caption:before {
    -----------------------------------------------
 */
 /* possible values: normal, nowrap, pre, pre-wrap, pre-line */
-tt.docutils.literal {
+tt.literal {
   white-space: pre-wrap;
+}
+
+
+/* Table of Contents */
+
+/* don't indent like a topic */
+div.topic.contents {
+  margin: 0;
+}
+/* div.topic.contents ul { */
+/*   list-style: none;	   */
+/*   }			   */
+
+div.topic.contents a {
+  text-decoration: none; /* no underline for links */
+}
+
+/* section numbers */
+
+span.sectnum {
+  padding-right: 1ex;
 }

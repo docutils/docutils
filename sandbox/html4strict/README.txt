@@ -265,13 +265,34 @@ The resulting list can be customized to a large extend
 
 
 
-Inline literal role pre-formatted
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Inline literal role with ``pre-wrap``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-+ simpler implementation and simpler/clean HTML code
+In contrast to the html4css1 writer, runs of whitespace are not
+replaced by ``&nbsp;`` entities (cf. bug #1938891).
 
-+ white-space handling and line-wrapping in inline literals
-  configurable with the CSS stylesheet.
+Whitespace-handling and wrapping are configured with the CSS
+property ``white-space: pre-wrap``:
+
+  Whitespace is preserved by the browser. Text will wrap when
+  necessary, and on line breaks
+
+However, most browsers wrap on non-word chars, too, if set to wrap
+at white-space. Text like "--an-option"  or the regular expression
+``[+]?(\d+(\.\d*)?|\.\d+)`` may be broken at the wrong place!
+The setting ``white-space: pre;`` prevents this, but also
+prevents wrapping at white space, contrary to the specification__
+
+In order to allow line-wrap at whitespace only,
+words-with-non-word-chars are wrapped in <span>s with class "pre".
+
++ simpler HTML code
+
++ White-space handling in inline literals configurable with the CSS
+  stylesheet. Possible values: ``normal, nowrap, pre, pre-wrap,
+  pre-line``.
+
+__ http://docutils.sf.net/docs/ref/rst/restructuredtext.html#inline-literals
 
 
 Table styling with CSS
@@ -294,6 +315,13 @@ Unified test if a list is compactable:
 
 + also test docinfo, as a field may contain more than one paragraph
 
+
+Docutils-generated section numbers in a <span>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Instead of hard-coded formatting with trailing ``&nbsp;``, 
+section numbers in section headings and the toc are placed in spans
+with ``class='sectnum'`` and separated from the heading by a CSS rule.
 
 TODO
 ----
