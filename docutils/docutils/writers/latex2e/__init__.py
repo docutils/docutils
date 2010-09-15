@@ -206,7 +206,8 @@ class Writer(writers.Writer):
     config_section_dependencies = ('writers',)
 
     head_parts = ('head_prefix', 'requirements', 'latex_preamble',
-                  'stylesheet', 'fallbacks', 'pdfsetup', 'title', 'subtitle')
+                  'stylesheet', 'fallbacks', 'pdfsetup',
+                  'title', 'subtitle', 'titledata')
     visitor_attributes = head_parts + ('body_pre_docinfo', 'docinfo',
                                        'dedication', 'abstract', 'body')
 
@@ -561,14 +562,6 @@ PreambleCmds.table = r"""\usepackage{longtable}
 # de.comp.text.tex/2005-12/msg01855
 PreambleCmds.textcomp = """\
 \\usepackage{textcomp} % text symbol macros"""
-
-PreambleCmds.documenttitle = r"""
-%% Document title
-\title{%s}
-\author{%s}
-\date{%s}
-\maketitle
-"""
 
 PreambleCmds.titlereference = r"""
 % titlereference role
@@ -960,8 +953,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.pdfsetup = [] # PDF properties (hyperref package)
         self.title = []
         self.subtitle = []
+        self.titledata = [] # \title, \author, \date
         ## self.body_prefix = ['\\begin{document}\n']
-        self.body_pre_docinfo = [] # title data and \maketitle
+        self.body_pre_docinfo = [] # \maketitle
         self.docinfo = []
         self.dedication = []
         self.abstract = []
@@ -978,7 +972,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # (if use_latex_docinfo: collects lists of
         # author/organization/contact/address lines)
         self.author_stack = []
-        # date (the default supresses the "auto-date" feature of \maketitle)
         self.date = []
 
         # PDF properties: pdftitle, pdfauthor
@@ -1688,7 +1681,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 if name == 'author' or not self.author_stack:
                     self.author_stack.append([])
                 if name == 'address':   # newlines are meaningful
-                    self.insert_newline = 1
+                    self.insert_newline = True
                     text = self.encode(node.astext())
                     self.insert_newline = False
                 else:
@@ -1725,11 +1718,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_document(self, node):
         # Complete header with information gained from walkabout
-        # a) conditional requirements (before style sheet)
+        # * conditional requirements (before style sheet)
         self.requirements = self.requirements.sortedvalues()
-        # b) coditional fallback definitions (after style sheet)
+        # * coditional fallback definitions (after style sheet)
         self.fallbacks = self.fallbacks.sortedvalues()
-        # c) PDF properties
+        # * PDF properties
         self.pdfsetup.append(PreambleCmds.linking % (self.colorlinks,
                                                      self.hyperlink_color,
                                                      self.hyperlink_color))
@@ -1739,25 +1732,30 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.pdfinfo:
             self.pdfsetup += [r'\hypersetup{'] + self.pdfinfo + ['}']
         # Complete body
-        # a) document title (part 'body_prefix'):
-        # NOTE: Docutils puts author/date into docinfo, so normally
-        #       we do not want LaTeX author/date handling (via \maketitle).
-        #       To deactivate it, we add \title, \author, \date,
-        #       even if the arguments are empty strings.
-        if self.title or self.author_stack or self.date:
-            authors = ['\\\\\n'.join(author_entry)
-                       for author_entry in self.author_stack]
+        # * document title (with "use_latex_docinfo" also
+        #   'author', 'organization', 'contact', 'address' and 'date')
+        if self.title or (
+           self.use_latex_docinfo and (self.author_stack or self.date)):
+            # always write \title (to prevent error with \maketitle)
             title = [''.join(self.title)] + self.title_labels
             if self.subtitle:
                 title += [r'\\ % subtitle',
                              r'\large{%s}' % ''.join(self.subtitle)
                          ] + self.subtitle_labels
-            self.body_pre_docinfo.append(PreambleCmds.documenttitle % (
-                '%\n  '.join(title),
-                ' \\and\n'.join(authors),
-                ', '.join(self.date)))
-        # b) bibliography
-        # TODO insertion point of bibliography should be configurable.
+            self.titledata.append(r'\title{%s}' % '%\n  '.join(title))
+            # author only required if non-empty
+            if self.author_stack:
+                authors = ['\\\\\n'.join(author_entry)
+                           for author_entry in self.author_stack]
+                self.titledata.append(r'\author{%s}' %
+                                      ' \\and\n'.join(authors))
+            # always write \date (to prevent defaulting to \today)
+            self.titledata.append(r'\date{%s}' % ', '.join(self.date))
+            # format title with LaTeX
+            self.body_pre_docinfo.append('\\maketitle\n')
+
+        # * bibliography
+        #   TODO insertion point of bibliography should be configurable.
         if self._use_latex_citations and len(self._bibitems)>0:
             if not self.bibtex:
                 widest_label = ''
@@ -1776,7 +1774,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 self.out.append('\n\\bibliographystyle{%s}\n' %
                                 self.bibtex[0])
                 self.out.append('\\bibliography{%s}\n' % self.bibtex[1])
-        # c) make sure to generate a toc file if needed for local contents:
+        # * make sure to generate a toc file if needed for local contents:
         if 'minitoc' in self.requirements and not self.has_latex_toc:
             self.out.append('\n\\faketableofcontents % for local ToCs\n')
 

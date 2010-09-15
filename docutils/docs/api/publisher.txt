@@ -273,6 +273,9 @@ The S5/HTML writer provides the same parts as the `HTML writer`_.
 Parts Provided by the LaTeX2e Writer
 ------------------------------------
 
+See the template files for examples how these parts can be combined
+into a valid LaTeX document.
+
 abstract
     ``parts['abstract']`` contains the formatted content of the
     'abstract' docinfo field.
@@ -285,18 +288,8 @@ body
     This part can be included into another LaTeX document body using the
     ``\input{}`` command.
 
-.. body_prefix
-    ``parts['body_prefix']`` contains the LaTeX ``\begin{document}``
-
 body_pre_docinfo
-    ``parts['body_pre_docinfo]`` contains title (and poss. subtitle) setup
-    and the ``\maketitle`` command.
-
-    With ``--use-latex-docinfo``, it also contains the 'author',
-    'organization', 'contact', 'address' and 'date' docinfo items.
-
-.. body_suffix
-    ``parts['body_suffix']`` contains the LaTeX ``\end{document}``.
+    ``parts['body_pre_docinfo]`` contains the ``\maketitle`` command.
 
 dedication
     ``parts['dedication']`` contains the formatted content of the
@@ -307,8 +300,7 @@ docinfo
     docinfo field list rendered as a table.
 
     With ``--use-latex-docinfo`` 'author', 'organization', 'contact',
-    'address' and 'date' info is moved to the title metadata (included in
-    body_pre_docinfo).
+    'address' and 'date' info is moved to titledata.
 
     'dedication' and 'abstract' are always moved to separate parts.
 
@@ -343,3 +335,10 @@ subtitle
 title
     ``parts['title']`` contains the document title text and any inline
     markup.
+
+titledata
+    ``parts['titledata]`` contains the combined title data in
+    ``\title``, ``\author``, and ``\data`` macros.
+
+    With ``--use-latex-docinfo``, this includes the 'author',
+    'organization', 'contact', 'address' and 'date' docinfo items.
