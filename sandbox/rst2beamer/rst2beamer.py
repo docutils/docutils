@@ -92,6 +92,13 @@ BEAMER_SPEC =   (
                 {'default': True, }
             ),
             (
+                'Default for whether or not to pass the fragile option to '
+                'the beamber frames (slides).',
+                ['--fragile-default'],
+                {'default': True, }
+            ),
+            
+            (
                 'Center figures.  All includegraphics statements will be put '
                 'inside center environments.',
                 ['--centerfigs'],
@@ -795,6 +802,7 @@ class BeamerTranslator (LaTeXTranslator):
             ])
 
         self.overlay_bullets = string_to_bool (document.settings.overlaybullets, False)
+        self.fragile_default = string_to_bool (document.settings.fragile_default, True)
         #using a False default because
         #True is the actual default.  If you are trying to pass in a value
         #and I can't determine what you really meant, I am assuming you
@@ -994,8 +1002,26 @@ class BeamerTranslator (LaTeXTranslator):
     def depart_Text(self, node):
         pass
 
-    def begin_frametag (self):
-        return '\n\\begin{frame}[fragile]\n'
+
+    def node_fragile_check(self, node):
+        """Check whether or not a slide should be marked as fragile.
+        If the slide has class attributes of fragile or notfragile,
+        then the document default is overriden."""
+        if 'notfragile' in node.attributes['classes']:
+            return False
+        elif 'fragile' in node.attributes['classes']:
+            return True
+        else:
+            return self.fragile_default
+
+
+    def begin_frametag (self, node):
+        bf_str = '\n\\begin{frame}'
+        if self.node_fragile_check(node):
+            bf_str += '[fragile]'
+        bf_str += '\n'
+        return bf_str
+        
 
     def end_frametag (self):
         return '\\end{frame}\n'
@@ -1006,7 +1032,7 @@ class BeamerTranslator (LaTeXTranslator):
             if temp > self.frame_level:
                 self.frame_level = temp
         else:
-            self.out.append (self.begin_frametag())
+            self.out.append (self.begin_frametag(node))
         LaTeXTranslator.visit_section (self, node)
 
 
