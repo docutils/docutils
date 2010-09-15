@@ -22,10 +22,16 @@
 
 \usepackage{fixltx2e} % LaTeX patches, \textsubscript
 \usepackage{cmap} % fix search and cut-and-paste in PDF
-\usepackage{babel}
 \usepackage[T1]{fontenc}
 \usepackage[latin1]{inputenc}
 \usepackage{ifthen}
+\usepackage{babel}
+
+%%% Custom LaTeX preamble
+% PDF Standard Fonts
+\usepackage{mathptmx} % Times
+\usepackage[scaled=.90]{helvet}
+\usepackage{courier}
 
 %%% User specified packages and stylesheets
 
@@ -33,7 +39,8 @@
 
 % hyperlinks:
 \ifthenelse{\isundefined{\hypersetup}}{
-  \usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
+  \usepackage[unicode,colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
+  \urlstyle{same} % normal text font (alternatives: tt, rm, sf)
 }{}
 
 %%% Body
