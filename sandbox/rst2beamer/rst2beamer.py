@@ -1088,10 +1088,23 @@ class BeamerTranslator (LaTeXTranslator):
             self.out.append( '\\begin{list}{}{}\n' )
         else:
             begin_str = '\\begin{itemize}'
-            if self.overlay_bullets:
+            if self.node_overlay_check(node):
                 begin_str += '[<+-| alert@+>]'
             begin_str += '\n'
             self.out.append (begin_str)
+
+
+    def node_overlay_check(self, node):
+        """Assuming that the bullet or enumerated list is the child of
+        a slide, check to see if the slide has either nooverlay or
+        overlay in its classes.  If not, default to the commandline
+        specification for overlaybullets."""
+        if 'nooverlay' in node.parent.attributes['classes']:
+            return False
+        elif 'overlay' in node.parent.attributes['classes']:
+            return True
+        else:
+            return self.overlay_bullets
 
 
     def depart_bullet_list (self, node):
@@ -1119,7 +1132,7 @@ class BeamerTranslator (LaTeXTranslator):
             self.out.append( '\\begin{list}{}{}\n' )
         else:
             begin_str = '\\begin{enumerate}'
-            if self.overlay_bullets:
+            if self.node_overlay_check(node):
                 begin_str += '[<+-| alert@+>]'
             begin_str += '\n'
             self.out.append(begin_str)
