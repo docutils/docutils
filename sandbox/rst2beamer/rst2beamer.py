@@ -937,63 +937,72 @@ class BeamerTranslator (LaTeXTranslator):
 
 
     def visit_image(self, node):
-        if self.centerfigs:
-            self.out.append('\\begin{center}\n')
         attrs = node.attributes
-        # Add image URI to dependency list, assuming that it's
-        # referring to a local file.
-        self.settings.record_dependencies.add(attrs['uri'])
-        pre = []                        # in reverse order
-        post = []
-        include_graphics_options = []
-        inline = isinstance(node.parent, nodes.TextElement)
-        if 'scale' in attrs:
-            # Could also be done with ``scale`` option to
-            # ``\includegraphics``; doing it this way for consistency.
-            pre.append('\\scalebox{%f}{' % (attrs['scale'] / 100.0,))
-            post.append('}')
-        if 'width' in attrs:
-            include_graphics_options.append('width=%s' % (
-                            self.latex_image_length(attrs['width']), ))
-        if 'height' in attrs:
-            include_graphics_options.append('height=%s' % (
-                            self.latex_image_length(attrs['height']), ))
+        if not 'align' in attrs and self.centerfigs:
+            attrs['align'] = 'center'
         if ('height' not in attrs) and ('width' not in attrs):
-            include_graphics_options.append('height=0.75\\textheight')
+            attrs['height'] = '0.75\\textheight'
+        LaTeXTranslator.visit_image(self, node)
 
-        if 'align' in attrs:
-            align_prepost = {
-                # By default latex aligns the bottom of an image.
-                (1, 'bottom'): ('', ''),
-                (1, 'middle'): ('\\raisebox{-0.5\\height}{', '}'),
-                (1, 'top'): ('\\raisebox{-\\height}{', '}'),
-                (0, 'center'): ('{\\hfill', '\\hfill}'),
-                # These 2 don't exactly do the right thing.  The image should
-                # be floated alongside the paragraph.  See
-                # http://www.w3.org/TR/html4/struct/objects.html#adef-align-IMG
-                (0, 'left'): ('{', '\\hfill}'),
-                (0, 'right'): ('{\\hfill', '}'),}
-            try:
-                pre.append(align_prepost[inline, attrs['align']][0])
-                post.append(align_prepost[inline, attrs['align']][1])
-            except KeyError:
-                pass                    # XXX complain here?
-        if not inline:
-            pre.append('\n')
-            post.append('\n')
-        pre.reverse()
-        self.out.extend( pre )
-        options = ''
-        if len(include_graphics_options)>0:
-            options = '[%s]' % (','.join(include_graphics_options))
-        self.out.append( '\\includegraphics%s{%s}' % (
-                            options, attrs['uri'] ) )
-        self.out.extend( post )
+        ## #Old approach
+        ## if self.centerfigs:
+        ##     self.out.append('\\begin{center}\n')
+        ## attrs = node.attributes
+        ## # Add image URI to dependency list, assuming that it's
+        ## # referring to a local file.
+        ## self.settings.record_dependencies.add(attrs['uri'])
+        ## pre = []                        # in reverse order
+        ## post = []
+        ## include_graphics_options = []
+        ## inline = isinstance(node.parent, nodes.TextElement)
+        ## if 'scale' in attrs:
+        ##     # Could also be done with ``scale`` option to
+        ##     # ``\includegraphics``; doing it this way for consistency.
+        ##     pre.append('\\scalebox{%f}{' % (attrs['scale'] / 100.0,))
+        ##     post.append('}')
+        ## if 'width' in attrs:
+        ##     include_graphics_options.append('width=%s' % (
+        ##                     self.latex_image_length(attrs['width']), ))
+        ## if 'height' in attrs:
+        ##     include_graphics_options.append('height=%s' % (
+        ##                     self.latex_image_length(attrs['height']), ))
+        ## if ('height' not in attrs) and ('width' not in attrs):
+        ##     include_graphics_options.append('height=0.75\\textheight')
+
+        ## if 'align' in attrs:
+        ##     align_prepost = {
+        ##         # By default latex aligns the bottom of an image.
+        ##         (1, 'bottom'): ('', ''),
+        ##         (1, 'middle'): ('\\raisebox{-0.5\\height}{', '}'),
+        ##         (1, 'top'): ('\\raisebox{-\\height}{', '}'),
+        ##         (0, 'center'): ('{\\hfill', '\\hfill}'),
+        ##         # These 2 don't exactly do the right thing.  The image should
+        ##         # be floated alongside the paragraph.  See
+        ##         # http://www.w3.org/TR/html4/struct/objects.html#adef-align-IMG
+        ##         (0, 'left'): ('{', '\\hfill}'),
+        ##         (0, 'right'): ('{\\hfill', '}'),}
+        ##     try:
+        ##         pre.append(align_prepost[inline, attrs['align']][0])
+        ##         post.append(align_prepost[inline, attrs['align']][1])
+        ##     except KeyError:
+        ##         pass                    # XXX complain here?
+        ## if not inline:
+        ##     pre.append('\n')
+        ##     post.append('\n')
+        ## pre.reverse()
+        ## self.out.extend( pre )
+        ## options = ''
+        ## if len(include_graphics_options)>0:
+        ##     options = '[%s]' % (','.join(include_graphics_options))
+        ## self.out.append( '\\includegraphics%s{%s}' % (
+        ##                     options, attrs['uri'] ) )
+        ## self.out.extend( post )
 
 
-    def depart_image(self, node):
-        if self.centerfigs:
-            self.out.append('\\end{center}\n')
+    ## def depart_image(self, node):
+    ##     #This goes with the old approach above
+    ##     if self.centerfigs:
+    ##         self.out.append('\\end{center}\n')
 
 
     ## def visit_Text (self, node):
