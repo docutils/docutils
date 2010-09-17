@@ -464,7 +464,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
           ['--error-encoding-error-handler'],
           {'default': default_error_encoding_error_handler,
            'validator': validate_encoding_error_handler}),
-         ('Specify the language (as 2-letter code).  Default: en.',
+         ('Specify the language (as BCP 47 language tag).  Default: en.',
           ['--language', '-l'], {'dest': 'language_code', 'default': 'en',
                                  'metavar': '<name>'}),
          ('Write output file dependencies to <file>.',
