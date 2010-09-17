@@ -211,5 +211,18 @@ class ExtensionOptionTests(unittest.TestCase):
                           field_list, self.optionspec)
 
 
+class HelperFunctionsTests(unittest.TestCase):
+
+    def test_normalize_language_tag(self):
+        self.assertEquals(utils.normalize_language_tag('de'), ['de'])
+        self.assertEquals(utils.normalize_language_tag('de-AT'),
+                          ['de_at', 'de'])
+        self.assertEquals(utils.normalize_language_tag('de-AT-1901'),
+                          ['de_at_1901', 'de_at', 'de_1901', 'de'])
+        self.assertEquals(utils.normalize_language_tag('de-AT-1901-frak'),
+                          ['de_at_1901_frak', 'de_at_1901', 'de_at_frak',
+                          'de_1901_frak', 'de_at', 'de_1901', 'de_frak', 'de'])
+
+
 if __name__ == '__main__':
     unittest.main()

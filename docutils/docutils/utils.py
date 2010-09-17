@@ -525,7 +525,7 @@ def get_stylesheet_list(settings):
     else:
         sheets = []
     # strip whitespace (frequently occuring in config files)
-    return [sheet.strip(u' \t\n\r') for sheet in sheets]
+    return [sheet.strip(u' \t\n') for sheet in sheets]
 
 def get_trim_footnote_ref_space(settings):
     """
@@ -609,6 +609,37 @@ def uniq(L):
              r.append(item)
      return r
 
+# by Li Daobing http://code.activestate.com/recipes/190465/
+# since Python 2.6 there is also itertools.combinations()
+def unique_combinations(items, n):
+    """Return r-length tuples, in sorted order, no repeated elements"""
+    if n==0: yield []
+    else:
+        for i in xrange(len(items)-n+1):
+            for cc in unique_combinations(items[i+1:],n-1):
+                yield [items[i]]+cc
+
+def normalize_language_tag(tag):
+    """Return a list of normalized combinations for a `BCP 47` language tag.
+
+    Example:
+
+      >>> normalize_language_tag('de-AT-1901')
+      ['de_at_1901', 'de_at', 'de_1901', 'de']
+    """
+    # normalize:
+    tag = tag.lower().replace('-','_')
+    # find all combinations of subtags
+    taglist = []
+    base_tag= tag.split('_')[:1]
+    subtags = tag.split('_')[1:]
+    # print base_tag, subtags
+    for n in range(len(subtags), 0, -1):
+        for tags in unique_combinations(subtags, n):
+            # print tags
+            taglist.append('_'.join(base_tag + tags))
+    taglist += base_tag
+    return taglist
 
 class DependencyList:
 

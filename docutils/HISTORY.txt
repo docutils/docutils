@@ -17,6 +17,10 @@
 Changes Since 0.7
 =================
 
+* General:
+
+  - Handle language codes according to BCP 47.
+
 * tools/buildhtml.py:
 
   - Fix ``--local`` switch.
@@ -25,6 +29,9 @@ Changes Since 0.7
 
   - Fix [ 3043986 ] AttributeError using :local: with table of content.
   - Place title data in the document preamble.
+  - Update list of supported languages.
+  - New config setting "hyperref-options".
+    No hard-coded "unicode" hyperref option (clash with xetex).
 
 * tools/editors/emacs/rst.el:
 
@@ -34,8 +41,8 @@ Changes Since 0.7
 * docutils/utils.py:
 
   - strip whitespace from stylesheet arguments
-  
-    
+
+
 Release 0.7 (2010-07-07)
 ========================
 

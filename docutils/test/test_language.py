@@ -47,6 +47,9 @@ class LanguageTestSuite(DocutilsTestSupport.CustomTestSuite):
             if match:
                 languages[match.group(1)] = 1
         self.languages = languages.keys()
+        # test language tag normalization:
+        self.languages += ['en_gb', 'en_US', 'en-CA', 'de-DE', 'de-AT-1901', 'pt-BR', 'pt-foo-BR']
+
 
     def generateTests(self):
         for language in self.languages:
@@ -182,7 +185,6 @@ class LanguageTestCase(DocutilsTestSupport.CustomTestCase):
             if type(text) is unicode:
                 text = text.encode('raw_unicode_escape')
             self.fail(text)
-
 
 languages_to_test = []
 
