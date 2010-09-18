@@ -539,6 +539,7 @@ class Inliner:
                             re.escape(closers)))
     non_whitespace_before = r'(?<![ \n])'
     non_whitespace_escape_before = r'(?<![ \n\x00])'
+    non_unescaped_whitespace_escape_before = r'(?<!(?<!\x00)[ \n\x00])'
     non_whitespace_after = r'(?![ \n])'
     # Alphanumerics with isolated internal [-._+:] chars (i.e. not 2 together):
     simplename = r'(?:(?!_)\w)+(?:[-._+:](?:(?!_)\w)+)*'
@@ -593,7 +594,7 @@ class Inliner:
                             + r'(\*\*)' + end_string_suffix),
           interpreted_or_phrase_ref=re.compile(
               r"""
-              %(non_whitespace_escape_before)s
+              %(non_unescaped_whitespace_escape_before)s
               (
                 `
                 (?P<suffix>

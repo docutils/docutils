@@ -124,6 +124,47 @@ totest['basics'] = [
         :title:`` (empty interpteted text not recognized)
 """],
 ["""\
+:title:`\ ` (interpteted text containing empty string)
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <title_reference>
+         (interpteted text containing empty string)
+"""],
+["""\
+`\ `:title: (interpteted text containing empty string (postfix))
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <title_reference>
+         (interpteted text containing empty string (postfix))
+"""],
+["""\
+:title:`\ non-empty`
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        <title_reference>
+            non-empty
+"""],
+["""\
+:title:`\  ` (trailing unquoted space)
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        :title:
+        <problematic ids="id2" refid="id1">
+            `
+         ` (trailing unquoted space)
+    <system_message backrefs="id2" ids="id1" level="2" line="1" source="test data" type="WARNING">
+        <paragraph>
+            Inline interpreted text or phrase reference start-string without end-string.
+"""],
+["""\
 Explicit roles for standard inline markup:
 :emphasis:`emphasis`,
 :strong:`strong`,
