@@ -195,6 +195,20 @@ Testing a :fileref:`role` in a nested parse.
                 role
              in a nested parse.
 """],
+["""\
+.. role:: custom
+.. role:: special
+
+Empty :custom:`\ ` and empty `\ `:special:
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Empty 
+        <inline classes="custom">
+         and empty 
+        <inline classes="special">
+"""],
 ]
 
 totest['raw_role'] = [
