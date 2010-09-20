@@ -1,7 +1,7 @@
 
 infodir ?= /usr/share/info
 
-all: rst2texinfo.info rst2texinfo.html
+all: rst2texinfo.info README.html
 
 rst2texinfo.info::
 	python rst2texinfo.py \
@@ -9,11 +9,11 @@ rst2texinfo.info::
 	    --texinfo-dir-entry='rst2texinfo' \
 	    --texinfo-dir-category='Documentation tools' \
 	    --texinfo-dir-description='Convert reStructuredText to Texinfo.' \
-	    README.rst rst2texinfo.texi
+	    README.txt rst2texinfo.texi
 	makeinfo --no-split rst2texinfo.texi
 
-rst2texinfo.html::
-	rst2html.py README.rst README.html
+README.html::
+	rst2html.py README.txt README.html
 
 install-info: all
 	cp -t $(infodir) rst2texinfo.info
@@ -34,7 +34,8 @@ test::
 	python test_texinfo.py -v
 
 clean:
-	-rm -f invocation.rst rst2texinfo.texi rst2texinfo.info
+	-rm -f README.html
+	-rm -f rst2texinfo.texi rst2texinfo.info
 	-rm -rf build rst2texinfo.egg-info dist
 	-rm -f *.pyc
 

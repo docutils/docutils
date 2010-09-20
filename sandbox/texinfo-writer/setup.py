@@ -11,7 +11,7 @@ setup(
     author_email         = 'jonathan.waltman@gmail.com',
     description          = 'Converts reStructuredText to Texinfo',
     long_description     = open(os.path.join(os.path.dirname(__file__),
-                                             'README.rst')).read(),
+                                             'README.txt')).read(),
     license              = 'TBD',
     install_requires     = ['docutils'],
     scripts              = ['rst2texinfo.py'],
