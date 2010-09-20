@@ -1,50 +1,38 @@
 
 rst2texinfo
-###########
+***********
 
 :Author: Jon Waltman
 :Contact: jonathan.waltman@gmail.com
-
-Convert reStructuredText to Texinfo
 
 ``rst2texinfo`` is an extension of the Docutils text processing system
 which adds support for generating Texinfo files from reStructuredText.
 
 
 Introduction
-************
+============
 
-The purpose of this program is to generate Info files from reST
-documents.  Info is the underlying format of the on-line help system
-used by the GNU Project.  This system provides a useful and convenient
-method for reading manuals from the terminal or within Emacs.
-Although, the focus of this program is to produce Info output, Texinfo
-can also be used to generate a variety of different formats, including
-HTML, Latex, and plain text.
-
-rst2texinfo is an extension of the Docutils text processing system
-http://docutils.sourceforge.net/.
-
-The output of rst2texinfo is Texinfo, the official documentation
-format of the GNU Project.  Information on Texinfo can be found at
+The purpose of this program is to generate Info files from
+reStructuredText documents.  Info is the underlying format of the
+on-line help system used by the GNU Project.  This system provides a
+useful and convenient method for reading manuals from the terminal or
+within the Emacs text editor.  Although, the focus of this program is
+to produce Info output, Texinfo can also be used to generate a variety
+of different formats, including HTML, Latex, and plain text.  More
+information on Texinfo can be found at
 http://www.gnu.org/software/texinfo/.
 
-
-Set up
-******
-
-Required packages:
+rst2texinfo uses the following components:
 
 * Python  (tested using v2.6) -- http://www.python.org/
 * Docutils (tested using v0.6) -- http://docutils.sourceforge.net/
 
 To create Info files, you will need the "makeinfo" program which is
-part of the Texinfo project located at
-http://www.gnu.org/software/texinfo/.
+part of the Texinfo project.
 
 
 Install
-*******
+=======
 
 ::
 
@@ -52,46 +40,66 @@ Install
 
 
 Invoking rst2texinfo
-********************
+====================
 
-.. include:: invocation.rst
+::
+
+    rst2texinfo.py [options] [<source> [<destination>]]
+
+Reads reStructuredText from ``source`` and writes Texinfo to
+``destination``.
+
+.. rubric:: Texinfo Specific Options
+
+In addition to the general options provided by Docutils, the following
+options affect the output of rst2texinfo.
+
+--texinfo-filename=<file>
+   Specify the name of the Info file that would be created after
+   running ``makeinfo`` on the generated Texinfo file.  Default
+   behavior is to use the base name of the input source.
+
+--texinfo-dir-entry=<name>
+   Specify the name of the entry to create in the top level ``DIR``
+   menu file.
+
+   To create this entry, run ``install-info`` on the generated Info
+   file.
+
+--texinfo-dir-description=<desc>
+   Descriptive text to appear in the top-level ``DIR`` menu file.
+
+--texinfo-dir-category=<category>
+   Specifies the section which this entry will appear in the top-level
+   ``DIR`` menu file.
 
 
 Converting Texinfo to Info
-**************************
+==========================
 
-Now that you can convert your reST document to Texinfo, the next step
-is to convert the Texinfo file to Info.  To do this, you will need to
-use the ``makeinfo`` program.  Refer to the documentation for more
-details but its general usage is::
+After converting your reStructuredText document to Texinfo, the next
+step is to convert the Texinfo file to Info.  To do this, you will
+need to use the ``makeinfo`` program.  Refer to the documentation for
+more details but its general usage is::
 
     makeinfo --no-split FILENAME.texi
 
 This should create a file named FILENAME.info which can then be read
 using an "Info reader".
 
-See `makeinfo`_ for more information.
-
-.. _makeinfo: info:texinfo#Invoking_makeinfo
-
 
 Reading Info Files
-******************
+==================
 
 There are two main programs for reading Info files, ``info`` and GNU
 Emacs.  The ``info`` program has less features but is available on
 most \*nix environments and can be quickly accessed at the terminal.
 Emacs provides better font color displays and supports extensive
-customization (of course).  This document focuses on using Emacs for
-reading Info files.
-
-Checkout the `manual`_ for help on reading Info files.
-
-.. _manual: info:info
+customization (of course).
 
 
 Issues
-******
+======
 
 The conversion of reST to Texinfo is not a seamless transition.  Info
 is not as sophisticated as HTML which creates several issues since
@@ -100,7 +108,7 @@ describe some of these issues.
 
 
 Displaying Links
-================
+----------------
 
 One noticeable problem you may encounter with the generated Info files
 is how references are displayed.  If you read the source of an Info
@@ -149,8 +157,8 @@ your start-up file, ``~/.emacs.d/init.el``.
                  'hide)))))
 
 
-Miscellaneous
-=============
+Notes
+=====
 
 The following notes may be helpful if you want to create Texinfo
 files:
@@ -181,7 +189,7 @@ files:
 
 
 Copyright
-*********
+=========
 
 rst2texinfo and this documentation should have the same license as the
 Docutils project.
