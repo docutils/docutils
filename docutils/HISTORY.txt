@@ -25,6 +25,13 @@ Changes Since 0.7
 
   - Fix ``--local`` switch.
 
+* docutils/writers/xetex/__init__.py
+
+  - New writer generating LaTeX code for compiling with ``xelatex``.
+  
+    A separate writer (inheriting from latex2e) instead of a ``--xetex``
+    option allows separate config options for XeTeX vs. LaTeX2e.
+
 * docutils/writers/latex2e/__init__.py
 
   - Fix [ 3043986 ] AttributeError using :local: with table of content.

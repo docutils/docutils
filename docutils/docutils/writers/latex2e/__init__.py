@@ -286,7 +286,7 @@ class Babel(object):
         'bg':           'bulgarian',
         'br':           'breton',
         'ca':           'catalan',
-        # 'cop':          'coptic', 
+        # 'cop':          'coptic',
         'cs':           'czech',
         'cy':           'welsh',
         'da':           'danish',
@@ -313,7 +313,7 @@ class Babel(object):
         'fr_ca':        'canadien',
         'ga':           'irish',    # Irish Gaelic
         # 'grc':                    # Ancient Greek
-        'grc_x_ibycus': 'ibycus',   # Ibycus encoding 
+        'grc_x_ibycus': 'ibycus',   # Ibycus encoding
         'grc_ibycus':   'ibycus',
         'gd':           'scottish', # Scottish Gaelic
         'gl':           'galician',
@@ -335,7 +335,7 @@ class Babel(object):
         'nb':           'norsk',     # Norwegian Bokmal
         'nl':           'dutch',
         'nn':           'nynorsk',   # Norwegian Nynorsk
-        'no':           'norsk',     # Norwegian Bokmal   
+        'no':           'norsk',     # Norwegian Bokmal
         'pl':           'polish',
         'pt':           'portuges',
         'pt_br':        'brazil',
@@ -343,18 +343,18 @@ class Babel(object):
         'ru':           'russian',   # " active
         'se':           'samin', # North Sami
         # sh-cyrl:      Serbo-Croatian, Cyrillic script
-        'sh-latn':      'serbian', # Serbo-Croatian, Latin script   
+        'sh-latn':      'serbian', # Serbo-Croatian, Latin script
         'sk':           'slovak',
         'sl':           'slovene',
         'sq':           'albanian',
         # 'sr-cyrl':    Serbian, Cyrillic script (sr-cyrl)
-        'sr-latn':      'serbian', # Serbian, Latin script, " active.                 
+        'sr-latn':      'serbian', # Serbian, Latin script, " active.
         'sv':           'swedish',
         # 'th':           'thai',
         'tr':           'turkish',
         'uk':           'ukrainian',
         'vi':           'vietnam',
-        # zh-latn:      Chinese Pinyin             
+        # zh-latn:      Chinese Pinyin
         }
 
     def __init__(self, language_code):
@@ -2146,8 +2146,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.requirements['~header'] = ''.join(self.out)
         self.pop_output_collector()
 
-    def to_latex_length(self, length_str):
-        """Convert string with rst lenght to LaTeX"""
+    def to_latex_length(self, length_str, pxunit='px'):
+        """Convert `length_str` with rst lenght to LaTeX length
+        """
         match = re.match('(\d*\.?\d*)\s*(\S*)', length_str)
         if not match:
             return length_str
@@ -2158,6 +2159,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # percentage: relate to current line width
         elif unit == '%':
             length_str = '%.3f\\linewidth' % (float(value)/100.0)
+        elif (unit == 'px') and (pxunit != 'px'):
+            # length unit px not defined in some tex variants (e.g. XeTeX)
+            self.fallbacks['_providelength'] = PreambleCmds.providelength
+            self.fallbacks['px'] = '\n\\DUprovidelength{%s}{1bp}\n' % pxunit
+            length_str = '%s%s' % (value, pxunit)
+
         return length_str
 
     def visit_image(self, node):
