@@ -319,8 +319,16 @@ _`input_encoding_error_handler`
     --input-encoding, -i``.
 
 _`language_code`
-    `ISO 639`_ 2-letter language code (3-letter codes used only if no
-    2-letter code exists).
+    Case-insensitive `language tag`_ as defined in `BCP 47`_.
+
+    A typical language identifier consists of a 2-letter language code
+    from `ISO 639`_ (3-letter codes can be used if no 2-letter code
+    exists). The language identifier can have an optional subtag,
+    typically for variations based on country (from `ISO 3166`_
+    2-letter country codes).  Avoid subtags except where they add
+    useful distinguishing information. Examples of language tags
+    include "fr", "en-GB", "pt_br" (the same as "pt-BR"), and
+    "de-1901".
 
     Default: English ("en").  Options: ``--language, -l``.
 
@@ -935,10 +943,30 @@ _`use_latex_abstract`
     Default: off.  Options: ``--use-latex-abstract, --topic-abstract``.
 
 _`hyperlink_color`
-    Color of any hyperlinks embedded in text. Use "0" to disable
-    coloring of links.
+    Color of any hyperlinks embedded in text.
+
+    * "0" or "false" disable coloring of links. (Links will be marked
+      by red boxes that are not printed),
+    * "black" results in “invisible“ links,
+
+    Set hyperref_options_ to "draft" to completely disable
+    hyperlinking.
 
     Default: "blue".  Option: ``--hyperlink-color``.
+
+_`hyperref_options`
+    Options for the `hyperref TeX package`_. If hyperlink_color_ is
+    not "false", the expansion of ::
+
+      'colorlinks=true,linkcolor=%s,urlcolor=%s' % (
+         hyperlink_color, self.hyperlink_color
+
+    is prepended. For documents typeset in Cyrillic script,
+    ``--hyperref-options=unicode`` is recommended.
+
+    Default: "".   Option: ``--hyperref-options``.
+
+    .. _hyperref TeX package: http://tug.org/applications/hyperref/
 
 _`documentclass`
     Specify latex documentclass.
@@ -1232,7 +1260,11 @@ _`_source`
     Default: stdin (None).  No command-line options.
 
 
+.. _language tag: http://www.w3.org/International/articles/language-tags/
+.. _BCP 47: http://www.rfc-editor.org/rfc/bcp/bcp47.txt
 .. _ISO 639: http://www.loc.gov/standards/iso639-2/php/English_list.php
+.. _ISO 3166: http://www.iso.ch/iso/en/prods-services/iso3166ma/
+   02iso-3166-code-lists/index.html
 
 .. [#pwd] Path relative to the working directory of the process at
    launch.
