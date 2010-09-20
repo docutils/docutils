@@ -1,0 +1,506 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="Docutils 0.7: http://docutils.sourceforge.net/" />
+<title>rst2texinfo</title>
+<meta name="author" content="Jon Waltman" />
+<style type="text/css">
+
+/*
+:Author: David Goodger (goodger@python.org)
+:Id: $Id$
+:Copyright: This stylesheet has been placed in the public domain.
+
+Default cascading style sheet for the HTML output of Docutils.
+
+See http://docutils.sf.net/docs/howto/html-stylesheets.html for how to
+customize this style sheet.
+*/
+
+/* used to remove borders from tables and images */
+.borderless, table.borderless td, table.borderless th {
+  border: 0 }
+
+table.borderless td, table.borderless th {
+  /* Override padding for "table.docutils td" with "! important".
+     The right padding separates the table cells. */
+  padding: 0 0.5em 0 0 ! important }
+
+.first {
+  /* Override more specific margin styles with "! important". */
+  margin-top: 0 ! important }
+
+.last, .with-subtitle {
+  margin-bottom: 0 ! important }
+
+.hidden {
+  display: none }
+
+a.toc-backref {
+  text-decoration: none ;
+  color: black }
+
+blockquote.epigraph {
+  margin: 2em 5em ; }
+
+dl.docutils dd {
+  margin-bottom: 0.5em }
+
+/* Uncomment (and remove this text!) to get bold-faced definition list terms
+dl.docutils dt {
+  font-weight: bold }
+*/
+
+div.abstract {
+  margin: 2em 5em }
+
+div.abstract p.topic-title {
+  font-weight: bold ;
+  text-align: center }
+
+div.admonition, div.attention, div.caution, div.danger, div.error,
+div.hint, div.important, div.note, div.tip, div.warning {
+  margin: 2em ;
+  border: medium outset ;
+  padding: 1em }
+
+div.admonition p.admonition-title, div.hint p.admonition-title,
+div.important p.admonition-title, div.note p.admonition-title,
+div.tip p.admonition-title {
+  font-weight: bold ;
+  font-family: sans-serif }
+
+div.attention p.admonition-title, div.caution p.admonition-title,
+div.danger p.admonition-title, div.error p.admonition-title,
+div.warning p.admonition-title {
+  color: red ;
+  font-weight: bold ;
+  font-family: sans-serif }
+
+/* Uncomment (and remove this text!) to get reduced vertical space in
+   compound paragraphs.
+div.compound .compound-first, div.compound .compound-middle {
+  margin-bottom: 0.5em }
+
+div.compound .compound-last, div.compound .compound-middle {
+  margin-top: 0.5em }
+*/
+
+div.dedication {
+  margin: 2em 5em ;
+  text-align: center ;
+  font-style: italic }
+
+div.dedication p.topic-title {
+  font-weight: bold ;
+  font-style: normal }
+
+div.figure {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+div.footer, div.header {
+  clear: both;
+  font-size: smaller }
+
+div.line-block {
+  display: block ;
+  margin-top: 1em ;
+  margin-bottom: 1em }
+
+div.line-block div.line-block {
+  margin-top: 0 ;
+  margin-bottom: 0 ;
+  margin-left: 1.5em }
+
+div.sidebar {
+  margin: 0 0 0.5em 1em ;
+  border: medium outset ;
+  padding: 1em ;
+  background-color: #ffffee ;
+  width: 40% ;
+  float: right ;
+  clear: right }
+
+div.sidebar p.rubric {
+  font-family: sans-serif ;
+  font-size: medium }
+
+div.system-messages {
+  margin: 5em }
+
+div.system-messages h1 {
+  color: red }
+
+div.system-message {
+  border: medium outset ;
+  padding: 1em }
+
+div.system-message p.system-message-title {
+  color: red ;
+  font-weight: bold }
+
+div.topic {
+  margin: 2em }
+
+h1.section-subtitle, h2.section-subtitle, h3.section-subtitle,
+h4.section-subtitle, h5.section-subtitle, h6.section-subtitle {
+  margin-top: 0.4em }
+
+h1.title {
+  text-align: center }
+
+h2.subtitle {
+  text-align: center }
+
+hr.docutils {
+  width: 75% }
+
+img.align-left, .figure.align-left, object.align-left {
+  clear: left ;
+  float: left ;
+  margin-right: 1em }
+
+img.align-right, .figure.align-right, object.align-right {
+  clear: right ;
+  float: right ;
+  margin-left: 1em }
+
+img.align-center, .figure.align-center, object.align-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.align-left {
+  text-align: left }
+
+.align-center {
+  clear: both ;
+  text-align: center }
+
+.align-right {
+  text-align: right }
+
+/* reset inner alignment in figures */
+div.align-right {
+  text-align: left }
+
+/* div.align-center * { */
+/*   text-align: left } */
+
+ol.simple, ul.simple {
+  margin-bottom: 1em }
+
+ol.arabic {
+  list-style: decimal }
+
+ol.loweralpha {
+  list-style: lower-alpha }
+
+ol.upperalpha {
+  list-style: upper-alpha }
+
+ol.lowerroman {
+  list-style: lower-roman }
+
+ol.upperroman {
+  list-style: upper-roman }
+
+p.attribution {
+  text-align: right ;
+  margin-left: 50% }
+
+p.caption {
+  font-style: italic }
+
+p.credits {
+  font-style: italic ;
+  font-size: smaller }
+
+p.label {
+  white-space: nowrap }
+
+p.rubric {
+  font-weight: bold ;
+  font-size: larger ;
+  color: maroon ;
+  text-align: center }
+
+p.sidebar-title {
+  font-family: sans-serif ;
+  font-weight: bold ;
+  font-size: larger }
+
+p.sidebar-subtitle {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+p.topic-title {
+  font-weight: bold }
+
+pre.address {
+  margin-bottom: 0 ;
+  margin-top: 0 ;
+  font: inherit }
+
+pre.literal-block, pre.doctest-block {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+span.classifier {
+  font-family: sans-serif ;
+  font-style: oblique }
+
+span.classifier-delimiter {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+span.interpreted {
+  font-family: sans-serif }
+
+span.option {
+  white-space: nowrap }
+
+span.pre {
+  white-space: pre }
+
+span.problematic {
+  color: red }
+
+span.section-subtitle {
+  /* font-size relative to parent (h1..h6 element) */
+  font-size: 80% }
+
+table.citation {
+  border-left: solid 1px gray;
+  margin-left: 1px }
+
+table.docinfo {
+  margin: 2em 4em }
+
+table.docutils {
+  margin-top: 0.5em ;
+  margin-bottom: 0.5em }
+
+table.footnote {
+  border-left: solid 1px black;
+  margin-left: 1px }
+
+table.docutils td, table.docutils th,
+table.docinfo td, table.docinfo th {
+  padding-left: 0.5em ;
+  padding-right: 0.5em ;
+  vertical-align: top }
+
+table.docutils th.field-name, table.docinfo th.docinfo-name {
+  font-weight: bold ;
+  text-align: left ;
+  white-space: nowrap ;
+  padding-left: 0 }
+
+h1 tt.docutils, h2 tt.docutils, h3 tt.docutils,
+h4 tt.docutils, h5 tt.docutils, h6 tt.docutils {
+  font-size: 100% }
+
+ul.auto-toc {
+  list-style-type: none }
+
+</style>
+</head>
+<body>
+<div class="document" id="rst2texinfo">
+<h1 class="title">rst2texinfo</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name" />
+<col class="docinfo-content" />
+<tbody valign="top">
+<tr><th class="docinfo-name">Author:</th>
+<td>Jon Waltman</td></tr>
+<tr><th class="docinfo-name">Contact:</th>
+<td><a class="first last reference external" href="mailto:jonathan.waltman&#64;gmail.com">jonathan.waltman&#64;gmail.com</a></td></tr>
+</tbody>
+</table>
+<p><tt class="docutils literal">rst2texinfo</tt> is an extension of the Docutils text processing system
+which adds support for generating Texinfo files from reStructuredText.</p>
+<div class="section" id="introduction">
+<h1>Introduction</h1>
+<p>The purpose of this program is to generate Info files from
+reStructuredText documents.  Info is the underlying format of the
+on-line help system used by the GNU Project.  This system provides a
+useful and convenient method for reading manuals from the terminal or
+within the Emacs text editor.  Although, the focus of this program is
+to produce Info output, Texinfo can also be used to generate a variety
+of different formats, including HTML, Latex, and plain text.  More
+information on Texinfo can be found at
+<a class="reference external" href="http://www.gnu.org/software/texinfo/">http://www.gnu.org/software/texinfo/</a>.</p>
+<p>rst2texinfo uses the following components:</p>
+<ul class="simple">
+<li>Python  (tested using v2.6) -- <a class="reference external" href="http://www.python.org/">http://www.python.org/</a></li>
+<li>Docutils (tested using v0.6) -- <a class="reference external" href="http://docutils.sourceforge.net/">http://docutils.sourceforge.net/</a></li>
+</ul>
+<p>To create Info files, you will need the &quot;makeinfo&quot; program which is
+part of the Texinfo project.</p>
+</div>
+<div class="section" id="install">
+<h1>Install</h1>
+<pre class="literal-block">
+python setup.py install
+</pre>
+</div>
+<div class="section" id="invoking-rst2texinfo">
+<h1>Invoking rst2texinfo</h1>
+<pre class="literal-block">
+rst2texinfo.py [options] [&lt;source&gt; [&lt;destination&gt;]]
+</pre>
+<p>Reads reStructuredText from <tt class="docutils literal">source</tt> and writes Texinfo to
+<tt class="docutils literal">destination</tt>.</p>
+<p class="rubric">Texinfo Specific Options</p>
+<p>In addition to the general options provided by Docutils, the following
+options affect the output of rst2texinfo.</p>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">--texinfo-filename=<var>&lt;file&gt;</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>Specify the name of the Info file that would be created after
+running <tt class="docutils literal">makeinfo</tt> on the generated Texinfo file.  Default
+behavior is to use the base name of the input source.</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">--texinfo-dir-entry=<var>&lt;name&gt;</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td><p class="first">Specify the name of the entry to create in the top level <tt class="docutils literal">DIR</tt>
+menu file.</p>
+<p class="last">To create this entry, run <tt class="docutils literal"><span class="pre">install-info</span></tt> on the generated Info
+file.</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">--texinfo-dir-description=<var>&lt;desc&gt;</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>Descriptive text to appear in the top-level <tt class="docutils literal">DIR</tt> menu file.</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">--texinfo-dir-category=<var>&lt;category&gt;</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>Specifies the section which this entry will appear in the top-level
+<tt class="docutils literal">DIR</tt> menu file.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="converting-texinfo-to-info">
+<h1>Converting Texinfo to Info</h1>
+<p>After converting your reStructuredText document to Texinfo, the next
+step is to convert the Texinfo file to Info.  To do this, you will
+need to use the <tt class="docutils literal">makeinfo</tt> program.  Refer to the documentation for
+more details but its general usage is:</p>
+<pre class="literal-block">
+makeinfo --no-split FILENAME.texi
+</pre>
+<p>This should create a file named FILENAME.info which can then be read
+using an &quot;Info reader&quot;.</p>
+</div>
+<div class="section" id="reading-info-files">
+<h1>Reading Info Files</h1>
+<p>There are two main programs for reading Info files, <tt class="docutils literal">info</tt> and GNU
+Emacs.  The <tt class="docutils literal">info</tt> program has less features but is available on
+most *nix environments and can be quickly accessed at the terminal.
+Emacs provides better font color displays and supports extensive
+customization (of course).</p>
+</div>
+<div class="section" id="issues">
+<h1>Issues</h1>
+<p>The conversion of reST to Texinfo is not a seamless transition.  Info
+is not as sophisticated as HTML which creates several issues since
+most reST documents are geared for HTML output.  The following sections
+describe some of these issues.</p>
+<div class="section" id="displaying-links">
+<h2>Displaying Links</h2>
+<p>One noticeable problem you may encounter with the generated Info files
+is how references are displayed.  If you read the source of an Info
+file, a reference to this section would look like:</p>
+<pre class="literal-block">
+* note Displaying Links: target-id
+</pre>
+<p>In the stand-alone reader, <tt class="docutils literal">info</tt>, references are displayed just as
+they appear in the source.  Emacs, on the other-hand, will by default
+replace <tt class="docutils literal">\*note:</tt> with <tt class="docutils literal">see</tt> and hide the <tt class="docutils literal"><span class="pre">target-id</span></tt>.  For
+example:</p>
+<blockquote>
+<a class="reference internal" href="#displaying-links">Displaying Links</a></blockquote>
+<p>The exact behavior of how Emacs displays references is dependent on
+the variable <tt class="docutils literal"><span class="pre">Info-hide-note-references</span></tt>.  If set to the value of
+<tt class="docutils literal">hide</tt>, Emacs will hide both the <tt class="docutils literal">\*note:</tt> part and the
+<tt class="docutils literal"><span class="pre">target-id</span></tt>.  This is generally the best way to view reST documents
+since they often make frequent use of links and do not take this
+limitation into account.  However, changing this variable affects how
+all Info documents are displayed and most due take this behavior into
+account.</p>
+<p>If you want Emacs to display Info files produced by rst2texinfo using the
+value <tt class="docutils literal">hide</tt> for <tt class="docutils literal"><span class="pre">Info-hide-note-references</span></tt> and the default value
+for all other Info files, try adding the following Emacs Lisp code to
+your start-up file, <tt class="docutils literal"><span class="pre">~/.emacs.d/init.el</span></tt>.</p>
+<pre class="literal-block">
+(defadvice info-insert-file-contents (after
+                                      docutils-info-insert-file-contents
+                                      activate)
+  &quot;Hack to make `Info-hide-note-references' buffer-local and
+automatically set to `hide' iff it can be determined that this file
+was created from a Texinfo file generated by Docutils or Sphinx.&quot;
+  (set (make-local-variable 'Info-hide-note-references)
+       (default-value 'Info-hide-note-references))
+  (save-excursion
+    (save-restriction
+      (widen) (goto-char (point-min))
+      (when (re-search-forward
+             &quot;^Generated by \\(Sphinx\\|Docutils\\)&quot;
+             (save-excursion (search-forward &quot;&quot; nil t)) t)
+        (set (make-local-variable 'Info-hide-note-references)
+             'hide)))))
+</pre>
+</div>
+</div>
+<div class="section" id="notes">
+<h1>Notes</h1>
+<p>The following notes may be helpful if you want to create Texinfo
+files:</p>
+<ul>
+<li><p class="first">Each section corresponds to a different <tt class="docutils literal">node</tt> in the Info file.</p>
+</li>
+<li><p class="first">Some characters cannot be properly escaped in menu entries and
+xrefs.  The following characters are replaced by spaces in these
+contexts: <tt class="docutils literal">&#64;</tt>, <tt class="docutils literal">{</tt>, <tt class="docutils literal">}</tt>, <tt class="docutils literal">.</tt>, <tt class="docutils literal">,</tt>, and <tt class="docutils literal">:</tt>.</p>
+</li>
+<li><p class="first">In the HTML and Tex output, the word <tt class="docutils literal">see</tt> is automatically
+inserted before all xrefs.</p>
+</li>
+<li><p class="first">Links to external Info files can be created using the somewhat
+official URI scheme <tt class="docutils literal">info</tt>.  For example:</p>
+<pre class="literal-block">
+info:Texinfo#makeinfo_options
+</pre>
+<p>which produces:</p>
+<blockquote>
+<p><a class="reference external" href="info:Texinfo#makeinfo_options">info:Texinfo#makeinfo_options</a></p>
+</blockquote>
+</li>
+<li><p class="first">Inline markup appears as follows in Info:</p>
+<ul class="simple">
+<li>strong -- *strong*</li>
+<li>emphasis -- _emphasis_</li>
+<li>literal -- `literal'</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="copyright">
+<h1>Copyright</h1>
+<p>rst2texinfo and this documentation should have the same license as the
+Docutils project.</p>
+<p>Copyright © 2010  Jon Waltman. All rights reserved.</p>
+</div>
+</div>
+</body>
+</html>

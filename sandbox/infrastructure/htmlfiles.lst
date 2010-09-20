@@ -152,6 +152,7 @@
 ./sandbox/html4strict/docs/sample-html4-strict-css1.html
 ./sandbox/html4strict/README.html
 ./sandbox/rst2pdf/README.html
+./sandbox/texinfo-writer/README.html
 ./COPYING.html
 ./HISTORY.html
 ./README.html

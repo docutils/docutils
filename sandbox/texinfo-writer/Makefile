@@ -1,21 +1,19 @@
 
 infodir ?= /usr/share/info
 
-dir_entry = 'rst2texinfo'
-dir_category = 'Documentation tools'
-dir_description = 'Convert reStructuredText to Texinfo.'
-
-all: rst2texinfo.info
+all: rst2texinfo.info rst2texinfo.html
 
 rst2texinfo.info::
-	python rst2texinfo.py --help > invocation.rst
 	python rst2texinfo.py \
 	    --texinfo-filename=rst2texinfo.info \
-	    --texinfo-dir-entry=$(dir_entry) \
-	    --texinfo-dir-category=$(dir_category) \
-	    --texinfo-dir-description=$(dir_description) \
+	    --texinfo-dir-entry='rst2texinfo' \
+	    --texinfo-dir-category='Documentation tools' \
+	    --texinfo-dir-description='Convert reStructuredText to Texinfo.' \
 	    README.rst rst2texinfo.texi
 	makeinfo --no-split rst2texinfo.texi
+
+rst2texinfo.html::
+	rst2html.py README.rst README.html
 
 install-info: all
 	cp -t $(infodir) rst2texinfo.info
