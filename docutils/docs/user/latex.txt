@@ -211,14 +211,12 @@ The LaTeX code generation can be configured via
 Options
 -------
 
-Options to the Docutils LaTeX writer are specified as
+Options can be specified as
 
-command-line options
-  to the conversion command (run ``rst2latex.py --help`` to get a list of
+* command-line options (run ``rst2latex.py --help`` to get a list of
   available options), or
 
-configuration settings
-  in a configuration file (see `Docutils Configuration`_ for details).
+* configuration settings (see `Docutils Configuration`_ for details).
 
 .. _Docutils Configuration:
    ../user/config.html
@@ -296,8 +294,8 @@ Example:
   latex-preamble_ setting in a configuration file::
 
      latex-preamble: \renewcommand{\ttdefault}{txtt}
-     		     \usepackage{mathptmx}          % Times
-		     \usepackage[scaled=.92]{helvet}  % Helvetica
+                     \usepackage{mathptmx}          % Times
+                     \usepackage[scaled=.92]{helvet}  % Helvetica
 
 .. _latex-preamble:
    ../user/config.html#latex-preamble
@@ -819,7 +817,7 @@ d) PSNFSS_ Postscript fonts
            old-style figures
      -1  bad rendering in xpdf viewer (auto-hinting leads to different
          x-hight for different characters at some magnifications)
-	 (this is fixed in recent versions).
+         (this is fixed in recent versions).
 
    Times
      +1  the serif `PDF Standard Font`_,
@@ -1048,15 +1046,17 @@ Example:
 hyperlinks
 ----------
 
+Options:
+  hyperlink-color_, hyperref-options_
+
 Hyperlinks are realized using the hyperref_ package. As it re-defines many
 standard LaTeX macros, this package is loaded last, *after* the style
 sheets.
 
-However, you can load hyperref with custom options (or before a
-package that requires its presence) in a `style sheet`_ or the `LaTeX
-preamble`_, e.g. ::
-
-  \usepackage[unicode,colorlinks=true,linkcolor=green]{hyperref}
+However, you can load hyperref before a package that requires its
+presence in a `style sheet`_ or the `LaTeX preamble`_ (see example
+below). This will ignore options set with hyperlink-color_ and
+hyperref-options_.
 
 URLs are typeset with the "url" package (loaded implicitely by "hyperref").
 The font of URLs can be defined with the ``\urlstyle`` command. Valid
@@ -1077,19 +1077,27 @@ Example:
 
 See also `non-breaking hyperlinks`_.
 
+.. _hyperlink-color:
+   ../user/config.html#hyperlink-color
+.. _hyperref-options:
+   ../user/config.html#hyperref-options
+
+
 disable hyperlinks
 ``````````````````
 
-To suppress the hyper-linking completely (e.g. for printing or to avoid
-clashes with other packages), load the "nohyperref" package that comes with
-the "hyperref" bundle.
+To suppress the hyper-linking completely (e.g. for printing or to
+avoid clashes with other packages), set hyperref-options_ to "draft"
+or load the "nohyperref" package that comes with the "hyperref"
+bundle.
 
 Option:
-  ``--stylesheet=nohyperref,url``
+  ``--hyperref-options=draft``
 
 LaTeX code::
 
   \usepackage{nohyperref,url}
+  \urlstyle{same}
 
 .. _hyperref:
    http://mirror.ctan.org/help/Catalogue/entries/hyperref.html
@@ -1715,6 +1723,7 @@ not wrap and sometimes stick into the margin.
 
 Wrong:
   ::
+
      \usepackage[breaklinks=true]{hyperref}
 
   "breaklinks" is an internal option that indicates whether the chosen
@@ -1738,6 +1747,27 @@ See also the `Link text doesn’t break at end line`_ FAQ entry.
 
 .. _Link text doesn’t break at end line:
    http://www.tex.ac.uk/cgi-bin/texfaq2html?label=breaklinks
+
+
+Glyph not defined in PD1 encoding
+`````````````````````````````````
+
+If a section title or other link contains e.g. cyrillic characters,
+the LaTeX log contains lots of warnings like::
+
+  Package hyperref Warning: Glyph not defined in PD1 encoding,
+  (hyperref)                removing `\CYRZ' on input line 6.
+  ...
+
+This can be solved with the "unicode" hyperref_option_ setting::
+
+  --hyperref-option=unicode
+
+(works also with non-unicode input/output encoding (e.g. "koi8r" or
+"latin1"). However, this setting clashes with the XeTeX_ engine and is
+therefore not made a default.
+
+.. _hyperref_option: ../user/config.html#stylesheet-latex2e-writer
 
 
 image inclusion
@@ -1812,7 +1842,7 @@ an Euro sign at its place). You might see an error like::
 
 :warn: turn the error in a warning, use the default symbol (bitmap), or
 :force,almostfull: use the symbol provided by the font at the users
-		     risk,
+                     risk,
 
 to the document options or use a different font package.
 

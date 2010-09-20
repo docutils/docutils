@@ -134,8 +134,11 @@ class Writer(writers.Writer):
           {'default': 0, 'action': 'store_true',
            'validator': frontend.validate_boolean}),
          ('Color of any hyperlinks embedded in text '
-          '(default: "blue", "0" to disable).',
+          '(default: "blue", "false" to disable).',
           ['--hyperlink-color'], {'default': 'blue'}),
+         ('Additional options to the "hyperref" package '
+          '(default: "").',
+          ['--hyperref-options'], {'default': ''}),
          ('Enable compound enumerators for nested enumerated lists '
           '(e.g. "1.2.a.ii").  Default: disabled.',
           ['--compound-enumerators'],
@@ -229,7 +232,6 @@ class Writer(writers.Writer):
        # transform_list.append(footnotes.collect)
        return transform_list
 
-
     def translate(self):
         visitor = self.translator_class(self.document)
         self.document.walkabout(visitor)
@@ -240,7 +242,7 @@ class Writer(writers.Writer):
         try:
             file = open(self.document.settings.template, 'rb')
         except IOError:
-            file = open(os.path.join(os.path.dirname(__file__),
+            file = open(os.path.join(self.default_template_path,
                                      self.document.settings.template), 'rb')
         template = string.Template(unicode(file.read(), 'utf-8'))
         file.close()
@@ -264,70 +266,120 @@ class Writer(writers.Writer):
 
 class Babel(object):
     """Language specifics for LaTeX."""
-    # country code by a.schlock.
-    # partly manually converted from iso and babel stuff, dialects and some
-    _ISO639_TO_BABEL = {
-        'no': 'norsk',     #XXX added by hand ( forget about nynorsk?)
-        'gd': 'scottish',  #XXX added by hand
-        'hu': 'magyar',    #XXX added by hand
-        'pt': 'portuguese',#XXX added by hand
-        'sl': 'slovenian',
-        'af': 'afrikaans',
-        'bg': 'bulgarian',
-        'br': 'breton',
-        'ca': 'catalan',
-        'cs': 'czech',
-        'cy': 'welsh',
-        'da': 'danish',
-        'fr': 'french',
-        # french, francais, canadien, acadian
-        'de': 'ngerman',  #XXX rather than german
-        # ngerman, naustrian, german, germanb, austrian
-        'el': 'greek',
-        'en': 'english',
-        # english, USenglish, american, UKenglish, british, canadian
-        'eo': 'esperanto',
-        'es': 'spanish',
-        'et': 'estonian',
-        'eu': 'basque',
-        'fi': 'finnish',
-        'ga': 'irish',
-        'gl': 'galician',
-        'he': 'hebrew',
-        'hr': 'croatian',
-        'hu': 'hungarian',
-        'is': 'icelandic',
-        'it': 'italian',
-        'la': 'latin',
-        'nl': 'dutch',
-        'pl': 'polish',
-        'pt': 'portuguese',
-        'ro': 'romanian',
-        'ru': 'russian',
-        'sk': 'slovak',
-        'sr': 'serbian',
-        'sv': 'swedish',
-        'tr': 'turkish',
-        'uk': 'ukrainian'
-    }
 
-    def __init__(self, lang):
-        self.language = lang
+    # TeX (babel) language names:
+    # ! not all of these are supported by Docutils!
+    #
+    # based on LyX' languages file with adaptions to `BCP 47`_
+    # (http://www.rfc-editor.org/rfc/bcp/bcp47.txt) and
+    # http://www.tug.org/TUGboat/Articles/tb29-3/tb93miklavec.pdf
+    # * the key without subtags is the default
+    # * case is ignored
+    # cf. http://docutils.sourceforge.net/docs/howto/i18n.html
+    #     http://www.w3.org/International/articles/language-tags/
+    # and http://www.iana.org/assignments/language-subtag-registry
+    language_codes = {
+        # code          TeX/Babel-name       comment
+        'af':           'afrikaans',
+        'ar':           'arabic',
+        # 'be':           'belarusian',
+        'bg':           'bulgarian',
+        'br':           'breton',
+        'ca':           'catalan',
+        # 'cop':          'coptic', 
+        'cs':           'czech',
+        'cy':           'welsh',
+        'da':           'danish',
+        'de':           'ngerman', # new spelling (de_1996)
+        'de_1901':      'german', # old spelling
+        'de_at':        'naustrian',
+        'de_at_1901':   'austrian',
+        'dsb':          'lowersorbian',
+        'el':           'greek', # monotonic (el-monoton)
+        'el_polyton':   'polutonikogreek',
+        'en':           'english',  # TeX' default language
+        'en_au':        'australian',
+        'en_ca':        'canadian',
+        'en_gb':        'british',
+        'en_nz':        'newzealand',
+        'en_us':        'american',
+        'eo':           'esperanto', # '^' is made active!
+        'es':           'spanish',
+        'et':           'estonian',
+        'eu':           'basque',
+        # 'fa':           'farsi',
+        'fi':           'finnish',
+        'fr':           'french',
+        'fr_ca':        'canadien',
+        'ga':           'irish',    # Irish Gaelic
+        # 'grc':                    # Ancient Greek
+        'grc_x_ibycus': 'ibycus',   # Ibycus encoding 
+        'grc_ibycus':   'ibycus',
+        'gd':           'scottish', # Scottish Gaelic
+        'gl':           'galician',
+        'he':           'hebrew',
+        'hr':           'croatian',
+        'hsb':          'uppersorbian',
+        'hu':           'magyar',
+        'ia':           'interlingua',
+        'id':           'bahasai',  # Bahasa (Indonesian)
+        'is':           'icelandic',
+        'it':           'italian',
+        'ja':           'japanese',
+        'kk':           'kazakh',
+        'la':           'latin',
+        'lt':           'lithuanian',
+        'lv':           'latvian',
+        'mn':           'mongolian', # Mongolian, Cyrillic script (mn-cyrl)
+        'ms':           'bahasam',   # Bahasa (Malay)
+        'nb':           'norsk',     # Norwegian Bokmal
+        'nl':           'dutch',
+        'nn':           'nynorsk',   # Norwegian Nynorsk
+        'no':           'norsk',     # Norwegian Bokmal   
+        'pl':           'polish',
+        'pt':           'portuges',
+        'pt_br':        'brazil',
+        'ro':           'romanian',
+        'ru':           'russian',   # " active
+        'se':           'samin', # North Sami
+        # sh-cyrl:      Serbo-Croatian, Cyrillic script
+        'sh-latn':      'serbian', # Serbo-Croatian, Latin script   
+        'sk':           'slovak',
+        'sl':           'slovene',
+        'sq':           'albanian',
+        # 'sr-cyrl':    Serbian, Cyrillic script (sr-cyrl)
+        'sr-latn':      'serbian', # Serbian, Latin script, " active.                 
+        'sv':           'swedish',
+        # 'th':           'thai',
+        'tr':           'turkish',
+        'uk':           'ukrainian',
+        'vi':           'vietnam',
+        # zh-latn:      Chinese Pinyin             
+        }
+
+    def __init__(self, language_code):
+        self.language_code = language_code
+        self.get_language() # set self.language, self.warning
         self.quote_index = 0
         self.quotes = ('``', "''")
-        self.setup = '' # language dependent configuration code
+        self.setup = [r'\usepackage{babel}']
+        # language dependent configuration:
         # double quotes are "active" in some languages (e.g. German).
-        # TODO: use \textquotedbl in OT1 font encoding?
+        # TODO: use \textquotedbl in T1 font encoding?
         self.literal_double_quote = u'"'
-        if self.language.startswith('de'):
+        if self.language in ('ngerman', 'german', 'austrian', 'naustrian'):
             self.quotes = (r'\glqq{}', r'\grqq{}')
             self.literal_double_quote = ur'\dq{}'
-        if self.language.startswith('it'):
+        if self.language == 'italian':
             self.literal_double_quote = ur'{\char`\"}'
-        if self.language.startswith('es'):
-            # reset tilde ~ to the original binding (nobreakspace):
-            self.setup = ('\n'
+        if self.language == 'spanish':
+            # reset active chars to the original meaning:
+            self.setup.append(
                   r'\addto\shorthandsspanish{\spanishdeactivate{."~<>}}')
+            # or prepend r'\def\spanishoptions{es-noshorthands}'
+        # don't use babel for (american) English or unknown languages:
+        if self.language in ('english', ''):
+            self.setup = []
 
     def next_quote(self):
         q = self.quotes[self.quote_index]
@@ -344,8 +396,20 @@ class Babel(object):
         return t
 
     def get_language(self):
-        lang = self.language.split('_')[0]  # filter dialects
-        return self._ISO639_TO_BABEL.get(lang, "")
+        """Set TeX language name"""
+        for tag in utils.normalize_language_tag(self.language_code):
+            try:
+                self.language = self.language_codes[tag]
+                self.warning = ''
+                break
+            except KeyError:
+                continue
+        else:
+            self.language = ''
+            self.warning = ('language "%s" not supported by XeTeX' +
+                            'defaulting to "english"') % self.language_code
+
+
 
 # Building blocks for the latex preamble
 # --------------------------------------
@@ -506,7 +570,7 @@ PreambleCmds.lineblock = r"""
 PreambleCmds.linking = r"""
 %% hyperlinks:
 \ifthenelse{\isundefined{\hypersetup}}{
-  \usepackage[unicode,colorlinks=%s,linkcolor=%s,urlcolor=%s]{hyperref}
+  \usepackage[%s]{hyperref}
   \urlstyle{same} %% normal text font (alternatives: tt, rm, sf)
 }{}"""
 
@@ -662,7 +726,6 @@ class Table(object):
         self.stubs = []
     def is_open(self):
         return self._open
-
     def set_table_style(self, table_style):
         if not table_style in ('standard','booktabs','borderless','nolines'):
             return
@@ -851,9 +914,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
     # prefix from the regular list enumerator.
     section_enumerator_separator = '-'
 
-    # default link color
-    hyperlink_color = 'blue'
-
     # Auxiliary variables
     # -------------------
 
@@ -888,7 +948,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self._reference_label = settings.reference_label
         self.hyperlink_color = settings.hyperlink_color
         self.compound_enumerators = settings.compound_enumerators
-        self.font_encoding = settings.font_encoding
+        self.font_encoding = getattr(settings, 'font_encoding', '')
         self.section_prefix_for_enumerators = (
             settings.section_prefix_for_enumerators)
         self.section_enumerator_separator = (
@@ -913,9 +973,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # (labels, bibliographic_fields, and author_separators)
         self.language = languages.get_language(settings.language_code)
         self.babel = Babel(settings.language_code)
+        if self.babel.language == '':
+            self.warn(self.babel.warning)
         self.author_separator = self.language.author_separators[0]
-        self.d_options = [self.settings.documentoptions,
-                          self.babel.get_language()]
+        self.d_options = [self.settings.documentoptions]
+        if self.babel.language and self.babel.language != 'english':
+            self.d_options.append(self.babel.language)
         self.d_options = ','.join([opt for opt in self.d_options if opt])
         self.d_class = DocumentClass(settings.documentclass,
                                      settings.use_part_section)
@@ -1010,17 +1073,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.font_encoding:
             encodings = [r'\usepackage[%s]{fontenc}' % self.font_encoding]
         else:
-            encodings = [r'%\usepackage[OT1]{fontenc}'] # just a comment
+            encodings = []
         # Docutils' output-encoding => TeX input encoding:
         if self.latex_encoding != 'ascii':
             encodings.append(r'\usepackage[%s]{inputenc}'
                              % self.latex_encoding)
-        self.requirements['_static'] = '\n'.join(
-              encodings + [
-              r'\usepackage{ifthen}',
-              # multi-language support (language is in document options)
-              '\\usepackage{babel}%s' % self.babel.setup,
-              ])
+        self.requirements['_static'] = '\n'.join(encodings +
+                                                 [r'\usepackage{ifthen}'] +
+                                                 self.babel.setup)
         # page layout with typearea (if there are relevant document options)
         if (settings.documentclass.find('scr') == -1 and
             (self.d_options.find('DIV') != -1 or
@@ -1054,11 +1114,13 @@ class LaTeXTranslator(nodes.NodeVisitor):
                     self.stylesheet.append(r'\input{%s}' % sheet)
 
         # PDF setup
-        if self.hyperlink_color == '0':
-            self.hyperlink_color = 'black'
-            self.colorlinks = 'false'
+        if self.hyperlink_color in ('0', 'false', 'False', ''):
+            self.hyperref_options = ''
         else:
-            self.colorlinks = 'true'
+            self.hyperref_options = 'colorlinks=true,linkcolor=%s,urlcolor=%s' % (
+                                      self.hyperlink_color, self.hyperlink_color)
+        if settings.hyperref_options:
+            self.hyperref_options += ',' + settings.hyperref_options
 
         # LaTeX Toc
         # include all supported sections in toc and PDF bookmarks
@@ -1723,9 +1785,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # * coditional fallback definitions (after style sheet)
         self.fallbacks = self.fallbacks.sortedvalues()
         # * PDF properties
-        self.pdfsetup.append(PreambleCmds.linking % (self.colorlinks,
-                                                     self.hyperlink_color,
-                                                     self.hyperlink_color))
+        self.pdfsetup.append(PreambleCmds.linking % self.hyperref_options)
         if self.pdfauthor:
             authors = self.author_separator.join(self.pdfauthor)
             self.pdfinfo.append('  pdfauthor={%s}' % authors)
@@ -1736,22 +1796,23 @@ class LaTeXTranslator(nodes.NodeVisitor):
         #   'author', 'organization', 'contact', 'address' and 'date')
         if self.title or (
            self.use_latex_docinfo and (self.author_stack or self.date)):
-            # always write \title (to prevent error with \maketitle)
+            # with the default template, titledata is written to the preamble
+            self.titledata.append('%%% Title Data')
+            # \title (empty \title prevents error with \maketitle)
             title = [''.join(self.title)] + self.title_labels
             if self.subtitle:
                 title += [r'\\ % subtitle',
                              r'\large{%s}' % ''.join(self.subtitle)
                          ] + self.subtitle_labels
             self.titledata.append(r'\title{%s}' % '%\n  '.join(title))
-            # author only required if non-empty
-            if self.author_stack:
-                authors = ['\\\\\n'.join(author_entry)
-                           for author_entry in self.author_stack]
-                self.titledata.append(r'\author{%s}' %
+            # \author (empty \author prevents warning with \maketitle)
+            authors = ['\\\\\n'.join(author_entry)
+                        for author_entry in self.author_stack]
+            self.titledata.append(r'\author{%s}' %
                                       ' \\and\n'.join(authors))
-            # always write \date (to prevent defaulting to \today)
+            # \date (empty \date prevents defaulting to \today)
             self.titledata.append(r'\date{%s}' % ', '.join(self.date))
-            # format title with LaTeX
+            # \maketitle in the body formats title with LaTeX
             self.body_pre_docinfo.append('\\maketitle\n')
 
         # * bibliography

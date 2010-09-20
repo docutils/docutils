@@ -29,6 +29,7 @@ Changes Since 0.7
 
   - Fix [ 3043986 ] AttributeError using :local: with table of content.
   - Place title data in the document preamble.
+  - Load `babel` package only if required.
   - Update list of supported languages.
   - New config setting "hyperref-options".
     No hard-coded "unicode" hyperref option (clash with xetex).
