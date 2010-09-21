@@ -2525,20 +2525,19 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_sidebar(self, node):
         self.out.append('}\n')
 
-    attribution_formats = {'dash': ('---', ''),
+    attribution_formats = {'dash': (u'—', ''), # EM DASH
                            'parentheses': ('(', ')'),
                            'parens': ('(', ')'),
                            'none': ('', '')}
 
     def visit_attribution(self, node):
         prefix, suffix = self.attribution_formats[self.settings.attribution]
-        self.out.append('\n\\begin{flushright}\n')
+        self.out.append('\\nopagebreak\n\n\\raggedleft ')
         self.out.append(prefix)
         self.context.append(suffix)
 
     def depart_attribution(self, node):
         self.out.append(self.context.pop() + '\n')
-        self.out.append('\\end{flushright}\n')
 
     def visit_status(self, node):
         self.visit_docinfo_item(node, 'status')
