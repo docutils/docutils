@@ -1066,6 +1066,16 @@ __ rst/alternatives.html#or-not-to-do
 
   Build on existing extensions (`latex_math`_, `math support in Sphinx`_).
 
+  Use MathJax_ for HTML export?
+
+   * a JavaScript-based engine for including TEX and MathML in HTML
+   * Works across multiple browsers and platforms
+   * Uses HTML/CSS, JavaScript, and unicode fonts for high-quality
+     typesetting that is scalable and prints at full resolution.
+   * MathJax is a joint project of the AMS, Design Science, Inc., and
+     the Society for Industrial and Applied Mathematics.
+   * `Math support in Sphinx`_ uses MathJax.
+
   Both a directive and an interpreted text role will be necessary (for
   each markup).  Directive example::
 
@@ -1083,6 +1093,7 @@ __ rst/alternatives.html#or-not-to-do
   .. _MathML: http://www.w3.org/TR/MathML2/
   .. _itex: http://pear.math.pitt.edu/mathzilla/itex2mmlItex.html
   .. _ASCIIMathML: http://www1.chapman.edu/~jipsen/mathml/asciimath.html
+  .. _MathJax: http://www.mathjax.org/
   .. _Unicode Nearly Plain Text Encoding of Mathematics:
      http://www.unicode.org/notes/tn28/
 
@@ -1782,16 +1793,16 @@ Unimplemented Transforms
        + based on bibstuff_?
        + also have a look at
 
-	 * CrossTeX_, a backwards-compatible, improved bibtex
-	   re-implementation in Python (including HTML export).
-	   (development stalled since 2 years)
+         * CrossTeX_, a backwards-compatible, improved bibtex
+           re-implementation in Python (including HTML export).
+           (development stalled since 2 years)
 
          * Pybtex_,a drop-in replacement for BibTeX written in Python.
 
-	   * BibTeX styles & (experimental) pythonic style API.
-	   * Database in BibTeX, BibTeXML and YAML formats.
-	   * full Unicode support.
-	   * Write to TeX, HTML and plain text.
+           * BibTeX styles & (experimental) pythonic style API.
+           * Database in BibTeX, BibTeXML and YAML formats.
+           * full Unicode support.
+           * Write to TeX, HTML and plain text.
 
     * Automatically insert a "References" heading?
 
@@ -2159,13 +2170,13 @@ Which packages do we want to use?
   .. Footnote packages:
 
      :footnote: texlive-latex-recommended % savenotes environment
-     :footmisc: texlive-latex-extra	  % formatting options
+     :footmisc: texlive-latex-extra       % formatting options
      :manyfoot: texlive-latex-extra
      :bigfoot: texlive-latex-extra
      :perpage: texlive-latex-extra
      :ftnxtra: new on CTAN
-	       fixes the issue of footnote inside \caption{},
-	       tabular environment and \section{} like commands.
+               fixes the issue of footnote inside \caption{},
+               tabular environment and \section{} like commands.
 
 
      German tutorial:
@@ -2196,7 +2207,7 @@ Which packages do we want to use?
      * Take advantage of the fact that the mandatory argument doesn't
        move if the optional argument is present::
 
-       	   \section[title] {title\footnote{title ftnt}}
+           \section[title] {title\footnote{title ftnt}}
 
      * Use the footmisc package, with package option stable - this modifies
        footnotes so that they softly and silently vanish away if used in a
@@ -2273,11 +2284,11 @@ Tables
 
 * Improve/simplify logic to set the column width in the output.
 
-  + Assumed reST line length for table width setting configurable.
-  + Maybe use `ltxtable` (a combination of `tabularx` (auto-width) and
-    `longtable` (page breaks))?
-
-  Use tabularx column type ``X`` and let LaTeX decide width?
+  + Assumed reST line length for table width setting configurable, or
+  + use `ltxtable` (a combination of `tabularx` (auto-width) and
+    `longtable` (page breaks)), or
+  + use tabularx column type ``X`` and let LaTeX decide width, or
+  + use tabulary_?
 
 * csv-tables do not have a colwidth.
 
@@ -2313,6 +2324,10 @@ Tables
   The 'table', 'csv-table', and 'list-table' directives support an (optional)
   table title. In analogy to the 'figure' directive this should map to a
   table float.
+
+.. _tabulary:
+   http://tug.ctan.org/cgi-bin/ctanPackageInformation.py?id=tabulary
+
 
 Image and figure directives
 ```````````````````````````
@@ -2407,25 +2422,8 @@ Ideas:
 XeTeX writer
 ````````````
 
-Generate LaTeX source code suitable for XeLaTeX.
-
-  You will need to do three things to your source document to convert it
-  to XeLaTeX:
-
-  1) save the source as UTF-8
-  2) remove any fontenc/inputenc/mathptmx
-  3) add the following to your preamble:
-
-  \usepackage{xltxtra}
-  \setmainfont[Mapping=tex-text]{Times New Roman}
-
-  This will use the real Times New Roman font.
-
-  -- a comp.text.tex post by Alan Munn 2010-05-10
-
-Use a separate writer (inheriting from latex2e) instead of a ``--xetex``
-option, to allow separate config options for XeTeX vs. LaTeX2e.
-
+* Glyphs missing in the font are left out in the PDF without warning
+  (e.g. ⇔ left-right double arrow in the functional test output).
 
 problematic URLs
 ````````````````
