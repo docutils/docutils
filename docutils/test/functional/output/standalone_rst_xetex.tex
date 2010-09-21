@@ -4,7 +4,6 @@
 \usepackage[no-sscript]{xltxtra} % loads fixltx2e, metalogo, xunicode, fontspec
 \usepackage{ifthen}
 \usepackage{color}
-\usepackage{alltt}
 \usepackage{float} % float configuration
 \floatplacement{figure}{H} % place figures here definitely
 \usepackage{graphicx}
@@ -19,7 +18,7 @@
 % PDF Standard Fonts
 \setmainfont{Times New Roman}
 \setsansfont[Scale=MatchLowercase]{Arial}
-\setmonofont[Scale=MatchLowercase]{Courier New}
+\setmonofont[Scale=MatchLowercase,HyphenChar=None]{Courier New}
 
 %%% User specified packages and stylesheets
 
@@ -751,10 +750,9 @@ as follows and begins now.  All brontosauruses are thin at one
 end, much much thicker in the middle and then thin again at the
 far end.  That is my theory, it is mine, and belongs to me and I
 own it, and what it is too.
+\nopagebreak
 
-\begin{flushright}
----Anne Elk (Miss)
-\end{flushright}
+\raggedleft —Anne Elk (Miss)
 
 \end{quote}
 
@@ -2074,11 +2072,11 @@ pdnderdmdtdrischpdnderdmdtdrischpdnderdmdtdrischpdnderdmdtdrischpdnderdmdtdrisch
 (some have an Euro sign at its place). You might see an error
 like:
 %
-\begin{quote}\begin{alltt}
-! Package textcomp Error: Symbol \textbackslash{}textcurrency not provided by
-(textcomp)                font family ptm in TS1 encoding.
-(textcomp)                Default family used instead.
-\end{alltt}
+\begin{quote}{\ttfamily \raggedright \noindent
+!~Package~textcomp~Error:~Symbol~\textbackslash{}textcurrency~not~provided~by\\
+(textcomp)~~~~~~~~~~~~~~~~font~family~ptm~in~TS1~encoding.\\
+(textcomp)~~~~~~~~~~~~~~~~Default~family~used~instead.
+}
 \end{quote}
 
 (which in case of font family ptm is a false positive). Add either

@@ -31,11 +31,12 @@ class Writer(latex2e.Writer):
     """Formats this writer supports."""
 
     default_template = 'xelatex.tex'
-    default_preamble = '\n'.join([r'% PDF Standard Fonts',
-                                  r'\setmainfont{Times New Roman}',
-                                  r'\setsansfont[Scale=MatchLowercase]{Arial}',
-                                  r'\setmonofont[Scale=MatchLowercase]{Courier New}',
-                                 ])
+    default_preamble = '\n'.join([
+        r'% PDF Standard Fonts',
+        r'\setmainfont{Times New Roman}',
+        r'\setsansfont[Scale=MatchLowercase]{Arial}',
+        r'\setmonofont[Scale=MatchLowercase,HyphenChar=None]{Courier New}',
+    ])
 
     config_section = 'xetex writer'
     config_section_dependencies = ('writers', 'latex2e writer')
