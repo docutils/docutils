@@ -163,7 +163,7 @@ expected output and check it in:
             try:
                 output = output.decode(output_encoding)
             except UnicodeDecodeError:
-                # failsafe (default for latex2e writer)
+                # failsafe
                 output = output.decode('latin1', 'replace')
         # Normalize line endings:
         output = '\n'.join(output.splitlines())
@@ -171,14 +171,15 @@ expected output and check it in:
         no_expected = self.no_expected_template % {
             'exp': expected_path, 'out': params['destination_path']}
         self.assert_(os.access(expected_path, os.R_OK), no_expected)
-        f = open(expected_path, 'rb')
+        f = open(expected_path, 'r') # ! 'rb' leads to errors with Python 3!
         # Normalize line endings:
         expected = '\n'.join(f.read().splitlines())
         f.close()
-        try:
-            expected = expected.decode(output_encoding)
-        except UnicodeDecodeError:
-            expected = expected.decode('latin1', 'replace')
+        if sys.version_info < (3,0):
+            try:
+                expected = expected.decode(output_encoding)
+            except UnicodeDecodeError:
+                expected = expected.decode('latin1', 'replace')
 
         diff = self.expected_output_differs_template % {
             'exp': expected_path, 'out': params['destination_path']}
