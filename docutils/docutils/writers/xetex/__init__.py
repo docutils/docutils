@@ -32,10 +32,10 @@ class Writer(latex2e.Writer):
 
     default_template = 'xelatex.tex'
     default_preamble = '\n'.join([
-        r'% PDF Standard Fonts',
-        r'\setmainfont{Times New Roman}',
-        r'\setsansfont[Scale=MatchLowercase]{Arial}',
-        r'\setmonofont[Scale=MatchLowercase,HyphenChar=None]{Courier New}',
+        r'% Linux Libertine (free, wide coverage, not only for Linux',
+        r'\setmainfont{Linux Libertine O}',
+        r'\setsansfont{Linux Biolinum O}',
+        r'\setmonofont[HyphenChar=None]{DejaVu Sans Mono}',
     ])
 
     config_section = 'xetex writer'

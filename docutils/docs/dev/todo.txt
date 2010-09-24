@@ -2425,6 +2425,10 @@ XeTeX writer
 * Glyphs missing in the font are left out in the PDF without warning
   (e.g. ⇔ left-right double arrow in the functional test output).
 
+* Disable word-wrap (hyphenation) in literal text locally with
+  ``providecommand{\nohyphenation}{\addfontfeatures{HyphenChar=None}}``?
+
+
 problematic URLs
 ````````````````
 

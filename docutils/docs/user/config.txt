@@ -977,7 +977,7 @@ _`documentoptions`
     Specify document options.  Multiple options can be given, separated by
     commas.
 
-    Default: "10pt,a4paper".  Option: ``--documentoptions``.
+    Default: "a4paper".  Option: ``--documentoptions``.
 
 _`font_encoding`
     Specify LaTeX font encoding. Multiple options can be given, separated
@@ -1155,6 +1155,47 @@ table_style
       no lines.
 
     Default: "standard".  Option: ``--table-style``.
+
+[xetex writer]
+.................
+
+The xetex writer derives from the latex2e writer, and shares
+all settings defined in the `[latex2e writer]`_ section.  The
+"[latex2e writer]" section of configuration files is processed
+before the "[xetex writer]" section.
+
+The following settings differ from those of the latex2e writer:
+
+font_encoding
+    Disabled as XeTeX uses Unicode-encoded fonts.
+
+.. _latex_preamble [xetex writer]:
+
+latex_preamble
+    LaTeX code that will be inserted in the document preamble.
+
+    Default:
+      Font setup for `Linux Libertine`_,::
+
+        % Linux Libertine (free, wide coverage, not only for Linux)
+        \setmainfont{Linux Libertine O}
+        \setsansfont{Linux Biolinum O}
+        \setmonofont[HyphenChar=None]{DejaVu Sans Mono}
+
+      The optional argument ``HyphenChar=None`` to the monospace font
+      prevents word hyphenation in literal text.
+
+
+    Option: ``--latex-preamble``
+
+.. _template [xetex writer]:
+
+template
+    Path to template file.
+
+    Default: "xelatex.tex" in the ``docutils/writers/latex2e/``
+    directory (installed automatically; for the exact machine-specific
+    path, use the ``--help`` option).  Options: ``--template``.
 
 
 [pseudoxml writer]

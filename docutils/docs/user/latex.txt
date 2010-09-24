@@ -45,7 +45,8 @@ sources via LaTeX:
    As with HTML, styling is mostly done via style sheets or
    `LaTeX packages`_.
 
-   If you prefer this approach, try the `latex2e` writer.
+   If you prefer this approach, try the `latex2e` or the `xetex`
+   writer.
 
 2. treat LaTeX as a page description format (like Postscript):
 
@@ -60,7 +61,7 @@ sources via LaTeX:
    files.
 
 This documents describes the first approach used by the `latex2e`
-writer.
+and `xetex` writers.
 
 
 LaTeX
@@ -83,7 +84,7 @@ available at CTAN_ (see the `TeX Catalogue`_).
 .. _CTAN: http://www.ctan.org
 .. _TeX Catalogue: http://texcatalogue.sarovar.org/
 .. _stylesheet:
-   ../user/config.html#stylesheet-latex2e-writer
+   config.html#stylesheet-latex2e-writer
 .. _TeX input path:
    http://www.tex.ac.uk/cgi-bin/texfaq2html?label=what-TDS
 
@@ -91,10 +92,10 @@ available at CTAN_ (see the `TeX Catalogue`_).
 Docutils special LaTeX macros
 -----------------------------
 
-Some Docutils objects have no LaTeX counterpart, they will be typeset using
-a Docutils specific LaTeX *macro* (command, environment, or length) to allow
-layout changes from the `style sheet`_ or with `raw LaTeX`_. By convention,
-special macros use the prefix ``\DU``\ [#]_.
+Some Docutils objects have no LaTeX counterpart, they will be typeset
+using a Docutils specific LaTeX *macro* (command, environment, or
+length) to allow customization. By convention, special macros use the
+prefix ``\DU``\ [#]_.
 
 The generated LaTeX documents should be kept processable by a standard LaTeX
 installation. Therefore fallback definitions are included after the `custom
@@ -158,8 +159,8 @@ PDF generation
 ==============
 
 In most cases, LaTeX code is not the desired end-format of the document.
-LaTeX offers (at least) four ways to generate PDF documents from the LaTeX
-source:
+LaTeX offers many ways to generate PDF documents from the LaTeX
+source, including:
 
 _`pdflatex`
   Generates a PDF document directly from the LaTeX file.
@@ -173,15 +174,16 @@ _`latex` + dvips + ps2pdf
   Produce a DVI file with ``latex``, postscript with ``dvips`` and PDF with
   ``ps2pdf``.
 
-_`xetex`
+_`xelatex`
   The `XeTeX`__ engine works with input files in UTF-8 encoding and system
-  fonts. It is currently not supported by Docutils.
+  fonts. Export your document with the `xetex` writer (``rst2xetex``),
+  if you want to go this route.
 
 You need to call latex (or pdflatex/xelatex) twice (or even three times) to
 get internal references correct.
 
-.. _documentoptions: ../user/config.html#documentoptions
-__ http://scripts.sil.org/xetex
+.. _documentoptions: config.html#documentoptions
+__ http://tug.org/xetex/
 
 
 _`rubber`
@@ -219,7 +221,7 @@ Options can be specified as
 * configuration settings (see `Docutils Configuration`_ for details).
 
 .. _Docutils Configuration:
-   ../user/config.html
+   config.html
 
 
 .. _style sheet:
@@ -269,7 +271,7 @@ Stylesheet Repository
 .. _clsguide:
    http://mirror.ctan.org/macros/latex/doc/clsguide.pdf
 .. _embed-stylesheet:
-   ../user/config.html#embed-stylesheet-latex2e-writer
+   config.html#embed-stylesheet-latex2e-writer
 .. _repository of user-contributed style sheets:
    ../../../sandbox/stylesheets/
 .. _sandbox: ../../../sandbox/
@@ -287,7 +289,7 @@ Option:
   latex-preamble_
 
 Default:
-  Load the `PDF standard fonts`_ (Times, Helvetica, Courier)
+  used for `font setup`_
 
 Example:
   To use the better looking ``txtt`` font for monospaced text define the
@@ -298,9 +300,11 @@ Example:
                      \usepackage[scaled=.92]{helvet}  % Helvetica
 
 .. _latex-preamble:
-   ../user/config.html#latex-preamble
+   config.html#latex-preamble
 .. _PDF standard fonts:
    http://en.wikipedia.org/wiki/PDF#Standard_Type_1_Fonts
+.. _Linux Libertine:
+   http://www.linuxlibertine.org/index.php?id=1&L=1
 
 
 Templates
@@ -324,7 +328,7 @@ Example:
     --template=titlepage.tex
 
 .. _publisher documentation: ../api/publisher.html
-.. _template: ../user/config.html#template-latex2e-writer
+.. _template: config.html#template-latex2e-writer
 
 
 Raw LaTeX
@@ -558,7 +562,7 @@ Option:
 .. _memoir:
    http://mirror.ctan.org/help/Catalogue/entries/memoir.html
 .. _documentclass:
-   ../user/config.html#documentclass
+   config.html#documentclass
 
 
 document info
@@ -585,9 +589,9 @@ Example:
 __ ../ref/rst/restructuredtext.html#bibliographic-fields
 
 .. _use-latex-docinfo:
-   ../user/config.html#use-latex-docinfo
+   config.html#use-latex-docinfo
 .. _use-latex-abstract:
-   ../user/config.html#use-latex-abstract
+   config.html#use-latex-abstract
 
 
 document title
@@ -710,6 +714,7 @@ Example 2:
 .. _float.pdf:
    http://mirror.ctan.org/macros/latex/contrib/float/float.pdf
 
+.. _font setup:
 
 font
 ----
@@ -720,30 +725,102 @@ http://www.csarven.ca/web-typography).
 Selecting a suitable font also solves the problem with `bad looking
 PDF output`_.
 
-Default:
+Font selection is one of the main differences between LaTeX and XeTeX:
+
+LaTeX
+  cannot use the fonts of the operating system directly but needs
+  specially installed fonts with additional supporting files.
+
+XeTeX
+  can use system fonts and provides access to the full feature set of
+  modern OpenType_ fonts.
+
+.. _OpenType: http://en.wikipedia.org/wiki/OpenType
+
+The default font setup is done in the latex-preamble_:
+
+LaTeX
   `PDF standard fonts`_ (Times, Helvetica, Courier)
-  (since Docutils 0.7)
+
+XeTeX
+  `Linux Libertine`_, a free, high quality alternative to Times with a
+  wide coverage of glyphs, styles, and OpenType features.
+
+  Despite its name, Linux Libertine can be used on any operating
+  system that can handle OpenType fonts.
 
 Alternative fonts can be selected by
 
-a) specifying the corresponding LaTeX package(s) as argument to the
-   stylesheet_ option_ or with the ``\usepackage`` LaTeX command.
+LaTeX
+  a) specifying the corresponding LaTeX package(s) as argument to the
+     stylesheet_ option_ or with the ``\usepackage`` LaTeX command.
 
-   * packages can be combined,
-   * passing options to a package is only possible in a `style sheet`_
-     or the `LaTeX preamble`_.
+     * packages can be combined,
+     * passing options to a package is only possible in a `style sheet`_
+       or the `LaTeX preamble`_.
 
-b) changing the font-default macros ``\rmdefault``, ``\sfdefault``
-   and/or ``\ttdefault`` in a custom `style sheet`_, the `LaTeX
-   preamble`_ or `raw LaTeX`_.
+  b) changing the font-default macros ``\rmdefault``, ``\sfdefault``
+     and/or ``\ttdefault`` in a custom `style sheet`_, the `LaTeX
+     preamble`_ or `raw LaTeX`_.
+
+  Example 1:
+    Use `Latin Modern`_. LaTeX code::
+
+      \usepackage{lmodern}
+
+    Command line argument::
+
+      --stylesheet=lmodern
+
+  Example 2:
+    The _`Times/Helvetica/Courier` `PDF standard fonts`_ are
+    selected by the LaTeX code [#]_::
+
+      \usepackage{mathptmx}            % Times for serif and math
+      \usepackage[scaled=.90]{helvet}  % downscaled Helvetica for sans serif
+      \usepackage{courier}             % Courier for teletype (mono-space)
+
+    Since Docutils 0.7, this is the default value of the
+    `latex-preamble`_ option.
+
+  .. [#] When generating PDF-files from LaTeX, the `PDF standard
+     fonts`_ do not need to be embedded in the document. While this
+     results in smaller files, the actually used fonts on screen and in
+     print might differ! (For details see, e.g., the testflow_ package
+     documentation.)
+
+
+  Example 3:
+    Use the teletype font from the txfonts_ package. As there is no
+    package for this, we re-define the font macro with the LaTeX code::
+
+      \renewcommand{\ttdefault}{txtt}
+
+
+XeTeX
+  using the macros of the fontspec_ package. Use some font-viewer or
+  -manager (e.g. fontmatrix_) to find out the correct names of the
+  fonts on your system.
+
+  Example:
+    DejaVu_, very wide coverage, screen optimized. As this font
+    runs wide, add ``DIV=10`` to the `documentoptions`_::
+
+      \setmainfont{DejaVu Serif}
+      \setsansfont{DejaVu Sans}
+      \setmonofont[HyphenChar=None]{DejaVu Sans Mono}
+
+.. _fontspec: http://mirror.ctan.org/help/Catalogue/entries/fontspec.html
+.. _fontmatrix: http://fontmatrix.net/
+.. _DejaVu: http://dejavu-fonts.org/
+.. _documentoptions: config.html#documentoptions
 
 choice of suitable fonts
 ````````````````````````
 
-Unfortunately, LaTeX cannot use the fonts of the operating system directly
-[#]_ but needs specially installed fonts with additional supporting files.
-
-.. [#] XeTeX_ can, but is not (yet) supported by Docutils
+High quality free fonts suitable for use with XeTeX are, e.g., listed
+at `Good Libre Fonts`_, `25 Best Free Quality Fonts`_ and the update
+`19 More Free Quality Fonts`_.
 
 The `LaTeX Font Catalogue`_ provides information and examples for a wide
 range of fonts available for use with LaTeX. Here is just a selection:
@@ -864,39 +941,6 @@ d) PSNFSS_ Postscript fonts
        which is part of, e.g., `TeX Live`_.
 
 
-Example 1:
-  Use `Latin Modern`_. LaTeX code::
-
-    \usepackage{lmodern}
-
-  Command line argument::
-
-    --stylesheet=lmodern
-
-Example 2:
-  The _`Times/Helvetica/Courier` `PDF standard fonts`_ are
-  selected by the LaTeX code [#]_::
-
-    \usepackage{mathptmx}            % Times for serif and math
-    \usepackage[scaled=.90]{helvet}  % downscaled Helvetica for sans serif
-    \usepackage{courier}             % Courier for teletype (mono-space)
-
-  Since Docutils 0.7, this is the default value of the
-  `latex-preamble`_ option.
-
-.. [#] When generating PDF-files from LaTeX, the `PDF standard
-   fonts`_ do not need to be embedded in the document. While this
-   results in smaller files, the actually used fonts on screen and in
-   print might differ! (For details see, e.g., the testflow_ package
-   documentation.)
-
-
-Example 3:
-  Use the teletype font from the txfonts_ package. As there is no
-  package for this, we re-define the font macro with the LaTeX code::
-
-    \renewcommand{\ttdefault}{txtt}
-
 .. _LaTeX Font Catalogue:
    http://www.tug.dk/FontCatalogue/
 .. _Latin Modern:
@@ -917,6 +961,13 @@ Example 3:
    http://en.wikipedia.org/wiki/PDF#Standard_Type_1_Fonts
 .. _testflow:
    http://www.tex.ac.uk/tex-archive/help/Catalogue/entries/testflow.html
+.. _Good Libre Fonts:
+   http://typophile.com/node/18207
+.. _25 Best Free Quality Fonts:
+   http://www.alvit.de/blog/article/20-best-license-free-official-fonts
+.. _19 More Free Quality Fonts:
+   http://www.smashingmagazine.com/2006/10/11/17-more-free-quality-fonts/
+
 
 font encoding
 -------------
@@ -954,7 +1005,7 @@ Example 2:
 .. _encguide:
    http://mirror.ctan.org/macros/latex/doc/encguide.pdf
 .. _font-encoding:
-   ../user/config.html#font-encoding
+   config.html#font-encoding
 .. _fontenc:
    http://mirror.ctan.org/help/Catalogue/entries/fontenc.html
 
@@ -1078,9 +1129,9 @@ Example:
 See also `non-breaking hyperlinks`_.
 
 .. _hyperlink-color:
-   ../user/config.html#hyperlink-color
+   config.html#hyperlink-color
 .. _hyperref-options:
-   ../user/config.html#hyperref-options
+   config.html#hyperref-options
 
 
 disable hyperlinks
@@ -1177,7 +1228,7 @@ Example:
 
 __ ../ref/rst/restructuredtext.html#literal-blocks
 .. _literal-block-env:
-   ../user/config.html#literal-block-env
+   config.html#literal-block-env
 .. _listings.pdf:
     http://mirror.ctan.org/macros/latex/contrib/listings/listings.pdf
 
@@ -1400,7 +1451,7 @@ and can be configured in a LaTeX `style sheet`_, e.g.::
 .. note:: The LaTeX name is 'secnumdepth' (whithout 't').
 
 .. _sectnum directive: ../ref/rst/directives.html#sectnum
-.. _sectnum_xform: ../user/config.html#sectnum-xform
+.. _sectnum_xform: config.html#sectnum-xform
 
 
 sidebar
@@ -1553,7 +1604,7 @@ With use-latex-toc (default since release 0.6):
    This is an intended feature of the minitoc_ package. If you really
    require local ToCs at lower level, turn off the use-latex-toc_ option.
 
-.. _use-latex-toc: ../user/config.html#use-latex-toc
+.. _use-latex-toc: config.html#use-latex-toc
 .. _contents directive: ../ref/rst/directives.html#contents
 .. _minitoc:
    http://mirror.ctan.org/help/Catalogue/entries/minitoc.html
@@ -1624,7 +1675,7 @@ Note:
    (where *n* is the Unicode page-number) to the style sheet might help.
 
 .. _LaTeX Unicode: http://www.unruh.de/DniQ/latex/unicode/
-.. _output-encoding: ../user/config.html#output-encoding
+.. _output-encoding: config.html#output-encoding
 .. _inputenc:
    http://mirror.ctan.org/help/Catalogue/entries/inputenc.html
 .. _ucs:
@@ -1695,8 +1746,7 @@ Bad looking PDF output
   So am I just stupid or is there a way to get really high quality pdf from
   Docutils?
 
-Make sure the default font is not a bitmap font. Unfortunately, the
-default font is a bitmap font. You must change it.
+Make sure the default font is not a bitmap font.
 
 There is `Latin Modern`_ if you like the look of the standard font on paper,
 but want nice pdf. Or select something else like Times, Palatino, ... via
@@ -1764,10 +1814,10 @@ This can be solved with the "unicode" hyperref_option_ setting::
   --hyperref-option=unicode
 
 (works also with non-unicode input/output encoding (e.g. "koi8r" or
-"latin1"). However, this setting clashes with the XeTeX_ engine and is
+"latin1"). However, this setting does not work with xelatex_ and is
 therefore not made a default.
 
-.. _hyperref_option: ../user/config.html#stylesheet-latex2e-writer
+.. _hyperref_option: config.html#stylesheet-latex2e-writer
 
 
 image inclusion
@@ -1779,7 +1829,7 @@ supported file formats depend on the used driver:
 * Standard latex_ can include **only EPS** graphics, no other format.
 * `latex + dvipdfmx`_ works with EPS and JPG (add 'dvipdfmx' to the
   documentoptions_ and 'bmpsize' to the stylesheet_ setting).
-* pdflatex_ and xetex_ work with PNG, JPG, or PDF, but **not EPS**.
+* pdflatex_ and xelatex_ work with PNG, JPG, or PDF, but **not EPS**.
 
 If PDF-image inclusion in PDF files fails, specifying
 ``--graphicx-option=pdftex`` or ``--graphicx-option=auto`` might help.
@@ -1921,8 +1971,8 @@ only by a single space or a newline) are combined to a single citation
 group, i.e. ``[cite1]_ [cite2]_`` results in ``\cite{cite1,cite2}``.
 The appearance in the output can be configured in a `style sheet`_.
 
-.. _docutils-footnotes: ../user/config.html#docutils-footnotes
-.. _use-latex-citations: ../user/config.html#use-latex-citations
+.. _docutils-footnotes: config.html#docutils-footnotes
+.. _use-latex-citations: config.html#use-latex-citations
 
 
 Tables
