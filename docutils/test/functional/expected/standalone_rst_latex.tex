@@ -1580,9 +1580,10 @@ not need to be tested with other writers (e.g. the HTML writer).
 %
 \begin{itemize}
 
-\item Role names and class arguments are converted to conform to the regular
-expression \texttt{{[}a-z{]}{[}-a-z0-9{]}*} (all non-conforming characters are replaced
-by a hyphen, all letters are downcased).
+\item Role names and class arguments are converted to conform to the
+regular expression \texttt{{[}a-z{]}{[}-a-z0-9{]}*} (letters are downcased,
+accents and similar decoration is stripped, non-conforming
+characters are replaced by a hyphen).
 
 Class arguments may contain numbers and hyphens, which need special
 treatment in LaTeX command names.
