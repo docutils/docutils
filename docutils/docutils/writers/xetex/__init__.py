@@ -43,7 +43,7 @@ class Writer(latex2e.Writer):
 
     settings_spec = frontend.filter_settings_spec(
         latex2e.Writer.settings_spec,
-        'font_encoding', 
+        'font_encoding',
         template=('Template file. Default: "%s".' % default_template,
           ['--template'], {'default': default_template, 'metavar': '<file>'}),
         latex_preamble=('Customization by LaTeX code in the preamble. '
@@ -91,42 +91,29 @@ class Babel(latex2e.Babel):
                 'sr-latn',      # 'serbian script=latin'
                 'vi'):          # 'vietnam',
         del(language_codes[key])
-            
-    def __init__(self, language_code):
+
+    def __init__(self, language_code, reporter):
         self.language_code = language_code
-        self.get_language() # updates self.language, self.warning
-        self.quote_index = 0
-        self.quotes = ('"', '"')
-        self.setup = [r'\usepackage{polyglossia}',
-                      r'\setdefaultlanguage{%s}' % self.language]
-        # language dependent configuration:
-        # double quotes are "active" in some languages (e.g. German).
-        self.literal_double_quote = u'"' # TODO: use \textquotedbl
+        self.language = self.get_language(language_code)
+        if self.language == '':
+            reporter.warning('Language "%s" ' % self.language_code +
+                'not supported by XeTeX (polyglossia), defaulting to "english".' )
         # don't use polyglossia for (american) English or unknown languages:
         if self.language in ('english', ''):
             self.setup = []
-
-    def get_language(self):
-        """Set XeTeX-language (Polyglossia)"""
-        # print self.language_codes
-        for tag in utils.normalize_language_tag(self.language_code):
-            try:
-                self.language = self.language_codes[tag]
-                self.warning = ''
-                break
-            except KeyError:
-                continue
         else:
-            self.language = ''
-            self.warning = ('language "%s" not supported by XeTeX ' +
-                            'defaulting to "english"') % self.language_code
-
+            self.setup = [r'\usepackage{polyglossia}',
+                          r'\setdefaultlanguage{%s}' % self.language]
+        self.quote_index = 0
+        self.quotes = ('"', '"')
+        # language dependent configuration:
+        # double quotes are "active" in some languages (e.g. German).
+        self.literal_double_quote = u'"' # TODO: use \textquotedbl
 
 class XeLaTeXTranslator(latex2e.LaTeXTranslator):
 
     def __init__(self, document):
-        latex2e.LaTeXTranslator.__init__(self, document)
-        self.babel = Babel(self.settings.language_code)
+        latex2e.LaTeXTranslator.__init__(self, document, Babel)
         requirements = [r'\usepackage{ifthen}'] + self.babel.setup
         if self.latex_encoding != 'utf8':
             requirements.append(r'\XeTeXinputencoding %s '
@@ -140,6 +127,7 @@ class XeLaTeXTranslator(latex2e.LaTeXTranslator):
         """Convert string with rst lenght to LaTeX length"""
         return latex2e.LaTeXTranslator.to_latex_length(self, length_str, px)
 
+    # Simpler variant of encode, as XeTeX understands utf8 Unicode:
     def encode(self, text):
         """Return text with 'problematic' characters escaped.
 

@@ -21,6 +21,15 @@ more detailed list of changes, please see the `Docutils History`_.
 Changes Since 0.7
 =================
 
+* General:
+
+  - Handle language codes according to `BCP 47`_.
+  - If the specified langauage is not supported by Docutils,
+    warn and fall back to English.
+
+.. _BCP 47: http://www.rfc-editor.org/rfc/bcp/bcp47.txt
+
+
 Release 0.7 (2010-07-07)
 ========================
 

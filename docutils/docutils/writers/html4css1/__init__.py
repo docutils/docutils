@@ -243,7 +243,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         nodes.NodeVisitor.__init__(self, document)
         self.settings = settings = document.settings
         lcode = settings.language_code
-        self.language = languages.get_language(lcode)
+        self.language = languages.get_language(lcode, document.reporter)
         self.meta = [self.content_type % settings.output_encoding,
                      self.generator % docutils.__version__]
         self.head_prefix = []

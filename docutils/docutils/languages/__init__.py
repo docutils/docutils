@@ -15,7 +15,13 @@ from docutils.utils import normalize_language_tag
 
 _languages = {}
 
-def get_language(language_code):
+def get_language(language_code, reporter):
+    """Return module with language localizations.
+
+    `language_code` is a "BCP 47" language tag.
+    If there is no matching module, warn and fall back to English.
+    """
+    # TODO: use a dummy module returning emtpy strings?, configurable?
     for tag in normalize_language_tag(language_code):
         if tag in _languages:
             return _languages[tag]
@@ -25,6 +31,9 @@ def get_language(language_code):
             continue
         _languages[tag] = module
         return module
-    # TODO: use Docutils reporter, warn instead of fail
-    # warn ('language "%s" not supported' % tag)
-    raise
+    reporter.warning(
+        'language "%s" not supported: ' % language_code +
+        'Docutils-generated text will be in English.')
+    module = __import__('en', globals(), locals())
+    _languages[tag] = module # warn only one time!
+    return module

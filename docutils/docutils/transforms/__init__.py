@@ -53,7 +53,7 @@ class Transform:
         value is `None`)."""
 
         self.language = languages.get_language(
-            document.settings.language_code)
+            document.settings.language_code, document.reporter)
         """Language module local to this document."""
 
     def apply(self, **kwargs):

@@ -19,7 +19,11 @@ Changes Since 0.7
 
 * General:
 
-  - Handle language codes according to BCP 47.
+  - Handle language codes according to `BCP 47`_.
+  - If the specified langauage is not supported by Docutils,
+    warn and fall back to English.
+
+.. _BCP 47: http://www.rfc-editor.org/rfc/bcp/bcp47.txt
 
 * tools/buildhtml.py:
 
@@ -28,7 +32,7 @@ Changes Since 0.7
 * docutils/writers/xetex/__init__.py
 
   - New writer generating LaTeX code for compiling with ``xelatex``.
-  
+
     A separate writer (inheriting from latex2e) instead of a ``--xetex``
     option allows separate config options for XeTeX vs. LaTeX2e.
 
