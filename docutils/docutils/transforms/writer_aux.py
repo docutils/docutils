@@ -73,8 +73,8 @@ class Admonitions(Transform):
     default_priority = 920
 
     def apply(self):
-        lcode = self.document.settings.language_code
-        language = languages.get_language(lcode)
+        language = languages.get_language(self.document.settings.language_code,
+                                          self.document.reporter)
         for node in self.document.traverse(nodes.Admonition):
             node_name = node.__class__.__name__
             # Set class, so that we know what node this admonition came from.

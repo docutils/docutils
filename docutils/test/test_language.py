@@ -19,7 +19,10 @@ import DocutilsTestSupport              # must be imported before docutils
 import docutils.languages
 import docutils.parsers.rst.languages
 from docutils.parsers.rst import states, directives, roles
+import docutils.utils, docutils.frontend
 
+_settings = docutils.frontend.OptionParser().get_default_values()
+_reporter = docutils.utils.new_reporter('', _settings)
 
 reference_language = 'en'
 
@@ -48,8 +51,8 @@ class LanguageTestSuite(DocutilsTestSupport.CustomTestSuite):
                 languages[match.group(1)] = 1
         self.languages = languages.keys()
         # test language tag normalization:
-        self.languages += ['en_gb', 'en_US', 'en-CA', 'de-DE', 'de-AT-1901', 'pt-BR', 'pt-foo-BR']
-
+        self.languages += ['en_gb', 'en_US', 'en-CA', 'de-DE', 'de-AT-1901',
+                           'pt-BR', 'pt-foo-BR']
 
     def generateTests(self):
         for language in self.languages:
@@ -65,7 +68,8 @@ class LanguageTestCase(DocutilsTestSupport.CustomTestCase):
     """Names of methods used to test each language."""
 
     def __init__(self, *args, **kwargs):
-        self.ref = docutils.languages.get_language(reference_language)
+        self.ref = docutils.languages.get_language(reference_language,
+                                                   _reporter)
         self.language = kwargs['language']
         del kwargs['language']          # only wanted here
         DocutilsTestSupport.CustomTestCase.__init__(self, *args, **kwargs)
@@ -94,7 +98,7 @@ class LanguageTestCase(DocutilsTestSupport.CustomTestCase):
 
     def test_labels(self):
         try:
-            module = docutils.languages.get_language(self.language)
+            module = docutils.languages.get_language(self.language, _reporter)
             if not module:
                 raise ImportError
         except ImportError:
@@ -107,7 +111,7 @@ class LanguageTestCase(DocutilsTestSupport.CustomTestCase):
 
     def test_bibliographic_fields(self):
         try:
-            module = docutils.languages.get_language(self.language)
+            module = docutils.languages.get_language(self.language, _reporter)
             if not module:
                 raise ImportError
         except ImportError:
@@ -207,5 +211,5 @@ if __name__ == '__main__':
     get_language_arguments()
     import unittest
     unittest.main(defaultTest='suite')
-    
+
 # vim: set et ts=4 ai :

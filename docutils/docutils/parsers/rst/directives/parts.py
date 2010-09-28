@@ -49,7 +49,8 @@ class Contents(Directive):
             raise self.error('The "%s" directive may not be used within '
                              'topics or body elements.' % self.name)
         document = self.state_machine.document
-        language = languages.get_language(document.settings.language_code)
+        language = languages.get_language(document.settings.language_code,
+                                          document.reporter)
         if self.arguments:
             title_text = self.arguments[0]
             text_nodes, messages = self.state.inline_text(title_text,

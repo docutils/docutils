@@ -71,7 +71,8 @@ class Writer(Component):
         """
         self.document = document
         self.language = languages.get_language(
-            document.settings.language_code)
+            document.settings.language_code,
+            document.reporter)
         self.destination = destination
         self.translate()
         output = self.destination.write(self.output)

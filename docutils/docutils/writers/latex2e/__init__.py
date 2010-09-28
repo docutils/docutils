@@ -356,13 +356,21 @@ class Babel(object):
         'vi':           'vietnam',
         # zh-latn:      Chinese Pinyin
         }
+    warning = ''
 
-    def __init__(self, language_code):
+    def __init__(self, language_code, reporter):
         self.language_code = language_code
-        self.get_language() # set self.language, self.warning
+        self.language = self.get_language(language_code)
+        if self.language == '':
+            reporter.warning('language "%s" ' % self.language_code +
+                'not supported by LaTeX (babel), defaulting to "english"')
+        # don't use babel for (american) English or unknown languages:
+        if self.language in ('english', ''):
+            self.setup = []
+        else:
+            self.setup = [r'\usepackage{babel}']
         self.quote_index = 0
         self.quotes = ('``', "''")
-        self.setup = [r'\usepackage{babel}']
         # language dependent configuration:
         # double quotes are "active" in some languages (e.g. German).
         # TODO: use \textquotedbl in T1 font encoding?
@@ -377,9 +385,6 @@ class Babel(object):
             self.setup.append(
                   r'\addto\shorthandsspanish{\spanishdeactivate{."~<>}}')
             # or prepend r'\def\spanishoptions{es-noshorthands}'
-        # don't use babel for (american) English or unknown languages:
-        if self.language in ('english', ''):
-            self.setup = []
 
     def next_quote(self):
         q = self.quotes[self.quote_index]
@@ -395,19 +400,17 @@ class Babel(object):
                 t += self.next_quote() + part
         return t
 
-    def get_language(self):
+    def get_language(self, language_code):
         """Set TeX language name"""
-        for tag in utils.normalize_language_tag(self.language_code):
+        for tag in utils.normalize_language_tag(language_code):
             try:
-                self.language = self.language_codes[tag]
-                self.warning = ''
+                language = self.language_codes[tag]
                 break
             except KeyError:
                 continue
         else:
-            self.language = ''
-            self.warning = ('language "%s" not supported by XeTeX' +
-                            'defaulting to "english"') % self.language_code
+            language = ''
+        return language
 
 
 
@@ -930,7 +933,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     literal = False                    # literal text (block or inline)
 
 
-    def __init__(self, document):
+    def __init__(self, document, babel_class=Babel):
         nodes.NodeVisitor.__init__(self, document)
         # Reporter
         # ~~~~~~~~
@@ -969,13 +972,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # TODO avoid errors on not declared citations.
         else:
             self.bibtex = None
-        # language:
+        # language module for Docutils-generated text
         # (labels, bibliographic_fields, and author_separators)
-        self.language = languages.get_language(settings.language_code)
-        self.babel = Babel(settings.language_code)
-        if self.babel.language == '':
-            self.warn(self.babel.warning)
-        self.author_separator = self.language.author_separators[0]
+        self.language_module = languages.get_language(settings.language_code,
+                                              document.reporter)
+        self.babel = babel_class(settings.language_code, document.reporter)
+        self.author_separator = self.language_module.author_separators[0]
         self.d_options = [self.settings.documentoptions]
         if self.babel.language and self.babel.language != 'english':
             self.d_options.append(self.babel.language)
@@ -1209,7 +1211,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         return encoding.split(':')[0]
 
     def language_label(self, docutil_label):
-        return self.language.labels[docutil_label]
+        return self.language_module.labels[docutil_label]
 
     def ensure_math(self, text):
         if not hasattr(self, 'ensure_math_re'):
