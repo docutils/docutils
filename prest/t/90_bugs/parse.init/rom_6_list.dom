@@ -1,0 +1,11 @@
+<document source="rom_6_list.rst">
+    <enumerated_list enumtype="upperroman" prefix="" start="5" suffix=".">
+        <list_item>
+            <paragraph>
+                A Roman numerals list starting at 5.
+    <paragraph>
+        And again
+    <enumerated_list enumtype="upperroman" prefix="" start="6" suffix=".">
+        <list_item>
+            <paragraph>
+                A Roman numerals list starting at 6.
