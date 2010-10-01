@@ -107,7 +107,7 @@ sub BEGIN = {
 
     # Run-time globals
     use vars qw($HAS_CONTENTS $TARGET_FRAME $FOOTER $HEADER @HEAD @HEAD_INFO
-		%IMAGE_EXTS $IMAGE_EXT_RE %USED_DEFAULT $DOCTYPE);
+		%IMAGE_EXTS $IMAGE_EXT_RE %USED_DEFAULT $DOCTYPE $DOCDOM);
 
     # Defaults for -W flags
     $attribution = 'dash' unless defined $attribution;
@@ -168,6 +168,18 @@ sub MakeAttrList {
     grep ref($attr->{$_}) eq 'ARRAY' ?
 	grep(s/\"/&quot;/g, @{$attr->{$_}}) :
 	defined $attr->{$_} && $attr->{$_} =~ s/\"/&quot;/g, keys %$attr;
+    # Force ids to be unique
+    my $id  = $attr->{id};
+    if ($id && $DOCDOM->{_html}{ids}{$id}++) {
+	
+	my $ids_hr = $DOCDOM->{_html}{ids};
+	my $sfx;
+	for ($sfx = '0001'; $ids_hr->{"$id-$sfx"}; $sfx++) {
+	}
+	my $new_id         = "$id-$sfx";
+	$attr->{id}        = $new_id;
+	$ids_hr->{$new_id} = 1;
+    }
     return ' ' . join(' ', map($_ . (! defined $attr->{$_} ? '' :
 				     ref($attr->{$_}) eq 'ARRAY' ?
 				     qq(="@{$attr->{$_}}") :
@@ -247,6 +259,7 @@ phase FIXATTR {
 		    EncodeHTML($dom->{attr}{$attr});
 	    }
 	}
+	$DOCDOM = $dom if $dom->tag eq 'document';
 	return;
     }
 }
@@ -747,7 +760,9 @@ phase PROCESS {
 
     sub list_item = { # PROCESS
 	my ($dom, $str) = @_;
-	return qq(<li>$str</li>\n);
+ 	my $attr = $dom->{attr};
+	my $attrlist = GetAttr($dom);
+	return qq(<li$attrlist>$str</li>\n);
     }
 
     sub section = { # PROCESS
@@ -817,8 +832,13 @@ phase PROCESS {
 
     sub literal = { # PROCESS
 	my ($dom, $str) = @_;
+	my %attr;
+	$attr{class} = [qw(docutils literal)];
+	push @{$attr{class}}, @{$dom->{attr}{classes}}
+	    if $dom->{attr}{classes};
+	my $attr = MakeAttrList(\%attr);
 	return defined $dom->{_html}{txt} ? $dom->{_html}{txt} :
-	    qq(<tt class="docutils literal">$str</tt>);
+	    qq(<tt$attr>$str</tt>);
     }
 
     sub term = { # PROCESS
