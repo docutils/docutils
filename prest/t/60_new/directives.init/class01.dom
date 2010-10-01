@@ -1,0 +1,128 @@
+<document source="test data">
+    <paragraph>
+        Check the new 
+        <literal>
+            :parent:
+         option to the class:: directive.
+    <system_message level="1" line="3" source="test data" type="INFO">
+        <paragraph>
+            No directive entry for "perl" in module "Text::Restructured::Directive".
+            Trying "perl" as canonical directive name.
+    <table>
+        <tgroup cols="3">
+            <colspec colwidth="33">
+            <colspec colwidth="33">
+            <colspec colwidth="33">
+            <thead>
+                <row>
+                    <entry classes="yellow">
+                        <paragraph>
+                            A
+                    <entry>
+                        <paragraph>
+                            B
+                    <entry>
+                        <paragraph>
+                            C
+            <tbody>
+                <row>
+                    <entry classes="red blue">
+                        <paragraph>
+                            abc
+                        <paragraph>
+                            cba
+                    <entry>
+                        <paragraph>
+                            def
+                    <entry>
+                        <paragraph>
+                            ghi
+                <row>
+                    <entry>
+                        <pending>
+                            .. internal attributes:
+                                 .transform: docutils.transforms.parts.Class
+                                 .details:
+                                   class: yellow
+                        <paragraph>
+                            cba
+                    <entry>
+                        <paragraph>
+                            fed
+                    <entry>
+                        <paragraph>
+                            ihg
+    <bullet_list bullet="*">
+        <list_item>
+            <bullet_list bullet="-">
+                <list_item>
+                    <paragraph>
+                        D
+                <list_item>
+                    <paragraph>
+                        E
+                <list_item>
+                    <paragraph>
+                        F
+        <list_item>
+            <bullet_list bullet="-">
+                <list_item classes="red">
+                    <paragraph>
+                        jkl
+                    <paragraph>
+                        mno
+                <list_item>
+                    <paragraph>
+                        pqr
+                <list_item>
+                    <paragraph>
+                        stu
+        <list_item>
+            <bullet_list bullet="-">
+                <list_item>
+                    <pending>
+                        .. internal attributes:
+                             .transform: docutils.transforms.parts.Class
+                             .details:
+                               class: yellow
+                    <paragraph>
+                        lkj
+                    <paragraph>
+                        onm
+                <list_item>
+                    <paragraph>
+                        rqp
+                <list_item>
+                    <paragraph>
+                        uts
+    <table>
+        <tgroup cols="3">
+            <colspec colwidth="22">
+            <colspec colwidth="12">
+            <colspec colwidth="13">
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            abc
+                    <entry classes="yellow">
+                        <paragraph>
+                            def
+                    <entry>
+                        <paragraph>
+                            ghi
+                <row>
+                    <entry classes="red">
+                        <paragraph>
+                            cba
+                    <entry>
+                        <paragraph>
+                            fed
+                    <entry>
+                        <paragraph>
+                            ihg
+    <raw format="html" head="1" xml:space="preserve">
+        <style type="text/css">
+        .red    { background:red }
+        .yellow { background:yellow }
+        </style>
