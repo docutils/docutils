@@ -1621,7 +1621,7 @@ Class
 :Doctree Element: pending
 :Directive Arguments: One or more, required (class names / attribute
                       values).
-:Directive Options: None.
+:Directive Options: Possible.
 :Directive Content: None.
 
 The "class" directive sets the "classes" attribute value on
@@ -1669,6 +1669,12 @@ The text above is parsed and transformed into this doctree fragment::
    required to terminate the directive.  Without the empty comment,
    the block quote text would be interpreted as the "class"
    directive's content, and the parser would complain.
+
+The following options are recognized:
+
+``parent`` : flag (empty)
+    Attach the class to the containing element rather than the next
+    element.
 
 .. topic:: Rationale for "classes" Attribute Value Conversion
 
