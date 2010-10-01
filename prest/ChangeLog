@@ -5,6 +5,20 @@ Release Notes
 
 .. contents::
 
+Release 0.3.44
+--------------
+
+reStructuredText parsing:
+
+* Fixed an issue in recognizing a Roman numeral list beginning VI.
+* Added :parent: option to class:: directive
+* Propagate classes on list items in list tables to the table cells
+
+Writer 'html':
+
+* Force HTML ids to be unique
+* Process attributes (such as class) on list items and literal
+
 Release 0.3.43
 --------------
 

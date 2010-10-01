@@ -251,6 +251,8 @@ t/40_writers/xref.init/xref09.xref
 t/40_writers/xref.init/xref10.xref
 t/40_writers/xref.init/xref11.xref
 t/40_writers/xref.init/xreftest.rst
+t/60_new/directives.init/class01.dom
+t/60_new/directives.init/class01.rst
 t/60_new/directives.init/Dir.smak
 t/60_new/directives.init/mathml01.dom
 t/60_new/directives.init/mathml01.rst
@@ -287,7 +289,11 @@ t/60_new/directives.init/tables04.rst
 t/60_new/directives.init/Text/ASCIIMathML.pm
 t/60_new/html.init/bodyonly.myhtml
 t/60_new/html.init/bodyonly.rst
+t/60_new/html.init/class01.myhtml
+t/60_new/html.init/class01.rst
 t/60_new/html.init/Dir.smak
+t/60_new/html.init/dupsection.myhtml
+t/60_new/html.init/dupsection.rst
 t/60_new/html.init/entryattr.myhtml
 t/60_new/html.init/entryattr.rst
 t/60_new/html.init/interptags.myhtml
@@ -1083,6 +1089,8 @@ t/90_bugs/parse.init/quoteinline.dom
 t/90_bugs/parse.init/quoteinline.rst
 t/90_bugs/parse.init/replaceinterp.dom
 t/90_bugs/parse.init/replaceinterp.rst
+t/90_bugs/parse.init/rom_6_list.dom
+t/90_bugs/parse.init/rom_6_list.rst
 t/90_bugs/parse.init/sections.dom
 t/90_bugs/parse.init/sections.rst
 t/90_bugs/parse.init/sections.stderr
