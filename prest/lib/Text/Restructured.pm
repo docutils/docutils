@@ -6,7 +6,7 @@
 package Text::Restructured;
 
 # N.B.: keep version in quotes so trailing 0's are not lost
-$VERSION = '0.003043';
+$VERSION = '0.003044';
 
 # This package does parsing of reStructuredText files
 
@@ -1010,7 +1010,7 @@ my @ENUM_STRINGS = ('arabic', 'loweralpha', 'upperalpha',
 sub EnumType : method {
     my ($self, $index) = @_;
     my @matches = 
-	$index=~/^(?:([0-9]+)|([a-hj-z])|([A-HJ-Z])|([ivxlcdm]+)|([IVXLCDM]+))|(\#)$/;
+	$index=~/^(?:([0-9]+)|([a-hj-uw-z])|([A-HJ-UW-Z])|([ivxlcdm]+)|([IVXLCDM]+)|(\#))$/;
     my @defs = grep(defined $matches[$_], 0 .. 5);
     # uncoverable branch false note:assert defined $defs[0]
     my $type = defined $defs[0] ? $ENUM_STRINGS[$defs[0]] : 'error';
@@ -3329,7 +3329,7 @@ sub ascii_mathml {
 # Returns: array of DOM objects
 sub class {
     my($parser, $name, $parent, $source, $lineno, $dtext, $lit) = @_;
-    my @optlist = ();
+    my @optlist = qw(parent);
     my $dhash = parse_directive($parser, $dtext, $lit, $source, $lineno,
 				\@optlist, '1+');
     return $dhash if ref($dhash) =~ /$DOM$/o;
@@ -3346,6 +3346,11 @@ sub class {
 	 $lit)
 	unless $args =~ /^[a-z][-a-z0-9]*(?:\s+[a-z][-a-z0-9]*)*$/i;
 
+    if (defined $options->{parent}) {
+	$parent->{attr}{classes} ||= [];
+	push @{$parent->{attr}{classes}}, split(/\s+/, $args);
+	return;
+    }
     my $pending = $DOM->new('pending');
     $pending->{internal}{'.transform'} = "docutils.transforms.parts.Class";
     my $details = $pending->{internal}{'.details'} = { };
@@ -4368,7 +4373,15 @@ sub table {
 					    $content_lineno+$lines);
 		    }
 		    else {
-			$e->append(@{$row->[$entry]});
+			my $myentry = $row->[$entry];
+			my $ep = $myentry->[0];
+			if (ref $ep &&
+			    $ep->tag eq 'paragraph' &&
+			    $ep->{attr}{classes}) {
+			    $e->{attr}{classes} = $ep->{attr}{classes};
+			    delete $ep->{attr}{classes};
+			}
+			$e->append(@$myentry);
 		    }
 		    $e->{entry_attr} = $parser->{opt}{D}{entry_attr}
 		    if defined $parser->{opt}{D}{entry_attr} &&
@@ -4442,7 +4455,10 @@ sub ParseListTable {
 	return "uniform two-level bullet list expected, but row @{[$row+1]} does not contain the same number of items as row 1 (@{[$bl2->num_contents]} vs $cols)"
 	    if $row > 0 && $bl2->num_contents ne $cols;
  	for (my $col=0; $col < $bl2->num_contents; $col++) {
-	    push @{$rows[$row]}, $bl2->child($col)->{content};
+	    my $child = $bl2->child($col);
+	    push @{$rows[$row]}, $child->{content};
+	    $rows[$row][-1][0]{attr}{classes} = $child->{attr}{classes}
+	    if $child->{attr}{classes};
  	}
 	$cols = $bl2->contents if $row eq 0;
 	
