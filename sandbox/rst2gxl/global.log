@@ -1,4 +1,38 @@
 **************************************
+Date: Sat Oct  2 14:53:49 CEST 2010
+Author: stefan
+Tag: rst2gxl_1_37
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory rosalu:/home/stefan/free/rst2gxl
+
+Modified Files:
+	.cvsignore Makefile setup.py 
+
+--------------------------------------
+Log Message:
+Added version infrastructure.
+**************************************
+Date: Sat Oct  2 14:48:43 CEST 2010
+Author: stefan
+Tag: rst2gxl_1_36
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory rosalu:/home/stefan/free/rst2gxl
+
+Modified Files:
+	Makefile 
+Added Files:
+	.cvsignore setup.py 
+
+--------------------------------------
+Log Message:
+Added setup.
+
+Added infrastructure for versioning.
+**************************************
 Date: Mon May 24 18:02:51 CEST 2010
 Author: stefan
 Tag: rst2gxl_1_35
