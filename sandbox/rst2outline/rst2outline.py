@@ -88,6 +88,8 @@ class OutlineTranslator(nodes.SparseNodeVisitor):
     def depart_bullet_list(self, node):
         self.inBullet -= 1
 
+    # TODO Other list types need to be included as well
+
     def visit_list_item(self, node):
         self.inItem = True
 
