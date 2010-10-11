@@ -19,11 +19,28 @@ Custom Roles
      :class: special
 
   :customclass:`interpreted text`
-   
-* A role with class attribute.
+
+* A language-switching role:
+
+  .. role:: language-de
+
+  Let's count in German :language-de:`eins zwei drei`.
+
+* A role with multiple class attributes, styled with raw directives:
 
   .. role:: customx
-     :class: very special 
+     :class: green sc language-en-GB
 
-  :customx:`interpreted text`
-   
+  .. raw:: latex
+
+     \newcommand{\DUrolegreen}[1]{\textcolor{green}{#1}}
+     \newcommand{\DUrolesc}[1]{\textsc{#1}}
+
+  .. raw:: html
+
+    <style type="text/css"><!--
+     .green {color: green;}
+     .sc {font-variant: small-caps;}
+     --></style>
+
+  :customx:`British colourful text in small-caps`.

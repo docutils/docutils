@@ -1,4 +1,4 @@
-# -*- coding: utf8 -*-
+# .. coding: utf8
 # $Id$
 # Author: Engelbert Gruber <grubert@users.sourceforge.net>
 # Copyright: This module has been placed in the public domain.
@@ -303,7 +303,7 @@ class Babel(object):
         'en_gb':        'british',
         'en_nz':        'newzealand',
         'en_us':        'american',
-        'eo':           'esperanto', # '^' is made active!
+        'eo':           'esperanto', # '^' is active
         'es':           'spanish',
         'et':           'estonian',
         'eu':           'basque',
@@ -313,9 +313,7 @@ class Babel(object):
         'fr_ca':        'canadien',
         'ga':           'irish',    # Irish Gaelic
         # 'grc':                    # Ancient Greek
-        'grc_x_ibycus': 'ibycus',   # Ibycus encoding
-        'grc_ibycus':   'ibycus',
-        'gd':           'scottish', # Scottish Gaelic
+        'grc_ibycus':   'ibycus',   # Ibycus encoding
         'gl':           'galician',
         'he':           'hebrew',
         'hr':           'croatian',
@@ -340,15 +338,15 @@ class Babel(object):
         'pt':           'portuges',
         'pt_br':        'brazil',
         'ro':           'romanian',
-        'ru':           'russian',   # " active
-        'se':           'samin', # North Sami
+        'ru':           'russian',   # '"' is active
+        'se':           'samin',     # North Sami
         # sh-cyrl:      Serbo-Croatian, Cyrillic script
         'sh-latn':      'serbian', # Serbo-Croatian, Latin script
         'sk':           'slovak',
         'sl':           'slovene',
         'sq':           'albanian',
         # 'sr-cyrl':    Serbian, Cyrillic script (sr-cyrl)
-        'sr-latn':      'serbian', # Serbian, Latin script, " active.
+        'sr-latn':      'serbian', # Serbian, Latin script, " active.
         'sv':           'swedish',
         # 'th':           'thai',
         'tr':           'turkish',
@@ -356,26 +354,21 @@ class Babel(object):
         'vi':           'vietnam',
         # zh-latn:      Chinese Pinyin
         }
-    warning = ''
+    warn_msg = 'Language "%s" not supported by LaTeX (babel)'
 
     def __init__(self, language_code, reporter):
         self.language_code = language_code
+        self.reporter = reporter
         self.language = self.get_language(language_code)
-        if self.language == '':
-            reporter.warning('language "%s" ' % self.language_code +
-                'not supported by LaTeX (babel), defaulting to "english"')
-        # don't use babel for (american) English or unknown languages:
-        if self.language in ('english', ''):
-            self.setup = []
-        else:
-            self.setup = [r'\usepackage{babel}']
+        self.otherlanguages = {}
         self.quote_index = 0
         self.quotes = ('``', "''")
         # language dependent configuration:
         # double quotes are "active" in some languages (e.g. German).
         # TODO: use \textquotedbl in T1 font encoding?
         self.literal_double_quote = u'"'
-        if self.language in ('ngerman', 'german', 'austrian', 'naustrian'):
+        if self.language in ('ngerman', 'german', 'austrian', 'naustrian',
+                             'russian'):
             self.quotes = (r'\glqq{}', r'\grqq{}')
             self.literal_double_quote = ur'\dq{}'
         if self.language == 'italian':
@@ -385,6 +378,11 @@ class Babel(object):
             self.setup.append(
                   r'\addto\shorthandsspanish{\spanishdeactivate{."~<>}}')
             # or prepend r'\def\spanishoptions{es-noshorthands}'
+
+    def __call__(self):
+        languages = self.otherlanguages.keys()
+        languages.append(self.language or 'english')
+        return r'\usepackage[%s]{babel}' % ','.join(languages)
 
     def next_quote(self):
         q = self.quotes[self.quote_index]
@@ -401,7 +399,7 @@ class Babel(object):
         return t
 
     def get_language(self, language_code):
-        """Set TeX language name"""
+        """Return TeX language name for `language_code`"""
         for tag in utils.normalize_language_tag(language_code):
             try:
                 language = self.language_codes[tag]
@@ -409,9 +407,9 @@ class Babel(object):
             except KeyError:
                 continue
         else:
+            self.reporter.warning(self.warn_msg % self.language_code)
             language = ''
         return language
-
 
 
 # Building blocks for the latex preamble
@@ -462,6 +460,12 @@ PreambleCmds.admonition = r"""
     \end{center}
   \fi
 }"""
+
+PreambleCmds.align_center = r"""
+\makeatletter
+\@namedef{DUrolealign-center}{\centering}
+\makeatother
+"""
 
 ## PreambleCmds.caption = r"""% configure caption layout
 ## \usepackage{caption}
@@ -955,7 +959,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.section_prefix_for_enumerators = (
             settings.section_prefix_for_enumerators)
         self.section_enumerator_separator = (
-            settings.section_enumerator_separator.replace('_', '\\_'))
+            settings.section_enumerator_separator.replace('_', r'\_'))
         # literal blocks:
         self.literal_block_env = ''
         self.literal_block_options = ''
@@ -978,10 +982,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
                                               document.reporter)
         self.babel = babel_class(settings.language_code, document.reporter)
         self.author_separator = self.language_module.author_separators[0]
-        self.d_options = [self.settings.documentoptions]
-        if self.babel.language and self.babel.language != 'english':
-            self.d_options.append(self.babel.language)
-        self.d_options = ','.join([opt for opt in self.d_options if opt])
+        d_options = [self.settings.documentoptions]
+        if self.babel.language not in ('english', ''):
+            d_options.append(self.babel.language)
+        self.documentoptions = ','.join(filter(None, d_options))
         self.d_class = DocumentClass(settings.documentclass,
                                      settings.use_part_section)
         # graphic package options:
@@ -1010,8 +1014,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         # Document parts
         self.head_prefix = [r'\documentclass[%s]{%s}' %
-                            (self.d_options, self.settings.documentclass)]
+            (self.documentoptions, self.settings.documentclass)]
         self.requirements = SortableDict() # made a list in depart_document()
+        self.requirements['_static'] = r'\usepackage{ifthen}'
         self.latex_preamble = [settings.latex_preamble]
         self.stylesheet = []
         self.fallbacks = SortableDict() # made a list in depart_document()
@@ -1069,24 +1074,19 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         # Process settings
         # ~~~~~~~~~~~~~~~~
-
-        # Static requirements
+        # Encodings:
+        # Docutils' output-encoding => TeX input encoding
+        if self.latex_encoding != 'ascii':
+            self.requirements['_inputenc'] = (r'\usepackage[%s]{inputenc}'
+                                              % self.latex_encoding)
         # TeX font encoding
         if self.font_encoding:
-            encodings = [r'\usepackage[%s]{fontenc}' % self.font_encoding]
-        else:
-            encodings = []
-        # Docutils' output-encoding => TeX input encoding:
-        if self.latex_encoding != 'ascii':
-            encodings.append(r'\usepackage[%s]{inputenc}'
-                             % self.latex_encoding)
-        self.requirements['_static'] = '\n'.join(encodings +
-                                                 [r'\usepackage{ifthen}'] +
-                                                 self.babel.setup)
+            self.requirements['_fontenc'] = (r'\usepackage[%s]{fontenc}' %
+                                             self.font_encoding)
         # page layout with typearea (if there are relevant document options)
         if (settings.documentclass.find('scr') == -1 and
-            (self.d_options.find('DIV') != -1 or
-             self.d_options.find('BCOR') != -1)):
+            (self.documentoptions.find('DIV') != -1 or
+             self.documentoptions.find('BCOR') != -1)):
             self.requirements['typearea'] = r'\usepackage{typearea}'
 
         # Stylesheets
@@ -1449,7 +1449,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         """Cleanse, encode, and return attribute value text."""
         return self.encode(whitespace.sub(' ', text))
 
-    # TODO: is this used anywhere? (update or delete)
+    # TODO: is this used anywhere? -> update (use template) or delete
     ## def astext(self):
     ##     """Assemble document parts and return as string."""
     ##     head = '\n'.join(self.head_prefix + self.stylesheet + self.head)
@@ -1526,8 +1526,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_block_quote(self, node):
         self.out.append( '%\n\\begin{quote}\n')
+        if node['classes']:
+            self.visit_inline(node)
 
     def depart_block_quote(self, node):
+        if node['classes']:
+            self.depart_inline(node)
         self.out.append( '\n\\end{quote}\n')
 
     def visit_bullet_list(self, node):
@@ -1782,6 +1786,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def depart_document(self, node):
         # Complete header with information gained from walkabout
+        # * language setup
+        if (self.babel.otherlanguages or
+            self.babel.language not in ('', 'english')):
+            self.requirements['_babel'] = self.babel()
         # * conditional requirements (before style sheet)
         self.requirements = self.requirements.sortedvalues()
         # * coditional fallback definitions (after style sheet)
@@ -2229,6 +2237,32 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if node.get('ids'):
             self.out += self.ids_to_labels(node) + ['\n']
 
+    def visit_inline(self, node): # <span>, i.e. custom roles
+        # Make a copy to keep  ``node['classes']`` True if a
+        # language argument is popped (used in conditional calls of
+        # depart_inline()):
+        classes = node['classes'][:]
+        self.context.append('}' * len(classes))
+        # handle language specification:
+        language_tags = [cls for cls in classes
+                         if cls.startswith('language-')]
+        if language_tags:
+            language = self.babel.get_language(language_tags[0][9:])
+            if language:
+                self.babel.otherlanguages[language] = True
+                self.out.append(r'{\selectlanguage{%s}' % language)
+                classes.pop(classes.index(language_tags[0]))
+        if not classes:
+            return
+        # mark up for styling with custom macros
+        if 'align-center' in classes:
+            self.fallbacks['align-center'] = PreambleCmds.align_center
+        self.fallbacks['inline'] = PreambleCmds.inline
+        self.out += [r'\DUrole{%s}{' % cls for cls in classes]
+
+    def depart_inline(self, node):
+        self.out.append(self.context.pop())
+
     def visit_interpreted(self, node):
         # @@@ Incomplete, pending a proper implementation on the
         # Parser/Reader end.
@@ -2258,8 +2292,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
                              '\\begin{DUlineblock}{\\DUlineblockindent}\n')
         else:
             self.out.append('\n\\begin{DUlineblock}{0em}\n')
+        if node['classes']:
+            self.visit_inline(node)
+            self.out.append('\n')
 
     def depart_line_block(self, node):
+        if node['classes']:
+            self.depart_inline(node)
+            self.out.append('\n')
         self.out.append('\\end{DUlineblock}\n')
 
     def visit_list_item(self, node):
@@ -2410,22 +2450,26 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.depart_docinfo_item(node)
 
     def visit_paragraph(self, node):
-        # no newline if the paragraph is first in a list item
-        if ((isinstance(node.parent, nodes.list_item) or
-             isinstance(node.parent, nodes.description)) and
-            node is node.parent[0]):
-            return
+        # insert blank line, if the paragraph is not first in a list item
+        # nor follows a non-paragraph node in a compound
         index = node.parent.index(node)
-        if (isinstance(node.parent, nodes.compound) and
-            index > 0 and
-            not isinstance(node.parent[index - 1], nodes.paragraph) and
-            not isinstance(node.parent[index - 1], nodes.compound)):
-            return
-        self.out.append('\n')
+        if (index == 0 and (isinstance(node.parent, nodes.list_item) or
+                            isinstance(node.parent, nodes.description))):
+            pass
+        elif (index > 0 and isinstance(node.parent, nodes.compound) and
+              not isinstance(node.parent[index - 1], nodes.paragraph) and
+              not isinstance(node.parent[index - 1], nodes.compound)):
+            pass
+        else:
+            self.out.append('\n')
         if node.get('ids'):
             self.out += self.ids_to_labels(node) + ['\n']
+        if node['classes']:
+            self.visit_inline(node)
 
     def depart_paragraph(self, node):
+        if node['classes']:
+            self.depart_inline(node)
         self.out.append('\n')
 
     def visit_problematic(self, node):
@@ -2440,6 +2484,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_raw(self, node):
         if not 'latex' in node.get('format', '').split():
             raise nodes.SkipNode
+        if not self.is_inline(node):
+            self.out.append('\n')
         if node['classes']:
             self.visit_inline(node)
         # append "as-is" skipping any LaTeX-encoding
@@ -2449,6 +2495,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.verbatim = False
         if node['classes']:
             self.depart_inline(node)
+        if not self.is_inline(node):
+            self.out.append('\n')
 
     def has_unbalanced_braces(self, string):
         """Test whether there are unmatched '{' or '}' characters."""
@@ -2854,15 +2902,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if ('abstract' in node['classes'] or
             'dedication' in node['classes']):
             self.pop_output_collector()
-
-    def visit_inline(self, node): # <span>, i.e. custom roles
-        # insert fallback definition
-        self.fallbacks['inline'] = PreambleCmds.inline
-        self.out += [r'\DUrole{%s}{' % cls for cls in node['classes']]
-        self.context.append('}' * (len(node['classes'])))
-
-    def depart_inline(self, node):
-        self.out.append(self.context.pop())
 
     def visit_rubric(self, node):
         self.fallbacks['rubric'] = PreambleCmds.rubric

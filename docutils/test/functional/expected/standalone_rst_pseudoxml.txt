@@ -889,6 +889,38 @@
                                 <line>
                     <line>
                         Singing...
+            <paragraph>
+                A poem by Christian Morgenstern:
+            <line_block classes="language-de align-center">
+                <line>
+                    Das æsthetische Wiesel
+                <line>
+                <line>
+                    Ein Wiesel
+                <line>
+                    saß auf einem Kiesel
+                <line>
+                    inmitten Bachgeriesel.
+                <line>
+                <line>
+                    Wißt ihr
+                <line>
+                    weshalb?
+                <line>
+                <line>
+                    Das Mondkalb
+                <line>
+                    verriet es mir
+                <line>
+                    im Stillen:
+                <line>
+                <line>
+                    Das raffinier-
+                <line>
+                    te Tier
+                <line>
+                    tat's um des Reimes willen.
+                <line>
         <section ids="block-quotes" names="block\ quotes">
             <title auto="1" refid="id46">
                 <generated classes="sectnum">
@@ -905,6 +937,14 @@
                     own it, and what it is too.
                 <attribution>
                     Anne Elk (Miss)
+            <paragraph>
+                The language of a quote (like any other object) can be specified by
+                a class attribute:
+            <comment xml:space="preserve">
+            <block_quote classes="language-fr">
+                <paragraph>
+                    ReStructuredText est un langage de balisage léger utilisé
+                    notamment dans la documentation du langage Python.
         <section ids="doctest-blocks" names="doctest\ blocks">
             <title auto="1" refid="id47">
                 <generated classes="sectnum">
@@ -1882,15 +1922,15 @@
         <system_message backrefs="id24" ids="id23" level="3" line="102" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Undefined substitution referenced: "problematic".
-        <system_message backrefs="id80" ids="id79" level="3" line="361" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id80" ids="id79" level="3" line="394" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Unknown target name: "5".
-        <system_message backrefs="id82" ids="id81" level="3" line="370" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id82" ids="id81" level="3" line="403" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Unknown target name: "nonexistent".
-        <system_message backrefs="id84" ids="id83" level="3" line="397" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id84" ids="id83" level="3" line="430" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Unknown target name: "hyperlink reference without a target".
-        <system_message backrefs="id86" ids="id85" level="3" line="410" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id86" ids="id85" level="3" line="443" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Duplicate target name, cannot be used as a unique reference: "duplicate target names".

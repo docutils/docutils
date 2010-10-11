@@ -133,7 +133,7 @@ Also see the `SourceForge Bug Tracker`_.
 * .. _error reporting:
 
   Calling rst2s5.py with a non-existent theme (``--theme
-  does_not_exist``) or a non-existent language (``--language zz``)
+  does_not_exist``)
   causes exceptions.  Such errors should be handled more gracefully.
 
 * The "stylesheet" setting (a URL, to be used verbatim) should be

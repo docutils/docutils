@@ -564,7 +564,7 @@ the~empty~line~gets~tested~too\\
 totest['raw'] = [
 [r""".. raw:: latex
 
-   \noindent
+   $E=mc^2$
 
 A paragraph.
 
@@ -575,7 +575,9 @@ A paragraph.
 Foo |sub|
 same paragraph.
 """,
-head + r"""\noindent
+head + r"""
+$E=mc^2$
+
 A paragraph.
 
 Foo (some raw text)

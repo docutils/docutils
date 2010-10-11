@@ -321,6 +321,9 @@ _`input_encoding_error_handler`
 _`language_code`
     Case-insensitive `language tag`_ as defined in `BCP 47`_.
 
+    Sets the document language, also used for localized directive and
+    role names as well as Docutils-generated text.
+
     A typical language identifier consists of a 2-letter language code
     from `ISO 639`_ (3-letter codes can be used if no 2-letter code
     exists). The language identifier can have an optional subtag,
@@ -328,9 +331,15 @@ _`language_code`
     2-letter country codes).  Avoid subtags except where they add
     useful distinguishing information. Examples of language tags
     include "fr", "en-GB", "pt_br" (the same as "pt-BR"), and
-    "de-1901".
+    "de-1901" (German with pre-1998 spelling).
+
+    The language of document parts can be specified with a
+    "language-<language tag>" `class attribute`_, e.g.
+    ``.. class:: language-el-polyton`` for a quote in polytonic Greek.
 
     Default: English ("en").  Options: ``--language, -l``.
+
+    .. _class attribute: ../ref/doctree.html#classes
 
 _`output_encoding`
     The text encoding for output.

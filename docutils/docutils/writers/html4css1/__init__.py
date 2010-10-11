@@ -360,6 +360,12 @@ class HTMLTranslator(nodes.NodeVisitor):
         classes = node.get('classes', [])
         if 'class' in atts:
             classes.append(atts['class'])
+        # move language specification to 'lang' attribute
+        languages = [cls for cls in classes
+                     if cls.startswith('language-')]
+        if languages:
+            atts['lang'] = languages[0][9:]
+            classes.pop(classes.index(languages[0]))
         if classes:
             atts['class'] = ' '.join(classes)
         assert 'id' not in atts
