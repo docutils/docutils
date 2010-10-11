@@ -310,6 +310,30 @@ Take it away, Eric the Orchestra Leader!
     |
     | Singing...
 
+A poem by Christian Morgenstern:
+
+.. class:: language-de align-center
+
+
+|    Das æsthetische Wiesel
+|
+|    Ein Wiesel
+|    saß auf einem Kiesel
+|    inmitten Bachgeriesel.
+|
+|    Wißt ihr
+|    weshalb?
+|
+|    Das Mondkalb
+|    verriet es mir
+|    im Stillen:
+|
+|    Das raffinier-
+|    te Tier
+|    tat's um des Reimes willen.
+|
+
+
 Block Quotes
 ------------
 
@@ -322,6 +346,15 @@ Block quotes consist of indented body elements:
     own it, and what it is too.
 
     -- Anne Elk (Miss)
+
+The language of a quote (like any other object) can be specified by
+a class attribute:
+
+.. class:: language-fr
+..
+
+    ReStructuredText est un langage de balisage léger utilisé
+    notamment dans la documentation du langage Python.
 
 Doctest Blocks
 --------------
@@ -529,7 +562,7 @@ A left-aligned figure:
 
    The legend may consist of several paragraphs.
 
-This paragraph might flow around the figure. 
+This paragraph might flow around the figure.
 
 The specific behavior depends upon the style sheet and the browser or
 rendering software used.

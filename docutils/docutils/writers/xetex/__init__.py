@@ -87,38 +87,41 @@ class Babel(latex2e.Babel):
                 'de_at',        # 'naustrian',
                 'de_at_1901',   # 'austrian',
                 'fr_ca',        # 'canadien',
-                'grc_x_ibycus', # 'ibycus',   Ibycus encoding
+                'grc_ibycus',   # 'ibycus', (Greek Ibycus encoding)
                 'sr-latn',      # 'serbian script=latin'
                 'vi'):          # 'vietnam',
         del(language_codes[key])
 
     def __init__(self, language_code, reporter):
         self.language_code = language_code
+        self.reporter = reporter
         self.language = self.get_language(language_code)
-        if self.language == '':
-            reporter.warning('Language "%s" ' % self.language_code +
-                'not supported by XeTeX (polyglossia), defaulting to "english".' )
-        # don't use polyglossia for (american) English or unknown languages:
-        if self.language in ('english', ''):
-            self.setup = []
-        else:
-            self.setup = [r'\usepackage{polyglossia}',
-                          r'\setdefaultlanguage{%s}' % self.language]
+        self.otherlanguages = {}
+        self.warn_msg = 'Language "%s" not supported by XeTeX (polyglossia).'
         self.quote_index = 0
         self.quotes = ('"', '"')
         # language dependent configuration:
         # double quotes are "active" in some languages (e.g. German).
         self.literal_double_quote = u'"' # TODO: use \textquotedbl
 
+    def __call__(self):
+        setup = [r'\usepackage{polyglossia}',
+                 r'\setdefaultlanguage{%s}' % self.language]
+        if self.otherlanguages:
+            setup.append(r'\setotherlanguages{%s}' %
+                         ','.join(self.otherlanguages.keys()))
+        return '\n'.join(setup)
+
+
 class XeLaTeXTranslator(latex2e.LaTeXTranslator):
 
     def __init__(self, document):
         latex2e.LaTeXTranslator.__init__(self, document, Babel)
-        requirements = [r'\usepackage{ifthen}'] + self.babel.setup
-        if self.latex_encoding != 'utf8':
-            requirements.append(r'\XeTeXinputencoding %s '
-                                % self.latex_encoding)
-        self.requirements['_static'] = '\n'.join(requirements)
+        if self.latex_encoding == 'utf8':
+            self.requirements.pop('_inputenc', None)
+        else:
+            self.requirements['_inputenc'] = (r'\XeTeXinputencoding %s '
+                                              % self.latex_encoding)
 
     # XeTeX does not know the length unit px
     # Use \pdfpxdimen, the macro to set the value of 1 px in pdftex

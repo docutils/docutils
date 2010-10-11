@@ -29,12 +29,11 @@ Changes Since 0.7
 
   - Fix ``--local`` switch.
 
-* docutils/writers/xetex/__init__.py
 
-  - New writer generating LaTeX code for compiling with ``xelatex``.
+* docutils/writers/html4css1/__init__.py
 
-    A separate writer (inheriting from latex2e) instead of a ``--xetex``
-    option allows separate config options for XeTeX vs. LaTeX2e.
+  - Set "lang" argument for objects with class argument
+    "language-<language tag>".
 
 * docutils/writers/latex2e/__init__.py
 
@@ -44,6 +43,15 @@ Changes Since 0.7
   - Update list of supported languages.
   - New config setting "hyperref-options".
     No hard-coded "unicode" hyperref option (clash with xetex).
+  - Set language for custom roles, paragraphs, block-quotes, and
+    line-quotes with class argument "language-<language tag>".
+
+* docutils/writers/xetex/__init__.py
+
+  - New writer generating LaTeX code for compiling with ``xelatex``.
+
+    A separate writer (inheriting from latex2e) instead of a ``--xetex``
+    option allows separate config options for XeTeX vs. LaTeX2e.
 
 * tools/editors/emacs/rst.el:
 

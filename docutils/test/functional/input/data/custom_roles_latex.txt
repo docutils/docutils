@@ -19,10 +19,10 @@ Custom Roles in LaTeX
 
   .. raw:: latex
 
-    \newcommand{\docutilsrolelarge}[1]{{\large #1}}
+    \newcommand{\DUrolelarge}[1]{{\large #1}}
     \makeatletter
-    \@namedef{docutilsrolesmall-caps}{\textsc}
-    \@namedef{docutilsrolecustom4}{\textbf}
+    \@namedef{DUrolesmall-caps}{\textsc}
+    \@namedef{DUrolecustom4}{\textbf}
     \makeatother
 
   :custom4:`Interpreted Text` in large, bold, small-caps.

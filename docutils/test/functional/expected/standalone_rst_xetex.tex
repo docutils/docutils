@@ -3,6 +3,9 @@
 % rubber: set program xelatex
 \usepackage[no-sscript]{xltxtra} % loads fixltx2e, metalogo, xunicode, fontspec
 \defaultfontfeatures{Scale=MatchLowercase}
+\usepackage{polyglossia}
+\setdefaultlanguage{english}
+\setotherlanguages{german,british,french}
 \usepackage{ifthen}
 \usepackage{color}
 \usepackage{float} % float configuration
@@ -44,6 +47,11 @@
     \end{center}
   \fi
 }
+
+\makeatletter
+\@namedef{DUrolealign-center}{\centering}
+\makeatother
+
 
 % dedication topic
 \providecommand{\DUtopicdedication}[1]{\begin{center}#1\end{center}}
@@ -261,7 +269,9 @@ reStructuredText construct.
 % They are transformed from section titles after parsing.
 
 % bibliographic fields (which also require a transform):
+
 \pagebreak[4] % start ToC on new page
+
 \phantomsection\label{table-of-contents}
 \pdfbookmark[1]{Table of Contents}{table-of-contents}
 \renewcommand{\contentsname}{Table of Contents}
@@ -576,9 +586,9 @@ The field body may contain one or more body elements, indented
 relative to the field marker.
 
 \item[{credits:}]
-This paragraph has the \DUroletitlereference{credits} class set.  (This is actually not
+\DUrole{credits}{This paragraph has the \DUroletitlereference{credits} class set.  (This is actually not
 about credits but just for ensuring that the class attribute
-doesn't get stripped away.)
+doesn't get stripped away.)}
 
 \end{DUfieldlist}
 
@@ -733,6 +743,30 @@ Take it away, Eric the Orchestra Leader!
 
 \end{quote}
 
+A poem by Christian Morgenstern:
+
+\begin{DUlineblock}{0em}
+{\selectlanguage{german}\DUrole{align-center}{
+\item[] Das æsthetische Wiesel
+\item[] 
+\item[] Ein Wiesel
+\item[] saß auf einem Kiesel
+\item[] inmitten Bachgeriesel.
+\item[] 
+\item[] Wißt ihr
+\item[] weshalb?
+\item[] 
+\item[] Das Mondkalb
+\item[] verriet es mir
+\item[] im Stillen:
+\item[] 
+\item[] Das raffinier-
+\item[] te Tier
+\item[] tat's um des Reimes willen.
+\item[] 
+}}
+\end{DUlineblock}
+
 
 %___________________________________________________________________________
 
@@ -755,6 +789,18 @@ own it, and what it is too.
 
 \raggedleft —Anne Elk (Miss)
 
+\end{quote}
+
+The language of a quote (like any other object) can be specified by
+a class attribute:
+
+% 
+%
+\begin{quote}
+{\selectlanguage{french}
+ReStructuredText est un langage de balisage léger utilisé
+notamment dans la documentation du langage Python.
+}
 \end{quote}
 
 
@@ -1366,9 +1412,17 @@ Here's one:
 This does not necessarily look nice, because there may be missing white space.
 
 It's just there to freeze the behavior.
-A test.Second test.\DUrole{myclass}{Another test with myclass set.}
+
+A test.
+
+Second test.
+
+\DUrole{myclass}{Another test with myclass set.}
+
 This is the \DUrole{myrawroleclass}{fourth test} with myrawroleclass set.
+
 Fifth test in LaTeX.\\Line two.
+
 
 %___________________________________________________________________________
 
@@ -1555,9 +1609,16 @@ body row 3
 
 \DUrole{special}{interpreted text}
 
-\item A role with class attribute.
+\item A language-switching role:
 
-\DUrole{very}{\DUrole{special}{interpreted text}}
+Let's count in German {\selectlanguage{german}eins zwei drei}.
+
+\item A role with multiple class attributes, styled with raw directives:
+
+\newcommand{\DUrolegreen}[1]{\textcolor{green}{#1}}
+\newcommand{\DUrolesc}[1]{\textsc{#1}}
+
+{\selectlanguage{british}\DUrole{green}{\DUrole{sc}{British colourful text in small-caps}}}.
 
 \end{itemize}
 
@@ -1596,11 +1657,13 @@ treatment in LaTeX command names.
 
 \item With LaTeX, roles can be styled within the document using the \DUroletitlereference{raw}
 directive.
-\newcommand{\docutilsrolelarge}[1]{{\large #1}}
+
+\newcommand{\DUrolelarge}[1]{{\large #1}}
 \makeatletter
-\@namedef{docutilsrolesmall-caps}{\textsc}
-\@namedef{docutilsrolecustom4}{\textbf}
+\@namedef{DUrolesmall-caps}{\textsc}
+\@namedef{DUrolecustom4}{\textbf}
 \makeatother
+
 \DUrole{large}{\DUrole{custom4}{\DUrole{small-caps}{\DUrole{custom-role}{\DUrole{custom-role}{Interpreted Text}}}}} in large, bold, small-caps.
 
 \item Custom roles can be based on standard roles:
@@ -2372,7 +2435,7 @@ Undefined substitution referenced: "problematic".
 \DUtitle[system-message]{system-message}
 \raisebox{1em}{\hypertarget{id42}{}}
 
-{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~361
+{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~394
 
 \hyperlink{id43}{
 Unknown target name: "5".
@@ -2382,7 +2445,7 @@ Unknown target name: "5".
 \DUtitle[system-message]{system-message}
 \raisebox{1em}{\hypertarget{id44}{}}
 
-{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~370
+{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~403
 
 \hyperlink{id45}{
 Unknown target name: "nonexistent".
@@ -2392,7 +2455,7 @@ Unknown target name: "nonexistent".
 \DUtitle[system-message]{system-message}
 \raisebox{1em}{\hypertarget{id46}{}}
 
-{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~397
+{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~430
 
 \hyperlink{id47}{
 Unknown target name: "hyperlink reference without a target".
@@ -2402,7 +2465,7 @@ Unknown target name: "hyperlink reference without a target".
 \DUtitle[system-message]{system-message}
 \raisebox{1em}{\hypertarget{id48}{}}
 
-{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~410
+{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~443
 
 \hyperlink{id49}{
 Duplicate target name, cannot be used as a unique reference: "duplicate target names".

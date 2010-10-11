@@ -155,6 +155,8 @@ General
   - I18n needs refactoring, the language dictionaries are difficult to
     maintain.  Maybe have a look at gettext or similar tools.
 
+    (This would make a nice Google Summer of Code project)
+
   - Language modules: in accented languages it may be useful to have
     both accented and unaccented entries in the
     ``bibliographic_fields`` mapping for versatility.
@@ -162,9 +164,21 @@ General
   - Add a "--strict-language" option & setting: no English fallback
     for language-dependent features.
 
+    Make this the default for output (as opposed to input)?
+    Throw an error with a helpfull message, e.g.
+
+      Default "contents" title for language %s missing, please specify
+      an explicit title.
+
+    or
+
+     "attention" title for language %s missing, please use a generic
+     admonition with explicit title.
+
   - Add internationalization to _`footer boilerplate text` (resulting
     from "--generator", "--source-link", and "--date" etc.), allowing
     translations.
+
 
 * Add validation?  See http://pytrex.sourceforge.net, RELAX NG, pyRXP.
 
