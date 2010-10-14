@@ -18,8 +18,10 @@ import tempfile
 try:
     import pygments
     from pygments import formatter, lexers
+    pygmentsAvail = True
 except:
     print 'Could not import pygments code highlighting will not work'
+    pygmentsAvail = False
 import zipwrap
 import Image
 import imagescale
@@ -1221,59 +1223,61 @@ class ParagraphStyle(TextStyle):
     PREFIX = 'P%d'
 
 
-class OdtCodeFormatter(formatter.Formatter):  
-    def __init__(self, writable, preso):
-        formatter.Formatter.__init__(self)
-        self.writable = writable
-        self.preso = preso
-        self.seen = []
-        
-    def format(self, source, outfile):
-        tclass = pygments.token.Token
-        # push default style
-        default_style_attrib = self.get_style(tclass.Text)
-        self.writable.slide.push_style(TextStyle(**default_style_attrib))
-        
-        for ttype, value in source:
-            self.seen.append(value)
-            # getting ttype, values like (Token.Keyword.Namespace, u'')
-            if value == '':
-                continue
-            style_attrib = self.get_style(ttype)
-            tstyle = TextStyle(**style_attrib)
-            self.writable.slide.push_style(tstyle)
-            if value == '\n':
-                self.writable.slide.insert_line_break = 1
-                self.writable.write('') # will insert break/formatting
-            else:
-                parts = value.split('\n')
-                for part in parts[:-1]:
-                    self.writable.write(part)
-                    self.writable.slide.insert_line_break = 1
-                    self.writable.write('') #insert break
-                self.writable.write(parts[-1])
+if pygmentsAvail:
 
+    class OdtCodeFormatter(formatter.Formatter):  
+        def __init__(self, writable, preso):
+            formatter.Formatter.__init__(self)
+            self.writable = writable
+            self.preso = preso
+            self.seen = []
+
+        def format(self, source, outfile):
+            tclass = pygments.token.Token
+            # push default style
+            default_style_attrib = self.get_style(tclass.Text)
+            self.writable.slide.push_style(TextStyle(**default_style_attrib))
+
+            for ttype, value in source:
+                self.seen.append(value)
+                # getting ttype, values like (Token.Keyword.Namespace, u'')
+                if value == '':
+                    continue
+                style_attrib = self.get_style(ttype)
+                tstyle = TextStyle(**style_attrib)
+                self.writable.slide.push_style(tstyle)
+                if value == '\n':
+                    self.writable.slide.insert_line_break = 1
+                    self.writable.write('') # will insert break/formatting
+                else:
+                    parts = value.split('\n')
+                    for part in parts[:-1]:
+                        self.writable.write(part)
+                        self.writable.slide.insert_line_break = 1
+                        self.writable.write('') #insert break
+                    self.writable.write(parts[-1])
+
+                self.writable.slide.pop_style()
+
+                self.writable.pop_node()
             self.writable.slide.pop_style()
-            
-            self.writable.pop_node()
-        self.writable.slide.pop_style()
-            
-    def get_style(self, tokentype):
-        while not self.style.styles_token(tokentype):
-            tokentype = tokentype.parent
-        value = self.style.style_for_token(tokentype)
-        # default to monospace
-        results = {
-            'fo:font-family':MONO_FONT,
-            'style:font-family-generic':"swiss",
-            'style:font-pitch':"fixed"}
-        if value['color']:
-            results['fo:color'] = '#' + value['color']
-        if value['bold']:
-            results['fo:font-weight'] = 'bold'
-        if value['italic']:
-            results['fo:font-weight'] = 'italic'
-        return results
+
+        def get_style(self, tokentype):
+            while not self.style.styles_token(tokentype):
+                tokentype = tokentype.parent
+            value = self.style.style_for_token(tokentype)
+            # default to monospace
+            results = {
+                'fo:font-family':MONO_FONT,
+                'style:font-family-generic':"swiss",
+                'style:font-pitch':"fixed"}
+            if value['color']:
+                results['fo:color'] = '#' + value['color']
+            if value['bold']:
+                results['fo:font-weight'] = 'bold'
+            if value['italic']:
+                results['fo:font-weight'] = 'italic'
+            return results
           
 
 class OutlineList(MixedContent):
