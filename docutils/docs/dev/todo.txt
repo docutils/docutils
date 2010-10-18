@@ -1069,50 +1069,6 @@ __ rst/alternatives.html#or-not-to-do
 
   Probably not worth the trouble.
 
-* Add _`math markup`.  We should try for a general solution, that's
-  applicable to any output format.  Using a standard, such as MathML_,
-  would be best.  TeX (or itex_) would be acceptable as a *front-end*
-  to MathML. A simpler, alternative input format is defined by
-  ASCIIMathML_ and Microsoft's
-  `Unicode Nearly Plain Text Encoding of Mathematics`_. See `the
-  culmination of a relevant discussion
-  <http://article.gmane.org/gmane.text.docutils.user/118>`__.
-
-  Build on existing extensions (`latex_math`_, `math support in Sphinx`_).
-
-  Use MathJax_ for HTML export?
-
-   * a JavaScript-based engine for including TEX and MathML in HTML
-   * Works across multiple browsers and platforms
-   * Uses HTML/CSS, JavaScript, and unicode fonts for high-quality
-     typesetting that is scalable and prints at full resolution.
-   * MathJax is a joint project of the AMS, Design Science, Inc., and
-     the Society for Industrial and Applied Mathematics.
-   * `Math support in Sphinx`_ uses MathJax.
-
-  Both a directive and an interpreted text role will be necessary (for
-  each markup).  Directive example::
-
-      .. math::
-
-         \alpha_t(i) = P(O_1, O_2, \dots O_t, q_t = S_i \lambda)
-
-  The same thing inline::
-
-      The equation in question is :math:`\alpha_t(i) = P(O_1, O_2,
-      \dots O_t, q_t = S_i \lambda)`.
-
-  .. _latex_math: ../../../sandbox/jensj/latex_math/
-  .. _Math support in Sphinx: http://sphinx.pocoo.org/ext/math.html
-  .. _MathML: http://www.w3.org/TR/MathML2/
-  .. _itex: http://pear.math.pitt.edu/mathzilla/itex2mmlItex.html
-  .. _ASCIIMathML: http://www1.chapman.edu/~jipsen/mathml/asciimath.html
-  .. _MathJax: http://www.mathjax.org/
-  .. _Unicode Nearly Plain Text Encoding of Mathematics:
-     http://www.unicode.org/notes/tn28/
-
-
-
 * How about a syntax for alternative hyperlink behavior, such as "open
   in a new window" (as in HTML's ``<a target="_blank">``)?
 
@@ -1176,6 +1132,73 @@ __ rst/alternatives.html#or-not-to-do
 
 * Generalize docinfo contents (bibliographic fields): remove specific
   fields, and have only a single generic "field"?
+
+Math Markup
+-----------
+
+We need a generic solution, that's applicable to any output format.
+
+* Using a standard, such as MathML_, would be best. However, MathML is
+  no *easy-to-read plaintext markup syntax*, so a different input
+  format would be needed.
+
+* LaTeX math syntax can be used for both, input and internal storage,
+  as it is
+
+  * intended for input by a human, widely used, and well documented,
+  * convertible to all supported output formats (building on
+    existing extensions like `latex_math`_ (LaTeX2MathML) or the `math
+    support in Sphinx`_ (see below for `options for HTML output`_).
+
+* Simpler, alternative input formats are defined by ASCIIMathML_ and
+  Microsoft's `Unicode Nearly Plain Text Encoding of Mathematics`_.
+  See `the culmination of a relevant discussion
+  <http://article.gmane.org/gmane.text.docutils.user/118>`__.
+
+Both a directive and an interpreted text role will be necessary.
+
+Directive example::
+
+    .. math::
+
+       \alpha_t(i) = P(O_1, O_2, \dots O_t, q_t = S_i \lambda)
+
+Inline example::
+
+    The equation in question is :math:`\alpha_t(i) = P(O_1, O_2,
+    \dots O_t, q_t = S_i \lambda)`.
+
+_`Options for HTML output`:
+
+* MathML_ is the W3C recommendation. Browser support is finally
+  becoming more widespread (Firefox, Opera, IE via free plugin).
+  Others can be supported using a CSS MathML profile.
+  See e.g. `viewing mathematics`__.
+
+  __ http://vismor.com/documents/site_implementation/viewing_mathematics/
+
+* MathJax_
+
+ * a JavaScript-based engine for including TEX and MathML in HTML
+ * Works across multiple browsers and platforms
+ * Uses HTML/CSS, JavaScript, and unicode fonts for high-quality
+   typesetting that is scalable and prints at full resolution.
+ * MathJax is a joint project of the AMS, Design Science, Inc., and
+   the Society for Industrial and Applied Mathematics.
+ * `Math support in Sphinx`_ supports MathJax.
+
+* images (PNG or SVG) like e.g. Wikipedia.
+
+
+.. _latex_math: ../../../sandbox/jensj/latex_math/
+.. _Math support in Sphinx: http://sphinx.pocoo.org/ext/math.html
+.. _MathML: http://www.w3.org/TR/MathML2/
+.. _itex: http://pear.math.pitt.edu/mathzilla/itex2mmlItex.html
+.. _ASCIIMathML: http://www1.chapman.edu/~jipsen/mathml/asciimath.html
+.. _MathJax: http://www.mathjax.org/
+.. _Unicode Nearly Plain Text Encoding of Mathematics:
+   http://www.unicode.org/notes/tn28/
+
 
 
 Directives
