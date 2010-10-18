@@ -2625,7 +2625,7 @@ Details
     styles).
 
 :Processing:
-    Unline ``literal_block``, ``line_block`` elements are typically
+    Unlike ``literal_block``, ``line_block`` elements are typically
     rendered in an ordinary text typeface.  It is crucial that leading
     whitespace and line breaks are preserved in the rendered form.
 
@@ -2681,7 +2681,7 @@ Pseudo-XML_ fragment from simple parsing::
             Half a bee, philosophically,
         <line_block>
             <line>
-                must, 
+                must,
                 <emphasis>
                     ipso facto
                 , half not be.
@@ -4726,16 +4726,14 @@ Entity definition:
 
 .. parsed-literal::
 
-    paragraph_ | compound_ | container_ | literal_block_ | doctest_block_
-    | line_block_ | block_quote_
-    | table_ | figure_ | image_ | footnote_ | citation_ | rubric_
-    | bullet_list_ | enumerated_list_ | definition_list_ | field_list_
-    | option_list_
-    | attention_ | caution_ | danger_ | error_ | hint_ | important_ | note_
-    | tip_ | warning_ | admonition_
-    | reference_ | target_ | substitution_definition_ | comment_ | pending_
-    | system_message_ | raw_
-    %additional.body.elements;
+    admonition_ | attention_ | block_quote_ | bullet_list_ | caution_
+    | citation_ | compound_ | comment_ | container_ | danger_ |
+      definition_list_ | doctest_block_ | enumerated_list_ | error_ |
+      field_list_ | figure_ | footnote_ | hint_ | image_ | important_
+      | line_block_ | literal_block_ | note_ | option_list_ |
+      paragraph_ | pending_ | raw_ reference_ | rubric_ |
+      substitution_definition_ | system_message_ | table_ | target_ |
+      tip_ | warning_ %additional.body.elements;
 
 The ``%additional.body.elements;`` parameter entity can be used by
 wrapper DTDs to extend ``%body.elements;``.
@@ -4780,12 +4778,10 @@ Entity definition:
 
 .. parsed-literal::
 
-    emphasis_ | strong_ | literal_
-    | reference_ | footnote_reference_ | citation_reference_
-    | substitution_reference_ | title_reference_
-    | abbreviation_ | acronym_ | subscript_ | superscript_
-    | inline_ | problematic_ | generated_
-    | target_ | image_ | raw_
+    abbreviation_ | acronym_ | citation_reference_ | emphasis_ |
+    footnote_reference_ | generated_ | image_ | inline_ | literal_ |
+    problematic_ | raw_ | reference_ | strong_ | substitution_reference_ |
+    subscript_ | superscript_ | target_ | title_reference_
     %additional.inline.elements;
 
 The ``%additional.inline.elements;`` parameter entity can be used by
