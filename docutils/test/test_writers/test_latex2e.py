@@ -116,6 +116,18 @@ head_textcomp + r"""
 """],
 ]
 
+totest['spanish quote'] = [
+[".. role:: language-es\n\nUnd damit :language-es:`basta`!",
+head_template.substitute(dict(parts, requirements =
+r"""\usepackage[spanish,english]{babel}
+\addto\shorthandsspanish{\spanishdeactivate{."~<>}}
+""" + parts['requirements'])) + r"""
+Und damit {\selectlanguage{spanish}basta}!
+
+\end{document}
+"""],
+]
+
 totest['table_of_contents'] = [
 # input
 ["""\

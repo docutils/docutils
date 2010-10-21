@@ -355,6 +355,11 @@ class Babel(object):
         # zh-latn:      Chinese Pinyin
         }
     warn_msg = 'Language "%s" not supported by LaTeX (babel)'
+    frenchfix = """\
+% With frenchb.ldf (<= v2.3d), \\iflanguage{french} returns a false positive
+% if French hyphenation patterns are not enabled:
+\\makeatletter\\adddialect\\l@french{255}\\makeatother
+\\frenchbsetup{StandardLayout}"""
 
     def __init__(self, language_code, reporter):
         self.language_code = language_code
@@ -373,16 +378,21 @@ class Babel(object):
             self.literal_double_quote = ur'\dq{}'
         if self.language == 'italian':
             self.literal_double_quote = ur'{\char`\"}'
-        if self.language == 'spanish':
-            # reset active chars to the original meaning:
-            self.setup.append(
-                  r'\addto\shorthandsspanish{\spanishdeactivate{."~<>}}')
-            # or prepend r'\def\spanishoptions{es-noshorthands}'
 
     def __call__(self):
+        """Return the babel call with correct options and settings"""
         languages = self.otherlanguages.keys()
         languages.append(self.language or 'english')
-        return r'\usepackage[%s]{babel}' % ','.join(languages)
+        self.setup = [r'\usepackage[%s]{babel}' % ','.join(languages)]
+        if 'spanish' in languages:
+            # reset active chars to the original meaning:
+            self.setup.append(
+                r'\addto\shorthandsspanish{\spanishdeactivate{."~<>}}')
+            # or prepend r'\def\spanishoptions{es-noshorthands}'
+        if (languages[-1] is 'english' and 
+            'french' in self.otherlanguages.keys()):
+            self.setup.append(self.frenchfix)
+        return '\n'.join(self.setup)
 
     def next_quote(self):
         q = self.quotes[self.quote_index]
