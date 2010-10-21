@@ -1168,6 +1168,10 @@ Inline example::
     The equation in question is :math:`\alpha_t(i) = P(O_1, O_2,
     \dots O_t, q_t = S_i \lambda)`.
 
+The backtick cannot be used in a math role. However it is not needed,
+as in math the ``\grave`` macro is used instead of ``\``` for the
+grave accent.
+
 _`Options for HTML output`:
 
 * MathML_ is the W3C recommendation. Browser support is finally
@@ -1176,6 +1180,10 @@ _`Options for HTML output`:
   See e.g. `viewing mathematics`__.
 
   __ http://vismor.com/documents/site_implementation/viewing_mathematics/
+
+  OpenSource LaTeX to MathML converters include `latex_math`_
+  (LaTeX2MathML) in the Docutils sandbox, MathToWeb_ (Java),
+  TeX4ht_ (TeX based).
 
 * MathJax_
 
@@ -1187,8 +1195,8 @@ _`Options for HTML output`:
    the Society for Industrial and Applied Mathematics.
  * `Math support in Sphinx`_ supports MathJax.
 
-* images (PNG or SVG) like e.g. Wikipedia.
-
+* images (PNG or SVG) like e.g. Wikipedia. (e.g. with dvisvgm_ or the
+  pure-python MathML->SVG converter SVGMath_)
 
 .. _latex_math: ../../../sandbox/jensj/latex_math/
 .. _Math support in Sphinx: http://sphinx.pocoo.org/ext/math.html
@@ -1198,6 +1206,10 @@ _`Options for HTML output`:
 .. _MathJax: http://www.mathjax.org/
 .. _Unicode Nearly Plain Text Encoding of Mathematics:
    http://www.unicode.org/notes/tn28/
+.. _dvisvgm: http://dvisvgm.sourceforge.net/
+.. _MathToWeb:  http://www.mathtoweb.com/
+.. _TeX4ht: http://www.tug.org/applications/tex4ht/mn.html
+.. _SVGMath: http://www.grigoriev.ru/svgmath/
 
 
 
