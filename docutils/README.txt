@@ -42,6 +42,9 @@ complete details.
         (enter admin password)
         ./setup.py install
 
+   Docutils will only work with Python 3, if installed with a Python
+   version >= 3. If your default Python version is 2.x, also call
+   ``python3 setup.py install`` from the temporary directory.
    See Installation_ below for details.
 
 4. Use a front-end tool from the "tools" subdirectory of the same
