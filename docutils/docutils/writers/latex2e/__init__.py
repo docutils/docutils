@@ -389,7 +389,7 @@ class Babel(object):
             self.setup.append(
                 r'\addto\shorthandsspanish{\spanishdeactivate{."~<>}}')
             # or prepend r'\def\spanishoptions{es-noshorthands}'
-        if (languages[-1] is 'english' and 
+        if (languages[-1] is 'english' and
             'french' in self.otherlanguages.keys()):
             self.setup.append(self.frenchfix)
         return '\n'.join(self.setup)
@@ -2405,6 +2405,28 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     ## def depart_meta(self, node):
     ##     self.out.append('[depart_meta]\n')
+
+    def visit_math(self, node):
+        self.requirements['amsmath'] = r'\usepackage{amsmath}'
+        if node['classes']:
+            self.visit_inline(node)
+        self.verbatim = True
+        self.out.append('$')
+
+    def depart_math(self, node):
+        self.requirements['amsmath'] = r'\usepackage{amsmath}'
+        if node['classes']:
+            self.depart_inline(node)
+        self.verbatim = False
+        self.out.append('$')
+
+    def visit_math_block(self, node):
+        self.verbatim = True
+        self.out.append (r'\begin{equation*}\begin{split}')
+
+    def depart_math_block(self, node):
+        self.verbatim = False
+        self.out.append(r'\end{split}\end{equation*}')
 
     def visit_option(self, node):
         if self.context[-1]:

@@ -1138,9 +1138,15 @@ Math Markup
 
 We need a generic solution, that's applicable to any output format.
 
-* Using a standard, such as MathML_, would be best. However, MathML is
-  no *easy-to-read plaintext markup syntax*, so a different input
-  format would be needed.
+* Using a standard, such as MathML_, would be best. However,
+
+    MathML in its full XML form was never thought to be usable as an
+    input format: for a start it is far too verbose as necessitated by
+    its intention to be expressive.
+
+    -- http://www.w3.org/Math/Roadmap/
+
+  so a different input format is be needed.
 
 * LaTeX math syntax can be used for both, input and internal storage,
   as it is
@@ -1172,21 +1178,30 @@ The backtick cannot be used in a math role. However it is not needed,
 as in math the ``\grave`` macro is used instead of ``\``` for the
 grave accent.
 
-_`Options for HTML output`:
+Options for HTML output
+```````````````````````
 
-* MathML_ is the W3C recommendation. Browser support is finally
+MathML_
+  is the W3C recommendation. Browser support is finally
   becoming more widespread (Firefox, Opera, IE via free plugin).
   Others can be supported using a CSS MathML profile.
-  See e.g. `viewing mathematics`__.
+  See e.g. `viewing mathematics`__ and the `MathML Browser Test`__
 
   __ http://vismor.com/documents/site_implementation/viewing_mathematics/
+  .. _MathML Browser Test:
+     http://eyeasme.com/Joe/MathML/MathML_browser_test.html
 
-  OpenSource LaTeX to MathML converters include `latex_math`_
-  (LaTeX2MathML) in the Docutils sandbox, MathToWeb_ (Java),
-  TeX4ht_ (TeX based).
+  MathHTML_
+    uses CSS to style any MathML tags in an HTML page. Javascript is
+    then used to tidy up the mathematics in an effort to achive
+    typeset quality. MathHTML has been tested in Firefox, Safari,
+    Chrome, Opera, and Internet Explorer 8.
 
-* MathJax_
+  Converters
+    from LaTeX to MathML include `latex_math`_ (LaTeX2MathML) in the
+    Docutils sandbox, MathToWeb_ (Java), TeX4ht_ (TeX based).
 
+MathJax_
  * a JavaScript-based engine for including TEX and MathML in HTML
  * Works across multiple browsers and platforms
  * Uses HTML/CSS, JavaScript, and unicode fonts for high-quality
@@ -1195,12 +1210,23 @@ _`Options for HTML output`:
    the Society for Industrial and Applied Mathematics.
  * `Math support in Sphinx`_ supports MathJax.
 
-* images (PNG or SVG) like e.g. Wikipedia. (e.g. with dvisvgm_ or the
+HTML+CSS
+ format math in standard HTML enhanced by CSS rules
+
+ Overview__, `Examples and experiments`__
+
+ __ http://www.cs.tut.fi/~jkorpela/math/
+ __ http://www.zipcon.net/~swhite/docs/math/math.html
+
+
+images
+  (PNG or SVG) like e.g. Wikipedia. (e.g. with dvisvgm_ or the
   pure-python MathML->SVG converter SVGMath_)
 
 .. _latex_math: ../../../sandbox/jensj/latex_math/
 .. _Math support in Sphinx: http://sphinx.pocoo.org/ext/math.html
 .. _MathML: http://www.w3.org/TR/MathML2/
+.. _MathHTML: http://2020math.org/MathHTML/index.html
 .. _itex: http://pear.math.pitt.edu/mathzilla/itex2mmlItex.html
 .. _ASCIIMathML: http://www1.chapman.edu/~jipsen/mathml/asciimath.html
 .. _MathJax: http://www.mathjax.org/
@@ -1210,7 +1236,6 @@ _`Options for HTML output`:
 .. _MathToWeb:  http://www.mathtoweb.com/
 .. _TeX4ht: http://www.tug.org/applications/tex4ht/mn.html
 .. _SVGMath: http://www.grigoriev.ru/svgmath/
-
 
 
 Directives

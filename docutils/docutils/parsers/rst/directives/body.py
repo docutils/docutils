@@ -108,6 +108,19 @@ class ParsedLiteral(Directive):
         node.line = self.content_offset + 1
         return [node] + messages
 
+class MathBlock(Directive):
+
+    option_spec = {'class': directives.class_option}
+    has_content = True
+
+    def run(self):
+        set_classes(self.options)
+        self.assert_has_content()
+        latex_code = '\n'.join(self.content)
+        node = nodes.math_block(self.block_text, latex_code, **self.options)
+        node.line = self.content_offset + 1
+        return [node]
+
 
 class Rubric(Directive):
 

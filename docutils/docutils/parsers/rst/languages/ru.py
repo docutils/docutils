@@ -17,6 +17,7 @@ __docformat__ = 'reStructuredText'
 directives = {
  u'\u0431\u043b\u043e\u043a-\u0441\u0442\u0440\u043e\u043a': u'line-block',
  u'meta': u'meta',
+      'math-block (translation required)': 'math-block',
  u'\u043e\u0431\u0440\u0430\u0431\u043e\u0442\u0430\u043d\u043d\u044b\u0439-\u043b\u0438\u0442\u0435\u0440\u0430\u043b':
  u'parsed-literal',
  u'\u0432\u044b\u0434\u0435\u043b\u0435\u043d\u043d\u0430\u044f-\u0446\u0438\u0442\u0430\u0442\u0430':
@@ -74,6 +75,7 @@ roles = {
  u'\u0430\u043d\u043e\u043d\u0438\u043c\u043d\u0430\u044f-\u0441\u0441\u044b\u043b\u043a\u0430':
   'anonymous-reference',
  u'\u0431\u0443\u043a\u0432\u0430\u043b\u044c\u043d\u043e': 'literal',
+    'math (translation required)': 'math',
  u'\u0432\u0435\u0440\u0445\u043d\u0438\u0439-\u0438\u043d\u0434\u0435\u043a\u0441':
   'superscript',
  u'\u0432\u044b\u0434\u0435\u043b\u0435\u043d\u0438\u0435': 'emphasis',

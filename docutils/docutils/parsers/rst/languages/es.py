@@ -51,6 +51,7 @@ directives = {
       u'tabla-csv': 'csv-table',
       u'tabla-lista': 'list-table',
       u'meta': 'meta',
+      'math-block (translation required)': 'math-block',
       #'imagemap': 'imagemap',
       u'imagen': 'image',
       u'figura': 'figure',
@@ -103,6 +104,7 @@ roles = {
     u'\u00e9nfasis': 'emphasis',
     u'destacado': 'strong',
     u'literal': 'literal',              # "literal" is also a word in Spanish :-)
+    u'math (translation required)': 'math',
     u'referencia-con-nombre': 'named-reference',
     u'referencia-anonima': 'anonymous-reference',
     u'referencia-an\u00f3nima': 'anonymous-reference',

@@ -314,6 +314,13 @@ raw_role.options = {'format': directives.unchanged}
 
 register_canonical_role('raw', raw_role)
 
+def math_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
+    i = rawtext.find('`')
+    text = rawtext.split('`')[1]
+    node = nodes.math(rawtext, text)
+    return [node], []
+
+register_canonical_role('math', math_role)
 
 ######################################################################
 # Register roles that are currently unimplemented.
