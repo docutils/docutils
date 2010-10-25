@@ -560,9 +560,8 @@ class Writer(writers.Writer):
         self.write_zip_str(zfile, 'meta.xml', s1)
         s1 = self.get_stylesheet()
         self.write_zip_str(zfile, 'styles.xml', s1)
-        s1 = self.get_settings()
-        self.write_zip_str(zfile, 'settings.xml', s1)
         self.store_embedded_files(zfile)
+        self.copy_from_stylesheet(zfile)
         zfile.close()
         f.seek(0)
         whole = f.read()
@@ -608,6 +607,22 @@ class Writer(writers.Writer):
         """
         s1 = self.visitor.setup_page()
         return s1
+
+    def copy_from_stylesheet(self, outzipfile):
+        """Copy images, settings, etc from the stylesheet doc into target doc.
+        """
+        stylespath = self.settings.stylesheet
+        inzipfile = zipfile.ZipFile(stylespath, 'r')
+        # Copy the styles.
+        s1 = inzipfile.read('settings.xml')
+        self.write_zip_str(outzipfile, 'settings.xml', s1)
+        # Copy the images.
+        namelist = inzipfile.namelist()
+        for name in namelist:
+            if name.startswith('Pictures/'):
+                imageobj = inzipfile.read(name)
+                outzipfile.writestr(name, imageobj, zipfile.ZIP_STORED)
+        inzipfile.close()
 
     def assemble_parts(self):
         pass
