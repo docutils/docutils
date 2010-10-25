@@ -26,7 +26,7 @@ except ImportError:
 import docutils
 from docutils import frontend, nodes, utils, writers, languages, io
 from docutils.transforms import writer_aux
-
+from docutils.latex2mathml import parse_latex_math
 
 class Writer(writers.Writer):
 
@@ -228,10 +228,18 @@ class HTMLTranslator(nodes.NodeVisitor):
     doctype = (
         '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"'
         ' "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n')
+    doctype_mathml = ('<!DOCTYPE html PUBLIC '
+    '"-//W3C//DTD XHTML 1.0 Transitional plus MathML 2.0//EN" "">\n')
+
     head_prefix_template = ('<html xmlns="http://www.w3.org/1999/xhtml"'
                             ' xml:lang="%s" lang="%s">\n<head>\n')
     content_type = ('<meta http-equiv="Content-Type"'
                     ' content="text/html; charset=%s" />\n')
+    # TODO: content_type_mathml
+    #   In particular, 'text/html' is NOT suitable for XHTML Family
+    #   document types that add elements and attributes from foreign
+    #   namespaces, such as XHTML+MathML [XHTML+MathML].
+    #   -- http://www.w3.org/TR/xhtml-media-types/#text-html
     generator = ('<meta name="generator" content="Docutils %s: '
                  'http://docutils.sourceforge.net/" />\n')
     stylesheet_link = '<link rel="stylesheet" href="%s" type="text/css" />\n'
@@ -301,6 +309,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.in_document_title = 0
         self.in_mailto = 0
         self.author_in_authors = None
+        self.has_mathml_dtd = False
 
     def astext(self):
         return ''.join(self.head_prefix + self.head
@@ -1090,6 +1099,48 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def depart_literal_block(self, node):
         self.body.append('\n</pre>\n')
+
+    def visit_math(self, node, inline=True):
+        # update the doctype:
+        if not self.has_mathml_dtd:
+            if self.settings.xml_declaration:
+                self.head_prefix[1] = self.doctype_mathml
+            else:
+                self.head_prefix[0] = self.doctype_mathml
+            self.has_mathml_dtd = True
+        # Convert from LaTeX to MathML:
+        math_code = node.astext()
+        try:
+            mathml_tree = parse_latex_math(math_code, inline=inline)
+        except SyntaxError, msg:
+            msg = inliner.reporter.error(msg, line=node.lineno)
+            # prb = inliner.problematic(rawtext, rawtext, msg)
+            # return [prb], [msg]
+        mathml = ''.join(mathml_tree.xml())
+        self.body.append(mathml)
+        # Content already processed:
+        raise nodes.SkipNode
+
+    def depart_math(self, node):
+        pass
+
+    def visit_math_block(self, node):
+        self.visit_math(node, inline=False)
+
+    def depart_math_block(self, node):
+        pass
+    # for testing:
+    # def visit_math(self, node):
+    #     self.visit_literal(node)
+    #
+    # def depart_math(self, node):
+    #     self.depart_literal(node)
+    #
+    # def visit_math_block(self, node):
+    #     self.visit_literal_block(node)
+    #
+    # def depart_math_block(self, node):
+    #     self.depart_literal_block(node)
 
     def visit_meta(self, node):
         meta = self.emptytag(node, 'meta', **node.non_default_attributes())

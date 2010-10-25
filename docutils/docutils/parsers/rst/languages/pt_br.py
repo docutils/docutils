@@ -44,6 +44,7 @@ directives = {
       u'csv-table (translation required)': 'csv-table',
       u'list-table (translation required)': 'list-table',
       'meta': 'meta',
+      'math-block (translation required)': 'math-block',
       #'imagemap': 'imagemap',
       'imagem': 'image',
       'figura': 'figure',
@@ -89,7 +90,8 @@ roles = {
     'rfc': 'rfc-reference',
     u'\u00EAnfase': 'emphasis',
     'forte': 'strong',
-    'literal': 'literal',               # translation required?
+    'literal': 'literal',
+    'math (translation required)': 'math',               # translation required?
     u'refer\u00EAncia-por-nome': 'named-reference',
     u'refer\u00EAncia-an\u00F4nima': 'anonymous-reference',
     u'refer\u00EAncia-a-nota-de-rodap\u00E9': 'footnote-reference',

@@ -1341,6 +1341,7 @@ class option_string(Part, TextElement): pass
 class description(Part, Element): pass
 class literal_block(General, FixedTextElement): pass
 class doctest_block(General, FixedTextElement): pass
+class math_block(General, FixedTextElement): pass
 class line_block(General, Element): pass
 
 
@@ -1498,6 +1499,7 @@ class abbreviation(Inline, TextElement): pass
 class acronym(Inline, TextElement): pass
 class superscript(Inline, TextElement): pass
 class subscript(Inline, TextElement): pass
+class math(Inline, TextElement): pass
 
 
 class image(General, Inline, Element):
@@ -1531,6 +1533,7 @@ node_class_names = """
     header hint
     image important inline
     label legend line line_block list_item literal literal_block
+    math math_block
     note
     option option_argument option_group option_list option_list_item
         option_string organization

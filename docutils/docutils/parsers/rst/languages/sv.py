@@ -43,6 +43,7 @@ directives = {
       u'csv-table (translation required)': 'csv-table',
       u'list-table (translation required)': 'list-table',
       u'meta': 'meta',
+      'math-block (translation required)': 'math-block',
       # u'bildkarta': 'imagemap',   # FIXME: Translation might be too literal.
       u'bild': 'image',
       u'figur': 'figure',
@@ -78,6 +79,7 @@ roles = {
       u'emphasis (translation required)': 'emphasis',
       u'strong (translation required)': 'strong',
       u'literal (translation required)': 'literal',
+    'math (translation required)': 'math',
       u'named-reference (translation required)': 'named-reference',
       u'anonymous-reference (translation required)': 'anonymous-reference',
       u'footnote-reference (translation required)': 'footnote-reference',

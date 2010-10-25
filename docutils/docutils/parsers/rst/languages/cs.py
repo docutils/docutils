@@ -43,6 +43,7 @@ directives = {
       u'table (translation required)': 'table',
       u'csv-table (translation required)': 'csv-table',
       u'list-table (translation required)': 'list-table',
+      u'math-block (translation required)': 'math-block',
       u'meta (translation required)': 'meta',
       #'imagemap': 'imagemap',
       u'image (translation required)': 'image',   # obrazek
@@ -90,6 +91,7 @@ roles = {
     u'emphasis (translation required)': 'emphasis',
     u'strong (translation required)': 'strong',
     u'literal (translation required)': 'literal',
+    u'math (translation required)': 'math',
     u'named-reference (translation required)': 'named-reference',
     u'anonymous-reference (translation required)': 'anonymous-reference',
     u'footnote-reference (translation required)': 'footnote-reference',
