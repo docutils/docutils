@@ -586,7 +586,7 @@ class Writer(writers.Writer):
             try:
                 # encode/decode
                 destination1 = destination.decode('latin-1').encode('utf-8')
-                zfile.write(source, destination1, zipfile.ZIP_STORED)
+                zfile.write(source, destination1)
             except OSError, e:
                 self.document.reporter.warning(
                     "Can't open file %s." % (source, ))
@@ -621,7 +621,7 @@ class Writer(writers.Writer):
         for name in namelist:
             if name.startswith('Pictures/'):
                 imageobj = inzipfile.read(name)
-                outzipfile.writestr(name, imageobj, zipfile.ZIP_STORED)
+                outzipfile.writestr(name, imageobj)
         inzipfile.close()
 
     def assemble_parts(self):
