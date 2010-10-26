@@ -40,10 +40,12 @@ Quantum mechanics:
 
 Math split over two lines:
 
-.. math-block: (this one currently fails)
+.. math-block::
 
    g(\alpha) = & (1 + \alpha + \alpha^2 + \alpha^3 + \alpha^4\\
                & + \alpha^5)
+
+Cases (realized with a matrix environment):
 
 .. math-block::
 
