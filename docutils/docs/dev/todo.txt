@@ -1136,32 +1136,7 @@ __ rst/alternatives.html#or-not-to-do
 Math Markup
 -----------
 
-We need a generic solution, that's applicable to any output format.
-
-* Using a standard, such as MathML_, would be best. However,
-
-    MathML in its full XML form was never thought to be usable as an
-    input format: for a start it is far too verbose as necessitated by
-    its intention to be expressive.
-
-    -- http://www.w3.org/Math/Roadmap/
-
-  so a different input format is be needed.
-
-* LaTeX math syntax can be used for both, input and internal storage,
-  as it is
-
-  * intended for input by a human, widely used, and well documented,
-  * convertible to all supported output formats (building on
-    existing extensions like `latex_math`_ (LaTeX2MathML) or the `math
-    support in Sphinx`_ (see below for `options for HTML output`_).
-
-* Simpler, alternative input formats are defined by ASCIIMathML_ and
-  Microsoft's `Unicode Nearly Plain Text Encoding of Mathematics`_.
-  See `the culmination of a relevant discussion
-  <http://article.gmane.org/gmane.text.docutils.user/118>`__.
-
-Both a directive and an interpreted text role will be necessary.
+Both a directive and an interpreted text role are necessary.
 
 Directive example::
 
@@ -1174,32 +1149,104 @@ Inline example::
     The equation in question is :math:`\alpha_t(i) = P(O_1, O_2,
     \dots O_t, q_t = S_i \lambda)`.
 
-The backtick cannot be used in a math role. However it is not needed,
-as in math the ``\grave`` macro is used instead of ``\``` for the
-grave accent.
+
+We need a generic solution, that's applicable to any output format.
+Using a standard, such as MathML_, would be best.
+
+For an overview of MathML implementations and tests, see e.g.
+http://www.mathweb.org/wiki/MathML
+
+However,
+
+    MathML in its full XML form was never thought to be usable as an
+    input format: for a start it is far too verbose as necessitated by
+    its intention to be expressive.
+
+    -- http://www.w3.org/Math/Roadmap/
+
+Hence, a different input format is needed. Alternatives:
+
+LaTeX math syntax
+  can be used for both, input and internal storage:
+
+  * intended for input by a human, widely used, and well documented
+    (see, e.g., the `Short Math Guide`__)
+
+    __ ftp://ftp.ams.org/pub/tex/doc/amsmath/short-math-guide.pdf)
+
+  * convertible to all supported output formats (building on
+    existing extensions like `latex_math`_ (LaTeX2MathML) or the `math
+    support in Sphinx`_ (see below for `options for HTML output`_).
+
+  * The backtick cannot be used in a math role. Fortunately, in LaTeX
+    math mode the ``\grave`` macro is used instead of ``\``` for the
+    grave accent.
+
+  * Used for input and storage by the `Math support in Sphinx`_.
+
+ASCIIMathML_
+  Used, e.g., by MultiMarkdown__
+
+  __ http://fletcherpenney.net/multimarkdown/
+
+`Unicode Nearly Plain Text Encoding of Mathematics`_
+   format for lightly marked-up representation of mathematical
+   expressions in Unicode.
+
+   (Unicode Technical Note. Sole responsibility for its contents rests
+   with the author(s). Publication does not imply any endorsement by
+   the Unicode Consortium.)
+
+See `the culmination of a relevant discussion
+<http://article.gmane.org/gmane.text.docutils.user/118>`__.
+
+
+Try to keep it compatible with `Math support in Sphinx`_:
+
+* Just one name for role and directive: ("math-block" -> "math").
+  How about an alias in ``docutils/parsers/rst/languages/en.py``?
+
+* When the math is only one line of text, it can also be given as a
+  directive argument.
+
+  
+  .. caution:: 
+    
+    Clashs with possible use of the directive argument for type of
+    equation (``align``, ``equation``, ``equation*``, ...)
+
+* support multiple equations, which should be separated by a blank
+  line.
+
+* The ``:label:`` option selects a label for the equation, by which it
+  can be cross-referenced, and causes an equation number to be issued.
+
+* Option ``:nowrap:`` prevents any wrapping of the given math in a
+  math environment
 
 Options for HTML output
 ```````````````````````
 
 MathML_
-  is the W3C recommendation. Browser support is finally
-  becoming more widespread (Firefox, Opera, IE via free plugin).
+  is the W3C recommendation. Browser support is finally becoming more
+  widespread (Firefox, Opera, IE via free MathPlayer_ plugin).
   Others can be supported using a CSS MathML profile.
-  See e.g. `viewing mathematics`__ and the `MathML Browser Test`__
+  See e.g. `viewing mathematics`__ and the `MathML Browser Test`_
 
   __ http://vismor.com/documents/site_implementation/viewing_mathematics/
   .. _MathML Browser Test:
      http://eyeasme.com/Joe/MathML/MathML_browser_test.html
+  .. _MathPlayer: http://www.dessci.com/en/products/mathplayer/
 
-  MathHTML_
-    uses CSS to style any MathML tags in an HTML page. Javascript is
-    then used to tidy up the mathematics in an effort to achive
-    typeset quality. MathHTML has been tested in Firefox, Safari,
-    Chrome, Opera, and Internet Explorer 8.
+  Converters from LaTeX to MathML include `latex_math`_ (LaTeX2MathML)
+  in the Docutils sandbox, MathToWeb_ (Java), TeX4ht_ (TeX based),
+  LaTeXML_ (Perl).
 
-  Converters
-    from LaTeX to MathML include `latex_math`_ (LaTeX2MathML) in the
-    Docutils sandbox, MathToWeb_ (Java), TeX4ht_ (TeX based).
+MathHTML_
+  uses CSS to style any MathML tags in an HTML page. Javascript is
+  then used to tidy up the mathematics in an effort to achive typeset
+  quality. MathHTML has been tested in Firefox, Safari, Chrome, Opera,
+  and Internet Explorer 8.
 
 MathJax_
  * a JavaScript-based engine for including TEX and MathML in HTML
@@ -1212,8 +1259,7 @@ MathJax_
 
 HTML+CSS
  format math in standard HTML enhanced by CSS rules
-
- Overview__, `Examples and experiments`__
+ (Overview__, `Examples and experiments`__):
 
  __ http://www.cs.tut.fi/~jkorpela/math/
  __ http://www.zipcon.net/~swhite/docs/math/math.html
@@ -1222,6 +1268,23 @@ HTML+CSS
 images
   (PNG or SVG) like e.g. Wikipedia. (e.g. with dvisvgm_ or the
   pure-python MathML->SVG converter SVGMath_)
+
+
+OpenOffice output
+`````````````````
+
+* MathML_ can be imported by the Math module. 
+
+  However, putting MathML into an ODP file seems tricky:
+  http://idippedut.dk/post/2008/01/25/Do-your-math-ODF-and-MathML.aspx
+  http://idippedut.dk/post/2008/03/03/Now-I-get-it-ODF-and-MathML.aspx
+  
+  
+
+* OOoLaTeX__:  "a set of macros designed to bring the power of LaTeX
+  into OpenOffice." 
+
+  __ http://ooolatex.sourceforge.net/
 
 .. _latex_math: ../../../sandbox/jensj/latex_math/
 .. _Math support in Sphinx: http://sphinx.pocoo.org/ext/math.html
@@ -1235,6 +1298,7 @@ images
 .. _dvisvgm: http://dvisvgm.sourceforge.net/
 .. _MathToWeb:  http://www.mathtoweb.com/
 .. _TeX4ht: http://www.tug.org/applications/tex4ht/mn.html
+.. _LaTeXML: http://dlmf.nist.gov/LaTeXML/
 .. _SVGMath: http://www.grigoriev.ru/svgmath/
 
 
