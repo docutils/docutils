@@ -355,11 +355,10 @@ class Babel(object):
         # zh-latn:      Chinese Pinyin
         }
     warn_msg = 'Language "%s" not supported by LaTeX (babel)'
-    frenchfix = """\
-% With frenchb.ldf (<= v2.3d), \\iflanguage{french} returns a false positive
+    frenchfix = r"""% With frenchb.ldf (<= v2.5a), \iflanguage{french} returns a false positive
 % if French hyphenation patterns are not enabled:
-\\makeatletter\\adddialect\\l@french{255}\\makeatother
-\\frenchbsetup{StandardLayout}"""
+\makeatletter\ifthenelse{\l@french=0}{\adddialect\l@french{255}}{}\makeatother
+\frenchbsetup{StandardLayout}"""
 
     def __init__(self, language_code, reporter):
         self.language_code = language_code
@@ -1026,7 +1025,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.head_prefix = [r'\documentclass[%s]{%s}' %
             (self.documentoptions, self.settings.documentclass)]
         self.requirements = SortableDict() # made a list in depart_document()
-        self.requirements['_static'] = r'\usepackage{ifthen}'
+        self.requirements['__static'] = r'\usepackage{ifthen}'
         self.latex_preamble = [settings.latex_preamble]
         self.stylesheet = []
         self.fallbacks = SortableDict() # made a list in depart_document()
