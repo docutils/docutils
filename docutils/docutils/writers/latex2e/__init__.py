@@ -375,6 +375,8 @@ class Babel(object):
                              'russian'):
             self.quotes = (r'\glqq{}', r'\grqq{}')
             self.literal_double_quote = ur'\dq{}'
+        if self.language == 'french':
+            self.quotes = (r'\og{}', r'\fg{}')
         if self.language == 'italian':
             self.literal_double_quote = ur'{\char`\"}'
 
@@ -1417,8 +1419,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self.literal:
             # double quotes are 'active' in some languages
             table[ord('"')] = self.babel.literal_double_quote
-        else:
-            text = self.babel.quote_quotes(text)
         # Unicode chars:
         table.update(unsupported_unicode_chars)
         table.update(pifont_chars)
@@ -1446,6 +1446,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             textlines = [line + '~'*(not line.lstrip())
                          for line in text.split('\n')]
             text = '\\\\\n'.join(textlines)
+        if not self.literal:
+            text = self.babel.quote_quotes(text)
         if self.literal and not self.insert_non_breaking_blanks:
             # preserve runs of spaces but allow wrapping
             text = text.replace('  ', ' ~')

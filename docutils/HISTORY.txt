@@ -45,6 +45,7 @@ Changes Since 0.7
     No hard-coded "unicode" hyperref option (clash with xetex).
   - Set language for custom roles, paragraphs, block-quotes, and
     line-quotes with class argument "language-<language tag>".
+  - Fix [ 3095603 ] wrong quotes output for russian and other languages.
 
 * docutils/writers/xetex/__init__.py
 
