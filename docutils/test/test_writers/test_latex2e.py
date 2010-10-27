@@ -56,9 +56,9 @@ $titledata
 parts = dict(
 head_prefix = r"""\documentclass[a4paper]{article}
 """,
-requirements = r"""\usepackage[T1]{fontenc}
+requirements = r"""\usepackage{ifthen}
+\usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{ifthen}
 """,
 latex_preamble = r"""% PDF Standard Fonts
 \usepackage{mathptmx} % Times
@@ -119,9 +119,12 @@ head_textcomp + r"""
 totest['spanish quote'] = [
 [".. role:: language-es\n\nUnd damit :language-es:`basta`!",
 head_template.substitute(dict(parts, requirements =
-r"""\usepackage[spanish,english]{babel}
+r"""\usepackage{ifthen}
+\usepackage[spanish,english]{babel}
 \addto\shorthandsspanish{\spanishdeactivate{."~<>}}
-""" + parts['requirements'])) + r"""
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+""")) + r"""
 Und damit {\selectlanguage{spanish}basta}!
 
 \end{document}
