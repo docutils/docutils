@@ -2415,19 +2415,23 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.out.append('$')
 
     def depart_math(self, node):
-        self.requirements['amsmath'] = r'\usepackage{amsmath}'
-        if node['classes']:
-            self.depart_inline(node)
         self.verbatim = False
         self.out.append('$')
+        if node['classes']:
+            self.depart_inline(node)
 
     def visit_math_block(self, node):
+        self.requirements['amsmath'] = r'\usepackage{amsmath}'
+        if node['classes']:
+            self.visit_inline(node)
         self.verbatim = True
         self.out.append (r'\begin{equation*}\begin{split}')
 
     def depart_math_block(self, node):
         self.verbatim = False
         self.out.append(r'\end{split}\end{equation*}')
+        if node['classes']:
+            self.depart_inline(node)
 
     def visit_option(self, node):
         if self.context[-1]:
@@ -2435,7 +2439,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.out.append(', ')
 
     def depart_option(self, node):
-        # flag tha the first option is done.
+        # flag that the first option is done.
         self.context[-1] += 1
 
     def visit_option_argument(self, node):
