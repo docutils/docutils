@@ -49,7 +49,7 @@ directives = {
     #u'質問': 'questions',
     #u'問答': 'questions',
     #u'faq': 'questions',
-    u'math-block (translation required)': 'math-block',
+    u'math (translation required)': 'math',
     u'メタ': 'meta',
     #u'イメージマプ': 'imagemap',
     u'イメージ': 'image',

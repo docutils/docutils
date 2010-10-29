@@ -45,7 +45,7 @@ directives = {
       u'taula-llista': 'list-table',
       #'qa': 'questions',
       #'faq': 'questions',
-      u'math-block (translation required)': 'math-block',
+      u'math (translation required)': 'math',
       u'meta': 'meta',
       #'imagemap': 'imagemap',
       u'imatge': 'image',

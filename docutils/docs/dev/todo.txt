@@ -1172,7 +1172,7 @@ LaTeX math syntax
   * intended for input by a human, widely used, and well documented
     (see, e.g., the `Short Math Guide`__)
 
-    __ ftp://ftp.ams.org/pub/tex/doc/amsmath/short-math-guide.pdf)
+    __ http://tex.loria.fr/general/downes-short-math-guide.pdf
 
   * convertible to all supported output formats (building on
     existing extensions like `latex_math`_ (LaTeX2MathML) or the `math
@@ -1183,6 +1183,25 @@ LaTeX math syntax
     grave accent.
 
   * Used for input and storage by the `Math support in Sphinx`_.
+
+Which equation environments should be supported?
+
+Inline
+  the usual dollar signs ``$ $``.
+
+Display
+  * one line:
+
+    + numbered: "equation"
+    + unnumbered: "equation*" or ``\[ \]``?
+
+  * multiline (test for ``\\``)
+
+    + numbered: "align" (number every line) or "split" in "equation"
+      (number one line)?
+    + unnumbered: "align*"
+
+See http://www.math.uiuc.edu/~hildebr/tex/displays.html.
 
 ASCIIMathML_
   Used, e.g., by MultiMarkdown__
@@ -1203,26 +1222,25 @@ See `the culmination of a relevant discussion
 
 Try to keep it compatible with `Math support in Sphinx`_:
 
-* Just one name for role and directive: ("math-block" -> "math").
-  How about an alias in ``docutils/parsers/rst/languages/en.py``?
-
 * When the math is only one line of text, it can also be given as a
   directive argument.
 
-  
-  .. caution:: 
-    
-    Clashs with possible use of the directive argument for type of
-    equation (``align``, ``equation``, ``equation*``, ...)
 
-* support multiple equations, which should be separated by a blank
+  .. caution::
+
+    Clashs with possible use of the directive argument for type of
+    equation (``align``, ``equation``, ``equation*``, ...) or input
+    format (``LaTeX``, ``MathML``, ``linear math``, ...).
+
+* Supports multiple equations, which should be separated by a blank
   line.
 
 * The ``:label:`` option selects a label for the equation, by which it
   can be cross-referenced, and causes an equation number to be issued.
 
-* Option ``:nowrap:`` prevents any wrapping of the given math in a
-  math environment
+* Option ``:nowrap:`` prevents wrapping of the given math in a
+  math environment (you have to specify the math environment in the
+  content).
 
 Options for HTML output
 ```````````````````````
@@ -1273,16 +1291,16 @@ images
 OpenOffice output
 `````````````````
 
-* MathML_ can be imported by the Math module. 
+* MathML_ can be imported by the Math module.
 
   However, putting MathML into an ODP file seems tricky:
   http://idippedut.dk/post/2008/01/25/Do-your-math-ODF-and-MathML.aspx
   http://idippedut.dk/post/2008/03/03/Now-I-get-it-ODF-and-MathML.aspx
-  
-  
+
+
 
 * OOoLaTeX__:  "a set of macros designed to bring the power of LaTeX
-  into OpenOffice." 
+  into OpenOffice."
 
   __ http://ooolatex.sourceforge.net/
 

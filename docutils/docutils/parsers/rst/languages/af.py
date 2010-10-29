@@ -29,7 +29,7 @@ directives = {
       'kantstreep': 'sidebar',
       'onderwerp': 'topic',
       'lynblok': 'line-block',
-      'math-block (translation required)': 'math-block',
+      'math (translation required)': 'math',
       'parsed-literal (translation required)': 'parsed-literal',
       'rubriek': 'rubric',
       'epigraaf': 'epigraph',

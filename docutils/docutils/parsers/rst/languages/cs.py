@@ -43,7 +43,7 @@ directives = {
       u'table (translation required)': 'table',
       u'csv-table (translation required)': 'csv-table',
       u'list-table (translation required)': 'list-table',
-      u'math-block (translation required)': 'math-block',
+      u'math (translation required)': 'math',
       u'meta (translation required)': 'meta',
       #'imagemap': 'imagemap',
       u'image (translation required)': 'image',   # obrazek
