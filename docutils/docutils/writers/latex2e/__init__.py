@@ -355,10 +355,6 @@ class Babel(object):
         # zh-latn:      Chinese Pinyin
         }
     warn_msg = 'Language "%s" not supported by LaTeX (babel)'
-    frenchfix = r"""% With frenchb.ldf (<= v2.5a), \iflanguage{french} returns a false positive
-% if French hyphenation patterns are not enabled:
-\makeatletter\ifthenelse{\l@french=0}{\adddialect\l@french{255}}{}\makeatother
-\frenchbsetup{StandardLayout}"""
 
     def __init__(self, language_code, reporter):
         self.language_code = language_code
@@ -392,7 +388,11 @@ class Babel(object):
             # or prepend r'\def\spanishoptions{es-noshorthands}'
         if (languages[-1] is 'english' and
             'french' in self.otherlanguages.keys()):
-            self.setup.append(self.frenchfix)
+            self.setup.append('%% Prevent side-effects if French hyphenation '
+                              'patterns are not loaded:\n'
+                              '\\frenchbsetup{StandardLayout}\n'
+                              r'\AtBeginDocument{\selectlanguage{%s}'
+                              r'\noextrasfrench}' % self.language)
         return '\n'.join(self.setup)
 
     def next_quote(self):
@@ -545,7 +545,6 @@ PreambleCmds.graphicx_auto = r"""% Check output format
 \else
   \usepackage[pdftex]{graphicx}
 \fi'))"""
-
 
 PreambleCmds.inline = r"""
 % inline markup (custom roles)
@@ -2408,6 +2407,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
     ##     self.out.append('[depart_meta]\n')
 
     def visit_math(self, node):
+        """math role"""
         self.requirements['amsmath'] = r'\usepackage{amsmath}'
         if node['classes']:
             self.visit_inline(node)
@@ -2424,12 +2424,19 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.requirements['amsmath'] = r'\usepackage{amsmath}'
         if node['classes']:
             self.visit_inline(node)
-        self.verbatim = True
-        self.out.append (r'\begin{equation*}\begin{split}')
+        math_code = node.astext()
+        is_multiline = math_code.find(r'\\') >= 0
+        if is_multiline:
+            environment = 'align*'
+        else:
+            environment = 'equation*'
+        self.out.append ('%%\n\\begin{%s}\n' % environment)
+        self.out.append(math_code)
+        self.out.append('\n\\end{%s}' % environment)
+        # Content already processed:
+        raise nodes.SkipNode
 
     def depart_math_block(self, node):
-        self.verbatim = False
-        self.out.append(r'\end{split}\end{equation*}')
         if node['classes']:
             self.depart_inline(node)
 
