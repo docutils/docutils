@@ -4,10 +4,9 @@
 \usepackage{cmap} % fix search and cut-and-paste in Acrobat
 \usepackage{ifthen}
 \usepackage[british,french,ngerman,english]{babel}
-% With frenchb.ldf (<= v2.5a), \iflanguage{french} returns a false positive
-% if French hyphenation patterns are not enabled:
-\makeatletter\ifthenelse{\l@french=0}{\adddialect\l@french{255}}{}\makeatother
+% Prevent side-effects if French hyphenation patterns are not loaded:
 \frenchbsetup{StandardLayout}
+\AtBeginDocument{\selectlanguage{english}\noextrasfrench}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{color}
