@@ -1,8 +1,8 @@
 # .. coding: utf8
-# :Author: Günter Milde <milde@users.berlios.de>
+# :Author: Günter Milde <milde@users.sourceforge.net>
 # :Revision: $Revision$
-# :Date: $Date: 2005-06-28$
-# :Copyright: © 2005, 2009 Günter Milde.
+# :Date: $Date: 2010-10-29$
+# :Copyright: © 2010 Günter Milde.
 #             Released  without warranties or conditions of any kind
 #             under the terms of the Apache License, Version 2.0
 #             http://www.apache.org/licenses/LICENSE-2.0
@@ -32,7 +32,7 @@ class Writer(latex2e.Writer):
 
     default_template = 'xelatex.tex'
     default_preamble = '\n'.join([
-        r'% Linux Libertine (free, wide coverage, not only for Linux',
+        r'% Linux Libertine (free, wide coverage, not only for Linux)',
         r'\setmainfont{Linux Libertine O}',
         r'\setsansfont{Linux Biolinum O}',
         r'\setmonofont[HyphenChar=None]{DejaVu Sans Mono}',
