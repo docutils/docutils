@@ -20,7 +20,7 @@ Changes Since 0.7
 * General:
 
   - Handle language codes according to `BCP 47`_.
-  - If the specified langauage is not supported by Docutils,
+  - If the specified language is not supported by Docutils,
     warn and fall back to English.
 
 .. _BCP 47: http://www.rfc-editor.org/rfc/bcp/bcp47.txt
@@ -29,6 +29,8 @@ Changes Since 0.7
 
   - Fix ``--local`` switch.
 
+
+* Fix [ 3018371 ] Added Lithuanian mappings by Dalius Dobravolskas.
 
 * docutils/writers/html4css1/__init__.py
 
