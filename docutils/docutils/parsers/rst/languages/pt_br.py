@@ -44,7 +44,7 @@ directives = {
       u'csv-table (translation required)': 'csv-table',
       u'list-table (translation required)': 'list-table',
       'meta': 'meta',
-      'math-block (translation required)': 'math-block',
+      'math (translation required)': 'math',
       #'imagemap': 'imagemap',
       'imagem': 'image',
       'figura': 'figure',

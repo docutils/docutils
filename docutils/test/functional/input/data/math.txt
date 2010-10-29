@@ -4,27 +4,36 @@ Testing Math
 Docutils supports inline math with the prefix or postfix ``:math:``
 role specificator, :math:`n! + \sin(x_n^2)` and `A_\text{c} =
 \frac{\pi}{4} d^2`:math:, as well as displayed math via the
-``math-block`` directive:
+``math`` directive:
 
-.. math-block::
+.. math::
 
    f(\epsilon) = \frac{1}{1 + \exp\left(\frac{\varepsilon}{k_\text{B}T}\right)}
 
-.. math-block::
+.. In Sphinx, blank lines inside a math directive start a new math
+   display.
+
+   Should we handle this:
+
+   * in the parser (adding one node per line),
+   * in the writers, or
+   * not at all?
+
+.. math::
 
    N = \frac{\text{number of apples}}{7}
 
-.. math-block::
+.. math::
 
    \mathbf{M} = \left(\begin{matrix}a&b\\c&d\end{matrix}\right)
 
 We have :math:`|\mathbf{M}| = ad - bc`.
 
-.. math-block::
+.. math::
 
    \int_0^1 x^n dx = \frac{1}{n + 1}
 
-.. math-block::
+.. math::
 
    \sum_{n=1}^m n = \frac{m(m+1)}{2}
 
@@ -34,20 +43,20 @@ We have :math:`|\mathbf{M}| = ad - bc`.
 
 Quantum mechanics:
 
-.. math-block::
+.. math::
 
    -\frac{1}{2}\nabla^2 \psi + v \psi = \varepsilon \psi
 
 Math split over two lines:
 
-.. math-block::
+.. math::
 
    g(\alpha) = & (1 + \alpha + \alpha^2 + \alpha^3 + \alpha^4\\
                & + \alpha^5)
 
 Cases (realized with a matrix environment):
 
-.. math-block::
+.. math::
 
    f(x) = \left\{
      \begin{matrix}

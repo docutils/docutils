@@ -44,7 +44,7 @@ directives = {
       #'qa': 'questions',
       #'faq': 'questions',
       u'meta': 'meta',
-      'math-block (translation required)': 'math-block',
+      'math (translation required)': 'math',
       #'imagemap': 'imagemap',
       u'obraz': 'image',
       u'rycina': 'figure',
@@ -97,4 +97,4 @@ roles = {
 """
     
 
- 	  	 
+                 

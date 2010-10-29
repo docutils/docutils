@@ -44,7 +44,7 @@ directives = {
       #'qa': 'questions',
       #'faq': 'questions',
       'meta': 'meta',
-      'math-block': 'math-block',
+      'math': 'math',
       #'imagemap': 'imagemap',
       'image': 'image',
       'figure': 'figure',

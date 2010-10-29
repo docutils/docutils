@@ -29,7 +29,7 @@ _directive_registry = {
       'topic': ('body', 'Topic'),
       'line-block': ('body', 'LineBlock'),
       'parsed-literal': ('body', 'ParsedLiteral'),
-      'math-block': ('body', 'MathBlock'),
+      'math': ('body', 'MathBlock'),
       'rubric': ('body', 'Rubric'),
       'epigraph': ('body', 'Epigraph'),
       'highlights': ('body', 'Highlights'),

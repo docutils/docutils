@@ -51,7 +51,7 @@ directives = {
       u'tabla-csv': 'csv-table',
       u'tabla-lista': 'list-table',
       u'meta': 'meta',
-      'math-block (translation required)': 'math-block',
+      'math (translation required)': 'math',
       #'imagemap': 'imagemap',
       u'imagen': 'image',
       u'figura': 'figure',

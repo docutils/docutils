@@ -44,7 +44,7 @@ directives = {
       'lijst-tabel': 'list-table',
       #'veelgestelde-vragen': 'questions',
       'meta': 'meta',
-      'math-block (translation required)': 'math-block',
+      'math (translation required)': 'math',
       #'imagemap': 'imagemap',
       'beeld': 'image',
       'figuur': 'figure',

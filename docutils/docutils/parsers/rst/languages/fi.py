@@ -42,7 +42,7 @@ directives = {
       u'container (translation required)': 'container',
       #u'kysymykset': u'questions',
       u'meta': u'meta',
-      'math-block (translation required)': 'math-block',
+      'math (translation required)': 'math',
       #u'kuvakartta': u'imagemap',
       u'kuva': u'image',
       u'kaavio': u'figure',

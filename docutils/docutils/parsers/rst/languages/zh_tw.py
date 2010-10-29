@@ -45,7 +45,7 @@ directives = {
       #'qa (translation required)': 'questions',
       #'faq (translation required)': 'questions',
       'meta (translation required)': 'meta',
-      'math-block (translation required)': 'math-block',
+      'math (translation required)': 'math',
       #'imagemap (translation required)': 'imagemap',
       'image (translation required)': 'image',
       'figure (translation required)': 'figure',
