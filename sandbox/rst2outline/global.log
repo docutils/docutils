@@ -1,4 +1,91 @@
 **************************************
+Date: Sat Oct 30 14:04:11 CEST 2010
+Author: stefan
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2outline/rst_xslt
+In directory rosalu:/home/stefan/free/rst2outline/rst_xslt
+
+
+--------------------------------------
+Log Message:
+Directory /home/stefan/vault/sm/rst2outline/rst_xslt added to the repository
+**************************************
+Date: Sun Oct 10 13:50:18 CEST 2010
+Author: stefan
+Tag: rst2outline_1_15
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2outline
+In directory rosalu:/home/stefan/free/rst2outline
+
+Modified Files:
+	Makefile 
+
+--------------------------------------
+Log Message:
+Switched to using `packageSupport`.
+**************************************
+Date: Sun Oct  3 10:47:28 CEST 2010
+Author: stefan
+Tag: rst2outline_1_14
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2outline
+In directory rosalu:/home/stefan/free/rst2outline
+
+Modified Files:
+	Makefile 
+
+--------------------------------------
+Log Message:
+Improved Makefile.
+**************************************
+Date: Sun Oct  3 10:42:03 CEST 2010
+Author: stefan
+Tag: rst2outline_1_13
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2outline
+In directory rosalu:/home/stefan/free/rst2outline
+
+Modified Files:
+	Makefile 
+
+--------------------------------------
+Log Message:
+Improved Makefile.
+**************************************
+Date: Sun Oct  3 10:35:53 CEST 2010
+Author: stefan
+Tag: rst2outline_1_12
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2outline
+In directory rosalu:/home/stefan/free/rst2outline
+
+Modified Files:
+	Makefile 
+
+--------------------------------------
+Log Message:
+Improved Makefile.
+**************************************
+Date: Sun Oct  3 10:24:04 CEST 2010
+Author: stefan
+Tag: rst2outline_1_11
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2outline
+In directory rosalu:/home/stefan/free/rst2outline
+
+Modified Files:
+	Makefile 
+
+--------------------------------------
+Log Message:
+Improved Makefile.
+**************************************
 Date: Sat Oct  2 15:01:15 CEST 2010
 Author: stefan
 Tag: rst2outline_1_10
