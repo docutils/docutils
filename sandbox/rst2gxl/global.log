@@ -1,4 +1,117 @@
 **************************************
+Date: Sun Oct 31 20:02:16 CET 2010
+Author: stefan
+Tag: rst2gxl_1_42
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory rosalu:/home/stefan/free/rst2gxl
+
+Modified Files:
+	.cvsignore Makefile 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/complex
+In directory rosalu:/home/stefan/free/rst2gxl/tests/complex
+
+Added Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+`.cvsignore` is constructed.
+**************************************
+Date: Sun Oct 31 19:53:57 CET 2010
+Author: stefan
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/complex/expected
+In directory rosalu:/home/stefan/free/rst2gxl/tests/complex/expected
+
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/complex/input
+In directory rosalu:/home/stefan/free/rst2gxl/tests/complex/input
+
+
+--------------------------------------
+Log Message:
+Directory /home/stefan/vault/sm/rst2gxl/tests/complex/expected added to the repository
+
+Directory /home/stefan/vault/sm/rst2gxl/tests/complex/input added to the repository
+**************************************
+Date: Sun Oct 31 19:53:44 CET 2010
+Author: stefan
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl/tests/complex
+In directory rosalu:/home/stefan/free/rst2gxl/tests/complex
+
+
+--------------------------------------
+Log Message:
+Directory /home/stefan/vault/sm/rst2gxl/tests/complex added to the repository
+**************************************
+Date: Sun Oct 10 13:53:14 CEST 2010
+Author: stefan
+Tag: rst2gxl_1_41
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory rosalu:/home/stefan/free/rst2gxl
+
+Modified Files:
+	Makefile 
+
+--------------------------------------
+Log Message:
+Switched to using `packageSupport`.
+**************************************
+Date: Sun Oct  3 10:47:21 CEST 2010
+Author: stefan
+Tag: rst2gxl_1_40
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory rosalu:/home/stefan/free/rst2gxl
+
+Modified Files:
+	Makefile 
+
+--------------------------------------
+Log Message:
+Improved Makefile.
+**************************************
+Date: Sun Oct  3 10:43:21 CEST 2010
+Author: stefan
+Tag: rst2gxl_1_39
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory rosalu:/home/stefan/free/rst2gxl
+
+Modified Files:
+	Makefile 
+
+--------------------------------------
+Log Message:
+Improved Makefile.
+**************************************
+Date: Sun Oct  3 10:25:44 CEST 2010
+Author: stefan
+Tag: rst2gxl_1_38
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rst2gxl
+In directory rosalu:/home/stefan/free/rst2gxl
+
+Modified Files:
+	Makefile 
+
+--------------------------------------
+Log Message:
+Improved Makefile.
+**************************************
 Date: Sat Oct  2 14:53:49 CEST 2010
 Author: stefan
 Tag: rst2gxl_1_37
