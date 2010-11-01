@@ -1,0 +1,476 @@
+#format rst
+#language en
+
+Discussion__
+
+.. __: /Talk
+
+.. contents::
+
+This page describes the machinery used by the `Oekonux community`_.
+This page is motivated by a `thread about this topic
+<http://www.oekonux.de/projekt/liste/archive/msg03333.html>`_ on the
+`project list`_, which cares about the organization of the project.
+
+The intention of this page is to reflect the current state of the
+machinery. It is originally written in German which is available as
+the first version of this page.
+
+Overview
+========
+
+The `Oekonux community`_ currently uses the following technical
+facilities:
+
+* `mailing lists`_
+
+* `web sites`_
+
+* OpenTheory_
+
+* `news groups`_
+
+* Wiki_
+
+As far as I know other facilities such as IRC are currently not used.
+
+.. _Oekonux server:
+
+Dedicated Oekonux server
+========================
+
+There is a dedicated server for the Oekonux project. Currently this is
+a virtual server based on Debian and hosted by `VD server`_. This
+dedicated server is paid by the `Projekt Oekonux e.V.`_, a registered
+association in Germany.
+
+Today the server runs most of the technical infrastructure of the
+project. It has a fixed IP address and the DNS entries for the domains
+point to this server. The generic address of the server is
+``server.oekonux.de``.
+
+The general maintainer of this server is HolgerWeiss_, certain
+facilities are maintained mainly by StefanMerten_.
+
+In case it is necessary because the project needs more computing
+resources a real server could be hosted by `Individual Network
+Berlin`_.
+
+Mailing lists
+=============
+
+Existing lists
+~~~~~~~~~~~~~~
+
+The following lists exist:
+
+* ``liste AT oekonux DOT de``
+
+* ``list-en AT oekonux DOT org``
+
+* ``projekt AT oekonux DOT de``
+
+* ``chat AT oekonux DOT de``
+
+* ``mitglieder AT oekonux DOT de``
+
+* ``helfer AT oekonux-konferenz DOT de``
+
+* ``referenten AT oekonux-konferenz DOT de``
+
+For all mailing lists there are archives_, which are on the web sites
+of the domain they belong to.
+
+Hosting
+~~~~~~~
+
+All mailing lists are hosted on the `Oekonux server`_. The mailing
+lists are all served by a Majordomo_.
+
+Features
+~~~~~~~~
+
+Spam protection
+---------------
+
+Mail to all mailing lists is routed over a SpamAssassin_. This is
+indispensable because the addresses of the mailing lists have a wide
+distribution.
+
+The SpamAssassin installation needs some maintenance once in a while
+to be ready for the latest ideas of spammers. This maintenance is done
+by StefanMerten_.
+
+Unfortunately the spam filtering does not catch all spam :-( .
+Therefore the mailing lists have been closed so only subscribers can
+post to the list unmoderated. The bounces of spam and legitimate mail
+from non-subscribers are handled by StefanMerten_. All other tasks
+necessary for keeping the mailing lists running are also handled by
+StefanMerten_.
+
+Web sites
+=========
+
+Hosting
+~~~~~~~
+
+Provider
+--------
+
+There is no special provider for the web sites. All web sites are
+hosted on the `Oekonux server`_.
+
+Because of their size the audio files which mainly have been recorded
+during the conferences are kept on web space donated by various
+people.
+
+Before conferences resources of the `OpenTheory project`_ are used
+for online creation and presentation of the program of the conference.
+
+Domains
+-------
+
+There are four domains for which the `e.V.`_ is the owner:
+
+* ``oekonux.de``
+
+  Under ``www`` the German main page of the project can be found.
+
+* ``oekonux.org``
+
+  Under ``www`` the international main page of the project can be
+  found.
+
+  Also the Wikis are all hosted here:
+
+  * ``en.wiki``
+
+    The English language Wiki.
+
+  * ``de.wiki``
+
+    The German language Wiki.
+
+* ``oekonux-konferenz.de``
+
+  The German domain for everything around the Oekonux conferences.
+
+  - ``www``
+
+    Entry point for the most recent conference.
+
+  - ``erste``, ``zweite``, ``dritte``
+
+    Entry points for the respective conference.
+
+* ``oekonux-conference.org``
+
+  The international domains for everything around the Oekonux
+  conferences.
+
+  - ``www``
+
+    Entry point for the most recent conference.
+
+  - ``second``, ``third``
+
+    Entry points for the respective conference.
+
+More domains were present before the `e.V.`_ took them over but they
+have been abandoned.
+
+Features
+~~~~~~~~
+
+Web space
+---------
+
+The audio files hosted externally sum up to about 4GB.
+
+Traffic
+-------
+
+.. $$$
+
+There are statistics about the `network traffic
+<http://traffic.oekonux.de/>`_ and the `page hits
+http://www.oekonux.de/projekt/statistik/website/`_.
+
+Mail addresses
+--------------
+
+All domains support a couple of mail addresses. They are mainly used
+for the `mailing lists`_.
+
+Besides the functional mail addresses there is only one private mail
+address. Generally it is possible to create more private mail
+addresses. Such private mail address must contain the family name of
+the person.
+
+Generation and Upload
+---------------------
+
+At the moment all content of the web sites is generated by
+StefanMerten_ on his private computer and uploaded onto the server.
+Among other facilities the SDF format is used and the whole thing is
+embedded in a ``make`` based automation.
+
+.. important:: The sources for the static pages have been brought to a
+   CVS repository eons ago. However, this has not been used.
+
+   In general it would be good if a new solution for the web sites
+   would be available by CVS. With this many people could work on the
+   site.
+
+   StefanMerten_ would appreciate that the sources of the web pages
+   are created in a format close to ASCII - at best reStructuredText_.
+   He is ready to provide a converter from the current format.
+
+Static pages
+------------
+
+Apart from the Wiki pages nearly all pages in the Oekonux domains are
+static HTML pages without any JavaScript or other active elements. By
+this they are
+
+* usable by *all* browsers
+
+* readable for all times
+
+* no security risk for the server
+
+* stable URLs without variable parts
+
+  Many search engines ignore links containing a ``?``.
+
+* need no maintenance
+
+* friendly to external search engines
+
+  Though navigation is done by frames there is always a ``<noframes>``
+  section which contains the links.
+
+* can be downloaded with tools like ``wget`` completely and without
+  problems
+
+* works with every web hosting offer
+
+Navigation
+----------
+
+Navigation is realized with frames. A narrow frame on the left is
+modeled after a file browser. It permanently presents the current
+position in the site. The right frame contains the selected content.
+If a directory is selected in the navigation the content frame
+``default.html`` always appears.
+
+Apart from this each third level domain has a separate site map.
+
+Links in all pages are followed by QBullets_ which roughly give the
+type of the link.
+
+Locale search engine
+--------------------
+
+.. $$$ Link ht://dig
+
+Currently the local search engine is replaced by a ht://dig based
+solution.
+
+RSS-Feed
+--------
+
+.. important:: There is no RSS feed yet but it would be nice to have
+   one.
+
+Content
+~~~~~~~
+
+General
+-------
+
+.. important:: In general the sites are not maintained really. This is
+   bad.
+
+.. important:: In particular it would be good if the international
+   site would have more of the content of the German site.
+   Particularly it would be good to have the `Oekonux links`_ in
+   English. Also the structure of the project should be presented on
+   the international site.
+
+Archives
+--------
+
+All `mailing lists`_ of the project are archived on the web sites.
+StefanMerten_ converts the incoming mails to HTML by MHonArc_ and
+uploaded automatically.
+
+HTML pages for the archives are filtered. At the moment
+
+* comments of MHonArc_ are removed
+
+* phone numbers are replaced by a fixed text
+
+* names of certain people who decided to late that they not want to be
+  found in Oekonux by Google are shortened
+
+* all URLs pointing to mail addresses are obfuscated a bit
+
+* mail addresses are obfuscated
+
+.. important:: There is a request to have the archives on the `web
+   sites`_ in mbox format. For this it must be clarified what can be
+   done against mail address harvesting.
+
+Removal of archived pages is also widely automated. However, it needs
+an explicit call with the number of the mail to remove.
+
+.. important:: Right now the removed mail is removed only from the
+   indexes but *not* from the server. By this it is no longer
+   reachable by neighboring mails or an index but the are generally
+   accessible. This must be changed.
+
+Texts
+-----
+
+Several texts of the project are available on the `web sites`_.
+
+Among them is an introduction for which MagicPoint sources are
+available.
+
+Link page
+---------
+
+One of the most important content resources of the `Oekonux
+community`_ are the `Oekonux links`_, where interesting links are
+entered with a short comment. The page is structured.
+
+.. important:: It would be good if each of the `Oekonux links`_ would
+   get a creation date. Meanwhile this would have some historical
+   value.
+
+   In general for existing links this would be possible by ``cvs
+   annotate``.
+
+.. important:: It would be useful if the language of the page behind
+   the link would be given. This can be done by the HTML attribute
+   ``hreflang``.
+
+Statistics
+----------
+
+Statistics are available about the usage of the `mailing lists`_ as
+well as about the `web sites`_ usage on the `web sites`_. All
+statistics are created weekly by some Free Software (webalizer_,
+mail2clf_, mail2chart_) automatically by StefanMerten_ and uploaded.
+
+OpenTheory
+==========
+
+Many texts from the project and from its environment are available in
+the `OpenTheory project`_. Some of them are gathered in the `Oekonux
+OpenTheory project`_.
+
+The texts are about Oekonux content as well as for organizational
+purposes. In particular the conference preparation has been done
+there.
+
+Wiki
+====
+
+Currently there are two Oekonux Wikis at
+
+* http://en.wiki.oekonux.org/
+
+* http://de.wiki.oekonux.org/
+
+They are based on the MoinMoin_ Wiki engine.
+
+The content is maintained by a group of maintainers (`English
+<http://en.wiki.oekonux.org/MaintainerGroup>`_, `German
+<http://de.wiki.oekonux.org/MaintainerGruppe>`_ . The technical part
+of the Wikis is maintained by StefanMerten_.
+
+News groups
+===========
+
+Since end of 2003 the main discussion `mailing lists`_ are available
+through Gmane_ as Usenet newsgroups:
+
+* news://news.gmane.org/gmane.politics.oekonux.german
+
+  Mirrors ``liste AT oekonux DOT de``.
+
+* news://news.gmane.org/gmane.politics.oekonux.english
+
+  Mirrors ``list-en AT oekonux DOT org``.
+
+The newsgroups are configured in a way replies by news are not
+possible.
+
+.. important:: For now the newsgroup archives contain only those mails
+   written after the newsgroup feature was in place. After the problem
+   of readable mail addresses has been solved the whole archive shall
+   be `brought <http://gmane.org/import.php>`_ to the newsgroup archive
+
+Features
+~~~~~~~~
+
+Search engine
+-------------
+
+Gmane_ has a search engine which searches the newsgroups.
+
+.. ############################################################################
+
+.. _reStructuredText: http://docutils.sourceforge.net/rst.html
+
+.. _Oekonux community: http://www.oekonux.de/
+
+.. _project list: http://www.oekonux.de/projekt/liste/
+
+.. _Majordomo: http://www.greatcircle.com/majordomo/
+
+.. _SpamAssassin: http://www.spamassassin.org/
+
+.. _Projekt Oekonux e.V.:
+
+.. _e.V.: http://www.oekonux.de/projekt/verein/
+
+.. _OpenTheory project: http://www.opentheory.org/
+
+.. _Individual Network Berlin: http://www.in-berlin.de/
+
+.. _QBullets: http://www.matterform.com/qbullets/
+
+.. _MHonArc: http://www.mhonarc.org/
+
+.. _Oekonux links: http://www.oekonux.de/projekt/links.html
+
+.. _webalizer: http://www.webalizer.org/
+
+.. _mail2clf: http://www.merten-home.de/FreeSoftware/mail2clf/
+
+.. _mail2chart: http://www.merten-home.de/FreeSoftware/mail2chart/
+
+.. _Oekonux OpenTheory project: http://www.opentheory.org/oekonux/
+
+.. _Gmane: http://gmane.org/
+
+.. _VD server: http://www.vd-server.de/
+
+.. _MoinMoin: http://moinmoin.wikiwikiweb.de/
+
+.. ############################################################################
+
+..  LocalWords:  reStructuredText Premium page premium oekonux www org Hoster
+..  LocalWords:  konferenz conference second third gehosteten MagicPoint Upload
+..  LocalWords:  SDF make MHonArc Harvesting ToDo important JavaScript noframes
+..  LocalWords:  wget pox Privacy Policy site default html Sitemap FreeFind you
+..  LocalWords:  Perlfect clf Search webalizer mail mail chart Referrer co chat
+..  LocalWords:  forum Kalka Chris Croome Gmane DOT list en mbox Subversion cvs
+..  LocalWords:  StefanMn projekt helfer referenten gepollt Sympa SmartList rst
+..  LocalWords:  MailMan buug SpamAssassin Individual Network vLinux server IRC
+..  LocalWords:  Repository QBullets annotate hreflang OpenTheory Debian VD DNS
+..  LocalWords:  HolgerWeiss StefanMerten mitglieder erste zweite dritte RSS
+..  LocalWords:  MoinMoin
