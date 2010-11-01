@@ -1,4 +1,34 @@
 **************************************
+Date: Mon Nov  1 14:04:05 CET 2010
+Author: stefan
+Tag: xml2rst_1_198
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	Makefile 
+
+--------------------------------------
+Log Message:
+Final version using `setup.py`.
+**************************************
+Date: Mon Nov  1 13:37:50 CET 2010
+Author: stefan
+Tag: xml2rst_1_197
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Added Files:
+	README 
+
+--------------------------------------
+Log Message:
+Updated ``README``.
+**************************************
 Date: Mon Nov  1 10:56:42 CET 2010
 Author: stefan
 Tag: xml2rst_1_196

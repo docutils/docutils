@@ -1,0 +1,3 @@
+include tests.tgz
+include version.py
+include rst/*.xsl
