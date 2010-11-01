@@ -60,29 +60,8 @@ import os.path
 import re
 
 from optparse import OptionParser, OptionGroup, OptionValueError, Option
-from copy import copy
 
-try:
-    from lxml import etree
-except ImportError:
-    errorExit(2, ( "Python package 'lxml' is not available",
-                   "You may try to use 'xml2rst.xsl' with a standalone XSLT processor like 'xalan' or 'xsltproc'", ))
-
-###############################################################################
-###############################################################################
-# Constants
-
-"""
-@var MainXsltNm: Name of the main XSLT source file
-@type MainXsltNm: str
-"""
-MainXsltNm = "xml2rst.xsl"
-
-"""
-@var ScriptNm: Name of the script
-@type ScriptNm: str
-"""
-ScriptNm = sys.argv[0]
+from rst import rst_xslt
 
 ###############################################################################
 ###############################################################################
@@ -416,61 +395,6 @@ def errorExit(code, lines):
 ###############################################################################
 # Specialized functions
 
-def convert(inNm, outNm):
-    """
-    Do the conversion.
-
-    @param inNm: Filename of input file.
-    @type inNm: str
-
-    @param outNm: Filename of output file or None.
-    @type outNm: str | None
-    """
-    try:
-        inF = open(inNm)
-    except IOError:
-        errorExit(1, ( "Can't open input file %r" % ( inNm, ), ))
-
-    scriptP = os.path.dirname(os.path.realpath(ScriptNm))
-    mainXsltNm = os.path.join(scriptP, MainXsltNm)
-    try:
-        mainXsltF = open(mainXsltNm)
-    except IOError:
-        errorExit(1, ( "Can't open main XSLT file %r" % ( mainXsltNm, ), ))
-
-    xsltParser = etree.XMLParser()
-    mainXsltDoc = etree.parse(mainXsltF, xsltParser)
-    mainXsltF.close()
-    mainXslt = etree.XSLT(mainXsltDoc)
-
-    inParser = etree.XMLParser()
-    try:
-        inDoc = etree.parse(inF, inParser)
-    except Exception, e:
-        errorExit(1, ( "Error parsing input file %r: %s" % ( inNm, e, ), ))
-    inF.close()
-
-    xsltParams = { }
-    if options.fold is not None:
-        xsltParams['fold'] = str(options.fold)
-    if options.adornment is not None:
-        xsltParams['adornment'] = "'" + options.adornment + "'"
-    try:
-        result = mainXslt(inDoc, **xsltParams)
-    except Exception, e:
-        errorExit(1, ( "Error transforming input file %r: %s" % ( inNm, e, ), ))
-    # Chop off trailing linefeed - added somehow
-    outS = str(result)[:-1]
-    if outNm:
-        try:
-            outF = open(outNm, "w")
-        except IOError:
-            errorExit(1, ( "Can't open output file %r" % ( outNm, ), ))
-        outF.write(outS)
-        outF.close()
-    else:
-        print(outS)
-
 ###############################################################################
 ###############################################################################
 # Classes
@@ -486,7 +410,10 @@ if __name__ == '__main__':
         outF = arguments[1]
     else:
         outF = None
-    convert(inF, outF)
+    try:
+        rst_xslt.convert(inF, outF, options)
+    except Exception, e:
+        errorExit(1, e)
 
 ##############################################################################
 ##############################################################################
@@ -496,3 +423,5 @@ if __name__ == '__main__':
 # TODO Move from XSLT to Python implementation step by step by replacing
 #      XSLT-code by Python code through extensions and other means
 
+
+# TODO The docutils XML reader must be used
