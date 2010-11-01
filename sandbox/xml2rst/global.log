@@ -1,0 +1,3647 @@
+**************************************
+Date: Mon Nov  1 10:56:42 CET 2010
+Author: stefan
+Tag: xml2rst_1_196
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	Makefile 
+
+--------------------------------------
+Log Message:
+Minor improvement.
+
+A full test using all processors can be made.
+**************************************
+Date: Mon Nov  1 10:48:03 CET 2010
+Author: stefan
+Tag: xml2rst_1_195
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	Makefile setup.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/rst
+In directory rosalu:/home/stefan/free/xml2rst/rst
+
+Modified Files:
+	.cvsignore 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/options/input
+In directory rosalu:/home/stefan/free/xml2rst/tests/options/input
+
+Modified Files:
+	adornmentDefault.xsltproc adornmentEmacs.xsltproc 
+	adornmentReverse.xsltproc fold20.xsltproc fold70.xsltproc 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xalan
+In directory rosalu:/home/stefan/free/xml2rst/tests.xalan
+
+Modified Files:
+	common.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xsltproc
+In directory rosalu:/home/stefan/free/xml2rst/tests.xsltproc
+
+Modified Files:
+	common.cfg 
+
+--------------------------------------
+Log Message:
+Version not using EXSLT is generated.
+**************************************
+Date: Mon Nov  1 10:24:28 CET 2010
+Author: stefan
+Tag: xml2rst_1_194
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	Makefile setup.py xml2rst.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/rst
+In directory rosalu:/home/stefan/free/xml2rst/rst
+
+Added Files:
+	.cvsignore rst_xslt.py 
+
+--------------------------------------
+Log Message:
+Refactoring to become a real writer. Functional code moved to an own
+module.
+**************************************
+Date: Mon Nov  1 09:47:04 CET 2010
+Author: stefan
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/rst
+In directory rosalu:/home/stefan/free/xml2rst/rst
+
+
+--------------------------------------
+Log Message:
+Directory /home/stefan/vault/sm/xml2rst/rst added to the repository
+**************************************
+Date: Sun Oct 31 21:24:46 CET 2010
+Author: stefan
+Tag: xml2rst_1_193
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	Makefile 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/options
+In directory rosalu:/home/stefan/free/xml2rst/tests/options
+
+Added Files:
+	.cvsignore 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/options/expected
+In directory rosalu:/home/stefan/free/xml2rst/tests/options/expected
+
+Added Files:
+	adornmentDefault.rst adornmentEmacs.rst adornmentReverse.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/options/input
+In directory rosalu:/home/stefan/free/xml2rst/tests/options/input
+
+Added Files:
+	.cvsignore 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/real
+In directory rosalu:/home/stefan/free/xml2rst/tests/real
+
+Added Files:
+	.cvsignore 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple
+In directory rosalu:/home/stefan/free/xml2rst/tests/simple
+
+Added Files:
+	.cvsignore 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/synthetic
+In directory rosalu:/home/stefan/free/xml2rst/tests/synthetic
+
+Added Files:
+	.cvsignore 
+
+--------------------------------------
+Log Message:
+Added forgotten files and ingores.
+**************************************
+Date: Sat Oct 30 14:14:15 CEST 2010
+Author: stefan
+Tag: xml2rst_1_192
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	Makefile xml2rst.py 
+Added Files:
+	setup.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/rst_xslt
+In directory rosalu:/home/stefan/free/xml2rst/rst_xslt
+
+Added Files:
+	__init__.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/options
+In directory rosalu:/home/stefan/free/xml2rst/tests/options
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/real
+In directory rosalu:/home/stefan/free/xml2rst/tests/real
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple
+In directory rosalu:/home/stefan/free/xml2rst/tests/simple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/synthetic
+In directory rosalu:/home/stefan/free/xml2rst/tests/synthetic
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Added `setup.py`.
+**************************************
+Date: Sat Oct 30 14:05:17 CEST 2010
+Author: stefan
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/rst_xslt
+In directory rosalu:/home/stefan/free/xml2rst/rst_xslt
+
+
+--------------------------------------
+Log Message:
+Directory /home/stefan/vault/sm/xml2rst/rst_xslt added to the repository
+**************************************
+Date: Sat Oct 30 13:34:19 CEST 2010
+Author: stefan
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst/xml2rst
+
+
+--------------------------------------
+Log Message:
+Directory /home/stefan/vault/sm/xml2rst/xml2rst added to the repository
+**************************************
+Date: Tue Oct 26 15:41:17 CEST 2010
+Author: stefan
+Tag: xml2rst_1_191
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	Makefile 
+
+--------------------------------------
+Log Message:
+`Makefile` uses `packageSupport`.
+**************************************
+Date: Sun Oct 24 13:24:32 CEST 2010
+Author: stefan
+Tag: xml2rst_1_190
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	Makefile 
+
+--------------------------------------
+Log Message:
+`dist` is used for packages.
+**************************************
+Date: Mon Apr 19 11:27:16 CEST 2010
+Author: stefan
+Tag: xml2rst_1_189
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/expected
+In directory paulla:/home/stefan/free/xml2rst/tests/simple/expected
+
+Added Files:
+	titles.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/original
+In directory paulla:/home/stefan/free/xml2rst/tests/simple/original
+
+Added Files:
+	titles.rst 
+
+--------------------------------------
+Log Message:
+Added tests.
+**************************************
+Date: Sun Mar 14 19:13:20 CET 2010
+Author: stefan
+Tag: xml2rst_1_188
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xalan
+In directory rosalu:/home/stefan/free/xml2rst/tests.xalan
+
+Added Files:
+	common.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xalan/real
+In directory rosalu:/home/stefan/free/xml2rst/tests.xalan/real
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xalan/simple
+In directory rosalu:/home/stefan/free/xml2rst/tests.xalan/simple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xalan/synthetic
+In directory rosalu:/home/stefan/free/xml2rst/tests.xalan/synthetic
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xsltproc
+In directory rosalu:/home/stefan/free/xml2rst/tests.xsltproc
+
+Added Files:
+	common.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xsltproc/real
+In directory rosalu:/home/stefan/free/xml2rst/tests.xsltproc/real
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xsltproc/simple
+In directory rosalu:/home/stefan/free/xml2rst/tests.xsltproc/simple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xsltproc/synthetic
+In directory rosalu:/home/stefan/free/xml2rst/tests.xsltproc/synthetic
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Improved test infrastructure.
+**************************************
+Date: Sun Mar 14 18:40:08 CET 2010
+Author: stefan
+Tag: xml2rst_1_187
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Documentation improved.
+**************************************
+Date: Thu Dec 24 13:51:00 CET 2009
+Author: stefan
+Tag: xml2rst_1_186
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	Makefile 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests
+In directory rosalu:/home/stefan/free/xml2rst/tests
+
+Added Files:
+	Makefile rules.gmk 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/options
+In directory rosalu:/home/stefan/free/xml2rst/tests/options
+
+Added Files:
+	Makefile 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/real
+In directory rosalu:/home/stefan/free/xml2rst/tests/real
+
+Added Files:
+	Makefile 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple
+In directory rosalu:/home/stefan/free/xml2rst/tests/simple
+
+Added Files:
+	Makefile 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/synthetic
+In directory rosalu:/home/stefan/free/xml2rst/tests/synthetic
+
+Added Files:
+	Makefile 
+
+--------------------------------------
+Log Message:
+Added `Makefile`s to create supplemental test files.
+**************************************
+Date: Thu Dec 24 12:14:40 CET 2009
+Author: stefan
+Tag: xml2rst_1_185
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	Makefile 
+
+--------------------------------------
+Log Message:
+Packaging is supported.
+**************************************
+Date: Thu Dec 24 11:44:43 CET 2009
+Author: stefan
+Tag: xml2rst_1_184
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Added Files:
+	Makefile 
+
+--------------------------------------
+Log Message:
+First steps in making this a real package.
+**************************************
+Date: Wed Dec 23 00:43:54 CET 2009
+Author: stefan
+Tag: xml2rst_1_183
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/options/input
+In directory rosalu:/home/stefan/free/xml2rst/tests/options/input
+
+Added Files:
+	adornmentDefault.opt adornmentDefault.xsltproc 
+	adornmentEmacs.opt adornmentEmacs.xsltproc 
+	adornmentReverse.opt adornmentReverse.xsltproc 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/options/original
+In directory rosalu:/home/stefan/free/xml2rst/tests/options/original
+
+Added Files:
+	adornmentX.rst 
+
+--------------------------------------
+Log Message:
+Added tests for options.
+**************************************
+Date: Wed Dec 23 00:21:56 CET 2009
+Author: stefan
+Tag: xml2rst_1_182
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/options
+In directory rosalu:/home/stefan/free/xml2rst/tests/options
+
+Added Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/options/expected
+In directory rosalu:/home/stefan/free/xml2rst/tests/options/expected
+
+Added Files:
+	fold20.rst fold70.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/options/input
+In directory rosalu:/home/stefan/free/xml2rst/tests/options/input
+
+Added Files:
+	fold20.opt fold20.xsltproc fold70.opt fold70.xsltproc 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/options/original
+In directory rosalu:/home/stefan/free/xml2rst/tests/options/original
+
+Added Files:
+	foldX.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xsltproc/options
+In directory rosalu:/home/stefan/free/xml2rst/tests.xsltproc/options
+
+Added Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Added parameter processing in scripts and tests.
+**************************************
+Date: Tue Dec 22 23:29:37 CET 2009
+Author: stefan
+Tag: xml2rst_1_181
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.py xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Minor improvements.
+**************************************
+Date: Sun Dec 20 14:36:22 CET 2009
+Author: stefan
+Tag: xml2rst_1_180
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added more EXSLT.
+**************************************
+Date: Sun Dec 20 14:35:04 CET 2009
+Author: stefan
+Tag: xml2rst_1_179
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added more EXSLT.
+**************************************
+Date: Wed Dec 16 23:25:27 CET 2009
+Author: stefan
+Tag: xml2rst_1_178
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added more EXSLT.
+**************************************
+Date: Tue Dec 15 23:49:38 CET 2009
+Author: stefan
+Tag: xml2rst_1_177
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added more EXSLT.
+**************************************
+Date: Tue Dec 15 23:11:39 CET 2009
+Author: stefan
+Tag: xml2rst_1_176
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added more EXSLT.
+**************************************
+Date: Sun Dec 13 15:21:23 CET 2009
+Author: stefan
+Tag: xml2rst_1_175
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added more EXSLT.
+**************************************
+Date: Sat Dec 12 20:25:33 CET 2009
+Author: stefan
+Tag: xml2rst_1_174
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.py xml2rst.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/real
+In directory rosalu:/home/stefan/free/xml2rst/tests/real
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple
+In directory rosalu:/home/stefan/free/xml2rst/tests/simple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/synthetic
+In directory rosalu:/home/stefan/free/xml2rst/tests/synthetic
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.py/real
+In directory rosalu:/home/stefan/free/xml2rst/tests.py/real
+
+Removed Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.py/simple
+In directory rosalu:/home/stefan/free/xml2rst/tests.py/simple
+
+Removed Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.py/synthetic
+In directory rosalu:/home/stefan/free/xml2rst/tests.py/synthetic
+
+Removed Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xalan/real
+In directory rosalu:/home/stefan/free/xml2rst/tests.xalan/real
+
+Added Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xalan/simple
+In directory rosalu:/home/stefan/free/xml2rst/tests.xalan/simple
+
+Added Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xalan/synthetic
+In directory rosalu:/home/stefan/free/xml2rst/tests.xalan/synthetic
+
+Added Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Starting with this version the EXSLT extensions are used.
+
+Xalan does not support enough of EXSLT so those unit tests don't run
+any more. These tests are moved to `tests.xalan` while the script
+based tests formerly under `tests.py` are moved to `tests`.
+
+Replaced `u:quoteWhite` by EXSLT.
+**************************************
+Date: Sat Dec 12 20:12:21 CET 2009
+Author: stefan
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xalan
+In directory rosalu:/home/stefan/free/xml2rst/tests.xalan
+
+
+--------------------------------------
+Log Message:
+Directory /home/stefan/vault/sm/xml2rst/tests.xalan added to the repository
+**************************************
+Date: Sat Dec 12 15:33:01 CET 2009
+Author: stefan
+Tag: xml2rst_1_173
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.py/real
+In directory rosalu:/home/stefan/free/xml2rst/tests.py/real
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.py/simple
+In directory rosalu:/home/stefan/free/xml2rst/tests.py/simple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.py/synthetic
+In directory rosalu:/home/stefan/free/xml2rst/tests.py/synthetic
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xsltproc/real
+In directory rosalu:/home/stefan/free/xml2rst/tests.xsltproc/real
+
+Added Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xsltproc/simple
+In directory rosalu:/home/stefan/free/xml2rst/tests.xsltproc/simple
+
+Added Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xsltproc/synthetic
+In directory rosalu:/home/stefan/free/xml2rst/tests.xsltproc/synthetic
+
+Added Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Added tests using `xsltproc`.
+**************************************
+Date: Sat Dec 12 15:31:21 CET 2009
+Author: stefan
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xsltproc/real
+In directory rosalu:/home/stefan/free/xml2rst/tests.xsltproc/real
+
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xsltproc/simple
+In directory rosalu:/home/stefan/free/xml2rst/tests.xsltproc/simple
+
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xsltproc/synthetic
+In directory rosalu:/home/stefan/free/xml2rst/tests.xsltproc/synthetic
+
+
+--------------------------------------
+Log Message:
+Directory /home/stefan/vault/sm/xml2rst/tests.xsltproc/real added to the repository
+
+Directory /home/stefan/vault/sm/xml2rst/tests.xsltproc/simple added to the repository
+
+Directory /home/stefan/vault/sm/xml2rst/tests.xsltproc/synthetic added to the repository
+**************************************
+Date: Sat Dec 12 15:31:08 CET 2009
+Author: stefan
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xsltproc
+In directory rosalu:/home/stefan/free/xml2rst/tests.xsltproc
+
+
+--------------------------------------
+Log Message:
+Directory /home/stefan/vault/sm/xml2rst/tests.xsltproc added to the repository
+**************************************
+Date: Sat Dec 12 15:15:19 CET 2009
+Author: stefan
+Tag: xml2rst_1_172
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.py/real
+In directory rosalu:/home/stefan/free/xml2rst/tests.py/real
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.py/simple
+In directory rosalu:/home/stefan/free/xml2rst/tests.py/simple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.py/synthetic
+In directory rosalu:/home/stefan/free/xml2rst/tests.py/synthetic
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Improved test configuration.
+**************************************
+Date: Fri Dec 11 17:47:58 CET 2009
+Author: stefan
+Tag: xml2rst_1_171
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.py 
+
+--------------------------------------
+Log Message:
+Trailing linefeed is chopped. Tests run.
+**************************************
+Date: Sat Dec  5 18:31:05 CET 2009
+Author: stefan
+Tag: xml2rst_1_170
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.py xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Adapted stylesheet slightly so libxslt doesn't normalize the linefeed
+in `<text>
+</text>` away.
+**************************************
+Date: Thu Nov 26 18:22:51 CET 2009
+Author: stefan
+Tag: xml2rst_1_169
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.py/real
+In directory paulla:/home/stefan/free/xml2rst/tests.py/real
+
+Added Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.py/simple
+In directory paulla:/home/stefan/free/xml2rst/tests.py/simple
+
+Added Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.py/synthetic
+In directory paulla:/home/stefan/free/xml2rst/tests.py/synthetic
+
+Added Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Added testing for script. Tests fail.
+**************************************
+Date: Thu Nov 26 17:53:36 CET 2009
+Author: stefan
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.py
+In directory paulla:/home/stefan/free/xml2rst/tests.py
+
+
+--------------------------------------
+Log Message:
+Directory /home/stefan/vault/sm/xml2rst/tests.py added to the repository
+**************************************
+Date: Thu Nov 26 17:48:24 CET 2009
+Author: stefan
+Tag: xml2rst_1_168
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.py 
+
+--------------------------------------
+Log Message:
+Debugging.
+**************************************
+Date: Thu Nov 26 17:46:00 CET 2009
+Author: stefan
+Tag: xml2rst_1_167
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.py xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Made first attempt a real script.
+**************************************
+Date: Wed Nov 25 20:21:58 CET 2009
+Author: stefan
+Tag: xml2rst_1_166
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+Added Files:
+	xml2rst.py 
+
+--------------------------------------
+Log Message:
+Added very first step to a script using the XSLT.
+**************************************
+Date: Sun Nov  8 22:49:56 CET 2009
+Author: stefan
+Tag: xml2rst_1_165
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added comment.
+**************************************
+Date: Sun Nov  8 22:10:39 CET 2009
+Author: stefan
+Tag: xml2rst_1_164
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Adapted copyright notice.
+**************************************
+Date: Mon Sep 21 08:46:52 CEST 2009
+Author: stefan
+Tag: xml2rst_1_163
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Removed TODO because it is not a xml2rst problem.
+**************************************
+Date: Tue Sep 15 23:03:29 CEST 2009
+Author: stefan
+Tag: xml2rst_1_162
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/synthetic/expected
+In directory paulla:/home/stefan/free/xml2rst/tests/synthetic/expected
+
+Modified Files:
+	standard_0_3_7.rst 
+
+--------------------------------------
+Log Message:
+Corrected unit test.
+**************************************
+Date: Tue Sep 15 22:57:13 CEST 2009
+Author: stefan
+Tag: xml2rst_1_161
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Improved comments.
+**************************************
+Date: Tue Sep 15 22:48:36 CEST 2009
+Author: stefan
+Tag: xml2rst_1_160
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/synthetic/expected
+In directory paulla:/home/stefan/free/xml2rst/tests/synthetic/expected
+
+Modified Files:
+	standard_r6008.rst 
+
+--------------------------------------
+Log Message:
+Inline raw is supported.
+**************************************
+Date: Sun Sep 13 12:51:30 CEST 2009
+Author: stefan
+Tag: xml2rst_1_159
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/synthetic/expected
+In directory rosalu:/home/stefan/free/xml2rst/tests/synthetic/expected
+
+Modified Files:
+	standard_r6008.rst 
+
+--------------------------------------
+Log Message:
+``align`` attribute of ``.. figure::`` is supported.
+**************************************
+Date: Sun Sep 13 12:39:39 CEST 2009
+Author: stefan
+Tag: xml2rst_1_158
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+``.. container::`` directive is supported.
+**************************************
+Date: Sat Sep 12 13:52:29 CEST 2009
+Author: stefan
+Tag: xml2rst_1_157
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/real
+In directory rosalu:/home/stefan/free/xml2rst/tests/real
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple
+In directory rosalu:/home/stefan/free/xml2rst/tests/simple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/synthetic
+In directory rosalu:/home/stefan/free/xml2rst/tests/synthetic
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/synthetic/expected
+In directory rosalu:/home/stefan/free/xml2rst/tests/synthetic/expected
+
+Modified Files:
+	standard_r6008.rst 
+
+--------------------------------------
+Log Message:
+Added support for ``.. parsed-literal::``.
+**************************************
+Date: Sat Sep 12 13:21:43 CEST 2009
+Author: stefan
+Tag: xml2rst_1_156
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/synthetic/expected
+In directory rosalu:/home/stefan/free/xml2rst/tests/synthetic/expected
+
+Modified Files:
+	standard_0_3_7.rst standard_r6008.rst 
+
+--------------------------------------
+Log Message:
+Continuation lines in line work correctly.
+**************************************
+Date: Fri Sep 11 21:09:10 CEST 2009
+Author: stefan
+Tag: xml2rst_1_155
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+@classes works for raw directive.
+**************************************
+Date: Fri Sep 11 21:06:10 CEST 2009
+Author: stefan
+Tag: xml2rst_1_154
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/synthetic/expected
+In directory paulla:/home/stefan/free/xml2rst/tests/synthetic/expected
+
+Modified Files:
+	standard_r6008.rst 
+
+--------------------------------------
+Log Message:
+Removed things which are too hard to implement.
+**************************************
+Date: Fri Sep 11 21:01:02 CEST 2009
+Author: stefan
+Tag: xml2rst_1_153
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/synthetic/expected
+In directory paulla:/home/stefan/free/xml2rst/tests/synthetic/expected
+
+Added Files:
+	standard_r6008.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/synthetic/original
+In directory paulla:/home/stefan/free/xml2rst/tests/synthetic/original
+
+Added Files:
+	standard_r6008.rst 
+
+--------------------------------------
+Log Message:
+@ids and @names of images are no longer output.
+**************************************
+Date: Fri Sep 11 20:15:25 CEST 2009
+Author: stefan
+Tag: xml2rst_1_152
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Standard class for admonitions is taken into account.
+**************************************
+Date: Fri Sep 11 19:42:10 CEST 2009
+Author: stefan
+Tag: xml2rst_1_151
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/synthetic/expected
+In directory paulla:/home/stefan/free/xml2rst/tests/synthetic/expected
+
+Modified Files:
+	standard_0_3_7.rst 
+
+--------------------------------------
+Log Message:
+Adapted target notes.
+**************************************
+Date: Fri Sep 11 18:57:59 CEST 2009
+Author: stefan
+Tag: xml2rst_1_150
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Debugging.
+**************************************
+Date: Fri Sep 11 18:33:40 CEST 2009
+Author: stefan
+Tag: xml2rst_1_149
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/synthetic/expected
+In directory paulla:/home/stefan/free/xml2rst/tests/synthetic/expected
+
+Modified Files:
+	class.rst 
+
+--------------------------------------
+Log Message:
+Debugging.
+**************************************
+Date: Sat Sep  5 12:34:44 CEST 2009
+Author: stefan
+Tag: xml2rst_1_148
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/synthetic/expected
+In directory rosalu:/home/stefan/free/xml2rst/tests/synthetic/expected
+
+Modified Files:
+	class.rst 
+
+--------------------------------------
+Log Message:
+".. contents:: :local:" is supported.
+**************************************
+Date: Fri Sep  4 20:14:18 CEST 2009
+Author: stefan
+Tag: xml2rst_1_147
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/synthetic/expected
+In directory paulla:/home/stefan/free/xml2rst/tests/synthetic/expected
+
+Modified Files:
+	class.rst 
+
+--------------------------------------
+Log Message:
+Debugging.
+**************************************
+Date: Sat Aug 22 21:43:38 CEST 2009
+Author: stefan
+Tag: xml2rst_1_146
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/real/expected
+In directory rosalu:/home/stefan/free/xml2rst/tests/real/expected
+
+Modified Files:
+	Machinery.rst MediaWikiFAQ.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/expected
+In directory rosalu:/home/stefan/free/xml2rst/tests/simple/expected
+
+Modified Files:
+	targets.rst 
+
+--------------------------------------
+Log Message:
+Lists of names are processed correctly.
+**************************************
+Date: Sat Aug 22 19:36:42 CEST 2009
+Author: stefan
+Tag: xml2rst_1_145
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/real
+In directory rosalu:/home/stefan/free/xml2rst/tests/real
+
+Added Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/real/expected
+In directory rosalu:/home/stefan/free/xml2rst/tests/real/expected
+
+Added Files:
+	Machinery.rst MediaWikiFAQ.rst Technik.rst 
+	WikiRequirements.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/real/original
+In directory rosalu:/home/stefan/free/xml2rst/tests/real/original
+
+Added Files:
+	Machinery.rst MediaWikiFAQ.rst Technik.rst 
+	WikiRequirements.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple
+In directory rosalu:/home/stefan/free/xml2rst/tests/simple
+
+Added Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/expected
+In directory rosalu:/home/stefan/free/xml2rst/tests/simple/expected
+
+Added Files:
+	header.rst manyLines.rst oneLine.rst targets.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/original
+In directory rosalu:/home/stefan/free/xml2rst/tests/simple/original
+
+Added Files:
+	header.rst manyLines.rst oneLine.rst targets.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/synthetic
+In directory rosalu:/home/stefan/free/xml2rst/tests/synthetic
+
+Added Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/synthetic/expected
+In directory rosalu:/home/stefan/free/xml2rst/tests/synthetic/expected
+
+Added Files:
+	class.rst standard_0_3_7.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/synthetic/original
+In directory rosalu:/home/stefan/free/xml2rst/tests/synthetic/original
+
+Added Files:
+	class.rst standard_0_3_7.rst 
+
+--------------------------------------
+Log Message:
+Added unit tests.
+**************************************
+Date: Sat Aug 22 19:34:11 CEST 2009
+Author: stefan
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests
+In directory rosalu:/home/stefan/free/xml2rst/tests
+
+
+--------------------------------------
+Log Message:
+Directory /home/stefan/vault/sm/xml2rst/tests added to the repository
+**************************************
+Date: Thu Aug 20 23:53:50 CEST 2009
+Author: stefan
+Tag: xml2rst_1_144
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Adapted to new attribute names and semantics:
+
+* @id => @ids
+
+  May contain multiple ids seperated by spaces.
+
+* @name => @names
+
+  May contain quoted spaces and multiple names seperated by unquoted
+  spaces.
+
+* @dupname => @dupnames
+
+* @class => @classes
+
+  May contain multiple classes seperated by spaces.
+**************************************
+Date: Thu Aug 20 21:42:15 CEST 2009
+Author: stefan
+Tag: xml2rst_1_143
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added some comments.
+**************************************
+Date: Thu Aug 20 19:34:30 CEST 2009
+Author: stefan
+Tag: xml2rst_1_142
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Removed Files:
+	rst2xml.py 
+
+--------------------------------------
+Log Message:
+Removed now superfluous script.
+**************************************
+Date: Mon Aug 17 12:19:05 CEST 2009
+Author: stefan
+Tag: xml2rst_1_141
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added some TODOs.
+**************************************
+Date: Thu Aug  3 09:10:06 CEST 2006
+Author: stefan
+Tag: xml2rst_1_140
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added comments.
+**************************************
+Date: Thu Jun 22 09:40:22 CEST 2006
+Author: stefan
+Tag: xml2rst_1_139
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added some todos to update to Docutils 0.4.
+**************************************
+Date: Wed Jun 14 09:30:50 CEST 2006
+Author: stefan
+Tag: xml2rst_1_138
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Improved class after transitions.
+**************************************
+Date: Wed Jun 14 09:26:51 CEST 2006
+Author: stefan
+Tag: xml2rst_1_137
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Improved class attributes after section titles.
+**************************************
+Date: Wed Jun 14 08:50:21 CEST 2006
+Author: stefan
+Tag: xml2rst_1_136
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+`figclass` attribute is supported.
+**************************************
+Date: Tue Jun 13 19:26:48 CEST 2006
+Author: stefan
+Tag: xml2rst_1_135
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+`contents` directive outputs class correctly.
+**************************************
+Date: Tue Jun 13 19:06:19 CEST 2006
+Author: stefan
+Tag: xml2rst_1_134
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Specific admonitions output class correctly.
+**************************************
+Date: Tue Jun 13 18:52:56 CEST 2006
+Author: stefan
+Tag: xml2rst_1_133
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Most class directives come out fine.
+**************************************
+Date: Tue Jun 13 09:54:15 CEST 2006
+Author: stefan
+Tag: xml2rst_1_132
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Improved output of class directive.
+**************************************
+Date: Tue Jun 13 09:14:39 CEST 2006
+Author: stefan
+Tag: xml2rst_1_131
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Merged bug fix on `V0_3_9` to current development version.
+**************************************
+Date: Tue Jun 13 09:11:30 CEST 2006
+Author: stefan
+Tag: xml2rst_1_130
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Reverted to `V0_3_8` and fixed a bug.
+**************************************
+Date: Tue Jun 13 08:55:22 CEST 2006
+Author: stefan
+Tag: xml2rst_1_129
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added comments.
+**************************************
+Date: Fri May 26 00:37:44 CEST 2006
+Author: stefan
+Tag: xml2rst_1_128
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added more support for `class` attribute. Many things are still wrong.
+**************************************
+Date: Thu May 25 23:22:07 CEST 2006
+Author: stefan
+Tag: xml2rst_1_127
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Started support for `class` attribute.
+**************************************
+Date: Sat Dec 17 12:22:35 CET 2005
+Author: stefan
+Tag: xml2rst_1_126
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+`inline' tag for user-defined roles supported.
+**************************************
+Date: Thu Dec 15 18:26:01 CET 2005
+Author: stefan
+Tag: xml2rst_1_125
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Folding works. Added TODOs for missing features.
+**************************************
+Date: Thu Dec 15 17:45:17 CET 2005
+Author: stefan
+Tag: xml2rst_1_124
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Folding improved. Still does not work for field bodies. Substiution
+bodies must fold. Quoted space must be handled special. Inline
+literals may need special handling.
+**************************************
+Date: Thu Dec 15 09:33:39 CET 2005
+Author: stefan
+Tag: xml2rst_1_123
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Folding works for inline elements. Field contents, line blocks, text
+in figures, generic admonitions need folding also.
+**************************************
+Date: Wed Dec 14 20:28:46 CET 2005
+Author: stefan
+Tag: xml2rst_1_122
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Removed most changes from `xml2rst_1_109' to `xml2rst_1_115'. Folding
+is not actively switched. This is a preparation for folding elements
+which explicitly fold considering inline elements. Folding code is
+retained.
+**************************************
+Date: Wed Dec 14 20:15:47 CET 2005
+Author: stefan
+Tag: xml2rst_1_121
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added some comments for correct folding considering inline elments
+also.
+**************************************
+Date: Sun Dec 11 16:57:16 CET 2005
+Author: stefan
+Tag: xml2rst_1_120
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Removed initial blank line for documents without ``title`` and
+``docinfo``.
+**************************************
+Date: Sun Dec 11 16:47:22 CET 2005
+Author: stefan
+Tag: xml2rst_1_119
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Corrected compound element lists.
+**************************************
+Date: Sun Dec 11 16:04:02 CET 2005
+Author: stefan
+Tag: xml2rst_1_118
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Blank line added for paragraph after ``docinfo``.
+**************************************
+Date: Sat Dec  3 19:56:02 CET 2005
+Author: stefan
+Tag: xml2rst_1_117
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Changed standard adornment so section title adornment does not end in
+`::'.
+**************************************
+Date: Sat Nov 12 19:50:45 CET 2005
+Author: stefan
+Tag: xml2rst_1_116
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Enumerated list items are indented correctly and more nicely.
+**************************************
+Date: Sat Oct  1 19:21:07 CEST 2005
+Author: stefan
+Tag: xml2rst_1_115
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Classifiers do not fold.
+**************************************
+Date: Sat Oct  1 19:13:15 CEST 2005
+Author: stefan
+Tag: xml2rst_1_114
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Corrected comment once more.
+**************************************
+Date: Sat Oct  1 19:11:08 CEST 2005
+Author: stefan
+Tag: xml2rst_1_113
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Corrected comment.
+**************************************
+Date: Sat Oct  1 16:26:06 CEST 2005
+Author: stefan
+Tag: xml2rst_1_112
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Debugging for definition terms.
+**************************************
+Date: Fri Sep 30 18:01:29 CEST 2005
+Author: stefan
+Tag: xml2rst_1_111
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Folding now works fine. Inline markup is not considered, however.
+**************************************
+Date: Fri Sep 30 16:51:49 CEST 2005
+Author: stefan
+Tag: xml2rst_1_110
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added support for folding text chunks to a given length. Does not work
+with any inline markup.
+**************************************
+Date: Wed Sep 28 18:48:58 CEST 2005
+Author: stefan
+Tag: xml2rst_1_109
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Anonymous reference to explicit given URI is supported.
+**************************************
+Date: Thu Sep  1 16:31:46 CEST 2005
+Author: stefan
+Tag: xml2rst_1_108
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added TODO.
+**************************************
+Date: Fri Aug 19 17:33:19 CEST 2005
+Author: stefan
+Tag: xml2rst_1_107
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+For table columns too narrow for the contained text a warning is
+output.
+**************************************
+Date: Fri Aug 19 17:12:25 CEST 2005
+Author: stefan
+Tag: xml2rst_1_106
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Table title is rendered as correctly as possible.
+**************************************
+Date: Thu Aug  4 17:50:17 CEST 2005
+Author: stefan
+Tag: xml2rst_1_105
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Improved non-special bibliographic fields.
+**************************************
+Date: Thu Aug  4 17:37:54 CEST 2005
+Author: stefan
+Tag: xml2rst_1_104
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Clickable images to external targets are supported.
+**************************************
+Date: Sat Jul 30 15:41:13 CEST 2005
+Author: stefan
+Tag: xml2rst_1_103
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory paulla:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Minor improvements.
+**************************************
+Date: Thu Jul 21 21:55:52 CEST 2005
+Author: stefan
+Tag: xml2rst_1_102
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Improved comments.
+**************************************
+Date: Thu Jul 21 21:53:06 CEST 2005
+Author: stefan
+Tag: xml2rst_1_101
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Just to checkin.
+**************************************
+Date: Thu Jul 21 21:50:36 CEST 2005
+Author: stefan
+Tag: xml2rst_1_100
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added manual page.
+**************************************
+Date: Thu Jul 21 21:04:03 CEST 2005
+Author: stefan
+Tag: xml2rst_1_99
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	tag.log 
+
+--------------------------------------
+Log Message:
+Corrected `tag.log'.
+**************************************
+Date: Thu Jul 21 21:00:01 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_98
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	global.log tag.log 
+
+--------------------------------------
+Log Message:
+Moved `xml2rst.xsl' and other files to an own project.
+**************************************
+Date: Thu Jul 21 19:19:58 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_97
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Changed copyright.
+**************************************
+Date: Thu Jul 21 17:42:20 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_96
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	sdf2rst.xsl 
+
+--------------------------------------
+Log Message:
+Debugging. Sections are done correctly now.
+**************************************
+Date: Thu Jul 21 17:26:50 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_95
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	sdf2rst.xsl 
+
+--------------------------------------
+Log Message:
+Restructured section generation. Does not work fully.
+**************************************
+Date: Thu Jul 21 11:32:24 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_94
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	sdf2rst.xsl 
+
+--------------------------------------
+Log Message:
+Continued section generation.
+**************************************
+Date: Tue Jul 19 10:18:04 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_93
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	sdf2rst.xsl 
+
+--------------------------------------
+Log Message:
+Headers called in `topLevel' behave correctly.
+**************************************
+Date: Mon Jul 18 20:52:30 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_92
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	sdf2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added more support for generating sections.
+**************************************
+Date: Mon Jul 18 20:03:06 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_91
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	sdf2rst.xsl 
+
+--------------------------------------
+Log Message:
+Clarified use of modes.
+**************************************
+Date: Mon Jul 18 19:30:41 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_90
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	sdf2rst.xsl 
+
+--------------------------------------
+Log Message:
+Implicit section before the first header is somewhat supported.
+**************************************
+Date: Mon Jul 18 16:35:45 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_89
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	sdf2rst.xsl 
+
+--------------------------------------
+Log Message:
+First code for creating sections.
+**************************************
+Date: Sun Jul 17 23:12:29 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_88
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	sdf2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added conversion of some document level SDF constructs.
+**************************************
+Date: Sun Jul 17 21:18:35 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_87
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	sdf2rst.xsl 
+
+--------------------------------------
+Log Message:
+Resolved namespace issues.
+**************************************
+Date: Sun Jul 17 18:40:17 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_86
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Added Files:
+	sdf2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added a copy of `sdf2ot.xsl' more or less unmodified.
+**************************************
+Date: Sat Jul 16 18:40:11 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_85
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added GPL.
+**************************************
+Date: Sat Jul 16 18:34:41 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_84
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Corrected blank lining of `legend's and `figure's.
+
+Several minor improvments.
+
+Improved comments.
+**************************************
+Date: Sat Jul 16 16:09:11 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_83
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Special `block_quote's are supported.
+**************************************
+Date: Sat Jul 16 11:14:43 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_82
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Table entries with multiple lines are supported.
+**************************************
+Date: Sat Jul 16 10:21:45 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_81
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Rearranged code.
+**************************************
+Date: Sat Jul 16 10:16:56 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_80
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added code for multiple line entries in tables.
+**************************************
+Date: Fri Jul 15 19:49:13 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_79
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+".. section-numbering" is now generated.
+**************************************
+Date: Thu Jul 14 21:59:53 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_78
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Rendering of admonitions improved.
+**************************************
+Date: Thu Jul 14 21:24:19 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_77
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Quoted literal blocks are supported.
+**************************************
+Date: Thu Jul 14 18:05:35 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_76
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Enumerated lists have counting enumerators.
+**************************************
+Date: Thu Jul 14 17:42:46 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_75
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+`enumerated_list/list_item' is indented correctly.
+**************************************
+Date: Thu Jul 14 17:23:48 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_74
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Improved blank lining of `substitution_definition'.
+**************************************
+Date: Thu Jul 14 08:45:08 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_73
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Improved indentation.
+**************************************
+Date: Wed Jul 13 21:20:06 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_72
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Corrected blank lining for `citation'.
+**************************************
+Date: Wed Jul 13 21:14:44 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_71
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Corrected blank lining for `line_block's.
+**************************************
+Date: Wed Jul 13 19:17:19 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_70
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Corrected blank lining for footnotes.
+**************************************
+Date: Wed Jul 13 19:13:58 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_69
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Corrected blank lining for compounds.
+**************************************
+Date: Wed Jul 13 19:04:38 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_68
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Corrected blank lining for some titled elements.
+**************************************
+Date: Wed Jul 13 18:36:48 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_67
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Corrected blank lining for lists.
+**************************************
+Date: Sat Jul  9 23:06:26 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_66
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Minor rearrangements.
+**************************************
+Date: Fri Jul  8 18:17:26 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_65
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Minor corrections.
+**************************************
+Date: Fri Jul  8 08:53:01 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_64
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Corrected blank lines for field bodies.
+**************************************
+Date: Thu Jul  7 20:23:27 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_63
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Correction.
+**************************************
+Date: Thu Jul  7 20:16:45 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_62
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added some comments putting the element classification to the
+respective template.
+**************************************
+Date: Wed Jul  6 01:16:43 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_61
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Imroved comments.
+**************************************
+Date: Wed Jul  6 00:33:51 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_60
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Multi-column entries in tables are considered correctly.
+**************************************
+Date: Mon Jul  4 22:00:33 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_59
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added some comments.
+**************************************
+Date: Mon Jul  4 21:54:47 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_58
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added some support for multi-column table entries.
+**************************************
+Date: Mon Jul  4 21:15:54 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_57
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Support added for simple tables with single-line rows and no spanning
+columns.
+**************************************
+Date: Mon Jul  4 20:39:28 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_56
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added some documentation for tables.
+
+Basic support for tables.
+**************************************
+Date: Mon Jul  4 17:29:03 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_55
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Removed superfluous comments.
+**************************************
+Date: Mon Jul  4 17:24:08 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_54
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Section with system messages is ignored.
+**************************************
+Date: Mon Jul  4 17:21:20 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_53
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added support for `raw'.
+**************************************
+Date: Mon Jul  4 16:49:37 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_52
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Debugged indendation for `literal_block'.
+**************************************
+Date: Mon Jul  4 16:37:40 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_51
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added support for `compound'.
+**************************************
+Date: Mon Jul  4 16:20:43 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_50
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added support for `substitution_definition'.
+**************************************
+Date: Mon Jul  4 15:40:39 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_49
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Directive `target-notes' added.
+**************************************
+Date: Mon Jul  4 14:41:25 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_48
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Parameters for figure indented correctly.
+**************************************
+Date: Mon Jul  4 12:44:40 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_47
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Clickable images are supported.
+**************************************
+Date: Sun Jul  3 21:09:33 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_46
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added anonymous targets.
+**************************************
+Date: Sun Jul  3 20:57:41 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_45
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Debugged footnotes.
+**************************************
+Date: Sun Jul  3 20:38:36 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_44
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added support for `doctest_block'.
+**************************************
+Date: Sun Jul  3 20:05:35 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_43
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Corrected blank lines once again.
+**************************************
+Date: Sat Jul  2 00:48:16 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_42
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Corrected indendation for `line_block's.
+**************************************
+Date: Sat Jul  2 00:27:40 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_41
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Implemented `line_block's according to current standard.
+**************************************
+Date: Fri Jul  1 18:14:00 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_40
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Corrected indentation for indented line blocks.
+**************************************
+Date: Thu Jun 30 19:20:08 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_39
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Removed non-working support for fully minimized markup for literal
+blocks.
+**************************************
+Date: Thu Jun 30 19:12:39 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_38
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Minor changes.
+**************************************
+Date: Thu Jun 30 18:47:42 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_37
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Debugged spacing after definition items.
+**************************************
+Date: Thu Jun 30 18:35:22 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_36
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Improved insertion of blank lines once more.
+**************************************
+Date: Wed Jun 29 21:33:27 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_35
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Targets of embedded references handles correctly.
+**************************************
+Date: Wed Jun 29 20:51:22 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_34
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Insertion of blank lines seems correct now.
+**************************************
+Date: Tue Jun 28 21:23:04 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_33
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Improved empty lines after section titles.
+**************************************
+Date: Tue Jun 28 20:57:03 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_32
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Target directives are also indented correctly.
+**************************************
+Date: Tue Jun 28 20:53:15 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_31
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added support for tag `problematic'.
+**************************************
+Date: Tue Jun 28 20:47:37 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_30
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Images support inline substitutions.
+**************************************
+Date: Mon Jun 27 21:27:23 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_29
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Tag lists are searched correctly.
+**************************************
+Date: Mon Jun 27 21:08:36 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_28
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Debugged and enhanced role rendering.
+**************************************
+Date: Mon Jun 27 20:46:39 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_27
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Debugged and improved target rendering.
+**************************************
+Date: Sat Jun 25 19:27:33 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_26
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Refactoring.
+**************************************
+Date: Sat Jun 25 19:07:52 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_25
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Enhanced generation of references.
+**************************************
+Date: Tue Jun 21 20:05:58 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_24
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Corrected some tests to use identity instead of equality.
+**************************************
+Date: Mon Jun 20 21:25:31 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_23
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Adornment for titles is configurable.
+**************************************
+Date: Mon Jun 20 20:38:47 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_22
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Titles take inline markup and generated nodes into account.
+**************************************
+Date: Mon Jun 20 20:09:46 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_21
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Multiline comments are indented correctly.
+**************************************
+Date: Sat Jun 18 00:34:30 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_20
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Modified indendation of some elements.x
+**************************************
+Date: Fri Jun 17 23:59:50 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_19
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Debugged generation of targets.
+**************************************
+Date: Fri Jun 17 20:19:48 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_18
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Backslash escaping of adjacent inline elements and text is done.
+**************************************
+Date: Thu Jun 16 20:26:16 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_17
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Inline markup is prefixed/suffixed by `\ ' in case it is
+preceded/followed directly by a wrong character (e.g. whitespace).
+**************************************
+Date: Thu Jun 16 19:38:27 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_16
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Removes stripping of spaces from source documents because this
+stripped runs of whitespace between inline elements.
+**************************************
+Date: Wed Jun 15 19:26:50 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_15
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Debugged indentation of paragraphs in list items.
+**************************************
+Date: Wed Jun 15 18:49:10 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_14
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Debugged embedded targets.
+**************************************
+Date: Wed Jun 15 18:45:27 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_13
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Debugged blank line insertion.
+**************************************
+Date: Tue Jun 14 18:47:46 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_12
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Identified some problems.
+**************************************
+Date: Thu Jun  9 21:21:59 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_11
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Removed one superfluous blank line before section headers.
+**************************************
+Date: Thu Jun  9 21:12:42 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_10
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Improved blank lines for lists.
+**************************************
+Date: Thu Jun  9 20:54:40 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_9
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Embedded links are generated correct.
+**************************************
+Date: Thu Jun  9 20:15:22 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_8
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory paulla:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Some more cosmetics and various notes added.
+**************************************
+Date: Sat May 28 01:13:43 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_7
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Heavy cosmetics.
+**************************************
+Date: Thu May 26 18:56:45 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_6
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added output of some blank lines. Phrase delimiters are only used for
+references needing them.
+**************************************
+Date: Thu May 26 18:14:27 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_5
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Cosmetic changes.
+**************************************
+Date: Thu May 26 17:43:00 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_4
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Removed some marker characters probably for debugging purposes.
+**************************************
+Date: Thu May 26 17:07:50 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_3
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Added Files:
+	rst2xml.py 
+
+--------------------------------------
+Log Message:
+Added `rst2xml.py' producing Docutils XML from reST input.
+**************************************
+Date: Thu May 26 17:05:02 CEST 2005
+Author: stefan
+Tag: sdf2rst_1_2
+
+--------------------------------------
+Update of /home/stefan/vault/sm/sdf2rst
+In directory rosalu:/home/stefan/prog/sdf2rst
+
+Added Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Added original version of `xml2rst.xsl' by David Priest.
+
