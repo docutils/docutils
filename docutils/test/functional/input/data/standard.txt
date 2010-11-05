@@ -350,8 +350,7 @@ Block quotes consist of indented body elements:
 The language of a quote (like any other object) can be specified by
 a class attribute:
 
-.. class:: language-fr
-..
+    .. class:: language-fr
 
     ReStructuredText est un langage de balisage léger utilisé
     notamment dans la documentation du langage Python.

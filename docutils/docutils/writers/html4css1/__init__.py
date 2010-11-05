@@ -228,8 +228,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     doctype = (
         '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"'
         ' "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n')
-    doctype_mathml = ('<!DOCTYPE html PUBLIC '
-    '"-//W3C//DTD XHTML 1.0 Transitional plus MathML 2.0//EN" "">\n')
+    doctype_mathml = doctype
 
     head_prefix_template = ('<html xmlns="http://www.w3.org/1999/xhtml"'
                             ' xml:lang="%s" lang="%s">\n<head>\n')
@@ -368,15 +367,16 @@ class HTMLTranslator(nodes.NodeVisitor):
             atts[name.lower()] = value
         classes = node.get('classes', [])
         if 'class' in atts:
-            classes.append(atts['class'])
+            classes.append(atts.pop('class'))
         # move language specification to 'lang' attribute
         languages = [cls for cls in classes
                      if cls.startswith('language-')]
         if languages:
             atts['lang'] = languages[0][9:]
             classes.pop(classes.index(languages[0]))
+        classes = ' '.join(classes)
         if classes:
-            atts['class'] = ' '.join(classes)
+            atts['class'] = classes
         assert 'id' not in atts
         ids.extend(node.get('ids', []))
         if 'ids' in atts:
@@ -1112,11 +1112,10 @@ class HTMLTranslator(nodes.NodeVisitor):
         math_code = node.astext()
         try:
             mathml_tree = parse_latex_math(math_code, inline=inline)
+            mathml = ''.join(mathml_tree.xml())
         except SyntaxError, msg:
-            msg = inliner.reporter.error(msg, line=node.lineno)
-            # prb = inliner.problematic(rawtext, rawtext, msg)
-            # return [prb], [msg]
-        mathml = ''.join(mathml_tree.xml())
+            self.document.reporter.error(msg, base_node=node)
+            mathml = msg # TODO: generate system message and link.
         self.body.append(mathml)
         # Content already processed:
         raise nodes.SkipNode
