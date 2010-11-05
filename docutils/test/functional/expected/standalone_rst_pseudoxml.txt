@@ -940,9 +940,8 @@
             <paragraph>
                 The language of a quote (like any other object) can be specified by
                 a class attribute:
-            <comment xml:space="preserve">
-            <block_quote classes="language-fr">
-                <paragraph>
+            <block_quote>
+                <paragraph classes="language-fr">
                     ReStructuredText est un langage de balisage léger utilisé
                     notamment dans la documentation du langage Python.
         <section ids="doctest-blocks" names="doctest\ blocks">
@@ -1922,15 +1921,15 @@
         <system_message backrefs="id24" ids="id23" level="3" line="102" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Undefined substitution referenced: "problematic".
-        <system_message backrefs="id80" ids="id79" level="3" line="394" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id80" ids="id79" level="3" line="393" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Unknown target name: "5".
-        <system_message backrefs="id82" ids="id81" level="3" line="403" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id82" ids="id81" level="3" line="402" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Unknown target name: "nonexistent".
-        <system_message backrefs="id84" ids="id83" level="3" line="430" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id84" ids="id83" level="3" line="429" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Unknown target name: "hyperlink reference without a target".
-        <system_message backrefs="id86" ids="id85" level="3" line="443" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id86" ids="id85" level="3" line="442" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Duplicate target name, cannot be used as a unique reference: "duplicate target names".
