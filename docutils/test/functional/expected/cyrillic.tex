@@ -3,9 +3,9 @@
 \usepackage{fixltx2e} % LaTeX patches, \textsubscript
 \usepackage{cmap} % fix search and cut-and-paste in Acrobat
 \usepackage{ifthen}
-\usepackage[english,russian]{babel}
 \usepackage[T1,T2A]{fontenc}
 \usepackage[utf8]{inputenc}
+\usepackage[english,russian]{babel}
 
 %%% Custom LaTeX preamble
 % PDF Standard Fonts
@@ -31,8 +31,8 @@
 
 %___________________________________________________________________________
 
-\section*{Заголовок%
-  \phantomsection%
+\section*{\phantomsection%
+  Заголовок%
   \addcontentsline{toc}{section}{Заголовок}%
   \label{id1}%
 }
@@ -42,8 +42,8 @@
 
 %___________________________________________________________________________
 
-\section*{Title%
-  \phantomsection%
+\section*{\phantomsection%
+  Title%
   \addcontentsline{toc}{section}{Title}%
   \label{title}%
 }

@@ -6,5 +6,6 @@ test_destination = "xetex-cyrillic.tex"
 writer_name = "xetex"
 
 # Settings
-# settings_overrides['hyperref_options'] = 'unicode'
 settings_overrides['language_code'] = 'ru'
+# override the automatic addition of "unicode" option for "russian" language
+settings_overrides['hyperref_options'] = 'unicode=false'

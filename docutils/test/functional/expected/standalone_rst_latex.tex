@@ -3,12 +3,12 @@
 \usepackage{fixltx2e} % LaTeX patches, \textsubscript
 \usepackage{cmap} % fix search and cut-and-paste in Acrobat
 \usepackage{ifthen}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
 \usepackage[british,french,ngerman,english]{babel}
 % Prevent side-effects if French hyphenation patterns are not loaded:
 \frenchbsetup{StandardLayout}
 \AtBeginDocument{\selectlanguage{english}\noextrasfrench}
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
 \usepackage{color}
 \usepackage{float} % float configuration
 \floatplacement{figure}{H} % place figures here definitely
@@ -188,8 +188,8 @@
 }
 
 %%% Title Data
-\title{reStructuredText Test Document%
-  \phantomsection%
+\title{\phantomsection%
+  reStructuredText Test Document%
   \label{restructuredtext-test-document}%
   \label{doctitle}%
   \\ % subtitle%
@@ -282,8 +282,8 @@ reStructuredText construct.
 
 %___________________________________________________________________________
 
-\section*{1~~~Structural Elements%
-  \phantomsection%
+\section*{\phantomsection%
+  1~~~Structural Elements%
   \addcontentsline{toc}{section}{1~~~Structural Elements}%
   \label{structural-elements}%
 }
@@ -291,8 +291,8 @@ reStructuredText construct.
 
 %___________________________________________________________________________
 
-\subsection*{1.1~~~Section Title%
-  \phantomsection%
+\subsection*{\phantomsection%
+  1.1~~~Section Title%
   \addcontentsline{toc}{subsection}{1.1~~~Section Title}%
   \label{section-title}%
 }
@@ -303,8 +303,8 @@ That's it, the text just above this line.
 
 %___________________________________________________________________________
 
-\subsection*{1.2~~~Empty Section%
-  \phantomsection%
+\subsection*{\phantomsection%
+  1.2~~~Empty Section%
   \addcontentsline{toc}{subsection}{1.2~~~Empty Section}%
   \label{empty-section}%
 }
@@ -312,8 +312,8 @@ That's it, the text just above this line.
 
 %___________________________________________________________________________
 
-\subsection*{1.3~~~Transitions%
-  \phantomsection%
+\subsection*{\phantomsection%
+  1.3~~~Transitions%
   \addcontentsline{toc}{subsection}{1.3~~~Transitions}%
   \label{transitions}%
 }
@@ -335,8 +335,8 @@ It divides the section.  Transitions may also occur between sections:
 
 %___________________________________________________________________________
 
-\section*{2~~~Body Elements%
-  \phantomsection%
+\section*{\phantomsection%
+  2~~~Body Elements%
   \addcontentsline{toc}{section}{2~~~Body Elements}%
   \label{body-elements}%
 }
@@ -344,8 +344,8 @@ It divides the section.  Transitions may also occur between sections:
 
 %___________________________________________________________________________
 
-\subsection*{2.1~~~Paragraphs%
-  \phantomsection%
+\subsection*{\phantomsection%
+  2.1~~~Paragraphs%
   \addcontentsline{toc}{subsection}{2.1~~~Paragraphs}%
   \label{paragraphs}%
 }
@@ -355,8 +355,8 @@ A paragraph.
 
 %___________________________________________________________________________
 
-\subsubsection*{2.1.1~~~Inline Markup%
-  \phantomsection%
+\subsubsection*{\phantomsection%
+  2.1.1~~~Inline Markup%
   \addcontentsline{toc}{subsubsection}{2.1.1~~~Inline Markup}%
   \label{inline-markup}%
 }
@@ -397,8 +397,8 @@ live link to PEP 258 here.
 
 %___________________________________________________________________________
 
-\subsection*{2.2~~~Bullet Lists%
-  \phantomsection%
+\subsection*{\phantomsection%
+  2.2~~~Bullet Lists%
   \addcontentsline{toc}{subsection}{2.2~~~Bullet Lists}%
   \label{bullet-lists}%
 }
@@ -447,8 +447,8 @@ Paragraph 2 of item 2.
 
 %___________________________________________________________________________
 
-\subsection*{2.3~~~Enumerated Lists%
-  \phantomsection%
+\subsection*{\phantomsection%
+  2.3~~~Enumerated Lists%
   \addcontentsline{toc}{subsection}{2.3~~~Enumerated Lists}%
   \label{enumerated-lists}%
 }
@@ -539,8 +539,8 @@ Paragraph 2 of item 2.
 
 %___________________________________________________________________________
 
-\subsection*{2.4~~~Definition Lists%
-  \phantomsection%
+\subsection*{\phantomsection%
+  2.4~~~Definition Lists%
   \addcontentsline{toc}{subsection}{2.4~~~Definition Lists}%
   \label{definition-lists}%
 }
@@ -568,8 +568,8 @@ Definition
 
 %___________________________________________________________________________
 
-\subsection*{2.5~~~Field Lists%
-  \phantomsection%
+\subsection*{\phantomsection%
+  2.5~~~Field Lists%
   \addcontentsline{toc}{subsection}{2.5~~~Field Lists}%
   \label{field-lists}%
 }
@@ -596,8 +596,8 @@ doesn't get stripped away.)}
 
 %___________________________________________________________________________
 
-\subsection*{2.6~~~Option Lists%
-  \phantomsection%
+\subsection*{\phantomsection%
+  2.6~~~Option Lists%
   \addcontentsline{toc}{subsection}{2.6~~~Option Lists}%
   \label{option-lists}%
 }
@@ -637,8 +637,8 @@ description.
 
 %___________________________________________________________________________
 
-\subsection*{2.7~~~Literal Blocks%
-  \phantomsection%
+\subsection*{\phantomsection%
+  2.7~~~Literal Blocks%
   \addcontentsline{toc}{subsection}{2.7~~~Literal Blocks}%
   \label{literal-blocks}%
 }
@@ -666,8 +666,8 @@ Or they can be quoted without indentation:
 
 %___________________________________________________________________________
 
-\subsection*{2.8~~~Line Blocks%
-  \phantomsection%
+\subsection*{\phantomsection%
+  2.8~~~Line Blocks%
   \addcontentsline{toc}{subsection}{2.8~~~Line Blocks}%
   \label{line-blocks}%
 }
@@ -771,8 +771,8 @@ A poem by Christian Morgenstern:
 
 %___________________________________________________________________________
 
-\subsection*{2.9~~~Block Quotes%
-  \phantomsection%
+\subsection*{\phantomsection%
+  2.9~~~Block Quotes%
   \addcontentsline{toc}{subsection}{2.9~~~Block Quotes}%
   \label{block-quotes}%
 }
@@ -807,8 +807,8 @@ notamment dans la documentation du langage Python.
 
 %___________________________________________________________________________
 
-\subsection*{2.10~~~Doctest Blocks%
-  \phantomsection%
+\subsection*{\phantomsection%
+  2.10~~~Doctest Blocks%
   \addcontentsline{toc}{subsection}{2.10~~~Doctest Blocks}%
   \label{doctest-blocks}%
 }
@@ -824,8 +824,8 @@ Python-specific~usage~examples;~begun~with~">{}>{}>"\\
 
 %___________________________________________________________________________
 
-\subsection*{2.11~~~Footnotes%
-  \phantomsection%
+\subsection*{\phantomsection%
+  2.11~~~Footnotes%
   \addcontentsline{toc}{subsection}{2.11~~~Footnotes}%
   \label{footnotes}%
 }
@@ -872,8 +872,8 @@ nonexistent footnote:%
 
 %___________________________________________________________________________
 
-\subsection*{2.12~~~Citations%
-  \phantomsection%
+\subsection*{\phantomsection%
+  2.12~~~Citations%
   \addcontentsline{toc}{subsection}{2.12~~~Citations}%
   \label{citations}%
 }
@@ -890,8 +890,8 @@ citation.
 
 %___________________________________________________________________________
 
-\subsection*{2.13~~~Targets%
-  \phantomsection%
+\subsection*{\phantomsection%
+  2.13~~~Targets%
   \addcontentsline{toc}{subsection}{2.13~~~Targets}%
   \label{targets}%
   \label{another-target}%
@@ -918,8 +918,8 @@ error.
 
 %___________________________________________________________________________
 
-\subsubsection*{2.13.1~~~Duplicate Target Names%
-  \phantomsection%
+\subsubsection*{\phantomsection%
+  2.13.1~~~Duplicate Target Names%
   \addcontentsline{toc}{subsubsection}{2.13.1~~~Duplicate Target Names}%
   \label{duplicate-target-names}%
 }
@@ -931,8 +931,8 @@ explicit targets will generate ``warning'' (level-2) system messages.
 
 %___________________________________________________________________________
 
-\subsubsection*{2.13.2~~~Duplicate Target Names%
-  \phantomsection%
+\subsubsection*{\phantomsection%
+  2.13.2~~~Duplicate Target Names%
   \addcontentsline{toc}{subsubsection}{2.13.2~~~Duplicate Target Names}%
   \label{id21}%
 }
@@ -945,8 +945,8 @@ this: %
 
 %___________________________________________________________________________
 
-\subsection*{2.14~~~Directives%
-  \phantomsection%
+\subsection*{\phantomsection%
+  2.14~~~Directives%
   \addcontentsline{toc}{subsection}{2.14~~~Directives}%
   \label{directives}%
 }
@@ -959,8 +959,8 @@ others, please see
 
 %___________________________________________________________________________
 
-\subsubsection*{2.14.1~~~Document Parts%
-  \phantomsection%
+\subsubsection*{\phantomsection%
+  2.14.1~~~Document Parts%
   \addcontentsline{toc}{subsubsection}{2.14.1~~~Document Parts}%
   \label{document-parts}%
 }
@@ -972,8 +972,8 @@ document (a document-wide \hyperref[table-of-contents]{table of contents}).
 
 %___________________________________________________________________________
 
-\subsubsection*{2.14.2~~~Images and Figures%
-  \phantomsection%
+\subsubsection*{\phantomsection%
+  2.14.2~~~Images and Figures%
   \addcontentsline{toc}{subsubsection}{2.14.2~~~Images and Figures}%
   \label{images-and-figures}%
 }
@@ -1111,8 +1111,8 @@ upon the style sheet and the browser or rendering software used.
 
 %___________________________________________________________________________
 
-\subsubsection*{2.14.3~~~Admonitions%
-  \phantomsection%
+\subsubsection*{\phantomsection%
+  2.14.3~~~Admonitions%
   \addcontentsline{toc}{subsubsection}{2.14.3~~~Admonitions}%
   \label{admonitions}%
 }
@@ -1191,8 +1191,8 @@ You can make up your own admonition too.
 
 %___________________________________________________________________________
 
-\subsubsection*{2.14.4~~~Topics, Sidebars, and Rubrics%
-  \phantomsection%
+\subsubsection*{\phantomsection%
+  2.14.4~~~Topics, Sidebars, and Rubrics%
   \addcontentsline{toc}{subsubsection}{2.14.4~~~Topics, Sidebars, and Rubrics}%
   \label{topics-sidebars-and-rubrics}%
 }
@@ -1233,8 +1233,8 @@ allowed (e.g. inside a directive).
 
 %___________________________________________________________________________
 
-\subsubsection*{2.14.5~~~Target Footnotes%
-  \phantomsection%
+\subsubsection*{\phantomsection%
+  2.14.5~~~Target Footnotes%
   \addcontentsline{toc}{subsubsection}{2.14.5~~~Target Footnotes}%
   \label{target-footnotes}%
 }
@@ -1254,8 +1254,8 @@ allowed (e.g. inside a directive).
 
 %___________________________________________________________________________
 
-\subsubsection*{2.14.6~~~Replacement Text%
-  \phantomsection%
+\subsubsection*{\phantomsection%
+  2.14.6~~~Replacement Text%
   \addcontentsline{toc}{subsubsection}{2.14.6~~~Replacement Text}%
   \label{replacement-text}%
 }
@@ -1265,8 +1265,8 @@ I recommend you try \href{http://www.python.org/}{Python, \emph{the} best langua
 
 %___________________________________________________________________________
 
-\subsubsection*{2.14.7~~~Compound Paragraph%
-  \phantomsection%
+\subsubsection*{\phantomsection%
+  2.14.7~~~Compound Paragraph%
   \addcontentsline{toc}{subsubsection}{2.14.7~~~Compound Paragraph}%
   \label{compound-paragraph}%
 }
@@ -1347,8 +1347,8 @@ Compound 7, another paragraph.
 
 %___________________________________________________________________________
 
-\subsubsection*{2.14.8~~~Parsed Literal Blocks%
-  \phantomsection%
+\subsubsection*{\phantomsection%
+  2.14.8~~~Parsed Literal Blocks%
   \addcontentsline{toc}{subsubsection}{2.14.8~~~Parsed Literal Blocks}%
   \label{parsed-literal-blocks}%
 }
@@ -1366,8 +1366,8 @@ text},~footnotes\DUfootnotemark{id22}{id8}{1},~%
 
 %___________________________________________________________________________
 
-\subsection*{2.15~~~Substitution Definitions%
-  \phantomsection%
+\subsection*{\phantomsection%
+  2.15~~~Substitution Definitions%
   \addcontentsline{toc}{subsection}{2.15~~~Substitution Definitions}%
   \label{substitution-definitions}%
 }
@@ -1379,8 +1379,8 @@ An inline image (\includegraphics{../../../docs/user/rst/images/biohazard.png}) 
 
 %___________________________________________________________________________
 
-\subsection*{2.16~~~Comments%
-  \phantomsection%
+\subsection*{\phantomsection%
+  2.16~~~Comments%
   \addcontentsline{toc}{subsection}{2.16~~~Comments}%
   \label{comments}%
 }
@@ -1400,8 +1400,8 @@ Here's one:
 
 %___________________________________________________________________________
 
-\subsection*{2.17~~~Raw text%
-  \phantomsection%
+\subsection*{\phantomsection%
+  2.17~~~Raw text%
   \addcontentsline{toc}{subsection}{2.17~~~Raw text}%
   \label{raw-text}%
 }
@@ -1423,8 +1423,8 @@ Fifth test in LaTeX.\\Line two.
 
 %___________________________________________________________________________
 
-\subsection*{2.18~~~Container%
-  \phantomsection%
+\subsection*{\phantomsection%
+  2.18~~~Container%
   \addcontentsline{toc}{subsection}{2.18~~~Container}%
   \label{container}%
 }
@@ -1439,8 +1439,8 @@ paragraph 2
 
 %___________________________________________________________________________
 
-\subsection*{2.19~~~Colspanning tables%
-  \phantomsection%
+\subsection*{\phantomsection%
+  2.19~~~Colspanning tables%
   \addcontentsline{toc}{subsection}{2.19~~~Colspanning tables}%
   \label{colspanning-tables}%
 }
@@ -1522,8 +1522,8 @@ True
 
 %___________________________________________________________________________
 
-\subsection*{2.20~~~Rowspanning tables%
-  \phantomsection%
+\subsection*{\phantomsection%
+  2.20~~~Rowspanning tables%
   \addcontentsline{toc}{subsection}{2.20~~~Rowspanning tables}%
   \label{rowspanning-tables}%
 }
@@ -1586,8 +1586,8 @@ body row 3
 
 %___________________________________________________________________________
 
-\subsection*{2.21~~~Custom Roles%
-  \phantomsection%
+\subsection*{\phantomsection%
+  2.21~~~Custom Roles%
   \addcontentsline{toc}{subsection}{2.21~~~Custom Roles}%
   \label{custom-roles}%
 }
@@ -1622,8 +1622,8 @@ Let's count in German {\selectlanguage{ngerman}eins zwei drei}.
 
 %___________________________________________________________________________
 
-\section*{3~~~Tests for the LaTeX writer%
-  \phantomsection%
+\section*{\phantomsection%
+  3~~~Tests for the LaTeX writer%
   \addcontentsline{toc}{section}{3~~~Tests for the LaTeX writer}%
   \label{tests-for-the-latex-writer}%
 }
@@ -1634,8 +1634,8 @@ not need to be tested with other writers (e.g. the HTML writer).
 
 %___________________________________________________________________________
 
-\subsection*{3.1~~~Custom Roles in LaTeX%
-  \phantomsection%
+\subsection*{\phantomsection%
+  3.1~~~Custom Roles in LaTeX%
   \addcontentsline{toc}{subsection}{3.1~~~Custom Roles in LaTeX}%
   \label{custom-roles-in-latex}%
 }
@@ -1684,8 +1684,8 @@ This is a \DUroletitlereference{\DUrole{custom-title-reference}{customized title
 
 %___________________________________________________________________________
 
-\subsection*{3.2~~~Option lists%
-  \phantomsection%
+\subsection*{\phantomsection%
+  3.2~~~Option lists%
   \addcontentsline{toc}{subsection}{3.2~~~Option lists}%
   \label{id23}%
 }
@@ -1724,8 +1724,8 @@ is contained in a quote
 
 %___________________________________________________________________________
 
-\subsection*{3.3~~~Monospaced non-alphanumeric characters%
-  \phantomsection%
+\subsection*{\phantomsection%
+  3.3~~~Monospaced non-alphanumeric characters%
   \addcontentsline{toc}{subsection}{3.3~~~Monospaced non-alphanumeric characters}%
   \label{monospaced-non-alphanumeric-characters}%
 }
@@ -1744,8 +1744,8 @@ width as the third line.
 
 %___________________________________________________________________________
 
-\subsection*{3.4~~~Non-ASCII characters%
-  \phantomsection%
+\subsection*{\phantomsection%
+  3.4~~~Non-ASCII characters%
   \addcontentsline{toc}{subsection}{3.4~~~Non-ASCII characters}%
   \label{non-ascii-characters}%
 }
@@ -2164,8 +2164,8 @@ to the document options or use a different font package.
 
 %___________________________________________________________________________
 
-\subsection*{3.5~~~Encoding special chars%
-  \phantomsection%
+\subsection*{\phantomsection%
+  3.5~~~Encoding special chars%
   \addcontentsline{toc}{subsection}{3.5~~~Encoding special chars}%
   \label{encoding-special-chars}%
 }
@@ -2237,8 +2237,8 @@ greater-than and bar, < | >, except for typewriter font \DUroletitlereference{cm
 
 %___________________________________________________________________________
 
-\subsection*{3.6~~~Hyperlinks and -targets%
-  \phantomsection%
+\subsection*{\phantomsection%
+  3.6~~~Hyperlinks and -targets%
   \addcontentsline{toc}{subsection}{3.6~~~Hyperlinks and -targets}%
   \label{hyperlinks-and-targets}%
 }
@@ -2287,8 +2287,8 @@ See \hyperref[hypertarget-in-plain-text]{hypertarget in plain text},
 
 %___________________________________________________________________________
 
-\subsection*{3.7~~~External references%
-  \phantomsection%
+\subsection*{\phantomsection%
+  3.7~~~External references%
   \addcontentsline{toc}{subsection}{3.7~~~External references}%
   \label{external-references}%
 }
@@ -2381,8 +2381,8 @@ while balanced braces are suported:
 
 %___________________________________________________________________________
 
-\section*{4~~~Error Handling%
-  \phantomsection%
+\section*{\phantomsection%
+  4~~~Error Handling%
   \addcontentsline{toc}{section}{4~~~Error Handling}%
   \label{error-handling}%
 }
@@ -2397,8 +2397,8 @@ section, ``Docutils System Messages'':
 
 %___________________________________________________________________________
 
-\section*{\color{red}Docutils System Messages%
-  \phantomsection%
+\section*{\phantomsection%
+  \color{red}Docutils System Messages%
   \addcontentsline{toc}{section}{Docutils System Messages}%
 }
 

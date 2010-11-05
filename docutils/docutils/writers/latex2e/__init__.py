@@ -388,11 +388,11 @@ class Babel(object):
             # or prepend r'\def\spanishoptions{es-noshorthands}'
         if (languages[-1] is 'english' and
             'french' in self.otherlanguages.keys()):
-            self.setup.append('%% Prevent side-effects if French hyphenation '
-                              'patterns are not loaded:\n'
-                              '\\frenchbsetup{StandardLayout}\n'
-                              r'\AtBeginDocument{\selectlanguage{%s}'
-                              r'\noextrasfrench}' % self.language)
+            self.setup += ['% Prevent side-effects if French hyphenation '
+                           'patterns are not loaded:',
+                           r'\frenchbsetup{StandardLayout}',
+                           r'\AtBeginDocument{\selectlanguage{%s}'
+                           r'\noextrasfrench}' % self.language]
         return '\n'.join(self.setup)
 
     def next_quote(self):
@@ -1792,14 +1792,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # titled document?
         if (self.use_latex_docinfo or len(node) and
             isinstance(node[0], nodes.title)):
-            self.title_labels += self.ids_to_labels(node)
+            self.title_labels += self.ids_to_labels(node, set_anchor=False)
 
     def depart_document(self, node):
         # Complete header with information gained from walkabout
         # * language setup
         if (self.babel.otherlanguages or
             self.babel.language not in ('', 'english')):
-            self.requirements['_babel'] = self.babel()
+            self.requirements['babel'] = self.babel()
         # * conditional requirements (before style sheet)
         self.requirements = self.requirements.sortedvalues()
         # * coditional fallback definitions (after style sheet)
@@ -1819,6 +1819,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # with the default template, titledata is written to the preamble
             self.titledata.append('%%% Title Data')
             # \title (empty \title prevents error with \maketitle)
+            if self.title:
+                self.title.insert(0, '\phantomsection%\n  ')
             title = [''.join(self.title)] + self.title_labels
             if self.subtitle:
                 title += [r'\\ % subtitle',
@@ -2796,7 +2798,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # add to the toc and pdfbookmarks
             section_name = self.d_class.section(max(self.section_level, 1))
             section_title = self.encode(node.astext())
-            result.append(r'\phantomsection')
             result.append(r'\addcontentsline{toc}{%s}{%s}' %
                           (section_name, section_title))
         result += self.ids_to_labels(node.parent, set_anchor=False)
@@ -2831,13 +2832,15 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.out.append('\n\n')
             #
             section_name = self.d_class.section(self.section_level)
+            section_star = ''
+            pdfanchor = ''
             # number sections?
             if (self.settings.sectnum_xform # numbering by Docutils
                 or (self.section_level > len(self.d_class.sections))):
                 section_star = '*'
-            else: # LaTeX numbered sections
-                section_star = ''
-            self.out.append(r'\%s%s{' % (section_name, section_star))
+                pdfanchor = '\\phantomsection%\n  '
+            self.out.append(r'\%s%s{%s' %
+                            (section_name, section_star, pdfanchor))
             # System messages heading in red:
             if ('system-messages' in node.parent['classes']):
                 self.requirements['color'] = PreambleCmds.color

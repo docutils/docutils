@@ -20,7 +20,7 @@
 
 % hyperlinks:
 \ifthenelse{\isundefined{\hypersetup}}{
-  \usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
+  \usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,unicode=false]{hyperref}
   \urlstyle{same} % normal text font (alternatives: tt, rm, sf)
 }{}
 
@@ -31,8 +31,8 @@
 
 %___________________________________________________________________________
 
-\section*{Заголовок%
-  \phantomsection%
+\section*{\phantomsection%
+  Заголовок%
   \addcontentsline{toc}{section}{Заголовок}%
   \label{id1}%
 }
@@ -42,8 +42,8 @@
 
 %___________________________________________________________________________
 
-\section*{Title%
-  \phantomsection%
+\section*{\phantomsection%
+  Title%
   \addcontentsline{toc}{section}{Title}%
   \label{title}%
 }

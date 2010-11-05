@@ -120,10 +120,10 @@ totest['spanish quote'] = [
 [".. role:: language-es\n\nUnd damit :language-es:`basta`!",
 head_template.substitute(dict(parts, requirements =
 r"""\usepackage{ifthen}
-\usepackage[spanish,english]{babel}
-\addto\shorthandsspanish{\spanishdeactivate{."~<>}}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+\usepackage[spanish,english]{babel}
+\addto\shorthandsspanish{\spanishdeactivate{."~<>}}
 """)) + r"""
 Und damit {\selectlanguage{spanish}basta}!
 
@@ -175,8 +175,8 @@ head_template.substitute(dict(parts, fallbacks = r"""
 
 %___________________________________________________________________________
 
-\section*{Title 1%
-  \phantomsection%
+\section*{\phantomsection%
+  Title 1%
   \addcontentsline{toc}{section}{Title 1}%
   \label{title-1}%
 }
@@ -186,8 +186,8 @@ Paragraph 1.
 
 %___________________________________________________________________________
 
-\subsection*{Title 2%
-  \phantomsection%
+\subsection*{\phantomsection%
+  Title 2%
   \addcontentsline{toc}{subsection}{Title 2}%
   \label{title-2}%
 }
@@ -217,8 +217,8 @@ head + r"""
 
 %___________________________________________________________________________
 
-\section*{first section%
-  \phantomsection%
+\section*{\phantomsection%
+  first section%
   \addcontentsline{toc}{section}{first section}%
   \label{first-section}%
 }
@@ -246,8 +246,8 @@ head + r"""
 
 %___________________________________________________________________________
 
-\section*{1~~~first section%
-  \phantomsection%
+\section*{\phantomsection%
+  1~~~first section%
   \addcontentsline{toc}{section}{1~~~first section}%
   \label{first-section}%
 }
@@ -620,8 +620,8 @@ head_template.substitute(
   pdftitle={This is the Title},
 }
 """, titledata=r"""%%% Title Data
-\title{This is the \emph{Title}%
-  \phantomsection%
+\title{\phantomsection%
+  This is the \emph{Title}%
   \label{this-is-the-title}%
   \\ % subtitle%
   \large{This is the \emph{Subtitle}}%
@@ -633,8 +633,8 @@ head_template.substitute(
 
 %___________________________________________________________________________
 
-\section*{This is a \emph{section title}%
-  \phantomsection%
+\section*{\phantomsection%
+  This is a \emph{section title}%
   \addcontentsline{toc}{section}{This is a section title}%
   \label{this-is-a-section-title}%
 }
