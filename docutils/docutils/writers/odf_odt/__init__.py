@@ -2389,6 +2389,23 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     visit_doctest_block = visit_literal_block
     depart_doctest_block = depart_literal_block
 
+    # placeholder for math (see docs/dev/todo.txt)
+    def visit_math(self, node):
+        self.document.reporter.warning('"math" role not supported',
+                base_node=node)
+        self.visit_literal(node)
+
+    def depart_math(self, node):
+        self.depart_literal(node)
+
+    def visit_math_block(self, node):
+        self.document.reporter.warning('"math" directive not supported',
+                base_node=node)
+        self.visit_literal_block(node)
+
+    def depart_math_block(self, node):
+        self.depart_literal_block(node)
+
     def visit_meta(self, node):
         name = node.attributes.get('name')
         content = node.attributes.get('content')

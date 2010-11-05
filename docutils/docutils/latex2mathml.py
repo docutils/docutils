@@ -214,6 +214,7 @@ class mtext(math):
 over = {'tilde': '~',
         'hat': '^',
         'bar': '_',
+        'grave': '`',
         'dot': u'\u0307',
         'vec': u'\u2192'}
 
