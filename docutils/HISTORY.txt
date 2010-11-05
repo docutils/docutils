@@ -22,6 +22,8 @@ Changes Since 0.7
   - Handle language codes according to `BCP 47`_.
   - If the specified language is not supported by Docutils,
     warn and fall back to English.
+  - Math support: reStructuredText "math" role and directive,
+    ``math`` and ``math_block`` doctree elements.
 
 .. _BCP 47: http://www.rfc-editor.org/rfc/bcp/bcp47.txt
 

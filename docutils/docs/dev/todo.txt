@@ -1133,28 +1133,14 @@ __ rst/alternatives.html#or-not-to-do
 * Generalize docinfo contents (bibliographic fields): remove specific
   fields, and have only a single generic "field"?
 
+
 Math Markup
 -----------
 
-Both a directive and an interpreted text role are necessary.
-
-Directive example::
-
-    .. math::
-
-       \alpha_t(i) = P(O_1, O_2, \dots O_t, q_t = S_i \lambda)
-
-Inline example::
-
-    The equation in question is :math:`\alpha_t(i) = P(O_1, O_2,
-    \dots O_t, q_t = S_i \lambda)`.
-
-
 We need a generic solution, that's applicable to any output format.
-Using a standard, such as MathML_, would be best.
-
-For an overview of MathML implementations and tests, see e.g.
-http://www.mathweb.org/wiki/MathML
+Using a standard, such as MathML_, would be best. (For an overview of
+MathML implementations and tests, see e.g. the `mathweb wiki
+<http://www.mathweb.org/wiki/MathML>`__.)
 
 However,
 
@@ -1164,19 +1150,18 @@ However,
 
     -- http://www.w3.org/Math/Roadmap/
 
-Hence, a different input format is needed. Alternatives:
+Hence, with MathML, a different input format is needed. OTOH, LaTeX
+math syntax can be used for both, input and internal storage.
+
+Input formats
+`````````````
 
 LaTeX math syntax
-  can be used for both, input and internal storage:
-
-  * intended for input by a human, widely used, and well documented
-    (see, e.g., the `Short Math Guide`__)
-
-    __ http://tex.loria.fr/general/downes-short-math-guide.pdf
+  * intended for input by a human, widely used, and well documented.
 
   * convertible to all supported output formats (building on
     existing extensions like `latex_math`_ (LaTeX2MathML) or the `math
-    support in Sphinx`_ (see below for `options for HTML output`_).
+    support in Sphinx`_ (see below for `HTML output`_).
 
   * The backtick cannot be used in a math role. Fortunately, in LaTeX
     math mode the ``\grave`` macro is used instead of ``\``` for the
@@ -1184,24 +1169,8 @@ LaTeX math syntax
 
   * Used for input and storage by the `Math support in Sphinx`_.
 
-Which equation environments should be supported?
-
-Inline
-  the usual dollar signs ``$ $``.
-
-Display
-  * one line:
-
-    + numbered: "equation"
-    + unnumbered: "equation*" or ``\[ \]``?
-
-  * multiline (test for ``\\``)
-
-    + numbered: "align" (number every line) or "split" in "equation"
-      (number one line)?
-    + unnumbered: "align*"
-
-See http://www.math.uiuc.edu/~hildebr/tex/displays.html.
+  * Unicode input supported by the "unicode-math" package for
+    XeTeX/LuaTeX provides for a improved readability.
 
 ASCIIMathML_
   Used, e.g., by MultiMarkdown__
@@ -1220,11 +1189,10 @@ See `the culmination of a relevant discussion
 <http://article.gmane.org/gmane.text.docutils.user/118>`__.
 
 
-Try to keep it compatible with `Math support in Sphinx`_:
+Try to be compatible with `Math support in Sphinx`_?
 
 * When the math is only one line of text, it can also be given as a
   directive argument.
-
 
   .. caution::
 
@@ -1242,8 +1210,32 @@ Try to keep it compatible with `Math support in Sphinx`_:
   math environment (you have to specify the math environment in the
   content).
 
-Options for HTML output
-```````````````````````
+LaTeX output
+````````````
+
+Which equation environments should be supported by the math directive?
+
+* one line:
+
+  + numbered: "equation"
+  + unnumbered: "equation*" or ``\[ \]``?
+
+* multiline (test for ``\\`` outside of "array" or "cases")
+
+  + numbered: "align" (number every line) or "split" in "equation"
+    (number one line)?
+  + unnumbered: "align*"
+
+  + Sphinx math also supports "gather" (checking for blank lines in
+    the content).
+
+See http://www.math.uiuc.edu/~hildebr/tex/displays.html.
+
+
+HTML output
+```````````
+
+There is no native math support in HTML.
 
 MathML_
   is the W3C recommendation. Browser support is finally becoming more
@@ -1257,14 +1249,14 @@ MathML_
   .. _MathPlayer: http://www.dessci.com/en/products/mathplayer/
 
   Converters from LaTeX to MathML include `latex_math`_ (LaTeX2MathML)
-  in the Docutils sandbox, MathToWeb_ (Java), TeX4ht_ (TeX based),
-  LaTeXML_ (Perl).
+  in the Docutils sandbox, Blahtex_ (C++), MathToWeb_ (Java), TeX4ht_
+  (TeX based), LaTeXML_ (Perl).
 
-MathHTML_
-  uses CSS to style any MathML tags in an HTML page. Javascript is
-  then used to tidy up the mathematics in an effort to achive typeset
-  quality. MathHTML has been tested in Firefox, Safari, Chrome, Opera,
-  and Internet Explorer 8.
+  MathHTML_
+    uses CSS to style any MathML tags in an HTML page. Javascript is
+    then used to tidy up the mathematics in an effort to achive typeset
+    quality. MathHTML has been tested in Firefox, Safari, Chrome, Opera,
+    and Internet Explorer 8.
 
 MathJax_
  * a JavaScript-based engine for including TEX and MathML in HTML
@@ -1273,7 +1265,7 @@ MathJax_
    typesetting that is scalable and prints at full resolution.
  * MathJax is a joint project of the AMS, Design Science, Inc., and
    the Society for Industrial and Applied Mathematics.
- * `Math support in Sphinx`_ supports MathJax.
+ * `Math support in Sphinx`_ also works with MathJax.
 
 HTML+CSS
  format math in standard HTML enhanced by CSS rules
@@ -1298,7 +1290,6 @@ OpenOffice output
   http://idippedut.dk/post/2008/03/03/Now-I-get-it-ODF-and-MathML.aspx
 
 
-
 * OOoLaTeX__:  "a set of macros designed to bring the power of LaTeX
   into OpenOffice."
 
@@ -1314,6 +1305,7 @@ OpenOffice output
 .. _Unicode Nearly Plain Text Encoding of Mathematics:
    http://www.unicode.org/notes/tn28/
 .. _dvisvgm: http://dvisvgm.sourceforge.net/
+.. _Blahtex: http://gva.noekeon.org/blahtexml/
 .. _MathToWeb:  http://www.mathtoweb.com/
 .. _TeX4ht: http://www.tug.org/applications/tex4ht/mn.html
 .. _LaTeXML: http://dlmf.nist.gov/LaTeXML/

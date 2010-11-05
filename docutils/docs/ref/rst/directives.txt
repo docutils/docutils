@@ -486,6 +486,40 @@ The following option is recognized:
     the class_ directive below.
 
 
+Math
+====
+
+:Directive Type: "math"
+:Doctree Element: math-block
+:Directive Arguments: None.
+:Directive Options: Possible.
+:Directive Content: Becomes the body of the math block (display formula).
+
+The "math" directive inserts a block with mathematical content
+(display formula) into the document. The input format is *LaTeX math
+syntax* (see, e.g. the `Short Math Guide`_), for example::
+
+  .. math::
+
+    \alpha_t(i) = P(O_1, O_2, \dots O_t, q_t = S_i \lambda)
+
+Docutil's latex2mathml converter (used, e.g., by the HTML writers)
+supports a subset of LaTeX syntax described in `Using LaTeX syntax for
+mathematics`__. If a writer does not support math typesetting, the
+content is inserted verbatim.
+
+The following options are recognized:
+
+``class`` : text
+    Set a "classes" attribute value on the block element.  See the
+    class_ directive.
+
+.. _Short Math Guide:
+   http://tex.loria.fr/general/downes-short-math-guide.pdf
+
+__ http://docutils.sf.net/sandbox/jensj/latex_math/docs/latex_math.txt
+
+
 Rubric
 ======
 

@@ -104,6 +104,29 @@ whereas the backslashes in the second line escape the following
 spaces.
 
 
+``:math:``
+==========
+
+:Aliases: None
+:DTD Element: math
+:Customization:
+    :Options: class_
+    :Content: None.
+
+The ``math`` role marks its content as mathematical notation (inline
+formula).
+
+The input format is LaTeX math syntax without the “math delimiters“
+(``$ $``), for example::
+
+  The area of a circle is :math:`A_\text{c} = (\pi/4) d^2`.
+
+See the `math directive`_ (producing display formulas) for more info
+on mathematical notation in reStructuredText.
+
+.. _math directive: directives.html#math
+
+
 ``:pep-reference:``
 ===================
 
@@ -226,7 +249,7 @@ HTML "cite" element, and it is expected that HTML writers will
 typically render "title_reference" elements using "cite".
 
 Since title references are typically rendered with italics, they are
-often marked up using ``*emphasis*``, which is misleading and vague. 
+often marked up using ``*emphasis*``, which is misleading and vague.
 The "title_reference" element provides accurate and unambiguous
 descriptive markup.
 

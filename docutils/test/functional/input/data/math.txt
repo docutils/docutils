@@ -10,24 +10,19 @@ role specificator, :math:`n! + \sin(x_n^2)` and `A_\text{c} =
 
    f(\epsilon) = \frac{1}{1 + \exp\left(\frac{\varepsilon}{k_\text{B}T}\right)}
 
-.. In Sphinx, blank lines inside a math directive start a new math
-   display.
-
-   Should we handle this:
-
-   * in the parser (adding one node per line),
-   * in the writers, or
-   * not at all?
-
 .. math::
 
    N = \frac{\text{number of apples}}{7}
+
+The determinant of the matrix
 
 .. math::
 
    \mathbf{M} = \left(\begin{matrix}a&b\\c&d\end{matrix}\right)
 
-We have :math:`|\mathbf{M}| = ad - bc`.
+is :math:`|\mathbf{M}| = ad - bc`.
+
+Sum and Integral with limits:
 
 .. math::
 
@@ -37,9 +32,14 @@ We have :math:`|\mathbf{M}| = ad - bc`.
 
    \sum_{n=1}^m n = \frac{m(m+1)}{2}
 
-* tilde: :math:`\tilde{n}`
-* hat: :math:`\hat{H}`
-* bar: :math:`\bar{v}`
+Math-Accents:
+  .. class:: borderless
+
+  ===============================  ===========================
+  :math:`\tilde{n}` ``\tilde{n}``  :math:`\hat{H}` ``\hat{H}``
+  :math:`\bar{v}`   ``\bar{v}``    :math:`\vec{R}` ``\vec{R}``
+  :math:`\grave{a}` ``\grave{a}``
+  ===============================  ===========================
 
 Quantum mechanics:
 
@@ -54,7 +54,7 @@ Math split over two lines:
    g(\alpha) = & (1 + \alpha + \alpha^2 + \alpha^3 + \alpha^4\\
                & + \alpha^5)
 
-Cases (realized with a matrix environment):
+Cases:
 
 .. math::
 

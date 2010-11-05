@@ -70,6 +70,7 @@ BUGS
 1. Format options are included as they are required. 
 2. bullet lists
 3. number lists
+4. math: The LaTeX source is shown, e.g. :math:`n! + \sin(x_n^2)`.
 
 
 Discussion is still open.

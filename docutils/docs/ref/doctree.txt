@@ -162,7 +162,8 @@ that contain text data may also contain inline elements.  Such
 elements therefore have a "mixed content model".
 
 Category members: comment_, doctest_block_, image_, literal_block_,
-paragraph_, pending_, raw_, rubric_, substitution_definition_, target_
+math_block_, paragraph_, pending_, raw_, rubric_, substitution_definition_,
+target_
 
 
 Compound Body Elements
@@ -207,7 +208,7 @@ body elements.  Most inline elements have a "mixed content model".
 
 Category members: abbreviation_, acronym_, citation_reference_,
 emphasis_, footnote_reference_, generated_, image_, inline_, literal_,
-problematic_, reference_, strong_, subscript_,
+math_, problematic_, reference_, strong_, subscript_,
 substitution_reference_, superscript_, target_, title_reference_, raw_
 
 
@@ -2861,6 +2862,91 @@ Pseudo-XML_ fragment from simple parsing::
             spaces_and_linebreaks = 'are preserved'
             markup_processing = None
 
+``math``
+========
+
+The ``math`` element contains text in `LaTeX math format` that is typeset
+as mathematical notation (inline formula).
+
+If the output format does not support math typesetting, the content is
+inserted verbatim.
+
+Details
+-------
+
+:Category:
+    `Inline Elements`_
+
+:Parents:
+    All elements employing the `%inline.elements;`_ parameter entities in 
+    their content models may contain ``math``.
+
+:Children:
+    ``math`` elements may contain text data.
+
+:Analogues:
+    ``math`` is analogous to a MathML "math" element or
+    the LaTeX (``$ math $``) mode.
+
+:Processing:
+    Rendered as mathematical notation.
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+    `%text.model;`_
+
+:Attributes:
+    The ``math`` element contains the `common attributes`_
+    (ids_, names_, dupnames_, source_, and classes_).
+
+
+``math_block``
+==============
+
+The ``math_block`` element contains a block of text in `LaTeX math
+format` that is typeset as mathematical notation (display formula).
+The ``math_block`` element is generated during the initial parse from a
+"math" directive.
+
+If the output format does not support math typesetting, the content is
+inserted verbatim.
+
+Details
+-------
+
+:Category:
+    `Simple Body Elements`_
+
+:Parents:
+    All elements employing the `%body.elements;`_ or
+    `%structure.model;`_ parameter entities in their content models
+    may contain ``math_block``.
+
+:Children:
+    ``math_block`` elements may contain text data.
+
+:Analogues:
+    ``math_block`` is analogous to a LaTeX "equation*" environment or
+    a MathML "math" element displayed as block-level element.
+
+:Processing:
+    Rendered in a block as mathematical notation, typically centered or with
+    indentation
+
+Content Model
+-------------
+
+.. parsed-literal::
+
+    `%text.model;`_
+
+:Attributes:
+    The ``math`` element contains the `common attributes`_
+    (ids_, names_, dupnames_, source_, and classes_).
+
 
 ``note``
 ========
@@ -4791,7 +4877,8 @@ Via `%text.model;`_, the ``%inline.elements;`` parameter entity is
 indirectly employed in the content models of the following elements:
 abbreviation_, acronym_, address_, attribution_, author_, caption_,
 classifier_, contact_, copyright_, date_, doctest_block_, emphasis_,
-generated_, inline_, line_block_, literal_block_, organization_,
+generated_, inline_, line_block_, literal_block_, math_, math_block_,
+organization_,
 paragraph_, problematic_, raw_, reference_, revision_, rubric_,
 status_, strong_, subscript_, substitution_definition_,
 substitution_reference_, subtitle_, superscript_, target_, term_,
