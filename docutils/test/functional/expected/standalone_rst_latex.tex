@@ -5,6 +5,7 @@
 \usepackage{ifthen}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+\usepackage{amsmath}
 \usepackage[british,french,ngerman,english]{babel}
 % Prevent side-effects if French hyphenation patterns are not loaded:
 \frenchbsetup{StandardLayout}
@@ -747,7 +748,7 @@ Take it away, Eric the Orchestra Leader!
 A poem by Christian Morgenstern:
 
 \begin{DUlineblock}{0em}
-{\selectlanguage{ngerman}\DUrole{align-center}{
+\otherlanguage{ngerman}{\DUrole{align-center}{
 \item[] Das æsthetische Wiesel
 \item[] 
 \item[] Ein Wiesel
@@ -794,14 +795,12 @@ own it, and what it is too.
 
 The language of a quote (like any other object) can be specified by
 a class attribute:
-
-% 
 %
 \begin{quote}
-{\selectlanguage{french}
-ReStructuredText est un langage de balisage léger utilisé
-notamment dans la documentation du langage Python.
-}
+
+\otherlanguage{french}{ReStructuredText est un langage de balisage léger utilisé
+notamment dans la documentation du langage Python.}
+
 \end{quote}
 
 
@@ -1608,17 +1607,94 @@ body row 3
 
 \item A language-switching role:
 
-Let's count in German {\selectlanguage{ngerman}eins zwei drei}.
+Let's count in German \otherlanguage{ngerman}{eins zwei drei}.
 
 \item A role with multiple class attributes, styled with raw directives:
 
 \newcommand{\DUrolegreen}[1]{\textcolor{green}{#1}}
 \newcommand{\DUrolesc}[1]{\textsc{#1}}
 
-{\selectlanguage{british}\DUrole{green}{\DUrole{sc}{British colourful text in small-caps}}}.
+\otherlanguage{british}{\DUrole{green}{\DUrole{sc}{British colourful text in small-caps}}}.
 
 \end{itemize}
 
+
+%___________________________________________________________________________
+
+\subsection*{\phantomsection%
+  2.22~~~Testing Math%
+  \addcontentsline{toc}{subsection}{2.22~~~Testing Math}%
+  \label{testing-math}%
+}
+
+Docutils supports inline math with the prefix or postfix \texttt{:math:}
+role specificator, $n! + \sin(x_n^2)$ and $A_\text{c} =
+\frac{\pi}{4} d^2$, as well as displayed math via the
+\texttt{math} directive:
+%
+\begin{equation*}
+f(\epsilon) = \frac{1}{1 + \exp\left(\frac{\varepsilon}{k_\text{B}T}\right)}
+\end{equation*}%
+\begin{equation*}
+N = \frac{\text{number of apples}}{7}
+\end{equation*}
+The determinant of the matrix
+%
+\begin{align*}
+\mathbf{M} = \left(\begin{matrix}a&b\\c&d\end{matrix}\right)
+\end{align*}
+is $|\mathbf{M}| = ad - bc$.
+
+Sum and Integral with limits:
+%
+\begin{equation*}
+\int_0^1 x^n dx = \frac{1}{n + 1}
+\end{equation*}%
+\begin{equation*}
+\sum_{n=1}^m n = \frac{m(m+1)}{2}
+\end{equation*}%
+\begin{description}
+\item[{Math-Accents:}] \leavevmode 
+\leavevmode
+\setlength{\DUtablewidth}{\linewidth}
+\begin{longtable}[c]{p{0.377\DUtablewidth}p{0.331\DUtablewidth}}
+
+$\tilde{n}$ \texttt{\textbackslash{}tilde\{n\}}
+ & 
+$\hat{H}$ \texttt{\textbackslash{}hat\{H\}}
+ \\
+
+$\bar{v}$   \texttt{\textbackslash{}bar\{v\}}
+ & 
+$\vec{R}$ \texttt{\textbackslash{}vec\{R\}}
+ \\
+
+$\grave{a}$ \texttt{\textbackslash{}grave\{a\}}
+ &  \\
+\end{longtable}
+
+\end{description}
+
+Quantum mechanics:
+%
+\begin{equation*}
+-\frac{1}{2}\nabla^2 \psi + v \psi = \varepsilon \psi
+\end{equation*}
+Math split over two lines:
+%
+\begin{align*}
+g(\alpha) = & (1 + \alpha + \alpha^2 + \alpha^3 + \alpha^4\\
+            & + \alpha^5)
+\end{align*}
+Cases:
+%
+\begin{align*}
+f(x) = \left\{
+  \begin{matrix}
+    1 - x, & x < 1 \\
+    0,     & x > 1
+  \end{matrix}\right.
+\end{align*}
 
 %___________________________________________________________________________
 
@@ -2416,7 +2492,7 @@ Undefined substitution referenced: ``problematic''.
 \DUtitle[system-message]{system-message}
 \raisebox{1em}{\hypertarget{id40}{}}
 
-{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~394
+{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~393
 
 \hyperlink{id41}{
 Unknown target name: ``5''.
@@ -2426,7 +2502,7 @@ Unknown target name: ``5''.
 \DUtitle[system-message]{system-message}
 \raisebox{1em}{\hypertarget{id42}{}}
 
-{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~403
+{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~402
 
 \hyperlink{id43}{
 Unknown target name: ``nonexistent''.
@@ -2436,7 +2512,7 @@ Unknown target name: ``nonexistent''.
 \DUtitle[system-message]{system-message}
 \raisebox{1em}{\hypertarget{id44}{}}
 
-{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~430
+{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~429
 
 \hyperlink{id45}{
 Unknown target name: ``hyperlink reference without a target''.
@@ -2446,7 +2522,7 @@ Unknown target name: ``hyperlink reference without a target''.
 \DUtitle[system-message]{system-message}
 \raisebox{1em}{\hypertarget{id46}{}}
 
-{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~443
+{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~442
 
 \hyperlink{id47}{
 Duplicate target name, cannot be used as a unique reference: ``duplicate target names''.

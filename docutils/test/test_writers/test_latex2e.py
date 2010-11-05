@@ -125,7 +125,7 @@ r"""\usepackage{ifthen}
 \usepackage[spanish,english]{babel}
 \addto\shorthandsspanish{\spanishdeactivate{."~<>}}
 """)) + r"""
-Und damit {\selectlanguage{spanish}basta}!
+Und damit \otherlanguage{spanish}{basta}!
 
 \end{document}
 """],

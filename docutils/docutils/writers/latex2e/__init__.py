@@ -2262,7 +2262,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             language = self.babel.get_language(language_tags[0][9:])
             if language:
                 self.babel.otherlanguages[language] = True
-                self.out.append(r'{\selectlanguage{%s}' % language)
+                self.out.append(r'\otherlanguage{%s}{' % language)
                 classes.pop(classes.index(language_tags[0]))
         if not classes:
             return
