@@ -746,7 +746,7 @@ Take it away, Eric the Orchestra Leader!
 A poem by Christian Morgenstern:
 
 \begin{DUlineblock}{0em}
-{\selectlanguage{german}\DUrole{align-center}{
+\otherlanguage{german}{\DUrole{align-center}{
 \item[] Das æsthetische Wiesel
 \item[] 
 \item[] Ein Wiesel
@@ -793,14 +793,12 @@ own it, and what it is too.
 
 The language of a quote (like any other object) can be specified by
 a class attribute:
-
-% 
 %
 \begin{quote}
-{\selectlanguage{french}
-ReStructuredText est un langage de balisage léger utilisé
-notamment dans la documentation du langage Python.
-}
+
+\otherlanguage{french}{ReStructuredText est un langage de balisage léger utilisé
+notamment dans la documentation du langage Python.}
+
 \end{quote}
 
 
@@ -1611,14 +1609,14 @@ body row 3
 
 \item A language-switching role:
 
-Let's count in German {\selectlanguage{german}eins zwei drei}.
+Let's count in German \otherlanguage{german}{eins zwei drei}.
 
 \item A role with multiple class attributes, styled with raw directives:
 
 \newcommand{\DUrolegreen}[1]{\textcolor{green}{#1}}
 \newcommand{\DUrolesc}[1]{\textsc{#1}}
 
-{\selectlanguage{british}\DUrole{green}{\DUrole{sc}{British colourful text in small-caps}}}.
+\otherlanguage{british}{\DUrole{green}{\DUrole{sc}{British colourful text in small-caps}}}.
 
 \end{itemize}
 
@@ -2435,7 +2433,7 @@ Undefined substitution referenced: "problematic".
 \DUtitle[system-message]{system-message}
 \raisebox{1em}{\hypertarget{id42}{}}
 
-{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~394
+{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~393
 
 \hyperlink{id43}{
 Unknown target name: "5".
@@ -2445,7 +2443,7 @@ Unknown target name: "5".
 \DUtitle[system-message]{system-message}
 \raisebox{1em}{\hypertarget{id44}{}}
 
-{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~403
+{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~402
 
 \hyperlink{id45}{
 Unknown target name: "nonexistent".
@@ -2455,7 +2453,7 @@ Unknown target name: "nonexistent".
 \DUtitle[system-message]{system-message}
 \raisebox{1em}{\hypertarget{id46}{}}
 
-{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~430
+{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~429
 
 \hyperlink{id47}{
 Unknown target name: "hyperlink reference without a target".
@@ -2465,7 +2463,7 @@ Unknown target name: "hyperlink reference without a target".
 \DUtitle[system-message]{system-message}
 \raisebox{1em}{\hypertarget{id48}{}}
 
-{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~443
+{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~442
 
 \hyperlink{id49}{
 Duplicate target name, cannot be used as a unique reference: "duplicate target names".
