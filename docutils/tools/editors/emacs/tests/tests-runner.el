@@ -74,22 +74,9 @@ function."
       ;; Print current text.
       (message (format "========= %s" (prin1-to-string (car curtest))))
 
-      ;; Prepare a buffer with the starting text, and move the cursor where
-      ;; the special character is located.
-      (switch-to-buffer buf)
-      (erase-buffer)
-      (insert (cadr curtest))
-
-      (if (not (search-backward regression-point-char nil t))
-	  (error (concat "Error: Badly formed test input, missing "
-			 "the cursor position marker.")))
-
-      (delete-char 1)
-
-      (setq errtxt (funcall testfun
-			    (car curtest)
-			    (caddr curtest)
-			    (cadddr curtest)))
+      (setq errtxt (run-test buf (cadr curtest) testfun
+			     (list (car curtest) (caddr curtest)
+				   (cadddr curtest))))
 
       (if errtxt
 	  (if continue
@@ -99,6 +86,33 @@ function."
     ))
   (message "Done."))
 
+(defun run-test (buf input testfun args)
+  "Prepare BUF with the starting text INPUT, move the cursor
+where the special character is located, run TESTFUN with ARGS and
+return the error text."
+  (switch-to-buffer buf)
+  (erase-buffer)
+  (insert input)
+
+  (if (not (search-backward regression-point-char nil t))
+      (error (concat "Error: Badly formed test input, missing "
+		     "the cursor position marker.")))
+
+  (delete-char 1)
+  (apply testfun args))
+
+(defun run-test-filter (testfun &rest args)
+  "Run a test as a filter.
+
+Can be used with \"emacs --batch -l tests-runner.el -l ../rst.el --eval \"(run-test-filter 'function-name 'arg1...)\""
+  (let (;; Input from stdin
+	(input (read-from-minibuffer "")))
+    ;; Output result to stderr
+    (message "%s" (run-test (get-buffer-create "test") input testfun args))
+    (insert regression-point-char)
+    ;; Output buffer to stdout
+    (princ (buffer-string))
+    (princ "\n")))
 
 (defun regression-compare-buffers (testname expected testargs)
   "Compare the buffer and expected text and return actual

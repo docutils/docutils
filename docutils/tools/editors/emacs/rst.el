@@ -250,7 +250,6 @@
     (define-key map [(control c) (control h)] 'rst-display-decorations-hierarchy)
     ;; Homogeneize the decorations in the document.
     (define-key map [(control c) (control s)] 'rst-straighten-decorations)
-;;    (define-key map [(control c) (control s)] 'rst-straighten-deco-spacing)
 
     ;;
     ;; Section Movement and Selection.
@@ -394,29 +393,34 @@ highlighting.
        "\f\\|>*[ \t]*$\\|>*[ \t]*[-+*] \\|>*[ \t]*[0-9#]+\\. ")
   (set (make-local-variable 'adaptive-fill-mode) t)
 
-  ;; FIXME: No need to reset this.
-  ;; (set (make-local-variable 'indent-line-function) 'indent-relative)
-
   ;; The details of the following comment setup is important because it affects
   ;; auto-fill, and it is pretty common in running text to have an ellipsis
   ;; ("...") which trips because of the rest comment syntax (".. ").
   (set (make-local-variable 'comment-start) ".. ")
   (set (make-local-variable 'comment-start-skip) "^\\.\\. ")
   (set (make-local-variable 'comment-multi-line) nil)
+  ;; Text after a changed line may need new fontification - though we don't use
+  ;; jit-lock-mode at the moment...
+  (set (make-local-variable 'jit-lock-contextually) t)
 
   ;; Special variables
   (make-local-variable 'rst-adornment-level-alist)
 
   ;; Font lock
-  (set (make-local-variable 'font-lock-defaults)
-       '(rst-font-lock-keywords
-	 t nil nil nil
-	 ;; (font-lock-multiline . t) ;; Removed my EmacsMainDevelopment
-	 (font-lock-mark-block-function . mark-paragraph)))
-  (when (boundp 'font-lock-support-mode)
-    ;; rst-mode does not need font-lock-support-mode and works not well with
-    ;; jit-lock-mode because reST is not made for machines
-    (set (make-local-variable 'font-lock-support-mode) nil)))
+  (setq font-lock-defaults
+	'(rst-font-lock-keywords
+	  t nil nil nil
+	  (font-lock-multiline . t)
+	  (font-lock-mark-block-function . mark-paragraph)
+	  ;; rst-mode does not need font-lock-support-mode because it's fast
+	  ;; enough. In fact using `jit-lock-mode` slows things down
+	  ;; considerably even if `rst-font-lock-extend-region` is in place and
+	  ;; compiled.
+	  (font-lock-support-mode . nil)
+	  ))
+  (setq font-lock-extend-region-functions
+	(append font-lock-extend-region-functions
+		'(rst-font-lock-extend-region))))
 
 ;;;###autoload
 (define-minor-mode rst-minor-mode
@@ -984,7 +988,7 @@ REVERSE-DIRECTION is used to reverse the cycling order."
      )))
 
 
-(defun rst-adjust ()
+(defun rst-adjust (pfxarg)
   "Auto-adjust the decoration around point.
 
 Adjust/rotate the section decoration for the section title
@@ -1001,7 +1005,7 @@ title in restructuredtext.  It tries to deal with all the
 possible cases gracefully and to do `the right thing' in all
 cases.
 
-See the documentations of `rst-adjust-decoration' and
+See the documentations of `rst-adjust-decoration-work' and
 `rst-promote-region' for full details.
 
 Prefix Arguments
@@ -1015,23 +1019,19 @@ a. a (non-negative) prefix argument, which means to toggle the
 b. a negative numerical argument, which generally inverts the
    direction of search in the file or hierarchy.  Invoke with C--
    prefix for example."
-  (interactive)
+  (interactive "P")
 
   (let* (;; Save our original position on the current line.
 	 (origpt (set-marker (make-marker) (point)))
 
-	 ;; Parse the positive and negative prefix arguments.
-         (reverse-direction
-          (and current-prefix-arg
-               (< (prefix-numeric-value current-prefix-arg) 0)))
-         (toggle-style
-          (and current-prefix-arg (not reverse-direction))))
+         (reverse-direction (and pfxarg (< (prefix-numeric-value pfxarg) 0)))
+         (toggle-style (and pfxarg (not reverse-direction))))
 
     (if (rst-portable-mark-active-p)
         ;; Adjust decorations within region.
-        (rst-promote-region current-prefix-arg)
+        (rst-promote-region (and pfxarg t))
       ;; Adjust decoration around point.
-      (rst-adjust-decoration toggle-style reverse-direction))
+      (rst-adjust-decoration-work toggle-style reverse-direction))
 
     ;; Run the hooks to run after adjusting.
     (run-hooks 'rst-adjust-hook)
@@ -1051,7 +1051,17 @@ be one level down from the previous decoration.  If nil, a new
 decoration will be equal to the level of the previous
 decoration.")
 
-(defun rst-adjust-decoration (&optional toggle-style reverse-direction)
+(defun rst-adjust-decoration (pfxarg)
+  "Call `rst-adjust-decoration-work' interactively.
+
+Keep this for compatibility for older bindings (are there any?)."
+  (interactive "P")
+
+  (let* ((reverse-direction (and pfxarg (< (prefix-numeric-value pfxarg) 0)))
+         (toggle-style (and pfxarg (not reverse-direction))))
+    (rst-adjust-decoration-work toggle-style reverse-direction)))
+
+(defun rst-adjust-decoration-work (toggle-style reverse-direction)
 "Adjust/rotate the section decoration for the section title around point.
 
 This function is meant to be invoked possibly multiple times, and
@@ -1203,27 +1213,7 @@ might be required to make it non-ambiguous.
 
 For now we assume that the decorations are disjoint, that is,
 there is at least a single line between the titles/decoration
-lines.
-
-
-Suggested Binding
-=================
-
-We suggest that you bind this function on C-=.  It is close to
-C-- so a negative argument can be easily specified with a flick
-of the right hand fingers and the binding is unused in `text-mode'."
-  (interactive)
-
-  ;; If we were invoked directly, parse the prefix arguments into the
-  ;; arguments of the function.
-  (if current-prefix-arg
-      (setq reverse-direction
-            (and current-prefix-arg
-                 (< (prefix-numeric-value current-prefix-arg) 0))
-
-            toggle-style
-            (and current-prefix-arg (not reverse-direction))))
-
+lines."
   (let* (;; Check if we're on an underline around a section title, and move the
          ;; cursor to the title if this is the case.
          (moved (rst-normalize-cursor-position))
@@ -1344,16 +1334,15 @@ of the right hand fingers and the binding is unused in `text-mode'."
 (defalias 'rst-adjust-section-title 'rst-adjust)
 
 
-(defun rst-promote-region (&optional demote)
+(defun rst-promote-region (demote)
   "Promote the section titles within the region.
 
 With argument DEMOTE or a prefix argument, demote the section
 titles instead.  The algorithm used at the boundaries of the
-hierarchy is similar to that used by `rst-adjust-decoration'."
-  (interactive)
+hierarchy is similar to that used by `rst-adjust-decoration-work'."
+  (interactive "P")
 
-  (let* ((demote (or current-prefix-arg demote))
-         (alldecos (rst-find-all-decorations))
+  (let* ((alldecos (rst-find-all-decorations))
          (cur alldecos)
 
          (hier (rst-get-hierarchy alldecos))
@@ -1460,28 +1449,6 @@ in order to adapt it to our preferred style."
     )))
 
 
-
-
-(defun rst-straighten-deco-spacing ()
-  "Adjust the spacing before and after decorations in the entire document.
-The spacing will be set to two blank lines before the first two
-section levels, and one blank line before any of the other
-section levels."
-;; FIXME: we need to take care of subtitle at some point.
-  (interactive)
-  (save-excursion
-    (let* ((alldecos (rst-find-all-decorations)))
-
-      ;; Work the list from the end, so that we don't have to use markers to
-      ;; adjust for the changes in the document.
-      (dolist (deco (nreverse alldecos))
-	;; Go to the appropriate position.
-	(goto-char (point-min))
-	(forward-line (1- (car deco)))
-	(insert "@\n")
-;; FIXME: todo, we
-	)
-    )))
 
 
 (defun rst-find-pfx-in-region (beg end pfx-re)
@@ -2471,28 +2438,28 @@ first of a paragraph."
 ;;
 ;; FIXME: TODO we need to do the enumeration removal as well.
 
-(defun rst-enumerate-region (beg end)
+(defun rst-enumerate-region (beg end all)
   "Add enumeration to all the leftmost paragraphs in the given region.
-The region is specified between BEG and END.  With prefix argument,
+The region is specified between BEG and END.  With ALL,
 do all lines instead of just paragraphs."
-  (interactive "r")
+  (interactive "r\nP")
   (let ((count 0)
 	(last-insert-len nil))
     (rst-iterate-leftmost-paragraphs
-     beg end (not current-prefix-arg)
+     beg end (not all)
      (let ((ins-string (format "%d. " (incf count))))
        (setq last-insert-len (length ins-string))
        (insert ins-string))
      (insert (make-string last-insert-len ?\ ))
      )))
 
-(defun rst-bullet-list-region (beg end)
+(defun rst-bullet-list-region (beg end all)
   "Add bullets to all the leftmost paragraphs in the given region.
-The region is specified between BEG and END.  With prefix argument,
+The region is specified between BEG and END.  With ALL,
 do all lines instead of just paragraphs."
-  (interactive "r")
+  (interactive "r\nP")
   (rst-iterate-leftmost-paragraphs
-   beg end (not current-prefix-arg)
+   beg end (not all)
    (insert "- ")
    (insert "  ")
    ))
@@ -2827,6 +2794,10 @@ details check the Rst Faces Defaults group."
       (concat re-bol "\\(\\(\\(\\([-+/]\\|--\\)\\sw\\(-\\|\\sw\\)*"
 	      "\\([ =]\\S +\\)?\\)\\(,[\t ]\\)?\\)+\\)\\($\\|[\t ]\\{2\\}\\)")
       1 rst-block-face)
+     ;; `Line Blocks`_
+     (list
+      (concat re-bol "\\(|" re-blksep1 "\\)[^|\n]*$")
+      1 rst-block-face)
 
      ;; `Tables`_ FIXME: missing
 
@@ -2851,7 +2822,9 @@ details check the Rst Faces Defaults group."
       (concat re-bol "\\(__\\)" re-blksep1)
       1 rst-definition-face)
 
-     ;; All `Inline Markup`_
+     ;; All `Inline Markup`_ - most of them may be multiline though this is
+     ;; uninteresting
+
      ;; FIXME: Condition 5 preventing fontification of e.g. "*" not implemented
      ;; `Strong Emphasis`_
      (list
@@ -2900,7 +2873,7 @@ details check the Rst Faces Defaults group."
 
      ;; Do all block fontification as late as possible so 'append works
 
-     ;; Sections_ / Transitions_
+     ;; Sections_ / Transitions_ - for sections this is multiline
      (list
       re-ado2
       (list 'rst-font-lock-handle-adornment-match
@@ -2915,7 +2888,11 @@ details check the Rst Faces Defaults group."
 	    (list 3 '(cdr (assoc nil rst-adornment-faces-alist))
 		  'append t)))
 
-     ;; `Comments`_
+     ;; FIXME: FACESPEC could be used instead of ordinary faces to set
+     ;;        properties on comments and literal blocks so they are *not*
+     ;;        inline fontified; see (elisp)Search-based Fontification
+
+     ;; `Comments`_ - this is multiline
      (list
       (concat re-bol "\\(" re-ems "\\)\[^[|_\n]\\([^:\n]\\|:\\([^:\n]\\|$\\)\\)*$")
       (list 1 rst-comment-face)
@@ -2932,7 +2909,7 @@ details check the Rst Faces Defaults group."
 	    nil
 	    (list 0 rst-comment-face 'append)))
 
-     ;; `Literal Blocks`_
+     ;; `Literal Blocks`_ - this is multiline
      (list
       (concat re-bol "\\(\\([^.\n]\\|\\.[^.\n]\\).*\\)?\\(::\\)$")
       (list 3 rst-block-face)
@@ -2947,7 +2924,35 @@ details check the Rst Faces Defaults group."
       (list 1 rst-block-face)
       (list 2 rst-literal-face))
      ))
-  "Returns keywords to highlight in rst mode according to current settings.")
+  "Keywords to highlight in rst mode.")
+
+(defun rst-font-lock-extend-region ()
+  "Extend the region `font-lock-beg' / `font-lock-end' iff it may
+be in the middle of a multiline construct and return non-nil if so."
+  ;; There are many potential multiline constructs but really relevant ones are
+  ;; comment lines without leading explicit markup tag and literal blocks
+  ;; following "::" which are both indented. Thus indendation is what is
+  ;; recognized here. The second criteria is an explicit markup tag which may
+  ;; be a comment or a double colon at the end of a line.
+  (if (not (get-text-property font-lock-beg 'font-lock-multiline))
+      ;; Don't move if we start with a multiline construct already
+      (save-excursion
+	(let ((cont t))
+	  (move-to-window-line 0) ;; Start at the top window line
+	  (if (>= (point) font-lock-beg)
+	      (goto-char font-lock-beg))
+	  (forward-line 0)
+	  (while cont
+	    (if (looking-at "[^ \t]\\|[ \t]*\\.\\.[^ \t]\\|.*::$")
+		;; non-empty indented line, explicit markup tag or literal
+		;; block tag
+		(setq cont nil)
+	      (if (not (= (forward-line -1) 0)) ;; try previous line
+		  ;; no more previous line
+		  (setq cont nil))))
+	  (when (not (= (point) font-lock-beg))
+	    (setq font-lock-beg (point))
+	    t)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Indented blocks
@@ -3043,6 +3048,9 @@ point is not moved."
     (set-match-data
      (list rst-font-lock-find-unindented-line-begin
 	   rst-font-lock-find-unindented-line-end))
+    (put-text-property rst-font-lock-find-unindented-line-begin
+		       rst-font-lock-find-unindented-line-end
+		       'font-lock-multiline t)
     ;; Make sure this is called only once
     (setq rst-font-lock-find-unindented-line-end nil)
     t))
@@ -3185,7 +3193,8 @@ entered.")
     (setq rst-font-lock-adornment-data nil)
     (when ado-data
       (goto-char (nth 1 ado-data))
-      (put-text-property (nth 0 ado-data) (nth 1 ado-data) 'font-lock-multiline t) ;; Added by EmacsMainDevelopment
+      (put-text-property (nth 0 ado-data) (nth 1 ado-data)
+			 'font-lock-multiline t)
       (set-match-data ado-data)
       t)))
 
@@ -3248,15 +3257,15 @@ string)) to be used for converting the document.")
 
 (require 'compile)
 
-(defun rst-compile (&optional pfxarg)
+(defun rst-compile (&optional use-alt)
   "Compile command to convert reST document into some output file.
 Attempts to find configuration file, if it can, overrides the
-options.  There are two commands to choose from, with a prefix
-argument, select the alternative toolset."
+options.  There are two commands to choose from, with USE-ALT,
+select the alternative toolset."
   (interactive "P")
   ;; Note: maybe we want to check if there is a Makefile too and not do anything
   ;; if that is the case.  I dunno.
-  (let* ((toolset (cdr (assq (if pfxarg
+  (let* ((toolset (cdr (assq (if use-alt
 				 rst-compile-secondary-toolset
 			       rst-compile-primary-toolset)
 			rst-compile-toolsets)))
@@ -3280,7 +3289,7 @@ argument, select the alternative toolset."
                     " "))
 
     ;; Invoke the compile command.
-    (if (or compilation-read-command current-prefix-arg)
+    (if (or compilation-read-command use-alt)
         (call-interactively 'compile)
       (compile compile-command))
     ))
@@ -3288,7 +3297,7 @@ argument, select the alternative toolset."
 (defun rst-compile-alt-toolset ()
   "Compile command with the alternative toolset."
   (interactive)
-  (rst-compile 't))
+  (rst-compile t))
 
 (defun rst-compile-pseudo-region ()
   "Show the pseudo-XML rendering of the current active region,
@@ -3374,35 +3383,33 @@ This is useful for filling list item paragraphs."
 ;; Generic character repeater function.
 ;; For sections, better to use the specialized function above, but this can
 ;; be useful for creating separators.
-(defun rst-repeat-last-character (&optional tofill)
+(defun rst-repeat-last-character (use-next)
   "Fill the current line up to the length of the preceding line (if not
 empty), using the last character on the current line.  If the preceding line is
 empty, we use the `fill-column'.
 
-If a prefix argument is provided, use the next line rather than the preceding
-line.
+If USE-NEXT, use the next line rather than the preceding line.
 
 If the current line is longer than the desired length, shave the characters off
 the current line to fit the desired length.
 
 As an added convenience, if the command is repeated immediately, the alternative
 column is used (fill-column vs. end of previous/next line)."
-  (interactive)
+  (interactive "P")
   (let* ((curcol (current-column))
          (curline (+ (count-lines (point-min) (point))
                      (if (eq curcol 0) 1 0)))
          (lbp (line-beginning-position 0))
-         (prevcol (if (and (= curline 1) (not current-prefix-arg))
+         (prevcol (if (and (= curline 1) (not use-next))
                       fill-column
                     (save-excursion
-                      (forward-line (if current-prefix-arg 1 -1))
+                      (forward-line (if use-next 1 -1))
                       (end-of-line)
                       (skip-chars-backward " \t" lbp)
                       (let ((cc (current-column)))
                         (if (= cc 0) fill-column cc)))))
          (rightmost-column
-          (cond (tofill fill-column)
-                ((equal last-command 'rst-repeat-last-character)
+          (cond ((equal last-command 'rst-repeat-last-character)
                  (if (= curcol fill-column) prevcol fill-column))
                 (t (save-excursion
                      (if (= prevcol 0) fill-column prevcol)))
