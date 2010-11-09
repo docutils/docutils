@@ -1616,6 +1616,19 @@ Let's count in German \otherlanguage{german}{eins zwei drei}.
 \newcommand{\DUrolegreen}[1]{\textcolor{green}{#1}}
 \newcommand{\DUrolesc}[1]{\textsc{#1}}
 
+The following works in most browsers but does not validate
+(\texttt{<style>} is only allowed in the document head):
+%
+\begin{quote}{\ttfamily \raggedright \noindent
+..~raw::~html\\
+~\\
+~~<style~type="text/css"><!--\\
+~~~.green~\{color:~green;\}\\
+~~~.sc~\{font-variant:~small-caps;\}\\
+~~~--></style>
+}
+\end{quote}
+
 \otherlanguage{british}{\DUrole{green}{\DUrole{sc}{British colourful text in small-caps}}}.
 
 \end{itemize}

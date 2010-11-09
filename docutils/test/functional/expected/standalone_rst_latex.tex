@@ -1614,6 +1614,19 @@ Let's count in German \otherlanguage{ngerman}{eins zwei drei}.
 \newcommand{\DUrolegreen}[1]{\textcolor{green}{#1}}
 \newcommand{\DUrolesc}[1]{\textsc{#1}}
 
+The following works in most browsers but does not validate
+(\texttt{<style>} is only allowed in the document head):
+%
+\begin{quote}{\ttfamily \raggedright \noindent
+..~raw::~html\\
+~\\
+~~<style~type="text/css"><!-{}-\\
+~~~.green~\{color:~green;\}\\
+~~~.sc~\{font-variant:~small-caps;\}\\
+~~~-{}-></style>
+}
+\end{quote}
+
 \otherlanguage{british}{\DUrole{green}{\DUrole{sc}{British colourful text in small-caps}}}.
 
 \end{itemize}
@@ -1657,23 +1670,38 @@ Sum and Integral with limits:
 \item[{Math-Accents:}] \leavevmode 
 \leavevmode
 \setlength{\DUtablewidth}{\linewidth}
-\begin{longtable}[c]{p{0.377\DUtablewidth}p{0.331\DUtablewidth}}
+\begin{longtable}[c]{p{0.238\DUtablewidth}p{0.238\DUtablewidth}p{0.238\DUtablewidth}p{0.238\DUtablewidth}}
 
-$\tilde{n}$ \texttt{\textbackslash{}tilde\{n\}}
+$\acute{a}$ \texttt{\textbackslash{}acute\{a\}}
  & 
-$\hat{H}$ \texttt{\textbackslash{}hat\{H\}}
- \\
-
-$\bar{v}$   \texttt{\textbackslash{}bar\{v\}}
- & 
-$\vec{R}$ \texttt{\textbackslash{}vec\{R\}}
- \\
-
 $\grave{a}$ \texttt{\textbackslash{}grave\{a\}}
+ & 
+$\tilde{z}$ \texttt{\textbackslash{}tilde\{z\}}
+ & 
+$\bar{x}$   \texttt{\textbackslash{}bar\{x\}}
+ \\
+
+$\breve{x}$ \texttt{\textbackslash{}breve\{x\}}
+ & 
+$\check{x}$ \texttt{\textbackslash{}check\{x\}}
+ & 
+$\hat{x}$   \texttt{\textbackslash{}hat\{x\}}
  &  \\
+
+$\dot{t}$   \texttt{\textbackslash{}dot\{t\}}
+ & 
+$\ddot{t}$  \texttt{\textbackslash{}ddot\{t\}}
+ & 
+$\dddot{t}$ \texttt{\textbackslash{}dddot\{t\}}
+ & 
+$\vec{R}$   \texttt{\textbackslash{}vec\{R\}}
+ \\
 \end{longtable}
 
 \end{description}
+
+% \widetilde{xxx}
+% \widehat{xxx}
 
 Quantum mechanics:
 %

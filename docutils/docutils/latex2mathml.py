@@ -7,22 +7,22 @@
 # :Id: $Id$
 
 # latex2mathml.py: Convert LaTex math code into presentational MathML
-# Based on `latex_math` sandbox project by Jens Jørgen Mortensen 
+# Based on `latex_math` sandbox project by Jens Jørgen Mortensen
 # =========================================================================
 
 
 # LaTeX to MathML translation stuff:
 class math:
     """Base class for MathML elements."""
-    
+
     nchildren = 1000000
     """Required number of children"""
-    
+
     def __init__(self, children=None, inline=None):
         """math([children]) -> MathML element
 
         children can be one child or a list of children."""
-        
+
         self.children = []
         if children is not None:
             if type(children) is list:
@@ -44,15 +44,15 @@ class math:
 
     def full(self):
         """Room for more children?"""
-        
+
         return len(self.children) >= self.nchildren
-    
+
     def append(self, child):
         """append(child) -> element
 
         Appends child and returns self if self is not full or first
         non-full parent."""
-        
+
         assert not self.full()
         self.children.append(child)
         child.parent = self
@@ -65,7 +65,7 @@ class math:
         """delete_child() -> child
 
         Delete last child and return it."""
-        
+
         child = self.children[-1]
         del self.children[-1]
         return child
@@ -74,7 +74,7 @@ class math:
         """close() -> parent
 
         Close element and return first non-full element."""
-        
+
         parent = self.parent
         while parent.full():
             parent = parent.parent
@@ -82,9 +82,9 @@ class math:
 
     def xml(self):
         """xml() -> xml-string"""
-        
+
         return self.xml_start() + self.xml_body() + self.xml_end()
-    
+
     def xml_start(self):
         if not hasattr(self, 'inline'):
             return ['<%s>' % self.__class__.__name__]
@@ -96,7 +96,7 @@ class math:
 
     def xml_end(self):
         return ['</%s>' % self.__class__.__name__]
-    
+
     def xml_body(self):
         xml = []
         for child in self.children:
@@ -110,7 +110,7 @@ class mtd(mrow): pass
 
 class mx(math):
     """Base class for mo, mi, and mn"""
-    
+
     nchildren = 0
     def __init__(self, data):
         self.data = data
@@ -122,7 +122,7 @@ class mo(mx):
     translation = {'<': '&lt;', '>': '&gt;'}
     def xml_body(self):
         return [self.translation.get(self.data, self.data)]
-        
+
 class mi(mx): pass
 class mn(mx): pass
 
@@ -134,13 +134,13 @@ class msup(math):
 
 class msqrt(math):
     nchildren = 1
-    
+
 class mroot(math):
     nchildren = 2
-    
+
 class mfrac(math):
     nchildren = 2
-    
+
 class msubsup(math):
     nchildren = 3
     def __init__(self, children=None, reversed=False):
@@ -153,7 +153,7 @@ class msubsup(math):
             self.children[1:3] = [self.children[2], self.children[1]]
             self.reversed = False
         return math.xml(self)
-        
+
 class mfenced(math):
     translation = {'\\{': '{', '\\langle': u'\u2329',
                    '\\}': '}', '\\rangle': u'\u232A',
@@ -176,7 +176,7 @@ class mstyle(math):
             self.nchildren = nchildren
         math.__init__(self, children)
         self.attrs = kwargs
-        
+
     def xml_start(self):
         return ['<mstyle '] + ['%s="%s"' % item
                                for item in self.attrs.items()] + ['>']
@@ -200,7 +200,7 @@ class munderover(math):
     nchildren = 3
     def __init__(self, children=None):
         math.__init__(self, children)
-        
+
 class mtext(math):
     nchildren = 0
     def __init__(self, text):
@@ -209,14 +209,19 @@ class mtext(math):
     def xml_body(self):
         return [self.text]
 
-
-#an obvious choice for dot is EE24 but it is less likely to be rendered
-over = {'tilde': '~',
-        'hat': '^',
-        'bar': '_',
-        'grave': '`',
-        'dot': u'\u0307',
-        'vec': u'\u2192'}
+#        TeX      spacing    combining
+over = {'acute': u'\u00B4',  # u'\u0301',
+        'bar':   u'\u00AF',  # u'\u0304',
+        'breve': u'\u02D8',  # u'\u0306',
+        'check': u'\u02C7',  # u'\u030C',
+        'dot':   u'\u02D9',  # u'\u0307',
+        'ddot':  u'\u00A8',  # u'\u0308',
+        'dddot':             u'\u20DB',
+        'grave': u'`',       # u'\u0300',
+        'hat':   u'^',       # u'\u0302',
+        'tilde': u'\u02DC',  # u'\u0303',
+        # 'overline':        # u'\u0305',
+        'vec':               u'\u20D7'}
 
 Greek = {
     # Upper case greek letters:
@@ -259,7 +264,7 @@ def parse_latex_math(string, inline=True):
     inline math and inline=False is for displayed math.
 
     tree is the whole tree and node is the current element."""
-    
+
     # Normalize white-space:
     string = ' '.join(string.split())
 
@@ -354,7 +359,7 @@ mathbb = {'A': u'\U0001D538',
           'B': u'\U0001D539',
           'C': u'\u2102',
           'D': u'\U0001D53B',
-          'E': u'\U0001D53C', 
+          'E': u'\U0001D53C',
           'F': u'\U0001D53D',
           'G': u'\U0001D53E',
           'H': u'\u210D',
@@ -473,4 +478,3 @@ def handle_keyword(name, node, string):
             raise SyntaxError('Unknown LaTeX command: ' + name)
 
     return node, skip
-

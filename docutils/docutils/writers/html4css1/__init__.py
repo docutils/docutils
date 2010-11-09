@@ -231,20 +231,19 @@ class HTMLTranslator(nodes.NodeVisitor):
     doctype_mathml = doctype
 
     head_prefix_template = ('<html xmlns="http://www.w3.org/1999/xhtml"'
-                            ' xml:lang="%s" lang="%s">\n<head>\n')
+                            ' xml:lang="%(lang)s" lang="%(lang)s">\n<head>\n')
     content_type = ('<meta http-equiv="Content-Type"'
                     ' content="text/html; charset=%s" />\n')
-    # TODO: content_type_mathml
-    #   In particular, 'text/html' is NOT suitable for XHTML Family
-    #   document types that add elements and attributes from foreign
-    #   namespaces, such as XHTML+MathML [XHTML+MathML].
-    #   -- http://www.w3.org/TR/xhtml-media-types/#text-html
+    content_type_mathml = ('<meta http-equiv="Content-Type"'
+                           ' content="application/xhtml+xml; charset=%s" />\n')
+
     generator = ('<meta name="generator" content="Docutils %s: '
                  'http://docutils.sourceforge.net/" />\n')
     stylesheet_link = '<link rel="stylesheet" href="%s" type="text/css" />\n'
     embedded_stylesheet = '<style type="text/css">\n\n%s\n</style>\n'
     words_and_spaces = re.compile(r'\S+| +|\n')
     sollbruchstelle = re.compile(r'.+\W\W.+|[-?].+', re.U) # wrap point inside word
+    lang_attribute = 'lang' # name changes to 'xml:lang' in XHTML 1.1
 
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
@@ -261,7 +260,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             # encoding not interpolated:
             self.html_prolog.append(self.xml_declaration)
         self.head_prefix.extend([self.doctype,
-                                 self.head_prefix_template % (lcode, lcode)])
+                                 self.head_prefix_template % {'lang': lcode}])
         self.html_prolog.append(self.doctype)
         self.head = self.meta[:]
         # stylesheets
@@ -372,7 +371,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         languages = [cls for cls in classes
                      if cls.startswith('language-')]
         if languages:
-            atts['lang'] = languages[0][9:]
+            # lang attribute name is 'lang' in XHTML 1.0 but 'xml:lang' in 1.1
+            atts[self.lang_attribute] = languages[0][9:]
             classes.pop(classes.index(languages[0]))
         classes = ' '.join(classes)
         if classes:
@@ -1107,15 +1107,17 @@ class HTMLTranslator(nodes.NodeVisitor):
                 self.head_prefix[1] = self.doctype_mathml
             else:
                 self.head_prefix[0] = self.doctype_mathml
+            self.html_head[0] = self.content_type_mathml
+            self.head[0] = self.content_type_mathml % self.settings.output_encoding
             self.has_mathml_dtd = True
         # Convert from LaTeX to MathML:
         math_code = node.astext()
         try:
             mathml_tree = parse_latex_math(math_code, inline=inline)
             mathml = ''.join(mathml_tree.xml())
-        except SyntaxError, msg:
-            self.document.reporter.error(msg, base_node=node)
-            mathml = msg # TODO: generate system message and link.
+        except SyntaxError, err:
+            self.document.reporter.error(err, base_node=node)
+            mathml = unicode(err) # TODO: generate system message and link.
         self.body.append(mathml)
         # Content already processed:
         raise nodes.SkipNode

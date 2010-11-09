@@ -33,13 +33,26 @@ Sum and Integral with limits:
    \sum_{n=1}^m n = \frac{m(m+1)}{2}
 
 Math-Accents:
-  .. class:: borderless
+  .. list-table::
+     :class: borderless
 
-  ===============================  ===========================
-  :math:`\tilde{n}` ``\tilde{n}``  :math:`\hat{H}` ``\hat{H}``
-  :math:`\bar{v}`   ``\bar{v}``    :math:`\vec{R}` ``\vec{R}``
-  :math:`\grave{a}` ``\grave{a}``
-  ===============================  ===========================
+     * - :math:`\acute{a}` ``\acute{a}``
+       - :math:`\grave{a}` ``\grave{a}``
+       - :math:`\tilde{z}` ``\tilde{z}``
+       - :math:`\bar{x}`   ``\bar{x}``
+     * - :math:`\breve{x}` ``\breve{x}``
+       - :math:`\check{x}` ``\check{x}``
+       - :math:`\hat{x}`   ``\hat{x}``
+       -
+     * - :math:`\dot{t}`   ``\dot{t}``
+       - :math:`\ddot{t}`  ``\ddot{t}``
+       - :math:`\dddot{t}` ``\dddot{t}``
+       - :math:`\vec{R}`   ``\vec{R}``
+
+..
+       \widetilde{xxx}
+       \widehat{xxx}
+
 
 Quantum mechanics:
 
