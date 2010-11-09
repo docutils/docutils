@@ -36,11 +36,14 @@ Custom Roles
      \newcommand{\DUrolegreen}[1]{\textcolor{green}{#1}}
      \newcommand{\DUrolesc}[1]{\textsc{#1}}
 
-  .. raw:: html
+  The following works in most browsers but does not validate
+  (``<style>`` is only allowed in the document head)::
 
-    <style type="text/css"><!--
-     .green {color: green;}
-     .sc {font-variant: small-caps;}
-     --></style>
+    .. raw:: html
+
+      <style type="text/css"><!--
+       .green {color: green;}
+       .sc {font-variant: small-caps;}
+       --></style>
 
   :customx:`British colourful text in small-caps`.
