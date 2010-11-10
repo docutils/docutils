@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #! /usr/bin/env python
 
 # $Id$
@@ -222,6 +223,11 @@ class HelperFunctionsTests(unittest.TestCase):
         self.assertEquals(utils.normalize_language_tag('de-AT-1901-frak'),
                           ['de_at_1901_frak', 'de_at_1901', 'de_at_frak',
                           'de_1901_frak', 'de_at', 'de_1901', 'de_frak', 'de'])
+
+    def test_column_width(self):
+        self.assertEquals(utils.column_width('de'), 2)
+        self.assertEquals(utils.column_width(u'dâ'), 2) # pre-composed
+        self.assertEquals(utils.column_width(u'dâ'), 2) # combining
 
 
 if __name__ == '__main__':

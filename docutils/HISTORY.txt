@@ -66,6 +66,8 @@ Changes Since 0.7
 * docutils/utils.py:
 
   - strip whitespace from stylesheet arguments
+  - exclude combining chars from column_width
+    (partial fix for [ 2926161 ])
 
 
 Release 0.7 (2010-07-07)

@@ -585,22 +585,24 @@ east_asian_widths = {'W': 2,   # Wide
                      'N': 1,   # Neutral (not East Asian, treated as narrow)
                      'A': 1}   # Ambiguous (s/b wide in East Asian context,
                                # narrow otherwise, but that doesn't work)
-"""Mapping of result codes from `unicodedata.east_asian_width()` to character
+"""Mapping of result codes from `unicodedata.east_asian_widt()` to character
 column widths."""
 
-def east_asian_column_width(text):
-    if isinstance(text, unicode):
-        total = 0
-        for c in text:
-            total += east_asian_widths[unicodedata.east_asian_width(c)]
-        return total
-    else:
-        return len(text)
+def column_width(text):
+    """Return the column width of text.
 
-if hasattr(unicodedata, 'east_asian_width'):
-    column_width = east_asian_column_width
-else:
-    column_width = len
+    Correct ``len(text)`` for wide East Asian and combining Unicode chars.
+    """
+    if isinstance(text, str):
+        return len(text)
+    try:
+        width = sum([east_asian_widths[unicodedata.east_asian_width(c)]
+                     for c in text])
+    except AttributeError:  # east_asian_width() New in version 2.4.
+        width = len(text)
+    combining_correction = sum([-1 for ch in text
+                                if unicodedata.combining(ch)])
+    return width + combining_correction
 
 def uniq(L):
      r = []
