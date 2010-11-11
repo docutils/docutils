@@ -1623,6 +1623,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def visit_comment(self, node):
         el = self.append_p('textbody')
         el1 =  SubElement(el, 'office:annotation', attrib={})
+        el2 =  SubElement(el1, 'dc:creator', attrib={})
+        s1 = os.environ.get('USER', '')
+        el2.text = s1
         el2 =  SubElement(el1, 'text:p', attrib={})
         el2.text = node.astext()
 
