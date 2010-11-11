@@ -1265,7 +1265,9 @@ MathJax_
    typesetting that is scalable and prints at full resolution.
  * MathJax is a joint project of the AMS, Design Science, Inc., and
    the Society for Industrial and Applied Mathematics.
- * `Math support in Sphinx`_ also works with MathJax.
+ * There is a `MathJax extension`__ for Sphinx.
+ 
+ __ http://bitbucket.org/kevindunn/sphinx-extension-mathjax
 
 HTML+CSS
  format math in standard HTML enhanced by CSS rules
