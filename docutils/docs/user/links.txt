@@ -34,6 +34,10 @@ Editors with reStructuredText support and docutils GUIs:
 * `VST <http://skawina.eu.org/mikolaj/vst.html>`__ (Vim reStructured Text)
   is a plugin for Vim7 with folding.
 
+* `VOoM <http://www.vim.org/scripts/script.php?script_id=2657>`__
+   is a plugin for Vim that emulates two-pane outliner. 
+   Version 4.0b2 added support for reStructuredText.
+
 * `rst mode <http://jedmodes.sf.net/mode/rst/>`__ for the
   `JED <http://www.jedsoft.org/jed/>`__ programmers editor.
 
@@ -180,9 +184,9 @@ Extend the reStructuredText syntax or the features of Docutils.
 More extensions are in the `Docutils Sandbox`_.
 
 * Jens J. Mortensen developed `LaTeX math for reST`_, which writes to
-  LaTeX or to MathML.
+  LaTeX or to MathML. It's included with Docutils > 0.7 (2010-11-05).
 
-* Beni Cherniavsky has written a generic `preprocessing module`_ for
+* BENI Cherniavsky has written a generic `preprocessing module`_ for
   roles and/or directives and built preprocessors for TeX math for
   both LaTeX and HTML output on top of it.
 
