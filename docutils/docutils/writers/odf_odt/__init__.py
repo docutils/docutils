@@ -836,6 +836,7 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         self.in_table_of_contents = False
         self.table_of_content_index_body = None
         self.list_level = 0
+        self.def_list_level = 0
         self.footnote_ref_dict = {}
         self.footnote_list = []
         self.footnote_chars_idx = 0
@@ -1655,19 +1656,14 @@ class ODFTranslator(nodes.GenericNodeVisitor):
     def depart_decoration(self, node):
         pass
 
-    def visit_definition(self, node):
-        self.paragraph_style_stack.append(self.rststyle('blockindent'))
-        self.bumped_list_level_stack.append(ListLevel(1))
-
-    def depart_definition(self, node):
-        self.paragraph_style_stack.pop()
-        self.bumped_list_level_stack.pop()
-
     def visit_definition_list(self, node):
-        pass
+        self.def_list_level +=1
+        if self.list_level > 5:
+            raise RuntimeError(
+                'max definition list nesting level exceeded')
 
     def depart_definition_list(self, node):
-        pass
+        self.def_list_level -=1
 
     def visit_definition_list_item(self, node):
         pass
@@ -1676,15 +1672,22 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         pass
 
     def visit_term(self, node):
-        el = self.append_p('textbody')
-        el1 = SubElement(el, 'text:span',
-            attrib={'text:style-name': self.rststyle('strong')})
-        #el1.text = node.astext()
-        self.set_current_element(el1)
+        el = self.append_p('deflist-term-%d' % self.def_list_level)
+        el.text = node.astext()
+        self.set_current_element(el)
+        raise nodes.SkipChildren()
 
     def depart_term(self, node):
         self.set_to_parent()
-        self.set_to_parent()
+
+    def visit_definition(self, node):
+        self.paragraph_style_stack.append(
+            self.rststyle('deflist-def-%d' % self.def_list_level))
+        self.bumped_list_level_stack.append(ListLevel(1))
+
+    def depart_definition(self, node):
+        self.paragraph_style_stack.pop()
+        self.bumped_list_level_stack.pop()
 
     def visit_classifier(self, node):
         els = self.current_element.getchildren()
