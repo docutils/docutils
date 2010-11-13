@@ -1,4 +1,486 @@
 **************************************
+Date: Sat Nov 13 16:08:34 CET 2010
+Author: stefan
+Tag: rstdiff_1_90
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Added Files:
+	README 
+
+--------------------------------------
+Log Message:
+Added README.
+**************************************
+Date: Sat Nov 13 16:03:42 CET 2010
+Author: stefan
+Tag: rstdiff_1_89
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple/input
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple/input
+
+Modified Files:
+	section.new.rst section.old.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple/source
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple/source
+
+Modified Files:
+	section.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleHtml
+In directory rosalu:/home/stefan/free/rstdiff/tests/simpleHtml
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource
+In directory rosalu:/home/stefan/free/rstdiff/tests/simpleNoSource
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource/expected
+In directory rosalu:/home/stefan/free/rstdiff/tests/simpleNoSource/expected
+
+Modified Files:
+	onceOnly.xml 
+Added Files:
+	section.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource/input
+In directory rosalu:/home/stefan/free/rstdiff/tests/simpleNoSource/input
+
+Modified Files:
+	onceOnly.new.rst onceOnly.old.rst 
+Added Files:
+	section.new.rst section.old.rst 
+
+--------------------------------------
+Log Message:
+Adapted tests to run again.
+**************************************
+Date: Sat Nov 13 15:17:18 CET 2010
+Author: stefan
+Tag: rstdiff_1_88
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource
+In directory rosalu:/home/stefan/free/rstdiff/tests/simpleNoSource
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Implemented up propagation for replacement of elements which may
+propagate up if their siblings also may propagate a replacement up.
+Tests need to be considered.
+**************************************
+Date: Sat Nov 13 14:13:48 CET 2010
+Author: stefan
+Tag: rstdiff_1_87
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple/input
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple/input
+
+Modified Files:
+	section.new.rst section.old.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple/source
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple/source
+
+Modified Files:
+	section.rst 
+
+--------------------------------------
+Log Message:
+One more step for proper replacement of complex elements. Expected
+tests fail.
+**************************************
+Date: Sat Nov 13 11:17:24 CET 2010
+Author: stefan
+Tag: rstdiff_1_86
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Refactoring: Prepared code for up-propagation for handling
+section/title.
+**************************************
+Date: Sun Nov  7 20:10:28 CET 2010
+Author: stefan
+Tag: rstdiff_1_85
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/html
+In directory rosalu:/home/stefan/free/rstdiff/tests/html
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/secret
+In directory rosalu:/home/stefan/free/rstdiff/tests/secret
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/secretHtml
+In directory rosalu:/home/stefan/free/rstdiff/tests/secretHtml
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleHtml
+In directory rosalu:/home/stefan/free/rstdiff/tests/simpleHtml
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource
+In directory rosalu:/home/stefan/free/rstdiff/tests/simpleNoSource
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Upgraded tests to filterunit V0.7.1.
+**************************************
+Date: Mon Nov  1 19:33:50 CET 2010
+Author: stefan
+Tag: rstdiff_1_84
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	Makefile 
+Added Files:
+	rstdiff.pod 
+
+--------------------------------------
+Log Message:
+Added man page.
+**************************************
+Date: Sun Oct 31 20:53:50 CET 2010
+Author: stefan
+Tag: rstdiff_1_83
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/studies
+In directory rosalu:/home/stefan/free/rstdiff/studies
+
+Added Files:
+	.cvsignore 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/html
+In directory rosalu:/home/stefan/free/rstdiff/tests/html
+
+Added Files:
+	.cvsignore 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple
+In directory rosalu:/home/stefan/free/rstdiff/tests/simple
+
+Added Files:
+	.cvsignore 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleHtml
+In directory rosalu:/home/stefan/free/rstdiff/tests/simpleHtml
+
+Added Files:
+	.cvsignore 
+
+--------------------------------------
+Log Message:
+Removed created `.cvsignore`.
+**************************************
+Date: Mon Oct 18 12:30:28 CEST 2010
+Author: stefan
+Tag: rstdiff_1_82
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory theowa:/home/stefan/free/rstdiff
+
+Added Files:
+	setup.py 
+
+--------------------------------------
+Log Message:
+Added `setup.py`.
+**************************************
+Date: Mon Oct 18 12:14:54 CEST 2010
+Author: stefan
+Tag: rstdiff_1_81
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory theowa:/home/stefan/free/rstdiff
+
+Modified Files:
+	Makefile 
+
+--------------------------------------
+Log Message:
+Added library sources.
+**************************************
+Date: Mon Oct 18 12:02:16 CEST 2010
+Author: stefan
+Tag: rstdiff_1_80
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory theowa:/home/stefan/free/rstdiff
+
+Modified Files:
+	Makefile 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/secret
+In directory theowa:/home/stefan/free/rstdiff/tests/secret
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/secretHtml
+In directory theowa:/home/stefan/free/rstdiff/tests/secretHtml
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/secretHtml/expected
+In directory theowa:/home/stefan/free/rstdiff/tests/secretHtml/expected
+
+Modified Files:
+	transaktionsbehandlung.html 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple
+In directory theowa:/home/stefan/free/rstdiff/tests/simple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleHtml
+In directory theowa:/home/stefan/free/rstdiff/tests/simpleHtml
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Added tags to some tests.
+
+Adapted expected output to Docutils 0.8.
+**************************************
+Date: Mon Oct 11 10:48:34 CEST 2010
+Author: stefan
+Tag: rstdiff_1_79
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/secret/expected
+In directory theowa:/home/stefan/free/rstdiff/tests/secret/expected
+
+Modified Files:
+	transaktionsbehandlung.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource/expected
+In directory theowa:/home/stefan/free/rstdiff/tests/simpleNoSource/expected
+
+Modified Files:
+	attributesNoSource.xml onceOnly.xml pcdataOnly.xml 
+	references.xml 
+
+--------------------------------------
+Log Message:
+Adapted comments in tests to newer docutils version.
+**************************************
+Date: Sun Oct 10 16:41:51 CEST 2010
+Author: stefan
+Tag: rstdiff_1_78
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	Makefile 
+
+--------------------------------------
+Log Message:
+Switched to using `packageSupport`.
+**************************************
+Date: Sun Aug 22 14:24:03 CEST 2010
+Author: stefan
+Tag: rstdiff_1_77
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/secret
+In directory rosalu:/home/stefan/free/rstdiff/tests/secret
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/secret/expected
+In directory rosalu:/home/stefan/free/rstdiff/tests/secret/expected
+
+Modified Files:
+	transaktionsbehandlung.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/secret/input
+In directory rosalu:/home/stefan/free/rstdiff/tests/secret/input
+
+Added Files:
+	transaktionsbehandlung.opt 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/secretHtml
+In directory rosalu:/home/stefan/free/rstdiff/tests/secretHtml
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/secretHtml/expected
+In directory rosalu:/home/stefan/free/rstdiff/tests/secretHtml/expected
+
+Modified Files:
+	transaktionsbehandlung.html 
+
+--------------------------------------
+Log Message:
+Corrected expected results.
+**************************************
+Date: Sun Aug 22 13:43:23 CEST 2010
+Author: stefan
+Tag: rstdiff_1_76
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Debugging.
+
+Moved debug flag to a parameter.
+
+Removed some debugging code again.
+**************************************
+Date: Fri Aug 13 10:43:23 CEST 2010
+Author: stefan
+Tag: rstdiff_1_75
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/secret
+In directory theowa:/home/stefan/free/rstdiff/tests/secret
+
+Added Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/secret/expected
+In directory theowa:/home/stefan/free/rstdiff/tests/secret/expected
+
+Added Files:
+	transaktionsbehandlung.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/secret/input
+In directory theowa:/home/stefan/free/rstdiff/tests/secret/input
+
+Added Files:
+	transaktionsbehandlung.new.rst transaktionsbehandlung.old.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/secretHtml
+In directory theowa:/home/stefan/free/rstdiff/tests/secretHtml
+
+Added Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/secretHtml/expected
+In directory theowa:/home/stefan/free/rstdiff/tests/secretHtml/expected
+
+Added Files:
+	transaktionsbehandlung.html 
+
+--------------------------------------
+Log Message:
+Added directories for tests with secret input files. Added test for
+new bug.
+**************************************
 Date: Sun Aug  8 14:23:27 CEST 2010
 Author: stefan
 Tag: rstdiff_1_74

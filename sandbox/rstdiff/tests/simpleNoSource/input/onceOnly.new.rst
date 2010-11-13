@@ -76,6 +76,8 @@ PCDATA *and* only once
 
 Some elements are of both types.
 
+--same		A NEW DESCRIPTION
+
 --changed       A changing option_string must propagate to option
 
 -g, --group	THE DESCRIPTION AS WELL AS THE OPTION_GROUP MUST BE SINGLE.

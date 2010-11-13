@@ -77,6 +77,9 @@ PCDATA *and* only once
 
 Some elements are of both types.
 
+--same			Some old description - still description may
+  			appear only once
+
 --option        	A changing option_string must propagate to option
 
 -o, --option_group	The option_group and the description may also appear
