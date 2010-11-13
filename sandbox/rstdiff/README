@@ -1,0 +1,3 @@
+`rstdiff.py` generates a structural diff from two reStructuredText
+input documents and produces an annotated result. Use the `--writer`
+option to select a writer for the result.

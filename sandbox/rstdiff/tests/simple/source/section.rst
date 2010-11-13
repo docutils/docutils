@@ -45,4 +45,3 @@ Section replacement
 ===================
 
 Text replacement.
-

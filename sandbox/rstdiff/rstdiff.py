@@ -280,8 +280,8 @@ class Words2Text(Transform):
 
 class Words2TextVisitor(nodes.SparseNodeVisitor):
 
-    def visit_Word(self, word):
-        parent = word.parent
+    def visit_Text(self, text):
+        parent = text.parent
         # Find this node and the first node of the sequence it belongs to
         first = None
         for i in range(len(parent)):
@@ -289,13 +289,13 @@ class Words2TextVisitor(nodes.SparseNodeVisitor):
                 first = None
             elif first is None:
                 first = i
-            # ``parent.index(word)`` uses value equality - can not be
-            # used here to find `word`
-            if id(parent[i]) == id(word):
+            # ``parent.index(text)`` uses value equality - can not be
+            # used here to find `text`
+            if id(parent[i]) == id(text):
                 end = i + 1
                 break
         else:
-            raise IndexError("Can not find %r in its parent" % ( word, ))
+            raise IndexError("Can not find %r in its parent" % ( text, ))
 
         if (len(parent) > end
             and isinstance(parent[end], nodes.Text)):
@@ -303,11 +303,13 @@ class Words2TextVisitor(nodes.SparseNodeVisitor):
             # deleted - so work for last node of a sequence
             return
 
-        text = nodes.Text(reduce(lambda s, node: s + node.astext(),
+        texts = nodes.Text(reduce(lambda s, node: s + node.astext(),
                                  parent[first:end], ""))
-        parent[first:end] = ( text, )
+        parent[first:end] = ( texts, )
 
-    visit_White = visit_Word
+    visit_White = visit_Text
+
+    visit_Word = visit_Text
 
 ###############################################################################
 ###############################################################################
@@ -486,8 +488,8 @@ class DocutilsDispatcher(HashableNodeImpl):
         elif command == Opcode.Replace:
             # TODO Replacement doubles elements. This needs to be
             # reflected by creation of unique @ids for replaced
-            # elements. This needs to be reflected in referring @refid
-            # and @backrefs.
+            # elements. This needs also to be reflected in referring
+            # @refid and @backrefs.
             for newChild in self.copyRange(oldRoot, oldRange,
                                            self.NewReplaced):
                 self.addChild(diffRoot, newChild)
@@ -818,8 +820,8 @@ def buildTree(dispatcher, diffRoot, opcodes, oldRoot, newRoot):
             dispatcher.mergeChildren(diffRoot, oldRoot, newRoot,
                                      command, oldRange, newRange)
 
-# A change in certain elements must not be propagated up since they
-# may occur only once
+# A replacement in certain elements must not be propagated up since
+# they may occur only once and replacement would double them
 replaceNotUp = ( nodes.title, nodes.subtitle, nodes.term, nodes.field_name,
                  nodes.attribution, nodes.caption, # (%text.model)
                  nodes.header, nodes.footer, nodes.definition,
@@ -830,9 +832,31 @@ replaceNotUp = ( nodes.title, nodes.subtitle, nodes.term, nodes.field_name,
                  nodes.tbody, # different content model
                  )
 
+# A replacement in certain elements normally not subject to up
+# propagation and contained in certain elements may propagate up if
+# all their siblings are also replacements and would propagate up
+replaceUpSiblings = (
+    ( nodes.title, nodes.section, ),
+    ( nodes.subtitle, nodes.section, ),
+    ( nodes.term, nodes.definition_list_item, ),
+    ( nodes.field_name, nodes.field, ),
+    ( nodes.attribution, nodes.block_quote, ),
+    ( nodes.caption, nodes.figure, ),
+    ( nodes.definition, nodes.definition_list_item, ),
+    ( nodes.field_body, nodes.field, ),
+    ( nodes.description, nodes.option_list_item, ),
+    ( nodes.legend, nodes.figure, ),
+    ( nodes.option_group, nodes.option_list_item, ),
+    )
+
+# TODO If much text is replaced in a text element the whole element
+# should be replaced. This makes more sense to people than two large
+# replaced/replacement blocks where the only equality is in words like
+# "the". The exact meaning of "much" should be an option.
 def cleanOpcodes(opcodes, dispatcher, oldList, newList):
     """Replace some nasty results in `opcodes` by cleaner versions. Opcodes
     create `newList` from `oldList`."""
+    mightReplaceUpSiblings = [ ]
     for i in range(len(opcodes)):
         opcode = Opcode(opcodes[i])
         ( command, oldRange, newRange, subOpcodes,
@@ -864,39 +888,55 @@ def cleanOpcodes(opcodes, dispatcher, oldList, newList):
         opcode.setSubOpcodes(subOpcodes)
         if len(subOpcodes) == 1:
             subOpcode = Opcode(subOpcodes[0])
-            if (subOpcode.getCommand() != Opcode.Replace
-                or not reduce(lambda last, cls:
-                                  last or isinstance(oldNode, cls),
-                              replaceNotUp, False)):
-                # TODO If a section/title would propagate up the
-                # propagation needs to be done if all siblings would
-                # propagate, too; this way a section replacement
-                # should work again
-                #
-                # This applies to section/title, section/subtitle,
-                # definition_list_item/term, field/field_name,
-                # block_quote/attribution, figure/caption,
-                # definition_list_item/definition, field/field_body,
-                # option_list_item/description, figure/legend,
-                # option_list_item/option_group
-                if subOpcode.getCommand() != Opcode.Descend:
-                    # Propagate 1-element sequences up
-                    opcode.setCommand(subOpcode.getCommand())
+            if subOpcode.getCommand() == Opcode.Descend:
+                propagateUp = False
+            elif subOpcode.getCommand() == Opcode.Replace:
+                if any([ isinstance(oldNode, cls)
+                         for cls in replaceNotUp ]):
+                    propagateUp = False
+                    # TODO FIXME `container` must be considered
+                    if any([ isinstance(oldNode, cls)
+                             for ( cls, container, ) in replaceUpSiblings ]):
+                        # If for instance a section/title would
+                        # propagate a replacement up the propagation
+                        # needs to be done if all siblings would
+                        # also propagate a replacement up
+                        mightReplaceUpSiblings.append(i)
+                else:
+                    propagateUp = True
+            else:
+                propagateUp = True
+            if propagateUp:
+                # Propagate 1-element sequences up
+                opcode.setCommand(subOpcode.getCommand())
         opcodes[i] = opcode.asTuple()
 
-def createDiff(oldTree, newTree):
+    if mightReplaceUpSiblings:
+        # There are entries which might propagate a replace up if all
+        # siblings could do as well
+        if all([ i in mightReplaceUpSiblings
+                 or Opcode(opcodes[i]).getCommand() == Opcode.Replace
+                 for i in range(len(opcodes)) ]):
+            # All entries are replacements which may propagate up -
+            # actually propagate elements which may propagate
+            for i in mightReplaceUpSiblings:
+                opcode = Opcode(opcodes[i])
+                opcode.setCommand(Opcode.Replace)
+                opcodes[i] = opcode.asTuple()
+
+def createDiff(oldTree, newTree, debug=False):
     """Create and return a diff document from `oldTree` to `newTree`."""
     dispatcher = DocutilsDispatcher()
-    #dispatcher.debug = True
+    dispatcher.debug = debug
     opcodes = doDiff(dispatcher, oldTree, newTree)
-    if dispatcher.debug:
+    if debug:
         from pprint import pprint
         print(oldTree.asdom().toprettyxml())
         print(newTree.asdom().toprettyxml())
         pprint(opcodes, sys.stdout, 2, 40, None)
         print("^^^ Before cleaning vvv After cleaning")
     cleanOpcodes(opcodes, dispatcher, [ oldTree ], [ newTree ])
-    if dispatcher.debug:
+    if debug:
         from pprint import pprint
         pprint(opcodes, sys.stdout, 2, 40, None)
     if len(opcodes) != 1:
