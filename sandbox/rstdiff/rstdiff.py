@@ -487,9 +487,10 @@ class DocutilsDispatcher(HashableNodeImpl):
                 self.addChild(diffRoot, newChild)
         elif command == Opcode.Replace:
             # TODO Replacement doubles elements. This needs to be
-            # reflected by creation of unique @ids for replaced
-            # elements. This needs also to be reflected in referring
-            # @refid and @backrefs.
+            # reflected properly in the @ids. If the @ids don't change
+            # there need to be unique @ids for replaced elements. This
+            # needs also to be reflected in referring @refid and
+            # @backrefs.
             for newChild in self.copyRange(oldRoot, oldRange,
                                            self.NewReplaced):
                 self.addChild(diffRoot, newChild)
@@ -894,9 +895,9 @@ def cleanOpcodes(opcodes, dispatcher, oldList, newList):
                 if any([ isinstance(oldNode, cls)
                          for cls in replaceNotUp ]):
                     propagateUp = False
-                    # TODO FIXME `container` must be considered
                     if any([ isinstance(oldNode, cls)
-                             for ( cls, container, ) in replaceUpSiblings ]):
+                             and isinstance(oldNode.parent, parentCls)
+                             for ( cls, parentCls, ) in replaceUpSiblings ]):
                         # If for instance a section/title would
                         # propagate a replacement up the propagation
                         # needs to be done if all siblings would
@@ -940,10 +941,12 @@ def createDiff(oldTree, newTree, debug=False):
         from pprint import pprint
         pprint(opcodes, sys.stdout, 2, 40, None)
     if len(opcodes) != 1:
-        raise TypeError("Don't how to merge documents which are not rootEq")
+        raise TypeError("Don't know how to merge documents which are not rootEq")
     opcode = Opcode(opcodes[0])
     if opcode.getCommand() not in ( Opcode.Descend, Opcode.Equal, ):
-        raise TypeError("Don't how to merge top level opcode of type %r"
+        # TODO There should be a sense making message for this case
+        # because this may happen due to up propagation of replacements
+        raise TypeError("Don't know how to merge top level opcode of type %r"
                         % ( opcode.getCommand(), ))
 
     diffDoc = buildDocument(oldTree, newTree, opcodes, pub.settings)
