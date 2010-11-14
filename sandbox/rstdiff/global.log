@@ -1,4 +1,85 @@
 **************************************
+Date: Sun Nov 14 12:41:30 CET 2010
+Author: stefan
+Tag: rstdiff_1_94
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource/expected
+In directory rosalu:/home/stefan/free/rstdiff/tests/simpleNoSource/expected
+
+Added Files:
+	documentTitle.xml 
+
+--------------------------------------
+Log Message:
+Debugging.
+**************************************
+Date: Sun Nov 14 10:35:16 CET 2010
+Author: stefan
+Tag: rstdiff_1_93
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource/expected
+In directory rosalu:/home/stefan/free/rstdiff/tests/simpleNoSource/expected
+
+Removed Files:
+	documentTitle.xml 
+
+--------------------------------------
+Log Message:
+Debugging.
+**************************************
+Date: Sun Nov 14 10:20:30 CET 2010
+Author: stefan
+Tag: rstdiff_1_92
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Added todo.
+**************************************
+Date: Sun Nov 14 10:18:52 CET 2010
+Author: stefan
+Tag: rstdiff_1_91
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	README rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource/expected
+In directory rosalu:/home/stefan/free/rstdiff/tests/simpleNoSource/expected
+
+Added Files:
+	documentTitle.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource/input
+In directory rosalu:/home/stefan/free/rstdiff/tests/simpleNoSource/input
+
+Added Files:
+	documentTitle.new.rst documentTitle.old.rst 
+
+--------------------------------------
+Log Message:
+Parent classes are considered for up propagating candidates.
+**************************************
 Date: Sat Nov 13 16:08:34 CET 2010
 Author: stefan
 Tag: rstdiff_1_90
