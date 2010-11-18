@@ -7,5 +7,7 @@ writer_name = "xetex"
 
 # Settings
 settings_overrides['language_code'] = 'ru'
-# override the automatic addition of "unicode" option for "russian" language
+# Override the automatic addition of "unicode" option for "russian"
+# language to work around a problem with cyrillic in PDF-bookmarks in
+# hyperref versions < v6.79g 2009/11/20 
 settings_overrides['hyperref_options'] = 'unicode=false'
