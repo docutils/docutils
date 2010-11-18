@@ -1802,8 +1802,8 @@ See also the `Link text doesn’t break at end line`_ FAQ entry.
 Glyph not defined in PD1 encoding
 `````````````````````````````````
 
-If a section title or other link contains e.g. cyrillic characters,
-the LaTeX log contains lots of warnings like::
+If a section title or other link contains non-Latin (e.g. Cyrillic)
+characters, the LaTeX log contains lots of warnings like::
 
   Package hyperref Warning: Glyph not defined in PD1 encoding,
   (hyperref)                removing `\CYRZ' on input line 6.
@@ -1814,11 +1814,26 @@ This can be solved with the "unicode" hyperref_option_ setting::
   --hyperref-option=unicode
 
 (works also with non-unicode input/output encoding (e.g. "koi8r" or
-"latin1"). However, this setting does not work with xelatex_ and is
-therefore not made a default.
+"latin1"). Newer versions of hyperref default to "unicode=true" if the
+document language is "russian".
 
+However, this setting leads to "strange" characters in the bookmarks
+if used with xelatex_ in hyperref versions before v6.79g (2009/11/20).
+(cf `bugreport 3100778`__).
+
+If updating the hyperref package is not an option, the workaround is
+to set ::
+
+  --hyperref-option="unicode=false"
+
+or (in the config file)::
+
+  [xetex writer]
+
+  hyperref-option: unicode=false
+
+__ http://sourceforge.net/tracker/?func=detail&aid=3100778&group_id=38414&atid=422030
 .. _hyperref_option: config.html#stylesheet-latex2e-writer
-
 
 image inclusion
 ```````````````
