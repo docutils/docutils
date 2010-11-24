@@ -70,6 +70,7 @@ class Babel(latex2e.Babel):
         'cop':          'coptic',
         'de':           'german', # new spelling (de_1996)
         'de_1901':      'ogerman', # old spelling
+        'dv':           'divehi',  # Maldivian
         'dsb':          'lsorbian',
         'el_polyton':   'polygreek',
         'fa':           'farsi',
@@ -80,6 +81,7 @@ class Babel(latex2e.Babel):
         'sq':           'albanian',
         'sr':           'serbian', # Cyrillic script (sr-cyrl)
         'th':           'thai',
+        'vi':           'vietnamese',
         # zh-latn:      ???        #     Chinese Pinyin
         })
     # Languages without Polyglossia support:
@@ -89,7 +91,7 @@ class Babel(latex2e.Babel):
                 'fr_ca',        # 'canadien',
                 'grc_ibycus',   # 'ibycus', (Greek Ibycus encoding)
                 'sr-latn',      # 'serbian script=latin'
-                'vi'):          # 'vietnam',
+               ):
         del(language_codes[key])
 
     def __init__(self, language_code, reporter):
