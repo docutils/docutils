@@ -890,36 +890,29 @@
                     <line>
                         Singing...
             <paragraph>
-                A poem by Christian Morgenstern:
+                A line block, like the following poem by Christian Morgenstern, can
+                also be centre-aligned:
             <line_block classes="language-de align-center">
                 <line>
-                    Das æsthetische Wiesel
+                    <strong>
+                        Die Trichter
                 <line>
                 <line>
-                    Ein Wiesel
+                    Zwei Trichter wandeln durch die Nacht.
                 <line>
-                    saß auf einem Kiesel
+                    Durch ihres Rumpfs verengten Schacht
                 <line>
-                    inmitten Bachgeriesel.
+                    fließt weißes Mondlicht
                 <line>
+                    still und heiter
                 <line>
-                    Wißt ihr
+                    auf   ihren
                 <line>
-                    weshalb?
+                    Waldweg
                 <line>
+                    u. s.
                 <line>
-                    Das Mondkalb
-                <line>
-                    verriet es mir
-                <line>
-                    im Stillen:
-                <line>
-                <line>
-                    Das raffinier-
-                <line>
-                    te Tier
-                <line>
-                    tat's um des Reimes willen.
+                    w.
                 <line>
         <section ids="block-quotes" names="block\ quotes">
             <title auto="1" refid="id46">
@@ -940,8 +933,9 @@
             <paragraph>
                 The language of a quote (like any other object) can be specified by
                 a class attribute:
-            <block_quote>
-                <paragraph classes="language-fr">
+            <comment xml:space="preserve">
+            <block_quote classes="language-fr">
+                <paragraph>
                     ReStructuredText est un langage de balisage léger utilisé
                     notamment dans la documentation du langage Python.
         <section ids="doctest-blocks" names="doctest\ blocks">
@@ -1921,15 +1915,15 @@
         <system_message backrefs="id24" ids="id23" level="3" line="102" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Undefined substitution referenced: "problematic".
-        <system_message backrefs="id80" ids="id79" level="3" line="393" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id80" ids="id79" level="3" line="388" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Unknown target name: "5".
-        <system_message backrefs="id82" ids="id81" level="3" line="402" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id82" ids="id81" level="3" line="397" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Unknown target name: "nonexistent".
-        <system_message backrefs="id84" ids="id83" level="3" line="429" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id84" ids="id83" level="3" line="424" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Unknown target name: "hyperlink reference without a target".
-        <system_message backrefs="id86" ids="id85" level="3" line="442" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id86" ids="id85" level="3" line="437" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Duplicate target name, cannot be used as a unique reference: "duplicate target names".

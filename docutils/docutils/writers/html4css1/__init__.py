@@ -27,6 +27,7 @@ import docutils
 from docutils import frontend, nodes, utils, writers, languages, io
 from docutils.transforms import writer_aux
 from docutils.latex2mathml import parse_latex_math
+# from docutils.math.math2html import math2html
 
 class Writer(writers.Writer):
 
@@ -248,6 +249,8 @@ class HTMLTranslator(nodes.NodeVisitor):
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
         self.settings = settings = document.settings
+        # TODO: make this a config value once the HTML math output is ready:
+        self.settings.math_output = "MathML"
         lcode = settings.language_code
         self.language = languages.get_language(lcode, document.reporter)
         self.meta = [self.content_type % settings.output_encoding,
@@ -371,10 +374,10 @@ class HTMLTranslator(nodes.NodeVisitor):
         languages = [cls for cls in classes
                      if cls.startswith('language-')]
         if languages:
-            # lang attribute name is 'lang' in XHTML 1.0 but 'xml:lang' in 1.1
+            # attribute name is 'lang' in XHTML 1.0 but 'xml:lang' in 1.1
             atts[self.lang_attribute] = languages[0][9:]
             classes.pop(classes.index(languages[0]))
-        classes = ' '.join(classes)
+        classes = ' '.join(classes).strip()
         if classes:
             atts['class'] = classes
         assert 'id' not in atts
@@ -1101,24 +1104,33 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('\n</pre>\n')
 
     def visit_math(self, node, inline=True):
-        # update the doctype:
-        if not self.has_mathml_dtd:
-            if self.settings.xml_declaration:
-                self.head_prefix[1] = self.doctype_mathml
-            else:
-                self.head_prefix[0] = self.doctype_mathml
-            self.html_head[0] = self.content_type_mathml
-            self.head[0] = self.content_type_mathml % self.settings.output_encoding
-            self.has_mathml_dtd = True
-        # Convert from LaTeX to MathML:
-        math_code = node.astext()
-        try:
-            mathml_tree = parse_latex_math(math_code, inline=inline)
-            mathml = ''.join(mathml_tree.xml())
-        except SyntaxError, err:
-            self.document.reporter.error(err, base_node=node)
-            mathml = unicode(err) # TODO: generate system message and link.
-        self.body.append(mathml)
+        math_in = node.astext()
+
+        if self.settings.math_output == 'HTML':
+            tag={True: 'span', False: 'div'}
+            self.body.append(self.starttag(node, tag[inline], CLASS='formula'))
+            self.body.append(math2html(math_in))
+            self.body.append('</%s>\n' % tag[inline])
+
+        elif self.settings.math_output == 'MathML':
+            # MathML export:
+            # update the doctype:
+            if not self.has_mathml_dtd:
+                if self.settings.xml_declaration:
+                    self.head_prefix[1] = self.doctype_mathml
+                else:
+                    self.head_prefix[0] = self.doctype_mathml
+                self.html_head[0] = self.content_type_mathml
+                self.head[0] = self.content_type_mathml % self.settings.output_encoding
+                self.has_mathml_dtd = True
+            # Convert from LaTeX to MathML:
+            try:
+                mathml_tree = parse_latex_math(math_in, inline=inline)
+                math_out = ''.join(mathml_tree.xml())
+            except SyntaxError, err:
+                self.document.reporter.error(err, base_node=node)
+                math_out = unicode(err) # TODO: generate system message and link.
+            self.body.append(math_out)
         # Content already processed:
         raise nodes.SkipNode
 

@@ -745,26 +745,21 @@ Take it away, Eric the Orchestra Leader!
 
 \end{quote}
 
-A poem by Christian Morgenstern:
+A line block, like the following poem by Christian Morgenstern, can
+also be centre-aligned:
 
 \begin{DUlineblock}{0em}
 \otherlanguage{ngerman}{\DUrole{align-center}{
-\item[] Das æsthetische Wiesel
+\item[] \textbf{Die Trichter}
 \item[] 
-\item[] Ein Wiesel
-\item[] saß auf einem Kiesel
-\item[] inmitten Bachgeriesel.
-\item[] 
-\item[] Wißt ihr
-\item[] weshalb?
-\item[] 
-\item[] Das Mondkalb
-\item[] verriet es mir
-\item[] im Stillen:
-\item[] 
-\item[] Das raffinier-
-\item[] te Tier
-\item[] tat's um des Reimes willen.
+\item[] Zwei Trichter wandeln durch die Nacht.
+\item[] Durch ihres Rumpfs verengten Schacht
+\item[] fließt weißes Mondlicht
+\item[] still und heiter
+\item[] auf ~ ihren
+\item[] Waldweg
+\item[] u. s.
+\item[] w.
 \item[] 
 }}
 \end{DUlineblock}
@@ -795,12 +790,14 @@ own it, and what it is too.
 
 The language of a quote (like any other object) can be specified by
 a class attribute:
+
+% 
 %
 \begin{quote}
-
-\otherlanguage{french}{ReStructuredText est un langage de balisage léger utilisé
-notamment dans la documentation du langage Python.}
-
+\otherlanguage{french}{
+ReStructuredText est un langage de balisage léger utilisé
+notamment dans la documentation du langage Python.
+}
 \end{quote}
 
 
@@ -1676,17 +1673,19 @@ $\acute{a}$ \texttt{\textbackslash{}acute\{a\}}
  & 
 $\grave{a}$ \texttt{\textbackslash{}grave\{a\}}
  & 
-$\tilde{z}$ \texttt{\textbackslash{}tilde\{z\}}
+$\tilde{\alpha}$ \texttt{\textbackslash{}tilde\{\textbackslash{}alpha\}}
  & 
-$\bar{x}$   \texttt{\textbackslash{}bar\{x\}}
+$\bar{a}$   \texttt{\textbackslash{}bar\{a\}}
  \\
 
 $\breve{x}$ \texttt{\textbackslash{}breve\{x\}}
  & 
-$\check{x}$ \texttt{\textbackslash{}check\{x\}}
+$\check{a}$ \texttt{\textbackslash{}check\{a\}}
  & 
-$\hat{x}$   \texttt{\textbackslash{}hat\{x\}}
- &  \\
+$\hat{\gamma}$ \texttt{\textbackslash{}hat\{\textbackslash{}gamma\}}
+ & 
+$\vec{\imath}$   \texttt{\textbackslash{}vec\{\textbackslash{}imath\}}
+ \\
 
 $\dot{t}$   \texttt{\textbackslash{}dot\{t\}}
  & 
@@ -2520,7 +2519,7 @@ Undefined substitution referenced: ``problematic''.
 \DUtitle[system-message]{system-message}
 \raisebox{1em}{\hypertarget{id40}{}}
 
-{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~393
+{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~388
 
 \hyperlink{id41}{
 Unknown target name: ``5''.
@@ -2530,7 +2529,7 @@ Unknown target name: ``5''.
 \DUtitle[system-message]{system-message}
 \raisebox{1em}{\hypertarget{id42}{}}
 
-{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~402
+{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~397
 
 \hyperlink{id43}{
 Unknown target name: ``nonexistent''.
@@ -2540,7 +2539,7 @@ Unknown target name: ``nonexistent''.
 \DUtitle[system-message]{system-message}
 \raisebox{1em}{\hypertarget{id44}{}}
 
-{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~429
+{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~424
 
 \hyperlink{id45}{
 Unknown target name: ``hyperlink reference without a target''.
@@ -2550,7 +2549,7 @@ Unknown target name: ``hyperlink reference without a target''.
 \DUtitle[system-message]{system-message}
 \raisebox{1em}{\hypertarget{id46}{}}
 
-{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~442
+{\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~437
 
 \hyperlink{id47}{
 Duplicate target name, cannot be used as a unique reference: ``duplicate target names''.

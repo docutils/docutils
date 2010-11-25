@@ -38,12 +38,12 @@ Math-Accents:
 
      * - :math:`\acute{a}` ``\acute{a}``
        - :math:`\grave{a}` ``\grave{a}``
-       - :math:`\tilde{z}` ``\tilde{z}``
-       - :math:`\bar{x}`   ``\bar{x}``
+       - :math:`\tilde{\alpha}` ``\tilde{\alpha}``
+       - :math:`\bar{a}`   ``\bar{a}``
      * - :math:`\breve{x}` ``\breve{x}``
-       - :math:`\check{x}` ``\check{x}``
-       - :math:`\hat{x}`   ``\hat{x}``
-       -
+       - :math:`\check{a}` ``\check{a}``
+       - :math:`\hat{\gamma}` ``\hat{\gamma}``
+       - :math:`\vec{\imath}`   ``\vec{\imath}``
      * - :math:`\dot{t}`   ``\dot{t}``
        - :math:`\ddot{t}`  ``\ddot{t}``
        - :math:`\dddot{t}` ``\dddot{t}``
@@ -52,7 +52,6 @@ Math-Accents:
 ..
        \widetilde{xxx}
        \widehat{xxx}
-
 
 Quantum mechanics:
 

@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
-# :Copyright: © 2010 Jens Jørgen Mortensen, Günter Milde.
-#             Released  without warranties or conditions of any kind
+# :Copyright: © 2010 Günter Milde.
+#             Based on rst2mathml.py from the latex_math sandbox project
+#             © 2005 Jens Jørgen Mortensen
+# :License:   Released  without warranties or conditions of any kind
 #             under the terms of the Apache License, Version 2.0
 #             http://www.apache.org/licenses/LICENSE-2.0
 # :Id: $Id$
@@ -223,26 +225,87 @@ over = {'acute': u'\u00B4',  # u'\u0301',
         # 'overline':        # u'\u0305',
         'vec':               u'\u20D7'}
 
-Greek = {
-    # Upper case greek letters:
-    'Phi': u'\u03a6', 'Xi': u'\u039e', 'Sigma': u'\u03a3', 'Psi': u'\u03a8', 'Delta': u'\u0394', 'Theta': u'\u0398', 'Upsilon': u'\u03d2', 'Pi': u'\u03a0', 'Omega': u'\u03a9', 'Gamma': u'\u0393', 'Lambda': u'\u039b'}
-greek = {
-    # Lower case greek letters:
-    'tau': u'\u03c4', 'phi': u'\u03d5', 'xi': u'\u03be', 'iota': u'\u03b9', 'epsilon': u'\u03f5', 'varrho': u'\u03f1', 'varsigma': u'\u03c2', 'beta': u'\u03b2', 'psi': u'\u03c8', 'rho': u'\u03c1', 'delta': u'\u03b4', 'alpha': u'\u03b1', 'zeta': u'\u03b6', 'omega': u'\u03c9', 'varepsilon': u'\u03b5', 'kappa': u'\u03ba', 'vartheta': u'\u03d1', 'chi': u'\u03c7', 'upsilon': u'\u03c5', 'sigma': u'\u03c3', 'varphi': u'\u03c6', 'varpi': u'\u03d6', 'mu': u'\u03bc', 'eta': u'\u03b7', 'theta': u'\u03b8', 'pi': u'\u03c0', 'varkappa': u'\u03f0', 'nu': u'\u03bd', 'gamma': u'\u03b3', 'lambda': u'\u03bb'}
+Greek = { # Upper case greek letters:
+    'Phi':u'\u03a6', 'Xi':u'\u039e', 'Sigma':u'\u03a3',
+    'Psi':u'\u03a8', 'Delta':u'\u0394', 'Theta':u'\u0398',
+    'Upsilon':u'\u03d2', 'Pi':u'\u03a0', 'Omega':u'\u03a9',
+    'Gamma':u'\u0393', 'Lambda':u'\u039b'}
+
+letters = { # Lower case greek letters (and dotless i, j):
+    # 'imath':u'i', 'jmath':u'i', # when used with combining accents
+    'imath':u'\u0131', 'jmath':u'\u0237',
+    'tau':u'\u03c4', 'phi':u'\u03d5', 'xi':u'\u03be', 'iota':u'\u03b9',
+    'epsilon':u'\u03f5', 'varrho':u'\u03f1', 'varsigma':u'\u03c2',
+    'beta':u'\u03b2', 'psi':u'\u03c8', 'rho':u'\u03c1',
+    'delta':u'\u03b4', 'alpha':u'\u03b1', 'zeta':u'\u03b6',
+    'omega':u'\u03c9', 'varepsilon':u'\u03b5', 'kappa':u'\u03ba',
+    'vartheta':u'\u03d1', 'chi':u'\u03c7', 'upsilon':u'\u03c5',
+    'sigma':u'\u03c3', 'varphi':u'\u03c6', 'varpi':u'\u03d6',
+    'mu':u'\u03bc', 'eta':u'\u03b7', 'theta':u'\u03b8', 'pi':u'\u03c0',
+    'varkappa':u'\u03f0', 'nu':u'\u03bd', 'gamma':u'\u03b3',
+    'lambda':u'\u03bb'}
 
 special = {
     # Binary operation symbols:
-    'wedge': u'\u2227', 'diamond': u'\u22c4', 'star': u'\u22c6', 'amalg': u'\u2a3f', 'ast': u'\u2217', 'odot': u'\u2299', 'triangleleft': u'\u25c1', 'bigtriangleup': u'\u25b3', 'ominus': u'\u2296', 'ddagger': u'\u2021', 'wr': u'\u2240', 'otimes': u'\u2297', 'sqcup': u'\u2294', 'oplus': u'\u2295', 'bigcirc': u'\u25cb', 'oslash': u'\u2298', 'sqcap': u'\u2293', 'bullet': u'\u2219', 'cup': u'\u222a', 'cdot': u'\u22c5', 'cap': u'\u2229', 'bigtriangledown': u'\u25bd', 'times': u'\xd7', 'setminus': u'\u2216', 'circ': u'\u2218', 'vee': u'\u2228', 'uplus': u'\u228e', 'mp': u'\u2213', 'dagger': u'\u2020', 'triangleright': u'\u25b7', 'div': u'\xf7', 'pm': u'\xb1',
+    'wedge':u'\u2227', 'diamond':u'\u22c4', 'star':u'\u22c6',
+    'amalg':u'\u2a3f', 'ast':u'\u2217', 'odot':u'\u2299',
+    'triangleleft':u'\u25c1', 'bigtriangleup':u'\u25b3',
+    'ominus':u'\u2296', 'ddagger':u'\u2021', 'wr':u'\u2240',
+    'otimes':u'\u2297', 'sqcup':u'\u2294', 'oplus':u'\u2295',
+    'bigcirc':u'\u25cb', 'oslash':u'\u2298', 'sqcap':u'\u2293',
+    'bullet':u'\u2219', 'cup':u'\u222a', 'cdot':u'\u22c5',
+    'cap':u'\u2229', 'bigtriangledown':u'\u25bd', 'times':u'\xd7',
+    'setminus':u'\u2216', 'circ':u'\u2218', 'vee':u'\u2228',
+    'uplus':u'\u228e', 'mp':u'\u2213', 'dagger':u'\u2020',
+    'triangleright':u'\u25b7', 'div':u'\xf7', 'pm':u'\xb1',
     # Relation symbols:
-    'subset': u'\u2282', 'propto': u'\u221d', 'geq': u'\u2265', 'ge': u'\u2265', 'sqsubset': u'\u228f', 'Join': u'\u2a1d', 'frown': u'\u2322', 'models': u'\u22a7', 'supset': u'\u2283', 'in': u'\u2208', 'doteq': u'\u2250', 'dashv': u'\u22a3', 'gg': u'\u226b', 'leq': u'\u2264', 'succ': u'\u227b', 'vdash': u'\u22a2', 'cong': u'\u2245', 'simeq': u'\u2243', 'subseteq': u'\u2286', 'parallel': u'\u2225', 'equiv': u'\u2261', 'ni': u'\u220b', 'le': u'\u2264', 'approx': u'\u2248', 'precsim': u'\u227e', 'sqsupset': u'\u2290', 'll': u'\u226a', 'sqsupseteq': u'\u2292', 'mid': u'\u2223', 'prec': u'\u227a', 'succsim': u'\u227f', 'bowtie': u'\u22c8', 'perp': u'\u27c2', 'sqsubseteq': u'\u2291', 'asymp': u'\u224d', 'smile': u'\u2323', 'supseteq': u'\u2287', 'sim': u'\u223c', 'neq': u'\u2260',
+    'subset':u'\u2282', 'propto':u'\u221d', 'geq':u'\u2265',
+    'ge':u'\u2265', 'sqsubset':u'\u228f', 'Join':u'\u2a1d',
+    'frown':u'\u2322', 'models':u'\u22a7', 'supset':u'\u2283',
+    'in':u'\u2208', 'doteq':u'\u2250', 'dashv':u'\u22a3',
+    'gg':u'\u226b', 'leq':u'\u2264', 'succ':u'\u227b',
+    'vdash':u'\u22a2', 'cong':u'\u2245', 'simeq':u'\u2243',
+    'subseteq':u'\u2286', 'parallel':u'\u2225', 'equiv':u'\u2261',
+    'ni':u'\u220b', 'le':u'\u2264', 'approx':u'\u2248',
+    'precsim':u'\u227e', 'sqsupset':u'\u2290', 'll':u'\u226a',
+    'sqsupseteq':u'\u2292', 'mid':u'\u2223', 'prec':u'\u227a',
+    'succsim':u'\u227f', 'bowtie':u'\u22c8', 'perp':u'\u27c2',
+    'sqsubseteq':u'\u2291', 'asymp':u'\u224d', 'smile':u'\u2323',
+    'supseteq':u'\u2287', 'sim':u'\u223c', 'neq':u'\u2260',
     # Arrow symbols:
-    'searrow': u'\u2198', 'updownarrow': u'\u2195', 'Uparrow': u'\u21d1', 'longleftrightarrow': u'\u27f7', 'Leftarrow': u'\u21d0', 'longmapsto': u'\u27fc', 'Longleftarrow': u'\u27f8', 'nearrow': u'\u2197', 'hookleftarrow': u'\u21a9', 'downarrow': u'\u2193', 'Leftrightarrow': u'\u21d4', 'longrightarrow': u'\u27f6', 'rightharpoondown': u'\u21c1', 'longleftarrow': u'\u27f5', 'rightarrow': u'\u2192', 'Updownarrow': u'\u21d5', 'rightharpoonup': u'\u21c0', 'Longleftrightarrow': u'\u27fa', 'leftarrow': u'\u2190', 'mapsto': u'\u21a6', 'nwarrow': u'\u2196', 'uparrow': u'\u2191', 'leftharpoonup': u'\u21bc', 'leftharpoondown': u'\u21bd', 'Downarrow': u'\u21d3', 'leftrightarrow': u'\u2194', 'Longrightarrow': u'\u27f9', 'swarrow': u'\u2199', 'hookrightarrow': u'\u21aa', 'Rightarrow': u'\u21d2',
+    'searrow':u'\u2198', 'updownarrow':u'\u2195', 'Uparrow':u'\u21d1',
+    'longleftrightarrow':u'\u27f7', 'Leftarrow':u'\u21d0',
+    'longmapsto':u'\u27fc', 'Longleftarrow':u'\u27f8',
+    'nearrow':u'\u2197', 'hookleftarrow':u'\u21a9',
+    'downarrow':u'\u2193', 'Leftrightarrow':u'\u21d4',
+    'longrightarrow':u'\u27f6', 'rightharpoondown':u'\u21c1',
+    'longleftarrow':u'\u27f5', 'rightarrow':u'\u2192',
+    'Updownarrow':u'\u21d5', 'rightharpoonup':u'\u21c0',
+    'Longleftrightarrow':u'\u27fa', 'leftarrow':u'\u2190',
+    'mapsto':u'\u21a6', 'nwarrow':u'\u2196', 'uparrow':u'\u2191',
+    'leftharpoonup':u'\u21bc', 'leftharpoondown':u'\u21bd',
+    'Downarrow':u'\u21d3', 'leftrightarrow':u'\u2194',
+    'Longrightarrow':u'\u27f9', 'swarrow':u'\u2199',
+    'hookrightarrow':u'\u21aa', 'Rightarrow':u'\u21d2',
     # Miscellaneous symbols:
-    'infty': u'\u221e', 'surd': u'\u221a', 'partial': u'\u2202', 'ddots': u'\u22f1', 'exists': u'\u2203', 'flat': u'\u266d', 'diamondsuit': u'\u2662', 'wp': u'\u2118', 'spadesuit': u'\u2660', 'Re': u'\u211c', 'vdots': u'\u22ee', 'aleph': u'\u2135', 'clubsuit': u'\u2663', 'sharp': u'\u266f', 'angle': u'\u2220', 'prime': u'\u2032', 'natural': u'\u266e', 'ell': u'\u2113', 'neg': u'\xac', 'top': u'\u22a4', 'nabla': u'\u2207', 'bot': u'\u22a5', 'heartsuit': u'\u2661', 'cdots': u'\u22ef', 'Im': u'\u2111', 'forall': u'\u2200', 'imath': u'\u0131', 'hbar': u'\u210f', 'emptyset': u'\u2205',
+    'infty':u'\u221e', 'surd':u'\u221a',
+    'partial':u'\u2202', 'ddots':u'\u22f1', 'exists':u'\u2203',
+    'flat':u'\u266d', 'diamondsuit':u'\u2662', 'wp':u'\u2118',
+    'spadesuit':u'\u2660', 'Re':u'\u211c', 'vdots':u'\u22ee',
+    'aleph':u'\u2135', 'clubsuit':u'\u2663', 'sharp':u'\u266f',
+    'angle':u'\u2220', 'prime':u'\u2032', 'natural':u'\u266e',
+    'ell':u'\u2113', 'neg':u'\xac', 'top':u'\u22a4', 'nabla':u'\u2207',
+    'bot':u'\u22a5', 'heartsuit':u'\u2661', 'cdots':u'\u22ef',
+    'Im':u'\u2111', 'forall':u'\u2200',
+    'hbar':u'\u210f', 'emptyset':u'\u2205',
     # Variable-sized symbols:
-    'bigotimes': u'\u2a02', 'coprod': u'\u2210', 'int': u'\u222b', 'sum': u'\u2211', 'bigodot': u'\u2a00', 'bigcup': u'\u22c3', 'biguplus': u'\u2a04', 'bigcap': u'\u22c2', 'bigoplus': u'\u2a01', 'oint': u'\u222e', 'bigvee': u'\u22c1', 'bigwedge': u'\u22c0', 'prod': u'\u220f',
+    'bigotimes':u'\u2a02', 'coprod':u'\u2210', 'int':u'\u222b',
+    'sum':u'\u2211', 'bigodot':u'\u2a00', 'bigcup':u'\u22c3',
+    'biguplus':u'\u2a04', 'bigcap':u'\u22c2', 'bigoplus':u'\u2a01',
+    'oint':u'\u222e', 'bigvee':u'\u22c1', 'bigwedge':u'\u22c0',
+    'prod':u'\u220f',
     # Braces:
-    'langle': u'\u2329', 'rangle': u'\u232A'}
+    'langle':u'\u2329', 'rangle':u'\u232A'}
 
 sumintprod = ''.join([special[symbol] for symbol in
                       ['sum', 'int', 'oint', 'prod']])
@@ -460,8 +523,8 @@ def handle_keyword(name, node, string):
             raise SyntaxError('Expected something like "\mathbb{A}"!')
         node = node.append(mi(mathbb[string[1]]))
         skip += 3
-    elif name in greek:
-        node = node.append(mi(greek[name]))
+    elif name in letters:
+        node = node.append(mi(letters[name]))
     elif name in Greek:
         node = node.append(mo(Greek[name]))
     elif name in special:
