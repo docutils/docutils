@@ -310,29 +310,22 @@ Take it away, Eric the Orchestra Leader!
     |
     | Singing...
 
-A poem by Christian Morgenstern:
+A line block, like the following poem by Christian Morgenstern, can
+also be centre-aligned:
 
 .. class:: language-de align-center
-
-
-|    Das æsthetische Wiesel
+ 
+| **Die Trichter** 
 |
-|    Ein Wiesel
-|    saß auf einem Kiesel
-|    inmitten Bachgeriesel.
+| Zwei Trichter wandeln durch die Nacht.
+| Durch ihres Rumpfs verengten Schacht
+| fließt weißes Mondlicht
+| still und heiter
+| auf   ihren
+| Waldweg
+| u. s.
+| w.
 |
-|    Wißt ihr
-|    weshalb?
-|
-|    Das Mondkalb
-|    verriet es mir
-|    im Stillen:
-|
-|    Das raffinier-
-|    te Tier
-|    tat's um des Reimes willen.
-|
-
 
 Block Quotes
 ------------
@@ -350,7 +343,9 @@ Block quotes consist of indented body elements:
 The language of a quote (like any other object) can be specified by
 a class attribute:
 
-    .. class:: language-fr
+.. class:: language-fr
+
+..
 
     ReStructuredText est un langage de balisage léger utilisé
     notamment dans la documentation du langage Python.
