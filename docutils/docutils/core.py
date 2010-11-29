@@ -22,6 +22,12 @@ from docutils.frontend import OptionParser
 from docutils.transforms import Transformer
 import docutils.readers.doctree
 
+try:
+    import locale
+    argv_encoding = locale.getpreferredencoding()
+except:
+    argv_encoding = 'ascii'
+
 
 class Publisher:
 
@@ -150,7 +156,7 @@ class Publisher:
         option_parser = self.setup_option_parser(
             usage, description, settings_spec, config_section, **defaults)
         if argv is None:
-            argv = sys.argv[1:]
+            argv = [a.decode(argv_encoding) for a in sys.argv[1:]]
         self.settings = option_parser.parse_args(argv)
 
     def set_io(self, source_path=None, destination_path=None):
