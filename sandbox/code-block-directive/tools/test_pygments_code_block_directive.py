@@ -39,7 +39,7 @@ unstyled_tokens = ['']
 # ----------------------
 
 document = utils.new_document('generated')
-literal_block = nodes.literal_block(classes=["code-block", language])
+literal_block = nodes.literal_block(classes=["code", language])
 document += literal_block
 
 

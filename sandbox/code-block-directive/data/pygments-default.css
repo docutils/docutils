@@ -12,7 +12,7 @@
 /* --------------------------------------- */
 /* :: */
 
-@import url("/stylesheets/html4css1.css");         
+@import url("/stylesheets/html4css1.css");
 
 /* Indent the code block */
 /* --------------------- */
@@ -20,12 +20,16 @@
 /* Content copied from the `html4css1.css` rule for literal blocks. */
 /* Selector adapted to the output of Pygments_. :: */
 
-div.highlight {
+pre.code {
   margin-left: 2em ;
   margin-right: 2em ;
   background-color: #eeeeee
   }
 
+pre.code .ln { /* line numbers */
+/*   color: grey; */
+  font-size: small;
+}
 
 /* Colour code blocks */
 /* ------------------ */
