@@ -1440,11 +1440,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
             text = text.replace(char + char, char + '{}' + char)
         # Literal line breaks (in address or literal blocks):
         if self.insert_newline:
+            lines = text.split('\n')
             # for blank lines, insert a protected space, to avoid
             # ! LaTeX Error: There's no line here to end.
-            textlines = [line + '~'*(not line.lstrip())
-                         for line in text.split('\n')]
-            text = '\\\\\n'.join(textlines)
+            lines = [line + '~'*(not line.lstrip())
+                     for line in lines[:-1]] + lines[-1:]
+            text = '\\\\\n'.join(lines)
         if not self.literal:
             text = self.babel.quote_quotes(text)
         if self.literal and not self.insert_non_breaking_blanks:
