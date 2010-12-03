@@ -72,7 +72,9 @@ Section Title
 Section Subtitle
 ````````````````
 
-That's it, the text just above this line.
+Lone subsections are converted to a section subtitle by a transform
+activated with the ``--section-subtitles`` command line option or the
+``sectsubtitle-xform`` configuration value.
 
 Empty Section
 -------------
