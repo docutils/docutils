@@ -2423,13 +2423,24 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if node['classes']:
             self.depart_inline(node)
 
+    def multiline_math(self, code):
+        """find out whether `code` is a multi-line equation
+
+        This is a very simplified test, looking
+        for line-breaks (``\\``) outside environments.
+        """
+        # cut out environment content:
+        chunks = code.split(r'\begin{')
+        toplevel_code = ''.join([chunk.split(r'\end{')[-1]
+                                 for chunk in chunks])
+        return toplevel_code.find(r'\\') >= 0
+
     def visit_math_block(self, node):
         self.requirements['amsmath'] = r'\usepackage{amsmath}'
         if node['classes']:
             self.visit_inline(node)
         math_code = node.astext()
-        is_multiline = math_code.find(r'\\') >= 0
-        if is_multiline:
+        if self.multiline_math(math_code):
             environment = 'align*'
         else:
             environment = 'equation*'

@@ -1142,6 +1142,8 @@ Using a standard, such as MathML_, would be best. (For an overview of
 MathML implementations and tests, see e.g. the `mathweb wiki
 <http://www.mathweb.org/wiki/MathML>`__.)
 
+.. _MathML: http://www.w3.org/TR/MathML2/
+
 However,
 
     MathML in its full XML form was never thought to be usable as an
@@ -1175,7 +1177,9 @@ LaTeX math syntax
 ASCIIMathML_
   Used, e.g., by MultiMarkdown__
 
+  .. _ASCIIMathML: http://www1.chapman.edu/~jipsen/mathml/asciimath.html
   __ http://fletcherpenney.net/multimarkdown/
+
 
 `Unicode Nearly Plain Text Encoding of Mathematics`_
    format for lightly marked-up representation of mathematical
@@ -1184,6 +1188,9 @@ ASCIIMathML_
    (Unicode Technical Note. Sole responsibility for its contents rests
    with the author(s). Publication does not imply any endorsement by
    the Unicode Consortium.)
+
+   .. _Unicode Nearly Plain Text Encoding of Mathematics:
+      http://www.unicode.org/notes/tn28/
 
 See `the culmination of a relevant discussion
 <http://article.gmane.org/gmane.text.docutils.user/118>`__.
@@ -1209,6 +1216,9 @@ Try to be compatible with `Math support in Sphinx`_?
 * Option ``:nowrap:`` prevents wrapping of the given math in a
   math environment (you have to specify the math environment in the
   content).
+
+.. _Math support in Sphinx: http://sphinx.pocoo.org/ext/math.html
+
 
 LaTeX output
 ````````````
@@ -1240,46 +1250,81 @@ There is no native math support in HTML.
 MathML_
   is the W3C recommendation. Browser support is finally becoming more
   widespread (Firefox, Opera, IE via free MathPlayer_ plugin).
-  Others can be supported using a CSS MathML profile.
+  Others can be supported using a CSS MathML profile or MathHTML\ [#]_.
   See e.g. `viewing mathematics`__ and the `MathML Browser Test`_
 
   __ http://vismor.com/documents/site_implementation/viewing_mathematics/
   .. _MathML Browser Test:
      http://eyeasme.com/Joe/MathML/MathML_browser_test.html
   .. _MathPlayer: http://www.dessci.com/en/products/mathplayer/
+  .. _MathHTML: http://2020math.org/MathHTML/index.html
 
-  Converters from LaTeX to MathML include `latex_math`_ (LaTeX2MathML)
-  in the Docutils sandbox, Blahtex_ (C++), MathToWeb_ (Java), TeX4ht_
-  (TeX based), LaTeXML_ (Perl).
+  .. [#] MathHTML_ uses CSS to style any MathML tags in an HTML page.
+     Javascript is then used to tidy up the mathematics in an effort
+     to achive typeset quality. MathHTML has been tested in Firefox,
+     Safari, Chrome, Opera, and Internet Explorer 8.
 
-  MathHTML_
-    uses CSS to style any MathML tags in an HTML page. Javascript is
-    then used to tidy up the mathematics in an effort to achive typeset
-    quality. MathHTML has been tested in Firefox, Safari, Chrome, Opera,
-    and Internet Explorer 8.
+  Converters from LaTeX to MathML include
+
+  * `latex_math`_ (LaTeX2MathML) in the Docutils sandbox
+  * Blahtex_ (C++)
+  * MathToWeb_ (Java)
+  * TeX4ht_ (TeX based)
+  * LaTeXML_ (Perl)
+  * itex_ (also `used in Abiword`__)
+  * TtM_ (C, non free, free binary for Linux) with an `online-trial page`__
+  * `Steve’s LATEX-to-MathML translator`_
+    ('mini-language', javascript, Python)
+
+  __ http://msevior.livejournal.com/26377.html
+  __ http://hutchinson.belmont.ma.us/tth/mml/ttmmozform.html
+  .. _latex_math: ../../../sandbox/jensj/latex_math/
+  .. _Blahtex: http://gva.noekeon.org/blahtexml/
+  .. _MathToWeb:  http://www.mathtoweb.com/
+  .. _TeX4ht: http://www.tug.org/applications/tex4ht/mn.html
+  .. _LaTeXML: http://dlmf.nist.gov/LaTeXML/
+  .. _itex: http://golem.ph.utexas.edu/~distler/blog/itex2MMLcommands.html
+  .. _ttm: http://hutchinson.belmont.ma.us/tth/mml/
+  .. _Steve’s LATEX-to-MathML translator:
+     http://www.gold-saucer.org/mathml/greasemonkey/dist/display-latex
+
+.. URL seems down:
+   .. _itex: http://pear.math.pitt.edu/mathzilla/itex2mmlItex.html
 
 MathJax_
- * a JavaScript-based engine for including TEX and MathML in HTML
- * Works across multiple browsers and platforms
- * Uses HTML/CSS, JavaScript, and unicode fonts for high-quality
-   typesetting that is scalable and prints at full resolution.
- * MathJax is a joint project of the AMS, Design Science, Inc., and
-   the Society for Industrial and Applied Mathematics.
- * There is a `MathJax extension`__ for Sphinx.
- 
- __ http://bitbucket.org/kevindunn/sphinx-extension-mathjax
+  * a JavaScript-based engine for including TEX and MathML in HTML
+  * Works across multiple browsers and platforms
+  * Uses HTML/CSS, JavaScript, and unicode fonts for high-quality
+    typesetting that is scalable and prints at full resolution.
+  * MathJax is a joint project of the AMS, Design Science, Inc., and
+    the Society for Industrial and Applied Mathematics.
+  * There is a `MathJax extension`__ for Sphinx.
 
-HTML+CSS
- format math in standard HTML enhanced by CSS rules
- (Overview__, `Examples and experiments`__):
+  .. _MathJax: http://www.mathjax.org/
+  __ http://bitbucket.org/kevindunn/sphinx-extension-mathjax
 
- __ http://www.cs.tut.fi/~jkorpela/math/
- __ http://www.zipcon.net/~swhite/docs/math/math.html
+HTML/CSS
+  format math in standard HTML enhanced by CSS rules
+  (Overview__, `Examples and experiments`__).
 
+  LaTeX-math to HTML/CSS converters include
+
+  * TtH_ (C)
+  * Hevea_ (Objective Caml)
+  * eLyXer_ (Python)
+
+  __ http://www.cs.tut.fi/~jkorpela/math/
+  __ http://www.zipcon.net/~swhite/docs/math/math.html
+  .. _TtH: ttp://hutchinson.belmont.ma.us/tth/index.html
+  .. _Hevea: http://para.inria.fr/~maranget/hevea/
+  .. _elyxer: http://elyxer.nongnu.org/
 
 images
   (PNG or SVG) like e.g. Wikipedia. (e.g. with dvisvgm_ or the
   pure-python MathML->SVG converter SVGMath_)
+
+  .. _dvisvgm: http://dvisvgm.sourceforge.net/
+  .. _SVGMath: http://www.grigoriev.ru/svgmath/
 
 
 OpenOffice output
@@ -1296,22 +1341,6 @@ OpenOffice output
   into OpenOffice."
 
   __ http://ooolatex.sourceforge.net/
-
-.. _latex_math: ../../../sandbox/jensj/latex_math/
-.. _Math support in Sphinx: http://sphinx.pocoo.org/ext/math.html
-.. _MathML: http://www.w3.org/TR/MathML2/
-.. _MathHTML: http://2020math.org/MathHTML/index.html
-.. _itex: http://pear.math.pitt.edu/mathzilla/itex2mmlItex.html
-.. _ASCIIMathML: http://www1.chapman.edu/~jipsen/mathml/asciimath.html
-.. _MathJax: http://www.mathjax.org/
-.. _Unicode Nearly Plain Text Encoding of Mathematics:
-   http://www.unicode.org/notes/tn28/
-.. _dvisvgm: http://dvisvgm.sourceforge.net/
-.. _Blahtex: http://gva.noekeon.org/blahtexml/
-.. _MathToWeb:  http://www.mathtoweb.com/
-.. _TeX4ht: http://www.tug.org/applications/tex4ht/mn.html
-.. _LaTeXML: http://dlmf.nist.gov/LaTeXML/
-.. _SVGMath: http://www.grigoriev.ru/svgmath/
 
 
 Directives
