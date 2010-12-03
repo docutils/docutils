@@ -1650,9 +1650,9 @@ N = \frac{\text{number of apples}}{7}
 \end{equation*}
 The determinant of the matrix
 %
-\begin{align*}
+\begin{equation*}
 \mathbf{M} = \left(\begin{matrix}a&b\\c&d\end{matrix}\right)
-\end{align*}
+\end{equation*}
 is $|\mathbf{M}| = ad - bc$.
 
 Sum and Integral with limits:
@@ -1667,33 +1667,34 @@ Sum and Integral with limits:
 \item[{Math-Accents:}] \leavevmode 
 \leavevmode
 \setlength{\DUtablewidth}{\linewidth}
-\begin{longtable}[c]{p{0.238\DUtablewidth}p{0.238\DUtablewidth}p{0.238\DUtablewidth}p{0.238\DUtablewidth}}
+\begin{longtable}[c]{p{0.315\DUtablewidth}p{0.315\DUtablewidth}p{0.315\DUtablewidth}}
 
-$\acute{a}$ \texttt{\textbackslash{}acute\{a\}}
+$\acute{a}$      \texttt{\textbackslash{}acute\{a\}}
  & 
-$\grave{a}$ \texttt{\textbackslash{}grave\{a\}}
+$\dot{t}$        \texttt{\textbackslash{}dot\{t\}}
  & 
-$\tilde{\alpha}$ \texttt{\textbackslash{}tilde\{\textbackslash{}alpha\}}
- & 
-$\bar{a}$   \texttt{\textbackslash{}bar\{a\}}
+$\hat{\gamma}$   \texttt{\textbackslash{}hat\{\textbackslash{}gamma\}}
  \\
 
-$\breve{x}$ \texttt{\textbackslash{}breve\{x\}}
+$\grave{a}$      \texttt{\textbackslash{}grave\{a\}}
  & 
-$\check{a}$ \texttt{\textbackslash{}check\{a\}}
+$\ddot{t}$       \texttt{\textbackslash{}ddot\{t\}}
  & 
-$\hat{\gamma}$ \texttt{\textbackslash{}hat\{\textbackslash{}gamma\}}
+$\tilde{\alpha}$ \texttt{\textbackslash{}tilde\{\textbackslash{}alpha\}}
+ \\
+
+$\breve{x}$      \texttt{\textbackslash{}breve\{x\}}
+ & 
+$\dddot{t}$      \texttt{\textbackslash{}dddot\{t\}}
  & 
 $\vec{\imath}$   \texttt{\textbackslash{}vec\{\textbackslash{}imath\}}
  \\
 
-$\dot{t}$   \texttt{\textbackslash{}dot\{t\}}
+$\check{a}$      \texttt{\textbackslash{}check\{a\}}
  & 
-$\ddot{t}$  \texttt{\textbackslash{}ddot\{t\}}
+$\bar{a}$        \texttt{\textbackslash{}bar\{a\}}
  & 
-$\dddot{t}$ \texttt{\textbackslash{}dddot\{t\}}
- & 
-$\vec{R}$   \texttt{\textbackslash{}vec\{R\}}
+$\vec{R}$        \texttt{\textbackslash{}vec\{R\}}
  \\
 \end{longtable}
 
@@ -1713,15 +1714,25 @@ Math split over two lines:
 g(\alpha) = & (1 + \alpha + \alpha^2 + \alpha^3 + \alpha^4\\
             & + \alpha^5)
 \end{align*}
-Cases:
+Cases (``manually'', with \texttt{matrix} environment):
 %
-\begin{align*}
+\begin{equation*}
 f(x) = \left\{
   \begin{matrix}
-    1 - x, & x < 1 \\
-    0,     & x > 1
+    -1 & x<0\\
+     1 & x>0
   \end{matrix}\right.
-\end{align*}
+\end{equation*}
+Cases with the AMSmath \texttt{cases} environment is not (yet)
+supported by latex2MathML.
+
+% math:
+% 
+% \mathrm{sgn}(x) = \begin{cases}
+%                     -1 & x<0\\
+%                      1 & x>0
+%                   \end{cases}
+
 
 %___________________________________________________________________________
 

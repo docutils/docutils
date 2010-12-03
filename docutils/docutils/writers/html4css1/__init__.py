@@ -26,8 +26,8 @@ except ImportError:
 import docutils
 from docutils import frontend, nodes, utils, writers, languages, io
 from docutils.transforms import writer_aux
-from docutils.latex2mathml import parse_latex_math
-# from docutils.math.math2html import math2html
+from docutils.math.latex2mathml import parse_latex_math
+from docutils.math.latex2html import math2html
 
 class Writer(writers.Writer):
 
@@ -123,6 +123,9 @@ class Writer(writers.Writer):
           'Defined styles: "borderless". Default: ""',
           ['--table-style'],
           {'default': ''}),
+         ('Math output format, e.g. "MathML" or "HTML". Default: "MathML"',
+          ['--math-output'],
+          {'default': 'MathML'}),
          ('Omit the XML declaration.  Use with caution.',
           ['--no-xml-declaration'],
           {'dest': 'xml_declaration', 'default': 1, 'action': 'store_false',
@@ -250,7 +253,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         nodes.NodeVisitor.__init__(self, document)
         self.settings = settings = document.settings
         # TODO: make this a config value once the HTML math output is ready:
-        self.settings.math_output = "MathML"
+        # self.settings.math_output = "MathML"
+        # self.settings.math_output = "HTML"
         lcode = settings.language_code
         self.language = languages.get_language(lcode, document.reporter)
         self.meta = [self.content_type % settings.output_encoding,

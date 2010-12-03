@@ -1,0 +1,156 @@
+/* math formatting. From elyxer's lyx.css */
+.formula {
+	text-align: center;
+	font-family: 
+		STIXGeneral, 'Asana Math', 'DejaVu Serif', 'DejaVu Sans', 
+		serif;
+	margin: 1.2em 0;
+}
+div.formula {
+	padding: 0.5ex;
+}
+i { font-family: italic; }
+span.overline, span.bar {
+	text-decoration: overline;
+}
+.fraction, .fullfraction {
+	display: inline-block;
+	vertical-align: middle;
+	text-align: center;
+}
+.fraction .fraction {
+	font-size: 80%;
+	line-height: 100%;
+}
+span.numerator {
+	display: block;
+}
+span.numerator-l {
+	display: block;
+	text-align: left;
+}
+span.numerator-r {
+	display: block;
+	text-align: right;
+}
+span.denominator {
+	display: block;
+	padding: 0;
+	border-top: thin solid #000040;
+}
+span.sqrt {
+	display: inline-block;
+	vertical-align: middle;
+}
+span.radical {
+	display: inline-block;
+	padding: 0;
+	font-size: 150%;
+	vertical-align: top;
+}
+span.root {
+	display: inline-block;
+	border-top: thin #000040 solid;
+	padding: 0;
+	vertical-align: middle;
+}
+span.symbol {
+	font-size: 125%;
+}
+span.bigsymbol {
+	font-size: 150%;
+}
+span.largesymbol {
+	font-size: 175%;
+}
+span.hugesymbol {
+	font-size: 200%;
+}
+span.limits {
+	display: inline-table;
+	vertical-align: middle;
+}
+sub.bigsymbol {
+	display: table-row;
+	text-align: left;
+	line-height: 150%;
+}
+sup.bigsymbol {
+	display: table-row;
+	text-align: left;
+	line-height: 150%;
+}
+span.symbolover {
+	display: inline-block;
+	text-align: center;
+	position: relative;
+	float: right;
+	right: 100%;
+	bottom: 0.5em;
+	width: 0px;
+}
+span.withsymbol {
+	display: inline-block;
+}
+span.symbolunder {
+	display: inline-block;
+	text-align: center;
+	position: relative;
+	float: right;
+	right: 80%;
+	top: 0.3em;
+	width: 0px;
+}
+span.fraktur {
+	font-family: "Lucida Blackletter", eufm10, blackletter;
+}
+span.blackboard {
+	font-family: Blackboard, msbm10, serif;
+}
+span.script {
+	font-family: "Monotype Corsiva", "Apple Chancery", 
+		     "URW Chancery L", cursive;
+}
+table.formula {
+	display: inline-block;
+	text-align: center;
+	border-collapse: collapse;
+	margin: 0em;
+	vertical-align: middle;
+}
+td.formula-l {
+	text-align: left;
+	padding: 0.2ex;
+	border: 0ex;
+}
+td.formula-c {
+	text-align: center;
+	padding: 0.2ex;
+	border: 0ex;
+}
+td.formula-r {
+	text-align: right;
+	padding: 0.2ex;
+	border: 0ex;
+}
+table.cases {
+	display: inline-block;
+	text-align: center;
+	border-collapse: collapse;
+	margin: 0.2em;
+	border-left: thin solid #000040;
+	vertical-align: middle;
+}
+table.cases tr td {
+	padding-left: 1ex;
+	padding-right: 1em;
+}
+table.environment {
+	display: inline-block;
+	text-align: right;
+	margin: 0;
+	vertical-align: middle;
+}
+table.environment tr td {
+	padding: 0 1em;
+}

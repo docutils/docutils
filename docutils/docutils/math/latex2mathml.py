@@ -372,7 +372,7 @@ def parse_latex_math(string, inline=True):
                 node = entry
                 skip = 2
             else:
-                raise SyntaxError('Syntax error: "%s%s"' % (c, c2))
+                raise SyntaxError(r'Syntax error: "%s%s"' % (c, c2))
         elif c.isalpha():
             node = node.append(mi(c))
         elif c.isdigit():
@@ -413,7 +413,7 @@ def parse_latex_math(string, inline=True):
             node.close().append(entry)
             node = entry
         else:
-            raise SyntaxError('Illegal character: "%s"' % c)
+            raise SyntaxError(r'Illegal character: "%s"' % c)
         string = string[skip:]
     return tree
 
@@ -457,7 +457,7 @@ def handle_keyword(name, node, string):
         skip = 1
     if name == 'begin':
         if not string.startswith('{matrix}'):
-            raise SyntaxError('Expected "\begin{matrix}"!')
+            raise SyntaxError(r'Expected "\begin{matrix}"!')
         skip += 8
         entry = mtd()
         table = mtable(mtr(entry))
@@ -465,15 +465,15 @@ def handle_keyword(name, node, string):
         node = entry
     elif name == 'end':
         if not string.startswith('{matrix}'):
-            raise SyntaxError('Expected "\end{matrix}"!')
+            raise SyntaxError(r'Expected "\end{matrix}"!')
         skip += 8
         node = node.close().close().close()
     elif name == 'text':
         if string[0] != '{':
-            raise SyntaxError('Expected "\text{...}"!')
+            raise SyntaxError(r'Expected "\text{...}"!')
         i = string.find('}')
         if i == -1:
-            raise SyntaxError('Expected "\text{...}"!')
+            raise SyntaxError(r'Expected "\text{...}"!')
         node = node.append(mtext(string[1:i]))
         skip += i + 1
     elif name == 'sqrt':
@@ -489,7 +489,7 @@ def handle_keyword(name, node, string):
             if string.startswith(par):
                 break
         else:
-            raise SyntaxError('Missing left-brace!')
+            raise SyntaxError(r'Missing left-brace!')
         fenced = mfenced(par)
         node.append(fenced)
         row = mrow()
@@ -501,7 +501,7 @@ def handle_keyword(name, node, string):
             if string.startswith(par):
                 break
         else:
-            raise SyntaxError('Missing right-brace!')
+            raise SyntaxError(r'Missing right-brace!')
         node = node.close()
         node.closepar = par
         node = node.close()
@@ -511,7 +511,7 @@ def handle_keyword(name, node, string):
             if string.startswith(operator):
                 break
         else:
-            raise SyntaxError('Expected something to negate: "\\not ..."!')
+            raise SyntaxError(r'Expected something to negate: "\not ..."!')
         node = node.append(mo(negatables[operator]))
         skip += len(operator)
     elif name == 'mathbf':
@@ -520,7 +520,7 @@ def handle_keyword(name, node, string):
         node = style
     elif name == 'mathbb':
         if string[0] != '{' or not string[1].isupper() or string[2] != '}':
-            raise SyntaxError('Expected something like "\mathbb{A}"!')
+            raise SyntaxError(r'Expected something like "\mathbb{A}"!')
         node = node.append(mi(mathbb[string[1]]))
         skip += 3
     elif name in letters:
@@ -538,6 +538,6 @@ def handle_keyword(name, node, string):
             node.append(ovr)
             node = ovr
         else:
-            raise SyntaxError('Unknown LaTeX command: ' + name)
+            raise SyntaxError(r'Unknown LaTeX command: ' + name)
 
     return node, skip
