@@ -13,7 +13,7 @@ Strict HyperText Markup Language document tree Writer.
 This is a variant of Docutils' standard 'html4css1' writer.
 
 GOAL:
- * The output conforms to the XHTML version 1.0 Strict DTD.
+ * The output conforms to the XHTML version 1.1 DTD.
  * It contains no hard-coded formatting information that would prevent
    layout design by cascading style sheets.
 """
@@ -63,11 +63,28 @@ class Writer(html4css1.Writer):
 
 class HTMLTranslator(html4css1.HTMLTranslator):
     """
-    This writer generates XHTML 1.0 Strict
+    This writer generates XHTML 1.1
     without formatting hints that interfere with a CSS stylesheet.
     """
-    doctype = ('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" '
-               '"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n')
+    doctype = ('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" '
+               '"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">\n')
+    doctype_mathml = (
+        '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN" '
+        '"http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd">\n')
+
+    # there is no attribute "lang" in XHTML 1.1
+    head_prefix_template = ('<html xmlns="http://www.w3.org/1999/xhtml"'
+                            ' xml:lang="%(lang)s">\n<head>\n')
+    lang_attribute = 'xml:lang' # changed from 'lang' in XHTML 1.0
+
+
+    # Do not  mark the first child with 'class="first"' and the last
+    # child with 'class="last"' in definitions, table cells, field
+    # bodies, option descriptions, and list items. Use the
+    # ``:first-child`` and ``:last-child`` selectors instad.
+
+    def set_first_last(self, node):
+        pass
 
     # Compact lists
     # ------------
@@ -108,7 +125,6 @@ class HTMLTranslator(html4css1.HTMLTranslator):
         else:
             # print "simple list"
             return True
-
 
     # citations
     # ---------
@@ -221,7 +237,7 @@ class HTMLTranslator(html4css1.HTMLTranslator):
         if self.body[-1] == '<-- next footnote -->':
             del(self.body[-1])
         else:
-            self.body.append('<dl class="docutils footnote">')
+            self.body.append('<dl class="footnote">')
         self.context.append(self.starttag(node, 'dd'))
         self.footnote_backrefs(node)
 
@@ -276,6 +292,9 @@ class HTMLTranslator(html4css1.HTMLTranslator):
     def depart_generated(self, node):
         pass
 
+    # Do not  mark the first child with 'class="first"'
+    def visit_list_item(self, node):
+        self.body.append(self.starttag(node, 'li', ''))
 
     # Literal role
     # ------------
@@ -300,20 +319,23 @@ class HTMLTranslator(html4css1.HTMLTranslator):
         # Content already processed:
         raise nodes.SkipNode
 
+    # Meta tags: 'lang' attribute replaced by 'xml:lang' in XHTML 1.1
+    def visit_meta(self, node):
+        if node.hasattr('lang'):
+            node['xml:lang'] = node['lang']
+            del(node['lang'])
+        meta = self.emptytag(node, 'meta', **node.non_default_attributes())
+        self.add_meta(meta)
+
 
     # option-list as definition list, styled with CSS
     # ----------------------------------------------
 
     def visit_option_list(self, node):
-        # Keep also simple paragraphs in the field_body to enable CSS
-        # rule to start body on new line if label is too long
-        self.context.append((self.compact_field_list, self.compact_p))
-        self.compact_field_list, self.compact_p = False, False
         self.body.append(
-            self.starttag(node, 'dl', CLASS='docutils option-list'))
+            self.starttag(node, 'dl', CLASS='option-list'))
 
     def depart_option_list(self, node):
-        self.compact_field_list, self.compact_p = self.context.pop()
         self.body.append('</dl>\n')
 
     def visit_option_list_item(self, node):
@@ -344,14 +366,41 @@ class HTMLTranslator(html4css1.HTMLTranslator):
     def depart_description(self, node):
         self.body.append('</dd>\n')
 
+    # Do not omit <p> tags
+    # --------------------
+    #
+    # The HTML4CSS1 writer does this to "produce
+    # visually compact lists (less vertical whitespace)". This writer
+    # relies on CSS rules for"visual compactness".
+    #
+    # * In XHTML 1.1, e.g. a <blockquote> element may not contain
+    #   character data, so you cannot drop the <p> tags.
+    # * Keeping simple paragraphs in the field_body enables a CSS
+    #   rule to start the field-body on new line if the label is too long
+    # * it makes the code simpler.
+    #
+    # TODO: omit paragraph tags in simple table cells. 
+
+    def visit_paragraph(self, node):
+        self.body.append(self.starttag(node, 'p', ''))
+
+    def depart_paragraph(self, node):
+        self.body.append('</p>')
+        if not (isinstance(node.parent, (nodes.list_item, nodes.entry)) and 
+                # (node is node.parent[-1])
+                (len(node.parent) == 1)
+               ):
+            self.body.append('\n')
+
+
     # no hard-coded border setting in the table head
     # ----------------------------------------------
 
     def visit_table(self, node):
         classes = [cls.strip(u' \t\n')
                    for cls in self.settings.table_style.split(',')]
-        self.body.append(
-            self.starttag(node, 'table', CLASS=' '.join(classes)))
+        tag = self.starttag(node, 'table', CLASS=' '.join(classes))
+        self.body.append(tag)
 
 
 class SimpleListChecker(html4css1.SimpleListChecker):

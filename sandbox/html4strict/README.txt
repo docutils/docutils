@@ -7,7 +7,7 @@
 
 :Author: Günter Milde
 :Date: $Date$
-:Abstract: A HTML writer, generating `XHTML 1.0 Strict` for styling
+:Abstract: A HTML writer, generating `XHTML 1.1` for styling
            with CSS 2.1.
 
 .. contents::
@@ -124,7 +124,7 @@ Implementation
 
 The writer module subclasses the ``html4css1.Writer`` and
 ``html4css1.HTMLTranslator`` classes. Some methods are overwritten to
-remove deprecated HTML constructs or hard coded formatting.
+replace deprecated HTML constructs or hard coded formatting.
 
 The html4css2.css style sheet extends the standard layout for
 CSS2-conforming Html browsers.
@@ -132,6 +132,20 @@ CSS2-conforming Html browsers.
 
 Changes to the html4css1 writer
 -------------------------------
+
+Document type
+~~~~~~~~~~~~~
+
++ The output conforms to the XHTML version 1.1 DTD::
+
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+     '"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+  or XHTML + MathML::
+
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN"
+    "http://www.w3.org/Math/DTD/mathml2/xhtml-math11-f.dtd">
+
 
 Docinfo and field lists based on definition lists (instead of tables)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -319,9 +333,32 @@ Unified test if a list is compactable:
 Docutils-generated section numbers in a <span>
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Instead of hard-coded formatting with trailing ``&nbsp;``, 
+Instead of hard-coded formatting with trailing ``&nbsp;``,
 section numbers in section headings and the toc are placed in spans
 with ``class='sectnum'`` and separated from the heading by a CSS rule.
+
+Omit redundant class arguments
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Do not  mark the first child with 'class="first"' and the last
+child with 'class="last"' in definitions, table cells, field
+bodies, option descriptions, and list items. Use the
+``:first-child`` and ``:last-child`` selectors instad.
+
+Language attribute name changed to 'xml:lang'
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The name of the language attribute changed from 'lang' in XHTML 1.0 to
+'xml:lang' in XHTML 1.1. Documents using 'lang' do not validate.
+
+
+Do not omit <p> tags
+~~~~~~~~~~~~~~~~~~~~
+
+The HTML4CSS1 writer does this to "produce visually compact lists
+(less vertical whitespace)". This writer relies on CSS rules
+for"visual compactness".
+
 
 TODO
 ----

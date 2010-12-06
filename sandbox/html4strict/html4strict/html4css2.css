@@ -135,32 +135,6 @@ dl.docinfo > dd {
 /*   margin-bottom: 0.5em; */
 }
 
-/* pretty-print date and author */
-dl.docinfo dt.author:first-child,
-dt.date:first-child + dd.date + dt.author  {
-  display: none;
-}
-dl.docinfo dt.author:first-child + dd,
-dt.date:first-child + dd.date + dt.author + dd {
-  margin-left: 0;
-  padding: 0 5%;
-  font-size: larger;
-  text-align: center;
-  padding-bottom: 1em;
-}
-
-dl.docinfo dt.date:first-child,
-dt.author:first-child + dd.author + dt.date {
-  display: none;
-}
-dl.docinfo dt.date:first-child + dd,
-dt.author:first-child + dd.author + dt.date + dd {
-  margin-left: 0;
-  padding: 0 5%;
-  font-weight: bold;
-  text-align: center;
-  padding-bottom: 1em;
-}
 
 /* option list */
 
@@ -192,6 +166,13 @@ dl.footnote {
   border-left: solid;
   border-left-width: thin;
   /* border-color: black; */
+}
+
+/* paragraph on same line as backrefs */
+dd > em {
+/*   background: green; */
+  float: left;
+  margin-right: 1ex
 }
 
 
@@ -292,6 +273,13 @@ td, th {
   padding: 0 1ex;
 }
 
+td > p:first-child, th > p:first-child {
+  margin-top: 0;
+}
+td > p, th > p {
+  margin-bottom: 0;
+}
+
 /* no borders for "borderless" tables */
 table.borderless, table.borderless * {
   border-style: none;
@@ -358,3 +346,10 @@ div.topic.contents a {
 span.sectnum {
   padding-right: 1ex;
 }
+
+/* admonitions */
+
+/* no padding for top and bottom */
+div.admonition, div.attention, div.caution, div.danger, div.error,
+div.hint, div.important, div.note, div.tip, div.warning {
+  padding: 0px 1em }
