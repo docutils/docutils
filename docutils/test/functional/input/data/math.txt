@@ -62,6 +62,17 @@ Quantum mechanics:
 
    -\frac{1}{2}\nabla^2 \psi + v \psi = \varepsilon \psi
 
+Modulation Transfer Function:
+
+.. math::
+
+ \text{MTF}=\left|\frac{\mathcal{F}\left\{ s(x)\right\} }
+                   {\mathcal{F}\left\{ s(x)\right\} |_{\omega_{x}=0}}\right|
+            =\text{abs}\left(\frac{\int_{-\infty}^{\infty}s(x)
+                               \text{e}^{\text{i}\omega_{x}x}\text{d}{x}}
+                               {\int_{-\infty}^{\infty}s(x)\text{d}{x}}
+                         \right).
+
 Math split over two lines:
 
 .. math::

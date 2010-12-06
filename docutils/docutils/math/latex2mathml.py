@@ -105,8 +105,14 @@ class math:
             xml.extend(child.xml())
         return xml
 
-class mrow(math): pass
-class mtable(math): pass
+class mrow(math):
+    def xml_start(self):
+        return ['\n<%s>' % self.__class__.__name__]
+
+class mtable(math):
+    def xml_start(self):
+        return ['\n<%s>' % self.__class__.__name__]
+
 class mtr(mrow): pass
 class mtd(mrow): pass
 
@@ -377,7 +383,7 @@ def parse_latex_math(string, inline=True):
             node = node.append(mi(c))
         elif c.isdigit():
             node = node.append(mn(c))
-        elif c in "+-/()[]|=<>,.!'":
+        elif c in "+-/()[]|=<>,.!':":
             node = node.append(mo(c))
         elif c == '_':
             child = node.delete_child()
@@ -418,7 +424,8 @@ def parse_latex_math(string, inline=True):
     return tree
 
 
-mathbb = {'A': u'\U0001D538',
+mathbb = {
+          'A': u'\U0001D538',
           'B': u'\U0001D539',
           'C': u'\u2102',
           'D': u'\U0001D53B',
@@ -443,7 +450,63 @@ mathbb = {'A': u'\U0001D538',
           'W': u'\U0001D54E',
           'X': u'\U0001D54F',
           'Y': u'\U0001D550',
-          'Z': u'\u2124'}
+          'Z': u'\u2124',
+         }
+
+mathscr = {
+           'A': u'\U0001D49C',
+           'B': u'\u212C',     # bernoulli function
+           'C': u'\U0001D49E',
+           'D': u'\U0001D49F',
+           'E': u'\u2130',
+           'F': u'\u2131',
+           'G': u'\U0001D4A2',
+           'H': u'\u210B',     # hamiltonian
+           'I': u'\u2110',
+           'J': u'\U0001D4A5',
+           'K': u'\U0001D4A6',
+           'L': u'\u2112',     # lagrangian
+           'M': u'\u2133',     # physics m-matrix
+           'N': u'\U0001D4A9',
+           'O': u'\U0001D4AA',
+           'P': u'\U0001D4AB',
+           'Q': u'\U0001D4AC',
+           'R': u'\u211B',
+           'S': u'\U0001D4AE',
+           'T': u'\U0001D4AF',
+           'U': u'\U0001D4B0',
+           'V': u'\U0001D4B1',
+           'W': u'\U0001D4B2',
+           'X': u'\U0001D4B3',
+           'Y': u'\U0001D4B4',
+           'Z': u'\U0001D4B5',
+           'a': u'\U0001D4B6',
+           'b': u'\U0001D4B7',
+           'c': u'\U0001D4B8',
+           'd': u'\U0001D4B9',
+           'e': u'\u212F',
+           'f': u'\U0001D4BB',
+           'g': u'\u210A',
+           'h': u'\U0001D4BD',
+           'i': u'\U0001D4BE',
+           'j': u'\U0001D4BF',
+           'k': u'\U0001D4C0',
+           'l': u'\U0001D4C1',
+           'm': u'\U0001D4C2',
+           'n': u'\U0001D4C3',
+           'o': u'\u2134',     # order of
+           'p': u'\U0001D4C5',
+           'q': u'\U0001D4C6',
+           'r': u'\U0001D4C7',
+           's': u'\U0001D4C8',
+           't': u'\U0001D4C9',
+           'u': u'\U0001D4CA',
+           'v': u'\U0001D4CB',
+           'w': u'\U0001D4CC',
+           'x': u'\U0001D4CD',
+           'y': u'\U0001D4CE',
+           'z': u'\U0001D4CF',
+          }
 
 negatables = {'=': u'\u2260',
               '\in': u'\u2209',
@@ -522,6 +585,11 @@ def handle_keyword(name, node, string):
         if string[0] != '{' or not string[1].isupper() or string[2] != '}':
             raise SyntaxError(r'Expected something like "\mathbb{A}"!')
         node = node.append(mi(mathbb[string[1]]))
+        skip += 3
+    elif name in ('mathscr', 'mathcal'):
+        if string[0] != '{' or string[2] != '}':
+            raise SyntaxError(r'Expected something like "\mathscr{A}"!')
+        node = node.append(mi(mathscr[string[1]]))
         skip += 3
     elif name in letters:
         node = node.append(mi(letters[name]))

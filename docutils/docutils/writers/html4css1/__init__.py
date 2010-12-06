@@ -1135,6 +1135,8 @@ class HTMLTranslator(nodes.NodeVisitor):
                 self.document.reporter.error(err, base_node=node)
                 math_out = unicode(err) # TODO: generate system message and link.
             self.body.append(math_out)
+            if not inline:
+                self.body.append('\n')
         # Content already processed:
         raise nodes.SkipNode
 
@@ -1146,18 +1148,6 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def depart_math_block(self, node):
         pass
-    # for testing:
-    # def visit_math(self, node):
-    #     self.visit_literal(node)
-    #
-    # def depart_math(self, node):
-    #     self.depart_literal(node)
-    #
-    # def visit_math_block(self, node):
-    #     self.visit_literal_block(node)
-    #
-    # def depart_math_block(self, node):
-    #     self.depart_literal_block(node)
 
     def visit_meta(self, node):
         meta = self.emptytag(node, 'meta', **node.non_default_attributes())
