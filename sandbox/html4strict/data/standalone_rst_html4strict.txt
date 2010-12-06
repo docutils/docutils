@@ -169,21 +169,23 @@ Numbered tables can be achieved with the "formal" class option
    :class: numbered
 
    ======= ======= ==========
-   A       B       A or B    
+   A       B       A or B
    ======= ======= ==========
-   False   False   False     
-   True    False   True      
-   False   True    True      
-   True    True    True      
+   False   False   False
+   True    False   True
+   False   True    True
+   True    True    True
    ======= ======= ==========
 
 Styling with class arguments
 ````````````````````````````
 
-In addition to the *recognized class argument* "borderless",
-tables with the class argument "booktabs" will be rendered
-similar to the style from the booktabs_ LaTeX package.
+In addition to the "borderless" table-style_, the style sheet also
+defines "booktabs", that will be rendered similar to the style from
+the booktabs_ LaTeX package.
 
+.. _table-style:
+   http://docutils.sourceforge.net/docs/user/config.html#table-style
 .. _booktabs:
    http://tug.ctan.org/tex-archive/macros/latex/contrib/booktabs/booktabs.pdf
 
@@ -228,14 +230,32 @@ Of course, also booktabs style tables can be numbered:
    =====  =====  ======
 
 
+Math
+----
+
+The W3C consortium provides a DTD for XHTML 1.1 plus MathML 2.0, so
+that documentd embedding formulas as MathML can be validated.
+
+The linear mapping :math:`f: \mathbb{C}^{N}\longmapsto\mathbb{C}^{N}`
+with
+
+.. math::
+
+  c_{k}=F(kf_{0})=T_{\text{A}}
+  \sum_{n=-N/2}^{+N/2}f(x_{n})\text{e}^{-2\pi\text{i}\frac{nk}{N}}
+
+for all :math:`a\in\mathbb{C}^{N}` is called discrete Fourier
+transformation (DFT).
+
+
 .. include:: data/errors.txt
 
-.. footer:: |valid-xhtml10| |valid-CSS2|
+.. footer:: |valid-xhtml11| |valid-CSS2|
 
-.. |valid-xhtml10| image:: http://www.w3.org/Icons/valid-xhtml10
+.. |valid-xhtml11| image:: http://www.w3.org/Icons/valid-xhtml11
    :height: 31
    :width: 88
-   :alt: Valid XHTML 1.0!
+   :alt: Valid XHTML 1.1!
    :target: http://validator.w3.org/check?uri=referer
 
 .. |valid-CSS2| image:: http://jigsaw.w3.org/css-validator/images/vcss
