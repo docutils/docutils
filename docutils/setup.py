@@ -95,7 +95,7 @@ def do_setup():
     # Install data files properly.
     kwargs['cmdclass'] = {'build_data': build_data,
                           'install_data': smart_install_data}
-    # Auto-convert surce code for Python 3
+    # Auto-convert source code for Python 3
     if sys.version_info >= (3,):
         kwargs['cmdclass']['build_py'] = copy_build_py_2to3
     else:
@@ -133,7 +133,7 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
                  'docutils.parsers.rst.directives',
                  'docutils.parsers.rst.languages',
                  'docutils.readers',
-                 'docutils.readers.python',
+                 # 'docutils.readers.python', # in the sandbox since 0.8
                  'docutils.transforms',
                  'docutils.math',
                  'docutils.writers',
@@ -142,7 +142,7 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
                  'docutils.writers.pep_html',
                  'docutils.writers.s5_html',
                  'docutils.writers.latex2e',
-                 'docutils.writers.newlatex2e',
+                 # 'docutils.writers.newlatex2e', # in the sandbox since 0.8
                  'docutils.writers.xetex',
                  'docutils.writers.odf_odt',
                  ],
@@ -155,8 +155,8 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
                      ['docutils/writers/latex2e/default.tex',
                       'docutils/writers/latex2e/titlepage.tex',
                       'docutils/writers/latex2e/xelatex.tex',]),
-                    ('docutils/writers/newlatex2e',
-                     ['docutils/writers/newlatex2e/base.tex']),
+                    # ('docutils/writers/newlatex2e',
+                    #  ['docutils/writers/newlatex2e/base.tex']),
                     ('docutils/writers/pep_html',
                      ['docutils/writers/pep_html/pep.css',
                       'docutils/writers/pep_html/template.txt']),
@@ -169,7 +169,7 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
     'scripts' : ['tools/rst2html.py',
                  'tools/rst2s5.py',
                  'tools/rst2latex.py',
-                 'tools/rst2newlatex.py',
+                 # 'tools/rst2newlatex.py',
                  'tools/rst2xetex.py',
                  'tools/rst2man.py',
                  'tools/rst2xml.py',

@@ -28,6 +28,7 @@ Changes Since 0.7
     warn and fall back to English.
   - Math support: reStructuredText "math" role and directive,
     ``math`` and ``math_block`` doctree elements.
+  - Orphaned "python" reader and "newlatex2e" writer moved to the sandbox.
 
 .. _BCP 47: http://www.rfc-editor.org/rfc/bcp/bcp47.txt
 
