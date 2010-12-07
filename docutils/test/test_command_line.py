@@ -45,10 +45,13 @@ class CommandLineEncodingTests(unittest.TestCase):
             return # nothing to test
         cmd_str = (u'../tools/rst2pseudoxml.py --no-generator '
                    u'--no-datestamp --title=Dornröschen')
-        output = os.popen(cmd_str.encode(argv_encoding)).read()
-
+        # os.popen2 deprecated in Python 2.6 
+        # but the subprocess module is new in Python 2.4
+        (child_in, child_out) = os.popen2(cmd_str.encode(argv_encoding))
+        child_in.close()
+        output = child_out.read()
+        child_out.close()
         self.assertEqual(output, testoutput)
-
 
 if __name__ == '__main__':
     unittest.main()
