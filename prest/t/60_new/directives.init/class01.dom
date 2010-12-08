@@ -4,18 +4,14 @@
         <literal>
             :parent:
          option to the class:: directive.
-    <system_message level="1" line="3" source="test data" type="INFO">
-        <paragraph>
-            No directive entry for "perl" in module "Text::Restructured::Directive".
-            Trying "perl" as canonical directive name.
     <table>
         <tgroup cols="3">
             <colspec colwidth="33">
             <colspec colwidth="33">
             <colspec colwidth="33">
             <thead>
-                <row>
-                    <entry classes="yellow">
+                <row classes="yellow">
+                    <entry>
                         <paragraph>
                             A
                     <entry>
@@ -39,12 +35,7 @@
                             ghi
                 <row>
                     <entry>
-                        <pending>
-                            .. internal attributes:
-                                 .transform: docutils.transforms.parts.Class
-                                 .details:
-                                   class: yellow
-                        <paragraph>
+                        <paragraph classes="yellow">
                             cba
                     <entry>
                         <paragraph>
@@ -64,9 +55,9 @@
                 <list_item>
                     <paragraph>
                         F
-        <list_item>
+        <list_item classes="red blue">
             <bullet_list bullet="-">
-                <list_item classes="red">
+                <list_item>
                     <paragraph>
                         jkl
                     <paragraph>
@@ -80,12 +71,7 @@
         <list_item>
             <bullet_list bullet="-">
                 <list_item>
-                    <pending>
-                        .. internal attributes:
-                             .transform: docutils.transforms.parts.Class
-                             .details:
-                               class: yellow
-                    <paragraph>
+                    <paragraph classes="yellow">
                         lkj
                     <paragraph>
                         onm
@@ -99,7 +85,7 @@
         <tgroup cols="3">
             <colspec colwidth="22">
             <colspec colwidth="12">
-            <colspec colwidth="13">
+            <colspec colwidth="16">
             <tbody>
                 <row>
                     <entry>
@@ -111,7 +97,7 @@
                     <entry>
                         <paragraph>
                             ghi
-                <row>
+                <row classes="blue">
                     <entry classes="red">
                         <paragraph>
                             cba
@@ -124,5 +110,15 @@
     <raw format="html" head="1" xml:space="preserve">
         <style type="text/css">
         .red    { background:red }
+        .blue   { color:blue }
         .yellow { background:yellow }
         </style>
+    <section classes="system-messages">
+        <title>
+            Docutils System Messages
+        <system_message level="2" line="51" source="test data" type="WARNING">
+            <paragraph>
+                Error in "class" directive: there is no block element satisfying the parent condition.
+            <literal_block xml:space="preserve">
+                .. class:: black
+                   :parent: not_found      

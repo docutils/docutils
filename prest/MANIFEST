@@ -411,8 +411,6 @@ t/60_new/roles.init/mathml02.dom
 t/60_new/roles.init/mathml02.rst
 t/60_new/roles.init/mathml03.dom
 t/60_new/roles.init/mathml03.rst
-t/60_new/roles.init/perl01.dom
-t/60_new/roles.init/perl01.rst
 t/60_new/roles.init/skip.pl
 t/60_new/roles.init/subst_ref01.dom
 t/60_new/roles.init/subst_ref01.rst
@@ -552,6 +550,12 @@ t/70_plugins/perl.init/role01.dom
 t/70_plugins/perl.init/role01.rst
 t/70_plugins/perl.init/role02.dom
 t/70_plugins/perl.init/role02.rst
+t/70_plugins/perl.init/role03.dom
+t/70_plugins/perl.init/role03.rst
+t/70_plugins/perl.init/role04.dom
+t/70_plugins/perl.init/role04.rst
+t/70_plugins/perl.init/role05.dom
+t/70_plugins/perl.init/role05.rst
 t/70_plugins/perl.init/skip.pl
 t/70_plugins/perl.init/trusted01.dom
 t/70_plugins/perl.init/trusted01.rst

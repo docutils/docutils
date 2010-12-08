@@ -7,8 +7,7 @@
             Trying "perl" as canonical directive name.
     <system_message level="4" line="3" source="opt_report.txt" type="SEVERE">
         <paragraph>
-            Error executing "perl" directive: Can't locate object method "severe" via package "error" (perhaps you forgot to load "error"?) at (eval 48) line 1.
-            .
+            Error executing "perl" directive: Can't locate object method "severe" via package "error" (perhaps you forgot to load "error"?) at (eval 51) line 1.
         <literal_block xml:space="preserve">
             .. perl:: severe error
     <system_message level="3" line="5" source="opt_report.txt" type="ERROR">

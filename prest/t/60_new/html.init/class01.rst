@@ -6,13 +6,21 @@ Check the new ``:parent:`` option to the class:: directive.
 .. list-table::
    :header-rows: 1
 
-   * - A
+   * - .. class:: yellow
+          :parent: row
+
+       A
      - B
      - C
    * - .. class:: red
           :parent:
 
        abc
+
+       .. class:: blue
+          :parent:
+
+       cba
      - def
      - ghi
    * - .. class:: yellow
@@ -25,16 +33,26 @@ Check the new ``:parent:`` option to the class:: directive.
   - E
   - F
 * - .. class:: red
-       :parent:
+       :parent: bullet_list 1
 
     jkl
-  - mno
-  - pqr
+
+    mno
+  - .. class:: blue
+       :parent: list_item 2
+
+    pqr
+  - stu
 * - .. class:: yellow
 
     lkj
-  - onm
-  - rpq
+
+    onm
+  - .. class:: black
+       :parent: not_found      
+
+    rqp
+  - uts
 
 ====================== ============ =============
   abc                   .. class::   ghi
@@ -42,7 +60,10 @@ Check the new ``:parent:`` option to the class:: directive.
                            :parent:
 
                         def
-.. perl::  red('cba')   fed          ihg
+.. perl::  red('cba')   fed          .. class:: blue
+                                        :parent: row
+
+                                     ihg
 ====================== ============ =============
 
 
@@ -51,5 +72,6 @@ Check the new ``:parent:`` option to the class:: directive.
 
    <style type="text/css">
    .red    { background:red }
+   .blue   { color:blue }
    .yellow { background:yellow }
    </style>

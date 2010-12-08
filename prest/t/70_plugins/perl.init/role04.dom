@@ -1,0 +1,97 @@
+<document source="test data">
+    <system_message level="1" line="1" source="test data" type="INFO">
+        <paragraph>
+            No directive entry for "perl" in module "Text::Restructured::Directive".
+            Trying "perl" as canonical directive name.
+    <table>
+        <tgroup cols="4">
+            <colspec colwidth="31">
+            <colspec colwidth="11">
+            <colspec colwidth="8">
+            <colspec colwidth="8">
+            <thead>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Feature
+                    <entry>
+                        <paragraph>
+                            Required?
+                    <entry>
+                        <paragraph>
+                            Plan A
+                    <entry>
+                        <paragraph>
+                            Plan B
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Plays CDs
+                    <entry classes="green">
+                        <paragraph>
+                            Yes
+                    <entry classes="green">
+                        <paragraph>
+                            Yes
+                    <entry classes="green">
+                        <paragraph>
+                            Yes
+                <row>
+                    <entry>
+                        <paragraph>
+                            Is satellite-radio compatible
+                    <entry classes="red">
+                        <paragraph>
+                            No
+                    <entry classes="green">
+                        <paragraph>
+                            Yes
+                    <entry classes="red">
+                        <paragraph>
+                            No
+                <row>
+                    <entry>
+                        <paragraph>
+                            Has USB connection for iPod
+                    <entry classes="red">
+                        <paragraph>
+                            No
+                    <entry classes="red">
+                        <paragraph>
+                            No
+                    <entry classes="green">
+                        <paragraph>
+                            Yes
+                <row>
+                    <entry>
+                        <paragraph>
+                            Has iPod input
+                    <entry classes="green">
+                        <paragraph>
+                            Yes
+                    <entry classes="green">
+                        <paragraph>
+                            Yes
+                    <entry classes="yellow">
+                        <paragraph>
+                            New
+                <row>
+                    <entry>
+                        <paragraph>
+                            Does Bluetooth hands-free
+                    <entry>
+                        <paragraph>
+                            Helpful
+                    <entry classes="red">
+                        <paragraph>
+                            No
+                    <entry classes="green">
+                        <paragraph>
+                            Yes
+    <raw format="html" xml:space="preserve">
+        <style type="text/css">
+        .green  { background-color: lightgreen }
+        .red    { background-color: pink }
+        .yellow { background-color: yellow }
+        </style>
