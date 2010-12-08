@@ -5,6 +5,33 @@ Release Notes
 
 .. contents::
 
+Release 0.3.45
+--------------
+
+reStructuredText parsing:
+
+* Allow plug-in roles to return an array mixing text and DOM elements
+* Changed the implementation of the :parent: option to the class::
+  directive to be more general
+
+reStructuredText transforms:
+
+* Pending transforms can now supply a code reference instead of a
+  string to implement the transform
+
+Writer 'html':
+
+* No longer round column widths to the nearest integer: rounding can
+  cause the percentages to go over 100%.  Browsers deal better with
+  percentages < 100 than > 100.
+* Allow classes to be attached to rows (can happen with the :parent:
+  option of the class:: directive)
+
+Directive 'perl':
+
+* Improved handling when errors occur in running directive, especially
+  for the perl role.
+
 Release 0.3.44
 --------------
 

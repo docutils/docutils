@@ -1,0 +1,62 @@
+<document source="test data">
+    <paragraph>
+        Examples that do not strictly meet the DTD.
+    <system_message level="1" line="3" source="test data" type="INFO">
+        <paragraph>
+            No directive entry for "perl" in module "Text::Restructured::Directive".
+            Trying "perl" as canonical directive name.
+    <table>
+        <tgroup cols="4">
+            <colspec colwidth="31">
+            <colspec colwidth="11">
+            <colspec colwidth="8">
+            <colspec colwidth="8">
+            <thead>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Feature
+                    <entry>
+                        <paragraph>
+                            Required?
+                    <entry>
+                        <paragraph>
+                            Plan A
+                    <entry>
+                        <paragraph>
+                            Plan B
+            <tbody>
+                <row>
+                    <entry>
+                        <paragraph>
+                            Generates \n\
+                            New
+                            <bullet_list>
+                                <list_item>
+                                    <paragraph>
+                                        Another list
+                            <emphasis>
+                                here
+                             Keys
+                    <entry>
+                        <paragraph>
+                            Yes
+                            <bullet_list bullet="*">
+                                <list_item>
+                                    <paragraph>
+                                        Put a bullet list here
+                    <entry>
+                        <paragraph>
+                            No
+                            <system_message level="1" line="26" source="test data" type="INFO">
+                                <paragraph>
+                                    Informational message only
+                    <entry>
+                        <paragraph>
+                            New
+                            <bullet_list>
+                                <list_item>
+                                    <paragraph>
+                                        Another list
+                            <emphasis>
+                                here

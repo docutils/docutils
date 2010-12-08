@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="default.css" type="text/css" />
 <style type="text/css">
 .red    { background:red }
+.blue   { color:blue }
 .yellow { background:yellow }
 </style>
 </head>
@@ -19,13 +20,15 @@
 <col width="33%" />
 </colgroup>
 <thead valign="bottom">
-<tr><th class="head">A</th>
+<tr class="yellow"><th class="head">A</th>
 <th class="head">B</th>
 <th class="head">C</th>
 </tr>
 </thead>
 <tbody valign="top">
-<tr><td class="red">abc</td>
+<tr><td class="red blue"><p class="first">abc</p>
+<p class="last">cba</p>
+</td>
 <td>def</td>
 <td>ghi</td>
 </tr>
@@ -43,37 +46,54 @@
 <li>F</li>
 </ul>
 </li>
-<li><ul class="simple">
-<li class="red">jkl</li>
-<li>mno</li>
-<li>pqr</li>
+<li class="red blue"><ul>
+<li><p class="first">jkl</p>
+<p>mno</p>
+</li>
+<li><p class="first">pqr</p>
+</li>
+<li><p class="first">stu</p>
+</li>
 </ul>
 </li>
-<li><ul class="simple">
-<li><p class="yellow">lkj</p>
+<li><ul>
+<li><p class="yellow first">lkj</p>
+<p>onm</p>
 </li>
-<li>onm</li>
-<li>rpq</li>
+<li><p class="first">rqp</p>
+</li>
+<li><p class="first">uts</p>
+</li>
 </ul>
 </li>
 </ul>
 <table border="1" class="docutils">
 <colgroup>
-<col width="47%" />
-<col width="26%" />
-<col width="28%" />
+<col width="44%" />
+<col width="24%" />
+<col width="32%" />
 </colgroup>
 <tbody valign="top">
 <tr><td>abc</td>
 <td class="yellow">def</td>
 <td>ghi</td>
 </tr>
-<tr><td class="red">cba</td>
+<tr class="blue"><td class="red">cba</td>
 <td>fed</td>
 <td>ihg</td>
 </tr>
 </tbody>
 </table>
+<div class="system-messages section">
+<h1><a>Docutils System Messages</a></h1>
+<div class="system-message">
+<p class="system-message-title">System Message: <a>WARNING/2</a> (<tt class="docutils">test data</tt>, line 51)</p>
+<p>Error in "class" directive: there is no block element satisfying the parent condition.</p>
+<pre class="literal-block">.. class:: black
+   :parent: not_found      
+</pre>
+</div>
+</div>
 </div>
 </body>
 </html>

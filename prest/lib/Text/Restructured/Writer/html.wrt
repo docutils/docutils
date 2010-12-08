@@ -1095,7 +1095,7 @@ EOS
 	my $total = 0;
 	grep($total += $_, @colwidths);
 	my $colspecs = join('',map(sprintf(qq(<col width="%s%%" />\n),
-					   int(100*$_/$total+.5)),
+					   int(100*$_/$total)),
 				   @colwidths));
 	my $colgroup = "<colgroup>\n$colspecs</colgroup>\n";
 	return qq($colgroup$rest);
@@ -1116,6 +1116,8 @@ EOS
 	my ($dom, $str) = @_;
 	my $attr = defined $dom->{row_attr} && $dom->{row_attr} ne '' ?
 	    " $dom->{row_attr}" : '';
+	my $dom_attr = GetAttr($dom);
+	$attr .= $dom_attr if $dom_attr ne '';
 	return qq(<tr$attr>$str</tr>\n);
     }
 

@@ -137,10 +137,11 @@ sub directive {
 
     my @text = evaluate_code($parser, $code, $source, $lineno, $lit, $subst);
     my $err = $@ =~ /trapped by/ ?
-	"$@Run with -D trusted if you believe the code is safe" : $@;
+	"$@Run with -D trusted if you believe the code is safe." : $@;
+    chomp $err;
     return $parser->system_message
 	(4, $source, $lineno,
-	 qq(Error executing "$name" directive: $err.), $lit)
+	 qq(Error executing "$name" directive: $err), $lit)
 	if $@ && ! defined $options->{lenient};
 
     push @text, $@ if $@;
@@ -211,7 +212,13 @@ sub role {
     my ($parser, $code, $role, $source, $lineno) = @_;
 
     my @text = evaluate_code($parser, $code, $source, $lineno);
-    return join '',@text;
+    my $err = $@ =~ /trapped by/ ?
+	"$@Run with -D trusted if you believe the code is safe." : $@;
+    return [$parser->system_message
+	    (4, $source, $lineno,
+	     qq(Error executing "$role" role: $err), $lit)]
+	    if $@;
+    return \@text;
 }
 
 # Creates the perl Safe area to execute code in and initializes it with
@@ -230,9 +237,9 @@ sub create_safe {
 	# Grant privileges to the safe if -D trusted is specified
 	$Perl::safe_world->op_permit_only(':default');
 	$Perl::safe_world->op_deny_only() if $parser->{opt}{D}{trusted};
-	# Share $opt_ variables, $^A to $^Z, %ENV, VERSION
+	# Share $opt_ variables, $^A to $^R, $^T to $^Z, %ENV, VERSION
 	$Perl::safe_world->share_vars('main' => ['%ENV']);
-	my @vars = grep(/^[\x00-\x1f]|^(VERSION)\Z/,
+	my @vars = grep(/^[\x00-\x12\x14-\x1f]\Z|^(VERSION)\Z/,
 			keys %main::);
 	foreach (@vars) {
 	    $Perl::safe_world->set("\$$_", ${$_});
@@ -257,10 +264,10 @@ sub create_safe {
 	    my $exp = $parser->{opt}{D}{perl};
 	    $Perl::safe_world->eval($exp);
 	    delete $parser->{opt}{D}{perl};
-	    my $err = $@ =~ /trapped by/ ? "$@Run with -D trusted if you believe the code is safe" : $@;
+	    my $err = $@ =~ /trapped by/ ? "$@Run with -D trusted if you believe the code is safe." : $@;
 	    return $parser->system_message
 		(4, $source, $lineno,
-		 qq(Error executing "-D perl" option: $err.), $exp)
+		 qq(Error executing "-D perl" option: $err), $exp)
 		if $@;
 	}
     }

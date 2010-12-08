@@ -7,6 +7,8 @@
 	 perl09 => q(-D perl='$a=0;$b=1'),
 	 perl10 => q(-D perl=4/0),
 	 perl18 => q(-d -d -d),
+	 role03 => q(-D xformoff='(?!Pending).......$'),
+	 role04 => q(-D xformoff='(?!Pending).......$'),
 	 trusted01 => q(-D trusted=0),
 	 trusted03 => q(-D trusted=0 -D perl='$a=1;open F,"perl14.rst"'),
 	 );

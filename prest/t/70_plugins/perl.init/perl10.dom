@@ -14,8 +14,8 @@
                 Trying "perl" as canonical directive name.
         <system_message level="4" line="7" source="test data" type="SEVERE">
             <paragraph>
-                Error executing "-D perl" option: Illegal division by zero at (eval 13) line 2.
-                .
+                Error executing "-D perl" option: Illegal division by zero at (eval 49) line 1.
+                \n\
             <literal_block xml:space="preserve">
                 4/0
         <paragraph>

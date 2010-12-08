@@ -555,7 +555,7 @@ document (a document-wide <a class="reference" href="#table-of-contents">table o
 <table border="1" class="docutils">
 <colgroup>
 <col width="20%" />
-<col width="80%" />
+<col width="79%" />
 </colgroup>
 <tbody valign="top">
 <tr><td>re</td>
@@ -779,7 +779,7 @@ Fifth test in HTML.<br />Line two.</div>
 <colgroup>
 <col width="31%" />
 <col width="31%" />
-<col width="38%" />
+<col width="37%" />
 </colgroup>
 <thead valign="bottom">
 <tr><th class="head" colspan="2">Inputs</th>
@@ -848,10 +848,10 @@ cell.</td>
 <p>Here's a complex table, which should test all features.</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="43%" />
+<col width="42%" />
 <col width="21%" />
-<col width="18%" />
-<col width="18%" />
+<col width="17%" />
+<col width="17%" />
 </colgroup>
 <thead valign="bottom">
 <tr><th class="head">Header row, column 1
@@ -898,7 +898,7 @@ empty: <tt class="docutils literal"><span class="pre">--&gt;</span></tt></td>
 <table border="1" class="test docutils">
 <caption>list table with integral header</caption>
 <colgroup>
-<col width="17%" />
+<col width="16%" />
 <col width="33%" />
 <col width="50%" />
 </colgroup>

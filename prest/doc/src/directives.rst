@@ -1672,9 +1672,16 @@ The text above is parsed and transformed into this doctree fragment::
 
 The following options are recognized:
 
-``parent`` : flag (empty)
-    Attach the class to the containing element rather than the next
-    element.
+``parent`` : parent selector
+
+    Attach the class to a containing element rather than the next
+    element.  The parent selector is an optional space-separated list
+    of parent elements.  Each element is either a number, which
+    indicates how many levels to go up, or the name of an element.
+    For example, "entry" would attach the class to the first
+    containing table entry, and "row 2" would attach the class to
+    whatever is two levels above the first containing table row.  The
+    default parent selector is "1".
 
 .. topic:: Rationale for "classes" Attribute Value Conversion
 

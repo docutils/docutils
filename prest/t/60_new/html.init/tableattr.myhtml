@@ -13,7 +13,7 @@
 <table border="1" class="docutils">
 <colgroup>
 <col width="33%" />
-<col width="67%" />
+<col width="66%" />
 </colgroup>
 <tbody valign="top">
 <tr><td>Honey</td>
@@ -30,7 +30,7 @@
 <p>The following simple table should get created with no attributes.</p>
 <table>
 <colgroup>
-<col width="37%" />
+<col width="36%" />
 <col width="63%" />
 </colgroup>
 <tbody valign="top">
@@ -50,7 +50,7 @@ background, and no wrapping.</p>
 <table bgcolor="pink" border="10" nowrap>
 <colgroup>
 <col width="2%" />
-<col width="98%" />
+<col width="97%" />
 </colgroup>
 <tbody valign="top">
 <tr><td rowspan="3">1</td>

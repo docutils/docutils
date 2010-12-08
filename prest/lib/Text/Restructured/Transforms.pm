@@ -416,7 +416,9 @@ sub Pending {
     foreach my $dom (@pendings) {
 	my @result;
 	my $transform = $dom->{internal}{'.transform'};
-	(my $t = "Text::Restructured::$transform") =~ s/\./::/g;
+	my $t = ref $transform eq 'CODE' ? $transform :
+	    "Text::Restructured::$transform";
+	$t =~ s/\./::/g if ! defined &$t;
 	# Check the original transform path before giving up
 	($t = $transform) =~ s/\./::/g if ! defined &$t;
 	if (! defined &$t) {
@@ -451,6 +453,41 @@ BEGIN {
 # Arguments: pending DOM, parser obj, details hash reference
 sub Class {
     my ($dom, $parser, $details) = @_;
+
+    if (defined $details->{parent}) {
+	# We're attaching to a parent DOM
+	my @parents = split /\s+/, $details->{parent};
+	@parents = (1) unless @parents;	# Default to immediate parent
+	my $parent = $dom;
+
+	while (@parents) {
+	    $parent = $parent->parent;
+	    if ($parents[0] =~ /^\d+$/) {
+		# A number of levels up was specified (skip paragraph tags)
+		while ($parent && $parent->tag ne 'paragraph' && --$parents[0]) {
+		    $parent = $parent->parent;
+		}
+		last unless $parent;
+		shift @parents;
+	    }
+	    else {
+		# Search for a specific tag
+		while ($parent && $parent->tag !~ /^$parents[0]$/) {
+		    $parent = $parent->parent;
+		}
+		last unless $parent;
+		shift @parents;
+	    }
+	}
+	if (! $parent) {
+	    return $parser->system_message
+		(2, $dom->{source}, $dom->{lineno},
+		 qq(Error in "class" directive: there is no block element satisfying the parent condition.),
+		 $dom->{lit})
+	    }
+	push @{$parent->{attr}{classes}}, split(/\s+/, $details->{class});
+	return;
+    }
 
     my $next = $dom->next('comment|substitution_definition|target|system_message|pending');
     my $tag = $next->tag if defined $next;

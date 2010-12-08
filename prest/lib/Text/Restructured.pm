@@ -6,7 +6,7 @@
 package Text::Restructured;
 
 # N.B.: keep version in quotes so trailing 0's are not lost
-$VERSION = '0.003044';
+$VERSION = '0.003045';
 
 # This package does parsing of reStructuredText files
 
@@ -1550,6 +1550,37 @@ sub Inline : method {
 			sprintf $role_r->{text}, $mid
 			if defined $role_r->{text};
 		    my $options = $role_r->{options} || {};
+		    if (ref $mid eq 'ARRAY') {
+			my $new_mid   = '';
+			foreach my $elt (@$mid) {
+			    if (ref($elt) =~ /$DOM$/) {
+				$parent->append($DOM->newPCDATA($new_mid))
+				    if $new_mid ne '';
+				$parent->append($elt);
+				$new_mid   = '';
+			    }
+			    else {
+				if ($options->{reparse}) {
+				    my $temp = $DOM->new('temp');
+				    $self->Paragraphs($temp, $elt,
+						      $source, $lineno);
+				    foreach my $child ($temp->contents) {
+					if ($child->tag eq 'paragraph') {
+					    $parent->append($child->contents);
+					}
+					else {
+					    $parent->append($child);
+					}
+				    }
+				}
+				else {
+				    $new_mid .= $elt;
+				}
+			    }
+			}
+			next if $options->{reparse};
+			$mid = $new_mid;
+		    }
 		    if ($options->{prefix} &&
 			defined (my $pfx =
 				 ($options->{prefix}{$self->{opt}{w}} ||
@@ -3346,15 +3377,10 @@ sub class {
 	 $lit)
 	unless $args =~ /^[a-z][-a-z0-9]*(?:\s+[a-z][-a-z0-9]*)*$/i;
 
-    if (defined $options->{parent}) {
-	$parent->{attr}{classes} ||= [];
-	push @{$parent->{attr}{classes}}, split(/\s+/, $args);
-	return;
-    }
     my $pending = $DOM->new('pending');
     $pending->{internal}{'.transform'} = "docutils.transforms.parts.Class";
     my $details = $pending->{internal}{'.details'} = { };
-    $details->{class} = $args;
+    @{$details}{qw(class parent)} = ($args, $options->{parent});
     @{$pending}{qw(source lineno lit)} = ($source, $lineno, $lit);
     return $pending;
 }
