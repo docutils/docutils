@@ -1986,11 +1986,12 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         if 'uri' in node.attributes:
             source = node.attributes['uri']
             source = urllib.url2pathname(source)
-            docsource, line = utils.get_source_line(node)
-            if docsource:
-                dirname = os.path.dirname(docsource)
-                if dirname:
-                    source = '%s%s%s' % (dirname, os.sep, source, )
+            if not source.startswith(os.sep):
+                docsource, line = utils.get_source_line(node)
+                if docsource:
+                    dirname = os.path.dirname(docsource)
+                    if dirname:
+                        source = '%s%s%s' % (dirname, os.sep, source, )
             if not self.check_file_exists(source):
                 self.document.reporter.warning(
                     'Cannot find image file %s.' % (source, ))
