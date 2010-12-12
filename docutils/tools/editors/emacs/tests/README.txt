@@ -1,27 +1,20 @@
-==========================================
-  Tests for automatic section adjustment
-==========================================
+====================
+  Tests for rst.el
+====================
 
-:Author: Martin Blais <blais@furius.ca>
-:Date: 2005-09-03
+:Author: Martin Blais <blais@furius.ca>, Stefan Merten <smerten@oekonux.de>
 
+The tests are using ERT_. You need to install ERT_ for to run them. If
+you did you should change the path to the library contained in the
+variable `ERT` in `Makefile`.
 
-Running the tests
-=================
+To run the tests in Emacs use the facilities provided by ERT_. Namely
+evaluate the buffer containing the tests and do::
 
-To run the test suite, you can either evaluate the relevant progn from within
-emacs, or you can run them from the command-line like this, e.g.::
+  M-x ert [RETURN] [RETURN]
 
-   emacs --script tests-basic.el
+To run the tests by `make` use ::
 
-See the Makefile for more details.
+  make ert-tests
 
-Status
-======
-
-We are planning to write many more tests and eventually to rewrite the
-interactive section adjustment because it contains a few bugs (it nonetheless
-pretty much works well otherwise).  Some of those bugs have been added and are
-currently failing if you run the tests.
-
-(See the FIXME statements for where to continue.)
+.. _ERT: http://www.emacswiki.org/emacs/ErtTestLibrary

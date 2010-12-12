@@ -1,12 +1,12 @@
 #!/usr/bin/env make
 
-EMACS=/usr/bin/emacs
+EMACS = /usr/bin/emacs
+ERT = ~/lib/emacs/ert
 
-runtests:
-	$(EMACS) --batch -l tests-basic.el
-	$(EMACS) --batch -l tests-adjust-section.el
+EMACS_ERT_PFX = $(EMACS) --batch --quick --directory=$(ERT) --load=ert.el
+EMACS_ERT_SFX = --funcall=ert-run-tests-batch-and-exit
 
-runtests-emacs-cvs:
-	$(EMACS) --script tests-basic.el
-	$(EMACS) --script tests-adjust-section.el
+ERT_TESTS := $(filter-out ert-%,$(wildcard *.el))
 
+tests:
+	$(EMACS_ERT_PFX) $(addprefix -l ,$(ERT_TESTS)) $(EMACS_ERT_SFX)
