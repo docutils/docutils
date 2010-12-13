@@ -363,6 +363,41 @@ Not a docinfo.
 </div>\\n''',
  'html_head': '''...<title></title>\\n'''}
 """],
+["""\
+Not a docinfo.
+
+:This is: a
+:simple field list with loooong field: names
+""",
+"""\
+{'fragment': '''<p>Not a docinfo.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">This is:</th><td class="field-body">a</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">simple field list with loooong field:</th></tr>
+<tr class="field"><td>&nbsp;</td><td class="field-body">names</td>
+</tr>
+</tbody>
+</table>\\n''',
+ 'html_body': '''<div class="document">
+<p>Not a docinfo.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">This is:</th><td class="field-body">a</td>
+</tr>
+<tr class="field"><th class="field-name" colspan="2">simple field list with loooong field:</th></tr>
+<tr class="field"><td>&nbsp;</td><td class="field-body">names</td>
+</tr>
+</tbody>
+</table>
+</div>\\n''',
+ 'html_head': '''...<title></title>\\n'''}
+"""],
 ])
 
 
