@@ -858,7 +858,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         if ( self.settings.field_name_limit
              and len(node.astext()) > self.settings.field_name_limit):
             atts['colspan'] = 2
-            self.context.append('</tr>\n<tr><td>&nbsp;</td>')
+            self.context.append('</tr>\n'
+                                + self.starttag(node.parent, 'tr', '')
+                                + '<td>&nbsp;</td>')
         else:
             self.context.append('')
         self.body.append(self.starttag(node, 'th', '', **atts))
