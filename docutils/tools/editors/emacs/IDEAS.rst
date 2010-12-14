@@ -138,3 +138,9 @@ Display of current location
 * Display the "section path" to the current point
 
 * Like in XML: In which element is the point?
+
+toc-mode only to a certain level
+================================
+
+* If a TOC buffer is created a prefix argument should limit the depth
+  of the listing to the given level
