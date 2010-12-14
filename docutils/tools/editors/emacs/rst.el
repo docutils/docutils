@@ -478,17 +478,17 @@ After interpretation of ARGS the results are concatenated as for
   "Alist of deprecated keys mapping to the right key to use and the
 definition.")
 
+(require 'edmacro)
+
 (defun rst-call-deprecated ()
   (interactive)
   (let* ((dep-key (this-command-keys-vector))
+	 (dep-key-s (format-kbd-macro dep-key))
 	 (fnd (assoc dep-key rst-deprecated-keys)))
     (if (not fnd)
-	(error "Unknown deprecated key sequence %s" dep-key)
-      (message "[Deprecated use of key %S; use key %S instead]"
-	       (mapconcat (lambda (c) (format (if (integerp c) "%c" "%s") c))
-			  dep-key "")
-	       (mapconcat (lambda (c) (format (if (integerp c) "%c" "%s") c))
-			  (second fnd) ""))
+	(error "Unknown deprecated key sequence %s" dep-key-s)
+      (message "[Deprecated use of key %s; use key %s instead]"
+	       dep-key-s (format-kbd-macro (second fnd)))
       (call-interactively (third fnd)))))
 
 (defun rst-define-key (keymap key def &rest deprecated)
@@ -3191,6 +3191,7 @@ details check the Rst Faces Defaults group."
 
     ;; Simple `Body Elements`_
     ;; `Bullet Lists`_
+    ;; FIXME: A bullet directly after a field name is not recognized
     (,(rst-re 'lin-beg '(:grp bul-sta))
      1 ,rst-block-face)
     ;; `Enumerated Lists`_
@@ -3250,6 +3251,8 @@ details check the Rst Faces Defaults group."
      1 ,rst-definition-face)
     ;; `Hyperlink References`_
     ;; FIXME: `Embedded URIs`_ not considered
+    ;; FIXME: Directly adjacing marked up words are not fontified correctly
+    ;;        unless they are not separated by two spaces: foo_ bar_
     (,(rst-re 'ilm-pfx '(:grp (:alt (:seq "`" ilcbkq-tag "`")
 				    (:seq "\\sw" (:alt "\\sw" "-") "+\\sw"))
 			      "__?") 'ilm-sfx)
