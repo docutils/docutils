@@ -62,6 +62,10 @@ Completion for directives
 
   * May be `expand.el` can help (look in package finder)?
 
+  * May be `hippie` is good here
+
+  * Check `(info)autotype`
+
 Completion for user-defined elements
 ====================================
 
@@ -144,3 +148,10 @@ toc-mode only to a certain level
 
 * If a TOC buffer is created a prefix argument should limit the depth
   of the listing to the given level
+
+Imenu support
+=============
+
+* Imenu could be supported
+
+  * See `(elisp)Imenu`
