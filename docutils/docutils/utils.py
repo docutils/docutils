@@ -346,12 +346,13 @@ class NameValueError(DataError): pass
 
 def decode_path(path):
     """
-    Decode file/path string. Return `nodes.reprunicode` object.
+    Ensure `path` is Unicode. Return `nodes.reprunicode` object.
 
-    Convert to Unicode without the UnicodeDecode error of the
-    implicit 'ascii:strict' decoding.
+    Decode file/path string in a failsave manner if not already done.
     """
     # see also http://article.gmane.org/gmane.text.docutils.user/2905
+    if isinstance(path, unicode):
+        return path
     try:
         path = path.decode(sys.getfilesystemencoding(), 'strict')
     except AttributeError: # default value None has no decode method
