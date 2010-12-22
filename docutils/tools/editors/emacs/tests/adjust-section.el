@@ -281,9 +281,30 @@ Previous Title
 -\^@
 "
 	     "
-================
- Previous Title
-================
+Previous Title
+-
+"
+	     t))
+    (should (equal-buffer
+	     '(rst-adjust)
+	     "
+Previous Title
+--\^@
+"
+	     "
+Previous Title
+--
+"
+	     t))
+    (should (equal-buffer
+	     '(rst-adjust)
+	     "
+Previous Title
+---\^@
+"
+	     "
+Previous Title
+--------------
 
 "
 	     t))
@@ -715,6 +736,50 @@ Document Title
 Document Title2
 ===============
 
+"
+	     t))
+    ;; docutils-Bugs #2972588
+    (should (equal-buffer
+	     '(rst-adjust)
+	     "
+==============
+Document Title
+==============
+
+Subtitle
+========
+
+.. contents::
+   :depth: 2
+..
+  1 Section 1
+  2 Section 2
+
+Section 1\^@
+---------
+
+Section 2
+---------
+"
+	     "
+==============
+Document Title
+==============
+
+Subtitle
+========
+
+.. contents::
+   :depth: 2
+..
+  1 Section 1
+  2 Section 2
+
+Section 1\^@
+=========
+
+Section 2
+---------
 "
 	     t))
 

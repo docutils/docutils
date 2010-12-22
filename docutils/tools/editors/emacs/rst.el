@@ -180,13 +180,6 @@
 ;;   We could perform this guessing by searching for a valid adornment
 ;;   at the top of the document or searching for reStructuredText_
 ;;   directives further on.
-;;
-;; - We should support imenu in our major mode, with the menu filled with the
-;;   section titles (this should be really easy).
-;;
-;; - Maybe some functions for adornment overlap.
-;;
-;; - We need to automatically recenter on rst-forward-section movement commands.
 
 
 ;;; HISTORY
@@ -381,17 +374,18 @@
 			    ; otherwise explicit markup start would be
 			    ; recognized
     (ado-tag-1-1 (:grp ado-prt)
-		 "\\1" adorep-hlp) ; A complete adorment, group is the first
+		 "\\1" adorep-hlp) ; A complete adornment, group is the first
 				   ; adornment character and MUST be the FIRST
 				   ; group in the whole expression
     (ado-tag-1-2 (:grp ado-prt)
-		 "\\2" adorep-hlp) ; A complete adorment, group is the first
+		 "\\2" adorep-hlp) ; A complete adornment, group is the first
 				   ; adornment character and MUST be the
 				   ; SECOND group in the whole expression
-    (ado-beg-2-1 "^" (:grp ado-tag-1-2)) ; An adornment at the beginning of a
-					 ; line; first group is the whole
-					 ; adornment and MUST be the FIRST
-					 ; group in the whole expression
+    (ado-beg-2-1 "^" (:grp ado-tag-1-2)
+		 lin-end) ; A complete adornment line; first group is the whole
+			  ; adornment and MUST be the FIRST group in the whole
+			  ; expression; second group is the first adornment
+			  ; character
 
     ;; Titles (`ttl')
     (ttl-tag "\\S *\\w\\S *") ; A title text
@@ -875,46 +869,6 @@ style."
   :group 'rst-adjust)
 
 
-(defun rst-line-homogeneous-p (&optional accept-special)
-  "Return true if the line is homogeneous.
-
-Predicate that returns the unique char if the current line is
-composed only of a single repeated non-whitespace character.
-This returns the char even if there is whitespace at the
-beginning of the line.
-
-If ACCEPT-SPECIAL is specified we do not ignore special sequences
-which normally we would ignore when doing a search on many lines.
-For example, normally we have cases to ignore commonly occurring
-patterns, such as :: or ...; with the flag do not ignore them."
-  (save-excursion
-    (back-to-indentation)
-    (unless (looking-at "\n")
-      (let ((c (char-after)))
-	(if (and (looking-at (rst-re c "+" 'lin-end))
-		 (or accept-special
-		     (and
-		      ;; Common patterns.
-		      (not (looking-at (rst-re 'dcl-tag 'lin-end)))
-		      (not (looking-at (rst-re 'ell-tag 'lin-end)))
-		      ;; Discard one char line
-		      (not (looking-at (rst-re "." 'lin-end)))
-		      )))
-	    c)
-	))
-    ))
-
-(defun rst-line-homogeneous-nodent-p (&optional accept-special)
-  "Return true if the line is homogeneous with no indent.
-See `rst-line-homogeneous-p' about ACCEPT-SPECIAL."
-  (save-excursion
-    (beginning-of-line)
-    (if (looking-at (rst-re 'hws-sta))
-        nil
-      (rst-line-homogeneous-p accept-special)
-      )))
-
-
 (defun rst-compare-adornments (ado1 ado2)
   "Compare adornments.
 Return true if both ADO1 and ADO2 adornments are equal,
@@ -1003,21 +957,20 @@ requested adornment."
       ;; Set the current column, we're at the end of the title line
       (setq len (+ (current-column) indent))
 
-      ;; Remove previous line if it consists only of a single repeated character
+      ;; Remove previous line if it is an adornment
       (save-excursion
         (forward-line -1)
-        (and (rst-line-homogeneous-p 1)
-             ;; Avoid removing the underline of a title right above us.
-             (save-excursion (forward-line -1)
-                             (not (looking-at (rst-re 'ttl-beg))))
-             (rst-delete-entire-line)))
+	(if (and (looking-at (rst-re 'ado-beg-2-1))
+		 ;; Avoid removing the underline of a title right above us.
+		 (save-excursion (forward-line -1)
+				 (not (looking-at (rst-re 'ttl-beg)))))
+	    (rst-delete-entire-line)))
 
-      ;; Remove following line if it consists only of a single repeated
-      ;; character
+      ;; Remove following line if it is an adornment
       (save-excursion
         (forward-line +1)
-        (and (rst-line-homogeneous-p 1)
-             (rst-delete-entire-line))
+        (if (looking-at (rst-re 'ado-beg-2-1))
+	    (rst-delete-entire-line))
         ;; Add a newline if we're at the end of the buffer, for the subsequence
         ;; inserting of the underline
         (if (= (point) (buffer-end 1))
@@ -1042,28 +995,29 @@ requested adornment."
 
 (defun rst-normalize-cursor-position ()
   "Normalize the cursor position.
-If the cursor is on an adornment line or an empty line , place it
-on the section title line (at the end).  Returns the line offset
-by which the cursor was moved.  This works both over or under a
-line."
+If the cursor is on an adornment line or an empty line, place it
+on the section title line (at the beginning). Return the line
+offset by which the cursor was moved. This works both over or
+under a line."
   (if (save-excursion (beginning-of-line)
-                      (or (rst-line-homogeneous-p 1)
+                      (or (looking-at (rst-re 'ado-beg-2-1))
                           (looking-at (rst-re 'lin-end))))
       (progn
         (beginning-of-line)
         (cond
          ((save-excursion (forward-line -1)
-                          (beginning-of-line)
                           (and (looking-at (rst-re 'ttl-beg))
-                               (not (rst-line-homogeneous-p 1))))
-          (progn (forward-line -1) -1))
+                               (not (looking-at (rst-re 'ado-beg-2-1)))))
+          (forward-line -1)
+	  -1)
          ((save-excursion (forward-line +1)
-                          (beginning-of-line)
                           (and (looking-at (rst-re 'ttl-beg))
-                               (not (rst-line-homogeneous-p 1))))
-          (progn (forward-line +1) +1))
-         (t 0)))
-    0 ))
+                               (not (looking-at (rst-re 'ado-beg-2-1)))))
+          (forward-line +1)
+	  +1)
+         (t
+	  0)))
+    0))
 
 
 (defun rst-find-all-adornments ()
@@ -1081,7 +1035,7 @@ function to remove redundancies and inconsistencies."
     (save-excursion
       (goto-char (point-min))
       (while (< (point) (buffer-end 1))
-        (if (rst-line-homogeneous-nodent-p)
+        (if (looking-at (rst-re 'ado-beg-2-1))
             (progn
               (setq curline (+ curline (rst-normalize-cursor-position)))
 
@@ -1163,11 +1117,12 @@ extracting the adornment."
       (if (looking-at (rst-re 'ttl-beg))
           (let* ((over (save-excursion
                          (forward-line -1)
-                         (rst-line-homogeneous-nodent-p)))
-
-                (under (save-excursion
-                         (forward-line +1)
-                         (rst-line-homogeneous-nodent-p)))
+                         (if (looking-at (rst-re 'ado-beg-2-1))
+			     (string-to-char (match-string 2)))))
+		 (under (save-excursion
+			  (forward-line +1)
+			  (if (looking-at (rst-re 'ado-beg-2-1))
+			      (string-to-char (match-string 2)))))
                 )
 
             ;; Check that the line above the overline is not part of a title
@@ -3293,7 +3248,7 @@ details check the Rst Faces Defaults group."
     ;; Do all block fontification as late as possible so 'append works
 
     ;; Sections_ / Transitions_ - for sections this is multiline
-    (,(rst-re 'ado-beg-2-1 'lin-end)
+    (,(rst-re 'ado-beg-2-1)
      (rst-font-lock-handle-adornment-match
       (rst-font-lock-handle-adornment-limit
        (match-string-no-properties 1) (match-end 1))
@@ -3483,6 +3438,9 @@ or nil."
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Adornments
+
+;; FIXMEFIXME: This must be merged with the adornment functions for section
+;;             adjustment.
 
 (defvar rst-font-lock-adornment-level nil
   "Storage for `rst-font-lock-handle-adornment-match'.

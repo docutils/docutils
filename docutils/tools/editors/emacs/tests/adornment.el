@@ -3,114 +3,6 @@
 (add-to-list 'load-path ".")
 (load "ert-support" nil t)
 
-(ert-deftest rst-line-homogeneous-p ()
-  "Tests for `rst-line-homogeneous-p'."
-  (should (equal-buffer-return
-	   '(rst-line-homogeneous-p)
-	   "Blablabla bla\^@"
-	   nil
-	   nil))
-  (should (equal-buffer-return
-	   '(rst-line-homogeneous-p)
-	   "-----------\^@"
-	   nil
-	   ?-))
-  (should (equal-buffer-return
-	   '(rst-line-homogeneous-p)
-	   "   -----------\^@"
-	   nil
-	   ?-))
-  (should (equal-buffer-return
-	   '(rst-line-homogeneous-p)
-	   "aaaa\^@aaa"
-	   nil
-	   ?a))
-  (should (equal-buffer-return
-	   '(rst-line-homogeneous-p)
-	   "uuuuuuuuuuuuuuuuu\^@"
-	   nil
-	   ?u))
-  (should (equal-buffer-return
-	   '(rst-line-homogeneous-p)
-	   "--=---------\^@"
-	   nil
-	   nil))
-  (should (equal-buffer-return
-	   '(rst-line-homogeneous-p)
-	   " uuuuuuuuuuuuuuuuu\^@"
-	   nil
-	   ?u))
-  (should (equal-buffer-return
-	   '(rst-line-homogeneous-p)
-	   " uuuuuuuuuuuuuuuuu \^@"
-	   nil
-	   ?u))
-  (should (equal-buffer-return
-	   '(rst-line-homogeneous-p)
-	   "-------\^@----"
-	   nil
-	   ?-))
-  (should (equal-buffer-return
-	   '(rst-line-homogeneous-p)
-	   "-\^@"
-	   nil
-	   nil))
-  )
-
-(ert-deftest rst-line-homogeneous-nodent-p ()
-  "Tests for `rst-line-homogeneous-nodent-p'."
-  (should (equal-buffer-return
-	   '(rst-line-homogeneous-nodent-p)
-	   "Blablabla bla\^@"
-	   nil
-	   nil))
-  (should (equal-buffer-return
-	   '(rst-line-homogeneous-nodent-p)
-	   "-----------\^@"
-	   nil
-	   ?-))
-  (should (equal-buffer-return
-	   '(rst-line-homogeneous-nodent-p)
-	   "   -----------\^@"
-	   nil
-	   nil))
-  (should (equal-buffer-return
-	   '(rst-line-homogeneous-nodent-p)
-	   "aaaa\^@aaa"
-	   nil
-	   ?a))
-  (should (equal-buffer-return
-	   '(rst-line-homogeneous-nodent-p)
-	   "uuuuuuuuuuuuuuuuu\^@"
-	   nil
-	   ?u))
-  (should (equal-buffer-return
-	   '(rst-line-homogeneous-nodent-p)
-	   "--=---------\^@"
-	   nil
-	   nil))
-  (should (equal-buffer-return
-	   '(rst-line-homogeneous-nodent-p)
-	   " uuuuuuuuuuuuuuuuu\^@"
-	   nil
-	   nil))
-  (should (equal-buffer-return
-	   '(rst-line-homogeneous-nodent-p)
-	   " uuuuuuuuuuuuuuuuu \^@"
-	   nil
-	   nil))
-  (should (equal-buffer-return
-	   '(rst-line-homogeneous-nodent-p)
-	   "-------\^@----"
-	   nil
-	   ?-))
-  (should (equal-buffer-return
-	   '(rst-line-homogeneous-nodent-p)
-	   "-\^@"
-	   nil
-	   nil))
-  )
-
 (ert-deftest rst-normalize-cursor-position ()
   "Tests for `rst-normalize-cursor-position'."
   (should (equal-buffer
@@ -325,6 +217,15 @@ Du bon vin tous les jours
 
 \^@Du bon vin tous les jours
 --
+"
+	   nil
+	   '(nil nil 0)))
+  (should (equal-buffer-return
+	   '(rst-get-adornment)
+	   "
+
+\^@Du bon vin tous les jours
+---
 "
 	   nil
 	   '(?- simple 0)))
