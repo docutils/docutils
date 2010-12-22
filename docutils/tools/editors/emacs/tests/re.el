@@ -829,7 +829,7 @@ and the numbered matches are compared."
 	     ;; Sections_ / Transitions_
 	     re-ado2
 	     "=== rst.el.~rst_el_1_68~:3109"
-	     (rst-re 'ado-beg-2-1 'lin-end)
+	     (rst-re 'ado-beg-2-1)
 	     (cons "\\^\\[:word:]\\[:space:]\\[:cntrl:]"
 		   "]!\"#$%&'()*+,./:;<=>?@[\\^_`{|}~-") ;; Use real adornment
 							 ;; characters
