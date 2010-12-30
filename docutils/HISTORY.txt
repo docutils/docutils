@@ -25,7 +25,7 @@ Changes Since 0.7
   - Math support: reStructuredText "math" role and directive,
     ``math`` and ``math_block`` doctree elements.
   - Decode command line arguments with the locales preferred encoding
-    (to allow, e.g., ``--title=Dornröschen``.
+    (to allow, e.g., ``--title=Dornröschen``).
   - Orphaned "python" reader and "newlatex2e" writer moved to the sandbox.
 
 .. _BCP 47: http://www.rfc-editor.org/rfc/bcp/bcp47.txt
@@ -53,6 +53,7 @@ Changes Since 0.7
   - Set language for custom roles, paragraphs, block-quotes, and
     line-quotes with class argument "language-<language tag>".
   - Fix [ 3095603 ] wrong quotes output for russian and other languages.
+  - Convert image URI to a local file path.
 
 * docutils/writers/xetex/__init__.py
 

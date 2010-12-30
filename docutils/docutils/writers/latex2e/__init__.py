@@ -17,6 +17,7 @@ import os
 import time
 import re
 import string
+import urllib
 from docutils import frontend, nodes, languages, writers, utils, io
 from docutils.transforms import writer_aux
 
@@ -2193,9 +2194,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_image(self, node):
         self.requirements['graphicx'] = self.graphicx_package
         attrs = node.attributes
-        # Add image URI to dependency list, assuming that it's
-        # referring to a local file.
-        self.settings.record_dependencies.add(attrs['uri'])
+        # Convert image URI to a local file path and add to dependency list
+        imagepath = urllib.url2pathname(attrs['uri'])
+        self.settings.record_dependencies.add(imagepath)
         # alignment defaults:
         if not 'align' in attrs:
             # Set default align of image in a figure to 'center'
@@ -2243,7 +2244,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         options = ''
         if include_graphics_options:
             options = '[%s]' % (','.join(include_graphics_options))
-        self.out.append('\\includegraphics%s{%s}' % (options, attrs['uri']))
+        self.out.append('\\includegraphics%s{%s}' % (options, imagepath))
         self.out.extend(post)
 
     def depart_image(self, node):
