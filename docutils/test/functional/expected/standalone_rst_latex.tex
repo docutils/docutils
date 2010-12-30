@@ -1449,7 +1449,7 @@ This table has a cell spanning two columns:
 \setlength{\DUtablewidth}{\linewidth}
 \begin{longtable}[c]{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|p{0.086\DUtablewidth}|}
 \hline
-\multicolumn{2}{|l|}{\textbf{%
+\multicolumn{2}{|p{0.15\DUtablewidth}|}{\textbf{%
 Inputs
 }} & \textbf{%
 Output
@@ -1465,7 +1465,7 @@ A or B
 \hline
 \endfirsthead
 \hline
-\multicolumn{2}{|l|}{\textbf{%
+\multicolumn{2}{|p{0.15\DUtablewidth}|}{\textbf{%
 Inputs
 }} & \textbf{%
 Output
@@ -1805,14 +1805,81 @@ This is a \DUroletitlereference{\DUrole{custom-title-reference}{customized title
 
 \end{itemize}
 
+
+%___________________________________________________________________________
+
+\subsection*{\phantomsection%
+  3.2~~~More Tables%
+  \addcontentsline{toc}{subsection}{3.2~~~More Tables}%
+  \label{more-tables}%
+}
+
+A multicolumn table with multi-paragraph rowspanning cells:
+
+\leavevmode
+\setlength{\DUtablewidth}{\linewidth}
+\begin{longtable}[c]{|p{0.133\DUtablewidth}|p{0.179\DUtablewidth}|p{0.179\DUtablewidth}|p{0.110\DUtablewidth}|p{0.121\DUtablewidth}|p{0.145\DUtablewidth}|}
+\hline
+
+test
+ & 
+\textbf{bold hd}
+ & \multicolumn{3}{p{0.41\DUtablewidth}|}{
+multicolumn 1
+
+With a second paragraph
+} & 
+\emph{emph hd}
+ \\
+\hline
+\multicolumn{2}{|p{0.31\DUtablewidth}|}{
+multicolumn 2
+
+With a second paragraph
+} & 
+cell
+ & 
+cell
+ & 
+cell
+ & 
+cell
+ \\
+\hline
+
+cell
+ & \multicolumn{2}{p{0.36\DUtablewidth}|}{
+multicolumn 3 (one line,
+but very very very very
+very looooong)
+} & 
+cell
+ & 
+cell
+ & 
+cell
+ \\
+\hline
+
+cell
+ & 
+cell
+ & 
+cell
+ & \multicolumn{3}{p{0.38\DUtablewidth}|}{
+Short multicolumn 4
+} \\
+\hline
+\end{longtable}
+
 % This file is used by the standalone_rst_latex test.
 
 
 %___________________________________________________________________________
 
 \subsection*{\phantomsection%
-  3.2~~~Option lists%
-  \addcontentsline{toc}{subsection}{3.2~~~Option lists}%
+  3.3~~~Option lists%
+  \addcontentsline{toc}{subsection}{3.3~~~Option lists}%
   \label{id23}%
 }
 
@@ -1851,8 +1918,8 @@ is contained in a quote
 %___________________________________________________________________________
 
 \subsection*{\phantomsection%
-  3.3~~~Monospaced non-alphanumeric characters%
-  \addcontentsline{toc}{subsection}{3.3~~~Monospaced non-alphanumeric characters}%
+  3.4~~~Monospaced non-alphanumeric characters%
+  \addcontentsline{toc}{subsection}{3.4~~~Monospaced non-alphanumeric characters}%
   \label{monospaced-non-alphanumeric-characters}%
 }
 
@@ -1871,8 +1938,8 @@ width as the third line.
 %___________________________________________________________________________
 
 \subsection*{\phantomsection%
-  3.4~~~Non-ASCII characters%
-  \addcontentsline{toc}{subsection}{3.4~~~Non-ASCII characters}%
+  3.5~~~Non-ASCII characters%
+  \addcontentsline{toc}{subsection}{3.5~~~Non-ASCII characters}%
   \label{non-ascii-characters}%
 }
 
@@ -2291,8 +2358,8 @@ to the document options or use a different font package.
 %___________________________________________________________________________
 
 \subsection*{\phantomsection%
-  3.5~~~Encoding special chars%
-  \addcontentsline{toc}{subsection}{3.5~~~Encoding special chars}%
+  3.6~~~Encoding special chars%
+  \addcontentsline{toc}{subsection}{3.6~~~Encoding special chars}%
   \label{encoding-special-chars}%
 }
 
@@ -2364,8 +2431,8 @@ greater-than and bar, < | >, except for typewriter font \DUroletitlereference{cm
 %___________________________________________________________________________
 
 \subsection*{\phantomsection%
-  3.6~~~Hyperlinks and -targets%
-  \addcontentsline{toc}{subsection}{3.6~~~Hyperlinks and -targets}%
+  3.7~~~Hyperlinks and -targets%
+  \addcontentsline{toc}{subsection}{3.7~~~Hyperlinks and -targets}%
   \label{hyperlinks-and-targets}%
 }
 
@@ -2414,8 +2481,8 @@ See \hyperref[hypertarget-in-plain-text]{hypertarget in plain text},
 %___________________________________________________________________________
 
 \subsection*{\phantomsection%
-  3.7~~~External references%
-  \addcontentsline{toc}{subsection}{3.7~~~External references}%
+  3.8~~~External references%
+  \addcontentsline{toc}{subsection}{3.8~~~External references}%
   \label{external-references}%
 }
 

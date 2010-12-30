@@ -825,6 +825,13 @@ class Table(object):
         """Return columnwidth for current cell (not multicell)."""
         return '%.2f\\DUtablewidth' % self._col_width[self._cell_in_row-1]
 
+    def get_multicolumn_width(self, start, len_):
+        """Return sum of columnwidths for multicell."""
+        mc_width = sum(width
+                       for width in (self._col_width[start + co - 1]
+                                     for co in range (len_)))
+        return '{0:.2f}\\DUtablewidth'.format(mc_width)
+
     def get_caption(self):
         if not self.caption:
             return ''
@@ -1913,8 +1920,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
             else:
                 bar1 = ''
             count = node['morecols'] + 1
-            self.out.append('\\multicolumn{%d}{%sl%s}{' %
-                    (count, bar1, self.active_table.get_vertical_bar()))
+            self.out.append('\\multicolumn{%d}{%sp{%s}%s}{' %
+                    (count, bar1,
+                     self.active_table.get_multicolumn_width(
+                        self.active_table.get_entry_number(),
+                        count),
+                     self.active_table.get_vertical_bar()))
             self.context.append('}')
         else:
             self.context.append('')

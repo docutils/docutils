@@ -54,6 +54,8 @@ Changes Since 0.7
     line-quotes with class argument "language-<language tag>".
   - Fix [ 3095603 ] wrong quotes output for russian and other languages.
   - Convert image URI to a local file path.
+  - Apply [ 3148141 ] fix multicolumn support when a colspanning cell
+    has more than one paragraph (Wolfgang Scherer).
 
 * docutils/writers/xetex/__init__.py
 
