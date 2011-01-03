@@ -594,15 +594,15 @@ def column_width(text):
 
     Correct ``len(text)`` for wide East Asian and combining Unicode chars.
     """
-    if isinstance(text, str):
+    if isinstance(text, str) and sys.version_info < (3,0):
         return len(text)
+    combining_correction = sum([-1 for c in text
+                                if unicodedata.combining(c)])
     try:
         width = sum([east_asian_widths[unicodedata.east_asian_width(c)]
                      for c in text])
     except AttributeError:  # east_asian_width() New in version 2.4.
         width = len(text)
-    combining_correction = sum([-1 for ch in text
-                                if unicodedata.combining(ch)])
     return width + combining_correction
 
 def uniq(L):
