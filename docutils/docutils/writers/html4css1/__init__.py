@@ -27,7 +27,7 @@ import docutils
 from docutils import frontend, nodes, utils, writers, languages, io
 from docutils.transforms import writer_aux
 from docutils.math.latex2mathml import parse_latex_math
-from docutils.math.latex2html import math2html
+from docutils.math.math2html import math2html
 
 class Writer(writers.Writer):
 

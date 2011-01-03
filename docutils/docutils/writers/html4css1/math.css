@@ -1,15 +1,48 @@
-/* math formatting. From elyxer's lyx.css */
+/* --end--
+* CSS file for LaTeX formulas.
+*/
+
+/* Formulas */
 .formula {
 	text-align: center;
-	font-family: 
-		STIXGeneral, 'Asana Math', 'DejaVu Serif', 'DejaVu Sans', 
-		serif;
+	font-family: "DejaVu Serif", serif;
 	margin: 1.2em 0;
+}
+span.formula {
+	white-space: nowrap;
 }
 div.formula {
 	padding: 0.5ex;
+	margin-left: auto;
+	margin-right: auto;
 }
-i { font-family: italic; }
+
+/* Basic features */
+a.eqnumber {
+	display: inline-block;
+	float: right;
+	clear: right;
+	font-weight: bold;
+}
+span.unknown {
+	color: #800000;
+}
+span.ignored, span.arraydef {
+	display: none;
+}
+
+/* Alignment */
+.align-left, .align-l {
+	text-align: left;
+}
+.align-right, .align-r {
+	text-align: right;
+}
+.align-center, .align-c {
+	text-align: center;
+}
+
+/* Structures */
 span.overline, span.bar {
 	text-decoration: overline;
 }
@@ -25,33 +58,39 @@ span.overline, span.bar {
 span.numerator {
 	display: block;
 }
-span.numerator-l {
-	display: block;
-	text-align: left;
-}
-span.numerator-r {
-	display: block;
-	text-align: right;
-}
 span.denominator {
 	display: block;
-	padding: 0;
-	border-top: thin solid #000040;
+	padding: 0ex;
+	border-top: thin solid;
+}
+sup.numerator, sup.unit {
+	font-size: 70%;
+	vertical-align: 80%;
+}
+sub.denominator, sub.unit {
+	font-size: 70%;
+	vertical-align: -20%;
 }
 span.sqrt {
 	display: inline-block;
 	vertical-align: middle;
+	padding: 0.1ex;
+}
+sup.root {
+	font-size: 70%;
+	position: relative;
+	left: 1.4ex;
 }
 span.radical {
 	display: inline-block;
-	padding: 0;
+	padding: 0ex;
 	font-size: 150%;
 	vertical-align: top;
 }
 span.root {
 	display: inline-block;
-	border-top: thin #000040 solid;
-	padding: 0;
+	border-top: thin solid;
+	padding: 0ex;
 	vertical-align: middle;
 }
 span.symbol {
@@ -66,18 +105,24 @@ span.largesymbol {
 span.hugesymbol {
 	font-size: 200%;
 }
-span.limits {
+span.scripts {
 	display: inline-table;
 	vertical-align: middle;
 }
-sub.bigsymbol {
+.script {
 	display: table-row;
 	text-align: left;
 	line-height: 150%;
 }
-sup.bigsymbol {
+span.limits {
+	display: inline-table;
+	vertical-align: middle;
+}
+.limit {
 	display: table-row;
-	text-align: left;
+	line-height: 95%;
+}
+sup.limit, sub.limit {
 	line-height: 150%;
 }
 span.symbolover {
@@ -101,56 +146,23 @@ span.symbolunder {
 	top: 0.3em;
 	width: 0px;
 }
-span.fraktur {
-	font-family: "Lucida Blackletter", eufm10, blackletter;
-}
-span.blackboard {
-	font-family: Blackboard, msbm10, serif;
-}
-span.script {
-	font-family: "Monotype Corsiva", "Apple Chancery", 
-		     "URW Chancery L", cursive;
-}
-table.formula {
-	display: inline-block;
+
+/* Environments */
+span.array, span.bracketcases, span.binomial, span.environment {
+	display: inline-table;
 	text-align: center;
 	border-collapse: collapse;
 	margin: 0em;
 	vertical-align: middle;
 }
-td.formula-l {
-	text-align: left;
-	padding: 0.2ex;
+span.arrayrow, span.binomrow {
+	display: table-row;
+	padding: 0ex;
 	border: 0ex;
 }
-td.formula-c {
-	text-align: center;
-	padding: 0.2ex;
+span.arraycell, span.bracket, span.case, span.binomcell, span.environmentcell {
+	display: table-cell;
+	padding: 0ex 0.2ex;
+	line-height: 99%;
 	border: 0ex;
-}
-td.formula-r {
-	text-align: right;
-	padding: 0.2ex;
-	border: 0ex;
-}
-table.cases {
-	display: inline-block;
-	text-align: center;
-	border-collapse: collapse;
-	margin: 0.2em;
-	border-left: thin solid #000040;
-	vertical-align: middle;
-}
-table.cases tr td {
-	padding-left: 1ex;
-	padding-right: 1em;
-}
-table.environment {
-	display: inline-block;
-	text-align: right;
-	margin: 0;
-	vertical-align: middle;
-}
-table.environment tr td {
-	padding: 0 1em;
 }
