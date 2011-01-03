@@ -225,7 +225,7 @@ class HelperFunctionsTests(unittest.TestCase):
                           'de_1901_frak', 'de_at', 'de_1901', 'de_frak', 'de'])
 
     def test_column_width(self):
-        self.assertEquals(utils.column_width('de'), 2)
+        self.assertEquals(utils.column_width(u'de'), 2)
         self.assertEquals(utils.column_width(u'dâ'), 2) # pre-composed
         self.assertEquals(utils.column_width(u'dâ'), 2) # combining
 
