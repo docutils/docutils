@@ -3,7 +3,7 @@
 # Copyright: This module has been placed in the public domain.
 
 """
-This is the ``docutils.parsers.restructuredtext.states`` module, the core of
+This is the ``docutils.parsers.rst.states`` module, the core of
 the reStructuredText parser.  It defines the following:
 
 :Classes:
