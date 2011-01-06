@@ -41,6 +41,7 @@ Changes Since 0.7
 
   - Set "lang" argument for objects with class argument
     "language-<language tag>".
+  - New setting "math-output" with support for HTML, MathML, and LaTeX.
 
 * docutils/writers/latex2e/__init__.py
 

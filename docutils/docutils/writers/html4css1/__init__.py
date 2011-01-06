@@ -252,9 +252,6 @@ class HTMLTranslator(nodes.NodeVisitor):
     def __init__(self, document):
         nodes.NodeVisitor.__init__(self, document)
         self.settings = settings = document.settings
-        # TODO: make this a config value once the HTML math output is ready:
-        # self.settings.math_output = "MathML"
-        # self.settings.math_output = "HTML"
         lcode = settings.language_code
         self.language = languages.get_language(lcode, document.reporter)
         self.meta = [self.content_type % settings.output_encoding,
@@ -293,6 +290,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body_suffix = ['</body>\n</html>\n']
         self.section_level = 0
         self.initial_header_level = int(settings.initial_header_level)
+        self.math_output = settings.math_output.lower()
         # A heterogenous stack used in conjunction with the tree traversal.
         # Make sure that the pops correspond to the pushes:
         self.context = []
@@ -1112,14 +1110,17 @@ class HTMLTranslator(nodes.NodeVisitor):
     def visit_math(self, node, inline=True):
         math_in = node.astext()
 
-        if self.settings.math_output == 'HTML':
+        if self.math_output == 'latex':
+            self.body.append(self.starttag(node, 'tt', CLASS='math'))
+            return
+
+        if self.math_output == 'html':
             tag={True: 'span', False: 'div'}
             self.body.append(self.starttag(node, tag[inline], CLASS='formula'))
             self.body.append(math2html(math_in))
             self.body.append('</%s>\n' % tag[inline])
 
-        elif self.settings.math_output == 'MathML':
-            # MathML export:
+        elif self.math_output == 'mathml':
             # update the doctype:
             if not self.has_mathml_dtd:
                 if self.settings.xml_declaration:
@@ -1143,13 +1144,18 @@ class HTMLTranslator(nodes.NodeVisitor):
         raise nodes.SkipNode
 
     def depart_math(self, node):
-        pass
+        if self.math_output == 'latex':
+            self.body.append('</tt>\n')
 
     def visit_math_block(self, node):
-        self.visit_math(node, inline=False)
+        if self.math_output == 'latex':
+            self.body.append(self.starttag(node, 'pre', CLASS='math'))
+        else:
+            self.visit_math(node, inline=False)
 
     def depart_math_block(self, node):
-        pass
+        if self.math_output == 'latex':
+            self.body.append('\n</pre>\n')
 
     def visit_meta(self, node):
         meta = self.emptytag(node, 'meta', **node.non_default_attributes())
