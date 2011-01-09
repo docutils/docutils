@@ -1,3 +1,5 @@
+.. OLD, USELESS STUFF
+
 ============================
  README: Docutils Extensions
 ============================
