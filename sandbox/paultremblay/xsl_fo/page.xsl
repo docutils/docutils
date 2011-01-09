@@ -3,6 +3,7 @@
     xmlns:fo="http://www.w3.org/1999/XSL/Format"
     version="1.1"
     >
+    <!-- $Date: 2011-01-09 02:51:33 -0500 (Sun, 09 Jan 2011) $ -->
     <xsl:variable name="this-stylesheet" select="'page.xsl'"/>
 
     <xsl:attribute-set name="paper-size">
