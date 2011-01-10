@@ -26,5 +26,10 @@ first-odd-even (different first, odd, and even; headers and footers will be the 
 
 <!--supress the footer on the first page--> 
 <xsl:param name="suppress-first-page-footer"/>
+
+<!--these are unfortunate parameters; they should be set to exactly the value of extent in 
+the page-header or page-footer attribute sets-->
+<xsl:param name="spacing-header"/>
+<xsl:param name="spacing-footer"/>
     
 </xsl:stylesheet>
