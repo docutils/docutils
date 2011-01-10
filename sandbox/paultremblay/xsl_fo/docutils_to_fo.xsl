@@ -9,6 +9,7 @@
     <xsl:include href="body_elements.xsl"/>
     <xsl:include href="page.xsl"/>
     <xsl:include href = "header_footer.xsl"/>
+    <xsl:include href = "root.xsl"/>
 
 
 
