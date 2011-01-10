@@ -4,6 +4,47 @@
     version="1.1"
     >
     <!-- $Date: 2011-01-09 02:51:33 -0500 (Sun, 09 Jan 2011) $ -->
+    <!--
+    This stylesheet handles headers and footers. It creates the fo:static-content 
+    elements, and the child fo:block elements. Each paragraph up to three has its 
+    own attriute set.
+    -->
+
+    <xsl:attribute-set name="header-first-paragraph">
+        <xsl:attribute name="font-size">12pt</xsl:attribute>
+        <xsl:attribute name="text-align">center</xsl:attribute>
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="header-second-paragraph">
+        <xsl:attribute name="space-before">5pt</xsl:attribute>
+        <xsl:attribute name="font-size">12pt</xsl:attribute>
+        <xsl:attribute name="text-align">center</xsl:attribute>
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="header-third-paragraph">
+        <xsl:attribute name="space-before">5pt</xsl:attribute>
+        <xsl:attribute name="font-size">12pt</xsl:attribute>
+        <xsl:attribute name="text-align">center</xsl:attribute>
+    </xsl:attribute-set>
+
+
+    <xsl:attribute-set name="footer-first-paragraph">
+        <xsl:attribute name="font-size">12pt</xsl:attribute>
+        <xsl:attribute name="text-align">center</xsl:attribute>
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="footer-second-paragraph">
+        <xsl:attribute name="space-before">5pt</xsl:attribute>
+        <xsl:attribute name="font-size">12pt</xsl:attribute>
+        <xsl:attribute name="text-align">center</xsl:attribute>
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="footer-third-paragraph">
+        <xsl:attribute name="space-before">5pt</xsl:attribute>
+        <xsl:attribute name="font-size">12pt</xsl:attribute>
+        <xsl:attribute name="text-align">center</xsl:attribute>
+    </xsl:attribute-set>
+
     <xsl:template match="decoration">
         <xsl:apply-templates/>
     </xsl:template>
@@ -94,6 +135,40 @@
         <fo:page-number/>
     </xsl:template>
 
+    <xsl:template match="decoration/header/paragraph[1]">
+        <fo:block xsl:use-attribute-sets="header-first-paragraph">
+            <xsl:apply-templates/>
+        </fo:block>
+    </xsl:template>
 
-    
+    <xsl:template match="decoration/header/paragraph[2]">
+        <fo:block xsl:use-attribute-sets="header-second-paragraph">
+            <xsl:apply-templates/>
+        </fo:block>
+    </xsl:template>
+
+    <xsl:template match="decoration/header/paragraph[3]">
+        <fo:block xsl:use-attribute-sets="header-third-paragraph">
+            <xsl:apply-templates/>
+        </fo:block>
+    </xsl:template>
+
+    <xsl:template match="decoration/footer/paragraph[1]">
+        <fo:block xsl:use-attribute-sets="footer-first-paragraph">
+            <xsl:apply-templates/>
+        </fo:block>
+    </xsl:template>
+
+    <xsl:template match="decoration/footer/paragraph[2]">
+        <fo:block xsl:use-attribute-sets="footer-second-paragraph">
+            <xsl:apply-templates/>
+        </fo:block>
+    </xsl:template>
+
+    <xsl:template match="decoration/footer/paragraph[3]">
+        <fo:block xsl:use-attribute-sets="footer-third-paragraph">
+            <xsl:apply-templates/>
+        </fo:block>
+    </xsl:template>
+
 </xsl:stylesheet>
