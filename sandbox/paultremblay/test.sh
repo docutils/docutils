@@ -1,3 +1,4 @@
+#-$Id: cvs_notes_for_paul.rst,v 1.3 2009/07/26 23:22:04 cynthia Exp 
 set -e
 set -u #  warns if a variable is not assigned.
 
@@ -81,10 +82,15 @@ xsltproc --stringparam page-layout "first-odd-even" \
 $STYLESHEET simple_header_footer.xml   >  first_odd_even_page_header_footer_suppress_first.fo 
 xmlformat.pl -i first_odd_even_page_header_footer_suppress_first.fo
 
+# TOC test
+xsltproc $STYLESHEET toc.xml > toc.fo
+xmlformat.pl -i toc.xml
+
 echo converting FO to PDF
 FILES=`ls *\.fo`
 for THE_FILE in $FILES 
 do
+    echo converting $THE_FILE to PDF
     FILENAME=`basename $THE_FILE .fo`
     NEW_FILE=${FILENAME}.pdf
     fop -fo $THE_FILE -pdf $NEW_FILE
