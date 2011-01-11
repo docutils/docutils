@@ -3,36 +3,173 @@
     xmlns:fo="http://www.w3.org/1999/XSL/Format"
     version="1.1"
     >
-    <!-- $Date: 2011-01-09 02:51:33 -0500 (Sun, 09 Jan 2011) $ -->
-    <xsl:attribute-set name="page-format-body">
-        <xsl:attribute name= "format">1</xsl:attribute> 
-        <xsl:attribute name= "initial-page-number">auto-odd</xsl:attribute> 
+    <!--$Id: cvs_notes_for_paul.rst,v 1.3 2009/07/26 23:22:04 cynthia Exp $-->
+    <xsl:attribute-set name="toc-level1">
+        <xsl:attribute name="text-align-last">justify</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="page-sequence-body" use-attribute-sets="page-format-body">
+    <xsl:attribute-set name="toc-level2">
+        <xsl:attribute name="text-align-last">justify</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:template match = "document">
-        <xsl:choose>
-            <xsl:when test="$create-chapters = '' or not(section)">
-                <!--No chapters and no TOC-->
-                <!--have to do initial page numbers and format of those numbers-->
-                <fo:page-sequence master-reference="pages" xsl:use-attribute-sets="page-sequence-body">
-                    <!--Set up the footers and headers-->
-                    <xsl:apply-templates select="/document/decoration/header" mode="header"/>
-                    <xsl:apply-templates select="/document/decoration/footer" mode="footer"/>
-                    <fo:flow flow-name="xsl-region-body">
-                        <xsl:apply-templates/>
-                    </fo:flow>
-                </fo:page-sequence>
-            </xsl:when>
-        </xsl:choose>
-    </xsl:template>
+    <xsl:attribute-set name="toc-level3">
+        <xsl:attribute name="text-align-last">justify</xsl:attribute>
+    </xsl:attribute-set>
 
-    <xsl:template match="paragraph">
+    <xsl:attribute-set name="toc-level4">
+        <xsl:attribute name="text-align-last">justify</xsl:attribute>
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="toc-level5">
+        <xsl:attribute name="text-align-last">justify</xsl:attribute>
+    </xsl:attribute-set>
+
+
+    <!--default paragraphs-->
+    <xsl:template match="section/paragraph|document/paragraph">
         <xsl:element name="fo:block">
             <xsl:apply-templates/>
         </xsl:element>
+    </xsl:template>
+
+    <!--TOC title-->
+    <xsl:template match="topic[@classes='contents']/title">
+        <fo:block>
+            <xsl:apply-templates/>
+        </fo:block>
+    </xsl:template>
+
+
+    <xsl:template match="section/title">
+        <xsl:variable name="level">
+            <xsl:value-of select="count(ancestor::section)"/>
+        </xsl:variable>
+        <fo:block id = "{@refid}">
+            <xsl:apply-templates/>
+        </fo:block>
+    </xsl:template>
+
+    <xsl:template match="bullet_list">
+        <xsl:choose>
+            <xsl:when test="ancestor::topic[@classes='contents']">
+                <xsl:apply-templates mode="toc"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:apply-templates/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+
+    <xsl:template match="list_item" mode="toc">
+        <xsl:apply-templates mode="toc"/>
+    </xsl:template>
+
+    <xsl:template match="paragraph" mode="toc">
+        <xsl:variable name="level">
+        <xsl:value-of select="count(ancestor::bullet_list)"/>
+        </xsl:variable> 
+        <xsl:choose>
+            <xsl:when test="$level = 1">
+                <xsl:call-template name="toc-paragraph-level1"/>
+            </xsl:when>
+            <xsl:when test="$level = 2">
+                <xsl:call-template name="toc-paragraph-level2"/>
+            </xsl:when>
+            <xsl:when test="$level = 3">
+                <xsl:call-template name="toc-paragraph-level3"/>
+            </xsl:when>
+            <xsl:when test="$level = 4">
+                <xsl:call-template name="toc-paragraph-level4"/>
+            </xsl:when>
+            <xsl:when test="$level = 5">
+                <xsl:call-template name="toc-paragraph-level5"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:message>
+                    <xsl:text>Can't format paragraphs in TOC deeper than 5</xsl:text>
+                </xsl:message>
+                <xsl:if test="$strict='True'">
+                    <xsl:message terminate = "yes">
+                        <xsl:text>Terminating</xsl:text>
+                    </xsl:message>
+                </xsl:if>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+    <xsl:template name="toc-paragraph-level1">
+        <fo:block xsl:use-attribute-sets = "toc-level1">
+            <fo:inline>
+                <xsl:apply-templates mode="toc"/>
+                <fo:leader leader-pattern="dots"/>
+                <xsl:element name="fo:page-number-citation">
+                    <xsl:attribute name="ref-id">
+                        <xsl:value-of select="reference/@ids"/>
+                    </xsl:attribute>
+                </xsl:element>
+            </fo:inline>
+        </fo:block>
+    </xsl:template>
+
+    <xsl:template name="toc-paragraph-level2">
+        <fo:block xsl:use-attribute-sets = "toc-level2">
+            <fo:inline>
+                <xsl:apply-templates mode="toc"/>
+                <fo:leader leader-pattern="dots"/>
+                <xsl:element name="fo:page-number-citation">
+                    <xsl:attribute name="ref-id">
+                        <xsl:value-of select="reference/@ids"/>
+                    </xsl:attribute>
+                </xsl:element>
+            </fo:inline>
+        </fo:block>
+    </xsl:template>
+
+    <xsl:template name="toc-paragraph-level3">
+        <fo:block xsl:use-attribute-sets = "toc-level3">
+            <fo:inline>
+                <xsl:apply-templates mode="toc"/>
+                <fo:leader leader-pattern="dots"/>
+                <xsl:element name="fo:page-number-citation">
+                    <xsl:attribute name="ref-id">
+                        <xsl:value-of select="reference/@ids"/>
+                    </xsl:attribute>
+                </xsl:element>
+            </fo:inline>
+        </fo:block>
+    </xsl:template>
+
+    <xsl:template name="toc-paragraph-level4">
+        <fo:block xsl:use-attribute-sets = "toc-level4">
+            <fo:inline>
+                <xsl:apply-templates mode="toc"/>
+                <fo:leader leader-pattern="dots"/>
+                <xsl:element name="fo:page-number-citation">
+                    <xsl:attribute name="ref-id">
+                        <xsl:value-of select="reference/@ids"/>
+                    </xsl:attribute>
+                </xsl:element>
+            </fo:inline>
+        </fo:block>
+    </xsl:template>
+
+    <xsl:template name="toc-paragraph-level5">
+        <fo:block xsl:use-attribute-sets = "toc-level5">
+            <fo:inline>
+                <xsl:apply-templates mode="toc"/>
+                <fo:leader leader-pattern="dots"/>
+                <xsl:element name="fo:page-number-citation">
+                    <xsl:attribute name="ref-id">
+                        <xsl:value-of select="reference/@ids"/>
+                    </xsl:attribute>
+                </xsl:element>
+            </fo:inline>
+        </fo:block>
+    </xsl:template>
+
+    <xsl:template match="reference" mode="toc">
+        <xsl:apply-templates/> 
     </xsl:template>
 
     <xsl:template match="comment|decoration/header|decoration/footer"/>

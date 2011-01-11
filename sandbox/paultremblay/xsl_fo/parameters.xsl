@@ -6,6 +6,12 @@
     >
     <!-- $Date: 2011-01-09 02:51:33 -0500 (Sun, 09 Jan 2011) $ -->
 <!--create new page sequences for sections one level deep, including page breaks-->
+
+<!--if set to True, stylesheets cause quit when error found-->
+<xsl:param name="strict"/>
+
+<!--wheter to start new page when coming across sections one level deep
+Not implemented yet-->
 <xsl:param name="create-chapters"/>
 
 <!--layout is either 
