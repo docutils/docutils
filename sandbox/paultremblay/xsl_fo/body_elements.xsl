@@ -3,7 +3,13 @@
     xmlns:fo="http://www.w3.org/1999/XSL/Format"
     version="1.1"
     >
-    <!--$Id: cvs_notes_for_paul.rst,v 1.3 2009/07/26 23:22:04 cynthia Exp $-->
+    <!-- $Id:$ -->
+    <xsl:attribute-set name="literal_block">
+        <xsl:attribute name="font-family">Courier</xsl:attribute>
+        <xsl:attribute name="font-size">8</xsl:attribute>
+        <xsl:attribute name="white-space">pre</xsl:attribute>
+    </xsl:attribute-set>
+
     <xsl:attribute-set name="toc-level1">
         <xsl:attribute name="text-align-last">justify</xsl:attribute>
     </xsl:attribute-set>
@@ -170,6 +176,10 @@
 
     <xsl:template match="reference" mode="toc">
         <xsl:apply-templates/> 
+    </xsl:template>
+
+    <xsl:template match="literal_block">
+        <fo:block xsl:use-attribute-sets="literal_block"><xsl:apply-templates/></fo:block>
     </xsl:template>
 
     <xsl:template match="comment|decoration/header|decoration/footer"/>
