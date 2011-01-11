@@ -1,4 +1,4 @@
-.. $Id: cvs_notes_for_paul.rst,v 1.3 2009/07/26 23:22:04 cynthia Exp $
+.. $Id:$
 
 .. example toc file
 
