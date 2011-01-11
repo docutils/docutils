@@ -86,6 +86,9 @@ xmlformat.pl -i first_odd_even_page_header_footer_suppress_first.fo
 xsltproc $STYLESHEET toc.xml > toc.fo
 xmlformat.pl -i toc.xml
 
+# literal block test
+xsltproc $STYLESHEET literal_block.xml > literal_block.fo
+
 echo converting FO to PDF
 FILES=`ls *\.fo`
 for THE_FILE in $FILES 
