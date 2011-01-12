@@ -37,5 +37,8 @@ first-odd-even (different first, odd, and even; headers and footers will be the 
 the page-header or page-footer attribute sets-->
 <xsl:param name="spacing-header"/>
 <xsl:param name="spacing-footer"/>
+
+<!--text to use for transition elements-->
+<xsl:param name="transition-text">***</xsl:param>
     
 </xsl:stylesheet>
