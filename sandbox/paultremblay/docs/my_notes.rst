@@ -26,3 +26,55 @@ TODO:
 1. work on sections next, getting all the formatting down
 
 2 paragrah elements (called Paragraphs)
+
+3. work on lists, then tables (to get minimum functionality)
+
+Open Office Names
+==================
+
+Page: 
+   
+   page-format
+
+       width, height, orientation (portrait of landscape); 
+   
+   Margins:
+
+     left right bottom top  
+
+   page layout: 
+   
+        right and left, mirrored, only right, only left; 
+
+   format [for numbering]:
+   
+      1, i, I, a, A none; 
+         
+    Background: 
+
+       color; 
+
+    Borders:
+
+       [puts borders around page; not possible in FO]
+
+   header [will put down below]
+
+header: 
+
+    header on, same content left and right, left margin, right margin;
+    Spacing: use dynamic spacing, AutoFit height; 
+
+    borders 
+    
+        [drop down of different types of borders; 
+        
+        spacing to content: 
+
+             left, right, top bottom, syncronize; 
+        
+        Shadow style position: 
+        
+            distance, color; 
+              
+     backround [drop down of colors]
