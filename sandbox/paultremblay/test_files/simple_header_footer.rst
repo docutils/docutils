@@ -1,3 +1,5 @@
+.. $Id:$
+
 .. set up roles, etc.
 
 .. role:: page-num
