@@ -30,6 +30,12 @@
         <xsl:attribute name="text-align-last">justify</xsl:attribute>
     </xsl:attribute-set>
 
+    <xsl:attribute-set name="transition">
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+        <xsl:attribute name="space-after">12pt</xsl:attribute>
+    </xsl:attribute-set>
+
+
 
     <!--default paragraphs-->
     <xsl:template match="section/paragraph|document/paragraph">
@@ -180,6 +186,15 @@
 
     <xsl:template match="literal_block">
         <fo:block xsl:use-attribute-sets="literal_block"><xsl:apply-templates/></fo:block>
+    </xsl:template>
+
+    <xsl:template match="transition">
+        <fo:block xsl:use-attribute-sets = "transition" text-align="center">
+            <!--
+            <fo:inline><fo:leader leader-pattern="rule" leader-length="3in"/></fo:inline>
+            -->
+            <xsl:value-of select="$transition-text"/>
+        </fo:block>
     </xsl:template>
 
     <xsl:template match="comment|decoration/header|decoration/footer"/>
