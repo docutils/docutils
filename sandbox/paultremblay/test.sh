@@ -11,6 +11,7 @@ cd test_output
 echo converting rst to xml
 # convert the files to XML
 FILES=`ls *rst`
+
 for THE_FILE in $FILES 
 do
     FILENAME=`basename $THE_FILE .rst`
@@ -89,12 +90,36 @@ xmlformat.pl -i toc.xml
 # literal block test
 xsltproc $STYLESHEET literal_block.xml > literal_block.fo
 
+# inline test
+xsltproc $STYLESHEET inline.xml > inline.fo
+xmlformat.pl -i inline.xml
+
+# transistion test
+xsltproc $STYLESHEET transition.xml > transition.fo
+xmlformat.pl -i transition.xml
+
+# bullet list test
+xsltproc $STYLESHEET bullet_list.xml > bullet_list.fo
+xmlformat.pl -i bullet_list.xml
+
 echo converting FO to PDF
 FILES=`ls *\.fo`
+
+# get the number of files
+NUM_FILES=0
 for THE_FILE in $FILES 
 do
-    echo converting $THE_FILE to PDF
+    let "NUM_FILES += 1"
+done
+echo $NUM_FILES
+
+
+FILES_DONE=1
+for THE_FILE in $FILES 
+do
+    echo converting $THE_FILE to PDF File $FILES_DONE of $NUM_FILES
     FILENAME=`basename $THE_FILE .fo`
     NEW_FILE=${FILENAME}.pdf
     fop -fo $THE_FILE -pdf $NEW_FILE
+    let "FILES_DONE += 1"
 done
