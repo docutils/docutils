@@ -296,9 +296,7 @@ class HTMLTranslator(html4css1.HTMLTranslator):
     def visit_list_item(self, node):
         self.body.append(self.starttag(node, 'li', ''))
 
-    # Literal role
-    # ------------
-
+    # inline literal
     def visit_literal(self, node):
         """Process text to prevent in-word line wrapping."""
         self.body.append(
@@ -318,6 +316,12 @@ class HTMLTranslator(html4css1.HTMLTranslator):
         self.body.append('</tt>')
         # Content already processed:
         raise nodes.SkipNode
+
+    # literal block: no newline after <pre> tag 
+    # (leads to blank line in XHTML1.1)
+    def visit_literal_block(self, node,):
+        self.body.append(self.starttag(node, 'pre', suffix='', 
+                                       CLASS='literal-block'))
 
     # Meta tags: 'lang' attribute replaced by 'xml:lang' in XHTML 1.1
     def visit_meta(self, node):
