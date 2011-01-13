@@ -5,7 +5,7 @@
     >
     <!-- $Id:$ -->
     <xsl:attribute-set name="literal_block">
-        <xsl:attribute name="font-family">Courier</xsl:attribute>
+        <xsl:attribute name="font-family">monospace</xsl:attribute>
         <xsl:attribute name="font-size">8</xsl:attribute>
         <xsl:attribute name="white-space">pre</xsl:attribute>
     </xsl:attribute-set>
@@ -61,16 +61,12 @@
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="bullet_list">
-        <xsl:choose>
-            <xsl:when test="ancestor::topic[@classes='contents']">
-                <xsl:apply-templates mode="toc"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:apply-templates/>
-            </xsl:otherwise>
-        </xsl:choose>
+    <!--Clean up the reduncancy here-->
+    <xsl:template match="topic[@classes = 'contents']/bullet_list">
+        <xsl:apply-templates mode="toc"/>
     </xsl:template>
+
+    <xsl:template match="topic[@classes='contents']/bullet_list/list_item"/>
 
 
     <xsl:template match="list_item" mode="toc">
