@@ -550,7 +550,8 @@ are defined as well but give an additional message."
 		    [?\C-c ?\C-d])
     ;; Shift region left or right (taking into account of enumerations/bullets,
     ;; etc.).
-    (rst-define-key map [?\C-c ?\C-r backtab] 'rst-shift-region-left
+    ;; FIXME: These bindings are ugly and should be replaced by [?\C-x TAB]
+    (rst-define-key map [?\C-c ?\C-r (control tab)] 'rst-shift-region-left
 		    [?\C-c ?\C-l t])
     (rst-define-key map [?\C-c ?\C-r tab] 'rst-shift-region-right
 		    [?\C-c ?\C-r t])
@@ -731,8 +732,7 @@ highlighting.
 	  ;; enough. In fact using `jit-lock-mode` slows things down
 	  ;; considerably even if `rst-font-lock-extend-region` is in place and
 	  ;; compiled.
-	  (font-lock-support-mode . nil)
-	  ))
+	  (font-lock-support-mode . nil)))
   (setq font-lock-extend-region-functions
 	(append font-lock-extend-region-functions
 		'(rst-font-lock-extend-region))))
@@ -843,6 +843,8 @@ for modes derived from Text mode, like Mail mode."
   :group 'rst
   :version "21.1")
 
+(define-obsolete-variable-alias
+  'rst-preferred-decorations 'rst-preferred-adornments "r6506")
 (defcustom rst-preferred-adornments '((?= over-and-under 1)
 				      (?= simple 0)
 				      (?- simple 0)
@@ -936,8 +938,6 @@ is always assumed to be 0).
 If there are existing overline and/or underline from the
 existing adornment, they are removed before adding the
 requested adornment."
-
-  (interactive)
   (let (marker
         len)
 
@@ -1102,14 +1102,14 @@ adornment that is found there.  Assumes that the cursor is
 already placed on the title line (and not on the overline or
 underline).
 
-This function returns a (char, style, indent) triple.  If the
-characters of overline and underline are different, return
-the underline character.  The indent is always calculated.
-A adornment can be said to exist if the style is not nil.
+This function returns a (CHAR, STYLE, INDENT) triple. If the
+characters of overline and underline are different, return the
+underline character. The INDENT of the title text is always
+calculated. An adornment can be said to exist if STYLE is not
+nil.
 
-A point can be specified to go to the given location before
+POINT can be specified to go to the given location before
 extracting the adornment."
-
   (let (char style indent)
     (save-excursion
       (if point (goto-char point))
@@ -1152,12 +1152,9 @@ extracting the adornment."
              (t
               (setq char under
                     style 'over-and-under))
-             )
-            )
-        )
+             )))
       ;; Find indentation.
-      (setq indent (save-excursion (back-to-indentation) (current-column)))
-      )
+      (setq indent (save-excursion (back-to-indentation) (current-column))))
     ;; Return values.
     (list char style indent)))
 
@@ -1246,6 +1243,7 @@ REVERSE-DIRECTION is used to reverse the cycling order."
      )))
 
 
+;; FIXME: A line "``/`` full" is not accepted as a section title
 (defun rst-adjust (pfxarg)
   "Auto-adjust the adornment around point.
 
@@ -3310,27 +3308,28 @@ be in the middle of a multiline construct and return non-nil if so."
   (if (not (get-text-property font-lock-beg 'font-lock-multiline))
       ;; Don't move if we start with a multiline construct already
       (save-excursion
-	(let ((cont t))
-	  (move-to-window-line 0) ; Start at the top window line
-	  (if (>= (point) font-lock-beg)
-	      (goto-char font-lock-beg))
-	  (forward-line 0)
-	  (while cont
-	    (if (looking-at (rst-re '(:alt
-				      "[^ \t]"
-				      (:seq hws-tag exm-tag "[^ \t]")
-				      ;; FIXME: Shouldn't this allow whitespace
-				      ;; after the explicit markup tag?
-				      (:seq ".*" dcl-tag lin-end))))
-		;; non-empty indented line, explicit markup tag or literal
-		;; block tag
-		(setq cont nil)
-	      (if (not (= (forward-line -1) 0)) ; try previous line
-		  ;; no more previous line
-		  (setq cont nil))))
-	  (when (not (= (point) font-lock-beg))
-	    (setq font-lock-beg (point))
-	    t)))))
+	(let ((cont t)
+	      ;; non-empty non-indented line, explicit markup tag or literal
+	      ;; block tag
+	      (stop-re (rst-re '(:alt "[^ \t]"
+				      (:seq hws-tag exm-tag)
+				      (:seq ".*" dcl-tag lin-end)))))
+	  (when (get-buffer-window)
+	    ;; Try this only if there actually *is* a window. May not be the
+	    ;; case if the buffer is just loaded and not yet displayed.
+	    (move-to-window-line 0) ; Start at the top window line
+	    (if (>= (point) font-lock-beg)
+		(goto-char font-lock-beg))
+	    (forward-line 0)
+	    (while cont
+	      (if (looking-at stop-re)
+		  (setq cont nil)
+		(if (not (= (forward-line -1) 0)) ; try previous line
+		    ;; no more previous line
+		    (setq cont nil))))
+	    (when (not (= (point) font-lock-beg))
+	      (setq font-lock-beg (point))
+	      t))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Indented blocks
@@ -3440,21 +3439,16 @@ or nil."
 ;; Adornments
 
 ;; FIXMEFIXME: This must be merged with the adornment functions for section
-;;             adjustment.
+;;             adjustment and toc generation.
 
+;; FIXMEADO: Directly used during font-lock
 (defvar rst-font-lock-adornment-level nil
   "Storage for `rst-font-lock-handle-adornment-match'.
 Either section level of the current adornment or t for a transition.")
 
-;; FIXME: It would be good if this could be used to markup section titles of
-;; given level with a special key; it would be even better to be able to
-;; customize this so it can be used for a generally available personal style
-;;
+;; FIXMEADO: Used by `rst-adornment-level'
 ;; FIXME: There should be some way to reset and reload this variable - probably
 ;; a special key
-;;
-;; FIXME: Some support for `outline-mode' would be nice which should be based
-;; on this information
 (defvar rst-adornment-level-alist nil
   "Associates adornments with section levels.
 The key is a two character string.  The first character is the adornment
@@ -3464,6 +3458,8 @@ from overline/underline section titles (`o').  The value is the section level.
 This is made buffer local on start and adornments found during font lock are
 entered.")
 
+;; FIXMEADO: Used by `rst-font-lock-handle-adornment-limit'; check
+;; `rst-get-hierarchy' for similar functionality
 (defun rst-adornment-level (key &optional add)
   "Return section level for adornment key KEY.
 Add new section level if KEY is not found and ADD. If KEY is not
@@ -3482,6 +3478,8 @@ a string it is simply returned."
 	    (append rst-adornment-level-alist (list (cons key new))))
       new))))
 
+;; FIXMEADO: Used by `rst-font-lock-handle-adornment-limit'; check
+;; `rst-get-adornment' for similar functionality
 (defun rst-classify-adornment (adornment end limit)
   "Classify adornment for section titles and transitions.
 ADORNMENT is the complete adornment string as found in the
@@ -3491,7 +3489,7 @@ matching underline.
 
 Return a list. The first entry is t for a transition, or a key
 string for `rst-adornment-level' for a section title. The
-following eight values forming four match groups as can be used
+following eight values form four match groups as can be used
 for `set-match-data'. First match group contains the maximum
 points of the whole construct. Second and last match group
 matched pure section title adornment while third match group
@@ -3521,6 +3519,8 @@ the first may or may not exist."
 	  (setq key t)
 	  (setq beg-txt beg-pnt)
 	  (setq end-txt end-pnt))
+	 ;; FIXME: Assumes empty lines between section headers - although this
+	 ;; is not required
 	 (prv-emp
 	  ;; An overline
 	  (setq key (concat (list ado-ch) "o"))
@@ -3528,6 +3528,8 @@ the first may or may not exist."
 	  (setq end-ovr end-pnt)
 	  (forward-line 1)
 	  (setq beg-txt (point))
+	  ;; FIXME: Does it make sense to search the underline this far? The
+	  ;; next two lines should be sufficient
 	  (while (and (<= (point) limit) (not end-txt))
 	    (if (or (= (point) limit) (looking-at (rst-re 'lin-end)))
 		;; No underline found
@@ -3559,14 +3561,17 @@ the first may or may not exist."
 	    (setq end-ovr (match-end 1)))))
 	(list key
 	      (or beg-ovr beg-txt beg-und)
-	      (or end-und end-txt end-und)
+	      (or end-und end-txt end-ovr)
 	      beg-ovr end-ovr beg-txt end-txt beg-und end-und)))))
 
+;; FIXMEADO: Used by `rst-font-lock-handle-adornment-limit' and
+;; `rst-font-lock-handle-adornment-match'
 (defvar rst-font-lock-adornment-data nil
   "Storage for `rst-classify-adornment'.
 Also used as a trigger for
 `rst-font-lock-handle-adornment-match'.")
 
+;; FIXMEADO: Directly used during font-lock
 (defun rst-font-lock-handle-adornment-limit (ado ado-end)
   "Determine limit for adornments for font-locking section titles and transitions.
 In fact determine all things necessary and put the result to
@@ -3579,6 +3584,7 @@ where the whole adorned construct ends."
     (goto-char (nth 1 ado-data))
     (nth 2 ado-data)))
 
+;; FIXMEADO: Directly used during font-lock
 (defun rst-font-lock-handle-adornment-match (limit)
   "Set the match found by `rst-font-lock-handle-adornment-limit'
 the first time called or nil"
@@ -3710,6 +3716,7 @@ or of the entire buffer, if the region is not selected."
 (defun rst-compile-pdf-preview ()
   "Convert the document to a PDF file and launch a preview program."
   (interactive)
+  ;; FIXME: Should use `make-temp-file' - see bug #2912890
   (let* ((tmp-filename "/tmp/out.pdf")
 	 (command (format "%s %s %s && %s %s"
 			  (cadr (assq 'pdf rst-compile-toolsets))
@@ -3726,6 +3733,7 @@ or of the entire buffer, if the region is not selected."
 (defun rst-compile-slides-preview ()
   "Convert the document to an S5 slide presentation and launch a preview program."
   (interactive)
+  ;; FIXME: Should use `make-temp-file' - see bug #2912890
   (let* ((tmp-filename "/tmp/slides.html")
 	 (command (format "%s %s %s && %s %s"
 			  (cadr (assq 's5 rst-compile-toolsets))

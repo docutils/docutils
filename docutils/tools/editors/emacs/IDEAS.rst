@@ -155,3 +155,14 @@ Imenu support
 * Imenu could be supported
 
   * See `(elisp)Imenu`
+
+Outline support
+===============
+
+* Support for `outline-mode' / `allout-mode' would be nice
+
+  * Should consider section titles
+
+* May be folding is also possible
+
+  * For item lists
