@@ -78,6 +78,37 @@
         <xsl:attribute name="space-before">12pt</xsl:attribute>
     </xsl:attribute-set>
 
+    <!--Definition list attriute sets-->
+    <xsl:attribute-set name="definition-list" >
+        <xsl:attribute name="start-indent">5mm</xsl:attribute>
+        <xsl:attribute name="provisional-distance-between-starts">30mm</xsl:attribute>
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="definition-list-item">
+        <xsl:attribute name="space-after">12pt</xsl:attribute> 
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="definition-list-last-item" use-attriubte-sets="enumerated-list-item">
+        <xsl:attribute name="space-after">0pt</xsl:attribute> 
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="definition-list-item-label">
+        <xsl:attribute name="end-indent">label-end()</xsl:attribute>
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="definition-list-item-body">
+        <xsl:attribute name="start-indent">body-start()</xsl:attribute>
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="definition-list-paragraph">
+        <xsl:attribute name="space-after">12pt</xsl:attribute> 
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="definition-term">
+        <xsl:attribute name="font-weight">bold</xsl:attribute> 
+    </xsl:attribute-set>
+
+
     <!--END attribute sets-->
 
     <xsl:template match="bullet_list">
@@ -109,7 +140,7 @@
         </fo:list-item>
     </xsl:template>
 
-    <xsl:template match="list_item/paragraph">
+    <xsl:template match="bullet_list/list_item/paragraph">
         <fo:block xsl:use-attribute-sets="bullet-list-paragraph">
             <xsl:apply-templates/>
         </fo:block>
@@ -146,7 +177,6 @@
             <xsl:apply-templates/>
         </fo:list-block>
     </xsl:template>
-
 
     <xsl:template name="make-enum-list-contents">
         <xsl:variable name="format">
@@ -193,6 +223,12 @@
         </fo:list-item>
     </xsl:template>
 
+    <xsl:template match="enumerated_list/list_item/paragraph">
+        <fo:block xsl:use-attribute-sets="bullet-list-paragraph">
+            <xsl:apply-templates/>
+        </fo:block>
+    </xsl:template>
+
     <xsl:template match="list_item/enumerated_list" priority="2">
         <xsl:variable name="level" select="count(ancestor::list_item)"/>
         <xsl:choose>
@@ -216,5 +252,63 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
+
+    <!--DEFINITION LIST-->
+
+    <xsl:template match="definition_list">
+        <fo:list-block xsl:use-attribute-sets="definition-list">
+            <xsl:apply-templates/>
+        </fo:list-block>
+    </xsl:template>
+
+
+    <xsl:template match="definition_list_item">
+        <fo:list-item xsl:use-attribute-sets="definition-list-item">
+            <xsl:apply-templates/>
+        </fo:list-item>
+    </xsl:template>
+
+    <!--last item, may be different for space-->
+    <xsl:template match="definition_list_item[last()]">
+        <fo:list-item xsl:use-attribute-sets="definition-list-last-item">
+            <xsl:apply-templates/>
+        </fo:list-item>
+    </xsl:template>
+
+    <xsl:template match="definition/paragraph">
+        <fo:block xsl:use-attribute-sets="definition-list-paragraph">
+            <xsl:apply-templates/>
+        </fo:block>
+    </xsl:template>
+
+    <xsl:template match="list_item/definition_list" priority="2">
+        <xsl:message terminate="yes">
+            <xsl:text>FATAL: Should not have nested defintiion lists</xsl:text>
+            <xsl:text>Processinng stylesheets now quiting</xsl:text>
+        </xsl:message>
+    </xsl:template>
+
+    <xsl:template match="definition">
+        <fo:list-item-body xsl:use-attribute-sets="definition-list-item-body">
+            <xsl:apply-templates/>
+        </fo:list-item-body>
+    </xsl:template>
+
+    <xsl:template match="term">
+        <fo:list-item-label xsl:use-attribute-sets="definition-list-item-label">
+            <fo:block xsl:use-attribute-sets="definition-term">
+                <xsl:apply-templates/>
+                <xsl:apply-templates select="../classifier" mode="classifier"/>
+            </fo:block>
+        </fo:list-item-label>
+    </xsl:template>
+
+    <xsl:template match="classifier" mode="classifier">
+        <xsl:text> (</xsl:text>
+        <xsl:apply-templates/>
+        <xsl:text>)</xsl:text>
+    </xsl:template>
+
+    <xsl:template match="classifier"/>
 
 </xsl:stylesheet> 
