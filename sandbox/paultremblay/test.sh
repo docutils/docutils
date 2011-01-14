@@ -102,6 +102,14 @@ xmlformat.pl -i transition.xml
 xsltproc $STYLESHEET bullet_list.xml > bullet_list.fo
 xmlformat.pl -i bullet_list.xml
 
+# enumerated list test
+xsltproc $STYLESHEET enumerated_list.xml > enumerated_list.fo
+xmlformat.pl -i enumerated_list.xml
+
+# definition list test
+xsltproc $STYLESHEET definition_list.xml > definition_list.fo
+xmlformat.pl -i definition_list.xml
+
 echo converting FO to PDF
 FILES=`ls *\.fo`
 
