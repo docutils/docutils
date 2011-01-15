@@ -300,7 +300,7 @@ class Directive(object):
         self.block_text = block_text
         self.state = state
         self.state_machine = state_machine
-        self.src, self.scrline = state_machine.get_source_and_line(lineno)
+        self.src, self.srcline = state_machine.get_source_and_line(lineno)
 
     def run(self):
         raise NotImplementedError('Must override run() is subclass.')
