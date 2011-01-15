@@ -110,6 +110,10 @@ xmlformat.pl -i enumerated_list.xml
 xsltproc $STYLESHEET definition_list.xml > definition_list.fo
 xmlformat.pl -i definition_list.xml
 
+# Field List test
+xsltproc $STYLESHEET field_lists.xml > field_lists.fo
+xmlformat.pl -i field_lists.xml
+
 # section test
 xsltproc $STYLESHEET section.xml > section.fo
 xmlformat.pl -i section.xml
@@ -123,7 +127,6 @@ for THE_FILE in $FILES
 do
     let "NUM_FILES += 1"
 done
-echo $NUM_FILES
 
 
 FILES_DONE=1
