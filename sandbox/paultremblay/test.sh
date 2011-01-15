@@ -110,6 +110,10 @@ xmlformat.pl -i enumerated_list.xml
 xsltproc $STYLESHEET definition_list.xml > definition_list.fo
 xmlformat.pl -i definition_list.xml
 
+# section test
+xsltproc $STYLESHEET section.xml > section.fo
+xmlformat.pl -i section.xml
+
 echo converting FO to PDF
 FILES=`ls *\.fo`
 
