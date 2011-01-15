@@ -1,5 +1,7 @@
 .. $Id$
 
+Text before list.
+
 term 1
     Definition 1.
 
@@ -13,4 +15,6 @@ term 3 : classifier
 
 term 4 : classifier one : classifier two
     Definition 4.
+
+Text after list.
 
