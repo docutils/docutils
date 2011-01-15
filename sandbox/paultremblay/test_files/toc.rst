@@ -2,6 +2,8 @@
 
 .. example toc file
 
+.. sectnum::
+
 .. contents:: Table of Contents
 
 
