@@ -57,10 +57,6 @@
         </fo:page-sequence>
     </xsl:template>
 
-    <!--do nothing for sections, at least for now-->
-    <xsl:template match="section">
-        <xsl:apply-templates/>
-    </xsl:template>
 
     <xsl:template match="topic[@classes='contents']"/>
 
