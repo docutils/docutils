@@ -8,6 +8,15 @@
 
     Custom bullets (rather than default) by means of a parameter-->
 
+        <!--
+        "The provisional-distance-between-starts property of the 
+        list-block specifies the distance bewteen the start of the
+        label (the bullet, for example) and the actual start of
+        the list content" (Pawson, 100).
+
+        -->
+
+    <!--Attribute sets for Bullet List-->
 
     <xsl:attribute-set name="bullet-list" >
         <xsl:attribute name="start-indent">5mm</xsl:attribute>
@@ -40,13 +49,6 @@
         <xsl:attribute name="space-before">12pt</xsl:attribute>
     </xsl:attribute-set>
 
-        <!--
-        "The provisional-distance-between-starts property of the 
-        list-block specifies the distance bewteen the start of the
-        label (the bullet, for example) and the actual start of
-        the list content" (Pawson, 100).
-
-        -->
     <xsl:attribute-set name="enumerated-list" >
         <xsl:attribute name="start-indent">5mm</xsl:attribute>
         <xsl:attribute name="provisional-distance-between-starts">15mm</xsl:attribute>
@@ -79,34 +81,66 @@
     </xsl:attribute-set>
 
     <!--Definition list attriute sets-->
+
     <xsl:attribute-set name="definition-list" >
-        <xsl:attribute name="start-indent">5mm</xsl:attribute>
-        <xsl:attribute name="provisional-distance-between-starts">30mm</xsl:attribute>
+        <xsl:attribute name="space-after">12pt</xsl:attribute>
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="definition-list-item">
-        <xsl:attribute name="space-after">12pt</xsl:attribute> 
+    <xsl:attribute-set name="term" >
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="definition-list-last-item" use-attriubte-sets="enumerated-list-item">
-        <xsl:attribute name="space-after">0pt</xsl:attribute> 
-    </xsl:attribute-set>
-
-    <xsl:attribute-set name="definition-list-item-label">
-        <xsl:attribute name="end-indent">label-end()</xsl:attribute>
-    </xsl:attribute-set>
-
-    <xsl:attribute-set name="definition-list-item-body">
-        <xsl:attribute name="start-indent">body-start()</xsl:attribute>
+    <xsl:attribute-set name="term-last" use-attriubte-sets="term" >
     </xsl:attribute-set>
 
     <xsl:attribute-set name="definition-list-paragraph">
         <xsl:attribute name="space-after">12pt</xsl:attribute> 
+        <xsl:attribute name="start-indent">30pt</xsl:attribute>
     </xsl:attribute-set>
+
+    <xsl:attribute-set name="definition-list-last-paragraph" use-attribute-sets="definition-list-paragraph">
+        <xsl:attribute name="space-after">0pt</xsl:attribute> 
+    </xsl:attribute-set>
+
 
     <xsl:attribute-set name="definition-term">
         <xsl:attribute name="font-weight">bold</xsl:attribute> 
     </xsl:attribute-set>
+
+    <!--FIELD LIST attribute sets-->
+
+    <xsl:attribute-set name="field-list" >
+        <xsl:attribute name="start-indent">0mm</xsl:attribute>
+        <xsl:attribute name="provisional-distance-between-starts">30mm</xsl:attribute>
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+        <xsl:attribute name="space-after">12pt</xsl:attribute>
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="field-list-item">
+        <xsl:attribute name="space-after">12pt</xsl:attribute> 
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="field-list-last-item" use-attriubte-sets="enumerated-list-item">
+        <xsl:attribute name="space-after">0pt</xsl:attribute> 
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="field-list-item-label">
+        <xsl:attribute name="end-indent">label-end()</xsl:attribute>
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="field-list-item-body">
+        <xsl:attribute name="start-indent">body-start()</xsl:attribute>
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="field-list-paragraph">
+        <xsl:attribute name="space-after">12pt</xsl:attribute> 
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="field-name">
+        <xsl:attribute name="font-weight">bold</xsl:attribute> 
+    </xsl:attribute-set>
+
+
 
 
     <!--END attribute sets-->
@@ -256,30 +290,44 @@
     <!--DEFINITION LIST-->
 
     <xsl:template match="definition_list">
-        <fo:list-block xsl:use-attribute-sets="definition-list">
+        <fo:block role="defintion-list" xsl:use-attribute-sets="definition-list">
             <xsl:apply-templates/>
-        </fo:list-block>
+        </fo:block>
     </xsl:template>
 
 
     <xsl:template match="definition_list_item">
-        <fo:list-item xsl:use-attribute-sets="definition-list-item">
-            <xsl:apply-templates/>
-        </fo:list-item>
-    </xsl:template>
-
-    <!--last item, may be different for space-->
-    <xsl:template match="definition_list_item[last()]">
-        <fo:list-item xsl:use-attribute-sets="definition-list-last-item">
-            <xsl:apply-templates/>
-        </fo:list-item>
+        <fo:block xsl:use-attriute-sets = "definition-term" role="term">
+            <xsl:apply-templates select="term" mode = "term"/>
+            <xsl:apply-templates select="classifier" mode = "classifier"/>
+        </fo:block>
+        <xsl:apply-templates/>
     </xsl:template>
 
     <xsl:template match="definition/paragraph">
-        <fo:block xsl:use-attribute-sets="definition-list-paragraph">
-            <xsl:apply-templates/>
-        </fo:block>
+        <xsl:variable name="position">
+            <xsl:for-each select="ancestor::definition_list_item">
+                <xsl:if test = "not(following-sibling::definition_list_item)">
+                    <xsl:text>last</xsl:text>
+                </xsl:if>
+            </xsl:for-each>
+        </xsl:variable>
+        <xsl:choose>
+            <xsl:when test="$position = 'last'">
+                <fo:block xsl:use-attribute-sets="definition-list-last-paragraph" 
+                    role="definition-paragraph">
+                    <xsl:apply-templates/>
+                </fo:block>
+            </xsl:when>
+            <xsl:otherwise>
+                <fo:block xsl:use-attribute-sets="definition-list-paragraph" 
+                    role="definition-paragraph">
+                    <xsl:apply-templates/>
+                </fo:block>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
+
 
     <xsl:template match="list_item/definition_list" priority="2">
         <xsl:message terminate="yes">
@@ -289,26 +337,63 @@
     </xsl:template>
 
     <xsl:template match="definition">
-        <fo:list-item-body xsl:use-attribute-sets="definition-list-item-body">
+        <xsl:apply-templates/>
+    </xsl:template>
+
+    <xsl:template match="term" mode="term">
+        <xsl:apply-templates/>
+    </xsl:template>
+
+    <xsl:template match="classifier" mode="classifier">
+        <xsl:text> :</xsl:text>
+        <fo:inline xsl:use-attribute-sets="emphasis">
+            <xsl:apply-templates mode="classifier"/>
+        </fo:inline>
+    </xsl:template>
+
+    <xsl:template match="classifier|term"/>
+
+
+
+    <!--start a list-->
+    <xsl:template match="field_list">
+        <fo:list-block xsl:use-attribute-sets="field-list">
+            <xsl:apply-templates/>
+        </fo:list-block>
+    </xsl:template>
+
+    <xsl:template match="field">
+        <fo:list-item xsl:use-attribute-sets="field-list-item">
+            <xsl:apply-templates/>
+        </fo:list-item>
+    </xsl:template>
+
+    <!--last item, may be different for space-->
+    <xsl:template match="field[last()]">
+        <fo:list-item xsl:use-attribute-sets="field-list-last-item">
+            <xsl:apply-templates/>
+        </fo:list-item>
+    </xsl:template>
+
+    <xsl:template match="field_list/field/field_body/paragraph">
+        <fo:block xsl:use-attribute-sets="field-list-paragraph">
+            <xsl:apply-templates/>
+        </fo:block>
+    </xsl:template>
+
+    <xsl:template match="field_body">
+        <fo:list-item-body xsl:use-attribute-sets="field-list-item-body">
             <xsl:apply-templates/>
         </fo:list-item-body>
     </xsl:template>
 
-    <xsl:template match="term">
-        <fo:list-item-label xsl:use-attribute-sets="definition-list-item-label">
-            <fo:block xsl:use-attribute-sets="definition-term">
+    <xsl:template match="field_name">
+        <fo:list-item-label xsl:use-attribute-sets="field-list-item-label">
+            <fo:block xsl:use-attribute-sets="field-name">
                 <xsl:apply-templates/>
-                <xsl:apply-templates select="../classifier" mode="classifier"/>
             </fo:block>
         </fo:list-item-label>
     </xsl:template>
 
-    <xsl:template match="classifier" mode="classifier">
-        <xsl:text> (</xsl:text>
-        <xsl:apply-templates/>
-        <xsl:text>)</xsl:text>
-    </xsl:template>
-
-    <xsl:template match="classifier"/>
 
 </xsl:stylesheet> 
