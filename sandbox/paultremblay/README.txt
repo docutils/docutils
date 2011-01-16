@@ -69,8 +69,6 @@ XSLT Stylesheets
 
 - Bibliographic Fields
 
-- RCS Keywords
-
 - Option List
 
 - Indented Literal Blocks
