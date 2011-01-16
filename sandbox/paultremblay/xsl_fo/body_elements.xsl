@@ -3,7 +3,8 @@
     xmlns:fo="http://www.w3.org/1999/XSL/Format"
     version="1.1"
     >
-    <!-- $Id: $ -->
+    <!-- $Id:$ -->
+
     <xsl:attribute-set name="literal_block">
         <xsl:attribute name="font-family">monospace</xsl:attribute>
         <xsl:attribute name="font-size">8</xsl:attribute>
