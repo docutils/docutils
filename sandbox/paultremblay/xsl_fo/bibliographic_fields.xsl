@@ -6,17 +6,6 @@
 
     <!--label and value-->
     <!-- $Id$ -->
-    <!--Parameters for docinfo fields. These parameters are used to fill in the text before such
-    fields as author, etc.`docutils`-->
-    <xsl:param name="author-text">Author: </xsl:param>
-    <xsl:param name="authors-text">Authors: </xsl:param>
-    <xsl:param name="organization-text">Organization: </xsl:param>
-    <xsl:param name="contact-text">Contact: </xsl:param>
-    <xsl:param name="status-text">Status: </xsl:param>
-    <xsl:param name="copyright-text">Copyright: </xsl:param>
-    <xsl:param name="address-text">Address: </xsl:param>
-    <xsl:param name="version-text">Version: </xsl:param>
-    <xsl:param name="date-text">Date: </xsl:param>
 
     <!--Attribute sets for Bibliographic Fields-->
 
