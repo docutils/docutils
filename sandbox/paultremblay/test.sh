@@ -118,6 +118,10 @@ xmlformat.pl -i field_lists.xml
 xsltproc $STYLESHEET section.xml > section.fo
 xmlformat.pl -i section.xml
 
+# bibliograhic field test
+xsltproc $STYLESHEET bibliographic_fields.xml > bibliographic_fields.fo
+xmlformat.pl -i bibliographic_fields.xml
+
 echo converting FO to PDF
 FILES=`ls *\.fo`
 
