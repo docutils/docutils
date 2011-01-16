@@ -13,6 +13,12 @@
 	<xsl:attribute name="font-weight">bold</xsl:attribute>
     </xsl:attribute-set>
 
+    <!--attribute set for reference elements with refuri attriute. Element is fo:basic-link. `docutils`-->
+    <xsl:attribute-set name="basic-link" >
+	<xsl:attribute name="text-decoration">underline</xsl:attribute>
+        <xsl:attribute name="color">blue</xsl:attribute>
+    </xsl:attribute-set>
+
 
     <xsl:template match="strong">
         <fo:inline xsl:use-attribute-sets="strong">
@@ -25,6 +31,14 @@
             <xsl:apply-templates/>
         </fo:inline>
     </xsl:template>
+
+    <!--this template creates clickable links; you may want to give the option to turn this off-->
+    <xsl:template match= "reference[@refuri]">
+        <fo:basic-link xsl:use-attribute-sets="basic-link" external-destination="url('{@refuri}')"> 
+            <xsl:apply-templates/>
+        </fo:basic-link>
+    </xsl:template> 
+
     
 </xsl:stylesheet>
 
