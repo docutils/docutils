@@ -27,7 +27,7 @@
         <xsl:attribute name="space-after">12pt</xsl:attribute> 
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="bullet-list-last-item" use-attriubte-sets="bullet-list-item">
+    <xsl:attribute-set name="bullet-list-last-item" use-attribute-sets="bullet-list-item">
         <xsl:attribute name="space-after">0pt</xsl:attribute> 
     </xsl:attribute-set>
 
@@ -58,7 +58,7 @@
         <xsl:attribute name="space-after">12pt</xsl:attribute> 
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="enumerated-list-last-item" use-attriubte-sets="enumerated-list-item">
+    <xsl:attribute-set name="enumerated-list-last-item" use-attribute-sets="enumerated-list-item">
         <xsl:attribute name="space-after">0pt</xsl:attribute> 
     </xsl:attribute-set>
 
@@ -90,7 +90,7 @@
     <xsl:attribute-set name="term" >
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="term-last" use-attriubte-sets="term" >
+    <xsl:attribute-set name="term-last" use-attribute-sets="term" >
     </xsl:attribute-set>
 
     <xsl:attribute-set name="definition-list-paragraph">
@@ -120,7 +120,7 @@
         <xsl:attribute name="space-after">12pt</xsl:attribute> 
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="field-list-last-item" use-attriubte-sets="enumerated-list-item">
+    <xsl:attribute-set name="field-list-last-item" use-attribute-sets="enumerated-list-item">
         <xsl:attribute name="space-after">0pt</xsl:attribute> 
     </xsl:attribute-set>
 
@@ -297,7 +297,7 @@
 
 
     <xsl:template match="definition_list_item">
-        <fo:block xsl:use-attriute-sets = "definition-term" role="term">
+        <fo:block xsl:use-attribute-sets = "definition-term" role="term">
             <xsl:apply-templates select="term" mode = "term"/>
             <xsl:apply-templates select="classifier" mode = "classifier"/>
         </fo:block>
@@ -369,7 +369,7 @@
     </xsl:template>
 
     <!--last item, may be different for space-->
-    <xsl:template match="field[last()]">
+    <xsl:template match="field_list/field[last()]">
         <fo:list-item xsl:use-attribute-sets="field-list-last-item">
             <xsl:apply-templates/>
         </fo:list-item>
