@@ -21,9 +21,9 @@
 
     <!--default paragraphs-->
     <xsl:template match="section/paragraph|document/paragraph">
-        <xsl:element name="fo:block">
+        <fo:block role="paragraph">
             <xsl:apply-templates/>
-        </xsl:element>
+        </fo:block>
     </xsl:template>
 
     <xsl:template match="literal_block">
