@@ -5,6 +5,10 @@
     >
     <!-- $Id$ -->
 
+    <!--
+    BEGIN LONG TEMPLATE
+====================================================================================================
+    -->
     <xsl:template name="generate-section-num">
         <xsl:variable name="level">
             <xsl:value-of select="count(ancestor::section)"/>
@@ -181,5 +185,59 @@
             </xsl:when>
         </xsl:choose>
     </xsl:template>
+
+    <!--
+    END LONG TEMPLATE
+====================================================================================================
+    -->
+
+    <!--determine page sequence, to be used in other templates-->
+    <xsl:variable name="page-sequence-type">
+        <xsl:variable name="toc-exists">
+            <xsl:if test="/document/topic[@classes='contents']">True</xsl:if>
+        </xsl:variable>
+        <xsl:variable name="dedication-exists">
+            <xsl:if test="/document/topic[@classes='dedication']">True</xsl:if>
+        </xsl:variable>
+        <xsl:variable name="abstract-exists">
+            <xsl:if test="/document/topic[@classes='dedication']">True</xsl:if>
+        </xsl:variable>
+        <xsl:variable name="need-toc-page-sequence">
+            <xsl:choose>
+                <xsl:when test="$toc-exists='True' and $toc-pagination = 'own-section'">True</xsl:when>
+                <xsl:otherwise>False</xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:variable name="need-front-matter-page-sequence">
+            <xsl:choose>
+                <xsl:when test="($dedication-exists='True' or $abstract-exists='True') and $front-matter-pagination = 'own-section'">True</xsl:when>
+                <xsl:when test="($dedication-exists='True' or $abstract-exists='True') and $front-matter-pagination = 'with-toc'">True</xsl:when>
+                <xsl:otherwise>False</xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:choose>
+            <xsl:when test="$need-toc-page-sequence = 'True' and $front-matter-pagination = 'with-toc'">
+                <xsl:text>toc-combined-body</xsl:text>
+            </xsl:when>
+            <xsl:when test="$need-toc-page-sequence = 'True' and $need-front-matter-page-sequence = 'True'">
+                <xsl:text>front-toc-body</xsl:text>
+            </xsl:when>
+            <xsl:when test="$need-toc-page-sequence = 'True' and $need-front-matter-page-sequence = 'False'">
+                <xsl:text>toc-body</xsl:text>
+            </xsl:when>
+            <xsl:when test="$need-toc-page-sequence = 'False' and $need-front-matter-page-sequence = 'True'">
+                <xsl:text>front-body</xsl:text>
+            </xsl:when>
+            <xsl:when test="$need-toc-page-sequence = 'False' and $need-front-matter-page-sequence = 'False'">
+                <xsl:text>body</xsl:text>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:message terminate = "yes">
+                    <xsl:text>Stylsheet error: no page sequence found</xsl:text>
+                </xsl:message>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+
     
 </xsl:stylesheet> 
