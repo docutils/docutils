@@ -24,6 +24,7 @@
     </xsl:attribute-set>
 
 
+
     <!--attributes for the sequence of pages for the main body. So far, it 
     only uses the page-format-body attriutes 
     
@@ -36,32 +37,65 @@
     <xsl:attribute-set name="page-sequence-toc" use-attribute-sets="page-format-toc">
     </xsl:attribute-set>
 
+    <xsl:attribute-set name="page-sequence-front">
+    </xsl:attribute-set>
+
+
     <xsl:template match = "document">
-        <xsl:if test="topic[@classes='contents']">
-            <fo:page-sequence master-reference="toc-pages" xsl:use-attribute-sets="page-sequence-toc">
-                <!--Set up the footers and headers-->
-                <xsl:apply-templates select="/document/decoration/header" mode="header"/>
-                <xsl:apply-templates select="/document/decoration/footer" mode="footer"/>
-                <fo:flow flow-name="xsl-region-body">
-                    <xsl:apply-templates select="topic[@classes='contents']" mode="toc"/>
-                </fo:flow>
-            </fo:page-sequence>
-        </xsl:if>
+        <xsl:call-template name='test-params'/>
+        <xsl:choose>
+            <xsl:when test="$page-sequence-type = 'toc-combined-body'">
+                <fo:page-sequence master-reference="toc-pages" xsl:use-attribute-sets="page-sequence-toc">
+                    <xsl:apply-templates select="/document/decoration/header" mode="header"/>
+                    <xsl:apply-templates select="/document/decoration/footer" mode="footer"/>
+                    <fo:flow flow-name="xsl-region-body">
+                        <xsl:apply-templates select="topic[@classes='abstract']|topic[@classes='dedication']|docinfo" mode="front"/>
+                        <xsl:apply-templates select="topic[@classes='contents']" mode="toc"/>
+                    </fo:flow>
+                </fo:page-sequence>
+            </xsl:when>
+            <xsl:when test="$page-sequence-type = 'front-toc-body'">
+                <fo:page-sequence master-reference="front-matter-pages" xsl:use-attribute-sets="page-sequence-front">
+                    <fo:flow flow-name="xsl-region-body">
+                        <xsl:apply-templates select="topic[@classes='abstract']|topic[@classes='dedication']|docinfo" mode="front"/>
+                    </fo:flow>
+                </fo:page-sequence>
+                <fo:page-sequence master-reference="toc-pages" xsl:use-attribute-sets="page-sequence-toc">
+                    <xsl:apply-templates select="/document/decoration/header" mode="header"/>
+                    <xsl:apply-templates select="/document/decoration/footer" mode="footer"/>
+                    <fo:flow flow-name="xsl-region-body">
+                        <xsl:apply-templates select="topic[@classes='contents']" mode="toc"/>
+                    </fo:flow>
+                </fo:page-sequence>
+            </xsl:when>
+            <xsl:when test="$page-sequence-type = 'front-body'">
+                <fo:page-sequence master-reference="front-matter-pages" xsl:use-attribute-sets="page-sequence-front">
+                    <fo:flow flow-name="xsl-region-body">
+                        <xsl:apply-templates select="topic[@classes='abstract']|topic[@classes='dedication']|docinfo" mode="front"/>
+                    </fo:flow>
+                </fo:page-sequence>
+            </xsl:when>
+            <xsl:when test="$page-sequence-type = 'toc-body'">
+                <fo:page-sequence master-reference="toc-pages" xsl:use-attribute-sets="page-sequence-toc">
+                    <xsl:apply-templates select="/document/decoration/header" mode="header"/>
+                    <xsl:apply-templates select="/document/decoration/footer" mode="footer"/>
+                    <fo:flow flow-name="xsl-region-body">
+                        <xsl:apply-templates select="topic[@classes='contents']" mode="toc"/>
+                    </fo:flow>
+                </fo:page-sequence>
+            </xsl:when>
+        </xsl:choose>
         <fo:page-sequence master-reference="pages" xsl:use-attribute-sets="page-sequence-body">
-            <!--Set up the footers and headers-->
             <xsl:apply-templates select="/document/decoration/header" mode="header"/>
             <xsl:apply-templates select="/document/decoration/footer" mode="footer"/>
             <fo:flow flow-name="xsl-region-body">
                 <xsl:apply-templates/>
+                <!--write an empty block in case there is no content. A hack which I will have to fix later-->
+                <fo:block/>
             </fo:flow>
         </fo:page-sequence>
     </xsl:template>
 
 
-    <xsl:template match="topic[@classes='contents']"/>
-
-     <xsl:template match="topic[@classes='contents']" mode="toc">
-         <xsl:apply-templates/>
-     </xsl:template>
 
 </xsl:stylesheet>

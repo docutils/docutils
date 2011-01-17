@@ -17,12 +17,12 @@
 
     <!--attribute set for Bibliographic cells for labels.  Element is fo:table-cell. `docutils`-->
     <xsl:attribute-set name="docinfo-label-cell" >
-        <xsl:attribute name="padding">5pt</xsl:attribute>
+        <xsl:attribute name="padding">3pt</xsl:attribute>
     </xsl:attribute-set>
 
     <!--attribute set for Bibliographic cells for values.  Element is fo:table-cell. `docutils`-->
     <xsl:attribute-set name="docinfo-value-cell">
-        <xsl:attribute name="padding">5pt</xsl:attribute>
+        <xsl:attribute name="padding">3pt</xsl:attribute>
     </xsl:attribute-set>
 
     <!--attribute set for Bibliographic labes, such as Author, Organization, etc. 
@@ -53,8 +53,40 @@
         <xsl:attribute name="column-width">4in</xsl:attribute>
     </xsl:attribute-set>
 
+    <!--attribute set for after docinfo.  There is an empty block just for the layout in which docinfo
+    gets put into the front matter. This block should have the break-after = page value
+    to force a break. Element is fo:block. `docutils`-->
+    <xsl:attribute-set name="after-docinfo">
+        <xsl:attribute name="break-after">page</xsl:attribute>
+    </xsl:attribute-set>
 
-    <xsl:template match="docinfo">
+    <!--attribute set for dedication paragraph. Element is fo:block-->
+    <xsl:attribute-set name="dedication-paragraph">
+    </xsl:attribute-set>
+
+    <!--attribute set for abstract paragraph. Element is fo:block-->
+    <xsl:attribute-set name="abstract-paragraph">
+    </xsl:attribute-set>
+
+    <!--attribute set for abstract title. Element is fo:block-->
+    <xsl:attribute-set name="abstract-title">
+    </xsl:attribute-set>
+
+    <!--attribute set for dedication title. Element is fo:block-->
+    <xsl:attribute-set name="dedication-title">
+    </xsl:attribute-set>
+
+    <!--attribute set for dedication wrapper block (to be able to force a break after). Element is fo:block-->
+    <xsl:attribute-set name="dedication">
+        <xsl:attribute name="break-after">page</xsl:attribute>
+    </xsl:attribute-set>
+
+    <!--attribute set for abstract wrapper block (to be able to force a break after). Element is fo:block-->
+    <xsl:attribute-set name="abstract">
+        <xsl:attribute name="break-after">page</xsl:attribute>
+    </xsl:attribute-set>
+
+    <xsl:template name="docinfo">
         <fo:table  table-layout="fixed" xsl:use-attribute-sets="docinfo-table">
             <fo:table-column column-number="1" xsl:use-attribute-sets="docinfo-label-row"/>
             <fo:table-column column-number="2" xsl:use-attribute-sets="docinfo-value-row"/>
@@ -62,6 +94,18 @@
                 <xsl:apply-templates/>
             </fo:table-body>
         </fo:table>
+    </xsl:template>
+
+    <!--only apply temlates if docinfo won't be written to front matter-->
+    <xsl:template match="docinfo">
+        <xsl:if test="$page-sequence-type = 'body' or $page-sequence-type = 'toc-body'">
+            <xsl:call-template name="docinfo"/>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template match="docinfo" mode="front">
+        <xsl:call-template name="docinfo"/>
+        <fo:block xsl:use-attribute-sets = "after-docinfo"/>
     </xsl:template>
 
     <xsl:template name="make-docinfo-row">
@@ -192,30 +236,55 @@
         </fo:block>
     </xsl:template>
 
-    <!--longer bibliographic elements-->
-
+    <!--abstract and dedication-->
+    <!--ony process if not already processed in front matter-->
     <xsl:template match="topic[@classes='dedication']">
-        
+        <xsl:if test="$page-sequence-type = 'body' or $page-sequence-type = 'toc-body'">
+            <xsl:apply-templates/>
+        </xsl:if> 
+    </xsl:template>
+
+    <xsl:template match="topic[@classes='dedication']" mode="front">
+        <fo:block role="dedication" xsl:use-attribute-sets="dedication">
+            <xsl:apply-templates/>
+        </fo:block>
     </xsl:template>
 
     <xsl:template match="topic[@classes='dedication']/title">
-        
+        <fo:block role="dedication-title" xsl:use-attribute-sets="dedication-title">
+            <xsl:apply-templates/>
+        </fo:block>
     </xsl:template>
 
     <xsl:template match="topic[@classes='dedication']/paragraph">
-        
+        <fo:block role="dedication-paragraph" xsl:use-attribute-sets="dedication-paragraph">
+            <xsl:apply-templates/>
+        </fo:block>
     </xsl:template>
 
+
     <xsl:template match="topic[@classes='abstract']">
-        
+        <xsl:if test="$page-sequence-type = 'body' or $page-sequence-type = 'toc-body'">
+            <xsl:apply-templates/>
+        </xsl:if> 
+    </xsl:template>
+
+    <xsl:template match="topic[@classes='abstract']" mode="front">
+        <fo:block role="abstract" xsl:use-attribute-sets="abstract">
+            <xsl:apply-templates/>
+        </fo:block>
     </xsl:template>
 
     <xsl:template match="topic[@classes='abstract']/title">
-        
+        <fo:block role="abstract-title" xsl:use-attribute-sets="abstract-title">
+            <xsl:apply-templates/>
+        </fo:block>
     </xsl:template>
 
     <xsl:template match="topic[@classes='abstract']/paragraph">
-        
+        <fo:block role="abstract-paragraph" xsl:use-attribute-sets = "abstract-paragraph">
+            <xsl:apply-templates/>
+        </fo:block>
     </xsl:template>
     
 </xsl:stylesheet>

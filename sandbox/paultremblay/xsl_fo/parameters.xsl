@@ -67,7 +67,10 @@ fields as author, etc.`docutils`-->
 <xsl:param name="date-text">Date: </xsl:param>
 
 <!--whether to make new pages for dedication and abstact-->
-<xsl:param name="front-matter">True</xsl:param>
-
+<!--either own-section, with-toc, with-body-->
+<xsl:param name="front-matter-pagination">own-section</xsl:param>
+<!--either own-section, or with-body-->
+<xsl:param name="toc-pagination">own-section</xsl:param>
+<!--Note: utils.xsl has the code for the variable page-sequence-type-->
     
 </xsl:stylesheet>
