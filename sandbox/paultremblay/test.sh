@@ -122,6 +122,10 @@ xmlformat.pl -i section.xml
 xsltproc $STYLESHEET bibliographic_fields.xml > bibliographic_fields.fo
 xmlformat.pl -i bibliographic_fields.xml
 
+# bibliograhic fields with toc test
+xsltproc $STYLESHEET bibliographic_fields_toc.xml > bibliographic_fields_toc.fo
+xmlformat.pl -i bibliographic_fields_toc.xml
+
 echo converting FO to PDF
 FILES=`ls *\.fo`
 
