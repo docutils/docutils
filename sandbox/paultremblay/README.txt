@@ -57,6 +57,10 @@ Completion
 
 - Field Lists
 
+- Bibliographic Fields
+
+- Option List
+
 - Headers and Footers, with the ability to suppress them on the first
   page.
 
@@ -66,10 +70,6 @@ TODO
 
 XSLT Stylesheets
 -----------------
-
-- Bibliographic Fields
-
-- Option List
 
 - Indented Literal Blocks
 
