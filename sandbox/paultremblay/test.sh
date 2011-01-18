@@ -126,6 +126,15 @@ xmlformat.pl -i bibliographic_fields.xml
 xsltproc $STYLESHEET bibliographic_fields_toc.xml > bibliographic_fields_toc.fo
 xmlformat.pl -i bibliographic_fields_toc.xml
 
+# test for options_list
+xsltproc  $STYLESHEET opt_list.xml   > opt_list.fo 
+xmlformat.pl -i opt_list.fo
+
+# test for options_list with definition layout
+xsltproc --stringparam option-list-format "definition" \
+$STYLESHEET opt_list.xml   >  opt_list_as_def.fo 
+xmlformat.pl -i opt_list_as_def.fo
+
 echo converting FO to PDF
 FILES=`ls *\.fo`
 
