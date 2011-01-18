@@ -141,8 +141,6 @@
     </xsl:attribute-set>
 
 
-
-
     <!--END attribute sets-->
 
     <xsl:template match="bullet_list">
@@ -355,7 +353,7 @@
 
 
 
-    <!--start a list-->
+    <!--Field list-->
     <xsl:template match="field_list">
         <fo:list-block xsl:use-attribute-sets="field-list">
             <xsl:apply-templates/>
@@ -394,6 +392,9 @@
             </fo:block>
         </fo:list-item-label>
     </xsl:template>
+
+    <!--=======================================================================================-->
+
 
 
 </xsl:stylesheet> 
