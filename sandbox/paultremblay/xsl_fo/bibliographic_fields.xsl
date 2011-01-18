@@ -9,11 +9,23 @@
 
     <!--Attribute sets for Bibliographic Fields-->
 
-    <!--attribute set for Bibliographic table of all values.  Element is fo:table. `docutils`-->
+    <!--Bibliographic table of all values.  Element is fo:table. `docutils`-->
     <xsl:attribute-set name="docinfo-table">
         <xsl:attribute name="inline-progression-dimension">6in</xsl:attribute>
         <xsl:attribute name="space-after">12pt</xsl:attribute>
+        <xsl:attribute name="break-after">page</xsl:attribute>
     </xsl:attribute-set>
+
+    <!--attribute set for Bibliographic label row.  Element is fo:table-column. `docutils`-->
+    <xsl:attribute-set name="docinfo-label-row" use-attribute-sets="docinfo-value">
+        <xsl:attribute name="column-width">1.5in</xsl:attribute>
+    </xsl:attribute-set>
+
+    <!--attribute set for Bibliographic value row.  Element is fo:table-column. `docutils`-->
+    <xsl:attribute-set name="docinfo-value-row" use-attribute-sets="docinfo-value">
+        <xsl:attribute name="column-width">4in</xsl:attribute>
+    </xsl:attribute-set>
+
 
     <!--attribute set for Bibliographic cells for labels.  Element is fo:table-cell. `docutils`-->
     <xsl:attribute-set name="docinfo-label-cell" >
@@ -43,22 +55,6 @@
         <xsl:attribute name="white-space">pre</xsl:attribute>
     </xsl:attribute-set>
 
-    <!--attribute set for Bibliographic label row.  Element is fo:table-column. `docutils`-->
-    <xsl:attribute-set name="docinfo-label-row" use-attribute-sets="docinfo-value">
-        <xsl:attribute name="column-width">1.5in</xsl:attribute>
-    </xsl:attribute-set>
-
-    <!--attribute set for Bibliographic value row.  Element is fo:table-column. `docutils`-->
-    <xsl:attribute-set name="docinfo-value-row" use-attribute-sets="docinfo-value">
-        <xsl:attribute name="column-width">4in</xsl:attribute>
-    </xsl:attribute-set>
-
-    <!--attribute set for after docinfo.  There is an empty block just for the layout in which docinfo
-    gets put into the front matter. This block should have the break-after = page value
-    to force a break. Element is fo:block. `docutils`-->
-    <xsl:attribute-set name="after-docinfo">
-        <xsl:attribute name="break-after">page</xsl:attribute>
-    </xsl:attribute-set>
 
     <!--attribute set for dedication paragraph. Element is fo:block-->
     <xsl:attribute-set name="dedication-paragraph">
@@ -105,7 +101,6 @@
 
     <xsl:template match="docinfo" mode="front">
         <xsl:call-template name="docinfo"/>
-        <fo:block xsl:use-attribute-sets = "after-docinfo"/>
     </xsl:template>
 
     <xsl:template name="make-docinfo-row">
@@ -229,7 +224,6 @@
         <xsl:apply-templates/>
     </xsl:template>
 
-    <!--the value of the field goes to the right of the table-->
     <xsl:template match="docinfo/field/field_body/paragraph" priority="2">
         <fo:block xsl:use-attribute-sets = "docinfo-value">
             <xsl:apply-templates/>
@@ -240,7 +234,9 @@
     <!--ony process if not already processed in front matter-->
     <xsl:template match="topic[@classes='dedication']">
         <xsl:if test="$page-sequence-type = 'body' or $page-sequence-type = 'toc-body'">
-            <xsl:apply-templates/>
+            <fo:block role="dedication" xsl:use-attribute-sets="dedication">
+                <xsl:apply-templates/>
+            </fo:block>
         </xsl:if> 
     </xsl:template>
 
@@ -265,7 +261,9 @@
 
     <xsl:template match="topic[@classes='abstract']">
         <xsl:if test="$page-sequence-type = 'body' or $page-sequence-type = 'toc-body'">
-            <xsl:apply-templates/>
+            <fo:block role="abstract" xsl:use-attribute-sets="abstract">
+                <xsl:apply-templates/>
+            </fo:block>
         </xsl:if> 
     </xsl:template>
 
