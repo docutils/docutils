@@ -27,12 +27,21 @@
         </xsl:if>
 
         <xsl:if test= "$page-layout != 'simple'  and $page-layout != 'odd-even' 
-            and $page-layout != 'first-odd-even'">
+            and $page-layout != 'first-odd-even' and $page-layout != 'first'">
             <xsl:message terminate = "yes">
                 <xsl:text>"</xsl:text>
                 <xsl:value-of select="$page-layout"/>
                 <xsl:text>" not a valid value for parm "page-layout"&#xA;</xsl:text>
                 <xsl:text>Valid values are 'simple', 'odd-even', 'first', or 'first-odd-even'&#xA;</xsl:text>
+                <xsl:text>Processing XSLT now quiting.</xsl:text>
+            </xsl:message>
+        </xsl:if>
+        <xsl:if test= "$option-list-format != 'list'  and $option-list-format != 'definition'">
+            <xsl:message terminate = "yes">
+                <xsl:text>"</xsl:text>
+                <xsl:value-of select="$option-list-format"/>
+                <xsl:text>" not a valid value for parm "option-list-format"&#xA;</xsl:text>
+                <xsl:text>Valid values are 'list', and 'definition'&#xA;</xsl:text>
                 <xsl:text>Processing XSLT now quiting.</xsl:text>
             </xsl:message>
         </xsl:if>
