@@ -23,7 +23,7 @@ odd-even (different for odd and even; headers and footers will be the same becau
 first-odd-even (different first, odd, and even; headers and footers will be the same, with the option of suppressing the first header and footer)
 
 -->
-<xsl:param name="page-layout"/>
+<xsl:param name="page-layout">simple</xsl:param>
 
 
 <!--supress the header on the first page--> 
@@ -72,5 +72,17 @@ fields as author, etc.`docutils`-->
 <!--either own-section, or with-body-->
 <xsl:param name="toc-pagination">own-section</xsl:param>
 <!--Note: utils.xsl has the code for the variable page-sequence-type-->
+
+<!--the text that separates options in the options_list,
+for example, -f  -file. With "," as the value, thise 
+arguments become -f, -file `doc`-->
+<xsl:param name="options-separator">, </xsl:param>
+
+<!--how to format the options list. Acceptable values are
+'list' and 'definition'. The 'list' values creates a bullet-type
+list, with the options taking the place of bullets. The 'definiton' 
+value creates a definition type list, with the options on a separate
+block above the description `doc`-->
+<xsl:param name="option-list-format">list</xsl:param>
     
 </xsl:stylesheet>
