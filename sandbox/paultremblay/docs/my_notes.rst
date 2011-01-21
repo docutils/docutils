@@ -78,3 +78,7 @@ header:
             distance, color; 
               
      backround [drop down of colors]
+
+Can set font-size on  fo:page-sequence, fo:flow
+
+.. svn propset svn:keywords "Date Author Id HeadURL Revision" the file
