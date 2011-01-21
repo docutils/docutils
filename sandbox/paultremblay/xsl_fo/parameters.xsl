@@ -73,6 +73,9 @@ fields as author, etc.`docutils`-->
 <xsl:param name="toc-pagination">own-section</xsl:param>
 <!--Note: utils.xsl has the code for the variable page-sequence-type-->
 
+<!--the default to use for a bullet list, rather than what the user specifies-->
+<xsl:param name="bullet-text">&#x2022;</xsl:param>
+
 <!--the text that separates options in the options_list,
 for example, -f  -file. With "," as the value, thise 
 arguments become -f, -file `doc`-->
