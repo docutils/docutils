@@ -21,38 +21,7 @@
     <xsl:include href = "error.xsl"/>
 
 
-
-
     <xsl:output method="xml" encoding="UTF-8"/>
-
-    <xsl:template match="/">
-        <xsl:element name="fo:root">
-            <xsl:call-template name="make-pages">
-                <xsl:with-param name="page-layout" select="$page-layout"/>
-            </xsl:call-template>
-            <xsl:apply-templates/>
-        </xsl:element>
-    </xsl:template>
-
-
-    <xsl:template match="*">
-        <xsl:message>
-            <xsl:text>no match for </xsl:text>
-            <xsl:value-of select="name(.)"/>
-        </xsl:message>
-        <xsl:choose>
-            <xsl:when test="$strict='True'">
-                <xsl:message terminate="yes">
-                    <xsl:text>Processing XSLT Stylesheets now quiting</xsl:text>
-                </xsl:message>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:message>
-                    <xsl:text>Not processing test in this element.</xsl:text>
-                </xsl:message>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
 
 
 </xsl:stylesheet>
