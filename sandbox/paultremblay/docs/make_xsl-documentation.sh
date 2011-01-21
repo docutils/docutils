@@ -9,15 +9,7 @@ if [ "$PWD" != 'docs' ];then
     exit 1
 fi
 
-echo '#####################'
-echo XSL-FO Documentation
-echo '#####################'
-echo
-
-echo '==============='
-echo Attribute Sets
-echo '==============='
-
-
-xsltproc xsl/document_stylesheet.xsl ../xsl_fo/option_list.xsl
+xsltproc xsl/document_stylesheet.xsl xsl/document_stylesheet.xsl > doc.xml
+xml2txt.py doc.xml > doc.rst
+rst2html.py doc.rst > doc.html
 
