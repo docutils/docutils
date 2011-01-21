@@ -3,7 +3,7 @@
     xmlns:fo="http://www.w3.org/1999/XSL/Format"
     version="1.1"
     >
-    <!-- $Date: 2011-01-09 02:51:33 -0500 (Sun, 09 Jan 2011) $ -->
+    <!-- $Id: docutils_to_fo.xsl 6604 2011-01-20 04:56:24Z paultremblay $ -->
 
     <!-- This template sets up the page styles, needed at the start of an 
     FO document.  
@@ -27,62 +27,44 @@
 	<xsl:attribute name="page-height">11in</xsl:attribute>
     </xsl:attribute-set>
 
-    <!--properties for simple page.
-    Use simple page when all the pages will be the same with 
-    the same headers and footers-->
-    <xsl:attribute-set name="simple-page" use-attribute-sets="paper-size">
+    <!--default for all pages-->
+    <xsl:attribute-set name="default-page-setup">
 	<xsl:attribute name="margin-left">1.0in</xsl:attribute>
 	<xsl:attribute name="margin-right">1.0in</xsl:attribute>
 	<xsl:attribute name="margin-top">1.0in</xsl:attribute>
 	<xsl:attribute name="margin-bottom">1.0in</xsl:attribute>
+    </xsl:attribute-set>
+
+
+    <!--properties for simple page.
+    Use simple page when all the pages will be the same with 
+    the same headers and footers-->
+    <xsl:attribute-set name="simple-page" use-attribute-sets="paper-size default-page-setup">
     </xsl:attribute-set>
 
     <!--properties for first page.
     Used for either the "first" layout, or "first-odd-even" layout.
     With the first, you can set different margins for the first page,
     and can suppress the header or footer on the first page-->
-    <xsl:attribute-set name="first-page" use-attribute-sets="paper-size">
-	<xsl:attribute name="margin-left">1.0in</xsl:attribute>
-	<xsl:attribute name="margin-right">1.0in</xsl:attribute>
-	<xsl:attribute name="margin-top">1.0in</xsl:attribute>
-	<xsl:attribute name="margin-bottom">1.0in</xsl:attribute>
+    <xsl:attribute-set name="first-page" use-attribute-sets="paper-size default-page-setup">
     </xsl:attribute-set>
 
     <!--properties for the body page.
     The body page defines the pages in a "first" layout that are not the 
     first page-->
-    <xsl:attribute-set name="body-page" use-attribute-sets="paper-size">
-	<xsl:attribute name="margin-left">1.0in</xsl:attribute>
-	<xsl:attribute name="margin-right">1.0in</xsl:attribute>
-	<xsl:attribute name="margin-top">1.0in</xsl:attribute>
-	<xsl:attribute name="margin-bottom">1.0in</xsl:attribute>
+    <xsl:attribute-set name="body-page" use-attribute-sets="paper-size default-page-setup" >
     </xsl:attribute-set>
 
     <!-- properties for the odd page.
     The odd-page is used in either a "odd-even" layout or "first-odd-even" 
     layout. With odd-even, you can specify different margins for odd and even
     pages. You cannot have different headers and footers-->
-    <xsl:attribute-set name="odd-page" use-attribute-sets="paper-size">
-	<xsl:attribute name="margin-left">1.0in</xsl:attribute>
-	<xsl:attribute name="margin-right">1.0in</xsl:attribute>
-	<xsl:attribute name="margin-top">1.0in</xsl:attribute>
-	<xsl:attribute name="margin-bottom">1.0in</xsl:attribute>
+    <xsl:attribute-set name="odd-page" use-attribute-sets="paper-size default-page-setup">
     </xsl:attribute-set>
 
     <!-- properties for the even page.
     See the odd page above-->
-    <xsl:attribute-set name="even-page" use-attribute-sets="paper-size">
-	<xsl:attribute name="margin-left">1.0in</xsl:attribute>
-	<xsl:attribute name="margin-right">1.0in</xsl:attribute>
-	<xsl:attribute name="margin-top">1.0in</xsl:attribute>
-	<xsl:attribute name="margin-bottom">1.0in</xsl:attribute>
-    </xsl:attribute-set>
-
-    <xsl:attribute-set name="default-page-setup">
-	<xsl:attribute name="margin-left">1.0in</xsl:attribute>
-	<xsl:attribute name="margin-right">1.0in</xsl:attribute>
-	<xsl:attribute name="margin-top">1.0in</xsl:attribute>
-	<xsl:attribute name="margin-bottom">1.0in</xsl:attribute>
+    <xsl:attribute-set name="even-page" use-attribute-sets="paper-size default-page-setup">
     </xsl:attribute-set>
 
     <!--attribute sets for toc pages; traits are inherited from the body pages-->
@@ -216,22 +198,6 @@
         </xsl:variable>
 
         <fo:region-body margin-top="{$margin-top}" margin-bottom="{$margin-bottom}" xsl:use-attribute-sets="region-body"/>
-
-
-        <!--
-        <xsl:element name="fo:region-body">
-            <xsl:if test="$margin-top != '0in'">
-                <xsl:attribute name="margin-top" >
-                    <xsl:value-of select="$margin-top"/>
-                </xsl:attribute>
-            </xsl:if>
-            <xsl:if test="$margin-bottom != '0in'">
-                <xsl:attribute name="margin-bottom">
-                    <xsl:value-of select="$margin-bottom"/>
-                </xsl:attribute>
-            </xsl:if>
-        </xsl:element>
-        -->
     </xsl:template>
 
     <!--make the simple-page-master with the appropriate master-name
