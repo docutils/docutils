@@ -4,6 +4,7 @@
     version="1.1"
     >
     <!-- $Id$ -->
+
     <xsl:template name="test-params">
         <xsl:if test= "$front-matter-pagination != 'own-section' and $front-matter-pagination != 'with-toc' 
             and $front-matter-pagination != 'with-body'">
@@ -45,7 +46,26 @@
                 <xsl:text>Processing XSLT now quiting.</xsl:text>
             </xsl:message>
         </xsl:if>
-        
     </xsl:template>
+
+    <xsl:template match="*">
+        <xsl:message>
+            <xsl:text>no match for </xsl:text>
+            <xsl:value-of select="name(.)"/>
+        </xsl:message>
+        <xsl:choose>
+            <xsl:when test="$strict='True'">
+                <xsl:message terminate="yes">
+                    <xsl:text>Processing XSLT Stylesheets now quiting</xsl:text>
+                </xsl:message>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:message>
+                    <xsl:text>Not processing test in this element.</xsl:text>
+                </xsl:message>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
     
 </xsl:stylesheet>
