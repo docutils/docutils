@@ -13,8 +13,8 @@
     <xsl:include href = "root.xsl"/>
     <xsl:include href = "inline.xsl"/>
     <xsl:include href = "misc.xsl"/>
-    <xsl:include href = "lists.xsl"/>
     <xsl:include href = "option_list.xsl"/>
+    <xsl:include href = "bullet_list.xsl"/>
     <xsl:include href = "util.xsl"/>
     <xsl:include href = "toc.xsl"/>
     <xsl:include href = "bibliographic_fields.xsl"/>
