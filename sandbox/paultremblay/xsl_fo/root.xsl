@@ -4,44 +4,27 @@
     version="1.1"
     >
     <!-- $Id$ -->
-    <!--TODO
-
-    set up attribute-sets for fo:flow, for each region (front, toc, body)
-
-    -->
 
     <!-- The stylesheet for handling root elements, such as document-->
-    <!--
-    NOTE: This will have to be changed, by the user, if an odd-even layout is used. 
-    Namely, the user might have to change the the force-page-count to odd or even, depending.
-    -->
-    <!--attributes for page numbering of the toc-->
-    <xsl:attribute-set name="page-format-toc">
+
+
+    <xsl:attribute-set name="front-page-sequence">
+    </xsl:attribute-set>
+
+    <!--attributes for the sequence of pages for the toc. 
+    NOTE: The page numbering might have to be changed, by the user, if an odd-even layout is used. 
+    Namely, the user might have to change the the force-page-count to odd or even, depending.  -->
+    <xsl:attribute-set name="toc-page-sequence">
         <xsl:attribute name= "format">i</xsl:attribute> 
         <xsl:attribute name= "initial-page-number">auto</xsl:attribute> 
         <xsl:attribute name= "force-page-count">no-force</xsl:attribute> 
     </xsl:attribute-set>
 
-    <!--attributes for page numbering of the main body-->
-    <xsl:attribute-set name="page-format-body">
+
+    <!--attributes for the sequence of pages for the main body. -->
+    <xsl:attribute-set name="body-page-sequence" >
         <xsl:attribute name= "format">1</xsl:attribute> 
         <xsl:attribute name= "initial-page-number">1</xsl:attribute> 
-    </xsl:attribute-set>
-
-
-
-    <!--attributes for the sequence of pages for the main body. So far, it 
-    only uses the page-format-body attriutes 
-    -->
-    <xsl:attribute-set name="page-sequence-body" use-attribute-sets="page-format-body">
-    </xsl:attribute-set>
-
-    <!--attributes for the sequence of pages for the toc. So far, it 
-    only uses the page-format-body attriutes -->
-    <xsl:attribute-set name="page-sequence-toc" use-attribute-sets="page-format-toc">
-    </xsl:attribute-set>
-
-    <xsl:attribute-set name="page-sequence-front">
     </xsl:attribute-set>
 
     <!--default for fo:flow-->
@@ -49,6 +32,7 @@
     used to set font-size, background, line-height, etc.-->
     <xsl:attribute-set name="default-flow">
     </xsl:attribute-set>
+
 
     <xsl:attribute-set name="front-flow" use-attribute-sets="default-flow">
     </xsl:attribute-set>
@@ -72,7 +56,7 @@
         <xsl:call-template name='test-params'/>
         <xsl:choose>
             <xsl:when test="$page-sequence-type = 'toc-combined-body'">
-                <fo:page-sequence master-reference="toc-pages" xsl:use-attribute-sets="page-sequence-toc">
+                <fo:page-sequence master-reference="toc-pages" xsl:use-attribute-sets="toc-page-sequence">
                     <xsl:apply-templates select="/document/decoration/header" mode="header"/>
                     <xsl:apply-templates select="/document/decoration/footer" mode="footer"/>
                     <fo:flow flow-name="xsl-region-body" xsl:use-attribute-sets="toc-flow">
@@ -82,12 +66,12 @@
                 </fo:page-sequence>
             </xsl:when>
             <xsl:when test="$page-sequence-type = 'front-toc-body'">
-                <fo:page-sequence master-reference="front-matter-pages" xsl:use-attribute-sets="page-sequence-front">
+                <fo:page-sequence master-reference="front-matter-pages" xsl:use-attribute-sets="front-page-sequence">
                     <fo:flow flow-name="xsl-region-body" xsl:use-attribue-sets="front-flow">
                         <xsl:apply-templates select="topic[@classes='abstract']|topic[@classes='dedication']|docinfo" mode="front"/>
                     </fo:flow>
                 </fo:page-sequence>
-                <fo:page-sequence master-reference="toc-pages" xsl:use-attribute-sets="page-sequence-toc">
+                <fo:page-sequence master-reference="toc-pages" xsl:use-attribute-sets="toc-page-sequence">
                     <xsl:apply-templates select="/document/decoration/header" mode="header"/>
                     <xsl:apply-templates select="/document/decoration/footer" mode="footer"/>
                     <fo:flow flow-name="xsl-region-body" xsl:use-attribute-sets="toc-flow">
@@ -96,14 +80,14 @@
                 </fo:page-sequence>
             </xsl:when>
             <xsl:when test="$page-sequence-type = 'front-body'">
-                <fo:page-sequence master-reference="front-matter-pages" xsl:use-attribute-sets="page-sequence-front">
+                <fo:page-sequence master-reference="front-matter-pages" xsl:use-attribute-sets="front-page-sequence">
                     <fo:flow flow-name="xsl-region-body" xsl:use-attribute-sets="front-flow">
                         <xsl:apply-templates select="topic[@classes='abstract']|topic[@classes='dedication']|docinfo" mode="front"/>
                     </fo:flow>
                 </fo:page-sequence>
             </xsl:when>
             <xsl:when test="$page-sequence-type = 'toc-body'">
-                <fo:page-sequence master-reference="toc-pages" xsl:use-attribute-sets="page-sequence-toc">
+                <fo:page-sequence master-reference="toc-pages" xsl:use-attribute-sets="toc-page-sequence">
                     <xsl:apply-templates select="/document/decoration/header" mode="header"/>
                     <xsl:apply-templates select="/document/decoration/footer" mode="footer"/>
                     <fo:flow flow-name="xsl-region-body" xsl:use-attribute-sets="toc-flow">
@@ -112,7 +96,7 @@
                 </fo:page-sequence>
             </xsl:when>
         </xsl:choose>
-        <fo:page-sequence master-reference="pages" xsl:use-attribute-sets="page-sequence-body">
+        <fo:page-sequence master-reference="pages" xsl:use-attribute-sets="body-page-sequence">
             <xsl:apply-templates select="/document/decoration/header" mode="header"/>
             <xsl:apply-templates select="/document/decoration/footer" mode="footer"/>
             <fo:flow flow-name="xsl-region-body" xsl:use-attribute-sets="body-flow">
