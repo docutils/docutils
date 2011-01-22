@@ -56,7 +56,7 @@
     </xsl:attribute-set>
 
     <xsl:template match="bullet_list">
-        <fo:list-block xsl:use-attribute-sets="bullet-list-block">
+        <fo:list-block xsl:use-attribute-sets="bullet-list-block" role="bullet-list">
             <xsl:apply-templates/>
         </fo:list-block>
     </xsl:template>
@@ -96,7 +96,7 @@
     </xsl:template>
 
     <xsl:template match="bullet_list/list_item/paragraph">
-        <fo:block xsl:use-attribute-sets="bullet-list-item-body-block">
+        <fo:block xsl:use-attribute-sets="bullet-list-item-body-block" role="bullet-list-paragraph">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -105,7 +105,7 @@
         <xsl:variable name="level" select="count(ancestor::list_item)"/>
         <xsl:choose>
             <xsl:when test="$level = 1">
-                <fo:list-block xsl:use-attribute-sets="bullet-level2-list-block">
+                <fo:list-block xsl:use-attribute-sets="bullet-level2-list-block" role="bullet-list2">
                     <xsl:apply-templates/>
                 </fo:list-block>
             </xsl:when>
