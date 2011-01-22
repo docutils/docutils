@@ -1,5 +1,7 @@
 .. $Id$
 
+This paragraph comes before the list.
+
 - This is the first bullet list item.  The blank line above the
   first list item is required; blank lines between list items
   (such as below this paragraph) are optional.
