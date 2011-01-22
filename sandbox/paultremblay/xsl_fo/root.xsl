@@ -67,7 +67,7 @@
             </xsl:when>
             <xsl:when test="$page-sequence-type = 'front-toc-body'">
                 <fo:page-sequence master-reference="front-matter-pages" xsl:use-attribute-sets="front-page-sequence">
-                    <fo:flow flow-name="xsl-region-body" xsl:use-attribue-sets="front-flow">
+                    <fo:flow flow-name="xsl-region-body" xsl:use-attribute-sets="front-flow">
                         <xsl:apply-templates select="topic[@classes='abstract']|topic[@classes='dedication']|docinfo" mode="front"/>
                     </fo:flow>
                 </fo:page-sequence>

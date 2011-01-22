@@ -74,10 +74,10 @@
         <xsl:attribute name="space-before">8pt</xsl:attribute>
     </xsl:attribute-set>
 
-    <!--for the block for each item (option with description) in an option list. 
+    <!--for the first block for each item (option with description) in an option list. 
     May need special space for first item.
     Element is fo:block.-->
-    <xsl:attribute-set name="option-list-item-first-block" use-attribute-sets="option-list-item-block">
+    <xsl:attribute-set name="option-list-first-item-block" use-attribute-sets="option-list-item-block">
         <xsl:attribute name="space-before">0pt</xsl:attribute>
     </xsl:attribute-set>
 
@@ -191,7 +191,7 @@
     </xsl:template>
 
     <xsl:template match="option_list/option_list_item[1]" mode="definition" priority="2">
-        <fo:block role="item" xsl:use-attribute-sets = "option-list-item-block-first">
+        <fo:block role="item" xsl:use-attribute-sets = "option-list-first-item-block">
             <xsl:apply-templates mode="definition"/>
         </fo:block>
     </xsl:template>
