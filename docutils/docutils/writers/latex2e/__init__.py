@@ -1636,7 +1636,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 href = node['refid']
             elif 'refname' in node:
                 href = self.document.nameids[node['refname']]
-            self.out.append('[\\hyperlink{%s}{' % href)
+            self.out.append('\\hyperlink{%s}{[' % href)
 
     def depart_citation_reference(self, node):
         if self._use_latex_citations:
@@ -1656,7 +1656,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 self.out.append('}')
                 self.inside_citation_reference_label = False
         else:
-            self.out.append('}]')
+            self.out.append(']}')
 
     def visit_classifier(self, node):
         self.out.append( '(\\textbf{' )
