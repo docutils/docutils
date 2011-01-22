@@ -60,7 +60,7 @@
             <xsl:with-param name="docutils">option_list/option_list_item/option_group</xsl:with-param> 
         </xsl:call-template>
         <block>
-            The deault attribute end-indent = "label-end()" ensures
+            The default attribute end-indent = "label-end()" ensures
             that the label aligns properly.
         </block>
     </xsl:template>
