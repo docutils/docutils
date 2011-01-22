@@ -52,6 +52,9 @@
             text before it, use the space-after attribute in the option-list attribute
             set.
         </block>
+        <block>
+            It does not make sense to change this attriubte set directly.
+        </block>
     </xsl:template>
 
     <xsl:template match= "xsl:attribute-set[@name='option-list-item-label']" priority="3">
@@ -152,6 +155,19 @@
         </xsl:call-template>
         <block>
             Formats the block that wraps the options and descriptions, which are also blocks. 
+        </block>
+    </xsl:template>
+
+    <xsl:template match= "xsl:attribute-set[@name='option-list-first-item-block']" priority="3">
+        <xsl:call-template name="before-desc">
+            <xsl:with-param name="fo">fo:block</xsl:with-param> 
+            <xsl:with-param name="docutils">option_list/option_list_item</xsl:with-param> 
+        </xsl:call-template>
+        <block>
+            Same as for option-list-item-block, but sets the space-before to 0pt 
+        </block>
+        <block>
+            Does not make sense to change the attributes here directly.
         </block>
     </xsl:template>
 
