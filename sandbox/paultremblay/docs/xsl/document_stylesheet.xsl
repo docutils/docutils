@@ -9,6 +9,7 @@
     <xsl:include href="bullet_list.xsl"/>
     <xsl:include href="enumerated_list.xsl"/>
     <xsl:include href="option_list.xsl"/>
+    <xsl:include href="definition_list.xsl"/>
     <xsl:include href="root.xsl"/>
     <xsl:include href="comment.xsl"/>
 
@@ -56,6 +57,15 @@
                 Attribute sets for the enumerated list.
             </block>
             <xsl:apply-templates select="document('../../xsl_fo/enumerated_list.xsl')/xsl:stylesheet"/>
+
+            <xsl:call-template name="make-title">
+                <xsl:with-param name="level">3</xsl:with-param>
+                <xsl:with-param name="text">definition list</xsl:with-param>
+            </xsl:call-template>
+            <block>
+                Attribute sets for the definition list.
+            </block>
+            <xsl:apply-templates select="document('../../xsl_fo/definition_list.xsl')/xsl:stylesheet"/>
 
             <xsl:call-template name="make-title">
                 <xsl:with-param name="level">3</xsl:with-param>
