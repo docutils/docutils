@@ -27,16 +27,8 @@
         <xsl:attribute name="space-before">0pt</xsl:attribute>
     </xsl:attribute-set>
 
-
-    <!--for the blocks of paragraphs in the definition block. Don't set any 
-    space-after or space before; the space before this block and the term block
-    is controlled by the definition-term block and space between items by the definiton
-    list-item block.-->
-    <xsl:attribute-set name="definition-block" >
-    </xsl:attribute-set>
-
     <!--for the bock of the the term. Can be used to control spacing between
-    term and defition, but don't use with space before, or you won't be able
+    term and definition, but don't use with space before, or you won't be able
     to control spacing before list-->
     <xsl:attribute-set name="definition-term-block">
     </xsl:attribute-set>
@@ -44,6 +36,10 @@
 
     <xsl:attribute-set name="definition-term-inline">
         <xsl:attribute name="font-weight">bold</xsl:attribute> 
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="classifier-inline">
+	<xsl:attribute name="font-style">italic</xsl:attribute>
     </xsl:attribute-set>
 
 
@@ -120,7 +116,7 @@
     
     <xsl:template match="classifier">
         <xsl:text> :</xsl:text>
-        <fo:inline xsl:use-attribute-sets="emphasis">
+        <fo:inline xsl:use-attribute-sets="classifier-inline">
             <xsl:apply-templates />
         </fo:inline>
     </xsl:template>
