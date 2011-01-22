@@ -6,6 +6,8 @@
     <!-- $Id$ -->
 
     <xsl:include href="utils.xsl"/>
+    <xsl:include href="bullet_list.xsl"/>
+    <xsl:include href="enumerated_list.xsl"/>
     <xsl:include href="option_list.xsl"/>
     <xsl:include href="root.xsl"/>
     <xsl:include href="comment.xsl"/>
@@ -26,6 +28,7 @@
                 <xsl:with-param name="level">2</xsl:with-param>
                 <xsl:with-param name="text">Attribute Sets</xsl:with-param>
             </xsl:call-template>
+            <block>.. contents:: Table of Contents</block>
 
             <xsl:call-template name="make-title">
                 <xsl:with-param name="level">3</xsl:with-param>
@@ -35,7 +38,24 @@
                 Attribute sets root elements. Use these attribute sets to format
                 the defaults in a document, such as font, font-size, or line-height.
             </block>
-        <xsl:apply-templates select="document('../../xsl_fo/root.xsl')/xsl:stylesheet"/>
+            <xsl:apply-templates select="document('../../xsl_fo/root.xsl')/xsl:stylesheet"/>
+            <xsl:call-template name="make-title">
+                <xsl:with-param name="level">3</xsl:with-param>
+                <xsl:with-param name="text">bullet list</xsl:with-param>
+            </xsl:call-template>
+            <block>
+                Attribute sets for the bullet list.
+            </block>
+            <xsl:apply-templates select="document('../../xsl_fo/bullet_list.xsl')/xsl:stylesheet"/>
+
+            <xsl:call-template name="make-title">
+                <xsl:with-param name="level">3</xsl:with-param>
+                <xsl:with-param name="text">enumerated list</xsl:with-param>
+            </xsl:call-template>
+            <block>
+                Attribute sets for the enumerated list.
+            </block>
+            <xsl:apply-templates select="document('../../xsl_fo/enumerated_list.xsl')/xsl:stylesheet"/>
 
             <xsl:call-template name="make-title">
                 <xsl:with-param name="level">3</xsl:with-param>
@@ -46,7 +66,7 @@
                 definition list, there are two sets of attribute sets. These attribute sets
                 are used for the options list when it is rendered as a list.
             </block>
-        <xsl:apply-templates select="document('../../xsl_fo/option_list.xsl')/xsl:stylesheet"/>
+            <xsl:apply-templates select="document('../../xsl_fo/option_list.xsl')/xsl:stylesheet"/>
         </doc>
     </xsl:template>
 
