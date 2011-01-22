@@ -10,6 +10,7 @@ if [ "$PWD" != 'docs' ];then
 fi
 
 xsltproc xsl/document_stylesheet.xsl xsl/document_stylesheet.xsl > doc.xml
-xml2txt.py doc.xml > doc.rst
-rst2html.py doc.rst > doc.html
+xml2txt.py doc.xml > rst/attribute_sets.rst
+rst2html.py  rst/attribute_sets.rst >  html/attribute_sets.html 
+# rm doc.xml
 
