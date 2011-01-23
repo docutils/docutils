@@ -10,8 +10,6 @@ Example of Fields List
    field name marker, and they must line up with each other.
 :Parameter i: integer
 
-Text
-
 :Test list arg: foo
 
    first
@@ -19,4 +17,6 @@ Text
    second
 
    third
+
+Text after field list.
 
