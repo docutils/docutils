@@ -5,13 +5,15 @@
 
     <!-- $Id$ -->
 
-    <xsl:include href="utils.xsl"/>
+    <xsl:include href="root.xsl"/>
+    <xsl:include href="page.xsl"/>
     <xsl:include href="bullet_list.xsl"/>
     <xsl:include href="enumerated_list.xsl"/>
     <xsl:include href="option_list.xsl"/>
     <xsl:include href="definition_list.xsl"/>
-    <xsl:include href="root.xsl"/>
+    <xsl:include href="field_list.xsl"/>
     <xsl:include href="comment.xsl"/>
+    <xsl:include href="utils.xsl"/>
 
     <xsl:output method="xml"/>
 
@@ -40,6 +42,17 @@
                 the defaults in a document, such as font, font-size, or line-height.
             </block>
             <xsl:apply-templates select="document('../../xsl_fo/root.xsl')/xsl:stylesheet"/>
+
+            <xsl:call-template name="make-title">
+                <xsl:with-param name="level">3</xsl:with-param>
+                <xsl:with-param name="text">Page Attribute Sets</xsl:with-param>
+            </xsl:call-template>
+            <block>
+                Attribute sets for page. These attributes control the formatting of 
+                the actual pages: the paper size and margins.
+            </block>
+            <xsl:apply-templates select="document('../../xsl_fo/page.xsl')/xsl:stylesheet"/>
+
             <xsl:call-template name="make-title">
                 <xsl:with-param name="level">3</xsl:with-param>
                 <xsl:with-param name="text">bullet list</xsl:with-param>
@@ -66,6 +79,15 @@
                 Attribute sets for the definition list.
             </block>
             <xsl:apply-templates select="document('../../xsl_fo/definition_list.xsl')/xsl:stylesheet"/>
+
+            <xsl:call-template name="make-title">
+                <xsl:with-param name="level">3</xsl:with-param>
+                <xsl:with-param name="text">field list</xsl:with-param>
+            </xsl:call-template>
+            <block>
+                Attribute sets for the field list.
+            </block>
+            <xsl:apply-templates select="document('../../xsl_fo/field_list.xsl')/xsl:stylesheet"/>
 
             <xsl:call-template name="make-title">
                 <xsl:with-param name="level">3</xsl:with-param>
