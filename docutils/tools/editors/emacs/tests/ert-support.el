@@ -13,10 +13,10 @@
 ;; ****************************************************************************
 ;; `buf' and related functions
 
-(defvar buf-point-char "\0"
+(defvar buf-point-char "\^@"
   "Special character used to mark the position of point in a `buf'.")
 
-(defvar buf-mark-char "\177"
+(defvar buf-mark-char "\^?"
   "Special character used to mark the position of mark in a `buf'.")
 
 (defstruct (buf
