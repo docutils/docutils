@@ -166,3 +166,23 @@ Outline support
 * May be folding is also possible
 
   * For item lists
+
+Caring about literal blocks `rst-shift-region-*`
+================================================
+
+* `rst-shift-region-*` should care about literal blocks
+
+  * These should not be filled
+
+* Similarly for other stuff which should not be filled:
+
+  * Tables  
+
+  * Field lists
+
+Filling definitions
+===================
+
+* Filling with M-q doesn't fill definitions properly
+
+  * A definition of `fill-paragraph-function` or similar could be useful

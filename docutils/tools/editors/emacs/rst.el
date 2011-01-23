@@ -1,6 +1,6 @@
 ;;; rst.el --- Mode for viewing and editing reStructuredText-documents.
 
-;; Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010
+;; Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011
 ;;   Free Software Foundation, Inc.
 
 ;; Maintainer: Stefan Merten <smerten@oekonux.de>
@@ -370,17 +370,19 @@
 
     ;; Adornment (`ado')
     (ado-prt "[" ,(concat rst-adornment-chars) "]")
-    (adorep-hlp "\\{2,\\}") ; there must be at least 3 characters because
-			    ; otherwise explicit markup start would be
-			    ; recognized
+    (adorep3-hlp "\\{3,\\}") ; There must be at least 3 characters because
+			     ; otherwise explicit markup start would be
+			     ; recognized
+    (adorep2-hlp "\\{2,\\}") ; As `adorep3-hlp' but when the first of three
+			     ; characters is matched differently
     (ado-tag-1-1 (:grp ado-prt)
-		 "\\1" adorep-hlp) ; A complete adornment, group is the first
-				   ; adornment character and MUST be the FIRST
-				   ; group in the whole expression
+		 "\\1" adorep2-hlp) ; A complete adornment, group is the first
+				    ; adornment character and MUST be the FIRST
+				    ; group in the whole expression
     (ado-tag-1-2 (:grp ado-prt)
-		 "\\2" adorep-hlp) ; A complete adornment, group is the first
-				   ; adornment character and MUST be the
-				   ; SECOND group in the whole expression
+		 "\\2" adorep2-hlp) ; A complete adornment, group is the first
+				    ; adornment character and MUST be the
+				    ; SECOND group in the whole expression
     (ado-beg-2-1 "^" (:grp ado-tag-1-2)
 		 lin-end) ; A complete adornment line; first group is the whole
 			  ; adornment and MUST be the FIRST group in the whole
@@ -550,7 +552,8 @@ are defined as well but give an additional message."
 		    [?\C-c ?\C-d])
     ;; Shift region left or right (taking into account of enumerations/bullets,
     ;; etc.).
-    ;; FIXME: These bindings are ugly and should be replaced by [?\C-x TAB]
+    ;; FIXME: These bindings are ugly and should be replaced by [?\C-c TAB]
+    ;;        when `rst-shift-region-*' works more like `indent-rigidly'
     (rst-define-key map [?\C-c ?\C-r (control tab)] 'rst-shift-region-left
 		    [?\C-c ?\C-l t])
     (rst-define-key map [?\C-c ?\C-r tab] 'rst-shift-region-right
@@ -715,12 +718,8 @@ highlighting.
   (set (make-local-variable 'comment-start) ".. ")
   (set (make-local-variable 'comment-start-skip) (rst-re "^" 'exm-sta))
   (set (make-local-variable 'comment-multi-line) nil)
-  ;; Text after a changed line may need new fontification - though we don't use
-  ;; jit-lock-mode at the moment...
+  ;; Text after a changed line may need new fontification
   (set (make-local-variable 'jit-lock-contextually) t)
-
-  ;; Special variables
-  (make-local-variable 'rst-adornment-level-alist)
 
   ;; Font lock
   (setq font-lock-defaults
@@ -732,10 +731,9 @@ highlighting.
 	  ;; enough. In fact using `jit-lock-mode` slows things down
 	  ;; considerably even if `rst-font-lock-extend-region` is in place and
 	  ;; compiled.
-	  (font-lock-support-mode . nil)))
-  (setq font-lock-extend-region-functions
-	(append font-lock-extend-region-functions
-		'(rst-font-lock-extend-region))))
+	  ;;(font-lock-support-mode . nil)
+	  ))
+  (add-hook 'font-lock-extend-region-functions 'rst-font-lock-extend-region t))
 
 ;;;###autoload
 (define-minor-mode rst-minor-mode
@@ -854,6 +852,13 @@ for modes derived from Text mode, like Mail mode."
 				      (?# simple 0)
 				      (?@ simple 0))
   "Preferred ordering of section title adornments.
+
+A list consisting of lists of the form (CHARACTER STYLE INDENT).
+CHARACTER is the character used. STYLE is one of the symbols
+OVER-AND-UNDER or SIMPLE. INDENT is an integer giving the wanted
+indentation for STYLE OVER-AND-UNDER. CHARACTER and STYLE are
+always used when a section adornment is described. In other
+places t instead of a list stands for a transition.
 
 This sequence is consulted to offer a new adornment suggestion
 when we rotate the underlines at the end of the existing
@@ -992,180 +997,271 @@ requested adornment."
       (goto-char marker)
       ))
 
+(defun rst-classify-adornment (adornment end)
+  "Classify adornment for section titles and transitions.
+ADORNMENT is the complete adornment string as found in the buffer
+with optional trailing whitespace. END is the point after the
+last character of ADORNMENT.
 
-(defun rst-normalize-cursor-position ()
-  "Normalize the cursor position.
-If the cursor is on an adornment line or an empty line, place it
-on the section title line (at the beginning). Return the line
-offset by which the cursor was moved. This works both over or
-under a line."
-  (if (save-excursion (beginning-of-line)
-                      (or (looking-at (rst-re 'ado-beg-2-1))
-                          (looking-at (rst-re 'lin-end))))
-      (progn
-        (beginning-of-line)
-        (cond
-         ((save-excursion (forward-line -1)
-                          (and (looking-at (rst-re 'ttl-beg))
-                               (not (looking-at (rst-re 'ado-beg-2-1)))))
-          (forward-line -1)
-	  -1)
-         ((save-excursion (forward-line +1)
-                          (and (looking-at (rst-re 'ttl-beg))
-                               (not (looking-at (rst-re 'ado-beg-2-1)))))
-          (forward-line +1)
-	  +1)
-         (t
-	  0)))
-    0))
+Return a list. The first entry is t for a transition or a
+cons (CHARACTER . STYLE). Check `rst-preferred-adornments' for
+the meaning of CHARACTER and STYLE.
 
+The remaining list forms four match groups as returned by
+`match-data'. Match group 0 matches the whole construct. Match
+group 1 matches the overline adornment if present. Match group 2
+matches the section title text or the transition. Match group 3
+matches the underline adornment.
+
+Return nil if no syntactically valid adornment is found."
+  (save-excursion
+    (save-match-data
+      (when (string-match (rst-re 'ado-beg-2-1) adornment)
+	(goto-char end)
+	(let* ((ado-ch (string-to-char (match-string 2 adornment)))
+	       (ado-re (rst-re ado-ch 'adorep3-hlp))
+	       (end-pnt (point))
+	       (beg-pnt (progn
+			  (forward-line 0)
+			  (point)))
+	       (nxt-emp ; Next line inexistant or empty
+		(save-excursion
+		  (or (not (zerop (forward-line 1)))
+		      (looking-at (rst-re 'lin-end)))))
+	       (prv-emp ; Previous line inexistant or empty
+		(save-excursion
+		  (or (not (zerop (forward-line -1)))
+		      (looking-at (rst-re 'lin-end)))))
+	       (ttl-blw ; Title found below starting here
+		(save-excursion
+		  (and
+		   (zerop (forward-line 1))
+		   (looking-at (rst-re 'ttl-beg))
+		   (point))))
+	       (ttl-abv ; Title found above starting here
+		(save-excursion
+		  (and
+		   (zerop (forward-line -1))
+		   (looking-at (rst-re 'ttl-beg))
+		   (point))))
+	       (und-fnd ; Matching underline found starting here
+		(save-excursion
+		  (and ttl-blw
+		   (zerop (forward-line 2))
+		   (looking-at (rst-re ado-re 'lin-end))
+		   (point))))
+	       (ovr-fnd ; Matching overline found starting here
+		(save-excursion
+		  (and ttl-abv
+		   (zerop (forward-line -2))
+		   (looking-at (rst-re ado-re 'lin-end))
+		   (point))))
+	       key beg-ovr end-ovr beg-txt end-txt beg-und end-und)
+	  (cond
+	   ((and nxt-emp prv-emp)
+	    ;; A transition
+	    (setq key t)
+	    (setq beg-txt beg-pnt)
+	    (setq end-txt end-pnt))
+	   ((or und-fnd ovr-fnd)
+	    ;; An overline with an underline
+	    (setq key (cons ado-ch 'over-and-under))
+	    (let (;; Prefer overline match over underline match
+		  (und-pnt (if ovr-fnd beg-pnt und-fnd))
+		  (ovr-pnt (if ovr-fnd ovr-fnd beg-pnt))
+		  (txt-pnt (if ovr-fnd ttl-abv ttl-blw)))
+	      (goto-char ovr-pnt)
+	      (setq beg-ovr (point))
+	      (setq end-ovr (line-end-position))
+	      (goto-char txt-pnt)
+	      (setq beg-txt (point))
+	      (setq end-txt (line-end-position))
+	      (goto-char und-pnt)
+	      (setq beg-und (point))
+	      (setq end-und (line-end-position))))
+	   (ttl-abv
+	    ;; An underline
+	    (setq key (cons ado-ch 'simple))
+	    (setq beg-und beg-pnt)
+	    (setq end-und end-pnt)
+	    (goto-char ttl-abv)
+	    (setq beg-txt (point))
+	    (setq end-txt (line-end-position)))
+	   (t
+	    ;; Invalid adornment
+	    (setq key nil)))
+	  (if key
+	      (list key
+		    (or beg-ovr beg-txt beg-und)
+		    (or end-und end-txt end-ovr)
+		    beg-ovr end-ovr beg-txt end-txt beg-und end-und)))))))
+
+(defun rst-find-title-line ()
+  "Find a section title line around point and return its characteristics.
+If the point is on an adornment line find the respective title
+line. If the point is on an empty line check previous or next
+line whether it is a suitable title line and use it if so. If
+point is on a suitable title line use it.
+
+If no title line is found return nil.
+
+Otherwise return as `rst-classify-adornment' does. However, if
+the title line has no syntactically valid adornment STYLE is nil
+in the first element. If there is no adornment around the title
+CHARACTER is also nil and match groups for overline and underline
+are nil."
+  (save-excursion
+    (forward-line 0)
+    (let ((orig-pnt (point))
+	  (orig-end (line-end-position)))
+      (cond
+       ((looking-at (rst-re 'ado-beg-2-1))
+	(let ((char (string-to-char (match-string-no-properties 2)))
+	      (r (rst-classify-adornment (match-string-no-properties 0)
+					 (match-end 0))))
+	  (cond
+	   ((not r)
+	    ;; Invalid adornment - check whether this is an incomplete overline
+	    (if (and
+		 (zerop (forward-line 1))
+		 (looking-at (rst-re 'ttl-beg)))
+		(list (cons char nil) orig-pnt (line-end-position)
+		      orig-pnt orig-end (point) (line-end-position) nil nil)))
+	   ((consp (car r))
+	    ;; A section title - not a transition
+	    r))))
+       ((looking-at (rst-re 'lin-end))
+	(or
+	 (save-excursion
+	   (if (and (zerop (forward-line -1))
+		    (looking-at (rst-re 'ttl-beg)))
+	       (list (cons nil nil) (point) (line-end-position)
+		     nil nil (point) (line-end-position) nil nil)))
+	 (save-excursion
+	   (if (and (zerop (forward-line 1))
+		    (looking-at (rst-re 'ttl-beg)))
+	       (list (cons nil nil) (point) (line-end-position)
+		     nil nil (point) (line-end-position) nil nil)))))
+       ((looking-at (rst-re 'ttl-beg))
+	;; Try to use the underline
+	(let ((r (rst-classify-adornment
+		  (buffer-substring-no-properties 
+		   (line-beginning-position 2) (line-end-position 2))
+		  (line-end-position 2))))
+	  (if r
+	      r
+	    ;; No valid adornment found
+	    (list (cons nil nil) (point) (line-end-position)
+		  nil nil (point) (line-end-position) nil nil))))))))
+
+;; The following function and variables are used to maintain information about
+;; current section adornment in a buffer local cache. Thus they can be used for
+;; font-locking and manipulation commands.
+
+(defun rst-reset-section-caches ()
+  "Reset all section cache variables.
+Should be called by interactive functions which deal with sections."
+  (setq rst-all-sections nil)
+  (setq rst-section-hierarchy nil))
+
+(defvar rst-all-sections nil
+  "All section adornments in the buffer as found by `rst-find-all-adornments'.
+t when no section adornments were found.
+
+This is automatically buffer local.")
+(make-variable-buffer-local 'rst-all-sections)
+
+;; FIXME: If this variable is set to a different value font-locking of section
+;; headers is wrong
+(defvar rst-section-hierarchy nil
+  "Section hierarchy in the buffer as determined by `rst-get-hierarchy'.
+t when no section adornments were found. Value depends on
+`rst-all-sections'.
+
+This is automatically buffer local.")
+(make-variable-buffer-local 'rst-section-hierarchy)
 
 (defun rst-find-all-adornments ()
-  "Find all the adornments in the file.
-Return a list of (line, adornment) pairs.  Each adornment
-consists in a (char, style, indent) triple.
+  "Return all the section adornments in the current buffer.
+Return a list of (LINE . ADORNMENT) with ascending LINE where
+LINE is the line containing the section title. ADORNMENT consists
+of a (CHARACTER STYLE INDENT) triple as described for
+`rst-preferred-adornments'.
 
-This function does not detect the hierarchy of adornments, it
-just finds all of them in a file.  You can then invoke another
-function to remove redundancies and inconsistencies."
-
-  (let (positions
-        (curline 1))
-    ;; Iterate over all the section titles/adornments in the file.
-    (save-excursion
-      (goto-char (point-min))
-      (while (< (point) (buffer-end 1))
-        (if (looking-at (rst-re 'ado-beg-2-1))
-            (progn
-              (setq curline (+ curline (rst-normalize-cursor-position)))
-
-              ;; Here we have found a potential site for a adornment,
-              ;; characterize it.
-              (let ((ado (rst-get-adornment)))
-                (if (cadr ado) ; Style is existing.
-                    ;; Found a real adornment site.
-                    (progn
-                      (push (cons curline ado) positions)
-                      ;; Push beyond the underline.
-                      (forward-line 1)
-                      (setq curline (+ curline 1))
-                      )))
-              ))
-        (forward-line 1)
-        (setq curline (+ curline 1))
-        ))
-    (reverse positions)))
-
+Uses and sets `rst-all-sections'."
+  (unless rst-all-sections
+    (let (positions)
+      ;; Iterate over all the section titles/adornments in the file.
+      (save-excursion
+	(goto-char (point-min))
+	(while (re-search-forward (rst-re 'ado-beg-2-1) nil t)
+	  (let ((ado-data (rst-classify-adornment
+			   (match-string-no-properties 0) (point))))
+	    (when (and ado-data
+		       (consp (car ado-data))) ; Ignore transitions
+	      (set-match-data (cdr ado-data))
+	      (goto-char (match-beginning 2)) ; Goto the title start
+	      (push (cons (1+ (count-lines (point-min) (point)))
+			  (list (caar ado-data)
+				(cdar ado-data)
+				(current-indentation)))
+		    positions)
+	      (goto-char (match-end 0))))) ; Go beyond the whole thing
+	(setq positions (nreverse positions))
+	(setq rst-all-sections (or positions t)))))
+  (if (eq rst-all-sections t)
+      nil
+    rst-all-sections))
 
 (defun rst-infer-hierarchy (adornments)
   "Build a hierarchy of adornments using the list of given ADORNMENTS.
 
-This function expects a list of (char, style, indent) adornment
+ADORNMENTS is a list of (CHARACTER STYLE INDENT) adornment
 specifications, in order that they appear in a file, and will
 infer a hierarchy of section levels by removing adornments that
 have already been seen in a forward traversal of the adornments,
-comparing just the character and style.
+comparing just CHARACTER and STYLE.
 
-Similarly returns a list of (char, style, indent), where each
+Similarly returns a list of (CHARACTER STYLE INDENT), where each
 list element should be unique."
-
-  (let ((hierarchy-alist (list)))
+  (let (hierarchy-alist)
     (dolist (x adornments)
       (let ((char (car x))
             (style (cadr x)))
         (unless (assoc (cons char style) hierarchy-alist)
-	  (push (cons (cons char style) x) hierarchy-alist))
-        ))
+	  (push (cons (cons char style) x) hierarchy-alist))))
+    (mapcar 'cdr (nreverse hierarchy-alist))))
 
-    (mapcar 'cdr (nreverse hierarchy-alist))
-    ))
-
-
-(defun rst-get-hierarchy (&optional allados ignore)
+(defun rst-get-hierarchy (&optional ignore)
   "Return the hierarchy of section titles in the file.
 
 Return a list of adornments that represents the hierarchy of
-section titles in the file.  Reuse the list of adornments
-already computed in ALLADOS if present.  If the line number in
-IGNORE is specified, the adornment found on that line (if there
-is one) is not taken into account when building the hierarchy."
-  (let ((all (or allados (rst-find-all-adornments))))
-    (setq all (assq-delete-all ignore all))
-    (rst-infer-hierarchy (mapcar 'cdr all))))
+section titles in the file. Each element consists of (CHARACTER
+STYLE INDENT) as described for `rst-find-all-adornments'. If the
+line number in IGNORE is specified, a possibly adornment found on
+that line is not taken into account when building the hierarchy.
 
+Uses and sets `rst-section-hierarchy' unless IGNORE is given."
+  (if (and (not ignore) rst-section-hierarchy)
+      (if (eq rst-section-hierarchy t)
+	  nil
+	rst-section-hierarchy)
+    (let ((all (rst-find-all-adornments))
+	  r)
+      (setq all (assq-delete-all ignore all))
+      (setq r (rst-infer-hierarchy (mapcar 'cdr all)))
+      (setq rst-section-hierarchy
+	    (if ignore
+		;; Clear cache reflecting that a possible update is not
+		;; reflected
+		nil
+	      (or r t)))
+      r)))
 
-(defun rst-get-adornment (&optional point)
-  "Get the adornment at POINT.
-
-Looks around point and finds the characteristics of the
-adornment that is found there.  Assumes that the cursor is
-already placed on the title line (and not on the overline or
-underline).
-
-This function returns a (CHAR, STYLE, INDENT) triple. If the
-characters of overline and underline are different, return the
-underline character. The INDENT of the title text is always
-calculated. An adornment can be said to exist if STYLE is not
-nil.
-
-POINT can be specified to go to the given location before
-extracting the adornment."
-  (let (char style indent)
-    (save-excursion
-      (if point (goto-char point))
-      (beginning-of-line)
-      (if (looking-at (rst-re 'ttl-beg))
-          (let* ((over (save-excursion
-                         (forward-line -1)
-                         (if (looking-at (rst-re 'ado-beg-2-1))
-			     (string-to-char (match-string 2)))))
-		 (under (save-excursion
-			  (forward-line +1)
-			  (if (looking-at (rst-re 'ado-beg-2-1))
-			      (string-to-char (match-string 2)))))
-                )
-
-            ;; Check that the line above the overline is not part of a title
-            ;; above it.
-            (if (and over
-                     (save-excursion
-                       (and (equal (forward-line -2) 0)
-                            (looking-at (rst-re 'ttl-beg)))))
-                (setq over nil))
-
-            (cond
-             ;; No adornment found, leave all return values nil.
-             ((and (eq over nil) (eq under nil)))
-
-             ;; Overline only, leave all return values nil.
-             ;;
-             ;; Note: we don't return the overline character, but it could
-             ;; perhaps in some cases be used to do something.
-             ((and over (eq under nil)))
-
-             ;; Underline only.
-             ((and under (eq over nil))
-              (setq char under
-                    style 'simple))
-
-             ;; Both overline and underline.
-             (t
-              (setq char under
-                    style 'over-and-under))
-             )))
-      ;; Find indentation.
-      (setq indent (save-excursion (back-to-indentation) (current-column))))
-    ;; Return values.
-    (list char style indent)))
-
-
-(defun rst-get-adornments-around (&optional allados)
+(defun rst-get-adornments-around ()
   "Return the adornments around point.
-
-Given the list of all adornments ALLADOS (with positions),
-find the adornments before and after the given point.
-A list of the previous and next adornments is returned."
-  (let* ((all (or allados (rst-find-all-adornments)))
+Return a list of the previous and next adornments."
+  (let* ((all (rst-find-all-adornments))
          (curline (line-number-at-pos))
          prev next
          (cur all))
@@ -1389,8 +1485,7 @@ If the current line has no adornment around it,
 - if there is no adornment found in the given direction, we use
   the first of `rst-preferred-adornments'.
 
-The prefix argument forces a toggle of the prescribed adornment
-style.
+TOGGLE-STYLE forces a toggle of the prescribed adornment style.
 
 Case 2: Incomplete Adornment
 ----------------------------
@@ -1401,8 +1496,7 @@ not extend to exactly the end of the title line (it is either too
 short or too long), we simply extend the length of the
 underlines/overlines to fit exactly the section title.
 
-If the prefix argument is given, we toggle the style of the
-adornment as well.
+If TOGGLE-STYLE we toggle the style of the adornment as well.
 
 REVERSE-DIRECTION has no effect in this case.
 
@@ -1431,10 +1525,10 @@ If REVERSE-DIRECTION is true, the effect is to change the
 direction of rotation in the hierarchy of adornments, thus
 instead going *up* the hierarchy.
 
-However, if there is a non-negative prefix argument, we do not
-rotate the adornment, but instead simply toggle the style of the
-current adornment (this should be the most common way to toggle
-the style of an existing complete adornment).
+However, if TOGGLE-STYLE, we do not rotate the adornment, but
+instead simply toggle the style of the current adornment (this
+should be the most common way to toggle the style of an existing
+complete adornment).
 
 
 Point Location
@@ -1470,121 +1564,81 @@ might be required to make it non-ambiguous.
 For now we assume that the adornments are disjoint, that is,
 there is at least a single line between the titles/adornment
 lines."
-  (let* (;; Check if we're on an underline around a section title, and move the
-         ;; cursor to the title if this is the case.
-         (moved (rst-normalize-cursor-position))
-
-         ;; Find the adornment and completeness around point.
-         (curado (rst-get-adornment))
-         (char (car curado))
-         (style (cadr curado))
-         (indent (caddr curado))
-
-         ;; New values to be computed.
-         char-new style-new indent-new
-         )
-
-    ;; We've moved the cursor... if we're not looking at some text, we have
-    ;; nothing to do.
-    (if (save-excursion (beginning-of-line)
-                        (looking-at (rst-re 'ttl-beg)))
-        (progn
-          (cond
-           ;;-------------------------------------------------------------------
-           ;; Case 1: No Adornment
-           ((and (eq char nil) (eq style nil))
-
-            (let* ((allados (rst-find-all-adornments))
-
-                   (around (rst-get-adornments-around allados))
-                   (prev (car around))
-                   cur
-
-                   (hier (rst-get-hierarchy allados))
-                   )
-
-              ;; Advance one level down.
-              (setq cur
-                    (if prev
-                        (if (or (and rst-new-adornment-down reverse-direction)
-				(and (not rst-new-adornment-down) (not reverse-direction)))
-			    prev
-                            (or (cadr (rst-get-adornment-match hier prev))
-                                (rst-suggest-new-adornment hier prev)))
-                      (copy-sequence (car rst-preferred-adornments))))
-
-              ;; Invert the style if requested.
-              (if toggle-style
-                  (setcar (cdr cur) (if (eq (cadr cur) 'simple)
-                                        'over-and-under 'simple)) )
-
-              (setq char-new (car cur)
-                    style-new (cadr cur)
-                    indent-new (caddr cur))
-              ))
-
-           ;;-------------------------------------------------------------------
-           ;; Case 2: Incomplete Adornment
-           ((not (rst-adornment-complete-p curado))
-
-            ;; Invert the style if requested.
-            (if toggle-style
-                (setq style (if (eq style 'simple) 'over-and-under 'simple)))
-
-            (setq char-new char
-                  style-new style
-                  indent-new indent))
-
-           ;;-------------------------------------------------------------------
-           ;; Case 3: Complete Existing Adornment
-           (t
-            (if toggle-style
-
-                ;; Simply switch the style of the current adornment.
-                (setq char-new char
-                      style-new (if (eq style 'simple) 'over-and-under 'simple)
-                      indent-new rst-default-indent)
-
-              ;; Else, we rotate, ignoring the adornment around the current
-              ;; line...
-              (let* ((allados (rst-find-all-adornments))
-
-                     (hier (rst-get-hierarchy allados (line-number-at-pos)))
-
-                     ;; Suggestion, in case we need to come up with something
-                     ;; new
-                     (suggestion (rst-suggest-new-adornment
-                                  hier
-                                  (car (rst-get-adornments-around allados))))
-
-                     (nextado (rst-get-next-adornment
-                                curado hier suggestion reverse-direction))
-
-                     )
-
-                ;; Indent, if present, always overrides the prescribed indent.
-                (setq char-new (car nextado)
-                      style-new (cadr nextado)
-                      indent-new (caddr nextado))
-
-                )))
-           )
-
-          ;; Override indent with present indent!
-          (setq indent-new (if (> indent 0) indent indent-new))
-
-          (if (and char-new style-new)
-              (rst-update-section char-new style-new indent-new))
-          ))
-
-
-    ;; Correct the position of the cursor to more accurately reflect where it
-    ;; was located when the function was invoked.
-    (unless (= moved 0)
-      (forward-line (- moved))
-      (end-of-line))
-
-    ))
+  (rst-reset-section-caches)
+  (let ((ttl-fnd (rst-find-title-line))
+	(orig-pnt (point)))
+    (when ttl-fnd
+      (set-match-data (cdr ttl-fnd))
+      (goto-char (match-beginning 2))
+      (let* ((moved (- (line-number-at-pos) (line-number-at-pos orig-pnt)))
+	     (char (caar ttl-fnd))
+	     (style (cdar ttl-fnd))
+	     (indent (current-indentation))
+	     (curado (list char style indent))
+	     char-new style-new indent-new)
+	(cond
+	 ;;-------------------------------------------------------------------
+	 ;; Case 1: No valid adornment
+	 ((not style)
+	  (let ((prev (car (rst-get-adornments-around)))
+		cur
+		(hier (rst-get-hierarchy)))
+	    ;; Advance one level down.
+	    (setq cur
+		  (if prev
+		      (if (or (and rst-new-adornment-down reverse-direction)
+			      (and (not rst-new-adornment-down)
+				   (not reverse-direction)))
+			  prev
+			(or (cadr (rst-get-adornment-match hier prev))
+			    (rst-suggest-new-adornment hier prev)))
+		    (copy-sequence (car rst-preferred-adornments))))
+	    ;; Invert the style if requested.
+	    (if toggle-style
+		(setcar (cdr cur) (if (eq (cadr cur) 'simple)
+				      'over-and-under 'simple)) )
+	    (setq char-new (car cur)
+		  style-new (cadr cur)
+		  indent-new (caddr cur))))
+	 ;;-------------------------------------------------------------------
+	 ;; Case 2: Incomplete Adornment
+	 ((not (rst-adornment-complete-p curado))
+	  ;; Invert the style if requested.
+	  (if toggle-style
+	      (setq style (if (eq style 'simple) 'over-and-under 'simple)))
+	  (setq char-new char
+		style-new style
+		indent-new indent))
+	 ;;-------------------------------------------------------------------
+	 ;; Case 3: Complete Existing Adornment
+	 (t
+	  (if toggle-style
+	      ;; Simply switch the style of the current adornment.
+	      (setq char-new char
+		    style-new (if (eq style 'simple) 'over-and-under 'simple)
+		    indent-new rst-default-indent)
+	    ;; Else, we rotate, ignoring the adornment around the current
+	    ;; line...
+	    (let* ((hier (rst-get-hierarchy (line-number-at-pos)))
+		   ;; Suggestion, in case we need to come up with something new
+		   (suggestion (rst-suggest-new-adornment
+				hier
+				(car (rst-get-adornments-around))))
+		   (nextado (rst-get-next-adornment
+			     curado hier suggestion reverse-direction)))
+	      ;; Indent, if present, always overrides the prescribed indent.
+	      (setq char-new (car nextado)
+		    style-new (cadr nextado)
+		    indent-new (caddr nextado))))))
+	;; Override indent with present indent!
+	(setq indent-new (if (> indent 0) indent indent-new))
+	(if (and char-new style-new)
+	    (rst-update-section char-new style-new indent-new))
+	;; Correct the position of the cursor to more accurately reflect where
+	;; it was located when the function was invoked.
+	(unless (zerop moved)
+	  (forward-line (- moved))
+	  (end-of-line))))))
 
 ;; Maintain an alias for compatibility.
 (defalias 'rst-adjust-section-title 'rst-adjust)
@@ -1597,11 +1651,9 @@ With argument DEMOTE or a prefix argument, demote the section
 titles instead.  The algorithm used at the boundaries of the
 hierarchy is similar to that used by `rst-adjust-adornment-work'."
   (interactive "P")
-
-  (let* ((allados (rst-find-all-adornments))
-         (cur allados)
-
-         (hier (rst-get-hierarchy allados))
+  (rst-reset-section-caches)
+  (let* ((cur (rst-find-all-adornments))
+         (hier (rst-get-hierarchy))
          (suggestion (rst-suggest-new-adornment hier))
 
          (region-begin-line (line-number-at-pos (region-beginning)))
@@ -1648,10 +1700,10 @@ hierarchy is similar to that used by `rst-adjust-adornment-work'."
 
 (defun rst-display-adornments-hierarchy (&optional adornments)
   "Display the current file's section title adornments hierarchy.
-This function expects a list of (char, style, indent) triples in
-ADORNMENTS."
+This function expects a list of (CHARACTER STYLE INDENT) triples
+in ADORNMENTS."
   (interactive)
-
+  (rst-reset-section-caches)
   (if (not adornments)
       (setq adornments (rst-get-hierarchy)))
   (with-output-to-temp-buffer "*rest section hierarchy*"
@@ -1677,21 +1729,19 @@ This is done using our preferred set of adornments.  This can be
 used, for example, when using somebody else's copy of a document,
 in order to adapt it to our preferred style."
   (interactive)
+  (rst-reset-section-caches)
   (save-excursion
-    (let* ((allados (rst-find-all-adornments))
-	   (hier (rst-get-hierarchy allados))
-
-	   ;; Get a list of pairs of (level . marker)
-	   (levels-and-markers (mapcar
-				(lambda (ado)
-				  (cons (rst-position (cdr ado) hier)
-					(let ((m (make-marker)))
-					  (goto-char (point-min))
-					  (forward-line (1- (car ado)))
-					  (set-marker m (point))
-					  m)))
-				allados))
-	   )
+    (let (;; Get a list of pairs of (level . marker)
+	  (levels-and-markers (mapcar
+			       (lambda (ado)
+				 (cons (rst-position (cdr ado)
+						     (rst-get-hierarchy))
+				       (let ((m (make-marker)))
+					 (goto-char (point-min))
+					 (forward-line (1- (car ado)))
+					 (set-marker m (point))
+					 m)))
+			       (rst-find-all-adornments))))
       (dolist (lm levels-and-markers)
 	;; Go to the appropriate position
 	(goto-char (cdr lm))
@@ -1894,7 +1944,7 @@ starting item, for example 'e' for 'A)' style.  The position is also arranged by
 		(save-excursion
 		  ;; FIXME: Assumes one line list items without separating
 		  ;; empty lines
-		  (if (and (= (forward-line -1) 0)
+		  (if (and (zerop (forward-line -1))
 			   (looking-at (rst-re 'enmexp-beg)))
 		      (string-match
 		       (rst-re 'rom-tag)
@@ -1997,14 +2047,14 @@ adjust.  If bullets are found on levels beyond the
   (buffer-substring-no-properties (match-beginning 0)
                                   (match-end 0)) )
 
-(defun rst-section-tree (allados)
+(defun rst-section-tree ()
   "Get the hierarchical tree of section titles.
 
 Returns a hierarchical tree of the sections titles in the
-document, for adornments ALLADOS.  This can be used to generate
-a table of contents for the document.  The top node will always
-be a nil node, with the top level titles as children (there may
-potentially be more than one).
+document. This can be used to generate a table of contents for
+the document. The top node will always be a nil node, with the
+top level titles as children (there may potentially be more than
+one).
 
 Each section title consists in a cons of the stripped title
 string and a marker to the section in the original text document.
@@ -2016,9 +2066,9 @@ Conceptually, the nil nodes--i.e. those which have no title--are
 to be considered as being the same line as their first non-nil
 child.  This has advantages later in processing the graph."
 
-  (let* ((hier (rst-get-hierarchy allados))
-         (levels (make-hash-table :test 'equal :size 10))
-         lines)
+  (let ((hier (rst-get-hierarchy))
+	(levels (make-hash-table :test 'equal :size 10))
+	lines)
 
     (let ((lev 0))
       (dolist (ado hier)
@@ -2039,8 +2089,7 @@ child.  This has advantages later in processing the graph."
                               (beginning-of-line 1)
                               (set-marker m (point)))
                             ))
-                    allados)))
-
+                    (rst-find-all-adornments))))
     (let ((lcontnr (cons nil lines)))
       (rst-section-tree-rec lcontnr -1))))
 
@@ -2163,9 +2212,8 @@ If a numeric prefix argument PFXARG is given, insert the TOC up
 to the specified level.
 
 The TOC is inserted indented at the current column."
-
   (interactive "P")
-
+  (rst-reset-section-caches)
   (let* (;; Check maximum level override
          (rst-toc-insert-max-level
           (if (and (integerp pfxarg) (> (prefix-numeric-value pfxarg) 0))
@@ -2174,7 +2222,7 @@ The TOC is inserted indented at the current column."
          ;; Get the section tree for the current cursor point.
          (sectree-pair
 	  (rst-section-tree-point
-	   (rst-section-tree (rst-find-all-adornments))))
+	   (rst-section-tree)))
 
          ;; Figure out initial indent.
          (initial-indent (make-string (current-column) ? ))
@@ -2380,11 +2428,9 @@ document.
 The Emacs buffer can be navigated, and selecting a section
 brings the cursor in that section."
   (interactive)
+  (rst-reset-section-caches)
   (let* ((curbuf (list (current-window-configuration) (point-marker)))
-
-         ;; Get the section tree
-         (allados (rst-find-all-adornments))
-         (sectree (rst-section-tree allados))
+         (sectree (rst-section-tree))
 
  	 (our-node (cdr (rst-section-tree-point sectree)))
 	 line
@@ -2427,7 +2473,7 @@ brings the cursor in that section."
       (error "Buffer for this section was killed"))
     pos))
 
-;; FIXME: Cursor before of behind the list must be handled properly, before the
+;; FIXME: Cursor before of behind the list must be handled properly; before the
 ;;        list should jump to the top and behind the list to the last normal
 ;;        paragraph
 (defun rst-goto-section (&optional kill)
@@ -2504,6 +2550,7 @@ EVENT is the input event."
 OFFSET specifies how many titles to skip.  Use a negative OFFSET to move
 backwards in the file (default is to use 1)."
   (interactive)
+  (rst-reset-section-caches)
   (let* (;; Default value for offset.
          (offset (or offset 1))
 
@@ -3247,8 +3294,8 @@ details check the Rst Faces Defaults group."
 
     ;; Sections_ / Transitions_ - for sections this is multiline
     (,(rst-re 'ado-beg-2-1)
-     (rst-font-lock-handle-adornment-match
-      (rst-font-lock-handle-adornment-limit
+     (rst-font-lock-handle-adornment-matcher
+      (rst-font-lock-handle-adornment-pre-match-form
        (match-string-no-properties 1) (match-end 1))
       nil
       (1 (cdr (assoc nil rst-adornment-faces-alist)) append t)
@@ -3300,36 +3347,35 @@ details check the Rst Faces Defaults group."
 (defun rst-font-lock-extend-region ()
   "Extend the region `font-lock-beg' / `font-lock-end' iff it may
 be in the middle of a multiline construct and return non-nil if so."
+  (let ((r (rst-font-lock-extend-region-internal font-lock-beg font-lock-end)))
+    (when r
+      (setq font-lock-beg (car r))
+      (setq font-lock-end (cdr r))
+      t)))
+
+(defun rst-font-lock-extend-region-internal (beg end)
+  "Check the region BEG / END for being in the middle of a multiline construct.
+Return nil if not or a cons with new values for BEG / END"
   ;; There are many potential multiline constructs but really relevant ones are
   ;; comment lines without leading explicit markup tag and literal blocks
   ;; following "::" which are both indented. Thus indendation is what is
   ;; recognized here. The second criteria is an explicit markup tag which may
   ;; be a comment or a double colon at the end of a line.
-  (if (not (get-text-property font-lock-beg 'font-lock-multiline))
-      ;; Don't move if we start with a multiline construct already
+  (if (not (get-text-property beg 'font-lock-multiline))
+      ;; Move only if we don't start inside a multiline construct already
       (save-excursion
-	(let ((cont t)
-	      ;; non-empty non-indented line, explicit markup tag or literal
+	(let (;; non-empty non-indented line, explicit markup tag or literal
 	      ;; block tag
-	      (stop-re (rst-re '(:alt "[^ \t]"
+	      (stop-re (rst-re '(:alt "[^ \t\n]"
 				      (:seq hws-tag exm-tag)
 				      (:seq ".*" dcl-tag lin-end)))))
-	  (when (get-buffer-window)
-	    ;; Try this only if there actually *is* a window. May not be the
-	    ;; case if the buffer is just loaded and not yet displayed.
-	    (move-to-window-line 0) ; Start at the top window line
-	    (if (>= (point) font-lock-beg)
-		(goto-char font-lock-beg))
-	    (forward-line 0)
-	    (while cont
-	      (if (looking-at stop-re)
-		  (setq cont nil)
-		(if (not (= (forward-line -1) 0)) ; try previous line
-		    ;; no more previous line
-		    (setq cont nil))))
-	    (when (not (= (point) font-lock-beg))
-	      (setq font-lock-beg (point))
-	      t))))))
+	  (goto-char beg)
+	  (forward-line 0)
+	  (while (and (not (looking-at stop-re))
+		      (zerop (forward-line -1)))) ; try previous line if exists
+	  ;; FIXME: Extending the end should also be done
+	  (if (not (= (point) beg))
+	      (cons (point) end))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Indented blocks
@@ -3438,164 +3484,63 @@ or nil."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Adornments
 
-;; FIXMEFIXME: This must be merged with the adornment functions for section
-;;             adjustment and toc generation.
-
-;; FIXMEADO: Directly used during font-lock
 (defvar rst-font-lock-adornment-level nil
-  "Storage for `rst-font-lock-handle-adornment-match'.
+  "Storage for `rst-font-lock-handle-adornment-matcher'.
 Either section level of the current adornment or t for a transition.")
 
-;; FIXMEADO: Used by `rst-adornment-level'
-;; FIXME: There should be some way to reset and reload this variable - probably
-;; a special key
-(defvar rst-adornment-level-alist nil
-  "Associates adornments with section levels.
-The key is a two character string.  The first character is the adornment
-character.  The second character distinguishes underline section titles (`u')
-from overline/underline section titles (`o').  The value is the section level.
+(defun rst-adornment-level (key)
+  "Return section level for adornment KEY.
+KEY is the first element of the return list of
+`rst-classify-adornment'. If KEY is not a cons return it. If KEY is found
+in the hierarchy return its level. Otherwise return a level one
+beyond the existing hierarchy."
+  (if (not (consp key))
+      key
+    (let* ((hier (rst-get-hierarchy))
+	   (char (car key))
+	   (style (cdr key)))
+      (1+ (or (position-if (lambda (elt)
+			     (and (equal (car elt) char)
+				  (equal (cadr elt) style))) hier)
+	      (length hier))))))
 
-This is made buffer local on start and adornments found during font lock are
-entered.")
+(defvar rst-font-lock-adornment-match nil
+  "Storage for match for current adornment.
+Set by `rst-font-lock-handle-adornment-pre-match-form'. Also used
+as a trigger for `rst-font-lock-handle-adornment-matcher'.")
 
-;; FIXMEADO: Used by `rst-font-lock-handle-adornment-limit'; check
-;; `rst-get-hierarchy' for similar functionality
-(defun rst-adornment-level (key &optional add)
-  "Return section level for adornment key KEY.
-Add new section level if KEY is not found and ADD. If KEY is not
-a string it is simply returned."
-  (let ((fnd (assoc key rst-adornment-level-alist))
-	(new 1))
-    (cond
-     ((not (stringp key))
-      key)
-     (fnd
-      (cdr fnd))
-     (add
-      (while (rassoc new rst-adornment-level-alist)
-	(setq new (1+ new)))
-      (setq rst-adornment-level-alist
-	    (append rst-adornment-level-alist (list (cons key new))))
-      new))))
-
-;; FIXMEADO: Used by `rst-font-lock-handle-adornment-limit'; check
-;; `rst-get-adornment' for similar functionality
-(defun rst-classify-adornment (adornment end limit)
-  "Classify adornment for section titles and transitions.
-ADORNMENT is the complete adornment string as found in the
-buffer. END is the point after the last character of ADORNMENT.
-For overline section adornment LIMIT limits the search for the
-matching underline.
-
-Return a list. The first entry is t for a transition, or a key
-string for `rst-adornment-level' for a section title. The
-following eight values form four match groups as can be used
-for `set-match-data'. First match group contains the maximum
-points of the whole construct. Second and last match group
-matched pure section title adornment while third match group
-matched the section title text or the transition. Each group but
-the first may or may not exist."
-  (save-excursion
-    (save-match-data
-      (goto-char end)
-      (let ((ado-ch (aref adornment 0))
-	    (ado-re (rst-re (regexp-quote adornment)))
-	    (end-pnt (point))
-	    (beg-pnt (progn
-		       (forward-line 0)
-		       (point)))
-	    (nxt-emp
-	     (save-excursion
-	       (or (not (zerop (forward-line 1)))
-		   (looking-at (rst-re 'lin-end)))))
-	    (prv-emp
-	     (save-excursion
-	       (or (not (zerop (forward-line -1)))
-		   (looking-at (rst-re 'lin-end)))))
-	    key beg-ovr end-ovr beg-txt end-txt beg-und end-und)
-	(cond
-	 ((and nxt-emp prv-emp)
-	  ;; A transition
-	  (setq key t)
-	  (setq beg-txt beg-pnt)
-	  (setq end-txt end-pnt))
-	 ;; FIXME: Assumes empty lines between section headers - although this
-	 ;; is not required
-	 (prv-emp
-	  ;; An overline
-	  (setq key (concat (list ado-ch) "o"))
-	  (setq beg-ovr beg-pnt)
-	  (setq end-ovr end-pnt)
-	  (forward-line 1)
-	  (setq beg-txt (point))
-	  ;; FIXME: Does it make sense to search the underline this far? The
-	  ;; next two lines should be sufficient
-	  (while (and (<= (point) limit) (not end-txt))
-	    (if (or (= (point) limit) (looking-at (rst-re 'lin-end)))
-		;; No underline found
-		(setq end-txt (1- (point)))
-	      (when (looking-at (rst-re (list :grp
-					      ado-re)
-					'lin-end))
-		(setq end-und (match-end 1))
-		(setq beg-und (point))
-		(setq end-txt (1- beg-und))))
-	    (forward-line 1)))
-	 (t
-	  ;; An underline
-	  (setq key (concat (list ado-ch) "u"))
-	  (setq beg-und beg-pnt)
-	  (setq end-und end-pnt)
-	  (setq end-txt (1- beg-und))
-	  (setq beg-txt (progn
-			  (goto-char end-txt)
-			  (forward-line 0)
-			  (point)))
-	  (when (and (zerop (forward-line -1))
-		     (looking-at (rst-re (list :grp
-					       ado-re)
-					 'lin-end)))
-	    ;; There is a matching overline
-	    (setq key (concat (list ado-ch) "o"))
-	    (setq beg-ovr (point))
-	    (setq end-ovr (match-end 1)))))
-	(list key
-	      (or beg-ovr beg-txt beg-und)
-	      (or end-und end-txt end-ovr)
-	      beg-ovr end-ovr beg-txt end-txt beg-und end-und)))))
-
-;; FIXMEADO: Used by `rst-font-lock-handle-adornment-limit' and
-;; `rst-font-lock-handle-adornment-match'
-(defvar rst-font-lock-adornment-data nil
-  "Storage for `rst-classify-adornment'.
-Also used as a trigger for
-`rst-font-lock-handle-adornment-match'.")
-
-;; FIXMEADO: Directly used during font-lock
-(defun rst-font-lock-handle-adornment-limit (ado ado-end)
+(defun rst-font-lock-handle-adornment-pre-match-form (ado ado-end)
   "Determine limit for adornments for font-locking section titles and transitions.
 In fact determine all things necessary and put the result to
-`rst-font-lock-adornment-data'. ADO is the complete adornment
+`rst-font-lock-adornment-match' and
+`rst-font-lock-adornment-level'. ADO is the complete adornment
 matched. ADO-END is the point where ADO ends. Return the point
-where the whole adorned construct ends."
-  (let ((ado-data (rst-classify-adornment ado ado-end (point-max))))
-    (setq rst-font-lock-adornment-level (rst-adornment-level (car ado-data) t))
-    (setq rst-font-lock-adornment-data (cdr ado-data))
-    (goto-char (nth 1 ado-data))
-    (nth 2 ado-data)))
+where the whole adorned construct ends.
 
-;; FIXMEADO: Directly used during font-lock
-(defun rst-font-lock-handle-adornment-match (limit)
-  "Set the match found by `rst-font-lock-handle-adornment-limit'
-the first time called or nil"
-  (let ((ado-data rst-font-lock-adornment-data))
+Called as a PRE-MATCH-FORM in the sense of `font-lock-keywords'."
+  (let ((ado-data (rst-classify-adornment ado ado-end)))
+    (if (not ado-data)
+	(setq rst-font-lock-adornment-level nil
+	      rst-font-lock-adornment-match nil)
+      (setq rst-font-lock-adornment-level
+	    (rst-adornment-level (car ado-data)))
+      (setq rst-font-lock-adornment-match (cdr ado-data))
+      (goto-char (nth 1 ado-data)) ; Beginning of construct
+      (nth 2 ado-data)))) ; End of construct
+
+(defun rst-font-lock-handle-adornment-matcher (limit)
+  "Set the match found by `rst-font-lock-handle-adornment-pre-match-form'
+the first time called or nil.
+
+Called as a MATCHER in the sense of `font-lock-keywords'."
+  (let ((match rst-font-lock-adornment-match))
     ;; May run only once - enforce this
-    (setq rst-font-lock-adornment-data nil)
-    (when ado-data
-      (goto-char (nth 1 ado-data))
-      (put-text-property (nth 0 ado-data) (nth 1 ado-data)
+    (setq rst-font-lock-adornment-match nil)
+    (when match
+      (set-match-data match)
+      (goto-char (match-end 0))
+      (put-text-property (match-beginning 0) (match-end 0)
 			 'font-lock-multiline t)
-      (set-match-data ado-data)
       t)))
 
 
@@ -3798,7 +3743,7 @@ column is used (fill-column vs. end of previous/next line)."
   (interactive "P")
   (let* ((curcol (current-column))
          (curline (+ (count-lines (point-min) (point))
-                     (if (eq curcol 0) 1 0)))
+                     (if (zerop curcol) 1 0)))
          (lbp (line-beginning-position 0))
          (prevcol (if (and (= curline 1) (not use-next))
                       fill-column
@@ -3807,12 +3752,12 @@ column is used (fill-column vs. end of previous/next line)."
                       (end-of-line)
                       (skip-chars-backward " \t" lbp)
                       (let ((cc (current-column)))
-                        (if (= cc 0) fill-column cc)))))
+                        (if (zerop cc) fill-column cc)))))
          (rightmost-column
           (cond ((equal last-command 'rst-repeat-last-character)
                  (if (= curcol fill-column) prevcol fill-column))
                 (t (save-excursion
-                     (if (= prevcol 0) fill-column prevcol)))
+                     (if (zerop prevcol) fill-column prevcol)))
                 )) )
     (end-of-line)
     (if (> (current-column) rightmost-column)
