@@ -2616,7 +2616,6 @@ backwards in the file (default is to use 1)."
 ;; Functions to work on item lists (e.g. indent/dedent, enumerate), which are
 ;; always 2 or 3 characters apart horizontally with rest.
 
-;; (FIXME: there is currently a bug that makes the region go away when we do that.)
 (defvar rst-shift-fill-region nil
   "If non-nil, automatically re-fill the region that is being shifted.")
 
@@ -2738,6 +2737,7 @@ of (COLUMN-NUMBER . LINE) pairs."
 (defvar rst-shift-basic-offset 2
   "Basic horizontal shift distance when there is no preceding alignment tabs.")
 
+;; FIXME Doesn't keep the region
 (defun rst-shift-region-guts (find-next-fun offset-fun)
   "(See `rst-shift-region-right' for a description)."
   (let* ((mbeg (set-marker (make-marker) (region-beginning)))
@@ -2795,7 +2795,6 @@ of (COLUMN-NUMBER . LINE) pairs."
       (fill-region mbeg mend))
     ))
 
-;; FIXME Doesn't keep the region
 ;; FIXME Should work more like `indent-rigidly'
 (defun rst-shift-region-right (pfxarg)
   "Indent region ridigly, by a few characters to the right.
@@ -3661,12 +3660,11 @@ or of the entire buffer, if the region is not selected."
 (defun rst-compile-pdf-preview ()
   "Convert the document to a PDF file and launch a preview program."
   (interactive)
-  ;; FIXME: Should use `make-temp-file' - see bug #2912890
-  (let* ((tmp-filename "/tmp/out.pdf")
-	 (command (format "%s %s %s && %s %s"
+  (let* ((tmp-filename (make-temp-file "rst_el" nil ".pdf"))
+	 (command (format "%s %s %s && %s %s ; rm %s"
 			  (cadr (assq 'pdf rst-compile-toolsets))
 			  buffer-file-name tmp-filename
-			  rst-pdf-program tmp-filename)))
+			  rst-pdf-program tmp-filename tmp-filename)))
     (start-process-shell-command "rst-pdf-preview" nil command)
     ;; Note: you could also use (compile command) to view the compilation
     ;; output.
@@ -3678,17 +3676,15 @@ or of the entire buffer, if the region is not selected."
 (defun rst-compile-slides-preview ()
   "Convert the document to an S5 slide presentation and launch a preview program."
   (interactive)
-  ;; FIXME: Should use `make-temp-file' - see bug #2912890
-  (let* ((tmp-filename "/tmp/slides.html")
-	 (command (format "%s %s %s && %s %s"
+  (let* ((tmp-filename (make-temp-file "rst_el" nil ".html"))
+	 (command (format "%s %s %s && %s %s ; rm %s"
 			  (cadr (assq 's5 rst-compile-toolsets))
 			  buffer-file-name tmp-filename
-			  rst-slides-program tmp-filename)))
+			  rst-slides-program tmp-filename tmp-filename)))
     (start-process-shell-command "rst-slides-preview" nil command)
     ;; Note: you could also use (compile command) to view the compilation
     ;; output.
     ))
-
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
