@@ -20,6 +20,7 @@
     <xsl:include href = "util.xsl"/>
     <xsl:include href = "toc.xsl"/>
     <xsl:include href = "bibliographic_fields.xsl"/>
+    <xsl:include href = "front_matter.xsl"/>
     <xsl:include href = "inline.xsl"/>
     <xsl:include href = "error.xsl"/>
 
