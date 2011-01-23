@@ -14,6 +14,8 @@
     <xsl:include href = "misc.xsl"/>
     <xsl:include href = "bullet_list.xsl"/>
     <xsl:include href = "enumerated_list.xsl"/>
+    <xsl:include href = "definition_list.xsl"/>
+    <xsl:include href = "field_list.xsl"/>
     <xsl:include href = "option_list.xsl"/>
     <xsl:include href = "util.xsl"/>
     <xsl:include href = "toc.xsl"/>
