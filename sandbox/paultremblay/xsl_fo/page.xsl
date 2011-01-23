@@ -5,6 +5,14 @@
     >
     <!-- $Id: docutils_to_fo.xsl 6604 2011-01-20 04:56:24Z paultremblay $ -->
 
+    <!--
+    TODO
+    make the xsl:attribute-set name="region-body" functional. Right now, the 
+    template make-region-body uses the region-body attribute set, even if 
+    a toc were being written. Need to pass the parmater section and determine
+    what type of attribute set to use.
+    -->
+
     <!-- This template sets up the page styles, needed at the start of an 
     FO document.  
 
@@ -75,7 +83,6 @@
     <xsl:attribute-set name="toc-odd-page" use-attribute-sets="paper-size default-page-setup"/>
 
     <!--attribute sets for front-matter pages; traits are inherited from the page size only pages-->
-
     <xsl:attribute-set name="front-matter-simple-page" use-attribute-sets="paper-size default-page-setup"/> 
     <xsl:attribute-set name="front-matter-first-page" use-attribute-sets="paper-size default-page-setup"/>
     <xsl:attribute-set name="front-matter-body-page" use-attribute-sets="paper-size default-page-setup"/>
@@ -93,20 +100,18 @@
 	<xsl:attribute name="extent">.75in</xsl:attribute>
     </xsl:attribute-set>
 
-    <!--NOT USED at this point-->
+    <!--Not used for anything at this point-->
+    <xsl:attribute-set name="front-matter-region-body">
+    </xsl:attribute-set>
+
+    <!--Not used for anything at this point-->
     <xsl:attribute-set name="region-body">
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="front-matter-region-body">
-    </xsl:attribute-set>
 
     <!--default spacing for footer and header spacing-->
     <xsl:variable name="default-spacing-header">.75in</xsl:variable>
     <xsl:variable name="default-spacing-footer">.75in</xsl:variable>
-
-    <xsl:variable name="body-top-margin">
-        
-    </xsl:variable>
 
 
     <!--the main template. Calls on other templates to make fo:simple-page-master,
@@ -158,6 +163,7 @@
     may or may not be present, and the user has to override the defaults-->
     <xsl:template name="make-region-body">
         <xsl:param name="page-type"/>
+        <xsl:param name="section"/>
         <xsl:variable name="margin-top">
             <xsl:choose>
                 <xsl:when test="$page-layout = 'first' and $suppress-first-page-header = 'True' and $page-type = 'first'">
@@ -443,8 +449,8 @@
         </xsl:choose>
     </xsl:template>
 
-    <!--FRONT MATTER (no page numbers)-->
 
+    <!--FRONT MATTER (no page numbers)-->
 
     <xsl:template name="make-front-matter-pages">
         <xsl:call-template name="front-matter-page-properties"/>
