@@ -15,11 +15,7 @@
         <xsl:attribute name="break-after">page</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="bibliographic-field-list-item-label-block">
-        <xsl:attribute name="font-weight">bold</xsl:attribute> 
-    </xsl:attribute-set>
-
-    <xsl:attribute-set name="bibliographic-field-list-item">
+    <xsl:attribute-set name="bibliographic-fields-list-item">
         <xsl:attribute name="space-before">12pt</xsl:attribute>
     </xsl:attribute-set>
 
@@ -27,16 +23,21 @@
         <xsl:attribute name="end-indent">label-end()</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="bibliographic-fields-list-item-body">
+    <xsl:attribute-set name="bibliographic-fields-item-body">
         <xsl:attribute name="start-indent">body-start()</xsl:attribute>
     </xsl:attribute-set>
+
+    <xsl:attribute-set name="bibliographic-fields-item-label-block">
+        <xsl:attribute name="font-weight">bold</xsl:attribute> 
+    </xsl:attribute-set>
+
 
     <xsl:attribute-set name="bibliographic-fields-block">
     </xsl:attribute-set>
 
     <!--attribute set for Bibliographic address value. Address must preserve white space.  
     Element is fo:block. `docutils`-->
-    <xsl:attribute-set name="address-value" use-attribute-sets="bibliographic-fields-block">
+    <xsl:attribute-set name="address-value-block" use-attribute-sets="bibliographic-fields-block">
         <xsl:attribute name="white-space">pre</xsl:attribute>
     </xsl:attribute-set>
 
@@ -63,19 +64,19 @@
         <xsl:param name="label-text"/>
         <xsl:param name="has-children"/>
         <xsl:param name="address"/>
-        <fo:list-item role="{$role}" xsl:use-attribute-sets="bibliographic-field-list-item">
-            <fo:list-item-label xsl:use-attribue-sets = "bibliographic-fields-list-item-label">
-                <fo:block xsl:use-attriute-sets="bibliographic-field-list-item-label-block">
+        <fo:list-item role="{$role}" xsl:use-attribute-sets="bibliographic-fields-list-item">
+            <fo:list-item-label xsl:use-attribute-sets = "bibliographic-fields-list-item-label">
+                <fo:block xsl:use-attribute-sets="bibliographic-fields-item-label-block">
                     <xsl:value-of select="$label-text"/>
                 </fo:block>
             </fo:list-item-label>
-            <fo:list-item-body xsl:use-attribute-sets="bibliographic-fields-list-item-body">
+            <fo:list-item-body xsl:use-attribute-sets="bibliographic-fields-item-body">
                 <xsl:choose>
                     <xsl:when test="$has-children = 'True'">
                         <xsl:apply-templates/>
                     </xsl:when>
                     <xsl:when test="$address = 'True'">
-                        <fo:block xsl:use-attribute-sets = "address-value">
+                        <fo:block xsl:use-attribute-sets = "address-value-block">
                             <xsl:apply-templates/>
                         </fo:block>
                     </xsl:when>
