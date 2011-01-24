@@ -19,7 +19,7 @@
         <block>
             "The provisional-distance-between-starts property of the list-block
             specifies the distance bewteen the start of the label (the bullet, for
-            example) and the actual start of the list content" (Pawson, 100)
+            example) and the actual start of the list content" (Pawson, 100).
         </block>
     </xsl:template>
 
