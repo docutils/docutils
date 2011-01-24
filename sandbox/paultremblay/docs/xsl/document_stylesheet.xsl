@@ -9,6 +9,7 @@
     <xsl:include href="page.xsl"/>
     <xsl:include href="bibliographic_fields.xsl"/>
     <xsl:include href="front_matter.xsl"/>
+    <xsl:include href="toc.xsl"/>
     <xsl:include href="bullet_list.xsl"/>
     <xsl:include href="enumerated_list.xsl"/>
     <xsl:include href="option_list.xsl"/>
@@ -73,6 +74,15 @@
                 Attribute sets for the dedication and abstract. 
             </block>
             <xsl:apply-templates select="document('../../xsl_fo/front_matter.xsl')/xsl:stylesheet"/>
+
+            <xsl:call-template name="make-title">
+                <xsl:with-param name="level">3</xsl:with-param>
+                <xsl:with-param name="text">TOC Matter Attribute Sets</xsl:with-param>
+            </xsl:call-template>
+            <block>
+                Attribute sets for the TOC. 
+            </block>
+            <xsl:apply-templates select="document('../../xsl_fo/toc.xsl')/xsl:stylesheet"/>
 
             <xsl:call-template name="make-title">
                 <xsl:with-param name="level">3</xsl:with-param>
