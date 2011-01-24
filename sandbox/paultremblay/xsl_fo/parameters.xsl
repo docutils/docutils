@@ -73,6 +73,11 @@ fields as author, etc.`docutils`-->
 <xsl:param name="toc-pagination">own-section</xsl:param>
 <!--Note: utils.xsl has the code for the variable page-sequence-type-->
 
+<!--whether to put title on its own page  Acceptable values are 'own-page' or not-own-page-->
+<!--decided not to use this after all
+<xsl:param name="document-title">own-page</xsl:param>
+-->
+
 <!--the default to use for a bullet list, rather than what the user specifies-->
 <xsl:param name="bullet-text">&#x2022;</xsl:param>
 
