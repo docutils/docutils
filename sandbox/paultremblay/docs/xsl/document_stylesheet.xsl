@@ -9,6 +9,7 @@
     <xsl:include href="page.xsl"/>
     <xsl:include href="bibliographic_fields.xsl"/>
     <xsl:include href="front_matter.xsl"/>
+    <xsl:include href="header_footer.xsl"/>
     <xsl:include href="toc.xsl"/>
     <xsl:include href="section.xsl"/>
     <xsl:include href="bullet_list.xsl"/>
@@ -75,6 +76,19 @@
                 Attribute sets for the dedication and abstract. 
             </block>
             <xsl:apply-templates select="document('../../xsl_fo/front_matter.xsl')/xsl:stylesheet"/>
+
+            <!--header footer-->
+            <xsl:call-template name="make-title">
+                <xsl:with-param name="level">3</xsl:with-param>
+                <xsl:with-param name="text">Header and Footer Attribute Sets</xsl:with-param>
+            </xsl:call-template>
+            <block>
+                Attribute sets for the headers and footers. Since headers and footers often need
+                very special formatting, the stylesheets allow for the formatting of up to three
+                paragraphs for each header and footer. The first refers to the first that occurrs in 
+                the document, the second to the second, and the third to the third.
+            </block>
+            <xsl:apply-templates select="document('../../xsl_fo/header_footer.xsl')/xsl:stylesheet"/>
 
             <xsl:call-template name="make-title">
                 <xsl:with-param name="level">3</xsl:with-param>
