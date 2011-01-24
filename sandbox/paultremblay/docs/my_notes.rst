@@ -82,3 +82,14 @@ header:
 Can set font-size on  fo:page-sequence, fo:flow
 
 .. svn propset svn:keywords "Date Author Id HeadURL Revision" the file
+
+FO notes
+========
+
+Generally, set the extent to the same as top-margin or bottom-margin. Then, to 
+move the header down, use space-before with
+space-before.conitionality="retain".
+
+<!--sets header 1/2 inch down from top margin-->
+<fo:block space-before=".5in" space-before.conditionality = "retain">
+
