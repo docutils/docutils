@@ -28,7 +28,7 @@
 
     <xsl:template match= "xsl:attribute-set[@name='simple-page']" priority="3">
         <xsl:call-template name="make-title">
-            <xsl:with-param name="level">3</xsl:with-param>
+            <xsl:with-param name="level">5</xsl:with-param>
             <xsl:with-param name="text">Page Master Sets</xsl:with-param>
         </xsl:call-template>
 
