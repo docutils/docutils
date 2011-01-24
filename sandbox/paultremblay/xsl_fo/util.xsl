@@ -202,6 +202,9 @@
         <xsl:variable name="abstract-exists">
             <xsl:if test="/document/topic[@classes='dedication']">True</xsl:if>
         </xsl:variable>
+        <xsl:variable name="title-exists">
+            <xsl:if test="/document/title">True</xsl:if>
+        </xsl:variable>
         <xsl:variable name="need-toc-page-sequence">
             <xsl:choose>
                 <xsl:when test="$toc-exists='True' and $toc-pagination = 'own-section'">True</xsl:when>
@@ -210,8 +213,8 @@
         </xsl:variable>
         <xsl:variable name="need-front-matter-page-sequence">
             <xsl:choose>
-                <xsl:when test="($dedication-exists='True' or $abstract-exists='True') and $front-matter-pagination = 'own-section'">True</xsl:when>
-                <xsl:when test="($dedication-exists='True' or $abstract-exists='True') and $front-matter-pagination = 'with-toc'">True</xsl:when>
+                <xsl:when test="($dedication-exists='True' or $abstract-exists='True' or $title-exists='True') and $front-matter-pagination = 'own-section'">True</xsl:when>
+                <xsl:when test="($dedication-exists='True' or $abstract-exists='True' or $title-exists='True') and $front-matter-pagination = 'with-toc'">True</xsl:when>
                 <xsl:otherwise>False</xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
