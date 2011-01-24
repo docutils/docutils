@@ -7,6 +7,8 @@
     <!-- $Id$ -->
 
 
+    <!--the automatic page break creates problems for simple page
+    layouts when no page break should occurr-->
     <xsl:attribute-set name="bibliographic-fields-list-block" >
         <xsl:attribute name="start-indent">0mm</xsl:attribute>
         <xsl:attribute name="provisional-distance-between-starts">30mm</xsl:attribute>
@@ -49,6 +51,7 @@
         </xsl:if>
     </xsl:template>
 
+    <!--FIX this. make it so this template produces a page break, but the other doesn't-->
     <xsl:template match="docinfo" mode="front">
         <xsl:call-template name="docinfo"/>
     </xsl:template>

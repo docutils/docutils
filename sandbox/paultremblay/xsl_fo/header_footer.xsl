@@ -171,4 +171,6 @@
         </fo:block>
     </xsl:template>
 
+    <xsl:template match="decoration/header|decoration/footer"/>
+
 </xsl:stylesheet>

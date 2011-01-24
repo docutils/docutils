@@ -46,6 +46,17 @@
                 <xsl:text>Processing XSLT now quiting.</xsl:text>
             </xsl:message>
         </xsl:if>
+        <!--
+        <xsl:if test= "$document-title != 'own-page'  and $document-title != 'not-own-page'">
+            <xsl:message terminate = "yes">
+                <xsl:text>"</xsl:text>
+                <xsl:value-of select="$option-list-format"/>
+                <xsl:text>" not a valid value for parm "document-title"&#xA;</xsl:text>
+                <xsl:text>Valid values are 'own-page', and 'not-own-page'&#xA;</xsl:text>
+                <xsl:text>Processing XSLT now quiting.</xsl:text>
+            </xsl:message>
+        </xsl:if>
+        -->
     </xsl:template>
 
     <xsl:template match="*">
@@ -61,7 +72,7 @@
             </xsl:when>
             <xsl:otherwise>
                 <xsl:message>
-                    <xsl:text>Not processing test in this element.</xsl:text>
+                    <xsl:text>Not processing text in this element.</xsl:text>
                 </xsl:message>
             </xsl:otherwise>
         </xsl:choose>
