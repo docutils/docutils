@@ -5,29 +5,41 @@
     >
     <!-- $Id$ -->
 
-    <xsl:attribute-set name="toc-level1">
+    <xsl:attribute-set name="toc-title-block">
+        <xsl:attribute name="text-align">center</xsl:attribute>
+        <xsl:attribute name="font-weight">bold</xsl:attribute>
+        <xsl:attribute name="font-size">14pt</xsl:attribute>
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="toc-entry-defaults">
+        <xsl:attribute name="space-after">3pt</xsl:attribute>
         <xsl:attribute name="text-align-last">justify</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="toc-level2">
-        <xsl:attribute name="text-align-last">justify</xsl:attribute>
+    <xsl:attribute-set name="toc-level1-block" use-attribute-sets="toc-entry-defaults">
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="toc-level3">
-        <xsl:attribute name="text-align-last">justify</xsl:attribute>
+    <xsl:attribute-set name="toc-level2-block" use-attribute-sets="toc-entry-defaults">
+        <xsl:attribute name="start-indent">10mm</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="toc-level4">
-        <xsl:attribute name="text-align-last">justify</xsl:attribute>
+    <xsl:attribute-set name="toc-level3-block" use-attribute-sets="toc-entry-defaults">
+        <xsl:attribute name="start-indent">20mm</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="toc-level5">
-        <xsl:attribute name="text-align-last">justify</xsl:attribute>
+    <xsl:attribute-set name="toc-level4-block" use-attribute-sets="toc-entry-defaults">
+        <xsl:attribute name="start-indent">30mm</xsl:attribute>
     </xsl:attribute-set>
+
+    <xsl:attribute-set name="toc-level5-block" use-attribute-sets="toc-entry-defaults">
+        <xsl:attribute name="start-indent">40mm</xsl:attribute>
+    </xsl:attribute-set>
+
+    <!--END OF ATTRIBUTE SETS-->
 
     <!--TOC title-->
     <xsl:template match="topic[@classes='contents']/title">
-        <fo:block>
+        <fo:block xsl:use-attribute-sets="toc-title-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -93,7 +105,7 @@
     </xsl:template>
 
     <xsl:template name="toc-paragraph-level1">
-        <fo:block xsl:use-attribute-sets = "toc-level1">
+        <fo:block xsl:use-attribute-sets = "toc-level1-block">
             <fo:inline>
                 <xsl:apply-templates mode="toc"/>
                 <fo:leader leader-pattern="dots"/>
@@ -107,7 +119,7 @@
     </xsl:template>
 
     <xsl:template name="toc-paragraph-level2">
-        <fo:block xsl:use-attribute-sets = "toc-level2">
+        <fo:block xsl:use-attribute-sets = "toc-level2-block">
             <fo:inline>
                 <xsl:apply-templates mode="toc"/>
                 <fo:leader leader-pattern="dots"/>
@@ -121,7 +133,7 @@
     </xsl:template>
 
     <xsl:template name="toc-paragraph-level3">
-        <fo:block xsl:use-attribute-sets = "toc-level3">
+        <fo:block xsl:use-attribute-sets = "toc-level3-block">
             <fo:inline>
                 <xsl:apply-templates mode="toc"/>
                 <fo:leader leader-pattern="dots"/>
@@ -135,7 +147,7 @@
     </xsl:template>
 
     <xsl:template name="toc-paragraph-level4">
-        <fo:block xsl:use-attribute-sets = "toc-level4">
+        <fo:block xsl:use-attribute-sets = "toc-level4-block">
             <fo:inline>
                 <xsl:apply-templates mode="toc"/>
                 <fo:leader leader-pattern="dots"/>
@@ -149,7 +161,7 @@
     </xsl:template>
 
     <xsl:template name="toc-paragraph-level5">
-        <fo:block xsl:use-attribute-sets = "toc-level5">
+        <fo:block xsl:use-attribute-sets = "toc-level5-block">
             <fo:inline>
                 <xsl:apply-templates mode="toc"/>
                 <fo:leader leader-pattern="dots"/>
@@ -163,6 +175,7 @@
     </xsl:template>
 
          <xsl:template match="generated[@classes='sectnum'][ancestor::topic[@classes='contents']]">
+             <!--not sure about this no-break space-->
             <xsl:variable name="num" select="concat(substring-before(., '&#x00a0;'), '.')"/>
                 <xsl:call-template name="format-number">
                     <xsl:with-param name="string" select="$num"/>
