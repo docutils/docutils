@@ -5,53 +5,61 @@
     >
     <!-- $Id$ -->
 
-    <xsl:attribute-set name="title-level1">
+    <xsl:attribute-set name="default-section-title">
         <xsl:attribute name="space-before">12pt</xsl:attribute>
         <xsl:attribute name="space-after">12pt</xsl:attribute>
+        <xsl:attribute name="keep-with-next">always</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="title-level2">
-        <xsl:attribute name="space-before">12pt</xsl:attribute>
-        <xsl:attribute name="space-after">12pt</xsl:attribute>
+    <xsl:attribute-set name="title-level1-block" use-attribute-sets="default-section-title">
+        <xsl:attribute name="font-weight">bold</xsl:attribute>
+        <xsl:attribute name="font-size">16</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="title-level3">
-        <xsl:attribute name="space-before">12pt</xsl:attribute>
-        <xsl:attribute name="space-after">12pt</xsl:attribute>
+    <xsl:attribute-set name="title-level2-block" use-attribute-sets="default-section-title">
+        <xsl:attribute name="font-weight">bold</xsl:attribute>
+        <xsl:attribute name="font-size">14</xsl:attribute>
+        <xsl:attribute name="font-style">italic</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="title-level4">
-        <xsl:attribute name="space-before">12pt</xsl:attribute>
-        <xsl:attribute name="space-after">12pt</xsl:attribute>
+    <xsl:attribute-set name="title-level3-block" use-attribute-sets="default-section-title">
+        <xsl:attribute name="font-weight">bold</xsl:attribute>
+        <xsl:attribute name="font-size">14</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="title-level5">
-        <xsl:attribute name="space-before">12pt</xsl:attribute>
-        <xsl:attribute name="space-after">12pt</xsl:attribute>
+    <xsl:attribute-set name="title-level4-block" use-attribute-sets="default-section-title">
+        <xsl:attribute name="font-weight">bold</xsl:attribute>
+        <xsl:attribute name="font-size">12</xsl:attribute>
+        <xsl:attribute name="font-style">italic</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="title-level6">
-        <xsl:attribute name="space-before">12pt</xsl:attribute>
-        <xsl:attribute name="space-after">12pt</xsl:attribute>
+    <xsl:attribute-set name="title-level5-block" use-attribute-sets="default-section-title">
+        <xsl:attribute name="font-weight">bold</xsl:attribute>
+        <xsl:attribute name="font-size">10</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="title-level7">
-        <xsl:attribute name="space-before">12pt</xsl:attribute>
-        <xsl:attribute name="space-after">12pt</xsl:attribute>
+    <xsl:attribute-set name="title-level6-block" use-attribute-sets="default-section-title">
+        <xsl:attribute name="font-weight">bold</xsl:attribute>
+        <xsl:attribute name="font-size">10</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="title-level8">
-        <xsl:attribute name="space-before">12pt</xsl:attribute>
-        <xsl:attribute name="space-after">12pt</xsl:attribute>
+    <xsl:attribute-set name="title-level7-block" use-attribute-sets="default-section-title">
+        <xsl:attribute name="font-weight">bold</xsl:attribute>
+        <xsl:attribute name="font-size">10</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="title-level9">
-        <xsl:attribute name="space-before">12pt</xsl:attribute>
-        <xsl:attribute name="space-after">12pt</xsl:attribute>
+    <xsl:attribute-set name="title-level8-block" use-attribute-sets="default-section-title">
+        <xsl:attribute name="font-weight">bold</xsl:attribute>
+        <xsl:attribute name="font-size">10</xsl:attribute>
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="title-level9-block" use-attribute-sets="default-section-title">
+        <xsl:attribute name="font-weight">bold</xsl:attribute>
+        <xsl:attribute name="font-size">10</xsl:attribute>
     </xsl:attribute-set>
 
 
-    <xsl:attribute-set name="title-number">
+    <xsl:attribute-set name="title-number-inline">
         <xsl:attribute name="space-end">12pt</xsl:attribute>
     </xsl:attribute-set>
 
@@ -66,47 +74,47 @@
         </xsl:variable>
         <xsl:choose>
             <xsl:when test="$level = 1">
-                <fo:block  xsl:use-attribute-sets="title-level1" id = "{@refid}">
+                <fo:block  xsl:use-attribute-sets="title-level1-block" id = "{@refid}">
                     <xsl:apply-templates/>
                 </fo:block>
             </xsl:when>
             <xsl:when test="$level = 2">
-                <fo:block  xsl:use-attribute-sets="title-level2" id="{@refid}">
+                <fo:block  xsl:use-attribute-sets="title-level2-block" id="{@refid}">
                     <xsl:apply-templates/>
                 </fo:block>
             </xsl:when>
             <xsl:when test="$level = 3">
-                <fo:block  xsl:use-attribute-sets="title-level3" id="{@refid}">
+                <fo:block  xsl:use-attribute-sets="title-level3-block" id="{@refid}">
                     <xsl:apply-templates/>
                 </fo:block>
             </xsl:when>
             <xsl:when test="$level = 4">
-                <fo:block  xsl:use-attribute-sets="title-level4" id="{@refid}">
+                <fo:block  xsl:use-attribute-sets="title-level4-block" id="{@refid}">
                     <xsl:apply-templates/>
                 </fo:block>
             </xsl:when>
             <xsl:when test="$level = 5">
-                <fo:block  xsl:use-attribute-sets="title-level5" id="{@refid}">
+                <fo:block  xsl:use-attribute-sets="title-level5-block" id="{@refid}">
                     <xsl:apply-templates/>
                 </fo:block>
             </xsl:when>
             <xsl:when test="$level = 6">
-                <fo:block  xsl:use-attribute-sets="title-level6" id="{@refid}">
+                <fo:block  xsl:use-attribute-sets="title-level6-block" id="{@refid}">
                     <xsl:apply-templates/>
                 </fo:block>
             </xsl:when>
             <xsl:when test="$level = 7">
-                <fo:block  xsl:use-attribute-sets="title-level7" id="{@refid}">
+                <fo:block  xsl:use-attribute-sets="title-level7-block" id="{@refid}">
                     <xsl:apply-templates/>
                 </fo:block>
             </xsl:when>
             <xsl:when test="$level = 8">
-                <fo:block  xsl:use-attribute-sets="title-level8" id ="{@refid}">
+                <fo:block  xsl:use-attribute-sets="title-level8-block" id ="{@refid}">
                     <xsl:apply-templates/>
                 </fo:block>
             </xsl:when>
             <xsl:when test="$level = 9">
-                <fo:block  xsl:use-attribute-sets="title-level9" id="{@refid}">
+                <fo:block  xsl:use-attribute-sets="title-level9-block" id="{@refid}">
                     <xsl:apply-templates/>
                 </fo:block>
             </xsl:when>
@@ -168,7 +176,7 @@
 
     <xsl:template match="section/title/generated[@classes='sectnum']">
         <xsl:variable name="num" select="concat(substring-before(., '&#x00a0;'), '.')"/>
-        <fo:inline xsl:use-attribute-sets="title-number" role="number">
+        <fo:inline xsl:use-attribute-sets="title-number-inline" role="number">
             <xsl:call-template name="format-number">
                 <xsl:with-param name="string" select="$num"/>
             </xsl:call-template>
