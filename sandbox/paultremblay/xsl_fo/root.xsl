@@ -54,13 +54,16 @@
 
     <xsl:template match = "document">
         <xsl:call-template name='test-params'/>
+        <xsl:message>
+            <xsl:value-of select="$page-sequence-type"/>
+        </xsl:message>
         <xsl:choose>
             <xsl:when test="$page-sequence-type = 'toc-combined-body'">
                 <fo:page-sequence master-reference="toc-pages" xsl:use-attribute-sets="toc-page-sequence">
                     <xsl:apply-templates select="/document/decoration/header" mode="header"/>
                     <xsl:apply-templates select="/document/decoration/footer" mode="footer"/>
                     <fo:flow flow-name="xsl-region-body" xsl:use-attribute-sets="toc-flow">
-                        <xsl:apply-templates select="topic[@classes='abstract']|topic[@classes='dedication']|docinfo" mode="front"/>
+                        <xsl:apply-templates select="topic[@classes='abstract']|topic[@classes='dedication']|docinfo|/document/title" mode="front"/>
                         <xsl:apply-templates select="topic[@classes='contents']" mode="toc"/>
                     </fo:flow>
                 </fo:page-sequence>
@@ -68,7 +71,7 @@
             <xsl:when test="$page-sequence-type = 'front-toc-body'">
                 <fo:page-sequence master-reference="front-matter-pages" xsl:use-attribute-sets="front-page-sequence">
                     <fo:flow flow-name="xsl-region-body" xsl:use-attribute-sets="front-flow">
-                        <xsl:apply-templates select="topic[@classes='abstract']|topic[@classes='dedication']|docinfo" mode="front"/>
+                        <xsl:apply-templates select="topic[@classes='abstract']|topic[@classes='dedication']|docinfo|/document/title" mode="front"/>
                     </fo:flow>
                 </fo:page-sequence>
                 <fo:page-sequence master-reference="toc-pages" xsl:use-attribute-sets="toc-page-sequence">
@@ -82,7 +85,7 @@
             <xsl:when test="$page-sequence-type = 'front-body'">
                 <fo:page-sequence master-reference="front-matter-pages" xsl:use-attribute-sets="front-page-sequence">
                     <fo:flow flow-name="xsl-region-body" xsl:use-attribute-sets="front-flow">
-                        <xsl:apply-templates select="topic[@classes='abstract']|topic[@classes='dedication']|docinfo" mode="front"/>
+                        <xsl:apply-templates select="topic[@classes='abstract']|topic[@classes='dedication']|docinfo|/document/title" mode="front"/>
                     </fo:flow>
                 </fo:page-sequence>
             </xsl:when>
