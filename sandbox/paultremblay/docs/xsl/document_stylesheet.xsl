@@ -7,6 +7,7 @@
 
     <xsl:include href="root.xsl"/>
     <xsl:include href="page.xsl"/>
+    <xsl:include href="bibliographic_fields.xsl"/>
     <xsl:include href="bullet_list.xsl"/>
     <xsl:include href="enumerated_list.xsl"/>
     <xsl:include href="option_list.xsl"/>
@@ -52,6 +53,16 @@
                 the actual pages: the paper size and margins.
             </block>
             <xsl:apply-templates select="document('../../xsl_fo/page.xsl')/xsl:stylesheet"/>
+
+            <xsl:call-template name="make-title">
+                <xsl:with-param name="level">3</xsl:with-param>
+                <xsl:with-param name="text">Bibliograhic Fields Attribute Sets</xsl:with-param>
+            </xsl:call-template>
+            <block>
+                Attribute sets for the bibliograhic fields. These attributes control the formatting of 
+               bibliographic fields.
+            </block>
+            <xsl:apply-templates select="document('../../xsl_fo/bibliographic_fields.xsl')/xsl:stylesheet"/>
 
             <xsl:call-template name="make-title">
                 <xsl:with-param name="level">3</xsl:with-param>
