@@ -12,6 +12,7 @@
     <xsl:include href="header_footer.xsl"/>
     <xsl:include href="toc.xsl"/>
     <xsl:include href="section.xsl"/>
+    <xsl:include href="body_elements.xsl"/>
     <xsl:include href="bullet_list.xsl"/>
     <xsl:include href="enumerated_list.xsl"/>
     <xsl:include href="option_list.xsl"/>
@@ -38,6 +39,7 @@
             </xsl:call-template>
             <block>.. contents:: Table of Contents</block>
 
+            <!--root attribute sets-->
             <xsl:call-template name="make-title">
                 <xsl:with-param name="level">3</xsl:with-param>
                 <xsl:with-param name="text">Root Attribute Sets</xsl:with-param>
@@ -49,6 +51,7 @@
             <xsl:apply-templates select="document('../../xsl_fo/root.xsl')/xsl:stylesheet"/>
 
             <xsl:call-template name="make-title">
+            <!--page attribute sets-->
                 <xsl:with-param name="level">3</xsl:with-param>
                 <xsl:with-param name="text">Page Attribute Sets</xsl:with-param>
             </xsl:call-template>
@@ -68,6 +71,7 @@
             </block>
             <xsl:apply-templates select="document('../../xsl_fo/bibliographic_fields.xsl')/xsl:stylesheet"/>
 
+            <!--front matter attribute sets-->
             <xsl:call-template name="make-title">
                 <xsl:with-param name="level">3</xsl:with-param>
                 <xsl:with-param name="text">Front Matter Attribute Sets</xsl:with-param>
@@ -90,6 +94,7 @@
             </block>
             <xsl:apply-templates select="document('../../xsl_fo/header_footer.xsl')/xsl:stylesheet"/>
 
+            <!--TOC attribute sets-->
             <xsl:call-template name="make-title">
                 <xsl:with-param name="level">3</xsl:with-param>
                 <xsl:with-param name="text">TOC Matter Attribute Sets</xsl:with-param>
@@ -99,6 +104,7 @@
             </block>
             <xsl:apply-templates select="document('../../xsl_fo/toc.xsl')/xsl:stylesheet"/>
 
+            <!--Section attribute sets-->
             <xsl:call-template name="make-title">
                 <xsl:with-param name="level">3</xsl:with-param>
                 <xsl:with-param name="text">Section Attribute Sets</xsl:with-param>
@@ -108,6 +114,18 @@
             </block>
             <xsl:apply-templates select="document('../../xsl_fo/section.xsl')/xsl:stylesheet"/>
 
+            <!--body-element attribute sets-->
+            <xsl:call-template name="make-title">
+                <xsl:with-param name="level">3</xsl:with-param>
+                <xsl:with-param name="text">Body Elements</xsl:with-param>
+            </xsl:call-template>
+            <block>
+                Attribute sets for body elements, including the document title and subtitle; the
+                default paragraph; the transition element; and the literal block.
+            </block>
+            <xsl:apply-templates select="document('../../xsl_fo/body_elements.xsl')/xsl:stylesheet"/>
+
+            <!--bullet-list attribute sets-->
             <xsl:call-template name="make-title">
                 <xsl:with-param name="level">3</xsl:with-param>
                 <xsl:with-param name="text">bullet list</xsl:with-param>
@@ -117,6 +135,7 @@
             </block>
             <xsl:apply-templates select="document('../../xsl_fo/bullet_list.xsl')/xsl:stylesheet"/>
 
+            <!--enumerated-list attribute sets-->
             <xsl:call-template name="make-title">
                 <xsl:with-param name="level">3</xsl:with-param>
                 <xsl:with-param name="text">enumerated list</xsl:with-param>
@@ -126,6 +145,7 @@
             </block>
             <xsl:apply-templates select="document('../../xsl_fo/enumerated_list.xsl')/xsl:stylesheet"/>
 
+            <!--definition-list attribute sets-->
             <xsl:call-template name="make-title">
                 <xsl:with-param name="level">3</xsl:with-param>
                 <xsl:with-param name="text">definition list</xsl:with-param>
@@ -135,6 +155,7 @@
             </block>
             <xsl:apply-templates select="document('../../xsl_fo/definition_list.xsl')/xsl:stylesheet"/>
 
+            <!--field-list attribute sets-->
             <xsl:call-template name="make-title">
                 <xsl:with-param name="level">3</xsl:with-param>
                 <xsl:with-param name="text">field list</xsl:with-param>
@@ -144,6 +165,7 @@
             </block>
             <xsl:apply-templates select="document('../../xsl_fo/field_list.xsl')/xsl:stylesheet"/>
 
+            <!--option-list attribute sets-->
             <xsl:call-template name="make-title">
                 <xsl:with-param name="level">3</xsl:with-param>
                 <xsl:with-param name="text">option list as list</xsl:with-param>
