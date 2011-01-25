@@ -14,8 +14,12 @@
         <xsl:attribute name="provisional-distance-between-starts">30mm</xsl:attribute>
         <xsl:attribute name="space-before">12pt</xsl:attribute>
         <xsl:attribute name="space-after">12pt</xsl:attribute>
-        <xsl:attribute name="break-after">page</xsl:attribute>
     </xsl:attribute-set>
+
+    <!--same as above but with page break-->
+    <xsl:attribute-set name="bibliographic-fields-front-list-block" use-attribute-sets="bibliographic-fields-list-block">
+        <xsl:attribute name="break-after">page</xsl:attribute>
+    </xsl:attribute-set> 
 
     <xsl:attribute-set name="bibliographic-fields-list-item">
         <xsl:attribute name="space-before">12pt</xsl:attribute>
@@ -47,20 +51,18 @@
     <!--only apply temlates if docinfo won't be written to front matter-->
     <xsl:template match="docinfo">
         <xsl:if test="$page-sequence-type = 'body' or $page-sequence-type = 'toc-body'">
-            <xsl:call-template name="docinfo"/>
+            <fo:list-block role="field-list" xsl:use-attribute-sets="bibliographic-fields-list-block">
+                <xsl:apply-templates/>
+            </fo:list-block>
         </xsl:if>
     </xsl:template>
 
-    <!--FIX this. make it so this template produces a page break, but the other doesn't-->
     <xsl:template match="docinfo" mode="front">
-        <xsl:call-template name="docinfo"/>
-    </xsl:template>
-
-    <xsl:template name="docinfo">
-        <fo:list-block role="field-list" xsl:use-attribute-sets="bibliographic-fields-list-block">
+        <fo:list-block role="field-list" xsl:use-attribute-sets="bibliographic-fields-front-list-block">
             <xsl:apply-templates/>
         </fo:list-block>
     </xsl:template>
+
 
     <xsl:template name="make-list-item">
         <xsl:param name="role"/>
