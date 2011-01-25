@@ -16,7 +16,7 @@
     Namely, the user might have to change the the force-page-count to odd or even, depending.  -->
     <xsl:attribute-set name="toc-page-sequence">
         <xsl:attribute name= "format">i</xsl:attribute> 
-        <xsl:attribute name= "initial-page-number">auto</xsl:attribute> 
+        <xsl:attribute name= "initial-page-number">1</xsl:attribute> 
         <xsl:attribute name= "force-page-count">no-force</xsl:attribute> 
     </xsl:attribute-set>
 
@@ -54,9 +54,6 @@
 
     <xsl:template match = "document">
         <xsl:call-template name='test-params'/>
-        <xsl:message>
-            <xsl:value-of select="$page-sequence-type"/>
-        </xsl:message>
         <xsl:choose>
             <xsl:when test="$page-sequence-type = 'toc-combined-body'">
                 <fo:page-sequence master-reference="toc-pages" xsl:use-attribute-sets="toc-page-sequence">
