@@ -92,5 +92,10 @@ list, with the options taking the place of bullets. The 'definiton'
 value creates a definition type list, with the options on a separate
 block above the description `doc`-->
 <xsl:param name="option-list-format">list</xsl:param>
+
+<!--whether to number verse. Value is either '', or
+some integer, a multiple of the lines you want to number.
+For example, '5' will number every fifth line-->
+<xsl:param name="number-verse"></xsl:param>
     
 </xsl:stylesheet>
