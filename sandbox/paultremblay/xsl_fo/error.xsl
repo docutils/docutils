@@ -78,5 +78,24 @@
         </xsl:choose>
     </xsl:template>
 
+    <xsl:template name="error-message">
+        <xsl:param name="text"/>
+        <xsl:message>
+            <xsl:value-of select="$text"/>
+        </xsl:message>
+        <xsl:choose>
+            <xsl:when test="$strict='True'">
+                <xsl:message terminate="yes">
+                    <xsl:text>Processing stylesheets now quitting.</xsl:text>
+                </xsl:message>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:message>
+                    <xsl:text>Not processing text for this element.</xsl:text>
+                </xsl:message>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
     
 </xsl:stylesheet>
