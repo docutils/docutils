@@ -84,6 +84,19 @@
         </fo:block>
     </xsl:template>
 
+    <xsl:template match="doctest_block">
+        <fo:block xsl:use-attribute-sets="literal-block" role="doctest-block"><xsl:apply-templates/></fo:block>
+    </xsl:template>
+
+    <xsl:template match="transition">
+        <fo:block xsl:use-attribute-sets = "transition-block" role="transition">
+            <!--
+            <fo:inline><fo:leader leader-pattern="rule" leader-length="3in"/></fo:inline>
+            -->
+            <xsl:value-of select="$transition-text"/>
+        </fo:block>
+    </xsl:template>
+
     <xsl:template match="document/subtitle">
         <xsl:if test="$page-sequence-type = 'body' or $page-sequence-type='toc-body'">
             <fo:block xsl:use-attribute-sets="document-subtitle-block" role="subtitle">
