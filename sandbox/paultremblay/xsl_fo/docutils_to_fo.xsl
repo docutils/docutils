@@ -19,8 +19,9 @@
     <xsl:include href = "definition_list.xsl"/>
     <xsl:include href = "field_list.xsl"/>
     <xsl:include href = "option_list.xsl"/>
-    <xsl:include href = "inline.xsl"/>
     <xsl:include href = "line_block.xsl"/>
+    <xsl:include href = "table.xsl"/>
+    <xsl:include href = "inline.xsl"/>
     <xsl:include href = "misc.xsl"/>
     <xsl:include href = "error.xsl"/>
     <xsl:include href = "util.xsl"/>
