@@ -19,34 +19,23 @@
     <!--add text-align-last=justfiy only for numbered verse, so change-->
     <xsl:attribute-set name="level1-line-block">
         <xsl:attribute name="start-indent">10mm</xsl:attribute>
-        <xsl:attribute name="end-indent">40mm</xsl:attribute>
     </xsl:attribute-set>
     
     <xsl:attribute-set name="level2-line-block">
         <xsl:attribute name="start-indent">20mm</xsl:attribute>
-        <xsl:attribute name="end-indent">40mm</xsl:attribute>
     </xsl:attribute-set>
 
     <xsl:attribute-set name="level3-line-block">
         <xsl:attribute name="start-indent">30mm</xsl:attribute>
-        <xsl:attribute name="end-indent">40mm</xsl:attribute>
     </xsl:attribute-set>
 
     <xsl:attribute-set name="level4-line-block">
         <xsl:attribute name="start-indent">40mm</xsl:attribute>
-        <xsl:attribute name="end-indent">40mm</xsl:attribute>
     </xsl:attribute-set>
 
     <xsl:attribute-set name="level5-line-block">
         <xsl:attribute name="start-indent">50mm</xsl:attribute>
-        <xsl:attribute name="end-indent">40mm</xsl:attribute>
     </xsl:attribute-set>
-
-    <xsl:attribute-set name="line-block">
-        <xsl:attribute name="start-indent">inherit</xsl:attribute>
-        <xsl:attribute name="text-indent">-12pt</xsl:attribute>
-    </xsl:attribute-set>
-
 
     <xsl:template match="line_block">
         <xsl:choose>
