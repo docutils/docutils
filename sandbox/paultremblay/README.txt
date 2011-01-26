@@ -61,23 +61,20 @@ Completion
 
 - Option List
 
+- Line Blocks
+
+- Block Quotes
+
 - Headers and Footers, with the ability to suppress them on the first
   page.
 
+- Doctest Blocks
 
 TODO
 =====
 
 XSLT Stylesheets
 -----------------
-
-- Indented Literal Blocks
-
-- Quoted Literal Blocks
-
-- Line Blocks
-
-- Doctest Blocks
 
 - Tables
 
