@@ -97,5 +97,8 @@ block above the description `doc`-->
 some integer, a multiple of the lines you want to number.
 For example, '5' will number every fifth line-->
 <xsl:param name="number-verse"></xsl:param>
+
+<!--text to use before an attributeion of a block quote-->
+<xsl:param name="text-before-block-quote-attribution">&#x2014;</xsl:param>
     
 </xsl:stylesheet>
