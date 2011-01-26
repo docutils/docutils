@@ -42,7 +42,27 @@
         <xsl:attribute name="font-weight">bold</xsl:attribute>
     </xsl:attribute-set>
 
+    <xsl:attribute-set name="block-quote-outer-block">
+        <xsl:attribute name="start-indent">20mm</xsl:attribute>
+        <xsl:attribute name="end-indent">20mm</xsl:attribute>
+        <xsl:attribute name="space-after">12pt</xsl:attribute>
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+    </xsl:attribute-set>
 
+    <xsl:attribute-set name="block-quote-paragraph-block">
+        <xsl:attribute name="start-indent">inherit</xsl:attribute>
+        <xsl:attribute name="end-indent">inherit</xsl:attribute>
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="block-quote-first-paragraph-block" use-attribute-sets="block-quote-paragraph-block">
+        <xsl:attribute name="space-before">0pt</xsl:attribute>
+    </xsl:attribute-set>
+
+
+    <xsl:attribute-set name="block-quote-attribution-block">
+        <xsl:attribute name="text-align">right</xsl:attribute>
+    </xsl:attribute-set>
 
     <!--default paragraphs-->
     <xsl:template match="section/paragraph|document/paragraph">
@@ -63,7 +83,6 @@
             <xsl:value-of select="$transition-text"/>
         </fo:block>
     </xsl:template>
-
 
     <xsl:template match="document/subtitle">
         <xsl:if test="$page-sequence-type = 'body' or $page-sequence-type='toc-body'">
@@ -92,6 +111,31 @@
 
     <xsl:template match="document/subtitle" mode="front">
         <fo:block xsl:use-attribute-sets="document-subtitle-block" role="subtitle">
+            <xsl:apply-templates/>
+        </fo:block>
+    </xsl:template>
+
+    <xsl:template match="block_quote">
+        <fo:block role="block-quote" xsl:use-attribute-sets = "block-quote-outer-block">
+            <xsl:apply-templates/>
+        </fo:block>
+    </xsl:template>
+
+    <xsl:template match="block_quote/paragraph">
+        <fo:block role="block-quote" xsl:use-attribute-sets = "block-quote-paragraph-block">
+            <xsl:apply-templates/>
+        </fo:block>
+    </xsl:template>
+
+    <xsl:template match="block_quote/paragraph[1]" priority="2">
+        <fo:block role="block-quote" xsl:use-attribute-sets = "block-quote-first-paragraph-block">
+            <xsl:apply-templates/>
+        </fo:block>
+    </xsl:template>
+
+    <xsl:template match="block_quote/attribution">
+        <fo:block role="block-quote" xsl:use-attribute-sets = "block-quote-attribution-block">
+            <xsl:value-of select="$text-before-block-quote-attribution"/>
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
