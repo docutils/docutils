@@ -19,6 +19,7 @@
     <xsl:include href="definition_list.xsl"/>
     <xsl:include href="field_list.xsl"/>
     <xsl:include href="line_block.xsl"/>
+    <xsl:include href="table.xsl"/>
     <xsl:include href="inline.xsl"/>
     <xsl:include href="comment.xsl"/>
     <xsl:include href="utils.xsl"/>
@@ -188,6 +189,16 @@
                 Attribute sets for the line block.
             </block>
             <xsl:apply-templates select="document('../../xsl_fo/line_block.xsl')/xsl:stylesheet"/>
+
+            <!--table attribute sets-->
+            <xsl:call-template name="make-title">
+                <xsl:with-param name="level">3</xsl:with-param>
+                <xsl:with-param name="text">Table</xsl:with-param>
+            </xsl:call-template>
+            <block>
+                Attribute sets for the Table.
+            </block>
+            <xsl:apply-templates select="document('../../xsl_fo/table.xsl')/xsl:stylesheet"/>
 
 
             <!--option-inline attribute sets-->
