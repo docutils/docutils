@@ -9,6 +9,11 @@
     <!--Just a temp fix for now-->
     <xsl:variable name="table-width">6in</xsl:variable>
 
+    <xsl:attribute-set name="table-block">
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+        <xsl:attribute name="space-after">12pt</xsl:attribute>
+    </xsl:attribute-set>
+
     <xsl:attribute-set name="table">
         <xsl:attribute name="table-layout">fixed</xsl:attribute>
         <xsl:attribute name="inline-progression-dimension"><xsl:value-of select="$table-width"/></xsl:attribute>
@@ -40,14 +45,28 @@
 
     <xsl:attribute-set name="cell-block">
     </xsl:attribute-set>
+
+    <xsl:attribute-set name="caption-block">
+        <xsl:attribute name="text-align">center</xsl:attribute>
+        <xsl:attribute name="space-before">6pt</xsl:attribute>
+        <xsl:attribute name="space-after">6pt</xsl:attribute>
+    </xsl:attribute-set>
     
 
     <!--END OF ATTRIBUTE SETS-->
 
     <xsl:template match="table">
-        <fo:table xsl:use-attribute-sets="table">
-            <xsl:apply-templates/>
-        </fo:table>
+        <fo:block-container xsl:use-attribute-sets = "table-block">
+            <xsl:if test="title and $table-title-placement = 'top'">
+                <xsl:apply-templates select="title" mode="caption"/>
+            </xsl:if>
+            <fo:table xsl:use-attribute-sets="table">
+                <xsl:apply-templates/>
+            </fo:table>
+            <xsl:if test="title and $table-title-placement = 'bottom'">
+                <xsl:apply-templates select="title" mode="caption"/>
+            </xsl:if>
+        </fo:block-container>
     </xsl:template>
 
     <xsl:template match="tgroup">
@@ -127,5 +146,21 @@
         </fo:block>
     </xsl:template>
 
+    <xsl:template match="table/title"/>
+
+    <xsl:template match="table/title" mode="caption">
+        <xsl:choose>
+            <xsl:when test="$table-title-placement = 'top'">
+                <fo:block xsl:use-attribute-sets="caption-block" keep-with-next="always">
+                    <xsl:apply-templates/>
+                </fo:block>
+            </xsl:when>
+            <xsl:when test="$table-title-placement = 'bottom'">
+                <fo:block xsl:use-attribute-sets="caption-block" keep-with-previous="always">
+                    <xsl:apply-templates/>
+                </fo:block>
+            </xsl:when>
+        </xsl:choose>
+    </xsl:template>
     
 </xsl:stylesheet>
