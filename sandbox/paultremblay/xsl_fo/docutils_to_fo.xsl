@@ -21,6 +21,7 @@
     <xsl:include href = "option_list.xsl"/>
     <xsl:include href = "line_block.xsl"/>
     <xsl:include href = "table.xsl"/>
+    <xsl:include href = "footnote.xsl"/>
     <xsl:include href = "inline.xsl"/>
     <xsl:include href = "misc.xsl"/>
     <xsl:include href = "error.xsl"/>
