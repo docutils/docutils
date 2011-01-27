@@ -9,7 +9,8 @@
     <!--Just a temp fix for now-->
     <xsl:variable name="table-width">6in</xsl:variable>
 
-    <xsl:attribute-set name="table-block">
+    <!--wraps the rest of the table.-->
+    <xsl:attribute-set name="table-block-container">
         <xsl:attribute name="space-before">12pt</xsl:attribute>
         <xsl:attribute name="space-after">12pt</xsl:attribute>
     </xsl:attribute-set>
@@ -56,7 +57,7 @@
     <!--END OF ATTRIBUTE SETS-->
 
     <xsl:template match="table">
-        <fo:block-container xsl:use-attribute-sets = "table-block">
+        <fo:block-container xsl:use-attribute-sets = "table-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
                 <xsl:apply-templates select="title" mode="caption"/>
             </xsl:if>
