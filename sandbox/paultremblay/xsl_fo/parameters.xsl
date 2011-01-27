@@ -100,5 +100,7 @@ For example, '5' will number every fifth line-->
 
 <!--text to use before an attributeion of a block quote-->
 <xsl:param name="text-before-block-quote-attribution">&#x2014;</xsl:param>
+
+<xsl:param name="table-title-placement">bottom</xsl:param>
     
 </xsl:stylesheet>
