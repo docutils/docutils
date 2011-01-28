@@ -45,6 +45,9 @@ Puritan morals which began to decline by the end of the 1920s [#note7]_.
 .. [*] second ere was a recession in 1938 which dampened spending on modernizing. 
  The 1938 figure, however, was still above the spending of 1936. 
 
+.. class:: endnotes
+.. rubric:: Endnotes
+
 
 .. [#note1] Esperdy, Gabrielle. “Modernizing Main Street: Everyday Architecture and 
  the New Deal.” Dissertation. (The City University of New York, 1999). Ann 
