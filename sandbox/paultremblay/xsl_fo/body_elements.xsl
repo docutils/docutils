@@ -3,7 +3,7 @@
     xmlns:fo="http://www.w3.org/1999/XSL/Format"
     version="1.1"
     >
-    <!-- $Id:$ -->
+    <!-- $Id$ -->
 
     <xsl:attribute-set name="paragraph-block">
         <xsl:attribute name="space-after">12pt</xsl:attribute>
