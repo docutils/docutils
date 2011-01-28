@@ -11,7 +11,7 @@
             <xsl:message terminate = "yes">
                 <xsl:text>"</xsl:text>
                 <xsl:value-of select="$front-matter-pagination"/>
-                <xsl:text>" not a valid value for parm "front-matter-pagination"&#xA;</xsl:text>
+                <xsl:text>" not a valid value for param "front-matter-pagination"&#xA;</xsl:text>
                 <xsl:text>Valid values are 'own-section', 'with-toc' or 'with-body'&#xA;</xsl:text>
                 <xsl:text>Processing XSLT now quiting.</xsl:text>
             </xsl:message>
@@ -21,7 +21,7 @@
             <xsl:message terminate = "yes">
                 <xsl:text>"</xsl:text>
                 <xsl:value-of select="$toc-pagination"/>
-                <xsl:text>" not a valid value for parm "toc-pagination"&#xA;</xsl:text>
+                <xsl:text>" not a valid value for param "toc-pagination"&#xA;</xsl:text>
                 <xsl:text>Valid values are 'own-section', or 'with-body'&#xA;</xsl:text>
                 <xsl:text>Processing XSLT now quiting.</xsl:text>
             </xsl:message>
@@ -32,7 +32,7 @@
             <xsl:message terminate = "yes">
                 <xsl:text>"</xsl:text>
                 <xsl:value-of select="$page-layout"/>
-                <xsl:text>" not a valid value for parm "page-layout"&#xA;</xsl:text>
+                <xsl:text>" not a valid value for param "page-layout"&#xA;</xsl:text>
                 <xsl:text>Valid values are 'simple', 'odd-even', 'first', or 'first-odd-even'&#xA;</xsl:text>
                 <xsl:text>Processing XSLT now quiting.</xsl:text>
             </xsl:message>
@@ -41,8 +41,44 @@
             <xsl:message terminate = "yes">
                 <xsl:text>"</xsl:text>
                 <xsl:value-of select="$option-list-format"/>
-                <xsl:text>" not a valid value for parm "option-list-format"&#xA;</xsl:text>
+                <xsl:text>" not a valid value for param "option-list-format"&#xA;</xsl:text>
                 <xsl:text>Valid values are 'list', and 'definition'&#xA;</xsl:text>
+                <xsl:text>Processing XSLT now quiting.</xsl:text>
+            </xsl:message>
+        </xsl:if>
+        <xsl:if test ="$number-verse != '' and string($number-verse + 1 ) = 'NaN'">
+            <xsl:message terminate = "yes">
+                <xsl:text>"</xsl:text>
+                <xsl:value-of select="$number-verse"/>
+                <xsl:text>" not a valid value for param "number-verse"&#xA;</xsl:text>
+                <xsl:text>Please use a number&#xA;</xsl:text>
+                <xsl:text>Processing XSLT now quiting.</xsl:text>
+            </xsl:message>
+        </xsl:if>
+        <xsl:if test= "$table-title-placement != 'bottom'  and $table-title-placement != 'top'">
+            <xsl:message terminate = "yes">
+                <xsl:text>"</xsl:text>
+                <xsl:value-of select="$table-title-placement"/>
+                <xsl:text>" not a valid value for param "table-title-placement"&#xA;</xsl:text>
+                <xsl:text>Valid values are 'top', and 'bottom'&#xA;</xsl:text>
+                <xsl:text>Processing XSLT now quiting.</xsl:text>
+            </xsl:message>
+        </xsl:if>
+        <xsl:if test= "$footnote-style != 'list'  and $footnote-style != 'traditional'">
+            <xsl:message terminate = "yes">
+                <xsl:text>"</xsl:text>
+                <xsl:value-of select="$footnote-style"/>
+                <xsl:text>" not a valid value for param "footnote-style"&#xA;</xsl:text>
+                <xsl:text>Valid values are 'list', and 'traditional'&#xA;</xsl:text>
+                <xsl:text>Processing XSLT now quiting.</xsl:text>
+            </xsl:message>
+        </xsl:if>
+        <xsl:if test= "$footnote-placement != 'footnote'  and $footnote-placement != 'endnote'">
+            <xsl:message terminate = "yes">
+                <xsl:text>"</xsl:text>
+                <xsl:value-of select="$footnote-placement"/>
+                <xsl:text>" not a valid value for param "footnote-placement"&#xA;</xsl:text>
+                <xsl:text>Valid values are 'footnote', and 'endnote'&#xA;</xsl:text>
                 <xsl:text>Processing XSLT now quiting.</xsl:text>
             </xsl:message>
         </xsl:if>
@@ -51,7 +87,7 @@
             <xsl:message terminate = "yes">
                 <xsl:text>"</xsl:text>
                 <xsl:value-of select="$option-list-format"/>
-                <xsl:text>" not a valid value for parm "document-title"&#xA;</xsl:text>
+                <xsl:text>" not a valid value for param "document-title"&#xA;</xsl:text>
                 <xsl:text>Valid values are 'own-page', and 'not-own-page'&#xA;</xsl:text>
                 <xsl:text>Processing XSLT now quiting.</xsl:text>
             </xsl:message>
