@@ -32,12 +32,40 @@
         </fo:inline>
     </xsl:template>
 
+    <!--internal links-->
+    <xsl:template match="reference[@refid]">
+        <xsl:choose>
+            <xsl:when test="$internal-link-type = 'link'">
+                <fo:inline>
+                    <fo:basic-link xsl:use-attribute-sets="basic-link-inline" internal-destination="{@refid}">
+                        <xsl:apply-templates/>
+                    </fo:basic-link>
+                </fo:inline>
+            </xsl:when>
+            <xsl:when test="$internal-link-type = 'page'">
+                <fo:page-number-citation ref-id="{@refid}"/>
+            </xsl:when>
+            <xsl:when test="$internal-link-type = 'page-link'">
+                <fo:inline>
+                    <fo:basic-link xsl:use-attribute-sets="basic-link-inline" internal-destination="{@refid}">
+                        <fo:page-number-citation ref-id="{@refid}"/>
+                    </fo:basic-link>
+                </fo:inline>
+            </xsl:when>
+        </xsl:choose>
+    </xsl:template>
+
+
     <!--this template creates clickable links; you may want to give the option to turn this off-->
     <xsl:template match= "reference[@refuri]">
         <fo:basic-link xsl:use-attribute-sets="basic-link-inline" external-destination="url('{@refuri}')"> 
             <xsl:apply-templates/>
         </fo:basic-link>
     </xsl:template> 
+
+    <xsl:template match="target"/>
+    
+
 
     
 </xsl:stylesheet>

@@ -125,4 +125,8 @@ at the bottom of each page. When 'endnote' is choosen, footnotes
 are placed in the same place as in the RST document-->
 <xsl:param name="footnote-placement">footnote</xsl:param>
     
+<!--whether to make internal links clickable ('link'), 
+refer to a page number ('page'), or both ('link-page')-->
+<xsl:param name="internal-link-type">link</xsl:param>
+
 </xsl:stylesheet>
