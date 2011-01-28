@@ -10,37 +10,59 @@
     <!--note that a value of 'baseline' for baseline-shift means the number
     has no shift, and has the same effect as not setting the value at all-->
 
+    <!--set up the defaults for the footnote label-->
     <xsl:attribute-set name="footnote-label-default">
         <xsl:attribute name="baseline-shift">super</xsl:attribute>
         <xsl:attribute name="font-size">8pt</xsl:attribute>
     </xsl:attribute-set>
 
+    <!--the attributes for the label at the bottom of the page, or with the endnotes-->
     <xsl:attribute-set name="footnote-label-inline" use-attribute-sets="footnote-label-default">
     </xsl:attribute-set>
 
+    <!--the attributes for the label in the body of the text-->
     <xsl:attribute-set name="footnote-body-label-inline" use-attribute-sets="footnote-label-default">
     </xsl:attribute-set>
 
 
+    <!-- the attributes for the list that formats each footnote-->
     <xsl:attribute-set name="footnote-list-block">
         <xsl:attribute name="provisional-label-separation">0pt</xsl:attribute>
         <xsl:attribute name="provisional-distance-between-starts">18pt</xsl:attribute>
     </xsl:attribute-set>
 
+    <!--the item-lable in the list when footnotes formatted as a list-->
     <xsl:attribute-set name= "footnote-item-label">
         <xsl:attribute name="end-indent">label-end()</xsl:attribute>
     </xsl:attribute-set>
 
+    <!--the block that surrounds the label. By default, this is not a superscript-->
     <xsl:attribute-set name= "footnote-label-block">
     </xsl:attribute-set>
 
+    <!--the attributes for the item-body of the list when a footnote is formatted
+    as a list-->
     <xsl:attribute-set name= "footnote-item-body">
         <xsl:attribute name="start-indent">body-start()</xsl:attribute>
     </xsl:attribute-set>
 
+    <!--the attributes for the footnote-body-->
     <xsl:attribute-set name= "footnote-body">
     </xsl:attribute-set>
 
+    <!--for the paragraphs in the footnote-->
+    <xsl:attribute-set name="footnote-paragraph-block">
+        <xsl:attribute name="space-before">5pt</xsl:attribute>
+    </xsl:attribute-set>
+
+    <!--for the paragraphs in the footnote, the first one-->
+    <xsl:attribute-set name="footnote-first-paragraph-block" use-attribute-sets="footnote-paragraph-block">
+        <xsl:attribute name="space-before">0pt</xsl:attribute>
+    </xsl:attribute-set>
+
+    <!--ENDNOTES-->
+
+    <!--the block that wraps all the endnotes-->
     <xsl:attribute-set name="endnotes-block">
         <xsl:attribute name="break-before">page</xsl:attribute>
     </xsl:attribute-set>
@@ -55,17 +77,8 @@
         <xsl:attribute name="space-before">0pt</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="footnote-paragraph-block">
-        <!--
-        <xsl:attribute name="text-indent">18pt</xsl:attribute>
-        -->
-        <xsl:attribute name="space-before">5pt</xsl:attribute>
-    </xsl:attribute-set>
 
-    <xsl:attribute-set name="footnote-first-paragraph-block" use-attribute-sets="footnote-paragraph-block">
-        <xsl:attribute name="space-before">0pt</xsl:attribute>
-    </xsl:attribute-set>
-
+    <!--for the title of the endnotes-->
     <xsl:attribute-set name="endnotes-title-block">
         <xsl:attribute name="space-after">18pt</xsl:attribute>
         <xsl:attribute name="font-weight">bold</xsl:attribute>
@@ -122,7 +135,7 @@
     <xsl:template name="footnote-as-list">
         <fo:footnote>
             <xsl:apply-templates select="label" mode="footnote"/>
-            <fo:footnote-body xsl:use-attribute-sets="footnote-block">
+            <fo:footnote-body xsl:use-attribute-sets="footnote-body">
                 <xsl:call-template name="footnote-list-body"/>
             </fo:footnote-body>
         </fo:footnote>
