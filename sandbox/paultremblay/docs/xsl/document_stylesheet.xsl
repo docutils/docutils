@@ -20,6 +20,7 @@
     <xsl:include href="field_list.xsl"/>
     <xsl:include href="line_block.xsl"/>
     <xsl:include href="table.xsl"/>
+    <xsl:include href="footnote.xsl"/>
     <xsl:include href="inline.xsl"/>
     <xsl:include href="comment.xsl"/>
     <xsl:include href="utils.xsl"/>
@@ -200,6 +201,15 @@
             </block>
             <xsl:apply-templates select="document('../../xsl_fo/table.xsl')/xsl:stylesheet"/>
 
+            <!--footnote attribute sets-->
+            <xsl:call-template name="make-title">
+                <xsl:with-param name="level">3</xsl:with-param>
+                <xsl:with-param name="text">Footnote</xsl:with-param>
+            </xsl:call-template>
+            <block>
+                Attribute sets for footnotes, endnotes, and the endnotes title.
+            </block>
+            <xsl:apply-templates select="document('../../xsl_fo/footnote.xsl')/xsl:stylesheet"/>
 
             <!--option-inline attribute sets-->
             <xsl:call-template name="make-title">
@@ -207,7 +217,14 @@
                 <xsl:with-param name="text">Inline</xsl:with-param>
             </xsl:call-template>
             <block>
-                Attribute sets for all the inline elements.
+                Attribute sets for all the inline elements. The parameter 'footnote-style' 
+                controls the style of the footnote. The paramater 'footnote-placement' determines
+                whether the footnotes that are numbered will be placed as footnotes or endnotes. 
+            </block>
+            <block>
+                The parameter 'space-between-foototes' controls the space between footnotes. 
+                (Becuase of a flaw(?) in FOP, an attribute set could not be used.) This parameter
+                has no effect on the space between endnotes.
             </block>
             <xsl:apply-templates select="document('../../xsl_fo/inline.xsl')/xsl:stylesheet"/>
         </doc>
