@@ -82,7 +82,7 @@ fields as author, etc.`docutils`-->
 <xsl:param name="bullet-text">&#x2022;</xsl:param>
 
 <!--the text that separates options in the options_list,
-for example, -f  -file. With "," as the value, thise 
+for example, -f  -file. With "," as the value, these 
 arguments become -f, -file `doc`-->
 <xsl:param name="options-separator">, </xsl:param>
 
@@ -101,6 +101,28 @@ For example, '5' will number every fifth line-->
 <!--text to use before an attributeion of a block quote-->
 <xsl:param name="text-before-block-quote-attribution">&#x2014;</xsl:param>
 
+<!--where to place table title valid options are 'top' or 'bottom'-->
 <xsl:param name="table-title-placement">bottom</xsl:param>
+
+<!--the style of the footnote. Valid values are 'list', for making 
+the footnote into a list, with the number as the item; 'traditional', 
+to make the footnote more traditional with a first line indent; and 'endnote',
+to place the footnotes as endnotes, or more specifically, whereever they 
+occurr in the document-->
+<xsl:param name="footnote-style">list</xsl:param>
+
+
+<!--This is a hack to fix the problem with fop ?? not
+being able to space between footnotes. Instead, a blank
+block is written with a no-break space character, and
+the height of this block is determined by a font-size, 
+here the space-between-footnotes-->
+<xsl:param name="space-between-footnotes">5pt</xsl:param>
+
+<!--where to place footnote. Values are 'footnote' and
+'endnote'. When 'footnote is choosen, footnotes are placed
+at the bottom of each page. When 'endnote' is choosen, footnotes
+are placed in the same place as in the RST document-->
+<xsl:param name="footnote-placement">footnote</xsl:param>
     
 </xsl:stylesheet>
