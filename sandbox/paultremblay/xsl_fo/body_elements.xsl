@@ -66,9 +66,18 @@
 
     <!--default paragraphs-->
     <xsl:template match="section/paragraph|document/paragraph">
-        <fo:block role="paragraph" xsl:use-attribute-sets="paragraph-block">
-            <xsl:apply-templates/>
-        </fo:block>
+        <xsl:choose>
+            <xsl:when test="@ids">
+                <fo:block role="paragraph" xsl:use-attribute-sets="paragraph-block" id="{@ids}">
+                    <xsl:apply-templates/>
+                </fo:block>
+            </xsl:when>
+            <xsl:otherwise>
+                <fo:block role="paragraph" xsl:use-attribute-sets="paragraph-block">
+                    <xsl:apply-templates/>
+                </fo:block>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
     <xsl:template match="literal_block">
