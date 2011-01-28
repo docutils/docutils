@@ -7,12 +7,20 @@
 
     <xsl:key name="footnote" match="footnote" use="@ids"/>
 
-    <xsl:attribute-set name="footnote-label-inline">
+    <!--note that a value of 'baseline' for baseline-shift means the number
+    has no shift, and has the same effect as not setting the value at all-->
+
+    <xsl:attribute-set name="footnote-label-default">
         <xsl:attribute name="baseline-shift">super</xsl:attribute>
+        <xsl:attribute name="font-size">8pt</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="footnote-paragraph-block">
+    <xsl:attribute-set name="footnote-label-inline" use-attribute-sets="footnote-label-default">
     </xsl:attribute-set>
+
+    <xsl:attribute-set name="footnote-body-label-inline" use-attribute-sets="footnote-label-default">
+    </xsl:attribute-set>
+
 
     <xsl:attribute-set name="footnote-list-block">
         <xsl:attribute name="provisional-label-separation">0pt</xsl:attribute>
@@ -30,43 +38,109 @@
         <xsl:attribute name="start-indent">body-start()</xsl:attribute>
     </xsl:attribute-set>
 
-    <!--three way to place footnotes:
+    <xsl:attribute-set name= "footnote-body">
+    </xsl:attribute-set>
 
-    1. as list as a footnote
+    <xsl:attribute-set name="endnotes-block">
+        <xsl:attribute name="break-before">page</xsl:attribute>
+    </xsl:attribute-set>
 
-    2. more traditional, as footnote
+    <!--controls the space between each endnote-->
+    <xsl:attribute-set name="endnote-block">
+        <xsl:attribute name="space-before">5pt</xsl:attribute>
+    </xsl:attribute-set>
 
-    3. as endnotes, or where the footnotes really are.
-    -->
+    <!--the spacing for the first endnote-->
+    <xsl:attribute-set name="endnote-first-block">
+        <xsl:attribute name="space-before">0pt</xsl:attribute>
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="footnote-paragraph-block">
+        <!--
+        <xsl:attribute name="text-indent">18pt</xsl:attribute>
+        -->
+        <xsl:attribute name="space-before">5pt</xsl:attribute>
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="footnote-first-paragraph-block" use-attribute-sets="footnote-paragraph-block">
+        <xsl:attribute name="space-before">0pt</xsl:attribute>
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="endnotes-title-block">
+        <xsl:attribute name="space-after">18pt</xsl:attribute>
+        <xsl:attribute name="font-weight">bold</xsl:attribute>
+        <xsl:attribute name="font-size">18pt</xsl:attribute>
+        <xsl:attribute name="text-align">center</xsl:attribute>
+    </xsl:attribute-set>
+
+
 
 
     <xsl:template match="footnote_reference">
-        <xsl:apply-templates select="key('footnote', @refid)" mode="footnote"/>
+        <xsl:choose>
+            <xsl:when test = "$footnote-placement = 'footnote'">
+                <xsl:apply-templates select="key('footnote', @refid)" mode="footnote"/>
+            </xsl:when>
+            <xsl:when test = "$footnote-placement = 'endnote' and string(. + 1) = 'NaN'">
+                <xsl:apply-templates select="key('footnote', @refid)" mode="footnote"/>
+            </xsl:when>
+            <xsl:when test = "$footnote-placement = 'endnote' and string(. + 1) != 'NaN'">
+                <fo:inline xsl:use-attribute-sets="footnote-body-label-inline">
+                    <xsl:value-of select="."/>
+                </fo:inline> 
+            </xsl:when>
+        </xsl:choose>
     </xsl:template>
 
     <xsl:template match="footnote" mode="footnote">
+        <xsl:choose>
+            <xsl:when test="$footnote-style = 'list'">
+                <xsl:call-template name="footnote-as-list"/>
+            </xsl:when>
+            <xsl:when test="$footnote-style = 'traditional'">
+                <xsl:call-template name="footnote-traditional"/>
+            </xsl:when>
+        </xsl:choose>
+    </xsl:template>
+
+    <xsl:template name="footnote-list-body">
+        <fo:list-block xsl:use-attribute-sets="footnote-list-block">
+            <fo:list-item>
+                <fo:list-item-label xsl:use-attribute-sets="footnote-item-label">
+                    <fo:block xsl:use-attribute-sets="footnote-label-block">
+                        <xsl:value-of select="label"/>
+                    </fo:block>
+                </fo:list-item-label>
+                <fo:list-item-body xsl:use-attribute-sets="footnote-item-body">
+                    <xsl:apply-templates select="paragraph" mode="footnote"/>
+                </fo:list-item-body>
+            </fo:list-item>
+        </fo:list-block>
+        <fo:block role="spacer" font-size="{$space-between-footnotes}" >&#x00a0;</fo:block>
+    </xsl:template>
+
+    <xsl:template name="footnote-as-list">
         <fo:footnote>
             <xsl:apply-templates select="label" mode="footnote"/>
             <fo:footnote-body xsl:use-attribute-sets="footnote-block">
-                <fo:list-block xsl:use-attribute-sets="footnote-list-block">
-                    <fo:list-item>
-                        <fo:list-item-label xsl:use-attribute-sets="footnote-item-label">
-                            <fo:block xsl:use-attribute-sets="footnote-label-block">
-                                <xsl:value-of select="label"/>
-                            </fo:block>
-                        </fo:list-item-label>
-                        <fo:list-item-body xsl:use-attribute-sets="footnote-item-body">
-                            <xsl:apply-templates select="paragraph" mode="footnote"/>
-                        </fo:list-item-body>
-                    </fo:list-item>
-                </fo:list-block>
+                <xsl:call-template name="footnote-list-body"/>
+            </fo:footnote-body>
+        </fo:footnote>
+    </xsl:template>
+
+    <xsl:template name="footnote-traditional">
+        <fo:footnote>
+            <xsl:apply-templates select="label" mode="footnote"/>
+            <fo:footnote-body xsl:use-attribute-sets="footnote-body">
+                <xsl:apply-templates select="paragraph" mode="traditional-footnote"/>
+                <fo:block role="spacer" font-size="{$space-between-footnotes}" >&#x00a0;</fo:block>
             </fo:footnote-body>
         </fo:footnote>
     </xsl:template>
     
 
     <xsl:template match="footnote/label" mode="footnote">
-        <fo:inline>
+        <fo:inline xsl:use-attribute-sets="footnote-body-label-inline">
             <xsl:apply-templates/>
         </fo:inline>
     </xsl:template>
@@ -77,6 +151,64 @@
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="footnote|footnote/label|footnote/paragraph"/>
+    <xsl:template match="footnote/paragraph[1]" mode="traditional-footnote" priority="2">
+        <fo:block xsl:use-attribute-sets="footnote-first-paragraph-block">
+            <fo:inline xsl:use-attribute-sets="footnote-label-inline">
+                <xsl:value-of select="../label"/>
+            </fo:inline>
+            <xsl:apply-templates/>
+        </fo:block>
+    </xsl:template>
+
+    <xsl:template match="footnote/paragraph" mode="traditional-footnote">
+        <fo:block xsl:use-attribute-sets="footnote-paragraph-block">
+            <xsl:apply-templates/>
+        </fo:block>
+    </xsl:template>
+
+    <xsl:template match="footnote[label = '1']" priority="2">
+        <xsl:if test="$footnote-placement='endnote'">
+            <fo:block role="endnotes" xsl:use-attribute-sets="endnotes-block">
+                <xsl:apply-templates select="../rubric[@classes='endnotes']" mode="endnotes"/>
+                <xsl:for-each select="self::footnote|following-sibling::footnote">
+                    <xsl:variable name="label" select="label"/>
+                    <xsl:if test="string($label + 1) != 'NaN'">
+                        <xsl:call-template name="endnote"/>
+                    </xsl:if>
+                </xsl:for-each>
+            </fo:block>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="endnote">
+        <xsl:choose>
+            <xsl:when test="$footnote-style = 'list'">
+                <xsl:call-template name="footnote-list-body"/>
+            </xsl:when>
+            <xsl:when test="$footnote-style = 'traditional'">
+                <xsl:choose>
+                    <xsl:when test="self::footnote[label = '1']">
+                        <fo:block role="endnote" xsl:use-attribute-sets="endnote-first-block">
+                            <xsl:apply-templates select="paragraph" mode="traditional-footnote"/>
+                        </fo:block>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <fo:block role="endnote" xsl:use-attribute-sets="endnote-block">
+                            <xsl:apply-templates select="paragraph" mode="traditional-footnote"/>
+                        </fo:block>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:when>
+        </xsl:choose>
+    </xsl:template>
+
+    <xsl:template match="rubric[@classes='endnotes']" mode="endnotes">
+        <fo:block role="endnotes-title" xsl:use-attribute-sets="endnotes-title-block">
+            <xsl:apply-templates/>
+        </fo:block>
+    </xsl:template>
+
+
+    <xsl:template match="footnote|footnote/label|footnote/paragraph|rubric[@classes='endnotes']"/>
 
 </xsl:stylesheet>
