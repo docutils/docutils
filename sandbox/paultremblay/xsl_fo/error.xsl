@@ -82,6 +82,16 @@
                 <xsl:text>Processing XSLT now quiting.</xsl:text>
             </xsl:message>
         </xsl:if>
+        <xsl:if test= "$internal-link-type != 'link'  and $internal-link-type != 'page'
+                and $internal-link-type != 'page-link'">
+            <xsl:message terminate = "yes">
+                <xsl:text>"</xsl:text>
+                <xsl:value-of select="$internal-link-type"/>
+                <xsl:text>" not a valid value for param "internal-link-type"&#xA;</xsl:text>
+                <xsl:text>Valid values are 'link', and 'page', and 'page-link'&#xA;</xsl:text>
+                <xsl:text>Processing XSLT now quiting.</xsl:text>
+            </xsl:message>
+        </xsl:if>
         <!--
         <xsl:if test= "$document-title != 'own-page'  and $document-title != 'not-own-page'">
             <xsl:message terminate = "yes">
