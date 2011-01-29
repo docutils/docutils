@@ -63,7 +63,13 @@
         </fo:basic-link>
     </xsl:template> 
 
-    <xsl:template match="target"/>
+    <xsl:template match="target">
+        <xsl:if test="parent::paragraph">
+            <fo:inline id="{@ids}">
+                <xsl:apply-templates/>
+            </fo:inline>
+        </xsl:if>
+    </xsl:template>
     
 
 
