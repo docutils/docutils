@@ -23,6 +23,7 @@
     <xsl:include href = "table.xsl"/>
     <xsl:include href = "footnote.xsl"/>
     <xsl:include href = "citation.xsl"/>
+    <xsl:include href = "admonitions.xsl"/>
     <xsl:include href = "inline.xsl"/>
     <xsl:include href = "misc.xsl"/>
     <xsl:include href = "error.xsl"/>
