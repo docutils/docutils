@@ -21,6 +21,7 @@
     <xsl:include href="line_block.xsl"/>
     <xsl:include href="table.xsl"/>
     <xsl:include href="footnote.xsl"/>
+    <xsl:include href="admonitions.xsl"/>
     <xsl:include href="inline.xsl"/>
     <xsl:include href="comment.xsl"/>
     <xsl:include href="utils.xsl"/>
@@ -210,6 +211,26 @@
                 Attribute sets for footnotes, endnotes, and the endnotes title.
             </block>
             <xsl:apply-templates select="document('../../xsl_fo/footnote.xsl')/xsl:stylesheet"/>
+
+            <!--admonitions attribute sets-->
+            <xsl:call-template name="make-title">
+                <xsl:with-param name="level">3</xsl:with-param>
+                <xsl:with-param name="text">Admonitions</xsl:with-param>
+            </xsl:call-template>
+            <block>
+                Attribute sets for Admonitions. By default, the admontioins have a 
+                border around them. Each admonition gets its title from the parameter
+                of that name. For example, the danger admonitions title gets its title
+                from the 'danger-title' parameter, the caution from the `caution-title`
+                paramter, and so fourth.
+            </block>
+            <block>
+                Although each admonition and each admonition title has its own attribute-set,
+                by default they all inherit these values from two default attribute sets. (See
+                below.) Each of these areas can thus be customized. In contrast, all the paragrahs
+                in each admonition are identical.
+            </block>
+            <xsl:apply-templates select="document('../../xsl_fo/admonitions.xsl')/xsl:stylesheet"/>
 
             <!--option-inline attribute sets-->
             <xsl:call-template name="make-title">
