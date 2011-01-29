@@ -129,4 +129,32 @@ are placed in the same place as in the RST document-->
 refer to a page number ('page'), or both ('link-page')-->
 <xsl:param name="internal-link-type">link</xsl:param>
 
+<!--text for attention admontion-->
+<xsl:param name="attention-title">Attention!</xsl:param>
+
+<!--text for caution admontion-->
+<xsl:param name="caution-title">Caution!</xsl:param>
+
+<!--text for danger admontion-->
+<xsl:param name="danger-title">!Danger!</xsl:param>
+
+<!--text for error admontion-->
+<xsl:param name="error-title">Error</xsl:param>
+
+<!--text for hint admontion-->
+<xsl:param name="hint-title">Hint</xsl:param>
+
+<!--text for important admontion-->
+<xsl:param name="important-title">Important</xsl:param>
+
+<!--text for note admontion-->
+<xsl:param name="note-title">Note</xsl:param>
+
+<!--text for tip admontion-->
+<xsl:param name="tip-title">Tip</xsl:param>
+
+<!--text for  admontion-->
+<xsl:param name="warning-title">Warning!</xsl:param>
+
+
 </xsl:stylesheet>
