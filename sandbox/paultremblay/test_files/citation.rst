@@ -1,5 +1,7 @@
-Here is a citation reference: [CIT2002]_.
+Here is a citation reference: [CITESP]_.
 
-.. [CIT2002] This is the citation.  It's just like a footnote,
-   except the label is textual.
+
+.. [CITESP] (Esperdy, Gabrielle. 1999)  
+
+
 
