@@ -15,7 +15,7 @@
         -->
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="admonition-default-title-block">
+    <xsl:attribute-set name="default-admonition-title-block">
         <xsl:attribute name="space-after">10pt</xsl:attribute>
         <xsl:attribute name="font-size">larger</xsl:attribute>
         <xsl:attribute name="color">red</xsl:attribute>
@@ -54,42 +54,43 @@
     <xsl:attribute-set name="warning-block" use-attribute-sets="default-admonition-outer-block">
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="attention-title-block" use-attribute-sets="admonition-default-title-block">
+    <xsl:attribute-set name="attention-title-block" use-attribute-sets="default-admonition-title-block">
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="caution-title-block" use-attribute-sets="admonition-default-title-block">
+    <xsl:attribute-set name="caution-title-block" use-attribute-sets="default-admonition-title-block">
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="danger-title-block" use-attribute-sets="admonition-default-title-block">
+    <xsl:attribute-set name="danger-title-block" use-attribute-sets="default-admonition-title-block">
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="error-title-block" use-attribute-sets="admonition-default-title-block">
+    <xsl:attribute-set name="error-title-block" use-attribute-sets="default-admonition-title-block">
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="hint-title-block" use-attribute-sets="admonition-default-title-block">
+    <xsl:attribute-set name="hint-title-block" use-attribute-sets="default-admonition-title-block">
         <xsl:attribute name="color">black</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="important-title-block" use-attribute-sets="admonition-default-title-block">
+    <xsl:attribute-set name="important-title-block" use-attribute-sets="default-admonition-title-block">
         <xsl:attribute name="color">black</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="note-title-block" use-attribute-sets="admonition-default-title-block">
+    <xsl:attribute-set name="note-title-block" use-attribute-sets="default-admonition-title-block">
         <xsl:attribute name="color">black</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="tip-title-block" use-attribute-sets="admonition-default-title-block">
+    <xsl:attribute-set name="tip-title-block" use-attribute-sets="default-admonition-title-block">
         <xsl:attribute name="color">black</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="warning-title-block" use-attribute-sets="admonition-default-title-block">
+    <xsl:attribute-set name="warning-title-block" use-attribute-sets="default-admonition-title-block">
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="admonition-custorm-title-block" use-attribute-sets="admonition-default-title-block">
+    <xsl:attribute-set name="admonition-custorm-title-block" use-attribute-sets="default-admonition-title-block">
         <xsl:attribute name="color">black</xsl:attribute>
     </xsl:attribute-set>
 
     <xsl:attribute-set name="admonition-paragraph-block">
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
     </xsl:attribute-set>
 
     <xsl:attribute-set name="admonition-first-paragraph-block" use-attribute-sets="admonition-paragraph-block">
