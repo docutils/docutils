@@ -167,22 +167,37 @@ Outline support
 
   * For item lists
 
-Caring about literal blocks `rst-shift-region-*`
-================================================
+`rst-shift-region-*` should only shift
+======================================
 
-* `rst-shift-region-*` should care about literal blocks
+* `rst-shift-region-*` should only shift a region
 
-  * These should not be filled
+  * Should work exactly like `indent-rigidly` just with indentation
+    points instead of columns
 
-* Similarly for other stuff which should not be filled:
+* Filling should be an own function
 
-  * Tables  
+  * See `Sophisticated filling`_
 
-  * Field lists
+Sophisticated filling
+=====================
 
-Filling definitions
-===================
-
-* Filling with M-q doesn't fill definitions properly
+* Filling with M-q doesn't care about special parts
 
   * A definition of `fill-paragraph-function` or similar could be useful
+
+* These things must be filled special
+
+  * Definitions must be filled special
+
+  * Field lists with separating empty lines
+
+* These things may not be filled at all
+
+  * Literal blocks
+
+  * Tables
+
+  * Field lists without separating empty lines
+
+  * These should not be filled

@@ -39,7 +39,7 @@
 ;;   document;
 ;; - Function to insert list, processing item bullets and enumerations
 ;;   automatically;
-;; - Font-lock highlighting of notable reStructuredText structures;
+;; - Font-lock highlighting of most reStructuredText structures;
 ;; - Some other convenience functions.
 ;;
 ;; See the accompanying document in the docutils documentation about
@@ -58,9 +58,7 @@
 ;;    C-c C-a (also C-=): rst-adjust
 ;;
 ;; Updates or rotates the section title around point or promotes/demotes the
-;; adornments within the region (see full details below).  Note that C-= is a
-;; good binding, since it allows you to specify a negative arg easily with C--
-;; C-= (easy to type), as well as ordinary prefix arg with C-u C-=.
+;; adornments within the region (see full details below).
 ;;
 ;; For more on bindings, see rst-mode-map below.  There are also many variables
 ;; that can be customized, look for defcustom and defvar in this file.
@@ -99,7 +97,7 @@
 ;; section title faces.
 ;;
 ;; The general idea for section title faces is to have a non-default background
-;; but do not change the background.  The section level is shown by the
+;; but do not change the foreground.  The section level is shown by the
 ;; lightness of the background color.  If you like this general idea of
 ;; generating faces for section titles but do not like the details this group
 ;; is the point where you can customize the details.  If you do not like the
@@ -148,8 +146,6 @@
 
 ;; - rst-enumeration-region: Select a single paragraph, with the top at one
 ;;   blank line before the beginning, and it will fail.
-;; - The active region goes away when we shift it left or right, and this
-;;   prevents us from refilling it automatically when shifting many times.
 ;; - The suggested adornments when adjusting should not have to cycle
 ;;   below one below the last section adornment level preceding the
 ;;   cursor.  We need to fix that.
@@ -550,19 +546,14 @@ are defined as well but give an additional message."
     ;; Makes region a line-block.
     (rst-define-key map [?\C-c ?\C-r ?\C-l] 'rst-line-block-region
 		    [?\C-c ?\C-d])
-    ;; Shift region left or right (taking into account of enumerations/bullets,
-    ;; etc.).
-    ;; FIXME: These bindings are ugly and should be replaced by [?\C-c TAB]
-    ;;        when `rst-shift-region-*' works more like `indent-rigidly'
-    (rst-define-key map [?\C-c ?\C-r (control tab)] 'rst-shift-region-left
-		    [?\C-c ?\C-l t])
-    (rst-define-key map [?\C-c ?\C-r tab] 'rst-shift-region-right
-		    [?\C-c ?\C-r t])
+    ;; Shift region left or right according to indentation points
+    (rst-define-key map [?\C-c ?\C-r tab] 'rst-shift-region
+		    [?\C-c ?\C-r t] [?\C-c ?\C-l t])
 
     ;;
     ;; Operating on lists.
     ;;
-    ;; \C-c \C-l is the keymap for regions
+    ;; \C-c \C-l is the keymap for lists
     (rst-define-key map [?\C-c ?\C-l ?\C-h] 'describe-prefix-bindings)
     ;; Makes paragraphs in region as a bullet list.
     (rst-define-key map [?\C-c ?\C-l ?\C-b] 'rst-bullet-list-region
@@ -851,7 +842,7 @@ for modes derived from Text mode, like Mail mode."
 				      (?` simple 0)
 				      (?# simple 0)
 				      (?@ simple 0))
-  "Preferred ordering of section title adornments.
+  "Preferred hierarchy of section title adornments.
 
 A list consisting of lists of the form (CHARACTER STYLE INDENT).
 CHARACTER is the character used. STYLE is one of the symbols
@@ -864,8 +855,19 @@ This sequence is consulted to offer a new adornment suggestion
 when we rotate the underlines at the end of the existing
 hierarchy of characters, or when there is no existing section
 title in the file."
-  :group 'rst-adjust)
-
+  :group 'rst-adjust
+  :type `(repeat
+	  (group :tag "Adornment specification"
+		 (choice :tag "Adornment character"
+			 ,@(mapcar (lambda (char)
+				     (list 'const
+					   :tag (char-to-string char) char))
+				   rst-adornment-chars))
+		 (radio :tag "Adornment type"
+			(const :tag "Overline and underline" over-and-under)
+			(const :tag "Underline only" simple))
+		 (integer :tag "Indentation for overline and underline type"
+			  :value 0))))
 
 (defcustom rst-default-indent 1
   "Number of characters to indent the section title.
@@ -2473,7 +2475,7 @@ brings the cursor in that section."
       (error "Buffer for this section was killed"))
     pos))
 
-;; FIXME: Cursor before of behind the list must be handled properly; before the
+;; FIXME: Cursor before or behind the list must be handled properly; before the
 ;;        list should jump to the top and behind the list to the last normal
 ;;        paragraph
 (defun rst-goto-section (&optional kill)
@@ -2616,22 +2618,19 @@ backwards in the file (default is to use 1)."
 ;; Functions to work on item lists (e.g. indent/dedent, enumerate), which are
 ;; always 2 or 3 characters apart horizontally with rest.
 
-(defvar rst-shift-fill-region nil
-  "If non-nil, automatically re-fill the region that is being shifted.")
-
 (defun rst-find-leftmost-column (beg end)
-  "Find the leftmost column in the region."
-  (let ((mincol 1000))
+  "Return the leftmost column in region BEG to END."
+  (let (mincol)
     (save-excursion
       (goto-char beg)
       (while (< (point) end)
         (back-to-indentation)
         (unless (looking-at (rst-re 'lin-end))
-	  (setq mincol (min mincol (current-column))))
-        (forward-line 1)
-        ))
+	  (setq mincol (if mincol
+			   (min mincol (current-column))
+			 (current-column))))
+        (forward-line 1)))
     mincol))
-
 
 ;; What we really need to do is compute all the possible alignment possibilities
 ;; and then select one.
@@ -2651,198 +2650,97 @@ backwards in the file (default is to use 1)."
 ;; Move backwards, accumulate the beginning positions, and also the second
 ;; positions, in case the line matches the bullet pattern, and then sort.
 
-(defun rst-compute-bullet-tabs (&optional pt)
+;; FIXME: Must consider other indentation points - such as literal blocks
+(defun rst-compute-tabs (pt)
   "Build the list of possible horizontal alignment points.
-Search backwards from point (or point PT if specified) to
-build the list of possible horizontal alignment points that
-includes the beginning and contents of a restructuredtext
-bulleted or enumerated list item.  Return a sorted list
-of (COLUMN-NUMBER . LINE) pairs."
+Search backwards from point PT to build the list of possible
+horizontal alignment points that includes the beginning and
+contents of a restructuredtext bulleted or enumerated list item.
+Return a sorted list of (COLUMN . POINT) pairs where POINT is the
+point where COLUMN is found. Return nil if no tab is found in the
+text above."
   (save-excursion
-    (when pt (goto-char pt))
-
-    ;; We work our way backwards and towards the left.
-    (let ((leftcol 100000) ; Current column.
-	  (tablist nil) ; List of tab positions.
-	  )
-
-      ;; Start by skipping the current line.
-      (forward-line -1)
-
-      ;; Search backwards for each line.
-      (while (and (> (point) (point-min))
-		  (> leftcol 0))
-
-	;; Skip empty lines.
+    (goto-char pt)
+    ;; We work our way backwards and towards the left
+    (let (leftmost tablist) ; List of (COLUMN . POINT) for each tab
+      (while (and (zerop (forward-line -1))
+		  (or (not leftmost)
+		      (> leftmost 0)))
 	(unless (looking-at (rst-re 'lin-end))
-	  ;; Inspect the current non-empty line
 	  (back-to-indentation)
-
-	  ;; Skip lines that are beyond the current column (we want to move
-	  ;; towards the left).
 	  (let ((col (current-column)))
-	    (when (< col leftcol)
-
-	      ;; Add the beginning of the line as a tabbing point.
+	    ;; Skip lines indented more
+	    (when (or (not leftmost)
+		      (< col leftmost))
+	      ;; Add indentation of the line as a tabbing point if new
 	      (unless (memq col (mapcar 'car tablist))
 		(push (cons col (point)) tablist))
-
-	      ;; Look at the line to figure out if it is a bulleted or enumerate
-	      ;; list item.
-	      (when (looking-at (rst-re
-				 `(:grp
-				   (:alt
-				    itmany-tag
-				    ;; FIXME: What does this mean?
-				    (:seq ,(char-after) "\\{2,\\}"))
-				   hws-sta)
+	      (when (looking-at (rst-re ; Non-empty item line
+				 '(:grp itmany-tag hws-sta)
 				 "\\S "))
-		;; Add the column of the contained item.
-		(let* ((matchlen (length (match-string 1)))
-		       (newcol (+ col matchlen)))
-		  (unless (or (>= newcol leftcol)
-			      (memq (+ col matchlen) (mapcar 'car tablist)))
-		    (push (cons (+ col matchlen) (+ (point) matchlen))
-                          tablist)))
-		)
+		(goto-char (match-end 1))
+		(let ((newcol (current-column)))
+		  ;; Add the column of the contained item if still less indented
+		  (when (and (or (not leftmost)
+				 (< newcol leftmost))
+			     (not (memq newcol (mapcar 'car tablist))))
+		    (push (cons newcol (point)) tablist))))
+	      (setq leftmost col)))))
+      (sort tablist (lambda (x y) (<= (car x) (car y)))))))
 
-	      (setq leftcol col)
-	      )))
+(define-obsolete-variable-alias
+  'rst-shift-basic-offset 'rst-indent-width "> r6647")
+(defcustom rst-indent-width 2
+  "Indent width when there is no preceding indentation point."
+  :group 'rst
+  :type '(integer))
 
-	(forward-line -1))
-
-      (sort tablist (lambda (x y) (<= (car x) (car y))))
-      )))
-
-(defun rst-debug-print-tabs (tablist)
-  "Insert a line and place special characters at the tab points in TABLIST."
-  (beginning-of-line)
-  (insert (concat "\n" (make-string 1000 ? ) "\n"))
-  (beginning-of-line 0)
-  (dolist (col tablist)
-    (beginning-of-line)
-    (forward-char (car col))
-    (delete-char 1)
-    (insert "@")
-    ))
-
-(defun rst-debug-mark-found (tablist)
-  "Insert a line and place special characters at the tab points in TABLIST."
-  (dolist (col tablist)
-    (when (cdr col)
-      (goto-char (cdr col))
-      (insert "@"))))
-
-
-(defvar rst-shift-basic-offset 2
-  "Basic horizontal shift distance when there is no preceding alignment tabs.")
-
-;; FIXME Doesn't keep the region
-(defun rst-shift-region-guts (find-next-fun offset-fun)
-  "(See `rst-shift-region-right' for a description)."
-  (let* ((mbeg (set-marker (make-marker) (region-beginning)))
-	 (mend (set-marker (make-marker) (region-end)))
-	 (tabs (rst-compute-bullet-tabs mbeg))
-	 (leftmostcol (rst-find-leftmost-column (region-beginning) (region-end)))
-	 )
-    ;; Add basic offset tabs at the end of the list.  This is a better
-    ;; implementation technique than hysteresis and a basic offset because it
-    ;; insures that movement in both directions is consistently using the same
-    ;; column positions.  This makes it more predictable.
-    (setq tabs
-	  (append tabs
-		  (mapcar (lambda (x) (cons x nil))
-			  (let ((maxcol 120)
-				(max-lisp-eval-depth 2000))
-			    (flet ((addnum (x)
-					   (if (> x maxcol)
-					       nil
-					     (cons x (addnum
-						      (+ x rst-shift-basic-offset))))))
-			      (addnum (or (caar (last tabs)) 0))))
-			  )))
-
-    ;; (For debugging.)
-    ;;; (save-excursion (goto-char mbeg) (forward-char -1) (rst-debug-print-tabs tabs))))
-    ;;; (print tabs)
-    ;;; (save-excursion (rst-debug-mark-found tabs))
-
-    ;; Apply the indent.
-    (indent-rigidly
-     mbeg mend
-
-     ;; Find the next tab after the leftmost columnt.
-     (let ((tab (funcall find-next-fun tabs leftmostcol)))
-
-       (if tab
-	   (progn
-	     (when (cdar tab)
-	       (message "Aligned on '%s'"
-			(save-excursion
-			  (goto-char (cdar tab))
-			  (buffer-substring-no-properties
-			   (line-beginning-position)
-			   (line-end-position))))
-	       )
-	     (- (caar tab) leftmostcol)) ; Num chars.
-
-	 ;; Otherwise use the basic offset
-	 (funcall offset-fun rst-shift-basic-offset)
-	 )))
-
-    ;; Optionally reindent.
-    (when rst-shift-fill-region
-      (fill-region mbeg mend))
-    ))
-
-;; FIXME Should work more like `indent-rigidly'
-(defun rst-shift-region-right (pfxarg)
-  "Indent region ridigly, by a few characters to the right.
-This function first computes all possible alignment columns by
-inspecting the lines preceding the region for bulleted or
-enumerated list items.  If the leftmost column is beyond the
-preceding lines, the region is moved to the right by
-`rst-shift-basic-offset'.  With a prefix argument, do not
-automatically fill the region."
-  (interactive "P")
-  (let ((rst-shift-fill-region
-	 (if (not pfxarg) rst-shift-fill-region)))
-    (rst-shift-region-guts (lambda (tabs leftmostcol)
-			     (let ((cur tabs))
-			       (while (and cur (<= (caar cur) leftmostcol))
-				 (setq cur (cdr cur)))
-			       cur))
-			   'identity
-			   )))
-
-(defun rst-shift-region-left (pfxarg)
-  "Like `rst-shift-region-right', except we move to the left.
-Also, if invoked with a negative prefix arg, the entire
-indentation is removed, up to the leftmost character in the
-region, and automatic filling is disabled."
-  (interactive "P")
-  (let ((mbeg (set-marker (make-marker) (region-beginning)))
-	(mend (set-marker (make-marker) (region-end)))
-	(leftmostcol (rst-find-leftmost-column
-		      (region-beginning) (region-end)))
-	(rst-shift-fill-region
-	 (if (not pfxarg) rst-shift-fill-region)))
-
-    (when (> leftmostcol 0)
-      (if (and pfxarg (< (prefix-numeric-value pfxarg) 0))
-	  (progn
-	    (indent-rigidly (region-beginning) (region-end) (- leftmostcol))
-	    (when rst-shift-fill-region
-	      (fill-region mbeg mend))
-	    )
-	(rst-shift-region-guts (lambda (tabs leftmostcol)
-				 (let ((cur (reverse tabs)))
-				   (while (and cur (>= (caar cur) leftmostcol))
-				     (setq cur (cdr cur)))
-				   cur))
-			       '-
-			       ))
-      )))
+(defun rst-shift-region (beg end cnt)
+  "Shift region BEG to END by CNT indentation points.
+Shift by one indentation point to the right (CNT > 0) or
+left (CNT < 0) or remove all indentation (CNT = 0). An
+indendation point is taken from the text above. If no suitable
+indendation point is found `rst-indent-width' is used."
+  (interactive "r\np")
+  (let ((tabs (rst-compute-tabs beg))
+	(leftmostcol (rst-find-leftmost-column beg end)))
+    (when (or (> leftmostcol 0) (> cnt 0))
+      ;; Apply the indent
+      (indent-rigidly
+       beg end
+       (if (zerop cnt)
+	   (- leftmostcol)
+	 ;; Find the next tab after the leftmost column
+	 (let* ((cmp (if (> cnt 0) '> '<))
+		(tabs (if (> cnt 0) tabs (reverse tabs)))
+		(len (length tabs))
+		(dir (signum cnt)) ; Direction to take
+		(abs (abs cnt)) ; Absolute number of steps to take
+		;; Get the position of the first tab beyond leftmostcol
+		(fnd (position-if (lambda (elt)
+				    (funcall cmp (car elt) leftmostcol))
+				  tabs))
+		;; Virtual position of tab
+		(pos (+ (or fnd len) (1- abs)))
+		(tab (if (< pos len)
+			 ;; Tab exists - use it
+			 (nth pos tabs)
+		       ;; Column needs to be computed
+		       (let ((col (+ (or (caar (last tabs)) leftmostcol)
+				     ;; Base on last known column
+				     (* (- pos (1- len)) ; Distance left
+					dir ; Direction to take
+					rst-indent-width))))
+			 (list (if (< col 0) 0 col))))))
+	   (when (cdr tab)
+	     ;; If a point is given output message
+	     (message "Aligned on '%s'"
+		      (save-excursion
+			(goto-char (cdr tab))
+			(buffer-substring-no-properties
+			 (line-beginning-position)
+			 (line-end-position)))))
+	   (- (car tab) leftmostcol)))))))
 
 (defmacro rst-iterate-leftmost-paragraphs
   (beg end first-only body-consequent body-alternative)
@@ -3172,6 +3070,7 @@ details check the Rst Faces Defaults group."
 	  :value-type (face))
   :set-after '(rst-level-face-max))
 
+;; FIXME: It should be possible to give "#RRGGBB" type of color values
 (defun rst-define-level-faces ()
   "Define the faces for the section title text faces from the values."
   ;; All variables used here must be checked in `rst-set-level-default'
@@ -3337,6 +3236,26 @@ details check the Rst Faces Defaults group."
       (0 ,rst-literal-face append)))
 
     ;; `Doctest Blocks`_
+    ;; FIXME: This is wrong according to the specification:
+    ;;
+    ;;   Doctest blocks are text blocks which begin with ">>> ", the Python
+    ;;   interactive interpreter main prompt, and end with a blank line.
+    ;;   Doctest blocks are treated as a special case of literal blocks,
+    ;;   without requiring the literal block syntax. If both are present, the
+    ;;   literal block syntax takes priority over Doctest block syntax:
+    ;;
+    ;;   This is an ordinary paragraph.
+    ;;
+    ;;   >>> print 'this is a Doctest block'
+    ;;   this is a Doctest block
+    ;;
+    ;;   The following is a literal block::
+    ;;
+    ;;       >>> This is not recognized as a doctest block by
+    ;;       reStructuredText.  It *will* be recognized by the doctest
+    ;;       module, though!
+    ;;
+    ;;   Indentation is not required for doctest blocks.
     (,(rst-re 'lin-beg '(:grp (:alt ">>>" ell-tag)) '(:grp ".+"))
      (1,rst-block-face)
      (2 ,rst-literal-face))
