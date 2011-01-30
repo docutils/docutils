@@ -22,6 +22,7 @@
     <xsl:include href="table.xsl"/>
     <xsl:include href="footnote.xsl"/>
     <xsl:include href="admonitions.xsl"/>
+    <xsl:include href="image_figure.xsl"/>
     <xsl:include href="inline.xsl"/>
     <xsl:include href="comment.xsl"/>
     <xsl:include href="utils.xsl"/>
@@ -231,6 +232,33 @@
                 in each admonition are identical.
             </block>
             <xsl:apply-templates select="document('../../xsl_fo/admonitions.xsl')/xsl:stylesheet"/>
+
+            <!--image and figure attribute sets-->
+            <xsl:call-template name="make-title">
+                <xsl:with-param name="level">3</xsl:with-param>
+                <xsl:with-param name="text">Image and Figure</xsl:with-param>
+            </xsl:call-template>
+            <block>
+                Attribute sets for Images and Figures. The image property of
+                ``alt`` and ``target`` are ignored by the stylesheets, since
+                they have no use in PDF. In addtion, if the ``align`` is set
+                to ``top`` or ``bottom``, both properties that have no meaning
+                for PDF, the stylesheets will report an error, and if
+                ``strict`` is set to ``true``, quit. 
+            </block>
+
+            <block>
+                Likwise, the figure ``figwidth`` property will be ignored, since there 
+                is not way to implement this property directy in FO. 
+            </block>
+            <block>
+                In order to control the scaling, alignment, and width of images and
+                figures, it is better to use the attribute sets than to try to set these
+                properties in RST. The regions of 'image', 'figure', 'caption', and 'legend'
+                are all wrapped in blocks. Use the attribute sets for these blocks to control the 
+                properties.
+            </block>
+            <xsl:apply-templates select="document('../../xsl_fo/image_figure.xsl')/xsl:stylesheet"/>
 
             <!--option-inline attribute sets-->
             <xsl:call-template name="make-title">
