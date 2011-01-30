@@ -8,6 +8,9 @@
     <xsl:attribute-set name="figure-block">
     </xsl:attribute-set>
 
+    <xsl:attribute-set name="image-block">
+    </xsl:attribute-set>
+
     <xsl:attribute-set name="figure-caption-block">
         <xsl:attribute name="space-before">12pt</xsl:attribute>
         <xsl:attribute name="space-after">12pt</xsl:attribute>
@@ -60,7 +63,7 @@
             </xsl:if>
             <xsl:if test="@width">
                 <xsl:attribute name="content-width">
-                    <xsl:value-of select="@height"/>
+                    <xsl:value-of select="@width"/>
                 </xsl:attribute>
             </xsl:if>
             <!--doesn't work-->
@@ -79,10 +82,12 @@
         </xsl:variable>
         <xsl:choose>
             <xsl:when test="parent::figure">
-                <xsl:call-template name="create-external-image-element"/>
+                <fo:block role="image" xsl:use-attribute-sets="image-block" >
+                    <xsl:call-template name="create-external-image-element"/>
+                </fo:block>
             </xsl:when>
             <xsl:otherwise>
-                <fo:block role="image" xsl:use-attribute-sets="figure-block" text-align="{$text-align}" >
+                <fo:block role="image" xsl:use-attribute-sets="image-block" text-align="{$text-align}" >
                     <xsl:call-template name="create-external-image-element"/>
                 </fo:block>
             </xsl:otherwise>
