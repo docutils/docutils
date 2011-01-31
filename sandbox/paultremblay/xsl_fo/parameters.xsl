@@ -98,8 +98,14 @@ some integer, a multiple of the lines you want to number.
 For example, '5' will number every fifth line-->
 <xsl:param name="number-verse"></xsl:param>
 
-<!--text to use before an attributeion of a block quote-->
+<!--text to use before an attribution of a block quote-->
 <xsl:param name="text-before-block-quote-attribution">&#x2014;</xsl:param>
+
+<!--text to use before an attribution in an epigraph-->
+<xsl:param name="text-before-epigraph-attribution">&#x2014;</xsl:param>
+
+<!--text to use before an attribution in an pull-quote-->
+<xsl:param name="text-before-pull-quote-attribution">&#x2014;</xsl:param>
 
 <!--where to place table title valid options are 'top' or 'bottom'-->
 <xsl:param name="table-title-placement">bottom</xsl:param>
