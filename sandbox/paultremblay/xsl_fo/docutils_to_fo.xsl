@@ -25,6 +25,7 @@
     <xsl:include href = "citation.xsl"/>
     <xsl:include href = "admonitions.xsl"/>
     <xsl:include href = "image_figure.xsl"/>
+    <xsl:include href = "body_directives.xsl"/>
     <xsl:include href = "inline.xsl"/>
     <xsl:include href = "misc.xsl"/>
     <xsl:include href = "error.xsl"/>
