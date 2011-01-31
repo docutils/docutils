@@ -93,3 +93,12 @@ space-before.conitionality="retain".
 <!--sets header 1/2 inch down from top margin-->
 <fo:block space-before=".5in" space-before.conditionality = "retain">
 
+    * em (ems, the height of the element's font)
+    * ex (x-height, the height of the letter "x")
+    * px (pixels, relative to the canvas resolution)
+    * in (inches; 1in=2.54cm)
+    * cm (centimeters; 1cm=10mm)
+    * mm (millimeters)
+    * pt (points; 1pt=1/72in)
+    * pc (picas; 1pc=12pt)
+
