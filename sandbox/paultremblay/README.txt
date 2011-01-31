@@ -1,5 +1,5 @@
 =========================
- README: Docutils2fo 0.1
+ README: Docutils2fo 0.5
 =========================
 
 :Author: Paul Tremblay
@@ -70,12 +70,6 @@ Completion
 
 - Doctest Blocks
 
-TODO
-=====
-
-XSLT Stylesheets
------------------
-
 - Tables
 
 - Footnotes
@@ -87,8 +81,23 @@ XSLT Stylesheets
 - Interpreted Text
 
 - inline Literals
+- Specific Admonitions
+- Generic Admonition
+- Image
+- Figure
+- Topic
+- Sidebar
+- Parsed Literal Block
+- Rubric
+- Epigraph
+- Highlights
+- Pull-Quote
+- Compound Paragraph
+- Container
 
-- Directives
+TODO
+=====
+
 
 Python Code
 ------------
@@ -113,3 +122,9 @@ Documentaion
 
 - Write a detailed overview
 
+Limitations
+------------
+
+* Cannot do transitions as well as latex
+* Cannot put borders around page
+* Cannot do sidebars
