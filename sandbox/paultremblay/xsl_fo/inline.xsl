@@ -19,6 +19,15 @@
         <xsl:attribute name="color">blue</xsl:attribute>
     </xsl:attribute-set>
 
+    <xsl:attribute-set name="literal-inline">
+        <xsl:attribute name="font-family">monospace</xsl:attribute>
+        <xsl:attribute name="font-size">8</xsl:attribute>
+        <xsl:attribute name="white-space">pre</xsl:attribute>
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="title-reference-inline" >
+	<xsl:attribute name="font-style">italic</xsl:attribute>
+    </xsl:attribute-set>
 
     <xsl:template match="strong">
         <fo:inline xsl:use-attribute-sets="strong-inline">
@@ -69,6 +78,18 @@
                 <xsl:apply-templates/>
             </fo:inline>
         </xsl:if>
+    </xsl:template>
+
+    <xsl:template match="literal">
+        <fo:inline xsl:use-attribute-sets="literal-inline">
+            <xsl:apply-templates/>
+        </fo:inline>
+    </xsl:template>
+
+    <xsl:template match="title_reference">
+        <fo:inline xsl:use-attribute-sets="title-reference-inline">
+            <xsl:apply-templates/>
+        </fo:inline>
     </xsl:template>
     
 
