@@ -23,6 +23,7 @@
     <xsl:include href="footnote.xsl"/>
     <xsl:include href="admonitions.xsl"/>
     <xsl:include href="image_figure.xsl"/>
+    <xsl:include href="body_directives.xsl"/>
     <xsl:include href="inline.xsl"/>
     <xsl:include href="comment.xsl"/>
     <xsl:include href="utils.xsl"/>
@@ -259,6 +260,17 @@
                 properties.
             </block>
             <xsl:apply-templates select="document('../../xsl_fo/image_figure.xsl')/xsl:stylesheet"/>
+
+            <!--body_directive attribute sets-->
+            <xsl:call-template name="make-title">
+                <xsl:with-param name="level">3</xsl:with-param>
+                <xsl:with-param name="text">Body Elements Directives</xsl:with-param>
+            </xsl:call-template>
+            <block>
+                Attribute sets for Body Elements Directives. 
+            </block>
+
+            <xsl:apply-templates select="document('../../xsl_fo/body_directives.xsl')/xsl:stylesheet"/>
 
             <!--option-inline attribute sets-->
             <xsl:call-template name="make-title">
