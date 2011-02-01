@@ -35,4 +35,24 @@
         </block>
     </xsl:template>
 
+    <xsl:template match= "xsl:attribute-set[@name='literal-inline']" priority="3">
+        <xsl:call-template name="before-desc">
+            <xsl:with-param name="fo">fo:inline</xsl:with-param> 
+            <xsl:with-param name="docutils">literal</xsl:with-param> 
+        </xsl:call-template>
+        <block>
+            Formats the literal element.
+        </block>
+    </xsl:template>
+
+    <xsl:template match= "xsl:attribute-set[@name='title-reference-inline']" priority="3">
+        <xsl:call-template name="before-desc">
+            <xsl:with-param name="fo">fo:inline</xsl:with-param> 
+            <xsl:with-param name="docutils">title-reference</xsl:with-param> 
+        </xsl:call-template>
+        <block>
+            Formats the title_reference element.
+        </block>
+    </xsl:template>
+
 </xsl:stylesheet>
