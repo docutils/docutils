@@ -50,8 +50,10 @@
     </xsl:attribute-set>
 
     <xsl:attribute-set name="block-quote-paragraph-block">
+        <!--
         <xsl:attribute name="start-indent">inherit</xsl:attribute>
         <xsl:attribute name="end-indent">inherit</xsl:attribute>
+        -->
         <xsl:attribute name="space-before">12pt</xsl:attribute>
     </xsl:attribute-set>
 
