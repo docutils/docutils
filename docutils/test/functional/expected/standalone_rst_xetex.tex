@@ -12,8 +12,7 @@
 \floatplacement{figure}{H} % place figures here definitely
 \usepackage{graphicx}
 \usepackage{multirow}
-\usepackage{longtable}
-\usepackage{array}
+\usepackage{longtable,ltcaption,array}
 \setlength{\extrarowheight}{2pt}
 \newlength{\DUtablewidth} % internal use in tables
 \usepackage{tabularx}
@@ -1030,9 +1029,8 @@ layout.
 \noindent\makebox[\textwidth][c]{\includegraphics[width=258bp]{../../../docs/user/rst/images/title.png}}
 \caption{Plaintext markup syntax and parser system.}
 \begin{DUlegend}
-\leavevmode
 \setlength{\DUtablewidth}{\linewidth}
-\begin{longtable}[c]{|p{0.156\DUtablewidth}|p{0.563\DUtablewidth}|}
+\begin{longtable*}[c]{|p{0.156\DUtablewidth}|p{0.563\DUtablewidth}|}
 \hline
 
 re
@@ -1052,7 +1050,7 @@ Text
 Well it is, isn't it?
  \\
 \hline
-\end{longtable}
+\end{longtable*}
 
 This paragraph is also part of the legend.
 \end{DUlegend}
@@ -1316,9 +1314,8 @@ Compound 5, block 3 (a paragraph).
 
 Compound 7, with a table inside:
 
-\leavevmode
 \setlength{\DUtablewidth}{\linewidth}
-\begin{longtable}[c]{|p{0.249\DUtablewidth}|p{0.249\DUtablewidth}|p{0.249\DUtablewidth}|}
+\begin{longtable*}[c]{|p{0.249\DUtablewidth}|p{0.249\DUtablewidth}|p{0.249\DUtablewidth}|}
 \hline
 
 Left cell, first
@@ -1339,7 +1336,7 @@ Paragraph 2.
 Paragraph 3.
  \\
 \hline
-\end{longtable}
+\end{longtable*}
 Compound 7, a paragraph after the table.
 
 Compound 7, another paragraph.
@@ -1447,9 +1444,8 @@ paragraph 2
 
 This table has a cell spanning two columns:
 
-\leavevmode
 \setlength{\DUtablewidth}{\linewidth}
-\begin{longtable}[c]{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|p{0.086\DUtablewidth}|}
+\begin{longtable*}[c]{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|p{0.086\DUtablewidth}|}
 \hline
 \multicolumn{2}{|p{0.15\DUtablewidth}|}{\textbf{%
 Inputs
@@ -1517,7 +1513,7 @@ True
 True
  \\
 \hline
-\end{longtable}
+\end{longtable*}
 
 
 %___________________________________________________________________________
@@ -1530,9 +1526,8 @@ True
 
 Here's a table with cells spanning several rows:
 
-\leavevmode
 \setlength{\DUtablewidth}{\linewidth}
-\begin{longtable}[c]{|p{0.296\DUtablewidth}|p{0.156\DUtablewidth}|p{0.226\DUtablewidth}|}
+\begin{longtable*}[c]{|p{0.296\DUtablewidth}|p{0.156\DUtablewidth}|p{0.226\DUtablewidth}|}
 \hline
 \textbf{%
 Header row, column 1
@@ -1581,7 +1576,7 @@ cell.
 body row 3
  &  \\
 \hline
-\end{longtable}
+\end{longtable*}
 
 
 %___________________________________________________________________________
@@ -1765,9 +1760,8 @@ width as the third line.
 
 Punctuation and footnote symbols
 
-\leavevmode
 \setlength{\DUtablewidth}{\linewidth}
-\begin{longtable}[c]{|p{0.028\DUtablewidth}|p{0.424\DUtablewidth}|}
+\begin{longtable*}[c]{|p{0.028\DUtablewidth}|p{0.424\DUtablewidth}|}
 \hline
 
 –
@@ -1871,13 +1865,12 @@ trade mark sign
 left-right double arrow
  \\
 \hline
-\end{longtable}
+\end{longtable*}
 
 The \DUroletitlereference{Latin-1 extended} Unicode block
 
-\leavevmode
 \setlength{\DUtablewidth}{\linewidth}
-\begin{longtable}[c]{|p{0.051\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|}
+\begin{longtable*}[c]{|p{0.051\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|}
 \hline
 
 % 
@@ -2131,7 +2124,7 @@ The \DUroletitlereference{Latin-1 extended} Unicode block
 ÿ
  &  &  &  &  \\
 \hline
-\end{longtable}
+\end{longtable*}
 %
 \begin{itemize}
 
@@ -2261,7 +2254,6 @@ In LaTeX, we must set an explicit anchor (\texttt{\textbackslash{}phantomsection
 \phantomsection\label{hypertarget-in-plain-text}hypertarget in plain text or in a figure but not in a longtable or
 caption:
 
-\leavevmode
 \setlength{\DUtablewidth}{\linewidth}
 \begin{longtable}[c]{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
 \caption{Table with %
