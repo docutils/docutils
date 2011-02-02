@@ -38,7 +38,7 @@
     <!--END OF ATTRIBUTE SETS-->
 
     <!--TOC title-->
-    <xsl:template match="topic[@classes='contents']/title">
+    <xsl:template match="topic[@classes='contents']/title" priority="2">
         <fo:block xsl:use-attribute-sets="toc-title-block">
             <xsl:apply-templates/>
         </fo:block>
