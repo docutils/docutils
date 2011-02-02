@@ -1,45 +1,12 @@
 #! /Library/Frameworks/Python.framework/Versions/2.7/bin/python
 #  $Id$
 import sys, copy, getopt, os, ConfigParser
-from temp import *
+from docutils_fo_dicts import *
 
 class ReadConfig:
 
-    __block = {
-            'space-before':'space-before',
-            'font-style':['font-weight', 'font-style']
-            }
 
     def __init__(self):
-        self.__set_dict = {
-                'paragraph':['paragrah', 'block'],
-                'bullet-list':['bullet-list', 'list-block'],
-                'bullet-list-test':['bullet-list', 'list-block']
-
-                }
-        self.__list_block = {
-                'space-after':'space-after',
-                'space-between-items': 'space-after',
-                'font-style':['font-weight', 'font-style']
-                }
-
-        self.__which_dict = {
-                'block': self.__block,
-                'list-block':self.__list_block
-
-                }
-
-        self.__att_dict = {
-                'block':['space-before', ('space-between', 'space-before')]
-                }
-
-        self.__font_style={'bold': [('font-weight','bold')],
-                'italic': [('font-style','italic')],
-                'bold-italic':[('font-weight','bold'), ('font-style','italic')],
-                'italic-bold':[('font-weight','bold'), ('font-style','italic')]
-                }
-
-
         self.__attribute_sets = {}
 
     def read_config_file(self):
@@ -72,11 +39,11 @@ class ReadConfig:
         return opts_dict
 
     def __handle_attributes(self, set, att, value):
-        name_type_pair = self.__set_dict.get(set)
+        name_type_pair = att_set_dict.get(set)
         if name_type_pair:
             true_name = name_type_pair[0]
             the_type = name_type_pair[1]
-            att_true_value = self.__which_dict.get(the_type).get(att)
+            att_true_value = which_dict.get(the_type).get(att)
             if not att_true_value:
                 self.__error('%s not a valid value for att-set %s' % (att, set))
             elif type(att_true_value) == type([]):
@@ -101,7 +68,7 @@ class ReadConfig:
 
     def __handle_multiple_att(self, att, the_list, value):
         if att == 'font-style':
-            att_list = self.__font_style.get(value)
+            att_list = font_style_dict.get(value)
             if not att_list:
                 self.__error('%s not a valid value for att-set %s' % (value, att))
             else:
