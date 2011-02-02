@@ -1,5 +1,6 @@
 .. $Id$
 
+.. role:: page-num
 
 :Author: Paul Tremblay
 :Authors: David Goodger, Paul Tremlbay
@@ -20,6 +21,17 @@
 :Abstract: Just an example of bibliograhic fields.
 
 .. contents:: Table of Contents
+
+.. header:: 
+
+    A Christmas Carol 
+    
+.. footer:: 
+
+    Charles Dickens.
+    
+    -:page-num:`1`-
+
 
 section
 ========
