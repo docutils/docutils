@@ -293,6 +293,10 @@
         </fo:block>
     </xsl:template>
 
+    <xsl:template match="compound">
+        <xsl:apply-templates/>
+    </xsl:template>
+
 
 
 </xsl:stylesheet>
