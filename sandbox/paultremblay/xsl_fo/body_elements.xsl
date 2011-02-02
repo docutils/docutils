@@ -67,7 +67,7 @@
     </xsl:attribute-set>
 
     <!--default paragraphs-->
-    <xsl:template match="section/paragraph|document/paragraph">
+    <xsl:template match="section/paragraph|document/paragraph|compound/paragraph">
         <xsl:choose>
             <xsl:when test="@ids">
                 <fo:block role="paragraph" xsl:use-attribute-sets="paragraph-block" id="{@ids}">
