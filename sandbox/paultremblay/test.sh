@@ -135,6 +135,59 @@ xsltproc --stringparam option-list-format "definition" \
 $STYLESHEET opt_list.xml   >  opt_list_as_def.fo 
 xmlformat.pl -i opt_list_as_def.fo
 
+# literal block
+xsltproc $STYLESHEET literal_block.xml > literal_block.fo
+
+
+xsltproc $STYLESHEET line_block.xml > line_block.fo
+
+xsltproc $STYLESHEET block.xml > block.fo
+xsltproc $STYLESHEET doctest_blocks.xml > doctest_blocks.fo
+
+xsltproc $STYLESHEET table_csv.xml > table_csv.fo
+
+# with param of title on toop
+xsltproc --stringparam table-title-placement "top" \
+$STYLESHEET table_csv.xml > table_caption_top_csv.fo
+
+xsltproc $STYLESHEET table_grid.xml > table_grid.fo
+xsltproc $STYLESHEET table_simple.xml > table_simple.fo
+
+
+# regular footnotes
+xsltproc $STYLESHEET footnotes.xml > footnotes.fo
+
+xsltproc --stringparam footnote-style "traditional" \
+$STYLESHEET footnotes.xml > footnotes_traditional.fo
+
+xsltproc --stringparam footnote-placement "endnote" \
+$STYLESHEET endnotes.xml > endnotes.fo
+
+xsltproc $STYLESHEET citation.xml > citation.fo
+
+xsltproc $STYLESHEET hyperlinks.xml > hyperlinks.fo
+
+xsltproc --stringparam internal-link-type "page" \
+$STYLESHEET hyperlinks.xml > hyperlinks_page.fo
+
+xsltproc --stringparam internal-link-type "page-link" \
+$STYLESHEET hyperlinks.xml > hyperlinks_link_page.fo
+
+xsltproc $STYLESHEET admonition.xml > admonition.fo
+
+xsltproc $STYLESHEET image.xml > image.fo
+
+xsltproc $STYLESHEET figure.xml > image.fo
+
+xsltproc $STYLESHEET sidebar.xml > sidebar.fo
+xsltproc $STYLESHEET rubric.xml > rubric.fo
+xsltproc $STYLESHEET epigraph.xml > epigraph.fo
+xsltproc $STYLESHEET highlights.xml > highlights.fo
+xsltproc $STYLESHEET pull_quote.xml > pull_quote.fo
+xsltproc $STYLESHEET compound_paragraph.xml > compound_paragraph.fo
+xsltproc $STYLESHEET topic.xml > topic.fo
+xsltproc $STYLESHEET container.xml > container.fo
+
 echo converting FO to PDF
 FILES=`ls *\.fo`
 
