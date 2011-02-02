@@ -635,8 +635,7 @@ PreambleCmds.subtitle = r"""
 % subtitle (for topic/sidebar)
 \providecommand*{\DUsubtitle}[2][class-arg]{\par\emph{#2}\smallskip}"""
 
-PreambleCmds.table = r"""\usepackage{longtable}
-\usepackage{array}
+PreambleCmds.table = r"""\usepackage{longtable,ltcaption,array}
 \setlength{\extrarowheight}{2pt}
 \newlength{\DUtablewidth} % internal use in tables"""
 
@@ -731,25 +730,29 @@ class Table(object):
         self._in_thead = 0
 
     def open(self):
-        self._open = 1
+        self._open = True
         self._col_specs = []
         self.caption = []
         self._attrs = {}
-        self._in_head = 0 # maybe context with search
+        self._in_head = False # maybe context with search
     def close(self):
-        self._open = 0
+        self._open = False
         self._col_specs = None
         self.caption = []
         self._attrs = {}
         self.stubs = []
     def is_open(self):
         return self._open
+
     def set_table_style(self, table_style):
         if not table_style in ('standard','booktabs','borderless','nolines'):
             return
         self._table_style = table_style
 
     def get_latex_type(self):
+        if self._latex_type == 'longtable' and not self.caption:
+            # do not advance the "table" counter (requires "ltcaption" package)
+            return('longtable*')
         return self._latex_type
 
     def set(self,attr,value):
@@ -766,21 +769,17 @@ class Table(object):
 
     # horizontal lines are drawn below a row,
     def get_opening(self):
-        if self._latex_type == 'longtable':
-            # otherwise longtable might move before paragraph and subparagraph
-            prefix = '\\leavevmode\n'
-        else:
-            prefix = ''
-        prefix += '\setlength{\DUtablewidth}{\linewidth}'
-        return '%s\n\\begin{%s}[c]' % (prefix, self._latex_type)
+        return '\n'.join([r'\setlength{\DUtablewidth}{\linewidth}',
+                          r'\begin{%s}[c]' % self.get_latex_type()])
 
     def get_closing(self):
-        line = ''
+        closing = []
         if self._table_style == 'booktabs':
-            line = '\\bottomrule\n'
-        elif self._table_style == 'standard':
-            lines = '\\hline\n'
-        return '%s\\end{%s}' % (line,self._latex_type)
+            closing.append(r'\bottomrule')
+        # elif self._table_style == 'standard':
+        #     closing.append(r'\hline')
+        closing.append(r'\end{%s}' % self.get_latex_type())
+        return '\n'.join(closing)
 
     def visit_colspec(self, node):
         self._col_specs.append(node)
@@ -1285,7 +1284,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
             0x00A0: ur'~', # NO-BREAK SPACE
             0x00AD: ur'\-', # SOFT HYPHEN
             #
+            0x2008: ur'\,', # PUNCTUATION SPACE   
             0x2011: ur'\hbox{-}', # NON-BREAKING HYPHEN
+            0x202F: ur'\,', # NARROW NO-BREAK SPACE
             0x21d4: ur'$\Leftrightarrow$',
             # Docutils footnote symbols:
             0x2660: ur'$\spadesuit$',
@@ -1316,6 +1317,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pifont_chars = {
             0x2665: ur'\ding{170}',     # black heartsuit
             0x2666: ur'\ding{169}',     # black diamondsuit
+            0x2713: ur'\ding{51}',      # check mark
+            0x2717: ur'\ding{55}',      # check mark
         }
         # recognized with 'utf8', if textcomp is loaded
         textcomp_chars = {
@@ -2731,14 +2734,26 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.table_stack.append(self.active_table)
             # nesting longtable does not work (e.g. 2007-04-18)
             self.active_table = Table(self,'tabular',self.settings.table_style)
+        # A longtable moves before \paragraph and \subparagraph
+        # section titles if it immediately follows them:
+        if (self.active_table._latex_type == 'longtable' and
+            isinstance(node.parent, nodes.section) and
+            node.parent.index(node) == 1 and
+            self.d_class.section(self.section_level).find('paragraph') != -1):
+            self.out.append('\\leavevmode')
         self.active_table.open()
         for cls in node['classes']:
             self.active_table.set_table_style(cls)
         if self.active_table._table_style == 'booktabs':
             self.requirements['booktabs'] = r'\usepackage{booktabs}'
-        self.out.append('\n' + self.active_table.get_opening())
+        self.push_output_collector([])
 
     def depart_table(self, node):
+        # wrap content in the right environment:
+        content = self.out
+        self.pop_output_collector()
+        self.out.append('\n' + self.active_table.get_opening())
+        self.out += content
         self.out.append(self.active_table.get_closing() + '\n')
         self.active_table.close()
         if len(self.table_stack)>0:

@@ -16,8 +16,7 @@
 \usepackage{graphicx}
 \usepackage{multirow}
 \usepackage{pifont}
-\usepackage{longtable}
-\usepackage{array}
+\usepackage{longtable,ltcaption,array}
 \setlength{\extrarowheight}{2pt}
 \newlength{\DUtablewidth} % internal use in tables
 \usepackage{tabularx}
@@ -1032,9 +1031,8 @@ layout.
 \noindent\makebox[\textwidth][c]{\includegraphics[width=258bp]{../../../docs/user/rst/images/title.png}}
 \caption{Plaintext markup syntax and parser system.}
 \begin{DUlegend}
-\leavevmode
 \setlength{\DUtablewidth}{\linewidth}
-\begin{longtable}[c]{|p{0.156\DUtablewidth}|p{0.563\DUtablewidth}|}
+\begin{longtable*}[c]{|p{0.156\DUtablewidth}|p{0.563\DUtablewidth}|}
 \hline
 
 re
@@ -1054,7 +1052,7 @@ Text
 Well it is, isn't it?
  \\
 \hline
-\end{longtable}
+\end{longtable*}
 
 This paragraph is also part of the legend.
 \end{DUlegend}
@@ -1314,9 +1312,8 @@ Compound 5, block 3 (a paragraph).
 
 Compound 7, with a table inside:
 
-\leavevmode
 \setlength{\DUtablewidth}{\linewidth}
-\begin{longtable}[c]{|p{0.249\DUtablewidth}|p{0.249\DUtablewidth}|p{0.249\DUtablewidth}|}
+\begin{longtable*}[c]{|p{0.249\DUtablewidth}|p{0.249\DUtablewidth}|p{0.249\DUtablewidth}|}
 \hline
 
 Left cell, first
@@ -1337,7 +1334,7 @@ Paragraph 2.
 Paragraph 3.
  \\
 \hline
-\end{longtable}
+\end{longtable*}
 Compound 7, a paragraph after the table.
 
 Compound 7, another paragraph.
@@ -1445,9 +1442,8 @@ paragraph 2
 
 This table has a cell spanning two columns:
 
-\leavevmode
 \setlength{\DUtablewidth}{\linewidth}
-\begin{longtable}[c]{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|p{0.086\DUtablewidth}|}
+\begin{longtable*}[c]{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|p{0.086\DUtablewidth}|}
 \hline
 \multicolumn{2}{|p{0.15\DUtablewidth}|}{\textbf{%
 Inputs
@@ -1515,7 +1511,7 @@ True
 True
  \\
 \hline
-\end{longtable}
+\end{longtable*}
 
 
 %___________________________________________________________________________
@@ -1528,9 +1524,8 @@ True
 
 Here's a table with cells spanning several rows:
 
-\leavevmode
 \setlength{\DUtablewidth}{\linewidth}
-\begin{longtable}[c]{|p{0.296\DUtablewidth}|p{0.156\DUtablewidth}|p{0.226\DUtablewidth}|}
+\begin{longtable*}[c]{|p{0.296\DUtablewidth}|p{0.156\DUtablewidth}|p{0.226\DUtablewidth}|}
 \hline
 \textbf{%
 Header row, column 1
@@ -1579,7 +1574,7 @@ cell.
 body row 3
  &  \\
 \hline
-\end{longtable}
+\end{longtable*}
 
 
 %___________________________________________________________________________
@@ -1667,9 +1662,8 @@ Sum and Integral with limits:
 \end{equation*}%
 \begin{description}
 \item[{Math-Accents:}] \leavevmode 
-\leavevmode
 \setlength{\DUtablewidth}{\linewidth}
-\begin{longtable}[c]{p{0.315\DUtablewidth}p{0.315\DUtablewidth}p{0.315\DUtablewidth}}
+\begin{longtable*}[c]{p{0.315\DUtablewidth}p{0.315\DUtablewidth}p{0.315\DUtablewidth}}
 
 $\acute{a}$      \texttt{\textbackslash{}acute\{a\}}
  & 
@@ -1698,7 +1692,7 @@ $\bar{a}$        \texttt{\textbackslash{}bar\{a\}}
  & 
 $\vec{R}$        \texttt{\textbackslash{}vec\{R\}}
  \\
-\end{longtable}
+\end{longtable*}
 
 \end{description}
 
@@ -1816,9 +1810,8 @@ This is a \DUroletitlereference{\DUrole{custom-title-reference}{customized title
 
 A multicolumn table with multi-paragraph rowspanning cells:
 
-\leavevmode
 \setlength{\DUtablewidth}{\linewidth}
-\begin{longtable}[c]{|p{0.133\DUtablewidth}|p{0.179\DUtablewidth}|p{0.179\DUtablewidth}|p{0.110\DUtablewidth}|p{0.121\DUtablewidth}|p{0.145\DUtablewidth}|}
+\begin{longtable*}[c]{|p{0.133\DUtablewidth}|p{0.179\DUtablewidth}|p{0.179\DUtablewidth}|p{0.110\DUtablewidth}|p{0.121\DUtablewidth}|p{0.145\DUtablewidth}|}
 \hline
 
 test
@@ -1870,7 +1863,7 @@ cell
 Short multicolumn 4
 } \\
 \hline
-\end{longtable}
+\end{longtable*}
 
 % This file is used by the standalone_rst_latex test.
 
@@ -1945,9 +1938,8 @@ width as the third line.
 
 Punctuation and footnote symbols
 
-\leavevmode
 \setlength{\DUtablewidth}{\linewidth}
-\begin{longtable}[c]{|p{0.028\DUtablewidth}|p{0.424\DUtablewidth}|}
+\begin{longtable*}[c]{|p{0.028\DUtablewidth}|p{0.424\DUtablewidth}|}
 \hline
 
 –
@@ -2051,13 +2043,12 @@ $\Leftrightarrow$
 left-right double arrow
  \\
 \hline
-\end{longtable}
+\end{longtable*}
 
 The \DUroletitlereference{Latin-1 extended} Unicode block
 
-\leavevmode
 \setlength{\DUtablewidth}{\linewidth}
-\begin{longtable}[c]{|p{0.051\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|}
+\begin{longtable*}[c]{|p{0.051\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|p{0.028\DUtablewidth}|}
 \hline
 
 % 
@@ -2311,7 +2302,7 @@ The \DUroletitlereference{Latin-1 extended} Unicode block
 ÿ
  &  &  &  &  \\
 \hline
-\end{longtable}
+\end{longtable*}
 %
 \begin{itemize}
 
@@ -2441,7 +2432,6 @@ In LaTeX, we must set an explicit anchor (\texttt{\textbackslash{}phantomsection
 \phantomsection\label{hypertarget-in-plain-text}hypertarget in plain text or in a figure but not in a longtable or
 caption:
 
-\leavevmode
 \setlength{\DUtablewidth}{\linewidth}
 \begin{longtable}[c]{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
 \caption{Table with %

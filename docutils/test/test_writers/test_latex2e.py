@@ -80,8 +80,7 @@ head = head_template.substitute(parts)
 
 head_table = head_template.substitute(
     dict(parts, requirements = parts['requirements'] +
-r"""\usepackage{longtable}
-\usepackage{array}
+r"""\usepackage{longtable,ltcaption,array}
 \setlength{\extrarowheight}{2pt}
 \newlength{\DUtablewidth} % internal use in tables
 """))
@@ -501,7 +500,6 @@ totest['table_caption'] = [
    +-----+-----+
 """,
 head_table + r"""
-\leavevmode
 \setlength{\DUtablewidth}{\linewidth}
 \begin{longtable}[c]{|p{0.075\DUtablewidth}|p{0.075\DUtablewidth}|}
 \caption{Foo}\\
@@ -529,9 +527,8 @@ totest['table_class'] = [
    +-----+-----+
 """,
 head_table + r"""
-\leavevmode
 \setlength{\DUtablewidth}{\linewidth}
-\begin{longtable}[c]{p{0.075\DUtablewidth}p{0.075\DUtablewidth}}
+\begin{longtable*}[c]{p{0.075\DUtablewidth}p{0.075\DUtablewidth}}
 
 1
  & 
@@ -542,7 +539,7 @@ head_table + r"""
  & 
 4
  \\
-\end{longtable}
+\end{longtable*}
 
 \end{document}
 """],

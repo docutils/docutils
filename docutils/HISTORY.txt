@@ -57,6 +57,8 @@ Changes Since 0.7
   - Convert image URI to a local file path.
   - Apply [ 3148141 ] fix multicolumn support when a colspanning cell
     has more than one paragraph (Wolfgang Scherer).
+  - \leavevmode before longtable only when needed (prevents spurious vspace)
+  - do not advance table counter for tables without caption
 
 * docutils/writers/xetex/__init__.py
 
