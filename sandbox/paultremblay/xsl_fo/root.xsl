@@ -9,6 +9,7 @@
 
 
     <xsl:attribute-set name="front-page-sequence">
+        <xsl:attribute name= "force-page-count">no-force</xsl:attribute> 
     </xsl:attribute-set>
 
     <!--attributes for the sequence of pages for the toc. 
