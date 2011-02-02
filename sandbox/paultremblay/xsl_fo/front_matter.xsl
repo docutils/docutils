@@ -56,7 +56,7 @@
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="topic[@classes='dedication']/title">
+    <xsl:template match="topic[@classes='dedication']/title" priority="2">
         <fo:block role="dedication-title" xsl:use-attribute-sets="dedication-title-block">
             <xsl:apply-templates/>
         </fo:block>
@@ -83,7 +83,7 @@
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="topic[@classes='abstract']/title">
+    <xsl:template match="topic[@classes='abstract']/title" priority="2">
         <fo:block role="abstract-title" xsl:use-attribute-sets="abstract-title-block">
             <xsl:apply-templates/>
         </fo:block>
