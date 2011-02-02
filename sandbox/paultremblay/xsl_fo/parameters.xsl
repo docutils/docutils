@@ -112,9 +112,7 @@ For example, '5' will number every fifth line-->
 
 <!--the style of the footnote. Valid values are 'list', for making 
 the footnote into a list, with the number as the item; 'traditional', 
-to make the footnote more traditional with a first line indent; and 'endnote',
-to place the footnotes as endnotes, or more specifically, whereever they 
-occurr in the document-->
+to make the footnote more traditional with a first line indent;-->
 <xsl:param name="footnote-style">list</xsl:param>
 
 
@@ -132,7 +130,7 @@ are placed in the same place as in the RST document-->
 <xsl:param name="footnote-placement">footnote</xsl:param>
     
 <!--whether to make internal links clickable ('link'), 
-refer to a page number ('page'), or both ('link-page')-->
+refer to a page number ('page'), or both ('page-link')-->
 <xsl:param name="internal-link-type">link</xsl:param>
 
 <!--text for attention admontion-->
