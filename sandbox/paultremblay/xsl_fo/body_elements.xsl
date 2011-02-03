@@ -86,14 +86,6 @@
         <fo:block xsl:use-attribute-sets="literal-block" role="literal-block"><xsl:apply-templates/></fo:block>
     </xsl:template>
 
-    <xsl:template match="transition">
-        <fo:block xsl:use-attribute-sets = "transition-block" role="transition">
-            <!--
-            <fo:inline><fo:leader leader-pattern="rule" leader-length="3in"/></fo:inline>
-            -->
-            <xsl:value-of select="$transition-text"/>
-        </fo:block>
-    </xsl:template>
 
     <xsl:template match="doctest_block">
         <fo:block xsl:use-attribute-sets="literal-block" role="doctest-block"><xsl:apply-templates/></fo:block>
@@ -139,25 +131,25 @@
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="block_quote">
+    <xsl:template match="block_quote[not(@classes)]">
         <fo:block role="block-quote" xsl:use-attribute-sets = "block-quote-outer-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="block_quote/paragraph">
+    <xsl:template match="block_quote[not(@classes)]/paragraph">
         <fo:block role="block-quote" xsl:use-attribute-sets = "block-quote-paragraph-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="block_quote/paragraph[1]" priority="2">
+    <xsl:template match="block_quote[not(@classes)]/paragraph[1]" priority="2">
         <fo:block role="block-quote" xsl:use-attribute-sets = "block-quote-first-paragraph-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="block_quote/attribution">
+    <xsl:template match="block_quote[not(@classes)]/attribution">
         <fo:block role="block-quote" xsl:use-attribute-sets = "block-quote-attribution-block">
             <xsl:value-of select="$text-before-block-quote-attribution"/>
             <xsl:apply-templates/>

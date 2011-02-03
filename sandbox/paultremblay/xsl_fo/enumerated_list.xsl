@@ -85,7 +85,7 @@
         </fo:list-item>
     </xsl:template>
 
-    <xsl:template match="enumerated_list/list_item[1]">
+    <xsl:template match="enumerated_list/list_item[1]" priority="2">
         <fo:list-item xsl:use-attribute-sets="enumerated-first-list-item">
             <xsl:call-template name="make-enum-list-contents"/>
         </fo:list-item>

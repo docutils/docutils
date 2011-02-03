@@ -84,7 +84,7 @@
     </xsl:template>
 
     <!--last item, may be different for space-->
-    <xsl:template match="bullet_list/list_item[1]">
+    <xsl:template match="bullet_list/list_item[1]" priority="2">
         <fo:list-item xsl:use-attribute-sets="bullet-first-list-item">
             <fo:list-item-label xsl:use-attribute-sets="bullet-list-item-label">
                 <fo:block xsl:use-attribute-sets = "bullet-list-item-label-block"><xsl:call-template name="make-bullet"/></fo:block>

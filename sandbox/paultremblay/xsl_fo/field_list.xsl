@@ -60,7 +60,7 @@
 
 
     <!--last item, may be different for space-->
-    <xsl:template match="field_list/field[1]">
+    <xsl:template match="field_list/field[1]" priority="2">
         <fo:list-item xsl:use-attribute-sets="field-first-list-item">
             <xsl:apply-templates/>
         </fo:list-item>
