@@ -1,7 +1,9 @@
 import sys, os, glob, commands, shlex, subprocess
+import docutilsToFo.rst2xml_lib
 
-XSL_TRANSFORM = 'xsltproc'
+# $Id$ 
 XSL_TRANSFORM = 'saxon'
+XSL_TRANSFORM = 'xsltproc'
 STRICT = True
 test_dict = {
         'long_plain.xml':[({'page-layout':'simple'}, 'simple_no_page_nos.fo'), 
@@ -38,7 +40,8 @@ test_dict = {
 def error(msg):
     sys.stderr.write(msg)
     if STRICT:
-        sys.exit(1)
+        # sys.exit(1)
+        pass
 
 def transform_xsl(xsl_file, xml_file, param_dict = {}, out_file = None):
     if not out_file:
@@ -78,11 +81,27 @@ def main():
     current_dir = os.getcwd()
     os.chdir('test_files')
     rst_files = glob.glob('*.rst')
-    # convert_to_xml(rst_files)
+    convert_to_xml(rst_files)
     convert_to_fo()
+    convert_to_pdf()
     os.chdir(current_dir)
 
 def convert_to_xml(path_list):
+    print 'converting to xml...'
+    num_files = len(path_list)
+    counter = 0
+    xml_obj = docutilsToFo.rst2xml_lib.XMLPublish()
+    for the_path in path_list:
+        counter += 1
+        print 'converting %s of %s files' % (counter, num_files)
+        base, ext = os.path.splitext(the_path)
+        out_file = '%s.xml' % (base)
+        xml_obj.publish_xml_cmdline(writer_name='xml', 
+                source=the_path,
+                destination = out_file
+                )
+
+def convert_to_xml_old(path_list):
     for the_path in path_list:
         base, ext = os.path.splitext(the_path)
         out_file = '%s.xml' % (base)
@@ -90,12 +109,18 @@ def convert_to_xml(path_list):
         status, output = commands.getstatusoutput(command)
 
 def convert_to_fo():
+    print 'converting to fo...'
     params = {'strict':'True'}
     xml_files =  glob.glob('*.xml')
+    num_files = 60
+    counter = 0
     for xml_file in xml_files:
+        counter += 1
+        print 'converting %s of %s files' % (counter, num_files)
         transform_info = test_dict.get(xml_file)
         if transform_info:
             for info in transform_info:
+                counter += 1
                 added_params = info[0]
                 out_file = info[1]
                 params.update(added_params)
@@ -103,7 +128,24 @@ def convert_to_fo():
         else:
             transform_xsl('../xsl_fo/docutils_to_fo.xsl', xml_file, params)
 
+def convert_to_pdf():
+    print 'converting to pdf...'
+    fo_files =  glob.glob('*.fo')
+    num_files = len(fo_files)
+    counter = 0
+    for fo_file in fo_files:
+        counter += 1
+        print 'converting %s of %s files' % (counter, num_files)
+        base, ext = os.path.splitext(fo_file)
+        out_file = '%s.pdf' % (base)
+        command = 'fop  %s %s' % (fo_file, out_file)
+        status, output = commands.getstatusoutput(command)
 
 
+try:
+    import locale
+    locale.setlocale(locale.LC_ALL, '')
+except:
+    pass
 main()
 
