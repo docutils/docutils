@@ -1,12 +1,14 @@
 import sys, os, glob, commands, shlex, subprocess
 import docutilsToFo.rst2xml_lib
+from lxml import etree
+import lxml
 
 # $Id$ 
 XSL_TRANSFORM = 'saxon'
 XSL_TRANSFORM = 'xsltproc'
+XSL_TRANSFORM = 'lyxml'
 STRICT = True
 TEST = False
-# NOTE firt-odd-even doesn't work for title_subtitle
 test_dict = {
         'long_plain.xml':[({'page-layout':'simple'}, 'simple_no_page_nos.fo'), 
                 ({'page-layout': 'first'}, 'first_page_diff_no_page_nos.fo'),  
@@ -86,7 +88,7 @@ test_dict = {
                 ]
         }
 
-def error(msg):
+def error_func(msg):
     sys.stderr.write(msg)
     if STRICT:
         sys.exit(1)
@@ -110,7 +112,7 @@ def transform_xsl(xsl_file, xml_file, param_dict = {}, out_file = None):
             msg += 'command = "%s" \n' % (command)
             msg += output
             msg += '\n'
-            error(msg)
+            error_func(msg)
     elif XSL_TRANSFORM == 'saxon':
         command = 'saxon.sh '
         command += ' -o %s' % (out_file)
@@ -122,20 +124,49 @@ def transform_xsl(xsl_file, xml_file, param_dict = {}, out_file = None):
             command += ' %s=%s ' % (param, param_dict[param])
         status, output = commands.getstatusoutput(command)
         if status:
-            msg = 'error converting %s to Of\n'
+            msg = 'error converting %s to Fo\n' % (xml_file)
             msg += 'command = "%s" \n' % (command)
             msg += output
             msg += '\n'
-            error(msg)
+            error_func(msg)
+    elif XSL_TRANSFORM == 'lyxml':
+        transform_lxml(xsl_file, xml_file, param_dict, out_file)
 
-def main():
-    current_dir = os.getcwd()
-    os.chdir('test_files')
-    rst_files = glob.glob('*.rst')
-    convert_to_xml(rst_files)
-    convert_to_fo()
-    convert_to_pdf()
-    os.chdir(current_dir)
+def transform_lxml(xslt_file, xml_file, param_dict = {}, out_file = None):
+    # have to put quotes around string params
+    temp = {}
+    the_keys = param_dict.keys()
+    for the_key in the_keys:
+        if len(the_key) > 0: 
+            if the_key[0] == '"' and the_key[-1] == '"':
+                temp[the_key] = param_dict[the_key]
+            elif the_key[0] == "'" and the_key[-1] == "'":
+                temp[the_key] = param_dict[the_key]
+            else:
+                temp[the_key] = "'%s'" % param_dict[the_key]
+    param_dict = {}
+    param_dict.update(temp)
+
+    xslt_doc = etree.parse(xslt_file)
+    try:
+        transform = etree.XSLT(xslt_doc)
+    except lxml.etree.XSLTParseError, error:
+        print str(error)
+    indoc = etree.parse(xml_file)
+    try:
+        outdoc = transform(indoc, **param_dict)
+    except lxml.etree.XSLTApplyError, error:
+        msg = 'error converting %s to FO\n' % (xml_file)
+        msg += str(error)
+        msg += '\n'
+        error_func(msg)
+    if out_file:
+        write_obj = open(out_file, 'w')
+        outdoc.write(write_obj)
+        write_obj.close()
+    else:
+        sys.stdout.write(str(input_obj))
+
 
 def convert_to_xml_old(path_list):
     print 'converting to xml...'
@@ -212,10 +243,21 @@ def convert_to_pdf():
             error(msg)
 
 
+
+def main():
+    current_dir = os.getcwd()
+    os.chdir('test_files')
+    rst_files = glob.glob('*.rst')
+    convert_to_xml(rst_files)
+    convert_to_fo()
+    convert_to_pdf()
+    os.chdir(current_dir)
+
 try:
     import locale
     locale.setlocale(locale.LC_ALL, '')
 except:
     pass
+
 main()
 
