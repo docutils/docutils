@@ -5,6 +5,8 @@ import docutilsToFo.rst2xml_lib
 XSL_TRANSFORM = 'saxon'
 XSL_TRANSFORM = 'xsltproc'
 STRICT = True
+TEST = False
+# NOTE firt-odd-even doesn't work for title_subtitle
 test_dict = {
         'long_plain.xml':[({'page-layout':'simple'}, 'simple_no_page_nos.fo'), 
                 ({'page-layout': 'first'}, 'first_page_diff_no_page_nos.fo'),  
@@ -15,14 +17,16 @@ test_dict = {
                 ({'page-layout': 'simple', 'suppress-first-page-header': 'True'}, 'header_footer2.fo'),
                 ({'page-layout': 'first' }, 'first_page_header_footer.fo'),
                 ({'page-layout': 'first', 'suppress-first-page-header': 'True'}, 'first_page_suppress_header.fo'),
-                ({'page-layout': 'first', 'suppress-first-page-header': 'True', 'suppress-first-page-header': 'True'}, 'first_suppress_header__footer.fo'),
+                ({'page-layout': 'first', 'suppress-first-page-header': 'True', 'suppress-first-page-header': 'True'},
+                    'first_suppress_header__footer.fo'),
                 ({'page-layout': 'odd-even' }, 'odd_even_page_header_footer.fo'),
                 ({'page-layout': 'first-odd-even' }, 'first-odd_even_page_header_footer.fo'),
-                ({'page-layout': 'first-odd-even', 'suppress-first-page-header': 'True', 'suppress-first-page-header': 'True'}, 'first_odd_even_page_header_footer_suppress_first.fo'),
+                ({'page-layout': 'first-odd-even', 'suppress-first-page-header': 'True', 'suppress-first-page-header': 'True'},
+                    'first_odd_even_page_header_footer_suppress_first.fo'),
                 ],
         'opt_list.xml':[({},'opt_list.fo'),
-            ({'option-list-format': 'definition'}, 'opt_list_as_def.fo') 
-            ],
+                ({'option-list-format': 'definition'}, 'opt_list_as_def.fo') 
+                ],
         'table_csv.xml':[({},''),
                 ({'table-title-placement':'top'},'table_caption_top_csv.fo')
                 ],
@@ -30,17 +34,62 @@ test_dict = {
                 ({'footnote-style': 'traditional'},'footnotes_traditional.fo')
                 ],
         'endnotes.xml':[({'footnote-placement':'endnote'}, 'endnotes.fo')
-            ],
+                ],
         'hyperlinks.xml':[({}, 'hyperlinks.fo'),
-            ({'internal-link-type':'page'}, 'hyperlinks_page.fo'),
-            ({'internal-link-type':'page-link'}, 'hyperlinks_link_page.fo')
-            ]
+                ({'internal-link-type':'page'}, 'hyperlinks_page.fo'),
+                ({'internal-link-type':'page-link'}, 'hyperlinks_link_page.fo')
+                ],
+
+        'title_subtitle.xml':[({}, 'title_subtitle.fo'),
+                ({'page-layout': 'first'}, 'title_subtitle_first.fo'),
+                ({'page-layout': 'odd-even'}, 'title_subtitle_odd_even.fo'),
+                ({'page-layout': 'first-odd-even'}, 'title_subtitle_first_odd_even.fo')
+                ],
+
+        'bibliographic_fields_toc.xml':[
+                ({},'bibliographic_fields_toc.fo'),
+                ({'page-layout':'first'},'bibliographic_fields_first_toc.fo'),
+                ({'page-layout':'odd-even'},'bibliographic_fields_odd_even_toc.fo'),
+                ({'page-layout':'first-odd-even'},'bibliographic_fields_first_odd_even_toc.fo'),
+                ({'front-matter-pagination':'own-section'},'bibliographic_fields_own_section_toc.fo'),
+                ({'front-matter-pagination':'with-toc'},'bibliographic_fields_with_toc_toc.fo'),
+                ({'front-matter-pagination':'with-body'},'bibliographic_fields_with_body_toc.fo'),
+
+                ({'front-matter-pagination':'own-section', 'page-layout':'simple'},
+                    'bibliographic_fields_own_section_simple_toc.fo'),
+                ({'front-matter-pagination':'own-section', 'page-layout':'first'},
+                    'bibliographic_fields_own_section_first_toc.fo'),
+                ({'front-matter-pagination':'own-section', 'page-layout':'odd-even'},
+                    'bibliographic_fields_own_section__odd_even_toc.fo'),
+                ({'front-matter-pagination':'own-section', 'page-layout':'first-odd-even'},
+                    'bibliographic_fields_own_section__odd_even_toc.fo'),
+
+                ({'front-matter-pagination':'with-toc', 'page-layout':'simple'},
+                    'bibliographic_fields_own_section_with_toc_simple_toc.fo'),
+                ({'front-matter-pagination':'with-toc', 'page-layout':'first'},
+                    'bibliographic_fields_own_section_with_toc_first_toc.fo'),
+                ({'front-matter-pagination':'with-toc', 'page-layout':'odd-even'},
+                    'bibliographic_fields_own_section_with_toc__odd_even_toc.fo'),
+                ({'front-matter-pagination':'with-toc', 'page-layout':'first-odd-even'},
+                    'bibliographic_fields_own_section_with_toc__odd_even_toc.fo'),
+
+                ({'front-matter-pagination':'with-body', 'page-layout':'simple'},
+                    'bibliographic_fields_own_section_with_body_simple_toc.fo'),
+                ({'front-matter-pagination':'with-body', 'page-layout':'first'},
+                    'bibliographic_fields_own_section_with_body_first_toc.fo'),
+                ({'front-matter-pagination':'with-body', 'page-layout':'odd-even'},
+                    'bibliographic_fields_own_section_with_body__odd_even_toc.fo'),
+                ({'front-matter-pagination':'with-body', 'page-layout':'first-odd-even'},
+                    'bibliographic_fields_own_section_with_body__odd_even_toc.fo'),
+
+
+                ]
         }
 
 def error(msg):
     sys.stderr.write(msg)
     if STRICT:
-        # sys.exit(1)
+        sys.exit(1)
         pass
 
 def transform_xsl(xsl_file, xml_file, param_dict = {}, out_file = None):
@@ -53,6 +102,8 @@ def transform_xsl(xsl_file, xml_file, param_dict = {}, out_file = None):
         for param in params:
             command += ' --stringparam %s "%s" ' % (param, param_dict[param])
         command += ' %s %s ' % (xsl_file, xml_file)
+        if TEST:
+            print command
         status, output = commands.getstatusoutput(command)
         if status:
             msg = 'error converting %s to FO\n' % (xml_file)
@@ -86,7 +137,7 @@ def main():
     convert_to_pdf()
     os.chdir(current_dir)
 
-def convert_to_xml(path_list):
+def convert_to_xml_old(path_list):
     print 'converting to xml...'
     num_files = len(path_list)
     counter = 0
@@ -101,8 +152,13 @@ def convert_to_xml(path_list):
                 destination = out_file
                 )
 
-def convert_to_xml_old(path_list):
+def convert_to_xml(path_list):
+    print 'converting to xml...'
+    num_files = len(path_list)
+    counter = 0
     for the_path in path_list:
+        counter += 1
+        print 'converting %s of %s files' % (counter, num_files)
         base, ext = os.path.splitext(the_path)
         out_file = '%s.xml' % (base)
         command = 'rst2xml.py --trim-footnote-reference-space %s %s' % (the_path, out_file)
@@ -110,22 +166,30 @@ def convert_to_xml_old(path_list):
 
 def convert_to_fo():
     print 'converting to fo...'
-    params = {'strict':'True'}
     xml_files =  glob.glob('*.xml')
-    num_files = 60
+    len_simple = len(xml_files)
+    the_keys = test_dict.keys()
+    len_complex = len(the_keys)
+    len_inside = 0
+    for the_key in the_keys:
+        this_inside = len(test_dict[the_key])
+        len_inside += this_inside
+    num_files = len_simple - len_complex + len_inside
     counter = 0
     for xml_file in xml_files:
-        counter += 1
-        print 'converting %s of %s files' % (counter, num_files)
+        params = {'strict':'True'}
         transform_info = test_dict.get(xml_file)
         if transform_info:
             for info in transform_info:
                 counter += 1
+                print 'converting %s of %s files' % (counter, num_files)
                 added_params = info[0]
                 out_file = info[1]
                 params.update(added_params)
                 transform_xsl('../xsl_fo/docutils_to_fo.xsl', xml_file, params, out_file)
         else:
+            counter += 1
+            print 'converting %s of %s files' % (counter, num_files)
             transform_xsl('../xsl_fo/docutils_to_fo.xsl', xml_file, params)
 
 def convert_to_pdf():
@@ -140,6 +204,12 @@ def convert_to_pdf():
         out_file = '%s.pdf' % (base)
         command = 'fop  %s %s' % (fo_file, out_file)
         status, output = commands.getstatusoutput(command)
+        if status:
+            msg = 'error converting %s to PDF\n' % (fo_file)
+            msg += 'command = "%s" \n' % (command)
+            msg += output
+            msg += '\n'
+            error(msg)
 
 
 try:
