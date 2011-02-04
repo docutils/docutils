@@ -117,13 +117,16 @@
     <!--the main template. Calls on other templates to make fo:simple-page-master,
     then calls on other templates to make fo:page-sequence-master-->
     <xsl:template name="make-pages">
+        <xsl:if test="$test='True'">
+            <xsl:message>
+                <xsl:text>value of $page-sequence-type="</xsl:text>
+                <xsl:value-of select="$page-sequence-type"/>
+                <xsl:text>"</xsl:text>
+            </xsl:message>
+        </xsl:if>
         <fo:layout-master-set>
-            <xsl:call-template name="page-properties">
-                <xsl:with-param name="page-layout" select="$page-layout"/> 
-            </xsl:call-template>
-            <xsl:call-template name="page-sequence">
-                <xsl:with-param name="page-layout" select="$page-layout"/> 
-            </xsl:call-template>
+            <xsl:call-template name="page-properties"/>
+            <xsl:call-template name="page-sequence"/>
             <xsl:if test= "$page-sequence-type='front-toc-body' or $page-sequence-type = 'front-body'">
                 <xsl:call-template name="make-front-matter-pages"/> 
             </xsl:if>
@@ -138,7 +141,6 @@
     the parameter $page-layout-->
     <xsl:template name="page-properties">
         <!--set up the physical properties of the pages-->
-        <xsl:param name="page-layout"/>
         <xsl:choose>
             <xsl:when test="$page-layout = '' or $page-layout = 'simple'">
                 <xsl:call-template name="make-simple-page"/>
@@ -276,8 +278,6 @@
 
     <!--Create the fo:page-sequence-master, depending on the parameter page-layout-->
     <xsl:template name="page-sequence">
-        <xsl:param name="page-layout"/>
-        <xsl:param name="master-name" select="'pages'"/>
         <xsl:choose>
             <xsl:when test="$page-layout = '' or $page-layout = 'simple'">
                 <fo:page-sequence-master master-name = "pages" >
@@ -413,8 +413,6 @@
     <!--Create the fo:page-sequence-master, depending on the parameter page-layout-->
     <xsl:template name="toc-page-sequence">
         <!--do I want these params? They seem unneeded and potentially trouble making-->
-        <xsl:param name="page-layout"/>
-        <xsl:param name="master-name" select="'pages'"/>
         <xsl:choose>
             <xsl:when test="$page-layout = '' or $page-layout = 'simple'">
                 <fo:page-sequence-master master-name = "toc-pages" >
@@ -468,29 +466,29 @@
                 </fo:simple-page-master>
             </xsl:when>
             <xsl:when test="$page-layout = 'first'">
-                <fo:simple-page-master xsl:use-attribute-sets="front-matter-first-page" master-name="front-matter-first-page">  
+                <fo:simple-page-master xsl:use-attribute-sets="front-matter-first-page" master-name="front-matter-first">  
                     <fo:region-body xsl:use-attribute-sets="front-matter-region-body"/>
                 </fo:simple-page-master>
-                <fo:simple-page-master xsl:use-attribute-sets="front-matter-body-page" master-name="front-matter-body-page">  
+                <fo:simple-page-master xsl:use-attribute-sets="front-matter-body-page" master-name="front-matter-body">  
                     <fo:region-body xsl:use-attribute-sets="front-matter-region-body"/>
                 </fo:simple-page-master>
             </xsl:when>
             <xsl:when test="$page-layout = 'odd-even'">
-                <fo:simple-page-master xsl:use-attribute-sets="front-matter-odd-page" master-name="front-matter-odd-page">  
+                <fo:simple-page-master xsl:use-attribute-sets="front-matter-odd-page" master-name="front-matter-odd">  
                     <fo:region-body xsl:use-attribute-sets="front-matter-region-body"/>
                 </fo:simple-page-master>
-                <fo:simple-page-master xsl:use-attribute-sets="front-matter-even-page" master-name="front-matter-even-page">  
+                <fo:simple-page-master xsl:use-attribute-sets="front-matter-even-page" master-name="front-matter-even">  
                     <fo:region-body xsl:use-attribute-sets="front-matter-region-body"/>
                 </fo:simple-page-master>
             </xsl:when>
             <xsl:when test="$page-layout = 'first-odd-even'">
-                <fo:simple-page-master xsl:use-attribute-sets="front-matter-first-page" master-name="front-matter-first-page">  
+                <fo:simple-page-master xsl:use-attribute-sets="front-matter-first-page" master-name="front-matter-first">  
                     <fo:region-body xsl:use-attribute-sets="front-matter-region-body"/>
                 </fo:simple-page-master>
-                <fo:simple-page-master xsl:use-attribute-sets="front-matter-odd-page" master-name="front-matter-odd-page">  
+                <fo:simple-page-master xsl:use-attribute-sets="front-matter-odd-page" master-name="front-matter-odd">  
                     <fo:region-body xsl:use-attribute-sets="front-matter-region-body"/>
                 </fo:simple-page-master>
-                <fo:simple-page-master xsl:use-attribute-sets="front-matter-even-page" master-name="front-matter-even-page">  
+                <fo:simple-page-master xsl:use-attribute-sets="front-matter-even-page" master-name="front-matter-even">  
                     <fo:region-body xsl:use-attribute-sets="front-matter-region-body"/>
                 </fo:simple-page-master>
             </xsl:when>
@@ -514,7 +512,7 @@
                 </fo:page-sequence-master> 
             </xsl:when>
             <xsl:when test="$page-layout = 'odd-even'">
-                <fo:page-sequence-master master-name = "toc-pages">
+                <fo:page-sequence-master master-name = "front-matter-pages">
                     <fo:repeatable-page-master-alternatives>
                         <fo:conditional-page-master-reference master-reference = "front-matter-odd" odd-or-even = "odd"/>
                         <fo:conditional-page-master-reference master-reference = "front-matter-even" odd-or-even = "even"/>
@@ -522,7 +520,7 @@
                 </fo:page-sequence-master> 
             </xsl:when>
             <xsl:when test="$page-layout = 'first-odd-even'">
-                <fo:page-sequence-master master-name = "toc-pages">
+                <fo:page-sequence-master master-name = "front-matter-pages">
                     <fo:repeatable-page-master-alternatives>
                         <fo:conditional-page-master-reference master-reference = "front-matter-first" page-position = "first"/>
                         <fo:conditional-page-master-reference master-reference = "front-matter-odd" odd-or-even = "odd"/>
