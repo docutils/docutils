@@ -9,6 +9,9 @@
 <!--if set to True, stylesheets cause quit when error found-->
 <xsl:param name="strict"/>
 
+<!--only for testing purposes-->
+<xsl:param name="test"/>
+
 <!--wheter to start new page when coming across sections one level deep
 Not implemented yet-->
 <xsl:param name="create-chapters"/>
