@@ -1,9 +1,7 @@
 #!/Library/Frameworks/Python.framework/Versions/2.7/Resources/Python.app/Contents/MacOS/Python
 # $Id$ 
 
-import docutils.core
 import cStringIO, sys
-from docutils.core import  default_description
 
 
 the_settings_dict = {   '_config_files': ['/Users/cynthia/.docutils'],
@@ -60,147 +58,31 @@ the_settings_dict = {   '_config_files': ['/Users/cynthia/.docutils'],
     'warning_stream': None,
     'xml_declaration': 1}
 
-class XMLPublish(docutils.core.Publisher):
-
-
-    default_usage = '%prog [options] [<source> [<destination>]]'
-    default_description = ('Reads from <source> (default is stdin) and writes to '
-                       '<destination> (default is stdout).  See '
-                       '<http://docutils.sf.net/docs/user/config.html> for '
-                       'the full reference.')
-
-    description = ('Generates Docutils-native XML from standalone '
-                   'reStructuredText sources.  ' + default_description)
-
-    # doesn't work, and not sure why
-    def __init_old__(self):
-         docutils.core.Publisher.__init__(self)
-
-    def publish(self, argv=None, usage=None, description=None,
-                settings_spec=None, settings_overrides=None,
-                config_section=None, enable_exit_status=None):
-        """
-        Process command line options and arguments (if `self.settings` not
-        already set), run `self.reader` and then `self.writer`.  Return
-        `self.writer`'s output.
-        """
-        default_for_xml = {'trim_footnote_reference_space': True} 
-        if settings_overrides == None:
-            settings_overrides = {}
-        settings_overrides.update(default_for_xml)
-        exit = None
-        try:
-            if self.settings is None:
-                self.process_command_line(
-                    argv, usage, description, settings_spec, config_section,
-                    **(settings_overrides or {}))
-            self.set_io()
-
-            # had to add  this as well
-            the_source_path = settings_overrides.get('_source')
-            if the_source_path:
-                source_path = the_source_path
-                source = file(the_source_path, 'rU')
-                self.source = self.source_class(
-                    source=source, source_path=source_path,
-                    encoding=self.settings.input_encoding)
-            self.document = self.reader.read(self.source, self.parser,
-                                             self.settings)
-            self.apply_transforms()
-            # had to add the destination_path and destination to redirect
-            # output
-            destination_path = settings_overrides.get('_destination')
-            if not destination_path:
-                output = cStringIO.StringIO()
-                destination = output
-            else:
-                destination = None
-            self.destination = self.destination_class(
-                destination=destination, destination_path=destination_path,
-                encoding=self.settings.output_encoding,
-                error_handler=self.settings.output_encoding_error_handler)
-            output = self.writer.write(self.document, self.destination)
-            self.writer.assemble_parts()
-        except SystemExit, error:
-            exit = 1
-            exit_status = error.code
-        except Exception, error:
-            if not self.settings:       # exception too early to report nicely
-                raise
-            if self.settings.traceback: # Propagate exceptions?
-                self.debugging_dumps()
-                raise
-            self.report_Exception(error)
-            exit = 1
-            exit_status = 1
-        self.debugging_dumps()
-        if (enable_exit_status and self.document
-            and (self.document.reporter.max_level
-                 >= self.settings.exit_status_level)):
-            sys.exit(self.document.reporter.max_level + 10)
-        elif exit:
-            sys.exit(exit_status)
-        return output
-
-
-    def publish_xml_cmdline(self, source = None, destination = None, 
-                        reader=None, reader_name='standalone',
-                        parser=None, parser_name='restructuredtext',
-                        writer=None, writer_name='pseudoxml',
-                        settings=None, settings_spec=None,
-                        settings_overrides=None, config_section=None,
-                        enable_exit_status=1, argv=None,
-                        usage=None, description=None):
-        """
-        Set up & run a `Publisher` for command-line-based file I/O (input and
-        output file paths taken automatically from the command line).  Return the
-        encoded string output also.
-
-        Parameters: see `publish_programmatically` for the remainder.
-
-        - `argv`: Command-line argument list to use instead of ``sys.argv[1:]``.
-        - `usage`: Usage string, output if there's a problem parsing the command
-          line.
-        - `description`: Program description, output for the "--help" option
-          (along with command-line option descriptions).
-        """
-        if usage == None:
-            usage = self.default_usage
-        if description == None:
-            description = self.description
-
-        if source:
-            if settings_overrides == None:
-                settings_overrides = {}
-            settings_overrides['_source'] = source
-        if destination:
-            if settings_overrides == None:
-                settings_overrides = {}
-            settings_overrides['_destination'] = destination
-
-        pub = XMLPublish(reader, parser, writer, settings=settings)
-        pub.set_components(reader_name, parser_name, writer_name)
-        output = pub.publish(
-            argv, usage, description, settings_spec, settings_overrides,
-            config_section=config_section, enable_exit_status=enable_exit_status)
-        return output
-
-
-"""
-
-from docutils.core import  default_description
-
-
-
-"""
-
-if __name__ == '__main__':
+def publish_xml_cmdline (in_path = None, out_path = None, settings_overrides=None):
     try:
         import locale
         locale.setlocale(locale.LC_ALL, '')
     except:
         pass
-    xml_obj = XMLPublish()
-    the_out = xml_obj.publish_xml_cmdline(writer_name='xml')
 
-    print the_out
+
+    from docutils.core import  default_description, default_usage
+    import docutils.core
+    description = ('Generates Docutils-native XML from standalone '
+               'reStructuredText sources.  ' + default_description)
+
+    if out_path:
+        sys.stdout = file(out_path, 'w')
+    if in_path:
+        sys.stdin = file(in_path)
+
+    pub = docutils.core.Publisher(None, None, None, settings=None)
+    pub.set_components('standalone', 'restructuredtext', 'xml')
+    output = pub.publish(
+        None, default_usage, description, None, settings_overrides,
+        config_section=None, enable_exit_status=1)
+    return output
+
+if __name__ == '__main__':
+    custom = {'title':'Doc Title'}
+    publish_xml_cmdline('test.rst', 'out.xml', custom)
