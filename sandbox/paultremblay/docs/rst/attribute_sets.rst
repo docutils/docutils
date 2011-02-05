@@ -15,6 +15,17 @@ Attribute sets root elements. Use these attribute sets to format
 the defaults in a document, such as font, font-size, or
 line-height.
 
+default-page-sequence
+---------------------
+
+:fo: fo:page-sequence
+
+:docutils: document
+
+:defaults:
+
+Formats the properties for the all of the document.
+
 front-page-sequence
 -------------------
 
@@ -22,7 +33,11 @@ front-page-sequence
 
 :docutils: document
 
+:inherits: default-page-sequence
+
 :defaults:
+
+     force-page-count: no-force
 
 Formats the properties for the complete run of pages, in this
 case, the front matter.
@@ -33,6 +48,8 @@ toc-page-sequence
 :fo: fo:page-sequence
 
 :docutils: document
+
+:inherits: default-page-sequence
 
 :defaults:
 
@@ -51,6 +68,8 @@ body-page-sequence
 :fo: fo:page-sequence
 
 :docutils: document
+
+:inherits: default-page-sequence
 
 :defaults:
 
