@@ -70,7 +70,7 @@
 
 
     <xsl:template match="topic[@classes='abstract']">
-        <xsl:if test="$page-sequence-type = 'body' or $page-sequence-type = 'toc-body'">
+        <xsl:if test="$abstract-pagination = 'with-body'">
             <fo:block role="abstract" xsl:use-attribute-sets="abstract-block">
                 <xsl:apply-templates/>
             </fo:block>
@@ -82,6 +82,7 @@
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
+
 
     <xsl:template match="topic[@classes='abstract']/title" priority="2">
         <fo:block role="abstract-title" xsl:use-attribute-sets="abstract-title-block">

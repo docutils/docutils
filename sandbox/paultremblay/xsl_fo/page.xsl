@@ -121,6 +121,9 @@
             <xsl:message>
                 <xsl:text>value of $page-sequence-type="</xsl:text>
                 <xsl:value-of select="$page-sequence-type"/>
+                <xsl:text>"&#xA;</xsl:text> 
+                <xsl:text>value of $page-layout="</xsl:text>
+                <xsl:value-of select="$page-layout"/>
                 <xsl:text>"</xsl:text>
             </xsl:message>
         </xsl:if>

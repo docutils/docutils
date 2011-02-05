@@ -101,7 +101,7 @@
     </xsl:template>
 
     <xsl:template match="document/subtitle">
-        <xsl:if test="$page-sequence-type = 'body' or $page-sequence-type='toc-body'">
+        <xsl:if test="$title-pagination='with-body'">
             <fo:block xsl:use-attribute-sets="document-subtitle-block" role="subtitle">
                 <xsl:apply-templates/>
             </fo:block>
@@ -109,7 +109,7 @@
     </xsl:template>
 
     <xsl:template match="document/title">
-        <xsl:if test="$page-sequence-type = 'body' or $page-sequence-type = 'toc-body'">
+        <xsl:if test="$title-pagination='with-body'">
             <fo:block xsl:use-attribute-sets="document-title-block" role="title">
                 <xsl:apply-templates/>
             </fo:block>

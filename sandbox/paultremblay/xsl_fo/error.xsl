@@ -6,25 +6,66 @@
     <!-- $Id$ -->
 
     <xsl:template name="test-params">
-        <xsl:if test= "$front-matter-pagination != 'own-section' and $front-matter-pagination != 'with-toc' 
-            and $front-matter-pagination != 'with-body'">
+
+        <xsl:if test= "$title-pagination != 'with-front'  and $title-pagination != 'with-toc' and 
+            $title-pagination != 'with-body'">
             <xsl:variable name="msg">
                 <xsl:text>"</xsl:text>
-                <xsl:value-of select="$front-matter-pagination"/>
-                <xsl:text>" not a valid value for param "front-matter-pagination."&#xA;</xsl:text>
-                <xsl:text>Valid values are 'own-section', 'with-toc' or 'with-body'&#xA;</xsl:text>
+                <xsl:value-of select="$page-layout"/>
+                <xsl:text>" not a valid value for param "title-pagination"&#xA;</xsl:text>
+                <xsl:text>Valid values are 'with-front', 'with-body', or 'with-body'&#xA;</xsl:text>
             </xsl:variable>
             <xsl:call-template name="quit-message">
                 <xsl:with-param name="msg" select="$msg"/>
             </xsl:call-template>
         </xsl:if>
 
-        <xsl:if test= "$toc-pagination != 'own-section'  and $toc-pagination != 'with-body'">
+        <xsl:if test= "$bibliographic-pagination != 'with-front'  and $bibliographic-pagination != 'with-toc' and 
+            $bibliographic-pagination != 'with-body'">
             <xsl:variable name="msg">
                 <xsl:text>"</xsl:text>
-                <xsl:value-of select="$toc-pagination"/>
+                <xsl:value-of select="$page-layout"/>
+                <xsl:text>" not a valid value for param "bibliographic-pagination"&#xA;</xsl:text>
+                <xsl:text>Valid values are 'with-front', 'with-body', or 'with-body'&#xA;</xsl:text>
+            </xsl:variable>
+            <xsl:call-template name="quit-message">
+                <xsl:with-param name="msg" select="$msg"/>
+            </xsl:call-template>
+        </xsl:if>
+
+        <xsl:if test= "$dedication-pagination != 'with-front'  and $dedication-pagination != 'with-toc' and 
+            $dedication-pagination != 'with-body'">
+            <xsl:variable name="msg">
+                <xsl:text>"</xsl:text>
+                <xsl:value-of select="$page-layout"/>
+                <xsl:text>" not a valid value for param "dedication-pagination"&#xA;</xsl:text>
+                <xsl:text>Valid values are 'with-front', 'with-body', or 'with-body'&#xA;</xsl:text>
+            </xsl:variable>
+            <xsl:call-template name="quit-message">
+                <xsl:with-param name="msg" select="$msg"/>
+            </xsl:call-template>
+        </xsl:if>
+
+        <xsl:if test= "$abstract-pagination != 'with-front'  and $abstract-pagination != 'with-toc' and 
+            $abstract-pagination != 'with-body'">
+            <xsl:variable name="msg">
+                <xsl:text>"</xsl:text>
+                <xsl:value-of select="$page-layout"/>
+                <xsl:text>" not a valid value for param "abstract-pagination"&#xA;</xsl:text>
+                <xsl:text>Valid values are 'with-front', 'with-body', or 'with-body'&#xA;</xsl:text>
+            </xsl:variable>
+            <xsl:call-template name="quit-message">
+                <xsl:with-param name="msg" select="$msg"/>
+            </xsl:call-template>
+        </xsl:if>
+
+        <xsl:if test= "$toc-pagination != 'with-front'  and $toc-pagination != 'with-toc' and 
+            $toc-pagination != 'with-body'">
+            <xsl:variable name="msg">
+                <xsl:text>"</xsl:text>
+                <xsl:value-of select="$page-layout"/>
                 <xsl:text>" not a valid value for param "toc-pagination"&#xA;</xsl:text>
-                <xsl:text>Valid values are 'own-section', or 'with-body'.&#xA;</xsl:text>
+                <xsl:text>Valid values are 'with-front', 'with-body', or 'with-body'&#xA;</xsl:text>
             </xsl:variable>
             <xsl:call-template name="quit-message">
                 <xsl:with-param name="msg" select="$msg"/>
