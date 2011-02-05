@@ -2,6 +2,7 @@ import sys, os, glob, commands, shlex, subprocess
 import docutilsToFo.rst2xml_lib
 from lxml import etree
 import lxml
+from docutilsToFo.rst2xml_lib import transform_lxml, publish_xml_cmdline
 
 # $Id$ 
 XSL_TRANSFORM = 'saxon'
@@ -53,39 +54,30 @@ test_dict = {
                 ({'page-layout':'first'},'bibliographic_fields_first_toc.fo'),
                 ({'page-layout':'odd-even'},'bibliographic_fields_odd_even_toc.fo'),
                 ({'page-layout':'first-odd-even'},'bibliographic_fields_first_odd_even_toc.fo'),
-                ({'front-matter-pagination':'own-section'},'bibliographic_fields_own_section_toc.fo'),
-                ({'front-matter-pagination':'with-toc'},'bibliographic_fields_with_toc_toc.fo'),
-                ({'front-matter-pagination':'with-body'},'bibliographic_fields_with_body_toc.fo'),
-
-                ({'front-matter-pagination':'own-section', 'page-layout':'simple'},
-                    'bibliographic_fields_own_section_simple_toc.fo'),
-                ({'front-matter-pagination':'own-section', 'page-layout':'first'},
-                    'bibliographic_fields_own_section_first_toc.fo'),
-                ({'front-matter-pagination':'own-section', 'page-layout':'odd-even'},
-                    'bibliographic_fields_own_section__odd_even_toc.fo'),
-                ({'front-matter-pagination':'own-section', 'page-layout':'first-odd-even'},
-                    'bibliographic_fields_own_section__odd_even_toc.fo'),
-
-                ({'front-matter-pagination':'with-toc', 'page-layout':'simple'},
-                    'bibliographic_fields_own_section_with_toc_simple_toc.fo'),
-                ({'front-matter-pagination':'with-toc', 'page-layout':'first'},
-                    'bibliographic_fields_own_section_with_toc_first_toc.fo'),
-                ({'front-matter-pagination':'with-toc', 'page-layout':'odd-even'},
-                    'bibliographic_fields_own_section_with_toc__odd_even_toc.fo'),
-                ({'front-matter-pagination':'with-toc', 'page-layout':'first-odd-even'},
-                    'bibliographic_fields_own_section_with_toc__odd_even_toc.fo'),
-
-                ({'front-matter-pagination':'with-body', 'page-layout':'simple'},
-                    'bibliographic_fields_own_section_with_body_simple_toc.fo'),
-                ({'front-matter-pagination':'with-body', 'page-layout':'first'},
-                    'bibliographic_fields_own_section_with_body_first_toc.fo'),
-                ({'front-matter-pagination':'with-body', 'page-layout':'odd-even'},
-                    'bibliographic_fields_own_section_with_body__odd_even_toc.fo'),
-                ({'front-matter-pagination':'with-body', 'page-layout':'first-odd-even'},
-                    'bibliographic_fields_own_section_with_body__odd_even_toc.fo'),
-
-
-                ]
+                ],
+        'front_matter.xml':[({},'front_matter.fo'),
+                    ({'title-pagination':'with-front'},
+                    {'bibliographic-pagination':'with-front'},
+                    {'dedication-pagination':'with-front'},
+                    {'dedication-pagination':'with-front'},
+                    {'abstract-pagination':'with-front'},
+                    {'toc-pagination':'with-front'},
+                    'front_matter2.fo'),
+                    ({'title-pagination':'with-front'},
+                    {'bibliographic-pagination':'with-front'},
+                    {'dedication-pagination':'with-body'},
+                    {'dedication-pagination':'with-front'},
+                    {'abstract-pagination':'with-toc'},
+                    {'toc-pagination':'with-front'},
+                    'front_matter3.fo'),
+                    ({'title-pagination':'with-body'},
+                    {'bibliographic-pagination':'with-front'},
+                    {'dedication-pagination':'with-toc'},
+                    {'dedication-pagination':'with-front'},
+                    {'abstract-pagination':'with-toc'},
+                    {'toc-pagination':'with-body'},
+                    'front_matter4.fo'),
+            ]
         }
 
 def error_func(msg):
@@ -130,60 +122,24 @@ def transform_xsl(xsl_file, xml_file, param_dict = {}, out_file = None):
             msg += '\n'
             error_func(msg)
     elif XSL_TRANSFORM == 'lyxml':
-        transform_lxml(xsl_file, xml_file, param_dict, out_file)
-
-def transform_lxml(xslt_file, xml_file, param_dict = {}, out_file = None):
-    # have to put quotes around string params
-    temp = {}
-    the_keys = param_dict.keys()
-    for the_key in the_keys:
-        if len(the_key) > 0: 
-            if the_key[0] == '"' and the_key[-1] == '"':
-                temp[the_key] = param_dict[the_key]
-            elif the_key[0] == "'" and the_key[-1] == "'":
-                temp[the_key] = param_dict[the_key]
-            else:
-                temp[the_key] = "'%s'" % param_dict[the_key]
-    param_dict = {}
-    param_dict.update(temp)
-
-    xslt_doc = etree.parse(xslt_file)
-    try:
-        transform = etree.XSLT(xslt_doc)
-    except lxml.etree.XSLTParseError, error:
-        print str(error)
-    indoc = etree.parse(xml_file)
-    try:
-        outdoc = transform(indoc, **param_dict)
-    except lxml.etree.XSLTApplyError, error:
-        msg = 'error converting %s to FO\n' % (xml_file)
-        msg += str(error)
-        msg += '\n'
-        error_func(msg)
-    if out_file:
-        write_obj = open(out_file, 'w')
-        outdoc.write(write_obj)
-        write_obj.close()
-    else:
-        sys.stdout.write(str(input_obj))
+        error = transform_lxml(xsl_file, xml_file, param_dict, out_file)
+        if error:
+            error_func(error)
 
 
-def convert_to_xml_old(path_list):
+def convert_to_xml(path_list):
     print 'converting to xml...'
     num_files = len(path_list)
     counter = 0
-    xml_obj = docutilsToFo.rst2xml_lib.XMLPublish()
     for the_path in path_list:
         counter += 1
         print 'converting %s of %s files' % (counter, num_files)
         base, ext = os.path.splitext(the_path)
         out_file = '%s.xml' % (base)
-        xml_obj.publish_xml_cmdline(writer_name='xml', 
-                source=the_path,
-                destination = out_file
-                )
+        publish_xml_cmdline (in_path = the_path, out_path = out_file)
 
-def convert_to_xml(path_list):
+# simple, fail-proof method
+def convert_to_xml_command(path_list):
     print 'converting to xml...'
     num_files = len(path_list)
     counter = 0
