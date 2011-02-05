@@ -140,25 +140,25 @@
     <!--END OF ATTRIBUTE SETS-->
 
     <!--TOPIC-->
-    <xsl:template match="topic">
+    <xsl:template match="topic[not(@classes)]">
         <fo:block xsl:use-attribute-sets="topic-block" role="topic">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="topic/title">
+    <xsl:template match="topic[not(@classes)]/title">
         <fo:block role="title" xsl:use-attribute-sets = "topic-title-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="topic/paragraph[1]" priority="2">
+    <xsl:template match="topic[not(@classes)]/paragraph[1]" priority="2">
         <fo:block role="topic-paragraph" xsl:use-attribute-sets="topic-first-paragraph-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="topic/paragraph">
+    <xsl:template match="topic[not(@classes)]/paragraph">
         <fo:block role="topic-paragraph" xsl:use-attribute-sets="topic-paragraph-block">
             <xsl:apply-templates/>
         </fo:block>

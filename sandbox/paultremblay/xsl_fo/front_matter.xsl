@@ -43,7 +43,7 @@
 
     <!--ony process if not already processed in front matter-->
     <xsl:template match="topic[@classes='dedication']">
-        <xsl:if test="$page-sequence-type = 'body' or $page-sequence-type = 'toc-body'">
+        <xsl:if test="$dedication-pagination = 'with-body'">
             <fo:block role="dedication" xsl:use-attribute-sets="dedication-block">
                 <xsl:apply-templates/>
             </fo:block>

@@ -95,6 +95,12 @@ fields as author, etc.`docutils`-->
 <xsl:param name="toc-pagination">with-toc</xsl:param>
 <!--Note: utils.xsl has the code for the variable page-sequence-type-->
 
+<!--the order for the front matter. Use a comma after each area, and 
+make sure you incude all areas. Relevant areas are 
+title, bibliographic, dedication, abstract, and toc
+-->
+<xsl:param name="front-order">title,bibliographic,dedication,abstract,toc</xsl:param>
+
 <!--the default to use for a bullet list, rather than what the user specifies-->
 <xsl:param name="bullet-text">&#x2022;</xsl:param>
 

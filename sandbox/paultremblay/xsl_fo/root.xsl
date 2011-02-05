@@ -29,8 +29,6 @@
     </xsl:attribute-set>
 
     <!--default for fo:flow-->
-    <!--NOTE: note of the flows yet implemented, but when implemented, could be 
-    used to set font-size, background, line-height, etc.-->
     <xsl:attribute-set name="default-flow">
     </xsl:attribute-set>
 
@@ -53,57 +51,17 @@
         </xsl:element>
     </xsl:template>
 
-    <xsl:template name="make-front">
-        <fo:page-sequence master-reference="front-matter-pages" xsl:use-attribute-sets="front-page-sequence">
-            <fo:flow flow-name="xsl-region-body" xsl:use-attribute-sets="front-flow">
-                <xsl:if test="$title-pagination='with-front'">
-                    <xsl:apply-templates select="/document/title" mode="front"/>
-                </xsl:if>
-                <xsl:if test="$bibliographic-pagination='with-front'">
-                    <xsl:apply-templates select="docinfo" mode="front"/>
-                </xsl:if>
-                <xsl:if test="$dedication-pagination='with-front'">
-                    <xsl:apply-templates select="topic[@classes='dedication']" mode="front"/>
-                </xsl:if>
-                <xsl:if test="$abstract-pagination='with-front'">
-                    <xsl:apply-templates select="topic[@classes='abstract']" mode="front"/>
-                </xsl:if>
-                <xsl:if test="$toc-pagination='with-front'">
-                    <xsl:apply-templates select="topic[@classes='contents']" mode="front"/>
-                </xsl:if>
-            </fo:flow>
-        </fo:page-sequence>
-    </xsl:template>
-
-    <xsl:template name="make-toc">
-        <fo:page-sequence master-reference="toc-pages" xsl:use-attribute-sets="toc-page-sequence">
-            <xsl:apply-templates select="/document/decoration/header" mode="header"/>
-            <xsl:apply-templates select="/document/decoration/footer" mode="footer"/>
-            <fo:flow flow-name="xsl-region-body" xsl:use-attribute-sets="toc-flow">
-                <xsl:if test="$title-pagination='with-toc'">
-                    <xsl:apply-templates select="/document/title" mode="front"/>
-                </xsl:if>
-                <xsl:if test="$bibliographic-pagination='with-toc'">
-                    <xsl:apply-templates select="docinfo" mode="front"/>
-                </xsl:if>
-                <xsl:if test="$dedication-pagination='with-toc'">
-                    <xsl:apply-templates select="topic[@classes='dedication']" mode="front"/>
-                </xsl:if>
-                <xsl:if test="$abstract-pagination='with-toc'">
-                    <xsl:apply-templates select="topic[@classes='abstract']" mode="front"/>
-                </xsl:if>
-                <xsl:if test="$toc-pagination='with-toc'">
-                    <xsl:apply-templates select="topic[@classes='contents']" mode="front"/>
-                </xsl:if>
-            </fo:flow>
-        </fo:page-sequence>
-    </xsl:template>
-
     <!--title, bibliographic-info dedication, abstract toc-->
     <xsl:template match = "document">
         <xsl:call-template name='test-params'/>
+        <xsl:if test="$test='True'">
+            <xsl:message>
+                <xsl:text>value of $front-order = "</xsl:text>
+                <xsl:value-of select="$front-order"/>
+                <xsl:text>"</xsl:text>
+            </xsl:message>
+        </xsl:if>
         <xsl:choose>
-            <!--won't match anything-->
             <xsl:when test="$page-sequence-type = 'front-toc-body'">
                 <xsl:call-template name="make-front"/>
                 <xsl:call-template name="make-toc"/>
@@ -124,6 +82,70 @@
                 <fo:block/>
             </fo:flow>
         </fo:page-sequence>
+    </xsl:template>
+
+    <xsl:template name="make-front">
+        <fo:page-sequence master-reference="front-matter-pages" xsl:use-attribute-sets="front-page-sequence">
+            <fo:flow flow-name="xsl-region-body" xsl:use-attribute-sets="front-flow">
+                <xsl:call-template name="apply-in-order">
+                    <xsl:with-param name="order" select="$front-order"/>
+                    <xsl:with-param name="region" select="'with-front'"/>
+                </xsl:call-template>
+            </fo:flow>
+        </fo:page-sequence>
+    </xsl:template>
+
+    <xsl:template name="make-toc">
+        <fo:page-sequence master-reference="toc-pages" xsl:use-attribute-sets="toc-page-sequence">
+            <xsl:apply-templates select="/document/decoration/header" mode="header"/>
+            <xsl:apply-templates select="/document/decoration/footer" mode="footer"/>
+            <fo:flow flow-name="xsl-region-body" xsl:use-attribute-sets="toc-flow">
+                <xsl:call-template name="apply-in-order">
+                    <xsl:with-param name="order" select="$front-order"/>
+                    <xsl:with-param name="region" select="'with-toc'"/>
+                </xsl:call-template>
+            </fo:flow>
+        </fo:page-sequence>
+    </xsl:template>
+
+
+    <xsl:template name="apply-in-order">
+        <xsl:param name="order"/>
+        <xsl:param name="first-run">True</xsl:param>
+        <xsl:param name="region"/>
+        <xsl:variable name="order-string">
+            <xsl:choose>
+                <xsl:when test="$first-run='True'">
+                    <xsl:value-of select="concat($order, ',')"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="$order"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:variable name="matter" select="normalize-space(substring-before($order-string, ','))"/>
+        <xsl:if test = "$matter != ''">
+            <xsl:if test="$title-pagination=$region and $matter='title'">
+                <xsl:apply-templates select="/document/title" mode="front"/>
+            </xsl:if>
+            <xsl:if test="$bibliographic-pagination=$region and $matter = 'bibliographic'">
+                <xsl:apply-templates select="docinfo" mode="front"/>
+            </xsl:if>
+            <xsl:if test="$dedication-pagination=$region and $matter = 'dedication'">
+                <xsl:apply-templates select="topic[@classes='dedication']" mode="front"/>
+            </xsl:if>
+            <xsl:if test="$abstract-pagination=$region and $matter = 'abstract'">
+                <xsl:apply-templates select="topic[@classes='abstract']" mode="front"/>
+            </xsl:if>
+            <xsl:if test="$toc-pagination=$region and $matter = 'toc'">
+                <xsl:apply-templates select="topic[@classes='contents']" mode="front"/>
+            </xsl:if>
+            <xsl:call-template name="apply-in-order">
+                <xsl:with-param name="first-run">False</xsl:with-param>
+                <xsl:with-param name="order" select="substring-after($order-string, ',')"/>
+                <xsl:with-param name="region" select="$region"/>
+            </xsl:call-template>
+        </xsl:if>
     </xsl:template>
 
 
