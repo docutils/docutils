@@ -7,15 +7,18 @@
 
     <!-- The stylesheet for handling root elements, such as document-->
 
+    <!--any attributes here will apply to the entire document-->
+    <xsl:attribute-set name="default-page-sequence">
+    </xsl:attribute-set>
 
-    <xsl:attribute-set name="front-page-sequence">
+    <xsl:attribute-set name="front-page-sequence" use-attribute-sets="default-page-sequence">
         <xsl:attribute name= "force-page-count">no-force</xsl:attribute> 
     </xsl:attribute-set>
 
     <!--attributes for the sequence of pages for the toc. 
     NOTE: The page numbering might have to be changed, by the user, if an odd-even layout is used. 
     Namely, the user might have to change the the force-page-count to odd or even, depending.  -->
-    <xsl:attribute-set name="toc-page-sequence">
+    <xsl:attribute-set name="toc-page-sequence" use-attribute-sets="default-page-sequence">
         <xsl:attribute name= "format">i</xsl:attribute> 
         <xsl:attribute name= "initial-page-number">1</xsl:attribute> 
         <xsl:attribute name= "force-page-count">no-force</xsl:attribute> 
@@ -23,7 +26,7 @@
 
 
     <!--attributes for the sequence of pages for the main body. -->
-    <xsl:attribute-set name="body-page-sequence" >
+    <xsl:attribute-set name="body-page-sequence" use-attribute-sets="default-page-sequence">
         <xsl:attribute name= "format">1</xsl:attribute> 
         <xsl:attribute name= "initial-page-number">1</xsl:attribute> 
     </xsl:attribute-set>
