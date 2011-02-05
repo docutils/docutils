@@ -45,12 +45,12 @@
     </xsl:template>
 
     <xsl:template match="topic[@classes='contents']">
-        <xsl:if test="$page-sequence-type = 'body' or $page-sequence-type = 'front-body'">
+        <xsl:if test="$toc-pagination ='with-body'">
             <xsl:apply-templates/>
         </xsl:if>
     </xsl:template>
 
-     <xsl:template match="topic[@classes='contents']" mode="toc">
+     <xsl:template match="topic[@classes='contents']" mode="front">
          <xsl:apply-templates/>
      </xsl:template>
 

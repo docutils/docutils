@@ -53,48 +53,66 @@
         </xsl:element>
     </xsl:template>
 
+    <xsl:template name="make-front">
+        <fo:page-sequence master-reference="front-matter-pages" xsl:use-attribute-sets="front-page-sequence">
+            <fo:flow flow-name="xsl-region-body" xsl:use-attribute-sets="front-flow">
+                <xsl:if test="$title-pagination='with-front'">
+                    <xsl:apply-templates select="/document/title" mode="front"/>
+                </xsl:if>
+                <xsl:if test="$bibliographic-pagination='with-front'">
+                    <xsl:apply-templates select="docinfo" mode="front"/>
+                </xsl:if>
+                <xsl:if test="$dedication-pagination='with-front'">
+                    <xsl:apply-templates select="topic[@classes='dedication']" mode="front"/>
+                </xsl:if>
+                <xsl:if test="$abstract-pagination='with-front'">
+                    <xsl:apply-templates select="topic[@classes='abstract']" mode="front"/>
+                </xsl:if>
+                <xsl:if test="$toc-pagination='with-front'">
+                    <xsl:apply-templates select="topic[@classes='contents']" mode="front"/>
+                </xsl:if>
+            </fo:flow>
+        </fo:page-sequence>
+    </xsl:template>
+
+    <xsl:template name="make-toc">
+        <fo:page-sequence master-reference="toc-pages" xsl:use-attribute-sets="toc-page-sequence">
+            <xsl:apply-templates select="/document/decoration/header" mode="header"/>
+            <xsl:apply-templates select="/document/decoration/footer" mode="footer"/>
+            <fo:flow flow-name="xsl-region-body" xsl:use-attribute-sets="toc-flow">
+                <xsl:if test="$title-pagination='with-toc'">
+                    <xsl:apply-templates select="/document/title" mode="front"/>
+                </xsl:if>
+                <xsl:if test="$bibliographic-pagination='with-toc'">
+                    <xsl:apply-templates select="docinfo" mode="front"/>
+                </xsl:if>
+                <xsl:if test="$dedication-pagination='with-toc'">
+                    <xsl:apply-templates select="topic[@classes='dedication']" mode="front"/>
+                </xsl:if>
+                <xsl:if test="$abstract-pagination='with-toc'">
+                    <xsl:apply-templates select="topic[@classes='abstract']" mode="front"/>
+                </xsl:if>
+                <xsl:if test="$toc-pagination='with-toc'">
+                    <xsl:apply-templates select="topic[@classes='contents']" mode="front"/>
+                </xsl:if>
+            </fo:flow>
+        </fo:page-sequence>
+    </xsl:template>
+
+    <!--title, bibliographic-info dedication, abstract toc-->
     <xsl:template match = "document">
         <xsl:call-template name='test-params'/>
         <xsl:choose>
-            <xsl:when test="$page-sequence-type = 'toc-combined-body'">
-                <fo:page-sequence master-reference="toc-pages" xsl:use-attribute-sets="toc-page-sequence">
-                    <xsl:apply-templates select="/document/decoration/header" mode="header"/>
-                    <xsl:apply-templates select="/document/decoration/footer" mode="footer"/>
-                    <fo:flow flow-name="xsl-region-body" xsl:use-attribute-sets="toc-flow">
-                        <xsl:apply-templates select="topic[@classes='abstract']|topic[@classes='dedication']|docinfo|/document/title" mode="front"/>
-                        <xsl:apply-templates select="topic[@classes='contents']" mode="toc"/>
-                    </fo:flow>
-                </fo:page-sequence>
-            </xsl:when>
+            <!--won't match anything-->
             <xsl:when test="$page-sequence-type = 'front-toc-body'">
-                <fo:page-sequence master-reference="front-matter-pages" xsl:use-attribute-sets="front-page-sequence">
-                    <fo:flow flow-name="xsl-region-body" xsl:use-attribute-sets="front-flow">
-                        <xsl:apply-templates select="topic[@classes='abstract']|topic[@classes='dedication']|docinfo|/document/title" mode="front"/>
-                    </fo:flow>
-                </fo:page-sequence>
-                <fo:page-sequence master-reference="toc-pages" xsl:use-attribute-sets="toc-page-sequence">
-                    <xsl:apply-templates select="/document/decoration/header" mode="header"/>
-                    <xsl:apply-templates select="/document/decoration/footer" mode="footer"/>
-                    <fo:flow flow-name="xsl-region-body" xsl:use-attribute-sets="toc-flow">
-                        <xsl:apply-templates select="topic[@classes='contents']" mode="toc"/>
-                    </fo:flow>
-                </fo:page-sequence>
+                <xsl:call-template name="make-front"/>
+                <xsl:call-template name="make-toc"/>
             </xsl:when>
             <xsl:when test="$page-sequence-type = 'front-body'">
-                <fo:page-sequence master-reference="front-matter-pages" xsl:use-attribute-sets="front-page-sequence">
-                    <fo:flow flow-name="xsl-region-body" xsl:use-attribute-sets="front-flow">
-                        <xsl:apply-templates select="topic[@classes='abstract']|topic[@classes='dedication']|docinfo|/document/title" mode="front"/>
-                    </fo:flow>
-                </fo:page-sequence>
+                <xsl:call-template name="make-front"/>
             </xsl:when>
             <xsl:when test="$page-sequence-type = 'toc-body'">
-                <fo:page-sequence master-reference="toc-pages" xsl:use-attribute-sets="toc-page-sequence">
-                    <xsl:apply-templates select="/document/decoration/header" mode="header"/>
-                    <xsl:apply-templates select="/document/decoration/footer" mode="footer"/>
-                    <fo:flow flow-name="xsl-region-body" xsl:use-attribute-sets="toc-flow">
-                        <xsl:apply-templates select="topic[@classes='contents']" mode="toc"/>
-                    </fo:flow>
-                </fo:page-sequence>
+                <xsl:call-template name="make-toc"/>
             </xsl:when>
         </xsl:choose>
         <fo:page-sequence master-reference="pages" xsl:use-attribute-sets="body-page-sequence">

@@ -50,7 +50,7 @@
 
     <!--only apply temlates if docinfo won't be written to front matter-->
     <xsl:template match="docinfo">
-        <xsl:if test="$page-sequence-type = 'body' or $page-sequence-type = 'toc-body'">
+        <xsl:if test="$bibliographic-pagination='with-body'">
             <fo:list-block role="field-list" xsl:use-attribute-sets="bibliographic-fields-list-block">
                 <xsl:apply-templates/>
             </fo:list-block>
@@ -156,6 +156,13 @@
         <xsl:call-template name="make-list-item">
             <xsl:with-param name="label-text" select="$version-text"/>
             <xsl:with-param name="role" select="'version'"/>
+        </xsl:call-template>
+    </xsl:template>
+
+    <xsl:template match="docinfo/revision">
+        <xsl:call-template name="make-list-item">
+            <xsl:with-param name="label-text" select="$revision-text"/>
+            <xsl:with-param name="role" select="'revision'"/>
         </xsl:call-template>
     </xsl:template>
 

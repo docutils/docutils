@@ -67,19 +67,33 @@ fields as author, etc.`docutils`-->
 <xsl:param name="copyright-text">Copyright: </xsl:param>
 <xsl:param name="address-text">Address: </xsl:param>
 <xsl:param name="version-text">Version: </xsl:param>
+<xsl:param name="revision-text">Revision: </xsl:param>
 <xsl:param name="date-text">Date: </xsl:param>
+
+<!--abstract, dedication, toc title-->
 
 <!--whether to make new pages for dedication and abstact-->
 <!--either own-section, with-toc, with-body-->
+<!--
 <xsl:param name="front-matter-pagination">own-section</xsl:param>
-<!--either own-section, or with-body-->
-<xsl:param name="toc-pagination">own-section</xsl:param>
-<!--Note: utils.xsl has the code for the variable page-sequence-type-->
-
-<!--whether to put title on its own page  Acceptable values are 'own-page' or not-own-page-->
-<!--decided not to use this after all
-<xsl:param name="document-title">own-page</xsl:param>
 -->
+<!--with-front, with-toc, or with-body-->
+<xsl:param name="title-pagination">with-front</xsl:param>
+<!--either own-section, or with-body-->
+
+<!--with-front, with-toc, or with-body-->
+<xsl:param name="bibliographic-pagination">with-toc</xsl:param>
+
+<!--with-front, with-toc, or with-body-->
+<xsl:param name="dedication-pagination">with-front</xsl:param>
+
+<!--with-front, with-toc, or with-body-->
+<xsl:param name="abstract-pagination">with-front</xsl:param>
+<!--either own-section, or with-body-->
+
+<!--with-front, with-toc, or with-body-->
+<xsl:param name="toc-pagination">with-toc</xsl:param>
+<!--Note: utils.xsl has the code for the variable page-sequence-type-->
 
 <!--the default to use for a bullet list, rather than what the user specifies-->
 <xsl:param name="bullet-text">&#x2022;</xsl:param>
