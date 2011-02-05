@@ -2,6 +2,8 @@
 # $Id$ 
 
 import cStringIO, sys
+from lxml import etree
+import lxml
 
 
 the_settings_dict = {   '_config_files': ['/Users/cynthia/.docutils'],
@@ -58,7 +60,7 @@ the_settings_dict = {   '_config_files': ['/Users/cynthia/.docutils'],
     'warning_stream': None,
     'xml_declaration': 1}
 
-def publish_xml_cmdline (in_path = None, out_path = None, settings_overrides=None):
+def publish_xml_cmdline (in_path = None, in_string = None, out_path = None, settings_overrides=None ):
     try:
         import locale
         locale.setlocale(locale.LC_ALL, '')
@@ -66,22 +68,78 @@ def publish_xml_cmdline (in_path = None, out_path = None, settings_overrides=Non
         pass
 
 
-    from docutils.core import  default_description, default_usage
+    from docutils.core import  default_description, default_usage, publish_file, publish_string
     import docutils.core
     description = ('Generates Docutils-native XML from standalone '
                'reStructuredText sources.  ' + default_description)
 
-    if out_path:
-        sys.stdout = file(out_path, 'w')
-    if in_path:
-        sys.stdin = file(in_path)
+    if not in_path and not in_string:
+        raise TypeError('publish_xml_cmdlind() must have either "in_path" or "in_string" as parameters')
 
-    pub = docutils.core.Publisher(None, None, None, settings=None)
-    pub.set_components('standalone', 'restructuredtext', 'xml')
-    output = pub.publish(
-        None, default_usage, description, None, settings_overrides,
-        config_section=None, enable_exit_status=1)
-    return output
+
+    if in_path:
+        out_string = publish_file(source_path= in_path, destination_path=out_path, 
+                    settings_overrides = settings_overrides, writer_name='xml')
+
+    elif in_string:
+        out_string = publish_string(source= in_string, destination_path=out_path, 
+                    settings_overrides = settings_overrides, writer_name='xml')
+    return out_string
+
+
+def report_xsl_error(transform_error_obj):
+    for error_obj in transform_error_obj:
+        sys.stderr.write(error_obj.message)
+        if error_obj.line != 0 and error_obj.column != 0:
+            sys.stderr.write(str(error_obj.line))
+            sys.stderr.write(str(error_obj.column))
+        #print error_obj.domain_name, 'domain_name'
+        #print error_obj.filename, 'filename'
+        #print error_obj.level, 'level'
+        #print error_obj.level_name, 'level-name'
+        #print error_obj.type, 'type'
+        #print error_obj.type_name, 'type_name'
+        #print error_obj.line, 'line' 
+        #print error_obj.column, 'line' 
+        #print error_obj.message, 'message' 
+
+def transform_lxml(xslt_file, xml_file, param_dict = {}, out_file = None):
+    # have to put quotes around string params
+    temp = {}
+    the_keys = param_dict.keys()
+    for the_key in the_keys:
+        if len(the_key) > 0: 
+            if the_key[0] == '"' and the_key[-1] == '"':
+                temp[the_key] = param_dict[the_key]
+            elif the_key[0] == "'" and the_key[-1] == "'":
+                temp[the_key] = param_dict[the_key]
+            else:
+                temp[the_key] = "'%s'" % param_dict[the_key]
+    param_dict = {}
+    param_dict.update(temp)
+
+    xslt_doc = etree.parse(xslt_file)
+    try:
+        transform = etree.XSLT(xslt_doc)
+    except lxml.etree.XSLTParseError, error:
+        sys.stderr.write(str(error) + '\n')
+        sys.exit(1)
+    indoc = etree.parse(xml_file)
+    try:
+        outdoc = transform(indoc, **param_dict)
+    except lxml.etree.XSLTApplyError, error:
+        msg = 'error converting %s to %s with %s:\n' % (xml_file, out_file, xslt_file)
+        msg += str(error)
+        msg += '\n'
+        return msg
+    report_xsl_error(transform.error_log)
+    if out_file:
+        write_obj = open(out_file, 'w')
+        outdoc.write(write_obj)
+        write_obj.close()
+    else:
+        sys.stdout.write(str(input_obj))
+
 
 if __name__ == '__main__':
     custom = {'title':'Doc Title'}
