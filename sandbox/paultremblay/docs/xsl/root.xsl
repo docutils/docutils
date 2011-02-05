@@ -5,11 +5,21 @@
 
     <!-- $Id$ -->
 
+    <xsl:template match= "xsl:attribute-set[@name='default-page-sequence']" priority="3">
+        <xsl:call-template name="before-desc">
+            <xsl:with-param name="fo">fo:page-sequence</xsl:with-param> 
+            <xsl:with-param name="docutils">document</xsl:with-param> 
+        </xsl:call-template>
+        <block>
+            Formats the properties for the all of the document.
+        </block>
+    </xsl:template>
 
     <xsl:template match= "xsl:attribute-set[@name='front-page-sequence']" priority="3">
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">fo:page-sequence</xsl:with-param> 
             <xsl:with-param name="docutils">document</xsl:with-param> 
+            <xsl:with-param name="inherits">default-page-sequence</xsl:with-param> 
         </xsl:call-template>
         <block>
             Formats the properties for the complete run of pages, in this case, the front matter.
@@ -20,6 +30,7 @@
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">fo:page-sequence</xsl:with-param> 
             <xsl:with-param name="docutils">document</xsl:with-param> 
+            <xsl:with-param name="inherits">default-page-sequence</xsl:with-param> 
         </xsl:call-template>
         <block>
             Formats the properties for the complete run of pages, in this case, the toc and any
@@ -27,21 +38,12 @@
         </block>
     </xsl:template>
 
-    <xsl:template match= "xsl:attribute-set[@name='toc-page-sequence']" priority="3">
-        <xsl:call-template name="before-desc">
-            <xsl:with-param name="fo">fo:page-sequence</xsl:with-param> 
-            <xsl:with-param name="docutils">document</xsl:with-param> 
-        </xsl:call-template>
-        <block>
-            Formats the properties for the complete run of pages, in this case, the toc and any
-            pages associated with it.
-        </block>
-    </xsl:template>
 
     <xsl:template match= "xsl:attribute-set[@name='body-page-sequence']" priority="3">
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">fo:page-sequence</xsl:with-param> 
             <xsl:with-param name="docutils">document</xsl:with-param> 
+            <xsl:with-param name="inherits">default-page-sequence</xsl:with-param> 
         </xsl:call-template>
         <block>
             Formats the properties for the complete run of pages, in this case, the body.
