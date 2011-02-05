@@ -151,17 +151,98 @@
                 <xsl:with-param name="msg" select="$msg"/>
             </xsl:call-template>
         </xsl:if>
-        <!--
-        <xsl:if test= "$document-title != 'own-page'  and $document-title != 'not-own-page'">
-            <xsl:message terminate = "yes">
-                <xsl:text>"</xsl:text>
-                <xsl:value-of select="$option-list-format"/>
-                <xsl:text>" not a valid value for param "document-title"&#xA;</xsl:text>
-                <xsl:text>Valid values are 'own-page', and 'not-own-page'&#xA;</xsl:text>
-                <xsl:text>Processing XSLT now quiting.</xsl:text>
-            </xsl:message>
+
+        <!--test $font-order parameter for valid values-->
+        <xsl:call-template name="test-order">
+            <xsl:with-param name="order" select="$front-order"/>
+        </xsl:call-template>
+
+        <!--test $front order to make sure appropriate values included-->
+        <xsl:if test = "$title-exists and not(contains($front-order, 'title'))">
+            <xsl:variable name="msg">
+                <xsl:text>'title' has not been declared in parameter 'front-order', </xsl:text>
+                <xsl:text>yet this element exists.&#xA;</xsl:text>
+                <xsl:text>Please fix. (For example, 'title, bibliographic, dedication, abstract, toc')&#xA;</xsl:text>
+            </xsl:variable>
+            <xsl:call-template name="quit-message">
+                <xsl:with-param name="msg" select="$msg"/>
+            </xsl:call-template>
         </xsl:if>
-        -->
+        <xsl:if test = "$bibliographic-exists and not(contains($front-order, 'bibliographic'))">
+            <xsl:variable name="msg">
+                <xsl:text>'bibliographic' has not been declared in parameter 'front-order', </xsl:text>
+                <xsl:text>yet this element exists.&#xA;</xsl:text>
+                <xsl:text>Please fix. (For example, 'title, bibliographic, dedication, abstract, toc')&#xA;</xsl:text>
+            </xsl:variable>
+            <xsl:call-template name="quit-message">
+                <xsl:with-param name="msg" select="$msg"/>
+            </xsl:call-template>
+        </xsl:if>
+        <xsl:if test = "$dedication-exists and not(contains($front-order, 'dedication'))">
+            <xsl:variable name="msg">
+                <xsl:text>'dedication' has not been declared in parameter 'front-order', </xsl:text>
+                <xsl:text>yet this element exists.&#xA;</xsl:text>
+                <xsl:text>Please fix. (For example, 'title, bibliographic, dedication, abstract, toc')&#xA;</xsl:text>
+            </xsl:variable>
+            <xsl:call-template name="quit-message">
+                <xsl:with-param name="msg" select="$msg"/>
+            </xsl:call-template>
+        </xsl:if>
+        <xsl:if test = "$abstract-exists and not(contains($front-order, 'abstract'))">
+            <xsl:variable name="msg">
+                <xsl:text>'abstract' has not been declared in parameter 'front-order', </xsl:text>
+                <xsl:text>yet this element exists.&#xA;</xsl:text>
+                <xsl:text>Please fix. (For example, 'title, bibliographic, dedication, abstract, toc')&#xA;</xsl:text>
+            </xsl:variable>
+            <xsl:call-template name="quit-message">
+                <xsl:with-param name="msg" select="$msg"/>
+            </xsl:call-template>
+        </xsl:if>
+        <xsl:if test = "$toc-exists and not(contains($front-order, 'toc'))">
+            <xsl:variable name="msg">
+                <xsl:text>'toc' has not been declared in parameter 'front-order', </xsl:text>
+                <xsl:text>yet this element exists.&#xA;</xsl:text>
+                <xsl:text>Please fix. (For example, 'title, bibliographic, dedication, abstract, toc')&#xA;</xsl:text>
+            </xsl:variable>
+            <xsl:call-template name="quit-message">
+                <xsl:with-param name="msg" select="$msg"/>
+            </xsl:call-template>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="test-order">
+        <xsl:param name="order"/>
+        <xsl:param name="first-run">True</xsl:param>
+        <xsl:variable name="order-string">
+            <xsl:choose>
+                <xsl:when test="$first-run='True'">
+                    <xsl:value-of select="concat($order, ',')"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="$order"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:variable name="matter" select="normalize-space(substring-before($order-string, ','))"/>
+        <xsl:if test="$matter != ''">
+            <xsl:if test = "$matter != 'title' and $matter != 'bibliographic' and 
+                $matter != 'dedication' and $matter != 'abstract' and $matter != 'toc'">
+                <xsl:variable name="msg">
+                    <xsl:text>"</xsl:text>
+                    <xsl:value-of select="$matter"/>
+                    <xsl:text>" not a valid area for parameter 'front-order'&#xA;</xsl:text>
+                    <xsl:text>Valid values are 'title', 'bibliographic', 'dedication',</xsl:text>
+                    <xsl:text> 'abstract', and 'toc'&#xA;</xsl:text>
+                </xsl:variable>
+                <xsl:call-template name="quit-message">
+                    <xsl:with-param name="msg" select="$msg"/>
+                </xsl:call-template>
+            </xsl:if>
+            <xsl:call-template name="test-order">
+                <xsl:with-param name="order" select="substring-after($order-string, ',')"/>
+                <xsl:with-param name="first-run" select="'False'"/>
+            </xsl:call-template>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template name="trace-ancestors">

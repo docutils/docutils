@@ -5,191 +5,6 @@
     >
     <!-- $Id$ -->
 
-    <!--
-    BEGIN LONG TEMPLATE
-====================================================================================================
-    -->
-    <xsl:template name="generate-section-num">
-        <xsl:variable name="level">
-            <xsl:value-of select="count(ancestor::section)"/>
-        </xsl:variable>
-        <xsl:choose>
-            <xsl:when test="$level=1">
-                <xsl:for-each select="parent::section">
-                    <xsl:number format="{$number-section1}"/>
-                </xsl:for-each>
-            </xsl:when>
-            <xsl:when test="$level = 2">
-                <xsl:if test="$inherit-section-num = 'True'">
-                    <xsl:for-each select="parent::section/parent::section">
-                        <xsl:number format="{$number-section1}"/>
-                    </xsl:for-each>
-                </xsl:if>
-                <xsl:for-each select="parent::section">
-                    <xsl:number format="{$number-section2}"/>
-                </xsl:for-each>
-            </xsl:when>
-            <xsl:when test="$level = 3">
-                <xsl:if test="$inherit-section-num = 'True'">
-                    <xsl:for-each select="parent::section/parent::section/parent::section">
-                        <xsl:number format="{$number-section1}"/>
-                    </xsl:for-each>
-                    <xsl:for-each select="parent::section/parent::section">
-                        <xsl:number format="{$number-section2}"/>
-                    </xsl:for-each>
-                </xsl:if>
-                <xsl:for-each select="parent::section">
-                    <xsl:number format="{$number-section3}"/>
-                </xsl:for-each>
-            </xsl:when>
-            <xsl:when test="$level = 4">
-                <xsl:if test="$inherit-section-num = 'True'">
-                    <xsl:for-each select="parent::section/parent::section/parent::section/parent::section">
-                        <xsl:number format="{$number-section1}"/>
-                    </xsl:for-each>
-                    <xsl:for-each select="parent::section/parent::section/parent::section">
-                        <xsl:number format="{$number-section2}"/>
-                    </xsl:for-each>
-                    <xsl:for-each select="parent::section/parent::section">
-                        <xsl:number format="{$number-section3}"/>
-                    </xsl:for-each>
-                </xsl:if>
-                <xsl:for-each select="parent::section">
-                    <xsl:number format="{$number-section4}"/>
-                </xsl:for-each>
-            </xsl:when>
-            <xsl:when test="$level = 5">
-                <xsl:if test="$inherit-section-num = 'True'">
-                    <xsl:for-each select="parent::section/parent::section/parent::section/parent::section/parent::section">
-                        <xsl:number format="{$number-section1}"/>
-                    </xsl:for-each>
-                    <xsl:for-each select="parent::section/parent::section/parent::section/parent::section">
-                        <xsl:number format="{$number-section2}"/>
-                    </xsl:for-each>
-                    <xsl:for-each select="parent::section/parent::section/parent::section">
-                        <xsl:number format="{$number-section3}"/>
-                    </xsl:for-each>
-                    <xsl:for-each select="parent::section/parent::section">
-                        <xsl:number format="{$number-section4}"/>
-                    </xsl:for-each>
-                </xsl:if>
-                <xsl:for-each select="parent::section">
-                    <xsl:number format="{$number-section5}"/>
-                </xsl:for-each>
-            </xsl:when>
-            <xsl:when test="$level = 6">
-                <xsl:if test="$inherit-section-num = 'True'">
-                    <xsl:for-each select="parent::section/parent::section/parent::section/parent::section/parent::section/parent::section">
-                        <xsl:number format="{$number-section1}"/>
-                    </xsl:for-each>
-                    <xsl:for-each select="parent::section/parent::section/parent::section/parent::section/parent::section">
-                        <xsl:number format="{$number-section2}"/>
-                    </xsl:for-each>
-                    <xsl:for-each select="parent::section/parent::section/parent::section/parent::section">
-                        <xsl:number format="{$number-section3}"/>
-                    </xsl:for-each>
-                    <xsl:for-each select="parent::section/parent::section/parent::section">
-                        <xsl:number format="{$number-section4}"/>
-                    </xsl:for-each>
-                    <xsl:for-each select="parent::section/parent::section">
-                        <xsl:number format="{$number-section5}"/>
-                    </xsl:for-each>
-                </xsl:if>
-                <xsl:for-each select="parent::section">
-                    <xsl:number format="{$number-section6}"/>
-                </xsl:for-each>
-            </xsl:when>
-            <xsl:when test="$level = 7">
-                <xsl:if test="$inherit-section-num = 'True'">
-                    <xsl:for-each select="parent::section/parent::section/parent::section/parent::section/parent::section/parent::section/parent::section">
-                        <xsl:number format="{$number-section1}"/>
-                    </xsl:for-each>
-                    <xsl:for-each select="parent::section/parent::section/parent::section/parent::section/parent::section/parent::section">
-                        <xsl:number format="{$number-section2}"/>
-                    </xsl:for-each>
-                    <xsl:for-each select="parent::section/parent::section/parent::section/parent::section/parent::section">
-                        <xsl:number format="{$number-section3}"/>
-                    </xsl:for-each>
-                    <xsl:for-each select="parent::section/parent::section/parent::section/parent::section">
-                        <xsl:number format="{$number-section4}"/>
-                    </xsl:for-each>
-                    <xsl:for-each select="parent::sectioin/parent::section/parent::section">
-                        <xsl:number format="{$number-section5}"/>
-                    </xsl:for-each>
-                    <xsl:for-each select="parent::section/parent::section">
-                        <xsl:number format="{$number-section6}"/>
-                    </xsl:for-each>
-                </xsl:if>
-                <xsl:for-each select="parent::section">
-                    <xsl:number format="{$number-section7}"/>
-                </xsl:for-each>
-            </xsl:when>
-            <xsl:when test="$level = 8">
-                <xsl:if test="$inherit-section-num = 'True'">
-                    <xsl:for-each select="parent::section/parent::section/parent::section/parent::section/parent::section/parent::section/parent::section/parent::section">
-                        <xsl:number format="{$number-section1}"/>
-                    </xsl:for-each>
-                    <xsl:for-each select="parent::section/parent::section/parent::section/parent::section/parent::section/parent::section/parent::section">
-                        <xsl:number format="{$number-section2}"/>
-                    </xsl:for-each>
-                    <xsl:for-each select="parent::section/parent::section/parent::section/parent::section/parent::section/parent::section">
-                        <xsl:number format="{$number-section3}"/>
-                    </xsl:for-each>
-                    <xsl:for-each select="parent::section/parent::section/parent::section/parent::section/parent::section">
-                        <xsl:number format="{$number-section4}"/>
-                    </xsl:for-each>
-                    <xsl:for-each select="parent::section/parent::sectioin/parent::section/parent::section">
-                        <xsl:number format="{$number-section5}"/>
-                    </xsl:for-each>
-                    <xsl:for-each select="parent::section/parent::section/parent::section">
-                        <xsl:number format="{$number-section6}"/>
-                    </xsl:for-each>
-                    <xsl:for-each select="parent::section/parent::section">
-                        <xsl:number format="{$number-section7}"/>
-                    </xsl:for-each>
-                </xsl:if>
-                <xsl:for-each select="parent::section">
-                    <xsl:number format="{$number-section8}"/>
-                </xsl:for-each>
-            </xsl:when>
-            <xsl:when test="$level = 9">
-                <xsl:if test="$inherit-section-num = 'True'">
-                    <xsl:for-each select="parent::section/parent::section/parent::section/parent::section/parent::section/parent::section/parent::section/parent::section/parent::section">
-                        <xsl:number format="{$number-section1}"/>
-                    </xsl:for-each>
-                    <xsl:for-each select="parent::section/parent::section/parent::section/parent::section/parent::section/parent::section/parent::section/parent::section">
-                        <xsl:number format="{$number-section2}"/>
-                    </xsl:for-each>
-                    <xsl:for-each select="parent::section/parent::section/parent::section/parent::section/parent::section/parent::section/parent::section">
-                        <xsl:number format="{$number-section3}"/>
-                    </xsl:for-each>
-                    <xsl:for-each select="parent::section/parent::section/parent::section/parent::section/parent::section/parent::section">
-                        <xsl:number format="{$number-section4}"/>
-                    </xsl:for-each>
-                    <xsl:for-each select="parent::section/parent::section/parent::sectioin/parent::section/parent::section">
-                        <xsl:number format="{$number-section5}"/>
-                    </xsl:for-each>
-                    <xsl:for-each select="parent::section/parent::section/parent::section/parent::section">
-                        <xsl:number format="{$number-section6}"/>
-                    </xsl:for-each>
-                    <xsl:for-each select="parent::section/parent::section/parent::section">
-                        <xsl:number format="{$number-section7}"/>
-                    </xsl:for-each>
-                    <xsl:for-each select="parent::section/parent::section">
-                        <xsl:number format="{$number-section8}"/>
-                    </xsl:for-each>
-                </xsl:if>
-                <xsl:for-each select="parent::section">
-                    <xsl:number format="{$number-section9}"/>
-                </xsl:for-each>
-            </xsl:when>
-        </xsl:choose>
-    </xsl:template>
-
-    <!--
-    END LONG TEMPLATE
-====================================================================================================
-    -->
 
     <xsl:variable name="toc-exists">
         <xsl:if test="/document/topic[@classes='contents']">True</xsl:if>
@@ -203,11 +18,15 @@
     <xsl:variable name="title-exists">
         <xsl:if test="/document/title">True</xsl:if>
     </xsl:variable>
+    <xsl:variable name="bibliographic-exists">
+        <xsl:if test="/document/docinfo">True</xsl:if>
+    </xsl:variable>
     <!--determine page sequence, to be used in other templates-->
     <xsl:variable name="page-sequence-type">
         <xsl:variable name="need-front-matter-page-sequence">
             <xsl:choose>
                 <xsl:when test="$title-exists='True' and $title-pagination='with-front'">True</xsl:when>
+                <xsl:when test="$bibliographic-exists='True' and $bibliographic-pagination='with-front'">True</xsl:when>
                 <xsl:when test="$abstract-exists='True' and $abstract-pagination='with-front'">True</xsl:when>
                 <xsl:when test="$dedication-exists='True' and $dedication-pagination='with-front'">True</xsl:when>
                 <xsl:when test="$toc-exists='True' and $toc-pagination='with-front'">True</xsl:when>
@@ -217,6 +36,7 @@
         <xsl:variable name="need-toc-page-sequence">
             <xsl:choose>
                 <xsl:when test="$title-exists='True' and $title-pagination='with-toc'">True</xsl:when>
+                <xsl:when test="$bibliographic-exists='True' and $bibliographic-pagination='with-toc'">True</xsl:when>
                 <xsl:when test="$abstract-exists='True' and $abstract-pagination='with-toc'">True</xsl:when>
                 <xsl:when test="$dedication-exists='True' and $dedication-pagination='with-toc'">True</xsl:when>
                 <xsl:when test="$toc-exists='True' and $toc-pagination='with-toc'">True</xsl:when>
