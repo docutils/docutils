@@ -322,13 +322,335 @@ ul.auto-toc {
 <p class="topic-title first">Table of Contents</p>
 <ul class="simple">
 <li><a class="reference internal" href="#strict" id="id1">strict</a></li>
+<li><a class="reference internal" href="#page-layout" id="id2">page-layout</a></li>
+<li><a class="reference internal" href="#suppress-first-page-header" id="id3">suppress-first-page-header</a></li>
+<li><a class="reference internal" href="#suppress-first-page-footer" id="id4">suppress-first-page-footer</a></li>
+<li><a class="reference internal" href="#spacing-header-and-spacing-footer" id="id5">spacing-header and spacing-footer</a></li>
+<li><a class="reference internal" href="#pagination-for-front-matter" id="id6">pagination for front matter</a></li>
+<li><a class="reference internal" href="#front-order" id="id7">front-order</a></li>
+<li><a class="reference internal" href="#bibliographic-field-names" id="id8">Bibliographic Field Names</a></li>
+<li><a class="reference internal" href="#admonition-title-names" id="id9">Admonition Title Names</a></li>
+<li><a class="reference internal" href="#transition-text" id="id10">transition-text</a></li>
+<li><a class="reference internal" href="#formatting-of-section-numbering" id="id11">Formatting of Section Numbering</a></li>
+<li><a class="reference internal" href="#inherit-section-num" id="id12">inherit-section-num</a></li>
+<li><a class="reference internal" href="#bullet-text" id="id13">bullet-text</a></li>
+<li><a class="reference internal" href="#option-list-format" id="id14">option-list-format</a></li>
+<li><a class="reference internal" href="#options-separator" id="id15">options-separator</a></li>
+<li><a class="reference internal" href="#number-verse" id="id16">number-verse</a></li>
+<li><a class="reference internal" href="#text-before-attributions" id="id17">Text Before Attributions</a></li>
+<li><a class="reference internal" href="#table-title-placement" id="id18">table-title-placement</a></li>
+<li><a class="reference internal" href="#footnote-placement" id="id19">footnote-placement</a></li>
+<li><a class="reference internal" href="#footnote-style" id="id20">footnote-style</a></li>
+<li><a class="reference internal" href="#space-between-footnotes" id="id21">space-between-footnotes</a></li>
+<li><a class="reference internal" href="#internal-link-type" id="id22">internal-link-type</a></li>
+<li><a class="reference internal" href="#test" id="id23">test</a></li>
 </ul>
 </div>
 <div class="section" id="strict">
 <h1><a class="toc-backref" href="#id1">strict</a></h1>
-<p><strong>Possible Values</strong>: <tt class="docutils literal">'True'</tt>, <tt class="docutils literal">'False'</tt>, <tt class="docutils literal">''</tt></p>
+<p><strong>Possible Values</strong>: <tt class="docutils literal">True</tt>, <tt class="docutils literal">False</tt>, <tt class="docutils literal">''</tt></p>
+<p><strong>Default:</strong></p>
 <p>If set to True, stylesheet processing quits when an error is
 found.</p>
+</div>
+<div class="section" id="page-layout">
+<h1><a class="toc-backref" href="#id2">page-layout</a></h1>
+<p><strong>Possible Values</strong>: <tt class="docutils literal">simple</tt>, <tt class="docutils literal">first</tt>, <tt class="docutils literal"><span class="pre">odd-even</span></tt>,
+<tt class="docutils literal"><span class="pre">first-odd-even</span></tt></p>
+<p><strong>Default:</strong> simple</p>
+<p>This parameter determines the page layout for the document. A
+value of <tt class="docutils literal">simple</tt> will create a document with the same page
+layout for all pages. A value of <tt class="docutils literal">first</tt> creates a document
+with a dfferent page layout for the first page and for the rest
+of the pages. A value of <tt class="docutils literal"><span class="pre">odd-even</span></tt> creates a different layout
+for for odd and even pages. A value of <tt class="docutils literal"><span class="pre">first-odd-even</span></tt> creates
+a different layout for the first page, for odd pages, and for
+even pages.</p>
+<p>Because restructured text only allows one footer and header, the
+footer and header will be the same for bth odd and even pages.
+However, if the <tt class="docutils literal">first</tt> or <tt class="docutils literal"><span class="pre">first-odd-even</span></tt> values is chosen,
+you can suppress the first footer and header (see below).</p>
+<p>Using a value other than <tt class="docutils literal">simple</tt> allows for different margins
+for different page sequences, depending on the value.</p>
+</div>
+<div class="section" id="suppress-first-page-header">
+<h1><a class="toc-backref" href="#id3">suppress-first-page-header</a></h1>
+<p><strong>Possible Values</strong>: <tt class="docutils literal">True</tt>, <tt class="docutils literal">False</tt>, <tt class="docutils literal">''</tt></p>
+<p><strong>Default:</strong></p>
+<p>If set to True, and the <tt class="docutils literal"><span class="pre">page-layout</span></tt> is set to``first``, or
+<tt class="docutils literal"><span class="pre">page-layout</span></tt> is set to <tt class="docutils literal"><span class="pre">first-odd-even</span></tt>, no header will
+appear on the first page. If a value of <tt class="docutils literal">simple</tt> or
+<tt class="docutils literal"><span class="pre">odd-even</span></tt> is chosen for the <tt class="docutils literal"><span class="pre">page-layout</span></tt>, this parameter
+will have no effect, and the header will appear on all pages.</p>
+</div>
+<div class="section" id="suppress-first-page-footer">
+<h1><a class="toc-backref" href="#id4">suppress-first-page-footer</a></h1>
+<p><strong>Possible Values</strong>: <tt class="docutils literal">True</tt>, <tt class="docutils literal">False</tt>, <tt class="docutils literal">''</tt></p>
+<p><strong>Default:</strong></p>
+<p>If set to True, and the <tt class="docutils literal"><span class="pre">page-layout</span></tt> is set to <tt class="docutils literal">first</tt>, or
+<tt class="docutils literal"><span class="pre">page-layout</span></tt> is set to <tt class="docutils literal"><span class="pre">first-odd-even</span></tt>, no footer will
+appear on the first page. If a value of <tt class="docutils literal">simple</tt> or
+<tt class="docutils literal"><span class="pre">odd-even</span></tt> is chosen for the <tt class="docutils literal"><span class="pre">page-layout</span></tt>, this parameter
+will have no effect, and the footer will appear on all pages.</p>
+</div>
+<div class="section" id="spacing-header-and-spacing-footer">
+<h1><a class="toc-backref" href="#id5">spacing-header and spacing-footer</a></h1>
+<p><strong>Possible Values</strong>: Any Measure</p>
+<p><strong>Default:</strong></p>
+<p>The parameters <tt class="docutils literal"><span class="pre">spacing-header</span></tt> and <tt class="docutils literal"><span class="pre">spacing-footer</span></tt> create
+the space for the header and footer. Although the default is set
+to an empty string, the XSL styelsheets will create a
+satisfactory space if a header or footer is found. Use either of
+these parameters to change that default.</p>
+</div>
+<div class="section" id="pagination-for-front-matter">
+<h1><a class="toc-backref" href="#id6">pagination for front matter</a></h1>
+<p><strong>Possible Values</strong>: <tt class="docutils literal"><span class="pre">with-front</span></tt>, <tt class="docutils literal"><span class="pre">with-toc</span></tt>, <tt class="docutils literal"><span class="pre">with-body</span></tt></p>
+<p><strong>Defaults:</strong> See below</p>
+<p>The function is the same for the following parameters:</p>
+<ul class="simple">
+<li>title-pagination</li>
+<li>bibliographic-pagination</li>
+<li>dedication-pagination</li>
+<li>abstract-pagination</li>
+<li>toc-pagination</li>
+</ul>
+<p>Each determines what region to place the textual matter. There
+are three regions, the front matter, the toc matter, and the body
+matter. The front matter has no footers and headers. The toc
+matter starts a new page run, in which the numbers start with 1
+(or any other value), and can take any formatting. The body
+matter again starts a new run of pages with its own page
+numbering and formatting of these numbers.</p>
+<p>In practice, the abstract and title page often occurr before the
+other front matter material, and they appear on pages with no
+footers and headers. The dedication and Table of Contents appear
+next, with the first numbering of the document, the numbers being
+formatted as lower-case Roman numberals. The bibliographic
+information could appear in either the front matter or toc
+matter. In order to achieve this standard layout, the defaults
+choose a <tt class="docutils literal"><span class="pre">with-front</span></tt> for the <tt class="docutils literal"><span class="pre">title-pagination</span></tt>,
+<tt class="docutils literal"><span class="pre">abstract-pagination.</span></tt>, and <tt class="docutils literal"><span class="pre">bibliographic-pagination;</span> and a
+<span class="pre">``with-toc</span></tt> for the <tt class="docutils literal"><span class="pre">toc-pagination</span></tt> and
+<tt class="docutils literal"><span class="pre">dedication-pagination</span></tt>.</p>
+<p>In order to change these defaults, choose a different value. For
+example, to place the dedication in the front matter, set
+<tt class="docutils literal"><span class="pre">dedication-pagination</span></tt> to <tt class="docutils literal"><span class="pre">with-front</span></tt>. For a simple
+document, in which there is only one set of page runs, simply set
+each of these parameters to <tt class="docutils literal"><span class="pre">with-body</span></tt>.</p>
+</div>
+<div class="section" id="front-order">
+<h1><a class="toc-backref" href="#id7">front-order</a></h1>
+<p><strong>Possible Values</strong>: <tt class="docutils literal">title</tt>, <tt class="docutils literal">bibliographic</tt>,
+<tt class="docutils literal">dedication</tt>, <tt class="docutils literal">abstract</tt>, <tt class="docutils literal">toc</tt></p>
+<p><strong>Default:</strong> title,bibliographic,dedication,abstract,toc</p>
+<p>The param <tt class="docutils literal"><span class="pre">front-order</span></tt> is a string of each region, separated
+by a comma, that determines the order of the title, the
+bibliographic information, the dedication, the abstract, and the
+Table of Contents. The default puts them in order that docutils
+puts them in when the document is converted to XML. In order to
+change this, change the order in the string. For example, to
+place the abstract before the dedication, use
+<tt class="docutils literal">'title,bibliographic,dedication,abstract,toc'</tt> as a value.</p>
+<p>If you have a region in your parameter value that does not
+actually exist in your document, no error will occurr. For
+example, if you set your value to
+<tt class="docutils literal">title,bibliographic,dedication,abstract,toc</tt>, but have no
+<tt class="docutils literal">title</tt> in your document, the XSL stylesheet will still place
+the abstract before the dedication without raising any error.</p>
+<p>However, if you lack a region in your value that exists in the
+document, the stylesheets will recognize this as an error,
+notifiy you, and quit. For eaxmple, if your value is
+<tt class="docutils literal">,bibliographic,dedication,abstract,toc</tt>, and your document
+contains a title, the processing will quit.</p>
+</div>
+<div class="section" id="bibliographic-field-names">
+<h1><a class="toc-backref" href="#id8">Bibliographic Field Names</a></h1>
+<p><strong>Possible Values</strong>: Any Text</p>
+<p><strong>Defaults:</strong> See below</p>
+<p>The function is the same for the following parameters:</p>
+<ul class="simple">
+<li>author-text (default: Author: )</li>
+<li>authors-text (default: Authors: )</li>
+<li>organization-text (default: Organization: )</li>
+<li>contact-text (default: Contact: )</li>
+<li>status-text (default: Status: )</li>
+<li>copyright-text (default: Copyright: )</li>
+<li>address-text (default: Address: )</li>
+<li>version-text (default: Version: )</li>
+<li>revision-text (default: Revison: )</li>
+<li>date-text (default: Date: )</li>
+</ul>
+<p>Each parameter sets the text in the list for that particular
+bibliographic item. For example if you wanted to change the
+default for <tt class="docutils literal">contact</tt> from 'contact' to email, you would simply
+set this value to 'email'.</p>
+</div>
+<div class="section" id="admonition-title-names">
+<h1><a class="toc-backref" href="#id9">Admonition Title Names</a></h1>
+<p><strong>Possible Values</strong>: Any Text</p>
+<p><strong>Defaults:</strong> See below</p>
+<p>The function is the same for the following parameters:</p>
+<ul class="simple">
+<li>attention-title (default: Attention!)</li>
+<li>caution-title (default: Caution!)</li>
+<li>danger-title (default: !Danger!)</li>
+<li>error-title (default: Error)</li>
+<li>hint-title (default: Hint)</li>
+<li>important-title (default: Important)</li>
+<li>note-title (default: Note)</li>
+<li>tip-title (default: Tip)</li>
+<li>warning-title (default: Warning!)</li>
+</ul>
+<p>Each parameter sets the text for the title for that particular
+Admonition. For example if you wanted to change the default for
+<tt class="docutils literal"><span class="pre">attention-title</span></tt> from 'Important' to 'Pay Attention!', you
+would simply set this value to 'Pay Attnetion!'.</p>
+</div>
+<div class="section" id="transition-text">
+<h1><a class="toc-backref" href="#id10">transition-text</a></h1>
+<p><strong>Possible Values</strong>: Any Text</p>
+<p><strong>Defaults:</strong> ***</p>
+<p>The text to use for a transtion element. Use any text (including
+an empty string) to change that value.</p>
+</div>
+<div class="section" id="formatting-of-section-numbering">
+<h1><a class="toc-backref" href="#id11">Formatting of Section Numbering</a></h1>
+<p><strong>Possible Values</strong>: Valid Number Formatting String</p>
+<p><strong>Defaults:</strong> See below</p>
+<p>The function is the same for the following parameters:</p>
+<ul class="simple">
+<li>number-section1 (default: 1)</li>
+<li>number-section2 (default: .1)</li>
+<li>number-section3 (default: .1)</li>
+<li>number-section4 (default: .1)</li>
+<li>number-section5 (default: .1)</li>
+<li>number-section6 (default: .1)</li>
+<li>number-section7 (default: .1)</li>
+<li>number-section8 (default: .1)</li>
+<li>number-section9 (default: .1)</li>
+</ul>
+<p>Each parameter sets the formatting (not the actual number) for
+that particular level. The stylesheets allow for a great deal of
+flexibility here. For example, in order to set a level 3 number
+format to '(II)3.b', you would set <tt class="docutils literal"><span class="pre">number-section1</span></tt> to '(I)',
+<tt class="docutils literal"><span class="pre">number-section2</span></tt> to '.1' (the default, in this case, meaning
+you woud not need to make a change), and <tt class="docutils literal"><span class="pre">number-section3</span></tt> to
+'.a'.</p>
+</div>
+<div class="section" id="inherit-section-num">
+<h1><a class="toc-backref" href="#id12">inherit-section-num</a></h1>
+<p><strong>Possible Values</strong>: <tt class="docutils literal">True</tt>, <tt class="docutils literal">False</tt></p>
+<p><strong>Default:</strong> True</p>
+<p>If set to 'True', each section inherits the section numbering
+from the sections above it. For example, section '1.1.2' will
+appear as '1.1.2'. If set to 'False', the section number will
+appear as '2'.</p>
+</div>
+<div class="section" id="bullet-text">
+<h1><a class="toc-backref" href="#id13">bullet-text</a></h1>
+<p><strong>Possible Values</strong>: Any Text</p>
+<p><strong>Default:</strong> •</p>
+<p>Use to set the value for the bullets in a bullet list. If this
+string is left blank, then the stylesheets will use the value in
+the XML.</p>
+</div>
+<div class="section" id="option-list-format">
+<h1><a class="toc-backref" href="#id14">option-list-format</a></h1>
+<p><strong>Possible Values</strong>: <tt class="docutils literal">list</tt>, <tt class="docutils literal">definition</tt></p>
+<p><strong>Default:</strong> list</p>
+<p>Use to determine the formatting of an options list. If <tt class="docutils literal">list</tt>
+is choosen, then the options list is formatted as a traditional
+list, with the options to the left and the description to the
+right. If <tt class="docutils literal">definition</tt> is choosen, the options list is
+formatted as a defintion list, with the options above the
+description, which is indented. Lists with long options are
+probably better formatted using <tt class="docutils literal">definition.</tt></p>
+</div>
+<div class="section" id="options-separator">
+<h1><a class="toc-backref" href="#id15">options-separator</a></h1>
+<p><strong>Possible Values</strong>: Any Text</p>
+<p><strong>Default:</strong> ,</p>
+<p>Use to set the value for the text that separates the options in
+an option list. For example, if your RST file has <tt class="docutils literal"><span class="pre">-f</span> <span class="pre">-file</span></tt> as
+the options, and you choose ';' as the <tt class="docutils literal"><span class="pre">options-separator</span></tt>,
+the output becomes <tt class="docutils literal"><span class="pre">-f;</span> <span class="pre">-file</span></tt>.</p>
+</div>
+<div class="section" id="number-verse">
+<h1><a class="toc-backref" href="#id16">number-verse</a></h1>
+<p><strong>Possible Values:</strong> any positive integer, or <tt class="docutils literal">''</tt></p>
+<p><strong>Default:</strong> 5</p>
+<p>When set, this parameter numbers a line block (&quot;verse&quot;) every
+<tt class="docutils literal">value</tt> lines. The value of <tt class="docutils literal">'5'</tt> numbers every 5th line. If
+<tt class="docutils literal"><span class="pre">number-verse</span></tt> is left empty, the line block will not be
+numbered.</p>
+</div>
+<div class="section" id="text-before-attributions">
+<h1><a class="toc-backref" href="#id17">Text Before Attributions</a></h1>
+<p><strong>Possible Values</strong>: Any Text</p>
+<p><strong>Defaults:</strong> —</p>
+<p>The function is the same for the following parameters:</p>
+<ul class="simple">
+<li>text-before-block-quote-attribution</li>
+<li>text-before-epigraph-attribution</li>
+<li>text-before-pull-quote-attribution</li>
+</ul>
+<p>Each parameter determines the text before the attribution. When
+the parameter is left empty, no text will appear before an
+attribution.</p>
+</div>
+<div class="section" id="table-title-placement">
+<h1><a class="toc-backref" href="#id18">table-title-placement</a></h1>
+<p><strong>Possible Values</strong>: <tt class="docutils literal">top</tt>, <tt class="docutils literal">bottom</tt></p>
+<p><strong>Default:</strong> bottom</p>
+<p>Where to place the table title, or caption.</p>
+</div>
+<div class="section" id="footnote-placement">
+<h1><a class="toc-backref" href="#id19">footnote-placement</a></h1>
+<p><strong>Possible Values</strong>: <tt class="docutils literal">footnote</tt>, <tt class="docutils literal">endnote</tt></p>
+<p><strong>Default:</strong> footnote</p>
+<p>This parameter determines whether footnotes will function as
+footnotes, or endnotes. When <tt class="docutils literal">footnote</tt> is choosen, footnotes
+appear at the bottom of the page. When <tt class="docutils literal">endnote</tt> is choosen,
+the <em>numbered</em> footnotes appear as endnotes, in the same position
+where they are in the RST document. If <tt class="docutils literal">endnote</tt> is choosen,
+symbolic footnotes still appear as footnotes, thus giving a user
+the ability to use both footnotes and endnotes.</p>
+</div>
+<div class="section" id="footnote-style">
+<h1><a class="toc-backref" href="#id20">footnote-style</a></h1>
+<p><strong>Possible Values</strong>: <tt class="docutils literal">list</tt>, <tt class="docutils literal">traditional</tt></p>
+<p><strong>Default:</strong> list</p>
+<p>This parameter determines the style of the footnote or endnote
+text. When <tt class="docutils literal">'list'</tt>, is choosen, the text is formatted as a
+list, with the number as the item. When <tt class="docutils literal">'traditional'</tt> is
+choosen, the footnote appears in the more traditional manner, as
+a paragraph with the first line indented.</p>
+</div>
+<div class="section" id="space-between-footnotes">
+<h1><a class="toc-backref" href="#id21">space-between-footnotes</a></h1>
+<p><strong>Possible Values</strong>: Any Measure</p>
+<p><strong>Default:</strong> 5pt</p>
+<p>Use to set the space between footnotes. (I have not determined
+how to set this property in the normal way, which is why this
+property appears as a parameter, rather than in an attribute set,
+like the other similar properties.)</p>
+</div>
+<div class="section" id="internal-link-type">
+<h1><a class="toc-backref" href="#id22">internal-link-type</a></h1>
+<p><strong>Possible Values</strong>: <tt class="docutils literal">link</tt>, <tt class="docutils literal">page</tt>, <tt class="docutils literal"><span class="pre">page-link</span></tt></p>
+<p><strong>Default:</strong> link</p>
+<p>When set to <tt class="docutils literal">'page'</tt>, the page number of the target appears.
+When set to <tt class="docutils literal">'link'</tt>, the text of the link appears, and
+clicking on that link takes you to the target. When set to
+<tt class="docutils literal"><span class="pre">'page-link'</span></tt>, the page of the target appears, and clicking on
+that page number takes you to the target.</p>
+</div>
+<div class="section" id="test">
+<h1><a class="toc-backref" href="#id23">test</a></h1>
+<p><strong>Possible Values</strong>: <tt class="docutils literal">True</tt>, <tt class="docutils literal">False</tt>, <tt class="docutils literal">''</tt></p>
+<p><strong>Default:</strong></p>
+<p>For testing purposes only.</p>
 </div>
 </div>
 </body>
