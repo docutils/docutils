@@ -100,17 +100,18 @@ fields as author, etc.`docutils`-->
 <!--the default to use for a bullet list, rather than what the user specifies-->
 <xsl:param name="bullet-text">&#x2022;</xsl:param>
 
-<!--the text that separates options in the options_list,
-for example, -f  -file. With "," as the value, these 
-arguments become -f, -file `doc`-->
-<xsl:param name="options-separator">, </xsl:param>
-
 <!--how to format the options list. Acceptable values are
 'list' and 'definition'. The 'list' values creates a bullet-type
 list, with the options taking the place of bullets. The 'definiton' 
 value creates a definition type list, with the options on a separate
 block above the description `doc`-->
 <xsl:param name="option-list-format">list</xsl:param>
+
+<!--the text that separates options in the options_list,
+for example, -f  -file. With "," as the value, these 
+arguments become -f, -file -->
+<xsl:param name="options-separator">, </xsl:param>
+
 
 <!--whether to number verse. Value is either '', or
 some integer, a multiple of the lines you want to number.
@@ -125,16 +126,17 @@ For example, '5' will number every fifth line-->
 <!--where to place table title valid options are 'top' or 'bottom'-->
 <xsl:param name="table-title-placement">bottom</xsl:param>
 
-<!--the style of the footnote. Valid values are 'list', for making 
-the footnote into a list, with the number as the item; 'traditional', 
-to make the footnote more traditional with a first line indent;-->
-<xsl:param name="footnote-style">list</xsl:param>
-
 <!--where to place footnote. Values are 'footnote' and
 'endnote'. When 'footnote is choosen, footnotes are placed
 at the bottom of each page. When 'endnote' is choosen, footnotes
 are placed in the same place as in the RST document-->
 <xsl:param name="footnote-placement">footnote</xsl:param>
+
+<!--the style of the footnote. Valid values are 'list', for making 
+the footnote into a list, with the number as the item; 'traditional', 
+to make the footnote more traditional with a first line indent;-->
+<xsl:param name="footnote-style">list</xsl:param>
+
 
 <!--This is a hack to fix the problem with fop ?? not
 being able to space between footnotes. Instead, a blank
