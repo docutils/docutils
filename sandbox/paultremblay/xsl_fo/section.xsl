@@ -5,55 +5,55 @@
     >
     <!-- $Id$ -->
 
-    <xsl:attribute-set name="default-section-title">
+    <xsl:attribute-set name="default-section-title-block">
         <xsl:attribute name="space-before">12pt</xsl:attribute>
         <xsl:attribute name="space-after">12pt</xsl:attribute>
         <xsl:attribute name="keep-with-next">always</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="title-level1-block" use-attribute-sets="default-section-title">
+    <xsl:attribute-set name="title-level1-block" use-attribute-sets="default-section-title-block">
         <xsl:attribute name="font-weight">bold</xsl:attribute>
         <xsl:attribute name="font-size">16</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="title-level2-block" use-attribute-sets="default-section-title">
+    <xsl:attribute-set name="title-level2-block" use-attribute-sets="default-section-title-block">
         <xsl:attribute name="font-weight">bold</xsl:attribute>
         <xsl:attribute name="font-size">14</xsl:attribute>
         <xsl:attribute name="font-style">italic</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="title-level3-block" use-attribute-sets="default-section-title">
+    <xsl:attribute-set name="title-level3-block" use-attribute-sets="default-section-title-block">
         <xsl:attribute name="font-weight">bold</xsl:attribute>
         <xsl:attribute name="font-size">14</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="title-level4-block" use-attribute-sets="default-section-title">
+    <xsl:attribute-set name="title-level4-block" use-attribute-sets="default-section-title-block">
         <xsl:attribute name="font-weight">bold</xsl:attribute>
         <xsl:attribute name="font-size">12</xsl:attribute>
         <xsl:attribute name="font-style">italic</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="title-level5-block" use-attribute-sets="default-section-title">
+    <xsl:attribute-set name="title-level5-block" use-attribute-sets="default-section-title-block">
         <xsl:attribute name="font-weight">bold</xsl:attribute>
         <xsl:attribute name="font-size">10</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="title-level6-block" use-attribute-sets="default-section-title">
+    <xsl:attribute-set name="title-level6-block" use-attribute-sets="default-section-title-block">
         <xsl:attribute name="font-weight">bold</xsl:attribute>
         <xsl:attribute name="font-size">10</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="title-level7-block" use-attribute-sets="default-section-title">
+    <xsl:attribute-set name="title-level7-block" use-attribute-sets="default-section-title-block">
         <xsl:attribute name="font-weight">bold</xsl:attribute>
         <xsl:attribute name="font-size">10</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="title-level8-block" use-attribute-sets="default-section-title">
+    <xsl:attribute-set name="title-level8-block" use-attribute-sets="default-section-title-block">
         <xsl:attribute name="font-weight">bold</xsl:attribute>
         <xsl:attribute name="font-size">10</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="title-level9-block" use-attribute-sets="default-section-title">
+    <xsl:attribute-set name="title-level9-block" use-attribute-sets="default-section-title-block">
         <xsl:attribute name="font-weight">bold</xsl:attribute>
         <xsl:attribute name="font-size">10</xsl:attribute>
     </xsl:attribute-set>
