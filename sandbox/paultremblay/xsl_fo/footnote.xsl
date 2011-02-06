@@ -11,17 +11,17 @@
     has no shift, and has the same effect as not setting the value at all-->
 
     <!--set up the defaults for the footnote label-->
-    <xsl:attribute-set name="footnote-label-default">
+    <xsl:attribute-set name="default-footnote-label-inline">
         <xsl:attribute name="baseline-shift">super</xsl:attribute>
         <xsl:attribute name="font-size">8pt</xsl:attribute>
     </xsl:attribute-set>
 
     <!--the attributes for the label at the bottom of the page, or with the endnotes-->
-    <xsl:attribute-set name="footnote-label-inline" use-attribute-sets="footnote-label-default">
+    <xsl:attribute-set name="footnote-label-inline" use-attribute-sets="default-footnote-label-inline">
     </xsl:attribute-set>
 
     <!--the attributes for the label in the body of the text-->
-    <xsl:attribute-set name="footnote-body-label-inline" use-attribute-sets="footnote-label-default">
+    <xsl:attribute-set name="footnote-body-label-inline" use-attribute-sets="default-footnote-label-inline">
     </xsl:attribute-set>
 
 

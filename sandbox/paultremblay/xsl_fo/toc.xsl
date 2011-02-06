@@ -11,27 +11,27 @@
         <xsl:attribute name="font-size">14pt</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="toc-entry-defaults">
+    <xsl:attribute-set name="toc-entry-defaults-block">
         <xsl:attribute name="space-after">3pt</xsl:attribute>
         <xsl:attribute name="text-align-last">justify</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="toc-level1-block" use-attribute-sets="toc-entry-defaults">
+    <xsl:attribute-set name="toc-level1-block" use-attribute-sets="toc-entry-defaults-block">
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="toc-level2-block" use-attribute-sets="toc-entry-defaults">
+    <xsl:attribute-set name="toc-level2-block" use-attribute-sets="toc-entry-defaults-block">
         <xsl:attribute name="start-indent">10mm</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="toc-level3-block" use-attribute-sets="toc-entry-defaults">
+    <xsl:attribute-set name="toc-level3-block" use-attribute-sets="toc-entry-defaults-block">
         <xsl:attribute name="start-indent">20mm</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="toc-level4-block" use-attribute-sets="toc-entry-defaults">
+    <xsl:attribute-set name="toc-level4-block" use-attribute-sets="toc-entry-defaults-block">
         <xsl:attribute name="start-indent">30mm</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="toc-level5-block" use-attribute-sets="toc-entry-defaults">
+    <xsl:attribute-set name="toc-level5-block" use-attribute-sets="toc-entry-defaults-block">
         <xsl:attribute name="start-indent">40mm</xsl:attribute>
     </xsl:attribute-set>
 

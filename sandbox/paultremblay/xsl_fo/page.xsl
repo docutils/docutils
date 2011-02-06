@@ -30,13 +30,13 @@
 
     <!--paper size for the whole document (Converstion only allows one 
     size, at least at this point-->
-    <xsl:attribute-set name="paper-size">
+    <xsl:attribute-set name="paper-size-simple-page-master">
 	<xsl:attribute name="page-width">8.5in</xsl:attribute>
 	<xsl:attribute name="page-height">11in</xsl:attribute>
     </xsl:attribute-set>
 
     <!--default for all pages-->
-    <xsl:attribute-set name="default-page-setup">
+    <xsl:attribute-set name="default-simple-page-master">
 	<xsl:attribute name="margin-left">1.0in</xsl:attribute>
 	<xsl:attribute name="margin-right">1.0in</xsl:attribute>
 	<xsl:attribute name="margin-top">1.0in</xsl:attribute>
@@ -47,56 +47,55 @@
     <!--properties for simple page.
     Use simple page when all the pages will be the same with 
     the same headers and footers-->
-    <xsl:attribute-set name="simple-page" use-attribute-sets="paper-size default-page-setup">
+    <xsl:attribute-set name="simple-page-master" use-attribute-sets="paper-size-simple-page-master default-simple-page-master">
     </xsl:attribute-set>
 
     <!--properties for first page.
     Used for either the "first" layout, or "first-odd-even" layout.
     With the first, you can set different margins for the first page,
     and can suppress the header or footer on the first page-->
-    <xsl:attribute-set name="first-page" use-attribute-sets="paper-size default-page-setup">
+    <xsl:attribute-set name="first-simple-page-master" use-attribute-sets="paper-size-simple-page-master default-simple-page-master">
     </xsl:attribute-set>
 
     <!--properties for the body page.
     The body page defines the pages in a "first" layout that are not the 
     first page-->
-    <xsl:attribute-set name="body-page" use-attribute-sets="paper-size default-page-setup" >
+    <xsl:attribute-set name="body-simple-page-master" use-attribute-sets="paper-size-simple-page-master default-simple-page-master" >
     </xsl:attribute-set>
 
     <!-- properties for the odd page.
     The odd-page is used in either a "odd-even" layout or "first-odd-even" 
     layout. With odd-even, you can specify different margins for odd and even
     pages. You cannot have different headers and footers-->
-    <xsl:attribute-set name="odd-page" use-attribute-sets="paper-size default-page-setup">
+    <xsl:attribute-set name="odd-simple-page-master" use-attribute-sets="paper-size-simple-page-master default-simple-page-master">
     </xsl:attribute-set>
 
     <!-- properties for the even page.
     See the odd page above-->
-    <xsl:attribute-set name="even-page" use-attribute-sets="paper-size default-page-setup">
+    <xsl:attribute-set name="even-simple-page-master" use-attribute-sets="paper-size-simple-page-master default-simple-page-master">
     </xsl:attribute-set>
 
     <!--attribute sets for toc pages; traits are inherited from the body pages-->
-    <xsl:attribute-set name="toc-simple-page" use-attribute-sets="paper-size default-page-setup"/>
-    <xsl:attribute-set name="toc-first-page" use-attribute-sets="paper-size default-page-setup"/>
-    <xsl:attribute-set name="toc-body-page" use-attribute-sets="paper-size default-page-setup"/>
-    <xsl:attribute-set name="toc-even-page" use-attribute-sets="paper-size default-page-setup"/>
-    <xsl:attribute-set name="toc-odd-page" use-attribute-sets="paper-size default-page-setup"/>
+    <xsl:attribute-set name="toc-simple-page-master" use-attribute-sets="paper-size-simple-page-master default-simple-page-master"/>
+    <xsl:attribute-set name="toc-first-simple-page-master" use-attribute-sets="paper-size-simple-page-master default-simple-page-master"/>
+    <xsl:attribute-set name="toc-body-simple-page-master" use-attribute-sets="paper-size-simple-page-master default-simple-page-master"/>
+    <xsl:attribute-set name="toc-even-simple-page-master" use-attribute-sets="paper-size-simple-page-master default-simple-page-master"/>
+    <xsl:attribute-set name="toc-odd-simple-page-master" use-attribute-sets="paper-size-simple-page-master default-simple-page-master"/>
 
     <!--attribute sets for front-matter pages; traits are inherited from the page size only pages-->
-    <xsl:attribute-set name="front-matter-simple-page" use-attribute-sets="paper-size default-page-setup"/> 
-    <xsl:attribute-set name="front-matter-first-page" use-attribute-sets="paper-size default-page-setup"/>
-    <xsl:attribute-set name="front-matter-body-page" use-attribute-sets="paper-size default-page-setup"/>
-    <xsl:attribute-set name="front-matter-even-page" use-attribute-sets="paper-size default-page-setup"/>
-    <xsl:attribute-set name="front-matter-odd-page" use-attribute-sets="paper-size default-page-setup"/>
-    <xsl:attribute-set name="front-matter-odd-page" use-attribute-sets="paper-size default-page-setup"/>
+    <xsl:attribute-set name="front-simple-page-master" use-attribute-sets="paper-size-simple-page-master default-simple-page-master"/> 
+    <xsl:attribute-set name="front-first-simple-page-master" use-attribute-sets="paper-size-simple-page-master default-simple-page-master"/>
+    <xsl:attribute-set name="front-body-simple-page-master" use-attribute-sets="paper-size-simple-page-master default-simple-page-master"/>
+    <xsl:attribute-set name="front-even-simple-page-master" use-attribute-sets="paper-size-simple-page-master default-simple-page-master"/>
+    <xsl:attribute-set name="front-odd-simple-page-master" use-attribute-sets="paper-size-simple-page-master default-simple-page-master"/>
 
     <!--the extent for the header at the top of the page-->
-    <xsl:attribute-set name="page-header">
+    <xsl:attribute-set name="header-region-before">
 	<xsl:attribute name="extent">.75in</xsl:attribute>
     </xsl:attribute-set>
 
     <!--the extent for the footer at the top of the page-->
-    <xsl:attribute-set name="page-footer">
+    <xsl:attribute-set name="footer-region-after">
 	<xsl:attribute name="extent">.75in</xsl:attribute>
     </xsl:attribute-set>
 
@@ -215,13 +214,13 @@
     As with the other templates that create simple-page-master, it determines if there are headers 
     and footers, and if so, makes room for them-->
     <xsl:template name="make-simple-page">
-        <fo:simple-page-master xsl:use-attribute-sets="simple-page" master-name="simple-page">  
+        <fo:simple-page-master xsl:use-attribute-sets="simple-page-master" master-name="simple-page">  
             <xsl:call-template name="make-region-body"/>
             <xsl:if test="document/decoration/header">
-                <fo:region-before xsl:use-attribute-sets = "page-header" region-name="odd-even-header"/>
+                <fo:region-before xsl:use-attribute-sets = "header-region-before" region-name="odd-even-header"/>
             </xsl:if>
             <xsl:if test="document/decoration/footer">
-                <fo:region-after xsl:use-attribute-sets = "page-footer" region-name="odd-even-footer"/>
+                <fo:region-after xsl:use-attribute-sets = "footer-region-after" region-name="odd-even-footer"/>
             </xsl:if>
         </fo:simple-page-master>
     </xsl:template>
@@ -229,51 +228,51 @@
     <!--same as above, but this template also determines if no space should be created, based
     on the suppress-first-page-footer and suppress-first-page-header parameters-->
     <xsl:template name="make-first-page">
-        <fo:simple-page-master xsl:use-attribute-sets="first-page" master-name="first">  
+        <fo:simple-page-master xsl:use-attribute-sets="first-simple-page-master" master-name="first">  
             <xsl:call-template name="make-region-body">
                 <xsl:with-param name="page-type" select="'first'"/>
             </xsl:call-template>
             <xsl:if test="document/decoration/header and $suppress-first-page-header != 'True'">
-                <fo:region-before xsl:use-attribute-sets = "page-header" region-name="first-header"/>
+                <fo:region-before xsl:use-attribute-sets = "header-region-before" region-name="first-header"/>
             </xsl:if>
             <xsl:if test="document/decoration/footer and $suppress-first-page-footer != 'True'">
-                <fo:region-after xsl:use-attribute-sets = "page-footer" region-name="first-footer"/>
+                <fo:region-after xsl:use-attribute-sets = "footer-region-after" region-name="first-footer"/>
             </xsl:if>
         </fo:simple-page-master>
     </xsl:template>
 
     <xsl:template name="make-body-page">
-        <fo:simple-page-master xsl:use-attribute-sets="body-page" master-name="body">  
+        <fo:simple-page-master xsl:use-attribute-sets="body-simple-page-master" master-name="body">  
             <xsl:call-template name="make-region-body"/>
             <xsl:if test="document/decoration/header">
-                <fo:region-before xsl:use-attribute-sets = "page-header" region-name = "odd-even-header"/>
+                <fo:region-before xsl:use-attribute-sets = "header-region-before" region-name = "odd-even-header"/>
             </xsl:if>
             <xsl:if test="document/decoration/footer">
-                <fo:region-after xsl:use-attribute-sets = "page-footer" region-name = "odd-even-footer"/>
+                <fo:region-after xsl:use-attribute-sets = "footer-region-after" region-name = "odd-even-footer"/>
             </xsl:if>
         </fo:simple-page-master>
     </xsl:template>
 
     <xsl:template name="make-odd-page">
-        <fo:simple-page-master xsl:use-attribute-sets="odd-page" master-name="odd">  
+        <fo:simple-page-master xsl:use-attribute-sets="odd-simple-page-master" master-name="odd">  
             <xsl:call-template name="make-region-body"/>
             <xsl:if test="document/decoration/header">
-                <fo:region-before xsl:use-attribute-sets = "page-header" region-name="odd-header"/>
+                <fo:region-before xsl:use-attribute-sets = "header-region-before" region-name="odd-header"/>
             </xsl:if>
             <xsl:if test="document/decoration/footer">
-                <fo:region-after xsl:use-attribute-sets = "page-footer" region-name="odd-footer"/>
+                <fo:region-after xsl:use-attribute-sets = "footer-region-after" region-name="odd-footer"/>
             </xsl:if>
         </fo:simple-page-master>
     </xsl:template>
 
     <xsl:template name="make-even-page">
-        <fo:simple-page-master xsl:use-attribute-sets="even-page" master-name="even">  
+        <fo:simple-page-master xsl:use-attribute-sets="even-simple-page-master" master-name="even">  
             <xsl:call-template name="make-region-body"/>
             <xsl:if test="document/decoration/header">
-                <fo:region-before xsl:use-attribute-sets = "page-header" region-name="even-header"/>
+                <fo:region-before xsl:use-attribute-sets = "header-region-before" region-name="even-header"/>
             </xsl:if>
             <xsl:if test="document/decoration/footer">
-                <fo:region-after xsl:use-attribute-sets = "page-footer" region-name="even-footer"/>
+                <fo:region-after xsl:use-attribute-sets = "footer-region-after" region-name="even-footer"/>
             </xsl:if>
         </fo:simple-page-master>
     </xsl:template>
@@ -350,64 +349,64 @@
 
     <!--make the simple-page-master for toc-->
     <xsl:template name="toc-make-simple-page">
-        <fo:simple-page-master xsl:use-attribute-sets="toc-simple-page" master-name="toc-simple-page">  
+        <fo:simple-page-master xsl:use-attribute-sets="toc-simple-page-master" master-name="toc-simple-page">  
             <xsl:call-template name="make-region-body"/>
             <xsl:if test="document/decoration/header">
-                <fo:region-before xsl:use-attribute-sets = "page-header" region-name="odd-even-header"/>
+                <fo:region-before xsl:use-attribute-sets = "header-region-before" region-name="odd-even-header"/>
             </xsl:if>
             <xsl:if test="document/decoration/footer">
-                <fo:region-after xsl:use-attribute-sets = "page-footer" region-name="odd-even-footer"/>
+                <fo:region-after xsl:use-attribute-sets = "footer-region-after" region-name="odd-even-footer"/>
             </xsl:if>
         </fo:simple-page-master>
     </xsl:template>
 
     <!--same as for non toc pages,-->
     <xsl:template name="toc-make-first-page">
-        <fo:simple-page-master xsl:use-attribute-sets="toc-first-page" master-name="toc-first">  
+        <fo:simple-page-master xsl:use-attribute-sets="toc-first-simple-page-master" master-name="toc-first">  
             <xsl:call-template name="make-region-body">
                 <xsl:with-param name="page-type" select="'first'"/>
             </xsl:call-template>
             <xsl:if test="document/decoration/header and $suppress-first-page-header != 'True'">
-                <fo:region-before xsl:use-attribute-sets = "page-header" region-name="first-header"/>
+                <fo:region-before xsl:use-attribute-sets = "header-region-before" region-name="first-header"/>
             </xsl:if>
             <xsl:if test="document/decoration/footer and $suppress-first-page-footer != 'True'">
-                <fo:region-after xsl:use-attribute-sets = "page-footer" region-name="first-footer"/>
+                <fo:region-after xsl:use-attribute-sets = "footer-region-after" region-name="first-footer"/>
             </xsl:if>
         </fo:simple-page-master>
     </xsl:template>
 
     <xsl:template name="toc-make-body-page">
-        <fo:simple-page-master xsl:use-attribute-sets="toc-body-page" master-name="toc-body">  
+        <fo:simple-page-master xsl:use-attribute-sets="toc-body-simple-page-master" master-name="toc-body">  
             <xsl:call-template name="make-region-body"/>
             <xsl:if test="document/decoration/header">
-                <fo:region-before xsl:use-attribute-sets = "page-header" region-name = "odd-even-header"/>
+                <fo:region-before xsl:use-attribute-sets = "header-region-before" region-name = "odd-even-header"/>
             </xsl:if>
             <xsl:if test="document/decoration/footer">
-                <fo:region-after xsl:use-attribute-sets = "page-footer" region-name = "odd-even-footer"/>
+                <fo:region-after xsl:use-attribute-sets = "footer-region-after" region-name = "odd-even-footer"/>
             </xsl:if>
         </fo:simple-page-master>
     </xsl:template>
 
     <xsl:template name="toc-make-odd-page">
-        <fo:simple-page-master xsl:use-attribute-sets="toc-odd-page" master-name="toc-odd">  
+        <fo:simple-page-master xsl:use-attribute-sets="toc-odd-simple-page-master" master-name="toc-odd">  
             <xsl:call-template name="make-region-body"/>
             <xsl:if test="document/decoration/header">
-                <fo:region-before xsl:use-attribute-sets = "page-header" region-name="odd-header"/>
+                <fo:region-before xsl:use-attribute-sets = "header-region-before" region-name="odd-header"/>
             </xsl:if>
             <xsl:if test="document/decoration/footer">
-                <fo:region-after xsl:use-attribute-sets = "page-footer" region-name="odd-footer"/>
+                <fo:region-after xsl:use-attribute-sets = "footer-region-after" region-name="odd-footer"/>
             </xsl:if>
         </fo:simple-page-master>
     </xsl:template>
 
     <xsl:template name="toc-make-even-page">
-        <fo:simple-page-master xsl:use-attribute-sets="toc-even-page" master-name="toc-even">  
+        <fo:simple-page-master xsl:use-attribute-sets="toc-even-simple-page-master" master-name="toc-even">  
             <xsl:call-template name="make-region-body"/>
             <xsl:if test="document/decoration/header">
-                <fo:region-before xsl:use-attribute-sets = "page-header" region-name="even-header"/>
+                <fo:region-before xsl:use-attribute-sets = "header-region-before" region-name="even-header"/>
             </xsl:if>
             <xsl:if test="document/decoration/footer">
-                <fo:region-after xsl:use-attribute-sets = "page-footer" region-name="even-footer"/>
+                <fo:region-after xsl:use-attribute-sets = "footer-region-after" region-name="even-footer"/>
             </xsl:if>
         </fo:simple-page-master>
     </xsl:template>
@@ -464,34 +463,34 @@
         <!--set up the physical properties of the pages-->
         <xsl:choose>
             <xsl:when test="$page-layout = '' or $page-layout = 'simple'">
-                <fo:simple-page-master xsl:use-attribute-sets="front-matter-simple-page" master-name="front-matter-simple-page">  
+                <fo:simple-page-master xsl:use-attribute-sets="front-simple-page-master" master-name="front-matter-simple-page">  
                     <fo:region-body xsl:use-attribute-sets="front-matter-region-body"/>
                 </fo:simple-page-master>
             </xsl:when>
             <xsl:when test="$page-layout = 'first'">
-                <fo:simple-page-master xsl:use-attribute-sets="front-matter-first-page" master-name="front-matter-first">  
+                <fo:simple-page-master xsl:use-attribute-sets="front-first-simple-page-master" master-name="front-matter-first">  
                     <fo:region-body xsl:use-attribute-sets="front-matter-region-body"/>
                 </fo:simple-page-master>
-                <fo:simple-page-master xsl:use-attribute-sets="front-matter-body-page" master-name="front-matter-body">  
+                <fo:simple-page-master xsl:use-attribute-sets="front-body-simple-page-master" master-name="front-matter-body">  
                     <fo:region-body xsl:use-attribute-sets="front-matter-region-body"/>
                 </fo:simple-page-master>
             </xsl:when>
             <xsl:when test="$page-layout = 'odd-even'">
-                <fo:simple-page-master xsl:use-attribute-sets="front-matter-odd-page" master-name="front-matter-odd">  
+                <fo:simple-page-master xsl:use-attribute-sets="front-odd-simple-page-master" master-name="front-matter-odd">  
                     <fo:region-body xsl:use-attribute-sets="front-matter-region-body"/>
                 </fo:simple-page-master>
-                <fo:simple-page-master xsl:use-attribute-sets="front-matter-even-page" master-name="front-matter-even">  
+                <fo:simple-page-master xsl:use-attribute-sets="front-even-simple-page-master" master-name="front-matter-even">  
                     <fo:region-body xsl:use-attribute-sets="front-matter-region-body"/>
                 </fo:simple-page-master>
             </xsl:when>
             <xsl:when test="$page-layout = 'first-odd-even'">
-                <fo:simple-page-master xsl:use-attribute-sets="front-matter-first-page" master-name="front-matter-first">  
+                <fo:simple-page-master xsl:use-attribute-sets="front-first-simple-page-master" master-name="front-matter-first">  
                     <fo:region-body xsl:use-attribute-sets="front-matter-region-body"/>
                 </fo:simple-page-master>
-                <fo:simple-page-master xsl:use-attribute-sets="front-matter-odd-page" master-name="front-matter-odd">  
+                <fo:simple-page-master xsl:use-attribute-sets="front-odd-simple-page-master" master-name="front-matter-odd">  
                     <fo:region-body xsl:use-attribute-sets="front-matter-region-body"/>
                 </fo:simple-page-master>
-                <fo:simple-page-master xsl:use-attribute-sets="front-matter-even-page" master-name="front-matter-even">  
+                <fo:simple-page-master xsl:use-attribute-sets="front-even-simple-page-master" master-name="front-matter-even">  
                     <fo:region-body xsl:use-attribute-sets="front-matter-region-body"/>
                 </fo:simple-page-master>
             </xsl:when>
