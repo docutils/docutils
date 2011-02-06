@@ -311,6 +311,168 @@
         </block>
     </xsl:template>
 
+    <xsl:template match="xsl:param[@name='bullet-text']" priority = "3">
+        <xsl:call-template name="before_p_text">
+            <xsl:with-param name="possible-values">
+                <xsl:text>Any Text</xsl:text>
+            </xsl:with-param>
+        </xsl:call-template>
+        <block>
+            Use to set the value for the bullets in a bullet list. If this string is left blank,
+            then the stylesheets will use the value in the XML.
+        </block>
+    </xsl:template>
+
+    <xsl:template match="xsl:param[@name='options-separator']" priority = "3">
+        <xsl:call-template name="before_p_text">
+            <xsl:with-param name="possible-values">
+                <xsl:text>Any Text</xsl:text>
+            </xsl:with-param>
+        </xsl:call-template>
+        <block>
+            Use to set the value for the text that separates the options in an option list.
+            For example, if your RST file has ``-f  -file`` as the options, and you choose
+            ';' as the ``options-separator``, the output becomes ``-f; -file``.
+        </block>
+    </xsl:template>
+
+    <xsl:template match="xsl:param[@name='option-list-format']" priority = "3">
+        <xsl:call-template name="before_p_text">
+            <xsl:with-param name="possible-values">
+                <xsl:text>list, definition</xsl:text>
+            </xsl:with-param>
+        </xsl:call-template>
+        <block>
+            Use to determine the formatting of an options list. If ``list`` is choosen, then
+            the options list is formatted as a traditional list, with the options to the left 
+            and the description to the right. If ``definition`` is choosen, the options 
+            list is formatted as a defintion list, with the options above the description, which
+            is indented. Lists with long options are probably better formatted using 
+            ``definition.``
+        </block>
+    </xsl:template>
+
+    <xsl:template match="xsl:param[@name='number-verse']" priority = "3">
+        <xsl:call-template name="make-name">
+            <xsl:with-param name="name">number-verse</xsl:with-param>
+        </xsl:call-template>
+        <block>**Possible Values:** any positive integer, or ``''``</block>
+        <block>**Default:** 5</block>
+        <block>
+            When set, this parameter numbers a line block ("verse") every ``value`` lines.   
+            The value of ``'5'`` numbers every 5th line. If ``number-verse`` is left 
+            empty, the line block will not be numbered.
+        </block>
+    </xsl:template>
+
+
+    <xsl:template match="xsl:param[@name='text-before-block-quote-attribution']" priority = "3">
+        <xsl:call-template name="make-name">
+            <xsl:with-param name="name">Text Before Attributions</xsl:with-param>
+        </xsl:call-template>
+        <xsl:call-template name="possible-values">
+            <xsl:with-param name="text" select="'Any Text'"/>
+        </xsl:call-template>
+        <block>**Defaults:** &#x2014;</block>
+        <block>
+            The function is the same for the following parameters:
+        </block>
+        <block>* text-before-block-quote-attribution</block>
+        <block>* text-before-epigraph-attribution</block>
+        <block>* text-before-pull-quote-attribution</block>
+        <block>
+            Each parameter determines the text before the attribution. When the parameter
+            is left empty, no text will appear before an attribution.
+        </block>
+    </xsl:template>
+
+    <xsl:template match="xsl:param[@name='text-before-epigraph-attribution']|
+        xsl:param[@name='text-before-pull-quote-attribution']" priority = "3"/>
+
+    <xsl:template match="xsl:param[@name='table-title-placement']" priority = "3">
+        <xsl:call-template name="before_p_text">
+            <xsl:with-param name="possible-values">
+                <xsl:text>top, bottom</xsl:text>
+            </xsl:with-param>
+        </xsl:call-template>
+        <block>
+            Where to place the table title, or caption.
+        </block>
+    </xsl:template>
+
+    <xsl:template match="xsl:param[@name='footnote-placement']" priority = "3">
+        <xsl:call-template name="before_p_text">
+            <xsl:with-param name="possible-values">
+                <xsl:text>footnote, endnote</xsl:text>
+            </xsl:with-param>
+        </xsl:call-template>
+        <block>
+            This parameter determines whether footnotes will function as footnotes, 
+            or endnotes. When ``footnote`` is choosen, footnotes appear at the 
+            bottom of the page. When ``endnote`` is choosen, the *numbered* footnotes appear
+            as endnotes, in the same position where they are in the RST document.
+            If ``endnote`` is choosen, symbolic footnotes still appear as footnotes, 
+            thus giving a user the ability to use both footnotes and endnotes.
+        </block>
+    </xsl:template>
+
+    <xsl:template match="xsl:param[@name='footnote-style']" priority = "3">
+        <xsl:call-template name="before_p_text">
+            <xsl:with-param name="possible-values">
+                <xsl:text>list, traditional</xsl:text>
+            </xsl:with-param>
+        </xsl:call-template>
+        <block>
+            This parameter determines the style of the footnote or endnote text. 
+            When ``'list'``, is choosen, the text is formatted as a list, 
+            with the number as the item. When ``'traditional'`` is choosen,
+            the footnote appears in the more traditional manner, as a paragraph
+            with the first line indented.
+        </block>
+    </xsl:template>
+
+    <xsl:template match="xsl:param[@name='space-between-footnotes']" priority = "3">
+        <xsl:call-template name="before_p_text">
+            <xsl:with-param name="possible-values">
+                <xsl:text>Any Measure</xsl:text>
+            </xsl:with-param>
+        </xsl:call-template>
+        <block>
+            Use to set the space between footnotes. (I have not determined how to set 
+            this property in the normal way, which is why this property appears as 
+            a parameter, rather than in an attribute set, like the other similar
+            properties.)
+        </block>
+    </xsl:template>
+
+    <xsl:template match="xsl:param[@name='internal-link-type']" priority = "3">
+        <xsl:call-template name="before_p_text">
+            <xsl:with-param name="possible-values">
+                <xsl:text>link, page, page-link</xsl:text>
+            </xsl:with-param>
+        </xsl:call-template>
+        <block>
+            When set to ``'page'``, the page number of the target appears. When 
+            set to ``'link'``, the text of the link appears, and clicking on that
+            link takes you to the target. When set to ``'page-link'``, the page 
+            of the target appears, and clicking on that page number takes you to 
+            the target.
+        </block>
+    </xsl:template>
+
+    <xsl:template match="xsl:param[@name='test']" priority = "3">
+        <xsl:call-template name="before_p_text">
+            <xsl:with-param name="possible-values">
+                <xsl:text>True, False, ''</xsl:text>
+            </xsl:with-param>
+        </xsl:call-template>
+        <block>
+           For testing purposes only. 
+        </block>
+    </xsl:template>
+
+
+
     <xsl:template match="xsl:param" priority="2">
         <xsl:message>
             <xsl:text>no match for "</xsl:text>
