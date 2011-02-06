@@ -77,6 +77,14 @@ test_dict = {
                     {'abstract-pagination':'with-toc'},
                     {'toc-pagination':'with-body'},
                     'front_matter4.fo'),
+                    ({'title-pagination':'with-body'},
+                    {'bibliographic-pagination':'with-front'},
+                    {'dedication-pagination':'with-toc'},
+                    {'dedication-pagination':'with-front'},
+                    {'abstract-pagination':'with-toc'},
+                    {'toc-pagination':'with-body'},
+                    {'front-order':'toc, abstract, dedication,,title, bibliographic'},
+                    'front_matter5.fo'),
             ]
         }
 
