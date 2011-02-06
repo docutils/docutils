@@ -5,7 +5,7 @@
 
     <!-- $Id$ -->
 
-    <xsl:template match= "xsl:attribute-set[@name='footnote-label-default']" priority="3">
+    <xsl:template match= "xsl:attribute-set[@name='default-footnote-label-inline']" priority="3">
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">fo:inline</xsl:with-param> 
             <xsl:with-param name="docutils">None</xsl:with-param> 
@@ -19,7 +19,7 @@
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">fo:inline</xsl:with-param> 
             <xsl:with-param name="docutils">footnote/paragraph[1]</xsl:with-param> 
-            <xsl:with-param name="inherits">footnote-label-default</xsl:with-param> 
+            <xsl:with-param name="inherits">default-footnote-label-inline</xsl:with-param> 
         </xsl:call-template>
         <block>
             Formats the label for *traditional* footnotes and endnotes at the bottomm of the page
@@ -32,7 +32,7 @@
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">fo:inline</xsl:with-param> 
             <xsl:with-param name="docutils">footnote/paragraph[1]</xsl:with-param> 
-            <xsl:with-param name="inherits">footnote_reference</xsl:with-param> 
+            <xsl:with-param name="inherits">default-footnote-label-inline</xsl:with-param> 
         </xsl:call-template>
         <block>
             Formats the label for *traditional* footnotes and endnotes in the body

@@ -16,7 +16,7 @@
         </block>
     </xsl:template>
 
-    <xsl:template match= "xsl:attribute-set[@name='toc-entry-defaults']" priority="3">
+    <xsl:template match= "xsl:attribute-set[@name='toc-entry-defaults-block']" priority="3">
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">None</xsl:with-param> 
             <xsl:with-param name="docutils">None</xsl:with-param> 
@@ -31,7 +31,7 @@
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">fo:block</xsl:with-param> 
             <xsl:with-param name="docutils">topic[@classes = "contents"]/bullet_list/list_item/paragraph/</xsl:with-param> 
-            <xsl:with-param name="inherits">toc-entry-defaults</xsl:with-param>
+            <xsl:with-param name="inherits">toc-entry-defaults-block</xsl:with-param>
         </xsl:call-template>
         <block>
             Formats the block for the level 1 table of contents entry. If a number exists, it is 
@@ -43,7 +43,7 @@
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">fo:block</xsl:with-param> 
             <xsl:with-param name="docutils">topic[@classes = "contents"]/bullet_list/list_item/bullet_list/list_item/paragraph/</xsl:with-param> 
-            <xsl:with-param name="inherits">toc-entry-defaults</xsl:with-param>
+            <xsl:with-param name="inherits">toc-entry-defaults-block</xsl:with-param>
         </xsl:call-template>
         <block>
             Formats the block for the level 2 table of contents entry. If a number exists, it is 
@@ -55,7 +55,7 @@
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">fo:block</xsl:with-param> 
             <xsl:with-param name="docutils">topic[@classes = "contents"]/bullet_list/list_item/bullet_list/list_item/paragraph/etc.</xsl:with-param> 
-            <xsl:with-param name="inherits">toc-entry-defaults</xsl:with-param>
+            <xsl:with-param name="inherits">toc-entry-defaults-block</xsl:with-param>
         </xsl:call-template>
         <block>
             Formats the block for the level 3 table of contents entry. If a number exists, it is 
@@ -67,7 +67,7 @@
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">fo:block</xsl:with-param> 
             <xsl:with-param name="docutils">topic[@classes = "contents"]/bullet_list/list_item/bullet_list/list_item/paragraph/etc.</xsl:with-param> 
-            <xsl:with-param name="inherits">toc-entry-defaults</xsl:with-param>
+            <xsl:with-param name="inherits">toc-entry-defaults-block</xsl:with-param>
         </xsl:call-template>
         <block>
             Formats the block for the level 4 table of contents entry. If a number exists, it is 
@@ -78,7 +78,7 @@
     <xsl:template match= "xsl:attribute-set[@name='toc-level5-block']" priority="3">
         <xsl:call-template name="before-desc">
             <xsl:with-param name="docutils">topic[@classes = "contents"]/bullet_list/list_item/bullet_list/list_item/paragraph/etc.</xsl:with-param> 
-            <xsl:with-param name="inherits">toc-entry-defaults</xsl:with-param>
+            <xsl:with-param name="inherits">toc-entry-defaults-block</xsl:with-param>
         </xsl:call-template>
         <block>
             Formats the block for the level 5 table of contents entry. If a number exists, it is 

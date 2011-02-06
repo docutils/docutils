@@ -5,7 +5,7 @@
 
     <!-- $Id$ -->
 
-    <xsl:template match= "xsl:attribute-set[@name='default-section-title']" priority="3">
+    <xsl:template match= "xsl:attribute-set[@name='default-section-title-block']" priority="3">
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">None</xsl:with-param> 
             <xsl:with-param name="docutils">None</xsl:with-param> 
@@ -29,7 +29,7 @@
             <xsl:text>:docutils: section/title|section/section/title|etc.</xsl:text> 
         </block>
         <block first-line-indent="-9">
-            <xsl:text>:inherits: default-section-title</xsl:text> 
+            <xsl:text>:inherits: default-section-title-block</xsl:text> 
         </block>
         <block>
             The following attribute sets are identical in nature:
