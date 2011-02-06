@@ -1,5 +1,5 @@
 =========================
- README: Docutils2fo 0.5
+ README: Docutils2fo 0.6
 =========================
 
 :Author: Paul Tremblay
@@ -40,60 +40,43 @@ would have to be developed by consensus on the mailing list, if at all.
 Completion
 ==========
 
-- Ability to create custom pages of simple layout, of first page layout,
+* Ability to create custom pages of simple layout, of first page layout,
   of odd-even layout, and first, odd-even layout.
-
-- Sections
-
-- Transitions
-
-- Paragraphs
-
-- Bullet Lists
-
-- Enumerated Lists
-
-- Definition Lists
-
-- Field Lists
-
-- Bibliographic Fields
-
-- Option List
-
-- Line Blocks
-
-- Block Quotes
-
-- Headers and Footers, with the ability to suppress them on the first
+* Sections
+* Transitions
+* Paragraphs
+* Bullet Lists
+* Enumerated Lists
+* Definition Lists
+* Field Lists
+* Bibliographic Fields
+* Option List
+* Line Blocks
+* Block Quotes
+* Headers and Footers, with the ability to suppress them on the first
   page.
+* Doctest Blocks
+* Tables
+* Footnotes
+* Citations
+* Hyperlinks
+* Interpreted Text
+* inline Literals
+* Specific Admonitions
+* Generic Admonition
+* Image
+* Figure
+* Topic
+* Sidebar
+* Parsed Literal Block
+* Rubric
+* Epigraph
+* Highlights
+* Pull-Quote
+* Compound Paragraph
+* Container
 
-- Doctest Blocks
-
-- Tables
-
-- Footnotes
-
-- Citations
-
-- Hyperlinks
-
-- Interpreted Text
-
-- inline Literals
-- Specific Admonitions
-- Generic Admonition
-- Image
-- Figure
-- Topic
-- Sidebar
-- Parsed Literal Block
-- Rubric
-- Epigraph
-- Highlights
-- Pull-Quote
-- Compound Paragraph
-- Container
+* documenttion of XSLT stylesheets
 
 TODO
 =====
@@ -116,7 +99,6 @@ Python Code
 Documentaion
 ------------
 
-- Document XSLT stylesheets
 
 - Write a quick overview
 
