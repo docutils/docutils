@@ -6,7 +6,7 @@
     <!-- $Id$ -->
 
 
-    <xsl:template match= "xsl:attribute-set[@name='paper-size']" priority="3">
+    <xsl:template match= "xsl:attribute-set[@name='paper-size-simple-page-master']" priority="3">
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">None</xsl:with-param> 
             <xsl:with-param name="docutils">/</xsl:with-param> 
@@ -16,7 +16,7 @@
         </block>
     </xsl:template>
 
-    <xsl:template match= "xsl:attribute-set[@name='default-page-setup']" priority="3">
+    <xsl:template match= "xsl:attribute-set[@name='default-simple-page-master']" priority="3">
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">None</xsl:with-param> 
             <xsl:with-param name="docutils">/</xsl:with-param> 
@@ -26,10 +26,10 @@
         </block>
     </xsl:template>
 
-    <xsl:template match= "xsl:attribute-set[@name='simple-page']" priority="3">
+    <xsl:template match= "xsl:attribute-set[@name='simple-page-master']" priority="3">
         <xsl:call-template name="make-title">
             <xsl:with-param name="level">5</xsl:with-param>
-            <xsl:with-param name="text">Page Master Sets</xsl:with-param>
+            <xsl:with-param name="text">Simple Page Master Sets</xsl:with-param>
         </xsl:call-template>
 
         <block>
@@ -44,48 +44,50 @@
         <block>
             The following attribute sets are identical:
         </block>
-        <block>- simple-page</block>
-        <block>- first-page</block>
-        <block>- body-page</block>
-        <block>- odd-page</block>
-        <block>- even-page</block>
-        <block>- toc-simple-page</block>
-        <block>- toc-first-page</block>
-        <block>- toc-body-page</block>
-        <block>- toc-odd-page</block>
-        <block>- toc-even-page</block>
-        <block>- front-matter-simple-page</block>
-        <block>- front-matter-first-page</block>
-        <block>- front-matter-body-page</block>
-        <block>- front-matter-odd-page</block>
-        <block>- front-matter-even-page</block>
+        <block>- simple-page-master</block>
+        <block>- first-simple-page-master</block>
+        <block>- body-simpe-page-master</block>
+        <block>- odd-simple-page-master</block>
+        <block>- even-simple-page-master</block>
+        <block>- toc-simple-page-master</block>
+        <block>- toc-first-simple-page-master</block>
+        <block>- toc-body-simple-page-master</block>
+        <block>- toc-odd-simple-page-master</block>
+        <block>- toc-even-simple-page-master</block>
+        <block>- front-simple-page-master</block>
+        <block>- front-first-simple-page-master</block>
+        <block>- front-body-simple-page-master</block>
+        <block>- front-odd-simple-page-master</block>
+        <block>- front-even-simple-page-master</block>
         <block>
-            These attriute sets format the margins of the fo:simple-page-master. By default, they inherit 
-            the paper-size and default-page-setup attriute-sets, meaning each page will have identical 
-            size and margins, a satisfactory setup for many documents. However, the sizes and margins can be
-            modified by page type, if desired.
+            These attriute sets format the margins of the
+            fo:simple-page-master. By default, they inherit the
+            ``'paper-size-simple-page-master'`` and
+            ``'default-simple-page-master'`` attriute-sets, meaning each page
+            will have identical size and margins, a satisfactory setup for
+            many documents. However, the sizes and margins can be modified by
+            page type, if desired.
         </block>
     </xsl:template>
 
-    <xsl:template match= "xsl:attribute-set[@name='first-page']|
-        xsl:attribute-set[@name='first-page']|
-        xsl:attribute-set[@name='body-page']|
-        xsl:attribute-set[@name='odd-page']| 
-        xsl:attribute-set[@name='even-page']|
-        xsl:attribute-set[@name='toc-simple-page']|
-        xsl:attribute-set[@name='toc-first-page']|
-        xsl:attribute-set[@name='toc-body-page']|
-        xsl:attribute-set[@name='toc-odd-page']| 
-        xsl:attribute-set[@name='toc-even-page']|
-        xsl:attribute-set[@name='front-matter-simple-page']|
-        xsl:attribute-set[@name='front-matter-first-page']|
-        xsl:attribute-set[@name='front-matter-body-page']|
-        xsl:attribute-set[@name='front-matter-odd-page']| 
-        xsl:attribute-set[@name='front-matter-even-page']
+    <xsl:template match= "xsl:attribute-set[@name='first-simple-page-master']|
+        xsl:attribute-set[@name='body-simple-page-master']|
+        xsl:attribute-set[@name='odd-simple-page-master']| 
+        xsl:attribute-set[@name='even-simple-page-master']|
+        xsl:attribute-set[@name='toc-simple-page-master']|
+        xsl:attribute-set[@name='toc-first-simple-page-master']|
+        xsl:attribute-set[@name='toc-body-simple-page-master']|
+        xsl:attribute-set[@name='toc-odd-simple-page-master']| 
+        xsl:attribute-set[@name='toc-even-simple-page-master']|
+        xsl:attribute-set[@name='front-simple-page-master']|
+        xsl:attribute-set[@name='front-first-simple-page-master']|
+        xsl:attribute-set[@name='front-body-simple-page-master']|
+        xsl:attribute-set[@name='front-odd-simple-page-master']| 
+        xsl:attribute-set[@name='front-even-simple-page-master']
         " 
         priority="3"/>
 
-    <xsl:template match= "xsl:attribute-set[@name='page-header']" priority="3">
+    <xsl:template match= "xsl:attribute-set[@name='header-region-before']" priority="3">
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">fo:region-before</xsl:with-param> 
             <xsl:with-param name="docutils">decoration/header</xsl:with-param> 
@@ -95,7 +97,7 @@
         </block>
     </xsl:template>
 
-    <xsl:template match= "xsl:attribute-set[@name='page-footer']" priority="3">
+    <xsl:template match= "xsl:attribute-set[@name='footer-region-after']" priority="3">
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">fo:region-after</xsl:with-param> 
             <xsl:with-param name="docutils">decoration/footer</xsl:with-param> 
