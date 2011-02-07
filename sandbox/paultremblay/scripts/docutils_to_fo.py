@@ -1,218 +1,80 @@
 #! /Library/Frameworks/Python.framework/Versions/2.7/bin/python
+
 #  $Id$
-import sys, copy, getopt, os, StringIO, ConfigParser, commands, shlex, subprocess
-from lxml import etree
-import lxml
 
-def transform_xslt_as_string(inxsltfile, inxmlfile):
-    xslt_doc = etree.parse(inxsltfile)
+import sys, commands, shlex, subprocess, argparse, ConfigParser, os,  tempfile
+import docutilsToFo.rst2xml_lib 
+import docutilsToFo.make_stylesheet
+
+def get_args():
+    parser = argparse.ArgumentParser(description='Converts a file to XSLFO') 
+    parser.add_argument('--xslt', nargs=1, choices = ['xsltproc', 'lxml', 'saxon'], default=['lxml'], 
+            dest='xsl_transform', help = 'choose which processer to use when transforming' ) 
+    parser.add_argument('--strict', nargs=1, choices = ['True', 'False'],  
+            default = 'True', help = 'whether to quit on errors', dest='strict')
+    parser.add_argument('--clean', action="store_const", const=True, help = 'Whether to remove files after test', dest='clean')
+    parser.add_argument('in_path', nargs=1, help = 'The file to convert')
+    parser.add_argument('-s, -stylesheet', nargs=1, help = 'The root stylesheet to use',
+            dest='root_stylesheet')
+    parser.add_argument('-o, --out', nargs=1, help = 'Path to output result', dest='out_path')
+    return  parser.parse_args()
+
+ 
+
+
+home= os.environ.get('HOME')
+home_config_file = os.path.join(home, '.docutils')
+cwd = os.getcwd()
+project_config_file = os.path.join(cwd, '.docutils.conf')
+config = ConfigParser.SafeConfigParser()
+config.read([home_config_file, project_config_file])
+
+
+arg = get_args()
+
+if arg.root_stylesheet:
+    root_stylesheet = arg.root_stylesheet[0]
+else:
     try:
-        transform = etree.XSLT(xslt_doc)
-    except lxml.etree.XSLTParseError, error:
-        raise Rst2foException, str(error)
-    indoc = etree.parse(inxmlfile)
-    paramdict = {'param1': 'value1', 'param2': 'value2'}
-    try:
-        outdoc = transform(indoc, **paramdict)
-    except lxml.etree.XSLTApplyError, error:
-        raise Rst2foException, str(error)
-    return outdoc
-
-
-
-def transform(xslt_file, xml_file, param_dict):
-    xslt_doc = etree.parse(xslt_file)
-    try:
-        transform = etree.XSLT(xslt_doc)
-    except lxml.etree.XSLTParseError, error:
-        raise Rst2foException, str(error)
-    indoc = etree.parse(xml_file)
-    try:
-        outdoc = transform(indoc, **param_dict)
-    except lxml.etree.XSLTApplyError, error:
-        raise Rst2foException, str(error)
-    return outdoc
-
-
-def print_result(input_obj, out_path = None):
-    if out_path:
-        write_obj = open(out_path, 'w')
-        input_obj.write(write_obj)
-        write_obj.close()
-    else:
-        sys.stdout.write(str(input_obj))
-
-
-def get_xslt():
-    """
-    just an example of how to create a stylesheet as a string
-
-    """
-    string_xslt="""<xsl:stylesheet 
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:tei="http://www.tei-c.org/ns/1.0"
-    version="1.1"
->
-
-    <xsl:output method="xml" encoding="UTF-8"/>
-
-
-    <xsl:template match="@*|node()">
-        <xsl:copy> 
-            <xsl:apply-templates select="@*|node()"/>
-        </xsl:copy>
-    </xsl:template>
-
-    <xsl:template match="comment()">
-        <xsl:comment>
-            <xsl:value-of select="."/>
-        </xsl:comment>
-    </xsl:template>
-
-</xsl:stylesheet>
-"""
-    return  StringIO.StringIO(string_xslt)
-
-def help():
-    print "rst2fo.py --stylesheet --<file>"
-
-
-def parse_config_file(the_path):
-    opts_dict = {}
-    config = ConfigParser.SafeConfigParser()
-    config.read(the_path)
-    try:
-        xsltproc = config.getboolean('FO', 'xsltproc')
-        opts_dict['use_xsltproc'] = xsltproc
-    except ConfigParser.NoSectionError:
-        pass
-    try:
-        xsl_stylesheet = config.get('FO', 'xsl-stylesheet')
-        opts_dict['xsl_stylesheet'] = xsl_stylesheet
-    except ConfigParser.NoSectionError:
-        pass
-    except ConfigParser.NoOptionError:
-        pass
-    return opts_dict
-
-
-def read_config_file():
-    opts_dict = {}
-    home= os.environ.get('HOME')
-    home_config_file = os.path.join(home, '.docutils')
-    if os.path.isfile(home_config_file):
-        opts_dict_home = parse_config_file(home_config_file)
-        opts_dict.update(opts_dict_home)
-    cwd = os.getcwd()
-    project_config_file = os.path.join(cwd, '.docutils.conf')
-    if os.path.isfile(project_config_file):
-        opts_dict_project = parse_config_file(project_config_file)
-        opts_dict.update(opts_dict_project)
-    return opts_dict
-
-
-def get_options():
-    opts_dict = read_config_file()
-    try:
-        opts, args = getopt.getopt(sys.argv[1:], 'hc', ['help', 'fo-template=', 'xsltproc' ])
-    except getopt.GetoptError, error:
-        sys.stderr.write('rst2fo.py: Can\'t parse command line: %s' % str(error))
-        help()
+        root_stylesheet = config.get('FO', 'stylesheet')
+    except (ConfigParser.NoSectionError, ConfigParser.NoOptionError):
+        sys.stderr.write('No stylesheet found.\n')
+        sys.stderr.write('Script quiting.\n')
         sys.exit(1)
-    for option, arg_in_opt in opts:
-        if option in ('-h', '--help'):
-            help()
-            sys.exit(0)
-        if option in ('--fo-template'):
-            fo_template = arg_in_opt
-            opts_dict['fo_template']= arg_in_opt
-        if option in ('--xsltproc','-c'):
-            opts_dict['use_xsltproc'] = True
-    return opts_dict, args
 
 
-def main():
-    the_opts_dict, the_args = get_options()
-    if the_args:
-        xml_file = the_args[0]
-    else:
-        # line = unicode(sys.stdin.read(), "UTF-8")
-        line = sys.stdin.read()
-        xml_file = StringIO.StringIO(line)
-    convert_obj = paultremblay.rst2fo_lib.Convert()
-    xslt_stylesheet = the_opts_dict.get('xsl_stylesheet')
-    if not xslt_stylesheet:
-        xslt_stylesheet_dir = convert_obj.get_path_of_xsl_dir()
-        xslt_stylesheet = os.path.join(xslt_stylesheet_dir, 'docutils_to_fop.xsl')
-    param_dict = {}
-    fo_template = the_opts_dict.get('fo_template')
-    if fo_template:
-        param_dict['fo-template'] = "'%s'" % fo_template
-    use_command_line = the_opts_dict.get('use_xsltproc')
-    if use_command_line: # a pure hack to be done away with!
-        command = 'xsltproc %s' % (xslt_stylesheet)
-        if not the_args:
-            temp_file = 'temp_as_command.xml'
-            write_obj = file(temp_file, 'w')
-            line_to_read = 1
-            while line_to_read:
-                line_to_read = xml_file.readline()
-                line = line_to_read
-                write_obj.write(line)
-            write_obj.close()
-            command = '%s %s' % (command, temp_file)
-        else:
-            command = '%s %s' % (command, xml_file)
 
-        # status, output = commands.getstatusoutput(command)
-        args = shlex.split(command)
-        subprocess.Popen(args)
-        
-    else:
-        out_doc = convert_obj.transform(xslt_stylesheet, xml_file, param_dict)
-        convert_obj.print_result(out_doc)
+out_path = None
+in_path = arg.in_path[0]
+if arg.out_path:
+    out_path = arg.out_path[0]
+    filename, ext = os.path.splitext(out_path)
+    out_xml = '%s.xml' % (filename)
+else:
+    out_xml = tempfile.mkstemp(suffix = '.xml')[1]
 
-main()
-# Here is new code to read the configuration file.
-import sys
-import ConfigParser
-stylesheet = '/Library/svn/trunk/sandbox/paultremblay/xsl_fo/docutils_to_fo.xsl'
-config = ConfigParser.RawConfigParser()
-config.read('config.txt')
-opts =  config.items('FO')
+# convert to XML
+docutilsToFo.rst2xml_lib.publish_xml_cmdline(in_path = in_path, out_path = out_xml)
+
+# get path to put stylesheet
+if out_path:
+    filename, ext = os.path.splitext(out_path)
+    out_xsl = '%s.xsl' % (filename)
+else:
+    out_xsl = tempfile.mkstemp(suffix = '.xsl')[1]
+
+# make a stylesheet
+ss_obj = docutilsToFo.make_stylesheet.ReadConfig(import_ss = root_stylesheet )
+ss_string = ss_obj.main()
+write_obj = file(out_xsl, 'w')
+write_obj.write(ss_string)
+write_obj.close()
+
+# convert to FO 
+error = docutilsToFo.rst2xml_lib.transform_lxml(xslt_file = out_xsl, xml_file = out_xml, 
+        param_dict = {}, out_file = out_path )
+if error:
+    sys.stderr.write(error)
+    sys.exit(1)
 
 
-def make_attribute_set(the_name, the_dict):
-    sys.stdout.write('<xsl:attribute-set name="%s">\n' % (the_name))
-    the_keys = the_dict.keys()
-    the_keys.sort()
-    for the_key in the_keys:
-        sys.stdout.write('     <xsl:attribute name="%s">' % (the_key))
-        sys.stdout.write(the_dict[the_key])
-        sys.stdout.write('</xsl:attribute>\n')
-    sys.stdout.write('</xsl:attribute-set>\n\n')
-sys.stdout.write("""
-<xsl:stylesheet 
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:fo="http://www.w3.org/1999/XSL/Format"
-    version="1.1"
-    >
-    <xsl:import href="%s"/>
-    """ % (stylesheet))
-
-opts_dict = {}
-for pair_tupple in opts:
-    first = pair_tupple[0]
-    second = pair_tupple[1]
-    the_class, att = first.split('.')
-    class_exists = opts_dict.get(the_class)
-    if not class_exists:
-        opts_dict[the_class] = {}
-    opts_dict[the_class][att] = second
-
-the_keys = opts_dict.keys()
-the_keys.sort()
-for the_key in the_keys:
-    make_attribute_set(the_key, opts_dict[the_key])
-
-sys.stdout.write('\n</xsl:stylesheet>')
