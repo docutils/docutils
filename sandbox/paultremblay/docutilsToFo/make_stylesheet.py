@@ -3,11 +3,72 @@
 import sys, copy, getopt, os, ConfigParser
 from docutils_fo_dicts import *
 
-class ReadConfig:
-
+class WriteStylesheet:
 
     def __init__(self):
+        self.__string = ''
+        pass
+
+    def __write_start_element(self, name, atts):
+        pass
+
+    def __write_end_element(self, name):
+        pass
+
+    def __write_root_start(self):
+        self.__string +=  """<xsl:stylesheet 
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:fo="http://www.w3.org/1999/XSL/Format"
+    version="1.1"
+    >\n\n"""
+        pass
+
+    def __write_root_end(self):
+        self.__string +='</xsl:stylesheet>'
+
+    def __write_att_sets(self):
+        att_sets = self.__att_sets.keys()
+        for att_set in att_sets:
+            self.__string += '     <xsl:attribute-set name="%s">\n' % (att_set)
+            att_dict = self.__att_sets[att_set]
+            atts = att_dict.keys()
+            for att in atts:
+                self.__string += '          <xsl:attribute name="%s">' % (att)
+                self.__string += att_dict[att]
+                self.__string += '</xsl:attribute>\n' 
+
+            self.__string += '     </xsl:attribute-set>\n\n'
+
+    def __write_import(self):
+        self.__string += """     <xsl:import href= "%s"/>\n\n""" % (self.__import_ss)
+
+    def __write_params(self):
+        pass
+
+    def write_stylesheet(self, import_ss, params, att_sets, out=None):
+        self.__import_ss = import_ss
+        self.__params = params
+        self.__att_sets = att_sets
+        self.__out = out
+        self.__write_root_start()
+        self.__write_import()
+        self.__write_params()
+        self.__write_att_sets()
+        self.__write_root_end()
+        return self.__string
+
+class ReadConfig:
+
+    def __init__(self, import_ss):
         self.__attribute_sets = {}
+        self.__params = {}
+        self.__import_ss = import_ss
+
+    def write_config_file(self, dest=None):
+        w = WriteStylesheet()
+        ss_string = w.write_stylesheet(import_ss = self.__import_ss, params = self.__params, 
+                att_sets = self.__attribute_sets)
+        return ss_string
 
     def read_config_file(self):
         opts_dict = {}
@@ -40,8 +101,8 @@ class ReadConfig:
 
     def __handle_attributes(self, set, att, value):
         name_type_pair = att_set_dict.get(set)
-        if name_type_pair:
-            true_name = name_type_pair[0]
+        if name_type_pair: # found a valid att-set
+            true_name = name_type_pair[0] # the true name as found in the stylesheet
             the_type = name_type_pair[1]
             att_true_value = which_dict.get(the_type).get(att)
             if not att_true_value:
@@ -77,8 +138,14 @@ class ReadConfig:
     def print_att_list(self):
         print self.__attribute_sets
 
+    def main(self):
+        self.read_config_file()
+        ss_string = self.write_config_file()
+        return ss_string
+        # self.print_att_list()
+
 
 if __name__ == '__main__':
-    read_config_obj =  ReadConfig()
-    read_config_obj.read_config_file()
-    read_config_obj.print_att_list()
+    read_config_obj =  ReadConfig(import_ss = '/Users/cynthia/tmp/paultremblay/xsl_fo/docutils_to_fo.xsl' )
+    ss_string = read_config_obj.main()
+    print ss_string
