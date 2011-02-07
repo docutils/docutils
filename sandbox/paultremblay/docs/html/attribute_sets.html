@@ -333,11 +333,11 @@ ul.auto-toc {
 </ul>
 </li>
 <li><a class="reference internal" href="#page-attribute-sets" id="id11">Page Attribute Sets</a><ul>
-<li><a class="reference internal" href="#paper-size" id="id12">paper-size</a></li>
-<li><a class="reference internal" href="#default-page-setup" id="id13">default-page-setup</a></li>
-<li><a class="reference internal" href="#page-master-sets" id="id14">Page Master Sets</a></li>
-<li><a class="reference internal" href="#page-header" id="id15">page-header</a></li>
-<li><a class="reference internal" href="#page-footer" id="id16">page-footer</a></li>
+<li><a class="reference internal" href="#paper-size-simple-page-master" id="id12">paper-size-simple-page-master</a></li>
+<li><a class="reference internal" href="#default-simple-page-master" id="id13">default-simple-page-master</a></li>
+<li><a class="reference internal" href="#simple-page-master-sets" id="id14">Simple Page Master Sets</a></li>
+<li><a class="reference internal" href="#header-region-before" id="id15">header-region-before</a></li>
+<li><a class="reference internal" href="#footer-region-after" id="id16">footer-region-after</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#bibliograhic-fields-attribute-sets" id="id17">Bibliograhic Fields Attribute Sets</a><ul>
@@ -371,7 +371,7 @@ ul.auto-toc {
 </li>
 <li><a class="reference internal" href="#toc-matter-attribute-sets" id="id40">TOC Matter Attribute Sets</a><ul>
 <li><a class="reference internal" href="#toc-title-block" id="id41">toc-title-block</a></li>
-<li><a class="reference internal" href="#toc-entry-defaults" id="id42">toc-entry-defaults</a></li>
+<li><a class="reference internal" href="#toc-entry-defaults-block" id="id42">toc-entry-defaults-block</a></li>
 <li><a class="reference internal" href="#toc-level1-block" id="id43">toc-level1-block</a></li>
 <li><a class="reference internal" href="#toc-level2-block" id="id44">toc-level2-block</a></li>
 <li><a class="reference internal" href="#toc-level3-block" id="id45">toc-level3-block</a></li>
@@ -380,7 +380,7 @@ ul.auto-toc {
 </ul>
 </li>
 <li><a class="reference internal" href="#section-attribute-sets" id="id48">Section Attribute Sets</a><ul>
-<li><a class="reference internal" href="#default-section-title" id="id49">default-section-title</a></li>
+<li><a class="reference internal" href="#default-section-title-block" id="id49">default-section-title-block</a></li>
 <li><a class="reference internal" href="#title-level-block" id="id50">title-level-block</a></li>
 <li><a class="reference internal" href="#title-number-inline" id="id51">title-number-inline</a></li>
 </ul>
@@ -485,7 +485,7 @@ ul.auto-toc {
 </ul>
 </li>
 <li><a class="reference internal" href="#footnote" id="id133">Footnote</a><ul>
-<li><a class="reference internal" href="#footnote-label-default" id="id134">footnote-label-default</a></li>
+<li><a class="reference internal" href="#default-footnote-label-inline" id="id134">default-footnote-label-inline</a></li>
 <li><a class="reference internal" href="#footnote-label-inline" id="id135">footnote-label-inline</a></li>
 <li><a class="reference internal" href="#footnote-body-label-inline" id="id136">footnote-body-label-inline</a></li>
 <li><a class="reference internal" href="#footnote-list-block" id="id137">footnote-list-block</a></li>
@@ -725,8 +725,8 @@ which means everything except headers and footers.</p>
 <h1><a class="toc-backref" href="#id11">Page Attribute Sets</a></h1>
 <p>Attribute sets for page. These attributes control the formatting
 of the actual pages: the paper size and margins.</p>
-<div class="section" id="paper-size">
-<h2><a class="toc-backref" href="#id12">paper-size</a></h2>
+<div class="section" id="paper-size-simple-page-master">
+<h2><a class="toc-backref" href="#id12">paper-size-simple-page-master</a></h2>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -746,8 +746,8 @@ of the actual pages: the paper size and margins.</p>
 <p>Sets up the defaults for the paper size, used in other attribute
 sets.</p>
 </div>
-<div class="section" id="default-page-setup">
-<h2><a class="toc-backref" href="#id13">default-page-setup</a></h2>
+<div class="section" id="default-simple-page-master">
+<h2><a class="toc-backref" href="#id13">default-simple-page-master</a></h2>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -769,8 +769,8 @@ sets.</p>
 <p>Sets up the defaults for the margins of the fo:body-region for
 all the pages.</p>
 </div>
-<div class="section" id="page-master-sets">
-<h2><a class="toc-backref" href="#id14">Page Master Sets</a></h2>
+<div class="section" id="simple-page-master-sets">
+<h2><a class="toc-backref" href="#id14">Simple Page Master Sets</a></h2>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -785,31 +785,32 @@ all the pages.</p>
 </table>
 <p>The following attribute sets are identical:</p>
 <ul class="simple">
-<li>simple-page</li>
-<li>first-page</li>
-<li>body-page</li>
-<li>odd-page</li>
-<li>even-page</li>
-<li>toc-simple-page</li>
-<li>toc-first-page</li>
-<li>toc-body-page</li>
-<li>toc-odd-page</li>
-<li>toc-even-page</li>
-<li>front-matter-simple-page</li>
-<li>front-matter-first-page</li>
-<li>front-matter-body-page</li>
-<li>front-matter-odd-page</li>
-<li>front-matter-even-page</li>
+<li>simple-page-master</li>
+<li>first-simple-page-master</li>
+<li>body-simpe-page-master</li>
+<li>odd-simple-page-master</li>
+<li>even-simple-page-master</li>
+<li>toc-simple-page-master</li>
+<li>toc-first-simple-page-master</li>
+<li>toc-body-simple-page-master</li>
+<li>toc-odd-simple-page-master</li>
+<li>toc-even-simple-page-master</li>
+<li>front-simple-page-master</li>
+<li>front-first-simple-page-master</li>
+<li>front-body-simple-page-master</li>
+<li>front-odd-simple-page-master</li>
+<li>front-even-simple-page-master</li>
 </ul>
 <p>These attriute sets format the margins of the
-fo:simple-page-master. By default, they inherit the paper-size
-and default-page-setup attriute-sets, meaning each page will have
-identical size and margins, a satisfactory setup for many
-documents. However, the sizes and margins can be modified by page
-type, if desired.</p>
+fo:simple-page-master. By default, they inherit the
+<tt class="docutils literal"><span class="pre">'paper-size-simple-page-master'</span></tt> and
+<tt class="docutils literal"><span class="pre">'default-simple-page-master'</span></tt> attriute-sets, meaning each page
+will have identical size and margins, a satisfactory setup for
+many documents. However, the sizes and margins can be modified by
+page type, if desired.</p>
 </div>
-<div class="section" id="page-header">
-<h2><a class="toc-backref" href="#id15">page-header</a></h2>
+<div class="section" id="header-region-before">
+<h2><a class="toc-backref" href="#id15">header-region-before</a></h2>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -824,8 +825,8 @@ type, if desired.</p>
 </table>
 <p>The extent attribute specifies the header and footer height.</p>
 </div>
-<div class="section" id="page-footer">
-<h2><a class="toc-backref" href="#id16">page-footer</a></h2>
+<div class="section" id="footer-region-after">
+<h2><a class="toc-backref" href="#id16">footer-region-after</a></h2>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1280,8 +1281,8 @@ document, the second to the second, and the third to the third.</p>
 </table>
 <p>Formats the block for the title for the TOC.</p>
 </div>
-<div class="section" id="toc-entry-defaults">
-<h2><a class="toc-backref" href="#id42">toc-entry-defaults</a></h2>
+<div class="section" id="toc-entry-defaults-block">
+<h2><a class="toc-backref" href="#id42">toc-entry-defaults-block</a></h2>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1311,7 +1312,7 @@ document, the second to the second, and the third to the third.</p>
 <tr class="field"><th class="field-name">docutils:</th><td class="field-body">topic[&#64;classes =
 &quot;contents&quot;]/bullet_list/list_item/paragraph/</td>
 </tr>
-<tr class="field"><th class="field-name">inherits:</th><td class="field-body">toc-entry-defaults</td>
+<tr class="field"><th class="field-name">inherits:</th><td class="field-body">toc-entry-defaults-block</td>
 </tr>
 <tr class="field"><th class="field-name">defaults:</th><td class="field-body"></td>
 </tr>
@@ -1332,7 +1333,7 @@ number exists, it is formatted according to the parameter
 <tr class="field"><th class="field-name">docutils:</th><td class="field-body">topic[&#64;classes =
 &quot;contents&quot;]/bullet_list/list_item/bullet_list/list_item/paragraph/</td>
 </tr>
-<tr class="field"><th class="field-name">inherits:</th><td class="field-body">toc-entry-defaults</td>
+<tr class="field"><th class="field-name">inherits:</th><td class="field-body">toc-entry-defaults-block</td>
 </tr>
 <tr class="field"><th class="field-name">defaults:</th><td class="field-body">start-indent: 10mm</td>
 </tr>
@@ -1353,7 +1354,7 @@ number exists, it is formatted according to the parameter
 <tr class="field"><th class="field-name">docutils:</th><td class="field-body">topic[&#64;classes =
 &quot;contents&quot;]/bullet_list/list_item/bullet_list/list_item/paragraph/etc.</td>
 </tr>
-<tr class="field"><th class="field-name">inherits:</th><td class="field-body">toc-entry-defaults</td>
+<tr class="field"><th class="field-name">inherits:</th><td class="field-body">toc-entry-defaults-block</td>
 </tr>
 <tr class="field"><th class="field-name">defaults:</th><td class="field-body">start-indent: 20mm</td>
 </tr>
@@ -1374,7 +1375,7 @@ number exists, it is formatted according to the parameter
 <tr class="field"><th class="field-name">docutils:</th><td class="field-body">topic[&#64;classes =
 &quot;contents&quot;]/bullet_list/list_item/bullet_list/list_item/paragraph/etc.</td>
 </tr>
-<tr class="field"><th class="field-name">inherits:</th><td class="field-body">toc-entry-defaults</td>
+<tr class="field"><th class="field-name">inherits:</th><td class="field-body">toc-entry-defaults-block</td>
 </tr>
 <tr class="field"><th class="field-name">defaults:</th><td class="field-body">start-indent: 30mm</td>
 </tr>
@@ -1395,7 +1396,7 @@ number exists, it is formatted according to the parameter
 <tr class="field"><th class="field-name">docutils:</th><td class="field-body">topic[&#64;classes =
 &quot;contents&quot;]/bullet_list/list_item/bullet_list/list_item/paragraph/etc.</td>
 </tr>
-<tr class="field"><th class="field-name">inherits:</th><td class="field-body">toc-entry-defaults</td>
+<tr class="field"><th class="field-name">inherits:</th><td class="field-body">toc-entry-defaults-block</td>
 </tr>
 <tr class="field"><th class="field-name">defaults:</th><td class="field-body">start-indent: 40mm</td>
 </tr>
@@ -1409,8 +1410,8 @@ number exists, it is formatted according to the parameter
 <div class="section" id="section-attribute-sets">
 <h1><a class="toc-backref" href="#id48">Section Attribute Sets</a></h1>
 <p>Attribute sets for the section titles.</p>
-<div class="section" id="default-section-title">
-<h2><a class="toc-backref" href="#id49">default-section-title</a></h2>
+<div class="section" id="default-section-title-block">
+<h2><a class="toc-backref" href="#id49">default-section-title-block</a></h2>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1442,7 +1443,7 @@ hence the keep-with-always property.</p>
 </tr>
 <tr class="field"><th class="field-name">docutils:</th><td class="field-body">section/title|section/section/title|etc.</td>
 </tr>
-<tr class="field"><th class="field-name">inherits:</th><td class="field-body">default-section-title</td>
+<tr class="field"><th class="field-name">inherits:</th><td class="field-body">default-section-title-block</td>
 </tr>
 </tbody>
 </table>
@@ -2928,8 +2929,8 @@ If this block is placed on the bottom it has a
 <div class="section" id="footnote">
 <h1><a class="toc-backref" href="#id133">Footnote</a></h1>
 <p>Attribute sets for footnotes, endnotes, and the endnotes title.</p>
-<div class="section" id="footnote-label-default">
-<h2><a class="toc-backref" href="#id134">footnote-label-default</a></h2>
+<div class="section" id="default-footnote-label-inline">
+<h2><a class="toc-backref" href="#id134">default-footnote-label-inline</a></h2>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2958,7 +2959,7 @@ If this block is placed on the bottom it has a
 </tr>
 <tr class="field"><th class="field-name">docutils:</th><td class="field-body">footnote/paragraph[1]</td>
 </tr>
-<tr class="field"><th class="field-name">inherits:</th><td class="field-body">footnote-label-default</td>
+<tr class="field"><th class="field-name">inherits:</th><td class="field-body">default-footnote-label-inline</td>
 </tr>
 <tr class="field"><th class="field-name">defaults:</th><td class="field-body"></td>
 </tr>
@@ -2979,7 +2980,7 @@ a list.</p>
 </tr>
 <tr class="field"><th class="field-name">docutils:</th><td class="field-body">footnote/paragraph[1]</td>
 </tr>
-<tr class="field"><th class="field-name">inherits:</th><td class="field-body">footnote_reference</td>
+<tr class="field"><th class="field-name">inherits:</th><td class="field-body">default-footnote-label-inline</td>
 </tr>
 <tr class="field"><th class="field-name">defaults:</th><td class="field-body"></td>
 </tr>
