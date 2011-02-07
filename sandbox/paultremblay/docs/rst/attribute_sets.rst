@@ -141,8 +141,8 @@ Page Attribute Sets
 Attribute sets for page. These attributes control the formatting
 of the actual pages: the paper size and margins.
 
-paper-size
-----------
+paper-size-simple-page-master
+-----------------------------
 
 :fo: None
 
@@ -157,8 +157,8 @@ paper-size
 Sets up the defaults for the paper size, used in other attribute
 sets.
 
-default-page-setup
-------------------
+default-simple-page-master
+--------------------------
 
 :fo: None
 
@@ -177,8 +177,8 @@ default-page-setup
 Sets up the defaults for the margins of the fo:body-region for
 all the pages.
 
-Page Master Sets
-----------------
+Simple Page Master Sets
+-----------------------
 
 :fo: fo:simple-page-master
 
@@ -188,45 +188,46 @@ Page Master Sets
 
 The following attribute sets are identical:
 
-- simple-page
+- simple-page-master
 
-- first-page
+- first-simple-page-master
 
-- body-page
+- body-simpe-page-master
 
-- odd-page
+- odd-simple-page-master
 
-- even-page
+- even-simple-page-master
 
-- toc-simple-page
+- toc-simple-page-master
 
-- toc-first-page
+- toc-first-simple-page-master
 
-- toc-body-page
+- toc-body-simple-page-master
 
-- toc-odd-page
+- toc-odd-simple-page-master
 
-- toc-even-page
+- toc-even-simple-page-master
 
-- front-matter-simple-page
+- front-simple-page-master
 
-- front-matter-first-page
+- front-first-simple-page-master
 
-- front-matter-body-page
+- front-body-simple-page-master
 
-- front-matter-odd-page
+- front-odd-simple-page-master
 
-- front-matter-even-page
+- front-even-simple-page-master
 
 These attriute sets format the margins of the
-fo:simple-page-master. By default, they inherit the paper-size
-and default-page-setup attriute-sets, meaning each page will have
-identical size and margins, a satisfactory setup for many
-documents. However, the sizes and margins can be modified by page
-type, if desired.
+fo:simple-page-master. By default, they inherit the
+``'paper-size-simple-page-master'`` and
+``'default-simple-page-master'`` attriute-sets, meaning each page
+will have identical size and margins, a satisfactory setup for
+many documents. However, the sizes and margins can be modified by
+page type, if desired.
 
-page-header
------------
+header-region-before
+--------------------
 
 :fo: fo:region-before
 
@@ -238,8 +239,8 @@ page-header
 
 The extent attribute specifies the header and footer height.
 
-page-footer
------------
+footer-region-after
+-------------------
 
 :fo: fo:region-after
 
@@ -622,8 +623,8 @@ toc-title-block
 
 Formats the block for the title for the TOC.
 
-toc-entry-defaults
-------------------
+toc-entry-defaults-block
+------------------------
 
 :fo: None
 
@@ -645,7 +646,7 @@ toc-level1-block
 :docutils: topic[@classes =
          "contents"]/bullet_list/list_item/paragraph/
 
-:inherits: toc-entry-defaults
+:inherits: toc-entry-defaults-block
 
 :defaults:
 
@@ -661,7 +662,7 @@ toc-level2-block
 :docutils: topic[@classes =
          "contents"]/bullet_list/list_item/bullet_list/list_item/paragraph/
 
-:inherits: toc-entry-defaults
+:inherits: toc-entry-defaults-block
 
 :defaults:
 
@@ -679,7 +680,7 @@ toc-level3-block
 :docutils: topic[@classes =
          "contents"]/bullet_list/list_item/bullet_list/list_item/paragraph/etc.
 
-:inherits: toc-entry-defaults
+:inherits: toc-entry-defaults-block
 
 :defaults:
 
@@ -697,7 +698,7 @@ toc-level4-block
 :docutils: topic[@classes =
          "contents"]/bullet_list/list_item/bullet_list/list_item/paragraph/etc.
 
-:inherits: toc-entry-defaults
+:inherits: toc-entry-defaults-block
 
 :defaults:
 
@@ -715,7 +716,7 @@ toc-level5-block
 :docutils: topic[@classes =
          "contents"]/bullet_list/list_item/bullet_list/list_item/paragraph/etc.
 
-:inherits: toc-entry-defaults
+:inherits: toc-entry-defaults-block
 
 :defaults:
 
@@ -730,8 +731,8 @@ Section Attribute Sets
 
 Attribute sets for the section titles.
 
-default-section-title
----------------------
+default-section-title-block
+---------------------------
 
 :fo: None
 
@@ -756,7 +757,7 @@ title-level-block
 
 :docutils: section/title|section/section/title|etc.
 
-:inherits: default-section-title
+:inherits: default-section-title-block
 
 The following attribute sets are identical in nature:
 
@@ -2013,8 +2014,8 @@ Footnote
 
 Attribute sets for footnotes, endnotes, and the endnotes title.
 
-footnote-label-default
-----------------------
+default-footnote-label-inline
+-----------------------------
 
 :fo: fo:inline
 
@@ -2035,7 +2036,7 @@ footnote-label-inline
 
 :docutils: footnote/paragraph[1]
 
-:inherits: footnote-label-default
+:inherits: default-footnote-label-inline
 
 :defaults:
 
@@ -2051,7 +2052,7 @@ footnote-body-label-inline
 
 :docutils: footnote/paragraph[1]
 
-:inherits: footnote_reference
+:inherits: default-footnote-label-inline
 
 :defaults:
 
