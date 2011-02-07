@@ -138,7 +138,7 @@ def transform_lxml(xslt_file, xml_file, param_dict = {}, out_file = None):
         outdoc.write(write_obj)
         write_obj.close()
     else:
-        sys.stdout.write(str(input_obj))
+        sys.stdout.write(str(outdoc))
 
 
 if __name__ == '__main__':
