@@ -36,7 +36,7 @@ if arg.root_stylesheet:
     root_stylesheet = arg.root_stylesheet[0]
 else:
     try:
-        root_stylesheet = config.get('FO', 'stylesheet')
+        root_stylesheet = config.get('FO', 'xsl-stylesheet')
     except (ConfigParser.NoSectionError, ConfigParser.NoOptionError):
         sys.stderr.write('No stylesheet found.\n')
         sys.stderr.write('Script quiting.\n')
@@ -48,13 +48,13 @@ out_path = None
 in_path = arg.in_path[0]
 if arg.out_path:
     out_path = arg.out_path[0]
-    filename, ext = os.path.splitext(out_path)
-    out_xml = '%s.xml' % (filename)
+    # filename, ext = os.path.splitext(out_path)
+    # out_xml = '%s.xml' % (filename)
 else:
-    out_xml = tempfile.mkstemp(suffix = '.xml')[1]
+    out_xml = tempfile.mkstemp(suffix = '.fo')[1]
 
 # convert to XML
-docutilsToFo.rst2xml_lib.publish_xml_cmdline(in_path = in_path, out_path = out_xml)
+# docutilsToFo.rst2xml_lib.publish_xml_cmdline(in_path = in_path, out_path = out_xml)
 
 # get path to put stylesheet
 if out_path:
@@ -71,7 +71,7 @@ write_obj.write(ss_string)
 write_obj.close()
 
 # convert to FO 
-error = docutilsToFo.rst2xml_lib.transform_lxml(xslt_file = out_xsl, xml_file = out_xml, 
+error = docutilsToFo.rst2xml_lib.transform_lxml(xslt_file = out_xsl, xml_file = in_path, 
         param_dict = {}, out_file = out_path )
 if error:
     sys.stderr.write(error)
