@@ -1,3 +1,5 @@
+ # -*- coding: UTF8 -*-
+
 att_set_dict = {
 'abstract-block':['abstract-block', 'block'],
 'abstract-paragraph-block':['abstract-paragraph-block', 'block'],
@@ -54,6 +56,8 @@ att_set_dict = {
 'default-page-sequence':['default-page-sequence', 'page-sequence'],
 'default-section-title-block':['default-section-title-block', 'block'],
 'default-simple-page-master':['default-simple-page-master', 'simple-page-master'],
+'page':['default-simple-page-master', 'simple-page-master'], # added
+'page-layout':['default-simple-page-master', 'simple-page-master'], # added
 'definition-first-paragraph-block':['definition-first-paragraph-block', 'block'],
 'definition-list-block':['definition-list-block', 'list-block'],
 'definition-list-item-block':['definition-list-item-block', 'block'],
@@ -83,6 +87,7 @@ att_set_dict = {
 'error-block':['error-block', 'block'],
 'error-title-block':['error-title-block', 'block'],
 'even-simple-page-master':['even-simple-page-master', 'simple-page-master'],
+'even-page':['even-simple-page-master', 'simple-page-master'], # added
 'field-body-block':['field-body-block', 'block'],
 'field-first-list-item':['field-first-list-item', 'list-item'],
 'field-list-block':['field-list-block', 'list-block'],
@@ -94,6 +99,8 @@ att_set_dict = {
 'figure-caption-block':['figure-caption-block', 'block'],
 'figure-legend-block':['figure-legend-block', 'block'],
 'first-simple-page-master':['first-simple-page-master', 'simple-page-master'],
+'first-page':['first-simple-page-master', 'simple-page-master'],# added
+'footer-block':['footer-block', 'block'],
 'footer-first-block':['footer-first-block', 'block'],
 'footer-region-after':['footer-region-after', 'region-after'],
 'footer-second-block':['footer-second-block', 'block'],
@@ -115,6 +122,7 @@ att_set_dict = {
 'front-odd-simple-page-master':['front-odd-simple-page-master', 'simple-page-master'],
 'front-page-sequence':['front-page-sequence', 'page-sequence'],
 'front-simple-page-master':['front-simple-page-master', 'simple-page-master'],
+'header-block':['header-block', 'block'],
 'header-first-block':['header-first-block', 'block'],
 'header-region-before':['header-region-before', 'region-before'],
 'header-second-block':['header-second-block', 'block'],
@@ -139,6 +147,7 @@ att_set_dict = {
 'note-block':['note-block', 'block'],
 'note-title-block':['note-title-block', 'block'],
 'odd-simple-page-master':['odd-simple-page-master', 'simple-page-master'],
+'odd-page':['odd-simple-page-master', 'simple-page-master'], # added
 'option-argument-inline':['option-argument-inline', 'inline'],
 'option-first-list-item':['option-first-list-item', 'list-item'],
 'option-group-block':['option-group-block', 'block'],
@@ -156,6 +165,8 @@ att_set_dict = {
 'option-list-item-label-block':['option-list-item-label-block', 'block'],
 'outer-line-block':['outer-line-block', 'block'],
 'paper-size-simple-page-master':['paper-size-simple-page-master', 'simple-page-master'],
+'paper':['paper-size-simple-page-master', 'simple-page-master'], # added
+'paper-size':['paper-size-simple-page-master', 'simple-page-master'], # added
 'paragraph':['paragraph-block', 'block'], # added
 'paragraph-block':['paragraph-block', 'block'],
 'pull-quote-attribution-block':['pull-quote-attribution-block', 'block'],
@@ -961,12 +972,18 @@ simple_page_master_dict = {
 'margin-top' : 'margin-top',
 'master-name' : 'master-name',
 'page-height' : 'page-height',
+'height' : 'page-height',
 'page-width' : 'page-width',
+'width' : 'page-width',
 'reference-orientation' : 'reference-orientation',
 'space-after' : 'space-after',
 'space-before' : 'space-before',
 'start-indent' : 'start-indent',
 'writing-mode' : 'writing-mode',
+'bottom-margin' : 'margin-bottom', # added
+'left-margin' : 'margin-left', # added
+'right-margin' : 'margin-right', # added
+'top-margin' : 'margin-top', # added
 }
 
 table_body_dict = {
@@ -1203,8 +1220,8 @@ table_row_dict = {
 'volume' : 'volume',
 }
 
-block_dict.update({'font-style': ['font-style']})
-inline_dict.update({'font-style': ['font-style']})
+# block_dict.update({'font-style': ['font-style']})
+# inline_dict.update({'font-style': ['font-style']})
 
 
 block_set = set(block_dict.keys())
@@ -1223,6 +1240,13 @@ font_style_dict={'bold': [('font-weight','bold')],
 'bold-italic':[('font-weight','bold'), ('font-style','italic')],
 'italic-bold':[('font-weight','bold'), ('font-style','italic')]
 }
+special_values_dict = {'font-style':[True],
+        }
+
+special_atts_dict = {
+        'header':[True],
+        'footer':[True],
+        }
 
 
 
@@ -1248,3 +1272,64 @@ which_dict = {
 'table-row': table_row_dict,
 }
 
+
+param_dict = {
+'abstract-pagination' : 'with-front',
+'address-text' : 'Address: ',
+'attention-title' : 'Attention!',
+'author-text' : 'Author: ',
+'authors-text' : 'Authors: ',
+'bibliographic-pagination' : 'with-toc',
+'bullet-text' : '•',
+'caution-title' : 'Caution!',
+'contact-text' : 'Contact: ',
+'copyright-text' : 'Copyright: ',
+'danger-title' : '!Danger!',
+'date-text' : 'Date: ',
+'dedication-pagination' : 'with-front',
+'error-title' : 'Error',
+'footnote-placement' : 'footnote',
+'footnote-style' : 'list',
+'front-order' : 'title,bibliographic,dedication,abstract,toc',
+'hint-title' : 'Hint',
+'important-title' : 'Important',
+'inherit-section-num' : 'True',
+'internal-link-type' : 'link',
+'note-title' : 'Note',
+'number-section1' : '1',
+'number-section2' : '.1',
+'number-section3' : '.1',
+'number-section4' : '.1',
+'number-section5' : '.1',
+'number-section6' : '.1',
+'number-section7' : '.1',
+'number-section8' : '.1',
+'number-section9' : '.1',
+'number-verse' : '',
+'option-list-format' : 'list',
+'options-separator' : ', ',
+'organization-text' : 'Organization: ',
+'page-layout' : 'simple',
+'revision-text' : 'Revision: ',
+'space-between-footnotes' : '5pt',
+'spacing-footer' : '',
+'spacing-header' : '',
+'status-text' : 'Status: ',
+'strict' : '',
+'suppress-first-page-footer' : '',
+'suppress-first-page-header' : '',
+'table-title-placement' : 'bottom',
+'test' : '',
+'text-before-block-quote-attribution' : '—',
+'text-before-epigraph-attribution' : '—',
+'text-before-pull-quote-attribution' : '—',
+'tip-title' : 'Tip',
+'title-pagination' : 'with-front',
+'toc-pagination' : 'with-toc',
+'transition-text' : '***',
+'version-text' : 'Version: ',
+'warning-title' : 'Warning!',
+}
+param_list = param_dict.keys()
+
+commands_list = ['xsl-stylesheet']
