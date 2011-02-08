@@ -2,6 +2,7 @@
 #  $Id$
 import sys, copy, getopt, os, ConfigParser
 from docutils_fo_dicts import *
+from xml.sax import saxutils
 
 class WriteStylesheet:
 
@@ -27,6 +28,7 @@ class WriteStylesheet:
         self.__string +='</xsl:stylesheet>'
 
     def __write_att_sets(self):
+        self.__string += '\n     <!--ATTRIBUTE SETS-->\n\n'
         att_sets = self.__att_sets.keys()
         for att_set in att_sets:
             self.__string += '     <xsl:attribute-set name="%s">\n' % (att_set)
@@ -34,7 +36,7 @@ class WriteStylesheet:
             atts = att_dict.keys()
             for att in atts:
                 self.__string += '          <xsl:attribute name="%s">' % (att)
-                self.__string += att_dict[att]
+                self.__string += saxutils.escape(att_dict[att])
                 self.__string += '</xsl:attribute>\n' 
 
             self.__string += '     </xsl:attribute-set>\n\n'
@@ -43,7 +45,13 @@ class WriteStylesheet:
         self.__string += """     <xsl:import href= "%s"/>\n\n""" % (self.__import_ss)
 
     def __write_params(self):
-        pass
+        self.__string += '\n     <!--PARAMS-->\n\n'
+        the_keys = self.__params.keys()
+        the_keys.sort()
+        for the_key in the_keys:
+            value =  saxutils.escape(self.__params[the_key])
+            self.__string += '     <xsl:param name = "%s">%s</xsl:param>\n' % (the_key, value)
+        self.__string += '\n\n'
 
     def write_stylesheet(self, import_ss, params, att_sets, out=None):
         self.__import_ss = import_ss
@@ -75,14 +83,12 @@ class ReadConfig:
         home= os.environ.get('HOME')
         home_config_file = os.path.join(home, '.docutils')
         if os.path.isfile(home_config_file):
-            opts_dict_home = self.parse_config_file(home_config_file)
-            opts_dict.update(opts_dict_home)
+            self.parse_config_file(home_config_file)
         cwd = os.getcwd()
         project_config_file = os.path.join(cwd, '.docutils.conf')
         if os.path.isfile(project_config_file):
-            opts_dict_project = self.parse_config_file(project_config_file)
-            opts_dict.update(opts_dict_project)
-        return opts_dict
+            self.parse_config_file(project_config_file)
+        self.__post_adjust()# add parameters or fix attriute sets
 
     def parse_config_file(self, the_path):
         config = ConfigParser.SafeConfigParser()
@@ -97,25 +103,60 @@ class ReadConfig:
             fields = first.split('.', 1)
             if len(fields) == 2:
                 self.__handle_attributes(fields[0], fields[1], second)
-        return opts_dict
-
-    def __handle_attributes(self, set, att, value):
-        name_type_pair = att_set_dict.get(set)
-        if name_type_pair: # found a valid att-set
-            true_name = name_type_pair[0] # the true name as found in the stylesheet
-            the_type = name_type_pair[1]
-            att_true_value = which_dict.get(the_type).get(att)
-            if not att_true_value:
-                self.__error('%s not a valid value for att-set %s' % (att, set))
-            elif type(att_true_value) == type([]):
-                att_list = self.__handle_multiple_att(att, att_true_value, value)
-                if att_list:
-                    for item in att_list:
-                        self.__add_attribute(true_name, item[0], item[1] )
+            elif first in param_list:
+                self.__handle_param(first, second)
+            elif first in commands_list:
+                pass
             else:
-                self.__add_attribute(true_name, att_true_value, value )
+                self.__error('"%s" = "%s" not a valid config option\n' % (first, second))
+
+    def __post_adjust(self):
+        # have to set the param spacing-header to extent, if not already set
+        header_att_set = self.__attribute_sets.get('header-region-before')
+        if header_att_set:
+            extent = header_att_set.get('extent')
+            if extent and not self.__params.get('spacing-header'):
+                self.__params['spacing-header'] = extent
+
+        footer_att_set = self.__attribute_sets.get('footer-region-after')
+        if footer_att_set:
+            extent = footer_att_set.get('extent')
+            if extent and not self.__params.get('spacing-footer'):
+                self.__params['spacing-footer'] = extent
+
+        # have to add a space-before.conditionality to force space that
+        # otherwise would not be written
+        header_att_set = self.__attribute_sets.get('header-block')
+        if header_att_set:
+            space_before = header_att_set.get('space-before')
+            if space_before:
+                self.__attribute_sets['header-block']['space-before.conditionality'] = 'retain'
+
+        # doesn't work in FO. Have to somehow make the extent larger
+        footer_att_set = self.__attribute_sets.get('footer-block')
+        if footer_att_set:
+            space_before = footer_att_set.get('space-before')
+            if space_before:
+                self.__attribute_sets['footer-block']['space-before.conditionality'] = 'retain'
+
+    def __handle_attributes(self, user_att_set, user_att, value, check_special = True):
+        if  special_values_dict.get(user_att) and check_special:
+            self.__handle_special_atts(user_att_set, user_att, value)
+            return
+        if  special_atts_dict.get(user_att_set) and check_special:
+            self.__handle_special_atts(user_att_set, user_att, value)
+            return
+        set_element = att_set_dict.get(user_att_set)
+        if set_element: # found a valid att-set
+            att_set = set_element[0] 
+            fo_element = set_element[1]
+            att = which_dict.get(fo_element).get(user_att)
+            if not att:
+                self.__error('%s not a valid value for att-set %s' % (user_att, user_att_set))
+            else:
+                self.__add_attribute(att_set, att, value )
         else:
-            self.__error('%s not a valid attribute-set' % (set))
+            self.__error('%s not a valid attribute-set' % (user_att_set))
 
     def __add_attribute(self, att_set, att, value):
         att_exists =  self.__attribute_sets.get(att_set)
@@ -127,13 +168,38 @@ class ReadConfig:
         sys.stderr.write(msg)
         sys.stderr.write('\n')
 
-    def __handle_multiple_att(self, att, the_list, value):
-        if att == 'font-style':
+    def __handle_special_atts(self, user_att_set, user_att, value):
+        if user_att == 'font-style':
+            set_element = att_set_dict.get(user_att_set)
+            if not set_element: 
+                self.__error('%s not a valid attribute-set' % (user_att_set))
+                return
+            att_set = set_element[0] 
             att_list = font_style_dict.get(value)
             if not att_list:
-                self.__error('%s not a valid value for att-set %s' % (value, att))
+                self.__error('%s not a valid value for att-set %s' % (value, user_att))
+                return
             else:
-                return att_list
+                for the_tupple in att_list:
+                    self.__add_attribute(att_set, the_tupple[0], the_tupple[1])
+        elif user_att_set == 'footer' or user_att_set == 'header':
+            if user_att == 'height':
+                if user_att_set == 'header':
+                    self. __handle_attributes('header-region-before' , 'extent', value)
+                if user_att_set == 'footer':
+                    self. __handle_attributes('footer-region-after' , 'extent', value)
+            else: 
+                if user_att_set == 'header':
+                    self. __handle_attributes('header-block' , user_att, value)
+                if user_att_set == 'footer':
+                    self. __handle_attributes('footer-block' , user_att, value)
+
+        else:
+            self.__error('%s.%s = %s not a valid attribute property\n' % (user_att_set, user_att, value))
+
+
+    def __handle_param(self, param, value):
+        self.__params[param] = value
 
     def print_att_list(self):
         print self.__attribute_sets
