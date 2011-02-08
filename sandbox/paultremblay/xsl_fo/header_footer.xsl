@@ -10,6 +10,16 @@
     own attriute set.
     -->
 
+    <xsl:attribute-set name="header-block">
+        <xsl:attribute name="font-size">12pt</xsl:attribute>
+        <xsl:attribute name="text-align">center</xsl:attribute>
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="footer-block">
+        <xsl:attribute name="font-size">12pt</xsl:attribute>
+        <xsl:attribute name="text-align">center</xsl:attribute>
+    </xsl:attribute-set>
+
     <xsl:attribute-set name="header-first-block">
         <xsl:attribute name="font-size">12pt</xsl:attribute>
         <xsl:attribute name="text-align">center</xsl:attribute>
@@ -53,38 +63,54 @@
         <xsl:choose>
             <xsl:when test="$page-layout = '' or $page-layout = 'simple'">
                 <fo:static-content flow-name="odd-even-header">
-                    <xsl:apply-templates/>
+                    <fo:block role="header" xsl:use-attribute-sets="header-block">
+                        <xsl:apply-templates/>
+                    </fo:block>
                 </fo:static-content>
             </xsl:when>
             <xsl:when test="$page-layout = 'odd-even'">
                 <fo:static-content flow-name="odd-header">
-                    <xsl:apply-templates/>
+                    <fo:block role="header" xsl:use-attribute-sets="header-block">
+                        <xsl:apply-templates/>
+                    </fo:block>
                 </fo:static-content>
                 <fo:static-content flow-name="even-header">
-                    <xsl:apply-templates/>
+                    <fo:block role="header" xsl:use-attribute-sets="header-block">
+                        <xsl:apply-templates/>
+                    </fo:block>
                 </fo:static-content>
             </xsl:when>
             <xsl:when test="$page-layout = 'first'">
                 <xsl:if test="$suppress-first-page-header != 'True'">
                     <fo:static-content flow-name = "first-header">
-                        <xsl:apply-templates/>
+                        <fo:block role="header" xsl:use-attribute-sets="header-block">
+                            <xsl:apply-templates/>
+                        </fo:block>
                     </fo:static-content>
                 </xsl:if>
                 <fo:static-content flow-name = "odd-even-header">
-                    <xsl:apply-templates/>
+                    <fo:block role="header" xsl:use-attribute-sets="header-block">
+                        <xsl:apply-templates/>
+                    </fo:block>
                 </fo:static-content>
             </xsl:when>
             <xsl:when test="$page-layout = 'first-odd-even'">
                 <xsl:if test="$suppress-first-page-header != 'True'">
                     <fo:static-content flow-name = "first-header">
-                        <xsl:apply-templates/>
+                        <fo:block role="header" xsl:use-attribute-sets="header-block">
+                            <xsl:apply-templates/>
+                        </fo:block>
                     </fo:static-content>
                 </xsl:if>
                 <fo:static-content flow-name = "odd-header">
-                    <xsl:apply-templates/>
+                    <fo:block role="header" xsl:use-attribute-sets="header-block">
+                        <xsl:apply-templates/>
+                    </fo:block>
                 </fo:static-content>
                 <fo:static-content flow-name = "even-header">
-                    <xsl:apply-templates/>
+                    <fo:block role="header" xsl:use-attribute-sets="header-block">
+                        <xsl:apply-templates/>
+                    </fo:block>
                 </fo:static-content>
             </xsl:when>
         </xsl:choose>
@@ -94,38 +120,54 @@
         <xsl:choose>
             <xsl:when test="$page-layout = '' or $page-layout = 'simple'">
                 <fo:static-content flow-name="odd-even-footer">
-                    <xsl:apply-templates/>
+                    <fo:block role="footer" xsl:use-attribute-sets="footer-block">
+                        <xsl:apply-templates/>
+                    </fo:block>
                 </fo:static-content>
             </xsl:when>
             <xsl:when test="$page-layout = 'odd-even'">
                 <fo:static-content flow-name="odd-footer">
-                    <xsl:apply-templates/>
+                    <fo:block role="footer" xsl:use-attribute-sets="footer-block">
+                        <xsl:apply-templates/>
+                    </fo:block>
                 </fo:static-content>
                 <fo:static-content flow-name="even-footer">
-                    <xsl:apply-templates/>
+                    <fo:block role="footer" xsl:use-attribute-sets="footer-block">
+                        <xsl:apply-templates/>
+                    </fo:block>
                 </fo:static-content>
             </xsl:when>
             <xsl:when test="$page-layout = 'first'">
                 <xsl:if test="$suppress-first-page-footer != 'True'">
                     <fo:static-content flow-name = "first-footer">
-                        <xsl:apply-templates/>
+                        <fo:block role="footer" xsl:use-attribute-sets="footer-block">
+                            <xsl:apply-templates/>
+                        </fo:block>
                     </fo:static-content>
                 </xsl:if>
                 <fo:static-content flow-name = "odd-even-footer">
-                    <xsl:apply-templates/>
+                    <fo:block role="footer" xsl:use-attribute-sets="footer-block">
+                        <xsl:apply-templates/>
+                    </fo:block>
                 </fo:static-content>
             </xsl:when>
             <xsl:when test="$page-layout = 'first-odd-even'">
                 <xsl:if test="$suppress-first-page-footer != 'True'">
                     <fo:static-content flow-name = "first-footer">
-                        <xsl:apply-templates/>
+                        <fo:block role="footer" xsl:use-attribute-sets="footer-block">
+                            <xsl:apply-templates/>
+                        </fo:block>
                     </fo:static-content>
                 </xsl:if>
                 <fo:static-content flow-name = "odd-footer">
-                    <xsl:apply-templates/>
+                    <fo:block role="footer" xsl:use-attribute-sets="footer-block">
+                        <xsl:apply-templates/>
+                    </fo:block>
                 </fo:static-content>
                 <fo:static-content flow-name = "even-footer">
-                    <xsl:apply-templates/>
+                    <fo:block role="footer" xsl:use-attribute-sets="footer-block">
+                        <xsl:apply-templates/>
+                    </fo:block>
                 </fo:static-content>
             </xsl:when>
         </xsl:choose>
