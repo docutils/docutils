@@ -131,6 +131,7 @@ def transform_lxml(xslt_file, xml_file, param_dict = {}, out_file = None):
         msg = 'error converting %s to %s with %s:\n' % (xml_file, out_file, xslt_file)
         msg += str(error)
         msg += '\n'
+        report_xsl_error(transform.error_log)
         return msg
     report_xsl_error(transform.error_log)
     if out_file:
