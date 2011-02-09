@@ -10,14 +10,18 @@ Height
 +++++++
 
 * default-simple-page-master.page-height = 11in
-* paper.height = 11in
+
+The short version is:
+
 * paper-size.height = 11in
 
 Width
 ++++++
 
 * default-simple-page-master.page-width = 8.5in
-* paper.width = 8.5in
+
+The short version is:
+
 * paper-size.width = 8.5in
 
 Page Margins
@@ -28,25 +32,25 @@ For a Simple Document
 
 Each set of properties has the same effect.
 
+* simple-page-master.top-margin = 1in
+* simple-page-master.bottom-margin = 1in
+* simple-page-master.right-margin = 1in
+* simple-page-master.left-margin = 2in
+
+The short versions are:
+
 * page.top-margin = .75in
 * page.bottom-margin = .75in
 * page.right-margin = .75in
 * page.left-margin = .75in
+
+The properties can be reversed:
  
 * page.margin-top = .75in
 * page.margin-bottom = .75in
 * page.margin-right = .75in
 * page.margin-left = .75in
 
-* page-layout.top-margin = .75in
-* page-layout.bottom-margin = .75in
-* page-layout.right-margin = .75in
-* page-layout.left-margin = .75in
-
-* page-layout.margin-top = .75in
-* page-layout.margin-bottom = .75in
-* page-layout.margin-right = .75in
-* page-layout.margin-left = .75in
 
 For Documents with First, Odd, and Even Pages
 ++++++++++++++++++++++++++++++++++++++++++++++
@@ -72,7 +76,7 @@ The long version:
 * first-simple-page-master.right-margin = 2in
 * first-simple-page-master.left-margin = 1in
 
-The short version:
+The short versions:
 
 * odd-page.top-margin = 1in
 * odd-page.bottom-margin = 1in
@@ -113,3 +117,38 @@ Use the ``'space-before'`` property for the footer, as well, to move it
 closer to the  text::
 
  footer.space-before = -.1in
+
+Documnet
+=============
+
+The following properties can be set for the entire document:
+
+* font-size
+* font-family or font
+
+The short version of ``'font-family'`` is ``'font'``; they are synonymous.
+
+Possible font-families are serif, sans-seif, monospace; Times, Helvitica
+Coureir, ZapfDingbats, and Symbol. Since these font families are builit in,
+they are guarenteed to work, regardless of the availability of fonts on 
+an operating system.
+
+Body
+=====
+
+The following properties can be set for the body of the document. The body
+is defined as everything except headers and footers.
+
+* font-size
+* font
+* line-height or line-spacing
+
+The property ``'line-spacing'`` is the short version of ``'line-height'``;
+They are synomous. 
+
+Set ``line-spacing`` to a number to determine the spacing relative to
+the font size. For example, a value of ``'2'`` sets the line spacing to
+double. 
+
+Set ``'line-spacing'`` to a measure, such as ``'24pt'`` to set an absolute
+value to the line spacing.
