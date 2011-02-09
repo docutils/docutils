@@ -27,6 +27,27 @@
         </block>
     </xsl:template>
 
+    <xsl:template match= "xsl:attribute-set[@name='footnote-separator-flow']" priority="3">
+        <xsl:call-template name="before-desc">
+            <xsl:with-param name="fo">fo:flow</xsl:with-param> 
+            <xsl:with-param name="docutils">footnote</xsl:with-param> 
+        </xsl:call-template>
+        <block>
+            Formats the flow of the footnote.
+        </block>
+    </xsl:template>
+
+    <xsl:template match= "xsl:attribute-set[@name='footnote-separator-block']" priority="3">
+        <xsl:call-template name="before-desc">
+            <xsl:with-param name="fo">fo:block</xsl:with-param> 
+            <xsl:with-param name="docutils">footnote</xsl:with-param> 
+        </xsl:call-template>
+        <block>
+            Formats the block (with the leader) that separates the footnotes from the rest
+            of the page.
+        </block>
+    </xsl:template>
+
 
     <xsl:template match= "xsl:attribute-set[@name='footnote-label-inline']" priority="3">
         <xsl:call-template name="before-desc">
