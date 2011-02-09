@@ -45,6 +45,17 @@
     <xsl:attribute-set name="body-flow" use-attribute-sets="default-flow">
     </xsl:attribute-set>
 
+    <xsl:attribute-set name="footnote-separator-flow">
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="footnote-separator-block">
+        <!--putting space before can create way too much space-->
+        <!--
+        <xsl:attribute name="space-before">5mm</xsl:attribute>
+        <xsl:attribute name="space-before.conditionality">retain</xsl:attribute>
+        -->
+    </xsl:attribute-set>
+
     <xsl:template match="/">
         <xsl:element name="fo:root">
             <xsl:call-template name="make-pages">
@@ -79,6 +90,12 @@
         <fo:page-sequence master-reference="pages" xsl:use-attribute-sets="body-page-sequence">
             <xsl:apply-templates select="/document/decoration/header" mode="header"/>
             <xsl:apply-templates select="/document/decoration/footer" mode="footer"/>
+            <fo:static-content role = "footnote-separator" 
+                xsl:use-attribute-sets = "footnote-separator-flow" flow-name="xsl-footnote-separator">
+               <fo:block xsl:use-attribute-sets = "footnote-separator-block">
+                    <fo:leader leader-pattern="rule" leader-length="100%"/>
+               </fo:block>
+            </fo:static-content>
             <fo:flow flow-name="xsl-region-body" xsl:use-attribute-sets="body-flow">
                 <xsl:apply-templates/>
                 <!--write an empty block in case there is no content. A hack which I will have to fix later-->
