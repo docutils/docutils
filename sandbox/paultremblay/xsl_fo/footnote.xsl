@@ -10,6 +10,11 @@
     <!--note that a value of 'baseline' for baseline-shift means the number
     has no shift, and has the same effect as not setting the value at all-->
 
+    <xsl:attribute-set name="footnote">
+        <xsl:attribute name="font-weight">normal</xsl:attribute>
+        <xsl:attribute name="font-style">normal</xsl:attribute>
+    </xsl:attribute-set>
+
     <!--set up the defaults for the footnote label-->
     <xsl:attribute-set name="default-footnote-label-inline">
         <xsl:attribute name="baseline-shift">super</xsl:attribute>
@@ -133,7 +138,7 @@
     </xsl:template>
 
     <xsl:template name="footnote-as-list">
-        <fo:footnote>
+        <fo:footnote xsl:use-attribute-sets = "footnote">
             <xsl:apply-templates select="label" mode="footnote"/>
             <fo:footnote-body xsl:use-attribute-sets="footnote-body">
                 <xsl:call-template name="footnote-list-body"/>
@@ -142,7 +147,7 @@
     </xsl:template>
 
     <xsl:template name="footnote-traditional">
-        <fo:footnote>
+        <fo:footnote xsl:use-attribute-sets = "footnote">
             <xsl:apply-templates select="label" mode="footnote"/>
             <fo:footnote-body xsl:use-attribute-sets="footnote-body">
                 <xsl:apply-templates select="paragraph" mode="traditional-footnote"/>
