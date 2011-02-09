@@ -15,6 +15,19 @@
         </block>
     </xsl:template>
 
+    <xsl:template match= "xsl:attribute-set[@name='footnote']" priority="3">
+        <xsl:call-template name="before-desc">
+            <xsl:with-param name="fo">fo:footnote</xsl:with-param> 
+            <xsl:with-param name="docutils">footnote</xsl:with-param> 
+        </xsl:call-template>
+        <block>
+            Formats the footnote. By default, it sets properties to neutral, so 
+            that it does not inherit any unwanted properties, such as from a 
+            definition term.
+        </block>
+    </xsl:template>
+
+
     <xsl:template match= "xsl:attribute-set[@name='footnote-label-inline']" priority="3">
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">fo:inline</xsl:with-param> 

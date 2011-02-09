@@ -92,6 +92,7 @@
         </block>
     </xsl:template>
 
+    <!--
     <xsl:template match= "xsl:attribute-set[@name='definition-term-inline']" priority="3">
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">fo:inline</xsl:with-param> 
@@ -101,6 +102,7 @@
             For the inine properties of the term item. 
         </block>
     </xsl:template>
+    -->
 
     <xsl:template match= "xsl:attribute-set[@name='classifier-inline']" priority="3">
         <xsl:call-template name="before-desc">
