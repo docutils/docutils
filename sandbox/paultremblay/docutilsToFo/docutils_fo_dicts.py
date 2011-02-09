@@ -100,6 +100,7 @@ att_set_dict = {
 'footer-region-after':['footer-region-after', 'region-after'],
 'footer-second-block':['footer-second-block', 'block'],
 'footer-third-block':['footer-third-block', 'block'],
+'footnote':['footnote', 'footnote'],
 'footnote-body':['footnote-body', 'footnote-body'],
 'footnote-body-label-inline':['footnote-body-label-inline', 'inline'],
 'footnote-first-paragraph-block':['footnote-first-paragraph-block', 'block'],
@@ -504,7 +505,10 @@ cell_dict = {
 
 flow_dict = {'flow-name': 'flow-name'}
 
-footnote_body_dict = {'role': 'role', 'source-document': 'source-document'}
+
+footnote_dict = {'role': 'role', 'source-document': 'source-document'}
+footnote_body_dict = {}
+footnote_body_dict.update(footnote_dict)
 
 header_dict = {
 'azimuth' : 'azimuth',
