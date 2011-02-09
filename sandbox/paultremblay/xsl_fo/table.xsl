@@ -44,6 +44,10 @@
     <xsl:attribute-set name="table-cell" use-attribute-sets="default-cell">
     </xsl:attribute-set>
 
+    <xsl:attribute-set name="table-cell-borderless" >
+        <xsl:attribute name="padding">1em</xsl:attribute>
+    </xsl:attribute-set>
+
     <xsl:attribute-set name="cell-block">
     </xsl:attribute-set>
 
@@ -56,7 +60,7 @@
 
     <!--END OF ATTRIBUTE SETS-->
 
-    <xsl:template match="table">
+    <xsl:template match="table[not(@classes)]|table[@classes='borderless']">
         <fo:block-container xsl:use-attribute-sets = "table-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
                 <xsl:apply-templates select="title" mode="caption"/>
@@ -69,6 +73,7 @@
             </xsl:if>
         </fo:block-container>
     </xsl:template>
+
 
     <xsl:template match="tgroup">
         <xsl:apply-templates/>
@@ -133,12 +138,25 @@
                 <xsl:otherwise>1</xsl:otherwise>
             </xsl:choose>
         </xsl:variable>
-        <fo:table-cell xsl:use-attribute-sets="table-cell" 
-            number-columns-spanned="{$cols-spanned}"
-            number-rows-spanned="{$rows-spanned}"
-            >
-            <xsl:apply-templates/>
-        </fo:table-cell>
+        <xsl:choose>
+            <xsl:when test="ancestor::table[@classes='borderless']">
+                <fo:table-cell xsl:use-attribute-sets="table-cell-borderless" 
+                    number-columns-spanned="{$cols-spanned}"
+                    number-rows-spanned="{$rows-spanned}"
+                    >
+                    <xsl:apply-templates/>
+                </fo:table-cell>
+                
+            </xsl:when>
+            <xsl:otherwise>
+                <fo:table-cell xsl:use-attribute-sets="table-cell" 
+                    number-columns-spanned="{$cols-spanned}"
+                    number-rows-spanned="{$rows-spanned}"
+                    >
+                    <xsl:apply-templates/>
+                </fo:table-cell>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
     <xsl:template match="tbody/row/entry/paragraph">
