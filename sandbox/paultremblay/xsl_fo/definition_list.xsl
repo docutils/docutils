@@ -31,12 +31,16 @@
     term and definition, but don't use with space before, or you won't be able
     to control spacing before list-->
     <xsl:attribute-set name="definition-term-block">
-    </xsl:attribute-set>
-
-
-    <xsl:attribute-set name="definition-term-inline">
         <xsl:attribute name="font-weight">bold</xsl:attribute> 
     </xsl:attribute-set>
+
+
+    <!--
+    <xsl:attribute-set name="definition-term-inline">
+        <xsl:attribute name="font-weight">bold</xsl:attribute> 
+        <xsl:attribute name="role">definition-term-inline</xsl:attribute>
+    </xsl:attribute-set>
+    -->
 
     <xsl:attribute-set name="classifier-inline">
 	<xsl:attribute name="font-style">italic</xsl:attribute>
@@ -91,9 +95,7 @@
     </xsl:template>
 
     <xsl:template match="definition_list_item/term">
-        <fo:inline xsl:use-attribute-sets="definition-term-inline">
-            <xsl:apply-templates/>
-        </fo:inline>
+        <xsl:apply-templates/>
     </xsl:template>
 
     <xsl:template match="definition_list_item/definition">
