@@ -88,6 +88,17 @@
         </block>
     </xsl:template>
 
+    <xsl:template match= "xsl:attribute-set[@name='table-cell-borderless']" priority="3">
+        <xsl:call-template name="before-desc">
+            <xsl:with-param name="fo">fo:table-cell</xsl:with-param> 
+            <xsl:with-param name="docutils">tbody/row/entry</xsl:with-param> 
+        </xsl:call-template>
+        <block>
+            Attributes for the table cell for borderless table.
+        </block>
+    </xsl:template>
+
+
     <xsl:template match= "xsl:attribute-set[@name='cell-block']" priority="3">
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">fo:block</xsl:with-param> 
