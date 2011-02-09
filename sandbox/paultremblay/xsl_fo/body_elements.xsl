@@ -13,6 +13,8 @@
         <xsl:attribute name="font-family">monospace</xsl:attribute>
         <xsl:attribute name="font-size">8</xsl:attribute>
         <xsl:attribute name="white-space">pre</xsl:attribute>
+        <xsl:attribute name="space-after">12pt</xsl:attribute>
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
     </xsl:attribute-set>
 
 
