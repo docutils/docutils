@@ -110,6 +110,8 @@ att_set_dict = {
 'footnote-label-inline':['footnote-label-inline', 'inline'],
 'footnote-list-block':['footnote-list-block', 'list-block'],
 'footnote-paragraph-block':['footnote-paragraph-block', 'block'],
+'footnote-separator-block':['footnote-separator-block', 'block'],
+'footnote-separator-flow':['footnote-separator-flow', 'flow'],
 'front-body-simple-page-master':['front-body-simple-page-master', 'simple-page-master'],
 'front-even-simple-page-master':['front-even-simple-page-master', 'simple-page-master'],
 'front-first-simple-page-master':['front-first-simple-page-master', 'simple-page-master'],
