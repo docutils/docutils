@@ -63,8 +63,8 @@
         <xsl:attribute name="space-end">12pt</xsl:attribute>
     </xsl:attribute-set>
 
-    <!--do nothing for sections, at least for now-->
     <xsl:template match="section">
+        <fo:block role="empty-section-for-id" id = "{@ids}"/>
         <xsl:apply-templates/>
     </xsl:template>
 
@@ -74,47 +74,47 @@
         </xsl:variable>
         <xsl:choose>
             <xsl:when test="$level = 1">
-                <fo:block  xsl:use-attribute-sets="title-level1-block" id = "{@refid}">
+                <fo:block  role = "section1-title" xsl:use-attribute-sets="title-level1-block" id = "{@refid}">
                     <xsl:apply-templates/>
                 </fo:block>
             </xsl:when>
             <xsl:when test="$level = 2">
-                <fo:block  xsl:use-attribute-sets="title-level2-block" id="{@refid}">
+                <fo:block role="section2-title" xsl:use-attribute-sets="title-level2-block" id="{@refid}">
                     <xsl:apply-templates/>
                 </fo:block>
             </xsl:when>
             <xsl:when test="$level = 3">
-                <fo:block  xsl:use-attribute-sets="title-level3-block" id="{@refid}">
+                <fo:block  role="section3-title" xsl:use-attribute-sets="title-level3-block" id="{@refid}">
                     <xsl:apply-templates/>
                 </fo:block>
             </xsl:when>
             <xsl:when test="$level = 4">
-                <fo:block  xsl:use-attribute-sets="title-level4-block" id="{@refid}">
+                <fo:block role="section4-title" xsl:use-attribute-sets="title-level4-block" id="{@refid}">
                     <xsl:apply-templates/>
                 </fo:block>
             </xsl:when>
             <xsl:when test="$level = 5">
-                <fo:block  xsl:use-attribute-sets="title-level5-block" id="{@refid}">
+                <fo:block  role="section5-title" xsl:use-attribute-sets="title-level5-block" id="{@refid}">
                     <xsl:apply-templates/>
                 </fo:block>
             </xsl:when>
             <xsl:when test="$level = 6">
-                <fo:block  xsl:use-attribute-sets="title-level6-block" id="{@refid}">
+                <fo:block role="section6-title" xsl:use-attribute-sets="title-level6-block" id="{@refid}">
                     <xsl:apply-templates/>
                 </fo:block>
             </xsl:when>
             <xsl:when test="$level = 7">
-                <fo:block  xsl:use-attribute-sets="title-level7-block" id="{@refid}">
+                <fo:block role="section7-title" xsl:use-attribute-sets="title-level7-block" id="{@refid}">
                     <xsl:apply-templates/>
                 </fo:block>
             </xsl:when>
             <xsl:when test="$level = 8">
-                <fo:block  xsl:use-attribute-sets="title-level8-block" id ="{@refid}">
+                <fo:block role="section8-title"  xsl:use-attribute-sets="title-level8-block" id ="{@refid}">
                     <xsl:apply-templates/>
                 </fo:block>
             </xsl:when>
             <xsl:when test="$level = 9">
-                <fo:block  xsl:use-attribute-sets="title-level9-block" id="{@refid}">
+                <fo:block role="section9-title"  xsl:use-attribute-sets="title-level9-block" id="{@refid}">
                     <xsl:apply-templates/>
                 </fo:block>
             </xsl:when>
