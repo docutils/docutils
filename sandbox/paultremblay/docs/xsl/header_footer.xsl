@@ -15,6 +15,32 @@
         </block>
     </xsl:template>
 
+    <xsl:template match= "xsl:attribute-set[@name='header-block']" priority="3">
+        <xsl:call-template name="before-desc">
+            <xsl:with-param name="fo">fo:block</xsl:with-param> 
+            <xsl:with-param name="docutils">decoration/header</xsl:with-param> 
+        </xsl:call-template>
+        <block>
+            Formats the properties for the  header. Use to set the space between
+            the header and the body text, using ``'space-before = x'``
+            and setting ``'space-before.conditionality'`` to ``'retain'``.
+        </block>
+            
+    </xsl:template>
+
+    <xsl:template match= "xsl:attribute-set[@name='footer-block']" priority="3">
+        <xsl:call-template name="before-desc">
+            <xsl:with-param name="fo">fo:block</xsl:with-param> 
+            <xsl:with-param name="docutils">decoration/footer</xsl:with-param> 
+        </xsl:call-template>
+        <block>
+            Formats the properties for the  footer. Use to set the space between
+            the footer and the body text, using ``'space-before = x'``
+            and setting ``'space-before.conditionality'`` to ``'retain'``.
+        </block>
+            
+    </xsl:template>
+
     <xsl:template match= "xsl:attribute-set[@name='header-second-block']" priority="3">
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">fo:block</xsl:with-param> 
