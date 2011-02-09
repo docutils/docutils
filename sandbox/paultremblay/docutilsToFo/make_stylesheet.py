@@ -101,7 +101,9 @@ class ReadConfig:
             first = pair_tupple[0]
             second = pair_tupple[1]
             fields = first.split('.', 1)
-            if len(fields) == 2:
+            if prop_as_param_dict.get(first):
+                self.__handle_param(prop_as_param_dict.get(first), second)
+            elif len(fields) == 2:
                 self.__handle_attributes(fields[0], fields[1], second)
             elif first in param_list:
                 self.__handle_param(first, second)
@@ -110,7 +112,67 @@ class ReadConfig:
             else:
                 self.__error('"%s" = "%s" not a valid config option\n' % (first, second))
 
+    def __get_default_font_size(self):
+        document_att_set = self.__attribute_sets.get('default-page-sequence')
+        body_att_set = self.__attribute_sets.get('default-flow')
+        if document_att_set and document_att_set.get('font-size'):
+            default_font_size = document_att_set.get('font-size')
+        elif body_att_set and document_att_set.get('font-size'):
+            default_font_size = body_att_set.get('font-size')
+        else:
+            default_font_size = '12pt'
+        num, unit = self.__test_measure(default_font_size)
+        if not num:
+            default_font_size = '12pt'
+        self.__default_font_size = default_font_size
+
+    def __test_measure(self, the_string):
+        """
+        test if string is a measure:
+        12pt returns 12, pt
+        1.5 returns None, None
+
+        """
+        accept_units = ['em', 'px', 'in', 'cm', 'mm', 'pt', 'pc']
+        try:
+            float(the_string)
+            return None, None
+        except ValueError:
+            pass
+        if len(the_string) < 3:
+            return None, None
+        unit = the_string[-2:]
+        if unit not in accept_units:
+            return None, None
+        num = the_string[:-2]
+        try:
+            num = float(num)
+        except ValueError:
+            return None, None
+        return num, unit
+
+    def __fix_line_height_not_needed(self):
+        default_font_size = self.__default_font_size
+        font_size, font_unit = self.__test_measure(self.__default_font_size)
+        att_sets = self.__attribute_sets.keys()
+        for att_set in att_sets:
+            properties = self.__attribute_sets[att_set]
+            line_height = properties.get('line-height')
+            if line_height:
+                num, unit =  self.__test_measure(line_height)
+                if num: return # no need to multiply and add units
+                try:
+                    line_height = float(line_height)
+                except ValueError:
+                    self.__error('"%s" not a valid unit for line-height\n' % (line_height))
+                    del(self.__attribute_sets[att_set]['line-height']) 
+                    return
+                line_height_true = str(int(round(line_height * font_size))) + font_unit
+                self.__attribute_sets[att_set]['line-height'] = line_height_true
+
+
     def __post_adjust(self):
+        self.__get_default_font_size()
         # have to set the param spacing-header to extent, if not already set
         header_att_set = self.__attribute_sets.get('header-region-before')
         if header_att_set:
@@ -132,12 +194,14 @@ class ReadConfig:
             if space_before:
                 self.__attribute_sets['header-block']['space-before.conditionality'] = 'retain'
 
-        # doesn't work in FO. Have to somehow make the extent larger
+        # same as above
         footer_att_set = self.__attribute_sets.get('footer-block')
         if footer_att_set:
             space_before = footer_att_set.get('space-before')
             if space_before:
                 self.__attribute_sets['footer-block']['space-before.conditionality'] = 'retain'
+
+
 
     def __handle_attributes(self, user_att_set, user_att, value, check_special = True):
         if  special_values_dict.get(user_att) and check_special:

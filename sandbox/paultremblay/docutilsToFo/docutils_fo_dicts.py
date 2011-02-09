@@ -29,7 +29,6 @@ att_set_dict = {
 'bullet-first-list-item':['bullet-first-list-item', 'list-item'],
 'bullet-level2-list-block':['bullet-level2-list-block', 'list-block'],
 'bullet-list-block':['bullet-list-block', 'list-block'],
-'bullet-list':['bullet-list-block', 'list-block'], # added
 'bullet-list-item':['bullet-list-item', 'list-item'],
 'bullet-list-item-body':['bullet-list-item-body', 'item-body'],
 'bullet-list-item-body-block':['bullet-list-item-body-block', 'block'],
@@ -56,8 +55,6 @@ att_set_dict = {
 'default-page-sequence':['default-page-sequence', 'page-sequence'],
 'default-section-title-block':['default-section-title-block', 'block'],
 'default-simple-page-master':['default-simple-page-master', 'simple-page-master'],
-'page':['default-simple-page-master', 'simple-page-master'], # added
-'page-layout':['default-simple-page-master', 'simple-page-master'], # added
 'definition-first-paragraph-block':['definition-first-paragraph-block', 'block'],
 'definition-list-block':['definition-list-block', 'list-block'],
 'definition-list-item-block':['definition-list-item-block', 'block'],
@@ -87,7 +84,6 @@ att_set_dict = {
 'error-block':['error-block', 'block'],
 'error-title-block':['error-title-block', 'block'],
 'even-simple-page-master':['even-simple-page-master', 'simple-page-master'],
-'even-page':['even-simple-page-master', 'simple-page-master'], # added
 'field-body-block':['field-body-block', 'block'],
 'field-first-list-item':['field-first-list-item', 'list-item'],
 'field-list-block':['field-list-block', 'list-block'],
@@ -99,7 +95,6 @@ att_set_dict = {
 'figure-caption-block':['figure-caption-block', 'block'],
 'figure-legend-block':['figure-legend-block', 'block'],
 'first-simple-page-master':['first-simple-page-master', 'simple-page-master'],
-'first-page':['first-simple-page-master', 'simple-page-master'],# added
 'footer-block':['footer-block', 'block'],
 'footer-first-block':['footer-first-block', 'block'],
 'footer-region-after':['footer-region-after', 'region-after'],
@@ -147,7 +142,6 @@ att_set_dict = {
 'note-block':['note-block', 'block'],
 'note-title-block':['note-title-block', 'block'],
 'odd-simple-page-master':['odd-simple-page-master', 'simple-page-master'],
-'odd-page':['odd-simple-page-master', 'simple-page-master'], # added
 'option-argument-inline':['option-argument-inline', 'inline'],
 'option-first-list-item':['option-first-list-item', 'list-item'],
 'option-group-block':['option-group-block', 'block'],
@@ -165,9 +159,6 @@ att_set_dict = {
 'option-list-item-label-block':['option-list-item-label-block', 'block'],
 'outer-line-block':['outer-line-block', 'block'],
 'paper-size-simple-page-master':['paper-size-simple-page-master', 'simple-page-master'],
-'paper':['paper-size-simple-page-master', 'simple-page-master'], # added
-'paper-size':['paper-size-simple-page-master', 'simple-page-master'], # added
-'paragraph':['paragraph-block', 'block'], # added
 'paragraph-block':['paragraph-block', 'block'],
 'pull-quote-attribution-block':['pull-quote-attribution-block', 'block'],
 'pull-quote-first-paragraph-block':['pull-quote-first-paragraph-block', 'block'],
@@ -225,6 +216,21 @@ att_set_dict = {
 'warning-block':['warning-block', 'block'],
 'warning-title-block':['warning-title-block', 'block'],
 }
+
+# customize
+added_att_sets = {
+'bullet-list':['bullet-list-block', 'list-block'], 
+'document':['default-page-sequence', 'page-sequence'], 
+'page':['default-simple-page-master', 'simple-page-master'], 
+'even-page':['even-simple-page-master', 'simple-page-master'], 
+'first-page':['first-simple-page-master', 'simple-page-master'],
+'odd-page':['odd-simple-page-master', 'simple-page-master'], 
+'paper-size':['paper-size-simple-page-master', 'simple-page-master'], 
+'paragraph':['paragraph-block', 'block'], 
+'body':['default-flow', 'flow'],
+}
+
+att_set_dict.update(added_att_sets)
 
 
 block_dict = {
@@ -1223,6 +1229,16 @@ table_row_dict = {
 # block_dict.update({'font-style': ['font-style']})
 # inline_dict.update({'font-style': ['font-style']})
 
+# customize
+font_dict = { 'font': 'font-family', }
+line_height_dict = {'line-spacing':'line-height'}
+page_sequence_dict.update(font_dict)
+page_sequence_dict.update({'font-size':'font-size'})
+block_dict.update(font_dict)
+inline_dict.update(font_dict)
+block_dict.update(line_height_dict)
+inline_dict.update(line_height_dict)
+flow_dict.update(line_height_dict)
 
 block_set = set(block_dict.keys())
 block_container_set = set(block_container_dict.keys())
@@ -1272,6 +1288,9 @@ which_dict = {
 'table-row': table_row_dict,
 }
 
+prop_as_param_dict = {
+'page.page-layout':'page-layout',
+}
 
 param_dict = {
 'abstract-pagination' : 'with-front',
