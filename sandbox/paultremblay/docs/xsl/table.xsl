@@ -57,6 +57,16 @@
         </block>
     </xsl:template>
 
+    <xsl:template match= "xsl:attribute-set[@name='thead-borderless-cell']" priority="3">
+        <xsl:call-template name="before-desc">
+            <xsl:with-param name="fo">fo:cell</xsl:with-param> 
+            <xsl:with-param name="docutils">thead/row/entry</xsl:with-param> 
+        </xsl:call-template>
+        <block>
+            Formats the cells in the table header for a borderless table.
+        </block>
+    </xsl:template>
+
     <xsl:template match= "xsl:attribute-set[@name='table-body']" priority="3">
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">fo:table-body</xsl:with-param> 

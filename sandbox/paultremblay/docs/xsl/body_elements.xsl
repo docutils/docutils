@@ -15,6 +15,18 @@
         </block>
     </xsl:template>
 
+    <xsl:template match= "xsl:attribute-set[@name='first-paragraph-block']" priority="3">
+        <xsl:call-template name="before-desc">
+            <xsl:with-param name="fo">fo:block</xsl:with-param> 
+            <xsl:with-param name="docutils">document/paragrah|section/paragraph"</xsl:with-param> 
+            <xsl:with-param name="inherits">paragraph-block</xsl:with-param> 
+        </xsl:call-template>
+        <block>
+            Formats the first default paragraph.
+        </block>
+    </xsl:template>
+
+
     <xsl:template match= "xsl:attribute-set[@name='literal-block']" priority="3">
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">fo:block</xsl:with-param> 
