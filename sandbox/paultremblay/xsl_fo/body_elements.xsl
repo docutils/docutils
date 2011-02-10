@@ -9,6 +9,9 @@
         <xsl:attribute name="space-after">12pt</xsl:attribute>
     </xsl:attribute-set>
 
+    <xsl:attribute-set name="first-paragraph-block" use-attribute-sets="paragraph-block">
+    </xsl:attribute-set>
+
     <xsl:attribute-set name="literal-block">
         <xsl:attribute name="font-family">monospace</xsl:attribute>
         <xsl:attribute name="font-size">8</xsl:attribute>
@@ -68,8 +71,71 @@
         <xsl:attribute name="text-align">right</xsl:attribute>
     </xsl:attribute-set>
 
+    <xsl:template name="get-preceding-sib">
+        <xsl:choose>
+            <xsl:when test="self::comment">
+                <xsl:for-each select="preceding-sibling::*[1]">
+                    <xsl:call-template name="get-preceding-sib"/>
+                </xsl:for-each>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:value-of select="name(.)"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
     <!--default paragraphs-->
     <xsl:template match="section/paragraph|document/paragraph|compound/paragraph">
+        <xsl:variable name="prev-sib">
+            <xsl:for-each select="preceding-sibling::*[1]">
+                <xsl:call-template name="get-preceding-sib"/>
+            </xsl:for-each>
+        </xsl:variable>
+        <xsl:choose>
+            <xsl:when test="not(preceding-sibling::*)">
+                <xsl:call-template name="default-first-paragraph"/>
+            </xsl:when>
+            <xsl:when test="$prev-sib != 'paragraph'">
+                <xsl:call-template name="default-first-paragraph"/>
+            </xsl:when>
+            <!--
+            <xsl:when test="$prev-sib = 'topic' or $prev-sib = 'table'  
+                or $prev-sib = 'attention' or $prev-sib = 'caution' or $prev-sib = 'danger'
+                or $prev-sib = 'danger' or $prev-sib = 'error' or $prev-sib = 'hint'
+                or $prev-sib = 'important' or $prev-sib = 'note' or $prev-sib = 'tip' or
+                $prev-sib = 'warning' or $prev-sib = 'admonition' or $prev-sib = 'bullet_list'
+                or $prev-sib = 'enumerated_list' or $prev-sib = 'definition_list' or
+                $prev-sib = 'field_list' or $prev-sib = 'option_list' or $prev-sib = 'line_block'
+                or $prev-sib = 'literal_block' or $prev-sib = 'doctest_block' or 
+                $prev-sib = 'transition' or $prev-sib = 'title' or $prev-sib = 'subtitle'
+                or $prev-sib = 'block_quote' or $prev-sib = 'sidebar' or $prev-sib = 'rubric'
+                or $prev-sib = 'container' or $prev-sib = 'compound' or $prev-sib = 'decoration' 
+                ">
+                <xsl:call-template name="default-first-paragraph"/>
+            </xsl:when>
+            -->
+            <xsl:otherwise>
+                <xsl:call-template name="default-paragraph"/>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+    <xsl:template name="default-first-paragraph">
+        <xsl:choose>
+            <xsl:when test="@ids">
+                <fo:block role="first-paragraph" xsl:use-attribute-sets="first-paragraph-block" id="{@ids}">
+                    <xsl:apply-templates/>
+                </fo:block>
+            </xsl:when>
+            <xsl:otherwise>
+                <fo:block role="first-paragraph" xsl:use-attribute-sets="first-paragraph-block">
+                    <xsl:apply-templates/>
+                </fo:block>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+    <xsl:template name="default-paragraph">
         <xsl:choose>
             <xsl:when test="@ids">
                 <fo:block role="paragraph" xsl:use-attribute-sets="paragraph-block" id="{@ids}">
