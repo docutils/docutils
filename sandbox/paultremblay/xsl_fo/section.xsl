@@ -63,8 +63,23 @@
         <xsl:attribute name="space-end">12pt</xsl:attribute>
     </xsl:attribute-set>
 
+    <xsl:template name="make-ids">
+        <xsl:param name="ids"/>
+        <xsl:variable name = "id" select="normalize-space(substring-before($ids, ' '))"/>
+        <xsl:if test = "$id != ''">
+            <fo:inline id = "{$id}"/>
+            <xsl:call-template name="make-ids">
+                <xsl:with-param name="ids" select = "substring-after($ids, ' ')"/> 
+            </xsl:call-template>
+        </xsl:if>
+    </xsl:template>
+
     <xsl:template match="section">
-        <fo:block role="empty-section-for-id" id = "{@ids}"/>
+        <fo:block role="empty-section-for-id">
+            <xsl:call-template name="make-ids">
+                <xsl:with-param name="ids" select="concat(@ids, ' ')"/>
+            </xsl:call-template>
+        </fo:block>
         <xsl:apply-templates/>
     </xsl:template>
 
