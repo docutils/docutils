@@ -32,6 +32,11 @@
     <xsl:attribute-set name="thead-cell" use-attribute-sets="default-cell">
     </xsl:attribute-set>
 
+    <xsl:attribute-set name="thead-borderless-cell">
+        <xsl:attribute name="padding">1em</xsl:attribute>
+        <xsl:attribute name="border-collapse">collapse</xsl:attribute>
+    </xsl:attribute-set>
+
     <xsl:attribute-set name="thead-block">
     </xsl:attribute-set>
 
@@ -95,6 +100,12 @@
 
     <xsl:template match="thead/row">
         <xsl:apply-templates/>
+    </xsl:template>
+
+    <xsl:template match="thead[ancestor::table[@classes='borderless']]/row/entry" priority="2">
+        <fo:table-cell xsl:use-attribute-sets="thead-borderless-cell">
+            <xsl:apply-templates/>
+        </fo:table-cell>
     </xsl:template>
 
     <xsl:template match="thead/row/entry">
