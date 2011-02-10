@@ -94,6 +94,7 @@ att_set_dict = {
 'figure-block':['figure-block', 'block'],
 'figure-caption-block':['figure-caption-block', 'block'],
 'figure-legend-block':['figure-legend-block', 'block'],
+'first-paragraph-block':['first-paragraph-block', 'bold'],
 'first-simple-page-master':['first-simple-page-master', 'simple-page-master'],
 'footer-block':['footer-block', 'block'],
 'footer-first-block':['footer-first-block', 'block'],
@@ -182,6 +183,7 @@ att_set_dict = {
 'table-cell':['table-cell', 'cell'],
 'table-row':['table-row', 'table-row'],
 'thead-block':['thead-block', 'block'],
+'thead-borderless-cell':['thead-borderless-cell', 'cell'],
 'thead-cell':['thead-cell', 'cell'],
 'thead-header':['thead-header', 'header'],
 'tip-block':['tip-block', 'block'],
@@ -230,6 +232,7 @@ added_att_sets = {
 'odd-page':['odd-simple-page-master', 'simple-page-master'], 
 'paper-size':['paper-size-simple-page-master', 'simple-page-master'], 
 'paragraph':['paragraph-block', 'block'], 
+'first-paragraph':['first-paragraph-block', 'block'], 
 'body':['default-flow', 'flow'],
 }
 
