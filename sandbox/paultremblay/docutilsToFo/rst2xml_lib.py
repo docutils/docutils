@@ -90,6 +90,7 @@ def publish_xml_cmdline (in_path = None, in_string = None, out_path = None, sett
 def report_xsl_error(transform_error_obj):
     for error_obj in transform_error_obj:
         sys.stderr.write(error_obj.message)
+        sys.stderr.write('\n')
         if error_obj.line != 0 and error_obj.column != 0:
             sys.stderr.write(str(error_obj.line))
             sys.stderr.write(str(error_obj.column))
