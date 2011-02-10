@@ -129,7 +129,7 @@ The following properties can be set for the entire document:
 The short version of ``'font-family'`` is ``'font'``; they are synonymous.
 
 Possible font-families are serif, sans-seif, monospace; Times, Helvitica
-Coureir, ZapfDingbats, and Symbol. Since these font families are builit in,
+Coureir, ZapfDingbats, and Symbol. Since these font families are buiit in,
 they are guarenteed to work, regardless of the availability of fonts on 
 an operating system.
 
