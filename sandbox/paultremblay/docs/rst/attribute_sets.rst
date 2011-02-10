@@ -135,6 +135,29 @@ body-flow
 Formats the properties of the body in the body sequence of pages,
 which means everything except headers and footers.
 
+footnote-separator-flow
+-----------------------
+
+:fo: fo:flow
+
+:docutils: footnote
+
+:defaults:
+
+Formats the flow of the footnote.
+
+footnote-separator-block
+------------------------
+
+:fo: fo:block
+
+:docutils: footnote
+
+:defaults:
+
+Formats the block (with the leader) that separates the footnotes
+from the rest of the page.
+
 Page Attribute Sets
 ===================
 
@@ -503,6 +526,42 @@ for the formatting of up to three paragraphs for each header and
 footer. The first refers to the first that occurrs in the
 document, the second to the second, and the third to the third.
 
+header-block
+------------
+
+:fo: fo:block
+
+:docutils: decoration/header
+
+:defaults:
+
+     font-size: 12pt
+
+     text-align: center
+
+Formats the properties for the header. Use to set the space
+between the header and the body text, using ``'space-before =
+x'`` and setting ``'space-before.conditionality'`` to
+``'retain'``.
+
+footer-block
+------------
+
+:fo: fo:block
+
+:docutils: decoration/footer
+
+:defaults:
+
+     font-size: 12pt
+
+     text-align: center
+
+Formats the properties for the footer. Use to set the space
+between the footer and the body text, using ``'space-before =
+x'`` and setting ``'space-before.conditionality'`` to
+``'retain'``.
+
 header-first-block
 ------------------
 
@@ -814,6 +873,19 @@ paragraph-block
 
 Formats the default paragraph.
 
+first-paragraph-block
+---------------------
+
+:fo: fo:block
+
+:docutils: document/paragrah|section/paragraph"
+
+:inherits: paragraph-block
+
+:defaults:
+
+Formats the first default paragraph.
+
 literal-block
 -------------
 
@@ -828,6 +900,10 @@ literal-block
      font-size: 8
 
      white-space: pre
+
+     space-after: 12pt
+
+     space-before: 12pt
 
 Formats the literal text.
 
@@ -1311,22 +1387,11 @@ definition-term-block
 
 :defaults:
 
+     font-weight: bold
+
 Formats the bock of the the term. Can be used to control spacing
 between term and definition, but don't use with space before, or
 you won't be able to control spacing before list
-
-definition-term-inline
-----------------------
-
-:fo: fo:inline
-
-:docutils: definition_list/definition_list_item/term
-
-:defaults:
-
-     font-weight: bold
-
-For the inine properties of the term item.
 
 classifier-inline
 -----------------
@@ -1930,6 +1995,21 @@ thead-cell
 
 Formats the cells in the table header.
 
+thead-borderless-cell
+---------------------
+
+:fo: fo:cell
+
+:docutils: thead/row/entry
+
+:defaults:
+
+     padding: 1em
+
+     border-collapse: collapse
+
+Formats the cells in the table header for a borderless table.
+
 thead-block
 -----------
 
@@ -1976,6 +2056,19 @@ table-cell
 
 Attributes for the table cell.
 
+table-cell-borderless
+---------------------
+
+:fo: fo:table-cell
+
+:docutils: tbody/row/entry
+
+:defaults:
+
+     padding: 1em
+
+Attributes for the table cell for borderless table.
+
 cell-block
 ----------
 
@@ -2013,6 +2106,23 @@ Footnote
 ========
 
 Attribute sets for footnotes, endnotes, and the endnotes title.
+
+footnote
+--------
+
+:fo: fo:footnote
+
+:docutils: footnote
+
+:defaults:
+
+     font-weight: normal
+
+     font-style: normal
+
+Formats the footnote. By default, it sets properties to neutral,
+so that it does not inherit any unwanted properties, such as from
+a definition term.
 
 default-footnote-label-inline
 -----------------------------
