@@ -65,7 +65,7 @@ else:
 
 # make a stylesheet
 ss_obj = docutilsToFo.make_stylesheet.ReadConfig(import_ss = root_stylesheet )
-ss_string = ss_obj.main()
+ss_string = ss_obj.make_stylesheet()
 write_obj = file(out_xsl, 'w')
 write_obj.write(ss_string)
 write_obj.close()
