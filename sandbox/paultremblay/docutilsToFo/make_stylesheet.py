@@ -3,6 +3,8 @@
 import sys, copy, getopt, os, ConfigParser
 from docutils_fo_dicts import *
 from xml.sax import saxutils
+class FOConfigFileException(Exception):
+    pass
 
 class WriteStylesheet:
 
@@ -67,11 +69,21 @@ class WriteStylesheet:
 
 class ReadConfig:
 
-    def __init__(self, import_ss):
-        self.__file =  __file__
+    def __init__(self, import_ss = None, verbose = 0):
+        self.__verbose = verbose
+        if self.__verbose > 4:
+            sys.stderr.write('modules is "%s"\n' % __file__)
         self.__attribute_sets = {}
         self.__params = {}
         self.__import_ss = import_ss
+        if not self.__import_ss:
+            # os.sep
+            self.__import_ss = os.path.join(os.path.dirname(__file__), 'xsl_fo','docutils_to_fo.xsl') 
+        if not os.path.isfile(self.__import_ss):
+            msg = '"%s" cannot be found\n' % (self.__import_ss)
+            raise FOConfigFileException(msg)
+        if self.__verbose > 3:
+            sys.stderr.write('self.__import_ss (stylesheet to import) is "%s" \n' % self.__import_ss)
 
     def write_config_file(self, dest=None):
         w = WriteStylesheet()
