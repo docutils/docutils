@@ -77,13 +77,35 @@ class ReadConfig:
         self.__params = {}
         self.__import_ss = import_ss
         if not self.__import_ss:
-            # os.sep
             self.__import_ss = os.path.join(os.path.dirname(__file__), 'xsl_fo','docutils_to_fo.xsl') 
+        if os.sep != '/':
+            self.__correct_path = self.__correct_path(self.__import_ss)
         if not os.path.isfile(self.__import_ss):
             msg = '"%s" cannot be found\n' % (self.__import_ss)
             raise FOConfigFileException(msg)
         if self.__verbose > 3:
             sys.stderr.write('self.__import_ss (stylesheet to import) is "%s" \n' % self.__import_ss)
+
+    def __correct_path(self, the_path):
+        """
+        make sure the_path is os.path.abs(the_path) and that
+        the_path really exits or this may not work
+
+        """
+        paths = []
+        head = None
+        counter = 1
+        while 1:
+            counter += 1
+            if not head:
+                head = the_path
+            head, tail = os.path.split(head)
+            paths.insert(0,tail)
+            if not tail: 
+                break
+            if counter > 100:
+                raise RuntimeError, 'max num recursions (100) reached'
+        return '/'.join(paths)
 
     def write_config_file(self, dest=None):
         w = WriteStylesheet()
