@@ -20,6 +20,10 @@ in this way::
  docutils_to_fo.py my_file.xml > my_file.fo
  fop my_file.fo my_file.pdf
 
+Or, to do all in one pass::
+
+ rst2xml.py my_file.rst | docutils_to_fo.py | fop -fo - -pdf my_file.pdf
+
 
 Completion
 ==========
