@@ -4,6 +4,7 @@
 import cStringIO, sys
 from lxml import etree
 import lxml
+import os
 
 
 the_settings_dict = {   '_config_files': ['/Users/cynthia/.docutils'],
@@ -94,17 +95,24 @@ def report_xsl_error(transform_error_obj):
         if error_obj.line != 0 and error_obj.column != 0:
             sys.stderr.write(str(error_obj.line))
             sys.stderr.write(str(error_obj.column))
-        #print error_obj.domain_name, 'domain_name'
-        #print error_obj.filename, 'filename'
-        #print error_obj.level, 'level'
-        #print error_obj.level_name, 'level-name'
         #print error_obj.type, 'type'
         #print error_obj.type_name, 'type_name'
-        #print error_obj.line, 'line' 
-        #print error_obj.column, 'line' 
-        #print error_obj.message, 'message' 
 
-def transform_lxml(xslt_file, xml_file, param_dict = {}, out_file = None):
+def validate_docutils(xml_obj):
+    the_dtd = os.path.join(os.path.dirname(__file__), 'valid','docutils.dtd') 
+    if not os.path.isfile(the_dtd):
+        msg = '"%s" cannot be found\n' % (the_dtd)
+        raise IOError(msg)
+    
+    dtd = etree.DTD(file(the_dtd))
+    is_valid = dtd.validate(xml_obj)
+    if not is_valid:
+        sys.stderr.write('Document not Valid:\n')
+        report_xsl_error(dtd.error_log)
+        return 1
+
+def transform_lxml(xslt_file, xml_file, valid = True, param_dict = {}, out_file = None, 
+        verbose = 0):
     # have to put quotes around string params
     temp = {}
     the_keys = param_dict.keys()
@@ -125,7 +133,17 @@ def transform_lxml(xslt_file, xml_file, param_dict = {}, out_file = None):
     except lxml.etree.XSLTParseError, error:
         sys.stderr.write(str(error) + '\n')
         sys.exit(1)
-    indoc = etree.parse(xml_file)
+    try:
+        indoc = etree.parse(xml_file)
+    except lxml.etree.XMLSyntaxError, msg:
+        sys.stderr.write('Invalid XML\n')
+        sys.stderr.write(str(msg))
+        sys.stderr.write('\n')
+        return 1
+    if valid:
+        not_valid = validate_docutils(indoc)
+        if not_valid:
+            return 1
     try:
         outdoc = transform(indoc, **param_dict)
     except lxml.etree.XSLTApplyError, error:
@@ -133,7 +151,7 @@ def transform_lxml(xslt_file, xml_file, param_dict = {}, out_file = None):
         msg += str(error)
         msg += '\n'
         report_xsl_error(transform.error_log)
-        return msg
+        return 1
     report_xsl_error(transform.error_log)
     if out_file:
         write_obj = open(out_file, 'w')
