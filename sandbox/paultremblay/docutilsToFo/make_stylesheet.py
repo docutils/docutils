@@ -68,6 +68,7 @@ class WriteStylesheet:
 class ReadConfig:
 
     def __init__(self, import_ss):
+        self.__file =  __file__
         self.__attribute_sets = {}
         self.__params = {}
         self.__import_ss = import_ss
@@ -268,7 +269,7 @@ class ReadConfig:
     def print_att_list(self):
         print self.__attribute_sets
 
-    def main(self):
+    def make_stylesheet(self):
         self.read_config_file()
         ss_string = self.write_config_file()
         return ss_string
