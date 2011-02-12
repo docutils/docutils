@@ -98,7 +98,23 @@ def report_xsl_error(transform_error_obj):
         #print error_obj.type, 'type'
         #print error_obj.type_name, 'type_name'
 
-def validate_docutils(xml_obj):
+def validate_docutils(xml_file):
+    doc = etree.parse(file(xml_file))
+    validate_docutils_rng(doc)
+
+def validate_docutils_rng(xml_obj):
+    the_rng = os.path.join(os.path.dirname(__file__), 'valid','docutils.rng') 
+    relaxng_doc = etree.parse(file(the_rng))
+    relaxng = etree.RelaxNG(relaxng_doc)
+    is_valid = relaxng.validate(xml_obj)
+    if not is_valid:
+        sys.stderr.write('Document not Valid:\n')
+        report_xsl_error(relaxng.error_log)
+        return 1
+
+
+
+def validate_docutils_dtd(xml_obj):
     the_dtd = os.path.join(os.path.dirname(__file__), 'valid','docutils.dtd') 
     if not os.path.isfile(the_dtd):
         msg = '"%s" cannot be found\n' % (the_dtd)
@@ -111,8 +127,7 @@ def validate_docutils(xml_obj):
         report_xsl_error(dtd.error_log)
         return 1
 
-def transform_lxml(xslt_file, xml_file, valid = True, param_dict = {}, out_file = None, 
-        verbose = 0):
+def transform_lxml(xslt_file, xml_file, valid = True, param_dict = {}, out_file = None, verbose = 0):
     # have to put quotes around string params
     temp = {}
     the_keys = param_dict.keys()
@@ -132,7 +147,7 @@ def transform_lxml(xslt_file, xml_file, valid = True, param_dict = {}, out_file 
         transform = etree.XSLT(xslt_doc)
     except lxml.etree.XSLTParseError, error:
         sys.stderr.write(str(error) + '\n')
-        sys.exit(1)
+        return 1
     try:
         indoc = etree.parse(xml_file)
     except lxml.etree.XMLSyntaxError, msg:
@@ -141,7 +156,7 @@ def transform_lxml(xslt_file, xml_file, valid = True, param_dict = {}, out_file 
         sys.stderr.write('\n')
         return 1
     if valid:
-        not_valid = validate_docutils(indoc)
+        not_valid = validate_docutils_rng(indoc)
         if not_valid:
             return 1
     try:
