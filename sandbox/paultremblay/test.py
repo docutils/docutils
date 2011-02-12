@@ -32,7 +32,7 @@ test_dict = {
                 ({'page-layout': 'odd-even'}, 'odd_even_no_page_nos.fo'),
                 ({'page-layout': 'first-odd-even'}, 'first_odd_even_no_page_nos.fo')
                 ],
-        'simple_header_footer.xml':[({'page-layout': 'simple'}, 'header_footer.fo'),
+        'header_footer.xml':[({'page-layout': 'simple'}, 'header_footer.fo'),
                 ({'page-layout': 'simple', 'suppress-first-page-header': 'True'}, 'header_footer2.fo'),
                 ({'page-layout': 'first' }, 'first_page_header_footer.fo'),
                 ({'page-layout': 'first', 'suppress-first-page-header': 'True'}, 'first_page_suppress_header.fo'),
