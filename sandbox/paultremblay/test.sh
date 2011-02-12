@@ -42,19 +42,19 @@ xmlformat.pl -i first_odd_even_no_page_nos.fo
 
 # simple page, with headers and footers, no inline; just paragraphs
 xsltproc --stringparam page-layout "simple" \
-$STYLESHEET simple_header_footer.xml   >  header_footer.fo 
+$STYLESHEET header_footer.xml   >  header_footer.fo 
 xmlformat.pl -i header_footer.fo
 
 # simple page, with headers and footers, no inline; just paragraphs
 # the --suppress-page-num has no effect
 xsltproc --stringparam page-layout "simple" \
 --stringparam suppress-first-page-header "True" \
-$STYLESHEET simple_header_footer.xml    > header_footer2.fo 
+$STYLESHEET header_footer.xml    > header_footer2.fo 
 xmlformat.pl -i header_footer2.fo
 
 # first page, with headers and footers, no inline; just paragraphs
 xsltproc --stringparam page-layout "simple" \
-$STYLESHEET simple_header_footer.xml   >  first_page_header_footer.fo 
+$STYLESHEET header_footer.xml   >  first_page_header_footer.fo 
 xmlformat.pl -i first_page_header_footer.fo
 
 # first page, with headers and footers, no inline; just paragraphs
@@ -62,17 +62,17 @@ xmlformat.pl -i first_page_header_footer.fo
 xsltproc --stringparam page-layout "first" \
 --stringparam suppress-first-page-header "True" \
 --stringparam suppress-first-page-footer "True" \
-$STYLESHEET simple_header_footer.xml   >  first_suppress_header__footer.fo 
+$STYLESHEET header_footer.xml   >  first_suppress_header__footer.fo 
 xmlformat.pl -i first_suppress_header__footer.fo
 
 # odd-even page, with headers and footers, no inline; just paragraphs
 xsltproc --stringparam page-layout "odd-even" \
-$STYLESHEET simple_header_footer.xml   >  odd_even_page_header_footer.fo 
+$STYLESHEET header_footer.xml   >  odd_even_page_header_footer.fo 
 xmlformat.pl -i odd_even_page_header_footer.fo
 
 # first-odd-even page, with headers and footers, no inline; just paragraphs
 xsltproc --stringparam page-layout "first-odd-even" \
-$STYLESHEET simple_header_footer.xml   >  first_odd_even_page_header_footer.fo 
+$STYLESHEET header_footer.xml   >  first_odd_even_page_header_footer.fo 
 xmlformat.pl -i first_odd_even_page_header_footer.fo
 
 # first-odd-even page, with headers and footers, no inline; just paragraphs
@@ -80,7 +80,7 @@ xmlformat.pl -i first_odd_even_page_header_footer.fo
 xsltproc --stringparam page-layout "first-odd-even" \
 --stringparam suppress-first-page-header "True" \
 --stringparam suppress-first-page-footer "True" \
-$STYLESHEET simple_header_footer.xml   >  first_odd_even_page_header_footer_suppress_first.fo 
+$STYLESHEET header_footer.xml   >  first_odd_even_page_header_footer_suppress_first.fo 
 xmlformat.pl -i first_odd_even_page_header_footer_suppress_first.fo
 
 # TOC test
