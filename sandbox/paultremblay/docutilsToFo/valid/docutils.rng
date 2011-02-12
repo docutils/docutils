@@ -1,0 +1,1503 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ======================================================================
+      Docutils Generic DTD
+  ======================================================================
+  :Author: David Goodger
+  :Contact: goodger@python.org
+  :Revision: $Revision: 4564 $
+  :Date: $Date: 2006-05-21 16:44:42 -0400 (Sun, 21 May 2006) $
+  :Copyright: This DTD has been placed in the public domain.
+  :Filename: docutils.dtd
+  
+  More information about this DTD (document type definition) and the
+  Docutils project can be found at http://docutils.sourceforge.net/.
+  The latest version of this DTD is available from
+  http://docutils.sourceforge.net/docs/ref/docutils.dtd.
+  
+  The formal public identifier for this DTD is::
+  
+      +//IDN docutils.sourceforge.net//DTD Docutils Generic//EN//XML
+-->
+<!--
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      Parameter Entities
+  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  
+  Parameter entities are used to simplify the DTD (reduce duplication)
+  and to allow the DTD to be customized by wrapper DTDs.  Parameter
+  entities beginning with "additional" are meant to allow easy extension
+  by wrapper DTDs.
+-->
+<!--
+  Attributes
+  ==================================================================
+-->
+<!-- Boolean: no if zero(s), yes if any other value. -->
+<grammar xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+  <define name="yesorno">
+    <data type="NMTOKEN"/>
+  </define>
+  <!-- Emphasize that the attribute value must be a number. -->
+  <define name="number">
+    <data type="NMTOKEN"/>
+  </define>
+  <!-- A number which may be immediately followed by a unit. -->
+  <define name="measure">
+    <data type="NMTOKEN"/>
+  </define>
+  <define name="additional.basic.atts">
+    <empty/>
+  </define>
+  <!--
+    Attributes shared by all elements in this DTD:
+    
+    - `id` is a unique identifier, typically assigned by the system.
+    - `name` is an identifier assigned in the markup.
+    - `dupname` is the same as `name`, used when it's a duplicate.
+    - `source` is the name of the source of this document or fragment.
+    - `class` is used to transmit individuality information forward.
+  -->
+  <define name="basic.atts">
+    <optional>
+      <attribute name="ids">
+        <data type="NMTOKENS"/>
+      </attribute>
+    </optional>
+    <optional>
+      <attribute name="names"/>
+    </optional>
+    <optional>
+      <attribute name="dupnames"/>
+    </optional>
+    <optional>
+      <attribute name="source"/>
+    </optional>
+    <optional>
+      <attribute name="classes">
+        <data type="NMTOKENS"/>
+      </attribute>
+    </optional>
+    <ref name="additional.basic.atts"/>
+  </define>
+  <!-- External reference to a URI/URL. -->
+  <define name="refuri.att">
+    <optional>
+      <attribute name="refuri"/>
+    </optional>
+  </define>
+  <!-- Internal reference to the `id` attribute of an element. -->
+  <define name="refid.att">
+    <optional>
+      <attribute name="refid">
+          <!--
+        <data type="IDREF"/>
+        -->
+      </attribute>
+    </optional>
+  </define>
+  <!-- Space-separated list of id references, for backlinks. -->
+  <define name="backrefs.att">
+    <optional>
+      <attribute name="backrefs">
+          <!--
+        <data type="IDREFS"/>
+        -->
+      </attribute>
+    </optional>
+  </define>
+  <!--
+    Internal reference to the `name` attribute of an element. On a
+    'target' element, 'refname' indicates an indirect target which may
+    resolve to either an internal or external reference.
+  -->
+  <define name="refname.att">
+    <optional>
+      <attribute name="refname">
+        <data type="NMTOKENS"/>
+      </attribute>
+    </optional>
+  </define>
+  <define name="additional.reference.atts">
+    <empty/>
+  </define>
+  <!-- Collected hyperlink reference attributes. -->
+  <define name="reference.atts">
+    <ref name="refuri.att"/>
+    <ref name="refid.att"/>
+    <ref name="refname.att"/>
+    <ref name="additional.reference.atts"/>
+  </define>
+  <!-- Unnamed hyperlink. -->
+  <define name="anonymous.att">
+    <optional>
+      <attribute name="anonymous">
+        <ref name="yesorno"/>
+      </attribute>
+    </optional>
+  </define>
+  <!-- Auto-numbered footnote or title. -->
+  <define name="auto.att">
+    <optional>
+      <attribute name="auto"/>
+    </optional>
+  </define>
+  <!-- XML standard attribute for whitespace-preserving elements. -->
+  <define name="fixedspace.att">
+    <optional>
+      <attribute name="xml:space" a:defaultValue="preserve">
+        <value>preserve</value>
+      </attribute>
+    </optional>
+  </define>
+  <define name="align-h.att">
+    <optional>
+      <attribute name="align">
+        <choice>
+          <value>left</value>
+          <value>center</value>
+          <value>right</value>
+        </choice>
+      </attribute>
+    </optional>
+  </define>
+  <define name="align-hv.att">
+    <optional>
+      <attribute name="align">
+        <choice>
+          <value>top</value>
+          <value>middle</value>
+          <value>bottom</value>
+          <value>left</value>
+          <value>center</value>
+          <value>right</value>
+        </choice>
+      </attribute>
+    </optional>
+  </define>
+  <!--
+    Element OR-Lists
+    =============================================================
+  -->
+  <define name="additional.bibliographic.elements">
+    <notAllowed/>
+  </define>
+  <define name="bibliographic.elements">
+    <choice>
+      <ref name="author"/>
+      <ref name="authors"/>
+      <ref name="organization"/>
+      <ref name="address"/>
+      <ref name="contact"/>
+      <ref name="version"/>
+      <ref name="revision"/>
+      <ref name="status"/>
+      <ref name="date"/>
+      <ref name="copyright"/>
+      <ref name="field"/>
+      <ref name="additional.bibliographic.elements"/>
+    </choice>
+  </define>
+  <define name="additional.section.elements">
+    <notAllowed/>
+  </define>
+  <define name="section.elements">
+    <choice>
+      <ref name="section"/>
+      <ref name="additional.section.elements"/>
+    </choice>
+  </define>
+  <define name="additional.body.elements">
+    <notAllowed/>
+  </define>
+  <define name="body.elements">
+    <choice>
+      <ref name="paragraph"/>
+      <ref name="compound"/>
+      <ref name="container"/>
+      <ref name="literal_block"/>
+      <ref name="doctest_block"/>
+      <ref name="line_block"/>
+      <ref name="block_quote"/>
+      <ref name="table"/>
+      <ref name="figure"/>
+      <ref name="image"/>
+      <ref name="footnote"/>
+      <ref name="citation"/>
+      <ref name="rubric"/>
+      <ref name="bullet_list"/>
+      <ref name="enumerated_list"/>
+      <ref name="definition_list"/>
+      <ref name="field_list"/>
+      <ref name="option_list"/>
+      <ref name="attention"/>
+      <ref name="caution"/>
+      <ref name="danger"/>
+      <ref name="error"/>
+      <ref name="hint"/>
+      <ref name="important"/>
+      <ref name="note"/>
+      <ref name="tip"/>
+      <ref name="warning"/>
+      <ref name="admonition"/>
+      <ref name="reference"/>
+      <ref name="target"/>
+      <ref name="substitution_definition"/>
+      <ref name="comment"/>
+      <ref name="pending"/>
+      <ref name="system_message"/>
+      <ref name="raw"/>
+      <ref name="additional.body.elements"/>
+    </choice>
+  </define>
+  <define name="additional.inline.elements">
+    <notAllowed/>
+  </define>
+  <define name="inline.elements">
+    <choice>
+      <ref name="emphasis"/>
+      <ref name="strong"/>
+      <ref name="literal"/>
+      <ref name="reference"/>
+      <ref name="footnote_reference"/>
+      <ref name="citation_reference"/>
+      <ref name="substitution_reference"/>
+      <ref name="title_reference"/>
+      <ref name="abbreviation"/>
+      <ref name="acronym"/>
+      <ref name="subscript"/>
+      <ref name="superscript"/>
+      <ref name="inline"/>
+      <ref name="problematic"/>
+      <ref name="generated"/>
+      <ref name="target"/>
+      <ref name="image"/>
+      <ref name="raw"/>
+      <ref name="additional.inline.elements"/>
+    </choice>
+  </define>
+  <!--
+    Element Content Models
+    ==================================================================
+  -->
+  <!-- The structure model may not end with a transition. -->
+  <define name="structure.model">
+    <zeroOrMore>
+      <oneOrMore>
+        <choice>
+          <ref name="body.elements"/>
+          <ref name="topic"/>
+          <ref name="sidebar"/>
+        </choice>
+      </oneOrMore>
+      <optional>
+        <ref name="transition"/>
+      </optional>
+    </zeroOrMore>
+    <optional>
+      <ref name="section.elements"/>
+      <zeroOrMore>
+        <optional>
+          <ref name="transition"/>
+        </optional>
+        <ref name="section.elements"/>
+      </zeroOrMore>
+    </optional>
+  </define>
+  <define name="text.model">
+    <zeroOrMore>
+      <choice>
+        <text/>
+        <ref name="inline.elements"/>
+      </choice>
+    </zeroOrMore>
+  </define>
+  <!--
+    Table Model
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
+    This DTD uses the Exchange subset of the CALS-table model (OASIS
+    Technical Memorandum 9901:1999 "XML Exchange Table Model DTD",
+    http://www.oasis-open.org/html/tm9901.htm).
+  -->
+  <!-- These parameter entities customize the table model DTD. -->
+  <define name="bodyatt">
+    <ref name="basic.atts"/>
+  </define>
+  <!-- table elt -->
+  <define name="tbl.tgroup.att">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="tbl.thead.att">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="tbl.tbody.att">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="tbl.colspec.att">
+    <ref name="basic.atts"/>
+    <optional>
+      <attribute name="stub">
+        <ref name="yesorno"/>
+      </attribute>
+    </optional>
+  </define>
+  <define name="tbl.row.att">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="tbl.entry.mdl">
+    <zeroOrMore>
+      <ref name="body.elements"/>
+    </zeroOrMore>
+  </define>
+  <define name="tbl.entry.att">
+    <ref name="basic.atts"/>
+    <optional>
+      <attribute name="morecols">
+        <ref name="number"/>
+      </attribute>
+    </optional>
+  </define>
+  <!--
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        Root Element
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  -->
+  <!-- Optional elements may be generated by internal processing. -->
+  <define name="document">
+    <element name="document">
+      <ref name="document.attlist"/>
+      <optional>
+        <ref name="title"/>
+        <optional>
+          <ref name="subtitle"/>
+        </optional>
+      </optional>
+      <optional>
+        <ref name="decoration"/>
+      </optional>
+      <optional>
+        <ref name="docinfo"/>
+        <optional>
+          <ref name="transition"/>
+        </optional>
+      </optional>
+      <ref name="structure.model"/>
+    </element>
+  </define>
+  <define name="document.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+    <optional>
+      <attribute name="title"/>
+    </optional>
+  </define>
+  <!--
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        Title Elements
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  -->
+  <define name="title">
+    <element name="title">
+      <ref name="title.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="title.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+    <ref name="refid.att"/>
+    <ref name="auto.att"/>
+  </define>
+  <define name="subtitle">
+    <element name="subtitle">
+      <ref name="subtitle.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="subtitle.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <!--
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        Bibliographic Elements
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  -->
+  <!-- Container for bibliographic elements. May not be empty. -->
+  <define name="docinfo">
+    <element name="docinfo">
+      <ref name="docinfo.attlist"/>
+      <oneOrMore>
+        <ref name="bibliographic.elements"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="docinfo.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <!--
+    Container for bibliographic elements. May not be empty.
+    Eventual replacement for docinfo?
+  -->
+  <define name="info">
+    <element name="info">
+      <ref name="info.attlist"/>
+      <oneOrMore>
+        <ref name="bibliographic.elements"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="info.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="author">
+    <element name="author">
+      <ref name="author.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="author.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="authors">
+    <element name="authors">
+      <ref name="authors.attlist"/>
+      <oneOrMore>
+        <ref name="author"/>
+        <optional>
+          <ref name="organization"/>
+        </optional>
+        <optional>
+          <ref name="address"/>
+        </optional>
+        <optional>
+          <ref name="contact"/>
+        </optional>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="authors.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="organization">
+    <element name="organization">
+      <ref name="organization.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="organization.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="address">
+    <element name="address">
+      <ref name="address.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="address.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+    <ref name="fixedspace.att"/>
+  </define>
+  <define name="contact">
+    <element name="contact">
+      <ref name="contact.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="contact.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="version">
+    <element name="version">
+      <ref name="version.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="version.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="revision">
+    <element name="revision">
+      <ref name="revision.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="revision.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="status">
+    <element name="status">
+      <ref name="status.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="status.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="date">
+    <element name="date">
+      <ref name="date.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="date.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="copyright">
+    <element name="copyright">
+      <ref name="copyright.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="copyright.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <!--
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        Decoration Elements
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  -->
+  <define name="decoration">
+    <element name="decoration">
+      <ref name="decoration.attlist"/>
+      <optional>
+        <ref name="header"/>
+      </optional>
+      <optional>
+        <ref name="footer"/>
+      </optional>
+    </element>
+  </define>
+  <define name="decoration.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="header">
+    <element name="header">
+      <ref name="header.attlist"/>
+      <oneOrMore>
+        <ref name="body.elements"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="header.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="footer">
+    <element name="footer">
+      <ref name="footer.attlist"/>
+      <oneOrMore>
+        <ref name="body.elements"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="footer.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <!--
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        Structural Elements
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  -->
+  <define name="section">
+    <element name="section">
+      <ref name="section.attlist"/>
+      <ref name="title"/>
+      <optional>
+        <ref name="subtitle"/>
+      </optional>
+      <optional>
+        <ref name="info"/>
+      </optional>
+      <optional>
+        <ref name="decoration"/>
+      </optional>
+      <ref name="structure.model"/>
+    </element>
+  </define>
+  <define name="section.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="topic">
+    <element name="topic">
+      <ref name="topic.attlist"/>
+      <optional>
+        <ref name="title"/>
+      </optional>
+      <oneOrMore>
+        <ref name="body.elements"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="topic.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="sidebar">
+    <element name="sidebar">
+      <ref name="sidebar.attlist"/>
+      <ref name="title"/>
+      <optional>
+        <ref name="subtitle"/>
+      </optional>
+      <oneOrMore>
+        <choice>
+          <ref name="body.elements"/>
+          <ref name="topic"/>
+        </choice>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="sidebar.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="transition">
+    <element name="transition">
+      <ref name="transition.attlist"/>
+      <empty/>
+    </element>
+  </define>
+  <define name="transition.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <!--
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        Body Elements
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  -->
+  <define name="paragraph">
+    <element name="paragraph">
+      <ref name="paragraph.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="paragraph.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="compound">
+    <element name="compound">
+      <ref name="compound.attlist"/>
+      <oneOrMore>
+        <ref name="body.elements"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="compound.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="container">
+    <element name="container">
+      <ref name="container.attlist"/>
+      <oneOrMore>
+        <ref name="body.elements"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="container.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="bullet_list">
+    <element name="bullet_list">
+      <ref name="bullet_list.attlist"/>
+      <oneOrMore>
+        <ref name="list_item"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="bullet_list.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+    <optional>
+      <attribute name="bullet"/>
+    </optional>
+  </define>
+  <define name="enumerated_list">
+    <element name="enumerated_list">
+      <ref name="enumerated_list.attlist"/>
+      <oneOrMore>
+        <ref name="list_item"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="enumerated_list.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+    <optional>
+      <attribute name="enumtype">
+        <choice>
+          <value>arabic</value>
+          <value>loweralpha</value>
+          <value>upperalpha</value>
+          <value>lowerroman</value>
+          <value>upperroman</value>
+        </choice>
+      </attribute>
+    </optional>
+    <optional>
+      <attribute name="prefix"/>
+    </optional>
+    <optional>
+      <attribute name="suffix"/>
+    </optional>
+    <optional>
+      <attribute name="start">
+        <ref name="number"/>
+      </attribute>
+    </optional>
+  </define>
+  <define name="list_item">
+    <element name="list_item">
+      <ref name="list_item.attlist"/>
+      <zeroOrMore>
+        <ref name="body.elements"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="list_item.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="definition_list">
+    <element name="definition_list">
+      <ref name="definition_list.attlist"/>
+      <oneOrMore>
+        <ref name="definition_list_item"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="definition_list.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="definition_list_item">
+    <element name="definition_list_item">
+      <ref name="definition_list_item.attlist"/>
+      <ref name="term"/>
+      <zeroOrMore>
+        <ref name="classifier"/>
+      </zeroOrMore>
+      <ref name="definition"/>
+    </element>
+  </define>
+  <define name="definition_list_item.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="term">
+    <element name="term">
+      <ref name="term.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="term.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="classifier">
+    <element name="classifier">
+      <ref name="classifier.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="classifier.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="definition">
+    <element name="definition">
+      <ref name="definition.attlist"/>
+      <oneOrMore>
+        <ref name="body.elements"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="definition.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="field_list">
+    <element name="field_list">
+      <ref name="field_list.attlist"/>
+      <oneOrMore>
+        <ref name="field"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="field_list.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="field">
+    <element name="field">
+      <ref name="field.attlist"/>
+      <ref name="field_name"/>
+      <ref name="field_body"/>
+    </element>
+  </define>
+  <define name="field.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="field_name">
+    <element name="field_name">
+      <ref name="field_name.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="field_name.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <!-- May be empty. -->
+  <define name="field_body">
+    <element name="field_body">
+      <ref name="field_body.attlist"/>
+      <zeroOrMore>
+        <ref name="body.elements"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="field_body.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="option_list">
+    <element name="option_list">
+      <ref name="option_list.attlist"/>
+      <oneOrMore>
+        <ref name="option_list_item"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="option_list.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="option_list_item">
+    <element name="option_list_item">
+      <ref name="option_list_item.attlist"/>
+      <ref name="option_group"/>
+      <ref name="description"/>
+    </element>
+  </define>
+  <define name="option_list_item.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="option_group">
+    <element name="option_group">
+      <ref name="option_group.attlist"/>
+      <oneOrMore>
+        <ref name="option"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="option_group.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="option">
+    <element name="option">
+      <ref name="option.attlist"/>
+      <ref name="option_string"/>
+      <zeroOrMore>
+        <ref name="option_argument"/>
+      </zeroOrMore>
+    </element>
+  </define>
+  <define name="option.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="option_string">
+    <element name="option_string">
+      <ref name="option_string.attlist"/>
+      <text/>
+    </element>
+  </define>
+  <define name="option_string.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <!--
+    `delimiter` contains the text preceding the `option_argument`: either
+    the text separating it from the `option_string` (typically either "="
+    or " ") or the text between option arguments (typically either "," or
+    " ").
+  -->
+  <define name="option_argument">
+    <element name="option_argument">
+      <ref name="option_argument.attlist"/>
+      <text/>
+    </element>
+  </define>
+  <define name="option_argument.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+    <optional>
+      <attribute name="delimiter"/>
+    </optional>
+  </define>
+  <define name="description">
+    <element name="description">
+      <ref name="description.attlist"/>
+      <oneOrMore>
+        <ref name="body.elements"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="description.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="literal_block">
+    <element name="literal_block">
+      <ref name="literal_block.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="literal_block.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+    <ref name="fixedspace.att"/>
+  </define>
+  <define name="line_block">
+    <element name="line_block">
+      <ref name="line_block.attlist"/>
+      <oneOrMore>
+        <choice>
+          <ref name="line"/>
+          <ref name="line_block"/>
+        </choice>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="line_block.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="line">
+    <element name="line">
+      <ref name="line.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="line.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="block_quote">
+    <element name="block_quote">
+      <ref name="block_quote.attlist"/>
+      <oneOrMore>
+        <ref name="body.elements"/>
+      </oneOrMore>
+      <optional>
+        <ref name="attribution"/>
+      </optional>
+    </element>
+  </define>
+  <define name="block_quote.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="attribution">
+    <element name="attribution">
+      <ref name="attribution.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="attribution.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="doctest_block">
+    <element name="doctest_block">
+      <ref name="doctest_block.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="doctest_block.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+    <ref name="fixedspace.att"/>
+  </define>
+  <define name="attention">
+    <element name="attention">
+      <ref name="attention.attlist"/>
+      <oneOrMore>
+        <ref name="body.elements"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="attention.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="caution">
+    <element name="caution">
+      <ref name="caution.attlist"/>
+      <oneOrMore>
+        <ref name="body.elements"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="caution.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="danger">
+    <element name="danger">
+      <ref name="danger.attlist"/>
+      <oneOrMore>
+        <ref name="body.elements"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="danger.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="error">
+    <element name="error">
+      <ref name="error.attlist"/>
+      <oneOrMore>
+        <ref name="body.elements"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="error.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="hint">
+    <element name="hint">
+      <ref name="hint.attlist"/>
+      <oneOrMore>
+        <ref name="body.elements"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="hint.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="important">
+    <element name="important">
+      <ref name="important.attlist"/>
+      <oneOrMore>
+        <ref name="body.elements"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="important.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="note">
+    <element name="note">
+      <ref name="note.attlist"/>
+      <oneOrMore>
+        <ref name="body.elements"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="note.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="tip">
+    <element name="tip">
+      <ref name="tip.attlist"/>
+      <oneOrMore>
+        <ref name="body.elements"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="tip.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="warning">
+    <element name="warning">
+      <ref name="warning.attlist"/>
+      <oneOrMore>
+        <ref name="body.elements"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="warning.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="admonition">
+    <element name="admonition">
+      <ref name="admonition.attlist"/>
+      <ref name="title"/>
+      <oneOrMore>
+        <ref name="body.elements"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="admonition.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="footnote">
+    <element name="footnote">
+      <ref name="footnote.attlist"/>
+      <optional>
+        <ref name="label"/>
+      </optional>
+      <oneOrMore>
+        <ref name="body.elements"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="footnote.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+    <ref name="backrefs.att"/>
+    <ref name="auto.att"/>
+  </define>
+  <define name="citation">
+    <element name="citation">
+      <ref name="citation.attlist"/>
+      <ref name="label"/>
+      <oneOrMore>
+        <ref name="body.elements"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="citation.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+    <ref name="backrefs.att"/>
+  </define>
+  <define name="label">
+    <element name="label">
+      <ref name="label.attlist"/>
+      <text/>
+    </element>
+  </define>
+  <define name="label.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="rubric">
+    <element name="rubric">
+      <ref name="rubric.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="rubric.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <!-- Empty except when used as an inline element. -->
+  <define name="target">
+    <element name="target">
+      <ref name="target.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="target.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+    <ref name="reference.atts"/>
+    <ref name="anonymous.att"/>
+  </define>
+  <define name="substitution_definition">
+    <element name="substitution_definition">
+      <ref name="substitution_definition.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="substitution_definition.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+    <optional>
+      <attribute name="ltrim">
+        <ref name="yesorno"/>
+      </attribute>
+    </optional>
+    <optional>
+      <attribute name="rtrim">
+        <ref name="yesorno"/>
+      </attribute>
+    </optional>
+  </define>
+  <define name="comment">
+    <element name="comment">
+      <ref name="comment.attlist"/>
+      <text/>
+    </element>
+  </define>
+  <define name="comment.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+    <ref name="fixedspace.att"/>
+  </define>
+  <define name="pending">
+    <element name="pending">
+      <ref name="pending.attlist"/>
+      <empty/>
+    </element>
+  </define>
+  <define name="pending.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="figure">
+    <element name="figure">
+      <ref name="figure.attlist"/>
+      <ref name="image"/>
+      <choice>
+        <group>
+          <ref name="caption"/>
+          <optional>
+            <ref name="legend"/>
+          </optional>
+        </group>
+        <ref name="legend"/>
+      </choice>
+    </element>
+  </define>
+  <define name="figure.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+    <ref name="align-h.att"/>
+    <optional>
+      <attribute name="width">
+          <!--
+          number or percent
+        <ref name="number"/>
+        -->
+      </attribute>
+    </optional>
+  </define>
+  <!-- Also an inline element. -->
+  <define name="image">
+    <element name="image">
+      <ref name="image.attlist"/>
+      <empty/>
+    </element>
+  </define>
+  <define name="image.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+    <ref name="align-hv.att"/>
+    <attribute name="uri"/>
+    <optional>
+      <attribute name="alt"/>
+    </optional>
+    <optional>
+      <attribute name="height">
+        <ref name="measure"/>
+      </attribute>
+    </optional>
+    <optional>
+      <attribute name="width">
+        <ref name="measure"/>
+      </attribute>
+    </optional>
+    <optional>
+      <attribute name="scale">
+        <ref name="number"/>
+      </attribute>
+    </optional>
+  </define>
+  <define name="caption">
+    <element name="caption">
+      <ref name="caption.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="caption.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="legend">
+    <element name="legend">
+      <ref name="legend.attlist"/>
+      <oneOrMore>
+        <ref name="body.elements"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="legend.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <!-- Table elements: table, tgroup, colspec, thead, tbody, row, entry. -->
+  <include href="soextblx.rng"/>
+  <!-- Used to record processing information. -->
+  <define name="system_message">
+    <element name="system_message">
+      <ref name="system_message.attlist"/>
+      <oneOrMore>
+        <ref name="body.elements"/>
+      </oneOrMore>
+    </element>
+  </define>
+  <define name="system_message.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+    <ref name="backrefs.att"/>
+    <optional>
+      <attribute name="level">
+        <ref name="number"/>
+      </attribute>
+    </optional>
+    <optional>
+      <attribute name="line">
+        <ref name="number"/>
+      </attribute>
+    </optional>
+    <optional>
+      <attribute name="type">
+        <data type="NMTOKEN"/>
+      </attribute>
+    </optional>
+  </define>
+  <!-- Used to pass raw data through the system. Also inline. -->
+  <define name="raw">
+    <element name="raw">
+      <ref name="raw.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="raw.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+    <ref name="fixedspace.att"/>
+    <optional>
+      <attribute name="format">
+        <data type="NMTOKENS"/>
+      </attribute>
+    </optional>
+  </define>
+  <!--
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        Inline Elements
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
+    Inline elements occur within the text contents of body elements. Some
+    nesting of inline elements is allowed by these definitions, with the
+    following caveats:
+    
+    - An inline element may not contain a nested element of the same type
+      (e.g. <strong> may not contain another <strong>).
+    - Nested inline elements may or may not be supported by individual
+      applications using this DTD.
+    - The inline elements <footnote_reference>, <citation_reference>,
+      <literal>, and <image> do not support nesting.
+  -->
+  <define name="emphasis">
+    <element name="emphasis">
+      <ref name="emphasis.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="emphasis.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="strong">
+    <element name="strong">
+      <ref name="strong.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="strong.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="literal">
+    <element name="literal">
+      <ref name="literal.attlist"/>
+      <text/>
+    </element>
+  </define>
+  <define name="literal.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <!-- Can also be a body element, when it contains an "image" element. -->
+  <define name="reference">
+    <element name="reference">
+      <ref name="reference.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="reference.attlist" combine="interleave">
+    <optional>
+      <attribute name="name"/>
+    </optional>
+    <ref name="basic.atts"/>
+    <ref name="reference.atts"/>
+    <ref name="anonymous.att"/>
+  </define>
+  <define name="footnote_reference">
+    <element name="footnote_reference">
+      <ref name="footnote_reference.attlist"/>
+      <text/>
+    </element>
+  </define>
+  <define name="footnote_reference.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+    <ref name="refid.att"/>
+    <ref name="refname.att"/>
+    <ref name="auto.att"/>
+  </define>
+  <define name="citation_reference">
+    <element name="citation_reference">
+      <ref name="citation_reference.attlist"/>
+      <text/>
+    </element>
+  </define>
+  <define name="citation_reference.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+    <ref name="refid.att"/>
+    <ref name="refname.att"/>
+  </define>
+  <define name="substitution_reference">
+    <element name="substitution_reference">
+      <ref name="substitution_reference.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="substitution_reference.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+    <ref name="refname.att"/>
+  </define>
+  <define name="title_reference">
+    <element name="title_reference">
+      <ref name="title_reference.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="title_reference.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="abbreviation">
+    <element name="abbreviation">
+      <ref name="abbreviation.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="abbreviation.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="acronym">
+    <element name="acronym">
+      <ref name="acronym.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="acronym.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="superscript">
+    <element name="superscript">
+      <ref name="superscript.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="superscript.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="subscript">
+    <element name="subscript">
+      <ref name="subscript.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="subscript.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="inline">
+    <element name="inline">
+      <ref name="inline.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="inline.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <define name="problematic">
+    <element name="problematic">
+      <ref name="problematic.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="problematic.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+    <ref name="refid.att"/>
+  </define>
+  <define name="generated">
+    <element name="generated">
+      <ref name="generated.attlist"/>
+      <ref name="text.model"/>
+    </element>
+  </define>
+  <define name="generated.attlist" combine="interleave">
+    <ref name="basic.atts"/>
+  </define>
+  <start>
+    <choice>
+      <ref name="document"/>
+    </choice>
+  </start>
+</grammar>
+<!--
+  Local Variables:
+  mode: sgml
+  indent-tabs-mode: nil
+  fill-column: 70
+  End:
+-->
