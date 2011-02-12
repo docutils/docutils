@@ -13,6 +13,7 @@ parser.add_argument('--xslt', nargs=1, choices = ['xsltproc', 'lxml', 'saxon'], 
         dest='xsl_transform', help = 'choose which processer to use when transforming' ) 
 parser.add_argument('--no-pdf', action="store_const", const=True, help = 'don\'t convert to PDF', dest='no_pdf')
 parser.add_argument('--no-rst', action="store_const", const=True, help = 'don\'t convert to RST', dest='no_rst')
+parser.add_argument('--no-fo', action="store_const", const=True, help = 'don\'t convert to FO', dest='no_fo')
 parser.add_argument('--strict', nargs=1, choices = ['True', 'False'],  
         default = 'True', help = 'whether to quit on errors', dest='strict')
 parser.add_argument('--clean', action="store_const", const=True, help = 'whether to remove files after test', dest='clean')
@@ -22,6 +23,9 @@ if  arg.strict == 'True':
 else:
     STRICT = False
 
+# =========================================================================================
+# stylesheet  test
+# =========================================================================================
 test_dict = {
         'long_plain.xml':[({'page-layout':'simple'}, 'simple_no_page_nos.fo'), 
                 ({'page-layout': 'first'}, 'first_page_diff_no_page_nos.fo'),  
@@ -99,6 +103,22 @@ test_dict = {
                     'front_matter5.fo'),
             ]
         }
+# =========================================================================================
+# Docutils_to_fo test
+# =========================================================================================
+
+docfo_commands = [
+            ('long_plain.xml', '' , {'paper-size.height':'9in', 'paper-size.width': '6in'}),
+            ('long_plain.xml', '' , {'page.top-margin':'.75in', 'page.bottom-margine': '.75in', 
+                'page.right-margin' : '.75in', 'page.left-margin' : '.75in' }),
+            ('long_plain.xml', '', {'odd-page.top-margin' : '1in', 'odd-page.bottom-margin' : '1in', 
+                'odd-page.right-margin' : '1in', 'odd-page.left-margin' : '2in', 'even-page.top-margin' : '1in', 
+                'even-page.bottom-margin' : '1in', 'even-page.right-margin' : '2in', 
+                'even-page.left-margin' : '1in', 'first-page.top-margin' : '3in', 
+                'first-page.bottom-margin' : '1in', 'first-page.right-margin' : '.8in', 
+                'first-page.left-margin' : '2in'}), 
+                
+                ]
 
 def error_func(msg, the_path = None):
     if the_path:
@@ -230,6 +250,51 @@ def convert_to_pdf():
             msg += '\n'
             error(msg)
 
+def convert_fo_to_pdf(fo_file, out_file):
+    command = 'fop  %s %s' % (fo_file, out_file)
+    status, output = commands.getstatusoutput(command)
+    if status:
+        msg = 'error converting %s to PDF\n' % (fo_file)
+        msg += 'command = "%s" \n' % (command)
+        msg += output
+        msg += '\n'
+        error(msg)
+
+
+def make_conf_file(the_dict, section = 'FO', conf_path = 'docutils.conf'):
+    rm_path(conf_path)
+    write_obj = file(conf_path, 'w')
+    the_keys = the_dict.keys()
+    write_obj.write('[%s]\n' % section) 
+    for the_key in the_keys:
+        write_obj.write('%s = %s\n' % (the_key, the_dict[the_key]))
+    write_obj.close()
+    return conf_path
+
+def run_docutils_command(command):
+    status, output = commands.getstatusoutput(command)
+    if status:
+        msg = 'error converting  to FO with docutilst_to_fo.py:\n' 
+        msg += 'command = "%s" \n' % (command)
+        msg += output
+        msg += '\n'
+        error_func(msg)
+
+def test_docutils_to_fo_script(script_command):
+    command = '%s -h' % script_command
+    status, output = commands.getstatusoutput(command)
+    default__commands = ' --config docutils.conf '
+    for info in docfo_commands:
+        command = script_command
+        make_conf_file(info[2])
+        in_file = info[0]
+        filename,ext = os.path.splitext(in_file)
+        out_file = '%s.fo' % filename
+        out_opt = ' -o %s ' % out_file
+        command += ' %s %s %s' % (info[1], out_opt, info[0])
+        run_docutils_command(command)
+        out_pdf = '%s.pdf' % filename
+        convert_fo_to_pdf(fo_file = out_file, out_file = out_pdf)
 
 def clean():
     xml_files = glob.glob('*.xml')
@@ -238,10 +303,15 @@ def clean():
     fo_files = glob.glob('*.fo')
     for fo_file in fo_files:
         os.remove(fo_file)
+    pdf_files = glob.glob('*.pdf')
+    for pdf_file in pdf_files:
+        os.remove(pdf_file)
 
-def test_docutils_to_fo_script(script_command):
-    command = '%s -h' % script_command
-    status, output = commands.getstatusoutput(command)
+def rm_path(the_path):
+    try:
+        os.remove(the_path)
+    except OSError:
+        pass
 
 def main():
     script_path  = os.path.abspath(os.path.join('scripts', 'docutils_to_fo.py'))
@@ -251,10 +321,15 @@ def main():
     if not arg.no_rst:
         rst_files = glob.glob('*.rst')
         convert_to_xml(rst_files)
-    convert_to_fo(xsl_transform = arg.xsl_transform[0])
+    if not arg.no_fo:
+        convert_to_fo(xsl_transform = arg.xsl_transform[0])
     if not arg.no_pdf:
         convert_to_pdf()
+    for fo_file in glob.glob('*.fo'):
+        os.remove(fo_file)
     test_docutils_to_fo_script(script_command)
+    if arg.clean:
+        clean()
     os.chdir(current_dir)
 
 try:
