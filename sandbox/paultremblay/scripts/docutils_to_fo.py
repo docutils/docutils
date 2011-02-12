@@ -33,7 +33,8 @@ def parse_config_files(the_paths):
 
 def read_config_files():
     config_files = []
-    config_files.append(os.path.join(os.environ.get('HOME'), '.docutils'))
+    if os.environ.get('HOME'):
+        config_files.append(os.path.join(os.environ.get('HOME'), '.docutils'))
     config_files.append(os.path.join(os.getcwd(), 'docutils.conf'))
     if arg.config_file:
         config_files.append(arg.config_file[0])
@@ -84,7 +85,12 @@ if debug:
     verbose = 5
 # make a stylesheet
 ss_obj = docutilsToFo.make_stylesheet.ReadConfig(import_ss = root_stylesheet, verbose = verbose)
-ss_string = ss_obj.make_stylesheet()
+try:
+    ss_string = ss_obj.make_stylesheet()
+except docutilsToFo.make_stylesheet.FOConfigFileException, msg:
+    sys.stderr.write(str(msg))
+    sys.stderr.write('\nscript now quitting\n')
+    sys.exit(1)
 write_obj = file(out_xsl, 'w')
 write_obj.write(ss_string)
 write_obj.close()
