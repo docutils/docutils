@@ -1,16 +1,26 @@
 #! /Library/Frameworks/Python.framework/Versions/2.7/bin/python
 #  $Id$
-import sys, copy, getopt, os, ConfigParser
+import sys, copy,  os, ConfigParser, pprint
 from docutils_fo_dicts import *
 from xml.sax import saxutils
 class FOConfigFileException(Exception):
     pass
 
+def dump(object):
+    pp = pprint.PrettyPrinter(indent=4)
+    sys.stderr.write(pp.pformat(object))
+    sys.stderr.write('\n')
+
+
+class Dump:
+    def __init__(self):
+        pass
+
 class WriteStylesheet:
 
-    def __init__(self):
+    def __init__(self, verbose = 0):
+        self.__verbose = verbose
         self.__string = ''
-        pass
 
     def __write_start_element(self, name, atts):
         pass
@@ -67,6 +77,115 @@ class WriteStylesheet:
         self.__write_root_end()
         return self.__string
 
+class PostProcess:
+
+    def __init__(self, params, attribute_sets):
+        self.__attribute_sets = attribute_sets
+        self.__params = params
+
+
+    # not used
+    def __test_measure(self, the_string):
+        """
+        test if string is a measure:
+        12pt returns 12, pt
+        1.5 returns None, None
+
+        """
+        accept_units = ['em', 'px', 'in', 'cm', 'mm', 'pt', 'pc']
+        try:
+            float(the_string)
+            return None, None
+        except ValueError:
+            pass
+        if len(the_string) < 3:
+            return None, None
+        unit = the_string[-2:]
+        if unit not in accept_units:
+            return None, None
+        num = the_string[:-2]
+        try:
+            num = float(num)
+        except ValueError:
+            return None, None
+        return num, unit
+
+    # not used
+    def __get_default_font_size(self):
+        document_att_set = self.__attribute_sets.get('default-page-sequence')
+        body_att_set = self.__attribute_sets.get('default-flow')
+        if document_att_set and document_att_set.get('font-size'):
+            default_font_size = document_att_set.get('font-size')
+        elif body_att_set and document_att_set.get('font-size'):
+            default_font_size = body_att_set.get('font-size')
+        else:
+            default_font_size = '12pt'
+        num, unit = self.__test_measure(default_font_size)
+        if not num:
+            default_font_size = '12pt'
+        self.__default_font_size = default_font_size
+
+    def __fix_header_footer(self):
+        # have to set the param spacing-header to extent, if not already set
+        header_att_set = self.__attribute_sets.get('header-region-before')
+        if header_att_set:
+            extent = header_att_set.get('extent')
+            if extent and not self.__params.get('spacing-header'):
+                self.__params['spacing-header'] = extent
+
+        footer_att_set = self.__attribute_sets.get('footer-region-after')
+        if footer_att_set:
+            extent = footer_att_set.get('extent')
+            if extent and not self.__params.get('spacing-footer'):
+                self.__params['spacing-footer'] = extent
+
+        # have to add a space-before.conditionality to force space that
+        # otherwise would not be written
+        header_att_set = self.__attribute_sets.get('header-block')
+        if header_att_set:
+            space_before = header_att_set.get('space-before')
+            if space_before:
+                self.__attribute_sets['header-block']['space-before.conditionality'] = 'retain'
+
+        # same as above
+        footer_att_set = self.__attribute_sets.get('footer-block')
+        if footer_att_set:
+            space_before = footer_att_set.get('space-before')
+            if space_before:
+                self.__attribute_sets['footer-block']['space-before.conditionality'] = 'retain'
+
+    def __get_page_layout(self):
+        odd_page = self.__attribute_sets.get('odd-simple-page-master')
+        even_page = self.__attribute_sets.get('even-simple-page-master')
+        first_page = self.__attribute_sets.get('first-simple-page-master')
+        suppress_first_header = self.__params.get('suppress-first-page-header')
+        suppress_first_footer = self.__params.get('suppress-first-page-footer')
+        need_odd_or_even_page = False
+        if odd_page or even_page:
+            need_odd_or_even_page = True
+        need_first_page = False
+        if suppress_first_footer or suppress_first_header or first_page:
+            need_first_page = True
+
+        if need_first_page and need_odd_or_even_page:
+            page_layout = 'first-odd-even'
+        elif need_first_page:
+            page_layout = 'first'
+        elif need_odd_or_even_page:
+            page_layout = 'odd-even'
+        else:
+            page_layout = 'simple'
+        self.__params['page-layout'] = page_layout
+        
+
+
+
+    def post_process(self):
+        self.__get_default_font_size()
+        self.__fix_header_footer()
+        self.__get_page_layout()
+        return self.__attribute_sets, self.__params
+
 class ReadConfig:
 
     def __init__(self, import_ss = None, verbose = 0):
@@ -113,21 +232,23 @@ class ReadConfig:
                 att_sets = self.__attribute_sets)
         return ss_string
 
-    def read_config_file(self):
-        opts_dict = {}
-        home= os.environ.get('HOME')
-        home_config_file = os.path.join(home, '.docutils')
-        if os.path.isfile(home_config_file):
-            self.parse_config_file(home_config_file)
-        cwd = os.getcwd()
-        project_config_file = os.path.join(cwd, '.docutils.conf')
-        if os.path.isfile(project_config_file):
-            self.parse_config_file(project_config_file)
-        self.__post_adjust()# add parameters or fix attriute sets
 
-    def parse_config_file(self, the_path):
+    def read_config_files(self):
         config = ConfigParser.SafeConfigParser()
-        config.read(the_path)
+        config_files = []
+        if os.environ.get('HOME'):
+            config_files.append(os.path.join(os.environ.get('HOME'), '.docutils'))
+        config_files.append(os.path.join(os.getcwd(), 'docutils.conf'))
+        for the_path in config_files:
+            config.read(the_path)
+        if self.__verbose > 4:
+            sys.stderr.write('config is: \n' )
+            dump(config.items('FO'))
+        return config
+
+
+    def parse_config_files(self):
+        config = self.read_config_files()
         if not 'FO' in config.sections():
             return
         opts =  config.items('FO')
@@ -147,96 +268,15 @@ class ReadConfig:
             else:
                 self.__error('"%s" = "%s" not a valid config option\n' % (first, second))
 
-    def __get_default_font_size(self):
-        document_att_set = self.__attribute_sets.get('default-page-sequence')
-        body_att_set = self.__attribute_sets.get('default-flow')
-        if document_att_set and document_att_set.get('font-size'):
-            default_font_size = document_att_set.get('font-size')
-        elif body_att_set and document_att_set.get('font-size'):
-            default_font_size = body_att_set.get('font-size')
-        else:
-            default_font_size = '12pt'
-        num, unit = self.__test_measure(default_font_size)
-        if not num:
-            default_font_size = '12pt'
-        self.__default_font_size = default_font_size
-
-    def __test_measure(self, the_string):
-        """
-        test if string is a measure:
-        12pt returns 12, pt
-        1.5 returns None, None
-
-        """
-        accept_units = ['em', 'px', 'in', 'cm', 'mm', 'pt', 'pc']
-        try:
-            float(the_string)
-            return None, None
-        except ValueError:
-            pass
-        if len(the_string) < 3:
-            return None, None
-        unit = the_string[-2:]
-        if unit not in accept_units:
-            return None, None
-        num = the_string[:-2]
-        try:
-            num = float(num)
-        except ValueError:
-            return None, None
-        return num, unit
-
-    def __fix_line_height_not_needed(self):
-        default_font_size = self.__default_font_size
-        font_size, font_unit = self.__test_measure(self.__default_font_size)
-        att_sets = self.__attribute_sets.keys()
-        for att_set in att_sets:
-            properties = self.__attribute_sets[att_set]
-            line_height = properties.get('line-height')
-            if line_height:
-                num, unit =  self.__test_measure(line_height)
-                if num: return # no need to multiply and add units
-                try:
-                    line_height = float(line_height)
-                except ValueError:
-                    self.__error('"%s" not a valid unit for line-height\n' % (line_height))
-                    del(self.__attribute_sets[att_set]['line-height']) 
-                    return
-                line_height_true = str(int(round(line_height * font_size))) + font_unit
-                self.__attribute_sets[att_set]['line-height'] = line_height_true
-
-
-    def __post_adjust(self):
-        self.__get_default_font_size()
-        # have to set the param spacing-header to extent, if not already set
-        header_att_set = self.__attribute_sets.get('header-region-before')
-        if header_att_set:
-            extent = header_att_set.get('extent')
-            if extent and not self.__params.get('spacing-header'):
-                self.__params['spacing-header'] = extent
-
-        footer_att_set = self.__attribute_sets.get('footer-region-after')
-        if footer_att_set:
-            extent = footer_att_set.get('extent')
-            if extent and not self.__params.get('spacing-footer'):
-                self.__params['spacing-footer'] = extent
-
-        # have to add a space-before.conditionality to force space that
-        # otherwise would not be written
-        header_att_set = self.__attribute_sets.get('header-block')
-        if header_att_set:
-            space_before = header_att_set.get('space-before')
-            if space_before:
-                self.__attribute_sets['header-block']['space-before.conditionality'] = 'retain'
-
-        # same as above
-        footer_att_set = self.__attribute_sets.get('footer-block')
-        if footer_att_set:
-            space_before = footer_att_set.get('space-before')
-            if space_before:
-                self.__attribute_sets['footer-block']['space-before.conditionality'] = 'retain'
-
-
+    def __post_process(self):
+        post_process_obj = PostProcess(attribute_sets = self.__attribute_sets, params = self.__params)
+        self.__attribute_sets, self.__params = post_process_obj.post_process()
+        if self.__verbose > 4:
+            sys.stderr.write('self.__attribute_sets after post process:\n')
+            dump(self.__attribute_sets)
+            sys.stderr.write('self.__params after post process:\n')
+            dump(self.__params)
+            sys.stderr.write('\n')
 
     def __handle_attributes(self, user_att_set, user_att, value, check_special = True):
         if  special_values_dict.get(user_att) and check_special:
@@ -264,8 +304,9 @@ class ReadConfig:
         self.__attribute_sets[att_set][att] = value
 
     def __error(self, msg):
-        sys.stderr.write(msg)
-        sys.stderr.write('\n')
+        # sys.stderr.write(msg)
+        # sys.stderr.write('\n')
+        raise FOConfigFileException(msg)
 
     def __handle_special_atts(self, user_att_set, user_att, value):
         if user_att == 'font-style':
@@ -300,11 +341,9 @@ class ReadConfig:
     def __handle_param(self, param, value):
         self.__params[param] = value
 
-    def print_att_list(self):
-        print self.__attribute_sets
-
     def make_stylesheet(self):
-        self.read_config_file()
+        self.parse_config_files()
+        self.__post_process()
         ss_string = self.write_config_file()
         return ss_string
         # self.print_att_list()
