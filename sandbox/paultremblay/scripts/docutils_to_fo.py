@@ -22,18 +22,37 @@ def get_args():
     parser.add_argument('-s, -stylesheet', nargs=1, help = 'The root stylesheet to use',
             dest='root_stylesheet')
     parser.add_argument('-o, --out', nargs=1, help = 'Path to output result', dest='out_path')
+    parser.add_argument('--config', nargs=1, help = 'Path to configuration file', dest='config_file')
     return  parser.parse_args()
 
+def parse_config_files(the_paths):
+    config = ConfigParser.SafeConfigParser()
+    for the_path in the_paths:
+        config.read(the_path)
+    return config
+
+def read_config_files():
+    config_files = []
+    config_files.append(os.path.join(os.environ.get('HOME'), '.docutils'))
+    config_files.append(os.path.join(os.getcwd(), 'docutils.conf'))
+    if arg.config_file:
+        config_files.append(arg.config_file[0])
+    config = parse_config_files(config_files)
+    return config
+
+def get_config_option(the_option, section='FO'):
+    try:
+        value = config_obj.get(section, the_option)
+    except ConfigParser.NoSectionError, error:
+        return
+    except ConfigParser.NoOptionError, error:
+        return
  
 
-
-home_config_file = os.path.join(os.environ.get('HOME'), '.docutils')
-project_config_file = os.path.join(os.getcwd(), '.docutils.conf')
-config = ConfigParser.SafeConfigParser()
-config.read([home_config_file, project_config_file])
-
-
 arg = get_args()
+config_obj = read_config_files()
+# get_config_option('strict')
+
 debug = arg.debug
 if debug: sys.stderr.write('In debug mode\n')
 if debug: sys.stderr.write('script is "%s"\n' % __file__)
@@ -41,13 +60,8 @@ in_file = arg.in_file
 if debug:
     sys.stderr.write('in_file is "%s"\n' % str(in_file))
 
-if arg.root_stylesheet:
-    root_stylesheet = arg.root_stylesheet[0]
-else:
-    try:
-        root_stylesheet = config.get('FO', 'xsl-stylesheet')
-    except (ConfigParser.NoSectionError, ConfigParser.NoOptionError):
-        root_stylesheet = None
+root_stylesheet = get_config_option('xsl-stylesheet')
+if arg.root_stylesheet: root_stylesheet = arg.root_stylesheet[0]
 
 if debug: sys.stderr.write('root_stylesheet is "%s"\n' % str(root_stylesheet))
 out_path = None
