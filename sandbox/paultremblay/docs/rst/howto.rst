@@ -218,6 +218,8 @@ In the *document* (not the config file), use the following::
     
     :page-num:`1`
 
+Page numbers will be generated automatically.
+
 Create space for a header or footer
 ------------------------------------
 
@@ -241,3 +243,43 @@ Create space between footer and body text
 ::
 
  footer.space-before = -.1in
+
+Suppress first page header or footer
+--------------------------------------
+
+::
+
+ footer.suppress-first-page = True
+ header.suppress-first-page = True
+
+Create custome headers and footers for odd, even, etc.
+--------------------------------------------------------
+
+There is no way to create different headers and footers for different parts of
+the document, since Restructured Text only allows for one type of header and
+footer.
+
+Format header and footer text
+------------------------------
+
+If your header or footer contains just one paragraphs, use the header or
+footer region plus any block property::
+
+ header.color = blue
+ header.background-color = black
+
+If you have more than one paragraph, you can either set all the properties the
+same using as in the example above, or set each individual paragraph. You can
+format up to 3 different paragraphs:: 
+
+ # create a blue backgroud color for all paragraphs
+ header.background-color = blue
+ # create different formatting for each paragraph
+ header-first-paragraph.font-style = bold
+ header-second-paragraph.font-style = italic
+ header-third-paragraph.font-style = italic-bold
+
+ footer-first-paragraph.font-style = bold
+ footer-second-paragraph.font-style = italic
+ footer-third-paragraph.font-style = italic-bold
+
