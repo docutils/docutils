@@ -2,7 +2,7 @@ import sys, os, glob, commands, shlex, subprocess, argparse
 import docutilsToFo.rst2xml_lib
 from lxml import etree
 import lxml
-from docutilsToFo.rst2xml_lib import transform_lxml, publish_xml_cmdline
+from docutilsToFo.rst2xml_lib import transform_lxml, publish_xml_cmdline, validate_fo_xsl 
 
 # $Id$ 
 TEST = False
@@ -16,12 +16,18 @@ parser.add_argument('--no-rst', action="store_const", const=True, help = 'don\'t
 parser.add_argument('--no-fo', action="store_const", const=True, help = 'don\'t convert to FO', dest='no_fo')
 parser.add_argument('--strict', nargs=1, choices = ['True', 'False'],  
         default = 'True', help = 'whether to quit on errors', dest='strict')
+parser.add_argument('--debug', action="store_const", const=True, help = 'do debug messaging', dest='debug')
+parser.add_argument('--verbose', action="store_const", const=True, help = 'be verose in messaging', dest='verbose')
 parser.add_argument('--clean', action="store_const", const=True, help = 'whether to remove files after test', dest='clean')
 arg = parser.parse_args()
 if  arg.strict == 'True':
     STRICT = True
 else:
     STRICT = False
+debug = False
+debug = arg.debug
+verbose = arg.verbose
+if debug: verbose = True
 
 # =========================================================================================
 # stylesheet  test
@@ -46,7 +52,7 @@ test_dict = {
         'opt_list.xml':[({},'opt_list.fo'),
                 ({'option-list-format': 'definition'}, 'opt_list_as_def.fo') 
                 ],
-        'table_csv.xml':[({},''),
+        'table_csv.xml':[({},'table_csv.fo'),
                 ({'table-title-placement':'top'},'table_caption_top_csv.fo')
                 ],
         'footnotes.xml':[({},'footnotes.fo'),
@@ -108,17 +114,12 @@ test_dict = {
 # =========================================================================================
 
 docfo_commands = [
-            ('long_plain.xml', '' , {'paper-size.height':'9in', 'paper-size.width': '6in'}),
-            ('long_plain.xml', '' , {'page.top-margin':'.75in', 'page.bottom-margine': '.75in', 
-                'page.right-margin' : '.75in', 'page.left-margin' : '.75in' }),
-            ('long_plain.xml', '', {'odd-page.top-margin' : '1in', 'odd-page.bottom-margin' : '1in', 
-                'odd-page.right-margin' : '1in', 'odd-page.left-margin' : '2in', 'even-page.top-margin' : '1in', 
-                'even-page.bottom-margin' : '1in', 'even-page.right-margin' : '2in', 
-                'even-page.left-margin' : '1in', 'first-page.top-margin' : '3in', 
-                'first-page.bottom-margin' : '1in', 'first-page.right-margin' : '.8in', 
-                'first-page.left-margin' : '2in'}), 
-                
-                ]
+        ('long_plain.xml', 'paper_size.conf'),
+        ('long_plain.xml', 'margins_simple.conf'),
+        ('long_plain.xml', 'margins_first_odd_even.conf'),
+        ('long_plain.xml', 'header_footer2.conf'),
+        ('long_plain.xml', 'header_footer3.conf'),
+    ]
 
 def error_func(msg, the_path = None):
     if the_path:
@@ -174,14 +175,16 @@ def transform_xsl(xsl_file, xml_file, param_dict = {}, out_file = None, xsl_tran
 
 
 def convert_to_xml(path_list):
-    # print 'converting to xml...'
+    if verbose:
+        sys.stderr.write('converting to xml...\n')
     num_files = len(path_list)
     counter = 0
     for the_path in path_list:
         counter += 1
-        # print 'converting %s of %s files' % (counter, num_files)
         base, ext = os.path.splitext(the_path)
         out_file = '%s.xml' % (base)
+        if verbose:
+            sys.stderr.write('converting "%s" to "%s"\n' % (the_path, out_file))
         publish_xml_cmdline (in_path = the_path, out_path = out_file)
 
 # simple, fail-proof method
@@ -198,7 +201,8 @@ def convert_to_xml_command(path_list):
         status, output = commands.getstatusoutput(command)
 
 def convert_to_fo(xsl_transform):
-    # print 'converting to fo...'
+    if verbose:
+        sys.stderr.write('converting to fo...\n')
     xml_files =  glob.glob('*.xml')
     len_simple = len(xml_files)
     the_keys = test_dict.keys()
@@ -219,6 +223,8 @@ def convert_to_fo(xsl_transform):
         if transform_info:
             for info in transform_info:
                 counter += 1
+                if verbose:
+                    sys.stderr.write('converting "%s" to %s FO\n' % (xml_file, out_file))
                 # print 'converting %s of %s files' % (counter, num_files)
                 added_params = info[0]
                 out_file = info[1]
@@ -226,10 +232,18 @@ def convert_to_fo(xsl_transform):
                 transform_xsl(xsl_file = '../docutilsToFo/xsl_fo/docutils_to_fo.xsl', 
                         xml_file = xml_file, param_dict= params, out_file = out_file,
                         xsl_transform = xsl_transform)
+
+                validate_the_fo(out_file)
+
         else:
             counter += 1
             # print 'converting %s of %s files' % (counter, num_files)
+            base, ext = os.path.splitext(xml_file)
+            out_file = '%s.fo' % (base)
+            if verbose:
+                sys.stderr.write('converting "%s" to %s FO\n' % (xml_file, out_file))
             transform_xsl(xsl_file = '../docutilsToFo/xsl_fo/docutils_to_fo.xsl', xml_file = xml_file, param_dict=params, xsl_transform = xsl_transform)
+            validate_the_fo(out_file)
 
 def convert_to_pdf():
     # print 'converting to pdf...'
@@ -261,6 +275,7 @@ def convert_fo_to_pdf(fo_file, out_file):
         error(msg)
 
 
+# not used
 def make_conf_file(the_dict, section = 'FO', conf_path = 'docutils.conf'):
     rm_path(conf_path)
     write_obj = file(conf_path, 'w')
@@ -280,21 +295,35 @@ def run_docutils_command(command):
         msg += '\n'
         error_func(msg)
 
+def validate_the_fo(xml_file):
+    error = validate_fo_xsl(xml_file)
+    if error:
+        sys.stderr.write('Problems converting "%s"\n' % (xml_file))
+        error('')
+
 def test_docutils_to_fo_script(script_command):
     command = '%s -h' % script_command
     status, output = commands.getstatusoutput(command)
     default__commands = ' --config docutils.conf '
     for info in docfo_commands:
         command = script_command
-        make_conf_file(info[2])
         in_file = info[0]
         filename,ext = os.path.splitext(in_file)
         out_file = '%s.fo' % filename
         out_opt = ' -o %s ' % out_file
-        command += ' %s %s %s' % (info[1], out_opt, info[0])
+        config_file = os.path.join('conf_files', info[1])
+        if not os.path.isfile(config_file):
+            sys.stderr.write('Can\'t find "%s" conf file\n' % config_file)
+            sys.exit(1)
+        config_opt = ' --config %s ' % config_file
+        command += ' %s %s %s' % (out_opt, config_opt, in_file)
+        if verbose:
+            sys.stderr.write('Converting "%s" to "%s" with "%s" \n' % (in_file, out_file, config_file))
         run_docutils_command(command)
-        out_pdf = '%s.pdf' % filename
-        convert_fo_to_pdf(fo_file = out_file, out_file = out_pdf)
+        validate_the_fo(out_file)
+        # out_pdf = '%s.pdf' % filename
+        # convert_fo_to_pdf(fo_file = out_file, out_file = out_pdf)
+
 
 def clean():
     xml_files = glob.glob('*.xml')
@@ -324,7 +353,8 @@ def main():
     if not arg.no_fo:
         convert_to_fo(xsl_transform = arg.xsl_transform[0])
     if not arg.no_pdf:
-        convert_to_pdf()
+        # convert_to_pdf()
+        pass
     for fo_file in glob.glob('*.fo'):
         os.remove(fo_file)
     test_docutils_to_fo_script(script_command)
