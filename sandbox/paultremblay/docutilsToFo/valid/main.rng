@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  =========================================================
+                                                           
+  (c) 2004, RenderX                                        
+                                                           
+  Author: Alexander Peshkov <peshkov@renderx.com>          
+                                                           
+  Permission is granted to use this document, copy and     
+  modify free of charge, provided that every derived work  
+  bear a reference to the present document.                
+                                                           
+  This document contains a computer program written in     
+  XSL Transformations Language. It is published with no    
+  warranty of any kind about its usability, as a mere      
+  example of XSL technology. RenderX shall not be          
+  considered liable for any damage or loss of data caused  
+  by use of this program.                                  
+                                                           
+  =========================================================
+-->
+<grammar xmlns:rx="http://www.renderx.com/XSL/Extensions" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns="http://relaxng.org/ns/structure/1.0">
+  <include href="elements.rng"/>
+  <start>
+    <ref name="root"/>
+  </start>
+  <!--
+    ****************************************************************************************
+    Element structure for top-level elements
+    ****************************************************************************************
+    ===============================================================
+    Root element. Contains everything, generates nothing. It has an
+    id, a FO namespace prefix declaration, and other namespace
+    declarations if used.
+    ===============================================================
+  -->
+  <define name="root">
+    <element name="fo:root">
+      <ref name="root.attlist"/>
+      <ref name="root.content"/>
+    </element>
+  </define>
+  <define name="root.content">
+    <optional>
+      <ref name="meta-info"/>
+    </optional>
+    <ref name="layout-master-set"/>
+    <optional>
+      <ref name="declarations"/>
+    </optional>
+    <optional>
+      <ref name="outline"/>
+    </optional>
+    <oneOrMore>
+      <ref name="page-sequence"/>
+    </oneOrMore>
+  </define>
+  <!--
+    ===============================================================
+    Document meta information - RenderX extension
+    ===============================================================
+  -->
+  <define name="meta-info">
+    <element name="rx:meta-info">
+      <ref name="meta-info.attlist"/>
+      <ref name="meta-info.content"/>
+    </element>
+  </define>
+  <define name="meta-info.content">
+    <oneOrMore>
+      <ref name="meta-field"/>
+    </oneOrMore>
+  </define>
+  <define name="meta-field">
+    <element name="rx:meta-field">
+      <ref name="meta-field.attlist"/>
+      <empty/>
+    </element>
+  </define>
+  <!--
+    ===============================================================
+    Color profile declarations
+    ===============================================================
+  -->
+  <define name="declarations">
+    <element name="fo:declarations">
+      <ref name="declarations.attlist"/>
+      <ref name="declarations.content"/>
+    </element>
+  </define>
+  <define name="declarations.content">
+    <oneOrMore>
+      <ref name="color-profile"/>
+    </oneOrMore>
+  </define>
+  <define name="color-profile">
+    <element name="fo:color-profile">
+      <ref name="color-profile.attlist"/>
+      <empty/>
+    </element>
+  </define>
+  <!--
+    ===============================================================
+    Bookmarks - RenderX extension
+    ===============================================================
+  -->
+  <define name="outline">
+    <element name="rx:outline">
+      <ref name="outline.attlist"/>
+      <ref name="outline.content"/>
+    </element>
+  </define>
+  <define name="outline.content">
+    <oneOrMore>
+      <ref name="bookmark"/>
+    </oneOrMore>
+  </define>
+  <define name="bookmark">
+    <element name="rx:bookmark">
+      <ref name="bookmark.attlist"/>
+      <ref name="bookmark.content"/>
+    </element>
+  </define>
+  <define name="bookmark.content">
+    <ref name="bookmark-label"/>
+    <zeroOrMore>
+      <ref name="bookmark"/>
+    </zeroOrMore>
+  </define>
+  <define name="bookmark-label">
+    <element name="rx:bookmark-label">
+      <ref name="bookmark-label.attlist"/>
+      <ref name="bookmark-label.content"/>
+    </element>
+  </define>
+  <define name="bookmark-label.content">
+    <text/>
+  </define>
+  <!--
+    ===============================================================
+    Layout-master-set. Contains a set of page-masters.
+    Content model made more strict than in the spec, to enforce
+    that a page-sequence-master be always accompanied by at least
+    one simple-page-master.
+    ===============================================================
+  -->
+  <define name="layout-master-set">
+    <element name="fo:layout-master-set">
+      <ref name="layout-master-set.attlist"/>
+      <ref name="layout-master-set.content"/>
+    </element>
+  </define>
+  <define name="layout-master-set.content">
+    <interleave>
+      <zeroOrMore>
+        <ref name="page-sequence-master"/>
+      </zeroOrMore>
+      <oneOrMore>
+        <ref name="simple-page-master"/>
+      </oneOrMore>
+    </interleave>
+  </define>
+  <!--
+    ===============================================================
+    Page sequence master
+    ===============================================================
+  -->
+  <define name="page-sequence-master">
+    <element name="fo:page-sequence-master">
+      <ref name="page-sequence-master.attlist"/>
+      <ref name="page-sequence-master.content"/>
+    </element>
+  </define>
+  <define name="page-sequence-master.content">
+    <oneOrMore>
+      <choice>
+        <ref name="single-page-master-reference"/>
+        <ref name="repeatable-page-master-reference"/>
+        <ref name="repeatable-page-master-alternatives"/>
+      </choice>
+    </oneOrMore>
+  </define>
+  <!--
+    ===============================================================
+    Sequence specifiers are predefined sequences of page masters
+    that are used by page sequence master to construct a desired
+    page collection.
+    ===============================================================
+  -->
+  <define name="single-page-master-reference">
+    <element name="fo:single-page-master-reference">
+      <ref name="single-page-master-reference.attlist"/>
+      <empty/>
+    </element>
+  </define>
+  <define name="repeatable-page-master-reference">
+    <element name="fo:repeatable-page-master-reference">
+      <ref name="repeatable-page-master-reference.attlist"/>
+      <empty/>
+    </element>
+  </define>
+  <define name="repeatable-page-master-alternatives">
+    <element name="fo:repeatable-page-master-alternatives">
+      <ref name="repeatable-page-master-alternatives.attlist"/>
+      <ref name="repeatable-page-master-alternatives.content"/>
+    </element>
+  </define>
+  <define name="repeatable-page-master-alternatives.content">
+    <oneOrMore>
+      <ref name="conditional-page-master-reference"/>
+    </oneOrMore>
+  </define>
+  <define name="conditional-page-master-reference">
+    <element name="fo:conditional-page-master-reference">
+      <ref name="conditional-page-master-reference.attlist"/>
+      <empty/>
+    </element>
+  </define>
+  <!--
+    ===============================================================
+    Simple page master defines a page layout. It does not
+    explicitly generate any content.
+    ===============================================================
+  -->
+  <define name="simple-page-master">
+    <element name="fo:simple-page-master">
+      <ref name="simple-page-master.attlist"/>
+      <ref name="simple-page-master.content"/>
+    </element>
+  </define>
+  <define name="simple-page-master.content">
+    <ref name="region-body"/>
+    <optional>
+      <ref name="region-before"/>
+    </optional>
+    <optional>
+      <ref name="region-after"/>
+    </optional>
+    <optional>
+      <ref name="region-start"/>
+    </optional>
+    <optional>
+      <ref name="region-end"/>
+    </optional>
+  </define>
+  <!--
+    ===============================================================
+    Regions. The page instance is divided into subareas, whose
+    properties are described by the five region-* elements. These
+    elements by themselves do not generate any content.
+    ===============================================================
+  -->
+  <!--
+    ===============================================================
+    Body region: middle of the page.
+    ===============================================================
+  -->
+  <define name="region-body">
+    <element name="fo:region-body">
+      <ref name="region-body.attlist"/>
+      <empty/>
+    </element>
+  </define>
+  <!--
+    ===============================================================
+    Side regions: page edges.
+    ===============================================================
+  -->
+  <define name="region-before">
+    <element name="fo:region-before">
+      <ref name="region-before.attlist"/>
+      <empty/>
+    </element>
+  </define>
+  <define name="region-after">
+    <element name="fo:region-after">
+      <ref name="region-after.attlist"/>
+      <empty/>
+    </element>
+  </define>
+  <define name="region-start">
+    <element name="fo:region-start">
+      <ref name="region-start.attlist"/>
+      <empty/>
+    </element>
+  </define>
+  <define name="region-end">
+    <element name="fo:region-end">
+      <ref name="region-end.attlist"/>
+      <empty/>
+    </element>
+  </define>
+  <!--
+    ===============================================================
+    Page sequence defines the order of choosing page masters to
+    accomodate all the contents generated by its fo:flow and
+    fo:static-content children, and the way of numbering them.
+    ===============================================================
+  -->
+  <define name="page-sequence">
+    <element name="fo:page-sequence">
+      <ref name="page-sequence.attlist"/>
+      <ref name="page-sequence.content"/>
+    </element>
+  </define>
+  <define name="page-sequence.content">
+    <optional>
+      <ref name="title"/>
+    </optional>
+    <zeroOrMore>
+      <ref name="static-content"/>
+    </zeroOrMore>
+    <ref name="flow"/>
+  </define>
+  <!--
+    ===============================================================
+    Title. May not contain out-of-lines.
+    ===============================================================
+    MEMO: Spec states:
+    XSL> Additionally, an fo:title is not permitted to have as a descendant an fo:block-container
+    XSL> that generates an absolutely positioned area.
+    We prohibit block-level descendants except for those descendats of fo:inline-container.
+    This content model shared by fo:leader and fo:inline child of an fo:footnote.
+  -->
+  <define name="title">
+    <element name="fo:title">
+      <ref name="title.attlist"/>
+      <ref name="title.content"/>
+    </element>
+  </define>
+  <define name="title.content">
+    <zeroOrMore>
+      <ref name="inlines-inline"/>
+    </zeroOrMore>
+  </define>
+  <!--
+    ===============================================================
+    Flows. They are just sequences of blocks. 'flow-name' feature
+    defines linkage of the flow to a region in the page master.
+    ===============================================================
+    ===============================================================
+    An extension element, rx:flow-section, has been added in order
+    to overcome limitations on multicolumn layout imposed by XSL FO
+    ===============================================================
+    NOTE: We use tricks with nested grammar in order control marker/retrieve-marker 
+    and outlines  appearance inside fo:static-content and fo:flow
+    MEMO: We forcedly prohibit side-floats as descendants of ablsoutely positioned
+    block-containers. This problem appears due to the 'half-outline' behavior of
+    an absolute-container - it cannot contain outlines except for side-float and it cannot
+    be nested into any other outlines.
+    NOTE: 'Folint' prohibits use of side-floats in static-content that is against the spec.
+  -->
+  <define name="static-content">
+    <element name="fo:static-content">
+      <ref name="static-content.attlist"/>
+      <ref name="static-content.content"/>
+    </element>
+  </define>
+  <define name="static-content.content">
+    <grammar>
+      <start>
+        <oneOrMore>
+          <ref name="blocks"/>
+        </oneOrMore>
+      </start>
+      <include href="elements.rng">
+        <define name="retrieve-marker">
+          <ref name="retrieve-marker-real"/>
+        </define>
+        <define name="absolute-container">
+          <ref name="absolute-container-real"/>
+        </define>
+        <define name="absolute-container.content">
+          <parentRef name="absolute-container.content"/>
+        </define>
+        <define name="side-float">
+          <ref name="side-float-real"/>
+        </define>
+        <define name="float.content">
+          <parentRef name="float.content"/>
+        </define>
+        <define name="leader.content">
+          <parentRef name="leader.content"/>
+        </define>
+      </include>
+    </grammar>
+  </define>
+  <define name="flow">
+    <element name="fo:flow">
+      <ref name="flow.attlist"/>
+      <ref name="flow.content"/>
+    </element>
+  </define>
+  <define name="flow.content">
+    <grammar>
+      <start>
+        <zeroOrMore>
+          <ref name="marker"/>
+        </zeroOrMore>
+        <oneOrMore>
+          <choice>
+            <ref name="blocks"/>
+            <ref name="flow-section"/>
+          </choice>
+        </oneOrMore>
+      </start>
+      <include href="elements.rng">
+        <define name="absolute-container">
+          <ref name="absolute-container-real"/>
+        </define>
+        <!--
+          MEMO: We have two options here:
+          * use parent content model which is too strict (side-floats descendants not allowed);
+          * use current content model which is too loose (all outline descendants are allowed).
+          We prefer stricter mode.
+        -->
+        <define name="absolute-container.content">
+          <parentRef name="absolute-container.content"/>
+        </define>
+        <define name="marker">
+          <ref name="marker-real"/>
+        </define>
+        <define name="marker.content">
+          <parentRef name="marker.content"/>
+        </define>
+        <define name="side-float">
+          <ref name="side-float-real"/>
+        </define>
+        <define name="before-float">
+          <ref name="before-float-real"/>
+        </define>
+        <define name="float.content">
+          <parentRef name="float.content"/>
+        </define>
+        <define name="footnote">
+          <ref name="footnote-real"/>
+        </define>
+        <define name="footnote.content">
+          <parentRef name="footnote.content"/>
+        </define>
+        <!-- NOTE: fo:leader can't have outlines and marker descendants -->
+        <define name="leader.content">
+          <parentRef name="leader.content"/>
+        </define>
+      </include>
+      <!-- Extension element. Acts like a top-level block with multiple columns. -->
+      <define name="flow-section">
+        <element name="rx:flow-section">
+          <ref name="flow-section.attlist"/>
+          <ref name="flow-section.content"/>
+        </element>
+      </define>
+      <define name="flow-section.content">
+        <oneOrMore>
+          <ref name="blocks"/>
+        </oneOrMore>
+      </define>
+    </grammar>
+  </define>
+</grammar>
+<!--
+  MEMO: Spec prohibits use of fo:leader as a descendant of itself.
+  We find this constraint somewhat abusive so we do not enforce it.
+  'Folint' also does not controll this constraint
+  However following trick can be used to prevent fo:leader to appear as it's own child.
+  (to make it work we have to set leader.content to be notAllowed and move
+  actual content into leader.content-real in elements.rnc)
+  leader.content |= grammar {
+  start = leader.content-real
+   include "elements.rnc" {
+     leader = notAllowed 
+   }
+  }
+-->
