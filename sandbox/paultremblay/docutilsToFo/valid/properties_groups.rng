@@ -1,0 +1,1209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  =========================================================
+                                                           
+  (c) 2004, RenderX                                        
+                                                           
+  Author: Alexander Peshkov <peshkov@renderx.com>          
+                                                           
+  Permission is granted to use this document, copy and     
+  modify free of charge, provided that every derived work  
+  bear a reference to the present document.                
+                                                           
+  This document contains a computer program written in     
+  XSL Transformations Language. It is published with no    
+  warranty of any kind about its usability, as a mere      
+  example of XSL technology. RenderX shall not be          
+  considered liable for any damage or loss of data caused  
+  by use of this program.                                  
+                                                           
+  =========================================================
+-->
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+  <include href="basic_properties.rng"/>
+  <!--
+    ===============================================================  
+    Properties grouping. Groups used by different elements classes
+    ===============================================================
+  -->
+  <!--
+    ===============================================================
+    Entity definitions for common groups of properties
+    This grouping reflects properties co occurrence, rather than
+    property semantics. It does not correspond to grouping in the
+    spec.
+    ===============================================================
+  -->
+  <!-- Accessibility Properties -->
+  <define name="accessibility-properties">
+    <optional>
+      <ref name="source-document.attr"/>
+    </optional>
+    <optional>
+      <ref name="role.attr"/>
+    </optional>
+  </define>
+  <!--
+    MEMO: XSLFO is selfcontradictory:
+    Those properties allowed on all inline elements excep to for fo:character, fo:bidi-override and fo:inline-conteiner
+    At the same time spec says about those properties:
+    XSL> It is used by all formatting objects that can be contained in fo:flow or fo:static-content (all formatting
+    XSL> objects that can be directly created from an XML source element).
+    Thus they must be present on fo:character, fo:bidi-override, fo:inline-conteiner as well
+    (there are more elements missing these properties)
+    Note also, that comment in the round brackets seems to be meaningless.
+  -->
+  <!--
+    Relative Position Properties
+    'position' shorthand property also makes part of this group
+  -->
+  <define name="relative-position-properties">
+    <optional>
+      <ref name="relative-position.attr"/>
+    </optional>
+    <optional>
+      <ref name="relative-position-shorthand.attr"/>
+    </optional>
+  </define>
+  <!-- Absolute Position Properties -->
+  <define name="absolute-position-properties">
+    <ref name="absolute-position.attr"/>
+    <optional>
+      <ref name="absolute-position-shorthand.attr"/>
+    </optional>
+    <optional>
+      <ref name="top.attr"/>
+    </optional>
+    <optional>
+      <ref name="right.attr"/>
+    </optional>
+    <optional>
+      <ref name="bottom.attr"/>
+    </optional>
+    <optional>
+      <ref name="left.attr"/>
+    </optional>
+  </define>
+  <!--
+    Aural Properties
+    'cue' and 'pause' shorthand properties are also included
+    MEMO: XSLFO is selfcontradictory here in the same way
+    it is for  Accessibility Properties - Aural properties allowed everywhere
+    but yet not specified on some elements, e.g. fo:block-container or fo:inline-container.
+    We believe this is an omission and therefor those properties are available  everywhere.
+  -->
+  <define name="aural-properties-inheritable">
+    <optional>
+      <ref name="azimuth.attr"/>
+    </optional>
+    <optional>
+      <ref name="elevation.attr"/>
+    </optional>
+    <optional>
+      <ref name="pitch.attr"/>
+    </optional>
+    <optional>
+      <ref name="pitch-range.attr"/>
+    </optional>
+    <optional>
+      <ref name="play-during.attr"/>
+    </optional>
+    <optional>
+      <ref name="richness.attr"/>
+    </optional>
+    <optional>
+      <ref name="speak.attr"/>
+    </optional>
+    <optional>
+      <ref name="speak-header.attr"/>
+    </optional>
+    <optional>
+      <ref name="speak-numeral.attr"/>
+    </optional>
+    <optional>
+      <ref name="speak-punctuation.attr"/>
+    </optional>
+    <optional>
+      <ref name="speech-rate.attr"/>
+    </optional>
+    <optional>
+      <ref name="stress.attr"/>
+    </optional>
+    <optional>
+      <ref name="voice-family.attr"/>
+    </optional>
+    <optional>
+      <ref name="volume.attr"/>
+    </optional>
+  </define>
+  <define name="aural-properties-unheritable">
+    <optional>
+      <ref name="cue.attr"/>
+    </optional>
+    <optional>
+      <ref name="cue-after.attr"/>
+    </optional>
+    <optional>
+      <ref name="cue-before.attr"/>
+    </optional>
+    <optional>
+      <ref name="pause.attr"/>
+    </optional>
+    <optional>
+      <ref name="pause-after.attr"/>
+    </optional>
+    <optional>
+      <ref name="pause-before.attr"/>
+    </optional>
+  </define>
+  <define name="aural-properties">
+    <ref name="aural-properties-inheritable"/>
+    <ref name="aural-properties-unheritable"/>
+  </define>
+  <!--
+    Common Border, Padding, and Background Properties
+    Related shorthand properties are also included
+  -->
+  <define name="border-properties">
+    <optional>
+      <ref name="border.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-after-color.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-after-style.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-after-width.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-after-width.length.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-after-width.conditionality.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-before-color.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-before-style.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-before-width.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-before-width.length.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-before-width.conditionality.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-bottom.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-bottom-color.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-bottom-style.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-bottom-width.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-bottom-width.length.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-bottom-width.conditionality.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-color.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-end-color.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-end-style.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-end-width.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-end-width.length.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-end-width.conditionality.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-left.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-left-color.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-left-style.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-left-width.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-left-width.length.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-left-width.conditionality.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-right.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-right-color.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-right-style.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-right-width.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-right-width.length.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-right-width.conditionality.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-start-color.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-start-style.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-start-width.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-start-width.length.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-start-width.conditionality.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-style.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-top.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-top-color.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-top-style.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-top-width.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-top-width.length.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-top-width.conditionality.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-width.attr"/>
+    </optional>
+  </define>
+  <define name="padding-properties">
+    <optional>
+      <ref name="padding.attr"/>
+    </optional>
+    <optional>
+      <ref name="padding-after.attr"/>
+    </optional>
+    <optional>
+      <ref name="padding-after.length.attr"/>
+    </optional>
+    <optional>
+      <ref name="padding-after.conditionality.attr"/>
+    </optional>
+    <optional>
+      <ref name="padding-before.attr"/>
+    </optional>
+    <optional>
+      <ref name="padding-before.length.attr"/>
+    </optional>
+    <optional>
+      <ref name="padding-before.conditionality.attr"/>
+    </optional>
+    <optional>
+      <ref name="padding-bottom.attr"/>
+    </optional>
+    <optional>
+      <ref name="padding-bottom.length.attr"/>
+    </optional>
+    <optional>
+      <ref name="padding-bottom.conditionality.attr"/>
+    </optional>
+    <optional>
+      <ref name="padding-end.attr"/>
+    </optional>
+    <optional>
+      <ref name="padding-end.length.attr"/>
+    </optional>
+    <optional>
+      <ref name="padding-end.conditionality.attr"/>
+    </optional>
+    <optional>
+      <ref name="padding-left.attr"/>
+    </optional>
+    <optional>
+      <ref name="padding-left.length.attr"/>
+    </optional>
+    <optional>
+      <ref name="padding-left.conditionality.attr"/>
+    </optional>
+    <optional>
+      <ref name="padding-right.attr"/>
+    </optional>
+    <optional>
+      <ref name="padding-right.length.attr"/>
+    </optional>
+    <optional>
+      <ref name="padding-right.conditionality.attr"/>
+    </optional>
+    <optional>
+      <ref name="padding-start.attr"/>
+    </optional>
+    <optional>
+      <ref name="padding-start.length.attr"/>
+    </optional>
+    <optional>
+      <ref name="padding-start.conditionality.attr"/>
+    </optional>
+    <optional>
+      <ref name="padding-top.attr"/>
+    </optional>
+    <optional>
+      <ref name="padding-top.length.attr"/>
+    </optional>
+    <optional>
+      <ref name="padding-top.conditionality.attr"/>
+    </optional>
+  </define>
+  <define name="background-properties">
+    <optional>
+      <ref name="background.attr"/>
+    </optional>
+    <optional>
+      <ref name="background-attachment.attr"/>
+    </optional>
+    <optional>
+      <ref name="background-color.attr"/>
+    </optional>
+    <optional>
+      <ref name="background-image.attr"/>
+    </optional>
+    <optional>
+      <ref name="background-position.attr"/>
+    </optional>
+    <optional>
+      <ref name="background-position-vertical.attr"/>
+    </optional>
+    <optional>
+      <ref name="background-position-horizontal.attr"/>
+    </optional>
+    <optional>
+      <ref name="background-repeat.attr"/>
+    </optional>
+    <optional>
+      <ref name="rx-background-content-type.attr"/>
+    </optional>
+    <optional>
+      <ref name="rx-background-content-height.attr"/>
+    </optional>
+    <optional>
+      <ref name="rx-background-content-width.attr"/>
+    </optional>
+    <optional>
+      <ref name="rx-background-scaling.attr"/>
+    </optional>
+  </define>
+  <define name="border-padding-background-properties">
+    <ref name="border-properties"/>
+    <ref name="padding-properties"/>
+    <ref name="background-properties"/>
+  </define>
+  <!-- Border Precedence Properties for tables -->
+  <define name="border-precedence-properties">
+    <optional>
+      <ref name="border-after-precedence.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-before-precedence.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-end-precedence.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-start-precedence.attr"/>
+    </optional>
+  </define>
+  <!-- Box Size Properties -->
+  <define name="height-properties">
+    <optional>
+      <ref name="height.attr"/>
+    </optional>
+    <optional>
+      <ref name="min-height.attr"/>
+    </optional>
+    <optional>
+      <ref name="max-height.attr"/>
+    </optional>
+    <optional>
+      <ref name="block-progression-dimension.attr"/>
+    </optional>
+    <optional>
+      <ref name="block-progression-dimension.minimum.attr"/>
+    </optional>
+    <optional>
+      <ref name="block-progression-dimension.optimum.attr"/>
+    </optional>
+    <optional>
+      <ref name="block-progression-dimension.maximum.attr"/>
+    </optional>
+  </define>
+  <define name="width-properties">
+    <optional>
+      <ref name="width.attr"/>
+    </optional>
+    <optional>
+      <ref name="min-width.attr"/>
+    </optional>
+    <optional>
+      <ref name="max-width.attr"/>
+    </optional>
+    <optional>
+      <ref name="inline-progression-dimension.attr"/>
+    </optional>
+    <optional>
+      <ref name="inline-progression-dimension.minimum.attr"/>
+    </optional>
+    <optional>
+      <ref name="inline-progression-dimension.optimum.attr"/>
+    </optional>
+    <optional>
+      <ref name="inline-progression-dimension.maximum.attr"/>
+    </optional>
+  </define>
+  <define name="box-size-properties">
+    <ref name="height-properties"/>
+    <ref name="width-properties"/>
+  </define>
+  <!-- Common Area Properties -->
+  <define name="area-properties-inheritable">
+    <optional>
+      <ref name="display-align.attr"/>
+    </optional>
+    <optional>
+      <ref name="reference-orientation.attr"/>
+    </optional>
+    <optional>
+      <ref name="writing-mode.attr"/>
+    </optional>
+  </define>
+  <define name="area-properties-unheritable">
+    <optional>
+      <ref name="clip.attr"/>
+    </optional>
+    <optional>
+      <ref name="overflow.attr"/>
+    </optional>
+  </define>
+  <define name="area-properties">
+    <ref name="area-properties-inheritable"/>
+    <ref name="area-properties-unheritable"/>
+  </define>
+  <!--
+    Common Font Properties
+    'font' shorthand property is also included
+  -->
+  <define name="font-properties">
+    <optional>
+      <ref name="font.attr"/>
+    </optional>
+    <optional>
+      <ref name="font-selection-strategy.attr"/>
+    </optional>
+    <optional>
+      <ref name="font-family.attr"/>
+    </optional>
+    <optional>
+      <ref name="font-size.attr"/>
+    </optional>
+    <optional>
+      <ref name="font-size-adjust.attr"/>
+    </optional>
+    <optional>
+      <ref name="font-stretch.attr"/>
+    </optional>
+    <optional>
+      <ref name="font-style.attr"/>
+    </optional>
+    <optional>
+      <ref name="font-variant.attr"/>
+    </optional>
+    <optional>
+      <ref name="font-weight.attr"/>
+    </optional>
+  </define>
+  <!--
+    Common Hyphenation Properties - Inline
+    'xml:lang' shorthand property is also included
+  -->
+  <define name="hyphenation-properties-inline">
+    <optional>
+      <ref name="country.attr"/>
+    </optional>
+    <optional>
+      <ref name="language.attr"/>
+    </optional>
+    <optional>
+      <ref name="script.attr"/>
+    </optional>
+    <optional>
+      <attribute name="xml:lang"/>
+    </optional>
+    <optional>
+      <ref name="hyphenate.attr"/>
+    </optional>
+    <optional>
+      <ref name="hyphenation-character.attr"/>
+    </optional>
+    <optional>
+      <ref name="hyphenation-push-character-count.attr"/>
+    </optional>
+    <optional>
+      <ref name="hyphenation-remain-character-count.attr"/>
+    </optional>
+  </define>
+  <!-- Common Hyphenation Properties - Block -->
+  <define name="hyphenation-properties-block">
+    <optional>
+      <ref name="hyphenation-keep.attr"/>
+    </optional>
+    <optional>
+      <ref name="hyphenation-ladder-count.attr"/>
+    </optional>
+  </define>
+  <define name="hyphenation-properties">
+    <ref name="hyphenation-properties-inline"/>
+    <ref name="hyphenation-properties-block"/>
+  </define>
+  <!--
+    Common CSS Margin Properties
+    'margin' shorthand property is also included
+  -->
+  <define name="margin-properties-CSS">
+    <optional>
+      <ref name="margin.attr"/>
+    </optional>
+    <optional>
+      <ref name="margin-bottom.attr"/>
+    </optional>
+    <optional>
+      <ref name="margin-left.attr"/>
+    </optional>
+    <optional>
+      <ref name="margin-right.attr"/>
+    </optional>
+    <optional>
+      <ref name="margin-top.attr"/>
+    </optional>
+  </define>
+  <!-- Common Margin Properties - Block -->
+  <define name="margin-properties-inheritable">
+    <optional>
+      <ref name="start-indent.attr"/>
+    </optional>
+    <optional>
+      <ref name="end-indent.attr"/>
+    </optional>
+  </define>
+  <define name="margin-properties-block">
+    <ref name="margin-properties-CSS"/>
+    <optional>
+      <ref name="space-after.attr"/>
+    </optional>
+    <optional>
+      <ref name="space-after.minimum.attr"/>
+    </optional>
+    <optional>
+      <ref name="space-after.optimum.attr"/>
+    </optional>
+    <optional>
+      <ref name="space-after.maximum.attr"/>
+    </optional>
+    <optional>
+      <ref name="space-after.precedence.attr"/>
+    </optional>
+    <optional>
+      <ref name="space-after.conditionality.attr"/>
+    </optional>
+    <optional>
+      <ref name="space-before.attr"/>
+    </optional>
+    <optional>
+      <ref name="space-before.minimum.attr"/>
+    </optional>
+    <optional>
+      <ref name="space-before.optimum.attr"/>
+    </optional>
+    <optional>
+      <ref name="space-before.maximum.attr"/>
+    </optional>
+    <optional>
+      <ref name="space-before.precedence.attr"/>
+    </optional>
+    <optional>
+      <ref name="space-before.conditionality.attr"/>
+    </optional>
+  </define>
+  <!-- Common Margin Properties - Inline -->
+  <define name="margin-properties-inline">
+    <ref name="margin-properties-CSS"/>
+    <optional>
+      <ref name="space-start.attr"/>
+    </optional>
+    <optional>
+      <ref name="space-start.minimum.attr"/>
+    </optional>
+    <optional>
+      <ref name="space-start.optimum.attr"/>
+    </optional>
+    <optional>
+      <ref name="space-start.maximum.attr"/>
+    </optional>
+    <optional>
+      <ref name="space-start.precedence.attr"/>
+    </optional>
+    <optional>
+      <ref name="space-start.conditionality.attr"/>
+    </optional>
+    <optional>
+      <ref name="space-end.attr"/>
+    </optional>
+    <optional>
+      <ref name="space-end.minimum.attr"/>
+    </optional>
+    <optional>
+      <ref name="space-end.optimum.attr"/>
+    </optional>
+    <optional>
+      <ref name="space-end.maximum.attr"/>
+    </optional>
+    <optional>
+      <ref name="space-end.precedence.attr"/>
+    </optional>
+    <optional>
+      <ref name="space-end.conditionality.attr"/>
+    </optional>
+  </define>
+  <!--
+    Area Alignment Properties
+    'vertical-align' shorthand is added
+    'relative-align' - excluded
+  -->
+  <define name="area-alignment-properties">
+    <optional>
+      <ref name="alignment-adjust.attr"/>
+    </optional>
+    <optional>
+      <ref name="alignment-baseline.attr"/>
+    </optional>
+    <optional>
+      <ref name="baseline-shift.attr"/>
+    </optional>
+    <optional>
+      <ref name="dominant-baseline.attr"/>
+    </optional>
+    <optional>
+      <ref name="vertical-align.attr"/>
+    </optional>
+  </define>
+  <!-- Line Height Properties -->
+  <define name="line-height-properties">
+    <optional>
+      <ref name="line-height.attr"/>
+    </optional>
+    <optional>
+      <ref name="line-height.minimum.attr"/>
+    </optional>
+    <optional>
+      <ref name="line-height.optimum.attr"/>
+    </optional>
+    <optional>
+      <ref name="line-height.maximum.attr"/>
+    </optional>
+    <optional>
+      <ref name="line-height.precedence.attr"/>
+    </optional>
+    <optional>
+      <ref name="line-height.conditionality.attr"/>
+    </optional>
+    <optional>
+      <ref name="line-height-shift-adjustment.attr"/>
+    </optional>
+  </define>
+  <!-- Line Related Properties -->
+  <define name="line-related-properties">
+    <optional>
+      <ref name="text-align.attr"/>
+    </optional>
+    <optional>
+      <ref name="text-align-last.attr"/>
+    </optional>
+    <optional>
+      <ref name="text-indent.attr"/>
+    </optional>
+    <optional>
+      <ref name="last-line-end-indent.attr"/>
+    </optional>
+    <optional>
+      <ref name="line-stacking-strategy.attr"/>
+    </optional>
+    <optional>
+      <ref name="linefeed-treatment.attr"/>
+    </optional>
+    <optional>
+      <ref name="white-space.attr"/>
+    </optional>
+    <optional>
+      <ref name="white-space-treatment.attr"/>
+    </optional>
+    <optional>
+      <ref name="white-space-collapse.attr"/>
+    </optional>
+    <optional>
+      <ref name="wrap-option.attr"/>
+    </optional>
+    <optional>
+      <ref name="direction.attr"/>
+    </optional>
+  </define>
+  <!-- Character Properties -->
+  <define name="character-properties-inheritable">
+    <optional>
+      <ref name="letter-spacing.attr"/>
+    </optional>
+    <optional>
+      <ref name="letter-spacing.minimum.attr"/>
+    </optional>
+    <optional>
+      <ref name="letter-spacing.optimum.attr"/>
+    </optional>
+    <optional>
+      <ref name="letter-spacing.maximum.attr"/>
+    </optional>
+    <optional>
+      <ref name="letter-spacing.precedence.attr"/>
+    </optional>
+    <optional>
+      <ref name="letter-spacing.conditionality.attr"/>
+    </optional>
+    <optional>
+      <ref name="word-spacing.attr"/>
+    </optional>
+    <optional>
+      <ref name="word-spacing.minimum.attr"/>
+    </optional>
+    <optional>
+      <ref name="word-spacing.optimum.attr"/>
+    </optional>
+    <optional>
+      <ref name="word-spacing.maximum.attr"/>
+    </optional>
+    <optional>
+      <ref name="word-spacing.precedence.attr"/>
+    </optional>
+    <optional>
+      <ref name="word-spacing.conditionality.attr"/>
+    </optional>
+    <optional>
+      <ref name="glyph-orientation-horizontal.attr"/>
+    </optional>
+    <optional>
+      <ref name="glyph-orientation-vertical.attr"/>
+    </optional>
+    <optional>
+      <ref name="score-spaces.attr"/>
+    </optional>
+    <optional>
+      <ref name="text-transform.attr"/>
+    </optional>
+  </define>
+  <define name="character-properties-unheritable">
+    <optional>
+      <!--
+        MEMO: There is a problem with these two properties in XSL FO spec.
+        They are assumed to be allowed everywhere but somehow on of them
+        missing on fo:inline, another on fo:leader and both absent on fo:bidi-override.
+        They are not present on fo:block also.
+        We suppose that those omissions are erratic. and allow them on all elements that can cotain text.
+        It makes sence to allow text-decoration on the graphical inlines also.
+      -->
+      <ref name="text-decoration.attr"/>
+    </optional>
+    <optional>
+      <ref name="text-shadow.attr"/>
+    </optional>
+  </define>
+  <!--
+    NOTE: Those properties apllies to char elements but they are already included into 'inheritable-properties' set
+    font-properties,
+    line-height-properties
+  -->
+  <define name="character-properties">
+    <ref name="character-properties-inheritable"/>
+    <ref name="character-properties-unheritable"/>
+  </define>
+  <!--
+    Common Keeps and Breaks Properties - Atomic objects
+    Keeps only
+  -->
+  <define name="keeps-properties-atomic">
+    <optional>
+      <ref name="keep-with-next.attr"/>
+    </optional>
+    <optional>
+      <ref name="keep-with-next.within-line.attr"/>
+    </optional>
+    <optional>
+      <ref name="keep-with-next.within-column.attr"/>
+    </optional>
+    <optional>
+      <ref name="keep-with-next.within-page.attr"/>
+    </optional>
+    <optional>
+      <ref name="keep-with-previous.attr"/>
+    </optional>
+    <optional>
+      <ref name="keep-with-previous.within-line.attr"/>
+    </optional>
+    <optional>
+      <ref name="keep-with-previous.within-column.attr"/>
+    </optional>
+    <optional>
+      <ref name="keep-with-previous.within-page.attr"/>
+    </optional>
+  </define>
+  <!--
+    Common Keeps and Breaks Properties - Atomic objects
+    Keeps and Breaks
+    'page-break-*' shorthand properties are also included
+  -->
+  <define name="keeps-and-breaks-properties-atomic">
+    <ref name="keeps-properties-atomic"/>
+    <optional>
+      <ref name="break-after.attr"/>
+    </optional>
+    <optional>
+      <ref name="break-before.attr"/>
+    </optional>
+    <optional>
+      <ref name="page-break-after.attr"/>
+    </optional>
+    <optional>
+      <ref name="page-break-before.attr"/>
+    </optional>
+  </define>
+  <!--
+    Common Keeps and Breaks Properties - Inline
+    'page-break-inside' shorthand property is also included
+  -->
+  <define name="keeps-and-breaks-properties-inline-inheritable">
+    <optional>
+      <ref name="keep-together.attr"/>
+    </optional>
+    <optional>
+      <ref name="keep-together.within-line.attr"/>
+    </optional>
+    <optional>
+      <ref name="keep-together.within-column.attr"/>
+    </optional>
+    <optional>
+      <ref name="keep-together.within-page.attr"/>
+    </optional>
+    <optional>
+      <ref name="page-break-inside.attr"/>
+    </optional>
+  </define>
+  <!-- MEMO: Do we really need separate block and inline groups here -->
+  <!-- Common Keeps and Breaks Properties - Block -->
+  <define name="keeps-and-breaks-properties-block-inheritable">
+    <optional>
+      <ref name="orphans.attr"/>
+    </optional>
+    <optional>
+      <ref name="widows.attr"/>
+    </optional>
+  </define>
+  <!-- Leader and Rule Properties -->
+  <define name="leader-properties">
+    <optional>
+      <ref name="leader-alignment.attr"/>
+    </optional>
+    <optional>
+      <ref name="leader-pattern.attr"/>
+    </optional>
+    <optional>
+      <ref name="leader-pattern-width.attr"/>
+    </optional>
+    <optional>
+      <ref name="leader-length.attr"/>
+    </optional>
+    <optional>
+      <ref name="leader-length.minimum.attr"/>
+    </optional>
+    <optional>
+      <ref name="leader-length.optimum.attr"/>
+    </optional>
+    <optional>
+      <ref name="leader-length.maximum.attr"/>
+    </optional>
+    <optional>
+      <ref name="rule-style.attr"/>
+    </optional>
+    <optional>
+      <ref name="rule-thickness.attr"/>
+    </optional>
+  </define>
+  <!--
+    Table Properties
+    'border-spacing' shorthand property is also included
+    'inherit' property added to table-omit-...er-at-break
+  -->
+  <define name="table-properties-inheritable">
+    <optional>
+      <ref name="border-collapse.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-spacing.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-separation.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-separation.inline-progression-direction.attr"/>
+    </optional>
+    <optional>
+      <ref name="border-separation.block-progression-direction.attr"/>
+    </optional>
+    <optional>
+      <ref name="caption-side.attr"/>
+    </optional>
+    <optional>
+      <ref name="empty-cells.attr"/>
+    </optional>
+  </define>
+  <define name="table-properties-unheritable">
+    <optional>
+      <ref name="table-layout.attr"/>
+    </optional>
+    <optional>
+      <ref name="table-omit-header-at-break.attr"/>
+    </optional>
+    <optional>
+      <ref name="table-omit-footer-at-break.attr"/>
+    </optional>
+    <optional>
+      <ref name="rx-table-omit-initial-header.attr"/>
+    </optional>
+  </define>
+  <define name="table-properties">
+    <ref name="table-properties-inheritable"/>
+    <ref name="table-properties-unheritable"/>
+  </define>
+  <!-- List Properties -->
+  <define name="list-properties">
+    <optional>
+      <ref name="provisional-distance-between-starts.attr"/>
+    </optional>
+    <optional>
+      <ref name="provisional-label-separation.attr"/>
+    </optional>
+  </define>
+  <!--
+    Visibility Properties
+    NOTE: 'visibility' is inheritable, but 'z-index' is not.
+  -->
+  <define name="visibility-properties">
+    <optional>
+      <ref name="visibility.attr"/>
+    </optional>
+    <optional>
+      <ref name="z-index.attr"/>
+    </optional>
+  </define>
+  <!--
+    ===============================================================
+    Set of 'explicitly' inheritable properties. This includes attributes
+    marked as inheritable in the spec only!
+    We define two sets of inheritable properties:
+    1. Basic properties applicable to inline-level elements with character-only content
+    2. Full set of inheritable properties 
+    ===============================================================
+  -->
+  <define name="inheritable-properties-inline">
+    <ref name="aural-properties-inheritable"/>
+    <optional>
+      <ref name="color.attr"/>
+    </optional>
+    <ref name="character-properties-inheritable"/>
+    <ref name="font-properties"/>
+    <ref name="hyphenation-properties-inline"/>
+    <ref name="line-height-properties"/>
+    <optional>
+      <ref name="visibility.attr"/>
+    </optional>
+  </define>
+  <define name="inheritable-properties-block">
+    <ref name="table-properties-inheritable"/>
+    <ref name="area-properties-inheritable"/>
+    <ref name="hyphenation-properties-block"/>
+    <ref name="margin-properties-inheritable"/>
+    <optional>
+      <ref name="intrusion-displace.attr"/>
+    </optional>
+    <!-- 'intrusion-displace' applies to: fo:block, fo:block-container, fo:table-and-caption, fo:table, fo:table-caption, fo:list-block, fo:list-item. -->
+    <ref name="keeps-and-breaks-properties-inline-inheritable"/>
+    <ref name="keeps-and-breaks-properties-block-inheritable"/>
+    <ref name="leader-properties"/>
+    <!-- MEMO: Should we move this one to inheritable-properties-inline? -->
+    <ref name="line-related-properties"/>
+    <ref name="list-properties"/>
+    <optional>
+      <ref name="relative-align.attr"/>
+    </optional>
+  </define>
+  <!-- NOTE: Property 'relative-align' applies to fo:list-item and fo:table-cell only. -->
+  <define name="inheritable-properties">
+    <ref name="inheritable-properties-inline"/>
+    <ref name="inheritable-properties-block"/>
+  </define>
+  <!--
+    ===============================================================
+    Common property subsets.
+    ===============================================================
+    Common block properties (those properties applies to any type of block-container as well
+  -->
+  <define name="common-block-properties">
+    <optional>
+      <ref name="id.attr"/>
+    </optional>
+    <optional>
+      <ref name="rx-key.attr"/>
+    </optional>
+    <ref name="accessibility-properties"/>
+    <ref name="aural-properties-unheritable"/>
+    <ref name="border-padding-background-properties"/>
+    <ref name="margin-properties-block"/>
+    <ref name="inheritable-properties"/>
+  </define>
+  <!-- Properties for fo:block and fo:block-container -->
+  <define name="block-properties">
+    <ref name="common-block-properties"/>
+    <optional>
+      <ref name="clear.attr"/>
+    </optional>
+    <optional>
+      <ref name="span.attr"/>
+    </optional>
+    <ref name="keeps-and-breaks-properties-atomic"/>
+    <ref name="relative-position-properties"/>
+  </define>
+  <!--
+    Common inline properties
+    MEMO: Spec says that text-altitude/text-depth applicable only to
+    fo:block, fo:character, fo:leader, fo:page-number, fo:page-number-citation
+    We believe this is an omission and they must be allowed on all elements
+    that can have text children.
+  -->
+  <define name="common-inline-properties">
+    <optional>
+      <ref name="id.attr"/>
+    </optional>
+    <optional>
+      <ref name="rx-key.attr"/>
+    </optional>
+    <ref name="accessibility-properties"/>
+    <ref name="aural-properties-unheritable"/>
+    <ref name="area-alignment-properties"/>
+    <ref name="border-padding-background-properties"/>
+    <ref name="character-properties-unheritable"/>
+    <ref name="keeps-properties-atomic"/>
+    <ref name="margin-properties-inline"/>
+    <ref name="relative-position-properties"/>
+    <optional>
+      <ref name="text-altitude.attr"/>
+    </optional>
+    <optional>
+      <ref name="text-depth.attr"/>
+    </optional>
+    <ref name="inheritable-properties-inline"/>
+  </define>
+  <!-- Properties for nonempty inline elements -->
+  <define name="inline-properties">
+    <ref name="common-inline-properties"/>
+    <ref name="inheritable-properties-block"/>
+  </define>
+  <!--
+    Properties for graphical inline elements
+    NOTE: src attribute exclueded since it's not applicable to fo:instream-foreign-object
+  -->
+  <define name="graphic-properties">
+    <optional>
+      <!--
+        MEMO: We can replace part of the definition here with 'common-inline-properties' set
+        - it will be formaly rightfil since the only difference made by text-shadow,   text-altitude,
+         text-depth  and inheritable-properties-inline and both of them are allowed here.
+        At the same time those properties do not make any sense being specified on those
+        elements since they will be never applied.
+      -->
+      <ref name="id.attr"/>
+    </optional>
+    <optional>
+      <ref name="rx-key.attr"/>
+    </optional>
+    <ref name="accessibility-properties"/>
+    <ref name="aural-properties"/>
+    <ref name="area-properties-unheritable"/>
+    <ref name="border-padding-background-properties"/>
+    <ref name="margin-properties-inline"/>
+    <ref name="relative-position-properties"/>
+    <ref name="area-alignment-properties"/>
+    <ref name="box-size-properties"/>
+    <ref name="keeps-properties-atomic"/>
+    <ref name="line-height-properties"/>
+    <optional>
+      <ref name="display-align.attr"/>
+    </optional>
+    <optional>
+      <ref name="content-type.attr"/>
+    </optional>
+    <optional>
+      <ref name="content-height.attr"/>
+    </optional>
+    <optional>
+      <ref name="content-width.attr"/>
+    </optional>
+    <optional>
+      <ref name="scaling.attr"/>
+    </optional>
+    <optional>
+      <ref name="scaling-method.attr"/>
+    </optional>
+    <optional>
+      <ref name="text-align.attr"/>
+    </optional>
+    <optional>
+      <ref name="text-decoration.attr"/>
+    </optional>
+  </define>
+</grammar>

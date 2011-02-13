@@ -1,0 +1,991 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  =========================================================
+                                                           
+  (c) 2004, RenderX                                        
+                                                           
+  Author: Alexander Peshkov <peshkov@renderx.com>          
+                                                           
+  Permission is granted to use this document, copy and     
+  modify free of charge, provided that every derived work  
+  bear a reference to the present document.                
+                                                           
+  This document contains a computer program written in     
+  XSL Transformations Language. It is published with no    
+  warranty of any kind about its usability, as a mere      
+  example of XSL technology. RenderX shall not be          
+  considered liable for any damage or loss of data caused  
+  by use of this program.                                  
+                                                           
+  =========================================================
+-->
+<grammar xmlns="http://relaxng.org/ns/structure/1.0">
+  <include href="properties_groups.rng"/>
+  <!--
+    ****************************************************************************************
+    Properties used by top-level elements
+    ****************************************************************************************
+    ===============================================================
+    Root element can bear inheritable properties, passed further to 
+    fo:flows/fo:static-contents. Inheritable properties from fo:layout-master-set 
+    are banned in this version of schema.
+    ===============================================================
+  -->
+  <define name="root.attlist">
+    <optional>
+      <ref name="media-usage.attr"/>
+    </optional>
+    <ref name="inheritable-properties"/>
+  </define>
+  <!--
+    ===============================================================
+    Document meta information - RenderX extension
+    ===============================================================
+  -->
+  <define name="meta-info.attlist">
+    <empty/>
+  </define>
+  <define name="meta-field.attlist">
+    <ref name="name.attr"/>
+    <ref name="value.attr"/>
+  </define>
+  <!--
+    ===============================================================
+    Color profile declarations
+    ===============================================================
+  -->
+  <define name="declarations.attlist">
+    <empty/>
+  </define>
+  <define name="color-profile.attlist">
+    <ref name="src.attr"/>
+    <ref name="color-profile-name.attr"/>
+    <optional>
+      <ref name="rendering-intent.attr"/>
+    </optional>
+  </define>
+  <!--
+    ===============================================================
+    Bookmarks - RenderX extension
+    ===============================================================
+  -->
+  <define name="outline.attlist">
+    <empty/>
+  </define>
+  <define name="bookmark.attlist">
+    <choice>
+      <ref name="internal-destination.attr"/>
+      <ref name="external-destination.attr"/>
+    </choice>
+    <optional>
+      <ref name="collapse-subtree.attr"/>
+    </optional>
+  </define>
+  <define name="bookmark-label.attlist">
+    <empty/>
+  </define>
+  <!--
+    ===============================================================
+    Layout-master-set contains a set of page-masters. Neither of
+    its descendants generates any area, so no inherited elements
+    can be specified on it or on its children.
+    ===============================================================
+  -->
+  <define name="layout-master-set.attlist">
+    <empty/>
+  </define>
+  <!--
+    ===============================================================
+    Page sequence master
+    ===============================================================
+  -->
+  <define name="page-sequence-master.attlist">
+    <ref name="master-name.attr"/>
+  </define>
+  <!--
+    ===============================================================
+    Sequence specifiers.
+    ===============================================================
+  -->
+  <define name="single-page-master-reference.attlist">
+    <ref name="master-reference.attr"/>
+  </define>
+  <define name="repeatable-page-master-reference.attlist">
+    <ref name="master-reference.attr"/>
+    <optional>
+      <ref name="maximum-repeats.attr"/>
+    </optional>
+  </define>
+  <define name="repeatable-page-master-alternatives.attlist">
+    <optional>
+      <ref name="maximum-repeats.attr"/>
+    </optional>
+  </define>
+  <define name="conditional-page-master-reference.attlist">
+    <ref name="master-reference.attr"/>
+    <optional>
+      <ref name="page-position.attr"/>
+    </optional>
+    <optional>
+      <ref name="odd-or-even.attr"/>
+    </optional>
+    <optional>
+      <ref name="blank-or-not-blank.attr"/>
+    </optional>
+  </define>
+  <!--
+    ===============================================================
+    Simple page master defines a page layout. It does not
+    explicitly generate any content. Most of its properties are
+    local except for writing-mode and reference-orientation that
+    are inherited by the underlying region-* objects.
+    ===============================================================
+    NOTE. We could think about a common background/padding/border
+    for every page instance generated by the page master. For such
+    a scope, we may add borders/padding/background to its features.
+    However, in the current version this is ruled out explicitly by the XSL specs.
+  -->
+  <define name="simple-page-master.attlist">
+    <ref name="margin-properties-CSS"/>
+    <ref name="master-name.attr"/>
+    <optional>
+      <ref name="page-height.attr"/>
+    </optional>
+    <optional>
+      <ref name="page-width.attr"/>
+    </optional>
+    <optional>
+      <ref name="reference-orientation.attr"/>
+    </optional>
+    <optional>
+      <ref name="size.attr"/>
+    </optional>
+    <optional>
+      <ref name="writing-mode.attr"/>
+    </optional>
+  </define>
+  <!--
+    ===============================================================
+    Region elements by themselves do not generate any content.
+    Reference-orientation and writing-mode may be inherited from
+    the page master; all other features are local.
+    ===============================================================
+  -->
+  <define name="region-properties">
+    <ref name="border-padding-background-properties"/>
+    <ref name="area-properties"/>
+    <optional>
+      <ref name="region-name.attr"/>
+    </optional>
+  </define>
+  <!--
+    ===============================================================
+    Body region: middle of the page. Unlike side regions, this one
+    may have multiple columns.
+    ===============================================================  
+    NOTE: We have restricted margin properties to be margin-only,
+    allowing no spaces. This is done because no clear semantics
+    can be ascribed to single components of a space vector.
+  -->
+  <define name="region-body.attlist">
+    <ref name="region-properties"/>
+    <ref name="margin-properties-CSS"/>
+    <optional>
+      <ref name="column-count.attr"/>
+    </optional>
+    <optional>
+      <ref name="column-gap.attr"/>
+    </optional>
+  </define>
+  <!--
+    ===============================================================
+    Side regions: page edges. These regions have extent and
+    precedence that is used to arbitrate corner conflicts. Side
+    regions are viewed as frames, and may not have margins.
+    ===============================================================
+    NOTE: Extent made obligatory: its default value of 0.0pt does not
+    make much sense.
+  -->
+  <define name="region-before.attlist">
+    <ref name="region-properties"/>
+    <ref name="extent.attr"/>
+    <optional>
+      <ref name="precedence.attr"/>
+    </optional>
+  </define>
+  <define name="region-after.attlist">
+    <ref name="region-properties"/>
+    <ref name="extent.attr"/>
+    <optional>
+      <ref name="precedence.attr"/>
+    </optional>
+  </define>
+  <define name="region-start.attlist">
+    <ref name="region-properties"/>
+    <ref name="extent.attr"/>
+  </define>
+  <define name="region-end.attlist">
+    <ref name="region-properties"/>
+    <ref name="extent.attr"/>
+  </define>
+  <!--
+    ===============================================================
+    Page sequence. 
+    ===============================================================
+  -->
+  <define name="page-sequence.attlist">
+    <optional>
+      <ref name="format.attr"/>
+    </optional>
+    <optional>
+      <ref name="letter-value.attr"/>
+    </optional>
+    <optional>
+      <ref name="grouping-separator.attr"/>
+    </optional>
+    <optional>
+      <ref name="grouping-size.attr"/>
+    </optional>
+    <optional>
+      <ref name="id.attr"/>
+    </optional>
+    <optional>
+      <ref name="rx-key.attr"/>
+    </optional>
+    <optional>
+      <ref name="initial-page-number.attr"/>
+    </optional>
+    <optional>
+      <ref name="force-page-count.attr"/>
+    </optional>
+    <ref name="master-reference.attr"/>
+    <ref name="inheritable-properties"/>
+  </define>
+  <!--
+    ===============================================================
+    Title
+    ===============================================================
+    MEMO: Why 'id' attribute is not allowed here?
+    MEMO: Does it makes sence to add relative-position here? 
+    According to Section 7.12.1. "relative-position" it is allowed everywhere except fo:block-container
+    Should we allow all inline properties here??
+  -->
+  <define name="title.attlist">
+    <ref name="accessibility-properties"/>
+    <ref name="aural-properties-unheritable"/>
+    <ref name="border-padding-background-properties"/>
+    <ref name="margin-properties-inline"/>
+    <ref name="inheritable-properties"/>
+  </define>
+  <!--
+    ===============================================================
+    Flows. 'flow-name' feature defines linkage of the flow to a region in the page master.
+    ===============================================================
+  -->
+  <define name="flow-properties">
+    <optional>
+      <ref name="id.attr"/>
+    </optional>
+    <optional>
+      <ref name="rx-key.attr"/>
+    </optional>
+    <ref name="flow-name.attr"/>
+    <ref name="inheritable-properties"/>
+  </define>
+  <define name="flow.attlist">
+    <ref name="flow-properties"/>
+  </define>
+  <define name="static-content.attlist">
+    <ref name="flow-properties"/>
+  </define>
+  <!--
+    ===============================================================
+    An extension element, rx:flow-section.
+    Acts like a top-level block with multiple columns.
+    ===============================================================
+  -->
+  <define name="flow-section.attlist">
+    <optional>
+      <ref name="column-count.attr"/>
+    </optional>
+    <optional>
+      <ref name="column-gap.attr"/>
+    </optional>
+    <ref name="border-padding-background-properties"/>
+    <ref name="margin-properties-block"/>
+    <ref name="inheritable-properties"/>
+  </define>
+  <!--
+    ****************************************************************************************
+    Properties used by content-bearing elements
+    ****************************************************************************************
+  -->
+  <!--
+    ===============================================================
+    Properties of block formatting objects.
+    ===============================================================
+    ===============================================================
+    Besides properties used to format the block itself, it also conveys
+    formatting information to its inline-level children.
+    ===============================================================
+  -->
+  <define name="block.attlist">
+    <ref name="block-properties"/>
+    <ref name="character-properties-unheritable"/>
+    <optional>
+      <ref name="text-altitude.attr"/>
+    </optional>
+    <optional>
+      <ref name="text-depth.attr"/>
+    </optional>
+  </define>
+  <!--
+    ===============================================================
+    Block container
+    ===============================================================
+  -->
+  <!--
+    MEMO: We are forced to create separate element 'absolute-container' in order 
+    to satisfy XSL FO spec requirements. 
+  -->
+  <define name="absolute-container.attlist">
+    <ref name="absolute-position-properties"/>
+    <ref name="area-properties-unheritable"/>
+    <ref name="box-size-properties"/>
+    <ref name="common-block-properties"/>
+    <optional>
+      <ref name="z-index.attr"/>
+    </optional>
+  </define>
+  <!--
+    'Usual' container element
+    MEMO: XSLFO spec prohibits use of 'relative-position' for fo:block-container,
+    but we believe that it should be allowed for non-absolutely positioned containers.
+  -->
+  <define name="block-container.attlist">
+    <ref name="area-properties-unheritable"/>
+    <ref name="box-size-properties"/>
+    <ref name="block-properties"/>
+    <optional>
+      <ref name="container-position.attr"/>
+    </optional>
+    <optional>
+      <ref name="z-index.attr"/>
+    </optional>
+  </define>
+  <!--
+    ===============================================================
+    Properties of inline formatting objects.
+    ===============================================================
+    ===============================================================
+    Unicode bidi-override
+    ===============================================================
+    MEMO: This element is 'half-inline' accroding to spec, since it's exhibits the same 
+    bahavior and used in the same context but yet cannot carry some of inline-level
+    properties such as margins and border.
+    We use the same set of properties as for inline here (except for unicode-bidi and
+    width properties) since we believe that this is a typical inline element.
+    Moreover fo:bidi-override is redundant from semantic point of view since it do not 
+    carry any additional information compared to regular fo:inline - just add
+    'unicode-bidi' to fo:inline and you do not need fo:bidi-override anymore.
+  -->
+  <define name="bidi-override.attlist">
+    <ref name="inline-properties"/>
+    <optional>
+      <ref name="unicode-bidi.attr"/>
+    </optional>
+  </define>
+  <!--
+    MEMO: 'Folint' believes that direction property is required for fo:bidi-override,
+    but this is against the spec since this property can be inherited.
+  -->
+  <!--
+    ===============================================================
+    Single character
+    ===============================================================
+  -->
+  <define name="character.attlist">
+    <ref name="character.attr"/>
+    <optional>
+      <ref name="suppress-at-line-break.attr"/>
+    </optional>
+    <optional>
+      <ref name="treat-as-word-space.attr"/>
+    </optional>
+    <ref name="common-inline-properties"/>
+  </define>
+  <!--
+    ===============================================================
+    Initial property set specifies properties for one or more lines
+    ===============================================================
+    MEMO: Spec is contradictory here. It states that use of this object is equivalent to
+    the fo:wrapper around the first line. At the same time spec allows on this element
+    such properties as 'Common Border, Padding, and Background Properties' 
+    - fo:wrapper can't have border/padding/etc and can bear inheritable properties only.
+    We believe that this element should be treated as inline and thus should have
+    appropriate properties set.
+  -->
+  <define name="initial-property-set.attlist">
+    <ref name="common-inline-properties"/>
+  </define>
+  <!--
+    ===============================================================
+    External graphic
+    ===============================================================
+  -->
+  <define name="external-graphic.attlist">
+    <ref name="graphic-properties"/>
+    <optional>
+      <ref name="src.attr"/>
+    </optional>
+  </define>
+  <!--
+    ===============================================================
+    In-stream graphic
+    ===============================================================
+  -->
+  <define name="instream-foreign-object.attlist">
+    <ref name="graphic-properties"/>
+  </define>
+  <!--
+    ===============================================================
+    Inline
+    ===============================================================
+  -->
+  <define name="inline.attlist">
+    <ref name="height-properties"/>
+    <ref name="inline-properties"/>
+  </define>
+  <!--
+    ===============================================================
+    Inline container
+    ===============================================================
+    FIXME! We believe that this element should not bear not-inheritable properties,
+    which applies to text since it can't have text children.
+    Therefor we do not use 'common-inline-properties' set.
+  -->
+  <define name="inline-container.attlist">
+    <optional>
+      <ref name="id.attr"/>
+    </optional>
+    <optional>
+      <ref name="rx-key.attr"/>
+    </optional>
+    <ref name="accessibility-properties"/>
+    <ref name="aural-properties-unheritable"/>
+    <ref name="area-alignment-properties"/>
+    <ref name="border-padding-background-properties"/>
+    <ref name="keeps-properties-atomic"/>
+    <ref name="margin-properties-inline"/>
+    <ref name="relative-position-properties"/>
+    <ref name="area-properties-unheritable"/>
+    <ref name="box-size-properties"/>
+    <ref name="inheritable-properties"/>
+  </define>
+  <!--
+    ===============================================================
+    Leader
+    ===============================================================
+  -->
+  <define name="leader.attlist">
+    <ref name="inline-properties"/>
+  </define>
+  <!--
+    MEMO: Note that 'inline-properties' includes block-level inheritable properties.
+    But it's OK in our content-model since it allows block-level descendants wrapped
+    into fo:inline-container.
+    At the same time block-level inheritable properties includes leader properties,
+    since they are inheritable... 
+  -->
+  <!--
+    ===============================================================
+    Page Number
+    ===============================================================
+  -->
+  <define name="page-number.attlist">
+    <ref name="common-inline-properties"/>
+    <optional>
+      <ref name="wrap-option.attr"/>
+    </optional>
+  </define>
+  <!--
+    ===============================================================
+    Page number citation
+    ===============================================================
+  -->
+  <define name="page-number-citation.attlist">
+    <ref name="common-inline-properties"/>
+    <optional>
+      <ref name="wrap-option.attr"/>
+    </optional>
+    <ref name="ref-id.attr"/>
+  </define>
+  <!--
+    ===============================================================
+    Atomic elements for index ranges markup
+    ===============================================================
+  -->
+  <define name="begin-index-range.attlist">
+    <ref name="id.attr"/>
+    <ref name="rx-key.attr"/>
+  </define>
+  <define name="end-index-range.attlist">
+    <ref name="ref-id.attr"/>
+  </define>
+  <!--
+    ===============================================================
+    Page number list - index entry
+    ===============================================================
+  -->
+  <define name="page-index.attlist">
+    <ref name="common-inline-properties"/>
+    <optional>
+      <ref name="wrap-option.attr"/>
+    </optional>
+    <optional>
+      <ref name="list-separator.attr"/>
+    </optional>
+    <optional>
+      <ref name="ref-key.attr"/>
+    </optional>
+  </define>
+  <!--
+    MEMO: There is no 'ref-key' attribute on page-index now, but it is allowed for 
+    backward compatibility.
+    MEMO: Actually it makes sense to exclude id/rx:key fom the set of availabe properties 
+    for 'index-item', however we prefer no to do it just to avoid creation of yet another content
+    model (attribute set) for thid inline element.
+  -->
+  <define name="index-item.attlist">
+    <ref name="common-inline-properties"/>
+    <optional>
+      <ref name="wrap-option.attr"/>
+    </optional>
+    <ref name="ref-key.attr"/>
+    <optional>
+      <ref name="link-back.attr"/>
+    </optional>
+    <optional>
+      <ref name="range-separator.attr"/>
+    </optional>
+    <optional>
+      <ref name="merge-subsequent-page-numbers.attr"/>
+    </optional>
+  </define>
+  <!--
+    ===============================================================
+    Properties of table formatting objects.
+    ===============================================================
+    ===============================================================
+    Table & Caption.
+    ===============================================================
+  -->
+  <define name="table-and-caption.attlist">
+    <ref name="common-block-properties"/>
+    <optional>
+      <ref name="clear.attr"/>
+    </optional>
+    <ref name="relative-position-properties"/>
+    <ref name="keeps-and-breaks-properties-atomic"/>
+  </define>
+  <!--
+    MEMO: Spec do not allows margins on fo:table-caption that is against common sence 
+    since this is a typical container.
+    We do allow margins (they are included in common-block-properties).
+    'Folint' does the same.
+  -->
+  <define name="table-caption.attlist">
+    <optional>
+      <ref name="clear.attr"/>
+    </optional>
+    <ref name="common-block-properties"/>
+    <ref name="relative-position-properties"/>
+    <ref name="box-size-properties"/>
+  </define>
+  <define name="table.attlist">
+    <optional>
+      <ref name="clear.attr"/>
+    </optional>
+    <ref name="common-block-properties"/>
+    <ref name="box-size-properties"/>
+    <ref name="keeps-and-breaks-properties-atomic"/>
+    <ref name="table-properties-unheritable"/>
+  </define>
+  <!--
+    ===============================================================
+    Table column specifies common properties to ascribe to all
+    cells in a column *or a group of columns*. Note that, if both
+    'number-columns-repeated' and 'number-columns-spanned' exceed
+    1, the column counter is increased by 'number-columns-spanned'.
+    it means that you only set properties for columns:
+    'column-number'
+    'column-number' + 'number-columns-spanned'
+    'column-number' + 2 * 'number-columns-spanned'
+    and so on, leaving default properties for intermediate columns.
+    ===============================================================
+  -->
+  <define name="table-column.attlist">
+    <optional>
+      <ref name="column-number.attr"/>
+    </optional>
+    <optional>
+      <ref name="column-width.attr"/>
+    </optional>
+    <optional>
+      <ref name="number-columns-repeated.attr"/>
+    </optional>
+    <optional>
+      <ref name="number-columns-spanned.attr"/>
+    </optional>
+    <ref name="background-properties"/>
+    <!--
+      MEMO: Border properties applies to this formatting object only if the value of border-collapse
+      for the table is "collapse" or "collapse-with-precedence" 
+    -->
+    <ref name="border-properties"/>
+    <ref name="border-precedence-properties"/>
+    <ref name="inheritable-properties"/>
+  </define>
+  <!--
+    ===============================================================
+    Table header, table footer, and table body.
+    ===============================================================
+  -->
+  <define name="row-group.attlist">
+    <optional>
+      <ref name="id.attr"/>
+    </optional>
+    <optional>
+      <ref name="rx-key.attr"/>
+    </optional>
+    <ref name="accessibility-properties"/>
+    <ref name="aural-properties-unheritable"/>
+    <ref name="background-properties"/>
+    <!--
+      MEMO: Border properties applies to this formatting object only if the value of border-collapse
+      for the table is "collapse" or "collapse-with-precedence" 
+    -->
+    <ref name="border-properties"/>
+    <ref name="border-precedence-properties"/>
+    <ref name="relative-position-properties"/>
+    <ref name="inheritable-properties"/>
+  </define>
+  <define name="table-header.attlist">
+    <ref name="row-group.attlist"/>
+  </define>
+  <define name="table-footer.attlist">
+    <ref name="row-group.attlist"/>
+  </define>
+  <!--
+    MEMO: Spec do not list "Keep" properties almong applicable to fo:table-body that is a clear
+    case of  errata.
+  -->
+  <define name="table-body.attlist">
+    <ref name="row-group.attlist"/>
+    <ref name="keeps-and-breaks-properties-atomic"/>
+  </define>
+  <!--
+    ===============================================================
+    Table row.
+    ===============================================================
+    MEMO: Should we create separate collection of properties in 'properties_groups.rnc'
+    based on row-group.attlist?
+  -->
+  <define name="table-row.attlist">
+    <ref name="row-group.attlist"/>
+    <ref name="height-properties"/>
+    <ref name="keeps-and-breaks-properties-atomic"/>
+  </define>
+  <!--
+    ===============================================================
+    Table cell.
+    ===============================================================
+    MEMO: Spec do not allows margins on fo:table-cell but 'Folint' does.
+    We excluded margins from this element and therefor don't use 'common-block-properties'
+    MEMO: Spec do not list "Keep" properties almong applicable to fo:table-cell that is a clear
+    case of  errata.
+  -->
+  <define name="table-cell.attlist">
+    <optional>
+      <ref name="id.attr"/>
+    </optional>
+    <optional>
+      <ref name="rx-key.attr"/>
+    </optional>
+    <optional>
+      <ref name="column-number.attr"/>
+    </optional>
+    <ref name="accessibility-properties"/>
+    <ref name="aural-properties-unheritable"/>
+    <ref name="border-padding-background-properties"/>
+    <ref name="border-precedence-properties"/>
+    <ref name="box-size-properties"/>
+    <optional>
+      <ref name="ends-row.attr"/>
+    </optional>
+    <ref name="keeps-and-breaks-properties-atomic"/>
+    <optional>
+      <ref name="number-columns-spanned.attr"/>
+    </optional>
+    <optional>
+      <ref name="number-rows-spanned.attr"/>
+    </optional>
+    <optional>
+      <ref name="starts-row.attr"/>
+    </optional>
+    <ref name="inheritable-properties"/>
+  </define>
+  <!--
+    ===============================================================
+    Properties of list formatting objects.
+    ===============================================================  
+    ===============================================================
+    List block.
+    ===============================================================
+  -->
+  <define name="list-block.attlist">
+    <optional>
+      <ref name="clear.attr"/>
+    </optional>
+    <ref name="common-block-properties"/>
+    <ref name="keeps-and-breaks-properties-atomic"/>
+    <ref name="relative-position-properties"/>
+  </define>
+  <!--
+    ===============================================================
+    List item.
+    ===============================================================
+  -->
+  <define name="list-item.attlist">
+    <ref name="common-block-properties"/>
+    <ref name="keeps-and-breaks-properties-atomic"/>
+    <ref name="relative-position-properties"/>
+  </define>
+  <!--
+    ===============================================================
+    List item label and list item body
+    ===============================================================
+  -->
+  <define name="list-item-label.attlist">
+    <optional>
+      <ref name="id.attr"/>
+    </optional>
+    <optional>
+      <ref name="rx-key.attr"/>
+    </optional>
+    <ref name="accessibility-properties"/>
+    <ref name="inheritable-properties"/>
+  </define>
+  <define name="list-item-body.attlist">
+    <optional>
+      <ref name="id.attr"/>
+    </optional>
+    <optional>
+      <ref name="rx-key.attr"/>
+    </optional>
+    <ref name="accessibility-properties"/>
+    <ref name="inheritable-properties"/>
+  </define>
+  <!--
+    ===============================================================
+    Floats and footnotes.
+    ===============================================================
+    MEMO: Outlines can't have id and therefor can't have rx:key properties so we are strict here.
+    'Folint' is loose here - it allows use of these properties.
+    MEMO: We are forced to create two types of floats: side-floats and before-floats.
+  -->
+  <define name="side-float.attlist">
+    <optional>
+      <ref name="side-float.attr"/>
+    </optional>
+    <optional>
+      <ref name="clear.attr"/>
+    </optional>
+    <ref name="inheritable-properties"/>
+  </define>
+  <!-- NOTE: before-float can't bear 'clear' property -->
+  <define name="before-float.attlist">
+    <optional>
+      <ref name="before-float.attr"/>
+    </optional>
+    <ref name="inheritable-properties"/>
+  </define>
+  <define name="footnote.attlist">
+    <ref name="accessibility-properties"/>
+    <ref name="inheritable-properties"/>
+  </define>
+  <define name="footnote-body.attlist">
+    <ref name="accessibility-properties"/>
+    <ref name="inheritable-properties"/>
+  </define>
+  <!--
+    ===============================================================
+    Simple link.
+    ===============================================================
+  -->
+  <define name="basic-link.attlist">
+    <ref name="inline-properties"/>
+    <optional>
+      <ref name="external-destination.attr"/>
+    </optional>
+    <optional>
+      <ref name="internal-destination.attr"/>
+    </optional>
+    <optional>
+      <ref name="indicate-destination.attr"/>
+    </optional>
+    <optional>
+      <ref name="show-destination.attr"/>
+    </optional>
+    <optional>
+      <ref name="destination-placement-offset.attr"/>
+    </optional>
+    <optional>
+      <ref name="target-processing-context.attr"/>
+    </optional>
+    <optional>
+      <ref name="target-presentation-context.attr"/>
+    </optional>
+    <optional>
+      <ref name="target-stylesheet.attr"/>
+    </optional>
+  </define>
+  <!--
+    ===============================================================
+    Wrappers.
+    ===============================================================
+  -->
+  <define name="wrapper.attlist">
+    <optional>
+      <ref name="id.attr"/>
+    </optional>
+    <optional>
+      <ref name="rx-key.attr"/>
+    </optional>
+    <ref name="inheritable-properties"/>
+  </define>
+  <!--
+    ===============================================================
+    Marker. This element may embrace any content but cannot pass
+    properties to its children; so, it may not have features other
+    than marker-class-name.
+    ===============================================================
+    MEMO: We are more strict here making marker-class-name attribute a mandatory,
+    but marker with no marker-class-name is meaningless.
+  -->
+  <define name="marker.attlist">
+    <ref name="marker-class-name.attr"/>
+  </define>
+  <!--
+    ===============================================================
+    Marker retrieval.
+    ===============================================================
+    FIXME! We are more strict here making retrieve-class-name attribute a mandatory, 
+    but marker with no retrieve-class-name is meaningless.
+  -->
+  <define name="retrieve-marker.attlist">
+    <ref name="retrieve-class-name.attr"/>
+    <optional>
+      <ref name="retrieve-position.attr"/>
+    </optional>
+    <optional>
+      <ref name="retrieve-boundary.attr"/>
+    </optional>
+    <!--
+      MEMO: Is it OK to allow inheritable properties here? There are no explicit arguments
+      against it in the spec.
+    -->
+    <ref name="inheritable-properties"/>
+  </define>
+  <!--
+    ===============================================================
+    Multistate stuff.
+    ===============================================================
+    ===============================================================
+    Switch. 
+    ===============================================================
+    MEMO: Should we have Aural Properties here as well?
+  -->
+  <define name="multi-switch.attlist">
+    <optional>
+      <ref name="id.attr"/>
+    </optional>
+    <optional>
+      <ref name="rx-key.attr"/>
+    </optional>
+    <optional>
+      <ref name="auto-restore.attr"/>
+    </optional>
+    <ref name="accessibility-properties"/>
+    <ref name="inheritable-properties"/>
+  </define>
+  <!--
+    ===============================================================
+    Single case.
+    ===============================================================
+  -->
+  <define name="multi-case.attlist">
+    <optional>
+      <ref name="id.attr"/>
+    </optional>
+    <optional>
+      <ref name="rx-key.attr"/>
+    </optional>
+    <optional>
+      <ref name="starting-state.attr"/>
+    </optional>
+    <optional>
+      <ref name="case-name.attr"/>
+    </optional>
+    <optional>
+      <ref name="case-title.attr"/>
+    </optional>
+    <ref name="accessibility-properties"/>
+    <ref name="inheritable-properties"/>
+  </define>
+  <!--
+    ===============================================================
+    Toggle. 
+    ===============================================================
+    MEMO: Should we have here inline-level properties only?
+  -->
+  <define name="multi-toggle.attlist">
+    <optional>
+      <ref name="switch-to.attr"/>
+    </optional>
+    <ref name="accessibility-properties"/>
+    <ref name="inheritable-properties"/>
+  </define>
+  <!--
+    ===============================================================
+    Multi-properties.
+    ===============================================================
+    Should we allow here any possible properties applicable to the objects inside of the flow?
+  -->
+  <define name="multi-properties.attlist">
+    <optional>
+      <ref name="id.attr"/>
+    </optional>
+    <optional>
+      <ref name="rx-key.attr"/>
+    </optional>
+    <ref name="accessibility-properties"/>
+    <ref name="inheritable-properties"/>
+  </define>
+  <!--
+    ===============================================================
+    Multi property set.
+    ===============================================================
+    Should we allow here any possible properties applicable to the objects inside of the flow?
+  -->
+  <define name="multi-property-set.attlist">
+    <optional>
+      <ref name="id.attr"/>
+    </optional>
+    <optional>
+      <ref name="rx-key.attr"/>
+    </optional>
+    <ref name="active-state.attr"/>
+    <ref name="inheritable-properties"/>
+  </define>
+</grammar>

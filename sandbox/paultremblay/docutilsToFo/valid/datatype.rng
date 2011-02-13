@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  =========================================================
+                                                           
+  (c) 2004, RenderX                                        
+                                                           
+  Author: Alexander Peshkov <peshkov@renderx.com>          
+                                                           
+  Permission is granted to use this document, copy and     
+  modify free of charge, provided that every derived work  
+  bear a reference to the present document.                
+                                                           
+  This document contains a computer program written in     
+  XSL Transformations Language. It is published with no    
+  warranty of any kind about its usability, as a mere      
+  example of XSL technology. RenderX shall not be          
+  considered liable for any damage or loss of data caused  
+  by use of this program.                                  
+                                                           
+  =========================================================
+-->
+<grammar xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+  <!--
+    ***************************************************************
+    Common XSL FO datatypes definitions
+    ***************************************************************
+  -->
+  <define name="integer.datatype">
+    <data type="integer"/>
+  </define>
+  <define name="number.datatype">
+    <data type="decimal"/>
+  </define>
+  <define name="length.datatype">
+    <data type="string">
+      <param name="pattern">[\-+]?(\d*\.?\d+)(cm|mm|in|pt|pc|px|em)</param>
+    </data>
+  </define>
+  <define name="angle.datatype">
+    <data type="string">
+      <param name="pattern">[\-+]?(\d*\.?\d+)(deg|grad|rad)</param>
+    </data>
+  </define>
+  <define name="percentage.datatype">
+    <data type="string">
+      <param name="pattern">[\-+]?(\d*\.?\d+)%</param>
+    </data>
+  </define>
+  <define name="character.datatype">
+    <data type="string">
+      <param name="pattern">.|\r|\n</param>
+    </data>
+  </define>
+  <define name="string.datatype">
+    <data type="string" datatypeLibrary=""/>
+  </define>
+  <define name="name.datatype">
+    <data type="NCName"/>
+  </define>
+  <define name="family-name.datatype">
+    <data type="normalizedString"/>
+  </define>
+  <!-- MEMO: Should I add some constraints to the family-name.datatype? -->
+  <define name="color.datatype">
+    <data type="token"/>
+  </define>
+  <!-- MEMO: Should I add some constraints to the color.datatype? -->
+  <define name="country.datatype">
+    <data type="string">
+      <param name="pattern">\w{2,3}</param>
+    </data>
+  </define>
+  <define name="language.datatype">
+    <data type="string">
+      <param name="pattern">\w{2,3}</param>
+    </data>
+  </define>
+  <define name="script.datatype">
+    <data type="string">
+      <param name="pattern">\w</param>
+    </data>
+  </define>
+  <!-- MEMO: Should I add detailed constraints to the country/language/script.datatype? -->
+  <define name="uri-specification.datatype">
+    <data type="string"/>
+  </define>
+  <!-- MEMO: Should I add some constraints to the uri-specification.datatype? -->
+  <define name="time.datatype">
+    <data type="string">
+      <param name="pattern">[\-+]?(\d*\.?\d+)(m?s)</param>
+    </data>
+  </define>
+  <define name="frequency.datatype">
+    <data type="string">
+      <param name="pattern">[\-+]?(\d*\.?\d+)(k?Hz)</param>
+    </data>
+  </define>
+  <!-- NOTE: <shape> datatype added in XSL FO 1.0 Errata -->
+  <define name="shape.datatype">
+    <data type="normalizedString">
+      <param name="pattern">(([\-+]?(\d*\.?\d+)(cm|mm|in|pt|pc|px|em))|auto) (([\-+]?(\d*\.?\d+)(cm|mm|in|pt|pc|px|em))|auto) (([\-+]?(\d*\.?\d+)(cm|mm|in|pt|pc|px|em))|auto) (([\-+]?(\d*\.?\d+)(cm|mm|in|pt|pc|px|em))|auto)</param>
+    </data>
+  </define>
+  <!--
+    ***************************************************************
+    Special datatype - expressions
+    ***************************************************************
+    MEMO: simple example of constraint for functions
+  -->
+  <define name="expr.datatype">
+    <data type="normalizedString">
+      <param name="pattern">.*\(.*\).*</param>
+    </data>
+  </define>
+</grammar>
