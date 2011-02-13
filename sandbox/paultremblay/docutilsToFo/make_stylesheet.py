@@ -328,18 +328,31 @@ class ReadConfig:
                     self. __handle_attributes('header-region-before' , 'extent', value)
                 if user_att_set == 'footer':
                     self. __handle_attributes('footer-region-after' , 'extent', value)
+            elif user_att == 'suppress-first-page' :
+                if user_att_set == 'header':
+                    self.__handle_param(param = 'suppress-first-page-header', value = value)
+                elif user_att_set == 'footer':
+                    self.__handle_param(param = 'suppress-first-page-footer', value = value)
             else: 
                 if user_att_set == 'header':
-                    self. __handle_attributes('header-block' , user_att, value)
+                    self. __handle_attributes(user_att_set , user_att, value, check_special = False)
                 if user_att_set == 'footer':
-                    self. __handle_attributes('footer-block' , user_att, value)
+                    self. __handle_attributes(user_att_set , user_att, value, check_special = False)
 
         else:
             self.__error('%s.%s = %s not a valid attribute property\n' % (user_att_set, user_att, value))
 
 
     def __handle_param(self, param, value):
-        self.__params[param] = value
+        to_test_dict = param_dict_test.get(param)
+        if to_test_dict:
+            correct_value = to_test_dict.get(value)
+            if correct_value:
+                self.__params[param] = correct_value
+            else:
+                self.__error('%s = %s not a valid command\n' % (param, value))
+        else:
+            self.__params[param] = value
 
     def make_stylesheet(self):
         self.parse_config_files()

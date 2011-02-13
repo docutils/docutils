@@ -234,6 +234,13 @@ added_att_sets = {
 'paragraph':['paragraph-block', 'block'], 
 'first-paragraph':['first-paragraph-block', 'block'], 
 'body':['default-flow', 'flow'],
+'header':['header-block', 'block'],
+'header-first-paragraph':['header-first-block', 'block'],
+'header-second-paragraph':['header-second-block', 'block'],
+'header-third-paragraph':['header-third-block', 'block'],
+'footer-first-paragraph':['footer-first-block', 'block'],
+'footer-second-paragraph':['footer-second-block', 'block'],
+'footer-third-paragraph':['footer-third-block', 'block'],
 }
 
 att_set_dict.update(added_att_sets)
@@ -1263,7 +1270,8 @@ diff = rbe_set.symmetric_difference(rbo_set)
 font_style_dict={'bold': [('font-weight','bold')],
 'italic': [('font-style','italic')],
 'bold-italic':[('font-weight','bold'), ('font-style','italic')],
-'italic-bold':[('font-weight','bold'), ('font-style','italic')]
+'italic-bold':[('font-weight','bold'), ('font-style','italic')],
+'normal':[('font-weight', 'normal'), ('font-style', 'normal')],
 }
 special_values_dict = {'font-style':[True],
         }
@@ -1359,5 +1367,11 @@ param_dict = {
 'warning-title' : 'Warning!',
 }
 param_list = param_dict.keys()
+true_or_false = {'True':'True', 'true':'True', 'yes':'True', 'Yes': 'True', 'False': 'False', 
+        'false':'False', 'no': 'False', 'No':'False'}
+param_dict_test = {'strict':true_or_false,
+        'suppress-first-page-header': true_or_false,
+        'suppress-first-page-footer': true_or_false,
+        }
 
 commands_list = ['xsl-stylesheet']

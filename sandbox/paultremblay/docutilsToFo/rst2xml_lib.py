@@ -102,6 +102,29 @@ def validate_docutils(xml_file):
     doc = etree.parse(file(xml_file))
     validate_docutils_rng(doc)
 
+# validate through xslt stylesheet
+def validate_fo_xsl(xml_file):
+    xsl_ss = os.path.join(os.path.dirname(__file__), 'valid','folint.xsl')
+    xslt_doc = etree.parse(xsl_ss)
+    transform = etree.XSLT(xslt_doc)
+    try:
+        indoc = etree.parse(xml_file)
+    except lxml.etree.XMLSyntaxError, msg:
+        sys.stderr.write('Invalid XML\n')
+        sys.stderr.write(str(msg))
+        sys.stderr.write('\n')
+        return 1
+    try:
+        outdoc = transform(indoc)
+    except lxml.etree.XSLTApplyError, error:
+        msg = 'error converting %s to %s with %s:\n' % (xml_file, out_file, xslt_file)
+        msg += str(error)
+        msg += '\n'
+        report_xsl_error(transform.error_log)
+        return 1
+    report_xsl_error(transform.error_log)
+    return  len(transform.error_log)
+
 def validate_docutils_rng(xml_obj):
     the_rng = os.path.join(os.path.dirname(__file__), 'valid','docutils.rng') 
     relaxng_doc = etree.parse(file(the_rng))
