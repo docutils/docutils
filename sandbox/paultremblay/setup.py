@@ -23,6 +23,6 @@ setup(name="docutilsToFo",
     # url = "http://rtf2xml.sourceforge.net/",
     packages=['docutilsToFo'],
     package_dir = {'docutilsToFo': 'docutilsToFo'},
-    package_data={'docutilsToFo': ['xsl_fo/*.xsl', 'valid/*.dtd', 'valid/*.rng']},
+    package_data={'docutilsToFo': ['xsl_fo/*.xsl', 'valid/*.dtd', 'valid/*.rng', 'valid/*xsl']},
     scripts=[script_name],
     )
