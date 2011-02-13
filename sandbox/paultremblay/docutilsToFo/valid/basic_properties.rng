@@ -1,0 +1,3087 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  =========================================================
+                                                           
+  (c) 2004, RenderX                                        
+                                                           
+  Author: Alexander Peshkov <peshkov@renderx.com>          
+                                                           
+  Permission is granted to use this document, copy and     
+  modify free of charge, provided that every derived work  
+  bear a reference to the present document.                
+                                                           
+  This document contains a computer program written in     
+  XSL Transformations Language. It is published with no    
+  warranty of any kind about its usability, as a mere      
+  example of XSL technology. RenderX shall not be          
+  considered liable for any damage or loss of data caused  
+  by use of this program.                                  
+                                                           
+  =========================================================
+-->
+<grammar xmlns:rx="http://www.renderx.com/XSL/Extensions" xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+  <include href="datatype.rng"/>
+  <!--
+    ===============================================================   
+    Common properties content models used by several attributes
+    ===============================================================   
+  -->
+  <define name="border-style.attr-content">
+    <choice>
+      <value>none</value>
+      <value>hidden</value>
+      <value>dotted</value>
+      <value>dashed</value>
+      <value>solid</value>
+      <value>double</value>
+      <value>groove</value>
+      <value>ridge</value>
+      <value>inset</value>
+      <value>outset</value>
+      <value>inherit</value>
+    </choice>
+  </define>
+  <define name="orientation.attr-content">
+    <choice>
+      <value>0</value>
+      <value>90</value>
+      <value>180</value>
+      <value>270</value>
+      <value>-90</value>
+      <value>-180</value>
+      <value>-270</value>
+      <value>0deg</value>
+      <value>90deg</value>
+      <value>180deg</value>
+      <value>270deg</value>
+      <value>-90deg</value>
+      <value>-180deg</value>
+      <value>-270deg</value>
+      <value>inherit</value>
+    </choice>
+  </define>
+  <define name="keep.attr-content">
+    <choice>
+      <value>auto</value>
+      <value>always</value>
+      <ref name="integer.datatype"/>
+    </choice>
+  </define>
+  <!--
+    ===============================================================   
+    Definitions of all the attributes (properties) used in XSL FO
+    includeing those from RX extensions
+    (definitions of attributes bearing 'rx' namespace named as rx-...,
+    but sorted according to the actual attribute name)
+    ===============================================================
+  -->
+  <define name="absolute-position.attr">
+    <attribute name="absolute-position">
+      <choice>
+        <value>absolute</value>
+        <value>fixed</value>
+      </choice>
+    </attribute>
+  </define>
+  <!-- MEMO: We forced to separate this property from actual 'absolute-position' -->
+  <define name="container-position.attr">
+    <attribute name="absolute-position">
+      <choice>
+        <value>auto</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="active-state.attr">
+    <attribute name="active-state">
+      <choice>
+        <value>link</value>
+        <value>visited</value>
+        <value>active</value>
+        <value>hover</value>
+        <value>focus</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="alignment-adjust.attr">
+    <attribute name="alignment-adjust">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="alignment-baseline.attr">
+    <attribute name="alignment-baseline">
+      <choice>
+        <value>auto</value>
+        <value>baseline</value>
+        <value>before-edge</value>
+        <value>text-before-edge</value>
+        <value>middle</value>
+        <value>central</value>
+        <value>after-edge</value>
+        <value>text-after-edge</value>
+        <value>top</value>
+        <value>text-top</value>
+        <value>bottom</value>
+        <value>text-bottom</value>
+        <value>ideographic</value>
+        <value>alphabetic</value>
+        <value>hanging</value>
+        <value>mathematical</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="auto-restore.attr">
+    <attribute name="auto-restore">
+      <choice>
+        <value>true</value>
+        <value>false</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="azimuth.attr">
+    <attribute name="azimuth">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="background.attr">
+    <attribute name="background">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="background-attachment.attr">
+    <attribute name="background-attachment">
+      <choice>
+        <value>scroll</value>
+        <value>fixed</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="background-color.attr">
+    <attribute name="background-color">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="background-image.attr">
+    <attribute name="background-image">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="background-position.attr">
+    <attribute name="background-position">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="background-position-horizontal.attr">
+    <attribute name="background-position-horizontal">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="background-position-vertical.attr">
+    <attribute name="background-position-vertical">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="background-repeat.attr">
+    <attribute name="background-repeat">
+      <choice>
+        <value>repeat</value>
+        <value>repeat-x</value>
+        <value>repeat-y</value>
+        <value>no-repeat</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <!-- RenderX extension attributes -->
+  <define name="rx-background-content-type.attr">
+    <attribute name="rx:background-content-type">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="rx-background-content-height.attr">
+    <attribute name="rx:background-content-height">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="rx-background-content-width.attr">
+    <attribute name="rx:background-content-width">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="rx-background-scaling.attr">
+    <attribute name="rx:background-scaling">
+      <choice>
+        <value>uniform</value>
+        <value>non-uniform</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="baseline-shift.attr">
+    <attribute name="baseline-shift">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="blank-or-not-blank.attr">
+    <attribute name="blank-or-not-blank">
+      <choice>
+        <value>blank</value>
+        <value>not-blank</value>
+        <value>any</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="block-progression-dimension.attr">
+    <attribute name="block-progression-dimension">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="block-progression-dimension.maximum.attr">
+    <attribute name="block-progression-dimension.maximum">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="block-progression-dimension.minimum.attr">
+    <attribute name="block-progression-dimension.minimum">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="block-progression-dimension.optimum.attr">
+    <attribute name="block-progression-dimension.optimum">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border.attr">
+    <attribute name="border">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-after-color.attr">
+    <attribute name="border-after-color">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-after-precedence.attr">
+    <attribute name="border-after-precedence">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-after-style.attr">
+    <attribute name="border-after-style">
+      <choice>
+        <ref name="border-style.attr-content"/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-after-width.attr">
+    <attribute name="border-after-width">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-after-width.conditionality.attr">
+    <attribute name="border-after-width.conditionality">
+      <choice>
+        <value>discard</value>
+        <value>retain</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-after-width.length.attr">
+    <attribute name="border-after-width.length">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-before-color.attr">
+    <attribute name="border-before-color">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-before-precedence.attr">
+    <attribute name="border-before-precedence">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-before-style.attr">
+    <attribute name="border-before-style">
+      <choice>
+        <ref name="border-style.attr-content"/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-before-width.attr">
+    <attribute name="border-before-width">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-before-width.conditionality.attr">
+    <attribute name="border-before-width.conditionality">
+      <choice>
+        <value>discard</value>
+        <value>retain</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-before-width.length.attr">
+    <attribute name="border-before-width.length">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-bottom.attr">
+    <attribute name="border-bottom">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-bottom-color.attr">
+    <attribute name="border-bottom-color">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-bottom-style.attr">
+    <attribute name="border-bottom-style">
+      <choice>
+        <ref name="border-style.attr-content"/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-bottom-width.attr">
+    <attribute name="border-bottom-width">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-bottom-width.conditionality.attr">
+    <attribute name="border-bottom-width.conditionality">
+      <choice>
+        <value>discard</value>
+        <value>retain</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-bottom-width.length.attr">
+    <attribute name="border-bottom-width.length">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-collapse.attr">
+    <attribute name="border-collapse">
+      <choice>
+        <value>collapse</value>
+        <value>collapse-with-precedence</value>
+        <value>separate</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-color.attr">
+    <attribute name="border-color">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-end-color.attr">
+    <attribute name="border-end-color">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-end-precedence.attr">
+    <attribute name="border-end-precedence">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-end-style.attr">
+    <attribute name="border-end-style">
+      <choice>
+        <ref name="border-style.attr-content"/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-end-width.attr">
+    <attribute name="border-end-width">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-end-width.conditionality.attr">
+    <attribute name="border-end-width.conditionality">
+      <choice>
+        <value>discard</value>
+        <value>retain</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-end-width.length.attr">
+    <attribute name="border-end-width.length">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-left.attr">
+    <attribute name="border-left">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-left-color.attr">
+    <attribute name="border-left-color">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-left-style.attr">
+    <attribute name="border-left-style">
+      <choice>
+        <ref name="border-style.attr-content"/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-left-width.attr">
+    <attribute name="border-left-width">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-left-width.conditionality.attr">
+    <attribute name="border-left-width.conditionality">
+      <choice>
+        <value>discard</value>
+        <value>retain</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-left-width.length.attr">
+    <attribute name="border-left-width.length">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-right.attr">
+    <attribute name="border-right">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-right-color.attr">
+    <attribute name="border-right-color">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-right-style.attr">
+    <attribute name="border-right-style">
+      <choice>
+        <ref name="border-style.attr-content"/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-right-width.attr">
+    <attribute name="border-right-width">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-right-width.conditionality.attr">
+    <attribute name="border-right-width.conditionality">
+      <choice>
+        <value>discard</value>
+        <value>retain</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-right-width.length.attr">
+    <attribute name="border-right-width.length">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-separation.attr">
+    <attribute name="border-separation">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-separation.block-progression-direction.attr">
+    <attribute name="border-separation.block-progression-direction">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-separation.inline-progression-direction.attr">
+    <attribute name="border-separation.inline-progression-direction">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-spacing.attr">
+    <attribute name="border-spacing">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-start-color.attr">
+    <attribute name="border-start-color">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-start-precedence.attr">
+    <attribute name="border-start-precedence">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-start-style.attr">
+    <attribute name="border-start-style">
+      <choice>
+        <ref name="border-style.attr-content"/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-start-width.attr">
+    <attribute name="border-start-width">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-start-width.conditionality.attr">
+    <attribute name="border-start-width.conditionality">
+      <choice>
+        <value>discard</value>
+        <value>retain</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-start-width.length.attr">
+    <attribute name="border-start-width.length">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-style.attr">
+    <attribute name="border-style">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-top.attr">
+    <attribute name="border-top">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-top-color.attr">
+    <attribute name="border-top-color">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-top-style.attr">
+    <attribute name="border-top-style">
+      <choice>
+        <ref name="border-style.attr-content"/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-top-width.attr">
+    <attribute name="border-top-width">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-top-width.conditionality.attr">
+    <attribute name="border-top-width.conditionality">
+      <choice>
+        <value>discard</value>
+        <value>retain</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-top-width.length.attr">
+    <attribute name="border-top-width.length">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="border-width.attr">
+    <attribute name="border-width">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="bottom.attr">
+    <attribute name="bottom">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="break-after.attr">
+    <attribute name="break-after">
+      <choice>
+        <value>auto</value>
+        <value>column</value>
+        <value>page</value>
+        <value>even-page</value>
+        <value>odd-page</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="break-before.attr">
+    <attribute name="break-before">
+      <choice>
+        <value>auto</value>
+        <value>column</value>
+        <value>page</value>
+        <value>even-page</value>
+        <value>odd-page</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="caption-side.attr">
+    <attribute name="caption-side">
+      <choice>
+        <value>before</value>
+        <value>after</value>
+        <value>start</value>
+        <value>end</value>
+        <value>top</value>
+        <value>bottom</value>
+        <value>left</value>
+        <value>right</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="case-name.attr">
+    <attribute name="case-name">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="case-title.attr">
+    <attribute name="case-title">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="character.attr">
+    <attribute name="character"/>
+  </define>
+  <define name="clear.attr">
+    <attribute name="clear">
+      <choice>
+        <value>start</value>
+        <value>end</value>
+        <value>left</value>
+        <value>right</value>
+        <value>both</value>
+        <value>none</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="clip.attr">
+    <attribute name="clip">
+      <choice>
+        <ref name="shape.datatype"/>
+        <value>auto</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="collapse-subtree.attr">
+    <attribute name="collapse-subtree">
+      <choice>
+        <value>true</value>
+        <value>false</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="color.attr">
+    <attribute name="color">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="color-profile-name.attr">
+    <attribute name="color-profile-name"/>
+  </define>
+  <define name="column-count.attr">
+    <attribute name="column-count">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="column-gap.attr">
+    <attribute name="column-gap">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="column-number.attr">
+    <attribute name="column-number">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="column-width.attr">
+    <attribute name="column-width">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="content-height.attr">
+    <attribute name="content-height">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="content-type.attr">
+    <attribute name="content-type">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="content-width.attr">
+    <attribute name="content-width">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="country.attr">
+    <attribute name="country">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="cue.attr">
+    <attribute name="cue">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="cue-after.attr">
+    <attribute name="cue-after">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="cue-before.attr">
+    <attribute name="cue-before">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="destination-placement-offset.attr">
+    <attribute name="destination-placement-offset">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="direction.attr">
+    <attribute name="direction">
+      <choice>
+        <value>ltr</value>
+        <value>rtl</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="display-align.attr">
+    <attribute name="display-align">
+      <choice>
+        <value>auto</value>
+        <value>before</value>
+        <value>center</value>
+        <value>after</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="dominant-baseline.attr">
+    <attribute name="dominant-baseline">
+      <choice>
+        <value>auto</value>
+        <value>use-script</value>
+        <value>no-change</value>
+        <value>reset-size</value>
+        <value>ideographic</value>
+        <value>alphabetic</value>
+        <value>hanging</value>
+        <value>mathematical</value>
+        <value>central</value>
+        <value>middle</value>
+        <value>text-after-edge</value>
+        <value>text-before-edge</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="elevation.attr">
+    <attribute name="elevation">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="empty-cells.attr">
+    <attribute name="empty-cells">
+      <choice>
+        <value>show</value>
+        <value>hide</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="end-indent.attr">
+    <attribute name="end-indent">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="ends-row.attr">
+    <attribute name="ends-row">
+      <choice>
+        <value>true</value>
+        <value>false</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="extent.attr">
+    <attribute name="extent">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="external-destination.attr">
+    <attribute name="external-destination">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <!--
+    MEMO: We have separated this property into the two (for side and before floats)
+    MEMO: Float values "inside" and "outside" are RenderX extensions.
+  -->
+  <define name="before-float.attr">
+    <attribute name="float">
+      <value>before</value>
+    </attribute>
+  </define>
+  <define name="side-float.attr">
+    <attribute name="float">
+      <choice>
+        <value>start</value>
+        <value>end</value>
+        <value>left</value>
+        <value>right</value>
+        <value>none</value>
+        <value>inside</value>
+        <value>outside</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="flow-name.attr">
+    <attribute name="flow-name"/>
+  </define>
+  <define name="font.attr">
+    <attribute name="font">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="font-family.attr">
+    <attribute name="font-family">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="font-selection-strategy.attr">
+    <attribute name="font-selection-strategy">
+      <choice>
+        <value>auto</value>
+        <value>character-by-character</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="font-size.attr">
+    <attribute name="font-size">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="font-size-adjust.attr">
+    <attribute name="font-size-adjust">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="font-stretch.attr">
+    <attribute name="font-stretch">
+      <choice>
+        <value>normal</value>
+        <value>wider</value>
+        <value>narrower</value>
+        <value>ultra-condensed</value>
+        <value>extra-condensed</value>
+        <value>condensed</value>
+        <value>semi-condensed</value>
+        <value>semi-expanded</value>
+        <value>expanded</value>
+        <value>extra-expanded</value>
+        <value>ultra-expanded</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="font-style.attr">
+    <attribute name="font-style">
+      <choice>
+        <value>normal</value>
+        <value>italic</value>
+        <value>oblique</value>
+        <value>backslant</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="font-variant.attr">
+    <attribute name="font-variant">
+      <choice>
+        <value>normal</value>
+        <value>small-caps</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="font-weight.attr">
+    <attribute name="font-weight">
+      <choice>
+        <value>normal</value>
+        <value>bold</value>
+        <value>bolder</value>
+        <value>lighter</value>
+        <value>inherit</value>
+        <value>100</value>
+        <value>200</value>
+        <value>300</value>
+        <value>400</value>
+        <value>500</value>
+        <value>600</value>
+        <value>700</value>
+        <value>800</value>
+        <value>900</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="force-page-count.attr">
+    <attribute name="force-page-count">
+      <choice>
+        <value>auto</value>
+        <value>even</value>
+        <value>odd</value>
+        <value>end-on-even</value>
+        <value>end-on-odd</value>
+        <value>no-force</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="format.attr">
+    <attribute name="format"/>
+  </define>
+  <define name="glyph-orientation-horizontal.attr">
+    <attribute name="glyph-orientation-horizontal">
+      <choice>
+        <ref name="orientation.attr-content"/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="glyph-orientation-vertical.attr">
+    <attribute name="glyph-orientation-vertical">
+      <choice>
+        <ref name="orientation.attr-content"/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="grouping-separator.attr">
+    <attribute name="grouping-separator"/>
+  </define>
+  <define name="grouping-size.attr">
+    <attribute name="grouping-size">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="height.attr">
+    <attribute name="height">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="hyphenate.attr">
+    <attribute name="hyphenate">
+      <choice>
+        <value>false</value>
+        <value>true</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="hyphenation-character.attr">
+    <attribute name="hyphenation-character"/>
+  </define>
+  <define name="hyphenation-keep.attr">
+    <attribute name="hyphenation-keep">
+      <choice>
+        <value>auto</value>
+        <value>column</value>
+        <value>page</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="hyphenation-ladder-count.attr">
+    <attribute name="hyphenation-ladder-count">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="hyphenation-push-character-count.attr">
+    <attribute name="hyphenation-push-character-count">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="hyphenation-remain-character-count.attr">
+    <attribute name="hyphenation-remain-character-count">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="id.attr">
+    <attribute name="id"/>
+  </define>
+  <define name="indicate-destination.attr">
+    <attribute name="indicate-destination">
+      <choice>
+        <value>true</value>
+        <value>false</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="initial-page-number.attr">
+    <attribute name="initial-page-number">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="inline-progression-dimension.attr">
+    <attribute name="inline-progression-dimension">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="inline-progression-dimension.maximum.attr">
+    <attribute name="inline-progression-dimension.maximum">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="inline-progression-dimension.minimum.attr">
+    <attribute name="inline-progression-dimension.minimum">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="inline-progression-dimension.optimum.attr">
+    <attribute name="inline-progression-dimension.optimum">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="internal-destination.attr">
+    <attribute name="internal-destination"/>
+  </define>
+  <define name="intrusion-displace.attr">
+    <attribute name="intrusion-displace">
+      <choice>
+        <value>auto</value>
+        <value>none</value>
+        <value>line</value>
+        <value>indent</value>
+        <value>block</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="keep-together.attr">
+    <attribute name="keep-together">
+      <choice>
+        <ref name="keep.attr-content"/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="keep-together.within-column.attr">
+    <attribute name="keep-together.within-column">
+      <choice>
+        <ref name="keep.attr-content"/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="keep-together.within-line.attr">
+    <attribute name="keep-together.within-line">
+      <choice>
+        <ref name="keep.attr-content"/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="keep-together.within-page.attr">
+    <attribute name="keep-together.within-page">
+      <choice>
+        <ref name="keep.attr-content"/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="keep-with-next.attr">
+    <attribute name="keep-with-next">
+      <choice>
+        <ref name="keep.attr-content"/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="keep-with-next.within-column.attr">
+    <attribute name="keep-with-next.within-column">
+      <choice>
+        <ref name="keep.attr-content"/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="keep-with-next.within-line.attr">
+    <attribute name="keep-with-next.within-line">
+      <choice>
+        <ref name="keep.attr-content"/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="keep-with-next.within-page.attr">
+    <attribute name="keep-with-next.within-page">
+      <choice>
+        <ref name="keep.attr-content"/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="keep-with-previous.attr">
+    <attribute name="keep-with-previous">
+      <choice>
+        <ref name="keep.attr-content"/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="keep-with-previous.within-column.attr">
+    <attribute name="keep-with-previous.within-column">
+      <choice>
+        <ref name="keep.attr-content"/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="keep-with-previous.within-line.attr">
+    <attribute name="keep-with-previous.within-line">
+      <choice>
+        <ref name="keep.attr-content"/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="keep-with-previous.within-page.attr">
+    <attribute name="keep-with-previous.within-page">
+      <choice>
+        <ref name="keep.attr-content"/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <!-- RenderX extension attribute -->
+  <define name="rx-key.attr">
+    <attribute name="rx:key"/>
+  </define>
+  <define name="language.attr">
+    <attribute name="language">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="last-line-end-indent.attr">
+    <attribute name="last-line-end-indent">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="leader-alignment.attr">
+    <attribute name="leader-alignment">
+      <choice>
+        <value>none</value>
+        <value>reference-area</value>
+        <value>page</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="leader-length.attr">
+    <attribute name="leader-length">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="leader-length.maximum.attr">
+    <attribute name="leader-length.maximum">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="leader-length.minimum.attr">
+    <attribute name="leader-length.minimum">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="leader-length.optimum.attr">
+    <attribute name="leader-length.optimum">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="leader-pattern.attr">
+    <attribute name="leader-pattern">
+      <choice>
+        <value>space</value>
+        <value>rule</value>
+        <value>dots</value>
+        <value>use-content</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="leader-pattern-width.attr">
+    <attribute name="leader-pattern-width">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="left.attr">
+    <attribute name="left">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="letter-spacing.attr">
+    <attribute name="letter-spacing">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="letter-spacing.conditionality.attr">
+    <attribute name="letter-spacing.conditionality">
+      <choice>
+        <value>retain</value>
+        <value>discard</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="letter-spacing.maximum.attr">
+    <attribute name="letter-spacing.maximum">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="letter-spacing.minimum.attr">
+    <attribute name="letter-spacing.minimum">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="letter-spacing.optimum.attr">
+    <attribute name="letter-spacing.optimum">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="letter-spacing.precedence.attr">
+    <attribute name="letter-spacing.precedence">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="letter-value.attr">
+    <attribute name="letter-value">
+      <choice>
+        <value>auto</value>
+        <value>alphabetic</value>
+        <value>traditional</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="line-height.attr">
+    <attribute name="line-height">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="line-height-shift-adjustment.attr">
+    <attribute name="line-height-shift-adjustment">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="line-height.conditionality.attr">
+    <attribute name="line-height.conditionality">
+      <choice>
+        <value>retain</value>
+        <value>discard</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="line-height.maximum.attr">
+    <attribute name="line-height.maximum">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="line-height.minimum.attr">
+    <attribute name="line-height.minimum">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="line-height.optimum.attr">
+    <attribute name="line-height.optimum">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="line-height.precedence.attr">
+    <attribute name="line-height.precedence">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="line-stacking-strategy.attr">
+    <attribute name="line-stacking-strategy">
+      <choice>
+        <value>line-height</value>
+        <value>font-height</value>
+        <value>max-height</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="linefeed-treatment.attr">
+    <attribute name="linefeed-treatment">
+      <choice>
+        <value>ignore</value>
+        <value>preserve</value>
+        <value>treat-as-space</value>
+        <value>treat-as-zero-width-space</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="link-back.attr">
+    <attribute name="link-back">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="list-separator.attr">
+    <attribute name="list-separator"/>
+  </define>
+  <define name="margin.attr">
+    <attribute name="margin">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="margin-bottom.attr">
+    <attribute name="margin-bottom">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="margin-left.attr">
+    <attribute name="margin-left">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="margin-right.attr">
+    <attribute name="margin-right">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="margin-top.attr">
+    <attribute name="margin-top">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="marker-class-name.attr">
+    <attribute name="marker-class-name"/>
+  </define>
+  <define name="master-name.attr">
+    <attribute name="master-name"/>
+  </define>
+  <define name="master-reference.attr">
+    <attribute name="master-reference"/>
+  </define>
+  <define name="max-height.attr">
+    <attribute name="max-height">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="max-width.attr">
+    <attribute name="max-width">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="maximum-repeats.attr">
+    <attribute name="maximum-repeats">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="media-usage.attr">
+    <attribute name="media-usage">
+      <choice>
+        <value>auto</value>
+        <value>paginate</value>
+        <value>bounded-in-one-dimension</value>
+        <value>unbounded</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="merge-subsequent-page-numbers.attr">
+    <attribute name="merge-subsequent-page-numbers">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="min-height.attr">
+    <attribute name="min-height">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="min-width.attr">
+    <attribute name="min-width">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <!-- NOTE: It's RenderX extension attribute (belongs to rx:meta-field). It enumerates values currently available in XEP -->
+  <define name="name.attr">
+    <attribute name="name">
+      <choice>
+        <value>author</value>
+        <value>title</value>
+        <value>subject</value>
+        <value>keywords</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="number-columns-repeated.attr">
+    <attribute name="number-columns-repeated">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="number-columns-spanned.attr">
+    <attribute name="number-columns-spanned">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="number-rows-spanned.attr">
+    <attribute name="number-rows-spanned">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="odd-or-even.attr">
+    <attribute name="odd-or-even">
+      <choice>
+        <value>odd</value>
+        <value>even</value>
+        <value>any</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="rx-table-omit-initial-header.attr">
+    <attribute name="rx:table-omit-initial-header">
+      <choice>
+        <value>true</value>
+        <value>false</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="orphans.attr">
+    <attribute name="orphans">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="overflow.attr">
+    <attribute name="overflow">
+      <choice>
+        <value>visible</value>
+        <value>hidden</value>
+        <value>scroll</value>
+        <value>auto</value>
+        <value>error-if-overflow</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="padding.attr">
+    <attribute name="padding">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="padding-after.attr">
+    <attribute name="padding-after">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="padding-after.conditionality.attr">
+    <attribute name="padding-after.conditionality">
+      <choice>
+        <value>discard</value>
+        <value>retain</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="padding-after.length.attr">
+    <attribute name="padding-after.length">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="padding-before.attr">
+    <attribute name="padding-before">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="padding-before.conditionality.attr">
+    <attribute name="padding-before.conditionality">
+      <choice>
+        <value>discard</value>
+        <value>retain</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="padding-before.length.attr">
+    <attribute name="padding-before.length">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="padding-bottom.attr">
+    <attribute name="padding-bottom">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="padding-bottom.conditionality.attr">
+    <attribute name="padding-bottom.conditionality">
+      <choice>
+        <value>discard</value>
+        <value>retain</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="padding-bottom.length.attr">
+    <attribute name="padding-bottom.length">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="padding-end.attr">
+    <attribute name="padding-end">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="padding-end.conditionality.attr">
+    <attribute name="padding-end.conditionality">
+      <choice>
+        <value>discard</value>
+        <value>retain</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="padding-end.length.attr">
+    <attribute name="padding-end.length">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="padding-left.attr">
+    <attribute name="padding-left">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="padding-left.conditionality.attr">
+    <attribute name="padding-left.conditionality">
+      <choice>
+        <value>discard</value>
+        <value>retain</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="padding-left.length.attr">
+    <attribute name="padding-left.length">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="padding-right.attr">
+    <attribute name="padding-right">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="padding-right.conditionality.attr">
+    <attribute name="padding-right.conditionality">
+      <choice>
+        <value>discard</value>
+        <value>retain</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="padding-right.length.attr">
+    <attribute name="padding-right.length">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="padding-start.attr">
+    <attribute name="padding-start">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="padding-start.conditionality.attr">
+    <attribute name="padding-start.conditionality">
+      <choice>
+        <value>discard</value>
+        <value>retain</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="padding-start.length.attr">
+    <attribute name="padding-start.length">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="padding-top.attr">
+    <attribute name="padding-top">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="padding-top.conditionality.attr">
+    <attribute name="padding-top.conditionality">
+      <choice>
+        <value>discard</value>
+        <value>retain</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="padding-top.length.attr">
+    <attribute name="padding-top.length">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="page-break-after.attr">
+    <attribute name="page-break-after">
+      <choice>
+        <value>auto</value>
+        <value>always</value>
+        <value>avoid</value>
+        <value>left</value>
+        <value>right</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="page-break-before.attr">
+    <attribute name="page-break-before">
+      <choice>
+        <value>auto</value>
+        <value>always</value>
+        <value>avoid</value>
+        <value>left</value>
+        <value>right</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="page-break-inside.attr">
+    <attribute name="page-break-inside">
+      <choice>
+        <value>avoid</value>
+        <value>auto</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="page-height.attr">
+    <attribute name="page-height">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="page-position.attr">
+    <attribute name="page-position">
+      <choice>
+        <value>first</value>
+        <value>last</value>
+        <value>rest</value>
+        <value>any</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="page-width.attr">
+    <attribute name="page-width">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="pause.attr">
+    <attribute name="pause">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="pause-after.attr">
+    <attribute name="pause-after">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="pause-before.attr">
+    <attribute name="pause-before">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="pitch.attr">
+    <attribute name="pitch">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="pitch-range.attr">
+    <attribute name="pitch-range">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="play-during.attr">
+    <attribute name="play-during">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <!-- MEMO: We forced to devide this shorthand since we have separate absolute-container element -->
+  <define name="absolute-position-shorthand.attr">
+    <attribute name="position">
+      <choice>
+        <value>absolute</value>
+        <value>fixed</value>
+      </choice>
+    </attribute>
+  </define>
+  <define name="relative-position-shorthand.attr">
+    <attribute name="position">
+      <choice>
+        <value>static</value>
+        <value>relative</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="precedence.attr">
+    <attribute name="precedence">
+      <choice>
+        <value>true</value>
+        <value>false</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="provisional-distance-between-starts.attr">
+    <attribute name="provisional-distance-between-starts">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="provisional-label-separation.attr">
+    <attribute name="provisional-label-separation">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="range-separator.attr">
+    <attribute name="range-separator"/>
+  </define>
+  <define name="ref-id.attr">
+    <attribute name="ref-id"/>
+  </define>
+  <define name="ref-key.attr">
+    <attribute name="ref-key"/>
+  </define>
+  <define name="reference-orientation.attr">
+    <attribute name="reference-orientation">
+      <choice>
+        <ref name="orientation.attr-content"/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="region-name.attr">
+    <attribute name="region-name"/>
+  </define>
+  <define name="relative-align.attr">
+    <attribute name="relative-align">
+      <choice>
+        <value>before</value>
+        <value>baseline</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="relative-position.attr">
+    <attribute name="relative-position">
+      <choice>
+        <value>auto</value>
+        <value>static</value>
+        <value>relative</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="rendering-intent.attr">
+    <optional>
+      <attribute name="rendering-intent">
+        <choice>
+          <value>auto</value>
+          <value>perceptual</value>
+          <value>relative-colorimetric</value>
+          <value>saturation</value>
+          <value>absolute-colorimetric</value>
+          <value>inherit</value>
+          <ref name="expr.datatype"/>
+        </choice>
+      </attribute>
+    </optional>
+  </define>
+  <define name="retrieve-boundary.attr">
+    <attribute name="retrieve-boundary">
+      <choice>
+        <value>page</value>
+        <value>page-sequence</value>
+        <value>document</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="retrieve-class-name.attr">
+    <attribute name="retrieve-class-name"/>
+  </define>
+  <define name="retrieve-position.attr">
+    <attribute name="retrieve-position">
+      <choice>
+        <value>first-starting-within-page</value>
+        <value>first-including-carryover</value>
+        <value>last-starting-within-page</value>
+        <value>last-ending-within-page</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="richness.attr">
+    <attribute name="richness">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="right.attr">
+    <attribute name="right">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="role.attr">
+    <attribute name="role"/>
+  </define>
+  <define name="rule-style.attr">
+    <attribute name="rule-style">
+      <choice>
+        <value>none</value>
+        <value>dotted</value>
+        <value>dashed</value>
+        <value>solid</value>
+        <value>double</value>
+        <value>groove</value>
+        <value>ridge</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="rule-thickness.attr">
+    <attribute name="rule-thickness">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="scaling.attr">
+    <attribute name="scaling">
+      <choice>
+        <value>uniform</value>
+        <value>non-uniform</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="scaling-method.attr">
+    <attribute name="scaling-method">
+      <choice>
+        <value>auto</value>
+        <value>integer-pixels</value>
+        <value>resample-any-method</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="score-spaces.attr">
+    <attribute name="score-spaces">
+      <choice>
+        <value>true</value>
+        <value>false</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="script.attr">
+    <attribute name="script">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="show-destination.attr">
+    <attribute name="show-destination">
+      <choice>
+        <value>replace</value>
+        <value>new</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="size.attr">
+    <attribute name="size">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="source-document.attr">
+    <attribute name="source-document"/>
+  </define>
+  <define name="space-after.attr">
+    <attribute name="space-after">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="space-after.conditionality.attr">
+    <attribute name="space-after.conditionality">
+      <choice>
+        <value>retain</value>
+        <value>discard</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="space-after.maximum.attr">
+    <attribute name="space-after.maximum">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="space-after.minimum.attr">
+    <attribute name="space-after.minimum">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="space-after.optimum.attr">
+    <attribute name="space-after.optimum">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="space-after.precedence.attr">
+    <attribute name="space-after.precedence">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="space-before.attr">
+    <attribute name="space-before">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="space-before.conditionality.attr">
+    <attribute name="space-before.conditionality">
+      <choice>
+        <value>retain</value>
+        <value>discard</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="space-before.maximum.attr">
+    <attribute name="space-before.maximum">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="space-before.minimum.attr">
+    <attribute name="space-before.minimum">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="space-before.optimum.attr">
+    <attribute name="space-before.optimum">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="space-before.precedence.attr">
+    <attribute name="space-before.precedence">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="space-end.attr">
+    <attribute name="space-end">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="space-end.conditionality.attr">
+    <attribute name="space-end.conditionality">
+      <choice>
+        <value>retain</value>
+        <value>discard</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="space-end.maximum.attr">
+    <attribute name="space-end.maximum">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="space-end.minimum.attr">
+    <attribute name="space-end.minimum">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="space-end.optimum.attr">
+    <attribute name="space-end.optimum">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="space-end.precedence.attr">
+    <attribute name="space-end.precedence">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="space-start.attr">
+    <attribute name="space-start">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="space-start.conditionality.attr">
+    <attribute name="space-start.conditionality">
+      <choice>
+        <value>retain</value>
+        <value>discard</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="space-start.maximum.attr">
+    <attribute name="space-start.maximum">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="space-start.minimum.attr">
+    <attribute name="space-start.minimum">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="space-start.optimum.attr">
+    <attribute name="space-start.optimum">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="space-start.precedence.attr">
+    <attribute name="space-start.precedence">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="span.attr">
+    <attribute name="span">
+      <choice>
+        <value>none</value>
+        <value>all</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="speak.attr">
+    <attribute name="speak">
+      <choice>
+        <value>normal</value>
+        <value>none</value>
+        <value>spell-out</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="speak-header.attr">
+    <attribute name="speak-header">
+      <choice>
+        <value>once</value>
+        <value>always</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="speak-numeral.attr">
+    <attribute name="speak-numeral">
+      <choice>
+        <value>digits</value>
+        <value>continuous</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="speak-punctuation.attr">
+    <attribute name="speak-punctuation">
+      <choice>
+        <value>code</value>
+        <value>none</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="speech-rate.attr">
+    <attribute name="speech-rate">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="src.attr">
+    <attribute name="src">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="start-indent.attr">
+    <attribute name="start-indent">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="starting-state.attr">
+    <attribute name="starting-state">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="starts-row.attr">
+    <attribute name="starts-row">
+      <choice>
+        <value>true</value>
+        <value>false</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="stress.attr">
+    <attribute name="stress">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="suppress-at-line-break.attr">
+    <attribute name="suppress-at-line-break">
+      <choice>
+        <value>auto</value>
+        <value>suppress</value>
+        <value>retain</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="switch-to.attr">
+    <attribute name="switch-to">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="table-layout.attr">
+    <attribute name="table-layout">
+      <choice>
+        <value>auto</value>
+        <value>fixed</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="table-omit-footer-at-break.attr">
+    <attribute name="table-omit-footer-at-break">
+      <choice>
+        <value>true</value>
+        <value>false</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="table-omit-header-at-break.attr">
+    <attribute name="table-omit-header-at-break">
+      <choice>
+        <value>true</value>
+        <value>false</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="target-presentation-context.attr">
+    <attribute name="target-presentation-context"/>
+  </define>
+  <define name="target-processing-context.attr">
+    <attribute name="target-processing-context"/>
+  </define>
+  <define name="target-stylesheet.attr">
+    <attribute name="target-stylesheet"/>
+  </define>
+  <!-- MEMO: <string> values are temporarily excluded from text-align and text-align-last -->
+  <define name="text-align.attr">
+    <attribute name="text-align">
+      <choice>
+        <value>start</value>
+        <value>center</value>
+        <value>end</value>
+        <value>justify</value>
+        <value>inside</value>
+        <value>outside</value>
+        <value>left</value>
+        <value>right</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="text-align-last.attr">
+    <attribute name="text-align-last">
+      <choice>
+        <value>relative</value>
+        <value>start</value>
+        <value>center</value>
+        <value>end</value>
+        <value>justify</value>
+        <value>inside</value>
+        <value>outside</value>
+        <value>left</value>
+        <value>right</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="text-altitude.attr">
+    <attribute name="text-altitude">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="text-decoration.attr">
+    <attribute name="text-decoration">
+      <choice>
+        <data type="NMTOKENS"/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="text-depth.attr">
+    <attribute name="text-depth">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="text-indent.attr">
+    <attribute name="text-indent">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="text-shadow.attr">
+    <attribute name="text-shadow">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="text-transform.attr">
+    <attribute name="text-transform">
+      <choice>
+        <value>capitalize</value>
+        <value>uppercase</value>
+        <value>lowercase</value>
+        <value>none</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="top.attr">
+    <attribute name="top">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="treat-as-word-space.attr">
+    <attribute name="treat-as-word-space">
+      <choice>
+        <value>auto</value>
+        <value>true</value>
+        <value>false</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="unicode-bidi.attr">
+    <attribute name="unicode-bidi">
+      <choice>
+        <value>normal</value>
+        <value>embed</value>
+        <value>bidi-override</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="value.attr">
+    <attribute name="value"/>
+  </define>
+  <define name="vertical-align.attr">
+    <attribute name="vertical-align">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="visibility.attr">
+    <attribute name="visibility">
+      <choice>
+        <value>visible</value>
+        <value>hidden</value>
+        <value>collapse</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="voice-family.attr">
+    <attribute name="voice-family">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="volume.attr">
+    <attribute name="volume">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="white-space.attr">
+    <attribute name="white-space">
+      <choice>
+        <value>normal</value>
+        <value>pre</value>
+        <value>nowrap</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="white-space-collapse.attr">
+    <attribute name="white-space-collapse">
+      <choice>
+        <value>false</value>
+        <value>true</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="white-space-treatment.attr">
+    <attribute name="white-space-treatment">
+      <choice>
+        <value>ignore</value>
+        <value>preserve</value>
+        <value>ignore-if-before-linefeed</value>
+        <value>ignore-if-after-linefeed</value>
+        <value>ignore-if-surrounding-linefeed</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="widows.attr">
+    <attribute name="widows">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="width.attr">
+    <attribute name="width">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="word-spacing.attr">
+    <attribute name="word-spacing">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="word-spacing.conditionality.attr">
+    <attribute name="word-spacing.conditionality">
+      <choice>
+        <value>retain</value>
+        <value>discard</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="word-spacing.maximum.attr">
+    <attribute name="word-spacing.maximum">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="word-spacing.minimum.attr">
+    <attribute name="word-spacing.minimum">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="word-spacing.optimum.attr">
+    <attribute name="word-spacing.optimum">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="word-spacing.precedence.attr">
+    <attribute name="word-spacing.precedence">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="wrap-option.attr">
+    <attribute name="wrap-option">
+      <choice>
+        <value>no-wrap</value>
+        <value>wrap</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="writing-mode.attr">
+    <attribute name="writing-mode">
+      <choice>
+        <value>lr-tb</value>
+        <value>rl-tb</value>
+        <value>tb-rl</value>
+        <value>lr</value>
+        <value>rl</value>
+        <value>tb</value>
+        <value>inherit</value>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+  <define name="z-index.attr">
+    <attribute name="z-index">
+      <choice>
+        <text/>
+        <ref name="expr.datatype"/>
+      </choice>
+    </attribute>
+  </define>
+</grammar>

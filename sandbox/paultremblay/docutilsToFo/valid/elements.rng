@@ -1,0 +1,1143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  =========================================================
+                                                           
+  (c) 2004, RenderX                                        
+                                                           
+  Author: Alexander Peshkov <peshkov@renderx.com>          
+                                                           
+  Permission is granted to use this document, copy and     
+  modify free of charge, provided that every derived work  
+  bear a reference to the present document.                
+                                                           
+  This document contains a computer program written in     
+  XSL Transformations Language. It is published with no    
+  warranty of any kind about its usability, as a mere      
+  example of XSL technology. RenderX shall not be          
+  considered liable for any damage or loss of data caused  
+  by use of this program.                                  
+                                                           
+  =========================================================
+-->
+<grammar xmlns:rx="http://www.renderx.com/XSL/Extensions" xmlns:fo="http://www.w3.org/1999/XSL/Format" xmlns="http://relaxng.org/ns/structure/1.0">
+  <include href="properties.rng"/>
+  <!--
+    ****************************************************************************************
+    Common content models used by content-bearing elements
+    ****************************************************************************************
+  -->
+  <define name="very-basic-inlines">
+    <choice>
+      <ref name="character"/>
+      <ref name="external-graphic"/>
+      <ref name="instream-foreign-object"/>
+      <ref name="inline-container"/>
+      <ref name="leader"/>
+      <ref name="page-number"/>
+      <ref name="page-number-citation"/>
+      <ref name="multi-toggle"/>
+      <!-- MEMO: To be strict, we have to control that this element is a descendant of an fo:multi-case. -->
+      <ref name="page-index"/>
+      <ref name="begin-index-range"/>
+      <ref name="end-index-range"/>
+    </choice>
+  </define>
+  <!-- NOTE: An absolute-container can be treated both as block and as outline. -->
+  <define name="basic-blocks">
+    <choice>
+      <ref name="block"/>
+      <ref name="block-container"/>
+      <ref name="table-and-caption"/>
+      <ref name="table"/>
+      <ref name="list-block"/>
+    </choice>
+  </define>
+  <!-- NOTE: Unlike other out-of-lines fo:footnote can be used only in the context where inlines are permitted -->
+  <define name="out-of-lines-block">
+    <choice>
+      <ref name="before-float"/>
+      <ref name="side-float"/>
+      <ref name="absolute-container"/>
+    </choice>
+  </define>
+  <define name="out-of-lines">
+    <choice>
+      <ref name="footnote"/>
+      <ref name="out-of-lines-block"/>
+    </choice>
+  </define>
+  <!--
+    As a compromise for intricated inline content model prescribed by XSL FO spec
+    we define two types of inline content:
+    first as restrictive as required by spec for descendants of an fo:leader or of an fo:inline
+    child of an fo:footnote (and for some other cases where we believe it is reasonable),
+    it permits inline level elements only, except for descendants of fo:inline-container;
+    second as loose as prescribed by spec for the general cases
+  -->
+  <define name="basic-inlines-inline">
+    <choice>
+      <ref name="very-basic-inlines"/>
+      <ref name="basic-link-inline"/>
+      <ref name="inline-inline"/>
+      <ref name="bidi-override-inline"/>
+    </choice>
+  </define>
+  <define name="basic-inlines">
+    <choice>
+      <ref name="very-basic-inlines"/>
+      <ref name="basic-link"/>
+      <ref name="inline"/>
+      <ref name="bidi-override"/>
+    </choice>
+  </define>
+  <!--
+    We have three content models for wrappers:
+    first one allows inline content only (based on basic-inlines-inline described above);
+    second one requires block-level elements to be at the top of it;
+    third one is for mixed content (general case);
+  -->
+  <define name="wrappers-inline">
+    <choice>
+      <ref name="multi-switch-inline"/>
+      <ref name="multi-properties-inline"/>
+      <ref name="wrapper-inline"/>
+      <ref name="retrieve-marker"/>
+    </choice>
+  </define>
+  <define name="wrappers-block">
+    <choice>
+      <ref name="multi-switch-block"/>
+      <ref name="multi-properties-block"/>
+      <ref name="wrapper-block"/>
+      <ref name="retrieve-marker"/>
+    </choice>
+  </define>
+  <define name="wrappers">
+    <choice>
+      <ref name="multi-switch"/>
+      <ref name="multi-properties"/>
+      <ref name="wrapper"/>
+      <ref name="retrieve-marker"/>
+    </choice>
+  </define>
+  <!--
+    We have two extended content models for inlines:
+    first one is stricter, with inline elements only (exception for fo:inline-container descendants)
+    and with no outlines (actually they are bared in main.rnc anyway);
+    second one is loose, with all possible inlines and outlines.
+    In general those content models corresponds very well with two possible contexts:
+    block context and inline context
+  -->
+  <define name="inlines-inline">
+    <choice>
+      <text/>
+      <ref name="basic-inlines-inline"/>
+      <ref name="wrappers-inline"/>
+    </choice>
+  </define>
+  <define name="inlines">
+    <choice>
+      <text/>
+      <ref name="basic-inlines"/>
+      <ref name="out-of-lines"/>
+      <ref name="wrappers"/>
+    </choice>
+  </define>
+  <!-- Content model for blocks including  block-level outlines -->
+  <define name="blocks">
+    <choice>
+      <ref name="basic-blocks"/>
+      <ref name="wrappers-block"/>
+      <ref name="out-of-lines-block"/>
+    </choice>
+  </define>
+  <!-- Mixed content model - broadest one -->
+  <define name="mix">
+    <choice>
+      <ref name="inlines"/>
+      <ref name="basic-blocks"/>
+    </choice>
+  </define>
+  <!--
+    ****************************************************************************************
+    Element structure for content-bearing elements
+    ****************************************************************************************
+    ===============================================================
+    Block is the base element for all content areas. 
+    ===============================================================
+  -->
+  <define name="block">
+    <element name="fo:block">
+      <ref name="block.attlist"/>
+      <ref name="block.content"/>
+    </element>
+  </define>
+  <define name="block.content">
+    <zeroOrMore>
+      <ref name="marker"/>
+    </zeroOrMore>
+    <zeroOrMore>
+      <choice>
+        <ref name="initial-property-set"/>
+        <ref name="mix"/>
+      </choice>
+    </zeroOrMore>
+  </define>
+  <!--
+    ===============================================================
+    Block container
+    ===============================================================
+    MEMO: We are forced to create separate element 'absolute-container' in order 
+    to satisfy XSL FO spec requirements. Note that this is the *only* place where 
+    properties really interfer with element-level structure (well, actually fo:float is the second place). 
+    A separate fo:absolute-container is clearly necessary.
+    Absolutely possitioned block-container cannot contain markers and and outlines.
+    It's behaviour is quite similar to the outline elements such as float.
+    'Folint' do not control absolutely positioned container restriction 
+    (due to expressions that can result in absolute position)
+    'Folint' also permits  empty block-containers, that is against the spec.
+    Spec defines fo:block-container content as (%block;)+
+  -->
+  <define name="absolute-container">
+    <notAllowed/>
+  </define>
+  <define name="absolute-container-real">
+    <element name="fo:block-container">
+      <ref name="absolute-container.attlist"/>
+      <ref name="absolute-container.content"/>
+    </element>
+  </define>
+  <define name="absolute-container.content">
+    <oneOrMore>
+      <ref name="blocks"/>
+    </oneOrMore>
+  </define>
+  <define name="block-container">
+    <element name="fo:block-container">
+      <ref name="block-container.attlist"/>
+      <ref name="block-container.content"/>
+    </element>
+  </define>
+  <define name="block-container.content">
+    <zeroOrMore>
+      <ref name="marker"/>
+    </zeroOrMore>
+    <oneOrMore>
+      <ref name="blocks"/>
+    </oneOrMore>
+  </define>
+  <!--
+    ****************************************************************************************
+    Inline elements
+    ****************************************************************************************
+    ===============================================================
+    Unicode bidi-override
+    ===============================================================
+    MEMO: According to spec this element CAN have block level children except for the cases listed below:
+    XSL> An fo:bidi-override that is a descendant of an fo:leader or of an fo:inline child 
+    XSL> of an fo:footnote may not have block-level children, unless it has a nearer ancestor
+    XSL> that is an fo:inline-container.
+    NOTE: This is contradictory to the description of fo:leader element (6.6.9. fo:leader) that 
+    prohibits (some) block-level elements/outlines to be fo:leader descendants
+    no matter if they wrapped in any fo:inline-containers and  fo:bidi-override.
+    We have two models:
+    first (restrictive) used by descendants of an fo:title, fo:leader or of an fo:inline child of an fo:footnote;
+    second (loose) as prescribed by spec for the general cases
+    'Folint' believes that no block level elements should be allowed in this element in either way. 
+  -->
+  <define name="bidi-override-inline">
+    <element name="fo:bidi-override">
+      <ref name="bidi-override.attlist"/>
+      <ref name="bidi-override-inline.content"/>
+    </element>
+  </define>
+  <define name="bidi-override-inline.content">
+    <zeroOrMore>
+      <ref name="marker"/>
+    </zeroOrMore>
+    <zeroOrMore>
+      <ref name="inlines-inline"/>
+    </zeroOrMore>
+  </define>
+  <define name="bidi-override">
+    <element name="fo:bidi-override">
+      <ref name="bidi-override.attlist"/>
+      <ref name="bidi-override.content"/>
+    </element>
+  </define>
+  <define name="bidi-override.content">
+    <zeroOrMore>
+      <ref name="marker"/>
+    </zeroOrMore>
+    <zeroOrMore>
+      <ref name="mix"/>
+    </zeroOrMore>
+  </define>
+  <!--
+    ===============================================================
+    Single character
+    ===============================================================
+  -->
+  <define name="character">
+    <element name="fo:character">
+      <ref name="character.attlist"/>
+      <empty/>
+    </element>
+  </define>
+  <!--
+    ===============================================================
+    Initial property set specifies properties for one or more lines
+    ===============================================================
+  -->
+  <define name="initial-property-set">
+    <element name="fo:initial-property-set">
+      <ref name="initial-property-set.attlist"/>
+      <empty/>
+    </element>
+  </define>
+  <!--
+    ===============================================================
+    External graphic
+    ===============================================================
+  -->
+  <define name="external-graphic">
+    <element name="fo:external-graphic">
+      <ref name="external-graphic.attlist"/>
+      <empty/>
+    </element>
+  </define>
+  <!--
+    ===============================================================
+    In-stream graphic
+    ===============================================================
+  -->
+  <define name="instream-foreign-object">
+    <element name="fo:instream-foreign-object">
+      <ref name="instream-foreign-object.attlist"/>
+      <ref name="any"/>
+    </element>
+  </define>
+  <!--
+    ===============================================================
+    Inline
+    ===============================================================
+    MEMO: This element used by content model that consists of inlines only
+    with exception for descendants of inline-container
+  -->
+  <define name="inline-inline">
+    <element name="fo:inline">
+      <ref name="inline.attlist"/>
+      <ref name="inline-inline.content"/>
+    </element>
+  </define>
+  <define name="inline-inline.content">
+    <zeroOrMore>
+      <ref name="marker"/>
+    </zeroOrMore>
+    <zeroOrMore>
+      <ref name="inlines-inline"/>
+    </zeroOrMore>
+  </define>
+  <define name="inline">
+    <element name="fo:inline">
+      <ref name="inline.attlist"/>
+      <ref name="inline.content"/>
+    </element>
+  </define>
+  <define name="inline.content">
+    <zeroOrMore>
+      <ref name="marker"/>
+    </zeroOrMore>
+    <zeroOrMore>
+      <ref name="mix"/>
+    </zeroOrMore>
+  </define>
+  <!--
+    XSL> An fo:inline that is a child of an fo:footnote may not have block-level children.
+    XSL> An fo:inline that is a descendant of an fo:leader or of the fo:inline child of 
+    XSL> an fo:footnote may not have block-level children, unless it has a nearer 
+    XSL> ancestor that is an fo:inline-container.
+    NOTE: This definition is contradictory to the one of the fo:leader since latter prohibits
+    fo:inline-container as a descendant. But it's the definition of fo:leader that should be fixed
+    since content model described above is the only sane content model in the inline context.
+    It should be the same for fo:bidi-override. However definition must  be adjasted 
+    in order to mention fo:title since this element is a typical inline. 
+    
+    'Folint' believes that block elements are allowed here and thoroughly tests for  
+    all those tricky exceptions. This behavior seems to be quite inconsisten with the 
+    one regarding fo:bidi-override treatment.
+  -->
+  <!--
+    ===============================================================
+    Inline container
+    ===============================================================
+  -->
+  <define name="inline-container">
+    <element name="fo:inline-container">
+      <ref name="inline-container.attlist"/>
+      <ref name="inline-container.content"/>
+    </element>
+  </define>
+  <define name="inline-container.content">
+    <zeroOrMore>
+      <ref name="marker"/>
+    </zeroOrMore>
+    <zeroOrMore>
+      <ref name="blocks"/>
+    </zeroOrMore>
+  </define>
+  <!--
+    ===============================================================
+    Leader
+    ===============================================================
+  -->
+  <define name="leader">
+    <element name="fo:leader">
+      <ref name="leader.attlist"/>
+      <ref name="leader.content"/>
+    </element>
+  </define>
+  <define name="leader.content">
+    <zeroOrMore>
+      <ref name="inlines-inline"/>
+    </zeroOrMore>
+  </define>
+  <!--
+    MEMO: Following two lines used together with tricky redefinition in main.rnc 
+    in order to prevent fo:leader nesting.
+    leader.content = notAllowed
+    leader.content-real = inlines-inline*
+  -->
+  <!--
+    MEMO: We use inline content model here which is consistent with 
+    such elements as fo:inline child of fo:footnote. It allows blocks/outlines, but only as a 
+    descendant of  inline-container. XSL FO spec is quite uneven at this point (and should be fixed).
+    According to spec, this element can contain inline level elements and text, but
+    XSL> The content must not contain an fo:leader, fo:inline-container, fo:block-container,
+    XSL> fo:float, fo:footnote, or fo:marker either as a direct child or as a descendant.
+    NOTE: XSL FO spec DO NOT prohibit blocks or tables as descendants of fo:leader!
+    NOTE: fo:leader constraints are contradictory to those of fo:inline since section "6.6.7. fo:inline" 
+    states implicitly that there could be an fo:inline-container that is a descendent of fo:leader.
+    
+    'Folint' respects these constraints partially: it prohibits fo:block-container as a descendant,
+    but permits fo:marker, fo:leader, fo:inline-container, fo:float, fo:footnote.
+    It also prohibits use of fo:block as descendant.
+  -->
+  <!--
+    ===============================================================
+    Page Number
+    ===============================================================
+  -->
+  <define name="page-number">
+    <element name="fo:page-number">
+      <ref name="page-number.attlist"/>
+      <empty/>
+    </element>
+  </define>
+  <!--
+    ===============================================================
+    Page number citation
+    ===============================================================
+  -->
+  <define name="page-number-citation">
+    <element name="fo:page-number-citation">
+      <ref name="page-number-citation.attlist"/>
+      <empty/>
+    </element>
+  </define>
+  <!--
+    ===============================================================
+    Atomic elements for index ranges markup
+    ===============================================================
+  -->
+  <define name="begin-index-range">
+    <element name="rx:begin-index-range">
+      <ref name="begin-index-range.attlist"/>
+      <empty/>
+    </element>
+  </define>
+  <define name="end-index-range">
+    <element name="rx:end-index-range">
+      <ref name="end-index-range.attlist"/>
+      <empty/>
+    </element>
+  </define>
+  <!--
+    ===============================================================
+    Page number list - index entry
+    ===============================================================
+  -->
+  <define name="page-index">
+    <element name="rx:page-index">
+      <ref name="page-index.attlist"/>
+      <ref name="page-index.content"/>
+    </element>
+  </define>
+  <!--
+    MEMO: Currently page-index must contain at least one rx:index-item element, 
+    empty content is allowed for backward compatibility.
+  -->
+  <define name="page-index.content">
+    <zeroOrMore>
+      <ref name="index-item"/>
+    </zeroOrMore>
+  </define>
+  <define name="index-item">
+    <element name="rx:index-item">
+      <ref name="index-item.attlist"/>
+      <empty/>
+    </element>
+  </define>
+  <!--
+    ****************************************************************************************
+    Formatting objects for tables.
+    ****************************************************************************************
+  -->
+  <!--
+    ===============================================================
+    Table & Caption is a wrapper to all the stuff pertinent to a
+    given table. It generates a block consisting of two subblocks:
+    one for the caption, another one for the table itself. The
+    placement of these two blocks is controlled by the
+    'caption-side' property: if  caption-side="before"|"after" (or
+    their absolute orientation equivalents), the two blocks are
+    drawn one after another; if it is "start"|"end", then the
+    caption is displayed on the correspondent side of the table.
+    In this case, the relative alignment of the two blocks is given
+    by the 'relative-align'/'display-align' property.
+    
+    ===============================================================
+  -->
+  <define name="table-and-caption">
+    <element name="fo:table-and-caption">
+      <ref name="table-and-caption.attlist"/>
+      <ref name="table-and-caption.content"/>
+    </element>
+  </define>
+  <define name="table-and-caption.content">
+    <zeroOrMore>
+      <ref name="marker"/>
+    </zeroOrMore>
+    <optional>
+      <ref name="table-caption"/>
+    </optional>
+    <ref name="table"/>
+  </define>
+  <!--
+    ===============================================================
+    Table caption is an area container.
+    ===============================================================
+  -->
+  <define name="table-caption">
+    <element name="fo:table-caption">
+      <ref name="table-caption.attlist"/>
+      <ref name="table-caption.content"/>
+    </element>
+  </define>
+  <define name="table-caption.content">
+    <zeroOrMore>
+      <ref name="marker"/>
+    </zeroOrMore>
+    <oneOrMore>
+      <ref name="blocks"/>
+    </oneOrMore>
+  </define>
+  <!--
+    ===============================================================
+    fo:table is the basic element for all tables. All the contents
+    placed inside it is distributed over a single rectangular grid
+    of rows and columns.
+    ===============================================================
+  -->
+  <define name="table">
+    <element name="fo:table">
+      <ref name="table.attlist"/>
+      <ref name="table.content"/>
+    </element>
+  </define>
+  <define name="table.content">
+    <zeroOrMore>
+      <ref name="marker"/>
+    </zeroOrMore>
+    <zeroOrMore>
+      <ref name="table-column"/>
+    </zeroOrMore>
+    <optional>
+      <ref name="table-header"/>
+    </optional>
+    <optional>
+      <ref name="table-footer"/>
+    </optional>
+    <oneOrMore>
+      <ref name="table-body"/>
+    </oneOrMore>
+  </define>
+  <!--
+    ===============================================================
+    Table column specifies common properties to ascribe to all
+    cells in a column *or a group of columns*. Note that, if both
+    'number-columns-repeated' and 'number-columns-spanned' exceed
+    1, the column counter is increased by 'number-columns-spanned'.
+    it means that you only set properties for columns:
+    'column-number'
+    'column-number' + 'number-columns-spanned'
+    'column-number' + 2 * 'number-columns-spanned'
+    and so on, leaving default properties for intermediate columns.
+    ===============================================================
+  -->
+  <define name="table-column">
+    <element name="fo:table-column">
+      <ref name="table-column.attlist"/>
+      <empty/>
+    </element>
+  </define>
+  <!--
+    ===============================================================
+    Table header, table footer, and table body are wrappers for
+    groups of rows. They contain either one or more fo:table-rows,
+    or one or more fo:table-cells; in the latter case, row breaks
+    are specified in the cells by 'starts-row'/'ends-row'.
+    All these elements are identical both in the content structure
+    and in the attributes.
+    ===============================================================
+  -->
+  <define name="row-group">
+    <zeroOrMore>
+      <ref name="marker"/>
+    </zeroOrMore>
+    <choice>
+      <oneOrMore>
+        <ref name="table-row"/>
+      </oneOrMore>
+      <oneOrMore>
+        <ref name="table-cell"/>
+      </oneOrMore>
+    </choice>
+  </define>
+  <define name="table-header">
+    <element name="fo:table-header">
+      <ref name="table-header.attlist"/>
+      <ref name="table-header.content"/>
+    </element>
+  </define>
+  <define name="table-header.content">
+    <ref name="row-group"/>
+  </define>
+  <define name="table-footer">
+    <element name="fo:table-footer">
+      <ref name="table-footer.attlist"/>
+      <ref name="table-footer.content"/>
+    </element>
+  </define>
+  <define name="table-footer.content">
+    <ref name="row-group"/>
+  </define>
+  <define name="table-body">
+    <element name="fo:table-body">
+      <ref name="table-body.attlist"/>
+      <ref name="table-body.content"/>
+    </element>
+  </define>
+  <define name="table-body.content">
+    <ref name="row-group"/>
+  </define>
+  <!--
+    ===============================================================
+    Table row.
+    ===============================================================
+  -->
+  <define name="table-row">
+    <element name="fo:table-row">
+      <ref name="table-row.attlist"/>
+      <ref name="table-row.content"/>
+    </element>
+  </define>
+  <define name="table-row.content">
+    <oneOrMore>
+      <ref name="table-cell"/>
+    </oneOrMore>
+  </define>
+  <!--
+    MEMO: We are more strict here, so this note is about 'Folint': 
+    'Folint' permits  empty fo:table-row, that is against the spec.
+    XSL FO spec defines  fo:table-row content as (table-cell+)
+  -->
+  <!--
+    ===============================================================
+    Table cell.
+    ===============================================================
+  -->
+  <define name="table-cell">
+    <element name="fo:table-cell">
+      <ref name="table-cell.attlist"/>
+      <ref name="table-cell.content"/>
+    </element>
+  </define>
+  <define name="table-cell.content">
+    <zeroOrMore>
+      <ref name="marker"/>
+    </zeroOrMore>
+    <oneOrMore>
+      <ref name="blocks"/>
+    </oneOrMore>
+  </define>
+  <!--
+    MEMO: We are more strict here, so this note is about 'Folint':
+    'Folint' permits empty table-cells that is against the spec. Spec defines fo:table-cell
+    content as (%block;)+
+    Note that 'Folint' is quite consistent regarding this matter - it simillary allows empty 
+    block-containers and table-rows
+  -->
+  <!--
+    ****************************************************************************************
+    Formatting objects for lists.
+    ****************************************************************************************
+    ===============================================================
+    List block is a block, with some extra features to control the
+    disposition of list items.
+    ===============================================================
+  -->
+  <define name="list-block">
+    <element name="fo:list-block">
+      <ref name="list-block.attlist"/>
+      <ref name="list-block.content"/>
+    </element>
+  </define>
+  <define name="list-block.content">
+    <zeroOrMore>
+      <ref name="marker"/>
+    </zeroOrMore>
+    <oneOrMore>
+      <ref name="list-item"/>
+    </oneOrMore>
+  </define>
+  <!--
+    ===============================================================
+    List item is a coupling of item label and item body.
+    ===============================================================
+  -->
+  <define name="list-item">
+    <element name="fo:list-item">
+      <ref name="list-item.attlist"/>
+      <ref name="list-item.content"/>
+    </element>
+  </define>
+  <define name="list-item.content">
+    <zeroOrMore>
+      <ref name="marker"/>
+    </zeroOrMore>
+    <ref name="list-item-label"/>
+    <ref name="list-item-body"/>
+  </define>
+  <!--
+    ===============================================================
+    List item label and list item body
+    ===============================================================
+  -->
+  <define name="list-item-label">
+    <element name="fo:list-item-label">
+      <ref name="list-item-label.attlist"/>
+      <ref name="list-item-label.content"/>
+    </element>
+  </define>
+  <define name="list-item-label.content">
+    <zeroOrMore>
+      <ref name="marker"/>
+    </zeroOrMore>
+    <oneOrMore>
+      <ref name="blocks"/>
+    </oneOrMore>
+  </define>
+  <define name="list-item-body">
+    <element name="fo:list-item-body">
+      <ref name="list-item-body.attlist"/>
+      <ref name="list-item-body.content"/>
+    </element>
+  </define>
+  <define name="list-item-body.content">
+    <zeroOrMore>
+      <ref name="marker"/>
+    </zeroOrMore>
+    <oneOrMore>
+      <ref name="blocks"/>
+    </oneOrMore>
+  </define>
+  <!--
+    MEMO: We are more strict here, so this note is about 'Folint':
+    'Folint' permits  empty fo:list-item-label/body, that is clearly the spec.
+    Spec defines  fo:list-item-label/body content as (%block;)+
+  -->
+  <!--
+    ****************************************************************************************
+    Out-of-lines.
+    ****************************************************************************************
+    ===============================================================
+    Floats and footnotes resemble containers. Accordingly, we treat
+    them as block sequences.
+    ===============================================================
+    MEMO: We do not allows absolutely positioned container as an outline descendant.
+    'Folint' is loose here - it do not check this condition.
+    MEMO: We are forced to create two types of floats: side-floats and before-floats
+    because they have different restrictions (side-floats can appear in static content, 
+    before-floats can't bear 'clear' property)
+    NOTE: 'Folint' does not allows any floats inside absolutely positioned containers too.
+  -->
+  <define name="side-float">
+    <notAllowed/>
+  </define>
+  <define name="side-float-real">
+    <element name="fo:float">
+      <ref name="side-float.attlist"/>
+      <ref name="float.content"/>
+    </element>
+  </define>
+  <define name="before-float">
+    <notAllowed/>
+  </define>
+  <define name="before-float-real">
+    <element name="fo:float">
+      <ref name="before-float.attlist"/>
+      <ref name="float.content"/>
+    </element>
+  </define>
+  <define name="float.content">
+    <oneOrMore>
+      <ref name="blocks"/>
+    </oneOrMore>
+  </define>
+  <!--
+    XSL> It is an error if the fo:footnote occurs as a descendant of a flow that is not assigned
+    XSL> to a region-body, or of an fo:block-container that generates absolutely positioned areas.
+  -->
+  <define name="footnote">
+    <notAllowed/>
+  </define>
+  <define name="footnote-real">
+    <element name="fo:footnote">
+      <ref name="footnote.attlist"/>
+      <ref name="footnote.content"/>
+    </element>
+  </define>
+  <!--
+    XSL> An fo:inline that is a child of an fo:footnote may not have block-level children.
+    XSL> An fo:inline that is a descendant of an fo:leader or of the fo:inline child of 
+    XSL> an fo:footnote may not have block-level children, unless it has a nearer 
+    XSL> ancestor that is an fo:inline-container.
+    We do check here that first inline have no block-level children/descendants unlless 
+    they are wrapped into an inline-container.
+    'Folint' does the same.
+  -->
+  <define name="footnote.content">
+    <ref name="inline-inline"/>
+    <ref name="footnote-body"/>
+  </define>
+  <define name="footnote-body">
+    <element name="fo:footnote-body">
+      <ref name="footnote-body.attlist"/>
+      <ref name="footnote-body.content"/>
+    </element>
+  </define>
+  <define name="footnote-body.content">
+    <oneOrMore>
+      <ref name="blocks"/>
+    </oneOrMore>
+  </define>
+  <!--
+    ===============================================================
+    Simple link. From the formatting point of view, it's nothing
+    but a regular inline sequence.
+    ===============================================================
+    This elment is for separate 'inline' content model
+  -->
+  <define name="basic-link-inline">
+    <element name="fo:basic-link">
+      <ref name="basic-link.attlist"/>
+      <ref name="basic-link-inline.content"/>
+    </element>
+  </define>
+  <define name="basic-link-inline.content">
+    <zeroOrMore>
+      <ref name="marker"/>
+    </zeroOrMore>
+    <zeroOrMore>
+      <ref name="inlines-inline"/>
+    </zeroOrMore>
+  </define>
+  <define name="basic-link">
+    <element name="fo:basic-link">
+      <ref name="basic-link.attlist"/>
+      <ref name="basic-link.content"/>
+    </element>
+  </define>
+  <define name="basic-link.content">
+    <zeroOrMore>
+      <ref name="marker"/>
+    </zeroOrMore>
+    <zeroOrMore>
+      <ref name="mix"/>
+    </zeroOrMore>
+  </define>
+  <!--
+    ****************************************************************************************
+    Wrappers and Markers.
+    ****************************************************************************************
+    ===============================================================
+    Wrapper. This may be useful but it seriously complicates validation of
+    content models for blocks and inlines.
+    ===============================================================
+    There are 3 different kind of wrappers for different contexts
+  -->
+  <define name="wrapper-inline">
+    <element name="fo:wrapper">
+      <ref name="wrapper.attlist"/>
+      <ref name="wrapper-inline.content"/>
+    </element>
+  </define>
+  <define name="wrapper-inline.content">
+    <zeroOrMore>
+      <ref name="marker"/>
+    </zeroOrMore>
+    <zeroOrMore>
+      <ref name="inlines-inline"/>
+    </zeroOrMore>
+  </define>
+  <define name="wrapper-block">
+    <element name="fo:wrapper">
+      <ref name="wrapper.attlist"/>
+      <ref name="wrapper-block.content"/>
+    </element>
+  </define>
+  <define name="wrapper-block.content">
+    <zeroOrMore>
+      <ref name="marker"/>
+    </zeroOrMore>
+    <zeroOrMore>
+      <ref name="blocks"/>
+    </zeroOrMore>
+  </define>
+  <define name="wrapper">
+    <element name="fo:wrapper">
+      <ref name="wrapper.attlist"/>
+      <ref name="wrapper.content"/>
+    </element>
+  </define>
+  <define name="wrapper.content">
+    <zeroOrMore>
+      <ref name="marker"/>
+    </zeroOrMore>
+    <zeroOrMore>
+      <ref name="mix"/>
+    </zeroOrMore>
+  </define>
+  <!--
+    ===============================================================
+    Marker.
+    ===============================================================
+  -->
+  <define name="marker">
+    <notAllowed/>
+  </define>
+  <define name="marker-real">
+    <element name="fo:marker">
+      <ref name="marker.attlist"/>
+      <ref name="marker.content"/>
+    </element>
+  </define>
+  <define name="marker.content">
+    <zeroOrMore>
+      <ref name="mix"/>
+    </zeroOrMore>
+  </define>
+  <!--
+    ===============================================================
+    Marker retrieval.
+    We are more strict here making retrieve-class-name attribute a mandatory, 
+    but marker with no retrieve-class-name is meaningless.
+    ===============================================================
+  -->
+  <define name="retrieve-marker">
+    <notAllowed/>
+  </define>
+  <define name="retrieve-marker-real">
+    <element name="fo:retrieve-marker">
+      <ref name="retrieve-marker.attlist"/>
+      <empty/>
+    </element>
+  </define>
+  <!--
+    ****************************************************************************************
+    Multistate stuff.
+    All those elements are practically  unused and XSL content model invloved is 
+    intricated. Therefor validation is not absolutely strict here.
+    ****************************************************************************************
+    ===============================================================
+    Switch. This is a pure logical operator; no formatting may be
+    conveyed through it.
+    ===============================================================
+    Thera are 3 different kind of multi-switch (because there are 3 kinds of multi-case)
+  -->
+  <define name="multi-switch-inline">
+    <element name="fo:multi-switch">
+      <ref name="multi-switch.attlist"/>
+      <ref name="multi-switch-inline.content"/>
+    </element>
+  </define>
+  <define name="multi-switch-inline.content">
+    <oneOrMore>
+      <ref name="multi-case-inline"/>
+    </oneOrMore>
+  </define>
+  <define name="multi-switch-block">
+    <element name="fo:multi-switch">
+      <ref name="multi-switch.attlist"/>
+      <ref name="multi-switch-block.content"/>
+    </element>
+  </define>
+  <define name="multi-switch-block.content">
+    <oneOrMore>
+      <ref name="multi-case-block"/>
+    </oneOrMore>
+  </define>
+  <define name="multi-switch">
+    <element name="fo:multi-switch">
+      <ref name="multi-switch.attlist"/>
+      <ref name="multi-switch.content"/>
+    </element>
+  </define>
+  <define name="multi-switch.content">
+    <oneOrMore>
+      <ref name="multi-case"/>
+    </oneOrMore>
+  </define>
+  <!--
+    ===============================================================
+    Single case. Block-level formatting may be conveyed.
+    ===============================================================
+    Thera are 3 different kind of multi-case (similar to fo:wrapper)
+  -->
+  <define name="multi-case-inline">
+    <element name="fo:multi-case">
+      <ref name="multi-case.attlist"/>
+      <ref name="multi-case-inline.content"/>
+    </element>
+  </define>
+  <define name="multi-case-inline.content">
+    <zeroOrMore>
+      <ref name="inlines-inline"/>
+    </zeroOrMore>
+  </define>
+  <define name="multi-case-block">
+    <element name="fo:multi-case">
+      <ref name="multi-case.attlist"/>
+      <ref name="multi-case-block.content"/>
+    </element>
+  </define>
+  <define name="multi-case-block.content">
+    <zeroOrMore>
+      <ref name="blocks"/>
+    </zeroOrMore>
+  </define>
+  <define name="multi-case">
+    <element name="fo:multi-case">
+      <ref name="multi-case.attlist"/>
+      <ref name="multi-case.content"/>
+    </element>
+  </define>
+  <define name="multi-case.content">
+    <zeroOrMore>
+      <ref name="mix"/>
+    </zeroOrMore>
+  </define>
+  <!--
+    ===============================================================
+    Toggle. This is a typical inline.
+    ===============================================================
+    MEMO: This element is only permitted as a descendant of an fo:multi-case.
+  -->
+  <define name="multi-toggle">
+    <element name="fo:multi-toggle">
+      <ref name="multi-toggle.attlist"/>
+      <ref name="multi-toggle.content"/>
+    </element>
+  </define>
+  <define name="multi-toggle.content">
+    <zeroOrMore>
+      <ref name="mix"/>
+    </zeroOrMore>
+  </define>
+  <!--
+    ===============================================================
+    Multi-properties.
+    ===============================================================
+    Thera are 3 different kind of multi-properties (similar to fo:wrapper)
+  -->
+  <define name="multi-properties-inline">
+    <element name="fo:multi-properties">
+      <ref name="multi-properties.attlist"/>
+      <ref name="multi-properties-inline.content"/>
+    </element>
+  </define>
+  <define name="multi-properties-inline.content">
+    <oneOrMore>
+      <ref name="multi-property-set"/>
+    </oneOrMore>
+    <ref name="wrapper-inline"/>
+  </define>
+  <define name="multi-properties-block">
+    <element name="fo:multi-properties">
+      <ref name="multi-properties.attlist"/>
+      <ref name="multi-properties-block.content"/>
+    </element>
+  </define>
+  <define name="multi-properties-block.content">
+    <oneOrMore>
+      <ref name="multi-property-set"/>
+    </oneOrMore>
+    <ref name="wrapper-block"/>
+  </define>
+  <define name="multi-properties">
+    <element name="fo:multi-properties">
+      <ref name="multi-properties.attlist"/>
+      <ref name="multi-properties.content"/>
+    </element>
+  </define>
+  <define name="multi-properties.content">
+    <oneOrMore>
+      <ref name="multi-property-set"/>
+    </oneOrMore>
+    <ref name="wrapper"/>
+  </define>
+  <!--
+    ===============================================================
+    Multi property set.
+    ===============================================================
+  -->
+  <define name="multi-property-set">
+    <element name="fo:multi-property-set">
+      <ref name="multi-property-set.attlist"/>
+      <empty/>
+    </element>
+  </define>
+  <!--
+    ===============================================================
+    "Match anything" definition, used by fo:instream-foreign-object
+    ===============================================================
+    MEMO: Should we exclude elements which belongs to fo: namespace?
+  -->
+  <define name="any">
+    <zeroOrMore>
+      <choice>
+        <element>
+          <anyName/>
+          <zeroOrMore>
+            <attribute>
+              <anyName/>
+            </attribute>
+          </zeroOrMore>
+          <ref name="any"/>
+        </element>
+        <text/>
+      </choice>
+    </zeroOrMore>
+  </define>
+</grammar>
