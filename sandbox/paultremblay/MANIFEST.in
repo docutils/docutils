@@ -1,3 +1,5 @@
 include test_files/* 
 include test.py
+include test_files/conf_files/*
+
                 
