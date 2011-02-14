@@ -119,18 +119,16 @@ blocks can take the following properties:
 * font-style
 * color (for the color of the text)
 * backgroud-color
-* left-indent [have to create this short form]
-* right-indent [have to create this short form]
-* border (for the boders around the block) [have to create this short form]
+* left-indent 
+* right-indent 
+* border (for the boders around the block) 
 * line-spacing (for double space, for exampe)
-* alignment [have to creat his short form]
-* keep-with-next (to keep the block with the next block, to avoid widows
-  and orphans)
-* keep-with-previous (to keep the block with the previous block, to avoid widows
-  and orphans)
-* keep-together (to prevent a block form splitting across a page)
-* break-after (to create page breaks) [have to create short form]
-* break-before (to create page breaks) [have to create short form]
+* alignment 
+* keep-with-next (to keep the block from ending a page)
+* keep-with-previous (to keep the block from starting a new page)
+* keep-on-same-page (to prevent a block form splitting across a page)
+* page-break-before (to create page breaks) 
+* page-break-after (to create page breaks) 
 
 These properties are the most commonly used and have an easy-to-remember,
 short name. In addition, one can use any of the valid FO properties, which can
@@ -282,4 +280,140 @@ format up to 3 different paragraphs::
  footer-first-paragraph.font-style = bold
  footer-second-paragraph.font-style = italic
  footer-third-paragraph.font-style = italic-bold
+
+===========
+Paragraphs
+===========
+
+Space before or after paragraphs
+---------------------------------
+
+::
+
+ paragraph.space-before = 12pt
+ paragraph.space-after = 12pt
+
+Indent first line
+-------------------
+
+::
+
+ paragraph.first-line-indent = 12pt
+
+Font Family
+-------------
+
+::
+
+ paragraph.font = monospace
+
+Font Size
+----------
+
+::
+
+ paragraph.font-size = 12pt
+
+Font Style
+-----------
+
+Set ``'font-style'`` to ``'bold'``, ``'italic'``, ``'bold-italic'``,
+or ``'normal'``::
+
+ paragraph.font-style = bold-italic
+
+Color (font color)
+-------------------
+
+::
+
+ paragraph.color = red
+
+Background color
+------------------
+
+::
+
+ paragraph.backgroud-color = red
+
+Left and right indent
+----------------------
+
+::
+
+ paragraph.left-indent = 12pt 
+ paragraph.right-indent = 12pt 
+
+Borders
+---------
+
+::
+
+ paragraph.border = solid black 1px
+
+Use ``'border-top'``, ``'border-bottom'``, ``'border-left'``, and
+``'border-right'`` to set properties on specific borders::
+
+ # creates a bottom border
+ paragraph.border-bottom = solid black 1px
+
+Line spacing
+--------------
+
+::
+
+ # double spaces paragraphs
+ paragraph.line-spacing  = 2
+
+Alignment
+-----------
+
+Use ``'alignment'`` to align text. Valid values are ``'left'``,
+``'right'``, ``'center'``, and ``'justify'``.
+
+::
+
+ # center aligns text
+ paragraph.alignment = center
+
+Keep with previous text
+-------------------------
+
+::
+
+ # paragrah won't start a new page
+ keep-with-previous = true
+
+Keep  with next text
+----------------------
+
+::
+
+ # paragrah won't end the page
+ keep-with-next = true
+
+Keep from breaking across pages
+---------------------------------
+::
+
+ keep-on-same-page = true
+
+
+Page break before or after
+----------------------------
+
+::
+
+ paragraph.page-break-before = yes
+ paragraph.page-break-after = yes
+
+
+No page break before or after
+-------------------------------
+
+::
+
+ paragraph.page-break-after = no
+ paragraph.page-break-before = no
+
 
