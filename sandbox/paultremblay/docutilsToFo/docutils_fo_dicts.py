@@ -1,5 +1,5 @@
  # -*- coding: UTF8 -*-
-
+ 
 att_set_dict = {
 'abstract-block':['abstract-block', 'block'],
 'abstract-paragraph-block':['abstract-paragraph-block', 'block'],
@@ -221,8 +221,9 @@ att_set_dict = {
 'warning-block':['warning-block', 'block'],
 'warning-title-block':['warning-title-block', 'block'],
 }
-
-# customize
+# =======================================================
+# CUSTOMIZE ATT SETS
+# =======================================================
 added_att_sets = {
 'bullet-list':['bullet-list-block', 'list-block'], 
 'document':['default-page-sequence', 'page-sequence'], 
@@ -245,446 +246,392 @@ added_att_sets = {
 
 att_set_dict.update(added_att_sets)
 
-
-block_dict = {
-'azimuth' : 'azimuth',
-'background-attachment' : 'background-attachment',
-'background-color' : 'background-color',
-'background-image' : 'background-image',
-'background-repeat' : 'background-repeat',
-'background-position-horizontal' : 'background-position-horizontal',
-'background-position-vertical' : 'background-position-vertical',
-'border-after-color' : 'border-after-color',
-'border-after-style' : 'border-after-style',
-'border-after-width' : 'border-after-width',
-'border-before-color' : 'border-before-color',
-'border-before-style' : 'border-before-style',
-'border-before-width' : 'border-before-width',
-'border-bottom-color' : 'border-bottom-color',
-'border-bottom-style' : 'border-bottom-style',
-'border-bottom-width' : 'border-bottom-width',
-'border-end-color' : 'border-end-color',
-'border-end-style' : 'border-end-style',
-'border-end-width' : 'border-end-width',
-'border-left-color' : 'border-left-color',
-'border-left-style' : 'border-left-style',
-'border-left-width' : 'border-left-width',
-'border-right-color' : 'border-right-color',
-'border-right-style' : 'border-right-style',
-'border-right-width' : 'border-right-width',
-'border-start-color' : 'border-start-color',
-'border-start-style' : 'border-start-style',
-'border-start-width' : 'border-start-width',
-'border-top-color' : 'border-top-color',
-'border-top-style' : 'border-top-style',
-'border-top-width' : 'border-top-width',
-'bottom' : 'bottom',
-'break-after' : 'break-after',
-'break-before' : 'break-before',
-'color' : 'color',
-'country' : 'country',
-'cue-after' : 'cue-after',
-'cue-before' : 'cue-before',
-'elevation' : 'elevation',
-'end-indent' : 'end-indent',
-'font-family' : 'font-family',
-'font-selection-strategy' : 'font-selection-strategy',
-'font-size' : 'font-size',
-'font-size-adjust' : 'font-size-adjust',
-'font-stretch' : 'font-stretch',
-'font-style' : 'font-style',
-'font-variant' : 'font-variant',
-'font-weight' : 'font-weight',
-'hyphenate' : 'hyphenate',
-'hyphenation-character' : 'hyphenation-character',
-'hyphenation-keep' : 'hyphenation-keep',
-'hyphenation-ladder-count' : 'hyphenation-ladder-count',
-'hyphenation-push-character-count' : 'hyphenation-push-character-count',
-'hyphenation-remain-character-count' : 'hyphenation-remain-character-count',
-'id' : 'id',
-'intrusion-displace' : 'intrusion-displace',
-'keep-together' : 'keep-together',
-'keep-with-next' : 'keep-with-next',
-'keep-with-previous' : 'keep-with-previous',
-'language' : 'language',
-'last-line-end-indent' : 'last-line-end-indent',
-'left' : 'left',
-'linefeed-treatment' : 'linefeed-treatment',
-'line-height' : 'line-height',
-'line-height-shift-adjustment' : 'line-height-shift-adjustment',
-'line-stacking-strategy' : 'line-stacking-strategy',
-'margin-bottom' : 'margin-bottom',
-'margin-left' : 'margin-left',
-'margin-right' : 'margin-right',
-'margin-top' : 'margin-top',
-'orphans' : 'orphans',
-'padding-after' : 'padding-after',
-'padding-before' : 'padding-before',
-'padding-bottom' : 'padding-bottom',
-'padding-end' : 'padding-end',
-'padding-left' : 'padding-left',
-'padding-right' : 'padding-right',
-'padding-start' : 'padding-start',
-'padding-top' : 'padding-top',
-'pause-after' : 'pause-after',
-'pause-before' : 'pause-before',
-'pitch' : 'pitch',
-'pitch-range' : 'pitch-range',
-'play-during' : 'play-during',
-'relative-position' : 'relative-position',
-'richness' : 'richness',
-'right' : 'right',
-'role' : 'role',
-'script' : 'script',
-'source-document' : 'source-document',
-'space-after' : 'space-after',
-'space-before' : 'space-before',
-'span' : 'span',
-'speak' : 'speak',
-'speak-header' : 'speak-header',
-'speak-numeral' : 'speak-numeral',
-'speak-punctuation' : 'speak-punctuation',
-'speech-rate' : 'speech-rate',
-'start-indent' : 'start-indent',
-'stress' : 'stress',
-'text-align' : 'text-align',
-'text-align-last' : 'text-align-last',
-'text-altitude' : 'text-altitude',
-'text-depth' : 'text-depth',
-'text-indent' : 'text-indent',
-'top' : 'top',
-'visibility' : 'visibility',
-'voice-family' : 'voice-family',
-'volume' : 'volume',
-'white-space-collapse' : 'white-space-collapse',
-'white-space-treatment' : 'white-space-treatment',
-'widows' : 'widows',
-'wrap-option' : 'wrap-option',
+# =====================================================================
+# =====================================================================
+# =====================================================================
+padding_dict = {
+'padding-after': 'padding-after',
+'padding-before': 'padding-before',
+'padding-bottom': 'padding-bottom',
+'padding-end': 'padding-end',
+'padding-left': 'padding-left',
+'padding-right': 'padding-right',
+'padding-start': 'padding-start',
+'padding-top': 'padding-top',
 }
 
-block_container_dict = {
-'absolute-position' : 'absolute-position',
-'background-attachment' : 'background-attachment',
-'background-color' : 'background-color',
-'background-image' : 'background-image',
-'background-position-horizontal' : 'background-position-horizontal',
-'background-position-vertical' : 'background-position-vertical',
-'background-repeat' : 'background-repeat',
-'border-after-color' : 'border-after-color',
-'border-after-style' : 'border-after-style',
-'border-after-width' : 'border-after-width',
-'border-before-color' : 'border-before-color',
-'border-before-style' : 'border-before-style',
-'border-before-width' : 'border-before-width',
-'border-bottom-color' : 'border-bottom-color',
-'border-bottom-style' : 'border-bottom-style',
-'border-bottom-width' : 'border-bottom-width',
-'border-end-color' : 'border-end-color',
-'border-end-style' : 'border-end-style',
-'border-end-width' : 'border-end-width',
-'border-left-color' : 'border-left-color',
-'border-left-style' : 'border-left-style',
-'border-left-width' : 'border-left-width',
-'border-right-color' : 'border-right-color',
-'border-right-style' : 'border-right-style',
-'border-right-width' : 'border-right-width',
-'border-start-color' : 'border-start-color',
-'border-start-style' : 'border-start-style',
-'border-start-width' : 'border-start-width',
-'border-top-color' : 'border-top-color',
-'border-top-style' : 'border-top-style',
-'border-top-width' : 'border-top-width',
-'bottom' : 'bottom',
-'break-after' : 'break-after',
-'break-before' : 'break-before',
-'clip' : 'clip',
-'display-align' : 'display-align',
-'end-indent' : 'end-indent',
-'height' : 'height',
-'id' : 'id',
-'inline-progression-dimension' : 'inline-progression-dimension',
-'intrusion-displace' : 'intrusion-displace',
-'keep-together' : 'keep-together',
-'keep-with-next' : 'keep-with-next',
-'keep-with-previous' : 'keep-with-previous',
-'left' : 'left',
-'margin-bottom' : 'margin-bottom',
-'margin-left' : 'margin-left',
-'margin-right' : 'margin-right',
-'margin-top' : 'margin-top',
-'overflow' : 'overflow',
-'padding-after' : 'padding-after',
-'padding-before' : 'padding-before',
-'padding-bottom' : 'padding-bottom',
-'padding-end' : 'padding-end',
-'padding-left' : 'padding-left',
-'padding-right' : 'padding-right',
-'padding-start' : 'padding-start',
-'padding-top' : 'padding-top',
-'reference-orientation' : 'reference-orientation',
-'right' : 'right',
-'space-after' : 'space-after',
-'space-before' : 'space-before',
-'span' : 'span',
-'start-indent' : 'start-indent',
-'top' : 'top',
-'width' : 'width',
-'writing-mode' : 'writing-mode',
-'z-index' : 'z-index',
+margin_dict = {
+'margin-bottom': 'margin-bottom',
+'margin-left': 'margin-left',
+'margin-right': 'margin-right',
+'margin-top': 'margin-top',
 }
 
-cell_dict = {
-'azimuth' : 'azimuth',
-'background-attachment' : 'background-attachment',
-'background-color' : 'background-color',
-'background-image' : 'background-image',
-'background-position-horizontal' : 'background-position-horizontal',
-'background-position-vertical' : 'background-position-vertical',
-'background-repeat' : 'background-repeat',
-'block-progression-dimension' : 'block-progression-dimension',
-'border-after-color' : 'border-after-color',
-'border-after-precedence' : 'border-after-precedence',
-'border-after-style' : 'border-after-style',
-'border-after-width' : 'border-after-width',
-'border-before-color' : 'border-before-color',
-'border-before-precedence' : 'border-before-precedence',
-'border-before-style' : 'border-before-style',
-'border-before-width' : 'border-before-width',
-'border-bottom-color' : 'border-bottom-color',
-'border-bottom-style' : 'border-bottom-style',
-'border-bottom-width' : 'border-bottom-width',
-'border-end-color' : 'border-end-color',
-'border-end-precedence' : 'border-end-precedence',
-'border-end-style' : 'border-end-style',
-'border-end-width' : 'border-end-width',
-'border-left-color' : 'border-left-color',
-'border-left-style' : 'border-left-style',
-'border-left-width' : 'border-left-width',
-'border-right-color' : 'border-right-color',
-'border-right-style' : 'border-right-style',
-'border-right-width' : 'border-right-width',
-'border-start-color' : 'border-start-color',
-'border-start-precedence' : 'border-start-precedence',
-'border-start-style' : 'border-start-style',
-'border-start-width' : 'border-start-width',
-'border-top-color' : 'border-top-color',
-'border-top-style' : 'border-top-style',
-'border-top-width' : 'border-top-width',
-'bottom' : 'bottom',
-'column-number' : 'column-number',
-'cue-after' : 'cue-after',
-'cue-before' : 'cue-before',
-'display-align' : 'display-align',
-'elevation' : 'elevation',
-'empty-cells' : 'empty-cells',
-'ends-row' : 'ends-row',
-'height' : 'height',
-'id' : 'id',
-'inline-progression-dimension' : 'inline-progression-dimension',
-'left' : 'left',
-'number-columns-spanned' : 'number-columns-spanned',
-'number-rows-spanned' : 'number-rows-spanned',
-'padding-after' : 'padding-after',
-'padding-before' : 'padding-before',
-'padding-bottom' : 'padding-bottom',
-'padding-end' : 'padding-end',
-'padding-left' : 'padding-left',
-'padding-right' : 'padding-right',
-'padding-start' : 'padding-start',
-'padding-top' : 'padding-top',
-'pause-after' : 'pause-after',
-'pause-before' : 'pause-before',
-'pitch' : 'pitch',
-'pitch-range' : 'pitch-range',
-'play-during' : 'play-during',
-'relative-position' : 'relative-position',
-'richness' : 'richness',
-'right' : 'right',
-'role' : 'role',
-'source-document' : 'source-document',
-'speak' : 'speak',
-'speak-header' : 'speak-header',
-'speak-numeral' : 'speak-numeral',
-'speak-punctuation' : 'speak-punctuation',
-'speech-rate' : 'speech-rate',
-'starts-row' : 'starts-row',
-'stress' : 'stress',
-'top' : 'top',
-'voice-family' : 'voice-family',
-'volume' : 'volume',
-'width' : 'width',
+# common items for block and inline, minus azimuth
+block_inline_dict = {
+'color': 'color',
+'font-family': 'font-family',
+'font-selection-strategy': 'font-selection-strategy',
+'font-size': 'font-size',
+'font-size-adjust': 'font-size-adjust',
+'font-stretch': 'font-stretch',
+'font-style': 'font-style',
+'font-variant': 'font-variant',
+'font-weight': 'font-weight',
+'keep-together': 'keep-together',
+'keep-with-next': 'keep-with-next',
+'keep-with-previous': 'keep-with-previous',
+'line-height': 'line-height',
+'visibility': 'visibility',
+'wrap-option': 'wrap-option'
 }
+
+sound_dict = {
+'azimuth': 'azimuth',
+'cue-after': 'cue-after',
+'cue-before': 'cue-before',
+'elevation': 'elevation',
+'pause-after': 'pause-after',
+'pause-before': 'pause-before',
+'pitch': 'pitch',
+'pitch-range': 'pitch-range',
+'play-during': 'play-during',
+'relative-position': 'relative-position',
+'richness': 'richness',
+'speak': 'speak',
+'speak-header': 'speak-header',
+'speak-numeral': 'speak-numeral',
+'speak-punctuation': 'speak-punctuation',
+'speech-rate': 'speech-rate',
+'stress': 'stress',
+'voice-family': 'voice-family',
+'volume': 'volume'}
+
+common_dict1 = {
+'background-attachment': 'background-attachment',
+'background-color': 'background-color',
+'background-image': 'background-image',
+'background-position-horizontal': 'background-position-horizontal',
+'background-position-vertical': 'background-position-vertical',
+'background-repeat': 'background-repeat',
+'border-after-color': 'border-after-color',
+'border-after-style': 'border-after-style',
+'border-after-width': 'border-after-width',
+'border-before-color': 'border-before-color',
+'border-before-style': 'border-before-style',
+'border-before-width': 'border-before-width',
+'border-bottom-color': 'border-bottom-color',
+'border-bottom-style': 'border-bottom-style',
+'border-bottom-width': 'border-bottom-width',
+'border-end-color': 'border-end-color',
+'border-end-style': 'border-end-style',
+'border-end-width': 'border-end-width',
+'border-left-color': 'border-left-color',
+'border-left-style': 'border-left-style',
+'border-left-width': 'border-left-width',
+'border-right-color': 'border-right-color',
+'border-right-style': 'border-right-style',
+'border-right-width': 'border-right-width',
+'border-start-color': 'border-start-color',
+'border-start-style': 'border-start-style',
+'border-start-width': 'border-start-width',
+'border-top-color': 'border-top-color',
+'border-top-style': 'border-top-style',
+'border-top-width': 'border-top-width',
+'bottom': 'bottom',
+'id': 'id',
+'left': 'left',
+'right': 'right',
+'role': 'role',
+'source-document': 'source-document',
+'top': 'top',
+}
+
+just_block_dict = {
+'break-after': 'break-after',
+'break-before': 'break-before',
+'country': 'country',
+'end-indent': 'end-indent',
+'hyphenate': 'hyphenate',
+'hyphenation-character': 'hyphenation-character',
+'hyphenation-keep': 'hyphenation-keep',
+'hyphenation-ladder-count': 'hyphenation-ladder-count',
+'hyphenation-push-character-count': 'hyphenation-push-character-count',
+'hyphenation-remain-character-count': 'hyphenation-remain-character-count',
+'intrusion-displace': 'intrusion-displace',
+'language': 'language',
+'last-line-end-indent': 'last-line-end-indent',
+'line-height-shift-adjustment': 'line-height-shift-adjustment',
+'line-stacking-strategy': 'line-stacking-strategy',
+'linefeed-treatment': 'linefeed-treatment',
+'orphans': 'orphans',
+'script': 'script',
+'space-after': 'space-after',
+'space-before': 'space-before',
+'span': 'span',
+'start-indent': 'start-indent',
+'text-align': 'text-align',
+'text-align-last': 'text-align-last',
+'text-altitude': 'text-altitude',
+'text-depth': 'text-depth',
+'text-indent': 'text-indent',
+'white-space-collapse': 'white-space-collapse',
+'white-space-treatment': 'white-space-treatment',
+'widows': 'widows'
+}
+
+just_block_container_dict = {
+'absolute-position': 'absolute-position',
+'break-after': 'break-after',
+'break-before': 'break-before',
+'clip': 'clip',
+'display-align': 'display-align',
+'end-indent': 'end-indent',
+'height': 'height',
+'inline-progression-dimension': 'inline-progression-dimension',
+'intrusion-displace': 'intrusion-displace',
+'keep-on-same-page': 'keep-on-same-page',
+'keep-together': 'keep-together',
+'keep-with-next': 'keep-with-next',
+'keep-with-previous': 'keep-with-previous',
+'overflow': 'overflow',
+'reference-orientation': 'reference-orientation',
+'space-after': 'space-after',
+'space-before': 'space-before',
+'span': 'span',
+'start-indent': 'start-indent',
+'width': 'width',
+'writing-mode': 'writing-mode',
+'z-index': 'z-index'
+}
+
+# properties unique to inline, minus azimuth and block_inline
+just_inline_dict = {
+'alignment-adjust': 'alignment-adjust',
+'alignment-baseline': 'alignment-baseline',
+'baseline-shift': 'baseline-shift',
+'block-progression-dimension': 'block-progression-dimension',
+'dominant-baseline': 'dominant-baseline',
+'height': 'height',
+'inline-progression-dimension': 'inline-progression-dimension',
+'space-end': 'space-end',
+'space-start': 'space-start',
+'text-decoration': 'text-decoration',
+'width': 'width'
+}
+
+# properties unique to cell, minus azimuth 
+just_cell_dict = {
+'block-progression-dimension': 'block-progression-dimension',
+'border-after-precedence': 'border-after-precedence',
+'border-before-precedence': 'border-before-precedence',
+'border-end-precedence': 'border-end-precedence',
+'border-start-precedence': 'border-start-precedence',
+'column-number': 'column-number',
+'display-align': 'display-align',
+'empty-cells': 'empty-cells',
+'ends-row': 'ends-row',
+'height': 'height',
+'inline-progression-dimension': 'inline-progression-dimension',
+'number-columns-spanned': 'number-columns-spanned',
+'number-rows-spanned': 'number-rows-spanned',
+'starts-row': 'starts-row',
+'width': 'width'
+}
+
+just_header_dict = {
+'border-after-precedence': 'border-after-precedence',
+'border-before-precedence': 'border-before-precedence',
+'border-collapse': 'border-collapse',
+'border-end-precedence': 'border-end-precedence',
+'border-separation': 'border-separation',
+'border-start-precedence': 'border-start-precedence',
+'visibility': 'visibility'
+}
+
+just_list_item_dict = {
+'break-after': 'break-after',
+'break-before': 'break-before',
+'end-indent': 'end-indent',
+'intrusion-displace': 'intrusion-displace',
+'keep-on-same-page': 'keep-on-same-page',
+'keep-together': 'keep-together',
+'keep-with-next': 'keep-with-next',
+'keep-with-previous': 'keep-with-previous',
+'relative-align': 'relative-align',
+'space-after': 'space-after',
+'space-before': 'space-before',
+'start-indent': 'start-indent'}
+
+just_list_block_dict = {
+'provisional-distance-between-starts': 'provisional-distance-between-starts',
+'provisional-label-separation': 'provisional-label-separation',
+}
+just_table_dict = {
+'block-progression-dimension': 'block-progression-dimension',
+'border-after-precedence': 'border-after-precedence',
+'border-before-precedence': 'border-before-precedence',
+'border-collapse': 'border-collapse',
+'border-end-precedence': 'border-end-precedence',
+'border-separation': 'border-separation',
+'border-start-precedence': 'border-start-precedence',
+'break-after': 'break-after',
+'break-before': 'break-before',
+'end-indent': 'end-indent',
+'height': 'height',
+'inline-progression-dimension': 'inline-progression-dimension',
+'intrusion-displace': 'intrusion-displace',
+'keep-on-same-page': 'keep-on-same-page',
+'keep-together': 'keep-together',
+'keep-with-next': 'keep-with-next',
+'keep-with-previous': 'keep-with-previous',
+'space-after': 'space-after',
+'space-before': 'space-before',
+'start-indent': 'start-indent',
+'table-layout': 'table-layout',
+'table-omit-footer-at-break': 'table-omit-footer-at-break',
+'table-omit-header-at-break': 'table-omit-header-at-break',
+'width': 'width',
+'writing-mode': 'writing-mode'
+}
+
+just_table_row_dict = {
+'block-progression-dimension': 'block-progression-dimension',
+'border-after-precedence': 'border-after-precedence',
+'border-before-precedence': 'border-before-precedence',
+'border-collapse': 'border-collapse',
+'border-end-precedence': 'border-end-precedence',
+'border-separation': 'border-separation',
+'border-start-precedence': 'border-start-precedence',
+'break-after': 'break-after',
+'break-before': 'break-before',
+'height': 'height',
+'keep-on-same-page': 'keep-on-same-page',
+'keep-together': 'keep-together',
+'keep-with-next': 'keep-with-next',
+'keep-with-previous': 'keep-with-previous',
+'visibility': 'visibility'}
+
+just_region_body_dict = {
+'bottom': 'bottom',
+'clip': 'clip',
+'column-count': 'column-count',
+'column-gap': 'column-gap',
+'display-align': 'display-align',
+'end-indent': 'end-indent',
+'id': 'id',
+'left': 'left',
+'overflow': 'overflow',
+'reference-orientation': 'reference-orientation',
+'region-name': 'region-name',
+'right': 'right',
+'role': 'role',
+'source-document': 'source-document',
+'space-after': 'space-after',
+'space-before': 'space-before',
+'top': 'top',
+'writing-mode': 'writing-mode'}
+
+just_region_after_dict = {
+'bottom': 'bottom',
+'clip': 'clip',
+'display-align': 'display-align',
+'extent': 'extent',
+'id': 'id',
+'left': 'left',
+'overflow': 'overflow',
+'precedence': 'precedence',
+'reference-orientation': 'reference-orientation',
+'region-name': 'region-name',
+'right': 'right',
+'role': 'role',
+'source-document': 'source-document',
+'top': 'top',
+'writing-mode': 'writing-mode'}
+# ======================================================================
+# put dicts together
+block_dict = {}
+block_dict.update(block_inline_dict)
+block_dict.update(margin_dict)
+block_dict.update(padding_dict)
+block_dict.update(common_dict1)
+block_dict.update(sound_dict)
+block_dict.update(just_block_dict)
+
+inline_dict = {}
+inline_dict.update(block_inline_dict)
+inline_dict.update(margin_dict)
+inline_dict.update(padding_dict)
+inline_dict.update(common_dict1)
+inline_dict.update(sound_dict)
+inline_dict.update(just_inline_dict)
+
+cell_dict = {}
+cell_dict.update(common_dict1)
+cell_dict.update(padding_dict)
+cell_dict.update(sound_dict)
+cell_dict.update(just_cell_dict)
+
+header_dict = {}
+header_dict.update(common_dict1)
+header_dict.update(sound_dict)
+header_dict.update(just_header_dict)
+
+list_item_dict = {}
+list_item_dict.update(common_dict1)
+list_item_dict.update(margin_dict)
+list_item_dict.update(padding_dict)
+list_item_dict.update(sound_dict)
+list_item_dict.update(just_list_item_dict)
+
+list_block_dict = {}
+list_block_dict.update(list_item_dict)
+list_block_dict.update(just_list_block_dict)
+
+block_container_dict = {}
+block_container_dict.update(common_dict1)
+block_container_dict.update(margin_dict)
+block_container_dict.update(padding_dict)
+block_container_dict.update(just_block_container_dict)
+
+table_dict = {}
+table_dict.update(common_dict1)
+table_dict.update(margin_dict)
+table_dict.update(padding_dict)
+table_dict.update(sound_dict)
+table_dict.update(just_table_dict)
+
+table_row_dict = {}
+table_row_dict.update(common_dict1)
+table_row_dict.update(sound_dict)
+table_row_dict.update(just_table_row_dict)
+
+region_body_dict = {}
+region_body_dict.update(common_dict1)
+region_body_dict.update(margin_dict)
+region_body_dict.update(padding_dict)
+region_body_dict.update(just_region_body_dict)
+del(region_body_dict['top'])
+del(region_body_dict['bottom'])
+del(region_body_dict['right'])
+del(region_body_dict['left'])
+del(region_body_dict['source-document'])
+
+region_after_dict = {}
+region_after_dict.update(common_dict1)
+region_after_dict.update(padding_dict)
+region_after_dict.update(just_region_after_dict)
+del(region_after_dict['top'])
+del(region_after_dict['bottom'])
+del(region_after_dict['right'])
+del(region_after_dict['left'])
+del(region_after_dict['source-document'])
 
 flow_dict = {'flow-name': 'flow-name'}
-
 
 footnote_dict = {'role': 'role', 'source-document': 'source-document'}
 footnote_body_dict = {}
 footnote_body_dict.update(footnote_dict)
-
-header_dict = {
-'azimuth' : 'azimuth',
-'background-attachment' : 'background-attachment',
-'background-color' : 'background-color',
-'background-image' : 'background-image',
-'background-position-horizontal' : 'background-position-horizontal',
-'background-position-vertical' : 'background-position-vertical',
-'background-repeat' : 'background-repeat',
-'border-after-color' : 'border-after-color',
-'border-after-precedence' : 'border-after-precedence',
-'border-after-style' : 'border-after-style',
-'border-after-width' : 'border-after-width',
-'border-before-color' : 'border-before-color',
-'border-before-precedence' : 'border-before-precedence',
-'border-before-style' : 'border-before-style',
-'border-before-width' : 'border-before-width',
-'border-bottom-color' : 'border-bottom-color',
-'border-bottom-style' : 'border-bottom-style',
-'border-bottom-width' : 'border-bottom-width',
-'border-collapse' : 'border-collapse',
-'border-end-color' : 'border-end-color',
-'border-end-precedence' : 'border-end-precedence',
-'border-end-style' : 'border-end-style',
-'border-end-width' : 'border-end-width',
-'border-left-color' : 'border-left-color',
-'border-left-style' : 'border-left-style',
-'border-left-width' : 'border-left-width',
-'border-right-color' : 'border-right-color',
-'border-right-style' : 'border-right-style',
-'border-right-width' : 'border-right-width',
-'border-separation' : 'border-separation',
-'border-start-color' : 'border-start-color',
-'border-start-precedence' : 'border-start-precedence',
-'border-start-style' : 'border-start-style',
-'border-start-width' : 'border-start-width',
-'border-top-color' : 'border-top-color',
-'border-top-style' : 'border-top-style',
-'border-top-width' : 'border-top-width',
-'bottom' : 'bottom',
-'cue-after' : 'cue-after',
-'cue-before' : 'cue-before',
-'elevation' : 'elevation',
-'id' : 'id',
-'left' : 'left',
-'pause-after' : 'pause-after',
-'pause-before' : 'pause-before',
-'pitch' : 'pitch',
-'pitch-range' : 'pitch-range',
-'play-during' : 'play-during',
-'relative-position' : 'relative-position',
-'richness' : 'richness',
-'right' : 'right',
-'role' : 'role',
-'source-document' : 'source-document',
-'speak' : 'speak',
-'speak-header' : 'speak-header',
-'speak-numeral' : 'speak-numeral',
-'speak-punctuation' : 'speak-punctuation',
-'speech-rate' : 'speech-rate',
-'stress' : 'stress',
-'top' : 'top',
-'visibility' : 'visibility',
-'voice-family' : 'voice-family',
-'volume' : 'volume',
-}
-
-
-inline_dict = {
-'alignment-adjust' : 'alignment-adjust',
-'alignment-baseline' : 'alignment-baseline',
-'azimuth' : 'azimuth',
-'background-attachment' : 'background-attachment',
-'background-color' : 'background-color',
-'background-image' : 'background-image',
-'background-position-horizontal' : 'background-position-horizontal',
-'background-position-vertical' : 'background-position-vertical',
-'background-repeat' : 'background-repeat',
-'baseline-shift' : 'baseline-shift',
-'block-progression-dimension' : 'block-progression-dimension',
-'border-after-color' : 'border-after-color',
-'border-after-style' : 'border-after-style',
-'border-after-width' : 'border-after-width',
-'border-before-color' : 'border-before-color',
-'border-before-style' : 'border-before-style',
-'border-before-width' : 'border-before-width',
-'border-bottom-color' : 'border-bottom-color',
-'border-bottom-style' : 'border-bottom-style',
-'border-bottom-width' : 'border-bottom-width',
-'border-end-color' : 'border-end-color',
-'border-end-style' : 'border-end-style',
-'border-end-width' : 'border-end-width',
-'border-left-color' : 'border-left-color',
-'border-left-style' : 'border-left-style',
-'border-left-width' : 'border-left-width',
-'border-right-color' : 'border-right-color',
-'border-right-style' : 'border-right-style',
-'border-right-width' : 'border-right-width',
-'border-start-color' : 'border-start-color',
-'border-start-style' : 'border-start-style',
-'border-start-width' : 'border-start-width',
-'border-top-color' : 'border-top-color',
-'border-top-style' : 'border-top-style',
-'border-top-width' : 'border-top-width',
-'bottom' : 'bottom',
-'color' : 'color',
-'cue-after' : 'cue-after',
-'cue-before' : 'cue-before',
-'dominant-baseline' : 'dominant-baseline',
-'elevation' : 'elevation',
-'font-family' : 'font-family',
-'font-selection-strategy' : 'font-selection-strategy',
-'font-size' : 'font-size',
-'font-size-adjust' : 'font-size-adjust',
-'font-stretch' : 'font-stretch',
-'font-style' : 'font-style',
-'font-variant' : 'font-variant',
-'font-weight' : 'font-weight',
-'height' : 'height',
-'id' : 'id',
-'inline-progression-dimension' : 'inline-progression-dimension',
-'keep-together' : 'keep-together',
-'keep-with-next' : 'keep-with-next',
-'keep-with-previous' : 'keep-with-previous',
-'left' : 'left',
-'line-height' : 'line-height',
-'margin-bottom' : 'margin-bottom',
-'margin-left' : 'margin-left',
-'margin-right' : 'margin-right',
-'margin-top' : 'margin-top',
-'padding-after' : 'padding-after',
-'padding-before' : 'padding-before',
-'padding-bottom' : 'padding-bottom',
-'padding-end' : 'padding-end',
-'padding-left' : 'padding-left',
-'padding-right' : 'padding-right',
-'padding-start' : 'padding-start',
-'padding-top' : 'padding-top',
-'pause-after' : 'pause-after',
-'pause-before' : 'pause-before',
-'pitch' : 'pitch',
-'pitch-range' : 'pitch-range',
-'play-during' : 'play-during',
-'relative-position' : 'relative-position',
-'richness' : 'richness',
-'right' : 'right',
-'role' : 'role',
-'source-document' : 'source-document',
-'space-end' : 'space-end',
-'space-start' : 'space-start',
-'speak' : 'speak',
-'speak-header' : 'speak-header',
-'speak-numeral' : 'speak-numeral',
-'speak-punctuation' : 'speak-punctuation',
-'speech-rate' : 'speech-rate',
-'stress' : 'stress',
-'text-decoration' : 'text-decoration',
-'top' : 'top',
-'visibility' : 'visibility',
-'voice-family' : 'voice-family',
-'volume' : 'volume',
-'width' : 'width',
-'wrap-option' : 'wrap-option',
-}
 
 item_body_dict = {
 'Property' : 'Property',
@@ -697,170 +644,6 @@ item_body_dict = {
 item_label_dict = {}
 item_label_dict.update(item_body_dict)
 
-list_item_dict = {
-'azimuth' : 'azimuth',
-'background-attachment' : 'background-attachment',
-'background-color' : 'background-color',
-'background-image' : 'background-image',
-'background-position-horizontal' : 'background-position-horizontal',
-'background-position-vertical' : 'background-position-vertical',
-'background-repeat' : 'background-repeat',
-'border-after-color' : 'border-after-color',
-'border-after-style' : 'border-after-style',
-'border-after-width' : 'border-after-width',
-'border-before-color' : 'border-before-color',
-'border-before-style' : 'border-before-style',
-'border-before-width' : 'border-before-width',
-'border-bottom-color' : 'border-bottom-color',
-'border-bottom-style' : 'border-bottom-style',
-'border-bottom-width' : 'border-bottom-width',
-'border-end-color' : 'border-end-color',
-'border-end-style' : 'border-end-style',
-'border-end-width' : 'border-end-width',
-'border-left-color' : 'border-left-color',
-'border-left-style' : 'border-left-style',
-'border-left-width' : 'border-left-width',
-'border-right-color' : 'border-right-color',
-'border-right-style' : 'border-right-style',
-'border-right-width' : 'border-right-width',
-'border-start-color' : 'border-start-color',
-'border-start-style' : 'border-start-style',
-'border-start-width' : 'border-start-width',
-'border-top-color' : 'border-top-color',
-'border-top-style' : 'border-top-style',
-'border-top-width' : 'border-top-width',
-'bottom' : 'bottom',
-'break-after' : 'break-after',
-'break-before' : 'break-before',
-'cue-after' : 'cue-after',
-'cue-before' : 'cue-before',
-'elevation' : 'elevation',
-'end-indent' : 'end-indent',
-'id' : 'id',
-'intrusion-displace' : 'intrusion-displace',
-'keep-together' : 'keep-together',
-'keep-with-next' : 'keep-with-next',
-'keep-with-previous' : 'keep-with-previous',
-'left' : 'left',
-'margin-bottom' : 'margin-bottom',
-'margin-left' : 'margin-left',
-'margin-right' : 'margin-right',
-'margin-top' : 'margin-top',
-'padding-after' : 'padding-after',
-'padding-before' : 'padding-before',
-'padding-bottom' : 'padding-bottom',
-'padding-end' : 'padding-end',
-'padding-left' : 'padding-left',
-'padding-right' : 'padding-right',
-'padding-start' : 'padding-start',
-'padding-top' : 'padding-top',
-'pause-after' : 'pause-after',
-'pause-before' : 'pause-before',
-'pitch' : 'pitch',
-'pitch-range' : 'pitch-range',
-'play-during' : 'play-during',
-'relative-align' : 'relative-align',
-'relative-position' : 'relative-position',
-'richness' : 'richness',
-'right' : 'right',
-'role' : 'role',
-'source-document' : 'source-document',
-'space-after' : 'space-after',
-'space-before' : 'space-before',
-'speak' : 'speak',
-'speak-header' : 'speak-header',
-'speak-numeral' : 'speak-numeral',
-'speak-punctuation' : 'speak-punctuation',
-'speech-rate' : 'speech-rate',
-'start-indent' : 'start-indent',
-'stress' : 'stress',
-'top' : 'top',
-'voice-family' : 'voice-family',
-'volume' : 'volume',
-}
-
-list_block_dict = {
-'azimuth' : 'azimuth',
-'background-attachment' : 'background-attachment',
-'background-color' : 'background-color',
-'background-image' : 'background-image',
-'background-position-horizontal' : 'background-position-horizontal',
-'background-position-vertical' : 'background-position-vertical',
-'background-repeat' : 'background-repeat',
-'border-after-color' : 'border-after-color',
-'border-after-style' : 'border-after-style',
-'border-after-width' : 'border-after-width',
-'border-before-color' : 'border-before-color',
-'border-before-style' : 'border-before-style',
-'border-before-width' : 'border-before-width',
-'border-bottom-color' : 'border-bottom-color',
-'border-bottom-style' : 'border-bottom-style',
-'border-bottom-width' : 'border-bottom-width',
-'border-end-color' : 'border-end-color',
-'border-end-style' : 'border-end-style',
-'border-end-width' : 'border-end-width',
-'border-left-color' : 'border-left-color',
-'border-left-style' : 'border-left-style',
-'border-left-width' : 'border-left-width',
-'border-right-color' : 'border-right-color',
-'border-right-style' : 'border-right-style',
-'border-right-width' : 'border-right-width',
-'border-start-color' : 'border-start-color',
-'border-start-style' : 'border-start-style',
-'border-start-width' : 'border-start-width',
-'border-top-color' : 'border-top-color',
-'border-top-style' : 'border-top-style',
-'border-top-width' : 'border-top-width',
-'bottom' : 'bottom',
-'break-after' : 'break-after',
-'break-before' : 'break-before',
-'cue-after' : 'cue-after',
-'cue-before' : 'cue-before',
-'elevation' : 'elevation',
-'end-indent' : 'end-indent',
-'id' : 'id',
-'intrusion-displace' : 'intrusion-displace',
-'keep-together' : 'keep-together',
-'keep-with-next' : 'keep-with-next',
-'keep-with-previous' : 'keep-with-previous',
-'left' : 'left',
-'margin-bottom' : 'margin-bottom',
-'margin-left' : 'margin-left',
-'margin-right' : 'margin-right',
-'margin-top' : 'margin-top',
-'padding-after' : 'padding-after',
-'padding-before' : 'padding-before',
-'padding-bottom' : 'padding-bottom',
-'padding-end' : 'padding-end',
-'padding-left' : 'padding-left',
-'padding-right' : 'padding-right',
-'padding-start' : 'padding-start',
-'padding-top' : 'padding-top',
-'pause-after' : 'pause-after',
-'pause-before' : 'pause-before',
-'pitch' : 'pitch',
-'pitch-range' : 'pitch-range',
-'play-during' : 'play-during',
-'provisional-distance-between-starts' : 'provisional-distance-between-starts',
-'provisional-label-separation' : 'provisional-label-separation',
-'relative-position' : 'relative-position',
-'richness' : 'richness',
-'right' : 'right',
-'role' : 'role',
-'source-document' : 'source-document',
-'space-after' : 'space-after',
-'space-before' : 'space-before',
-'speak' : 'speak',
-'speak-header' : 'speak-header',
-'speak-numeral' : 'speak-numeral',
-'speak-punctuation' : 'speak-punctuation',
-'speech-rate' : 'speech-rate',
-'start-indent' : 'start-indent',
-'stress' : 'stress',
-'top' : 'top',
-'voice-family' : 'voice-family',
-'volume' : 'volume',
-}
 
 page_sequence_dict = {
 'Property' : 'Property',
@@ -877,114 +660,8 @@ page_sequence_dict = {
 }
 
 
-region_after_dict = {
-'background-attachment' : 'background-attachment',
-'background-color' : 'background-color',
-'background-image' : 'background-image',
-'background-position-horizontal' : 'background-position-horizontal',
-'background-position-vertical' : 'background-position-vertical',
-'background-repeat' : 'background-repeat',
-'border-after-color' : 'border-after-color',
-'border-after-style' : 'border-after-style',
-'border-after-width' : 'border-after-width',
-'border-before-color' : 'border-before-color',
-'border-before-style' : 'border-before-style',
-'border-before-width' : 'border-before-width',
-'border-bottom-color' : 'border-bottom-color',
-'border-bottom-style' : 'border-bottom-style',
-'border-bottom-width' : 'border-bottom-width',
-'border-end-color' : 'border-end-color',
-'border-end-style' : 'border-end-style',
-'border-end-width' : 'border-end-width',
-'border-left-color' : 'border-left-color',
-'border-left-style' : 'border-left-style',
-'border-left-width' : 'border-left-width',
-'border-right-color' : 'border-right-color',
-'border-right-style' : 'border-right-style',
-'border-right-width' : 'border-right-width',
-'border-start-color' : 'border-start-color',
-'border-start-style' : 'border-start-style',
-'border-start-width' : 'border-start-width',
-'border-top-color' : 'border-top-color',
-'border-top-style' : 'border-top-style',
-'border-top-width' : 'border-top-width',
-'clip' : 'clip',
-'display-align' : 'display-align',
-'extent' : 'extent',
-'overflow' : 'overflow',
-'padding-after' : 'padding-after',
-'padding-before' : 'padding-before',
-'padding-bottom' : 'padding-bottom',
-'padding-end' : 'padding-end',
-'padding-left' : 'padding-left',
-'padding-right' : 'padding-right',
-'padding-start' : 'padding-start',
-'padding-top' : 'padding-top',
-'precedence' : 'precedence',
-'reference-orientation' : 'reference-orientation',
-'region-name' : 'region-name',
-'writing-mode' : 'writing-mode',
-}
-
 region_before_dict = { }
 region_before_dict.update(region_after_dict)
-
-# very close to region_after_dict
-region_body_dict = {
-'background-attachment' : 'background-attachment',
-'background-color' : 'background-color',
-'background-image' : 'background-image',
-'background-position-horizontal' : 'background-position-horizontal',
-'background-position-vertical' : 'background-position-vertical',
-'background-repeat' : 'background-repeat',
-'border-after-color' : 'border-after-color',
-'border-after-style' : 'border-after-style',
-'border-after-width' : 'border-after-width',
-'border-before-color' : 'border-before-color',
-'border-before-style' : 'border-before-style',
-'border-before-width' : 'border-before-width',
-'border-bottom-color' : 'border-bottom-color',
-'border-bottom-style' : 'border-bottom-style',
-'border-bottom-width' : 'border-bottom-width',
-'border-end-color' : 'border-end-color',
-'border-end-style' : 'border-end-style',
-'border-end-width' : 'border-end-width',
-'border-left-color' : 'border-left-color',
-'border-left-style' : 'border-left-style',
-'border-left-width' : 'border-left-width',
-'border-right-color' : 'border-right-color',
-'border-right-style' : 'border-right-style',
-'border-right-width' : 'border-right-width',
-'border-start-color' : 'border-start-color',
-'border-start-style' : 'border-start-style',
-'border-start-width' : 'border-start-width',
-'border-top-color' : 'border-top-color',
-'border-top-style' : 'border-top-style',
-'border-top-width' : 'border-top-width',
-'clip' : 'clip',
-'column-count' : 'column-count',
-'column-gap' : 'column-gap',
-'display-align' : 'display-align',
-'end-indent' : 'end-indent',
-'margin-bottom' : 'margin-bottom',
-'margin-left' : 'margin-left',
-'margin-right' : 'margin-right',
-'margin-top' : 'margin-top',
-'overflow' : 'overflow',
-'padding-after' : 'padding-after',
-'padding-before' : 'padding-before',
-'padding-bottom' : 'padding-bottom',
-'padding-end' : 'padding-end',
-'padding-left' : 'padding-left',
-'padding-right' : 'padding-right',
-'padding-start' : 'padding-start',
-'padding-top' : 'padding-top',
-'reference-orientation' : 'reference-orientation',
-'region-name' : 'region-name',
-'space-after' : 'space-after',
-'space-before' : 'space-before',
-'writing-mode' : 'writing-mode',
-}
 
 simple_page_master_dict = {
 'end-indent' : 'end-indent',
@@ -1002,251 +679,26 @@ simple_page_master_dict = {
 'space-before' : 'space-before',
 'start-indent' : 'start-indent',
 'writing-mode' : 'writing-mode',
-'bottom-margin' : 'margin-bottom', # added
-'left-margin' : 'margin-left', # added
-'right-margin' : 'margin-right', # added
-'top-margin' : 'margin-top', # added
 }
+table_body_dict = {}
+table_body_dict.update(header_dict)
 
-table_body_dict = {
-'azimuth' : 'azimuth',
-'background-attachment' : 'background-attachment',
-'background-color' : 'background-color',
-'background-image' : 'background-image',
-'background-position-horizontal' : 'background-position-horizontal',
-'background-position-vertical' : 'background-position-vertical',
-'background-repeat' : 'background-repeat',
-'border-after-color' : 'border-after-color',
-'border-after-precedence' : 'border-after-precedence',
-'border-after-style' : 'border-after-style',
-'border-after-width' : 'border-after-width',
-'border-before-color' : 'border-before-color',
-'border-before-precedence' : 'border-before-precedence',
-'border-before-style' : 'border-before-style',
-'border-before-width' : 'border-before-width',
-'border-bottom-color' : 'border-bottom-color',
-'border-bottom-style' : 'border-bottom-style',
-'border-bottom-width' : 'border-bottom-width',
-'border-collapse' : 'border-collapse',
-'border-end-color' : 'border-end-color',
-'border-end-precedence' : 'border-end-precedence',
-'border-end-style' : 'border-end-style',
-'border-end-width' : 'border-end-width',
-'border-left-color' : 'border-left-color',
-'border-left-style' : 'border-left-style',
-'border-left-width' : 'border-left-width',
-'border-right-color' : 'border-right-color',
-'border-right-style' : 'border-right-style',
-'border-right-width' : 'border-right-width',
-'border-separation' : 'border-separation',
-'border-start-color' : 'border-start-color',
-'border-start-precedence' : 'border-start-precedence',
-'border-start-style' : 'border-start-style',
-'border-start-width' : 'border-start-width',
-'border-top-color' : 'border-top-color',
-'border-top-style' : 'border-top-style',
-'border-top-width' : 'border-top-width',
-'bottom' : 'bottom',
-'cue-after' : 'cue-after',
-'cue-before' : 'cue-before',
-'elevation' : 'elevation',
-'id' : 'id',
-'left' : 'left',
-'pause-after' : 'pause-after',
-'pause-before' : 'pause-before',
-'pitch' : 'pitch',
-'pitch-range' : 'pitch-range',
-'play-during' : 'play-during',
-'relative-position' : 'relative-position',
-'richness' : 'richness',
-'right' : 'right',
-'role' : 'role',
-'source-document' : 'source-document',
-'speak' : 'speak',
-'speak-header' : 'speak-header',
-'speak-numeral' : 'speak-numeral',
-'speak-punctuation' : 'speak-punctuation',
-'speech-rate' : 'speech-rate',
-'stress' : 'stress',
-'top' : 'top',
-'visibility' : 'visibility',
-'voice-family' : 'voice-family',
-'volume' : 'volume',
+# =============================================================
+# CUSTOMIZE
+# =============================================================
+
+custom_margin_dict = {
+'bottom-margin' : 'margin-bottom',
+'left-margin' : 'margin-left',
+'right-margin' : 'margin-right', 
+'top-margin' : 'margin-top',
 }
+simple_page_master_dict.update(custom_margin_dict)
 
-table_dict = {
-'azimuth' : 'azimuth',
-'background-attachment' : 'background-attachment',
-'background-color' : 'background-color',
-'background-image' : 'background-image',
-'background-position-horizontal' : 'background-position-horizontal',
-'background-position-vertical' : 'background-position-vertical',
-'background-repeat' : 'background-repeat',
-'block-progression-dimension' : 'block-progression-dimension',
-'border-after-color' : 'border-after-color',
-'border-after-precedence' : 'border-after-precedence',
-'border-after-style' : 'border-after-style',
-'border-after-width' : 'border-after-width',
-'border-before-color' : 'border-before-color',
-'border-before-precedence' : 'border-before-precedence',
-'border-before-style' : 'border-before-style',
-'border-before-width' : 'border-before-width',
-'border-bottom-color' : 'border-bottom-color',
-'border-bottom-style' : 'border-bottom-style',
-'border-bottom-width' : 'border-bottom-width',
-'border-collapse' : 'border-collapse',
-'border-end-color' : 'border-end-color',
-'border-end-precedence' : 'border-end-precedence',
-'border-end-style' : 'border-end-style',
-'border-end-width' : 'border-end-width',
-'border-left-color' : 'border-left-color',
-'border-left-style' : 'border-left-style',
-'border-left-width' : 'border-left-width',
-'border-right-color' : 'border-right-color',
-'border-right-style' : 'border-right-style',
-'border-right-width' : 'border-right-width',
-'border-separation' : 'border-separation',
-'border-start-color' : 'border-start-color',
-'border-start-precedence' : 'border-start-precedence',
-'border-start-style' : 'border-start-style',
-'border-start-width' : 'border-start-width',
-'border-top-color' : 'border-top-color',
-'border-top-style' : 'border-top-style',
-'border-top-width' : 'border-top-width',
-'bottom' : 'bottom',
-'break-after' : 'break-after',
-'break-before' : 'break-before',
-'cue-after' : 'cue-after',
-'cue-before' : 'cue-before',
-'elevation' : 'elevation',
-'end-indent' : 'end-indent',
-'height' : 'height',
-'id' : 'id',
-'inline-progression-dimension' : 'inline-progression-dimension',
-'intrusion-displace' : 'intrusion-displace',
-'keep-together' : 'keep-together',
-'keep-with-next' : 'keep-with-next',
-'keep-with-previous' : 'keep-with-previous',
-'left' : 'left',
-'margin-bottom' : 'margin-bottom',
-'margin-left' : 'margin-left',
-'margin-right' : 'margin-right',
-'margin-top' : 'margin-top',
-'padding-after' : 'padding-after',
-'padding-before' : 'padding-before',
-'padding-bottom' : 'padding-bottom',
-'padding-end' : 'padding-end',
-'padding-left' : 'padding-left',
-'padding-right' : 'padding-right',
-'padding-start' : 'padding-start',
-'padding-top' : 'padding-top',
-'pause-after' : 'pause-after',
-'pause-before' : 'pause-before',
-'pitch' : 'pitch',
-'pitch-range' : 'pitch-range',
-'play-during' : 'play-during',
-'relative-position' : 'relative-position',
-'richness' : 'richness',
-'right' : 'right',
-'role' : 'role',
-'source-document' : 'source-document',
-'space-after' : 'space-after',
-'space-before' : 'space-before',
-'speak' : 'speak',
-'speak-header' : 'speak-header',
-'speak-numeral' : 'speak-numeral',
-'speak-punctuation' : 'speak-punctuation',
-'speech-rate' : 'speech-rate',
-'start-indent' : 'start-indent',
-'stress' : 'stress',
-'table-layout' : 'table-layout',
-'table-omit-footer-at-break' : 'table-omit-footer-at-break',
-'table-omit-header-at-break' : 'table-omit-header-at-break',
-'top' : 'top',
-'voice-family' : 'voice-family',
-'volume' : 'volume',
-'width' : 'width',
-'writing-mode' : 'writing-mode',
-}
-
-table_row_dict = {
-'azimuth' : 'azimuth',
-'background-attachment' : 'background-attachment',
-'background-color' : 'background-color',
-'background-image' : 'background-image',
-'background-position-horizontal' : 'background-position-horizontal',
-'background-position-vertical' : 'background-position-vertical',
-'background-repeat' : 'background-repeat',
-'block-progression-dimension' : 'block-progression-dimension',
-'border-after-color' : 'border-after-color',
-'border-after-precedence' : 'border-after-precedence',
-'border-after-style' : 'border-after-style',
-'border-after-width' : 'border-after-width',
-'border-before-color' : 'border-before-color',
-'border-before-precedence' : 'border-before-precedence',
-'border-before-style' : 'border-before-style',
-'border-before-width' : 'border-before-width',
-'border-bottom-color' : 'border-bottom-color',
-'border-bottom-style' : 'border-bottom-style',
-'border-bottom-width' : 'border-bottom-width',
-'border-collapse' : 'border-collapse',
-'border-end-color' : 'border-end-color',
-'border-end-precedence' : 'border-end-precedence',
-'border-end-style' : 'border-end-style',
-'border-end-width' : 'border-end-width',
-'border-left-color' : 'border-left-color',
-'border-left-style' : 'border-left-style',
-'border-left-width' : 'border-left-width',
-'border-right-color' : 'border-right-color',
-'border-right-style' : 'border-right-style',
-'border-right-width' : 'border-right-width',
-'border-separation' : 'border-separation',
-'border-start-color' : 'border-start-color',
-'border-start-precedence' : 'border-start-precedence',
-'border-start-style' : 'border-start-style',
-'border-start-width' : 'border-start-width',
-'border-top-color' : 'border-top-color',
-'border-top-style' : 'border-top-style',
-'border-top-width' : 'border-top-width',
-'bottom' : 'bottom',
-'break-after' : 'break-after',
-'break-before' : 'break-before',
-'cue-after' : 'cue-after',
-'cue-before' : 'cue-before',
-'elevation' : 'elevation',
-'height' : 'height',
-'id' : 'id',
-'keep-together' : 'keep-together',
-'keep-with-next' : 'keep-with-next',
-'keep-with-previous' : 'keep-with-previous',
-'left' : 'left',
-'pause-after' : 'pause-after',
-'pause-before' : 'pause-before',
-'pitch' : 'pitch',
-'pitch-range' : 'pitch-range',
-'play-during' : 'play-during',
-'relative-position' : 'relative-position',
-'richness' : 'richness',
-'right' : 'right',
-'role' : 'role',
-'source-document' : 'source-document',
-'speak' : 'speak',
-'speak-header' : 'speak-header',
-'speak-numeral' : 'speak-numeral',
-'speak-punctuation' : 'speak-punctuation',
-'speech-rate' : 'speech-rate',
-'stress' : 'stress',
-'top' : 'top',
-'visibility' : 'visibility',
-'voice-family' : 'voice-family',
-'volume' : 'volume',
-}
-
-# block_dict.update({'font-style': ['font-style']})
-# inline_dict.update({'font-style': ['font-style']})
-
-# customize
+# font family
 font_dict = { 'font': 'font-family', }
+
+# line height-short terms
 line_height_dict = {'line-spacing':'line-height'}
 page_sequence_dict.update(font_dict)
 page_sequence_dict.update({'font-size':'font-size'})
@@ -1256,31 +708,63 @@ block_dict.update(line_height_dict)
 inline_dict.update(line_height_dict)
 flow_dict.update(line_height_dict)
 
-block_set = set(block_dict.keys())
-block_container_set = set(block_container_dict.keys())
-cell_set= set(cell_dict.keys())
-intersect_block_block_container = block_set.intersection(block_container_set)
-intersect_block_container_cell = block_container_set.intersection(cell_set)
-diff = block_container_set.symmetric_difference(block_set)
+# block dict short terms
+custom_block_atts_dict = {
+'first-line-indent': 'text-indent',
+'left-indent': 'start-indent',
+'right-indent': 'end-indent',
+'alignment':'text-align',
+        }
 
-rbe_set = set(region_before_dict.keys())
-rbo_set = set(region_body_dict.keys())
-diff = rbe_set.symmetric_difference(rbo_set)
 
+block_dict.update(custom_block_atts_dict)
+
+keep_together_dict = {
+'keep-on-same-page': 'keep-together.within-page',
+}
+block_dict.update(keep_together_dict)
+block_container_dict.update(keep_together_dict)
+inline_dict.update(keep_together_dict)
+item_body_dict.update(keep_together_dict)
+list_item_dict.update(keep_together_dict)
+list_block_dict.update(keep_together_dict)
+table_dict.update(keep_together_dict)
+table_row_dict.update(keep_together_dict)
+
+border_simple_dict = {'border' : 'border',
+'border-bottom' : 'border-bottom',
+'border-top' : 'border-top',
+'border-left' : 'border-left',
+'border-right' : 'border-right',
+}
+block_dict.update(border_simple_dict)
+
+# font-style short terms
 font_style_dict={'bold': [('font-weight','bold')],
 'italic': [('font-style','italic')],
 'bold-italic':[('font-weight','bold'), ('font-style','italic')],
 'italic-bold':[('font-weight','bold'), ('font-style','italic')],
 'normal':[('font-weight', 'normal'), ('font-style', 'normal')],
 }
-special_values_dict = {'font-style':[True],
+
+
+special_atts_dict = {'font-style':[True],
+        'page-break-before':[True],
+        'page-break-after':[True],
+        'keep-with-next':[True],
+        'keep-with-previous':[True],
+        'keep-on-same-page':[True],
         }
 
-special_atts_dict = {
+special_att_sets_dict = {
         'header':[True],
         'footer':[True],
         }
 
+
+# true_of_false
+special_values_dict = {
+        }
 
 
 which_dict = {
@@ -1305,10 +789,12 @@ which_dict = {
 'table-row': table_row_dict,
 }
 
+# properties that are really params
 prop_as_param_dict = {
 'page.page-layout':'page-layout',
 }
 
+# default params
 param_dict = {
 'abstract-pagination' : 'with-front',
 'address-text' : 'Address: ',
@@ -1367,11 +853,13 @@ param_dict = {
 'warning-title' : 'Warning!',
 }
 param_list = param_dict.keys()
-true_or_false = {'True':'True', 'true':'True', 'yes':'True', 'Yes': 'True', 'False': 'False', 
+true_or_false_dict = {'True':'True', 'true':'True', 'yes':'True', 'Yes': 'True', 'False': 'False', 
         'false':'False', 'no': 'False', 'No':'False'}
-param_dict_test = {'strict':true_or_false,
-        'suppress-first-page-header': true_or_false,
-        'suppress-first-page-footer': true_or_false,
+true_dict = {'true':True, 'True':True, 'yes':True, 'Yes':True}
+false_dict = {'false':False, 'False':False, 'none': False, 'None':False, 'no': False, 'No':False}
+param_dict_test = {'strict':true_or_false_dict,
+        'suppress-first-page-header': true_or_false_dict,
+        'suppress-first-page-footer': true_or_false_dict,
         }
 
 commands_list = ['xsl-stylesheet']
