@@ -105,10 +105,10 @@ def validate_docutils(xml_file):
 # validate through xslt stylesheet
 def validate_fo_xsl(xml_file):
     xsl_ss = os.path.join(os.path.dirname(__file__), 'valid','folint.xsl')
-    xslt_doc = etree.parse(xsl_ss)
+    xslt_doc = etree.parse(xsl_ss) 
     transform = etree.XSLT(xslt_doc)
     try:
-        indoc = etree.parse(xml_file)
+        indoc = etree.parse(xml_file) 
     except lxml.etree.XMLSyntaxError, msg:
         sys.stderr.write('Invalid XML\n')
         sys.stderr.write(str(msg))
@@ -150,7 +150,8 @@ def validate_docutils_dtd(xml_obj):
         report_xsl_error(dtd.error_log)
         return 1
 
-def transform_lxml(xslt_file, xml_file, valid = True, param_dict = {}, out_file = None, verbose = 0):
+def transform_lxml(xslt_file, xml_file, valid_docutils = True, 
+        param_dict = {}, out_file = None, verbose = 0, valid_fo = True):
     # have to put quotes around string params
     temp = {}
     the_keys = param_dict.keys()
@@ -178,7 +179,7 @@ def transform_lxml(xslt_file, xml_file, valid = True, param_dict = {}, out_file 
         sys.stderr.write(str(msg))
         sys.stderr.write('\n')
         return 1
-    if valid:
+    if valid_docutils:
         not_valid = validate_docutils_rng(indoc)
         if not_valid:
             return 1
@@ -191,6 +192,10 @@ def transform_lxml(xslt_file, xml_file, valid = True, param_dict = {}, out_file 
         report_xsl_error(transform.error_log)
         return 1
     report_xsl_error(transform.error_log)
+    if valid_fo:
+        not_valid = validate_fo_xsl(cStringIO.StringIO(str(outdoc)))
+        if not_valid:
+            return 1
     if out_file:
         write_obj = open(out_file, 'w')
         outdoc.write(write_obj)
