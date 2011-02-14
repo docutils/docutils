@@ -279,10 +279,10 @@ class ReadConfig:
             sys.stderr.write('\n')
 
     def __handle_attributes(self, user_att_set, user_att, value, check_special = True):
-        if  special_values_dict.get(user_att) and check_special:
+        if  special_atts_dict.get(user_att) and check_special:
             self.__handle_special_atts(user_att_set, user_att, value)
             return
-        if  special_atts_dict.get(user_att_set) and check_special:
+        if  special_att_sets_dict.get(user_att_set) and check_special:
             self.__handle_special_atts(user_att_set, user_att, value)
             return
         set_element = att_set_dict.get(user_att_set)
@@ -297,10 +297,21 @@ class ReadConfig:
         else:
             self.__error('%s not a valid attribute-set' % (user_att_set))
 
+    def __check_value(self, att, value):
+        special = special_values_dict.get(value)
+        if special:
+            if special[0] == att:
+                return special[1]
+            else:
+                return value
+        else:
+            return value
+
     def __add_attribute(self, att_set, att, value):
         att_exists =  self.__attribute_sets.get(att_set)
         if not att_exists:
             self.__attribute_sets[att_set] = {}
+        value = self.__check_value(att, value)
         self.__attribute_sets[att_set][att] = value
 
     def __error(self, msg):
@@ -309,6 +320,7 @@ class ReadConfig:
         raise FOConfigFileException(msg)
 
     def __handle_special_atts(self, user_att_set, user_att, value):
+        keep_with = ['keep-with-next', 'keep-with-previous', 'keep-together', 'keep-on-same-page']
         if user_att == 'font-style':
             set_element = att_set_dict.get(user_att_set)
             if not set_element: 
@@ -338,6 +350,23 @@ class ReadConfig:
                     self. __handle_attributes(user_att_set , user_att, value, check_special = False)
                 if user_att_set == 'footer':
                     self. __handle_attributes(user_att_set , user_att, value, check_special = False)
+        elif user_att == 'page-break-after' or user_att == 'page-break-before':
+            att = user_att[5:]
+            true_or_false = true_or_false_dict.get(value)
+            if true_or_false == 'True':
+                self. __handle_attributes(user_att_set , att, 'page', check_special = False)
+                # self.__add_attribute(att_set, 'break-before', 'page')
+            elif true_or_false == 'False':
+                self. __handle_attributes(user_att_set , att, 'auto', check_special = False)
+            else:
+                self.__error('%s.%s = %s not a valid attribute property\n' % (user_att_set, user_att, value))
+
+        elif user_att in keep_with:
+            true_value = true_dict.get(value)
+            if true_value:
+                self. __handle_attributes(user_att_set , user_att, 'always', check_special = False)
+            else:
+                self. __handle_attributes(user_att_set , user_att, value, check_special = False)
 
         else:
             self.__error('%s.%s = %s not a valid attribute property\n' % (user_att_set, user_att, value))
