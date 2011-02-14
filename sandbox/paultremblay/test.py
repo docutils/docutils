@@ -11,7 +11,7 @@ STRICT = True
 parser = argparse.ArgumentParser(description='Test all the files') 
 parser.add_argument('--xslt', nargs=1, choices = ['xsltproc', 'lxml', 'saxon'], default=['lxml'], 
         dest='xsl_transform', help = 'choose which processer to use when transforming' ) 
-parser.add_argument('--no-pdf', action="store_const", const=True, help = 'don\'t convert to PDF', dest='no_pdf')
+parser.add_argument('--pdf', action="store_const", const=True, help = 'convert to PDF', dest='pdf')
 parser.add_argument('--no-rst', action="store_const", const=True, help = 'don\'t convert to RST', dest='no_rst')
 parser.add_argument('--no-fo', action="store_const", const=True, help = 'don\'t convert to FO', dest='no_fo')
 parser.add_argument('--strict', nargs=1, choices = ['True', 'False'],  
@@ -19,7 +19,9 @@ parser.add_argument('--strict', nargs=1, choices = ['True', 'False'],
 parser.add_argument('--debug', action="store_const", const=True, help = 'do debug messaging', dest='debug')
 parser.add_argument('--verbose', action="store_const", const=True, help = 'be verose in messaging', dest='verbose')
 parser.add_argument('--clean', action="store_const", const=True, help = 'whether to remove files after test', dest='clean')
+
 arg = parser.parse_args()
+PDF = arg.pdf
 if  arg.strict == 'True':
     STRICT = True
 else:
@@ -119,6 +121,10 @@ docfo_commands = [
         ('long_plain.xml', 'margins_first_odd_even.conf'),
         ('long_plain.xml', 'header_footer2.conf'),
         ('long_plain.xml', 'header_footer3.conf'),
+        ('simple.xml', 'paragraph1.conf'),
+        ('simple.xml', 'paragraph2.conf'),
+        ('simple.xml', 'paragraph3.conf'),
+        ('simple2.xml', 'paragraph4.conf'), # long para should not break across page
     ]
 
 def error_func(msg, the_path = None):
@@ -321,8 +327,9 @@ def test_docutils_to_fo_script(script_command):
             sys.stderr.write('Converting "%s" to "%s" with "%s" \n' % (in_file, out_file, config_file))
         run_docutils_command(command)
         validate_the_fo(out_file)
-        # out_pdf = '%s.pdf' % filename
-        # convert_fo_to_pdf(fo_file = out_file, out_file = out_pdf)
+        if PDF:
+            out_pdf = '%s.pdf' % filename
+            convert_fo_to_pdf(fo_file = out_file, out_file = out_pdf)
 
 
 def clean():
@@ -352,9 +359,8 @@ def main():
         convert_to_xml(rst_files)
     if not arg.no_fo:
         convert_to_fo(xsl_transform = arg.xsl_transform[0])
-    if not arg.no_pdf:
-        # convert_to_pdf()
-        pass
+    if PDF:
+        convert_to_pdf()
     for fo_file in glob.glob('*.fo'):
         os.remove(fo_file)
     test_docutils_to_fo_script(script_command)
