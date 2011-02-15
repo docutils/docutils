@@ -416,4 +416,199 @@ No page break before or after
  paragraph.page-break-after = no
  paragraph.page-break-before = no
 
+Formatting for first paragrahs
+--------------------------------
 
+Docutils to FO allows first paragraphs to be formatted differently
+from all others. First paragraphs refers to the first paragraphs after
+a section of document, or the first paragaph after a list, code block,
+admonition block, or table. British style dictates that such
+paragraphs do not have their first line indented. 
+
+::
+
+ #indents all but first paragraph 12pt
+ paragraph.first-line-indent = 12pt
+ first-paragraph.first-line-indent = 0pt
+
+================
+Non Body Matter
+================
+
+Non Body matter refers to the document title and subtitle; the
+bibliographic fields; the dedication; the abstract; and the table of
+contents. 
+
+Each such matter can be put in the front part, the toc (table of
+contents) part, or the body part. 
+
+The front part of a document occurrs first and has not headers or
+footers. The toc part occurrs next, generally starts with page 1
+(thought this can be changed), and page numberas are  formamtted with
+Roman numberals (though this can be changed.)
+
+The body part is part of any document. It generally starts with page 1
+(though this can be changed) and page numbers are formatted with
+Arabic numbers (though this can be changed).
+
+Placing the title/subtitle
+---------------------------
+
+With the front part (default)
++++++++++++++++++++++++++++++++
+
+::
+
+ title-subtitle.placement = with-front
+
+With the toc part
+++++++++++++++++++
+
+::
+
+ title-subtitle.placement = with-toc
+
+With the body part
++++++++++++++++++++
+
+::
+
+ title-subtitle.placement = with-body
+
+Placing the bibliograph fields
+-------------------------------
+
+With the front part 
+++++++++++++++++++++
+
+::
+
+ bibliographic-fields.placement = with-front
+
+With the toc part (default)
+++++++++++++++++++++++++++++
+
+::
+
+ bibliographic-fields.placement = with-toc
+
+With the body part
++++++++++++++++++++
+
+::
+
+ bibliographic-fields.placement = with-body
+
+Placing the dedication
+-----------------------
+
+With the front part 
+++++++++++++++++++++
+
+::
+
+ dedication.placement = with-front
+
+With the toc part (default)
+++++++++++++++++++++++++++++
+
+::
+
+ dedication.placement = with-toc
+
+With the body part
++++++++++++++++++++
+
+::
+
+ dedication.placement = with-body
+
+Placing the abstract
+-----------------------
+
+With the front part (default)
+++++++++++++++++++++++++++++++
+
+::
+
+ abstract.placement = with-front
+
+With the toc part 
+++++++++++++++++++
+
+::
+
+ abstract.placement = with-toc
+
+With the body part
++++++++++++++++++++
+
+::
+
+ abstract.placement = with-body
+
+Placing the toc
+----------------
+
+With the front part 
+++++++++++++++++++++
+
+::
+
+ toc.placement = with-front
+
+With the toc part 
+++++++++++++++++++
+
+::
+
+ toc.placement = with-toc
+
+With the body part
++++++++++++++++++++
+
+::
+
+ toc.placement = with-body
+
+Changing the order of non-body matter
+---------------------------------------
+
+By default, docutils to fo places the non-body matter in the order it
+occurrs in the docutils XML document (which may be different than the
+RST document). This order is title/subtitle, bibliographic,
+dedication, and table of contents. To change this order, use the
+``'front.order'`` property. Its value is a list of the non-body order
+areas in the order you wish it to occurr, speparated by commas::
+
+ # changes the order of the abstract and the bibliographic fields
+ front.order = title, abstract, dedication, toc, bibliographic
+
+Formatting the title/subtitle
+------------------------------
+
+Use the property ``'title-subtitle'`` to format both the title and
+subtitle. Use the property ``'title'``  to format just the title. Use the
+property ``'subtitle'`` to format just the subtitle. All of these
+properites are are block properties, and can take any of the
+properites a block (see paragraph) can take::
+
+ # center the title an subtitle
+ title-subtitle.alignment = center
+ # format the title
+ title.font-size = 24pt
+ # format the subtitle
+ subtitle.font-size = 18pt
+
+To create space before a title/subtitle, and to put the title/subtitle
+on their own page::
+
+ title-subtitle.page-break-before= true
+ title-subtitle.space-before=3in
+
+Formatting the bibliograhic fields
+-----------------------------------
+
+Bibliographic fields are formatted as a list. 
+
+bibliographic-fields-list-block
