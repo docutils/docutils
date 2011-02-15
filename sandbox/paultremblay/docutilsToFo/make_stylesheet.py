@@ -154,6 +154,14 @@ class PostProcess:
             if space_before:
                 self.__attribute_sets['footer-block']['space-before.conditionality'] = 'retain'
 
+    def __fix_title(self):
+        doc_tit_att_set = self.__attribute_sets.get('document-title-page-block')
+        if doc_tit_att_set:
+            space_before = doc_tit_att_set.get('space-before')
+            if space_before:
+                self.__attribute_sets['document-title-page-block']['space-before.conditionality'] = 'retain'
+
+
     def __get_page_layout(self):
         odd_page = self.__attribute_sets.get('odd-simple-page-master')
         even_page = self.__attribute_sets.get('even-simple-page-master')
@@ -184,6 +192,7 @@ class PostProcess:
         self.__get_default_font_size()
         self.__fix_header_footer()
         self.__get_page_layout()
+        self. __fix_title()
         return self.__attribute_sets, self.__params
 
 class ReadConfig:
