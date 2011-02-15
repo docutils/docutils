@@ -242,12 +242,16 @@ added_att_sets = {
 'footer-first-paragraph':['footer-first-block', 'block'],
 'footer-second-paragraph':['footer-second-block', 'block'],
 'footer-third-paragraph':['footer-third-block', 'block'],
+'title-subtitle':['document-title-page-block', 'block'],
+'title':['document-title-block', 'block'],
+'subtitle':['document-subtitle-block', 'block'],
+'bibliographic-fields':['bibliographic-fields-list-block', 'list-block'],
 }
 
 att_set_dict.update(added_att_sets)
 
 # =====================================================================
-# =====================================================================
+# ATTS
 # =====================================================================
 padding_dict = {
 'padding-after': 'padding-after',
@@ -265,6 +269,23 @@ margin_dict = {
 'margin-left': 'margin-left',
 'margin-right': 'margin-right',
 'margin-top': 'margin-top',
+}
+
+font_dict = {
+'color': 'color',
+'font-family': 'font-family',
+'font-selection-strategy': 'font-selection-strategy',
+'font-size': 'font-size',
+'font-size-adjust': 'font-size-adjust',
+'font-stretch': 'font-stretch',
+'font-style': 'font-style',
+'font-variant': 'font-variant',
+'font-weight': 'font-weight',
+}
+keep_with_dict = {
+'keep-together': 'keep-together',
+'keep-with-next': 'keep-with-next',
+'keep-with-previous': 'keep-with-previous',
 }
 
 # common items for block and inline, minus azimuth
@@ -792,7 +813,15 @@ which_dict = {
 # properties that are really params
 prop_as_param_dict = {
 'page.page-layout':'page-layout',
+'title-subtitle.placement': 'title-pagination', 
+'bibliographic-fields.placement' : 'bibliographic-pagination',
+'dedication.placement': 'dedication-pagination',
+'abstract.placement': 'abstract-pagination',
+'toc.placement': 'toc-pagination',
+'front.order': 'font-order',
 }
+
+ 
 
 # default params
 param_dict = {
