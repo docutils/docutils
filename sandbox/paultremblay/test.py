@@ -125,6 +125,10 @@ docfo_commands = [
         ('simple.xml', 'paragraph2.conf'),
         ('simple.xml', 'paragraph3.conf'),
         ('simple2.xml', 'paragraph4.conf'), # long para should not break across page
+        ('simple.xml', 'paragraph5.conf'), # first paragraph test
+        ('font_body.xml', 'front1.conf'), # all front matter
+        ('font_body.xml', 'front2.conf'), # change order of front matter
+        ('title_subtitle.xml', 'title1.conf'), # title with front matter
     ]
 
 def error_func(msg, the_path = None):
