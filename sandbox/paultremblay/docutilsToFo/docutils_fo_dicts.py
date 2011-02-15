@@ -892,3 +892,266 @@ param_dict_test = {'strict':true_or_false_dict,
         }
 
 commands_list = ['xsl-stylesheet']
+
+# ==========================================================================
+# ==========================================================================
+# ==========================================================================
+# ==========================================================================
+# ==========================================================================
+
+accessibility_properties = [
+'source-document', 
+'role']
+
+area_properties_inheritable = [
+'display-align',
+'reference-orientation',
+'writing-mode',
+'</define>',
+'<define name="area-properties-unheritable">',
+'clip',
+'overflow']
+
+aural_properties_unheritable = [
+'cue', 
+'cue-after', 
+'cue-before', 
+'pause', 
+'pause-after', 
+'pause-before']
+
+aural_properties_inheritable = [
+'azimuth',
+'elevation',
+'pitch',
+'pitch-range',
+'play-during',
+'richness',
+'speak',
+'speak-header',
+'speak-numeral',
+'speak-punctuation',
+'speech-rate',
+'stress',
+'voice-family',
+'volume']
+
+background_properties = [ 'background',
+'background-attachment',
+'background-color',
+'background-image',
+'background-position',
+'background-position-vertical',
+'background-position-horizontal',
+'background-repeat',
+'rx-background-content-type',
+'rx-background-content-height',
+'rx-background-content-width',
+'rx-background-scaling' ]
+
+border_properties =  ['border',
+'border-after-color',
+'border-after-style',
+'border-after-width',
+'border-after-width.length',
+'border-after-width.conditionality',
+'border-before-color',
+'border-before-style',
+'border-before-width',
+'border-before-width.length',
+'border-before-width.conditionality',
+'border-bottom',
+'border-bottom-color',
+'border-bottom-style',
+'border-bottom-width',
+'border-bottom-width.length',
+'border-bottom-width.conditionality',
+'border-color',
+'border-end-color',
+'border-end-style',
+'border-end-width',
+'border-end-width.length',
+'border-end-width.conditionality',
+'border-left',
+'border-left-color',
+'border-left-style',
+'border-left-width',
+'border-left-width.length',
+'border-left-width.conditionality',
+'border-right',
+'border-right-color',
+'border-right-style',
+'border-right-width',
+'border-right-width.length',
+'border-right-width.conditionality',
+'border-start-color',
+'border-start-style',
+'border-start-width',
+'border-start-width.length',
+'border-start-width.conditionality',
+'border-style',
+'border-top',
+'border-top-color',
+'border-top-style',
+'border-top-width',
+'border-top-width.length',
+'border-top-width.conditionality',
+'border-width' ]
+
+character_properties_inheritable = [
+'letter-spacing',
+'letter-spacing.minimum',
+'letter-spacing.optimum',
+'letter-spacing.maximum',
+'letter-spacing.precedence',
+'letter-spacing.conditionality',
+'word-spacing',
+'word-spacing.minimum',
+'word-spacing.optimum',
+'word-spacing.maximum',
+'word-spacing.precedence',
+'word-spacing.conditionality',
+'glyph-orientation-horizontal',
+'glyph-orientation-vertical',
+'score-spaces',
+'text-transform']
+
+font_properties = [
+'font',
+'font-selection-strategy',
+'font-family',
+'font-size',
+'font-size-adjust',
+'font-stretch',
+'font-style',
+'font-variant',
+'font-weight']
+hyphenation_properties_inline = [
+'country',
+'language',
+'script',
+'xml:lang'
+'hyphenate',
+'hyphenation-character',
+'hyphenation-push-character-count',
+'hyphenation-remain-character-count']
+
+hyphenation_properties_block = [
+'hyphenation-keep',
+'hyphenation-ladder-count']
+
+keeps_and_breaks_properties_atomic = [
+'break-after',
+'break-before',
+'page-break-after',
+'page-break-before']
+
+margin_properties_CSS = ['margin',
+'margin-bottom',
+'margin-left',
+'margin-right',
+'margin-top']
+
+margin_properties_inheritable = [
+'start-indent',
+'end-indent']
+
+padding_properties =  ['padding',
+'padding-after',
+'padding-after.length',
+'padding-after.conditionality',
+'padding-before',
+'padding-before.length',
+'padding-before.conditionality',
+'padding-bottom',
+'padding-bottom.length',
+'padding-bottom.conditionality',
+'padding-end',
+'padding-end.length',
+'padding-end.conditionality',
+'padding-left',
+'padding-left.length',
+'padding-left.conditionality',
+'padding-right',
+'padding-right.length',
+'padding-right.conditionality',
+'padding-start',
+'padding-start.length',
+'padding-start.conditionality',
+'padding-top',
+'padding-top.length',
+'padding-top.conditionality' ]
+
+relative_position_properties = [ 
+'relative-position',
+'relative-position-shorthand']
+
+table_properties_inheritable = [
+'border-collapse',
+'border-spacing',
+'border-separation',
+'border-separation.inline-progression-direction',
+'border-separation.block-progression-direction',
+'caption-side',
+'empty-cells']
+
+
+# ==========================================
+inheritable_properties_inline = ['color']
+inheritable_properties_inline.extend(aural_properties_inheritable)
+inheritable_properties_inline.extend(character_properties_inheritable)
+inheritable_properties_inline.extend(font_properties)
+inheritable_properties_inline.extend(hyphenation_properties_inline)
+
+inheritable_properties_block = []
+inheritable_properties_block.extend(table_properties_inheritable)
+inheritable_properties_block.extend(area_properties_inheritable)
+inheritable_properties_block.extend(hyphenation_properties_block)
+inheritable_properties_block.extend(margin_properties_inheritable)
+
+inheritable_properties = []
+inheritable_properties.extend(inheritable_properties_block)
+inheritable_properties.extend(inheritable_properties_inline)
+
+
+margin_properties_block = ['space-after',
+'space-after.minimum',
+'space-after.optimum',
+'space-after.maximum',
+'space-after.precedence',
+'space-after.conditionality',
+'space-before',
+'space-before.minimum',
+'space-before.optimum',
+'space-before.maximum',
+'space-before.precedence',
+'space-before.conditionality']
+margin_properties_block.extend(margin_properties_CSS)
+
+border_padding_background_properties = []
+border_padding_background_properties.extend(border_properties)
+border_padding_background_properties.extend(padding_properties)
+border_padding_background_properties.extend(background_properties)
+
+
+
+common_block_properties = ['id', 'rx:key']
+common_block_properties.extend(accessibility_properties)
+common_block_properties.extend(aural_properties_unheritable)
+common_block_properties.extend(border_padding_background_properties)
+common_block_properties.extend(margin_properties_block)
+common_block_properties.extend(inheritable_properties)
+# dump(common_block_properties)
+
+# BLOCK
+block_properties = ['clear', 'span']
+block_properties.extend(common_block_properties) 
+block_properties.extend(keeps_and_breaks_properties_atomic) 
+block_properties.extend(relative_position_properties) 
+
+# BLOCK CONTAINER
+block_container = ['container-position', 'z-index']
+# block_container.extend(area_properties_unheritable)
+# block_container.extend(box_size_properties)
+block_container.extend(block_properties)
+
