@@ -294,12 +294,16 @@ class ReadConfig:
         if  special_att_sets_dict.get(user_att_set) and check_special:
             self.__handle_special_atts(user_att_set, user_att, value)
             return
-        set_element = att_set_dict.get(user_att_set)
-        if set_element: # found a valid att-set
-            att_set = set_element[0] 
-            fo_element = set_element[1]
-            att = which_dict.get(fo_element).get(user_att)
-            if not att:
+
+        att_set = short_cut_att_sets.get(user_att_set)
+        if not att_set: # proper att-set, found in xsl stylesheets
+            att_set = user_att_set
+        fo_element = att_set_dict.get(att_set)
+        if fo_element: # found a valid att-set
+            att = custom_atts.get(user_att)
+            if not att: # valid attriubute, according to FO standards
+                att = user_att
+            if att not in which_list.get(fo_element):
                 self.__error('%s not a valid value for att-set %s' % (user_att, user_att_set))
             else:
                 self.__add_attribute(att_set, att, value )
