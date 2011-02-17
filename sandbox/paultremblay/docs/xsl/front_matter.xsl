@@ -58,6 +58,17 @@
         </block>
     </xsl:template>
 
+    <xsl:template match= "xsl:attribute-set[@name='dedication-first-paragraph-block']" priority="3">
+        <xsl:call-template name="before-desc">
+            <xsl:with-param name="fo">fo:block</xsl:with-param> 
+            <xsl:with-param name="docutils">topic[@classes = "dedication"]/paragraph</xsl:with-param> 
+            <xsl:with-param name="inherits">dedication-paragraph-block</xsl:with-param> 
+        </xsl:call-template>
+        <block>
+            Formats the first paragraph of the dedication.
+        </block>
+    </xsl:template>
+
     <xsl:template match= "xsl:attribute-set[@name='abstract-paragraph-block']" priority="3">
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">fo:block</xsl:with-param> 
@@ -65,6 +76,17 @@
         </xsl:call-template>
         <block>
             Formats the paragraphs of the abstract.
+        </block>
+    </xsl:template>
+
+    <xsl:template match= "xsl:attribute-set[@name='abstract-first-paragraph-block']" priority="3">
+        <xsl:call-template name="before-desc">
+            <xsl:with-param name="fo">fo:block</xsl:with-param> 
+            <xsl:with-param name="docutils">topic[@classes = "abstract"]/paragraph</xsl:with-param> 
+            <xsl:with-param name="inherits">abstract-paragraph-block</xsl:with-param> 
+        </xsl:call-template>
+        <block>
+            Formats the first paragraph of the abstract.
         </block>
     </xsl:template>
 

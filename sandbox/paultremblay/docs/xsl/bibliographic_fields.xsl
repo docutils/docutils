@@ -24,20 +24,6 @@
             and the labels' value (such as "1.2").
         </block>
     </xsl:template>
-    <xsl:template match= "xsl:attribute-set[@name='bibliographic-fields-front-list-block']" priority="3">
-        <xsl:call-template name="before-desc">
-            <xsl:with-param name="fo">list-block</xsl:with-param> 
-            <xsl:with-param name="docutils">docinfo</xsl:with-param> 
-            <xsl:with-param name="inherits">bibliographic-fields-list-block</xsl:with-param> 
-        </xsl:call-template>
-        <block>
-            The attribute set has a single default attribute, 'break-after="page"', and inherits the rest
-            of the properties from bibliographic-fields-list-block. It is applied
-            *only* when the bibliographic-fields is located in the front section. If you did not wish 
-            for a page break, create this attribute set with no attributes. 
-        </block>
-    </xsl:template>
-
 
 
     <xsl:template match= "xsl:attribute-set[@name='bibliographic-fields-list-item']" priority="3">
@@ -46,9 +32,20 @@
             <xsl:with-param name="docutils">docinfo/author|docinfo/authors|docinfo/organization|etc.</xsl:with-param> 
         </xsl:call-template>
         <block>
-            For the each item (author, authors, organization, contact, address, version, date, copyright, 
+            For each item (author, authors, organization, contact, address, version, date, copyright, 
             custom field) in the bibliograhic fields. Use the 'space-after' attribute to control
             the spacing between each item.
+        </block>
+    </xsl:template>
+
+    <xsl:template match= "xsl:attribute-set[@name='bibliographic-fields-first-list-item']" priority="3">
+        <xsl:call-template name="before-desc">
+            <xsl:with-param name="fo">fo:list-item</xsl:with-param> 
+            <xsl:with-param name="docutils">docinfo/author|docinfo/authors|docinfo/organization|etc.</xsl:with-param> 
+            <xsl:with-param name="inherits">bibliographic-fields-list-item</xsl:with-param> 
+        </xsl:call-template>
+        <block>
+            Same as above, but sets the space before to 0pt.
         </block>
     </xsl:template>
 
@@ -97,6 +94,18 @@
             description.
         </block>
     </xsl:template>
+
+    <xsl:template match= "xsl:attribute-set[@name='bibliographic-first-fields-block']" priority="3">
+        <xsl:call-template name="before-desc">
+            <xsl:with-param name="fo">fo:block</xsl:with-param> 
+            <xsl:with-param name="docutils">docinfo/author|docinfo/authors|docinfo/organization|etc.</xsl:with-param> 
+            <xsl:with-param name="inherits">bibliographic-fields-block</xsl:with-param> 
+        </xsl:call-template>
+        <block>
+            Same as above, but for the first such paragraph.
+        </block>
+    </xsl:template>
+
 
     <xsl:template match= "xsl:attribute-set[@name='address-value-block']" priority="3">
         <xsl:call-template name="before-desc">
