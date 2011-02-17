@@ -310,26 +310,6 @@ content" (Pawson, 100). In this case, that means the distance
 between the label (such as "Version", and the labels' value (such
 as "1.2").
 
-bibliographic-fields-front-list-block
--------------------------------------
-
-:fo: list-block
-
-:docutils: docinfo
-
-:inherits: bibliographic-fields-list-block
-
-:defaults:
-
-     break-after: page
-
-The attribute set has a single default attribute,
-'break-after="page"', and inherits the rest of the properties
-from bibliographic-fields-list-block. It is applied *only* when
-the bibliographic-fields is located in the front section. If you
-did not wish for a page break, create this attribute set with no
-attributes.
-
 bibliographic-fields-list-item
 ------------------------------
 
@@ -342,10 +322,26 @@ bibliographic-fields-list-item
 
      space-before: 12pt
 
-For the each item (author, authors, organization, contact,
-address, version, date, copyright, custom field) in the
-bibliograhic fields. Use the 'space-after' attribute to control
-the spacing between each item.
+For each item (author, authors, organization, contact, address,
+version, date, copyright, custom field) in the bibliograhic
+fields. Use the 'space-after' attribute to control the spacing
+between each item.
+
+bibliographic-fields-first-list-item
+------------------------------------
+
+:fo: fo:list-item
+
+:docutils:
+         docinfo/author|docinfo/authors|docinfo/organization|etc.
+
+:inherits: bibliographic-fields-list-item
+
+:defaults:
+
+     space-before: 0pt
+
+Same as above, but sets the space before to 0pt.
 
 bibliographic-fields-list-item-label
 ------------------------------------
@@ -406,6 +402,20 @@ Formats the blocks (docutilis paragraphs) of the value of the
 field. Use the 'space-after' attribute to control the spacing
 between a multi-paragraph description.
 
+bibliographic-first-fields-block
+--------------------------------
+
+:fo: fo:block
+
+:docutils:
+         docinfo/author|docinfo/authors|docinfo/organization|etc.
+
+:inherits: bibliographic-fields-block
+
+:defaults:
+
+Same as above, but for the first such paragraph.
+
 address-value-block
 -------------------
 
@@ -438,8 +448,6 @@ dedication-block
 
 :defaults:
 
-     break-after: page
-
 Formats the dedication text, including the title and subsequent
 paragraphs, by wrapping them in a block.
 
@@ -451,8 +459,6 @@ abstract-block
 :docutils: topic[@classes = "abstract"]
 
 :defaults:
-
-     break-after: page
 
 Formats the abstract text, including the title and subsequent
 paragraphs, by wrapping them in a block.
@@ -504,6 +510,21 @@ dedication-paragraph-block
 
 Formats the paragraphs of the dedication.
 
+dedication-first-paragraph-block
+--------------------------------
+
+:fo: fo:block
+
+:docutils: topic[@classes = "dedication"]/paragraph
+
+:inherits: dedication-paragraph-block
+
+:defaults:
+
+     space-before: 0pt
+
+Formats the first paragraph of the dedication.
+
 abstract-paragraph-block
 ------------------------
 
@@ -513,9 +534,24 @@ abstract-paragraph-block
 
 :defaults:
 
-     space-after: 12pt
+     space-before: 12pt
 
 Formats the paragraphs of the abstract.
+
+abstract-first-paragraph-block
+------------------------------
+
+:fo: fo:block
+
+:docutils: topic[@classes = "abstract"]/paragraph
+
+:inherits: abstract-paragraph-block
+
+:defaults:
+
+     space-before: 0pt
+
+Formats the first paragraph of the abstract.
 
 Header and Footer Attribute Sets
 ================================

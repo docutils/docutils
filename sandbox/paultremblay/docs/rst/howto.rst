@@ -619,6 +619,15 @@ any other property you want to set on the list, such as font for font-size::
  bibliographic-fields.right-indent = 20pt
  bibliographic-fields.background-color = grey
 
+Putting the bibliographic fields on its own page
+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+::
+
+ bibliographic-fields.page-break-before = true
+ # or, depending on your layout
+ bibliographic-fields.page-break-after = true
+
 
 To format space between items
 ++++++++++++++++++++++++++++++
@@ -669,4 +678,100 @@ bibliographic fields. If you wish to change the name, use the
   bibliographic-fields.address-text = address
   bibliographic-fields.revision-text = revision
   bibliographic-fields.date-text = date
+
+Formatting the text of the field
++++++++++++++++++++++++++++++++++++
+
+Use the ``'bibliographic-fields-text'`` identifier::
+
+ bibliographic-fields-text.font-weight=bold
+
+Formatting the text for individual paragraphs
++++++++++++++++++++++++++++++++++++++++++++++
+
+For fields that have more than one paragraph, use the ``'bibliographic-fields-paragraph'``
+identifier. This identifier can take any block property::
+
+ bibliographic-fields-paragraph.space-before = 12pt
+
+Note that using the ``'space-before'`` property has the same effect as
+controlling the space between each paragraph, without putting unwated space
+before the first paragraph. 
+
+Formatting the dedication
+--------------------------
+
+Creating a dedication
++++++++++++++++++++++++
+
+::
+
+ :Dedication: I dedicate this thesis to my good friend John, who
+   stood by me for many years while I struggled ...
+
+Putting dedication on its own page
+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+::
+
+ dedication.page-break-before = true
+ # or, depending on your layout
+ dedication.page-break-after = true
+
+Formatting the title
++++++++++++++++++++++++
+
+Use the ``'dedication-title'`` identifier, which can take any block property::
+
+ dedication-title.alignment = center
+ dedication-title.font-size = 24pt
+
+Formatting the paragraphs
+++++++++++++++++++++++++++
+
+Use the ``'dedication-paragraph'`` identifier, which can take any block property::
+
+ dedication-paragraph.font-size = 10pt
+ dedication-paragraph.alignment = right
+ dedication-paragraph.font-style = italic
+
+
+Formatting the abstract
+--------------------------
+
+Creating a abstract
++++++++++++++++++++++++
+
+::
+
+
+ :Abstract: Just an example of bibliograhic fields.
+  This continues on.
+
+Putting abstract on its own page
+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+::
+
+ abstract.page-break-before = true
+ # or, depending on your layout
+ abstract.page-break-after = true
+
+Formatting the title
++++++++++++++++++++++++
+
+Use the ``'abstract-title'`` identifier, which can take any block property::
+
+ abstract-title.alignment = center
+ abstract-title.font-size = 24pt
+
+Formatting the paragraphs
+++++++++++++++++++++++++++
+
+Use the ``'abstract-paragraph'`` identifier, which can take any block property::
+
+ abstract-paragraph.font-size = 10pt
+ abstract-paragraph.alignment = right
+ abstract-paragraph.font-style = italic
+
 
