@@ -1,5 +1,8 @@
 include test_files/* 
 include test.py
 include test_files/conf_files/*
+include test_files/conf_files/*
+include docs/rst/*
+include docs/html/*
 
                 
