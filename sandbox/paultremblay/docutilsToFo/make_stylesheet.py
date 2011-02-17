@@ -294,12 +294,27 @@ class ReadConfig:
         if  special_att_sets_dict.get(user_att_set) and check_special:
             self.__handle_special_atts(user_att_set, user_att, value)
             return
-
+        spc_att_set_att_list =  special_att_set_att_dict.get((user_att_set, user_att))
+        if spc_att_set_att_list and check_special:
+            for new_pair  in spc_att_set_att_list:
+                att_set = new_pair[0]
+                att = new_pair[1]
+                self.__add_attribute(att_set, att, value )
+            return
         att_set = short_cut_att_sets.get(user_att_set)
         if not att_set: # proper att-set, found in xsl stylesheets
             att_set = user_att_set
         fo_element = att_set_dict.get(att_set)
-        if fo_element: # found a valid att-set
+
+        spc_att_val_list = special_att_value_dict.get((user_att, value))
+        if spc_att_val_list and fo_element:
+            for new_pair  in spc_att_val_list:
+                att = new_pair[0]
+                value = new_pair[1]
+                self.__add_attribute(att_set, att, value )
+            return
+
+        elif fo_element: # found a valid att-set
             att = custom_atts.get(user_att)
             if not att: # valid attriubute, according to FO standards
                 att = user_att
@@ -333,56 +348,7 @@ class ReadConfig:
         raise FOConfigFileException(msg)
 
     def __handle_special_atts(self, user_att_set, user_att, value):
-        keep_with = ['keep-with-next', 'keep-with-previous', 'keep-together', 'keep-on-same-page']
-        if user_att == 'font-style':
-            set_element = att_set_dict.get(user_att_set)
-            if not set_element: 
-                self.__error('%s not a valid attribute-set' % (user_att_set))
-                return
-            att_set = set_element[0] 
-            att_list = font_style_dict.get(value)
-            if not att_list:
-                self.__error('%s not a valid value for att-set %s' % (value, user_att))
-                return
-            else:
-                for the_tupple in att_list:
-                    self.__add_attribute(att_set, the_tupple[0], the_tupple[1])
-        elif user_att_set == 'footer' or user_att_set == 'header':
-            if user_att == 'height':
-                if user_att_set == 'header':
-                    self. __handle_attributes('header-region-before' , 'extent', value)
-                if user_att_set == 'footer':
-                    self. __handle_attributes('footer-region-after' , 'extent', value)
-            elif user_att == 'suppress-first-page' :
-                if user_att_set == 'header':
-                    self.__handle_param(param = 'suppress-first-page-header', value = value)
-                elif user_att_set == 'footer':
-                    self.__handle_param(param = 'suppress-first-page-footer', value = value)
-            else: 
-                if user_att_set == 'header':
-                    self. __handle_attributes(user_att_set , user_att, value, check_special = False)
-                if user_att_set == 'footer':
-                    self. __handle_attributes(user_att_set , user_att, value, check_special = False)
-        elif user_att == 'page-break-after' or user_att == 'page-break-before':
-            att = user_att[5:]
-            true_or_false = true_or_false_dict.get(value)
-            if true_or_false == 'True':
-                self. __handle_attributes(user_att_set , att, 'page', check_special = False)
-                # self.__add_attribute(att_set, 'break-before', 'page')
-            elif true_or_false == 'False':
-                self. __handle_attributes(user_att_set , att, 'auto', check_special = False)
-            else:
-                self.__error('%s.%s = %s not a valid attribute property\n' % (user_att_set, user_att, value))
-
-        elif user_att in keep_with:
-            true_value = true_dict.get(value)
-            if true_value:
-                self. __handle_attributes(user_att_set , user_att, 'always', check_special = False)
-            else:
-                self. __handle_attributes(user_att_set , user_att, value, check_special = False)
-
-        else:
-            self.__error('%s.%s = %s not a valid attribute property\n' % (user_att_set, user_att, value))
+        self.__error('%s.%s = %s not a valid attribute property\n' % (user_att_set, user_att, value))
 
 
     def __handle_param(self, param, value):
