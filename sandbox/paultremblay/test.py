@@ -130,6 +130,8 @@ docfo_commands = [
         ('front_body.xml', 'front2.conf'), # change order of front matter
         ('title_subtitle.xml', 'title1.conf'), # title with front matter
         ('bibliographic_fields.xml', 'bibliographic_fields.conf'), # generic bibliographic fields
+        ('bibliographic_fields.xml', 'dedication1.conf'), # generic dedication
+        ('bibliographic_fields.xml', 'abstract1.conf'), # generic dedication
     ]
 
 def error_func(msg, the_path = None):
