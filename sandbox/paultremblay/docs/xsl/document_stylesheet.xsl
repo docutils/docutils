@@ -55,7 +55,7 @@
                 Attribute sets root elements. Use these attribute sets to format
                 the defaults in a document, such as font, font-size, or line-height.
             </block>
-            <xsl:apply-templates select="document('../../xsl_fo/root.xsl')/xsl:stylesheet"/>
+            <xsl:apply-templates select="document('../../docutilsToFo/xsl_fo/root.xsl')/xsl:stylesheet"/>
 
             <xsl:call-template name="make-title">
             <!--page attribute sets-->
@@ -66,7 +66,7 @@
                 Attribute sets for page. These attributes control the formatting of 
                 the actual pages: the paper size and margins.
             </block>
-            <xsl:apply-templates select="document('../../xsl_fo/page.xsl')/xsl:stylesheet"/>
+            <xsl:apply-templates select="document('../../docutilsToFo/xsl_fo/page.xsl')/xsl:stylesheet"/>
 
             <xsl:call-template name="make-title">
                 <xsl:with-param name="level">3</xsl:with-param>
@@ -76,7 +76,7 @@
                 Attribute sets for the bibliograhic fields. These attributes control the formatting of 
                bibliographic fields.
             </block>
-            <xsl:apply-templates select="document('../../xsl_fo/bibliographic_fields.xsl')/xsl:stylesheet"/>
+            <xsl:apply-templates select="document('../../docutilsToFo/xsl_fo/bibliographic_fields.xsl')/xsl:stylesheet"/>
 
             <!--front matter attribute sets-->
             <xsl:call-template name="make-title">
@@ -86,7 +86,7 @@
             <block>
                 Attribute sets for the dedication and abstract. 
             </block>
-            <xsl:apply-templates select="document('../../xsl_fo/front_matter.xsl')/xsl:stylesheet"/>
+            <xsl:apply-templates select="document('../../docutilsToFo/xsl_fo/front_matter.xsl')/xsl:stylesheet"/>
 
             <!--header footer-->
             <xsl:call-template name="make-title">
@@ -99,7 +99,7 @@
                 paragraphs for each header and footer. The first refers to the first that occurrs in 
                 the document, the second to the second, and the third to the third.
             </block>
-            <xsl:apply-templates select="document('../../xsl_fo/header_footer.xsl')/xsl:stylesheet"/>
+            <xsl:apply-templates select="document('../../docutilsToFo/xsl_fo/header_footer.xsl')/xsl:stylesheet"/>
 
             <!--TOC attribute sets-->
             <xsl:call-template name="make-title">
@@ -109,7 +109,7 @@
             <block>
                 Attribute sets for the TOC. 
             </block>
-            <xsl:apply-templates select="document('../../xsl_fo/toc.xsl')/xsl:stylesheet"/>
+            <xsl:apply-templates select="document('../../docutilsToFo/xsl_fo/toc.xsl')/xsl:stylesheet"/>
 
             <!--Section attribute sets-->
             <xsl:call-template name="make-title">
@@ -119,7 +119,7 @@
             <block>
                 Attribute sets for the section titles. 
             </block>
-            <xsl:apply-templates select="document('../../xsl_fo/section.xsl')/xsl:stylesheet"/>
+            <xsl:apply-templates select="document('../../docutilsToFo/xsl_fo/section.xsl')/xsl:stylesheet"/>
 
             <!--body-element attribute sets-->
             <xsl:call-template name="make-title">
@@ -130,7 +130,7 @@
                 Attribute sets for body elements, including the document title and subtitle; the
                 default paragraph; the transition element; and the literal block.
             </block>
-            <xsl:apply-templates select="document('../../xsl_fo/body_elements.xsl')/xsl:stylesheet"/>
+            <xsl:apply-templates select="document('../../docutilsToFo/xsl_fo/body_elements.xsl')/xsl:stylesheet"/>
 
             <!--bullet-list attribute sets-->
             <xsl:call-template name="make-title">
@@ -140,7 +140,7 @@
             <block>
                 Attribute sets for the bullet list.
             </block>
-            <xsl:apply-templates select="document('../../xsl_fo/bullet_list.xsl')/xsl:stylesheet"/>
+            <xsl:apply-templates select="document('../../docutilsToFo/xsl_fo/bullet_list.xsl')/xsl:stylesheet"/>
 
             <!--enumerated-list attribute sets-->
             <xsl:call-template name="make-title">
@@ -150,7 +150,7 @@
             <block>
                 Attribute sets for the enumerated list.
             </block>
-            <xsl:apply-templates select="document('../../xsl_fo/enumerated_list.xsl')/xsl:stylesheet"/>
+            <xsl:apply-templates select="document('../../docutilsToFo/xsl_fo/enumerated_list.xsl')/xsl:stylesheet"/>
 
             <!--definition-list attribute sets-->
             <xsl:call-template name="make-title">
@@ -160,7 +160,7 @@
             <block>
                 Attribute sets for the definition list.
             </block>
-            <xsl:apply-templates select="document('../../xsl_fo/definition_list.xsl')/xsl:stylesheet"/>
+            <xsl:apply-templates select="document('../../docutilsToFo/xsl_fo/definition_list.xsl')/xsl:stylesheet"/>
 
             <!--field-list attribute sets-->
             <xsl:call-template name="make-title">
@@ -170,7 +170,7 @@
             <block>
                 Attribute sets for the field list.
             </block>
-            <xsl:apply-templates select="document('../../xsl_fo/field_list.xsl')/xsl:stylesheet"/>
+            <xsl:apply-templates select="document('../../docutilsToFo/xsl_fo/field_list.xsl')/xsl:stylesheet"/>
 
             <!--option-list attribute sets-->
             <xsl:call-template name="make-title">
@@ -182,7 +182,7 @@
                 definition list, there are two sets of attribute sets. These attribute sets
                 are used for the options list when it is rendered as a list.
             </block>
-            <xsl:apply-templates select="document('../../xsl_fo/option_list.xsl')/xsl:stylesheet"/>
+            <xsl:apply-templates select="document('../../docutilsToFo/xsl_fo/option_list.xsl')/xsl:stylesheet"/>
 
             <!--line-block attribute sets-->
             <xsl:call-template name="make-title">
@@ -192,7 +192,7 @@
             <block>
                 Attribute sets for the line block.
             </block>
-            <xsl:apply-templates select="document('../../xsl_fo/line_block.xsl')/xsl:stylesheet"/>
+            <xsl:apply-templates select="document('../../docutilsToFo/xsl_fo/line_block.xsl')/xsl:stylesheet"/>
 
             <!--table attribute sets-->
             <xsl:call-template name="make-title">
@@ -202,7 +202,7 @@
             <block>
                 Attribute sets for the Table.
             </block>
-            <xsl:apply-templates select="document('../../xsl_fo/table.xsl')/xsl:stylesheet"/>
+            <xsl:apply-templates select="document('../../docutilsToFo/xsl_fo/table.xsl')/xsl:stylesheet"/>
 
             <!--footnote attribute sets-->
             <xsl:call-template name="make-title">
@@ -212,7 +212,7 @@
             <block>
                 Attribute sets for footnotes, endnotes, and the endnotes title.
             </block>
-            <xsl:apply-templates select="document('../../xsl_fo/footnote.xsl')/xsl:stylesheet"/>
+            <xsl:apply-templates select="document('../../docutilsToFo/xsl_fo/footnote.xsl')/xsl:stylesheet"/>
 
             <!--admonitions attribute sets-->
             <xsl:call-template name="make-title">
@@ -232,7 +232,7 @@
                 below.) Each of these areas can thus be customized. In contrast, all the paragrahs
                 in each admonition are identical.
             </block>
-            <xsl:apply-templates select="document('../../xsl_fo/admonitions.xsl')/xsl:stylesheet"/>
+            <xsl:apply-templates select="document('../../docutilsToFo/xsl_fo/admonitions.xsl')/xsl:stylesheet"/>
 
             <!--image and figure attribute sets-->
             <xsl:call-template name="make-title">
@@ -259,7 +259,7 @@
                 are all wrapped in blocks. Use the attribute sets for these blocks to control the 
                 properties.
             </block>
-            <xsl:apply-templates select="document('../../xsl_fo/image_figure.xsl')/xsl:stylesheet"/>
+            <xsl:apply-templates select="document('../../docutilsToFo/xsl_fo/image_figure.xsl')/xsl:stylesheet"/>
 
             <!--body_directive attribute sets-->
             <xsl:call-template name="make-title">
@@ -270,7 +270,7 @@
                 Attribute sets for Body Elements Directives. 
             </block>
 
-            <xsl:apply-templates select="document('../../xsl_fo/body_directives.xsl')/xsl:stylesheet"/>
+            <xsl:apply-templates select="document('../../docutilsToFo/xsl_fo/body_directives.xsl')/xsl:stylesheet"/>
 
             <!--option-inline attribute sets-->
             <xsl:call-template name="make-title">
@@ -287,7 +287,7 @@
                 (Becuase of a flaw(?) in FOP, an attribute set could not be used.) This parameter
                 has no effect on the space between endnotes.
             </block>
-            <xsl:apply-templates select="document('../../xsl_fo/inline.xsl')/xsl:stylesheet"/>
+            <xsl:apply-templates select="document('../../docutilsToFo/xsl_fo/inline.xsl')/xsl:stylesheet"/>
         </doc>
     </xsl:template>
 
