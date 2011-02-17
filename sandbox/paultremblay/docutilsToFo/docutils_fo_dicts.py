@@ -243,12 +243,21 @@ att_set_dict = {
 'warning-title-block': 'block'}
 
 #===========================================================
+# SHORT CUTS
 
 short_cut_att_sets = {
+'abstract': 'abstract-block',
+'abstract-title': 'abstract-title-block',
+'abstract-paragraph': 'abstract-paragraph-block',
 'bibliographic-field':'bibliographic-fields-item-label-block',
 'bibliographic-fields': 'bibliographic-fields-list-block',
+'bibliographic-fields-text': 'bibliographic-fields-item-body',
+'bibliographic-fields-paragraph': 'bibliographic-fields-block',
 'body': 'default-flow',
 'bullet-list': 'bullet-list-block',
+'dedication': 'dedication-block',
+'dedication-title': 'dedication-title-block',
+'dedication-paragraph': 'dedication-paragraph-block',
 'document': 'default-page-sequence',
 'even-page': 'even-simple-page-master',
 'first-page': 'first-simple-page-master',
@@ -843,6 +852,12 @@ special_att_set_att_dict = {
 ('bibliographic-fields', 'space-between-items'): [('bibliographic-fields-list-item', 'space-before')], 
 ('header' , 'height'):[('header-region-before', 'extent')],
 ('footer' , 'height'):[('footer-region-after', 'extent')],
+('toc' , 'start-page'):[('toc-page-sequence', 'initial-page-number')],
+('toc' , 'page-format'):[('toc-page-sequence', 'format')],
+('toc-section' , 'start-page'):[('toc-page-sequence', 'initial-page-number')],
+('toc-section' , 'page-format'):[('toc-page-sequence', 'format')],
+('body' , 'start-page'):[('body-page-sequence', 'initial-page-number')],
+('body' , 'page-format'):[('bdy-page-sequence', 'format')],
 }
 special_att_value_dict = {
 ('font-style', 'bold'): [('font-weight','bold')],
