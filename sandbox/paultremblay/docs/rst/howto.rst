@@ -590,8 +590,8 @@ Formatting the title/subtitle
 Use the property ``'title-subtitle'`` to format both the title and
 subtitle. Use the property ``'title'``  to format just the title. Use the
 property ``'subtitle'`` to format just the subtitle. All of these
-properites are are block properties, and can take any of the
-properites a block (see paragraph) can take::
+properites are block properties, and can take any of the
+properites of a block (see paragraph)::
 
  # center the title an subtitle
  title-subtitle.alignment = center
@@ -609,6 +609,64 @@ on their own page::
 Formatting the bibliograhic fields
 -----------------------------------
 
-Bibliographic fields are formatted as a list. 
+Bibliographic fields are formatted as a list. Use the ``'bibliograhic-fields'``
+property to format the space after and before, the left and right indent, and
+any other property you want to set on the list, such as font for font-size::
 
-bibliographic-fields-list-block
+ bibliographic-fields.space-after = 20pt
+ bibliographic-fields.space-before = 20pt
+ bibliographic-fields.left-indent = 20pt
+ bibliographic-fields.right-indent = 20pt
+ bibliographic-fields.background-color = grey
+
+
+To format space between items
+++++++++++++++++++++++++++++++
+
+Use the ``'space-between-items'`` property.
+
+::
+
+
+  bibliographic-fields.space-between-items = 30pt
+
+To format space between field and text
++++++++++++++++++++++++++++++++++++++++
+
+The ``'space-form-fields'`` works exactly as the ``'space-from-bulle''``: both
+properties control the spacing from the list label and the text.
+
+::
+
+  bibliographic-fields.space-from-field = 3in
+
+Formatting the field
+++++++++++++++++++++++
+
+Use the ``'bibliographic-field'`` property, and apply any block properties.
+Note the slight, one letter difference between ``'bibliographic-fields``, which
+formats the entire list, and ``'bibliographic-field'`` which formats just the
+field::
+
+ # change default font to normal
+ bibliographic-field.font-style = normal
+
+Changing the default text of the fields
++++++++++++++++++++++++++++++++++++++++++
+
+By default, the docutils to FO converter gives expected names to each of the
+bibliographic fields. If you wish to change the name, use the
+``'bibliographic-fields.<fieldname-text>`` property::
+
+  # change all the fields from the default to lower case
+  bibliographic-fields.author-text = author
+  bibliographic-fields.authors-text = authors
+  bibliographic-fields.organization-text = organization
+  # change 'contact' to 'email'
+  bibliographic-fields.contact-text = email
+  bibliographic-fields.status-text = status
+  bibliographic-fields.copyright-text = copyright
+  bibliographic-fields.address-text = address
+  bibliographic-fields.revision-text = revision
+  bibliographic-fields.date-text = date
+
