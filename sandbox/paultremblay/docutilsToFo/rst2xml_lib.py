@@ -183,6 +183,8 @@ def transform_lxml(xslt_file, xml_file, valid_docutils = True,
         not_valid = validate_docutils_rng(indoc)
         if not_valid:
             return 1
+        elif verbose > 2:
+            sys.stderr.write('docutils document is valid\n')
     try:
         outdoc = transform(indoc, **param_dict)
     except lxml.etree.XSLTApplyError, error:
@@ -196,6 +198,8 @@ def transform_lxml(xslt_file, xml_file, valid_docutils = True,
         not_valid = validate_fo_xsl(cStringIO.StringIO(str(outdoc)))
         if not_valid:
             return 1
+        elif verbose > 2:
+            sys.stderr.write('FO document is valid\n')
     if out_file:
         write_obj = open(out_file, 'w')
         outdoc.write(write_obj)
