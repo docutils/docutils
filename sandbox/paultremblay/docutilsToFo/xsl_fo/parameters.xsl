@@ -100,6 +100,13 @@ fields as author, etc.`docutils`-->
 <!--the default to use for a bullet list, rather than what the user specifies-->
 <xsl:param name="bullet-text">&#x2022;</xsl:param>
 
+<!--the default to use for a bullet list level 2, rather than what the user specifies-->
+<!--
+<xsl:param name="bullet-text-level2">&#x25E6;</xsl:param>
+-->
+
+<xsl:param name="bullet-text-level2">&#x00B0;</xsl:param>
+
 <!--how to format the options list. Acceptable values are
 'list' and 'definition'. The 'list' values creates a bullet-type
 list, with the options taking the place of bullets. The 'definiton' 
