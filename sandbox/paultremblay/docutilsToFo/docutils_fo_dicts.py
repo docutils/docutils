@@ -270,6 +270,13 @@ short_cut_att_sets = {
 'header-first-paragraph': 'header-first-block',
 'header-second-paragraph': 'header-second-block',
 'header-third-paragraph': 'header-third-block',
+'heading1':'title-level1-block',
+'heading2':'title-level2-block',
+'heading3':'title-level3-block',
+'heading4':'title-level4-block',
+'heading5':'title-level5-block',
+'heading6':'title-level6-block',
+'heading7':'title-level7-block',
 'odd-page': 'odd-simple-page-master',
 'page': 'default-simple-page-master',
 'paper-size': 'paper-size-simple-page-master',
@@ -285,6 +292,7 @@ short_cut_att_sets = {
 'toc-entry4': 'toc-level4-block',
 'toc-entry5': 'toc-level5-block',
 'toc-default': 'toc-entry-defaults-block',
+'transition':'transition-block',
 }
 # ===========================================================
 
@@ -929,6 +937,15 @@ prop_as_param_dict = {
 'bibliographic-fields.address-text': 'address-text',
 'bibliographic-fields.revision-text': 'revision-text',
 'bibliographic-fields.date-text': 'date-text',
+'heading1.number-format':'number-section1',
+'heading2.number-format':'number-section2',
+'heading3.number-format':'number-section3',
+'heading4.number-format':'number-section4',
+'heading5.number-format':'number-section5',
+'heading6.number-format':'number-section6',
+'heading7.number-format':'number-section7',
+'headings.inherit-sections-number':'inherit-section-num',
+'transition.text':'transition-text',
 }
 
 
