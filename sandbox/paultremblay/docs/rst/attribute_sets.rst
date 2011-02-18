@@ -701,6 +701,17 @@ TOC Matter Attribute Sets
 
 Attribute sets for the TOC.
 
+toc-block
+---------
+
+:fo: fo:block
+
+:docutils: topic[@classes = "contents"]
+
+:defaults:
+
+Formats the block that wraps the TOC.
+
 toc-title-block
 ---------------
 
