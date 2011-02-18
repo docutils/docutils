@@ -5,6 +5,9 @@
     >
     <!-- $Id$ -->
 
+    <xsl:attribute-set name="toc-block">
+    </xsl:attribute-set>
+
     <xsl:attribute-set name="toc-title-block">
         <xsl:attribute name="text-align">center</xsl:attribute>
         <xsl:attribute name="font-weight">bold</xsl:attribute>
@@ -37,22 +40,27 @@
 
     <!--END OF ATTRIBUTE SETS-->
 
+    <xsl:template match="topic[@classes='contents']">
+        <xsl:if test="$toc-pagination ='with-body'">
+            <fo:block role="toc" xsl:use-attribute-sets="toc-block">
+                <xsl:apply-templates/>
+            </fo:block>
+        </xsl:if>
+    </xsl:template>
+
+     <xsl:template match="topic[@classes='contents']" mode="front">
+        <fo:block role="toc" xsl:use-attribute-sets="toc-block">
+            <xsl:apply-templates/>
+        </fo:block>
+     </xsl:template>
+
+
     <!--TOC title-->
     <xsl:template match="topic[@classes='contents']/title" priority="2">
         <fo:block xsl:use-attribute-sets="toc-title-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
-
-    <xsl:template match="topic[@classes='contents']">
-        <xsl:if test="$toc-pagination ='with-body'">
-            <xsl:apply-templates/>
-        </xsl:if>
-    </xsl:template>
-
-     <xsl:template match="topic[@classes='contents']" mode="front">
-         <xsl:apply-templates/>
-     </xsl:template>
 
 
     <xsl:template match="topic[@classes = 'contents']/bullet_list">
