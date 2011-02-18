@@ -17,6 +17,8 @@ This paragraph comes before the list.
     the text blocks above.  A sublist is a new list so requires a
     blank line above and below.
 
+  - second item sublist.
+
 - This is the third item of the main list.
 
 This paragraph is not part of the list.
