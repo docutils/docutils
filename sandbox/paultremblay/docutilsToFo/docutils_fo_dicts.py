@@ -256,6 +256,8 @@ short_cut_att_sets = {
 'bibliographic-fields-paragraph': 'bibliographic-fields-block',
 'body': 'default-flow',
 'bullet-list': 'bullet-list-block',
+'bullet-list-level2' :'bullet-level2-list-block',
+'bullet-list-paragraph': 'bullet-list-item-body-block',
 'dedication': 'dedication-block',
 'dedication-title': 'dedication-title-block',
 'dedication-paragraph': 'dedication-paragraph-block',
@@ -868,6 +870,10 @@ special_att_att_set_dict = {
 special_att_set_att_dict = {
 ('bibliographic-fields', 'space-from-field'): [('bibliographic-fields-list-block', 'provisional-distance-between-starts')], 
 ('bibliographic-fields', 'space-between-items'): [('bibliographic-fields-list-item', 'space-before')], 
+('bullet-list', 'space-between-items'): [('bullet-list-item', 'space-before')], 
+('bullet-list', 'space-from-bullet'): [('bullet-list-block', 'provisional-distance-between-starts')], 
+('bullet-list-level2', 'space-from-bullet'): [('bullet-level2-list-block', 'provisional-distance-between-starts')], 
+('bullet-list-level2', 'space-between-items'): [('bullet-level2-list-item', 'space-before')], 
 ('header' , 'height'):[('header-region-before', 'extent')],
 ('footer' , 'height'):[('footer-region-after', 'extent')],
 ('toc-section' , 'start-page'):[('toc-page-sequence', 'initial-page-number')],
@@ -946,6 +952,8 @@ prop_as_param_dict = {
 'heading7.number-format':'number-section7',
 'headings.inherit-sections-number':'inherit-section-num',
 'transition.text':'transition-text',
+'bullet-list.text': 'bullet-text',
+'bullet-list-level2.text': 'bullet-text-level2',
 }
 
 
