@@ -220,6 +220,7 @@ att_set_dict = {
 'title-number-inline': 'inline',
 'title-reference-inline': 'inline',
 'title-subtitle': 'block',
+'toc-block': 'block',
 'toc-body-simple-page-master': 'simple-page-master',
 'toc-entry-defaults-block': 'block',
 'toc-even-simple-page-master': 'simple-page-master',
@@ -275,7 +276,16 @@ short_cut_att_sets = {
 'paragraph': 'paragraph-block',
 'subtitle': 'document-subtitle-block',
 'title': 'document-title-block',
-'title-subtitle': 'document-title-page-block'}
+'title-subtitle': 'document-title-page-block',
+'toc': 'toc-block',
+'toc-title': 'toc-title-block',
+'toc-entry1': 'toc-level1-block',
+'toc-entry2': 'toc-level2-block',
+'toc-entry3': 'toc-level3-block',
+'toc-entry4': 'toc-level4-block',
+'toc-entry5': 'toc-level5-block',
+'toc-default': 'toc-entry-defaults-block',
+}
 # ===========================================================
 
 
@@ -852,12 +862,10 @@ special_att_set_att_dict = {
 ('bibliographic-fields', 'space-between-items'): [('bibliographic-fields-list-item', 'space-before')], 
 ('header' , 'height'):[('header-region-before', 'extent')],
 ('footer' , 'height'):[('footer-region-after', 'extent')],
-('toc' , 'start-page'):[('toc-page-sequence', 'initial-page-number')],
-('toc' , 'page-format'):[('toc-page-sequence', 'format')],
 ('toc-section' , 'start-page'):[('toc-page-sequence', 'initial-page-number')],
 ('toc-section' , 'page-format'):[('toc-page-sequence', 'format')],
-('body' , 'start-page'):[('body-page-sequence', 'initial-page-number')],
-('body' , 'page-format'):[('bdy-page-sequence', 'format')],
+('body-section' , 'start-page'):[('body-page-sequence', 'initial-page-number')],
+('body-section' , 'page-format'):[('body-page-sequence', 'format')],
 }
 special_att_value_dict = {
 ('font-style', 'bold'): [('font-weight','bold')],
