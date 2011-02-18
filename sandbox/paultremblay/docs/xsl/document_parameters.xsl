@@ -323,6 +323,18 @@
         </block>
     </xsl:template>
 
+    <xsl:template match="xsl:param[@name='bullet-text-level2']" priority = "3">
+        <xsl:call-template name="before_p_text">
+            <xsl:with-param name="possible-values">
+                <xsl:text>Any Text</xsl:text>
+            </xsl:with-param>
+        </xsl:call-template>
+        <block>
+            Use to set the value for the bullets in a nested bullet list. If this string is left blank,
+            then the stylesheets will use the value in the XML.
+        </block>
+    </xsl:template>
+
     <xsl:template match="xsl:param[@name='options-separator']" priority = "3">
         <xsl:call-template name="before_p_text">
             <xsl:with-param name="possible-values">
