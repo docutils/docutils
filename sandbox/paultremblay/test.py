@@ -136,6 +136,7 @@ docfo_commands = [
         ('bibliographic_fields_toc.xml', 'page_number1.conf'), # page numbering
         ('section.xml', 'section1.conf'), # generic sections
         ('transition.xml', 'transition1.conf'), # transition
+        ('bullet_list.xml', 'bullet_list1.conf'), # bullet list
     ]
 
 def error_func(msg, the_path = None):
