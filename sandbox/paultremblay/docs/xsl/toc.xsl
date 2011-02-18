@@ -5,6 +5,15 @@
 
     <!-- $Id$ -->
 
+    <xsl:template match= "xsl:attribute-set[@name='toc-block']" priority="3">
+        <xsl:call-template name="before-desc">
+            <xsl:with-param name="fo">fo:block</xsl:with-param> 
+            <xsl:with-param name="docutils">topic[@classes = "contents"]</xsl:with-param> 
+        </xsl:call-template>
+        <block>
+            Formats the block that wraps the TOC.
+        </block>
+    </xsl:template>
 
     <xsl:template match= "xsl:attribute-set[@name='toc-title-block']" priority="3">
         <xsl:call-template name="before-desc">
