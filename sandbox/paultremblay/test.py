@@ -132,6 +132,10 @@ docfo_commands = [
         ('bibliographic_fields.xml', 'bibliographic_fields.conf'), # generic bibliographic fields
         ('bibliographic_fields.xml', 'dedication1.conf'), # generic dedication
         ('bibliographic_fields.xml', 'abstract1.conf'), # generic dedication
+        ('toc.xml', 'toc1.conf'), # generic toc
+        ('bibliographic_fields_toc.xml', 'page_number1.conf'), # page numbering
+        ('section.xml', 'section1.conf'), # generic sections
+        ('transition.xml', 'transition1.conf'), # transition
     ]
 
 def error_func(msg, the_path = None):
