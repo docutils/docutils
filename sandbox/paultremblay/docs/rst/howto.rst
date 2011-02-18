@@ -281,155 +281,6 @@ format up to 3 different paragraphs::
  footer-second-paragraph.font-style = italic
  footer-third-paragraph.font-style = italic-bold
 
-===========
-Paragraphs
-===========
-
-Space before or after paragraphs
----------------------------------
-
-::
-
- paragraph.space-before = 12pt
- paragraph.space-after = 12pt
-
-Indent first line
--------------------
-
-::
-
- paragraph.first-line-indent = 12pt
-
-Font Family
--------------
-
-::
-
- paragraph.font = monospace
-
-Font Size
-----------
-
-::
-
- paragraph.font-size = 12pt
-
-Font Style
------------
-
-Set ``'font-style'`` to ``'bold'``, ``'italic'``, ``'bold-italic'``,
-or ``'normal'``::
-
- paragraph.font-style = bold-italic
-
-Color (font color)
--------------------
-
-::
-
- paragraph.color = red
-
-Background color
-------------------
-
-::
-
- paragraph.backgroud-color = red
-
-Left and right indent
-----------------------
-
-::
-
- paragraph.left-indent = 12pt 
- paragraph.right-indent = 12pt 
-
-Borders
----------
-
-::
-
- paragraph.border = solid black 1px
-
-Use ``'border-top'``, ``'border-bottom'``, ``'border-left'``, and
-``'border-right'`` to set properties on specific borders::
-
- # creates a bottom border
- paragraph.border-bottom = solid black 1px
-
-Line spacing
---------------
-
-::
-
- # double spaces paragraphs
- paragraph.line-spacing  = 2
-
-Alignment
------------
-
-Use ``'alignment'`` to align text. Valid values are ``'left'``,
-``'right'``, ``'center'``, and ``'justify'``.
-
-::
-
- # center aligns text
- paragraph.alignment = center
-
-Keep with previous text
--------------------------
-
-::
-
- # paragrah won't start a new page
- keep-with-previous = true
-
-Keep  with next text
-----------------------
-
-::
-
- # paragrah won't end the page
- keep-with-next = true
-
-Keep from breaking across pages
----------------------------------
-::
-
- keep-on-same-page = true
-
-
-Page break before or after
-----------------------------
-
-::
-
- paragraph.page-break-before = yes
- paragraph.page-break-after = yes
-
-
-No page break before or after
--------------------------------
-
-::
-
- paragraph.page-break-after = no
- paragraph.page-break-before = no
-
-Formatting for first paragrahs
---------------------------------
-
-Docutils to FO allows first paragraphs to be formatted differently
-from all others. First paragraphs refers to the first paragraphs after
-a section of document, or the first paragaph after a list, code block,
-admonition block, or table. British style dictates that such
-paragraphs do not have their first line indented. 
-
-::
-
- #indents all but first paragraph 12pt
- paragraph.first-line-indent = 12pt
- first-paragraph.first-line-indent = 0pt
 
 ================
 Non Body Matter
@@ -583,6 +434,29 @@ areas in the order you wish it to occurr, speparated by commas::
 
  # changes the order of the abstract and the bibliographic fields
  front.order = title, abstract, dedication, toc, bibliographic
+
+Changing the starting page number
+----------------------------------
+
+In order to change the starting page number of a toc section or body
+section, use the ``'toc-section.start-page'`` or
+``'body-section.start-page'`` properties::
+
+ # toc now start on page 3
+ toc-section.start-page = 3
+ # body starts on page 15
+ body-section.start-page = 15
+
+Changing the format of the page number
+----------------------------------------
+
+In order to change the formatting of the page numbers, use the
+``'toc-section.page-format'`` and ``'body-section.page-format'``::
+
+ # upper case Roman numberals
+ toc-section.page-format = I
+ # upper case letters
+ body-section.page-format = A
 
 Formatting the title/subtitle
 ------------------------------
@@ -775,3 +649,354 @@ Use the ``'abstract-paragraph'`` identifier, which can take any block property::
  abstract-paragraph.font-style = italic
 
 
+Formatting the toc
+--------------------------
+
+Creating a toc
++++++++++++++++++++++++
+
+::
+
+ .. contents:: Table of Contents
+
+Putting toc on its own page
+++++++++++++++++++++++++++++++++++++++++++++++++++
+
+::
+
+ toc.page-break-before = true
+ # or, depending on your layout
+ toc.page-break-after = true
+
+Formatting the title
++++++++++++++++++++++++
+
+Use the ``'toc-title'`` identifier, which can take any block property::
+
+ toc-title.alignment = center
+ toc-title.font-size = 24pt
+
+Setting the defaults on each entry
+++++++++++++++++++++++++++++++++++++
+
+Use the ``'toc-default'`` to set properties for all of the toc entries
+at once::
+
+
+ # sets space between entries to 12pt
+ toc-default.space-after = 12pt
+
+
+Formatting the entries
+++++++++++++++++++++++++++
+
+Use the identifierst ``'toc-entry1'``, ``'toc-entry2'``, etc.
+which can take any block property::
+
+ # increase indents by 10mm
+ toc-entry1.left-indent = 10mm
+ toc-entry2.left-indent = 20mm
+ toc-entry3.left-indent = 30mm
+ toc-entry4.left-indent = 40mm
+ toc-entry5.left-indent = 50mm
+
+
+Format the toc numbers
++++++++++++++++++++++++
+
+The format of the numbers for toc entry takes the same format as the
+section numbers. See section numbers.
+
+=========
+Sections
+=========
+
+Creating sections
+------------------
+
+Sections are identified through their titles, which are marked up with
+adornment: "underlines" below the title text, or underlines and matching
+"overlines" above the title.
+
+
+Here are some examples::
+
+ ===============
+ Heading1 Title
+ ===============
+ 
+ ---------------
+ Heading2 Title
+ ---------------
+ 
+ Heading3 Title
+ =============
+ 
+ Heading4 Title
+ -------------
+ 
+ Heading5 Title
+ `````````````
+ 
+ Heading6 Title
+ '''''''''''''
+ 
+ Heading7 Title
+ .............
+ 
+Any combination of valid adornments can be used. The rst2xml.py utility
+recognizes the first such example as the main section, the next such example
+as the sub section, and so on.
+
+See the http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#sections.
+
+
+Formatting titles
+-------------------
+
+Use the identifiers ``'heading1'``, ``'heading2'``, ``'heading3'``, etc, to
+format the titles for each section. Docutils to fo allows sections to go 7
+levels deep. Headings are blocks and can take any property of a block. (See
+paragrahs). 
+
+::
+
+ heading1.font-size = 30pt
+ heading1.font-style = bold
+ heading2.font-size = 24pt
+ # etc.
+ heading7.font-size = normal
+ heading7.font-style = bold
+
+Creating section numbers
+-------------------------
+
+At the start of the document, put::
+
+ .. sectnum::
+
+Formatting section numbers
+---------------------------
+
+Use the ``'heading#'`` identifier plus the ``'number-format'`` to format the
+section numbers. The value for formatting can take a combination of
+punctuation and numbers, letters, or Roman numberals
+
+::
+
+ # (I.), (II.), (III.), etc
+ heading1.number-format = (I.)
+
+ # i.), ii.), etc 
+ heading2.number-format = i.)
+
+ # .1., .2., .3., etc
+ heading3.number-format = .1.
+
+ # a, b, c, etc
+ heading4.number-format = a
+
+ # A, B, C., etc
+ heading5.number-format = A
+
+.. Don't inherit section numbers
+.. ------------------------------
+.. 
+.. By default, the numbers of each section inherit the numbers of the parent
+.. section. to disable this formatting::
+.. 
+..  headings.inherit-sections-number = False
+
+============
+Transitions
+============
+
+Creating transitions
+---------------------
+
+To create a transition, use horizontal line of 4 or more repeated punctuation
+characters.
+
+::
+
+
+ Para.
+
+ ----------
+
+ Para.
+
+Changing the text of the transtion.
+-------------------------------------
+
+The default transition text is a single paragraph of three asteristics. To
+change the default, use the ``'transition.text'`` property::
+
+ # change to three hypens
+ transition.text = ---
+ # change to nothing
+ transition.text = 
+
+Formatting the transition paragraph
+------------------------------------
+
+Use the ``'transition'`` identifier to format the paragraph of the transition
+text. This identifier can take any block property.
+
+::
+
+ transition.space-before = 24pt
+ transition.space-after = 24pt
+ # change the default alignment from center
+ transition.alignment = left
+
+
+===========
+Paragraphs
+===========
+
+Space before or after paragraphs
+---------------------------------
+
+::
+
+ paragraph.space-before = 12pt
+ paragraph.space-after = 12pt
+
+Indent first line
+-------------------
+
+::
+
+ paragraph.first-line-indent = 12pt
+
+Font Family
+-------------
+
+::
+
+ paragraph.font = monospace
+
+Font Size
+----------
+
+::
+
+ paragraph.font-size = 12pt
+
+Font Style
+-----------
+
+Set ``'font-style'`` to ``'bold'``, ``'italic'``, ``'bold-italic'``,
+or ``'normal'``::
+
+ paragraph.font-style = bold-italic
+
+Color (font color)
+-------------------
+
+::
+
+ paragraph.color = red
+
+Background color
+------------------
+
+::
+
+ paragraph.backgroud-color = red
+
+Left and right indent
+----------------------
+
+::
+
+ paragraph.left-indent = 12pt 
+ paragraph.right-indent = 12pt 
+
+Borders
+---------
+
+::
+
+ paragraph.border = solid black 1px
+
+Use ``'border-top'``, ``'border-bottom'``, ``'border-left'``, and
+``'border-right'`` to set properties on specific borders::
+
+ # creates a bottom border
+ paragraph.border-bottom = solid black 1px
+
+Line spacing
+--------------
+
+::
+
+ # double spaces paragraphs
+ paragraph.line-spacing  = 2
+
+Alignment
+-----------
+
+Use ``'alignment'`` to align text. Valid values are ``'left'``,
+``'right'``, ``'center'``, and ``'justify'``.
+
+::
+
+ # center aligns text
+ paragraph.alignment = center
+
+Keep with previous text
+-------------------------
+
+::
+
+ # paragrah won't start a new page
+ keep-with-previous = true
+
+Keep  with next text
+----------------------
+
+::
+
+ # paragrah won't end the page
+ keep-with-next = true
+
+Keep from breaking across pages
+---------------------------------
+::
+
+ keep-on-same-page = true
+
+
+Page break before or after
+----------------------------
+
+::
+
+ paragraph.page-break-before = yes
+ paragraph.page-break-after = yes
+
+
+No page break before or after
+-------------------------------
+
+::
+
+ paragraph.page-break-after = no
+ paragraph.page-break-before = no
+
+Formatting for first paragrahs
+--------------------------------
+
+Docutils to FO allows first paragraphs to be formatted differently
+from all others. First paragraphs refers to the first paragraphs after
+a section of document, or the first paragaph after a list, code block,
+admonition block, or table. British style dictates that such
+paragraphs do not have their first line indented. 
+
+::
+
+ #indents all but first paragraph 12pt
+ paragraph.first-line-indent = 12pt
+ first-paragraph.first-line-indent = 0pt
