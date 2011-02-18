@@ -23,6 +23,8 @@ def get_args():
             dest='root_stylesheet')
     parser.add_argument('-o, --out', nargs=1, help = 'Path to output result', dest='out_path')
     parser.add_argument('--config', nargs=1, help = 'Path to configuration file', dest='config_file')
+    parser.add_argument('--verbose', nargs=1, type = int, help = 'How verbose messaging should be',
+            dest='verbose')
     return  parser.parse_args()
 
 def parse_config_files(the_paths):
@@ -53,8 +55,14 @@ def get_config_option(the_option, section='FO'):
 arg = get_args()
 config_obj = read_config_files()
 # get_config_option('strict')
+verbose = arg.verbose
+if verbose:
+    verbose = arg.verbose[0]
+else:
+    verbose = 2
 
 debug = arg.debug
+if debug: verbose = 5
 if debug: sys.stderr.write('In debug mode\n')
 if debug: sys.stderr.write('script is "%s"\n' % __file__)
 in_file = arg.in_file
@@ -80,9 +88,6 @@ else:
 if debug:
     sys.stderr.write('out_xsl (file to output XSL stylesheet) is "%s"\n' % (out_xsl))
 
-verbose = 0
-if debug:
-    verbose = 5
 # make a stylesheet
 ss_obj = docutilsToFo.make_stylesheet.ReadConfig(import_ss = root_stylesheet, verbose = verbose)
 try:
