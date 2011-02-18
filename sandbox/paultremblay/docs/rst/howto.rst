@@ -516,7 +516,7 @@ Use the ``'space-between-items'`` property.
 To format space between field and text
 +++++++++++++++++++++++++++++++++++++++
 
-The ``'space-form-fields'`` works exactly as the ``'space-from-bulle''``: both
+The ``'space-from-fields'`` works exactly as the ``'space-from-bullet''``: both
 properties control the spacing from the list label and the text.
 
 ::
@@ -814,8 +814,8 @@ Transitions
 Creating transitions
 ---------------------
 
-To create a transition, use horizontal line of 4 or more repeated punctuation
-characters.
+To create a transition, in the *document* (not the config file), use
+horizontal line of 4 or more repeated punctuation characters.
 
 ::
 
@@ -1000,3 +1000,83 @@ paragraphs do not have their first line indented.
  #indents all but first paragraph 12pt
  paragraph.first-line-indent = 12pt
  first-paragraph.first-line-indent = 0pt
+
+============
+Bullet List
+============
+
+bullet-list-block 
+
+Formatting the bullet list
+----------------------------
+
+Use the ``'bullet-list'`` property to format the space after and
+before, the left and right indent, and any other property you want to
+set on the list, such as font for font-size::
+
+ bullet-list.space-after = 20pt
+ bullet-list.space-before = 20pt
+ bullet-list.left-indent = 20pt
+ bullet-list.right-indent = 20pt
+ bullet-list.background-color = grey
+
+
+To format space between items
+-------------------------------
+
+Use the ``'space-between-items'`` property.
+
+::
+
+
+  bullet-list.space-between-items = 30pt
+
+To format space between bullets and text
+-------------------------------------------
+
+Use the ``'space-from-bullet'`` identifier::
+
+
+  bullet-list.space-from-bullet = 1in
+
+Choosing the text for the bullet
+-----------------------------------
+
+Use the ``'bullet-list.text'`` property to change the default bullet::
+
+ # change to hyphen
+ bullet-list.text = -
+
+If the ``'bullet-list.text'`` property is left empty, the converter
+uses the text in the actual document::
+
+ # use the text in the document 
+ bullet-list.text = 
+
+
+Formatting the  paragraphs
+----------------------------
+
+Use the ``'bullet-list-paragraph'`` identifier to format the text of
+the bullet list. This identifier can take any block property::
+
+ bullet-list-paragraph.space-before = 12pt
+ bullet-list-paragraph.font-style = italic
+
+Note that using the ``'space-before'`` property has the same effect as
+controlling the space between each paragraph, without putting unwated space
+before the first paragraph. 
+
+Formatting nested bullet lists
+-------------------------------
+
+Use the ``'bullet-list-level2'`` to format nested lists::
+
+ bullet-list-level2.space-before = 20pt
+ bullet-list-level2.left-indent = 40pt
+ bullet-list-level2.background-color = blue
+ bullet-list-level2.space-from-bullet = 1.5in
+ bullet-list-level2.text = †
+ bullet-list-level2.space-between-items = 50pt
+
+

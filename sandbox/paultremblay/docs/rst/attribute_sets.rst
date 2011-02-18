@@ -1164,6 +1164,38 @@ re-defines the space-before to 0pt. In order to get space between
 the first item and the text before it, use the space-after
 attribute in the bullet-list attribute set.
 
+bullet-level2-list-item
+-----------------------
+
+:fo: fo:list-item
+
+:docutils: bullet_list/bullet_list/list_item
+
+:defaults:
+
+     space-before: 12pt
+
+Same as above, except for a nested bullet list.
+
+bullet-level2-first-list-item
+-----------------------------
+
+:fo: fo:list-item
+
+:docutils: bullet_list/list_item[1]
+
+:inherits: bullet-level2-list-item
+
+:defaults:
+
+     space-before: 0pt
+
+For the first item in a nested bullet list. This attribute set
+inherits all the properties form 'bullet-list-item', and then
+re-defines the space-before to 0pt. In order to get space between
+the first item and the text before it, use the space-after
+attribute in the bullet-list attribute set.
+
 bullet-list-item-label
 ----------------------
 

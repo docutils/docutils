@@ -291,6 +291,17 @@ Use to set the value for the bullets in a bullet list. If this
 string is left blank, then the stylesheets will use the value in
 the XML.
 
+bullet-text-level2
+==================
+
+**Possible Values**: Any Text
+
+**Default:** °
+
+Use to set the value for the bullets in a nested bullet list. If
+this string is left blank, then the stylesheets will use the
+value in the XML.
+
 option-list-format
 ==================
 
