@@ -137,6 +137,8 @@ docfo_commands = [
         ('section.xml', 'section1.conf'), # generic sections
         ('transition.xml', 'transition1.conf'), # transition
         ('bullet_list.xml', 'bullet_list1.conf'), # bullet list
+        ('enumerated_list.xml', 'enumerated_list1.conf'), # enumerated list
+        ('definition_list.xml', 'definition_list1.conf'), # definition list
     ]
 
 def error_func(msg, the_path = None):
