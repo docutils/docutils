@@ -20,8 +20,7 @@
     </xsl:attribute-set>
 
     <!--Sames as definition-list-item-block, but for the first block.
-    Since this inherits from the definition-list-item-block, it doesn't
-    make sense to changes this directly
+    It inherits from the definition-list-item-block. 
     -->
     <xsl:attribute-set name="definition-list-item-first-block" use-attribute-sets="definition-list-item-block" >
         <xsl:attribute name="space-before">0pt</xsl:attribute>
@@ -32,6 +31,9 @@
     to control spacing before list-->
     <xsl:attribute-set name="definition-term-block">
         <xsl:attribute name="font-weight">bold</xsl:attribute> 
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="definition-block">
     </xsl:attribute-set>
 
 
@@ -99,7 +101,9 @@
     </xsl:template>
 
     <xsl:template match="definition_list_item/definition">
+        <fo:block role="definition" xsl:use-attribute-sets = "definition-block">
             <xsl:apply-templates/>
+        </fo:block>
     </xsl:template>
 
     <xsl:template match="definition/paragraph[1]" priority="2">
