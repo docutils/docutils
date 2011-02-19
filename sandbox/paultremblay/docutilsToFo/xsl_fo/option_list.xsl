@@ -34,7 +34,7 @@
         <xsl:attribute name="end-indent">label-end()</xsl:attribute>
     </xsl:attribute-set>
 
-    <!--for the block in the options label fo:list-item-lable/block. Element is fo:block.`doc`-->
+    <!--for the block in the options label fo:list-item-lable/block. Element is fo:block.-->
     <xsl:attribute-set name="option-list-item-label-block">
     </xsl:attribute-set>
 
@@ -95,7 +95,15 @@
     <!--for the block for paragraphs describing options. 
     This attribute set for the first of such paragraphs
     Element is fo:block.-->
-    <xsl:attribute-set name="option-list-description-first-block" use-attribute-sets="option-list-description-block">
+    <xsl:attribute-set name="option-list-description-block">
+        <xsl:attribute name="space-before">0pt</xsl:attribute>
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="option-list-paragraph-block">
+        <xsl:attribute name="space-before">0pt</xsl:attribute>
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="option-list-first-paragraph-block" use-attribute-sets="option-list-paragraph-block">
         <xsl:attribute name="space-before">0pt</xsl:attribute>
     </xsl:attribute-set>
     
@@ -216,17 +224,19 @@
     </xsl:template>
 
     <xsl:template match="option_list_item/description" mode="definition">
-        <xsl:apply-templates mode="definition"/>
-    </xsl:template>
-
-    <xsl:template match="option_list_item/description/paragraph[1]" mode="definition" priority="2">
         <fo:block role="option-list-description" xsl:use-attribute-sets="option-list-description-first-block">
             <xsl:apply-templates mode="definition"/>
         </fo:block>
     </xsl:template>
 
+    <xsl:template match="option_list_item/description/paragraph[1]" mode="definition" priority="2">
+        <fo:block role="option-list-description" xsl:use-attribute-sets="option-list-first-paragraph-block">
+            <xsl:apply-templates mode="definition"/>
+        </fo:block>
+    </xsl:template>
+
     <xsl:template match="option_list_item/description/paragraph" mode="definition" priority="1">
-        <fo:block role="option-list-description" xsl:use-attribute-sets="option-list-description-block">
+        <fo:block role="option-list-description" xsl:use-attribute-sets="option-list-paragraph-block">
             <xsl:apply-templates mode="definition"/>
         </fo:block>
     </xsl:template>
