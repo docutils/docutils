@@ -1271,3 +1271,141 @@ controlling the space between each paragraph, without putting unwated space
 before the first paragraph. 
 
 
+============
+Option List
+============
+
+Choosing the layout
+-------------------
+
+::
+
+ option-list.format = definition
+
+Choosing the options separator
+-------------------------------
+
+By default, the docutils to FO convertor uses a comma to separate
+options. To change the default, use the ``'options-list.separate'``
+property::
+
+ options-list.separator = :
+
+Formatting the option list format
+-----------------------------------
+
+The option list can either be formatted as a list, with the options as
+labels to the left of the description; or as a definition list, with
+the options serving as the terms, and the descriptions in a paragraph
+right below. For an option list with lenghty options, a definition
+list may work better.
+
+Use the ``'option-list.format'`` to determine the style, choosing
+either ``'list'`` or ``'definition'``::
+
+ # change default layout to a definitio list
+ option-list.format = definition
+
+Formatting the option list
+----------------------------
+
+Use the ``'option-list'`` property to format the space after and
+before, the left and right indent, and any other property you want to
+set on the list, such as font for font-size::
+
+ option-list.space-after = 20pt
+ option-list.space-before = 20pt
+ option-list.left-indent = 20pt
+ option-list.right-indent = 20pt
+ option-list.background-color = grey
+
+
+To format space between items
+-------------------------------
+
+Use the ``'space-between-items'`` property.
+
+::
+
+
+  option-list.space-between-items = 30pt
+ 
+
+To format space between option and text
+-------------------------------------------
+
+Use the ``'space-from-option'`` identifier::
+
+
+  option-list.space-from-option = 1in
+
+Note: this option is only valid for option lists formatted as lists,
+not for optons lists formatted as definition lists.
+
+To format space below option and text
+-------------------------------------------
+
+Use the ``'space-below-option'`` identifier::
+
+
+  option-list.space-below-option = 1in
+
+Note: this option is only valid for option lists formatted as
+definition lists, not for optons lists formatted as lists.
+
+
+Formatting the options
+---------------------------
+
+Use the ``'options'`` identifier to format the option with the
+arguments of the options. This identifier  can take any inline
+properties::
+
+
+  options.font-size = xx-small
+
+Formatting the options without the argument
+----------------------------------------------
+
+Use the ``'option'`` identifier to format only the option without the
+arguments of the options. This identifier  can take any inline
+properties::
+
+
+  option.color = green
+
+.. option-group-block
+
+Formatting the arguments of the options
+----------------------------------------------
+
+Use the ``'option-argument'`` identifier to format just the option of
+the arugment. This identifier  can take any inline properties::
+
+
+  option-argument.color = green
+
+
+Formatting the description
+----------------------------
+
+Use the ``'option-list-body'`` identifier to format the text of
+the option list::
+
+ option-list-body.font-style = italic
+
+..  option-list-description-block
+
+Formatting the paragraphs
+----------------------------
+
+Use the ``'option-list-paragraph'`` identifier to format the text of
+the bullet list. This identifier can take any block property::
+
+ option-list-paragraph.space-before = 12pt
+ option-list-paragraph.font-style = italic
+
+Note that using the ``'space-before'`` property has the same effect as
+controlling the space between each paragraph, without putting unwated space
+before the first paragraph. 
+
