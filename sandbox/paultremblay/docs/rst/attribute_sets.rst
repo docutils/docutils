@@ -1920,7 +1920,7 @@ option-list-description-block
 
 :fo: fo:block
 
-:docutils: option_list/option_list_item/description/paragraph
+:docutils: option_list/option_list_item/description
 
 :defaults:
 
@@ -1928,26 +1928,56 @@ option-list-description-block
 
      space-before: 8pt
 
-Formats the paragraphs describing the options or arguments. This
-groups of blocks sits below the blocks formatting the options and
-arguments, and in a defintion list are usually indented right.
+Formats the blocks wrappring the paragraphs describing the
+options or arguments. This groups of blocks sits below the blocks
+formatting the options and arguments, and in a defintion list
+are usually indented right.
 
-option-list-description-first-block
------------------------------------
+option-list-description-block
+-----------------------------
 
 :fo: fo:block
 
-:docutils: option_list/option_list_item/description/paragraph
-
-:inherits: option-list-description-block
+:docutils: option_list/option_list_item/description
 
 :defaults:
 
      space-before: 0pt
 
-Same as the option-list-description-block, from which it inherits
-all of its attibutes. By default, it redfines the space-before
-as 0pt.
+Formats the blocks wrappring the paragraphs describing the
+options or arguments. This groups of blocks sits below the blocks
+formatting the options and arguments, and in a defintion list
+are usually indented right.
+
+option-list-paragraph-block
+---------------------------
+
+:fo: fo:block
+
+:docutils: option_list/option_list_item/description/paragraph
+
+:defaults:
+
+     space-before: 0pt
+
+Formats the paragraphs in the description for an options list
+formatted as a definition list.
+
+option-list-first-paragraph-block
+---------------------------------
+
+:fo: fo:block
+
+:docutils: option_list/option_list_item/description/paragraph
+
+:inherits: option-list-paragraph-block
+
+:defaults:
+
+     space-before: 0pt
+
+Formats the first paragraph in the description for an options
+list formatted as a definition list.
 
 Line Block
 ==========
