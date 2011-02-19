@@ -200,23 +200,36 @@
     <xsl:template match= "xsl:attribute-set[@name='option-list-description-block']" priority="3">
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">fo:block</xsl:with-param> 
-            <xsl:with-param name="docutils">option_list/option_list_item/description/paragraph</xsl:with-param> 
+            <xsl:with-param name="docutils">option_list/option_list_item/description</xsl:with-param> 
         </xsl:call-template>
         <block>
-            Formats the paragraphs describing the options or arguments. This groups of blocks sits below the 
-            blocks formatting the options and arguments, and in a defintion list are usually indented right.
+
+            Formats the blocks wrappring the paragraphs describing the options
+            or arguments. This groups of blocks sits below the blocks
+            formatting the options and arguments, and in a defintion list are
+            usually indented right.
+
         </block>
     </xsl:template>
 
-    <xsl:template match= "xsl:attribute-set[@name='option-list-description-first-block']" priority="3">
+    <xsl:template match= "xsl:attribute-set[@name='option-list-paragraph-block']" priority="3">
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">fo:block</xsl:with-param> 
             <xsl:with-param name="docutils">option_list/option_list_item/description/paragraph</xsl:with-param> 
-            <xsl:with-param name="inherits">option-list-description-block</xsl:with-param> 
         </xsl:call-template>
         <block>
-        Same as the option-list-description-block, from which it inherits all
-        of its attibutes. By default, it redfines the space-before as 0pt.
+        Formats the paragraphs in the description for an options list formatted as a definition list.
+        </block>
+    </xsl:template>
+
+    <xsl:template match= "xsl:attribute-set[@name='option-list-first-paragraph-block']" priority="3">
+        <xsl:call-template name="before-desc">
+            <xsl:with-param name="fo">fo:block</xsl:with-param> 
+            <xsl:with-param name="docutils">option_list/option_list_item/description/paragraph</xsl:with-param> 
+            <xsl:with-param name="inherits">option-list-paragraph-block</xsl:with-param> 
+        </xsl:call-template>
+        <block>
+        Formats the first paragraph in the description for an options list formatted as a definition list.
         </block>
     </xsl:template>
 
