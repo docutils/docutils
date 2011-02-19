@@ -1080,3 +1080,133 @@ Use the ``'bullet-list-level2'`` to format nested lists::
  bullet-list-level2.space-between-items = 50pt
 
 
+=================
+Enumerated List
+=================
+
+Formatting the enumerated list
+-------------------------------
+
+Use the ``'enumerated-list'`` property to format the space after and
+before, the left and right indent, and any other property you want to
+set on the list, such as font for font-size::
+
+ enumerated-list.space-after = 20pt
+ enumerated-list.space-before = 20pt
+ enumerated-list.left-indent = 20pt
+ enumerated-list.right-indent = 20pt
+ enumerated-list.background-color = grey
+
+
+To format space between items
+-------------------------------
+
+Use the ``'space-between-items'`` property.
+
+::
+
+
+  enumerated-list.space-between-items = 30pt
+
+To format space between enumerateds and text
+---------------------------------------------
+
+Use the ``'space-from-number'`` identifier::
+
+
+  enumerated-list.space-from-number = 1in
+
+
+Formatting the  paragraphs
+---------------------------
+
+Use the ``'enumerated-list-paragraph'`` identifier to format the text of
+the enumerated list. This identifier can take any block property::
+
+ enumerated-list-paragraph.space-before = 12pt
+ enumerated-list-paragraph.font-style = italic
+
+Note that using the ``'space-before'`` property has the same effect as
+controlling the space between each paragraph, without putting unwated space
+before the first paragraph. 
+
+Formatting nested enumerated lists
+-----------------------------------
+
+Use the ``'enumerated-list-level2'`` to format nested lists::
+
+ enumerated-list-level2.space-before = 20pt
+ enumerated-list-level2.left-indent = 40pt
+ enumerated-list-level2.background-color = blue
+ enumerated-list-level2.space-from-number = 1.5in
+ enumerated-list-level2.space-between-items = 50pt
+
+
+=================
+Definition List
+=================
+
+Formatting the definition list
+-------------------------------
+
+Use the ``'definition-list'`` property to format the space after and
+before, the left and right indent, and any other property you want to
+set on the list, such as font for font-size::
+
+ definition-list.space-after = 20pt
+ definition-list.space-before = 20pt
+ definition-list.left-indent = 20pt
+ definition-list.right-indent = 20pt
+ definition-list.background-color = grey
+
+Formatting space between items
+-------------------------------
+
+An item consists of both the term and definition.
+
+::
+
+ definition-list.space-between-items = 0pt
+
+To format space below term
+---------------------------
+
+Use the ``'space-below-term'`` property.
+
+::
+
+  definition-list.space-below-term = 30pt
+
+Formatting the term
+---------------------
+
+Use the ``'definition-term'`` identifier, which can take any block property::
+
+ definition-term.right-indent = 10pt
+ definition-term.color = red
+
+Formatting the definition
+--------------------------
+
+Use the ``'definition-list-definition'`` identifier, which can take any block property::
+
+ definition-list-definition.color = blue
+
+Formatting the classifier
+-------------------------
+
+Use the ``'definition-list-classifier'`` identifier, which can take any inline property::
+
+::
+
+ definition-list-classifier.color = green
+
+Formatting the  paragraphs
+---------------------------
+
+The ``'definition-list-definition'`` formats all the paragraphs in the
+definiton. If you wish to change a property on the paragraphs instead, use the
+``'definition-list-paragraph'`` identifier::
+
+ # the space before dtermines the space between each paragraph
+ definition-list-paragraph.space-before = 12pt

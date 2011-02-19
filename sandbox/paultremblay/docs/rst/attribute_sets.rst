@@ -1356,6 +1356,34 @@ re-defines the space-before to 0pt. In order to get space
 between the first item and the text before it, use the
 space-after attribute in the enumerated-list attribute set.
 
+enumerated-level2-list-item
+---------------------------
+
+:fo: fo:list-item
+
+:docutils: enumerated_list/list_item/enumerated_list/list-item
+
+:defaults:
+
+     space-before: 12pt
+
+Same as above, but formats item of nested list.
+
+enumerated-level2-first-list-item
+---------------------------------
+
+:fo: fo:list-item
+
+:docutils: enumerated_list/item/enumerated_list/list_item[1]
+
+:inherits: enumerated-level2-list-item
+
+:defaults:
+
+     space-before: 0pt
+
+For the first item in the nested enumerated list.
+
 enumerated-list-item-label
 --------------------------
 
@@ -1471,6 +1499,18 @@ definition-term-block
 Formats the bock of the the term. Can be used to control spacing
 between term and definition, but don't use with space before, or
 you won't be able to control spacing before list
+
+definition-block
+----------------
+
+:fo: fo:block
+
+:docutils: definition_list/definition_list_item/definition
+
+:defaults:
+
+Formats the bock of the of the defintion, that wraps the
+paragraph blocks.
 
 classifier-inline
 -----------------
