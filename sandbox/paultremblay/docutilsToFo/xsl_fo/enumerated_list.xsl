@@ -27,6 +27,15 @@
         <xsl:attribute name="space-before">0pt</xsl:attribute> 
     </xsl:attribute-set>
 
+    <xsl:attribute-set name="enumerated-level2-list-item">
+        <xsl:attribute name="space-before">12pt</xsl:attribute> 
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="enumerated-level2-first-list-item" 
+        use-attribute-sets="enumerated-level2-list-item">
+        <xsl:attribute name="space-before">0pt</xsl:attribute> 
+    </xsl:attribute-set>
+
     <xsl:attribute-set name="enumerated-list-item-label">
         <xsl:attribute name="end-indent">label-end()</xsl:attribute>
     </xsl:attribute-set>
@@ -85,8 +94,20 @@
         </fo:list-item>
     </xsl:template>
 
+    <xsl:template match="enumerated_list/list_item/enumerated_list/list_item" priority="3">
+        <fo:list-item xsl:use-attribute-sets="enumerated-level2-list-item">
+            <xsl:call-template name="make-enum-list-contents"/>
+        </fo:list-item>
+    </xsl:template>
+
     <xsl:template match="enumerated_list/list_item[1]" priority="2">
         <fo:list-item xsl:use-attribute-sets="enumerated-first-list-item">
+            <xsl:call-template name="make-enum-list-contents"/>
+        </fo:list-item>
+    </xsl:template>
+
+    <xsl:template match="enumerated_list/list_item/enumerated_list/list_item[1]" priority="4">
+        <fo:list-item xsl:use-attribute-sets="enumerated-level2-first-list-item">
             <xsl:call-template name="make-enum-list-contents"/>
         </fo:list-item>
     </xsl:template>
