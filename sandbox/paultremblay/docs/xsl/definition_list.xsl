@@ -63,6 +63,16 @@
         </block>
     </xsl:template>
 
+    <xsl:template match= "xsl:attribute-set[@name='definition-block']" priority="3">
+        <xsl:call-template name="before-desc">
+            <xsl:with-param name="fo">fo:block</xsl:with-param> 
+            <xsl:with-param name="docutils">definition_list/definition_list_item/definition</xsl:with-param> 
+        </xsl:call-template>
+        <block>
+        Formats the bock of the of the defintion, that wraps the paragraph blocks.
+        </block>
+    </xsl:template>
+
     <xsl:template match= "xsl:attribute-set[@name='definition-paragraph-block']" priority="3">
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">fo:block</xsl:with-param> 
