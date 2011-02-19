@@ -177,6 +177,8 @@ att_set_dict = {
 'option-list-item-body-block': 'block',
 'option-list-item-label': 'item-label',
 'option-list-item-label-block': 'block',
+'option-list-paragraph-block': 'block',
+'option-list-first-paragraph-block': 'block',
 'outer-line-block': 'block',
 'page': 'simple-page-master',
 'paper-size': 'simple-page-master',
@@ -293,6 +295,8 @@ short_cut_att_sets = {
 'heading6':'title-level6-block',
 'heading7':'title-level7-block',
 'odd-page': 'odd-simple-page-master',
+'option': 'option-inline',
+'option-argument': 'option-argument-inline',
 'page': 'default-simple-page-master',
 'paper-size': 'paper-size-simple-page-master',
 'paragraph': 'paragraph-block',
@@ -308,6 +312,17 @@ short_cut_att_sets = {
 'toc-entry5': 'toc-level5-block',
 'toc-default': 'toc-entry-defaults-block',
 'transition':'transition-block',
+}
+
+short_cut_att_sets2 = {
+('option-list-body','list') :'option-list-item-body',
+('option-list-body','definition') :'option-list-description-block',
+('option-list','list') :'option-list-block',
+('option-list','definition') :'option-list-definition-block',
+('options', 'list'): 'option-list-item-label-block',
+('options', 'definition'): 'option-group-block',
+('option-list-paragraph', 'list'): 'option-list-item-body-block',
+('option-list-paragraph', 'definition'): 'option-list-paragraph-block',
 }
 # ===========================================================
 
@@ -862,10 +877,10 @@ custom_atts = {
 'keep-on-same-page': 'keep-together.within-page',
 'font': 'font-family', # could be problamatic
 'space-from-label': 'provisional-distance-between-starts',
+# 'space-from-option': 'provisional-distance-between-starts',
+# 'space-between-items': 'space-before',
 }
 
-special_atts_dict = {
-        }
 
 special_att_sets_dict = {
         }
@@ -884,6 +899,8 @@ special_att_set_att_dict = {
 ('bibliographic-fields', 'space-from-field'): [('bibliographic-fields-list-block', 'provisional-distance-between-starts')], 
 ('bibliographic-fields', 'space-from-name'): [('bibliographic-fields-list-block', 'provisional-distance-between-starts')], 
 ('bibliographic-fields', 'space-between-items'): [('bibliographic-fields-list-item', 'space-before')], 
+('body-section' , 'start-page'):[('body-page-sequence', 'initial-page-number')],
+('body-section' , 'page-format'):[('body-page-sequence', 'format')],
 ('bullet-list', 'space-between-items'): [('bullet-list-item', 'space-before')], 
 ('bullet-list', 'space-from-bullet'): [('bullet-list-block', 'provisional-distance-between-starts')], 
 ('bullet-list-level2', 'space-from-bullet'): [('bullet-level2-list-block', 'provisional-distance-between-starts')], 
@@ -901,9 +918,15 @@ special_att_set_att_dict = {
 ('footer' , 'height'):[('footer-region-after', 'extent')],
 ('toc-section' , 'start-page'):[('toc-page-sequence', 'initial-page-number')],
 ('toc-section' , 'page-format'):[('toc-page-sequence', 'format')],
-('body-section' , 'start-page'):[('body-page-sequence', 'initial-page-number')],
-('body-section' , 'page-format'):[('body-page-sequence', 'format')],
 }
+
+# special: only in certain contexts
+special_att_set_att_dict2 = {
+('option-list', 'space-from-option', 'list'): [('option-list-block', 'provisional-distance-between-starts')], 
+('option-list', 'space-between-items', 'list'): [('option-list-item', 'space-before')], 
+('option-list', 'space-between-items', 'definition'): [('option-list-item-block', 'space-before')], 
+('option-list', 'space-below-option', 'definition'): [('option-group-block', 'space-after')], 
+        }
 special_att_value_dict = {
 ('font-style', 'bold'): [('font-weight','bold')],
 ('font-style', 'italic'): [('font-style','italic')],
@@ -977,6 +1000,8 @@ prop_as_param_dict = {
 'transition.text':'transition-text',
 'bullet-list.text': 'bullet-text',
 'bullet-list-level2.text': 'bullet-text-level2',
+'option-list.format':'option-list-format',
+'options-list.separator': 'options-separator',
 }
 
 

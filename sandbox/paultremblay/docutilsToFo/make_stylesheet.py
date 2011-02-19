@@ -1,6 +1,6 @@
 #! /Library/Frameworks/Python.framework/Versions/2.7/bin/python
 #  $Id$
-import sys, copy,  os, ConfigParser, pprint
+import sys, copy,  os, ConfigParser, pprint, types
 from docutils_fo_dicts import *
 from xml.sax import saxutils
 class FOConfigFileException(Exception):
@@ -258,6 +258,7 @@ class ReadConfig:
 
     def parse_config_files(self):
         config = self.read_config_files()
+        self.__config = config
         if not 'FO' in config.sections():
             return
         opts =  config.items('FO')
@@ -287,23 +288,41 @@ class ReadConfig:
             dump(self.__params)
             sys.stderr.write('\n')
 
-    def __handle_attributes(self, user_att_set, user_att, value, check_special = True):
-        if  special_atts_dict.get(user_att) and check_special:
-            self.__handle_special_atts(user_att_set, user_att, value)
-            return
+    def __get_shortcut_att_set(self, user_att_set):
+        format = self.__get_config_option(option = 'option-list.format', default = 'list')
+        att_set = short_cut_att_sets.get(user_att_set)
+        if att_set:
+            return att_set
+        att_set = short_cut_att_sets2.get((user_att_set, format))
+        if att_set:
+            return att_set
+        elif att_set == None:
+            return user_att_set
+
+    def __get_special_set_att(self, user_att_set, user_att):
+        format = self.__get_config_option(option = 'option-list.format', default = 'list')
+        spc_att_set_att_list =  special_att_set_att_dict.get((user_att_set, user_att))
+        if spc_att_set_att_list:
+            return spc_att_set_att_list
+        spc_att_set_att_list =  special_att_set_att_dict2.get((user_att_set, user_att, format))
+        if spc_att_set_att_list:
+            return spc_att_set_att_list
+    
+
+    def __handle_attributes(self, user_att_set, user_att, value, check_special = True, s=None):
         if  special_att_sets_dict.get(user_att_set) and check_special:
             self.__handle_special_atts(user_att_set, user_att, value)
             return
-        spc_att_set_att_list =  special_att_set_att_dict.get((user_att_set, user_att))
+
+        # change both att-set and att
+        spc_att_set_att_list =  self.__get_special_set_att(user_att_set, user_att)
         if spc_att_set_att_list and check_special:
             for new_pair  in spc_att_set_att_list:
                 att_set = new_pair[0]
                 att = new_pair[1]
                 self.__add_attribute(att_set, att, value )
             return
-        att_set = short_cut_att_sets.get(user_att_set)
-        if not att_set: # proper att-set, found in xsl stylesheets
-            att_set = user_att_set
+        att_set = self.__get_shortcut_att_set(user_att_set)
         fo_element = att_set_dict.get(att_set)
 
         spc_att_val_list = special_att_value_dict.get((user_att, value))
@@ -347,8 +366,34 @@ class ReadConfig:
         # sys.stderr.write('\n')
         raise FOConfigFileException(msg)
 
+    def __get_config_option(self, option, section = 'FO', default = None):
+        try:
+            option = self.__config.get('FO', 'option-list.format')
+            return option
+        except ConfigParser.NoOptionError:
+            return default
+
     def __handle_special_atts(self, user_att_set, user_att, value):
-        self.__error('%s.%s = %s not a valid attribute property\n' % (user_att_set, user_att, value))
+        # for opt list as list
+        att_list_dict = {'space-from-option_off':'provisional-distance-between-starts'}
+        # for opt list as def
+        att_def_dict = {'':''}
+        att_def_not_allowed = ['space-from-option_', 'space-from-label_']
+        if user_att_set == 'option-list':
+            format = self.__get_config_option(option = 'option-list.format', default = 'list')
+            if format == 'list':
+                changed_att = att_list_dict.get(user_att)
+                if changed_att: 
+                    user_att = changed_att
+                self.__handle_attributes('option-list', user_att, value, check_special = False)
+            elif format == 'definition':
+                if user_att in att_def_not_allowed:
+                    self.__error('%s.%s = %s not a valid attribute property\n' % 
+                            (user_att_set, user_att, value))
+                self.__handle_attributes('option-list-definition-block', 
+                        user_att, value, check_special = False)
+        else:
+            self.__error('%s.%s = %s not a valid attribute property\n' % (user_att_set, user_att, value))
 
 
     def __handle_param(self, param, value):
