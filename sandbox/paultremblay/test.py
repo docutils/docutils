@@ -140,6 +140,8 @@ docfo_commands = [
         ('enumerated_list.xml', 'enumerated_list1.conf'), # enumerated list
         ('definition_list.xml', 'definition_list1.conf'), # definition list
         ('field_lists.xml', 'field_list1.conf'), # field list
+        ('opt_list.xml', 'option_list1.conf'), # option list as list
+        ('opt_list.xml', 'option_list2.conf'), # option list as definition list
     ]
 
 def error_func(msg, the_path = None):
