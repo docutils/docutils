@@ -11,6 +11,20 @@ def get_script_name():
 
 xsl_files = glob.glob('xsl_fo/*')
 
+def remove_files(the_list):
+    for the_path in the_list:
+        os.remove(the_path)
+
+if 'sdist' in sys.argv:
+    os.chdir('test_files')
+    rm_files = []
+    rm_files.extend(glob.glob('*.pdf'))
+    rm_files.extend(glob.glob('*.fo'))
+    rm_files.extend(glob.glob('*.xml'))
+    rm_files.extend(glob.glob('*.xsl'))
+    remove_files(rm_files)
+    os.chdir('..')
+
 remove_build()
 script_name = get_script_name()
 
