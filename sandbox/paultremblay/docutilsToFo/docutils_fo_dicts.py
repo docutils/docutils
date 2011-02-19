@@ -272,6 +272,10 @@ short_cut_att_sets = {
 'enumerated-list': 'enumerated-list-block',
 'enumerated-list-level2': 'enumerated-level2-list-block',
 'enumerated-list-paragraph': 'enumerated-list-item-body-block',
+'field-name':'field-list-item-label-block',
+'field-list': 'field-list-block',
+'field-list-paragraph': 'field-body-block',
+'field-name':'field-list-item-label-block',
 'first-page': 'first-simple-page-master',
 'first-paragraph': 'first-paragraph-block',
 'footer-first-paragraph': 'footer-first-block',
@@ -878,6 +882,7 @@ special_att_att_set_dict = {
 # att-sets atts
 special_att_set_att_dict = {
 ('bibliographic-fields', 'space-from-field'): [('bibliographic-fields-list-block', 'provisional-distance-between-starts')], 
+('bibliographic-fields', 'space-from-name'): [('bibliographic-fields-list-block', 'provisional-distance-between-starts')], 
 ('bibliographic-fields', 'space-between-items'): [('bibliographic-fields-list-item', 'space-before')], 
 ('bullet-list', 'space-between-items'): [('bullet-list-item', 'space-before')], 
 ('bullet-list', 'space-from-bullet'): [('bullet-list-block', 'provisional-distance-between-starts')], 
@@ -891,6 +896,8 @@ special_att_set_att_dict = {
 ('enumerated-list-level2', 'space-from-number'): [('bullet-level2-list-block', 'provisional-distance-between-starts')], 
 ('enumerated-list-level2', 'space-between-items'): [('bullet-level2-list-item', 'space-before')], 
 ('header' , 'height'):[('header-region-before', 'extent')],
+('field-list', 'space-from-name'): [('field-list-block', 'provisional-distance-between-starts')], 
+('field-list', 'space-between-items'): [('field-list-item', 'space-before')], 
 ('footer' , 'height'):[('footer-region-after', 'extent')],
 ('toc-section' , 'start-page'):[('toc-page-sequence', 'initial-page-number')],
 ('toc-section' , 'page-format'):[('toc-page-sequence', 'format')],

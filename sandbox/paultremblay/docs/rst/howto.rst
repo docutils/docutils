@@ -756,7 +756,7 @@ Formatting titles
 
 Use the identifiers ``'heading1'``, ``'heading2'``, ``'heading3'``, etc, to
 format the titles for each section. Docutils to fo allows sections to go 7
-levels deep. Headings are blocks and can take any property of a block. (See
+levels deep. Headings are blocks and can take any property of a block (see
 paragrahs). 
 
 ::
@@ -1005,7 +1005,6 @@ paragraphs do not have their first line indented.
 Bullet List
 ============
 
-bullet-list-block 
 
 Formatting the bullet list
 ----------------------------
@@ -1210,3 +1209,65 @@ definiton. If you wish to change a property on the paragraphs instead, use the
 
  # the space before dtermines the space between each paragraph
  definition-list-paragraph.space-before = 12pt
+
+============
+Field List
+============
+
+
+Formatting the field list
+----------------------------
+
+Use the ``'field-list'`` property to format the space after and
+before, the left and right indent, and any other property you want to
+set on the list, such as font for font-size::
+
+ field-list.space-after = 20pt
+ field-list.space-before = 20pt
+ field-list.left-indent = 20pt
+ field-list.right-indent = 20pt
+ field-list.background-color = grey
+
+
+To format space between items
+-------------------------------
+
+Use the ``'space-between-items'`` property.
+
+::
+
+
+  field-list.space-between-items = 30pt
+
+To format space between field and text
+-------------------------------------------
+
+Use the ``'space-from-name'`` identifier::
+
+
+  field-list.space-from-name = 1in
+
+Formatting the field names
+---------------------------
+
+Use the ``'field-name'`` identifier, which can take any inline
+properties::
+
+
+  field-name.color = blue
+
+
+Formatting the  paragraphs
+----------------------------
+
+Use the ``'field-list-paragraph'`` identifier to format the text of
+the bullet list. This identifier can take any block property::
+
+ field-list-paragraph.space-before = 12pt
+ field-list-paragraph.font-style = italic
+
+Note that using the ``'space-before'`` property has the same effect as
+controlling the space between each paragraph, without putting unwated space
+before the first paragraph. 
+
+
