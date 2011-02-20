@@ -35,8 +35,9 @@
     </xsl:attribute-set>
 
     <xsl:attribute-set name="document-title-page-block">
+        <!--
         <xsl:attribute name="break-after">page</xsl:attribute>
-        
+        -->
     </xsl:attribute-set>
 
     <xsl:attribute-set name="document-subtitle-block">

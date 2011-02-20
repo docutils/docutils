@@ -157,6 +157,18 @@ notifiy you, and quit. For eaxmple, if your value is
 ``,bibliographic,dedication,abstract,toc``, and your document
 contains a title, the processing will quit.
 
+bibliographic-format
+====================
+
+**Possible Values**: ``list``, ``normal``, ``''``
+
+**Default:** list
+
+Determines the formatting of the bibliographic info. When set to
+``'list'`` (the default), the bibliograhic fields will be
+formatted as a list. When set to ``'normal'`` or ``''``, the each
+bibliographic field will be formatted as a block.
+
 Bibliographic Field Names
 =========================
 
@@ -190,6 +202,38 @@ Each parameter sets the text in the list for that particular
 bibliographic item. For example if you wanted to change the
 default for ``contact`` from 'contact' to email, you would simply
 set this value to 'email'.
+
+Custom bibliographic field names
+================================
+
+**Possible Values**: Any Text
+
+**Defaults:** ''
+
+The function is the same for the following parameters:
+
+* custom-bib-info1-name
+
+* custom-bib-info2-name
+
+* custom-bib-info3-name
+
+* custom-bib-info4-name
+
+* custom-bib-info5-name
+
+* custom-bib-info6-name
+
+* custom-bib-info7-name
+
+* custom-bib-info8-name
+
+* custom-bib-info9-name
+
+* custom-bib-info10-name
+
+Each parameter sets the value of the corresponding text for cutom
+bibliographic fields.
 
 Admonition Title Names
 ======================
