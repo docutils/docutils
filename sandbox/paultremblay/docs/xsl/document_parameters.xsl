@@ -472,6 +472,57 @@
         </block>
     </xsl:template>
 
+    <xsl:template match="xsl:param[@name='bibliographic-format']" priority = "3">
+        <xsl:call-template name="before_p_text">
+            <xsl:with-param name="possible-values">
+                <xsl:text>list, normal, ''</xsl:text>
+            </xsl:with-param>
+        </xsl:call-template>
+        <block>
+            Determines the formatting of the bibliographic info. When set to ``'list'`` 
+            (the default), the bibliograhic fields will be formatted as a list. When set
+            to ``'normal'`` or ``''``, the each bibliographic field will be formatted 
+            as a block.
+        </block>
+    </xsl:template>
+
+
+    <xsl:template match="xsl:param[@name='custom-bib-info1-name']" priority = "3">
+        <xsl:call-template name="make-name">
+            <xsl:with-param name="name">Custom bibliographic field names</xsl:with-param>
+        </xsl:call-template>
+        <xsl:call-template name="possible-values">
+            <xsl:with-param name="text" select="'Any Text'"/>
+        </xsl:call-template>
+        <block>**Defaults:** ''</block>
+        <block>
+            The function is the same for the following parameters:
+        </block>
+        <block>* custom-bib-info1-name</block>
+        <block>* custom-bib-info2-name</block>
+        <block>* custom-bib-info3-name</block>
+        <block>* custom-bib-info4-name</block>
+        <block>* custom-bib-info5-name</block>
+        <block>* custom-bib-info6-name</block>
+        <block>* custom-bib-info7-name</block>
+        <block>* custom-bib-info8-name</block>
+        <block>* custom-bib-info9-name</block>
+        <block>* custom-bib-info10-name</block>
+        <block>
+            Each parameter sets the value of the corresponding text for cutom bibliographic fields.  
+        </block>
+    </xsl:template>
+
+    <xsl:template match="xsl:param[@name='custom-bib-info2-name']|
+        xsl:param[@name='custom-bib-info3-name']|
+        xsl:param[@name='custom-bib-info4-name']|
+        xsl:param[@name='custom-bib-info5-name']|
+        xsl:param[@name='custom-bib-info6-name']|
+        xsl:param[@name='custom-bib-info7-name']|
+        xsl:param[@name='custom-bib-info8-name']|
+        xsl:param[@name='custom-bib-info9-name']|
+        xsl:param[@name='custom-bib-info10-name'] " priority = "3"/>
+
     <xsl:template match="xsl:param[@name='test']" priority = "3">
         <xsl:call-template name="before_p_text">
             <xsl:with-param name="possible-values">

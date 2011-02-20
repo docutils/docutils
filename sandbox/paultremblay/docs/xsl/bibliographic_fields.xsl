@@ -120,5 +120,145 @@
         </block>
     </xsl:template>
 
+    <xsl:template match= "xsl:attribute-set[@name='author-block']" priority="3">
+        <xsl:call-template name="before-desc">
+            <xsl:with-param name="fo">fo:block</xsl:with-param> 
+            <xsl:with-param name="docutils">docinfo/author</xsl:with-param> 
+        </xsl:call-template>
+        <block>
+            Formats the author element, when bibliograhic info is not formatted as a list.
+        </block>
+    </xsl:template>
+
+    <xsl:template match= "xsl:attribute-set[@name='authors-block']" priority="3">
+        <xsl:call-template name="before-desc">
+            <xsl:with-param name="fo">fo:block</xsl:with-param> 
+            <xsl:with-param name="docutils">docinfo/authors</xsl:with-param> 
+        </xsl:call-template>
+        <block>
+            Formats the authors element, when bibliograhic info is not formatted as a list.
+        </block>
+    </xsl:template>
+
+    <xsl:template match= "xsl:attribute-set[@name='date-block']" priority="3">
+        <xsl:call-template name="before-desc">
+            <xsl:with-param name="fo">fo:block</xsl:with-param> 
+            <xsl:with-param name="docutils">docinfo/date</xsl:with-param> 
+        </xsl:call-template>
+        <block>
+            Formats the date element, when bibliograhic info is not formatted as a list.
+        </block>
+    </xsl:template>
+
+    <xsl:template match= "xsl:attribute-set[@name='organization-block']" priority="3">
+        <xsl:call-template name="before-desc">
+            <xsl:with-param name="fo">fo:block</xsl:with-param> 
+            <xsl:with-param name="docutils">docinfo/organization</xsl:with-param> 
+        </xsl:call-template>
+        <block>
+            Formats the organization element, when bibliograhic info is not formatted as a list.
+        </block>
+    </xsl:template>
+
+    <xsl:template match= "xsl:attribute-set[@name='contact-block']" priority="3">
+        <xsl:call-template name="before-desc">
+            <xsl:with-param name="fo">fo:block</xsl:with-param> 
+            <xsl:with-param name="docutils">docinfo/contact</xsl:with-param> 
+        </xsl:call-template>
+        <block>
+            Formats the contact element, when bibliograhic info is not formatted as a list.
+        </block>
+    </xsl:template>
+
+    <xsl:template match= "xsl:attribute-set[@name='status-block']" priority="3">
+        <xsl:call-template name="before-desc">
+            <xsl:with-param name="fo">fo:block</xsl:with-param> 
+            <xsl:with-param name="docutils">docinfo/status</xsl:with-param> 
+        </xsl:call-template>
+        <block>
+            Formats the status element, when bibliograhic info is not formatted as a list.
+        </block>
+    </xsl:template>
+
+    <xsl:template match= "xsl:attribute-set[@name='copyright-block']" priority="3">
+        <xsl:call-template name="before-desc">
+            <xsl:with-param name="fo">fo:block</xsl:with-param> 
+            <xsl:with-param name="docutils">docinfo/copyright</xsl:with-param> 
+        </xsl:call-template>
+        <block>
+            Formats the copyright element, when bibliograhic info is not formatted as a list.
+        </block>
+    </xsl:template>
+
+    <xsl:template match= "xsl:attribute-set[@name='version-block']" priority="3">
+        <xsl:call-template name="before-desc">
+            <xsl:with-param name="fo">fo:block</xsl:with-param> 
+            <xsl:with-param name="docutils">docinfo/version</xsl:with-param> 
+        </xsl:call-template>
+        <block>
+            Formats the version element, when bibliograhic info is not formatted as a list.
+        </block>
+    </xsl:template>
+
+    <xsl:template match= "xsl:attribute-set[@name='revision-block']" priority="3">
+        <xsl:call-template name="before-desc">
+            <xsl:with-param name="fo">fo:block</xsl:with-param> 
+            <xsl:with-param name="docutils">docinfo/revision</xsl:with-param> 
+        </xsl:call-template>
+        <block>
+            Formats the revision element, when bibliograhic info is not formatted as a list.
+        </block>
+    </xsl:template>
+
+    <xsl:template match= "xsl:attribute-set[@name='address-block']" priority="3">
+        <xsl:call-template name="before-desc">
+            <xsl:with-param name="fo">fo:block</xsl:with-param> 
+            <xsl:with-param name="docutils">docinfo/address</xsl:with-param> 
+        </xsl:call-template>
+        <block>
+            Formats the address element, when bibliograhic info is not formatted as a list.
+        </block>
+    </xsl:template>
+
+
+    <xsl:template match= "xsl:attribute-set[@name='custom-bib-info1']" priority="3">
+        <xsl:call-template name="make-title">
+            <xsl:with-param name="level">5</xsl:with-param>
+            <xsl:with-param name="text">Custom bibliographic fields</xsl:with-param>
+        </xsl:call-template>
+        <block>
+            <xsl:text>:fo: fo:block</xsl:text> 
+        </block>
+        <block first-line-indent="-9">
+            <xsl:text>:docutils: docinfo/field</xsl:text> 
+        </block>
+        <block>
+            The following attribute sets are identical in nature:
+        </block>
+        <block>* custom-bib-info1</block>
+        <block>* custom-bib-info2</block>
+        <block>* custom-bib-info3</block>
+        <block>* custom-bib-info4</block>
+        <block>* custom-bib-info5</block>
+        <block>* custom-bib-info6</block>
+        <block>* custom-bib-info7</block>
+        <block>* custom-bib-info8</block>
+        <block>* custom-bib-info9</block>
+        <block>* custom-bib-info10</block>
+        <block>
+            These attribute-sets format the custom bibliographic fields. ``'custom-bib-info1'`` refers to the first
+            occurrence of such a field, ``'custom-bib-info2'`` to the second, and so fourth.
+        </block>
+    </xsl:template>
+
+    <xsl:template match= "xsl:attribute-set[@name='custom-bib-info2']|
+        xsl:attribute-set[@name='custom-bib-info3']|
+        xsl:attribute-set[@name='custom-bib-info4']|
+        xsl:attribute-set[@name='custom-bib-info5']|
+        xsl:attribute-set[@name='custom-bib-info6']|
+        xsl:attribute-set[@name='custom-bib-info7']|
+        xsl:attribute-set[@name='custom-bib-info8']|
+        xsl:attribute-set[@name='custom-bib-info9']|
+        xsl:attribute-set[@name='custom-bib-info10'] " priority="3"/>
 
 </xsl:stylesheet>

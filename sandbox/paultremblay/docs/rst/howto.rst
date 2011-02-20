@@ -480,12 +480,17 @@ on their own page::
  title-subtitle.page-break-before= true
  title-subtitle.space-before=3in
 
+===================================
 Formatting the bibliograhic fields
------------------------------------
+===================================
 
-Bibliographic fields are formatted as a list. Use the ``'bibliograhic-fields'``
-property to format the space after and before, the left and right indent, and
-any other property you want to set on the list, such as font for font-size::
+Formatting as a list
+---------------------
+
+By defaullt, bibliographic fields are formatted as a list. Use the
+``'bibliograhic-fields'`` property to format the space after and before, the
+left and right indent, and any other property you want to set on the list,
+such as font for font-size::
 
  bibliographic-fields.space-after = 20pt
  bibliographic-fields.space-before = 20pt
@@ -571,6 +576,148 @@ identifier. This identifier can take any block property::
 Note that using the ``'space-before'`` property has the same effect as
 controlling the space between each paragraph, without putting unwated space
 before the first paragraph. 
+
+Formatting as blocks of text
+-----------------------------
+
+Use ``'the bibliographic-fields.format'`` to change the value of the default
+format::
+
+ bibliographic-fields.format = normal
+
+Formatting the author field, etc.
+----------------------------------
+
+Each bibliographic field is a block, and its identifier is the name of the
+field . 
+
+:address: formats the address field
+:author: formats the author field
+:authors: formats the authors field
+:contact: formats the contact field
+:copyright: formats the copyright field
+:date: formats the date field
+:organization: formats the organization field
+:revision: formats the revision field
+:status: formats the status field
+:version: formats the version field
+
+::
+
+ address.space-before=24pt
+ author.font-style = bold
+ authors.alignment = center
+ contact.font-style = italic
+ copyright.color = red
+ date.background-color = blue
+ organization.font-size = 24pt
+ revision.alignment = center
+ status.alignment = right
+ version.font-style = bold-italic
+        
+
+Formatting custom bibliographic fields
+----------------------------------------
+
+Use the ``'bibliographic-fields-custom1'``,
+``'bibliographic-fields-custom2'``, etc, to format each custom field, where
+``'-custom1'`` refers to the first occurrence of a custom field,
+''`-custom2'`` refers to the second such occurrence, and so on:: 
+
+ bibliographic-field-custom1.color = green
+ bibliographic-field-custom2.color = red
+
+Changing the default text of the fields
++++++++++++++++++++++++++++++++++++++++++
+
+As when the bibliiographic fields are formatted as a list, the text of the
+fields can likewise be changed in the same manner when formatting the
+bibliographic fields as blocks. It often makes sense to makes these fields
+empty, especially when creating title page::
+
+  bibliographic-fields.author-text = by
+  bibliographic-fields.date-text = 
+
+Including text for custom fields
++++++++++++++++++++++++++++++++++
+
+Use the ``'bibliographic-field-custom#.text'`` property::
+
+ bibliographic-field-custom1.text = Country
+ bibliographic-field-custom2.text = Uses of software: 
+
+Making a Title Page
+--------------------
+
+Here is the actual RST document::
+
+ ======
+ Title
+ ======
+ 
+ Subtitle
+ =========
+ 
+ 
+ :by: by
+ :Author: Paul Tremblay
+ :Address: Paul Tremblay 
+           100 Market St. 
+           Boston, MA, 01800
+ 
+ :Country: USA
+ :Organization: Open Source Software
+ :useline: Uses
+ :Uses: text processing
+ 
+        documentation
+ :Date: $Date$
+ :Copyright: This document is in the public domain
+ 
+ Text after.
+
+Here is the configuration file::
+
+ [general]
+ trim-footnote-reference-space = true
+ [FO]
+ bibliographic-fields.format = normal
+ 
+ # the by line by itself
+ bibliographic-field-custom1.space-after = 12pt
+ bibliographic-field-custom1.alignment = center
+
+ # the line with 'usline' 
+ bibliographic-field-custom3.space-after = 0pt
+ bibliographic-field-custom3.font-style = bold
+
+ # the Uses field
+ bibliographic-field-custom4.space-before = 0pt
+
+ # center align author
+ author.alignment = center
+ author.font-size = 16pt
+ # put a border after the title
+ author.border-bottom = 2px solid
+ author.padding = 6pt
+
+ # put a borer after copyright
+ copyright.border-bottom = 2px solid
+ copyright.padding = 6pt
+ 
+ 
+ 
+ # set the default text to nothing
+ bibliographic-fields.author-text =
+ bibliographic-fields.authors-text = 
+ bibliographic-fields.organization-text = 
+ bibliographic-fields.copyright-text = 
+ bibliographic-fields.address-text = 
+ bibliographic-fields.date-text = 
+
+ # commands
+ strict = True
+
 
 Formatting the dedication
 --------------------------

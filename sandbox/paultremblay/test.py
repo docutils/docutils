@@ -130,6 +130,7 @@ docfo_commands = [
         ('front_body.xml', 'front2.conf'), # change order of front matter
         ('title_subtitle.xml', 'title1.conf'), # title with front matter
         ('bibliographic_fields.xml', 'bibliographic_fields.conf'), # generic bibliographic fields
+        ('bibliographic_fields.xml', 'bibliographic_fields2.conf'), # bibliographic fields as blocks
         ('bibliographic_fields.xml', 'dedication1.conf'), # generic dedication
         ('bibliographic_fields.xml', 'abstract1.conf'), # generic dedication
         ('toc.xml', 'toc1.conf'), # generic toc

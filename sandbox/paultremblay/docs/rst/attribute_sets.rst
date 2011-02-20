@@ -434,6 +434,181 @@ which has to preserve the white space, according to the docutils
 specs. Since this inherits from the bibliographic-fields-bloc, it
 doesn't make sense to change attributes here directly.
 
+author-block
+------------
+
+:fo: fo:block
+
+:docutils: docinfo/author
+
+:defaults:
+
+     space-before: 12pt
+
+Formats the author element, when bibliograhic info is not
+formatted as a list.
+
+authors-block
+-------------
+
+:fo: fo:block
+
+:docutils: docinfo/authors
+
+:defaults:
+
+     space-before: 12pt
+
+Formats the authors element, when bibliograhic info is not
+formatted as a list.
+
+date-block
+----------
+
+:fo: fo:block
+
+:docutils: docinfo/date
+
+:defaults:
+
+     space-before: 12pt
+
+Formats the date element, when bibliograhic info is not formatted
+as a list.
+
+organization-block
+------------------
+
+:fo: fo:block
+
+:docutils: docinfo/organization
+
+:defaults:
+
+     space-before: 12pt
+
+Formats the organization element, when bibliograhic info is not
+formatted as a list.
+
+contact-block
+-------------
+
+:fo: fo:block
+
+:docutils: docinfo/contact
+
+:defaults:
+
+     space-before: 12pt
+
+Formats the contact element, when bibliograhic info is not
+formatted as a list.
+
+status-block
+------------
+
+:fo: fo:block
+
+:docutils: docinfo/status
+
+:defaults:
+
+     space-before: 12pt
+
+Formats the status element, when bibliograhic info is not
+formatted as a list.
+
+copyright-block
+---------------
+
+:fo: fo:block
+
+:docutils: docinfo/copyright
+
+:defaults:
+
+     space-before: 12pt
+
+Formats the copyright element, when bibliograhic info is not
+formatted as a list.
+
+version-block
+-------------
+
+:fo: fo:block
+
+:docutils: docinfo/version
+
+:defaults:
+
+     space-before: 12pt
+
+Formats the version element, when bibliograhic info is not
+formatted as a list.
+
+revision-block
+--------------
+
+:fo: fo:block
+
+:docutils: docinfo/revision
+
+:defaults:
+
+     space-before: 12pt
+
+Formats the revision element, when bibliograhic info is not
+formatted as a list.
+
+address-block
+-------------
+
+:fo: fo:block
+
+:docutils: docinfo/address
+
+:defaults:
+
+     white-space: pre
+
+     space-before: 12pt
+
+Formats the address element, when bibliograhic info is not
+formatted as a list.
+
+Custom bibliographic fields
+---------------------------
+
+:fo: fo:block
+
+:docutils: docinfo/field
+
+The following attribute sets are identical in nature:
+
+* custom-bib-info1
+
+* custom-bib-info2
+
+* custom-bib-info3
+
+* custom-bib-info4
+
+* custom-bib-info5
+
+* custom-bib-info6
+
+* custom-bib-info7
+
+* custom-bib-info8
+
+* custom-bib-info9
+
+* custom-bib-info10
+
+These attribute-sets format the custom bibliographic fields.
+``'custom-bib-info1'`` refers to the first occurrence of such a
+field, ``'custom-bib-info2'`` to the second, and so fourth.
+
 Front Matter Attribute Sets
 ===========================
 

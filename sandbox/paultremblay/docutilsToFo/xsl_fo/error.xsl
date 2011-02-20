@@ -151,6 +151,18 @@
                 <xsl:with-param name="msg" select="$msg"/>
             </xsl:call-template>
         </xsl:if>
+        <xsl:if test= "$bibliographic-format != 'list'  and $bibliographic-format != 'normal'
+            and $bibliographic-format != ''">
+            <xsl:variable name="msg">
+                <xsl:text>"</xsl:text>
+                <xsl:value-of select="$bibliographic-format"/>
+                <xsl:text>" not a valid value for param "bibliographic-format"&#xA;</xsl:text>
+                <xsl:text>Valid values are 'list', 'normal', or ''.&#xA;</xsl:text>
+            </xsl:variable>
+            <xsl:call-template name="quit-message">
+                <xsl:with-param name="msg" select="$msg"/>
+            </xsl:call-template>
+        </xsl:if>
 
         <!--test $font-order parameter for valid values-->
         <xsl:call-template name="test-order">

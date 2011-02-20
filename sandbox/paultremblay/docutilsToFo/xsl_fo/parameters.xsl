@@ -37,7 +37,7 @@ the page-header or page-footer attribute sets-->
 <xsl:param name="title-pagination">with-front</xsl:param>
 
 <!--with-front, with-toc, or with-body-->
-<xsl:param name="bibliographic-pagination">with-toc</xsl:param>
+<xsl:param name="bibliographic-pagination">with-front</xsl:param>
 
 <!--with-front, with-toc, or with-body-->
 <xsl:param name="dedication-pagination">with-front</xsl:param>
@@ -56,6 +56,8 @@ title, bibliographic, dedication, abstract, and toc
 -->
 <xsl:param name="front-order">title,bibliographic,dedication,abstract,toc</xsl:param>
 
+<xsl:param name="bibliographic-format">list</xsl:param>
+
 <!--Parameters for docinfo fields. These parameters are used to fill in the text before such
 fields as author, etc.`docutils`-->
 <xsl:param name="author-text">Author: </xsl:param>
@@ -68,6 +70,18 @@ fields as author, etc.`docutils`-->
 <xsl:param name="version-text">Version: </xsl:param>
 <xsl:param name="revision-text">Revision: </xsl:param>
 <xsl:param name="date-text">Date: </xsl:param>
+
+<!--cutom bibliographic entry names-->
+<xsl:param name="custom-bib-info1-name"></xsl:param>
+<xsl:param name="custom-bib-info2-name"></xsl:param>
+<xsl:param name="custom-bib-info3-name"></xsl:param>
+<xsl:param name="custom-bib-info4-name"></xsl:param>
+<xsl:param name="custom-bib-info5-name"></xsl:param>
+<xsl:param name="custom-bib-info6-name"></xsl:param>
+<xsl:param name="custom-bib-info7-name"></xsl:param>
+<xsl:param name="custom-bib-info8-name"></xsl:param>
+<xsl:param name="custom-bib-info9-name"></xsl:param>
+<xsl:param name="custom-bib-info10-name"></xsl:param>
 
 <!--text for  admontions-->
 <xsl:param name="attention-title">Attention!</xsl:param>
