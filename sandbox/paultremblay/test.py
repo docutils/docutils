@@ -143,6 +143,8 @@ docfo_commands = [
         ('field_lists.xml', 'field_list1.conf'), # field list
         ('opt_list.xml', 'option_list1.conf'), # option list as list
         ('opt_list.xml', 'option_list2.conf'), # option list as definition list
+        ('literal_block.xml', 'literal_block1.conf'), # literal block
+        ('line_block.xml', 'line_block1.conf'), # line block
     ]
 
 def error_func(msg, the_path = None):
