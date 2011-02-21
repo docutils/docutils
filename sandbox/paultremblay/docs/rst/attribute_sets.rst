@@ -1175,8 +1175,6 @@ document-title-page-block
 
 :defaults:
 
-     break-after: page
-
 The block that wraps both the title and subtitle. This block only
 gets written if the title and subtitle occur in the front
 section, or TOC section.
@@ -2240,6 +2238,23 @@ level5-line-block
      start-indent: 50mm
 
 Attribute sets for the fifth level of lines.
+
+stanza-title-block
+------------------
+
+:fo: fo:block
+
+:docutils: line_block/title_reference
+
+:defaults:
+
+     text-align: center
+
+     space-before: 12
+
+     font-weight: bold
+
+Formats the title of a stanza.
 
 Table
 =====
