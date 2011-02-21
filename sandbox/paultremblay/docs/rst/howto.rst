@@ -1556,3 +1556,138 @@ Note that using the ``'space-before'`` property has the same effect as
 controlling the space between each paragraph, without putting unwated space
 before the first paragraph. 
 
+===============
+Literal Blocks
+===============
+
+To format a literal block, use the ``'literal-block'`` identifier. The
+literal block takes any block properties::
+
+ literal-block.background-color = red
+
+===========
+Line Blocks
+===========
+
+Formatting the entire line block
+---------------------------------
+
+Use the ``'line-block'`` indentifier to format the entire line block.
+This identifier can take any block property::
+
+ line-block.space-before = 24pt
+ # set font properties, etc
+ line-block.font-size = 10pt
+ line-block.line-spacing = 1
+
+Formatting the lines
+----------------------
+
+The lines have the identifier ``'line-level1'``, ``'line-level2'`` and
+so fourth. Each level indicates how many levels the line is nested.
+Lines may be nesed up to 5 levels deep. It makes sense to set overall
+properties with the ``'line-block'`` identifier, and to use the
+``'line-level#'`` to set the indents of for each level::
+
+ line-level1.left-indent = 15mm
+ line-level2.left-indent = 25mm
+ line-level3.left-indent = 35mm
+ line-level4.left-indent = 45mm
+ line-level5.left-indent = 55mm
+
+Create a stanza title
+----------------------
+
+In order to create a title for a stanza, in the *document* (not the
+configuration file) include the line in a title_reference::
+
+ | `stanza title 1` 
+ | A one, two, a one two three four
+ |
+ | `stanza title 2`
+ | Half a bee, philosophically,
+ |     must, *ipso facto*, half not be.
+ | But half the bee has got to be,
+ |     *vis a vis* its entity.  D'you see?
+ |
+ | `stanza title 3`
+ | But can a bee be said to be
+ |     or not to be an entire bee,
+ |         when half the bee is not a bee,
+ |             due to some ancient injury?
+ |
+ | Singing...
+
+Formatting the stanza title
+-----------------------------
+
+Use the ``'stanza-title'`` to format the stanza title::
+
+ stanza-title.font-style = bold
+
+You cannot do any formatting with a title reference (the text between
+the \`\`). If you need to do inline markup on part of a stanza title,
+only put the \`\` around the part that does not need the markup::
+
+ 
+ | *stanza title* `3` 
+ | But can a bee be said to be
+
+If you need to format the entire stanza title, use the following work
+around::
+
+
+ .. role:: title
+ 
+ | *stanza title 3* :title:`x` 
+ | But can a bee be said to be
+ |     or not to be an entire bee,
+ |         when half the bee is not a bee,
+ |             due to some ancient injury?
+
+Number lines
+------------
+
+Use the ``'line-block.number'`` property, and choose a number for the
+value. If a value of 5 is choosen, every 5th line will be numbered. If
+10 is choosen, every 10th line will be nummbered, and so on.
+
+::
+
+ line-block.number = 5
+
+Make numers closer to line
+----------------------------
+
+By default, docutils to fo puts the number to the very right of the
+margin. There is not way to change this default. However, by
+increasing the margin on the line-block, the numbers will render
+closer::
+
+ line-block.right-indent = 20mm
+
+Keeping the lines on the same page
+-----------------------------------
+
+If the line block is relatively short, use the ``'keep-on-same-page'``
+property.
+
+::
+
+ line-block.keep-on-same-page = true
+
+If the line block is long, using this property could lead to
+huge space on a page.
+
+.. note a work around is to create a completely new stanza, and use
+.. keep-on-same-page property. 
+
+Creating space between stanzas
+-------------------------------
+
+Use a blank line to control the space between stanzas. There is no
+othe way to control space. The rst2xml.py utility marks a new set of
+line blocks when it detects a new indentation. In contrast, real verse
+is marked by the space between stanzas.
+
+
