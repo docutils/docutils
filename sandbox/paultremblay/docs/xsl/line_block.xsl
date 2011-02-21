@@ -66,6 +66,15 @@
         </block>
     </xsl:template>
 
+    <xsl:template match= "xsl:attribute-set[@name='stanza-title-block']" priority="3">
+        <xsl:call-template name="before-desc">
+            <xsl:with-param name="fo">fo:block</xsl:with-param> 
+            <xsl:with-param name="docutils">line_block/title_reference</xsl:with-param> 
+        </xsl:call-template>
+        <block>
+            Formats the title of a stanza.
+        </block>
+    </xsl:template>
 
 
 </xsl:stylesheet>
