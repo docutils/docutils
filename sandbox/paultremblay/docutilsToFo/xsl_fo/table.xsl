@@ -6,8 +6,6 @@
 
     <!-- $Id$ -->
 
-    <!--Just a temp fix for now-->
-    <xsl:variable name="table-width">6in</xsl:variable>
 
     <!--wraps the rest of the table.-->
     <xsl:attribute-set name="table-block-container">
@@ -44,6 +42,7 @@
     </xsl:attribute-set>
 
     <xsl:attribute-set name="table-row">
+        <xsl:attribute name="keep-together.within-page">always</xsl:attribute>
     </xsl:attribute-set>
 
     <xsl:attribute-set name="table-cell" use-attribute-sets="default-cell">

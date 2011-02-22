@@ -58,6 +58,8 @@ title, bibliographic, dedication, abstract, and toc
 
 <xsl:param name="bibliographic-format">list</xsl:param>
 
+<xsl:param name="table-width">6in</xsl:variable>
+
 <!--Parameters for docinfo fields. These parameters are used to fill in the text before such
 fields as author, etc.`docutils`-->
 <xsl:param name="author-text">Author: </xsl:param>
