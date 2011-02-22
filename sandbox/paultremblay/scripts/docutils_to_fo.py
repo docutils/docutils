@@ -25,6 +25,8 @@ def get_args():
     parser.add_argument('--config', nargs=1, help = 'Path to configuration file', dest='config_file')
     parser.add_argument('--verbose', nargs=1, type = int, help = 'How verbose messaging should be',
             dest='verbose')
+    parser.add_argument('--no-fo-valid', action="store_const", 
+            const=True, help = 'don\'t validate FO', dest='no_valid_fo')
     return  parser.parse_args()
 
 def parse_config_files(the_paths):
@@ -69,6 +71,9 @@ in_file = arg.in_file
 if debug:
     sys.stderr.write('in_file is "%s"\n' % str(in_file))
 
+valid_fo = True
+if  arg.no_valid_fo:
+    valid_fo = False
 root_stylesheet = get_config_option('xsl-stylesheet')
 if arg.root_stylesheet: root_stylesheet = arg.root_stylesheet[0]
 
@@ -102,7 +107,7 @@ write_obj.close()
 
 # convert to FO 
 error = docutilsToFo.rst2xml_lib.transform_lxml(xslt_file = out_xsl, xml_file = in_file, 
-        param_dict = {}, out_file = out_path, verbose = verbose )
+        param_dict = {}, out_file = out_path, verbose = verbose, valid_fo = valid_fo )
 if error:
     if type(error) == type(' '):
         sys.stderr.write(error)
