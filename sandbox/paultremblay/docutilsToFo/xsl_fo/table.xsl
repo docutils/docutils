@@ -15,7 +15,7 @@
 
     <xsl:attribute-set name="table">
         <xsl:attribute name="table-layout">fixed</xsl:attribute>
-        <xsl:attribute name="inline-progression-dimension"><xsl:value-of select="$table-width"/></xsl:attribute>
+        <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
     <xsl:attribute-set name="thead-header">
