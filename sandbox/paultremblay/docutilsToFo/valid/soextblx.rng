@@ -202,8 +202,12 @@
     <optional>
       <ref name="thead"/>
     </optional>
+    <optional>
+      <ref name="tfoot"/>
+    </optional>
     <ref name="tbody"/>
   </define>
+
   <define name="tbl.row.mdl">
     <oneOrMore>
       <ref name="entry"/>
@@ -373,6 +377,15 @@
       </attribute>
     </optional>
     <ref name="tbl.thead.att"/>
+  </define>
+
+  <define name="tfoot">
+    <element name="tfoot">
+      <ref name="thead.attlist"/>
+      <oneOrMore>
+        <ref name="row"/>
+      </oneOrMore>
+    </element>
   </define>
   <!--
     Default declarations previously defined in this entity and
