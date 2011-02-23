@@ -28,15 +28,14 @@
     <xsl:attribute-set name="table1-body">
     </xsl:attribute-set>
 
+    <xsl:attribute-set name="table-header-row">
+    </xsl:attribute-set>
+
     <xsl:attribute-set name="table1-row">
         <xsl:attribute name="keep-together.within-page">always</xsl:attribute>
     </xsl:attribute-set>
 
     <xsl:attribute-set name="table1-cell" use-attribute-sets="default-cell">
-    </xsl:attribute-set>
-
-    <xsl:attribute-set name="table1-cell-borderless" >
-        <xsl:attribute name="padding">1em</xsl:attribute>
     </xsl:attribute-set>
 
     <xsl:attribute-set name="cell1-block">
@@ -92,22 +91,6 @@
         <xsl:value-of select="$columns"/>
     </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
-    </xsl:template>
-
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
-    </xsl:template>
 
     <xsl:template name="make-col-specs">
         <xsl:param name="classes"/>
@@ -168,6 +151,23 @@
         </fo:block-container>
     </xsl:template>
 
+     <xsl:template match="tgroup" mode="classes">
+         <xsl:param name="classes"/>
+         <xsl:apply-templates mode="classes">
+             <xsl:with-param name="classes" select="$classes"/>
+         </xsl:apply-templates>
+    </xsl:template>
+
+    <xsl:template match="tgroup/colspec" mode="classes"/>
+
+    <xsl:template match="tgroup/colspec" mode="use">
+        <xsl:variable name="col-num">
+            <xsl:number/>
+        </xsl:variable>
+        <fo:table-column column-number="{$col-num}" 
+            column-width="proportional-column-width({@colwidth})"/>
+    </xsl:template>
+
 
     <xsl:template match="table[@classes = 'table1']/tgroup/thead" mode="classes">
         <fo:table-header xsl:use-attribute-sets = "thead1-header">
@@ -175,8 +175,10 @@
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table1']/thead/row" mode="classes">
-        <xsl:apply-templates mode="classes"/>
+    <xsl:template match="table[@classes='table1']/tgroup//thead/row" mode="classes">
+        <fo:table-row xsl:use-attribute-sets="table-header-row">
+            <xsl:apply-templates mode="classes"/>
+        </fo:table-row>
     </xsl:template>
 
     <xsl:template match="table[@classes='table1']/tgroup/thead/row/entry" mode="classes">
@@ -244,6 +246,6 @@
         </fo:block>
     </xsl:template>
 
-
      <xsl:template match="title" mode="classes"/>
+
 </xsl:stylesheet>
