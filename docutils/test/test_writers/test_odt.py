@@ -164,7 +164,7 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
             }
         self.process_test('odt_custom_headfoot.txt', 'odt_custom_headfoot.odt',
             settings_overrides=settings_overrides,
-            #save_output_name='odt_tables1.odt'
+            #save_output_name='odt_custom_headfoot.odt'
             )
 
     #
