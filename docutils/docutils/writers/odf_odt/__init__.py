@@ -188,7 +188,7 @@ META_NAMESPACE_DICT = METNSD = {
 #   does not support use of nsmap parameter on Element() and SubElement().
 
 CONTENT_NAMESPACE_ATTRIB = {
-    'office:version': '1.0',
+    #'office:version': '1.0',
     'xmlns:chart': 'urn:oasis:names:tc:opendocument:xmlns:chart:1.0',
     'xmlns:dc': 'http://purl.org/dc/elements/1.1/',
     'xmlns:dom': 'http://www.w3.org/2001/xml-events',
@@ -216,7 +216,7 @@ CONTENT_NAMESPACE_ATTRIB = {
     }
 
 STYLES_NAMESPACE_ATTRIB = {
-    'office:version': '1.0',
+    #'office:version': '1.0',
     'xmlns:chart': 'urn:oasis:names:tc:opendocument:xmlns:chart:1.0',
     'xmlns:dc': 'http://purl.org/dc/elements/1.1/',
     'xmlns:dom': 'http://www.w3.org/2001/xml-events',
@@ -245,7 +245,7 @@ MANIFEST_NAMESPACE_ATTRIB = {
 }
 
 META_NAMESPACE_ATTRIB = {
-    'office:version': '1.0',
+    #'office:version': '1.0',
     'xmlns:dc': 'http://purl.org/dc/elements/1.1/',
     'xmlns:meta': 'urn:oasis:names:tc:opendocument:xmlns:meta:1.0',
     'xmlns:office': NAME_SPACE_1,
@@ -552,9 +552,10 @@ class Writer(writers.Writer):
         writers.Writer.assemble_parts(self)
         f = tempfile.NamedTemporaryFile()
         zfile = zipfile.ZipFile(f, 'w', zipfile.ZIP_DEFLATED)
+        self.write_zip_str(zfile, 'mimetype', self.MIME_TYPE,
+            compress_type=zipfile.ZIP_STORED)
         content = self.visitor.content_astext()
         self.write_zip_str(zfile, 'content.xml', content)
-        self.write_zip_str(zfile, 'mimetype', self.MIME_TYPE)
         s1 = self.create_manifest()
         self.write_zip_str(zfile, 'META-INF/manifest.xml', s1)
         s1 = self.create_meta()
@@ -571,12 +572,12 @@ class Writer(writers.Writer):
         self.parts['encoding'] = self.document.settings.output_encoding
         self.parts['version'] = docutils.__version__
 
-    def write_zip_str(self, zfile, name, bytes):
+    def write_zip_str(self, zfile, name, bytes, compress_type=zipfile.ZIP_DEFLATED):
         localtime = time.localtime(time.time())
         zinfo = zipfile.ZipInfo(name, localtime)
         # Add some standard UNIX file access permissions (-rw-r--r--).
         zinfo.external_attr = (0x81a4 & 0xFFFF) << 16L
-        zinfo.compress_type = zipfile.ZIP_DEFLATED
+        zinfo.compress_type = compress_type
         zfile.writestr(zinfo, bytes)
 
     def store_embedded_files(self, zfile):
@@ -651,6 +652,10 @@ class Writer(writers.Writer):
         SubElement(root, 'manifest:file-entry', attrib={
             'manifest:media-type': 'text/xml',
             'manifest:full-path': 'styles.xml',
+            }, nsdict=MANNSD)
+        SubElement(root, 'manifest:file-entry', attrib={
+            'manifest:media-type': 'text/xml',
+            'manifest:full-path': 'settings.xml',
             }, nsdict=MANNSD)
         SubElement(root, 'manifest:file-entry', attrib={
             'manifest:media-type': 'text/xml',
