@@ -58,12 +58,38 @@ title, bibliographic, dedication, abstract, and toc
 
 <xsl:param name="bibliographic-format">list</xsl:param>
 
-<!--should not be here-->
-<xsl:param name="table-width">6in</xsl:param>
 
+<!--cols for custom table, when needed-->
 <xsl:param name="table1-cols"></xsl:param>
-<xsl:param name="table2-cols">15,30,15</xsl:param>
-<xsl:param name="table3-cols">15,30,15</xsl:param>
+<xsl:param name="table2-cols"></xsl:param>
+<xsl:param name="table3-cols"></xsl:param>
+<xsl:param name="table4-cols"></xsl:param>
+<xsl:param name="table5-cols"></xsl:param>
+<xsl:param name="table6-cols"></xsl:param>
+<xsl:param name="table7-cols"></xsl:param>
+<xsl:param name="table8-cols"></xsl:param>
+<xsl:param name="table9-cols"></xsl:param>
+<xsl:param name="table10-cols"></xsl:param>
+<xsl:param name="table11-cols"></xsl:param>
+<xsl:param name="table12-cols"></xsl:param>
+<xsl:param name="table13-cols"></xsl:param>
+<xsl:param name="table14-cols"></xsl:param>
+<xsl:param name="table15-cols"></xsl:param>
+<xsl:param name="table16-cols"></xsl:param>
+<xsl:param name="table17-cols"></xsl:param>
+<xsl:param name="table18-cols"></xsl:param>
+<xsl:param name="table19-cols"></xsl:param>
+<xsl:param name="table20-cols"></xsl:param>
+<xsl:param name="table21-cols"></xsl:param>
+<xsl:param name="table22-cols"></xsl:param>
+<xsl:param name="table23-cols"></xsl:param>
+<xsl:param name="table24-cols"></xsl:param>
+<xsl:param name="table25-cols"></xsl:param>
+<xsl:param name="table26-cols"></xsl:param>
+<xsl:param name="table27-cols"></xsl:param>
+<xsl:param name="table28-cols"></xsl:param>
+<xsl:param name="table29-cols"></xsl:param>
+<xsl:param name="table30-cols"></xsl:param>
 
 <!--Parameters for docinfo fields. These parameters are used to fill in the text before such
 fields as author, etc.`docutils`-->
