@@ -91,6 +91,8 @@ title, bibliographic, dedication, abstract, and toc
 <xsl:param name="table29-cols"></xsl:param>
 <xsl:param name="table30-cols"></xsl:param>
 
+<xsl:param name="long-rows-first-page">10</xsl:param>
+
 <!--Parameters for docinfo fields. These parameters are used to fill in the text before such
 fields as author, etc.`docutils`-->
 <xsl:param name="author-text">Author: </xsl:param>
@@ -178,7 +180,7 @@ For example, '5' will number every fifth line-->
 <xsl:param name="text-before-pull-quote-attribution">&#x2014;</xsl:param>
 
 <!--where to place table title valid options are 'top' or 'bottom'-->
-<xsl:param name="table-title-placement">bottom</xsl:param>
+<xsl:param name="table-title-placement">top</xsl:param>
 
 <!--where to place footnote. Values are 'footnote' and
 'endnote'. When 'footnote is choosen, footnotes are placed
