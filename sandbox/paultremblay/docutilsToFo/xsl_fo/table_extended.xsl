@@ -1359,7 +1359,7 @@
             </xsl:when>
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table1-cell"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -1369,7 +1369,7 @@
             <xsl:otherwise>
                 <fo:table-cell xsl:use-attribute-sets="table1-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -1489,7 +1489,7 @@
             </xsl:when>
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table2-cell"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -1499,7 +1499,7 @@
             <xsl:otherwise>
                 <fo:table-cell xsl:use-attribute-sets="table2-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -1619,7 +1619,7 @@
             </xsl:when>
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table3-cell"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -1629,7 +1629,7 @@
             <xsl:otherwise>
                 <fo:table-cell xsl:use-attribute-sets="table3-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -1749,7 +1749,7 @@
             </xsl:when>
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table4-cell"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -1759,7 +1759,7 @@
             <xsl:otherwise>
                 <fo:table-cell xsl:use-attribute-sets="table4-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -1879,7 +1879,7 @@
             </xsl:when>
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table5-cell"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -1889,7 +1889,7 @@
             <xsl:otherwise>
                 <fo:table-cell xsl:use-attribute-sets="table5-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -2009,7 +2009,7 @@
             </xsl:when>
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table6-cell"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -2019,7 +2019,7 @@
             <xsl:otherwise>
                 <fo:table-cell xsl:use-attribute-sets="table6-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -2139,7 +2139,7 @@
             </xsl:when>
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table7-cell"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -2149,7 +2149,7 @@
             <xsl:otherwise>
                 <fo:table-cell xsl:use-attribute-sets="table7-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -2269,7 +2269,7 @@
             </xsl:when>
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table8-cell"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -2279,7 +2279,7 @@
             <xsl:otherwise>
                 <fo:table-cell xsl:use-attribute-sets="table8-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -2399,7 +2399,7 @@
             </xsl:when>
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table9-cell"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -2409,7 +2409,7 @@
             <xsl:otherwise>
                 <fo:table-cell xsl:use-attribute-sets="table9-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -2529,7 +2529,7 @@
             </xsl:when>
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table10-cell"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -2539,7 +2539,7 @@
             <xsl:otherwise>
                 <fo:table-cell xsl:use-attribute-sets="table10-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -2659,7 +2659,7 @@
             </xsl:when>
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table11-cell"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -2669,7 +2669,7 @@
             <xsl:otherwise>
                 <fo:table-cell xsl:use-attribute-sets="table11-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -2789,7 +2789,7 @@
             </xsl:when>
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table12-cell"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -2799,7 +2799,7 @@
             <xsl:otherwise>
                 <fo:table-cell xsl:use-attribute-sets="table12-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -2919,7 +2919,7 @@
             </xsl:when>
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table13-cell"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -2929,7 +2929,7 @@
             <xsl:otherwise>
                 <fo:table-cell xsl:use-attribute-sets="table13-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -3049,7 +3049,7 @@
             </xsl:when>
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table14-cell"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -3059,7 +3059,7 @@
             <xsl:otherwise>
                 <fo:table-cell xsl:use-attribute-sets="table14-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -3179,7 +3179,7 @@
             </xsl:when>
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table15-cell"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -3189,7 +3189,7 @@
             <xsl:otherwise>
                 <fo:table-cell xsl:use-attribute-sets="table15-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -3309,7 +3309,7 @@
             </xsl:when>
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table16-cell"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -3319,7 +3319,7 @@
             <xsl:otherwise>
                 <fo:table-cell xsl:use-attribute-sets="table16-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -3439,7 +3439,7 @@
             </xsl:when>
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table17-cell"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -3449,7 +3449,7 @@
             <xsl:otherwise>
                 <fo:table-cell xsl:use-attribute-sets="table17-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -3569,7 +3569,7 @@
             </xsl:when>
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table18-cell"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -3579,7 +3579,7 @@
             <xsl:otherwise>
                 <fo:table-cell xsl:use-attribute-sets="table18-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -3699,7 +3699,7 @@
             </xsl:when>
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table19-cell"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -3709,7 +3709,7 @@
             <xsl:otherwise>
                 <fo:table-cell xsl:use-attribute-sets="table19-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -3829,7 +3829,7 @@
             </xsl:when>
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table20-cell"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -3839,7 +3839,7 @@
             <xsl:otherwise>
                 <fo:table-cell xsl:use-attribute-sets="table20-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -3959,7 +3959,7 @@
             </xsl:when>
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table21-cell"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -3969,7 +3969,7 @@
             <xsl:otherwise>
                 <fo:table-cell xsl:use-attribute-sets="table21-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -4089,7 +4089,7 @@
             </xsl:when>
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table22-cell"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -4099,7 +4099,7 @@
             <xsl:otherwise>
                 <fo:table-cell xsl:use-attribute-sets="table22-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -4219,7 +4219,7 @@
             </xsl:when>
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table23-cell"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -4229,7 +4229,7 @@
             <xsl:otherwise>
                 <fo:table-cell xsl:use-attribute-sets="table23-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -4349,7 +4349,7 @@
             </xsl:when>
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table24-cell"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -4359,7 +4359,7 @@
             <xsl:otherwise>
                 <fo:table-cell xsl:use-attribute-sets="table24-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -4479,7 +4479,7 @@
             </xsl:when>
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table25-cell"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -4489,7 +4489,7 @@
             <xsl:otherwise>
                 <fo:table-cell xsl:use-attribute-sets="table25-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -4609,7 +4609,7 @@
             </xsl:when>
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table26-cell"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -4619,7 +4619,7 @@
             <xsl:otherwise>
                 <fo:table-cell xsl:use-attribute-sets="table26-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -4739,7 +4739,7 @@
             </xsl:when>
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table27-cell"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -4749,7 +4749,7 @@
             <xsl:otherwise>
                 <fo:table-cell xsl:use-attribute-sets="table27-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -4869,7 +4869,7 @@
             </xsl:when>
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table28-cell"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -4879,7 +4879,7 @@
             <xsl:otherwise>
                 <fo:table-cell xsl:use-attribute-sets="table28-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -4999,7 +4999,7 @@
             </xsl:when>
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table29-cell"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -5009,7 +5009,7 @@
             <xsl:otherwise>
                 <fo:table-cell xsl:use-attribute-sets="table29-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -5129,7 +5129,7 @@
             </xsl:when>
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table30-cell"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -5139,7 +5139,7 @@
             <xsl:otherwise>
                 <fo:table-cell xsl:use-attribute-sets="table30-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
