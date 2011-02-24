@@ -197,7 +197,7 @@
     </xsl:template>
 
     <!--RUBRIC-->
-    <xsl:template match="rubric">
+    <xsl:template match="rubric[not(@classes)]">
         <fo:block role="rubric" xsl:use-attribute-sets="rubric-block">
             <xsl:apply-templates/>
         </fo:block>
