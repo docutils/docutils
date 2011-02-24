@@ -6,7 +6,7 @@ if TEST:
 else:
     en =  num_styles + 1
 
-ss = '/Users/cynthia/tmp/paultremblay/docutilsToFo/xsl_fo/table_extended_new.xsl'
+ss = '/Users/cynthia/tmp/paultremblay/docutilsToFo/xsl_fo/table_extended.xsl'
 write_obj = file(ss, 'w')
 start= """<xsl:stylesheet 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -264,7 +264,7 @@ for n in range(1,en):
             </xsl:when>
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table%s-cell"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
@@ -274,7 +274,7 @@ for n in range(1,en):
             <xsl:otherwise>
                 <fo:table-cell xsl:use-attribute-sets="table%s-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    number-columns-spanned="{$columns-spanned}">
+                    number-columns-spanned="{$cols-spanned}">
                     <xsl:apply-templates mode="classes"/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
