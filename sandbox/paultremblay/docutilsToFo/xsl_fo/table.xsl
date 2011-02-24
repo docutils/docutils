@@ -30,11 +30,6 @@
     <xsl:attribute-set name="thead-cell" use-attribute-sets="default-cell">
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="thead-borderless-cell">
-        <xsl:attribute name="padding">1em</xsl:attribute>
-        <xsl:attribute name="border-collapse">collapse</xsl:attribute>
-    </xsl:attribute-set>
-
     <xsl:attribute-set name="thead-block">
     </xsl:attribute-set>
 
@@ -46,10 +41,6 @@
     </xsl:attribute-set>
 
     <xsl:attribute-set name="table-cell" use-attribute-sets="default-cell">
-    </xsl:attribute-set>
-
-    <xsl:attribute-set name="table-cell-borderless" >
-        <xsl:attribute name="padding">1em</xsl:attribute>
     </xsl:attribute-set>
 
     <xsl:attribute-set name="cell-block">
@@ -64,7 +55,7 @@
 
     <!--END OF ATTRIBUTE SETS-->
 
-    <xsl:template match="table[not(@classes)]|table[@classes='borderless']">
+    <xsl:template match="table[not(@classes)]">
         <fo:block-container xsl:use-attribute-sets = "table-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
                 <xsl:apply-templates select="title" mode="caption"/>
@@ -98,13 +89,9 @@
     </xsl:template>
 
     <xsl:template match="thead/row">
-        <xsl:apply-templates/>
-    </xsl:template>
-
-    <xsl:template match="thead[ancestor::table[@classes='borderless']]/row/entry" priority="2">
-        <fo:table-cell xsl:use-attribute-sets="thead-borderless-cell">
+        <fo:table-row>
             <xsl:apply-templates/>
-        </fo:table-cell>
+        </fo:table-row>
     </xsl:template>
 
     <xsl:template match="thead/row/entry">
@@ -131,7 +118,7 @@
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="tbody/row/entry">
+    <xsl:template match="table[not(@classes)]/tgroup/tbody/row/entry">
         <xsl:variable name="cols-spanned">
             <xsl:choose>
                 <xsl:when test="@morecols">
@@ -149,25 +136,45 @@
             </xsl:choose>
         </xsl:variable>
         <xsl:choose>
-            <xsl:when test="ancestor::table[@classes='borderless']">
-                <fo:table-cell xsl:use-attribute-sets="table-cell-borderless" 
-                    number-columns-spanned="{$cols-spanned}"
-                    number-rows-spanned="{$rows-spanned}"
-                    >
+            <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
+                <fo:table-cell xsl:use-attribute-sets="table-cell">
                     <xsl:apply-templates/>
+                    <xsl:if test="not(paragraph)">
+                        <fo:block/>
+                    </xsl:if>
                 </fo:table-cell>
-                
+            </xsl:when>
+            <xsl:when test="$cols-spanned= 1">
+                <fo:table-cell xsl:use-attribute-sets="table-cell"
+                    number-rows-spanned="{$rows-spanned}">
+                    <xsl:apply-templates/>
+                    <xsl:if test="not(paragraph)">
+                        <fo:block/>
+                    </xsl:if>
+                </fo:table-cell>
+            </xsl:when>
+            <xsl:when test="$rows-spanned= 1">
+                <fo:table-cell xsl:use-attribute-sets="table-cell"
+                    number-columns-spanned="{$cols-spanned}">
+                    <xsl:apply-templates/>
+                    <xsl:if test="not(paragraph)">
+                        <fo:block/>
+                    </xsl:if>
+                </fo:table-cell>
             </xsl:when>
             <xsl:otherwise>
-                <fo:table-cell xsl:use-attribute-sets="table-cell" 
-                    number-columns-spanned="{$cols-spanned}"
+                <fo:table-cell xsl:use-attribute-sets="table-cell"
                     number-rows-spanned="{$rows-spanned}"
-                    >
-                    <xsl:apply-templates/>
+                    number-columns-spanned="{$cols-spanned}">
+                    <xsl:apply-templates />
+                    <xsl:if test="not(paragraph)">
+                        <fo:block/>
+                    </xsl:if>
                 </fo:table-cell>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
+
 
     <xsl:template match="tbody/row/entry/paragraph">
         <fo:block xsl:use-attribute-sets="cell-block">
