@@ -36,13 +36,6 @@
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='borderless']/tgroup/tbody/row/entry">
-        <fo:table-cell xsl:use-attribute-sets="table-cell-borderless" 
-            number-columns-spanned="{$cols-spanned}"
-            number-rows-spanned="{$rows-spanned}" >
-            <xsl:apply-templates/>
-        </fo:table-cell>
-    </xsl:template>
 
     <xsl:template match="table[@classes = 'borderless']/tgroup/tbody/row/entry">
         <xsl:variable name="cols-spanned">
@@ -91,6 +84,11 @@
         </xsl:choose>
     </xsl:template>
 
+    <xsl:template match="table[@classes = 'borderless']/tgroup/tbody/row/entry/paragraph">
+        <fo:block xsl:use-attribute-sets="cell-block">
+            <xsl:apply-templates/>
+        </fo:block>
+    </xsl:template>
 
 
 </xsl:stylesheet> 
