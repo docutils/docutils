@@ -90,11 +90,14 @@ title, bibliographic, dedication, abstract, and toc
 <xsl:param name="table28-cols"></xsl:param>
 <xsl:param name="table29-cols"></xsl:param>
 <xsl:param name="table30-cols"></xsl:param>
+<xsl:param name="table-cols"></xsl:param>
+<xsl:param name="table-borderless-cols"></xsl:param>
+<xsl:param name="table-long-cols"></xsl:param>
 
 <xsl:param name="long-rows-first-page"></xsl:param>
 
 <!--Parameters for docinfo fields. These parameters are used to fill in the text before such
-fields as author, etc.`docutils`-->
+fields as author, etc.-->
 <xsl:param name="author-text">Author: </xsl:param>
 <xsl:param name="authors-text">Authors: </xsl:param>
 <xsl:param name="organization-text">Organization: </xsl:param>
