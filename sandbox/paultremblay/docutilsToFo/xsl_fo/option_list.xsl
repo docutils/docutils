@@ -92,6 +92,10 @@
         <xsl:attribute name="space-before">8pt</xsl:attribute>
     </xsl:attribute-set>
 
+    <xsl:attribute-set name="option-list-description-first-block" use-attribute-sets = "option-list-description-block">
+        <xsl:attribute name="space-before">0pt</xsl:attribute>
+    </xsl:attribute-set>
+
     <!--for the block for paragraphs describing options. 
     This attribute set for the first of such paragraphs
     Element is fo:block.-->
