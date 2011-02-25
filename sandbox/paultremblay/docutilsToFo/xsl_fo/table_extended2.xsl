@@ -1,8 +1,7 @@
 <xsl:stylesheet 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:fo="http://www.w3.org/1999/XSL/Format"
-    version="1.1"
-    >
+    version="1.1">
 
     <!-- $Id$ -->
 
@@ -21,7 +20,10 @@
             <xsl:if test="title and $table-title-placement = 'top'">
                 <xsl:apply-templates select="title" mode="caption"/>
             </xsl:if>
-            <fo:table xsl:use-attribute-sets="table">
+            <fo:table role="borderless" xsl:use-attribute-sets="table">
+                <xsl:call-template name="make-col-specs">
+                    <xsl:with-param name="classes" select="@classes"/>
+                </xsl:call-template>
                 <xsl:apply-templates/>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
@@ -30,12 +32,48 @@
         </fo:block-container>
     </xsl:template>
 
-    <xsl:template match="thead[ancestor::table[@classes='borderless']]/row/entry" priority="2">
+    <xsl:template match="table[@classes='borderless']/tgroup">
+        <xsl:apply-templates/>
+    </xsl:template>
+
+    <xsl:template match="table[@classes='borderless']/tgroup/colspec"/>
+
+    <xsl:template match="table[@classes = 'borderless']/tgroup/thead">
+        <fo:table-header xsl:use-attribute-sets = "thead-header">
+            <xsl:apply-templates/>
+        </fo:table-header>
+    </xsl:template>
+
+    <xsl:template match="table[@classes='borderless']/tgroup//thead/row">
+        <fo:table-row xsl:use-attribute-sets="table-header-row">
+            <xsl:apply-templates/>
+        </fo:table-row>
+    </xsl:template>
+
+
+    <xsl:template match="table[@classes='borderless']/tgroup/thead/row/entry">
         <fo:table-cell xsl:use-attribute-sets="thead-borderless-cell">
             <xsl:apply-templates/>
         </fo:table-cell>
     </xsl:template>
 
+    <xsl:template match="table[@classes='borderless']/tgroup/thead/row/entry/paragraph">
+        <fo:block xsl:use-attribute-sets="thead-block">
+            <xsl:apply-templates/>
+        </fo:block>
+    </xsl:template>
+
+    <xsl:template match="table[@classes='borderless']/tgroup/tbody">
+        <fo:table-body xsl:use-attribute-sets="table-body">
+            <xsl:apply-templates/>
+        </fo:table-body>
+    </xsl:template>
+
+    <xsl:template match="table[@classes='borderless']/tgroup/tbody/row">
+        <fo:table-row xsl:use-attribute-sets="table-row">
+            <xsl:apply-templates/>
+        </fo:table-row>
+    </xsl:template>
 
     <xsl:template match="table[@classes = 'borderless']/tgroup/tbody/row/entry">
         <xsl:variable name="cols-spanned">
