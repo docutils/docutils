@@ -110,7 +110,19 @@ for n in range(1,en):
                 </xsl:when>\n""" % (n, n)
     write_obj.write(s)
 
-s= """             </xsl:choose>
+s= """\n                 <xsl:when test="$classes = 'borderless'">
+                       <xsl:value-of select="$table-borderless-cols"/>
+                  </xsl:when> 
+
+                  <xsl:when test="$classes = 'long'">
+                       <xsl:value-of select="$table-long-cols"/>
+                  </xsl:when> 
+
+                  <xsl:when test="$classes = ''">
+                       <xsl:value-of select="$table-cols"/>
+                  </xsl:when> 
+
+             </xsl:choose>
         </xsl:variable>
         <xsl:value-of select="$columns"/>
     </xsl:template>\n"""
@@ -159,6 +171,18 @@ s = """\n
 
 write_obj.write(s)
 
+s= """\n     <xsl:template match="tgroup/colspec" mode="classes"/>
+
+     <xsl:template match="tgroup/colspec" mode="use">
+        <xsl:variable name="col-num">
+            <xsl:number/>
+        </xsl:variable>
+        <fo:table-column column-number="{$col-num}" 
+            column-width="proportional-column-width({@colwidth})"/>
+     </xsl:template>\n"""
+
+write_obj.write(s)
+
 for n in range(1,en):
     s = """\n   
      <xsl:template match="table[@classes='table%s']">
@@ -185,16 +209,6 @@ for n in range(1,en):
          <xsl:apply-templates mode="classes">
              <xsl:with-param name="classes" select="$classes"/>
          </xsl:apply-templates>
-    </xsl:template>
-
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
     </xsl:template>
 
 
