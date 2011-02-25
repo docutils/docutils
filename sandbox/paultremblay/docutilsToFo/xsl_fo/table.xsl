@@ -70,11 +70,11 @@
     </xsl:template>
 
 
-    <xsl:template match="tgroup">
+    <xsl:template match="table[not(@classes)]/tgroup">
         <xsl:apply-templates/>
     </xsl:template>
 
-    <xsl:template match="tgroup/colspec">
+    <xsl:template match="table[not(@classes)]/tgroup/colspec">
         <xsl:variable name="col-num">
             <xsl:number/>
         </xsl:variable>
@@ -82,37 +82,37 @@
             column-width="proportional-column-width({@colwidth})"/>
     </xsl:template>
 
-    <xsl:template match="tgroup/thead">
+    <xsl:template match="table[not(@classes)]/tgroup/thead">
         <fo:table-header xsl:use-attribute-sets = "thead-header">
             <xsl:apply-templates/>
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="thead/row">
+    <xsl:template match="table[not(@classes)]/tgroup/thead/row">
         <fo:table-row>
             <xsl:apply-templates/>
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="thead/row/entry">
+    <xsl:template match="table[not(@classes)]/tgroup/thead/row/entry">
         <fo:table-cell xsl:use-attribute-sets="thead-cell">
             <xsl:apply-templates/>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="thead/row/entry/paragraph">
+    <xsl:template match="table[not(@classes)]/tgroup/thead/row/entry/paragraph">
         <fo:block xsl:use-attribute-sets="thead-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="tbody">
+    <xsl:template match="table[not(@classes)]/tgroup/tbody">
         <fo:table-body xsl:use-attribute-sets="table-body">
             <xsl:apply-templates/>
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="tbody/row">
+    <xsl:template match="table[not(@classes)]/tgroup/tbody/row">
         <fo:table-row xsl:use-attribute-sets="table-row">
             <xsl:apply-templates/>
         </fo:table-row>
@@ -176,7 +176,7 @@
     </xsl:template>
 
 
-    <xsl:template match="tbody/row/entry/paragraph">
+    <xsl:template match="table[not(@classes)]/tgroup/tbody/row/entry/paragraph">
         <fo:block xsl:use-attribute-sets="cell-block">
             <xsl:apply-templates/>
         </fo:block>
