@@ -1210,6 +1210,15 @@
                  <xsl:when test="$classes = 'table30'">
                     <xsl:value-of select="$table30-cols"/>
                 </xsl:when>
+
+                 <xsl:when test="$classes = 'borderless'">
+                       <xsl:value-of select="$table-borderless-cols"/>
+                  </xsl:when> 
+
+                  <xsl:when test="$classes = ''">
+                       <xsl:value-of select="$table-cols"/>
+                  </xsl:when> 
+
              </xsl:choose>
         </xsl:variable>
         <xsl:value-of select="$columns"/>
@@ -1255,6 +1264,16 @@
         </xsl:choose>
     </xsl:template>
 
+     <xsl:template match="tgroup/colspec" mode="classes"/>
+
+     <xsl:template match="tgroup/colspec" mode="use">
+        <xsl:variable name="col-num">
+            <xsl:number/>
+        </xsl:variable>
+        <fo:table-column column-number="{$col-num}" 
+            column-width="proportional-column-width({@colwidth})"/>
+     </xsl:template>
+
    
      <xsl:template match="table[@classes='table1']">
         <fo:block-container xsl:use-attribute-sets = "table1-block-container">
@@ -1280,16 +1299,6 @@
          <xsl:apply-templates mode="classes">
              <xsl:with-param name="classes" select="$classes"/>
          </xsl:apply-templates>
-    </xsl:template>
-
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
     </xsl:template>
 
 
@@ -1412,16 +1421,6 @@
          </xsl:apply-templates>
     </xsl:template>
 
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
-    </xsl:template>
-
 
     <xsl:template match="table[@classes = 'table2']/tgroup/thead" mode="classes">
         <fo:table-header xsl:use-attribute-sets = "thead2-header">
@@ -1540,16 +1539,6 @@
          <xsl:apply-templates mode="classes">
              <xsl:with-param name="classes" select="$classes"/>
          </xsl:apply-templates>
-    </xsl:template>
-
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
     </xsl:template>
 
 
@@ -1672,16 +1661,6 @@
          </xsl:apply-templates>
     </xsl:template>
 
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
-    </xsl:template>
-
 
     <xsl:template match="table[@classes = 'table4']/tgroup/thead" mode="classes">
         <fo:table-header xsl:use-attribute-sets = "thead4-header">
@@ -1800,16 +1779,6 @@
          <xsl:apply-templates mode="classes">
              <xsl:with-param name="classes" select="$classes"/>
          </xsl:apply-templates>
-    </xsl:template>
-
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
     </xsl:template>
 
 
@@ -1932,16 +1901,6 @@
          </xsl:apply-templates>
     </xsl:template>
 
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
-    </xsl:template>
-
 
     <xsl:template match="table[@classes = 'table6']/tgroup/thead" mode="classes">
         <fo:table-header xsl:use-attribute-sets = "thead6-header">
@@ -2060,16 +2019,6 @@
          <xsl:apply-templates mode="classes">
              <xsl:with-param name="classes" select="$classes"/>
          </xsl:apply-templates>
-    </xsl:template>
-
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
     </xsl:template>
 
 
@@ -2192,16 +2141,6 @@
          </xsl:apply-templates>
     </xsl:template>
 
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
-    </xsl:template>
-
 
     <xsl:template match="table[@classes = 'table8']/tgroup/thead" mode="classes">
         <fo:table-header xsl:use-attribute-sets = "thead8-header">
@@ -2320,16 +2259,6 @@
          <xsl:apply-templates mode="classes">
              <xsl:with-param name="classes" select="$classes"/>
          </xsl:apply-templates>
-    </xsl:template>
-
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
     </xsl:template>
 
 
@@ -2452,16 +2381,6 @@
          </xsl:apply-templates>
     </xsl:template>
 
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
-    </xsl:template>
-
 
     <xsl:template match="table[@classes = 'table10']/tgroup/thead" mode="classes">
         <fo:table-header xsl:use-attribute-sets = "thead10-header">
@@ -2580,16 +2499,6 @@
          <xsl:apply-templates mode="classes">
              <xsl:with-param name="classes" select="$classes"/>
          </xsl:apply-templates>
-    </xsl:template>
-
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
     </xsl:template>
 
 
@@ -2712,16 +2621,6 @@
          </xsl:apply-templates>
     </xsl:template>
 
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
-    </xsl:template>
-
 
     <xsl:template match="table[@classes = 'table12']/tgroup/thead" mode="classes">
         <fo:table-header xsl:use-attribute-sets = "thead12-header">
@@ -2840,16 +2739,6 @@
          <xsl:apply-templates mode="classes">
              <xsl:with-param name="classes" select="$classes"/>
          </xsl:apply-templates>
-    </xsl:template>
-
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
     </xsl:template>
 
 
@@ -2972,16 +2861,6 @@
          </xsl:apply-templates>
     </xsl:template>
 
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
-    </xsl:template>
-
 
     <xsl:template match="table[@classes = 'table14']/tgroup/thead" mode="classes">
         <fo:table-header xsl:use-attribute-sets = "thead14-header">
@@ -3100,16 +2979,6 @@
          <xsl:apply-templates mode="classes">
              <xsl:with-param name="classes" select="$classes"/>
          </xsl:apply-templates>
-    </xsl:template>
-
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
     </xsl:template>
 
 
@@ -3232,16 +3101,6 @@
          </xsl:apply-templates>
     </xsl:template>
 
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
-    </xsl:template>
-
 
     <xsl:template match="table[@classes = 'table16']/tgroup/thead" mode="classes">
         <fo:table-header xsl:use-attribute-sets = "thead16-header">
@@ -3360,16 +3219,6 @@
          <xsl:apply-templates mode="classes">
              <xsl:with-param name="classes" select="$classes"/>
          </xsl:apply-templates>
-    </xsl:template>
-
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
     </xsl:template>
 
 
@@ -3492,16 +3341,6 @@
          </xsl:apply-templates>
     </xsl:template>
 
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
-    </xsl:template>
-
 
     <xsl:template match="table[@classes = 'table18']/tgroup/thead" mode="classes">
         <fo:table-header xsl:use-attribute-sets = "thead18-header">
@@ -3620,16 +3459,6 @@
          <xsl:apply-templates mode="classes">
              <xsl:with-param name="classes" select="$classes"/>
          </xsl:apply-templates>
-    </xsl:template>
-
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
     </xsl:template>
 
 
@@ -3752,16 +3581,6 @@
          </xsl:apply-templates>
     </xsl:template>
 
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
-    </xsl:template>
-
 
     <xsl:template match="table[@classes = 'table20']/tgroup/thead" mode="classes">
         <fo:table-header xsl:use-attribute-sets = "thead20-header">
@@ -3880,16 +3699,6 @@
          <xsl:apply-templates mode="classes">
              <xsl:with-param name="classes" select="$classes"/>
          </xsl:apply-templates>
-    </xsl:template>
-
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
     </xsl:template>
 
 
@@ -4012,16 +3821,6 @@
          </xsl:apply-templates>
     </xsl:template>
 
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
-    </xsl:template>
-
 
     <xsl:template match="table[@classes = 'table22']/tgroup/thead" mode="classes">
         <fo:table-header xsl:use-attribute-sets = "thead22-header">
@@ -4140,16 +3939,6 @@
          <xsl:apply-templates mode="classes">
              <xsl:with-param name="classes" select="$classes"/>
          </xsl:apply-templates>
-    </xsl:template>
-
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
     </xsl:template>
 
 
@@ -4272,16 +4061,6 @@
          </xsl:apply-templates>
     </xsl:template>
 
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
-    </xsl:template>
-
 
     <xsl:template match="table[@classes = 'table24']/tgroup/thead" mode="classes">
         <fo:table-header xsl:use-attribute-sets = "thead24-header">
@@ -4400,16 +4179,6 @@
          <xsl:apply-templates mode="classes">
              <xsl:with-param name="classes" select="$classes"/>
          </xsl:apply-templates>
-    </xsl:template>
-
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
     </xsl:template>
 
 
@@ -4532,16 +4301,6 @@
          </xsl:apply-templates>
     </xsl:template>
 
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
-    </xsl:template>
-
 
     <xsl:template match="table[@classes = 'table26']/tgroup/thead" mode="classes">
         <fo:table-header xsl:use-attribute-sets = "thead26-header">
@@ -4660,16 +4419,6 @@
          <xsl:apply-templates mode="classes">
              <xsl:with-param name="classes" select="$classes"/>
          </xsl:apply-templates>
-    </xsl:template>
-
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
     </xsl:template>
 
 
@@ -4792,16 +4541,6 @@
          </xsl:apply-templates>
     </xsl:template>
 
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
-    </xsl:template>
-
 
     <xsl:template match="table[@classes = 'table28']/tgroup/thead" mode="classes">
         <fo:table-header xsl:use-attribute-sets = "thead28-header">
@@ -4922,16 +4661,6 @@
          </xsl:apply-templates>
     </xsl:template>
 
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
-    </xsl:template>
-
 
     <xsl:template match="table[@classes = 'table29']/tgroup/thead" mode="classes">
         <fo:table-header xsl:use-attribute-sets = "thead29-header">
@@ -5050,16 +4779,6 @@
          <xsl:apply-templates mode="classes">
              <xsl:with-param name="classes" select="$classes"/>
          </xsl:apply-templates>
-    </xsl:template>
-
-    <xsl:template match="tgroup/colspec" mode="classes"/>
-
-    <xsl:template match="tgroup/colspec" mode="use">
-        <xsl:variable name="col-num">
-            <xsl:number/>
-        </xsl:variable>
-        <fo:table-column column-number="{$col-num}" 
-            column-width="proportional-column-width({@colwidth})"/>
     </xsl:template>
 
 

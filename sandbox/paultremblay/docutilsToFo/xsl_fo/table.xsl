@@ -61,6 +61,9 @@
                 <xsl:apply-templates select="title" mode="caption"/>
             </xsl:if>
             <fo:table xsl:use-attribute-sets="table">
+                <xsl:call-template name="make-col-specs">
+                    <xsl:with-param name="classes" select="''"/>
+                </xsl:call-template>
                 <xsl:apply-templates/>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
@@ -74,6 +77,9 @@
         <xsl:apply-templates/>
     </xsl:template>
 
+    <xsl:template match="table[not(@classes)]/tgroup/colspec"/>
+
+    <!--
     <xsl:template match="table[not(@classes)]/tgroup/colspec">
         <xsl:variable name="col-num">
             <xsl:number/>
@@ -81,6 +87,7 @@
         <fo:table-column column-number="{$col-num}" 
             column-width="proportional-column-width({@colwidth})"/>
     </xsl:template>
+    -->
 
     <xsl:template match="table[not(@classes)]/tgroup/thead">
         <fo:table-header xsl:use-attribute-sets = "thead-header">
