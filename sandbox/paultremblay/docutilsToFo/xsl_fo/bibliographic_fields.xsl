@@ -134,6 +134,10 @@
         <xsl:attribute name="space-before">12pt</xsl:attribute>
     </xsl:attribute-set>
 
+    <xsl:attribute-set name="Some-custom-field">
+    </xsl:attribute-set>
+
+
 
     <!--END OF ATTRIBUTE SETS-->
     <!--======================================================================-->
