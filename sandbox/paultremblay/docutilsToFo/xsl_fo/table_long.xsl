@@ -27,6 +27,10 @@
         <xsl:attribute name="keep-together.within-page">always</xsl:attribute>
     </xsl:attribute-set>
 
+    <xsl:attribute-set name="long-header-table-row">
+        <xsl:attribute name="keep-together.within-page">always</xsl:attribute>
+    </xsl:attribute-set>
+
     <xsl:attribute-set name="long-table-cell" use-attribute-sets="default-cell">
     </xsl:attribute-set>
 
@@ -74,9 +78,10 @@
         </xsl:choose>
     </xsl:template>
 
+
     <xsl:template name="caption-if-no-header">
         <xsl:param name="type"/>
-        <xsl:if test="not(tgroup/thead) and title">
+        <xsl:if test="not(tgroup/thead) and title and $table-title-placement = 'top'">
             <fo:table-header xsl:use-attribute-sets = "long-thead-header">
                 <xsl:choose>
                     <xsl:when test = "$type = 'first'">
@@ -90,25 +95,147 @@
         </xsl:if>
     </xsl:template>
 
+    <xsl:template name="caption-if-no-footer">
+        <xsl:param name="type"/>
+        <xsl:if test="not(tgroup/tfoot) and title and $table-title-placement = 'bottom'">
+            <fo:table-footer xsl:use-attribute-sets = "long-thead-header">
+                <xsl:choose>
+                    <xsl:when test = "$type = 'first'">
+                        <xsl:call-template name="make-first-long-header"/>
+                    </xsl:when>
+                    <xsl:when test = "$type = 'second'">
+                        <xsl:call-template name="make-second-long-header"/>
+                    </xsl:when>
+                </xsl:choose>
+            </fo:table-footer>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="num-first-rows">
+        <xsl:param name="preceding-tables"/>
+        <xsl:param name="row-string"/>
+        <xsl:param name="first-run">True</xsl:param>
+        <xsl:param name="recurs-num">1</xsl:param>
+        <xsl:variable name="table-num">
+            <xsl:choose>
+                <xsl:when test="$preceding-tables != ''">
+                    <xsl:value-of select="$preceding-tables"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="count(preceding::table[@classes='long']) + 1"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:variable name="row-str">
+            <xsl:choose>
+                <xsl:when test="$first-run = 'True'">
+                    <xsl:value-of select="normalize-space($long-rows-first-page)"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="$row-string"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:variable name="num">
+            <xsl:choose>
+                <xsl:when test="substring-before($row-str, ',') != ''">
+                    <xsl:value-of select="substring-before($row-str, ',')"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="normalize-space($row-str)"/>
+                </xsl:otherwise>
+            </xsl:choose>
+        </xsl:variable>
+        <xsl:choose>
+            <xsl:when test="$num = ''"/>
+            <xsl:when test="$recurs-num = $table-num">
+                <xsl:variable name="num-t-rows" select =  "count(tgroup/tbody/row)"/>
+                <xsl:if test = "$num != 0 and $num &gt; $num-t-rows - 1">
+                    <xsl:variable name="msg">
+                        <xsl:value-of select="$num"/>
+                        <xsl:text> too large a number for long table </xsl:text>
+                        <xsl:value-of select="$table-num"/>
+                        <xsl:text>&#xA;</xsl:text>
+                        <xsl:text>Table has </xsl:text>
+                        <xsl:value-of select="$num-t-rows"/>
+                        <xsl:text> rows. Can have no more than </xsl:text>
+                        <xsl:value-of select="$num-t-rows - 1"/>
+                        <xsl:text> rows on first page.&#xA;</xsl:text>
+                    </xsl:variable>
+                    <xsl:call-template name="quit-message">
+                        <xsl:with-param name="msg" select="$msg"/>
+                    </xsl:call-template>
+                </xsl:if>
+                <xsl:value-of select="$num"/> 
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:call-template name="num-first-rows">
+                    <xsl:with-param name="preceding-tables" select="$table-num"/>
+                    <xsl:with-param name="recurs-num" select="$recurs-num + 1"/>
+                    <xsl:with-param name="row-string" select="substring-after($row-str, ',')"/>
+                    <xsl:with-param name="first-run" select="'False'"/>
+                </xsl:call-template>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+
     <xsl:template match="table[@classes= 'long']">
-        <fo:table xsl:use-attribute-sets="long-table" break-after="page">
-            <xsl:call-template name="make-col-specs">
-                <xsl:with-param name="classes" select="@classes"/>
-            </xsl:call-template>
-            <xsl:call-template name="caption-if-no-header">
-                <xsl:with-param name="type" select="'first'"/>
-            </xsl:call-template>
-            <xsl:apply-templates mode="first-long"/>
-        </fo:table>
-        <fo:table xsl:use-attribute-sets="long-table">
-            <xsl:call-template name="make-col-specs">
-                <xsl:with-param name="classes" select="@classes"/>
-            </xsl:call-template>
-            <xsl:call-template name="caption-if-no-header">
-                <xsl:with-param name="type" select="'second'"/>
-            </xsl:call-template>
-            <xsl:apply-templates mode="second-long"/>
-        </fo:table>
+        <xsl:variable name="num-first-rows">
+            <xsl:call-template name="num-first-rows"/>
+        </xsl:variable>
+        <xsl:choose>
+            <xsl:when test="$num-first-rows = '' or $num-first-rows = 0">
+                <fo:table xsl:use-attribute-sets="long-table">
+                    <xsl:call-template name="make-col-specs">
+                        <xsl:with-param name="classes" select="@classes"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="caption-if-no-header">
+                        <xsl:with-param name="type" select="'first'"/>
+                    </xsl:call-template>
+                    <xsl:if test = "not(tgroup/thead)">
+                        <xsl:call-template name="caption-if-no-footer">
+                            <xsl:with-param name="type" select="'first'"/>
+                        </xsl:call-template>
+                    </xsl:if>
+                    <xsl:apply-templates/>
+                </fo:table>
+            </xsl:when>
+            <xsl:otherwise>
+                <fo:table xsl:use-attribute-sets="long-table" break-after="page">
+                    <xsl:call-template name="make-col-specs">
+                        <xsl:with-param name="classes" select="@classes"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="caption-if-no-header">
+                        <xsl:with-param name="type" select="'first'"/>
+                    </xsl:call-template>
+                    <xsl:if test = "not(tgroup/thead)">
+                        <xsl:call-template name="caption-if-no-footer">
+                            <xsl:with-param name="type" select="'first'"/>
+                        </xsl:call-template>
+                    </xsl:if>
+                    <xsl:apply-templates mode="first-long">
+                        <xsl:with-param name="num-first-rows" select="$num-first-rows"/>
+                    </xsl:apply-templates>
+                </fo:table>
+                <fo:table xsl:use-attribute-sets="long-table">
+                    <xsl:call-template name="make-col-specs">
+                        <xsl:with-param name="classes" select="@classes"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="caption-if-no-header">
+                        <xsl:with-param name="type" select="'second'"/>
+                    </xsl:call-template>
+                    <xsl:if test = "not(tgroup/thead)">
+                        <xsl:call-template name="caption-if-no-footer">
+                            <xsl:with-param name="type" select="'second'"/>
+                        </xsl:call-template>
+                    </xsl:if>
+                    <xsl:apply-templates mode="second-long">
+                        <xsl:with-param name="num-first-rows" select="$num-first-rows"/>
+                    </xsl:apply-templates>
+                </fo:table>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
     <xsl:template match="table/title" mode="use" priority="2">
@@ -119,12 +246,24 @@
     <xsl:template match="table/title" mode="second-long"/>
 
     <xsl:template match="tgroup" mode="first-long">
-        <xsl:apply-templates mode="first-long"/>
+        <xsl:param name="num-first-rows"/>
+        <xsl:apply-templates mode="first-long">
+            <xsl:with-param name="num-first-rows" select="$num-first-rows"/>
+        </xsl:apply-templates>
     </xsl:template>
 
     <xsl:template match="tgroup" mode="second-long">
-        <xsl:apply-templates mode="second-long"/>
+        <xsl:param name="num-first-rows"/>
+        <xsl:apply-templates mode="second-long">
+            <xsl:with-param name="num-first-rows" select="$num-first-rows"/>
+        </xsl:apply-templates>
     </xsl:template>
+
+    <xsl:template match="table[@classes ='long']/tgroup">
+        <xsl:apply-templates/>
+    </xsl:template>
+
+    <xsl:template match="table[@classes = 'long']/tgroup/colspec"/>
 
     <xsl:template match="table[@classes ='long']/tgroup/thead" mode="first-long">
         <fo:table-header xsl:use-attribute-sets = "long-thead-header">
@@ -135,6 +274,11 @@
             </xsl:if>
             <xsl:apply-templates/>
         </fo:table-header>
+        <xsl:for-each select="../..">
+            <xsl:call-template name="caption-if-no-footer">
+                <xsl:with-param name="type" select="'first'"/>
+            </xsl:call-template>
+        </xsl:for-each>
     </xsl:template>
 
     <xsl:template match="table[@classes = 'long']/tgroup/thead" mode="second-long">
@@ -146,6 +290,27 @@
             </xsl:if>
             <xsl:apply-templates/>
         </fo:table-header>
+        <xsl:for-each select="../..">
+            <xsl:call-template name="caption-if-no-footer">
+                <xsl:with-param name="type" select="'second'"/>
+            </xsl:call-template>
+        </xsl:for-each>
+    </xsl:template>
+
+    <xsl:template match="table[@classes ='long']/tgroup/thead">
+        <fo:table-header xsl:use-attribute-sets = "long-thead-header">
+            <xsl:if test="../../title and $table-title-placement = 'top'">
+                <xsl:for-each select="../..">
+                    <xsl:call-template name="make-first-long-header"/>
+                </xsl:for-each>
+            </xsl:if>
+            <xsl:apply-templates/>
+        </fo:table-header>
+        <xsl:for-each select="../..">
+            <xsl:call-template name="caption-if-no-footer">
+                <xsl:with-param name="type" select="'first'"/>
+            </xsl:call-template>
+        </xsl:for-each>
     </xsl:template>
 
     <xsl:template match="table[@classes ='long']/tgroup/thead/row">
@@ -167,22 +332,36 @@
     </xsl:template>
 
     <xsl:template match="table[@classes = 'long']/tgroup/tbody" mode="first-long">
+        <xsl:param name="num-first-rows"/>
         <fo:table-body xsl:use-attribute-sets="long-table-body">
-            <xsl:apply-templates mode="first-long"/>
+            <xsl:apply-templates mode="first-long">
+                <xsl:with-param name="num-first-rows" select="$num-first-rows"/>
+            </xsl:apply-templates>
         </fo:table-body>
     </xsl:template>
 
     <xsl:template match="table[@classes ='long']/tgroup/tbody" mode="second-long">
+        <xsl:param name="num-first-rows"/>
         <fo:table-body xsl:use-attribute-sets="long-table-body">
-            <xsl:apply-templates mode="second-long"/>
+            <xsl:apply-templates mode="second-long">
+                <xsl:with-param name="num-first-rows" select="$num-first-rows"/>
+            </xsl:apply-templates>
+        </fo:table-body>
+    </xsl:template>
+
+    <xsl:template match="table[@classes = 'long']/tgroup/tbody">
+        <xsl:param name="num-first-rows"/>
+        <fo:table-body xsl:use-attribute-sets="long-table-body">
+            <xsl:apply-templates/>
         </fo:table-body>
     </xsl:template>
 
     <xsl:template match="table[@classes ='long']/tgroup/tbody/row" mode="first-long">
+        <xsl:param name="num-first-rows"/>
         <xsl:variable name="num">
             <xsl:number/>
         </xsl:variable>
-        <xsl:if test="$num  &lt; $long-rows-first-page + 1">
+        <xsl:if test="$num  &lt; $num-first-rows + 1">
             <fo:table-row xsl:use-attribute-sets = "long-table-row">
                 <xsl:apply-templates />
             </fo:table-row>
@@ -190,14 +369,21 @@
     </xsl:template>
 
     <xsl:template match="table[@classes = 'long']/tgroup/tbody/row" mode="second-long">
+        <xsl:param name="num-first-rows"/>
         <xsl:variable name="num">
             <xsl:number/>
         </xsl:variable>
-        <xsl:if test="$num &gt; $long-rows-first-page">
+        <xsl:if test="$num &gt; $num-first-rows">
             <fo:table-row xsl:use-attribute-sets = "long-table-row">
                 <xsl:apply-templates />
             </fo:table-row>
         </xsl:if>
+    </xsl:template>
+
+    <xsl:template match="table[@classes ='long']/tgroup/tbody/row">
+        <fo:table-row xsl:use-attribute-sets = "long-table-row">
+            <xsl:apply-templates />
+        </fo:table-row>
     </xsl:template>
 
     <xsl:template match="table[@classes = 'long']/tgroup/tbody/row/entry">
@@ -248,7 +434,7 @@
     </xsl:template>
 
 
-    <xsl:template match="tbody/row/entry/paragraph">
+    <xsl:template match="table[@classes = 'long']/tgroup/tbody/row/entry/paragraph">
         <fo:block xsl:use-attribute-sets="cell-block">
             <xsl:apply-templates/>
         </fo:block>
