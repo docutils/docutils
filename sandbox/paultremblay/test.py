@@ -109,7 +109,17 @@ test_dict = {
                     'toc-pagination':'with-body',
                     'front-order':'toc, abstract, dedication,,title, bibliographic'},
                     'front_matter5.fo'),
-            ]
+            ],
+
+        'table_long1.xml':[({}, 'table_long1.fo'),
+                ({'table-title-placement':'top'}, 'table_long1_top_title.fo'),
+                ({'table-title-placement':'top','long-rows-first-page':'8' }, 'table_long1_top_title_split.fo'),
+
+                ],
+        'table_long2.xml':[({}, 'table_long2.fo'),
+                ({'table-title-placement':'top'}, 'table_long2_top_title.fo'),
+                ({'table-title-placement':'top','long-rows-first-page':'8' }, 'table_long2_top_title_split.fo'),
+                ],
         }
 # =========================================================================================
 # Docutils_to_fo test
