@@ -169,6 +169,74 @@ Determines the formatting of the bibliographic info. When set to
 formatted as a list. When set to ``'normal'`` or ``''``, the each
 bibliographic field will be formatted as a block.
 
+Custom Table Columns
+====================
+
+**Possible Values**: ``numbers separated by commas``
+
+**Defaults:** ''
+
+The function is the same for the following parameters:
+
+* table-cols
+
+* table-borderless-cols
+
+* table-long-cols
+
+* table1-cols
+
+* table2-cols
+
+* ...
+
+* table30-cols
+
+Each parameter sets the columns for the table. ``'table-cols'``
+sets the columns for the default table;
+``'table-borderless-cols'`` sets the columns for the borderless
+table, and ``'table-long-cols'`` sets the columns for the long
+table. There are also 30 custom tables, and the parameter for the
+columns is ``'table1-cols'``, ``'table2-cols'`` ...
+``'table30-cols'``.
+
+Use these parameters to override the defualts created by
+rst2xml.py
+
+Use a value of numbers separated by commas. For example, a value
+of ``'10,20,10'`` sets the first column to 10, the second to 20,
+and the third to 10. That means the first and third columns will
+have the same width, and the second will be twice as large as
+those.
+
+long-rows-first-page
+====================
+
+**Possible Values**: ``numbers separated by commas``
+
+**Default:**
+
+Use this property to set the number of rows you want on the first
+page for a table with a class of ``'long'``. Only use if you
+desire a different caption from that which appears on the first
+page.
+
+FO by itself cannot create different table headings or footings
+from on subsequent pages. The stylesheets get around this
+limitation by creating two tables, one which takes the first
+heading (or footing), and one which takes the second. The user
+must tell the stylesheets when to start the new table; the
+stylesheets have no way of calcuating this on their own.
+
+Use numbers separated by commas for this parameter, where the
+first number inidcatetes the first long table, the second the
+second table, and so on. For example, a value of ``'8,10'`` tells
+the stylesheet to break the first *long* table at 8 rows, and
+the second at 10 rows.
+
+Leave this parameter empty, or set it to 0 in order to have the
+same caption on all pages.
+
 Bibliographic Field Names
 =========================
 
