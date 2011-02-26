@@ -11,7 +11,7 @@
             <xsl:with-param name="text">Custom Tables</xsl:with-param>
         </xsl:call-template>
         <block>
-            <xsl:text>:fo: fo:block</xsl:text> 
+            <xsl:text>:fo: See below</xsl:text> 
         </block>
         <block first-line-indent="-9">
             <xsl:text>:docutils: See below</xsl:text> 
@@ -29,7 +29,7 @@
         <block>* table1 => table</block>
         <block>* thead1-header => table-header</block>
         <block>* thead1-cell => thead-cell</block>
-        <block>* thead1 => thead-block</block>
+        <block>* thead1-block => thead-block</block>
         <block>* table1-body => table-body</block>
         <block>* table1-header-row => table-header-row</block>
         <block>* table1-row => table-row</block>

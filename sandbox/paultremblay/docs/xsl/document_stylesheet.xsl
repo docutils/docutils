@@ -21,6 +21,8 @@
     <xsl:include href="line_block.xsl"/>
     <xsl:include href="table.xsl"/>
     <xsl:include href="table_extended.xsl"/>
+    <xsl:include href="table_extended2.xsl"/>
+    <xsl:include href="table_long.xsl"/>
     <xsl:include href="footnote.xsl"/>
     <xsl:include href="admonitions.xsl"/>
     <xsl:include href="image_figure.xsl"/>
@@ -214,6 +216,28 @@
                 Attribute sets for the Extended Tables.
             </block>
             <xsl:apply-templates select="document('../../docutilsToFo/xsl_fo/table_extended.xsl')/xsl:stylesheet"/>
+
+            <!--table extended 2 attribute sets-->
+            <xsl:call-template name="make-title">
+                <xsl:with-param name="level">3</xsl:with-param>
+                <xsl:with-param name="text">Table Extended 2 (Borderless)</xsl:with-param>
+            </xsl:call-template>
+            <block>
+                Attribute sets for the Extended 2 (Borderless) Tables.
+            </block>
+            <xsl:apply-templates select="document('../../docutilsToFo/xsl_fo/table_extended2.xsl')/xsl:stylesheet"/>
+
+            <!--table long attribute sets-->
+            <xsl:call-template name="make-title">
+                <xsl:with-param name="level">3</xsl:with-param>
+                <xsl:with-param name="text">Table Long</xsl:with-param>
+            </xsl:call-template>
+            <block>
+                Attribute sets for the Long Tables.
+            </block>
+            <xsl:apply-templates select="document('../../docutilsToFo/xsl_fo/table_long.xsl')/xsl:stylesheet"/>
+
+
 
 
             <!--footnote attribute sets-->
