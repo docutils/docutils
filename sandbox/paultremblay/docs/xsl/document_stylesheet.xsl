@@ -20,6 +20,7 @@
     <xsl:include href="field_list.xsl"/>
     <xsl:include href="line_block.xsl"/>
     <xsl:include href="table.xsl"/>
+    <xsl:include href="table_extended.xsl"/>
     <xsl:include href="footnote.xsl"/>
     <xsl:include href="admonitions.xsl"/>
     <xsl:include href="image_figure.xsl"/>
@@ -203,6 +204,17 @@
                 Attribute sets for the Table.
             </block>
             <xsl:apply-templates select="document('../../docutilsToFo/xsl_fo/table.xsl')/xsl:stylesheet"/>
+
+            <!--table extended attribute sets-->
+            <xsl:call-template name="make-title">
+                <xsl:with-param name="level">3</xsl:with-param>
+                <xsl:with-param name="text">Table Extended</xsl:with-param>
+            </xsl:call-template>
+            <block>
+                Attribute sets for the Extended Tables.
+            </block>
+            <xsl:apply-templates select="document('../../docutilsToFo/xsl_fo/table_extended.xsl')/xsl:stylesheet"/>
+
 
             <!--footnote attribute sets-->
             <xsl:call-template name="make-title">
