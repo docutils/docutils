@@ -261,4 +261,6 @@
         xsl:attribute-set[@name='custom-bib-info9']|
         xsl:attribute-set[@name='custom-bib-info10'] " priority="3"/>
 
+    <xsl:template match= "xsl:attribute-set[@name='Some-custom-field']" priority = "3"/>
+
 </xsl:stylesheet>
