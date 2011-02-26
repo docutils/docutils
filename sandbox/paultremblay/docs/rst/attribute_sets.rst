@@ -2106,6 +2106,21 @@ options or arguments. This groups of blocks sits below the blocks
 formatting the options and arguments, and in a defintion list
 are usually indented right.
 
+option-list-description-first-block
+-----------------------------------
+
+:fo: fo:block
+
+:docutils: option_list/option_list_item/description[1]
+
+:inherits: option-list-description-block
+
+:defaults:
+
+     space-before: 0pt
+
+Same as above, except formats the first such element.
+
 option-list-description-block
 -----------------------------
 
@@ -2289,7 +2304,7 @@ table
 
      table-layout: fixed
 
-     inline-progression-dimension:
+     inline-progression-dimension: 100%
 
 Formats the table.
 
@@ -2334,21 +2349,6 @@ thead-cell
 
 Formats the cells in the table header.
 
-thead-borderless-cell
----------------------
-
-:fo: fo:cell
-
-:docutils: thead/row/entry
-
-:defaults:
-
-     padding: 1em
-
-     border-collapse: collapse
-
-Formats the cells in the table header for a borderless table.
-
 thead-block
 -----------
 
@@ -2380,6 +2380,8 @@ table-row
 
 :defaults:
 
+     keep-together.within-page: always
+
 Attributes for the table row.
 
 table-cell
@@ -2394,19 +2396,6 @@ table-cell
 :defaults:
 
 Attributes for the table cell.
-
-table-cell-borderless
----------------------
-
-:fo: fo:table-cell
-
-:docutils: tbody/row/entry
-
-:defaults:
-
-     padding: 1em
-
-Attributes for the table cell for borderless table.
 
 cell-block
 ----------
@@ -2440,6 +2429,77 @@ before or after the table. If it is placed on top of the table,
 it has a 'keep-with-next="always"' value that cannot be changed.
 If this block is placed on the bottom it has a
 'keep-with-previous="always"' value that cannot be changed.
+
+Table Extended
+==============
+
+Attribute sets for the Extended Tables.
+
+Custom Tables
+-------------
+
+:fo: fo:block
+
+:docutils: See below
+
+The table_extend.xsl contains templates to match 30 custom
+tables, and and attribute sets for each of these tables. Each
+attribute set has has the same function as its corresponding
+attribute set in the regular table, as documented above.
+
+* table1-block-container => table-block-contanter
+
+* table1 => table
+
+* thead1-header => table-header
+
+* thead1-cell => thead-cell
+
+* thead1 => thead-block
+
+* table1-body => table-body
+
+* table1-header-row => table-header-row
+
+* table1-row => table-row
+
+* table1-cell => table-cell
+
+* cell1-block => cell-block
+
+* table2-block-container => table-block-contanter
+
+* table2 => table
+
+* ...
+
+* table2-row => table-row
+
+* table2-cell => table-cell
+
+* cell2-block => cell-block
+
+* ...
+
+* table30-block-container => table-block-contanter
+
+* table30 => table
+
+* thead30-header => table-header
+
+* thead30-cell => thead-cell
+
+* thead30 => thead-block
+
+* table30-body => table-body
+
+* table30-header-row => table-header-row
+
+* table30-row => table-row
+
+* table30-cell => table-cell
+
+* cell30-block => cell-block
 
 Footnote
 ========
