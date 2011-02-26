@@ -212,6 +212,20 @@
         </block>
     </xsl:template>
 
+    <xsl:template match= "xsl:attribute-set[@name='option-list-description-first-block']"
+        priority="3">
+        <xsl:call-template name="before-desc">
+            <xsl:with-param name="fo">fo:block</xsl:with-param> 
+            <xsl:with-param name="docutils">option_list/option_list_item/description[1]</xsl:with-param> 
+            <xsl:with-param name="inherits">option-list-description-block</xsl:with-param> 
+        </xsl:call-template>
+        <block>
+
+            Same as above, except formats the first such element.
+
+        </block>
+    </xsl:template>
+
     <xsl:template match= "xsl:attribute-set[@name='option-list-paragraph-block']" priority="3">
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">fo:block</xsl:with-param> 
