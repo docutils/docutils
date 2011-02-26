@@ -523,6 +523,112 @@
         xsl:param[@name='custom-bib-info9-name']|
         xsl:param[@name='custom-bib-info10-name'] " priority = "3"/>
 
+    <xsl:template match="xsl:param[@name='table-cols']" priority = "3">
+        <xsl:call-template name="make-name">
+            <xsl:with-param name="name">Custom Table Columns</xsl:with-param>
+        </xsl:call-template>
+        <xsl:call-template name="possible-values">
+            <xsl:with-param name="text" select="'numbers separated by commas'"/>
+        </xsl:call-template>
+        <block>**Defaults:** ''</block>
+        <block>
+            The function is the same for the following parameters:
+        </block>
+        <block>* table-cols</block>
+        <block>* table-borderless-cols</block>
+        <block>* table-long-cols</block>
+        <block>* table1-cols</block>
+        <block>* table2-cols</block>
+        <block>* ...</block>
+        <block>* table30-cols</block>
+        <block>
+            Each parameter sets the columns for the table. ``'table-cols'`` sets the columns
+            for the default table; ``'table-borderless-cols'`` sets the columns for the 
+            borderless table, and ``'table-long-cols'`` sets the columns for the long 
+            table. There are also 30 custom tables, and the parameter for the columns is 
+            ``'table1-cols'``, ``'table2-cols'`` ... ``'table30-cols'``.
+        </block>
+        <block>
+            Use these parameters to override the defualts created by rst2xml.py
+        </block>
+
+        <block>
+            Use a value of numbers separated by commas. For example, a value of 
+            ``'10,20,10'`` sets the first column to 10, the second to 20, and the
+            third to 10. That means the first and third columns will have the 
+            same width, and the second will be twice as large as those.
+        </block>
+    </xsl:template>
+
+    <xsl:template match="xsl:param[@name='table1-cols']|
+        xsl:param[@name='table2-cols']|
+        xsl:param[@name='table3-cols']|
+        xsl:param[@name='table4-cols']|
+        xsl:param[@name='table5-cols']|
+        xsl:param[@name='table6-cols']|
+        xsl:param[@name='table7-cols']|
+        xsl:param[@name='table8-cols']|
+        xsl:param[@name='table9-cols']|
+        xsl:param[@name='table10-cols']|
+        xsl:param[@name='table11-cols']|
+        xsl:param[@name='table12-cols']|
+        xsl:param[@name='table13-cols']|
+        xsl:param[@name='table14-cols']|
+        xsl:param[@name='table15-cols']|
+        xsl:param[@name='table16-cols']|
+        xsl:param[@name='table17-cols']|
+        xsl:param[@name='table18-cols']|
+        xsl:param[@name='table19-cols']|
+        xsl:param[@name='table20-cols']|
+        xsl:param[@name='table21-cols']|
+        xsl:param[@name='table22-cols']|
+        xsl:param[@name='table23-cols']|
+        xsl:param[@name='table24-cols']|
+        xsl:param[@name='table25-cols']|
+        xsl:param[@name='table26-cols']|
+        xsl:param[@name='table27-cols']|
+        xsl:param[@name='table28-cols']|
+        xsl:param[@name='table29-cols']|
+        xsl:param[@name='table30-cols']|
+        xsl:param[@name='table-borderless-cols']|
+        xsl:param[@name='table-long-cols'] " priority = "3"/>
+
+    <xsl:template match="xsl:param[@name='long-rows-first-page']" priority = "3">
+        <xsl:call-template name="before_p_text">
+            <xsl:with-param name="possible-values">
+                <xsl:text>numbers separated by commas</xsl:text>
+            </xsl:with-param>
+        </xsl:call-template>
+        <block>
+
+            Use this property to set the number of rows you want on the first
+            page for a table with a class of ``'long'``. Only use if you desire
+            a different caption from that which appears on the first page. 
+
+        </block>
+        <block>
+            FO by itself cannot create different table headings or footings
+            from on subsequent pages. The stylesheets get around this
+            limitation by creating two tables, one which takes the first
+            heading (or footing), and one which takes the second. The user
+            must tell the stylesheets when to start the new table; the 
+            stylesheets have no way of calcuating this on their own.
+
+        </block>
+        <block>
+            Use numbers separated by commas for this parameter, where the first number
+            inidcatetes the first long table, the second the second table, and so on. For
+            example, a value of ``'8,10'`` tells the stylesheet to break the first *long* table
+            at 8 rows, and the second at 10 rows.
+        </block>
+        <block>
+            Leave this parameter empty, or set it to 0 in order to have the same caption on
+            all pages.
+        </block>
+
+    </xsl:template>
+
+
     <xsl:template match="xsl:param[@name='test']" priority = "3">
         <xsl:call-template name="before_p_text">
             <xsl:with-param name="possible-values">
