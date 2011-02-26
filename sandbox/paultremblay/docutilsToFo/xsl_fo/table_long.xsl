@@ -14,6 +14,10 @@
     <xsl:attribute-set name="long-thead-header">
     </xsl:attribute-set>
 
+    <xsl:attribute-set name="long-table-header-row">
+        <xsl:attribute name="keep-together.within-page">always</xsl:attribute>
+    </xsl:attribute-set>
+
     <xsl:attribute-set name="long-thead-cell" use-attribute-sets="default-cell">
     </xsl:attribute-set>
 
@@ -27,9 +31,6 @@
         <xsl:attribute name="keep-together.within-page">always</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="long-header-table-row">
-        <xsl:attribute name="keep-together.within-page">always</xsl:attribute>
-    </xsl:attribute-set>
 
     <xsl:attribute-set name="long-table-cell" use-attribute-sets="default-cell">
     </xsl:attribute-set>
@@ -314,7 +315,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes ='long']/tgroup/thead/row">
-        <fo:table-row xsl:use-attribute-sets = "long-header-table-row">
+        <fo:table-row xsl:use-attribute-sets = "long-table-header-row">
             <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
