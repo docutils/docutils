@@ -5,19 +5,26 @@
 
     <!-- $Id$ -->
 
-    <xsl:attribute-set name="table-borderless-cell" >
-        <xsl:attribute name="padding">1em</xsl:attribute>
+    
+    <xsl:attribute-set name="table-borderless-block-container" >
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+        <xsl:attribute name="space-after">12pt</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="thead-borderless-cell">
-        <xsl:attribute name="padding">1em</xsl:attribute>
-        <xsl:attribute name="border-collapse">collapse</xsl:attribute>
+    <xsl:attribute-set name="table-borderless">
+        <xsl:attribute name="table-layout">fixed</xsl:attribute>
+        <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="borderless-thead-header">
     </xsl:attribute-set>
 
     <xsl:attribute-set name="table-borderless-header-row">
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="borderless-thead-header">
+    <xsl:attribute-set name="thead-borderless-cell">
+        <xsl:attribute name="padding">1em</xsl:attribute>
+        <xsl:attribute name="border-collapse">collapse</xsl:attribute>
     </xsl:attribute-set>
 
     <xsl:attribute-set name="borderless-thead-block">
@@ -30,17 +37,20 @@
         <xsl:attribute name="keep-together.within-page">always</xsl:attribute>
     </xsl:attribute-set>
 
+    <xsl:attribute-set name="table-borderless-cell" >
+    </xsl:attribute-set>
+
     <xsl:attribute-set name="borderless-cell-block">
     </xsl:attribute-set>
 
 
 
     <xsl:template match="table[@classes='borderless']">
-        <fo:block-container xsl:use-attribute-sets = "table-block-container">
+        <fo:block-container xsl:use-attribute-sets = "table-borderless-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
                 <xsl:apply-templates select="title" mode="caption"/>
             </xsl:if>
-            <fo:table role="borderless" xsl:use-attribute-sets="table">
+            <fo:table role="borderless" xsl:use-attribute-sets="borderless-table">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
