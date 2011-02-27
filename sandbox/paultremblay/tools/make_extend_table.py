@@ -179,7 +179,14 @@ s= """\n     <xsl:template match="tgroup/colspec" mode="classes"/>
         </xsl:variable>
         <fo:table-column column-number="{$col-num}" 
             column-width="proportional-column-width({@colwidth})"/>
-     </xsl:template>\n"""
+     </xsl:template>
+
+     <xsl:template match="tgroup" mode="classes">
+         <xsl:param name="classes"/>
+         <xsl:apply-templates mode="classes">
+             <xsl:with-param name="classes" select="$classes"/>
+         </xsl:apply-templates>
+    </xsl:template>\n"""
 
 write_obj.write(s)
 
@@ -202,13 +209,6 @@ for n in range(1,en):
                 <xsl:apply-templates select="title" mode="caption"/>
             </xsl:if>
         </fo:block-container>
-    </xsl:template>
-
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
     </xsl:template>
 
 
@@ -261,7 +261,7 @@ for n in range(1,en):
         <xsl:choose>
             <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
                 <fo:table-cell xsl:use-attribute-sets="table%s-cell">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -270,7 +270,7 @@ for n in range(1,en):
             <xsl:when test="$cols-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table%s-cell"
                     number-rows-spanned="{$rows-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -279,7 +279,7 @@ for n in range(1,en):
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table%s-cell"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -289,7 +289,7 @@ for n in range(1,en):
                 <fo:table-cell xsl:use-attribute-sets="table%s-cell"
                     number-rows-spanned="{$rows-spanned}"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -298,7 +298,7 @@ for n in range(1,en):
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table%s']/tgroup/tbody/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table%s']/tgroup/tbody/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="cell%s-block">
             <xsl:apply-templates/>
         </fo:block>
