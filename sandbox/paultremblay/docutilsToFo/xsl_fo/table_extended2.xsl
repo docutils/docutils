@@ -50,7 +50,7 @@
             <xsl:if test="title and $table-title-placement = 'top'">
                 <xsl:apply-templates select="title" mode="caption"/>
             </xsl:if>
-            <fo:table role="borderless" xsl:use-attribute-sets="borderless-table">
+            <fo:table role="borderless" xsl:use-attribute-sets="table-borderless">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
