@@ -111,6 +111,8 @@ test_dict = {
                     'front_matter5.fo'),
             ],
 
+        'table_borderless.xml':[({}, 'table_borderless.fo'),],
+        'table_grid_class.xml':[({}, 'table_grid_class.fo'),],
         'table_long1.xml':[({}, 'table_long1.fo'),
                 ({'table-title-placement':'top'}, 'table_long1_top_title.fo'),
                 ({'table-title-placement':'top','long-rows-first-page':'8' }, 'table_long1_top_title_split.fo'),
@@ -335,7 +337,7 @@ def validate_the_fo(xml_file):
     error = validate_fo_xsl(xml_file)
     if error:
         sys.stderr.write('Problems converting "%s"\n' % (xml_file))
-        error('')
+        error_func('')
 
 def test_docutils_to_fo_script(script_command):
     command = '%s -h' % script_command
