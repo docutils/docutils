@@ -755,6 +755,69 @@ between the header and the body text, using ``'space-before =
 x'`` and setting ``'space-before.conditionality'`` to
 ``'retain'``.
 
+first-header-block
+------------------
+
+:fo: fo:block
+
+:docutils: container[@classes='first-header']
+
+:defaults:
+
+     font-size: 12pt
+
+     text-align: center
+
+Formats the properties for the header for the first page.
+
+odd-header-block
+----------------
+
+:fo: fo:block
+
+:docutils: container[@classes='odd-header']
+
+:defaults:
+
+     font-size: 12pt
+
+     text-align: center
+
+Formats the properties for the for the header of odd pages, when
+using a layout of ``'first-odd-even'``, or ``'odd-even'``.
+
+even-header-block
+-----------------
+
+:fo: fo:block
+
+:docutils: container[@classes='even-header']
+
+:defaults:
+
+     font-size: 12pt
+
+     text-align: center
+
+Formats the properties for the for the header of even pages, when
+using a layout of ``'first-odd-even'``, or ``'odd-even'``.
+
+body-header-block
+-----------------
+
+:fo: fo:block
+
+:docutils: container[@classes='body-header']
+
+:defaults:
+
+     font-size: 12pt
+
+     text-align: center
+
+Formats the properties for the for the header of the body, when
+using a layout of ``'first'``.
+
 footer-block
 ------------
 
@@ -769,16 +832,16 @@ footer-block
      text-align: center
 
 Formats the properties for the footer. Use to set the space
-between the footer and the body text, using ``'space-before =
+between the header and the body text, using ``'space-before =
 x'`` and setting ``'space-before.conditionality'`` to
 ``'retain'``.
 
-header-first-block
+first-footer-block
 ------------------
 
 :fo: fo:block
 
-:docutils: decoration/header/paragraph[1]
+:docutils: container[@classes='first-footer']
 
 :defaults:
 
@@ -786,48 +849,46 @@ header-first-block
 
      text-align: center
 
-Formats the properties for the first paragrah in the header.
+Formats the properties for the footer for the first page.
 
-header-second-block
--------------------
+odd-footer-block
+----------------
 
 :fo: fo:block
 
-:docutils: decoration/header/paragraph[2]
+:docutils: container[@classes='odd-footer']
 
 :defaults:
-
-     space-before: 5pt
 
      font-size: 12pt
 
      text-align: center
 
-Formats the properties for the second paragrah in the header.
+Formats the properties for the for the footer of odd pages, when
+using a layout of ``'first-odd-even'``, or ``'odd-even'``.
 
-header-third-block
-------------------
+even-footer-block
+-----------------
 
 :fo: fo:block
 
-:docutils: decoration/header/paragraph[3]
+:docutils: container[@classes='even-footer']
 
 :defaults:
-
-     space-before: 5pt
 
      font-size: 12pt
 
      text-align: center
 
-Formats the properties for the third paragrah in the header.
+Formats the properties for the for the footer of even pages, when
+using a layout of ``'first-odd-even'``, or ``'odd-even'``.
 
-footer-first-block
-------------------
+body-footer-block
+-----------------
 
 :fo: fo:block
 
-:docutils: decoration/footer/paragraph[1]
+:docutils: container[@classes='body-footer']
 
 :defaults:
 
@@ -835,41 +896,176 @@ footer-first-block
 
      text-align: center
 
-Formats the properties for the first paragrah in the footer.
+Formats the properties for the for the footer of the body, when
+using a layout of ``'first'``.
 
-footer-second-block
--------------------
+toc-first-header-block
+----------------------
 
 :fo: fo:block
 
-:docutils: decoration/footer/paragraph[2]
+:docutils: container[@classes='toc-first-header']
 
 :defaults:
-
-     space-before: 5pt
 
      font-size: 12pt
 
      text-align: center
 
-Formats the properties for the second paragrah in the footer.
+Formats the properties for the header for the first page of the
+TOC.
 
-footer-third-block
-------------------
+toc-odd-header-block
+--------------------
 
 :fo: fo:block
 
-:docutils: decoration/footer/paragraph[3]
+:docutils: container[@classes='toc-odd-header']
 
 :defaults:
-
-     space-before: 5pt
 
      font-size: 12pt
 
      text-align: center
 
-Formats the properties for the third paragrah in the footer.
+Formats the properties for the for the header of odd pages of the
+TOC, when using a layout of ``'first-odd-even'``, or
+``'odd-even'``.
+
+toc-even-header-block
+---------------------
+
+:fo: fo:block
+
+:docutils: container[@classes='toc-even-header']
+
+:defaults:
+
+     font-size: 12pt
+
+     text-align: center
+
+Formats the properties for the for the header of even pages of
+the TOC, when using a layout of ``'first-odd-even'``, or
+``'odd-even'``.
+
+toc-body-header-block
+---------------------
+
+:fo: fo:block
+
+:docutils: container[@classes='toc-body-header']
+
+:defaults:
+
+     font-size: 12pt
+
+     text-align: center
+
+Formats the properties for the for the header of the body of the
+TOC, when using a layout of ``'first'``.
+
+toc-first-footer-block
+----------------------
+
+:fo: fo:block
+
+:docutils: container[@classes='toc-first-footer']
+
+:defaults:
+
+     font-size: 12pt
+
+     text-align: center
+
+Formats the properties for the footer for the first page of the
+TOC.
+
+toc-odd-footer-block
+--------------------
+
+:fo: fo:block
+
+:docutils: container[@classes='toc-odd-footer']
+
+:defaults:
+
+     font-size: 12pt
+
+     text-align: center
+
+Formats the properties for the for the footer of odd pages of the
+TOC, when using a layout of ``'first-odd-even'``, or
+``'odd-even'``.
+
+toc-even-footer-block
+---------------------
+
+:fo: fo:block
+
+:docutils: container[@classes='toc-even-footer']
+
+:defaults:
+
+     font-size: 12pt
+
+     text-align: center
+
+Formats the properties for the for the footer of even pages of
+the TOC, when using a layout of ``'first-odd-even'``, or
+``'odd-even'``.
+
+toc-body-footer-block
+---------------------
+
+:fo: fo:block
+
+:docutils: container[@classes='toc-body-footer']
+
+:defaults:
+
+     font-size: 12pt
+
+     text-align: center
+
+Formats the properties for the for the footer of the body of the
+TOC, when using a layout of ``'first'``.
+
+paragraph-header-block
+----------------------
+
+:fo: fo:block
+
+:docutils: decoration/footer/paragraph
+
+:defaults:
+
+     font-size: 12pt
+
+     text-align: center
+
+Formats the properties for the paragraphs in the header. Use to
+set the space between the footer and the body text, using
+``'space-before = x'`` and setting
+``'space-before.conditionality'`` to ``'retain'``.
+
+paragraph-footer-block
+----------------------
+
+:fo: fo:block
+
+:docutils: decoration/footer/paragraph
+
+:defaults:
+
+     font-size: 12pt
+
+     text-align: center
+
+Formats the properties for the footer. Use to set the space
+between the footer and the body text, using ``'space-before =
+x'`` and setting ``'space-before.conditionality'`` to
+``'retain'``.
 
 TOC Matter Attribute Sets
 =========================
@@ -2438,7 +2634,7 @@ Attribute sets for the Extended Tables.
 Custom Tables
 -------------
 
-:fo: fo:block
+:fo: See below
 
 :docutils: See below
 
@@ -2455,7 +2651,7 @@ attribute set in the regular table, as documented above.
 
 * thead1-cell => thead-cell
 
-* thead1 => thead-block
+* thead1-block => thead-block
 
 * table1-body => table-body
 
@@ -2500,6 +2696,99 @@ attribute set in the regular table, as documented above.
 * table30-cell => table-cell
 
 * cell30-block => cell-block
+
+Table Extended 2 (Borderless)
+=============================
+
+Attribute sets for the Extended 2 (Borderless) Tables.
+
+Custom Tables
+-------------
+
+:fo: See below
+
+:docutils: See below
+
+The table_extend2.xsl contains templates for the borderless
+table. Each attribute set has has the same function as its
+corresponding attribute set in the regular table, as documented
+above.
+
+* table-borderless-block-container => table-block-contanter
+
+* table-borderless => table
+
+* borderless-thead-header => table-header
+
+* borderless-thed-cell => thead-cell
+
+* borderless-thead-block => thead-block
+
+* table-borderless-body => table-body
+
+* table-borderless-header-row => table-header-row
+
+* table-borderless-row => table-row
+
+* table-borderless-cell => table-cell
+
+* borderless-cell-block => cell-block
+
+thead-borderless-cell
+---------------------
+
+:fo: fo:cell
+
+:docutils: thead/row/entry
+
+:defaults:
+
+     padding: 1em
+
+     border-collapse: collapse
+
+Formats the cells in the table header for a borderless table.
+
+Table Long
+==========
+
+Attribute sets for the Long Tables.
+
+Long Tables
+-----------
+
+:fo: See below
+
+:docutils: See below
+
+The table_long.xsl contains templates for a long table. Each
+attribute set has has the same function as its corresponding
+attribute set in the regular table, as documented above. There is
+no block-container attriute set, because there is no
+block-container element; the caption is rendered as part of the
+header or footer.
+
+* long-table => table
+
+* long-thead-header => table-header
+
+* long-table-header-row => table-header-row
+
+* long-thead-cell => thead-cell
+
+* long-thead-block => thead-block
+
+* long-table-body => table-body
+
+* long-table-header-row => table-header-row
+
+* long-table-row => table-row
+
+* long-table-cell => table-cell
+
+* long-cell-block => cell-block
+
+* long-caption-block => caption-block
 
 Footnote
 ========

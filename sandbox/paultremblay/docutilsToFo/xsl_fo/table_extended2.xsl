@@ -66,7 +66,6 @@
         <xsl:apply-templates/>
     </xsl:template>
 
-    <xsl:template match="table[@classes='borderless']/tgroup/colspec"/>
 
     <xsl:template match="table[@classes = 'borderless']/tgroup/thead">
         <fo:table-header xsl:use-attribute-sets = "borderless-thead-header">

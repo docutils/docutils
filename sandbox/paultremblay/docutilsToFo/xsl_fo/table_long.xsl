@@ -264,8 +264,6 @@
         <xsl:apply-templates/>
     </xsl:template>
 
-    <xsl:template match="table[@classes = 'long']/tgroup/colspec"/>
-
     <xsl:template match="table[@classes ='long']/tgroup/thead" mode="first-long">
         <fo:table-header xsl:use-attribute-sets = "long-thead-header">
             <xsl:if test="../../title and $table-title-placement = 'top'">
