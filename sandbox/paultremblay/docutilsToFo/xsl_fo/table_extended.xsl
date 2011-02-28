@@ -1215,6 +1215,10 @@
                        <xsl:value-of select="$table-borderless-cols"/>
                   </xsl:when> 
 
+                  <xsl:when test="$classes = 'long'">
+                       <xsl:value-of select="$table-long-cols"/>
+                  </xsl:when> 
+
                   <xsl:when test="$classes = ''">
                        <xsl:value-of select="$table-cols"/>
                   </xsl:when> 
@@ -1264,7 +1268,7 @@
         </xsl:choose>
     </xsl:template>
 
-     <xsl:template match="tgroup/colspec" mode="classes"/>
+     <xsl:template match="tgroup/colspec" />
 
      <xsl:template match="tgroup/colspec" mode="use">
         <xsl:variable name="col-num">
@@ -1274,74 +1278,74 @@
             column-width="proportional-column-width({@colwidth})"/>
      </xsl:template>
 
+     <xsl:template match="tgroup" >
+         <xsl:param name="classes"/>
+         <xsl:apply-templates >
+             <xsl:with-param name="classes" select="$classes"/>
+         </xsl:apply-templates>
+    </xsl:template>
+
    
      <xsl:template match="table[@classes='table1']">
         <fo:block-container xsl:use-attribute-sets = "table1-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
             <fo:table role="table1" xsl:use-attribute-sets="table1">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
-                <xsl:apply-templates mode="classes">
+                <xsl:apply-templates >
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:apply-templates>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
         </fo:block-container>
     </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
-    </xsl:template>
 
-
-    <xsl:template match="table[@classes = 'table1']/tgroup/thead" mode="classes">
+    <xsl:template match="table[@classes = 'table1']/tgroup/thead" >
         <fo:table-header xsl:use-attribute-sets = "thead1-header">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table1']/tgroup//thead/row" mode="classes">
+    <xsl:template match="table[@classes='table1']/tgroup//thead/row" >
         <fo:table-row xsl:use-attribute-sets="table1-header-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table1']/tgroup/thead/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table1']/tgroup/thead/row/entry" >
         <fo:table-cell xsl:use-attribute-sets="thead1-cell">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
             </xsl:if>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table1']/tgroup/thead/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table1']/tgroup/thead/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="thead1-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table1']/tgroup/tbody" mode="classes">
+    <xsl:template match="table[@classes='table1']/tgroup/tbody" >
         <fo:table-body xsl:use-attribute-sets="table1-body">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table1']/tgroup/tbody/row" mode="classes">
+    <xsl:template match="table[@classes='table1']/tgroup/tbody/row" >
         <fo:table-row xsl:use-attribute-sets="table1-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table1']/tgroup/tbody/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table1']/tgroup/tbody/row/entry" >
         <xsl:variable name="cols-spanned">
             <xsl:call-template name="cols-spanned"/>
         </xsl:variable>
@@ -1351,7 +1355,7 @@
         <xsl:choose>
             <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
                 <fo:table-cell xsl:use-attribute-sets="table1-cell">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -1360,7 +1364,7 @@
             <xsl:when test="$cols-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table1-cell"
                     number-rows-spanned="{$rows-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -1369,7 +1373,7 @@
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table1-cell"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -1379,7 +1383,7 @@
                 <fo:table-cell xsl:use-attribute-sets="table1-cell"
                     number-rows-spanned="{$rows-spanned}"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -1388,7 +1392,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table1']/tgroup/tbody/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table1']/tgroup/tbody/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="cell1-block">
             <xsl:apply-templates/>
         </fo:block>
@@ -1398,70 +1402,63 @@
      <xsl:template match="table[@classes='table2']">
         <fo:block-container xsl:use-attribute-sets = "table2-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
             <fo:table role="table2" xsl:use-attribute-sets="table2">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
-                <xsl:apply-templates mode="classes">
+                <xsl:apply-templates >
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:apply-templates>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
         </fo:block-container>
     </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
-    </xsl:template>
 
-
-    <xsl:template match="table[@classes = 'table2']/tgroup/thead" mode="classes">
+    <xsl:template match="table[@classes = 'table2']/tgroup/thead" >
         <fo:table-header xsl:use-attribute-sets = "thead2-header">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table2']/tgroup//thead/row" mode="classes">
+    <xsl:template match="table[@classes='table2']/tgroup//thead/row" >
         <fo:table-row xsl:use-attribute-sets="table2-header-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table2']/tgroup/thead/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table2']/tgroup/thead/row/entry" >
         <fo:table-cell xsl:use-attribute-sets="thead2-cell">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
             </xsl:if>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table2']/tgroup/thead/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table2']/tgroup/thead/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="thead2-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table2']/tgroup/tbody" mode="classes">
+    <xsl:template match="table[@classes='table2']/tgroup/tbody" >
         <fo:table-body xsl:use-attribute-sets="table2-body">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table2']/tgroup/tbody/row" mode="classes">
+    <xsl:template match="table[@classes='table2']/tgroup/tbody/row" >
         <fo:table-row xsl:use-attribute-sets="table2-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table2']/tgroup/tbody/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table2']/tgroup/tbody/row/entry" >
         <xsl:variable name="cols-spanned">
             <xsl:call-template name="cols-spanned"/>
         </xsl:variable>
@@ -1471,7 +1468,7 @@
         <xsl:choose>
             <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
                 <fo:table-cell xsl:use-attribute-sets="table2-cell">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -1480,7 +1477,7 @@
             <xsl:when test="$cols-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table2-cell"
                     number-rows-spanned="{$rows-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -1489,7 +1486,7 @@
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table2-cell"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -1499,7 +1496,7 @@
                 <fo:table-cell xsl:use-attribute-sets="table2-cell"
                     number-rows-spanned="{$rows-spanned}"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -1508,7 +1505,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table2']/tgroup/tbody/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table2']/tgroup/tbody/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="cell2-block">
             <xsl:apply-templates/>
         </fo:block>
@@ -1518,70 +1515,63 @@
      <xsl:template match="table[@classes='table3']">
         <fo:block-container xsl:use-attribute-sets = "table3-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
             <fo:table role="table3" xsl:use-attribute-sets="table3">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
-                <xsl:apply-templates mode="classes">
+                <xsl:apply-templates >
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:apply-templates>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
         </fo:block-container>
     </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
-    </xsl:template>
 
-
-    <xsl:template match="table[@classes = 'table3']/tgroup/thead" mode="classes">
+    <xsl:template match="table[@classes = 'table3']/tgroup/thead" >
         <fo:table-header xsl:use-attribute-sets = "thead3-header">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table3']/tgroup//thead/row" mode="classes">
+    <xsl:template match="table[@classes='table3']/tgroup//thead/row" >
         <fo:table-row xsl:use-attribute-sets="table3-header-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table3']/tgroup/thead/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table3']/tgroup/thead/row/entry" >
         <fo:table-cell xsl:use-attribute-sets="thead3-cell">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
             </xsl:if>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table3']/tgroup/thead/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table3']/tgroup/thead/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="thead3-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table3']/tgroup/tbody" mode="classes">
+    <xsl:template match="table[@classes='table3']/tgroup/tbody" >
         <fo:table-body xsl:use-attribute-sets="table3-body">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table3']/tgroup/tbody/row" mode="classes">
+    <xsl:template match="table[@classes='table3']/tgroup/tbody/row" >
         <fo:table-row xsl:use-attribute-sets="table3-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table3']/tgroup/tbody/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table3']/tgroup/tbody/row/entry" >
         <xsl:variable name="cols-spanned">
             <xsl:call-template name="cols-spanned"/>
         </xsl:variable>
@@ -1591,7 +1581,7 @@
         <xsl:choose>
             <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
                 <fo:table-cell xsl:use-attribute-sets="table3-cell">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -1600,7 +1590,7 @@
             <xsl:when test="$cols-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table3-cell"
                     number-rows-spanned="{$rows-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -1609,7 +1599,7 @@
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table3-cell"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -1619,7 +1609,7 @@
                 <fo:table-cell xsl:use-attribute-sets="table3-cell"
                     number-rows-spanned="{$rows-spanned}"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -1628,7 +1618,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table3']/tgroup/tbody/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table3']/tgroup/tbody/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="cell3-block">
             <xsl:apply-templates/>
         </fo:block>
@@ -1638,70 +1628,63 @@
      <xsl:template match="table[@classes='table4']">
         <fo:block-container xsl:use-attribute-sets = "table4-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
             <fo:table role="table4" xsl:use-attribute-sets="table4">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
-                <xsl:apply-templates mode="classes">
+                <xsl:apply-templates >
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:apply-templates>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
         </fo:block-container>
     </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
-    </xsl:template>
 
-
-    <xsl:template match="table[@classes = 'table4']/tgroup/thead" mode="classes">
+    <xsl:template match="table[@classes = 'table4']/tgroup/thead" >
         <fo:table-header xsl:use-attribute-sets = "thead4-header">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table4']/tgroup//thead/row" mode="classes">
+    <xsl:template match="table[@classes='table4']/tgroup//thead/row" >
         <fo:table-row xsl:use-attribute-sets="table4-header-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table4']/tgroup/thead/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table4']/tgroup/thead/row/entry" >
         <fo:table-cell xsl:use-attribute-sets="thead4-cell">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
             </xsl:if>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table4']/tgroup/thead/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table4']/tgroup/thead/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="thead4-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table4']/tgroup/tbody" mode="classes">
+    <xsl:template match="table[@classes='table4']/tgroup/tbody" >
         <fo:table-body xsl:use-attribute-sets="table4-body">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table4']/tgroup/tbody/row" mode="classes">
+    <xsl:template match="table[@classes='table4']/tgroup/tbody/row" >
         <fo:table-row xsl:use-attribute-sets="table4-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table4']/tgroup/tbody/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table4']/tgroup/tbody/row/entry" >
         <xsl:variable name="cols-spanned">
             <xsl:call-template name="cols-spanned"/>
         </xsl:variable>
@@ -1711,7 +1694,7 @@
         <xsl:choose>
             <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
                 <fo:table-cell xsl:use-attribute-sets="table4-cell">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -1720,7 +1703,7 @@
             <xsl:when test="$cols-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table4-cell"
                     number-rows-spanned="{$rows-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -1729,7 +1712,7 @@
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table4-cell"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -1739,7 +1722,7 @@
                 <fo:table-cell xsl:use-attribute-sets="table4-cell"
                     number-rows-spanned="{$rows-spanned}"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -1748,7 +1731,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table4']/tgroup/tbody/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table4']/tgroup/tbody/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="cell4-block">
             <xsl:apply-templates/>
         </fo:block>
@@ -1758,70 +1741,63 @@
      <xsl:template match="table[@classes='table5']">
         <fo:block-container xsl:use-attribute-sets = "table5-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
             <fo:table role="table5" xsl:use-attribute-sets="table5">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
-                <xsl:apply-templates mode="classes">
+                <xsl:apply-templates >
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:apply-templates>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
         </fo:block-container>
     </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
-    </xsl:template>
 
-
-    <xsl:template match="table[@classes = 'table5']/tgroup/thead" mode="classes">
+    <xsl:template match="table[@classes = 'table5']/tgroup/thead" >
         <fo:table-header xsl:use-attribute-sets = "thead5-header">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table5']/tgroup//thead/row" mode="classes">
+    <xsl:template match="table[@classes='table5']/tgroup//thead/row" >
         <fo:table-row xsl:use-attribute-sets="table5-header-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table5']/tgroup/thead/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table5']/tgroup/thead/row/entry" >
         <fo:table-cell xsl:use-attribute-sets="thead5-cell">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
             </xsl:if>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table5']/tgroup/thead/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table5']/tgroup/thead/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="thead5-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table5']/tgroup/tbody" mode="classes">
+    <xsl:template match="table[@classes='table5']/tgroup/tbody" >
         <fo:table-body xsl:use-attribute-sets="table5-body">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table5']/tgroup/tbody/row" mode="classes">
+    <xsl:template match="table[@classes='table5']/tgroup/tbody/row" >
         <fo:table-row xsl:use-attribute-sets="table5-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table5']/tgroup/tbody/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table5']/tgroup/tbody/row/entry" >
         <xsl:variable name="cols-spanned">
             <xsl:call-template name="cols-spanned"/>
         </xsl:variable>
@@ -1831,7 +1807,7 @@
         <xsl:choose>
             <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
                 <fo:table-cell xsl:use-attribute-sets="table5-cell">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -1840,7 +1816,7 @@
             <xsl:when test="$cols-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table5-cell"
                     number-rows-spanned="{$rows-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -1849,7 +1825,7 @@
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table5-cell"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -1859,7 +1835,7 @@
                 <fo:table-cell xsl:use-attribute-sets="table5-cell"
                     number-rows-spanned="{$rows-spanned}"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -1868,7 +1844,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table5']/tgroup/tbody/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table5']/tgroup/tbody/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="cell5-block">
             <xsl:apply-templates/>
         </fo:block>
@@ -1878,70 +1854,63 @@
      <xsl:template match="table[@classes='table6']">
         <fo:block-container xsl:use-attribute-sets = "table6-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
             <fo:table role="table6" xsl:use-attribute-sets="table6">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
-                <xsl:apply-templates mode="classes">
+                <xsl:apply-templates >
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:apply-templates>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
         </fo:block-container>
     </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
-    </xsl:template>
 
-
-    <xsl:template match="table[@classes = 'table6']/tgroup/thead" mode="classes">
+    <xsl:template match="table[@classes = 'table6']/tgroup/thead" >
         <fo:table-header xsl:use-attribute-sets = "thead6-header">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table6']/tgroup//thead/row" mode="classes">
+    <xsl:template match="table[@classes='table6']/tgroup//thead/row" >
         <fo:table-row xsl:use-attribute-sets="table6-header-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table6']/tgroup/thead/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table6']/tgroup/thead/row/entry" >
         <fo:table-cell xsl:use-attribute-sets="thead6-cell">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
             </xsl:if>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table6']/tgroup/thead/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table6']/tgroup/thead/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="thead6-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table6']/tgroup/tbody" mode="classes">
+    <xsl:template match="table[@classes='table6']/tgroup/tbody" >
         <fo:table-body xsl:use-attribute-sets="table6-body">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table6']/tgroup/tbody/row" mode="classes">
+    <xsl:template match="table[@classes='table6']/tgroup/tbody/row" >
         <fo:table-row xsl:use-attribute-sets="table6-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table6']/tgroup/tbody/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table6']/tgroup/tbody/row/entry" >
         <xsl:variable name="cols-spanned">
             <xsl:call-template name="cols-spanned"/>
         </xsl:variable>
@@ -1951,7 +1920,7 @@
         <xsl:choose>
             <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
                 <fo:table-cell xsl:use-attribute-sets="table6-cell">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -1960,7 +1929,7 @@
             <xsl:when test="$cols-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table6-cell"
                     number-rows-spanned="{$rows-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -1969,7 +1938,7 @@
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table6-cell"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -1979,7 +1948,7 @@
                 <fo:table-cell xsl:use-attribute-sets="table6-cell"
                     number-rows-spanned="{$rows-spanned}"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -1988,7 +1957,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table6']/tgroup/tbody/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table6']/tgroup/tbody/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="cell6-block">
             <xsl:apply-templates/>
         </fo:block>
@@ -1998,70 +1967,63 @@
      <xsl:template match="table[@classes='table7']">
         <fo:block-container xsl:use-attribute-sets = "table7-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
             <fo:table role="table7" xsl:use-attribute-sets="table7">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
-                <xsl:apply-templates mode="classes">
+                <xsl:apply-templates >
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:apply-templates>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
         </fo:block-container>
     </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
-    </xsl:template>
 
-
-    <xsl:template match="table[@classes = 'table7']/tgroup/thead" mode="classes">
+    <xsl:template match="table[@classes = 'table7']/tgroup/thead" >
         <fo:table-header xsl:use-attribute-sets = "thead7-header">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table7']/tgroup//thead/row" mode="classes">
+    <xsl:template match="table[@classes='table7']/tgroup//thead/row" >
         <fo:table-row xsl:use-attribute-sets="table7-header-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table7']/tgroup/thead/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table7']/tgroup/thead/row/entry" >
         <fo:table-cell xsl:use-attribute-sets="thead7-cell">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
             </xsl:if>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table7']/tgroup/thead/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table7']/tgroup/thead/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="thead7-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table7']/tgroup/tbody" mode="classes">
+    <xsl:template match="table[@classes='table7']/tgroup/tbody" >
         <fo:table-body xsl:use-attribute-sets="table7-body">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table7']/tgroup/tbody/row" mode="classes">
+    <xsl:template match="table[@classes='table7']/tgroup/tbody/row" >
         <fo:table-row xsl:use-attribute-sets="table7-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table7']/tgroup/tbody/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table7']/tgroup/tbody/row/entry" >
         <xsl:variable name="cols-spanned">
             <xsl:call-template name="cols-spanned"/>
         </xsl:variable>
@@ -2071,7 +2033,7 @@
         <xsl:choose>
             <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
                 <fo:table-cell xsl:use-attribute-sets="table7-cell">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2080,7 +2042,7 @@
             <xsl:when test="$cols-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table7-cell"
                     number-rows-spanned="{$rows-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2089,7 +2051,7 @@
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table7-cell"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2099,7 +2061,7 @@
                 <fo:table-cell xsl:use-attribute-sets="table7-cell"
                     number-rows-spanned="{$rows-spanned}"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2108,7 +2070,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table7']/tgroup/tbody/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table7']/tgroup/tbody/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="cell7-block">
             <xsl:apply-templates/>
         </fo:block>
@@ -2118,70 +2080,63 @@
      <xsl:template match="table[@classes='table8']">
         <fo:block-container xsl:use-attribute-sets = "table8-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
             <fo:table role="table8" xsl:use-attribute-sets="table8">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
-                <xsl:apply-templates mode="classes">
+                <xsl:apply-templates >
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:apply-templates>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
         </fo:block-container>
     </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
-    </xsl:template>
 
-
-    <xsl:template match="table[@classes = 'table8']/tgroup/thead" mode="classes">
+    <xsl:template match="table[@classes = 'table8']/tgroup/thead" >
         <fo:table-header xsl:use-attribute-sets = "thead8-header">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table8']/tgroup//thead/row" mode="classes">
+    <xsl:template match="table[@classes='table8']/tgroup//thead/row" >
         <fo:table-row xsl:use-attribute-sets="table8-header-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table8']/tgroup/thead/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table8']/tgroup/thead/row/entry" >
         <fo:table-cell xsl:use-attribute-sets="thead8-cell">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
             </xsl:if>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table8']/tgroup/thead/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table8']/tgroup/thead/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="thead8-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table8']/tgroup/tbody" mode="classes">
+    <xsl:template match="table[@classes='table8']/tgroup/tbody" >
         <fo:table-body xsl:use-attribute-sets="table8-body">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table8']/tgroup/tbody/row" mode="classes">
+    <xsl:template match="table[@classes='table8']/tgroup/tbody/row" >
         <fo:table-row xsl:use-attribute-sets="table8-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table8']/tgroup/tbody/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table8']/tgroup/tbody/row/entry" >
         <xsl:variable name="cols-spanned">
             <xsl:call-template name="cols-spanned"/>
         </xsl:variable>
@@ -2191,7 +2146,7 @@
         <xsl:choose>
             <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
                 <fo:table-cell xsl:use-attribute-sets="table8-cell">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2200,7 +2155,7 @@
             <xsl:when test="$cols-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table8-cell"
                     number-rows-spanned="{$rows-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2209,7 +2164,7 @@
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table8-cell"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2219,7 +2174,7 @@
                 <fo:table-cell xsl:use-attribute-sets="table8-cell"
                     number-rows-spanned="{$rows-spanned}"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2228,7 +2183,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table8']/tgroup/tbody/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table8']/tgroup/tbody/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="cell8-block">
             <xsl:apply-templates/>
         </fo:block>
@@ -2238,70 +2193,63 @@
      <xsl:template match="table[@classes='table9']">
         <fo:block-container xsl:use-attribute-sets = "table9-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
             <fo:table role="table9" xsl:use-attribute-sets="table9">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
-                <xsl:apply-templates mode="classes">
+                <xsl:apply-templates >
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:apply-templates>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
         </fo:block-container>
     </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
-    </xsl:template>
 
-
-    <xsl:template match="table[@classes = 'table9']/tgroup/thead" mode="classes">
+    <xsl:template match="table[@classes = 'table9']/tgroup/thead" >
         <fo:table-header xsl:use-attribute-sets = "thead9-header">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table9']/tgroup//thead/row" mode="classes">
+    <xsl:template match="table[@classes='table9']/tgroup//thead/row" >
         <fo:table-row xsl:use-attribute-sets="table9-header-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table9']/tgroup/thead/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table9']/tgroup/thead/row/entry" >
         <fo:table-cell xsl:use-attribute-sets="thead9-cell">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
             </xsl:if>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table9']/tgroup/thead/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table9']/tgroup/thead/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="thead9-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table9']/tgroup/tbody" mode="classes">
+    <xsl:template match="table[@classes='table9']/tgroup/tbody" >
         <fo:table-body xsl:use-attribute-sets="table9-body">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table9']/tgroup/tbody/row" mode="classes">
+    <xsl:template match="table[@classes='table9']/tgroup/tbody/row" >
         <fo:table-row xsl:use-attribute-sets="table9-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table9']/tgroup/tbody/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table9']/tgroup/tbody/row/entry" >
         <xsl:variable name="cols-spanned">
             <xsl:call-template name="cols-spanned"/>
         </xsl:variable>
@@ -2311,7 +2259,7 @@
         <xsl:choose>
             <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
                 <fo:table-cell xsl:use-attribute-sets="table9-cell">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2320,7 +2268,7 @@
             <xsl:when test="$cols-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table9-cell"
                     number-rows-spanned="{$rows-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2329,7 +2277,7 @@
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table9-cell"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2339,7 +2287,7 @@
                 <fo:table-cell xsl:use-attribute-sets="table9-cell"
                     number-rows-spanned="{$rows-spanned}"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2348,7 +2296,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table9']/tgroup/tbody/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table9']/tgroup/tbody/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="cell9-block">
             <xsl:apply-templates/>
         </fo:block>
@@ -2358,70 +2306,63 @@
      <xsl:template match="table[@classes='table10']">
         <fo:block-container xsl:use-attribute-sets = "table10-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
             <fo:table role="table10" xsl:use-attribute-sets="table10">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
-                <xsl:apply-templates mode="classes">
+                <xsl:apply-templates >
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:apply-templates>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
         </fo:block-container>
     </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
-    </xsl:template>
 
-
-    <xsl:template match="table[@classes = 'table10']/tgroup/thead" mode="classes">
+    <xsl:template match="table[@classes = 'table10']/tgroup/thead" >
         <fo:table-header xsl:use-attribute-sets = "thead10-header">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table10']/tgroup//thead/row" mode="classes">
+    <xsl:template match="table[@classes='table10']/tgroup//thead/row" >
         <fo:table-row xsl:use-attribute-sets="table10-header-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table10']/tgroup/thead/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table10']/tgroup/thead/row/entry" >
         <fo:table-cell xsl:use-attribute-sets="thead10-cell">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
             </xsl:if>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table10']/tgroup/thead/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table10']/tgroup/thead/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="thead10-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table10']/tgroup/tbody" mode="classes">
+    <xsl:template match="table[@classes='table10']/tgroup/tbody" >
         <fo:table-body xsl:use-attribute-sets="table10-body">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table10']/tgroup/tbody/row" mode="classes">
+    <xsl:template match="table[@classes='table10']/tgroup/tbody/row" >
         <fo:table-row xsl:use-attribute-sets="table10-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table10']/tgroup/tbody/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table10']/tgroup/tbody/row/entry" >
         <xsl:variable name="cols-spanned">
             <xsl:call-template name="cols-spanned"/>
         </xsl:variable>
@@ -2431,7 +2372,7 @@
         <xsl:choose>
             <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
                 <fo:table-cell xsl:use-attribute-sets="table10-cell">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2440,7 +2381,7 @@
             <xsl:when test="$cols-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table10-cell"
                     number-rows-spanned="{$rows-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2449,7 +2390,7 @@
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table10-cell"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2459,7 +2400,7 @@
                 <fo:table-cell xsl:use-attribute-sets="table10-cell"
                     number-rows-spanned="{$rows-spanned}"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2468,7 +2409,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table10']/tgroup/tbody/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table10']/tgroup/tbody/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="cell10-block">
             <xsl:apply-templates/>
         </fo:block>
@@ -2478,70 +2419,63 @@
      <xsl:template match="table[@classes='table11']">
         <fo:block-container xsl:use-attribute-sets = "table11-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
             <fo:table role="table11" xsl:use-attribute-sets="table11">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
-                <xsl:apply-templates mode="classes">
+                <xsl:apply-templates >
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:apply-templates>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
         </fo:block-container>
     </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
-    </xsl:template>
 
-
-    <xsl:template match="table[@classes = 'table11']/tgroup/thead" mode="classes">
+    <xsl:template match="table[@classes = 'table11']/tgroup/thead" >
         <fo:table-header xsl:use-attribute-sets = "thead11-header">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table11']/tgroup//thead/row" mode="classes">
+    <xsl:template match="table[@classes='table11']/tgroup//thead/row" >
         <fo:table-row xsl:use-attribute-sets="table11-header-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table11']/tgroup/thead/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table11']/tgroup/thead/row/entry" >
         <fo:table-cell xsl:use-attribute-sets="thead11-cell">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
             </xsl:if>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table11']/tgroup/thead/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table11']/tgroup/thead/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="thead11-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table11']/tgroup/tbody" mode="classes">
+    <xsl:template match="table[@classes='table11']/tgroup/tbody" >
         <fo:table-body xsl:use-attribute-sets="table11-body">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table11']/tgroup/tbody/row" mode="classes">
+    <xsl:template match="table[@classes='table11']/tgroup/tbody/row" >
         <fo:table-row xsl:use-attribute-sets="table11-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table11']/tgroup/tbody/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table11']/tgroup/tbody/row/entry" >
         <xsl:variable name="cols-spanned">
             <xsl:call-template name="cols-spanned"/>
         </xsl:variable>
@@ -2551,7 +2485,7 @@
         <xsl:choose>
             <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
                 <fo:table-cell xsl:use-attribute-sets="table11-cell">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2560,7 +2494,7 @@
             <xsl:when test="$cols-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table11-cell"
                     number-rows-spanned="{$rows-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2569,7 +2503,7 @@
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table11-cell"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2579,7 +2513,7 @@
                 <fo:table-cell xsl:use-attribute-sets="table11-cell"
                     number-rows-spanned="{$rows-spanned}"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2588,7 +2522,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table11']/tgroup/tbody/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table11']/tgroup/tbody/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="cell11-block">
             <xsl:apply-templates/>
         </fo:block>
@@ -2598,70 +2532,63 @@
      <xsl:template match="table[@classes='table12']">
         <fo:block-container xsl:use-attribute-sets = "table12-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
             <fo:table role="table12" xsl:use-attribute-sets="table12">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
-                <xsl:apply-templates mode="classes">
+                <xsl:apply-templates >
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:apply-templates>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
         </fo:block-container>
     </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
-    </xsl:template>
 
-
-    <xsl:template match="table[@classes = 'table12']/tgroup/thead" mode="classes">
+    <xsl:template match="table[@classes = 'table12']/tgroup/thead" >
         <fo:table-header xsl:use-attribute-sets = "thead12-header">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table12']/tgroup//thead/row" mode="classes">
+    <xsl:template match="table[@classes='table12']/tgroup//thead/row" >
         <fo:table-row xsl:use-attribute-sets="table12-header-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table12']/tgroup/thead/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table12']/tgroup/thead/row/entry" >
         <fo:table-cell xsl:use-attribute-sets="thead12-cell">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
             </xsl:if>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table12']/tgroup/thead/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table12']/tgroup/thead/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="thead12-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table12']/tgroup/tbody" mode="classes">
+    <xsl:template match="table[@classes='table12']/tgroup/tbody" >
         <fo:table-body xsl:use-attribute-sets="table12-body">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table12']/tgroup/tbody/row" mode="classes">
+    <xsl:template match="table[@classes='table12']/tgroup/tbody/row" >
         <fo:table-row xsl:use-attribute-sets="table12-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table12']/tgroup/tbody/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table12']/tgroup/tbody/row/entry" >
         <xsl:variable name="cols-spanned">
             <xsl:call-template name="cols-spanned"/>
         </xsl:variable>
@@ -2671,7 +2598,7 @@
         <xsl:choose>
             <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
                 <fo:table-cell xsl:use-attribute-sets="table12-cell">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2680,7 +2607,7 @@
             <xsl:when test="$cols-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table12-cell"
                     number-rows-spanned="{$rows-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2689,7 +2616,7 @@
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table12-cell"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2699,7 +2626,7 @@
                 <fo:table-cell xsl:use-attribute-sets="table12-cell"
                     number-rows-spanned="{$rows-spanned}"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2708,7 +2635,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table12']/tgroup/tbody/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table12']/tgroup/tbody/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="cell12-block">
             <xsl:apply-templates/>
         </fo:block>
@@ -2718,70 +2645,63 @@
      <xsl:template match="table[@classes='table13']">
         <fo:block-container xsl:use-attribute-sets = "table13-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
             <fo:table role="table13" xsl:use-attribute-sets="table13">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
-                <xsl:apply-templates mode="classes">
+                <xsl:apply-templates >
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:apply-templates>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
         </fo:block-container>
     </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
-    </xsl:template>
 
-
-    <xsl:template match="table[@classes = 'table13']/tgroup/thead" mode="classes">
+    <xsl:template match="table[@classes = 'table13']/tgroup/thead" >
         <fo:table-header xsl:use-attribute-sets = "thead13-header">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table13']/tgroup//thead/row" mode="classes">
+    <xsl:template match="table[@classes='table13']/tgroup//thead/row" >
         <fo:table-row xsl:use-attribute-sets="table13-header-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table13']/tgroup/thead/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table13']/tgroup/thead/row/entry" >
         <fo:table-cell xsl:use-attribute-sets="thead13-cell">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
             </xsl:if>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table13']/tgroup/thead/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table13']/tgroup/thead/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="thead13-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table13']/tgroup/tbody" mode="classes">
+    <xsl:template match="table[@classes='table13']/tgroup/tbody" >
         <fo:table-body xsl:use-attribute-sets="table13-body">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table13']/tgroup/tbody/row" mode="classes">
+    <xsl:template match="table[@classes='table13']/tgroup/tbody/row" >
         <fo:table-row xsl:use-attribute-sets="table13-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table13']/tgroup/tbody/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table13']/tgroup/tbody/row/entry" >
         <xsl:variable name="cols-spanned">
             <xsl:call-template name="cols-spanned"/>
         </xsl:variable>
@@ -2791,7 +2711,7 @@
         <xsl:choose>
             <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
                 <fo:table-cell xsl:use-attribute-sets="table13-cell">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2800,7 +2720,7 @@
             <xsl:when test="$cols-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table13-cell"
                     number-rows-spanned="{$rows-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2809,7 +2729,7 @@
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table13-cell"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2819,7 +2739,7 @@
                 <fo:table-cell xsl:use-attribute-sets="table13-cell"
                     number-rows-spanned="{$rows-spanned}"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2828,7 +2748,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table13']/tgroup/tbody/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table13']/tgroup/tbody/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="cell13-block">
             <xsl:apply-templates/>
         </fo:block>
@@ -2838,70 +2758,63 @@
      <xsl:template match="table[@classes='table14']">
         <fo:block-container xsl:use-attribute-sets = "table14-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
             <fo:table role="table14" xsl:use-attribute-sets="table14">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
-                <xsl:apply-templates mode="classes">
+                <xsl:apply-templates >
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:apply-templates>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
         </fo:block-container>
     </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
-    </xsl:template>
 
-
-    <xsl:template match="table[@classes = 'table14']/tgroup/thead" mode="classes">
+    <xsl:template match="table[@classes = 'table14']/tgroup/thead" >
         <fo:table-header xsl:use-attribute-sets = "thead14-header">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table14']/tgroup//thead/row" mode="classes">
+    <xsl:template match="table[@classes='table14']/tgroup//thead/row" >
         <fo:table-row xsl:use-attribute-sets="table14-header-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table14']/tgroup/thead/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table14']/tgroup/thead/row/entry" >
         <fo:table-cell xsl:use-attribute-sets="thead14-cell">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
             </xsl:if>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table14']/tgroup/thead/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table14']/tgroup/thead/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="thead14-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table14']/tgroup/tbody" mode="classes">
+    <xsl:template match="table[@classes='table14']/tgroup/tbody" >
         <fo:table-body xsl:use-attribute-sets="table14-body">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table14']/tgroup/tbody/row" mode="classes">
+    <xsl:template match="table[@classes='table14']/tgroup/tbody/row" >
         <fo:table-row xsl:use-attribute-sets="table14-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table14']/tgroup/tbody/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table14']/tgroup/tbody/row/entry" >
         <xsl:variable name="cols-spanned">
             <xsl:call-template name="cols-spanned"/>
         </xsl:variable>
@@ -2911,7 +2824,7 @@
         <xsl:choose>
             <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
                 <fo:table-cell xsl:use-attribute-sets="table14-cell">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2920,7 +2833,7 @@
             <xsl:when test="$cols-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table14-cell"
                     number-rows-spanned="{$rows-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2929,7 +2842,7 @@
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table14-cell"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2939,7 +2852,7 @@
                 <fo:table-cell xsl:use-attribute-sets="table14-cell"
                     number-rows-spanned="{$rows-spanned}"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -2948,7 +2861,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table14']/tgroup/tbody/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table14']/tgroup/tbody/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="cell14-block">
             <xsl:apply-templates/>
         </fo:block>
@@ -2958,70 +2871,63 @@
      <xsl:template match="table[@classes='table15']">
         <fo:block-container xsl:use-attribute-sets = "table15-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
             <fo:table role="table15" xsl:use-attribute-sets="table15">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
-                <xsl:apply-templates mode="classes">
+                <xsl:apply-templates >
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:apply-templates>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
         </fo:block-container>
     </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
-    </xsl:template>
 
-
-    <xsl:template match="table[@classes = 'table15']/tgroup/thead" mode="classes">
+    <xsl:template match="table[@classes = 'table15']/tgroup/thead" >
         <fo:table-header xsl:use-attribute-sets = "thead15-header">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table15']/tgroup//thead/row" mode="classes">
+    <xsl:template match="table[@classes='table15']/tgroup//thead/row" >
         <fo:table-row xsl:use-attribute-sets="table15-header-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table15']/tgroup/thead/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table15']/tgroup/thead/row/entry" >
         <fo:table-cell xsl:use-attribute-sets="thead15-cell">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
             </xsl:if>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table15']/tgroup/thead/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table15']/tgroup/thead/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="thead15-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table15']/tgroup/tbody" mode="classes">
+    <xsl:template match="table[@classes='table15']/tgroup/tbody" >
         <fo:table-body xsl:use-attribute-sets="table15-body">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table15']/tgroup/tbody/row" mode="classes">
+    <xsl:template match="table[@classes='table15']/tgroup/tbody/row" >
         <fo:table-row xsl:use-attribute-sets="table15-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table15']/tgroup/tbody/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table15']/tgroup/tbody/row/entry" >
         <xsl:variable name="cols-spanned">
             <xsl:call-template name="cols-spanned"/>
         </xsl:variable>
@@ -3031,7 +2937,7 @@
         <xsl:choose>
             <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
                 <fo:table-cell xsl:use-attribute-sets="table15-cell">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3040,7 +2946,7 @@
             <xsl:when test="$cols-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table15-cell"
                     number-rows-spanned="{$rows-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3049,7 +2955,7 @@
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table15-cell"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3059,7 +2965,7 @@
                 <fo:table-cell xsl:use-attribute-sets="table15-cell"
                     number-rows-spanned="{$rows-spanned}"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3068,7 +2974,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table15']/tgroup/tbody/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table15']/tgroup/tbody/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="cell15-block">
             <xsl:apply-templates/>
         </fo:block>
@@ -3078,70 +2984,63 @@
      <xsl:template match="table[@classes='table16']">
         <fo:block-container xsl:use-attribute-sets = "table16-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
             <fo:table role="table16" xsl:use-attribute-sets="table16">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
-                <xsl:apply-templates mode="classes">
+                <xsl:apply-templates >
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:apply-templates>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
         </fo:block-container>
     </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
-    </xsl:template>
 
-
-    <xsl:template match="table[@classes = 'table16']/tgroup/thead" mode="classes">
+    <xsl:template match="table[@classes = 'table16']/tgroup/thead" >
         <fo:table-header xsl:use-attribute-sets = "thead16-header">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table16']/tgroup//thead/row" mode="classes">
+    <xsl:template match="table[@classes='table16']/tgroup//thead/row" >
         <fo:table-row xsl:use-attribute-sets="table16-header-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table16']/tgroup/thead/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table16']/tgroup/thead/row/entry" >
         <fo:table-cell xsl:use-attribute-sets="thead16-cell">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
             </xsl:if>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table16']/tgroup/thead/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table16']/tgroup/thead/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="thead16-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table16']/tgroup/tbody" mode="classes">
+    <xsl:template match="table[@classes='table16']/tgroup/tbody" >
         <fo:table-body xsl:use-attribute-sets="table16-body">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table16']/tgroup/tbody/row" mode="classes">
+    <xsl:template match="table[@classes='table16']/tgroup/tbody/row" >
         <fo:table-row xsl:use-attribute-sets="table16-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table16']/tgroup/tbody/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table16']/tgroup/tbody/row/entry" >
         <xsl:variable name="cols-spanned">
             <xsl:call-template name="cols-spanned"/>
         </xsl:variable>
@@ -3151,7 +3050,7 @@
         <xsl:choose>
             <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
                 <fo:table-cell xsl:use-attribute-sets="table16-cell">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3160,7 +3059,7 @@
             <xsl:when test="$cols-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table16-cell"
                     number-rows-spanned="{$rows-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3169,7 +3068,7 @@
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table16-cell"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3179,7 +3078,7 @@
                 <fo:table-cell xsl:use-attribute-sets="table16-cell"
                     number-rows-spanned="{$rows-spanned}"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3188,7 +3087,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table16']/tgroup/tbody/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table16']/tgroup/tbody/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="cell16-block">
             <xsl:apply-templates/>
         </fo:block>
@@ -3198,70 +3097,63 @@
      <xsl:template match="table[@classes='table17']">
         <fo:block-container xsl:use-attribute-sets = "table17-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
             <fo:table role="table17" xsl:use-attribute-sets="table17">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
-                <xsl:apply-templates mode="classes">
+                <xsl:apply-templates >
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:apply-templates>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
         </fo:block-container>
     </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
-    </xsl:template>
 
-
-    <xsl:template match="table[@classes = 'table17']/tgroup/thead" mode="classes">
+    <xsl:template match="table[@classes = 'table17']/tgroup/thead" >
         <fo:table-header xsl:use-attribute-sets = "thead17-header">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table17']/tgroup//thead/row" mode="classes">
+    <xsl:template match="table[@classes='table17']/tgroup//thead/row" >
         <fo:table-row xsl:use-attribute-sets="table17-header-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table17']/tgroup/thead/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table17']/tgroup/thead/row/entry" >
         <fo:table-cell xsl:use-attribute-sets="thead17-cell">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
             </xsl:if>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table17']/tgroup/thead/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table17']/tgroup/thead/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="thead17-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table17']/tgroup/tbody" mode="classes">
+    <xsl:template match="table[@classes='table17']/tgroup/tbody" >
         <fo:table-body xsl:use-attribute-sets="table17-body">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table17']/tgroup/tbody/row" mode="classes">
+    <xsl:template match="table[@classes='table17']/tgroup/tbody/row" >
         <fo:table-row xsl:use-attribute-sets="table17-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table17']/tgroup/tbody/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table17']/tgroup/tbody/row/entry" >
         <xsl:variable name="cols-spanned">
             <xsl:call-template name="cols-spanned"/>
         </xsl:variable>
@@ -3271,7 +3163,7 @@
         <xsl:choose>
             <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
                 <fo:table-cell xsl:use-attribute-sets="table17-cell">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3280,7 +3172,7 @@
             <xsl:when test="$cols-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table17-cell"
                     number-rows-spanned="{$rows-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3289,7 +3181,7 @@
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table17-cell"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3299,7 +3191,7 @@
                 <fo:table-cell xsl:use-attribute-sets="table17-cell"
                     number-rows-spanned="{$rows-spanned}"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3308,7 +3200,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table17']/tgroup/tbody/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table17']/tgroup/tbody/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="cell17-block">
             <xsl:apply-templates/>
         </fo:block>
@@ -3318,70 +3210,63 @@
      <xsl:template match="table[@classes='table18']">
         <fo:block-container xsl:use-attribute-sets = "table18-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
             <fo:table role="table18" xsl:use-attribute-sets="table18">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
-                <xsl:apply-templates mode="classes">
+                <xsl:apply-templates >
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:apply-templates>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
         </fo:block-container>
     </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
-    </xsl:template>
 
-
-    <xsl:template match="table[@classes = 'table18']/tgroup/thead" mode="classes">
+    <xsl:template match="table[@classes = 'table18']/tgroup/thead" >
         <fo:table-header xsl:use-attribute-sets = "thead18-header">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table18']/tgroup//thead/row" mode="classes">
+    <xsl:template match="table[@classes='table18']/tgroup//thead/row" >
         <fo:table-row xsl:use-attribute-sets="table18-header-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table18']/tgroup/thead/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table18']/tgroup/thead/row/entry" >
         <fo:table-cell xsl:use-attribute-sets="thead18-cell">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
             </xsl:if>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table18']/tgroup/thead/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table18']/tgroup/thead/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="thead18-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table18']/tgroup/tbody" mode="classes">
+    <xsl:template match="table[@classes='table18']/tgroup/tbody" >
         <fo:table-body xsl:use-attribute-sets="table18-body">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table18']/tgroup/tbody/row" mode="classes">
+    <xsl:template match="table[@classes='table18']/tgroup/tbody/row" >
         <fo:table-row xsl:use-attribute-sets="table18-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table18']/tgroup/tbody/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table18']/tgroup/tbody/row/entry" >
         <xsl:variable name="cols-spanned">
             <xsl:call-template name="cols-spanned"/>
         </xsl:variable>
@@ -3391,7 +3276,7 @@
         <xsl:choose>
             <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
                 <fo:table-cell xsl:use-attribute-sets="table18-cell">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3400,7 +3285,7 @@
             <xsl:when test="$cols-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table18-cell"
                     number-rows-spanned="{$rows-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3409,7 +3294,7 @@
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table18-cell"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3419,7 +3304,7 @@
                 <fo:table-cell xsl:use-attribute-sets="table18-cell"
                     number-rows-spanned="{$rows-spanned}"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3428,7 +3313,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table18']/tgroup/tbody/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table18']/tgroup/tbody/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="cell18-block">
             <xsl:apply-templates/>
         </fo:block>
@@ -3438,70 +3323,63 @@
      <xsl:template match="table[@classes='table19']">
         <fo:block-container xsl:use-attribute-sets = "table19-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
             <fo:table role="table19" xsl:use-attribute-sets="table19">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
-                <xsl:apply-templates mode="classes">
+                <xsl:apply-templates >
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:apply-templates>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
         </fo:block-container>
     </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
-    </xsl:template>
 
-
-    <xsl:template match="table[@classes = 'table19']/tgroup/thead" mode="classes">
+    <xsl:template match="table[@classes = 'table19']/tgroup/thead" >
         <fo:table-header xsl:use-attribute-sets = "thead19-header">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table19']/tgroup//thead/row" mode="classes">
+    <xsl:template match="table[@classes='table19']/tgroup//thead/row" >
         <fo:table-row xsl:use-attribute-sets="table19-header-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table19']/tgroup/thead/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table19']/tgroup/thead/row/entry" >
         <fo:table-cell xsl:use-attribute-sets="thead19-cell">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
             </xsl:if>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table19']/tgroup/thead/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table19']/tgroup/thead/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="thead19-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table19']/tgroup/tbody" mode="classes">
+    <xsl:template match="table[@classes='table19']/tgroup/tbody" >
         <fo:table-body xsl:use-attribute-sets="table19-body">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table19']/tgroup/tbody/row" mode="classes">
+    <xsl:template match="table[@classes='table19']/tgroup/tbody/row" >
         <fo:table-row xsl:use-attribute-sets="table19-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table19']/tgroup/tbody/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table19']/tgroup/tbody/row/entry" >
         <xsl:variable name="cols-spanned">
             <xsl:call-template name="cols-spanned"/>
         </xsl:variable>
@@ -3511,7 +3389,7 @@
         <xsl:choose>
             <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
                 <fo:table-cell xsl:use-attribute-sets="table19-cell">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3520,7 +3398,7 @@
             <xsl:when test="$cols-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table19-cell"
                     number-rows-spanned="{$rows-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3529,7 +3407,7 @@
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table19-cell"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3539,7 +3417,7 @@
                 <fo:table-cell xsl:use-attribute-sets="table19-cell"
                     number-rows-spanned="{$rows-spanned}"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3548,7 +3426,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table19']/tgroup/tbody/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table19']/tgroup/tbody/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="cell19-block">
             <xsl:apply-templates/>
         </fo:block>
@@ -3558,70 +3436,63 @@
      <xsl:template match="table[@classes='table20']">
         <fo:block-container xsl:use-attribute-sets = "table20-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
             <fo:table role="table20" xsl:use-attribute-sets="table20">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
-                <xsl:apply-templates mode="classes">
+                <xsl:apply-templates >
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:apply-templates>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
         </fo:block-container>
     </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
-    </xsl:template>
 
-
-    <xsl:template match="table[@classes = 'table20']/tgroup/thead" mode="classes">
+    <xsl:template match="table[@classes = 'table20']/tgroup/thead" >
         <fo:table-header xsl:use-attribute-sets = "thead20-header">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table20']/tgroup//thead/row" mode="classes">
+    <xsl:template match="table[@classes='table20']/tgroup//thead/row" >
         <fo:table-row xsl:use-attribute-sets="table20-header-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table20']/tgroup/thead/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table20']/tgroup/thead/row/entry" >
         <fo:table-cell xsl:use-attribute-sets="thead20-cell">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
             </xsl:if>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table20']/tgroup/thead/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table20']/tgroup/thead/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="thead20-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table20']/tgroup/tbody" mode="classes">
+    <xsl:template match="table[@classes='table20']/tgroup/tbody" >
         <fo:table-body xsl:use-attribute-sets="table20-body">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table20']/tgroup/tbody/row" mode="classes">
+    <xsl:template match="table[@classes='table20']/tgroup/tbody/row" >
         <fo:table-row xsl:use-attribute-sets="table20-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table20']/tgroup/tbody/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table20']/tgroup/tbody/row/entry" >
         <xsl:variable name="cols-spanned">
             <xsl:call-template name="cols-spanned"/>
         </xsl:variable>
@@ -3631,7 +3502,7 @@
         <xsl:choose>
             <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
                 <fo:table-cell xsl:use-attribute-sets="table20-cell">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3640,7 +3511,7 @@
             <xsl:when test="$cols-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table20-cell"
                     number-rows-spanned="{$rows-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3649,7 +3520,7 @@
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table20-cell"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3659,7 +3530,7 @@
                 <fo:table-cell xsl:use-attribute-sets="table20-cell"
                     number-rows-spanned="{$rows-spanned}"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3668,7 +3539,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table20']/tgroup/tbody/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table20']/tgroup/tbody/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="cell20-block">
             <xsl:apply-templates/>
         </fo:block>
@@ -3678,70 +3549,63 @@
      <xsl:template match="table[@classes='table21']">
         <fo:block-container xsl:use-attribute-sets = "table21-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
             <fo:table role="table21" xsl:use-attribute-sets="table21">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
-                <xsl:apply-templates mode="classes">
+                <xsl:apply-templates >
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:apply-templates>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
         </fo:block-container>
     </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
-    </xsl:template>
 
-
-    <xsl:template match="table[@classes = 'table21']/tgroup/thead" mode="classes">
+    <xsl:template match="table[@classes = 'table21']/tgroup/thead" >
         <fo:table-header xsl:use-attribute-sets = "thead21-header">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table21']/tgroup//thead/row" mode="classes">
+    <xsl:template match="table[@classes='table21']/tgroup//thead/row" >
         <fo:table-row xsl:use-attribute-sets="table21-header-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table21']/tgroup/thead/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table21']/tgroup/thead/row/entry" >
         <fo:table-cell xsl:use-attribute-sets="thead21-cell">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
             </xsl:if>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table21']/tgroup/thead/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table21']/tgroup/thead/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="thead21-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table21']/tgroup/tbody" mode="classes">
+    <xsl:template match="table[@classes='table21']/tgroup/tbody" >
         <fo:table-body xsl:use-attribute-sets="table21-body">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table21']/tgroup/tbody/row" mode="classes">
+    <xsl:template match="table[@classes='table21']/tgroup/tbody/row" >
         <fo:table-row xsl:use-attribute-sets="table21-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table21']/tgroup/tbody/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table21']/tgroup/tbody/row/entry" >
         <xsl:variable name="cols-spanned">
             <xsl:call-template name="cols-spanned"/>
         </xsl:variable>
@@ -3751,7 +3615,7 @@
         <xsl:choose>
             <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
                 <fo:table-cell xsl:use-attribute-sets="table21-cell">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3760,7 +3624,7 @@
             <xsl:when test="$cols-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table21-cell"
                     number-rows-spanned="{$rows-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3769,7 +3633,7 @@
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table21-cell"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3779,7 +3643,7 @@
                 <fo:table-cell xsl:use-attribute-sets="table21-cell"
                     number-rows-spanned="{$rows-spanned}"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3788,7 +3652,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table21']/tgroup/tbody/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table21']/tgroup/tbody/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="cell21-block">
             <xsl:apply-templates/>
         </fo:block>
@@ -3798,70 +3662,63 @@
      <xsl:template match="table[@classes='table22']">
         <fo:block-container xsl:use-attribute-sets = "table22-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
             <fo:table role="table22" xsl:use-attribute-sets="table22">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
-                <xsl:apply-templates mode="classes">
+                <xsl:apply-templates >
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:apply-templates>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
         </fo:block-container>
     </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
-    </xsl:template>
 
-
-    <xsl:template match="table[@classes = 'table22']/tgroup/thead" mode="classes">
+    <xsl:template match="table[@classes = 'table22']/tgroup/thead" >
         <fo:table-header xsl:use-attribute-sets = "thead22-header">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table22']/tgroup//thead/row" mode="classes">
+    <xsl:template match="table[@classes='table22']/tgroup//thead/row" >
         <fo:table-row xsl:use-attribute-sets="table22-header-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table22']/tgroup/thead/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table22']/tgroup/thead/row/entry" >
         <fo:table-cell xsl:use-attribute-sets="thead22-cell">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
             </xsl:if>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table22']/tgroup/thead/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table22']/tgroup/thead/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="thead22-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table22']/tgroup/tbody" mode="classes">
+    <xsl:template match="table[@classes='table22']/tgroup/tbody" >
         <fo:table-body xsl:use-attribute-sets="table22-body">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table22']/tgroup/tbody/row" mode="classes">
+    <xsl:template match="table[@classes='table22']/tgroup/tbody/row" >
         <fo:table-row xsl:use-attribute-sets="table22-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table22']/tgroup/tbody/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table22']/tgroup/tbody/row/entry" >
         <xsl:variable name="cols-spanned">
             <xsl:call-template name="cols-spanned"/>
         </xsl:variable>
@@ -3871,7 +3728,7 @@
         <xsl:choose>
             <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
                 <fo:table-cell xsl:use-attribute-sets="table22-cell">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3880,7 +3737,7 @@
             <xsl:when test="$cols-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table22-cell"
                     number-rows-spanned="{$rows-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3889,7 +3746,7 @@
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table22-cell"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3899,7 +3756,7 @@
                 <fo:table-cell xsl:use-attribute-sets="table22-cell"
                     number-rows-spanned="{$rows-spanned}"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -3908,7 +3765,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table22']/tgroup/tbody/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table22']/tgroup/tbody/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="cell22-block">
             <xsl:apply-templates/>
         </fo:block>
@@ -3918,70 +3775,63 @@
      <xsl:template match="table[@classes='table23']">
         <fo:block-container xsl:use-attribute-sets = "table23-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
             <fo:table role="table23" xsl:use-attribute-sets="table23">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
-                <xsl:apply-templates mode="classes">
+                <xsl:apply-templates >
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:apply-templates>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
         </fo:block-container>
     </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
-    </xsl:template>
 
-
-    <xsl:template match="table[@classes = 'table23']/tgroup/thead" mode="classes">
+    <xsl:template match="table[@classes = 'table23']/tgroup/thead" >
         <fo:table-header xsl:use-attribute-sets = "thead23-header">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table23']/tgroup//thead/row" mode="classes">
+    <xsl:template match="table[@classes='table23']/tgroup//thead/row" >
         <fo:table-row xsl:use-attribute-sets="table23-header-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table23']/tgroup/thead/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table23']/tgroup/thead/row/entry" >
         <fo:table-cell xsl:use-attribute-sets="thead23-cell">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
             </xsl:if>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table23']/tgroup/thead/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table23']/tgroup/thead/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="thead23-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table23']/tgroup/tbody" mode="classes">
+    <xsl:template match="table[@classes='table23']/tgroup/tbody" >
         <fo:table-body xsl:use-attribute-sets="table23-body">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table23']/tgroup/tbody/row" mode="classes">
+    <xsl:template match="table[@classes='table23']/tgroup/tbody/row" >
         <fo:table-row xsl:use-attribute-sets="table23-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table23']/tgroup/tbody/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table23']/tgroup/tbody/row/entry" >
         <xsl:variable name="cols-spanned">
             <xsl:call-template name="cols-spanned"/>
         </xsl:variable>
@@ -3991,7 +3841,7 @@
         <xsl:choose>
             <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
                 <fo:table-cell xsl:use-attribute-sets="table23-cell">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4000,7 +3850,7 @@
             <xsl:when test="$cols-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table23-cell"
                     number-rows-spanned="{$rows-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4009,7 +3859,7 @@
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table23-cell"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4019,7 +3869,7 @@
                 <fo:table-cell xsl:use-attribute-sets="table23-cell"
                     number-rows-spanned="{$rows-spanned}"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4028,7 +3878,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table23']/tgroup/tbody/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table23']/tgroup/tbody/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="cell23-block">
             <xsl:apply-templates/>
         </fo:block>
@@ -4038,70 +3888,63 @@
      <xsl:template match="table[@classes='table24']">
         <fo:block-container xsl:use-attribute-sets = "table24-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
             <fo:table role="table24" xsl:use-attribute-sets="table24">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
-                <xsl:apply-templates mode="classes">
+                <xsl:apply-templates >
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:apply-templates>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
         </fo:block-container>
     </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
-    </xsl:template>
 
-
-    <xsl:template match="table[@classes = 'table24']/tgroup/thead" mode="classes">
+    <xsl:template match="table[@classes = 'table24']/tgroup/thead" >
         <fo:table-header xsl:use-attribute-sets = "thead24-header">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table24']/tgroup//thead/row" mode="classes">
+    <xsl:template match="table[@classes='table24']/tgroup//thead/row" >
         <fo:table-row xsl:use-attribute-sets="table24-header-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table24']/tgroup/thead/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table24']/tgroup/thead/row/entry" >
         <fo:table-cell xsl:use-attribute-sets="thead24-cell">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
             </xsl:if>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table24']/tgroup/thead/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table24']/tgroup/thead/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="thead24-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table24']/tgroup/tbody" mode="classes">
+    <xsl:template match="table[@classes='table24']/tgroup/tbody" >
         <fo:table-body xsl:use-attribute-sets="table24-body">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table24']/tgroup/tbody/row" mode="classes">
+    <xsl:template match="table[@classes='table24']/tgroup/tbody/row" >
         <fo:table-row xsl:use-attribute-sets="table24-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table24']/tgroup/tbody/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table24']/tgroup/tbody/row/entry" >
         <xsl:variable name="cols-spanned">
             <xsl:call-template name="cols-spanned"/>
         </xsl:variable>
@@ -4111,7 +3954,7 @@
         <xsl:choose>
             <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
                 <fo:table-cell xsl:use-attribute-sets="table24-cell">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4120,7 +3963,7 @@
             <xsl:when test="$cols-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table24-cell"
                     number-rows-spanned="{$rows-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4129,7 +3972,7 @@
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table24-cell"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4139,7 +3982,7 @@
                 <fo:table-cell xsl:use-attribute-sets="table24-cell"
                     number-rows-spanned="{$rows-spanned}"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4148,7 +3991,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table24']/tgroup/tbody/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table24']/tgroup/tbody/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="cell24-block">
             <xsl:apply-templates/>
         </fo:block>
@@ -4158,70 +4001,63 @@
      <xsl:template match="table[@classes='table25']">
         <fo:block-container xsl:use-attribute-sets = "table25-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
             <fo:table role="table25" xsl:use-attribute-sets="table25">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
-                <xsl:apply-templates mode="classes">
+                <xsl:apply-templates >
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:apply-templates>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
         </fo:block-container>
     </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
-    </xsl:template>
 
-
-    <xsl:template match="table[@classes = 'table25']/tgroup/thead" mode="classes">
+    <xsl:template match="table[@classes = 'table25']/tgroup/thead" >
         <fo:table-header xsl:use-attribute-sets = "thead25-header">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table25']/tgroup//thead/row" mode="classes">
+    <xsl:template match="table[@classes='table25']/tgroup//thead/row" >
         <fo:table-row xsl:use-attribute-sets="table25-header-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table25']/tgroup/thead/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table25']/tgroup/thead/row/entry" >
         <fo:table-cell xsl:use-attribute-sets="thead25-cell">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
             </xsl:if>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table25']/tgroup/thead/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table25']/tgroup/thead/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="thead25-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table25']/tgroup/tbody" mode="classes">
+    <xsl:template match="table[@classes='table25']/tgroup/tbody" >
         <fo:table-body xsl:use-attribute-sets="table25-body">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table25']/tgroup/tbody/row" mode="classes">
+    <xsl:template match="table[@classes='table25']/tgroup/tbody/row" >
         <fo:table-row xsl:use-attribute-sets="table25-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table25']/tgroup/tbody/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table25']/tgroup/tbody/row/entry" >
         <xsl:variable name="cols-spanned">
             <xsl:call-template name="cols-spanned"/>
         </xsl:variable>
@@ -4231,7 +4067,7 @@
         <xsl:choose>
             <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
                 <fo:table-cell xsl:use-attribute-sets="table25-cell">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4240,7 +4076,7 @@
             <xsl:when test="$cols-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table25-cell"
                     number-rows-spanned="{$rows-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4249,7 +4085,7 @@
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table25-cell"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4259,7 +4095,7 @@
                 <fo:table-cell xsl:use-attribute-sets="table25-cell"
                     number-rows-spanned="{$rows-spanned}"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4268,7 +4104,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table25']/tgroup/tbody/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table25']/tgroup/tbody/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="cell25-block">
             <xsl:apply-templates/>
         </fo:block>
@@ -4278,70 +4114,63 @@
      <xsl:template match="table[@classes='table26']">
         <fo:block-container xsl:use-attribute-sets = "table26-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
             <fo:table role="table26" xsl:use-attribute-sets="table26">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
-                <xsl:apply-templates mode="classes">
+                <xsl:apply-templates >
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:apply-templates>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
         </fo:block-container>
     </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
-    </xsl:template>
 
-
-    <xsl:template match="table[@classes = 'table26']/tgroup/thead" mode="classes">
+    <xsl:template match="table[@classes = 'table26']/tgroup/thead" >
         <fo:table-header xsl:use-attribute-sets = "thead26-header">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table26']/tgroup//thead/row" mode="classes">
+    <xsl:template match="table[@classes='table26']/tgroup//thead/row" >
         <fo:table-row xsl:use-attribute-sets="table26-header-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table26']/tgroup/thead/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table26']/tgroup/thead/row/entry" >
         <fo:table-cell xsl:use-attribute-sets="thead26-cell">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
             </xsl:if>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table26']/tgroup/thead/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table26']/tgroup/thead/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="thead26-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table26']/tgroup/tbody" mode="classes">
+    <xsl:template match="table[@classes='table26']/tgroup/tbody" >
         <fo:table-body xsl:use-attribute-sets="table26-body">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table26']/tgroup/tbody/row" mode="classes">
+    <xsl:template match="table[@classes='table26']/tgroup/tbody/row" >
         <fo:table-row xsl:use-attribute-sets="table26-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table26']/tgroup/tbody/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table26']/tgroup/tbody/row/entry" >
         <xsl:variable name="cols-spanned">
             <xsl:call-template name="cols-spanned"/>
         </xsl:variable>
@@ -4351,7 +4180,7 @@
         <xsl:choose>
             <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
                 <fo:table-cell xsl:use-attribute-sets="table26-cell">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4360,7 +4189,7 @@
             <xsl:when test="$cols-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table26-cell"
                     number-rows-spanned="{$rows-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4369,7 +4198,7 @@
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table26-cell"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4379,7 +4208,7 @@
                 <fo:table-cell xsl:use-attribute-sets="table26-cell"
                     number-rows-spanned="{$rows-spanned}"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4388,7 +4217,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table26']/tgroup/tbody/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table26']/tgroup/tbody/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="cell26-block">
             <xsl:apply-templates/>
         </fo:block>
@@ -4398,70 +4227,63 @@
      <xsl:template match="table[@classes='table27']">
         <fo:block-container xsl:use-attribute-sets = "table27-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
             <fo:table role="table27" xsl:use-attribute-sets="table27">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
-                <xsl:apply-templates mode="classes">
+                <xsl:apply-templates >
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:apply-templates>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
         </fo:block-container>
     </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
-    </xsl:template>
 
-
-    <xsl:template match="table[@classes = 'table27']/tgroup/thead" mode="classes">
+    <xsl:template match="table[@classes = 'table27']/tgroup/thead" >
         <fo:table-header xsl:use-attribute-sets = "thead27-header">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table27']/tgroup//thead/row" mode="classes">
+    <xsl:template match="table[@classes='table27']/tgroup//thead/row" >
         <fo:table-row xsl:use-attribute-sets="table27-header-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table27']/tgroup/thead/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table27']/tgroup/thead/row/entry" >
         <fo:table-cell xsl:use-attribute-sets="thead27-cell">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
             </xsl:if>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table27']/tgroup/thead/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table27']/tgroup/thead/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="thead27-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table27']/tgroup/tbody" mode="classes">
+    <xsl:template match="table[@classes='table27']/tgroup/tbody" >
         <fo:table-body xsl:use-attribute-sets="table27-body">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table27']/tgroup/tbody/row" mode="classes">
+    <xsl:template match="table[@classes='table27']/tgroup/tbody/row" >
         <fo:table-row xsl:use-attribute-sets="table27-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table27']/tgroup/tbody/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table27']/tgroup/tbody/row/entry" >
         <xsl:variable name="cols-spanned">
             <xsl:call-template name="cols-spanned"/>
         </xsl:variable>
@@ -4471,7 +4293,7 @@
         <xsl:choose>
             <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
                 <fo:table-cell xsl:use-attribute-sets="table27-cell">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4480,7 +4302,7 @@
             <xsl:when test="$cols-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table27-cell"
                     number-rows-spanned="{$rows-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4489,7 +4311,7 @@
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table27-cell"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4499,7 +4321,7 @@
                 <fo:table-cell xsl:use-attribute-sets="table27-cell"
                     number-rows-spanned="{$rows-spanned}"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4508,7 +4330,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table27']/tgroup/tbody/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table27']/tgroup/tbody/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="cell27-block">
             <xsl:apply-templates/>
         </fo:block>
@@ -4518,70 +4340,63 @@
      <xsl:template match="table[@classes='table28']">
         <fo:block-container xsl:use-attribute-sets = "table28-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
             <fo:table role="table28" xsl:use-attribute-sets="table28">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
-                <xsl:apply-templates mode="classes">
+                <xsl:apply-templates >
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:apply-templates>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
         </fo:block-container>
     </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
-    </xsl:template>
 
-
-    <xsl:template match="table[@classes = 'table28']/tgroup/thead" mode="classes">
+    <xsl:template match="table[@classes = 'table28']/tgroup/thead" >
         <fo:table-header xsl:use-attribute-sets = "thead28-header">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table28']/tgroup//thead/row" mode="classes">
+    <xsl:template match="table[@classes='table28']/tgroup//thead/row" >
         <fo:table-row xsl:use-attribute-sets="table28-header-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table28']/tgroup/thead/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table28']/tgroup/thead/row/entry" >
         <fo:table-cell xsl:use-attribute-sets="thead28-cell">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
             </xsl:if>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table28']/tgroup/thead/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table28']/tgroup/thead/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="thead28-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table28']/tgroup/tbody" mode="classes">
+    <xsl:template match="table[@classes='table28']/tgroup/tbody" >
         <fo:table-body xsl:use-attribute-sets="table28-body">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table28']/tgroup/tbody/row" mode="classes">
+    <xsl:template match="table[@classes='table28']/tgroup/tbody/row" >
         <fo:table-row xsl:use-attribute-sets="table28-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table28']/tgroup/tbody/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table28']/tgroup/tbody/row/entry" >
         <xsl:variable name="cols-spanned">
             <xsl:call-template name="cols-spanned"/>
         </xsl:variable>
@@ -4591,7 +4406,7 @@
         <xsl:choose>
             <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
                 <fo:table-cell xsl:use-attribute-sets="table28-cell">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4600,7 +4415,7 @@
             <xsl:when test="$cols-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table28-cell"
                     number-rows-spanned="{$rows-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4609,7 +4424,7 @@
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table28-cell"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4619,7 +4434,7 @@
                 <fo:table-cell xsl:use-attribute-sets="table28-cell"
                     number-rows-spanned="{$rows-spanned}"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4628,7 +4443,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table28']/tgroup/tbody/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table28']/tgroup/tbody/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="cell28-block">
             <xsl:apply-templates/>
         </fo:block>
@@ -4638,70 +4453,63 @@
      <xsl:template match="table[@classes='table29']">
         <fo:block-container xsl:use-attribute-sets = "table29-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
             <fo:table role="table29" xsl:use-attribute-sets="table29">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
-                <xsl:apply-templates mode="classes">
+                <xsl:apply-templates >
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:apply-templates>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
         </fo:block-container>
     </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
-    </xsl:template>
 
-
-    <xsl:template match="table[@classes = 'table29']/tgroup/thead" mode="classes">
+    <xsl:template match="table[@classes = 'table29']/tgroup/thead" >
         <fo:table-header xsl:use-attribute-sets = "thead29-header">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table29']/tgroup//thead/row" mode="classes">
+    <xsl:template match="table[@classes='table29']/tgroup//thead/row" >
         <fo:table-row xsl:use-attribute-sets="table29-header-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table29']/tgroup/thead/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table29']/tgroup/thead/row/entry" >
         <fo:table-cell xsl:use-attribute-sets="thead29-cell">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
             </xsl:if>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table29']/tgroup/thead/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table29']/tgroup/thead/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="thead29-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table29']/tgroup/tbody" mode="classes">
+    <xsl:template match="table[@classes='table29']/tgroup/tbody" >
         <fo:table-body xsl:use-attribute-sets="table29-body">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table29']/tgroup/tbody/row" mode="classes">
+    <xsl:template match="table[@classes='table29']/tgroup/tbody/row" >
         <fo:table-row xsl:use-attribute-sets="table29-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table29']/tgroup/tbody/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table29']/tgroup/tbody/row/entry" >
         <xsl:variable name="cols-spanned">
             <xsl:call-template name="cols-spanned"/>
         </xsl:variable>
@@ -4711,7 +4519,7 @@
         <xsl:choose>
             <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
                 <fo:table-cell xsl:use-attribute-sets="table29-cell">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4720,7 +4528,7 @@
             <xsl:when test="$cols-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table29-cell"
                     number-rows-spanned="{$rows-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4729,7 +4537,7 @@
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table29-cell"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4739,7 +4547,7 @@
                 <fo:table-cell xsl:use-attribute-sets="table29-cell"
                     number-rows-spanned="{$rows-spanned}"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4748,7 +4556,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table29']/tgroup/tbody/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table29']/tgroup/tbody/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="cell29-block">
             <xsl:apply-templates/>
         </fo:block>
@@ -4758,70 +4566,63 @@
      <xsl:template match="table[@classes='table30']">
         <fo:block-container xsl:use-attribute-sets = "table30-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
             <fo:table role="table30" xsl:use-attribute-sets="table30">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
-                <xsl:apply-templates mode="classes">
+                <xsl:apply-templates >
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:apply-templates>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
         </fo:block-container>
     </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
-         <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
-             <xsl:with-param name="classes" select="$classes"/>
-         </xsl:apply-templates>
-    </xsl:template>
 
-
-    <xsl:template match="table[@classes = 'table30']/tgroup/thead" mode="classes">
+    <xsl:template match="table[@classes = 'table30']/tgroup/thead" >
         <fo:table-header xsl:use-attribute-sets = "thead30-header">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table30']/tgroup//thead/row" mode="classes">
+    <xsl:template match="table[@classes='table30']/tgroup//thead/row" >
         <fo:table-row xsl:use-attribute-sets="table30-header-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table30']/tgroup/thead/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table30']/tgroup/thead/row/entry" >
         <fo:table-cell xsl:use-attribute-sets="thead30-cell">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
             </xsl:if>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table30']/tgroup/thead/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table30']/tgroup/thead/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="thead30-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table30']/tgroup/tbody" mode="classes">
+    <xsl:template match="table[@classes='table30']/tgroup/tbody" >
         <fo:table-body xsl:use-attribute-sets="table30-body">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table30']/tgroup/tbody/row" mode="classes">
+    <xsl:template match="table[@classes='table30']/tgroup/tbody/row" >
         <fo:table-row xsl:use-attribute-sets="table30-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table30']/tgroup/tbody/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table30']/tgroup/tbody/row/entry" >
         <xsl:variable name="cols-spanned">
             <xsl:call-template name="cols-spanned"/>
         </xsl:variable>
@@ -4831,7 +4632,7 @@
         <xsl:choose>
             <xsl:when test="$cols-spanned= 1 and $rows-spanned = 1">
                 <fo:table-cell xsl:use-attribute-sets="table30-cell">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates/>
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4840,7 +4641,7 @@
             <xsl:when test="$cols-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table30-cell"
                     number-rows-spanned="{$rows-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4849,7 +4650,7 @@
             <xsl:when test="$rows-spanned= 1">
                 <fo:table-cell xsl:use-attribute-sets="table30-cell"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4859,7 +4660,7 @@
                 <fo:table-cell xsl:use-attribute-sets="table30-cell"
                     number-rows-spanned="{$rows-spanned}"
                     number-columns-spanned="{$cols-spanned}">
-                    <xsl:apply-templates mode="classes"/>
+                    <xsl:apply-templates />
                     <xsl:if test="not(paragraph)">
                         <fo:block/>
                     </xsl:if>
@@ -4868,7 +4669,7 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table30']/tgroup/tbody/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table30']/tgroup/tbody/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="cell30-block">
             <xsl:apply-templates/>
         </fo:block>
