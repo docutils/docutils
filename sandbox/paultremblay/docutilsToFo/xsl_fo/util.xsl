@@ -64,5 +64,60 @@
         </xsl:choose>
     </xsl:variable>
 
+    <xsl:variable name="layout-page">
+        <xsl:choose>
+            <xsl:when test = "$page-layout != ''">
+                <xsl:value-of select="$page-layout"/>
+            </xsl:when>
+            <xsl:when test = "/document/container[@classes = 'body-header']|/document/container[@classes='body-footer']">
+                <xsl:text>first</xsl:text> 
+            </xsl:when>
+            <xsl:when test = "/document/container[@classes = 'toc-body-header']|/document/container[@classes='toc-body-footer']">
+                <xsl:text>first</xsl:text> 
+            </xsl:when>
+            <xsl:when test = "/document/container[@classes = 'first-header']|/document/container[@classes='first-footer']">
+                <xsl:choose>
+                    <xsl:when test="/document/container[@classes = 'odd-header']|/document/container[@classes = 'odd-footer']">
+                        <xsl:text>first-odd-even</xsl:text> 
+                    </xsl:when>
+                    <xsl:when test="/document/container[@classes = 'even-header']|/document/container[@classes = 'even-footer']">
+                        <xsl:text>first-odd-even</xsl:text> 
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:text>first</xsl:text>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:when>
+            <xsl:when test = "/document/container[@classes = 'toc-first-header']|/document/container[@classes='toc-first-footer']">
+                <xsl:choose>
+                    <xsl:when test="/document/container[@classes = 'toc-odd-header']|/document/container[@classes = 'toc-odd-footer']">
+                        <xsl:text>first-odd-even</xsl:text> 
+                    </xsl:when>
+                    <xsl:when test="/document/container[@classes = 'toc-even-header']|/document/container[@classes = 'toc-even-footer']">
+                        <xsl:text>first-odd-even</xsl:text> 
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:text>first</xsl:text>
+                    </xsl:otherwise>
+                </xsl:choose>
+            </xsl:when>
+            <xsl:when test = "/document/container[@classes = 'odd-header']|/document/container[@classes='odd-footer']">
+                <xsl:text>odd-even</xsl:text>
+            </xsl:when>
+            <xsl:when test = "/document/container[@classes = 'toc-odd-header']|/document/container[@classes='toc-odd-footer']">
+                <xsl:text>odd-even</xsl:text>
+            </xsl:when>
+            <xsl:when test = "/document/container[@classes = 'even-header']|/document/container[@classes='even-footer']">
+                <xsl:text>odd-even</xsl:text>
+            </xsl:when>
+            <xsl:when test = "/document/container[@classes = 'toc-even-header']|/document/container[@classes='toc-even-footer']">
+                <xsl:text>odd-even</xsl:text>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:text>simple</xsl:text>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+
     
 </xsl:stylesheet> 

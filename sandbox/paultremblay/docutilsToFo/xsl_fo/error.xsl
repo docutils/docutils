@@ -72,7 +72,7 @@
             </xsl:call-template>
         </xsl:if>
 
-        <xsl:if test= "$page-layout != 'simple'  and $page-layout != 'odd-even' 
+        <xsl:if test= "$page-layout != '' and $page-layout != 'simple'  and $page-layout != 'odd-even' 
             and $page-layout != 'first-odd-even' and $page-layout != 'first'">
             <xsl:variable name="msg">
                 <xsl:text>"</xsl:text>

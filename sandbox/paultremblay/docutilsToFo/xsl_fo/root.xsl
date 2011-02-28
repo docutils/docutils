@@ -58,9 +58,7 @@
 
     <xsl:template match="/">
         <xsl:element name="fo:root">
-            <xsl:call-template name="make-pages">
-                <xsl:with-param name="page-layout" select="$page-layout"/>
-            </xsl:call-template>
+            <xsl:call-template name="make-pages"/>
             <xsl:apply-templates/>
         </xsl:element>
     </xsl:template>
@@ -89,7 +87,15 @@
         </xsl:choose>
         <fo:page-sequence master-reference="pages" xsl:use-attribute-sets="body-page-sequence">
             <xsl:apply-templates select="/document/decoration/header" mode="header"/>
+            <xsl:apply-templates select="/document/container[@classes='body-header']" mode="header"/>
+            <xsl:apply-templates select="/document/container[@classes='first-header']" mode="header"/>
+            <xsl:apply-templates select="/document/container[@classes='odd-header']" mode="header"/>
+            <xsl:apply-templates select="/document/container[@classes='even-header']" mode="header"/>
             <xsl:apply-templates select="/document/decoration/footer" mode="footer"/>
+            <xsl:apply-templates select="/document/container[@classes='body-footer']" mode="footer"/>
+            <xsl:apply-templates select="/document/container[@classes='first-footer']" mode="footer"/>
+            <xsl:apply-templates select="/document/container[@classes='odd-footer']" mode="footer"/>
+            <xsl:apply-templates select="/document/container[@classes='even-footer']" mode="footer"/>
             <fo:static-content role = "footnote-separator" 
                 xsl:use-attribute-sets = "footnote-separator-flow" flow-name="xsl-footnote-separator">
                <fo:block xsl:use-attribute-sets = "footnote-separator-block">
@@ -118,7 +124,15 @@
     <xsl:template name="make-toc">
         <fo:page-sequence master-reference="toc-pages" xsl:use-attribute-sets="toc-page-sequence">
             <xsl:apply-templates select="/document/decoration/header" mode="header"/>
+            <xsl:apply-templates select="/document/container[@classes='toc-body-header']" mode="header"/>
+            <xsl:apply-templates select="/document/container[@classes='toc-first-header']" mode="header"/>
+            <xsl:apply-templates select="/document/container[@classes='toc-odd-header']" mode="header"/>
+            <xsl:apply-templates select="/document/container[@classes='toc-even-header']" mode="header"/>
             <xsl:apply-templates select="/document/decoration/footer" mode="footer"/>
+            <xsl:apply-templates select="/document/container[@classes='toc-body-footer']" mode="footer"/>
+            <xsl:apply-templates select="/document/container[@classes='toc-first-footer']" mode="footer"/>
+            <xsl:apply-templates select="/document/container[@classes='toc-odd-footer']" mode="footer"/>
+            <xsl:apply-templates select="/document/container[@classes='toc-even-footer']" mode="footer"/>
             <fo:flow flow-name="xsl-region-body" xsl:use-attribute-sets="toc-flow">
                 <xsl:call-template name="apply-in-order">
                     <xsl:with-param name="order" select="$front-order"/>

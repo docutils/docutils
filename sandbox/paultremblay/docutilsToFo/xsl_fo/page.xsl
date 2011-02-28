@@ -16,7 +16,7 @@
     <!-- This template sets up the page styles, needed at the start of an 
     FO document.  
 
-    The parameter page-layout is inherited from other the parameter stylesheet.
+    The parameter layout-page is inherited from other the parameter stylesheet.
     This parameter must be
     1.blank (""). The stylesheet interprets an empty string as simple
     2. simple
@@ -123,6 +123,9 @@
                 <xsl:text>"&#xA;</xsl:text> 
                 <xsl:text>value of $page-layout="</xsl:text>
                 <xsl:value-of select="$page-layout"/>
+                <xsl:text>"&#xA;</xsl:text>
+                <xsl:text>value of $layout-page="</xsl:text>
+                <xsl:value-of select="$layout-page"/>
                 <xsl:text>"</xsl:text>
             </xsl:message>
         </xsl:if>
@@ -140,22 +143,22 @@
     </xsl:template>
 
     <!--call on the appropriate template to make simpe-page-master, depending on 
-    the parameter $page-layout-->
+    the parameter $layout-page-->
     <xsl:template name="page-properties">
         <!--set up the physical properties of the pages-->
         <xsl:choose>
-            <xsl:when test="$page-layout = '' or $page-layout = 'simple'">
+            <xsl:when test="$layout-page = '' or $layout-page = 'simple'">
                 <xsl:call-template name="make-simple-page"/>
             </xsl:when>
-            <xsl:when test="$page-layout = 'first'">
+            <xsl:when test="$layout-page = 'first'">
                 <xsl:call-template name="make-first-page"/>
                 <xsl:call-template name="make-body-page"/>
             </xsl:when>
-            <xsl:when test="$page-layout = 'odd-even'">
+            <xsl:when test="$layout-page = 'odd-even'">
                 <xsl:call-template name="make-odd-page"/>
                 <xsl:call-template name="make-even-page"/>
             </xsl:when>
-            <xsl:when test="$page-layout = 'first-odd-even'">
+            <xsl:when test="$layout-page = 'first-odd-even'">
                 <xsl:call-template name="make-first-page"/>
                 <xsl:call-template name="make-odd-page"/>
                 <xsl:call-template name="make-even-page"/>
@@ -170,16 +173,35 @@
         <xsl:param name="section"/>
         <xsl:variable name="margin-top">
             <xsl:choose>
-                <xsl:when test="$page-layout = 'first' and $suppress-first-page-header = 'True' and $page-type = 'first'">
-                    <xsl:text>0in</xsl:text>
+                <xsl:when test="$page-type = 'first' and /document/container[@classes = 'first-header']|/document/decoration/header">
+                    <xsl:value-of select="$default-spacing-header"/>
                 </xsl:when>
-                <xsl:when test="$page-layout = 'first-odd-even' and $suppress-first-page-header = 'True' and $page-type = 'first'">
-                    <xsl:text>0in</xsl:text>
+                <xsl:when test="$page-type = 'odd' and /document/container[@classes = 'odd-header']|/document/decoration/header">
+                    <xsl:value-of select="$default-spacing-header"/>
                 </xsl:when>
-                <xsl:when test="$spacing-header != ''">
-                    <xsl:value-of select="$spacing-header"/>
+                <xsl:when test="$page-type = 'even' and /document/container[@classes = 'even-header']|/document/decoration/header">
+                    <xsl:value-of select="$default-spacing-header"/>
                 </xsl:when>
-                <xsl:when test="/document/decoration/header">
+                <xsl:when test="$page-type = 'body' and /document/container[@classes = 'body-header']|/document/decoration/header">
+                    <xsl:value-of select="$default-spacing-header"/>
+                </xsl:when>
+                <xsl:when test="$page-type = 'toc-first' and 
+                    /document/container[@classes = 'toc-first-header']|/document/decoration/header">
+                    <xsl:value-of select="$default-spacing-header"/>
+                </xsl:when>
+                <xsl:when test="$page-type = 'toc-odd' 
+                    and /document/container[@classes = 'toc-odd-header']|/document/decoration/header">
+                    <xsl:value-of select="$default-spacing-header"/>
+                </xsl:when>
+                <xsl:when test="$page-type = 'toc-even' 
+                    and /document/container[@classes = 'toc-even-header']|/document/decoration/header">
+                    <xsl:value-of select="$default-spacing-header"/>
+                </xsl:when>
+                <xsl:when test="$page-type = 'toc-body' 
+                    and /document/container[@classes = 'toc-body-header']|/document/decoration/header">
+                    <xsl:value-of select="$default-spacing-header"/>
+                </xsl:when>
+                <xsl:when test="$page-type = 'simple' and /document/decoration/header">
                     <xsl:value-of select="$default-spacing-header"/>
                 </xsl:when>
                 <xsl:otherwise>
@@ -189,17 +211,39 @@
         </xsl:variable>
         <xsl:variable name="margin-bottom">
             <xsl:choose>
-                <xsl:when test="$page-layout = 'first' and $suppress-first-page-footer = 'True' and $page-type = 'first'">
-                    <xsl:text>0in</xsl:text>
+                <xsl:when test="$page-type = 'first' and /document/container[@classes = 'first-footer']|document/decoration/footer">
+                    <xsl:value-of select="$default-spacing-header"/>
                 </xsl:when>
-                <xsl:when test="$page-layout = 'first-odd-even' and $suppress-first-page-footer = 'True' and $page-type = 'first'">
-                    <xsl:text>0in</xsl:text>
+                <xsl:when test="$page-type = 'odd' and /document/container[@classes = 'odd-footer']|document/decoration/footer">
+                    <xsl:value-of select="$default-spacing-header"/>
                 </xsl:when>
-                <xsl:when test="$spacing-footer != ''">
-                    <xsl:value-of select="$spacing-footer"/>
+                <xsl:when test="$page-type = 'even' and /document/container[@classes = 'even-footer']|document/decoration/footer">
+                    <xsl:value-of select="$default-spacing-header"/>
                 </xsl:when>
-                <xsl:when test="/document/decoration/footer">
-                    <xsl:value-of select="$default-spacing-footer"/>
+                <xsl:when test="$page-type = 'body' and /document/container[@classes = 'body-footer']|document/decoration/footer">
+                    <xsl:value-of select="$default-spacing-header"/>
+                </xsl:when>
+                <xsl:when test="$page-type = 'simple' and /document/decoration/footer">
+                    <xsl:value-of select="$default-spacing-header"/>
+                </xsl:when>
+                <xsl:when test="$page-type = 'toc-first' 
+                    and /document/container[@classes = 'toc-first-footer']|document/decoration/footer">
+                    <xsl:value-of select="$default-spacing-header"/>
+                </xsl:when>
+                <xsl:when test="$page-type = 'toc-odd' 
+                    and /document/container[@classes = 'toc-odd-footer']|document/decoration/footer">
+                    <xsl:value-of select="$default-spacing-header"/>
+                </xsl:when>
+                <xsl:when test="$page-type = 'toc-even' 
+                    and /document/container[@classes = 'toc-even-footer']|document/decoration/footer">
+                    <xsl:value-of select="$default-spacing-header"/>
+                </xsl:when>
+                <xsl:when test="$page-type = 'toc-body' 
+                    and /document/container[@classes = 'toc-body-footer']|document/decoration/footer">
+                    <xsl:value-of select="$default-spacing-header"/>
+                </xsl:when>
+                <xsl:when test="$page-type = 'simple' and /document/decoration/footer">
+                    <xsl:value-of select="$default-spacing-header"/>
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:text>0in</xsl:text>
@@ -215,12 +259,14 @@
     and footers, and if so, makes room for them-->
     <xsl:template name="make-simple-page">
         <fo:simple-page-master xsl:use-attribute-sets="simple-page-master" master-name="simple-page">  
-            <xsl:call-template name="make-region-body"/>
+            <xsl:call-template name="make-region-body">
+                <xsl:with-param name="page-type" select="'simple'"/>
+            </xsl:call-template>
             <xsl:if test="document/decoration/header">
-                <fo:region-before xsl:use-attribute-sets = "header-region-before" region-name="odd-even-header"/>
+                <fo:region-before xsl:use-attribute-sets = "header-region-before" region-name="simple-header"/>
             </xsl:if>
             <xsl:if test="document/decoration/footer">
-                <fo:region-after xsl:use-attribute-sets = "footer-region-after" region-name="odd-even-footer"/>
+                <fo:region-after xsl:use-attribute-sets = "footer-region-after" region-name="simple-footer"/>
             </xsl:if>
         </fo:simple-page-master>
     </xsl:template>
@@ -232,10 +278,10 @@
             <xsl:call-template name="make-region-body">
                 <xsl:with-param name="page-type" select="'first'"/>
             </xsl:call-template>
-            <xsl:if test="document/decoration/header and $suppress-first-page-header != 'True'">
+            <xsl:if test="document/container[@classes='first-header']|document/decoration/header">
                 <fo:region-before xsl:use-attribute-sets = "header-region-before" region-name="first-header"/>
             </xsl:if>
-            <xsl:if test="document/decoration/footer and $suppress-first-page-footer != 'True'">
+            <xsl:if test="document/container[@classes = 'first-footer']|document/decoration/footer">
                 <fo:region-after xsl:use-attribute-sets = "footer-region-after" region-name="first-footer"/>
             </xsl:if>
         </fo:simple-page-master>
@@ -243,23 +289,27 @@
 
     <xsl:template name="make-body-page">
         <fo:simple-page-master xsl:use-attribute-sets="body-simple-page-master" master-name="body">  
-            <xsl:call-template name="make-region-body"/>
-            <xsl:if test="document/decoration/header">
-                <fo:region-before xsl:use-attribute-sets = "header-region-before" region-name = "odd-even-header"/>
+            <xsl:call-template name="make-region-body">
+                <xsl:with-param name="page-type" select="'body'"/>
+            </xsl:call-template>
+            <xsl:if test="document/container[@classes = 'body-header']|document/decoration/header">
+                <fo:region-before xsl:use-attribute-sets = "header-region-before" region-name = "body-header"/>
             </xsl:if>
-            <xsl:if test="document/decoration/footer">
-                <fo:region-after xsl:use-attribute-sets = "footer-region-after" region-name = "odd-even-footer"/>
+            <xsl:if test="document/container[@classes='body-footer']|document/decoration/footer">
+                <fo:region-after xsl:use-attribute-sets = "footer-region-after" region-name = "body-footer"/>
             </xsl:if>
         </fo:simple-page-master>
     </xsl:template>
 
     <xsl:template name="make-odd-page">
         <fo:simple-page-master xsl:use-attribute-sets="odd-simple-page-master" master-name="odd">  
-            <xsl:call-template name="make-region-body"/>
-            <xsl:if test="document/decoration/header">
+            <xsl:call-template name="make-region-body">
+                <xsl:with-param name="page-type" select="'odd'"/>
+            </xsl:call-template>
+            <xsl:if test="document/container[@classes = 'odd-header']|document/decoration/header">
                 <fo:region-before xsl:use-attribute-sets = "header-region-before" region-name="odd-header"/>
             </xsl:if>
-            <xsl:if test="document/decoration/footer">
+            <xsl:if test="document/container[@classes = 'odd-footer']|document/decoration/footer">
                 <fo:region-after xsl:use-attribute-sets = "footer-region-after" region-name="odd-footer"/>
             </xsl:if>
         </fo:simple-page-master>
@@ -267,26 +317,28 @@
 
     <xsl:template name="make-even-page">
         <fo:simple-page-master xsl:use-attribute-sets="even-simple-page-master" master-name="even">  
-            <xsl:call-template name="make-region-body"/>
-            <xsl:if test="document/decoration/header">
+            <xsl:call-template name="make-region-body">
+                <xsl:with-param name="page-type" select="'even'"/>
+            </xsl:call-template>
+            <xsl:if test="document/container[@classes='even-header']|document/decoration/header">
                 <fo:region-before xsl:use-attribute-sets = "header-region-before" region-name="even-header"/>
             </xsl:if>
-            <xsl:if test="document/decoration/footer">
+            <xsl:if test="document/container[@classes='even-footer']|document/decoration/footer">
                 <fo:region-after xsl:use-attribute-sets = "footer-region-after" region-name="even-footer"/>
             </xsl:if>
         </fo:simple-page-master>
     </xsl:template>
 
 
-    <!--Create the fo:page-sequence-master, depending on the parameter page-layout-->
+    <!--Create the fo:page-sequence-master, depending on the parameter layout-page-->
     <xsl:template name="page-sequence">
         <xsl:choose>
-            <xsl:when test="$page-layout = '' or $page-layout = 'simple'">
+            <xsl:when test="$layout-page = '' or $layout-page = 'simple'">
                 <fo:page-sequence-master master-name = "pages" >
                     <fo:repeatable-page-master-reference master-reference = "simple-page"/>
                 </fo:page-sequence-master>
             </xsl:when>
-            <xsl:when test="$page-layout = 'first'">
+            <xsl:when test="$layout-page = 'first'">
                 <fo:page-sequence-master master-name = "pages">
                     <fo:repeatable-page-master-alternatives>
                         <fo:conditional-page-master-reference master-reference = "first" page-position = "first"/>
@@ -294,7 +346,7 @@
                     </fo:repeatable-page-master-alternatives>
                 </fo:page-sequence-master> 
             </xsl:when>
-            <xsl:when test="$page-layout = 'odd-even'">
+            <xsl:when test="$layout-page = 'odd-even'">
                 <fo:page-sequence-master master-name = "pages">
                     <fo:repeatable-page-master-alternatives>
                         <fo:conditional-page-master-reference master-reference = "odd" odd-or-even = "odd"/>
@@ -302,7 +354,7 @@
                     </fo:repeatable-page-master-alternatives>
                 </fo:page-sequence-master> 
             </xsl:when>
-            <xsl:when test="$page-layout = 'first-odd-even'">
+            <xsl:when test="$layout-page = 'first-odd-even'">
                 <fo:page-sequence-master master-name = "pages">
                     <fo:repeatable-page-master-alternatives>
                         <fo:conditional-page-master-reference master-reference = "first" page-position = "first"/>
@@ -324,22 +376,22 @@
     </xsl:template>
 
     <!--call on the appropriate template to make simpe-page-master, depending on 
-    the parameter $page-layout-->
+    the parameter $layout-page-->
     <xsl:template name="toc-page-properties">
         <!--set up the physical properties of the pages-->
         <xsl:choose>
-            <xsl:when test="$page-layout = '' or $page-layout = 'simple'">
+            <xsl:when test="$layout-page = '' or $layout-page = 'simple'">
                 <xsl:call-template name="toc-make-simple-page"/>
             </xsl:when>
-            <xsl:when test="$page-layout = 'first'">
+            <xsl:when test="$layout-page = 'first'">
                 <xsl:call-template name="toc-make-first-page"/>
                 <xsl:call-template name="toc-make-body-page"/>
             </xsl:when>
-            <xsl:when test="$page-layout = 'odd-even'">
+            <xsl:when test="$layout-page = 'odd-even'">
                 <xsl:call-template name="toc-make-odd-page"/>
                 <xsl:call-template name="toc-make-even-page"/>
             </xsl:when>
-            <xsl:when test="$page-layout = 'first-odd-even'">
+            <xsl:when test="$layout-page = 'first-odd-even'">
                 <xsl:call-template name="toc-make-first-page"/>
                 <xsl:call-template name="toc-make-odd-page"/>
                 <xsl:call-template name="toc-make-even-page"/>
@@ -350,7 +402,9 @@
     <!--make the simple-page-master for toc-->
     <xsl:template name="toc-make-simple-page">
         <fo:simple-page-master xsl:use-attribute-sets="toc-simple-page-master" master-name="toc-simple-page">  
-            <xsl:call-template name="make-region-body"/>
+            <xsl:call-template name="make-region-body">
+                <xsl:with-param name="page-type" select="'simple'"/>
+            </xsl:call-template>
             <xsl:if test="document/decoration/header">
                 <fo:region-before xsl:use-attribute-sets = "header-region-before" region-name="odd-even-header"/>
             </xsl:if>
@@ -364,64 +418,70 @@
     <xsl:template name="toc-make-first-page">
         <fo:simple-page-master xsl:use-attribute-sets="toc-first-simple-page-master" master-name="toc-first">  
             <xsl:call-template name="make-region-body">
-                <xsl:with-param name="page-type" select="'first'"/>
+                <xsl:with-param name="page-type" select="'toc-first'"/>
             </xsl:call-template>
-            <xsl:if test="document/decoration/header and $suppress-first-page-header != 'True'">
-                <fo:region-before xsl:use-attribute-sets = "header-region-before" region-name="first-header"/>
+            <xsl:if test="document/container[@classes='toc-first-header']|document/decoration/header">
+                <fo:region-before xsl:use-attribute-sets = "header-region-before" region-name="toc-first-header"/>
             </xsl:if>
-            <xsl:if test="document/decoration/footer and $suppress-first-page-footer != 'True'">
-                <fo:region-after xsl:use-attribute-sets = "footer-region-after" region-name="first-footer"/>
+            <xsl:if test="document/container[@classes = 'toc-first-footer']|document/decoration/footer">
+                <fo:region-after xsl:use-attribute-sets = "footer-region-after" region-name="toc-first-footer"/>
             </xsl:if>
         </fo:simple-page-master>
     </xsl:template>
 
     <xsl:template name="toc-make-body-page">
         <fo:simple-page-master xsl:use-attribute-sets="toc-body-simple-page-master" master-name="toc-body">  
-            <xsl:call-template name="make-region-body"/>
-            <xsl:if test="document/decoration/header">
-                <fo:region-before xsl:use-attribute-sets = "header-region-before" region-name = "odd-even-header"/>
+            <xsl:call-template name="make-region-body">
+                <xsl:with-param name="page-type" select="'toc-body'"/>
+            </xsl:call-template>
+            <xsl:if test="document/container[@classes = 'toc-body-header']|document/decoration/header">
+                <fo:region-before xsl:use-attribute-sets = "header-region-before" region-name = "toc-body-header"/>
             </xsl:if>
-            <xsl:if test="document/decoration/footer">
-                <fo:region-after xsl:use-attribute-sets = "footer-region-after" region-name = "odd-even-footer"/>
+            <xsl:if test="document/container[@classes='toc-body-footer']|document/decoration/footer">
+                <fo:region-after xsl:use-attribute-sets = "footer-region-after" region-name = "toc-body-footer"/>
             </xsl:if>
         </fo:simple-page-master>
     </xsl:template>
 
     <xsl:template name="toc-make-odd-page">
         <fo:simple-page-master xsl:use-attribute-sets="toc-odd-simple-page-master" master-name="toc-odd">  
-            <xsl:call-template name="make-region-body"/>
-            <xsl:if test="document/decoration/header">
-                <fo:region-before xsl:use-attribute-sets = "header-region-before" region-name="odd-header"/>
+            <xsl:call-template name="make-region-body">
+                <xsl:with-param name="page-type" select="'toc-odd'"/>
+            </xsl:call-template>
+            <xsl:if test="document/container[@classes = 'toc-odd-header']|document/decoration/header">
+                <fo:region-before xsl:use-attribute-sets = "header-region-before" region-name="toc-odd-header"/>
             </xsl:if>
-            <xsl:if test="document/decoration/footer">
-                <fo:region-after xsl:use-attribute-sets = "footer-region-after" region-name="odd-footer"/>
+            <xsl:if test="document/container[@classes = 'toc-odd-footer']|document/decoration/footer">
+                <fo:region-after xsl:use-attribute-sets = "footer-region-after" region-name="toc-odd-footer"/>
             </xsl:if>
         </fo:simple-page-master>
     </xsl:template>
 
     <xsl:template name="toc-make-even-page">
         <fo:simple-page-master xsl:use-attribute-sets="toc-even-simple-page-master" master-name="toc-even">  
-            <xsl:call-template name="make-region-body"/>
-            <xsl:if test="document/decoration/header">
-                <fo:region-before xsl:use-attribute-sets = "header-region-before" region-name="even-header"/>
+            <xsl:call-template name="make-region-body">
+                <xsl:with-param name="page-type" select="'toc-even'"/>
+            </xsl:call-template>
+            <xsl:if test="document/container[@classes='toc-even-header']|document/decoration/header">
+                <fo:region-before xsl:use-attribute-sets = "header-region-before" region-name="toc-even-header"/>
             </xsl:if>
-            <xsl:if test="document/decoration/footer">
-                <fo:region-after xsl:use-attribute-sets = "footer-region-after" region-name="even-footer"/>
+            <xsl:if test="document/container[@classes='toc-even-footer']|document/decoration/footer">
+                <fo:region-after xsl:use-attribute-sets = "footer-region-after" region-name="toc-even-footer"/>
             </xsl:if>
         </fo:simple-page-master>
     </xsl:template>
 
 
-    <!--Create the fo:page-sequence-master, depending on the parameter page-layout-->
+    <!--Create the fo:page-sequence-master, depending on the parameter layout-page-->
     <xsl:template name="toc-page-sequence">
         <!--do I want these params? They seem unneeded and potentially trouble making-->
         <xsl:choose>
-            <xsl:when test="$page-layout = '' or $page-layout = 'simple'">
+            <xsl:when test="$layout-page = '' or $layout-page = 'simple'">
                 <fo:page-sequence-master master-name = "toc-pages" >
                     <fo:repeatable-page-master-reference master-reference = "toc-simple-page"/>
                 </fo:page-sequence-master>
             </xsl:when>
-            <xsl:when test="$page-layout = 'first'">
+            <xsl:when test="$layout-page = 'first'">
                 <fo:page-sequence-master master-name = "toc-pages">
                     <fo:repeatable-page-master-alternatives>
                         <fo:conditional-page-master-reference master-reference = "toc-first" page-position = "first"/>
@@ -429,7 +489,7 @@
                     </fo:repeatable-page-master-alternatives>
                 </fo:page-sequence-master> 
             </xsl:when>
-            <xsl:when test="$page-layout = 'odd-even'">
+            <xsl:when test="$layout-page = 'odd-even'">
                 <fo:page-sequence-master master-name = "toc-pages">
                     <fo:repeatable-page-master-alternatives>
                         <fo:conditional-page-master-reference master-reference = "toc-odd" odd-or-even = "odd"/>
@@ -437,7 +497,7 @@
                     </fo:repeatable-page-master-alternatives>
                 </fo:page-sequence-master> 
             </xsl:when>
-            <xsl:when test="$page-layout = 'first-odd-even'">
+            <xsl:when test="$layout-page = 'first-odd-even'">
                 <fo:page-sequence-master master-name = "toc-pages">
                     <fo:repeatable-page-master-alternatives>
                         <fo:conditional-page-master-reference master-reference = "toc-first" page-position = "first"/>
@@ -458,16 +518,16 @@
     </xsl:template>
 
     <!--call on the appropriate template to make simpe-page-master, depending on 
-    the parameter $page-layout-->
+    the parameter $layout-page-->
     <xsl:template name="front-matter-page-properties">
         <!--set up the physical properties of the pages-->
         <xsl:choose>
-            <xsl:when test="$page-layout = '' or $page-layout = 'simple'">
+            <xsl:when test="$layout-page = '' or $layout-page = 'simple'">
                 <fo:simple-page-master xsl:use-attribute-sets="front-simple-page-master" master-name="front-matter-simple-page">  
                     <fo:region-body xsl:use-attribute-sets="front-matter-region-body"/>
                 </fo:simple-page-master>
             </xsl:when>
-            <xsl:when test="$page-layout = 'first'">
+            <xsl:when test="$layout-page = 'first'">
                 <fo:simple-page-master xsl:use-attribute-sets="front-first-simple-page-master" master-name="front-matter-first">  
                     <fo:region-body xsl:use-attribute-sets="front-matter-region-body"/>
                 </fo:simple-page-master>
@@ -475,7 +535,7 @@
                     <fo:region-body xsl:use-attribute-sets="front-matter-region-body"/>
                 </fo:simple-page-master>
             </xsl:when>
-            <xsl:when test="$page-layout = 'odd-even'">
+            <xsl:when test="$layout-page = 'odd-even'">
                 <fo:simple-page-master xsl:use-attribute-sets="front-odd-simple-page-master" master-name="front-matter-odd">  
                     <fo:region-body xsl:use-attribute-sets="front-matter-region-body"/>
                 </fo:simple-page-master>
@@ -483,7 +543,7 @@
                     <fo:region-body xsl:use-attribute-sets="front-matter-region-body"/>
                 </fo:simple-page-master>
             </xsl:when>
-            <xsl:when test="$page-layout = 'first-odd-even'">
+            <xsl:when test="$layout-page = 'first-odd-even'">
                 <fo:simple-page-master xsl:use-attribute-sets="front-first-simple-page-master" master-name="front-matter-first">  
                     <fo:region-body xsl:use-attribute-sets="front-matter-region-body"/>
                 </fo:simple-page-master>
@@ -497,15 +557,15 @@
         </xsl:choose>
     </xsl:template>
 
-    <!--Create the fo:page-sequence-master, depending on the parameter page-layout-->
+    <!--Create the fo:page-sequence-master, depending on the parameter layout-page-->
     <xsl:template name="front-matter-page-sequence">
         <xsl:choose>
-            <xsl:when test="$page-layout = '' or $page-layout = 'simple'">
+            <xsl:when test="$layout-page = 'simple'">
                 <fo:page-sequence-master master-name = "front-matter-pages" >
                     <fo:repeatable-page-master-reference master-reference = "front-matter-simple-page"/>
                 </fo:page-sequence-master>
             </xsl:when>
-            <xsl:when test="$page-layout = 'first'">
+            <xsl:when test="$layout-page = 'first'">
                 <fo:page-sequence-master master-name = "front-matter-pages">
                     <fo:repeatable-page-master-alternatives>
                         <fo:conditional-page-master-reference master-reference = "front-matter-first" page-position = "first"/>
@@ -513,7 +573,7 @@
                     </fo:repeatable-page-master-alternatives>
                 </fo:page-sequence-master> 
             </xsl:when>
-            <xsl:when test="$page-layout = 'odd-even'">
+            <xsl:when test="$layout-page = 'odd-even'">
                 <fo:page-sequence-master master-name = "front-matter-pages">
                     <fo:repeatable-page-master-alternatives>
                         <fo:conditional-page-master-reference master-reference = "front-matter-odd" odd-or-even = "odd"/>
@@ -521,7 +581,7 @@
                     </fo:repeatable-page-master-alternatives>
                 </fo:page-sequence-master> 
             </xsl:when>
-            <xsl:when test="$page-layout = 'first-odd-even'">
+            <xsl:when test="$layout-page = 'first-odd-even'">
                 <fo:page-sequence-master master-name = "front-matter-pages">
                     <fo:repeatable-page-master-alternatives>
                         <fo:conditional-page-master-reference master-reference = "front-matter-first" page-position = "first"/>
