@@ -171,7 +171,7 @@ s = """\n
 
 write_obj.write(s)
 
-s= """\n     <xsl:template match="tgroup/colspec" mode="classes"/>
+s= """\n     <xsl:template match="tgroup/colspec" />
 
      <xsl:template match="tgroup/colspec" mode="use">
         <xsl:variable name="col-num">
@@ -181,9 +181,9 @@ s= """\n     <xsl:template match="tgroup/colspec" mode="classes"/>
             column-width="proportional-column-width({@colwidth})"/>
      </xsl:template>
 
-     <xsl:template match="tgroup" mode="classes">
+     <xsl:template match="tgroup" >
          <xsl:param name="classes"/>
-         <xsl:apply-templates mode="classes">
+         <xsl:apply-templates >
              <xsl:with-param name="classes" select="$classes"/>
          </xsl:apply-templates>
     </xsl:template>\n"""
@@ -195,63 +195,63 @@ for n in range(1,en):
      <xsl:template match="table[@classes='table%s']">
         <fo:block-container xsl:use-attribute-sets = "table%s-block-container">
             <xsl:if test="title and $table-title-placement = 'top'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
             <fo:table role="table%s" xsl:use-attribute-sets="table%s">
                 <xsl:call-template name="make-col-specs">
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:call-template>
-                <xsl:apply-templates mode="classes">
+                <xsl:apply-templates >
                     <xsl:with-param name="classes" select="@classes"/>
                 </xsl:apply-templates>
             </fo:table>
             <xsl:if test="title and $table-title-placement = 'bottom'">
-                <xsl:apply-templates select="title" mode="caption"/>
+                <xsl:apply-templates select="title" />
             </xsl:if>
         </fo:block-container>
     </xsl:template>
 
 
-    <xsl:template match="table[@classes = 'table%s']/tgroup/thead" mode="classes">
+    <xsl:template match="table[@classes = 'table%s']/tgroup/thead" >
         <fo:table-header xsl:use-attribute-sets = "thead%s-header">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table%s']/tgroup//thead/row" mode="classes">
+    <xsl:template match="table[@classes='table%s']/tgroup//thead/row" >
         <fo:table-row xsl:use-attribute-sets="table%s-header-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table%s']/tgroup/thead/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table%s']/tgroup/thead/row/entry" >
         <fo:table-cell xsl:use-attribute-sets="thead%s-cell">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
             </xsl:if>
         </fo:table-cell>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table%s']/tgroup/thead/row/entry/paragraph" mode="classes">
+    <xsl:template match="table[@classes='table%s']/tgroup/thead/row/entry/paragraph" >
         <fo:block xsl:use-attribute-sets="thead%s-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table%s']/tgroup/tbody" mode="classes">
+    <xsl:template match="table[@classes='table%s']/tgroup/tbody" >
         <fo:table-body xsl:use-attribute-sets="table%s-body">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-body>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table%s']/tgroup/tbody/row" mode="classes">
+    <xsl:template match="table[@classes='table%s']/tgroup/tbody/row" >
         <fo:table-row xsl:use-attribute-sets="table%s-row">
-            <xsl:apply-templates mode="classes"/>
+            <xsl:apply-templates />
         </fo:table-row>
     </xsl:template>
 
-    <xsl:template match="table[@classes='table%s']/tgroup/tbody/row/entry" mode="classes">
+    <xsl:template match="table[@classes='table%s']/tgroup/tbody/row/entry" >
         <xsl:variable name="cols-spanned">
             <xsl:call-template name="cols-spanned"/>
         </xsl:variable>
