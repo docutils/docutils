@@ -19,7 +19,7 @@ odd-even (different for odd and even; headers and footers will be the same becau
 
 first-odd-even (different first, odd, and even; headers and footers will be the same, with the option of suppressing the first header and footer)
 -->
-<xsl:param name="page-layout">simple</xsl:param>
+<xsl:param name="page-layout"></xsl:param>
 
 <!--supress the header on the first page--> 
 <xsl:param name="suppress-first-page-header"/>
