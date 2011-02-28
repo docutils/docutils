@@ -1268,8 +1268,6 @@
         </xsl:choose>
     </xsl:template>
 
-     <xsl:template match="tgroup/colspec" />
-
      <xsl:template match="tgroup/colspec" mode="use">
         <xsl:variable name="col-num">
             <xsl:number/>

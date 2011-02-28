@@ -41,8 +41,11 @@ Completion
 * Option List
 * Line Blocks
 * Block Quotes
-* Headers and Footers, with the ability to suppress them on the first
-  page.
+* Headers and Footers, with the ability to create custom headers and 
+  footers for the first, odd, and even pages; and the ability to 
+  create custom headers and footers for the Table of Contents secions
+  for the first, odd, and even pages; and the ability to suppress 
+  headers and footers on the first page.
 * Doctest Blocks
 * Tables
 * Footnotes
@@ -84,7 +87,6 @@ Python Code
 
 Documentaion
 ------------
-
 
 - Write a quick overview
 

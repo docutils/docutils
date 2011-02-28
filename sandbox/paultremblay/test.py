@@ -9,7 +9,7 @@ TEST = False
 STRICT = True
 
 parser = argparse.ArgumentParser(description='Test all the files') 
-parser.add_argument('--xslt', nargs=1, choices = ['xsltproc', 'lxml', 'saxon'], default=['lxml'], 
+parser.add_argument('--xslt', nargs=1, choices = ['xsltproc', 'lxml', 'saxon', 'xalan'], default=['lxml'], 
         dest='xsl_transform', help = 'choose which processer to use when transforming' ) 
 parser.add_argument('--pdf', action="store_const", const=True, help = 'convert to PDF', dest='pdf')
 parser.add_argument('--no-rst', action="store_const", const=True, help = 'don\'t convert to RST', dest='no_rst')
@@ -19,6 +19,7 @@ parser.add_argument('--strict', nargs=1, choices = ['True', 'False'],
 parser.add_argument('--debug', action="store_const", const=True, help = 'do debug messaging', dest='debug')
 parser.add_argument('--verbose', action="store_const", const=True, help = 'be verose in messaging', dest='verbose')
 parser.add_argument('--clean', action="store_const", const=True, help = 'whether to remove files after test', dest='clean')
+parser.add_argument('--full', action="store_const", const=True, help = 'Do a full test (for developer only)', dest='full')
 
 arg = parser.parse_args()
 PDF = arg.pdf
@@ -30,6 +31,10 @@ debug = False
 debug = arg.debug
 verbose = arg.verbose
 if debug: verbose = True
+FULL = False
+if arg.full:
+    FULL = True
+    PDF = True
 
 # =========================================================================================
 # stylesheet  test
@@ -203,6 +208,20 @@ def transform_xsl(xsl_file, xml_file, param_dict = {}, out_file = None, xsl_tran
             msg += output
             msg += '\n'
             error_func(msg)
+    elif xsl_transform == 'xalan':
+        command = 'xalan.sh '
+        command += ' -OUT %s' % (out_file)
+        command  += ' -IN %s -XSL %s' % (xml_file, xsl_file)
+        params = param_dict.keys()
+        for param in params:
+            command += ' -PARAM %s "%s" ' % (param, param_dict[param])
+        status, output = commands.getstatusoutput(command)
+        if status:
+            msg = 'error converting %s to Fo\n' % (xml_file)
+            msg += 'command = "%s" \n' % (command)
+            msg += output
+            msg += '\n'
+            error_func(msg)
     elif xsl_transform == 'lxml':
         error = transform_lxml(xslt_file = xsl_file, xml_file= xml_file, param_dict=param_dict, out_file= out_file)
         if error:
@@ -262,7 +281,7 @@ def convert_to_fo(xsl_transform):
             for info in transform_info:
                 counter += 1
                 if verbose:
-                    sys.stderr.write('converting "%s" to %s FO\n' % (xml_file, out_file))
+                    sys.stderr.write('converting "%s" to %s to FO\n' % (xml_file, out_file))
                 # print 'converting %s of %s files' % (counter, num_files)
                 added_params = info[0]
                 out_file = info[1]
@@ -304,6 +323,8 @@ def convert_to_pdf():
 
 def convert_fo_to_pdf(fo_file, out_file):
     command = 'fop  %s %s' % (fo_file, out_file)
+    if verbose:
+        sys.stderr.write('\n doing command "%s"\n' % (command))
     status, output = commands.getstatusoutput(command)
     if status:
         msg = 'error converting %s to PDF\n' % (fo_file)
@@ -340,6 +361,10 @@ def validate_the_fo(xml_file):
         error_func('')
 
 def test_docutils_to_fo_script(script_command):
+    if verbose:
+        sys.stderr.write('\n\n==========================================\n')
+        sys.stderr.write('TESTING DOCUTILS SCRIPT\n')
+        sys.stderr.write('\n==========================================\n')
     command = '%s -h' % script_command
     status, output = commands.getstatusoutput(command)
     default__commands = ' --config docutils.conf '
@@ -365,21 +390,46 @@ def test_docutils_to_fo_script(script_command):
 
 
 def clean():
-    xml_files = glob.glob('*.xml')
-    for xml_file in xml_files:
-        os.remove(xml_file)
-    fo_files = glob.glob('*.fo')
-    for fo_file in fo_files:
-        os.remove(fo_file)
-    pdf_files = glob.glob('*.pdf')
-    for pdf_file in pdf_files:
-        os.remove(pdf_file)
+    remove_paths(glob.glob('*.xml'))
+    remove_paths(glob.glob('*.xsl'))
+    remove_paths(glob.glob('*.fo'))
+    remove_paths(glob.glob('*.pdf'))
 
 def rm_path(the_path):
     try:
         os.remove(the_path)
     except OSError:
         pass
+
+def remove_paths(list_of_paths):
+    for the_path in list_of_paths:
+        rm_path(the_path)
+
+def full():
+    # main()
+    if verbose:
+        sys.stderr.write('In FULL mode\n')
+    clean()
+    script_path  = os.path.abspath(os.path.join('scripts', 'docutils_to_fo.py'))
+    script_command = 'python %s ' % script_path
+    current_dir = os.getcwd()
+    os.chdir('test_files')
+    rst_files = glob.glob('*.rst')
+    convert_to_xml(rst_files)
+    xsl_trans = ['xsltproc', 'saxon',  'xalan', 'lxml',]
+    for xsl_tran in xsl_trans:
+        if verbose:
+            sys.stderr.write('Transforming to FO with %s\n' % (xsl_tran))
+        convert_to_fo(xsl_transform = xsl_tran)
+        if xsl_tran != 'lxml':
+            remove_paths(glob.glob('*.fo'))
+    convert_to_pdf()
+    test_docutils_to_fo_script(script_command)
+    clean()
+    os.chdir(current_dir)
+    if verbose:
+        sys.stderr.write('\n\nSUCCESS!\n')
+
 
 def main():
     script_path  = os.path.abspath(os.path.join('scripts', 'docutils_to_fo.py'))
@@ -406,5 +456,8 @@ try:
 except:
     pass
 
-main()
+if FULL:
+    full()
+else:
+    main()
 

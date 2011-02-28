@@ -77,7 +77,7 @@
         <xsl:apply-templates/>
     </xsl:template>
 
-    <xsl:template match="table[not(@classes)]/tgroup/colspec"/>
+    <xsl:template match="table/tgroup/colspec"/>
 
     <!--
     <xsl:template match="table[not(@classes)]/tgroup/colspec">

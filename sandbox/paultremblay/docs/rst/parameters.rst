@@ -24,7 +24,7 @@ page-layout
 **Possible Values**: ``simple``, ``first``, ``odd-even``,
 ``first-odd-even``
 
-**Default:** simple
+**Default:**
 
 This parameter determines the page layout for the document. A
 value of ``simple`` will create a document with the same page
