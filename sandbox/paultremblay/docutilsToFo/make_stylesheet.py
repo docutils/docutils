@@ -182,7 +182,7 @@ class PostProcess:
         elif need_odd_or_even_page:
             page_layout = 'odd-even'
         else:
-            page_layout = 'simple'
+            page_layout = ''
         self.__params['page-layout'] = page_layout
         
 
