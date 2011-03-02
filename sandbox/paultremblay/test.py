@@ -162,6 +162,9 @@ docfo_commands = [
         ('opt_list.xml', 'option_list2.conf'), # option list as definition list
         ('literal_block.xml', 'literal_block1.conf'), # literal block
         ('line_block.xml', 'line_block1.conf'), # line block
+        ('header_footer2.xml', 'header_footer4.conf'), # first header and footer
+        ('header_footer5.xml', 'header_footer5.conf'), # odd even
+        ('header_footer5.xml', 'header_footer6.conf'), # odd even, suppress first
     ]
 
 def error_func(msg, the_path = None):
