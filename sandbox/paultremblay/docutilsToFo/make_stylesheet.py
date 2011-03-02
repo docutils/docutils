@@ -172,10 +172,12 @@ class PostProcess:
         if odd_page or even_page:
             need_odd_or_even_page = True
         need_first_page = False
-        if suppress_first_footer or suppress_first_header or first_page:
-            need_first_page = True
+        # if suppress_first_footer or suppress_first_header or first_page:
+            # need_first_page = True
 
-        if need_first_page and need_odd_or_even_page:
+        if self.__params.get('page-layout'):
+            page_layout = self.__params.get('page-layout')
+        elif need_first_page and need_odd_or_even_page:
             page_layout = 'first-odd-even'
         elif need_first_page:
             page_layout = 'first'
