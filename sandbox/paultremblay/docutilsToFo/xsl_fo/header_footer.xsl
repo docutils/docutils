@@ -423,6 +423,36 @@
         </fo:block>
     </xsl:template>
 
+    <xsl:template match="container[@classes='first-header']/paragraph| 
+        container[@classes='odd-header']/paragraph|
+        container[@classes='even-header']/paragraph|
+        container[@classes='body-header']/paragraph|
+        container[@classes='toc-first-header']/paragraph|
+        container[@classes='toc-odd-header']/paragraph|
+        container[@classes='toc-even-header']/paragraph|
+        container[@classes='toc-body-header']/paragraph" priority="3">
+
+        <fo:block role = "header-paragraph" xsl:use-attribute-sets="paragraph-header-block">
+            <xsl:apply-templates/>
+        </fo:block>
+        
+    </xsl:template>
+
+    <xsl:template match="container[@classes='first-footer']/paragraph|
+        container[@classes='odd-footer']/paragraph|
+        container[@classes='even-footer']/paragraph|
+        container[@classes='body-footer']/paragraph|
+        container[@classes='toc-first-footer']/paragraph|
+        container[@classes='toc-odd-footer']/paragraph|
+        container[@classes='toc-even-footer']/paragraph|
+        container[@classes='toc-body-footer']/paragraph" priority="3">
+
+        <fo:block role="footer-paragraph" xsl:use-attribute-sets="paragraph-footer-block">
+            <xsl:apply-templates/>
+        </fo:block>
+        
+    </xsl:template>
+
     <!--
     <xsl:template match="decoration/header/paragraph[2]">
         <fo:block xsl:use-attribute-sets="header-second-block">
