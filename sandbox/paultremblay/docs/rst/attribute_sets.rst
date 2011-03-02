@@ -2284,55 +2284,6 @@ Formats the block that contains the inline elements of the
 options and arguments. For a defintion list, this block serves as
 the term, and sits on top, and to the left of the description.
 
-option-list-description-block
------------------------------
-
-:fo: fo:block
-
-:docutils: option_list/option_list_item/description
-
-:defaults:
-
-     start-indent: 16pt
-
-     space-before: 8pt
-
-Formats the blocks wrappring the paragraphs describing the
-options or arguments. This groups of blocks sits below the blocks
-formatting the options and arguments, and in a defintion list
-are usually indented right.
-
-option-list-description-first-block
------------------------------------
-
-:fo: fo:block
-
-:docutils: option_list/option_list_item/description[1]
-
-:inherits: option-list-description-block
-
-:defaults:
-
-     space-before: 0pt
-
-Same as above, except formats the first such element.
-
-option-list-description-block
------------------------------
-
-:fo: fo:block
-
-:docutils: option_list/option_list_item/description
-
-:defaults:
-
-     space-before: 0pt
-
-Formats the blocks wrappring the paragraphs describing the
-options or arguments. This groups of blocks sits below the blocks
-formatting the options and arguments, and in a defintion list
-are usually indented right.
-
 option-list-paragraph-block
 ---------------------------
 
