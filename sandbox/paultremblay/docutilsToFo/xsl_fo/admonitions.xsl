@@ -112,7 +112,7 @@
     <xsl:template match="caution">
         <fo:block role="caution" xsl:use-attribute-sets="caution-block">
             <xsl:if test="$caution-title != ''">
-                <fo:block role="caution-title" xsl:use-attribute-sets="attention-title-block">
+                <fo:block role="caution-title" xsl:use-attribute-sets="caution-title-block">
                     <xsl:value-of select="$caution-title"/>
                 </fo:block>
             </xsl:if>

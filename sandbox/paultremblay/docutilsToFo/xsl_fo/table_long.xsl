@@ -434,7 +434,7 @@
 
 
     <xsl:template match="table[@classes = 'long']/tgroup/tbody/row/entry/paragraph">
-        <fo:block xsl:use-attribute-sets="cell-block">
+        <fo:block xsl:use-attribute-sets="long-cell-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
