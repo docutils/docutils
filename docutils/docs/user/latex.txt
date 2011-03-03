@@ -1226,6 +1226,15 @@ Example:
     \lstset{columns=fullflexible,
          basewidth={0.5em,0.4em}}
 
+
+  The indentation of literal blocks can be reset with ::
+
+    \lstset{resetmargins=true}
+
+  and/or configured with e. g.::
+
+    \lstset{xleftmargin=-2em}
+
 __ ../ref/rst/restructuredtext.html#literal-blocks
 .. _literal-block-env:
    config.html#literal-block-env
@@ -1924,6 +1933,10 @@ umlauts) might fail.  See font_ and `font encoding`_ (as well as
 Unicode box drawing and block characters
 ````````````````````````````````````````
 
+The easiest solution is to use xelatex_ for `PDF generation`_.
+
+With "traditional" TeX engines (e.g. pdflatex_):
+
 - Generate LaTeX code with `output-encoding`_ "utf-8".
 
 - Add the pmboxdraw_ package to the `style sheets`_.
@@ -1931,18 +1944,6 @@ Unicode box drawing and block characters
 
 Unfortunately, this defines only a subset of the characters
 (see pmboxdraw.pdf_ for a list).
-
-Alternatively:
-
-- In the latex file, edit the preamble to load ucs_ with "postscript"
-  option and also load the pstricks package::
-
-      - \usepackage[utf8]{inputenc}
-      + \usepackage[postscript]{ucs}
-      + \usepackage{pstricks}
-      + \usepackage[utf8x]{inputenc}
-
-- Convert to PDF with ``latex``, ``dvips``, and ``ps2pdf``.
 
 .. _pmboxdraw:
    http://mirror.ctan.org/help/Catalogue/entries/pmboxdraw.html
