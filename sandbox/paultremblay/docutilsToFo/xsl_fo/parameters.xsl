@@ -31,6 +31,7 @@ first-odd-even (different first, odd, and even; headers and footers will be the 
 the page-header or page-footer attribute sets-->
 <xsl:param name="spacing-header"/>
 <xsl:param name="spacing-footer"/>
+<xsl:param name="custom-spacing-header-footer"/>
 
 
 <!--with-front, with-toc, or with-body-->

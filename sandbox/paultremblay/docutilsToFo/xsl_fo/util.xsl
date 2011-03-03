@@ -119,5 +119,42 @@
         </xsl:choose>
     </xsl:variable>
 
+    <xsl:template name="my-boolean-func">
+        <xsl:param name="string"/>
+        <xsl:param name="name"/>
+        <xsl:param name="allow-empty-string" select="boolean('true')"/>
+        <xsl:choose>
+            <xsl:when test="$string = '' and $allow-empty-string">
+                <xsl:value-of select= "boolean('')"/>
+            </xsl:when>
+            <xsl:when test="$string = 'yes' or $string = 'Yes' or $string = 'true' or $string = 'True'">
+                <xsl:value-of select= "boolean('true')"/>
+            </xsl:when>
+            <xsl:when test="$string = 'no' or $string = 'No' or $string = 'false' or $string = 'False'">
+                <xsl:value-of select= "boolean('')"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:variable name="msg">
+                    <xsl:text>"</xsl:text>
+                    <xsl:value-of select="$string"/>
+                    <xsl:text>"</xsl:text>
+                    <xsl:text> not a valid boolean value for </xsl:text>
+                    <xsl:value-of select="$name"/>
+                    <xsl:text>&#xA;</xsl:text>
+                </xsl:variable>
+                <xsl:call-template name="quit-message">
+                    <xsl:with-param name="msg" select="$msg"/>
+                </xsl:call-template>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+    <xsl:variable name="custom-spc-header-footer">
+        <xsl:call-template name="my-boolean-func">
+            <xsl:with-param name="string" select="$custom-spacing-header-footer"/>
+            <xsl:with-param name="name" select="'custom-spacing-header-footer'"/>
+        </xsl:call-template>
+    </xsl:variable>
+
     
 </xsl:stylesheet> 

@@ -251,7 +251,14 @@
             </xsl:choose>
         </xsl:variable>
 
-        <fo:region-body margin-top="{$margin-top}" margin-bottom="{$margin-bottom}" xsl:use-attribute-sets="region-body"/>
+        <xsl:choose>
+            <xsl:when test="$custom-spc-header-footer">
+                <fo:region-body  xsl:use-attribute-sets="region-body"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <fo:region-body margin-top="{$margin-top}" margin-bottom="{$margin-bottom}" xsl:use-attribute-sets="region-body"/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
     <!--make the simple-page-master with the appropriate master-name

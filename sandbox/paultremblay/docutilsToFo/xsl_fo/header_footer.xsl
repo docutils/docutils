@@ -13,91 +13,64 @@
     <xsl:attribute-set name="header-block">
         <xsl:attribute name="font-size">12pt</xsl:attribute>
         <xsl:attribute name="text-align">center</xsl:attribute>
+        <xsl:attribute name="space-before.conditionality">retain</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="first-header-block">
-        <xsl:attribute name="font-size">12pt</xsl:attribute>
-        <xsl:attribute name="text-align">center</xsl:attribute>
+    <xsl:attribute-set name="first-header-block" use-attribute-sets = "header-block">
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="odd-header-block">
-        <xsl:attribute name="font-size">12pt</xsl:attribute>
-        <xsl:attribute name="text-align">center</xsl:attribute>
+    <xsl:attribute-set name="odd-header-block" use-attribute-sets = "header-block">
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="even-header-block">
-        <xsl:attribute name="font-size">12pt</xsl:attribute>
-        <xsl:attribute name="text-align">center</xsl:attribute>
+    <xsl:attribute-set name="even-header-block" use-attribute-sets = "header-block">
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="body-header-block">
-        <xsl:attribute name="font-size">12pt</xsl:attribute>
-        <xsl:attribute name="text-align">center</xsl:attribute>
+    <xsl:attribute-set name="body-header-block" use-attribute-sets = "header-block">
     </xsl:attribute-set>
 
     <xsl:attribute-set name="footer-block">
         <xsl:attribute name="font-size">12pt</xsl:attribute>
         <xsl:attribute name="text-align">center</xsl:attribute>
+        <xsl:attribute name="space-before.conditionality">retain</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="first-footer-block">
-        <xsl:attribute name="font-size">12pt</xsl:attribute>
-        <xsl:attribute name="text-align">center</xsl:attribute>
+    <xsl:attribute-set name="first-footer-block" use-attribute-sets = "footer-block">
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="odd-footer-block">
-        <xsl:attribute name="font-size">12pt</xsl:attribute>
-        <xsl:attribute name="text-align">center</xsl:attribute>
+    <xsl:attribute-set name="odd-footer-block" use-attribute-sets = "footer-block">
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="even-footer-block">
-        <xsl:attribute name="font-size">12pt</xsl:attribute>
-        <xsl:attribute name="text-align">center</xsl:attribute>
+    <xsl:attribute-set name="even-footer-block" use-attribute-sets = "footer-block">
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="body-footer-block">
-        <xsl:attribute name="font-size">12pt</xsl:attribute>
-        <xsl:attribute name="text-align">center</xsl:attribute>
+    <xsl:attribute-set name="body-footer-block" use-attribute-sets = "footer-block">
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="toc-first-header-block">
-        <xsl:attribute name="font-size">12pt</xsl:attribute>
-        <xsl:attribute name="text-align">center</xsl:attribute>
+    <xsl:attribute-set name="toc-first-header-block" use-attribute-sets = "header-block">
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="toc-odd-header-block">
-        <xsl:attribute name="font-size">12pt</xsl:attribute>
-        <xsl:attribute name="text-align">center</xsl:attribute>
+    <xsl:attribute-set name="toc-odd-header-block" use-attribute-sets = "header-block">
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="toc-even-header-block">
-        <xsl:attribute name="font-size">12pt</xsl:attribute>
-        <xsl:attribute name="text-align">center</xsl:attribute>
+    <xsl:attribute-set name="toc-even-header-block" use-attribute-sets = "header-block">
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="toc-body-header-block">
-        <xsl:attribute name="font-size">12pt</xsl:attribute>
-        <xsl:attribute name="text-align">center</xsl:attribute>
+    <xsl:attribute-set name="toc-body-header-block" use-attribute-sets = "header-block">
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="toc-first-footer-block">
-        <xsl:attribute name="font-size">12pt</xsl:attribute>
-        <xsl:attribute name="text-align">center</xsl:attribute>
+    <xsl:attribute-set name="toc-first-footer-block" use-attribute-sets = "footer-block">
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="toc-odd-footer-block">
-        <xsl:attribute name="font-size">12pt</xsl:attribute>
-        <xsl:attribute name="text-align">center</xsl:attribute>
+    <xsl:attribute-set name="toc-odd-footer-block" use-attribute-sets = "footer-block">
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="toc-even-footer-block">
-        <xsl:attribute name="font-size">12pt</xsl:attribute>
-        <xsl:attribute name="text-align">center</xsl:attribute>
+    <xsl:attribute-set name="toc-even-footer-block" use-attribute-sets = "footer-block">
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="toc-body-footer-block">
+    <xsl:attribute-set name="toc-body-footer-block" use-attribute-sets = "footer-block">
         <xsl:attribute name="font-size">12pt</xsl:attribute>
         <xsl:attribute name="text-align">center</xsl:attribute>
+        <xsl:attribute name="space-before.conditionality">retain</xsl:attribute>
     </xsl:attribute-set>
 
     <xsl:attribute-set name="paragraph-header-block">
