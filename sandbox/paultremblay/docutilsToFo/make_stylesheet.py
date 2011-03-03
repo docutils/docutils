@@ -127,32 +127,21 @@ class PostProcess:
 
     def __fix_header_footer(self):
         # have to set the param spacing-header to extent, if not already set
+        #custom-spacing-header-footer
         header_att_set = self.__attribute_sets.get('header-region-before')
         if header_att_set:
             extent = header_att_set.get('extent')
             if extent and not self.__params.get('spacing-header'):
-                self.__params['spacing-header'] = extent
+                # self.__params['spacing-header'] = extent
+                self.__params['custom-spacing-header-footer'] = 'yes'
 
         footer_att_set = self.__attribute_sets.get('footer-region-after')
         if footer_att_set:
             extent = footer_att_set.get('extent')
             if extent and not self.__params.get('spacing-footer'):
-                self.__params['spacing-footer'] = extent
+                # self.__params['spacing-footer'] = extent
+                self.__params['custom-spacing-header-footer'] = 'yes'
 
-        # have to add a space-before.conditionality to force space that
-        # otherwise would not be written
-        header_att_set = self.__attribute_sets.get('header-block')
-        if header_att_set:
-            space_before = header_att_set.get('space-before')
-            if space_before:
-                self.__attribute_sets['header-block']['space-before.conditionality'] = 'retain'
-
-        # same as above
-        footer_att_set = self.__attribute_sets.get('footer-block')
-        if footer_att_set:
-            space_before = footer_att_set.get('space-before')
-            if space_before:
-                self.__attribute_sets['footer-block']['space-before.conditionality'] = 'retain'
 
     def __fix_title(self):
         doc_tit_att_set = self.__attribute_sets.get('document-title-page-block')

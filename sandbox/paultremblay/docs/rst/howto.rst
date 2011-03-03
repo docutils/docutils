@@ -271,6 +271,11 @@ regions:
 * odd page of the table of contents section
 * even page of the table of contents section
 
+These headers and footers can be formatted all at once, using the ``'header'``
+and ``'footer'`` identifiers. By default, these headers and footers are all
+centered. However, each inidividua header and footer can be customized, as
+shown below.
+
 Create a different header for the first and subsequent pages
 -------------------------------------------------------------
 
@@ -420,6 +425,37 @@ method.
     .. container:: even-footer
     
      even footer
+
+Create a different header for the first and subsequent pages for the TOC
+-------------------------------------------------------------------------
+
+In the *document* set up the headers and footers::
+
+
+ .. container:: toc-first-header
+ 
+     First header 
+     
+ .. container:: toc-first-footer
+ 
+     First footer
+     
+ .. container:: toc-body-header
+ 
+     Body header 
+     
+ .. container:: toc-body-footer
+ 
+     Body footer
+    
+
+Use ``'toc-first-header'``, ``'toc-first-footer'``, ``'toc-body-header'`` and
+``'toc-body-footer'`` to format these headers and footers::
+
+ toc-body-header.color = red
+ toc-body-footer.color = red
+ toc-first-header.background-color = red
+ toc-first-footer.background-color = red
 
 Formatting the paragraphs in headers and footers
 --------------------------------------------------
