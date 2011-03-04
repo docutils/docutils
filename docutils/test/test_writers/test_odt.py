@@ -154,7 +154,7 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
 
     def test_odt_tables1(self):
         self.process_test('odt_tables1.txt', 'odt_tables1.odt',
-            #save_output_name='odt_tables1.odt'
+            save_output_name='odt_tables1.odt'
             )
 
     def test_odt_custom_headfoot(self):
