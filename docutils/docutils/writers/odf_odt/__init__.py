@@ -2781,7 +2781,8 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         if table_style.backgroundcolor is None:
             el1_1 = SubElement(el1, 'style:table-properties', attrib={
                 #'style:width': '17.59cm',
-                'table:align': 'margins',
+                #'table:align': 'margins',
+                'table:align': 'left',
                 'fo:margin-top': '0in',
                 'fo:margin-bottom': '0.10in',
                 }, nsdict=SNSD)
@@ -2829,12 +2830,14 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             })
         self.set_current_element(el4)
         self.current_table_style = el1
-        self.table_width = 0
+        self.table_width = 0.0
 
     def depart_table(self, node):
         attribkey = add_ns('style:width', nsdict=SNSD)
-        attribval = '%dcm' % self.table_width
-        self.current_table_style.attrib[attribkey] = attribval
+        attribval = '%.4fin' % (self.table_width, )
+        el1 = self.current_table_style
+        el2 = el1[0]
+        el2.attrib[attribkey] = attribval
         self.set_to_parent()
 
     def visit_tgroup(self, node):
@@ -2849,13 +2852,15 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             '%s%%d.%%s' % TABLESTYLEPREFIX,
             (self.table_count, chr(self.column_count), )
             )
-        colwidth = node['colwidth']
+        colwidth = node['colwidth'] / 12.0
         el1 = SubElement(self.automatic_styles, 'style:style', attrib={
             'style:name': colspec_name,
             'style:family': 'table-column',
             }, nsdict=SNSD)
         el1_1 = SubElement(el1, 'style:table-column-properties', attrib={
-            'style:column-width': '%dcm' % colwidth }, nsdict=SNSD)
+            'style:column-width': '%.4fin' % colwidth 
+            },
+            nsdict=SNSD)
         el2 = self.append_child('table:table-column', attrib={
             'table:style-name': colspec_name,
             })
