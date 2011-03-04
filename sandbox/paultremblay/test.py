@@ -165,6 +165,10 @@ docfo_commands = [
         ('header_footer2.xml', 'header_footer4.conf'), # first header and footer
         ('header_footer5.xml', 'header_footer5.conf'), # odd even
         ('header_footer5.xml', 'header_footer6.conf'), # odd even, suppress first
+        ('header_footer_toc1.xml', 'header_footer_toc1.conf'), # first and other
+        ('header_footer_toc4.xml', 'header_footer_toc2.conf'), # odd even, 
+        ('header_footer_toc3.xml', 'header_footer_toc3.conf'), # first odd even, 
+        ('header_footer_toc2.xml', 'header_footer_toc1.conf'), #  suppress first
     ]
 
 def error_func(msg, the_path = None):
@@ -449,8 +453,9 @@ def main():
     for fo_file in glob.glob('*.fo'):
         os.remove(fo_file)
     test_docutils_to_fo_script(script_command)
-    if arg.clean:
-        clean()
+    #if arg.clean:
+        # clean()
+    clean()
     os.chdir(current_dir)
 
 try:

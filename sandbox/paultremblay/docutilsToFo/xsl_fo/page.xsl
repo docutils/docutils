@@ -252,7 +252,7 @@
         </xsl:variable>
 
         <xsl:choose>
-            <xsl:when test="$custom-spc-header-footer">
+            <xsl:when test="$custom-spc-header-footer = 'true'">
                 <fo:region-body  xsl:use-attribute-sets="region-body"/>
             </xsl:when>
             <xsl:otherwise>

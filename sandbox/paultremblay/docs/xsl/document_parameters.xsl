@@ -56,7 +56,9 @@
         </block>
     </xsl:template>
 
-    <xsl:template match="xsl:param[@name='suppress-first-page-header']" priority = "3">
+    <!--not used anymore-->
+    <xsl:template match="xsl:param[@name='suppress-first-page-header']" priority = "3"/>
+    <xsl:template match="xsl:param[@name='suppress-first-page-header_old']" priority = "3">
         <xsl:call-template name="before_p_text">
             <xsl:with-param name="possible-values">
                 <xsl:text>True, False, ''</xsl:text>
@@ -70,7 +72,9 @@
         </block>
     </xsl:template>
 
-    <xsl:template match="xsl:param[@name='suppress-first-page-footer']" priority = "3">
+    <!--not used anymore-->
+    <xsl:template match="xsl:param[@name='suppress-first-page-footer']" priority = "3"/>
+    <xsl:template match="xsl:param[@name='suppress-first-page-footer_old']" priority = "3">
         <xsl:call-template name="before_p_text">
             <xsl:with-param name="possible-values">
                 <xsl:text>True, False, ''</xsl:text>
@@ -85,7 +89,9 @@
     </xsl:template>
 
 
-    <xsl:template match="xsl:param[@name='spacing-header']" priority = "3">
+    <!--not used anymore-->
+    <xsl:template match="xsl:param[@name='spacing-header']" priority = "3"/>
+    <xsl:template match="xsl:param[@name='spacing-header_old']" priority = "3">
         <xsl:call-template name="make-name">
             <xsl:with-param name="name">spacing-header and spacing-footer</xsl:with-param>
         </xsl:call-template>
@@ -626,6 +632,24 @@
             all pages.
         </block>
 
+    </xsl:template>
+
+    
+
+    <xsl:template match="xsl:param[@name='custom-spacing-header-footer']" priority = "3">
+        <xsl:call-template name="before_p_text">
+            <xsl:with-param name="possible-values">
+                <xsl:text>boolean</xsl:text>
+            </xsl:with-param>
+        </xsl:call-template>
+        <block>
+            Tells the stylesheets to use attributes of body and region-before that will determine
+            the spacing for the header. Normally, the stylesheets sets the area to .75in, if a
+            relevant header or footer is found. When ``'custom-spacing-header-footer'`` 
+            is set to true, the stylesheets 
+            won't try to generate any spacing, but will require these attributes to be set in 
+            the relevant attribute sets.
+        </block>
     </xsl:template>
 
 

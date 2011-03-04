@@ -394,18 +394,18 @@ footers for the body, but not for the first page::
  
   body footer
 
-For odd and even pages
-+++++++++++++++++++++++
+For odd and even pages if using standard page margins
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-If you wish to have different headers and footers on odd and even
-pages, but no headers and footers on the first page, use the following
-method.
+Use the following method if (1) you wish to have different headers and
+footers on odd and even pages, but no headers and footers on the first
+page; and (2) you have the same margins for odd and even pages.
 
 1. First, tell the formatter you desire a first-odd-even layout.
    (Without specifying this explicitly, the formatter will simply
    think you want an odd-even layout.)::
 
-     page-layout = first-odd-even
+     document.page-layout = first-odd-even
 
 2. Create odd and even headers, without creating any first headers
    and footers::
@@ -425,6 +425,43 @@ method.
     .. container:: even-footer
     
      even footer
+
+For odd and even pages if using custom page margins
++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+Use the following method if (1) you wish to have different headers and
+footers on odd and even pages, but no headers and footers on the first
+page; and (2) you have different margins for odd and even pages.
+
+1. First, set the margins for the first page to that of the odd page.
+   (This step tells the formatter that set the page layout to
+   first-odd-even, the layout desired; and it makes sure the first,
+   odd page, is identical to the other odd pages.)  
+   
+::
+
+     first-page.top-margin = .75in
+     # etc.
+
+2. Create odd and even headers, without creating any first headers
+   and footers::
+
+    .. container:: odd-header
+    
+     odd header
+    
+    .. container:: odd-footer
+    
+     odd footer
+    
+    .. container:: even-header
+    
+     even header
+    
+    .. container:: even-footer
+    
+     even footer
+
 
 Create a different header for the first and subsequent pages for the TOC
 -------------------------------------------------------------------------
@@ -456,6 +493,95 @@ Use ``'toc-first-header'``, ``'toc-first-footer'``, ``'toc-body-header'`` and
  toc-body-footer.color = red
  toc-first-header.background-color = red
  toc-first-footer.background-color = red
+
+Create a different header for odd and even pages for the TOC
+--------------------------------------------------------------
+
+In the *document* set up the headers and footers::
+
+
+ .. container:: toc-odd-header
+ 
+  odd header
+ 
+ .. container:: toc-odd-footer
+ 
+  odd footer
+ 
+ .. container:: toc-even-header
+ 
+  even header
+ 
+ .. container:: toc-even-footer
+ 
+  even footer
+
+Use ``'toc-odd-header'``, ``'toc-odd-footer'``, ``'toc-even-header'`` and
+``'toc-even-footer'`` to format these headers and footers::
+
+ toc-odd-header.color = red
+ toc-odd-footer.color = red
+ toc-even-header.background-color = red
+ toc-even-footer.background-color = red
+
+Create a different header for first, odd and even pages for the TOC
+--------------------------------------------------------------------
+
+In the *document* set up the headers and footers::
+
+ .. container:: toc-first-header
+ 
+  first header text
+ 
+ .. container:: toc-first-footer
+ 
+  first footer text
+
+ .. container:: toc-odd-header
+ 
+  odd header
+ 
+ .. container:: toc-odd-footer
+ 
+  odd footer
+ 
+ .. container:: toc-even-header
+ 
+  even header
+ 
+ .. container:: toc-even-footer
+ 
+  even footer
+
+Use ``'toc-first-header'`` ``'toc-first-footer'``, ``'toc-odd-header'``,
+``'toc-odd-footer'``, ``'toc-even-header'`` and ``'toc-even-footer'`` to format
+these headers and footers::
+
+ toc-first-header.font-style = italic
+ toc-first-footer.font-style = italic
+ toc-odd-header.color = red
+ toc-odd-footer.color = red
+ toc-even-header.background-color = red
+ toc-even-footer.background-color = red
+
+Suppress first page header or footer for the TOC
+-------------------------------------------------
+
+Follow the same procedures as for the body. To supress the header and
+footer when the headers and footers are otherwise the same for all
+pages, create body headers and footers for the toc, but not for the
+first page::
+
+ .. container:: toc-body-header
+ 
+     Body header 
+
+To suppress when using different headers and footers for odd and even
+pages, set up the odd and even headers/footers, and then signal to the
+formatter that you wish for a first-odd-even layout, either through
+the ``'document.page-layout'`` property, or by setting margins for the
+first page.
+
 
 Formatting the paragraphs in headers and footers
 --------------------------------------------------

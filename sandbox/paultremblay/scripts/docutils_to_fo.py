@@ -70,6 +70,7 @@ if debug: sys.stderr.write('script is "%s"\n' % __file__)
 in_file = arg.in_file
 if debug:
     sys.stderr.write('in_file is "%s"\n' % str(in_file))
+config_file = arg.config_file
 
 valid_fo = True
 if  arg.no_valid_fo:
@@ -94,7 +95,8 @@ if debug:
     sys.stderr.write('out_xsl (file to output XSL stylesheet) is "%s"\n' % (out_xsl))
 
 # make a stylesheet
-ss_obj = docutilsToFo.make_stylesheet.ReadConfig(import_ss = root_stylesheet, verbose = verbose)
+ss_obj = docutilsToFo.make_stylesheet.ReadConfig(import_ss = root_stylesheet, 
+        verbose = verbose, config_file = config_file)
 try:
     ss_string = ss_obj.make_stylesheet()
 except docutilsToFo.make_stylesheet.FOConfigFileException, msg:

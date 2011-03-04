@@ -188,7 +188,7 @@ class PostProcess:
 
 class ReadConfig:
 
-    def __init__(self, import_ss = None, verbose = 0):
+    def __init__(self, import_ss = None, verbose = 0, config_file = None):
         self.__verbose = verbose
         if self.__verbose > 4:
             sys.stderr.write('modules is "%s"\n' % __file__)
@@ -204,6 +204,9 @@ class ReadConfig:
             raise FOConfigFileException(msg)
         if self.__verbose > 3:
             sys.stderr.write('self.__import_ss (stylesheet to import) is "%s" \n' % self.__import_ss)
+        self.__config_file = config_file
+        if self.__verbose > 3  and self.__config_file:
+            sys.stderr.write('self.__config_file  is "%s" \n' % self.__config_file)
 
     def __correct_path(self, the_path):
         """
@@ -236,6 +239,9 @@ class ReadConfig:
     def read_config_files(self):
         config = ConfigParser.SafeConfigParser()
         config_files = []
+        if self.__config_file:
+            config.read(self.__config_file)
+            return config
         if os.environ.get('HOME'):
             config_files.append(os.path.join(os.environ.get('HOME'), '.docutils'))
         config_files.append(os.path.join(os.getcwd(), 'docutils.conf'))

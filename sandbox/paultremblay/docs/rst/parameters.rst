@@ -43,44 +43,20 @@ you can suppress the first footer and header (see below).
 Using a value other than ``simple`` allows for different margins
 for different page sequences, depending on the value.
 
-suppress-first-page-header
-==========================
+custom-spacing-header-footer
+============================
 
-**Possible Values**: ``True``, ``False``, ``''``
-
-**Default:**
-
-If set to True, and the ``page-layout`` is set to``first``, or
-``page-layout`` is set to ``first-odd-even``, no header will
-appear on the first page. If a value of ``simple`` or
-``odd-even`` is chosen for the ``page-layout``, this parameter
-will have no effect, and the header will appear on all pages.
-
-suppress-first-page-footer
-==========================
-
-**Possible Values**: ``True``, ``False``, ``''``
+**Possible Values**: ``boolean``
 
 **Default:**
 
-If set to True, and the ``page-layout`` is set to ``first``, or
-``page-layout`` is set to ``first-odd-even``, no footer will
-appear on the first page. If a value of ``simple`` or
-``odd-even`` is chosen for the ``page-layout``, this parameter
-will have no effect, and the footer will appear on all pages.
-
-spacing-header and spacing-footer
-=================================
-
-**Possible Values**: Any Measure
-
-**Default:**
-
-The parameters ``spacing-header`` and ``spacing-footer`` create
-the space for the header and footer. Although the default is set
-to an empty string, the XSL styelsheets will create a
-satisfactory space if a header or footer is found. Use either of
-these parameters to change that default.
+Tells the stylesheets to use attributes of body and region-before
+that will determine the spacing for the header. Normally, the
+stylesheets sets the area to .75in, if a relevant header or
+footer is found. When ``'custom-spacing-header-footer'`` is set
+to true, the stylesheets won't try to generate any spacing, but
+will require these attributes to be set in the relevant attribute
+sets.
 
 pagination for front matter
 ===========================
