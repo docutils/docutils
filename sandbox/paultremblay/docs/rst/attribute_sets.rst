@@ -750,6 +750,8 @@ header-block
 
      text-align: center
 
+     space-before.conditionality: retain
+
 Formats the properties for the header. Use to set the space
 between the header and the body text, using ``'space-before =
 x'`` and setting ``'space-before.conditionality'`` to
@@ -764,10 +766,6 @@ first-header-block
 
 :defaults:
 
-     font-size: 12pt
-
-     text-align: center
-
 Formats the properties for the header for the first page.
 
 odd-header-block
@@ -778,10 +776,6 @@ odd-header-block
 :docutils: container[@classes='odd-header']
 
 :defaults:
-
-     font-size: 12pt
-
-     text-align: center
 
 Formats the properties for the for the header of odd pages, when
 using a layout of ``'first-odd-even'``, or ``'odd-even'``.
@@ -795,10 +789,6 @@ even-header-block
 
 :defaults:
 
-     font-size: 12pt
-
-     text-align: center
-
 Formats the properties for the for the header of even pages, when
 using a layout of ``'first-odd-even'``, or ``'odd-even'``.
 
@@ -810,10 +800,6 @@ body-header-block
 :docutils: container[@classes='body-header']
 
 :defaults:
-
-     font-size: 12pt
-
-     text-align: center
 
 Formats the properties for the for the header of the body, when
 using a layout of ``'first'``.
@@ -831,6 +817,8 @@ footer-block
 
      text-align: center
 
+     space-before.conditionality: retain
+
 Formats the properties for the footer. Use to set the space
 between the header and the body text, using ``'space-before =
 x'`` and setting ``'space-before.conditionality'`` to
@@ -845,10 +833,6 @@ first-footer-block
 
 :defaults:
 
-     font-size: 12pt
-
-     text-align: center
-
 Formats the properties for the footer for the first page.
 
 odd-footer-block
@@ -859,10 +843,6 @@ odd-footer-block
 :docutils: container[@classes='odd-footer']
 
 :defaults:
-
-     font-size: 12pt
-
-     text-align: center
 
 Formats the properties for the for the footer of odd pages, when
 using a layout of ``'first-odd-even'``, or ``'odd-even'``.
@@ -876,10 +856,6 @@ even-footer-block
 
 :defaults:
 
-     font-size: 12pt
-
-     text-align: center
-
 Formats the properties for the for the footer of even pages, when
 using a layout of ``'first-odd-even'``, or ``'odd-even'``.
 
@@ -891,10 +867,6 @@ body-footer-block
 :docutils: container[@classes='body-footer']
 
 :defaults:
-
-     font-size: 12pt
-
-     text-align: center
 
 Formats the properties for the for the footer of the body, when
 using a layout of ``'first'``.
@@ -908,10 +880,6 @@ toc-first-header-block
 
 :defaults:
 
-     font-size: 12pt
-
-     text-align: center
-
 Formats the properties for the header for the first page of the
 TOC.
 
@@ -923,10 +891,6 @@ toc-odd-header-block
 :docutils: container[@classes='toc-odd-header']
 
 :defaults:
-
-     font-size: 12pt
-
-     text-align: center
 
 Formats the properties for the for the header of odd pages of the
 TOC, when using a layout of ``'first-odd-even'``, or
@@ -941,10 +905,6 @@ toc-even-header-block
 
 :defaults:
 
-     font-size: 12pt
-
-     text-align: center
-
 Formats the properties for the for the header of even pages of
 the TOC, when using a layout of ``'first-odd-even'``, or
 ``'odd-even'``.
@@ -958,10 +918,6 @@ toc-body-header-block
 
 :defaults:
 
-     font-size: 12pt
-
-     text-align: center
-
 Formats the properties for the for the header of the body of the
 TOC, when using a layout of ``'first'``.
 
@@ -973,10 +929,6 @@ toc-first-footer-block
 :docutils: container[@classes='toc-first-footer']
 
 :defaults:
-
-     font-size: 12pt
-
-     text-align: center
 
 Formats the properties for the footer for the first page of the
 TOC.
@@ -990,10 +942,6 @@ toc-odd-footer-block
 
 :defaults:
 
-     font-size: 12pt
-
-     text-align: center
-
 Formats the properties for the for the footer of odd pages of the
 TOC, when using a layout of ``'first-odd-even'``, or
 ``'odd-even'``.
@@ -1006,10 +954,6 @@ toc-even-footer-block
 :docutils: container[@classes='toc-even-footer']
 
 :defaults:
-
-     font-size: 12pt
-
-     text-align: center
 
 Formats the properties for the for the footer of even pages of
 the TOC, when using a layout of ``'first-odd-even'``, or
@@ -1027,6 +971,8 @@ toc-body-footer-block
      font-size: 12pt
 
      text-align: center
+
+     space-before.conditionality: retain
 
 Formats the properties for the for the footer of the body of the
 TOC, when using a layout of ``'first'``.
@@ -2283,6 +2229,24 @@ option-group-block
 Formats the block that contains the inline elements of the
 options and arguments. For a defintion list, this block serves as
 the term, and sits on top, and to the left of the description.
+
+option-list-description-block
+-----------------------------
+
+:fo: fo:block
+
+:docutils: option_list/option_list_item/description
+
+:defaults:
+
+     start-indent: 16pt
+
+     space-before: 8pt
+
+Formats the blocks wrappring the paragraphs describing the
+options or arguments. This groups of blocks sits below the blocks
+formatting the options and arguments, and in a defintion list
+are usually indented right.
 
 option-list-paragraph-block
 ---------------------------

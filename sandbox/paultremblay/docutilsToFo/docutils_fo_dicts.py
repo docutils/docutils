@@ -92,6 +92,14 @@ short_cut_att_sets = {
 'title': 'document-title-block',
 'title-subtitle': 'document-title-page-block',
 'toc': 'toc-block',
+'toc-body-footer':'toc-body-footer-block',
+'toc-body-header':'toc-body-header-block',
+'toc-first-header':'toc-first-header-block',
+'toc-first-footer':'toc-first-footer-block',
+'toc-odd-header':'toc-odd-header-block',
+'toc-even-header':'toc-even-header-block',
+'toc-odd-footer':'toc-odd-footer-block',
+'toc-even-footer':'toc-even-footer-block',
 'toc-title': 'toc-title-block',
 'toc-entry1': 'toc-level1-block',
 'toc-entry2': 'toc-level2-block',
@@ -639,7 +647,8 @@ which_list = {
 'footnote-body': footnote_body_attlist,
 'header': table_header_attlist,
 'inline': inline_attlist,
-'item-body': list_item_body_attlist,
+# 'item-body': list_item_body_attlist,
+'list-item-body': list_item_body_attlist,
 'item-label': list_item_label_attlist,
 'list-block':list_block_attlist,
 'list-item': list_item_attlist,
@@ -666,6 +675,8 @@ custom_atts = {
 'keep-on-same-page': 'keep-together.within-page',
 'font': 'font-family', # could be problamatic
 'space-from-label': 'provisional-distance-between-starts',
+'height': 'page-height',
+'width': 'page-width',
 # 'space-from-option': 'provisional-distance-between-starts',
 # 'space-between-items': 'space-before',
 }
@@ -803,6 +814,7 @@ prop_as_param_dict = {
 'bullet-list-level2.text': 'bullet-text-level2',
 'option-list.format':'option-list-format',
 'options-list.separator': 'options-separator',
+'document.page-layout': 'page-layout',
 }
 
 
