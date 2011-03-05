@@ -170,6 +170,7 @@ docfo_commands = [
         ('header_footer_toc3.xml', 'header_footer_toc3.conf'), # first odd even, 
         ('header_footer_toc2.xml', 'header_footer_toc1.conf'), #  suppress first
         ('block.xml', 'block_quote1.conf'), #  block quote
+        ('table_simple.xml', 'table1.conf'), #  default table
     ]
 
 def error_func(msg, the_path = None):
