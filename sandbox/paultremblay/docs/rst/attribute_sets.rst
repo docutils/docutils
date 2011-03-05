@@ -2419,7 +2419,7 @@ table
 
 Formats the table.
 
-thead-header
+table-header
 ------------
 
 :fo: fo:table-header
@@ -2427,6 +2427,8 @@ thead-header
 :docutils: tgroup/thead
 
 :defaults:
+
+     font-weight: bold
 
 Formats the header of the table.
 
@@ -2447,8 +2449,8 @@ default-cell
 
 Sets the defaults for all cells.
 
-thead-cell
-----------
+table-header-cell
+-----------------
 
 :fo: fo:cell
 
@@ -2458,10 +2460,12 @@ thead-cell
 
 :defaults:
 
+     border-bottom: solid black 2px
+
 Formats the cells in the table header.
 
-thead-block
------------
+table-header-block
+------------------
 
 :fo: fo:block
 
@@ -2562,11 +2566,11 @@ attribute set in the regular table, as documented above.
 
 * table1 => table
 
-* thead1-header => table-header
+* table1-header => table-header
 
-* thead1-cell => thead-cell
+* table1-header-cell => table-header-cell
 
-* thead1-block => thead-block
+* table1-header-block => table-header-block
 
 * table1-body => table-body
 
@@ -2596,11 +2600,11 @@ attribute set in the regular table, as documented above.
 
 * table30 => table
 
-* thead30-header => table-header
+* table30-header => table-header
 
-* thead30-cell => thead-cell
+* table30-header-cell => table-header-cell
 
-* thead30 => thead-block
+* table30-header-block => table-header-block
 
 * table30-body => table-body
 
@@ -2629,40 +2633,25 @@ table. Each attribute set has has the same function as its
 corresponding attribute set in the regular table, as documented
 above.
 
-* table-borderless-block-container => table-block-contanter
+* borderless-table-block-container => table-block-contanter
 
-* table-borderless => table
+* borderless-table => table
 
-* borderless-thead-header => table-header
+* borderless-table-header => table-header
 
-* borderless-thed-cell => thead-cell
+* borderless-table-header-cell => table-header-cell
 
-* borderless-thead-block => thead-block
+* borderless-table-header-block => table-header-block
 
-* table-borderless-body => table-body
+* borderless-table-body => table-body
 
-* table-borderless-header-row => table-header-row
+* borderless-table-header-row => table-header-row
 
-* table-borderless-row => table-row
+* borderless-table-row => table-row
 
-* table-borderless-cell => table-cell
+* borderless-table-cell => table-cell
 
 * borderless-cell-block => cell-block
-
-thead-borderless-cell
----------------------
-
-:fo: fo:cell
-
-:docutils: thead/row/entry
-
-:defaults:
-
-     padding: 1em
-
-     border-collapse: collapse
-
-Formats the cells in the table header for a borderless table.
 
 Table Long
 ==========
@@ -2685,13 +2674,13 @@ header or footer.
 
 * long-table => table
 
-* long-thead-header => table-header
+* long-table-header => table-header
 
 * long-table-header-row => table-header-row
 
 * long-thead-cell => thead-cell
 
-* long-thead-block => thead-block
+* long-table-header-block => table-header-block
 
 * long-table-body => table-body
 

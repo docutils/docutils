@@ -27,9 +27,9 @@
 
         <block>* table1-block-container => table-block-contanter</block>
         <block>* table1 => table</block>
-        <block>* thead1-header => table-header</block>
-        <block>* thead1-cell => thead-cell</block>
-        <block>* thead1-block => thead-block</block>
+        <block>* table1-header => table-header</block>
+        <block>* table1-header-cell => table-header-cell</block>
+        <block>* table1-header-block => table-header-block</block>
         <block>* table1-body => table-body</block>
         <block>* table1-header-row => table-header-row</block>
         <block>* table1-row => table-row</block>
@@ -44,9 +44,9 @@
         <block>* ... </block>
         <block>* table30-block-container => table-block-contanter</block>
         <block>* table30 => table</block>
-        <block>* thead30-header => table-header</block>
-        <block>* thead30-cell => thead-cell</block>
-        <block>* thead30 => thead-block</block>
+        <block>* table30-header => table-header</block>
+        <block>* table30-header-cell => table-header-cell</block>
+        <block>* table30-header-block => table-header-block</block>
         <block>* table30-body => table-body</block>
         <block>* table30-header-row => table-header-row</block>
         <block>* table30-row => table-row</block>
@@ -116,98 +116,98 @@
      xsl:attribute-set[@name='table29']|
      xsl:attribute-set[@name='table30']" priority="3"/>
 
-    <xsl:template match= "xsl:attribute-set[@name='thead1-header']|
-     xsl:attribute-set[@name='thead2-header']|
-     xsl:attribute-set[@name='thead3-header']|
-     xsl:attribute-set[@name='thead4-header']|
-     xsl:attribute-set[@name='thead5-header']|
-     xsl:attribute-set[@name='thead6-header']|
-     xsl:attribute-set[@name='thead7-header']|
-     xsl:attribute-set[@name='thead8-header']|
-     xsl:attribute-set[@name='thead9-header']|
-     xsl:attribute-set[@name='thead10-header']|
-     xsl:attribute-set[@name='thead11-header']|
-     xsl:attribute-set[@name='thead12-header']|
-     xsl:attribute-set[@name='thead13-header']|
-     xsl:attribute-set[@name='thead14-header']|
-     xsl:attribute-set[@name='thead15-header']|
-     xsl:attribute-set[@name='thead16-header']|
-     xsl:attribute-set[@name='thead17-header']|
-     xsl:attribute-set[@name='thead18-header']|
-     xsl:attribute-set[@name='thead19-header']|
-     xsl:attribute-set[@name='thead20-header']|
-     xsl:attribute-set[@name='thead21-header']|
-     xsl:attribute-set[@name='thead22-header']|
-     xsl:attribute-set[@name='thead23-header']|
-     xsl:attribute-set[@name='thead24-header']|
-     xsl:attribute-set[@name='thead25-header']|
-     xsl:attribute-set[@name='thead26-header']|
-     xsl:attribute-set[@name='thead27-header']|
-     xsl:attribute-set[@name='thead28-header']|
-     xsl:attribute-set[@name='thead29-header']|
-     xsl:attribute-set[@name='thead30-header']" priority="3"/>
+    <xsl:template match= "xsl:attribute-set[@name='table1-header']|
+     xsl:attribute-set[@name='table2-header']|
+     xsl:attribute-set[@name='table3-header']|
+     xsl:attribute-set[@name='table4-header']|
+     xsl:attribute-set[@name='table5-header']|
+     xsl:attribute-set[@name='table6-header']|
+     xsl:attribute-set[@name='table7-header']|
+     xsl:attribute-set[@name='table8-header']|
+     xsl:attribute-set[@name='table9-header']|
+     xsl:attribute-set[@name='table10-header']|
+     xsl:attribute-set[@name='table11-header']|
+     xsl:attribute-set[@name='table12-header']|
+     xsl:attribute-set[@name='table13-header']|
+     xsl:attribute-set[@name='table14-header']|
+     xsl:attribute-set[@name='table15-header']|
+     xsl:attribute-set[@name='table16-header']|
+     xsl:attribute-set[@name='table17-header']|
+     xsl:attribute-set[@name='table18-header']|
+     xsl:attribute-set[@name='table19-header']|
+     xsl:attribute-set[@name='table20-header']|
+     xsl:attribute-set[@name='table21-header']|
+     xsl:attribute-set[@name='table22-header']|
+     xsl:attribute-set[@name='table23-header']|
+     xsl:attribute-set[@name='table24-header']|
+     xsl:attribute-set[@name='table25-header']|
+     xsl:attribute-set[@name='table26-header']|
+     xsl:attribute-set[@name='table27-header']|
+     xsl:attribute-set[@name='table28-header']|
+     xsl:attribute-set[@name='table29-header']|
+     xsl:attribute-set[@name='table30-header']" priority="3"/>
 
-    <xsl:template match= "xsl:attribute-set[@name='thead1-cell']|
-     xsl:attribute-set[@name='thead2-cell']|
-     xsl:attribute-set[@name='thead3-cell']|
-     xsl:attribute-set[@name='thead4-cell']|
-     xsl:attribute-set[@name='thead5-cell']|
-     xsl:attribute-set[@name='thead6-cell']|
-     xsl:attribute-set[@name='thead7-cell']|
-     xsl:attribute-set[@name='thead8-cell']|
-     xsl:attribute-set[@name='thead9-cell']|
-     xsl:attribute-set[@name='thead10-cell']|
-     xsl:attribute-set[@name='thead11-cell']|
-     xsl:attribute-set[@name='thead12-cell']|
-     xsl:attribute-set[@name='thead13-cell']|
-     xsl:attribute-set[@name='thead14-cell']|
-     xsl:attribute-set[@name='thead15-cell']|
-     xsl:attribute-set[@name='thead16-cell']|
-     xsl:attribute-set[@name='thead17-cell']|
-     xsl:attribute-set[@name='thead18-cell']|
-     xsl:attribute-set[@name='thead19-cell']|
-     xsl:attribute-set[@name='thead20-cell']|
-     xsl:attribute-set[@name='thead21-cell']|
-     xsl:attribute-set[@name='thead22-cell']|
-     xsl:attribute-set[@name='thead23-cell']|
-     xsl:attribute-set[@name='thead24-cell']|
-     xsl:attribute-set[@name='thead25-cell']|
-     xsl:attribute-set[@name='thead26-cell']|
-     xsl:attribute-set[@name='thead27-cell']|
-     xsl:attribute-set[@name='thead28-cell']|
-     xsl:attribute-set[@name='thead29-cell']|
-     xsl:attribute-set[@name='thead30-cell']" priority="3"/>
+    <xsl:template match= "xsl:attribute-set[@name='table1-header-cell']|
+     xsl:attribute-set[@name='table2-header-cell']|
+     xsl:attribute-set[@name='table3-header-cell']|
+     xsl:attribute-set[@name='table4-header-cell']|
+     xsl:attribute-set[@name='table5-header-cell']|
+     xsl:attribute-set[@name='table6-header-cell']|
+     xsl:attribute-set[@name='table7-header-cell']|
+     xsl:attribute-set[@name='table8-header-cell']|
+     xsl:attribute-set[@name='table9-header-cell']|
+     xsl:attribute-set[@name='table10-header-cell']|
+     xsl:attribute-set[@name='table11-header-cell']|
+     xsl:attribute-set[@name='table12-header-cell']|
+     xsl:attribute-set[@name='table13-header-cell']|
+     xsl:attribute-set[@name='table14-header-cell']|
+     xsl:attribute-set[@name='table15-header-cell']|
+     xsl:attribute-set[@name='table16-header-cell']|
+     xsl:attribute-set[@name='table17-header-cell']|
+     xsl:attribute-set[@name='table18-header-cell']|
+     xsl:attribute-set[@name='table19-header-cell']|
+     xsl:attribute-set[@name='table20-header-cell']|
+     xsl:attribute-set[@name='table21-header-cell']|
+     xsl:attribute-set[@name='table22-header-cell']|
+     xsl:attribute-set[@name='table23-header-cell']|
+     xsl:attribute-set[@name='table24-header-cell']|
+     xsl:attribute-set[@name='table25-header-cell']|
+     xsl:attribute-set[@name='table26-header-cell']|
+     xsl:attribute-set[@name='table27-header-cell']|
+     xsl:attribute-set[@name='table28-header-cell']|
+     xsl:attribute-set[@name='table29-header-cell']|
+     xsl:attribute-set[@name='table30-header-cell']" priority="3"/>
 
-    <xsl:template match= "xsl:attribute-set[@name='thead1-block']|
-     xsl:attribute-set[@name='thead2-block']|
-     xsl:attribute-set[@name='thead3-block']|
-     xsl:attribute-set[@name='thead4-block']|
-     xsl:attribute-set[@name='thead5-block']|
-     xsl:attribute-set[@name='thead6-block']|
-     xsl:attribute-set[@name='thead7-block']|
-     xsl:attribute-set[@name='thead8-block']|
-     xsl:attribute-set[@name='thead9-block']|
-     xsl:attribute-set[@name='thead10-block']|
-     xsl:attribute-set[@name='thead11-block']|
-     xsl:attribute-set[@name='thead12-block']|
-     xsl:attribute-set[@name='thead13-block']|
-     xsl:attribute-set[@name='thead14-block']|
-     xsl:attribute-set[@name='thead15-block']|
-     xsl:attribute-set[@name='thead16-block']|
-     xsl:attribute-set[@name='thead17-block']|
-     xsl:attribute-set[@name='thead18-block']|
-     xsl:attribute-set[@name='thead19-block']|
-     xsl:attribute-set[@name='thead20-block']|
-     xsl:attribute-set[@name='thead21-block']|
-     xsl:attribute-set[@name='thead22-block']|
-     xsl:attribute-set[@name='thead23-block']|
-     xsl:attribute-set[@name='thead24-block']|
-     xsl:attribute-set[@name='thead25-block']|
-     xsl:attribute-set[@name='thead26-block']|
-     xsl:attribute-set[@name='thead27-block']|
-     xsl:attribute-set[@name='thead28-block']|
-     xsl:attribute-set[@name='thead29-block']|
-     xsl:attribute-set[@name='thead30-block']" priority="3"/>
+    <xsl:template match= "xsl:attribute-set[@name='table1-header-block']|
+     xsl:attribute-set[@name='table2-header-block']|
+     xsl:attribute-set[@name='table3-header-block']|
+     xsl:attribute-set[@name='table4-header-block']|
+     xsl:attribute-set[@name='table5-header-block']|
+     xsl:attribute-set[@name='table6-header-block']|
+     xsl:attribute-set[@name='table7-header-block']|
+     xsl:attribute-set[@name='table8-header-block']|
+     xsl:attribute-set[@name='table9-header-block']|
+     xsl:attribute-set[@name='table10-header-block']|
+     xsl:attribute-set[@name='table11-header-block']|
+     xsl:attribute-set[@name='table12-header-block']|
+     xsl:attribute-set[@name='table13-header-block']|
+     xsl:attribute-set[@name='table14-header-block']|
+     xsl:attribute-set[@name='table15-header-block']|
+     xsl:attribute-set[@name='table16-header-block']|
+     xsl:attribute-set[@name='table17-header-block']|
+     xsl:attribute-set[@name='table18-header-block']|
+     xsl:attribute-set[@name='table19-header-block']|
+     xsl:attribute-set[@name='table20-header-block']|
+     xsl:attribute-set[@name='table21-header-block']|
+     xsl:attribute-set[@name='table22-header-block']|
+     xsl:attribute-set[@name='table23-header-block']|
+     xsl:attribute-set[@name='table24-header-block']|
+     xsl:attribute-set[@name='table25-header-block']|
+     xsl:attribute-set[@name='table26-header-block']|
+     xsl:attribute-set[@name='table27-header-block']|
+     xsl:attribute-set[@name='table28-header-block']|
+     xsl:attribute-set[@name='table29-header-block']|
+     xsl:attribute-set[@name='table30-header-block']" priority="3"/>
 
     <xsl:template match= "xsl:attribute-set[@name='table1-body']|
      xsl:attribute-set[@name='table2-body']|

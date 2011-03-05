@@ -26,7 +26,7 @@
         </block>
     </xsl:template>
 
-    <xsl:template match= "xsl:attribute-set[@name='thead-header']" priority="3">
+    <xsl:template match= "xsl:attribute-set[@name='table-header']" priority="3">
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">fo:table-header</xsl:with-param> 
             <xsl:with-param name="docutils">tgroup/thead</xsl:with-param> 
@@ -46,7 +46,7 @@
         </block>
     </xsl:template>
 
-    <xsl:template match= "xsl:attribute-set[@name='thead-cell']" priority="3">
+    <xsl:template match= "xsl:attribute-set[@name='table-header-cell']" priority="3">
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">fo:cell</xsl:with-param> 
             <xsl:with-param name="docutils">thead/row/entry</xsl:with-param> 
@@ -57,7 +57,7 @@
         </block>
     </xsl:template>
 
-    <xsl:template match= "xsl:attribute-set[@name='thead-borderless-cell']" priority="3">
+    <xsl:template match= "xsl:attribute-set[@name='thead-borderless-cell_old']" priority="3">
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">fo:cell</xsl:with-param> 
             <xsl:with-param name="docutils">thead/row/entry</xsl:with-param> 
@@ -98,7 +98,7 @@
         </block>
     </xsl:template>
 
-    <xsl:template match= "xsl:attribute-set[@name='table-cell-borderless']" priority="3">
+    <xsl:template match= "xsl:attribute-set[@name='table-cell-borderless_old']" priority="3">
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">fo:table-cell</xsl:with-param> 
             <xsl:with-param name="docutils">tbody/row/entry</xsl:with-param> 
@@ -119,7 +119,7 @@
         </block>
     </xsl:template>
 
-    <xsl:template match= "xsl:attribute-set[@name='thead-block']" priority="3">
+    <xsl:template match= "xsl:attribute-set[@name='table-header-block']" priority="3">
         <xsl:call-template name="before-desc">
             <xsl:with-param name="fo">fo:block</xsl:with-param> 
             <xsl:with-param name="docutils">thead/row/entry/paragraph</xsl:with-param> 

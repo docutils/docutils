@@ -2000,4 +2000,141 @@ othe way to control space. The rst2xml.py utility marks a new set of
 line blocks when it detects a new indentation. In contrast, real verse
 is marked by the space between stanzas.
 
+==============
+Block Quotes
+==============
+
+Creating block quotes
+----------------------
+
+Indent text to creat a block quote. Use two dashes before a single
+paragraph to create an attribution for the block quote::
+
+ This is an ordinary paragraph, introducing a block quote.
+
+    "It is my business to know things.  That is my trade."
+
+    -- Sherlock Holmes
+
+Formatting block quotes
+------------------------
+
+Use the ``'block-quote'`` identifier to format block quotes. This
+identifier can take any block properties::
+
+ block-quote.space-before = 24pt
+ block-quote.left-indent = 30mm
+ block-quote.right-indent = 30mm
+
+Formatting the paragraphs in block quotes
+------------------------------------------
+
+Use the ``'block-quote-paragraph'`` identifier to format the
+individual paragraphs. Setting the ``'space-before'`` property changes
+the space between each paragraph::
+
+ block-quote-paragraph.space-before = 0pt
+ block-quote-paragraph.first-line-indent = 12pt
+
+Formatting the attribution 
+----------------------------
+
+Use the ``'block-quote-attribution'`` identifier to format the
+attribution::
+
+ block-quote-attribution.space-before = 12pt
+ block-quote-attribution.font-style = italic
+
+
+Changing the default text for the attribution
+-----------------------------------------------
+
+By default, the |script_name| puts and em-dash before the attribution
+text. To change this text, use the
+``'block-quote.attriubution-text'``. Set this to an empty string to
+set no text before the attribution::
+
+ # have no text before the attribution
+ block-quote.attriubution-text = 
+
+======
+Tables
+======
+
+Creating Tables
+----------------
+
+Either::
+
+ =====  =====
+ col 1  col 2
+ =====  =====
+ 1      Second column of row 1.
+ 2      Second column of row 2.
+        Second line of paragraph.
+ 3      - Second column of row 3.
+ 
+        - Second item in bullet
+          list (row 3, column 2).
+ \      Row 4; column 1 will be empty.
+ =====  =====
+
+Or::
+
+ +------------------------+------------+----------+----------+
+ | Header row, column 1   | Header 2   | Header 3 | Header 4 |
+ | (header rows optional) |            |          |          |
+ +========================+============+==========+==========+
+ | body row 1, column 1   | column 2   | column 3 | column 4 |
+ +------------------------+------------+----------+----------+
+ | body row 2             | Cells may span columns.          |
+ +------------------------+------------+---------------------+
+ | body row 3             | Cells may  | - Table cells       |
+ +------------------------+ span rows. | - contain           |
+ | body row 4             |            | - body elements.    |
+ +------------------------+------------+---------------------+
+
+Or::
+
+ .. csv-table:: Frozen Delights!
+    :header: "Treat", "Quantity", "Description"
+    :widths: 15, 10, 30
+ 
+    "Albatross", 2.99, "On a stick!"
+    "Crunchy Frog", 1.49, "If we took the bones out, it wouldn't be
+    crunchy, now would it?"
+    "Gannet Ripple", 1.99, "On a stick!"
+
+Formatting tables
+-------------------
+
+Use the ``'table'`` identifier to format properties on the entire
+table::
+
+ table.space-before = 24pt
+ table.space-after = 24pt
+
+Use the ``'width'`` property to change the width of the table::
+
+ table.width = 4in
+
+Formatting tables and captions
+-------------------------------
+
+Use the identifier ``'table-and-caption'`` if (1) you have a CVS table
+with a title (caption) and; (2) you wish to treat both table and
+caption as one block of text to control spacing::
+
+ table-and-caption.keep-on-same-page = true
+ table-and-caption.space-before = 12pt
+
+Formatting the table head
+---------------------------
+
+Use ``'table-head'`` identifier to format the head of a table. 
+
+
+
+.. |script_name| replace:: docutils to Of
+
 

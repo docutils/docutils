@@ -17,13 +17,13 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead1-header">
+     <xsl:attribute-set name="table1-header">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead1-cell">
+     <xsl:attribute-set name="table1-header-cell">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead1-block">
+     <xsl:attribute-set name="table1-header-block">
     </xsl:attribute-set>
 
      <xsl:attribute-set name="table1-body">
@@ -52,13 +52,13 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead2-header">
+     <xsl:attribute-set name="table2-header">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead2-cell">
+     <xsl:attribute-set name="table2-header-cell">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead2-block">
+     <xsl:attribute-set name="table2-header-block">
     </xsl:attribute-set>
 
      <xsl:attribute-set name="table2-body">
@@ -87,13 +87,13 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead3-header">
+     <xsl:attribute-set name="table3-header">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead3-cell">
+     <xsl:attribute-set name="table3-header-cell">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead3-block">
+     <xsl:attribute-set name="table3-header-block">
     </xsl:attribute-set>
 
      <xsl:attribute-set name="table3-body">
@@ -122,13 +122,13 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead4-header">
+     <xsl:attribute-set name="table4-header">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead4-cell">
+     <xsl:attribute-set name="table4-header-cell">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead4-block">
+     <xsl:attribute-set name="table4-header-block">
     </xsl:attribute-set>
 
      <xsl:attribute-set name="table4-body">
@@ -157,13 +157,13 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead5-header">
+     <xsl:attribute-set name="table5-header">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead5-cell">
+     <xsl:attribute-set name="table5-header-cell">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead5-block">
+     <xsl:attribute-set name="table5-header-block">
     </xsl:attribute-set>
 
      <xsl:attribute-set name="table5-body">
@@ -192,13 +192,13 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead6-header">
+     <xsl:attribute-set name="table6-header">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead6-cell">
+     <xsl:attribute-set name="table6-header-cell">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead6-block">
+     <xsl:attribute-set name="table6-header-block">
     </xsl:attribute-set>
 
      <xsl:attribute-set name="table6-body">
@@ -227,13 +227,13 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead7-header">
+     <xsl:attribute-set name="table7-header">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead7-cell">
+     <xsl:attribute-set name="table7-header-cell">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead7-block">
+     <xsl:attribute-set name="table7-header-block">
     </xsl:attribute-set>
 
      <xsl:attribute-set name="table7-body">
@@ -262,13 +262,13 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead8-header">
+     <xsl:attribute-set name="table8-header">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead8-cell">
+     <xsl:attribute-set name="table8-header-cell">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead8-block">
+     <xsl:attribute-set name="table8-header-block">
     </xsl:attribute-set>
 
      <xsl:attribute-set name="table8-body">
@@ -297,13 +297,13 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead9-header">
+     <xsl:attribute-set name="table9-header">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead9-cell">
+     <xsl:attribute-set name="table9-header-cell">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead9-block">
+     <xsl:attribute-set name="table9-header-block">
     </xsl:attribute-set>
 
      <xsl:attribute-set name="table9-body">
@@ -332,13 +332,13 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead10-header">
+     <xsl:attribute-set name="table10-header">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead10-cell">
+     <xsl:attribute-set name="table10-header-cell">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead10-block">
+     <xsl:attribute-set name="table10-header-block">
     </xsl:attribute-set>
 
      <xsl:attribute-set name="table10-body">
@@ -367,13 +367,13 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead11-header">
+     <xsl:attribute-set name="table11-header">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead11-cell">
+     <xsl:attribute-set name="table11-header-cell">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead11-block">
+     <xsl:attribute-set name="table11-header-block">
     </xsl:attribute-set>
 
      <xsl:attribute-set name="table11-body">
@@ -402,13 +402,13 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead12-header">
+     <xsl:attribute-set name="table12-header">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead12-cell">
+     <xsl:attribute-set name="table12-header-cell">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead12-block">
+     <xsl:attribute-set name="table12-header-block">
     </xsl:attribute-set>
 
      <xsl:attribute-set name="table12-body">
@@ -437,13 +437,13 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead13-header">
+     <xsl:attribute-set name="table13-header">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead13-cell">
+     <xsl:attribute-set name="table13-header-cell">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead13-block">
+     <xsl:attribute-set name="table13-header-block">
     </xsl:attribute-set>
 
      <xsl:attribute-set name="table13-body">
@@ -472,13 +472,13 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead14-header">
+     <xsl:attribute-set name="table14-header">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead14-cell">
+     <xsl:attribute-set name="table14-header-cell">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead14-block">
+     <xsl:attribute-set name="table14-header-block">
     </xsl:attribute-set>
 
      <xsl:attribute-set name="table14-body">
@@ -507,13 +507,13 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead15-header">
+     <xsl:attribute-set name="table15-header">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead15-cell">
+     <xsl:attribute-set name="table15-header-cell">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead15-block">
+     <xsl:attribute-set name="table15-header-block">
     </xsl:attribute-set>
 
      <xsl:attribute-set name="table15-body">
@@ -542,13 +542,13 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead16-header">
+     <xsl:attribute-set name="table16-header">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead16-cell">
+     <xsl:attribute-set name="table16-header-cell">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead16-block">
+     <xsl:attribute-set name="table16-header-block">
     </xsl:attribute-set>
 
      <xsl:attribute-set name="table16-body">
@@ -577,13 +577,13 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead17-header">
+     <xsl:attribute-set name="table17-header">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead17-cell">
+     <xsl:attribute-set name="table17-header-cell">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead17-block">
+     <xsl:attribute-set name="table17-header-block">
     </xsl:attribute-set>
 
      <xsl:attribute-set name="table17-body">
@@ -612,13 +612,13 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead18-header">
+     <xsl:attribute-set name="table18-header">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead18-cell">
+     <xsl:attribute-set name="table18-header-cell">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead18-block">
+     <xsl:attribute-set name="table18-header-block">
     </xsl:attribute-set>
 
      <xsl:attribute-set name="table18-body">
@@ -647,13 +647,13 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead19-header">
+     <xsl:attribute-set name="table19-header">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead19-cell">
+     <xsl:attribute-set name="table19-header-cell">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead19-block">
+     <xsl:attribute-set name="table19-header-block">
     </xsl:attribute-set>
 
      <xsl:attribute-set name="table19-body">
@@ -682,13 +682,13 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead20-header">
+     <xsl:attribute-set name="table20-header">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead20-cell">
+     <xsl:attribute-set name="table20-header-cell">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead20-block">
+     <xsl:attribute-set name="table20-header-block">
     </xsl:attribute-set>
 
      <xsl:attribute-set name="table20-body">
@@ -717,13 +717,13 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead21-header">
+     <xsl:attribute-set name="table21-header">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead21-cell">
+     <xsl:attribute-set name="table21-header-cell">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead21-block">
+     <xsl:attribute-set name="table21-header-block">
     </xsl:attribute-set>
 
      <xsl:attribute-set name="table21-body">
@@ -752,13 +752,13 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead22-header">
+     <xsl:attribute-set name="table22-header">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead22-cell">
+     <xsl:attribute-set name="table22-header-cell">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead22-block">
+     <xsl:attribute-set name="table22-header-block">
     </xsl:attribute-set>
 
      <xsl:attribute-set name="table22-body">
@@ -787,13 +787,13 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead23-header">
+     <xsl:attribute-set name="table23-header">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead23-cell">
+     <xsl:attribute-set name="table23-header-cell">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead23-block">
+     <xsl:attribute-set name="table23-header-block">
     </xsl:attribute-set>
 
      <xsl:attribute-set name="table23-body">
@@ -822,13 +822,13 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead24-header">
+     <xsl:attribute-set name="table24-header">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead24-cell">
+     <xsl:attribute-set name="table24-header-cell">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead24-block">
+     <xsl:attribute-set name="table24-header-block">
     </xsl:attribute-set>
 
      <xsl:attribute-set name="table24-body">
@@ -857,13 +857,13 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead25-header">
+     <xsl:attribute-set name="table25-header">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead25-cell">
+     <xsl:attribute-set name="table25-header-cell">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead25-block">
+     <xsl:attribute-set name="table25-header-block">
     </xsl:attribute-set>
 
      <xsl:attribute-set name="table25-body">
@@ -892,13 +892,13 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead26-header">
+     <xsl:attribute-set name="table26-header">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead26-cell">
+     <xsl:attribute-set name="table26-header-cell">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead26-block">
+     <xsl:attribute-set name="table26-header-block">
     </xsl:attribute-set>
 
      <xsl:attribute-set name="table26-body">
@@ -927,13 +927,13 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead27-header">
+     <xsl:attribute-set name="table27-header">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead27-cell">
+     <xsl:attribute-set name="table27-header-cell">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead27-block">
+     <xsl:attribute-set name="table27-header-block">
     </xsl:attribute-set>
 
      <xsl:attribute-set name="table27-body">
@@ -962,13 +962,13 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead28-header">
+     <xsl:attribute-set name="table28-header">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead28-cell">
+     <xsl:attribute-set name="table28-header-cell">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead28-block">
+     <xsl:attribute-set name="table28-header-block">
     </xsl:attribute-set>
 
      <xsl:attribute-set name="table28-body">
@@ -997,13 +997,13 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead29-header">
+     <xsl:attribute-set name="table29-header">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead29-cell">
+     <xsl:attribute-set name="table29-header-cell">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead29-block">
+     <xsl:attribute-set name="table29-header-block">
     </xsl:attribute-set>
 
      <xsl:attribute-set name="table29-body">
@@ -1032,13 +1032,13 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead30-header">
+     <xsl:attribute-set name="table30-header">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead30-cell">
+     <xsl:attribute-set name="table30-header-cell">
     </xsl:attribute-set>
 
-     <xsl:attribute-set name="thead30-block">
+     <xsl:attribute-set name="table30-header-block">
     </xsl:attribute-set>
 
      <xsl:attribute-set name="table30-body">
@@ -1305,7 +1305,7 @@
 
 
     <xsl:template match="table[@classes = 'table1']/tgroup/thead" >
-        <fo:table-header xsl:use-attribute-sets = "thead1-header">
+        <fo:table-header xsl:use-attribute-sets = "table1-header">
             <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
@@ -1317,7 +1317,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table1']/tgroup/thead/row/entry" >
-        <fo:table-cell xsl:use-attribute-sets="thead1-cell">
+        <fo:table-cell xsl:use-attribute-sets="table1-header-cell">
             <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
@@ -1326,7 +1326,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table1']/tgroup/thead/row/entry/paragraph" >
-        <fo:block xsl:use-attribute-sets="thead1-block">
+        <fo:block xsl:use-attribute-sets="table1-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -1418,7 +1418,7 @@
 
 
     <xsl:template match="table[@classes = 'table2']/tgroup/thead" >
-        <fo:table-header xsl:use-attribute-sets = "thead2-header">
+        <fo:table-header xsl:use-attribute-sets = "table2-header">
             <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
@@ -1430,7 +1430,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table2']/tgroup/thead/row/entry" >
-        <fo:table-cell xsl:use-attribute-sets="thead2-cell">
+        <fo:table-cell xsl:use-attribute-sets="table2-header-cell">
             <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
@@ -1439,7 +1439,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table2']/tgroup/thead/row/entry/paragraph" >
-        <fo:block xsl:use-attribute-sets="thead2-block">
+        <fo:block xsl:use-attribute-sets="table2-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -1531,7 +1531,7 @@
 
 
     <xsl:template match="table[@classes = 'table3']/tgroup/thead" >
-        <fo:table-header xsl:use-attribute-sets = "thead3-header">
+        <fo:table-header xsl:use-attribute-sets = "table3-header">
             <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
@@ -1543,7 +1543,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table3']/tgroup/thead/row/entry" >
-        <fo:table-cell xsl:use-attribute-sets="thead3-cell">
+        <fo:table-cell xsl:use-attribute-sets="table3-header-cell">
             <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
@@ -1552,7 +1552,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table3']/tgroup/thead/row/entry/paragraph" >
-        <fo:block xsl:use-attribute-sets="thead3-block">
+        <fo:block xsl:use-attribute-sets="table3-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -1644,7 +1644,7 @@
 
 
     <xsl:template match="table[@classes = 'table4']/tgroup/thead" >
-        <fo:table-header xsl:use-attribute-sets = "thead4-header">
+        <fo:table-header xsl:use-attribute-sets = "table4-header">
             <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
@@ -1656,7 +1656,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table4']/tgroup/thead/row/entry" >
-        <fo:table-cell xsl:use-attribute-sets="thead4-cell">
+        <fo:table-cell xsl:use-attribute-sets="table4-header-cell">
             <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
@@ -1665,7 +1665,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table4']/tgroup/thead/row/entry/paragraph" >
-        <fo:block xsl:use-attribute-sets="thead4-block">
+        <fo:block xsl:use-attribute-sets="table4-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -1757,7 +1757,7 @@
 
 
     <xsl:template match="table[@classes = 'table5']/tgroup/thead" >
-        <fo:table-header xsl:use-attribute-sets = "thead5-header">
+        <fo:table-header xsl:use-attribute-sets = "table5-header">
             <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
@@ -1769,7 +1769,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table5']/tgroup/thead/row/entry" >
-        <fo:table-cell xsl:use-attribute-sets="thead5-cell">
+        <fo:table-cell xsl:use-attribute-sets="table5-header-cell">
             <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
@@ -1778,7 +1778,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table5']/tgroup/thead/row/entry/paragraph" >
-        <fo:block xsl:use-attribute-sets="thead5-block">
+        <fo:block xsl:use-attribute-sets="table5-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -1870,7 +1870,7 @@
 
 
     <xsl:template match="table[@classes = 'table6']/tgroup/thead" >
-        <fo:table-header xsl:use-attribute-sets = "thead6-header">
+        <fo:table-header xsl:use-attribute-sets = "table6-header">
             <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
@@ -1882,7 +1882,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table6']/tgroup/thead/row/entry" >
-        <fo:table-cell xsl:use-attribute-sets="thead6-cell">
+        <fo:table-cell xsl:use-attribute-sets="table6-header-cell">
             <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
@@ -1891,7 +1891,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table6']/tgroup/thead/row/entry/paragraph" >
-        <fo:block xsl:use-attribute-sets="thead6-block">
+        <fo:block xsl:use-attribute-sets="table6-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -1983,7 +1983,7 @@
 
 
     <xsl:template match="table[@classes = 'table7']/tgroup/thead" >
-        <fo:table-header xsl:use-attribute-sets = "thead7-header">
+        <fo:table-header xsl:use-attribute-sets = "table7-header">
             <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
@@ -1995,7 +1995,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table7']/tgroup/thead/row/entry" >
-        <fo:table-cell xsl:use-attribute-sets="thead7-cell">
+        <fo:table-cell xsl:use-attribute-sets="table7-header-cell">
             <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
@@ -2004,7 +2004,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table7']/tgroup/thead/row/entry/paragraph" >
-        <fo:block xsl:use-attribute-sets="thead7-block">
+        <fo:block xsl:use-attribute-sets="table7-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -2096,7 +2096,7 @@
 
 
     <xsl:template match="table[@classes = 'table8']/tgroup/thead" >
-        <fo:table-header xsl:use-attribute-sets = "thead8-header">
+        <fo:table-header xsl:use-attribute-sets = "table8-header">
             <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
@@ -2108,7 +2108,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table8']/tgroup/thead/row/entry" >
-        <fo:table-cell xsl:use-attribute-sets="thead8-cell">
+        <fo:table-cell xsl:use-attribute-sets="table8-header-cell">
             <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
@@ -2117,7 +2117,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table8']/tgroup/thead/row/entry/paragraph" >
-        <fo:block xsl:use-attribute-sets="thead8-block">
+        <fo:block xsl:use-attribute-sets="table8-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -2209,7 +2209,7 @@
 
 
     <xsl:template match="table[@classes = 'table9']/tgroup/thead" >
-        <fo:table-header xsl:use-attribute-sets = "thead9-header">
+        <fo:table-header xsl:use-attribute-sets = "table9-header">
             <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
@@ -2221,7 +2221,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table9']/tgroup/thead/row/entry" >
-        <fo:table-cell xsl:use-attribute-sets="thead9-cell">
+        <fo:table-cell xsl:use-attribute-sets="table9-header-cell">
             <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
@@ -2230,7 +2230,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table9']/tgroup/thead/row/entry/paragraph" >
-        <fo:block xsl:use-attribute-sets="thead9-block">
+        <fo:block xsl:use-attribute-sets="table9-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -2322,7 +2322,7 @@
 
 
     <xsl:template match="table[@classes = 'table10']/tgroup/thead" >
-        <fo:table-header xsl:use-attribute-sets = "thead10-header">
+        <fo:table-header xsl:use-attribute-sets = "table10-header">
             <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
@@ -2334,7 +2334,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table10']/tgroup/thead/row/entry" >
-        <fo:table-cell xsl:use-attribute-sets="thead10-cell">
+        <fo:table-cell xsl:use-attribute-sets="table10-header-cell">
             <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
@@ -2343,7 +2343,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table10']/tgroup/thead/row/entry/paragraph" >
-        <fo:block xsl:use-attribute-sets="thead10-block">
+        <fo:block xsl:use-attribute-sets="table10-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -2435,7 +2435,7 @@
 
 
     <xsl:template match="table[@classes = 'table11']/tgroup/thead" >
-        <fo:table-header xsl:use-attribute-sets = "thead11-header">
+        <fo:table-header xsl:use-attribute-sets = "table11-header">
             <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
@@ -2447,7 +2447,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table11']/tgroup/thead/row/entry" >
-        <fo:table-cell xsl:use-attribute-sets="thead11-cell">
+        <fo:table-cell xsl:use-attribute-sets="table11-header-cell">
             <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
@@ -2456,7 +2456,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table11']/tgroup/thead/row/entry/paragraph" >
-        <fo:block xsl:use-attribute-sets="thead11-block">
+        <fo:block xsl:use-attribute-sets="table11-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -2548,7 +2548,7 @@
 
 
     <xsl:template match="table[@classes = 'table12']/tgroup/thead" >
-        <fo:table-header xsl:use-attribute-sets = "thead12-header">
+        <fo:table-header xsl:use-attribute-sets = "table12-header">
             <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
@@ -2560,7 +2560,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table12']/tgroup/thead/row/entry" >
-        <fo:table-cell xsl:use-attribute-sets="thead12-cell">
+        <fo:table-cell xsl:use-attribute-sets="table12-header-cell">
             <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
@@ -2569,7 +2569,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table12']/tgroup/thead/row/entry/paragraph" >
-        <fo:block xsl:use-attribute-sets="thead12-block">
+        <fo:block xsl:use-attribute-sets="table12-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -2661,7 +2661,7 @@
 
 
     <xsl:template match="table[@classes = 'table13']/tgroup/thead" >
-        <fo:table-header xsl:use-attribute-sets = "thead13-header">
+        <fo:table-header xsl:use-attribute-sets = "table13-header">
             <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
@@ -2673,7 +2673,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table13']/tgroup/thead/row/entry" >
-        <fo:table-cell xsl:use-attribute-sets="thead13-cell">
+        <fo:table-cell xsl:use-attribute-sets="table13-header-cell">
             <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
@@ -2682,7 +2682,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table13']/tgroup/thead/row/entry/paragraph" >
-        <fo:block xsl:use-attribute-sets="thead13-block">
+        <fo:block xsl:use-attribute-sets="table13-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -2774,7 +2774,7 @@
 
 
     <xsl:template match="table[@classes = 'table14']/tgroup/thead" >
-        <fo:table-header xsl:use-attribute-sets = "thead14-header">
+        <fo:table-header xsl:use-attribute-sets = "table14-header">
             <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
@@ -2786,7 +2786,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table14']/tgroup/thead/row/entry" >
-        <fo:table-cell xsl:use-attribute-sets="thead14-cell">
+        <fo:table-cell xsl:use-attribute-sets="table14-header-cell">
             <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
@@ -2795,7 +2795,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table14']/tgroup/thead/row/entry/paragraph" >
-        <fo:block xsl:use-attribute-sets="thead14-block">
+        <fo:block xsl:use-attribute-sets="table14-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -2887,7 +2887,7 @@
 
 
     <xsl:template match="table[@classes = 'table15']/tgroup/thead" >
-        <fo:table-header xsl:use-attribute-sets = "thead15-header">
+        <fo:table-header xsl:use-attribute-sets = "table15-header">
             <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
@@ -2899,7 +2899,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table15']/tgroup/thead/row/entry" >
-        <fo:table-cell xsl:use-attribute-sets="thead15-cell">
+        <fo:table-cell xsl:use-attribute-sets="table15-header-cell">
             <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
@@ -2908,7 +2908,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table15']/tgroup/thead/row/entry/paragraph" >
-        <fo:block xsl:use-attribute-sets="thead15-block">
+        <fo:block xsl:use-attribute-sets="table15-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -3000,7 +3000,7 @@
 
 
     <xsl:template match="table[@classes = 'table16']/tgroup/thead" >
-        <fo:table-header xsl:use-attribute-sets = "thead16-header">
+        <fo:table-header xsl:use-attribute-sets = "table16-header">
             <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
@@ -3012,7 +3012,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table16']/tgroup/thead/row/entry" >
-        <fo:table-cell xsl:use-attribute-sets="thead16-cell">
+        <fo:table-cell xsl:use-attribute-sets="table16-header-cell">
             <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
@@ -3021,7 +3021,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table16']/tgroup/thead/row/entry/paragraph" >
-        <fo:block xsl:use-attribute-sets="thead16-block">
+        <fo:block xsl:use-attribute-sets="table16-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -3113,7 +3113,7 @@
 
 
     <xsl:template match="table[@classes = 'table17']/tgroup/thead" >
-        <fo:table-header xsl:use-attribute-sets = "thead17-header">
+        <fo:table-header xsl:use-attribute-sets = "table17-header">
             <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
@@ -3125,7 +3125,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table17']/tgroup/thead/row/entry" >
-        <fo:table-cell xsl:use-attribute-sets="thead17-cell">
+        <fo:table-cell xsl:use-attribute-sets="table17-header-cell">
             <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
@@ -3134,7 +3134,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table17']/tgroup/thead/row/entry/paragraph" >
-        <fo:block xsl:use-attribute-sets="thead17-block">
+        <fo:block xsl:use-attribute-sets="table17-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -3226,7 +3226,7 @@
 
 
     <xsl:template match="table[@classes = 'table18']/tgroup/thead" >
-        <fo:table-header xsl:use-attribute-sets = "thead18-header">
+        <fo:table-header xsl:use-attribute-sets = "table18-header">
             <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
@@ -3238,7 +3238,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table18']/tgroup/thead/row/entry" >
-        <fo:table-cell xsl:use-attribute-sets="thead18-cell">
+        <fo:table-cell xsl:use-attribute-sets="table18-header-cell">
             <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
@@ -3247,7 +3247,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table18']/tgroup/thead/row/entry/paragraph" >
-        <fo:block xsl:use-attribute-sets="thead18-block">
+        <fo:block xsl:use-attribute-sets="table18-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -3339,7 +3339,7 @@
 
 
     <xsl:template match="table[@classes = 'table19']/tgroup/thead" >
-        <fo:table-header xsl:use-attribute-sets = "thead19-header">
+        <fo:table-header xsl:use-attribute-sets = "table19-header">
             <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
@@ -3351,7 +3351,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table19']/tgroup/thead/row/entry" >
-        <fo:table-cell xsl:use-attribute-sets="thead19-cell">
+        <fo:table-cell xsl:use-attribute-sets="table19-header-cell">
             <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
@@ -3360,7 +3360,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table19']/tgroup/thead/row/entry/paragraph" >
-        <fo:block xsl:use-attribute-sets="thead19-block">
+        <fo:block xsl:use-attribute-sets="table19-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -3452,7 +3452,7 @@
 
 
     <xsl:template match="table[@classes = 'table20']/tgroup/thead" >
-        <fo:table-header xsl:use-attribute-sets = "thead20-header">
+        <fo:table-header xsl:use-attribute-sets = "table20-header">
             <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
@@ -3464,7 +3464,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table20']/tgroup/thead/row/entry" >
-        <fo:table-cell xsl:use-attribute-sets="thead20-cell">
+        <fo:table-cell xsl:use-attribute-sets="table20-header-cell">
             <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
@@ -3473,7 +3473,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table20']/tgroup/thead/row/entry/paragraph" >
-        <fo:block xsl:use-attribute-sets="thead20-block">
+        <fo:block xsl:use-attribute-sets="table20-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -3565,7 +3565,7 @@
 
 
     <xsl:template match="table[@classes = 'table21']/tgroup/thead" >
-        <fo:table-header xsl:use-attribute-sets = "thead21-header">
+        <fo:table-header xsl:use-attribute-sets = "table21-header">
             <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
@@ -3577,7 +3577,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table21']/tgroup/thead/row/entry" >
-        <fo:table-cell xsl:use-attribute-sets="thead21-cell">
+        <fo:table-cell xsl:use-attribute-sets="table21-header-cell">
             <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
@@ -3586,7 +3586,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table21']/tgroup/thead/row/entry/paragraph" >
-        <fo:block xsl:use-attribute-sets="thead21-block">
+        <fo:block xsl:use-attribute-sets="table21-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -3678,7 +3678,7 @@
 
 
     <xsl:template match="table[@classes = 'table22']/tgroup/thead" >
-        <fo:table-header xsl:use-attribute-sets = "thead22-header">
+        <fo:table-header xsl:use-attribute-sets = "table22-header">
             <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
@@ -3690,7 +3690,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table22']/tgroup/thead/row/entry" >
-        <fo:table-cell xsl:use-attribute-sets="thead22-cell">
+        <fo:table-cell xsl:use-attribute-sets="table22-header-cell">
             <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
@@ -3699,7 +3699,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table22']/tgroup/thead/row/entry/paragraph" >
-        <fo:block xsl:use-attribute-sets="thead22-block">
+        <fo:block xsl:use-attribute-sets="table22-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -3791,7 +3791,7 @@
 
 
     <xsl:template match="table[@classes = 'table23']/tgroup/thead" >
-        <fo:table-header xsl:use-attribute-sets = "thead23-header">
+        <fo:table-header xsl:use-attribute-sets = "table23-header">
             <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
@@ -3803,7 +3803,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table23']/tgroup/thead/row/entry" >
-        <fo:table-cell xsl:use-attribute-sets="thead23-cell">
+        <fo:table-cell xsl:use-attribute-sets="table23-header-cell">
             <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
@@ -3812,7 +3812,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table23']/tgroup/thead/row/entry/paragraph" >
-        <fo:block xsl:use-attribute-sets="thead23-block">
+        <fo:block xsl:use-attribute-sets="table23-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -3904,7 +3904,7 @@
 
 
     <xsl:template match="table[@classes = 'table24']/tgroup/thead" >
-        <fo:table-header xsl:use-attribute-sets = "thead24-header">
+        <fo:table-header xsl:use-attribute-sets = "table24-header">
             <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
@@ -3916,7 +3916,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table24']/tgroup/thead/row/entry" >
-        <fo:table-cell xsl:use-attribute-sets="thead24-cell">
+        <fo:table-cell xsl:use-attribute-sets="table24-header-cell">
             <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
@@ -3925,7 +3925,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table24']/tgroup/thead/row/entry/paragraph" >
-        <fo:block xsl:use-attribute-sets="thead24-block">
+        <fo:block xsl:use-attribute-sets="table24-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -4017,7 +4017,7 @@
 
 
     <xsl:template match="table[@classes = 'table25']/tgroup/thead" >
-        <fo:table-header xsl:use-attribute-sets = "thead25-header">
+        <fo:table-header xsl:use-attribute-sets = "table25-header">
             <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
@@ -4029,7 +4029,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table25']/tgroup/thead/row/entry" >
-        <fo:table-cell xsl:use-attribute-sets="thead25-cell">
+        <fo:table-cell xsl:use-attribute-sets="table25-header-cell">
             <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
@@ -4038,7 +4038,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table25']/tgroup/thead/row/entry/paragraph" >
-        <fo:block xsl:use-attribute-sets="thead25-block">
+        <fo:block xsl:use-attribute-sets="table25-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -4130,7 +4130,7 @@
 
 
     <xsl:template match="table[@classes = 'table26']/tgroup/thead" >
-        <fo:table-header xsl:use-attribute-sets = "thead26-header">
+        <fo:table-header xsl:use-attribute-sets = "table26-header">
             <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
@@ -4142,7 +4142,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table26']/tgroup/thead/row/entry" >
-        <fo:table-cell xsl:use-attribute-sets="thead26-cell">
+        <fo:table-cell xsl:use-attribute-sets="table26-header-cell">
             <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
@@ -4151,7 +4151,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table26']/tgroup/thead/row/entry/paragraph" >
-        <fo:block xsl:use-attribute-sets="thead26-block">
+        <fo:block xsl:use-attribute-sets="table26-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -4243,7 +4243,7 @@
 
 
     <xsl:template match="table[@classes = 'table27']/tgroup/thead" >
-        <fo:table-header xsl:use-attribute-sets = "thead27-header">
+        <fo:table-header xsl:use-attribute-sets = "table27-header">
             <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
@@ -4255,7 +4255,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table27']/tgroup/thead/row/entry" >
-        <fo:table-cell xsl:use-attribute-sets="thead27-cell">
+        <fo:table-cell xsl:use-attribute-sets="table27-header-cell">
             <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
@@ -4264,7 +4264,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table27']/tgroup/thead/row/entry/paragraph" >
-        <fo:block xsl:use-attribute-sets="thead27-block">
+        <fo:block xsl:use-attribute-sets="table27-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -4356,7 +4356,7 @@
 
 
     <xsl:template match="table[@classes = 'table28']/tgroup/thead" >
-        <fo:table-header xsl:use-attribute-sets = "thead28-header">
+        <fo:table-header xsl:use-attribute-sets = "table28-header">
             <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
@@ -4368,7 +4368,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table28']/tgroup/thead/row/entry" >
-        <fo:table-cell xsl:use-attribute-sets="thead28-cell">
+        <fo:table-cell xsl:use-attribute-sets="table28-header-cell">
             <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
@@ -4377,7 +4377,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table28']/tgroup/thead/row/entry/paragraph" >
-        <fo:block xsl:use-attribute-sets="thead28-block">
+        <fo:block xsl:use-attribute-sets="table28-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -4469,7 +4469,7 @@
 
 
     <xsl:template match="table[@classes = 'table29']/tgroup/thead" >
-        <fo:table-header xsl:use-attribute-sets = "thead29-header">
+        <fo:table-header xsl:use-attribute-sets = "table29-header">
             <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
@@ -4481,7 +4481,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table29']/tgroup/thead/row/entry" >
-        <fo:table-cell xsl:use-attribute-sets="thead29-cell">
+        <fo:table-cell xsl:use-attribute-sets="table29-header-cell">
             <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
@@ -4490,7 +4490,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table29']/tgroup/thead/row/entry/paragraph" >
-        <fo:block xsl:use-attribute-sets="thead29-block">
+        <fo:block xsl:use-attribute-sets="table29-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
@@ -4582,7 +4582,7 @@
 
 
     <xsl:template match="table[@classes = 'table30']/tgroup/thead" >
-        <fo:table-header xsl:use-attribute-sets = "thead30-header">
+        <fo:table-header xsl:use-attribute-sets = "table30-header">
             <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
@@ -4594,7 +4594,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table30']/tgroup/thead/row/entry" >
-        <fo:table-cell xsl:use-attribute-sets="thead30-cell">
+        <fo:table-cell xsl:use-attribute-sets="table30-header-cell">
             <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
@@ -4603,7 +4603,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes='table30']/tgroup/thead/row/entry/paragraph" >
-        <fo:block xsl:use-attribute-sets="thead30-block">
+        <fo:block xsl:use-attribute-sets="table30-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>

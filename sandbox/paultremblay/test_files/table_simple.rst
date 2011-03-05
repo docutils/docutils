@@ -1,3 +1,5 @@
+Text before table.
+
 =====  =====
 col 1  col 2
 =====  =====
@@ -10,4 +12,6 @@ col 1  col 2
          list (row 3, column 2).
 \      Row 4; column 1 will be empty.
 =====  =====
+
+Text after table.
 
