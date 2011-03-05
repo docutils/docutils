@@ -34,6 +34,9 @@ short_cut_att_sets = {
 'bibliographic-field-custom8': 'custom-bib-info8',
 'bibliographic-field-custom9': 'custom-bib-info9',
 'bibliographic-field-custom10': 'custom-bib-info10',
+'block-quote' : 'block-quote-outer-block',
+'block-quote-paragraph' : 'block-quote-paragraph-block', 
+'block-quote-attribution' : 'block-quote-attribution-block',
 'date':'date-block',
 'dedication': 'dedication-block',
 'dedication-title': 'dedication-title-block',
@@ -89,6 +92,7 @@ short_cut_att_sets = {
 'stanza-title': 'stanza-title-block',
 'status':'status-block',
 'subtitle': 'document-subtitle-block',
+'table-and-caption' : 'table-block-container',
 'title': 'document-title-block',
 'title-subtitle': 'document-title-page-block',
 'toc': 'toc-block',
@@ -718,6 +722,8 @@ special_att_set_att_dict = {
 ('footer' , 'height'):[('footer-region-after', 'extent'),('region-body', 'margin-bottom')],
 ('toc-section' , 'start-page'):[('toc-page-sequence', 'initial-page-number')],
 ('toc-section' , 'page-format'):[('toc-page-sequence', 'format')],
+('table' , 'width'):[('table', 'inline-progression-dimension')],
+
 }
 
 # special: only in certain contexts
@@ -815,6 +821,7 @@ prop_as_param_dict = {
 'option-list.format':'option-list-format',
 'options-list.separator': 'options-separator',
 'document.page-layout': 'page-layout',
+'block-quote.attriubution-text' : 'text-before-block-quote-attribution',
 }
 
 

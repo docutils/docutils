@@ -27,10 +27,10 @@
         </block>
 
         <block>* long-table => table</block>
-        <block>* long-thead-header => table-header</block>
+        <block>* long-table-header => table-header</block>
         <block>* long-table-header-row => table-header-row</block>
         <block>* long-thead-cell => thead-cell</block>
-        <block>* long-thead-block => thead-block</block>
+        <block>* long-table-header-block => table-header-block</block>
         <block>* long-table-body => table-body</block>
         <block>* long-table-header-row => table-header-row</block>
         <block>* long-table-row => table-row</block>
@@ -39,10 +39,10 @@
         <block>* long-caption-block => caption-block</block>
     </xsl:template>
 
-    <xsl:template match= "xsl:attribute-set[@name='long-thead-header']|
+    <xsl:template match= "xsl:attribute-set[@name='long-table-header']|
         xsl:attribute-set[@name='long-table-header-row']|
-        xsl:attribute-set[@name='long-thead-cell']|
-        xsl:attribute-set[@name='long-thead-block']|
+        xsl:attribute-set[@name='long-table-header-cell']|
+        xsl:attribute-set[@name='long-table-header-block']|
         xsl:attribute-set[@name='long-table-body']|
         xsl:attribute-set[@name='long-table-row']|
         xsl:attribute-set[@name='long-table-cell']|

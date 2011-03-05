@@ -11,17 +11,17 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="long-thead-header">
+    <xsl:attribute-set name="long-table-header">
     </xsl:attribute-set>
 
     <xsl:attribute-set name="long-table-header-row">
         <xsl:attribute name="keep-together.within-page">always</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="long-thead-cell" use-attribute-sets="default-cell">
+    <xsl:attribute-set name="long-table-header-cell" use-attribute-sets="default-cell">
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="long-thead-block">
+    <xsl:attribute-set name="long-table-header-block">
     </xsl:attribute-set>
 
     <xsl:attribute-set name="long-table-body">
@@ -83,7 +83,7 @@
     <xsl:template name="caption-if-no-header">
         <xsl:param name="type"/>
         <xsl:if test="not(tgroup/thead) and title and $table-title-placement = 'top'">
-            <fo:table-header xsl:use-attribute-sets = "long-thead-header">
+            <fo:table-header xsl:use-attribute-sets = "long-table-header">
                 <xsl:choose>
                     <xsl:when test = "$type = 'first'">
                         <xsl:call-template name="make-first-long-header"/>
@@ -99,7 +99,7 @@
     <xsl:template name="caption-if-no-footer">
         <xsl:param name="type"/>
         <xsl:if test="not(tgroup/tfoot) and title and $table-title-placement = 'bottom'">
-            <fo:table-footer xsl:use-attribute-sets = "long-thead-header">
+            <fo:table-footer xsl:use-attribute-sets = "long-table-header">
                 <xsl:choose>
                     <xsl:when test = "$type = 'first'">
                         <xsl:call-template name="make-first-long-header"/>
@@ -265,7 +265,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes ='long']/tgroup/thead" mode="first-long">
-        <fo:table-header xsl:use-attribute-sets = "long-thead-header">
+        <fo:table-header xsl:use-attribute-sets = "long-table-header">
             <xsl:if test="../../title and $table-title-placement = 'top'">
                 <xsl:for-each select="../..">
                     <xsl:call-template name="make-first-long-header"/>
@@ -281,7 +281,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes = 'long']/tgroup/thead" mode="second-long">
-        <fo:table-header xsl:use-attribute-sets = "long-thead-header">
+        <fo:table-header xsl:use-attribute-sets = "long-table-header">
             <xsl:if test="../../title and $table-title-placement = 'top'">
                 <xsl:for-each select="../..">
                     <xsl:call-template name="make-second-long-header"/>
@@ -297,7 +297,7 @@
     </xsl:template>
 
     <xsl:template match="table[@classes ='long']/tgroup/thead">
-        <fo:table-header xsl:use-attribute-sets = "long-thead-header">
+        <fo:table-header xsl:use-attribute-sets = "long-table-header">
             <xsl:if test="../../title and $table-title-placement = 'top'">
                 <xsl:for-each select="../..">
                     <xsl:call-template name="make-first-long-header"/>
@@ -319,13 +319,13 @@
     </xsl:template>
 
     <xsl:template match="table[@classes ='long']/tgroup/thead/row/entry">
-        <fo:table-cell xsl:use-attribute-sets = "long-thead-cell">
+        <fo:table-cell xsl:use-attribute-sets = "long-table-header-cell">
             <xsl:apply-templates/>
         </fo:table-cell>
     </xsl:template>
 
     <xsl:template match="table[@classes ='long']/tgroup/thead/row/entry/paragraph">
-        <fo:block xsl:use-attribute-sets = "long-thead-block">
+        <fo:block xsl:use-attribute-sets = "long-table-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>

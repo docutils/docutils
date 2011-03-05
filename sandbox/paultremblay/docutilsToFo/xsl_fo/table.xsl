@@ -18,7 +18,8 @@
         <xsl:attribute name="inline-progression-dimension">100%</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="thead-header">
+    <xsl:attribute-set name="table-header">
+        <xsl:attribute name="font-weight">bold</xsl:attribute>
     </xsl:attribute-set>
 
     <xsl:attribute-set name="default-cell">
@@ -27,10 +28,11 @@
         <xsl:attribute name="border-collapse">collapse</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="thead-cell" use-attribute-sets="default-cell">
+    <xsl:attribute-set name="table-header-cell" use-attribute-sets="default-cell">
+        <xsl:attribute name="border-bottom">solid black 2px</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="thead-block">
+    <xsl:attribute-set name="table-header-block">
     </xsl:attribute-set>
 
     <xsl:attribute-set name="table-body">
@@ -90,7 +92,7 @@
     -->
 
     <xsl:template match="table[not(@classes)]/tgroup/thead">
-        <fo:table-header xsl:use-attribute-sets = "thead-header">
+        <fo:table-header xsl:use-attribute-sets = "table-header">
             <xsl:apply-templates/>
         </fo:table-header>
     </xsl:template>
@@ -102,13 +104,13 @@
     </xsl:template>
 
     <xsl:template match="table[not(@classes)]/tgroup/thead/row/entry">
-        <fo:table-cell xsl:use-attribute-sets="thead-cell">
+        <fo:table-cell xsl:use-attribute-sets="table-header-cell">
             <xsl:apply-templates/>
         </fo:table-cell>
     </xsl:template>
 
     <xsl:template match="table[not(@classes)]/tgroup/thead/row/entry/paragraph">
-        <fo:block xsl:use-attribute-sets="thead-block">
+        <fo:block xsl:use-attribute-sets="table-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>

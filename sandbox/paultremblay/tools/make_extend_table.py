@@ -32,15 +32,15 @@ for n in range(1,en):
     </xsl:attribute-set>\n""" % (n)
     write_obj.write(s)
 
-    s = """\n     <xsl:attribute-set name="thead%s-header">
+    s = """\n     <xsl:attribute-set name="table%s-header">
     </xsl:attribute-set>\n""" % (n)
     write_obj.write(s)
     
-    s = """\n     <xsl:attribute-set name="thead%s-cell">
+    s = """\n     <xsl:attribute-set name="table%s-header-cell">
     </xsl:attribute-set>\n""" % (n)
     write_obj.write(s)
 
-    s = """\n     <xsl:attribute-set name="thead%s-block">
+    s = """\n     <xsl:attribute-set name="table%s-header-block">
     </xsl:attribute-set>\n""" % (n)
     write_obj.write(s)
 
@@ -211,7 +211,7 @@ for n in range(1,en):
 
 
     <xsl:template match="table[@classes = 'table%s']/tgroup/thead" >
-        <fo:table-header xsl:use-attribute-sets = "thead%s-header">
+        <fo:table-header xsl:use-attribute-sets = "table%s-header">
             <xsl:apply-templates />
         </fo:table-header>
     </xsl:template>
@@ -223,7 +223,7 @@ for n in range(1,en):
     </xsl:template>
 
     <xsl:template match="table[@classes='table%s']/tgroup/thead/row/entry" >
-        <fo:table-cell xsl:use-attribute-sets="thead%s-cell">
+        <fo:table-cell xsl:use-attribute-sets="table%s-header-cell">
             <xsl:apply-templates />
             <xsl:if test="not(paragraph)">
                 <fo:block/>
@@ -232,7 +232,7 @@ for n in range(1,en):
     </xsl:template>
 
     <xsl:template match="table[@classes='table%s']/tgroup/thead/row/entry/paragraph" >
-        <fo:block xsl:use-attribute-sets="thead%s-block">
+        <fo:block xsl:use-attribute-sets="table%s-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
