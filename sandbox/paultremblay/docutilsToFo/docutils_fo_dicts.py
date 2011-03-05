@@ -663,6 +663,8 @@ which_list = {
 'simple-page-master': simple_page_master_attlist,
 'table': table_attlist,
 'table-body': table_body_attlist,
+'table-cell': table_cell_attlist,
+'table-header' : table_header_attlist,
 'table-row': table_row_attlist
 }
 
@@ -767,6 +769,9 @@ special_att_value_dict = {
 ('keep-on-same-page' , 'true'):[('keep-together.within-page', 'always')],
 ('keep-on-same-page' , 'Yes'):[('keep-together.within-page', 'always')],
 ('keep-on-same-page' , 'yes'):[('keep-together.within-page', 'always')],
+('vertical-alignment' , 'bottom'):[('display-align', 'after')],
+('vertical-alignment' , 'top'):[('display-align', 'before')],
+('vertical-alignment' , 'center'):[('display-align', 'center')],
 }
 
 special_values_dict = {
@@ -822,6 +827,7 @@ prop_as_param_dict = {
 'options-list.separator': 'options-separator',
 'document.page-layout': 'page-layout',
 'block-quote.attriubution-text' : 'text-before-block-quote-attribution',
+'table.column-widths': 'table-cols',
 }
 
 
