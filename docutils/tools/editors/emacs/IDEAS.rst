@@ -1,5 +1,5 @@
 The following is a list of ideas of functionality which would be nice
-to have in `rst.el`. In the examples a ``*`` stands for the cursor.
+to have in `rst.el`. In the examples a ``@`` stands for the cursor.
 
 Convert to id
 =============
@@ -36,19 +36,21 @@ Completion for directive options
 * Imagine ::
 
     .. list-table::
-       :*
+       :@
 
   with the cursor at the asterisk
 
 * There should be a command which offers all the possible options for
   this particular directive as completion
 
+* May be `skeleton.el` can also be useful
+
 Completion for directives
 =========================
 
 * Imagine ::
 
-    .. *
+    .. @
 
 * There should be a command which offers all directives as completion
 
@@ -71,15 +73,15 @@ Completion for user-defined elements
 
 * Imagine ::
 
-    |*
+    |@
 
   or ::
 
-    [*
+    [@
 
   or ::
 
-    _*
+    _@
 
 * There should be a command which offers all defined substitutions /
   footnotes / links as completion
@@ -92,7 +94,7 @@ Insertion of link alias
     Aspect of something
     ===================
 
-    This is about the `aspect of something`_*
+    This is about the `aspect of something`_@
 
 * There should be a command which asks you for an alias for the link,
   add the alias and change the link ::
@@ -102,7 +104,7 @@ Insertion of link alias
     Aspect of something
     ===================
 
-    This is about the `aspects of something`_*
+    This is about the `aspects of something`_@
 
 Smart use of `iimage-mode`
 ==========================
@@ -167,30 +169,18 @@ Outline support
 
   * For item lists
 
-`rst-shift-region-*` should only shift
-======================================
-
-* `rst-shift-region-*` should only shift a region
-
-  * Should work exactly like `indent-rigidly` just with indentation
-    points instead of columns
-
-* Filling should be an own function
-
-  * See `Sophisticated filling`_
-
 Sophisticated filling
 =====================
 
-* Filling with M-q doesn't care about special parts
+* These things must be filled special:
 
-  * A definition of `fill-paragraph-function` or similar could be useful
+  * Definitions
 
-* These things must be filled special
+  * Filling of ::
 
-  * Definitions must be filled special
+      * VeryLongWordSuchAsAnURLVeryLongWordSuchAsAnURLVeryLongWordSuchAsAnURLVeryLongWordSuchAsAnURLVeryLongWordSuchAsAnURL
 
-  * Field lists with separating empty lines
+    should work as expected by *not* breaking the line
 
 * These things may not be filled at all
 
@@ -198,6 +188,137 @@ Sophisticated filling
 
   * Tables
 
-  * Field lists without separating empty lines
+  * Section headers
 
-  * These should not be filled
+  * Link definitions
+
+Sophisticated indentation
+=========================
+
+* It should be generally possible to shift one more to the right
+
+  * This makes indentation for quotes possible
+
+  * But not for literal blocks
+
+* For item lists the best tab should be on the same level as the last
+  item::
+
+    * bla
+
+    @
+
+  * The second best tab should be where text starts::
+
+      * bla
+
+	@
+
+* <backtab> should be used to indent in the other direction
+
+  * Or may be C-u <tab> but this has a different meaning
+
+* <tab> could obsolete C-c C-r <tab>
+
+  * For this the indentation needs to be determined at the start
+    instead of per line
+
+    * <tab> over list works::
+
+	Text
+
+	  * GGGGGG
+	  * SSSSSSSSSSSSSSS
+	  * TTTTTTTT
+	  * ZZZZZZZZ
+
+    * <tab> over list doesn't work::
+
+	Text
+
+	* GGGGGG
+	* SSSSSSSSSSSSSSS
+	* TTTTTTTT
+	* ZZZZZZZZ
+
+List to sections
+================
+
+* A command would be nice which
+
+  * transforms the first level of a nested list in a region into a
+    header
+
+  * removes one level of indentation from the rest of the list
+
+Change section level by more than one step
+==========================================
+
+* It would be nice if <C-h> `rst-adjust` could rotate a section
+  adornment more than one level
+
+* A modification of the semantic of the prefix arguments could do this
+
+  * Non-zero numeric prefix arg n rotates n step in the given direction
+
+  * Prefix arg 0 toggles overline / underline
+
+    * This would be different from current setup
+
+Compiling for syntax check
+==========================
+
+* Compiling with results going to `/dev/null` would be useful
+
+  * This would just do a syntax check with no files lying around
+
+* Toolset choice for <C-c C-c C-c> `rst-compile` must be by
+  customizable if at all necessary
+
+  * Customization group must be used
+
+Renumber an exisiting enumeration
+=================================
+
+* Renumbering an exisiting enumeration is not possible yet
+
+Command to move across blocks
+=============================
+
+* A command moving forward / backward across the content blocks of the
+  current block would be nice
+
+  * For instance: Move across all blocks contained in an item or field
+
+  * This would move to the start of the sibling of the current block
+
+  * Would allow to jump to the next item on the same level in a list
+
+* <C-M-f> `forward-sexp` could be a nice binding
+
+rst-toc-insert features
+=======================
+
+* The `contents::` options could be parsed to figure out how deep to
+  render the inserted TOC
+
+* On load, detect any existing TOCs and set the properties for links
+
+* TOC insertion should have an option to add empty lines
+
+* TOC insertion should deal with multiple lines
+
+* Automatically detect if we have a `section-numbering::` in the
+  corresponding section, to render the toc.
+
+Automatic handling of `.txt` files
+----------------------------------
+
+It would be nice to differentiate between text files using
+reStructuredText and other general text files. If we had a function to
+automatically guess whether a `.txt` file is following the
+reStructuredText conventions, we could trigger `rst-mode` without
+having to hard-code this in every text file, nor forcing the user to
+add a local mode variable at the top of the file. We could perform
+this guessing by searching for a valid adornment at the top of the
+document or searching for reStructuredText directives further on.

@@ -31,6 +31,8 @@
 		 (roundtrip-buf (concat "a" buf-point-char "" buf-mark-char "bc\n"))))
   (should (equal (concat "ab" buf-mark-char "" buf-point-char "c\n")
 		 (roundtrip-buf (concat "ab" buf-mark-char buf-point-char "c\n"))))
+  (should-error (string2buf (concat "ab" buf-point-char buf-point-char "c\n")))
+  (should-error (string2buf (concat "ab" buf-mark-char buf-mark-char "c\n")))
   )
 
 ;; ****************************************************************************

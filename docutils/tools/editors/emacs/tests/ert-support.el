@@ -56,8 +56,12 @@ the the position of mark if `buf-mark-char' was found."
 	(replace-match "")
 	(cond
 	 ((equal fnd buf-point-char)
+	  (if point-fnd
+	      (error "Duplicate point"))
 	  (setq point-fnd (point)))
 	 ((equal fnd buf-mark-char)
+	  (if mark-fnd
+	      (error "Duplicate mark"))
 	  (setq mark-fnd (point)))
 	 (t
 	  (error "Unexpected marker found"))))
