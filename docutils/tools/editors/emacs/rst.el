@@ -25,11 +25,11 @@
 
 ;;; Commentary:
 
-;; This package provides major mode rst-mode, which supports documents marked up
-;; using the reStructuredText format.  Support includes font locking as well as
-;; some convenience functions for editing.  It does this by defining a Emacs
-;; major mode: rst-mode (ReST).  This mode is derived from text-mode (and
-;; inherits much of it).  This package also contains:
+;; This package provides major mode rst-mode, which supports documents marked
+;; up using the reStructuredText format. Support includes font locking as well
+;; as a lot of convenience functions for editing. It does this by defining a
+;; Emacs major mode: rst-mode (ReST). This mode is derived from text-mode. This
+;; package also contains:
 ;;
 ;; - Functions to automatically adjust and cycle the section underline
 ;;   adornments;
@@ -40,6 +40,8 @@
 ;; - Function to insert list, processing item bullets and enumerations
 ;;   automatically;
 ;; - Font-lock highlighting of most reStructuredText structures;
+;; - Indentation and filling according to reStructuredText syntax;
+;; - Cursor movement according to reStructuredText syntax;
 ;; - Some other convenience functions.
 ;;
 ;; See the accompanying document in the docutils documentation about
@@ -53,15 +55,8 @@
 ;;
 ;;
 ;; There are a number of convenient keybindings provided by rst-mode.
-;; The main one is
-;;
-;;    C-c C-a (also C-=): rst-adjust
-;;
-;; Updates or rotates the section title around point or promotes/demotes the
-;; adornments within the region (see full details below).
-;;
 ;; For more on bindings, see rst-mode-map below.  There are also many variables
-;; that can be customized, look for defcustom and defvar in this file.
+;; that can be customized, look for defcustom in this file.
 ;;
 ;; If you use the table-of-contents feature, you may want to add a hook to
 ;; update the TOC automatically everytime you adjust a section title::
@@ -73,52 +68,16 @@
 ;;
 ;;   (setq font-lock-global-modes '(not rst-mode ...))
 ;;
-
-
-;; CUSTOMIZATION
 ;;
-;; rst
-;; ---
-;; This group contains some general customizable features.
 ;;
-;; The group is contained in the wp group.
+;; Customization is done by customizable variables contained in customization
+;; group "rst" and subgroups. Group "rst" is contained in the "wp" group.
 ;;
-;; rst-faces
-;; ---------
-;; This group contains all necessary for customizing fonts.  The default
-;; settings use standard font-lock-*-face's so if you set these to your
-;; liking they are probably good in rst-mode also.
-;;
-;; The group is contained in the faces group as well as in the rst group.
-;;
-;; rst-faces-defaults
-;; ------------------
-;; This group contains all necessary for customizing the default fonts used for
-;; section title faces.
-;;
-;; The general idea for section title faces is to have a non-default background
-;; but do not change the foreground.  The section level is shown by the
-;; lightness of the background color.  If you like this general idea of
-;; generating faces for section titles but do not like the details this group
-;; is the point where you can customize the details.  If you do not like the
-;; general idea, however, you should customize the faces used in
-;; rst-adornment-faces-alist.
-;;
-;; Note: If you are using a dark background please make sure the variable
-;; frame-background-mode is set to the symbol dark.  This triggers
-;; some default values which are probably right for you.
-;;
-;; The group is contained in the rst-faces group.
-;;
-;; All customizable features have a comment explaining their meaning.
-;; Refer to the customization of your Emacs (try ``M-x customize``).
-
 
 ;;; DOWNLOAD
 
-;; The latest version of this file lies in the docutils source code repository:
+;; The latest release of this file lies in the docutils source code repository:
 ;;   http://svn.berlios.de/svnroot/repos/docutils/trunk/docutils/tools/editors/emacs/rst.el
-
 
 ;;; INSTALLATION
 
@@ -142,48 +101,79 @@
 ;;                 ("\\.rest$" . rst-mode)) auto-mode-alist))
 ;;
 
-;;; BUGS
-
-;; - rst-enumeration-region: Select a single paragraph, with the top at one
-;;   blank line before the beginning, and it will fail.
-;; - The suggested adornments when adjusting should not have to cycle
-;;   below one below the last section adornment level preceding the
-;;   cursor.  We need to fix that.
-
-;;; TODO LIST
-
-;; rst-toc-insert features
-;; ------------------------
-;; - rst-toc-insert: We should parse the contents:: options to figure out how
-;;   deep to render the inserted TOC.
-;; - On load, detect any existing TOCs and set the properties for links.
-;; - TOC insertion should have an option to add empty lines.
-;; - TOC insertion should deal with multiple lines.
-;; - There is a bug on redo after undo of adjust when rst-adjust-hook uses the
-;;   automatic toc update.  The cursor ends up in the TOC and this is
-;;   annoying.  Gotta fix that.
-;; - numbering: automatically detect if we have a section-numbering directive in
-;;   the corresponding section, to render the toc.
-;;
-;; Other
-;; -----
-;; - It would be nice to differentiate between text files using
-;;   reStructuredText_ and other general text files.  If we had a
-;;   function to automatically guess whether a .txt file is following the
-;;   reStructuredText_ conventions, we could trigger rst-mode without
-;;   having to hard-code this in every text file, nor forcing the user to
-;;   add a local mode variable at the top of the file.
-;;   We could perform this guessing by searching for a valid adornment
-;;   at the top of the document or searching for reStructuredText_
-;;   directives further on.
-
-
-;;; HISTORY
-;;
-
 ;;; Code:
 
 (require 'cl)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Versions
+
+(defun rst-extract-version (delim-re head-re re tail-re var &optional default)
+  "Return the version matching RE after regex DELIM-RE and HEAD-RE
+and before TAIL-RE and DELIM-RE in VAR or DEFAULT for no match"
+  (if (string-match
+       (concat delim-re head-re "\\(" re "\\)" tail-re delim-re)
+       var)
+      (match-string 1 var)
+    default))
+
+;; Use CVSHeader to really get information from CVS and not other version
+;; control systems
+(defconst rst-cvs-header
+  "$CVSHeader: sm/rst_el/rst.el,v 1.233 2011-03-20 17:20:28 stefan Exp $")
+(defconst rst-cvs-rev
+  (rst-extract-version "\\$" "CVSHeader: \\S + " "[0-9]+\\(?:\\.[0-9]+\\)+"
+		       " .*" rst-cvs-header "0.0")
+  "The CVS revision of this file. CVS revision is the development revision.")
+(defconst rst-cvs-timestamp
+  (rst-extract-version "\\$" "CVSHeader: \\S + \\S + "
+		       "[0-9]+-[0-9]+-[0-9]+ [0-9]+:[0-9]+:[0-9]+" " .*"
+		       rst-cvs-header "1970-01-01 00:00:00")
+  "The CVS timestamp of this file.")
+
+;; Use LastChanged... to really get information from SVN
+(defconst rst-svn-rev
+  (rst-extract-version "\\$" "LastChangedRevision: " "[0-9]+" " "
+		       "$LastChangedRevision$")
+  "The SVN revision of this file.
+SVN revision is the upstream (docutils) revision.")
+(defconst rst-svn-timestamp
+  (rst-extract-version "\\$" "LastChangedDate: " ".+?+" " "
+		       "$LastChangedDate$")
+  "The SVN timestamp of this file.")
+
+;; Maintained by the release process
+(defconst rst-official-version
+  (rst-extract-version "%" "OfficialVersion: " "[0-9]+\\(?:\\.[0-9]+\\)+" " "
+		       "%OfficialVersion: 1.1.0 %")
+  "Official version of the package.")
+(defconst rst-official-cvs-rev
+  (rst-extract-version "[%$]" "Revision: " "[0-9]+\\(?:\\.[0-9]+\\)+" " "
+		       "%Revision: 1.233 %")
+  "CVS revision of this file in the official version.")
+
+(defconst rst-version
+  (if (equal rst-official-cvs-rev rst-cvs-rev)
+      rst-official-version
+    (format "%s (development %s [%s])" rst-official-version
+	    rst-cvs-rev rst-cvs-timestamp))
+  "The version string.
+Starts with the current official version. For developer versions
+in parentheses follows the development revision and the timestamp.")
+
+(defconst rst-package-emacs-version-alist
+  '(("1.0.0" . "24.0")
+    ("1.1.0" . "24.0")))
+
+(unless (assoc rst-official-version rst-package-emacs-version-alist)
+  (error "Version %s not listed in `rst-package-emacs-version-alist'"
+	 rst-version))
+
+(add-to-list 'customize-package-emacs-version-alist
+	     (cons 'ReST rst-package-emacs-version-alist))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Initialize customization
 
 
 (defgroup rst nil "Support for reStructuredText documents."
@@ -351,6 +341,15 @@
     (fncnam-prt "[^\]\n]") ; Part of a footnote or citation name
     (fncnam-tag fncnam-prt "+") ; A footnote or citation name
     (fnc-tag "\\[" fncnam-tag "]") ; A complete footnote or citation tag
+    (fncdef-tag-2 (:grp exm-sta)
+		  (:grp fnc-tag)) ; A complete footnote or citation definition
+				  ; tag; first group is the explicit markup
+				  ; start, second group is the footnote /
+				  ; citation tag
+    (fnc-sta-2 fncdef-tag-2 bli-sfx) ; Start of a footnote or citation
+				     ; definition; first group is the explicit
+				     ; markup start, second group is the
+				     ; footnote / citation tag
 
     ;; Substitutions (`sub')
     (sub-tag "|" ilcbar-tag "|") ; A complete substitution tag
@@ -388,6 +387,36 @@
     ;; Titles (`ttl')
     (ttl-tag "\\S *\\w\\S *") ; A title text
     (ttl-beg lin-beg ttl-tag) ; A title text at the beginning of a line
+
+    ;; Directives and substitution definitions (`dir')
+    (dir-tag-3 (:grp exm-sta)
+	       (:grp (:shy subdef-tag hws-sta) "?")
+	       (:grp sym-tag dcl-tag)) ; A directive or substitution definition
+				       ; tag; first group is explicit markup
+				       ; start, second group is a possibly
+				       ; empty substitution tag, third group is
+				       ; the directive tag including the double
+				       ; colon
+    (dir-sta-3 dir-tag-3 bli-sfx) ; Start of a directive or substitution
+				  ; definition; groups are as in dir-tag-3
+
+    ;; Literal block (`lit')
+    (lit-sta-2 (:grp (:alt "[^.\n]" "\\.[^.\n]") ".*") "?"
+	       (:grp dcl-tag) "$") ; Start of a literal block; first group is
+				   ; any text before the double colon tag which
+				   ; may not exist, second group is the double
+				   ; colon tag
+
+    ;; Comments (`cmt')
+    (cmt-sta-1 (:grp exm-sta) "[^\[|_\n]"
+	       (:alt "[^:\n]" (:seq ":" (:alt "[^:\n]" "$")))
+	       "*$") ; Start of a comment block; first group is explicit markup
+		     ; start
+
+    ;; Paragraphs (`par')
+    (par-tag- (:alt itmany-tag fld-tag opt-tag fncdef-tag-2 dir-tag-3 exm-tag)
+	      ) ; Tag at the beginning of a paragraph; there may be groups in
+		; certain cases
     )
   "Definition alist of relevant regexes.
 Each entry consists of the symbol naming the regex and an
@@ -546,7 +575,7 @@ are defined as well but give an additional message."
     ;; Makes region a line-block.
     (rst-define-key map [?\C-c ?\C-r ?\C-l] 'rst-line-block-region
 		    [?\C-c ?\C-d])
-    ;; Shift region left or right according to indentation points
+    ;; Shift region left or right according to tabs
     (rst-define-key map [?\C-c ?\C-r tab] 'rst-shift-region
 		    [?\C-c ?\C-r t] [?\C-c ?\C-l t])
 
@@ -670,12 +699,6 @@ The hook for `text-mode' is run before this one."
   "Major mode for editing reStructuredText documents.
 \\<rst-mode-map>
 
-There are a number of convenient keybindings provided by Rst
-mode. The main one is \\[rst-adjust], it updates or rotates the
-section title around point or promotes/demotes the adornments
-within the region (see full details below). Use negative prefix
-arg to rotate in the other direction.
-
 Turning on `rst-mode' calls the normal hooks `text-mode-hook'
 and `rst-mode-hook'.  This mode also supports font-lock
 highlighting.
@@ -685,32 +708,47 @@ highlighting.
   :syntax-table rst-mode-syntax-table
   :group 'rst
 
+  ;; Paragraph recognition
   (set (make-local-variable 'paragraph-separate)
        (rst-re '(:alt
 		 "\f"
 		 lin-end)))
-  (set (make-local-variable 'indent-line-function)
-       (if (<= emacs-major-version 21)
-	   'indent-relative-maybe
-	 'indent-relative))
   (set (make-local-variable 'paragraph-start)
        (rst-re '(:alt
 		 "\f"
 		 lin-end
-		 (:seq hws-tag itmany-sta-1))))
-  (set (make-local-variable 'adaptive-fill-mode) t)
+		 (:seq hws-tag par-tag- bli-sfx))))
 
-  ;; The details of the following comment setup is important because it affects
-  ;; auto-fill, and it is pretty common in running text to have an ellipsis
-  ;; ("...") which trips because of the rest comment syntax (".. ").
-  ;; FIXME: Auto-fill continues a comment if there is an explicit markup start;
-  ;;        maybe comments can be made multi-line somehow (see
-  ;;        `comment-multi-line')
+  ;; Indenting and filling
+  (set (make-local-variable 'indent-line-function) 'rst-indent-line)
+  (set (make-local-variable 'adaptive-fill-mode) t)
+  (set (make-local-variable 'adaptive-fill-regexp)
+       (rst-re 'hws-tag 'par-tag- "?" 'hws-tag))
+  (set (make-local-variable 'adaptive-fill-function) 'rst-adaptive-fill)
+  (set (make-local-variable 'fill-paragraph-handle-comment) nil)
+
+  ;; Comments
   (set (make-local-variable 'comment-start) ".. ")
-  (set (make-local-variable 'comment-start-skip) (rst-re "^" 'exm-sta))
-  (set (make-local-variable 'comment-multi-line) nil)
-  ;; Text after a changed line may need new fontification
-  (set (make-local-variable 'jit-lock-contextually) t)
+  (set (make-local-variable 'comment-start-skip)
+       (rst-re 'lin-beg 'exm-tag 'bli-sfx))
+  (set (make-local-variable 'comment-continue) "   ")
+  (set (make-local-variable 'comment-multi-line) t)
+  (set (make-local-variable 'comment-use-syntax) nil)
+  ;; reStructuredText has not really a comment ender but nil is not really a
+  ;; permissible value
+  (set (make-local-variable 'comment-end) "")
+  (set (make-local-variable 'comment-end-skip) nil)
+
+  (set (make-local-variable 'comment-line-break-function)
+       'rst-comment-line-break)
+  (set (make-local-variable 'comment-indent-function)
+       'rst-comment-indent)
+  (set (make-local-variable 'comment-insert-comment-function)
+       'rst-comment-insert-comment)
+  (set (make-local-variable 'comment-region-function)
+       'rst-comment-region)
+  (set (make-local-variable 'uncomment-region-function)
+       'rst-uncomment-region)
 
   ;; Font lock
   (setq font-lock-defaults
@@ -724,7 +762,10 @@ highlighting.
 	  ;; compiled.
 	  ;;(font-lock-support-mode . nil)
 	  ))
-  (add-hook 'font-lock-extend-region-functions 'rst-font-lock-extend-region t))
+  (add-hook 'font-lock-extend-region-functions 'rst-font-lock-extend-region t)
+
+  ;; Text after a changed line may need new fontification
+  (set (make-local-variable 'jit-lock-contextually) t))
 
 ;;;###autoload
 (define-minor-mode rst-minor-mode
@@ -771,9 +812,6 @@ for modes derived from Text mode, like Mail mode."
 ;;     how many characters and over-and-under style is hanging outside of the
 ;;     title at the beginning and ending.
 ;;
-;; Important note: an existing adornment must be formed by at least two
-;; characters to be recognized.
-;;
 ;; Here are two examples of adornments (| represents the window border, column
 ;; 0):
 ;;
@@ -799,8 +837,6 @@ for modes derived from Text mode, like Mail mode."
 ;;   the adornments all over again.  Set this variable to nil if you want to
 ;;   limit the underlining character propositions to the existing adornments in
 ;;   the file.
-;;
-;; - A prefix argument can be used to alternate the style.
 ;;
 ;; - An underline/overline that is not extended to the column at which it should
 ;;   be hanging is dubbed INCOMPLETE.  For example::
@@ -854,7 +890,10 @@ places t instead of a list stands for a transition.
 This sequence is consulted to offer a new adornment suggestion
 when we rotate the underlines at the end of the existing
 hierarchy of characters, or when there is no existing section
-title in the file."
+title in the file.
+
+Set this to an empty list to use only the adornment found in the
+file."
   :group 'rst-adjust
   :type `(repeat
 	  (group :tag "Adornment specification"
@@ -875,7 +914,8 @@ title in the file."
 This is used for when toggling adornment styles, when switching
 from a simple adornment style to a over-and-under adornment
 style."
-  :group 'rst-adjust)
+  :group 'rst-adjust
+  :type '(integer))
 
 
 (defun rst-compare-adornments (ado1 ado2)
@@ -1168,9 +1208,7 @@ Should be called by interactive functions which deal with sections."
 
 (defvar rst-all-sections nil
   "All section adornments in the buffer as found by `rst-find-all-adornments'.
-t when no section adornments were found.
-
-This is automatically buffer local.")
+t when no section adornments were found.")
 (make-variable-buffer-local 'rst-all-sections)
 
 ;; FIXME: If this variable is set to a different value font-locking of section
@@ -1178,9 +1216,7 @@ This is automatically buffer local.")
 (defvar rst-section-hierarchy nil
   "Section hierarchy in the buffer as determined by `rst-get-hierarchy'.
 t when no section adornments were found. Value depends on
-`rst-all-sections'.
-
-This is automatically buffer local.")
+`rst-all-sections'.")
 (make-variable-buffer-local 'rst-section-hierarchy)
 
 (defun rst-find-all-adornments ()
@@ -1352,12 +1388,10 @@ be invoked possibly multiple times, and can vary its behavior
 with a positive prefix argument (toggle style), or with a
 negative prefix argument (alternate behavior).
 
-This function is the main focus of this module and is a bit of a
-swiss knife.  It is meant as the single most essential function
-to be bound to invoke to adjust the adornments of a section
-title in restructuredtext.  It tries to deal with all the
-possible cases gracefully and to do `the right thing' in all
-cases.
+This function is a bit of a swiss knife. It is meant to adjust
+the adornments of a section title in reStructuredText. It tries
+to deal with all the possible cases gracefully and to do `the
+right thing' in all cases.
 
 See the documentations of `rst-adjust-adornment-work' and
 `rst-promote-region' for full details.
@@ -1395,15 +1429,19 @@ b. a negative numerical argument, which generally inverts the
 
     ))
 
-(defvar rst-adjust-hook nil
-  "Hooks to be run after running `rst-adjust'.")
+(defcustom rst-adjust-hook nil
+  "Hooks to be run after running `rst-adjust'."
+  :group 'rst-adjust
+  :type '(hook)
+  :package-version '(rst . "1.1.0"))
 
-(defvar rst-new-adornment-down nil
-  "Non-nil if new adornment is added deeper.
-If non-nil, a new adornment being added will be initialized to
-be one level down from the previous adornment.  If nil, a new
-adornment will be equal to the level of the previous
-adornment.")
+(defcustom rst-new-adornment-down nil
+  "Controls level of new adornment for section headers."
+  :group 'rst-adjust
+  :type '(choice
+	  (const :tag "Same level as previous one" nil)
+	  (const :tag "One level down relative to the previous one" t))
+  :package-version '(rst . "1.1.0"))
 
 (defun rst-adjust-adornment (pfxarg)
   "Call `rst-adjust-adornment-work' interactively.
@@ -1550,7 +1588,7 @@ Indented section titles such as ::
    My Title
    --------
 
-are invalid in restructuredtext and thus not recognized by the
+are invalid in reStructuredText and thus not recognized by the
 parser.  This code will thus not work in a way that would support
 indented sections (it would be ambiguous anyway).
 
@@ -1923,9 +1961,16 @@ starting item, for example 'e' for 'A)' style.  The position is also arranged by
 	(setq itemstyle (replace-match no t t itemstyle)))
     (rst-insert-list-pos itemstyle)))
 
-(defvar rst-preferred-bullets
-  '(?- ?* ?+)
-  "List of favourite bullets.")
+(defcustom rst-preferred-bullets
+  '(?* ?- ?+)
+  "List of favorite bullets."
+  :group 'rst
+  :type `(repeat
+	  (choice ,@(mapcar (lambda (char)
+			      (list 'const
+				    :tag (char-to-string char) char))
+			    rst-bullets)))
+  :package-version '(rst . "1.1.0"))
 
 (defun rst-insert-list-continue (curitem prefer-roman)
   "Insert a list item with list start CURITEM including its indentation level."
@@ -2548,7 +2593,7 @@ EVENT is the input event."
 ;; =========================
 
 (defun rst-forward-section (&optional offset)
-  "Skip to the next restructured text section title.
+  "Skip to the next reStructuredText section title.
 OFFSET specifies how many titles to skip.  Use a negative OFFSET to move
 backwards in the file (default is to use 1)."
   (interactive)
@@ -2632,116 +2677,6 @@ backwards in the file (default is to use 1)."
         (forward-line 1)))
     mincol))
 
-;; What we really need to do is compute all the possible alignment possibilities
-;; and then select one.
-;;
-;; .. line-block::
-;;
-;;    a) sdjsds
-;;
-;;       - sdjsd jsjds
-;;
-;;           sdsdsjdsj
-;;
-;;               11. sjdss jddjs
-;;
-;; *  *  * * *   *   *
-;;
-;; Move backwards, accumulate the beginning positions, and also the second
-;; positions, in case the line matches the bullet pattern, and then sort.
-
-;; FIXME: Must consider other indentation points - such as literal blocks
-(defun rst-compute-tabs (pt)
-  "Build the list of possible horizontal alignment points.
-Search backwards from point PT to build the list of possible
-horizontal alignment points that includes the beginning and
-contents of a restructuredtext bulleted or enumerated list item.
-Return a sorted list of (COLUMN . POINT) pairs where POINT is the
-point where COLUMN is found. Return nil if no tab is found in the
-text above."
-  (save-excursion
-    (goto-char pt)
-    ;; We work our way backwards and towards the left
-    (let (leftmost tablist) ; List of (COLUMN . POINT) for each tab
-      (while (and (zerop (forward-line -1))
-		  (or (not leftmost)
-		      (> leftmost 0)))
-	(unless (looking-at (rst-re 'lin-end))
-	  (back-to-indentation)
-	  (let ((col (current-column)))
-	    ;; Skip lines indented more
-	    (when (or (not leftmost)
-		      (< col leftmost))
-	      ;; Add indentation of the line as a tabbing point if new
-	      (unless (memq col (mapcar 'car tablist))
-		(push (cons col (point)) tablist))
-	      (when (looking-at (rst-re ; Non-empty item line
-				 '(:grp itmany-tag hws-sta)
-				 "\\S "))
-		(goto-char (match-end 1))
-		(let ((newcol (current-column)))
-		  ;; Add the column of the contained item if still less indented
-		  (when (and (or (not leftmost)
-				 (< newcol leftmost))
-			     (not (memq newcol (mapcar 'car tablist))))
-		    (push (cons newcol (point)) tablist))))
-	      (setq leftmost col)))))
-      (sort tablist (lambda (x y) (<= (car x) (car y)))))))
-
-(define-obsolete-variable-alias
-  'rst-shift-basic-offset 'rst-indent-width "> r6647")
-(defcustom rst-indent-width 2
-  "Indent width when there is no preceding indentation point."
-  :group 'rst
-  :type '(integer))
-
-(defun rst-shift-region (beg end cnt)
-  "Shift region BEG to END by CNT indentation points.
-Shift by one indentation point to the right (CNT > 0) or
-left (CNT < 0) or remove all indentation (CNT = 0). An
-indendation point is taken from the text above. If no suitable
-indendation point is found `rst-indent-width' is used."
-  (interactive "r\np")
-  (let ((tabs (rst-compute-tabs beg))
-	(leftmostcol (rst-find-leftmost-column beg end)))
-    (when (or (> leftmostcol 0) (> cnt 0))
-      ;; Apply the indent
-      (indent-rigidly
-       beg end
-       (if (zerop cnt)
-	   (- leftmostcol)
-	 ;; Find the next tab after the leftmost column
-	 (let* ((cmp (if (> cnt 0) '> '<))
-		(tabs (if (> cnt 0) tabs (reverse tabs)))
-		(len (length tabs))
-		(dir (signum cnt)) ; Direction to take
-		(abs (abs cnt)) ; Absolute number of steps to take
-		;; Get the position of the first tab beyond leftmostcol
-		(fnd (position-if (lambda (elt)
-				    (funcall cmp (car elt) leftmostcol))
-				  tabs))
-		;; Virtual position of tab
-		(pos (+ (or fnd len) (1- abs)))
-		(tab (if (< pos len)
-			 ;; Tab exists - use it
-			 (nth pos tabs)
-		       ;; Column needs to be computed
-		       (let ((col (+ (or (caar (last tabs)) leftmostcol)
-				     ;; Base on last known column
-				     (* (- pos (1- len)) ; Distance left
-					dir ; Direction to take
-					rst-indent-width))))
-			 (list (if (< col 0) 0 col))))))
-	   (when (cdr tab)
-	     ;; If a point is given output message
-	     (message "Aligned on '%s'"
-		      (save-excursion
-			(goto-char (cdr tab))
-			(buffer-substring-no-properties
-			 (line-beginning-position)
-			 (line-end-position)))))
-	   (- (car tab) leftmostcol)))))))
-
 (defmacro rst-iterate-leftmost-paragraphs
   (beg end first-only body-consequent body-alternative)
   "FIXME This definition is old and deprecated / we need to move
@@ -2781,7 +2716,6 @@ of each paragraph only."
 
 	))))
 
-
 (defmacro rst-iterate-leftmost-paragraphs-2 (spec &rest body)
   "Evaluate BODY for each line in region defined by BEG END.
 LEFTMOST is set to true if the line is one of the leftmost of the
@@ -2820,6 +2754,307 @@ first of a paragraph."
 
 	)))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Indentation
+
+;; FIXME: At the moment only block comments with leading empty comment line are
+;; supported; comment lines with leading comment markup should be also
+;; supported; may be a customizable option could control which style to prefer
+
+(defgroup rst-indent nil "Settings for indendation in reStructuredText.
+
+In reStructuredText indendation points are usually determined by
+preceding lines. Sometimes the syntax allows arbitrary
+indendation points such as where to start the first line
+following a directive. These indentation widths can be customized
+here."
+  :group 'rst
+  :package-version '(rst . "1.1.0"))
+
+(define-obsolete-variable-alias
+  'rst-shift-basic-offset 'rst-indent-width "r6713")
+(defcustom rst-indent-width 2
+  "Indentation when there is no more indentation point given."
+  :group 'rst-indent
+  :type '(integer))
+
+(defcustom rst-indent-field 3
+  "Default indendation for first line after a field or 0 to always indent for
+content."
+  :group 'rst-indent
+  :type '(integer))
+
+(defcustom rst-indent-literal-normal 3
+  "Default indendation for literal block after a markup on an own
+line."
+  :group 'rst-indent
+  :type '(integer))
+
+(defcustom rst-indent-literal-minimized 2
+  "Default indendation for literal block after a minimized
+markup."
+  :group 'rst-indent
+  :type '(integer))
+
+(defcustom rst-indent-comment 3
+  "Default indendation for first line of a comment."
+  :group 'rst-indent
+  :type '(integer))
+
+;; FIXME: Must consider other tabs:
+;; * Line blocks
+;; * Definition lists
+;; * Option lists
+(defun rst-line-tabs ()
+  "Return tabs of the current line or nil for no tab.
+The list is sorted so the tab where writing continues most likely
+is the first one. Each tab is of the form (COLUMN . INNER).
+COLUMN is the column of the tab. INNER is non-nil if this is an
+inner tab. I.e. a tab which does come from the basic indentation
+and not from inner alignment points."
+  (save-excursion
+    (forward-line 0)
+    (save-match-data
+      (unless (looking-at (rst-re 'lin-end))
+	(back-to-indentation)
+	;; Current indendation is always the least likely tab
+	(let ((tabs (list (list (point) 0 nil)))) ; (POINT OFFSET INNER)
+	  ;; Push inner tabs more likely to continue writing
+	  (cond
+	   ;; Item
+	   ((looking-at (rst-re '(:grp itmany-tag hws-sta) '(:grp "\\S ") "?"))
+	    (when (match-string 2)
+	      (push (list (match-beginning 2) 0 t) tabs)))
+	   ;; Field
+	   ((looking-at (rst-re '(:grp fld-tag) '(:grp hws-tag)
+				'(:grp "\\S ") "?"))
+	    (unless (zerop rst-indent-field)
+	      (push (list (match-beginning 1) rst-indent-field t) tabs))
+	    (if (match-string 3)
+		(push (list (match-beginning 3) 0 t) tabs)
+	      (if (zerop rst-indent-field)
+		  (push (list (match-end 2)
+			      (if (string= (match-string 2) "") 1 0)
+			      t) tabs))))
+	   ;; Directive
+	   ((looking-at (rst-re 'dir-sta-3 '(:grp "\\S ") "?"))
+	    (push (list (match-end 1) 0 t) tabs)
+	    (unless (string= (match-string 2) "")
+	      (push (list (match-end 2) 0 t) tabs))
+	    (when (match-string 4)
+	      (push (list (match-beginning 4) 0 t) tabs)))
+	   ;; Footnote or citation definition
+	   ((looking-at (rst-re 'fnc-sta-2 '(:grp "\\S ") "?"))
+	    (push (list (match-end 1) 0 t) tabs)
+	    (when (match-string 3)
+	      (push (list (match-beginning 3) 0 t) tabs)))
+	   ;; Comment
+	   ((looking-at (rst-re 'cmt-sta-1))
+	    (push (list (point) rst-indent-comment t) tabs)))
+	  ;; Start of literal block
+	  (when (looking-at (rst-re 'lit-sta-2))
+	    (let ((tab0 (first tabs)))
+	      (push (list (first tab0)
+			  (+ (second tab0)
+			     (if (match-string 1)
+				 rst-indent-literal-minimized
+			       rst-indent-literal-normal))
+			  t) tabs)))
+	  (mapcar (lambda (tab)
+		    (goto-char (first tab))
+		    (cons (+ (current-column) (second tab)) (third tab)))
+		  tabs))))))
+
+(defun rst-compute-tabs (pt)
+  "Build the list of possible tabs for all lines above.
+Search backwards from point PT to build the list of possible
+tabs. Return a list of tabs sorted by likeliness to continue
+writing like `rst-line-tabs'. Nearer lines have generally a
+higher likeliness than farer lines. Return nil if no tab is found
+in the text above."
+  (save-excursion
+    (goto-char pt)
+    (let (leftmost ; Leftmost column found so far
+	  innermost ; Leftmost column for inner tab
+	  tablist)
+      (while (and (zerop (forward-line -1))
+		  (or (not leftmost)
+		      (> leftmost 0)))
+	(let* ((tabs (rst-line-tabs))
+	       (leftcol (if tabs (apply 'min (mapcar 'car tabs)))))
+	  (when tabs
+	    ;; Consider only lines indented less or same if not INNERMOST
+	    (when (or (not leftmost)
+		      (< leftcol leftmost)
+		      (and (not innermost) (= leftcol leftmost)))
+	      (dolist (tab tabs)
+		(let ((inner (cdr tab))
+		      (newcol (car tab)))
+		  (when (and
+			 (or
+			  (and (not inner)
+			       (or (not leftmost)
+				   (< newcol leftmost)))
+			  (and inner
+			       (or (not innermost)
+				   (< newcol innermost))))
+			 (not (memq newcol tablist)))
+		    (push newcol tablist))))
+	      (setq innermost (if (some 'identity
+					(mapcar 'cdr tabs)) ; Has inner
+				  leftcol
+				innermost))
+	      (setq leftmost leftcol)))))
+      (nreverse tablist))))
+
+(defun rst-indent-line (&optional dflt)
+  "Indent current line to next best reStructuredText tab.
+The next best tab is taken from the tab list returned by
+`rst-compute-tabs' which is used in a cyclic manner. If the
+current indentation does not end on a tab use the first one. If
+the current indentation is on a tab use the next tab. This allows
+a repeated use of \\[indent-for-tab-command] to cycle through all
+possible tabs. If no indentation is possible return `noindent' or
+use DFLT. Return the indentation indented to. When point is in
+indentation it ends up at its end. Otherwise the point is kept
+relative to the content."
+  (let* ((pt (point-marker))
+	 (cur (current-indentation))
+	 (clm (current-column))
+	 (tabs (rst-compute-tabs (point)))
+	 (fnd (position cur tabs))
+	 ind)
+    (if (and (not tabs) (not dflt))
+	'noindent
+      (if (not tabs)
+	  (setq ind dflt)
+	(if (not fnd)
+	    (setq fnd 0)
+	  (setq fnd (1+ fnd))
+	  (if (>= fnd (length tabs))
+	      (setq fnd 0)))
+	(setq ind (nth fnd tabs)))
+      (indent-line-to ind)
+      (if (> clm cur)
+	  (goto-char pt))
+      (set-marker pt nil)
+      ind)))
+
+(defun rst-shift-region (beg end cnt)
+  "Shift region BEG to END by CNT tabs.
+Shift by one tab to the right (CNT > 0) or left (CNT < 0) or
+remove all indentation (CNT = 0). An tab is taken from the text
+above. If no suitable tab is found `rst-indent-width' is used."
+  (interactive "r\np")
+  (let ((tabs (sort (rst-compute-tabs beg) (lambda (x y) (<= x y))))
+	(leftmostcol (rst-find-leftmost-column beg end)))
+    (when (or (> leftmostcol 0) (> cnt 0))
+      ;; Apply the indent
+      (indent-rigidly
+       beg end
+       (if (zerop cnt)
+	   (- leftmostcol)
+	 ;; Find the next tab after the leftmost column
+	 (let* ((cmp (if (> cnt 0) '> '<))
+		(tabs (if (> cnt 0) tabs (reverse tabs)))
+		(len (length tabs))
+		(dir (signum cnt)) ; Direction to take
+		(abs (abs cnt)) ; Absolute number of steps to take
+		;; Get the position of the first tab beyond leftmostcol
+		(fnd (position-if (lambda (elt)
+				    (funcall cmp elt leftmostcol))
+				  tabs))
+		;; Virtual position of tab
+		(pos (+ (or fnd len) (1- abs)))
+		(tab (if (< pos len)
+			 ;; Tab exists - use it
+			 (nth pos tabs)
+		       ;; Column needs to be computed
+		       (let ((col (+ (or (car (last tabs)) leftmostcol)
+				     ;; Base on last known column
+				     (* (- pos (1- len)) ; Distance left
+					dir ; Direction to take
+					rst-indent-width))))
+			 (if (< col 0) 0 col)))))
+	   (- tab leftmostcol)))))))
+
+;; FIXME: A paragraph with an (incorrectly) indented second line is not filled
+;; correctly::
+;;
+;;   Some start
+;;     continued wrong
+(defun rst-adaptive-fill ()
+  "Return fill prefix found at point.
+Value for `adaptive-fill-function'."
+  (let ((fnd (if (looking-at adaptive-fill-regexp)
+		 (match-string-no-properties 0))))
+    (if (save-match-data
+	  (not (string-match comment-start-skip fnd)))
+	;; An non-comment prefix is fine
+	fnd
+      ;; Matches a comment - return whitespace instead
+      (make-string (-
+		    (save-excursion
+		      (goto-char (match-end 0))
+		      (current-column))
+		    (save-excursion
+		      (goto-char (match-beginning 0))
+		      (current-column))) ? ))))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Comments
+
+(defun rst-comment-line-break (&optional soft)
+  "Break line and indent, continuing reStructuredText comment if within one.
+Value for `comment-line-break-function'."
+  (if soft
+      (insert-and-inherit ?\n)
+    (newline 1))
+  (save-excursion
+    (forward-char -1)
+    (delete-horizontal-space))
+  (delete-horizontal-space)
+  (let ((tabs (rst-compute-tabs (point))))
+    (when tabs
+      (indent-line-to (car tabs)))))
+
+(defun rst-comment-indent ()
+  "Return indentation for current comment line."
+  (car (rst-compute-tabs (point))))
+
+(defun rst-comment-insert-comment ()
+  "Insert a comment in the current line."
+  (rst-indent-line 0)
+  (insert comment-start))
+
+(defun rst-comment-region (beg end &optional arg)
+  "Comment the current region or uncomment it if ARG is \\[universal-argument]."
+  (save-excursion
+    (if (consp arg)
+	(rst-uncomment-region beg end arg)
+      (goto-char beg)
+      (let ((ind (current-indentation))
+	    bol)
+	(forward-line 0)
+	(setq bol (point))
+	(indent-rigidly bol end rst-indent-comment)
+	(goto-char bol)
+	(open-line 1)
+	(indent-line-to ind)
+	(insert (comment-string-strip comment-start t t))))))
+
+(defun rst-uncomment-region (beg end &optional arg)
+  "Uncomment the current region.
+ARG is ignored"
+  (save-excursion
+    (let (bol eol)
+      (goto-char beg)
+      (forward-line 0)
+      (setq bol (point))
+      (forward-line 1)
+      (setq eol (point))
+      (indent-rigidly eol end (- rst-indent-comment))
+      (delete-region bol eol))))
 
 ;;------------------------------------------------------------------------------
 
@@ -2827,7 +3062,7 @@ first of a paragraph."
 ;; bullets in bulletted lists.  The enumerate would just be one of the possible
 ;; outputs.
 ;;
-;; FIXME: TODO we need to do the enumeration removal as well.
+;; FIXME: We need to do the enumeration removal as well.
 
 (defun rst-enumerate-region (beg end all)
   "Add enumeration to all the leftmost paragraphs in the given region.
@@ -2855,15 +3090,9 @@ do all lines instead of just paragraphs."
    (insert "  ")
    ))
 
-
-;; FIXME: there are some problems left with the following function
-;; implementation:
-;;
-;; * It does not deal with a varying number of digits appropriately
-;; * It does not deal with multiple levels independently, and it should.
-;;
-;; I suppose it does 90% of the job for now.
-
+;; FIXME: Does not deal with a varying number of digits appropriately
+;; FIXME: Does not deal with multiple levels independently
+;; FIXME: Does not indent a multiline item correctly
 (defun rst-convert-bullets-to-enumeration (beg end)
   "Convert the bulleted and enumerated items in the region to enumerated lists.
 Renumber as necessary."
@@ -3123,12 +3352,11 @@ details check the Rst Faces Defaults group."
 
     ;; All the `Explicit Markup Blocks`_
     ;; `Footnotes`_ / `Citations`_
-    (,(rst-re 'lin-beg '(:grp exm-sta fnc-tag) 'bli-sfx)
-     1 ,rst-definition-face)
+    (,(rst-re 'lin-beg 'fnc-sta-2)
+     (1 ,rst-definition-face)
+     (2 ,rst-definition-face))
     ;; `Directives`_ / `Substitution Definitions`_
-    (,(rst-re 'lin-beg '(:grp exm-sta)
-	      '(:grp (:shy subdef-tag hws-sta) "?")
-	      '(:grp sym-tag dcl-tag) 'bli-sfx)
+    (,(rst-re 'lin-beg 'dir-sta-3)
      (1 ,rst-directive-face)
      (2 ,rst-definition-face)
      (3 ,rst-directive-face))
@@ -3206,8 +3434,7 @@ details check the Rst Faces Defaults group."
     ;;        inline fontified; see (elisp)Search-based Fontification
 
     ;; `Comments`_ - this is multiline
-    (,(rst-re 'lin-beg '(:grp exm-sta) "[^\[|_\n]"
-	      '(:alt "[^:\n]" (:seq ":" (:alt "[^:\n]" "$"))) "*$")
+    (,(rst-re 'lin-beg 'cmt-sta-1)
      (1 ,rst-comment-face)
      (rst-font-lock-find-unindented-line-match
       (rst-font-lock-find-unindented-line-limit (match-end 1))
@@ -3226,14 +3453,29 @@ details check the Rst Faces Defaults group."
     ;;       :stub-columns: 1
     ;;       :header-rows: 1
 
-    ;; `Literal Blocks`_ - this is multiline
-    (,(rst-re 'lin-beg '(:shy (:alt "[^.\n]" "\\.[^.\n]") ".*") "?"
-	      '(:grp dcl-tag) "$")
-     (1 ,rst-block-face)
+    ;; FIXME: This is rendered wrong::
+    ;;
+    ;; 	 xxx yyy::
+    ;;
+    ;; 	 			----|> KKKKK <|----
+    ;; 	 		       /	     	    \
+    ;; 	    -|> AAAAAAAAAAPPPPPP <|-   	       	 -|> AAAAAAAAAABBBBBBB <|-
+    ;; 	    |			   |	     	 |     	       	       	 |
+    ;; 	    |			   |		 |			 |
+    ;; 	    PPPPPP     PPPPPPDDDDDDD             BBBBBBB     PPPPPPBBBBBBB
+    ;;
+    ;; Indentation needs to be taken from the line with the ``::`` and not from
+    ;; the first content line.
+
+    ;; `Indented Literal Blocks`_ - this is multiline
+    (,(rst-re 'lin-beg 'lit-sta-2)
+     (2 ,rst-block-face)
      (rst-font-lock-find-unindented-line-match
       (rst-font-lock-find-unindented-line-limit t)
       nil
       (0 ,rst-literal-face append)))
+
+    ;; FIXME: `Quoted Literal Blocks`_ missing - this is multiline
 
     ;; `Doctest Blocks`_
     ;; FIXME: This is wrong according to the specification:
@@ -3463,7 +3705,7 @@ Called as a MATCHER in the sense of `font-lock-keywords'."
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Support for conversion from within Emacs
+;; Compilation
 
 (defgroup rst-compile nil
   "Settings for support of conversion of reStructuredText
@@ -3471,6 +3713,7 @@ document with \\[rst-compile]."
   :group 'rst
   :version "21.1")
 
+;; FIXME: Should be `defcustom`
 (defvar rst-compile-toolsets
   '((html . ("rst2html.py" ".html" nil))
     (latex . ("rst2latex.py" ".tex" nil))
@@ -3484,15 +3727,11 @@ An association list of the toolset to a list of the (command to use,
 extension of produced filename, options to the tool (nil or a
 string)) to be used for converting the document.")
 
-;; Note for Python programmers not familiar with association lists: you can set
-;; values in an alists like this, e.g. :
-;; (setcdr (assq 'html rst-compile-toolsets)
-;;      '("rst2html.py" ".htm" "--stylesheet=/docutils.css"))
-
-
+;; FIXME: Should be `defcustom`
 (defvar rst-compile-primary-toolset 'html
   "The default toolset for `rst-compile'.")
 
+;; FIXME: Should be `defcustom`
 (defvar rst-compile-secondary-toolset 'latex
   "The default toolset for `rst-compile' with a prefix argument.")
 
@@ -3573,6 +3812,7 @@ or of the entire buffer, if the region is not selected."
      (cadr (assq 'pseudoxml rst-compile-toolsets))
      standard-output)))
 
+;; FIXME: Should be `defcustom`
 (defvar rst-pdf-program "xpdf"
   "Program used to preview PDF files.")
 
@@ -3589,6 +3829,7 @@ or of the entire buffer, if the region is not selected."
     ;; output.
     ))
 
+;; FIXME: Should be `defcustom` or use something like `browse-url`
 (defvar rst-slides-program "firefox"
   "Program used to preview S5 slides.")
 
@@ -3609,6 +3850,7 @@ or of the entire buffer, if the region is not selected."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Generic text functions that are more convenient than the defaults.
 
+;; FIXME: Unbound command - should be bound or removed
 (defun rst-replace-lines (fromchar tochar)
   "Replace flush-left lines, consisting of multiple FROMCHAR characters,
 with equal-length lines of TOCHAR."
@@ -3626,12 +3868,14 @@ cand replace with char: ")
           (insert-char tochar width)))
       (message (format "%d lines replaced." found)))))
 
+;; FIXME: Unbound command - should be bound or removed
 (defun rst-join-paragraph ()
   "Join lines in current paragraph into one line, removing end-of-lines."
   (interactive)
   (let ((fill-column 65000)) ; some big number
     (call-interactively 'fill-paragraph)))
 
+;; FIXME: Unbound command - should be bound or removed
 (defun rst-force-fill-paragraph ()
   "Fill paragraph at point, first joining the paragraph's lines into one.
 This is useful for filling list item paragraphs."
@@ -3640,6 +3884,7 @@ This is useful for filling list item paragraphs."
   (fill-paragraph nil))
 
 
+;; FIXME: Unbound command - should be bound or removed
 ;; Generic character repeater function.
 ;; For sections, better to use the specialized function above, but this can
 ;; be useful for creating separators.
