@@ -1989,9 +1989,9 @@ An admonition_ (note, caution, etc.) contains other body elements::
 Directives are indicated by an explicit markup start (".. ") followed
 by the directive type, two colons, and whitespace (together called the
 "directive marker").  Directive types are case-insensitive single
-words (alphanumerics plus internal hyphens, underscores, and periods;
-no whitespace).  Two colons are used after the directive type for
-these reasons:
+words (alphanumerics plus isolated internal hyphens, underscores,
+plus signs, colons, and periods; no whitespace).  Two colons are used
+after the directive type for these reasons:
 
 - Two colons are distinctive, and unlikely to be used in common text.
 
@@ -2567,10 +2567,11 @@ The "role" of the interpreted text determines how the text is
 interpreted.  The role may be inferred implicitly (as above; the
 "default role" is used) or indicated explicitly, using a role marker.
 A role marker consists of a colon, the role name, and another colon.
-A role name is a single word consisting of alphanumerics plus internal
-hyphens, underscores, and periods; no whitespace or other characters
-are allowed.  A role marker is either a prefix or a suffix to the
-interpreted text, whichever reads better; it's up to the author::
+A role name is a single word consisting of alphanumerics plus isolated
+internal hyphens, underscores, plus signs, colons, and periods;
+no whitespace or other characters are allowed.  A role marker is
+either a prefix or a suffix to the interpreted text, whichever reads
+better; it's up to the author::
 
     :role:`interpreted text`
 
