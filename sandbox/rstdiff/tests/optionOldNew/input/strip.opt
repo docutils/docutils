@@ -1,0 +1,1 @@
+--strip-elements-with-class=both --old --strip-comments --strip-elements-with-class=old --new --strip-elements-with-class=new --both --strip-elements-with-class=all
