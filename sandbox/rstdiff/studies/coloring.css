@@ -1,7 +1,7 @@
 .change-added {
   background: green }
 
-.change-deleted {
+.change-removed {
   background: red }
 
 .change-replacement {

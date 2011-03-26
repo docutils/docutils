@@ -52,12 +52,41 @@ writerOption = 'writer'
 writerDefault = 'xml'
 writerArgRE1 = '^--' + writerOption + '=' + '(.*)$'
 
+oldOption = 'old'
+bothOption = 'both'
+newOption = 'new'
+
+def switchOptionsCallback(option, opt, value, parser, to):
+    """Callback for `optparse`."""
+    switchOptions(parser.values, to)
+
 settings_spec = (
     'rstdiff options',
     None,
     (('Select writer to write output with (default "xml").',
       ['--' + writerOption],
       {}),
+     ('Following options apply to the old input document'
+      + ' (default: both input documents).',
+      ['--' + oldOption],
+      { 'action': 'callback',
+        'callback': switchOptionsCallback,
+        'callback_args': ( oldOption, ),
+        }),
+     ('Following options apply to the new input document'
+      + ' (default: both input documents).',
+      ['--' + newOption],
+      { 'action': 'callback',
+        'callback': switchOptionsCallback,
+        'callback_args': ( newOption, ),
+        }),
+     ('Following options apply to both input documents'
+      + ' (default).',
+      ['--' + bothOption],
+      { 'action': 'callback',
+        'callback': switchOptionsCallback,
+        'callback_args': ( bothOption, ),
+        }),
      )
     )
 
@@ -70,6 +99,59 @@ usage = '%prog [options]... <old> [<new> [<output>]]'
 
 ###############################################################################
 # Classes for three argument command lines
+
+switchableMultiOptions = ( 'strip_elements_with_classes', 'strip_classes', )
+switchableOptions = (
+    'title', 'generator', 'datestamp',
+    'source_link', 'source_url',
+    'toc_backlinks', 'footnote_backlinks',
+    'sectnum_xform', 'doctitle_xform', 'docinfo_xform', 'sectsubtitle_xform',
+    'strip_comments',
+    'input_encoding', 'input_encoding_error_handler',
+    'language_code',
+    'pep_references', 'pep_base_url', 'pep_file_url_template',
+    'rfc_references', 'rfc_base_url',
+    'trim_footnote_reference_space',
+    'file_insertion_enabled', 'raw_enabled',
+    'auto_id_prefix', 'id_prefix',
+    ) + switchableMultiOptions
+
+def switchOptions(values, to):
+    """Switch `values` so following options apply to input document `to`."""
+    lastTo = getattr(values, '_optionsTo', '_' + bothOption)
+    lastTarget = getattr(values, lastTo, None)
+    if not lastTarget:
+        lastTarget = {}
+        setattr(values, lastTo, lastTarget)
+    target = getattr(values, '_' + to, None)
+    if not target:
+        target = {}
+        setattr(values, to, target)
+    for opt in switchableOptions:
+        if hasattr(values, opt):
+            # Save last option
+            lastTarget[opt] = getattr(values, opt)
+            delattr(values, opt)
+        if opt in target:
+            # Restore old option
+            setattr(values, opt, target[opt])
+    values._optionsTo = '_' + to
+
+def useOptions(values, to):
+    """Set `values` so use options applying to input document `to`."""
+    for opt in switchableOptions:
+        if hasattr(values, opt):
+            delattr(values, opt)
+        for src in ( '_' + to, '_' + bothOption, ):
+            if hasattr(values, src) and opt in getattr(values, src):
+                if opt in switchableMultiOptions:
+                    if not hasattr(values, opt):
+                        setattr(values, opt, [])
+                    if getattr(values, src)[opt] is not None:
+                        getattr(values, opt).extend(getattr(values, src)[opt])
+                else:
+                    setattr(values, opt, getattr(values, src)[opt])
+                    break
 
 class Publisher3Args(Publisher):
 
@@ -94,6 +176,8 @@ class OptionParser3Args(OptionParser):
 
     def check_values(self, values, args):
         """Store positional arguments as runtime settings."""
+        # Complete a possible switch
+        switchOptions(values, bothOption)
         values._old_source, values._new_source, values._destination = self.check_args(args)
         make_paths_absolute(values.__dict__, self.relative_path_settings,
                             os.getcwd())
@@ -746,6 +830,34 @@ class DocutilsDispatcher(HashableNodeImpl):
     def rootEq_option(self, node, other):
         return self.rootEqWithChild(node, other, nodes.option_string)
 
+    ###########################################################################
+    # Some attributes of some elements depend on their concrete parents.
+
+    # tgroup
+    def copyRoot_tgroup(self, node):
+        copy = node.copy()
+        copy['origcols'] = copy['cols']
+        copy['cols'] = 0
+        return copy
+
+    def addChild_tgroup(self, root, child):
+        root.append(child)
+        # This works only if for each column there is a `colspec`. Is
+        # this the case?
+        if isinstance(child, nodes.colspec):
+            root['cols'] += 1
+        elif isinstance(child, nodes.tbody):
+            # All columns seen - check the column widths
+            if root['origcols'] != root['cols']:
+                for elem in root:
+                    if isinstance(elem, nodes.colspec):
+                        elem['colwidth'] = 100 / root['cols']
+            del root['origcols']
+
+    # TODO Number of entries must change according to the (changed)
+    # number of columns; for added or removed columns entries of *one*
+    # column must be added / removed
+
 ###############################################################################
 ###############################################################################
 # Main
@@ -961,8 +1073,11 @@ def createDiff(oldTree, newTree, debug=False):
 if __name__ == '__main__':
     pub = processCommandLine()
 
+    useOptions(pub.settings, oldOption)
     oldTree = readTree(pub, pub.settings._old_source)
+    useOptions(pub.settings, newOption)
     newTree = readTree(pub, pub.settings._new_source)
+    useOptions(pub.settings, bothOption)
 
     Text2Words(oldTree).apply()
     Text2Words(newTree).apply()

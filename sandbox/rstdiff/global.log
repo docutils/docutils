@@ -1,4 +1,256 @@
 **************************************
+Date: Fri Mar 25 19:16:03 CET 2011
+Author: stefan
+Tag: rstdiff_1_106
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory theowa:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Multi options are handled correctly.
+**************************************
+Date: Fri Mar 25 18:58:54 CET 2011
+Author: stefan
+Tag: rstdiff_1_105
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/optionOldNew/expected
+In directory theowa:/home/stefan/free/rstdiff/tests/optionOldNew/expected
+
+Added Files:
+	strip.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/optionOldNew/input
+In directory theowa:/home/stefan/free/rstdiff/tests/optionOldNew/input
+
+Added Files:
+	strip.opt strip.rst 
+
+--------------------------------------
+Log Message:
+Added tests. Some fail.
+**************************************
+Date: Fri Mar 25 17:29:09 CET 2011
+Author: stefan
+Tag: rstdiff_1_104
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory theowa:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/optionOldNew/expected
+In directory theowa:/home/stefan/free/rstdiff/tests/optionOldNew/expected
+
+Modified Files:
+	generator.xml 
+
+--------------------------------------
+Log Message:
+Implemented using different options for old and new input file.
+**************************************
+Date: Fri Mar 25 16:14:17 CET 2011
+Author: stefan
+Tag: rstdiff_1_103
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/optionOldNew
+In directory theowa:/home/stefan/free/rstdiff/tests/optionOldNew
+
+Added Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/optionOldNew/expected
+In directory theowa:/home/stefan/free/rstdiff/tests/optionOldNew/expected
+
+Added Files:
+	generator.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/optionOldNew/input
+In directory theowa:/home/stefan/free/rstdiff/tests/optionOldNew/input
+
+Added Files:
+	generator.opt generator.rst 
+
+--------------------------------------
+Log Message:
+Added tests for options `--new` / `--old`. Do not run yet.
+**************************************
+Date: Wed Mar 23 22:48:58 CET 2011
+Author: stefan
+Tag: rstdiff_1_102
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/secretHtml/expected
+In directory theowa:/home/stefan/free/rstdiff/tests/secretHtml/expected
+
+Modified Files:
+	transaktionsbehandlung.html 
+Added Files:
+	taxonomie.html 
+
+--------------------------------------
+Log Message:
+Adapted tests to latest Docutils version.
+**************************************
+Date: Wed Mar 23 22:15:04 CET 2011
+Author: stefan
+Tag: rstdiff_1_101
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory theowa:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Added options `--old` and `--new`. Not really implemented yet.
+**************************************
+Date: Sat Mar  5 12:20:53 CET 2011
+Author: stefan
+Tag: rstdiff_1_100
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	Makefile 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/studies
+In directory rosalu:/home/stefan/free/rstdiff/studies
+
+Modified Files:
+	coloring.css 
+
+--------------------------------------
+Log Message:
+Adaptions to `packageSupport`.
+**************************************
+Date: Thu Dec  2 00:22:21 CET 2010
+Author: stefan
+Tag: rstdiff_1_99
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory theowa:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource/expected
+In directory theowa:/home/stefan/free/rstdiff/tests/simpleNoSource/expected
+
+Modified Files:
+	table.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource/input
+In directory theowa:/home/stefan/free/rstdiff/tests/simpleNoSource/input
+
+Modified Files:
+	table.new.rst table.old.rst 
+
+--------------------------------------
+Log Message:
+Modified test to expose a problem with modified tables.
+**************************************
+Date: Tue Nov 30 23:28:23 CET 2010
+Author: stefan
+Tag: rstdiff_1_98
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/secret/expected
+In directory theowa:/home/stefan/free/rstdiff/tests/secret/expected
+
+Modified Files:
+	taxonomie.xml 
+
+--------------------------------------
+Log Message:
+Adapted tests.
+**************************************
+Date: Tue Nov 30 23:21:00 CET 2010
+Author: stefan
+Tag: rstdiff_1_97
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory theowa:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Changing number of columns in tables are processed correctly.
+**************************************
+Date: Tue Nov 30 22:21:01 CET 2010
+Author: stefan
+Tag: rstdiff_1_96
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/secret/expected
+In directory theowa:/home/stefan/free/rstdiff/tests/secret/expected
+
+Modified Files:
+	taxonomie.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource/expected
+In directory theowa:/home/stefan/free/rstdiff/tests/simpleNoSource/expected
+
+Added Files:
+	table.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource/input
+In directory theowa:/home/stefan/free/rstdiff/tests/simpleNoSource/input
+
+Added Files:
+	table.new.rst table.old.rst 
+
+--------------------------------------
+Log Message:
+Added normal test exposing bug in changed tables.
+**************************************
+Date: Tue Nov 30 20:04:19 CET 2010
+Author: stefan
+Tag: rstdiff_1_95
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/secret/expected
+In directory theowa:/home/stefan/free/rstdiff/tests/secret/expected
+
+Added Files:
+	taxonomie.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/secret/input
+In directory theowa:/home/stefan/free/rstdiff/tests/secret/input
+
+Added Files:
+	taxonomie.new.rst taxonomie.old.rst taxonomie.opt 
+
+--------------------------------------
+Log Message:
+Added failing test for HTML writer.
+**************************************
 Date: Sun Nov 14 12:41:30 CET 2010
 Author: stefan
 Tag: rstdiff_1_94
