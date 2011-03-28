@@ -1862,9 +1862,18 @@ For details see grfguide.pdf_.
 
 The Rubber_ wrapper can be used for automatic image conversion.
 
+Docutils expects an URI as pointer to the image file. The latex writer
+transforms this URI to a local path. By default, LaTeX does not accept
+spaces and more than one dot in the filename. If using "traditional"
+filenames is not an option, the adding grffile_ to the `style sheets`_
+can help.
+
 __ ../ref/rst/directives.html#images
 .. _grfguide.pdf:
    http://mirror.ctan.org/macros/latex/required/graphics/grfguide.pdf
+.. _grffile:
+   http://mirror.ctan.org/help/Catalogue/entries/grffile.html
+
 
 
 Why are my images too big?
