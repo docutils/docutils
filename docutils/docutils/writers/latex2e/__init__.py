@@ -2209,7 +2209,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.requirements['graphicx'] = self.graphicx_package
         attrs = node.attributes
         # Convert image URI to a local file path and add to dependency list
-        imagepath = urllib.url2pathname(attrs['uri'])
+        imagepath = urllib.url2pathname(attrs['uri']).replace('\\', '/')
         self.settings.record_dependencies.add(imagepath)
         # alignment defaults:
         if not 'align' in attrs:
