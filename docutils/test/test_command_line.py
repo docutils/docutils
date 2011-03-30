@@ -47,8 +47,9 @@ class CommandLineEncodingTests(unittest.TestCase):
         if argv_encoding is None:
             # failure to load "locale" or "subprocess" module
             return # nothing to test
-        cmd_str = (u'../tools/rst2pseudoxml.py --no-generator '
-                   u'--no-datestamp --title=Dornröschen')
+        cmd_str = os.path.normpath(os.path.dirname(os.path.dirname(__file__)) +
+                                   '/tools/rst2pseudoxml.py')
+        cmd_str += u' --no-generator --no-datestamp --title=Dornröschen'
         p = subprocess.Popen([cmd_str.encode(argv_encoding)], shell=True,
                              stdin=subprocess.PIPE, stdout=subprocess.PIPE)
         p.stdin.close()
