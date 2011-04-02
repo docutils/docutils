@@ -32,11 +32,13 @@ except:
 
 import os, re, sys
 
+from pprint import pformat
+
 import docutils
 from docutils import frontend, writers, nodes, SettingsSpec
 from docutils.core import Publisher
 from docutils.utils import SystemMessage, Reporter, new_reporter, new_document
-from docutils.frontend import OptionParser, make_paths_absolute
+from docutils.frontend import OptionParser, make_paths_absolute, validate_boolean
 from docutils.transforms import Transform
 
 from treediff import TreeMatcher, HashableNodeImpl
@@ -87,6 +89,14 @@ settings_spec = (
         'callback': switchOptionsCallback,
         'callback_args': ( bothOption, ),
         }),
+     ('Compare sections by comparing their ids (default); '
+      + 'useful when section titles are stable but sections change',
+      ['--compare-sections-by-id'],
+      { 'action': 'store_true',
+        'default': 1, 'validator': validate_boolean}),
+     ('Compare sections normally; useful when section titles change',
+      ['--compare-sections-normally'],
+      { 'action': 'store_false', 'dest': 'compare_sections_by_id'}),
      )
     )
 
@@ -399,13 +409,14 @@ class Words2TextVisitor(nodes.SparseNodeVisitor):
 ###############################################################################
 # Hashable
 
-class DocutilsDispatcher(HashableNodeImpl): 
+class DocutilsDispatcher(HashableNodeImpl):
     """Implements hashable for a docutils `Node` and supports construction."""
 
-    debug = False
+    reporter = None
 
-    def __init__(self):
+    def __init__(self, reporter):
         super(self.__class__, self).__init__(nodes.Node)
+        self.reporter = reporter
 
     def dispatchClass(self, function, node, *args):
         """Dispatch a call of type `function` for the class of `node` using
@@ -418,15 +429,22 @@ class DocutilsDispatcher(HashableNodeImpl):
         except AttributeError:
             name = pat % ( 'UNKNOWN', )
             method = getattr(self, name)
-        if self.debug:
-            print("*** %s(%s)"
-                  % ( name, ", ".join([ arg.__class__.__name__
-                                        for arg in ( node, ) + args ]), ))
-            for arg in ( node, ) + args:
-                print("    > %s" % ( arg, ))
+        self.reporter.debug("*** %s(%s)"
+                            % ( name, ", ".join([ arg.__class__.__name__
+                                                  for arg
+                                                  in ( node, ) + args ]), ))
+        for arg in ( node, ) + args:
+            try:
+                self.reporter.debug("    > %s" % ( arg, ))
+            except UnicodeEncodeError:
+                self.reporter.debug("    > CANNOT OUTPUT ARGUMENT OF TYPE %s"
+                                    % ( type(arg), ))
         result = method(node, *args)
-        if self.debug:
-            print("    < %s" % ( result, ))
+        try:
+            self.reporter.debug("    < %s" % ( result, ))
+        except UnicodeEncodeError:
+            self.reporter.debug("    < CANNOT OUTPUT RESULT OF TYPE %s"
+                                % ( type(result), ))
         return result
 
     ###########################################################################
@@ -649,6 +667,17 @@ class DocutilsDispatcher(HashableNodeImpl):
     # Sequences of Text are treated together
     copyChildren_Word = copyChildren_Text
     copyChildren_White = copyChildren_Text
+
+    ###########################################################################
+    # section
+
+    def rootEq_section(self, node, other):
+        """Compare sections by their first ids or normally."""
+        # TODO Comparsion should be by names because they are richer -
+        # however, names seem not always to be present
+        if node.document.settings.compare_sections_by_id:
+            return node['ids'][0] == other['ids'][0]
+        return True
 
     ###########################################################################
     # For some elements their attributes need to be considered to
@@ -906,9 +935,9 @@ def doDiff(hashableNodeImpl, oldTree, newTree):
                           lambda node: isinstance(node, White))
     return matcher.get_opcodes()
 
-def buildDocument(oldTree, newTree, opcodes, settings):
+def buildDocument(oldTree, newTree, settings):
     """Returns a new document for the result of converting `oldTree` to
-    `newTree` using `opcodes` as description of changes."""
+    `newTree`."""
     if (not isinstance(oldTree, docutils.nodes.document)
         or not isinstance(newTree, docutils.nodes.document)):
         raise TypeError("Roots of trees must be documents")
@@ -1037,21 +1066,24 @@ def cleanOpcodes(opcodes, dispatcher, oldList, newList):
                 opcode.setCommand(Opcode.Replace)
                 opcodes[i] = opcode.asTuple()
 
-def createDiff(oldTree, newTree, debug=False):
+def createDiff(pub, oldTree, newTree):
     """Create and return a diff document from `oldTree` to `newTree`."""
-    dispatcher = DocutilsDispatcher()
-    dispatcher.debug = debug
+    dispatcher = DocutilsDispatcher(new_reporter("DIFF", pub.settings))
     opcodes = doDiff(dispatcher, oldTree, newTree)
-    if debug:
-        from pprint import pprint
-        print(oldTree.asdom().toprettyxml())
-        print(newTree.asdom().toprettyxml())
-        pprint(opcodes, sys.stdout, 2, 40, None)
-        print("^^^ Before cleaning vvv After cleaning")
+
+    if pub.settings.debug:
+        # This may be expensive so guard this explicitly
+        oldTree.reporter.debug(oldTree.asdom().toprettyxml())
+        newTree.reporter.debug(newTree.asdom().toprettyxml())
+        oldTree.reporter.debug(pformat(opcodes, 2, 40, None))
+        oldTree.reporter.debug("^^^ Before cleaning vvv After cleaning")
+
     cleanOpcodes(opcodes, dispatcher, [ oldTree ], [ newTree ])
-    if debug:
-        from pprint import pprint
-        pprint(opcodes, sys.stdout, 2, 40, None)
+
+    if pub.settings.debug:
+        # This may be expensive so guard this explicitly
+        oldTree.reporter.debug(pformat(opcodes, 2, 40, None))
+
     if len(opcodes) != 1:
         raise TypeError("Don't know how to merge documents which are not rootEq")
     opcode = Opcode(opcodes[0])
@@ -1061,7 +1093,7 @@ def createDiff(oldTree, newTree, debug=False):
         raise TypeError("Don't know how to merge top level opcode of type %r"
                         % ( opcode.getCommand(), ))
 
-    diffDoc = buildDocument(oldTree, newTree, opcodes, pub.settings)
+    diffDoc = buildDocument(oldTree, newTree, pub.settings)
     if opcode.getCommand() == Opcode.Equal:
         # TODO Equality should be reported somehow
         diffDoc.extend([ child.deepcopy()
@@ -1082,7 +1114,7 @@ if __name__ == '__main__':
     Text2Words(oldTree).apply()
     Text2Words(newTree).apply()
 
-    diffDoc = createDiff(oldTree, newTree)
+    diffDoc = createDiff(pub, oldTree, newTree)
     Words2Text(diffDoc).apply()
 
     pub.writer.write(diffDoc, pub.destination)

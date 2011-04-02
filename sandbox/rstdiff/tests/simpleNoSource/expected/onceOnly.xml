@@ -65,12 +65,7 @@ up. These are the references of
     </section>
     <section ids="only-once-only" names="only\ once\ only">
         <title>
-            <inline classes="change-replaced">
-                Only once only
-            </inline>
-            <inline classes="change-replacement">
-                Single
-            </inline>
+            Only once only
         </title>
         <paragraph>
             Other elements may occur only once and thus need to propagate their

@@ -16,8 +16,8 @@ PCDATA
 Some elements may contain only #PCDATA. They need to propagate changes
 up. These are the references of [CITATION]_ and footnotes [2]_.
 
-Single
-======
+Only once only
+==============
 
 Other elements may occur only once and thus need to propagate their
 changes up or down.

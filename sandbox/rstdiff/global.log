@@ -1,4 +1,314 @@
 **************************************
+Date: Sat Apr  2 11:42:34 CEST 2011
+Author: stefan
+Tag: rstdiff_1_114
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/optionCompareNormal
+In directory rosalu:/home/stefan/free/rstdiff/tests/optionCompareNormal
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Renamed `--compare-sections-id` / `--compare-sections-normal` to
+`--compare-sections-by-id` / `--compare-sections-normally`.
+**************************************
+Date: Fri Apr  1 19:36:45 CEST 2011
+Author: stefan
+Tag: rstdiff_1_113
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory theowa:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple
+In directory theowa:/home/stefan/free/rstdiff/tests/simple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleHtml
+In directory theowa:/home/stefan/free/rstdiff/tests/simpleHtml
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Options `--compare-sections-id` and `--compare-sections-normal` are
+supported.
+**************************************
+Date: Fri Apr  1 19:22:28 CEST 2011
+Author: stefan
+Tag: rstdiff_1_112
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory theowa:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/optionCompareNormal
+In directory theowa:/home/stefan/free/rstdiff/tests/optionCompareNormal
+
+Added Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/optionCompareNormal/expected
+In directory theowa:/home/stefan/free/rstdiff/tests/optionCompareNormal/expected
+
+Added Files:
+	section.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/optionCompareNormal/input
+In directory theowa:/home/stefan/free/rstdiff/tests/optionCompareNormal/input
+
+Added Files:
+	section.new.rst section.old.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/secret/expected
+In directory theowa:/home/stefan/free/rstdiff/tests/secret/expected
+
+Modified Files:
+	taxonomie.xml transaktionsbehandlung.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/secretHtml/expected
+In directory theowa:/home/stefan/free/rstdiff/tests/secretHtml/expected
+
+Modified Files:
+	transaktionsbehandlung.html 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource/expected
+In directory theowa:/home/stefan/free/rstdiff/tests/simpleNoSource/expected
+
+Modified Files:
+	onceOnly.xml section.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource/input
+In directory theowa:/home/stefan/free/rstdiff/tests/simpleNoSource/input
+
+Modified Files:
+	onceOnly.new.rst 
+
+--------------------------------------
+Log Message:
+Sections are compared by their first id. This way sections with
+unchanged title always match and sections with changed titles never
+match.
+
+Option `--compare-sections-normal` for old behavior still missing but
+tests are there.
+**************************************
+Date: Fri Apr  1 17:11:19 CEST 2011
+Author: stefan
+Tag: rstdiff_1_111
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory theowa:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/html
+In directory theowa:/home/stefan/free/rstdiff/tests/html
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/optionOldNew
+In directory theowa:/home/stefan/free/rstdiff/tests/optionOldNew
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/secret
+In directory theowa:/home/stefan/free/rstdiff/tests/secret
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/secretHtml
+In directory theowa:/home/stefan/free/rstdiff/tests/secretHtml
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple
+In directory theowa:/home/stefan/free/rstdiff/tests/simple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleHtml
+In directory theowa:/home/stefan/free/rstdiff/tests/simpleHtml
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource
+In directory theowa:/home/stefan/free/rstdiff/tests/simpleNoSource
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Docutils debugging facilities are used.
+**************************************
+Date: Mon Mar 28 12:00:49 CEST 2011
+Author: stefan
+Tag: rstdiff_1_110
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory theowa:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleHtml
+In directory theowa:/home/stefan/free/rstdiff/tests/simpleHtml
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource
+In directory theowa:/home/stefan/free/rstdiff/tests/simpleNoSource
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource/expected
+In directory theowa:/home/stefan/free/rstdiff/tests/simpleNoSource/expected
+
+Added Files:
+	footnoteSequence.xml 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource/input
+In directory theowa:/home/stefan/free/rstdiff/tests/simpleNoSource/input
+
+Added Files:
+	footnoteSequence.new.rst footnoteSequence.old.rst 
+
+--------------------------------------
+Log Message:
+Added a test exposing a problem when footnotes are added.
+
+Modification due to change in `top.gmk`.
+**************************************
+Date: Mon Mar 28 11:08:46 CEST 2011
+Author: stefan
+Tag: rstdiff_1_109
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple
+In directory theowa:/home/stefan/free/rstdiff/tests/simple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple/input
+In directory theowa:/home/stefan/free/rstdiff/tests/simple/input
+
+Added Files:
+	sectionSequence.new.rst sectionSequence.old.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple/source
+In directory theowa:/home/stefan/free/rstdiff/tests/simple/source
+
+Added Files:
+	sectionSequence.rst 
+
+--------------------------------------
+Log Message:
+Added a test exposing a problem in diffings sections in a sequence.
+**************************************
+Date: Sun Mar 27 11:52:11 CEST 2011
+Author: stefan
+Tag: rstdiff_1_108
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.rst 
+
+--------------------------------------
+Log Message:
+Options from command are included in documentation.
+**************************************
+Date: Sun Mar 27 11:34:24 CEST 2011
+Author: stefan
+Tag: rstdiff_1_107
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory rosalu:/home/stefan/free/rstdiff
+
+Modified Files:
+	Makefile 
+Added Files:
+	rstdiff.rst 
+Removed Files:
+	rstdiff.pod 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/secretHtml
+In directory rosalu:/home/stefan/free/rstdiff/tests/secretHtml
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simpleNoSource
+In directory rosalu:/home/stefan/free/rstdiff/tests/simpleNoSource
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Changed documentation to be in reStructuredText.
+
+Marked some tests as being `inProgress`.
+**************************************
 Date: Fri Mar 25 19:16:03 CET 2011
 Author: stefan
 Tag: rstdiff_1_106
