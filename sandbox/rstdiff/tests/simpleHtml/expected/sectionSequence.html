@@ -320,7 +320,13 @@ ul.auto-toc {
 <p>Some initial text.</p>
 <div class="change-removed section" id="removed-section">
 <h1>Removed section</h1>
-<p>Some text in removed section.</p>
+<p>Some text in removed section <a class="footnote-reference" href="#id2" id="id1">[1]</a>.</p>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Footnote to modify id counter.</td></tr>
+</tbody>
+</table>
 </div>
 <div class="section" id="constant-section">
 <h1>Constant section</h1>
@@ -329,6 +335,21 @@ ul.auto-toc {
 <h2>Changing sub-section</h2>
 <p class="change-replaced">To be changed sub section text.</p>
 <p class="change-replacement">A different content in a sub-section.</p>
+</div>
+</div>
+<div class="section" id="repeated-section-titles">
+<h1>Repeated section titles</h1>
+<p>Now testing sections with repeated section titles. This leads to
+different ids.</p>
+<div class="section" id="id3">
+<h2>Constant section</h2>
+<p class="change-replaced">Repeat this.</p>
+<p class="change-replacement">Repeated but different.</p>
+</div>
+<div class="section" id="id4">
+<h2>Constant section</h2>
+<p class="change-replaced">Once again.</p>
+<p class="change-replacement">Again.</p>
 </div>
 </div>
 </div>

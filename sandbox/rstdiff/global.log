@@ -1,4 +1,35 @@
 **************************************
+Date: Mon Apr  4 10:20:51 CEST 2011
+Author: stefan
+Tag: rstdiff_1_115
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory theowa:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple/input
+In directory theowa:/home/stefan/free/rstdiff/tests/simple/input
+
+Modified Files:
+	sectionSequence.new.rst sectionSequence.old.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/simple/source
+In directory theowa:/home/stefan/free/rstdiff/tests/simple/source
+
+Modified Files:
+	sectionSequence.rst 
+
+--------------------------------------
+Log Message:
+Renamed option `--compare-sections-by-id` to
+`--compare-sections-by-name` and comparison is done by name. This
+works for duplicated section titles, too.
+**************************************
 Date: Sat Apr  2 11:42:34 CEST 2011
 Author: stefan
 Tag: rstdiff_1_114
