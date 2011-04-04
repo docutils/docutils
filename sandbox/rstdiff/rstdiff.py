@@ -89,14 +89,14 @@ settings_spec = (
         'callback': switchOptionsCallback,
         'callback_args': ( bothOption, ),
         }),
-     ('Compare sections by comparing their ids (default); '
+     ('Compare sections by comparing their names (default); '
       + 'useful when section titles are stable but sections change',
-      ['--compare-sections-by-id'],
+      ['--compare-sections-by-names'],
       { 'action': 'store_true',
         'default': 1, 'validator': validate_boolean}),
      ('Compare sections normally; useful when section titles change',
       ['--compare-sections-normally'],
-      { 'action': 'store_false', 'dest': 'compare_sections_by_id'}),
+      { 'action': 'store_false', 'dest': 'compare_sections_by_names'}),
      )
     )
 
@@ -671,12 +671,17 @@ class DocutilsDispatcher(HashableNodeImpl):
     ###########################################################################
     # section
 
+    def getSectionName(self, node):
+        if node['dupnames']:
+            return node['dupnames'][0]
+        if node['names'][0]:
+            return node['names'][0]
+        return node['ids'][0]
+
     def rootEq_section(self, node, other):
-        """Compare sections by their first ids or normally."""
-        # TODO Comparsion should be by names because they are richer -
-        # however, names seem not always to be present
-        if node.document.settings.compare_sections_by_id:
-            return node['ids'][0] == other['ids'][0]
+        """Compare sections by their names or normally."""
+        if node.document.settings.compare_sections_by_names:
+            return self.getSectionName(node) == self.getSectionName(other)
         return True
 
     ###########################################################################
