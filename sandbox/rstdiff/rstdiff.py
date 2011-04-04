@@ -33,6 +33,7 @@ except:
 import os, re, sys
 
 from pprint import pformat
+from optparse import SUPPRESS_HELP
 
 import docutils
 from docutils import frontend, writers, nodes, SettingsSpec
@@ -97,7 +98,8 @@ settings_spec = (
      ('Compare sections normally; useful when section titles change',
       ['--compare-sections-normally'],
       { 'action': 'store_false', 'dest': 'compare_sections_by_names'}),
-     )
+     (SUPPRESS_HELP, ['--dump-rstdiff'], {'action': 'store_true'}),
+     ),
     )
 
 settings_defaults = {'output_encoding_error_handler': 'xmlcharrefreplace',
@@ -672,11 +674,14 @@ class DocutilsDispatcher(HashableNodeImpl):
     # section
 
     def getSectionName(self, node):
+        """Return the best name for `node`."""
         if node['dupnames']:
             return node['dupnames'][0]
-        if node['names'][0]:
+        if node['names']:
             return node['names'][0]
-        return node['ids'][0]
+        if node['ids']:
+            return node['ids'][0]
+        return '' # No idea...
 
     def rootEq_section(self, node, other):
         """Compare sections by their names or normally."""
@@ -1073,21 +1078,23 @@ def cleanOpcodes(opcodes, dispatcher, oldList, newList):
 
 def createDiff(pub, oldTree, newTree):
     """Create and return a diff document from `oldTree` to `newTree`."""
-    dispatcher = DocutilsDispatcher(new_reporter("DIFF", pub.settings))
+    realDebug = pub.settings.debug
+    pub.settings.debug = pub.settings.dump_rstdiff
+    reporter = new_reporter("RSTDIFF", pub.settings)
+    pub.settings.debug = realDebug
+    dispatcher = DocutilsDispatcher(reporter)
     opcodes = doDiff(dispatcher, oldTree, newTree)
 
-    if pub.settings.debug:
-        # This may be expensive so guard this explicitly
-        oldTree.reporter.debug(oldTree.asdom().toprettyxml())
-        newTree.reporter.debug(newTree.asdom().toprettyxml())
-        oldTree.reporter.debug(pformat(opcodes, 2, 40, None))
-        oldTree.reporter.debug("^^^ Before cleaning vvv After cleaning")
+    if pub.settings.dump_rstdiff:
+        reporter.debug(oldTree.asdom().toprettyxml())
+        reporter.debug(newTree.asdom().toprettyxml())
+        reporter.debug(pformat(opcodes, 2, 40, None))
+        reporter.debug("^^^ Before cleaning vvv After cleaning")
 
     cleanOpcodes(opcodes, dispatcher, [ oldTree ], [ newTree ])
 
-    if pub.settings.debug:
-        # This may be expensive so guard this explicitly
-        oldTree.reporter.debug(pformat(opcodes, 2, 40, None))
+    if pub.settings.dump_rstdiff:
+        reporter.debug(pformat(opcodes, 2, 40, None))
 
     if len(opcodes) != 1:
         raise TypeError("Don't know how to merge documents which are not rootEq")

@@ -1,4 +1,49 @@
 **************************************
+Date: Mon Apr  4 21:31:26 CEST 2011
+Author: stefan
+Tag: rstdiff_1_117
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory theowa:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Log Message:
+Debugging.
+**************************************
+Date: Mon Apr  4 21:13:49 CEST 2011
+Author: stefan
+Tag: rstdiff_1_116
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory theowa:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/secret
+In directory theowa:/home/stefan/free/rstdiff/tests/secret
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/secretHtml
+In directory theowa:/home/stefan/free/rstdiff/tests/secretHtml
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Introduced `--dump-rstdiff` since normal `--debug` fails to often with
+non-ASCII input documents.
+**************************************
 Date: Mon Apr  4 10:20:51 CEST 2011
 Author: stefan
 Tag: rstdiff_1_115
