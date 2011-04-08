@@ -33,16 +33,15 @@ class CommandLineEncodingTests(unittest.TestCase):
         if argv_encoding is None:
             # failure to load "locale" or "subprocess" module
             return # nothing to test
-        
+
         # This does not work, as there is no "encoding" argument!
         # if sys.argv:
         #     self.assertEqual(sys.argv[0].encoding,
         #                      locale.getpreferredencoding())
         # so instead, we check if a command line with non-ASCII char works
-        
-        cmd_str = normpath(dirname(dirname(__file__)) + 
-                           '/tools/rst2pseudoxml.py')
-        cmd_str += u' --title=Dornröschen'
+
+        cmd_str = (u'python %s/mini_frontend.py --title=Dornröschen' %
+                   normpath(dirname(__file__) + ''))
         p = subprocess.Popen([cmd_str.encode(argv_encoding)], shell=True,
                              stdin=subprocess.PIPE, stdout=subprocess.PIPE)
         p.stdin.close()
