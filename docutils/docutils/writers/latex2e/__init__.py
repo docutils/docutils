@@ -829,7 +829,7 @@ class Table(object):
         mc_width = sum(width
                        for width in (self._col_width[start + co - 1]
                                      for co in range (len_)))
-        return '{0:.2f}\\DUtablewidth'.format(mc_width)
+        return '%.2f\\DUtablewidth' % mc_width
 
     def get_caption(self):
         if not self.caption:
