@@ -1,4 +1,129 @@
 **************************************
+Date: Sat Apr  9 12:06:46 CEST 2011
+Author: stefan
+Tag: rstdiff_1_122
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/html/source
+In directory rosalu:/home/stefan/free/rstdiff/tests/html/source
+
+Removed Files:
+	contents.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/htmlNoSource/expected
+In directory rosalu:/home/stefan/free/rstdiff/tests/htmlNoSource/expected
+
+Added Files:
+	contents.html 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/secret/expected
+In directory rosalu:/home/stefan/free/rstdiff/tests/secret/expected
+
+Modified Files:
+	taxonomie.xml 
+
+--------------------------------------
+Log Message:
+Adapted tests.
+**************************************
+Date: Fri Apr  8 19:28:53 CEST 2011
+Author: stefan
+Tag: rstdiff_1_121
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff
+In directory theowa:/home/stefan/free/rstdiff
+
+Modified Files:
+	rstdiff.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/htmlNoSource
+In directory theowa:/home/stefan/free/rstdiff/tests/htmlNoSource
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/htmlNoSource/expected
+In directory theowa:/home/stefan/free/rstdiff/tests/htmlNoSource/expected
+
+Modified Files:
+	generated.html 
+
+--------------------------------------
+Log Message:
+`generated` nodes are replaced by `inline` nodes so changed section
+numbers are marked up correctly. Tests are not adapted yet.
+**************************************
+Date: Thu Apr  7 22:31:13 CEST 2011
+Author: stefan
+Tag: rstdiff_1_120
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/htmlNoSource/expected
+In directory theowa:/home/stefan/free/rstdiff/tests/htmlNoSource/expected
+
+Modified Files:
+	generated.html 
+
+--------------------------------------
+Log Message:
+Corrected test.
+**************************************
+Date: Thu Apr  7 22:29:51 CEST 2011
+Author: stefan
+Tag: rstdiff_1_119
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/htmlNoSource/expected
+In directory theowa:/home/stefan/free/rstdiff/tests/htmlNoSource/expected
+
+Modified Files:
+	generated.html 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/htmlNoSource/input
+In directory theowa:/home/stefan/free/rstdiff/tests/htmlNoSource/input
+
+Modified Files:
+	generated.new.rst generated.old.rst 
+
+--------------------------------------
+Log Message:
+Added description of solution.
+**************************************
+Date: Thu Apr  7 21:50:55 CEST 2011
+Author: stefan
+Tag: rstdiff_1_118
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/htmlNoSource
+In directory theowa:/home/stefan/free/rstdiff/tests/htmlNoSource
+
+Added Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/htmlNoSource/expected
+In directory theowa:/home/stefan/free/rstdiff/tests/htmlNoSource/expected
+
+Added Files:
+	generated.html 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/rstdiff/tests/htmlNoSource/input
+In directory theowa:/home/stefan/free/rstdiff/tests/htmlNoSource/input
+
+Added Files:
+	generated.new.rst generated.old.rst 
+
+--------------------------------------
+Log Message:
+Added a failing test for generated parts in HTML.
+**************************************
 Date: Mon Apr  4 21:31:26 CEST 2011
 Author: stefan
 Tag: rstdiff_1_117
