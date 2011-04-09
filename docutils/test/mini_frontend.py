@@ -14,6 +14,7 @@ A minimal Docutils front-end for testing the command line
 import sys, os
 testroot = os.path.abspath(os.path.dirname(__file__) or os.curdir)
 sys.path.insert(0, os.path.normpath(os.path.join(testroot, '..')))
+sys.path.append(os.path.normpath(os.path.join(testroot, '..', 'extras')))
 
 from docutils.core import publish_cmdline
 
