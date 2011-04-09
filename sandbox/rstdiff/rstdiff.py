@@ -407,6 +407,19 @@ class Words2TextVisitor(nodes.SparseNodeVisitor):
 
     visit_Word = visit_Text
 
+class Generated2Inline(Transform):
+    """Transforms a `generated` node into an `inline` node."""
+
+    def apply(self):
+        self.document.walk(Generated2InlineVisitor(self.document))
+
+class Generated2InlineVisitor(nodes.SparseNodeVisitor):
+
+    def visit_generated(self, generated):
+        inline = nodes.inline(text=generated.children[0].astext(),
+                              *generated.children[1:], **generated.attributes)
+        generated.parent.replace(generated, inline)
+
 ###############################################################################
 ###############################################################################
 # Hashable
@@ -1128,6 +1141,7 @@ if __name__ == '__main__':
 
     diffDoc = createDiff(pub, oldTree, newTree)
     Words2Text(diffDoc).apply()
+    Generated2Inline(diffDoc).apply()
 
     pub.writer.write(diffDoc, pub.destination)
     pub.writer.assemble_parts()
