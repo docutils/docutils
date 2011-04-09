@@ -39,9 +39,8 @@ class CommandLineEncodingTests(unittest.TestCase):
         #     self.assertEqual(sys.argv[0].encoding,
         #                      locale.getpreferredencoding())
         # so instead, we check if a command line with non-ASCII char works
-
-        cmd_str = (u'python %s/mini_frontend.py --title=Dornröschen' %
-                   normpath(dirname(__file__) + ''))
+        cmd_str = (u'%s %s/mini_frontend.py --title=Dornröschen' %
+                   (sys.executable, normpath(dirname(__file__) + '')))
         p = subprocess.Popen([cmd_str.encode(argv_encoding)], shell=True,
                              stdin=subprocess.PIPE, stdout=subprocess.PIPE)
         p.stdin.close()
