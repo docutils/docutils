@@ -60,7 +60,17 @@ __version_details__ = 'repository'
 """Extra version details (e.g. 'snapshot 2005-05-29, r3410', 'repository',
 'release'), modified automatically & manually."""
 
-class ApplicationError(StandardError): pass
+import sys
+
+class ApplicationError(StandardError):
+    # Workaround:
+    # In Python < 2.6, unicode(<exception instance>) calls `str` on the
+    # arg and therefore, e.g., unicode(StandardError(u'\u234')) fails
+    # with UnicodeDecodeError.
+    if sys.version_info < (2,6):
+        def __unicode__(self):
+            return u', '.join(self.args)
+
 class DataError(ApplicationError): pass
 
 
