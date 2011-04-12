@@ -12,10 +12,10 @@ Test module for utils.py.
 import unittest
 import sys
 from DocutilsTestSupport import utils, nodes
-if sys.version_info < (3,0):
-    from StringIO import StringIO
-else:
+try:
     from io import StringIO
+except ImportError:    # io is new in Python 2.6
+    from StringIO import StringIO
 
 
 class ReporterTests(unittest.TestCase):
@@ -72,6 +72,28 @@ class ReporterTests(unittest.TestCase):
         self.assertEquals(self.stream.getvalue(), 'test data:: (SEVERE/4) '
                           'a severe error, raises an exception\n')
 
+
+    def test_unicode_message(self):
+        sw = self.reporter.system_message(0, u'mesidʒ')
+        self.assertEquals(sw.pformat(), u"""\
+<system_message level="0" source="test data" type="DEBUG">
+    <paragraph>
+        mesidʒ
+""")
+
+    def test_unicode_message_from_exception(self):
+        """Workaround for Python < 2.6 bug:
+        unicode(<exception instance>) uses __str__
+        and hence fails with unicode message"""
+        try:
+            raise Exception(u'mesidʒ')
+        except Exception, err:
+            sw = self.reporter.system_message(0, err)
+            self.assertEquals(sw.pformat(), u"""\
+<system_message level="0" source="test data" type="DEBUG">
+    <paragraph>
+        mesidʒ
+""")
 
 class QuietReporterTests(unittest.TestCase):
 
