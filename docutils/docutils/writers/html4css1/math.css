@@ -30,6 +30,9 @@ span.unknown {
 span.ignored, span.arraydef {
 	display: none;
 }
+.formula i {
+	letter-spacing: 0.1ex;
+}
 
 /* Alignment */
 .align-left, .align-l {
@@ -166,3 +169,5 @@ span.arraycell, span.bracket, span.case, span.binomcell, span.environmentcell {
 	line-height: 99%;
 	border: 0ex;
 }
+@import "math-extras.css";
+

@@ -20,6 +20,7 @@ import string
 import urllib
 from docutils import frontend, nodes, languages, writers, utils, io
 from docutils.transforms import writer_aux
+from docutils.math import unimathsymbols2tex
 
 # compatibility module for Python 2.3
 if not hasattr(string, 'Template'):
@@ -2424,50 +2425,51 @@ class LaTeXTranslator(nodes.NodeVisitor):
     ## def depart_meta(self, node):
     ##     self.out.append('[depart_meta]\n')
 
-    def visit_math(self, node):
-        """math role"""
-        self.requirements['amsmath'] = r'\usepackage{amsmath}'
-        if node['classes']:
-            self.visit_inline(node)
-        self.verbatim = True
-        self.out.append('$')
-
-    def depart_math(self, node):
-        self.verbatim = False
-        self.out.append('$')
-        if node['classes']:
-            self.depart_inline(node)
-
-    def multiline_math(self, code):
+    def multiline_math(self, node):
         """find out whether `code` is a multi-line equation
 
         This is a very simplified test, looking
         for line-breaks (``\\``) outside environments.
         """
+        code = node.astext()
         # cut out environment content:
         chunks = code.split(r'\begin{')
         toplevel_code = ''.join([chunk.split(r'\end{')[-1]
                                  for chunk in chunks])
         return toplevel_code.find(r'\\') >= 0
 
-    def visit_math_block(self, node):
-        self.requirements['amsmath'] = r'\usepackage{amsmath}'
+    def visit_math(self, node, math_env='$'):
+        """math role"""
         if node['classes']:
             self.visit_inline(node)
-        math_code = node.astext()
-        if self.multiline_math(math_code):
-            environment = 'align*'
+        self.requirements['amsmath'] = r'\usepackage{amsmath}'
+        math_code = node.astext().translate(unimathsymbols2tex.uni2tex_table)
+        if math_env == '$':
+            wrapper = u'$%s$'
         else:
-            environment = 'equation*'
-        self.out.append ('%%\n\\begin{%s}\n' % environment)
-        self.out.append(math_code)
-        self.out.append('\n\\end{%s}' % environment)
+            wrapper = u'\n'.join(['%%',
+                                 r'\begin{%s}' % math_env,
+                                 '%s',
+                                 r'\end{%s}' % math_env])
+        # print repr(wrapper), repr(math_code)
+        self.out.append(wrapper % math_code)
+        if node['classes']:
+            self.depart_inline(node)
         # Content already processed:
         raise nodes.SkipNode
 
+    def depart_math(self, node):
+        pass # never reached
+
+    def visit_math_block(self, node):
+        if self.multiline_math(node):
+            math_env = 'align*'
+        else:
+            math_env = 'equation*'
+        self.visit_math(node, math_env=math_env)
+
     def depart_math_block(self, node):
-        if node['classes']:
-            self.depart_inline(node)
+        pass # never reached
 
     def visit_option(self, node):
         if self.context[-1]:

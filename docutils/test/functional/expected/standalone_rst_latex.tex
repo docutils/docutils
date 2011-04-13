@@ -1629,15 +1629,15 @@ The following works in most browsers but does not validate
 %___________________________________________________________________________
 
 \subsection*{\phantomsection%
-  2.22~~~Testing Math%
-  \addcontentsline{toc}{subsection}{2.22~~~Testing Math}%
-  \label{testing-math}%
+  2.22~~~Mathematics%
+  \addcontentsline{toc}{subsection}{2.22~~~Mathematics}%
+  \label{mathematics}%
 }
 
 Docutils supports inline math with the prefix or postfix \texttt{:math:}
 role specificator, $n! + \sin(x_n^2)$ and $A_\text{c} =
 \frac{\pi}{4} d^2$, as well as displayed math via the
-\texttt{math} directive:
+\DUroletitlereference{math} directive:
 %
 \begin{equation*}
 f(\epsilon) = \frac{1}{1 + \exp\left(\frac{\varepsilon}{k_\text{B}T}\right)}
@@ -1659,7 +1659,18 @@ Sum and Integral with limits:
 \end{equation*}%
 \begin{equation*}
 \sum_{n=1}^m n = \frac{m(m+1)}{2}
-\end{equation*}%
+\end{equation*}
+LaTeX-supported Unicode math symbols can be used in math roles and
+directives:
+
+The Schrödinger equation
+%
+\begin{equation*}
+i\hbar \frac{\partial }{\partial t}\Psi  = \hat{H}\Psi ,
+\end{equation*}
+with the \emph{wave function} $\Psi $, describes how the quantum state of a
+physical system changes in time.
+%
 \begin{description}
 \item[{Math-Accents:}] \leavevmode 
 \setlength{\DUtablewidth}{\linewidth}
@@ -1699,16 +1710,11 @@ $\vec{R}$        \texttt{\textbackslash{}vec\{R\}}
 % \widetilde{xxx}
 % \widehat{xxx}
 
-Quantum mechanics:
-%
-\begin{equation*}
--\frac{1}{2}\nabla^2 \psi + v \psi = \varepsilon \psi
-\end{equation*}
 Modulation Transfer Function:
 %
 \begin{equation*}
-\text{MTF}=\left|\frac{\mathcal{F}\left\{ s(x)\right\} }
-                  {\mathcal{F}\left\{ s(x)\right\} |_{\omega_{x}=0}}\right|
+\text{MTF}=\left|\frac{\mathcal{F}\{s(x)\}}
+                  {\mathcal{F}\{ s(x)\} |_{\omega_{x}=0}}\right|
            =\text{abs}\left(\frac{\int_{-\infty}^{\infty}s(x)
                               \text{e}^{\text{i}\omega_{x}x}\text{d}{x}}
                               {\int_{-\infty}^{\infty}s(x)\text{d}{x}}
@@ -1717,28 +1723,26 @@ Modulation Transfer Function:
 Math split over two lines:
 %
 \begin{align*}
-g(\alpha) = & (1 + \alpha + \alpha^2 + \alpha^3 + \alpha^4\\
-            & + \alpha^5)
+s_{\mathrm{out}}(x) & = s_{\mathrm{in}}(x') * s_\delta (x-x') \\
+                    & = \int  s_{\mathrm{in}}(x')s_\delta (x-x')\mathrm{d}x'
 \end{align*}
 Cases (``manually'', with \texttt{matrix} environment):
 %
 \begin{equation*}
-f(x) = \left\{
-  \begin{matrix}
-    -1 & x<0\\
-     1 & x>0
-  \end{matrix}\right.
+\mathrm{sgn}(x) = \left\{\begin{matrix}
+                    -1 & x<0\\
+                    1 & x>0
+                  \end{matrix}\right.
 \end{equation*}
-Cases with the AMSmath \texttt{cases} environment is not (yet)
-supported by latex2MathML.
-
-% math:
-% 
-% \mathrm{sgn}(x) = \begin{cases}
-%                     -1 & x<0\\
-%                      1 & x>0
-%                   \end{cases}
-
+Cases with the AMSmath \texttt{cases} environment (not (yet)
+supported by latex2MathML):
+%
+\begin{equation*}
+\mathrm{sgn}(x) = \begin{cases}
+                    -1 & x<0\\
+                     1 & x>0
+                  \end{cases}
+\end{equation*}
 
 %___________________________________________________________________________
 
