@@ -26,6 +26,7 @@ except ImportError:
 import docutils
 from docutils import frontend, nodes, utils, writers, languages, io
 from docutils.transforms import writer_aux
+from docutils.math import unimathsymbols2tex
 from docutils.math.latex2mathml import parse_latex_math
 from docutils.math.math2html import math2html
 
@@ -123,7 +124,8 @@ class Writer(writers.Writer):
           'Defined styles: "borderless". Default: ""',
           ['--table-style'],
           {'default': ''}),
-         ('Math output format, e.g. "MathML" or "HTML". Default: "MathML"',
+         ('Math output format, one of "MathML", "HTML", or "LaTeX". '
+          'Default: "MathML"', 
           ['--math-output'],
           {'default': 'MathML'}),
          ('Omit the XML declaration.  Use with caution.',
@@ -1107,17 +1109,37 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_literal_block(self, node):
         self.body.append('\n</pre>\n')
 
+    def multiline_math(self, node):
+        """find out whether `code` is a multi-line equation
+
+        This is a very simplified test, looking
+        for line-breaks (``\\``) outside environments.
+        """
+        code = node.astext()
+        # cut out environment content:
+        chunks = code.split(r'\begin{')
+        toplevel_code = ''.join([chunk.split(r'\end{')[-1]
+                                 for chunk in chunks])
+        return toplevel_code.find(r'\\') >= 0
+
     def visit_math(self, node, inline=True):
-        math_in = node.astext()
+        math_code = node.astext().translate(unimathsymbols2tex.uni2tex_table)
 
         if self.math_output == 'latex':
             self.body.append(self.starttag(node, 'tt', CLASS='math'))
             return
 
         if self.math_output == 'html':
+            wrapper = u'%s'
+            if not inline and self.multiline_math(node):
+                math_env = 'align*'
+                wrapper = u'\n'.join([r'\begin{%s}' % math_env,
+                                      '%s',
+                                      r'\end{%s}' % math_env])
+            #
             tag={True: 'span', False: 'div'}
             self.body.append(self.starttag(node, tag[inline], CLASS='formula'))
-            self.body.append(math2html(math_in))
+            self.body.append(math2html(wrapper % math_code))
             self.body.append('</%s>\n' % tag[inline])
 
         elif self.math_output == 'mathml':
@@ -1132,12 +1154,21 @@ class HTMLTranslator(nodes.NodeVisitor):
                 self.has_mathml_dtd = True
             # Convert from LaTeX to MathML:
             try:
-                mathml_tree = parse_latex_math(math_in, inline=inline)
+                mathml_tree = parse_latex_math(math_code, inline=inline)
                 math_out = ''.join(mathml_tree.xml())
             except SyntaxError, err:
-                self.document.reporter.error(err, base_node=node)
-                math_out = unicode(err) # TODO: generate system message and link.
-            self.body.append(math_out)
+                err_node = self.document.reporter.error(err, base_node=node)
+                self.visit_system_message(err_node)
+                self.body.append(self.starttag(node, 'p'))
+                self.body.append(u','.join(err.args))
+                self.body.append('</p>\n')
+                self.body.append(self.starttag(node, 'pre', 
+                                               CLASS='literal-block'))
+                self.body.append(self.encode(math_code))
+                self.body.append('\n</pre>\n')
+                self.depart_system_message(err_node)
+            else:
+                self.body.append(math_out)
             if not inline:
                 self.body.append('\n')
         # Content already processed:

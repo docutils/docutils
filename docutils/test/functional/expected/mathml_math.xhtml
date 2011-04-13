@@ -4,12 +4,12 @@
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
 <meta name="generator" content="Docutils 0.8: http://docutils.sourceforge.net/" />
-<title>Testing Math</title>
+<title>Mathematics</title>
 <link rel="stylesheet" href="../../../docutils/writers/html4css1/html4css1.css" type="text/css" />
 </head>
 <body>
-<div class="document" id="testing-math">
-<h1 class="title">Testing Math</h1>
+<div class="document" id="mathematics">
+<h1 class="title">Mathematics</h1>
 
 <p>Docutils supports inline math with the prefix or postfix <tt class="docutils literal">:math:</tt>
 role specificator, <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -17,7 +17,7 @@ role specificator, <math xmlns="http://www.w3.org/1998/Math/MathML">
 <mrow><msub><mi>A</mi><mtext>c</mtext></msub><mo>=</mo><mfrac>
 <mrow><mi>π</mi></mrow>
 <mrow><mn>4</mn></mrow></mfrac><msup><mi>d</mi><mn>2</mn></msup></mrow></math>, as well as displayed math via the
-<tt class="docutils literal">math</tt> directive:</p>
+<cite>math</cite> directive:</p>
 <math xmlns="http://www.w3.org/1998/Math/MathML" mode="display">
 <mtable>
 <mtr>
@@ -64,6 +64,19 @@ role specificator, <math xmlns="http://www.w3.org/1998/Math/MathML">
 <mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></munderover><mi>n</mi><mo>=</mo><mfrac>
 <mrow><mi>m</mi><mo>(</mo><mi>m</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow>
 <mrow><mn>2</mn></mrow></mfrac></mtd></mtr></mtable></math>
+<p>LaTeX-supported Unicode math symbols can be used in math roles and
+directives:</p>
+<p>The Schrödinger equation</p>
+<math xmlns="http://www.w3.org/1998/Math/MathML" mode="display">
+<mtable>
+<mtr>
+<mtd><mi>i</mi><mo>ℏ</mo><mfrac>
+<mrow><mo>∂</mo></mrow>
+<mrow><mo>∂</mo><mi>t</mi></mrow></mfrac><mo>Ψ</mo><mo>=</mo><mover>
+<mrow><mi>H</mi></mrow><mo>^</mo></mover><mo>Ψ</mo><mo>,</mo></mtd></mtr></mtable></math>
+<p>with the <em>wave function</em> <math xmlns="http://www.w3.org/1998/Math/MathML">
+<mrow><mo>Ψ</mo></mrow></math>, describes how the quantum state of a
+physical system changes in time.</p>
 <dl class="docutils">
 <dt>Math-Accents:</dt>
 <dd><table border="1" class="borderless first last docutils">
@@ -119,30 +132,14 @@ role specificator, <math xmlns="http://www.w3.org/1998/Math/MathML">
 </dl>
 <!-- \widetilde{xxx}
 \widehat{xxx} -->
-<p>Quantum mechanics:</p>
-<math xmlns="http://www.w3.org/1998/Math/MathML" mode="display">
-<mtable>
-<mtr>
-<mtd><mo>-</mo><mfrac>
-<mrow><mn>1</mn></mrow>
-<mrow><mn>2</mn></mrow></mfrac><msup><mo>∇</mo><mn>2</mn></msup><mi>ψ</mi><mo>+</mo><mi>v</mi><mi>ψ</mi><mo>=</mo><mi>ε</mi><mi>ψ</mi></mtd></mtr></mtable></math>
-<p>Alternatively, unicode math symbols can be used in the input:</p>
-<math xmlns="http://www.w3.org/1998/Math/MathML" mode="display">
-<mtable>
-<mtr>
-<mtd><mo>-</mo><mfrac>
-<mrow><mn>1</mn></mrow>
-<mrow><mn>2</mn></mrow></mfrac><msup><mo>∇</mo><mn>2</mn></msup><mi>ψ</mi><mo>+</mo><mi>v</mi><mi>ψ</mi><mo>=</mo><mi>ε</mi><mi>ψ</mi></mtd></mtr></mtable></math>
 <p>Modulation Transfer Function:</p>
 <math xmlns="http://www.w3.org/1998/Math/MathML" mode="display">
 <mtable>
 <mtr>
 <mtd><mtext>MTF</mtext><mo>=</mo><mfenced open="|" close="|">
 <mrow><mfrac>
-<mrow><mi>ℱ</mi><mfenced open="{" close="}">
-<mrow><mi>s</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow></mfenced></mrow>
-<mrow><mi>ℱ</mi><mfenced open="{" close="}">
-<mrow><mi>s</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow></mfenced><msub><mo>|</mo>
+<mrow><mi>ℱ</mi><mo>{</mo><mi>s</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo></mrow>
+<mrow><mi>ℱ</mi><mo>{</mo><mi>s</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>}</mo><msub><mo>|</mo>
 <mrow><msub><mi>ω</mi>
 <mrow><mi>x</mi></mrow></msub><mo>=</mo><mn>0</mn></mrow></msub></mrow></mfrac></mrow></mfenced><mo>=</mo><mtext>abs</mtext><mfenced open="(" close=")">
 <mrow><mfrac>
@@ -160,16 +157,19 @@ role specificator, <math xmlns="http://www.w3.org/1998/Math/MathML">
 <math xmlns="http://www.w3.org/1998/Math/MathML" mode="display">
 <mtable>
 <mtr>
-<mtd><mi>g</mi><mo>(</mo><mi>α</mi><mo>)</mo><mo>=</mo></mtd>
-<mtd><mo>(</mo><mn>1</mn><mo>+</mo><mi>α</mi><mo>+</mo><msup><mi>α</mi><mn>2</mn></msup><mo>+</mo><msup><mi>α</mi><mn>3</mn></msup><mo>+</mo><msup><mi>α</mi><mn>4</mn></msup></mtd></mtr>
+<mtd><msub><mi>s</mi>
+<mrow><mtext>out</mtext></mrow></msub><mo>(</mo><mi>x</mi><mo>)</mo></mtd>
+<mtd><mo>=</mo><msub><mi>s</mi>
+<mrow><mtext>in</mtext></mrow></msub><mo>(</mo><mi>x</mi><mo>'</mo><mo>)</mo><mo>*</mo><msub><mi>s</mi><mi>δ</mi></msub><mo>(</mo><mi>x</mi><mo>-</mo><mi>x</mi><mo>'</mo><mo>)</mo></mtd></mtr>
 <mtr>
 <mtd></mtd>
-<mtd><mo>+</mo><msup><mi>α</mi><mn>5</mn></msup><mo>)</mo></mtd></mtr></mtable></math>
+<mtd><mo>=</mo><mo>∫</mo><msub><mi>s</mi>
+<mrow><mtext>in</mtext></mrow></msub><mo>(</mo><mi>x</mi><mo>'</mo><mo>)</mo><msub><mi>s</mi><mi>δ</mi></msub><mo>(</mo><mi>x</mi><mo>-</mo><mi>x</mi><mo>'</mo><mo>)</mo><mtext>d</mtext><mi>x</mi><mo>'</mo></mtd></mtr></mtable></math>
 <p>Cases (&quot;manually&quot;, with <tt class="docutils literal">matrix</tt> environment):</p>
 <math xmlns="http://www.w3.org/1998/Math/MathML" mode="display">
 <mtable>
 <mtr>
-<mtd><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mfenced open="{" close="">
+<mtd><mtext>sgn</mtext><mo>(</mo><mi>x</mi><mo>)</mo><mo>=</mo><mfenced open="{" close="">
 <mrow>
 <mtable>
 <mtr>
@@ -178,14 +178,19 @@ role specificator, <math xmlns="http://www.w3.org/1998/Math/MathML">
 <mtr>
 <mtd><mn>1</mn></mtd>
 <mtd><mi>x</mi><mo>&gt;</mo><mn>0</mn></mtd></mtr></mtable></mrow></mfenced></mtd></mtr></mtable></math>
-<p>Cases with the AMSmath <tt class="docutils literal">cases</tt> environment is not (yet)
-supported by latex2MathML.</p>
-<!-- math:
-
+<p>Cases with the AMSmath <tt class="docutils literal">cases</tt> environment (not (yet)
+supported by latex2MathML):</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">functional/input/data/math.txt</tt>, line 103)</p>
+<p>
+Environment not supported! Supported environment: "matrix".</p>
+<pre class="literal-block">
 \mathrm{sgn}(x) = \begin{cases}
-                    -1 & x<0\\
-                     1 & x>0
-                  \end{cases} -->
+                    -1 &amp; x&lt;0\\
+                     1 &amp; x&gt;0
+                  \end{cases}
+</pre>
+</div>
 </div>
 </body>
 </html>

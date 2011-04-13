@@ -1,10 +1,10 @@
-Testing Math
-------------
+Mathematics
+-----------
 
 Docutils supports inline math with the prefix or postfix ``:math:``
 role specificator, :math:`n! + \sin(x_n^2)` and `A_\text{c} =
 \frac{\pi}{4} d^2`:math:, as well as displayed math via the
-``math`` directive:
+`math` directive:
 
 .. math::
 
@@ -32,6 +32,18 @@ Sum and Integral with limits:
 
    \sum_{n=1}^m n = \frac{m(m+1)}{2}
 
+LaTeX-supported Unicode math symbols can be used in math roles and
+directives:
+
+The Schrödinger equation
+
+.. math::
+
+   i\hbar \frac{∂}{∂t}Ψ = \hat{H}Ψ,
+
+with the *wave function* :math:`Ψ`, describes how the quantum state of a
+physical system changes in time.
+
 Math-Accents:
   .. list-table::
      :class: borderless
@@ -56,18 +68,12 @@ Math-Accents:
        \widetilde{xxx}
        \widehat{xxx}
 
-Quantum mechanics:
-
-.. math::
-
-   -\frac{1}{2}\nabla^2 \psi + v \psi = \varepsilon \psi
-
 Modulation Transfer Function:
 
 .. math::
 
- \text{MTF}=\left|\frac{\mathcal{F}\left\{ s(x)\right\} }
-                   {\mathcal{F}\left\{ s(x)\right\} |_{\omega_{x}=0}}\right|
+ \text{MTF}=\left|\frac{\mathcal{F}\{s(x)\}}
+                   {\mathcal{F}\{ s(x)\} |_{\omega_{x}=0}}\right|
             =\text{abs}\left(\frac{\int_{-\infty}^{\infty}s(x)
                                \text{e}^{\text{i}\omega_{x}x}\text{d}{x}}
                                {\int_{-\infty}^{\infty}s(x)\text{d}{x}}
@@ -77,23 +83,22 @@ Math split over two lines:
 
 .. math::
 
-   g(\alpha) = & (1 + \alpha + \alpha^2 + \alpha^3 + \alpha^4\\
-               & + \alpha^5)
+   s_{\mathrm{out}}(x) & = s_{\mathrm{in}}(x') * s_δ(x-x') \\
+                       & = ∫ s_{\mathrm{in}}(x')s_δ(x-x')\mathrm{d}x'
 
 Cases ("manually", with ``matrix`` environment):
 
 .. math::
 
-   f(x) = \left\{
-     \begin{matrix}
-       -1 & x<0\\
-        1 & x>0
-     \end{matrix}\right.
+   \mathrm{sgn}(x) = \left\{\begin{matrix}
+                       -1 & x<0\\
+                       1 & x>0
+                     \end{matrix}\right.
 
-Cases with the AMSmath ``cases`` environment is not (yet)
-supported by latex2MathML.
+Cases with the AMSmath ``cases`` environment (not (yet)
+supported by latex2MathML):
 
-.. math:
+.. math::
 
    \mathrm{sgn}(x) = \begin{cases}
                        -1 & x<0\\

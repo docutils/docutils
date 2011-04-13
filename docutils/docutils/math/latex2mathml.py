@@ -293,6 +293,7 @@ special = {
     'Downarrow':u'\u21d3', 'leftrightarrow':u'\u2194',
     'Longrightarrow':u'\u27f9', 'swarrow':u'\u2199',
     'hookrightarrow':u'\u21aa', 'Rightarrow':u'\u21d2',
+    'to':u'\u2192',
     # Miscellaneous symbols:
     'infty':u'\u221e', 'surd':u'\u221a',
     'partial':u'\u2202', 'ddots':u'\u22f1', 'exists':u'\u2203',
@@ -362,6 +363,9 @@ def parse_latex_math(string, inline=True):
             elif c2 == ' ':
                 node = node.append(mspace())
                 skip = 2
+            elif c2 == ',': # TODO: small space
+                node = node.append(mspace())
+                skip = 2
             elif c2.isalpha():
                 # We have a LaTeX-name:
                 i = 2
@@ -378,12 +382,12 @@ def parse_latex_math(string, inline=True):
                 node = entry
                 skip = 2
             else:
-                raise SyntaxError(r'Syntax error: "%s%s"' % (c, c2))
+                raise SyntaxError(ur'Syntax error: "%s%s"' % (c, c2))
         elif c.isalpha():
             node = node.append(mi(c))
         elif c.isdigit():
             node = node.append(mn(c))
-        elif c in "+-/()[]|=<>,.!':":
+        elif c in "+-*/=()[]|<>,.!?':;@":
             node = node.append(mo(c))
         elif c == '_':
             child = node.delete_child()
@@ -419,7 +423,7 @@ def parse_latex_math(string, inline=True):
             node.close().append(entry)
             node = entry
         else:
-            raise SyntaxError(r'Illegal character: "%s"' % c)
+            raise SyntaxError(ur'Illegal character: "%s"' % c)
         string = string[skip:]
     return tree
 
@@ -520,7 +524,8 @@ def handle_keyword(name, node, string):
         skip = 1
     if name == 'begin':
         if not string.startswith('{matrix}'):
-            raise SyntaxError(r'Expected "\begin{matrix}"!')
+            raise SyntaxError(u'Environment not supported! '
+                              u'Supported environment: "matrix".')
         skip += 8
         entry = mtd()
         table = mtable(mtr(entry))
@@ -528,15 +533,15 @@ def handle_keyword(name, node, string):
         node = entry
     elif name == 'end':
         if not string.startswith('{matrix}'):
-            raise SyntaxError(r'Expected "\end{matrix}"!')
+            raise SyntaxError(ur'Expected "\end{matrix}"!')
         skip += 8
         node = node.close().close().close()
-    elif name == 'text':
+    elif name in ('text', 'mathrm'):
         if string[0] != '{':
-            raise SyntaxError(r'Expected "\text{...}"!')
+            raise SyntaxError(ur'Expected "\text{...}"!')
         i = string.find('}')
         if i == -1:
-            raise SyntaxError(r'Expected "\text{...}"!')
+            raise SyntaxError(ur'Expected "\text{...}"!')
         node = node.append(mtext(string[1:i]))
         skip += i + 1
     elif name == 'sqrt':
@@ -552,7 +557,7 @@ def handle_keyword(name, node, string):
             if string.startswith(par):
                 break
         else:
-            raise SyntaxError(r'Missing left-brace!')
+            raise SyntaxError(u'Missing left-brace!')
         fenced = mfenced(par)
         node.append(fenced)
         row = mrow()
@@ -564,7 +569,7 @@ def handle_keyword(name, node, string):
             if string.startswith(par):
                 break
         else:
-            raise SyntaxError(r'Missing right-brace!')
+            raise SyntaxError(u'Missing right-brace!')
         node = node.close()
         node.closepar = par
         node = node.close()
@@ -574,7 +579,7 @@ def handle_keyword(name, node, string):
             if string.startswith(operator):
                 break
         else:
-            raise SyntaxError(r'Expected something to negate: "\not ..."!')
+            raise SyntaxError(ur'Expected something to negate: "\not ..."!')
         node = node.append(mo(negatables[operator]))
         skip += len(operator)
     elif name == 'mathbf':
@@ -583,14 +588,16 @@ def handle_keyword(name, node, string):
         node = style
     elif name == 'mathbb':
         if string[0] != '{' or not string[1].isupper() or string[2] != '}':
-            raise SyntaxError(r'Expected something like "\mathbb{A}"!')
+            raise SyntaxError(ur'Expected something like "\mathbb{A}"!')
         node = node.append(mi(mathbb[string[1]]))
         skip += 3
     elif name in ('mathscr', 'mathcal'):
         if string[0] != '{' or string[2] != '}':
-            raise SyntaxError(r'Expected something like "\mathscr{A}"!')
+            raise SyntaxError(ur'Expected something like "\mathscr{A}"!')
         node = node.append(mi(mathscr[string[1]]))
         skip += 3
+    elif name == 'colon': # "normal" colon, not binary operator
+        node = node.append(mo(':')) # TODO: add ``lspace="0pt"``
     elif name in letters:
         node = node.append(mi(letters[name]))
     elif name in Greek:
@@ -606,6 +613,6 @@ def handle_keyword(name, node, string):
             node.append(ovr)
             node = ovr
         else:
-            raise SyntaxError(r'Unknown LaTeX command: ' + name)
+            raise SyntaxError(u'Unknown LaTeX command: ' + name)
 
     return node, skip

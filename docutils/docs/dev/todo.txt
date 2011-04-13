@@ -1165,14 +1165,14 @@ LaTeX math syntax
     existing extensions like `latex_math`_ (LaTeX2MathML) or the `math
     support in Sphinx`_ (see below for `HTML output`_).
 
-  * The backtick cannot be used in a math role. Fortunately, in LaTeX
-    math mode the ``\grave`` macro is used instead of ``\``` for the
-    grave accent.
-
   * Used for input and storage by the `Math support in Sphinx`_.
 
-  * Unicode input supported by the "unicode-math" package for
+  * Unicode input similar to the "unicode-math" package for
     XeTeX/LuaTeX provides for a improved readability.
+
+  * The backtick (GRAVE ACCENT, 0x60) cannot be used in a math role.
+    Fortunately, it is not required in LaTeX math mode, as the
+    ``\grave`` macro is used instead of ``\```.
 
 ASCIIMathML_
   Used, e.g., by MultiMarkdown__
@@ -2274,6 +2274,8 @@ Bug fixes
 * An enumerated list in the docinfo fails (\newcounter definition inside
   tabularx).
 
+* File names of included graphics (see also `grffile` package).
+
 Generate clean and configurable LaTeX source
 ----------------------------------------------
 
@@ -2469,6 +2471,17 @@ Tables
   + use tabularx column type ``X`` and let LaTeX decide width, or
   + use tabulary_?
 
+  .. _tabulary:
+     http://tug.ctan.org/cgi-bin/ctanPackageInformation.py?id=tabulary
+
+* From comp.text.tex (13. 4. 2011):
+
+    When using fixed width columns, you should ensure that the total
+    width does not exceed \linewidth: if the first column is p{6cm}
+    the second one should be p{\dimexpr\linewidth-6cm-4\tabcolsep}
+    because the glue \tabcolsep is added twice at every column edge.
+    You may also consider to set \tabcolsep to a different value...
+
 * csv-tables do not have a colwidth.
 
 * Add more classes or options, e.g. for
@@ -2503,10 +2516,6 @@ Tables
   The 'table', 'csv-table', and 'list-table' directives support an (optional)
   table title. In analogy to the 'figure' directive this should map to a
   table float.
-
-.. _tabulary:
-   http://tug.ctan.org/cgi-bin/ctanPackageInformation.py?id=tabulary
-
 
 Image and figure directives
 ```````````````````````````
