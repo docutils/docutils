@@ -1,6 +1,6 @@
 # Source and destination file names.
 test_source = "data/math.txt"
-test_destination = "html_math.html"
+test_destination = "math_output_html.html"
 
 # Keyword parameters passed to publish_file.
 reader_name = "standalone"

@@ -1139,10 +1139,12 @@ Math Markup
 
 We need a generic solution, that's applicable to any output format.
 Using a standard, such as MathML_, would be best. (For an overview of
-MathML implementations and tests, see e.g. the `mathweb wiki
-<http://www.mathweb.org/wiki/MathML>`__.)
+MathML implementations and tests, see e.g. the `mathweb wiki`_ or
+the `ConTeXT MathML page`_
 
 .. _MathML: http://www.w3.org/TR/MathML2/
+.. _mathweb wiki: http://www.mathweb.org/wiki/MathML
+.. _ConTeXT MathML page: http://wiki.contextgarden.net/MathML
 
 However,
 
@@ -1227,16 +1229,20 @@ Which equation environments should be supported by the math directive?
 
 * one line:
 
-  + numbered: "equation"
-  + unnumbered: "equation*" or ``\[ \]``?
+  + numbered: `equation`
+  + unnumbered: `equation*`
 
-* multiline (test for ``\\`` outside of "array" or "cases")
+* multiline (test for ``\\`` outside of a nested environment 
+  (e.g. `array` or `cases`)
 
-  + numbered: "align" (number every line) or "split" in "equation"
-    (number one line)?
-  + unnumbered: "align*"
+  + numbered: `align` (number every line)
+  
+    (To give one common number to all lines, put them in a `split`
+    environment. Docutils then places it in an `equation` environment.)
+    
+  + unnumbered: `align*`
 
-  + Sphinx math also supports "gather" (checking for blank lines in
+  + Sphinx math also supports `gather` (checking for blank lines in
     the content).
 
 See http://www.math.uiuc.edu/~hildebr/tex/displays.html.
@@ -1266,7 +1272,7 @@ MathML_
 
   Converters from LaTeX to MathML include
 
-  * `latex_math`_ (LaTeX2MathML) in the Docutils sandbox
+  * latex_math_ (Python) by Jens Jørgen Mortensen in the Docutils sandbox
   * Blahtex_ (C++)
   * MathToWeb_ (Java)
   * TeX4ht_ (TeX based)
@@ -1276,9 +1282,19 @@ MathML_
   * `Steve’s LATEX-to-MathML translator`_
     ('mini-language', javascript, Python)
 
+  latex_math_ is the base for the current latex2mathml_ module used
+  with ``--math-output=MathML``.
+  
+  * Write a new converter based on:
+  
+    * a generic tokenizer (see e.g. a `latex-codec recipe`_, 
+      `updated latex-codec`_, )
+    * the Unicode-Char <-> LaTeX mappings database unimathsymbols_
+
   __ http://msevior.livejournal.com/26377.html
   __ http://hutchinson.belmont.ma.us/tth/mml/ttmmozform.html
   .. _latex_math: ../../../sandbox/jensj/latex_math/
+  .. _latex2mathml: ../../docutils/math/latex2mathml.py
   .. _Blahtex: http://gva.noekeon.org/blahtexml/
   .. _MathToWeb:  http://www.mathtoweb.com/
   .. _TeX4ht: http://www.tug.org/applications/tex4ht/mn.html
@@ -1287,6 +1303,11 @@ MathML_
   .. _ttm: http://hutchinson.belmont.ma.us/tth/mml/
   .. _Steve’s LATEX-to-MathML translator:
      http://www.gold-saucer.org/mathml/greasemonkey/dist/display-latex
+  .. _latex-codec recipe: 
+     http://code.activestate.com/recipes/252124-latex-codec/
+  .. _updated latex-codec: 
+     http://mirror.ctan.org/biblio/bibtex/utils/mab2bib/latex.py
+  .. _unimathsymbols: http://milde.users.sourceforge.net/LUCR/Math/
 
 .. URL seems down:
    .. _itex: http://pear.math.pitt.edu/mathzilla/itex2mmlItex.html

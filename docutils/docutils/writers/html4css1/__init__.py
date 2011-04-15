@@ -124,8 +124,8 @@ class Writer(writers.Writer):
           'Defined styles: "borderless". Default: ""',
           ['--table-style'],
           {'default': ''}),
-         ('Math output format, one of "MathML", "HTML", or "LaTeX". '
-          'Default: "MathML"', 
+         ('Math output format, one of "MathML", "HTML", "MathJax" '
+          'or "LaTeX". Default: "MathML"', 
           ['--math-output'],
           {'default': 'MathML'}),
          ('Omit the XML declaration.  Use with caution.',
@@ -245,6 +245,21 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     generator = ('<meta name="generator" content="Docutils %s: '
                  'http://docutils.sourceforge.net/" />\n')
+    
+    # Template for the MathJax script in the header:
+    mathjax_script = '<script type="text/javascript" src="%s"></script>\n'
+    # The latest version of MathJax from the distributed server:
+    # avaliable to the public under the `MathJax CDN Terms of Service`__
+    # __http://www.mathjax.org/download/mathjax-cdn-terms-of-service/
+    mathjax_url = ('http://cdn.mathjax.org/mathjax/latest/MathJax.js?'
+                   'config=TeX-AMS-MML_HTMLorMML')
+    # TODO: make this configurable:
+    #
+    # a) as extra option or
+    # b) appended to math-output="MathJax"?
+    #
+    # If b), which delimiter/delimter-set (':', ',', ' ')? 
+
     stylesheet_link = '<link rel="stylesheet" href="%s" type="text/css" />\n'
     embedded_stylesheet = '<style type="text/css">\n\n%s\n</style>\n'
     words_and_spaces = re.compile(r'\S+| +|\n')
@@ -314,7 +329,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.in_document_title = 0
         self.in_mailto = 0
         self.author_in_authors = None
-        self.has_mathml_dtd = False
+        self.has_math_header = False
 
     def astext(self):
         return ''.join(self.head_prefix + self.head
@@ -1128,6 +1143,14 @@ class HTMLTranslator(nodes.NodeVisitor):
         if self.math_output == 'latex':
             self.body.append(self.starttag(node, 'tt', CLASS='math'))
             return
+        
+        elif self.math_output == 'mathjax':
+            if not self.has_math_header: # add link to mathjax script
+                self.head.append(self.mathjax_script % self.mathjax_url)
+                self.has_math_header = True
+            self.body.append(self.starttag(node, 'span', CLASS='math'))
+            self.body.append(r'\(')
+            return
 
         if self.math_output == 'html':
             wrapper = u'%s'
@@ -1144,14 +1167,14 @@ class HTMLTranslator(nodes.NodeVisitor):
 
         elif self.math_output == 'mathml':
             # update the doctype:
-            if not self.has_mathml_dtd:
+            if not self.has_math_header:
                 if self.settings.xml_declaration:
                     self.head_prefix[1] = self.doctype_mathml
                 else:
                     self.head_prefix[0] = self.doctype_mathml
                 self.html_head[0] = self.content_type_mathml
                 self.head[0] = self.content_type_mathml % self.settings.output_encoding
-                self.has_mathml_dtd = True
+                self.has_math_header = True
             # Convert from LaTeX to MathML:
             try:
                 mathml_tree = parse_latex_math(math_code, inline=inline)
@@ -1177,16 +1200,31 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_math(self, node):
         if self.math_output == 'latex':
             self.body.append('</tt>\n')
+        elif self.math_output == 'mathjax':
+            self.body.append('\\)</span>\n')
 
     def visit_math_block(self, node):
         if self.math_output == 'latex':
             self.body.append(self.starttag(node, 'pre', CLASS='math'))
+        elif self.math_output == 'mathjax':
+            if not self.has_math_header: # add link to mathjax script
+                self.head.append(self.mathjax_script % self.mathjax_url)
+                self.has_math_header = True
+            self.body.append(self.starttag(node, 'div', CLASS='math'))
+            self.body.append(r'\[')
+            if self.multiline_math(node):
+                self.body.append(r'\begin{align*}')
         else:
             self.visit_math(node, inline=False)
 
     def depart_math_block(self, node):
         if self.math_output == 'latex':
             self.body.append('\n</pre>\n')
+        elif self.math_output == 'mathjax':
+            if self.multiline_math(node):
+                self.body.append(r'\end{align*}')
+            self.body.append('\\]</div>\n')
+        # other math_output formats raise SkipNode
 
     def visit_meta(self, node):
         meta = self.emptytag(node, 'meta', **node.non_default_attributes())
