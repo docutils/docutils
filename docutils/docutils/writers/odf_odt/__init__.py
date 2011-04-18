@@ -304,7 +304,10 @@ def add_ns(tag, nsdict=CNSD):
 
 def ToString(et):
     outstream = StringIO.StringIO()
-    et.write(outstream)
+    if sys.version_info >= (3, 2):
+        et.write(outstream, encoding="unicode")
+    else:
+        et.write(outstream)
     s1 = outstream.getvalue()
     outstream.close()
     return s1
