@@ -2641,11 +2641,13 @@ class Text(RSTState):
 
     def blank(self, match, context, next_state):
         """End of paragraph."""
+        # BUG 1830380: self.paragraph returns [ node, system_message(s) ], literalnext
         paragraph, literalnext = self.paragraph(
               context, self.state_machine.abs_line_number() - 1)
         self.parent += paragraph
         if literalnext:
             self.parent += self.literal_block()
+        # BUG 1830380: parent might contain now: [ node-paragraph, system_messages(s), literal_block ]
         return [], 'Body', []
 
     def eof(self, context):

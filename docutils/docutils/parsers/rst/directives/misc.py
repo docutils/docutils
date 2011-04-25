@@ -225,6 +225,8 @@ class Replace(Directive):
         element = nodes.Element(text)
         self.state.nested_parse(self.content, self.content_offset,
                                 element)
+        # BUG 1830380 : element might contain [paragraph] + system_message(s)
+        # BUG 1830380 : could skip embedded messages, but then we loose them
         if ( len(element) != 1
              or not isinstance(element[0], nodes.paragraph)):
             messages = []
