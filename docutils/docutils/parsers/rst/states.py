@@ -421,6 +421,7 @@ class RSTState(StateWS):
         textnodes, messages = self.inline_text(text, lineno)
         p = nodes.paragraph(data, '', *textnodes)
         p.source, p.line = self.state_machine.get_source_and_line(lineno)
+        # BUG 1830380: nodes and system_messages concattenated ?
         return [p] + messages, literalnext
 
     def inline_text(self, text, lineno):
