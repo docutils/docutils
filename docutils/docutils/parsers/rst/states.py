@@ -2091,6 +2091,7 @@ class Body(RSTState):
                 source=src, line=srcline)
             msg_node += nodes.literal_block(block_text, block_text)
             result = [msg_node]
+        # BUG 1830380: returns a list of system_messages, not nodes
         assert isinstance(result, list), \
                'Directive "%s" must return a list of nodes.' % type_name
         for i in range(len(result)):
