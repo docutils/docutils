@@ -96,6 +96,9 @@ I recommend you try |Python|_.
 ["""\
 .. |name| replace::  *error in **inline ``markup
 """,
+# BUG the "Error in "replace" directive: may contain a single paragraph only."
+# results from Replace.run gets [paragraph, system_massage(s)] from nestet_parse
+# but does not expect. 
 """\
 <document source="test data">
     <system_message ids="id1" level="2" line="1" source="test data" type="WARNING">
