@@ -44,7 +44,7 @@ class Reporter:
 
     When a system message is generated, its level is compared to the stored
     thresholds, and a warning or error is generated as appropriate.  Debug
-    messages are produced iff the stored debug switch is on, independently of
+    messages are produced if the stored debug switch is on, independently of
     other thresholds.  Message output is sent to the stored warning stream if
     not set to ''.
 
