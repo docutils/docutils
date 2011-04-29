@@ -96,9 +96,6 @@ I recommend you try |Python|_.
 ["""\
 .. |name| replace::  *error in **inline ``markup
 """,
-# BUG the "Error in "replace" directive: may contain a single paragraph only."
-# results from Replace.run gets [paragraph, system_massage(s)] from nestet_parse
-# but does not expect. 
 """\
 <document source="test data">
     <system_message ids="id1" level="2" line="1" source="test data" type="WARNING">
@@ -112,10 +109,10 @@ I recommend you try |Python|_.
             Inline literal start-string without end-string.
     <system_message level="3" line="1" source="test data" type="ERROR">
         <paragraph>
-            Error in "replace" directive: may contain a single paragraph only.
-    <system_message level="2" line="1" source="test data" type="WARNING">
-        <paragraph>
-            Substitution definition "name" empty or invalid.
+            Substitution definition contains illegal element:
+        <literal_block xml:space="preserve">
+            <problematic ids="id2" refid="id1">
+                *
         <literal_block xml:space="preserve">
             .. |name| replace::  *error in **inline ``markup
 """],

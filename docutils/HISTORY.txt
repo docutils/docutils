@@ -80,6 +80,10 @@ Changes Since 0.7
   - exclude combining chars from column_width
     (partial fix for [ 2926161 ])
 
+* docutils/parsers/rst/directives/misc.py:
+
+  - Fix [ 1830389 ] Replace not breaking on getting system_messages from 
+    nested_parse
 
 Release 0.7 (2010-07-07)
 ========================

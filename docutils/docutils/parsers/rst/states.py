@@ -421,7 +421,6 @@ class RSTState(StateWS):
         textnodes, messages = self.inline_text(text, lineno)
         p = nodes.paragraph(data, '', *textnodes)
         p.source, p.line = self.state_machine.get_source_and_line(lineno)
-        # BUG 1830380: nodes and system_messages concattenated ?
         return [p] + messages, literalnext
 
     def inline_text(self, text, lineno):
@@ -2091,7 +2090,6 @@ class Body(RSTState):
                 source=src, line=srcline)
             msg_node += nodes.literal_block(block_text, block_text)
             result = [msg_node]
-        # BUG 1830380: returns a list of system_messages, not nodes
         assert isinstance(result, list), \
                'Directive "%s" must return a list of nodes.' % type_name
         for i in range(len(result)):
@@ -2642,13 +2640,12 @@ class Text(RSTState):
 
     def blank(self, match, context, next_state):
         """End of paragraph."""
-        # BUG 1830380: self.paragraph returns [ node, system_message(s) ], literalnext
+        # NOTE: self.paragraph returns [ node, system_message(s) ], literalnext
         paragraph, literalnext = self.paragraph(
               context, self.state_machine.abs_line_number() - 1)
         self.parent += paragraph
         if literalnext:
             self.parent += self.literal_block()
-        # BUG 1830380: parent might contain now: [ node-paragraph, system_messages(s), literal_block ]
         return [], 'Body', []
 
     def eof(self, context):
