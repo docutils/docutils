@@ -225,23 +225,23 @@ class Replace(Directive):
         element = nodes.Element(text)
         self.state.nested_parse(self.content, self.content_offset,
                                 element)
-        # BUG 1830380 : element might contain [paragraph] + system_message(s)
-        # BUG 1830380 : could skip embedded messages, but then we loose them
-        if ( len(element) != 1
-             or not isinstance(element[0], nodes.paragraph)):
-            messages = []
-            for node in element:
-                if isinstance(node, nodes.system_message):
-                    node['backrefs'] = []
-                    messages.append(node)
-            error = self.state_machine.reporter.error(
-                'Error in "%s" directive: may contain a single paragraph '
-                'only.' % (self.name), line=self.lineno)
-            messages.append(error)
-            return messages
-        else:
-            return element[0].children
-
+        # element might contain [paragraph] + system_message(s)
+        node = None
+        messages = []
+        for elem in element:
+            if not node and isinstance(elem, nodes.paragraph):
+                node = elem
+            elif isinstance(elem, nodes.system_message):
+                elem['backrefs'] = []
+                messages.append(elem)
+            else:
+                return [
+                    self.state_machine.reporter.error(
+                        'Error in "%s" directive: may contain a single paragraph '
+                        'only.' % (self.name), line=self.lineno) ]
+        if node:
+            return messages + node.children
+        return messages
 
 class Unicode(Directive):
 
