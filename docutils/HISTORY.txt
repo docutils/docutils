@@ -27,10 +27,11 @@ Changes Since 0.7
   - Decode command line arguments with the locale's preferred encoding
     (to allow, e.g., ``--title=Dornröschen``).
   - Orphaned "python" reader and "newlatex2e" writer moved to the sandbox.
-  - Workaround for unicode messages in Exception instances 
-    with Python < 2.6.
+  - Work around Issue2517_ to allow unicode messages in `IOError`
+    instances with Python < 2.6.
 
-.. _BCP 47: http://www.rfc-editor.org/rfc/bcp/bcp47.txt
+  .. _BCP 47: http://www.rfc-editor.org/rfc/bcp/bcp47.txt
+  .. _Issue2517: http://bugs.python.org/issue2517
 
 * tools/buildhtml.py:
 
@@ -82,7 +83,7 @@ Changes Since 0.7
 
 * docutils/parsers/rst/directives/misc.py:
 
-  - Fix [ 1830389 ] Replace not breaking on getting system_messages from 
+  - Fix [ 1830389 ] Replace not breaking on getting system_messages from
     nested_parse
 
 Release 0.7 (2010-07-07)
