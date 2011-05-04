@@ -66,14 +66,13 @@ class Include(Directive):
                                input_encoding_error_handler),
                 handle_io_errors=None)
         except IOError, error:
-            raise self.severe('Problems with "%s" directive path:\n%s: %s.' %
-                        (self.name, error.__class__.__name__, str(error)))
-            # Hack: Since Python 2.6, the string interpolation returns a
-            # unicode object if one of the supplied %s replacements is a
-            # unicode object. IOError has no `__unicode__` method and the
-            # fallback `__repr__` does not report the file name. Explicitely
-            # converting to str fixes this for now::
-            #   print '%s\n%s\n%s\n' %(error, str(error), repr(error))
+            # robust error-instance to unicode conversion
+            # (work around http://bugs.python.org/issue2517):
+            errmsg = u"[Errno %d] %s: '%s'" % (error.errno,
+                                               error.strerror,
+                                               error.filename)
+            raise self.severe(u'Problems with "%s" directive path:\n%s: %s.' %
+                              (self.name, error.__class__.__name__, errmsg))
         startline = self.options.get('start-line', None)
         endline = self.options.get('end-line', None)
         try:
