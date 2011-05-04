@@ -76,12 +76,6 @@ def validate_encoding_error_handler(setting, value, option_parser,
                                     config_parser=None, config_section=None):
     try:
         codecs.lookup_error(value)
-    except AttributeError:    # TODO: remove (only needed prior to Python 2.3)
-        if value not in ('strict', 'ignore', 'replace', 'xmlcharrefreplace'):
-            raise (LookupError(
-                'unknown encoding error handler: "%s" (choices: '
-                '"strict", "ignore", "replace", or "xmlcharrefreplace")' % value),
-                   None, sys.exc_info()[2])
     except LookupError:
         raise (LookupError(
             'unknown encoding error handler: "%s" (choices: '
