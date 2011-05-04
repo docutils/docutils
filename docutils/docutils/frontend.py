@@ -39,6 +39,21 @@ import docutils.nodes
 import optparse
 from optparse import SUPPRESS_HELP
 
+# Guess the locale's encoding.
+# If no valid guess can be made, locale_encoding is set to `None`:
+try:
+    import locale # module missing in Jython
+except ImportError:
+    locale_encoding = None
+else:
+    locale_encoding = locale.getlocale()[1] or locale.getdefaultlocale()[1]
+    # locale.getpreferredencoding([do_setlocale=True|False])
+    # has side-effects | might return a wrong guess. 
+    # (cf. Update 1 in http://stackoverflow.com/questions/4082645/using-python-2-xs-locale-module-to-format-numbers-and-currency)
+    try:
+        codecs.lookup(locale_encoding)
+    except LookupError:
+        locale_encoding = None
 
 def store_multiple(option, opt, value, parser, *args, **kwargs):
     """
@@ -313,10 +328,8 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
               '0': 0, 'off': 0, 'no': 0, 'false': 0, '': 0}
     """Lookup table for boolean configuration file settings."""
 
-    try:
-        default_error_encoding = sys.stderr.encoding or 'ascii'
-    except AttributeError:
-        default_error_encoding = 'ascii'
+    default_error_encoding = getattr(sys.stderr, 'encoding',
+                                     None) or locale_encoding or 'ascii'
 
     default_error_encoding_error_handler = 'backslashreplace'
 
