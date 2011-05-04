@@ -72,9 +72,26 @@ for inclusion in the Python standard library.
 General
 =======
 
-* We don't have consistent (or no) encoding handling for command line
-  arguments.  See
-  <http://thread.gmane.org/gmane.text.docutils.user/2890/focus=2957>.
+* Encoding of command line arguments can only be guessed:
+
+  * try UTF-8/strict first, then try the locale's encoding with
+    strict error handling, then ASCII/replace?
+
+    UTF-8 is almost 100% safe to try first; false positives are rare,
+    The locale's encoding with strict error handling may be a
+    reasonable compromise, but any error would indicate that the
+    locale's encoding is inappropriate.  The only safe fallback is
+    ASCII/replace.
+
+  * Do not decode argv before option parsing but individual string
+    values?
+
+    +1 Allows for separate command-line vs. filesystem encodings,
+       respectively to keep file names encoded.
+    +1 Allows to configure command-line encoding in a config file,
+    -1 More complicated.
+
+  Cf. <http://thread.gmane.org/gmane.text.docutils.user/2890/focus=2957>.
 
 * Improve handling on Windows:
 
@@ -1232,14 +1249,14 @@ Which equation environments should be supported by the math directive?
   + numbered: `equation`
   + unnumbered: `equation*`
 
-* multiline (test for ``\\`` outside of a nested environment 
+* multiline (test for ``\\`` outside of a nested environment
   (e.g. `array` or `cases`)
 
   + numbered: `align` (number every line)
-  
+
     (To give one common number to all lines, put them in a `split`
     environment. Docutils then places it in an `equation` environment.)
-    
+
   + unnumbered: `align*`
 
   + Sphinx math also supports `gather` (checking for blank lines in
@@ -1284,10 +1301,10 @@ MathML_
 
   latex_math_ is the base for the current latex2mathml_ module used
   with ``--math-output=MathML``.
-  
+
   * Write a new converter based on:
-  
-    * a generic tokenizer (see e.g. a `latex-codec recipe`_, 
+
+    * a generic tokenizer (see e.g. a `latex-codec recipe`_,
       `updated latex-codec`_, )
     * the Unicode-Char <-> LaTeX mappings database unimathsymbols_
 
@@ -1303,9 +1320,9 @@ MathML_
   .. _ttm: http://hutchinson.belmont.ma.us/tth/mml/
   .. _Steve’s LATEX-to-MathML translator:
      http://www.gold-saucer.org/mathml/greasemonkey/dist/display-latex
-  .. _latex-codec recipe: 
+  .. _latex-codec recipe:
      http://code.activestate.com/recipes/252124-latex-codec/
-  .. _updated latex-codec: 
+  .. _updated latex-codec:
      http://mirror.ctan.org/biblio/bibtex/utils/mab2bib/latex.py
   .. _unimathsymbols: http://milde.users.sourceforge.net/LUCR/Math/
 

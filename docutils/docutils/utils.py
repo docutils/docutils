@@ -116,13 +116,7 @@ class Reporter:
         self.stream = stream
         """Where warning output is sent."""
 
-        if encoding is None:
-            try:
-                encoding = stream.encoding
-            except AttributeError:
-                pass
-
-        self.encoding = encoding or 'ascii'
+        self.encoding = encoding or getattr(stream, 'encoding', 'ascii')
         """The output character encoding."""
 
         self.observers = []
