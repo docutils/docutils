@@ -20,7 +20,7 @@ import string
 import urllib
 from docutils import frontend, nodes, languages, writers, utils, io
 from docutils.transforms import writer_aux
-from docutils.math import unimathsymbols2tex
+from docutils.math import unimathsymbols2tex, mathtools
 
 # compatibility module for Python 2.3
 if not hasattr(string, 'Template'):
@@ -2425,19 +2425,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
     ## def depart_meta(self, node):
     ##     self.out.append('[depart_meta]\n')
 
-    def multiline_math(self, node):
-        """find out whether `code` is a multi-line equation
-
-        This is a very simplified test, looking
-        for line-breaks (``\\``) outside environments.
-        """
-        code = node.astext()
-        # cut out environment content:
-        chunks = code.split(r'\begin{')
-        toplevel_code = ''.join([chunk.split(r'\end{')[-1]
-                                 for chunk in chunks])
-        return toplevel_code.find(r'\\') >= 0
-
     def visit_math(self, node, math_env='$'):
         """math role"""
         if node['classes']:
@@ -2462,10 +2449,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass # never reached
 
     def visit_math_block(self, node):
-        if self.multiline_math(node):
-            math_env = 'align*'
-        else:
-            math_env = 'equation*'
+        math_env = mathtools.pick_math_environment(node.astext())
         self.visit_math(node, math_env=math_env)
 
     def depart_math_block(self, node):

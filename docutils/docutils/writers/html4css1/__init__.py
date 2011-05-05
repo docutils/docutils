@@ -26,7 +26,7 @@ except ImportError:
 import docutils
 from docutils import frontend, nodes, utils, writers, languages, io
 from docutils.transforms import writer_aux
-from docutils.math import unimathsymbols2tex
+from docutils.math import unimathsymbols2tex, mathtools
 from docutils.math.latex2mathml import parse_latex_math
 from docutils.math.math2html import math2html
 
@@ -271,8 +271,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.settings = settings = document.settings
         lcode = settings.language_code
         self.language = languages.get_language(lcode, document.reporter)
-        self.meta = [self.content_type % settings.output_encoding,
-                     self.generator % docutils.__version__]
+        self.meta = [self.generator % docutils.__version__]
         self.head_prefix = []
         self.html_prolog = []
         if settings.xml_declaration:
@@ -280,9 +279,6 @@ class HTMLTranslator(nodes.NodeVisitor):
                                     % settings.output_encoding)
             # encoding not interpolated:
             self.html_prolog.append(self.xml_declaration)
-        self.head_prefix.extend([self.doctype,
-                                 self.head_prefix_template % {'lang': lcode}])
-        self.html_prolog.append(self.doctype)
         self.head = self.meta[:]
         # stylesheets
         styles = utils.get_stylesheet_list(settings)
@@ -329,7 +325,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.in_document_title = 0
         self.in_mailto = 0
         self.author_in_authors = None
-        self.has_math_header = False
+        self.math_header = ''
 
     def astext(self):
         return ''.join(self.head_prefix + self.head
@@ -743,11 +739,19 @@ class HTMLTranslator(nodes.NodeVisitor):
                          % self.encode(node.get('title', '')))
 
     def depart_document(self, node):
-        self.fragment.extend(self.body)
-        self.body_prefix.append(self.starttag(node, 'div', CLASS='document'))
-        self.body_suffix.insert(0, '</div>\n')
+        self.head_prefix.extend([self.doctype,
+                                 self.head_prefix_template %
+                                 {'lang': self.settings.language_code}])
+        self.html_prolog.append(self.doctype)
+        self.meta.insert(0, self.content_type % self.settings.output_encoding)
+        self.head.insert(0, self.content_type % self.settings.output_encoding)
+        if self.math_header:
+            self.head.append(self.math_header)
         # skip content-type meta tag with interpolated charset value:
         self.html_head.extend(self.head[1:])
+        self.body_prefix.append(self.starttag(node, 'div', CLASS='document'))
+        self.body_suffix.insert(0, '</div>\n')
+        self.fragment.extend(self.body) # self.fragment is the "naked" body
         self.html_body.extend(self.body_prefix[1:] + self.body_pre_docinfo
                               + self.docinfo + self.body
                               + self.body_suffix[:-1])
@@ -1124,61 +1128,48 @@ class HTMLTranslator(nodes.NodeVisitor):
     def depart_literal_block(self, node):
         self.body.append('\n</pre>\n')
 
-    def multiline_math(self, node):
-        """find out whether `code` is a multi-line equation
-
-        This is a very simplified test, looking
-        for line-breaks (``\\``) outside environments.
-        """
-        code = node.astext()
-        # cut out environment content:
-        chunks = code.split(r'\begin{')
-        toplevel_code = ''.join([chunk.split(r'\end{')[-1]
-                                 for chunk in chunks])
-        return toplevel_code.find(r'\\') >= 0
-
-    def visit_math(self, node, inline=True):
+    def visit_math(self, node, math_env=''):
+        # As there is no native HTML math support, we provide alternatives:
+        # LaTeX and MathJax math_output modes simply wrap the content,
+        # HTML and MathML math_output modes also convert the math_code.
+        # If the method is called from visit_math_block(), math_env != ''.
+        #
+        # HTML container
+        tags = {# math_mode: (inline, block, class-arguments)
+                'mathml':  (None,   None,  None),
+                'html':    ('span', 'div', 'formula'),
+                'mathjax': ('span', 'div', 'math'),
+                'latex':   ('tt',   'pre', 'math'),
+               }
+        tag = tags[self.math_output][math_env != '']
+        clsarg = tags[self.math_output][2]
+        # LaTeX container 
+        wrappers = {# math_mode: (inline, block)
+                    'mathml':  (None,     None),
+                    'html':    ('$%s$',   u'\\begin{%s}\n%s\n\\end{%s}'),
+                    'mathjax': ('\(%s\)', u'\\begin{%s}\n%s\n\\end{%s}'),
+                    'latex':   (None,     None),
+                   }
+        wrapper = wrappers[self.math_output][math_env != '']
+        # get and wrap content
         math_code = node.astext().translate(unimathsymbols2tex.uni2tex_table)
-
-        if self.math_output == 'latex':
-            self.body.append(self.starttag(node, 'tt', CLASS='math'))
-            return
-        
-        elif self.math_output == 'mathjax':
-            if not self.has_math_header: # add link to mathjax script
-                self.head.append(self.mathjax_script % self.mathjax_url)
-                self.has_math_header = True
-            self.body.append(self.starttag(node, 'span', CLASS='math'))
-            self.body.append(r'\(')
-            return
-
-        if self.math_output == 'html':
-            wrapper = u'%s'
-            if not inline and self.multiline_math(node):
-                math_env = 'align*'
-                wrapper = u'\n'.join([r'\begin{%s}' % math_env,
-                                      '%s',
-                                      r'\end{%s}' % math_env])
-            #
-            tag={True: 'span', False: 'div'}
-            self.body.append(self.starttag(node, tag[inline], CLASS='formula'))
-            self.body.append(math2html(wrapper % math_code))
-            self.body.append('</%s>\n' % tag[inline])
-
+        if wrapper and math_env:
+            math_code = wrapper % (math_env, math_code, math_env)
+        elif wrapper:
+            math_code = wrapper % math_code
+        # settings and conversion
+        if self.math_output in ('latex', 'mathjax'):
+            math_code = self.encode(math_code)
+        if self.math_output == 'mathjax':
+            self.math_header = self.mathjax_script % self.mathjax_url
+        elif self.math_output == 'html':
+            math_code = math2html(math_code)
         elif self.math_output == 'mathml':
-            # update the doctype:
-            if not self.has_math_header:
-                if self.settings.xml_declaration:
-                    self.head_prefix[1] = self.doctype_mathml
-                else:
-                    self.head_prefix[0] = self.doctype_mathml
-                self.html_head[0] = self.content_type_mathml
-                self.head[0] = self.content_type_mathml % self.settings.output_encoding
-                self.has_math_header = True
-            # Convert from LaTeX to MathML:
+            self.doctype = self.doctype_mathml
+            self.content_type = self.content_type_mathml
             try:
-                mathml_tree = parse_latex_math(math_code, inline=inline)
-                math_out = ''.join(mathml_tree.xml())
+                mathml_tree = parse_latex_math(math_code, inline=not(math_env))
+                math_code = ''.join(mathml_tree.xml())
             except SyntaxError, err:
                 err_node = self.document.reporter.error(err, base_node=node)
                 self.visit_system_message(err_node)
@@ -1190,41 +1181,27 @@ class HTMLTranslator(nodes.NodeVisitor):
                 self.body.append(self.encode(math_code))
                 self.body.append('\n</pre>\n')
                 self.depart_system_message(err_node)
-            else:
-                self.body.append(math_out)
-            if not inline:
-                self.body.append('\n')
+                raise nodes.SkipNode
+        # now append
+        if tag:
+            self.body.append(self.starttag(node, tag, CLASS=clsarg))
+        self.body.append(math_code)
+        if math_env:
+            self.body.append('\n')
+        if tag:
+            self.body.append('</%s>\n' % tag)
         # Content already processed:
         raise nodes.SkipNode
 
     def depart_math(self, node):
-        if self.math_output == 'latex':
-            self.body.append('</tt>\n')
-        elif self.math_output == 'mathjax':
-            self.body.append('\\)</span>\n')
+        pass # never reached
 
     def visit_math_block(self, node):
-        if self.math_output == 'latex':
-            self.body.append(self.starttag(node, 'pre', CLASS='math'))
-        elif self.math_output == 'mathjax':
-            if not self.has_math_header: # add link to mathjax script
-                self.head.append(self.mathjax_script % self.mathjax_url)
-                self.has_math_header = True
-            self.body.append(self.starttag(node, 'div', CLASS='math'))
-            self.body.append(r'\[')
-            if self.multiline_math(node):
-                self.body.append(r'\begin{align*}')
-        else:
-            self.visit_math(node, inline=False)
+        math_env = mathtools.pick_math_environment(node.astext())
+        self.visit_math(node, math_env=math_env)
 
     def depart_math_block(self, node):
-        if self.math_output == 'latex':
-            self.body.append('\n</pre>\n')
-        elif self.math_output == 'mathjax':
-            if self.multiline_math(node):
-                self.body.append(r'\end{align*}')
-            self.body.append('\\]</div>\n')
-        # other math_output formats raise SkipNode
+        pass # never reached
 
     def visit_meta(self, node):
         meta = self.emptytag(node, 'meta', **node.non_default_attributes())

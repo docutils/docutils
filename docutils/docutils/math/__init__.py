@@ -6,19 +6,14 @@
 #             http://www.apache.org/licenses/LICENSE-2.0
 # :Id: $Id$
 
-# __init__.py:
-# ============================================================
-
-# $Id$
-# Author: David Goodger <goodger@python.org>
-# Copyright: This module has been placed in the public domain.
-
 """
 This is the Docutils (Python Documentation Utilities) "math" sub-package.
 
 It contains various modules for conversion between different math formats
 (LaTeX, MathML, HTML).
 
-math2html.py: math conversion from eLyXer
-
+:math2html:    LaTeX math -> HTML conversion from eLyXer
+:latex2mathml: LaTeX math -> presentational MathML
+:mathtools:    helpers for Docutils math support
+:unimathsymbols2tex: Unicode symbol to LaTeX math translation table
 """

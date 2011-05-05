@@ -279,6 +279,13 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
             return 1
 
     def depart_document(self, node):
+        self.head_prefix.extend([self.doctype,
+                                 self.head_prefix_template %
+                                 {'lang': self.settings.language_code}])
+        self.html_prolog.append(self.doctype)
+        self.meta.insert(0, self.content_type % self.settings.output_encoding)
+        self.head.insert(0, self.content_type % self.settings.output_encoding)
+
         header = ''.join(self.s5_header)
         footer = ''.join(self.s5_footer)
         title = ''.join(self.html_title).replace('<h1 class="title">', '<h1>')
