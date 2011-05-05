@@ -21,27 +21,45 @@ role specificator, <span class="math">
 , as well as displayed math via the
 <cite>math</cite> directive:</p>
 <div class="math">
-\[f(\epsilon) = \frac{1}{1 + \exp\left(\frac{\varepsilon}{k_\text{B}T}\right)}\]</div>
+\begin{equation*}
+f(\epsilon) = \frac{1}{1 + \exp\left(\frac{\varepsilon}{k_\text{B}T}\right)}
+\end{equation*}
+</div>
 <div class="math">
-\[N = \frac{\text{number of apples}}{7}\]</div>
+\begin{equation*}
+N = \frac{\text{number of apples}}{7}
+\end{equation*}
+</div>
 <p>The determinant of the matrix</p>
 <div class="math">
-\[\mathbf{M} = \left(\begin{matrix}a&amp;b\\c&amp;d\end{matrix}\right)\]</div>
+\begin{equation*}
+\mathbf{M} = \left(\begin{matrix}a&amp;b\\c&amp;d\end{matrix}\right)
+\end{equation*}
+</div>
 <p>is <span class="math">
 \(|\mathbf{M}| = ad - bc\)</span>
 .</p>
 <p>Sum and Integral with limits:</p>
 <div class="math">
-\[\int_0^1 x^n dx = \frac{1}{n + 1}\]</div>
+\begin{equation*}
+\int_0^1 x^n dx = \frac{1}{n + 1}
+\end{equation*}
+</div>
 <div class="math">
-\[\sum_{n=1}^m n = \frac{m(m+1)}{2}\]</div>
+\begin{equation*}
+\sum_{n=1}^m n = \frac{m(m+1)}{2}
+\end{equation*}
+</div>
 <p>LaTeX-supported Unicode math symbols can be used in math roles and
 directives:</p>
 <p>The Schrödinger equation</p>
 <div class="math">
-\[i\hbar \frac{∂}{∂t}Ψ = \hat{H}Ψ,\]</div>
+\begin{equation*}
+i\hbar \frac{\partial }{\partial t}\Psi  = \hat{H}\Psi ,
+\end{equation*}
+</div>
 <p>with the <em>wave function</em> <span class="math">
-\(Ψ\)</span>
+\(\Psi \)</span>
 , describes how the quantum state of a
 physical system changes in time.</p>
 <dl class="docutils">
@@ -101,29 +119,41 @@ physical system changes in time.</p>
 \widehat{xxx} -->
 <p>Modulation Transfer Function:</p>
 <div class="math">
-\[\text{MTF}=\left|\frac{\mathcal{F}\{s(x)\}}
+\begin{equation*}
+\text{MTF}=\left|\frac{\mathcal{F}\{s(x)\}}
                   {\mathcal{F}\{ s(x)\} |_{\omega_{x}=0}}\right|
            =\text{abs}\left(\frac{\int_{-\infty}^{\infty}s(x)
                               \text{e}^{\text{i}\omega_{x}x}\text{d}{x}}
                               {\int_{-\infty}^{\infty}s(x)\text{d}{x}}
-                        \right).\]</div>
+                        \right).
+\end{equation*}
+</div>
 <p>Math split over two lines:</p>
 <div class="math">
-\[\begin{align*}s_{\mathrm{out}}(x) &amp; = s_{\mathrm{in}}(x') * s_δ(x-x') \\
-                    &amp; = ∫ s_{\mathrm{in}}(x')s_δ(x-x')\mathrm{d}x'\end{align*}\]</div>
+\begin{align*}
+s_{\mathrm{out}}(x) &amp; = s_{\mathrm{in}}(x') * s_\delta (x-x') \\
+                    &amp; = \int  s_{\mathrm{in}}(x')s_\delta (x-x')\mathrm{d}x'
+\end{align*}
+</div>
 <p>Cases (&quot;manually&quot;, with <tt class="docutils literal">matrix</tt> environment):</p>
 <div class="math">
-\[\mathrm{sgn}(x) = \left\{\begin{matrix}
+\begin{equation*}
+\mathrm{sgn}(x) = \left\{\begin{matrix}
                     -1 &amp; x&lt;0\\
                     1 &amp; x&gt;0
-                  \end{matrix}\right.\]</div>
+                  \end{matrix}\right.
+\end{equation*}
+</div>
 <p>Cases with the AMSmath <tt class="docutils literal">cases</tt> environment (not (yet)
 supported by latex2MathML):</p>
 <div class="math">
-\[\mathrm{sgn}(x) = \begin{cases}
+\begin{equation*}
+\mathrm{sgn}(x) = \begin{cases}
                     -1 &amp; x&lt;0\\
                      1 &amp; x&gt;0
-                  \end{cases}\]</div>
+                  \end{cases}
+\end{equation*}
+</div>
 </div>
 </body>
 </html>
