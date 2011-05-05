@@ -14,21 +14,17 @@ import DocutilsTestSupport              # must be imported before docutils
 import docutils.core
 
 try:
-    import subprocess  # new in 2.4
+    import locale # module missing in Jython
+    locale_encoding = locale.getdefaultlocale()[1]
 except ImportError:
-    argv_encoding = None
-try:
-    import locale
-    argv_encoding = locale.getpreferredencoding()
-except:
-    argv_encoding = None
+    locale_encoding = None
 
 class CommandLineEncodingTests(unittest.TestCase):
-    
+
     def test_sys_argv_decoding(self):
-        if argv_encoding is None: # cannot test
+        if locale_encoding in (None, 'ascii'): # cannot test
             return
-        sys.argv.append(u'--title=Dornröschen'.encode(argv_encoding))
+        sys.argv.append(u'--title=Dornröschen'.encode(locale_encoding))
         publisher = docutils.core.Publisher()
         publisher.process_command_line()
         self.assertEqual(publisher.settings.title, u'Dornröschen')
