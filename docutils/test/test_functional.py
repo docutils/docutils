@@ -190,7 +190,7 @@ expected output and check it in:
                 expected.splitlines(True), output.splitlines(True),
                 expected_path, params['destination_path']))
             if sys.version_info < (3,0):
-                diff = diff.encode('ascii', 'replace')
+                diff = diff.encode(sys.stderr.encoding or 'ascii', 'replace')
             print >>sys.stderr, '\n%s:' % (self,)
             print >>sys.stderr, diff
             raise

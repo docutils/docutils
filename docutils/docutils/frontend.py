@@ -717,7 +717,9 @@ Skipping "%s" configuration file.
             try:
                 CP.ConfigParser.readfp(self, fp, filename)
             except UnicodeDecodeError:
-                sys.stderr.write(self.not_utf8_error % (filename, filename))
+                msg = self.not_utf8_error % (filename, filename)
+                sys.stderr.write(msg.encode(sys.stderr.encoding or 'ascii',
+                                            'backslashreplace'))
                 fp.close()
                 continue
             fp.close()

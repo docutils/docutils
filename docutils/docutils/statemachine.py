@@ -111,7 +111,6 @@ import re
 import types
 import unicodedata
 
-
 class StateMachine:
 
     """
@@ -207,9 +206,9 @@ class StateMachine:
         self.line_offset = -1
         self.current_state = initial_state or self.initial_state
         if self.debug:
-            print >>sys.stderr, (
-                '\nStateMachine.run: input_lines (line_offset=%s):\n| %s'
-                % (self.line_offset, '\n| '.join(self.input_lines)))
+            print >>sys.stderr, self._save_encode(
+                u'\nStateMachine.run: input_lines (line_offset=%s):\n| %s'
+                % (self.line_offset, u'\n| '.join(self.input_lines)))
         transitions = None
         results = []
         state = self.get_state()
@@ -225,9 +224,9 @@ class StateMachine:
                         if self.debug:
                             source, offset = self.input_lines.info(
                                 self.line_offset)
-                            print >>sys.stderr, (
-                                '\nStateMachine.run: line (source=%r, '
-                                'offset=%r):\n| %s'
+                            print >>sys.stderr, self._save_encode(
+                                u'\nStateMachine.run: line (source=%r, '
+                                u'offset=%r):\n| %s'
                                 % (source, offset, self.line))
                         context, next_state, result = self.check_line(
                             context, state, transitions)
@@ -282,11 +281,11 @@ class StateMachine:
         """
         if next_state:
             if self.debug and next_state != self.current_state:
-                print >>sys.stderr, \
-                      ('\nStateMachine.get_state: Changing state from '
-                       '"%s" to "%s" (input line %s).'
-                       % (self.current_state, next_state,
-                          self.abs_line_number()))
+                print >>sys.stderr, (
+                    '\nStateMachine.get_state: Changing state from '
+                    '"%s" to "%s" (input line %s).'
+                    % (self.current_state, next_state,
+                       self.abs_line_number()))
             self.current_state = next_state
         try:
             return self.states[self.current_state]
@@ -488,10 +487,10 @@ class StateMachine:
     def error(self):
         """Report error details."""
         type, value, module, line, function = _exception_data()
-        print >>sys.stderr, '%s: %s' % (type, value)
+        print >>sys.stderr, self._save_encode(u'%s: %s' % (type, value))
         print >>sys.stderr, 'input line %s' % (self.abs_line_number())
-        print >>sys.stderr, ('module %s, line %s, function %s'
-                             % (module, line, function))
+        print >>sys.stderr, self._save_encode(
+                u'module %s, line %s, function %s' % (module, line, function))
 
     def attach_observer(self, observer):
         """
@@ -511,6 +510,13 @@ class StateMachine:
                 info = (None, None)
             observer(*info)
 
+    def _save_encode(self, s):
+        # Return `s` encoded catching exceptions.
+        # For debugging -> keep simple to avoid dependencies and errors.
+        if type(s) == str:
+            return s
+        # @ TODO: use 'utf-8' as fallback?
+        return s.encode(sys.stderr.encoding or 'ascii', 'backslashreplace')
 
 class State:
 
