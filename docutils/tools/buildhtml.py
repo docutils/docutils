@@ -195,12 +195,16 @@ class Builder:
         # BUG prune and ignore do not work 
         settings = self.get_settings('', directory)
         if settings.prune and (os.path.abspath(directory) in settings.prune):
-            print >>sys.stderr, '/// ...Skipping directory (pruned):', directory
+            sys.stderr.write((u'/// ...Skipping directory (pruned): %s\n' %
+                              directory).encode(settings.error_encoding,
+                                  settings.error_encoding_error_handler))
             sys.stderr.flush()
             names[:] = []
             return
         if not self.initial_settings.silent:
-            print >>sys.stderr, '/// Processing directory:', directory
+            sys.stderr.write((u'/// Processing directory: %s\n' %
+                              directory).encode(settings.error_encoding,
+                                  settings.error_encoding_error_handler))
             sys.stderr.flush()
         # settings.ignore grows many duplicate entries as we recurse
         # if we add patterns in config files or on the command line.
@@ -228,7 +232,7 @@ class Builder:
         settings._source = os.path.normpath(os.path.join(directory, name))
         settings._destination = settings._source[:-4]+'.html'
         if not self.initial_settings.silent:
-            print >>sys.stderr, '    ::: Processing:', name
+            sys.stderr.write('    ::: Processing: %s\n'% name)
             sys.stderr.flush()
         try:
             if not settings.dry_run:
@@ -239,8 +243,8 @@ class Builder:
                               writer_name=pub_struct.writer_name,
                               settings=settings)
         except ApplicationError, error:
-            print >>sys.stderr, ('        Error (%s): %s'
-                                 % (error.__class__.__name__, error))
+            sys.stderr.write('        Error (%s): %s' %
+                              (error.__class__.__name__, error))
 
 
 if __name__ == "__main__":
