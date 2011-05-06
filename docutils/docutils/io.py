@@ -12,13 +12,27 @@ __docformat__ = 'reStructuredText'
 import sys
 try:
     import locale
-except:
+except ImportError:  # module missing in Jython
     pass
 import re
 import codecs
 from docutils import TransformSpec
 from docutils._compat import b
 
+try:
+    locale_encoding = locale.getlocale()[1]
+    defaultlocale_encoding = locale.getdefaultlocale()[1]
+except NameError:
+    locale_encoding = None
+    defaultlocale_encoding = None
+
+def _save_encode(s):
+    # Return `s` encoded catching exceptions.
+    # For debugging -> keep simple to avoid dependencies and errors.
+    if type(s) == str:
+        return s
+    return s.encode(sys.stderr.encoding or defaultlocale_encoding or 'ascii',
+                    'backslashreplace')
 
 class Input(TransformSpec):
 
@@ -88,17 +102,11 @@ class Input(TransformSpec):
                 # Apply heuristics only if no encoding is explicitly given and
                 # no BOM found.  Start with UTF-8, because that only matches
                 # data that *IS* UTF-8:
-                encodings = ['utf-8']
-                try:
-                    encodings.append(locale.getlocale()[1])
-                except:
-                    pass
-                try:
-                    encodings.append(locale.getdefaultlocale()[1])
-                except:
-                    pass
-                # fallback encoding:
-                encodings.append('latin-1')
+                encodings = ['utf-8',
+                             locale_encoding,
+                             defaultlocale_encoding,
+                             'latin-1', # fallback encoding
+                            ]
         error = None
         error_details = ''
         for enc in encodings:
@@ -237,9 +245,8 @@ class FileInput(Input):
                         raise
                     print >>sys.stderr, '%s: %s' % (error.__class__.__name__,
                                                     error)
-                    print >>sys.stderr, ('Unable to open source file for '
-                                         "reading ('%s').  Exiting." %
-                                         source_path)
+                    print >>sys.stderr, _save_encode(u'Unable to open source'
+                        u" file for reading ('%s'). Exiting." % source_path)
                     sys.exit(1)
             else:
                 self.source = sys.stdin
@@ -327,10 +334,9 @@ class FileOutput(Output):
         except IOError, error:
             if not self.handle_io_errors:
                 raise
-            print >>sys.stderr, '%s: %s' % (error.__class__.__name__,
-                                            error)
-            print >>sys.stderr, ('Unable to open destination file for writing'
-                                 " ('%s').  Exiting." % self.destination_path)
+            print >>sys.stderr, '%s: %s' % (error.__class__.__name__, error)
+            print >>sys.stderr, _save_encode('Unable to open destination file'
+                " for writing ('%s').  Exiting." % self.destination_path)
             sys.exit(1)
         self.opened = 1
 
@@ -367,10 +373,9 @@ class BinaryFileOutput(FileOutput):
         except IOError, error:
             if not self.handle_io_errors:
                 raise
-            print >>sys.stderr, '%s: %s' % (error.__class__.__name__,
-                                            error)
-            print >>sys.stderr, ('Unable to open destination file for writing '
-                                 "('%s').  Exiting." % self.destination_path)
+            print >>sys.stderr, '%s: %s' % (error.__class__.__name__, error)
+            print >>sys.stderr, _save_encode('Unable to open destination file'
+                " for writing ('%s').  Exiting." % self.destination_path)
             sys.exit(1)
         self.opened = 1
 
