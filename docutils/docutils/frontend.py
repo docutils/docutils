@@ -678,7 +678,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
         raise KeyError('No option with dest == %r.' % dest)
 
 
-class ConfigParser(CP.ConfigParser):
+class ConfigParser(CP.RawConfigParser):
 
     old_settings = {
         'pep_stylesheet': ('pep_html writer', 'stylesheet'),
@@ -700,7 +700,7 @@ Skipping "%s" configuration file.
 """
 
     def __init__(self, *args, **kwargs):
-        CP.ConfigParser.__init__(self, *args, **kwargs)
+        CP.RawConfigParser.__init__(self, *args, **kwargs)
 
         self._files = []
         """List of paths of configuration files read."""
@@ -715,7 +715,7 @@ Skipping "%s" configuration file.
             except IOError:
                 continue
             try:
-                CP.ConfigParser.readfp(self, fp, filename)
+                CP.RawConfigParser.readfp(self, fp, filename)
             except UnicodeDecodeError:
                 msg = self.not_utf8_error % (filename, filename)
                 sys.stderr.write(msg.encode(sys.stderr.encoding or 'ascii',
@@ -758,7 +758,7 @@ Skipping "%s" configuration file.
                 except KeyError:
                     continue
                 if option.validator:
-                    value = self.get(section, setting, raw=1)
+                    value = self.get(section, setting)
                     try:
                         new_value = option.validator(
                             setting, value, option_parser,
@@ -787,7 +787,7 @@ Skipping "%s" configuration file.
         section_dict = {}
         if self.has_section(section):
             for option in self.options(section):
-                section_dict[option] = self.get(section, option, raw=1)
+                section_dict[option] = self.get(section, option)
         return section_dict
 
 
