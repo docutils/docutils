@@ -110,6 +110,7 @@ import sys
 import re
 import types
 import unicodedata
+from docutils.io import ErrorOutput
 
 class StateMachine:
 
@@ -168,6 +169,10 @@ class StateMachine:
         line changes.  Observers are called with one argument, ``self``.
         Cleared at the end of `run()`."""
 
+        self._stderr = ErrorOutput()
+        """Wrapper around sys.stderr catching en-/decoding errors"""
+
+
     def unlink(self):
         """Remove circular references to objects no longer required."""
         for state in self.states.values():
@@ -206,7 +211,7 @@ class StateMachine:
         self.line_offset = -1
         self.current_state = initial_state or self.initial_state
         if self.debug:
-            print >>sys.stderr, self._save_encode(
+            print >>self._stderr, (
                 u'\nStateMachine.run: input_lines (line_offset=%s):\n| %s'
                 % (self.line_offset, u'\n| '.join(self.input_lines)))
         transitions = None
@@ -214,7 +219,7 @@ class StateMachine:
         state = self.get_state()
         try:
             if self.debug:
-                print >>sys.stderr, ('\nStateMachine.run: bof transition')
+                print >>self._stderr, '\nStateMachine.run: bof transition'
             context, result = state.bof(context)
             results.extend(result)
             while 1:
@@ -224,7 +229,7 @@ class StateMachine:
                         if self.debug:
                             source, offset = self.input_lines.info(
                                 self.line_offset)
-                            print >>sys.stderr, self._save_encode(
+                            print >>self._stderr, (
                                 u'\nStateMachine.run: line (source=%r, '
                                 u'offset=%r):\n| %s'
                                 % (source, offset, self.line))
@@ -232,7 +237,7 @@ class StateMachine:
                             context, state, transitions)
                     except EOFError:
                         if self.debug:
-                            print >>sys.stderr, (
+                            print >>self._stderr, (
                                 '\nStateMachine.run: %s.eof transition'
                                 % state.__class__.__name__)
                         result = state.eof(context)
@@ -244,7 +249,7 @@ class StateMachine:
                     self.previous_line() # back up for another try
                     transitions = (exception.args[0],)
                     if self.debug:
-                        print >>sys.stderr, (
+                        print >>self._stderr, (
                               '\nStateMachine.run: TransitionCorrection to '
                               'state "%s", transition %s.'
                               % (state.__class__.__name__, transitions[0]))
@@ -257,7 +262,7 @@ class StateMachine:
                     else:
                         transitions = (exception.args[1],)
                     if self.debug:
-                        print >>sys.stderr, (
+                        print >>self._stderr, (
                               '\nStateMachine.run: StateCorrection to state '
                               '"%s", transition %s.'
                               % (next_state, transitions[0]))
@@ -281,7 +286,7 @@ class StateMachine:
         """
         if next_state:
             if self.debug and next_state != self.current_state:
-                print >>sys.stderr, (
+                print >>self._stderr, (
                     '\nStateMachine.get_state: Changing state from '
                     '"%s" to "%s" (input line %s).'
                     % (self.current_state, next_state,
@@ -438,7 +443,7 @@ class StateMachine:
             transitions =  state.transition_order
         state_correction = None
         if self.debug:
-            print >>sys.stderr, (
+            print >>self._stderr, (
                   '\nStateMachine.check_line: state="%s", transitions=%r.'
                   % (state.__class__.__name__, transitions))
         for name in transitions:
@@ -446,14 +451,14 @@ class StateMachine:
             match = pattern.match(self.line)
             if match:
                 if self.debug:
-                    print >>sys.stderr, (
+                    print >>self._stderr, (
                           '\nStateMachine.check_line: Matched transition '
                           '"%s" in state "%s".'
                           % (name, state.__class__.__name__))
                 return method(match, context, next_state)
         else:
             if self.debug:
-                print >>sys.stderr, (
+                print >>self._stderr, (
                       '\nStateMachine.check_line: No match in state "%s".'
                       % state.__class__.__name__)
             return state.no_match(context, transitions)
@@ -487,10 +492,10 @@ class StateMachine:
     def error(self):
         """Report error details."""
         type, value, module, line, function = _exception_data()
-        print >>sys.stderr, self._save_encode(u'%s: %s' % (type, value))
-        print >>sys.stderr, 'input line %s' % (self.abs_line_number())
-        print >>sys.stderr, self._save_encode(
-                u'module %s, line %s, function %s' % (module, line, function))
+        print >>self._stderr, u'%s: %s' % (type, value)
+        print >>self._stderr, 'input line %s' % (self.abs_line_number())
+        print >>self._stderr, (u'module %s, line %s, function %s' %
+                               (module, line, function))
 
     def attach_observer(self, observer):
         """
@@ -510,13 +515,6 @@ class StateMachine:
                 info = (None, None)
             observer(*info)
 
-    def _save_encode(self, s):
-        # Return `s` encoded catching exceptions.
-        # For debugging -> keep simple to avoid dependencies and errors.
-        if type(s) == str:
-            return s
-        # @ TODO: use 'utf-8' as fallback?
-        return s.encode(sys.stderr.encoding or 'ascii', 'backslashreplace')
 
 class State:
 
