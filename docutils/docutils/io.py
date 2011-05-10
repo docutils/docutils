@@ -10,29 +10,28 @@ will exist for a variety of input/output mechanisms.
 __docformat__ = 'reStructuredText'
 
 import sys
-try:
-    import locale
-except ImportError:  # module missing in Jython
-    pass
 import re
 import codecs
 from docutils import TransformSpec
-from docutils._compat import b
+from docutils._compat import b, bytes
 
+
+# Guess the locale's encoding.
+# If no valid guess can be made, locale_encoding is set to `None`:
 try:
-    locale_encoding = locale.getlocale()[1]
-    defaultlocale_encoding = locale.getdefaultlocale()[1]
-except NameError:
+    import locale # module missing in Jython
+except ImportError:
     locale_encoding = None
-    defaultlocale_encoding = None
+else:
+    locale_encoding = locale.getlocale()[1] or locale.getdefaultlocale()[1]
+    # locale.getpreferredencoding([do_setlocale=True|False])
+    # has side-effects | might return a wrong guess.
+    # (cf. Update 1 in http://stackoverflow.com/questions/4082645/using-python-2-xs-locale-module-to-format-numbers-and-currency)
+    try:
+        codecs.lookup(locale_encoding or '') # None -> ''
+    except LookupError:
+        locale_encoding = None
 
-def _save_encode(s):
-    # Return `s` encoded catching exceptions.
-    # For debugging -> keep simple to avoid dependencies and errors.
-    if type(s) == str:
-        return s
-    return s.encode(sys.stderr.encoding or defaultlocale_encoding or 'ascii',
-                    'backslashreplace')
 
 class Input(TransformSpec):
 
@@ -104,7 +103,6 @@ class Input(TransformSpec):
                 # data that *IS* UTF-8:
                 encodings = ['utf-8',
                              locale_encoding,
-                             defaultlocale_encoding,
                              'latin-1', # fallback encoding
                             ]
         error = None
@@ -203,12 +201,80 @@ class Output(TransformSpec):
             return data.encode(self.encoding, self.error_handler)
 
 
+class ErrorOutput(object):
+    """
+    Wrapper class for file-like error streams with
+    failsave de- and encoding of `str`, `bytes`, `unicode` and
+    `Exception` instances.
+
+    Note that the output stream is not automatically closed.
+    Call the close() method if required.
+    """
+
+    def __init__(self, stream=None, encoding=None,
+                 encoding_errors='backslashreplace',
+                 decoding_errors='replace'):
+        """
+        :Parameters:
+            - `stream`: a file-like object (which is written to)
+            - `encoding`: `stream` text encoding. Guessed if None.
+            - `encoding_errors`: how to treat encoding errors.
+        """
+        if stream is None:
+            stream = sys.stderr
+        elif stream: # if `stream` is a file name, open it
+            if type(stream) is bytes:
+                stream = open(stream, 'w')
+            elif type(stream) is unicode:
+                stream = open(stream.encode(sys.getfilesystemencoding()), 'w')
+
+        self.stream = stream
+        """Where warning output is sent."""
+
+        self.encoding = (encoding or getattr(stream, 'encoding', None) or
+                         locale_encoding or 'ascii')
+        """The output character encoding."""
+
+        self.encoding_errors = encoding_errors
+        """Encoding error handler."""
+
+        self.decoding_errors = decoding_errors
+        """Decoding error handler."""
+
+    def write(self, data):
+        """`data` can be a `string`, `unicode`, or `Exception` instance.
+        """
+        if isinstance(data, Exception):
+            # Convert now to detect errors:
+            # In Python <= 2.6, unicode(<exception instance>)
+            # uses __str__ and fails with non-ASCII chars in arguments
+            try:
+                data = unicode(data)
+            except UnicodeError, err:
+                try:
+                    data = u', '.join(data.args)
+                except AttributeError:
+                    raise err
+                except UnicodeDecodeError:
+                    data = str(data)
+        try:
+            self.stream.write(data)
+        except UnicodeEncodeError:
+            self.stream.write(data.encode(self.encoding,
+                                               self.encoding_errors))
+        except TypeError: # in Python 3, stderr expects unicode
+            self.stream.write(data.decode(self.encoding,
+                                          self.decoding_errors))
+
+    def close(self):
+        self.stream.close()
+
+
 class FileInput(Input):
 
     """
     Input for single, simple file-like objects.
     """
-
     def __init__(self, source=None, source_path=None,
                  encoding=None, error_handler='strict',
                  autoclose=1, handle_io_errors=1, mode='rU'):
@@ -229,6 +295,8 @@ class FileInput(Input):
         Input.__init__(self, source, source_path, encoding, error_handler)
         self.autoclose = autoclose
         self.handle_io_errors = handle_io_errors
+        self._stderr = ErrorOutput()
+
         if source is None:
             if source_path:
                 # Specify encoding in Python 3
@@ -243,9 +311,9 @@ class FileInput(Input):
                 except IOError, error:
                     if not handle_io_errors:
                         raise
-                    print >>sys.stderr, '%s: %s' % (error.__class__.__name__,
-                                                    error)
-                    print >>sys.stderr, _save_encode(u'Unable to open source'
+                    print >>self._stderr, '%s: %s' % (
+                        error.__class__.__name__, error)
+                    print >>self._stderr, (u'Unable to open source'
                         u" file for reading ('%s'). Exiting." % source_path)
                     sys.exit(1)
             else:
@@ -290,8 +358,8 @@ class FileOutput(Output):
     """
 
     def __init__(self, destination=None, destination_path=None,
-                 encoding=None, error_handler='strict', autoclose=1,
-                 handle_io_errors=1):
+                 encoding=None, error_handler='strict', autoclose=True,
+                 handle_io_errors=True):
         """
         :Parameters:
             - `destination`: either a file-like object (which is written
@@ -300,19 +368,21 @@ class FileOutput(Output):
             - `destination_path`: a path to a file, which is opened and then
               written.
             - `autoclose`: close automatically after write (boolean); always
-              false if `sys.stdout` is the destination.
+              False if `sys.stdout` or `sys.stderr` is the destination.
         """
         Output.__init__(self, destination, destination_path,
                         encoding, error_handler)
-        self.opened = 1
+        self.opened = True
         self.autoclose = autoclose
         self.handle_io_errors = handle_io_errors
+        self._stderr = ErrorOutput()
         if destination is None:
             if destination_path:
-                self.opened = None
+                self.opened = False
             else:
                 self.destination = sys.stdout
-                self.autoclose = None
+        if destination in (sys.stdout, sys.stderr):
+            self.autoclose = False
         if not destination_path:
             try:
                 self.destination_path = self.destination.name
@@ -334,16 +404,16 @@ class FileOutput(Output):
         except IOError, error:
             if not self.handle_io_errors:
                 raise
-            print >>sys.stderr, '%s: %s' % (error.__class__.__name__, error)
-            print >>sys.stderr, _save_encode('Unable to open destination file'
-                " for writing ('%s').  Exiting." % self.destination_path)
+            print >>self._stderr, '%s: %s' % (error.__class__.__name__, error)
+            print >>self._stderr, (u'Unable to open destination file'
+                u" for writing ('%s').  Exiting." % self.destination_path)
             sys.exit(1)
         self.opened = 1
 
     def write(self, data):
         """Encode `data`, write it to a single file, and return it.
 
-        In Python 3, a (unicode) String is returned.
+        In Python 3, a (unicode) string is returned.
         """
         if sys.version_info >= (3,0):
             output = data # in py3k, write expects a (Unicode) string
@@ -360,7 +430,7 @@ class FileOutput(Output):
 
     def close(self):
         self.destination.close()
-        self.opened = None
+        self.opened = False
 
 
 class BinaryFileOutput(FileOutput):
@@ -373,11 +443,11 @@ class BinaryFileOutput(FileOutput):
         except IOError, error:
             if not self.handle_io_errors:
                 raise
-            print >>sys.stderr, '%s: %s' % (error.__class__.__name__, error)
-            print >>sys.stderr, _save_encode('Unable to open destination file'
-                " for writing ('%s').  Exiting." % self.destination_path)
+            print >>self._stderr, '%s: %s' % (error.__class__.__name__, error)
+            print >>self._stderr, (u'Unable to open destination file'
+                u" for writing ('%s').  Exiting." % self.destination_path)
             sys.exit(1)
-        self.opened = 1
+        self.opened = True
 
 
 class StringInput(Input):

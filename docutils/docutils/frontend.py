@@ -33,27 +33,13 @@ import sys
 import warnings
 import ConfigParser as CP
 import codecs
+import optparse
+from optparse import SUPPRESS_HELP
 import docutils
 import docutils.utils
 import docutils.nodes
-import optparse
-from optparse import SUPPRESS_HELP
+from docutils.io import locale_encoding, ErrorOutput
 
-# Guess the locale's encoding.
-# If no valid guess can be made, locale_encoding is set to `None`:
-try:
-    import locale # module missing in Jython
-except ImportError:
-    locale_encoding = None
-else:
-    locale_encoding = locale.getlocale()[1] or locale.getdefaultlocale()[1]
-    # locale.getpreferredencoding([do_setlocale=True|False])
-    # has side-effects | might return a wrong guess. 
-    # (cf. Update 1 in http://stackoverflow.com/questions/4082645/using-python-2-xs-locale-module-to-format-numbers-and-currency)
-    try:
-        codecs.lookup(locale_encoding)
-    except LookupError:
-        locale_encoding = None
 
 def store_multiple(option, opt, value, parser, *args, **kwargs):
     """
@@ -705,6 +691,9 @@ Skipping "%s" configuration file.
         self._files = []
         """List of paths of configuration files read."""
 
+        self._stderr = ErrorOutput()
+        """Wrapper around sys.stderr catching en-/decoding errors"""
+
     def read(self, filenames, option_parser):
         if type(filenames) in (str, unicode):
             filenames = [filenames]
@@ -717,9 +706,7 @@ Skipping "%s" configuration file.
             try:
                 CP.RawConfigParser.readfp(self, fp, filename)
             except UnicodeDecodeError:
-                msg = self.not_utf8_error % (filename, filename)
-                sys.stderr.write(msg.encode(sys.stderr.encoding or 'ascii',
-                                            'backslashreplace'))
+                self._stderr.write(self.not_utf8_error % (filename, filename))
                 fp.close()
                 continue
             fp.close()

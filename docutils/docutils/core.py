@@ -20,6 +20,7 @@ from docutils import __version__, __version_details__, SettingsSpec
 from docutils import frontend, io, utils, readers, writers
 from docutils.frontend import OptionParser
 from docutils.transforms import Transformer
+from docutils.io import ErrorOutput
 import docutils.readers.doctree
 
 class Publisher:
@@ -73,6 +74,8 @@ class Publisher:
         self.settings = settings
         """An object containing Docutils settings as instance attributes.
         Set by `self.process_command_line()` or `self.get_settings()`."""
+
+        self._stderr = ErrorOutput()
 
     def set_reader(self, reader_name, parser, parser_name):
         """Set `self.reader` by name."""
@@ -230,23 +233,23 @@ class Publisher:
         if not self.document:
             return
         if self.settings.dump_settings:
-            print >>sys.stderr, '\n::: Runtime settings:'
-            print >>sys.stderr, pprint.pformat(self.settings.__dict__)
+            print >>self._stderr, '\n::: Runtime settings:'
+            print >>self._stderr, pprint.pformat(self.settings.__dict__)
         if self.settings.dump_internals:
-            print >>sys.stderr, '\n::: Document internals:'
-            print >>sys.stderr, pprint.pformat(self.document.__dict__)
+            print >>self._stderr, '\n::: Document internals:'
+            print >>self._stderr, pprint.pformat(self.document.__dict__)
         if self.settings.dump_transforms:
-            print >>sys.stderr, '\n::: Transforms applied:'
-            print >>sys.stderr, (' (priority, transform class, '
+            print >>self._stderr, '\n::: Transforms applied:'
+            print >>self._stderr, (' (priority, transform class, '
                                  'pending node details, keyword args)')
-            print >>sys.stderr, pprint.pformat(
+            print >>self._stderr, pprint.pformat(
                 [(priority, '%s.%s' % (xclass.__module__, xclass.__name__),
                   pending and pending.details, kwargs)
                  for priority, xclass, pending, kwargs
                  in self.document.transformer.applied])
         if self.settings.dump_pseudo_xml:
-            print >>sys.stderr, '\n::: Pseudo-XML:'
-            print >>sys.stderr, self.document.pformat().encode(
+            print >>self._stderr, '\n::: Pseudo-XML:'
+            print >>self._stderr, self.document.pformat().encode(
                 'raw_unicode_escape')
 
     def report_Exception(self, error):
@@ -255,8 +258,8 @@ class Publisher:
         elif isinstance(error, UnicodeEncodeError):
             self.report_UnicodeError(error)
         else:
-            print >>sys.stderr, '%s: %s' % (error.__class__.__name__, error)
-            print >>sys.stderr, ("""\
+            print >>self._stderr, '%s: %s' % (error.__class__.__name__, error)
+            print >>self._stderr, ("""\
 Exiting due to error.  Use "--traceback" to diagnose.
 Please report errors to <docutils-users@lists.sf.net>.
 Include "--traceback" output, Docutils version (%s [%s]),
@@ -265,13 +268,13 @@ command line used.""" % (__version__, __version_details__,
                          sys.version.split()[0]))
 
     def report_SystemMessage(self, error):
-        print >>sys.stderr, ('Exiting due to level-%s (%s) system message.'
+        print >>self._stderr, ('Exiting due to level-%s (%s) system message.'
                              % (error.level,
                                 utils.Reporter.levels[error.level]))
 
     def report_UnicodeError(self, error):
         data = error.object[error.start:error.end]
-        sys.stderr.write(
+        self._stderr.write(
             '%s: %s\n'
             '\n'
             'The specified output encoding (%s) cannot\n'
