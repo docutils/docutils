@@ -28,7 +28,7 @@ import copy
 from fnmatch import fnmatch
 import docutils
 from docutils import ApplicationError
-from docutils import core, frontend, utils
+from docutils import core, frontend, utils, io
 from docutils.parsers import rst
 from docutils.readers import standalone, pep
 from docutils.writers import html4css1, pep_html
@@ -194,17 +194,15 @@ class Builder:
     def visit(self, directory, names):
         # BUG prune and ignore do not work 
         settings = self.get_settings('', directory)
+        stderr = io.ErrorOutput(encoding=settings.error_encoding)
         if settings.prune and (os.path.abspath(directory) in settings.prune):
-            sys.stderr.write((u'/// ...Skipping directory (pruned): %s\n' %
-                              directory).encode(settings.error_encoding,
-                                  settings.error_encoding_error_handler))
+            stderr.write('/// ...Skipping directory (pruned): %s\n' %
+                         directory)
             sys.stderr.flush()
             names[:] = []
             return
         if not self.initial_settings.silent:
-            sys.stderr.write((u'/// Processing directory: %s\n' %
-                              directory).encode(settings.error_encoding,
-                                  settings.error_encoding_error_handler))
+            stderr.write('/// Processing directory: %s\n' % directory)
             sys.stderr.flush()
         # settings.ignore grows many duplicate entries as we recurse
         # if we add patterns in config files or on the command line.
@@ -226,13 +224,14 @@ class Builder:
         else:
             publisher = '.txt'
         settings = self.get_settings(publisher, directory)
+        stderr = io.ErrorOutput(encoding=settings.error_encoding)
         pub_struct = self.publishers[publisher]
         if settings.prune and (directory in settings.prune):
             return 1
         settings._source = os.path.normpath(os.path.join(directory, name))
         settings._destination = settings._source[:-4]+'.html'
         if not self.initial_settings.silent:
-            sys.stderr.write('    ::: Processing: %s\n'% name)
+            stderr.write('    ::: Processing: %s\n'% name)
             sys.stderr.flush()
         try:
             if not settings.dry_run:
@@ -243,8 +242,8 @@ class Builder:
                               writer_name=pub_struct.writer_name,
                               settings=settings)
         except ApplicationError, error:
-            sys.stderr.write('        Error (%s): %s' %
-                              (error.__class__.__name__, error))
+            stderr.write('        Error (%s): %s' %
+                         (error.__class__.__name__, error))
 
 
 if __name__ == "__main__":
