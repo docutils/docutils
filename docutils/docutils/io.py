@@ -206,9 +206,6 @@ class ErrorOutput(object):
     Wrapper class for file-like error streams with
     failsave de- and encoding of `str`, `bytes`, `unicode` and
     `Exception` instances.
-
-    Note that the output stream is not automatically closed.
-    Call the close() method if required.
     """
 
     def __init__(self, stream=None, encoding=None,
@@ -216,17 +213,23 @@ class ErrorOutput(object):
                  decoding_errors='replace'):
         """
         :Parameters:
-            - `stream`: a file-like object (which is written to)
+            - `stream`: a file-like object (which is written to),
+                        a string (opended as a file),
+                        `None` (bind to `sys.stderr`; default).
+                        If evaluating to `False` (but not `None`),
+                        write() requests are ignored.
             - `encoding`: `stream` text encoding. Guessed if None.
             - `encoding_errors`: how to treat encoding errors.
         """
         if stream is None:
             stream = sys.stderr
-        elif stream: # if `stream` is a file name, open it
-            if type(stream) is bytes:
-                stream = open(stream, 'w')
-            elif type(stream) is unicode:
-                stream = open(stream.encode(sys.getfilesystemencoding()), 'w')
+        elif not(stream):
+            stream = False
+        # if `stream` is a file name, open it
+        elif isinstance(stream, bytes):
+            stream = open(stream, 'w')
+        elif isinstance(stream, unicode):
+            stream = open(stream.encode(sys.getfilesystemencoding()), 'w')
 
         self.stream = stream
         """Where warning output is sent."""
@@ -242,8 +245,13 @@ class ErrorOutput(object):
         """Decoding error handler."""
 
     def write(self, data):
-        """`data` can be a `string`, `unicode`, or `Exception` instance.
         """
+        Write `data` to self.stream. Ignore, if self.stream is False.
+
+        `data` can be a `string`, `unicode`, or `Exception` instance.
+        """
+        if self.stream is False:
+            return
         if isinstance(data, Exception):
             # Convert now to detect errors:
             # In Python <= 2.6, unicode(<exception instance>)
@@ -267,7 +275,15 @@ class ErrorOutput(object):
                                           self.decoding_errors))
 
     def close(self):
-        self.stream.close()
+        """
+        Close the error-output stream.
+
+        Ignored if the stream has no close() method.
+        """
+        try:
+            self.stream.close()
+        except AttributeError:
+            pass
 
 
 class FileInput(Input):

@@ -15,6 +15,7 @@ import warnings
 import unicodedata
 from docutils import ApplicationError, DataError
 from docutils import nodes
+from docutils.io import ErrorOutput
 from docutils._compat import bytes
 
 
@@ -81,8 +82,8 @@ class Reporter:
             - `debug`: Show debug (level=0) system messages?
             - `stream`: Where warning output is sent.  Can be file-like (has a
               ``.write`` method), a string (file name, opened for writing),
-              '' (empty string, for discarding all stream messages) or
-              `None` (implies `sys.stderr`; default).
+              '' (empty string) or `False` (for discarding all stream messages)
+              or `None` (implies `sys.stderr`; default).
             - `encoding`: The output encoding.
             - `error_handler`: The error handler for stderr output encoding.
         """
@@ -104,14 +105,8 @@ class Reporter:
         """The level at or above which `SystemMessage` exceptions
         will be raised, halting execution."""
 
-        if stream is None:
-            stream = sys.stderr
-        elif stream and type(stream) in (unicode, bytes):
-            # if `stream` is a file name, open it
-            if type(stream) is bytes:
-                stream = open(stream, 'w')
-            else:
-                stream = open(stream.encode(), 'w')
+        if not isinstance(stream, ErrorOutput):
+            stream = ErrorOutput(stream, encoding, error_handler)
 
         self.stream = stream
         """Where warning output is sent."""
@@ -133,8 +128,8 @@ class Reporter:
                       DeprecationWarning, stacklevel=2)
         self.report_level = report_level
         self.halt_level = halt_level
-        if stream is None:
-            stream = sys.stderr
+        if not isinstance(stream, ErrorOutput):
+            stream = ErrorOutput(stream, self.encoding, self.error_handler)
         self.stream = stream
         self.debug_flag = debug
 
@@ -202,12 +197,7 @@ class Reporter:
         if self.stream and (level >= self.report_level
                             or self.debug_flag and level == self.DEBUG_LEVEL
                             or level >= self.halt_level):
-            msgtext = msg.astext() + '\n'
-            try:
-                self.stream.write(msgtext)
-            except UnicodeEncodeError:
-                self.stream.write(msgtext.encode(self.encoding,
-                                                 self.error_handler))
+            self.stream.write(msg.astext() + '\n')
         if level >= self.halt_level:
             raise SystemMessage(msg, level)
         if level > self.DEBUG_LEVEL or self.debug_flag:
