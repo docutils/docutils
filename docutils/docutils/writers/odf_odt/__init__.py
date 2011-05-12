@@ -24,7 +24,7 @@ import StringIO
 import inspect
 import imp
 import copy
-import urllib
+import urllib2
 import docutils
 from docutils import frontend, nodes, utils, writers, languages
 from docutils.parsers import rst
@@ -1993,17 +1993,17 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         # Capture the image file.
         if 'uri' in node.attributes:
             source = node.attributes['uri']
-            source = urllib.url2pathname(source)
-            if not source.startswith(os.sep):
-                docsource, line = utils.get_source_line(node)
-                if docsource:
-                    dirname = os.path.dirname(docsource)
-                    if dirname:
-                        source = '%s%s%s' % (dirname, os.sep, source, )
-            if not self.check_file_exists(source):
-                self.document.reporter.warning(
-                    'Cannot find image file %s.' % (source, ))
-                return
+            if not source.startswith('http:'):
+                if not source.startswith(os.sep):
+                    docsource, line = utils.get_source_line(node)
+                    if docsource:
+                        dirname = os.path.dirname(docsource)
+                        if dirname:
+                            source = '%s%s%s' % (dirname, os.sep, source, )
+                if not self.check_file_exists(source):
+                    self.document.reporter.warning(
+                        'Cannot find image file %s.' % (source, ))
+                    return
         else:
             return
         if source in self.image_dict:
@@ -2012,8 +2012,22 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             self.image_count += 1
             filename = os.path.split(source)[1]
             destination = 'Pictures/1%08x%s' % (self.image_count, filename, )
-            spec = (os.path.abspath(source), destination,)
-            
+            if source.startswith('http:'):
+                try:
+                    imgfile = urllib2.urlopen(source)
+                    content = imgfile.read()
+                    imgfile.close()
+                    imgfile2 = tempfile.NamedTemporaryFile('wb', delete=False)
+                    imgfile2.write(content)
+                    imgfile2.close()
+                    imgfilename = imgfile2.name
+                    source = imgfilename
+                except urllib2.HTTPError, e:
+                    self.document.reporter.warning(
+                        "Can't open image url %s." % (source, ))
+                spec = (source, destination,)
+            else:
+                spec = (os.path.abspath(source), destination,)
             self.embedded_file_list.append(spec)
             self.image_dict[source] = (source, destination,)
         # Is this a figure (containing an image) or just a plain image?
