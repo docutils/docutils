@@ -200,6 +200,87 @@ class Output(TransformSpec):
         else:
             return data.encode(self.encoding, self.error_handler)
 
+# Robust error reporting
+# -----------------------
+#
+# Implicit conversions of strings and exceptions like
+#
+# >>> u'%s world' % 'H\xe4llo'
+#
+# fail in some Python versions:
+#
+# * In Python <= 2.6, ``unicode(<exception instance>)`` uses
+#   `__str__` and fails with non-ASCII chars in`unicode` arguments.
+#   (work around http://bugs.python.org/issue2517):
+#
+# * In Python 2, unicode(<exception instance>) fails, with non-ASCII
+#   chars in `str` arguments. (Use case: in some locales, the errstr
+#   argument of IOError contains non-ASCII chars.)
+#
+# * In Python 2, str(<exception instance>) fails, with non-ASCII chars
+#   in `unicode` arguments.
+#
+# However, when reporting an error we do not want to mask ist with
+# encoding/decoding errors. The `ErrString` and `ErrorOutput` classes
+# handle common exceptions:
+
+class ErrorString(object):
+    """
+    A wrapper providing robust (bytes and unicode) string conversion.
+    """
+
+    def __init__(self, data, encoding=None, encoding_errors='backslashreplace',
+                 decoding_errors='replace'):
+        self.data = data
+        self.encoding = (encoding or getattr(data, 'encoding', None) or
+                         locale_encoding or 'ascii')
+        self.encoding_errors = encoding_errors
+        self.decoding_errors = decoding_errors
+
+
+    def __str__(self):
+        try:
+            return str(self.data)
+        except UnicodeEncodeError, err:
+            if isinstance(self.data, Exception):
+                args = [str(ErrorString(arg, self.encoding,
+                                        self.encoding_errors))
+                        for arg in self.data.args]
+                return ', '.join(args)
+            if isinstance(self.data, unicode):
+                return self.data.encode(self.encoding, self.encoding_errors)
+            raise
+
+    def __unicode__(self):
+        """
+        Return unicode representation of `self.data`.
+
+        Try ``unicode(self.data)``, catch `UnicodeError` and
+
+        * if `self.data` is an Exception instance, work around
+          http://bugs.python.org/issue2517 with an emulation of
+          Exception.__unicode__,
+
+        * else decode with `self.encoding` and `self.decoding_errors`.
+        """
+        try:
+            return unicode(self.data)
+        except UnicodeError, err: # can be ..EncodeError or ..DecodeError
+            if isinstance(self.data, IOError):
+                return  u"[Errno %d] %s: '%s'" % (self.data.errno,
+                    unicode(self.data.strerror, self.encoding,
+                            self.decoding_errors),
+                    unicode(self.data.filename, self.encoding,
+                            self.decoding_errors))
+            if isinstance(self.data, Exception):
+                args = [unicode(ErrorString(arg, self.encoding,
+                            decoding_errors=self.decoding_errors))
+                        for arg in self.data.args]
+                return u', '.join(args)
+            if isinstance(err, UnicodeDecodeError):
+                return unicode(self.data, self.encoding, self.decoding_errors)
+            raise
+
 
 class ErrorOutput(object):
     """
@@ -253,26 +334,14 @@ class ErrorOutput(object):
         if self.stream is False:
             return
         if isinstance(data, Exception):
-            # Convert now to detect errors:
-            # In Python <= 2.6, unicode(<exception instance>)
-            # uses __str__ and fails with non-ASCII chars in arguments
-            try:
-                data = unicode(data)
-            except UnicodeError, err:
-                try:
-                    data = u', '.join(data.args)
-                except AttributeError:
-                    raise err
-                except UnicodeDecodeError:
-                    data = str(data)
+            data = unicode(ErrorString(data, self.encoding, 
+                                  self.encoding_errors, self.decoding_errors))
         try:
             self.stream.write(data)
         except UnicodeEncodeError:
-            self.stream.write(data.encode(self.encoding,
-                                               self.encoding_errors))
+            self.stream.write(data.encode(self.encoding, self.encoding_errors))
         except TypeError: # in Python 3, stderr expects unicode
-            self.stream.write(data.decode(self.encoding,
-                                          self.decoding_errors))
+            self.stream.write(unicode(data, self.encoding, self.decoding_errors))
 
     def close(self):
         """
