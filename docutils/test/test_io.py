@@ -17,7 +17,7 @@ except ImportError:    # io is new in Python 2.6
 
 import DocutilsTestSupport              # must be imported before docutils
 from docutils import io
-from docutils._compat import b
+from docutils._compat import b, bytes
 
 
 class InputTests(unittest.TestCase):
@@ -69,13 +69,67 @@ print "hello world"
         self.assertEquals(input.successful_encoding, 'utf-8')
 
 
+class ErrorStringTests(unittest.TestCase):
+    # test data:
+    bs = b('\xfc')     # unicode(bs) fails, str(bs) in Python 3 return repr()
+    us = u'\xfc'       # bytes(us) fails; str(us) fails in Python 2
+    be = Exception(bs) # unicode(be) fails
+    ue = Exception(us) # bytes(ue) fails, str(ue) fails in Python 2;
+                       # unicode(ue) fails in Python < 2.6 (issue2517_)
+    # wrapped test data:
+    wbs = io.ErrorString(bs)
+    wus = io.ErrorString(us)
+    wbe = io.ErrorString(be)
+    wue = io.ErrorString(ue)
+
+    def test_7bit(self):
+        # wrapping (not required with 7-bit chars) must not change the
+        # result of conversions:
+        bs = b('foo')
+        us = u'foo'
+        be = Exception(bs)
+        ue = Exception(us)
+        self.assertEqual(str(7), str(io.ErrorString(7)))
+        self.assertEqual(str(bs), str(io.ErrorString(bs)))
+        self.assertEqual(str(us), str(io.ErrorString(us)))
+        self.assertEqual(str(be), str(io.ErrorString(be)))
+        self.assertEqual(str(ue), str(io.ErrorString(ue)))
+        self.assertEqual(unicode(7), unicode(io.ErrorString(7)))
+        self.assertEqual(unicode(bs), unicode(io.ErrorString(bs)))
+        self.assertEqual(unicode(us), unicode(io.ErrorString(us)))
+        self.assertEqual(unicode(be), unicode(io.ErrorString(be)))
+        self.assertEqual(unicode(ue), unicode(io.ErrorString(ue)))
+
+    def test_ustr(self):
+        """Test conversion to a unicode-string."""
+        # unicode(self.bs) fails
+        self.assertEqual(unicode, type(unicode(self.wbs)))
+        self.assertEqual(unicode(self.us), unicode(self.wus))
+        # unicode(self.be) fails
+        self.assertEqual(unicode, type(unicode(self.wbe)))
+        # unicode(ue) fails in Python < 2.6 (issue2517_)
+        self.assertEqual(unicode, type(unicode(self.wue)))
+        self.assertEqual(self.us, unicode(self.wue))
+
+    def test_str(self):
+        """Test conversion to a string (bytes in Python 2, unicode in Python 3)."""
+        self.assertEqual(str(self.bs), str(self.wbs))
+        self.assertEqual(str(self.be), str(self.be))
+        # str(us) fails in Python 2
+        self.assertEqual(str, type(str(self.wus)))
+        # str(ue) fails in Python 2
+        self.assertEqual(str, type(str(self.wue)))
+
+# .. _issue2517: http://bugs.python.org/issue2517
+
+
 # ErrorOutput tests
 # -----------------
 
 # Stub: Buffer with 'strict' auto-conversion of input to byte string:
 class BBuf(BytesIO, object):
     def write(self, data):
-        if type(data) == unicode:
+        if isinstance(data, unicode):
             data.encode('ascii', 'strict')
         super(BBuf, self).write(data)
 
@@ -83,7 +137,7 @@ class BBuf(BytesIO, object):
 class UBuf(StringIO, object):
     def write(self, data):
         # emulate Python 3 handling of stdout, stderr
-        if type(data) == b:
+        if isinstance(data, bytes):
             raise TypeError('must be unicode, not bytes')
         super(UBuf, self).write(data)
 
@@ -125,16 +179,6 @@ class ErrorOutputTests(unittest.TestCase):
         e.encoding = 'latin1'
         e.write(b(' b\xfc'))
         self.assertEquals(buf.getvalue(), u'b\ufffd u\xfc e\xfc b\xfc')
-
-
-# class FileInputTests(unittest.TestCase):
-#     def test_io_error_reporting(self):
-#         # it seems like IOError and SystemExit are not catched by assertRaises:
-#         self.assertRaises(IOError, open('foo'))
-#         self.assertRaises(IOError,
-#                           io.FileInput(source_path=u'u\xfc', handle_io_errors=False))
-#         self.assertRaises(IOError,
-#                           io.FileInput(source_path=u'u\xfc', handle_io_errors=True))
 
 
 if __name__ == '__main__':

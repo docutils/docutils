@@ -11,6 +11,7 @@ import os.path
 import re
 import time
 from docutils import io, nodes, statemachine, utils
+from docutils.io import ErrorString
 from docutils.parsers.rst import Directive, convert_directive_function
 from docutils.parsers.rst import directives, roles, states
 from docutils.transforms import misc
@@ -66,13 +67,8 @@ class Include(Directive):
                                input_encoding_error_handler),
                 handle_io_errors=None)
         except IOError, error:
-            # robust error-instance to unicode conversion
-            # (work around http://bugs.python.org/issue2517):
-            errmsg = u"[Errno %d] %s: '%s'" % (error.errno,
-                                               error.strerror,
-                                               error.filename)
             raise self.severe(u'Problems with "%s" directive path:\n%s: %s.' %
-                              (self.name, error.__class__.__name__, errmsg))
+                      (self.name, error.__class__.__name__, ErrorString(error)))
         startline = self.options.get('start-line', None)
         endline = self.options.get('end-line', None)
         try:
