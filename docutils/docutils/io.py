@@ -268,9 +268,9 @@ class ErrorString(object):
         except UnicodeError, err: # can be ..EncodeError or ..DecodeError
             if isinstance(self.data, IOError):
                 return  u"[Errno %d] %s: '%s'" % (self.data.errno,
-                    unicode(self.data.strerror, self.encoding,
+                    ErrorString(self.data.strerror, self.encoding,
                             self.decoding_errors),
-                    unicode(self.data.filename, self.encoding,
+                    ErrorString(self.data.filename, self.encoding,
                             self.decoding_errors))
             if isinstance(self.data, Exception):
                 args = [unicode(ErrorString(arg, self.encoding,
@@ -334,7 +334,7 @@ class ErrorOutput(object):
         if self.stream is False:
             return
         if isinstance(data, Exception):
-            data = unicode(ErrorString(data, self.encoding, 
+            data = unicode(ErrorString(data, self.encoding,
                                   self.encoding_errors, self.decoding_errors))
         try:
             self.stream.write(data)
