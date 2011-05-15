@@ -8,10 +8,15 @@
 Test module for io.py.
 """
 
-import unittest, sys
 try:
+    import locale
+except ImportError:
+    locale = None
+
+import unittest, sys
+try: # from standard library module `io`
     from io import StringIO, BytesIO
-except ImportError:    # io is new in Python 2.6
+except ImportError: # new in Python 2.6
     from StringIO import StringIO
     BytesIO = StringIO
 
@@ -76,11 +81,35 @@ class ErrorStringTests(unittest.TestCase):
     be = Exception(bs) # unicode(be) fails
     ue = Exception(us) # bytes(ue) fails, str(ue) fails in Python 2;
                        # unicode(ue) fails in Python < 2.6 (issue2517_)
+    # the error message in IOError comes from the OS, and in some locales
+    # (e.g. ru_RU), contains high bit chars:
+    if locale:
+        try:
+            locale.setlocale(locale.LC_ALL, '')
+        except locale.Error:
+            print 'cannot test locale'
+    try:
+        open(u'\xfc')
+    except IOError, uioe:
+        pass
+    except UnicodeEncodeError:
+        try:
+            open(u'\xfc'.encode(sys.getfilesystemencoding(), 'replace'))
+        except IOError, uioe:
+            pass
+    try:
+        open(b('\xfc'))
+    except IOError, bioe:
+        pass
+    if locale:
+        locale.setlocale(locale.LC_ALL, 'C') # reset
     # wrapped test data:
     wbs = io.ErrorString(bs)
     wus = io.ErrorString(us)
     wbe = io.ErrorString(be)
     wue = io.ErrorString(ue)
+    wbioe = io.ErrorString(bioe)
+    wuioe = io.ErrorString(uioe)
 
     def test_7bit(self):
         # wrapping (not required with 7-bit chars) must not change the
@@ -110,6 +139,9 @@ class ErrorStringTests(unittest.TestCase):
         # unicode(ue) fails in Python < 2.6 (issue2517_)
         self.assertEqual(unicode, type(unicode(self.wue)))
         self.assertEqual(self.us, unicode(self.wue))
+        # unicode(bioe) fails with e.g. 'ru_RU.utf8' locale
+        self.assertEqual(unicode, type(unicode(self.wbioe)))
+        self.assertEqual(unicode, type(unicode(self.wuioe)))
 
     def test_str(self):
         """Test conversion to a string (bytes in Python 2, unicode in Python 3)."""
@@ -119,6 +151,9 @@ class ErrorStringTests(unittest.TestCase):
         self.assertEqual(str, type(str(self.wus)))
         # str(ue) fails in Python 2
         self.assertEqual(str, type(str(self.wue)))
+        self.assertEqual(str(self.bioe), str(self.wbioe))
+        self.assertEqual(str(self.uioe), str(self.wuioe))
+
 
 # .. _issue2517: http://bugs.python.org/issue2517
 
