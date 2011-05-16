@@ -89,18 +89,18 @@ class ErrorStringTests(unittest.TestCase):
         except locale.Error:
             print 'cannot test locale'
     try:
+        open(b('\xfc'))
+    except IOError, e: # in Python >= 3.2, the name for the exception instance
+        bioe = e       # is local to the except clause
+    try:
         open(u'\xfc')
-    except IOError, uioe:
-        pass
+    except IOError, e:
+        uioe = e
     except UnicodeEncodeError:
         try:
             open(u'\xfc'.encode(sys.getfilesystemencoding(), 'replace'))
-        except IOError, uioe:
-            pass
-    try:
-        open(b('\xfc'))
-    except IOError, bioe:
-        pass
+        except IOError:
+            uioe = e
     if locale:
         locale.setlocale(locale.LC_ALL, 'C') # reset
     # wrapped test data:
