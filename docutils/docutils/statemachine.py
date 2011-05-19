@@ -110,7 +110,7 @@ import sys
 import re
 import types
 import unicodedata
-from docutils.io import ErrorOutput
+from docutils.error_reporting import ErrorOutput
 
 class StateMachine:
 
