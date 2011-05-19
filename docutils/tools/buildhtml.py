@@ -28,7 +28,8 @@ import copy
 from fnmatch import fnmatch
 import docutils
 from docutils import ApplicationError
-from docutils import core, frontend, utils, io
+from docutils import core, frontend, utils
+from docutils.error_reporting import ErrorOutput, ErrorString
 from docutils.parsers import rst
 from docutils.readers import standalone, pep
 from docutils.writers import html4css1, pep_html
@@ -194,15 +195,15 @@ class Builder:
     def visit(self, directory, names):
         # BUG prune and ignore do not work 
         settings = self.get_settings('', directory)
-        stderr = io.ErrorOutput(encoding=settings.error_encoding)
+        errout = ErrorOutput(encoding=settings.error_encoding)
         if settings.prune and (os.path.abspath(directory) in settings.prune):
-            stderr.write('/// ...Skipping directory (pruned): %s\n' %
-                         directory)
+            print >>errout, ('/// ...Skipping directory (pruned): %s' %
+                              directory)
             sys.stderr.flush()
             names[:] = []
             return
         if not self.initial_settings.silent:
-            stderr.write('/// Processing directory: %s\n' % directory)
+            print >>errout, '/// Processing directory: %s' % directory
             sys.stderr.flush()
         # settings.ignore grows many duplicate entries as we recurse
         # if we add patterns in config files or on the command line.
@@ -224,14 +225,14 @@ class Builder:
         else:
             publisher = '.txt'
         settings = self.get_settings(publisher, directory)
-        stderr = io.ErrorOutput(encoding=settings.error_encoding)
+        errout = ErrorOutput(encoding=settings.error_encoding)
         pub_struct = self.publishers[publisher]
         if settings.prune and (directory in settings.prune):
             return 1
         settings._source = os.path.normpath(os.path.join(directory, name))
         settings._destination = settings._source[:-4]+'.html'
         if not self.initial_settings.silent:
-            stderr.write('    ::: Processing: %s\n'% name)
+            print >>errout, '    ::: Processing: %s' % name
             sys.stderr.flush()
         try:
             if not settings.dry_run:
@@ -242,8 +243,7 @@ class Builder:
                               writer_name=pub_struct.writer_name,
                               settings=settings)
         except ApplicationError, error:
-            stderr.write('        Error (%s): %s' %
-                         (error.__class__.__name__, error))
+            print >>errout, '        %s' % ErrorString(error)
 
 
 if __name__ == "__main__":

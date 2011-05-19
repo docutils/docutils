@@ -1443,8 +1443,8 @@ class Body(RSTState):
         except MarkupError, error:
             # This shouldn't happen; pattern won't match.
             src, srcline = self.state_machine.get_source_and_line()
-            msg = self.reporter.error('Invalid option list marker: %s' %
-                str(error), source=src, line=srcline)
+            msg = self.reporter.error(u'Invalid option list marker: %s' %
+                error, source=src, line=srcline)
             self.parent += msg
             indented, indent, line_offset, blank_finish = \
                   self.state_machine.get_first_known_indented(match.end())

@@ -38,7 +38,7 @@ from optparse import SUPPRESS_HELP
 import docutils
 import docutils.utils
 import docutils.nodes
-from docutils.io import locale_encoding, ErrorOutput
+from docutils.error_reporting import locale_encoding, ErrorOutput
 
 
 def store_multiple(option, opt, value, parser, *args, **kwargs):
@@ -276,8 +276,8 @@ class Option(optparse.Option):
                     new_value = self.validator(setting, value, parser)
                 except Exception, error:
                     raise (optparse.OptionValueError(
-                        'Error in option "%s":\n    %s: %s'
-                        % (opt, error.__class__.__name__, error)),
+                        'Error in option "%s":\n    %s'
+                        % (opt, ErrorString(error))),
                            None, sys.exc_info()[2])
                 setattr(values, setting, new_value)
             if self.overrides:
@@ -753,9 +753,10 @@ Skipping "%s" configuration file.
                     except Exception, error:
                         raise (ValueError(
                             'Error in config file "%s", section "[%s]":\n'
-                            '    %s: %s\n        %s = %s'
-                            % (filename, section, error.__class__.__name__,
-                               error, setting, value)), None, sys.exc_info()[2])
+                            '    %s\n'
+                            '        %s = %s'
+                            % (filename, section, ErrorString(error),
+                               setting, value)), None, sys.exc_info()[2])
                     self.set(section, setting, new_value)
                 if option.overrides:
                     self.set(section, option.overrides, None)

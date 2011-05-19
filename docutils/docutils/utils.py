@@ -15,8 +15,7 @@ import warnings
 import unicodedata
 from docutils import ApplicationError, DataError
 from docutils import nodes
-from docutils.io import ErrorOutput
-from docutils._compat import bytes
+from docutils.error_reporting import ErrorOutput, SafeString
 
 
 class SystemMessage(ApplicationError):
@@ -154,19 +153,8 @@ class Reporter:
         Raise an exception or generate a warning if appropriate.
         """
         # `message` can be a `string`, `unicode`, or `Exception` instance.
-        # Convert now to detect errors:
-        try:
-            message = unicode(message)
-        except UnicodeError, err:
-            # In Python < 2.6, # unicode(<exception instance>) uses __str__
-            # and fails with non-ASCII chars in arguments
-            if sys.version_info < (2,6):
-                try:
-                    message = u', '.join(message.args)
-                except AttributeError:
-                    raise err
-            else:
-                raise err
+        if isinstance(message, Exception):
+            message = SafeString(message)
 
         attributes = kwargs.copy()
         if 'base_node' in kwargs:

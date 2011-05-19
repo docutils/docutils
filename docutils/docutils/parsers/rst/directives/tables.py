@@ -14,6 +14,7 @@ import os.path
 import csv
 
 from docutils import io, nodes, statemachine, utils
+from docutils.error_reporting import SafeString
 from docutils.utils import SystemMessagePropagation
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives
@@ -274,9 +275,10 @@ class CSVTable(Table):
                 csv_data = csv_file.read().splitlines()
             except IOError, error:
                 severe = self.state_machine.reporter.severe(
-                    'Problems with "%s" directive path:\n%s.'
-                    % (self.name, error), nodes.literal_block(
-                    self.block_text, self.block_text), line=self.lineno)
+                    u'Problems with "%s" directive path:\n%s.'
+                    % (self.name, SafeString(error)),
+                    nodes.literal_block(self.block_text, self.block_text),
+                    line=self.lineno)
                 raise SystemMessagePropagation(severe)
         elif 'url' in self.options:
             # CSV data is from a URL.
@@ -290,7 +292,7 @@ class CSVTable(Table):
             except (urllib2.URLError, IOError, OSError, ValueError), error:
                 severe = self.state_machine.reporter.severe(
                       'Problems with "%s" directive URL "%s":\n%s.'
-                      % (self.name, self.options['url'], error),
+                      % (self.name, self.options['url'], SafeString(error)),
                       nodes.literal_block(self.block_text, self.block_text),
                       line=self.lineno)
                 raise SystemMessagePropagation(severe)

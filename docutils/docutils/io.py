@@ -13,25 +13,8 @@ import sys
 import re
 import codecs
 from docutils import TransformSpec
-from docutils._compat import b, bytes
-
-
-# Guess the locale's encoding.
-# If no valid guess can be made, locale_encoding is set to `None`:
-try:
-    import locale # module missing in Jython
-except ImportError:
-    locale_encoding = None
-else:
-    locale_encoding = locale.getlocale()[1] or locale.getdefaultlocale()[1]
-    # locale.getpreferredencoding([do_setlocale=True|False])
-    # has side-effects | might return a wrong guess.
-    # (cf. Update 1 in http://stackoverflow.com/questions/4082645/using-python-2-xs-locale-module-to-format-numbers-and-currency)
-    try:
-        codecs.lookup(locale_encoding or '') # None -> ''
-    except LookupError:
-        locale_encoding = None
-
+from docutils._compat import b
+from docutils.error_reporting import locale_encoding, ErrorString, ErrorOutput
 
 class Input(TransformSpec):
 
@@ -101,30 +84,23 @@ class Input(TransformSpec):
                 # Apply heuristics only if no encoding is explicitly given and
                 # no BOM found.  Start with UTF-8, because that only matches
                 # data that *IS* UTF-8:
-                encodings = ['utf-8',
-                             locale_encoding,
-                             'latin-1', # fallback encoding
-                            ]
-        error = None
-        error_details = ''
+                encodings = [enc for enc in ('utf-8',
+                                             locale_encoding, # can be None
+                                             'latin-1') # fallback encoding
+                             if enc]
         for enc in encodings:
-            if not enc:
-                continue
             try:
                 decoded = unicode(data, enc, self.error_handler)
                 self.successful_encoding = enc
                 # Return decoded, removing BOMs.
                 return decoded.replace(u'\ufeff', u'')
-            except (UnicodeError, LookupError), tmperror:
-                error = tmperror  # working around Python 3 deleting the
-                                  # error variable after the except clause
-        if error is not None:
-            error_details = '\n(%s: %s)' % (error.__class__.__name__, error)
+            except (UnicodeError, LookupError), err:
+                error = err # in Python 3, the <exception instance> is
+                            # local to the except clause
         raise UnicodeError(
             'Unable to decode input data.  Tried the following encodings: '
-            '%s.%s'
-            % (', '.join([repr(enc) for enc in encodings if enc]),
-               error_details))
+            '%s.\n(%s)' % (', '.join([repr(enc) for enc in encodings]),
+                         ErrorString(error)))
 
     coding_slug = re.compile(b("coding[:=]\s*([-\w.]+)"))
     """Encoding declaration pattern."""
@@ -200,160 +176,6 @@ class Output(TransformSpec):
         else:
             return data.encode(self.encoding, self.error_handler)
 
-# Robust error reporting
-# -----------------------
-#
-# Implicit conversions of strings and exceptions like
-#
-# >>> u'%s world' % 'H\xe4llo'
-#
-# fail in some Python versions:
-#
-# * In Python <= 2.6, ``unicode(<exception instance>)`` uses
-#   `__str__` and fails with non-ASCII chars in`unicode` arguments.
-#   (work around http://bugs.python.org/issue2517):
-#
-# * In Python 2, unicode(<exception instance>) fails, with non-ASCII
-#   chars in `str` arguments. (Use case: in some locales, the errstr
-#   argument of IOError contains non-ASCII chars.)
-#
-# * In Python 2, str(<exception instance>) fails, with non-ASCII chars
-#   in `unicode` arguments.
-#
-# However, when reporting an error we do not want to mask ist with
-# encoding/decoding errors. The `ErrString` and `ErrorOutput` classes
-# handle common exceptions:
-
-class ErrorString(object):
-    """
-    A wrapper providing robust (bytes and unicode) string conversion.
-    """
-
-    def __init__(self, data, encoding=None, encoding_errors='backslashreplace',
-                 decoding_errors='replace'):
-        self.data = data
-        self.encoding = (encoding or getattr(data, 'encoding', None) or
-                         locale_encoding or 'ascii')
-        self.encoding_errors = encoding_errors
-        self.decoding_errors = decoding_errors
-
-
-    def __str__(self):
-        try:
-            return str(self.data)
-        except UnicodeEncodeError, err:
-            if isinstance(self.data, Exception):
-                args = [str(ErrorString(arg, self.encoding,
-                                        self.encoding_errors))
-                        for arg in self.data.args]
-                return ', '.join(args)
-            if isinstance(self.data, unicode):
-                return self.data.encode(self.encoding, self.encoding_errors)
-            raise
-
-    def __unicode__(self):
-        """
-        Return unicode representation of `self.data`.
-
-        Try ``unicode(self.data)``, catch `UnicodeError` and
-
-        * if `self.data` is an Exception instance, work around
-          http://bugs.python.org/issue2517 with an emulation of
-          Exception.__unicode__,
-
-        * else decode with `self.encoding` and `self.decoding_errors`.
-        """
-        try:
-            return unicode(self.data)
-        except UnicodeError, err: # can be ..EncodeError or ..DecodeError
-            if isinstance(self.data, IOError):
-                return  u"[Errno %d] %s: '%s'" % (self.data.errno,
-                    ErrorString(self.data.strerror, self.encoding,
-                            self.decoding_errors),
-                    ErrorString(self.data.filename, self.encoding,
-                            self.decoding_errors))
-            if isinstance(self.data, Exception):
-                args = [unicode(ErrorString(arg, self.encoding,
-                            decoding_errors=self.decoding_errors))
-                        for arg in self.data.args]
-                return u', '.join(args)
-            if isinstance(err, UnicodeDecodeError):
-                return unicode(self.data, self.encoding, self.decoding_errors)
-            raise
-
-
-class ErrorOutput(object):
-    """
-    Wrapper class for file-like error streams with
-    failsave de- and encoding of `str`, `bytes`, `unicode` and
-    `Exception` instances.
-    """
-
-    def __init__(self, stream=None, encoding=None,
-                 encoding_errors='backslashreplace',
-                 decoding_errors='replace'):
-        """
-        :Parameters:
-            - `stream`: a file-like object (which is written to),
-                        a string (opended as a file),
-                        `None` (bind to `sys.stderr`; default).
-                        If evaluating to `False` (but not `None`),
-                        write() requests are ignored.
-            - `encoding`: `stream` text encoding. Guessed if None.
-            - `encoding_errors`: how to treat encoding errors.
-        """
-        if stream is None:
-            stream = sys.stderr
-        elif not(stream):
-            stream = False
-        # if `stream` is a file name, open it
-        elif isinstance(stream, bytes):
-            stream = open(stream, 'w')
-        elif isinstance(stream, unicode):
-            stream = open(stream.encode(sys.getfilesystemencoding()), 'w')
-
-        self.stream = stream
-        """Where warning output is sent."""
-
-        self.encoding = (encoding or getattr(stream, 'encoding', None) or
-                         locale_encoding or 'ascii')
-        """The output character encoding."""
-
-        self.encoding_errors = encoding_errors
-        """Encoding error handler."""
-
-        self.decoding_errors = decoding_errors
-        """Decoding error handler."""
-
-    def write(self, data):
-        """
-        Write `data` to self.stream. Ignore, if self.stream is False.
-
-        `data` can be a `string`, `unicode`, or `Exception` instance.
-        """
-        if self.stream is False:
-            return
-        if isinstance(data, Exception):
-            data = unicode(ErrorString(data, self.encoding,
-                                  self.encoding_errors, self.decoding_errors))
-        try:
-            self.stream.write(data)
-        except UnicodeEncodeError:
-            self.stream.write(data.encode(self.encoding, self.encoding_errors))
-        except TypeError: # in Python 3, stderr expects unicode
-            self.stream.write(unicode(data, self.encoding, self.decoding_errors))
-
-    def close(self):
-        """
-        Close the error-output stream.
-
-        Ignored if the stream has no close() method.
-        """
-        try:
-            self.stream.close()
-        except AttributeError:
-            pass
-
 
 class FileInput(Input):
 
@@ -396,8 +218,7 @@ class FileInput(Input):
                 except IOError, error:
                     if not handle_io_errors:
                         raise
-                    print >>self._stderr, '%s: %s' % (
-                        error.__class__.__name__, error)
+                    print >>self._stderr, ErrorString(error)
                     print >>self._stderr, (u'Unable to open source'
                         u" file for reading ('%s'). Exiting." % source_path)
                     sys.exit(1)
@@ -489,7 +310,7 @@ class FileOutput(Output):
         except IOError, error:
             if not self.handle_io_errors:
                 raise
-            print >>self._stderr, '%s: %s' % (error.__class__.__name__, error)
+            print >>self._stderr, ErrorString(error)
             print >>self._stderr, (u'Unable to open destination file'
                 u" for writing ('%s').  Exiting." % self.destination_path)
             sys.exit(1)
@@ -528,7 +349,7 @@ class BinaryFileOutput(FileOutput):
         except IOError, error:
             if not self.handle_io_errors:
                 raise
-            print >>self._stderr, '%s: %s' % (error.__class__.__name__, error)
+            print >>self._stderr, ErrorString(error)
             print >>self._stderr, (u'Unable to open destination file'
                 u" for writing ('%s').  Exiting." % self.destination_path)
             sys.exit(1)

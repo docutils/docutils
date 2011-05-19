@@ -20,7 +20,7 @@ from docutils import __version__, __version_details__, SettingsSpec
 from docutils import frontend, io, utils, readers, writers
 from docutils.frontend import OptionParser
 from docutils.transforms import Transformer
-from docutils.io import ErrorOutput
+from docutils.error_reporting import ErrorOutput, ErrorString
 import docutils.readers.doctree
 
 class Publisher:
@@ -152,6 +152,8 @@ class Publisher:
         option_parser = self.setup_option_parser(
             usage, description, settings_spec, config_section, **defaults)
         if argv is None:
+            # converting to Unicode (Python 3 does this automatically):
+            # TODO: make this failsafe and reversible
             argv_encoding = (sys.stdin.encoding or frontend.locale_encoding
                              or 'ascii')
             argv = [a.decode(argv_encoding) for a in sys.argv[1:]]
@@ -258,7 +260,7 @@ class Publisher:
         elif isinstance(error, UnicodeEncodeError):
             self.report_UnicodeError(error)
         else:
-            print >>self._stderr, '%s: %s' % (error.__class__.__name__, error)
+            print >>self._stderr, u'%s' % ErrorString(error)
             print >>self._stderr, ("""\
 Exiting due to error.  Use "--traceback" to diagnose.
 Please report errors to <docutils-users@lists.sf.net>.
@@ -275,7 +277,7 @@ command line used.""" % (__version__, __version_details__,
     def report_UnicodeError(self, error):
         data = error.object[error.start:error.end]
         self._stderr.write(
-            '%s: %s\n'
+            '%s\n'
             '\n'
             'The specified output encoding (%s) cannot\n'
             'handle all of the output.\n'
@@ -295,7 +297,7 @@ command line used.""" % (__version__, __version_details__,
             'Include "--traceback" output, Docutils version (%s),\n'
             'Python version (%s), your OS type & version, and the\n'
             'command line used.\n'
-            % (error.__class__.__name__, error,
+            % (ErrorString(error),
                self.settings.output_encoding,
                data.encode('ascii', 'xmlcharrefreplace'),
                data.encode('ascii', 'backslashreplace'),
