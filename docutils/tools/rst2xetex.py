@@ -1,8 +1,7 @@
 #!/usr/bin/env python
-# .. coding: utf8
 
 # $Id$
-# Author: Günter Milde
+# Author: Guenter Milde
 # Copyright: This module has been placed in the public domain.
 
 """
