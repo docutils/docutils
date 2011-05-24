@@ -171,7 +171,11 @@ expected output and check it in:
         no_expected = self.no_expected_template % {
             'exp': expected_path, 'out': params['destination_path']}
         self.assert_(os.access(expected_path, os.R_OK), no_expected)
-        f = open(expected_path, 'r') # ! 'rb' leads to errors with Python 3!
+        if sys.version_info < (3,0):
+            f = open(expected_path, 'r')
+        else: # samples are UTF8 encoded. 'rb' leads to errors with Python 3!
+            f = open(expected_path, 'r', encoding='utf-8')
+        f = open(expected_path, 'r')
         # Normalize line endings:
         expected = '\n'.join(f.read().splitlines())
         f.close()
