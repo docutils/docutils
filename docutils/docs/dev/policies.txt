@@ -164,16 +164,17 @@ intentions regarding copyright, in one of the following ways:
   accompanying license file, or a license URL.
 
 One of the goals of the Docutils project, once complete, is to be
-incorporated into the Python standard library.  At that time copyright
-of the Docutils code will be assumed by or transferred to the Python
-Software Foundation (PSF), and will be released under Python's
-license.  If the copyright/license option is chosen for new files, the
-license should be compatible with Python's current license, and the
-author(s) of the files should be willing to assign copyright to the
-PSF.  The PSF accepts the `Academic Free License v. 2.1
+incorporated into the Python standard library.  At that time, the
+Docutils code will be released under Python's license.  If the
+copyright/license option is chosen for new files, the license should
+be compatible with Python's current license, and the author(s) of the
+files should be willing to sign a `Contributor Agreement` (see
+`Contributing to the PSF`_). As initial license for contributions,
+the PSF accepts the `Academic Free License v. 2.1
 <http://opensource.org/licenses/afl-2.1.php>`_ and the `Apache
 License, Version 2.0 <http://opensource.org/licenses/apache2.0.php>`_.
 
+.. _Contributing to the PSF: http://www.python.org/psf/contrib/
 
 Subversion Repository
 =====================
