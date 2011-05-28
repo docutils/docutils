@@ -4,6 +4,12 @@ IN_DIR=input
 OUT_DIR=output
 EXP_DIR=expected
 
+if [ -z "`man man|grep -- '^ *-T Format'`" ] ; then
+    echo 'ALERT: your man does not support "-T Format" to specify encoding'
+    echo 'Ctrl-C to abort, Ctrl-D to continue'
+    read
+fi
+
 if [ -z "$1" ] ; then
   FILES=*.txt
 else
