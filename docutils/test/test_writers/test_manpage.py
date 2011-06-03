@@ -240,7 +240,7 @@ bla bla bla
 .INDENT 0.0
 .TP
 .B .
-.sp
+.
 bla bla bla
 .UNINDENT
 .INDENT 0.0
