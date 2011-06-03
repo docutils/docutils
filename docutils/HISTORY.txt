@@ -69,6 +69,10 @@ Changes Since 0.7
     A separate writer (inheriting from latex2e) instead of a ``--xetex``
     option allows separate config options for XeTeX vs. LaTeX2e.
 
+* docutils/writers/manpage.py
+
+  - Fix: vertical space cleaning for option group ``.``.
+ 
 * tools/editors/emacs/rst.el:
 
   - Fix [ 3001100 ] does not handle spaces in filenames

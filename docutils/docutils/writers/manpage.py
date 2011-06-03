@@ -155,6 +155,7 @@ class Translator(nodes.NodeVisitor):
     """"""
 
     words_and_spaces = re.compile(r'\S+| +|\n')
+    possibly_a_roff_command = re.compile(r'.\w')
     document_start = """Man page generated from reStructeredText."""
 
     def __init__(self, document):
@@ -259,7 +260,7 @@ class Translator(nodes.NodeVisitor):
                     self.body[i - 2][:4] == '.TP\n'):
                     self.body[i] = '.\n'
                 elif (self.body[i - 1] == '\n' and
-                    self.body[i - 2][0] != '.' and
+                    not self.possibly_a_roff_command.match(self.body[i - 2]) and
                     (self.body[i - 3][:7] == '.TP\n.B '
                         or self.body[i - 3][:4] == '\n.B ')
                      ):
