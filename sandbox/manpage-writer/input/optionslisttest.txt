@@ -83,6 +83,19 @@ is indented, as all text in man-pages. This is level 0.
 
 This paragraph should be at level 0. 
 
+emphasize
+=========
+
+plain text term
+    definition paragraph 1
+
+    definition paragraph 2
+
+term with *emphasis* in it
+    paragraph 1 should not be preceeded by a blank line
+
+    definition paragraph 2
+
 
 DEFINITION LIST
 =================
