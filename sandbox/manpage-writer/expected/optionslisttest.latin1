@@ -67,6 +67,18 @@ EEXXAAMMPPLLEESS
 
        This paragraph should be at level 0.
 
+EEMMPPHHAASSIIZZEE
+       ppllaaiinn tteexxtt tteerrmm
+              definition paragraph 1
+
+              definition paragraph 2
+
+       tteerrmm wwiitthh _e_m_p_h_a_s_i_s iinn iitt
+
+              paragraph 1 should not be preceeded by a blank line
+
+              definition paragraph 2
+
 DDEEFFIINNIITTIIOONN LLIISSTT
        tteerrmm11  Description  of Term 1 Description of Term 1 Description of Term
               1 Description of Term 1 Description of Term 1

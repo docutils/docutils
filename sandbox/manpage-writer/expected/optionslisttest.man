@@ -138,6 +138,21 @@ Paragraph at level 1. Same level as Line indented once.
 .UNINDENT
 .sp
 This paragraph should be at level 0.
+.SH EMPHASIZE
+.INDENT 0.0
+.TP
+.B plain text term
+.
+definition paragraph 1
+.sp
+definition paragraph 2
+.TP
+.B term with \fIemphasis\fP in it
+.sp
+paragraph 1 should not be preceeded by a blank line
+.sp
+definition paragraph 2
+.UNINDENT
 .SH DEFINITION LIST
 .INDENT 0.0
 .TP
