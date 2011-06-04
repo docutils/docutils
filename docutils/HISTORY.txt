@@ -71,6 +71,7 @@ Changes Since 0.7
 
 * docutils/writers/manpage.py
 
+  - Fix: BUG#3219183 - vertical space in definition lists containing markup.
   - Fix: vertical space cleaning for option group ``.``.
  
 * tools/editors/emacs/rst.el:
