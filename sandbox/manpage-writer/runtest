@@ -6,8 +6,10 @@ EXP_DIR=expected
 
 if [ -z "`man man|grep -- '^ *-T Format'`" ] ; then
     echo 'ALERT: your man does not support "-T Format" to specify encoding'
-    echo 'Ctrl-C to abort, Ctrl-D to continue'
-    read
+    echo 'SKIPPING encoding tests'
+    ENCS=""
+else
+    ENCS="latin1 utf8 ascii"
 fi
 
 if [ -z "$1" ] ; then
@@ -29,7 +31,7 @@ for IN_F in $IN_DIR/$FILES ; do
   $CMD $OPT $IN_F $OUT_DIR/$F_BASE.man
   if [ $? -eq 0 ] ; then
     diff -s -u $EXP_DIR/$F_BASE.man $OUT_DIR/$F_BASE.man
-    for ENC in latin1 utf8 ascii ; do
+    for ENC in $ENCS ; do
       if [ -e $EXP_DIR/$F_BASE.$ENC ] ; then
         man -T$ENC $OUT_DIR/$F_BASE.man > $OUT_DIR/$F_BASE.$ENC
         diff -s -u $EXP_DIR/$F_BASE.$ENC $OUT_DIR/$F_BASE.$ENC
