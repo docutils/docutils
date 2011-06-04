@@ -30,6 +30,7 @@ class Tee:
     def __init__(self, filename, stream=sys.__stdout__):
         self.file = open(filename, 'w')
         self.stream = stream
+        self.encoding = stream.encoding
 
     def write(self, string):
         self.stream.write(string)
