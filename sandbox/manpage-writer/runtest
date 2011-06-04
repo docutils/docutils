@@ -5,7 +5,7 @@ OUT_DIR=output
 EXP_DIR=expected
 
 if [ -z "`man man|grep -- '^ *-T Format'`" ] ; then
-    echo 'ALERT: your man does not support "-T Format" to specify encoding'
+    echo 'WARNING: your man does not support "-T Format" to specify encoding'
     echo 'SKIPPING encoding tests'
     ENCS=""
 else
