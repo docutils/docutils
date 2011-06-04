@@ -101,18 +101,14 @@ BBEESSCCHHRREEIIBBUUNNGG
        im SYNTAX Abschnitt dieser Manualseite gezeigt ist.
 
 BBEEIISSPPIIEELLEE
-       mmaann llss
-
-              zeigt die Manualseite fuer das Programm ls an.
+       mmaann llss zeigt die Manualseite fuer das Programm ls an.
 
        mmaann --aa iinnttrroo
-
               zeigt  alle vorhandenen intro Manualseiten an.  Mit  (q)uit  ist
               es moeglich,    das    aufeinanderfolgendende    Anzeigen    der
               Seiten  abzubrechen oder mit (s)kip eine Seite zu ueberspringen.
 
        mmaann --tt aalliiaass || llpprr --PPppss
-
               Formatiert die Manualseite, die sich  auf  alias   bezieht,   in
               das  Default   troff   oder  groff  Format und schickt es an den
               Drucker ps.  Die Defaultausgabe  fuer  groff   ist   Postscript.
@@ -122,7 +118,6 @@ BBEEIISSPPIIEELLEE
               helfen,  welcher  Prozessor an die -t Option gebunden ist.
 
        mmaann --ll --TTddvvii ..//ffoooo..11xx..ggzz >> ..//ffoooo..11xx..ddvvii
-
               Dieser  Befehl  formatiert   die   komprimierte    nroff-Manual‐
               seite wird zuerst dekomprimiert, bevor sie durch passende Filter
               und  Pro-  gramme   bearbeitet   wird.   Die    Umlenkung    ist
@@ -132,12 +127,10 @@ BBEEIISSPPIIEELLEE
               Postscript weiterverarbeitet werden.
 
        mmaann --kk pprriinnttff
-
               Sucht die Kurzbeschreibungen und die  Namen   der   Manualseiten
               zum Schluesselwort printf und gibt alle Treffer aus.
 
        mmaann --ff ssmmaaiill
-
               Sucht   die   Manualseiten, die sich auf smail beziehen und gibt
               alle gefundenen Kurzbeschreibungen aus.
 
@@ -311,7 +304,6 @@ OOPPTTIIOONNEENN
               wird, versucht man dort einige sinnvolle Optionen zu setzen. Die
               Eingabeaufforderung in der letzten Zeile sieht in  dem  Fall  so
               aus:
-
                   Manual page name(sec) line x,
 
               wobei  name  die  Manualseite  bezeichnet,  die gerade angezeigt
@@ -492,15 +484,12 @@ UUMMGGEEBBUUNNGG
 
 DDAATTEEIIEENN
        //eettcc//mmaannppaatthh..ccoonnffiigg
-
               Die Manualkonfigurationsdatei.
 
        //uussrr//......//mmaann
-
               Globale Manualhierarchien.
 
        //vvaarr//ccaattmmaann//......//iinnddeexx..((bbtt||ddbb||ddiirr||ppaagg))
-
               Die FSSTND complianten globalen Indexdatenbanken.
 
 SSIIEEHHEE AAUUCCHH

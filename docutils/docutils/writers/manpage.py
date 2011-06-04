@@ -908,6 +908,16 @@ class Translator(nodes.NodeVisitor):
     def depart_organization(self, node):
         pass
 
+    def first_child(self, node):
+        first = isinstance(node.parent[0], nodes.label) # skip label
+        for child in node.parent.children[first:]:
+            if isinstance(child, nodes.Invisible):
+                continue
+            if child is node:
+                return 1
+            break
+        return 0
+
     def visit_paragraph(self, node):
         # ``.PP`` : Start standard indented paragraph.
         # ``.LP`` : Start block paragraph, all except the first.
@@ -915,7 +925,8 @@ class Translator(nodes.NodeVisitor):
         # NOTE dont use paragraph starts because they reset indentation.
         # ``.sp`` is only vertical space
         self.ensure_eol()
-        self.body.append('.sp\n')
+        if not self.first_child(node):
+            self.body.append('.sp\n')
 
     def depart_paragraph(self, node):
         self.body.append('\n')

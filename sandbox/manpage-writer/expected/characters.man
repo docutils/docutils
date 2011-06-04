@@ -23,31 +23,23 @@ resulting in.
 encodings are problematic as alway.
 .INDENT 0.0
 .IP \(bu 2
-.
 accents:
 .INDENT 2.0
 .IP \(bu 2
-.
 right: \'
 .IP \(bu 2
-.
 left: \(ga
 .UNINDENT
 .IP \(bu 2
-.
 quotes:
 .INDENT 2.0
 .IP \(bu 2
-.
 straight: \(aq
 .IP \(bu 2
-.
 double: "
 .IP \(bu 2
-.
 single: ‘ ’
 .IP \(bu 2
-.
 double: “ ”
 .UNINDENT
 .UNINDENT

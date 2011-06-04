@@ -37,10 +37,8 @@ level margin: \\n[rst2man-indent\\n[rst2man-indent-level]]
 After an option list:
 .INDENT 0.0
 .IP \(bu 2
-.
 a paragraph within the same section must be intented
 .IP \(bu 2
-.
 a section header directly following the list must \fInot\fP be
 intentend.
 .UNINDENT
@@ -52,27 +50,22 @@ This line must be in indented.
 .INDENT 0.0
 .TP
 .BI \-o \ x
-.
 an option
 .TP
 .B \-b
-.
 another
 .sp
 This option does the following points:
 .INDENT 7.0
 .IP \(bu 2
-.
 one point
 .IP \(bu 2
-.
 second point
 .INDENT 2.0
 .INDENT 3.5
 .INDENT 0.0
 .TP
 .B \-\-ccc
-.
 option lists may be nested, even if this is rarely
 used.
 .UNINDENT
@@ -81,16 +74,13 @@ used.
 .UNINDENT
 .TP
 .B \-k
-.
 and even another
 .sp
 This option does the following points:
 .INDENT 7.0
 .IP \(bu 2
-.
 one point
 .IP \(bu 2
-.
 second point
 .UNINDENT
 .UNINDENT
@@ -100,11 +90,9 @@ For all other options see \fB\-\-help\fP. This line must be intented.
 .INDENT 0.0
 .TP
 .BI \-o \ x
-.
 an option
 .TP
 .B \-b
-.
 another
 .UNINDENT
 .SH EXAMPLES
@@ -113,24 +101,19 @@ The "Examples" section header must not be intented. But this paragraph
 is indented, as all text in man\-pages. This is level 0.
 .INDENT 0.0
 .IP \(bu 2
-.
 Now let\(aqs test nested lists.
 .sp
 Line indented once. This is level 1.
 .INDENT 2.0
 .IP \(bu 2
-.
 Nested item1.
 .IP \(bu 2
-.
 Nested item2.
 .IP \(bu 2
-.
 Nested item3.
 .sp
 Line for Nested item 3.
 .IP \(bu 2
-.
 Nested item4.
 .UNINDENT
 .sp
@@ -142,13 +125,11 @@ This paragraph should be at level 0.
 .INDENT 0.0
 .TP
 .B plain text term
-.
 definition paragraph 1
 .sp
 definition paragraph 2
 .TP
 .B term with \fIemphasis\fP in it
-.sp
 paragraph 1 should not be preceeded by a blank line
 .sp
 definition paragraph 2
@@ -157,7 +138,6 @@ definition paragraph 2
 .INDENT 0.0
 .TP
 .B term1
-.
 Description of Term 1 Description of Term 1 Description of Term 1
 Description of Term 1 Description of Term 1
 .sp
@@ -165,7 +145,6 @@ Description of Term 1 Description of Term 1 Description of Term 1
 Description of Term 1 Description of Term 1
 .TP
 .B term1111111111
-.
 Description of Term 1 Description of Term 1 Description of Term 1
 Description of Term 1 Description of Term 1
 .sp
@@ -173,11 +152,9 @@ Description of Term 1 Description of Term 1 Description of Term 1
 Description of Term 1 Description of Term 1
 .TP
 .B term2
-.
 Description of Term 2
 .INDENT 7.0
 .INDENT 3.5
-.sp
 Description of Term 2 Description of Term 2 Description of Term 2
 Description of Term 2 Description of Term 2
 .sp
@@ -188,14 +165,12 @@ Description of Term 2 Description of Term 2
 .INDENT 7.0
 .TP
 .B term22
-.
 Defintions lists may be nested, thus this at level 1.
 .sp
 More Description of Term 22. More Description of Term 22.
 More Description of Term 22. More Description of Term 22.
 .TP
 .B term23
-.
 Defintions lists may be nested, thus this at level 1.
 .UNINDENT
 .sp
@@ -204,7 +179,6 @@ This para is indented to term2, thus should be at level 1.
 This para is indented to term2, thus should be at level 1.
 .TP
 .B term3
-.
 Defintions lists are not nested
 .sp
 More Description for term3.

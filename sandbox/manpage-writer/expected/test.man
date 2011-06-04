@@ -44,15 +44,12 @@ Run it and examine output.
 .INDENT 0.0
 .TP
 .BI \-o \ x
-.
 an option
 .TP
 .B \-b
-.
 another
 .TP
 .B \-f,  \-\-force
-.
 really do it
 .UNINDENT
 .sp
@@ -61,7 +58,6 @@ For all other options see \fB\-\-help\fP.
 .INDENT 0.0
 .TP
 .B rst2man.py xml\-schema\-catalog.rst xml\-schema\-catalog.man
-.
 create a manpage from xml\-schema\-catalog.rst
 .UNINDENT
 .\" comments : lorem ipsum lorem ipsum
@@ -76,84 +72,61 @@ Test \fBbold\fP or \fBstrong\fP formatting.
 Special characters:
 .INDENT 0.0
 .IP \(bu 2
-.
 backslash: \e
 .IP \(bu 2
-.
 hyphen: \-
 .IP \(bu 2
-.
 accents: \' \(ga
 .IP \(bu 2
-.
 quotes: \(aq "
 .UNINDENT
 .SS Lists
 .INDENT 0.0
 .IP \(bu 2
-.
 bullet list
 .IP \(bu 2
-.
 and a longer entry, and a longer entry, and a longer entry, and a longer entry,
 and a longer entry, and a longer entry, and a longer entry, and a longer entry,
 .INDENT 2.0
 .IP 1. 4
-.
 and a nested
 .IP 2. 4
-.
 enumeration
 .INDENT 2.0
 .IP \(bu 2
-.
 some line
 .IP \(bu 2
-.
 bullets
 .UNINDENT
 .IP 3. 4
-.
 a third
 .IP 4. 4
-.
 a third
 .IP 5. 4
-.
 a third
 .INDENT 2.0
 .IP a. 3
-.
 alphabetically list
 .IP b. 3
-.
 betacarotin
 .IP c. 3
-.
 grammar
 .UNINDENT
 .IP 6. 4
-.
 a third
 .INDENT 2.0
 .IP Y. 3
-.
 the end
 .IP Z. 3
-.
 yellow
 .UNINDENT
 .IP 7. 4
-.
 a third
 .IP 8. 4
-.
 a third
 .IP 9. 4
-.
 a third
 .IP 10. 4
-.
 bigger indentation if there are more than nine
 enumerated items (or there are larger numbers)
 .sp
@@ -163,17 +136,14 @@ one and not flowing into.
 .UNINDENT
 .INDENT 0.0
 .IP 7. 3
-.
 dont start with 1
 .UNINDENT
 .INDENT 0.0
 .IP 9. 3
-.
 dont increment by 1
 .UNINDENT
 .INDENT 0.0
 .IP 13. 4
-.
 Problematic: indentation does not match for nonconsecutive entries.
 .UNINDENT
 .sp
@@ -186,40 +156,33 @@ one and not flowing into.
 .INDENT 0.0
 .TP
 .B Term
-.
 Definition
 .TP
 .B Term
 classifier
-.sp
 Definition paragraph 1.
 .sp
 Definition paragraph 2.
 .TP
 .B Term
-.
 Definition
 .UNINDENT
 .SS Field lists
 .INDENT 0.0
 .TP
 .B first
-.
 a short label and a short text
 .TP
 .B secondly a longer label
-.
 and some more text and some more text
 and some more text   and some more text
 .UNINDENT
 .INDENT 0.0
 .TP
 .B definition lists
-.
 are also a valuable option and simple nonintrusive formatting
 .TP
 .B definition too :
-.
 with the colon.
 .UNINDENT
 .SS Doctest Blocks
@@ -343,51 +306,39 @@ Singing...
 raw input to man
 .SS Admonitions
 .IP Attention!
-.
 Directives at large.
 .RE
 .IP Caution!
-.
 Don\(aqt take any wooden nickels.
 .RE
 .IP !DANGER!
-.
 Mad scientist at work!
 .RE
 .IP Error
-.
 Does not compute.
 .RE
 .IP Hint
-.
 It\(aqs bigger than a bread box.
 .RE
 .IP Important
 .INDENT 0.0
 .IP \(bu 2
-.
 Wash behind your ears.
 .IP \(bu 2
-.
 Clean up your room.
 .IP \(bu 2
-.
 Call your mother.
 .IP \(bu 2
-.
 Back up your data.
 .UNINDENT
 .RE
 .IP Note
-.
 This is a note.
 .RE
 .IP Tip
-.
 15% if the service is good.
 .RE
 .IP Warning
-.
 Strong prose may provoke extreme mental exertion.
 Reader discretion is strongly advised.
 .RE
@@ -402,7 +353,6 @@ Text after the admonition.
 .SS other
 .sp
 inline references \fIref something\fP .
-.sp
 Contained verbose. Nothing special.
 .SH TOP SECTION
 .sp
@@ -422,7 +372,6 @@ This is a file.
 More information can be found about
 .INDENT 0.0
 .IP \(bu 2
-.
 xml\-schema\-catalog at
 \fI\%http://xml\-schema\-catalog.origo.ethz.ch/\fP
 .UNINDENT
@@ -433,16 +382,12 @@ And see the stars at the sky!
 Numerous mapping problems.
 .INDENT 0.0
 .IP 1. 3
-.
 Where do we get the manual section number from ? Commandline ?
 .IP 2. 3
-.
 docutils authors should be filled into section "AUTHORS".
 .IP 3. 3
-.
 be carefull with linebreaks in generated code.
 .IP 4. 3
-.
 list items.
 bullets and enumerators.
 .UNINDENT
