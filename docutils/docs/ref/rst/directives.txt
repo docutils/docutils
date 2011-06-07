@@ -497,16 +497,20 @@ Math
 
 The "math" directive inserts a block with mathematical content
 (display formula) into the document. The input format is *LaTeX math
-syntax* (see, e.g. the `Short Math Guide`_), for example::
+syntax* (see, e.g. the `Short Math Guide`_) with support for Unicode
+symbols, for example::
 
   .. math::
 
-    \alpha_t(i) = P(O_1, O_2, \dots O_t, q_t = S_i \lambda)
+    α_t(i) = P(O_1, O_2, … O_t, q_t = S_i λ)
 
-Docutil's latex2mathml converter (used, e.g., by the HTML writers)
-supports a subset of LaTeX syntax described in `Using LaTeX syntax for
-mathematics`__. If a writer does not support math typesetting, the
-content is inserted verbatim.
+For inline formulae, use the `math role`_.
+
+Support for math may be limited by the output format. If a writer does
+not support math typesetting, the content is inserted verbatim.
+For HTML, the output format can be set with the `math_output`_
+configuration setting (or the corresponding ``--math-output`` command
+line option).
 
 The following options are recognized:
 
@@ -514,11 +518,11 @@ The following options are recognized:
     Set a "classes" attribute value on the block element.  See the
     class_ directive.
 
-.. _Short Math Guide:
-   http://tex.loria.fr/general/downes-short-math-guide.pdf
+New in Docutils 0.8.
 
-__ http://docutils.sf.net/sandbox/jensj/latex_math/docs/latex_math.txt
-
+.. _Short Math Guide: ftp://ftp.ams.org/ams/doc/amsmath/short-math-guide.pdf
+.. _math role: roles.html#math
+.. _math_output: ../../user/config.html#math-output
 
 Rubric
 ======

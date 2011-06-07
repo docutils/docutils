@@ -124,6 +124,8 @@ The input format is LaTeX math syntax without the “math delimiters“
 See the `math directive`_ (producing display formulas) for more info
 on mathematical notation in reStructuredText.
 
+New in Docutils 0.8.
+
 .. _math directive: directives.html#math
 
 
