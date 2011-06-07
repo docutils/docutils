@@ -86,10 +86,10 @@ General
   * Do not decode argv before option parsing but individual string
     values?
 
-    +1 Allows for separate command-line vs. filesystem encodings,
-       respectively to keep file names encoded.
-    +1 Allows to configure command-line encoding in a config file,
-    -1 More complicated.
+    +1  Allows for separate command-line vs. filesystem encodings,
+        respectively to keep file names encoded.
+    +1  Allows to configure command-line encoding in a config file,
+    -1  More complicated.
 
   Cf. <http://thread.gmane.org/gmane.text.docutils.user/2890/focus=2957>.
 
@@ -1220,12 +1220,6 @@ Try to be compatible with `Math support in Sphinx`_?
 * When the math is only one line of text, it can also be given as a
   directive argument.
 
-  .. caution::
-
-    Clashs with possible use of the directive argument for type of
-    equation (``align``, ``equation``, ``equation*``, ...) or input
-    format (``LaTeX``, ``MathML``, ``linear math``, ...).
-
 * Supports multiple equations, which should be separated by a blank
   line.
 
@@ -1271,22 +1265,6 @@ HTML output
 There is no native math support in HTML.
 
 MathML_
-  is the W3C recommendation. Browser support is finally becoming more
-  widespread (Firefox, Opera, IE via free MathPlayer_ plugin).
-  Others can be supported using a CSS MathML profile or MathHTML\ [#]_.
-  See e.g. `viewing mathematics`__ and the `MathML Browser Test`_
-
-  __ http://vismor.com/documents/site_implementation/viewing_mathematics/
-  .. _MathML Browser Test:
-     http://eyeasme.com/Joe/MathML/MathML_browser_test.html
-  .. _MathPlayer: http://www.dessci.com/en/products/mathplayer/
-  .. _MathHTML: http://2020math.org/MathHTML/index.html
-
-  .. [#] MathHTML_ uses CSS to style any MathML tags in an HTML page.
-     Javascript is then used to tidy up the mathematics in an effort
-     to achive typeset quality. MathHTML has been tested in Firefox,
-     Safari, Chrome, Opera, and Internet Explorer 8.
-
   Converters from LaTeX to MathML include
 
   * latex_math_ (Python) by Jens Jørgen Mortensen in the Docutils sandbox
@@ -1329,17 +1307,6 @@ MathML_
 .. URL seems down:
    .. _itex: http://pear.math.pitt.edu/mathzilla/itex2mmlItex.html
 
-MathJax_
-  * a JavaScript-based engine for including TEX and MathML in HTML
-  * Works across multiple browsers and platforms
-  * Uses HTML/CSS, JavaScript, and unicode fonts for high-quality
-    typesetting that is scalable and prints at full resolution.
-  * MathJax is a joint project of the AMS, Design Science, Inc., and
-    the Society for Industrial and Applied Mathematics.
-  * There is a `MathJax extension`__ for Sphinx.
-
-  .. _MathJax: http://www.mathjax.org/
-  __ http://bitbucket.org/kevindunn/sphinx-extension-mathjax
 
 HTML/CSS
   format math in standard HTML enhanced by CSS rules
@@ -2272,6 +2239,13 @@ There is a project for epub support with sphinx providing a
 .. _International Digital Publishing Forum: http://www.idpf.org/
 .. _electronic reading devices:
    http://en.wikipedia.org/wiki/List_of_e-book_readers
+
+Also, the plasTeX_ Python package has an EPUB renderer:
+
+  It simply calls the XHTML renderer and does the epub packaging in
+  postprocessing.
+
+.. _plasTeX: http://plastex.sourceforge.net/
 
 
 LaTeX writer

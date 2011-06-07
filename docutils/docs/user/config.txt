@@ -725,24 +725,64 @@ _`initial_header_level`
     Default: 1 (for "<h1>").  Option: ``--initial-header-level``.
 
 _`math_output`
-    The format of mathematical content ("math" role and directive) in
-    the output document. Supported values are
-    
-    :HTML:   Convert to a HTML representation (needs the ``math.css``
-             stylesheet).
-             
-    :MathML: Convert to MathML.
-             
-             With the "html4css1" writer, the resulting HTML document
-             does not validate, as there is no DTD for MathML + XHTML
-             Transitional. However, MathML-enabled browsers will
-             render it fine.
-             
-    :LaTeX:  Include literal LaTeX code.
-    
-    The HTML and MathML options support only a subset of valid LaTeX
-    code.
-    
+    The format of mathematical content (`math directive`_ and role) in
+    the output document. Supported values are:
+
+    :MathJax:
+      Format math for display with MathJax_, a JavaScript-based math
+      rendering engine that uses HTML/CSS, JavaScript, and unicode
+      fonts for high-quality typesetting that is scalable and prints
+      at full resolution.
+
+      Pro:
+        Works 'out of the box' across multiple browsers and platforms.
+
+        Supports a large subset of LaTeX math commands and constructs.
+
+      Con:
+        Requires an Internet connection or a local MathJax
+        installation.
+
+    :HTML:
+      Format math in standard HTML enhanced by CSS rules
+
+      Requires the ``math.css`` stylesheet (stored in the same
+      installation-dependent directory as the `default stylesheet
+      <stylesheet_path [html4css1 writer]>`__
+
+    :MathML:
+      Embed math content as presentational MathML_.
+
+      Pro:
+        The W3C recommendation for math on the web.
+
+        Self-contained documents (no JavaScript, no external downloads).
+
+      Con:
+        Docutil's latex2mathml converter supports only a small
+        subset of LaTeX syntax.
+
+        With the "html4css1" writer, the resulting HTML document does
+        not validate, as there is no DTD for MathML + XHTML
+        Transitional. However, MathML-enabled browsers will render it
+        fine.
+
+    :LaTeX:
+      Include literal LaTeX code.
+
+      The failsave fallback.
+
+    New in Docutils 0.8.
+
+    .. _math directive: ../ref/rst/directives.html#math
+    .. _MathJax: http://www.mathjax.org/
+    .. _MathPlayer: http://www.dessci.com/en/products/mathplayer/
+    .. _MathML: http://www.mathweb.org/wiki/MathML
+
+    .. _Using LaTeX syntax for mathematics:
+        http://docutils.sf.net/sandbox/jensj/latex_math/docs/latex_math.txt
+
+
 _`option_limit`
     The maximum width (in characters) for options in option lists.
     Longer options will span an entire row of the table used to render
@@ -1215,7 +1255,7 @@ latex_preamble
 
 
     Option: ``--latex-preamble``
-    
+
     .. _Linux Libertine: http://www.linuxlibertine.org/
 
 .. _template [xetex writer]:
