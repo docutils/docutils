@@ -41,6 +41,9 @@ Editors with reStructuredText support and docutils GUIs:
 * `rst mode <http://jedmodes.sf.net/mode/rst/>`__ for the
   `JED <http://www.jedsoft.org/jed/>`__ programmers editor.
 
+* `reStructuredText editor plug-in for Eclipse
+  <http://resteditor.sf.net/>`__
+
 * Gunnar Schwant's DocFactory_ is a wxPython GUI application for
   Docutils.
 
