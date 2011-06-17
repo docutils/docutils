@@ -35,7 +35,7 @@ Editors with reStructuredText support and docutils GUIs:
   is a plugin for Vim7 with folding.
 
 * `VOoM <http://www.vim.org/scripts/script.php?script_id=2657>`__
-   is a plugin for Vim that emulates two-pane outliner. 
+   is a plugin for Vim that emulates two-pane outliner.
    Version 4.0b2 added support for reStructuredText.
 
 * `rst mode <http://jedmodes.sf.net/mode/rst/>`__ for the
@@ -97,6 +97,9 @@ HTML variants
   created to translate the Python_ documentation, and is now `used by
   <http://sphinx.pocoo.org/examples.html>`__ a wide choice of projects.
 
+  Generates web sites (interlinked and indexed HTML pages) and/or PDF
+  from a set of rst source files.
+
 * rst2ht_ by Oliver Rutherfurd, converts reStructuredText to an .ht
   template, for use with ht2html_.
 
@@ -152,7 +155,7 @@ Others
   Emacs text editor.  Texinfo can be used to produce multiple output
   formats, including HTML, PDF, and Info.
 
-  
+
 Import
 ------
 
@@ -187,7 +190,7 @@ Extend the reStructuredText syntax or the features of Docutils.
 More extensions are in the `Docutils Sandbox`_.
 
 * Jens J. Mortensen developed `LaTeX math for reST`_, which writes to
-  LaTeX or to MathML. It's included with Docutils > 0.7 (2010-11-05).
+  LaTeX or to MathML. It's included with Docutils since 0.8 (2010-11-05).
 
 * BENI Cherniavsky has written a generic `preprocessing module`_ for
   roles and/or directives and built preprocessors for TeX math for
@@ -216,8 +219,10 @@ Development
 ```````````
 
 * Sphinx_ extends the ReStructuredText syntax to better support the
-  documentation of Software projects (but other documents can be written
-  with it too). Since version 2.6, the `Python documentation`_ is based on 
+  documentation of Software (and other) *projects* (but other documents
+  can be written with it too).
+
+  Since version 2.6, the `Python documentation`_ is based on
   reStructuredText and Sphinx.
 
 * Trac_, a project management and bug/issue tracking system, supports
@@ -250,7 +255,7 @@ Presentations
   presentations using ReportLabs' PythonPoint_.
 
 * InkSlide_ quick and easy presentations using Inkscape_. InkSlide uses
-  reStructuredText for markup, although it renders only a subset of rst. 
+  reStructuredText for markup, although it renders only a subset of rst.
 
 .. _Docutils: http://docutils.sourceforge.net/
 .. _FAQ entry about Wikis: http://docutils.sf.net/FAQ.html#are-there-any-wikis-that-use-restructuredtext-syntax

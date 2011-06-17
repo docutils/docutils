@@ -108,18 +108,33 @@ class ParsedLiteral(Directive):
         node.line = self.content_offset + 1
         return [node] + messages
 
+
 class MathBlock(Directive):
 
-    option_spec = {'class': directives.class_option}
     has_content = True
+    required_arguments = 0
+    optional_arguments = 1
+    final_argument_whitespace = True
+    option_spec = {'class': directives.class_option
+                   ## TODO: support Sphinx' ``mathbase.py`` options?
+                   # 'label': directives.unchanged,
+                   # 'nowrap': directives.flag,
+                  }
 
     def run(self):
         set_classes(self.options)
-        self.assert_has_content()
-        latex_code = '\n'.join(self.content)
-        node = nodes.math_block(self.block_text, latex_code, **self.options)
-        node.line = self.content_offset + 1
-        return [node]
+        if not self.arguments:
+            self.assert_has_content()
+        # join lines, separate blocks
+        content = '\n'.join(self.content).split('\n\n')
+        _nodes = []
+        for block in self.arguments + content:
+            if not block:
+                continue
+            node = nodes.math_block(self.block_text, block, **self.options)
+            node.line = self.content_offset + 1
+            _nodes.append(node)
+        return _nodes
 
 
 class Rubric(Directive):

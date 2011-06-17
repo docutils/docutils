@@ -779,10 +779,6 @@ _`math_output`
     .. _MathPlayer: http://www.dessci.com/en/products/mathplayer/
     .. _MathML: http://www.mathweb.org/wiki/MathML
 
-    .. _Using LaTeX syntax for mathematics:
-        http://docutils.sf.net/sandbox/jensj/latex_math/docs/latex_math.txt
-
-
 _`option_limit`
     The maximum width (in characters) for options in option lists.
     Longer options will span an entire row of the table used to render

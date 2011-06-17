@@ -10,9 +10,9 @@ role specificator, :math:`n! + \sin(x_n^2)` and `A_\text{c} =
 
    f(\epsilon) = \frac{1}{1 + \exp\left(\frac{\varepsilon}{k_\text{B}T}\right)}
 
-.. math::
+A display formula can also be given as directive argument, e.g.
 
-   N = \frac{\text{number of apples}}{7}
+.. math:: N = \frac{\text{number of apples}}{7}
 
 The determinant of the matrix
 
@@ -22,24 +22,21 @@ The determinant of the matrix
 
 is :math:`|\mathbf{M}| = ad - bc`.
 
-Sum and Integral with limits:
+More than one display math block can be put in one math directive.
+For example, the following sum and integral with limits:
 
 .. math::
 
-   \int_0^1 x^n dx = \frac{1}{n + 1}
+          \int_0^1 x^n dx = \frac{1}{n + 1}
 
-.. math::
-
-   \sum_{n=1}^m n = \frac{m(m+1)}{2}
+          \sum_{n=1}^m n = \frac{m(m+1)}{2}
 
 LaTeX-supported Unicode math symbols can be used in math roles and
 directives:
 
 The Schrödinger equation
 
-.. math::
-
-   i\hbar \frac{∂}{∂t}Ψ = \hat{H}Ψ,
+.. math:: i\hbar \frac{∂}{∂t}Ψ = \hat{H}Ψ,
 
 with the *wave function* :math:`Ψ`, describes how the quantum state of a
 physical system changes in time.
@@ -72,14 +69,16 @@ Modulation Transfer Function:
 
 .. math::
 
- \text{MTF}=\left|\frac{\mathcal{F}\{s(x)\}}
-                   {\mathcal{F}\{ s(x)\} |_{\omega_{x}=0}}\right|
-            =\text{abs}\left(\frac{\int_{-\infty}^{\infty}s(x)
-                               \text{e}^{\text{i}\omega_{x}x}\text{d}{x}}
-                               {\int_{-\infty}^{\infty}s(x)\text{d}{x}}
-                         \right).
+ \text{MTF} = \left|\frac{\mathcal{F}\{s(x)\}}
+                         {\mathcal{F}\{ s(x)\} |_{ω_{x}=0}}\right|
+            = \mathrm{abs}\left(\frac
+                  {∫_{-∞}^{∞}s(x) \mathrm{e}^{\mathrm{i}ω_{x}x}\mathrm{d}{x}}
+                  {∫_{-∞}^{∞}s(x)\mathrm{d}{x}}
+              \right).
 
-Math split over two lines:
+Math split over two lines: If a double backslash is detected outside a
+``\begin{...} \end{...}`` pair, the math code is wrapped in an AMSmath_
+``align`` environment:
 
 .. math::
 
@@ -95,8 +94,8 @@ Cases ("manually", with ``matrix`` environment):
                        1 & x>0
                      \end{matrix}\right.
 
-Cases with the AMSmath ``cases`` environment (not (yet)
-supported by latex2MathML):
+Cases with the AMSmath_ ``cases`` environment (not (yet) supported by
+HTML writers with ``--math-output=MathML``):
 
 .. math::
 
@@ -104,3 +103,5 @@ supported by latex2MathML):
                        -1 & x<0\\
                         1 & x>0
                      \end{cases}
+
+.. _AMSmath: ftp://ftp.ams.org/ams/doc/amsmath/short-math-guide.pdf

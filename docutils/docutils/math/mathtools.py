@@ -9,18 +9,24 @@
 # mathtools.py: helpers for Docutils math support
 # ============================================================
 
-def pick_math_environment(code):
-    """Return the right math environment to display of `code`.
+def pick_math_environment(code, numbered=False):
+    """Return the right math environment to display `code`.
 
     The test simply looks for line-breaks (``\\``) outside environments.
-    Multi-line formulae are set with ``align*``, one-liners with
-    ``equation*``.
+    Multi-line formulae are set with ``align``, one-liners with
+    ``equation``.
+
+    If `numbered` evaluates to ``False``, the "starred" versions are used
+    to suppress numbering.
     """
     # cut out environment content:
     chunks = code.split(r'\begin{')
     toplevel_code = ''.join([chunk.split(r'\end{')[-1]
                              for chunk in chunks])
     if toplevel_code.find(r'\\') >= 0:
-        return 'align*'
+        env = 'align'
     else:
-        return 'equation*'
+        env = 'equation'
+    if not numbered:
+        env += '*'
+    return env

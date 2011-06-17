@@ -368,7 +368,7 @@ Paragraphs contain text and may contain inline markup: \emph{emphasis},
 (\url{http://www.python.org}), external hyperlinks (\href{http://www.python.org/}{Python}\DUfootnotemark{id30}{id29}{5}), internal
 cross-references (\hyperref[example]{example}), external hyperlinks with embedded URIs
 (\href{http://www.python.org}{Python web site}), \href{http://www.python.org/}{anonymous hyperlink
-references}\DUfootnotemark{id33}{id29}{5} (\href{http://docutils.sourceforge.net/}{a second reference}\DUfootnotemark{id35}{id34}{6}), footnote references (manually
+references}\DUfootnotemark{id36}{id29}{5} (\href{http://docutils.sourceforge.net/}{a second reference}\DUfootnotemark{id38}{id37}{7}), footnote references (manually
 numbered\DUfootnotemark{id1}{id8}{1}, anonymous auto-numbered\DUfootnotemark{id2}{id12}{3}, labeled auto-numbered\DUfootnotemark{id3}{label}{2}, or symbolic\DUfootnotemark{id4}{id13}{*}), citation references (\hyperlink{cit2002}{[CIT2002]}),
 substitution references (\includegraphics{../../../docs/user/rst/images/biohazard.png}), and %
 \phantomsection\label{inline-hyperlink-targets}inline hyperlink targets
@@ -862,8 +862,8 @@ This footnote shows the next symbol in the sequence.
 \DUfootnotetext{id16}{id16}{4}{%
 Here's an unreferenced footnote, with a reference to a
 nonexistent footnote:%
-\raisebox{1em}{\hypertarget{id41}{}}%
-\raisebox{1em}{\hypertarget{id17}{}}\hyperlink{id40}{\textbf{\color{red}{[}5{]}\_}}.
+\raisebox{1em}{\hypertarget{id44}{}}%
+\raisebox{1em}{\hypertarget{id17}{}}\hyperlink{id43}{\textbf{\color{red}{[}5{]}\_}}.
 }
 
 
@@ -880,8 +880,8 @@ rendered separately and differently from footnotes.
 \end{figure}
 
 Here's a reference to the above, \hyperlink{cit2002}{[CIT2002]}, and a %
-\raisebox{1em}{\hypertarget{id43}{}}%
-\raisebox{1em}{\hypertarget{id19}{}}\hyperlink{id42}{\textbf{\color{red}{[}nonexistent{]}\_}}
+\raisebox{1em}{\hypertarget{id46}{}}%
+\raisebox{1em}{\hypertarget{id19}{}}\hyperlink{id45}{\textbf{\color{red}{[}nonexistent{]}\_}}
 citation.
 
 
@@ -909,7 +909,7 @@ Targets may be indirect and anonymous.  Thus \hyperref[targets]{this phrase} may
 refer to the \hyperref[targets]{Targets} section.
 
 Here's a %
-\raisebox{1em}{\hypertarget{id45}{}}\hyperlink{id44}{\textbf{\color{red}`hyperlink reference without a target`\_}}, which generates an
+\raisebox{1em}{\hypertarget{id48}{}}\hyperlink{id47}{\textbf{\color{red}`hyperlink reference without a target`\_}}, which generates an
 error.
 
 
@@ -937,7 +937,7 @@ explicit targets will generate ``warning'' (level-2) system messages.
 Since there are two ``Duplicate Target Names'' section headers, we
 cannot uniquely refer to either of them by name.  If we try to (like
 this: %
-\raisebox{1em}{\hypertarget{id47}{}}\hyperlink{id46}{\textbf{\color{red}`Duplicate Target Names`\_}}), an error is generated.
+\raisebox{1em}{\hypertarget{id50}{}}\hyperlink{id49}{\textbf{\color{red}`Duplicate Target Names`\_}}), an error is generated.
 
 
 %___________________________________________________________________________
@@ -1239,11 +1239,15 @@ allowed (e.g. inside a directive).
 \url{http://www.python.org/}
 }
 %
-\DUfootnotetext{id34}{id35}{6}{%
+\DUfootnotetext{id33}{id34}{6}{%
+\url{ftp://ftp.ams.org/ams/doc/amsmath/short-math-guide.pdf}
+}
+%
+\DUfootnotetext{id37}{id38}{7}{%
 \url{http://docutils.sourceforge.net/}
 }
 %
-\DUfootnotetext{id36}{id37}{7}{%
+\DUfootnotetext{id39}{id40}{8}{%
 \url{A:DOS\\path\\}
 }
 
@@ -1641,7 +1645,9 @@ role specificator, $n! + \sin(x_n^2)$ and $A_\text{c} =
 %
 \begin{equation*}
 f(\epsilon) = \frac{1}{1 + \exp\left(\frac{\varepsilon}{k_\text{B}T}\right)}
-\end{equation*}%
+\end{equation*}
+A display formula can also be given as directive argument, e.g.
+%
 \begin{equation*}
 N = \frac{\text{number of apples}}{7}
 \end{equation*}
@@ -1652,7 +1658,8 @@ The determinant of the matrix
 \end{equation*}
 is $|\mathbf{M}| = ad - bc$.
 
-Sum and Integral with limits:
+More than one display math block can be put in one math directive.
+For example, the following sum and integral with limits:
 %
 \begin{equation*}
 \int_0^1 x^n dx = \frac{1}{n + 1}
@@ -1713,14 +1720,16 @@ $\vec{R}$        \texttt{\textbackslash{}vec\{R\}}
 Modulation Transfer Function:
 %
 \begin{equation*}
-\text{MTF}=\left|\frac{\mathcal{F}\{s(x)\}}
-                  {\mathcal{F}\{ s(x)\} |_{\omega_{x}=0}}\right|
-           =\text{abs}\left(\frac{\int_{-\infty}^{\infty}s(x)
-                              \text{e}^{\text{i}\omega_{x}x}\text{d}{x}}
-                              {\int_{-\infty}^{\infty}s(x)\text{d}{x}}
-                        \right).
+\text{MTF} = \left|\frac{\mathcal{F}\{s(x)\}}
+                        {\mathcal{F}\{ s(x)\} |_{\omega _{x}=0}}\right|
+           = \mathrm{abs}\left(\frac
+                 {\int _{-\infty }^{\infty }s(x) \mathrm{e}^{\mathrm{i}\omega _{x}x}\mathrm{d}{x}}
+                 {\int _{-\infty }^{\infty }s(x)\mathrm{d}{x}}
+             \right).
 \end{equation*}
-Math split over two lines:
+Math split over two lines: If a double backslash is detected outside a
+\texttt{\textbackslash{}begin\{...\} \textbackslash{}end\{...\}} pair, the math code is wrapped in an \href{ftp://ftp.ams.org/ams/doc/amsmath/short-math-guide.pdf}{AMSmath}\DUfootnotemark{id34}{id33}{6}
+\texttt{align} environment:
 %
 \begin{align*}
 s_{\mathrm{out}}(x) & = s_{\mathrm{in}}(x') * s_\delta (x-x') \\
@@ -1734,8 +1743,8 @@ Cases (``manually'', with \texttt{matrix} environment):
                     1 & x>0
                   \end{matrix}\right.
 \end{equation*}
-Cases with the AMSmath \texttt{cases} environment (not (yet)
-supported by latex2MathML):
+Cases with the \href{ftp://ftp.ams.org/ams/doc/amsmath/short-math-guide.pdf}{AMSmath}\DUfootnotemark{id35}{id33}{6} \texttt{cases} environment (not (yet) supported by
+HTML writers with \texttt{-{}-math-output=MathML}):
 %
 \begin{equation*}
 \mathrm{sgn}(x) = \begin{cases}
@@ -2517,7 +2526,7 @@ Handling by the LaTeX writer:
 \url{http://www.w3.org/XML/Schema\#dev}
 \item[] \href{http://www.w3.org/XML/Schema\%dev}{URL with \%}
 \url{http://example.org/Schema\%dev}
-\item[] \href{A:DOS\\path\\}{file with DOS path}\DUfootnotemark{id37}{id36}{7} \url{A:DOS\\path\\}\DUfootnotemark{id38}{id36}{7}
+\item[] \href{A:DOS\\path\\}{file with DOS path}\DUfootnotemark{id40}{id39}{8} \url{A:DOS\\path\\}\DUfootnotemark{id41}{id39}{8}
 \end{DUlineblock}
 
 \DUadmonition[note]{
@@ -2528,7 +2537,7 @@ These URLs are typeset inside a LaTeX command without error.
 \begin{DUlineblock}{0em}
 \item[] \url{http://www.w3.org/XML/Schema\#dev}
 \item[] \url{http://example.org/Schema\%dev}
-\item[] \url{A:DOS\\path\\}\DUfootnotemark{id39}{id36}{7}
+\item[] \url{A:DOS\\path\\}\DUfootnotemark{id42}{id39}{8}
 \end{DUlineblock}
 }
 
@@ -2601,41 +2610,41 @@ Undefined substitution referenced: ``problematic''.
 
 \DUadmonition[system-message]{
 \DUtitle[system-message]{system-message}
-\raisebox{1em}{\hypertarget{id40}{}}
+\raisebox{1em}{\hypertarget{id43}{}}
 
 {\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~390
 
-\hyperlink{id41}{
+\hyperlink{id44}{
 Unknown target name: ``5''.
 }}
 
 \DUadmonition[system-message]{
 \DUtitle[system-message]{system-message}
-\raisebox{1em}{\hypertarget{id42}{}}
+\raisebox{1em}{\hypertarget{id45}{}}
 
 {\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~399
 
-\hyperlink{id43}{
+\hyperlink{id46}{
 Unknown target name: ``nonexistent''.
 }}
 
 \DUadmonition[system-message]{
 \DUtitle[system-message]{system-message}
-\raisebox{1em}{\hypertarget{id44}{}}
+\raisebox{1em}{\hypertarget{id47}{}}
 
 {\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~426
 
-\hyperlink{id45}{
+\hyperlink{id48}{
 Unknown target name: ``hyperlink reference without a target''.
 }}
 
 \DUadmonition[system-message]{
 \DUtitle[system-message]{system-message}
-\raisebox{1em}{\hypertarget{id46}{}}
+\raisebox{1em}{\hypertarget{id49}{}}
 
 {\color{red}ERROR/3} in \texttt{functional/input/data/standard.txt}, line~439
 
-\hyperlink{id47}{
+\hyperlink{id50}{
 Duplicate target name, cannot be used as a unique reference: ``duplicate target names''.
 }}
 
