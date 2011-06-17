@@ -22,6 +22,7 @@ role specificator, <span class="formula">
 <div class="formula">
 <i>f</i>(<i>ϵ</i>) = <span class="fraction"><span class="ignored">(</span><span class="numerator">1</span><span class="ignored">)/(</span><span class="denominator">1 + exp<span class="array"><span class="arrayrow"><span class="bracket align-left">⎛</span></span><span class="arrayrow"><span class="bracket align-left">⎝</span></span></span><span class="fraction"><span class="ignored">(</span><span class="numerator"><i>ε</i></span><span class="ignored">)/(</span><span class="denominator"><i>k</i><sub><span class="text">B</span></sub><i>T</i></span><span class="ignored">)</span></span><span class="array"><span class="arrayrow"><span class="bracket align-right">⎞</span></span><span class="arrayrow"><span class="bracket align-right">⎠</span></span></span></span><span class="ignored">)</span></span>
 </div>
+<p>A display formula can also be given as directive argument, e.g.</p>
 <div class="formula">
 <i>N</i> = <span class="fraction"><span class="ignored">(</span><span class="numerator"><span class="text">number of apples</span></span><span class="ignored">)/(</span><span class="denominator">7</span><span class="ignored">)</span></span>
 </div>
@@ -59,7 +60,8 @@ role specificator, <span class="formula">
 <p>is <span class="formula">
 |<b>M</b>| = <i>ad</i> − <i>bc</i></span>
 .</p>
-<p>Sum and Integral with limits:</p>
+<p>More than one display math block can be put in one math directive.
+For example, the following sum and integral with limits:</p>
 <div class="formula">
 <span class="limits"><span class="limit">∫</span></span><span class="scripts"><sup class="script">1</sup><sub class="script">0</sub></span><i>x</i><sup><i>n</i></sup><i>dx</i> = <span class="fraction"><span class="ignored">(</span><span class="numerator">1</span><span class="ignored">)/(</span><span class="denominator"><i>n</i> + 1</span><span class="ignored">)</span></span>
 </div>
@@ -133,9 +135,11 @@ physical system changes in time.</p>
 \widehat{xxx} -->
 <p>Modulation Transfer Function:</p>
 <div class="formula">
-<span class="text">MTF</span> = <span class="array"><span class="arrayrow"><span class="bracket align-left">|</span></span><span class="arrayrow"><span class="bracket align-left">|</span></span></span><span class="fraction"><span class="ignored">(</span><span class="numerator">ℱ{<i>s</i>(<i>x</i>)}</span><span class="ignored">)/(</span><span class="denominator">ℱ{<i>s</i>(<i>x</i>)}|<sub><i>ω</i><sub><i>x</i></sub> = 0</sub></span><span class="ignored">)</span></span><span class="array"><span class="arrayrow"><span class="bracket align-right">|</span></span><span class="arrayrow"><span class="bracket align-right">|</span></span></span> = <span class="text"> abs</span><span class="array"><span class="arrayrow"><span class="bracket align-left">⎛</span></span><span class="arrayrow"><span class="bracket align-left">⎝</span></span></span><span class="fraction"><span class="ignored">(</span><span class="numerator"><span class="limits"><span class="limit">∫</span></span><span class="scripts"><sup class="script">∞</sup><sub class="script"> − ∞</sub></span><i>s</i>(<i>x</i>)<span class="text">e</span><sup><span class="text">i</span><i>ω</i><sub><i>x</i></sub><i>x</i></sup><span class="text">d</span><i>x</i></span><span class="ignored">)/(</span><span class="denominator"><span class="limits"><span class="limit">∫</span></span><span class="scripts"><sup class="script">∞</sup><sub class="script"> − ∞</sub></span><i>s</i>(<i>x</i>)<span class="text">d</span><i>x</i></span><span class="ignored">)</span></span><span class="array"><span class="arrayrow"><span class="bracket align-right">⎞</span></span><span class="arrayrow"><span class="bracket align-right">⎠</span></span></span>.
+<span class="text">MTF</span> = <span class="array"><span class="arrayrow"><span class="bracket align-left">|</span></span><span class="arrayrow"><span class="bracket align-left">|</span></span></span><span class="fraction"><span class="ignored">(</span><span class="numerator">ℱ{<i>s</i>(<i>x</i>)}</span><span class="ignored">)/(</span><span class="denominator">ℱ{<i>s</i>(<i>x</i>)}|<sub><i>ω</i><sub><i>x</i></sub> = 0</sub></span><span class="ignored">)</span></span><span class="array"><span class="arrayrow"><span class="bracket align-right">|</span></span><span class="arrayrow"><span class="bracket align-right">|</span></span></span> = <span class="mathrm"> abs</span><span class="array"><span class="arrayrow"><span class="bracket align-left">⎛</span></span><span class="arrayrow"><span class="bracket align-left">⎝</span></span></span><span class="fraction"><span class="ignored">(</span><span class="numerator"><span class="limits"><span class="limit">∫</span></span><span class="scripts"><sup class="script">∞</sup><sub class="script"> − ∞</sub></span><i>s</i>(<i>x</i>)<span class="mathrm">e</span><sup><span class="mathrm">i</span><i>ω</i><sub><i>x</i></sub><i>x</i></sup><span class="mathrm">d</span><i>x</i></span><span class="ignored">)/(</span><span class="denominator"><span class="limits"><span class="limit">∫</span></span><span class="scripts"><sup class="script">∞</sup><sub class="script"> − ∞</sub></span><i>s</i>(<i>x</i>)<span class="mathrm">d</span><i>x</i></span><span class="ignored">)</span></span><span class="array"><span class="arrayrow"><span class="bracket align-right">⎞</span></span><span class="arrayrow"><span class="bracket align-right">⎠</span></span></span>.
 </div>
-<p>Math split over two lines:</p>
+<p>Math split over two lines: If a double backslash is detected outside a
+<tt class="docutils literal"><span class="pre">\begin{...}</span> <span class="pre">\end{...}</span></tt> pair, the math code is wrapped in an <a class="reference external" href="ftp://ftp.ams.org/ams/doc/amsmath/short-math-guide.pdf">AMSmath</a>
+<tt class="docutils literal">align</tt> environment:</p>
 <div class="formula">
 <span class="environment"><span class="arrayrow">
 <span class="arraycell align-r">
@@ -197,8 +201,8 @@ physical system changes in time.</p>
 </span>
 </span><span class="emptydot"></span>
 </div>
-<p>Cases with the AMSmath <tt class="docutils literal">cases</tt> environment (not (yet)
-supported by latex2MathML):</p>
+<p>Cases with the <a class="reference external" href="ftp://ftp.ams.org/ams/doc/amsmath/short-math-guide.pdf">AMSmath</a> <tt class="docutils literal">cases</tt> environment (not (yet) supported by
+HTML writers with <tt class="docutils literal"><span class="pre">--math-output=MathML</span></tt>):</p>
 <div class="formula">
 <span class="mathrm">sgn</span>(<i>x</i>) = <span class="array"><span class="arrayrow"><span class="bracket align-l">⎧</span></span><span class="arrayrow"><span class="bracket align-l">⎨</span></span><span class="arrayrow"><span class="bracket align-l">⎩</span></span></span><span class="bracketcases">
 <span class="arrayrow">

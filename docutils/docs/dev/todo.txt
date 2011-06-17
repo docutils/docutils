@@ -1154,10 +1154,9 @@ __ rst/alternatives.html#or-not-to-do
 Math Markup
 -----------
 
-We need a generic solution, that's applicable to any output format.
 Using a standard, such as MathML_, would be best. (For an overview of
 MathML implementations and tests, see e.g. the `mathweb wiki`_ or
-the `ConTeXT MathML page`_
+the `ConTeXT MathML page`_.)
 
 .. _MathML: http://www.w3.org/TR/MathML2/
 .. _mathweb wiki: http://www.mathweb.org/wiki/MathML
@@ -1187,7 +1186,7 @@ LaTeX math syntax
   * Used for input and storage by the `Math support in Sphinx`_.
 
   * Unicode input similar to the "unicode-math" package for
-    XeTeX/LuaTeX provides for a improved readability.
+    XeTeX/LuaTeX provides for improved readability of the source.
 
   * The backtick (GRAVE ACCENT, 0x60) cannot be used in a math role.
     Fortunately, it is not required in LaTeX math mode, as the
@@ -1216,12 +1215,6 @@ See `the culmination of a relevant discussion
 
 
 Try to be compatible with `Math support in Sphinx`_?
-
-* When the math is only one line of text, it can also be given as a
-  directive argument.
-
-* Supports multiple equations, which should be separated by a blank
-  line.
 
 * The ``:label:`` option selects a label for the equation, by which it
   can be cross-referenced, and causes an equation number to be issued.
@@ -1254,7 +1247,10 @@ Which equation environments should be supported by the math directive?
   + unnumbered: `align*`
 
   + Sphinx math also supports `gather` (checking for blank lines in
-    the content).
+    the content). Docutils puts content blocks separated by blank
+    lines in separate math-block doctree nodes. (The difference of
+    `gather` to two consecutive "normal" environments is that
+    line-breaks between the two are prevented.)
 
 See http://www.math.uiuc.edu/~hildebr/tex/displays.html.
 
@@ -1317,6 +1313,8 @@ HTML/CSS
   * TtH_ (C)
   * Hevea_ (Objective Caml)
   * eLyXer_ (Python)
+
+  The ``math-output=html`` option uses the converter from eLyXer.
 
   __ http://www.cs.tut.fi/~jkorpela/math/
   __ http://www.zipcon.net/~swhite/docs/math/math.html

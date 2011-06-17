@@ -27,6 +27,7 @@ role specificator, <math xmlns="http://www.w3.org/1998/Math/MathML">
 <mrow><mfrac>
 <mrow><mi>ε</mi></mrow>
 <mrow><msub><mi>k</mi><mtext>B</mtext></msub><mi>T</mi></mrow></mfrac></mrow></mfenced></mrow></mfrac></mtd></mtr></mtable></math>
+<p>A display formula can also be given as directive argument, e.g.</p>
 <math xmlns="http://www.w3.org/1998/Math/MathML" mode="display">
 <mtable>
 <mtr>
@@ -50,7 +51,8 @@ role specificator, <math xmlns="http://www.w3.org/1998/Math/MathML">
 <p>is <math xmlns="http://www.w3.org/1998/Math/MathML">
 <mrow><mo>|</mo><mstyle fontweight="bold">
 <mrow><mi>M</mi></mrow></mstyle><mo>|</mo><mo>=</mo><mi>a</mi><mi>d</mi><mo>-</mo><mi>b</mi><mi>c</mi></mrow></math>.</p>
-<p>Sum and Integral with limits:</p>
+<p>More than one display math block can be put in one math directive.
+For example, the following sum and integral with limits:</p>
 <math xmlns="http://www.w3.org/1998/Math/MathML" mode="display">
 <mtable>
 <mtr>
@@ -153,7 +155,9 @@ physical system changes in time.</p>
 <mrow><mo>-</mo><mo>∞</mo></mrow>
 <mrow><mo>∞</mo></mrow></munderover><mi>s</mi><mo>(</mo><mi>x</mi><mo>)</mo><mtext>d</mtext>
 <mrow><mi>x</mi></mrow></mrow></mfrac></mrow></mfenced><mo>.</mo></mtd></mtr></mtable></math>
-<p>Math split over two lines:</p>
+<p>Math split over two lines: If a double backslash is detected outside a
+<tt class="docutils literal"><span class="pre">\begin{...}</span> <span class="pre">\end{...}</span></tt> pair, the math code is wrapped in an <a class="reference external" href="ftp://ftp.ams.org/ams/doc/amsmath/short-math-guide.pdf">AMSmath</a>
+<tt class="docutils literal">align</tt> environment:</p>
 <math xmlns="http://www.w3.org/1998/Math/MathML" mode="display">
 <mtable>
 <mtr>
@@ -178,10 +182,10 @@ physical system changes in time.</p>
 <mtr>
 <mtd><mn>1</mn></mtd>
 <mtd><mi>x</mi><mo>&gt;</mo><mn>0</mn></mtd></mtr></mtable></mrow></mfenced></mtd></mtr></mtable></math>
-<p>Cases with the AMSmath <tt class="docutils literal">cases</tt> environment (not (yet)
-supported by latex2MathML):</p>
+<p>Cases with the <a class="reference external" href="ftp://ftp.ams.org/ams/doc/amsmath/short-math-guide.pdf">AMSmath</a> <tt class="docutils literal">cases</tt> environment (not (yet) supported by
+HTML writers with <tt class="docutils literal"><span class="pre">--math-output=MathML</span></tt>):</p>
 <div class="system-message">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">functional/input/data/math.txt</tt>, line 103)</p>
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">functional/input/data/math.txt</tt>, line 102)</p>
 <p>
 Environment not supported! Supported environment: "matrix".</p>
 <pre class="literal-block">

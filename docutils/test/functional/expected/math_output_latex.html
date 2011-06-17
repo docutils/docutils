@@ -22,6 +22,7 @@ A_\text{c} =
 <pre class="math">
 f(\epsilon) = \frac{1}{1 + \exp\left(\frac{\varepsilon}{k_\text{B}T}\right)}
 </pre>
+<p>A display formula can also be given as directive argument, e.g.</p>
 <pre class="math">
 N = \frac{\text{number of apples}}{7}
 </pre>
@@ -32,7 +33,8 @@ N = \frac{\text{number of apples}}{7}
 <p>is <tt class="math">
 |\mathbf{M}| = ad - bc</tt>
 .</p>
-<p>Sum and Integral with limits:</p>
+<p>More than one display math block can be put in one math directive.
+For example, the following sum and integral with limits:</p>
 <pre class="math">
 \int_0^1 x^n dx = \frac{1}{n + 1}
 </pre>
@@ -106,14 +108,16 @@ physical system changes in time.</p>
 \widehat{xxx} -->
 <p>Modulation Transfer Function:</p>
 <pre class="math">
-\text{MTF}=\left|\frac{\mathcal{F}\{s(x)\}}
-                  {\mathcal{F}\{ s(x)\} |_{\omega_{x}=0}}\right|
-           =\text{abs}\left(\frac{\int_{-\infty}^{\infty}s(x)
-                              \text{e}^{\text{i}\omega_{x}x}\text{d}{x}}
-                              {\int_{-\infty}^{\infty}s(x)\text{d}{x}}
-                        \right).
+\text{MTF} = \left|\frac{\mathcal{F}\{s(x)\}}
+                        {\mathcal{F}\{ s(x)\} |_{\omega _{x}=0}}\right|
+           = \mathrm{abs}\left(\frac
+                 {\int _{-\infty }^{\infty }s(x) \mathrm{e}^{\mathrm{i}\omega _{x}x}\mathrm{d}{x}}
+                 {\int _{-\infty }^{\infty }s(x)\mathrm{d}{x}}
+             \right).
 </pre>
-<p>Math split over two lines:</p>
+<p>Math split over two lines: If a double backslash is detected outside a
+<tt class="docutils literal"><span class="pre">\begin{...}</span> <span class="pre">\end{...}</span></tt> pair, the math code is wrapped in an <a class="reference external" href="ftp://ftp.ams.org/ams/doc/amsmath/short-math-guide.pdf">AMSmath</a>
+<tt class="docutils literal">align</tt> environment:</p>
 <pre class="math">
 s_{\mathrm{out}}(x) &amp; = s_{\mathrm{in}}(x') * s_\delta (x-x') \\
                     &amp; = \int  s_{\mathrm{in}}(x')s_\delta (x-x')\mathrm{d}x'
@@ -125,8 +129,8 @@ s_{\mathrm{out}}(x) &amp; = s_{\mathrm{in}}(x') * s_\delta (x-x') \\
                     1 &amp; x&gt;0
                   \end{matrix}\right.
 </pre>
-<p>Cases with the AMSmath <tt class="docutils literal">cases</tt> environment (not (yet)
-supported by latex2MathML):</p>
+<p>Cases with the <a class="reference external" href="ftp://ftp.ams.org/ams/doc/amsmath/short-math-guide.pdf">AMSmath</a> <tt class="docutils literal">cases</tt> environment (not (yet) supported by
+HTML writers with <tt class="docutils literal"><span class="pre">--math-output=MathML</span></tt>):</p>
 <pre class="math">
 \mathrm{sgn}(x) = \begin{cases}
                     -1 &amp; x&lt;0\\

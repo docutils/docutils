@@ -491,20 +491,22 @@ Math
 
 :Directive Type: "math"
 :Doctree Element: math-block
-:Directive Arguments: None.
+:Directive Arguments: One, optional: prepended to content.
 :Directive Options: Possible.
-:Directive Content: Becomes the body of the math block (display formula).
+:Directive Content: Interpreted as math block(s). 
+                    Content blocks separated by a blank line are put in 
+                    separate math-block doctree elements.
 
-The "math" directive inserts a block with mathematical content
-(display formula) into the document. The input format is *LaTeX math
-syntax* (see, e.g. the `Short Math Guide`_) with support for Unicode
-symbols, for example::
+The "math" directive inserts block(s) with mathematical content
+(display formulas, equations) into the document. The input format is
+*LaTeX math syntax* (see, e.g. the `Short Math Guide`_) with support
+for Unicode symbols, for example::
 
   .. math::
 
     α_t(i) = P(O_1, O_2, … O_t, q_t = S_i λ)
 
-For inline formulae, use the `math role`_.
+For inline math, use the `math role`_.
 
 Support for math may be limited by the output format. If a writer does
 not support math typesetting, the content is inserted verbatim.
