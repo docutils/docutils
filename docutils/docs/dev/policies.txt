@@ -163,18 +163,59 @@ intentions regarding copyright, in one of the following ways:
   with either an embedded license statement, a reference to an
   accompanying license file, or a license URL.
 
-One of the goals of the Docutils project, once complete, is to be
-incorporated into the Python standard library.  At that time, the
-Docutils code will be released under Python's license.  If the
-copyright/license option is chosen for new files, the license should
-be compatible with Python's current license, and the author(s) of the
-files should be willing to sign a `Contributor Agreement` (see
-`Contributing to the PSF`_). As initial license for contributions,
-the PSF accepts the `Academic Free License v. 2.1
-<http://opensource.org/licenses/afl-2.1.php>`_ and the `Apache
-License, Version 2.0 <http://opensource.org/licenses/apache2.0.php>`_.
+  The license should be well known, simple and compatible with other
+  open source software licenses. To keep the number of different
+  licenses at a minimum, using the `2-Clause BSD license`_
+  (also known as "Simplified" or `FreeBSD license`_) is recommended.
 
-.. _Contributing to the PSF: http://www.python.org/psf/contrib/
+  .. _2-Clause BSD license: http://www.opensource.org/licenses/BSD-2-Clause
+  .. _FreeBSD license:  http://www.freebsd.org/copyright/freebsd-license.html
+
+..
+
+  The following licenses are described as simple
+  and permissible on `Various Licenses and Comments about Them`_ by
+  the GNU Project and listed as popular in `OSI Approved Licenses`_:
+
+  Expat License / MIT License
+
+    http://www.jclark.com/xml/copying.txt
+    http://www.opensource.org/licenses/MIT
+    http://www.spdx.org/licenses/MIT
+
+    The term MIT License is ambiguous and may accurately refer to the
+    Expat license or the X11 license
+    [http://en.wikipedia.org/wiki/MIT_License]
+
+    -1  called `MIT license` by OSI and in the
+        `SPDX Open Source License Registry`_
+        but `Expat license` by GNU
+
+  2-Clause BSD license / FreeBSD license
+
+    http://www.freebsd.org/copyright/freebsd-license.html
+    http://www.opensource.org/licenses/BSD-2-Clause
+    http://www.spdx.org/licenses/BSD-2-Clause
+
+      If you want a simple, permissive non-copyleft free software
+      license, the FreeBSD license is a reasonable choice. However,
+      please don't call it a “BSD” or “BSD-style” license, because
+      that is likely to cause confusion which could lead to use of the
+      flawed original BSD license.
+
+      -- `Various Licenses and Comments about Them`_
+
+     +1  license used by the closely related Sphinx project
+     +1  "2-Clause BSD license" is a non-ambiguous name,
+         used by both, OSI and GNU.
+     +1  clear wording, structured text
+
+  .. _Various Licenses and Comments about Them:
+     http://www.gnu.org/licenses/license-list.html
+  .. _OSI Approved Licenses: http://www.opensource.org/licenses/category
+  .. _SPDX Open Source License Registry: http://www.spdx.org/licenses/
+  .. _pypi: http://pypi.python.org/pypi?:action=browse&c=54
+
 
 Subversion Repository
 =====================

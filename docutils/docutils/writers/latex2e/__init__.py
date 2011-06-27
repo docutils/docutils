@@ -18,9 +18,8 @@ import time
 import re
 import string
 import urllib
-from docutils import frontend, nodes, languages, writers, utils, io
+from docutils import frontend, nodes, languages, writers, utils, io, math
 from docutils.transforms import writer_aux
-from docutils.math import unimathsymbols2tex, mathtools
 
 # compatibility module for Python 2.3
 if not hasattr(string, 'Template'):
@@ -2430,7 +2429,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if node['classes']:
             self.visit_inline(node)
         self.requirements['amsmath'] = r'\usepackage{amsmath}'
-        math_code = node.astext().translate(unimathsymbols2tex.uni2tex_table)
+        math_code = node.astext().translate(
+                        math.unimathsymbols2tex.uni2tex_table)
         if math_env == '$':
             wrapper = u'$%s$'
         else:
@@ -2449,7 +2449,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         pass # never reached
 
     def visit_math_block(self, node):
-        math_env = mathtools.pick_math_environment(node.astext())
+        math_env = pick_math_environment(node.astext())
         self.visit_math(node, math_env=math_env)
 
     def depart_math_block(self, node):
