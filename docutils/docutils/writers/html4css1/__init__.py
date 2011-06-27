@@ -24,8 +24,9 @@ try:
 except ImportError:
     Image = None
 import docutils
-from docutils import frontend, nodes, utils, writers, languages, io, math
+from docutils import frontend, nodes, utils, writers, languages, io
 from docutils.transforms import writer_aux
+from docutils.math import unimathsymbols2tex, pick_math_environment
 from docutils.math.latex2mathml import parse_latex_math
 from docutils.math.math2html import math2html
 
@@ -1151,8 +1152,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                    }
         wrapper = wrappers[self.math_output][math_env != '']
         # get and wrap content
-        math_code = node.astext().translate(
-                        math.unimathsymbols2tex.uni2tex_table)
+        math_code = node.astext().translate(unimathsymbols2tex.uni2tex_table)
         if wrapper and math_env:
             math_code = wrapper % (math_env, math_code, math_env)
         elif wrapper:
@@ -1197,7 +1197,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         pass # never reached
 
     def visit_math_block(self, node):
-        math_env = math.pick_math_environment(node.astext())
+        math_env = pick_math_environment(node.astext())
         self.visit_math(node, math_env=math_env)
 
     def depart_math_block(self, node):
