@@ -3,10 +3,15 @@
 
 #   math2html: convert LaTeX equations to HTML output.
 #
-#   Copyright (C) 2009,2010 Alex Fernández
-#   Released  without warranties or conditions of any kind
-#   under the terms of the Apache License, Version 2.0
-#   http://www.apache.org/licenses/LICENSE-2.0
+#   Copyright (C) 2009-2011 Alex Fernández
+#
+#   Released under the terms of the `2-Clause BSD license'_, in short:
+#   Copying and distribution of this file, with or without modification,
+#   are permitted in any medium without royalty provided the copyright
+#   notice and this notice are preserved.
+#   This file is offered as-is, without any warranty.
+#
+# .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause
 
 #   Based on eLyXer: convert LyX source files to HTML output.
 #   http://elyxer.nongnu.org/
@@ -365,12 +370,12 @@ class FormulaConfig(object):
       u'\\hat':u'̂', u'\\mathring':u'̊', u'\\overleftarrow':u'⃖', 
       u'\\overrightarrow':u'⃗', u'\\r':u'̊', u'\\s':u'̩', 
       u'\\textcircled':u'⃝', u'\\textsubring':u'̥', u'\\tilde':u'̃', 
-      u'\\vec':u'⃗', u'\\~':u'̃', 
+      u'\\v':u'̌', u'\\vec':u'⃗', u'\\~':u'̃', 
       }
 
   commands = {
       u'\\ ':u' ', u'\\!':u'', u'\\#':u'#', u'\\$':u'$', u'\\%':u'%', 
-      u'\\&#38;':u'&', u'\\,':u' ', u'\\:':u' ', u'\\;':u' ', 
+      u'\\&':u'&', u'\\,':u' ', u'\\:':u' ', u'\\;':u' ', 
       u'\\APLdownarrowbox':u'⍗', u'\\APLleftarrowbox':u'⍇', 
       u'\\APLrightarrowbox':u'⍈', u'\\APLuparrowbox':u'⍐', u'\\Box':u'□', 
       u'\\Bumpeq':u'≎', u'\\CIRCLE':u'●', u'\\Cap':u'⋒', u'\\CheckedBox':u'☑', 
@@ -427,10 +432,10 @@ class FormulaConfig(object):
       u'\\gets':u'←', u'\\gg':u'≫', u'\\ggg':u'⋙', u'\\gimel':u'ℷ', 
       u'\\gneqq':u'≩', u'\\gnsim':u'⋧', u'\\gtrdot':u'⋗', u'\\gtreqless':u'⋚', 
       u'\\gtreqqless':u'⪌', u'\\gtrless':u'≷', u'\\gtrsim':u'≳', 
-      u'\\hbar':u'ℏ', u'\\heartsuit':u'♥', 
-      u'\\hfill':u'<span class="hfill"> </span>', u'\\hom':u'hom', 
-      u'\\hookleftarrow':u'↩', u'\\hookrightarrow':u'↪', u'\\hslash':u'ℏ', 
-      u'\\idotsint':u'<span class="bigsymbol">∫⋯∫</span>', 
+      u'\\guillemotleft':u'«', u'\\guillemotright':u'»', u'\\hbar':u'ℏ', 
+      u'\\heartsuit':u'♥', u'\\hfill':u'<span class="hfill"> </span>', 
+      u'\\hom':u'hom', u'\\hookleftarrow':u'↩', u'\\hookrightarrow':u'↪', 
+      u'\\hslash':u'ℏ', u'\\idotsint':u'<span class="bigsymbol">∫⋯∫</span>', 
       u'\\iiint':u'<span class="bigsymbol">∭</span>', 
       u'\\iint':u'<span class="bigsymbol">∬</span>', u'\\imath':u'ı', 
       u'\\inf':u'inf', u'\\infty':u'∞', u'\\invneg':u'⌐', u'\\jmath':u'ȷ', 
@@ -505,18 +510,23 @@ class FormulaConfig(object):
       u'\\succsim':u'≿', u'\\sun':u'☼', u'\\sup':u'sup', u'\\supseteqq':u'⫆', 
       u'\\supsetneqq':u'⫌', u'\\surd':u'√', u'\\swarrow':u'↙', u'\\tan':u'tan', 
       u'\\tanh':u'tanh', u'\\taurus':u'♉', u'\\textasciicircum':u'^', 
-      u'\\textasciitilde':u'~', u'\\textbackslash':u'\\', u'\\textendash':u'—', 
+      u'\\textasciitilde':u'~', u'\\textbackslash':u'\\', 
+      u'\\textcopyright':u'©\'', u'\\textdegree':u'°', u'\\textellipsis':u'…', 
+      u'\\textemdash':u'—', u'\\textendash':u'—', u'\\texteuro':u'€', 
       u'\\textgreater':u'>', u'\\textless':u'<', u'\\textordfeminine':u'ª', 
       u'\\textordmasculine':u'º', u'\\textquotedblleft':u'“', 
-      u'\\textquotedblright':u'”', u'\\textregistered':u'®', 
-      u'\\texttrademark':u'™', u'\\textvisiblespace':u' ', u'\\therefore':u'∴', 
-      u'\\top':u'⊤', u'\\triangle':u'△', u'\\triangleleft':u'⊲', 
-      u'\\trianglelefteq':u'⊴', u'\\triangleq':u'≜', u'\\triangleright':u'▷', 
-      u'\\trianglerighteq':u'⊵', u'\\twoheadleftarrow':u'↞', 
-      u'\\twoheadrightarrow':u'↠', u'\\twonotes':u'♫', u'\\udot':u'⊍', 
-      u'\\unlhd':u'⊴', u'\\unrhd':u'⊵', u'\\unrhl':u'⊵', u'\\uparrow':u'↑', 
-      u'\\updownarrow':u'↕', u'\\upharpoonleft':u'↿', u'\\upharpoonright':u'↾', 
-      u'\\uplus':u'⊎', u'\\upuparrows':u'⇈', u'\\uranus':u'♅', u'\\vDash':u'⊨', 
+      u'\\textquotedblright':u'”', u'\\textquoteright':u'’', 
+      u'\\textregistered':u'®', u'\\textrightarrow':u'→', 
+      u'\\textsection':u'§', u'\\texttrademark':u'™', 
+      u'\\texttwosuperior':u'²', u'\\textvisiblespace':u' ', 
+      u'\\therefore':u'∴', u'\\top':u'⊤', u'\\triangle':u'△', 
+      u'\\triangleleft':u'⊲', u'\\trianglelefteq':u'⊴', u'\\triangleq':u'≜', 
+      u'\\triangleright':u'▷', u'\\trianglerighteq':u'⊵', 
+      u'\\twoheadleftarrow':u'↞', u'\\twoheadrightarrow':u'↠', 
+      u'\\twonotes':u'♫', u'\\udot':u'⊍', u'\\unlhd':u'⊴', u'\\unrhd':u'⊵', 
+      u'\\unrhl':u'⊵', u'\\uparrow':u'↑', u'\\updownarrow':u'↕', 
+      u'\\upharpoonleft':u'↿', u'\\upharpoonright':u'↾', u'\\uplus':u'⊎', 
+      u'\\upuparrows':u'⇈', u'\\uranus':u'♅', u'\\vDash':u'⊨', 
       u'\\varclubsuit':u'♧', u'\\vardiamondsuit':u'♦', u'\\varheartsuit':u'♥', 
       u'\\varnothing':u'∅', u'\\varspadesuit':u'♤', u'\\vdash':u'⊢', 
       u'\\vdots':u'⋮', u'\\vee':u'∨', u'\\vee)':u'∨', u'\\veebar':u'⊻', 
@@ -628,7 +638,7 @@ class FormulaConfig(object):
       }
 
   modified = {
-      u'\n':u'', u' ':u'', u'$':u'', u'&':u'	', u'\'':u'’', u'+':u' + ', 
+      u'\n':u'', u' ':u'', u'$':u'', u'&':u'    ', u'\'':u'’', u'+':u' + ', 
       u',':u', ', u'-':u' − ', u'/':u' ⁄ ', u'<':u' &lt; ', u'=':u' = ', 
       u'>':u' &gt; ', u'@':u'', u'~':u'', 
       }
@@ -638,8 +648,10 @@ class FormulaConfig(object):
       u'\\bar':u'span class="bar"', u'\\begin{array}':u'span class="arraydef"', 
       u'\\big':u'span class="symbol"', u'\\bigg':u'span class="largesymbol"', 
       u'\\bigl':u'span class="bigsymbol"', u'\\bigr':u'span class="bigsymbol"', 
+      u'\\centering':u'span class="align-center"', 
       u'\\ensuremath':u'span class="ensuremath"', 
       u'\\hphantom':u'span class="phantom"', 
+      u'\\noindent':u'span class="noindent"', 
       u'\\overbrace':u'span class="overbrace"', 
       u'\\overline':u'span class="overline"', 
       u'\\phantom':u'span class="phantom"', 
@@ -683,14 +695,14 @@ class FormulaConfig(object):
       }
 
   urls = {
-      u'googlecharts':u'http://chart.googleapis.com/chart?cht=tx&#38;chl=', 
+      u'googlecharts':u'http://chart.googleapis.com/chart?cht=tx&chl=', 
       }
 
 class GeneralConfig(object):
   "Configuration class from elyxer.config file"
 
   version = {
-      u'date':u'2011-04-13', u'lyxformat':u'410', u'number':u'1.2.2', 
+      u'date':u'2011-06-27', u'lyxformat':u'413', u'number':u'1.2.3', 
       }
 
 class HeaderConfig(object):
@@ -769,11 +781,11 @@ class StyleConfig(object):
       }
 
   quotes = {
-      u'ald':u'»', u'als':u'›', u'ard':u'«', u'ars':u'‹', u'eld':u'“', 
-      u'els':u'‘', u'erd':u'”', u'ers':u'’', u'fld':u'«', u'fls':u'‹', 
-      u'frd':u'»', u'frs':u'›', u'gld':u'„', u'gls':u'‚', u'grd':u'“', 
-      u'grs':u'‘', u'pld':u'„', u'pls':u'‚', u'prd':u'”', u'prs':u'’', 
-      u'sld':u'”', u'srd':u'”', 
+      u'ald':u'»', u'als':u'›', u'ard':u'«', u'ars':u'‹', u'eld':u'&ldquo;', 
+      u'els':u'&lsquo;', u'erd':u'&rdquo;', u'ers':u'&rsquo;', u'fld':u'«', 
+      u'fls':u'‹', u'frd':u'»', u'frs':u'›', u'gld':u'„', u'gls':u'‚', 
+      u'grd':u'“', u'grs':u'‘', u'pld':u'„', u'pls':u'‚', u'prd':u'”', 
+      u'prs':u'’', u'sld':u'”', u'srd':u'”', 
       }
 
   referenceformats = {
@@ -805,7 +817,7 @@ class TOCConfig(object):
   extracttitle = {
       u'allowed':[u'StringContainer',u'Constant',u'Space',], 
       u'cloned':[u'TextFamily',u'EmphaticText',u'VersalitasText',u'BarredText',u'SizeText',u'ColorText',u'LangLine',u'Formula',], 
-      u'extracted':[u'PlainLayout',u'TaggedText',u'Align',u'Caption',u'StandardLayout',], 
+      u'extracted':[u'PlainLayout',u'TaggedText',u'Align',u'Caption',u'StandardLayout',u'FlexInset',], 
       }
 
 class TagConfig(object):
@@ -905,8 +917,9 @@ class CommandLineParser(object):
     arg = args[0][2:]
     del args[0]
     if '=' in arg:
-      return self.readequals(arg, args)
-    key = arg.replace('-', '')
+      key = self.readequalskey(arg, args)
+    else:
+      key = arg.replace('-', '')
     if not hasattr(self.options, key):
       return None, key
     current = getattr(self.options, key)
@@ -937,16 +950,13 @@ class CommandLineParser(object):
     value += ' ' + args[0:-1]
     return value
 
-  def readequals(self, arg, args):
-    "Read a value with equals"
+  def readequalskey(self, arg, args):
+    "Read a key using equals"
     split = arg.split('=', 1)
     key = split[0]
-    if not hasattr(self.options, key):
-      return None, key
     value = split[1]
-    if not value.startswith('"'):
-      return key, value
-    return key, self.readquoted(args, value)
+    args.insert(0, value)
+    return key
 
 
 
@@ -2345,13 +2355,26 @@ class FormulaParser(Parser):
   def parseheader(self, reader):
     "See if the formula is inlined"
     self.begin = reader.linenumber + 1
-    if reader.currentline().find(FormulaConfig.starts['simple']) > 0:
-      return ['inline']
-    if reader.currentline().find(FormulaConfig.starts['complex']) > 0:
-      return ['block']
-    if reader.currentline().find(FormulaConfig.starts['unnumbered']) > 0:
-      return ['block']
-    return ['numbered']
+    type = self.parsetype(reader)
+    if not type:
+      reader.nextline()
+      type = self.parsetype(reader)
+      if not type:
+        Trace.error('Unknown formula type in ' + reader.currentline().strip())
+        return ['unknown']
+    return [type]
+
+  def parsetype(self, reader):
+    "Get the formula type from the first line."
+    if reader.currentline().find(FormulaConfig.starts['simple']) >= 0:
+      return 'inline'
+    if reader.currentline().find(FormulaConfig.starts['complex']) >= 0:
+      return 'block'
+    if reader.currentline().find(FormulaConfig.starts['unnumbered']) >= 0:
+      return 'block'
+    if reader.currentline().find(FormulaConfig.starts['beginbefore']) >= 0:
+      return 'numbered'
+    return None
   
   def parse(self, reader):
     "Parse the formula until the end"
@@ -3881,6 +3904,8 @@ class Reference(Link):
     self.replace('@', partkey and partkey.number)
     self.replace(u'¶', partkey and partkey.tocentry)
     if not '$' in self.formatted or not partkey or not partkey.titlecontents:
+      if '$' in self.formatted:
+        Trace.error('No title in ' + unicode(partkey))
       self.contents = [Constant(self.formatted)]
       return
     pieces = self.formatted.split('$')

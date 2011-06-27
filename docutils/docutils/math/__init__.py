@@ -1,10 +1,13 @@
-#!/usr/bin/env python
-# -*- coding: utf8 -*-
-# :Copyright: © 2011 Günter Milde.
-#             Released  without warranties or conditions of any kind
-#             under the terms of the Apache License, Version 2.0
-#             (http://www.apache.org/licenses/LICENSE-2.0)
 # :Id: $Id$
+# :Author: Guenter Milde.
+# :License: Released under the terms of the `2-Clause BSD license`_, in short:
+# 
+#    Copying and distribution of this file, with or without modification,
+#    are permitted in any medium without royalty provided the copyright
+#    notice and this notice are preserved.
+#    This file is offered as-is, without any warranty.
+# 
+# .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause
 
 """
 This is the Docutils (Python Documentation Utilities) "math" sub-package.
@@ -14,18 +17,30 @@ It contains various modules for conversion between different math formats
 
 :math2html:    LaTeX math -> HTML conversion from eLyXer
 :latex2mathml: LaTeX math -> presentational MathML
-:mathtools:    helpers for Docutils math support
 :unimathsymbols2tex: Unicode symbol to LaTeX math translation table
 """
 
+# helpers for Docutils math support
+# =================================
 
-# While Docutils components can be used as parts in programs released
-# under GPL v3, it is not possible to include GPLed-code in a public
-# domain or Apache-2 licensed program.
-#
-# math2html.py is part of eLyXer_, released under the `GNU General
-# Public License`_ version 3 or later.  The author kindly relicensed it
-# for Docutils under the Apache License, Version 2.0.
-#
-# .. _Docutils policies: docs/dev/policies.txt
-# .. _eLyXer: http://www.nongnu.org/elyxer/
+def pick_math_environment(code, numbered=False):
+    """Return the right math environment to display `code`.
+
+    The test simply looks for line-breaks (``\\``) outside environments.
+    Multi-line formulae are set with ``align``, one-liners with
+    ``equation``.
+
+    If `numbered` evaluates to ``False``, the "starred" versions are used
+    to suppress numbering.
+    """
+    # cut out environment content:
+    chunks = code.split(r'\begin{')
+    toplevel_code = ''.join([chunk.split(r'\end{')[-1]
+                             for chunk in chunks])
+    if toplevel_code.find(r'\\') >= 0:
+        env = 'align'
+    else:
+        env = 'equation'
+    if not numbered:
+        env += '*'
+    return env

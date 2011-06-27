@@ -15,11 +15,6 @@ below.  There are a few exceptions_, listed below.
 Files in the Sandbox_ are not distributed with Docutils releases and
 may have different license terms.
 
-One goal of the Docutils project is to be included in the Python
-standard library distribution, at which time it is expected that
-copyright will be asserted by the `Python Software Foundation
-<http://www.python.org/psf/>`_.
-
 
 Public Domain Dedication
 ========================
@@ -59,16 +54,15 @@ that have not yet been invented or conceived.
 
 (This dedication is derived from the text of the `Creative Commons
 Public Domain Dedication
-<http://creativecommons.org/licenses/publicdomain>`_.)
+<http://creativecommons.org/licenses/publicdomain>`_. [#]_)
 
-.. Creative Commons has `retired this legal tool`__ and does not
+.. [#] Creative Commons has `retired this legal tool`__ and does not
    recommend that it be applied to works: This tool is based on United
    States law and may not be applicable outside the US. For dedicating
    new works to the public domain, Creative Commons recommend CC0_. So
    does the Free Software Foundation in its license-list_.
 
    __  http://creativecommons.org/retiredlicenses
-
    .. _CC0: http://creativecommons.org/publicdomain/zero/1.0/legalcode
 
 Exceptions
@@ -83,21 +77,22 @@ The exceptions to the `Public Domain Dedication`_ above are:
       this notice remains intact.
 
 * docutils/math/__init__.py,
-  docutils/math/mathtools.py,
   docutils/math/latex2mathml.py,
   docutils/writers/xetex/__init__.py,
   docutils/error_reporting.py:
 
   Copyright © Günter Milde.
-  Released under the terms of the `Apache License, Version 2.0`_
-  (`local copy <licenses/apache-license-2-0.txt>`__).
+  Released under the terms of the `2-Clause BSD license`_
+  (`local copy <licenses/BSD-2-Clause.txt>`__).
 
-* docutils/math/math2html.py, Copyright (C) Alex Fernández
+* docutils/math/math2html.py,
+  docutils/writers/html4css1/math.css
 
-  This conversion script is part of eLyXer_, released under the `GNU
+  Copyright © Alex Fernández
+  These files are part of eLyXer_, released under the `GNU
   General Public License`_ version 3 or later. The author relicensed
-  it for Docutils under the `Apache License, Version 2.0`_
-  (`local copy <licenses/apache-license-2-0.txt>`__).
+  them for Docutils under the terms of the `2-Clause BSD license`_
+  (`local copy <licenses/BSD-2-Clause.txt>`__).
 
   .. _eLyXer: http://www.nongnu.org/elyxer/
 
@@ -112,14 +107,8 @@ The exceptions to the `Public Domain Dedication`_ above are:
 
   __ licenses/gpl-3.0.txt
 
-(Disclaimer: I am not a lawyer.) The Apache License, version 2.0 and
-the Python licenses are OSI-approved_ and GPL-compatible_ (the Apache
-License is compatible to GPL version 3 but *not* version 2).
-The BSD license
-basically lets you copy, use, modify, and redistribute files as long
-as you keep the copyright attribution intact, note any changes you
-make, and don't use the owner's name in vain.  Although complicated by
-multiple owners and lots of legalese, the Python license is similar.
+The `2-Clause BSD license`_ and the Python licenses are OSI-approved_
+and GPL-compatible_.
 
 Plaintext versions of all the linked-to licenses are provided in the
 licenses_ directory.
@@ -128,7 +117,7 @@ licenses_ directory.
 .. _licenses: licenses/
 .. _Python 2.1.1 license: http://www.python.org/2.1.1/license.html
 .. _GNU General Public License: http://www.gnu.org/copyleft/gpl.html
-.. _Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
+.. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause
 .. _OSI-approved: http://opensource.org/licenses/
 .. _license-list:
 .. _GPL-compatible: http://www.gnu.org/licenses/license-list.html

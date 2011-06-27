@@ -1,16 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
+
+# :Id: $Id$
 # :Copyright: © 2010 Günter Milde.
 #             Based on rst2mathml.py from the latex_math sandbox project
 #             © 2005 Jens Jørgen Mortensen
-# :License:   Released  without warranties or conditions of any kind
-#             under the terms of the Apache License, Version 2.0
-#             http://www.apache.org/licenses/LICENSE-2.0
-# :Id: $Id$
+# :License: Released under the terms of the `2-Clause BSD license`_, in short:
+# 
+#    Copying and distribution of this file, with or without modification,
+#    are permitted in any medium without royalty provided the copyright
+#    notice and this notice are preserved.
+#    This file is offered as-is, without any warranty.
+# 
+# .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause
 
-# latex2mathml.py: Convert LaTex math code into presentational MathML
-# Based on `latex_math` sandbox project by Jens Jørgen Mortensen
-# =========================================================================
+
+"""Convert LaTex math code into presentational MathML"""
+
+# Based on the `latex_math` sandbox project by Jens Jørgen Mortensen
 
 
 # LaTeX to MathML translation stuff:
