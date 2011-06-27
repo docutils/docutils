@@ -1,12 +1,12 @@
 # :Id: $Id$
 # :Author: Guenter Milde.
 # :License: Released under the terms of the `2-Clause BSD license`_, in short:
-# 
+#
 #    Copying and distribution of this file, with or without modification,
 #    are permitted in any medium without royalty provided the copyright
 #    notice and this notice are preserved.
 #    This file is offered as-is, without any warranty.
-# 
+#
 # .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause
 
 """
@@ -19,6 +19,9 @@ It contains various modules for conversion between different math formats
 :latex2mathml: LaTeX math -> presentational MathML
 :unimathsymbols2tex: Unicode symbol to LaTeX math translation table
 """
+__all__ = ['math2html',
+           'latex2mathml',
+           'unimathsymbols2tex']
 
 # helpers for Docutils math support
 # =================================
