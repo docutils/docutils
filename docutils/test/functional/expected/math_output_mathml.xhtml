@@ -18,6 +18,7 @@ role specificator, <math xmlns="http://www.w3.org/1998/Math/MathML">
 <mrow><mi>π</mi></mrow>
 <mrow><mn>4</mn></mrow></mfrac><msup><mi>d</mi><mn>2</mn></msup></mrow></math>, as well as displayed math via the
 <cite>math</cite> directive:</p>
+<div>
 <math xmlns="http://www.w3.org/1998/Math/MathML" mode="display">
 <mtable>
 <mtr>
@@ -27,14 +28,18 @@ role specificator, <math xmlns="http://www.w3.org/1998/Math/MathML">
 <mrow><mfrac>
 <mrow><mi>ε</mi></mrow>
 <mrow><msub><mi>k</mi><mtext>B</mtext></msub><mi>T</mi></mrow></mfrac></mrow></mfenced></mrow></mfrac></mtd></mtr></mtable></math>
+</div>
 <p>A display formula can also be given as directive argument, e.g.</p>
+<div>
 <math xmlns="http://www.w3.org/1998/Math/MathML" mode="display">
 <mtable>
 <mtr>
 <mtd><mi>N</mi><mo>=</mo><mfrac>
 <mrow><mtext>number of apples</mtext></mrow>
 <mrow><mn>7</mn></mrow></mfrac></mtd></mtr></mtable></math>
+</div>
 <p>The determinant of the matrix</p>
+<div>
 <math xmlns="http://www.w3.org/1998/Math/MathML" mode="display">
 <mtable>
 <mtr>
@@ -48,17 +53,21 @@ role specificator, <math xmlns="http://www.w3.org/1998/Math/MathML">
 <mtr>
 <mtd><mi>c</mi></mtd>
 <mtd><mi>d</mi></mtd></mtr></mtable></mrow></mfenced></mtd></mtr></mtable></math>
+</div>
 <p>is <math xmlns="http://www.w3.org/1998/Math/MathML">
 <mrow><mo>|</mo><mstyle fontweight="bold">
 <mrow><mi>M</mi></mrow></mstyle><mo>|</mo><mo>=</mo><mi>a</mi><mi>d</mi><mo>-</mo><mi>b</mi><mi>c</mi></mrow></math>.</p>
 <p>More than one display math block can be put in one math directive.
 For example, the following sum and integral with limits:</p>
+<div>
 <math xmlns="http://www.w3.org/1998/Math/MathML" mode="display">
 <mtable>
 <mtr>
 <mtd><munderover><mo>∫</mo><mn>0</mn><mn>1</mn></munderover><msup><mi>x</mi><mi>n</mi></msup><mi>d</mi><mi>x</mi><mo>=</mo><mfrac>
 <mrow><mn>1</mn></mrow>
 <mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac></mtd></mtr></mtable></math>
+</div>
+<div>
 <math xmlns="http://www.w3.org/1998/Math/MathML" mode="display">
 <mtable>
 <mtr>
@@ -66,9 +75,11 @@ For example, the following sum and integral with limits:</p>
 <mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></munderover><mi>n</mi><mo>=</mo><mfrac>
 <mrow><mi>m</mi><mo>(</mo><mi>m</mi><mo>+</mo><mn>1</mn><mo>)</mo></mrow>
 <mrow><mn>2</mn></mrow></mfrac></mtd></mtr></mtable></math>
+</div>
 <p>LaTeX-supported Unicode math symbols can be used in math roles and
 directives:</p>
 <p>The Schrödinger equation</p>
+<div>
 <math xmlns="http://www.w3.org/1998/Math/MathML" mode="display">
 <mtable>
 <mtr>
@@ -76,6 +87,7 @@ directives:</p>
 <mrow><mo>∂</mo></mrow>
 <mrow><mo>∂</mo><mi>t</mi></mrow></mfrac><mo>Ψ</mo><mo>=</mo><mover>
 <mrow><mi>H</mi></mrow><mo>^</mo></mover><mo>Ψ</mo><mo>,</mo></mtd></mtr></mtable></math>
+</div>
 <p>with the <em>wave function</em> <math xmlns="http://www.w3.org/1998/Math/MathML">
 <mrow><mo>Ψ</mo></mrow></math>, describes how the quantum state of a
 physical system changes in time.</p>
@@ -135,6 +147,7 @@ physical system changes in time.</p>
 <!-- \widetilde{xxx}
 \widehat{xxx} -->
 <p>Modulation Transfer Function:</p>
+<div>
 <math xmlns="http://www.w3.org/1998/Math/MathML" mode="display">
 <mtable>
 <mtr>
@@ -155,9 +168,11 @@ physical system changes in time.</p>
 <mrow><mo>-</mo><mo>∞</mo></mrow>
 <mrow><mo>∞</mo></mrow></munderover><mi>s</mi><mo>(</mo><mi>x</mi><mo>)</mo><mtext>d</mtext>
 <mrow><mi>x</mi></mrow></mrow></mfrac></mrow></mfenced><mo>.</mo></mtd></mtr></mtable></math>
+</div>
 <p>Math split over two lines: If a double backslash is detected outside a
 <tt class="docutils literal"><span class="pre">\begin{...}</span> <span class="pre">\end{...}</span></tt> pair, the math code is wrapped in an <a class="reference external" href="ftp://ftp.ams.org/ams/doc/amsmath/short-math-guide.pdf">AMSmath</a>
 <tt class="docutils literal">align</tt> environment:</p>
+<div>
 <math xmlns="http://www.w3.org/1998/Math/MathML" mode="display">
 <mtable>
 <mtr>
@@ -169,7 +184,9 @@ physical system changes in time.</p>
 <mtd></mtd>
 <mtd><mo>=</mo><mo>∫</mo><msub><mi>s</mi>
 <mrow><mtext>in</mtext></mrow></msub><mo>(</mo><mi>x</mi><mo>'</mo><mo>)</mo><msub><mi>s</mi><mi>δ</mi></msub><mo>(</mo><mi>x</mi><mo>-</mo><mi>x</mi><mo>'</mo><mo>)</mo><mtext>d</mtext><mi>x</mi><mo>'</mo></mtd></mtr></mtable></math>
+</div>
 <p>Cases (&quot;manually&quot;, with <tt class="docutils literal">matrix</tt> environment):</p>
+<div>
 <math xmlns="http://www.w3.org/1998/Math/MathML" mode="display">
 <mtable>
 <mtr>
@@ -182,6 +199,7 @@ physical system changes in time.</p>
 <mtr>
 <mtd><mn>1</mn></mtd>
 <mtd><mi>x</mi><mo>&gt;</mo><mn>0</mn></mtd></mtr></mtable></mrow></mfenced></mtd></mtr></mtable></math>
+</div>
 <p>Cases with the <a class="reference external" href="ftp://ftp.ams.org/ams/doc/amsmath/short-math-guide.pdf">AMSmath</a> <tt class="docutils literal">cases</tt> environment (not (yet) supported by
 HTML writers with <tt class="docutils literal"><span class="pre">--math-output=MathML</span></tt>):</p>
 <div class="system-message">

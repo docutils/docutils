@@ -1136,7 +1136,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         #
         # HTML container
         tags = {# math_output: (block, inline, class-arguments)
-                'mathml':      ('div', 'span', ''),
+                'mathml':      ('div', '', ''),
                 'html':        ('div', 'span', 'formula'),
                 'mathjax':     ('div', 'span', 'math'),
                 'latex':       ('pre', 'tt',   'math'),
@@ -1183,11 +1183,13 @@ class HTMLTranslator(nodes.NodeVisitor):
                 self.depart_system_message(err_node)
                 raise nodes.SkipNode
         # append to document body
-        self.body.append(self.starttag(node, tag, CLASS=clsarg))
+        if tag:
+            self.body.append(self.starttag(node, tag, CLASS=clsarg))
         self.body.append(math_code)
         if math_env:
             self.body.append('\n')
-        self.body.append('</%s>\n' % tag)
+        if tag:
+            self.body.append('</%s>\n' % tag)
         # Content already processed:
         raise nodes.SkipNode
 
