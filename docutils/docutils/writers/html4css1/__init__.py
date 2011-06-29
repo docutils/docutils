@@ -1135,15 +1135,15 @@ class HTMLTranslator(nodes.NodeVisitor):
         # If the method is called from visit_math_block(), math_env != ''.
         #
         # HTML container
-        tags = {# math_mode: (inline, block, class-arguments)
-                'mathml':  (None,   None,  None),
-                'html':    ('span', 'div', 'formula'),
-                'mathjax': ('span', 'div', 'math'),
-                'latex':   ('tt',   'pre', 'math'),
+        tags = {# math_output: (block, inline, class-arguments)
+                'mathml':      ('div', 'span', ''),
+                'html':        ('div', 'span', 'formula'),
+                'mathjax':     ('div', 'span', 'math'),
+                'latex':       ('pre', 'tt',   'math'),
                }
-        tag = tags[self.math_output][math_env != '']
+        tag = tags[self.math_output][math_env == '']
         clsarg = tags[self.math_output][2]
-        # LaTeX container 
+        # LaTeX container
         wrappers = {# math_mode: (inline, block)
                     'mathml':  (None,     None),
                     'html':    ('$%s$',   u'\\begin{%s}\n%s\n\\end{%s}'),
@@ -1182,14 +1182,12 @@ class HTMLTranslator(nodes.NodeVisitor):
                 self.body.append('\n</pre>\n')
                 self.depart_system_message(err_node)
                 raise nodes.SkipNode
-        # now append
-        if tag:
-            self.body.append(self.starttag(node, tag, CLASS=clsarg))
+        # append to document body
+        self.body.append(self.starttag(node, tag, CLASS=clsarg))
         self.body.append(math_code)
         if math_env:
             self.body.append('\n')
-        if tag:
-            self.body.append('</%s>\n' % tag)
+        self.body.append('</%s>\n' % tag)
         # Content already processed:
         raise nodes.SkipNode
 
