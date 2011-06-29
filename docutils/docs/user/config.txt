@@ -737,7 +737,8 @@ _`math_output`
       Pro:
         Works 'out of the box' across multiple browsers and platforms.
 
-        Supports a large subset of LaTeX math commands and constructs.
+        Supports a large subset of LaTeX math commands and constructs
+        (see http://www.mathjax.org/docs/1.1/tex.html).
 
       Con:
         Requires an Internet connection or a local MathJax
