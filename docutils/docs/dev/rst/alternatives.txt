@@ -3134,6 +3134,33 @@ idea, and there is no "tool tip" in formats other than HTML.
 Add a "term" role for unfamiliar or specialized terminology?  Probably
 not; there is no real use case, and emphasis is enough for most cases.
 
+
+Object references
+=================
+
+We need syntax for `object references`_.
+
+  - Parameterized substitutions?  For example::
+
+        See |figure (figure name)| on |page (figure name)|.
+
+        .. |figure (name)| figure-ref:: (name)
+        .. |page (name)| page-ref:: (name)
+
+    The result would be::
+
+        See figure 3.11 on page 157.
+
+    But this would require substitution directives to be processed at
+    reference-time, not at definition-time as they are now.  Or,
+    perhaps the directives could just leave ``pending`` elements
+    behind, and the transforms do the work?  How to pass the data
+    through? Too complicated. Use interpreted text roles.
+
+.. _object references:
+   ../todo.html#object-numbering-and-object-references
+
+
 
 ..
    Local Variables:

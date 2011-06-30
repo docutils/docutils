@@ -23,7 +23,8 @@ class BasePseudoSection(Directive):
     required_arguments = 1
     optional_arguments = 0
     final_argument_whitespace = True
-    option_spec = {'class': directives.class_option}
+    option_spec = {'class': directives.class_option,
+                   'name': directives.unchanged}
     has_content = True
 
     node_class = None
@@ -48,6 +49,7 @@ class BasePseudoSection(Directive):
         text = '\n'.join(self.content)
         node = self.node_class(text, *(titles + messages))
         node['classes'] += self.options.get('class', [])
+        self.add_name(node)
         if text:
             self.state.nested_parse(self.content, self.content_offset, node)
         return [node]
@@ -74,12 +76,14 @@ class Sidebar(BasePseudoSection):
 
 class LineBlock(Directive):
 
-    option_spec = {'class': directives.class_option}
+    option_spec = {'class': directives.class_option,
+                   'name': directives.unchanged}
     has_content = True
 
     def run(self):
         self.assert_has_content()
         block = nodes.line_block(classes=self.options.get('class', []))
+        self.add_name(block)
         node_list = [block]
         for line_text in self.content:
             text_nodes, messages = self.state.inline_text(
@@ -96,7 +100,8 @@ class LineBlock(Directive):
 
 class ParsedLiteral(Directive):
 
-    option_spec = {'class': directives.class_option}
+    option_spec = {'class': directives.class_option,
+                   'name': directives.unchanged}
     has_content = True
 
     def run(self):
@@ -106,20 +111,20 @@ class ParsedLiteral(Directive):
         text_nodes, messages = self.state.inline_text(text, self.lineno)
         node = nodes.literal_block(text, '', *text_nodes, **self.options)
         node.line = self.content_offset + 1
+        self.add_name(node)
         return [node] + messages
 
 
 class MathBlock(Directive):
 
-    has_content = True
     required_arguments = 0
     optional_arguments = 1
     final_argument_whitespace = True
-    option_spec = {'class': directives.class_option
-                   ## TODO: support Sphinx' ``mathbase.py`` options?
-                   # 'label': directives.unchanged,
+    option_spec = {'class': directives.class_option,
+                   'name': directives.unchanged}
+                   ## TODO: Add Sphinx' ``mathbase.py`` option 'nowrap'?
                    # 'nowrap': directives.flag,
-                  }
+    has_content = True
 
     def run(self):
         set_classes(self.options)
@@ -133,6 +138,7 @@ class MathBlock(Directive):
                 continue
             node = nodes.math_block(self.block_text, block, **self.options)
             node.line = self.content_offset + 1
+            self.add_name(node)
             _nodes.append(node)
         return _nodes
 
@@ -142,13 +148,15 @@ class Rubric(Directive):
     required_arguments = 1
     optional_arguments = 0
     final_argument_whitespace = True
-    option_spec = {'class': directives.class_option}
+    option_spec = {'class': directives.class_option,
+                   'name': directives.unchanged}
 
     def run(self):
         set_classes(self.options)
         rubric_text = self.arguments[0]
         textnodes, messages = self.state.inline_text(rubric_text, self.lineno)
         rubric = nodes.rubric(rubric_text, '', *textnodes, **self.options)
+        self.add_name(rubric)
         return [rubric] + messages
 
 
@@ -183,7 +191,8 @@ class PullQuote(BlockQuote):
 
 class Compound(Directive):
 
-    option_spec = {'class': directives.class_option}
+    option_spec = {'class': directives.class_option,
+                   'name': directives.unchanged}
     has_content = True
 
     def run(self):
@@ -191,6 +200,7 @@ class Compound(Directive):
         text = '\n'.join(self.content)
         node = nodes.compound(text)
         node['classes'] += self.options.get('class', [])
+        self.add_name(node)
         self.state.nested_parse(self.content, self.content_offset, node)
         return [node]
 
@@ -200,6 +210,7 @@ class Container(Directive):
     required_arguments = 0
     optional_arguments = 1
     final_argument_whitespace = True
+    option_spec = {'name': directives.unchanged}
     has_content = True
 
     def run(self):
@@ -216,5 +227,6 @@ class Container(Directive):
                 % (self.name, self.arguments[0]))
         node = nodes.container(text)
         node['classes'].extend(classes)
+        self.add_name(node)
         self.state.nested_parse(self.content, self.content_offset, node)
         return [node]

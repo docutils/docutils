@@ -55,6 +55,21 @@ totest['topics'] = [
             Body.
 """],
 ["""\
+.. topic:: With Options
+   :class: custom
+   :name: my point
+
+   Body.
+""",
+"""\
+<document source="test data">
+    <topic classes="custom" ids="my-point" names="my\ point">
+        <title>
+            With Options
+        <paragraph>
+            Body.
+"""],
+["""\
 .. topic::
 
    Title

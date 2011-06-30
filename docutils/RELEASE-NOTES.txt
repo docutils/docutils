@@ -23,14 +23,8 @@ Changes Since 0.7
 
 * COPYING:
 
-  The XeTeX writer and the math subpackage are, in accordance with the
-  `Docutils policies`_, licensed under the `Apache License version 2.0`_.
-  Note, that this license is `compatible with GPL`_ version 3, but not
-  GPL version 2.
-
-  .. _Docutils policies: docs/dev/policies.txt
-  .. _Apache License, Version 2.0: http://www.apache.org/licenses/LICENSE-2.0
-  .. _compatible with GPL: http://www.gnu.org/licenses/license-list.html
+  - Some additions to the Docutils core are released under the 2-Clause BSD
+    license.
 
 * General:
 
@@ -41,7 +35,22 @@ Changes Since 0.7
     ``math`` and ``math_block`` doctree elements.
   - Orphaned "python" reader and "newlatex2e" writer moved to the sandbox.
 
-.. _BCP 47: http://www.rfc-editor.org/rfc/bcp/bcp47.txt
+  .. _BCP 47: http://www.rfc-editor.org/rfc/bcp/bcp47.txt
+
+* reStructuredText:
+
+  - most directives now support a "name" option that attaches a
+    reference name. So you can write ::
+
+      .. figure:: image.png
+         :name: figure name
+
+    as a short form of ::
+
+      .. _figure name:
+
+      .. figure:: image.png
+
 
 
 Release 0.7 (2010-07-07)

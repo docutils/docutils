@@ -42,6 +42,7 @@ class Image(Directive):
                    'width': directives.length_or_percentage_or_unitless,
                    'scale': directives.percentage,
                    'align': align,
+                   'name': directives.unchanged,
                    'target': directives.unchanged_required,
                    'class': directives.class_option}
 
@@ -85,6 +86,7 @@ class Image(Directive):
             del self.options['target']
         set_classes(self.options)
         image_node = nodes.image(self.block_text, **self.options)
+        self.add_name(image_node)
         if reference_node:
             reference_node += image_node
             return messages + [reference_node]

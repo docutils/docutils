@@ -66,6 +66,21 @@ totest['container'] = [
         <paragraph>
             Multiple paragraphs in the container.
 """],
+["""\
+.. container::
+   :name: my name
+
+   The name argument allows hyperlinks to `my name`_.
+""",
+"""\
+<document source="test data">
+    <container ids="my-name" names="my\ name">
+        <paragraph>
+            The name argument allows hyperlinks to 
+            <reference name="my name" refname="my name">
+                my name
+            .
+"""],
 ]
 
 

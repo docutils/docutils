@@ -29,7 +29,8 @@ class Table(Directive):
     required_arguments = 0
     optional_arguments = 1
     final_argument_whitespace = True
-    option_spec = {'class': directives.class_option}
+    option_spec = {'class': directives.class_option,
+                   'name': directives.unchanged}
     has_content = True
 
     def make_title(self):
@@ -130,6 +131,7 @@ class RSTTable(Table):
             return [error]
         table_node = node[0]
         table_node['classes'] += self.options.get('class', [])
+        self.add_name(table_node)
         if title:
             table_node.insert(0, title)
         return [table_node] + messages
@@ -145,6 +147,7 @@ class CSVTable(Table):
                    'url': directives.uri,
                    'encoding': directives.encoding,
                    'class': directives.class_option,
+                   'name': directives.unchanged,
                    # field delimiter char
                    'delim': directives.single_char_or_whitespace_or_unicode,
                    # treat whitespace after delimiter as significant
@@ -230,6 +233,7 @@ class CSVTable(Table):
         table_node = self.state.build_table(table, self.content_offset,
                                             stub_columns)
         table_node['classes'] += self.options.get('class', [])
+        self.add_name(table_node)
         if title:
             table_node.insert(0, title)
         return [table_node] + messages
@@ -354,7 +358,8 @@ class ListTable(Table):
     option_spec = {'header-rows': directives.nonnegative_int,
                    'stub-columns': directives.nonnegative_int,
                    'widths': directives.positive_int_list,
-                   'class': directives.class_option}
+                   'class': directives.class_option,
+                   'name': directives.unchanged}
 
     def run(self):
         if not self.content:
@@ -378,6 +383,7 @@ class ListTable(Table):
         table_node = self.build_table_from_list(table_data, col_widths,
                                                 header_rows, stub_columns)
         table_node['classes'] += self.options.get('class', [])
+        self.add_name(table_node)
         if title:
             table_node.insert(0, title)
         return [table_node] + messages
