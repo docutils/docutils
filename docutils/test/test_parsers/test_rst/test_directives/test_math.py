@@ -41,6 +41,21 @@ totest['content'] = [
 """],
 ]
 
+totest['options'] = [
+["""\
+.. math::
+  :class: new
+  :name: eq:Eulers law
+
+  e^i*2*\pi = 1
+""",
+"""\
+<document source="test data">
+    <math_block classes="new" ids="eq-eulers-law" names="eq:eulers\ law" xml:space="preserve">
+        e^i*2*\pi = 1
+"""],
+]
+
 totest['argument_and_content'] = [
 ["""\
 .. math:: y = f(x)

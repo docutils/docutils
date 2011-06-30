@@ -231,11 +231,14 @@ The following options are recognized:
 ``target`` : text (URI or reference name)
     Makes the image into a hyperlink reference ("clickable").  The
     option argument may be a URI (relative or absolute), or a
-    reference name with underscore suffix (e.g. ``name_``).
+    `reference name`_ with underscore suffix (e.g. ```a name`_``).
 
 ``class`` : text
     Set a "classes" attribute value on the image element.  See the
     class_ directive below.
+
+``name`` : text
+    Attach text as a `reference name`_ to the image element. [#name-option]_
 
 
 Figure
@@ -353,11 +356,14 @@ interpreted as body elements.  For example::
         the body of the topic, and are
         interpreted as body elements.
 
-The following option is recognized:
+The following options are recognized:
 
 ``class`` : text
     Set a "classes" attribute value on the topic element.  See the
     class_ directive below.
+
+``name`` : text
+    Attach text as a `reference name`_ to the topic element. [#name-option]_
 
 
 Sidebar
@@ -400,6 +406,10 @@ The following options are recognized:
     Set a "classes" attribute value on the sidebar element.  See the
     class_ directive below.
 
+``name`` : text
+    Attach text as a `reference name`_ to the sidebar element.
+    [#name-option]_
+
 
 Line Block
 ==========
@@ -438,11 +448,15 @@ example, here's a classic::
                 as soon as it comes.
             Love, Ewan.
 
-The following option is recognized:
+The following options are recognized:
 
 ``class`` : text
     Set a "classes" attribute value on the line_block element.  See the
     class_ directive below.
+
+``name`` : text
+    Attach text as a `reference name`_ to the line_block element.
+    [#name-option]_
 
 
 .. _parsed-literal:
@@ -479,11 +493,15 @@ For example, all the element names in this content model are links::
          (docinfo_, transition_?)?,
          `%structure.model;`_ )
 
-The following option is recognized:
+The following options are recognized:
 
 ``class`` : text
     Set a "classes" attribute value on the literal_block element.  See
     the class_ directive below.
+
+``name`` : text
+    Attach text as a `reference name`_ to the literal_block element.
+    [#name-option]_
 
 
 Math
@@ -493,8 +511,8 @@ Math
 :Doctree Element: math-block
 :Directive Arguments: One, optional: prepended to content.
 :Directive Options: Possible.
-:Directive Content: Interpreted as math block(s). 
-                    Content blocks separated by a blank line are put in 
+:Directive Content: Interpreted as math block(s).
+                    Content blocks separated by a blank line are put in
                     separate math-block doctree elements.
 
 The "math" directive inserts block(s) with mathematical content
@@ -519,6 +537,10 @@ The following options are recognized:
 ``class`` : text
     Set a "classes" attribute value on the block element.  See the
     class_ directive.
+
+``name`` : text
+    Attach text as a `reference name`_ to the math_block element.
+    [#name-option]_
 
 New in Docutils 0.8.
 
@@ -547,11 +569,14 @@ The "rubric" directive inserts a "rubric" element into the document
 tree.  A rubric is like an informal heading that doesn't correspond to
 the document's structure.
 
-The following option is recognized:
+The following options are recognized:
 
 ``class`` : text
     Set a "classes" attribute value on the rubric element.  See the
     class_ directive below.
+
+``name`` : text
+    Attach text as a `reference name`_ to the rubric element. [#name-option]_
 
 
 Epigraph
@@ -669,11 +694,15 @@ unity:
 * vertical spacing between physical elements may be reduced;
 * and so on.
 
-The following option is recognized:
+The following options are recognized:
 
 ``class`` : text
     Set a "classes" attribute value on the compound element.  See the
     class_ directive below.
+
+``name`` : text
+    Attach text as a `reference name`_ to the compound element.
+    [#name-option]_
 
 
 Container
@@ -705,6 +734,12 @@ Parsing the above results in the following pseudo-XML::
 The "container" directive is the equivalent of HTML's ``<div>``
 element.  It may be used to group a sequence of elements for user- or
 application-specific purposes.
+
+The following option is recognized:
+
+``name`` : text
+    Attach text as a `reference name`_ to the container element.
+    [#name-option]_
 
 
 --------
@@ -741,11 +776,14 @@ title with a table::
        True   False
        =====  =====
 
-The following option is recognized:
+The following options are recognized:
 
 ``class`` : text
     Set a "classes" attribute value on the table element.  See the
     class_ directive below.
+
+``name`` : text
+    Attach text as a `reference name`_ to the table element. [#name-option]_
 
 
 .. _csv-table:
@@ -803,6 +841,9 @@ The following options are recognized:
 ``class`` : text
     Set a "classes" attribute value on the table element.  See the
     class_ directive below.
+
+``name`` : text
+    Attach text as a `reference name`_ to the table element. [#name-option]_
 
 ``widths`` : integer [, integer...]
     A comma- or space-separated list of relative column widths.  The
@@ -901,6 +942,9 @@ The following options are recognized:
 ``class`` : text
     Set a "classes" attribute value on the table element.  See the
     class_ directive below.
+
+``name`` : text
+    Attach text as a `reference name`_ to the table element. [#name-option]_
 
 ``widths`` : integer [integer...]
     A comma- or space-separated list of relative column widths.  The
@@ -1105,11 +1149,15 @@ reference.  For every explicit target (of the form, ``.. _target name:
 URL``) in the text, a footnote will be generated containing the
 visible URL as content.
 
-The following option is recognized:
+The following options are recognized:
 
 ``class`` : text
     Set a "classes" attribute value on all footnote_reference elements.
     See the class_ directive below.
+
+``name`` : text
+    Attach text as a `reference name`_ to the first footnote_reference
+    element. [#name-option]_
 
 
 Footnotes
@@ -1793,6 +1841,28 @@ expected to type in a name *that* long!)  It is converted into a
 level-1 (info) system message showing the directive data, possibly
 followed by a literal block containing the rest of the directive
 block.
+
+.. _reference name: restructuredtext.html#reference-names
+.. _hyperlink target: restructuredtext.html#hyperlink-targets
+.. _hyperlink references: restructuredtext.html#hyperlink-references
+
+.. [#name-option] The `name` option adds its value to the "names"
+   attribute of the doctree element generated by the directive. This
+   allows `hyperlink references`_ to the element.
+
+   Specifying the `name` option of a directive like ::
+
+     .. image:: bild.png
+        :name: my picture
+
+   is a concise syntax alternative to preceding it with a `hyperlink
+   target`_ ::
+
+     .. _my picture:
+
+     .. image:: bild.png
+
+   New in Docutils 0.8.
 
 
 ..

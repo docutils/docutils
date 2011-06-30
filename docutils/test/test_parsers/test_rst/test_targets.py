@@ -249,6 +249,30 @@ Paragraph.
             Paragraph.
 """],
 ["""\
+Duplicate implicit/directive targets.
+
+Title
+=====
+
+.. target-notes::
+   :name: title
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Duplicate implicit/directive targets.
+    <section dupnames="title" ids="title">
+        <title>
+            Title
+        <pending ids="id1" names="title">
+            <system_message backrefs="id1" level="1" line="4" source="test data" type="INFO">
+                <paragraph>
+                    Duplicate implicit target name: "title".
+            .. internal attributes:
+                 .transform: docutils.transforms.references.TargetNotes
+                 .details:
+"""],
+["""\
 Duplicate explicit targets.
 
 .. _title:
@@ -284,6 +308,30 @@ Third.
         Third.
 """],
 ["""\
+Duplicate explicit/directive targets.
+
+.. _title:
+
+First.
+
+.. rubric:: this is a title too
+   :name: title
+
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Duplicate explicit/directive targets.
+    <target dupnames="title" ids="title">
+    <paragraph>
+        First.
+    <rubric dupnames="title" ids="id1">
+        this is a title too
+        <system_message backrefs="id1" level="2" line="9" source="test data" type="WARNING">
+            <paragraph>
+                Duplicate explicit target name: "title".
+"""],
+["""\
 Duplicate targets:
 
 Target
@@ -291,7 +339,7 @@ Target
 
 Implicit section header target.
 
-.. [target] Citation target.
+.. [TARGET] Citation target.
 
 .. [#target] Autonumber-labeled footnote target.
 
@@ -300,6 +348,9 @@ Implicit section header target.
 Explicit internal target.
 
 .. _target: Explicit_external_target
+
+.. rubric:: directive with target
+   :name: Target
 """,
 """\
 <document source="test data">
@@ -312,7 +363,7 @@ Explicit internal target.
             Implicit section header target.
         <citation dupnames="target" ids="id1">
             <label>
-                target
+                TARGET
             <system_message backrefs="id1" level="1" line="8" source="test data" type="INFO">
                 <paragraph>
                     Duplicate implicit target name: "target".
@@ -334,6 +385,11 @@ Explicit internal target.
             <paragraph>
                 Duplicate explicit target name: "target".
         <target dupnames="target" ids="id4" refuri="Explicit_external_target">
+        <rubric dupnames="target" ids="id5">
+            directive with target
+            <system_message backrefs="id5" level="2" line="4" source="test data" type="WARNING">
+                <paragraph>
+                    Duplicate explicit target name: "target".
 """],
 ["""\
 .. _unescaped colon at end:: no good

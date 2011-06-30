@@ -2431,7 +2431,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.visit_inline(node)
         self.requirements['amsmath'] = r'\usepackage{amsmath}'
         math_code = node.astext().translate(unimathsymbols2tex.uni2tex_table)
-        if node.get('id') == node.get('name'):  # explicite label
+        if node.get('ids'):
             math_code = '\n'.join([math_code] + self.ids_to_labels(node))
         if math_env == '$':
             wrapper = u'$%s$'

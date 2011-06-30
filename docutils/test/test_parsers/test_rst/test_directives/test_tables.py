@@ -49,6 +49,7 @@ totest['table'] = [
 ["""\
 .. table:: Truth table for "not"
    :class: custom
+   :name:  tab:truth.not
 
    =====  =====
      A    not A
@@ -59,7 +60,7 @@ totest['table'] = [
 """,
 """\
 <document source="test data">
-    <table classes="custom">
+    <table classes="custom" ids="tab-truth-not" names="tab:truth.not">
         <title>
             Truth table for "not"
         <tgroup cols="2">

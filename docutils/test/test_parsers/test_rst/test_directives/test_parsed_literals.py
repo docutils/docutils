@@ -35,6 +35,18 @@ totest['parsed_literals'] = [
             spanning lines.
 """],
 ["""\
+.. parsed-literal::
+  :class: myliteral
+  :name: example: parsed
+
+   This is a parsed literal block with options.
+""",
+"""\
+<document source="test data">
+    <literal_block classes="myliteral" ids="example-parsed" names="example:\ parsed" xml:space="preserve">
+         This is a parsed literal block with options.
+"""],
+["""\
 .. parsed-literal:: argument
 """,
 """\

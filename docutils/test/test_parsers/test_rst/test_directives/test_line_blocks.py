@@ -41,6 +41,19 @@ totest['line_blocks'] = [
 """],
 ["""\
 .. line-block::
+   :class: linear
+   :name:  cit:short
+   
+   This is a line block with options.
+""",
+"""\
+<document source="test data">
+    <line_block classes="linear" ids="cit-short" names="cit:short">
+        <line>
+            This is a line block with options.
+"""],
+["""\
+.. line-block::
 
    Inline markup *may not span
        multiple lines* of a line block.

@@ -39,6 +39,24 @@ totest['sidebars'] = [
                    Body.
 """],
 ["""\
+.. sidebar:: Margin Notes
+   :subtitle: with options
+   :class: margin
+   :name: note:Options
+
+   Body.
+""",
+"""\
+<document source="test data">
+    <sidebar classes="margin" ids="note-options" names="note:options">
+        <title>
+            Margin Notes
+        <subtitle>
+            with options
+        <paragraph>
+            Body.
+"""],
+["""\
 .. sidebar:: Outer
 
    .. topic:: Topic

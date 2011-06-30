@@ -93,13 +93,14 @@ totest['figures'] = [
    :scale: 50
    :figwidth: 300
    :figclass: class1 class2
+   :name: fig:pix
 
    A picture with image options on individual lines, and this caption.
 """,
 """\
 <document source="test data">
     <figure classes="class1 class2" width="300px">
-        <image alt="alternate text" height="100" scale="50" uri="picture.png" width="200">
+        <image alt="alternate text" height="100" ids="fig-pix" names="fig:pix" scale="50" uri="picture.png" width="200">
         <caption>
             A picture with image options on individual lines, and this caption.
 """],

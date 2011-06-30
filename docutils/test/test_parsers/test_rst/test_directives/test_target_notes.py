@@ -40,6 +40,19 @@ totest['target-notes'] = [
                class: ['custom']
 """],
 ["""\
+.. target-notes:: 
+   :class: custom
+   :name: targets
+""",
+"""\
+<document source="test data">
+    <pending ids="targets" names="targets">
+        .. internal attributes:
+             .transform: docutils.transforms.references.TargetNotes
+             .details:
+               class: ['custom']
+"""],
+["""\
 .. target-notes::
    :class:
 """,

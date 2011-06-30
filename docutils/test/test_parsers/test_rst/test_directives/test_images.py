@@ -283,11 +283,12 @@ totest['images'] = [
 ["""\
 .. image:: picture.png
    :target: bigpicture.png
+   :name: fig:pix
 """,
 """\
 <document source="test data">
     <reference refuri="bigpicture.png">
-        <image uri="picture.png">
+        <image ids="fig-pix" names="fig:pix" uri="picture.png">
 """],
 ["""\
 .. image:: picture.png

@@ -67,10 +67,11 @@ totest['rubrics'] = [
 ["""\
 .. rubric:: A Rubric
    :class: foo bar
+   :name: Foo Rubric
 """,
 """\
 <document source="test data">
-    <rubric classes="foo bar">
+    <rubric classes="foo bar" ids="foo-rubric" names="foo\ rubric">
         A Rubric
 """],
 ]

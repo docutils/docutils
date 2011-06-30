@@ -42,6 +42,8 @@ Below are action items that must be added and issues that must be
 addressed before Docutils can be considered suitable to be proposed
 for inclusion in the Python standard library.
 
+Many of these are now handled by Sphinx_
+
 * Support for `document splitting`_.  May require some major code
   rework.
 
@@ -61,13 +63,10 @@ for inclusion in the Python standard library.
 
 * Plugin support.
 
-* A LaTeX writer making use of (La)TeX's power, so that the rendering
-  of the resulting documents is more easily customizable.  (Similar to
-  what you wrote about a new HTML Writer.)
-
 * Suitability for `Python module documentation
   <http://docutils.sf.net/sandbox/README.html#documenting-python>`_.
 
+.. _Sphinx: http://sphinx.pocoo.org/
 
 General
 =======
@@ -211,103 +210,6 @@ General
 
 * Perhaps the ``Component.supports`` method should deal with
   individual features ("meta" etc.) instead of formats ("html" etc.)?
-
-* Add _`object numbering and object references` (tables & figures).
-  These would be the equivalent of DocBook's "formal" elements.
-
-  We may need _`persistent sequences`, such as chapter numbers.  See
-  `OpenOffice.org XML`_ "fields".  Should the sequences be automatic
-  or manual (user-specifyable)?
-
-  We need to name the objects:
-
-  - "name" option for the "figure" directive? ::
-
-        .. figure:: image.png
-           :name: image's name
-
-    Same for the "table" directive::
-
-        .. table:: optional title here
-           :name: table's name
-
-           =====  =====
-             x    not x
-           =====  =====
-           True   False
-           False  True
-           =====  =====
-
-    This would also allow other options to be set, like border
-    styles.  The same technique could be used for other objects.
-
-    A preliminary "table" directive has been implemented, supporting
-    table titles.  Perhaps the name should derive from the title.
-
-  - The object could also be done this way::
-
-        .. _figure name:
-
-        .. figure:: image.png
-
-    This may be a more general solution, equally applicable to tables.
-    However, explicit naming using an option seems simpler to users.
-
-  - Perhaps the figure name could be incorporated into the figure
-    definition, as an optional inline target part of the directive
-    argument::
-
-        .. figure:: _`figure name` image.png
-
-    Maybe with a delimiter::
-
-        .. figure:: _`figure name`: image.png
-
-    Or some other, simpler syntax.
-
-  We'll also need syntax for object references.  See `OpenOffice.org
-  XML`_ "reference fields":
-
-  - Parameterized substitutions?  For example::
-
-        See |figure (figure name)| on |page (figure name)|.
-
-        .. |figure (name)| figure-ref:: (name)
-        .. |page (name)| page-ref:: (name)
-
-    The result would be::
-
-        See figure 3.11 on page 157.
-
-    But this would require substitution directives to be processed at
-    reference-time, not at definition-time as they are now.  Or,
-    perhaps the directives could just leave ``pending`` elements
-    behind, and the transforms do the work?  How to pass the data
-    through?  Too complicated.
-
-  - An interpreted text approach is simpler and better::
-
-        See :figure:`figure name` on :page:`figure name`.
-
-    The "figure" and "page" roles could generate appropriate
-    boilerplate text.  The position of the role (prefix or suffix)
-    could also be utilized.
-
-    See `Interpreted Text`_ below.
-
-  - We could leave the boilerplate text up to the document::
-
-        See Figure :fig:`figure name` on page :pg:`figure name`.
-
-  - Reference boilerplate could be specified in the document
-    (defaulting to nothing)::
-
-        .. fignum::
-           :prefix-ref: "Figure "
-           :prefix-caption: "Fig. "
-           :suffix-caption: :
-
-  .. _OpenOffice.org XML: http://xml.openoffice.org/
 
 * Think about _`large documents` made up of multiple subdocument
   files.  Issues: continuity (`persistent sequences`_ above),
@@ -580,6 +482,75 @@ General
   Analogue to the ``sectnum_xform`` setting, it could be used by the
   latex writer to switch to a LaTeX generated ToC (currently, the latex
   writer calls it "use_latex_toc").
+
+object numbering and object references
+--------------------------------------
+
+For equations, tables & figures.
+
+These would be the equivalent of DocBook's "formal" elements.
+
+In LaTeX, automatic counters are implemented for sections, equations and
+floats (figures, tables) (configurable via stylesheets or in the
+latex-preamble). Objects can be given `reference names`_ with the
+``\label{<refname}`` command, ``\ref{<refname>}`` inserts the
+corresponding number.
+
+No such mechanism exists in HTML.
+
+* We need _`persistent sequences`, similar to chapter and footnote
+  numbers. See `OpenOffice.org XML`_ "fields".
+
+  - Should the sequences be automatic or manual (user-specifyable)?
+
+* It is already possible to give `reference names`_ to objects via
+  internal hyperlink targets or the "name" directive option::
+
+      .. _figure name:
+
+      .. figure:: image.png
+
+  or ::
+
+      .. figure:: image.png
+         :name: figure name
+
+  A "table" directive has been implemented, supporting table titles.
+
+  Perhaps the name could derive from the title/caption?
+
+  .. _reference names: ../ref/rst/restructuredtext.html#reference-names
+
+* We need syntax for object references.  Cf. `OpenOffice.org XML`_
+  "reference fields":
+
+  - Parameterized substitutions are too complicated
+    (cf. `or not to do`: `object references`_)
+
+  - An interpreted text approach is simpler and better::
+
+      See Figure :ref:`figure name` and Equation :ref:`eq:identity`.
+
+  - "equation", "figure", and "page" roles could generate appropriate
+    boilerplate text::
+
+        See :figure:`figure name` on :page:`figure name`.
+
+    See `Interpreted Text`_ below.
+
+    Reference boilerplate could be specified in the document
+    (defaulting to nothing)::
+
+        .. fignum::
+           :prefix-ref: "Figure "
+           :prefix-caption: "Fig. "
+           :suffix-caption: :
+
+    The position of the role (prefix or suffix) could also be utilized
+
+  .. _OpenOffice.org XML: http://xml.openoffice.org/
+  .. _object references: rst/alternatives.html#object-references
+
 
 Documentation
 =============
@@ -1333,12 +1304,17 @@ images
 OpenOffice output
 `````````````````
 
-* MathML_ can be imported by the Math module.
+* The `OpenDocument standard`_ version 1.1 says:
 
-  However, putting MathML into an ODP file seems tricky:
+    Mathematical content is represented by MathML 2.0
+
+  However, putting MathML into an ODP file seems tricky as these
+  (maybe outdated) links suppose:
   http://idippedut.dk/post/2008/01/25/Do-your-math-ODF-and-MathML.aspx
   http://idippedut.dk/post/2008/03/03/Now-I-get-it-ODF-and-MathML.aspx
 
+  .. _OpenDocument standard:
+    http://www.oasis-open.org/standards#opendocumentv1.1
 
 * OOoLaTeX__:  "a set of macros designed to bring the power of LaTeX
   into OpenOffice."
