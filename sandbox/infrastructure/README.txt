@@ -33,7 +33,7 @@ Overview:
 :`<fsfsbackup.sh>`_: Backup (mirror) an FSFS Subversion repository via
     SSH.  Used to backup the `Docutils Subversion repository`_.
 
-:`<release.sh>`_: The script used to make releases_ of Docutils.
+:`<release.sh>`_: The script to make releases_ of Docutils.
 
 :`<uploaddocutils.sh>`_: Upload files to http://docutils.sf.net/tmp/
     using ``scp``, inserting the current date in the file name.
