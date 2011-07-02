@@ -59,7 +59,6 @@ lib=$pylib/$project
 lockdir=$auxdir/lock
 # SSH stuff.
 sshdir=$auxdir/.ssh
-sshhost=docutilsupdate@shell.sourceforge.net
 sshhost=docutilsupdate,docutils@web.sourceforge.net
 sshcommand="ssh -i $lockdir/id_dsa
             -o UserKnownHostsFile=$sshdir/known_hosts $sshhost"
