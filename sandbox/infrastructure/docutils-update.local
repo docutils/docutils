@@ -129,7 +129,7 @@ svn -q revert $project/$project/__init__.py
 haschanges="`svn up docutils sandbox web | grep -v '^At revision '; true`"
 
 # update __version_details__ string
-version_details="snapshot `date --utc --iso`, r`svn info docutils | grep ^Revision: | sed 's/^Revision: //'`"
+version_details="snapshot `date -u +%Y-%m-%d`, r`svn info docutils | grep ^Revision: | sed 's/^Revision: //'`"
 (echo ",s/^__version_details__ = .*\$/__version_details__ = '$version_details'/";
     echo wq) | ed $project/$project/__init__.py 2> /dev/null
 
