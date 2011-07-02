@@ -24,7 +24,7 @@ set -e
 umask 002
 
 # URL for SVN project checkout:
-svnurl=http://svn.berlios.de/svnroot/repos/docutils/trunk/docutils
+svnurl=http://svn.berlios.de/svnroot/repos/docutils/trunk
 
 basedir=`pwd`/update-dir
 if [ ! -e $basedir ] ; then
@@ -117,7 +117,7 @@ if [ -e $lib ] ; then
 else
     test -d $pylib || mkdir -p $pylib
     cd $pylib
-    svn checkout $svnurl
+    svn checkout $svnurl/docutils
 fi
 
 # -------------------- Snapshots: --------------------
