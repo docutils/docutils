@@ -12,10 +12,8 @@
 #   -u    Regenerate .html unconditionally.
 #   -v    Run verbosely.
 #
-# Prerequisites:
+# Prerequisites: 
 #
-# - Checked out trunk at $snapshotdir.
-# - Checked out main tree at $lib, no longer necessary.
 
 # exit on error
 set -e
@@ -124,6 +122,9 @@ fi
 
 # gather the materials
 cd $snapshotdir
+for DIR in docutils sandbox web ; do
+    test -d $DIR || svn checkout $svnurl/$DIR
+done
 svn -q revert $project/$project/__init__.py
 haschanges="`svn up docutils sandbox web | grep -v '^At revision '; true`"
 
