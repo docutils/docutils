@@ -26,9 +26,8 @@ umask 002
 # URL for SVN project checkout:
 svnurl=http://svn.berlios.de/svnroot/repos/docutils/trunk/docutils
 
-basedir=/home/groups/docutils/htdocs
+basedir=`pwd`/update-dir
 if [ ! -e $basedir ] ; then
-    basedir=`pwd`/update-dir
     test -d $basedir || mkdir $basedir
 fi
 project=docutils
