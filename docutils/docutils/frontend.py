@@ -704,7 +704,10 @@ Skipping "%s" configuration file.
             except IOError:
                 continue
             try:
-                CP.RawConfigParser.readfp(self, fp, filename)
+                if sys.version_info < (3,2):
+                    CP.RawConfigParser.readfp(self, fp, filename)
+                else:
+                    CP.RawConfigParser.read_file(self, fp, filename)
             except UnicodeDecodeError:
                 self._stderr.write(self.not_utf8_error % (filename, filename))
                 fp.close()
