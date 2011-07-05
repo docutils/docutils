@@ -152,11 +152,13 @@ class Publisher:
         option_parser = self.setup_option_parser(
             usage, description, settings_spec, config_section, **defaults)
         if argv is None:
+            argv = sys.argv[1:]
             # converting to Unicode (Python 3 does this automatically):
-            # TODO: make this failsafe and reversible
-            argv_encoding = (sys.stdin.encoding or frontend.locale_encoding
-                             or 'ascii')
-            argv = [a.decode(argv_encoding) for a in sys.argv[1:]]
+            if sys.version_info < (3,0):
+                # TODO: make this failsafe and reversible
+                argv_encoding = (sys.stdin.encoding or
+                                 frontend.locale_encoding or 'ascii')
+                argv = [a.decode(argv_encoding) for a in argv]
         self.settings = option_parser.parse_args(argv)
 
     def set_io(self, source_path=None, destination_path=None):
