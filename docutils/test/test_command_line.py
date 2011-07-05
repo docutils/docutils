@@ -24,9 +24,14 @@ class CommandLineEncodingTests(unittest.TestCase):
     def test_sys_argv_decoding(self):
         if locale_encoding in (None, 'ascii'): # cannot test
             return
-        sys.argv.append(u'--title=Dornröschen'.encode(locale_encoding))
+        sys.argv.append('--source-url=test.txt') # pure ASCII argument
+        if sys.version_info < (3,0):
+            sys.argv.append(u'--title=Dornröschen'.encode(locale_encoding))
+        else:
+            sys.argv.append(u'--title=Dornröschen')
         publisher = docutils.core.Publisher()
         publisher.process_command_line()
+        self.assertEqual(publisher.settings.source_url, 'test.txt')
         self.assertEqual(publisher.settings.title, u'Dornröschen')
         sys.argv.pop()
 
