@@ -37,8 +37,11 @@ Changes Since 0.7
 
 * reStructuredText:
 
-  - most directives now support a "name" option that attaches a
+  - Most directives now support a "name" option that attaches a
     reference name.
+    
+  - Directive content may start on the first line also when the directive
+    type accepts options.
 
 * docs/dev/policies.txt:
 

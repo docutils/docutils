@@ -35,7 +35,6 @@ class Contents(Directive):
         else:
             return value
 
-    required_arguments = 0
     optional_arguments = 1
     final_argument_whitespace = True
     option_spec = {'depth': directives.nonnegative_int,

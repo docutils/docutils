@@ -22,12 +22,14 @@ A_\text{c} =
 <pre class="math">
 f(\epsilon) = \frac{1}{1 + \exp\left(\frac{\varepsilon}{k_\text{B}T}\right)}
 </pre>
-<p>A display formula can also be given as directive argument, e.g.</p>
+<p>Content may start on the first line of the directive, e.g.</p>
 <pre class="math">
 N = \frac{\text{number of apples}}{7}
 </pre>
+<p>Equations can be labeled with a reference name using the <tt class="docutils literal">:name:</tt> option.
+See <a class="reference internal" href="#eq-m">eq:M</a> and <a class="reference internal" href="#eq-schrodinger">eq:schrödinger</a> below.</p>
 <p>The determinant of the matrix</p>
-<pre class="math">
+<pre class="math" id="eq-m">
 \mathbf{M} = \left(\begin{matrix}a&amp;b\\c&amp;d\end{matrix}\right)
 </pre>
 <p>is <tt class="math">
@@ -44,7 +46,7 @@ For example, the following sum and integral with limits:</p>
 <p>LaTeX-supported Unicode math symbols can be used in math roles and
 directives:</p>
 <p>The Schrödinger equation</p>
-<pre class="math">
+<pre class="math" id="eq-schrodinger">
 i\hbar \frac{\partial }{\partial t}\Psi  = \hat{H}\Psi ,
 </pre>
 <p>with the <em>wave function</em> <tt class="math">

@@ -2111,8 +2111,8 @@ class Body(RSTState):
         if indented and (directive.required_arguments
                          or directive.optional_arguments
                          or option_spec):
-            for i in range(len(indented)):
-                if not indented[i].strip():
+            for i, line in enumerate(indented):
+                if not line.strip():
                     break
             else:
                 i += 1
@@ -2123,18 +2123,19 @@ class Body(RSTState):
             content = indented
             content_offset = line_offset
             arg_block = []
-        while content and not content[0].strip():
-            content.trim_start()
-            content_offset += 1
         if option_spec:
             options, arg_block = self.parse_directive_options(
                 option_presets, option_spec, arg_block)
-            if arg_block and not (directive.required_arguments
-                                  or directive.optional_arguments):
-                raise MarkupError('no arguments permitted; blank line '
-                                  'required before content block')
         else:
             options = {}
+        if arg_block and not (directive.required_arguments
+                              or directive.optional_arguments):
+            content = arg_block + indented[i:]
+            content_offset = line_offset
+            arg_block = []
+        while content and not content[0].strip():
+            content.trim_start()
+            content_offset += 1
         if directive.required_arguments or directive.optional_arguments:
             arguments = self.parse_directive_arguments(
                 directive, arg_block)

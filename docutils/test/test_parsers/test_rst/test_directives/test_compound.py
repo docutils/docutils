@@ -55,6 +55,8 @@ totest['compound'] = [
 """],
 ["""\
 .. compound::
+   :name: interesting
+   :class: log
 
    This is an extremely interesting compound paragraph containing a
    simple paragraph, a literal block with some useless log messages::
@@ -68,7 +70,7 @@ totest['compound'] = [
 """,
 """\
 <document source="test data">
-    <compound>
+    <compound classes="log" ids="interesting" names="interesting">
         <paragraph>
             This is an extremely interesting compound paragraph containing a
             simple paragraph, a literal block with some useless log messages:
@@ -81,20 +83,17 @@ totest['compound'] = [
             of the first simple paragraph, with the literal block in between.
 """],
 ["""\
-.. compound:: arg1 arg2
+.. compound:: content may start on same line
 
-   text
+   second paragraph
 """,
 """\
 <document source="test data">
-    <system_message level="3" line="1" source="test data" type="ERROR">
+    <compound>
         <paragraph>
-            Error in "compound" directive:
-            no arguments permitted; blank line required before content block.
-        <literal_block xml:space="preserve">
-            .. compound:: arg1 arg2
-            \n\
-               text
+            content may start on same line
+        <paragraph>
+            second paragraph
 """],
 ]
 

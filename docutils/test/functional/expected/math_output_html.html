@@ -22,12 +22,14 @@ role specificator, <span class="formula">
 <div class="formula">
 <i>f</i>(<i>ϵ</i>) = <span class="fraction"><span class="ignored">(</span><span class="numerator">1</span><span class="ignored">)/(</span><span class="denominator">1 + exp<span class="array"><span class="arrayrow"><span class="bracket align-left">⎛</span></span><span class="arrayrow"><span class="bracket align-left">⎝</span></span></span><span class="fraction"><span class="ignored">(</span><span class="numerator"><i>ε</i></span><span class="ignored">)/(</span><span class="denominator"><i>k</i><sub><span class="text">B</span></sub><i>T</i></span><span class="ignored">)</span></span><span class="array"><span class="arrayrow"><span class="bracket align-right">⎞</span></span><span class="arrayrow"><span class="bracket align-right">⎠</span></span></span></span><span class="ignored">)</span></span>
 </div>
-<p>A display formula can also be given as directive argument, e.g.</p>
+<p>Content may start on the first line of the directive, e.g.</p>
 <div class="formula">
 <i>N</i> = <span class="fraction"><span class="ignored">(</span><span class="numerator"><span class="text">number of apples</span></span><span class="ignored">)/(</span><span class="denominator">7</span><span class="ignored">)</span></span>
 </div>
+<p>Equations can be labeled with a reference name using the <tt class="docutils literal">:name:</tt> option.
+See <a class="reference internal" href="#eq-m">eq:M</a> and <a class="reference internal" href="#eq-schrodinger">eq:schrödinger</a> below.</p>
 <p>The determinant of the matrix</p>
-<div class="formula">
+<div class="formula" id="eq-m">
 <b>M</b> = <span class="array"><span class="arrayrow"><span class="bracket align-left">⎛</span></span><span class="arrayrow"><span class="bracket align-left">⎜</span></span><span class="arrayrow"><span class="bracket align-left">⎝</span></span></span><span class="array"><span class="arrayrow">
 <span class="arraycell align-c">
 <i>a</i>
@@ -71,7 +73,7 @@ For example, the following sum and integral with limits:</p>
 <p>LaTeX-supported Unicode math symbols can be used in math roles and
 directives:</p>
 <p>The Schrödinger equation</p>
-<div class="formula">
+<div class="formula" id="eq-schrodinger">
 <i>i</i>ℏ<span class="fraction"><span class="ignored">(</span><span class="numerator">∂</span><span class="ignored">)/(</span><span class="denominator">∂<i>t</i></span><span class="ignored">)</span></span>Ψ = <i>Ĥ</i>Ψ, 
 </div>
 <p>with the <em>wave function</em> <span class="formula">

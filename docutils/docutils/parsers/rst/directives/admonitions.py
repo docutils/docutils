@@ -11,35 +11,35 @@ __docformat__ = 'reStructuredText'
 
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import states, directives
+from docutils.parsers.rst.roles import set_classes
 from docutils import nodes
 
 
 class BaseAdmonition(Directive):
 
-    required_arguments = 0
-    optional_arguments = 0
     final_argument_whitespace = True
-    option_spec = {}
+    option_spec = {'class': directives.class_option,
+                   'name': directives.unchanged}
     has_content = True
 
     node_class = None
     """Subclasses must set this to the appropriate admonition node class."""
 
     def run(self):
+        set_classes(self.options)
         self.assert_has_content()
         text = '\n'.join(self.content)
-        admonition_node = self.node_class(text)
-        if self.arguments:
+        admonition_node = self.node_class(text, **self.options)
+        self.add_name(admonition_node)
+        if self.node_class is nodes.admonition:
             title_text = self.arguments[0]
             textnodes, messages = self.state.inline_text(title_text,
                                                          self.lineno)
             admonition_node += nodes.title(title_text, '', *textnodes)
             admonition_node += messages
-            if 'class' in self.options:
-                classes = self.options['class']
-            else:
-                classes = ['admonition-' + nodes.make_id(title_text)]
-            admonition_node['classes'] += classes
+            if not 'classes' in self.options:
+                admonition_node['classes'] += ['admonition-' +
+                                               nodes.make_id(title_text)]
         self.state.nested_parse(self.content, self.content_offset,
                                 admonition_node)
         return [admonition_node]
@@ -48,7 +48,6 @@ class BaseAdmonition(Directive):
 class Admonition(BaseAdmonition):
 
     required_arguments = 1
-    option_spec = {'class': directives.class_option}
     node_class = nodes.admonition
 
 

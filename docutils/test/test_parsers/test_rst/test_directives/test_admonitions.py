@@ -21,7 +21,10 @@ totest['admonitions'] = [
 ["""\
 .. Attention:: Directives at large.
 
-.. Note:: This is a note.
+.. Note:: :name: mynote
+   :class: testnote
+
+   Admonitions support the generic "name" and "class" options.
 
 .. Tip:: 15% if the
    service is good.
@@ -49,9 +52,9 @@ totest['admonitions'] = [
     <attention>
         <paragraph>
             Directives at large.
-    <note>
+    <note classes="testnote" ids="mynote" names="mynote">
         <paragraph>
-            This is a note.
+            Admonitions support the generic "name" and "class" options.
     <tip>
         <paragraph>
             15% if the
@@ -147,12 +150,13 @@ totest['admonitions'] = [
 ["""\
 .. admonition:: Admonition
    :class: emergency
+   :name: reference name
 
    Test the "class" override.
 """,
 """\
 <document source="test data">
-    <admonition classes="emergency">
+    <admonition classes="emergency" ids="reference-name" names="reference\ name">
         <title>
             Admonition
         <paragraph>
