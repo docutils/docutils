@@ -47,16 +47,12 @@ totest['parsed_literals'] = [
          This is a parsed literal block with options.
 """],
 ["""\
-.. parsed-literal:: argument
+.. parsed-literal:: content may start on same line
 """,
 """\
 <document source="test data">
-    <system_message level="3" line="1" source="test data" type="ERROR">
-        <paragraph>
-            Error in "parsed-literal" directive:
-            no arguments permitted; blank line required before content block.
-        <literal_block xml:space="preserve">
-            .. parsed-literal:: argument
+    <literal_block xml:space="preserve">
+        content may start on same line
 """],
 ["""\
 .. parsed-literal::

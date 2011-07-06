@@ -25,14 +25,16 @@ role specificator, <span class="math">
 f(\epsilon) = \frac{1}{1 + \exp\left(\frac{\varepsilon}{k_\text{B}T}\right)}
 \end{equation*}
 </div>
-<p>A display formula can also be given as directive argument, e.g.</p>
+<p>Content may start on the first line of the directive, e.g.</p>
 <div class="math">
 \begin{equation*}
 N = \frac{\text{number of apples}}{7}
 \end{equation*}
 </div>
+<p>Equations can be labeled with a reference name using the <tt class="docutils literal">:name:</tt> option.
+See <a class="reference internal" href="#eq-m">eq:M</a> and <a class="reference internal" href="#eq-schrodinger">eq:schrödinger</a> below.</p>
 <p>The determinant of the matrix</p>
-<div class="math">
+<div class="math" id="eq-m">
 \begin{equation*}
 \mathbf{M} = \left(\begin{matrix}a&amp;b\\c&amp;d\end{matrix}\right)
 \end{equation*}
@@ -55,7 +57,7 @@ For example, the following sum and integral with limits:</p>
 <p>LaTeX-supported Unicode math symbols can be used in math roles and
 directives:</p>
 <p>The Schrödinger equation</p>
-<div class="math">
+<div class="math" id="eq-schrodinger">
 \begin{equation*}
 i\hbar \frac{\partial }{\partial t}\Psi  = \hat{H}\Psi ,
 \end{equation*}

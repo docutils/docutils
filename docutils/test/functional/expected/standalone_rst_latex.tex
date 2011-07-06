@@ -1646,15 +1646,20 @@ role specificator, $n! + \sin(x_n^2)$ and $A_\text{c} =
 \begin{equation*}
 f(\epsilon) = \frac{1}{1 + \exp\left(\frac{\varepsilon}{k_\text{B}T}\right)}
 \end{equation*}
-A display formula can also be given as directive argument, e.g.
+Content may start on the first line of the directive, e.g.
 %
 \begin{equation*}
 N = \frac{\text{number of apples}}{7}
 \end{equation*}
+Equations can be labeled with a reference name using the \texttt{:name:} option.
+See \hyperref[eq-m]{eq:M} and \hyperref[eq-schrodinger]{eq:schrödinger} below.
+
 The determinant of the matrix
 %
 \begin{equation*}
 \mathbf{M} = \left(\begin{matrix}a&b\\c&d\end{matrix}\right)
+\phantomsection
+\label{eq-m}
 \end{equation*}
 is $|\mathbf{M}| = ad - bc$.
 
@@ -1674,6 +1679,8 @@ The Schrödinger equation
 %
 \begin{equation*}
 i\hbar \frac{\partial }{\partial t}\Psi  = \hat{H}\Psi ,
+\phantomsection
+\label{eq-schrodinger}
 \end{equation*}
 with the \emph{wave function} $\Psi $, describes how the quantum state of a
 physical system changes in time.

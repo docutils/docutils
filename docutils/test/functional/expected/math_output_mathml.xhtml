@@ -29,7 +29,7 @@ role specificator, <math xmlns="http://www.w3.org/1998/Math/MathML">
 <mrow><mi>ε</mi></mrow>
 <mrow><msub><mi>k</mi><mtext>B</mtext></msub><mi>T</mi></mrow></mfrac></mrow></mfenced></mrow></mfrac></mtd></mtr></mtable></math>
 </div>
-<p>A display formula can also be given as directive argument, e.g.</p>
+<p>Content may start on the first line of the directive, e.g.</p>
 <div>
 <math xmlns="http://www.w3.org/1998/Math/MathML" mode="display">
 <mtable>
@@ -38,8 +38,10 @@ role specificator, <math xmlns="http://www.w3.org/1998/Math/MathML">
 <mrow><mtext>number of apples</mtext></mrow>
 <mrow><mn>7</mn></mrow></mfrac></mtd></mtr></mtable></math>
 </div>
+<p>Equations can be labeled with a reference name using the <tt class="docutils literal">:name:</tt> option.
+See <a class="reference internal" href="#eq-m">eq:M</a> and <a class="reference internal" href="#eq-schrodinger">eq:schrödinger</a> below.</p>
 <p>The determinant of the matrix</p>
-<div>
+<div id="eq-m">
 <math xmlns="http://www.w3.org/1998/Math/MathML" mode="display">
 <mtable>
 <mtr>
@@ -79,7 +81,7 @@ For example, the following sum and integral with limits:</p>
 <p>LaTeX-supported Unicode math symbols can be used in math roles and
 directives:</p>
 <p>The Schrödinger equation</p>
-<div>
+<div id="eq-schrodinger">
 <math xmlns="http://www.w3.org/1998/Math/MathML" mode="display">
 <mtable>
 <mtr>
@@ -203,7 +205,7 @@ physical system changes in time.</p>
 <p>Cases with the <a class="reference external" href="ftp://ftp.ams.org/ams/doc/amsmath/short-math-guide.pdf">AMSmath</a> <tt class="docutils literal">cases</tt> environment (not (yet) supported by
 HTML writers with <tt class="docutils literal"><span class="pre">--math-output=MathML</span></tt>):</p>
 <div class="system-message">
-<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">functional/input/data/math.txt</tt>, line 102)</p>
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">functional/input/data/math.txt</tt>, line 108)</p>
 <p>
 Environment not supported! Supported environment: "matrix".</p>
 <pre class="literal-block">

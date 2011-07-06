@@ -381,7 +381,6 @@ class DefaultRole(Directive):
 
     """Set the default interpreted text role."""
 
-    required_arguments = 0
     optional_arguments = 1
     final_argument_whitespace = False
 
@@ -434,7 +433,6 @@ class TestDirective(Directive):
 
     """This directive is useful only for testing purposes."""
 
-    required_arguments = 0
     optional_arguments = 1
     final_argument_whitespace = True
     option_spec = {'option': directives.unchanged_required}

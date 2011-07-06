@@ -117,9 +117,6 @@ class ParsedLiteral(Directive):
 
 class MathBlock(Directive):
 
-    required_arguments = 0
-    optional_arguments = 1
-    final_argument_whitespace = True
     option_spec = {'class': directives.class_option,
                    'name': directives.unchanged}
                    ## TODO: Add Sphinx' ``mathbase.py`` option 'nowrap'?
@@ -128,12 +125,11 @@ class MathBlock(Directive):
 
     def run(self):
         set_classes(self.options)
-        if not self.arguments:
-            self.assert_has_content()
+        self.assert_has_content()
         # join lines, separate blocks
         content = '\n'.join(self.content).split('\n\n')
         _nodes = []
-        for block in self.arguments + content:
+        for block in content:
             if not block:
                 continue
             node = nodes.math_block(self.block_text, block, **self.options)
@@ -207,7 +203,6 @@ class Compound(Directive):
 
 class Container(Directive):
 
-    required_arguments = 0
     optional_arguments = 1
     final_argument_whitespace = True
     option_spec = {'name': directives.unchanged}

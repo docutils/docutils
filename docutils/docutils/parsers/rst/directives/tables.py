@@ -26,7 +26,6 @@ class Table(Directive):
     Generic table base class.
     """
 
-    required_arguments = 0
     optional_arguments = 1
     final_argument_whitespace = True
     option_spec = {'class': directives.class_option,

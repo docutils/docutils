@@ -10,13 +10,16 @@ role specificator, :math:`n! + \sin(x_n^2)` and `A_\text{c} =
 
    f(\epsilon) = \frac{1}{1 + \exp\left(\frac{\varepsilon}{k_\text{B}T}\right)}
 
-A display formula can also be given as directive argument, e.g.
+Content may start on the first line of the directive, e.g.
 
 .. math:: N = \frac{\text{number of apples}}{7}
 
+Equations can be labeled with a reference name using the ``:name:`` option.
+See `eq:M`_ and `eq:schrödinger`_ below.
+
 The determinant of the matrix
 
-.. math::
+.. math:: :name: eq:M
 
    \mathbf{M} = \left(\begin{matrix}a&b\\c&d\end{matrix}\right)
 
@@ -36,7 +39,10 @@ directives:
 
 The Schrödinger equation
 
-.. math:: i\hbar \frac{∂}{∂t}Ψ = \hat{H}Ψ,
+.. math:: :name: eq:schrödinger
+
+   i\hbar \frac{∂}{∂t}Ψ = \hat{H}Ψ,
+   
 
 with the *wave function* :math:`Ψ`, describes how the quantum state of a
 physical system changes in time.
