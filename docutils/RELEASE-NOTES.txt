@@ -51,8 +51,30 @@ Changes Since 0.7
 
       .. figure:: image.png
 
+Internationalization:
 
+* Added lithuanian mappings.
 
+Components:
+
+* HTML writer:
+
+  - New setting "math-output" with support for HTML, MathML, and LaTeX.
+
+* LaTeX2e writer:
+
+  - Convert image URI to a local file path.
+  - Apply [ 3148141 ] fix multicolumn support when a colspanning cell
+    has more than one paragraph (Wolfgang Scherer).
+
+* XeTeX writer:
+
+  - New writer generating LaTeX code for compiling with ``xelatex``.
+    
+    XeTeX uses unicode and modern font technologies.
+
+* and fixes and enhancements here and there.
+  
 Release 0.7 (2010-07-07)
 ========================
 
