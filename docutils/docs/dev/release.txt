@@ -34,8 +34,9 @@ reminded of them.
 Call ``sandbox/infrastructure/release.sh new_version svn_version``.
 For details see the script.
 
-And version numbers are unclear to me new is the current version,
-because only the status will change from ``repository`` to ``release``.
+And version numbers are unclear (to me). ``new_version`` is the current
+version, because only the status will change from ``repository`` to 
+``release``.
 
 * Change ``__version_details__`` in docutils/docutils/__init__.py to
   "release" (from "repository").
