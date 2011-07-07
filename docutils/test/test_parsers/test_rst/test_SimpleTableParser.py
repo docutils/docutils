@@ -40,6 +40,16 @@ and           two rows.
   [[0, 0, 2, ['and']],
    [0, 0, 2, ['two rows.']]]])],
 ["""\
+======================================
+The last row might stick into the margin
+second row.
+======================================
+""",
+([40],
+ [],
+ [[[0, 0, 1, ['The last row might stick into the margin']]],
+  [[0, 0, 2, ['second row.']]]])],
+["""\
 ==========  ===========
 A table with four rows,
 -----------------------
@@ -63,6 +73,13 @@ cell 3          cell 4
 ============  ======
 """,
 'TableMarkupError: Text in column margin at line offset 1.'],
+["""\
+======  =====  ======
+row     one
+Another bad    table
+======  =====  ======
+""",
+'TableMarkupError: Text in column margin at line offset 2.'],
 ["""\
 ===========  ================
 A table with two header rows,
