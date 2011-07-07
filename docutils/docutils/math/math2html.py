@@ -25,6 +25,14 @@
 
 import sys
 
+if sys.version_info < (2,4):
+  def reversed(sequence):
+    i = len(sequence)
+    while i > 0:
+        i = i - 1
+        yield sequence[i]
+
+
 class Trace(object):
   "A tracing class"
 
