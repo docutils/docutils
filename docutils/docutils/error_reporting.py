@@ -190,8 +190,11 @@ class ErrorOutput(object):
         """
         Close the error-output stream.
 
-        Ignored if the stream has no close() method.
+        Ignored if the stream is` sys.stderr` or `sys.stdout` or has no 
+        close() method.
         """
+        if self.stream in (sys.stdout, sys.stderr):
+            return
         try:
             self.stream.close()
         except AttributeError:
