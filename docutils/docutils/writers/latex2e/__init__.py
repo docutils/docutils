@@ -242,12 +242,12 @@ class Writer(writers.Writer):
             setattr(self, part, getattr(visitor, part))
         # get template string from file
         try:
-            file = open(self.document.settings.template, 'rb')
+            template_file = open(self.document.settings.template, 'rb')
         except IOError:
-            file = open(os.path.join(self.default_template_path,
+            template_file = open(os.path.join(self.default_template_path,
                                      self.document.settings.template), 'rb')
-        template = string.Template(unicode(file.read(), 'utf-8'))
-        file.close()
+        template = string.Template(unicode(template_file.read(), 'utf-8'))
+        template_file.close()
         # fill template
         self.assemble_parts() # create dictionary of parts
         self.output = template.substitute(self.parts)
