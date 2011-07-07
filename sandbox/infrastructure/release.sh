@@ -112,7 +112,7 @@ function initialize()
         usage
     fi
     echo 'Initializing...'
-    python_versions='2.3 2.4 2.5 2.6'
+    python_versions='2.3 2.4 2.5 2.6 2.7'
     for py_ver in $python_versions; do
         echo -n "Checking for Python $py_ver (python$py_ver)... "
         if ! echo 'print "OK"' | python$py_ver; then
