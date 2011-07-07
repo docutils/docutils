@@ -827,9 +827,9 @@ class Table(object):
 
     def get_multicolumn_width(self, start, len_):
         """Return sum of columnwidths for multicell."""
-        mc_width = sum(width
-                       for width in (self._col_width[start + co - 1]
-                                     for co in range (len_)))
+        mc_width = sum([width
+                       for width in ([self._col_width[start + co - 1]
+                                     for co in range (len_)])])
         return '%.2f\\DUtablewidth' % mc_width
 
     def get_caption(self):
