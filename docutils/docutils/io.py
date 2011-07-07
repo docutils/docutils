@@ -184,7 +184,7 @@ class FileInput(Input):
     """
     def __init__(self, source=None, source_path=None,
                  encoding=None, error_handler='strict',
-                 autoclose=1, handle_io_errors=1, mode='rU'):
+                 autoclose=True, handle_io_errors=True, mode='rU'):
         """
         :Parameters:
             - `source`: either a file-like object (which is read directly), or
@@ -192,8 +192,8 @@ class FileInput(Input):
             - `source_path`: a path to a file, which is opened and then read.
             - `encoding`: the expected text encoding of the input file.
             - `error_handler`: the encoding error handler to use.
-            - `autoclose`: close automatically after read (boolean); always
-              false if `sys.stdin` is the source.
+            - `autoclose`: close automatically after read (except when
+              `sys.stdin` is the source).
             - `handle_io_errors`: summarize I/O errors here, and exit?
             - `mode`: how the file is to be opened (see standard function
               `open`). The default 'rU' provides universal newline support
@@ -224,7 +224,6 @@ class FileInput(Input):
                     sys.exit(1)
             else:
                 self.source = sys.stdin
-                self.autoclose = None
         if not source_path:
             try:
                 self.source_path = self.source.name
@@ -254,7 +253,8 @@ class FileInput(Input):
         return [self.decode(line) for line in lines]
 
     def close(self):
-        self.source.close()
+        if self.source is not sys.stdin:
+            self.source.close()
 
 
 class FileOutput(Output):
@@ -273,8 +273,8 @@ class FileOutput(Output):
               `destination_path` given).
             - `destination_path`: a path to a file, which is opened and then
               written.
-            - `autoclose`: close automatically after write (boolean); always
-              False if `sys.stdout` or `sys.stderr` is the destination.
+            - `autoclose`: close automatically after write (except when
+              `sys.stdout` or `sys.stderr` is the destination).
         """
         Output.__init__(self, destination, destination_path,
                         encoding, error_handler)
@@ -287,8 +287,6 @@ class FileOutput(Output):
                 self.opened = False
             else:
                 self.destination = sys.stdout
-        if destination in (sys.stdout, sys.stderr):
-            self.autoclose = False
         if not destination_path:
             try:
                 self.destination_path = self.destination.name
@@ -314,7 +312,7 @@ class FileOutput(Output):
             print >>self._stderr, (u'Unable to open destination file'
                 u" for writing ('%s').  Exiting." % self.destination_path)
             sys.exit(1)
-        self.opened = 1
+        self.opened = True
 
     def write(self, data):
         """Encode `data`, write it to a single file, and return it.
@@ -335,8 +333,9 @@ class FileOutput(Output):
         return output
 
     def close(self):
-        self.destination.close()
-        self.opened = False
+        if self.destination not in (sys.stdout, sys.stderr):
+            self.destination.close()
+            self.opened = False
 
 
 class BinaryFileOutput(FileOutput):

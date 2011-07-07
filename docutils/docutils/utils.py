@@ -685,8 +685,9 @@ class DependencyList:
         """
         Close the output file.
         """
-        self.file.close()
-        self.file = None
+        if self.file not in (sys.stdout, sys.stderr):
+            self.file.close()
+            self.file = None
 
     def __repr__(self):
         if self.file:
