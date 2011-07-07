@@ -66,7 +66,7 @@ Specific Admonitions
 :Doctree Elements: attention, caution, danger, error, hint, important,
                    note, tip, warning, admonition, title
 :Directive Arguments: None.
-:Directive Options: None.
+:Directive Options: `:class:`_, `:name:`_
 :Directive Content: Interpreted as body elements.
 
 Admonitions are specially marked "topics" that can appear anywhere an
@@ -120,13 +120,13 @@ Generic Admonition
 :Directive Type: "admonition"
 :Doctree Elements: admonition, title
 :Directive Arguments: One, required (admonition title)
-:Directive Options: Possible.
+:Directive Options: Possible, see below.
 :Directive Content: Interpreted as body elements.
 
 This is a generic, titled admonition.  The title may be anything the
 author desires.
 
-The author-supplied title is also used as a "classes" attribute value
+The author-supplied title is also used as a `"classes"`_ attribute value
 after being converted into a valid identifier form (down-cased;
 non-alphanumeric characters converted to single hyphens; "admonition-"
 prefixed).  For example, this admonition::
@@ -144,11 +144,13 @@ becomes the following document tree (pseudo-XML)::
             <paragraph>
                 You can make up your own admonition too.
 
-The following option is recognized:
+The `common options`_ are recognized:
 
 ``class`` : text
-    Override the computed "classes" attribute value.  See the class_
-    directive below.
+    Overrides the computed `"classes"`_ attribute value.
+
+``name`` : text
+  Add `text` to the `"names"`_ attribute of the admonition element.
 
 
 --------
@@ -233,12 +235,7 @@ The following options are recognized:
     option argument may be a URI (relative or absolute), or a
     `reference name`_ with underscore suffix (e.g. ```a name`_``).
 
-``class`` : text
-    Set a "classes" attribute value on the image element.  See the
-    class_ directive below.
-
-``name`` : text
-    Attach text as a `reference name`_ to the image element. [#name-option]_
+and the common options `:class:`_ and `:name:`_.
 
 
 Figure
@@ -321,7 +318,7 @@ In addition, the following options are recognized:
         +---------------------------+
 
 ``figclass`` : text
-    Set a "classes" attribute value on the figure element.  See the
+    Set a `"classes"`_ attribute value on the figure element.  See the
     class_ directive below.
 
 .. _Python Imaging Library: http://www.pythonware.com/products/pil/
@@ -337,7 +334,7 @@ Topic
 :Directive Type: "topic"
 :Doctree Element: topic
 :Directive Arguments: 1, required (topic title).
-:Directive Options: Possible.
+:Directive Options: `:class:`_, `:name:`_
 :Directive Content: Interpreted as the topic body.
 
 A topic is like a block quote with a title, or a self-contained
@@ -356,15 +353,6 @@ interpreted as body elements.  For example::
         the body of the topic, and are
         interpreted as body elements.
 
-The following options are recognized:
-
-``class`` : text
-    Set a "classes" attribute value on the topic element.  See the
-    class_ directive below.
-
-``name`` : text
-    Attach text as a `reference name`_ to the topic element. [#name-option]_
-
 
 Sidebar
 =======
@@ -372,7 +360,7 @@ Sidebar
 :Directive Type: "sidebar"
 :Doctree Element: sidebar
 :Directive Arguments: One, required (sidebar title).
-:Directive Options: Possible.
+:Directive Options: Possible (see below).
 :Directive Content: Interpreted as the sidebar body.
 
 Sidebars are like miniature, parallel documents that occur inside
@@ -402,13 +390,7 @@ The following options are recognized:
 ``subtitle`` : text
     The sidebar's subtitle.
 
-``class`` : text
-    Set a "classes" attribute value on the sidebar element.  See the
-    class_ directive below.
-
-``name`` : text
-    Attach text as a `reference name`_ to the sidebar element.
-    [#name-option]_
+and the common options `:class:`_ and `:name:`_.
 
 
 Line Block
@@ -424,7 +406,7 @@ Line Block
 :Directive Type: "line-block"
 :Doctree Element: line_block
 :Directive Arguments: None.
-:Directive Options: Possible.
+:Directive Options: `:class:`_, `:name:`_
 :Directive Content: Becomes the body of the line block.
 
 The "line-block" directive constructs an element where line breaks and
@@ -448,15 +430,6 @@ example, here's a classic::
                 as soon as it comes.
             Love, Ewan.
 
-The following options are recognized:
-
-``class`` : text
-    Set a "classes" attribute value on the line_block element.  See the
-    class_ directive below.
-
-``name`` : text
-    Attach text as a `reference name`_ to the line_block element.
-    [#name-option]_
 
 
 .. _parsed-literal:
@@ -467,7 +440,7 @@ Parsed Literal Block
 :Directive Type: "parsed-literal"
 :Doctree Element: literal_block
 :Directive Arguments: None.
-:Directive Options: Possible.
+:Directive Options: `:class:`_, `:name:`_
 :Directive Content: Becomes the body of the literal block.
 
 Unlike an ordinary literal block, the "parsed-literal" directive
@@ -493,16 +466,6 @@ For example, all the element names in this content model are links::
          (docinfo_, transition_?)?,
          `%structure.model;`_ )
 
-The following options are recognized:
-
-``class`` : text
-    Set a "classes" attribute value on the literal_block element.  See
-    the class_ directive below.
-
-``name`` : text
-    Attach text as a `reference name`_ to the literal_block element.
-    [#name-option]_
-
 
 Math
 ====
@@ -510,7 +473,7 @@ Math
 :Directive Type: "math"
 :Doctree Element: math-block
 :Directive Arguments: One, optional: prepended to content.
-:Directive Options: Possible.
+:Directive Options: `:class:`_, `:name:`_
 :Directive Content: Interpreted as math block(s).
                     Content blocks separated by a blank line are put in
                     separate math-block doctree elements.
@@ -532,16 +495,6 @@ For HTML, the output format can be set with the `math_output`_
 configuration setting (or the corresponding ``--math-output`` command
 line option).
 
-The following options are recognized:
-
-``class`` : text
-    Set a "classes" attribute value on the block element.  See the
-    class_ directive.
-
-``name`` : text
-    Attach text as a `reference name`_ to the math_block element.
-    [#name-option]_
-
 New in Docutils 0.8.
 
 .. _Short Math Guide: ftp://ftp.ams.org/ams/doc/amsmath/short-math-guide.pdf
@@ -554,7 +507,7 @@ Rubric
 :Directive Type: "rubric"
 :Doctree Element: rubric
 :Directive Arguments: 1, required (rubric text).
-:Directive Options: Possible.
+:Directive Options: `:class:`_, `:name:`_
 :Directive Content: None.
 
 ..
@@ -568,15 +521,6 @@ Rubric
 The "rubric" directive inserts a "rubric" element into the document
 tree.  A rubric is like an informal heading that doesn't correspond to
 the document's structure.
-
-The following options are recognized:
-
-``class`` : text
-    Set a "classes" attribute value on the rubric element.  See the
-    class_ directive below.
-
-``name`` : text
-    Attach text as a `reference name`_ to the rubric element. [#name-option]_
 
 
 Epigraph
@@ -651,7 +595,7 @@ Compound Paragraph
 :Directive Type: "compound"
 :Doctree Element: compound
 :Directive Arguments: None.
-:Directive Options: Possible.
+:Directive Options: `:class:`_, `:name:`_
 :Directive Content: Interpreted as body elements.
 
 (New in Docutils 0.3.6)
@@ -694,16 +638,6 @@ unity:
 * vertical spacing between physical elements may be reduced;
 * and so on.
 
-The following options are recognized:
-
-``class`` : text
-    Set a "classes" attribute value on the compound element.  See the
-    class_ directive below.
-
-``name`` : text
-    Attach text as a `reference name`_ to the compound element.
-    [#name-option]_
-
 
 Container
 =========
@@ -711,7 +645,7 @@ Container
 :Directive Type: "container"
 :Doctree Element: container
 :Directive Arguments: One or more, optional (class names).
-:Directive Options: None.
+:Directive Options: `:name:`_
 :Directive Content: Interpreted as body elements.
 
 (New in Docutils 0.3.10)
@@ -735,11 +669,6 @@ The "container" directive is the equivalent of HTML's ``<div>``
 element.  It may be used to group a sequence of elements for user- or
 application-specific purposes.
 
-The following option is recognized:
-
-``name`` : text
-    Attach text as a `reference name`_ to the container element.
-    [#name-option]_
 
 
 --------
@@ -759,7 +688,7 @@ Table
 :Directive Type: "table"
 :Doctree Element: table
 :Directive Arguments: 1, optional (table title).
-:Directive Options: Possible.
+:Directive Options: `:class:`_, `:name:`_
 :Directive Content: A normal reStructuredText table.
 
 (New in Docutils 0.3.1)
@@ -776,15 +705,6 @@ title with a table::
        True   False
        =====  =====
 
-The following options are recognized:
-
-``class`` : text
-    Set a "classes" attribute value on the table element.  See the
-    class_ directive below.
-
-``name`` : text
-    Attach text as a `reference name`_ to the table element. [#name-option]_
-
 
 .. _csv-table:
 
@@ -794,7 +714,7 @@ CSV Table
 :Directive Type: "csv-table"
 :Doctree Element: table
 :Directive Arguments: 1, optional (table title).
-:Directive Options: Possible.
+:Directive Options: Possible (see below).
 :Directive Content: A CSV (comma-separated values) table.
 
 .. WARNING::
@@ -837,13 +757,6 @@ Working limitations:
   .. Add "strict" option to verify input?
 
 The following options are recognized:
-
-``class`` : text
-    Set a "classes" attribute value on the table element.  See the
-    class_ directive below.
-
-``name`` : text
-    Attach text as a `reference name`_ to the table element. [#name-option]_
 
 ``widths`` : integer [, integer...]
     A comma- or space-separated list of relative column widths.  The
@@ -898,6 +811,8 @@ The following options are recognized:
     .. Add another possible value, "double", to explicitly indicate
        the default case?
 
+and the common options `:class:`_ and `:name:`_.
+
 
 List Table
 ==========
@@ -905,7 +820,7 @@ List Table
 :Directive Type: "list-table"
 :Doctree Element: table
 :Directive Arguments: 1, optional (table title).
-:Directive Options: Possible.
+:Directive Options: Possible (see below).
 :Directive Content: A uniform two-level bullet list.
 
 (New in Docutils 0.3.8.  This is an initial implementation; `further
@@ -939,13 +854,6 @@ Example::
 
 The following options are recognized:
 
-``class`` : text
-    Set a "classes" attribute value on the table element.  See the
-    class_ directive below.
-
-``name`` : text
-    Attach text as a `reference name`_ to the table element. [#name-option]_
-
 ``widths`` : integer [integer...]
     A comma- or space-separated list of relative column widths.  The
     default is equal-width columns (100%/#columns).
@@ -957,6 +865,8 @@ The following options are recognized:
 ``stub-columns`` : integer
     The number of table columns to use as stubs (row titles, on the
     left).  Defaults to 0.
+
+and the common options `:class:`_ and `:name:`_.
 
 
 ----------------
@@ -1021,7 +931,7 @@ The following options are recognized:
     entries, the table of contents itself, or generate no backlinks.
 
 ``class`` : text
-    Set a "classes" attribute value on the topic element.  See the
+    Set a `"classes"`_ attribute value on the topic element.  See the
     class_ directive below.
 
 
@@ -1140,6 +1050,7 @@ Target Footnotes
 :Directive Type: "target-notes"
 :Doctree Elements: pending, footnote, footnote_reference
 :Directive Arguments: None.
+:Directive Options: `:class:`_, `:name:`_
 :Directive Options: Possible.
 :Directive Content: None.
 
@@ -1148,16 +1059,6 @@ target in the text, and corresponding footnote references after each
 reference.  For every explicit target (of the form, ``.. _target name:
 URL``) in the text, a footnote will be generated containing the
 visible URL as content.
-
-The following options are recognized:
-
-``class`` : text
-    Set a "classes" attribute value on all footnote_reference elements.
-    See the class_ directive below.
-
-``name`` : text
-    Attach text as a `reference name`_ to the first footnote_reference
-    element. [#name-option]_
 
 
 Footnotes
@@ -1577,7 +1478,7 @@ Class
 :Directive Content: Optional.  If present, it is interpreted as body
                     elements.
 
-The "class" directive sets the "classes" attribute value on its content
+The "class" directive sets the `"classes"`_ attribute value on its content
 or on the first immediately following non-comment element [#]_.  For
 details of the "classes" attribute, see `its entry`__ in `The Docutils
 Document Tree`_.
@@ -1637,12 +1538,10 @@ The text above is parsed and transformed into this doctree fragment::
 
            Block quote text.
 
-   An empty comment is required to terminate the directive to allow
-   the indented text to be parsed as a block quote.  Without the empty
-   comment, the indented text would be interpreted as the "class"
-   directive's content, and the classes would be applied to each
-   element (paragraph, in this case) individually, instead of to the
-   block quote as a whole.
+   Without the empty comment, the indented text would be interpreted as the
+   "class" directive's content, and the classes would be applied to each
+   element (paragraph, in this case) individually, instead of to the block
+   quote as a whole.
 
 .. _rationale:
 
@@ -1731,7 +1630,7 @@ The parsed result is as follows::
 
 If no base role is explicitly specified, a generic custom role is
 automatically used.  Subsequent interpreted text will produce an
-"inline" element with a "classes" attribute, as in the first example
+"inline" element with a `"classes"`_ attribute, as in the first example
 above.
 
 With most roles, the ":class:" option can be used to set a "classes"
@@ -1754,7 +1653,7 @@ The following option is recognized by the "role" directive for most
 base roles:
 
 ``class`` : text
-    Set the "classes" attribute value on the element produced
+    Set the `"classes"`_ attribute value on the element produced
     (``inline``, or element associated with a base class) when the
     custom interpreted text role is used.  If no directive options are
     specified, a "class" option with the directive argument (role
@@ -1842,27 +1741,42 @@ level-1 (info) system message showing the directive data, possibly
 followed by a literal block containing the rest of the directive
 block.
 
+--------------
+Common Options
+--------------
+
+Most of the directives that generate doctree elements support the following
+options:
+
+_`:class:` : text
+    Set a `"classes"`_ attribute value on the doctree element generated by
+    the directive. See also the class_ directive.
+
+_`:name:` : text
+    Add `text` to the `"names"`_ attribute of the doctree element generated
+    by the directive. This allows `hyperlink references`_ to the element
+    using `text` as `reference name`_.
+    
+    Specifying the `name` option of a directive, e.g., ::
+    
+      .. image:: bild.png
+         :name: my picture
+    
+    is a concise syntax alternative to preceding it with a `hyperlink
+    target`_ ::
+    
+      .. _my picture:
+    
+      .. image:: bild.png
+    
+    New in Docutils 0.8.
+
+
 .. _reference name: restructuredtext.html#reference-names
 .. _hyperlink target: restructuredtext.html#hyperlink-targets
 .. _hyperlink references: restructuredtext.html#hyperlink-references
-
-.. [#name-option] The `name` option adds its value to the "names"
-   attribute of the doctree element generated by the directive. This
-   allows `hyperlink references`_ to the element.
-
-   Specifying the `name` option of a directive like ::
-
-     .. image:: bild.png
-        :name: my picture
-
-   is a concise syntax alternative to preceding it with a `hyperlink
-   target`_ ::
-
-     .. _my picture:
-
-     .. image:: bild.png
-
-   New in Docutils 0.8.
+.. _"classes": ../doctree.html#classes
+.. _"names": ../doctree.html#names
 
 
 ..
