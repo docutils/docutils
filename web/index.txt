@@ -59,12 +59,12 @@ not only for developers!
 From version 0.6 Docutils is compatible with Python 3, but requires 2to3.
 
 The latest **release package** is `docutils-0.8.tgz`__.  It was
-released on 2009-10-11 and is mostly intended for distributors.  See
+released on 2011-07-08 and is mostly intended for distributors.  See
 the `release notes`_ for a list of changes since the previous release
 (0.7).
 
 __ http://prdownloads.sourceforge.net/docutils/docutils-0.8.tar.gz?download
-.. _release notes: RELEASE-NOTES.html#release-0-8-2011-07-08
+.. _release notes: RELEASE-NOTES.html#release-0-8-2011-07-07
 
 More snapshots:
 
