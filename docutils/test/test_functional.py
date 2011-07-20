@@ -175,7 +175,6 @@ expected output and check it in:
             f = open(expected_path, 'r')
         else: # samples are UTF8 encoded. 'rb' leads to errors with Python 3!
             f = open(expected_path, 'r', encoding='utf-8')
-        f = open(expected_path, 'r')
         # Normalize line endings:
         expected = '\n'.join(f.read().splitlines())
         f.close()

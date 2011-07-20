@@ -236,7 +236,7 @@ class SafeStringTests_locale(unittest.TestCase):
     except UnicodeEncodeError:
         try:
             open(u'\xfc'.encode(sys.getfilesystemencoding(), 'replace'))
-        except IOError:
+        except IOError, e:
             uioe = e
     try:
         os.chdir(b('\xfc'))
@@ -249,7 +249,7 @@ class SafeStringTests_locale(unittest.TestCase):
     except UnicodeEncodeError:
         try:
             os.chdir(u'\xfc'.encode(sys.getfilesystemencoding(), 'replace'))
-        except OSError:
+        except OSError, e:
             uose = e
     # wrapped test data:
     wbioe = SafeString(bioe)
