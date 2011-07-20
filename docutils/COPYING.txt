@@ -79,6 +79,8 @@ The exceptions to the `Public Domain Dedication`_ above are:
 * docutils/math/__init__.py,
   docutils/math/latex2mathml.py,
   docutils/writers/xetex/__init__.py,
+  docutils/writers/latex2e/docutils-05-compat.sty,
+  docs/user/docutils-05-compat.sty.txt,
   docutils/error_reporting.py:
 
   Copyright © Günter Milde.
