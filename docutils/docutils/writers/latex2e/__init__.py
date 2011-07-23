@@ -420,7 +420,7 @@ class Babel(object):
             except KeyError:
                 continue
         else:
-            self.reporter.warning(self.warn_msg % self.language_code)
+            self.reporter.warning(self.warn_msg % language_code)
             language = ''
         return language
 
