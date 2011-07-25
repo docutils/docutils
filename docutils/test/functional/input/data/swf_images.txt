@@ -20,5 +20,4 @@ An SWF image in a  4 cm x 2 em box, left aligned.
    :width:  0.8 em
    :height: 0.8 em
 
-An inline SWF image |inline-swf| scaled to 8.0 em x 0.8 em.
-
+An inline SWF image |inline-swf| scaled to 0.8 em x 0.8 em.
