@@ -103,9 +103,9 @@ The exceptions to the `Public Domain Dedication`_ above are:
 
   __ licenses/python-2-1-1.txt
 
-* tools/editors/emacs/rst.el, copyright by Martin Blais, Stefan
-  Merten, and David Goodger, released under the `GNU General Public
-  License`_ version 3 or later (`local copy`__).
+* tools/editors/emacs/rst.el, copyright by Free Software Foundation,
+  Inc., released under the `GNU General Public License`_ version 3 or
+  later (`local copy`__).
 
   __ licenses/gpl-3.0.txt
 
