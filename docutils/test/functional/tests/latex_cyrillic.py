@@ -9,7 +9,7 @@ writer_name = "latex"
 
 # Extra setting we need
 
-settings_overrides['hyperref_options'] = 'unicode'
+settings_overrides['hyperref_options'] = 'unicode=true'
 settings_overrides['font_encoding'] = 'T1,T2A'
 settings_overrides['stylesheet'] = 'cmlgc'
 settings_overrides['language_code'] = 'ru'
