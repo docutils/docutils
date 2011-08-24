@@ -358,16 +358,14 @@ class Babel(object):
         }
     warn_msg = 'Language "%s" not supported by LaTeX (babel)'
 
-    def __init__(self, language_code, reporter):
-        self.language_code = language_code
+    def __init__(self, language_code, reporter=None):
         self.reporter = reporter
-        self.language = self.get_language(language_code)
+        self.language = self.language_name(language_code)
         self.otherlanguages = {}
         self.quote_index = 0
         self.quotes = ('``', "''")
         # language dependent configuration:
         # double quotes are "active" in some languages (e.g. German).
-        # TODO: use \textquotedbl in T1 font encoding?
         self.literal_double_quote = u'"'
         if self.language in ('ngerman', 'german', 'austrian', 'naustrian',
                              'russian'):
@@ -411,18 +409,21 @@ class Babel(object):
                 t += self.next_quote() + part
         return t
 
-    def get_language(self, language_code):
+    def language_name(self, language_code):
         """Return TeX language name for `language_code`"""
         for tag in utils.normalize_language_tag(language_code):
             try:
-                language = self.language_codes[tag]
-                break
+                return self.language_codes[tag]
             except KeyError:
-                continue
-        else:
+                pass
+        if self.reporter is not None:
             self.reporter.warning(self.warn_msg % language_code)
-            language = ''
-        return language
+        return ''
+
+    def get_language(self):
+        """Return `self.language` (for backwards compatibility with Sphinx).
+        """
+        return self.language
 
 
 # Building blocks for the latex preamble
@@ -1429,6 +1430,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
             table[ord(' ')] = ur'~'
         if self.literal:
             # double quotes are 'active' in some languages
+            # TODO: use \textquotedbl if font encoding starts with T?
             table[ord('"')] = self.babel.literal_double_quote
         # Unicode chars:
         table.update(unsupported_unicode_chars)
@@ -2276,7 +2278,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         language_tags = [cls for cls in classes
                          if cls.startswith('language-')]
         if language_tags:
-            language = self.babel.get_language(language_tags[0][9:])
+            language = self.babel.language_name(language_tags[0][9:])
             if language:
                 self.babel.otherlanguages[language] = True
                 self.out.append(r'\otherlanguage{%s}{' % language)

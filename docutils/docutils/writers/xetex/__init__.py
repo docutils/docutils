@@ -104,7 +104,7 @@ class Babel(latex2e.Babel):
     def __init__(self, language_code, reporter):
         self.language_code = language_code
         self.reporter = reporter
-        self.language = self.get_language(language_code)
+        self.language = self.language_name(language_code)
         self.otherlanguages = {}
         self.warn_msg = 'Language "%s" not supported by XeTeX (polyglossia).'
         self.quote_index = 0
@@ -132,9 +132,9 @@ class XeLaTeXTranslator(latex2e.LaTeXTranslator):
             self.requirements['_inputenc'] = (r'\XeTeXinputencoding %s '
                                               % self.latex_encoding)
 
-    # XeTeX does not know the length unit px
-    # Use \pdfpxdimen, the macro to set the value of 1 px in pdftex
-    # this way, configuring works the same for pdftex and xetex.
+    # XeTeX does not know the length unit px.
+    # Use \pdfpxdimen, the macro to set the value of 1 px in pdftex.
+    # This way, configuring works the same for pdftex and xetex.
     def to_latex_length(self, length_str, px=r'\pdfpxdimen'):
         """Convert string with rst lenght to LaTeX length"""
         return latex2e.LaTeXTranslator.to_latex_length(self, length_str, px)
