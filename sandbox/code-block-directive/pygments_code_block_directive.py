@@ -21,7 +21,7 @@
 #            (misnamed as docutils_formatter) as class DocutilsInterface
 # 2007-06-08 Failsave implementation (fallback to a standard literal block
 #            if pygments not found)
-# 2010-11-27 Rename directive and class from "code-block" to "code".
+# 2010-11-27 Rename directive from "code-block" to "code".
 #            Fix fallback if pygments not found.
 #            Use class-based interface.
 #            Add "number-lines" option.
