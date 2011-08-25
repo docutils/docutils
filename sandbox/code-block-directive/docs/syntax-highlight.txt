@@ -5,13 +5,13 @@ Syntax Highlight
 
 :Author:    Günter Milde
 :Contact:   milde@users.berlios.de
-:Date: 	    $Date$
+:Date:      $Date$
 :Copyright: © 2007, 2009 G. Milde,
             Released  without warranties or conditions of any kind
             under the terms of the Apache License, Version 2.0
             http://www.apache.org/licenses/LICENSE-2.0
 :Abstract:  Proposal to add syntax highlight of code blocks to the
-	    capabilities of Docutils_.
+            capabilities of Docutils_.
 
 .. sectnum::
 .. contents::
@@ -34,6 +34,9 @@ David Goodger:
 
 __ http://sourceforge.net/mailarchive/message.php?msg_id=12921194
 
+Some older ideas are gathered in Docutils TODO_ document.
+
+.. _TODO: ../../../docutils/docs/dev/todo.html#colorize-python
 
 State of the art
 ----------------
@@ -48,14 +51,11 @@ SilverCity_,
 __ http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/252170
 
 `listings`_,
-  a LaTeX package providing highly customisable and advanced syntax
-  highlight, though only for LaTeX (and LaTeX derived PS|PDF).
-
   Since Docutils 0.5, the "latex2e" writer supports syntax highlight of
-  literal blocks by `listings` with the ``--literal-block-env=lstlistings``
-  option. You need to provide a custom style sheet. The stylesheets_
-  repository provides two LaTeX style sheets for highlighting literal-blocks
-  with "listings".
+  literal blocks via the `listings` package with the
+  ``--literal-block-env=lstlistings`` option. You need to provide a custom
+  style sheet. The stylesheets_ repository provides two LaTeX style sheets
+  for highlighting literal-blocks with "listings".
 
 Trac_
   has `reStructuredText support`__ and offers syntax highlighting with
@@ -136,9 +136,9 @@ Disadvantages:
 
 Point 1 and 2 lead to the `code-block directive proposal`_.
 
-Point 3 becomes an issue in literate programming where a code block is
-the most used block markup. It is addressed in the proposal for a
-`configurable literal block directive`_).
+Point 3 becomes an issue in software documentation and literate programming
+where a code block is the most used block markup. It is addressed in the
+proposal for a `configurable literal block directive`_).
 
 
 `code-block` directive proposal
@@ -148,38 +148,50 @@ Syntax
 """"""
 
 .. note:: This is the first draft for a reStructuredText definition,
-   	  analogue to other directives in ``directives.txt``.
+          analogue to other directives in ``directives.txt``.
 
-:Directive Type: "code-block"
+:Directive Type: "code"
 :Doctree Element: literal_block
-:Directive Arguments: One (`language`) or more (class names), optional.
-:Directive Options: None.
+:Directive Arguments: One (`language`), optional.
+:Directive Options: name, class.
 :Directive Content: Becomes the body of the literal block.
 
 The "code-block" directive constructs a literal block where the content is
-parsed as source code and syntax highlight rules for `language` are
-applied. If syntax rules for `language` are not known to Docutils, it
-is rendered like an ordinary literal block.
+parsed as source code and syntax highlight rules for `language` are applied.
+If syntax rules for `language` are not known to Docutils, a warning is
+issued and the content is rendered as ordinary literal block with
+additional class arguments: "code" and the value of `language`.
 
-Example:
-  A bit of Python code ::
+Example::
+  The Python code snippet ::
 
-   .. code-block:: python
+   .. code:: python
 
     def my_function():
         "just a test"
         print 8/2
 
-  The directive content will be parsed and marked up as Python source
-  code. The actual rendering depends on the style-sheet.
+  will be parsed and marked up as Python source code. The actual rendering
+  depends on the style-sheet.
 
 Remarks:
 
-* If the language argument is missing, a (configurable) default language
-  should be used.
+* Without language argument, the parsing step is skipped. Use cases:
+
+  * Mark a literal block as pseudo-code.
+
+  * Suppress warnings about a missing Pygments_ module or unknown languages.
+
+  * Do the parsing in the writer or output processor (e.g. LaTeX with
+    the listings_ package).
+
+  The language's name can be given as `class` option.
+  
+  Alternative: 
+    make the `language` argument compulsory and add a "no-parsing" option.
 
 * Additional arguments might be defined and passed to the pygments_
-  parser or the output document (as class arguments), e.g.
+  parser.
 
   :number-lines: let pygments include line-numbers
 
@@ -192,6 +204,13 @@ The include directive should get a matching new option:
 code: language
   The entire included text is inserted into the document as if it were the
   content of a code-block directive (useful for program listings).
+
+Code Role
+"""""""""
+
+For inline code snippets, a `code` role should be implemented. Roles for
+specific languages might be defined via the `role` directive based on the
+generic `code` role.
 
 Implementation
 """"""""""""""
@@ -210,7 +229,7 @@ directive.
 * The ``DocutilsInterface`` class uses pygments to parse the content of the
   directive and classify the tokens using short CSS class names identical to
   pygments HTML output. If pygments is not available, the unparsed code is
-  returned.
+  returned. TODO: issue a warning.
 
 * The ``code_block_directive`` function inserts the tokens in a "rich"
   <literal_block> element with "classified" <inline> nodes.
@@ -222,7 +241,7 @@ The writers can use the class information in the <inline> elements to render
 the tokens. They should ignore the class information if they are unable to
 use it or to pass it on.
 
-Running the test script `<../tools/test_pygments_code_block_directive.py>`_ 
+Running the test script `<../tools/test_pygments_code_block_directive.py>`_
 produces example output for a set of writers.
 
 HTML
@@ -230,7 +249,7 @@ HTML
 
   * The rst2html-highlight_ front end registers the "code-block" directive and
     converts an input file to html.
-    
+
   * Styling is done with the adapted CSS style sheet `pygments-default.css`_
     based on docutils' default stylesheet and the output of
     ``pygmentize -S default -f html``.
@@ -263,11 +282,8 @@ LaTeX
   and corresponding PDF like `<myfunction.py.pdf>`_.
 
 OpenOffice
-  The sandbox project `odtwriter` provided syntax highlight with
-  pygments but used a different syntax and implementation.
-
-  (What is the status of the `odtwriter` now included in the
-  standard distribution?)
+  The `odtwriter` provides syntax highlight with pygments but uses a
+  different syntax and implementation.
 
 
 TODO
@@ -283,7 +299,6 @@ TODO
    * provide a LaTeX style.
 
 2. Write functional test case and sample.
-
 
 3. Think about an interface for pygments' options (like "encoding" or
    "linenumbers").
