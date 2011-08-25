@@ -17,6 +17,18 @@
 Changes Since 0.8
 =================
 
+* General:
+
+  - Fix [ 3364658 ] (Change last file with Apache license to BSD-2-Clause)
+    and [ 3395920 ] (correct copyright info for rst.el). 
+  
+* docutils/test/
+
+  -  Apply [ 3303733 ] and [ 3365041 ] to fix tests under py3k. 
+
+* docutils/writers/latex2e/__init__.py
+
+  - Clean up Babel language setting. Restores Sphinx compatibility.
 
 Release 0.8 (2011-07-07)
 ========================
