@@ -1,15 +1,25 @@
-<document source="/home/milde/.python/PyLit/trunk/rstdocs/features/myfunction.py.txt">
-    <decoration>
-        <footer>
-            <paragraph>
-                Generated on: 2007-06-05.
+<document source="/home/milde/Code/Python/docutils-svn/sandbox/code-block-directive/docs/myfunction.py.txt">
     <paragraph>
-        This is a test of the new code-block directive:
+        This is a test of the new "code" directive:
     <comment xml:space="preserve">
         Translate this document to HTML with a pygments enhanced frontend, e.g.
         
-        rst2html-highlight --stylesheet=pygments-default.css --link-stylesheet
-    <literal_block classes="code-block python" raw_content="[u'def my_function():', u'    "just a test"', u'    print 8/2']" xml:space="preserve">
+        ../rst2html-highlight.py --stylesheet=../data/pygments-default.css
+        
+        ../rst2latex-highlight.py --stylesheet=../data/pygments-docutilsroles.sty
+        
+        ../rst2pseudoxml-highlight.py
+    <paragraph>
+        The example from Docutils TODO list:
+    <literal_block classes="code pythonsi" xml:space="preserve">
+        print 'This is Python code.'
+           for i in range(10):
+               print i
+    <paragraph>
+        Another example:
+    <literal_block classes="code python silly" ids="my-function" names="my-function" xml:space="preserve">
+        <inline classes="ln">
+             7 
         <inline classes="k">
             def
          
@@ -18,10 +28,31 @@
         <inline classes="p">
             ():
         
+        <inline classes="ln">
+             8 
             
-        <inline classes="s">
-            "just a test"
+        <inline classes="sd">
+            """Test the lexer.
+        <inline classes="ln">
+             9 
+        <inline classes="sd">
+            
+        <inline classes="ln">
+            10 
+        <inline classes="sd">
+                just a test"""
         
+        <inline classes="ln">
+            11 
+        
+        <inline classes="ln">
+            12 
+            
+        <inline classes="c">
+            # and now for something completely different
+        
+        <inline classes="ln">
+            13 
             
         <inline classes="k">
             print
@@ -32,4 +63,5 @@
             /
         <inline classes="mi">
             2
-        
+    <paragraph>
+        The end.

@@ -43,13 +43,6 @@ State of the art
 
 There are already docutils extensions providing syntax colouring, e.g:
 
-SilverCity_,
-  a C++ library and Python extension that can provide lexical
-  analysis for over 20 different programming languages. A recipe__ for a
-  "code-block" directive provides syntax highlight by SilverCity.
-
-__ http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/252170
-
 `listings`_,
   Since Docutils 0.5, the "latex2e" writer supports syntax highlight of
   literal blocks via the `listings` package with the
@@ -57,11 +50,20 @@ __ http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/252170
   style sheet. The stylesheets_ repository provides two LaTeX style sheets
   for highlighting literal-blocks with "listings".
 
-Trac_
-  has `reStructuredText support`__ and offers syntax highlighting with
-  a "code-block" directive using GNU Enscript_, SilverCity_, or Pygments_.
+Odtwriter_, experimental writer for Docutils OpenOffice export supports syntax
+  colours using Pygments_. See also the (outdated) section `Odtwriter syntax`_.
 
-__ http://trac.edgewall.org/wiki/WikiRestructuredText
+Pygments_
+  is a generic syntax highlighter written completely in Python.
+
+  * Usable as a command-line tool and as a Python package.
+  * Supports about 200 `languages and markup formats`_ (version 1.4).
+  * Already used by the odtwriter_ and Sphinx.
+  * Support for new languages, formats, and styles is added easily (modular
+    structure, Python code, existing documentation).
+  * Well documented and actively maintained.
+  * The web site provides a recipe for `using Pygments in ReST documents`_
+    (used in the legacy `Pygments enhanced docutils front-ends`_).
 
 rest2web_,
   the "site builder" provides the `colorize`__ macro (using the
@@ -69,6 +71,12 @@ rest2web_,
 
 __ http://www.voidspace.org.uk/python/rest2web/macros.html#colorize
 
+SilverCity_,
+  a C++ library and Python extension that can provide lexical
+  analysis for over 20 different programming languages. A recipe__ for a
+  "code-block" directive provides syntax highlight by SilverCity.
+
+__ http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/252170
 
 Sphinx_
   features automatic highlighting using the Pygments_ highlighter.
@@ -80,23 +88,12 @@ Sphinx_
 
   (see http://sphinx.pocoo.org/markup/code.html).
 
-Pygments_
-  is a generic syntax highlighter written completely in Python.
+Trac_
+  has `reStructuredText support`__ and offers syntax highlighting with
+  a "code-block" directive using GNU Enscript_, SilverCity_, or Pygments_.
 
-  * Usable as a command-line tool and as a Python package.
-  * A wide range of common `languages and markup formats`_ is supported.
-  * Additionally, OpenOffice's ``*.odt`` is supported by the odtwriter_.
-  * The layout is configurable by style sheets.
-  * Several built-in styles and an option for line-numbering.
-  * Built-in output formats include HTML, LaTeX, rtf
-  * Support for new languages, formats, and styles is added easily (modular
-    structure, Python code, existing documentation).
-  * Well documented and actively maintained.
-  * The web site provides a recipe for `using Pygments in ReST documents`_.
-    It is used in the `Pygments enhanced docutils front-ends`_ below.
+__ http://trac.edgewall.org/wiki/WikiRestructuredText
 
-Odtwriter_, experimental writer for Docutils OpenOffice export supports syntax
-  colours using Pygments_. (See the (outdated) section `Odtwriter syntax`_.)
 
 Summary
 """""""
@@ -153,7 +150,7 @@ Syntax
 :Directive Type: "code"
 :Doctree Element: literal_block
 :Directive Arguments: One (`language`), optional.
-:Directive Options: name, class.
+:Directive Options: name, class, number-lines.
 :Directive Content: Becomes the body of the literal block.
 
 The "code-block" directive constructs a literal block where the content is
@@ -162,8 +159,19 @@ If syntax rules for `language` are not known to Docutils, a warning is
 issued and the content is rendered as ordinary literal block with
 additional class arguments: "code" and the value of `language`.
 
+  :number-lines: let pygments include line-numbers
+
+
+The following options are recognized:
+
+``number-lines`` : [start line number]
+    Precede every code line with a line number.
+    The optional argument is the number of the first line (defaut 1).
+
+and the common options `:class:`_ and `:name:`_.
+
 Example::
-  The Python code snippet ::
+  The content of the following directive ::
 
    .. code:: python
 
@@ -171,10 +179,12 @@ Example::
         "just a test"
         print 8/2
 
-  will be parsed and marked up as Python source code. The actual rendering
+  is parsed and marked up as Python source code. The actual rendering
   depends on the style-sheet.
 
-Remarks:
+
+Remarks
+"""""""
 
 * Without language argument, the parsing step is skipped. Use cases:
 
@@ -186,14 +196,13 @@ Remarks:
     the listings_ package).
 
   The language's name can be given as `class` option.
-  
-  Alternative: 
-    make the `language` argument compulsory and add a "no-parsing" option.
 
-* Additional arguments might be defined and passed to the pygments_
-  parser.
+  Alternative:
+    make the `language` argument compulsory and add a "no-highlight" option.
 
-  :number-lines: let pygments include line-numbers
+* TODO: Pygments_ provides filters like VisibleWhitespaceFilter
+  add options to use them?
+
 
 
 Include directive option

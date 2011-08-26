@@ -19,7 +19,7 @@ A front end to docutils, producing LaTeX with syntax colouring using pygments
 
 Generates LaTeX documents from standalone reStructuredText sources. Uses the
 `Pygments` syntax highlighter to parse and mark up the content of ``..
-code-block::` directives. Needs an adapted stylesheet.
+code::` directives. Needs an adapted stylesheet.
 """
 
 # Requirements
@@ -36,7 +36,7 @@ except:
 from docutils.core import publish_cmdline, default_description
 
 # `<pygments_code_block_directive.py>`_ defines and registers a new
-# directive `code-block` that uses the `Pygments`_ syntax highlighter to
+# directive `code` that uses the `Pygments`_ syntax highlighter to
 # render code in color::
 
 import pygments_code_block_directive

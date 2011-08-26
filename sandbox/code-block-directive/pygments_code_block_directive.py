@@ -37,6 +37,7 @@
 
 from docutils import nodes
 from docutils.parsers.rst import directives, Directive
+from docutils.parsers.rst.roles import set_classes
 try:
     import pygments
     from pygments.lexers import get_lexer_by_name
@@ -45,54 +46,62 @@ try:
 except ImportError:
     with_pygments = False
 
-
 # Customisation
 # -------------
 #
 # Do not insert inline nodes for the following tokens.
 # (You could add e.g. Token.Punctuation like ``['', 'p']``.) ::
 
-unstyled_tokens = ['']
+unstyled_tokens = [''] # Token.Text
 
-# Tokenizer
-# -----------------
+# Lexer
+# ---------
 #
 # This interface class combines code from
 # pygments.formatters.html and pygments.formatters.others.
 
-class Tokenizer(object):
-    """Parse `code` string and yield "classified" tokens.
+class Lexer(object):
+    """Parse `code` lines and yield "classified" tokens.
 
     Arguments
 
-      code     -- string of source code to parse
+      code     -- list of source code lines to parse
       language -- formal language the code is written in.
 
     Merge subsequent tokens of the same token-type.
 
-    Yields the tokens as ``(ttype_class, value)`` tuples,
-    where ttype_class is taken from pygments.token.STANDARD_TYPES and
-    corresponds to the class argument used in pygments html output.
+    Iterating over an instance yields the tokens as ``(ttype_class, value)``
+    tuples, where `ttype_class` is taken from pygments.token.STANDARD_TYPES
+    and corresponds to the class argument used in pygments html output.
     """
 
     def __init__(self, code, language):
+        """
+        Set up a lexical analyzer for `code` in `language`.
+        """
         self.code = code
         self.language = language
-
-    def lex(self):
-        # Get lexer for language (use text as fallback)
+        self.lexer = None
+        # get lexical analyzer for `language`:
+        if language in ('', 'text'):
+            return
+        if not with_pygments:
+            raise ApplicationError('Cannot highlight code. '
+                                    'Pygments package not found.')
         try:
-            lexer = get_lexer_by_name(self.language)
-        except ValueError:
-            # info: 'no pygments lexer for %s, using "text"' % self.language
-            lexer = get_lexer_by_name('text')
-        return pygments.lex(self.code, lexer)
+            self.lexer = get_lexer_by_name(self.language)
+        except pygments.util.ClassNotFound:
+            raise ApplicationError('Cannot highlight code. '
+                'No Pygments lexer found for "%s".' % language)
 
+    # Since version 1.2. (released Jan 01, 2010) Pygments has a 
+    # TokenMergeFilter. ``self.merge(tokens)`` in __iter__ can be 
+    # replaced by ``self.lexer.add_filter('tokenmerge')`` in __init__.
 
-    def join(self, tokens):
-        """Join subsequent tokens of same token-type.
+    def merge(self, tokens):
+        """Merge subsequent tokens of same token-type.
 
-        Also, leave out the final '\n' (added by pygments).
+        Also strip the final '\n' (added by pygments).
         """
         tokens = iter(tokens)
         (lasttype, lastval) = tokens.next()
@@ -106,34 +115,46 @@ class Tokenizer(object):
             yield(lasttype, lastval)
 
     def __iter__(self):
-        """parse code string and yield "classified" tokens
+        """Parse self.code and yield "classified" tokens
         """
-        tokens = self.lex()
-        for ttype, value in self.join(tokens):
-            # yield (ttype, value)
-            yield (_get_ttype_class(ttype), value)
+        codestring = u'\n'.join(self.code)
+        if self.lexer is None:
+            yield [('', codestring)]
+            return
+        tokens = pygments.lex(codestring, self.lexer)
+        for ttype, value in self.merge(tokens):
+            # yield (ttype, value)  # token type objects
+            yield (_get_ttype_class(ttype), value) # short name strings
 
 
 class NumberLines(object):
-    """Insert linenumber-tokens in front of every newline
+    """Insert linenumber-tokens in front of every newline.
+    
+    Arguments
+    
+       tokens    -- iterable of ``(ttype_class, value)`` tuples
+       startline -- first line number
+       endline   -- last line number
 
-    Nontrivial, as we need to weave these into the possibly
-    multi-line tokens from pygments.
-    """
+    Iterating over an instance yields the tokens preceded by
+    a ``('ln', '<line number>')`` token for every line.
+    Multi-line tokens from pygments are splitted. """
 
-    def __init__(self, tokens, startline, fmt_str):
+    def __init__(self, tokens, startline, endline):
         self.tokens = tokens
-        self.lineno = startline
-        self.fmt_str = fmt_str
+        self.startline = startline
+        # pad linenumbers, e.g. endline == 100 -> fmt_str = '%3d '
+        self.fmt_str = '%%%dd ' % len(str(endline))
 
     def __iter__(self):
-        yield ('ln', self.fmt_str % self.lineno)
+        lineno = self.startline
+        yield ('ln', self.fmt_str % lineno)
         for ttype, value in self.tokens:
             lines = value.split('\n')
             for line in lines[:-1]:
                 yield (ttype, line + '\n')
-                self.lineno += 1
-                yield ('ln', self.fmt_str % self.lineno)
+                lineno += 1
+                yield ('ln', self.fmt_str % lineno)
             yield (ttype, lines[-1])
 
 
@@ -144,51 +165,54 @@ class NumberLines(object):
 class CodeBlock(Directive):
     """Parse and mark up content of a code block.
     """
-    required_arguments = 1
+    optional_arguments = 1
     option_spec = {'class': directives.class_option,
-                   'number-lines': directives.unchanged
+                   'name': directives.unchanged,
+                   'number-lines': directives.unchanged # integer or None
                   }
     has_content = True
 
     def run(self):
-        language = self.arguments[0]
-        # Process number-lines with optional argument `startline`
-        startline = self.options.get('number-lines', '1')
-        try:
-            startline = int(startline or 1) # default to 1 for empty str
-        except ValueError:
-            raise self.error(
-                ':number-lines: option with non-integer start value')
         self.assert_has_content()
-
-        # create a literal block element and set class argument
-        code_block = nodes.literal_block(classes=['code', language]
-                                        + self.options['class'])
-
-        # iterator returning code tokens
-        if with_pygments:
-            tokens = Tokenizer(u'\n'.join(self.content), language)
+        if self.arguments:
+            language = self.arguments[0]
         else:
-            # TODO: warning or info?
-            self.warning('Cannot highlight code, Pygments lexer not found.')
-            tokens = [('', u'\n'.join(self.content))]
+            language = ''
+        set_classes(self.options)
+        classes = ['code', language]
+        if 'classes' in self.options:
+            classes.extend(self.options['classes'])
+            
+        # TODO: config setting to skip lexical analysis: 
+        ## if document.settings.no_highlight:
+        ##      language = ''
+
+        # set up lexical analyzer
+        tokens = Lexer(self.content, language)
 
         if 'number-lines' in self.options:
-            # pad linenumbers, e.g. endline == 100 -> fmt_str = '%3d '
+            # optional argument `startline`, defaults to 1
+            try: 
+                startline = int(self.options['number-lines'] or 1)
+            except ValueError:
+                raise self.error(':number-lines: with non-integer start value')
             endline = startline + len(self.content)
-            fmt_str = "%%%dd " % len(str(endline))
-            # print startline, '...', endline, repr(fmt_str)
-            tokens = NumberLines(tokens, startline, fmt_str)
+            # add linenumber filter:
+            tokens = NumberLines(tokens, startline, endline)
 
-        # parse content with pygments and add to code_block element
+        node = nodes.literal_block('\n'.join(self.content), classes=classes)
+        self.add_name(node)
+        
+        # analyze content and add nodes for every token
         for cls, value in tokens:
+            # print (cls, value)
             if cls in unstyled_tokens:
                 # insert as Text to decrease the verbosity of the output.
-                code_block += nodes.Text(value, value)
+                node += nodes.Text(value, value)
             else:
-                code_block += nodes.inline(value, value, classes=[cls])
+                node += nodes.inline(value, value, classes=[cls])
 
-        return [code_block]
+        return [node]
 
 
 # Register Directive
@@ -220,5 +244,5 @@ if __name__ == '__main__':
     # Uncomment the desired output format:
     # publish_cmdline(writer_name='pseudoxml', description=description)
     # publish_cmdline(writer_name='xml', description=description)
-    publish_cmdline(writer_name='html', description=description)
-    # publish_cmdline(writer_name='latex', description=description)
+    # publish_cmdline(writer_name='html', description=description)
+    publish_cmdline(writer_name='latex', description=description)
