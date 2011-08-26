@@ -3,29 +3,29 @@
 
 # rst2html-highlight
 # ==================
-#
+# 
 # Docutils front-end with syntax highlight.
-#
+# 
 # :Author: David Goodger, Georg Brandl, Günter Milde
 # :Date: $Date: 2008-05-22 08:42:52 +0200 (Do, 22. Mai 2008) $
 # :Copyright: This module has been placed in the public domain.
-#
+# 
 # This is a merge of the docutils_ `rst2html` front end with an extension
-# suggestion taken from the pygments_ documentation.
-#
+# suggestion by Felix Wiemann.
+# 
 # ::
 
 """
 A front end to docutils, producing HTML with syntax colouring using pygments
 
 Generates (X)HTML documents from standalone reStructuredText sources. Uses
-`pygments` to parse and mark up the content of ``.. code-block::` directives.
+`pygments` to parse and mark up the content of ``.. code::` directives.
 Needs an adapted stylesheet
 """
 
 # Requirements
 # ------------
-#
+# 
 # ::
 
 try:
@@ -37,7 +37,7 @@ except:
 from docutils.core import publish_cmdline, default_description
 
 # The `pygments_code_block_directive`_ module defines and registers a new
-# directive `code-block` that uses the `pygments`_ source highlighter to
+# directive `code` that uses the `pygments`_ source highlighter to
 # render code in color::
 
 import pygments_code_block_directive
