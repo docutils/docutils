@@ -481,11 +481,10 @@ function stage_3()
     set_ver "$new_ver" "$svn_ver"
     echo
     echo 'Please update the web page now (web/index.txt).'
+    echo 'cd into sandbox/infrastructure'
+    echo 'and call docutils-update.local (requires linux, macosx cp misses something)'
     echo "Press enter when you're done."
     read
-    echo 'Running docutils-update on the server...'
-    echo 'This may take some time.'
-    confirm ssh shell.berlios.de docutils-update
 }
 
 initialize "$@"
