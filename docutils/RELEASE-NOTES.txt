@@ -18,8 +18,8 @@ more detailed list of changes, please see the `Docutils History`_.
 .. contents::
 
 
-Changes Since 0.8
-=================
+Release 0.8.1 (2011-08-30)
+==========================
 
 
 Release 0.8 (2011-07-07)
