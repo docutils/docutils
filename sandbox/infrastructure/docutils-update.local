@@ -190,7 +190,10 @@ for htmlfile in `find .. -name '*.html'` ; do
     dir=`dirname $htmlfile`
     base=`basename $htmlfile .html`
     txtfile=$dir/$base.txt
-    if [ -e $txtfile ] ; then
+    if [ "$base" == "standalone_rst_html4strict" ] ; then
+        # breaks web update
+        echo "skipped: $dir $base"
+    elif [ -e $txtfile ] ; then
         if [ $unconditional -eq 1 -o $txtfile -nt $htmlfile ] ; then
             if [ "${base:0:4}" == "pep-" ] ; then
                 test $feedback && echo "$txtfile (PEP)" || true
@@ -198,7 +201,7 @@ for htmlfile in `find .. -name '*.html'` ; do
                 haschanges=1
             else
                 test $feedback && echo $txtfile || true
-                python $lib/tools/rst2html.py --config=$dir/docutils.conf $txtfile $htmlfile
+                python $lib/tools/rst2html.py --halt=5 --config=$dir/docutils.conf $txtfile $htmlfile
                 haschanges=1
             fi
         fi
