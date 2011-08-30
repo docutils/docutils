@@ -201,7 +201,7 @@ for htmlfile in `find .. -name '*.html'` ; do
                 haschanges=1
             else
                 test $feedback && echo $txtfile || true
-                python $lib/tools/rst2html.py --halt=5 --config=$dir/docutils.conf $txtfile $htmlfile
+                python $lib/tools/rst2html.py --config=$dir/docutils.conf $txtfile $htmlfile
                 haschanges=1
             fi
         fi
