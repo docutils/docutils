@@ -37,6 +37,11 @@ For details see the script.
 ``new_version`` is the current version, status will change from ``repository`` to 
 ``release``. ``svn_version`` is the version after release.
 
+.. Note:: *BUG* The script requires that all supported python2-versions are installed.
+
+.. Note:: *BUG* test tarball requires root password, but it is possible to skip
+   this stage interactively, and testing should be done before release.
+
 * Change ``__version_details__`` in docutils/docutils/__init__.py to
   "release" (from "repository").
 
@@ -111,40 +116,18 @@ For details see the script.
       tar -xjvf ~/docutils-docs.tar.bz2
       rm ~/docutils-docs.tar.bz2
 
-* Upload the release tarball::
-
-      $ ftp upload.sourceforge.net
-      Connected to osdn.dl.sourceforge.net.
-      ...
-      Name (upload.sourceforge.net:david): anonymous
-      331 Anonymous login ok, send your complete e-mail address as password.
-      Password:
-      ...
-      230 Anonymous access granted, restrictions apply.
-      ftp> bin
-      200 Type set to I.
-      ftp> cd /incoming
-      250 CWD command successful.
-      ftp> put docutils-X.Y.Z.tar.gz
+* Upload the release tarball, release.sh tries with scp.
 
 * Access the _`file release system` on SourceForge (Admin
   interface).  
 
-  Not found 2009-10-11 for release 0.6.
+  ``https://sourceforge.net/projects/docutils/files/docutils/``
+ 
+  * change into the released version's directory 
+  * click ``(i)`` button of the tar.gz-file
+  * select as default download for all operating systems.
 
-  Fill in the fields:
-
-      :Package ID:      docutils
-      :Release Name:    <use release number only, e.g. 0.3>
-      :Release Date:    <today's date>
-      :Status:          Active
-      :File Name:       <select the file just uploaded>
-      :File Type:       Source .gz
-      :Processor Type:  Platform-Independent
-      :Release Notes:   <insert README.txt file here>
-      :Change Log:      <insert current release notes here>
-
-      Also check the "Preserve my pre-formatted text" box.
+* Submit a notification on project news.
 
 * For verifying the integrity of the release, download the release
   tarball (you may need to wait up to 30 minutes), install_ it, and
