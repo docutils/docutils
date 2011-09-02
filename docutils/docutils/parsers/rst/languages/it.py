@@ -19,6 +19,7 @@ __docformat__ = 'reStructuredText'
 directives = {
       'attenzione': 'attention',
       'cautela': 'caution',
+      'code (translation required)': 'code',
       'pericolo': 'danger',
       'errore': 'error',
       'suggerimento': 'hint',
@@ -73,6 +74,7 @@ mapping."""
 roles = {
       'abbreviazione': 'abbreviation',
       'acronimo': 'acronym',
+      u'code (translation required)': 'code',
       'indice': 'index',
       'deponente': 'subscript',
       'esponente': 'superscript',

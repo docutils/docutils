@@ -19,6 +19,7 @@ directives = {
       # language-dependent: fixed
       u'atentu': 'attention',
       u'zorgu': 'caution',
+      u'code (translation required)': 'code',
       u'dangxero': 'danger',
       u'dan\u011dero': 'danger',
       u'eraro': 'error',
@@ -82,6 +83,7 @@ roles = {
     u'mall': 'abbreviation',
     u'komenclitero': 'acronym',
     u'kl': 'acronym',
+    u'code (translation required)': 'code',
     u'indekso': 'index',
     u'i': 'index',
     u'subskribo': 'subscript',

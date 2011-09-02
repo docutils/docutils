@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # $Id$
 # Author: Asko Soukka <asko.soukka@iki.fi>
 # Copyright: This module has been placed in the public domain.
@@ -19,6 +20,7 @@ directives = {
       # language-dependent: fixed
       u'huomio': u'attention',
       u'varo': u'caution',
+      u'code (translation required)': 'code',
       u'vaara': u'danger',
       u'virhe': u'error',
       u'vihje': u'hint',
@@ -70,6 +72,7 @@ roles = {
     u'lyhennys': u'abbreviation',
     u'akronyymi': u'acronym',
     u'kirjainsana': u'acronym',
+    u'code (translation required)': 'code',
     u'hakemisto': u'index',
     u'luettelo': u'index',
     u'alaindeksi': u'subscript',

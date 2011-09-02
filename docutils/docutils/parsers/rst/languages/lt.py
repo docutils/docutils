@@ -20,6 +20,7 @@ directives = {
       # language-dependent: fixed
       u'dėmesio': 'attention',
       u'atsargiai': 'caution',
+      u'code (translation required)': 'code',
       u'pavojinga': 'danger',
       u'klaida': 'error',
       u'užuomina': 'hint',
@@ -76,6 +77,7 @@ roles = {
     'sa': 'abbreviation',
     'akronimas': 'acronym',
     'ak': 'acronym',
+    u'code (translation required)': 'code',
     'indeksas': 'index',
     'i': 'index',
     u'apatinis-indeksas': 'subscript',

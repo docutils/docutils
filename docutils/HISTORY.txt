@@ -17,6 +17,16 @@
 Changes Since 0.8.1
 ===================
 
+* General:
+
+  - reStructuredText "code" role and directive with syntax highlighting
+    by Pygments_.
+
+.. _Pygments: http://pygments.org/
+
+* docutils/writers/latex2e/__init__.py
+
+  - Support the `abbreviation` and `acronym` standard roles.
 
 Release 0.8.1 (2011-08-30)
 ==========================

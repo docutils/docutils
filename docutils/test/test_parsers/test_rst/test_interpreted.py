@@ -9,9 +9,12 @@ Tests for interpreted text in docutils/parsers/rst/states.py.
 """
 
 from __init__ import DocutilsTestSupport
+from docutils.parsers.code_analyzer import with_pygments
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()
+    if not with_pygments:
+        del(totest['code-parsing'])
     s.generateTests(totest)
     return s
 
@@ -210,6 +213,80 @@ Simple explicit roles:
         ,
         <title_reference>
             title reference
+        .
+"""],
+]
+
+totest['code'] = [
+["""\
+Code role for inline code snippets:
+:code:`$\alpha = \int_0^\infty f(x) dx$`.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Code role for inline code snippets:
+        <literal classes="code">
+            $\x07lpha = \\int_0^\\infty f(x) dx$
+        .
+"""],
+]
+
+totest['code-parsing'] = [
+["""\
+.. role:: tex(code)
+   :language: latex
+
+Custom role based on code role:
+:tex:`$\alpha = f(x)$`.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Custom role based on code role:
+        <literal classes="code latex tex">
+            <inline classes="s">
+                $
+            <inline classes="nb">
+                \x07lpha \n\
+            <inline classes="o">
+                =
+            <inline classes="nb">
+                 f
+            <inline classes="o">
+                (
+            <inline classes="nb">
+                x
+            <inline classes="o">
+                )
+            <inline classes="s">
+                $
+        .
+"""],
+["""\
+Custom role based on code role:
+
+.. role:: python(code)
+   :language: python
+   :class: testclass
+
+Python code :python:`print("The end")`.
+""",
+"""\
+<document source="test data">
+    <paragraph>
+        Custom role based on code role:
+    <paragraph>
+        Python code \n\
+        <literal classes="code python testclass">
+            <inline classes="k">
+                print
+            <inline classes="p">
+                (
+            <inline classes="s">
+                "The end"
+            <inline classes="p">
+                )
         .
 """],
 ]

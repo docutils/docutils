@@ -383,8 +383,13 @@ _`record_dependencies`
     Default: None.  Option: ``--record-dependencies``.
 
 _`report_level`
-    Verbosity threshold at or above which system messages are
-    reported.
+    Report system messages at or higher than <level>:
+
+    1  info
+    2  warning
+    3  error
+    4  severe
+    5  none
 
     Default: warning (2).  Options: ``--report, -r, --verbose, -v,
     --quiet, -q``.
@@ -551,6 +556,30 @@ _`trim_footnote_reference_space`
     --leave-footnote-reference-space``.
 
 __ `footnote_references [latex2e writer]`_
+
+
+_`syntax_highlight`
+
+    Token type names used by Pygments_ when parsing contents of the code_
+    directive and role.
+
+    Supported values:
+
+    long
+      Use hierarchy of long token type names.
+    short
+      Use short token type names. (For use with
+      `Pygments-generated stylesheets`_.)
+    none
+      No code parsing. Use this to avoid the "Pygments not
+      found" warning when Pygments is not installed.
+
+    Default: "short".  Option: ``--syntax-highlight``.
+
+.. _Pygments: http://pygments.org/
+.. _code: ../ref/rst/directives.html#code
+.. _Pygments-generated stylesheets:
+   http://pygments.org/docs/cmdline/#generating-styles
 
 
 [readers]

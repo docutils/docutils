@@ -131,7 +131,12 @@ class Parser(docutils.parsers.Parser):
            'validator': frontend.validate_boolean}),
          ('Enable the "raw" directive.  Enabled by default.',
           ['--raw-enabled'],
-          {'action': 'store_true'}),))
+          {'action': 'store_true'}),
+         ('Token name set for parsing code with Pygments: one of '
+          '"long", "short", or "none (no parsing)". Default is "short".',
+          ['--syntax-highlight'],
+          {'choices': ['long', 'short', 'none'],
+           'default': 'short', 'metavar': '<format>'}),))
 
     config_section = 'restructuredtext parser'
     config_section_dependencies = ('parsers',)

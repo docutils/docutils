@@ -20,6 +20,7 @@ directives = {
       # language-dependent: fixed
       u'注意': 'attention',
       u'小心': 'caution',
+      u'code (translation required)': 'code',
       u'危险': 'danger',
       u'错误': 'error',
       u'提示': 'hint',
@@ -73,6 +74,7 @@ roles = {
     # language-dependent: fixed
     u'缩写': 'abbreviation',
     u'简称': 'acronym',
+    u'code (translation required)': 'code',
     u'index (translation required)': 'index',
     u'i (translation required)': 'index',
     u'下标': 'subscript',

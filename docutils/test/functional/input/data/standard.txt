@@ -121,9 +121,10 @@ __ http://docutils.sourceforge.net/
 
 The default role for interpreted text is `Title Reference`.  Here are
 some explicit interpreted text roles: a PEP reference (:PEP:`287`); an
-RFC reference (:RFC:`2822`); a :sub:`subscript`; a :sup:`superscript`;
-and explicit roles for :emphasis:`standard` :strong:`inline`
-:literal:`markup`.
+RFC reference (:RFC:`2822`); an abbreviation (:ab:`abb.`), an acronym
+(:ac:`reST`), code (:code:`print "hello world"`); a :sub:`subscript`;
+a :sup:`superscript` and explicit roles for :title:`Docutils`'
+:emphasis:`standard` :strong:`inline` :literal:`markup`.
 
 .. DO NOT RE-WRAP THE FOLLOWING PARAGRAPH!
 
@@ -753,6 +754,41 @@ Parsed Literal Blocks
    Inline markup is supported, e.g. *emphasis*, **strong**, ``literal
    text``, footnotes [1]_, _`hyperlink targets`, and `references
    <http://www.python.org/>`_.
+
+Code
+````
+
+Blocks of source code can be set with the `code` directive. If the
+code language is specified, the content is parsed and tagged by the
+Pygments_ syntax highlighter and can be formatted with a style sheet:
+
+.. code:: python
+
+  print 'This is Python code.'
+
+There is an option for line numbers with optional start value:
+
+.. code:: python
+  :number-lines: 8
+
+  # print integers from 0 to 9:
+  for i in range(10):
+      print i
+
+For inline code snippets, there is the `code` role, which can be used
+directly (the code will not be parsed/tagged, as the language is not
+known) or as base for special code roles, e.g.,
+
+.. role:: tex(code)
+   :language: latex
+
+..
+
+  Docutils uses LaTeX syntax for math directives and roles:
+  :tex:`\alpha = f(x)` prints :math:`\alpha = f(x)`.
+
+.. _Pygments: http://pygments.org/
+
 
 Substitution Definitions
 ------------------------
