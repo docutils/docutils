@@ -93,250 +93,256 @@
         <bullet_list classes="auto-toc">
             <list_item>
                 <paragraph>
-                    <reference ids="id32" refid="structural-elements">
+                    <reference ids="id34" refid="structural-elements">
                         <generated classes="sectnum">
                             1   
                         Structural Elements
                 <bullet_list classes="auto-toc">
                     <list_item>
                         <paragraph>
-                            <reference ids="id33" refid="section-title">
+                            <reference ids="id35" refid="section-title">
                                 <generated classes="sectnum">
                                     1.1   
                                 Section Title
                     <list_item>
                         <paragraph>
-                            <reference ids="id34" refid="empty-section">
+                            <reference ids="id36" refid="empty-section">
                                 <generated classes="sectnum">
                                     1.2   
                                 Empty Section
                     <list_item>
                         <paragraph>
-                            <reference ids="id35" refid="transitions">
+                            <reference ids="id37" refid="transitions">
                                 <generated classes="sectnum">
                                     1.3   
                                 Transitions
             <list_item>
                 <paragraph>
-                    <reference ids="id36" refid="body-elements">
+                    <reference ids="id38" refid="body-elements">
                         <generated classes="sectnum">
                             2   
                         Body Elements
                 <bullet_list classes="auto-toc">
                     <list_item>
                         <paragraph>
-                            <reference ids="id37" refid="paragraphs">
+                            <reference ids="id39" refid="paragraphs">
                                 <generated classes="sectnum">
                                     2.1   
                                 Paragraphs
                         <bullet_list classes="auto-toc">
                             <list_item>
                                 <paragraph>
-                                    <reference ids="id38" refid="inline-markup">
+                                    <reference ids="id40" refid="inline-markup">
                                         <generated classes="sectnum">
                                             2.1.1   
                                         Inline Markup
                     <list_item>
                         <paragraph>
-                            <reference ids="id39" refid="bullet-lists">
+                            <reference ids="id41" refid="bullet-lists">
                                 <generated classes="sectnum">
                                     2.2   
                                 Bullet Lists
                     <list_item>
                         <paragraph>
-                            <reference ids="id40" refid="enumerated-lists">
+                            <reference ids="id42" refid="enumerated-lists">
                                 <generated classes="sectnum">
                                     2.3   
                                 Enumerated Lists
                     <list_item>
                         <paragraph>
-                            <reference ids="id41" refid="definition-lists">
+                            <reference ids="id43" refid="definition-lists">
                                 <generated classes="sectnum">
                                     2.4   
                                 Definition Lists
                     <list_item>
                         <paragraph>
-                            <reference ids="id42" refid="field-lists">
+                            <reference ids="id44" refid="field-lists">
                                 <generated classes="sectnum">
                                     2.5   
                                 Field Lists
                     <list_item>
                         <paragraph>
-                            <reference ids="id43" refid="option-lists">
+                            <reference ids="id45" refid="option-lists">
                                 <generated classes="sectnum">
                                     2.6   
                                 Option Lists
                     <list_item>
                         <paragraph>
-                            <reference ids="id44" refid="literal-blocks">
+                            <reference ids="id46" refid="literal-blocks">
                                 <generated classes="sectnum">
                                     2.7   
                                 Literal Blocks
                     <list_item>
                         <paragraph>
-                            <reference ids="id45" refid="line-blocks">
+                            <reference ids="id47" refid="line-blocks">
                                 <generated classes="sectnum">
                                     2.8   
                                 Line Blocks
                     <list_item>
                         <paragraph>
-                            <reference ids="id46" refid="block-quotes">
+                            <reference ids="id48" refid="block-quotes">
                                 <generated classes="sectnum">
                                     2.9   
                                 Block Quotes
                     <list_item>
                         <paragraph>
-                            <reference ids="id47" refid="doctest-blocks">
+                            <reference ids="id49" refid="doctest-blocks">
                                 <generated classes="sectnum">
                                     2.10   
                                 Doctest Blocks
                     <list_item>
                         <paragraph>
-                            <reference ids="id48" refid="footnotes">
+                            <reference ids="id50" refid="footnotes">
                                 <generated classes="sectnum">
                                     2.11   
                                 Footnotes
                     <list_item>
                         <paragraph>
-                            <reference ids="id49" refid="citations">
+                            <reference ids="id51" refid="citations">
                                 <generated classes="sectnum">
                                     2.12   
                                 Citations
                     <list_item>
                         <paragraph>
-                            <reference ids="id50" refid="targets">
+                            <reference ids="id52" refid="targets">
                                 <generated classes="sectnum">
                                     2.13   
                                 Targets
                         <bullet_list classes="auto-toc">
                             <list_item>
                                 <paragraph>
-                                    <reference ids="id51" refid="duplicate-target-names">
+                                    <reference ids="id53" refid="duplicate-target-names">
                                         <generated classes="sectnum">
                                             2.13.1   
                                         Duplicate Target Names
                             <list_item>
                                 <paragraph>
-                                    <reference ids="id52" refid="id21">
+                                    <reference ids="id54" refid="id21">
                                         <generated classes="sectnum">
                                             2.13.2   
                                         Duplicate Target Names
                     <list_item>
                         <paragraph>
-                            <reference ids="id53" refid="directives">
+                            <reference ids="id55" refid="directives">
                                 <generated classes="sectnum">
                                     2.14   
                                 Directives
                         <bullet_list classes="auto-toc">
                             <list_item>
                                 <paragraph>
-                                    <reference ids="id54" refid="document-parts">
+                                    <reference ids="id56" refid="document-parts">
                                         <generated classes="sectnum">
                                             2.14.1   
                                         Document Parts
                             <list_item>
                                 <paragraph>
-                                    <reference ids="id55" refid="images-and-figures">
+                                    <reference ids="id57" refid="images-and-figures">
                                         <generated classes="sectnum">
                                             2.14.2   
                                         Images and Figures
                             <list_item>
                                 <paragraph>
-                                    <reference ids="id56" refid="admonitions">
+                                    <reference ids="id58" refid="admonitions">
                                         <generated classes="sectnum">
                                             2.14.3   
                                         Admonitions
                             <list_item>
                                 <paragraph>
-                                    <reference ids="id57" refid="topics-sidebars-and-rubrics">
+                                    <reference ids="id59" refid="topics-sidebars-and-rubrics">
                                         <generated classes="sectnum">
                                             2.14.4   
                                         Topics, Sidebars, and Rubrics
                             <list_item>
                                 <paragraph>
-                                    <reference ids="id58" refid="target-footnotes">
+                                    <reference ids="id60" refid="target-footnotes">
                                         <generated classes="sectnum">
                                             2.14.5   
                                         Target Footnotes
                             <list_item>
                                 <paragraph>
-                                    <reference ids="id59" refid="replacement-text">
+                                    <reference ids="id61" refid="replacement-text">
                                         <generated classes="sectnum">
                                             2.14.6   
                                         Replacement Text
                             <list_item>
                                 <paragraph>
-                                    <reference ids="id60" refid="compound-paragraph">
+                                    <reference ids="id62" refid="compound-paragraph">
                                         <generated classes="sectnum">
                                             2.14.7   
                                         Compound Paragraph
                             <list_item>
                                 <paragraph>
-                                    <reference ids="id61" refid="parsed-literal-blocks">
+                                    <reference ids="id63" refid="parsed-literal-blocks">
                                         <generated classes="sectnum">
                                             2.14.8   
                                         Parsed Literal Blocks
+                            <list_item>
+                                <paragraph>
+                                    <reference ids="id64" refid="code">
+                                        <generated classes="sectnum">
+                                            2.14.9   
+                                        Code
                     <list_item>
                         <paragraph>
-                            <reference ids="id62" refid="substitution-definitions">
+                            <reference ids="id65" refid="substitution-definitions">
                                 <generated classes="sectnum">
                                     2.15   
                                 Substitution Definitions
                     <list_item>
                         <paragraph>
-                            <reference ids="id63" refid="comments">
+                            <reference ids="id66" refid="comments">
                                 <generated classes="sectnum">
                                     2.16   
                                 Comments
                     <list_item>
                         <paragraph>
-                            <reference ids="id64" refid="raw-text">
+                            <reference ids="id67" refid="raw-text">
                                 <generated classes="sectnum">
                                     2.17   
                                 Raw text
                     <list_item>
                         <paragraph>
-                            <reference ids="id65" refid="container">
+                            <reference ids="id68" refid="container">
                                 <generated classes="sectnum">
                                     2.18   
                                 Container
                     <list_item>
                         <paragraph>
-                            <reference ids="id66" refid="colspanning-tables">
+                            <reference ids="id69" refid="colspanning-tables">
                                 <generated classes="sectnum">
                                     2.19   
                                 Colspanning tables
                     <list_item>
                         <paragraph>
-                            <reference ids="id67" refid="rowspanning-tables">
+                            <reference ids="id70" refid="rowspanning-tables">
                                 <generated classes="sectnum">
                                     2.20   
                                 Rowspanning tables
                     <list_item>
                         <paragraph>
-                            <reference ids="id68" refid="complex-tables">
+                            <reference ids="id71" refid="complex-tables">
                                 <generated classes="sectnum">
                                     2.21   
                                 Complex tables
                     <list_item>
                         <paragraph>
-                            <reference ids="id69" refid="list-tables">
+                            <reference ids="id72" refid="list-tables">
                                 <generated classes="sectnum">
                                     2.22   
                                 List Tables
             <list_item>
                 <paragraph>
-                    <reference ids="id70" refid="error-handling">
+                    <reference ids="id73" refid="error-handling">
                         <generated classes="sectnum">
                             3   
                         Error Handling
     <section ids="structural-elements" names="structural\ elements">
-        <title auto="1" refid="id32">
+        <title auto="1" refid="id34">
             <generated classes="sectnum">
                 1   
             Structural Elements
         <section ids="section-title" names="section\ title">
-            <title auto="1" refid="id33">
+            <title auto="1" refid="id35">
                 <generated classes="sectnum">
                     1.1   
                 Section Title
@@ -352,12 +358,12 @@
                     sectsubtitle-xform
                  configuration value.
         <section ids="empty-section" names="empty\ section">
-            <title auto="1" refid="id34">
+            <title auto="1" refid="id36">
                 <generated classes="sectnum">
                     1.2   
                 Empty Section
         <section ids="transitions" names="transitions">
-            <title auto="1" refid="id35">
+            <title auto="1" refid="id37">
                 <generated classes="sectnum">
                     1.3   
                 Transitions
@@ -368,19 +374,19 @@
                 It divides the section.  Transitions may also occur between sections:
     <transition>
     <section ids="body-elements" names="body\ elements">
-        <title auto="1" refid="id36">
+        <title auto="1" refid="id38">
             <generated classes="sectnum">
                 2   
             Body Elements
         <section ids="paragraphs" names="paragraphs">
-            <title auto="1" refid="id37">
+            <title auto="1" refid="id39">
                 <generated classes="sectnum">
                     2.1   
                 Paragraphs
             <paragraph>
                 A paragraph.
             <section ids="inline-markup" names="inline\ markup">
-                <title auto="1" refid="id38">
+                <title auto="1" refid="id40">
                     <generated classes="sectnum">
                         2.1.1   
                     Inline Markup
@@ -417,14 +423,14 @@
                         anonymous hyperlink
                         references
                      
-                    <footnote_reference auto="1" ids="id29" refid="id25">
+                    <footnote_reference auto="1" ids="id31" refid="id25">
                         5
                      (
                     <reference anonymous="1" name="a second reference" refuri="http://docutils.sourceforge.net/">
                         a second reference
                      
-                    <footnote_reference auto="1" ids="id31" refid="id30">
-                        6
+                    <footnote_reference auto="1" ids="id33" refid="id32">
+                        7
                     ), footnote references (manually
                     numbered 
                     <footnote_reference ids="id1" refid="id8">
@@ -485,20 +491,33 @@
                     RFC reference (
                     <reference refuri="http://www.faqs.org/rfcs/rfc2822.html">
                         RFC 2822
+                    ); an abbreviation (
+                    <abbreviation>
+                        abb.
+                    ), an acronym
+                    (
+                    <acronym>
+                        reST
+                    ), code (
+                    <literal classes="code">
+                        print "hello world"
                     ); a 
                     <subscript>
                         subscript
-                    ; a 
+                    ;
+                    a 
                     <superscript>
                         superscript
-                    ;
-                    and explicit roles for 
+                     and explicit roles for 
+                    <title_reference>
+                        Docutils
+                    '
                     <emphasis>
                         standard
                      
                     <strong>
                         inline
-                    
+                     
                     <literal>
                         markup
                     .
@@ -519,7 +538,7 @@
                      option was supplied, there should be a
                     live link to PEP 258 here.
         <section ids="bullet-lists" names="bullet\ lists">
-            <title auto="1" refid="id39">
+            <title auto="1" refid="id41">
                 <generated classes="sectnum">
                     2.2   
                 Bullet Lists
@@ -563,7 +582,7 @@
                             <comment xml:space="preserve">
                                 Even if this item contains a target and a comment.
         <section ids="enumerated-lists" names="enumerated\ lists">
-            <title auto="1" refid="id40">
+            <title auto="1" refid="id42">
                 <generated classes="sectnum">
                     2.3   
                 Enumerated Lists
@@ -612,7 +631,7 @@
                             <paragraph>
                                 iv
         <section ids="definition-lists" names="definition\ lists">
-            <title auto="1" refid="id41">
+            <title auto="1" refid="id43">
                 <generated classes="sectnum">
                     2.4   
                 Definition Lists
@@ -650,7 +669,7 @@
                         <paragraph>
                             Definition
         <section ids="field-lists" names="field\ lists">
-            <title auto="1" refid="id42">
+            <title auto="1" refid="id44">
                 <generated classes="sectnum">
                     2.5   
                 Field Lists
@@ -684,7 +703,7 @@
                             about credits but just for ensuring that the class attribute
                             doesn't get stripped away.)
         <section ids="option-lists" names="option\ lists">
-            <title auto="1" refid="id43">
+            <title auto="1" refid="id45">
                 <generated classes="sectnum">
                     2.6   
                 Option Lists
@@ -797,7 +816,7 @@
                 There must be at least two spaces between the option and the
                 description.
         <section ids="literal-blocks" names="literal\ blocks">
-            <title auto="1" refid="id44">
+            <title auto="1" refid="id46">
                 <generated classes="sectnum">
                     2.7   
                 Literal Blocks
@@ -819,7 +838,7 @@
                 >
                 > Why didn't I think of that?
         <section ids="line-blocks" names="line\ blocks">
-            <title auto="1" refid="id45">
+            <title auto="1" refid="id47">
                 <generated classes="sectnum">
                     2.8   
                 Line Blocks
@@ -922,7 +941,7 @@
                     w.
                 <line>
         <section ids="block-quotes" names="block\ quotes">
-            <title auto="1" refid="id46">
+            <title auto="1" refid="id48">
                 <generated classes="sectnum">
                     2.9   
                 Block Quotes
@@ -946,7 +965,7 @@
                     ReStructuredText est un langage de balisage léger utilisé
                     notamment dans la documentation du langage Python.
         <section ids="doctest-blocks" names="doctest\ blocks">
-            <title auto="1" refid="id47">
+            <title auto="1" refid="id49">
                 <generated classes="sectnum">
                     2.10   
                 Doctest Blocks
@@ -956,7 +975,7 @@
                 >>> print '(cut and pasted from interactive Python sessions)'
                 (cut and pasted from interactive Python sessions)
         <section ids="footnotes" names="footnotes">
-            <title auto="1" refid="id48">
+            <title auto="1" refid="id50">
                 <generated classes="sectnum">
                     2.11   
                 Footnotes
@@ -1016,11 +1035,11 @@
                 <paragraph>
                     Here's an unreferenced footnote, with a reference to a
                     nonexistent footnote: 
-                    <problematic ids="id80 id17" refid="id79">
+                    <problematic ids="id84 id17" refid="id83">
                         [5]_
                     .
         <section ids="citations" names="citations">
-            <title auto="1" refid="id49">
+            <title auto="1" refid="id51">
                 <generated classes="sectnum">
                     2.12   
                 Citations
@@ -1035,13 +1054,13 @@
                 <citation_reference ids="id18" refid="cit2002">
                     CIT2002
                 , and a 
-                <problematic ids="id82 id19" refid="id81">
+                <problematic ids="id86 id19" refid="id85">
                     [nonexistent]_
                 
                 citation.
             <target refid="another-target">
         <section ids="targets another-target" names="targets another\ target">
-            <title auto="1" refid="id50">
+            <title auto="1" refid="id52">
                 <generated classes="sectnum">
                     2.13   
                 Targets
@@ -1086,12 +1105,12 @@
             <target anonymous="1" ids="id20" refid="targets">
             <paragraph>
                 Here's a 
-                <problematic ids="id84" refid="id83">
+                <problematic ids="id88" refid="id87">
                     `hyperlink reference without a target`_
                 , which generates an
                 error.
             <section dupnames="duplicate\ target\ names" ids="duplicate-target-names">
-                <title auto="1" refid="id51">
+                <title auto="1" refid="id53">
                     <generated classes="sectnum">
                         2.13.1   
                     Duplicate Target Names
@@ -1100,7 +1119,7 @@
                     generate "info" (level-1) system messages.  Duplicate names in
                     explicit targets will generate "warning" (level-2) system messages.
             <section dupnames="duplicate\ target\ names" ids="id21">
-                <title auto="1" refid="id52">
+                <title auto="1" refid="id54">
                     <generated classes="sectnum">
                         2.13.2   
                     Duplicate Target Names
@@ -1108,11 +1127,11 @@
                     Since there are two "Duplicate Target Names" section headers, we
                     cannot uniquely refer to either of them by name.  If we try to (like
                     this: 
-                    <problematic ids="id86" refid="id85">
+                    <problematic ids="id90" refid="id89">
                         `Duplicate Target Names`_
                     ), an error is generated.
         <section ids="directives" names="directives">
-            <title auto="1" refid="id53">
+            <title auto="1" refid="id55">
                 <generated classes="sectnum">
                     2.14   
                 Directives
@@ -1120,52 +1139,58 @@
                 <bullet_list classes="auto-toc">
                     <list_item>
                         <paragraph>
-                            <reference ids="id71" refid="document-parts">
+                            <reference ids="id74" refid="document-parts">
                                 <generated classes="sectnum">
                                     2.14.1   
                                 Document Parts
                     <list_item>
                         <paragraph>
-                            <reference ids="id72" refid="images-and-figures">
+                            <reference ids="id75" refid="images-and-figures">
                                 <generated classes="sectnum">
                                     2.14.2   
                                 Images and Figures
                     <list_item>
                         <paragraph>
-                            <reference ids="id73" refid="admonitions">
+                            <reference ids="id76" refid="admonitions">
                                 <generated classes="sectnum">
                                     2.14.3   
                                 Admonitions
                     <list_item>
                         <paragraph>
-                            <reference ids="id74" refid="topics-sidebars-and-rubrics">
+                            <reference ids="id77" refid="topics-sidebars-and-rubrics">
                                 <generated classes="sectnum">
                                     2.14.4   
                                 Topics, Sidebars, and Rubrics
                     <list_item>
                         <paragraph>
-                            <reference ids="id75" refid="target-footnotes">
+                            <reference ids="id78" refid="target-footnotes">
                                 <generated classes="sectnum">
                                     2.14.5   
                                 Target Footnotes
                     <list_item>
                         <paragraph>
-                            <reference ids="id76" refid="replacement-text">
+                            <reference ids="id79" refid="replacement-text">
                                 <generated classes="sectnum">
                                     2.14.6   
                                 Replacement Text
                     <list_item>
                         <paragraph>
-                            <reference ids="id77" refid="compound-paragraph">
+                            <reference ids="id80" refid="compound-paragraph">
                                 <generated classes="sectnum">
                                     2.14.7   
                                 Compound Paragraph
                     <list_item>
                         <paragraph>
-                            <reference ids="id78" refid="parsed-literal-blocks">
+                            <reference ids="id81" refid="parsed-literal-blocks">
                                 <generated classes="sectnum">
                                     2.14.8   
                                 Parsed Literal Blocks
+                    <list_item>
+                        <paragraph>
+                            <reference ids="id82" refid="code">
+                                <generated classes="sectnum">
+                                    2.14.9   
+                                Code
             <paragraph>
                 These are just a sample of the many reStructuredText Directives.  For
                 others, please see
@@ -1173,7 +1198,7 @@
                     http://docutils.sourceforge.net/docs/ref/rst/directives.html
                 .
             <section ids="document-parts" names="document\ parts">
-                <title auto="1" refid="id71">
+                <title auto="1" refid="id74">
                     <generated classes="sectnum">
                         2.14.1   
                     Document Parts
@@ -1188,7 +1213,7 @@
                         table of contents
                     ).
             <section ids="images-and-figures" names="images\ and\ figures">
-                <title auto="1" refid="id72">
+                <title auto="1" refid="id75">
                     <generated classes="sectnum">
                         2.14.2   
                     Images and Figures
@@ -1325,7 +1350,7 @@
                     This paragraph might flow around the figure. The specific behavior depends
                     upon the style sheet and the browser or rendering software used.
             <section ids="admonitions" names="admonitions">
-                <title auto="1" refid="id73">
+                <title auto="1" refid="id76">
                     <generated classes="sectnum">
                         2.14.3   
                     Admonitions
@@ -1375,7 +1400,7 @@
                         You can make up your own admonition too.
                     <target ids="docutils" names="docutils" refuri="http://docutils.sourceforge.net/">
             <section ids="topics-sidebars-and-rubrics" names="topics,\ sidebars,\ and\ rubrics">
-                <title auto="1" refid="id74">
+                <title auto="1" refid="id77">
                     <generated classes="sectnum">
                         2.14.4   
                     Topics, Sidebars, and Rubrics
@@ -1422,24 +1447,30 @@
                      is not
                     allowed (e.g. inside a directive).
             <section ids="target-footnotes" names="target\ footnotes">
-                <title auto="1" refid="id75">
+                <title auto="1" refid="id78">
                     <generated classes="sectnum">
                         2.14.5   
                     Target Footnotes
-                <footnote auto="1" backrefs="id26 id27 id28 id29" ids="id25" names="TARGET_NOTE:\ id25">
+                <footnote auto="1" backrefs="id26 id27 id28 id31" ids="id25" names="TARGET_NOTE:\ id25">
                     <label>
                         5
                     <paragraph>
                         <reference refuri="http://www.python.org/">
                             http://www.python.org/
-                <footnote auto="1" backrefs="id31" ids="id30" names="TARGET_NOTE:\ id30">
+                <footnote auto="1" backrefs="id30" ids="id29" names="TARGET_NOTE:\ id29">
                     <label>
                         6
+                    <paragraph>
+                        <reference refuri="http://pygments.org/">
+                            http://pygments.org/
+                <footnote auto="1" backrefs="id33" ids="id32" names="TARGET_NOTE:\ id32">
+                    <label>
+                        7
                     <paragraph>
                         <reference refuri="http://docutils.sourceforge.net/">
                             http://docutils.sourceforge.net/
             <section ids="replacement-text" names="replacement\ text">
-                <title auto="1" refid="id76">
+                <title auto="1" refid="id79">
                     <generated classes="sectnum">
                         2.14.6   
                     Replacement Text
@@ -1460,7 +1491,7 @@
                         the
                      best language around
             <section ids="compound-paragraph" names="compound\ paragraph">
-                <title auto="1" refid="id77">
+                <title auto="1" refid="id80">
                     <generated classes="sectnum">
                         2.14.7   
                     Compound Paragraph
@@ -1546,7 +1577,7 @@
                     <paragraph>
                         Compound 7, another paragraph.
             <section ids="parsed-literal-blocks" names="parsed\ literal\ blocks">
-                <title auto="1" refid="id78">
+                <title auto="1" refid="id81">
                     <generated classes="sectnum">
                         2.14.8   
                     Parsed Literal Blocks
@@ -1575,8 +1606,87 @@
                         references
                     <target ids="references" names="references" refuri="http://www.python.org/">
                     .
+            <section ids="code" names="code">
+                <title auto="1" refid="id82">
+                    <generated classes="sectnum">
+                        2.14.9   
+                    Code
+                <paragraph>
+                    Blocks of source code can be set with the 
+                    <title_reference>
+                        code
+                     directive. If the
+                    code language is specified, the content is parsed and tagged by the
+                    <reference name="Pygments" refuri="http://pygments.org/">
+                        Pygments
+                     
+                    <footnote_reference auto="1" ids="id30" refid="id29">
+                        6
+                     syntax highlighter and can be formatted with a style sheet:
+                <literal_block classes="code python" xml:space="preserve">
+                    <inline classes="k">
+                        print
+                     
+                    <inline classes="s">
+                        'This is Python code.'
+                <paragraph>
+                    There is an option for line numbers with optional start value:
+                <literal_block classes="code python" xml:space="preserve">
+                    <inline classes="ln">
+                         8 
+                    <inline classes="c">
+                        # print integers from 0 to 9:
+                    
+                    <inline classes="ln">
+                         9 
+                    <inline classes="k">
+                        for
+                     
+                    <inline classes="n">
+                        i
+                     
+                    <inline classes="ow">
+                        in
+                     
+                    <inline classes="nb">
+                        range
+                    <inline classes="p">
+                        (
+                    <inline classes="mi">
+                        10
+                    <inline classes="p">
+                        ):
+                    
+                    <inline classes="ln">
+                        10 
+                        
+                    <inline classes="k">
+                        print
+                     
+                    <inline classes="n">
+                        i
+                <paragraph>
+                    For inline code snippets, there is the 
+                    <title_reference>
+                        code
+                     role, which can be used
+                    directly (the code will not be parsed/tagged, as the language is not
+                    known) or as base for special code roles, e.g.,
+                <comment xml:space="preserve">
+                <block_quote>
+                    <paragraph>
+                        Docutils uses LaTeX syntax for math directives and roles:
+                        <literal classes="code latex tex">
+                            <inline classes="k">
+                                \alpha
+                             = f(x)
+                         prints 
+                        <math>
+                            \alpha = f(x)
+                        .
+                <target ids="pygments" names="pygments" refuri="http://pygments.org/">
         <section ids="substitution-definitions" names="substitution\ definitions">
-            <title auto="1" refid="id62">
+            <title auto="1" refid="id65">
                 <generated classes="sectnum">
                     2.15   
                 Substitution Definitions
@@ -1589,7 +1699,7 @@
             <paragraph>
                 (Substitution definitions are not visible in the HTML source.)
         <section ids="comments" names="comments">
-            <title auto="1" refid="id63">
+            <title auto="1" refid="id66">
                 <generated classes="sectnum">
                     2.16   
                 Comments
@@ -1606,7 +1716,7 @@
             <paragraph>
                 (View the HTML source to see the comment.)
         <section ids="raw-text" names="raw\ text">
-            <title auto="1" refid="id64">
+            <title auto="1" refid="id67">
                 <generated classes="sectnum">
                     2.17   
                 Raw text
@@ -1630,7 +1740,7 @@
             <raw format="latex" xml:space="preserve">
                 Fifth test in LaTeX.\\Line two.
         <section ids="container" names="container">
-            <title auto="1" refid="id65">
+            <title auto="1" refid="id68">
                 <generated classes="sectnum">
                     2.18   
                 Container
@@ -1640,7 +1750,7 @@
                 <paragraph>
                     paragraph 2
         <section ids="colspanning-tables" names="colspanning\ tables">
-            <title auto="1" refid="id66">
+            <title auto="1" refid="id69">
                 <generated classes="sectnum">
                     2.19   
                 Colspanning tables
@@ -1711,7 +1821,7 @@
                                 <paragraph>
                                     True
         <section ids="rowspanning-tables" names="rowspanning\ tables">
-            <title auto="1" refid="id67">
+            <title auto="1" refid="id70">
                 <generated classes="sectnum">
                     2.20   
                 Rowspanning tables
@@ -1763,7 +1873,7 @@
                                 <paragraph>
                                     body row 3
         <section ids="complex-tables" names="complex\ tables">
-            <title auto="1" refid="id68">
+            <title auto="1" refid="id71">
                 <generated classes="sectnum">
                     2.21   
                 Complex tables
@@ -1848,7 +1958,7 @@
                                         -->
                             <entry>
         <section ids="list-tables" names="list\ tables">
-            <title auto="1" refid="id69">
+            <title auto="1" refid="id72">
                 <generated classes="sectnum">
                     2.22   
                 List Tables
@@ -1905,7 +2015,7 @@
                                 <paragraph>
                                     On a stick!
     <section ids="error-handling" names="error\ handling">
-        <title auto="1" refid="id70">
+        <title auto="1" refid="id73">
             <generated classes="sectnum">
                 3   
             Error Handling
@@ -1922,15 +2032,15 @@
         <system_message backrefs="id24" ids="id23" level="3" line="104" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Undefined substitution referenced: "problematic".
-        <system_message backrefs="id80" ids="id79" level="3" line="390" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id84" ids="id83" level="3" line="391" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Unknown target name: "5".
-        <system_message backrefs="id82" ids="id81" level="3" line="399" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id86" ids="id85" level="3" line="400" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Unknown target name: "nonexistent".
-        <system_message backrefs="id84" ids="id83" level="3" line="426" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id88" ids="id87" level="3" line="427" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Unknown target name: "hyperlink reference without a target".
-        <system_message backrefs="id86" ids="id85" level="3" line="439" source="functional/input/data/standard.txt" type="ERROR">
+        <system_message backrefs="id90" ids="id89" level="3" line="440" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Duplicate target name, cannot be used as a unique reference: "duplicate target names".

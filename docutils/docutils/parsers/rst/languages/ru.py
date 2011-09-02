@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # $Id$
 # Author: Roman Suzi <rnd@onego.ru>
 # Copyright: This module has been placed in the public domain.
@@ -14,14 +15,16 @@ reStructuredText.
 
 __docformat__ = 'reStructuredText'
 
+# TODO: use utf-8 encoded literal Cyrillic characters
 directives = {
  u'\u0431\u043b\u043e\u043a-\u0441\u0442\u0440\u043e\u043a': u'line-block',
  u'meta': u'meta',
-      'math (translation required)': 'math',
+ u'math (translation required)': 'math',
  u'\u043e\u0431\u0440\u0430\u0431\u043e\u0442\u0430\u043d\u043d\u044b\u0439-\u043b\u0438\u0442\u0435\u0440\u0430\u043b':
  u'parsed-literal',
  u'\u0432\u044b\u0434\u0435\u043b\u0435\u043d\u043d\u0430\u044f-\u0446\u0438\u0442\u0430\u0442\u0430':
  u'pull-quote',
+ u'code (translation required)': 'code',
  u'compound (translation required)': 'compound',
  u'container (translation required)': 'container',
  u'table (translation required)': 'table',
@@ -72,6 +75,7 @@ mapping."""
 
 roles = {
  u'\u0430\u043a\u0440\u043e\u043d\u0438\u043c': 'acronym',
+ u'code (translation required)': 'code',
  u'\u0430\u043d\u043e\u043d\u0438\u043c\u043d\u0430\u044f-\u0441\u0441\u044b\u043b\u043a\u0430':
   'anonymous-reference',
  u'\u0431\u0443\u043a\u0432\u0430\u043b\u044c\u043d\u043e': 'literal',

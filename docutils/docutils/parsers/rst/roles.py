@@ -75,6 +75,7 @@ __docformat__ = 'reStructuredText'
 from docutils import nodes, utils
 from docutils.parsers.rst import directives
 from docutils.parsers.rst.languages import en as _fallback_language_module
+from docutils.parsers.code_analyzer import Lexer, LexerError
 
 DEFAULT_INTERPRETED_ROLE = 'title-reference'
 """
@@ -313,6 +314,41 @@ def raw_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
 raw_role.options = {'format': directives.unchanged}
 
 register_canonical_role('raw', raw_role)
+
+def code_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
+    set_classes(options)
+    language = options.get('language', '')
+    classes = ['code']
+    if language:
+        classes.append(language)
+    if 'classes' in options:
+        classes.extend(options['classes'])
+
+    try:
+        tokens = Lexer([utils.unescape(text, 1)], language,
+                       inliner.document.settings.syntax_highlight)
+    except LexerError, error:
+        msg = inliner.reporter.warning(error)
+        prb = inliner.problematic(rawtext, rawtext, msg)
+        return [prb], [msg]
+
+    node = nodes.literal(rawtext, '', classes=classes)
+
+    # analyze content and add nodes for every token
+    for classes, value in tokens:
+        # print (classes, value)
+        if classes:
+            node += nodes.inline(value, value, classes=classes)
+        else:
+            # insert as Text to decrease the verbosity of the output
+            node += nodes.Text(value, value)
+
+    return [node], []
+
+code_role.options = {'class': directives.class_option,
+                     'language': directives.unchanged}
+
+register_canonical_role('code', code_role)
 
 def math_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     i = rawtext.find('`')

@@ -18,6 +18,7 @@ __docformat__ = 'reStructuredText'
 directives = {
       u'attention': 'attention',
       u'pr\u00E9caution': 'caution',
+      u'code': 'code',
       u'danger': 'danger',
       u'erreur': 'error',
       u'conseil': 'hint',
@@ -76,6 +77,7 @@ roles = {
       u'abr\u00E9viation': 'abbreviation',
       u'acronyme': 'acronym',
       u'sigle': 'acronym',
+      u'code': 'code',
       u'index': 'index',
       u'indice': 'subscript',
       u'ind': 'subscript',

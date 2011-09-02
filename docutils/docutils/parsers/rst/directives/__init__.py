@@ -17,6 +17,7 @@ from docutils.parsers.rst.languages import en as _fallback_language_module
 _directive_registry = {
       'attention': ('admonitions', 'Attention'),
       'caution': ('admonitions', 'Caution'),
+      'code': ('body', 'CodeBlock'),
       'danger': ('admonitions', 'Danger'),
       'error': ('admonitions', 'Error'),
       'important': ('admonitions', 'Important'),
@@ -222,7 +223,7 @@ def get_measure(argument, units):
     Check for a positive argument of one of the units and return a
     normalized string of the form "<value><unit>" (without space in
     between).
-    
+
     To be called from directive option conversion functions.
     """
     match = re.match(r'^([0-9.]+) *(%s)$' % '|'.join(units), argument)

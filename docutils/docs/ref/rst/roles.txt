@@ -104,6 +104,43 @@ whereas the backslashes in the second line escape the following
 spaces.
 
 
+``:code:``
+==========
+
+:Aliases: None
+:DTD Element: literal
+:Customization:
+    :Options: class_, language
+    :Content: None.
+
+(New in Docutils 0.9.)
+
+The ``code`` role marks its content as code in a formal language.
+
+For syntax highlight of inline code, the `"role" directive`_ can be used to
+build custom roles with the code language specified in the "language"
+option.
+
+For example, the following creates a LaTeX-specific "latex" role::
+
+  .. role:: latex(code)
+     :language: latex
+
+Content of the new role is parsed and tagged by the Pygments_ syntax
+highlighter. See the `code directive`_ for more info on parsing and display
+of code in reStructuredText.
+
+In addition to "class_", the following option is recognized:
+
+``language`` : text
+    Name of the code's language.
+    See `supported languages and markup formats`_ for recognized values.
+
+.. _code directive: directives.html#code
+.. _Pygments: http://pygments.org/
+.. _supported languages and markup formats: http://pygments.org/languages/
+
+
 ``:math:``
 ==========
 
@@ -112,6 +149,8 @@ spaces.
 :Customization:
     :Options: class_
     :Content: None.
+
+(New in Docutils 0.8.)
 
 The ``math`` role marks its content as mathematical notation (inline
 formula).
@@ -123,8 +162,6 @@ The input format is LaTeX math syntax without the “math delimiters“
 
 See the `math directive`_ (producing display formulas) for more info
 on mathematical notation in reStructuredText.
-
-New in Docutils 0.8.
 
 .. _math directive: directives.html#math
 

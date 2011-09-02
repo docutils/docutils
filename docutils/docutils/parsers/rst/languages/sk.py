@@ -18,6 +18,7 @@ __docformat__ = 'reStructuredText'
 directives = {
       u'pozor': 'attention',
       u'opatrne': 'caution',
+      u'code (translation required)': 'code',
       u'nebezpe\xe8enstvo': 'danger',
       u'chyba': 'error',
       u'rada': 'hint',
@@ -71,6 +72,7 @@ mapping."""
 roles = {
       u'abbreviation (translation required)': 'abbreviation',
       u'acronym (translation required)': 'acronym',
+      u'code (translation required)': 'code',
       u'index (translation required)': 'index',
       u'subscript (translation required)': 'subscript',
       u'superscript (translation required)': 'superscript',

@@ -19,6 +19,7 @@ directives = {
       # language-dependent: fixed
       u'pozor': 'attention',
       u'caution (translation required)': 'caution', # jak rozlisit caution a warning?
+      u'code (translation required)': 'code',
       u'nebezpe\u010D\u00ED': 'danger',
       u'chyba': 'error',
       u'rada': 'hint',
@@ -75,6 +76,7 @@ roles = {
     u'ab (translation required)': 'abbreviation',
     u'acronym (translation required)': 'acronym',
     u'ac (translation required)': 'acronym',
+    u'code (translation required)': 'code',
     u'index (translation required)': 'index',
     u'i (translation required)': 'index',
     u'subscript (translation required)': 'subscript',

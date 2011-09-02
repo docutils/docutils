@@ -19,6 +19,7 @@ directives = {
       # language-dependent: fixed
       'attention': 'attention',
       'caution': 'caution',
+      'code': 'code',
       'danger': 'danger',
       'error': 'error',
       'hint': 'hint',
@@ -75,6 +76,7 @@ roles = {
     'ab': 'abbreviation',
     'acronym': 'acronym',
     'ac': 'acronym',
+    'code': 'code',
     'index': 'index',
     'i': 'index',
     'subscript': 'subscript',

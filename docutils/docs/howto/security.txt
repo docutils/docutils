@@ -49,7 +49,7 @@ features can be disabled by setting "file_insertion_enabled_" to
 
 .. _reStructuredText directives: ../ref/rst/directives.html
 .. _include: ../ref/rst/directives.html#include
-.. _raw: ../ref/rst/directives.html#raw
+.. _raw: ../ref/rst/directives.html#raw-directive
 .. _csv-table: ../ref/rst/directives.html#csv-table
 .. _file_insertion_enabled: ../user/config.html#file-insertion-enabled
 

@@ -19,6 +19,7 @@ directives = {
       # language-dependent: fixed
       u'aten\u00E7\u00E3o': 'attention',
       'cuidado': 'caution',
+      u'code (translation required)': 'code',
       'perigo': 'danger',
       'erro': 'error',
       u'sugest\u00E3o': 'hint',
@@ -75,6 +76,7 @@ roles = {
     'ab': 'abbreviation',
     u'acr\u00F4nimo': 'acronym',
     'ac': 'acronym',
+    u'code (translation required)': 'code',
     u'\u00EDndice-remissivo': 'index',
     'i': 'index',
     'subscrito': 'subscript',

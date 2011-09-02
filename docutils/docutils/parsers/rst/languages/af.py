@@ -18,6 +18,7 @@ __docformat__ = 'reStructuredText'
 directives = {
       'aandag': 'attention',
       'versigtig': 'caution',
+      'code (translation required)': 'code',
       'gevaar': 'danger',
       'fout': 'error',
       'wenk': 'hint',
@@ -73,6 +74,7 @@ roles = {
     'ab': 'abbreviation',
     'akroniem': 'acronym',
     'ac': 'acronym',
+    u'code (translation required)': 'code',
     'indeks': 'index',
     'i': 'index',
     'voetskrif': 'subscript',
