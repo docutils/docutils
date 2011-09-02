@@ -1518,6 +1518,20 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def depart_Text(self, node):
         pass
 
+    def visit_abbreviation(self, node):
+        node['classes'].insert(0, 'abbreviation')
+        self.visit_inline(node)
+
+    def depart_abbreviation(self, node):
+        self.depart_inline(node)
+
+    def visit_acronym(self, node):
+        node['classes'].insert(0, 'acronym')
+        self.visit_inline(node)
+
+    def depart_acronym(self, node):
+        self.depart_inline(node)
+
     def visit_address(self, node):
         self.visit_docinfo_item(node, 'address')
 
