@@ -758,9 +758,12 @@ Parsed Literal Blocks
 Code
 ````
 
-Blocks of source code can be set with the `code` directive. If the
-code language is specified, the content is parsed and tagged by the
-Pygments_ syntax highlighter and can be formatted with a style sheet:
+Blocks of source code can be set with the `code` directive. If the code
+language is specified, the content is parsed and tagged by the Pygments_
+syntax highlighter and can be formatted with a style sheet. (Code parsing
+is turned off using the ``syntax-highlight`` config setting in the test
+conversions in order to get identical results with/without installed
+Pygments highlighter.)
 
 .. code:: python
 

@@ -840,17 +840,20 @@ text</tt>, footnotes <a class="footnote-reference" href="#id8" id="id22">[1]</a>
 </div>
 <div class="section" id="code">
 <h3><a class="toc-backref" href="#id85">2.14.9&nbsp;&nbsp;&nbsp;Code</a></h3>
-<p>Blocks of source code can be set with the <cite>code</cite> directive. If the
-code language is specified, the content is parsed and tagged by the
-<a class="reference external" href="http://pygments.org/">Pygments</a> <a class="footnote-reference" href="#id29" id="id30">[6]</a> syntax highlighter and can be formatted with a style sheet:</p>
+<p>Blocks of source code can be set with the <cite>code</cite> directive. If the code
+language is specified, the content is parsed and tagged by the <a class="reference external" href="http://pygments.org/">Pygments</a> <a class="footnote-reference" href="#id29" id="id30">[6]</a>
+syntax highlighter and can be formatted with a style sheet. (Code parsing
+is turned off using the <tt class="docutils literal"><span class="pre">syntax-highlight</span></tt> config setting in the test
+conversions in order to get identical results with/without installed
+Pygments highlighter.)</p>
 <pre class="code python literal-block">
-<span class="k">print</span> <span class="s">'This is Python code.'</span>
+print 'This is Python code.'
 </pre>
 <p>There is an option for line numbers with optional start value:</p>
 <pre class="code python literal-block">
-<span class="l n"> 8 </span><span class="c"># print integers from 0 to 9:</span>
-<span class="ln"> 9 </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
-<span class="ln">10 </span>    <span class="k">print</span> <span class="n">i</span>
+<span class="l n"> 8 </span># print integers from 0 to 9:
+<span class="ln"> 9 </span>for i in range(10):
+<span class="ln">10 </span>    print i
 </pre>
 <p>For inline code snippets, there is the <cite>code</cite> role, which can be used
 directly (the code will not be parsed/tagged, as the language is not
@@ -858,8 +861,7 @@ known) or as base for special code roles, e.g.,</p>
 <!--  -->
 <blockquote>
 Docutils uses LaTeX syntax for math directives and roles:
-<tt class="code latex tex docutils literal">\alpha = f(x)
-</tt> prints <math xmlns="http://www.w3.org/1998/Math/MathML">
+<tt class="code latex tex docutils literal">\alpha = f(x)</tt> prints <math xmlns="http://www.w3.org/1998/Math/MathML">
 <mrow><mi>α</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math>.</blockquote>
 </div>
 </div>

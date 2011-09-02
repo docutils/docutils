@@ -1375,21 +1375,24 @@ text},~footnotes\DUfootnotemark{id22}{id8}{1},~%
   \label{code}%
 }
 
-Blocks of source code can be set with the \DUroletitlereference{code} directive. If the
-code language is specified, the content is parsed and tagged by the
-\href{http://pygments.org/}{Pygments}\DUfootnotemark{id34}{id33}{6} syntax highlighter and can be formatted with a style sheet:
+Blocks of source code can be set with the \DUroletitlereference{code} directive. If the code
+language is specified, the content is parsed and tagged by the \href{http://pygments.org/}{Pygments}\DUfootnotemark{id34}{id33}{6}
+syntax highlighter and can be formatted with a style sheet. (Code parsing
+is turned off using the \texttt{syntax-highlight} config setting in the test
+conversions in order to get identical results with/without installed
+Pygments highlighter.)
 %
 \begin{quote}{\ttfamily \raggedright \noindent
-\DUrole{k}{print}~\DUrole{s}{'This~is~Python~code.'}
+print~'This~is~Python~code.'
 }
 \end{quote}
 
 There is an option for line numbers with optional start value:
 %
 \begin{quote}{\ttfamily \raggedright \noindent
-\DUrole{l}{\DUrole{n}{~8~}}\DUrole{c}{\#~print~integers~from~0~to~9:}~\\
-~\DUrole{ln}{~9~}~\DUrole{k}{for}~\DUrole{n}{i}~\DUrole{ow}{in}~\DUrole{nb}{range}\DUrole{p}{(}\DUrole{mi}{10}\DUrole{p}{):}~\\
-~\DUrole{ln}{10~}~~~~\DUrole{k}{print}~\DUrole{n}{i}
+\DUrole{l}{\DUrole{n}{~8~}}\#~print~integers~from~0~to~9:\\
+~\DUrole{ln}{~9~}for~i~in~range(10):\\
+~\DUrole{ln}{10~}~~~~print~i
 }
 \end{quote}
 
@@ -1402,8 +1405,7 @@ known) or as base for special code roles, e.g.,
 \begin{quote}
 
 Docutils uses LaTeX syntax for math directives and roles:
-\texttt{\DUrole{code}{\DUrole{latex}{\DUrole{tex}{\DUrole{k}{\textbackslash{}alpha} = f(x)
-}}}} prints $\alpha = f(x)$.
+\texttt{\DUrole{code}{\DUrole{latex}{\DUrole{tex}{\textbackslash{}alpha = f(x)}}}} prints $\alpha = f(x)$.
 
 \end{quote}
 

@@ -1615,56 +1615,35 @@
                     Blocks of source code can be set with the 
                     <title_reference>
                         code
-                     directive. If the
-                    code language is specified, the content is parsed and tagged by the
+                     directive. If the code
+                    language is specified, the content is parsed and tagged by the 
                     <reference name="Pygments" refuri="http://pygments.org/">
                         Pygments
                      
                     <footnote_reference auto="1" ids="id30" refid="id29">
                         6
-                     syntax highlighter and can be formatted with a style sheet:
+                    
+                    syntax highlighter and can be formatted with a style sheet. (Code parsing
+                    is turned off using the 
+                    <literal>
+                        syntax-highlight
+                     config setting in the test
+                    conversions in order to get identical results with/without installed
+                    Pygments highlighter.)
                 <literal_block classes="code python" xml:space="preserve">
-                    <inline classes="k">
-                        print
-                     
-                    <inline classes="s">
-                        'This is Python code.'
+                    print 'This is Python code.'
                 <paragraph>
                     There is an option for line numbers with optional start value:
                 <literal_block classes="code python" xml:space="preserve">
                     <inline classes="ln">
                          8 
-                    <inline classes="c">
-                        # print integers from 0 to 9:
-                    
+                    # print integers from 0 to 9:
                     <inline classes="ln">
                          9 
-                    <inline classes="k">
-                        for
-                     
-                    <inline classes="n">
-                        i
-                     
-                    <inline classes="ow">
-                        in
-                     
-                    <inline classes="nb">
-                        range
-                    <inline classes="p">
-                        (
-                    <inline classes="mi">
-                        10
-                    <inline classes="p">
-                        ):
-                    
+                    for i in range(10):
                     <inline classes="ln">
                         10 
-                        
-                    <inline classes="k">
-                        print
-                     
-                    <inline classes="n">
-                        i
+                        print i
                 <paragraph>
                     For inline code snippets, there is the 
                     <title_reference>
@@ -1677,9 +1656,7 @@
                     <paragraph>
                         Docutils uses LaTeX syntax for math directives and roles:
                         <literal classes="code latex tex">
-                            <inline classes="k">
-                                \alpha
-                             = f(x)
+                            \alpha = f(x)
                          prints 
                         <math>
                             \alpha = f(x)
