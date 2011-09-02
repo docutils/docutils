@@ -4,3 +4,4 @@ parser_name = "rst"
 
 # Settings.
 settings_overrides['sectsubtitle_xform'] = 1
+settings_overrides['syntax_highlight'] = 'none'
