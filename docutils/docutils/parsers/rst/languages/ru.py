@@ -18,13 +18,13 @@ __docformat__ = 'reStructuredText'
 directives = {
  u'блок-строк': u'line-block',
  u'meta': u'meta',
- u'math (translation required)': 'math',
+ u'математика': 'math',
  u'обработанный-литерал': u'parsed-literal',
  u'выделенная-цитата': u'pull-quote',
- u'code (translation required)': 'code',
+ u'код': 'code',
  u'compound (translation required)': 'compound',
- u'container (translation required)': 'container',
- u'table (translation required)': 'table',
+ u'контейнер': 'container',
+ u'таблица': 'table',
  u'csv-table (translation required)': 'csv-table',
  u'list-table (translation required)': 'list-table',
  u'сырой': u'raw',
@@ -41,9 +41,9 @@ directives = {
  u'замечание': u'admonition',
  u'изображение': u'image',
  u'класс': u'class',
- u'role (translation required)': 'role',
+ u'роль': 'role',
  u'default-role (translation required)': 'default-role',
- u'title (translation required)': 'title',
+ u'титул': 'title',
  u'номер-раздела': u'sectnum',
  u'нумерация-разделов': u'sectnum',
  u'опасно': u'danger',
@@ -65,10 +65,10 @@ mapping."""
 
 roles = {
  u'акроним': 'acronym',
- u'code (translation required)': 'code',
+ u'код': 'code',
  u'анонимная-ссылка': 'anonymous-reference',
  u'буквально': 'literal',
- u'math (translation required)': 'math',
+ u'математика': 'math',
  u'верхний-индекс': 'superscript',
  u'выделение': 'emphasis',
  u'именованная-ссылка': 'named-reference',
@@ -84,6 +84,6 @@ roles = {
  u'ссылка-на-сноску': 'footnote-reference',
  u'цитатная-ссылка': 'citation-reference',
  u'цель': 'target',
- u'raw (translation required)': 'raw',}
+ u'сырой': 'raw',}
 """Mapping of Russian role names to canonical role names for interpreted text.
 """
