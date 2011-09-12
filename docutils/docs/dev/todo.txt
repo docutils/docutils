@@ -515,6 +515,11 @@ No such mechanism exists in HTML.
       .. figure:: image.png
          :name: figure name
 
+  Improve the mapping of "phrase references" to IDs/labels with
+  Literal transcription (i.e. ü -> ue, ß -> ss, å -> aa) instead of just
+  stripping the accents and other non-ASCII chars.
+  Use http://pypi.python.org/pypi/Unidecode?
+
   A "table" directive has been implemented, supporting table titles.
 
   Perhaps the name could derive from the title/caption?
@@ -750,8 +755,8 @@ Also see the `... Or Not To Do?`__ list.
 
 __ rst/alternatives.html#or-not-to-do
 
-* Recognize unicode whitespace and punctuation.  See
-  <http://thread.gmane.org/gmane.text.docutils.user/2765>.
+Misc
+----
 
 * Allow embedded references and not only embedded URIs: ```link text
   <reference_>`_``; see the second half of
@@ -1121,6 +1126,196 @@ __ rst/alternatives.html#or-not-to-do
 * Generalize docinfo contents (bibliographic fields): remove specific
   fields, and have only a single generic "field"?
 
+Inline markup recognition rules
+-------------------------------
+
+Allow unicode whitespace and punctuation around `inline markup`_. See bug
+http://sourceforge.net/tracker/?func=detail&aid=3402314&group_id=38414&atid=422030
+and the older discussion
+<http://thread.gmane.org/gmane.text.docutils.user/2765>.
+
+The rules are currently *complicated* (rules, exceptions,
+explicite character lists, exceptions of exceptions) and *incomplete*: Many
+non-ASCII characters are missing in the inline markup start-string and
+end-string recognition rules. Use cases like »German ›angular‹ quotes« are
+not recognized.
+
+.. _inline markup: ../ref/rst/restructuredtext.html#inline-markup
+
+Proposal
+````````
+
+Define character classes based on `Unicode categories`_, possibly with some
+exceptions (for backwards compatibility or based on use cases) and use them
+in the inline markup start-string and end-string recognition rules.
+
+The following sub-section is intended to replace the 5 inline markup rules in
+the reStructuredText Markup Specification's section on `inline markup`_.
+The composition of the character classes is open for discussion_.
+
+Inline markup syntax rules
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The inline markup start-string and end-string recognition rules distinguish
+the following character classes based on `Unicode categories`_:
+
+_`Whitespace`:
+   :Zs: Separator, Space
+   :Zl: Separator, Line
+   
+   :Zp: Separator, Paragraph
+
+   Exception: Non-breaking spaces count as Delimiters_, they may
+   immediately follow a start-string or precede an end-string.
+
+   :[ ]:  U+00A0, NO-BREAK SPACE
+   :[ ]:  U+202F, NARROW NO-BREAK SPACE
+
+_`Open`:
+   :Ps: Punctuation, Open
+   :Pi: Punctuation, Initial quote
+   :Pf: Punctuation, Final quote [#PiPf]_
+   :<:  U+003C, LESS-THAN SIGN [#ltgt]_ 
+
+_`Close`:
+   :Pe: Punctuation, Close
+   :Pf: Punctuation, Final quote
+   :Pi: Punctuation, Initial quote [#PiPf]_
+   :>:  U+003E, GREATER-THAN SIGN
+
+_`Delimiters`:
+   :Pd: Punctuation, Dash
+   :Po: Punctuation, Other [#Po]_
+   :[ ]:  U+00A0, NO-BREAK SPACE
+   :[ ]:  U+202F, NARROW NO-BREAK SPACE
+
+If any of the following conditions are not met, the start-string or
+end-string will not be recognized or processed:
+
+1. Inline markup start-strings must start a text block or be immediately
+   preceded by a character of the classes Whitespace_, Open_, or
+   Delimiters_.
+
+2. Inline markup start-strings must not be followed by Whitespace_.
+
+3. Inline markup end-strings must not be preceded by Whitespace_.
+
+4. Inline markup end-strings must end a text block or be immediately
+   followed by a character of the classes Whitespace_, Close_, or
+   Delimiters_.
+
+5. If an inline markup start-string is immediately preceded by a
+   single or double quote or a character from Open_, it must not be
+   immediately followed by a corresponding single or double quote or
+   character from Close.
+
+6. An inline markup end-string must be separated by at least one
+   character from the start-string.
+
+7. An unescaped backslash preceding a start-string or end-string will
+   disable markup recognition, except for the end-string of `inline
+   literals`_.  See `Escaping Mechanism`_ above for details.
+
+
+Discussion
+``````````
+
+The current markup recognition rules deviate from the above proposal in some
+cases "to allow 90% of non-markup uses of "*", "`", "_", and "|" without
+resorting to backslashes". 
+
+The above proposal aims to catch 85% of non-markup uses with simpler
+rules and enable additional markup uses (e.g. »German ›angular‹ quotes«)
+without escaping. It breaks backwards compatibility in some cases.
+However, if this is "the right thing", it should be done **now**, as long
+as the project is still "beta".
+
+Character classifications in need of discussion:
+
+.. [#PiPf] Pi (Punctuation, Initial quote) characters are "usually
+   closing, sometimes opening". Pf (Punctuation, Final quote) characters
+   are "usually closing, sometimes opening". I.e., both Pi and Pf may
+   behave like Ps or Pe depending on usage. The current implementation
+   sorts them into Open_ and Close_.
+   Adding Pf to Close_ and Pi to Open_ solves e.g. the problem with
+   »German ›angular‹ quotes«.
+
+.. [#ltgt] ``<`` and ``>`` belong to the Unicode category Ms (Symbols, Math).
+   The current implementation sorts them into Open_ and Close_ because of
+   their use as angular brackets in ASCII markup.
+
+.. [#Po] The ``Po`` characters ``.,;!?`` are usually followed by
+   whitespace. The backslash ``\`` is rarely used in front of marked-up
+   text. The current implementation sorts these characters into Close_.
+
+   The Po characters ``¡¿`` open a sentence. The current
+   implementation sorts them into Open_.
+
+Alternatives
+````````````
+
+a) The proposal_ above:
+
+   +1  truly international (considering characters of all writing systems 
+       recorded in Unicode)
+   +2  simpler specification of the rules
+   -1  more complicated implementation
+
+b) Backwards compatibility
+
+   :Pi: into Open_
+   :Pf: into Close_
+   :Po: "conservative" sorting of other punctuation:
+   
+        :``.,;!?\``: Close_
+        :````¡¿``:   Open_
+        
+        Are there more?
+
+   +1  backwards compatible,
+   +1  logical extension of the existing rules,
+   -1  exception list for "other" punctuation needed,
+   -1  rules even more complicated,
+   -1  not clear how to sort "other" punctuation that is currently not 
+       recognized,
+   -2  use cases like »German ›angular‹ quotes« not recognized.
+
+c) Simple rule: merge Open_, Close, and Delimiters_
+
+   Whitespace_, Open_, Close_, and Delimiters_ may all precede or follow
+   inline markup.
+
+   +3  very comprehensible,
+   -1  false positives need escaping,
+   -2  not backwards compatible.
+
+Implementation
+``````````````
+
+Some ideas for implementing the above rules:
+  
+David's regexp to match whitespace but keep NO-BREAK spaces as "invisible
+escape"::
+
+  u'(?![\xa0\u202f])\\s', re.UNICODE
+
+For punctuation, check `Unicode categories`_ with
+``unicodedata.category(ch)``
+(http://bytes.com/topic/python/answers/854011-identifying-unicode-punctuation-characters-python-regex)
+and generate a pattern string, e.g. ::
+
+  chars_open = u''.join(unichr(x) for x in range(74868)
+       if unicodedata.category(unichr(x)) in ('Ps', 'Pi', 'Pf')
+
+Do this in the setup script and use the resulting string literal?
+(Avoids re-calculation with every parsing run.)
+
+.. _inline markup: ../ref/rst/restructuredtext.html#inline-markup
+.. _inline literals: ../ref/rst/restructuredtext.html#inline-literals
+.. _escaping mechanism: ../ref/rst/restructuredtext.html#escaping-mechanism
+.. _Unicode categories:
+   http://www.unicode.org/Public/5.1.0/ucd/UCD.html#General_Category_Values
+
 
 Math Markup
 -----------
@@ -1189,6 +1384,7 @@ Try to be compatible with `Math support in Sphinx`_?
 
 * The ``:label:`` option selects a label for the equation, by which it
   can be cross-referenced, and causes an equation number to be issued.
+  In Docutils, this would be called ``:name:``.
 
 * Option ``:nowrap:`` prevents wrapping of the given math in a
   math environment (you have to specify the math environment in the
@@ -1329,9 +1525,6 @@ Directives below are often referred to as "module.directive", the
 directive function.  The "module." is not part of the directive name
 when used in a document.
 
-* Make the _`directive interface` object-oriented
-  (http://article.gmane.org/gmane.text.docutils.user/1871).
-
 * Allow for field lists in list tables.  See
   <http://thread.gmane.org/gmane.text.docutils.devel/3392>.
 
@@ -1347,13 +1540,7 @@ when used in a document.
 * Add "substitution_only" and "substitution_ok" function attributes,
   and automate context checking?
 
-* Change directive functions to directive classes?  Superclass'
-  ``__init__()`` could handle all the bookkeeping.
-
 * Implement options or features on existing directives:
-
-  - Add a "name" option to directives, to set an author-supplied
-    identifier?
 
   - All directives that produce titled elements should grow implicit
     reference names based on the titles.
@@ -1363,7 +1550,7 @@ when used in a document.
 
     .. _unicode: ../ref/rst/directives.html#unicode-character-codes
 
-  - Add the "class" option to the unicode directive.  For example, you
+  - Add the "class" option to the unicode_ directive.  For example, you
     might want to get characters or strings with borders around them.
 
   - _`images.figure`: "title" and "number", to indicate a formal
@@ -1471,7 +1658,20 @@ when used in a document.
   - _`parts.citations`: See `Footnote & Citation Gathering`_.
 
   - _`misc.language`: Specify (= change) the language of a document at
-    parse time.
+    parse time?
+
+    * The misc.settings_ directive suggested below offers a more generic
+      approach.
+
+    * The language of document parts can be indicated by the "special class
+      value" ``"language-"`` + `BCP 47`_ language code. Class arguments to
+      the title are attached to the document's base node - hence titled
+      documents can be given a different language at parse time. However,
+      "language by class attribute" does not change parsing (localized
+      directives etc.), only supporting writers.
+
+    .. _BCP 47: http://www.rfc-editor.org/rfc/bcp/bcp47.txt
+
 
   - _`misc.settings`: Set any(?) Docutils runtime setting from within
     a document?  Needs much thought and discussion.
@@ -1485,7 +1685,8 @@ when used in a document.
     <http://thread.gmane.org/gmane.text.docutils.user/3620/focus=3649>
 
   - _`misc.gather`: Gather (move, or copy) all instances of a specific
-    element.  A generalization of the "endnotes" & "citations" ideas.
+    element.  A generalization of the `Footnote & Citation Gathering`_
+    ideas.
 
   - Add a custom "directive" directive, equivalent to "role"?  For
     example::
@@ -1519,6 +1720,8 @@ when used in a document.
     though; doesn't solve the general problem.
 
   - .. _conditional directives:
+
+    .. note:: See also the implementation in Sphinx_.
 
     Docutils already has the ability to say "use this content for
     Writer X" (via the "raw" directive), but it doesn't have the
@@ -1606,7 +1809,14 @@ when used in a document.
   - _`body.listing`: Code listing with title (to be numbered
     eventually), equivalent of "figure" and "table" directives.
 
-  - _`colorize.python`: Colorize Python code.  Fine for HTML output,
+  - _`colorize.python`: Colorize code.
+
+    .. note:: See also the code-block-directive_ sandbox project.
+
+    .. _code-block-directive:
+       ../../../sandbox/code-block-directive/README.html
+
+    Fine for HTML output,
     but what about other formats?  Revert to a literal block?  Do we
     need some kind of "alternate" mechanism?  Perhaps use a "pending"
     transform, which could switch its output based on the "format" in
@@ -1636,7 +1846,7 @@ when used in a document.
 
     But I'm leaning toward adding a single new general-purpose
     element, "phrase", equivalent to HTML's <span>.  Here's the
-    example rewritten using the generic "phrase"::
+    example rewritten using the generic "phrase" [#]_::
 
         <literal_block xml:space="preserve" class="python">
         <phrase class="keyword">print</> <phrase
@@ -1652,6 +1862,8 @@ when used in a document.
     for the case at hand.  It allows us to edit style sheets to add
     support for new formats, not the Docutils code itself.
 
+    .. [#] The code-block-directive_ uses the existing <inline> element.
+
     Perhaps a single directive with a format parameter would be
     better::
 
@@ -1663,6 +1875,10 @@ when used in a document.
 
     But directives can have synonyms for convenience.  "format::
     python" was suggested, but "format" seems too generic.
+    Established names are: `code`, `sourcecode`, `code-block` (see
+    `SyntaxHighlight`__).
+
+    __ ../../../sandbox/code-block-directive/docs/syntax-highlight.html
 
   - _`pysource.usage`: Extract a usage message from the program,
     either by running it at the command line with a ``--help`` option
@@ -2062,6 +2278,17 @@ Unimplemented Transforms
 
   Write a generic version that uses Unicode chars
   (let the writer replace these if required).
+  
+  Some arguments for "smart quotes" are collected in a `mail to
+  docutils-user by Jörg W. Mittag from 2006-03-13`__.
+  
+  Also see the "... Or Not To Do?" list entry for
+  `Character Processing`_
+  
+__ http://article.gmane.org/gmane.text.docutils.user/2765 
+
+.. _Character Processing: rst/alternatives.html#character-processing
+
 
 HTML Writer
 ===========
