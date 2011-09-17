@@ -681,6 +681,9 @@ Complex optargs:
 --source-url=<URL>      Use the supplied <URL> verbatim.
 --output-encoding=<name[:handler]>, -o<name[:handler]>
                         Specify the text encoding for output.
+--af=<filter1[=parameter1:parameter2:...],filter2,...>
+                        Setup a chain of audio filters.
+                        Option argument containing delimiter ``=``.
 -f <[path]filename>     Send output to file.
 -d <src dest>           Use diff from <src> to <dest>.
 --bogus=<x y z>         Bogus 3D coordinates.
@@ -715,6 +718,20 @@ Complex optargs:
             <description>
                 <paragraph>
                     Specify the text encoding for output.
+        <option_list_item>
+            <option_group>
+                <option>
+                    <option_string>
+                        --af
+                    <option_argument delimiter="=">
+                        <filter1[=parameter1:parameter2:...],filter2,...>
+            <description>
+                <paragraph>
+                    Setup a chain of audio filters.
+                    Option argument containing delimiter \n\
+                    <literal>
+                        =
+                    .
         <option_list_item>
             <option_group>
                 <option>
