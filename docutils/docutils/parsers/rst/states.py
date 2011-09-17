@@ -1495,7 +1495,7 @@ class Body(RSTState):
         for optionstring in optionstrings:
             tokens = optionstring.split()
             delimiter = ' '
-            firstopt = tokens[0].split('=')
+            firstopt = tokens[0].split('=', 1)
             if len(firstopt) > 1:
                 # "--opt=value" form
                 tokens[:1] = firstopt
