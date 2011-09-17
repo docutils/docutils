@@ -1387,10 +1387,11 @@ print~'This~is~Python~code.'
 }
 \end{quote}
 
-There is an option for line numbers with optional start value:
+The \texttt{:number-lines:} option (with optional start value) generates line
+numbers:
 %
 \begin{quote}{\ttfamily \raggedright \noindent
-\DUrole{l}{\DUrole{n}{~8~}}\#~print~integers~from~0~to~9:\\
+\DUrole{ln}{~8~}\#~print~integers~from~0~to~9:\\
 ~\DUrole{ln}{~9~}for~i~in~range(10):\\
 ~\DUrole{ln}{10~}~~~~print~i
 }
@@ -1407,6 +1408,15 @@ known) or as base for special code roles, e.g.,
 Docutils uses LaTeX syntax for math directives and roles:
 \texttt{\DUrole{code}{\DUrole{latex}{\DUrole{tex}{\textbackslash{}alpha = f(x)}}}} prints $\alpha = f(x)$.
 
+\end{quote}
+
+The \texttt{:code:} option of the \DUroletitlereference{include} directive sets the included content
+as a code block, here the rst file \texttt{header\_footer.txt} with line numbers:
+%
+\begin{quote}{\ttfamily \raggedright \noindent
+\DUrole{ln}{1~}..~header::~Document~header\\
+~\DUrole{ln}{2~}..~footer::~Document~footer
+}
 \end{quote}
 
 

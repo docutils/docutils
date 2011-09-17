@@ -192,6 +192,19 @@ totest['code-parsing'] = [
         <inline classes="c">
             % emphasize"""],
 ["""\
+.. code:: rst
+  :number-lines:
+
+  This is a code block with text.
+""",
+"""\
+<document source="test data">
+    <literal_block classes="code rst" xml:space="preserve">
+        <inline classes="ln">
+            1 \n\
+        This is a code block with text.
+"""],
+["""\
 .. code:: s-lang
 
    % abc.sl

@@ -14,6 +14,8 @@ from docutils import io, nodes, statemachine, utils
 from docutils.error_reporting import SafeString, ErrorString
 from docutils.parsers.rst import Directive, convert_directive_function
 from docutils.parsers.rst import directives, roles, states
+from docutils.parsers.rst.directives.body import CodeBlock, NumberLines
+from docutils.parsers.rst.roles import set_classes
 from docutils.transforms import misc
 
 class Include(Directive):
@@ -32,18 +34,23 @@ class Include(Directive):
     optional_arguments = 0
     final_argument_whitespace = True
     option_spec = {'literal': directives.flag,
+                   'code': directives.unchanged,
                    'encoding': directives.encoding,
                    'tab-width': int,
                    'start-line': int,
                    'end-line': int,
                    'start-after': directives.unchanged_required,
-                   'end-before': directives.unchanged_required}
+                   'end-before': directives.unchanged_required,
+                   # ignored except for 'literal' or 'code':
+                   'number-lines': directives.unchanged, # integer or None
+                   'class': directives.class_option,
+                   'name': directives.unchanged}
 
     standard_include_path = os.path.join(os.path.dirname(states.__file__),
                                          'include')
 
     def run(self):
-        """Include a reST file as part of the content of this reST file."""
+        """Include a file as part of the content of this reST file."""
         if not self.state.document.settings.file_insertion_enabled:
             raise self.warning('"%s" directive disabled.' % self.name)
         source = self.state_machine.input_lines.source(
@@ -98,20 +105,52 @@ class Include(Directive):
                 raise self.severe('Problem with "end-before" option of "%s" '
                                   'directive:\nText not found.' % self.name)
             rawtext = rawtext[:before_index]
+            
+        include_lines = statemachine.string2lines(rawtext, tab_width, 
+                                                  convert_whitespace=1)
         if 'literal' in self.options:
             # Convert tabs to spaces, if `tab_width` is positive.
             if tab_width >= 0:
                 text = rawtext.expandtabs(tab_width)
             else:
                 text = rawtext
-            literal_block = nodes.literal_block(rawtext, text, source=path)
+            literal_block = nodes.literal_block(rawtext, source=path, 
+                                    classes=self.options.get('class', []))
             literal_block.line = 1
+            self.add_name(literal_block)
+            if 'number-lines' in self.options:
+                try:
+                    startline = int(self.options['number-lines'] or 1)
+                except ValueError:
+                    raise self.error(':number-lines: with non-integer '
+                                     'start value')
+                endline = startline + len(include_lines)
+                if text.endswith('\n'):
+                    text = text[:-1]
+                tokens = NumberLines([([], text)], startline, endline)
+                for classes, value in tokens:
+                    if classes:
+                        literal_block += nodes.inline(value, value, 
+                                                      classes=classes)
+                    else:
+                        literal_block += nodes.Text(value, value)
+            else:
+                literal_block += nodes.Text(text, text)
             return [literal_block]
-        else:
-            include_lines = statemachine.string2lines(
-                rawtext, tab_width, convert_whitespace=1)
-            self.state_machine.insert_input(include_lines, path)
-            return []
+        if 'code' in self.options:
+            self.options['source'] = path
+            codeblock = CodeBlock(self.name, 
+                                  [self.options.pop('code')], # arguments
+                                  self.options,
+                                  include_lines, # content
+                                  self.lineno,
+                                  self.content_offset,
+                                  self.block_text,
+                                  self.state,
+                                  self.state_machine)
+            return codeblock.run()
+        self.state_machine.insert_input(include_lines, path)
+        return []
 
 
 class Raw(Directive):

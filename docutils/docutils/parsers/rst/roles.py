@@ -325,7 +325,7 @@ def code_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
         classes.extend(options['classes'])
 
     try:
-        tokens = Lexer([utils.unescape(text, 1)], language,
+        tokens = Lexer(utils.unescape(text, 1), language,
                        inliner.document.settings.syntax_highlight)
     except LexerError, error:
         msg = inliner.reporter.warning(error)

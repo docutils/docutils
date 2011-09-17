@@ -145,7 +145,7 @@ class CodeBlock(Directive):
 
         # set up lexical analyzer
         try:
-            tokens = Lexer(self.content, language,
+            tokens = Lexer(u'\n'.join(self.content), language,
                            self.state.document.settings.syntax_highlight)
         except LexerError, error:
             raise self.warning(error)
@@ -162,7 +162,9 @@ class CodeBlock(Directive):
 
         node = nodes.literal_block('\n'.join(self.content), classes=classes)
         self.add_name(node)
-
+        # if called from "include", set the source
+        if 'source' in self.options:
+            node.attributes['source'] = self.options['source']
         # analyze content and add nodes for every token
         for classes, value in tokens:
             # print (classes, value)

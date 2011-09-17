@@ -1633,7 +1633,11 @@
                 <literal_block classes="code python" xml:space="preserve">
                     print 'This is Python code.'
                 <paragraph>
-                    There is an option for line numbers with optional start value:
+                    The 
+                    <literal>
+                        :number-lines:
+                     option (with optional start value) generates line
+                    numbers:
                 <literal_block classes="code python" xml:space="preserve">
                     <inline classes="ln">
                          8 
@@ -1662,6 +1666,25 @@
                             \alpha = f(x)
                         .
                 <target ids="pygments" names="pygments" refuri="http://pygments.org/">
+                <paragraph>
+                    The 
+                    <literal>
+                        :code:
+                     option of the 
+                    <title_reference>
+                        include
+                     directive sets the included content
+                    as a code block, here the rst file 
+                    <literal>
+                        header_footer.txt
+                     with line numbers:
+                <literal_block classes="code rst" source="functional/input/data/header_footer.txt" xml:space="preserve">
+                    <inline classes="ln">
+                        1 
+                    .. header:: Document header
+                    <inline classes="ln">
+                        2 
+                    .. footer:: Document footer
         <section ids="substitution-definitions" names="substitution\ definitions">
             <title auto="1" refid="id65">
                 <generated classes="sectnum">

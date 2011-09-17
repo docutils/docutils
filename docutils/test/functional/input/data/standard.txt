@@ -769,7 +769,8 @@ Pygments highlighter.)
 
   print 'This is Python code.'
 
-There is an option for line numbers with optional start value:
+The ``:number-lines:`` option (with optional start value) generates line
+numbers:
 
 .. code:: python
   :number-lines: 8
@@ -791,6 +792,13 @@ known) or as base for special code roles, e.g.,
   :tex:`\alpha = f(x)` prints :math:`\alpha = f(x)`.
 
 .. _Pygments: http://pygments.org/
+
+The ``:code:`` option of the `include` directive sets the included content
+as a code block, here the rst file ``header_footer.txt`` with line numbers:
+
+.. include:: header_footer.txt
+   :code: rst
+   :number-lines:
 
 
 Substitution Definitions
