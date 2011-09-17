@@ -497,7 +497,7 @@ __   http://pygments.org/docs/cmdline/#generating-styles
 The following options are recognized:
 
 ``number-lines`` : [start line number]
-    Precede every code line with a line number.
+    Precede every line with a line number.
     The optional argument is the number of the first line (defaut 1).
 
 and the common options `:class:`_ and `:name:`_.
@@ -1348,7 +1348,8 @@ Including an External Document Fragment
 =======================================
 
 :Directive Type: "include"
-:Doctree Elements: depend on data being included
+:Doctree Elements: Depend on data being included
+                   (literal_block_ with ``code`` or ``literal`` option).
 :Directive Arguments: One, required (path to the file to include).
 :Directive Options: Possible.
 :Directive Content: None.
@@ -1361,11 +1362,11 @@ Including an External Document Fragment
 
    .. _file_insertion_enabled: ../../user/config.html#file-insertion-enabled
 
-The "include" directive reads a reStructuredText-formatted text file
-and parses it in the current document's context at the point of the
-directive.  The directive argument is the path to the file to be
-included, relative to the document containing the directive.  For
-example::
+The "include" directive reads a text file. The directive argument is
+the path to the file to be included, relative to the document
+containing the directive. Unless the options ``literal`` or ``code``
+are given, the file is parsed in the current document's context at the
+point of the directive. For example::
 
     This first example will be parsed at the document level, and can
     thus contain any construct, including section headers.
@@ -1417,7 +1418,18 @@ The following options are recognized:
 
 ``literal`` : flag (empty)
     The entire included text is inserted into the document as a single
-    literal block (useful for program listings).
+    literal block.
+
+``code`` : formal language (optional)
+    The argument and the content of the included file are passed to
+    the code_ directive (useful for program listings).
+    (New in Docutils 0.9)
+
+``number-lines`` : [start line number]
+    Precede every code line with a line number.
+    The optional argument is the number of the first line (defaut 1).
+    Works only with ``code`` or ``literal``.
+    (New in Docutils 0.9)
 
 ``encoding`` : name of text encoding
     The text encoding of the external data file.  Defaults to the
@@ -1432,6 +1444,9 @@ The following options are recognized:
 
     .. _tab_width: ../../user/config.html#tab-width
 
+
+With ``code`` or ``literal`` the common options `:class:`_ and
+`:name:`_ are recognized as well.
 
 Combining ``start/end-line`` and ``start-after/end-before`` is possible. The
 text markers will be searched in the specified lines (further limiting the

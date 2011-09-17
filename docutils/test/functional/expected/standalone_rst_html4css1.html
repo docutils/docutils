@@ -849,9 +849,10 @@ Pygments highlighter.)</p>
 <pre class="code python literal-block">
 print 'This is Python code.'
 </pre>
-<p>There is an option for line numbers with optional start value:</p>
+<p>The <tt class="docutils literal"><span class="pre">:number-lines:</span></tt> option (with optional start value) generates line
+numbers:</p>
 <pre class="code python literal-block">
-<span class="l n"> 8 </span># print integers from 0 to 9:
+<span class="ln"> 8 </span># print integers from 0 to 9:
 <span class="ln"> 9 </span>for i in range(10):
 <span class="ln">10 </span>    print i
 </pre>
@@ -863,6 +864,12 @@ known) or as base for special code roles, e.g.,</p>
 Docutils uses LaTeX syntax for math directives and roles:
 <tt class="code latex tex docutils literal">\alpha = f(x)</tt> prints <math xmlns="http://www.w3.org/1998/Math/MathML">
 <mrow><mi>α</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math>.</blockquote>
+<p>The <tt class="docutils literal">:code:</tt> option of the <cite>include</cite> directive sets the included content
+as a code block, here the rst file <tt class="docutils literal">header_footer.txt</tt> with line numbers:</p>
+<pre class="code rst literal-block">
+<span class="ln">1 </span>.. header:: Document header
+<span class="ln">2 </span>.. footer:: Document footer
+</pre>
 </div>
 </div>
 <div class="section" id="substitution-definitions">

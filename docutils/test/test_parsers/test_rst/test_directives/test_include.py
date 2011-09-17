@@ -13,9 +13,12 @@ import sys
 from __init__ import DocutilsTestSupport
 from docutils.parsers.rst import states
 from docutils._compat import b
+from docutils.parsers.code_analyzer import with_pygments
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()
+    if not with_pygments:
+        del(totest['include-code'])
     s.generateTests(totest)
     return s
 
@@ -79,6 +82,8 @@ Include Test
 
 .. include:: %s
    :literal:
+   :class: test
+   :name: my name
 
 A paragraph.
 """ % include1,
@@ -87,13 +92,81 @@ A paragraph.
     <section ids="include-test" names="include\ test">
         <title>
             Include Test
-        <literal_block source="%s" xml:space="preserve">
+        <literal_block classes="test" ids="my-name" names="my\ name" source="%s" xml:space="preserve">
             Inclusion 1
             -----------
             \n\
             This file is used by ``test_include.py``.
         <paragraph>
             A paragraph.
+""" % include1rel],
+["""\
+Literal include, add line numbers
+
+.. include:: %s
+   :literal:
+   :number-lines:
+""" % include1,
+"""\
+<document source="test data">
+    <paragraph>
+        Literal include, add line numbers
+    <literal_block source="%s" xml:space="preserve">
+        <inline classes="ln">
+            1 \n\
+        Inclusion 1
+        <inline classes="ln">
+            2 \n\
+        -----------
+        <inline classes="ln">
+            3 \n\
+        \n\
+        <inline classes="ln">
+            4 \n\
+        This file is used by ``test_include.py``.
+""" % include1rel],
+["""\
+Include code
+
+.. include:: %s
+   :code:
+   :class: test
+   :name: my name
+""" % include1,
+"""\
+<document source="test data">
+    <paragraph>
+        Include code
+    <literal_block classes="code test" ids="my-name" names="my\ name" source="%s" xml:space="preserve">
+        Inclusion 1
+        -----------
+        \n\
+        This file is used by ``test_include.py``.
+""" % include1rel],
+["""\
+Include code, add line numbers
+
+.. include:: %s
+   :code:
+   :number-lines:
+""" % include1,
+"""\
+<document source="test data">
+    <paragraph>
+        Include code, add line numbers
+    <literal_block classes="code" source="%s" xml:space="preserve">
+        <inline classes="ln">
+            1 \n\
+        Inclusion 1
+        <inline classes="ln">
+            2 \n\
+        -----------
+        <inline classes="ln">
+            3 \n\
+        \n\
+        <inline classes="ln">
+            4 \n\
+        This file is used by ``test_include.py``.
 """ % include1rel],
 ["""\
 Let's test the parse context.
@@ -328,7 +401,6 @@ Include file is UTF-16-encoded, and is not valid ASCII.
             .. include:: %s
                :encoding: ascii
 """ % (utf_16_error_str, utf_16_file_rel)],
-# @@@ BUG with errors reported with incorrect "source" & "line":
 ["""\
 Testing errors in included file:
 
@@ -800,6 +872,63 @@ No TAB expansion with literal include:
 """ % include_literal],
 ]
 
+totest['include-code'] = [
+["""\
+Included code
+
+.. include:: %s
+   :code: rst
+""" % include1,
+"""\
+<document source="test data">
+    <paragraph>
+        Included code
+    <literal_block classes="code rst" source="%s" xml:space="preserve">
+        <inline classes="gh">
+            Inclusion 1
+        \n\
+        <inline classes="gh">
+            -----------
+        \n\
+        \n\
+        This file is used by \n\
+        <inline classes="s">
+            ``test_include.py``
+        .
+""" % include1rel],
+["""\
+Included code
+
+.. include:: %s
+   :code: rst
+   :number-lines:
+""" % include1,
+"""\
+<document source="test data">
+    <paragraph>
+        Included code
+    <literal_block classes="code rst" source="%s" xml:space="preserve">
+        <inline classes="ln">
+            1 \n\
+        <inline classes="gh">
+            Inclusion 1
+        \n\
+        <inline classes="ln">
+            2 \n\
+        <inline classes="gh">
+            -----------
+        \n\
+        <inline classes="ln">
+            3 \n\
+        \n\
+        <inline classes="ln">
+            4 \n\
+        This file is used by \n\
+        <inline classes="s">
+            ``test_include.py``
+        .
+""" % include1rel],
+]
 
 if __name__ == '__main__':
     import unittest

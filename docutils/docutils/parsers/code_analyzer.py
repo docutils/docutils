@@ -30,7 +30,7 @@ class Lexer(object):
 
     Arguments
 
-      code       -- list of source code lines to parse,
+      code       -- string of source code to parse,
       language   -- formal language the code is written in,
       tokennames -- either 'long', 'short', or '' (see below).
 
@@ -82,17 +82,18 @@ class Lexer(object):
             else:
                 yield(lasttype, lastval)
                 (lasttype, lastval) = (ttype, value)
-        if lastval != '\n':
+        if lastval.endswith('\n'):
+            lastval = lastval[:-1]
+        if lastval:
             yield(lasttype, lastval)
 
     def __iter__(self):
         """Parse self.code and yield "classified" tokens.
         """
-        codestring = u'\n'.join(self.code)
         if self.lexer is None:
-            yield ([], codestring)
+            yield ([], self.code)
             return
-        tokens = pygments.lex(codestring, self.lexer)
+        tokens = pygments.lex(self.code, self.lexer)
         for tokentype, value in self.merge(tokens):
             if self.tokennames == 'long': # long CSS class args
                 classes = str(tokentype).lower().split('.')
@@ -123,7 +124,7 @@ class NumberLines(object):
 
     def __iter__(self):
         lineno = self.startline
-        yield ('ln', self.fmt_str % lineno)
+        yield (['ln'], self.fmt_str % lineno)
         for ttype, value in self.tokens:
             lines = value.split('\n')
             for line in lines[:-1]:

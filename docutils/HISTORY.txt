@@ -21,6 +21,7 @@ Changes Since 0.8.1
 
   - reStructuredText "code" role and directive with syntax highlighting
     by Pygments_.
+  - "code" option of the "include" directive.
 
   - Fix parse_option_marker for options arguments containing ``=``.
 

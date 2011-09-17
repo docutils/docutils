@@ -42,7 +42,6 @@ The Schrödinger equation
 .. math:: :name: eq:schrödinger
 
    i\hbar \frac{∂}{∂t}Ψ = \hat{H}Ψ,
-   
 
 with the *wave function* :math:`Ψ`, describes how the quantum state of a
 physical system changes in time.
