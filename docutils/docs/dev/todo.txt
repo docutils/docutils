@@ -1162,7 +1162,7 @@ the following character classes based on `Unicode categories`_:
 _`Whitespace`:
    :Zs: Separator, Space
    :Zl: Separator, Line
-   
+
    :Zp: Separator, Paragraph
 
    Exception: Non-breaking spaces count as Delimiters_, they may
@@ -1175,7 +1175,7 @@ _`Open`:
    :Ps: Punctuation, Open
    :Pi: Punctuation, Initial quote
    :Pf: Punctuation, Final quote [#PiPf]_
-   :<:  U+003C, LESS-THAN SIGN [#ltgt]_ 
+   :<:  U+003C, LESS-THAN SIGN [#ltgt]_
 
 _`Close`:
    :Pe: Punctuation, Close
@@ -1222,7 +1222,7 @@ Discussion
 
 The current markup recognition rules deviate from the above proposal in some
 cases "to allow 90% of non-markup uses of "*", "`", "_", and "|" without
-resorting to backslashes". 
+resorting to backslashes".
 
 The above proposal aims to catch 85% of non-markup uses with simpler
 rules and enable additional markup uses (e.g. »German ›angular‹ quotes«)
@@ -1256,7 +1256,7 @@ Alternatives
 
 a) The proposal_ above:
 
-   +1  truly international (considering characters of all writing systems 
+   +1  truly international (considering characters of all writing systems
        recorded in Unicode)
    +2  simpler specification of the rules
    -1  more complicated implementation
@@ -1266,17 +1266,17 @@ b) Backwards compatibility
    :Pi: into Open_
    :Pf: into Close_
    :Po: "conservative" sorting of other punctuation:
-   
+
         :``.,;!?\``: Close_
         :````¡¿``:   Open_
-        
+
         Are there more?
 
    +1  backwards compatible,
    +1  logical extension of the existing rules,
    -1  exception list for "other" punctuation needed,
    -1  rules even more complicated,
-   -1  not clear how to sort "other" punctuation that is currently not 
+   -1  not clear how to sort "other" punctuation that is currently not
        recognized,
    -2  use cases like »German ›angular‹ quotes« not recognized.
 
@@ -1293,7 +1293,7 @@ Implementation
 ``````````````
 
 Some ideas for implementing the above rules:
-  
+
 David's regexp to match whitespace but keep NO-BREAK spaces as "invisible
 escape"::
 
@@ -1320,15 +1320,7 @@ Do this in the setup script and use the resulting string literal?
 Math Markup
 -----------
 
-Using a standard, such as MathML_, would be best. (For an overview of
-MathML implementations and tests, see e.g. the `mathweb wiki`_ or
-the `ConTeXT MathML page`_.)
-
-.. _MathML: http://www.w3.org/TR/MathML2/
-.. _mathweb wiki: http://www.mathweb.org/wiki/MathML
-.. _ConTeXT MathML page: http://wiki.contextgarden.net/MathML
-
-However,
+Using a standard, such as MathML_\ [#]_ seems a good start. However,
 
     MathML in its full XML form was never thought to be usable as an
     input format: for a start it is far too verbose as necessitated by
@@ -1336,20 +1328,29 @@ However,
 
     -- http://www.w3.org/Math/Roadmap/
 
-Hence, with MathML, a different input format is needed. OTOH, LaTeX
-math syntax can be used for both, input and internal storage.
+Like for non-mathematical content, a different input format is needed.
+
+.. [#] For an overview of MathML implementations and tests, see e.g.
+   the `mathweb wiki`_ or the `ConTeXT MathML page`_.
+
+.. _MathML: http://www.w3.org/TR/MathML2/
+.. _mathweb wiki: http://www.mathweb.org/wiki/MathML
+.. _ConTeXT MathML page: http://wiki.contextgarden.net/MathML
+
 
 Input formats
 `````````````
 
 LaTeX math syntax
-  * intended for input by a human, widely used, and well documented.
+  * Intended for input by a human, widely used, and well documented.
 
-  * convertible to all supported output formats (building on
+  * Can be used for both, input and internal storage.
+
+  * Convertible to all supported output formats (building on
     existing extensions like `latex_math`_ (LaTeX2MathML) or the `math
     support in Sphinx`_ (see below for `HTML output`_).
 
-  * Used for input and storage by the `Math support in Sphinx`_.
+  * Used by the `Math support in Sphinx`_.
 
   * Unicode input similar to the "unicode-math" package for
     XeTeX/LuaTeX provides for improved readability of the source.
@@ -1376,7 +1377,8 @@ ASCIIMathML_
    .. _Unicode Nearly Plain Text Encoding of Mathematics:
       http://www.unicode.org/notes/tn28/
 
-See `the culmination of a relevant discussion
+LaTeX math syntax was used as input format for the "math" role and directive.
+See also `the culmination of a relevant discussion
 <http://article.gmane.org/gmane.text.docutils.user/118>`__.
 
 
@@ -1809,77 +1811,6 @@ when used in a document.
   - _`body.listing`: Code listing with title (to be numbered
     eventually), equivalent of "figure" and "table" directives.
 
-  - _`colorize.python`: Colorize code.
-
-    .. note:: See also the code-block-directive_ sandbox project.
-
-    .. _code-block-directive:
-       ../../../sandbox/code-block-directive/README.html
-
-    Fine for HTML output,
-    but what about other formats?  Revert to a literal block?  Do we
-    need some kind of "alternate" mechanism?  Perhaps use a "pending"
-    transform, which could switch its output based on the "format" in
-    use.  Use a factory function "transformFF()" which returns either
-    "HTMLTransform()" instance or "GenericTransform" instance?
-
-    If we take a Python-to-HTML pretty-printer and make it output a
-    Docutils internal doctree (as per nodes.py) instead of HTML, then
-    each output format's stylesheet (or equivalent) mechanism could
-    take care of the rest.  The pretty-printer code could turn this
-    doctree fragment::
-
-         <literal_block xml:space="preserve">
-         print 'This is Python code.'
-         for i in range(10):
-             print i
-         </literal_block>
-
-    into something like this ("</>" is end-tag shorthand)::
-
-         <literal_block xml:space="preserve" class="python">
-         <keyword>print</> <string>'This is Python code.'</>
-         <keyword>for</> <identifier>i</> <keyword
-         >in</> <expression>range(10)</>:
-             <keyword>print</> <expression>i</>
-         </literal_block>
-
-    But I'm leaning toward adding a single new general-purpose
-    element, "phrase", equivalent to HTML's <span>.  Here's the
-    example rewritten using the generic "phrase" [#]_::
-
-        <literal_block xml:space="preserve" class="python">
-        <phrase class="keyword">print</> <phrase
-         class="string">'This is Python code.'</>
-        <phrase class="keyword">for</> <phrase
-         class="identifier">i</> <phrase class="keyword">in</> <phrase
-         class="expression">range(10)</>:
-            <phrase class="keyword">print</> <phrase
-             class="expression">i</>
-        </literal_block>
-
-    It's more verbose but more easily extensible and more appropriate
-    for the case at hand.  It allows us to edit style sheets to add
-    support for new formats, not the Docutils code itself.
-
-    .. [#] The code-block-directive_ uses the existing <inline> element.
-
-    Perhaps a single directive with a format parameter would be
-    better::
-
-        .. colorize:: python
-
-           print 'This is Python code.'
-           for i in range(10):
-               print i
-
-    But directives can have synonyms for convenience.  "format::
-    python" was suggested, but "format" seems too generic.
-    Established names are: `code`, `sourcecode`, `code-block` (see
-    `SyntaxHighlight`__).
-
-    __ ../../../sandbox/code-block-directive/docs/syntax-highlight.html
-
   - _`pysource.usage`: Extract a usage message from the program,
     either by running it at the command line with a ``--help`` option
     or through an exposed API.  [Suggestion for Optik.]
@@ -2069,9 +2000,9 @@ nodes. This makes the document model and the writers somewhat simpler.
   literal blocks with a class attribute.  The syntax could be left in
   reST (for a set period of time?).
 
-* Always use _`transforms.writer_aux.Admonitions` to "normalize" special
-  admonitions (note, hint, warning, ...). There is no need to keep them in
-  the doctree specification.
+* "Normalize" special admonitions (note, hint, warning, ...) during parsing
+  (similar to _`transforms.writer_aux.Admonitions`). There is no need to
+  keep them as distinct elements in the doctree specification.
 
   Keep the special admonition directives in reStructuredText syntax?
 
@@ -2278,14 +2209,14 @@ Unimplemented Transforms
 
   Write a generic version that uses Unicode chars
   (let the writer replace these if required).
-  
+
   Some arguments for "smart quotes" are collected in a `mail to
   docutils-user by Jörg W. Mittag from 2006-03-13`__.
-  
+
   Also see the "... Or Not To Do?" list entry for
   `Character Processing`_
-  
-__ http://article.gmane.org/gmane.text.docutils.user/2765 
+
+__ http://article.gmane.org/gmane.text.docutils.user/2765
 
 .. _Character Processing: rst/alternatives.html#character-processing
 
