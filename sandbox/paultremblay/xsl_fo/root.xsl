@@ -63,18 +63,22 @@
         <fo:page-sequence master-reference="pages" xsl:use-attribute-sets="body-page-sequence">
             <xsl:apply-templates select="/document/decoration/header" mode="header"/>
             <xsl:apply-templates select="/document/decoration/footer" mode="footer"/>
-            <fo:static-content role = "footnote-separator" 
-                xsl:use-attribute-sets = "footnote-separator-flow" flow-name="xsl-footnote-separator">
-               <fo:block xsl:use-attribute-sets = "footnote-separator-block">
-                    <fo:leader leader-pattern="rule" leader-length="100%"/>
-               </fo:block>
-            </fo:static-content>
+            <xsl:call-template name="make-footnote-separator"/>
             <fo:flow flow-name="xsl-region-body" xsl:use-attribute-sets="body-flow">
                 <xsl:apply-templates/>
             </fo:flow>
         </fo:page-sequence>
     </xsl:template>
 
+
+    <xsl:template name="make-footnote-separator">
+        <fo:static-content role = "footnote-separator" 
+            xsl:use-attribute-sets = "footnote-separator-flow" flow-name="xsl-footnote-separator">
+           <fo:block xsl:use-attribute-sets = "footnote-separator-block">
+                <fo:leader leader-pattern="rule" leader-length="100%"/>
+           </fo:block>
+        </fo:static-content>
+    </xsl:template>
 
     <xsl:attribute-set name="page-size">
 	<xsl:attribute name="margin-left">1.0in</xsl:attribute>
@@ -125,9 +129,6 @@
                <xsl:when test = "/document/decoration/footer">
                    <fo:region-after region-name="body-footer" xsl:use-attribute-sets="region-after"/>
                </xsl:when>
-               <xsl:otherwise>
-                    <fo:region-body/>
-               </xsl:otherwise>
            </xsl:choose>
           </fo:simple-page-master>
               <fo:page-sequence-master master-name="pages">
