@@ -457,7 +457,7 @@ def main():
     test_docutils_to_fo_script(script_command)
     #if arg.clean:
         # clean()
-    clean()
+    # clean()
     os.chdir(current_dir)
 
 try:
