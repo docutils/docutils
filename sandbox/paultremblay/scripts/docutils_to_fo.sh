@@ -13,6 +13,7 @@ Usage() {
 CLEAN='true'
 FORMAT=
 TEST=
+TESTQ=
 PDF='false'
 VALID='false'
  while [ $# -gt 0 ]
@@ -24,7 +25,8 @@ VALID='false'
          --help) Usage;exit 0;;
          --verbose) VERBOSE='true';;
          --format) FORMAT='true';;
-         --test) TEST='true';;
+         --test) CLEAN='false';FORMAT='true';VALID='true';PDF='true';TEST='true';;
+         --testq) CLEAN='false';FORMAT='true';VALID='true';PDF='true';;
          --noclean) CLEAN='false';;
          --pdf) PDF='true';;
          --valid) VALID='true';;
@@ -58,7 +60,8 @@ else
 fi
 
 if [ "$FORMAT" == "true" ]; then
-    xsltproc $MAIN_XSL $RAW_XML |xmlformat.pl > $FO_FILE
+    xsltproc $MAIN_XSL $RAW_XML  > $FO_FILE
+    xmlformat.pl -i $FO_FILE
 else
     xsltproc $MAIN_XSL $RAW_XML  > $FO_FILE
 fi
@@ -75,4 +78,7 @@ fi
 if [ "$CLEAN" == "true" ]; then
     rm -f $FO_FILE
     rm -f $RAW_XML
+    if [ "$TEST" == 'true' ]; then
+        rm $PDF_FILE
+    fi
 fi
