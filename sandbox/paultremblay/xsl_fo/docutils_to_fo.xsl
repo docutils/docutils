@@ -19,7 +19,6 @@
     <xsl:include href = "page.xsl"/>
     <xsl:include href = "front_matter.xsl"/>
     <xsl:include href = "bibliographic_fields.xsl"/>
-    <xsl:include href = "body_elements.xsl"/>
     <xsl:include href = "bullet_list.xsl"/>
     <xsl:include href = "enumerated_list.xsl"/>
     <xsl:include href = "definition_list.xsl"/>

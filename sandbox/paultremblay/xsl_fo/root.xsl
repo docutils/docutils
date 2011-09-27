@@ -7,12 +7,9 @@
 
     <!-- The stylesheet for handling root elements, such as document-->
 
-    <!--any attributes here will apply to the entire document-->
-    <xsl:attribute-set name="default-page-sequence">
-    </xsl:attribute-set>
 
     <!--attributes for the sequence of pages for the main body. -->
-    <xsl:attribute-set name="body-page-sequence" use-attribute-sets="default-page-sequence">
+    <xsl:attribute-set name="page-sequence" >
         <xsl:attribute name= "format">1</xsl:attribute> 
         <xsl:attribute name= "initial-page-number">1</xsl:attribute> 
     </xsl:attribute-set>
@@ -60,7 +57,7 @@
     <!--title, bibliographic-info dedication, abstract toc-->
     <xsl:template match = "document">
         <xsl:call-template name='test-params'/>
-        <fo:page-sequence master-reference="pages" xsl:use-attribute-sets="body-page-sequence">
+        <fo:page-sequence master-reference="simple-page" xsl:use-attribute-sets="page-sequence">
             <xsl:apply-templates select="/document/decoration/header" mode="header"/>
             <xsl:apply-templates select="/document/decoration/footer" mode="footer"/>
             <xsl:call-template name="make-footnote-separator"/>
@@ -120,20 +117,17 @@
             <fo:region-body margin-top="{$top}" margin-bottom="{$bottom}" xsl:use-attribute-sets="region-body"/>
             <xsl:choose>
                <xsl:when test = "/document/decoration/header and /document/decoration/footer">
-                   <fo:region-before region-name="body-header" xsl:use-attribute-sets="region-before"/>
-                   <fo:region-after region-name="body-footer" xsl:use-attribute-sets="region-after"/>
+                   <fo:region-before  xsl:use-attribute-sets="region-before"/>
+                   <fo:region-after  xsl:use-attribute-sets="region-after"/>
                </xsl:when>
                <xsl:when test = "/document/decoration/header">
-                   <fo:region-before region-name="body-header" xsl:use-attribute-sets="region-before"/>
+                   <fo:region-before  xsl:use-attribute-sets="region-before"/>
                </xsl:when>
                <xsl:when test = "/document/decoration/footer">
-                   <fo:region-after region-name="body-footer" xsl:use-attribute-sets="region-after"/>
+                   <fo:region-after  xsl:use-attribute-sets="region-after"/>
                </xsl:when>
            </xsl:choose>
           </fo:simple-page-master>
-              <fo:page-sequence-master master-name="pages">
-                    <fo:repeatable-page-master-reference master-reference="simple-page"/>
-              </fo:page-sequence-master>
          </fo:layout-master-set>
     </xsl:template>
 
