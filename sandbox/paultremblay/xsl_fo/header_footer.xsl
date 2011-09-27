@@ -38,7 +38,7 @@
     </xsl:template>
 
     <xsl:template match="decoration/header" mode="header">
-        <fo:static-content flow-name="body-header">
+        <fo:static-content flow-name="xsl-region-before">
             <fo:block role="header" xsl:use-attribute-sets="header-block">
                 <xsl:apply-templates/>
             </fo:block>
@@ -46,7 +46,7 @@
     </xsl:template>
 
     <xsl:template match="decoration/footer" mode="footer">
-        <fo:static-content flow-name="body-footer">
+        <fo:static-content flow-name="xsl-region-after">
             <fo:block role="footer" xsl:use-attribute-sets="footer-block">
                 <xsl:apply-templates/>
             </fo:block>
