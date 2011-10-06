@@ -192,7 +192,7 @@ More extensions are in the `Docutils Sandbox`_.
 * Jens J. Mortensen developed `LaTeX math for reST`_, which writes to
   LaTeX or to MathML. It's included with Docutils since 0.8 (2010-11-05).
 
-* BENI Cherniavsky has written a generic `preprocessing module`_ for
+* Beni Cherniavsky has written a generic `preprocessing module`_ for
   roles and/or directives and built preprocessors for TeX math for
   both LaTeX and HTML output on top of it.
 
@@ -205,6 +205,8 @@ More extensions are in the `Docutils Sandbox`_.
   embedded as ASCII art in the reST source and still look nice when
   converted to e.g. HTML
 
+* zot4rst_ by Erik Hetzner is an extension that allows users to write reST
+  documents using citations from a Zotero_ library.
 
 Related Applications
 --------------------
@@ -303,5 +305,7 @@ Presentations
 .. _rst2qhc: http://rst2qhc.googlecode.com
 .. _Plone: http://plone.org/
 .. _Zope: http://www.zope.org/
+.. _Zotero: http://www.zotero.org/
+.. _zot4rst: http://e6h.org/~egh/hg/zotero-plain
 .. _Trac: http://trac.edgewall.org/
 .. _Texinfo Writer: http://docutils.sf.net/sandbox/texinfo-writer/README.html
