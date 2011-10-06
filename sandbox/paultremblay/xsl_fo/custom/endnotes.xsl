@@ -61,25 +61,7 @@
     </xsl:template>
 
     <xsl:template name="endnote">
-        <xsl:choose>
-            <xsl:when test="$footnote-style = 'list'">
-                <xsl:call-template name="footnote-list-body"/>
-            </xsl:when>
-            <xsl:when test="$footnote-style = 'traditional'">
-                <xsl:choose>
-                    <xsl:when test="self::footnote[label = '1']">
-                        <fo:block role="endnote" xsl:use-attribute-sets="endnote-first-block">
-                            <xsl:apply-templates select="paragraph" mode="traditional-footnote"/>
-                        </fo:block>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <fo:block role="endnote" xsl:use-attribute-sets="endnote-block">
-                            <xsl:apply-templates select="paragraph" mode="traditional-footnote"/>
-                        </fo:block>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:when>
-        </xsl:choose>
+        <xsl:call-template name="footnote-list-body"/>
     </xsl:template>
 
     <xsl:template match="rubric[@classes='endnotes']" mode="endnotes">

@@ -40,17 +40,6 @@
                 <xsl:with-param name="msg" select="$msg"/>
             </xsl:call-template>
         </xsl:if>
-        <xsl:if test= "$footnote-style != 'list'  and $footnote-style != 'traditional'">
-            <xsl:variable name="msg">
-                <xsl:text>"</xsl:text>
-                <xsl:value-of select="$footnote-style"/>
-                <xsl:text>" not a valid value for param "footnote-style"&#xA;</xsl:text>
-                <xsl:text>Valid values are 'list', and 'traditional'&#xA;</xsl:text>
-            </xsl:variable>
-            <xsl:call-template name="quit-message">
-                <xsl:with-param name="msg" select="$msg"/>
-            </xsl:call-template>
-        </xsl:if>
         <xsl:if test= "$internal-link-type != 'link'  and $internal-link-type != 'page'
                 and $internal-link-type != 'page-link'">
             <xsl:variable name="msg">
