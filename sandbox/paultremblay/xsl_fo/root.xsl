@@ -14,8 +14,18 @@
         <xsl:attribute name= "initial-page-number">1</xsl:attribute> 
     </xsl:attribute-set>
 
-    <!--default for fo:flow-->
-    <xsl:attribute-set name="default-flow">
+    <!--margins for body-->
+    <xsl:attribute-set name="page-margins">
+	<xsl:attribute name="margin-left">1.0in</xsl:attribute>
+	<xsl:attribute name="margin-right">1.0in</xsl:attribute>
+	<xsl:attribute name="margin-top">1.0in</xsl:attribute>
+	<xsl:attribute name="margin-bottom">1.0in</xsl:attribute>
+    </xsl:attribute-set>
+
+    <!--put paper size here-->
+    <xsl:attribute-set name="paper-size">
+        <xsl:attribute name="page-width">8.5in</xsl:attribute>
+        <xsl:attribute name="page-height">11in</xsl:attribute>
     </xsl:attribute-set>
 
     <!--region-body-->
@@ -32,8 +42,7 @@
         <xsl:attribute name="extent">.75in</xsl:attribute>
     </xsl:attribute-set>
 
-
-    <xsl:attribute-set name="body-flow" use-attribute-sets="default-flow">
+    <xsl:attribute-set name="body-flow" >
     </xsl:attribute-set>
 
     <xsl:attribute-set name="footnote-separator-flow">
@@ -77,17 +86,9 @@
         </fo:static-content>
     </xsl:template>
 
-    <xsl:attribute-set name="page-size">
-	<xsl:attribute name="margin-left">1.0in</xsl:attribute>
-	<xsl:attribute name="margin-right">1.0in</xsl:attribute>
-	<xsl:attribute name="margin-top">1.0in</xsl:attribute>
-	<xsl:attribute name="margin-bottom">1.0in</xsl:attribute>
-    </xsl:attribute-set>
-
-
     <xsl:template name="make-pages">
          <fo:layout-master-set>
-          <fo:simple-page-master master-name="simple-page"  xsl:use-attribute-sets="page-size">
+          <fo:simple-page-master master-name="simple-page"  xsl:use-attribute-sets="page-margins paper-size">
               <xsl:variable name="top">
                   <xsl:choose>
                       <xsl:when test="/document/decoration/header and $spacing-header = ''">

@@ -68,17 +68,6 @@ fields as author, etc.-->
 <xsl:param name="revision-text">Revision: </xsl:param>
 <xsl:param name="date-text">Date: </xsl:param>
 
-<!--cutom bibliographic entry names-->
-<xsl:param name="custom-bib-info1-name"></xsl:param>
-<xsl:param name="custom-bib-info2-name"></xsl:param>
-<xsl:param name="custom-bib-info3-name"></xsl:param>
-<xsl:param name="custom-bib-info4-name"></xsl:param>
-<xsl:param name="custom-bib-info5-name"></xsl:param>
-<xsl:param name="custom-bib-info6-name"></xsl:param>
-<xsl:param name="custom-bib-info7-name"></xsl:param>
-<xsl:param name="custom-bib-info8-name"></xsl:param>
-<xsl:param name="custom-bib-info9-name"></xsl:param>
-<xsl:param name="custom-bib-info10-name"></xsl:param>
 
 <!--text for  admontions-->
 <xsl:param name="attention-title">Attention!</xsl:param>
