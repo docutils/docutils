@@ -5,6 +5,6 @@
     >
 
     <xsl:import href = "xsl_fo/docutils_to_fo.xsl"/>
-    <xsl:import href = "xsl_fo/custom/endnotes.xsl"/>
+    <xsl:import href = "xsl_fo/custom/footnotes_traditional.xsl"/>
     
 </xsl:stylesheet> 
