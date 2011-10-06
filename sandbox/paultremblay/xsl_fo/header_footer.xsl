@@ -6,8 +6,7 @@
     <!-- $Date: 2011-01-09 02:51:33 -0500 (Sun, 09 Jan 2011) $ -->
     <!--
     This stylesheet handles headers and footers. It creates the fo:static-content 
-    elements, and the child fo:block elements. Each paragraph up to three has its 
-    own attriute set.
+    elements, and the child fo:block elements. 
     -->
 
 
@@ -21,17 +20,6 @@
         <xsl:attribute name="text-align">center</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="footer-block">
-        <xsl:attribute name="font-size">12pt</xsl:attribute>
-        <xsl:attribute name="text-align">center</xsl:attribute>
-        <xsl:attribute name="space-before.conditionality">retain</xsl:attribute>
-    </xsl:attribute-set>
-
-    <xsl:attribute-set name="header-block">
-        <xsl:attribute name="font-size">12pt</xsl:attribute>
-        <xsl:attribute name="text-align">center</xsl:attribute>
-        <xsl:attribute name="space-before.conditionality">retain</xsl:attribute>
-    </xsl:attribute-set>
 
     <xsl:template match="decoration">
         <xsl:apply-templates/>
@@ -39,17 +27,13 @@
 
     <xsl:template match="decoration/header" mode="header">
         <fo:static-content flow-name="xsl-region-before">
-            <fo:block role="header" xsl:use-attribute-sets="header-block">
-                <xsl:apply-templates/>
-            </fo:block>
+            <xsl:apply-templates/>
         </fo:static-content>
     </xsl:template>
 
     <xsl:template match="decoration/footer" mode="footer">
         <fo:static-content flow-name="xsl-region-after">
-            <fo:block role="footer" xsl:use-attribute-sets="footer-block">
-                <xsl:apply-templates/>
-            </fo:block>
+            <xsl:apply-templates/>
         </fo:static-content>
     </xsl:template>
 
