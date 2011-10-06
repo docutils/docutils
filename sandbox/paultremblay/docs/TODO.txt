@@ -1,0 +1,2 @@
+Clean up bibliographic_fields.xsl, so that formatting fields as non list are a
+completely different stylesheet.
