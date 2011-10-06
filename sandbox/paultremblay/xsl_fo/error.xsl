@@ -51,17 +51,6 @@
                 <xsl:with-param name="msg" select="$msg"/>
             </xsl:call-template>
         </xsl:if>
-        <xsl:if test= "$footnote-placement != 'footnote'  and $footnote-placement != 'endnote'">
-            <xsl:variable name="msg">
-                <xsl:text>"</xsl:text>
-                <xsl:value-of select="$footnote-placement"/>
-                <xsl:text>" not a valid value for param "footnote-placement"&#xA;</xsl:text>
-                <xsl:text>Valid values are 'footnote', and 'endnote'&#xA;</xsl:text>
-            </xsl:variable>
-            <xsl:call-template name="quit-message">
-                <xsl:with-param name="msg" select="$msg"/>
-            </xsl:call-template>
-        </xsl:if>
         <xsl:if test= "$internal-link-type != 'link'  and $internal-link-type != 'page'
                 and $internal-link-type != 'page-link'">
             <xsl:variable name="msg">
@@ -69,18 +58,6 @@
                 <xsl:value-of select="$internal-link-type"/>
                 <xsl:text>" not a valid value for param "internal-link-type"&#xA;</xsl:text>
                 <xsl:text>Valid values are 'link', and 'page', and 'page-link'&#xA;</xsl:text>
-            </xsl:variable>
-            <xsl:call-template name="quit-message">
-                <xsl:with-param name="msg" select="$msg"/>
-            </xsl:call-template>
-        </xsl:if>
-        <xsl:if test= "$bibliographic-format != 'list'  and $bibliographic-format != 'normal'
-            and $bibliographic-format != ''">
-            <xsl:variable name="msg">
-                <xsl:text>"</xsl:text>
-                <xsl:value-of select="$bibliographic-format"/>
-                <xsl:text>" not a valid value for param "bibliographic-format"&#xA;</xsl:text>
-                <xsl:text>Valid values are 'list', 'normal', or ''.&#xA;</xsl:text>
             </xsl:variable>
             <xsl:call-template name="quit-message">
                 <xsl:with-param name="msg" select="$msg"/>

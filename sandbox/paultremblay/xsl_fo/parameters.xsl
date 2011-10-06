@@ -15,9 +15,6 @@ the page-header or page-footer attribute sets-->
 <xsl:param name="spacing-header"/>
 <xsl:param name="spacing-footer"/>
 
-<xsl:param name="bibliographic-format">list</xsl:param>
-
-
 <!--cols for custom table, when needed-->
 <xsl:param name="table1-cols"></xsl:param>
 <xsl:param name="table2-cols"></xsl:param>
@@ -133,11 +130,6 @@ For example, '5' will number every fifth line-->
 <!--where to place table title valid options are 'top' or 'bottom'-->
 <xsl:param name="table-title-placement">bottom</xsl:param>
 
-<!--where to place footnote. Values are 'footnote' and
-'endnote'. When 'footnote is choosen, footnotes are placed
-at the bottom of each page. When 'endnote' is choosen, footnotes
-are placed in the same place as in the RST document-->
-<xsl:param name="footnote-placement">footnote</xsl:param>
 
 <!--the style of the footnote. Valid values are 'list', for making 
 the footnote into a list, with the number as the item; 'traditional', 
