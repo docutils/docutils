@@ -89,13 +89,13 @@ else
     FO_FILE=${DIRNAME}/${BASENAME}.fo
 fi
 
-rst2xml.py --strip-comments --trim-footnote-reference-space $1 > $RAW_XML
+rst2xml.py --strip-comments --trim-footnote-reference-space $1  $RAW_XML
 
 if [ "$FORMAT" == "true" ]; then
     xmlformat.pl -i  $RAW_XML
 fi
 
-xsltproc $MAIN_XSL $RAW_XML  > $FO_FILE
+xsltproc --output $FO_FILE $MAIN_XSL $RAW_XML  
 
 if [ "$FORMAT" == "true" ]; then
     xmlformat.pl -i $FO_FILE
