@@ -131,12 +131,6 @@ For example, '5' will number every fifth line-->
 <xsl:param name="table-title-placement">bottom</xsl:param>
 
 
-<!--the style of the footnote. Valid values are 'list', for making 
-the footnote into a list, with the number as the item; 'traditional', 
-to make the footnote more traditional with a first line indent;-->
-<xsl:param name="footnote-style">list</xsl:param>
-
-
 <!--This is a hack to fix the problem with fop ?? not
 being able to space between footnotes. Instead, a blank
 block is written with a no-break space character, and

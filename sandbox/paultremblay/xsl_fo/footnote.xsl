@@ -60,24 +60,18 @@
         <xsl:attribute name="space-before">5pt</xsl:attribute>
     </xsl:attribute-set>
 
-    <!--for the paragraphs in the footnote, the first one-->
-    <xsl:attribute-set name="footnote-first-paragraph-block" use-attribute-sets="footnote-paragraph-block">
-        <xsl:attribute name="space-before">0pt</xsl:attribute>
-    </xsl:attribute-set>
 
     <xsl:template match="footnote_reference">
         <xsl:apply-templates select="key('footnote', @refid)" mode="footnote"/>
     </xsl:template>
 
     <xsl:template match="footnote" mode="footnote">
-        <xsl:choose>
-            <xsl:when test="$footnote-style = 'list'">
-                <xsl:call-template name="footnote-as-list"/>
-            </xsl:when>
-            <xsl:when test="$footnote-style = 'traditional'">
-                <xsl:call-template name="footnote-traditional"/>
-            </xsl:when>
-        </xsl:choose>
+        <fo:footnote xsl:use-attribute-sets = "footnote">
+            <xsl:apply-templates select="label" mode="footnote"/>
+            <fo:footnote-body xsl:use-attribute-sets="footnote-body">
+                <xsl:call-template name="footnote-list-body"/>
+            </fo:footnote-body>
+        </fo:footnote>
     </xsl:template>
 
     <xsl:template name="footnote-list-body">
@@ -96,25 +90,6 @@
         <fo:block role="spacer" font-size="{$space-between-footnotes}" >&#x00a0;</fo:block>
     </xsl:template>
 
-    <xsl:template name="footnote-as-list">
-        <fo:footnote xsl:use-attribute-sets = "footnote">
-            <xsl:apply-templates select="label" mode="footnote"/>
-            <fo:footnote-body xsl:use-attribute-sets="footnote-body">
-                <xsl:call-template name="footnote-list-body"/>
-            </fo:footnote-body>
-        </fo:footnote>
-    </xsl:template>
-
-    <xsl:template name="footnote-traditional">
-        <fo:footnote xsl:use-attribute-sets = "footnote">
-            <xsl:apply-templates select="label" mode="footnote"/>
-            <fo:footnote-body xsl:use-attribute-sets="footnote-body">
-                <xsl:apply-templates select="paragraph" mode="traditional-footnote"/>
-                <fo:block role="spacer" font-size="{$space-between-footnotes}" >&#x00a0;</fo:block>
-            </fo:footnote-body>
-        </fo:footnote>
-    </xsl:template>
-    
 
     <xsl:template match="footnote/label" mode="footnote">
         <fo:inline xsl:use-attribute-sets="footnote-body-label-inline">
@@ -123,22 +98,7 @@
     </xsl:template>
 
     <xsl:template match="footnote/paragraph" mode="footnote">
-        <fo:block xsl:use-attribute-sets="footnote-paragraph-block">
-            <xsl:apply-templates/>
-        </fo:block>
-    </xsl:template>
-
-    <xsl:template match="footnote/paragraph[1]" mode="traditional-footnote" priority="2">
-        <fo:block xsl:use-attribute-sets="footnote-first-paragraph-block">
-            <fo:inline xsl:use-attribute-sets="footnote-label-inline">
-                <xsl:value-of select="../label"/>
-            </fo:inline>
-            <xsl:apply-templates/>
-        </fo:block>
-    </xsl:template>
-
-    <xsl:template match="footnote/paragraph" mode="traditional-footnote">
-        <fo:block xsl:use-attribute-sets="footnote-paragraph-block">
+        <fo:block role="list-footnote-para" xsl:use-attribute-sets="footnote-paragraph-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
