@@ -89,33 +89,7 @@
     <xsl:template name="make-pages">
          <fo:layout-master-set>
           <fo:simple-page-master master-name="simple-page"  xsl:use-attribute-sets="page-margins paper-size">
-              <xsl:variable name="top">
-                  <xsl:choose>
-                      <xsl:when test="/document/decoration/header and $spacing-header = ''">
-                          <xsl:text>.75in</xsl:text>
-                      </xsl:when>
-                      <xsl:when test="document/decoration/header">
-                          <xsl:value-of select="$spacing-header"/>
-                      </xsl:when>
-                      <xsl:otherwise>
-                          <xsl:text>0in</xsl:text>
-                      </xsl:otherwise>
-                  </xsl:choose>
-              </xsl:variable>
-              <xsl:variable name="bottom">
-                  <xsl:choose>
-                      <xsl:when test="/document/decoration/footer and $spacing-footer = ''">
-                          <xsl:text>.75in</xsl:text>
-                      </xsl:when>
-                      <xsl:when test="document/decoration/footer">
-                          <xsl:value-of select="$spacing-footer"/>
-                      </xsl:when>
-                      <xsl:otherwise>
-                          <xsl:text>0in</xsl:text>
-                      </xsl:otherwise>
-                  </xsl:choose>
-              </xsl:variable>
-            <fo:region-body margin-top="{$top}" margin-bottom="{$bottom}" xsl:use-attribute-sets="region-body"/>
+            <fo:region-body margin-top="{$region-body-margin-top}" margin-bottom="{$region-body-margin-bottom}" xsl:use-attribute-sets="region-body"/>
             <xsl:choose>
                <xsl:when test = "/document/decoration/header and /document/decoration/footer">
                    <fo:region-before  xsl:use-attribute-sets="region-before"/>

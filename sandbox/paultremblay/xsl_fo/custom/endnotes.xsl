@@ -11,10 +11,6 @@
     has no shift, and has the same effect as not setting the value at all-->
 
 
-    <!--the block that wraps all the endnotes-->
-    <xsl:attribute-set name="endnotes-block">
-        <xsl:attribute name="break-before">page</xsl:attribute>
-    </xsl:attribute-set>
 
     <!--controls the space between each endnote-->
     <xsl:attribute-set name="endnote-block">
@@ -49,15 +45,13 @@
     </xsl:template>
 
     <xsl:template match="footnote[label = '1']" priority="2">
-        <fo:block role="endnotes" xsl:use-attribute-sets="endnotes-block">
-            <xsl:apply-templates select="../rubric[@classes='endnotes']" mode="endnotes"/>
-            <xsl:for-each select="self::footnote|following-sibling::footnote">
-                <xsl:variable name="label" select="label"/>
-                <xsl:if test="string($label + 1) != 'NaN'">
-                    <xsl:call-template name="endnote"/>
-                </xsl:if>
-            </xsl:for-each>
-        </fo:block>
+        <xsl:apply-templates select="../rubric[@classes='endnotes']" mode="endnotes"/>
+        <xsl:for-each select="self::footnote|following-sibling::footnote">
+            <xsl:variable name="label" select="label"/>
+            <xsl:if test="string($label + 1) != 'NaN'">
+                <xsl:call-template name="endnote"/>
+            </xsl:if>
+        </xsl:for-each>
     </xsl:template>
 
     <xsl:template name="endnote">

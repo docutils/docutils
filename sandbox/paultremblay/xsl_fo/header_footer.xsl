@@ -42,13 +42,13 @@
     </xsl:template>
 
     <xsl:template match="decoration/header/paragraph">
-        <fo:block xsl:use-attribute-sets="paragraph-header-block">
+        <fo:block role="header" xsl:use-attribute-sets="paragraph-header-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
 
     <xsl:template match="decoration/footer/paragraph">
-        <fo:block xsl:use-attribute-sets="paragraph-footer-block">
+        <fo:block role="footer" xsl:use-attribute-sets="paragraph-footer-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
