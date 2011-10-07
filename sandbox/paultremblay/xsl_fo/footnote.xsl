@@ -98,7 +98,7 @@
     </xsl:template>
 
     <xsl:template match="footnote/paragraph" mode="footnote">
-        <fo:block role="list-footnote-para" xsl:use-attribute-sets="footnote-paragraph-block">
+        <fo:block role="footnote-para" xsl:use-attribute-sets="footnote-paragraph-block">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>

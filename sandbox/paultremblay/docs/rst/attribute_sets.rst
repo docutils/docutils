@@ -334,32 +334,6 @@ default-footnote-label-inline
 
 Sets of the defaults for the label (1, \*, etc), of each label.
 
-footnote-label-inline
----------------------
-
-:fo: fo:inline
-
-:inherits: default-footnote-label-inline
-
-:defaults:
-
-Formats the label for *traditional* footnotes and endnotes at the
-bottomm of the page or with the endnotes. This attribute set
-does not affect the label for footnotes and endnotes formatted as
-a list.
-
-footnote-body-label-inline
---------------------------
-
-:fo: fo:inline
-
-:inherits: default-footnote-label-inline
-
-:defaults:
-
-Formats the label for *traditional* footnotes and endnotes in the
-body of the text. This attribute set does not affect the label
-for footnotes and endnotes formatted as a list.
 
 footnote-list-block
 -------------------
@@ -432,43 +406,13 @@ footnote-paragraph-block
 
 Formats the paragraphs in the body of a footnote or endnote. Use
 the 'space-before' to set the space between each paragraphs, for
-footnotes or endnotes with multiple paragraphs. In addition, for
-traditional footnotes, use the 'text-indent="18pt" to create a
-traditional footnote. (The deault does not do this, in order to
-accommodate the footnote-as-a-list.)
-
-footnote-first-paragraph-block
-------------------------------
-
-:fo: fo:block
-
-:inherits: footnote-paragraph-block
-
-:defaults:
-
-     space-before: 0pt
-
-Formats the first paragraphs in the body of a footnote or
-endnote. It inherits all the attributes from the
-'footnote-paragraphs-block' and sets the space-before to 0. It
-does not make sense to change attributes on this block directly.
+footnotes or endnotes with multiple paragraphs. 
 
 
 Endnote
 ========
 
-endnotes-block
---------------
-
-:fo: fo:block
-
-:defaults:
-
-     break-before: page
-
-The block that wraps all the other blocks of the endnotes. Use to
-create a page break before, or to create space before and after
-the endnotes.
+For attributes when the endnotes.xsl stylesheet is imported.
 
 endnote-block
 -------------
@@ -515,3 +459,111 @@ endnotes-title-block
 Formats the title for the endnotes, when one is present. The rst will have a
 rubric with the classes as "endnotes. The XML will look like <rubric
 @classes="endotes">
+
+TOC Matter Attribute Sets
+=========================
+
+Attribute sets for the TOC.
+
+toc-title-block
+---------------
+
+:fo: fo:block
+
+:defaults:
+
+     text-align: center
+
+     font-weight: bold
+
+     font-size: 14pt
+
+Formats the block for the title for the TOC.
+
+toc-entry-defaults-block
+------------------------
+
+:fo: None
+
+:defaults:
+
+     space-after: 3pt
+
+     text-align-last: justify
+
+Sets up the defaults for the TOC entries.
+
+toc-level1-block
+----------------
+
+:fo: fo:block
+
+
+:inherits: toc-entry-defaults-block
+
+:defaults:
+
+Formats the block for the level 1 table of contents entry. If a
+number exists, it is formatted according to the parameter
+'number-section1'.
+
+toc-level2-block
+----------------
+
+:fo: fo:block
+
+:inherits: toc-entry-defaults-block
+
+:defaults:
+
+     start-indent: 10mm
+
+Formats the block for the level 2 table of contents entry. If a
+number exists, it is formatted according to the parameter
+'number-section2'.
+
+toc-level3-block
+----------------
+
+:fo: fo:block
+
+:inherits: toc-entry-defaults-block
+
+:defaults:
+
+     start-indent: 20mm
+
+Formats the block for the level 3 table of contents entry. If a
+number exists, it is formatted according to the parameter
+'number-section3'.
+
+toc-level4-block
+----------------
+
+:fo: fo:block
+
+:inherits: toc-entry-defaults-block
+
+:defaults:
+
+     start-indent: 30mm
+
+Formats the block for the level 4 table of contents entry. If a
+number exists, it is formatted according to the parameter
+'number-section4'.
+
+toc-level5-block
+----------------
+
+:fo:
+
+
+:inherits: toc-entry-defaults-block
+
+:defaults:
+
+     start-indent: 40mm
+
+Formats the block for the level 5 table of contents entry. If a
+number exists, it is formatted according to the parameter
+'number-section5'.

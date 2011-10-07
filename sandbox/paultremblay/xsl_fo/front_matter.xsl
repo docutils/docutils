@@ -49,7 +49,6 @@
 
     <!--END OF ATTRIBUTE SETS-->
 
-    <!--ony process if not already processed in front matter-->
     <xsl:template match="topic[@classes='dedication']">
         <fo:block role="dedication" xsl:use-attribute-sets="dedication-block">
             <xsl:apply-templates/>

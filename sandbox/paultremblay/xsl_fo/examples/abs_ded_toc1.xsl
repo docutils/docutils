@@ -59,10 +59,10 @@
         </fo:page-sequence>
         <fo:page-sequence master-reference="abstract-page" format="i" initial-page-number="1" force-page-count="no-force">
             <fo:static-content flow-name = "odd-footer">
-                <fo:block>put page #  here</fo:block>
+                <fo:block><fo:page-number/></fo:block>
             </fo:static-content>
             <fo:static-content flow-name = "even-footer">
-                <fo:block>put page #  here</fo:block>
+                <fo:block><fo:page-number/></fo:block>
             </fo:static-content>
             <fo:flow flow-name="xsl-region-body" xsl:use-attribute-sets="body-flow">
                 <xsl:apply-templates select="topic[@classes='abstract']" mode="abstract"/>
@@ -70,10 +70,10 @@
         </fo:page-sequence>
         <fo:page-sequence master-reference="toc-pages" format="i" initial-page-number="1" force-page-count="no-force">
             <fo:static-content flow-name = "odd-footer">
-                <fo:block>put page #  here</fo:block>
+                <fo:block><fo:page-number/></fo:block>
             </fo:static-content>
             <fo:static-content flow-name = "even-footer">
-                <fo:block>put page #  here</fo:block>
+                <fo:block><fo:page-number/></fo:block>
             </fo:static-content>
             <fo:flow flow-name="xsl-region-body" xsl:use-attribute-sets="body-flow">
                 <xsl:apply-templates select="topic[@classes='contents']" mode="toc"/>
@@ -82,10 +82,10 @@
         <fo:page-sequence master-reference="body-pages" >
             <xsl:call-template name="make-footnote-separator"/>
             <fo:static-content flow-name="odd-header">
-                <fo:block>put page # </fo:block>
+                <fo:block><fo:page-number/></fo:block>
             </fo:static-content>
             <fo:static-content flow-name="even-header">
-                <fo:block>put page # </fo:block>
+                <fo:block><fo:page-number/></fo:block>
             </fo:static-content>
             <fo:flow flow-name="xsl-region-body" >
                 <xsl:apply-templates/>

@@ -5,8 +5,6 @@
     >
     <!-- $Id: toc.xsl 7131 2011-09-26 19:27:15Z paultremblay $ -->
 
-    <xsl:attribute-set name="toc-block">
-    </xsl:attribute-set>
 
     <xsl:attribute-set name="toc-title-block">
         <xsl:attribute name="text-align">center</xsl:attribute>
@@ -41,16 +39,9 @@
     <!--END OF ATTRIBUTE SETS-->
 
     <xsl:template match="topic[@classes='contents']">
-        <fo:block role="toc" xsl:use-attribute-sets="toc-block">
-            <xsl:apply-templates/>
-        </fo:block>
+        <xsl:apply-templates/>
     </xsl:template>
 
-     <xsl:template match="topic[@classes='contents']" mode="front">
-        <fo:block role="toc" xsl:use-attribute-sets="toc-block">
-            <xsl:apply-templates/>
-        </fo:block>
-     </xsl:template>
 
 
     <!--TOC title-->
