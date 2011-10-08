@@ -220,3 +220,75 @@ Format the toc numbers
 The format of the numbers for toc entry takes the same format as the
 section numbers. See section numbers.
 
+=========
+Sections
+=========
+
+Formatting titles
+-------------------
+
+Use the attribute-sets ``'title-level1-block'``, ``'title-level1-block'``,  etc, to
+format the titles for each section. Docutils to fo allows sections to go 7
+levels deep. Headings are blocks and can take any property of a block. 
+
+::
+
+    <xsl:attribute-set name="default-section-title-block">
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+        <xsl:attribute name="space-after">12pt</xsl:attribute>
+        <xsl:attribute name="keep-with-next">always</xsl:attribute>
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="title-level1-block" use-attribute-sets="default-section-title-block">
+        <xsl:attribute name="font-weight">bold</xsl:attribute>
+        <xsl:attribute name="font-size">16</xsl:attribute>
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="title-level2-block" use-attribute-sets="default-section-title-block">
+        <xsl:attribute name="font-weight">bold</xsl:attribute>
+        <xsl:attribute name="font-size">14</xsl:attribute>
+        <xsl:attribute name="font-style">italic</xsl:attribute>
+    </xsl:attribute-set>
+
+
+Creating section numbers
+-------------------------
+
+At the start of the document, put::
+
+ .. sectnum::
+
+Formatting section numbers
+---------------------------
+
+Use the ``'parm#'`` identifier plus the ``'number-format'`` to format the
+section numbers. The value for formatting can take a combination of
+punctuation and numbers, letters, or Roman numberals
+
+::
+
+
+ <xsl:param name="number-section1">1</xsl:param>
+ <xsl:param name="number-section2">.1</xsl:param>
+ <xsl:param name="number-section3">.1</xsl:param>
+ <xsl:param name="number-section4">.1</xsl:param>
+ <xsl:param name="number-section5">.1</xsl:param>
+ <xsl:param name="number-section6">.1</xsl:param>
+ <xsl:param name="number-section7">.1</xsl:param>
+ <xsl:param name="number-section8">.1</xsl:param>
+ <xsl:param name="number-section9">.1</xsl:param>
+
+ # (I.), (II.), (III.), etc
+ heading1.number-format = (I.)
+
+ # i.), ii.), etc 
+ heading2.number-format = i.)
+
+ # .1., .2., .3., etc
+ heading3.number-format = .1.
+
+ # a, b, c, etc
+ heading4.number-format = a
+
+ # A, B, C., etc
+ heading5.number-format = A

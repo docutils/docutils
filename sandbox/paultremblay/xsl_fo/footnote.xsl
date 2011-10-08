@@ -21,10 +21,6 @@
         <xsl:attribute name="font-size">8pt</xsl:attribute>
     </xsl:attribute-set>
 
-    <!--the attributes for the label at the bottom of the page-->
-    <xsl:attribute-set name="footnote-label-inline" use-attribute-sets="default-footnote-label-inline">
-    </xsl:attribute-set>
-
     <!--the attributes for the label in the body of the text-->
     <xsl:attribute-set name="footnote-body-label-inline" use-attribute-sets="default-footnote-label-inline">
     </xsl:attribute-set>
@@ -87,7 +83,6 @@
                 </fo:list-item-body>
             </fo:list-item>
         </fo:list-block>
-        <fo:block role="spacer" font-size="{$space-between-footnotes}" >&#x00a0;</fo:block>
     </xsl:template>
 
 

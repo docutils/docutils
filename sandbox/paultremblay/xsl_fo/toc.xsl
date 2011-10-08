@@ -43,7 +43,6 @@
     </xsl:template>
 
 
-
     <!--TOC title-->
     <xsl:template match="topic[@classes='contents']/title" priority="2">
         <fo:block xsl:use-attribute-sets="toc-title-block">
