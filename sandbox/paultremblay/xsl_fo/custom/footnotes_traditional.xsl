@@ -10,6 +10,11 @@
         <xsl:attribute name="space-before">0pt</xsl:attribute>
     </xsl:attribute-set>
 
+    <!--the attributes for the label at the bottom of the page-->
+    <xsl:attribute-set name="footnote-label-inline" use-attribute-sets="default-footnote-label-inline">
+    </xsl:attribute-set>
+
+
     <xsl:template match="footnote" mode="footnote">
         <fo:footnote xsl:use-attribute-sets = "footnote">
             <xsl:apply-templates select="label" mode="footnote"/>

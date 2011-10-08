@@ -10,10 +10,6 @@
 <xsl:param name="strict"/>
 
 
-<!--these are unfortunate parameters; they should be set to exactly the value of extent in 
-the page-header or page-footer attribute sets-->
-<xsl:param name="spacing-header"></xsl:param>
-<xsl:param name="spacing-footer">1.5in</xsl:param>
 
 <!--cols for custom table, when needed-->
 <xsl:param name="table1-cols"></xsl:param>
