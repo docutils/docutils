@@ -68,6 +68,8 @@ region-body
         margin-top: .75in
         margin-bottom: .75in
 
+(DON'T THIS IS CORRECT--VARIABLES NO HANDLE THIS?)
+
 Sets the defaults for the margins for the body region (as opposed to the
 page). These defaults are only used if headers or footers are found.
 
@@ -460,8 +462,8 @@ Formats the title for the endnotes, when one is present. The rst will have a
 rubric with the classes as "endnotes. The XML will look like <rubric
 @classes="endotes">
 
-TOC Matter Attribute Sets
-=========================
+TOC 
+====
 
 Attribute sets for the TOC.
 
