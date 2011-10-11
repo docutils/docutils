@@ -34,11 +34,6 @@
         <xsl:attribute name="font-weight">bold</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="document-title-page-block">
-        <!--
-        <xsl:attribute name="break-after">page</xsl:attribute>
-        -->
-    </xsl:attribute-set>
 
     <xsl:attribute-set name="document-subtitle-block">
         <xsl:attribute name="space-before">12pt</xsl:attribute>
@@ -48,23 +43,15 @@
         <xsl:attribute name="font-weight">bold</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="block-quote-outer-block">
+
+    <xsl:attribute-set name="block-quote-paragraph-block">
         <xsl:attribute name="start-indent">20mm</xsl:attribute>
         <xsl:attribute name="end-indent">20mm</xsl:attribute>
         <xsl:attribute name="space-after">12pt</xsl:attribute>
         <xsl:attribute name="space-before">12pt</xsl:attribute>
     </xsl:attribute-set>
 
-    <xsl:attribute-set name="block-quote-paragraph-block">
-        <!--
-        <xsl:attribute name="start-indent">inherit</xsl:attribute>
-        <xsl:attribute name="end-indent">inherit</xsl:attribute>
-        -->
-        <xsl:attribute name="space-before">12pt</xsl:attribute>
-    </xsl:attribute-set>
-
     <xsl:attribute-set name="block-quote-first-paragraph-block" use-attribute-sets="block-quote-paragraph-block">
-        <xsl:attribute name="space-before">0pt</xsl:attribute>
     </xsl:attribute-set>
 
 
@@ -181,25 +168,8 @@
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="document/title" mode="front">
-        <fo:block xsl:use-attribute-sets="document-title-page-block" role="title-page">
-            <fo:block xsl:use-attribute-sets="document-title-block" role="title">
-                <xsl:apply-templates/>
-            </fo:block>
-            <xsl:apply-templates select="/document/subtitle" mode="front"/>
-        </fo:block>
-    </xsl:template>
-
-    <xsl:template match="document/subtitle" mode="front">
-        <fo:block xsl:use-attribute-sets="document-subtitle-block" role="subtitle">
-            <xsl:apply-templates/>
-        </fo:block>
-    </xsl:template>
-
     <xsl:template match="block_quote[not(@classes)]">
-        <fo:block role="block-quote" xsl:use-attribute-sets = "block-quote-outer-block">
-            <xsl:apply-templates/>
-        </fo:block>
+        <xsl:apply-templates/>
     </xsl:template>
 
     <xsl:template match="block_quote[not(@classes)]/paragraph">

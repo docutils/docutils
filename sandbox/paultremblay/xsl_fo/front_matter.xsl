@@ -5,13 +5,6 @@
     >
     <!-- $Id: front_matter.xsl 7131 2011-09-26 19:27:15Z paultremblay $ -->
 
-    <!--attribute set for dedication wrapper block (to be able to force a break after). Element is fo:block-->
-    <xsl:attribute-set name="dedication-block">
-    </xsl:attribute-set>
-
-    <!--attribute set for abstract wrapper block (to be able to force a break after). Element is fo:block-->
-    <xsl:attribute-set name="abstract-block">
-    </xsl:attribute-set>
 
     <!--attribute set for dedication title. Element is fo:block-->
     <xsl:attribute-set name="dedication-title-block">
@@ -50,9 +43,7 @@
     <!--END OF ATTRIBUTE SETS-->
 
     <xsl:template match="topic[@classes='dedication']">
-        <fo:block role="dedication" xsl:use-attribute-sets="dedication-block">
-            <xsl:apply-templates/>
-        </fo:block>
+        <xsl:apply-templates/>
     </xsl:template>
 
 
@@ -76,9 +67,7 @@
 
 
     <xsl:template match="topic[@classes='abstract']">
-        <fo:block role="abstract" xsl:use-attribute-sets="abstract-block">
-            <xsl:apply-templates/>
-        </fo:block>
+        <xsl:apply-templates/>
     </xsl:template>
 
     <xsl:template match="topic[@classes='abstract']/title" priority="2">
