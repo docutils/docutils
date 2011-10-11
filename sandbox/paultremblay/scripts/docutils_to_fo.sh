@@ -13,6 +13,7 @@ Usage() {
     echo --noclean: no not remove files created
     echo --pdf: create a PDF document
     echo --valid: validate the FO document
+    echo --strict: quit when a template does not match \(or other error\)
     echo "-s | --stylesheet <stylesheet> : the stylesheet to use"
     echo "-o | --out: file to output to"
 }
@@ -23,6 +24,7 @@ TESTQ=
 VALID='false'
 STYLESHEET=
 OUT=''
+STRICT=''
  while [ $# -gt 0 ]
  do
      case "$1" in
@@ -32,11 +34,12 @@ OUT=''
          --help) Usage;exit 0;;
          --verbose) VERBOSE='true';;
          --format) FORMAT='true';;
-         --test) CLEAN='false';FORMAT='true';VALID='true';PDF='true';TEST='true';;
+         --test) CLEAN='false';FORMAT='true';VALID='true';PDF='true';TEST='true';STRICT='true';;
          --testq) CLEAN='false';VALID='true';FORMAT='true';;
          --noclean) CLEAN='false';;
          --pdf) PDF='true';;
          --valid) VALID='true';;
+         --strict) STRICT='true';;
          --out) shift;OUT=$1;;
          -o) shift;OUT=$1;;
          --stylesheet) shift;STYLESHEET=$1;;
@@ -95,7 +98,12 @@ if [ "$FORMAT" == "true" ]; then
     xmlformat.pl -i  $RAW_XML
 fi
 
-xsltproc --output $FO_FILE $MAIN_XSL $RAW_XML  
+if [ "$STRICT" == "" ]; then
+    xsltproc --output $FO_FILE $MAIN_XSL $RAW_XML  
+else
+    xsltproc --stringparam strict true --output $FO_FILE $MAIN_XSL $RAW_XML  
+fi
+
 
 if [ "$FORMAT" == "true" ]; then
     xmlformat.pl -i $FO_FILE
