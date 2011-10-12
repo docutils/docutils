@@ -23,7 +23,10 @@ In order to change the defaults of the stylesheets, you will need to create a
 new stylesheet which imports the standard stylesheet, and then process this
 stylesheet. 
 
-This new stylesheet changes the margins of the top and bottom to 1.5 inches.::
+This new stylesheet changes the margins of the top and bottom to 1.5 inches.
+The default margins for the left and right remain unchanged.
+
+::
 
  <xsl:stylesheet 
      xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -744,7 +747,258 @@ the definition::
         <xsl:attribute name="start-indent">30pt</xsl:attribute>
     </xsl:attribute-set>
 
+============
+Field List
+============
 
+
+Formatting the field list
+----------------------------
+
+Use the ``'field-list-block'`` attribute set to format the space after and
+before, the left and right indent, and any other property you want to
+set on the list, such as font for font-size::
+
+    <xsl:attribute-set name="field-list-block" >
+        <xsl:attribute name="start-indent">0mm</xsl:attribute>
+        <xsl:attribute name="provisional-distance-between-starts">30mm</xsl:attribute>
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+        <xsl:attribute name="space-after">12pt</xsl:attribute>
+    </xsl:attribute-set>
+
+To format space between field and text change the
+``'provisional-distance-between-starts'`` attribute::
+
+
+        <xsl:attribute name="provisional-distance-between-starts">40mm</xsl:attribute>
+
+
+format items
+-------------------------------
+
+Use the ``'field-list-items'`` attribute set.
+
+::
+
+
+    <xsl:attribute-set name="field-list-item">
+        <xsl:attribute name="space-before">12pt</xsl:attribute> 
+    </xsl:attribute-set>
+
+Formatting the field names
+---------------------------
+
+Use the ``'field-list-item-label-block'`` attribute-set, which can take any inline
+properties::
+
+
+    <xsl:attribute-set name="field-list-item-label-block">
+        <xsl:attribute name="font-weight">bold</xsl:attribute> 
+    </xsl:attribute-set>
+
+
+Formatting the  paragraphs
+----------------------------
+
+Use the ``'field-body-block'`` attribute-set to format the text of
+the bullet list. This identifier can take any block property::
+
+    <xsl:attribute-set name="field-body-block">
+        <xsl:attribute name="space-after">12pt</xsl:attribute> 
+    </xsl:attribute-set>
+
+Note that using the ``'space-before'`` property has the same effect as
+controlling the space between each paragraph, without putting unwated space
+before the first paragraph. 
+
+============
+Option List
+============
+
+Formatting the option list format
+-----------------------------------
+
+The option list can either be formatted as a list, with the options as
+labels to the left of the description; or as a definition list, with
+the options serving as the terms, and the descriptions in a paragraph
+right below. For an option list with lenghty options, a definition
+list may work better.
+
+By default, the stylesheets process the options list as a list. If you wish to
+format them as a definition list, use the following::
+
+    <xsl:stylesheet 
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:fo="http://www.w3.org/1999/XSL/Format"
+    version="1.1"
+    >
+
+        <xsl:import href="xsl_fo/docutils_to_fo.xsl"/>
+        <xsl:import href="xsl_fo/custom/option_list_as_definition.xsl"/>
+    
+    </xsl:stylesheet>
+
+Default (as list)
+------------------
+
+
+Choosing the options separator
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+By default, the docutils to FO convertor uses a comma to separate
+options. To change the default, use the ``'options-separator'``
+parameter::
+
+    <xsl:param name="options-separator">| </xsl:param>
+
+
+Formatting the option list
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Use the ``'option-list-block'`` attribute-set to format the space after and
+before, the left and right indent, and any other property you want to
+set on the list, such as font for font-size::
+
+    <xsl:attribute-set name="option-list-block">
+        <xsl:attribute name="start-indent">0mm</xsl:attribute>
+        <xsl:attribute name="provisional-distance-between-starts">50mm</xsl:attribute>
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+        <xsl:attribute name="space-after">12pt</xsl:attribute>
+    </xsl:attribute-set>
+
+To format space between option and text, chance the
+``'provisional-distance-between-starts'`` attribute::
+
+ <xsl:attribute name="provisional-distance-between-starts">40mm</xsl:attribute>
+
+
+Formating items
+^^^^^^^^^^^^^^^^
+
+Use the ``'option-list-item'`` attribute set.
+
+::
+
+
+    <xsl:attribute-set name="option-list-item">
+        <xsl:attribute name="space-before">12pt</xsl:attribute> 
+    </xsl:attribute-set>
+ 
+
+Formatting the options without the argument
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Use the ``'option-inline'`` attribute-set to format only the option without the
+arguments of the options. This identifier  can take any inline
+properties::
+
+
+    <xsl:attribute-set name="option-inline">
+        <xsl:attribute name="font-family">monospace</xsl:attribute>
+    </xsl:attribute-set>
+
+.. option-group-block
+
+Formatting the arguments of the options
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Use the ``'option-argument-inline'`` attribute-set to format just the option of
+the arugment. This identifier  can take any inline properties::
+
+
+    <xsl:attribute-set name="option-argument-inline">
+        <xsl:attribute name="font-family">monospace</xsl:attribute>
+	<xsl:attribute name="font-style">italic</xsl:attribute>
+    </xsl:attribute-set>
+
+
+Formatting the description
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Use the ``'option-list-item-body'`` attribue set to format the text of
+the option list.
+
+
+Formatting the paragraphs
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Use the ``'option-list-item-body-block'`` attribute-set to format the text of
+the list. This identifier can take any block property::
+
+    <xsl:attribute-set name="option-list-item-body-block">
+    </xsl:attribute-set>
+
+Note that using the ``'space-before'`` property has the same effect as
+controlling the space between each paragraph, without putting unwated space
+before the first paragraph. 
+
+
+As definition list
+------------------
+
+Formatting the option list
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Use the ``'option-list-definition-block'`` to format the entire option list::
+
+    <xsl:attribute-set name="option-list-definition-block">
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+        <xsl:attribute name="space-after">12pt</xsl:attribute>
+    </xsl:attribute-set>
+
+Formatting each item
+^^^^^^^^^^^^^^^^^^^^^
+
+Use the attribute-set ``'option-list-item-block'``.
+
+::
+
+    <xsl:attribute-set name="option-list-item-block">
+        <xsl:attribute name="space-before">8pt</xsl:attribute>
+    </xsl:attribute-set>
+
+Formatting the options
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Use the ``'option-group-block'`` attribute set::
+
+    <xsl:attribute-set name="option-group-block">
+        <xsl:attribute name="keep-with-next">always</xsl:attribute>
+    </xsl:attribute-set>
+
+Formatting the description
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The description contains one or more paragraphs. To format all of these at
+once, use the ``'option-list-description-block'`` attribute set::
+
+    <xsl:attribute-set name="option-list-description-block">
+        <xsl:attribute name="start-indent">16pt</xsl:attribute>
+        <xsl:attribute name="space-before">8pt</xsl:attribute>
+    </xsl:attribute-set>
+
+Fomratting the paragraphs in the description
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Use the ``'option-list-paragraph-block'``::
+
+    <xsl:attribute-set name="option-list-paragraph-block">
+        <xsl:attribute name="space-before">0pt</xsl:attribute>
+    </xsl:attribute-set>
+
+Formatting the options without the argument
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Use the ``'option-inline'`` attribute-set. (See above for the default
+section.)
+
+
+
+Formatting the arguments of the options
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Use the ``'option-argument-inline'`` attribute-set. (See above in the default
+section.)
 
 =======
 Inline
