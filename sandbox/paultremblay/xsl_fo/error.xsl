@@ -7,17 +7,6 @@
 
     <xsl:template name="test-params">
 
-        <xsl:if test= "$option-list-format != 'list'  and $option-list-format != 'definition'">
-            <xsl:variable name="msg">
-                <xsl:text>"</xsl:text>
-                <xsl:value-of select="$option-list-format"/>
-                <xsl:text>" not a valid value for param "option-list-format"&#xA;</xsl:text>
-                <xsl:text>Valid values are 'list', and 'definition'&#xA;</xsl:text>
-            </xsl:variable>
-            <xsl:call-template name="quit-message">
-                <xsl:with-param name="msg" select="$msg"/>
-            </xsl:call-template>
-        </xsl:if>
         <xsl:if test ="$number-verse != '' and string($number-verse + 1 ) = 'NaN'">
             <xsl:variable name="msg">
                 <xsl:text>"</xsl:text>
