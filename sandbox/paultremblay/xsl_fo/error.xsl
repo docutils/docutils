@@ -131,7 +131,7 @@
             <xsl:value-of select="$trace"/>
         </xsl:message>
         <xsl:choose>
-            <xsl:when test="$strict='True'">
+            <xsl:when test="$strict !=''">
                 <xsl:message terminate="yes">
                     <xsl:text>Processing XSLT Stylesheets now quiting</xsl:text>
                 </xsl:message>
