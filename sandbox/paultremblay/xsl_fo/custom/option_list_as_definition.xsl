@@ -3,7 +3,7 @@
     xmlns:fo="http://www.w3.org/1999/XSL/Format"
     version="1.1"
     >
-    <!--for the options-list . Element is fo:block.`doc`-->
+    <!--for the options-list . Element is fo:block.-->
     <xsl:attribute-set name="option-list-definition-block">
         <xsl:attribute name="space-before">12pt</xsl:attribute>
         <xsl:attribute name="space-after">12pt</xsl:attribute>
