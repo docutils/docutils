@@ -190,12 +190,6 @@ contains all the other list elements, it can be used to set
 values such as the font, background color, line-height, etc, for
 the entire list, as well as the space after and before.
 
-"The provisional-distance-between-starts property of the
-list-block specifies the distance bewteen the start of the label
-(the bullet, for example) and the actual start of the list
-content" (Pawson, 100). In this case, that means the distance
-between the label (such as "Version", and the labels' value (such
-as "1.2").
 
 bibliographic-fields-list-item
 ------------------------------
@@ -902,10 +896,6 @@ list elements, it can be used to set values such as the font,
 background color, line-height, etc, for the entire list, as well
 as the space after and before.
 
-"The provisional-distance-between-starts property of the
-list-block specifies the distance bewteen the start of the label
-(the bullet, for example) and the actual start of the list
-content" (Pawson, 100)
 
 bullet-list-item
 ----------------
@@ -1038,8 +1028,6 @@ enumerated-list-block
 
 :fo: list-block
 
-:docutils: enumerated_list
-
 :defaults:
 
      start-indent: 5mm
@@ -1055,17 +1043,12 @@ other list elements, it can be used to set values such as the
 font, background color, line-height, etc, for the entire list, as
 well as the space after and before.
 
-"The provisional-distance-between-starts property of the
-list-block specifies the distance bewteen the start of the label
-(the bullet, for example) and the actual start of the list
-content" (Pawson, 100)
+
 
 enumerated-level2-list-block
 ----------------------------
 
 :fo: list-block
-
-:docutils: enumerated_list/enumerated_list
 
 :defaults:
 
@@ -1086,8 +1069,6 @@ enumerated-list-item
 
 :fo: fo:list-item
 
-:docutils: enumerated_list/list_item
-
 :defaults:
 
      space-before: 12pt
@@ -1100,8 +1081,6 @@ enumerated-first-list-item
 --------------------------
 
 :fo: fo:list-item
-
-:docutils: enumerated_list/list_item[1]
 
 :inherits: enumerated-list-item
 
@@ -1120,8 +1099,6 @@ enumerated-level2-list-item
 
 :fo: fo:list-item
 
-:docutils: enumerated_list/list_item/enumerated_list/list-item
-
 :defaults:
 
      space-before: 12pt
@@ -1132,8 +1109,6 @@ enumerated-level2-first-list-item
 ---------------------------------
 
 :fo: fo:list-item
-
-:docutils: enumerated_list/item/enumerated_list/list_item[1]
 
 :inherits: enumerated-level2-list-item
 
@@ -1148,8 +1123,6 @@ enumerated-list-item-label
 
 :fo: fo:list-item-label
 
-:docutils: enumerated_list/list_item
-
 :defaults:
 
      end-indent: label-end()
@@ -1162,8 +1135,6 @@ enumerated-list-item-body
 
 :fo: fo:list-item-body
 
-:docutils: enumerated_list/list_item
-
 :defaults:
 
      start-indent: body-start()
@@ -1175,8 +1146,6 @@ enumerated-list-item-body-block
 -------------------------------
 
 :fo: fo:block
-
-:docutils: enumerated_list/list_item/paragraph
 
 :defaults:
 
@@ -1195,8 +1164,6 @@ definition-list-block
 
 :fo: block
 
-:docutils: definition_list
-
 :defaults:
 
      space-after: 12pt
@@ -1213,8 +1180,6 @@ definition-list-item-block
 
 :fo: fo:block
 
-:docutils: definition_list/definition_list_item
-
 :defaults:
 
      space-before: 12pt
@@ -1227,8 +1192,6 @@ definition-list-item-first-block
 --------------------------------
 
 :fo: fo:block
-
-:docutils: definition_list/definition_list_item
 
 :inherits: definition-list-item-block
 
@@ -1249,8 +1212,6 @@ definition-term-block
 
 :fo: fo:block
 
-:docutils: definition_list/definition_list_item/term
-
 :defaults:
 
      font-weight: bold
@@ -1264,8 +1225,6 @@ definition-block
 
 :fo: fo:block
 
-:docutils: definition_list/definition_list_item/definition
-
 :defaults:
 
 Formats the bock of the of the defintion, that wraps the
@@ -1275,8 +1234,6 @@ classifier-inline
 -----------------
 
 :fo: fo:inline
-
-:docutils: definition_list/definition_list_item/classifier
 
 :defaults:
 
@@ -1289,8 +1246,6 @@ definition-paragraph-block
 
 :fo: fo:block
 
-:docutils:
-         definition_list/definition_list_item/definition/paragraph
 
 :defaults:
 
@@ -1308,8 +1263,6 @@ definition-first-paragraph-block
 
 :fo: fo:block
 
-:docutils:
-         definition_list/definition_list_item/definition/paragraph[1]
 
 :inherits: definition-first-paragraph-block
 
@@ -1323,6 +1276,350 @@ set inherits all the properties frorm
 space-before to 0pt.
 
 It does not makes sense to change this set direclty.
+
+
+field list
+==========
+
+Attribute sets for the field list.
+
+field-list-block
+----------------
+
+:fo: list-block
+
+:defaults:
+
+     start-indent: 0mm
+
+     provisional-distance-between-starts: 30mm
+
+     space-before: 12pt
+
+     space-after: 12pt
+
+Formats the field list. Since this element contains all the other
+list elements, it can be used to set values such as the font,
+background color, line-height, etc, for the entire list, as well
+as the space after and before.
+
+field-list-item
+---------------
+
+:fo: fo:list-item
+
+:defaults:
+
+     space-before: 12pt
+
+For the items, or 'fields' in the field list. The attributes can
+control the spacing between each item. A different set of
+attributes controls the spacing of the first item (see below).
+
+field-first-list-item
+---------------------
+
+:fo: fo:list-item
+
+:inherits: field-list-item
+
+:defaults:
+
+     space-before: 0pt
+
+For the first item in the field list. This attribute set inherits
+all the properties form 'field-list-item', and then re-defines
+the space-before to 0pt. In order to get space between the first
+item and the text before it, use the space-after attribute in the
+field-list-block attribute set.
+
+It does not make sense to change this attriubte set directly.
+
+field-list-item-label
+---------------------
+
+:fo: fo:list-item-label
+
+:defaults:
+
+     end-indent: label-end()
+
+The default attribute end-indent = "label-end()" ensures that the
+label aligns properly.
+
+field-list-item-body
+--------------------
+
+:fo: fo:list-item-body
+
+:defaults:
+
+     start-indent: body-start()
+
+The default of start-indent = "body-start()" ensures the correct
+alignment of the labels.
+
+field-body-block
+----------------
+
+:fo: fo:block
+
+:defaults:
+
+     space-after: 12pt
+
+Formats the blocks (docutilis paragraphs) of the field.
+
+field-list-item-label-block
+---------------------------
+
+:fo: fo:block
+
+:defaults:
+
+     font-weight: bold
+
+Formats the block that wraps the field name.
+
+option list as list
+===================
+
+Since an option list can be rendered as either a traditonal list,
+or a definition list, there are two sets of attribute sets.
+These attribute sets are used for the options list when it is
+rendered as a list.
+
+option-list-block
+-----------------
+
+:fo: list-block
+
+:defaults:
+
+     start-indent: 0mm
+
+     provisional-distance-between-starts: 50mm
+
+     space-before: 12pt
+
+     space-after: 12pt
+
+For the option list. Since this element contains all the other
+list elements, it can be used to set values such as the font,
+background color, line-height, etc, for the entire list, as well
+as the space after and before.
+
+
+option-list-item
+----------------
+
+:fo: fo:list-item
+
+:defaults:
+
+     space-before: 12pt
+
+For the items in the option list. The attributes can control the
+spacing between each item. A different set of attributes controls
+the spacing of the first item (see below).
+
+option-first-list-item
+----------------------
+
+:fo: fo:list-item
+
+:inherits: option-list-item
+
+:defaults:
+
+     space-before: 0pt
+
+For the first item in the option list. This attribute set
+inherits all the properties form 'option-list-item', and then
+re-defines the space-before to 0pt. In order to get space between
+the first item and the text before it, use the space-after
+attribute in the option-list attribute set.
+
+It does not make sense to change this attriubte set directly.
+
+option-list-item-label
+----------------------
+
+:fo: fo:list-item-label
+
+:defaults:
+
+     end-indent: label-end()
+
+The default attribute end-indent = "label-end()" ensures that the
+label aligns properly.
+
+option-list-item-label-block
+----------------------------
+
+:fo: fo:block
+
+
+:defaults:
+
+These attributes format the block that wraps the option_string
+and option_argument.
+
+option-list-item-body
+---------------------
+
+:fo: fo:list-item-body
+
+:defaults:
+
+     start-indent: body-start()
+
+The default of start-indent = "body-start()" ensures the correct
+alignment of the labels.
+
+option-list-item-body-block
+---------------------------
+
+:fo: fo:block
+
+:defaults:
+
+Formats the blocks (docutilis paragraphs) that describe the
+options. If there was more than one paragraph, you could use
+attributes such as space after.
+
+option-inline
+-------------
+
+:fo: fo:inline
+
+
+:defaults:
+
+     font-family: monospace
+
+Used to format any inline properties of the option_string.
+
+option-argument-inline
+----------------------
+
+:fo: fo:inline
+
+
+:defaults:
+
+     font-family: monospace
+
+     font-style: italic
+
+Used to format any inline properties of the option_string.
+
+option list as definition list
+==============================
+
+These attribute sets are used for the options list when it is
+rendered as a definition list. (See the docutils reference guide
+for an example of a definition list, or see the defintion list in
+the test files.)
+
+option-list-definition-block
+----------------------------
+
+:fo: fo:block
+
+:defaults:
+
+     space-before: 12pt
+
+     space-after: 12pt
+
+Formats the block that wraps the other blocks. Use to control
+space after and before, or to set any block items on the entire
+list.
+
+This block wraps around another block, which in turn wraps around
+a third block.
+
+option-list-item-block
+----------------------
+
+:fo: fo:block
+
+:defaults:
+
+     space-before: 8pt
+
+Formats the block that wraps the options and descriptions, which
+are also blocks.
+
+option-list-first-item-block
+----------------------------
+
+:fo: fo:block
+
+:defaults:
+
+     space-before: 0pt
+
+Same as for option-list-item-block, but sets the space-before to
+0pt
+
+Does not make sense to change the attributes here directly.
+
+option-group-block
+------------------
+
+:fo: fo:block
+
+:defaults:
+
+     keep-with-next: always
+
+Formats the block that contains the inline elements of the
+options and arguments. For a defintion list, this block serves as
+the term, and sits on top, and to the left of the description.
+
+option-list-description-block
+-----------------------------
+
+:fo: fo:block
+
+:defaults:
+
+     start-indent: 16pt
+
+     space-before: 8pt
+
+Formats the blocks wrappring the paragraphs describing the
+options or arguments. This groups of blocks sits below the blocks
+formatting the options and arguments, and in a defintion list
+are usually indented right.
+
+option-list-paragraph-block
+---------------------------
+
+:fo: fo:block
+
+:defaults:
+
+     space-before: 0pt
+
+Formats the paragraphs in the description for an options list
+formatted as a definition list.
+
+option-list-first-paragraph-block
+---------------------------------
+
+:fo: fo:block
+
+:inherits: option-list-paragraph-block
+
+:defaults:
+
+     space-before: 0pt
+
+Formats the first paragraph in the description for an options
+list formatted as a definition list.
 
 
 
