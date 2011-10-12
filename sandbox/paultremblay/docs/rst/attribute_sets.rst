@@ -1154,6 +1154,96 @@ enumerated-list-item-body-block
 Formats the blocks (docutilis paragraphs) of the body of each
 item.
 
+Line Block
+==========
+
+Attribute sets for the line block.
+
+outer-line-block
+----------------
+
+:fo: fo:block
+
+:defaults:
+
+     space-before: 12pt
+
+     space-after: 12pt
+
+The outer block containing the blocks of lines. Use the outer
+block to set space before or after the verse.
+
+level1-line-block
+-----------------
+
+:fo: fo:block
+
+:defaults:
+
+     start-indent: 10mm
+
+Attribute sets for the first level of lines.
+
+level2-line-block
+-----------------
+
+:fo: fo:block
+
+:defaults:
+
+     start-indent: 20mm
+
+Attribute sets for the second level of lines.
+
+level3-line-block
+-----------------
+
+:fo: fo:block
+
+:defaults:
+
+     start-indent: 30mm
+
+Attribute sets for the third level of lines.
+
+level4-line-block
+-----------------
+
+:fo: fo:block
+
+:defaults:
+
+     start-indent: 40mm
+
+Attribute sets for the fourth level of lines.
+
+level5-line-block
+-----------------
+
+:fo: fo:block
+
+
+:defaults:
+
+     start-indent: 50mm
+
+Attribute sets for the fifth level of lines.
+
+stanza-title-block
+------------------
+
+:fo: fo:block
+
+:defaults:
+
+     text-align: center
+
+     space-before: 12
+
+     font-weight: bold
+
+Formats the title of a stanza.
+
 definition list
 ===============
 
