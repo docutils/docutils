@@ -100,13 +100,6 @@ fields as author, etc.-->
 
 <xsl:param name="bullet-text-level2">&#x00B0;</xsl:param>
 
-<!--how to format the options list. Acceptable values are
-'list' and 'definition'. The 'list' values creates a bullet-type
-list, with the options taking the place of bullets. The 'definiton' 
-value creates a definition type list, with the options on a separate
-block above the description `doc`-->
-<xsl:param name="option-list-format">list</xsl:param>
-
 <!--the text that separates options in the options_list,
 for example, -f  -file. With "," as the value, these 
 arguments become -f, -file -->
