@@ -17,12 +17,10 @@
     <xsl:include href = "error.xsl"/>
     <xsl:include href = "footnote.xsl"/>
     <xsl:include href = "front_matter.xsl"/>
-    <!--
-    <xsl:include href = "util.xsl"/>
-    <xsl:include href = "page.xsl"/>
     <xsl:include href = "bullet_list.xsl"/>
     <xsl:include href = "enumerated_list.xsl"/>
     <xsl:include href = "definition_list.xsl"/>
+    <!--
     <xsl:include href = "field_list.xsl"/>
     <xsl:include href = "option_list.xsl"/>
     <xsl:include href = "line_block.xsl"/>
@@ -34,7 +32,10 @@
     <xsl:include href = "admonitions.xsl"/>
     <xsl:include href = "image_figure.xsl"/>
     <xsl:include href = "body_directives.xsl"/>
+    =========================================
     <xsl:include href = "misc.xsl"/>
+    <xsl:include href = "util.xsl"/>
+    <xsl:include href = "page.xsl"/>
     -->
 
 
