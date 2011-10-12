@@ -494,6 +494,7 @@ Use the `block-quote-attributeion-block` attribute.
         <xsl:attribute name="text-align">right</xsl:attribute>
     </xsl:attribute-set>
 
+
 Literal Block
 -------------
 
@@ -675,6 +676,144 @@ the enumerated list. This identifier can take any block property::
     <xsl:attribute-set name="enumerated-list-item-body-block">
         <xsl:attribute name="space-after">12pt</xsl:attribute> 
     </xsl:attribute-set>
+
+===========
+Line Blocks
+===========
+
+Formatting the entire line block
+---------------------------------
+
+Use the ``'outer-line-block'`` attribute-set to format the entire line block.
+This identifier can take any block property::
+
+    <xsl:attribute-set name="outer-line-block">
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+        <xsl:attribute name="space-after">12pt</xsl:attribute>
+    </xsl:attribute-set>
+
+Formatting the lines
+----------------------
+
+The lines have the attribute-set ``'level1-line-block'``, ``'level2-line-block'`` and
+so fourth. Each level indicates how many levels the line is nested.
+Lines may be nesed up to 5 levels deep. It makes sense to set overall
+properties with the ``'outer-line-block'`` attribute-set, and to use the
+``'evel#-line-block'`` to set the indents of for each level::
+
+    <xsl:attribute-set name="level1-line-block">
+        <xsl:attribute name="start-indent">10mm</xsl:attribute>
+    </xsl:attribute-set>
+    
+    <xsl:attribute-set name="level2-line-block">
+        <xsl:attribute name="start-indent">20mm</xsl:attribute>
+    </xsl:attribute-set>
+
+Create a stanza title
+----------------------
+
+In order to create a title for a stanza, in the *document* (not the
+configuration file) include the line in a title_reference::
+
+ | `stanza title 1` 
+ | A one, two, a one two three four
+ |
+ | `stanza title 2`
+ | Half a bee, philosophically,
+ |     must, *ipso facto*, half not be.
+ | But half the bee has got to be,
+ |     *vis a vis* its entity.  D'you see?
+ |
+ | `stanza title 3`
+ | But can a bee be said to be
+ |     or not to be an entire bee,
+ |         when half the bee is not a bee,
+ |             due to some ancient injury?
+ |
+ | Singing...
+
+Formatting the stanza title
+-----------------------------
+
+Use the ``'stanza-title-block'`` attribute-set to format the stanza title::
+
+    <xsl:attribute-set name="stanza-title-block">
+        <xsl:attribute name="text-align">center</xsl:attribute>
+        <xsl:attribute name="space-before">12</xsl:attribute>
+        <xsl:attribute name="font-weight">bold</xsl:attribute>
+    </xsl:attribute-set>
+
+You cannot do any formatting with a title reference (the text between
+the \`\`). If you need to do inline markup on part of a stanza title,
+only put the \`\` around the part that does not need the markup::
+
+ 
+ | *stanza title* `3` 
+ | But can a bee be said to be
+
+If you need to format the entire stanza title, use the following work
+around::
+
+
+ .. role:: title
+ 
+ | *stanza title 3* :title:`x` 
+ | But can a bee be said to be
+ |     or not to be an entire bee,
+ |         when half the bee is not a bee,
+ |             due to some ancient injury?
+
+Number lines
+------------
+
+In order to number the lines in a verse, import the number_verse.xsl
+stylehseet, and set the parameter ``'number-verse'`` to the appropriate
+increment.
+
+::
+
+    <!--numbers every 5th line-->
+    <xsl:import href="xsl_fo/docutils_to_fo.xsl"/>
+    <xsl:import href="xsl_fo/custom/number_verse.xsl"/>
+    <xsl:param name="number-verse">5</xsl:param>
+
+Make numers closer to line
+----------------------------
+
+By default, docutils to fo puts the number to the very right of the
+margin. Set the attribute ``'right-indent'`` to a positive number to make the
+numbers appear closer to the lines::
+
+    <xsl:attribute-set name="outer-line-block">
+        <xsl:attribute name="right-indent">20mm</xsl:attribute>
+    </xsl:attribute-set>
+
+Keeping the lines on the same page
+-----------------------------------
+
+If the line block is relatively short, use the ``'keep-on-same-page'``
+property.
+
+::
+
+    <xsl:attribute-set name="outer-line-block">
+        <xsl:attribute name="keep-together.within-page">always</xsl:attribute>
+    </xsl:attribute-set>
+
+
+If the line block is long, using this property could lead to
+huge space on a page.
+
+.. note a work around is to create a completely new stanza, and use
+.. keep-on-same-page property. 
+
+Creating space between stanzas
+-------------------------------
+
+Use a blank line to control the space between stanzas. There is no
+othe way to control space. The rst2xml.py utility marks a new set of
+line blocks when it detects a new indentation. In contrast, real verse
+is marked by the space between stanzas.
 
 
 =================
