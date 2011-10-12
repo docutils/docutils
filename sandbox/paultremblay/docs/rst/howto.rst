@@ -546,12 +546,212 @@ To change the characteristics of the document subtitle, use the
         <xsl:attribute name="font-weight">bold</xsl:attribute>
     </xsl:attribute-set>
 
+============
+Bullet List
+============
+
+
+Formatting the bullet list
+----------------------------
+
+Use the attribute set  ``'bullet-list-block'`` and
+``'bullet-level2-list-block'`` property to format the space after and before,
+the left and right indent, and any other property you want to set on the list,
+such as font for font-size::
+
+    <xsl:attribute-set name="bullet-list-block" >
+        <xsl:attribute name="start-indent">5mm</xsl:attribute>
+        <xsl:attribute name="provisional-distance-between-starts">5mm</xsl:attribute>
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+        <xsl:attribute name="space-after">12pt</xsl:attribute>
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="bullet-level2-list-block" >
+        <xsl:attribute name="start-indent">15mm</xsl:attribute>
+        <xsl:attribute name="provisional-distance-between-starts">5mm</xsl:attribute>
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+    </xsl:attribute-set>
+
+To format space between bullets and text, change the attribute
+``'provisional-distance-between-starts'``.
+
+
+To format space between items
+-------------------------------
+
+Use the ``'bullet-list-item'`` and ``'bullet-level2-list-item'`` attribute set.
+
+::
+
+
+    <xsl:attribute-set name="bullet-list-item">
+        <xsl:attribute name="space-before">12pt</xsl:attribute> 
+    </xsl:attribute-set>
+
+
+    <xsl:attribute-set name="bullet-level2-list-item">
+        <xsl:attribute name="space-before">12pt</xsl:attribute> 
+    </xsl:attribute-set>
+
+Choosing the text for the bullet
+-----------------------------------
+
+Use the parameter ``'bullet-list'`` and ``'bullet-list-level2'`` to change the default bullet::
+
+ <xsl:param name="bullet-text">&#x2022;</xsl:param>
+ <xsl:param name="bullet-text-level2">&#x00B0;</xsl:param>
+
+
+Formatting the  paragraphs
+----------------------------
+
+Use the ``'bullet-list-item-body-block'`` attribute set to format the text of
+the bullet list. This identifier can take any block property::
+
+
+    <xsl:attribute-set name="bullet-list-item-body-block">
+        <xsl:attribute name="space-after">12pt</xsl:attribute> 
+    </xsl:attribute-set>
+
+
+================
+Enumerated List
+================
+
+
+Formatting the enumerated list
+--------------------------------
+
+Use the attribute set  ``'enumerated-list-block'`` and
+``'enumerated-level2-list-block'`` property to format the space after and
+before, the left and right indent, and any other property you want to set on
+the list, such as font for font-size::
+
+    <xsl:attribute-set name="enumerated-list-block" >
+        <xsl:attribute name="start-indent">5mm</xsl:attribute>
+        <xsl:attribute name="provisional-distance-between-starts">5mm</xsl:attribute>
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+        <xsl:attribute name="space-after">12pt</xsl:attribute>
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="enumerated-level2-list-block" >
+        <xsl:attribute name="start-indent">15mm</xsl:attribute>
+        <xsl:attribute name="provisional-distance-between-starts">10mm</xsl:attribute>
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+    </xsl:attribute-set>
+
+To format space between enumerateds and text, change the attribute
+``'provisional-distance-between-starts'``.
+
+
+To format space between items
+-------------------------------
+
+Use the ``'enumerated-list-item'`` and ``'enumerated-level2-list-item'`` attribute set.
+
+::
+
+    <xsl:attribute-set name="enumerated-list-item">
+        <xsl:attribute name="space-before">12pt</xsl:attribute> 
+    </xsl:attribute-set>
+
+
+    <xsl:attribute-set name="enumerated-level2-list-item">
+        <xsl:attribute name="space-before">12pt</xsl:attribute> 
+    </xsl:attribute-set>
+
+
+Formatting the  paragraphs
+----------------------------
+
+Use the ``'enumerated-list-item-body-block'`` attribute set to format the text of
+the enumerated list. This identifier can take any block property::
+
+
+    <xsl:attribute-set name="enumerated-list-item-body-block">
+        <xsl:attribute name="space-after">12pt</xsl:attribute> 
+    </xsl:attribute-set>
+
+
+=================
+Definition List
+=================
+
+Formatting the definition list
+-------------------------------
+
+Use the attribute set ``'definition-list-block'`` to change the
+characteristics of the entire definition.
+
+::
+
+    <xsl:attribute-set name="definition-list-block" >
+        <xsl:attribute name="space-after">12pt</xsl:attribute>
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+    </xsl:attribute-set>
+
+Formatting space between items
+-------------------------------
+
+An item consists of both the term and definition. Use the
+``'definition-list-item-block'`` attribute set.
+
+::
+
+    <xsl:attribute-set name="definition-list-item-block" >
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+    </xsl:attribute-set>
+
+Formatting the term
+---------------------
+
+
+Use the ``'definition-term-block'`` to change the properties of the term, such
+as the space below::
+
+    <xsl:attribute-set name="definition-term-block">
+        <xsl:attribute name="font-weight">bold</xsl:attribute> 
+    </xsl:attribute-set>
+
+
+Formatting the definition
+--------------------------
+
+The definition can consist of more than one paragraph. To format each of these
+paragraphs, and the space before or after, use the ``'definition-block'`` attribute set::
+
+    <xsl:attribute-set name="definition-block">
+    </xsl:attribute-set>
+
+Formatting the classifier
+-------------------------
+
+Use the ``'classifier-inline'`` attribute set to format the classifier::
+
+    <xsl:attribute-set name="classifier-inline">
+	<xsl:attribute name="font-style">italic</xsl:attribute>
+    </xsl:attribute-set>
+
+Formatting the  paragraphs
+---------------------------
+
+The ``'definition-list-paragraph'`` attribute-set formats the parapgraphs in
+the definition::
+
+    <xsl:attribute-set name="definition-paragraph-block">
+        <xsl:attribute name="space-before">12pt</xsl:attribute> 
+        <xsl:attribute name="start-indent">30pt</xsl:attribute>
+    </xsl:attribute-set>
+
+
+
 =======
 Inline
 =======
 
 emphasis
-=========
+---------
 
 Use the `emphasis-inline` attribute set to change the default behavior of the
 emphsis element.
@@ -578,6 +778,7 @@ reference
 
 
 ::
+
     <xsl:attribute-set name="basic-link-inline" >
 	<xsl:attribute name="text-decoration">underline</xsl:attribute>
         <xsl:attribute name="color">blue</xsl:attribute>
@@ -604,3 +805,11 @@ title-reference
 	<xsl:attribute name="font-style">italic</xsl:attribute>
     </xsl:attribute-set>
 
+inline-links
+------------
+
+Change the parameter `internalo-link-type` to change the type of hyper link::
+
+ <!--whether to make internal links clickable ('link'), 
+ refer to a page number ('page'), or both ('page-link')-->
+ <xsl:param name="internal-link-type">link</xsl:param>

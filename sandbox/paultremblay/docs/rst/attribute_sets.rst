@@ -877,6 +877,455 @@ block-quote-attribution-block
 
 This attribute set the attribution in a block quote.
 
+bullet list
+===========
+
+Attribute sets for the bullet list.
+
+bullet-list-block
+-----------------
+
+:fo: list-block
+
+:defaults:
+
+     start-indent: 5mm
+
+     provisional-distance-between-starts: 5mm
+
+     space-before: 12pt
+
+     space-after: 12pt
+
+For the bullet list. Since this element contains all the other
+list elements, it can be used to set values such as the font,
+background color, line-height, etc, for the entire list, as well
+as the space after and before.
+
+"The provisional-distance-between-starts property of the
+list-block specifies the distance bewteen the start of the label
+(the bullet, for example) and the actual start of the list
+content" (Pawson, 100)
+
+bullet-list-item
+----------------
+
+:fo: fo:list-item
+
+:defaults:
+
+     space-before: 12pt
+
+For the item in the bullet list. The attributes can control the
+spacing between each item. A different set of attributes controls
+the spacing of the first item (see below).
+
+bullet-first-list-item
+----------------------
+
+:fo: fo:list-item
+
+:inherits: bullet-list-item
+
+:defaults:
+
+     space-before: 0pt
+
+For the first item in the bullet list. This attribute set
+inherits all the properties form 'bullet-list-item', and then
+re-defines the space-before to 0pt. In order to get space between
+the first item and the text before it, use the space-after
+attribute in the bullet-list attribute set.
+
+bullet-level2-list-item
+-----------------------
+
+:fo: fo:list-item
+
+:defaults:
+
+     space-before: 12pt
+
+Same as above, except for a nested bullet list.
+
+bullet-level2-first-list-item
+-----------------------------
+
+:fo: fo:list-item
+
+:inherits: bullet-level2-list-item
+
+:defaults:
+
+     space-before: 0pt
+
+For the first item in a nested bullet list. This attribute set
+inherits all the properties form 'bullet-list-item', and then
+re-defines the space-before to 0pt. In order to get space between
+the first item and the text before it, use the space-after
+attribute in the bullet-list attribute set.
+
+bullet-list-item-label
+----------------------
+
+:fo: fo:list-item-label
+
+:defaults:
+
+     end-indent: label-end()
+
+The default attribute end-indent = "label-end()" ensures that the
+label aligns properly.
+
+bullet-list-item-label-block
+----------------------------
+
+:fo: fo:block
+
+:defaults:
+
+These attributes format the block that wraps the bullet. (FO
+requires such a block, even for a small label like this.)
+
+bullet-list-item-body
+---------------------
+
+:fo: fo:list-item-body
+
+:defaults:
+
+     start-indent: body-start()
+
+The default of start-indent = "body-start()" ensures the correct
+alignment of the labels.
+
+bullet-list-item-body-block
+---------------------------
+
+:fo: fo:block
+
+:defaults:
+
+     space-after: 12pt
+
+Formats the blocks (docutilis paragraphs) of the body of each
+item.
+
+bullet-level2-list-block
+------------------------
+
+:fo: list-block
+
+:defaults:
+
+     start-indent: 15mm
+
+     provisional-distance-between-starts: 5mm
+
+     space-before: 12pt
+
+Same as for the bullet-list-block attribute. The default sets the
+start-indent property to a greater value to indent this nested
+list.
+
+enumerated list
+===============
+
+Attribute sets for the enumerated list.
+
+enumerated-list-block
+---------------------
+
+:fo: list-block
+
+:docutils: enumerated_list
+
+:defaults:
+
+     start-indent: 5mm
+
+     provisional-distance-between-starts: 10mm
+
+     space-before: 12pt
+
+     space-after: 12pt
+
+For the enumerated list. Since this element contains all the
+other list elements, it can be used to set values such as the
+font, background color, line-height, etc, for the entire list, as
+well as the space after and before.
+
+"The provisional-distance-between-starts property of the
+list-block specifies the distance bewteen the start of the label
+(the bullet, for example) and the actual start of the list
+content" (Pawson, 100)
+
+enumerated-level2-list-block
+----------------------------
+
+:fo: list-block
+
+:docutils: enumerated_list/enumerated_list
+
+:defaults:
+
+     start-indent: 15mm
+
+     provisional-distance-between-starts: 10mm
+
+     space-before: 12pt
+
+     space-before: 12pt
+
+Same as for the enumerated-list-block attribute. The default sets
+the start-indent property to a greater value to indent this
+nested list.
+
+enumerated-list-item
+--------------------
+
+:fo: fo:list-item
+
+:docutils: enumerated_list/list_item
+
+:defaults:
+
+     space-before: 12pt
+
+For the item in the enumerated list. The attributes can control
+the spacing between each item. A different set of attributes
+controls the spacing of the first item (see below).
+
+enumerated-first-list-item
+--------------------------
+
+:fo: fo:list-item
+
+:docutils: enumerated_list/list_item[1]
+
+:inherits: enumerated-list-item
+
+:defaults:
+
+     space-before: 0pt
+
+For the first item in the enumerated list. This attribute set
+inherits all the properties form 'enumerated-list-item', and then
+re-defines the space-before to 0pt. In order to get space
+between the first item and the text before it, use the
+space-after attribute in the enumerated-list attribute set.
+
+enumerated-level2-list-item
+---------------------------
+
+:fo: fo:list-item
+
+:docutils: enumerated_list/list_item/enumerated_list/list-item
+
+:defaults:
+
+     space-before: 12pt
+
+Same as above, but formats item of nested list.
+
+enumerated-level2-first-list-item
+---------------------------------
+
+:fo: fo:list-item
+
+:docutils: enumerated_list/item/enumerated_list/list_item[1]
+
+:inherits: enumerated-level2-list-item
+
+:defaults:
+
+     space-before: 0pt
+
+For the first item in the nested enumerated list.
+
+enumerated-list-item-label
+--------------------------
+
+:fo: fo:list-item-label
+
+:docutils: enumerated_list/list_item
+
+:defaults:
+
+     end-indent: label-end()
+
+The default attribute end-indent = "label-end()" ensures that the
+label aligns properly.
+
+enumerated-list-item-body
+-------------------------
+
+:fo: fo:list-item-body
+
+:docutils: enumerated_list/list_item
+
+:defaults:
+
+     start-indent: body-start()
+
+The default of start-indent = "body-start()" ensures the correct
+alignment of the labels.
+
+enumerated-list-item-body-block
+-------------------------------
+
+:fo: fo:block
+
+:docutils: enumerated_list/list_item/paragraph
+
+:defaults:
+
+     space-after: 12pt
+
+Formats the blocks (docutilis paragraphs) of the body of each
+item.
+
+definition list
+===============
+
+Attribute sets for the definition list.
+
+definition-list-block
+---------------------
+
+:fo: block
+
+:docutils: definition_list
+
+:defaults:
+
+     space-after: 12pt
+
+     space-before: 12pt
+
+For the definition list. Since this element contains all the
+other blocks in the list, it can be used to set values such as
+the font, background color, line-height, etc, for the entire
+list, as well as the space after and before.
+
+definition-list-item-block
+--------------------------
+
+:fo: fo:block
+
+:docutils: definition_list/definition_list_item
+
+:defaults:
+
+     space-before: 12pt
+
+For the items in the definition list. The attributes can control
+the spacing between each item. A different set of attributes
+controls the spacing of the first item (see below).
+
+definition-list-item-first-block
+--------------------------------
+
+:fo: fo:block
+
+:docutils: definition_list/definition_list_item
+
+:inherits: definition-list-item-block
+
+:defaults:
+
+     space-before: 0pt
+
+For the first item in the definition list. This attribute set
+inherits all the properties form 'definition-list-item', and then
+re-defines the space-before to 0pt. In order to get space
+between the first item and the text before it, use the
+space-after attribute in the option-list attribute set.
+
+It does not makes sense to change this set direclty.
+
+definition-term-block
+---------------------
+
+:fo: fo:block
+
+:docutils: definition_list/definition_list_item/term
+
+:defaults:
+
+     font-weight: bold
+
+Formats the bock of the the term. Can be used to control spacing
+between term and definition, but don't use with space before, or
+you won't be able to control spacing before list
+
+definition-block
+----------------
+
+:fo: fo:block
+
+:docutils: definition_list/definition_list_item/definition
+
+:defaults:
+
+Formats the bock of the of the defintion, that wraps the
+paragraph blocks.
+
+classifier-inline
+-----------------
+
+:fo: fo:inline
+
+:docutils: definition_list/definition_list_item/classifier
+
+:defaults:
+
+     font-style: italic
+
+For the inine properties of the classifier item.
+
+definition-paragraph-block
+--------------------------
+
+:fo: fo:block
+
+:docutils:
+         definition_list/definition_list_item/definition/paragraph
+
+:defaults:
+
+     space-before: 12pt
+
+     start-indent: 30pt
+
+Formats the blocks (paragraphs in the defintion. Can be lsed to
+control the space between paragraphs by setting the space-bfore
+attribute. Don't use the space-after attribute, or you won't be
+able to contorl the spacing between items
+
+definition-first-paragraph-block
+--------------------------------
+
+:fo: fo:block
+
+:docutils:
+         definition_list/definition_list_item/definition/paragraph[1]
+
+:inherits: definition-first-paragraph-block
+
+:defaults:
+
+     space-before: 0pt
+
+For the first paragraph in the definition list. This attribute
+set inherits all the properties frorm
+'definition-first-paragraph-block', and then re-defines the
+space-before to 0pt.
+
+It does not makes sense to change this set direclty.
+
+
+
 
 Inline
 ======
