@@ -50,6 +50,7 @@ Take it away, Eric the Orchestra Leader!
 | But half the bee has got to be,
 |     *vis a vis* its entity.  D'you see?
 |
+|
 | stanza title 3 :title:`x` 
 | But can a bee be said to be
 |     or not to be an entire bee,
