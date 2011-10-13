@@ -92,7 +92,7 @@ else
     FO_FILE=${DIRNAME}/${BASENAME}.fo
 fi
 
-rst2xml.py --strip-comments --trim-footnote-reference-space $1  $RAW_XML
+rst2xml.py --strip-comments --trim-footnote-reference-space --no-doctype $1  $RAW_XML
 
 if [ "$FORMAT" == "true" ]; then
     xmlformat.pl -i  $RAW_XML
