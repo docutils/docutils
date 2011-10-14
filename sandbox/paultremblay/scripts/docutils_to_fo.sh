@@ -1,4 +1,5 @@
 XSLFO_HOME=/Users/cejohnsonlouisville/Documents/docutils/paultremblay/xsl_fo
+RSTML=/Users/cejohnsonlouisville/Documents/docutils/paultremblay/scripts/rstxml2mathml.py
 if [ "$XSLFO_PDF" != "" ]; then
     PDF='true'
 else
@@ -25,6 +26,7 @@ VALID='false'
 STYLESHEET=
 OUT=''
 STRICT=''
+MATHML='true'
  while [ $# -gt 0 ]
  do
      case "$1" in
@@ -92,7 +94,12 @@ else
     FO_FILE=${DIRNAME}/${BASENAME}.fo
 fi
 
-rst2xml.py --strip-comments --trim-footnote-reference-space --no-doctype $1  $RAW_XML
+if [ "$MATHML" == 'true' ]; then
+    rst2xml.py --strip-comments --trim-footnote-reference-space --no-doctype $1\
+        | python3 $RSTML >  $RAW_XML
+else
+    rst2xml.py --strip-comments --trim-footnote-reference-space --no-doctype $1  $RAW_XML
+fi
 
 if [ "$FORMAT" == "true" ]; then
     xmlformat.pl -i  $RAW_XML
