@@ -5,12 +5,9 @@ import xml.sax.handler
 from xml.sax.handler import feature_namespaces
 import os, sys, argparse
 from io import StringIO
-import asciimathml, markdown
-# from xml.etree.ElementTree import tostring
+import asciimathml
+from xml.etree.ElementTree import tostring
 
-# don't know if I need these two lines
-# sys.stdout = codecs.getwriter("utf-8")(sys.stdout.detach())
-# sys.stdin = codecs.getwriter("utf-8")(sys.stdin.detach())
 
 class CopyTree(xml.sax.ContentHandler):
 
@@ -76,9 +73,11 @@ class CopyTree(xml.sax.ContentHandler):
         if el_name == 'math_block':
             self.__math_element= False
             math_string = '$$ %s $$' % (self.__characters)
-            new_tree = markdown.markdown(math_string, ['asciimathml'])
-            new_tree = new_tree[3:-4]
-            sys.stdout.write(new_tree)
+            new_tree  = asciimathml.parse(self.__characters)[0]
+            string_tree = tostring(new_tree, encoding="utf-8").decode() 
+            sys.stdout.write('<math xmlns="http://www.w3.org/1998/Math/MathML">')
+            sys.stdout.write(string_tree)
+            sys.stdout.write('</math>')
             self.__characters = ''
         else:
             self.__write_text()
