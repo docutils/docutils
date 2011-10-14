@@ -3,10 +3,9 @@
 
 import xml.sax.handler
 from xml.sax.handler import feature_namespaces
-import os, sys, argparse,  codecs
+import os, sys, argparse
 from io import StringIO
-import asciimathml
-import markdown
+import asciimathml, markdown
 # from xml.etree.ElementTree import tostring
 
 # don't know if I need these two lines
