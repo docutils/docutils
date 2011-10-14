@@ -1153,6 +1153,8 @@ The following sub-section is intended to replace the 5 inline markup rules in
 the reStructuredText Markup Specification's section on `inline markup`_.
 The composition of the character classes is open for discussion_.
 
+The actual change needs to be done in `parsers.rst.states.Inliner`.
+
 Inline markup syntax rules
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -1320,67 +1322,12 @@ Do this in the setup script and use the resulting string literal?
 Math Markup
 -----------
 
-Using a standard, such as MathML_\ [#]_ seems a good start. However,
+Since Docutils 0.8, a "math" role and directive using LaTeX math
+syntax as input format is part of reStructuredText.
 
-    MathML in its full XML form was never thought to be usable as an
-    input format: for a start it is far too verbose as necessitated by
-    its intention to be expressive.
+Provide for `alternative input formats`__?
 
-    -- http://www.w3.org/Math/Roadmap/
-
-Like for non-mathematical content, a different input format is needed.
-
-.. [#] For an overview of MathML implementations and tests, see e.g.
-   the `mathweb wiki`_ or the `ConTeXT MathML page`_.
-
-.. _MathML: http://www.w3.org/TR/MathML2/
-.. _mathweb wiki: http://www.mathweb.org/wiki/MathML
-.. _ConTeXT MathML page: http://wiki.contextgarden.net/MathML
-
-
-Input formats
-`````````````
-
-LaTeX math syntax
-  * Intended for input by a human, widely used, and well documented.
-
-  * Can be used for both, input and internal storage.
-
-  * Convertible to all supported output formats (building on
-    existing extensions like `latex_math`_ (LaTeX2MathML) or the `math
-    support in Sphinx`_ (see below for `HTML output`_).
-
-  * Used by the `Math support in Sphinx`_.
-
-  * Unicode input similar to the "unicode-math" package for
-    XeTeX/LuaTeX provides for improved readability of the source.
-
-  * The backtick (GRAVE ACCENT, 0x60) cannot be used in a math role.
-    Fortunately, it is not required in LaTeX math mode, as the
-    ``\grave`` macro is used instead of ``\```.
-
-ASCIIMathML_
-  Used, e.g., by MultiMarkdown__
-
-  .. _ASCIIMathML: http://www1.chapman.edu/~jipsen/mathml/asciimath.html
-  __ http://fletcherpenney.net/multimarkdown/
-
-
-`Unicode Nearly Plain Text Encoding of Mathematics`_
-   format for lightly marked-up representation of mathematical
-   expressions in Unicode.
-
-   (Unicode Technical Note. Sole responsibility for its contents rests
-   with the author(s). Publication does not imply any endorsement by
-   the Unicode Consortium.)
-
-   .. _Unicode Nearly Plain Text Encoding of Mathematics:
-      http://www.unicode.org/notes/tn28/
-
-LaTeX math syntax was used as input format for the "math" role and directive.
-See also `the culmination of a relevant discussion
-<http://article.gmane.org/gmane.text.docutils.user/118>`__.
-
+__ ./rst/alternatives.html#math-markup
 
 Try to be compatible with `Math support in Sphinx`_?
 
@@ -1417,9 +1364,9 @@ Which equation environments should be supported by the math directive?
 
   + Sphinx math also supports `gather` (checking for blank lines in
     the content). Docutils puts content blocks separated by blank
-    lines in separate math-block doctree nodes. (The difference of
-    `gather` to two consecutive "normal" environments is that
-    line-breaks between the two are prevented.)
+    lines in separate math-block doctree nodes. (The only difference of
+    `gather` to two consecutive "normal" environments seems to be that
+    page-breaks between the two are prevented.)
 
 See http://www.math.uiuc.edu/~hildebr/tex/displays.html.
 
@@ -1453,6 +1400,7 @@ MathML_
 
   __ http://msevior.livejournal.com/26377.html
   __ http://hutchinson.belmont.ma.us/tth/mml/ttmmozform.html
+  .. _MathML: http://www.w3.org/TR/MathML2/
   .. _latex_math: ../../../sandbox/jensj/latex_math/
   .. _latex2mathml: ../../docutils/math/latex2mathml.py
   .. _Blahtex: http://gva.noekeon.org/blahtexml/
