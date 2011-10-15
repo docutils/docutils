@@ -1898,7 +1898,7 @@ ASCIIMath_
   * The Python module ASCIIMathML_ translates a string with ASCIIMath into a
     MathML tree. Used, e.g., by MultiMarkdown__.
 
-  * For conversion to TeX, there is JavaScript script at
+  * For conversion to LaTeX, there is a JavaScript script at
     http://dlippman.imathas.com/asciimathtex/ASCIIMath2TeX.js
 
   .. _ASCIIMath: http://www1.chapman.edu/~jipsen/mathml/asciimath.html
