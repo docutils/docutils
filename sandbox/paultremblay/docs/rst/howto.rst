@@ -1206,3 +1206,114 @@ Change the parameter `internalo-link-type` to change the type of hyper link::
  <!--whether to make internal links clickable ('link'), 
  refer to a page number ('page'), or both ('page-link')-->
  <xsl:param name="internal-link-type">link</xsl:param>
+
+============
+Admonitions
+============
+
+Titles
+-------
+
+Each admonishment has its own title formed by the following parameters:
+
+::
+
+
+    <xsl:param name="attention-title">Attention!</xsl:param>
+    <xsl:param name="caution-title">Caution!</xsl:param>
+    <xsl:param name="danger-title">!Danger!</xsl:param>
+    <xsl:param name="error-title">Error</xsl:param>
+    <xsl:param name="hint-title">Hint</xsl:param>
+    <xsl:param name="important-title">Important</xsl:param>
+    <xsl:param name="note-title">Note</xsl:param>
+    <xsl:param name="tip-title">Tip</xsl:param>
+    <xsl:param name="warning-title">Warning!</xsl:param>
+
+To change the default titles, simply change the parameters.
+
+Formating the the title blocks
+------------------------------------
+
+Each title block inherits its property from the `default-admonition-title-block`
+attribute-set.
+
+::
+
+    <xsl:attribute-set name="default-admonition-title-block">
+        <xsl:attribute name="space-after">10pt</xsl:attribute>
+        <xsl:attribute name="font-size">larger</xsl:attribute>
+        <xsl:attribute name="color">red</xsl:attribute>
+    </xsl:attribute-set>
+
+The attribute sets for each admonition tite, are logically the name, followed
+by the string 'title-block'.
+
+::
+
+    <xsl:attribute-set name="attention-title-block" use-attribute-sets="default-admonition-title-block">
+    </xsl:attribute-set>
+
+The exact names are:
+
+ - attention-title-block
+ - caution-title-block
+ - danger-title-block
+ - error-title-block
+ - hint-title-block
+ - important-title-block
+ - note-title-block
+ - tip-title-block
+ - admonition-custom-title-block
+ - warning-title-block
+
+Formating the the admonition blocks
+------------------------------------
+
+Each admonition is wrapped in a block. Each block inherits its characteristics
+from the default::
+
+
+
+    <xsl:attribute-set name="default-admonition-outer-block">
+        <xsl:attribute name="border-style">solid</xsl:attribute>
+        <xsl:attribute name="border-width">1px</xsl:attribute>
+        <xsl:attribute name="padding">6pt</xsl:attribute>
+        <xsl:attribute name="keep-together.within-page">always</xsl:attribute>
+    </xsl:attribute-set>
+
+Changing the attributes in this attribute set changes them for all
+admonitions. 
+
+Each admonition has its own attribute-set, the name of the admonition followed
+by the string '-block.'::
+
+    <xsl:attribute-set name="attention-block" use-attribute-sets="default-admonition-outer-block">
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="caution-block" use-attribute-sets="default-admonition-outer-block">
+    </xsl:attribute-set>
+
+    <!--etc-->
+
+The names of these blocks are:
+
+ - attention-block
+ - caution-block
+ - danger-block
+ - error-block
+ - hint-block
+ - important-block
+ - note-block
+ - tip-block
+ - admonition-custom-block
+ - warning-block
+
+
+Formatting the paragraphs within the admonition block
+-------------------------------------------------------
+    
+Use the attribute-set `admonition-paragraphs-block` to format paragraphs::
+
+    <xsl:attribute-set name="admonition-paragraph-block">
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+    </xsl:attribute-set>
