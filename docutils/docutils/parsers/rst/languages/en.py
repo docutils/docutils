@@ -20,6 +20,8 @@ directives = {
       'attention': 'attention',
       'caution': 'caution',
       'code': 'code',
+      'code-block': 'code',
+      'sourcecode': 'code',
       'danger': 'danger',
       'error': 'error',
       'hint': 'hint',
