@@ -15,7 +15,7 @@ class CopyTree(xml.sax.ContentHandler):
   
   def __init__(self):
         self.__characters = ''
-        self.__math_element= True
+        self.__ascii_math = False
         self.__ns_dict = {'http://www.w3.org/XML/1998/namespace': "xml"}
 
 
@@ -27,7 +27,12 @@ class CopyTree(xml.sax.ContentHandler):
         ns = name[0]
         el_name = name[1]
         if el_name == 'math_block':
-            self.__math_element= True
+            the_keys = list(attrs.keys())
+            for the_key in the_keys:
+                att_name = the_key[1]
+                value = attrs[the_key]
+                if att_name == 'classes' and value == 'asciimath':
+                    self.__ascii_math= True
         sys.stdout.write('<')
         if ns:
             sys.stdout.write('ns1:%s' % el_name)
@@ -70,12 +75,13 @@ class CopyTree(xml.sax.ContentHandler):
   def endElementNS(self, name, qname):
         ns = name[0]
         el_name = name[1]
-        if el_name == 'math_block':
+        if el_name == 'math_block' and  self.__ascii_math == True:
             self.__math_element= False
             math_string = '$$ %s $$' % (self.__characters)
             new_tree  = asciimathml.parse(self.__characters)[0]
             string_tree = tostring(new_tree, encoding="utf-8").decode() 
-            sys.stdout.write('<math xmlns="http://www.w3.org/1998/Math/MathML">')
+            title = xml.sax.saxutils.escape(self.__characters)
+            sys.stdout.write('<math title="%s" xmlns="http://www.w3.org/1998/Math/MathML">' % (title))
             sys.stdout.write(string_tree)
             sys.stdout.write('</math>')
             self.__characters = ''
