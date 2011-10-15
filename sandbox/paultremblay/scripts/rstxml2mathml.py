@@ -7,6 +7,7 @@ import os, sys, argparse
 from io import StringIO
 import asciimathml
 from xml.etree.ElementTree import tostring
+import tempfile, subprocess, os, re
 
 
 class CopyTree(xml.sax.ContentHandler):
@@ -16,6 +17,7 @@ class CopyTree(xml.sax.ContentHandler):
   def __init__(self):
         self.__characters = ''
         self.__ascii_math = False
+        self.__latex_math = False
         self.__ns_dict = {'http://www.w3.org/XML/1998/namespace': "xml"}
 
 
@@ -26,13 +28,10 @@ class CopyTree(xml.sax.ContentHandler):
   def startElementNS(self, name, qname, attrs):
         ns = name[0]
         el_name = name[1]
-        if el_name == 'math_block':
-            the_keys = list(attrs.keys())
-            for the_key in the_keys:
-                att_name = the_key[1]
-                value = attrs[the_key]
-                if att_name == 'classes' and value == 'asciimath':
-                    self.__ascii_math= True
+        if el_name == 'math_block' and attrs.get((None, 'classes')) == 'asciimath':
+            self.__ascii_math= True
+        if el_name == 'math_block' and attrs.get((None, 'classes')) == 'latex':
+            self.__latex_math= True
         sys.stdout.write('<')
         if ns:
             sys.stdout.write('ns1:%s' % el_name)
@@ -76,7 +75,7 @@ class CopyTree(xml.sax.ContentHandler):
         ns = name[0]
         el_name = name[1]
         if el_name == 'math_block' and  self.__ascii_math == True:
-            self.__math_element= False
+            self.__ascii_math= False
             math_string = '$$ %s $$' % (self.__characters)
             new_tree  = asciimathml.parse(self.__characters)[0]
             string_tree = tostring(new_tree, encoding="utf-8").decode() 
@@ -84,6 +83,15 @@ class CopyTree(xml.sax.ContentHandler):
             sys.stdout.write('<math title="%s" xmlns="http://www.w3.org/1998/Math/MathML">' % (title))
             sys.stdout.write(string_tree)
             sys.stdout.write('</math>')
+            self.__characters = ''
+        elif el_name == 'math_block' and  self.__latex_math == True:
+            regex = re.compile(r"(<math.*?>)")
+            self.__latex_math = False
+            xml_string = self.__tralics()
+            xml_string = regex.sub("", xml_string)
+            title = xml.sax.saxutils.escape(self.__characters)
+            xml_string = '<math title="%s" xmlns="http://www.w3.org/1998/Math/MathML">%s' % (title, xml_string)
+            sys.stdout.write(xml_string)
             self.__characters = ''
         else:
             self.__write_text()
@@ -93,6 +101,37 @@ class CopyTree(xml.sax.ContentHandler):
             sys.stdout.write('</ns1:%s>' % el_name)
         else:
             sys.stdout.write('</%s>' % el_name)
+
+  def __tralics(self):
+        regexp = re.compile(r"(<math.*</math>)")
+        num, tex_file = tempfile.mkstemp(suffix='.tex')
+        write_obj = open(tex_file, 'w')
+        write_obj.write(self.__characters)
+        write_obj.close()
+        num, bogus_out = tempfile.mkstemp()
+        bogus_out = open(bogus_out, 'w')
+        p = subprocess.call(['tralics', '-silent', '-utf8output', tex_file], stdout=bogus_out)
+        bogus_out.close()
+        dir_name = os.path.dirname(tex_file)
+        filename, ext = os.path.splitext(tex_file)
+        xml_file = filename + '.xml'
+        log_file = filename + '.log'
+        xml_file = os.path.join(dir_name, xml_file)
+        if not os.path.isfile(xml_file):
+            sys.stderr.write('Cannot find file %s\n"' % xml_file)
+            sys.stderr.write('Bug, program now quiting\n')
+            sys.exit(1)
+        read_obj = open(xml_file, 'r')
+        line_to_read = 1
+        xml_string = None
+        while line_to_read:
+            line_to_read = read_obj.readline()
+            line = line_to_read
+            search_obj = regexp.search(line)
+            if search_obj:
+                xml_string = (search_obj.group(0))
+        read_obj.close()
+        return xml_string
 
 class ConverttoMathml:
 
