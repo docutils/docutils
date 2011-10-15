@@ -66,7 +66,7 @@ is "en" for English.  Examples of module names include ``en.py``,
 
 .. _language tags: http://www.w3.org/International/articles/language-tags/
 .. _BCP 47: http://www.rfc-editor.org/rfc/bcp/bcp47.txt
-.. _ISO 639: http://www.loc.gov/standards/iso639-2/englangn.html
+.. _ISO 639: http://www.loc.gov/standards/iso639-2/php/English_list.php
 .. _ISO 3166: http://www.iso.ch/iso/en/prods-services/iso3166ma/
    02iso-3166-code-lists/index.html
 
@@ -74,17 +74,15 @@ is "en" for English.  Examples of module names include ``en.py``,
 Python Code
 ===========
 
-All Python code in Docutils will be ASCII-only.  In language modules,
-Unicode-escapes will have to be used for non-ASCII characters.
-Although it may be possible for some developers to store non-ASCII
-characters directly in strings, it will cause problems for other
-developers whose locales are set up differently.
+Generally Python code in Docutils is ASCII-only.  In language modules,
+Unicode-escapes can be used for non-ASCII characters.
 
 `PEP 263`_ introduces source code encodings to Python modules,
-implemented beginning in Python 2.3.  Until PEP 263 is fully
-implemented as a well-established convention, proven robust in daily
-use, and the tools (editors, CVS, email, etc.) recognize this
-convention, Docutils shall remain conservative.
+implemented beginning in Python 2.3.  Especially for languages with
+non-Latin scripts, using UTF-8 encoded literal Unicode strings increases the
+readability. Start the source code file with the magic comment::
+
+  # -*- coding: utf-8 -*-
 
 As mentioned in the note above, developers are invited to explore
 "gettext" and other i18n technologies.
