@@ -1781,3 +1781,166 @@ title-reference-inline
 
 Formats the title_reference element.
 
+
+Admonitions
+===========
+
+Attribute sets for Admonitions. By default, the admontioins have
+a border around them. Each admonition gets its title from the
+parameter of that name. For example, the danger admonitions title
+gets its title from the 'danger-title' parameter, the caution
+from the `caution-title` paramter, and so fourth.
+
+Although each admonition and each admonition title has its own
+attribute-set, by default they all inherit these values from two
+default attribute sets. (See below.) Each of these areas can thus
+be customized. In contrast, all the paragrahs in each admonition
+are identical.
+
+default-admonition-outer-block
+------------------------------
+
+:fo: block
+
+:docutils: None
+
+:defaults:
+
+     border-style: solid
+
+     border-width: 1px
+
+     padding: 6pt
+
+     keep-together.within-page: always
+
+Sets up the defaults for the outer blocks of all the admonitions.
+The attributes of this block control the borders and prohibit
+the admonition from breaking across a page.
+
+default-admonition-title-block
+------------------------------
+
+:fo: block
+
+:docutils: None
+
+:defaults:
+
+     space-after: 10pt
+
+     font-size: larger
+
+     color: red
+
+Sets up the defaults for the title blocks of all the admonitions.
+The attributes of this block control the color (red) and font
+size. For certain blocs, the color is set to black (see below).
+
+admonitions outer block
+-----------------------
+
+:fo: fo:block
+
+:docutils: attention | caution | danger | error | hint |
+         important | note | tip | warning |
+         admonitons[@classes='custorm']
+
+:inherits: default-admonition-outer-block
+
+The following attribute sets are identical in nature:
+
+* attention-block
+
+* caution-block
+
+* danger-block
+
+* error-block
+
+* hint-block
+
+* important-block
+
+* note-block
+
+* tip-block
+
+* warning-block
+
+* admonition-custom-block
+
+These attribute-sets format the outer block of all the
+admonitions. By default it puts an border around the text. Use
+this attribute set to set the space before or after, the
+background color, etc.
+
+admonitions title block
+-----------------------
+
+:fo: fo:block
+
+:docutils: attention | caution | danger | error | hint |
+         important | note | tip | warning |
+         admonitons[@classes='custorm']
+
+:inherits: default-admonition-title-block
+
+The following attribute sets are identical in nature:
+
+* attention-title-block
+
+* caution-title-block
+
+* danger-title-block
+
+* error-title-block
+
+* hint-title-block
+
+* important-title-block
+
+* note-title-block
+
+* tip-title-block
+
+* warning-title-block
+
+* admonition-custom-title-block
+
+These attribute-sets format the title block of all the
+admonitions. It sets the color to red.
+
+The attribute-sets ``error-title-block``, ``hint-title-block``,
+``important-title-block``, ``note-title-block``,
+``tip-title-block``, and ``admonition-custom-title-block`` resets
+the color back to black.
+
+admonition-paragraph-block
+--------------------------
+
+:fo: fo:block
+
+:docutils: attention/paragraph|caution/paragraph|etc.
+
+:defaults:
+
+     space-before: 12pt
+
+Formats the paragraphs in the admonitions. A different
+attribute-set formats the first paragraph (see below).
+
+admonition-first-paragraph-block
+--------------------------------
+
+:fo: fo:block
+
+:docutils: attention/paragraph[1]|caution/paragraph[1]|etc.
+
+:defaults:
+
+Formats the first paragraphs in the admonitions. It inherits its
+attributes from the ``admonition-paragraph-block`` and resets the
+``space-before`` property to ``0pt``. It does not make sense to
+modify the attributes in this set directly.
+
