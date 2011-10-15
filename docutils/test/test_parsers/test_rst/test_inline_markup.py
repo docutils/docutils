@@ -66,10 +66,10 @@ across lines*
         <paragraph>
             Inline emphasis start-string without end-string.
 """],
-["""\
+[r"""
 '*emphasis*' and 1/*emphasis*/2 and 3-*emphasis*-4 and 5:*emphasis*:6
-but not '*' or '"*"' or  x*2* or 2*x* or \\*args or *
-or *the\\* *stars\\\\\\* *inside*
+but not '*' or '"*"' or  x*2* or 2*x* or \*args or *
+or *the\* *stars\\\* *inside*
 
 (however, '*args' will trigger a warning and may be problematic)
 
@@ -100,7 +100,7 @@ what about *this**?
         <problematic ids="id2" refid="id1">
             *
         args' will trigger a warning and may be problematic)
-    <system_message backrefs="id2" ids="id1" level="2" line="5" source="test data" type="WARNING">
+    <system_message backrefs="id2" ids="id1" level="2" line="6" source="test data" type="WARNING">
         <paragraph>
             Inline emphasis start-string without end-string.
     <paragraph>
@@ -109,10 +109,37 @@ what about *this**?
             this*
         ?
 """],
-["""\
-Emphasized asterisk: *\\**
+[u"""\
+quoted '*emphasis*', quoted "*emphasis*",
+quoted \u2018*emphasis*\u2019, quoted \u201c*emphasis*\u201d,
+quoted \xab*emphasis*\xbb
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        quoted '
+        <emphasis>
+            emphasis
+        ', quoted "
+        <emphasis>
+            emphasis
+        ",
+        quoted \u2018
+        <emphasis>
+            emphasis
+        \u2019, quoted \u201c
+        <emphasis>
+            emphasis
+        \u201d,
+        quoted \xab
+        <emphasis>
+            emphasis
+        \xbb
+"""],
+[r"""
+Emphasized asterisk: *\**
 
-Emphasized double asterisk: *\\***
+Emphasized double asterisk: *\***
 """,
 """\
 <document source="test data">
@@ -178,8 +205,8 @@ u"""\
             strong
         \xbb
 """],
-["""\
-(**strong**) but not (**) or '(** ' or x**2 or \\**kwargs or **
+[r"""
+(**strong**) but not (**) or '(** ' or x**2 or \**kwargs or **
 
 (however, '**kwargs' will trigger a warning and may be problematic)
 """,
@@ -195,7 +222,7 @@ u"""\
         <problematic ids="id2" refid="id1">
             **
         kwargs' will trigger a warning and may be problematic)
-    <system_message backrefs="id2" ids="id1" level="2" line="3" source="test data" type="WARNING">
+    <system_message backrefs="id2" ids="id1" level="2" line="4" source="test data" type="WARNING">
         <paragraph>
             Inline strong start-string without end-string.
 """],
@@ -240,8 +267,8 @@ totest['literal'] = [
         <literal>
             literal
 """],
-["""\
-``\\literal``
+[r"""
+``\literal``
 """,
 """\
 <document source="test data">
@@ -249,8 +276,8 @@ totest['literal'] = [
         <literal>
             \\literal
 """],
-["""\
-``lite\\ral``
+[r"""
+``lite\ral``
 """,
 """\
 <document source="test data">
@@ -258,8 +285,8 @@ totest['literal'] = [
         <literal>
             lite\\ral
 """],
-["""\
-``literal\\``
+[r"""
+``literal\``
 """,
 """\
 <document source="test data">
@@ -332,8 +359,8 @@ u"""\
             \xabliteral\xbb
          with quotes
 """],
-["""\
-``literal ``TeX quotes'' & \\backslash`` but not "``" or ``
+[r"""
+``literal ``TeX quotes'' & \backslash`` but not "``" or ``
 
 (however, ``standalone TeX quotes'' will trigger a warning
 and may be problematic)
@@ -350,7 +377,7 @@ and may be problematic)
             ``
         standalone TeX quotes'' will trigger a warning
         and may be problematic)
-    <system_message backrefs="id2" ids="id1" level="2" line="3" source="test data" type="WARNING">
+    <system_message backrefs="id2" ids="id1" level="2" line="4" source="test data" type="WARNING">
         <paragraph>
             Inline literal start-string without end-string.
 """],
@@ -378,8 +405,8 @@ Find the ```interpreted text``` in this paragraph!
         <paragraph>
             Inline literal start-string without end-string.
 """],
-["""\
-Python ``list``\\s use square bracket syntax.
+[r"""
+Python ``list``\s use square bracket syntax.
 """,
 """\
 <document source="test data">
@@ -832,7 +859,7 @@ long/path /and  /whitespace>`__
         <reference name="embedded email address broken across lines" refuri="mailto:jdoe@example.com">
             embedded email address broken across lines
 """],
-["""\
+[r"""
 `embedded URI with too much whitespace < http://example.com/
 long/path /and  /whitespace >`__
 
@@ -841,9 +868,9 @@ long/path /and  /whitespace >`__
 
 `embedded URI with no preceding whitespace<http://example.com>`__
 
-`escaped URI \\<http://example.com>`__
+`escaped URI \<http://example.com>`__
 
-See `HTML Anchors: \\<a>`_.
+See `HTML Anchors: \<a>`_.
 """,
 """\
 <document source="test data">
@@ -1246,12 +1273,12 @@ ftp://ends.with.a.period.
             a.question.mark@end
         ?)
 """],
-["""\
+[r"""
 Valid URLs with escaped markup characters:
 
-http://example.com/\\*content\\*/whatever
+http://example.com/\*content\*/whatever
 
-http://example.com/\\*content*/whatever
+http://example.com/\*content*/whatever
 """,
 """\
 <document source="test data">
@@ -1340,33 +1367,6 @@ lines.
             u
         p
         with backslash-escaped whitespace, including newlines.
-"""],
-[u"""\
-quoted '*emphasis*', quoted "*emphasis*",
-quoted \u2018*emphasis*\u2019, quoted \u201c*emphasis*\u201d,
-quoted \xab*emphasis*\xbb
-""",
-u"""\
-<document source="test data">
-    <paragraph>
-        quoted '
-        <emphasis>
-            emphasis
-        ', quoted "
-        <emphasis>
-            emphasis
-        ",
-        quoted \u2018
-        <emphasis>
-            emphasis
-        \u2019, quoted \u201c
-        <emphasis>
-            emphasis
-        \u201d,
-        quoted \xab
-        <emphasis>
-            emphasis
-        \xbb
 """],
 [u"""\
 text-*separated*\u2010*by*\u2011*various*\u2012*dashes*\u2013*and*\u2014*hyphens*.
