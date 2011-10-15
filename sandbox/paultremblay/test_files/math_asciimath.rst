@@ -1,4 +1,6 @@
-Document tests math directive.
+Document tests mathml
+
+.. class:: asciimath
 
 .. math::
 
