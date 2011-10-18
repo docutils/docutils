@@ -1317,3 +1317,440 @@ Use the attribute-set `admonition-paragraphs-block` to format paragraphs::
     <xsl:attribute-set name="admonition-paragraph-block">
         <xsl:attribute name="space-before">12pt</xsl:attribute>
     </xsl:attribute-set>
+
+================
+Body Directives
+================
+
+topic
+------
+
+Formatting the complete block
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+::
+
+
+    <xsl:attribute-set name="topic-block">
+        <xsl:attribute name="space-after">12pt</xsl:attribute>
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+    </xsl:attribute-set>
+
+Formatting the title
+^^^^^^^^^^^^^^^^^^^^^
+
+::
+
+    <xsl:attribute-set name="topic-title-block">
+        <xsl:attribute name="font-weight">bold</xsl:attribute>
+        <xsl:attribute name="space-after">12pt</xsl:attribute>
+    </xsl:attribute-set>
+
+Formatting the paragraphs
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sidebar
+-------
+
+
+Unfortunately, sidebars can't be produced in XSLFO, at least not easily with
+the curren renderers. For that reason, the stylesheets render a sidebar
+similar to a block quote, not on the side of the page.
+
+Formatting the complete block
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+::
+
+    <xsl:attribute-set name="sidebar-block">
+        <xsl:attribute name="space-after">12pt</xsl:attribute>
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+        <xsl:attribute name="background-color">#FFFFF0</xsl:attribute>
+        <xsl:attribute name="padding">6pt</xsl:attribute>
+        <xsl:attribute name="start-indent">10mm</xsl:attribute>
+        <xsl:attribute name="end-indent">40mm</xsl:attribute>
+    </xsl:attribute-set>
+
+Formatting the title
+^^^^^^^^^^^^^^^^^^^^^
+
+::
+
+    <xsl:attribute-set name="sidebar-title-block">
+        <xsl:attribute name="font-weight">bold</xsl:attribute>
+        <xsl:attribute name="space-after">12pt</xsl:attribute>
+    </xsl:attribute-set>
+
+Formatting the subtitle
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+::
+
+    <xsl:attribute-set name="sidebar-subtitle-block">
+        <xsl:attribute name="font-weight">bold</xsl:attribute>
+        <xsl:attribute name="space-after">12pt</xsl:attribute>
+    </xsl:attribute-set>
+
+Formatting the paragraphs
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+::
+
+    <xsl:attribute-set name="sidebar-paragraph-block">
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+    </xsl:attribute-set>
+
+Rubric
+------
+
+::
+
+    <xsl:attribute-set name="rubric-block">
+        <xsl:attribute name="text-align">center</xsl:attribute>
+        <xsl:attribute name="font-size">larger</xsl:attribute>
+        <xsl:attribute name="color">red</xsl:attribute>
+    </xsl:attribute-set>
+
+Epigraph
+--------
+
+Formatting the complete block
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+::
+
+    <xsl:attribute-set name="epigraph-outer-block">
+        <xsl:attribute name="start-indent">20mm</xsl:attribute>
+        <xsl:attribute name="end-indent">20mm</xsl:attribute>
+        <xsl:attribute name="space-after">12pt</xsl:attribute>
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+        <xsl:attribute name="text-align">right</xsl:attribute>
+        <xsl:attribute name="font-style">italic</xsl:attribute>
+    </xsl:attribute-set>
+
+Formatting the paragraphs
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+::
+
+    <xsl:attribute-set name="epigraph-paragraph-block">
+        <xsl:attribute name="start-indent">inherit</xsl:attribute>
+        <xsl:attribute name="end-indent">inherit</xsl:attribute>
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+    </xsl:attribute-set>
+
+
+Formatting the attribution 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+::
+
+    <xsl:attribute-set name="epigraph-attribution-block">
+        <xsl:attribute name="text-align">right</xsl:attribute>
+    </xsl:attribute-set>
+
+
+Highlights
+-----------
+
+Formatting the complete block
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+::
+
+    <xsl:attribute-set name="highlights-outer-block">
+        <xsl:attribute name="start-indent">20mm</xsl:attribute>
+        <xsl:attribute name="end-indent">20mm</xsl:attribute>
+        <xsl:attribute name="space-after">12pt</xsl:attribute>
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+    </xsl:attribute-set>
+
+Formatting the paragraphs
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+::
+
+    <xsl:attribute-set name="highlights-paragraph-block">
+        <xsl:attribute name="start-indent">inherit</xsl:attribute>
+        <xsl:attribute name="end-indent">inherit</xsl:attribute>
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+    </xsl:attribute-set>
+
+Pull Quotes
+------------
+
+Formatting the complete block
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+::
+
+    <xsl:attribute-set name="pull-quote-paragraph-block">
+        <xsl:attribute name="start-indent">inherit</xsl:attribute>
+        <xsl:attribute name="end-indent">inherit</xsl:attribute>
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+    </xsl:attribute-set>
+
+Formatting the paragraphs
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+::
+
+    <xsl:attribute-set name="pull-quote-first-paragraph-block" use-attribute-sets="block-quote-paragraph-block">
+        <xsl:attribute name="space-before">0pt</xsl:attribute>
+    </xsl:attribute-set>
+
+Formatting the attribution
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+::
+
+    <xsl:attribute-set name="pull-quote-attribution-block">
+        <xsl:attribute name="text-align">right</xsl:attribute>
+    </xsl:attribute-set>
+
+Container
+---------
+
+Formatting the complete block
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+::
+
+    <xsl:attribute-set name="container-outer-block">
+        <xsl:attribute name="space-after">12pt</xsl:attribute>
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+    </xsl:attribute-set>
+
+Formatting the paragraphs
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+::
+
+    <xsl:attribute-set name="container-paragraph-block">
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+    </xsl:attribute-set>
+
+Math
+-----
+
+Formatting the complete block
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The math block does not consist of paragraphs. It either consists of literal
+text, or MathML markup. To format the contents in either case::
+
+    <xsl:attribute-set name="mathml-block">
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+        <xsl:attribute name="space-after">12pt</xsl:attribute>
+    </xsl:attribute-set>
+
+
+====================
+Images and Figures
+====================
+
+An image conssits of just the image. A figure consists of the image, with an
+option for alternative text, a caption, and a legend. The legend can consist
+of body elements, such as paragraphs or a table.
+
+
+Attribute sets for Images and Figures. The image property of
+``alt`` and ``target`` are ignored by the stylesheets, since they
+have no use in PDF. In addtion, if the ``align`` is set to
+``top`` or ``bottom``, both properties that have no meaning for
+PDF, the stylesheets will report an error, and if ``strict`` is
+set to ``true``, quit.
+
+Likwise, the figure ``figwidth`` property will be ignored, since
+there is not way to implement this property directy in FO.
+
+In order to control the scaling, alignment, and width of images
+and figures, it is better to use the attribute sets than to try
+to set these properties in RST. The regions of 'image', 'figure',
+'caption', and 'legend' are all wrapped in blocks. Use the
+attribute sets for these blocks to control the properties.
+
+Formatting the entire figure block
+-----------------------------------
+
+::
+
+    <xsl:attribute-set name="figure-block">
+    </xsl:attribute-set>
+
+Formatting the entire caption block
+------------------------------------
+
+::
+
+    <xsl:attribute-set name="figure-caption-block">
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+        <xsl:attribute name="space-after">12pt</xsl:attribute>
+        <xsl:attribute name="font-weight">bold</xsl:attribute>
+        <xsl:attribute name="font-size">smaller</xsl:attribute>
+        <xsl:attribute name="text-align">center</xsl:attribute>
+    </xsl:attribute-set>
+
+Formatting the entire legend block
+-----------------------------------
+
+::
+
+    <xsl:attribute-set name="figure-legend-block">
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+        <xsl:attribute name="space-after">12pt</xsl:attribute>
+    </xsl:attribute-set>
+
+Formatting the paragraphs in the legend block
+----------------------------------------------
+
+::
+
+    <xsl:attribute-set name="legend-paragraph-block">
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+    </xsl:attribute-set>
+
+Formatting the first paragraph in the legend block
+---------------------------------------------------
+
+::
+
+    <xsl:attribute-set name="legend-first-paragraph-block" use-attribute-sets="legend-paragraph-block">
+        <xsl:attribute name="space-before">0pt</xsl:attribute>
+    </xsl:attribute-set>
+
+Formatting the entire image block
+----------------------------------
+
+The image block contains no text or othe elements. None-the-less, it is
+wrapped in a block that allows formatting, including space before or after,
+alignment, and borders.
+
+::
+    <xsl:attribute-set name="image-block">
+    </xsl:attribute-set>
+
+=======
+Tables
+=======
+
+Use the attribute-set `table-block-container` to format all the
+characteristics of a table.
+
+::
+
+    <xsl:attribute-set name="table-block-container">
+        <xsl:attribute name="space-before">12pt</xsl:attribute>
+        <xsl:attribute name="space-after">12pt</xsl:attribute>
+    </xsl:attribute-set>
+
+Changing the widths of the columns
+------------------------------------
+
+The formatter uses the columns values generated by the rst2xml.py
+script to determine the width of the columns. In order to change this
+default, re-write the table template::
+
+    <!--sets the second two columns to twice the first column-->
+    <xsl:template match="table[not(@classes)]/tgroup">
+        <fo:table-column column-number="1" column-width="proportional-column-width(5)"/>
+        <fo:table-column column-number="2" column-width="proportional-column-width(10)"/>
+        <fo:table-column column-number="3" column-width="proportional-column-width(10)"/>
+        <xsl:apply-templates/>
+    </xsl:template>
+
+Formatting captions
+----------------------
+
+::
+
+    <xsl:attribute-set name="caption-block">
+        <xsl:attribute name="text-align">center</xsl:attribute>
+        <xsl:attribute name="space-before">6pt</xsl:attribute>
+        <xsl:attribute name="space-after">6pt</xsl:attribute>
+    </xsl:attribute-set>
+
+Placement of the caption
+--------------------------
+
+Use the parameter to place the the caption either at the top or bottom of the
+table::
+
+ <!--changes placement of caption to top of table-->
+ <xsl:param name="table-title-placement">bottom</xsl:param>
+
+Formatting the table header
+----------------------------
+
+To format all of the cells in the header, use the `table-header`
+attribute-set.
+
+::
+
+    <xsl:attribute-set name="table-header">
+        <!--increases font size-->
+        <xsl:attribute name="font-size">14/xsl:attribute>
+    </xsl:attribute-set>
+
+Formatting the table header cells
+-----------------------------------
+
+Use the ``'table-header-cell'`` attribute-set to format the cells in the
+heading. Note that this attribute set inherits the propertis of the
+default-cell attribute set (shown below).
+
+::
+
+
+    <xsl:attribute-set name="table-header-cell" use-attribute-sets="default-cell">
+        <xsl:attribute name="border-bottom">solid black 2px</xsl:attribute>
+    </xsl:attribute-set>
+
+
+Formatting the paragraphs in the table header
+----------------------------------------------
+
+.. you can probably do all the formatting in table-header-cell
+
+::
+
+    <xsl:attribute-set name="table-header-block">
+    </xsl:attribute-set>
+
+Formatting the table body
+-------------------------
+
+Use the `table-body` attribute-set to format all of the table body::
+
+    <xsl:attribute-set name="table-body">
+    </xsl:attribute-set>
+
+
+Fromatting the rows
+-------------------
+
+The attribute-set `table-row` formats the table row. Note that the defaults
+has the attribute "keep-together.within-page" set to "always" so that rows do
+not split across pages. 
+
+::
+
+    <xsl:attribute-set name="table-row">
+        <xsl:attribute name="keep-together.within-page">always</xsl:attribute>
+    </xsl:attribute-set>
+
+Formatting the cells in the body
+---------------------------------
+
+The cells are formatted with the `table-cell` attribute-set. This attribute
+set inherits its properties from the `default-table-cell`.
+
+::
+
+    <xsl:attribute-set name="table-cell" use-attribute-sets="default-cell">
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="default-cell">
+        <xsl:attribute name="border">solid black 1px</xsl:attribute>
+        <xsl:attribute name="padding">1em</xsl:attribute>
+        <xsl:attribute name="border-collapse">collapse</xsl:attribute>
+    </xsl:attribute-set>
