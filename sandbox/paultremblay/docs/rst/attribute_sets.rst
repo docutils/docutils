@@ -1802,8 +1802,6 @@ default-admonition-outer-block
 
 :fo: block
 
-:docutils: None
-
 :defaults:
 
      border-style: solid
@@ -1823,8 +1821,6 @@ default-admonition-title-block
 
 :fo: block
 
-:docutils: None
-
 :defaults:
 
      space-after: 10pt
@@ -1842,8 +1838,6 @@ admonitions outer block
 
 :fo: fo:block
 
-:docutils: attention | caution | danger | error | hint |
-         important | note | tip | warning |
          admonitons[@classes='custorm']
 
 :inherits: default-admonition-outer-block
@@ -1879,10 +1873,6 @@ admonitions title block
 -----------------------
 
 :fo: fo:block
-
-:docutils: attention | caution | danger | error | hint |
-         important | note | tip | warning |
-         admonitons[@classes='custorm']
 
 :inherits: default-admonition-title-block
 
@@ -1921,8 +1911,6 @@ admonition-paragraph-block
 
 :fo: fo:block
 
-:docutils: attention/paragraph|caution/paragraph|etc.
-
 :defaults:
 
      space-before: 12pt
@@ -1935,8 +1923,6 @@ admonition-first-paragraph-block
 
 :fo: fo:block
 
-:docutils: attention/paragraph[1]|caution/paragraph[1]|etc.
-
 :defaults:
 
 Formats the first paragraphs in the admonitions. It inherits its
@@ -1944,3 +1930,601 @@ attributes from the ``admonition-paragraph-block`` and resets the
 ``space-before`` property to ``0pt``. It does not make sense to
 modify the attributes in this set directly.
 
+Body Elements Directives
+========================
+
+Attribute sets for Body Elements Directives.
+
+topic-block
+-----------
+
+:fo: fo:block
+
+:defaults:
+
+     space-after: 12pt
+
+     space-before: 12pt
+
+Formats the outermost block of the topic element, which contains
+blocks.
+
+topic-title-block
+-----------------
+
+:fo: fo:block
+
+:defaults:
+
+     font-weight: bold
+
+     space-after: 12pt
+
+Formats the title of the topic.
+
+topic-paragraph-block
+---------------------
+
+:fo: fo:block
+
+:defaults:
+
+     space-before: 12pt
+
+     space-after: 0pt
+
+Formats the paragraphs of the topic. A different set of
+attributes formats the first paragraph.
+
+topic-first-paragraph-block
+---------------------------
+
+:fo: fo:block
+
+:inherits: topic-paragraph-block
+
+:defaults:
+
+Formats the first paragraphs of the topic.
+
+sidebar-block
+-------------
+
+:fo: fo:block
+
+:defaults:
+
+     space-after: 12pt
+
+     space-before: 12pt
+
+     background-color: #FFFFF0
+
+     padding: 6pt
+
+     start-indent: 10mm
+
+     end-indent: 40mm
+
+Formats the outermost block of the sidebar element, which
+contains blocks. Note that fop does not handle floats, so this
+element is formatted just like a topic block.
+
+sidebar-title-block
+-------------------
+
+:fo: fo:block
+
+:defaults:
+
+     font-weight: bold
+
+     space-after: 12pt
+
+Formats the title of the topic.
+
+sidebar-subtitle-block
+----------------------
+
+:fo: fo:block
+
+:defaults:
+
+     font-weight: bold
+
+     space-after: 12pt
+
+Formats the subtitle of the topic.
+
+sidebar-paragraph-block
+-----------------------
+
+:fo: fo:block
+
+:defaults:
+
+     space-before: 12pt
+
+Formats the paragraphs of the sidebar. A different set of
+attributes formats the first paragraph.
+
+sidebar-first-paragraph-block
+-----------------------------
+
+:fo: fo:block
+
+:inherits: sidebar-paragraph-block
+
+:defaults:
+
+     space-after: 0pt
+
+Formats the first paragraphs of the sidebar.
+
+rubric-block
+------------
+
+:fo: fo:block
+
+:defaults:
+
+     text-align: center
+
+     font-size: larger
+
+     color: red
+
+Formats the rubric.
+
+epigraph-outer-block
+--------------------
+
+:fo: fo:block
+
+:defaults:
+
+     start-indent: 20mm
+
+     end-indent: 20mm
+
+     space-after: 12pt
+
+     space-before: 12pt
+
+     text-align: right
+
+     font-style: italic
+
+Formats the outermost block of the epigraph element, which
+contains blocks.
+
+epigraph-paragraph-block
+------------------------
+
+:fo: fo:block
+
+:defaults:
+
+     start-indent: inherit
+
+     end-indent: inherit
+
+     space-before: 12pt
+
+Formats the paragraphs of the epigraph. A different set of
+attributes formats the first paragraph.
+
+epigraph-first-paragraph-block
+------------------------------
+
+:fo: fo:block
+
+:inherits: epigraph-paragraph-block
+
+:defaults:
+
+     space-before: 0pt
+
+Formats the first paragraphs of the epigraph.
+
+epigraph-attribution-block
+--------------------------
+
+:fo: fo:block
+
+:defaults:
+
+     text-align: right
+
+Formats the attribution of the epigraph. The parameter
+``text-before-epigraph-attribution`` determines the text to put
+before the attribtion. The default is '—' (an em-dash). To put no
+text before, set this parameter to an empty string.
+
+highlights-outer-block
+----------------------
+
+:fo: fo:block
+
+:defaults:
+
+     start-indent: 20mm
+
+     end-indent: 20mm
+
+     space-after: 12pt
+
+     space-before: 12pt
+
+Formats the outermost block of the epigraph element, which
+contains blocks.
+
+highlights-paragraph-block
+--------------------------
+
+:fo: fo:block
+
+:defaults:
+
+     start-indent: inherit
+
+     end-indent: inherit
+
+     space-before: 12pt
+
+Formats the paragraphs of the highlights. A different set of
+attributes formats the first paragraph.
+
+highlights-first-paragraph-block
+--------------------------------
+
+:fo: fo:block
+
+:inherits: highlights-paragraph-block
+
+:defaults:
+
+     space-before: 0pt
+
+Formats the first paragraphs of the highlights.
+
+pull-quote-outer-block
+----------------------
+
+:fo: fo:block
+
+:defaults:
+
+     start-indent: 20mm
+
+     end-indent: 20mm
+
+     space-after: 12pt
+
+     space-before: 12pt
+
+Formats the outermost block of the pull-quote element, which
+contains blocks.
+
+pull-quote-paragraph-block
+--------------------------
+
+:fo: fo:block
+
+:defaults:
+
+     start-indent: inherit
+
+     end-indent: inherit
+
+     space-before: 12pt
+
+Formats the paragraphs of the pull-quote. A different set of
+attributes formats the first paragraph.
+
+pull-quote-first-paragraph-block
+--------------------------------
+
+:fo: fo:block
+
+:inherits: pull-quote-paragraph-block
+
+:defaults:
+
+     space-before: 0pt
+
+Formats the first paragraphs of the pull-quote.
+
+pull-quote-attribution-block
+----------------------------
+
+:fo: fo:block
+
+:defaults:
+
+     text-align: right
+
+Formats the attribution of the pull-quote. The parameter
+``text-before-pull-quote-attribution`` determines the text to put
+before the attribtion. The default is '—' (an em-dash). To put
+no text before, set this parameter to an empty string.
+
+container-outer-block
+---------------------
+
+:fo: fo:block
+
+:defaults:
+
+     space-after: 12pt
+
+     space-before: 12pt
+
+Formats the outermost block of the container element, which
+contains blocks.
+
+container-paragraph-block
+-------------------------
+
+:fo: fo:block
+
+:defaults:
+
+     space-before: 12pt
+
+Formats the paragraphs of the container. A different set of
+attributes formats the first paragraph.
+
+container-first-paragraph-block
+-------------------------------
+
+:fo: fo:block
+
+:inherits: container-paragraph-block
+
+:defaults:
+
+     space-before: 0pt
+
+Formats the first paragraphs of the container.
+
+Image and Figure
+================
+
+Attribute sets for Images and Figures. The image property of
+``alt`` and ``target`` are ignored by the stylesheets, since they
+have no use in PDF. In addtion, if the ``align`` is set to
+``top`` or ``bottom``, both properties that have no meaning for
+PDF, the stylesheets will report an error, and if ``strict`` is
+set to ``true``, quit.
+
+Likwise, the figure ``figwidth`` property will be ignored, since
+there is not way to implement this property directy in FO.
+
+In order to control the scaling, alignment, and width of images
+and figures, it is better to use the attribute sets than to try
+to set these properties in RST. The regions of 'image', 'figure',
+'caption', and 'legend' are all wrapped in blocks. Use the
+attribute sets for these blocks to control the properties.
+
+figure-block
+------------
+
+:fo: fo:block
+
+:defaults:
+
+Formats the block that wraps the figure. Use this attribute set
+to set properties on the image, caption, and legend, as well as
+to set the space before and after the figure.
+
+image-block
+-----------
+
+:fo: fo:block
+
+:defaults:
+
+Formats the block that wraps the image, both for an image by
+itself, and for an image included in a figure. Use this attribute
+set to control the space before and after the image, as well as
+to align the image itself.
+
+figure-caption-block
+--------------------
+
+:fo: fo:block
+
+:defaults:
+
+     space-before: 12pt
+
+     space-after: 12pt
+
+     font-weight: bold
+
+     font-size: smaller
+
+     text-align: center
+
+Formats the block that wraps the caption.
+
+figure-legend-block
+-------------------
+
+:fo: fo:block
+
+:defaults:
+
+     space-before: 12pt
+
+     space-after: 12pt
+
+Formats the block that wraps the legend. The paragrahs in the
+legend have their own blocks.
+
+legend-paragraph-block
+----------------------
+
+:fo: fo:block
+
+:defaults:
+
+     space-before: 12pt
+
+Formats the block that wraps the paragraphs in the legend.
+
+legend-first-paragraph-block
+----------------------------
+
+:fo: fo:block
+
+:inherits: legend-paragraph-block
+
+:defaults:
+
+     space-before: 0pt
+
+Formats the first block that wraps the paragraphs in the legend.
+
+
+Table
+=====
+
+Attribute sets for the Table.
+
+table-block-container
+---------------------
+
+:fo: fo:block-container
+
+:defaults:
+
+     space-before: 12pt
+
+     space-after: 12pt
+
+Formats the block container that wraps bothe the table and a the
+table title (captin) if one exists. Use to control space before
+and after the table.
+
+table
+-----
+
+:fo: fo:table
+
+:defaults:
+
+     table-layout: fixed
+
+     inline-progression-dimension: 100%
+
+Formats the table.
+
+table-header
+------------
+
+:fo: fo:table-header
+
+:defaults:
+
+     font-weight: bold
+
+Formats the header of the table.
+
+default-cell
+------------
+
+:fo: fo:cell
+
+:defaults:
+
+     border: solid black 1px
+
+     padding: 1em
+
+     border-collapse: collapse
+
+Sets the defaults for all cells.
+
+table-header-cell
+-----------------
+
+:fo: fo:cell
+
+:inherits: default-cell
+
+:defaults:
+
+     border-bottom: solid black 2px
+
+Formats the cells in the table header.
+
+table-header-block
+------------------
+
+:fo: fo:block
+
+:defaults:
+
+Attributes for the paragraphs in the header cell.
+
+table-body
+----------
+
+:fo: fo:table-body
+
+:defaults:
+
+Attributes for the table body.
+
+table-row
+---------
+
+:fo: fo:table-row
+
+:defaults:
+
+     keep-together.within-page: always
+
+Attributes for the table row.
+
+table-cell
+----------
+
+:fo: fo:table-cell
+
+:inherits: default-cell
+
+:defaults:
+
+Attributes for the table cell.
+
+cell-block
+----------
+
+:fo: fo:block
+
+:defaults:
+
+Attributes for the paragraphs in the cell.
+
+caption-block
+-------------
+
+:fo: fo:block
+
+:defaults:
+
+     text-align: center
+
+     space-before: 6pt
+
+     space-after: 6pt
+
+Attributes for the table title, or caption. The parameter
+'table-title-placement', controls whether this block is placed
+before or after the table. If it is placed on top of the table,
+it has a 'keep-with-next="always"' value that cannot be changed.
+If this block is placed on the bottom it has a
+'keep-with-previous="always"' value that cannot be changed.

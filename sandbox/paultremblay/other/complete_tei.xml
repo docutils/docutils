@@ -1,0 +1,1021 @@
+<?xml version="1.0" encoding="ASCII"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0" version="5.0">
+<!--
+
+=================
+Complete Examples
+=================
+
+Last updated: July 12, 2004
+
+This XML document lists all examples of citations and references in TEI.
+As a work in progress, it is not yet completed.
+
+
+Status
+======
+
+
+I have combed the 14th edition of *The Chicago Manual of Style* and the
+3rd edition of the MLA handbook to get as many challenging examples as I cold.
+I have not made it through either reference manual; I stopped with journals. I 
+intend to add works when I have time.
+
+Many citations for books and some journals have been entered. These categories
+are covered:
+
+* authors with pseudonyms.
+* anonymous authors
+* more than one author
+* authors and editors, editors, compilers, and any of mix of these.
+* author in the title (important for some types of reference systems).
+* works that require the responsibility statement to be spelled out.
+* republished books (I am to happy with how I have marked up these entries).
+* multiple publishers.
+* journals with continuous and non-contious pagination.
+* articles published in journals in installments.
+* articles first published in books.
+
+
+
+
+
+
+-->
+  <teiHeader>
+    <fileDesc>
+      <titleStmt>
+        <title>Bibliographic Examples</title>
+      </titleStmt>
+      <publicationStmt>
+        <distributor>none</distributor>
+      </publicationStmt>
+      <sourceDesc>
+        <p>no source--a manuscript</p>
+      </sourceDesc>
+    </fileDesc>
+  </teiHeader>
+  <text>
+    <body>
+        <!--An example of a complete citation
+        I've dealt very little with citations, since most of this document contatins
+        references to works.-->
+      <p>
+        <cit>
+          <bibl>
+
+            <ref target="Eliot" type="bib"/>
+            <biblScope type="pageStart">99</biblScope>
+            <biblScope type="pageEnd">103</biblScope>
+          </bibl>
+          <bibl>
+
+            <ref target="EliotG" type="bib"/>
+            <biblScope type="page">127</biblScope>
+          </bibl>
+        </cit>
+      </p>
+
+      <!--This div element is optiona.
+      If an author used this element in this way, and if he had several works
+      with the same author, he would not have to enter the author each time.
+      Instead he could make a reference to the author here.-->
+      <div type="biblNames">
+        <listBibl>
+          <bibl id="eliot">
+            <persName>
+              <foreName>
+                <name type="initial">T</name>Thomas</foreName>
+              <foreName>
+                <name type="initial">S</name>Sterling</foreName>
+              <surname>Eliot</surname>
+            </persName>
+            <note type="desc">I included the optional first and middle name 
+                along with the initials just for thoroghness. Processors
+                can choose what to ignore. However, T.S. Eliot is really known
+                by his initials, and  processor needs to know this information.
+                  </note>
+          </bibl>
+        </listBibl>
+      </div>
+
+      <div type="bibli">
+        <listBibl>
+          <biblStruct id="Eliot" rend="book">
+            <monogr>
+              <author>
+                <link targets="eliot"/>
+              </author>
+              <title level="m">Four Quartets</title>
+              <imprint>
+                <pubPlace>London</pubPlace>
+                <publisher>Faber and Faber</publisher>
+                <date value="1982-01-10">1944</date>
+              </imprint>
+            </monogr>
+            <note type="source">
+              <ref target="Chicago">530</ref>
+            </note>
+          </biblStruct>
+
+          <biblStruct id="Blackfoot" rend="book">
+            <monogr>
+              <author>
+                <persName>
+                  <foreName>Emery</foreName>
+                  <surname>Blackfoot</surname>
+                </persName>
+              </author>
+              <title level="m">Chance Encounters</title>
+              <imprint>
+                <pubPlace>Boston</pubPlace>
+                <publisher>Serendipity Press</publisher>
+                <date>1987</date>
+              </imprint>
+            </monogr>
+            <note type="source">
+              <ref target="Chicago">531</ref>
+            </note>
+            <note type="desc">Simple one author entry</note>
+          </biblStruct>
+
+          <biblStruct id="Unwin" rend="book">
+            <monogr>
+              <author>
+                <persName>
+                  <foreName>Liam</foreName>
+                  <foreName>
+                    <name type="initial">P</name>
+                  </foreName>
+                  <surname>Unwin</surname>
+                </persName>
+              </author>
+              <author>
+                <persName>
+                  <foreName>Joseph</foreName>
+                  <surname>Galloway</surname>
+                </persName>
+              </author>
+              <title level="m">Peace in Ireland</title>
+              <imprint>
+                <pubPlace>Boston</pubPlace>
+                <publisher>Stronghope Press</publisher>
+                <date>1990</date>
+              </imprint>
+            </monogr>
+            <note type="source">
+              <ref target="Chicago">531</ref>
+            </note>
+            <note type="desc">Simple entry with two authors.</note>
+          </biblStruct>
+
+          <biblStruct id="Adams" rend="book">
+            <monogr>
+              <author>
+                <persName>
+                  <foreName>Henry</foreName>
+                  <surname>Adams</surname>
+                </persName>
+              </author>
+              <title level="m">
+                <seg type="nonfiling">The </seg>Education of Henry Adams: An Autobiography</title>
+                  <note type="authorInTitle"></note>
+              <imprint>
+                <pubPlace>Boston</pubPlace>
+                <publisher>Houghton Miffline</publisher>
+                <date>1918</date>
+                <biblScope type="pages">163-65</biblScope>
+              </imprint>
+            </monogr>
+            <note type="source">
+              <ref target="Chicago">532 (15.89)</ref>
+            </note>
+            <note type="desc">The author is in the tile of the work.</note>
+          </biblStruct>
+
+          <biblStruct id="Cline" rend="multivolume-book">
+            <monogr>
+              <author>
+                <persName>
+                  <foreName>
+                    <name type="initial">C</name>
+                  </foreName>
+                  <foreName>
+                    <name type="initial">L</name>
+                  </foreName>
+                  <surname>Cline</surname>
+                </persName>
+              </author>
+              <title level="m">
+                <seg type="nonfiling">The </seg>Letters of
+                 George Meredith</title>
+              <imprint>
+                <pubPlace>Oxford</pubPlace>
+                <publisher>Clarendon Press</publisher>
+                <date>1970</date>
+                <biblScope type="pages">125</biblScope>
+              </imprint>
+              <extent><num>3</num>volumes</extent>
+            </monogr>
+            <series>
+            </series>
+            <note type="source">
+              <ref target="Chicago">533 (15.89)</ref>
+            </note>
+            <note type="desc">In this case, the editor would appear first
+                because it is prominent.
+            </note>
+          </biblStruct>
+
+          <biblStruct id="Doe" rend="book">
+            <monogr>
+              <author>
+                <persName type="anonymous">
+                  <foreName>Jane</foreName>
+                  <surname>Doe</surname>
+                </persName>
+              </author>
+              <title level="m">
+                <seg type="nonfiling">The </seg>Burden of Anonymity.</title>
+              <imprint>
+                <pubPlace>Nowhere</pubPlace>
+                <publisher>Nonesuch Press</publisher>
+                <date>1948</date>
+              </imprint>
+            </monogr>
+            <note type="source">
+              <ref target="Chicago">533 (15.90)</ref>
+            </note>
+          </biblStruct>
+
+          <biblStruct id="EliotG" rend="book">
+            <monogr>
+              <author>
+                <persName type="pseudonym">
+                  <foreName>George</foreName>
+                  <surname>Eliot</surname>
+                </persName>
+              </author>
+              <title level="m">Middlemarch <title level="m">Norton Critical Editions</title>
+              </title>
+              <imprint>
+                <pubPlace>New York</pubPlace>
+                <publisher>W. W. Norton</publisher>
+                <date>1977</date>
+              </imprint>
+            </monogr>
+            <note type="source">
+              <ref target="Chicago">534 (15.93)</ref>
+            </note>
+            <note type="desc">An author so-well known by her pseudonym that a 
+                real name is not needed.</note>
+          </biblStruct>
+
+
+          <biblStruct id="LeCarr&#233;" rend="book">
+            <monogr>
+              <author>
+                <persName type="pseudonym">
+                  <surname>Le Carr&#233;</surname>
+                  <foreName>John</foreName>
+                </persName>
+                <persName>
+                  <foreName>David John Moore</foreName>
+                  <surname>Cornwell</surname>
+                </persName>
+              </author>
+              <title level="m">
+                <seg type="nonfiling">The </seg>Quest for Karla</title>
+              <imprint>
+                <pubPlace>New York</pubPlace>
+                <publisher>Knopf</publisher>
+                <date>1982</date>
+              </imprint>
+            </monogr>
+            <note type="source">
+              <ref target="Chicago">534 (19.93)</ref>
+            </note>
+            <note type="desc">An author with a real name and the pseudonym. </note>
+          </biblStruct>
+
+          <biblStruct id="Tortelli" rend="book">
+            <monogr>
+              <author>
+                <persName>
+                  <foreName>Anthony</foreName>
+                  <foreName>
+                    <name type="initial">B</name>
+                  </foreName>
+                  <surname>Tortelli</surname>
+                </persName>
+              </author>
+              <title level="m">Sociology Approaching the Twenty-first Century</title>
+              <imprint>
+                <pubPlace>Los Angeles</pubPlace>
+                <publisher>Peter and Sons</publisher>
+                <date>1991</date>
+              </imprint>
+            </monogr>
+            <note type="source">
+              <ref target="Chicago">535 (15.96)</ref>
+            </note>
+          </biblStruct>
+
+          <biblStruct id="Gianakakos" rend="book">
+            <monogr>
+              <respStmt>
+                <resp>translator</resp>
+                <resp>
+                  <persName>
+                    <foreName>Peter</foreName>
+                    <surname>Gianakakos</surname>
+                  </persName>
+                  <persName>
+                    <foreName>William</foreName>
+                    <surname>Poweska</surname>
+                  </persName>
+                </resp>
+              </respStmt>
+              <title level="m">Studies of Transformation in Eastern Europe</title>
+              <imprint>
+                <pubPlace>Buffalo, N.Y.</pubPlace>
+                <publisher>Touser and Blinken</publisher>
+                <date>1991</date>
+              </imprint>
+            </monogr>
+            <note type="desc">Note that the persName must go in the resp element.
+                This seems a bit awkward. The TEI webpage states that each respStmt
+                element should have one resp element and one name element. However, 
+                I want to list all names within the persName element for easy processing.
+
+                I could use a link element and point to a name, as I did with T.S. 
+                Eliot. Howevr, that might not really prove any clearer.
+            
+            </note>
+          </biblStruct>
+
+
+          <biblStruct id="Santos" rend="book">
+            <monogr>
+              <respStmt>
+                <resp>compiler</resp>
+                <resp>
+                  <persName>
+                    <foreName>Santos</foreName>
+                    <surname>Manuel</surname>
+                  </persName>
+                </resp>
+              </respStmt>
+              <title level="m">
+                <seg type="nonfiling">The </seg>Collected works of Henrietta Kahn</title>
+              <imprint>
+                <pubPlace>Boston</pubPlace>
+                <publisher>I. J. Filbert</publisher>
+                <date>1989</date>
+              </imprint>
+            </monogr>
+            <note type="source">
+              <ref target="Chicago">535 (15.96)</ref>
+            </note>
+            <note type="desc">The compiler takes the place of the author.</note>
+          </biblStruct>
+
+          <biblStruct id="Mill" rend="book">
+            <monogr>
+              <author>
+                <persName>
+                  <foreName>John</foreName>
+                  <foreName>Stuart</foreName>
+                  <surname>Mill</surname>
+                </persName>
+              </author>
+              <author>
+                <persName>
+                  <foreName>John</foreName>
+                  <foreName>
+                    <name type="initial">M</name>
+                  </foreName>
+                  <surname>Robinson</surname>
+                </persName>
+              </author>
+              <author>
+                <persName>
+                  <foreName>Jack</foreName>
+                  <surname>Stillinger</surname>
+                </persName>
+              </author>
+              <title level="m">Autobiography and Literary Essays</title>
+              <imprint>
+                <pubPlace>Toronto</pubPlace>
+                <publisher>University of Toronto Press</publisher>
+                <date>1980</date>
+              </imprint>
+            </monogr>
+            <note type="source">
+              <ref target="Chicago">535 (15.97)</ref>
+            </note>
+            <note type="desc">Editors along with author. The author appears first.</note>
+          </biblStruct>
+
+          <biblStruct id="Cort&#225;" rend="book">
+            <monogr>
+              <author>
+                <persName>
+                  <foreName>Julio</foreName>
+                  <surname>Cort&#225;</surname>
+                </persName>
+              </author>
+              <respStmt>
+                <resp>translator</resp>
+                <resp>
+                  <persName>
+                    <foreName>Paul</foreName>
+                    <surname>Blackburn</surname>
+                  </persName>
+                </resp>
+              </respStmt>
+              <title level="m">Cronopios and Famas</title>
+              <imprint>
+                <pubPlace>New York</pubPlace>
+                <publisher>Random House, Pantheon Books</publisher>
+                <date>1969</date>
+              </imprint>
+            </monogr>
+            <note type="source">
+              <ref target="Chicago">535 (15.97)</ref>
+            </note>
+            <note type="desc">Tranlsator with author. Author appears first.</note>
+          </biblStruct>
+
+          <biblStruct id="Chaucer" rend="book">
+            <monogr>
+              <title level="m">Chaucer Life-Records</title>
+              <respStmt>
+                <resp>edited by Martin M. Crow and Clair C.Olson from materials compiled by John M. Manly and Edith Rickert, witt he assistance of Lilian J. Redstone and others.</resp>
+                <resp>
+                </resp>
+              </respStmt>
+              <imprint>
+                <pubPlace>London</pubPlace>
+                <publisher>Oxford University Press</publisher>
+                <date>1996</date>
+              </imprint>
+            </monogr>
+            <note type="source">
+              <ref target="Chicago">536 (15.98)</ref>
+            </note>
+            <note type="desc">The responisiblity material must be spelled out.
+                The book appears first in the entry.</note>
+          </biblStruct>
+
+          <biblStruct id="EliotT2" rend="book">
+            <monogr>
+              <author>
+                <link targets="eliot"/>
+              </author>
+              <author>
+                <persName>
+                  <foreName>Ezra</foreName>
+                  <surname>Pound</surname>
+                </persName>
+              </author>
+              <title level="m">Literary Essays</title>
+              <imprint>
+                <pubPlace>New York</pubPlace>
+                <publisher>New Directions</publisher>
+                <date>1953</date>
+              </imprint>
+            </monogr>
+            <note type="source">
+              <ref target="Chicago">536 (15.99)</ref>
+            </note>
+            <note type="desc">The editor replaces the author in importance and so appears first.</note>
+          </biblStruct>
+
+          <biblStruct id="Nichols" rend="book">
+            <monogr>
+              <respStmt>
+                <resp>editor and translator</resp>
+                <resp>
+                  <persName>
+                    <foreName>Nichols</foreName>
+                    <foreName>
+                      <name type="initial">J</name>
+                    </foreName>
+                    <surname>Fred</surname>
+                  </persName>
+                </resp>
+              </respStmt>
+              <title level="m">An Anthology of Neo-Latin Poetry</title>
+              <imprint>
+                <pubPlace>New Haven</pubPlace>
+                <publisher>Yale UP</publisher>
+                <date>1979</date>
+              </imprint>
+            </monogr>
+            <note type="source">
+              <ref target="Gibaldi">95 (4.5.2)</ref>
+            </note>
+            <note type="desc">Example of an Anthology.</note>
+          </biblStruct>
+
+          <biblStruct id="Chicago" rend="book">
+            <monogr>
+              <title level="m">
+                <seg type="nonfiling">The </seg>Chicago Manual of Style</title>
+              <edition>14th</edition>
+              <imprint>
+                <pubPlace>Chicago</pubPlace>
+                <publisher>The University of Chicago Press</publisher>
+                <date value="1993-01-10">1993</date>
+              </imprint>
+            </monogr>
+          </biblStruct>
+
+          <biblStruct rend="book" id="Schweitzer">
+            <monogr>
+              <author>
+                <persName>
+                  <foreName>Albert</foreName>
+                  <surname>Schweitzer</surname>
+                </persName>
+              </author>
+              <respStmt>
+                <resp>translator</resp>
+                <resp>
+                  <persName>
+                    <foreName>Ernest</foreName>
+                    <surname>Newman</surname>
+                  </persName>
+                </resp>
+              </respStmt>
+              <title level="m">J.S. Bach</title>
+              <imprint>
+                <pubPlace/>
+                <publisher/>
+                <date>1911</date>
+              </imprint>
+            </monogr>
+            <monogr rend="reprint">
+              <imprint>
+                <pubPlace>New York</pubPlace>
+                <publisher>Dover Publication</publisher>
+                <date>1966</date>
+              </imprint>
+            </monogr>
+            <note type="source">
+              <ref target="Chicago">562 (15.179)</ref>
+            </note>
+            <note type="desc">A reprinted book originally printed a long time ago.
+                I must rely on the "rend" attribute. I would rather a better way.
+            
+            </note>
+          </biblStruct>
+
+          <biblStruct id="Small" rend="book">
+            <monogr>
+              <author>
+                <persName>
+                  <foreName>Robert</foreName>
+                  <surname>Small</surname>
+                </persName>
+              </author>
+              <title level="m">
+                <seg type="nonfiling">An </seg>Account of the Astronomical Discoveries of Kepler</title>
+              <imprint>
+                <pubPlace/>
+                <publisher/>
+                <date>1804</date>
+              </imprint>
+            </monogr>
+            <monogr rend="reprint">
+              <note type="reprint">with a foreword by William D. Stahlman</note>
+              <imprint>
+                <pubPlace>Madison</pubPlace>
+                <publisher>University of Wisconsin Press</publisher>
+                <date>1964</date>
+              </imprint>
+            </monogr>
+            <note type="source">
+              <ref target="Chicago">562 (15.180)</ref>
+            </note>
+            <note type="desc">A reprinted book originally printed a long time ago, with a new foreword.
+                I had to use a note element with the type of repring. However, this work-around won't work.
+                The MLA style would just need to know that a foreward has been added; it would not add 
+                the "with a foreward" text.
+            </note>
+          </biblStruct>
+
+          <biblStruct id="Audsley" rend="multivolume-book">
+            <monogr>
+              <author>
+                <persName>
+                  <foreName>George</foreName>
+                  <foreName>Ashdown</foreName>
+                  <surname>Audsley</surname>
+                </persName>
+              </author>
+              <title level="m">The Art of Organ Building</title>
+              <imprint>
+                <pubPlace/>
+                <publisher/>
+                <date>1905</date>
+                <biblScope type="vols">2</biblScope>
+              </imprint>
+            </monogr>
+            <monogr rend="reprint">
+              <note type="reprint">2 vols. in 1</note>
+              <imprint>
+                <pubPlace>New York</pubPlace>
+                <publisher>Dover Publications</publisher>
+                <date>1964</date>
+                <biblScope type="vols">1</biblScope>
+              </imprint>
+            </monogr>
+            <note type="source">
+              <ref target="Chicago">562 (15.180)</ref>
+            </note>
+            <note type="desc">A reprinted book originally printed a long time ago, 
+                which has been condensed to one volume.
+                As in the previous entry, the way I entered this information is too weak.
+            </note>
+          </biblStruct>
+
+          <biblStruct id="Harris" rend="book">
+            <monogr>
+              <author>
+                <persName>
+                  <foreName>Neil</foreName>
+                  <surname>Harris</surname>
+                </persName>
+              </author>
+              <title level="m">
+                <seg type="nonfiling">The </seg>Artist in American Society: The Formative Years, 1790-1860</title>
+              <imprint>
+                <pubPlace>New York</pubPlace>
+                <publisher>George Braziller</publisher>
+                <date>1966</date>
+              </imprint>
+            </monogr>
+            <monogr rend="reprint">
+              <imprint>
+                <pubPlace>Chicago</pubPlace>
+                <publisher>Phoenix Books</publisher>
+                <date>1982</date>
+              </imprint>
+            </monogr>
+            <note type="source">
+              <ref target="Chicago">562 (15.181)</ref>
+            </note>
+            <note type="desc">A book reprinted from one originally printed recently.</note>
+          </biblStruct>
+
+          <biblStruct id="WPA" rend="book">
+            <monogr>
+              <title level="m">New Jersey: A Guide to Its Past and Present</title>
+              <imprint>
+                <pubPlace/>
+                <publisher/>
+                <date>1939</date>
+              </imprint>
+            </monogr>
+            <monogr rend="reprint">
+              <title level="m">
+                <seg type="nonfiling">The </seg>WPA Guide to 1930s New Jersey</title>
+              <imprint>
+                <pubPlace>New Brunswick</pubPlace>
+                <publisher>Rutgers UP</publisher>
+                <date>1986</date>
+              </imprint>
+            </monogr>
+            <note type="source">
+              <ref type="Gibaldi">111 (4.5.14)</ref>
+            </note>
+            <note type="desc">Republished book with a changed title</note>
+          </biblStruct>
+
+          <biblStruct id="ALA" rend="book">
+            <monogr>
+                <author>
+                    <orgName type="association">American Library Association</orgName>
+                </author>
+              <title level="m">Intellectual Freedom Manual</title>
+              <edition>2nd</edition>
+              <imprint>
+                <pubPlace>Chicago</pubPlace>
+                <publisher>ALA</publisher>
+                <date>1983</date>
+              </imprint>
+            </monogr>
+            <note type="source">
+              <ref target="Gibaldi">100 (4.5.6)</ref>
+            </note>
+            <note type="desc">Corporate author.</note>
+          </biblStruct>
+
+          <biblStruct id="Duff" rend="book">
+            <monogr>
+              <author>
+                <persName>
+                    <foreName><name type="initial">J</name></foreName>
+                  <foreName>Wight</foreName>
+                  <surname>Duff</surname>
+                </persName>
+              </author>
+              <author>
+                <persName>
+                    <foreName><name type="initial">A</name></foreName>
+                  <foreName>
+                    <name type="initial">M</name>
+                  </foreName>
+                  <surname>Duff</surname>
+                </persName>
+              </author>
+              <title level="m">
+                <seg type="nonfiling">A </seg>Literary History of Rome: From the Origins to the Close of the Golden Age</title>
+              <edition>3</edition>
+              <imprint>
+                <pubPlace>London</pubPlace>
+                <publisher>Benn</publisher>
+                <date>1953</date>
+              </imprint>
+            </monogr>
+            <monogr rend="reprint">
+              <imprint>
+                <pubPlace>New York</pubPlace>
+                <publisher>Barnes</publisher>
+                <date>1967</date>
+              </imprint>
+            </monogr>
+            <note type="source">
+              <ref target="Gibaldi">116 (4.5.20)</ref>
+            </note>
+            <note type="desc">This appears under the part on multiple publishers, though it appears to be a republished book?</note>
+          </biblStruct>
+
+          <biblStruct id="Shelley" rend="book">
+            <monogr>
+              <author>
+                <persName>
+                  <foreName>Percy</foreName>
+                  <foreName>Bysshe</foreName>
+                  <surname>Shelley</surname>
+                </persName>
+              </author>
+              <author>
+                <persName>
+                  <foreName>Timoty</foreName>
+                  <surname>Webb</surname>
+                </persName>
+              </author>
+              <title level="m">Selected Poems</title>
+              <imprint>
+                <pubPlace>London</pubPlace>
+                <publisher>Dent</publisher>
+                <date>1977</date>
+                <pubPlace>Totowa</pubPlace>
+                <publisher>Rowman</publisher>
+              </imprint>
+            </monogr>
+            <note type="source">
+              <ref target="Gibaldi">117 (4.5.20)</ref>
+            </note>
+            <note type="desc">Mulitiple publishers. The second date is not 
+                required because it should be the same as the first?</note>
+          </biblStruct>
+
+          <biblStruct id="Brock" rend="journal">
+            <analytic>
+              <author>
+                <persName>
+                  <foreName>Dan</foreName>
+                  <foreName>
+                    <name type="initial">W</name>
+                  </foreName>
+                  <surname>Brock</surname>
+                </persName>
+              </author>
+              <title level="a">
+                <seg type="nonfiling">The </seg>Value of prolonging Human Life</title>
+            </analytic>
+            <monogr>
+              <title level="m">Philosophical Studies</title>
+              <imprint>
+                <date>1986</date>
+                <date rend="month">May</date>
+                <biblScope type="volume">50</biblScope>
+                <biblScope type="pages">401-26</biblScope>
+              </imprint>
+            </monogr>
+            <note type="source">
+              <ref target="Gibaldi">129 (4.7.3)</ref>
+            </note>
+            <note type="desc">Journal with continual pagination.</note>
+          </biblStruct>
+
+          <biblStruct id="Gerontion" rend="journal">
+            <analytic>
+              <author>
+                <persName>
+                  <foreName>Thomas</foreName>
+                  <surname>Gerontion</surname>
+                </persName>
+              </author>
+              <title level="a">Further Reflections of an <title level="a">Old Man in a Dry Month</title>
+              </title>
+            </analytic>
+            <monogr>
+              <title level="m">Norton Review</title>
+              <imprint>
+                <date>1990</date>
+                <date rend="month">April</date>
+                <biblScope type="volume">24</biblScope>
+                <biblScope type="pages">95-100</biblScope>
+              </imprint>
+            </monogr>
+            <note type="source">
+              <ref target="Chicago">572 (15.220)</ref>
+            </note>
+            <note type="desc">Title with title within title.</note>
+          </biblStruct>
+
+          <biblStruct id="Mills" rend="journal">
+            <analytic>
+              <author>
+                <persName>
+                  <foreName>Judith</foreName>
+                  <surname>Mills</surname>
+                </persName>
+              </author>
+              <title level="a">Packaging the Client</title>
+              <title type="installments" level="a">Parts 1 and 2</title>
+            </analytic>
+            <monogr>
+              <title level="m">Public Relations Review</title>
+              <imprint>
+                <date>1990</date>
+                <biblScope type="volume">14</biblScope>
+                <biblScope type="issue">3</biblScope>
+                <biblScope type="pages">95-102</biblScope>
+              </imprint>
+            </monogr>
+            <monogr rend="installments">
+              <imprint>
+                <date>1990</date>
+                <biblScope type="volume">14</biblScope>
+                <biblScope type="issue">4</biblScope>
+                <biblScope type="pages">43-52</biblScope>
+              </imprint>
+            </monogr>
+            <note type="source">
+              <ref target="Chicago">573 (15.222)</ref>
+            </note>
+            <note type="desc">Article published in installments.</note>
+          </biblStruct>
+
+          <biblStruct id="Patrick" rend="journal">
+            <analytic>
+              <author>
+                <persName>
+                  <foreName>Elizabeth</foreName>
+                  <foreName>Nelson</foreName>
+                  <surname>Patrick</surname>
+                </persName>
+              </author>
+              <title level="a">
+                <seg type="nonfiling">The </seg>Black Experience in Southern Nevada</title>
+              <title type="installments" level="a">Parts 1 and 2</title>
+            </analytic>
+            <monogr>
+              <title level="m">Nevada Historical Society Quarterly</title>
+              <imprint>
+                <date>1979</date>
+                <date rend="season">Summer</date>
+                <biblScope type="volume">22</biblScope>
+                <biblScope type="pages">128-140</biblScope>
+              </imprint>
+            </monogr>
+            <monogr rend="installments">
+              <imprint>
+                <date>1979</date>
+                <date rend="season">Fall</date>
+                <biblScope type="volume">22</biblScope>
+                <biblScope type="pages">209-20</biblScope>
+              </imprint>
+            </monogr>
+            <note type="source">
+              <ref target="Chicago">573 (15.222)</ref>
+            </note>
+            <note type="desc">Article published in installments.</note>
+            <note type="desc">Should look like: Patrick, Eliabeth Nelson. &quot;The Black Experience in Southern Nevada.&quot; Parts 1 and 2. *Nevada Historical Society Quarterly* 22 (summer/fall 1979): 128-40, 209-20.</note>
+          </biblStruct>
+
+          <biblStruct id="McKeon" rend="journal">
+            <analytic>
+              <author>
+                <persName>
+                  <foreName>Richard</foreName>
+                  <nameLink>Mc</nameLink>
+                  <surname>Keon</surname>
+                </persName>
+              </author>
+              <title level="a">Dialogue and Controversy in Philosophy</title>
+            </analytic>
+            <monogr>
+              <title level="m">Philosophy and Phenomenological Research</title>
+              <imprint>
+                <date>1955</date>
+                <biblScope type="volume">17</biblScope>
+                <biblScope type="pages">143-63</biblScope>
+              </imprint>
+            </monogr>
+            <monogr rend="first-in-book">
+              <title level="m">Entretiens philosophiques d'Ath&#232;nes</title>
+              <imprint>
+                <pubPlace>Athens</pubPlace>
+                <publisher>Institut International de Philosophie</publisher>
+                <date>1955</date>
+                <biblScope type="pages">161-178</biblScope>
+              </imprint>
+            </monogr>
+            <note type="source">
+              <ref target="Chicago">573 (15.223)</ref>
+            </note>
+            <note type="desc">Article originally published in a book.</note>
+          </biblStruct>
+
+
+          <biblStruct id="Med" rend="book">
+            <monogr>
+              <respStmt>
+                <resp>American Medical Association</resp>
+                <resp>
+                  <persName>
+
+                  </persName>
+                </resp>
+              </respStmt>
+              <title level="m">
+                <seg type="nonfiling">The </seg>American Medical Association Family Medical Guide</title>
+              <imprint>
+                <pubPlace>New York</pubPlace>
+                <publisher>Random</publisher>
+                <date>1987</date>
+              </imprint>
+            </monogr>
+            <note type="source">
+              <ref target="Gibaldi">100 (4.5.6)</ref>
+            </note>
+            <note type="desc">Corporate author.</note>
+          </biblStruct>
+
+          <biblStruct id="Photo" rend="book">
+            <monogr>
+              <title level="m">Encyclopedia of Photography</title>
+              <imprint>
+                <pubPlace>New York</pubPlace>
+                <publisher>Crown</publisher>
+                <date>1984</date>
+              </imprint>
+            </monogr>
+            <note type="source">
+              <ref target="Gibaldi">100 (4.5.6)</ref>
+            </note>
+            <note type="desc">Example of an anonymous book.</note>
+          </biblStruct>
+
+     
+
+
+
+          <biblStruct id="Gibaldi" rend="book">
+            <monogr>
+              <author>
+                <persName>
+                  <foreName>Joseph</foreName>
+                  <surname>Gibaldi</surname>
+                </persName>
+              </author>
+              <author>
+                <persName>
+                  <foreName>Walter</foreName>
+                  <foreName>
+                    <name type="initial">S</name>
+                  </foreName>
+                  <surname>Achtert</surname>
+                </persName>
+              </author>
+              <title level="m">MLA Handbook for Writers of Research Papers</title>
+              <imprint>
+                <pubPlace>New York</pubPlace>
+                <publisher>The Modern Language Association of America</publisher>
+                <date>1988</date>
+              </imprint>
+            </monogr>
+          </biblStruct>
+
+        </listBibl>
+      </div>
+    </body>
+  </text>
+</TEI>
