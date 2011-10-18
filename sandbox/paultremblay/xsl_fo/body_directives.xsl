@@ -310,7 +310,7 @@
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="math_block[@classes='asciimath']">
+    <xsl:template match="math_block[@classes='asciimath']|math_block[@classes='latex']">
         <xsl:if test="not(ml:math)">
             <xsl:message terminate="yes">
                 <xsl:text>You have used the math directive with the classes set to asciimath&#x000A;</xsl:text>

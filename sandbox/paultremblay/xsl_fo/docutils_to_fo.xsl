@@ -25,14 +25,14 @@
     <xsl:include href = "line_block.xsl"/>
     <xsl:include href = "admonitions.xsl"/>
     <xsl:include href = "body_directives.xsl"/>
-    <!--
+    <xsl:include href = "image_figure.xsl"/>
     <xsl:include href = "table.xsl"/>
-    <xsl:include href = "table_extended.xsl"/>
+    <xsl:include href = "citation.xsl"/>
+    <!--
     <xsl:include href = "table_extended2.xsl"/>
     <xsl:include href = "table_long.xsl"/>
-    <xsl:include href = "citation.xsl"/>
-    <xsl:include href = "image_figure.xsl"/>
     =========================================
+    <xsl:include href = "table_extended.xsl"/>
     <xsl:include href = "misc.xsl"/>
     <xsl:include href = "util.xsl"/>
     <xsl:include href = "page.xsl"/>
