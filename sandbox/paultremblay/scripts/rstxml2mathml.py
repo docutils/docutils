@@ -7,35 +7,23 @@ import os, sys, argparse
 from io import StringIO
 import asciimathml
 from xml.etree.ElementTree import Element, tostring
+import xml.etree.cElementTree as etree
 import tempfile, subprocess, os
+import docutils.math.latex2mathml
 
-try:
-  from lxml import etree
-except ImportError:
-  try:
-    import xml.etree.cElementTree as etree
-  except ImportError:
-    try:
-      import xml.etree.ElementTree as etree
-    except ImportError:
-      try:
-        import cElementTree as etree
-      except ImportError:
-        try:
-          import elementtree.ElementTree as etree
-        except ImportError:
-          print("Failed to import ElementTree from any known place")
-          sys.exit(1)
+if sys.version_info < (3,):
+    sys.stderr.write('Only run with pyton 3\n')
+    sys.stderr.write('Script now quiting\n')
+    sys.exit(1)
 
 
 class CopyTree(xml.sax.ContentHandler):
 
 
   
-  def __init__(self):
+  def __init__(self, mathml):
         self.__characters = ''
-        self.__ascii_math = False
-        self.__latex_math = False
+        self.__mathml = mathml
         self.__ns_dict = {'http://www.w3.org/XML/1998/namespace': "xml"}
 
 
@@ -44,12 +32,9 @@ class CopyTree(xml.sax.ContentHandler):
 
 
   def startElementNS(self, name, qname, attrs):
+        self.__write_text()
         ns = name[0]
         el_name = name[1]
-        if el_name == 'math_block' and attrs.get((None, 'classes')) == 'asciimath':
-            self.__ascii_math= True
-        if el_name == 'math_block' and attrs.get((None, 'classes')) == 'latex':
-            self.__latex_math= True
         sys.stdout.write('<')
         if ns:
             sys.stdout.write('ns1:%s' % el_name)
@@ -92,22 +77,24 @@ class CopyTree(xml.sax.ContentHandler):
   def endElementNS(self, name, qname):
         ns = name[0]
         el_name = name[1]
-        if el_name == 'math_block' and  self.__ascii_math == True:
-            self.__ascii_math= False
+        if (el_name == 'math_block' and  self.__mathml == 'ascii') or (el_name == 'math' and self.__mathml == 'ascii'):
             raw_tree  = asciimathml.parse(self.__characters)[0]
             math_tree = Element('math', title="%s" % self.__characters, xmlns="http://www.w3.org/1998/Math/MathML")
             math_tree.append(raw_tree)
             string_tree = tostring(math_tree, encoding="utf-8").decode() 
             sys.stdout.write(string_tree)
             self.__characters = ''
-        elif el_name == 'math_block' and  self.__latex_math == True:
-            raw_tree = self.__tralics()[0]
-            math_tree = Element('math', title="%s" % self.__characters, xmlns="http://www.w3.org/1998/Math/MathML")
-            math_tree.append(raw_tree)
-            string_tree = tostring(math_tree, encoding="utf-8").decode() 
-            sys.stdout.write(string_tree)
-            self.__characters = ''
-            self.__latex_math = False
+        elif (el_name == 'math_block' and  self.__mathml == 'latex') or (el_name == 'math' and self.__mathml == 'latex'):
+            raw_tree = self.__tralics()
+            if raw_tree == None:
+                self.__write_text()
+            else:
+                raw_tree = raw_tree[0]
+                math_tree = Element('math', title="%s" % self.__characters, xmlns="http://www.w3.org/1998/Math/MathML")
+                math_tree.append(raw_tree)
+                string_tree = tostring(math_tree, encoding="utf-8").decode() 
+                sys.stdout.write(string_tree)
+                self.__characters = ''
         else:
             self.__write_text()
         if ns:
@@ -117,14 +104,28 @@ class CopyTree(xml.sax.ContentHandler):
         else:
             sys.stdout.write('</%s>' % el_name)
 
+  def __python_latex_math(self):
+        """
+        Python code seriously broken
+
+        """
+        try:
+            mathml_tree = docutils.math.latex2mathml.parse_latex_math(self.__characters)
+        except SyntaxError:
+            return self.__characters
+        math_code = ''.join(mathml_tree.xml())
+        return math_code
+
   def __tralics(self):
         num, tex_file = tempfile.mkstemp(suffix='.tex')
         write_obj = open(tex_file, 'w')
+        write_obj.write('$')
         write_obj.write(self.__characters)
+        write_obj.write('$')
         write_obj.close()
         num, bogus_out = tempfile.mkstemp()
         bogus_out = open(bogus_out, 'w')
-        p = subprocess.call(['tralics', '-silent', '-utf8output', tex_file], stdout=bogus_out)
+        p = subprocess.call(['tralics', '-silent', '-utf8output', '-noentnames', tex_file], stdout=bogus_out)
         bogus_out.close()
         dir_name = os.path.dirname(tex_file)
         filename, ext = os.path.splitext(tex_file)
@@ -136,6 +137,7 @@ class CopyTree(xml.sax.ContentHandler):
             sys.stderr.write('Bug, program now quiting\n')
             sys.exit(1)
         tree = etree.ElementTree()
+        read_obj = open(xml_file, 'r')
         xml_tree = tree.parse(xml_file)
         found = None
         while not found:
@@ -143,7 +145,13 @@ class CopyTree(xml.sax.ContentHandler):
                 if child.tag == '{http://www.w3.org/1998/Math/MathML}math':
                     found = 1
                     break
-            xml_tree = xml_tree[0]
+            try:
+                xml_tree = xml_tree[0]
+            except IndexError:
+                sys.stderr.write('Could not find any latex math\n')
+                break
+        if not found:
+            return None
         return xml_tree
         """
         line_to_read = 1
@@ -174,7 +182,7 @@ Then run this script on that resulting file
 Or, in one pass: rst2xml.py <infile> | python3 rstxml2mathml.py
         """
         parser = argparse.ArgumentParser(description=desc)
-        # parser.add_argument('--type', nargs=1 ) # much better--demand an arg; the option is still optional
+        parser.add_argument('--mathml', choices = ['latex', 'ascii'], nargs=1 ) # much better--demand an arg; the option is still optional
         parser.add_argument('in_file', default = sys.stdin, nargs='?',  
                 help = 'the file to input; default is standard in')
         args =  parser.parse_args()
@@ -185,6 +193,9 @@ Or, in one pass: rst2xml.py <infile> | python3 rstxml2mathml.py
         args = self.__parse_args()
         standard_in = False
         in_file = args.in_file
+        mathml = args.mathml
+        if mathml:
+            mathml = mathml[0]
         if isinstance(in_file, io.TextIOWrapper):
             standard_in = True
             the_string = sys.stdin.read()
@@ -192,7 +203,7 @@ Or, in one pass: rst2xml.py <infile> | python3 rstxml2mathml.py
             read_obj = StringIO(the_string)
         else:
             read_obj = open(in_file, 'r')
-        the_handle=CopyTree()
+        the_handle=CopyTree(mathml)
         parser = xml.sax.make_parser()
         parser.setFeature(feature_namespaces, 1)
         parser.setContentHandler(the_handle)

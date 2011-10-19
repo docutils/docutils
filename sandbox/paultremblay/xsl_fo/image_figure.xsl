@@ -112,7 +112,7 @@
     </xsl:template>
 
     <xsl:template match="figure/legend">
-        <fo:block role="legend" xsl:use-attribute-sets="figure-legend-block" id="generate-id()">
+        <fo:block role="legend" xsl:use-attribute-sets="figure-legend-block" id="{generate-id()}">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>

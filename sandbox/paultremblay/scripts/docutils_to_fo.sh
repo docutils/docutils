@@ -1,5 +1,6 @@
 XSLFO_HOME=/Users/cejohnsonlouisville/Documents/docutils/paultremblay/xsl_fo
 RSTML=/Users/cejohnsonlouisville/Documents/docutils/paultremblay/scripts/rstxml2mathml.py
+FOPCONF=/Users/cejohnsonlouisville/Documents/docutils/paultremblay/fop.conf
 if [ "$XSLFO_PDF" != "" ]; then
     PDF='true'
 else
@@ -15,6 +16,7 @@ Usage() {
     echo --pdf: create a PDF document
     echo --valid: validate the FO document
     echo --strict: quit when a template does not match \(or other error\)
+    echo --latexml: convert latex in the math element to mathml
     echo "-s | --stylesheet <stylesheet> : the stylesheet to use"
     echo "-o | --out: file to output to"
 }
@@ -26,7 +28,8 @@ VALID='false'
 STYLESHEET=
 OUT=''
 STRICT=''
-MATHML='true'
+LATEXML='false'
+ASCIIML='false'
  while [ $# -gt 0 ]
  do
      case "$1" in
@@ -36,12 +39,14 @@ MATHML='true'
          --help) Usage;exit 0;;
          --verbose) VERBOSE='true';;
          --format) FORMAT='true';;
-         --test) CLEAN='false';FORMAT='true';VALID='true';PDF='true';TEST='true';STRICT='true';;
+         --test) CLEAN='false';FORMAT='true';VALID='true';TEST='true';STRICT='true';;
          --testq) CLEAN='false';VALID='true';FORMAT='true';;
          --noclean) CLEAN='false';;
          --pdf) PDF='true';;
          --valid) VALID='true';;
          --strict) STRICT='true';;
+         --latexml) LATEXML='true';;
+         --asciiml) ASCIIML='true';;
          --out) shift;OUT=$1;;
          -o) shift;OUT=$1;;
          --stylesheet) shift;STYLESHEET=$1;;
@@ -94,9 +99,12 @@ else
     FO_FILE=${DIRNAME}/${BASENAME}.fo
 fi
 
-if [ "$MATHML" == 'true' ]; then
+if [ "$LATEXML" == 'true' ]; then
     rst2xml.py --strip-comments --trim-footnote-reference-space --no-doctype $1\
-        | python3 $RSTML >  $RAW_XML
+        | python3 $RSTML --mathml  latex >  $RAW_XML
+elif [ "$ASCIIML" == 'true' ]; then
+    rst2xml.py --strip-comments --trim-footnote-reference-space --no-doctype $1\
+        | python3 $RSTML --mathml  ascii >  $RAW_XML
 else
     rst2xml.py --strip-comments --trim-footnote-reference-space --no-doctype $1  $RAW_XML
 fi
@@ -122,7 +130,7 @@ fi
 
 if [ "$PDF" == 'true' ]; then
     PDF_FILE=${DIRNAME}/${BASENAME}.pdf
-    fop -fo $FO_FILE -pdf ${PDF_FILE}
+    fop -c $FOPCONF -fo $FO_FILE -pdf ${PDF_FILE}
 fi
 
 if [ "$CLEAN" == "true" ]; then
