@@ -27,6 +27,7 @@
     <xsl:include href = "body_directives.xsl"/>
     <xsl:include href = "image_figure.xsl"/>
     <xsl:include href = "table.xsl"/>
+    <xsl:include href = "table_borderless.xsl"/>
     <xsl:include href = "citation.xsl"/>
     <!--
     <xsl:include href = "table_extended2.xsl"/>
