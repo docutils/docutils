@@ -58,7 +58,9 @@
 
     <xsl:template match="/">
         <xsl:element name="fo:root">
+            <!--
             <xsl:attribute name="font-family">STIX</xsl:attribute>
+            -->
             <xsl:call-template name="make-pages"/>
             <xsl:apply-templates/>
         </xsl:element>
