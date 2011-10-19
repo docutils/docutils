@@ -5,6 +5,8 @@
     >
     <!-- $Id: error.xsl 7131 2011-09-26 19:27:15Z paultremblay $ -->
 
+
+
     <xsl:template name="test-params">
 
         <xsl:if test ="$number-verse != '' and string($number-verse + 1 ) = 'NaN'">
@@ -145,6 +147,31 @@
 
     <xsl:template match="system_message[@type='ERROR']/paragraph| system_message[@type='ERROR']/literal_block" priority="2"/>
 
+    <xsl:template match="problematic|system_message|system_message/paragraph">
+        <fo:block>
+            <xsl:apply-templates/>
+        </fo:block>
+    </xsl:template>
+
+    <xsl:template match="split-space">
+        <xsl:param name="string"/>
+        <xsl:if test="$string != ''">
+            
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template match="raw[@format]">
+        <xsl:variable name="msg">
+            <xsl:text>Raw HMLT not allowed in an XML document</xsl:text>
+        </xsl:variable>
+        <!--
+        <xsl:call-template name="quit-message">
+            <xsl:with-param name="msg" select="$msg"/>
+        </xsl:call-template>
+        -->
+    </xsl:template>
+
+
     <xsl:template name="quit-message">
         <xsl:param name="msg"/>
         <xsl:message terminate="yes">
@@ -169,6 +196,7 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
+
 
     
 </xsl:stylesheet>

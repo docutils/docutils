@@ -303,30 +303,24 @@
         <xsl:apply-templates/>
     </xsl:template>
 
+    <xsl:template match="math_block">
+        <xsl:choose>
+            <xsl:when test="descendant::ml:math">
+                <fo:block xsl:use-attribute-sets="mathml-block">
+                    <fo:instream-foreign-object>
+                        <xsl:copy-of select="ml:math"/>
+                    </fo:instream-foreign-object>
+                </fo:block>
+            </xsl:when>
+            <xsl:otherwise>
+                <fo:block xsl:use-attribute-sets="literal-block">
+                    <xsl:apply-templates/>
+                </fo:block>
+            </xsl:otherwise>
+        </xsl:choose>
+        
+    </xsl:template>
     
-    <xsl:template match="math_block[not(@classes='asciimath')]">
-        <fo:block xsl:use-attribute-sets="literal-block">
-            <xsl:apply-templates/>
-        </fo:block>
-    </xsl:template>
-
-    <xsl:template match="math_block[@classes='asciimath']|math_block[@classes='latex']">
-        <xsl:if test="not(ml:math)">
-            <xsl:message terminate="yes">
-                <xsl:text>You have used the math directive with the classes set to asciimath&#x000A;</xsl:text>
-                <xsl:text>But you have no MathML present&#x000A;</xsl:text>
-                <xsl:text>It would appear you have not processed the file using rstxml2mathml.py&#x000A;</xsl:text>
-                <xsl:text>Stylesheets now quiting.&#x000A;</xsl:text>
-            </xsl:message>
-        </xsl:if>
-        <fo:block xsl:use-attribute-sets="mathml-block">
-            <fo:instream-foreign-object>
-                <xsl:copy-of select="ml:math"/>
-            </fo:instream-foreign-object>
-        </fo:block>
-    </xsl:template>
-
-
 
 
 </xsl:stylesheet>

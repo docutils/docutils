@@ -58,7 +58,11 @@
 
 
     <xsl:template match="footnote_reference">
-        <xsl:apply-templates select="key('footnote', @refid)" mode="footnote"/>
+        <!--need to check that there are no ancestors in a footnote reference, or 
+        you could get infinite recursion-->
+        <xsl:if test="not(ancestor::footnote)">
+            <xsl:apply-templates select="key('footnote', @refid)" mode="footnote"/>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template match="footnote" mode="footnote">

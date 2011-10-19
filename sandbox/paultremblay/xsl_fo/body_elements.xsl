@@ -191,6 +191,7 @@
         </fo:block>
     </xsl:template>
 
-    <xsl:template match="comment"/>
+    <xsl:template match="comment|substitution_definition"/>
+
     
 </xsl:stylesheet>

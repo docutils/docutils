@@ -38,7 +38,7 @@
 
     <!--END OF ATTRIBUTE SETS-->
 
-    <xsl:template match="topic[@classes='contents']">
+    <xsl:template match="topic[@classes='contents']|topic[@classes='contents local']">
         <xsl:apply-templates/>
     </xsl:template>
 
@@ -170,7 +170,7 @@
         </fo:block>
     </xsl:template>
 
-         <xsl:template match="generated[@classes='sectnum'][ancestor::topic[@classes='contents']]">
+         <xsl:template match="generated[@classes='sectnum'][ancestor::topic[@classes='contents']]|generated[@classes='sectnum'][ancestor::topic[@classes='contents local']]">
              <!--not sure about this no-break space-->
             <xsl:variable name="num" select="concat(substring-before(., '&#x00a0;'), '.')"/>
                 <xsl:call-template name="format-number">
