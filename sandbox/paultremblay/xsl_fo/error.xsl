@@ -161,14 +161,16 @@
     </xsl:template>
 
     <xsl:template match="raw[@format]">
-        <xsl:variable name="msg">
-            <xsl:text>Raw HMLT not allowed in an XML document</xsl:text>
-        </xsl:variable>
-        <!--
-        <xsl:call-template name="quit-message">
-            <xsl:with-param name="msg" select="$msg"/>
-        </xsl:call-template>
-        -->
+        <xsl:if test="@format != 'xml'">
+            <xsl:variable name="msg">
+                <xsl:text>Raw </xsl:text>
+                <xsl:value-of select="@format"/>
+                <xsl:text>Not allowd in an XML document</xsl:text>
+            </xsl:variable>
+            <xsl:call-template name="quit-message">
+                <xsl:with-param name="msg" select="$msg"/>
+            </xsl:call-template>
+        </xsl:if>
     </xsl:template>
 
 
