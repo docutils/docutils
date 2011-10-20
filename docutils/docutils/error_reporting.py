@@ -4,12 +4,12 @@
 # :Id: $Id$
 # :Copyright: © 2011 Günter Milde.
 # :License: Released under the terms of the `2-Clause BSD license`_, in short:
-# 
+#
 #    Copying and distribution of this file, with or without modification,
 #    are permitted in any medium without royalty provided the copyright
 #    notice and this notice are preserved.
 #    This file is offered as-is, without any warranty.
-# 
+#
 # .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause
 
 """
@@ -184,13 +184,17 @@ class ErrorOutput(object):
         except UnicodeEncodeError:
             self.stream.write(data.encode(self.encoding, self.encoding_errors))
         except TypeError: # in Python 3, stderr expects unicode
-            self.stream.write(unicode(data, self.encoding, self.decoding_errors))
+            if self.stream in (sys.stderr, sys.stdout):
+                self.stream.buffer.write(data) # write bytes to raw stream
+            else:
+                self.stream.write(unicode(data, self.encoding,
+                                          self.decoding_errors))
 
     def close(self):
         """
         Close the error-output stream.
 
-        Ignored if the stream is` sys.stderr` or `sys.stdout` or has no 
+        Ignored if the stream is` sys.stderr` or `sys.stdout` or has no
         close() method.
         """
         if self.stream in (sys.stdout, sys.stderr):
@@ -199,4 +203,3 @@ class ErrorOutput(object):
             self.stream.close()
         except AttributeError:
             pass
-
