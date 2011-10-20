@@ -10,6 +10,7 @@ will exist for a variety of input/output mechanisms.
 __docformat__ = 'reStructuredText'
 
 import sys
+import os
 import re
 import codecs
 from docutils import TransformSpec
@@ -84,10 +85,9 @@ class Input(TransformSpec):
                 # Apply heuristics only if no encoding is explicitly given and
                 # no BOM found.  Start with UTF-8, because that only matches
                 # data that *IS* UTF-8:
-                encodings = [enc for enc in ('utf-8',
-                                             locale_encoding, # can be None
-                                             'latin-1') # fallback encoding
-                             if enc]
+                encodings = ['utf-8', 'latin-1']
+                if locale_encoding:
+                    encodings.insert(1, locale_encoding)
         for enc in encodings:
             try:
                 decoded = unicode(data, enc, self.error_handler)
@@ -105,7 +105,7 @@ class Input(TransformSpec):
     coding_slug = re.compile(b("coding[:=]\s*([-\w.]+)"))
     """Encoding declaration pattern."""
 
-    byte_order_marks = ((codecs.BOM_UTF8, 'utf-8'), # actually 'utf-8-sig'
+    byte_order_marks = ((codecs.BOM_UTF8, 'utf-8'), # 'utf-8-sig' new in v2.5
                         (codecs.BOM_UTF16_BE, 'utf-16-be'),
                         (codecs.BOM_UTF16_LE, 'utf-16-le'),)
     """Sequence of (start_bytes, encoding) tuples for encoding detection.
@@ -224,6 +224,15 @@ class FileInput(Input):
                     sys.exit(1)
             else:
                 self.source = sys.stdin
+        elif (sys.version_info >= (3,0) and
+              self.encoding and hasattr(self.source, 'encoding') and
+              self.encoding != self.source.encoding and
+              codecs.lookup(self.encoding) !=
+              codecs.lookup(self.source.encoding)):
+            # TODO: re-open, warn or raise error?
+            raise UnicodeError('Encoding clash: encoding given is "%s" '
+                               'but source is opened with encoding "%s".' %
+                               (self.encoding, self.source.encoding))
         if not source_path:
             try:
                 self.source_path = self.source.name
@@ -234,8 +243,25 @@ class FileInput(Input):
         """
         Read and decode a single file and return the data (Unicode string).
         """
-        try:
-            data = self.source.read()
+        try: # In Python < 2.5, try...except has to be nested in try...finally.
+            try:
+                if self.source is sys.stdin and sys.version_info >= (3,0):
+                    # read as binary data to circumvent auto-decoding
+                    data = self.source.buffer.read()
+                    # normalize newlines
+                    data = b('\n').join(data.splitlines()) + b('\n')
+                else:
+                    data = self.source.read()
+            except (UnicodeError, LookupError), err: # (in Py3k read() decodes)
+                if not self.encoding and self.source_path:
+                    # re-read in binary mode and decode with heuristics
+                    b_source = open(self.source_path, 'rb')
+                    data = b_source.read()
+                    b_source.close()
+                    # normalize newlines
+                    data = b('\n').join(data.splitlines()) + b('\n')
+                else:
+                    raise
         finally:
             if self.autoclose:
                 self.close()
@@ -245,12 +271,7 @@ class FileInput(Input):
         """
         Return lines of a single file as list of Unicode strings.
         """
-        try:
-            lines = self.source.readlines()
-        finally:
-            if self.autoclose:
-                self.close()
-        return [self.decode(line) for line in lines]
+        return self.read().splitlines(True)
 
     def close(self):
         if self.source is not sys.stdin:
@@ -302,7 +323,6 @@ class FileOutput(Output):
                       'errors': self.error_handler}
         else:
             kwargs = {}
-
         try:
             self.destination = open(self.destination_path, 'w', **kwargs)
         except IOError, error:
@@ -317,20 +337,34 @@ class FileOutput(Output):
     def write(self, data):
         """Encode `data`, write it to a single file, and return it.
 
-        In Python 3, a (unicode) string is returned.
+        In Python 3, `data` is returned unchanged.
         """
-        if sys.version_info >= (3,0):
-            output = data # in py3k, write expects a (Unicode) string
-        else:
-            output = self.encode(data)
+        if sys.version_info < (3,0):
+            data = self.encode(data)
         if not self.opened:
             self.open()
-        try:
-            self.destination.write(output)
+        try: # In Python < 2.5, try...except has to be nested in try...finally.
+            try:
+                if (sys.version_info >= (3,0) and self.encoding and
+                    hasattr(self.destination,'encoding') and
+                    self.encoding != self.destination.encoding and
+                    codecs.lookup(self.encoding) !=
+                    codecs.lookup(self.destination.encoding)):
+                    # encode self, write bytes
+                    bdata = self.encode(data)
+                    if os.linesep != '\n':
+                        bdata = bdata.replace('\n', os.linesep)
+                    sys.stdout.buffer.write(bdata)
+                else:
+                    self.destination.write(data)
+            except (UnicodeError, LookupError), err: # can only happen in py3k
+                raise UnicodeError(
+                    'Unable to encode output data. output-encoding is: '
+                    '%s.\n(%s)' % (self.encoding, ErrorString(err)))
         finally:
             if self.autoclose:
                 self.close()
-        return output
+        return data
 
     def close(self):
         if self.destination not in (sys.stdout, sys.stderr):

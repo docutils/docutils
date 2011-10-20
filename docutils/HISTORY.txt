@@ -22,10 +22,13 @@ Changes Since 0.8.1
   - reStructuredText "code" role and directive with syntax highlighting
     by Pygments_.
   - "code" option of the "include" directive.
-
-  - Fix parse_option_marker for options arguments containing ``=``.
+  - Fix parse_option_marker for option arguments containing ``=``.
 
 .. _Pygments: http://pygments.org/
+
+* docutils/io.py
+
+  - Fix [ 3395948 ] (Work around encoding problems in Py3k).
 
 * docutils/writers/latex2e/__init__.py
 
