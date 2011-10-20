@@ -83,7 +83,11 @@ class Writer(writers.Writer):
           {'action': 'store_true', 'validator': frontend.validate_boolean}),
          ('Disable compact simple field lists.',
           ['--no-compact-field-lists'],
-          {'dest': 'compact_field_lists', 'action': 'store_false'}),))
+          {'dest': 'compact_field_lists', 'action': 'store_false'}),
+         ('Math output format, one of "MathML", "HTML", "MathJax" '
+          'or "LaTeX". Default: "MathML"',
+          ['--math-output'],
+          {'default': 'MathML'}),))
 
     relative_path_settings = ('stylesheet_path',)
 
