@@ -153,21 +153,6 @@ class CopyTree(xml.sax.ContentHandler):
         if not found:
             return None
         return xml_tree
-        """
-        line_to_read = 1
-        xml_string = None
-        while line_to_read:
-            line_to_read = read_obj.readline()
-            line = line_to_read
-            search_obj = regexp.search(line)
-            if search_obj:
-                xml_string = (search_obj.group(0))
-        read_obj.close()
-        if xml_string == None:
-            sys.stderr.write("found no math string\n")
-            sys.stderr.write('Bug, not quiting\n')
-        return xml_string
-        """
 
 class ConverttoMathml:
 
@@ -188,26 +173,8 @@ Or, in one pass: rst2xml.py <infile> | python3 rstxml2mathml.py
         args =  parser.parse_args()
         return args
 
-    def convert_to_mathml(self):
-        import io
-        tree = etree.ElementTree()
-        args = self.__parse_args()
-        standard_in = False
-        in_file = args.in_file
-        if isinstance(in_file, io.TextIOWrapper):
-            standard_in = True
-            the_string = sys.stdin.read()
-            xml_tree = tree.fromstring(the_string)
-        else:
-            xml_tree = tree.parse(in_file)
-        for element in xml_tree.iter('math_block'):
-            mathml_tree  = asciimathml.parse(element.text)
-            string_tree = tostring(mathml_tree).decode() 
-            element.append(etree.XML(string_tree))
-        string_tree = tostring(xml_tree, encoding="utf-8").decode() 
-        sys.stdout.write(string_tree)
 
-    def convert_to_mathml_(self):
+    def convert_to_mathml(self):
         import io
         args = self.__parse_args()
         standard_in = False
