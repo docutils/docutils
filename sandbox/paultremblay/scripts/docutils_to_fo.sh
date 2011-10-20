@@ -17,6 +17,7 @@ Usage() {
     echo --valid: validate the FO document
     echo --strict: quit when a template does not match \(or other error\)
     echo --latexml: convert latex in the math element to mathml
+    echo --asciiml: convert latex in the math element to mathml
     echo "-s | --stylesheet <stylesheet> : the stylesheet to use"
     echo "-o | --out: file to output to"
 }
@@ -104,7 +105,7 @@ if [ "$LATEXML" == 'true' ]; then
         | python3 $RSTML --mathml  latex >  $RAW_XML
 elif [ "$ASCIIML" == 'true' ]; then
     rst2xml.py --strip-comments --trim-footnote-reference-space --no-doctype $1\
-        | python3 $RSTML --mathml  ascii >  $RAW_XML
+        | python $RSTML  >  $RAW_XML
 else
     rst2xml.py --strip-comments --trim-footnote-reference-space --no-doctype $1  $RAW_XML
 fi
