@@ -1,5 +1,5 @@
 import io, argparse, sys
-import xml.etree.ElementTree as etree
+import xml.etree.cElementTree as etree
 import asciimathml
 
 
@@ -20,17 +20,17 @@ def convert_to_mathml():
     standard_in = False
     in_file = args.in_file
     if isinstance(in_file, io.TextIOWrapper):
-        standard_in = True
         the_string = sys.stdin.read()
         xml_tree = etree.fromstring(the_string)
     else:
         xml_tree = etree.ElementTree().parse(in_file)
-    for element in xml_tree.iter('math_block'):
-        mathml_tree  = asciimathml.parse(element.text)
-        mathml_tree.set("title", element.text)
-        mathml_tree.set("xmlns", "http://www.w3.org/1998/Math/MathML")
-        element.append(mathml_tree)
-        element.text = ''
+    for element in xml_tree.iter():
+        if element.tag == 'math' or element.tag == 'math_block':
+            mathml_tree  = asciimathml.parse(element.text)
+            mathml_tree.set("title", element.text)
+            mathml_tree.set("xmlns", "http://www.w3.org/1998/Math/MathML")
+            element.append(etree.XML(etree.tostring(mathml_tree)))
+            element.text = ''
     string_tree = etree.tostring(xml_tree, encoding="utf-8") 
     if sys.version_info < (3,):
         sys.stdout.write(string_tree)
