@@ -1,9 +1,9 @@
 #!/usr/bin/python
 #   $Id: sax_complete_copy.py 54 2011-04-17 15:44:41Z cynthia $
 
+import os, sys, argparse, io
 import xml.sax.handler
 from xml.sax.handler import feature_namespaces
-import os, sys, argparse
 from io import StringIO
 import asciimathml
 from xml.etree.ElementTree import Element, tostring
@@ -11,10 +11,12 @@ import xml.etree.cElementTree as etree
 import tempfile, subprocess, os
 import docutils.math.latex2mathml
 
+"""
 if sys.version_info < (3,):
     sys.stderr.write('Only run with pyton 3\n')
     sys.stderr.write('Script now quiting\n')
     sys.exit(1)
+"""
 
 
 class CopyTree(xml.sax.ContentHandler):
@@ -25,6 +27,7 @@ class CopyTree(xml.sax.ContentHandler):
         self.__characters = ''
         self.__mathml = mathml
         self.__ns_dict = {'http://www.w3.org/XML/1998/namespace': "xml"}
+        self.__raw = False
 
 
   def characters (self, characters): 
@@ -36,6 +39,9 @@ class CopyTree(xml.sax.ContentHandler):
         ns = name[0]
         el_name = name[1]
         sys.stdout.write('<')
+        if el_name == 'raw':
+            if attrs.get((None, 'format')) == 'xml':
+                self.__raw = True
         if ns:
             sys.stdout.write('ns1:%s' % el_name)
         else:
@@ -69,9 +75,15 @@ class CopyTree(xml.sax.ContentHandler):
 
     
 
-  def __write_text(self):
-        text =  xml.sax.saxutils.escape(self.__characters)
-        sys.stdout.write(text)
+  def __write_text(self, raw = False):
+        if raw:
+            text = self.__characters
+        else:
+            text =  xml.sax.saxutils.escape(self.__characters)
+        if sys.version_info < (3,):
+            sys.stdout.write(text.encode('utf8'))
+        else:
+            sys.stdout.write(text)
         self.__characters = ''
 
   def endElementNS(self, name, qname):
@@ -81,8 +93,11 @@ class CopyTree(xml.sax.ContentHandler):
             raw_tree  = asciimathml.parse(self.__characters)[0]
             math_tree = Element('math', title="%s" % self.__characters, xmlns="http://www.w3.org/1998/Math/MathML")
             math_tree.append(raw_tree)
-            string_tree = tostring(math_tree, encoding="utf-8").decode() 
-            sys.stdout.write(string_tree)
+            string_tree = tostring(math_tree, encoding="utf-8") 
+            if sys.version_info < (3,):
+                sys.stdout.write(string_tree)
+            else:
+                sys.stdout.write(string_tree.decode())
             self.__characters = ''
         elif (el_name == 'math_block' and  self.__mathml == 'latex') or (el_name == 'math' and self.__mathml == 'latex'):
             raw_tree = self.__tralics()
@@ -95,6 +110,8 @@ class CopyTree(xml.sax.ContentHandler):
                 string_tree = tostring(math_tree, encoding="utf-8").decode() 
                 sys.stdout.write(string_tree)
                 self.__characters = ''
+        elif el_name == 'raw' and self.__raw:
+            self.__write_text(raw = True)
         else:
             self.__write_text()
         if ns:
@@ -175,7 +192,6 @@ Or, in one pass: rst2xml.py <infile> | python3 rstxml2mathml.py
 
 
     def convert_to_mathml(self):
-        import io
         args = self.__parse_args()
         standard_in = False
         in_file = args.in_file
