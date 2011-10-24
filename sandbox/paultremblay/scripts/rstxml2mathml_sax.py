@@ -4,12 +4,20 @@
 import os, sys, argparse, io
 import xml.sax.handler
 from xml.sax.handler import feature_namespaces
-from io import StringIO
+from StringIO import StringIO
+
+"""
+if sys.version_info < (3,):
+else:
+    from io import StringIO
+"""
+
 import asciimathml
 from xml.etree.ElementTree import Element, tostring
 import xml.etree.cElementTree as etree
 import tempfile, subprocess, os
-import docutils.math.latex2mathml
+# import docutils.math.latex2mathml
+from xml.sax import InputSource
 
 """
 if sys.version_info < (3,):
@@ -28,7 +36,14 @@ class CopyTree(xml.sax.ContentHandler):
         self.__mathml = mathml
         self.__ns_dict = {'http://www.w3.org/XML/1998/namespace': "xml"}
         self.__raw = False
+        self.__fix_soft_hyphens = False
 
+
+  def startDocument(self):
+      pass
+
+  def startElement(self, name, qname):
+      print('okay')
 
   def characters (self, characters): 
     self.__characters += characters
@@ -76,14 +91,14 @@ class CopyTree(xml.sax.ContentHandler):
     
 
   def __write_text(self, raw = False):
+        soft_hyphen = chr(173)
         if raw:
             text = self.__characters
         else:
             text =  xml.sax.saxutils.escape(self.__characters)
-        if sys.version_info < (3,):
-            sys.stdout.write(text.encode('utf8'))
-        else:
-            sys.stdout.write(text)
+            if self.__fix_soft_hyphens:
+                text = text.replace(soft_hyphen, '-')
+        sys.stdout.write(text)
         self.__characters = ''
 
   def endElementNS(self, name, qname):
@@ -94,10 +109,16 @@ class CopyTree(xml.sax.ContentHandler):
             math_tree = Element('math', title="%s" % self.__characters, xmlns="http://www.w3.org/1998/Math/MathML")
             math_tree.append(raw_tree)
             string_tree = tostring(math_tree, encoding="utf-8") 
+            sys.stdout.write(string_tree.decode('utf8'))
+            """
             if sys.version_info < (3,):
-                sys.stdout.write(string_tree)
+                print(type(string_tree))
+                print()
+                sys.stdout.write(string_tree.decode('utf8'))
+                # sys.stdout.write(line.encode('utf8'))
             else:
                 sys.stdout.write(string_tree.decode())
+            """
             self.__characters = ''
         elif (el_name == 'math_block' and  self.__mathml == 'latex') or (el_name == 'math' and self.__mathml == 'latex'):
             raw_tree = self.__tralics()
@@ -198,7 +219,7 @@ Or, in one pass: rst2xml.py <infile> | python3 rstxml2mathml.py
         mathml = args.mathml
         if mathml:
             mathml = mathml[0]
-        if isinstance(in_file, io.TextIOWrapper):
+        if not isinstance(in_file, str):
             standard_in = True
             the_string = sys.stdin.read()
         if standard_in:

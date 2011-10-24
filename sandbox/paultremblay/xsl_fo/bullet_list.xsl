@@ -155,17 +155,12 @@
                 </fo:list-block>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:message>
-                    <xsl:text>Cannot format lists more than 2 levels deep</xsl:text>
-                </xsl:message>
-                <xsl:choose>
-                    <xsl:when test="$strict='True'">
-                        <xsl:message terminate="yes">Processinng stylesheets now quiting</xsl:message>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:message>Not formatting text</xsl:message>
-                    </xsl:otherwise>
-                </xsl:choose>
+                <xsl:variable name="msg">
+                    <xsl:text>Cannot format bullet lists more than 2 levels deep</xsl:text>
+                </xsl:variable>
+                <xsl:call-template name="error-message">
+                    <xsl:with-param name="msg" select="$msg"/>
+                </xsl:call-template>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>

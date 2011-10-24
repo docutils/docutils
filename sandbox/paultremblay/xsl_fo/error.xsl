@@ -100,14 +100,16 @@
             <xsl:call-template name="trace-siblings"/>
         </xsl:variable>
         <xsl:value-of select="$ancestors"/>
-        <xsl:text>[</xsl:text>
-        <xsl:for-each select="@*">
-            <xsl:value-of select="name(.)"/>
-            <xsl:text>="</xsl:text>
-            <xsl:value-of select="."/>
-            <xsl:text>" </xsl:text>
-        </xsl:for-each>
-        <xsl:text>]</xsl:text>
+        <xsl:if test="@*">
+            <xsl:text>[</xsl:text>
+            <xsl:for-each select="@*">
+                <xsl:value-of select="name(.)"/>
+                <xsl:text>="</xsl:text>
+                <xsl:value-of select="."/>
+                <xsl:text>" </xsl:text>
+            </xsl:for-each>
+            <xsl:text>]</xsl:text>
+        </xsl:if>
         <xsl:text>&#xA;</xsl:text>
         <xsl:value-of select="$siblings"/>
     </xsl:template>
@@ -117,22 +119,13 @@
         <xsl:variable name="trace">
             <xsl:call-template name="trace"/>
         </xsl:variable>
-        <xsl:message>
+        <xsl:variable name="msg">
             <xsl:text>no match for </xsl:text>
             <xsl:value-of select="$trace"/>
-        </xsl:message>
-        <xsl:choose>
-            <xsl:when test="$strict !=''">
-                <xsl:message terminate="yes">
-                    <xsl:text>Processing XSLT Stylesheets now quiting</xsl:text>
-                </xsl:message>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:message>
-                    <xsl:text>Not processing text in this element.</xsl:text>
-                </xsl:message>
-            </xsl:otherwise>
-        </xsl:choose>
+        </xsl:variable>
+        <xsl:call-template name="error-message">
+            <xsl:with-param name="msg" select="$msg"/>
+        </xsl:call-template>
     </xsl:template>
 
     <xsl:template match="system_message[@type='ERROR']">
@@ -163,11 +156,11 @@
     <xsl:template match="raw[@format]">
         <xsl:if test="@format != 'xml'">
             <xsl:variable name="msg">
-                <xsl:text>Raw </xsl:text>
+                <xsl:text>Raw "</xsl:text>
                 <xsl:value-of select="@format"/>
-                <xsl:text>Not allowd in an XML document</xsl:text>
+                <xsl:text>" not allowd in an XML document</xsl:text>
             </xsl:variable>
-            <xsl:call-template name="quit-message">
+            <xsl:call-template name="error-message">
                 <xsl:with-param name="msg" select="$msg"/>
             </xsl:call-template>
         </xsl:if>
@@ -184,11 +177,18 @@
 
     <xsl:template name="error-message">
         <xsl:param name="text"/>
+        <xsl:param name="msg"/>
+        <xsl:choose>
+            <xsl:when test="$text != ''">
+                <xsl:message>Don't use "text" when passing messages to eror-message; use "msg"</xsl:message>
+            </xsl:when>
+        </xsl:choose>
         <xsl:message>
             <xsl:value-of select="$text"/>
+            <xsl:value-of select="$msg"/>
         </xsl:message>
         <xsl:choose>
-            <xsl:when test="$strict='True'">
+            <xsl:when test="normalize-space($strict) != ''">
                 <xsl:call-template name="quit-message"/>
             </xsl:when>
             <xsl:otherwise>
