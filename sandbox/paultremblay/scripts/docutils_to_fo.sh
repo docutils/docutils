@@ -1,6 +1,6 @@
 XSLFO_HOME=/Users/cejohnsonlouisville/Documents/docutils/paultremblay/xsl_fo
-RSTML=/Users/cejohnsonlouisville/Documents/docutils/paultremblay/scripts/rstxml2mathml.py
-FOPCONF=/Users/cejohnsonlouisville/Documents/docutils/paultremblay/fop.conf
+RSTML=/Users/cejohnsonlouisville/Documents/docutils/paultremblay/scripts/rstxml2mathml_sax.py
+FOPCONF="/Library/Java/fop-1.0/conf/fop.xconf"
 if [ "$XSLFO_PDF" != "" ]; then
     PDF='true'
 else
@@ -40,7 +40,7 @@ ASCIIML='false'
          --help) Usage;exit 0;;
          --verbose) VERBOSE='true';;
          --format) FORMAT='true';;
-         --test) CLEAN='false';FORMAT='true';VALID='true';TEST='true';STRICT='true';;
+         --test) CLEAN='false';FORMAT='true';VALID='true';TEST='true';STRICT='true';PDF='true';;
          --testq) CLEAN='false';VALID='true';FORMAT='true';;
          --noclean) CLEAN='false';;
          --pdf) PDF='true';;
@@ -102,12 +102,12 @@ fi
 
 if [ "$LATEXML" == 'true' ]; then
     rst2xml.py --strip-comments --trim-footnote-reference-space --no-doctype $1\
-        | python3 $RSTML --mathml  latex >  $RAW_XML
+        | python $RSTML --mathml  latex >  $RAW_XML
 elif [ "$ASCIIML" == 'true' ]; then
     rst2xml.py --strip-comments --trim-footnote-reference-space --no-doctype $1\
-        | python $RSTML  >  $RAW_XML
+        | python3 $RSTML  >  $RAW_XML
 else
-    rst2xml.py --strip-comments --trim-footnote-reference-space --no-doctype $1  $RAW_XML
+    rst2xml.py --strip-comments --trim-footnote-reference-space --no-doctype $1 >  $RAW_XML
 fi
 
 if [ "$FORMAT" == "true" ]; then
@@ -131,7 +131,7 @@ fi
 
 if [ "$PDF" == 'true' ]; then
     PDF_FILE=${DIRNAME}/${BASENAME}.pdf
-    fop -c $FOPCONF -fo $FO_FILE -pdf ${PDF_FILE}
+    fop -fo $FO_FILE -pdf ${PDF_FILE}
 fi
 
 if [ "$CLEAN" == "true" ]; then

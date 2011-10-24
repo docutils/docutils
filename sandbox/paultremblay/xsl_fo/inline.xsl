@@ -126,7 +126,7 @@
             <xsl:text>"</xsl:text>
         </xsl:variable>
         <xsl:call-template name="error-message">
-            <xsl:with-param name="text" select="$msg"/>
+            <xsl:with-param name="msg" select="$msg"/>
         </xsl:call-template>
         
     </xsl:template>

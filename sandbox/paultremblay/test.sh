@@ -3,14 +3,31 @@ set -u
 # RST_COMMAND="rst2xml.py --strip-comments --trim-footnote-reference-space"
 # TEST_COMMAND="docutils_to_fo.sh --noclean --format --valid --pdf --test --strict"
 
-files=`find docutils_test \!  -name 'standard.txt' \
+files=`find functional\
+    \! -name 'standard.txt'\
     \! -name 'standalone_rst_html4css1.txt'\
+    \! -name 'dangerous.txt'\
+    \! -name 'custom_roles.txt'\
+    \! -name 'custom_roles_latex.txt'\
+    \! -name 'standalone_rst_latex.txt'\
+    \! -name 'standalone_rst_pseudoxml.txt'\
+    \! -name 'standalone_rst_s5_html.txt'\
+    \! -name 'latex.txt'\
+    \! -name 'list_table.txt'\
+    \! -name 'list_table.txt'\
+    \! -name 'header_footer.txt'\
+    \! -name 'standalone_rst_xetex.txt'\
     -name '*txt'`
 
+# header_footer.txt has no body, and causes fop to throw exception
+# serious error with unicode.txt: it crashes with 00AD
+# standalone_rst_xetex.txt contains latex raw
 
 for the_file in $files
 do
-    echo $the_file
+    echo
+    echo ========================================================
+    echo working on file \"$the_file\"
     DIR=`dirname $the_file`
     if [ "$DIR" == "$the_file" ]; then 
         DIRNAME="."
@@ -19,15 +36,25 @@ do
     fi
     PARENT_DIR=`basename $DIRNAME`
 
-    if [ "$PARENT_DIR" != "custom" ]; then
-        docutils_to_fo.sh --test $the_file
-    fi
+    docutils_to_fo.sh --test $the_file
+    echo ========================================================
 done
 
-files=`find test_files -name '*rst'`
+# special cases for default
+# get rid of strict 
+echo ========================================================
+echo working on standard.txt
+docutils_to_fo.sh --noclean --format --valid --pdf   functional/input/data/standard.txt
+docutils_to_fo.sh --noclean --format --valid --pdf   functional/input/standalone_rst_html4css1.txt
+docutils_to_fo.sh --noclean --format --valid --pdf   functional/input/dangerous.txt
+docutils_to_fo.sh --noclean --format --valid --pdf   functional/input/data/custom_roles.txt
+docutils_to_fo.sh --noclean --format --valid --pdf   functional/input/data/custom_roles_latex.txt
+docutils_to_fo.sh --noclean --format --valid --pdf   functional/input/standalone_rst_latex.txt
+docutils_to_fo.sh --noclean --format --valid --pdf   functional/input/standalone_rst_pseudoxml.txt
+
+files=`find test_files   -name '*rst'`
 for the_file in $files
 do
-    echo $the_file
     DIR=`dirname $the_file`
     if [ "$DIR" == "$the_file" ]; then 
         DIRNAME="."
@@ -37,6 +64,7 @@ do
     PARENT_DIR=`basename $DIRNAME`
 
     if [ "$PARENT_DIR" != "custom" ]; then
+        echo $the_file
         docutils_to_fo.sh --test $the_file
     fi
 done
