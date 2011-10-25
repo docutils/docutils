@@ -51,6 +51,16 @@ docutils_to_fo.sh --noclean --format --valid --pdf   functional/input/data/custo
 docutils_to_fo.sh --noclean --format --valid --pdf   functional/input/data/custom_roles_latex.txt
 docutils_to_fo.sh --noclean --format --valid --pdf   functional/input/standalone_rst_latex.txt
 docutils_to_fo.sh --noclean --format --valid --pdf   functional/input/standalone_rst_pseudoxml.txt
+docutils_to_fo.sh --noclean --format --valid --pdf   functional/input/standalone_rst_s5_html.txt
+docutils_to_fo.sh --noclean --format --valid --pdf   functional/input/data/latex.txt
+docutils_to_fo.sh --noclean --format --valid --pdf   functional/input/data/list_table.txt
+docutils_to_fo.sh --noclean --format --valid --pdf   functional/input/standalone_rst_xetex.txt
+
+
+# no body, so needs a special xsl stylesheet
+docutils_to_fo.sh --noclean --format --valid --pdf -s test_files/xsl/no_body.xsl functional/input/data/header_footer.txt
+
+
 
 files=`find test_files   -name '*rst'`
 for the_file in $files

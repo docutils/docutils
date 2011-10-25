@@ -19,7 +19,8 @@ done
 
 DIR=$1
 
-
+mkdir docs/user 2> /dev/null || echo
+mkdir docs/user/images 2> /dev/null || echo
 cp ${DIR}/docs/user/images/*  docs/user/images
 cp -R ${DIR}/docs/user/rst docs/user
 cp -R ${DIR}/test/functional .
