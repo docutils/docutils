@@ -37,7 +37,17 @@
     <xsl:template name="get-alignment">
         <xsl:choose>
             <xsl:when test="@align">
-                <xsl:value-of select="@align"/>
+                <xsl:variable name="desired-align">
+                    <xsl:value-of select="@align"/>
+                </xsl:variable>
+                <xsl:choose>
+                    <xsl:when test="$desired-align != 'left' and $desired-align != 'right' and $desired-align != 'center'">
+                        <xsl:text>left</xsl:text>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:value-of select="$desired-align"/>
+                    </xsl:otherwise>
+                </xsl:choose>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:text>left</xsl:text>
@@ -71,7 +81,7 @@
             <!--doesn't work-->
             <xsl:if test="@align">
                 <xsl:attribute name="text-align">
-                    <xsl:value-of select="@align"/>
+                    <xsl:call-template name="get-alignment"/>
                 </xsl:attribute>
             </xsl:if>
         </xsl:element>
