@@ -1,6 +1,10 @@
-XSLFO_HOME=/Users/cejohnsonlouisville/Documents/docutils/paultremblay/xsl_fo
-RSTML=/Users/cejohnsonlouisville/Documents/docutils/paultremblay/scripts/rstxml2mathml_sax.py
-FOPCONF="/Library/Java/fop-1.0/conf/fop.xconf"
+if [ "$RST_XSL" == "" ];then
+    echo Please set RST_XSL to the directory with the stylesheetst
+    echo script now quiting
+fi
+if [ "$FOPCONF" == "" ];then
+    FOPCONF=
+fi
 if [ "$XSLFO_PDF" != "" ]; then
     PDF='true'
 else
@@ -29,7 +33,6 @@ VALID='false'
 STYLESHEET=
 OUT=''
 STRICT=''
-LATEXML='false'
 ASCIIML='false'
  while [ $# -gt 0 ]
  do
@@ -46,7 +49,6 @@ ASCIIML='false'
          --pdf) PDF='true';;
          --valid) VALID='true';;
          --strict) STRICT='true';;
-         --latexml) LATEXML='true';;
          --asciiml) ASCIIML='true';;
          --out) shift;OUT=$1;;
          -o) shift;OUT=$1;;
@@ -59,7 +61,7 @@ ASCIIML='false'
  done
 
 if [ "$STYLESHEET" == "" ]; then
-    MAIN_XSL=${XSLFO_HOME}/docutils_to_fo.xsl
+    MAIN_XSL=${RST_XSL}/docutils_to_fo.xsl
 else
     MAIN_XSL=$STYLESHEET
 fi
@@ -100,12 +102,9 @@ else
     FO_FILE=${DIRNAME}/${BASENAME}.fo
 fi
 
-if [ "$LATEXML" == 'true' ]; then
+if [ "$ASCIIML" == 'true' ]; then
     rst2xml.py --strip-comments --trim-footnote-reference-space --no-doctype $1\
-        | python $RSTML --mathml  latex >  $RAW_XML
-elif [ "$ASCIIML" == 'true' ]; then
-    rst2xml.py --strip-comments --trim-footnote-reference-space --no-doctype $1\
-        | python3 $RSTML  >  $RAW_XML
+        | rstxml2xml.py  >  $RAW_XML
 else
     rst2xml.py --strip-comments --trim-footnote-reference-space --no-doctype $1 >  $RAW_XML
 fi
@@ -132,6 +131,10 @@ fi
 if [ "$PDF" == 'true' ]; then
     PDF_FILE=${DIRNAME}/${BASENAME}.pdf
     fop -fo $FO_FILE -pdf ${PDF_FILE}
+fi
+
+if [ "$OUT" == "" ]  && [ "$PDF" == 'false' ];then 
+    cat $FO_FILE
 fi
 
 if [ "$CLEAN" == "true" ]; then
