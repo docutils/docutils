@@ -7,6 +7,9 @@
 
     <!-- The stylesheet for handling root elements, such as document-->
 
+    <xsl:attribute-set name="root">
+        
+    </xsl:attribute-set>
 
     <!--attributes for the sequence of pages for the main body. -->
     <xsl:attribute-set name="page-sequence" >
@@ -57,13 +60,10 @@
     </xsl:attribute-set>
 
     <xsl:template match="/">
-        <xsl:element name="fo:root">
-            <!--
-            <xsl:attribute name="font-family">STIX</xsl:attribute>
-            -->
+        <fo:root xsl:use-attribute-sets="root">
             <xsl:call-template name="make-pages"/>
             <xsl:apply-templates/>
-        </xsl:element>
+        </fo:root>
     </xsl:template>
 
     <!--title, bibliographic-info dedication, abstract toc-->
