@@ -20,8 +20,8 @@ Usage() {
     echo --pdf: create a PDF document
     echo --valid: validate the FO document
     echo --strict: quit when a template does not match \(or other error\)
-    echo --latexml: convert latex in the math element to mathml
     echo --asciiml: convert latex in the math element to mathml
+    echo --rawxml: post process the document to really allow the raw XML in your RST document
     echo "-s | --stylesheet <stylesheet> : the stylesheet to use"
     echo "-o | --out: file to output to"
 }
@@ -130,7 +130,11 @@ fi
 
 if [ "$PDF" == 'true' ]; then
     PDF_FILE=${DIRNAME}/${BASENAME}.pdf
-    fop -fo $FO_FILE -pdf ${PDF_FILE}
+    if [ "$FOPCONF" != '' ]; then
+        fop  -c $FOPCONF -fo $FO_FILE -pdf ${PDF_FILE}
+    else
+        fop -fo  $FO_FILE -pdf ${PDF_FILE}
+    fi
 fi
 
 if [ "$OUT" == "" ]  && [ "$PDF" == 'false' ];then 

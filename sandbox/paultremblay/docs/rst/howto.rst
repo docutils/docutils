@@ -8,12 +8,99 @@ HOWTO: Docutils2fo 0.6
 .. contents::
 
 ================
-Convert to XML
+Convert to PDF 
 ================
 
-In one line::
+You will need a FO processor to convert to PDF. An open source,
+complete implementation, fop, is available at:
 
- rst2xml.py --strip-comments --trim-footnote-reference-space <file.rst> | fop -xml - -xsl xsl_fo/docutils_to_fo.xsl -pdf out.pdf
+http://ci.apache.org/projects/xmlgraphics/fop/snapshots/
+
+In addition, if you want to inclue any math in your document, download jeuclid:
+
+http://jeuclid.sourceforge.net/
+
+If you use ASCII math in your document, you will also have to download
+the  asciimathml.py and install it.
+
+https://github.com/favalex/python-asciimathml/blob/master/asciimathml.py
+
+Here is an example of converting file ``file.rst`` to ``out.pdf``.
+
+::
+
+
+ rst2xml.py --strip-comments --trim-footnote-reference-space file.rst | fop -xml - -xsl xsl_fo/docutils_to_fo.xsl -pdf out.pdf
+
+In this case, rst converts file.rst to XML, and the fop processor both
+converts the XML file to FO, and then processes that file. You can
+achieve the same result in several steps:
+
+1. ``rst2xml.py --strip-comments --trim-footnote-reference-space
+   file.rst file.xml``
+
+2. ``xsltproc xsl_fo/docutils_to_fo.xsl file.xml > file.fo``
+
+3. ``fop -fo file.fo -pdf out.pdf``
+
+The script ``docutils_to_fo.sh`` combines several of these steps to make
+converstion easier, and adds a few nice features, but it functions
+more of a convenience than as a necessary tool; one does not need it
+to convert. It is a work in progress, and serves as an example of how
+one could writes his own simple script to convert to PDF. The
+essential conversion utilities are the FO processor, and the XSL
+stylesheets themselves.
+
+===========================
+Post Processing a Document
+===========================
+
+You may need to further process the XML document created
+by rst2xml.py before converting it to FO in two cases: to include raw
+XML, and to include MathML. In both cases, use the ``rstxml2xml.py``
+script included in the scripts folder::
+
+ rst2xml.py --strip-comments --trim-footnote-reference-space file.rst\
+ |rstxml2xml.py | fop -xml - -xsl xsl_fo/docutils_to_fo.xsl -pdf out.pdf
+
+Install the script in the normal way::
+
+ python setup.py install
+
+The script can also be used if you wish to convert the document in
+steps.
+
+1. ``rst2xml.py --strip-comments --trim-footnote-reference-space
+   file.rst file.xml``
+
+2. ``rstxml2xml.py file.xml > file_fixed.xml``
+
+3. ``xsltproc xsl_fo/docutils_to_fo.xsl file_fixed.xml > file.fo``
+
+4. ``fop -fo file.fo -pdf out.pdf``
+
+Including Raw XML
+------------------
+
+If you have included raw XML, such as::
+
+.. raw:: XML
+
+ <math ....
+
+ <!--etc-->
+
+The XML will be converted to plain text, unless you use the
+``rstxml2xml.py`` script.
+
+
+Converting ASCII MathML to MathML
+----------------------------------
+
+If you have included ASCII MathML in your document, you should also
+use the ``rstxml2xml.py`` script. If you do not post process the
+document, the math will appear as ASCII text. If you post process it,
+the equations will appear formatted. 
 
 ===========
 Customize
@@ -23,10 +110,9 @@ In order to change the defaults of the stylesheets, you will need to create a
 new stylesheet which imports the standard stylesheet, and then process this
 stylesheet. 
 
-This new stylesheet changes the margins of the top and bottom to 1.5 inches.
-The default margins for the left and right remain unchanged.
-
-::
+As an example, consider that you might want to change your top and
+bottom margins from the default fo 1 inch to 1.5 inches. First, create
+the following stylesheet::
 
  <xsl:stylesheet 
      xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -38,12 +124,53 @@ The default margins for the left and right remain unchanged.
          <xsl:attribute name="margin-top">1.5in</xsl:attribute>
          <xsl:attribute name="margin-bottom">1.5in</xsl:attribute>
      </xsl:attribute-set>
-     
  </xsl:stylesheet>
 
-Save this stylesheet with any name you want, and then process it with fop. ::
+Save this stylesheet with any name you want. In this case, I've saved
+as custom.xsl. Next, I process the document in the normal way, except
+that I used ``custom.xsl`` as my stylesheet instead of
+``docutils_to_fo.xsl`` ::
 
  rst2xml.py --strip-comments --trim-footnote-reference-space <file.rst> | fop -xml - -xsl custom.xsl -pdf out.pdf
+
+Attribute Sets
+---------------
+
+When you import the docutils_to_fo.xsl stylesheet, you also import all
+of its rules, except the ones you re-write. In the example above, the
+attribute set in docutils_to_fo.xsl looks like this::
+
+  <xsl:attribute-set name="page-margins">
+      <xsl:attribute name="margin-left">1.0in</xsl:attribute>
+      <xsl:attribute name="margin-right">1.0in</xsl:attribute>
+      <xsl:attribute name="margin-top">1.0in</xsl:attribute>
+      <xsl:attribute name="margin-bottom">1.0in</xsl:attribute>
+  </xsl:attribute-set>
+
+I changed the attribute for ``margin-top`` and ``margin-bottom``, but
+left the ``margin-right`` and ``margin-left`` unchanged. You can also
+add to attribute sets. In this case, the ``page-margins`` attribute
+gets applied to the sequence of pages--practically the whole document.
+So in order to change the font size to 14 points,  I could
+create the attribute set as::
+
+     <xsl:attribute-set name="page-margins">
+         <xsl:attribute name="margin-top">1.5in</xsl:attribute>
+         <xsl:attribute name="margin-bottom">1.5in</xsl:attribute>
+         <xsl:attribute name="font-size">14pt</xsl:attribute>
+     </xsl:attribute-set>
+
+Most of the customization occurs  through attribute sets. If you are
+familiar with CSS, then the syntax will look very similar, and is in
+many cases exactly the same. If you have doubts, check out the FO
+specs online.
+
+Other Ways to Customize
+------------------------
+
+The other ways to customize are to re-write an entire template rule,
+change a parameter, or, in one case, change a variable. All these
+methods are explained below.
 
 
 ====================
@@ -1754,3 +1881,5 @@ set inherits its properties from the `default-table-cell`.
         <xsl:attribute name="padding">1em</xsl:attribute>
         <xsl:attribute name="border-collapse">collapse</xsl:attribute>
     </xsl:attribute-set>
+
+.. |RST| replace:: reStructuredText
