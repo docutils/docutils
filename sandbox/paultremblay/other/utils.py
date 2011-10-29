@@ -701,11 +701,29 @@ from xml.sax.handler import feature_namespaces
 from StringIO import StringIO
 
 class CopyTree(xml.sax.ContentHandler):
+    """
+    Needed class for the function  XmlStringToDocutilsNodes function. 
+    Don't invoke this class directly.
+
+    """
   
-    def __init__(self):
+    def __init__(self, default_namespace = None, ns_dict = None):
           self.__characters = ''
           self.__current_node_list = []
           self.__tree = None
+          self.__default_namespace = default_namespace
+          self.__ns_prefix_dict = {
+                  'http://www.w3.org/XML/1998/namespace': 'xml',
+                  'http://www.w3.org/1998/Math/MathML': 'ml',
+                  'http://www.w3.org/1999/xhtml': 'xhtml',
+                  'http://www.w3.org/1999/XSL/Transform':'xsl',
+                  }
+          if ns_dict != None:
+               self.__ns_prefix_dict.update(ns_dict)
+
+          self.__ns_prefix_no_write_dict = {
+                  'http://www.w3.org/XML/1998/namespace': 'xml',
+                  }
 
 
     def characters (self, characters): 
@@ -713,23 +731,84 @@ class CopyTree(xml.sax.ContentHandler):
 
 
     def startElementNS(self, name, qname, attrs):
+        """
+        Elements
+        ========
+
+        Get the information from the start of the element to write a docutis node Element.
+
+        If the default_namespace is set and it is the first element, get the
+        namespace from the first element. Write it as xmlns="http:/...." Do
+        not write any other namespaces.  If the default_namespace is set but
+        no namespace is found, raise an error.
+
+        If there are no namespaces, just get the element's name, create an Element method, and
+        set the tagname.
+
+
+        If there is namespace:
+
+          1. See if a convenient prefix exists. If so, write that prefix:
+             <math xmlns="http://www.w3.org/XML/1998/namespace" => <ml:math
+          
+          2. If there is a namespace but no prefix,  use ns1 as the prefix
+            <customElement xmlns="http://www.custom.org" => <ns1:customElement
+
+          3. If the namespace needs to be decalred, then write it:
+             <math xmlsn="http://www.w3.org/XML/1998/namespace" => <ml:math xmlsn:ml=http://www.w3.org/XML/1998/namespace"
+             of
+            <customElement xmlns="http://www.custom.org" => <ns1:customElement xmlns:ns1="http://www.custom.org"
+
+          4. If the namespace does not need to be written, don't write it:
+            (Don't think any examles exist for elements.)
+
+        Attributes
+        ==========
+
+        The same strategy is followd for the attributes, with the exception of using the ns# for a default prefix.
+        If no convenient prefix is found:
+
+        1. If the namespace for the attribute matches the namespace for the element, use it (ns1)
+
+        2. Otherwise, start with ns2, and use the next number (ns3) for the next prefix, and so on.
+
+        """
         if len(self.__current_node_list) > 0:
             self.__write_text()
-        ns = name[0]
-        el_name = name[1]
+        ns = name[0] # for example, "http://www.w3.org/XML/1998/namespace"
+        ns_prefix = self.__ns_prefix_dict.get(ns)
+        el_name = name[1] # a string indicating the tag name, for example, "math"
         element = nodes.Element()
         element.tagname = el_name
         if len(self.__current_node_list) > 0:
             self.__current_node_list[-1].append(element)
+            # if there is a namespace that does not match the root; and not an
+            # implicit namespace, like XML, raise an error
+            if ns and self.__default_namespace and ns != self.__default_namespace and not(self.__ns_prefix_no_write_dict.get(ns)):
+                raise SystemError('default namespace "%s"  does not match root namespace "%s"' % (ns, self.__default_namespace)) 
         else:
             self.__tree = element
+            if self.__default_namespace:
+                if not ns:
+                    raise SystemError('no default namespace found, yet default_namespace passed to function') 
+                element['xmlns'] = ns
+                self.__default_namespace = ns
         self.__current_node_list.append(element)
-        if ns:
-            element.tagname = 'ns1:%s' % el_name
-        else:
-            element.tagname = el_name
-        if ns:
-            element['xmlns:ns1'] = ns
+        if not self.__default_namespace:
+            if ns and ns_prefix:
+                element.tagname = '%s:%s' % (ns_prefix, el_name)
+            elif ns:
+                element.tagname = 'ns1:%s' % el_name
+
+            if ns and self.__ns_prefix_no_write_dict.get(ns): # don't need to write certain namespaces, like xml
+                pass
+            elif ns and ns_prefix:
+                element['xmlns:%s' % ns_prefix] = ns
+            elif ns:
+                element['xmlns:ns1'] = ns
+        elif self.__ns_prefix_no_write_dict.get(ns):
+            # unlikey to actually occurr, but just in case
+            element.tagname = '%s:%s' % (ns_prefix, el_name)
 
 
         the_keys = attrs.keys()
@@ -739,20 +818,30 @@ class CopyTree(xml.sax.ContentHandler):
             ns_att = the_key[0]
             att_name = the_key[1]
             value = attrs[the_key]
-            if ns_att and ns_att != ns:
-                att = 'xmlns:ns%s' % counter
-                the_value = ns_att
-                element[att] = the_value
-            if ns_att and ns_att == ns:
-                att = 'ns1:%s' % att_name
-                element[att] = value
-            elif ns_att:
-                att = 'ns%s:%s' % (counter, att_name)
-                element[att] = value
-            else:
-                element[att_name] = value
-
-        
+            ns_prefix = self.__ns_prefix_dict.get(ns_att)
+            if not self.__default_namespace:# all cases for non-default space, including no namespace and xml namespace
+                if ns_att and ns_att != ns:
+                    if not(self.__ns_prefix_no_write_dict.get(ns_att)):
+                        att = 'xmlns:ns%s' % counter
+                        the_value = ns_att
+                        element[att] = the_value
+                if ns_att and ns_prefix:
+                    att = '%s:%s' % (ns_prefix, att_name)
+                    element[att] = value
+                elif ns_att and ns_att == ns:
+                    att = 'ns1:%s' % att_name
+                    element[att] = value
+                elif ns_att:
+                    att = 'ns%s:%s' % (counter, att_name)
+                    element[att] = value
+                else:
+                    element[att_name] = value
+            else: # default namespace only write prefixes such as xml; otherwise just write attribute
+                if ns_att and self.__ns_prefix_no_write_dict.get(ns_att):
+                    att_name = '%s:%s' % (ns_prefix, att_name)
+                    element[att_name] = value
+                else:
+                    element[att_name] = value
 
     def __write_text(self):
         text = self.__characters
@@ -769,18 +858,61 @@ class CopyTree(xml.sax.ContentHandler):
     def endDocument(self):
         pass
 
-def XmlStringToDocutilsNodes(xml_string, encoding='utf8'):
+def XmlStringToDocutilsNodes(xml_string, encoding='utf8', default_namespace = None, ns_dict = None):
     """
-    Converts an XML String into a docutils node tree, and returns that tree
+    Converts an XML String into a docutils node tree, and returns that tree.
+
+    xml_string can either be a unicode object or a string (for Python < 3); or
+    a string or a byte string (for pyton >=3.0).
+
+    The encoding is the encoding for the xm_string.
+
+    The default_namespace should be set to some boolean value, such as True or
+    False. If set, default_namespace makes easier-to read XML by writing the
+    namespace in only the first element:
+
+    <ml:math xmlns:ml="http://www.w3.org/1998/Math/MathML>
+      <ml:style xmlns:ml="http://www.w3.org/1998/Math/MathMl">
+      </ml:style>
+     </ml:math
+
+     Becomes:
+
+    <math xmlns="http://www.w3.org/1998/Math/MathML>
+      <style >
+      </style>
+     </math
+
+     An error is raised if no namespace is found for the first element, or a namespace is found
+     for subequent elements that does not match.
+
+    The ns_dict is a dictionary of namespaces mapped to a prefix. For example:
+
+     {"http://www.tei-c.org/ns/1.0":'tei'}
+
+     If any element is found with the namespace http://www.tei-c.org/ns/1.0,
+     then the prefix "tei" is used.  Note that this dictionary only makes the
+     XML look more readable, and is not needed to create valid XML with the
+     correct namespaces. For example, if the parser finds an element with a
+     namespace "http://www.tei-c.org/ns/1.0", and no dict is passed to this 
+     function, the parser assigns its own prefix:
+
+     <ns1:paragraph xmlns:ns1="http://www.tei-c.org/ns/1.0"
+
 
     """
-    if type(xml_string) == type(unicode('x')):
-        xml_string = xml_string.encode('utf8')
-    elif type(xml_string) == type('x'):
-        xml_string = xml_string.decode(encoding)
-        xml_string = xml_string.encode('utf8')
+
+    if sys.version_info < (3,):
+        if type(xml_string) == type(unicode('x')):
+            xml_string = xml_string.encode('utf8')
+        elif type(xml_string) == type('x'):
+            xml_string = xml_string.decode(encoding)
+            xml_string = xml_string.encode('utf8')
+    else:
+        if type(xml_string) == type(b'x'):
+            xml_string = xml_string.decode(encoding)
     read_obj = StringIO(xml_string)
-    the_handle=CopyTree()
+    the_handle=CopyTree(ns_dict = ns_dict, default_namespace = default_namespace)
     parser = xml.sax.make_parser()
     parser.setFeature(feature_namespaces, 1)
     parser.setContentHandler(the_handle)
