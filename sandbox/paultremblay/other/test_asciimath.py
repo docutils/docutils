@@ -2,6 +2,7 @@ import unittest
 
 from xml.etree.ElementTree import tostring
 import asciitomathml
+from asciitomathml import AsciiMathML
 
 
 class TestAsciiToMathML(unittest.TestCase):
@@ -69,14 +70,34 @@ class TestAsciiToMathML(unittest.TestCase):
         the_string = '-1 -55.6 text alpha'
         mathml_obj.parse_string(the_string)
 
-    def test_to_xml_string(self):
-        mathml_obj = asciitomathml.AsciiMathML()
-        the_string = '1'
-        mathml_obj.parse_string(the_string)
-        xml_string = mathml_obj.to_xml_string()
-        result = '<math xmlsn="http://www.w3.org/1998/Math/MathML"><mstyle><mn>1</mn></mstyle></math>'
-        self.assertEquals(xml_string, result)
+    def test_to_xml_string_basic(self):
+        the_strings = [
+        ('1', '<math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle><mn>1</mn></mstyle></math>'),
+        ('-1', '<math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle><mo>-</mo><mn>1</mn></mstyle></math>'),
+        ('alpha', '<math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle><mi>&#945;</mi></mstyle></math>'),
+        ('a', '<math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle><mi>a</mi></mstyle></math>'),
+        ('+', '<math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle><mo>+</mo></mstyle></math>'),
+                ]
 
+        for the_pair in the_strings:
+            the_string = the_pair[0]
+            result = the_pair[1]
+            mathml_obj = asciitomathml.AsciiMathML(output_encoding='us-ascii')
+            mathml_obj.parse_string(the_string)
+            xml_string = mathml_obj.to_xml_string()
+            self.assertEquals(xml_string, result)
+
+    def test_to_xml_string_special(self):
+        the_strings = [
+                ('(x)', '<math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle><mfenced close=")" open="("><mi>x</mi></mfenced></mstyle></math>'),
+                ]
+        for the_pair in the_strings:
+            the_string = the_pair[0]
+            result = the_pair[1]
+            mathml_obj = asciitomathml.AsciiMathML(output_encoding='us-ascii')
+            mathml_obj.parse_string(the_string)
+            xml_string = mathml_obj.to_xml_string()
+            self.assertEquals(xml_string, result)
 
 if __name__ == '__main__':
     unittest.main()
