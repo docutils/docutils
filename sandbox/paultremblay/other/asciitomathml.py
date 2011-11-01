@@ -10,11 +10,12 @@ class AsciiMathML:
     'alpha': u"\u03B1",
         }
     special_dict = {
-            '(':'open_paren',
-            ')':'close_paren',
+            '(':{'type':'special'},
+            ')':{'type':'special'},
+            '/':{'type':'special'},
             }
     symbol_names = sorted(symbol_dict.keys(), key=lambda key_string: len(key_string), reverse=True)
-    special_names = ['(', ')']
+    special_names = ['(', ')', '/']
 
     def __init__(self, output_encoding = 'utf8'):
         self.__number_re = re.compile('-?(\d+\.(\d+)?|\.?\d+)')
@@ -24,7 +25,8 @@ class AsciiMathML:
         self.__append_el = mstyle
         self.__output_encoding = output_encoding
 
-    def make_element(self, tag, text=None, *children, **attrib):
+
+    def __make_element(self, tag, text=None, *children, **attrib):
         element = Element(tag, **attrib)
 
         if not text is None:
@@ -38,11 +40,19 @@ class AsciiMathML:
 
         return element
 
+    def __change_el_name(self, element, new_name):
+        element.tag = new_name
 
-    def get_previous_sibling(self,  element, the_tree = 0):
+
+    def __get_previous_sibling(self,  element , the_tree = 0):
+        """
+        either the previous sibling passed to the function, or if none is passed, 
+        the previous sibling of the last element written
+
+        """
         if the_tree == 0:
             the_tree = self.__tree
-        parent = self.get_parent(child = element, the_tree = the_tree)
+        parent = self.__get_parent(child = element, the_tree = the_tree)
         if parent == None:
             return
         counter = -1
@@ -53,10 +63,13 @@ class AsciiMathML:
                     return None
                 return parent[counter - 1]
 
-    def get_following_sibling(self, element, the_tree = 0):
+    def __get_last_element(self):
+        return self.__append_el[-1]
+
+    def __get_following_sibling(self, element, the_tree = 0):
         if the_tree == 0:
             the_tree = self.__tree
-        parent = self.get_parent(the_tree = the_tree, child = element)
+        parent = self.__get_parent(the_tree = the_tree, child = element)
         if parent == None:
             return
         counter = -1
@@ -67,7 +80,7 @@ class AsciiMathML:
                     return None
                 return parent[counter + 1]
 
-    def get_parent(self, child, the_tree = 0):
+    def __get_parent(self, child, the_tree = 0):
         """
 
         the_tree: an xml.etree of the whole tree
@@ -84,6 +97,19 @@ class AsciiMathML:
         child_parent_map = dict((c, p) for p in the_tree.getiterator() for c in p)
         parent = child_parent_map.get(child)
         return parent
+
+    def __get_grandparent(self, child, the_tree = 0):
+        parent = self.__get_parent(child = child, the_tree = the_tree)
+        grandparent = self.__get_parent(child = parent, the_tree = the_tree)
+
+
+    def __make_new_element(self, element, name, **attributes):
+        element.tag = name
+        the_keys = element.attrib.keys()
+        for the_key in the_keys:
+            del(element.attrib[the_key])
+        for att in attributes:
+            element.set(att, attributes[att])
 
 
     def __add_namespace(self):
@@ -104,50 +130,96 @@ class AsciiMathML:
         return self.__tree
 
     def __add_num_to_tree(self, token, the_type):
-        element = self.make_element('mn', text=token)
+        element = self.__make_element('mn', text=token)
         self.__append_el.append(element)
 
     def __add_neg_num_to_tree(self, token, the_type):
         num = token[1:]
-        element = self.make_element('mo', text='-')
+        element = self.__make_element('mo', text='-')
         self.__append_el.append(element)
-        element = self.make_element('mn', text=num)
+        element = self.__make_element('mn', text=num)
         self.__append_el.append(element)
 
-    def __add_symbol_alpha_to_tree(self, token, the_type):
-        element = self.make_element('mi', text=token)
+    def __add_alpha_to_tree(self, token, the_type):
+        element = self.__make_element('mi', text=token)
+        self.__append_el.append(element)
+
+    def __add_symbol_to_tree(self, token, token_dict):
+        token = token_dict['symbol']
+        element = self.__make_element('mi', text=token)
         self.__append_el.append(element)
 
     def __add_operator_to_tree(self, token, the_type):
-        element = self.make_element('mo', text=token)
+        element = self.__make_element('mo', text=token)
         self.__append_el.append(element)
 
     def __add_special_to_tree(self, token, the_type):
         if token == '(':
-            element = self.make_element('mfenced', open='(')
+            element = self.__make_element('mfenced', open='(', separators='')
             self.__append_el.append(element)
             self.__append_el = element
-        if token == ')':
+        elif token == ')':
             if self.__append_el.tag == 'mfenced' and self.__append_el.get('open') == '(':
                 self.__append_el.set('close', ')')
+                parent = self.__get_parent(self.__append_el)
+                self.__append_el = parent
+            else:
+                element = self.__make_element('mo', text=')')
+                self.__append_el.append(element)
+        elif token == '/':
+            last_element = self.__get_last_element()
+            if last_element != None and last_element.tag == 'mfenced' and last_element.get('open') == '(' and\
+                    last_element.get('close') == ')':
+                last_element.tag = 'mrow'
+                the_keys = last_element.attrib.keys()
+                for the_key in the_keys:
+                    del(last_element.attrib[the_key])
+            nominator = deepcopy(last_element)
+            nominator.set('class', 'nominator')
+            self.__append_el.remove(last_element)
+            mfrac = self.__make_element('mfrac',  nominator)
+            self.__append_el.append(mfrac)
+            self.__append_el = mfrac
+
+
 
     def parse_string(self, the_string):
-        
         while the_string != '':
-            the_string, token, the_type = self.parse_tokens(the_string)
+            the_string, token, token_info = self.__parse_tokens(the_string)
+            if isinstance(token_info, str):
+                the_type = token_info
+            else:
+                the_type = token_info.get('type')
             if the_type == 'number':
                 self.__add_num_to_tree(token, the_type)
             elif the_type == 'neg_number':
                 self.__add_neg_num_to_tree(token, the_type)
-            elif the_type == 'symbol' or the_type == 'alpha':
-                self.__add_symbol_alpha_to_tree(token, the_type)
+            elif the_type == 'alpha':
+                self.__add_alpha_to_tree(token, the_type)
+            elif the_type == 'symbol':
+                self.__add_symbol_to_tree(token, token_info)
             elif the_type == 'operator':
                 self.__add_operator_to_tree(token, the_type)
             elif the_type == 'special':
                 self.__add_special_to_tree(token, the_type)
 
+            # for all elements
+            if self.__append_el.tag == 'mfrac':
+                last_element = self.__get_last_element()
+                prev_sib = self.__get_previous_sibling(last_element)
+                if prev_sib != None:
+                    if last_element.tag == 'mfenced' and last_element.get('open') == '(' and\
+                            last_element.get('close') == ')':
+                        self.__make_new_element(last_element, 'mrow', **{'class':'denominator'})
+                    self.__append_el = self.__get_parent(self.__append_el)
 
-    def parse_tokens(self, the_string):
+
+    def __look_at_next_token(self, the_string):
+        the_string, token, the_type = self.__parse_tokens(the_string)
+        return the_string, token, the_type
+
+
+    def __parse_tokens(self, the_string):
 
         """
 
@@ -178,12 +250,13 @@ class AsciiMathML:
             if the_string.startswith(name):
                 special = the_string[:len(name)]
                 info = self.special_dict[special] # do nothing with this for now
-                return the_string[len(name):], special, 'special'
+                return the_string[len(name):], special, info
 
         for name in self.symbol_names: # found a special symbol
             if the_string.startswith(name):
                 symbol = the_string[:len(name)]
-                return the_string[len(name):], self.symbol_dict.get(symbol), 'symbol'
+                symbol = self.symbol_dict[symbol] # do nothing with this for now
+                return the_string[len(name):], name, {'type': 'symbol', 'symbol': symbol} 
 
         # found either an operator or a letter
 
