@@ -1,0 +1,66 @@
+<root>
+   <test name="simple-variable">
+      <string>x</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mi>x</mi>
+            </mstyle>
+         </math>
+      </result>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML"/>
+      </result>
+   </test>
+   <test name="simple-number">
+      <string>1</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mn>1</mn>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="simple-negative-number">
+      <string>-1</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mo>-</mo>
+               <mn>1</mn>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="simple-operator">
+      <string>+</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mo>+</mo>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="simple-operator">
+      <string>+</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mo>+</mo>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="simple-ascii-symbol">
+      <string>alpha</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mi>α</mi>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+</root>
