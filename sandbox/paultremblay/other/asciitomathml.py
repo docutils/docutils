@@ -346,7 +346,10 @@ class AsciiMathML:
 
 
 def ascii_to_xml_string(the_string):
-    pass
+    math_obj =  AsciiMathML()
+    math_obj.parse_string(the_string)
+    xml_string = math_obj.to_xml_string()
+    return xml_string
 
 def ascii_to_math_tree(the_string):
     math_obj =  AsciiMathML()
