@@ -921,3 +921,46 @@ def XmlStringToDocutilsNodes(xml_string, encoding='utf8', default_namespace = No
     read_obj.close()
     docutils_tree = the_handle.get_tree()
     return docutils_tree
+
+import xml.dom.minidom
+import xml.sax.saxutils
+
+    """
+    takes a dom element as current_element
+
+    """
+ 
+def start_tag(local_name):
+    sys.stdout.write('<%s>' % local_name)
+
+def end_tag(local_name):
+    sys.stdout.write('</%s>' % local_name)
+
+dom = xml.dom.minidom.parse('test.xml')
+out_doc = xml.dom.minidom.Document()
+def copy_tree(current_element):
+    elements = current_element.childNodes
+    for element in elements:
+        if element.nodeType == xml.dom.Node.ELEMENT_NODE:
+            element_name = element.localName
+        if element.attributes!= None:
+            for attr in element.attributes.values():
+                ns = attr.namespaceURI
+                local_name = attr.localName
+                name = attr.name
+                value = attr.value
+                prefix = attr.prefix
+                new_att = out_doc.createAttribute(name )
+            start_tag(element_name)
+            copy_tree(element)
+            end_tag(element_name)
+        elif element.nodeType == xml.dom.Node.TEXT_NODE:
+            parent = element.parentNode
+            if parent.localName == 'math':
+                sys.stdout.write(element.data)
+            else:
+                sys.stdout.write(element.data)
+                
+
+
+copy_tree(dom)

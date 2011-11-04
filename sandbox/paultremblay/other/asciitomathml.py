@@ -6,16 +6,28 @@ import xml.etree.ElementTree as etree
 
 class AsciiMathML:
 
-    symbol_dict = {
+    greek_dict = {
     'alpha': u"\u03B1",
         }
+    operator_dict = {
+        'sum':u"\u2211",
+        u"\u2211":u"\u2211", 
+        'Sigma':u"\u2211", 
+            }
+    symbol_dict = {}
+    symbol_dict.update(greek_dict)
     special_dict = {
             '(':{'type':'special'},
             ')':{'type':'special'},
             '/':{'type':'special'},
+            '^':{'type':'special'},
+            '_':{'type':'special'},
+
             }
     symbol_names = sorted(symbol_dict.keys(), key=lambda key_string: len(key_string), reverse=True)
-    special_names = ['(', ')', '/']
+    special_names = sorted(special_dict.keys(), key=lambda key_string: len(key_string), reverse=True)
+    operator_names = sorted(operator_dict.keys(), key=lambda key_string: len(key_string), reverse=True)
+    # special_names = [ '(', ')', '/', '^', '_']
 
     def __init__(self, output_encoding = 'utf8'):
         self.__number_re = re.compile('-?(\d+\.(\d+)?|\.?\d+)')
@@ -64,7 +76,9 @@ class AsciiMathML:
                 return parent[counter - 1]
 
     def __get_last_element(self):
-        return self.__append_el[-1]
+        if len(self.__append_el) > 0:
+            return self.__append_el[-1]
+        return self.__append_el
 
     def __get_following_sibling(self, element, the_tree = 0):
         if the_tree == 0:
@@ -102,8 +116,13 @@ class AsciiMathML:
         parent = self.__get_parent(child = child, the_tree = the_tree)
         grandparent = self.__get_parent(child = parent, the_tree = the_tree)
 
+    def __is_parenthesis(self, element):
+        if element != None and element.tag == 'mfenced' and element.get('open') == '(' and\
+                    element.get('close') == ')':
+            return True
 
-    def __make_new_element(self, element, name, **attributes):
+
+    def __change_element(self, element, name, **attributes):
         element.tag = name
         the_keys = element.attrib.keys()
         for the_key in the_keys:
@@ -149,37 +168,77 @@ class AsciiMathML:
         element = self.__make_element('mi', text=token)
         self.__append_el.append(element)
 
-    def __add_operator_to_tree(self, token, the_type):
-        element = self.__make_element('mo', text=token)
+    def __add_operator_to_tree(self, token, token_info):
+        if isinstance(token_info, dict):
+            text = token_info.get('symbol')
+        else:
+            text = token
+        element = self.__make_element('mo', text=text)
         self.__append_el.append(element)
 
-    def __add_special_to_tree(self, token, the_type):
-        if token == '(':
-            element = self.__make_element('mfenced', open='(', separators='')
-            self.__append_el.append(element)
-            self.__append_el = element
-        elif token == ')':
-            if self.__append_el.tag == 'mfenced' and self.__append_el.get('open') == '(':
-                self.__append_el.set('close', ')')
-                parent = self.__get_parent(self.__append_el)
-                self.__append_el = parent
-            else:
-                element = self.__make_element('mo', text=')')
-                self.__append_el.append(element)
-        elif token == '/':
-            last_element = self.__get_last_element()
-            if last_element != None and last_element.tag == 'mfenced' and last_element.get('open') == '(' and\
-                    last_element.get('close') == ')':
-                last_element.tag = 'mrow'
-                the_keys = last_element.attrib.keys()
-                for the_key in the_keys:
-                    del(last_element.attrib[the_key])
+    def __handle_binary(self, token, info):
+        last_element = self.__get_last_element() 
+        if last_element == self.__append_el: # no "previous sibling," and can't process
+            self.__add_operator_to_tree(token, info)
+            return
+        if token == '/':
+            num_frac = 0
+            if last_element.tag == 'mfrac':
+                for child in last_element:
+                    if child.tag == 'mfrac':
+                        num_frac +=1
+            if num_frac % 2 != 0:
+                self.__append_el = last_element
+                last_element = self.__get_last_element()
+            if self.__is_parenthesis(last_element):
+                self.__change_element(last_element, 'mrow', **{'class':'nominator'})
             nominator = deepcopy(last_element)
-            nominator.set('class', 'nominator')
             self.__append_el.remove(last_element)
             mfrac = self.__make_element('mfrac',  nominator)
             self.__append_el.append(mfrac)
             self.__append_el = mfrac
+        elif token == '^' or token == '_':
+            if last_element.tag == 'msub':
+                subsup = self.__make_element('msubsup')
+                for child in last_element: # should be just 2--check? 
+                    element = deepcopy(child)
+                    subsup.append(element)
+                self.__append_el.remove(last_element)
+                self.__append_el.append(subsup)
+                self.__append_el = subsup
+
+            else:
+                if token == '^':
+                    el_name = 'msup'
+                elif token == '_':
+                    el_name = 'msub'
+                base = deepcopy(last_element)
+                self.__append_el.remove(last_element)
+                base = self.__make_element(el_name,  base)
+                self.__append_el.append(base)
+                self.__append_el = base 
+
+    def __handle_open_parenthesis(self):
+        element = self.__make_element('mfenced', open='(', separators='', close="")
+        self.__append_el.append(element)
+        self.__append_el = element
+
+    def __handle_close_parenthesis(self):
+        if self.__append_el.tag == 'mfenced' and self.__append_el.get('open') == '(':
+            self.__append_el.set('close', ')')
+            parent = self.__get_parent(self.__append_el)
+            self.__append_el = parent
+        else:
+            element = self.__make_element('mo', text=')')
+            self.__append_el.append(element)
+
+    def __add_special_to_tree(self, token, the_type):
+        if token == '(':
+            self.__handle_open_parenthesis()
+        elif token == ')':
+            self.__handle_close_parenthesis()
+        elif token == '/' or token == '^' or token == '_':
+            self.__handle_binary(token, the_type)
 
 
 
@@ -199,18 +258,32 @@ class AsciiMathML:
             elif the_type == 'symbol':
                 self.__add_symbol_to_tree(token, token_info)
             elif the_type == 'operator':
-                self.__add_operator_to_tree(token, the_type)
+                self.__add_operator_to_tree(token, token_info)
             elif the_type == 'special':
                 self.__add_special_to_tree(token, the_type)
 
             # for all elements
-            if self.__append_el.tag == 'mfrac':
+            if self.__append_el.tag == 'mfrac' or self.__append_el.tag == 'msup' or self.__append_el.tag == 'msub':
                 last_element = self.__get_last_element()
                 prev_sib = self.__get_previous_sibling(last_element)
                 if prev_sib != None:
-                    if last_element.tag == 'mfenced' and last_element.get('open') == '(' and\
-                            last_element.get('close') == ')':
-                        self.__make_new_element(last_element, 'mrow', **{'class':'denominator'})
+                    if self.__is_parenthesis(last_element):
+                        if self.__append_el.tag == 'mfrac':
+                            the_dict = {'class':'denominator'}
+                        elif self.__append_el.tag == 'msup':
+                            the_dict = {'class':'superscript'}
+                        elif self.__append_el.tag == 'msub':
+                            the_dict = {'class':'subcript'}
+                        self.__change_element(last_element, 'mrow', **the_dict)
+                    self.__append_el = self.__get_parent(self.__append_el)
+            elif self.__append_el.tag =='msubsup':
+                last_element = self.__get_last_element()
+                prev_sib = self.__get_previous_sibling(last_element)
+                prev_prev_sib =self.__get_previous_sibling(prev_sib) 
+                if prev_prev_sib != None:
+                    if self.__is_parenthesis(last_element):
+                        the_dict = {'class':'subsuper'}
+                        self.__change_element(last_element, 'mrow', **the_dict)
                     self.__append_el = self.__get_parent(self.__append_el)
 
 
@@ -249,13 +322,19 @@ class AsciiMathML:
         for name in self.special_names:
             if the_string.startswith(name):
                 special = the_string[:len(name)]
-                info = self.special_dict[special] # do nothing with this for now
+                info = self.special_dict[special] 
                 return the_string[len(name):], special, info
+
+        for name in self.operator_names: # found special operator
+            if the_string.startswith(name):
+                symbol = the_string[:len(name)]
+                symbol = self.operator_dict[symbol] 
+                return the_string[len(name):], name, {'type': 'operator', 'symbol': symbol} 
 
         for name in self.symbol_names: # found a special symbol
             if the_string.startswith(name):
                 symbol = the_string[:len(name)]
-                symbol = self.symbol_dict[symbol] # do nothing with this for now
+                symbol = self.symbol_dict[symbol] 
                 return the_string[len(name):], name, {'type': 'symbol', 'symbol': symbol} 
 
         # found either an operator or a letter
