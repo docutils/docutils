@@ -1,129 +1,165 @@
-import unittest
+import sys
+from StringIO import StringIO
+from xml.etree.ElementTree import Element, tostring
+import xml.etree.ElementTree as etree
+import xml.sax.handler
+from xml.sax.handler import feature_namespaces
+from asciitomathml import ascii_to_xml_string
+from asciitomathml import  ascii_to_math_tree
 
-from xml.etree.ElementTree import tostring
-import asciitomathml
-from asciitomathml import AsciiMathML
+class CopyTree(xml.sax.ContentHandler):
+    """
+    A simple class that copies a tree. Used for testing two xml strings.
+
+    """
 
 
+    def __init__(self):
+        self.__characters = ''
+        self.__xml_string = ''
+        self.__default_ns = None
+        self.__mathml_ns = 'http://www.w3.org/1998/Math/MathML'
 
-class TestAsciiToMathML(unittest.TestCase):
+
+    def characters (self, characters): 
+        self.__characters += characters
 
 
-    def test_simple(self):
-        self.assertEquals('x', 'x')
+    def startElementNS(self, name, qname, attrs):
+        self.__write_text()
+        ns = name[0]
+        el_name = name[1]
+        root = None
+        self.__xml_string += '<'
+        if self.__default_ns == None:
+            if ns != self.__mathml_ns:
+                raise ValueError('wrong namespace "%s"' % (ns))
+            self.__default_ns = self.__mathml_ns
+            root = True
+        elif ns != self.__mathml_ns:
+            raise ValueError('wrong namespace')
+        self.__xml_string += el_name
+        if root:
+            self.__xml_string += ' xmlns="%s"' % ns
 
-    def test_make_element(self):
-        mathml_obj = asciitomathml.AsciiMathML()
-        root = mathml_obj._AsciiMathML__make_element('root')
-        child1 = mathml_obj._AsciiMathML__make_element('child1')
-        child2 = mathml_obj._AsciiMathML__make_element('child2')
-        new_root = mathml_obj._AsciiMathML__make_element('new_root', child1, child2)
-        self.assertEquals(tostring(new_root),'<new_root><child1 /><child2 /></new_root>')
+        the_keys = attrs.keys()
+        the_keys.sort()
+        counter = 1
+        for the_key in the_keys:
+            counter +=1
+            ns_att = the_key[0]
+            att_name = the_key[1]
+            value = attrs[the_key]
+            if ns_att and ns_att != ns:
+                self.__xml_string += ' xmlns:ns%s="%s"' % (counter,ns_att)
+            if ns_att and ns_att == ns:
+                self.__xml_string += ' ns1:%s="%s"' % (att_name, value)
+            elif ns_att:
+                self.__xml_string += ' ns%s:%s="%s"' % (counter,att_name, value)
+            else:
+                self.__xml_string += ' %s="%s"' % (att_name, value)
+        self.__xml_string += '>'
 
-    def test_get_parent(self):
-        mathml_obj = asciitomathml.AsciiMathML()
-        root = mathml_obj._AsciiMathML__make_element('root')
-        parent = mathml_obj._AsciiMathML__get_parent(root)
-        child_element = mathml_obj._AsciiMathML__make_element('child1')
-        root.append(child_element)
-        parent = mathml_obj._AsciiMathML__get_parent(child = child_element, the_tree = root)
-        self.assertEquals(root, parent)
-        
-    def test_get_previous_sibling(self):
-        mathml_obj = asciitomathml.AsciiMathML()
-        root = mathml_obj._AsciiMathML__make_element('root')
-        child_element1 = mathml_obj._AsciiMathML__make_element('child1')
-        child_element2 = mathml_obj._AsciiMathML__make_element('child2')
-        root.append(child_element1)
-        root.append(child_element2)
-        prev_sib = mathml_obj._AsciiMathML__get_previous_sibling(child_element2)
-        prev_sib = mathml_obj._AsciiMathML__get_previous_sibling(child_element2, the_tree = root)
-        self.assertEquals(prev_sib, child_element1)
+    def __write_text(self):
+        text =  xml.sax.saxutils.escape(self.__characters)
+        # text = text.encode('utf8')
+        self.__xml_string += text
+        self.__characters = ''
 
-    def test_get_following_sibling(self):
-        mathml_obj = asciitomathml.AsciiMathML()
-        root = mathml_obj._AsciiMathML__make_element('root')
-        child_element1 = mathml_obj._AsciiMathML__make_element('child1')
-        child_element2 = mathml_obj._AsciiMathML__make_element('child2')
-        root.append(child_element1)
-        root.append(child_element2)
-        foll_sib = mathml_obj._AsciiMathML__get_following_sibling(child_element1 )
-        foll_sib = mathml_obj._AsciiMathML__get_following_sibling(child_element1, the_tree = root)
-        self.assertEquals(foll_sib, child_element2)
+    def endElementNS(self, name, qname):
+        self.__write_text()
+        ns = name[0]
+        el_name = name[1]
+        self.__xml_string += '</%s>' % el_name
 
-    def test_symbol_dict(self):
-        mathml_obj = asciitomathml.AsciiMathML()
-        the_dict = mathml_obj.symbol_dict
+    def get_xml_string(self):
+        return self.__xml_string
+    
 
-    def test_parse_tokens(self):
-        # mathml_obj =  AsciiToMathMlLocal()
-        mathml_obj = asciitomathml.AsciiMathML()
-        rest_of_string, token, the_type = mathml_obj._AsciiMathML__parse_tokens('1')
-        self.assertEquals(token, '1')
-        rest_of_string, token, the_type = mathml_obj._AsciiMathML__parse_tokens('-55.6')
-        self.assertEquals(token, '-55.6')
-        rest_of_string, token, token_dict = mathml_obj._AsciiMathML__parse_tokens('alpha')
-        self.assertEquals(token_dict['symbol'], u"\u03B1")
-        self.assertEquals(token, 'alpha')
-        rest_of_string, token, the_type = mathml_obj._AsciiMathML__parse_tokens('')
-        self.assertEquals(token, None)
+def xml_copy_tree(xml_string, encoding='utf8'):
+    """
+    Makes a simple copy of an XML string. Only used for testing purposes.
 
-    def test_parse_string(self):
-        mathml_obj = asciitomathml.AsciiMathML()
-        the_string = '-1 -55.6 text alpha'
-        mathml_obj.parse_string(the_string)
+    Two identical XML strings may have different syntax:
 
-    def test_to_xml_string_basic(self):
-        the_strings = [
-        ('1', '<math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle><mn>1</mn></mstyle></math>'),
-        ('-1', '<math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle><mo>-</mo><mn>1</mn></mstyle></math>'),
-        ('alpha', '<math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle><mi>&#945;</mi></mstyle></math>'),
-        ('a', '<math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle><mi>a</mi></mstyle></math>'),
-        ('+', '<math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle><mo>+</mo></mstyle></math>'),
-                ]
+    <TEI xmlns="http://www.tei-c.org/ns/1.0"><p/></TEI>
 
-        for the_pair in the_strings:
-            the_string = the_pair[0]
-            result = the_pair[1]
-            mathml_obj = asciitomathml.AsciiMathML(output_encoding='us-ascii')
-            mathml_obj.parse_string(the_string)
-            xml_string = mathml_obj.to_xml_string()
-            self.assertEquals(xml_string, result)
+    is identical to 
 
-    def __test_to_xml_string_parenthesis(self):
-        the_strings = [
-                ('(x)', '<math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle><mfenced close=")" open="("><mi>x</mi></mfenced></mstyle></math>'),
-                ('(x)x', '<math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle><mfenced close=")" open="("><mi>x</mi></mfenced><mi>x</mi></mstyle></math>'),
-                ('((x))x', '<math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle><mfenced close=")" open="("><mfenced close=")" open="("><mi>x</mi></mfenced></mfenced><mi>x</mi></mstyle></math>'),
+    <tei:TEI xmlns:tei="http://www.tei-c.org/ns/1.0"><tei:p xmlns:tei="http://www.tei-c.org/ns/1.0"/></tei:TEI>
 
-                ]
-        for the_pair in the_strings:
-            the_string = the_pair[0]
-            result = the_pair[1]
-            mathml_obj = asciitomathml.AsciiMathML(output_encoding='us-ascii')
-            mathml_obj.parse_string(the_string)
-            xml_string = mathml_obj.to_xml_string()
-            self.assertEquals(xml_string, result)
+    All XML parsers read these strings as the same. However, when testing
+    modules in Python, the strings need to have the same syntax. This function
+    achieves will create two equal strings by passing each to it and comparing
+    the return value. 
 
-    def test_anything(self):
-        the_string = 'x^2'
-        mathml_obj = asciitomathml.AsciiMathML(output_encoding='us-ascii')
-        mathml_obj.parse_string(the_string)
-        xml_string = mathml_obj.to_xml_string()
+    string1 = xml_copy_tree(<'TEI xmlns="http://www.tei-c.org/ns/1.0"><p/></TEI>')
+    string2 = xml_copy('<tei:TEI xmlns:tei="http://www.tei-c.org/ns/1.0"><tei:p xmlns:tei="http://www.tei-c.org/ns/1.0"/></tei:TEI>')
 
-    def test_fractions(self):
-        the_strings = [
-        ('1/2', '<math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle><mfrac><mn>1</mn><mn>2</mn></mfrac></mstyle></math>'),
-        ('1/2 3', '<math xmlns="http://www.w3.org/1998/Math/MathML"><mstyle><mfrac><mn>1</mn><mn>2</mn></mfrac><mn>3</mn></mstyle></math>'),
-        ]
-        for the_pair in the_strings:
-            the_string = the_pair[0]
-            result = the_pair[1]
-            mathml_obj = asciitomathml.AsciiMathML(output_encoding='us-ascii')
-            mathml_obj.parse_string(the_string)
-            xml_string = mathml_obj.to_xml_string()
-            self.assertEquals(xml_string, result)
+    string1 == string2
+    True
+
+    """
+    if isinstance(xml_string, unicode):
+        xml_string = xml_string.encode('utf8')
+    elif isinstance(xml_string, str):
+        xml_string = xml_string.decode(encoding)
+        xml_string = xml_string.encode('utf8')
+    read_obj = StringIO(xml_string)
+    the_handle=CopyTree()
+    parser = xml.sax.make_parser()
+    parser.setFeature(feature_namespaces, 1)
+    parser.setContentHandler(the_handle)
+    parser.setFeature("http://xml.org/sax/features/external-general-entities", True)
+    parser.parse(read_obj)             
+    read_obj.close()
+    new_xml_string = the_handle.get_xml_string()
+    return new_xml_string
+
+# indents XML Needed to make a uniform XML string
+def indent(elem, level=0):
+    i = "\n" + level*"  "
+    if len(elem):
+        if not elem.text or not elem.text.strip():
+            elem.text = i + "  "
+        if not elem.tail or not elem.tail.strip():
+            elem.tail = i
+        for elem in elem:
+            indent(elem, level+1)
+        if not elem.tail or not elem.tail.strip():
+            elem.tail = i
+    else:
+        if level and (not elem.tail or not elem.tail.strip()):
+            elem.tail = i
+
+
+def test_xml():
+    the_tree = etree.parse('test.xml')
+    for test in the_tree.iter('test'):
+        name = test.get('name')
+        if not name:
+            raise ValueError('test element does not have a name attribute')
+        the_string = ''
+        for string in test.iter('string'):
+            the_string += string.text
+        test_xml = ascii_to_math_tree(the_string)
+        indent(test_xml)
+        test_xml_string = tostring(test_xml).encode('utf8')
+        standard_test_xml_string = xml_copy_tree(test_xml_string)
+        match = None
+        for result in test.iter('result'):
+            math_tree = result[0]
+            indent(math_tree)
+            xml_string = tostring(math_tree)
+            standard_result_xml_string = xml_copy_tree(xml_string)
+            if standard_test_xml_string == standard_result_xml_string:
+                match = True
+                break
+        if not match:
+            sys.stderr.write('Error for test "%s"\n' % (name))
+            sys.stderr.write(standard_test_xml_string)
+            sys.stderr.write('\ndoes not match\n')
+            sys.stderr.write(standard_result_xml_string)
 
 if __name__ == '__main__':
-    unittest.main()
-
+    test_xml()
