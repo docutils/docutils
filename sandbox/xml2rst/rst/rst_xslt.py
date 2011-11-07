@@ -3,6 +3,7 @@
 # Import
 
 import os.path
+import sys
 
 try:
     from lxml import etree
@@ -68,8 +69,7 @@ def convert(inNm, outNm, settings):
         result = mainXslt(inDoc, **xsltParams)
     except Exception, e:
         raise Exception("Error transforming input file %r: %s" % ( inNm, e, ))
-    # Chop off trailing linefeed - added somehow
-    outS = str(result)[:-1]
+    outS = str(result)
     if outNm:
         try:
             outF = open(outNm, "w")
@@ -78,4 +78,4 @@ def convert(inNm, outNm, settings):
         outF.write(outS)
         outF.close()
     else:
-        print(outS)
+        sys.stdout.write(outS)
