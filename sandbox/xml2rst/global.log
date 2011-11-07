@@ -1,4 +1,137 @@
 **************************************
+Date: Mon Nov  7 11:47:43 CET 2011
+Author: stefan
+Tag: xml2rst_1_202
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/command
+In directory theowa:/home/stefan/free/xml2rst/tests/command
+
+Added Files:
+	.cvsignore Makefile filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/command/expected
+In directory theowa:/home/stefan/free/xml2rst/tests/command/expected
+
+Added Files:
+	argument.emp stdout.emp 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/command/expected/argument.d
+In directory theowa:/home/stefan/free/xml2rst/tests/command/expected/argument.d
+
+Added Files:
+	argument.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/command/expected/stdout.d
+In directory theowa:/home/stefan/free/xml2rst/tests/command/expected/stdout.d
+
+Added Files:
+	stdout.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/command/input
+In directory theowa:/home/stefan/free/xml2rst/tests/command/input
+
+Added Files:
+	.cvsignore argument.arg stdout.arg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/command/original
+In directory theowa:/home/stefan/free/xml2rst/tests/command/original
+
+Added Files:
+	argument.rst stdout.rst 
+
+--------------------------------------
+Log Message:
+Added test for fixed bug.
+**************************************
+Date: Mon Nov  7 10:26:54 CET 2011
+Author: stefan
+Tag: xml2rst_1_201
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/rst
+In directory theowa:/home/stefan/free/xml2rst/rst
+
+Modified Files:
+	rst_xslt.py 
+
+--------------------------------------
+Log Message:
+Fixed bug chopping off newline when outputing to a file.
+**************************************
+Date: Sat Mar  5 12:19:10 CET 2011
+Author: stefan
+Tag: xml2rst_1_200
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory rosalu:/home/stefan/free/xml2rst
+
+Modified Files:
+	Makefile 
+
+--------------------------------------
+Log Message:
+Adaptions to `packageSupport`.
+**************************************
+Date: Sun Nov  7 20:10:05 CET 2010
+Author: stefan
+Tag: xml2rst_1_199
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/options
+In directory rosalu:/home/stefan/free/xml2rst/tests/options
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/options/input
+In directory rosalu:/home/stefan/free/xml2rst/tests/options/input
+
+Modified Files:
+	adornmentDefault.opt adornmentDefault.xsltproc 
+	adornmentEmacs.opt adornmentEmacs.xsltproc 
+	adornmentReverse.opt adornmentReverse.xsltproc fold20.opt 
+	fold20.xsltproc fold70.opt fold70.xsltproc 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/real
+In directory rosalu:/home/stefan/free/xml2rst/tests/real
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple
+In directory rosalu:/home/stefan/free/xml2rst/tests/simple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/synthetic
+In directory rosalu:/home/stefan/free/xml2rst/tests/synthetic
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xsltproc/options
+In directory rosalu:/home/stefan/free/xml2rst/tests.xsltproc/options
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Upgraded tests to filterunit V0.7.1.
+**************************************
 Date: Mon Nov  1 14:04:05 CET 2010
 Author: stefan
 Tag: xml2rst_1_198
