@@ -20,7 +20,7 @@ import string
 import urllib
 from docutils import frontend, nodes, languages, writers, utils, io
 from docutils.transforms import writer_aux
-from docutils.math import unimathsymbols2tex, pick_math_environment
+from docutils.math import pick_math_environment, unichar2tex
 
 # compatibility module for Python 2.3
 if not hasattr(string, 'Template'):
@@ -2446,7 +2446,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if node['classes']:
             self.visit_inline(node)
         self.requirements['amsmath'] = r'\usepackage{amsmath}'
-        math_code = node.astext().translate(unimathsymbols2tex.uni2tex_table)
+        math_code = node.astext().translate(unichar2tex.uni2tex_table)
         if node.get('ids'):
             math_code = '\n'.join([math_code] + self.ids_to_labels(node))
         if math_env == '$':
