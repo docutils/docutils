@@ -20,11 +20,11 @@ class InputTests(unittest.TestCase):
         input = io.StringInput(source=b('\xef\xbb\xbf foo \xef\xbb\xbf bar'),
                                encoding='utf8')
         # Assert BOMs are gone.
-        self.assertEquals(input.read(), u' foo  bar')
+        self.assertEqual(input.read(), u' foo  bar')
         # With unicode input:
         input = io.StringInput(source=u'\ufeff foo \ufeff bar')
         # Assert BOMs are still there.
-        self.assertEquals(input.read(), u'\ufeff foo \ufeff bar')
+        self.assertEqual(input.read(), u'\ufeff foo \ufeff bar')
 
     def test_coding_slug(self):
         input = io.StringInput(source=b("""\
@@ -33,14 +33,14 @@ data
 blah
 """))
         data = input.read()
-        self.assertEquals(input.successful_encoding, 'ascii')
+        self.assertEqual(input.successful_encoding, 'ascii')
         input = io.StringInput(source=b("""\
 #! python
 # -*- coding: ascii -*-
 print "hello world"
 """))
         data = input.read()
-        self.assertEquals(input.successful_encoding, 'ascii')
+        self.assertEqual(input.successful_encoding, 'ascii')
         input = io.StringInput(source=b("""\
 #! python
 # extraneous comment; prevents coding slug from being read
@@ -48,19 +48,38 @@ print "hello world"
 print "hello world"
 """))
         data = input.read()
-        self.assertNotEquals(input.successful_encoding, 'ascii')
+        self.assertNotEqual(input.successful_encoding, 'ascii')
 
     def test_bom_detection(self):
         source = u'\ufeffdata\nblah\n'
         input = io.StringInput(source=source.encode('utf-16-be'))
         data = input.read()
-        self.assertEquals(input.successful_encoding, 'utf-16-be')
+        self.assertEqual(input.successful_encoding, 'utf-16-be')
         input = io.StringInput(source=source.encode('utf-16-le'))
         data = input.read()
-        self.assertEquals(input.successful_encoding, 'utf-16-le')
+        self.assertEqual(input.successful_encoding, 'utf-16-le')
         input = io.StringInput(source=source.encode('utf-8'))
         data = input.read()
-        self.assertEquals(input.successful_encoding, 'utf-8')
+        self.assertEqual(input.successful_encoding, 'utf-8')
+
+    def test_readlines(self):
+        input = io.FileInput(source_path='data/include.txt')
+        data = input.readlines()
+        self.assertEqual(data, [u'Some include text.\n'])
+
+    def test_heuristics_utf8(self):
+        input = io.FileInput(source_path='functional/input/cyrillic.txt')
+        data = input.read()
+        if sys.version_info < (3,0): 
+            # in Py3k, the locale encoding is used without --input-encoding
+            # skipping the heuristic
+            self.assertEqual(input.successful_encoding, 'utf-8')
+
+    def test_heuristics_latin1(self):
+        input = io.FileInput(source_path='data/latin1.txt')
+        data = input.read()
+        self.assertEqual(input.successful_encoding, 'latin-1')
+        self.assertEqual(data, u'Gr\xfc\xdfe\n')
 
 
 if __name__ == '__main__':
