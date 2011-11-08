@@ -17,11 +17,9 @@ It contains various modules for conversion between different math formats
 
 :math2html:    LaTeX math -> HTML conversion from eLyXer
 :latex2mathml: LaTeX math -> presentational MathML
-:unimathsymbols2tex: Unicode symbol to LaTeX math translation table
+:unichar2tex: Unicode character to LaTeX math translation table
+:tex2unichar: LaTeX math to Unicode character translation dictionaries
 """
-__all__ = ['math2html',
-           'latex2mathml',
-           'unimathsymbols2tex']
 
 # helpers for Docutils math support
 # =================================

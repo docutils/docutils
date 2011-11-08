@@ -1,5 +1,7 @@
-# Translation table for Unicode symbols to LaTeX math commands
+# LaTeX math to Unicode symbols translation table
 # for use with the translate() method of unicode objects.
+# Generated with ``write_unichar2tex.py`` from the data in
+# http://milde.users.sourceforge.net/LUCR/Math/
 
 # Includes commands from: standard LaTeX, amssymb, amsmath
 
@@ -53,7 +55,7 @@ uni2tex_table = {
 977: u'\\vartheta ',
 981: u'\\phi ',
 982: u'\\varpi ',
-988: u'\\digamma ',
+989: u'\\digamma ',
 1014: u'\\backepsilon ',
 8193: u'\\quad ',
 8214: u'\\| ',

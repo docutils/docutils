@@ -19,6 +19,140 @@
 
 # Based on the `latex_math` sandbox project by Jens Jørgen Mortensen
 
+import docutils.math.tex2unichar as tex2unichar
+
+#        TeX      spacing    combining
+over = {'acute':    u'\u00B4', # u'\u0301',
+        'bar':      u'\u00AF', # u'\u0304',
+        'breve':    u'\u02D8', # u'\u0306',
+        'check':    u'\u02C7', # u'\u030C',
+        'dot':      u'\u02D9', # u'\u0307',
+        'ddot':     u'\u00A8', # u'\u0308',
+        'dddot':               u'\u20DB',
+        'grave':    u'`',      # u'\u0300',
+        'hat':      u'^',      # u'\u0302',
+        'mathring': u'\u02DA', # u'\u030A',
+        'overleftrightarrow':  u'\u20e1',
+        # 'overline':        # u'\u0305',
+        'tilde':    u'\u02DC', # u'\u0303',
+        'vec':               u'\u20D7'}
+
+Greek = { # Capital Greek letters: (upright in TeX style)
+    'Phi':u'\u03a6', 'Xi':u'\u039e', 'Sigma':u'\u03a3',
+    'Psi':u'\u03a8', 'Delta':u'\u0394', 'Theta':u'\u0398',
+    'Upsilon':u'\u03d2', 'Pi':u'\u03a0', 'Omega':u'\u03a9',
+    'Gamma':u'\u0393', 'Lambda':u'\u039b'}
+
+letters = tex2unichar.mathalpha
+
+special = tex2unichar.mathbin         # Binary symbols
+special.update(tex2unichar.mathrel)   # Relation symbols, arrow symbols
+special.update(tex2unichar.mathord)   # Miscellaneous symbols
+special.update(tex2unichar.mathop)    # Variable-sized symbols
+special.update(tex2unichar.mathopen)  # Braces
+special.update(tex2unichar.mathclose) # Braces
+special.update(tex2unichar.mathfence)
+
+sumintprod = ''.join([special[symbol] for symbol in
+                      ['sum', 'int', 'oint', 'prod']])
+
+functions = ['arccos', 'arcsin', 'arctan', 'arg', 'cos',  'cosh',
+             'cot',    'coth',   'csc',    'deg', 'det',  'dim',
+             'exp',    'gcd',    'hom',    'inf', 'ker',  'lg',
+             'lim',    'liminf', 'limsup', 'ln',  'log',  'max',
+             'min',    'Pr',     'sec',    'sin', 'sinh', 'sup',
+             'tan',    'tanh',
+             'injlim',  'varinjlim', 'varlimsup',
+             'projlim', 'varliminf', 'varprojlim']
+
+
+mathbb = {
+          'A': u'\U0001D538',
+          'B': u'\U0001D539',
+          'C': u'\u2102',
+          'D': u'\U0001D53B',
+          'E': u'\U0001D53C',
+          'F': u'\U0001D53D',
+          'G': u'\U0001D53E',
+          'H': u'\u210D',
+          'I': u'\U0001D540',
+          'J': u'\U0001D541',
+          'K': u'\U0001D542',
+          'L': u'\U0001D543',
+          'M': u'\U0001D544',
+          'N': u'\u2115',
+          'O': u'\U0001D546',
+          'P': u'\u2119',
+          'Q': u'\u211A',
+          'R': u'\u211D',
+          'S': u'\U0001D54A',
+          'T': u'\U0001D54B',
+          'U': u'\U0001D54C',
+          'V': u'\U0001D54D',
+          'W': u'\U0001D54E',
+          'X': u'\U0001D54F',
+          'Y': u'\U0001D550',
+          'Z': u'\u2124',
+         }
+
+mathscr = {
+           'A': u'\U0001D49C',
+           'B': u'\u212C',     # bernoulli function
+           'C': u'\U0001D49E',
+           'D': u'\U0001D49F',
+           'E': u'\u2130',
+           'F': u'\u2131',
+           'G': u'\U0001D4A2',
+           'H': u'\u210B',     # hamiltonian
+           'I': u'\u2110',
+           'J': u'\U0001D4A5',
+           'K': u'\U0001D4A6',
+           'L': u'\u2112',     # lagrangian
+           'M': u'\u2133',     # physics m-matrix
+           'N': u'\U0001D4A9',
+           'O': u'\U0001D4AA',
+           'P': u'\U0001D4AB',
+           'Q': u'\U0001D4AC',
+           'R': u'\u211B',
+           'S': u'\U0001D4AE',
+           'T': u'\U0001D4AF',
+           'U': u'\U0001D4B0',
+           'V': u'\U0001D4B1',
+           'W': u'\U0001D4B2',
+           'X': u'\U0001D4B3',
+           'Y': u'\U0001D4B4',
+           'Z': u'\U0001D4B5',
+           'a': u'\U0001D4B6',
+           'b': u'\U0001D4B7',
+           'c': u'\U0001D4B8',
+           'd': u'\U0001D4B9',
+           'e': u'\u212F',
+           'f': u'\U0001D4BB',
+           'g': u'\u210A',
+           'h': u'\U0001D4BD',
+           'i': u'\U0001D4BE',
+           'j': u'\U0001D4BF',
+           'k': u'\U0001D4C0',
+           'l': u'\U0001D4C1',
+           'm': u'\U0001D4C2',
+           'n': u'\U0001D4C3',
+           'o': u'\u2134',     # order of
+           'p': u'\U0001D4C5',
+           'q': u'\U0001D4C6',
+           'r': u'\U0001D4C7',
+           's': u'\U0001D4C8',
+           't': u'\U0001D4C9',
+           'u': u'\U0001D4CA',
+           'v': u'\U0001D4CB',
+           'w': u'\U0001D4CC',
+           'x': u'\U0001D4CD',
+           'y': u'\U0001D4CE',
+           'z': u'\U0001D4CF',
+          }
+
+negatables = {'=': u'\u2260',
+              '\in': u'\u2209',
+              '\equiv': u'\u2262'}
 
 # LaTeX to MathML translation stuff:
 class math:
@@ -224,116 +358,6 @@ class mtext(math):
     def xml_body(self):
         return [self.text]
 
-#        TeX      spacing    combining
-over = {'acute': u'\u00B4',  # u'\u0301',
-        'bar':   u'\u00AF',  # u'\u0304',
-        'breve': u'\u02D8',  # u'\u0306',
-        'check': u'\u02C7',  # u'\u030C',
-        'dot':   u'\u02D9',  # u'\u0307',
-        'ddot':  u'\u00A8',  # u'\u0308',
-        'dddot':             u'\u20DB',
-        'grave': u'`',       # u'\u0300',
-        'hat':   u'^',       # u'\u0302',
-        'tilde': u'\u02DC',  # u'\u0303',
-        # 'overline':        # u'\u0305',
-        'vec':               u'\u20D7'}
-
-Greek = { # Upper case greek letters:
-    'Phi':u'\u03a6', 'Xi':u'\u039e', 'Sigma':u'\u03a3',
-    'Psi':u'\u03a8', 'Delta':u'\u0394', 'Theta':u'\u0398',
-    'Upsilon':u'\u03d2', 'Pi':u'\u03a0', 'Omega':u'\u03a9',
-    'Gamma':u'\u0393', 'Lambda':u'\u039b'}
-
-letters = { # Lower case greek letters (and dotless i, j):
-    # 'imath':u'i', 'jmath':u'i', # when used with combining accents
-    'imath':u'\u0131', 'jmath':u'\u0237',
-    'tau':u'\u03c4', 'phi':u'\u03d5', 'xi':u'\u03be', 'iota':u'\u03b9',
-    'epsilon':u'\u03f5', 'varrho':u'\u03f1', 'varsigma':u'\u03c2',
-    'beta':u'\u03b2', 'psi':u'\u03c8', 'rho':u'\u03c1',
-    'delta':u'\u03b4', 'alpha':u'\u03b1', 'zeta':u'\u03b6',
-    'omega':u'\u03c9', 'varepsilon':u'\u03b5', 'kappa':u'\u03ba',
-    'vartheta':u'\u03d1', 'chi':u'\u03c7', 'upsilon':u'\u03c5',
-    'sigma':u'\u03c3', 'varphi':u'\u03c6', 'varpi':u'\u03d6',
-    'mu':u'\u03bc', 'eta':u'\u03b7', 'theta':u'\u03b8', 'pi':u'\u03c0',
-    'varkappa':u'\u03f0', 'nu':u'\u03bd', 'gamma':u'\u03b3',
-    'lambda':u'\u03bb'}
-
-special = {
-    # Binary operation symbols:
-    'wedge':u'\u2227', 'diamond':u'\u22c4', 'star':u'\u22c6',
-    'amalg':u'\u2a3f', 'ast':u'\u2217', 'odot':u'\u2299',
-    'triangleleft':u'\u25c1', 'bigtriangleup':u'\u25b3',
-    'ominus':u'\u2296', 'ddagger':u'\u2021', 'wr':u'\u2240',
-    'otimes':u'\u2297', 'sqcup':u'\u2294', 'oplus':u'\u2295',
-    'bigcirc':u'\u25cb', 'oslash':u'\u2298', 'sqcap':u'\u2293',
-    'bullet':u'\u2219', 'cup':u'\u222a', 'cdot':u'\u22c5',
-    'cap':u'\u2229', 'bigtriangledown':u'\u25bd', 'times':u'\xd7',
-    'setminus':u'\u2216', 'circ':u'\u2218', 'vee':u'\u2228',
-    'uplus':u'\u228e', 'mp':u'\u2213', 'dagger':u'\u2020',
-    'triangleright':u'\u25b7', 'div':u'\xf7', 'pm':u'\xb1',
-    # Relation symbols:
-    'subset':u'\u2282', 'propto':u'\u221d', 'geq':u'\u2265',
-    'ge':u'\u2265', 'sqsubset':u'\u228f', 'Join':u'\u2a1d',
-    'frown':u'\u2322', 'models':u'\u22a7', 'supset':u'\u2283',
-    'in':u'\u2208', 'doteq':u'\u2250', 'dashv':u'\u22a3',
-    'gg':u'\u226b', 'leq':u'\u2264', 'succ':u'\u227b',
-    'vdash':u'\u22a2', 'cong':u'\u2245', 'simeq':u'\u2243',
-    'subseteq':u'\u2286', 'parallel':u'\u2225', 'equiv':u'\u2261',
-    'ni':u'\u220b', 'le':u'\u2264', 'approx':u'\u2248',
-    'precsim':u'\u227e', 'sqsupset':u'\u2290', 'll':u'\u226a',
-    'sqsupseteq':u'\u2292', 'mid':u'\u2223', 'prec':u'\u227a',
-    'succsim':u'\u227f', 'bowtie':u'\u22c8', 'perp':u'\u27c2',
-    'sqsubseteq':u'\u2291', 'asymp':u'\u224d', 'smile':u'\u2323',
-    'supseteq':u'\u2287', 'sim':u'\u223c', 'neq':u'\u2260',
-    # Arrow symbols:
-    'searrow':u'\u2198', 'updownarrow':u'\u2195', 'Uparrow':u'\u21d1',
-    'longleftrightarrow':u'\u27f7', 'Leftarrow':u'\u21d0',
-    'longmapsto':u'\u27fc', 'Longleftarrow':u'\u27f8',
-    'nearrow':u'\u2197', 'hookleftarrow':u'\u21a9',
-    'downarrow':u'\u2193', 'Leftrightarrow':u'\u21d4',
-    'longrightarrow':u'\u27f6', 'rightharpoondown':u'\u21c1',
-    'longleftarrow':u'\u27f5', 'rightarrow':u'\u2192',
-    'Updownarrow':u'\u21d5', 'rightharpoonup':u'\u21c0',
-    'Longleftrightarrow':u'\u27fa', 'leftarrow':u'\u2190',
-    'mapsto':u'\u21a6', 'nwarrow':u'\u2196', 'uparrow':u'\u2191',
-    'leftharpoonup':u'\u21bc', 'leftharpoondown':u'\u21bd',
-    'Downarrow':u'\u21d3', 'leftrightarrow':u'\u2194',
-    'Longrightarrow':u'\u27f9', 'swarrow':u'\u2199',
-    'hookrightarrow':u'\u21aa', 'Rightarrow':u'\u21d2',
-    'to':u'\u2192',
-    # Miscellaneous symbols:
-    'infty':u'\u221e', 'surd':u'\u221a',
-    'partial':u'\u2202', 'ddots':u'\u22f1', 'exists':u'\u2203',
-    'flat':u'\u266d', 'diamondsuit':u'\u2662', 'wp':u'\u2118',
-    'spadesuit':u'\u2660', 'Re':u'\u211c', 'vdots':u'\u22ee',
-    'aleph':u'\u2135', 'clubsuit':u'\u2663', 'sharp':u'\u266f',
-    'angle':u'\u2220', 'prime':u'\u2032', 'natural':u'\u266e',
-    'ell':u'\u2113', 'neg':u'\xac', 'top':u'\u22a4', 'nabla':u'\u2207',
-    'bot':u'\u22a5', 'heartsuit':u'\u2661', 'cdots':u'\u22ef',
-    'Im':u'\u2111', 'forall':u'\u2200',
-    'hbar':u'\u210f', 'emptyset':u'\u2205',
-    # Variable-sized symbols:
-    'bigotimes':u'\u2a02', 'coprod':u'\u2210', 'int':u'\u222b',
-    'sum':u'\u2211', 'bigodot':u'\u2a00', 'bigcup':u'\u22c3',
-    'biguplus':u'\u2a04', 'bigcap':u'\u22c2', 'bigoplus':u'\u2a01',
-    'oint':u'\u222e', 'bigvee':u'\u22c1', 'bigwedge':u'\u22c0',
-    'prod':u'\u220f',
-    # Braces:
-    'langle':u'\u2329', 'rangle':u'\u232A'}
-
-sumintprod = ''.join([special[symbol] for symbol in
-                      ['sum', 'int', 'oint', 'prod']])
-
-functions = ['arccos', 'arcsin', 'arctan', 'arg', 'cos',  'cosh',
-             'cot',    'coth',   'csc',    'deg', 'det',  'dim',
-             'exp',    'gcd',    'hom',    'inf', 'ker',  'lg',
-             'lim',    'liminf', 'limsup', 'ln',  'log',  'max',
-             'min',    'Pr',     'sec',    'sin', 'sinh', 'sup',
-             'tan',    'tanh',
-             'injlim',  'varinjlim', 'varlimsup',
-             'projlim', 'varliminf', 'varprojlim']
-
-
 def parse_latex_math(string, inline=True):
     """parse_latex_math(string [,inline]) -> MathML-tree
 
@@ -435,95 +459,6 @@ def parse_latex_math(string, inline=True):
     return tree
 
 
-mathbb = {
-          'A': u'\U0001D538',
-          'B': u'\U0001D539',
-          'C': u'\u2102',
-          'D': u'\U0001D53B',
-          'E': u'\U0001D53C',
-          'F': u'\U0001D53D',
-          'G': u'\U0001D53E',
-          'H': u'\u210D',
-          'I': u'\U0001D540',
-          'J': u'\U0001D541',
-          'K': u'\U0001D542',
-          'L': u'\U0001D543',
-          'M': u'\U0001D544',
-          'N': u'\u2115',
-          'O': u'\U0001D546',
-          'P': u'\u2119',
-          'Q': u'\u211A',
-          'R': u'\u211D',
-          'S': u'\U0001D54A',
-          'T': u'\U0001D54B',
-          'U': u'\U0001D54C',
-          'V': u'\U0001D54D',
-          'W': u'\U0001D54E',
-          'X': u'\U0001D54F',
-          'Y': u'\U0001D550',
-          'Z': u'\u2124',
-         }
-
-mathscr = {
-           'A': u'\U0001D49C',
-           'B': u'\u212C',     # bernoulli function
-           'C': u'\U0001D49E',
-           'D': u'\U0001D49F',
-           'E': u'\u2130',
-           'F': u'\u2131',
-           'G': u'\U0001D4A2',
-           'H': u'\u210B',     # hamiltonian
-           'I': u'\u2110',
-           'J': u'\U0001D4A5',
-           'K': u'\U0001D4A6',
-           'L': u'\u2112',     # lagrangian
-           'M': u'\u2133',     # physics m-matrix
-           'N': u'\U0001D4A9',
-           'O': u'\U0001D4AA',
-           'P': u'\U0001D4AB',
-           'Q': u'\U0001D4AC',
-           'R': u'\u211B',
-           'S': u'\U0001D4AE',
-           'T': u'\U0001D4AF',
-           'U': u'\U0001D4B0',
-           'V': u'\U0001D4B1',
-           'W': u'\U0001D4B2',
-           'X': u'\U0001D4B3',
-           'Y': u'\U0001D4B4',
-           'Z': u'\U0001D4B5',
-           'a': u'\U0001D4B6',
-           'b': u'\U0001D4B7',
-           'c': u'\U0001D4B8',
-           'd': u'\U0001D4B9',
-           'e': u'\u212F',
-           'f': u'\U0001D4BB',
-           'g': u'\u210A',
-           'h': u'\U0001D4BD',
-           'i': u'\U0001D4BE',
-           'j': u'\U0001D4BF',
-           'k': u'\U0001D4C0',
-           'l': u'\U0001D4C1',
-           'm': u'\U0001D4C2',
-           'n': u'\U0001D4C3',
-           'o': u'\u2134',     # order of
-           'p': u'\U0001D4C5',
-           'q': u'\U0001D4C6',
-           'r': u'\U0001D4C7',
-           's': u'\U0001D4C8',
-           't': u'\U0001D4C9',
-           'u': u'\U0001D4CA',
-           'v': u'\U0001D4CB',
-           'w': u'\U0001D4CC',
-           'x': u'\U0001D4CD',
-           'y': u'\U0001D4CE',
-           'z': u'\U0001D4CF',
-          }
-
-negatables = {'=': u'\u2260',
-              '\in': u'\u2209',
-              '\equiv': u'\u2262'}
-
-
 def handle_keyword(name, node, string):
     skip = 0
     if len(string) > 0 and string[0] == ' ':
@@ -605,21 +540,21 @@ def handle_keyword(name, node, string):
         skip += 3
     elif name == 'colon': # "normal" colon, not binary operator
         node = node.append(mo(':')) # TODO: add ``lspace="0pt"``
+    elif name in Greek:   # Greek capitals (upright in "TeX style")
+        node = node.append(mo(Greek[name]))
+        # TODO: "ISO style" sets them italic. Could we use a class argument
+        # to enable styling via CSS?
     elif name in letters:
         node = node.append(mi(letters[name]))
-    elif name in Greek:
-        node = node.append(mo(Greek[name]))
     elif name in special:
         node = node.append(mo(special[name]))
     elif name in functions:
         node = node.append(mo(name))
+    elif name in over:
+        ovr = mover(mo(over[name]), reversed=True)
+        node.append(ovr)
+        node = ovr
     else:
-        chr = over.get(name)
-        if chr is not None:
-            ovr = mover(mo(chr), reversed=True)
-            node.append(ovr)
-            node = ovr
-        else:
-            raise SyntaxError(u'Unknown LaTeX command: ' + name)
+        raise SyntaxError(u'Unknown LaTeX command: ' + name)
 
     return node, skip
