@@ -6,3 +6,5 @@
    :file: raw.txt
 
 .. include:: include.txt
+
+.. image:: картина.jpg
