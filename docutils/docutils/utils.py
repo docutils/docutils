@@ -15,6 +15,7 @@ import warnings
 import unicodedata
 from docutils import ApplicationError, DataError
 from docutils import nodes
+from docutils.io import FileOutput
 from docutils.error_reporting import ErrorOutput, SafeString
 
 
@@ -631,6 +632,7 @@ def normalize_language_tag(tag):
     taglist += base_tag
     return taglist
 
+
 class DependencyList:
 
     """
@@ -662,10 +664,15 @@ class DependencyList:
         If it is None, no file output is done when calling add().
         """
         self.list = []
-        if output_file == '-':
-            self.file = sys.stdout
-        elif output_file:
-            self.file = open(output_file, 'w')
+        if output_file:
+            if output_file == '-':
+                of = None
+            else:
+                of = output_file
+            self.file = FileOutput(destination_path=of,
+                                   encoding=sys.getfilesystemencoding(),
+                                   error_handler='xmlcharrefreplace',
+                                   autoclose=False)
         else:
             self.file = None
 
@@ -679,15 +686,14 @@ class DependencyList:
             if not filename in self.list:
                 self.list.append(filename)
                 if self.file is not None:
-                    print >>self.file, filename
+                    self.file.write(filename+'\n')
 
     def close(self):
         """
         Close the output file.
         """
-        if self.file not in (sys.stdout, sys.stderr):
-            self.file.close()
-            self.file = None
+        self.file.close()
+        self.file = None
 
     def __repr__(self):
         if self.file:

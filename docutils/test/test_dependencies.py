@@ -14,6 +14,7 @@ import sys
 import DocutilsTestSupport              # must be imported before docutils
 import docutils.core
 import docutils.utils
+import docutils.io
 
 
 class RecordDependenciesTests(unittest.TestCase):
@@ -31,10 +32,12 @@ class RecordDependenciesTests(unittest.TestCase):
         if 'record_dependencies' not in settings['settings_overrides']:
             settings['settings_overrides']['record_dependencies'] = \
                 docutils.utils.DependencyList(recordfile)
-        docutils.core.publish_file(destination=DocutilsTestSupport.DevNull(),
-                                   **settings)
+        docutils.core.publish_file(
+            destination=DocutilsTestSupport.DevNull(), **settings)
         settings['settings_overrides']['record_dependencies'].close()
-        return open(recordfile).read().splitlines()
+        record = docutils.io.FileInput(source_path=recordfile,
+                                       encoding=sys.getfilesystemencoding())
+        return record.read().splitlines()
 
     def test_dependencies(self):
         self.assertEqual(self.get_record(),
@@ -43,7 +46,10 @@ class RecordDependenciesTests(unittest.TestCase):
                          ['data/include.txt',
                           'data/raw.txt',
                           # this is a URL, not a path:
-                          'some_image.png'])
+                          'some_image.png',
+                          # cyrillic filename (testing with an image, because
+                          # this does not abort if the file does not exist):
+                          u'\u043a\u0430\u0440\u0442\u0438\u043d\u0430.jpg'])
 
     def test_csv_dependencies(self):
         try:

@@ -30,6 +30,11 @@ Changes Since 0.8.1
 
   - Fix [ 3395948 ] (Work around encoding problems in Py3k).
 
+* docutils/utils.py
+
+  - DependencyList uses io.FileOutput to prevent errors recording
+    non-ASCII filenames (fixes [ 3434355 ].
+
 * docutils/writers/latex2e/__init__.py
 
   - Support the `abbreviation` and `acronym` standard roles.
