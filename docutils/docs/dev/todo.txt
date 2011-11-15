@@ -2057,6 +2057,13 @@ Unimplemented Transforms
            * full Unicode support.
            * Write to TeX, HTML and plain text.
 
+         * `Zotero plain <http://e6h.org/%7Eegh/hg/zotero-plain/>`__
+           supports Zotero databases and CSL_ styles with Docutils with an
+           ``xcite`` role.
+
+         .. _CSL: http://www.citationstyles.org/
+
+
     * Automatically insert a "References" heading?
 
 .. _CrossTeX: http://www.cs.cornell.edu/people/egs/crosstex/
