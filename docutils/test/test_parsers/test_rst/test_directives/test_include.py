@@ -22,22 +22,23 @@ def suite():
     s.generateTests(totest)
     return s
 
-mydir = 'test_parsers/test_rst/test_directives/'
-include1 = os.path.join(mydir, 'include1.txt')
-include1rel = DocutilsTestSupport.utils.relative_path(None, include1)
-include2 = os.path.join(mydir, 'include2.txt')
-include3 = os.path.join(mydir, 'include3.txt')
-include8 = os.path.join(mydir, 'include8.txt')
-include10 = os.path.join(mydir, 'include10.txt')
-include10rel = DocutilsTestSupport.utils.relative_path(None, include10)
-include11 = os.path.join(mydir, 'include 11.txt')
-include11rel = DocutilsTestSupport.utils.relative_path(None, include11)
-include12 = os.path.join(mydir, 'include12.txt')
-include13 = os.path.join(mydir, 'include13.txt')
-include13rel = DocutilsTestSupport.utils.relative_path(None, include13)
-include_literal = os.path.join(mydir, 'include_literal.txt')
-utf_16_file = os.path.join(mydir, 'utf-16.csv')
-utf_16_file_rel = DocutilsTestSupport.utils.relative_path(None, utf_16_file)
+# prepend this directory (relative to the test root):
+def mydir(path):
+    return os.path.join('test_parsers/test_rst/test_directives/', path)
+# make `path` relative with utils.relative_path():
+def reldir(path):
+    return DocutilsTestSupport.utils.relative_path(None, path)
+
+include1 = mydir('include1.txt')
+include2 = mydir('include2.txt')
+include3 = mydir('include3.txt')
+include8 = mydir('include8.txt')
+include10 = mydir('include10.txt')
+include11 = mydir('include 11.txt')
+include12 = mydir('include12.txt')
+include13 = mydir('include13.txt')
+include_literal = mydir('include_literal.txt')
+utf_16_file = mydir('utf-16.csv')
 utf_16_error_str = ("UnicodeDecodeError: 'ascii' codec can't decode byte 0xfe "
                     "in position 0: ordinal not in range(128)")
 if sys.version_info < (3,0):
@@ -99,7 +100,7 @@ A paragraph.
             This file is used by ``test_include.py``.
         <paragraph>
             A paragraph.
-""" % include1rel],
+""" % reldir(include1)],
 ["""\
 Literal include, add line numbers
 
@@ -124,7 +125,7 @@ Literal include, add line numbers
         <inline classes="ln">
             4 \n\
         This file is used by ``test_include.py``.
-""" % include1rel],
+""" % reldir(include1)],
 ["""\
 Include code
 
@@ -142,7 +143,7 @@ Include code
         -----------
         \n\
         This file is used by ``test_include.py``.
-""" % include1rel],
+""" % reldir(include1)],
 ["""\
 Include code, add line numbers
 
@@ -167,7 +168,7 @@ Include code, add line numbers
         <inline classes="ln">
             4 \n\
         This file is used by ``test_include.py``.
-""" % include1rel],
+""" % reldir(include1)],
 ["""\
 Let's test the parse context.
 
@@ -253,7 +254,7 @@ A paragraph.
                 .
             <paragraph>
                 A paragraph.
-""" % include1rel],
+""" % reldir(include1)],
 ["""\
 Include Test
 ============
@@ -293,7 +294,7 @@ A paragraph.
                 .
             <paragraph>
                 A paragraph.
-""" % include1rel],
+""" % reldir(include1)],
 ["""\
 In test data
 
@@ -371,7 +372,7 @@ Encoding:
 
 .. include:: %s
    :encoding: utf-16
-""" % utf_16_file_rel,
+""" % reldir(utf_16_file),
 b("""\
 <document source="test data">
     <paragraph>
@@ -388,7 +389,7 @@ Include file is UTF-16-encoded, and is not valid ASCII.
 
 .. include:: %s
    :encoding: ascii
-""" % utf_16_file_rel,
+""" % reldir(utf_16_file),
 """\
 <document source="test data">
     <paragraph>
@@ -400,7 +401,23 @@ Include file is UTF-16-encoded, and is not valid ASCII.
         <literal_block xml:space="preserve">
             .. include:: %s
                :encoding: ascii
-""" % (utf_16_error_str, utf_16_file_rel)],
+""" % (utf_16_error_str, reldir(utf_16_file))],
+[u"""\
+cyrillic filename:
+
+.. include:: \u043c\u0438\u0440.txt
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        cyrillic filename:
+    <system_message level="4" line="3" source="test data" type="SEVERE">
+        <paragraph>
+            Problems with "include" directive path:
+            IOError: [Errno 2] No such file or directory: '\u043c\u0438\u0440.txt'.
+        <literal_block xml:space="preserve">
+            .. include:: \u043c\u0438\u0440.txt
+"""],
 ["""\
 Testing errors in included file:
 
@@ -631,7 +648,7 @@ Testing errors in included file:
                 ==============  ======
                 A simple table  with
                 no bottom       border
-""" % {'source': include10rel, 'nonexistent': nonexistent_rel,
+""" % {'source': reldir(include10), 'nonexistent': reldir(nonexistent),
        'unichr_exception':
        DocutilsTestSupport.exception_data(unichr, int("11111111", 16))[2]
       }],
@@ -639,7 +656,7 @@ Testing errors in included file:
 Include file with whitespace in the path:
 
 .. include:: %s
-""" % include11rel,
+""" % reldir(include11),
 """\
 <document source="test data">
     <paragraph>
@@ -895,7 +912,7 @@ Included code
         <inline classes="s">
             ``test_include.py``
         .
-""" % include1rel],
+""" % reldir(include1)],
 ["""\
 Included code
 
@@ -927,7 +944,7 @@ Included code
         <inline classes="s">
             ``test_include.py``
         .
-""" % include1rel],
+""" % reldir(include1)],
 ]
 
 if __name__ == '__main__':
