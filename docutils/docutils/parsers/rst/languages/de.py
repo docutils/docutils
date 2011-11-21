@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # $Id$
 # Authors: Engelbert Gruber <grubert@users.sourceforge.net>;
 #          Lea Wiemann <LeWiemann@gmail.com>
@@ -36,7 +37,8 @@ directives = {
       'rubrik': 'rubric',
       'epigraph': 'epigraph',
       'highlights (translation required)': 'highlights',
-      'pull-quote (translation required)': 'pull-quote', # kasten too ?
+      u'pull-quote': 'pull-quote', # commonly used in German too
+      u'seitenansprache': 'pull-quote', # cf. http://www.typografie.info/2/wiki.php?title=Seitenansprache
       'zusammengesetzt': 'compound',
       'verbund': 'compound',
       u'container': 'container',
@@ -45,13 +47,14 @@ directives = {
       'csv-tabelle': 'csv-table',
       'list-table (translation required)': 'list-table',
       u'mathe': 'math',
+      u'formel': 'math',
       'meta': 'meta',
       #'imagemap': 'imagemap',
       'bild': 'image',
       'abbildung': 'figure',
-      u'unver\xe4ndert': 'raw',
+      u'unverändert': 'raw',
       u'roh': 'raw',
-      u'einf\xfcgen': 'include',
+      u'einfügen': 'include',
       'ersetzung': 'replace',
       'ersetzen': 'replace',
       'ersetze': 'replace',
@@ -64,17 +67,17 @@ directives = {
       'inhalt': 'contents',
       'kapitel-nummerierung': 'sectnum',
       'abschnitts-nummerierung': 'sectnum',
-      u'linkziel-fu\xdfnoten': 'target-notes',
+      u'linkziel-fußfnoten': 'target-notes',
       u'header (translation required)': 'header',
       u'footer (translation required)': 'footer',
-      #u'fu\xdfnoten': 'footnotes',
+      #u'fußfnoten': 'footnotes',
       #'zitate': 'citations',
       }
 """German name to registered (in directives/__init__.py) directive name
 mapping."""
 
 roles = {
-      u'abk\xfcrzung': 'abbreviation',
+      u'abkürzung': 'abbreviation',
       'akronym': 'acronym',
       u'code': 'code',
       'index': 'index',
@@ -85,16 +88,16 @@ roles = {
       'rfc-referenz': 'rfc-reference',
       'betonung': 'emphasis',
       'fett': 'strong',
-      u'w\xf6rtlich': 'literal',
+      u'wörtlich': 'literal',
       u'mathe': 'math',
       'benannte-referenz': 'named-reference',
       'unbenannte-referenz': 'anonymous-reference',
-      u'fu\xdfnoten-referenz': 'footnote-reference',
+      u'fußfnoten-referenz': 'footnote-reference',
       'zitat-referenz': 'citation-reference',
       'ersetzungs-referenz': 'substitution-reference',
       'ziel': 'target',
       'uri-referenz': 'uri-reference',
-      u'unver\xe4ndert': 'raw',
+      u'unverändert': 'raw',
       u'roh': 'raw',}
 """Mapping of German role names to canonical role names for interpreted text.
 """
