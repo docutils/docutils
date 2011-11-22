@@ -1674,9 +1674,12 @@ when used in a document.
     .. note:: See also the implementation in Sphinx_.
 
     Docutils already has the ability to say "use this content for
-    Writer X" (via the "raw" directive), but it doesn't have the
-    ability to say "use this content for any Writer other than X".  It
-    wouldn't be difficult to add this ability though.
+    Writer X" via the "raw" directive. It also does have the ability
+    to say "use this content for any Writer other than X" via the
+    "strip-elements with class" config value.  However, using "raw"
+    input just to select a special writer is inconvenient in many
+    cases.
+    It wouldn't be difficult to get more straightforward support, though.
 
     My first idea would be to add a set of conditional directives.
     Let's call them "writer-is" and "writer-is-not" for discussion

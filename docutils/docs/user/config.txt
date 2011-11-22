@@ -92,6 +92,21 @@ recognized:
 * On: "true", "yes", "on", "1"
 * Off: "false", "no", "off", "0", "" (no value)
 
+List values are comma-delimited. Whitespace around list values is
+stripped. ::
+
+    strip-classes: ham,eggs,
+    strip-elements-with-classes: sugar, salt, flour
+    stylesheet: html4css1.css,
+                math.css,
+                style with spaces.css
+    stylesheet-path: ../styles/my.css, ../styles/funny.css
+
+expose_internals_ and prune_ use the colon as delimiter and do not strip
+whitespace::
+
+    expose_internals: b:c:d
+
 
 Example
 =======
@@ -429,8 +444,9 @@ _`strict_visitor`
     for development use only).
 
 _`strip_classes`
-    List of "classes" attribute values to remove from all elements in
-    the document tree.
+    Comma-separated list of "classes" attribute values to remove from
+    all elements in the document tree.
+    The command line option may be used more than once.
 
     .. WARNING:: Potentially dangerous; use with caution.
 
@@ -443,8 +459,9 @@ _`strip_comments`
     ``--leave-comments``.
 
 _`strip_elements_with_classes`
-    List of "classes" attribute values; matching elements to be
-    removed from the document tree.
+    Comma-separated list of "classes" attribute values; 
+    matching elements are removed from the document tree.
+    The command line option may be used more than once.
 
     .. WARNING:: Potentially dangerous; use with caution.
 

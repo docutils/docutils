@@ -163,15 +163,17 @@ def validate_dependency_file(setting, value, option_parser,
 
 def validate_strip_class(setting, value, option_parser,
                          config_parser=None, config_section=None):
-    if config_parser:                   # validate all values
-        class_values = value
-    else:                               # just validate the latest value
-        class_values = [value[-1]]
+    # convert to list:
+    if isinstance(value, unicode):
+        value = [value]
+    class_values = filter(None, [v.strip() for v in value.pop().split(',')])
+    # validate:
     for class_value in class_values:
         normalized = docutils.nodes.make_id(class_value)
         if class_value != normalized:
             raise ValueError('invalid class value %r (perhaps %r?)'
                              % (class_value, normalized))
+    value.extend(class_values)
     return value
 
 def make_paths_absolute(pathdict, keys, base_path=None):
