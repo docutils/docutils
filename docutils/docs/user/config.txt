@@ -459,7 +459,7 @@ _`strip_comments`
     ``--leave-comments``.
 
 _`strip_elements_with_classes`
-    Comma-separated list of "classes" attribute values; 
+    Comma-separated list of "classes" attribute values;
     matching elements are removed from the document tree.
     The command line option may be used more than once.
 
@@ -647,6 +647,15 @@ Under construction.
 [docutils_xml writer]
 `````````````````````
 
+.. Caution::
+
+   * In versions older than 2.7.3 and 3.2.3, the newlines_ and indents_
+     options may adversely affect whitespace; use them only for reading
+     convenience (see http://bugs.python.org/issue4147).
+
+   * The XML declaration carries text encoding information, without which
+     standard tools may be unable to read the generated XML.
+
 _`doctype_declaration`
     Generate XML with a DOCTYPE declaration.
 
@@ -667,10 +676,6 @@ _`newlines`
 xml_declaration
     Generate XML with an XML declaration.  Also defined for the
     `HTML Writer`__.
-
-    .. Caution:: The XML declaration carries text encoding
-       information, without which standard tools may be unable to read
-       the generated XML.
 
     Default: do (1).  Options: ``--no-xml-declaration``.
 
