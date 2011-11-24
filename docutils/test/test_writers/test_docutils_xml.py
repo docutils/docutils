@@ -10,6 +10,7 @@ Test for docutils XML writer.
 
 from __init__ import DocutilsTestSupport
 
+import sys
 import docutils
 import docutils.core
 
@@ -40,6 +41,14 @@ bodynormal = u"""\
 
 bodynewlines = u"""\
 <document source="&lt;string&gt;">
+<paragraph>Test</paragraph>
+<transition/>
+<paragraph>Test. \xe4\xf6\xfc&#8364;</paragraph>
+</document>
+"""
+
+bodynewlines_old = u"""\
+<document source="&lt;string&gt;">
 <paragraph>
 Test
 </paragraph>
@@ -52,6 +61,14 @@ Test. \xe4\xf6\xfc&#8364;
 
 bodyindents = u"""\
 <document source="&lt;string&gt;">
+    <paragraph>Test</paragraph>
+    <transition/>
+    <paragraph>Test. \xe4\xf6\xfc&#8364;</paragraph>
+</document>
+"""
+
+bodyindents_old = u"""\
+<document source="&lt;string&gt;">
     <paragraph>
         Test
     </paragraph>
@@ -61,6 +78,13 @@ bodyindents = u"""\
     </paragraph>
 </document>
 """
+
+# New formatting introduced in versions 2.7.3 and 3.2.3 on 2011-11-18
+# to fix http://bugs.python.org/issue4147
+if (sys.version_info < (2, 7, 3) or
+    sys.version_info[0] == 3 and sys.version_info < (3, 2, 3)):
+    bodynewlines = bodynewlines_old
+    bodyindents = bodyindents_old
 
 
 class DocutilsXMLTestCase(DocutilsTestSupport.StandardTestCase):

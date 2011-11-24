@@ -20,8 +20,9 @@ class Writer(writers.Writer):
 
     settings_spec = (
         '"Docutils XML" Writer Options',
-        'Warning: the --newlines and --indents options may adversely affect '
-        'whitespace; use them only for reading convenience.',
+        'Warning: In versions older than 2.7.3 and 3.2.3, the --newlines and '
+        '--indents options may adversely affect whitespace; use them only '
+        'for reading convenience (see http://bugs.python.org/issue4147).',
         (('Generate XML with newlines before and after tags.',
           ['--newlines'],
           {'action': 'store_true', 'validator': frontend.validate_boolean}),
