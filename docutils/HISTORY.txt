@@ -35,6 +35,11 @@ Changes Since 0.8.1
   - DependencyList uses io.FileOutput to prevent errors recording
     non-ASCII filenames (fixes [ 3434355 ].
 
+* docutils/parsers/rst/tableparser.py
+
+  - Fix [ 2926161 ] for simple tables.
+    (Combining chars in grid tables still contribute to cell width.)
+
 * docutils/writers/latex2e/__init__.py
 
   - Support the `abbreviation` and `acronym` standard roles.
@@ -143,7 +148,7 @@ Release 0.8 (2011-07-07)
 * docutils/utils.py:
 
   - strip whitespace from stylesheet arguments
-  - exclude combining chars from column_width
+  - exclude combining chars from column_width()
     (partial fix for [ 2926161 ])
 
 * docutils/parsers/rst/directives/misc.py:

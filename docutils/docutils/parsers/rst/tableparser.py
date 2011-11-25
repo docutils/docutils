@@ -23,6 +23,7 @@ __docformat__ = 'reStructuredText'
 import re
 import sys
 from docutils import DataError
+from docutils.utils import strip_combining_chars
 
 
 class TableMarkupError(DataError): pass
@@ -190,8 +191,8 @@ class GridTableParser(TableParser):
         last = self.bottom - 1
         for col in range(self.right):
             if self.done[col] != last:
-                return None
-        return 1
+                return False
+        return True
 
     def scan_cell(self, top, left):
         """Starting at the top-left corner, start tracing out a cell."""
@@ -454,7 +455,7 @@ class SimpleTableParser(TableParser):
         The row is parsed according to the current column spec (either
         `spanline` if provided or `self.columns`).  For each column, extract
         text from each line, and check for text in column margins.  Finally,
-        adjust for insigificant whitespace.
+        adjust for insignificant whitespace.
         """
         if not (lines or spanline):
             # No new row, just blank lines.
@@ -485,6 +486,9 @@ class SimpleTableParser(TableParser):
         # check for text overflow:
         columns.append((sys.maxint, None))
         lastcol = len(columns) - 2
+        # combining characters do not contribute to the column width
+        lines = [strip_combining_chars(line) for line in lines]
+
         for i in range(len(columns) - 1):
             start, end = columns[i]
             nextstart = columns[i+1][0]
