@@ -1,3 +1,4 @@
+# coding: utf8
 # $Id$
 # Author: David Goodger <goodger@python.org>
 # Copyright: This module has been placed in the public domain.
@@ -478,7 +479,7 @@ def get_stylesheet_reference(settings, relative_to=None):
     """
     Retrieve a stylesheet reference from the settings object.
 
-    Deprecated. Use get_stylesheet_reference_list() instead to
+    Deprecated. Use get_stylesheet_list() instead to
     enable specification of multiple stylesheets as a comma-separated
     list.
     """
@@ -567,6 +568,34 @@ def unescape(text, restore_backslashes=0):
             text = ''.join(text.split(sep))
         return text
 
+def strip_combining_chars(text):
+    if isinstance(text, str) and sys.version_info < (3,0):
+        return text
+    return u''.join([c for c in text if not unicodedata.combining(c)])
+
+def find_combining_chars(text):
+    """Return indices of all combining chars in  Unicode string `text`.
+
+    >>> find_combining_chars(u'A t̆ab̆lĕ')
+    [3, 6, 9]
+    """
+    if isinstance(text, str) and sys.version_info < (3,0):
+        return []
+    return [i for i,c in enumerate(text) if unicodedata.combining(c)]
+
+def column_indices(text):
+    """Indices of Unicode string `text` when skipping combining characters.
+
+    >>> column_indices(u'A t̆ab̆lĕ')
+    [0, 1, 2, 4, 5, 7, 8]
+    """
+    # TODO: account for asian wide chars here instead of using dummy
+    # replacements in the tableparser?
+    string_indices = range(len(text))
+    for index in find_combining_chars(text):
+        string_indices[index] = None
+    return [i for i in string_indices if i is not None]
+
 east_asian_widths = {'W': 2,   # Wide
                      'F': 2,   # Full-width (wide)
                      'Na': 1,  # Narrow
@@ -584,14 +613,14 @@ def column_width(text):
     """
     if isinstance(text, str) and sys.version_info < (3,0):
         return len(text)
-    combining_correction = sum([-1 for c in text
-                                if unicodedata.combining(c)])
     try:
         width = sum([east_asian_widths[unicodedata.east_asian_width(c)]
                      for c in text])
     except AttributeError:  # east_asian_width() New in version 2.4.
         width = len(text)
-    return width + combining_correction
+    # correction for combining chars:
+    width -= len(find_combining_chars(text))
+    return width
 
 def uniq(L):
      r = []
@@ -603,7 +632,7 @@ def uniq(L):
 # by Li Daobing http://code.activestate.com/recipes/190465/
 # since Python 2.6 there is also itertools.combinations()
 def unique_combinations(items, n):
-    """Return r-length tuples, in sorted order, no repeated elements"""
+    """Return n-length tuples, in sorted order, no repeated elements"""
     if n==0: yield []
     else:
         for i in xrange(len(items)-n+1):

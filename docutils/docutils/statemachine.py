@@ -110,7 +110,9 @@ import sys
 import re
 import types
 import unicodedata
+from docutils import utils
 from docutils.error_reporting import ErrorOutput
+
 
 class StateMachine:
 
@@ -1431,6 +1433,16 @@ class StringList(ViewList):
         block = self[top:bottom]
         indent = right
         for i in range(len(block.data)):
+            # get slice from line, care for combining characters
+            ci = utils.column_indices(block.data[i])
+            try:
+                left = ci[left]
+            except IndexError:
+                left += len(block.data[i]) - len(ci)
+            try:
+                right = ci[right]
+            except IndexError:
+                right += len(block.data[i]) - len(ci)
             block.data[i] = line = block.data[i][left:right].rstrip()
             if line:
                 indent = min(indent, len(line) - len(line.lstrip()))

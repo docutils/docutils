@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+# coding: utf8
 
 # $Id$
 # Author: David Goodger <goodger@python.org>
@@ -38,6 +39,18 @@ totest['grid_tables'] = [
  [],
  [[(0, 0, 1, ['A table with']),
    (0, 0, 1, ['two columns.'])]])],
+# Combining chars in grid tables still fail
+# [u"""\
+# +--------------+------------------+
+# | A tāble w̅ith | comb̲ining chars. |
+# +--------------+------------------+
+# """,
+# [(0, 0, 2, 15, [u'A table with']),
+#  (0, 15, 2, 30, [u'combining chars.'])],
+# ([14, 14],
+#  [],
+#  [[(0, 0, 1, [u'A table with']),
+#    (0, 0, 1, [u'combining chars.'])]])],
 ["""\
 +--------------+-------------+
 | A table with | two columns |

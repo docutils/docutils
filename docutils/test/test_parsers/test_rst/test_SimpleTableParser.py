@@ -28,17 +28,15 @@ A table with  two columns.
  [],
  [[[0, 0, 1, ['A table with']],
    [0, 0, 1, ['two columns.']]]])],
-# This test currently fails: see issue 2926161
-# http://sourceforge.net/tracker/?func=detail&aid=2926161&group_id=38414&atid=422030
-# [u"""\
-# ============  ==============
-# A t̆able with  combining char
-# ============  ==============
-# """,
-# ([12, 12],
-#  [],
-#  [[[0, 0, 1, [u'A t̆able with']],
-#    [0, 0, 1, [u'combining char']]]])],
+[u"""\
+============  ===============
+A tāble w̅ith  comb̲ining chars
+============  ===============
+""",
+([12, 15],
+ [],
+ [[[0, 0, 1, [u'A ta\u0304ble w\u0305ith']],
+   [0, 0, 1, [u'comb\u0332ining chars']]]])],
 ["""\
 ============  ============
 A table with  two columns
