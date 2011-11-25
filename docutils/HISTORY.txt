@@ -39,6 +39,10 @@ Changes Since 0.8.1
 
   - Support the `abbreviation` and `acronym` standard roles.
 
+* docutils/writers/html4css1/__init__.py
+
+  - change default for `math-output` setting to MathJax
+
 Release 0.8.1 (2011-08-30)
 ==========================
 
