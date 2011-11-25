@@ -125,9 +125,9 @@ class Writer(writers.Writer):
           ['--table-style'],
           {'default': ''}),
          ('Math output format, one of "MathML", "HTML", "MathJax" '
-          'or "LaTeX". Default: "MathML"',
+          'or "LaTeX". Default: "MathJax"',
           ['--math-output'],
-          {'default': 'MathML'}),
+          {'default': 'MathJax'}),
          ('Omit the XML declaration.  Use with caution.',
           ['--no-xml-declaration'],
           {'dest': 'xml_declaration', 'default': 1, 'action': 'store_false',

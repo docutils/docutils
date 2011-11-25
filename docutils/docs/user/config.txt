@@ -89,8 +89,8 @@ underscores.
 For on/off switch settings (booleans), the following values are
 recognized:
 
-* On: "true", "yes", "on", "1"
-* Off: "false", "no", "off", "0", "" (no value)
+:On: "true", "yes", "on", "1"
+:Off: "false", "no", "off", "0", "" (no value)
 
 List values are comma-delimited. Whitespace around list values is
 stripped. ::
@@ -777,7 +777,7 @@ _`initial_header_level`
 
 _`math_output`
     The format of mathematical content (`math directive`_ and role) in
-    the output document. Supported values are:
+    the output document. Supported values are (case insensitive):
 
     :MathJax:
       Format math for display with MathJax_, a JavaScript-based math
@@ -823,6 +823,8 @@ _`math_output`
       Include literal LaTeX code.
 
       The failsave fallback.
+
+    Default: MathJax  Option: ``--math-output``.
 
     New in Docutils 0.8.
 

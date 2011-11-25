@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="Docutils 0.9: http://docutils.sourceforge.net/" />
 <title>reStructuredText Test Document</title>
 <meta name="author" content="David Goodger" />
@@ -12,6 +12,7 @@
 <meta name="copyright" content="This document has been placed in the public domain. You may do with it as you wish. You may copy, modify, redistribute, reattribute, sell, buy, rent, lease, destroy, or improve it, quote it at length, excerpt, incorporate, collate, fold, staple, or mutilate it, or do anything else to it that your or anyone else's heart desires." />
 <meta content="reStructuredText, test, parser" name="keywords" />
 <meta content="A test document, containing at least one example of each reStructuredText construct." lang="en" name="description" />
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 <link rel="stylesheet" href="../../../docutils/writers/html4css1/html4css1.css" type="text/css" />
 </head>
 <body>
@@ -862,8 +863,9 @@ known) or as base for special code roles, e.g.,</p>
 <!--  -->
 <blockquote>
 Docutils uses LaTeX syntax for math directives and roles:
-<tt class="code latex tex docutils literal">\alpha = f(x)</tt> prints <math xmlns="http://www.w3.org/1998/Math/MathML">
-<mrow><mi>α</mi><mo>=</mo><mi>f</mi><mo>(</mo><mi>x</mi><mo>)</mo></mrow></math>.</blockquote>
+<tt class="code latex tex docutils literal">\alpha = f(x)</tt> prints <span class="math">
+\(\alpha = f(x)\)</span>
+.</blockquote>
 <p>The <tt class="docutils literal">:code:</tt> option of the <cite>include</cite> directive sets the included content
 as a code block, here the rst file <tt class="docutils literal">header_footer.txt</tt> with line numbers:</p>
 <pre class="code rst literal-block">
