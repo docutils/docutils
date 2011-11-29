@@ -35,6 +35,11 @@ Changes Since 0.8.1
   - DependencyList uses io.FileOutput to prevent errors recording
     non-ASCII filenames (fixes [ 3434355 ].
 
+* docutils/parsers/rst/states.py
+
+  - Allow also non-ASCII whitespace characters around inline markup.
+    (first part of fix for [ 3402314 ]).
+
 * docutils/parsers/rst/tableparser.py
 
   - Fix [ 2926161 ] for simple tables.

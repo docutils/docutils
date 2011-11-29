@@ -2374,20 +2374,20 @@ end-string will not be recognized or processed.
 
 1. Inline markup start-strings must start a text block or be
    immediately preceded by whitespace, one of the ASCII
-   characters ``( [ { <``, or the Unicode characters:
+   characters ``' " ( [ { <``, or the Unicode characters:
 
        .. class:: borderless
 
        ===  ==========================================================
        ‘    (U+2018, left single-quote)
        “    (U+201C, left double-quote)
-       ’    (U+2019, apostrophe)
+       ’    (U+2019, right single-quote, or apostrophe)
        «    (U+00AB, left guillemet, or double angle quotation mark)
        ¡    (U+00A1, inverted exclamation mark)
        ¿    (U+00BF, inverted question mark)
        ===  ==========================================================
 
-   The ASCII characters ``" ' - / :`` and the Unicode characters
+   The ASCII characters ``- / :`` and the Unicode characters
 
        .. class:: borderless
 
@@ -2397,8 +2397,7 @@ end-string will not be recognized or processed.
        ‒    (U+2012, figure dash)
        –    (U+2013, en dash)
        —    (U+2014, em dash)
-
-       " "  (U+00A0, non-breaking space [between the quotes])
+       [ ]  (U+00A0, non-breaking space [between the brackets])
        ===  ==========================================================
 
    are _`delimiters`. They may precede or follow inline markup.
@@ -2411,7 +2410,7 @@ end-string will not be recognized or processed.
 
 4. Inline markup end-strings must end a text block or be immediately
    followed by whitespace, the ASCII characters
-   ``) ] } > . , ; ! ? \`` or the Unicode characters:
+   ``' " ) ] } > . , ; ! ? \``, the Unicode characters:
 
        .. class:: borderless
 
@@ -2421,13 +2420,15 @@ end-string will not be recognized or processed.
        »    (U+00BB, right guillemet, or double angle quotation mark)
        ===  ==========================================================
 
-   The `delimiters`_ listed in (1) above may precede or follow inline
-   markup.
+   or the `delimiters`_ listed in (1) above.
 
 5. If an inline markup start-string is immediately preceded by a
    single or double quote, "(", "[", "{", or "<", it must not be
    immediately followed by the corresponding single or double quote,
    ")", "]", "}", or ">".
+
+   .. this also holds for the opening/closing Unicode character pairs
+      (since at least 05. Sep 2008).
 
 6. An inline markup end-string must be separated by at least one
    character from the start-string.
