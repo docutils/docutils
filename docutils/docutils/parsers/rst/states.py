@@ -528,14 +528,19 @@ class Inliner:
             processed += self.implicit_inline(remaining, lineno)
         return processed, messages
 
+    # Inline object recognition
+    # -------------------------
+    # character categories:
     openers = u'\'"([{<\u2018\u201c\xab\u00a1\u00bf' # see quoted_start below
     closers = u'\'")]}>\u2019\u201d\xbb!?'
-    unicode_delimiters = u'\u2010\u2011\u2012\u2013\u2014\u00a0'
-    start_string_prefix = (u'((?<=^)|(?<=[-/: \\n\u2019%s%s]))'
-                           % (re.escape(unicode_delimiters),
+    delimiters = u'-/:\u2010\u2011\u2012\u2013\u2014\u00a0'
+    # lookahead and look-behind expressions for inline markup rules
+    # (see todo.html#inline-markup-syntax-rules)
+    start_string_prefix = (u'((?<=^)|(?<=\\s|[\u2019%s%s]))'
+                           % (re.escape(delimiters),
                               re.escape(openers)))
-    end_string_suffix = (r'((?=$)|(?=[-/:.,; \n\x00%s%s]))'
-                         % (re.escape(unicode_delimiters),
+    end_string_suffix = (u'((?=$)|(?=\\s|[.,; \x00%s%s]))'
+                         % (re.escape(delimiters),
                             re.escape(closers)))
     non_whitespace_before = r'(?<![ \n])'
     non_whitespace_escape_before = r'(?<![ \n\x00])'
@@ -589,9 +594,9 @@ class Inliner:
     patterns = Struct(
           initial=build_regexp(parts),
           emphasis=re.compile(non_whitespace_escape_before
-                              + r'(\*)' + end_string_suffix),
+                              + r'(\*)' + end_string_suffix, re.UNICODE),
           strong=re.compile(non_whitespace_escape_before
-                            + r'(\*\*)' + end_string_suffix),
+                            + r'(\*\*)' + end_string_suffix, re.UNICODE),
           interpreted_or_phrase_ref=re.compile(
               r"""
               %(non_unescaped_whitespace_escape_before)s
@@ -615,7 +620,7 @@ class Inliner:
                 >                       # close bracket w/o whitespace before
               )
               $                         # end of string
-              """ % locals(), re.VERBOSE),
+              """ % locals(), re.VERBOSE | re.UNICODE),
           literal=re.compile(non_whitespace_before + '(``)'
                              + end_string_suffix),
           target=re.compile(non_whitespace_escape_before
@@ -623,7 +628,8 @@ class Inliner:
           substitution_ref=re.compile(non_whitespace_escape_before
                                       + r'(\|_{0,2})'
                                       + end_string_suffix),
-          email=re.compile(email_pattern % locals() + '$', re.VERBOSE),
+          email=re.compile(email_pattern % locals() + '$',
+                           re.VERBOSE | re.UNICODE),
           uri=re.compile(
                 (r"""
                 %(start_string_prefix)s
@@ -655,7 +661,7 @@ class Inliner:
                   )
                 )
                 %(end_string_suffix)s
-                """) % locals(), re.VERBOSE),
+                """) % locals(), re.VERBOSE | re.UNICODE),
           pep=re.compile(
                 r"""
                 %(start_string_prefix)s
@@ -664,12 +670,12 @@ class Inliner:
                 |
                   (PEP\s+(?P<pepnum2>\d+))      # reference by name
                 )
-                %(end_string_suffix)s""" % locals(), re.VERBOSE),
+                %(end_string_suffix)s""" % locals(), re.VERBOSE | re.UNICODE),
           rfc=re.compile(
                 r"""
                 %(start_string_prefix)s
                 (RFC(-|\s+)?(?P<rfcnum>\d+))
-                %(end_string_suffix)s""" % locals(), re.VERBOSE))
+                %(end_string_suffix)s""" % locals(), re.VERBOSE | re.UNICODE))
 
     def quoted_start(self, match):
         """Return 1 if inline markup start-string is 'quoted', 0 if not."""
@@ -1044,7 +1050,7 @@ class Body(RSTState):
     enum.sequenceregexps = {}
     for sequence in enum.sequences:
         enum.sequenceregexps[sequence] = re.compile(
-              enum.sequencepats[sequence] + '$')
+              enum.sequencepats[sequence] + '$', re.UNICODE)
 
     grid_table_top_pat = re.compile(r'\+-[-+]+-\+ *$')
     """Matches the top (& bottom) of a full table)."""
@@ -1136,7 +1142,8 @@ class Body(RSTState):
         return elements
 
     # U+2014 is an em-dash:
-    attribution_pattern = re.compile(u'(---?(?!-)|\u2014) *(?=[^ \\n])')
+    attribution_pattern = re.compile(u'(---?(?!-)|\u2014) *(?=[^ \\n])',
+                                     re.UNICODE)
 
     def split_attribution(self, indented, line_offset):
         """
@@ -1793,7 +1800,7 @@ class Body(RSTState):
                             [ ]?            # optional space
                             :               # end of reference name
                             ([ ]+|$)        # followed by whitespace
-                            """ % vars(Inliner), re.VERBOSE),
+                            """ % vars(Inliner), re.VERBOSE | re.UNICODE),
           reference=re.compile(r"""
                                (
                                  (?P<simple>%(simplename)s)_
@@ -1815,7 +1822,8 @@ class Body(RSTState):
                                     \|               # close delimiter
                                   )
                                   ([ ]+|$)           # followed by whitespace
-                                  """ % vars(Inliner), re.VERBOSE),)
+                                  """ % vars(Inliner),
+                                  re.VERBOSE | re.UNICODE),)
 
     def footnote(self, match):
         src, srcline = self.state_machine.get_source_and_line()
@@ -2262,13 +2270,13 @@ class Body(RSTState):
                       \.\.[ ]+          # explicit markup start
                       _                 # target indicator
                       (?![ ]|$)         # first char. not space or EOL
-                      """, re.VERBOSE)),
+                      """, re.VERBOSE | re.UNICODE)),
           (substitution_def,
            re.compile(r"""
                       \.\.[ ]+          # explicit markup start
                       \|                # substitution indicator
                       (?![ ]|$)         # first char. not space or EOL
-                      """, re.VERBOSE)),
+                      """, re.VERBOSE | re.UNICODE)),
           (directive,
            re.compile(r"""
                       \.\.[ ]+          # explicit markup start
@@ -3029,7 +3037,7 @@ class QuotedLiteralBlock(RSTState):
         """Match arbitrary quote character on the first line only."""
         self.remove_transition('initial_quoted')
         quote = match.string[0]
-        pattern = re.compile(re.escape(quote))
+        pattern = re.compile(re.escape(quote), re.UNICODE)
         # New transition matches consistent quotes only:
         self.add_transition('quoted',
                             (pattern, self.quoted, self.__class__.__name__))

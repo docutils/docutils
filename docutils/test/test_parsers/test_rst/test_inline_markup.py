@@ -1339,7 +1339,7 @@ Escaped email addresses are not recognized: test\@example.org
 """],
 ]
 
-totest['miscellaneous'] = [
+totest['markup recognition rules'] = [
 ["""\
 __This__ should be left alone.
 """,
@@ -1370,7 +1370,7 @@ lines.
 """],
 [u"""\
 text-*separated*\u2010*by*\u2011*various*\u2012*dashes*\u2013*and*\u2014*hyphens*.
-\u00bf*punctuation*? \u00a1*examples*!\u00a0*too*.
+\u00bf*punctuation*? \u00a1*examples*!\u00a0*\u00a0no-break-space\u00a0*.
 """,
 u"""\
 <document source="test data">
@@ -1402,8 +1402,111 @@ u"""\
             examples
         !\xa0
         <emphasis>
-            too
+            \u00a0no-break-space\u00a0
         .
+"""],
+# Whitespace characters:                                      
+#  \u180e*MONGOLIAN VOWEL SEPARATOR*\u180e,   fails in Python 2.4
+[u"""\
+text separated by
+*newline*
+or *space* or one of
+\xa0*NO-BREAK SPACE*\xa0,
+\u1680*OGHAM SPACE MARK*\u1680,
+\u2000*EN QUAD*\u2000,
+\u2001*EM QUAD*\u2001,
+\u2002*EN SPACE*\u2002,
+\u2003*EM SPACE*\u2003,
+\u2004*THREE-PER-EM SPACE*\u2004,
+\u2005*FOUR-PER-EM SPACE*\u2005,
+\u2006*SIX-PER-EM SPACE*\u2006,
+\u2007*FIGURE SPACE*\u2007,
+\u2008*PUNCTUATION SPACE*\u2008,
+\u2009*THIN SPACE*\u2009,
+\u200a*HAIR SPACE*\u200a,
+\u202f*NARROW NO-BREAK SPACE*\u202f,
+\u205f*MEDIUM MATHEMATICAL SPACE*\u205f,
+\u3000*IDEOGRAPHIC SPACE*\u3000,
+\u2028*LINE SEPARATOR*\u2028
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        text separated by
+        <emphasis>
+            newline
+        \n\
+        or \n\
+        <emphasis>
+            space
+         or one of
+        \xa0
+        <emphasis>
+            NO-BREAK SPACE
+        \xa0,
+        \u1680
+        <emphasis>
+            OGHAM SPACE MARK
+        \u1680,
+        \u2000
+        <emphasis>
+            EN QUAD
+        \u2000,
+        \u2001
+        <emphasis>
+            EM QUAD
+        \u2001,
+        \u2002
+        <emphasis>
+            EN SPACE
+        \u2002,
+        \u2003
+        <emphasis>
+            EM SPACE
+        \u2003,
+        \u2004
+        <emphasis>
+            THREE-PER-EM SPACE
+        \u2004,
+        \u2005
+        <emphasis>
+            FOUR-PER-EM SPACE
+        \u2005,
+        \u2006
+        <emphasis>
+            SIX-PER-EM SPACE
+        \u2006,
+        \u2007
+        <emphasis>
+            FIGURE SPACE
+        \u2007,
+        \u2008
+        <emphasis>
+            PUNCTUATION SPACE
+        \u2008,
+        \u2009
+        <emphasis>
+            THIN SPACE
+        \u2009,
+        \u200a
+        <emphasis>
+            HAIR SPACE
+        \u200a,
+        \u202f
+        <emphasis>
+            NARROW NO-BREAK SPACE
+        \u202f,
+        \u205f
+        <emphasis>
+            MEDIUM MATHEMATICAL SPACE
+        \u205f,
+        \u3000
+        <emphasis>
+            IDEOGRAPHIC SPACE
+        \u3000,
+    <paragraph>
+        <emphasis>
+            LINE SEPARATOR
 """],
 [u"""\
 None of these should be markup (matched openers & closers):
