@@ -75,6 +75,21 @@ More snapshots:
 
 You can also access `Docutils' Subversion repository`_ directly.
 
+.. attention:: The repository was moved on 2011-12-02 at revision 7232
+   from |BerliOS|_ to |SourceForge|_.
+
+   To switch a subversion checkout use ::
+
+      svn switch --relocate 
+      https://svn.berlios.de/svnroot/repos/docutils/trunk 
+      https://docutils.svn.sourceforge.net/svnroot/docutils/trunk
+
+   or for developer access::
+
+      svn switch --relocate 
+      https://<username>@svn.berlios.de/svnroot/repos/docutils/trunk 
+      https://<username>@docutils.svn.sourceforge.net/svnroot/docutils/trunk
+
 .. class:: credits
 
 Subversion repository *was* hosted by |BerliOS|_, *many thanks for the support*.
