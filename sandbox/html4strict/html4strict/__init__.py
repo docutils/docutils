@@ -3,9 +3,14 @@
 # :Revision: $Revision$
 # :Date: $Date: 2005-06-28$
 # :Copyright: © 2005, 2009 Günter Milde.
-#             Released  without warranties or conditions of any kind
-#             under the terms of the Apache License, Version 2.0
-#             http://www.apache.org/licenses/LICENSE-2.0
+# :License: Released under the terms of the `2-Clause BSD license`_, in short:
+#
+#    Copying and distribution of this file, with or without modification,
+#    are permitted in any medium without royalty provided the copyright
+#    notice and this notice are preserved.
+#    This file is offered as-is, without any warranty.
+#
+# .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause
 
 """
 Strict HyperText Markup Language document tree Writer.
@@ -54,7 +59,11 @@ class Writer(html4css1.Writer):
             'Default: "%s"' % default_stylesheet_path,
             ['--stylesheet-path'],
             {'metavar': '<file>', 'overrides': 'stylesheet',
-            'default': default_stylesheet_path}))
+            'default': default_stylesheet_path}),
+        math_output = ('Math output format, one of "MathML", "HTML", '
+            '"MathJax" or "LaTeX". Default: "MathML"',
+            ['--math-output'],
+            {'default': 'MathML'}))
 
     def __init__(self):
         writers.Writer.__init__(self)
@@ -317,11 +326,15 @@ class HTMLTranslator(html4css1.HTMLTranslator):
         # Content already processed:
         raise nodes.SkipNode
 
-    # literal block: no newline after <pre> tag 
+    # literal block and doctest block: no newline after <pre> tag
     # (leads to blank line in XHTML1.1)
     def visit_literal_block(self, node,):
-        self.body.append(self.starttag(node, 'pre', suffix='', 
+        self.body.append(self.starttag(node, 'pre', suffix='',
                                        CLASS='literal-block'))
+
+    def visit_doctest_block(self, node):
+        self.body.append(self.starttag(node, 'pre', suffix='',
+                                       CLASS='doctest-block'))
 
     # Meta tags: 'lang' attribute replaced by 'xml:lang' in XHTML 1.1
     def visit_meta(self, node):
@@ -383,14 +396,14 @@ class HTMLTranslator(html4css1.HTMLTranslator):
     #   rule to start the field-body on new line if the label is too long
     # * it makes the code simpler.
     #
-    # TODO: omit paragraph tags in simple table cells. 
+    # TODO: omit paragraph tags in simple table cells.
 
     def visit_paragraph(self, node):
         self.body.append(self.starttag(node, 'p', ''))
 
     def depart_paragraph(self, node):
         self.body.append('</p>')
-        if not (isinstance(node.parent, (nodes.list_item, nodes.entry)) and 
+        if not (isinstance(node.parent, (nodes.list_item, nodes.entry)) and
                 # (node is node.parent[-1])
                 (len(node.parent) == 1)
                ):

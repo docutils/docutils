@@ -1,21 +1,26 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 # :Copyright: © 2005, 2009 Günter Milde.
-#             Released  without warranties or conditions of any kind
-#             under the terms of the Apache License, Version 2.0
-# 	      http://www.apache.org/licenses/LICENSE-2.0
+# :License: Released under the terms of the `2-Clause BSD license`_, in short:
+#
+#    Copying and distribution of this file, with or without modification,
+#    are permitted in any medium without royalty provided the copyright
+#    notice and this notice are preserved.
+#    This file is offered as-is, without any warranty.
+#
+# .. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause
+#
 # Revision: $Revision$
 # Date: $Date$
 
 """
-A minimal front end to the Docutils Publisher, producing (X)HTML relying on
-a css stylesheet.
+A minimal front end to the Docutils Publisher, producing valid XHTML 1.1
 """
 
 try:
-    import locale
+    import locale # module missing in Jython
     locale.setlocale(locale.LC_ALL, '')
-except:
+except locale.Error:
     pass
 
 from docutils.core import publish_cmdline, default_description
