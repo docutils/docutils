@@ -77,8 +77,8 @@ You can also access `Docutils' Subversion repository`_ directly.
 
 .. class:: credits
 
-Web site, tracker and mailing lists hosted by |SourceForge|_.
-Subversion repository hosted by |BerliOS|_.
+Subversion repository *was* hosted by |BerliOS|_, *many thanks for the support*.
+Web site, tracker and mailing lists and subversion repository hosted by |SourceForge|_.
 Powered by |Python|_.
 
 .. class:: hidden
