@@ -10,6 +10,7 @@
 
 .. _Docutils: http://docutils.sourceforge.net/
 
+REWORK FOR SOURCEFORGE REPO
 
 Steps in boldface text are *not* covered by the release script at
 sandbox/infrastructure/release.sh.  "Not covered" means that you aren't even
