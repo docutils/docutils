@@ -6,7 +6,7 @@ A backwards compatibility style sheet
 *************************************
 
 :Author:    Guenter Milde
-:Contact:   milde@users.berlios.de
+:Contact:   milde@users.sourceforge.net
 :Revision:  $Revision$
 :Date:      $Date$
 :Copyright: © 2009 Günter Milde,

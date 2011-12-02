@@ -77,7 +77,7 @@
 ;;; DOWNLOAD
 
 ;; The latest release of this file lies in the docutils source code repository:
-;;   http://svn.berlios.de/svnroot/repos/docutils/trunk/docutils/tools/editors/emacs/rst.el
+;;   http://docutils.svn.sourceforge.net/svnroot/docutils/trunk/docutils/tools/editors/emacs/rst.el
 
 ;;; INSTALLATION
 

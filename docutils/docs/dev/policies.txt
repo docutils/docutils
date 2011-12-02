@@ -387,9 +387,9 @@ official version numbering policy, and micro releases contained both
 bug fixes and new features.
 
 .. _Docutils core:
-   http://svn.berlios.de/viewcvs/docutils/trunk/docutils/
+   http://docutils.svn.sourceforge.net/viewvc/docutils/trunk/docutils/
 .. _maintenance branches:
-   http://svn.berlios.de/viewcvs/docutils/branches/
+   http://docutils.svn.sourceforge.net/viewvc/docutils/branches/
 
 
 Snapshots
@@ -427,7 +427,7 @@ ways to keep the Docutils code accessible during development:
    We'll assume that the Docutils trunk is checked out under your
    ~/projects/ directory as follows::
 
-       svn co svn+ssh://<user>@svn.berlios.de/svnroot/repos/docutils/trunk \
+       svn co https://<user>@docutils.svn.sourceforge.net/svnroot/docutils/trunk \
            docutils
 
    For the bash shell, add this to your ``~/.profile``::
@@ -542,7 +542,7 @@ Docutils, may graduate to become `parallel projects`_.
 
 .. _sandbox README: http://docutils.sf.net/sandbox/README.html
 .. _sandbox directory:
-   http://svn.berlios.de/viewcvs/docutils/trunk/sandbox/
+   http://docutils.svn.sourceforge.net/viewvc/docutils/trunk/sandbox/
 
 
 .. _parallel project:

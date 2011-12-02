@@ -57,7 +57,7 @@ __ http://www.python.org/peps/pep-0290.html
 
 .. _Python Check-in Policies: http://www.python.org/dev/tools.html
 .. _sandbox directory:
-   http://svn.berlios.de/viewcvs/docutils/trunk/sandbox/
+   http://docutils.svn.sourceforge.net/svnroot/docutils/trunk/sandbox/
 .. _nightly repository tarball:
    http://svn.berlios.de/svndumps/docutils-repos.gz
 

@@ -15,13 +15,13 @@
    To get a checkout of the Docutils source tree (without the
    sandboxes), type ::
 
-       svn checkout http://svn.berlios.de/svnroot/repos/docutils/trunk/docutils
+       svn checkout http://docutils.svn.sourceforge.net/svnroot/docutils/trunk/docutils
 
    If you are going to commit changes to the repository, please read
    the **whole document**, especially the section "`Information for
    Developers`_"!
 
-Docutils uses a Subversion_ repository located at ``svn.berlios.de``.
+Docutils uses a Subversion_ repository located at ``docutils.svn.sourceforge.net``.
 Subversion is exhaustively documented in the `Subversion Book`_
 (svnbook).
 
@@ -42,7 +42,6 @@ __ policies.html#subversion-repository
 .. _Subversion: http://subversion.tigris.org/
 .. _Subversion Book: http://svnbook.red-bean.com/
 .. _TortoiseSVN: http://tortoisesvn.tigris.org/
-.. _BerliOS: http://developer.berlios.de/
 .. _SourceForge.net: http://sourceforge.net/
 
 .. contents::
@@ -58,7 +57,7 @@ Web Access
 ~~~~~~~~~~
 
 The repository can be browsed and examined via the web at
-http://svn.berlios.de/viewvc/docutils/.
+http://docutils.svn.sourceforge.net/viewvc/docutils/.
 
 
 Repository Access Methods
@@ -67,12 +66,9 @@ Repository Access Methods
 To get a checkout of the Docutils repository, first determine the root
 of the repository depending on your preferred protocol::
 
-    svn://svn.berlios.de/docutils                     (anonymous)
-    http://svn.berlios.de/svnroot/repos/docutils      (anonymous + developers)
-    https://svn.berlios.de/svnroot/repos/docutils     (anonymous + developers)
-    svn+ssh://<username>@svn.berlios.de/svnroot/repos/docutils
-                                                      (developers only)
-
+    https://docutils.svn.sourceforge.net/svnroot/docutils (anonymous)
+    https://<username>@docutils.svn.sourceforge.net/svnroot/docutils 
+                                                    (developers only)
 
 Checking Out the Repository
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -118,6 +114,10 @@ BerliOS user names to docutils-develop@lists.sourceforge.net.
 (Note that there may be a delay of several hours until you can commit
 changes to the repository.)
 
+Sourceforge subversion access is documented `here`__ 
+
+__ http://sourceforge.net/apps/trac/sourceforge/wiki/Subversion
+
 
 Setting Up Your Subversion Client For Development
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -145,31 +145,6 @@ correct properties set::
     *.png = svn:mime-type=image/png
     *.jpg = svn:mime-type=image/jpeg
     *.gif = svn:mime-type=image/gif
-
-
-Setting Up SSH Keys
-~~~~~~~~~~~~~~~~~~~
-
-If you are a developer and you are using the svn+ssh access method
-instead of https or http, you may want to set a public & private key
-pair, so that you can access the shell and Subversion servers without
-having to enter your password.
-
-To do this, log in on BerliOS_ and copy and paste your SSH public key
-into the edit box on the "`CVS/SVN/SSH Shared Keys`__" page.  Further
-instructions are available on this page.
-
-__ https://developer.berlios.de/account/editsshkeys.php
-
-
-Migration from SourceForge.net
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Developers who had write-access for Docutils' CVS repository on
-SourceForge.net should `register with BerliOS`__ and send a message
-with their BerliOS user name to docutils-develop@lists.sourceforge.net.
-
-__ https://developer.berlios.de/account/register.php
 
 
 Repository Layout
