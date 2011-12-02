@@ -234,7 +234,7 @@ Math
 ----
 
 The W3C consortium provides a DTD for XHTML 1.1 plus MathML 2.0, so
-that documentd embedding formulas as MathML can be validated.
+that documents embedding formulas as MathML can be validated.
 
 The linear mapping :math:`f: \mathbb{C}^{N}\longmapsto\mathbb{C}^{N}`
 with
