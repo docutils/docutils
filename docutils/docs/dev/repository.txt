@@ -30,10 +30,6 @@ Subversion command line interface, Windows user may want to try
 TortoiseSVN_, a convenient explorer extension.  The instructions apply
 analogously.
 
-Note that while the repository and the snapshots reside at BerliOS_,
-all other project data (web site, releases, mailing lists, trackers)
-is hosted by SourceForge.net_.
-
 For the project policy on repository use (check-in requirements,
 branching, etc.), please see the `Docutils Project Policies`__.
 
