@@ -22,7 +22,7 @@ set -e
 umask 002
 
 # URL for SVN project checkout:
-svnurl=http://svn.berlios.de/svnroot/repos/docutils/trunk
+svnurl=https://docutils.svn.sourceforge.net/svnroot/docutils/trunk
 
 basedir=`pwd`/update-dir
 if [ ! -e $basedir ] ; then
