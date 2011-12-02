@@ -78,9 +78,11 @@ You can also access `Docutils' Subversion repository`_ directly.
 .. attention:: The repository was moved on 2011-12-02 at revision 7232
    from |BerliOS|_ to |SourceForge|_.
 
+   Subversion repository *was* hosted by |BerliOS|_ for years, 
+   *many thanks for the support*.
+
 .. class:: credits
 
-Subversion repository *was* hosted by |BerliOS|_, *many thanks for the support*.
 Web site, tracker and mailing lists and subversion repository hosted by |SourceForge|_.
 Powered by |Python|_.
 
