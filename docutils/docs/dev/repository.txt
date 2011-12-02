@@ -105,8 +105,8 @@ Information for Developers
 --------------------------
 
 If you would like to have write access to the repository, register
-with SourceForge.net_ and BerliOS_, and send your SourceForge.net and
-BerliOS user names to docutils-develop@lists.sourceforge.net.
+with SourceForge.net_ and send your SourceForge.net 
+user names to docutils-develop@lists.sourceforge.net.
 (Note that there may be a delay of several hours until you can commit
 changes to the repository.)
 
