@@ -831,7 +831,7 @@ _`math_output`
     .. _math directive: ../ref/rst/directives.html#math
     .. _MathJax: http://www.mathjax.org/
     .. _MathPlayer: http://www.dessci.com/en/products/mathplayer/
-    .. _MathML: http://www.mathweb.org/wiki/MathML
+    .. _MathML: http://www.w3.org/TR/MathML/
 
 _`option_limit`
     The maximum width (in characters) for options in option lists.
