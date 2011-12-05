@@ -20,21 +20,21 @@ try:
 except ImportError:
     locale_encoding = None
 
-stdin_encoding = sys.stdin.encoding or locale_encoding or 'ascii'
+argv_encoding = locale_encoding or 'ascii'
 try:
-    codecs.lookup(stdin_encoding)
+    codecs.lookup(argv_encoding)
 except LookupError:
-    stdin_encoding = 'ascii'
+    argv_encoding = 'ascii'
 
 
 class CommandLineEncodingTests(unittest.TestCase):
 
     def test_sys_argv_decoding(self):
-        if stdin_encoding == 'ascii': # cannot test
+        if argv_encoding == 'ascii': # cannot test
             return
         sys.argv.append('--source-url=test.txt') # pure ASCII argument
         if sys.version_info < (3,0):
-            sys.argv.append(u'--title=Dornröschen'.encode(stdin_encoding))
+            sys.argv.append(u'--title=Dornröschen'.encode(argv_encoding))
         else:
             sys.argv.append(u'--title=Dornröschen')
         publisher = docutils.core.Publisher()
