@@ -825,10 +825,6 @@ Misc
 
   See <http://thread.gmane.org/gmane.text.docutils.user/2499>.
 
-* Change the specification so that more punctuation is allowed
-  before/after inline markup start/end string
-  (http://article.gmane.org/gmane.text.docutils.cvs/3824).
-
 * Complain about bad URI characters
   (http://article.gmane.org/gmane.text.docutils.user/2046) and
   disallow internal whitespace
@@ -1129,150 +1125,32 @@ Misc
 Inline markup recognition rules
 -------------------------------
 
-Allow unicode whitespace and punctuation around `inline markup`_. See bug
-http://sourceforge.net/tracker/?func=detail&aid=3402314&group_id=38414&atid=422030
-and the older discussion
-<http://thread.gmane.org/gmane.text.docutils.user/2765>.
-
-The rules are currently *complicated* (rules, exceptions,
-explicite character lists, exceptions of exceptions) and *incomplete*: Many
-non-ASCII characters are missing in the inline markup start-string and
-end-string recognition rules. Use cases like »German ›angular‹ quotes« are
-not recognized.
+The `inline markup`_ recognition rules were devised intentionally to allow
+90% of non-markup uses of "*", "`", "_", and "|" *without* resorting to
+backslashes.  For 9% of the remaining 10%, use inline literals or literal
+blocks. Only those who understand the escaping and inline markup rules
+should attempt the remaining 1%.  ;-)
 
 .. _inline markup: ../ref/rst/restructuredtext.html#inline-markup
 
-Proposal
-````````
-
-Define character classes based on `Unicode categories`_, possibly with some
-exceptions (for backwards compatibility or based on use cases) and use them
-in the inline markup start-string and end-string recognition rules.
-
-The following sub-section is intended to replace the 5 inline markup rules in
-the reStructuredText Markup Specification's section on `inline markup`_.
-The composition of the character classes is open for discussion_.
-
-The actual change needs to be done in `parsers.rst.states.Inliner`.
-
-Inline markup syntax rules
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The inline markup start-string and end-string recognition rules distinguish
-the following character classes based on `Unicode categories`_:
-
-_`Whitespace`:
-   :Zs: Separator, Space
-   :Zl: Separator, Line
-
-   :Zp: Separator, Paragraph
-
-   Exception: Non-breaking spaces count as Delimiters_, they may
-   immediately follow a start-string or precede an end-string.
-
-   :[ ]:  U+00A0, NO-BREAK SPACE
-   :[ ]:  U+202F, NARROW NO-BREAK SPACE
-
-_`Open`:
-   :Ps: Punctuation, Open
-   :Pi: Punctuation, Initial quote
-   :Pf: Punctuation, Final quote [#PiPf]_
-   :<:  U+003C, LESS-THAN SIGN [#ltgt]_
-
-_`Close`:
-   :Pe: Punctuation, Close
-   :Pf: Punctuation, Final quote
-   :Pi: Punctuation, Initial quote [#PiPf]_
-   :>:  U+003E, GREATER-THAN SIGN
-
-_`Delimiters`:
-   :Pd: Punctuation, Dash
-   :Po: Punctuation, Other [#Po]_
-   :[ ]:  U+00A0, NO-BREAK SPACE
-   :[ ]:  U+202F, NARROW NO-BREAK SPACE
-
-If any of the following conditions are not met, the start-string or
-end-string will not be recognized or processed:
-
-1. Inline markup start-strings must start a text block or be immediately
-   preceded by a character of the classes Whitespace_, Open_, or
-   Delimiters_.
-
-2. Inline markup start-strings must not be followed by Whitespace_.
-
-3. Inline markup end-strings must not be preceded by Whitespace_.
-
-4. Inline markup end-strings must end a text block or be immediately
-   followed by a character of the classes Whitespace_, Close_, or
-   Delimiters_.
-
-5. If an inline markup start-string is immediately preceded by a
-   single or double quote or a character from Open_, it must not be
-   immediately followed by a corresponding single or double quote or
-   character from Close.
-
-6. An inline markup end-string must be separated by at least one
-   character from the start-string.
-
-7. An unescaped backslash preceding a start-string or end-string will
-   disable markup recognition, except for the end-string of `inline
-   literals`_.  See `Escaping Mechanism`_ above for details.
-
-
-Discussion
-``````````
-
-The current markup recognition rules deviate from the above proposal in some
-cases "to allow 90% of non-markup uses of "*", "`", "_", and "|" without
-resorting to backslashes".
-
-The above proposal aims to catch 85% of non-markup uses with simpler
-rules and enable additional markup uses (e.g. »German ›angular‹ quotes«)
-without escaping. It breaks backwards compatibility in some cases.
-However, if this is "the right thing", it should be done **now**, as long
-as the project is still "beta".
-
-Character classifications in need of discussion:
-
-.. [#PiPf] Pi (Punctuation, Initial quote) characters are "usually
-   closing, sometimes opening". Pf (Punctuation, Final quote) characters
-   are "usually closing, sometimes opening". I.e., both Pi and Pf may
-   behave like Ps or Pe depending on usage. The current implementation
-   sorts them into Open_ and Close_.
-   Adding Pf to Close_ and Pi to Open_ solves e.g. the problem with
-   »German ›angular‹ quotes«.
-
-.. [#ltgt] ``<`` and ``>`` belong to the Unicode category Ms (Symbols, Math).
-   The current implementation sorts them into Open_ and Close_ because of
-   their use as angular brackets in ASCII markup.
-
-.. [#Po] The ``Po`` characters ``.,;!?`` are usually followed by
-   whitespace. The backslash ``\`` is rarely used in front of marked-up
-   text. The current implementation sorts these characters into Close_.
-
-   The Po characters ``¡¿`` open a sentence. The current
-   implementation sorts them into Open_.
+Changes need to be done in `parsers.rst.states.Inliner`.
 
 Alternatives
-````````````
 
-a) The proposal_ above:
+a) Use `Unicode categories`_ for all chars (ASCII or not)
 
-   +1  truly international (considering characters of all writing systems
-       recorded in Unicode)
-   +2  simpler specification of the rules
-   -1  more complicated implementation
+   +1  comprehensible, standards based,
+   -1  many "false positives" need escaping,
+   -1  not backwards compatible.
 
-b) Backwards compatibility
+b) full backwards compatibility
 
-   :Pi: into Open_
-   :Pf: into Close_
+   :Pi: only before start-string
+   :Pf: only behind end-string
    :Po: "conservative" sorting of other punctuation:
 
-        :``.,;!?\``: Close_
-        :````¡¿``:   Open_
-
-        Are there more?
+        :``.,;!?\\``: Close
+        :``¡¿``:   Open
 
    +1  backwards compatible,
    +1  logical extension of the existing rules,
@@ -1280,41 +1158,9 @@ b) Backwards compatibility
    -1  rules even more complicated,
    -1  not clear how to sort "other" punctuation that is currently not
        recognized,
-   -2  use cases like »German ›angular‹ quotes« not recognized.
+   -2  international quoting convention like 
+       »German ›angular‹ quotes« not recognized.
 
-c) Simple rule: merge Open_, Close, and Delimiters_
-
-   Whitespace_, Open_, Close_, and Delimiters_ may all precede or follow
-   inline markup.
-
-   +3  very comprehensible,
-   -1  false positives need escaping,
-   -2  not backwards compatible.
-
-Implementation
-``````````````
-
-Some ideas for implementing the above rules:
-
-David's regexp to match whitespace but keep NO-BREAK spaces as "invisible
-escape"::
-
-  u'(?![\xa0\u202f])\\s', re.UNICODE
-
-For punctuation, check `Unicode categories`_ with
-``unicodedata.category(ch)``
-(http://bytes.com/topic/python/answers/854011-identifying-unicode-punctuation-characters-python-regex)
-and generate a pattern string, e.g. ::
-
-  chars_open = u''.join(unichr(x) for x in range(74868)
-       if unicodedata.category(unichr(x)) in ('Ps', 'Pi', 'Pf')
-
-Do this in the setup script and use the resulting string literal?
-(Avoids re-calculation with every parsing run.)
-
-.. _inline markup: ../ref/rst/restructuredtext.html#inline-markup
-.. _inline literals: ../ref/rst/restructuredtext.html#inline-literals
-.. _escaping mechanism: ../ref/rst/restructuredtext.html#escaping-mechanism
 .. _Unicode categories:
    http://www.unicode.org/Public/5.1.0/ucd/UCD.html#General_Category_Values
 

@@ -2368,39 +2368,23 @@ Three constructs use different start-strings and end-strings:
 `Standalone hyperlinks`_ are recognized implicitly, and use no extra
 markup.
 
-The inline markup start-string and end-string recognition rules are as
-follows.  If any of the conditions are not met, the start-string or
-end-string will not be recognized or processed.
+Inline markup recognition rules
+-------------------------------
+
+Inline markup start-strings and end-strings are only recognized if all of
+the following conditions are met:
 
 1. Inline markup start-strings must start a text block or be
-   immediately preceded by whitespace, one of the ASCII
-   characters ``' " ( [ { <``, or the Unicode characters:
+   immediately preceded by
 
-       .. class:: borderless
-
-       ===  ==========================================================
-       ‘    (U+2018, left single-quote)
-       “    (U+201C, left double-quote)
-       ’    (U+2019, right single-quote, or apostrophe)
-       «    (U+00AB, left guillemet, or double angle quotation mark)
-       ¡    (U+00A1, inverted exclamation mark)
-       ¿    (U+00BF, inverted question mark)
-       ===  ==========================================================
-
-   The ASCII characters ``- / :`` and the Unicode characters
-
-       .. class:: borderless
-
-       ===  ==========================================================
-       ‐    (U+2010, hyphen)
-       ‑    (U+2011, non-breaking hyphen)
-       ‒    (U+2012, figure dash)
-       –    (U+2013, en dash)
-       —    (U+2014, em dash)
-       [ ]  (U+00A0, non-breaking space [between the brackets])
-       ===  ==========================================================
-
-   are _`delimiters`. They may precede or follow inline markup.
+   * whitespace,
+   * one of the ASCII characters ``- : / ' " < ( [ {`` or
+   * a non-ASCII punctuation character with `Unicode category`_
+     `Pd` (Dash),
+     `Po` (Other),
+     `Ps` (Open),
+     `Pi` (Initial quote), or
+     `Pf` (Final quote) [#PiPf]_.
 
 2. Inline markup start-strings must be immediately followed by
    non-whitespace.
@@ -2409,26 +2393,22 @@ end-string will not be recognized or processed.
    non-whitespace.
 
 4. Inline markup end-strings must end a text block or be immediately
-   followed by whitespace, the ASCII characters
-   ``' " ) ] } > . , ; ! ? \``, the Unicode characters:
+   followed by
 
-       .. class:: borderless
+   * whitespace,
+   * one of the ASCII characters ``- . , : ; ! ? \ / ' " ) ] } >`` or
+   * a non-ASCII punctuation character with `Unicode category`_
+     `Pd` (Dash),
+     `Po` (Other),
+     `Pe` (Close),
+     `Pf` (Final quote), or
+     `Pi` (Initial quote) [#PiPf]_.
 
-       ===  ==========================================================
-       ’    (U+2019, right single-quote, or apostrophe)
-       ”    (U+201D, right double-quote)
-       »    (U+00BB, right guillemet, or double angle quotation mark)
-       ===  ==========================================================
-
-   or the `delimiters`_ listed in (1) above.
-
-5. If an inline markup start-string is immediately preceded by a
-   single or double quote, "(", "[", "{", or "<", it must not be
-   immediately followed by the corresponding single or double quote,
-   ")", "]", "}", or ">".
-
-   .. this also holds for the opening/closing Unicode character pairs
-      (since at least 05. Sep 2008).
+5. If an inline markup start-string is immediately preceded by one of the
+   ASCII characters ``' " < ( [ {``, or a character with Unicode character
+   category `Ps`, `Pi`, or `Pf`, it must not be followed by the
+   corresponding [#corresponding-quotes]_ closing character from
+   ``' " ) ] } >`` or the categories `Pe`, `Pf`, or `Pi`.
 
 6. An inline markup end-string must be separated by at least one
    character from the start-string.
@@ -2437,32 +2417,52 @@ end-string will not be recognized or processed.
    disable markup recognition, except for the end-string of `inline
    literals`_.  See `Escaping Mechanism`_ above for details.
 
-For example, none of the following are recognized as containing inline
-markup start-strings:
+.. [#PiPf] `Pi` (Punctuation, Initial quote) characters are "usually
+   closing, sometimes opening". `Pf` (Punctuation, Final quote)
+   characters are "usually closing, sometimes opening".
 
-- asterisks: * "*" '*' (*) (* [*] {*} 1*x BOM32_*
-- double asterisks: **  a**b O(N**2) etc.
-- backquotes: ` `` etc.
-- underscores: _ __ __init__ __init__() etc.
-- vertical bars: | || etc.
+.. [#corresponding-quotes] For quotes, corresponding characters can be
+   any of the `quotation marks in international usage`_
 
-It may be desirable to use inline literals for some of these anyhow,
+.. _Unicode category:
+   http://www.unicode.org/Public/5.1.0/ucd/UCD.html#General_Category_Values
+
+.. _quotation marks in international usage:
+   http://en.wikipedia.org/wiki/Quotation_mark,_non-English_usage
+
+The inline markup recognition rules were devised to allow 90% of non-markup
+uses of "*", "`", "_", and "|" without escaping. For example, none of the
+following terms are recognized as containing inline markup strings:
+
+- 2*x a**b O(N**2) e**(x*y) f(x)*f(y) a|b file*.* (breaks 1)
+- 2 * x  a ** b  (* BOM32_* ` `` _ __ | (breaks 2)
+- "*" '|' (*) [*] {*} <*>
+  ‘*’ ‚*‘ ‘*‚ ’*’ ‚*’
+  “*” „*“ “*„ ”*” „*”
+  »*« ›*‹ «*» »*» ›*› (breaks 5)
+- || (breaks 6)
+- __init__ __init__()
+
+No escaping is required inside the following inline markup examples:
+
+- *2 * x  *a **b *.txt* (breaks 3)
+- *2*x a**b O(N**2) e**(x*y) f(x)*f(y) a*(1+2)* (breaks 4)
+
+It may be desirable to use `inline literals`_ for some of these anyhow,
 especially if they represent code snippets.  It's a judgment call.
 
 These cases *do* require either literal-quoting or escaping to avoid
-misinterpretation::
+misinterpretation:
+
+    \*4, class\_, \*args, \**kwargs, \`TeX-quoted', \*ML, \*.txt
+
+In most use cases, `inline literals`_ or `literal blocks`_ are the best
+choice (by default, this also selects a monospaced font)::
 
     *4, class_, *args, **kwargs, `TeX-quoted', *ML, *.txt
 
-The inline markup recognition rules were devised intentionally to
-allow 90% of non-markup uses of "*", "`", "_", and "|" *without*
-resorting to backslashes.  For 9 of the remaining 10%, use inline
-literals or literal blocks::
-
-    "``\*``" -> "\*" (possibly in another font or quoted)
-
-Only those who understand the escaping and inline markup rules should
-attempt the remaining 1%.  ;-)
+Recognition order
+-----------------
 
 Inline markup delimiter characters are used for multiple constructs,
 so to avoid ambiguity there must be a specific recognition order for
