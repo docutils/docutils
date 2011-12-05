@@ -17,6 +17,22 @@ more detailed list of changes, please see the `Docutils History`_.
 
 .. contents::
 
+Release 0.9 (unpublished)
+=========================
+
+* General:
+
+  - reStructuredText "code" role and directive with syntax highlighting
+    by Pygments_.
+  - "code" option of the "include" directive.
+
+  .. _Pygments: http://pygments.org/
+
+* docutils/writers/html4css1/__init__.py
+
+  - change default for `math-output` setting to MathJax
+
+
 Release 0.8.1 (2011-08-30)
 ==========================
 
