@@ -116,7 +116,7 @@ from docutils.utils import escape2null, unescape, column_width
 import docutils.parsers.rst
 from docutils.parsers.rst import directives, languages, tableparser, roles
 from docutils.parsers.rst.languages import en as _fallback_language_module
-
+from docutils.parsers.rst import punctuation_chars
 
 class MarkupError(DataError): pass
 class UnknownInterpretedRoleError(DataError): pass
@@ -530,18 +530,16 @@ class Inliner:
 
     # Inline object recognition
     # -------------------------
-    # character categories:
-    openers = u'\'"([{<\u2018\u201c\xab\u00a1\u00bf' # see quoted_start below
-    closers = u'\'")]}>\u2019\u201d\xbb!?'
-    delimiters = u'-/:\u2010\u2011\u2012\u2013\u2014\u00a0'
     # lookahead and look-behind expressions for inline markup rules
-    # (see todo.html#inline-markup-syntax-rules)
-    start_string_prefix = (u'((?<=^)|(?<=\\s|[\u2019%s%s]))'
-                           % (re.escape(delimiters),
-                              re.escape(openers)))
-    end_string_suffix = (u'((?=$)|(?=\\s|[.,; \x00%s%s]))'
-                         % (re.escape(delimiters),
-                            re.escape(closers)))
+    start_string_prefix = (u'(^|(?<=\\s|[%s%s]))' %
+                           (punctuation_chars.openers,
+                            punctuation_chars.delimiters))
+    end_string_suffix = (u'($|(?=\\s|[\x00%s%s%s]))' %
+                         (punctuation_chars.closing_delimiters,
+                          punctuation_chars.delimiters,
+                          punctuation_chars.closers))
+    # print start_string_prefix.encode('utf8')
+    # TODO: support non-ASCII whitespace in the following 4 patterns?
     non_whitespace_before = r'(?<![ \n])'
     non_whitespace_escape_before = r'(?<![ \n\x00])'
     non_unescaped_whitespace_escape_before = r'(?<!(?<!\x00)[ \n\x00])'
@@ -678,23 +676,22 @@ class Inliner:
                 %(end_string_suffix)s""" % locals(), re.VERBOSE | re.UNICODE))
 
     def quoted_start(self, match):
-        """Return 1 if inline markup start-string is 'quoted', 0 if not."""
+        """Test if inline markup start-string is 'quoted'.
+
+        'Quoted' in this context means the start-string is enclosed in a pair
+        of matching opening/closing delimiters (not necessarily quotes)
+        or at the end of the match.
+        """
         string = match.string
         start = match.start()
-        end = match.end()
         if start == 0:                  # start-string at beginning of text
-            return 0
+            return False
         prestart = string[start - 1]
         try:
-            poststart = string[end]
-            if self.openers.index(prestart) \
-                  == self.closers.index(poststart):   # quoted
-                return 1
-        except IndexError:              # start-string at end of text
-            return 1
-        except ValueError:              # not quoted
-            pass
-        return 0
+            poststart = string[match.end()]
+        except IndexError:          # start-string at end of text
+            return True  # not "quoted" but no markup start-string either
+        return punctuation_chars.match_chars(prestart, poststart)
 
     def inline_obj(self, match, lineno, end_pattern, nodeclass,
                    restore_backslashes=0):

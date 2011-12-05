@@ -1,4 +1,5 @@
 #! /usr/bin/env python
+# -*- coding: utf8 -*-
 
 # $Id$
 # Author: David Goodger <goodger@python.org>
@@ -29,18 +30,26 @@ totest['emphasis'] = [
             emphasis
 """],
 [u"""\
-l'*emphasis* and l\u2019*emphasis* with apostrophe
+l'*emphasis* with the *emphasis*' apostrophe.
+l\u2019*emphasis* with the *emphasis*\u2019 apostrophe.
 """,
 u"""\
 <document source="test data">
     <paragraph>
-        l'
+        l\'
         <emphasis>
             emphasis
-         and l\u2019
+         with the \n\
         <emphasis>
             emphasis
-         with apostrophe
+        \' apostrophe.
+        l\u2019
+        <emphasis>
+            emphasis
+         with the \n\
+        <emphasis>
+            emphasis
+        \u2019 apostrophe.
 """],
 ["""\
 *emphasized sentence
@@ -66,41 +75,64 @@ across lines*
         <paragraph>
             Inline emphasis start-string without end-string.
 """],
-[r"""
-'*emphasis*' and 1/*emphasis*/2 and 3-*emphasis*-4 and 5:*emphasis*:6
-but not '*' or '"*"' or  x*2* or 2*x* or \*args or *
-or *the\* *stars\\\* *inside*
+[r"""some punctuation is allowed around inline markup, e.g.
+/*emphasis*/, -*emphasis*-, and :*emphasis*: (delimiters),
+(*emphasis*), [*emphasis*], <*emphasis*>, {*emphasis*} (open/close pairs)
 
-(however, '*args' will trigger a warning and may be problematic)
+but not
+)*emphasis*(, ]*emphasis*[, >*emphasis*>, }*emphasis*{ (close/open pairs)
+(*), [*], '*' or '"*"' ("quoted" start-string),
+x*2* or 2*x* (alphanumeric char before),
+\*args or * (escaped, whitespace behind start-string)
+or *the\* *stars\* *inside* (escaped, whitespace before end-string).
+
+However, '*args' will trigger a warning and may be problematic.
 
 what about *this**?
 """,
 """\
 <document source="test data">
     <paragraph>
-        '
+        some punctuation is allowed around inline markup, e.g.
+        /
         <emphasis>
             emphasis
-        ' and 1/
+        /, -
         <emphasis>
             emphasis
-        /2 and 3-
+        -, and :
         <emphasis>
             emphasis
-        -4 and 5:
+        : (delimiters),
+        (
         <emphasis>
             emphasis
-        :6
-        but not '*' or '"*"' or  x*2* or 2*x* or *args or *
+        ), [
+        <emphasis>
+            emphasis
+        ], <
+        <emphasis>
+            emphasis
+        >, {
+        <emphasis>
+            emphasis
+        } (open/close pairs)
+    <paragraph>
+        but not
+        )*emphasis*(, ]*emphasis*[, >*emphasis*>, }*emphasis*{ (close/open pairs)
+        (*), [*], '*' or '"*"' ("quoted" start-string),
+        x*2* or 2*x* (alphanumeric char before),
+        *args or * (escaped, whitespace behind start-string)
         or \n\
         <emphasis>
-            the* *stars\* *inside
+            the* *stars* *inside
+         (escaped, whitespace before end-string).
     <paragraph>
-        (however, '
+        However, '
         <problematic ids="id2" refid="id1">
             *
-        args' will trigger a warning and may be problematic)
-    <system_message backrefs="id2" ids="id1" level="2" line="6" source="test data" type="WARNING">
+        args' will trigger a warning and may be problematic.
+    <system_message backrefs="id2" ids="id1" level="2" line="12" source="test data" type="WARNING">
         <paragraph>
             Inline emphasis start-string without end-string.
     <paragraph>
@@ -110,31 +142,123 @@ what about *this**?
         ?
 """],
 [u"""\
-quoted '*emphasis*', quoted "*emphasis*",
-quoted \u2018*emphasis*\u2019, quoted \u201c*emphasis*\u201d,
-quoted \xab*emphasis*\xbb
+Quotes around inline markup:
+
+'*emphasis*' "*emphasis*" Straight,
+‘*emphasis*’ “*emphasis*” English, ...,
+« *emphasis* » ‹ *emphasis* › « *emphasis* » ‹ *emphasis* ›
+« *emphasis* » ‹ *emphasis* › French,
+„*emphasis*“ ‚*emphasis*‘ »*emphasis*« ›*emphasis*‹ German, Czech, ...,
+„*emphasis*” «*emphasis*» Romanian,
+“*emphasis*„ ‘*emphasis*‚ Greek,
+「*emphasis*」 『*emphasis*』traditional Chinese,
+”*emphasis*” ’*emphasis*’ »*emphasis*» ›*emphasis*› Swedish, Finnish,
+„*emphasis*” ‚*emphasis*’ Polish,
+„*emphasis*” »*emphasis*« ’*emphasis*’ Hungarian,
 """,
 u"""\
 <document source="test data">
     <paragraph>
-        quoted '
+        Quotes around inline markup:
+    <paragraph>
+        \'
         <emphasis>
             emphasis
-        ', quoted "
+        \' "
         <emphasis>
             emphasis
-        ",
-        quoted \u2018
+        " Straight,
+        \u2018
         <emphasis>
             emphasis
-        \u2019, quoted \u201c
+        \u2019 \u201c
         <emphasis>
             emphasis
-        \u201d,
-        quoted \xab
+        \u201d English, ...,
+        \xab\u202f
         <emphasis>
             emphasis
-        \xbb
+        \u202f\xbb \u2039\u202f
+        <emphasis>
+            emphasis
+        \u202f\u203a \xab\xa0
+        <emphasis>
+            emphasis
+        \xa0\xbb \u2039\xa0
+        <emphasis>
+            emphasis
+        \xa0\u203a
+        \xab\u2005
+        <emphasis>
+            emphasis
+        \u2005\xbb \u2039\u2005
+        <emphasis>
+            emphasis
+        \u2005\u203a French,
+        \u201e
+        <emphasis>
+            emphasis
+        \u201c \u201a
+        <emphasis>
+            emphasis
+        \u2018 \xbb
+        <emphasis>
+            emphasis
+        \xab \u203a
+        <emphasis>
+            emphasis
+        \u2039 German, Czech, ...,
+        \u201e
+        <emphasis>
+            emphasis
+        \u201d \xab
+        <emphasis>
+            emphasis
+        \xbb Romanian,
+        \u201c
+        <emphasis>
+            emphasis
+        \u201e \u2018
+        <emphasis>
+            emphasis
+        \u201a Greek,
+        \u300c
+        <emphasis>
+            emphasis
+        \u300d \u300e
+        <emphasis>
+            emphasis
+        \u300ftraditional Chinese,
+        \u201d
+        <emphasis>
+            emphasis
+        \u201d \u2019
+        <emphasis>
+            emphasis
+        \u2019 \xbb
+        <emphasis>
+            emphasis
+        \xbb \u203a
+        <emphasis>
+            emphasis
+        \u203a Swedish, Finnish,
+        \u201e
+        <emphasis>
+            emphasis
+        \u201d \u201a
+        <emphasis>
+            emphasis
+        \u2019 Polish,
+        \u201e
+        <emphasis>
+            emphasis
+        \u201d \xbb
+        <emphasis>
+            emphasis
+        \xab \u2019
+        <emphasis>
+            emphasis
+        \u2019 Hungarian,
 """],
 [r"""
 Emphasized asterisk: *\**
@@ -345,13 +469,13 @@ u"""\
     <paragraph>
         <literal>
             'literal'
-         with quotes, 
+         with quotes, \n\
         <literal>
             "literal"
          with quotes,
         <literal>
             \u2018literal\u2019
-         with quotes, 
+         with quotes, \n\
         <literal>
             \u201cliteral\u201d
          with quotes,
@@ -617,7 +741,7 @@ u"""\
     <paragraph>
         <reference name="'phrase reference'" refname="'phrase reference'">
             'phrase reference'
-         with quotes, 
+         with quotes, \n\
         <reference name=""phrase reference"" refname=""phrase reference"">
             "phrase reference"
          with quotes,
@@ -694,7 +818,7 @@ u"""\
     <paragraph>
         <reference anonymous="1" name="'anonymous reference'">
             'anonymous reference'
-         with quotes, 
+         with quotes, \n\
         <reference anonymous="1" name=""anonymous reference"">
             "anonymous reference"
          with quotes,
@@ -994,13 +1118,13 @@ u"""\
     <paragraph>
         <target ids="target1" names="'target1'">
             'target1'
-         with quotes, 
+         with quotes, \n\
         <target ids="target2" names=""target2"">
             "target2"
          with quotes,
         <target ids="target3" names="\u2018target3\u2019">
             \u2018target3\u2019
-         with quotes, 
+         with quotes, \n\
         <target ids="target4" names="\u201ctarget4\u201d">
             \u201ctarget4\u201d
          with quotes,
@@ -1405,7 +1529,7 @@ u"""\
             \u00a0no-break-space\u00a0
         .
 """],
-# Whitespace characters:                                      
+# Whitespace characters:
 #  \u180e*MONGOLIAN VOWEL SEPARATOR*\u180e,   fails in Python 2.4
 [u"""\
 text separated by
@@ -1508,28 +1632,47 @@ u"""\
         <emphasis>
             LINE SEPARATOR
 """],
+# « * » ‹ * › « * » ‹ * › « * » ‹ * › French,
 [u"""\
-None of these should be markup (matched openers & closers):
+"Quoted" markup start-string (matched openers & closers) -> no markup:
 
-\u2018*\u2019 \u201c*\u201d \xab*\xbb \u00bf*? \u00a1*!
+'*' "*" (*) <*> [*] {*}
+⁅*⁆
 
-But this should:
+Some international quoting styles:
+‘*’ “*” English, ...,
+„*“ ‚*‘ »*« ›*‹ German, Czech, ...,
+„*” «*» Romanian,
+“*„ ‘*‚ Greek,
+「*」 『*』traditional Chinese,
+”*” ’*’ »*» ›*› Swedish, Finnish,
+„*” ‚*’ Polish,
+„*” »*« ’*’ Hungarian,
 
-l\u2019*exception*.
+But this is „*’ emphasized »*‹.
 """,
 u"""\
 <document source="test data">
     <paragraph>
-        None of these should be markup (matched openers & closers):
+        "Quoted" markup start-string (matched openers & closers) -> no markup:
     <paragraph>
-        \u2018*\u2019 \u201c*\u201d \xab*\xbb \xbf*? \xa1*!
+        '*' "*" (*) <*> [*] {*}
+        ⁅*⁆
     <paragraph>
-        But this should:
+        Some international quoting styles:
+        ‘*’ “*” English, ...,
+        „*“ ‚*‘ »*« ›*‹ German, Czech, ...,
+        „*” «*» Romanian,
+        “*„ ‘*‚ Greek,
+        「*」 『*』traditional Chinese,
+        ”*” ’*’ »*» ›*› Swedish, Finnish,
+        „*” ‚*’ Polish,
+        „*” »*« ’*’ Hungarian,
     <paragraph>
-        l\u2019
+        But this is „
         <emphasis>
-            exception
-        .
+            ’ emphasized »
+        ‹.
 """],
 ]
 
