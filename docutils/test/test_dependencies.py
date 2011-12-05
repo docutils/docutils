@@ -35,8 +35,7 @@ class RecordDependenciesTests(unittest.TestCase):
         docutils.core.publish_file(
             destination=DocutilsTestSupport.DevNull(), **settings)
         settings['settings_overrides']['record_dependencies'].close()
-        record = docutils.io.FileInput(source_path=recordfile,
-                                       encoding=sys.getfilesystemencoding())
+        record = docutils.io.FileInput(source_path=recordfile)
         return record.read().splitlines()
 
     def test_dependencies(self):
