@@ -12,7 +12,7 @@ import unittest, sys
 import DocutilsTestSupport              # must be imported before docutils
 from docutils import io
 from docutils._compat import b, bytes
-
+from docutils.error_reporting import locale_encoding
 
 class InputTests(unittest.TestCase):
 
@@ -68,6 +68,7 @@ print "hello world"
         self.assertEqual(data, [u'Some include text.\n'])
 
     def test_heuristics_utf8(self):
+        # if no encoding is given, try decoding with utf8:
         input = io.FileInput(source_path='functional/input/cyrillic.txt')
         data = input.read()
         if sys.version_info < (3,0): 
@@ -75,11 +76,15 @@ print "hello world"
             # skipping the heuristic
             self.assertEqual(input.successful_encoding, 'utf-8')
 
-    def test_heuristics_latin1(self):
+    def test_heuristics_no_utf8(self):
+        # if no encoding is given and decoding with utf8 fails, 
+        # use either the locale encoding (if specified) or latin1:
         input = io.FileInput(source_path='data/latin1.txt')
         data = input.read()
-        self.assertEqual(input.successful_encoding, 'latin-1')
-        self.assertEqual(data, u'Gr\xfc\xdfe\n')
+        self.assertTrue(input.successful_encoding in (locale_encoding,
+                                                      'latin-1'))
+        if input.successful_encoding == 'latin-1':
+            self.assertEqual(data, u'Gr\xfc\xdfe\n')
 
 
 if __name__ == '__main__':
