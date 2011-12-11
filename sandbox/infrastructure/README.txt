@@ -24,21 +24,10 @@ TODOs:
   
 Overview:
 
-:`<dbackport.sh>`_: Back-port changes from the trunk to the
-    maintenance branch.
-
-:`<docutils-update>`_: The script that updates the `web site`_.
-    Executed on berlios, by user wiemann.
-
-    Attention: The cron job is executed, but the script is
-        doing nothing, because of the way to access sourceforge 
-        changed.
+Everything below this needs rework.
 
 :`<docutils-update.local>`_: The script to update the `web site`_
     from a developer machine. *The* current way of to go.
-
-:`<fsfsbackup.sh>`_: Backup (mirror) an FSFS Subversion repository via
-    SSH.  Used to backup the `Docutils Subversion repository`_.
 
 :`<release.sh>`_: The script to make releases_ of Docutils.
 
@@ -49,6 +38,23 @@ Overview:
     Generating html-files from txt-files first time.
 
 :`<htmlfiles.lst>`_: The list of files for ``update-htmlfiles``.
+
+used on and with berlios
+
+:`<docutils-update>`_: The script that updates the `web site`_.
+    Executed on berlios, by user wiemann.
+
+    Attention: The cron job is executed, but the script is
+        doing nothing, because of the way to access sourceforge 
+        changed.
+
+and are these used by anyone.
+
+:`<dbackport.sh>`_: Back-port changes from the trunk to the
+    maintenance branch.
+
+:`<fsfsbackup.sh>`_: Backup (mirror) an FSFS Subversion repository via
+    SSH.  Used to backup the `Docutils Subversion repository`_.
 
 .. _Docutils: http://docutils.sourceforge.net/
 .. _Docutils check-in mailing list:
