@@ -13,6 +13,7 @@ Examples of Syntax Constructs
 -----------------------------
 
 :author: David Goodger
+
 .. bibliographic fields (which also require a transform):
 
 .. class:: c5

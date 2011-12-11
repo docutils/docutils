@@ -12,7 +12,8 @@
 ]>
 
 <!--
-     Copyright (C) 2005, 2006, 2009 Stefan Merten, David Priest
+     Copyright (C) 2005, 2006 Stefan Merten, David Priest
+     Copyright (C) 2009, 2010, 2011 Stefan Merten
 
      xml2rst.xsl is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -56,7 +57,13 @@ data: Data elements used by the stylesheet
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:u="u"
     xmlns:data="a"
-    exclude-result-prefixes="data">
+    exclude-result-prefixes="data"
+    xmlns:str="http://exslt.org/strings"
+    xmlns:dyn="http://exslt.org/dynamic"
+    xmlns:math="http://exslt.org/math"
+    extension-element-prefixes="str dyn math">
+
+  <!-- xmlns:regexp="http://exslt.org/regular-expressions" not supported :-( -->
 
   <xsl:output
       method="text"
@@ -997,12 +1004,8 @@ data: Data elements used by the stylesheet
 	  <!-- Very special indendation for nested `line_block's -->
 	  <xsl:for-each
 	      select="ancestor::line_block[position() > 1]">
-	    <xsl:call-template
-		name="u:repeat">
-	      <xsl:with-param
-		  name="length"
-		  select="4"/>
-	    </xsl:call-template>
+	    <xsl:value-of
+		select="str:padding(4)"/>
 	  </xsl:for-each>
 	</xsl:variable>
 	<xsl:call-template
@@ -1964,13 +1967,9 @@ data: Data elements used by the stylesheet
     <!-- Output more whitespace to align with the maximum enumerator -->
     <xsl:if
 	test="$enumType != 'lowerroman' and $enumType != 'upperroman'">
-      <xsl:call-template
-	  name="u:repeat">
-	<!-- Assumes that the maximum number has maximum string length -->
-	<xsl:with-param
-	    name="length"
-	    select="string-length($max) - string-length($cur)"/>
-      </xsl:call-template>
+      <!-- Assumes that the maximum number has maximum string length -->
+      <xsl:value-of
+	  select="str:padding(string-length($max) - string-length($cur))"/>
     </xsl:if>
   </xsl:template>
 
@@ -2133,14 +2132,8 @@ data: Data elements used by the stylesheet
     </xsl:variable>
     <!-- Determine maximum height so every entry must be this high -->
     <xsl:variable
-	name="maxHeight">
-      <xsl:call-template
-	  name="u:maxNumber">
-	<xsl:with-param
-	    name="numbers"
-	    select="$heights"/>
-      </xsl:call-template>
-    </xsl:variable>
+	name="maxHeight"
+	select="math:max(str:tokenize(normalize-space($heights)))"/>
     <!-- Output all the physical lines of this row -->
     <xsl:call-template
 	name="u:rowLines">
@@ -2221,15 +2214,8 @@ data: Data elements used by the stylesheet
     <xsl:text>+</xsl:text>
     <xsl:for-each
 	select="../../colspec">
-      <xsl:call-template
-	  name="u:repeat">
-	<xsl:with-param
-	    name="length"
-	    select="@colwidth"/>
-	<xsl:with-param
-	    name="chars"
-	    select="$char"/>
-      </xsl:call-template>
+      <xsl:value-of
+	  select="str:padding(@colwidth, $char)"/>
       <xsl:text>+</xsl:text>
     </xsl:for-each>
     &tEOL;
@@ -2461,12 +2447,8 @@ data: Data elements used by the stylesheet
 	  &tEOL;
 	</xsl:message>
       </xsl:if>
-      <xsl:call-template
-	  name="u:repeat">
-	<xsl:with-param
-	    name="length"
-	    select="$width - string-length($padded)"/>
-      </xsl:call-template>
+      <xsl:value-of
+	  select="str:padding($width - string-length($padded))"/>
     </xsl:if>
     <xsl:if
 	test="$outputLine > 1 or $outputLine = 0 and string-length($remainingLines)">
@@ -2671,14 +2653,8 @@ data: Data elements used by the stylesheet
 	name="normalized"
 	select="translate(normalize-space(@name), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')"/>
     <xsl:variable
-	name="quoted">
-      <xsl:call-template
-	  name="u:quoteWhite">
-	<xsl:with-param
-	    name="string"
-	    select="$normalized"/>
-      </xsl:call-template>
-    </xsl:variable>
+	name="quoted"
+	select="str:replace($normalized, ' ', '\ ')"/>
     <xsl:variable
 	name="matching"
 	select="//target[contains(@names, $quoted)]"/>
@@ -3058,16 +3034,12 @@ data: Data elements used by the stylesheet
       <xsl:choose>
 	<xsl:when
 	    test="contains($directives, concat('*', $this, '*'))">
-	  <xsl:call-template
-	      name="u:repeat">
-	    <!-- TODO Indentation of lines after some directives must be
-	              indented to align with the directive instead of a
-	              fixed indentation; however, this is rather complicated
-	              since identation for parameters should be fixed -->
-	    <xsl:with-param
-		name="length"
-		select="3"/>
-	  </xsl:call-template>
+	  <!-- TODO Indentation of lines after some directives must be
+	            indented to align with the directive instead of a
+	            fixed indentation; however, this is rather complicated
+	            since identation for parameters should be fixed -->
+	  <xsl:value-of
+	      select="str:padding(3)"/>
 	</xsl:when>
 	<xsl:when
 	    test="$this = 'list_item' and parent::enumerated_list">
@@ -3078,66 +3050,15 @@ data: Data elements used by the stylesheet
 	    <xsl:call-template
 		name="u:outputEnumerator"/>
 	  </xsl:variable>
-	  <xsl:call-template
-	      name="u:repeat">
-	    <xsl:with-param
-		name="length"
-		select="string-length($enumerator)"/>
-	  </xsl:call-template>
+	  <xsl:value-of
+	      select="str:padding(string-length($enumerator))"/>
 	</xsl:when>
 	<xsl:otherwise>
-	  <xsl:call-template
-	      name="u:repeat">
-	    <xsl:with-param
-		name="length"
-		select="document('')//data:lookup/node[@name=$this]/@indent"/>
-	  </xsl:call-template>
+	  <xsl:value-of
+	      select="str:padding(document('')//data:lookup/node[@name=$this]/@indent)"/>
 	</xsl:otherwise>
       </xsl:choose>
     </xsl:for-each>
-  </xsl:template>
-
-  <!-- ******************************************************************** -->
-
-  <!--
-  Create a repeated character string
-  Shamelessly borrowed from Jeni Tennison's work on EXSLT
-  -->
-  <xsl:template
-      name="u:repeat">
-    <xsl:param
-	name="length"
-	select="0"/>
-    <xsl:param
-	name="chars"
-	select="' '"/>
-    <xsl:choose>
-      <xsl:when
-	  test="not($length) or $length &lt;= 0 or not($chars)"/>
-      <xsl:otherwise>
-	<xsl:variable
-	    name="string"
-	    select="concat($chars, $chars, $chars, $chars, $chars, $chars, $chars, $chars, $chars, $chars)"/>
-	<xsl:choose>
-	  <xsl:when
-	      test="string-length($string) >= $length">
-	    <xsl:value-of
-		select="substring($string, 1, $length)"/>
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <xsl:call-template
-		name="u:repeat">
-	      <xsl:with-param
-		  name="length"
-		  select="$length"/>
-	      <xsl:with-param
-		  name="chars"
-		  select="$string"/>
-	    </xsl:call-template>
-	  </xsl:otherwise>                
-	</xsl:choose>            
-      </xsl:otherwise>        
-    </xsl:choose>
   </xsl:template>
 
   <!-- ******************************************************************** -->
@@ -3468,7 +3389,7 @@ data: Data elements used by the stylesheet
     </xsl:choose>
   </xsl:template>
 
-  <!-- Output `\' or `\ ' after some inline element if necessary -->
+  <!-- Output `\' after some inline element if necessary -->
   <xsl:template
       name="u:bkslshEscSuf">
     <!-- Get the sibling node directly after the current element -->
@@ -3520,15 +3441,8 @@ data: Data elements used by the stylesheet
     <!-- Test whether a overline is wanted at all -->
     <xsl:if
 	test="substring($adornment, 2 * ($depth - 1) + 1, 1) = 'o'">
-      <xsl:call-template
-	  name="u:repeat">
-	<xsl:with-param
-	    name="length"
-	    select="$length"/>
-	<xsl:with-param
-	    name="chars"
-	    select="substring($adornment, 2 * ($depth - 1) + 2, 1)"/>
-      </xsl:call-template>
+      <xsl:value-of
+	  select="str:padding($length, substring($adornment, 2 * ($depth - 1) + 2, 1))"/>
       &tEOL;
     </xsl:if>
   </xsl:template>
@@ -3542,15 +3456,8 @@ data: Data elements used by the stylesheet
          greater than 2 are normal section titles -->
     <xsl:param
 	name="depth"/>
-    <xsl:call-template
-	name="u:repeat">
-      <xsl:with-param
-	  name="length"
-	  select="$length"/>
-      <xsl:with-param
-	  name="chars"
-	  select="substring($adornment, 2 * ($depth - 1) + 2, 1)"/>
-    </xsl:call-template>
+    <xsl:value-of
+	select="str:padding($length, substring($adornment, 2 * ($depth - 1) + 2, 1))"/>
     &tEOL;
   </xsl:template>
 
@@ -3613,69 +3520,6 @@ data: Data elements used by the stylesheet
 
   <!-- ******************************************************************** -->
 
-  <!-- Determine the maximum number from a whitespace separated number list -->
-  <xsl:template
-      name="u:maxNumber">
-    <xsl:param
-	name="numbers"/>
-    <!-- If this is not given by the caller a list of negative numbers will
-         not work -->
-    <xsl:param
-	name="currentMax"
-	select="0"/>
-    <xsl:variable
-	name="cleanNumbers"
-	select="normalize-space($numbers)"/>
-    <xsl:choose>
-      <xsl:when
-	  test="contains($cleanNumbers, ' ')">
-	<xsl:variable
-	    name="head"
-	    select="substring-before($cleanNumbers, ' ')"/>
-	<xsl:choose>
-	  <xsl:when
-	      test="$head > $currentMax">
-	    <xsl:call-template
-		name="u:maxNumber">
-	      <xsl:with-param
-		  name="numbers"
-		  select="substring-after($cleanNumbers, ' ')"/>
-	      <xsl:with-param
-		  name="currentMax"
-		  select="$head"/>
-	    </xsl:call-template>
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <xsl:call-template
-		name="u:maxNumber">
-	      <xsl:with-param
-		  name="numbers"
-		  select="substring-after($cleanNumbers, ' ')"/>
-	      <xsl:with-param
-		  name="currentMax"
-		  select="$currentMax"/>
-	    </xsl:call-template>
-	  </xsl:otherwise>
-	</xsl:choose>
-      </xsl:when>
-      <xsl:otherwise>
-	<xsl:choose>
-	  <xsl:when
-	      test="$cleanNumbers > $currentMax">
-	    <xsl:value-of
-		select="$cleanNumbers"/>
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <xsl:value-of
-		select="$currentMax"/>
-	  </xsl:otherwise>
-	</xsl:choose>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-  <!-- ******************************************************************** -->
-
   <!-- Output a class directive for the directly following element. -->
   <!-- TODO A class directive can also be used as a container putting the
 	    respective attribute to its content; however, this is not
@@ -3721,103 +3565,6 @@ data: Data elements used by the stylesheet
 
   <!-- ******************************************************************** -->
 
-  <!-- Output a string with backslashed stripped -->
-  <xsl:template
-      name="u:outputUnbackslashed">
-    <xsl:param
-	name="string"/>
-    <xsl:choose>
-      <xsl:when
-	  test="not(contains($string, '\'))">
-	<xsl:value-of
-	    select="$string"/>
-      </xsl:when>
-      <xsl:otherwise>
-	<xsl:value-of
-	    select="substring-before($string, '\')"/>
-	<xsl:call-template
-	    name="u:outputUnbackslashed">
-	  <xsl:with-param
-	      name="string"
-	      select="substring-after($string, '\')"/>
-	</xsl:call-template>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-  <!-- Returns a name at an index -->
-  <xsl:template
-      name="u:name4Index">
-    <xsl:param
-	name="names"/>
-    <xsl:param
-	name="index"/>
-    <xsl:param
-	name="name0"
-	select="''"/>
-    <xsl:choose>
-      <xsl:when
-	  test="not(contains($names, ' '))">
-	<xsl:choose>
-	  <xsl:when
-	      test="not($index)">
-	    <xsl:value-of
-		select="concat($name0, $names)"/>
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <!-- No string with this index -->
-	    <xsl:value-of
-		select="''"/>
-	  </xsl:otherwise>
-	</xsl:choose>
-      </xsl:when>
-      <xsl:otherwise>
-	<xsl:variable
-	    name="before"
-	    select="substring-before($names, ' ')"/>
-	<xsl:choose>
-	  <xsl:when
-	      test="substring($before, string-length($before)) = '\'">
-	    <!-- Quoted space found -->
-	    <xsl:call-template
-		name="u:name4Index">
-	      <xsl:with-param
-		  name="names"
-		  select="substring-after($names, ' ')"/>
-	      <xsl:with-param
-		  name="index"
-		  select="$index"/>
-	      <xsl:with-param
-		  name="name0"
-		  select="concat($name0, $before, ' ')"/>
-	    </xsl:call-template>
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <!-- Separating space found -->
-	    <xsl:choose>
-	      <xsl:when
-		  test="not($index)">
-		<xsl:value-of
-		    select="concat($name0, $before)"/>
-	      </xsl:when>
-	      <xsl:otherwise>
-		<xsl:call-template
-		    name="u:name4Index">
-		  <xsl:with-param
-		      name="names"
-		      select="substring-after($names, ' ')"/>
-		  <xsl:with-param
-		      name="index"
-		      select="$index - 1"/>
-		</xsl:call-template>
-	      </xsl:otherwise>
-	    </xsl:choose>
-	  </xsl:otherwise>
-	</xsl:choose>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
   <!-- Output a names attribute at index considering quoted spaces. -->
   <xsl:template
       name="u:outputNames">
@@ -3828,127 +3575,11 @@ data: Data elements used by the stylesheet
     <xsl:param
 	name="index"
 	select="0"/>
-    <xsl:variable
-	name="name">
-      <xsl:call-template
-	  name="u:name4Index">
-	<xsl:with-param
-	    name="names"
-	    select="$names"/>
-	<xsl:with-param
-	    name="index"
-	    select="$index"/>
-      </xsl:call-template>
-    </xsl:variable>
-    <xsl:call-template
-	name="u:outputUnbackslashed">
-      <xsl:with-param
-	  name="string"
-	  select="$name"/>
-    </xsl:call-template>
+    <xsl:value-of
+	select="str:replace(str:tokenize(normalize-space(str:replace($names, '\ ', '|')))[position() = $index + 1], '|', ' ')"/>
   </xsl:template>
 
   <!-- ******************************************************************** -->
-
-  <!-- Finds an id in a list and returns its index or empty string if not
-       contained exactly. -->
-  <xsl:template
-      name="u:findId">
-    <xsl:param
-	name="list"/>
-    <xsl:param
-	name="id"/>
-    <xsl:param
-	name="index"
-	select="0"/>
-    <xsl:choose>
-      <xsl:when
-	  test="$list = ''">
-	<xsl:value-of
-	    select="''"/>
-      </xsl:when>
-      <xsl:when
-	  test="$list = $id or starts-with($list, concat($id, ' '))">
-	<xsl:value-of
-	    select="$index"/>
-      </xsl:when>
-      <xsl:otherwise>
-	<xsl:call-template
-	    name="u:findId">
-	  <xsl:with-param
-	      name="list"
-	      select="substring-after($list, ' ')"/>
-	  <xsl:with-param
-	      name="id"
-	      select="$id"/>
-	  <xsl:with-param
-	      name="index"
-	      select="$index + 1"/>
-	</xsl:call-template>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
-
-  <!-- In a number of elements find the one containing exactly id and return
-       the index of the element as well as the index of the id -->
-  <xsl:template
-      name="u:findRefElem">
-    <xsl:param
-	name="possibleElems"/>
-    <xsl:param
-	name="id"/>
-    <!-- XSLT is 1-based -->
-    <xsl:param
-	name="elemIndex"
-	select="1"/>
-    <xsl:variable
-	name="elem"
-	select="$possibleElems[1]"/>
-    <xsl:choose>
-      <!-- No more elements - return empty string -->
-      <xsl:when
-	  test="not($possibleElems)">
-	<xsl:value-of
-	    select="''"/>
-      </xsl:when>
-      <xsl:otherwise>
-	<!-- Check whether the first element contains the id -->
-	<xsl:variable
-	    name="fnd">
-	  <xsl:call-template
-	      name="u:findId">
-	    <xsl:with-param
-		name="list"
-		select="$elem/@ids"/>
-	    <xsl:with-param
-		name="id"
-		select="$id"/>
-	  </xsl:call-template>
-	</xsl:variable>
-	<xsl:choose>
-	  <xsl:when
-	      test="$fnd != ''">
-	    <xsl:value-of
-		select="concat($elemIndex, ' ', $fnd)"/>
-	  </xsl:when>
-	  <xsl:otherwise>
-	    <xsl:call-template
-		name="u:findRefElem">
-	      <xsl:with-param
-		  name="possibleElems"
-		  select="$possibleElems[position() != 1]"/>
-	      <xsl:with-param
-		  name="id"
-		  select="$id"/>
-	      <xsl:with-param
-		  name="elemIndex"
-		  select="$elemIndex + 1"/>
-	    </xsl:call-template>
-	  </xsl:otherwise>
-	</xsl:choose>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
 
   <!-- Output a names attribute for a refid. -->
   <xsl:template
@@ -3956,60 +3587,19 @@ data: Data elements used by the stylesheet
     <xsl:param
 	name="refid"
 	select="@refid"/>
-    <!-- Determine all possible elements which might be referred -->
+    <!-- Determine the elements which is referred -->
     <xsl:variable
-	name="possibleElems"
-	select="//*[contains(@ids, $refid)]"/>
-    <xsl:variable
-	name="refElem_index">
-      <xsl:call-template
-	  name="u:findRefElem">
-	<xsl:with-param
-	    name="possibleElems"
-	    select="$possibleElems"/>
-	<xsl:with-param
-	    name="id"
-	    select="$refid"/>
-      </xsl:call-template>
-    </xsl:variable>
+	name="refElem"
+	select="//*[@ids and math:max(dyn:map(str:tokenize(normalize-space(@ids)), 'number($refid = .)')) > 0]"/>
     <xsl:call-template
 	name="u:outputNames">
       <xsl:with-param
 	  name="names"
-	  select="$possibleElems[position() = substring-before($refElem_index, ' ')]/@names"/>
+	  select="$refElem/@names"/>
       <xsl:with-param
 	  name="index"
-	  select="number(substring-after($refElem_index, ' '))"/>
+	  select="math:max(dyn:map(str:tokenize(normalize-space($refElem/@ids)), 'number($refid = .) * position() - 1'))"/>
     </xsl:call-template>
-  </xsl:template>
-
-  <!-- ******************************************************************** -->
-
-  <!-- Output a string with each space character quoted -->
-  <xsl:template
-      name="u:quoteWhite">
-    <xsl:param
-	name="string"/>
-    <xsl:variable
-	name="head"
-	select="substring-before($string, ' ')"/>
-    <xsl:choose>
-      <xsl:when
-	  test="$head = ''">
-	<xsl:value-of
-	    select="$string"/>
-      </xsl:when>
-      <xsl:otherwise>
-	<xsl:value-of
-	    select="concat($head, '\ ')"/>
-	<xsl:call-template
-	    name="u:quoteWhite">
-	  <xsl:with-param
-	      name="string"
-	      select="substring-after($string, ' ')"/>
-	</xsl:call-template>
-      </xsl:otherwise>
-    </xsl:choose>
   </xsl:template>
 
   <!-- ******************************************************************** -->
@@ -4043,32 +3633,32 @@ data: Data elements used by the stylesheet
 
 =head1 NAME
 
-xml2rst-noexslt.xsl - An XSLT script to convert Docutils XML to reStructuredText
+xml2rst-nopy.xsl - An XSLT script to convert Docutils XML to reStructuredText
 
 =head1 SYNOPSIS
 
-  Xalan docutils.xml xml2rst.xsl
+  xsltproc docutils.xml xml2rst-nopy.xsl
 
 =head1 NOTE
 
-Today B<xml2rst-noexslt.xsl> is not the recommended way to use
+Today B<xml2rst-nopy.xsl> is not the recommended way to use
 B<xml2rst>. The preferred way is to install B<lxml> and use
 B<xml2rst.py> instead.
 
 =head1 DESCRIPTION
 
-B<xml2rst-noexslt.xsl> is an XSLT script to convert Docutils XML to
-reStructuredText. You can use your favorite XSLT processor (e.g. Xalan
-from the Apache project) to generate reStructuredText from the
-Docutils intermediate XML representation. Its main use is to generate
-reStructuredText from some other format where a converter to Docutils
-XML already exists.
+B<xml2rst-nopy.xsl> is an XSLT script to convert Docutils XML to
+reStructuredText. You can use your favorite XSLT processor supporting
+EXSLT (e.g. xsltproc from the Gnome project) to generate
+reStructuredText from the Docutils intermediate XML representation.
+Its main use is to generate reStructuredText from some other format
+where a converter to Docutils XML already exists.
 
 =head2 Options
 
 The following options are supported. They are XSLT parameters for the
 whole script and must be given to the XSLT processor by the respective
-option (Xalan: B<-p>).
+option (xsltproc: B<- -param> or B<- -stringparam>).
 
 =over 4
 
@@ -4112,7 +3702,7 @@ reason is that Docutils transports pretty much but not all information
 of the original source into the XML. Also the sequence is changed
 sometimes.
 
-However, the coverage of Docutils features of B<xml2rst-noexslt.xsl> is
+However, the coverage of Docutils features of B<xml2rst-nopy.xsl> is
 pretty good. A few minor features are not supported:
 
 =over 4
@@ -4132,7 +3722,8 @@ pretty good. A few minor features are not supported:
 =head1 INSTALLATION
 
 Installation is not necessary. Just use the file as downloaded with
-your favorite XSLT processor.
+your favorite XSLT processor supporting EXSLT. For instance you can
+use B<xsltproc> from the Gnome project.
 
 =head1 AUTHOR
 
