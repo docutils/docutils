@@ -8,19 +8,23 @@ What is xml2rst?
 ================
 
 `xml2rst` is a tool to generate reStructuredText_ syntax back from
-`Docutils XML`_ input. This way you can an create XML files using
+`Docutils XML`_ input. This way you can create an XML files using
 `Docutils XML`_ from some other format (such as ODF_) and then
-transform them to reStructuredText_.
+transform the result to reStructuredText_.
 
 .. _flavor:
 
-It is currently implemented as an XSLT_ stylesheet coming in three
-flavors:
+Using xml2rst
+=============
+
+`xml2rst` is currently implemented as an XSLT_ stylesheet usable in
+three flavors:
 
 1. ``xml2rst.py``
 
    This script uses ``rst/xml2rst.xsl`` through the XSLT_ engine
-   available through the lxml_ package [#deb-lxml]_.
+   available through the lxml_ package [#deb-lxml]_. It also uses
+   Python callbacks for some advanced functionality.
 
    This is the preferred method of using `xml2rst` but depends on the
    lxml_ package. This is also what is installed normally.
@@ -28,33 +32,44 @@ flavors:
    .. [#deb-lxml] Under Debian based operating systems try ``apt-get
       install python-lxml``.
 
-2. ``rst/xml2rst.xsl``
+   Run ``xml2rst --help`` for information on how to run it.
 
-   This is the core XSLT_ script. It uses EXSLT_ and therefore needs
-   an EXSLT_ capable XSLT_ processors such as xsltproc_
-   [#deb-xsltproc]_.
+2. ``rst/xml2rst-nopy.xsl``
 
-   If you can't use ``xml2rst.py`` you may try this flavor.
+   This is the core XSLT_ script without using Python. It uses EXSLT_
+   and therefore needs an EXSLT_ capable XSLT_ processors such as
+   xsltproc_ [#deb-xsltproc]_.
+
+   If you can't use ``xml2rst.py`` because you don't have lxml_ you
+   may try this flavor. This version is no longer actively maintained,
+   though.
 
    .. [#deb-xsltproc] Under Debian based operating systems try
       ``apt-get install xsltproc``.
+
+   Run ``perldoc rst/xml2rst-nopy.xsl`` for information on how to run
+   it.
 
 3. ``rst/xml2rst-noexslt.xsl``
 
    This version can be processed with every XSLT_ processor like
    Xalan_ [#deb-xalan]_.
 
-   This version is no longer actively maintained, though.
+   If you can use neither ``xml2rst.py`` nor ``xml2rst-nopy.xsl`` you
+   may try this flavor. This version is no longer actively maintained,
+   though.
 
    .. [#deb-xalan] Under Debian based operating systems try ``apt-get
       install xalan``.
+
+   Run ``perldoc rst/xml2rst-noexslt.xsl`` for information on how to
+   run it.
 
 Availability
 ============
 
 `xml2rst` is available through the `Docutils Subversion repository`_
-as part of the Docutils sandbox at
-http://svn.berlios.de/viewcvs/docutils/trunk/sandbox/xml2rst
+as part of the Docutils sandbox in ``sandbox/xml2rst``.
 
 Moreover you can fetch it directly from the current maintainer at
 http://www.merten-home.de/FreeSoftware/xml2rst/
@@ -65,14 +80,13 @@ Installation
 After you obtained the package run ``python setup.py install``.
 
 Depending on the flavor_ you choose you need to install certain
-packages to run `xml2rst`. If using an XSLT_ processor try ``perldoc
-xml2rst.xsl`` for instructions how to run it.
+packages to run `xml2rst`.
 
 Copyright and license
 =====================
 
 Copyright (C) 2005, 2006 by Stefan Merten and David Priest
-Copyright (C) 2009, 2010 by Stefan Merten
+Copyright (C) 2009, 2010, 2011 by Stefan Merten
 
 License is GPL_ v2 or later.
 
@@ -93,7 +107,8 @@ with ``TODO`` which contain things which should be done.
 Plans
 -----
 
-``xml2rst`` should become a normal reStructuredText writer.
+``xml2rst`` should become a normal reStructuredText writer. Starting
+with V1.0 functionality is moved to a Python based implementation.
 
 .. ############################################################################
 

@@ -1,4 +1,520 @@
 **************************************
+Date: Sat Dec 10 21:43:02 CET 2011
+Author: stefan
+Tag: xml2rst_1_224
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/rst
+In directory theowa:/home/stefan/free/xml2rst/rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/expected
+In directory theowa:/home/stefan/free/xml2rst/tests/simple/expected
+
+Added Files:
+	docinfoHeader.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/original
+In directory theowa:/home/stefan/free/xml2rst/tests/simple/original
+
+Added Files:
+	docinfoHeader.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/synthetic/expected
+In directory theowa:/home/stefan/free/xml2rst/tests/synthetic/expected
+
+Modified Files:
+	class.rst standard_0_3_7.rst standard_r6008.rst 
+
+--------------------------------------
+Log Message:
+Docinfo blocks are ended with a blank line.
+**************************************
+Date: Sat Dec 10 20:41:03 CET 2011
+Author: stefan
+Tag: xml2rst_1_223
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory theowa:/home/stefan/free/xml2rst
+
+Modified Files:
+	Makefile 
+
+--------------------------------------
+Log Message:
+Improved Makefile.
+**************************************
+Date: Sat Dec 10 20:16:30 CET 2011
+Author: stefan
+Tag: xml2rst_1_222
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/rst
+In directory theowa:/home/stefan/free/xml2rst/rst
+
+Modified Files:
+	xml2rst.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/expected
+In directory theowa:/home/stefan/free/xml2rst/tests/simple/expected
+
+Modified Files:
+	targets.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/original
+In directory theowa:/home/stefan/free/xml2rst/tests/simple/original
+
+Modified Files:
+	targets.rst 
+
+--------------------------------------
+Log Message:
+Targets containing colons are quoted correctly.
+**************************************
+Date: Sat Dec 10 18:08:25 CET 2011
+Author: stefan
+Tag: xml2rst_1_221
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory theowa:/home/stefan/free/xml2rst
+
+Modified Files:
+	setup.py 
+
+--------------------------------------
+Log Message:
+Debugged packaging.
+**************************************
+Date: Sat Dec 10 17:59:00 CET 2011
+Author: stefan
+Tag: xml2rst_1_220
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple
+In directory theowa:/home/stefan/free/xml2rst/tests/simple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Excluded test for non-implemented feature.
+**************************************
+Date: Sat Dec 10 17:50:14 CET 2011
+Author: stefan
+Tag: xml2rst_1_219
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory theowa:/home/stefan/free/xml2rst
+
+Modified Files:
+	README 
+
+--------------------------------------
+Log Message:
+Improved documentation.
+**************************************
+Date: Tue Dec  6 22:00:35 CET 2011
+Author: stefan
+Tag: xml2rst_1_218
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xalan/simple
+In directory theowa:/home/stefan/free/xml2rst/tests.xalan/simple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xsltproc
+In directory theowa:/home/stefan/free/xml2rst/tests.xsltproc
+
+Modified Files:
+	common.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xsltproc/options
+In directory theowa:/home/stefan/free/xml2rst/tests.xsltproc/options
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xsltproc/simple
+In directory theowa:/home/stefan/free/xml2rst/tests.xsltproc/simple
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Log Message:
+Adapted tests to not test features implemented by Python.
+**************************************
+Date: Mon Dec  5 23:37:02 CET 2011
+Author: stefan
+Tag: xml2rst_1_217
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/rst
+In directory theowa:/home/stefan/free/xml2rst/rst
+
+Modified Files:
+	markup.py rst_xslt.py xml2rst.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/expected
+In directory theowa:/home/stefan/free/xml2rst/tests/simple/expected
+
+Modified Files:
+	quoteBlock.rst quoteOriginal.rst 
+
+--------------------------------------
+Log Message:
+Literal parts are not quoted.
+**************************************
+Date: Mon Dec  5 23:01:41 CET 2011
+Author: stefan
+Tag: xml2rst_1_216
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/expected
+In directory theowa:/home/stefan/free/xml2rst/tests/simple/expected
+
+Modified Files:
+	quoteOriginal.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/original
+In directory theowa:/home/stefan/free/xml2rst/tests/simple/original
+
+Modified Files:
+	quoteOriginal.rst 
+
+--------------------------------------
+Log Message:
+Extended test exposing bugs for literal text.
+**************************************
+Date: Mon Dec  5 22:52:43 CET 2011
+Author: stefan
+Tag: xml2rst_1_215
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/rst
+In directory theowa:/home/stefan/free/xml2rst/rst
+
+Modified Files:
+	markup.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/expected
+In directory theowa:/home/stefan/free/xml2rst/tests/simple/expected
+
+Modified Files:
+	quoteOriginal.rst 
+
+--------------------------------------
+Log Message:
+Quoting backslashes works.
+**************************************
+Date: Mon Dec  5 22:10:38 CET 2011
+Author: stefan
+Tag: xml2rst_1_214
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/expected
+In directory theowa:/home/stefan/free/xml2rst/tests/simple/expected
+
+Modified Files:
+	quoteOriginal.rst 
+Added Files:
+	quoteBlock.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/original
+In directory theowa:/home/stefan/free/xml2rst/tests/simple/original
+
+Modified Files:
+	quoteOriginal.rst 
+Added Files:
+	quoteBlock.rst 
+
+--------------------------------------
+Log Message:
+Separated tests for inline and block quoting.
+**************************************
+Date: Mon Dec  5 20:07:21 CET 2011
+Author: stefan
+Tag: xml2rst_1_213
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/rst
+In directory theowa:/home/stefan/free/xml2rst/rst
+
+Modified Files:
+	markup.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/expected
+In directory theowa:/home/stefan/free/xml2rst/tests/simple/expected
+
+Modified Files:
+	quoteOriginal.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/original
+In directory theowa:/home/stefan/free/xml2rst/tests/simple/original
+
+Modified Files:
+	quoteOriginal.rst 
+
+--------------------------------------
+Log Message:
+Inline markup is output properly.
+**************************************
+Date: Mon Dec  5 12:35:35 CET 2011
+Author: stefan
+Tag: xml2rst_1_212
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/rst
+In directory theowa:/home/stefan/free/xml2rst/rst
+
+Modified Files:
+	markup.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/expected
+In directory theowa:/home/stefan/free/xml2rst/tests/simple/expected
+
+Modified Files:
+	quoteOriginal.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/original
+In directory theowa:/home/stefan/free/xml2rst/tests/simple/original
+
+Modified Files:
+	quoteOriginal.rst 
+
+--------------------------------------
+Log Message:
+Most inline constructs work.
+**************************************
+Date: Mon Dec  5 12:11:13 CET 2011
+Author: stefan
+Tag: xml2rst_1_211
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/rst
+In directory theowa:/home/stefan/free/xml2rst/rst
+
+Modified Files:
+	markup.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/expected
+In directory theowa:/home/stefan/free/xml2rst/tests/simple/expected
+
+Modified Files:
+	quoteOriginal.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/original
+In directory theowa:/home/stefan/free/xml2rst/tests/simple/original
+
+Modified Files:
+	quoteOriginal.rst 
+
+--------------------------------------
+Log Message:
+Expanded tests.
+**************************************
+Date: Mon Dec  5 11:43:23 CET 2011
+Author: stefan
+Tag: xml2rst_1_210
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/rst
+In directory theowa:/home/stefan/free/xml2rst/rst
+
+Modified Files:
+	markup.py 
+
+--------------------------------------
+Log Message:
+Some markup recognition works.
+**************************************
+Date: Mon Dec  5 09:57:40 CET 2011
+Author: stefan
+Tag: xml2rst_1_209
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory theowa:/home/stefan/free/xml2rst
+
+Modified Files:
+	README 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/rst
+In directory theowa:/home/stefan/free/xml2rst/rst
+
+Modified Files:
+	.cvsignore markup.py rst_xslt.py xml2rst.xsl 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/expected
+In directory theowa:/home/stefan/free/xml2rst/tests/simple/expected
+
+Modified Files:
+	quoteOriginal.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/original
+In directory theowa:/home/stefan/free/xml2rst/tests/simple/original
+
+Modified Files:
+	quoteOriginal.rst 
+
+--------------------------------------
+Log Message:
+Intermediate version. Does not run.
+**************************************
+Date: Thu Nov 24 13:13:49 CET 2011
+Author: stefan
+Tag: xml2rst_1_208
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/rst
+In directory theowa:/home/stefan/free/xml2rst/rst
+
+Modified Files:
+	rst_xslt.py 
+Added Files:
+	markup.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/expected
+In directory theowa:/home/stefan/free/xml2rst/tests/simple/expected
+
+Modified Files:
+	quoteOriginal.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/original
+In directory theowa:/home/stefan/free/xml2rst/tests/simple/original
+
+Modified Files:
+	quoteOriginal.rst 
+
+--------------------------------------
+Log Message:
+Refactoring: Changed structure separating Python markup generation
+from glue to use in XSLT.
+**************************************
+Date: Mon Nov 21 21:54:36 CET 2011
+Author: stefan
+Tag: xml2rst_1_207
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/rst
+In directory theowa:/home/stefan/free/xml2rst/rst
+
+Modified Files:
+	rst_xslt.py xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+Plain text is formatted by Python based XPath extension.
+**************************************
+Date: Mon Nov 21 10:57:26 CET 2011
+Author: stefan
+Tag: xml2rst_1_206
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/rst
+In directory theowa:/home/stefan/free/xml2rst/rst
+
+Modified Files:
+	rst_xslt.py xml2rst.xsl 
+
+--------------------------------------
+Log Message:
+XSLT extension elements don't work since they can not receive
+parameters. Implemented as XPath function instead. Works in a first
+case.
+**************************************
+Date: Mon Nov 14 22:27:09 CET 2011
+Author: stefan
+Tag: xml2rst_1_205
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/rst
+In directory theowa:/home/stefan/free/xml2rst/rst
+
+Modified Files:
+	rst_xslt.py 
+
+--------------------------------------
+Log Message:
+Started implementation of XSLT extensions. Not used yet.
+
+Transformed documentation to reStructuredText.
+**************************************
+Date: Thu Nov 10 08:59:17 CET 2011
+Author: stefan
+Tag: xml2rst_1_204
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/expected
+In directory theowa:/home/stefan/free/xml2rst/tests/simple/expected
+
+Modified Files:
+	quoteOriginal.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/original
+In directory theowa:/home/stefan/free/xml2rst/tests/simple/original
+
+Modified Files:
+	quoteOriginal.rst 
+
+--------------------------------------
+Log Message:
+Improved new test. Test fails due to lack of implementation.
+**************************************
+Date: Thu Nov 10 08:44:11 CET 2011
+Author: stefan
+Tag: xml2rst_1_203
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/expected
+In directory theowa:/home/stefan/free/xml2rst/tests/simple/expected
+
+Added Files:
+	quoteOriginal.rst 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests/simple/original
+In directory theowa:/home/stefan/free/xml2rst/tests/simple/original
+
+Added Files:
+	quoteOriginal.rst 
+
+--------------------------------------
+Log Message:
+Added some tests for missing quoting of original text.
+**************************************
 Date: Mon Nov  7 11:47:43 CET 2011
 Author: stefan
 Tag: xml2rst_1_202

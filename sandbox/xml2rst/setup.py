@@ -14,5 +14,6 @@ setup(name='xml2rst',
       requires=[ 'docutils', 'lxml' ],
       scripts=[ 'xml2rst.py' ],
       packages=[ 'rst' ],
-      package_data={ 'rst': [ 'xml2rst.xsl', 'xml2rst-noexslt.xsl' ], },
+      package_data={ 'rst': [ 'xml2rst.xsl',
+                              'xml2rst-nopy.xsl', 'xml2rst-noexslt.xsl' ], },
      )

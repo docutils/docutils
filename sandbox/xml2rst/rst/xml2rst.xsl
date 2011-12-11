@@ -13,7 +13,7 @@
 
 <!--
      Copyright (C) 2005, 2006 Stefan Merten, David Priest
-     Copyright (C) 2009, 2010 Stefan Merten
+     Copyright (C) 2009, 2010, 2011 Stefan Merten
 
      xml2rst.xsl is free software; you can redistribute it and/or modify
      it under the terms of the GNU General Public License as published
@@ -61,7 +61,8 @@ data: Data elements used by the stylesheet
     xmlns:str="http://exslt.org/strings"
     xmlns:dyn="http://exslt.org/dynamic"
     xmlns:math="http://exslt.org/math"
-    extension-element-prefixes="str dyn math">
+    xmlns:rst="http://www.merten-home.de/xml2rst"
+    extension-element-prefixes="str dyn math rst">
 
   <!-- xmlns:regexp="http://exslt.org/regular-expressions" not supported :-( -->
 
@@ -468,6 +469,8 @@ data: Data elements used by the stylesheet
     <xsl:call-template
 	name="u:blank"/>
     <xsl:apply-templates/>
+    <xsl:call-template
+	name="u:blank"/>
   </xsl:template>
 
   <!-- ******************************************************************** -->
@@ -1036,10 +1039,13 @@ data: Data elements used by the stylesheet
   <!-- == simple_body_element == directive -->
   <xsl:template
       match="literal_block">
+    <!-- If it contains inline elements this is a parsed-literal -->
+    <xsl:variable
+	name="isParsedLiteral"
+	select=".//*[contains($inline_elements, concat('*', name(), '*'))]"/>
     <xsl:choose>
       <xsl:when
-	  test=".//*[contains($inline_elements, concat('*', name(), '*'))]">
-	<!-- If it contains inline elements this is a parsed-literal -->
+	  test="$isParsedLiteral">
 	<xsl:call-template
 	    name="u:BandI"/>
 	<xsl:text>.. parsed-literal::</xsl:text>
@@ -1086,7 +1092,16 @@ data: Data elements used by the stylesheet
 	      name="ancestors"
 	      select="ancestor-or-self::*"/>
 	</xsl:call-template>
-	<xsl:apply-templates/>
+	<xsl:choose>
+	  <xsl:when
+	      test="$isParsedLiteral">
+	    <xsl:apply-templates/>
+	  </xsl:when>
+	  <xsl:otherwise>
+	    <xsl:apply-templates
+		mode="inLiteral"/>
+	  </xsl:otherwise>
+	</xsl:choose>
       </xsl:otherwise>
     </xsl:choose>
     &tEOL;
@@ -1107,6 +1122,9 @@ data: Data elements used by the stylesheet
 	      select="ancestor::*[position() > 1]"/>
 	</xsl:call-template>
       </xsl:with-param>
+      <xsl:with-param
+	  name="literal"
+	  select="true()"/>
     </xsl:call-template>
   </xsl:template>
 
@@ -1246,7 +1264,8 @@ data: Data elements used by the stylesheet
 	      name="ancestors"
 	      select="ancestor-or-self::*"/>
 	</xsl:call-template>
-	<xsl:apply-templates/>
+	<xsl:apply-templates
+	    mode="inLiteral"/>
 	&tEOL;
       </xsl:otherwise>
     </xsl:choose>
@@ -2792,8 +2811,19 @@ data: Data elements used by the stylesheet
 		name="u:outputNamesRefid"/>
 	  </xsl:when>
 	  <xsl:otherwise>
+	    <xsl:variable
+		name="quoteNeeded"
+		select="contains(@names, ':')"/>
+	    <xsl:if
+		test="$quoteNeeded">
+	      <xsl:text>`</xsl:text>
+	    </xsl:if>
 	    <xsl:call-template
 		name="u:outputNames"/>
+	    <xsl:if
+		test="$quoteNeeded">
+	      <xsl:text>`</xsl:text>
+	    </xsl:if>
 	  </xsl:otherwise>
 	</xsl:choose>
 	<xsl:text>:</xsl:text>
@@ -2893,6 +2923,17 @@ data: Data elements used by the stylesheet
 	name="u:indentLF"/>
   </xsl:template>
 
+  <xsl:template
+      match="text()"
+      mode="inLiteral">
+    <xsl:call-template
+	name="u:indentLF">
+      <xsl:with-param
+	  name="literal"
+	  select="true()"/>
+    </xsl:call-template>
+  </xsl:template>
+
   <!-- ******************************************************************** -->
   <!-- ******************************************************************** -->
 
@@ -2945,62 +2986,62 @@ data: Data elements used by the stylesheet
   Indent a block if it's a child of...
   -->
   <data:lookup>
-    <node
+    <data:node
 	name="address"
 	indent="10"/>
-    <node
+    <data:node
 	name="author"
 	indent="9"/>
-    <node
+    <data:node
 	name="authors"
 	indent="10"/>
-    <node
+    <data:node
 	name="contact"
 	indent="10"/>
-    <node
+    <data:node
 	name="copyright"
 	indent="12"/>
-    <node
+    <data:node
 	name="date"
 	indent="7"/>
-    <node
+    <data:node
 	name="organization"
 	indent="15"/>
-    <node
+    <data:node
 	name="revision"
 	indent="11"/>
-    <node
+    <data:node
 	name="status"
 	indent="9"/>
-    <node
+    <data:node
 	name="version"
 	indent="10"/>
     <!-- This is only for `bullet_list/list_item';
          `enumerated_list/list_item' is handled special -->
-    <node
+    <data:node
 	name="list_item"
 	indent="2"/>
-    <node
+    <data:node
 	name="definition_list_item"
 	indent="4"/>
-    <node
+    <data:node
 	name="field_body"
 	indent="4"/>
-    <node
+    <data:node
 	name="option_list_item"
 	indent="4"/>
     <!-- This is also the indentation if block_quote comes as one of the
          special directives -->
-    <node
+    <data:node
 	name="block_quote"
 	indent="4"/>
-    <node
+    <data:node
 	name="literal_block"
 	indent="4"/>
-    <node
+    <data:node
 	name="attribution"
 	indent="3"/>
-    <node
+    <data:node
 	name="line"
 	indent="2"/>
   </data:lookup>
@@ -3042,7 +3083,7 @@ data: Data elements used by the stylesheet
 	</xsl:when>
 	<xsl:otherwise>
 	  <xsl:value-of
-	      select="str:padding(document('')//data:lookup/node[@name=$this]/@indent)"/>
+	      select="str:padding(document('')//data:lookup/data:node[@name=$this]/@indent)"/>
 	</xsl:otherwise>
       </xsl:choose>
     </xsl:for-each>
@@ -3063,33 +3104,11 @@ data: Data elements used by the stylesheet
       <xsl:call-template
 	  name="u:indent"/>
     </xsl:param>
-    <xsl:choose>
-      <xsl:when
-	  test="contains($string,'&#x0A;')">
-	<!-- Output first physical line -->
-	<xsl:value-of
-	    select="substring-before($string, '&#x0A;')"/>
-	&tEOL;
-	<!-- Indent before the next line -->
-	<xsl:value-of
-	    select="$indent"/>
-	<!-- Output remaining physical lines -->
-	<xsl:call-template
-	    name="u:indentLF">
-	  <xsl:with-param
-	      name="string"
-	      select="substring-after($string, '&#x0A;')"/>
-	  <xsl:with-param
-	      name="indent"
-	      select="$indent"/>
-	</xsl:call-template>
-      </xsl:when>
-      <!-- String does not contain newline, so just output it -->
-      <xsl:otherwise> 
-	<xsl:value-of
-	    select="$string"/>
-      </xsl:otherwise>
-    </xsl:choose>
+    <xsl:param
+	name="literal"
+	select="false()"/>
+    <xsl:value-of
+	select="rst:plain($string, $indent, $literal)"/>
   </xsl:template>
 
   <!-- ******************************************************************** -->
@@ -3612,116 +3631,3 @@ data: Data elements used by the stylesheet
   </xsl:template>
 
 </xsl:stylesheet>
-
-<!-- ********************************************************************** -->
-<!-- ********************************************************************** -->
-<!-- ********************************************************************** -->
-<!-- POD manual page
-
-=head1 NAME
-
-xml2rst.xsl - An XSLT script to convert Docutils XML to reStructuredText
-
-=head1 SYNOPSIS
-
-  xsltproc docutils.xml xml2rst.xsl
-
-=head1 DESCRIPTION
-
-B<xml2rst.xsl> is an XSLT script to convert Docutils XML to
-reStructuredText. You can use your favorite XSLT processor supporting
-EXSLT (e.g. xsltproc from the Gnome project) to generate
-reStructuredText from the Docutils intermediate XML representation.
-Its main use is to generate reStructuredText from some other format
-where a converter to Docutils XML already exists.
-
-=head2 Options
-
-The following options are supported. They are XSLT parameters for the
-whole script and must be given to the XSLT processor by the respective
-option (xsltproc: B<- -param> or B<- -stringparam>).
-
-=over 4
-
-=item adornment
-
-Configures title markup to use so different styles can be requested
-easily.
-
-The value of the parameter must be a string made up of a sequence of
-character pairs. The first character of a pair is C<o> (overline) or
-C<u> (underline) and the second character is the character to use for
-the markup.
-
-The first and the second character pair is used for document title and
-subtitle, the following pairs are used for section titles where the
-third pair is used for the top level section title.
-
-Defaults to C<o=o-u=u-u~u:u.u`>.
-
-=item fold
-
-Configures whether long text lines in paragraphs should be folded and
-to which length. This option is for input not coming from reST which
-may have no internal line feeds in plain text strings.
-
-If folding is enabled text strings not in a line feed preserving
-context are first white-space normalized and then broken according to
-the folding rules. Folding rules put out the first word and continue
-to do so with the following words unless the next word would cross
-the folding boundary. Words are delimited by white-space.
-
-Defaults to C<0>, i.e. no folding.
-
-=back
-
-=head2 Unsupported features
-
-It is generally not possible to create an exact reproduction of an
-original reStructuredText source from an intermediate XML file. The
-reason is that Docutils transports pretty much but not all information
-of the original source into the XML. Also the sequence is changed
-sometimes.
-
-However, the coverage of Docutils features of B<xml2rst.xsl> is pretty
-good. A few minor features are not supported:
-
-=over 4
-
-=item * Fully minimized style for literal blocks
-
-=item * Substitution references for C<replace::> substitutions
-
-=item * Counting roman numbers in enumerated lists
-
-=item * Special table types like C<list-table::> and C<csv-table::>
-
-=item * Custom role definitions
-
-=back
-
-=head1 INSTALLATION
-
-Installation is not necessary. Just use the file as downloaded with
-your favorite XSLT processor supporting EXSLT. For instance you can
-use B<xsltproc> from the Gnome project.
-
-=head1 AUTHOR
-
-Stefan Merten <smerten@oekonux.de> based on works by David Priest.
-
-=head1 LICENSE
-
-This program is licensed under the terms of the GPL. See
-
-	http://www.gnu.org/licenses/gpl.txt
-
-=head1 AVAILABILTY
-
-See
-
-	http://www.merten-home.de/FreeSoftware/xml2rst/
-
-=cut
-
--->
