@@ -24,9 +24,6 @@ TODOs:
   
 Overview:
 
-:`<commit-email>`_: A patch to commit-email.pl used for the `Docutils
-    check-in mailing list`_.
-
 :`<dbackport.sh>`_: Back-port changes from the trunk to the
     maintenance branch.
 
