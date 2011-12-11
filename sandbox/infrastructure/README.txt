@@ -12,6 +12,16 @@
 The `infrastructure <.>`_ sandbox directory stores any scripts that
 are needed for the development of the Docutils project.
 
+TODOs:
+
+* subversion is now on sourceforge
+  - change release and update
+
+* sourceforge does not have cron, but berlios installation
+  did not work since long time.
+
+* clean up.
+  
 Overview:
 
 :`<commit-email>`_: A patch to commit-email.pl used for the `Docutils
