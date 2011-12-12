@@ -2,6 +2,11 @@
 # $Id$
 #
 # This script updates the Docutils web site.
+#
+# TODO
+# remove snapshots, maybe skip sandbox .txt files, as they might be
+# for anything.
+#
 # ATTENTION
 # Any .html document with a corresponding .txt file is regenerated 
 # if the .txt has changed, but no new .html files will be generated.
