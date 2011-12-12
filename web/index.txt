@@ -43,6 +43,8 @@ to Docutils: |donate|.
 The only **requirement** for running Docutils is Python_ 2.3 or later.
 (For Docutils 0.5, Python 2.2.1+ is required.
 Up to Docutils 0.4, Python 2.1 is required.)
+From version 0.6, Docutils is compatible with Python 3 (see README_ for
+details).
 
 Docutils is in active development and should be considered **experimental**.
 APIs are subject to change at any time.
@@ -51,12 +53,9 @@ APIs are subject to change at any time.
 Download
 ========
 
-We recommend that you use the latest **snapshot**,
-`<docutils-snapshot.tgz>`_.  The snapshots usually contain *more
-features* and *fewer bugs* than the "official" releases |---| they're
-not only for developers!
-
-From version 0.6 Docutils is compatible with Python 3, but requires 2to3.
+We recommend that you use a snapshot_ from `Docutils' Subversion
+repository`_. The snapshots usually contain *more features* and *fewer bugs*
+than the "official" releases |---| they're not only for developers!
 
 The latest **release package** is `docutils-0.8.1.tgz`__.  It was
 released on 2011-07-08 and is mostly intended for distributors.  See
@@ -66,19 +65,14 @@ the `release notes`_ for a list of changes since the previous release
 __ http://prdownloads.sourceforge.net/docutils/docutils-0.8.1.tar.gz?download
 .. _release notes: RELEASE-NOTES.html#release-0-8-1-2011-08-30
 
-More snapshots:
-
-- `Snapshot of the Sandbox`_ (experimental, contributed code; see the
-  Sandbox_ for details)
-- `Snapshot of DocFactory project files`_ (this is a subset of the
-  Sandbox snapshot above; you don't need both)
-
-You can also access `Docutils' Subversion repository`_ directly.
+The Sandbox_ contains experimental, contributed code. You can download a
+complete `snapshot of the Sandbox`_ or `browse the Sandbox`_ to download a
+subset.
 
 .. attention:: The repository was moved on 2011-12-02 at revision 7232
-   from |BerliOS|_ to |SourceForge|_.
+   from BerliOS to |SourceForge|_.
 
-   Subversion repository *was* hosted by |BerliOS|_ for years, 
+   Subversion repository was hosted by |BerliOS|_ for years, 
    *many thanks for the support*.
 
 .. class:: credits
@@ -104,11 +98,12 @@ and `Docutils-checkins
 .. _dugui: http://docutils.sourceforge.net/sandbox/dugui/
 .. _LaTeX math support:
    http://docutils.sourceforge.net/sandbox/latex_directive/
-.. _latest snapshot: http://docutils.sourceforge.net/docutils-snapshot.tgz
+.. _snapshot:
+   http://docutils.svn.sourceforge.net/viewvc/docutils/trunk/docutils/?view=tar
 .. _Snapshot of the Sandbox:
-   http://docutils.sourceforge.net/docutils-sandbox-snapshot.tgz
-.. _Snapshot of DocFactory project files:
-   http://docutils.sourceforge.net/docfactory-snapshot.tgz
+   http://docutils.svn.sourceforge.net/viewvc/docutils/trunk/sandbox/?view=tar
+.. _browse the Sandbox:
+   http://docutils.svn.sourceforge.net/viewvc/docutils/trunk/sandbox/
 .. _bug report: http://sourceforge.net/tracker/?group_id=38414&atid=422030
 .. _patch tracker: http://sourceforge.net/tracker/?group_id=38414&atid=422032
 .. _mailing lists: docs/user/mailing-lists.html
