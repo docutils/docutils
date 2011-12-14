@@ -15,78 +15,107 @@ import DocutilsTestSupport              # must be imported before docutils
 import docutils.core
 import docutils.utils
 import docutils.io
+from docutils.parsers.rst.directives.images import PIL
+
+# docutils.utils.DependencyList records POSIX paths,
+# i.e. "/" as a path separator even on Windows (not os.path.join).
+paths = {'include': u'data/include.txt',  # included rst file
+         'raw':     u'data/raw.txt',      # included raw "HTML file"
+         'scaled-image': u'../docs/user/rst/images/biohazard.png',
+         'figure-image': u'../docs/user/rst/images/title.png',
+         'stylesheet':   u'data/stylesheet.txt',
+         'default-stylesheet': u'../docutils/writers/html4css1/html4css1.css',
+        }
 
 
 class RecordDependenciesTests(unittest.TestCase):
 
-    # docutils.utils.DependencyList records relative URLs, not platform paths,
-    # so use "/" as a path separator even on Windows (not os.path.join).
-
     def get_record(self, **settings):
         recordfile = 'record.txt'
+        recorder = docutils.utils.DependencyList(recordfile)
+        # (Re) create the record file by running a conversion:
         settings.setdefault('source_path',
                             os.path.join('data', 'dependencies.txt'))
         settings.setdefault('settings_overrides', {})
-        settings['settings_overrides'] = settings['settings_overrides'].copy()
-        settings['settings_overrides']['_disable_config'] = 1
-        if 'record_dependencies' not in settings['settings_overrides']:
-            settings['settings_overrides']['record_dependencies'] = \
-                docutils.utils.DependencyList(recordfile)
-        docutils.core.publish_file(
-            destination=DocutilsTestSupport.DevNull(), **settings)
-        settings['settings_overrides']['record_dependencies'].close()
+        settings['settings_overrides'].update(_disable_config=True,
+                                              record_dependencies=recorder)
+        docutils.core.publish_file(destination=DocutilsTestSupport.DevNull(),
+                                   **settings)
+        recorder.close()
+        # Read the record file:
         record = docutils.io.FileInput(source_path=recordfile,
                                        encoding='utf8')
         return record.read().splitlines()
 
     def test_dependencies(self):
-        self.assertEqual(self.get_record(),
-                         ['data/include.txt', 'data/raw.txt'])
-        self.assertEqual(self.get_record(writer_name='latex'),
-                         ['data/include.txt',
-                          'data/raw.txt',
-                          # this is a URL, not a path:
-                          'some_image.png',
-                          # cyrillic filename (testing with an image, because
-                          # this does not abort if the file does not exist):
-                          u'\u043a\u0430\u0440\u0442\u0438\u043d\u0430.jpg'])
+        # Note: currently, raw input files are read (and hence recorded) while
+        # parsing even if not used in the chosen output format.
+        # This should change (see parsers/rst/directives/misc.py).
+        keys = ['include', 'raw']
+        if PIL:
+            keys += ['figure-image']
+        expected = [paths[key] for key in keys]
+        record = self.get_record(writer_name='xml')
+        # the order of the files is arbitrary
+        record.sort()
+        expected.sort()
+        self.assertEqual(record, expected)
+
+    def test_dependencies_html(self):
+        keys = ['include', 'raw', 'default-stylesheet']
+        if PIL:
+            keys += ['figure-image', 'scaled-image']
+        expected = [paths[key] for key in keys]
+        record = self.get_record(writer_name='html')
+        # the order of the files is arbitrary
+        record.sort()
+        expected.sort()
+        self.assertEqual(record, expected)
+
+    def test_dependencies_latex(self):
+        # since 0.9, the latex writer records only really accessed files, too
+        # Note: currently, raw input files are read (and hence recorded) while
+        # parsing even if not used in the chosen output format.
+        # This should change (see parsers/rst/directives/misc.py).
+        keys = ['include', 'raw']
+        if PIL:
+            keys += ['figure-image']
+        expected = [paths[key] for key in keys]
+        record = self.get_record(writer_name='latex')
+        # the order of the files is arbitrary
+        record.sort()
+        expected.sort()
+        self.assertEqual(record, expected)
 
     def test_csv_dependencies(self):
         try:
             import csv
-            self.assertEqual(
-                self.get_record(source_path=os.path.join('data',
-                                                         'csv_dep.txt')),
-                ['data/csv_data.txt'])
+            csvsource = os.path.join('data', 'csv_dep.txt')
+            self.assertEqual(self.get_record(source_path=csvsource),
+                             ['data/csv_data.txt'])
         except ImportError:
             pass
 
     def test_stylesheet_dependencies(self):
-        # Parameters to publish_file.
-        s = {'settings_overrides': {}}
-        so = s['settings_overrides']
-        so['embed_stylesheet'] = 0
-        # must use '/', not os.sep or os.path.join, because of URL handling
-        # (see docutils.utils.relative_path):
-        stylesheet_path = 'data/stylesheet.txt'
-        so['stylesheet_path'] = stylesheet_path
-        so['stylesheet'] = None
-        s['writer_name'] = 'html'
-        record = self.get_record(**s)
-        self.assert_(stylesheet_path not in record,
-                     '%r should not be in %r' % (stylesheet_path, record))
-        so['embed_stylesheet'] = 1
-        record = self.get_record(**s)
-        self.assert_(stylesheet_path in record,
-                     '%r should be in %r' % (stylesheet_path, record))
-        s['writer_name'] = 'latex'
-        record = self.get_record(**s)
-        self.assert_(stylesheet_path in record,
-                     '%r should be in %r' % (stylesheet_path, record))
-        del so['embed_stylesheet']
-        record = self.get_record(**s)
-        self.assert_(stylesheet_path not in record,
-                     '%r should not be in %r' % (stylesheet_path, record))
+        stylesheet = paths['stylesheet']
+        so = {'stylesheet_path': paths['stylesheet'],
+              'stylesheet': None}
+
+        so['embed_stylesheet'] = False
+        record = self.get_record(writer_name='html', settings_overrides=so)
+        self.assert_(stylesheet not in record,
+                     '%r should not be in %r' % (stylesheet, record))
+        record = self.get_record(writer_name='latex', settings_overrides=so)
+        self.assert_(stylesheet not in record,
+                     '%r should not be in %r' % (stylesheet, record))
+
+        so['embed_stylesheet'] = True
+        record = self.get_record(writer_name='html', settings_overrides=so)
+        self.assert_(stylesheet in record,
+                     '%r should be in %r' % (stylesheet, record))
+        record = self.get_record(writer_name='latex', settings_overrides=so)
+        self.assert_(stylesheet in record,
+                     '%r should be in %r' % (stylesheet, record))
 
 
 if __name__ == '__main__':

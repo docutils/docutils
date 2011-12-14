@@ -662,7 +662,7 @@ def normalize_language_tag(tag):
     return taglist
 
 
-class DependencyList:
+class DependencyList(object):
 
     """
     List of dependencies, with file recording support.
@@ -699,9 +699,7 @@ class DependencyList:
             else:
                 of = output_file
             self.file = FileOutput(destination_path=of,
-                                   encoding=sys.getfilesystemencoding(),
-                                   error_handler='xmlcharrefreplace',
-                                   autoclose=False)
+                                   encoding='utf8', autoclose=False)
         else:
             self.file = None
 
@@ -725,8 +723,8 @@ class DependencyList:
         self.file = None
 
     def __repr__(self):
-        if self.file:
+        try:
             output_file = self.file.name
-        else:
+        except AttributeError:
             output_file = None
         return '%s(%r, %s)' % (self.__class__.__name__, output_file, self.list)
