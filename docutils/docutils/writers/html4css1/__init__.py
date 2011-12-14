@@ -19,10 +19,16 @@ import os
 import os.path
 import time
 import re
-try:
-    import Image                        # check for the Python Imaging Library
+import urllib
+try: # check for the Python Imaging Library
+    import PIL
 except ImportError:
-    Image = None
+    try:  # sometimes PIL modules are put in PYTHONPATH's root
+        import Image
+        class PIL(object): pass  # dummy wrapper
+        PIL.Image = Image
+    except ImportError:
+        PIL = None
 import docutils
 from docutils import frontend, nodes, utils, writers, languages, io
 from docutils.transforms import writer_aux
@@ -286,10 +292,10 @@ class HTMLTranslator(nodes.NodeVisitor):
             styles = [utils.relative_path(settings._destination, sheet)
                       for sheet in styles]
         if settings.embed_stylesheet:
-            settings.record_dependencies.add(*styles)
             self.stylesheet = [self.embedded_stylesheet %
                 io.FileInput(source_path=sheet, encoding='utf-8').read()
                 for sheet in styles]
+            settings.record_dependencies.add(*styles)
         else: # link to stylesheets
             self.stylesheet = [self.stylesheet_link % self.encode(stylesheet)
                                for stylesheet in styles]
@@ -1006,18 +1012,22 @@ class HTMLTranslator(nodes.NodeVisitor):
         if 'height' in node:
             atts['height'] = node['height']
         if 'scale' in node:
-            if Image and not ('width' in node and 'height' in node):
+            if (PIL and not ('width' in node and 'height' in node)
+                and self.settings.file_insertion_enabled):
+                imagepath = urllib.url2pathname(uri)
                 try:
-                    im = Image.open(str(uri))
-                except (IOError, # Source image can't be found or opened
-                        UnicodeError):  # PIL doesn't like Unicode paths.
-                    pass
+                    img = PIL.Image.open(
+                            imagepath.encode(sys.getfilesystemencoding()))
+                except (IOError, UnicodeEncodeError):
+                    pass # TODO: warn?
                 else:
+                    self.settings.record_dependencies.add(
+                        imagepath.replace('\\', '/'))
                     if 'width' not in atts:
-                        atts['width'] = str(im.size[0])
+                        atts['width'] = str(img.size[0])
                     if 'height' not in atts:
-                        atts['height'] = str(im.size[1])
-                    del im
+                        atts['height'] = str(img.size[1])
+                    del img
             for att_name in 'width', 'height':
                 if att_name in atts:
                     match = re.match(r'([0-9.]+)(\S*)$', atts[att_name])

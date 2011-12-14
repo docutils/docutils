@@ -1284,6 +1284,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # Unicode chars that are not recognized by LaTeX's utf8 encoding
         unsupported_unicode_chars = {
             0x00A0: ur'~', # NO-BREAK SPACE
+            # TODO: ensure white space also at the beginning of a line?
+            # 0x00A0: ur'\leavevmode\nobreak\vadjust{}~'
             0x00AD: ur'\-', # SOFT HYPHEN
             #
             0x2008: ur'\,', # PUNCTUATION SPACE   
@@ -2225,9 +2227,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
     def visit_image(self, node):
         self.requirements['graphicx'] = self.graphicx_package
         attrs = node.attributes
-        # Convert image URI to a local file path and add to dependency list
+        # Convert image URI to a local file path
         imagepath = urllib.url2pathname(attrs['uri']).replace('\\', '/')
-        self.settings.record_dependencies.add(imagepath)
         # alignment defaults:
         if not 'align' in attrs:
             # Set default align of image in a figure to 'center'

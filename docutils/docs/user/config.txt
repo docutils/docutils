@@ -387,13 +387,23 @@ _`output_encoding_error_handler`
     --output-encoding, -o``.
 
 _`record_dependencies`
-    Path to a file where Docutils will write a list of files that the
-    input and output depend on [#dependencies]_, e.g. due to file
-    inclusion. [#pwd]_ The format is one filename per line.  This
-    option is particularly useful in conjunction with programs like
-    ``make``.
+    Path to a file where Docutils will write a list of files that were
+    required to generate the output, e.g. included files or embedded
+    stylesheets [#dependencies]_. [#pwd]_ The format is one path per
+    line with forward slashes as separator, the encoding is ``utf8``.
 
     Set to ``-`` in order to write dependencies to stdout.
+
+    This option is particularly useful in conjunction with programs like
+    ``make`` using ``Makefile`` rules like::
+
+      ham.html: ham.txt $(shell cat hamdeps.txt)
+        rst2html.py --record-dependencies=hamdeps.txt ham.txt ham.html
+
+    If the filesystem encoding differs from utf8, replace the ``cat``
+    command with a call to a converter, e.g.::
+
+      $(shell iconv -f utf8 -t latin1 hamdeps.txt)
 
     Default: None.  Option: ``--record-dependencies``.
 
@@ -1436,19 +1446,8 @@ _`_source`
    do the overriding explicitly, by assigning ``None`` to the other
    settings.
 
-.. [#dependencies] Some notes on the dependency recorder:
-
-   * Images are only added to the dependency list if the
-     reStructuredText parser extracted image dimensions from the file.
-
-   * Stylesheets are only added if they are embedded.
-
-   * For practical reasons, the output of the LaTeX writer is
-     considered merely an *intermediate* processing stage.  The
-     dependency recorder records all files the *rendered* file
-     (e.g. in PDF or DVI format) depends on.  Thus, images and
-     stylesheets are both unconditionally recorded as dependencies
-     when using the LaTeX writer.
+.. [#dependencies] Images are only added to the dependency list if the
+   reStructuredText parser extracted image dimensions from the file.
 
 .. [#footnote_space] The footnote space is trimmed if the reference
    style is "superscript", and it is left if the reference style is

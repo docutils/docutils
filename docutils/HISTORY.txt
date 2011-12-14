@@ -32,8 +32,8 @@ Changes Since 0.8.1
 
 * docutils/utils.py
 
-  - DependencyList uses io.FileOutput to prevent errors recording
-    non-ASCII filenames (fixes [ 3434355 ].
+  - DependencyList uses io.FileOutput and 'utf8' encoding to prevent
+    errors recording non-ASCII filenames (fixes [ 3434355 ].
 
 * docutils/parsers/rst/states.py
 
@@ -48,6 +48,7 @@ Changes Since 0.8.1
 * docutils/writers/latex2e/__init__.py
 
   - Support the `abbreviation` and `acronym` standard roles.
+  - Record only files required to generate the LaTeX source as dependencies.
 
 * docutils/writers/html4css1/__init__.py
 
