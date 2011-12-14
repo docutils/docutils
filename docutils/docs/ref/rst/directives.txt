@@ -1393,10 +1393,10 @@ directory.  To access these files, use the special syntax for standard
     .. include:: <isonum.txt>
 
 The current set of standard "include" data files consists of sets of
-substitution definitions.  See `reStructuredText Standard Substitution
-Definition Sets`__ for details of the available standard data files.
+substitution definitions.  See `reStructuredText Standard Definition
+Files`__ for details.
 
-__ substitutions.html
+__ definitions.html
 
 The following options are recognized:
 
