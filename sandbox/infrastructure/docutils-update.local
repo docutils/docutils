@@ -3,15 +3,28 @@
 #
 # This script updates the Docutils web site.
 #
+# The web-root contains 
+#
+# * files and directories from ``trunk/web``:
+#   
+# * files and directories from ``trunk/docutils``:
+#   All files for easy referencing in mails.
+#
+# * and ``trunk/sandbox``.
+#
 # TODO
 # 
-# * remove snapshots,
 # * maybe skip sandbox .txt files, as they might be anything.
-# * do not copy docutils/docutils, the lib into web space
 #
 # ATTENTION
+#
 # Any .html document with a corresponding .txt file is regenerated 
 # if the .txt has changed, but no new .html files will be generated.
+#
+# ATTENTION
+#
+# Directories might contain Makefile.docutils-update files with
+# special instructions.
 #
 # Options:
 #   -f    Do not give feedback.
@@ -147,17 +160,6 @@ version_details="snapshot `date -u +%Y-%m-%d`, r`svn info docutils | grep ^Revis
 # (but change permissions for all subdirectories).
 #find $basedir -type f -print0 | xargs -0 chmod ug+rw 2> /dev/null || true
 find $basedir -name aux -o -type d -print0 | xargs -0 chmod ug+rwxs 2> /dev/null || true
-
-# create the snapshots
-exclude='--exclude=.svn'
-tar -cz $exclude -f $project-snapshot.tgz $project
-tar -cz $exclude -f $project-sandbox-snapshot.tgz sandbox
-tar -cz $exclude -f $project-web-snapshot.tgz web
-( cd sandbox/gschwant ;
-  tar -cz $exclude -f ../../docfactory-snapshot.tgz docfactory )
-
-# plant the snapshots
-mv -f *snapshot.tgz $htdocsdest
 
 # revert and touch (to avoid updating the web site only because of the
 # changed timestamp)
