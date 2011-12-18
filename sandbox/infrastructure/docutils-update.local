@@ -14,6 +14,9 @@
 #
 # TODO
 # 
+# * sourceforge does not offer cron, but shell or web instead:
+#   maybe use cgi-bin script to rebuild the website now and then,
+#   e.g. if accessed and more than one day old and svn is newer.
 # * use htmlfiles.lst to know which html-files have to be generated.
 #   not exclusively but for directory docs at least.
 # * maybe skip sandbox .txt files, as they might be input
