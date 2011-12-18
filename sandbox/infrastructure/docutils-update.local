@@ -14,7 +14,10 @@
 #
 # TODO
 # 
-# * maybe skip sandbox .txt files, as they might be anything.
+# * use htmlfiles.lst to know which html-files have to be generated.
+#   not exclusively but for directory docs at least.
+# * maybe skip sandbox .txt files, as they might be input
+#   for tests for example.
 #
 # ATTENTION
 #
