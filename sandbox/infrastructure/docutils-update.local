@@ -64,9 +64,6 @@ test -d $snapshotdir || mkdir $snapshotdir
 bindir=$auxdir/bin
 test -d $bindir || mkdir $bindir
 
-htdocs_patchfile=$auxdir/htdocs.patch
-htdocs_tarball=$auxdir/htdocs.tar
-htdocs_new_tarball=$auxdir/htdocs.new.tar
 # htdocs directory on SF.net
 remoteproject=/home/groups/d/do/docutils
 remotehtdocs=$remoteproject/htdocs
