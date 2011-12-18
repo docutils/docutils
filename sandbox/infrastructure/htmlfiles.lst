@@ -15,6 +15,7 @@
 ./docs/ref/rst/directives.html
 ./docs/ref/rst/roles.html
 ./docs/ref/rst/restructuredtext.html
+./docs/ref/rst/substitutions.html
 ./docs/ref/rst/definitions.html
 ./docs/ref/doctree.html
 ./docs/ref/transforms.html
