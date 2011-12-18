@@ -283,7 +283,8 @@ fi
 
 cd $htdocsdest
 # do not use -a to avoid "failed to set permissions"
-rsync -e ssh -r ./ web.sourceforge.net:$remotehtdocs
+# -t preserve modification times. But a new svn checkout has new modtime.
+rsync -e ssh -r -t ./ web.sourceforge.net:$remotehtdocs
 
 trap - 0 1 2 3 15
 rm -rf $lockdir
