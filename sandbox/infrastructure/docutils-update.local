@@ -30,7 +30,8 @@
 # ATTENTION
 #
 # Directories might contain Makefile.docutils-update files with
-# special instructions.
+# special instructions. only used in docs/user to call rst2s5.
+# Maybe add special treatment and remove this general solution.
 #
 # Options:
 #   -f    Do not give feedback.
