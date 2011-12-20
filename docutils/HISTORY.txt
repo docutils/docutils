@@ -26,6 +26,11 @@ Changes Since 0.8.1
 
 .. _Pygments: http://pygments.org/
 
+* setup.py
+
+  - Fix [ 2971827 ] and [ 3442827 ]
+    extras/roman.py moved to docutils/utils/roman.py
+
 * docutils/io.py
 
   - Fix [ 3395948 ] (Work around encoding problems in Py3k).

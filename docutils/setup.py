@@ -88,9 +88,6 @@ build.sub_commands.append(('build_data', lambda *a: True))
 
 def do_setup():
     kwargs = package_data.copy()
-    extras = get_extras()
-    if extras:
-        kwargs['py_modules'] = extras
     kwargs['classifiers'] = classifiers
     # Install data files properly.
     kwargs['cmdclass'] = {'build_data': build_data,
@@ -124,7 +121,6 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
     'license': 'public domain, Python, 2-Clause BSD, GPL 3 (see COPYING.txt)',
     'platforms': 'OS-independent',
     'package_dir': {'docutils': 'docutils',
-                    '': 'extras',
                     'docutils.tools': 'tools'},
     'packages': ['docutils',
                  'docutils.languages',
@@ -156,8 +152,6 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
                      ['docutils/writers/latex2e/default.tex',
                       'docutils/writers/latex2e/titlepage.tex',
                       'docutils/writers/latex2e/xelatex.tex',]),
-                    # ('docutils/writers/newlatex2e',
-                    #  ['docutils/writers/newlatex2e/base.tex']),
                     ('docutils/writers/pep_html',
                      ['docutils/writers/pep_html/pep.css',
                       'docutils/writers/pep_html/template.txt']),
@@ -170,7 +164,6 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
     'scripts' : ['tools/rst2html.py',
                  'tools/rst2s5.py',
                  'tools/rst2latex.py',
-                 # 'tools/rst2newlatex.py',
                  'tools/rst2xetex.py',
                  'tools/rst2man.py',
                  'tools/rst2xml.py',
@@ -221,27 +214,6 @@ classifiers = [
     ]
 """Trove classifiers for the Distutils "register" command;
 Python 2.3 and up."""
-
-extra_modules = [('roman', '1.4', ['toRoman', 'fromRoman',
-                                   'InvalidRomanNumeralError'])]
-"""Third-party modules to install if they're not already present.
-List of (module name, minimum __version__ string, [attribute names])."""
-
-def get_extras():
-    extras = []
-    for module_name, version, attributes in extra_modules:
-        try:
-            module = __import__(module_name)
-            if version and module.__version__ < version:
-                raise ValueError
-            for attribute in attributes or []:
-                getattr(module, attribute)
-            print ('"%s" module already present; ignoring extras/%s.py.'
-                   % (module_name, module_name))
-        except (ImportError, AttributeError, ValueError):
-            extras.append(module_name)
-    return extras
-
 
 if __name__ == '__main__' :
     do_setup()
