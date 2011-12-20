@@ -107,16 +107,17 @@ import sys
 import re
 import roman
 from types import FunctionType, MethodType
+
 from docutils import nodes, statemachine, utils, urischemes
 from docutils import ApplicationError, DataError
 from docutils.statemachine import StateMachineWS, StateWS
 from docutils.nodes import fully_normalize_name as normalize_name
 from docutils.nodes import whitespace_normalize_name
-from docutils.utils import escape2null, unescape, column_width
 import docutils.parsers.rst
 from docutils.parsers.rst import directives, languages, tableparser, roles
 from docutils.parsers.rst.languages import en as _fallback_language_module
-from docutils.parsers.rst import punctuation_chars
+from docutils.utils import escape2null, unescape, column_width
+from docutils.utils import punctuation_chars
 
 class MarkupError(DataError): pass
 class UnknownInterpretedRoleError(DataError): pass

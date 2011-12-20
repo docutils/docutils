@@ -30,7 +30,14 @@ Changes Since 0.8.1
 
   - Fix [ 3395948 ] (Work around encoding problems in Py3k).
 
-* docutils/utils.py
+* docutils/utils.py -> docutils/utils/__init__.py
+
+  - docutils.utils is now a package (providing a place for sub-modules)
+
+  .. important:: docutils/math, docutils/error_reporting.py, and
+     docutils/urischemes.py will move to the utils package in the next
+     release, too. Code importing these modules needs to adapt
+     (``import docutils.math`` -> ``import docutils.utils.math``, etc.).
 
   - DependencyList uses io.FileOutput and 'utf8' encoding to prevent
     errors recording non-ASCII filenames (fixes [ 3434355 ].
@@ -60,11 +67,11 @@ Release 0.8.1 (2011-08-30)
 * General:
 
   - Fix [ 3364658 ] (Change last file with Apache license to BSD-2-Clause)
-    and [ 3395920 ] (correct copyright info for rst.el). 
-  
+    and [ 3395920 ] (correct copyright info for rst.el).
+
 * docutils/test/
 
-  -  Apply [ 3303733 ] and [ 3365041 ] to fix tests under py3k. 
+  -  Apply [ 3303733 ] and [ 3365041 ] to fix tests under py3k.
 
 * docutils/writers/latex2e/__init__.py
 
@@ -95,7 +102,7 @@ Release 0.8 (2011-07-07)
 
   - Most directives now support a "name" option that attaches a
     reference name.
-    
+
   - Directive content may start on the first line also when the directive
     type accepts options.
 

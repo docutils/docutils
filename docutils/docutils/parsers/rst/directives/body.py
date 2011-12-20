@@ -16,7 +16,7 @@ from docutils import nodes
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst import directives
 from docutils.parsers.rst.roles import set_classes
-from docutils.parsers.code_analyzer import Lexer, LexerError, NumberLines
+from docutils.utils.code_analyzer import Lexer, LexerError, NumberLines
 
 class BasePseudoSection(Directive):
 

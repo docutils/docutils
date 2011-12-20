@@ -6,7 +6,7 @@
 # Copyright: This module has been placed in the public domain.
 
 """
-Test module for utils.py.
+Test module for utils/__init__.py.
 """
 
 import unittest
