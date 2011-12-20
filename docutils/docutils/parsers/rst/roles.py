@@ -75,7 +75,7 @@ __docformat__ = 'reStructuredText'
 from docutils import nodes, utils
 from docutils.parsers.rst import directives
 from docutils.parsers.rst.languages import en as _fallback_language_module
-from docutils.parsers.code_analyzer import Lexer, LexerError
+from docutils.utils.code_analyzer import Lexer, LexerError
 
 DEFAULT_INTERPRETED_ROLE = 'title-reference'
 """

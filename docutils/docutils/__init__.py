@@ -29,9 +29,6 @@ Modules:
 - urischemes.py: Contains a complete mapping of known URI addressing
   scheme names to descriptions.
 
-- utils.py: Contains the ``Reporter`` system warning class and miscellaneous
-  utilities.
-
 Subpackages:
 
 - languages: Language-specific mappings of terms.
@@ -43,6 +40,9 @@ Subpackages:
 
 - transforms: Modules used by readers and writers to modify DPS
   doctrees.
+
+- utils: Contains the ``Reporter`` system warning class and miscellaneous
+  utilities used by readers, writers, and transforms.
 
 - writers: Format-specific output translators.
 """

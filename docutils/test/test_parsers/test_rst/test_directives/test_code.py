@@ -9,7 +9,7 @@ Test the 'code' directive in parsers/rst/directives/body.py.
 """
 
 from __init__ import DocutilsTestSupport
-from docutils.parsers.code_analyzer import with_pygments
+from docutils.utils.code_analyzer import with_pygments
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()

@@ -135,6 +135,7 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
                  'docutils.readers',
                  # 'docutils.readers.python', # in the sandbox since 0.8
                  'docutils.transforms',
+                 'docutils.utils',
                  'docutils.math',
                  'docutils.writers',
                  'docutils.writers.html4css1',
@@ -198,14 +199,26 @@ classifiers = [
     'Topic :: Text Processing',
     'Natural Language :: English',      # main/default language, keep first
     'Natural Language :: Afrikaans',
+    'Natural Language :: Brazilian Portuguese',
+    'Natural Language :: Catalan',
+    'Natural Language :: Czech',
+    'Natural Language :: Dutch',
     'Natural Language :: Esperanto',
+    'Natural Language :: Finnish',
     'Natural Language :: French',
+    'Natural Language :: Galician',
     'Natural Language :: German',
     'Natural Language :: Italian',
+    'Natural Language :: Japanese',
+    'Natural Language :: Lithuanian',
+    'Natural Language :: Polish',
     'Natural Language :: Russian',
+    'Natural Language :: Simplified Chinese ',
     'Natural Language :: Slovak',
     'Natural Language :: Spanish',
-    'Natural Language :: Swedish',]
+    'Natural Language :: Swedish',
+    'Natural Language :: Traditional Chinese ',
+    ]
 """Trove classifiers for the Distutils "register" command;
 Python 2.3 and up."""
 

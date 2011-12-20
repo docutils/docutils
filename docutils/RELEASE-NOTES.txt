@@ -28,9 +28,22 @@ Release 0.9 (unpublished)
 
   .. _Pygments: http://pygments.org/
 
+* docutils/utils.py -> docutils/utils/__init__.py
+
+  - docutils.utils is now a package (providing a place for sub-modules)
+
+  .. important:: docutils/math, docutils/error_reporting.py, and
+     docutils/urischemes.py will move to the utils package in the next
+     release, too. Code importing these modules needs to adapt
+     (``import docutils.math`` -> ``import docutils.utils.math``, etc.).
+
 * docutils/writers/html4css1/__init__.py
 
   - change default for `math-output` setting to MathJax
+
+* docutils/writers/latex2e/__init__.py
+
+  - Record only files required to generate the LaTeX source as dependencies.
 
 
 Release 0.8.1 (2011-08-30)
