@@ -48,7 +48,10 @@ import re
 
 import docutils
 from docutils import nodes, writers, languages
-import roman
+try:
+    import roman
+except ImportError:
+    import docutils.utils.roman as roman
 
 FIELD_LIST_INDENT = 7
 DEFINITION_LIST_INDENT = 7
