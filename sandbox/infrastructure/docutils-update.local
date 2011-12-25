@@ -144,12 +144,8 @@ cd $snapshotdir
 for DIR in docutils sandbox web ; do
     test -d $DIR || svn checkout $svnurl/$DIR
 done
+# BUG if checked out for the first time, it has changes.
 haschanges="`svn up docutils sandbox web | grep -v '^At revision '; true`"
-
-# update __version_details__ string
-version_details="snapshot `date -u +%Y-%m-%d`, r`svn info docutils | grep ^Revision: | sed 's/^Revision: //'`"
-(echo ",s/^__version_details__ = .*\$/__version_details__ = '$version_details'/";
-    echo wq) | ed $project/$project/__init__.py 2> /dev/null
 
 # Ensure proper directory permissions are set so that the files can be
 # modified by several users.  Changing permissions of files is
@@ -158,13 +154,6 @@ version_details="snapshot `date -u +%Y-%m-%d`, r`svn info docutils | grep ^Revis
 # (but change permissions for all subdirectories).
 #find $basedir -type f -print0 | xargs -0 chmod ug+rw 2> /dev/null || true
 find $basedir -name aux -o -type d -print0 | xargs -0 chmod ug+rwxs 2> /dev/null || true
-
-# revert and touch (to avoid updating the web site only because of the
-# changed timestamp)
-svn -q revert $project/$project/__init__.py
-touch $project/$project/__init__.py --date \
-    "`svn info $project/$project/__init__.py | \
-    grep 'Last Changed Date:' | sed 's/[^:]*: //'`"
 
 # -------------------- htdocs: --------------------
 
