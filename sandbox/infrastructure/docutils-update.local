@@ -144,7 +144,6 @@ cd $snapshotdir
 for DIR in docutils sandbox web ; do
     test -d $DIR || svn checkout $svnurl/$DIR
 done
-svn -q revert $project/$project/__init__.py
 haschanges="`svn up docutils sandbox web | grep -v '^At revision '; true`"
 
 # update __version_details__ string
