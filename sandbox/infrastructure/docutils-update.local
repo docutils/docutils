@@ -21,12 +21,15 @@
 #   not exclusively but for directory docs at least.
 # * maybe skip sandbox .txt files, as they might be input
 #   for tests for example.
-# * Funny thing: sf hides README.txt files.
+# * this file might become easier if cleanest cron task handling is
+#   cut out, as it is not run by cron.
 #
 # ATTENTION
 #
 # Any .html document with a corresponding .txt file is regenerated 
 # if the .txt has changed, but no new .html files will be generated.
+#
+# * Funny thing: sf hides README.txt files.
 #
 # ATTENTION
 #
@@ -121,8 +124,7 @@ fi
 trap "rm -rf $lockdir; trap - 0; exit 1" 0 1 2 3 15
 # Make sure the lock directory is deletable (i.e. rwx) by other group
 # members (in case this script crashes after copying files into the
-# directory) and un-readable by world (because we'll be storing the
-# key in it).
+# directory)
 chmod 0770 $lockdir
 
 # update library area
