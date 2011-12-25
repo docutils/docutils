@@ -3,7 +3,7 @@
 ==========================
 
 :Author: Lea Wiemann
-:Contact: LeWiemann@gmail.com
+:Contact: grubert@users.sourceforge.net
 :Revision: $Revision$
 :Date: $Date$
 :Copyright: This document has been placed in the public domain.
