@@ -72,8 +72,9 @@ bindir=$auxdir/bin
 test -d $bindir || mkdir $bindir
 
 # htdocs directory on SF.net
-remoteproject=/home/groups/d/do/docutils
+remoteproject=/home/project-web/docutils
 remotehtdocs=$remoteproject/htdocs
+
 # local checkout
 pylib=$auxdir/lib/python
 lib=$pylib/$project
