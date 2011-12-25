@@ -79,11 +79,7 @@ pylib=$auxdir/lib/python
 lib=$pylib/$project
 # Lock directory.
 lockdir=$auxdir/lock
-# SSH stuff.
-sshdir=$auxdir/.ssh
-sshhost=docutilsupdate,docutils@web.sourceforge.net
-sshcommand="ssh -i $lockdir/id_dsa
-            -o UserKnownHostsFile=$sshdir/known_hosts $sshhost"
+
 # Project base URL (for sitemap) without trailing slash.
 baseurl="http://docutils.sourceforge.net"
 
