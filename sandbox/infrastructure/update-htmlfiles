@@ -5,6 +5,12 @@
 # a newer txt file besides.
 # Used to initialise a docutils-update upload directory.
 
+# needs to be called in an already existing update-dir/aux/htdoce
+# (see docutils-update.*)
+
+# requires rst2html in PATH.
+# TODO change this to touch files.
+
 cat $1 | \
 while read F ; do
     if test ${F: -4} == ".txt" ; then
