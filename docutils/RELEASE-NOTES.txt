@@ -2,8 +2,7 @@
  Docutils Release Notes
 ========================
 
-:Author: Lea Wiemann
-:Contact: LeWiemann@gmail.com
+:Contact: grubert@users.sourceforge.net
 :Date: $Date$
 :Revision: $Revision$
 :Web site: http://docutils.sourceforge.net/
