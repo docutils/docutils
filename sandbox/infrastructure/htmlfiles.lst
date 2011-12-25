@@ -64,6 +64,7 @@
 ./tools/dev/README.html
 ./mirror/setext.html
 ./BUGS.html
+./sandbox/infrastructure/README.html
 ./sandbox/mly/restblog/README.html
 ./sandbox/tibs/pysource/notes/string.html
 ./sandbox/dkuhlman/docutils/docs/rst/pythonlatex_quickref.html
