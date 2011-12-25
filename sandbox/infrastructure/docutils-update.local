@@ -21,6 +21,7 @@
 #   not exclusively but for directory docs at least.
 # * maybe skip sandbox .txt files, as they might be input
 #   for tests for example.
+# * Funny thing: sf hides README.txt files.
 #
 # ATTENTION
 #
@@ -66,10 +67,6 @@ test -d $htdocsdest || mkdir $htdocsdest
 # Where to create the snapshots (non-public).
 snapshotdir=$auxdir/snapshots
 test -d $snapshotdir || mkdir $snapshotdir
-# # Where to publish the snapshots (public).
-# snapshotdest=/home/groups/ftp/pub/docutils
-bindir=$auxdir/bin
-test -d $bindir || mkdir $bindir
 
 # htdocs directory on SF.net
 remoteproject=/home/project-web/docutils
@@ -127,7 +124,6 @@ trap "rm -rf $lockdir; trap - 0; exit 1" 0 1 2 3 15
 # directory) and un-readable by world (because we'll be storing the
 # key in it).
 chmod 0770 $lockdir
-
 
 # update library area
 if [ -e $lib ] ; then
