@@ -39,15 +39,6 @@ Everything below this needs rework.
 
 :`<htmlfiles.lst>`_: The list of files for ``update-htmlfiles``.
 
-used on and with berlios
-
-:`<docutils-update>`_: The script that updates the `web site`_.
-    Executed on berlios, by user wiemann.
-
-    Attention: The cron job is executed, but the script is
-        doing nothing, because of the way to access sourceforge 
-        changed.
-
 and are these used by anyone.
 
 :`<dbackport.sh>`_: Back-port changes from the trunk to the
