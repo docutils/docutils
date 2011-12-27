@@ -196,6 +196,19 @@ while read -r txtfile ; do
 done
 )
 
+#   for any README under sandbox
+find sandbox -type f -and -name README.txt -print | ( \
+while read -r txtfile ; do
+    dir=`dirname $txtfile`
+    base=`basename $txtfile .txt`
+    htmlfile=$dir/$base.html
+    if [ ! -e $htmlfile ] ; then
+        echo "touch $htmlfile"
+        touch -t 200001010101 $htmlfile
+    fi
+done
+)
+
 #    for any file in htmlfilelist
 while read -r htmlfile ; do
     if [ ! -d `dirname $htmlfile` ] ; then
