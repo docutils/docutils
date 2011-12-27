@@ -17,10 +17,6 @@
 # * sourceforge does not offer cron, but shell or web instead:
 #   maybe use cgi-bin script to rebuild the website now and then,
 #   e.g. if accessed and more than one day old and svn is newer.
-# * use htmlfiles.lst to know which html-files have to be generated.
-#   not exclusively but for directory docs at least.
-# * maybe skip sandbox .txt files, as they might be input
-#   for tests for example.
 # * this file might become easier if cleanest cron task handling is
 #   cut out, as it is not run by cron.
 #
@@ -159,6 +155,7 @@ find $basedir -name aux -o -type d -print0 | xargs -0 chmod ug+rwxs 2> /dev/null
 
 cd $snapshotdir
 
+# TODO this does not work on macosx
 function copy_to_htdocsdest() {
     find "$@" -type d -name .svn -prune -o \( -type f -o -type l \) -print0 | \
         xargs -0 cp --no-dereference --update --parents \
@@ -186,6 +183,7 @@ done
 cd $htdocsdest
 
 # 2. generate empty and old html files to force generation
+#    TODO or generate for any txt under docs ?
 while read -r htmlfile ; do
     if [ ! -d `dirname $htmlfile` ] ; then
         echo "Old htmlfile entry: $htmlfile"
