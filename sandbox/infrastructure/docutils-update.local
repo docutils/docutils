@@ -55,6 +55,7 @@ umask 002
 # URL for SVN project checkout:
 svnurl=https://docutils.svn.sourceforge.net/svnroot/docutils/trunk
 
+htmlfilelist=`pwd`/htmlfiles.lst
 basedir=`pwd`/update-dir
 if [ ! -e $basedir ] ; then
     test -d $basedir || mkdir $basedir
@@ -176,10 +177,26 @@ if [ $trace -eq 0 ] ; then
     set +o xtrace
 fi
 
+# 1. local Makefiles
 for makefile in `find .. -name Makefile.docutils-update` ; do
     dir=`dirname $makefile`
     ( cd $dir ; make -f Makefile.docutils-update -s )
 done
+
+cd $htdocsdest
+
+# 2. generate empty and old html files to force generation
+while read -r htmlfile ; do
+    if [ ! -d `dirname $htmlfile` ] ; then
+        echo "Old htmlfile entry: $htmlfile"
+    elif [ ! -e $htmlfile ] ; then
+        echo "T: $htmlfile"
+        touch -t 200001010101 $htmlfile
+    fi
+done < $htmlfilelist
+
+# 3. re/generate html from txt
+cd $htdocsdest/tools
 
 for htmlfile in `find .. -name '*.html'` ; do
     dir=`dirname $htmlfile`
