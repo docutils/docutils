@@ -197,7 +197,7 @@ done
 )
 
 #   for any README.txt under sandbox
-find sandbox -type f -and -name README.txt -print | ( \
+find sandbox -type f -and \( -name README.txt -o -name README \) -print | ( \
 while read -r txtfile ; do
     dir=`dirname $txtfile`
     base=`basename $txtfile .txt`
@@ -232,6 +232,9 @@ for htmlfile in `find .. -name '*.html'` ; do
         txtfile=$dir/$base.txt
         if [ ! -e $txtfile  ] ; then
             txtfile=$dir/$base.rst
+        fi
+        if [ ! -e $txtfile  ] ; then
+            txtfile=$dir/$base
         fi
         if [ $unconditional -eq 1 -o $txtfile -nt $htmlfile ] ; then
             if [ "${base:0:4}" == "pep-" ] ; then
