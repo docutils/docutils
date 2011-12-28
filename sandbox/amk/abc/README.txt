@@ -5,6 +5,7 @@ written in the ABC language for musical notation
 
 The directive relies on a number of libraries and external tools.
 Requirements:
+
   * abcm2ps (http://moinejf.free.fr/), which turns ABC into PostScript.
   * Ghostscript (http://www.cs.wisc.edu/~ghost/), which turns 
   PostScript into PNG files.
