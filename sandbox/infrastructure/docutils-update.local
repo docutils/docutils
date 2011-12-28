@@ -196,7 +196,7 @@ while read -r txtfile ; do
 done
 )
 
-#   for any README under sandbox
+#   for any README.txt under sandbox
 find sandbox -type f -and -name README.txt -print | ( \
 while read -r txtfile ; do
     dir=`dirname $txtfile`
@@ -225,11 +225,14 @@ cd $htdocsdest/tools
 for htmlfile in `find .. -name '*.html'` ; do
     dir=`dirname $htmlfile`
     base=`basename $htmlfile .html`
-    txtfile=$dir/$base.txt
     if [ "$base" == "standalone_rst_html4strict" ] ; then
         # breaks web update
         echo "skipped: $dir $base"
-    elif [ -e $txtfile ] ; then
+    else
+        txtfile=$dir/$base.txt
+        if [ ! -e $txtfile  ] ; then
+            txtfile=$dir/$base.rst
+        fi
         if [ $unconditional -eq 1 -o $txtfile -nt $htmlfile ] ; then
             if [ "${base:0:4}" == "pep-" ] ; then
                 test $feedback && echo "$txtfile (PEP)" || true

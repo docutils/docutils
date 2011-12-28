@@ -24,7 +24,6 @@ sandbox/tibs/pysource/notes/string.html
 sandbox/dkuhlman/docutils/docs/rst/pythonlatex_quickref.html
 sandbox/wilk/french/quickstart-fr.html
 sandbox/cben/make/Makefile.docutils.html
-sandbox/amk/abc/sample.html
 sandbox/ianb/wiki/docs/Wiki.html
 sandbox/gschwant/docfactory/doc/head.html
 sandbox/gschwant/docfactory/doc/navigation_l.html
@@ -37,6 +36,8 @@ sandbox/gschwant/docfactory/doc/screenshots.html
 sandbox/gschwant/docfactory/LICENSE.html
 sandbox/gschwant/docfactory/NOTES.html
 sandbox/stylesheets/index.html
+sandbox/paultremblay/docs/rst/howto.html
+sandbox/paultremblay/docs/rst/attribute_sets.html
 sandbox/presentations/pycon2006/architecture-extending-and-embedding/demo/test.html
 sandbox/presentations/pycon2006/architecture-extending-and-embedding/presentation.html
 sandbox/presentations/pycon2007/doctrees-lightning-talk/footnote.html
