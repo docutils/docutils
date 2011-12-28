@@ -8,9 +8,9 @@ Requirements:
 
   * abcm2ps (http://moinejf.free.fr/), which turns ABC into PostScript.
   * Ghostscript (http://www.cs.wisc.edu/~ghost/), which turns 
-  PostScript into PNG files.
+    PostScript into PNG files.
   * The Python Imaging Library (used to crop the PNG files by removing lots of 
-  blank space).
+    blank space).
 
 Images are converted to PNGs and written to the document output
 directory.
