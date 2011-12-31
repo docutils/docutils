@@ -38,6 +38,7 @@
 #   -t    Run the script in trace mode ("set -o xtrace").
 #   -u    Regenerate .html unconditionally.
 #   -v    Run verbosely.
+#   -q    Run quiet.
 #
 # Prerequisites: 
 #
@@ -86,7 +87,7 @@ export PATH=$lib/tools:$PATH
 
 trace=0
 unconditional=0
-verbose=0
+verbose=1
 feedback=1
 
 while getopts ftuv opt
@@ -96,6 +97,7 @@ do
         t)  trace=1;;
         u)  unconditional=1;;
         v)  verbose=1;;
+        q)  verbose=0;;
         \?) exit 2;;
     esac
 done
