@@ -87,7 +87,7 @@ export PATH=$lib/tools:$PATH
 
 trace=0
 unconditional=0
-verbose=1
+verbose=0
 feedback=1
 
 while getopts ftuv opt
@@ -103,7 +103,11 @@ do
 done
 shift `expr $OPTIND - 1`
 
-test $feedback && echo 'Starting docutils-update run...' || true
+function print_feedback () {
+    test $feedback && echo "$1" || true
+}
+
+print_feedback 'Starting docutils-update run...'
 
 if [ $trace -eq 1 -o $verbose -eq 1 ] ; then
     set -o xtrace
@@ -192,7 +196,7 @@ while read -r txtfile ; do
     base=`basename $txtfile .txt`
     htmlfile=$dir/$base.html
     if [ ! -e $htmlfile ] ; then
-        echo "touch $htmlfile"
+        print_feedback "touch $htmlfile"
         touch -t 200001010101 $htmlfile
     fi
 done
@@ -205,7 +209,7 @@ while read -r txtfile ; do
     base=`basename $txtfile .txt`
     htmlfile=$dir/$base.html
     if [ ! -e $htmlfile ] ; then
-        echo "touch $htmlfile"
+        print_feedback "touch $htmlfile"
         touch -t 200001010101 $htmlfile
     fi
 done
@@ -214,9 +218,9 @@ done
 #    for any file in htmlfilelist
 while read -r htmlfile ; do
     if [ ! -d `dirname $htmlfile` ] ; then
-        echo "Old htmlfile entry: $htmlfile"
+        print_feedback "Old htmlfile entry: $htmlfile"
     elif [ ! -e $htmlfile ] ; then
-        echo "touch $htmlfile"
+        print_feedback "touch $htmlfile"
         touch -t 200001010101 $htmlfile
     fi
 done < $htmlfilelist
@@ -229,7 +233,7 @@ for htmlfile in `find .. -name '*.html'` ; do
     base=`basename $htmlfile .html`
     if [ "$base" == "standalone_rst_html4strict" ] ; then
         # breaks web update
-        echo "skipped: $dir $base"
+        print_feedback "skipped: $dir $base"
     else
         txtfile=$dir/$base.txt
         if [ ! -e $txtfile  ] ; then
@@ -240,11 +244,11 @@ for htmlfile in `find .. -name '*.html'` ; do
         fi
         if [ $unconditional -eq 1 -o $txtfile -nt $htmlfile ] ; then
             if [ "${base:0:4}" == "pep-" ] ; then
-                test $feedback && echo "$txtfile (PEP)" || true
+                print_feedback "$txtfile (PEP)"
                 python $lib/tools/rstpep2html.py --config=$dir/docutils.conf $txtfile $htmlfile
                 haschanges=1
             else
-                test $feedback && echo $txtfile || true
+                print_feedback "$txtfile"
                 python $lib/tools/rst2html.py --config=$dir/docutils.conf $txtfile $htmlfile
                 haschanges=1
             fi
@@ -320,7 +324,7 @@ rsync -e ssh -r -t ./ web.sourceforge.net:$remotehtdocs
 
 trap - 0 1 2 3 15
 rm -rf $lockdir
-test $feedback && echo '...docutils-update done.' || true
+print_feedback '...docutils-update done.'
 
 # Local Variables:
 # indent-tabs-mode: nil
