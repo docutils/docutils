@@ -6,11 +6,11 @@ A backwards compatibility style sheet
 *************************************
 
 :Author:    Guenter Milde
-:Contact:   milde@users.sourceforge.net
+:Contact:   docutils-develop@lists.sourceforge.net
 :Revision:  $Revision$
 :Date:      $Date$
 :Copyright: © 2009 Günter Milde,
-:License: Released under the terms of the `2-Clause BSD license`_, in short:
+:License:   Released under the terms of the `2-Clause BSD license`_, in short:
 
    Copying and distribution of this file, with or without modification,
    are permitted in any medium without royalty provided the copyright

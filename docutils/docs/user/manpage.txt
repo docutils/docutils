@@ -2,7 +2,8 @@
  manpage writer for Docutils_ 
 ==============================
 
-:Contact: grubert@users.sourceforge.net
+:Author: Engelbert Gruber
+:Contact: docutils-develop@lists.sourceforge.net
 :Revision: $Revision$
 :Date: $Date$
 :Copyright: This document has been placed in the public domain.

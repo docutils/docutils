@@ -18,7 +18,7 @@
 :Address: 123 Example Street
           Example, EX  Canada
           A1B 2C3
-:Contact: goodger@python.org
+:Contact: docutils-develop@lists.sourceforge.net
 :Authors: Me; Myself; I
 :organization: humankind
 :date: $Date$

@@ -3,7 +3,7 @@
 ==========================
 
 :Author: Lea Wiemann
-:Contact: LeWiemann@gmail.com
+:Contact: docutils-develop@lists.sourceforge.net
 :Revision: $Revision$
 :Date: $Date$
 :Copyright: This document has been placed in the public domain.
