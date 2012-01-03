@@ -3,7 +3,7 @@
 ===========================
 
 :Author: David Goodger; open to all Docutils developers
-:Contact: goodger@python.org
+:Contact: docutils-develop@lists.sourceforge.net
 :Date: $Date$
 :Revision: $Revision$
 :Copyright: This document has been placed in the public domain.

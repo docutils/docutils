@@ -3,7 +3,7 @@
 ===========================================
 
 :Author: David Goodger
-:Contact: goodger@python.org
+:Contact: docutils-develop@lists.sourceforge.net
 :Date: $Date$
 :Revision: $Revision$
 :Copyright: 2004 by `Enthought, Inc. <http://www.enthought.com>`_
