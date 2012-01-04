@@ -114,7 +114,6 @@ file.)
 __ http://subversion.tigris.org/
 __ http://svn.collab.net/viewcvs/svn/trunk/BUGS?view=markup
 
-.. _CVS: http://sourceforge.net/cvs/?group_id=38414
 .. _repository: docs/dev/repository.html
 .. _snapshot: http://docutils.sourceforge.net/#download
 .. _documentation: docs/
