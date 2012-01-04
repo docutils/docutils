@@ -136,8 +136,6 @@ Others
 * An `XSLT script`_ by Ladislav Lhotka enables reStructuredText annotations
   to be included in RELAG NG XML schemas.
 
-* `ManPage Writer`_ by Engelbert Gruber.
-
 * `DocBook Writer`_ by Oliver Rutherfurd.
 
 * Nabu_, written by Martin Blais, is a publishing system which
@@ -149,12 +147,14 @@ Others
 * The `pickle writer`_ by Martin Blais pickles the document tree to a binary
   string. Later unpickling will allow you to publish with other Writers.
 
-
 * The `Texinfo Writer`_, by Jon Waltman converts reStructuredText to
   Texinfo, the documentation format used by the GNU project and the
   Emacs text editor.  Texinfo can be used to produce multiple output
   formats, including HTML, PDF, and Info.
 
+* For `confluence CMS`_ see https://github.com/cweiske/rst2confluence.
+
+* Deploying into wikis might be aided by https://github.com/netresearch/deploy-rst.
 
 Import
 ------
@@ -309,3 +309,4 @@ Presentations
 .. _zot4rst: http://e6h.org/~egh/hg/zotero-plain
 .. _Trac: http://trac.edgewall.org/
 .. _Texinfo Writer: http://docutils.sf.net/sandbox/texinfo-writer/README.html
+.. _confluence CMS: http://www.atlassian.com/software/confluence
