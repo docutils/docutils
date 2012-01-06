@@ -351,7 +351,7 @@ passed untouched to the Writer.  It is the inline equivalent of the
 `"raw" directive`_; see its documentation for details on the
 semantics.
 
-.. _"raw" directive: directives.html#raw
+.. _"raw" directive: directives.html#raw-directive
 
 The "raw" role cannot be used directly.  The `"role" directive`_ must
 first be used to build custom roles based on the "raw" role.  One or

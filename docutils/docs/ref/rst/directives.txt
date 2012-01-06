@@ -537,7 +537,7 @@ for Unicode symbols, for example::
 
     α_t(i) = P(O_1, O_2, … O_t, q_t = S_i λ)
 
-For inline math, use the `math role`_.
+For inline math, use the `"math" role`_.
 
 Support for math may be limited by the output format. If a writer does
 not support math typesetting, the content is inserted verbatim.
@@ -546,7 +546,7 @@ configuration setting (or the corresponding ``--math-output`` command
 line option).
 
 .. _Short Math Guide: ftp://ftp.ams.org/ams/doc/amsmath/short-math-guide.pdf
-.. _math role: roles.html#math
+.. _"math" role: roles.html#math
 .. _math_output: ../../user/config.html#math-output
 
 Rubric
@@ -1515,6 +1515,9 @@ example::
     .. raw:: html
        :file: inclusion.html
 
+Inline equivalents of the "raw" directive can be defined via
+`custom interpreted text roles`_ derived from the `"raw" role`_.
+
 The following options are recognized:
 
 ``file`` : string (newlines removed)
@@ -1526,6 +1529,8 @@ The following options are recognized:
 ``encoding`` : name of text encoding
     The text encoding of the external raw data (file or URL).
     Defaults to the document's encoding (if specified).
+
+.. _"raw" role: roles.html#raw
 
 
 .. _classes:
@@ -1690,6 +1695,14 @@ The parsed result is as follows::
     <paragraph>
         <emphasis classes="custom">
             text
+
+A special case is the `"raw" role`_: derived roles enable
+inline `raw data pass-through`_, e.g.::
+
+   .. role:: raw-role(raw)
+      :format: html latex
+
+   :raw-role:`raw text`
 
 If no base role is explicitly specified, a generic custom role is
 automatically used.  Subsequent interpreted text will produce an
