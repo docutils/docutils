@@ -227,9 +227,9 @@ class RSTState(StateWS):
         self.document = memo.document
         self.parent = self.state_machine.node
         # enable the reporter to determine source and source-line
-        if not hasattr(self.reporter, 'locator'):
-            self.reporter.locator = self.state_machine.get_source_and_line
-            # print "adding locator to reporter", self.state_machine.input_offset
+        if not hasattr(self.reporter, 'get_source_and_line'):
+            self.reporter.get_source_and_line = self.state_machine.get_source_and_line
+            # print "adding get_source_and_line to reporter", self.state_machine.input_offset
 
 
     def goto_line(self, abs_line_offset):

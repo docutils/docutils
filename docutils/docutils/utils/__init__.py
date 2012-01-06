@@ -169,7 +169,7 @@ class Reporter:
                 # assert source is not None, "node has line- but no source-argument"
         if not 'source' in attributes: # 'line' is absolute line number
             try: # look up (source, line-in-source)
-                source, line = self.locator(attributes.get('line'))
+                source, line = self.get_source_and_line(attributes.get('line'))
                 # print "locator lookup", kwargs.get('line'), "->", source, line
             except AttributeError:
                 source, line = None, None

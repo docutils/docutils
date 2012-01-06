@@ -309,6 +309,8 @@ def raw_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
         return [prb], [msg]
     set_classes(options)
     node = nodes.raw(rawtext, utils.unescape(text, 1), **options)
+    node.source, node.line = inliner.reporter.get_source_and_line()
+    node.line -= 1
     return [node], []
 
 raw_role.options = {'format': directives.unchanged}
