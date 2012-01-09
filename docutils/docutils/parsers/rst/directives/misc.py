@@ -240,6 +240,8 @@ class Raw(Directive):
             # This will always fail because there is no content.
             self.assert_has_content()
         raw_node = nodes.raw('', text, **attributes)
+        (raw_node.source, 
+        raw_node.line) = self.state_machine.get_source_and_line(self.lineno)
         return [raw_node]
 
 

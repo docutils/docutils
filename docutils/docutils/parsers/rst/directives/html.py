@@ -41,8 +41,7 @@ class MetaBody(states.SpecializedBody):
             line = self.state_machine.line
             msg = self.reporter.info(
                   'No content for meta tag "%s".' % name,
-                  nodes.literal_block(line, line),
-                  line=self.state_machine.abs_line_number())
+                  nodes.literal_block(line, line))
             return msg, blank_finish
         tokens = name.split()
         try:
@@ -58,8 +57,7 @@ class MetaBody(states.SpecializedBody):
                 line = self.state_machine.line
                 msg = self.reporter.error(
                       'Error parsing meta tag attribute "%s": %s.'
-                      % (token, detail), nodes.literal_block(line, line),
-                      line=self.state_machine.abs_line_number())
+                      % (token, detail), nodes.literal_block(line, line))
                 return msg, blank_finish
         self.document.note_pending(pending)
         return pending, blank_finish

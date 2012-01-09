@@ -305,7 +305,6 @@ class Directive(object):
         self.block_text = block_text
         self.state = state
         self.state_machine = state_machine
-        self.src, self.srcline = state_machine.get_source_and_line(lineno)
 
     def run(self):
         raise NotImplementedError('Must override run() is subclass.')
@@ -321,8 +320,9 @@ class Directive(object):
         at level `level`, which automatically gets the directive block
         and the line number added.
 
-        You'd often use self.error(message) instead, which will
-        generate an ERROR-level directive error.
+        Preferably use the `debug`, `info`, `warning`, `error`, or `severe`
+        wrapper methods, e.g. ``self.error(message)`` to generate an 
+        ERROR-level directive error.
         """
         return DirectiveError(level, message)
 
