@@ -896,10 +896,10 @@ cell 3          cell 4
 """,
 """\
 <document source="test data">
-    <system_message level="3" line="1" source="test data" type="ERROR">
+    <system_message level="3" line="4" source="test data" type="ERROR">
         <paragraph>
             Malformed table.
-            Column span alignment problem at line offset 3.
+            Column span alignment problem in table line 4.
         <literal_block xml:space="preserve">
             ==============  ======
             A bad table     cell 2
@@ -914,10 +914,10 @@ cell 3       cell 4
 """,
 """\
 <document source="test data">
-    <system_message level="3" line="1" source="test data" type="ERROR">
+    <system_message level="3" line="2" source="test data" type="ERROR">
         <paragraph>
             Malformed table.
-            Text in column margin at line offset 1.
+            Text in column margin in table line 2.
         <literal_block xml:space="preserve">
             ========  =========
             A bad table  cell 2
@@ -1158,10 +1158,10 @@ A table with  many row separators.
 """,
 """\
 <document source="test data">
-    <system_message level="3" line="1" source="test data" type="ERROR">
+    <system_message level="3" line="4" source="test data" type="ERROR">
         <paragraph>
             Malformed table.
-            Text in column margin at line offset 3.
+            Text in column margin in table line 4.
         <literal_block xml:space="preserve">
             ==  ===========  ===========
             1   Span columns 2 & 3
@@ -1170,10 +1170,10 @@ A table with  many row separators.
                 ------------------------
             3
             ==  ===========  ===========
-    <system_message level="3" line="9" source="test data" type="ERROR">
+    <system_message level="3" line="13" source="test data" type="ERROR">
         <paragraph>
             Malformed table.
-            Column span incomplete at line offset 4.
+            Column span incomplete in table line 5.
         <literal_block xml:space="preserve">
             ==  ===========  ===========
             1 Span cols 1&2  but not 3

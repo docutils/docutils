@@ -1627,9 +1627,9 @@ class Body(RSTState):
                              + 1)
                 table = self.build_table(tabledata, tableline)
                 nodelist = [table] + messages
-            except tableparser.TableMarkupError, detail:
-                nodelist = self.malformed_table(
-                    block, ' '.join(detail.args)) + messages
+            except tableparser.TableMarkupError, err:
+                nodelist = self.malformed_table(block, ' '.join(err.args),
+                                                offset=err.offset) + messages
         else:
             nodelist = messages
         return nodelist, blank_finish
@@ -1715,7 +1715,7 @@ class Body(RSTState):
         block.pad_double_width(self.double_width_pad_char)
         return block, [], end == limit or not lines[end+1].strip()
 
-    def malformed_table(self, block, detail=''):
+    def malformed_table(self, block, detail='', offset=0):
         block.replace(self.double_width_pad_char, '')
         data = '\n'.join(block)
         message = 'Malformed table.'
@@ -1723,7 +1723,7 @@ class Body(RSTState):
         if detail:
             message += '\n' + detail
         error = self.reporter.error(message, nodes.literal_block(data, data),
-                                    line=startline)
+                                    line=startline+offset)
         return [error]
 
     def build_table(self, tabledata, tableline, stub_columns=0):
