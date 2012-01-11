@@ -197,10 +197,10 @@ totest['grid_tables'] = [
 | That's bad. |                 |
 +-------------+-----------------+
 """,
-'TableMarkupError: Multiple head/body row separators in table '
-'(at line offset 2 and 4); only one allowed.',
-'TableMarkupError: Multiple head/body row separators in table '
-'(at line offset 2 and 4); only one allowed.'],
+'TableMarkupError: Multiple head/body row separators '
+'(table lines 3 and 5); only one allowed.',
+'TableMarkupError: Multiple head/body row separators '
+'(table lines 3 and 5); only one allowed.'],
 ["""\
 +-------------------------------------+
 |                                     |

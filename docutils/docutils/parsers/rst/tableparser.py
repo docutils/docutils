@@ -26,7 +26,18 @@ from docutils import DataError
 from docutils.utils import strip_combining_chars
 
 
-class TableMarkupError(DataError): pass
+class TableMarkupError(DataError):
+
+    """
+    Raise if there is any problem with table markup.
+
+    The keyword argument `offset` denotes the offset of the problem
+    from the table's start line.
+    """
+
+    def __init__(self, *args, **kwargs):
+            self.offset = kwargs.pop('offset', 0)
+            DataError.__init__(self, *args)
 
 
 class TableParser:
@@ -64,16 +75,17 @@ class TableParser:
             if self.head_body_separator_pat.match(line):
                 if self.head_body_sep:
                     raise TableMarkupError(
-                        'Multiple head/body row separators in table (at line '
-                        'offset %s and %s); only one allowed.'
-                        % (self.head_body_sep, i))
+                        'Multiple head/body row separators '
+                        '(table lines %s and %s); only one allowed.'
+                        % (self.head_body_sep+1, i+1), offset=i)
                 else:
                     self.head_body_sep = i
                     self.block[i] = line.replace('=', '-')
         if self.head_body_sep == 0 or self.head_body_sep == (len(self.block)
                                                              - 1):
             raise TableMarkupError('The head/body row separator may not be '
-                                   'the first or last line of the table.')
+                                   'the first or last line of the table.',
+                                   offset=i)
 
 
 class GridTableParser(TableParser):
@@ -425,8 +437,9 @@ class SimpleTableParser(TableParser):
             cols.append((begin, end))
         if self.columns:
             if cols[-1][1] != self.border_end:
-                raise TableMarkupError('Column span incomplete at line '
-                                       'offset %s.' % offset)
+                raise TableMarkupError('Column span incomplete in table '
+                                       'line %s.' % (offset+1),
+                                       offset=offset)
             # Allow for an unbounded rightmost column:
             cols[-1] = (cols[-1][0], self.columns[-1][1])
         return cols
@@ -442,8 +455,9 @@ class SimpleTableParser(TableParser):
                     i += 1
                     morecols += 1
             except (AssertionError, IndexError):
-                raise TableMarkupError('Column span alignment problem at '
-                                       'line offset %s.' % (offset + 1))
+                raise TableMarkupError('Column span alignment problem '
+                                       'in table line %s.' % (offset+2),
+                                       offset=offset+1)
             cells.append([0, morecols, offset, []])
             i += 1
         return cells
@@ -502,8 +516,9 @@ class SimpleTableParser(TableParser):
                     if new_end > main_end:
                         self.columns[-1] = (main_start, new_end)
                 elif line[end:nextstart].strip():
-                    raise TableMarkupError('Text in column margin at line '
-                                           'offset %s.' % (first_line + offset))
+                    raise TableMarkupError('Text in column margin '
+                        'in table line %s.' % (first_line+offset+1),
+                        offset=first_line+offset)
                 offset += 1
         columns.pop()
 

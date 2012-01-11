@@ -149,10 +149,10 @@ u"""\
                     <entry>
                         <paragraph>
                             ダイ2ラン
-    <system_message level="3" line="5" source="test data" type="ERROR">
+    <system_message level="3" line="6" source="test data" type="ERROR">
         <paragraph>
             Malformed table.
-            Text in column margin at line offset 1.
+            Text in column margin in table line 2.
         <literal_block xml:space="preserve">
             ========  =========
             ダイ1ラン ダイ2ラン

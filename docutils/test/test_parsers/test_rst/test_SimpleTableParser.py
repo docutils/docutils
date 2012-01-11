@@ -82,14 +82,14 @@ A bad table     cell 2
 cell 3          cell 4
 ============  ======
 """,
-'TableMarkupError: Text in column margin at line offset 1.'],
+'TableMarkupError: Text in column margin in table line 2.'],
 ["""\
 ======  =====  ======
 row     one
 Another bad    table
 ======  =====  ======
 """,
-'TableMarkupError: Text in column margin at line offset 2.'],
+'TableMarkupError: Text in column margin in table line 3.'],
 ["""\
 ===========  ================
 A table with two header rows,
@@ -116,8 +116,8 @@ row           separators.
 That's bad.
 ============  =============
 """,
-'TableMarkupError: Multiple head/body row separators in table '
-'(at line offset 2 and 4); only one allowed.'],
+'TableMarkupError: Multiple head/body row separators '
+'(table lines 3 and 5); only one allowed.'],
 ["""\
 ============  ============
 ============  ============
