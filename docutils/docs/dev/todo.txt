@@ -430,7 +430,8 @@ General
       [dest_file index.html]
       ...
 
-  Or rather allow settings configuration from the rst source file?
+  Or rather allow settings configuration from the rst source file
+  (see misc.settings_ directive)?
 
 * The "validator" support added to OptionParser is very similar to
   "traits_" in SciPy_.  Perhaps something could be done with them?
