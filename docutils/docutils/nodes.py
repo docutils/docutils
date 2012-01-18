@@ -499,23 +499,29 @@ class Element(Node):
         # 2to3 doesn't convert __unicode__ to __str__
         __str__ = __unicode__
 
-    def starttag(self):
+    def starttag(self, quoteattr=None):
+        # the optional arg is used by the docutils_xml writer
+        if quoteattr is None:
+            quoteattr = pseudo_quoteattr
         parts = [self.tagname]
         for name, value in self.attlist():
             if value is None:           # boolean attribute
                 parts.append(name)
-            elif isinstance(value, list):
+                continue
+            if isinstance(value, list):
                 values = [serial_escape('%s' % (v,)) for v in value]
-                parts.append('%s="%s"' % (name, ' '.join(values)))
+                value = ' '.join(values)
             else:
-                parts.append('%s="%s"' % (name, value))
-        return '<%s>' % ' '.join(parts)
+                value = unicode(value)
+            value = quoteattr(value)
+            parts.append(u'%s=%s' % (name, value))
+        return u'<%s>' % u' '.join(parts)
 
     def endtag(self):
         return '</%s>' % self.tagname
 
     def emptytag(self):
-        return u'<%s/>' % ' '.join([self.tagname] +
+        return u'<%s/>' % u' '.join([self.tagname] +
                                     ['%s="%s"' % (n, v)
                                      for n, v in self.attlist()])
 
@@ -1912,6 +1918,10 @@ def whitespace_normalize_name(name):
 def serial_escape(value):
     """Escape string values that are elements of a list, for serialization."""
     return value.replace('\\', r'\\').replace(' ', r'\ ')
+
+def pseudo_quoteattr(value):
+    """Quote attributes for pseudo-xml"""
+    return '"%s"' % value
 
 # 
 #

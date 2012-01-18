@@ -64,7 +64,14 @@ Changes Since 0.8.1
 
 * docutils/writers/html4css1/__init__.py
 
-  - change default for `math-output` setting to MathJax
+  - Change default for `math-output` setting to MathJax.
+
+* docutils/writers/docutils_xml.py
+
+  - Use the visitor pattern with default methods instead of minidom
+    to facilitate special handling of selected nodes.
+    
+  - Support raw XML (inserted as-is inside a <raw></raw> node).
 
 Release 0.8.1 (2011-08-30)
 ==========================
