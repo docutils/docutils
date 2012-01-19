@@ -11,7 +11,7 @@ Tests for misc.py "raw" directive.
 import os.path
 import sys
 from __init__ import DocutilsTestSupport
-from docutils._compat import u_prefix, b
+from docutils._compat import b
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()
@@ -158,24 +158,13 @@ Raw input file is UTF-16-encoded, and is not valid ASCII.
     <system_message level="4" line="1" source="test data" type="SEVERE">
         <paragraph>
             Problems with "raw" directive path:
-            IOError: [Errno 2] No such file or directory: %s'non-existent.file'.
+            IOError: [Errno 2] No such file or directory: 'non-existent.file'.
         <literal_block xml:space="preserve">
             .. raw:: html
                :file: non-existent.file
-""" % u_prefix],
+"""],
 # note that this output is rewritten below for certain python versions
 ]
-
-# Rewrite tests that depend on the output of IOError as it is
-# platform-dependent before python 2.4 for a unicode path.
-if sys.version_info < (2, 4):
-    # remove the unicode repr u except for py2.3 on windows:
-    if not sys.platform.startswith('win') or sys.version_info < (2, 3):
-        for i in range(len(totest['raw'])):
-            if totest['raw'][i][1].find("u'non-existent.file'") != -1:
-                totest['raw'][i][1] = totest['raw'][i][1].replace(
-                        "u'non-existent.file'", "'non-existent.file'")
-
 
 if __name__ == '__main__':
     import unittest

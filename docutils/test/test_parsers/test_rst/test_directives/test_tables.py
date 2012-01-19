@@ -12,7 +12,6 @@ from __init__ import DocutilsTestSupport
 
 import os
 import csv
-from docutils._compat import u_prefix
 from docutils.parsers.rst.directives import tables
 
 
@@ -558,11 +557,11 @@ u"""\
     <system_message level="4" line="1" source="test data" type="SEVERE">
         <paragraph>
             Problems with "csv-table" directive path:
-            [Errno 2] No such file or directory: %s'bogus.csv'.
+            [Errno 2] No such file or directory: 'bogus.csv'.
         <literal_block xml:space="preserve">
             .. csv-table:: no such file
                :file: bogus.csv
-""" % u_prefix],
+"""],
 # note that this output is rewritten below for certain python versions
 ["""\
 .. csv-table:: bad URL
