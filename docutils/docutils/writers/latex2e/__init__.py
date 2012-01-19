@@ -1,6 +1,7 @@
 # .. coding: utf8
 # $Id$
-# Author: Engelbert Gruber <grubert@users.sourceforge.net>
+# Author: Engelbert Gruber, Günter Milde
+# Maintainer: docutils-develop@lists.sourceforge.net
 # Copyright: This module has been placed in the public domain.
 
 """LaTeX2e document tree Writer."""
@@ -19,6 +20,7 @@ import re
 import string
 import urllib
 from docutils import frontend, nodes, languages, writers, utils, io
+from docutils.error_reporting import SafeString
 from docutils.transforms import writer_aux
 from docutils.math import pick_math_environment, unichar2tex
 
@@ -491,11 +493,6 @@ PreambleCmds.docinfo = r"""
 % docinfo (width of docinfo table)
 \DUprovidelength{\DUdocinfowidth}{0.9\textwidth}"""
 # PreambleCmds.docinfo._depends = 'providelength'
-
-PreambleCmds.embedded_package_wrapper = r"""\makeatletter
-%% embedded stylesheet: %s
-%s
-\makeatother"""
 
 PreambleCmds.dedication = r"""
 % dedication topic
@@ -970,7 +967,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.use_latex_toc = settings.use_latex_toc
         self.use_latex_docinfo = settings.use_latex_docinfo
         self._use_latex_citations = settings.use_latex_citations
-        self.embed_stylesheet = settings.embed_stylesheet
         self._reference_label = settings.reference_label
         self.hyperlink_color = settings.hyperlink_color
         self.compound_enumerators = settings.compound_enumerators
@@ -1037,7 +1033,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
         self.requirements = SortableDict() # made a list in depart_document()
         self.requirements['__static'] = r'\usepackage{ifthen}'
         self.latex_preamble = [settings.latex_preamble]
-        self.stylesheet = []
         self.fallbacks = SortableDict() # made a list in depart_document()
         self.pdfsetup = [] # PDF properties (hyperref package)
         self.title = []
@@ -1109,30 +1104,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.requirements['typearea'] = r'\usepackage{typearea}'
 
         # Stylesheets
-        # get list of style sheets from settings
-        styles = utils.get_stylesheet_list(settings)
-        # adapt path if --stylesheet_path is used
-        if settings.stylesheet_path and not(self.embed_stylesheet):
-            styles = [utils.relative_path(settings._destination, sheet)
-                      for sheet in styles]
-        for sheet in styles:
-            (base, ext) = os.path.splitext(sheet)
-            is_package = ext in ['.sty', '']
-            if self.embed_stylesheet:
-                if is_package:
-                    sheet = base + '.sty' # adapt package name
-                    # wrap in \makeatletter, \makeatother
-                    wrapper = PreambleCmds.embedded_package_wrapper
-                else:
-                    wrapper = '%% embedded stylesheet: %s\n%s'
-                settings.record_dependencies.add(sheet)
-                self.stylesheet.append(wrapper %
-                    (sheet, io.FileInput(source_path=sheet, encoding='utf-8').read()))
-            else: # link to style sheet
-                if is_package:
-                    self.stylesheet.append(r'\usepackage{%s}' % base)
-                else:
-                    self.stylesheet.append(r'\input{%s}' % sheet)
+        # (the name `self.stylesheet` is singular because only one
+        # stylesheet was supported before Docutils 0.6).
+        self.stylesheet = [self.stylesheet_call(path) 
+                           for path in utils.get_stylesheet_list(settings)]
 
         # PDF setup
         if self.hyperlink_color in ('0', 'false', 'False', ''):
@@ -1150,7 +1125,11 @@ class LaTeXTranslator(nodes.NodeVisitor):
         ##    self.requirements['tocdepth'] = (r'\setcounter{tocdepth}{%d}' %
         ##                                     len(self.d_class.sections))
 
-        # LaTeX section numbering
+        # Section numbering
+        # TODO: use \secnumdepth instead of starred commands
+        ## if self.settings.sectnum_xform: # section numbering by Docutils
+        ##     sectnum_depth = 0
+        ## else:
         if not self.settings.sectnum_xform: # section numbering by LaTeX:
             # sectnum_depth:
             #   None  "sectnum" directive without depth arg -> LaTeX default
@@ -1180,13 +1159,48 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 self.requirements['sectnum_start'] = (
                     r'\setcounter{%s}{%d}' % (self.d_class.sections[0],
                                               settings.sectnum_start-1))
-            # currently ignored (configure in a stylesheet):
+            # TODO: currently ignored (configure in a stylesheet):
             ## settings.sectnum_prefix
             ## settings.sectnum_suffix
 
 
     # Auxiliary Methods
     # -----------------
+
+    def stylesheet_call(self, path):
+        """Return code to reference or embed stylesheet file `path`"""
+        # is it a package (no extension or *.sty) or "normal" tex code:
+        (base, ext) = os.path.splitext(path)
+        is_package = ext in ['.sty', '']
+        # Embed content of style file:
+        if self.settings.embed_stylesheet:
+            if is_package:
+                path = base + '.sty' # ensure extension
+            try:
+                content = io.FileInput(source_path=path,
+                                       encoding='utf-8',
+                                       handle_io_errors=False).read()
+                self.settings.record_dependencies.add(path)
+            except IOError, err:
+                msg = u"Cannot embed stylesheet '%s':\n  %s." % (
+                                path, SafeString(err.strerror))
+                self.document.reporter.error(msg)
+                return '% ' + msg.replace('\n', '\n% ')
+            if is_package:
+                content = '\n'.join([r'\makeatletter',
+                                     content,
+                                     r'\makeatother'])
+            return '%% embedded stylesheet: %s\n%s' % (path, content)
+        # Link to style file:
+        if is_package:
+            path = base # drop extension
+            cmd = r'\usepackage{%s}'
+        else:
+            cmd = r'\input{%s}'
+        if self.settings.stylesheet_path:
+            # adapt path relative to output (cf. config.html#stylesheet-path)
+            path = utils.relative_path(self.settings._destination, path)
+        return cmd % path
 
     def to_latex_encoding(self,docutils_encoding):
         """Translate docutils encoding name into LaTeX's.

@@ -13,17 +13,15 @@
 
 .. contents::
 
-
 Changes Since 0.8.1
 ===================
 
 * General:
 
-  - reStructuredText "code" role and directive with syntax highlighting
-    by Pygments_.
-  - "code" option of the "include" directive.
+  - New reStructuredText "code" role and directive and "code" option
+    of the "include" directive with syntax highlighting by Pygments_.
   - Fix parse_option_marker for option arguments containing ``=``.
-
+  
 .. _Pygments: http://pygments.org/
 
 * setup.py
@@ -61,16 +59,17 @@ Changes Since 0.8.1
 
   - Support the `abbreviation` and `acronym` standard roles.
   - Record only files required to generate the LaTeX source as dependencies.
+  - Fix handling of missing stylesheets.
 
 * docutils/writers/html4css1/__init__.py
 
   - Change default for `math-output` setting to MathJax.
+  - Fix handling of missing stylesheets.
 
 * docutils/writers/docutils_xml.py
 
-  - Use the visitor pattern with default methods instead of minidom
-    to facilitate special handling of selected nodes.
-    
+  - Use the visitor pattern with default_visit()/default_depart() methods
+    instead of minidom to facilitate special handling of selected nodes.
   - Support raw XML (inserted as-is inside a <raw></raw> node).
 
 Release 0.8.1 (2011-08-30)

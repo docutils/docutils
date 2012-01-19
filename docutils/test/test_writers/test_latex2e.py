@@ -17,23 +17,22 @@ if not hasattr(string, 'Template'):
 
 from __init__ import DocutilsTestSupport
 
-from docutils._compat import b
-
 def suite():
-    settings = {'use_latex_toc': 0}
+    settings = {'use_latex_toc': False}
     s = DocutilsTestSupport.PublishTestSuite('latex', suite_settings=settings)
     s.generateTests(totest)
-    settings['use_latex_toc'] = 1
+    settings['use_latex_toc'] = True
     s.generateTests(totest_latex_toc)
-    settings['use_latex_toc'] = 0
-    settings['sectnum_xform'] = 0
+    settings['use_latex_toc'] = False
+    settings['sectnum_xform'] = False
     s.generateTests(totest_latex_sectnum)
-    settings['sectnum_xform'] = 1
-    settings['use_latex_citations'] = 1
+    settings['sectnum_xform'] = True
+    settings['use_latex_citations'] = True
     s.generateTests(totest_latex_citations)
     settings['stylesheet_path'] = 'data/spam,data/ham.tex'
     s.generateTests(totest_stylesheet)
-    settings['embed_stylesheet'] = 1
+    settings['embed_stylesheet'] = True
+    settings['warning_stream'] = ''
     s.generateTests(totest_stylesheet_embed)
     return s
 
@@ -659,13 +658,8 @@ totest_stylesheet_embed['two-styles'] = [
 # input
 ["""two stylesheets embedded in the header""",
 head_template.substitute(dict(parts, stylesheet =
-r"""\makeatletter
-% embedded stylesheet: data/spam.sty
-\ProvidesPackage{spam}
-[2008/12/09 v0.2 simple silly test package]
-\newcommand{\spam}{\@percentchar\ wonderfull spam}
-
-\makeatother
+r"""% Cannot embed stylesheet 'data/spam.sty':
+%   No such file or directory.
 % embedded stylesheet: data/ham.tex
 \newcommand{\ham}{wonderful ham}
 

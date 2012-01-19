@@ -52,7 +52,7 @@ class Writer(Component):
 
     def __init__(self):
 
-        # Used by HTML and LaTex writer for output fragments:
+        # Used by HTML and LaTeX writer for output fragments:
         self.parts = {}
         """Mapping of document part names to fragments of `self.output`.
         Values are Unicode strings; encoding is up to the client.  The 'whole'

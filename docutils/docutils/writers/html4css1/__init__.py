@@ -1,5 +1,6 @@
 # $Id$
-# Author: David Goodger <goodger@python.org>
+# Author: David Goodger
+# Maintainer: docutils-develop@lists.sourceforge.net
 # Copyright: This module has been placed in the public domain.
 
 """
@@ -31,6 +32,7 @@ except ImportError:
         PIL = None
 import docutils
 from docutils import frontend, nodes, utils, writers, languages, io
+from docutils.error_reporting import SafeString
 from docutils.transforms import writer_aux
 from docutils.math import unichar2tex, pick_math_environment
 from docutils.math.latex2mathml import parse_latex_math
@@ -286,19 +288,8 @@ class HTMLTranslator(nodes.NodeVisitor):
             # encoding not interpolated:
             self.html_prolog.append(self.xml_declaration)
         self.head = self.meta[:]
-        # stylesheets
-        styles = utils.get_stylesheet_list(settings)
-        if settings.stylesheet_path and not(settings.embed_stylesheet):
-            styles = [utils.relative_path(settings._destination, sheet)
-                      for sheet in styles]
-        if settings.embed_stylesheet:
-            self.stylesheet = [self.embedded_stylesheet %
-                io.FileInput(source_path=sheet, encoding='utf-8').read()
-                for sheet in styles]
-            settings.record_dependencies.add(*styles)
-        else: # link to stylesheets
-            self.stylesheet = [self.stylesheet_link % self.encode(stylesheet)
-                               for stylesheet in styles]
+        self.stylesheet = [self.stylesheet_call(path) 
+                           for path in utils.get_stylesheet_list(settings)]
         self.body_prefix = ['</head>\n<body>\n']
         # document title, subtitle display
         self.body_pre_docinfo = []
@@ -376,6 +367,26 @@ class HTMLTranslator(nodes.NodeVisitor):
             encoded = encoded.replace('%40', '&#37;&#52;&#48;')
             encoded = encoded.replace('.', '&#46;')
         return encoded
+
+    def stylesheet_call(self, path):
+        """Return code to reference or embed stylesheet file `path`"""
+        if self.settings.embed_stylesheet:
+            try:
+                content = io.FileInput(source_path=path,
+                                       encoding='utf-8',
+                                       handle_io_errors=False).read()
+                self.settings.record_dependencies.add(path)
+            except IOError, err:
+                msg = u"Cannot embed stylesheet '%s': %s." % (
+                                path, SafeString(err.strerror))
+                self.document.reporter.error(msg)
+                return '<--- %s --->\n' % msg
+            return self.embedded_stylesheet % content
+        # else link to style file:
+        if self.settings.stylesheet_path:
+            # adapt path relative to output (cf. config.html#stylesheet-path)
+            path = utils.relative_path(self.settings._destination, path)
+        return self.stylesheet_link % self.encode(path)
 
     def starttag(self, node, tagname, suffix='\n', empty=0, **attributes):
         """
