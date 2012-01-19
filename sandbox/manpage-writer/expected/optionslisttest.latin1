@@ -27,8 +27,8 @@ OOPPTTIIOONNSS
 
               · second point
 
-                    ----cccccc  option  lists may be nested, even if this is rarely
-                           used.
+                   ----cccccc  option  lists  may be nested, even if this is rarely
+                          used.
 
        --kk     and even another
 
@@ -93,11 +93,11 @@ DDEEFFIINNIITTIIOONN LLIISSTT
               1 Description of Term 1 Description of Term 1
 
        tteerrmm22  Description of Term 2
-                  Description  of  Term 2 Description of Term 2 Description of
-                  Term 2 Description of Term 2 Description of Term 2
+                 Description  of  Term  2 Description of Term 2 Description of
+                 Term 2 Description of Term 2 Description of Term 2
 
-                  Description of Term 2 Description of Term 2  Description  of
-                  Term 2 Description of Term 2 Description of Term 2
+                 Description of Term 2 Description of Term  2  Description  of
+                 Term 2 Description of Term 2 Description of Term 2
 
               tteerrmm2222 Defintions lists may be nested, thus this at level 1.
 
@@ -114,7 +114,7 @@ DDEEFFIINNIITTIIOONN LLIISSTT
 
               More Description for term3.
 
-       This  paragraph  should be at level 0. But the rst-manpage writer has a
+       This paragraph should be at level 0. But the rst-manpage writer  has  a
        bug here. See the option list above.
 
 AAUUTTHHOORR

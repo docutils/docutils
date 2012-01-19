@@ -31,7 +31,13 @@ DDEESSCCRRIIPPTTIIOONN
 
        +o double: "
 
-       +o single:
+       +o single: ' '
+
+       +o double: " "
+
+         Some  text  afterwards,  test.txt  ended  with  quotes test.  Unicode
+         breaks the man processing chain. The display ends with ssiinnggllee:: .
+
 
 
 
