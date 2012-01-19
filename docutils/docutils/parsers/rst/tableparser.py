@@ -427,7 +427,7 @@ class SimpleTableParser(TableParser):
         """
         cols = []
         end = 0
-        while 1:
+        while True:
             begin = line.find('-', end)
             end = line.find(' ', begin)
             if begin < 0:

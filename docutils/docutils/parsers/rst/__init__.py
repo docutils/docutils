@@ -49,12 +49,12 @@ Anything that isn't already customizable is that way simply because that type
 of customizability hasn't been implemented yet.  Patches welcome!
 
 When instantiating an object of the `Parser` class, two parameters may be
-passed: ``rfc2822`` and ``inliner``.  Pass ``rfc2822=1`` to enable an initial
-RFC-2822 style header block, parsed as a "field_list" element (with "class"
-attribute set to "rfc2822").  Currently this is the only body-level element
-which is customizable without subclassing.  (Tip: subclass `Parser` and change
-its "state_classes" and "initial_state" attributes to refer to new classes.
-Contact the author if you need more details.)
+passed: ``rfc2822`` and ``inliner``.  Pass ``rfc2822=True`` to enable an
+initial RFC-2822 style header block, parsed as a "field_list" element (with
+"class" attribute set to "rfc2822").  Currently this is the only body-level
+element which is customizable without subclassing.  (Tip: subclass `Parser`
+and change its "state_classes" and "initial_state" attributes to refer to new
+classes. Contact the author if you need more details.)
 
 The ``inliner`` parameter takes an instance of `states.Inliner` or a subclass.
 It handles inline markup recognition.  A common extension is the addition of
@@ -141,7 +141,7 @@ class Parser(docutils.parsers.Parser):
     config_section = 'restructuredtext parser'
     config_section_dependencies = ('parsers',)
 
-    def __init__(self, rfc2822=None, inliner=None):
+    def __init__(self, rfc2822=False, inliner=None):
         if rfc2822:
             self.initial_state = 'RFC2822Body'
         else:
@@ -158,7 +158,7 @@ class Parser(docutils.parsers.Parser):
               debug=document.reporter.debug_flag)
         inputlines = docutils.statemachine.string2lines(
               inputstring, tab_width=document.settings.tab_width,
-              convert_whitespace=1)
+              convert_whitespace=True)
         self.statemachine.run(inputlines, document, inliner=self.inliner)
         self.finish_parse()
 

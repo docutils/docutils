@@ -1,7 +1,8 @@
 #! /usr/bin/env python
 
 # $Id$
-# Author: Lea Wiemann <LeWiemann@gmail.com>
+# Author: Lea Wiemann
+# Maintainer: docutils-develop@lists.sourceforge.net
 # Copyright: This module has been placed in the public domain.
 
 """
@@ -21,13 +22,13 @@ class EncodingTestCase(DocutilsTestSupport.StandardTestCase):
         settings_overrides={
             'output_encoding': 'latin1',
             'stylesheet': '',
-            '_disable_config': 1,}
+            '_disable_config': True,}
         result = core.publish_string(
-            b('EUR = \xe2\x82\xac'), writer_name='html4css1',
+            u'EUR = \u20ac', writer_name='html4css1',
             settings_overrides=settings_overrides)
         # Encoding a euro sign with latin1 doesn't work, so the
         # xmlcharrefreplace handler is used.
-        self.assert_(result.find(b('EUR = &#8364;')) != -1)
+        self.assertNotEqual(result.find(b('EUR = &#8364;')), -1)
 
 
 if __name__ == '__main__':

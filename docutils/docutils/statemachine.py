@@ -128,7 +128,7 @@ class StateMachine:
     results of processing in a list.
     """
 
-    def __init__(self, state_classes, initial_state, debug=0):
+    def __init__(self, state_classes, initial_state, debug=False):
         """
         Initialize a `StateMachine` object; add state objects.
 
@@ -224,7 +224,7 @@ class StateMachine:
                 print >>self._stderr, '\nStateMachine.run: bof transition'
             context, result = state.bof(context)
             results.extend(result)
-            while 1:
+            while True:
                 try:
                     try:
                         self.next_line()
@@ -403,7 +403,7 @@ class StateMachine:
         self.input_lines.insert(self.line_offset + 2,
                                 StringList(input_lines, source))
 
-    def get_text_block(self, flush_left=0):
+    def get_text_block(self, flush_left=False):
         """
         Return a contiguous block of text.
 
@@ -595,14 +595,14 @@ class State:
     defaults.
     """
 
-    def __init__(self, state_machine, debug=0):
+    def __init__(self, state_machine, debug=False):
         """
         Initialize a `State` object; make & add initial transitions.
 
         Parameters:
 
         - `statemachine`: the controlling `StateMachine` object.
-        - `debug`: a boolean; produce verbose output if true (nonzero).
+        - `debug`: a boolean; produce verbose output if true.
         """
 
         self.transition_order = []
@@ -803,17 +803,15 @@ class StateMachineWS(StateMachine):
       known.
     """
 
-    def get_indented(self, until_blank=0, strip_indent=1):
+    def get_indented(self, until_blank=False, strip_indent=True):
         """
         Return a block of indented lines of text, and info.
 
         Extract an indented block where the indent is unknown for all lines.
 
         :Parameters:
-            - `until_blank`: Stop collecting at the first blank line if true
-              (1).
-            - `strip_indent`: Strip common leading indent if true (1,
-              default).
+            - `until_blank`: Stop collecting at the first blank line if true.
+            - `strip_indent`: Strip common leading indent if true (default).
 
         :Return:
             - the indented block (a list of lines of text),
@@ -831,7 +829,7 @@ class StateMachineWS(StateMachine):
             offset += 1
         return indented, indent, offset, blank_finish
 
-    def get_known_indented(self, indent, until_blank=0, strip_indent=1):
+    def get_known_indented(self, indent, until_blank=False, strip_indent=True):
         """
         Return an indented block and info.
 
@@ -842,10 +840,9 @@ class StateMachineWS(StateMachine):
 
         :Parameters:
             - `indent`: The number of indent columns/characters.
-            - `until_blank`: Stop collecting at the first blank line if true
-              (1).
+            - `until_blank`: Stop collecting at the first blank line if true.
             - `strip_indent`: Strip `indent` characters of indentation if true
-              (1, default).
+              (default).
 
         :Return:
             - the indented block,
@@ -862,8 +859,8 @@ class StateMachineWS(StateMachine):
             offset += 1
         return indented, offset, blank_finish
 
-    def get_first_known_indented(self, indent, until_blank=0, strip_indent=1,
-                                 strip_top=1):
+    def get_first_known_indented(self, indent, until_blank=False, 
+                                 strip_indent=True, strip_top=True):
         """
         Return an indented block and info.
 
@@ -957,7 +954,7 @@ class StateWS(State):
     """Default initial whitespace transitions, added before those listed in
     `State.initial_transitions`.  May be overridden in subclasses."""
 
-    def __init__(self, state_machine, debug=0):
+    def __init__(self, state_machine, debug=False):
         """
         Initialize a `StateSM` object; extends `State.__init__()`.
 
@@ -1348,7 +1345,7 @@ class StringList(ViewList):
         self.data[start:end] = [line[length:]
                                 for line in self.data[start:end]]
 
-    def get_text_block(self, start, flush_left=0):
+    def get_text_block(self, start, flush_left=False):
         """
         Return a contiguous block of text.
 
@@ -1369,7 +1366,7 @@ class StringList(ViewList):
             end += 1
         return self[start:end]
 
-    def get_indented(self, start=0, until_blank=0, strip_indent=1,
+    def get_indented(self, start=0, until_blank=False, strip_indent=True,
                      block_indent=None, first_indent=None):
         """
         Extract and return a StringList of indented lines of text.
@@ -1429,7 +1426,7 @@ class StringList(ViewList):
             block.trim_left(indent, start=(first_indent is not None))
         return block, indent or 0, blank_finish
 
-    def get_2D_block(self, top, left, bottom, right, strip_indent=1):
+    def get_2D_block(self, top, left, bottom, right, strip_indent=True):
         block = self[top:bottom]
         indent = right
         for i in range(len(block.data)):
@@ -1504,7 +1501,7 @@ class StateCorrection(Exception):
     """
 
 
-def string2lines(astring, tab_width=8, convert_whitespace=0,
+def string2lines(astring, tab_width=8, convert_whitespace=False,
                  whitespace=re.compile('[\v\f]')):
     """
     Return a list of one-line strings with tabs expanded, no newlines, and

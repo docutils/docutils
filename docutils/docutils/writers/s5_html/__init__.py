@@ -202,7 +202,7 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
         else:
             # no destination, so we can't copy the theme
             return
-        default = 0
+        default = False
         while path:
             for f in os.listdir(path):  # copy all files from each theme
                 if f == self.base_theme_file:
@@ -233,7 +233,7 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
             if not path:
                 path = find_theme(self.default_theme)
                 theme_paths.append(path)
-                default = 1
+                default = True
         if len(required_files_copied) != len(self.required_theme_files):
             # Some required files weren't found & couldn't be copied.
             required = list(self.required_theme_files)

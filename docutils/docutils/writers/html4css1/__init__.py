@@ -307,10 +307,10 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.topic_classes = []
         self.colspecs = []
         self.compact_p = 1
-        self.compact_simple = None
-        self.compact_field_list = None
-        self.in_docinfo = None
-        self.in_sidebar = None
+        self.compact_simple = False
+        self.compact_field_list = False
+        self.in_docinfo = False
+        self.in_sidebar = False
         self.title = []
         self.subtitle = []
         self.header = []
@@ -319,9 +319,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.html_title = []
         self.html_subtitle = []
         self.html_body = []
-        self.in_document_title = 0
-        self.in_mailto = 0
-        self.author_in_authors = None
+        self.in_document_title = 0   # len(self.body) or 0
+        self.in_mailto = False
+        self.author_in_authors = False
         self.math_header = ''
 
     def astext(self):
@@ -388,7 +388,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             path = utils.relative_path(self.settings._destination, path)
         return self.stylesheet_link % self.encode(path)
 
-    def starttag(self, node, tagname, suffix='\n', empty=0, **attributes):
+    def starttag(self, node, tagname, suffix='\n', empty=False, **attributes):
         """
         Construct and return a start tag given a node (id & class attributes
         are extracted), tag name, and optional attributes.
@@ -454,7 +454,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def emptytag(self, node, tagname, suffix='\n', **attributes):
         """Construct and return an XML-compatible empty tag."""
-        return self.starttag(node, tagname, suffix, empty=1, **attributes)
+        return self.starttag(node, tagname, suffix, empty=True, **attributes)
 
     def set_class_on_child(self, node, class_, index=0):
         """
@@ -497,7 +497,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</acronym>')
 
     def visit_address(self, node):
-        self.visit_docinfo_item(node, 'address', meta=None)
+        self.visit_docinfo_item(node, 'address', meta=False)
         self.body.append(self.starttag(node, 'pre', CLASS='address'))
 
     def depart_address(self, node):
@@ -534,17 +534,16 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def depart_author(self, node):
         if isinstance(node.parent, nodes.authors):
-            self.author_in_authors += 1
+            self.author_in_authors = True
         else:
             self.depart_docinfo_item()
 
     def visit_authors(self, node):
         self.visit_docinfo_item(node, 'authors')
-        self.author_in_authors = 0      # initialize counter
+        self.author_in_authors = False  # initialize
 
     def depart_authors(self, node):
         self.depart_docinfo_item()
-        self.author_in_authors = None
 
     def visit_block_quote(self, node):
         self.body.append(self.starttag(node, 'blockquote'))
@@ -661,7 +660,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</div>\n')
 
     def visit_contact(self, node):
-        self.visit_docinfo_item(node, 'contact', meta=None)
+        self.visit_docinfo_item(node, 'contact', meta=False)
 
     def depart_contact(self, node):
         self.depart_docinfo_item()
@@ -719,16 +718,16 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('<col class="docinfo-name" />\n'
                          '<col class="docinfo-content" />\n'
                          '<tbody valign="top">\n')
-        self.in_docinfo = 1
+        self.in_docinfo = True
 
     def depart_docinfo(self, node):
         self.body.append('</tbody>\n</table>\n')
-        self.in_docinfo = None
+        self.in_docinfo = False
         start = self.context.pop()
         self.docinfo = self.body[start:]
         self.body = []
 
-    def visit_docinfo_item(self, node, name, meta=1):
+    def visit_docinfo_item(self, node, name, meta=True):
         if meta:
             meta_tag = '<meta name="%s" content="%s" />\n' \
                        % (name, self.attval(node.astext()))
@@ -858,10 +857,10 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.context.append((self.compact_field_list, self.compact_p))
         self.compact_p = None
         if 'compact' in node['classes']:
-            self.compact_field_list = 1
+            self.compact_field_list = True
         elif (self.settings.compact_field_lists
               and 'open' not in node['classes']):
-            self.compact_field_list = 1
+            self.compact_field_list = True
         if self.compact_field_list:
             for field in node:
                 field_body = field[-1]
@@ -872,7 +871,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                         len(children) == 1 and
                         isinstance(children[0],
                                    (nodes.paragraph, nodes.line_block))):
-                    self.compact_field_list = 0
+                    self.compact_field_list = False
                     break
         self.body.append(self.starttag(node, 'table', frame='void',
                                        rules='none',
@@ -1369,7 +1368,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             if ( self.settings.cloak_email_addresses
                  and atts['href'].startswith('mailto:')):
                 atts['href'] = self.cloak_mailto(atts['href'])
-                self.in_mailto = 1
+                self.in_mailto = True
             atts['class'] += ' external'
         else:
             assert 'refid' in node, \
@@ -1385,10 +1384,10 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</a>')
         if not isinstance(node.parent, nodes.TextElement):
             self.body.append('\n')
-        self.in_mailto = 0
+        self.in_mailto = False
 
     def visit_revision(self, node):
-        self.visit_docinfo_item(node, 'revision', meta=None)
+        self.visit_docinfo_item(node, 'revision', meta=False)
 
     def depart_revision(self, node):
         self.depart_docinfo_item()
@@ -1419,14 +1418,14 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append(
             self.starttag(node, 'div', CLASS='sidebar'))
         self.set_first_last(node)
-        self.in_sidebar = 1
+        self.in_sidebar = True
 
     def depart_sidebar(self, node):
         self.body.append('</div>\n')
-        self.in_sidebar = None
+        self.in_sidebar = False
 
     def visit_status(self, node):
-        self.visit_docinfo_item(node, 'status', meta=None)
+        self.visit_docinfo_item(node, 'status', meta=False)
 
     def depart_status(self, node):
         self.depart_docinfo_item()
@@ -1569,7 +1568,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_title(self, node):
         """Only 6 section levels are supported by HTML."""
-        check_id = 0
+        check_id = 0  # TODO: is this a bool (False) or a counter?
         close_tag = '</p>\n'
         if isinstance(node.parent, nodes.topic):
             self.body.append(
@@ -1638,7 +1637,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         pass
 
     def visit_version(self, node):
-        self.visit_docinfo_item(node, 'version', meta=None)
+        self.visit_docinfo_item(node, 'version', meta=False)
 
     def depart_version(self, node):
         self.depart_docinfo_item()

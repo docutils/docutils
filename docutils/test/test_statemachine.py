@@ -14,7 +14,7 @@ import re
 from DocutilsTestSupport import statemachine
 
 
-debug = 0
+debug = False
 testtext = statemachine.string2lines("""\
 First paragraph.
 

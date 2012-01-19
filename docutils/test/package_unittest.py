@@ -21,7 +21,7 @@ import re
 # So that individual test modules can share a bit of state,
 # `package_unittest` acts as an intermediary for the following
 # variables:
-debug = 0
+debug = False
 verbosity = 1
 
 USAGE = """\

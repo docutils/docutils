@@ -39,11 +39,11 @@ class Compound(Transform):
 
     def apply(self):
         for compound in self.document.traverse(nodes.compound):
-            first_child = 1
+            first_child = True
             for child in compound:
                 if first_child:
                     if not isinstance(child, nodes.Invisible):
-                        first_child = 0
+                        first_child = False
                 else:
                     child['classes'].append('continued')
             # Substitute children for compound.

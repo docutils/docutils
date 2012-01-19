@@ -720,7 +720,7 @@ class Table(object):
         self._translator = translator
         self._latex_type = latex_type
         self._table_style = table_style
-        self._open = 0
+        self._open = False
         # miscellaneous attributes
         self._attrs = {}
         self._col_width = []
@@ -850,6 +850,7 @@ class Table(object):
         elif self._table_style == 'booktabs':
             return ['\\toprule\n']
         return []
+
     def depart_thead(self):
         a = []
         #if self._table_style == 'standard':
@@ -885,7 +886,7 @@ class Table(object):
                 cline = ''
                 rowspans.reverse()
                 # TODO merge clines
-                while 1:
+                while True:
                     try:
                         c_start = rowspans.pop()
                     except:
@@ -928,10 +929,10 @@ class LaTeXTranslator(nodes.NodeVisitor):
     ## use_optionlist_for_docinfo = False # TODO: NOT YET IN USE
 
     # Use compound enumerations (1.A.1.)
-    compound_enumerators = 0
+    compound_enumerators = False
 
     # If using compound enumerations, include section information.
-    section_prefix_for_enumerators = 0
+    section_prefix_for_enumerators = False
 
     # This is the character that separates the section ("." subsection ...)
     # prefix from the regular list enumerator.
@@ -1106,7 +1107,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # Stylesheets
         # (the name `self.stylesheet` is singular because only one
         # stylesheet was supported before Docutils 0.6).
-        self.stylesheet = [self.stylesheet_call(path) 
+        self.stylesheet = [self.stylesheet_call(path)
                            for path in utils.get_stylesheet_list(settings)]
 
         # PDF setup
@@ -1678,8 +1679,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
         if self._use_latex_citations:
             followup_citation = False
             # check for a following citation separated by a space or newline
-            next_siblings = node.traverse(descend=0, siblings=1,
-                                          include_self=0)
+            next_siblings = node.traverse(descend=False, siblings=True,
+                                          include_self=False)
             if len(next_siblings) > 1:
                 next = next_siblings[0]
                 if (isinstance(next, nodes.Text) and

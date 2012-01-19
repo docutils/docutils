@@ -28,4 +28,4 @@ class Writer(writers.Writer):
 
     def supports(self, format):
         """This writer supports all format-specific elements."""
-        return 1
+        return True

@@ -111,7 +111,7 @@ class Publisher:
         #@@@ Add self.source & self.destination to components in future?
         option_parser = OptionParser(
             components=(self.parser, self.reader, self.writer, settings_spec),
-            defaults=defaults, read_config_files=1,
+            defaults=defaults, read_config_files=True,
             usage=usage, description=description)
         return option_parser
 
@@ -193,7 +193,7 @@ class Publisher:
 
     def publish(self, argv=None, usage=None, description=None,
                 settings_spec=None, settings_overrides=None,
-                config_section=None, enable_exit_status=None):
+                config_section=None, enable_exit_status=False):
         """
         Process command line options and arguments (if `self.settings` not
         already set), run `self.reader` and then `self.writer`.  Return
@@ -316,7 +316,7 @@ def publish_cmdline(reader=None, reader_name='standalone',
                     writer=None, writer_name='pseudoxml',
                     settings=None, settings_spec=None,
                     settings_overrides=None, config_section=None,
-                    enable_exit_status=1, argv=None,
+                    enable_exit_status=True, argv=None,
                     usage=default_usage, description=default_description):
     """
     Set up & run a `Publisher` for command-line-based file I/O (input and
@@ -344,7 +344,7 @@ def publish_file(source=None, source_path=None,
                  parser=None, parser_name='restructuredtext',
                  writer=None, writer_name='pseudoxml',
                  settings=None, settings_spec=None, settings_overrides=None,
-                 config_section=None, enable_exit_status=None):
+                 config_section=None, enable_exit_status=False):
     """
     Set up & run a `Publisher` for programmatic use with file-like I/O.
     Return the encoded string output also.
@@ -370,7 +370,7 @@ def publish_string(source, source_path=None, destination_path=None,
                    writer=None, writer_name='pseudoxml',
                    settings=None, settings_spec=None,
                    settings_overrides=None, config_section=None,
-                   enable_exit_status=None):
+                   enable_exit_status=False):
     """
     Set up & run a `Publisher` for programmatic use with string I/O.  Return
     the encoded string or Unicode string output.
@@ -407,7 +407,7 @@ def publish_parts(source, source_path=None, source_class=io.StringInput,
                   writer=None, writer_name='pseudoxml',
                   settings=None, settings_spec=None,
                   settings_overrides=None, config_section=None,
-                  enable_exit_status=None):
+                  enable_exit_status=False):
     """
     Set up & run a `Publisher`, and return a dictionary of document parts.
     Dictionary keys are the names of parts, and values are Unicode strings;
@@ -440,7 +440,7 @@ def publish_doctree(source, source_path=None,
                     parser=None, parser_name='restructuredtext',
                     settings=None, settings_spec=None,
                     settings_overrides=None, config_section=None,
-                    enable_exit_status=None):
+                    enable_exit_status=False):
     """
     Set up & run a `Publisher` for programmatic use with string I/O.
     Return the document tree.
@@ -469,7 +469,7 @@ def publish_from_doctree(document, destination_path=None,
                          writer=None, writer_name='pseudoxml',
                          settings=None, settings_spec=None,
                          settings_overrides=None, config_section=None,
-                         enable_exit_status=None):
+                         enable_exit_status=False):
     """
     Set up & run a `Publisher` to render from an existing document
     tree data structure, for programmatic use with string I/O.  Return
@@ -509,7 +509,7 @@ def publish_cmdline_to_binary(reader=None, reader_name='standalone',
                     writer=None, writer_name='pseudoxml',
                     settings=None, settings_spec=None,
                     settings_overrides=None, config_section=None,
-                    enable_exit_status=1, argv=None,
+                    enable_exit_status=True, argv=None,
                     usage=default_usage, description=default_description,
                     destination=None, destination_class=io.BinaryFileOutput
                     ):

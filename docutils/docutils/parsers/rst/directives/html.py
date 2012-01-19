@@ -74,7 +74,7 @@ class Meta(Directive):
         node = nodes.Element()
         new_line_offset, blank_finish = self.state.nested_list_parse(
             self.content, self.content_offset, node,
-            initial_state='MetaBody', blank_finish=1,
+            initial_state='MetaBody', blank_finish=True,
             state_machine_kwargs=self.SMkwargs)
         if (new_line_offset - self.content_offset) != len(self.content):
             # incomplete parse of block?
