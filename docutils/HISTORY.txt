@@ -72,6 +72,10 @@ Changes Since 0.8.1
     instead of minidom to facilitate special handling of selected nodes.
   - Support raw XML (inserted as-is inside a <raw></raw> node).
 
+* docutils/writers/manpage.py
+
+  - Do not emit comment line with trailing blank. Problematic for VCS.
+
 Release 0.8.1 (2011-08-30)
 ==========================
 
