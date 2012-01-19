@@ -120,7 +120,7 @@ class Node(object):
 
         Return true if we should stop the traversal.
         """
-        stop = 0
+        stop = False
         visitor.document.reporter.debug(
             'docutils.nodes.Node.walk calling dispatch_visit for %s'
             % self.__class__.__name__)
@@ -135,12 +135,12 @@ class Node(object):
             try:
                 for child in children[:]:
                     if child.walk(visitor):
-                        stop = 1
+                        stop = True
                         break
             except SkipSiblings:
                 pass
         except StopTraversal:
-            stop = 1
+            stop = True
         return stop
 
     def walkabout(self, visitor):
@@ -155,8 +155,8 @@ class Node(object):
 
         Return true if we should stop the traversal.
         """
-        call_depart = 1
-        stop = 0
+        call_depart = True
+        stop = False
         visitor.document.reporter.debug(
             'docutils.nodes.Node.walkabout calling dispatch_visit for %s'
             % self.__class__.__name__)
@@ -166,19 +166,19 @@ class Node(object):
             except SkipNode:
                 return stop
             except SkipDeparture:
-                call_depart = 0
+                call_depart = False
             children = self.children
             try:
                 for child in children[:]:
                     if child.walkabout(visitor):
-                        stop = 1
+                        stop = True
                         break
             except SkipSiblings:
                 pass
         except SkipChildren:
             pass
         except StopTraversal:
-            stop = 1
+            stop = True
         if call_depart:
             visitor.document.reporter.debug(
                 'docutils.nodes.Node.walkabout calling dispatch_departure '
@@ -203,8 +203,8 @@ class Node(object):
             result.extend(child._all_traverse())
         return result
 
-    def traverse(self, condition=None,
-                 include_self=1, descend=1, siblings=0, ascend=0):
+    def traverse(self, condition=None, include_self=True, descend=True,
+                 siblings=False, ascend=False):
         """
         Return an iterable containing
 
@@ -236,12 +236,12 @@ class Node(object):
 
             [<emphasis>, <strong>, <#text: Foo>, <#text: Bar>]
 
-        and list(strong.traverse(ascend=1)) equals ::
+        and list(strong.traverse(ascend=True)) equals ::
 
             [<strong>, <#text: Foo>, <#text: Bar>, <reference>, <#text: Baz>]
         """
         if ascend:
-            siblings=1
+            siblings=True
         # Check for special argument combinations that allow using an
         # optimized version of traverse()
         if include_self and descend and not siblings:
@@ -260,16 +260,17 @@ class Node(object):
             r.append(self)
         if descend and len(self.children):
             for child in self:
-                r.extend(child.traverse(
-                    include_self=1, descend=1, siblings=0, ascend=0,
-                    condition=condition))
+                r.extend(child.traverse(include_self=True, descend=True,
+                                        siblings=False, ascend=False,
+                                        condition=condition))
         if siblings or ascend:
             node = self
             while node.parent:
                 index = node.parent.index(node)
                 for sibling in node.parent[index+1:]:
-                    r.extend(sibling.traverse(include_self=1, descend=descend,
-                                              siblings=0, ascend=0,
+                    r.extend(sibling.traverse(include_self=True,
+                                              descend=descend, 
+                                              siblings=False, ascend=False,
                                               condition=condition))
                 if not ascend:
                     break
@@ -277,8 +278,8 @@ class Node(object):
                     node = node.parent
         return r
 
-    def next_node(self, condition=None,
-                  include_self=0, descend=1, siblings=0, ascend=0):
+    def next_node(self, condition=None, include_self=False, descend=True,
+                  siblings=False, ascend=False):
         """
         Return the first node in the iterable returned by traverse(),
         or None if the iterable is empty.
@@ -1112,7 +1113,7 @@ class document(Root, Structural, Element):
 
     def note_explicit_target(self, target, msgnode=None):
         id = self.set_id(target, msgnode)
-        self.set_name_id_map(target, id, msgnode, explicit=1)
+        self.set_name_id_map(target, id, msgnode, explicit=True)
 
     def note_refname(self, node):
         self.refnames.setdefault(node['refname'], []).append(node)

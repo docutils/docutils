@@ -47,7 +47,7 @@ class PropagateTargets(Transform):
                  target.hasattr('refname'))):
                 continue
             assert len(target) == 0, 'error: block-level target has children'
-            next_node = target.next_node(ascend=1)
+            next_node = target.next_node(ascend=True)
             # Do not move names and ids into Invisibles (we'd lose the
             # attributes) or different Targetables (e.g. footnotes).
             if (next_node is not None and
@@ -136,7 +136,7 @@ class AnonymousHyperlinks(Transform):
             return
         for ref, target in zip(anonymous_refs, anonymous_targets):
             target.referenced = 1
-            while 1:
+            while True:
                 if target.hasattr('refuri'):
                     ref['refuri'] = target['refuri']
                     ref.resolved = 1
@@ -502,7 +502,7 @@ class Footnotes(Transform):
         corresponding footnote references.
         """
         for footnote in self.document.autofootnotes:
-            while 1:
+            while True:
                 label = str(startnum)
                 startnum += 1
                 if label not in self.document.nameids:
@@ -808,8 +808,7 @@ class TargetNotes(Transform):
         for ref in refs:
             if isinstance(ref, nodes.target):
                 continue
-            refnode = nodes.footnote_reference(
-                refname=footnote_name, auto=1)
+            refnode = nodes.footnote_reference(refname=footnote_name, auto=1)
             refnode['classes'] += self.classes
             self.document.note_autofootnote_ref(refnode)
             self.document.note_footnote_ref(refnode)

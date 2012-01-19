@@ -105,16 +105,16 @@ class Include(Directive):
                 raise self.severe('Problem with "end-before" option of "%s" '
                                   'directive:\nText not found.' % self.name)
             rawtext = rawtext[:before_index]
-            
-        include_lines = statemachine.string2lines(rawtext, tab_width, 
-                                                  convert_whitespace=1)
+
+        include_lines = statemachine.string2lines(rawtext, tab_width,
+                                                  convert_whitespace=True)
         if 'literal' in self.options:
             # Convert tabs to spaces, if `tab_width` is positive.
             if tab_width >= 0:
                 text = rawtext.expandtabs(tab_width)
             else:
                 text = rawtext
-            literal_block = nodes.literal_block(rawtext, source=path, 
+            literal_block = nodes.literal_block(rawtext, source=path,
                                     classes=self.options.get('class', []))
             literal_block.line = 1
             self.add_name(literal_block)
@@ -130,7 +130,7 @@ class Include(Directive):
                 tokens = NumberLines([([], text)], startline, endline)
                 for classes, value in tokens:
                     if classes:
-                        literal_block += nodes.inline(value, value, 
+                        literal_block += nodes.inline(value, value,
                                                       classes=classes)
                     else:
                         literal_block += nodes.Text(value, value)
@@ -139,7 +139,7 @@ class Include(Directive):
             return [literal_block]
         if 'code' in self.options:
             self.options['source'] = path
-            codeblock = CodeBlock(self.name, 
+            codeblock = CodeBlock(self.name,
                                   [self.options.pop('code')], # arguments
                                   self.options,
                                   include_lines, # content
@@ -240,7 +240,7 @@ class Raw(Directive):
             # This will always fail because there is no content.
             self.assert_has_content()
         raw_node = nodes.raw('', text, **attributes)
-        (raw_node.source, 
+        (raw_node.source,
         raw_node.line) = self.state_machine.get_source_and_line(self.lineno)
         return [raw_node]
 

@@ -143,8 +143,8 @@ class CustomTestCase(StandardTestCase):
     compare = difflib.Differ().compare
     """Comparison method shared by all subclasses."""
 
-    def __init__(self, method_name, input, expected, id, run_in_debugger=0,
-                 suite_settings=None):
+    def __init__(self, method_name, input, expected, id,
+                 run_in_debugger=True, suite_settings=None):
         """
         Initialise the CustomTestCase.
 
@@ -274,7 +274,7 @@ class CustomTestSuite(unittest.TestSuite):
             self.id = id
 
     def addTestCase(self, test_case_class, method_name, input, expected,
-                    id=None, run_in_debugger=0, **kwargs):
+                    id=None, run_in_debugger=False, **kwargs):
         """
         Create a CustomTestCase in the CustomTestSuite.
         Also return it, just in case.
@@ -405,7 +405,7 @@ class TransformTestSuite(CustomTestSuite):
         for name, (transforms, cases) in dict.items():
             for casenum in range(len(cases)):
                 case = cases[casenum]
-                run_in_debugger = 0
+                run_in_debugger = False
                 if len(case)==3:
                     # TODO: (maybe) change the 3rd argument to a dict, so it
                     # can handle more cases by keyword ('disable', 'debug',
@@ -413,7 +413,7 @@ class TransformTestSuite(CustomTestSuite):
                     # But there's also the method that
                     # HtmlPublishPartsTestSuite uses <DJG>
                     if case[2]:
-                        run_in_debugger = 1
+                        run_in_debugger = True
                     else:
                         continue
                 self.addTestCase(
@@ -479,10 +479,10 @@ class ParserTestSuite(CustomTestSuite):
         for name, cases in dict.items():
             for casenum in range(len(cases)):
                 case = cases[casenum]
-                run_in_debugger = 0
+                run_in_debugger = False
                 if len(case)==3:
                     if case[2]:
-                        run_in_debugger = 1
+                        run_in_debugger = True
                     else:
                         continue
                 self.addTestCase(
@@ -496,7 +496,7 @@ class PEPParserTestCase(ParserTestCase):
 
     """PEP-specific parser test case."""
 
-    parser = rst.Parser(rfc2822=1, inliner=rst.states.Inliner())
+    parser = rst.Parser(rfc2822=True, inliner=rst.states.Inliner())
     """Parser shared by all PEPParserTestCases."""
 
     option_parser = frontend.OptionParser(components=(rst.Parser, pep.Reader))
@@ -564,10 +564,10 @@ class GridTableParserTestSuite(CustomTestSuite):
         for name, cases in dict.items():
             for casenum in range(len(cases)):
                 case = cases[casenum]
-                run_in_debugger = 0
+                run_in_debugger = False
                 if len(case) == 4:
                     if case[-1]:
-                        run_in_debugger = 1
+                        run_in_debugger = True
                     else:
                         continue
                 self.addTestCase(self.test_case_class, 'test_parse_table',
@@ -607,10 +607,10 @@ class SimpleTableParserTestSuite(CustomTestSuite):
         for name, cases in dict.items():
             for casenum in range(len(cases)):
                 case = cases[casenum]
-                run_in_debugger = 0
+                run_in_debugger = False
                 if len(case) == 3:
                     if case[-1]:
-                        run_in_debugger = 1
+                        run_in_debugger = True
                     else:
                         continue
                 self.addTestCase(self.test_case_class, 'test_parse',
@@ -668,10 +668,10 @@ class PythonModuleParserTestSuite(CustomTestSuite):
         for name, cases in dict.items():
             for casenum in range(len(cases)):
                 case = cases[casenum]
-                run_in_debugger = 0
+                run_in_debugger = False
                 if len(case)==3:
                     if case[2]:
-                        run_in_debugger = 1
+                        run_in_debugger = True
                     else:
                         continue
                 self.addTestCase(
@@ -724,10 +724,10 @@ class PublishTestSuite(CustomTestSuite):
         for name, cases in dict.items():
             for casenum in range(len(cases)):
                 case = cases[casenum]
-                run_in_debugger = 0
+                run_in_debugger = False
                 if len(case)==3:
                     if case[2]:
-                        run_in_debugger = 1
+                        run_in_debugger = True
                     else:
                         continue
                 self.addTestCase(
@@ -747,10 +747,10 @@ class HtmlPublishPartsTestSuite(CustomTestSuite):
             settings.update(settings_overrides)
             for casenum in range(len(cases)):
                 case = cases[casenum]
-                run_in_debugger = 0
+                run_in_debugger = False
                 if len(case)==3:
                     if case[2]:
-                        run_in_debugger = 1
+                        run_in_debugger = True
                     else:
                         continue
                 self.addTestCase(

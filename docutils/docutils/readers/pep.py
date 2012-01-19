@@ -44,5 +44,5 @@ class Reader(standalone.Reader):
     def __init__(self, parser=None, parser_name=None):
         """`parser` should be ``None``."""
         if parser is None:
-            parser = rst.Parser(rfc2822=1, inliner=self.inliner_class())
+            parser = rst.Parser(rfc2822=True, inliner=self.inliner_class())
         standalone.Reader.__init__(self, parser, '')

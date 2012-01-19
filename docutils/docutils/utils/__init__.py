@@ -72,7 +72,7 @@ class Reporter:
      SEVERE_LEVEL) = range(5)
 
     def __init__(self, source, report_level, halt_level, stream=None,
-                 debug=0, encoding=None, error_handler='backslashreplace'):
+                 debug=False, encoding=None, error_handler='backslashreplace'):
         """
         :Parameters:
             - `source`: The path to or description of the source data.
@@ -123,7 +123,7 @@ class Reporter:
         """The highest level system message generated so far."""
 
     def set_conditions(self, category, report_level, halt_level,
-                       stream=None, debug=0):
+                       stream=None, debug=False):
         warnings.warn('docutils.utils.Reporter.set_conditions deprecated; '
                       'set attributes via configuration settings or directly',
                       DeprecationWarning, stacklevel=2)
@@ -547,7 +547,7 @@ def escape2null(text):
     """Return a string with escape-backslashes converted to nulls."""
     parts = []
     start = 0
-    while 1:
+    while True:
         found = text.find('\\', start)
         if found == -1:
             parts.append(text[start:])
@@ -556,7 +556,7 @@ def escape2null(text):
         parts.append('\x00' + text[found+1:found+2])
         start = found + 2               # skip character after escape
 
-def unescape(text, restore_backslashes=0):
+def unescape(text, restore_backslashes=False):
     """
     Return a string with nulls removed or restored to backslashes.
     Backslash-escaped spaces are also removed.
