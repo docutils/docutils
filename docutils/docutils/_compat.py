@@ -10,7 +10,8 @@ This module currently provides the following helper symbols:
 * bytes (name of byte string type; str in 2.x, bytes in 3.x)
 * b (function converting a string literal to an ASCII byte string;
   can be also used to convert a Unicode string into a byte string)
-* u_prefix (unicode repr prefix, 'u' in 2.x, nothing in 3.x)
+* u_prefix (unicode repr prefix: 'u' in 2.x, '' in 3.x)
+  (Required in docutils/test/test_publisher.py)
 * BytesIO (a StringIO class that works with bytestrings)
 """
 
