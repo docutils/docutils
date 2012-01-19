@@ -93,10 +93,10 @@ EEXXAAMMPPLLEESS
 
        13. Problematic: indentation does not match for nonconsecutive entries.
 
-       This paragraph must not be indented with the text the  last  list-item,
+       This  paragraph  must not be indented with the text the last list-item,
        but start at the left margin of the numbers.
 
-       a  second  paragraph that should be separated from the previous one and
+       a second paragraph that should be separated from the previous  one  and
        not flowing into.
 
    DDeeffiinniittiioonn LLiissttss
@@ -112,7 +112,7 @@ EEXXAAMMPPLLEESS
        ffiirrsstt  a short label and a short text
 
        sseeccoonnddllyy aa lloonnggeerr llaabbeell
-              and some more text and some more text and some more  text    and
+              and  some  more text and some more text and some more text   and
               some more text
 
        ddeeffiinniittiioonn lliissttss
@@ -141,7 +141,7 @@ EEXXAAMMPPLLEESS
        LA
 
 
-       A  paragraph  following  the line block.  lorem ipsum lorem ipsum lorem
+       A paragraph following the line block.  lorem ipsum  lorem  ipsum  lorem
        ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
 
    LLiitteerraall
@@ -174,19 +174,19 @@ EEXXAAMMPPLLEESS
 
 
        Take it away, Eric the Orchestra Leader!
-           A one, two, a one two three four
+          A one, two, a one two three four
 
-           Half a bee, philosophically,
-             must, _i_p_s_o _f_a_c_t_o, half not be.
-           But half the bee has got to be,
-             _v_i_s _a _v_i_s its entity.  D'you see?
+          Half a bee, philosophically,
+            must, _i_p_s_o _f_a_c_t_o, half not be.
+          But half the bee has got to be,
+            _v_i_s _a _v_i_s its entity.  D'you see?
 
-           But can a bee be said to be
-             or not to be an entire bee,
-               when half the bee is not a bee,
-                 due to some ancient injury?
+          But can a bee be said to be
+            or not to be an entire bee,
+              when half the bee is not a bee,
+                due to some ancient injury?
 
-           Singing...
+          Singing...
 
 
    rraaww
@@ -221,7 +221,7 @@ EEXXAAMMPPLLEESS
        Tip    15% if the service is good.
 
        Warning
-              Strong prose may provoke extreme mental exertion.   Reader  dis-
+              Strong  prose  may provoke extreme mental exertion.  Reader dis-
               cretion is strongly advised.
 
        And, by the way...
@@ -233,7 +233,7 @@ EEXXAAMMPPLLEESS
        Text after the admonition.
 
    ootthheerr
-       inline  references _r_e_f _s_o_m_e_t_h_i_n_g .  Contained verbose. Nothing special.
+       inline references _r_e_f _s_o_m_e_t_h_i_n_g .  Contained verbose. Nothing special.
 
 TTOOPP SSEECCTTIIOONN
        With mixed case
@@ -272,9 +272,9 @@ AAUUTTHHOORR
        Organization: humankind
 
        Address:
-           123 Example Street
-           Example, EX  Canada
-           A1B 2C3
+          123 Example Street
+          Example, EX  Canada
+          A1B 2C3
 
 CCOOPPYYRRIIGGHHTT
        public domain Behave responsible.

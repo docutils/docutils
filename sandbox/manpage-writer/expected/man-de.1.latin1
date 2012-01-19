@@ -6,16 +6,16 @@ NNAAMMEE
        man - Programm zum Einsehen der Online-Manuale
 
 SSYYNNTTAAXX
-           man  [-acdhwutZV]  [-m  System[,...]] [-L locale] [-p Zeichenkette]
-           [-M Pfad] [-P Pager] [-r  Prompt]  [-T  Format]  [-S   Liste]   [-e
-           Erweiterung] [[Abschnitt] Seite ...] ...
+          man   [-acdhwutZV]  [-m  System[,...]] [-L locale] [-p Zeichenkette]
+          [-M Pfad] [-P Pager]  [-r  Prompt]  [-T  Format]  [-S   Liste]   [-e
+          Erweiterung] [[Abschnitt] Seite ...] ...
 
-           man  -l  [-tZ] [-p Zeichenkette] [-P Pager] [-r Prompt] [-T Format]
-           Datei ...
+          man  -l  [-tZ]  [-p Zeichenkette] [-P Pager] [-r Prompt] [-T Format]
+          Datei ...
 
-           man -k Schluesselwort ...
+          man -k Schluesselwort ...
 
-           man -f Seite ...
+          man -f Seite ...
 
 BBEESSCCHHRREEIIBBUUNNGG
        man ist der Manualbrowser des Systems. Jedes Argument  Seite  ist  nor-
@@ -78,22 +78,22 @@ BBEESSCCHHRREEIIBBUUNNGG
        Die folgenden Konventionen gelten fuer den Abschnitt SYNTAX und koennen
        fuer andere Abschnitte als Anleitung benutzt werden.
 
-           bboolldd tteexxtt
-                  Literale Angaben wie in der Anzeige.
+          bboolldd tteexxtt
+                 Literale Angaben wie in der Anzeige.
 
-           iittaalliicc tteexxtt
-                  Ersetzen durch passendes Argument.
+          iittaalliicc tteexxtt
+                 Ersetzen durch passendes Argument.
 
-           [[--aabbcc]] Ein oder mehrere Argumente innerhalb der [[ ]] sind  optional.
+          [[--aabbcc]] Ein oder mehrere Argumente innerhalb der [[ ]] sind optional.
 
-           --aa||--bb  Optionen,  die durch || abgegrenzt sind, koennen nicht zusam-
-                  men benutzt werden.
+          --aa||--bb  Optionen, die durch || abgegrenzt sind, koennen nicht zusammen
+                 benutzt werden.
 
-           AArrgguummeenntt ......
-                  Argument kann wiederholt werden.
+          AArrgguummeenntt ......
+                 Argument kann wiederholt werden.
 
-           [[AAuussddrruucckk]] ......
-                  gesamter Ausdruck innerhalb [[ ]] kann wiederholt werden.
+          [[AAuussddrruucckk]] ......
+                 gesamter Ausdruck innerhalb [[ ]] kann wiederholt werden.
 
        Die   Befehls-  oder  Funktionsbeispiele  sind  Muster,  die  auf  alle
        moeglichen Aufrufe passen sollten. In manchen Faellen  ist  es  ratsam,
@@ -104,9 +104,9 @@ BBEEIISSPPIIEELLEE
        mmaann llss zeigt die Manualseite fuer das Programm ls an.
 
        mmaann --aa iinnttrroo
-              zeigt  alle vorhandenen intro Manualseiten an.  Mit  (q)uit  ist
-              es moeglich,    das    aufeinanderfolgendende    Anzeigen    der
-              Seiten  abzubrechen oder mit (s)kip eine Seite zu ueberspringen.
+              zeigt alle vorhandenen intro Manualseiten an.  Mit  (q)uit   ist
+              es  moeglich,     das    aufeinanderfolgendende   Anzeigen   der
+              Seiten abzubrechen oder mit (s)kip eine Seite zu ueberspringen.
 
        mmaann --tt aalliiaass || llpprr --PPppss
               Formatiert die Manualseite, die sich  auf  alias   bezieht,   in
@@ -123,8 +123,8 @@ BBEEIISSPPIIEELLEE
               und  Pro-  gramme   bearbeitet   wird.   Die    Umlenkung    ist
               notwendig,  da  die  -T  Option  die Ausgabe unformatiert an die
               Standardausgabe schickt. Die Ausgabe  kann  mit  einem  Programm
-              wie  xdvi  betrachtet  oder  mit  einem  Programm  wie  dvips in
-              Postscript weiterverarbeitet werden.
+              wie  xdvi  betrachtet oder mit einem Programm wie dvips in Post-
+              script weiterverarbeitet werden.
 
        mmaann --kk pprriinnttff
               Sucht die Kurzbeschreibungen und die  Namen   der   Manualseiten
@@ -256,17 +256,17 @@ NNOORRMMAALLEEIINNSSTTEELLLLUUNNGGEENN
 OOPPTTIIOONNEENN
        Eine Argumentoption, die entweder in der Kommandozeile, in $$MMAANNOOPPTT oder
        in beiden doppelt vorkommt , ist nicht schaedlich. Fuer  Optionen,  die
-       ein Argument benötigen, überschreibt jedes Duplikat den  vorhergehenden
+       ein  Argument benötigen, überschreibt jedes Duplikat den vorhergehenden
        Wert.
 
        --ll,, ----llooccaall--ffiillee
               Aktiviert den lokalen Modus. Formatiert und zeigt lokale Manual-
-              dateien an,  anstatt  die System-Manualsammlung zu  durchsuchen.
+              dateien  an,  anstatt  die System-Manualsammlung zu durchsuchen.
               Jedes Manualseiten-Argument wird als nroff-Quelle  im  richtigen
               Format  interpretiert. Komprimierte nroff-Quelldateien mit einer
               unterstuetzten Kompressions-Erweiterung werden  von  man  dekom-
               primiert, bevor sie ueber den ueblichen Filter angezeigt werden.
-              Es  wird  keine cat-Datei erzeugt. Wenn eines  der  Argumente  --
+              Es wird keine cat-Datei erzeugt. Wenn eines  der   Argumente   --
               ist, wird die Eingabe von der Standardeingabe uebernommen.
 
        --LL _l_o_c_a_l_e_, ----llooccaallee==_l_o_c_a_l_e
@@ -290,21 +290,21 @@ OOPPTTIIOONNEENN
 
        --MM _P_f_a_d_, ----mmaannppaatthh==_P_f_a_d
               Ermoeglicht es, einen alternativen  Manualpfad  anzugeben.  Nor-
-              malerweise verwendet man dieselben Methoden wie in  manpath,  um
-              den  Suchpfad zu ermitteln. Diese Option ueberschreibt die Umge-
+              malerweise  verwendet  man dieselben Methoden wie in manpath, um
+              den Suchpfad zu ermitteln. Diese Option ueberschreibt die  Umge-
               bungsvariable $$MMAANNPPAATTHH.
 
        --PP _P_a_g_e_r_, ----ppaaggeerr==_P_a_g_e_r
               Gibt an, welcher Pager verwendet wird. Die Normaleinstellung ist
               pager-s.   Diese  Option  ueberschreibt  die   Umgebungsvariable
-              $$PPAAGGEERR und wird nicht in Zusammenhang mit -f oder -k  verwendet.
+              $$PPAAGGEERR und wird nicht in Zusammenhang mit -f oder -k verwendet.
 
        --rr _P_r_o_m_p_t_, ----pprroommpptt==_P_r_o_m_p_t
               Wenn eine hinreichend neue Version von less als Pager  verwendet
               wird, versucht man dort einige sinnvolle Optionen zu setzen. Die
               Eingabeaufforderung in der letzten Zeile sieht in  dem  Fall  so
               aus:
-                  Manual page name(sec) line x,
+                 Manual page name(sec) line x,
 
               wobei  name  die  Manualseite  bezeichnet,  die gerade angezeigt
               wird, sec der Abschnitt ist, in dem sie gefunden  wurde,  und  x
@@ -365,7 +365,7 @@ OOPPTTIIOONNEENN
               zu übergeben, die angibt, in welchem Paket  die  Manualseite  zu
               finden  ist.  Im  obigen   Fall  beschränkt man seine Suche  auf
               Seiten  mit der Erweiterung **ttccll, wenn es mit --ee ttccll  aufgerufen
-              wurde.  Die Suche wird  dabei in allen Abschnitten durchgeführt.
+              wurde. Die Suche wird  dabei in allen Abschnitten durchgeführt.
 
        --ff,, ----wwhhaattiiss
               Diese  Option  ist  das  AEquivalent  zu  whatis.   Es wird eine
@@ -477,7 +477,7 @@ UUMMGGEEBBUUNNGG
 
        LLAANNGG,, LLCC__MMEESSSSAAGGEESS
               Abhaengig von System und Implementation  werden  entweder  $LANG
-              oder  $LC_MESSAGES  oder  beide  nach  der gegenwaertigen locale
+              oder $LC_MESSAGES  oder  beide  nach  der gegenwaertigen  locale
               Information  durchsucht.   man  wird   (wenn   moeglich)   seine
               Nachrichten in dieser locale anzeigen. Fuer Details siehe setlo-
               cale(3).
@@ -509,18 +509,18 @@ FFEEHHLLEERR
        werden diese Seiten als fehlerhaft zurueckgewiesen.
 
 GGEESSCCHHIICCHHTTEE
-       1990,  1991  -   Originale   geschrieben   von   John   W.   Eaton   (-
+       1990,   1991   -   Originale   geschrieben   von   John   W.  Eaton  (-
        _j_w_e_@_c_h_e_._u_t_e_x_a_s_._e_d_u).
 
-       23.  Dez.  1992:  Fehlerbereinigung  durch Rik Faith (_f_a_i_t_h_@_c_s_._u_n_c_._e_d_u)
+       23. Dez. 1992: Fehlerbereinigung  durch  Rik  Faith  (_f_a_i_t_h_@_c_s_._u_n_c_._e_d_u)
        unterstützt durch Willem Kasdorp (_w_k_a_s_d_o_@_n_i_k_h_e_f_k_._n_i_k_e_f_._n_l).
 
-       Zwischen dem 30. April 1994 und  dem  23.  Februar  2000  hat  Wilf  (-
+       Zwischen  dem  30.  April  1994  und  dem  23. Februar 2000 hat Wilf (-
        _G_._W_i_l_f_o_r_d_@_e_e_._s_u_r_r_e_y_._a_c_._u_k)   unter   Mithilfe   von   einigen   wenigen
        engagierten Menschen dieses Paket entwickelt und weitergeführt.
 
-       Die   deutsche   Übersetzung   wurde   von    Anke    Steuernagel    (-
-       _a___s_t_e_u_e_r_@_i_n_f_o_r_m_a_t_i_k_._u_n_i_-_k_l_._d_e)       und       Nils      Magnus      (-
+       Die    deutsche    Übersetzung    wurde   von   Anke   Steuernagel   (-
+       _a___s_t_e_u_e_r_@_i_n_f_o_r_m_a_t_i_k_._u_n_i_-_k_l_._d_e)      und      Nils       Magnus       (-
        _m_a_g_n_u_s_@_i_n_f_o_r_m_a_t_i_k_._u_n_i_-_k_l_._d_e) angefertigt.
 
        Für persönliche Würdigungen und Zusätze siehe Quelltexte.
