@@ -1,4 +1,4 @@
-.\" Man page generated from reStructeredText.
+.\" Man page generated from reStructuredText.
 .
 .TH RST2MAN 1 "2009-06-22" "0.0.1" "text processing"
 .SH NAME

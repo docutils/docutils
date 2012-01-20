@@ -1,4 +1,4 @@
-.\" Man page generated from reStructeredText.
+.\" Man page generated from reStructuredText.
 .
 .TH DEUTSCHES_MANPAGE_BEISPIEL 1 "" "0.5" "Beispielmanpages"
 .SH NAME

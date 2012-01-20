@@ -1,7 +1,7 @@
 .TH SPECIAL CHARACTERS  "" "" ""
 .SH NAME
 special characters \- test special characters
-.\" Man page generated from reStructeredText.
+.\" Man page generated from reStructuredText.
 .
 .SH SEE ALSO
 .sp

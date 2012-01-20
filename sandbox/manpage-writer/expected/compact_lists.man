@@ -1,7 +1,7 @@
 .TH   "" "" ""
 .SH NAME
  \- 
-.\" Man page generated from reStructeredText.
+.\" Man page generated from reStructuredText.
 .
 .INDENT 0.0
 .IP \(bu 2
