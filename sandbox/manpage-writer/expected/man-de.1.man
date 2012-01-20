@@ -1,4 +1,4 @@
-.\" Man page generated from reStructeredText.
+.\" Man page generated from reStructuredText.
 .
 .TH MAN 1 "2008-01-28" "2.5.1" "Manual Hilfsprogramme"
 .SH NAME
