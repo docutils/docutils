@@ -1341,19 +1341,22 @@ No settings are defined for this Writer.
 ```````````````````````
 
 _`ignore`
-    List of wildcard (shell globing) patterns to silently ignore.  To
-    specify multiple patterns in configuration files, use
-    colon-separated patterns; on the command line, the option may be
-    used more than once.
+    List of wildcard (shell globing) patterns, specifying files to
+    silently ignore.  To specify multiple patterns, use
+    colon-separated patterns (in configuration files or on the command
+    line); on the command line, the option may also be used more than
+    once.
 
-    Default: ['.svn', 'CVS'].  Options: ``--ignore``.
+    Default: none ([]).  Options: ``--ignore``.
 
 _`prune`
     List of directories not to process.  To specify multiple
-    directories in configuration files, use colon-separated paths; on
-    the command line, the option may be used more than once.
+    directories, use colon-separated paths (in configuration files or
+    on the command line); on the command line, the option may also be
+    used more than once.
 
-    Default: none ([]).  Options: ``--prune``.
+    Default: ['.hg', '.bzr', '.git', '.svn', 'CVS'].  Options:
+    ``--prune``.
 
 _`recurse`
     Recursively scan subdirectories, or ignore subdirectories.

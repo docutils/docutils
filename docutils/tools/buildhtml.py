@@ -47,6 +47,8 @@ class SettingsSpec(docutils.SettingsSpec):
     Runtime settings & command-line options for the front end.
     """
 
+    prune_default = ['.hg', '.bzr', '.git', '.svn', 'CVS']
+
     # Can't be included in OptionParser below because we don't want to
     # override the base class.
     settings_spec = (
@@ -59,17 +61,19 @@ class SettingsSpec(docutils.SettingsSpec):
            'validator': frontend.validate_boolean}),
          ('Do not scan subdirectories for files to process.',
           ['--local'], {'dest': 'recurse', 'action': 'store_false'}),
-         ('BROKEN Do not process files in <directory>.  This option may be used '
-          'more than once to specify multiple directories.',
+         ('Do not process files in <directory> (shell globbing patterns, '
+          'separated by colons).  This option may be used '
+          'more than once to specify multiple directories.  Default: "%s".'
+          % ':'.join(prune_default),
           ['--prune'],
           {'metavar': '<directory>', 'action': 'append',
-           'validator': frontend.validate_colon_separated_string_list}),
-         ('BROKEN Recursively ignore files or directories matching any of the given '
-          'wildcard (shell globbing) patterns (separated by colons).  '
-          'Default: ".svn:CVS"',
+           'validator': frontend.validate_colon_separated_string_list,
+           'default': prune_default,}),
+         ('Recursively ignore files matching any of the given '
+          'wildcard (shell globbing) patterns (separated by colons).',
           ['--ignore'],
           {'metavar': '<patterns>', 'action': 'append',
-           'default': ['.svn', 'CVS'],
+           'default': [],
            'validator': frontend.validate_colon_separated_string_list}),
          ('Work silently (no progress messages).  Independent of "--quiet".',
           ['--silent'],
@@ -190,17 +194,16 @@ class Builder:
                 # influence by modifying dirs.
                 if not recurse:
                     del dirs[:]
-                self.visit(root, files)
+                self.visit(root, files, dirs)
 
-    def visit(self, directory, names):
-        # BUG prune and ignore do not work 
+    def visit(self, directory, names, subdirectories):
         settings = self.get_settings('', directory)
         errout = ErrorOutput(encoding=settings.error_encoding)
         if settings.prune and (os.path.abspath(directory) in settings.prune):
             print >>errout, ('/// ...Skipping directory (pruned): %s' %
                               directory)
             sys.stderr.flush()
-            names[:] = []
+            del subdirectories[:]
             return
         if not self.initial_settings.silent:
             print >>errout, '/// Processing directory: %s' % directory
@@ -212,12 +215,9 @@ class Builder:
                 if fnmatch(names[i], pattern):
                     # Modify in place!
                     del names[i]
-        prune = 0
         for name in names:
             if name.endswith('.txt'):
-                prune = self.process_txt(directory, name)
-                if prune:
-                    break
+                self.process_txt(directory, name)
 
     def process_txt(self, directory, name):
         if name.startswith('pep-'):
@@ -227,8 +227,6 @@ class Builder:
         settings = self.get_settings(publisher, directory)
         errout = ErrorOutput(encoding=settings.error_encoding)
         pub_struct = self.publishers[publisher]
-        if settings.prune and (directory in settings.prune):
-            return 1
         settings._source = os.path.normpath(os.path.join(directory, name))
         settings._destination = settings._source[:-4]+'.html'
         if not self.initial_settings.silent:
