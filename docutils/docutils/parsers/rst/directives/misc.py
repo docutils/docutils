@@ -69,10 +69,10 @@ class Include(Directive):
         try:
             self.state.document.settings.record_dependencies.add(path)
             include_file = io.FileInput(
-                source_path=path, encoding=encoding,
-                error_handler=(self.state.document.settings.\
-                               input_encoding_error_handler),
-                handle_io_errors=None)
+                source_path=path,
+                encoding=encoding,
+                error_handler=
+                  self.state.document.settings.input_encoding_error_handler)
         except IOError, error:
             raise self.severe(u'Problems with "%s" directive path:\n%s.' %
                       (self.name, ErrorString(error)))
@@ -198,11 +198,10 @@ class Raw(Directive):
                                                  self.options['file']))
             path = utils.relative_path(None, path)
             try:
-                raw_file = io.FileInput(
-                    source_path=path, encoding=encoding,
-                    error_handler=(self.state.document.settings.\
-                                   input_encoding_error_handler),
-                    handle_io_errors=None)
+                eh = self.state.document.settings.input_encoding_error_handler
+                raw_file = io.FileInput(source_path=path,
+                                        encoding=encoding,
+                                        error_handler=eh)
                 # TODO: currently, raw input files are recorded as
                 # dependencies even if not used for the chosen output format.
                 self.state.document.settings.record_dependencies.add(path)

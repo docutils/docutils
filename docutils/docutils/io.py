@@ -17,6 +17,11 @@ from docutils import TransformSpec
 from docutils._compat import b
 from docutils.error_reporting import locale_encoding, ErrorString, ErrorOutput
 
+
+class InputError(IOError): pass
+class OutputError(IOError): pass
+
+
 class Input(TransformSpec):
 
     """
@@ -184,7 +189,7 @@ class FileInput(Input):
     """
     def __init__(self, source=None, source_path=None,
                  encoding=None, error_handler='strict',
-                 autoclose=True, handle_io_errors=True, mode='rU'):
+                 autoclose=True, handle_io_errors=False, mode='rU'):
         """
         :Parameters:
             - `source`: either a file-like object (which is read directly), or
@@ -194,7 +199,7 @@ class FileInput(Input):
             - `error_handler`: the encoding error handler to use.
             - `autoclose`: close automatically after read (except when
               `sys.stdin` is the source).
-            - `handle_io_errors`: summarize I/O errors here, and exit?
+            - `handle_io_errors`: ignored.
             - `mode`: how the file is to be opened (see standard function
               `open`). The default 'rU' provides universal newline support
               for text files.
@@ -216,12 +221,7 @@ class FileInput(Input):
                 try:
                     self.source = open(source_path, mode, **kwargs)
                 except IOError, error:
-                    if not handle_io_errors:
-                        raise
-                    print >>self._stderr, ErrorString(error)
-                    print >>self._stderr, (u'Unable to open source'
-                        u" file for reading ('%s'). Exiting." % source_path)
-                    sys.exit(1)
+                    raise InputError(error.errno, error.strerror, source_path)
             else:
                 self.source = sys.stdin
         elif (sys.version_info >= (3,0) and
@@ -286,7 +286,7 @@ class FileOutput(Output):
 
     def __init__(self, destination=None, destination_path=None,
                  encoding=None, error_handler='strict', autoclose=True,
-                 handle_io_errors=True):
+                 handle_io_errors=False):
         """
         :Parameters:
             - `destination`: either a file-like object (which is written
@@ -294,8 +294,11 @@ class FileOutput(Output):
               `destination_path` given).
             - `destination_path`: a path to a file, which is opened and then
               written.
+            - `encoding`: the text encoding of the output file.
+            - `error_handler`: the encoding error handler to use.
             - `autoclose`: close automatically after write (except when
               `sys.stdout` or `sys.stderr` is the destination).
+            - `handle_io_errors`: ignored.
         """
         Output.__init__(self, destination, destination_path,
                         encoding, error_handler)
@@ -326,12 +329,8 @@ class FileOutput(Output):
         try:
             self.destination = open(self.destination_path, 'w', **kwargs)
         except IOError, error:
-            if not self.handle_io_errors:
-                raise
-            print >>self._stderr, ErrorString(error)
-            print >>self._stderr, (u'Unable to open destination file'
-                u" for writing ('%s').  Exiting." % self.destination_path)
-            sys.exit(1)
+            raise OutputError(error.errno, error.strerror,
+                              self.destination_path)
         self.opened = True
 
     def write(self, data):
