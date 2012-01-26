@@ -143,8 +143,10 @@ Title 2
 Paragraph 2.
 """,
 ## # expected output
-head_template.substitute(dict(parts, fallbacks = r"""
-% title for topics, admonitions and sidebar
+head_template.substitute(dict(parts,
+    requirements=parts['requirements'] + '\\setcounter{secnumdepth}{0}\n',
+    fallbacks=r"""
+% title for topics, admonitions, unsupported section levels, and sidebar
 \providecommand*{\DUtitle}[2][class-arg]{%
   % call \DUtitle#1{#2} if it exists:
   \ifcsname DUtitle#1\endcsname%
@@ -171,22 +173,14 @@ head_template.substitute(dict(parts, fallbacks = r"""
 \end{list}
 
 
-%___________________________________________________________________________
-
-\section*{\phantomsection%
-  Title 1%
-  \addcontentsline{toc}{section}{Title 1}%
+\section{Title 1%
   \label{title-1}%
 }
 
 Paragraph 1.
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  Title 2%
-  \addcontentsline{toc}{subsection}{Title 2}%
+\subsection{Title 2%
   \label{title-2}%
 }
 
@@ -206,18 +200,16 @@ first section
 -------------
 """,
 ## # expected output
-head + r"""
+head_template.substitute(dict(parts,
+    requirements=parts['requirements'] + '\\setcounter{secnumdepth}{0}\n'
+)) + r"""
 \phantomsection\label{contents}
 \pdfbookmark[1]{Contents}{contents}
 \tableofcontents
 
 
 
-%___________________________________________________________________________
-
-\section*{\phantomsection%
-  first section%
-  \addcontentsline{toc}{section}{first section}%
+\section{first section%
   \label{first-section}%
 }
 
@@ -235,18 +227,16 @@ first section
 -------------
 """,
 ## # expected output
-head + r"""
+head_template.substitute(dict(parts,
+    requirements=parts['requirements'] + '\\setcounter{secnumdepth}{0}\n'
+)) + r"""
 \phantomsection\label{contents}
 \pdfbookmark[1]{Contents}{contents}
 \tableofcontents
 
 
 
-%___________________________________________________________________________
-
-\section*{\phantomsection%
-  1~~~first section%
-  \addcontentsline{toc}{section}{1~~~first section}%
+\section{1~~~first section%
   \label{first-section}%
 }
 
@@ -270,8 +260,6 @@ r"""\setcounter{secnumdepth}{0}
 some text
 
 
-%___________________________________________________________________________
-
 \section{first section%
   \label{first-section}%
 }
@@ -291,11 +279,11 @@ first section
 -------------
 """,
 ## # expected output
-head + r"""
+head_template.substitute(dict(parts,
+    requirements=parts['requirements'] + '\\setcounter{secnumdepth}{0}\n'
+)) + r"""
 some text
 
-
-%___________________________________________________________________________
 
 \section{first section%
   \label{first-section}%
@@ -611,8 +599,9 @@ This is a *section title*
 
 This is the *document*.
 """,
-head_template.substitute(
-    dict(parts, pdfsetup=parts['pdfsetup'] + r"""\hypersetup{
+head_template.substitute(dict(parts, 
+    requirements=parts['requirements'] + '\\setcounter{secnumdepth}{0}\n',
+    pdfsetup=parts['pdfsetup'] + r"""\hypersetup{
   pdftitle={This is the Title},
 }
 """, titledata=r"""%%% Title Data
@@ -627,11 +616,7 @@ head_template.substitute(
 """)) + r"""\maketitle
 
 
-%___________________________________________________________________________
-
-\section*{\phantomsection%
-  This is a \emph{section title}%
-  \addcontentsline{toc}{section}{This is a section title}%
+\section{This is a \emph{section title}%
   \label{this-is-a-section-title}%
 }
 

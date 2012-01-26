@@ -18,6 +18,7 @@ not need to be tested with other writers (e.g. the HTML writer).
 .. include:: data/latex_encoding.txt
 .. include:: data/hyperlinking.txt
 .. include:: data/urls.txt
+.. include:: data/section_titles.txt
 
 Tests for the XeTeX writer
 ==========================
@@ -32,8 +33,7 @@ Võro, ייִדיש , Žemaitėška.
 Currently, there is extended support for 28 languages in the
 polyglossia_ package.
 
-.. _polyglossia:
-   http://tug.ctan.org/cgi-bin/ctanPackageInformation.py?id=polyglossia
+.. _polyglossia: http://ctan.org/pkg/polyglossia
 
 .. System Messages:
 .. include:: data/errors.txt

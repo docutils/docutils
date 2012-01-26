@@ -21,7 +21,7 @@ Changes Since 0.8.1
   - New reStructuredText "code" role and directive and "code" option
     of the "include" directive with syntax highlighting by Pygments_.
   - Fix parse_option_marker for option arguments containing ``=``.
-  
+
 .. _Pygments: http://pygments.org/
 
 * setup.py
@@ -60,6 +60,9 @@ Changes Since 0.8.1
   - Support the `abbreviation` and `acronym` standard roles.
   - Record only files required to generate the LaTeX source as dependencies.
   - Fix handling of missing stylesheets.
+  - Use ``\setcounter{secnumdepth}{0}`` instead of ``*``-versions
+    when suppressing LaTeX section numbering.
+  - Use ``\DUtitle`` for unsupported section levels
 
 * docutils/writers/html4css1/__init__.py
 
