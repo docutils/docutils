@@ -1179,8 +1179,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 path = base + '.sty' # ensure extension
             try:
                 content = io.FileInput(source_path=path,
-                                       encoding='utf-8',
-                                       handle_io_errors=False).read()
+                                       encoding='utf-8').read()
                 self.settings.record_dependencies.add(path)
             except IOError, err:
                 msg = u"Cannot embed stylesheet '%s':\n  %s." % (
