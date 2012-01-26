@@ -6,6 +6,7 @@
 \usepackage[T1,T2A]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[english,russian]{babel}
+\setcounter{secnumdepth}{0}
 
 %%% Custom LaTeX preamble
 % PDF Standard Fonts
@@ -32,33 +33,21 @@
 \begin{document}
 
 
-%___________________________________________________________________________
-
-\section*{\phantomsection%
-  Заголовок%
-  \addcontentsline{toc}{section}{Заголовок}%
+\section{Заголовок%
   \label{id1}%
 }
 
 первый пример: \glqq{}Здравствуй, мир!\grqq{}
 
 
-%___________________________________________________________________________
-
-\section*{\phantomsection%
-  Title%
-  \addcontentsline{toc}{section}{Title}%
+\section{Title%
   \label{title}%
 }
 
 \otherlanguage{english}{first example: \glqq{}Hello world\grqq{}.}
 
 
-%___________________________________________________________________________
-
-\section*{\phantomsection%
-  Notes%
-  \addcontentsline{toc}{section}{Notes}%
+\section{Notes%
   \label{notes}%
 }
 

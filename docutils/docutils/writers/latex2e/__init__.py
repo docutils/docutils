@@ -19,6 +19,10 @@ import time
 import re
 import string
 import urllib
+try:
+    import roman
+except ImportError:
+    import docutils.utils.roman as roman
 from docutils import frontend, nodes, languages, writers, utils, io
 from docutils.error_reporting import SafeString
 from docutils.transforms import writer_aux
@@ -648,7 +652,7 @@ PreambleCmds.titlereference = r"""
 \providecommand*{\DUroletitlereference}[1]{\textsl{#1}}"""
 
 PreambleCmds.title = r"""
-% title for topics, admonitions and sidebar
+% title for topics, admonitions, unsupported section levels, and sidebar
 \providecommand*{\DUtitle}[2][class-arg]{%
   % call \DUtitle#1{#2} if it exists:
   \ifcsname DUtitle#1\endcsname%
@@ -696,12 +700,10 @@ class DocumentClass(object):
         The name depends on the specific document class.
         Level is 1,2,3..., as level 0 is the title.
         """
-
         if level <= len(self.sections):
             return self.sections[level-1]
-        else:
-            return self.sections[-1]
-
+        else:  # unsupported levels
+            return 'DUtitle[section%s]' % roman.toRoman(level)
 
 class Table(object):
     """Manage a table while traversing.
@@ -1127,33 +1129,32 @@ class LaTeXTranslator(nodes.NodeVisitor):
         ##                                     len(self.d_class.sections))
 
         # Section numbering
-        # TODO: use \secnumdepth instead of starred commands
-        ## if self.settings.sectnum_xform: # section numbering by Docutils
-        ##     sectnum_depth = 0
-        ## else:
-        if not self.settings.sectnum_xform: # section numbering by LaTeX:
-            # sectnum_depth:
-            #   None  "sectnum" directive without depth arg -> LaTeX default
-            #   0     no "sectnum" directive -> no section numbers
-            #   else  value of the "depth" argument: translate to LaTeX level
-            #         -1  part    (0 with "article" document class)
-            #          0  chapter (missing in "article" document class)
-            #          1  section
-            #          2  subsection
-            #          3  subsubsection
-            #          4  paragraph
-            #          5  subparagraph
-            if settings.sectnum_depth is not None:
+        if not self.settings.sectnum_xform: # section numbering by Docutils
+            PreambleCmds.secnumdepth = r'\setcounter{secnumdepth}{0}'
+        else: # section numbering by LaTeX:
+            secnumdepth = settings.sectnum_depth
+            # Possible values of settings.sectnum_depth:
+            # None  "sectnum" directive without depth arg -> LaTeX default
+            #  0    no "sectnum" directive -> no section numbers
+            # >0    value of "depth" argument -> translate to LaTeX levels:
+            #       -1  part    (0 with "article" document class)
+            #        0  chapter (missing in "article" document class)
+            #        1  section
+            #        2  subsection
+            #        3  subsubsection
+            #        4  paragraph
+            #        5  subparagraph
+            if secnumdepth is not None:
                 # limit to supported levels
-                sectnum_depth = min(settings.sectnum_depth,
-                                    len(self.d_class.sections))
+                secnumdepth = min(secnumdepth, len(self.d_class.sections))
                 # adjust to document class and use_part_section settings
                 if 'chapter' in  self.d_class.sections:
-                    sectnum_depth -= 1
+                    secnumdepth -= 1
                 if self.d_class.sections[0] == 'part':
-                    sectnum_depth -= 1
-                self.requirements['sectnum_depth'] = (
-                    r'\setcounter{secnumdepth}{%d}' % sectnum_depth)
+                    secnumdepth -= 1
+                PreambleCmds.secnumdepth = \
+                    r'\setcounter{secnumdepth}{%d}' % secnumdepth
+
             # start with specified number:
             if (hasattr(settings, 'sectnum_start') and
                 settings.sectnum_start != 1):
@@ -1163,7 +1164,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
             # TODO: currently ignored (configure in a stylesheet):
             ## settings.sectnum_prefix
             ## settings.sectnum_suffix
-
 
     # Auxiliary Methods
     # -----------------
@@ -2850,18 +2850,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 node.walkabout(self)
         self._thead_depth -= 1
 
-    def bookmark(self, node):
-        """Return label and pdfbookmark string for titles."""
-        result = ['']
-        if self.settings.sectnum_xform: # "starred" section cmd
-            # add to the toc and pdfbookmarks
-            section_name = self.d_class.section(max(self.section_level, 1))
-            section_title = self.encode(node.astext())
-            result.append(r'\addcontentsline{toc}{%s}{%s}' %
-                          (section_name, section_title))
-        result += self.ids_to_labels(node.parent, set_anchor=False)
-        return '%\n  '.join(result) + '%\n'
-
     def visit_title(self, node):
         """Append section and other titles."""
         # Document title
@@ -2886,26 +2874,31 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.context.append('')
         # Section title
         else:
-            self.out.append('\n\n')
-            self.out.append('%' + '_' * 75)
-            self.out.append('\n\n')
-            #
+            self.requirements['secnumdepth'] = PreambleCmds.secnumdepth
             section_name = self.d_class.section(self.section_level)
-            section_star = ''
-            pdfanchor = ''
-            # number sections?
-            if (self.settings.sectnum_xform # numbering by Docutils
-                or (self.section_level > len(self.d_class.sections))):
-                section_star = '*'
-                pdfanchor = '\\phantomsection%\n  '
-            self.out.append(r'\%s%s{%s' %
-                            (section_name, section_star, pdfanchor))
+            self.out.append('\n\n')
             # System messages heading in red:
             if ('system-messages' in node.parent['classes']):
                 self.requirements['color'] = PreambleCmds.color
-                self.out.append('\color{red}')
+                section_title = self.encode(node.astext())
+                self.out.append(r'\%s[%s]{\color{red}' % (
+                                section_name,section_title))
+            else:
+                self.out.append(r'\%s{' % section_name)
+            if self.section_level > len(self.d_class.sections):
+                # section level not supported by LaTeX
+                self.fallbacks['title'] = PreambleCmds.title
+                # self.out.append('\\phantomsection%\n  ')
             # label and ToC entry:
-            self.context.append(self.bookmark(node) + '}\n')
+            bookmark = ['']
+            # add sections with unsupported level to toc and pdfbookmarks?
+            ## if self.section_level > len(self.d_class.sections):
+            ##     section_title = self.encode(node.astext())
+            ##     bookmark.append(r'\addcontentsline{toc}{%s}{%s}' %
+            ##               (section_name, section_title))
+            bookmark += self.ids_to_labels(node.parent, set_anchor=False)
+            self.context.append('%\n  '.join(bookmark) + '%\n}\n')
+
             # MAYBE postfix paragraph and subparagraph with \leavemode to
             # ensure floats stay in the section and text starts on a new line.
 

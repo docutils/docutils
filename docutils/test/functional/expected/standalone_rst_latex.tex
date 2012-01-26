@@ -16,6 +16,7 @@
 \usepackage{graphicx}
 \usepackage{multirow}
 \usepackage{pifont}
+\setcounter{secnumdepth}{0}
 \usepackage{longtable,ltcaption,array}
 \setlength{\extrarowheight}{2pt}
 \newlength{\DUtablewidth} % internal use in tables
@@ -149,7 +150,7 @@
 % subtitle (for topic/sidebar)
 \providecommand*{\DUsubtitle}[2][class-arg]{\par\emph{#2}\smallskip}
 
-% title for topics, admonitions and sidebar
+% title for topics, admonitions, unsupported section levels, and sidebar
 \providecommand*{\DUtitle}[2][class-arg]{%
   % call \DUtitle#1{#2} if it exists:
   \ifcsname DUtitle#1\endcsname%
@@ -280,20 +281,12 @@ reStructuredText construct.
 
 
 
-%___________________________________________________________________________
-
-\section*{\phantomsection%
-  1~~~Structural Elements%
-  \addcontentsline{toc}{section}{1~~~Structural Elements}%
+\section{1~~~Structural Elements%
   \label{structural-elements}%
 }
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  1.1~~~Section Title%
-  \addcontentsline{toc}{subsection}{1.1~~~Section Title}%
+\subsection{1.1~~~Section Title%
   \label{section-title}%
 }
 \subsubsection*{Section Subtitle}
@@ -303,20 +296,12 @@ activated with the \texttt{-{}-section-subtitles} command line option or the
 \texttt{sectsubtitle-xform} configuration value.
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  1.2~~~Empty Section%
-  \addcontentsline{toc}{subsection}{1.2~~~Empty Section}%
+\subsection{1.2~~~Empty Section%
   \label{empty-section}%
 }
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  1.3~~~Transitions%
-  \addcontentsline{toc}{subsection}{1.3~~~Transitions}%
+\subsection{1.3~~~Transitions%
   \label{transitions}%
 }
 
@@ -335,31 +320,19 @@ It divides the section.  Transitions may also occur between sections:
 
 
 
-%___________________________________________________________________________
-
-\section*{\phantomsection%
-  2~~~Body Elements%
-  \addcontentsline{toc}{section}{2~~~Body Elements}%
+\section{2~~~Body Elements%
   \label{body-elements}%
 }
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  2.1~~~Paragraphs%
-  \addcontentsline{toc}{subsection}{2.1~~~Paragraphs}%
+\subsection{2.1~~~Paragraphs%
   \label{paragraphs}%
 }
 
 A paragraph.
 
 
-%___________________________________________________________________________
-
-\subsubsection*{\phantomsection%
-  2.1.1~~~Inline Markup%
-  \addcontentsline{toc}{subsubsection}{2.1.1~~~Inline Markup}%
+\subsubsection{2.1.1~~~Inline Markup%
   \label{inline-markup}%
 }
 
@@ -398,11 +371,7 @@ If the \texttt{-{}-pep-references} option was supplied, there should be a
 live link to PEP 258 here.
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  2.2~~~Bullet Lists%
-  \addcontentsline{toc}{subsection}{2.2~~~Bullet Lists}%
+\subsection{2.2~~~Bullet Lists%
   \label{bullet-lists}%
 }
 %
@@ -448,11 +417,7 @@ Paragraph 2 of item 2.
 \end{itemize}
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  2.3~~~Enumerated Lists%
-  \addcontentsline{toc}{subsection}{2.3~~~Enumerated Lists}%
+\subsection{2.3~~~Enumerated Lists%
   \label{enumerated-lists}%
 }
 \newcounter{listcnt0}
@@ -540,11 +505,7 @@ Paragraph 2 of item 2.
 \end{list}
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  2.4~~~Definition Lists%
-  \addcontentsline{toc}{subsection}{2.4~~~Definition Lists}%
+\subsection{2.4~~~Definition Lists%
   \label{definition-lists}%
 }
 %
@@ -569,11 +530,7 @@ Definition
 \end{description}
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  2.5~~~Field Lists%
-  \addcontentsline{toc}{subsection}{2.5~~~Field Lists}%
+\subsection{2.5~~~Field Lists%
   \label{field-lists}%
 }
 %
@@ -597,11 +554,7 @@ doesn't get stripped away.)}
 \end{DUfieldlist}
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  2.6~~~Option Lists%
-  \addcontentsline{toc}{subsection}{2.6~~~Option Lists}%
+\subsection{2.6~~~Option Lists%
   \label{option-lists}%
 }
 
@@ -638,11 +591,7 @@ There must be at least two spaces between the option and the
 description.
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  2.7~~~Literal Blocks%
-  \addcontentsline{toc}{subsection}{2.7~~~Literal Blocks}%
+\subsection{2.7~~~Literal Blocks%
   \label{literal-blocks}%
 }
 
@@ -667,11 +616,7 @@ Or they can be quoted without indentation:
 \end{quote}
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  2.8~~~Line Blocks%
-  \addcontentsline{toc}{subsection}{2.8~~~Line Blocks}%
+\subsection{2.8~~~Line Blocks%
   \label{line-blocks}%
 }
 
@@ -767,11 +712,7 @@ also be centre-aligned:
 \end{DUlineblock}
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  2.9~~~Block Quotes%
-  \addcontentsline{toc}{subsection}{2.9~~~Block Quotes}%
+\subsection{2.9~~~Block Quotes%
   \label{block-quotes}%
 }
 
@@ -803,11 +744,7 @@ notamment dans la documentation du langage Python.
 \end{quote}
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  2.10~~~Doctest Blocks%
-  \addcontentsline{toc}{subsection}{2.10~~~Doctest Blocks}%
+\subsection{2.10~~~Doctest Blocks%
   \label{doctest-blocks}%
 }
 %
@@ -820,11 +757,7 @@ Python-specific~usage~examples;~begun~with~">{}>{}>"\\
 \end{quote}
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  2.11~~~Footnotes%
-  \addcontentsline{toc}{subsection}{2.11~~~Footnotes}%
+\subsection{2.11~~~Footnotes%
   \label{footnotes}%
 }
 %
@@ -868,11 +801,7 @@ nonexistent footnote:%
 }
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  2.12~~~Citations%
-  \addcontentsline{toc}{subsection}{2.12~~~Citations}%
+\subsection{2.12~~~Citations%
   \label{citations}%
 }
 \begin{figure}[b]\raisebox{1em}{\hypertarget{cit2002}{}}[CIT2002]
@@ -886,11 +815,7 @@ Here's a reference to the above, \hyperlink{cit2002}{[CIT2002]}, and a %
 citation.
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  2.13~~~Targets%
-  \addcontentsline{toc}{subsection}{2.13~~~Targets}%
+\subsection{2.13~~~Targets%
   \label{targets}%
   \label{another-target}%
 }
@@ -914,11 +839,7 @@ Here's a %
 error.
 
 
-%___________________________________________________________________________
-
-\subsubsection*{\phantomsection%
-  2.13.1~~~Duplicate Target Names%
-  \addcontentsline{toc}{subsubsection}{2.13.1~~~Duplicate Target Names}%
+\subsubsection{2.13.1~~~Duplicate Target Names%
   \label{duplicate-target-names}%
 }
 
@@ -927,11 +848,7 @@ generate ``info'' (level-1) system messages.  Duplicate names in
 explicit targets will generate ``warning'' (level-2) system messages.
 
 
-%___________________________________________________________________________
-
-\subsubsection*{\phantomsection%
-  2.13.2~~~Duplicate Target Names%
-  \addcontentsline{toc}{subsubsection}{2.13.2~~~Duplicate Target Names}%
+\subsubsection{2.13.2~~~Duplicate Target Names%
   \label{id21}%
 }
 
@@ -941,11 +858,7 @@ this: %
 \raisebox{1em}{\hypertarget{id52}{}}\hyperlink{id51}{\textbf{\color{red}`Duplicate Target Names`\_}}), an error is generated.
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  2.14~~~Directives%
-  \addcontentsline{toc}{subsection}{2.14~~~Directives}%
+\subsection{2.14~~~Directives%
   \label{directives}%
 }
 
@@ -955,11 +868,7 @@ others, please see
 \url{http://docutils.sourceforge.net/docs/ref/rst/directives.html}.
 
 
-%___________________________________________________________________________
-
-\subsubsection*{\phantomsection%
-  2.14.1~~~Document Parts%
-  \addcontentsline{toc}{subsubsection}{2.14.1~~~Document Parts}%
+\subsubsection{2.14.1~~~Document Parts%
   \label{document-parts}%
 }
 
@@ -968,11 +877,7 @@ An example of the ``contents'' directive can be seen above this section
 document (a document-wide \hyperref[table-of-contents]{table of contents}).
 
 
-%___________________________________________________________________________
-
-\subsubsection*{\phantomsection%
-  2.14.2~~~Images and Figures%
-  \addcontentsline{toc}{subsubsection}{2.14.2~~~Images and Figures}%
+\subsubsection{2.14.2~~~Images and Figures%
   \label{images-and-figures}%
 }
 
@@ -1106,11 +1011,7 @@ This paragraph might flow around the figure. The specific behavior depends
 upon the style sheet and the browser or rendering software used.
 
 
-%___________________________________________________________________________
-
-\subsubsection*{\phantomsection%
-  2.14.3~~~Admonitions%
-  \addcontentsline{toc}{subsubsection}{2.14.3~~~Admonitions}%
+\subsubsection{2.14.3~~~Admonitions%
   \label{admonitions}%
 }
 
@@ -1186,11 +1087,7 @@ You can make up your own admonition too.
 }
 
 
-%___________________________________________________________________________
-
-\subsubsection*{\phantomsection%
-  2.14.4~~~Topics, Sidebars, and Rubrics%
-  \addcontentsline{toc}{subsubsection}{2.14.4~~~Topics, Sidebars, and Rubrics}%
+\subsubsection{2.14.4~~~Topics, Sidebars, and Rubrics%
   \label{topics-sidebars-and-rubrics}%
 }
 
@@ -1228,11 +1125,7 @@ Topics and rubrics can be used at places where a \hyperref[section-title]{sectio
 allowed (e.g. inside a directive).
 
 
-%___________________________________________________________________________
-
-\subsubsection*{\phantomsection%
-  2.14.5~~~Target Footnotes%
-  \addcontentsline{toc}{subsubsection}{2.14.5~~~Target Footnotes}%
+\subsubsection{2.14.5~~~Target Footnotes%
   \label{target-footnotes}%
 }
 %
@@ -1257,22 +1150,14 @@ allowed (e.g. inside a directive).
 }
 
 
-%___________________________________________________________________________
-
-\subsubsection*{\phantomsection%
-  2.14.6~~~Replacement Text%
-  \addcontentsline{toc}{subsubsection}{2.14.6~~~Replacement Text}%
+\subsubsection{2.14.6~~~Replacement Text%
   \label{replacement-text}%
 }
 
 I recommend you try \href{http://www.python.org/}{Python, \emph{the} best language around}\DUfootnotemark{id32}{id29}{5}.
 
 
-%___________________________________________________________________________
-
-\subsubsection*{\phantomsection%
-  2.14.7~~~Compound Paragraph%
-  \addcontentsline{toc}{subsubsection}{2.14.7~~~Compound Paragraph}%
+\subsubsection{2.14.7~~~Compound Paragraph%
   \label{compound-paragraph}%
 }
 
@@ -1349,11 +1234,7 @@ Compound 7, a paragraph after the table.
 Compound 7, another paragraph.
 
 
-%___________________________________________________________________________
-
-\subsubsection*{\phantomsection%
-  2.14.8~~~Parsed Literal Blocks%
-  \addcontentsline{toc}{subsubsection}{2.14.8~~~Parsed Literal Blocks}%
+\subsubsection{2.14.8~~~Parsed Literal Blocks%
   \label{parsed-literal-blocks}%
 }
 %
@@ -1368,11 +1249,7 @@ text},~footnotes\DUfootnotemark{id22}{id8}{1},~%
 \end{quote}
 
 
-%___________________________________________________________________________
-
-\subsubsection*{\phantomsection%
-  2.14.9~~~Code%
-  \addcontentsline{toc}{subsubsection}{2.14.9~~~Code}%
+\subsubsection{2.14.9~~~Code%
   \label{code}%
 }
 
@@ -1421,11 +1298,7 @@ as a code block, here the rst file \texttt{header\_footer.txt} with line numbers
 \end{quote}
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  2.15~~~Substitution Definitions%
-  \addcontentsline{toc}{subsection}{2.15~~~Substitution Definitions}%
+\subsection{2.15~~~Substitution Definitions%
   \label{substitution-definitions}%
 }
 
@@ -1434,11 +1307,7 @@ An inline image (\includegraphics{../../../docs/user/rst/images/biohazard.png}) 
 (Substitution definitions are not visible in the HTML source.)
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  2.16~~~Comments%
-  \addcontentsline{toc}{subsection}{2.16~~~Comments}%
+\subsection{2.16~~~Comments%
   \label{comments}%
 }
 
@@ -1455,11 +1324,7 @@ Here's one:
 (View the HTML source to see the comment.)
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  2.17~~~Raw text%
-  \addcontentsline{toc}{subsection}{2.17~~~Raw text}%
+\subsection{2.17~~~Raw text%
   \label{raw-text}%
 }
 
@@ -1478,11 +1343,7 @@ This is the \DUrole{myrawroleclass}{fourth test} with myrawroleclass set.
 Fifth test in LaTeX.\\Line two.
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  2.18~~~Container%
-  \addcontentsline{toc}{subsection}{2.18~~~Container}%
+\subsection{2.18~~~Container%
   \label{container}%
 }
 
@@ -1494,11 +1355,7 @@ paragraph 2
 % .. include:: data/header_footer.txt
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  2.19~~~Colspanning tables%
-  \addcontentsline{toc}{subsection}{2.19~~~Colspanning tables}%
+\subsection{2.19~~~Colspanning tables%
   \label{colspanning-tables}%
 }
 
@@ -1576,11 +1433,7 @@ True
 \end{longtable*}
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  2.20~~~Rowspanning tables%
-  \addcontentsline{toc}{subsection}{2.20~~~Rowspanning tables}%
+\subsection{2.20~~~Rowspanning tables%
   \label{rowspanning-tables}%
 }
 
@@ -1639,11 +1492,7 @@ body row 3
 \end{longtable*}
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  2.21~~~Custom Roles%
-  \addcontentsline{toc}{subsection}{2.21~~~Custom Roles}%
+\subsection{2.21~~~Custom Roles%
   \label{custom-roles}%
 }
 %
@@ -1688,11 +1537,7 @@ The following works in most browsers but does not validate
 \end{itemize}
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  2.22~~~Mathematics%
-  \addcontentsline{toc}{subsection}{2.22~~~Mathematics}%
+\subsection{2.22~~~Mathematics%
   \label{mathematics}%
 }
 
@@ -1818,11 +1663,7 @@ HTML writers with \texttt{-{}-math-output=MathML}):
                   \end{cases}
 \end{equation*}
 
-%___________________________________________________________________________
-
-\section*{\phantomsection%
-  3~~~Tests for the LaTeX writer%
-  \addcontentsline{toc}{section}{3~~~Tests for the LaTeX writer}%
+\section{3~~~Tests for the LaTeX writer%
   \label{tests-for-the-latex-writer}%
 }
 
@@ -1830,11 +1671,7 @@ Test syntax elements which may cause trouble for the LaTeX writer but might
 not need to be tested with other writers (e.g. the HTML writer).
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  3.1~~~Custom Roles in LaTeX%
-  \addcontentsline{toc}{subsection}{3.1~~~Custom Roles in LaTeX}%
+\subsection{3.1~~~Custom Roles in LaTeX%
   \label{custom-roles-in-latex}%
 }
 %
@@ -1878,11 +1715,7 @@ This is a \DUroletitlereference{\DUrole{custom-title-reference}{customized title
 \end{itemize}
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  3.2~~~More Tables%
-  \addcontentsline{toc}{subsection}{3.2~~~More Tables}%
+\subsection{3.2~~~More Tables%
   \label{more-tables}%
 }
 
@@ -1946,11 +1779,7 @@ Short multicolumn 4
 % This file is used by the standalone_rst_latex test.
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  3.3~~~Option lists%
-  \addcontentsline{toc}{subsection}{3.3~~~Option lists}%
+\subsection{3.3~~~Option lists%
   \label{id23}%
 }
 
@@ -1986,11 +1815,7 @@ is contained in a quote
 \end{description}
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  3.4~~~Monospaced non-alphanumeric characters%
-  \addcontentsline{toc}{subsection}{3.4~~~Monospaced non-alphanumeric characters}%
+\subsection{3.4~~~Monospaced non-alphanumeric characters%
   \label{monospaced-non-alphanumeric-characters}%
 }
 
@@ -2006,11 +1831,7 @@ The two lines of non-alphanumeric characters should both have the same
 width as the third line.
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  3.5~~~Non-ASCII characters%
-  \addcontentsline{toc}{subsection}{3.5~~~Non-ASCII characters}%
+\subsection{3.5~~~Non-ASCII characters%
   \label{non-ascii-characters}%
 }
 
@@ -2424,11 +2245,7 @@ to the document options or use a different font package.
 \end{itemize}
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  3.6~~~Encoding special chars%
-  \addcontentsline{toc}{subsection}{3.6~~~Encoding special chars}%
+\subsection{3.6~~~Encoding special chars%
   \label{encoding-special-chars}%
 }
 
@@ -2497,11 +2314,7 @@ greater-than and bar, < | >, except for typewriter font \DUroletitlereference{cm
 \end{quote}
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  3.7~~~Hyperlinks and -targets%
-  \addcontentsline{toc}{subsection}{3.7~~~Hyperlinks and -targets}%
+\subsection{3.7~~~Hyperlinks and -targets%
   \label{hyperlinks-and-targets}%
 }
 
@@ -2546,17 +2359,13 @@ See \hyperref[hypertarget-in-plain-text]{hypertarget in plain text},
 \hyperref[image-label]{image label}.
 
 
-%___________________________________________________________________________
-
-\subsection*{\phantomsection%
-  3.8~~~External references%
-  \addcontentsline{toc}{subsection}{3.8~~~External references}%
+\subsection{3.8~~~External references%
   \label{external-references}%
 }
 
 Long URLs should be wrapped in the PDF.
 This can be achieved with the url command which is used by the LaTeX writer
-wheneve the content (name) of a reference node equals the link URL.
+whenever the content (name) of a reference node equals the link URL.
 %
 \begin{description}
 \item[{Example:}] \leavevmode 
@@ -2634,17 +2443,63 @@ while balanced braces are suported:
 
 \end{itemize}
 
+
+\subsection{3.9~~~Section titles with \hyperref[inline-markup]{inline markup}%
+  \label{section-titles-with-inline-markup}%
+}
+
+
+\subsubsection{3.9.1~~~\emph{emphasized}, H\textsubscript{2}O and $x^2$%
+  \label{emphasized-h2o-and-x-2}%
+}
+
+
+\subsubsection{3.9.2~~~Substitutions work%
+  \label{substitutions-fail}%
+}
+
+
+\subsection{3.10~~~Deeply nested sections%
+  \label{deeply-nested-sections}%
+}
+
+In LaTeX and HTML,
+
+
+\subsubsection{3.10.1~~~Level 3%
+  \label{level-3}%
+}
+
+nested sections
+
+
+\paragraph{3.10.1.1~~~level 4%
+  \label{level-4}%
+}
+
+reach at some level
+
+
+\subparagraph{3.10.1.1.1~~~level 5%
+  \label{level-5}%
+}
+
+(depending on the document class)
+
+
+\DUtitle[sectionVI]{3.10.1.1.1.1~~~level 6%
+  \label{level-6}%
+}
+
+an unsupported level.
+
 % unusual combinations (from newlatex, for interactive testing)
 % .. include:: data/latex.txt
 
 % Preface for System Messages:
 
 
-%___________________________________________________________________________
-
-\section*{\phantomsection%
-  4~~~Error Handling%
-  \addcontentsline{toc}{section}{4~~~Error Handling}%
+\section{4~~~Error Handling%
   \label{error-handling}%
 }
 
@@ -2656,11 +2511,7 @@ section, ``Docutils System Messages'':
 % section should be added by Docutils automatically
 
 
-%___________________________________________________________________________
-
-\section*{\phantomsection%
-  \color{red}Docutils System Messages%
-  \addcontentsline{toc}{section}{Docutils System Messages}%
+\section[Docutils System Messages]{\color{red}Docutils System Messages%
 }
 
 \DUadmonition[system-message]{

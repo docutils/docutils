@@ -3,7 +3,7 @@ External references
 
 Long URLs should be wrapped in the PDF.
 This can be achieved with the \url command which is used by the LaTeX writer
-wheneve the content (name) of a reference node equals the link URL.
+whenever the content (name) of a reference node equals the link URL.
 
 Example:
   a long URL that should wrap in the output
