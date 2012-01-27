@@ -271,10 +271,10 @@ class CSVTable(Table):
             try:
                 self.state.document.settings.record_dependencies.add(source)
                 csv_file = io.FileInput(
-                    source_path=source, 
-                    encoding=encoding,
-                    error_handler=
-                     self.state.document.settings.input_encoding_error_handler)
+                    source_path=source, encoding=encoding,
+                    error_handler=(self.state.document.settings.\
+                                   input_encoding_error_handler),
+                    handle_io_errors=None)
                 csv_data = csv_file.read().splitlines()
             except IOError, error:
                 severe = self.state_machine.reporter.severe(
