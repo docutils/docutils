@@ -63,4 +63,88 @@
          </math>
       </result>
    </test>
+   <test name="simple-addition">
+      <string>1 + 1</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mn>1</mn>
+               <mo>+</mo>
+               <mn>1</mn>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="simple-fraction">
+      <string>1/2</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mfrac>
+                  <mn>1</mn>
+                  <mn>2</mn>
+               </mfrac>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="double-fraction">
+      <string>1/2/3/4</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mfrac>
+                  <mfrac>
+                     <mn>1</mn>
+                     <mn>2</mn>
+                  </mfrac>
+                  <mfrac>
+                     <mn>3</mn>
+                     <mn>4</mn>
+                  </mfrac>
+               </mfrac>
+            </mstyle>
+         </math>
+      </result>
+      <result>
+         <math  xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle >
+               <mfrac>
+                  <mn>1</mn>
+                  <mn>2</mn>
+               </mfrac>
+               <mo>/</mo>
+               <mfrac>
+                  <mn>3</mn>
+                  <mn>4</mn>
+               </mfrac>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="tripple-fraction">
+      <string>1/2/3/4/5/6</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mfrac>
+                  <mfrac>
+                     <mn>1</mn>
+                     <mn>2</mn>
+                  </mfrac>
+                  <mfrac>
+                     <mfrac>
+                        <mn>3</mn>
+                        <mn>4</mn>
+                     </mfrac>
+                     <mfrac>
+                        <mn>5</mn>
+                        <mn>6</mn>
+                     </mfrac>
+                  </mfrac>
+               </mfrac>
+            </mstyle>
+         </math>
+      </result>
+   </test>
 </root>
