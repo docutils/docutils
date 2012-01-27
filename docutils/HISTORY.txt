@@ -29,18 +29,9 @@ Changes Since 0.8.1
   - Fix [ 2971827 ] and [ 3442827 ]
     extras/roman.py moved to docutils/utils/roman.py
 
-* docutils/core.py:
-
-  - Catch and report InputError/OutputError
-    (unless the configuration setting "traceback" is true).
-
 * docutils/io.py
 
   - Fix [ 3395948 ] (Work around encoding problems in Py3k).
-  - FileInput/FileOutput: No system-exit on IOError.
-    Instead, the custom exceptions InputError/OutputError are raised
-    to allow handling by core.Publisher or a calling application.
-    The optional argument `handle_io_errors` (to be removed later) is ignored.
 
 * docutils/utils.py -> docutils/utils/__init__.py
 

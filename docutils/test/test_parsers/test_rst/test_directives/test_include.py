@@ -212,7 +212,7 @@ A paragraph.
         <system_message level="4" line="4" source="test data" type="SEVERE">
             <paragraph>
                 Problems with "include" directive path:
-                InputError: [Errno 2] No such file or directory: 'nonexistent.txt'.
+                IOError: [Errno 2] No such file or directory: 'nonexistent.txt'.
             <literal_block xml:space="preserve">
                 .. include:: nonexistent.txt
         <paragraph>
@@ -414,7 +414,7 @@ u"""\
     <system_message level="4" line="3" source="test data" type="SEVERE">
         <paragraph>
             Problems with "include" directive path:
-            InputError: [Errno 2] No such file or directory: '\u043c\u0438\u0440.txt'.
+            IOError: [Errno 2] No such file or directory: '\u043c\u0438\u0440.txt'.
         <literal_block xml:space="preserve">
             .. include:: \u043c\u0438\u0440.txt
 """],
@@ -458,7 +458,7 @@ Testing errors in included file:
         <system_message level="4" line="12" source="%(source)s" type="SEVERE">
             <paragraph>
                 Problems with "include" directive path:
-                InputError: [Errno 2] No such file or directory: '%(nonexistent)s'.
+                IOError: [Errno 2] No such file or directory: '%(nonexistent)s'.
             <literal_block xml:space="preserve">
                 .. include:: <nonexistent>
         <system_message level="3" line="14" source="%(source)s" type="ERROR">
@@ -697,7 +697,7 @@ Nonexistent standard include data file:
     <system_message level="4" line="3" source="test data" type="SEVERE">
         <paragraph>
             Problems with "include" directive path:
-            InputError: [Errno 2] No such file or directory: '%s'.
+            IOError: [Errno 2] No such file or directory: '%s'.
         <literal_block xml:space="preserve">
             .. include:: <nonexistent>
 """ % nonexistent_rel],

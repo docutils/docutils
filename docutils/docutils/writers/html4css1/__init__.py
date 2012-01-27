@@ -373,7 +373,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         if self.settings.embed_stylesheet:
             try:
                 content = io.FileInput(source_path=path,
-                                       encoding='utf-8').read()
+                                       encoding='utf-8',
+                                       handle_io_errors=False).read()
                 self.settings.record_dependencies.add(path)
             except IOError, err:
                 msg = u"Cannot embed stylesheet '%s': %s." % (

@@ -135,7 +135,7 @@ class Publisher:
         if self.settings is None:
             defaults = (settings_overrides or {}).copy()
             # Propagate exceptions by default when used programmatically:
-            defaults.setdefault('traceback', True)
+            defaults.setdefault('traceback', 1)
             self.get_settings(settings_spec=settings_spec,
                               config_section=config_section,
                               **defaults)
@@ -221,7 +221,7 @@ class Publisher:
                 self.debugging_dumps()
                 raise
             self.report_Exception(error)
-            exit = True
+            exit = 1
             exit_status = 1
         self.debugging_dumps()
         if (enable_exit_status and self.document
@@ -260,10 +260,6 @@ class Publisher:
             self.report_SystemMessage(error)
         elif isinstance(error, UnicodeEncodeError):
             self.report_UnicodeError(error)
-        elif isinstance(error, io.InputError):
-            self.report_InputError(error)
-        elif isinstance(error, io.OutputError):
-            self.report_OutputError(error)
         else:
             print >>self._stderr, u'%s' % ErrorString(error)
             print >>self._stderr, ("""\
@@ -278,14 +274,6 @@ command line used.""" % (__version__, __version_details__,
         print >>self._stderr, ('Exiting due to level-%s (%s) system message.'
                              % (error.level,
                                 utils.Reporter.levels[error.level]))
-
-    def report_InputError(self, error):
-        self._stderr.write(u'Unable to open source file for reading:\n'
-                           u'  %s\n' % ErrorString(error))
-
-    def report_OutputError(self, error):
-        self._stderr.write(u'Unable to open destination file for writing:\n'
-                           u'  %s\n' % ErrorString(error))
 
     def report_UnicodeError(self, error):
         data = error.object[error.start:error.end]
