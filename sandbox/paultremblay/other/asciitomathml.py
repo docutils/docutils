@@ -1,3 +1,4 @@
+ # -*- coding: UTF-8 -*-
 import re, sys, copy
 from copy import deepcopy
 
@@ -8,11 +9,11 @@ class AsciiMathML:
 
     greek_dict = {
     'alpha': u"\u03B1",
+    'Sigma': u"\u2211",
+     'sum':u"\u2211",
         }
     operator_dict = {
-        'sum':u"\u2211",
         u"\u2211":u"\u2211", 
-        'Sigma':u"\u2211", 
             }
     symbol_dict = {}
     symbol_dict.update(greek_dict)
@@ -22,6 +23,7 @@ class AsciiMathML:
             '/':{'type':'special'},
             '^':{'type':'special'},
             '_':{'type':'special'},
+            '||':{'type':'special'},
 
             }
     symbol_names = sorted(symbol_dict.keys(), key=lambda key_string: len(key_string), reverse=True)
@@ -36,7 +38,7 @@ class AsciiMathML:
         self._mathml_ns = 'http://www.w3.org/1998/Math/MathML'
         self._append_el = mstyle
         self._output_encoding = output_encoding
-
+        self._fenced_for_right_parenthesis = True #  used fence for right parentheiss
 
     def _make_element(self, tag, text=None, *children, **attrib):
         element = Element(tag, **attrib)
@@ -198,17 +200,24 @@ class AsciiMathML:
             self._append_el.append(mfrac)
             self._append_el = mfrac
         elif token == '^' or token == '_':
-            if last_element.tag == 'msub':
-                subsup = self._make_element('msubsup')
+            if last_element.tag == 'msub' or last_element.tag == 'munder':
+                if last_element.tag == 'msub':
+                    new_element = self._make_element('msubsup')
+                else:
+                    new_element = self._make_element('munderover')
                 for child in last_element: # should be just 2--check? 
                     element = deepcopy(child)
-                    subsup.append(element)
+                    new_element.append(element)
                 self._append_el.remove(last_element)
-                self._append_el.append(subsup)
-                self._append_el = subsup
+                self._append_el.append(new_element)
+                self._append_el = new_element
 
             else:
-                if token == '^':
+                if last_element.text == self.greek_dict.get('Sigma') and token == '^':
+                    el_name = 'mover'
+                elif last_element.text == self.greek_dict.get('Sigma') and token == '_':
+                    el_name = 'munder'
+                elif token == '^':
                     el_name = 'msup'
                 elif token == '_':
                     el_name = 'msub'
@@ -229,8 +238,23 @@ class AsciiMathML:
             parent = self._get_parent(self._append_el)
             self._append_el = parent
         else:
-            element = self._make_element('mo', text=')')
+            if self._fenced_for_right_parenthesis: 
+                element = self._make_element('mfenced', open='', separators='', close=")")
+                self._append_el.append(element)
+            else:
+                element = self._make_element('mo', text=')')
+                self._append_el.append(element)
+
+    def _handle_double_bar(self, token, the_type):
+        if self._append_el.tag == 'mfenced' and self._append_el.get('open') == u"\u2016":
+            self._append_el.set('close', u"\u2016")
+            parent = self._get_parent(self._append_el)
+            self._append_el = parent
+        else:
+            element = self._make_element('mfenced', open=u"\u2016", separators='', close="")
             self._append_el.append(element)
+            self._append_el = element
+
 
     def _add_special_to_tree(self, token, the_type):
         if token == '(':
@@ -239,6 +263,8 @@ class AsciiMathML:
             self._handle_close_parenthesis()
         elif token == '/' or token == '^' or token == '_':
             self._handle_binary(token, the_type)
+        elif token == '||':
+            self._handle_double_bar(token, the_type)
 
 
 
@@ -268,7 +294,8 @@ class AsciiMathML:
                 self._add_special_to_tree(token, the_type)
 
             # for all elements
-            if self._append_el.tag == 'mfrac' or self._append_el.tag == 'msup' or self._append_el.tag == 'msub':
+            if self._append_el.tag == 'mfrac' or self._append_el.tag == 'msup' or\
+                    self._append_el.tag == 'msub' or self._append_el.tag == 'munder':
                 last_element = self._get_last_element()
                 prev_sib = self._get_previous_sibling(last_element)
                 if prev_sib != None:
@@ -279,15 +306,22 @@ class AsciiMathML:
                             the_dict = {'class':'superscript'}
                         elif self._append_el.tag == 'msub':
                             the_dict = {'class':'subcript'}
+                        elif self._append_el.tag == 'munder':
+                            the_dict = {'class':'munder'}
+                        elif self._append_el.tag == 'mover':
+                            the_dict = {'class':'mover'}
                         self._change_element(last_element, 'mrow', **the_dict)
                     self._append_el = self._get_parent(self._append_el)
-            elif self._append_el.tag =='msubsup':
+            elif self._append_el.tag =='msubsup' or self._append_el.tag == 'munderover':
                 last_element = self._get_last_element()
                 prev_sib = self._get_previous_sibling(last_element)
                 prev_prev_sib =self._get_previous_sibling(prev_sib) 
                 if prev_prev_sib != None:
                     if self._is_parenthesis(last_element):
-                        the_dict = {'class':'subsuper'}
+                        if self._append_el.tag == 'msubsup':
+                            the_dict = {'class':'subsuper'}
+                        else:
+                            the_dict = {'class':'munderover'}
                         self._change_element(last_element, 'mrow', **the_dict)
                     self._append_el = self._get_parent(self._append_el)
 

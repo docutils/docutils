@@ -147,4 +147,184 @@
          </math>
       </result>
    </test>
+   <test name="parenthesis">
+      <string>(6)</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mfenced close=")" open="(" separators="">
+                  <mn>6</mn>
+               </mfenced>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="left parenthesis">
+      <string>(6</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mfenced close="" open="(" separators="">
+                  <mn>6</mn>
+               </mfenced>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="right parenthesis">
+      <string>6)</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mn>6</mn>
+               <mo>)</mo>
+            </mstyle>
+         </math>
+      </result>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mn>6</mn>
+               <mfenced close=")" open="" separators=""></mfenced>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="fraction needs parenthesis">
+      <string>(a + b)/c</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mfrac>
+                  <mrow class="nominator">
+                     <mi>a</mi>
+                     <mo>+</mo>
+                     <mi>b</mi>
+                  </mrow>
+                  <mi>c</mi>
+               </mfrac>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="simple superscript">
+      <string>b^2</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <msup>
+                  <mi>b</mi>
+                  <mn>2</mn>
+               </msup>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="superscript with addition">
+      <string>b^(c + d)</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <msup>
+                  <mi>b</mi>
+                  <mrow class="superscript">
+                     <mi>c</mi>
+                     <mo>+</mo>
+                     <mi>d</mi>
+                  </mrow>
+               </msup>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="superscript with complex fraction">
+      <string>b^((c + d)/(e + f))</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <msup>
+                  <mi>b</mi>
+                  <mrow class="superscript">
+                     <mfrac>
+                        <mrow class="nominator">
+                           <mi>c</mi>
+                           <mo>+</mo>
+                           <mi>d</mi>
+                        </mrow>
+                        <mrow class="denominator">
+                           <mi>e</mi>
+                           <mo>+</mo>
+                           <mi>f</mi>
+                        </mrow>
+                     </mfrac>
+                  </mrow>
+               </msup>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="single double bar">
+      <string>||</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mfenced close="" open="&#x2016;" separators=""></mfenced>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="double bar with addition">
+      <string>|| 4 + 5 ||</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mfenced close="&#x2016;" open="&#x2016;" separators="">
+                  <mn>4</mn>
+                  <mo>+</mo>
+                  <mn>5</mn>
+               </mfenced>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="complex double bar">
+      <string>|| (a + b)/(c+d) ||^2</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <msup>
+                  <mfenced close="&#x2016;" open="&#x2016;" separators="">
+                     <mfrac>
+                        <mrow class="nominator">
+                           <mi>a</mi>
+                           <mo>+</mo>
+                           <mi>b</mi>
+                        </mrow>
+                        <mrow class="denominator">
+                           <mi>c</mi>
+                           <mo>+</mo>
+                           <mi>d</mi>
+                        </mrow>
+                     </mfrac>
+                  </mfenced>
+                  <mn>2</mn>
+               </msup>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="simple sub super">
+      <string>a_b^2</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <msubsup>
+                  <mi>a</mi>
+                  <mi>b</mi>
+                  <mn>2</mn>
+               </msubsup>
+            </mstyle>
+         </math>
+      </result>
+   </test>
 </root>

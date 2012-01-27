@@ -135,19 +135,19 @@ def indent(elem, level=0):
 
 def test_xml():
     the_tree = etree.parse('test.xml')
-    for test in the_tree.iter('test'):
+    for test in the_tree.getiterator('test'):
         name = test.get('name')
         if not name:
             raise ValueError('test element does not have a name attribute')
         the_string = ''
-        for string in test.iter('string'):
+        for string in test.getiterator('string'):
             the_string += string.text
         test_xml = ascii_to_math_tree(the_string)
         indent(test_xml)
         test_xml_string = tostring(test_xml).encode('utf8')
         standard_test_xml_string = xml_copy_tree(test_xml_string)
         match = None
-        for result in test.iter('result'):
+        for result in test.getiterator('result'):
             math_tree = result[0]
             indent(math_tree)
             xml_string = tostring(math_tree)
@@ -157,9 +157,9 @@ def test_xml():
                 break
         if not match:
             sys.stderr.write('Error for test "%s"\n' % (name))
-            sys.stderr.write(standard_test_xml_string)
+            sys.stderr.write(standard_test_xml_string.encode("utf8"))
             sys.stderr.write('\ndoes not match\n')
-            sys.stderr.write(standard_result_xml_string)
+            sys.stderr.write(standard_result_xml_string.encode("utf8"))
 
 if __name__ == '__main__':
     test_xml()
