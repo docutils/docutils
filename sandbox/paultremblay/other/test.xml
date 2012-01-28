@@ -327,4 +327,313 @@
          </math>
       </result>
    </test>
+   <test name="simple sum">
+      <string>sum</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mi>∑</mi>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="simple sum">
+      <string>&#x2211;</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mi>∑</mi>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="sum with base">
+      <string>sum_b</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <munder>
+                  <mi>∑</mi>
+                  <mi>b</mi>
+               </munder>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="sum with super">
+      <string>sum^6</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mover>
+                  <mi>∑</mi>
+                  <mn>6</mn>
+               </mover>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="sum with munder and mover">
+      <string>sum_(n=1)^oo = 1/2 + 1/4 + 1/8 + ....</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <munderover>
+                  <mi>∑</mi>
+                  <mrow class="munder">
+                     <mi>n</mi>
+                     <mo>=</mo>
+                     <mn>1</mn>
+                  </mrow>
+                  <mi>∞</mi>
+               </munderover>
+               <mo>=</mo>
+               <mfrac>
+                  <mn>1</mn>
+                  <mn>2</mn>
+               </mfrac>
+               <mo>+</mo>
+               <mfrac>
+                  <mn>1</mn>
+                  <mn>4</mn>
+               </mfrac>
+               <mo>+</mo>
+               <mfrac>
+                  <mn>1</mn>
+                  <mn>8</mn>
+               </mfrac>
+               <mo>+</mo>
+               <mo>.</mo>
+               <mo>.</mo>
+               <mo>.</mo>
+               <mo>.</mo>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="product with munder and mover">
+      <string>∏_b^2</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <munderover>
+                  <mi>∏</mi>
+                  <mi>b</mi>
+                  <mn>2</mn>
+               </munderover>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="hat ?? with munder and mover">
+      <string>^^^_b^2</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <munderover>
+                  <mi>⋀</mi>
+                  <mi>b</mi>
+                  <mn>2</mn>
+               </munderover>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="Big vvv ?? with munder and mover">
+      <string>vvv_b^2</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <munderover>
+                  <mi>⋁</mi>
+                  <mi>b</mi>
+                  <mn>2</mn>
+               </munderover>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="nnn with munder and mover">
+      <string>nnn_b^2</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <munderover>
+                  <mi>⋂</mi>
+                  <mi>b</mi>
+                  <mn>2</mn>
+               </munderover>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="min with under and over">
+      <string>min_b^2</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <munderover>
+                  <mo>min</mo>
+                  <mi>b</mi>
+                  <mn>2</mn>
+               </munderover>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="max with munder and mover">
+      <string>max_b^2</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <munderover>
+                  <mo>max</mo>
+                  <mi>b</mi>
+                  <mn>2</mn>
+               </munderover>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="simple {}">
+      <string>{a + b}</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mfenced close="}" open="{" separators="">
+                  <mi>a</mi>
+                  <mo>+</mo>
+                  <mi>b</mi>
+               </mfenced>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="{ and } with fraction">
+      <string>({x + 5}/{x -5})</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mfenced close=")" open="(" separators="">
+                  <mfrac>
+                     <mrow class="nominator">
+                        <mi>x</mi>
+                        <mo>+</mo>
+                        <mn>5</mn>
+                     </mrow>
+                     <mrow class="denominator">
+                        <mi>x</mi>
+                        <mo>-</mo>
+                        <mn>5</mn>
+                     </mrow>
+                  </mfrac>
+               </mfenced>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="brackets with square">
+      <string>[x -5]^2</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <msup>
+                  <mfenced close="]" open="[" separators="">
+                     <mi>x</mi>
+                     <mo>-</mo>
+                     <mn>5</mn>
+                  </mfenced>
+                  <mn>2</mn>
+               </msup>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="(:">
+      <string>(: x + y :)</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mfenced close="〉" open="〈" separators="">
+                  <mi>x</mi>
+                  <mo>+</mo>
+                  <mi>y</mi>
+               </mfenced>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="(: with fraction">
+      <string>(: x + y :)/ (: x - y :)</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mfrac>
+                  <mfenced close="〉" open="〈" separators="">
+                     <mi>x</mi>
+                     <mo>+</mo>
+                     <mi>y</mi>
+                  </mfenced>
+                  <mfenced close="〉" open="〈" separators="">
+                     <mi>x</mi>
+                     <mo>-</mo>
+                     <mi>y</mi>
+                  </mfenced>
+               </mfrac>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="(: with fraction">
+      <string>&lt;&lt; x + y &gt;&gt;/ &lt;&lt; x - y &gt;&gt;</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mfrac>
+                  <mfenced close="〉" open="〈" separators="">
+                     <mi>x</mi>
+                     <mo>+</mo>
+                     <mi>y</mi>
+                  </mfenced>
+                  <mfenced close="〉" open="〈" separators="">
+                     <mi>x</mi>
+                     <mo>-</mo>
+                     <mi>y</mi>
+                  </mfenced>
+               </mfrac>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="(: with fraction">
+      <string>{: 5 + 7 :}</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mrow class="mover">
+                  <mn>5</mn>
+                  <mo>+</mo>
+                  <mn>7</mn>
+               </mrow>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="(: with fraction">
+      <string>B^{: 5 + 7 :}</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <msup>
+                  <mi>B</mi>
+                  <mrow class="superscript">
+                     <mn>5</mn>
+                     <mo>+</mo>
+                     <mn>7</mn>
+                  </mrow>
+               </msup>
+            </mstyle>
+         </math>
+      </result>
+   </test>
 </root>

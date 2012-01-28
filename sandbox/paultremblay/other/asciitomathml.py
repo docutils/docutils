@@ -11,21 +11,49 @@ class AsciiMathML:
     'alpha': u"\u03B1",
     'Sigma': u"\u2211",
      'sum':u"\u2211",
+     u"\u2211":u"\u2211", 
         }
     operator_dict = {
-        u"\u2211":u"\u2211", 
+        'min': 'min',
+        'max': 'max',
             }
-    symbol_dict = {}
+    symbol_dict = {'oo':u"\u221E",
+     u"\u220f":u"\u220f",
+     "prod":u"\u220f",
+     u"\u22c0":u"\u22c0",
+     "^^^":u"\u22c0",
+     u"\u22c1":u"\u22c1",
+     "vvv":u"\u22c1",
+     u"\u22c2":u"\u22c2",
+     "nnn":u"\u22c2",
+     u"\u22c3":u"\u22c3",
+     "uuu":u"\u22c3",
+            }
     symbol_dict.update(greek_dict)
     special_dict = {
             '(':{'type':'special'},
+            '{':{'type':'special'},
+            '}':{'type':'special'},
             ')':{'type':'special'},
+            '[':{'type':'special'},
+            ']':{'type':'special'},
             '/':{'type':'special'},
             '^':{'type':'special'},
             '_':{'type':'special'},
             '||':{'type':'special'},
+            '(:':{'type':'special'},  
+            ':)':{'type':'special'},  
+            '<<':{'type':'special'}, 
+            '>>':{'type':'special'},  
+            '{:':{'type':'special'},
+            ':}':{'type':'special'},
 
             }
+    under_over_list = [u"\u2211", u"\u220f", u"\u22c0", u"\u22c1",u"\u22c2",u"\u22c3", "min", "max"]
+    fence_list = ['(', ')', '{', '}', '[', ']', u'\u2239', u'\u232a', '(:', ':)', '<<', '>>', '{:', ':}']
+    open_fence_list = ['(', '{', '[', u'\u2329', '<<', '{:']
+    close_fence_list = [')', '}', ']', u'\u232A', '>>', ':}']
+    fence_pair = {')':'(', '}':'{', ']':'[', u'\u232A':u'\u2329', ':}': '{:'}
     symbol_names = sorted(symbol_dict.keys(), key=lambda key_string: len(key_string), reverse=True)
     special_names = sorted(special_dict.keys(), key=lambda key_string: len(key_string), reverse=True)
     operator_names = sorted(operator_dict.keys(), key=lambda key_string: len(key_string), reverse=True)
@@ -39,6 +67,7 @@ class AsciiMathML:
         self._append_el = mstyle
         self._output_encoding = output_encoding
         self._fenced_for_right_parenthesis = True #  used fence for right parentheiss
+        self._use_fence = True #  use <mfence> for fences
 
     def _make_element(self, tag, text=None, *children, **attrib):
         element = Element(tag, **attrib)
@@ -119,8 +148,15 @@ class AsciiMathML:
         grandparent = self._get_parent(child = parent, the_tree = the_tree)
 
     def _is_parenthesis(self, element):
-        if element != None and element.tag == 'mfenced' and element.get('open') == '(' and\
-                    element.get('close') == ')':
+        if element == None:
+            return
+        close_fence = element.get('close')
+        if close_fence == u'\u232A': # don't remove these parenthesis
+            return
+        pair = self.fence_pair.get(close_fence)
+        if not pair:
+            return
+        if element.tag == 'mfenced': 
             return True
 
 
@@ -213,9 +249,9 @@ class AsciiMathML:
                 self._append_el = new_element
 
             else:
-                if last_element.text == self.greek_dict.get('Sigma') and token == '^':
+                if last_element.text in self.under_over_list and token == '^':
                     el_name = 'mover'
-                elif last_element.text == self.greek_dict.get('Sigma') and token == '_':
+                elif last_element.text in self.under_over_list and token == '_':
                     el_name = 'munder'
                 elif token == '^':
                     el_name = 'msup'
@@ -227,23 +263,29 @@ class AsciiMathML:
                 self._append_el.append(base)
                 self._append_el = base 
 
-    def _handle_open_parenthesis(self):
-        element = self._make_element('mfenced', open='(', separators='', close="")
+
+    def _handle_open_fence(self, token):
+        if self._use_fence:
+            element = self._make_element('mfenced', open=token, separators='', close="")
+        else:
+            element = self._make_element('mo', text=token)
         self._append_el.append(element)
         self._append_el = element
 
-    def _handle_close_parenthesis(self):
-        if self._append_el.tag == 'mfenced' and self._append_el.get('open') == '(':
-            self._append_el.set('close', ')')
+
+    def _handle_close_fence(self, token):
+        if self._append_el.tag == 'mfenced' and self._append_el.get('open') == self.fence_pair.get(token):
+            self._append_el.set('close', token)
             parent = self._get_parent(self._append_el)
             self._append_el = parent
         else:
-            if self._fenced_for_right_parenthesis: 
-                element = self._make_element('mfenced', open='', separators='', close=")")
+            if self._use_fence:
+                element = self._make_element('mfenced', open='', separators='', close=token)
                 self._append_el.append(element)
             else:
-                element = self._make_element('mo', text=')')
+                element = self._make_element('mo', text=token)
                 self._append_el.append(element)
+
 
     def _handle_double_bar(self, token, the_type):
         if self._append_el.tag == 'mfenced' and self._append_el.get('open') == u"\u2016":
@@ -257,15 +299,24 @@ class AsciiMathML:
 
 
     def _add_special_to_tree(self, token, the_type):
-        if token == '(':
-            self._handle_open_parenthesis()
-        elif token == ')':
-            self._handle_close_parenthesis()
+        if token in self.open_fence_list:
+            self._handle_open_fence(token)
+        elif token in self.close_fence_list:
+            self._handle_close_fence(token)
         elif token == '/' or token == '^' or token == '_':
             self._handle_binary(token, the_type)
         elif token == '||':
             self._handle_double_bar(token, the_type)
 
+    def _add_fence_to_tree(self, token, the_type):
+        if token == '(:' or  token == '<<':
+            token = u"\u2329"
+        if token == ':)' or token == '>>':
+            token = u"\u232a"
+        if token in self.open_fence_list:
+            self._handle_open_fence(token)
+        elif token in self.close_fence_list:
+            self._handle_close_fence(token)
 
 
     def parse_string(self, the_string):
@@ -290,6 +341,8 @@ class AsciiMathML:
                 self._add_symbol_to_tree(token, token_info)
             elif the_type == 'operator':
                 self._add_operator_to_tree(token, token_info)
+            elif token in self.fence_list:
+                self._add_fence_to_tree(token, the_type)
             elif the_type == 'special':
                 self._add_special_to_tree(token, the_type)
 
@@ -325,6 +378,13 @@ class AsciiMathML:
                         self._change_element(last_element, 'mrow', **the_dict)
                     self._append_el = self._get_parent(self._append_el)
 
+            last_element = self._get_last_element()
+            if last_element.tag == 'mfenced':
+                if last_element.get('close') == ':}':
+                    the_dict = {'class':'mover'}
+                    self._change_element(last_element, 'mrow', **the_dict)
+
+
 
     def _look_at_next_token(self, the_string):
         the_string, token, the_type = self._parse_tokens(the_string)
@@ -358,6 +418,12 @@ class AsciiMathML:
             else:
                 return the_string[match.end():], number, 'number'
 
+        for name in self.symbol_names: # found a special symbol
+            if the_string.startswith(name):
+                symbol = the_string[:len(name)]
+                symbol = self.symbol_dict[symbol] 
+                return the_string[len(name):], name, {'type': 'symbol', 'symbol': symbol} 
+
         for name in self.special_names:
             if the_string.startswith(name):
                 special = the_string[:len(name)]
@@ -370,11 +436,6 @@ class AsciiMathML:
                 symbol = self.operator_dict[symbol] 
                 return the_string[len(name):], name, {'type': 'operator', 'symbol': symbol} 
 
-        for name in self.symbol_names: # found a special symbol
-            if the_string.startswith(name):
-                symbol = the_string[:len(name)]
-                symbol = self.symbol_dict[symbol] 
-                return the_string[len(name):], name, {'type': 'symbol', 'symbol': symbol} 
 
         # found either an operator or a letter
 
@@ -385,12 +446,16 @@ class AsciiMathML:
 
 
 def ascii_to_xml_string(the_string):
+    if isinstance(the_string, str) and  sys.version_info < (3,):
+        the_string = the_string.decode('utf8')
     math_obj =  AsciiMathML()
     math_obj.parse_string(the_string)
     xml_string = math_obj.to_xml_string()
     return xml_string
 
 def ascii_to_math_tree(the_string):
+    if isinstance(the_string, str) and  sys.version_info < (3,):
+        the_string = the_string.decode('utf8')
     math_obj =  AsciiMathML()
     math_obj.parse_string(the_string)
     math_tree = math_obj.get_tree()
