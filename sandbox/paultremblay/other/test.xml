@@ -610,7 +610,7 @@
       <result>
          <math xmlns="http://www.w3.org/1998/Math/MathML">
             <mstyle>
-               <mrow class="mover">
+               <mrow class="invisible">
                   <mn>5</mn>
                   <mo>+</mo>
                   <mn>7</mn>
@@ -632,6 +632,197 @@
                      <mn>7</mn>
                   </mrow>
                </msup>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="hat 5">
+      <string>hat 5</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mover class="hat">
+                  <mn>5</mn>
+                  <mo>^</mo>
+               </mover>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="hat with double base">
+      <string>hat (5 6)</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mover class="hat">
+                  <mrow class="mover">
+                     <mn>5</mn>
+                     <mn>6</mn>
+                  </mrow>
+                  <mo>^</mo>
+               </mover>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="bar with double base">
+      <string>bar (5 6)</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mover class="bar">
+                  <mrow class="mover">
+                     <mn>5</mn>
+                     <mn>6</mn>
+                  </mrow>
+                  <mo>¯</mo>
+               </mover>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="vec with double base">
+      <string>vec (5 6)</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mover class="vec">
+                  <mrow class="mover">
+                     <mn>5</mn>
+                     <mn>6</mn>
+                  </mrow>
+                  <mo>→</mo>
+               </mover>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="dot with double base">
+      <string>dot (5 6)</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mover class="dot">
+                  <mrow class="mover">
+                     <mn>5</mn>
+                     <mn>6</mn>
+                  </mrow>
+                  <mo>.</mo>
+               </mover>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="ddot with double base">
+      <string>ddot (5 6)</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mover class="ddot">
+                  <mrow class="mover">
+                     <mn>5</mn>
+                     <mn>6</mn>
+                  </mrow>
+                  <mo>..</mo>
+               </mover>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="ul with double base">
+      <string>ul (5 6)</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <munder class="ul">
+                  <mrow class="munder">
+                     <mn>5</mn>
+                     <mn>6</mn>
+                  </mrow>
+                  <mo>̲</mo>
+               </munder>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="mtext">
+      <string>text(sum vs.) sum</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mtext>sum vs.</mtext>
+               <mi>∑</mi>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="mroot">
+      <string>root (2 + 1) ((b^2 - 4ac)/b)</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mroot>
+                  <mrow class="base">
+                     <mfrac>
+                        <mrow class="nominator">
+                           <msup>
+                              <mi>b</mi>
+                              <mn>2</mn>
+                           </msup>
+                           <mo>-</mo>
+                           <mn>4</mn>
+                           <mi>a</mi>
+                           <mi>c</mi>
+                        </mrow>
+                        <mi>b</mi>
+                     </mfrac>
+                  </mrow>
+                  <mrow class="index">
+                     <mn>2</mn>
+                     <mo>+</mo>
+                     <mn>1</mn>
+                  </mrow>
+               </mroot>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="frac">
+      <string>frac a (b - a)</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mfrac>
+                  <mi>a</mi>
+                  <mrow class="denominator">
+                     <mi>b</mi>
+                     <mo>-</mo>
+                     <mi>a</mi>
+                  </mrow>
+               </mfrac>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="sqrt">
+      <string>sqrt(a^2 - 4ac) + 4</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <msqrt>
+                  <mrow class="radical">
+                     <msup>
+                        <mi>a</mi>
+                        <mn>2</mn>
+                     </msup>
+                     <mo>-</mo>
+                     <mn>4</mn>
+                     <mi>a</mi>
+                     <mi>c</mi>
+                  </mrow>
+               </msqrt>
+               <mo>+</mo>
+               <mn>4</mn>
             </mstyle>
          </math>
       </result>
