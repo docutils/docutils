@@ -5,6 +5,13 @@ from copy import deepcopy
 from xml.etree.ElementTree import Element, tostring
 import xml.etree.ElementTree as etree
 
+class InvalidAsciiMath(Exception):
+    """
+    handle invalid Ascii Math
+
+    """
+    pass
+
 class AsciiMathML:
 
     greek_dict = {
@@ -47,13 +54,30 @@ class AsciiMathML:
             '>>':{'type':'special'},  
             '{:':{'type':'special'},
             ':}':{'type':'special'},
+            'hat':{'type':'special'},
+            'bar':{'type':'special'},
+            'vec':{'type':'special'},
+            'dot':{'type':'special'},
+            'ddot':{'type':'special'},
+            'ul':{'type':'special'},
+            'root':{'type':'special'},
+            'stackrel':{'type':'special'},
+            'frac':{'type':'special'},
+            'sqrt':{'type':'special'},
 
             }
+
     under_over_list = [u"\u2211", u"\u220f", u"\u22c0", u"\u22c1",u"\u22c2",u"\u22c3", "min", "max"]
+    under_over_base_last = ['hat', 'bar', 'vec', 'dot', 'ddot', 'ul']
+    over_list = ['hat', 'bar', 'vec', 'dot', 'ddot']
+    under_list = ['ul']
     fence_list = ['(', ')', '{', '}', '[', ']', u'\u2239', u'\u232a', '(:', ':)', '<<', '>>', '{:', ':}']
     open_fence_list = ['(', '{', '[', u'\u2329', '<<', '{:']
     close_fence_list = [')', '}', ']', u'\u232A', '>>', ':}']
-    fence_pair = {')':'(', '}':'{', ']':'[', u'\u232A':u'\u2329', ':}': '{:'}
+    function_list = ['root', 'stackrel', 'frac', 'sqrt']
+    fence_pair = {')':'(', '}':'{', ']':'[', u'\u232A':u'\u2329', ':}': '{:'} # last pair goes first in this dic
+    over_dict = {'hat':'^', 'bar':u"\u00AF", 'vec':u"\u2192", 'dot':u".", 'ddot':u".."}
+    under_dict = {'ul': u"\u0332"}
     symbol_names = sorted(symbol_dict.keys(), key=lambda key_string: len(key_string), reverse=True)
     special_names = sorted(special_dict.keys(), key=lambda key_string: len(key_string), reverse=True)
     operator_names = sorted(operator_dict.keys(), key=lambda key_string: len(key_string), reverse=True)
@@ -61,6 +85,7 @@ class AsciiMathML:
 
     def __init__(self, output_encoding = 'utf8'):
         self._number_re = re.compile('-?(\d+\.(\d+)?|\.?\d+)')
+        self._text_re = re.compile('text\s*\(')
         self._tree = Element('math')
         mstyle = etree.SubElement(self._tree, 'mstyle')
         self._mathml_ns = 'http://www.w3.org/1998/Math/MathML'
@@ -190,6 +215,16 @@ class AsciiMathML:
         element = self._make_element('mn', text=token)
         self._append_el.append(element)
 
+    def _add_text_el_to_tree(self):
+        element = self._make_element('mtext')
+        self._append_el.append(element)
+        self._append_el = element
+
+    def _add_text_to_tree(self, token):
+        self._append_el.text = token
+        self._append_el = self._get_parent(self._append_el)
+
+
     def _add_neg_num_to_tree(self, token, the_type):
         num = token[1:]
         element = self._make_element('mo', text='-')
@@ -297,6 +332,33 @@ class AsciiMathML:
             self._append_el.append(element)
             self._append_el = element
 
+    def _handle_over(self, token):
+        element = self._make_element('mover', **{'class':token} )
+        self._append_el.append(element)
+        self._append_el = element
+
+    def _handle_under(self, token):
+        element = self._make_element('munder', **{'class':token} )
+        self._append_el.append(element)
+        self._append_el = element
+
+    def _handle_function(self, token):
+        if token == 'root':
+            element = self._make_element('mroot')
+            self._append_el.append(element)
+            self._append_el = element
+        elif token == 'stackrel':
+            element = self._make_element('mover', **{'class':'stackrel'})
+            self._append_el.append(element)
+            self._append_el = element
+        elif token == 'frac':
+            element = self._make_element('mfrac')
+            self._append_el.append(element)
+            self._append_el = element
+        elif token == 'sqrt':
+            element = self._make_element('msqrt')
+            self._append_el.append(element)
+            self._append_el = element
 
     def _add_special_to_tree(self, token, the_type):
         if token in self.open_fence_list:
@@ -307,6 +369,12 @@ class AsciiMathML:
             self._handle_binary(token, the_type)
         elif token == '||':
             self._handle_double_bar(token, the_type)
+        elif token in self.over_list:
+            self._handle_over(token)
+        elif token in self.under_list:
+            self._handle_under(token)
+        elif token in self.function_list:
+            self._handle_function(token)
 
     def _add_fence_to_tree(self, token, the_type):
         if token == '(:' or  token == '<<':
@@ -331,7 +399,11 @@ class AsciiMathML:
                 the_type = token_info
             else:
                 the_type = token_info.get('type')
-            if the_type == 'number':
+            if the_type == 'text_start':
+                self._add_text_el_to_tree()
+            elif the_type == 'text':
+                self._add_text_to_tree(token)
+            elif the_type == 'number':
                 self._add_num_to_tree(token, the_type)
             elif the_type == 'neg_number':
                 self._add_neg_num_to_tree(token, the_type)
@@ -346,9 +418,49 @@ class AsciiMathML:
             elif the_type == 'special':
                 self._add_special_to_tree(token, the_type)
 
-            # for all elements
-            if self._append_el.tag == 'mfrac' or self._append_el.tag == 'msup' or\
-                    self._append_el.tag == 'msub' or self._append_el.tag == 'munder':
+            if self._append_el.tag == 'mover' and self._append_el.get('class') == 'stackrel' and len(self._append_el) == 2:
+                if self._is_parenthesis(self._append_el[0]):
+                    self._change_element(self._append_el[0], 'mrow', **{'class':'top'})
+                if self._is_parenthesis(self._append_el[1]):
+                    self._change_element(self._append_el[1], 'mrow', **{'class':'bottom'})
+                top = deepcopy(self._append_el[0])
+                self._append_el[0] = self._append_el[1]
+                self._append_el[1] = top
+                self._append_el = self._get_parent(self._append_el)
+            elif (self._append_el.tag == 'mover' or self._append_el.tag == 'munder')\
+                    and self._append_el.get('class') in self.under_over_base_last:
+                last_element = self._get_last_element()
+                if last_element.tag != self._append_el.tag:
+                    if self._is_parenthesis(last_element): # remove parenthesis
+                        if self._append_el.tag == 'mover':
+                            the_dict = {'class':'mover'}
+                        if self._append_el.tag == 'munder':
+                            the_dict = {'class':'munder'}
+                        self._change_element(last_element, 'mrow', **the_dict)
+                    text = self._append_el.get('class') # add top
+                    if self._append_el.tag == 'mover':
+                        text = self.over_dict.get(text) 
+                    elif self._append_el.tag == 'munder':
+                        text = self.under_dict.get(text) 
+                    element = self._make_element('mo', text=text)
+                    self._append_el.append(element)
+            elif self._append_el.tag == 'msqrt' and len(self._append_el) == 1:
+                if self._is_parenthesis(self._append_el[0]):
+                    self._change_element(self._append_el[0], 'mrow', **{'class':'radical'})
+                self._append_el = self._get_parent(self._append_el)
+            elif self._append_el.tag == 'mroot' and len(self._append_el) == 2:
+                if self._is_parenthesis(self._append_el[0]):
+                    self._change_element(self._append_el[0], 'mrow', **{'class':'index'})
+                if self._is_parenthesis(self._append_el[1]):
+                    self._change_element(self._append_el[1], 'mrow', **{'class':'base'})
+                the_index = deepcopy(self._append_el[0])
+                self._append_el[0] = self._append_el[1]
+                self._append_el[1] = the_index
+                self._append_el = self._get_parent(self._append_el)
+
+            elif self._append_el.tag == 'mfrac' or self._append_el.tag == 'msup' or\
+                    self._append_el.tag == 'msub' or self._append_el.tag == 'munder'\
+                    or self._append_el.tag == 'mover':
                 last_element = self._get_last_element()
                 prev_sib = self._get_previous_sibling(last_element)
                 if prev_sib != None:
@@ -381,7 +493,7 @@ class AsciiMathML:
             last_element = self._get_last_element()
             if last_element.tag == 'mfenced':
                 if last_element.get('close') == ':}':
-                    the_dict = {'class':'mover'}
+                    the_dict = {'class':'invisible'}
                     self._change_element(last_element, 'mrow', **the_dict)
 
 
@@ -404,6 +516,16 @@ class AsciiMathML:
         Else, get the next character, and process that with the rest of the string.
 
         """
+        if self._append_el.tag == 'mtext':
+            the_index = the_string.find(')')
+            if the_index < 0:
+                raise InvalidAsciiMath('Not valid Ascii math: text does not have closing "("')
+            text = the_string[:the_index]
+            return the_string[the_index + 1:], text, 'text'
+        text_match = self._text_re.match(the_string)
+        if text_match:
+            return the_string[text_match.end():], None, 'text_start'
+
         the_string = the_string.strip()
 
         if the_string == '':
