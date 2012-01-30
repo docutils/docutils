@@ -17,7 +17,7 @@ initial), but project directories are recommended over personal directories,
 which discourage collaboration.
 
 For more information, please see the `Docutils Project Policies`_. The
-Sandbox_ is mirrored at the Docutils web site, so the `Docutils Web Site`_
+Sandbox is mirrored at the Docutils web site, so the `Docutils Web Site`_
 documentation applies as well.
 
 
@@ -34,71 +34,69 @@ documentation applies as well.
 Sandbox Projects
 ================
 
-.. contents:: :local:
-
-
-Project Infrastructure
-----------------------
-
-`docutils-update <infrastructure/docutils-update>`_ is a script that
-is installed as a cron job on BerliOS.de to automatically update the
-Docutils `web site`_ whenever the SVN files change.  Any .html
-document with a corresponding .txt file is regenerated whenever the
-.txt file changes.
-
-.. _web site: http://docutils.sf.net/docs/dev/website.html
-
-
-Documenting Python
-------------------
-
-Some work has been done on enabling Docutils to write the
-`"Documenting Python" variant of LaTeX`__, which we're calling
-"DocPy".
-
-__ http://docs.python.org/doc/doc.html
-
-* `Edward Loper's sandbox
-  <http://docutils.sf.net/sandbox/edloper/docpy/>`__.  The example
-  "asyncore.rst" file was originally adapted by Steve Holden and Bill
-  Sconce.
-
-* `Dave Kuhlman's sandbox
-  <http://docutils.sf.net/sandbox/dkuhlman/>`__ and `his homepage
-  <http://www.rexx.com/~dkuhlman/rstpythonlatex_intro.html>`__.
-
-* `docpy-writer <http://docutils.sf.net/sandbox/docpy-writer/>`__ was
-  used for ctypes documentation.
-
-Since Python 2.6, the markup used for the official `Python documentation`_
-is `reStructuredText`_, amended by custom directives. The Sphinx_ toolset is
-used to generate the HTML and LaTeX versions.
-
-.. _Python documentation: http://docs.python.org/
-.. _reStructuredText: http://docutils.sf.net/rst.html
-.. _Sphinx: http://sphinx.pocoo.org/
-
-.. Could we convert the `Documenting Python`_ section into an item in the
-   `Other Sandbox Projects`_ list, as it is obsoleted by the move to Sphinx?
-   [GM]
-
-
-Other Sandbox Projects
-----------------------
-
 See the `sandbox/`_ directory for a complete list.
 
-* Many Sandbox projects, are sorted into the `Docutils Link List`_.
-
-* `<code-block-directive>`_ contains documentation, reasoning and
-  experimental code for support of syntax highlight in docutils.
-
-* `<latex-variants>`_ is a place to try out and discuss improvements, fixes
-  and variants of the latex2e writer.
-
-* `LaTeX math for reST`_ by Jens J. Mortensen writes Math to
-  LaTeX or MathML.
+Some Sandbox projects, are also sorted into the `Docutils Link List`_.
 
 .. _Docutils Link List: http://docutils.sf.net/docs/user/links.html
-.. _LaTeX math for reST:
-   http://docutils.sourceforge.net/sandbox/jensj/latex_math/
+
+.. TODO: update the list of important sandbox projects (here or in the link
+   list?)
+
+   The remainder of this section contained descriptions and links to obsolete
+   or abadoned projects. Commented out because this give an impression of an
+   attic instead of a place for experimenting.
+
+  Projects that are now implemented in Docutils
+  ---------------------------------------------
+  
+  * `<code-block-directive>`_ contains documentation, reasoning and
+    experimental code for support of syntax highlight in Docutils.
+    Preparational work for the `code`_ directive available since version 0.9.
+  
+  * `LaTeX math for reST`_ by Jens J. Mortensen writes Math to
+    LaTeX or MathML. This is the base of math_ support since version 0.8.
+  
+  .. _code: docutils/docs/ref/rst/directives.txt#code
+  .. _math: docutils/docs/ref/rst/directives.txt#math
+  .. _LaTeX math for reST:
+     http://docutils.sourceforge.net/sandbox/jensj/latex_math/
+  
+  Documenting Python
+  ------------------
+  
+  Since Python 2.6, the markup used for the official `Python documentation`_
+  is `reStructuredText`_, amended by custom directives. The Sphinx_ toolset is
+  used to generate the HTML and LaTeX versions.
+  
+  The sandbox contains some of the pervious work done on enabling Docutils to
+  write the `"Documenting Python"`__ using rST.
+  
+  __ http://docs.python.org/doc/doc.html
+  
+  * `Edward Loper's sandbox
+    <http://docutils.sf.net/sandbox/edloper/docpy/>`__.  The example
+    "asyncore.rst" file was originally adapted by Steve Holden and Bill
+    Sconce.
+  
+  * `Dave Kuhlman's sandbox
+    <http://docutils.sf.net/sandbox/dkuhlman/>`__ and `his homepage
+    <http://www.rexx.com/~dkuhlman/rstpythonlatex_intro.html>`__.
+  
+  * `docpy-writer <http://docutils.sf.net/sandbox/docpy-writer/>`__ was
+    used for ctypes documentation.
+  
+  .. _Python documentation: http://docs.python.org/
+  .. _reStructuredText: http://docutils.sf.net/rst.html
+  .. _Sphinx: http://sphinx.pocoo.org/
+  
+  Project Infrastructure
+  ----------------------
+  
+  `docutils-update <infrastructure/docutils-update>`_ is a script that
+  was installed as a cron job on BerliOS.de to automatically update the
+  Docutils `web site`_ whenever the SVN files change.  Any .html
+  document with a corresponding .txt file is regenerated whenever the
+  .txt file changes.
+  
+  .. _web site: http://docutils.sf.net/docs/dev/website.html
