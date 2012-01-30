@@ -332,7 +332,7 @@
       <result>
          <math xmlns="http://www.w3.org/1998/Math/MathML">
             <mstyle>
-               <mi>∑</mi>
+               <mo>∑</mo>
             </mstyle>
          </math>
       </result>
@@ -342,7 +342,7 @@
       <result>
          <math xmlns="http://www.w3.org/1998/Math/MathML">
             <mstyle>
-               <mi>∑</mi>
+               <mo>∑</mo>
             </mstyle>
          </math>
       </result>
@@ -353,7 +353,7 @@
          <math xmlns="http://www.w3.org/1998/Math/MathML">
             <mstyle>
                <munder>
-                  <mi>∑</mi>
+                  <mo>∑</mo>
                   <mi>b</mi>
                </munder>
             </mstyle>
@@ -366,7 +366,7 @@
          <math xmlns="http://www.w3.org/1998/Math/MathML">
             <mstyle>
                <mover>
-                  <mi>∑</mi>
+                  <mo>∑</mo>
                   <mn>6</mn>
                </mover>
             </mstyle>
@@ -374,18 +374,18 @@
       </result>
    </test>
    <test name="sum with munder and mover">
-      <string>sum_(n=1)^oo = 1/2 + 1/4 + 1/8 + ....</string>
+      <string>sum_(n=1)^oo = 1/2 + 1/4 + 1/8 + ...</string>
       <result>
          <math xmlns="http://www.w3.org/1998/Math/MathML">
             <mstyle>
                <munderover>
-                  <mi>∑</mi>
+                  <mo>∑</mo>
                   <mrow class="munder">
                      <mi>n</mi>
                      <mo>=</mo>
                      <mn>1</mn>
                   </mrow>
-                  <mi>∞</mi>
+                  <mo>∞</mo>
                </munderover>
                <mo>=</mo>
                <mfrac>
@@ -403,10 +403,7 @@
                   <mn>8</mn>
                </mfrac>
                <mo>+</mo>
-               <mo>.</mo>
-               <mo>.</mo>
-               <mo>.</mo>
-               <mo>.</mo>
+               <mo>...</mo>
             </mstyle>
          </math>
       </result>
@@ -417,7 +414,7 @@
          <math xmlns="http://www.w3.org/1998/Math/MathML">
             <mstyle>
                <munderover>
-                  <mi>∏</mi>
+                  <mo>∏</mo>
                   <mi>b</mi>
                   <mn>2</mn>
                </munderover>
@@ -431,7 +428,7 @@
          <math xmlns="http://www.w3.org/1998/Math/MathML">
             <mstyle>
                <munderover>
-                  <mi>⋀</mi>
+                  <mo>⋀</mo>
                   <mi>b</mi>
                   <mn>2</mn>
                </munderover>
@@ -445,7 +442,7 @@
          <math xmlns="http://www.w3.org/1998/Math/MathML">
             <mstyle>
                <munderover>
-                  <mi>⋁</mi>
+                  <mo>⋁</mo>
                   <mi>b</mi>
                   <mn>2</mn>
                </munderover>
@@ -459,7 +456,21 @@
          <math xmlns="http://www.w3.org/1998/Math/MathML">
             <mstyle>
                <munderover>
-                  <mi>⋂</mi>
+                  <mo>⋂</mo>
+                  <mi>b</mi>
+                  <mn>2</mn>
+               </munderover>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="uuu with munder and mover">
+      <string>uuu_b^2</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <munderover>
+                  <mo>⋃</mo>
                   <mi>b</mi>
                   <mn>2</mn>
                </munderover>
@@ -751,7 +762,7 @@
          <math xmlns="http://www.w3.org/1998/Math/MathML">
             <mstyle>
                <mtext>sum vs.</mtext>
-               <mi>∑</mi>
+               <mo>∑</mo>
             </mstyle>
          </math>
       </result>
@@ -823,6 +834,110 @@
                </msqrt>
                <mo>+</mo>
                <mn>4</mn>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="max underover as function">
+      <string>max_i^j(x)</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <munderover>
+                  <mo>max</mo>
+                  <mi>i</mi>
+                  <mi>j</mi>
+               </munderover>
+               <mfenced close=")" open="(" separators="">
+                  <mi>x</mi>
+               </mfenced>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="lim">
+      <string>lim_i^j(x)</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <munderover>
+                  <mo>lim</mo>
+                  <mi>i</mi>
+                  <mi>j</mi>
+               </munderover>
+               <mfenced close=")" open="(" separators="">
+                  <mi>x</mi>
+               </mfenced>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="lim">
+      <string>Lim_(i + 1)^j x</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <munderover>
+                  <mo>Lim</mo>
+                  <mrow class="munder">
+                     <mi>i</mi>
+                     <mo>+</mo>
+                     <mn>1</mn>
+                  </mrow>
+                  <mi>j</mi>
+               </munderover>
+               <mi>x</mi>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="sin">
+      <string>sin (x + 5)</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mo>sin</mo>
+               <mfenced close=")" open="(" separators="">
+                  <mrow class="function">
+                     <mi>x</mi>
+                     <mo>+</mo>
+                     <mn>5</mn>
+                  </mrow>
+               </mfenced>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="cos">
+      <string>cos (x + 5)</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mo>cos</mo>
+               <mfenced close=")" open="(" separators="">
+                  <mrow class="function">
+                     <mi>x</mi>
+                     <mo>+</mo>
+                     <mn>5</mn>
+                  </mrow>
+               </mfenced>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="tan">
+      <string>tan (x + 5)</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mo>tan</mo>
+               <mfenced close=")" open="(" separators="">
+                  <mrow class="function">
+                     <mi>x</mi>
+                     <mo>+</mo>
+                     <mn>5</mn>
+                  </mrow>
+               </mfenced>
             </mstyle>
          </math>
       </result>

@@ -15,59 +15,191 @@ class InvalidAsciiMath(Exception):
 class AsciiMathML:
 
     greek_dict = {
-    'alpha': u"\u03B1",
-    'Sigma': u"\u2211",
-     'sum':u"\u2211",
-     u"\u2211":u"\u2211", 
+'alpha':       u'\u03B1',
+'beta':        u'\u03B2',
+'chi' :        u'\u03C7',
+'delta':       u'\u03B4',
+'epsi':        u'\u03B5',
+'varepsilon':  u'\u025B',
+'eta':         u'\u03B7',
+'gamma':       u'\u03B3',
+'iota':        u'\u03B9',
+'kappa':       u'\u03BA',
+'lambda':      u'\u03BB',
+'mu':          u'\u03BC',
+'nu':          u'\u03BD',
+'omega':       u'\u03C9',
+'phi':         u'\u03C6',
+'varphi':      u'\u03D5',
+'pi' :         u'\u03C0',
+'psi':         u'\u03C8',
+'Psi':         u'\u03A8',
+'rho':         u'\u03C1',
+'sigma':       u'\u03C3',
+'tau':         u'\u03C4',
+'theta':       u'\u03B8',
+'vartheta':    u'\u03D1',
+'Theta':       u'\u0398',
+'upsilon':     u'\u03C5',
+'xi':          u'\u03BE',
+'zeta':        u'\u03B6'
         }
-    operator_dict = {
-        'min': 'min',
-        'max': 'max',
+
+    symbol_dict = {
             }
-    symbol_dict = {'oo':u"\u221E",
-     u"\u220f":u"\u220f",
-     "prod":u"\u220f",
-     u"\u22c0":u"\u22c0",
-     "^^^":u"\u22c0",
-     u"\u22c1":u"\u22c1",
-     "vvv":u"\u22c1",
-     u"\u22c2":u"\u22c2",
-     "nnn":u"\u22c2",
-     u"\u22c3":u"\u22c3",
-     "uuu":u"\u22c3",
+    text_dict = {
+            'and':'and', # space = true
+            'or' : 'or', # space = true
+            'if' :'if', # space = true
             }
+
     symbol_dict.update(greek_dict)
+    operator_dict = {
+'min':   'min',
+'max':   'max',
+'lim':   'lim',
+'Lim':   'Lim',
+'sin':   'sin',
+'cos':   'cos',
+'tan':   'tan',
+'sinh':  'sinh',
+'cosh':  'cosh',
+'tanh':  'tanh',
+'cot':   'cot',
+'sec':   'sec',
+'csc':   'csc',
+'log':   'log',
+'ln':    'ln',
+'det':   'det',
+'gcd':   'gcd',
+'lcm':   'lcm',
+'Delta': u'\u0394',
+'Gamma': u'\u0393',
+'Lambda':u'\u039B',
+'Omega': u'\u03A9',
+'Phi' :  u'\u03A6',
+'Pi' :   u'\u03A0',
+'Sigma': u'\u2211',
+'sum':   u'\u2211',
+'Xi':    u'\u039E',
+'prod':  u'\u220f',
+'^^^':   u'\u22c0',
+'vvv':   u'\u22c1',
+'nnn':   u'\u22c2',
+'uuu':   u'\u22c3',
+"*" :    u"\u22C5",
+"**":    u"\u22C6",
+"//": u"/",
+"\\\\":  u"\\",
+"setminus": u"\\",
+"xx":   u"\u00D7",
+"-:": u"\u00F7",
+"@":  u"\u2218",
+"o+": u"\u2295",
+"ox": u"\u2297",
+"o.": u"\u2299",
+"^^": u"\u2227",
+"vv":  u"\u2228",
+"nn": u"\u2229",
+"uu": u"\u222A",
+"!=":u"\u2260",
+":=":  u":=",
+"lt": u"<",
+"<=":  u"\u2264",
+"lt=":  u"\u2264",
+">=": u"\u2265",
+"geq":  u"\u2265",
+"-<":  u"\u227A",
+"-lt": u"\u227A",
+">-": u"\u227B",
+"-<=": u"\u2AAF",
+">-=": u"\u2AB0",
+"in": u"\u2208",
+"!in":u"\u2209",
+"sub": u"\u2282",
+"sup":u"\u2283",
+"sube": u"\u2286",
+"supe":  u"\u2287",
+"-=": u"\u2261",
+"~=": u"\u2245",
+"~~":  u"\u2248",
+"prop":  u"\u221D",
+"not": u"\u00AC",
+"=>": u"\u21D2",
+"<=>": u"\u21D4",
+"AA": u"\u2200",
+"EE": u"\u2203",
+"_|_": u"\u22A5",
+"TT":  u"\u22A4",
+"|--": u"\u22A2",
+"|==": u"\u22A8",
+"int": u"\u222B",
+"oint":u"\u222E",
+"del":  u"\u2202",
+"grad":u"\u2207",
+"+-":u"\u00B1",
+"O/":u"\u2205",
+"oo":u"\u221E",
+'aleph': u"\u2135",
+"...":u"...",
+":.":u"\u2234",
+"/_": u"\u2220",
+"\\ ":u"\u00A0",
+"quad": u"\u00A0\u00A0",
+"qquad": u"\u00A0\u00A0\u00A0\u00A0",
+"cdots": u"\u22EF",
+"vdots": u"\u22EE",
+"ddots": u"\u22F1",
+"diamond": u"\u22C4",
+"square": u"\u25A1",
+"|__":u"\u230A",
+"__|": u"\u230B",
+"|~":u"\u2308",
+"~|": u"\u2309",
+"CC": u"\u2102",
+"NN":u"\u2115",
+"QQ": u"\u211A",
+"RR": u"\u211D",
+"ZZ": u"\u2124",
+"dim":  u"dim",
+"mod":  u"mod",
+"lub":  u"lub",
+"glb":  u"glb",
+            }
+# left off f and g because don't know what to do with them
+
     special_dict = {
-            '(':{'type':'special'},
-            '{':{'type':'special'},
-            '}':{'type':'special'},
-            ')':{'type':'special'},
-            '[':{'type':'special'},
-            ']':{'type':'special'},
-            '/':{'type':'special'},
-            '^':{'type':'special'},
-            '_':{'type':'special'},
-            '||':{'type':'special'},
-            '(:':{'type':'special'},  
-            ':)':{'type':'special'},  
-            '<<':{'type':'special'}, 
-            '>>':{'type':'special'},  
-            '{:':{'type':'special'},
-            ':}':{'type':'special'},
-            'hat':{'type':'special'},
-            'bar':{'type':'special'},
-            'vec':{'type':'special'},
-            'dot':{'type':'special'},
-            'ddot':{'type':'special'},
-            'ul':{'type':'special'},
-            'root':{'type':'special'},
-            'stackrel':{'type':'special'},
-            'frac':{'type':'special'},
-            'sqrt':{'type':'special'},
+'(':{'type':'special'},
+'{':{'type':'special'},
+'}':{'type':'special'},
+')':{'type':'special'},
+'[':{'type':'special'},
+']':{'type':'special'},
+'/':{'type':'special'},
+'^':{'type':'special'},
+'_':{'type':'special'},
+'||':{'type':'special'},
+'(:':{'type':'special'},  
+':)':{'type':'special'},  
+'<<':{'type':'special'}, 
+'>>':{'type':'special'},  
+'{:':{'type':'special'},
+':}':{'type':'special'},
+'hat':{'type':'special'},
+'bar':{'type':'special'},
+'vec':{'type':'special'},
+'dot':{'type':'special'},
+'ddot':{'type':'special'},
+'ul':{'type':'special'},
+'root':{'type':'special'},
+'stackrel':{'type':'special'},
+'frac':{'type':'special'},
+'sqrt':{'type':'special'},
+'text':{'type':'special'},
 
             }
 
-    under_over_list = [u"\u2211", u"\u220f", u"\u22c0", u"\u22c1",u"\u22c2",u"\u22c3", "min", "max"]
+    under_over_list = [u"\u2211", u"\u220f", u"\u22c0", u"\u22c1",u"\u22c2",u"\u22c3", "min", "max", "Lim", "lim"]
     under_over_base_last = ['hat', 'bar', 'vec', 'dot', 'ddot', 'ul']
     over_list = ['hat', 'bar', 'vec', 'dot', 'ddot']
     under_list = ['ul']
@@ -75,17 +207,17 @@ class AsciiMathML:
     open_fence_list = ['(', '{', '[', u'\u2329', '<<', '{:']
     close_fence_list = [')', '}', ']', u'\u232A', '>>', ':}']
     function_list = ['root', 'stackrel', 'frac', 'sqrt']
+    group_func_list = ['min', 'max', 'sin', 'cos', 'tan', 'sinh', 'cosh', 'tanh', 'cot', 'sec', 'csc', 'log', 'ln', 'det', 'gcd', 'lcm']
     fence_pair = {')':'(', '}':'{', ']':'[', u'\u232A':u'\u2329', ':}': '{:'} # last pair goes first in this dic
     over_dict = {'hat':'^', 'bar':u"\u00AF", 'vec':u"\u2192", 'dot':u".", 'ddot':u".."}
     under_dict = {'ul': u"\u0332"}
-    symbol_names = sorted(symbol_dict.keys(), key=lambda key_string: len(key_string), reverse=True)
-    special_names = sorted(special_dict.keys(), key=lambda key_string: len(key_string), reverse=True)
-    operator_names = sorted(operator_dict.keys(), key=lambda key_string: len(key_string), reverse=True)
-    # special_names = [ '(', ')', '/', '^', '_']
+    sym_list = symbol_dict.keys()
+    spec_name_list = special_dict.keys()
+    op_name_list = operator_dict.keys()
+    names = sorted(sym_list + op_name_list + spec_name_list, key=lambda key_string: len(key_string), reverse=True)
 
     def __init__(self, output_encoding = 'utf8'):
         self._number_re = re.compile('-?(\d+\.(\d+)?|\.?\d+)')
-        self._text_re = re.compile('text\s*\(')
         self._tree = Element('math')
         mstyle = etree.SubElement(self._tree, 'mstyle')
         self._mathml_ns = 'http://www.w3.org/1998/Math/MathML'
@@ -193,6 +325,16 @@ class AsciiMathML:
         for att in attributes:
             element.set(att, attributes[att])
 
+    def _insert_mrow(self, element, class_name):
+        if len(element) == 1:
+            return
+        self._change_element(element, 'mrow', **{'class':class_name})
+        new_element = deepcopy(element)
+        self._append_el.remove(element)
+        parenthesis = self._make_element('mfenced', open='(', separators='', close=")")
+        parenthesis.append(new_element)
+        self._append_el.append(parenthesis)
+
 
     def _add_namespace(self):
         attributes = self._tree.attrib
@@ -215,15 +357,11 @@ class AsciiMathML:
         element = self._make_element('mn', text=token)
         self._append_el.append(element)
 
-    def _add_text_el_to_tree(self):
+
+    def _add_text_to_tree(self, text):
         element = self._make_element('mtext')
+        element.text = text
         self._append_el.append(element)
-        self._append_el = element
-
-    def _add_text_to_tree(self, token):
-        self._append_el.text = token
-        self._append_el = self._get_parent(self._append_el)
-
 
     def _add_neg_num_to_tree(self, token, the_type):
         num = token[1:]
@@ -399,10 +537,9 @@ class AsciiMathML:
                 the_type = token_info
             else:
                 the_type = token_info.get('type')
-            if the_type == 'text_start':
-                self._add_text_el_to_tree()
-            elif the_type == 'text':
-                self._add_text_to_tree(token)
+            if the_type == 'text':
+                text = token_info['text']
+                self._add_text_to_tree(text)
             elif the_type == 'number':
                 self._add_num_to_tree(token, the_type)
             elif the_type == 'neg_number':
@@ -428,22 +565,21 @@ class AsciiMathML:
                 self._append_el[1] = top
                 self._append_el = self._get_parent(self._append_el)
             elif (self._append_el.tag == 'mover' or self._append_el.tag == 'munder')\
-                    and self._append_el.get('class') in self.under_over_base_last:
+                    and self._append_el.get('class') in self.under_over_base_last and len(self._append_el) > 0:
                 last_element = self._get_last_element()
-                if last_element.tag != self._append_el.tag:
-                    if self._is_parenthesis(last_element): # remove parenthesis
-                        if self._append_el.tag == 'mover':
-                            the_dict = {'class':'mover'}
-                        if self._append_el.tag == 'munder':
-                            the_dict = {'class':'munder'}
-                        self._change_element(last_element, 'mrow', **the_dict)
-                    text = self._append_el.get('class') # add top
+                if self._is_parenthesis(last_element): # remove parenthesis
                     if self._append_el.tag == 'mover':
-                        text = self.over_dict.get(text) 
-                    elif self._append_el.tag == 'munder':
-                        text = self.under_dict.get(text) 
-                    element = self._make_element('mo', text=text)
-                    self._append_el.append(element)
+                        the_dict = {'class':'mover'}
+                    if self._append_el.tag == 'munder':
+                        the_dict = {'class':'munder'}
+                    self._change_element(last_element, 'mrow', **the_dict)
+                text = self._append_el.get('class') # add top
+                if self._append_el.tag == 'mover':
+                    text = self.over_dict.get(text) 
+                elif self._append_el.tag == 'munder':
+                    text = self.under_dict.get(text) 
+                element = self._make_element('mo', text=text)
+                self._append_el.append(element)
             elif self._append_el.tag == 'msqrt' and len(self._append_el) == 1:
                 if self._is_parenthesis(self._append_el[0]):
                     self._change_element(self._append_el[0], 'mrow', **{'class':'radical'})
@@ -458,25 +594,22 @@ class AsciiMathML:
                 self._append_el[1] = the_index
                 self._append_el = self._get_parent(self._append_el)
 
-            elif self._append_el.tag == 'mfrac' or self._append_el.tag == 'msup' or\
+            elif (self._append_el.tag == 'mfrac' or self._append_el.tag == 'msup' or\
                     self._append_el.tag == 'msub' or self._append_el.tag == 'munder'\
-                    or self._append_el.tag == 'mover':
-                last_element = self._get_last_element()
-                prev_sib = self._get_previous_sibling(last_element)
-                if prev_sib != None:
-                    if self._is_parenthesis(last_element):
-                        if self._append_el.tag == 'mfrac':
-                            the_dict = {'class':'denominator'}
-                        elif self._append_el.tag == 'msup':
-                            the_dict = {'class':'superscript'}
-                        elif self._append_el.tag == 'msub':
-                            the_dict = {'class':'subcript'}
-                        elif self._append_el.tag == 'munder':
-                            the_dict = {'class':'munder'}
-                        elif self._append_el.tag == 'mover':
-                            the_dict = {'class':'mover'}
-                        self._change_element(last_element, 'mrow', **the_dict)
-                    self._append_el = self._get_parent(self._append_el)
+                    or self._append_el.tag == 'mover') and len(self._append_el) == 2:
+                if self._is_parenthesis(self._append_el[1]):
+                    if self._append_el.tag == 'mfrac':
+                        the_dict = {'class':'denominator'}
+                    elif self._append_el.tag == 'msup':
+                        the_dict = {'class':'superscript'}
+                    elif self._append_el.tag == 'msub':
+                        the_dict = {'class':'subcript'}
+                    elif self._append_el.tag == 'munder':
+                        the_dict = {'class':'munder'}
+                    elif self._append_el.tag == 'mover':
+                        the_dict = {'class':'mover'}
+                    self._change_element(self._append_el[1], 'mrow', **the_dict)
+                self._append_el = self._get_parent(self._append_el)
             elif self._append_el.tag =='msubsup' or self._append_el.tag == 'munderover':
                 last_element = self._get_last_element()
                 prev_sib = self._get_previous_sibling(last_element)
@@ -491,10 +624,19 @@ class AsciiMathML:
                     self._append_el = self._get_parent(self._append_el)
 
             last_element = self._get_last_element()
-            if last_element.tag == 'mfenced':
-                if last_element.get('close') == ':}':
-                    the_dict = {'class':'invisible'}
-                    self._change_element(last_element, 'mrow', **the_dict)
+            if last_element.tag == 'mfenced' and last_element.get('close') == ':}':
+                self._change_element(last_element, 'mrow', **{'class':'invisible'})
+
+            if self._is_parenthesis(last_element) and len(self._append_el)> 1 :
+                prev_sib = self._get_previous_sibling(last_element)
+                is_function = False
+                if prev_sib.text in self.group_func_list:
+                    is_function = True
+                if prev_sib.tag == 'munderover':
+                    if prev_sib[0].tag == 'mo' and prev_sib[0].text in self.group_func_list:
+                        is_function = True
+                if is_function:
+                    self._insert_mrow(last_element, 'function')
 
 
 
@@ -516,16 +658,6 @@ class AsciiMathML:
         Else, get the next character, and process that with the rest of the string.
 
         """
-        if self._append_el.tag == 'mtext':
-            the_index = the_string.find(')')
-            if the_index < 0:
-                raise InvalidAsciiMath('Not valid Ascii math: text does not have closing "("')
-            text = the_string[:the_index]
-            return the_string[the_index + 1:], text, 'text'
-        text_match = self._text_re.match(the_string)
-        if text_match:
-            return the_string[text_match.end():], None, 'text_start'
-
         the_string = the_string.strip()
 
         if the_string == '':
@@ -540,24 +672,24 @@ class AsciiMathML:
             else:
                 return the_string[match.end():], number, 'number'
 
-        for name in self.symbol_names: # found a special symbol
+        for name in self.names:
             if the_string.startswith(name):
-                symbol = the_string[:len(name)]
-                symbol = self.symbol_dict[symbol] 
-                return the_string[len(name):], name, {'type': 'symbol', 'symbol': symbol} 
-
-        for name in self.special_names:
-            if the_string.startswith(name):
-                special = the_string[:len(name)]
-                info = self.special_dict[special] 
-                return the_string[len(name):], special, info
-
-        for name in self.operator_names: # found special operator
-            if the_string.startswith(name):
-                symbol = the_string[:len(name)]
-                symbol = self.operator_dict[symbol] 
-                return the_string[len(name):], name, {'type': 'operator', 'symbol': symbol} 
-
+                the_found = the_string[:len(name)]
+                symbol = self.symbol_dict.get(the_found)
+                operator = self.operator_dict.get(the_found)
+                special = self.special_dict.get(the_found)
+                if the_found == 'text':
+                    start = the_string.find('(')
+                    end = the_string.find(')')
+                    text =  the_string[start + 1:end]
+                    rest = the_string[end + 1:]
+                    return rest, name, {'type': 'text', 'text':text}
+                elif symbol != None:
+                    return the_string[len(name):], name, {'type': 'symbol', 'symbol': symbol} 
+                elif special != None:
+                    return the_string[len(name):], name, special
+                elif operator != None:
+                    return the_string[len(name):], name, {'type': 'operator', 'symbol': operator} 
 
         # found either an operator or a letter
 
@@ -565,6 +697,7 @@ class AsciiMathML:
             return the_string[1:], the_string[0], 'alpha'
         else:
             return the_string[1:], the_string[0], 'operator'
+
 
 
 def ascii_to_xml_string(the_string):
