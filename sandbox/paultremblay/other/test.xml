@@ -942,4 +942,78 @@
          </math>
       </result>
    </test>
+   <test name="open matrix">
+      <string>|x|= {(x , if x ge 0 text(,)),(-x , if x &lt;0.):}</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mfenced close="|" open="|" separators="">
+                  <mi>x</mi>
+               </mfenced>
+               <mo>=</mo>
+               <mfenced class="invisible" close="" open="{" separators="">
+                  <mtable>
+                     <mtr>
+                        <mtd>
+                           <mi>x</mi>
+                        </mtd>
+                        <mtd>
+                           <mspace width="1ex"></mspace>
+                           <mo>if</mo>
+                           <mspace width="1ex"></mspace>
+                           <mi>x</mi>
+                           <mo>≥</mo>
+                           <mn>0</mn>
+                           <mtext>,</mtext>
+                        </mtd>
+                     </mtr>
+                     <mtr>
+                        <mtd>
+                           <mo>-</mo>
+                           <mi>x</mi>
+                        </mtd>
+                        <mtd>
+                           <mspace width="1ex"></mspace>
+                           <mo>if</mo>
+                           <mspace width="1ex"></mspace>
+                           <mi>x</mi>
+                           <mo>&lt;</mo>
+                           <mn>0.</mn>
+                        </mtd>
+                     </mtr>
+                  </mtable>
+               </mfenced>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="cos">
+      <string>((1,2),(1,2))</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mfenced close=")" open="(" separators="">
+                  <mtable>
+                     <mtr>
+                        <mtd>
+                           <mn>1</mn>
+                        </mtd>
+                        <mtd>
+                           <mn>2</mn>
+                        </mtd>
+                     </mtr>
+                     <mtr>
+                        <mtd>
+                           <mn>1</mn>
+                        </mtd>
+                        <mtd>
+                           <mn>2</mn>
+                        </mtd>
+                     </mtr>
+                  </mtable>
+               </mfenced>
+            </mstyle>
+         </math>
+      </result>
+   </test>
 </root>
