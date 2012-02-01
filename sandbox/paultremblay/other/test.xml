@@ -170,6 +170,14 @@
             </mstyle>
          </math>
       </result>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mo>(</mo>
+               <mn>6</mn>
+            </mstyle>
+         </math>
+      </result>
    </test>
    <test name="right parenthesis">
       <string>6)</string>
@@ -269,6 +277,13 @@
          <math xmlns="http://www.w3.org/1998/Math/MathML">
             <mstyle>
                <mfenced close="" open="&#x2016;" separators=""></mfenced>
+            </mstyle>
+         </math>
+      </result>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mo>‖</mo>
             </mstyle>
          </math>
       </result>
@@ -987,7 +1002,7 @@
          </math>
       </result>
    </test>
-   <test name="cos">
+   <test name="simple matrix">
       <string>((1,2),(1,2))</string>
       <result>
          <math xmlns="http://www.w3.org/1998/Math/MathML">
@@ -1008,6 +1023,365 @@
                         </mtd>
                         <mtd>
                            <mn>2</mn>
+                        </mtd>
+                     </mtr>
+                  </mtable>
+               </mfenced>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="bar with non maching">
+      <string>(a,b]={x in RR | a &lt; x &lt;= b}</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mo>(</mo>
+               <mi>a</mi>
+               <mo>,</mo>
+               <mi>b</mi>
+               <mo>]</mo>
+               <mo>=</mo>
+               <mfenced close="}" open="{" separators="">
+                  <mi>x</mi>
+                  <mo>∈</mo>
+                  <mo>ℝ</mo>
+                  <mo>|</mo>
+                  <mi>a</mi>
+                  <mo>&lt;</mo>
+                  <mi>x</mi>
+                  <mo>≤</mo>
+                  <mi>b</mi>
+               </mfenced>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="incomplete fraction">
+      <string>alpha /</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mfrac>
+                  <mi>α</mi>
+                  <mo></mo>
+               </mfrac>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="incomplete root">
+      <string>root 1</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mroot>
+                  <mo></mo>
+                  <mn>1</mn>
+               </mroot>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="incomplete root">
+      <string>root</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mroot>
+                  <mo></mo>
+                  <mo></mo>
+               </mroot>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="incomplete hat">
+      <string>hat</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mover class="hat">
+                  <mo></mo>
+                  <mo>^</mo>
+               </mover>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="incomplete vec">
+      <string>vec</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mover class="vec">
+                  <mo></mo>
+                  <mo>→</mo>
+               </mover>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="incomplete dot">
+      <string>dot</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mover class="dot">
+                  <mo></mo>
+                  <mo>.</mo>
+               </mover>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="incomplete ddot">
+      <string>ddot</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mover class="ddot">
+                  <mo></mo>
+                  <mo>..</mo>
+               </mover>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="incomplete ul">
+      <string>ul</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <munder class="ul">
+                  <mo></mo>
+                  <mo>̲</mo>
+               </munder>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="empty frac">
+      <string>frac</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mfrac>
+                  <mo></mo>
+                  <mo></mo>
+               </mfrac>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="incomplete sum1">
+      <string>sum_</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <munder>
+                  <mo>∑</mo>
+                  <mo></mo>
+               </munder>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="incomplete sum2">
+      <string>sum_^</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <munder>
+                  <mover>
+                     <mo>∑</mo>
+                     <mo></mo>
+                  </mover>
+                  <mo></mo>
+               </munder>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="incomplete munderover">
+      <string>sum_b^</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <munderover>
+                  <mo>∑</mo>
+                  <mi>b</mi>
+                  <mo></mo>
+               </munderover>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="incomplete superscript">
+      <string>b^</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <msup>
+                  <mi>b</mi>
+                  <mo></mo>
+               </msup>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="incomplete subscript">
+      <string>b_</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <msub>
+                  <mi>b</mi>
+                  <mo></mo>
+               </msub>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="incomplete subsup">
+      <string>b_a^</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <msubsup>
+                  <mi>b</mi>
+                  <mi>a</mi>
+                  <mo></mo>
+               </msubsup>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="external1">
+      <string>abc-123.45^-1.1</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mi>a</mi>
+               <mi>b</mi>
+               <mi>c</mi>
+               <mo>-</mo>
+               <msup>
+                  <mn>123.45</mn>
+                  <mrow class="neg-num">
+                     <mo>-</mo>
+                     <mn>1.1</mn>
+                  </mrow>
+               </msup>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="incomplete text">
+      <string>text alpha</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mtext></mtext>
+               <mi>α</mi>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="text with curly brackets">
+      <string>text{undefined}</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mtext>undefined</mtext>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="empty text ">
+      <string>text</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mtext></mtext>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="over many">
+      <string>hat(ab) bar(xy) ulA vec v dotx ddot y</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mover class="hat">
+                  <mrow class="mover">
+                     <mi>a</mi>
+                     <mi>b</mi>
+                  </mrow>
+                  <mo>^</mo>
+               </mover>
+               <mover class="bar">
+                  <mrow class="mover">
+                     <mi>x</mi>
+                     <mi>y</mi>
+                  </mrow>
+                  <mo>¯</mo>
+               </mover>
+               <munder class="ul">
+                  <mi>A</mi>
+                  <mo>̲</mo>
+               </munder>
+               <mover class="vec">
+                  <mi>v</mi>
+                  <mo>→</mo>
+               </mover>
+               <mover class="dot">
+                  <mi>x</mi>
+                  <mo>.</mo>
+               </mover>
+               <mover class="ddot">
+                  <mi>y</mi>
+                  <mo>..</mo>
+               </mover>
+            </mstyle>
+         </math>
+      </result>
+   </test>
+   <test name="two matrices">
+      <string>[[a,b],[c,d]]((n),(k))</string>
+      <result>
+         <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <mstyle>
+               <mfenced close="]" open="[" separators="">
+                  <mtable>
+                     <mtr>
+                        <mtd>
+                           <mi>a</mi>
+                        </mtd>
+                        <mtd>
+                           <mi>b</mi>
+                        </mtd>
+                     </mtr>
+                     <mtr>
+                        <mtd>
+                           <mi>c</mi>
+                        </mtd>
+                        <mtd>
+                           <mi>d</mi>
+                        </mtd>
+                     </mtr>
+                  </mtable>
+               </mfenced>
+               <mfenced close=")" open="(" separators="">
+                  <mtable>
+                     <mtr>
+                        <mtd>
+                           <mi>n</mi>
+                        </mtd>
+                     </mtr>
+                     <mtr>
+                        <mtd>
+                           <mi>k</mi>
                         </mtd>
                      </mtr>
                   </mtable>

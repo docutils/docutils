@@ -226,8 +226,26 @@ class AsciiMathML:
         self._mathml_ns = 'http://www.w3.org/1998/Math/MathML'
         self._append_el = mstyle
         self._output_encoding = output_encoding
-        self._fenced_for_right = False #  used fence for right parentheiss
+        self._fenced_for_right = False #  used fence for right fence with no match
+        self._fenced_for_left = False #  used fence for left fence with no match
         self._use_fence = True #  use <mfence> for fences
+
+    def _add_namespace(self):
+        attributes = self._tree.attrib
+        value = attributes.get('xmlns')
+        if not value:
+            self._tree.set('xmlns', self._mathml_ns)
+
+    def to_xml_string(self, encoding=None):
+        if not encoding:
+            encoding = self._output_encoding
+        self._add_namespace()
+        xml_string = tostring(self._tree, encoding=encoding)
+        return xml_string
+
+    def get_tree(self):
+        self._add_namespace()
+        return self._tree
 
     def _make_element(self, tag, text=None, *children, **attrib):
         element = Element(tag, **attrib)
@@ -307,7 +325,107 @@ class AsciiMathML:
         parent = self._get_parent(child = child, the_tree = the_tree)
         grandparent = self._get_parent(child = parent, the_tree = the_tree)
 
+    def _change_element(self, element, name, **attributes):
+        """
+        Changes just the top element to the name "element' with the **attributes passed to it.
+
+        """
+        element.tag = name
+        the_keys = element.attrib.keys()
+        for the_key in the_keys:
+            del(element.attrib[the_key])
+        for att in attributes:
+            element.set(att, attributes[att])
+
+                
+    def _fix_open_fence(self, element):
+        """
+        changes <mfence open="(" close="" 
+         ...
+         </mfenced>
+
+         <mo>(</mo>
+         ...
+
+
+        """
+        parent = self._get_parent(element)
+        the_open = element.get('open')
+        position = 0
+        found = False
+        for e in parent:
+            if e == element:
+                found = 1
+                break
+            position += 1
+        paren = self._make_element('mo', text = the_open)
+        parent.insert(position, paren)
+        c = 1 + position
+        for e in element:
+            parent.insert(c, e)
+            c += 1
+        parent.remove(element)
+
+    def _insert_mrow(self, element, class_name):
+        """
+        Inserts an mrow element around element
+
+        """
+        if len(element) == 1:
+            return
+        self._change_element(element, 'mrow', **{'class':class_name})
+        new_element = deepcopy(element)
+        self._append_el.remove(element)
+        parenthesis = self._make_element('mfenced', open='(', separators='', close=")")
+        parenthesis.append(new_element)
+        self._append_el.append(parenthesis)
+
+    def _count_commas(self, element):
+        """
+        counts commas for matrix
+        """
+        if  element == None:
+            return 0
+        count = 0
+        for child in element:
+            if child.tag == 'mo' and child.text == ',':
+                count += 1
+        return count
+
+    def _is_matrix(self, element):
+        """
+        Tests if element is in fact a matrix
+
+        """
+        if len(element) < 3:
+            return
+        if not self._is_full_fenced(element):
+            return
+        counter = 0
+        row_len = None
+        for child in element:
+            if counter % 2 == 0: # even
+                if not self._is_full_fenced(child):
+                    return
+                num_commas = self._count_commas(child)
+                if row_len == None:
+                    row_len = num_commas
+                else:
+                    if num_commas != row_len:
+                        return
+                inner_counter = 0
+            else:
+                if child.tag != 'mo' or child.text != ',':
+                    return
+            counter += 1
+        return True
+
+
     def _is_full_fenced(self, element):
+        """
+        Returns True if element is a fence with matching open and close; or if open is {: or closse is :}
+
+        """
         if element == None:
             return
         close_fence = element.get('close')
@@ -323,41 +441,6 @@ class AsciiMathML:
         if element.tag == 'mfenced': 
             return True
 
-    def _change_element(self, element, name, **attributes):
-        element.tag = name
-        the_keys = element.attrib.keys()
-        for the_key in the_keys:
-            del(element.attrib[the_key])
-        for att in attributes:
-            element.set(att, attributes[att])
-
-    def _insert_mrow(self, element, class_name):
-        if len(element) == 1:
-            return
-        self._change_element(element, 'mrow', **{'class':class_name})
-        new_element = deepcopy(element)
-        self._append_el.remove(element)
-        parenthesis = self._make_element('mfenced', open='(', separators='', close=")")
-        parenthesis.append(new_element)
-        self._append_el.append(parenthesis)
-
-
-    def _add_namespace(self):
-        attributes = self._tree.attrib
-        value = attributes.get('xmlns')
-        if not value:
-            self._tree.set('xmlns', self._mathml_ns)
-
-    def to_xml_string(self, encoding=None):
-        if not encoding:
-            encoding = self._output_encoding
-        self._add_namespace()
-        xml_string = tostring(self._tree, encoding=encoding)
-        return xml_string
-
-    def get_tree(self):
-        self._add_namespace()
-        return self._tree
 
     def _add_num_to_tree(self, token, the_type):
         element = self._make_element('mn', text=token)
@@ -365,11 +448,25 @@ class AsciiMathML:
 
 
     def _add_text_to_tree(self, text):
+        present_text = self._append_el.text
+        if present_text == None:
+            present_text = ''
+        self._append_el.text = present_text + text
+
+    def _add_text_el_to_tree(self):
         element = self._make_element('mtext')
-        element.text = text
         self._append_el.append(element)
+        self._append_el = element
+
+    def _end_text_el_to_tree(self):
+        self._append_el.attrib.pop('open')
+        self._append_el = self._get_parent(self._append_el)
 
     def _add_special_text_to_tree(self, text):
+        """
+        adds if , and , or
+
+        """
         element = self._make_element('mspace', **{'width':'1ex'})
         self._append_el.append(element)
         element = self._make_element('mo', text=text)
@@ -407,39 +504,6 @@ class AsciiMathML:
             text = token
         element = self._make_element('mo', text=text)
         self._append_el.append(element)
-
-    def _count_commas(self, element):
-        if  element == None:
-            return 0
-        count = 0
-        for child in element:
-            if child.tag == 'mo' and child.text == ',':
-                count += 1
-        return count
-
-    def _is_matrix(self, element):
-        if len(element) < 3:
-            return
-        if not self._is_full_fenced(element):
-            return
-        counter = 0
-        row_len = None
-        for child in element:
-            if counter % 2 == 0: # even
-                if not self._is_full_fenced(child):
-                    return
-                num_commas = self._count_commas(child)
-                if row_len == None:
-                    row_len = num_commas
-                else:
-                    if num_commas != row_len:
-                        return
-                inner_counter = 0
-            else:
-                if child.tag != 'mo' or child.text != ',':
-                    return
-            counter += 1
-        return True
 
     def _do_matrix(self):
         last_element = self._get_last_element()
@@ -529,8 +593,35 @@ class AsciiMathML:
         self._append_el.append(element)
         self._append_el = element
 
-
     def _handle_close_fence(self, token):
+        first_match = self.fence_pair.get(token)
+        element = self._append_el
+        match_found = False
+        while element != None:
+            if element.tag == 'mfenced' and element.get('open') == first_match :
+                element.set('close', token)
+                parent = self._get_parent(element)
+                self._append_el = parent
+                match_found = True
+                break
+            elif element.tag == 'mfenced' and ( element.get('open') == '{:' or token == ':}'):
+                element.set('class','invisible')
+                parent = self._get_parent(element)
+                self._append_el = parent
+                match_found = True
+                break
+            element = self._get_parent(element)
+
+        if match_found:
+            return
+        if self._fenced_for_right:
+            element = self._make_element('mfenced', open='', separators='', close=token)
+            self._append_el.append(element)
+        else:
+            element = self._make_element('mo', text=token)
+            self._append_el.append(element)
+
+    def _handle_close_fence_old(self, token):
         the_open = self._append_el.get('open')
         first_match = self.fence_pair.get(token)
         if self._append_el.tag == 'mfenced' and the_open == first_match :
@@ -542,6 +633,7 @@ class AsciiMathML:
             parent = self._get_parent(self._append_el)
             self._append_el = parent
         else:
+            self._find_match_fence(self._append_el, token)
             if self._fenced_for_right:
                 element = self._make_element('mfenced', open='', separators='', close=token)
                 self._append_el.append(element)
@@ -549,6 +641,17 @@ class AsciiMathML:
                 element = self._make_element('mo', text=token)
                 self._append_el.append(element)
 
+    def _find_match_fence(self, element, close):
+        first_match = self.fence_pair.get(close)
+        while element != None:
+            print(element.tag)
+            if element.tag == 'mfenced' and element.get('open') == first_match :
+                self._append_el = element
+                element.set('close', close)
+                parent = self._get_parent(element)
+                self._append_el = parent
+                break
+            element = self._get_parent(element)
 
     def _handle_double_single_bar(self, token, the_type):
         if token == '||':
@@ -622,6 +725,47 @@ class AsciiMathML:
         elif token in self.close_fence_list:
             self._handle_close_fence(token)
 
+    def _fix_tree(self):
+        for e in self._tree.getiterator('mfenced'):
+            if e.get('close') == '' and e.get('class') != 'invisible' and not self._fenced_for_left:
+                self._fix_open_fence(e)
+        for e in self._tree.getiterator():
+            if e.tag == 'mfrac' and len(e) != 2:
+                element = self._make_element('mo')
+                while len(e) != 2:
+                    element = self._make_element('mo')
+                    e.insert(len(e), element)
+            elif e.tag == 'mroot' and len(e) != 2:
+                if len(e) == 1:
+                    element = self._make_element('mo')
+                    e.insert(0,element)
+                else:
+                    while len(e) != 2:
+                        element = self._make_element('mo')
+                        e.insert(len(e), element)
+            elif (e.tag == 'mover' or e.tag == 'munder') and len(e) != 2:
+                char = self.over_dict.get(e.get('class'))
+                if not char:
+                    char = self.under_dict.get(e.get('class'))
+                if len(e) == 0: 
+                    element = self._make_element('mo')
+                    e.insert(0, element)
+                    element = self._make_element('mo', text=char)
+                    e.insert(1, element)
+                elif len(e) == 1: 
+                    element = self._make_element('mo')
+                    e.insert(1, element)
+            elif (e.tag == 'munderover' or e.tag == 'msubsup') and len(e) != 3:
+                element = self._make_element('mo')
+                while len(e) != 3:
+                    element = self._make_element('mo')
+                    e.insert(len(e), element)
+            elif (e.tag == 'msup' or e.tag == 'msub') and len(e) != 2:
+                element = self._make_element('mo')
+                while len(e) != 2:
+                    element = self._make_element('mo')
+                    e.insert(len(e), element)
+
 
     def parse_string(self, the_string):
         """
@@ -636,8 +780,12 @@ class AsciiMathML:
             else:
                 the_type = token_info.get('type')
             if the_type == 'text':
-                text = token_info['text']
+                text = token
                 self._add_text_to_tree(text)
+            elif the_type == 'start_text':
+                self._add_text_el_to_tree()
+            elif the_type == 'end_text':
+                self._end_text_el_to_tree()
             elif the_type == 'special_text':
                 self._add_special_text_to_tree(token)
             elif the_type == 'number':
@@ -680,6 +828,7 @@ class AsciiMathML:
                     text = self.under_dict.get(text) 
                 element = self._make_element('mo', text=text)
                 self._append_el.append(element)
+                self._append_el = self._get_parent(self._append_el)
             elif self._append_el.tag == 'msqrt' and len(self._append_el) == 1:
                 if self._is_full_fenced(self._append_el[0]):
                     self._change_element(self._append_el[0], 'mrow', **{'class':'radical'})
@@ -739,7 +888,7 @@ class AsciiMathML:
                     self._insert_mrow(last_element, 'function')
 
             self._do_matrix()
-
+        self._fix_tree()
 
 
     def _look_at_next_token(self, the_string):
@@ -760,6 +909,22 @@ class AsciiMathML:
         Else, get the next character, and process that with the rest of the string.
 
         """
+        if self._append_el.tag == 'mtext':
+            next_char = the_string[0]
+            if not self._append_el.get('open'):
+                if next_char == ' ':
+                    return the_string[1:], ' ', {'type':'empty_text'}
+                elif next_char == '(' or next_char == '{' or next_char == '[':
+                    self._append_el.set('open', next_char)
+                    return the_string[1:], ' ', {'type': 'empty_text'}
+                else: # false text; continue
+                    self._append_el = self._get_parent(self._append_el)
+            else:
+                first_match = self.fence_pair.get(next_char)
+                if first_match:
+                    return the_string[1:], next_char, {'type':'end_text'}
+                else:
+                    return the_string[1:], next_char, {'type':'text'}
         the_string = the_string.strip()
 
         if the_string == '':
@@ -782,11 +947,7 @@ class AsciiMathML:
                 special = self.special_dict.get(the_found)
                 text = self.text_dict.get(the_found)
                 if the_found == 'text':
-                    start = the_string.find('(')
-                    end = the_string.find(')')
-                    text =  the_string[start + 1:end]
-                    rest = the_string[end + 1:]
-                    return rest, name, {'type': 'text', 'text':text}
+                    return the_string[len(name):], name, {'type': 'start_text'} 
                 elif symbol != None:
                     return the_string[len(name):], name, {'type': 'symbol', 'symbol': symbol} 
                 elif special != None:
