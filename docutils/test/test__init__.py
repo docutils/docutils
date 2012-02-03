@@ -17,11 +17,11 @@ class ApplicationErrorTests(unittest.TestCase):
 
     def test_message(self):
         err = docutils.ApplicationError('the message')
-        self.assertEquals(unicode(err), u'the message')
+        self.assertEqual(unicode(err), u'the message')
 
     def test_non_ASCII_message(self):
         err = docutils.ApplicationError(u'\u0169')
-        self.assertEquals(unicode(err), u'\u0169')
+        self.assertEqual(unicode(err), u'\u0169')
 
 
 if __name__ == '__main__':

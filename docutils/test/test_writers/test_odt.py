@@ -136,7 +136,7 @@ class DocutilsOdtTestCase(DocutilsTestSupport.StandardTestCase):
                 sep, first, sep, second, sep, )
             #msg2 = '%s\n%s' % (msg1, msg, )
             msg2 = '%s' % (msg, )
-        DocutilsTestSupport.StandardTestCase.failUnlessEqual(self,
+        DocutilsTestSupport.StandardTestCase.assertEqual(self,
             first, second, msg2)
 
     #

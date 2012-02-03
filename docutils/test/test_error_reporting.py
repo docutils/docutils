@@ -175,41 +175,41 @@ class UBuf(StringIO, object):
 class ErrorOutputTests(unittest.TestCase):
     def test_defaults(self):
         e = ErrorOutput()
-        self.assertEquals(e.stream, sys.stderr)
+        self.assertEqual(e.stream, sys.stderr)
 
     def test_bbuf(self):
         buf = BBuf() # buffer storing byte string
         e = ErrorOutput(buf, encoding='ascii')
         # write byte-string as-is
         e.write(b('b\xfc'))
-        self.assertEquals(buf.getvalue(), b('b\xfc'))
+        self.assertEqual(buf.getvalue(), b('b\xfc'))
         # encode unicode data with backslashescape fallback replacement:
         e.write(u' u\xfc')
-        self.assertEquals(buf.getvalue(), b('b\xfc u\\xfc'))
+        self.assertEqual(buf.getvalue(), b('b\xfc u\\xfc'))
         # handle Exceptions with Unicode string args
         # unicode(Exception(u'e\xfc')) # fails in Python < 2.6
         e.write(AttributeError(u' e\xfc'))
-        self.assertEquals(buf.getvalue(), b('b\xfc u\\xfc e\\xfc'))
+        self.assertEqual(buf.getvalue(), b('b\xfc u\\xfc e\\xfc'))
         # encode with `encoding` attribute
         e.encoding = 'utf8'
         e.write(u' u\xfc')
-        self.assertEquals(buf.getvalue(), b('b\xfc u\\xfc e\\xfc u\xc3\xbc'))
+        self.assertEqual(buf.getvalue(), b('b\xfc u\\xfc e\\xfc u\xc3\xbc'))
 
     def test_ubuf(self):
         buf = UBuf() # buffer only accepting unicode string
         # decode of binary strings
         e = ErrorOutput(buf, encoding='ascii')
         e.write(b('b\xfc'))
-        self.assertEquals(buf.getvalue(), u'b\ufffd') # use REPLACEMENT CHARACTER
+        self.assertEqual(buf.getvalue(), u'b\ufffd') # use REPLACEMENT CHARACTER
         # write Unicode string and Exceptions with Unicode args
         e.write(u' u\xfc')
-        self.assertEquals(buf.getvalue(), u'b\ufffd u\xfc')
+        self.assertEqual(buf.getvalue(), u'b\ufffd u\xfc')
         e.write(AttributeError(u' e\xfc'))
-        self.assertEquals(buf.getvalue(), u'b\ufffd u\xfc e\xfc')
+        self.assertEqual(buf.getvalue(), u'b\ufffd u\xfc e\xfc')
         # decode with `encoding` attribute
         e.encoding = 'latin1'
         e.write(b(' b\xfc'))
-        self.assertEquals(buf.getvalue(), u'b\ufffd u\xfc e\xfc b\xfc')
+        self.assertEqual(buf.getvalue(), u'b\ufffd u\xfc e\xfc b\xfc')
 
 
 

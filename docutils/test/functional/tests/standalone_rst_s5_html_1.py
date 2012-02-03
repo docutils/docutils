@@ -41,7 +41,7 @@ def _test_more(expected_dir, output_dir, test_case, parameters):
     if uniques:
         parts.append('The following paths are unique:')
         parts.extend(uniques)
-    test_case.assert_(not parts, '\n'.join(parts))
+    test_case.assertTrue(not parts, '\n'.join(parts))
 
 def _compare_directories(expected, output):
     dircmp = _filecmp.dircmp(expected, output, ['.svn', 'CVS'])

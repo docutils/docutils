@@ -21,15 +21,15 @@ class FuctionTests(unittest.TestCase):
 
     def test_escape2null(self):
         nulled = states.escape2null(self.escaped)
-        self.assertEquals(nulled, self.nulled)
+        self.assertEqual(nulled, self.nulled)
         nulled = states.escape2null(self.escaped + '\\')
-        self.assertEquals(nulled, self.nulled + '\x00')
+        self.assertEqual(nulled, self.nulled + '\x00')
 
     def test_unescape(self):
         unescaped = states.unescape(self.nulled)
-        self.assertEquals(unescaped, self.unescaped)
+        self.assertEqual(unescaped, self.unescaped)
         restored = states.unescape(self.nulled, 1)
-        self.assertEquals(restored, self.escaped)
+        self.assertEqual(restored, self.escaped)
 
 
 if __name__ == '__main__':

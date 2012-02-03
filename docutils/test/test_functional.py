@@ -170,7 +170,7 @@ expected output and check it in:
         # Get the expected output *after* writing the actual output.
         no_expected = self.no_expected_template % {
             'exp': expected_path, 'out': params['destination_path']}
-        self.assert_(os.access(expected_path, os.R_OK), no_expected)
+        self.assertTrue(os.access(expected_path, os.R_OK), no_expected)
         if sys.version_info < (3,0):
             f = open(expected_path, 'r')
         else: # samples are UTF8 encoded. 'rb' leads to errors with Python 3!
@@ -187,7 +187,7 @@ expected output and check it in:
         diff = self.expected_output_differs_template % {
             'exp': expected_path, 'out': params['destination_path']}
         try:
-            self.assertEquals(output, expected, diff)
+            self.assertEqual(output, expected, diff)
         except AssertionError:
             diff = ''.join(difflib.unified_diff(
                 expected.splitlines(True), output.splitlines(True),

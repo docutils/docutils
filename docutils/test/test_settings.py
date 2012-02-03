@@ -99,14 +99,14 @@ class ConfigFileTests(unittest.TestCase):
 
     def compare_output(self, result, expected):
         """`result` and `expected` should both be dicts."""
-        self.assert_('record_dependencies' in result)
+        self.assertTrue('record_dependencies' in result)
         if 'record_dependencies' not in expected:
             # Delete it if we don't want to test it.
             del result['record_dependencies']
         result = pprint.pformat(result) + '\n'
         expected = pprint.pformat(expected) + '\n'
         try:
-            self.assertEquals(result, expected)
+            self.assertEqual(result, expected)
         except AssertionError:
             print >>sys.stderr, '\n%s\n' % (self,)
             print >>sys.stderr, '-: expected\n+: result'

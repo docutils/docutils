@@ -62,7 +62,7 @@ class StopTraversalTests(unittest.TestCase, docutils.SettingsSpec):
             reader_name='standalone',
             parser_name='restructuredtext',
             settings_spec=self)
-        self.assert_(isinstance(doctree, nodes.document))
+        self.assertTrue(isinstance(doctree, nodes.document))
 
         parts = docutils.core.publish_parts(
            reader_name='doctree', source_class=docutils.io.DocTreeInput,

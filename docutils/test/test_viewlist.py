@@ -39,7 +39,7 @@ class ViewListTests(unittest.TestCase):
         self.assertEqual(self.b, self.b_list)
         self.assertEqual(self.c, self.c_list)
         self.assertEqual(len(self.a), len(self.a_list))
-        self.failUnless('d' in self.a) # __contains__
+        self.assertTrue('d' in self.a) # __contains__
         self.assertEqual([value for value in self.a], self.a_list)
         # get and set values
         self.assertEqual(self.a[2], self.a_list[2])
@@ -105,7 +105,7 @@ class ViewListTests(unittest.TestCase):
         a_list.insert(2, 'Q')
         a_list[4:4] = self.b_list
         a = self.a[:]
-        self.assert_(isinstance(a, statemachine.ViewList))
+        self.assertTrue(isinstance(a, statemachine.ViewList))
         a.insert(2, 'Q', 'runtime')
         a.insert(4, self.b)
         self.assertEqual(a, a_list)
@@ -151,11 +151,11 @@ class ViewListTests(unittest.TestCase):
         a = statemachine.ViewList(self.a[:])
         s = a[1:-1]
         s.trim_start(1)
-        self.assertEquals(a, self.a)
-        self.assertEquals(s, a[2:-1])
+        self.assertEqual(a, self.a)
+        self.assertEqual(s, a[2:-1])
         s.trim_end(1)
-        self.assertEquals(a, self.a)
-        self.assertEquals(s, a[2:-2])
+        self.assertEqual(a, self.a)
+        self.assertEqual(s, a[2:-2])
 
     def test_info(self):
         ab = self.a + self.b
@@ -215,11 +215,11 @@ Unindented text.
         self.assertEqual(s, [line.lstrip() for line in self.a_list[3:5]])
 
     def test_get_indented(self):
-        self.assertEquals(self.a.get_indented(),
+        self.assertEqual(self.a.get_indented(),
                           ([], 0, 0))
         block = statemachine.StringList(
             statemachine.string2lines(self.indented_string))
-        self.assertEquals(block.get_indented(),
+        self.assertEqual(block.get_indented(),
                           ([s[6:] for s in block], 6, 1))
 
 

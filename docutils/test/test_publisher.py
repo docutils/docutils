@@ -69,14 +69,14 @@ class PublishDoctreeTestCase(DocutilsTestSupport.StandardTestCase, docutils.Sett
             settings_overrides={'expose_internals':
                                 ['refnames', 'do_not_expose'],
                                 'report_level': 5})
-        self.assert_(isinstance(doctree, nodes.document))
+        self.assertTrue(isinstance(doctree, nodes.document))
 
         # Confirm that transforms have been applied (in this case, the
         # DocTitle transform):
-        self.assert_(isinstance(doctree[0], nodes.title))
-        self.assert_(isinstance(doctree[1], nodes.paragraph))
+        self.assertTrue(isinstance(doctree[0], nodes.title))
+        self.assertTrue(isinstance(doctree[1], nodes.paragraph))
         # Confirm that the Messages transform has not yet been applied:
-        self.assertEquals(len(doctree), 2)
+        self.assertEqual(len(doctree), 2)
 
         # The `do_not_expose` attribute may not show up in the
         # pseudoxml output because the expose_internals transform may
@@ -89,14 +89,14 @@ class PublishDoctreeTestCase(DocutilsTestSupport.StandardTestCase, docutils.Sett
             settings_overrides={'expose_internals':
                                 ['refnames', 'do_not_expose'],
                                 'report_level': 1})
-        self.assertEquals(output, exposed_pseudoxml_output)
+        self.assertEqual(output, exposed_pseudoxml_output)
 
         # Test publishing parts using document as the source.
         parts = core.publish_parts(
            reader_name='doctree', source_class=io.DocTreeInput,
            source=doctree, source_path='test', writer_name='html',
            settings_spec=self)
-        self.assert_(isinstance(parts, dict))
+        self.assertTrue(isinstance(parts, dict))
 
     def test_publish_pickle(self):
         # Test publishing a document tree with pickling and unpickling.
@@ -107,7 +107,7 @@ class PublishDoctreeTestCase(DocutilsTestSupport.StandardTestCase, docutils.Sett
             reader_name='standalone',
             parser_name='restructuredtext',
             settings_spec=self)
-        self.assert_(isinstance(doctree, nodes.document))
+        self.assertTrue(isinstance(doctree, nodes.document))
 
         # Pickle the document.  Note: if this fails, some unpickleable
         # reference has been added somewhere within the document tree.
@@ -122,18 +122,18 @@ class PublishDoctreeTestCase(DocutilsTestSupport.StandardTestCase, docutils.Sett
         doctree.transformer = None
 
         doctree_pickled = pickle.dumps(doctree)
-        self.assert_(isinstance(doctree_pickled, bytes))
+        self.assertTrue(isinstance(doctree_pickled, bytes))
         del doctree
 
         # Unpickle the document.
         doctree_zombie = pickle.loads(doctree_pickled)
-        self.assert_(isinstance(doctree_zombie, nodes.document))
+        self.assertTrue(isinstance(doctree_zombie, nodes.document))
 
         # Write out the document:
         output = core.publish_from_doctree(
             doctree_zombie, writer_name='pseudoxml',
             settings_spec=self)
-        self.assertEquals(output, pseudoxml_output)
+        self.assertEqual(output, pseudoxml_output)
 
 
 if __name__ == '__main__':
