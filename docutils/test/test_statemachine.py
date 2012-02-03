@@ -109,11 +109,11 @@ class EmptySMTests(unittest.TestCase):
 
     def test_add_state(self):
         self.sm.add_state(statemachine.State)
-        self.assert_(len(self.sm.states) == 1)
+        self.assertTrue(len(self.sm.states) == 1)
         self.assertRaises(statemachine.DuplicateStateError, self.sm.add_state,
                           statemachine.State)
         self.sm.add_state(statemachine.StateWS)
-        self.assert_(len(self.sm.states) == 2)
+        self.assertTrue(len(self.sm.states) == 2)
 
     def test_add_states(self):
         self.sm.add_states((statemachine.State, statemachine.StateWS))
@@ -124,9 +124,9 @@ class EmptySMTests(unittest.TestCase):
         self.sm.add_states((statemachine.State, statemachine.StateWS))
         self.assertRaises(statemachine.UnknownStateError, self.sm.get_state,
                           'unknownState')
-        self.assert_(isinstance(self.sm.get_state('State'),
+        self.assertTrue(isinstance(self.sm.get_state('State'),
                                 statemachine.State))
-        self.assert_(isinstance(self.sm.get_state('StateWS'),
+        self.assertTrue(isinstance(self.sm.get_state('StateWS'),
                                 statemachine.State))
         self.assertEqual(self.sm.current_state, 'StateWS')
 
@@ -151,56 +151,56 @@ class SMWSTests(unittest.TestCase):
         self.sm.unlink()
 
     def test___init__(self):
-        self.assertEquals(self.sm.states.keys(), ['MockState'])
-        self.assertEquals(len(self.sm.states['MockState'].transitions), 4)
+        self.assertEqual(self.sm.states.keys(), ['MockState'])
+        self.assertEqual(len(self.sm.states['MockState'].transitions), 4)
 
     def test_get_indented(self):
         self.sm.input_lines = statemachine.StringList(testtext)
         self.sm.line_offset = -1
         self.sm.next_line(3)
         indented, offset, good = self.sm.get_known_indented(2)
-        self.assertEquals(indented, item1)
-        self.assertEquals(offset, len(para1))
-        self.failUnless(good)
+        self.assertEqual(indented, item1)
+        self.assertEqual(offset, len(para1))
+        self.assertTrue(good)
         self.sm.next_line()
         indented, offset, good = self.sm.get_known_indented(2)
-        self.assertEquals(indented, item2)
-        self.assertEquals(offset, len(para1) + len(item1))
-        self.failUnless(good)
+        self.assertEqual(indented, item2)
+        self.assertEqual(offset, len(para1) + len(item1))
+        self.assertTrue(good)
         self.sm.previous_line(3)
         if self.sm.debug:
             print '\ntest_get_indented: self.sm.line:\n', self.sm.line
         indented, indent, offset, good = self.sm.get_indented()
         if self.sm.debug:
             print '\ntest_get_indented: indented:\n', indented
-        self.assertEquals(indent, lbindent)
-        self.assertEquals(indented, literalblock)
-        self.assertEquals(offset, (len(para1) + len(item1) + len(item2)
+        self.assertEqual(indent, lbindent)
+        self.assertEqual(indented, literalblock)
+        self.assertEqual(offset, (len(para1) + len(item1) + len(item2)
                                    - len(literalblock)))
-        self.failUnless(good)
+        self.assertTrue(good)
 
     def test_get_text_block(self):
         self.sm.input_lines = statemachine.StringList(testtext)
         self.sm.line_offset = -1
         self.sm.next_line()
         textblock = self.sm.get_text_block()
-        self.assertEquals(textblock, testtext[:1])
+        self.assertEqual(textblock, testtext[:1])
         self.sm.next_line(2)
         textblock = self.sm.get_text_block()
-        self.assertEquals(textblock, testtext[2:4])
+        self.assertEqual(textblock, testtext[2:4])
 
     def test_get_text_block_flush_left(self):
         self.sm.input_lines = statemachine.StringList(testtext)
         self.sm.line_offset = -1
         self.sm.next_line()
         textblock = self.sm.get_text_block(flush_left=1)
-        self.assertEquals(textblock, testtext[:1])
+        self.assertEqual(textblock, testtext[:1])
         self.sm.next_line(2)
         self.assertRaises(statemachine.UnexpectedIndentationError,
                           self.sm.get_text_block, flush_left=1)
 
     def test_run(self):
-        self.assertEquals(self.sm.run(testtext), expected)
+        self.assertEqual(self.sm.run(testtext), expected)
 
 
 class EmptyClass:
@@ -218,9 +218,9 @@ class EmptyStateTests(unittest.TestCase):
         self.state.nop2 = self.state.nop3 = self.state.nop
 
     def test_add_transitions(self):
-        self.assertEquals(len(self.state.transitions), 0)
+        self.assertEqual(len(self.state.transitions), 0)
         self.state.add_transitions(['None'], {'None': None})
-        self.assertEquals(len(self.state.transitions), 1)
+        self.assertEqual(len(self.state.transitions), 1)
         self.assertRaises(statemachine.UnknownTransitionError,
                           self.state.add_transitions, ['bogus'], {})
         self.assertRaises(statemachine.DuplicateTransitionError,
@@ -228,26 +228,26 @@ class EmptyStateTests(unittest.TestCase):
                           {'None': None})
 
     def test_add_transition(self):
-        self.assertEquals(len(self.state.transitions), 0)
+        self.assertEqual(len(self.state.transitions), 0)
         self.state.add_transition('None', None)
-        self.assertEquals(len(self.state.transitions), 1)
+        self.assertEqual(len(self.state.transitions), 1)
         self.assertRaises(statemachine.DuplicateTransitionError,
                           self.state.add_transition, 'None', None)
 
     def test_remove_transition(self):
-        self.assertEquals(len(self.state.transitions), 0)
+        self.assertEqual(len(self.state.transitions), 0)
         self.state.add_transition('None', None)
-        self.assertEquals(len(self.state.transitions), 1)
+        self.assertEqual(len(self.state.transitions), 1)
         self.state.remove_transition('None')
-        self.assertEquals(len(self.state.transitions), 0)
+        self.assertEqual(len(self.state.transitions), 0)
         self.assertRaises(statemachine.UnknownTransitionError,
                           self.state.remove_transition, 'None')
 
     def test_make_transition(self):
         dummy = re.compile('dummy')
-        self.assertEquals(self.state.make_transition('nop', 'bogus'),
+        self.assertEqual(self.state.make_transition('nop', 'bogus'),
                           (dummy, self.state.nop, 'bogus'))
-        self.assertEquals(self.state.make_transition('nop'),
+        self.assertEqual(self.state.make_transition('nop'),
                           (dummy, self.state.nop,
                            self.state.__class__.__name__))
         self.assertRaises(statemachine.TransitionPatternNotFound,
@@ -257,7 +257,7 @@ class EmptyStateTests(unittest.TestCase):
 
     def test_make_transitions(self):
         dummy = re.compile('dummy')
-        self.assertEquals(self.state.make_transitions(('nop', ['nop2'],
+        self.assertEqual(self.state.make_transitions(('nop', ['nop2'],
                                                        ('nop3', 'bogus'))),
                           (['nop', 'nop2', 'nop3'],
                            {'nop': (dummy, self.state.nop,
@@ -273,7 +273,7 @@ class MiscTests(unittest.TestCase):
     s2l_expected = ['hello   there   how are you?',
                     "        I'm fine        thanks."]
     def test_string2lines(self):
-        self.assertEquals(statemachine.string2lines(self.s2l_string),
+        self.assertEqual(statemachine.string2lines(self.s2l_string),
                           self.s2l_expected)
 
 

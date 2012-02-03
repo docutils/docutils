@@ -107,7 +107,7 @@ class StandardTestCase(unittest.TestCase):
     def setUp(self):
         os.chdir(testroot)
 
-    def failUnlessEqual(self, first, second, msg=None):
+    def assertEqual(self, first, second, msg=None):
         """Fail if the two objects are unequal as determined by the '=='
            operator.
         """
@@ -115,7 +115,7 @@ class StandardTestCase(unittest.TestCase):
             raise self.failureException, \
                   (msg or '%s != %s' % _format_str(first, second))
 
-    def failIfEqual(self, first, second, msg=None):
+    def assertNotEqual(self, first, second, msg=None):
         """Fail if the two objects are equal as determined by the '=='
            operator.
         """
@@ -123,11 +123,11 @@ class StandardTestCase(unittest.TestCase):
             raise self.failureException, \
                   (msg or '%s == %s' % _format_str(first, second))
 
-    # Synonyms for assertion methods
+    # aliases for assertion methods, deprecated since Python 2.7
 
-    assertEqual = assertEquals = failUnlessEqual
+    failUnlessEqual = assertEquals = assertEqual 
 
-    assertNotEqual = assertNotEquals = failIfEqual
+    assertNotEquals = failIfEqual = assertNotEqual
 
 
 class CustomTestCase(StandardTestCase):
@@ -135,7 +135,7 @@ class CustomTestCase(StandardTestCase):
     """
     Helper class, providing extended functionality over unittest.TestCase.
 
-    The methods failUnlessEqual and failIfEqual have been overwritten
+    The methods assertEqual and assertNotEqual have been overwritten
     to provide better support for multi-line strings.  Furthermore,
     see the compare_output method and the parameter list of __init__.
     """
@@ -209,7 +209,7 @@ class CustomTestCase(StandardTestCase):
         if output:
             output = '\n'.join(output.splitlines())
         try:
-            self.assertEquals(output, expected)
+            self.assertEqual(output, expected)
         except AssertionError, error:
             print >>sys.stderr, '\n%s\ninput:' % (self,)
             print >>sys.stderr, input

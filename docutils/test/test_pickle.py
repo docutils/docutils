@@ -21,7 +21,7 @@ class PickleTests(unittest.TestCase):
             settings_overrides={'_disable_config': 1})
         dill = pickle.dumps(doctree)
         reconstituted = pickle.loads(dill)
-        self.assertEquals(doctree.pformat(), reconstituted.pformat())
+        self.assertEqual(doctree.pformat(), reconstituted.pformat())
 
 
 if __name__ == '__main__':

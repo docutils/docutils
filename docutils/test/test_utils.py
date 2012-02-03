@@ -11,6 +11,7 @@ Test module for utils/__init__.py.
 
 import unittest
 import sys
+import os
 from DocutilsTestSupport import utils, nodes
 try:
     from io import StringIO
@@ -29,53 +30,53 @@ class ReporterTests(unittest.TestCase):
 
     def test_level0(self):
         sw = self.reporter.system_message(0, 'debug output')
-        self.assertEquals(sw.pformat(), """\
+        self.assertEqual(sw.pformat(), """\
 <system_message level="0" source="test data" type="DEBUG">
     <paragraph>
         debug output
 """)
-        self.assertEquals(self.stream.getvalue(),
+        self.assertEqual(self.stream.getvalue(),
                           'test data:: (DEBUG/0) debug output\n')
 
     def test_level1(self):
         sw = self.reporter.system_message(1, 'a little reminder')
-        self.assertEquals(sw.pformat(), """\
+        self.assertEqual(sw.pformat(), """\
 <system_message level="1" source="test data" type="INFO">
     <paragraph>
         a little reminder
 """)
-        self.assertEquals(self.stream.getvalue(), '')
+        self.assertEqual(self.stream.getvalue(), '')
 
     def test_level2(self):
         sw = self.reporter.system_message(2, 'a warning')
-        self.assertEquals(sw.pformat(), """\
+        self.assertEqual(sw.pformat(), """\
 <system_message level="2" source="test data" type="WARNING">
     <paragraph>
         a warning
 """)
-        self.assertEquals(self.stream.getvalue(),
+        self.assertEqual(self.stream.getvalue(),
                           'test data:: (WARNING/2) a warning\n')
 
     def test_level3(self):
         sw = self.reporter.system_message(3, 'an error')
-        self.assertEquals(sw.pformat(), """\
+        self.assertEqual(sw.pformat(), """\
 <system_message level="3" source="test data" type="ERROR">
     <paragraph>
         an error
 """)
-        self.assertEquals(self.stream.getvalue(),
+        self.assertEqual(self.stream.getvalue(),
                           'test data:: (ERROR/3) an error\n')
 
     def test_level4(self):
         self.assertRaises(utils.SystemMessage, self.reporter.system_message, 4,
                           'a severe error, raises an exception')
-        self.assertEquals(self.stream.getvalue(), 'test data:: (SEVERE/4) '
+        self.assertEqual(self.stream.getvalue(), 'test data:: (SEVERE/4) '
                           'a severe error, raises an exception\n')
 
 
     def test_unicode_message(self):
         sw = self.reporter.system_message(0, u'mesidʒ')
-        self.assertEquals(sw.pformat(), u"""\
+        self.assertEqual(sw.pformat(), u"""\
 <system_message level="0" source="test data" type="DEBUG">
     <paragraph>
         mesidʒ
@@ -89,7 +90,7 @@ class ReporterTests(unittest.TestCase):
             raise Exception(u'mesidʒ')
         except Exception, err:
             sw = self.reporter.system_message(0, err)
-            self.assertEquals(sw.pformat(), u"""\
+            self.assertEqual(sw.pformat(), u"""\
 <system_message level="0" source="test data" type="DEBUG">
     <paragraph>
         mesidʒ
@@ -107,44 +108,44 @@ class QuietReporterTests(unittest.TestCase):
     def test_debug(self):
         sw = self.reporter.debug('a debug message')
         # None because debug is disabled.
-        self.assertEquals(sw, None)
-        self.assertEquals(self.stream.getvalue(), '')
+        self.assertEqual(sw, None)
+        self.assertEqual(self.stream.getvalue(), '')
 
     def test_info(self):
         sw = self.reporter.info('an informational message')
-        self.assertEquals(sw.pformat(), """\
+        self.assertEqual(sw.pformat(), """\
 <system_message level="1" source="test data" type="INFO">
     <paragraph>
         an informational message
 """)
-        self.assertEquals(self.stream.getvalue(), '')
+        self.assertEqual(self.stream.getvalue(), '')
 
     def test_warning(self):
         sw = self.reporter.warning('a warning')
-        self.assertEquals(sw.pformat(), """\
+        self.assertEqual(sw.pformat(), """\
 <system_message level="2" source="test data" type="WARNING">
     <paragraph>
         a warning
 """)
-        self.assertEquals(self.stream.getvalue(), '')
+        self.assertEqual(self.stream.getvalue(), '')
 
     def test_error(self):
         sw = self.reporter.error('an error')
-        self.assertEquals(sw.pformat(), """\
+        self.assertEqual(sw.pformat(), """\
 <system_message level="3" source="test data" type="ERROR">
     <paragraph>
         an error
 """)
-        self.assertEquals(self.stream.getvalue(), '')
+        self.assertEqual(self.stream.getvalue(), '')
 
     def test_severe(self):
         sw = self.reporter.severe('a severe error')
-        self.assertEquals(sw.pformat(), """\
+        self.assertEqual(sw.pformat(), """\
 <system_message level="4" source="test data" type="SEVERE">
     <paragraph>
         a severe error
 """)
-        self.assertEquals(self.stream.getvalue(), '')
+        self.assertEqual(self.stream.getvalue(), '')
 
 
 class NameValueTests(unittest.TestCase):
@@ -166,7 +167,7 @@ class NameValueTests(unittest.TestCase):
                           'hello="something"else')
         output = utils.extract_name_value(
               """att1=val1 att2=val2 att3="value number '3'" att4=val4""")
-        self.assertEquals(output, [('att1', 'val1'), ('att2', 'val2'),
+        self.assertEqual(output, [('att1', 'val1'), ('att2', 'val2'),
                                    ('att3', "value number '3'"),
                                    ('att4', 'val4')])
 
@@ -178,7 +179,7 @@ class ExtensionOptionTests(unittest.TestCase):
 
     def test_assemble_option_dict(self):
         input = utils.extract_name_value('a=1 bbb=2.0 cdef=hol%s' % chr(224))
-        self.assertEquals(
+        self.assertEqual(
               utils.assemble_option_dict(input, self.optionspec),
               {'a': 1, 'bbb': 2.0, 'cdef': ('hol%s' % chr(224))})
         input = utils.extract_name_value('a=1 b=2.0 c=hol%s' % chr(224))
@@ -201,7 +202,7 @@ class ExtensionOptionTests(unittest.TestCase):
               nodes.field_body('', nodes.paragraph('', u'hol\u00e0')))
         field_list += nodes.field(
               '', nodes.field_name('', 'empty'), nodes.field_body())
-        self.assertEquals(
+        self.assertEqual(
               utils.extract_extension_options(field_list, self.optionspec),
               {'a': 1, 'bbb': 2.0,
                'cdef': u'hol\u00e0',
@@ -237,19 +238,19 @@ class ExtensionOptionTests(unittest.TestCase):
 class HelperFunctionsTests(unittest.TestCase):
 
     def test_normalize_language_tag(self):
-        self.assertEquals(utils.normalize_language_tag('de'), ['de'])
-        self.assertEquals(utils.normalize_language_tag('de-AT'),
+        self.assertEqual(utils.normalize_language_tag('de'), ['de'])
+        self.assertEqual(utils.normalize_language_tag('de-AT'),
                           ['de_at', 'de'])
-        self.assertEquals(utils.normalize_language_tag('de-AT-1901'),
+        self.assertEqual(utils.normalize_language_tag('de-AT-1901'),
                           ['de_at_1901', 'de_at', 'de_1901', 'de'])
-        self.assertEquals(utils.normalize_language_tag('de-AT-1901-frak'),
+        self.assertEqual(utils.normalize_language_tag('de-AT-1901-frak'),
                           ['de_at_1901_frak', 'de_at_1901', 'de_at_frak',
                           'de_1901_frak', 'de_at', 'de_1901', 'de_frak', 'de'])
 
     def test_column_width(self):
-        self.assertEquals(utils.column_width(u'de'), 2)
-        self.assertEquals(utils.column_width(u'dâ'), 2) # pre-composed
-        self.assertEquals(utils.column_width(u'dâ'), 2) # combining
+        self.assertEqual(utils.column_width(u'de'), 2)
+        self.assertEqual(utils.column_width(u'dâ'), 2) # pre-composed
+        self.assertEqual(utils.column_width(u'dâ'), 2) # combining
 
 
 if __name__ == '__main__':

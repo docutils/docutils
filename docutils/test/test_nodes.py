@@ -30,22 +30,22 @@ class TextTests(unittest.TestCase):
                                    'lamb was sure to go.')
 
     def test_repr(self):
-        self.assertEquals(repr(self.text), r"<#text: 'Line 1.\nLine 2.'>")
-        self.assertEquals(self.text.shortrepr(),
+        self.assertEqual(repr(self.text), r"<#text: 'Line 1.\nLine 2.'>")
+        self.assertEqual(self.text.shortrepr(),
                           r"<#text: 'Line 1.\nLine 2.'>")
 
     def test_str(self):
-        self.assertEquals(str(self.text), 'Line 1.\nLine 2.')
+        self.assertEqual(str(self.text), 'Line 1.\nLine 2.')
 
     def test_unicode(self):
-        self.assertEquals(unicode(self.unicode_text), u'Möhren')
-        self.assertEquals(str(self.unicode_text), 'M\xf6hren')
+        self.assertEqual(unicode(self.unicode_text), u'Möhren')
+        self.assertEqual(str(self.unicode_text), 'M\xf6hren')
 
     def test_astext(self):
-        self.assertEquals(self.text.astext(), 'Line 1.\nLine 2.')
+        self.assertEqual(self.text.astext(), 'Line 1.\nLine 2.')
 
     def test_pformat(self):
-        self.assertEquals(self.text.pformat(), 'Line 1.\nLine 2.\n')
+        self.assertEqual(self.text.pformat(), 'Line 1.\nLine 2.\n')
 
     def test_asciirestriction(self):
         if sys.version_info < (3,):
@@ -56,93 +56,93 @@ class TextTests(unittest.TestCase):
             self.assertRaises(TypeError, nodes.Text, b('hol'))
 
     def test_longrepr(self):
-        self.assertEquals(repr(self.longtext), r"<#text: 'Mary had a "
+        self.assertEqual(repr(self.longtext), r"<#text: 'Mary had a "
                           r"little lamb whose fleece was white as snow "
                           r"and everwh ...'>")
-        self.assertEquals(self.longtext.shortrepr(),
+        self.assertEqual(self.longtext.shortrepr(),
                           r"<#text: 'Mary had a lit ...'>")
 
 class ElementTests(unittest.TestCase):
 
     def test_empty(self):
         element = nodes.Element()
-        self.assertEquals(repr(element), '<Element: >')
-        self.assertEquals(str(element), '<Element/>')
+        self.assertEqual(repr(element), '<Element: >')
+        self.assertEqual(str(element), '<Element/>')
         dom = element.asdom()
-        self.assertEquals(dom.toxml(), '<Element/>')
+        self.assertEqual(dom.toxml(), '<Element/>')
         dom.unlink()
         element['attr'] = '1'
-        self.assertEquals(repr(element), '<Element: >')
-        self.assertEquals(str(element), '<Element attr="1"/>')
+        self.assertEqual(repr(element), '<Element: >')
+        self.assertEqual(str(element), '<Element attr="1"/>')
         dom = element.asdom()
-        self.assertEquals(dom.toxml(), '<Element attr="1"/>')
+        self.assertEqual(dom.toxml(), '<Element attr="1"/>')
         dom.unlink()
-        self.assertEquals(element.pformat(), '<Element attr="1">\n')
+        self.assertEqual(element.pformat(), '<Element attr="1">\n')
         del element['attr']
         element['mark'] = u'\u2022'
-        self.assertEquals(repr(element), '<Element: >')
+        self.assertEqual(repr(element), '<Element: >')
         if sys.version_info < (3,):
-            self.assertEquals(str(element), '<Element mark="\\u2022"/>')
+            self.assertEqual(str(element), '<Element mark="\\u2022"/>')
         else:
-            self.assertEquals(str(element), '<Element mark="\u2022"/>')
+            self.assertEqual(str(element), '<Element mark="\u2022"/>')
         dom = element.asdom()
-        self.assertEquals(dom.toxml(), u'<Element mark="\u2022"/>')
+        self.assertEqual(dom.toxml(), u'<Element mark="\u2022"/>')
         dom.unlink()
 
     def test_withtext(self):
         element = nodes.Element('text\nmore', nodes.Text('text\nmore'))
-        self.assertEquals(repr(element), r"<Element: <#text: 'text\nmore'>>")
-        self.assertEquals(str(element), '<Element>text\nmore</Element>')
+        self.assertEqual(repr(element), r"<Element: <#text: 'text\nmore'>>")
+        self.assertEqual(str(element), '<Element>text\nmore</Element>')
         dom = element.asdom()
-        self.assertEquals(dom.toxml(), '<Element>text\nmore</Element>')
+        self.assertEqual(dom.toxml(), '<Element>text\nmore</Element>')
         dom.unlink()
         element['attr'] = '1'
-        self.assertEquals(repr(element), r"<Element: <#text: 'text\nmore'>>")
-        self.assertEquals(str(element),
+        self.assertEqual(repr(element), r"<Element: <#text: 'text\nmore'>>")
+        self.assertEqual(str(element),
                           '<Element attr="1">text\nmore</Element>')
         dom = element.asdom()
-        self.assertEquals(dom.toxml(),
+        self.assertEqual(dom.toxml(),
                           '<Element attr="1">text\nmore</Element>')
         dom.unlink()
-        self.assertEquals(element.pformat(),
+        self.assertEqual(element.pformat(),
                           '<Element attr="1">\n    text\n    more\n')
 
     def test_clear(self):
         element = nodes.Element()
         element += nodes.Element()
-        self.assert_(len(element))
+        self.assertTrue(len(element))
         element.clear()
-        self.assert_(not len(element))
+        self.assertTrue(not len(element))
 
     def test_normal_attributes(self):
         element = nodes.Element()
-        self.assert_('foo' not in element)
+        self.assertTrue('foo' not in element)
         self.assertRaises(KeyError, element.__getitem__, 'foo')
         element['foo'] = 'sometext'
-        self.assertEquals(element['foo'], 'sometext')
+        self.assertEqual(element['foo'], 'sometext')
         del element['foo']
         self.assertRaises(KeyError, element.__getitem__, 'foo')
 
     def test_default_attributes(self):
         element = nodes.Element()
-        self.assertEquals(element['ids'], [])
-        self.assertEquals(element.non_default_attributes(), {})
-        self.assert_(not element.is_not_default('ids'))
-        self.assert_(element['ids'] is not nodes.Element()['ids'])
+        self.assertEqual(element['ids'], [])
+        self.assertEqual(element.non_default_attributes(), {})
+        self.assertTrue(not element.is_not_default('ids'))
+        self.assertTrue(element['ids'] is not nodes.Element()['ids'])
         element['ids'].append('someid')
-        self.assertEquals(element['ids'], ['someid'])
-        self.assertEquals(element.non_default_attributes(),
+        self.assertEqual(element['ids'], ['someid'])
+        self.assertEqual(element.non_default_attributes(),
                           {'ids': ['someid']})
-        self.assert_(element.is_not_default('ids'))
+        self.assertTrue(element.is_not_default('ids'))
 
     def test_update_basic_atts(self):
         element1 = nodes.Element(ids=['foo', 'bar'], test=['test1'])
         element2 = nodes.Element(ids=['baz', 'qux'], test=['test2'])
         element1.update_basic_atts(element2)
         # 'ids' are appended because 'ids' is a basic attribute.
-        self.assertEquals(element1['ids'], ['foo', 'bar', 'baz', 'qux'])
+        self.assertEqual(element1['ids'], ['foo', 'bar', 'baz', 'qux'])
         # 'test' is not overwritten because it is not a basic attribute.
-        self.assertEquals(element1['test'], ['test1'])
+        self.assertEqual(element1['test'], ['test1'])
 
     def test_replace_self(self):
         parent = nodes.Element(ids=['parent'])
@@ -155,7 +155,7 @@ class ElementTests(unittest.TestCase):
         child3 = nodes.Element(ids=['child3'])
         child4 = nodes.Element(ids=['child4'])
         parent += [child1, child2, child3, child4]
-        self.assertEquals(parent.pformat(), """\
+        self.assertEqual(parent.pformat(), """\
 <Element ids="parent">
     <Element ids="child1">
         <Element ids="grandchild">
@@ -167,29 +167,29 @@ class ElementTests(unittest.TestCase):
 """)
         # Replace child1 with the grandchild.
         child1.replace_self(child1[0])
-        self.assertEquals(parent[0], grandchild)
+        self.assertEqual(parent[0], grandchild)
         # Assert that 'ids' have been updated.
-        self.assertEquals(grandchild['ids'], ['grandchild', 'child1'])
+        self.assertEqual(grandchild['ids'], ['grandchild', 'child1'])
         # Replace child2 with its children.
         child2.replace_self(child2[:])
-        self.assertEquals(parent[1:3], twins)
+        self.assertEqual(parent[1:3], twins)
         # Assert that 'ids' have been propagated to first child.
-        self.assertEquals(twins[0]['ids'], ['twin1', 'child2'])
-        self.assertEquals(twins[1]['ids'], ['twin2'])
+        self.assertEqual(twins[0]['ids'], ['twin1', 'child2'])
+        self.assertEqual(twins[1]['ids'], ['twin2'])
         # Replace child3 with new child.
         newchild = nodes.Element(ids=['newchild'])
         child3.replace_self(newchild)
-        self.assertEquals(parent[3], newchild)
-        self.assertEquals(newchild['ids'], ['newchild', 'child3'])
+        self.assertEqual(parent[3], newchild)
+        self.assertEqual(newchild['ids'], ['newchild', 'child3'])
         # Crazy but possible case: Substitute child4 for itself.
         child4.replace_self(child4)
         # Make sure the 'child4' ID hasn't been duplicated.
-        self.assertEquals(child4['ids'], ['child4'])
-        self.assertEquals(len(parent), 5)
+        self.assertEqual(child4['ids'], ['child4'])
+        self.assertEqual(len(parent), 5)
 
     def test_unicode(self):
         node = nodes.Element(u'Möhren', nodes.Text(u'Möhren', u'Möhren'))
-        self.assertEquals(unicode(node), u'<Element>Möhren</Element>')
+        self.assertEqual(unicode(node), u'<Element>Möhren</Element>')
 
 
 class MiscTests(unittest.TestCase):
@@ -203,7 +203,7 @@ class MiscTests(unittest.TestCase):
                 node_class_names.append(x)
         node_class_names.sort()
         nodes.node_class_names.sort()
-        self.assertEquals(node_class_names, nodes.node_class_names)
+        self.assertEqual(node_class_names, nodes.node_class_names)
 
     ids = [(u'a', 'a'), ('A', 'a'), ('', ''), ('a b \n c', 'a-b-c'),
            ('a.b.c', 'a-b-c'), (' - a - b - c - ', 'a-b-c'), (' - ', ''),
@@ -397,33 +397,33 @@ class MiscTests(unittest.TestCase):
         e[0][1] += nodes.Text('some text')
         e += nodes.Element()
         e += nodes.Element()
-        self.assertEquals(list(e.traverse()),
+        self.assertEqual(list(e.traverse()),
                           [e, e[0], e[0][0], e[0][1], e[0][1][0], e[1], e[2]])
-        self.assertEquals(list(e.traverse(include_self=False)),
+        self.assertEqual(list(e.traverse(include_self=False)),
                           [e[0], e[0][0], e[0][1], e[0][1][0], e[1], e[2]])
-        self.assertEquals(list(e.traverse(descend=False)),
+        self.assertEqual(list(e.traverse(descend=False)),
                           [e])
-        self.assertEquals(list(e[0].traverse(descend=False, ascend=True)),
+        self.assertEqual(list(e[0].traverse(descend=False, ascend=True)),
                           [e[0], e[1], e[2]])
-        self.assertEquals(list(e[0][0].traverse(descend=False, ascend=True)),
+        self.assertEqual(list(e[0][0].traverse(descend=False, ascend=True)),
                           [e[0][0], e[0][1], e[1], e[2]])
-        self.assertEquals(list(e[0][0].traverse(descend=False, siblings=True)),
+        self.assertEqual(list(e[0][0].traverse(descend=False, siblings=True)),
                           [e[0][0], e[0][1]])
         self.testlist = e[0:2]
-        self.assertEquals(list(e.traverse(condition=self.not_in_testlist)),
+        self.assertEqual(list(e.traverse(condition=self.not_in_testlist)),
                           [e, e[0][0], e[0][1], e[0][1][0], e[2]])
         # Return siblings despite siblings=False because ascend is true.
-        self.assertEquals(list(e[1].traverse(ascend=True, siblings=False)),
+        self.assertEqual(list(e[1].traverse(ascend=True, siblings=False)),
                           [e[1], e[2]])
-        self.assertEquals(list(e[0].traverse()),
+        self.assertEqual(list(e[0].traverse()),
                           [e[0], e[0][0], e[0][1], e[0][1][0]])
         self.testlist = [e[0][0], e[0][1]]
-        self.assertEquals(list(e[0].traverse(condition=self.not_in_testlist)),
+        self.assertEqual(list(e[0].traverse(condition=self.not_in_testlist)),
                                [e[0], e[0][1][0]])
         self.testlist.append(e[0][1][0])
-        self.assertEquals(list(e[0].traverse(condition=self.not_in_testlist)),
+        self.assertEqual(list(e[0].traverse(condition=self.not_in_testlist)),
                                [e[0]])
-        self.assertEquals(list(e.traverse(nodes.TextElement)), [e[0][1]])
+        self.assertEqual(list(e.traverse(nodes.TextElement)), [e[0][1]])
 
     def test_next_node(self):
         e = nodes.Element()
@@ -442,10 +442,10 @@ class MiscTests(unittest.TestCase):
                    (e[1], e[2]),
                    (e[2], None)]
         for node, next_node in compare:
-            self.assertEquals(node.next_node(self.not_in_testlist, ascend=True),
+            self.assertEqual(node.next_node(self.not_in_testlist, ascend=True),
                               next_node)
-        self.assertEquals(e[0][0].next_node(ascend=True), e[0][1])
-        self.assertEquals(e[2].next_node(), None)
+        self.assertEqual(e[0][0].next_node(ascend=True), e[0][1])
+        self.assertEqual(e[2].next_node(), None)
 
     def not_in_testlist(self, x):
         return x not in self.testlist
@@ -456,21 +456,21 @@ class MiscTests(unittest.TestCase):
         e = nodes.Element('rawsource', child, att='e')
         # Shallow copy:
         e_copy = e.copy()
-        self.assert_(e is not e_copy)
+        self.assertTrue(e is not e_copy)
         # Internal attributes (like `rawsource`) are also copied.
-        self.assertEquals(e.rawsource, 'rawsource')
-        self.assertEquals(e_copy.rawsource, e.rawsource)
-        self.assertEquals(e_copy['att'], 'e')
+        self.assertEqual(e.rawsource, 'rawsource')
+        self.assertEqual(e_copy.rawsource, e.rawsource)
+        self.assertEqual(e_copy['att'], 'e')
         # Children are not copied.
-        self.assertEquals(len(e_copy), 0)
+        self.assertEqual(len(e_copy), 0)
         # Deep copy:
         e_deepcopy = e.deepcopy()
-        self.assertEquals(e_deepcopy.rawsource, e.rawsource)
-        self.assertEquals(e_deepcopy['att'], 'e')
+        self.assertEqual(e_deepcopy.rawsource, e.rawsource)
+        self.assertEqual(e_deepcopy['att'], 'e')
         # Children are copied recursively.
-        self.assertEquals(e_deepcopy[0][0], grandchild)
-        self.assert_(e_deepcopy[0][0] is not grandchild)
-        self.assertEquals(e_deepcopy[0]['att'], 'child')
+        self.assertEqual(e_deepcopy[0][0], grandchild)
+        self.assertTrue(e_deepcopy[0][0] is not grandchild)
+        self.assertEqual(e_deepcopy[0]['att'], 'child')
 
 
 class TreeCopyVisitorTests(unittest.TestCase):
@@ -488,9 +488,9 @@ class TreeCopyVisitorTests(unittest.TestCase):
         self.document = document
 
     def compare_trees(self, one, two):
-        self.assertEquals(one.__class__, two.__class__)
+        self.assertEqual(one.__class__, two.__class__)
         self.assertNotEquals(id(one), id(two))
-        self.assertEquals(len(one.children), len(two.children))
+        self.assertEqual(len(one.children), len(two.children))
         for i in range(len(one.children)):
             self.compare_trees(one.children[i], two.children[i])
 
@@ -498,7 +498,7 @@ class TreeCopyVisitorTests(unittest.TestCase):
         visitor = nodes.TreeCopyVisitor(self.document)
         self.document.walkabout(visitor)
         newtree = visitor.get_tree_copy()
-        self.assertEquals(self.document.pformat(), newtree.pformat())
+        self.assertEqual(self.document.pformat(), newtree.pformat())
         self.compare_trees(self.document, newtree)
 
 
@@ -511,7 +511,7 @@ class MiscFunctionTests(unittest.TestCase):
     def test_normalize_name(self):
         for input, output in self.names:
             normed = nodes.fully_normalize_name(input)
-            self.assertEquals(normed, output)
+            self.assertEqual(normed, output)
 
     def test_set_id_default(self):
         # Default prefixes.
@@ -519,11 +519,11 @@ class MiscFunctionTests(unittest.TestCase):
         # From name.
         element = nodes.Element(names=['test'])
         document.set_id(element)
-        self.assertEquals(element['ids'], ['test'])
+        self.assertEqual(element['ids'], ['test'])
         # Auto-generated.
         element = nodes.Element()
         document.set_id(element)
-        self.assertEquals(element['ids'], ['id1'])
+        self.assertEqual(element['ids'], ['id1'])
 
     def test_set_id_custom(self):
         # Custom prefixes.
@@ -534,11 +534,11 @@ class MiscFunctionTests(unittest.TestCase):
         # From name.
         element = nodes.Element(names=['test'])
         document.set_id(element)
-        self.assertEquals(element['ids'], ['prefixtest'])
+        self.assertEqual(element['ids'], ['prefixtest'])
         # Auto-generated.
         element = nodes.Element()
         document.set_id(element)
-        self.assertEquals(element['ids'], ['prefixauto1'])
+        self.assertEqual(element['ids'], ['prefixauto1'])
         
 
 if __name__ == '__main__':

@@ -103,18 +103,18 @@ class RecordDependenciesTests(unittest.TestCase):
 
         so['embed_stylesheet'] = False
         record = self.get_record(writer_name='html', settings_overrides=so)
-        self.assert_(stylesheet not in record,
+        self.assertTrue(stylesheet not in record,
                      '%r should not be in %r' % (stylesheet, record))
         record = self.get_record(writer_name='latex', settings_overrides=so)
-        self.assert_(stylesheet not in record,
+        self.assertTrue(stylesheet not in record,
                      '%r should not be in %r' % (stylesheet, record))
 
         so['embed_stylesheet'] = True
         record = self.get_record(writer_name='html', settings_overrides=so)
-        self.assert_(stylesheet in record,
+        self.assertTrue(stylesheet in record,
                      '%r should be in %r' % (stylesheet, record))
         record = self.get_record(writer_name='latex', settings_overrides=so)
-        self.assert_(stylesheet in record,
+        self.assertTrue(stylesheet in record,
                      '%r should be in %r' % (stylesheet, record))
 
 
