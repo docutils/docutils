@@ -29,6 +29,10 @@ Changes Since 0.8.1
   - Fix [ 2971827 ] and [ 3442827 ]
     extras/roman.py moved to docutils/utils/roman.py
 
+* docutils/frontend.py
+
+  - Fix [ 3481980 ] Use os.getcwdu() in make_paths_absolute().
+
 * docutils/io.py
 
   - Fix [ 3395948 ] (Work around encoding problems in Py3k).
@@ -37,13 +41,16 @@ Changes Since 0.8.1
 
   - docutils.utils is now a package (providing a place for sub-modules)
 
-  .. important:: docutils/math, docutils/error_reporting.py, and
+  .. note:: docutils/math, docutils/error_reporting.py, and
      docutils/urischemes.py will move to the utils package in the next
-     release, too. Code importing these modules needs to adapt
-     (``import docutils.math`` -> ``import docutils.utils.math``, etc.).
+     release, too. See RELEASE-NOTES__
+
+     __ RELEASE-NOTES.html
 
   - DependencyList uses io.FileOutput and 'utf8' encoding to prevent
-    errors recording non-ASCII filenames (fixes [ 3434355 ].
+    errors recording non-ASCII filenames (fixes [ 3434355 ]).
+
+  - Fix relative_path() with source=None and `unicode` target.
 
 * docutils/parsers/rst/states.py
 

@@ -169,5 +169,29 @@ class ConfigEnvVarFileTests(ConfigFileTests):
         os.environ = self.orig_environ
 
 
+class HelperFunctionsTests(unittest.TestCase):
+
+    pathdict = {'foo': 'hallo', 'ham': u'h\xE4m', 'spam': u'spam'}
+    keys = ['foo', 'ham']
+
+    def test_make_paths_absolute(self):
+        pathdict = self.pathdict.copy()
+        frontend.make_paths_absolute(pathdict, self.keys, base_path='base')
+        self.assertEqual(pathdict['foo'], os.path.abspath('base/hallo'))
+        self.assertEqual(pathdict['ham'], os.path.abspath(u'base/h\xE4m'))
+        # not touched, because key not in keys:
+        self.assertEqual(pathdict['spam'], u'spam')
+
+    def test_make_paths_absolute_cwd(self):
+        # With base_path None, the cwd is used as base path.
+        # Settings values may-be `unicode` instances, therefore
+        # os.getcwdu() is used and the converted path is a unicode instance:
+        pathdict = self.pathdict.copy()
+        frontend.make_paths_absolute(pathdict, self.keys)
+        self.assertEqual(pathdict['foo'], os.path.abspath(u'hallo'))
+        self.assertEqual(pathdict['ham'], os.path.abspath(u'h\xE4m'))
+        # not touched, because key not in keys:
+        self.assertEqual(pathdict['spam'], u'spam')
+
 if __name__ == '__main__':
     unittest.main()
