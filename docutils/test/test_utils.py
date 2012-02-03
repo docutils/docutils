@@ -253,5 +253,37 @@ class HelperFunctionsTests(unittest.TestCase):
         self.assertEqual(utils.column_width(u'dâ'), 2) # combining
 
 
+    def test_relative_path(self):
+        # Build and return a path to `target`, relative to `source`:
+        # Use '/' as path sep in result.
+        self.assertEqual(utils.relative_path('spam', 'spam'), '')
+        source = os.path.join('h\xE4m', 'spam', 'fileA')
+        target = os.path.join('h\xE4m', 'spam', 'fileB')
+        self.assertEqual(utils.relative_path(source, target), 'fileB')
+        source = os.path.join('h\xE4m', 'spam', 'fileA')
+        target = os.path.join('h\xE4m', 'fileB')
+        self.assertEqual(utils.relative_path(source, target), '../fileB')
+        # if source is None, default to the cwd:
+        target = os.path.join('eggs', 'fileB')
+        self.assertEqual(utils.relative_path(None, target), 'eggs/fileB')
+        # If there is no common prefix, return the absolute path to `target`:
+        # source = '/foo/bar/fileA' # POSIX
+        #   TODO: how to specify an absolute path independent of the OS?
+        # target = os.path.join('eggs', 'fileB')
+        # self.assertEqual(utils.relative_path(source, target),
+        #                  os.path.abspath('fileB'))
+        # Correctly process unicode instances:
+        self.assertEqual(utils.relative_path(u'spam', u'spam'), u'')
+        source = os.path.join(u'h\xE4m', u'spam', u'fileA')
+        target = os.path.join(u'h\xE4m', u'spam', u'fileB')
+        self.assertEqual(utils.relative_path(source, target), u'fileB')
+        source = os.path.join(u'h\xE4m', u'spam', u'fileA')
+        target = os.path.join(u'h\xE4m', u'fileB')
+        self.assertEqual(utils.relative_path(source, target), u'../fileB')
+        # if source is None, default to the cwd:
+        target = os.path.join(u'eggs', u'fileB')
+        self.assertEqual(utils.relative_path(None, target), u'eggs/fileB')
+
+
 if __name__ == '__main__':
     unittest.main()
