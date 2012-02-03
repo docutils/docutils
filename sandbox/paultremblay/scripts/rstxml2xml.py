@@ -7,7 +7,8 @@ from xml.sax.handler import feature_namespaces
 from StringIO import StringIO
 
 
-import asciimathml
+# import asciimathml
+import asciitomathml.asciitomathml 
 from xml.etree.ElementTree import Element, tostring
 import xml.etree.cElementTree as etree
 import tempfile, subprocess, os
@@ -73,8 +74,8 @@ class FixTree(xml.sax.ContentHandler):
     
 
   def __write_text(self, raw = False):
-        soft_hyphen = unichr(173)
         if raw:
+            ff
             text = self.__characters
         else:
             text =  xml.sax.saxutils.escape(self.__characters)
@@ -87,11 +88,11 @@ class FixTree(xml.sax.ContentHandler):
         ns = name[0]
         el_name = name[1]
         if (el_name == 'math_block' and  self.__mathml) or (el_name == 'math' and self.__mathml) :
-            math_tree  = asciimathml.parse(self.__characters)
-            math_tree.set('title', self.__characters)
-            math_tree.set('xmlns', 'http://www.w3.org/1998/Math/MathML')
-            string_tree = tostring(math_tree, encoding="utf-8") 
-            sys.stdout.write(string_tree.decode('utf8'))
+            math_obj =  asciitomathml.asciitomathml.AsciiMathML()
+            math_obj.parse_string(self.__characters)
+            math_tree = math_obj.get_tree()
+            math_string = tostring(math_tree, encoding="us-ascii")
+            sys.stdout.write(math_string)
             self.__characters = ''
         elif el_name == 'raw' and self.__write_raw:
             self.__write_text(raw = True)
