@@ -16,6 +16,19 @@ more detailed list of changes, please see the `Docutils History`_.
 
 .. contents::
 
+Future changes
+==============
+
+* docutils/math, docutils/error_reporting.py, and
+  docutils/urischemes.py will move to the utils package
+  Code importing these modules needs to adapt, e.g.::
+  
+    try:
+        import docutils.math as math
+    except ImportError:
+        import docutils.utils.math as math
+
+
 Release 0.9 (unpublished)
 =========================
 
@@ -30,11 +43,6 @@ Release 0.9 (unpublished)
 * docutils/utils.py -> docutils/utils/__init__.py
 
   - docutils.utils is now a package (providing a place for sub-modules)
-
-  .. important:: docutils/math, docutils/error_reporting.py, and
-     docutils/urischemes.py will move to the utils package in the next
-     release, too. Code importing these modules needs to adapt
-     (``import docutils.math`` -> ``import docutils.utils.math``, etc.).
 
 * docutils/writers/html4css1/__init__.py
 

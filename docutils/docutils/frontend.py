@@ -184,7 +184,8 @@ def make_paths_absolute(pathdict, keys, base_path=None):
     `OptionParser.relative_path_settings`.
     """
     if base_path is None:
-        base_path = os.getcwd()
+        base_path = os.getcwdu() # type(base_path) == unicode
+        # to allow combining non-ASCII cwd with unicode values in `pathdict`
     for key in keys:
         if key in pathdict:
             value = pathdict[key]
@@ -618,8 +619,7 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
     def check_values(self, values, args):
         """Store positional arguments as runtime settings."""
         values._source, values._destination = self.check_args(args)
-        make_paths_absolute(values.__dict__, self.relative_path_settings,
-                            os.getcwd())
+        make_paths_absolute(values.__dict__, self.relative_path_settings)
         values._config_files = self.config_files
         return values
 
