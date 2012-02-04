@@ -20,14 +20,12 @@ class InvaidXml(Exception):
 
 class FixTree(xml.sax.ContentHandler):
   
-  def __init__(self, mathml=True, raw_xml=True, fix_sh = False):
+  def __init__(self, mathml=True, raw_xml=True):
         self.__characters = ''
         self.__mathml = mathml
         self.__raw_xml = raw_xml
         self.__write_raw = False
-        self.__fix_sh = fix_sh
         self.__ns_dict = {'http://www.w3.org/XML/1998/namespace': "xml"}
-        self.__fix_soft_hyphens = False
 
 
   def startDocument(self):
@@ -68,7 +66,7 @@ class FixTree(xml.sax.ContentHandler):
             elif ns_att:
                 raise InvaidXml('Sorry, but don\'t know what to do with ns "%s"\n' % (ns_prefix))
             else:
-                sys.stdout.write(' %s="%s"' % (att_name, value))
+                sys.stdout.write(' %s="%s"' % (att_name.encode('utf8'), value.encode('utf8')))
         sys.stdout.write('>')
 
     
@@ -79,9 +77,7 @@ class FixTree(xml.sax.ContentHandler):
             text = self.__characters
         else:
             text =  xml.sax.saxutils.escape(self.__characters)
-        if self.__fix_soft_hyphens:
-            text = text.replace(soft_hyphen, '')
-        sys.stdout.write(text)
+        sys.stdout.write(text.encode('utf8'))
         self.__characters = ''
 
   def endElementNS(self, name, qname):
@@ -150,7 +146,7 @@ Or, in one pass: rst2xml.py <infile> | python3 rstxml2mathml.py
             read_obj = StringIO(the_string)
         else:
             read_obj = open(in_file, 'r')
-        the_handle=FixTree(mathml= mathml, raw_xml = raw_xml, fix_sh = fix_sh)
+        the_handle=FixTree(mathml= mathml, raw_xml = raw_xml)
         parser = xml.sax.make_parser()
         parser.setFeature(feature_namespaces, 1)
         parser.setContentHandler(the_handle)

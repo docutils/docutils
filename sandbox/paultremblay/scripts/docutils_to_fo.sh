@@ -114,9 +114,9 @@ if [ "$FORMAT" == "true" ]; then
 fi
 
 if [ "$STRICT" == "" ]; then
-    xsltproc --output $FO_FILE $MAIN_XSL $RAW_XML  
+    xsltproc --output $FO_FILE "$MAIN_XSL" $RAW_XML  
 else
-    xsltproc --stringparam strict true --output $FO_FILE $MAIN_XSL $RAW_XML  
+    xsltproc --stringparam strict true --output $FO_FILE "$MAIN_XSL" $RAW_XML  
 fi
 
 

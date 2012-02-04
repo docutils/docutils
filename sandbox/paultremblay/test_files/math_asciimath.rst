@@ -72,7 +72,7 @@ This yields the **edge spread function (ESF).**
 
 .. math::
 
- sigma = sqrt((sum_(i=0)^(n-1)(x_i-mu)^2)/n
+ sigma = sqrt(sum_(i=0)^(n-1)(x_i-mu)^2)/n
 
 The Fourier transform of the LSF can not be determined analytically by the following equations:
 
