@@ -2,7 +2,6 @@
 
 
 :Author: Paul Tremblay
-:Authors: David Goodger, Paul Tremlbay
 :Organization: Open Source Software
 :Contact: paulhtremblay@gmail.com
 :Address: Paul Tremblay 
