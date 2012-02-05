@@ -7,7 +7,10 @@
         match="document/paragraph|section/paragraph|block_quote/paragraph|
         attention/paragraph|caution/paragraph|admonition/paragraph|
         danger/paragraph|hint/paragraph|important/paragraph|
-        note/paragraph|tip/paragraph|warning/paragraph ">
+        note/paragraph|tip/paragraph|warning/paragraph|
+        docinfo/field/field_body/paragraph|/document/topic[@classes='dedication']/paragraph|
+        /document/topic[@classes='abstract']/paragraph|
+        list_item/paragraph">
         <d:para>
             <xsl:apply-templates/>
         </d:para>
@@ -31,5 +34,21 @@
     </xsl:template>
 
     <xsl:template match="block_quote/attribution"/>
+
+    <xsl:template match="compound">
+        <xsl:apply-templates/>
+    </xsl:template>
+
+    <xsl:template match="compound/paragraph">
+        <d:para role="compound">
+            <xsl:apply-templates/>
+        </d:para>
+    </xsl:template>
+
+    <xsl:template match="literal_block">
+        <d:literallayout xml:space="preserve">
+            <xsl:apply-templates/>
+        </d:literallayout>
+    </xsl:template>
     
 </xsl:stylesheet>

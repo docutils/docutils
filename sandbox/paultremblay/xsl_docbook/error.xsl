@@ -64,6 +64,7 @@
         <xsl:if test="@*">
             <xsl:text>[</xsl:text>
             <xsl:for-each select="@*">
+                <xsl:text>@</xsl:text>
                 <xsl:value-of select="name(.)"/>
                 <xsl:text>="</xsl:text>
                 <xsl:value-of select="."/>
@@ -136,16 +137,10 @@
         </xsl:message>
     </xsl:template>
 
+    <!--for unmatched templates-->
     <xsl:template name="error-message">
-        <xsl:param name="text"/>
         <xsl:param name="msg"/>
-        <xsl:choose>
-            <xsl:when test="$text != ''">
-                <xsl:message>Don't use "text" when passing messages to eror-message; use "msg"</xsl:message>
-            </xsl:when>
-        </xsl:choose>
         <xsl:message>
-            <xsl:value-of select="$text"/>
             <xsl:value-of select="$msg"/>
         </xsl:message>
         <xsl:choose>
@@ -160,6 +155,15 @@
         </xsl:choose>
     </xsl:template>
 
-
+    <xsl:template name="error-message-generic">
+        <xsl:param name="quit"/>
+        <xsl:param name="msg"/>
+        <xsl:message>
+            <xsl:value-of select="$msg"/>
+        </xsl:message>
+        <xsl:if test="normalize-space($quit) != ''">
+            <xsl:call-template name="quit-message"/>
+        </xsl:if>
+    </xsl:template>
     
 </xsl:stylesheet>
