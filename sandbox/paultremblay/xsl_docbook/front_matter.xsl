@@ -11,16 +11,23 @@
                 </xsl:if>
                 <xsl:apply-templates select="title" mode="with-info"/>
             </d:title>
+            <xsl:apply-templates select="subtitle" mode="with-info"/>
             <xsl:apply-templates select="docinfo" mode="with-info"/>
             <xsl:apply-templates select="/document/topic[@classes='abstract']" mode="with-info"/>
         </d:info>
     </xsl:template>
 
     <xsl:template match="/document/title|/document/docinfo|document/docinfo/organization|contact|docinfo/address|
-        docinfo/status|docinfo/date|docinfo/version"/>
+        docinfo/status|docinfo/date|docinfo/version|document/subtitle"/>
 
     <xsl:template match="/document/title" mode="with-info">
         <xsl:apply-templates/>
+    </xsl:template>
+
+    <xsl:template match="/document/subtitle" mode="with-info">
+        <d:subtitle>
+            <xsl:apply-templates/>
+        </d:subtitle>
     </xsl:template>
 
     <xsl:template match="document/docinfo" mode="with-info">
