@@ -10,7 +10,7 @@
         note/paragraph|tip/paragraph|warning/paragraph|
         docinfo/field/field_body/paragraph|/document/topic[@classes='dedication']/paragraph|
         /document/topic[@classes='abstract']/paragraph|
-        list_item/paragraph">
+        list_item/paragraph|container/paragraph">
         <d:para>
             <xsl:apply-templates/>
         </d:para>
@@ -49,6 +49,16 @@
         <d:literallayout xml:space="preserve">
             <xsl:apply-templates/>
         </d:literallayout>
+    </xsl:template>
+
+    <!--imperfect match for container-->
+    <xsl:template match="container">
+        <d:section role="@classes">
+            <d:title>
+                <xsl:value-of select="@classes"/>
+            </d:title>
+            <xsl:apply-templates/>
+        </d:section>
     </xsl:template>
     
 </xsl:stylesheet>
