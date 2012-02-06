@@ -9,6 +9,12 @@
         </d:itemizedlist>
     </xsl:template>
 
+    <xsl:template match="enumerated_list">
+        <d:orderedlist numeration="{@enumtype}">
+            <xsl:apply-templates/>
+        </d:orderedlist>
+    </xsl:template>
+
     <xsl:template match="list_item">
         <d:listitem>
             <xsl:apply-templates/>
