@@ -12,7 +12,7 @@
         docinfo/field/field_body/paragraph|/document/topic[@classes='dedication']/paragraph|
         /document/topic[@classes='abstract']/paragraph|
         list_item/paragraph|container/paragraph|legend/paragraph|
-        footnote/paragraph">
+        footnote/paragraph|description/paragraph|sidebar/paragraph">
         <d:para>
             <xsl:apply-templates/>
         </d:para>
@@ -52,7 +52,8 @@
         </d:para>
     </xsl:template>
 
-    <xsl:template match="literal_block">
+    <!--use programlisting?? for now-->
+    <xsl:template match="literal_block_">
         <d:literallayout xml:space="preserve">
             <xsl:apply-templates/>
         </d:literallayout>
@@ -89,5 +90,33 @@
     </xsl:template>
 
     <xsl:template match="footnote|footnote/label"/>
+
+    <xsl:template match="rubric">
+        <d:bridgehead>
+            <xsl:apply-templates/>
+        </d:bridgehead>
+    </xsl:template>
+
+    <xsl:template match="sidebar">
+        <d:sidebar>
+            <xsl:apply-templates/>
+        </d:sidebar>
+    </xsl:template>
+
+    <xsl:template match="sidebar/title">
+        <d:title>
+            <xsl:apply-templates/>
+        </d:title>
+    </xsl:template>
+
+    <xsl:template match="sidebar/subtitle">
+        <xsl:call-template name="error-message">
+            <xsl:with-param name="msg">
+                <xsl:text >docbook does not allow subtitle for sidebars</xsl:text>
+            </xsl:with-param>
+        </xsl:call-template>
+    </xsl:template>
+
+    <xsl:template match="substitution_definition"/>
     
 </xsl:stylesheet>

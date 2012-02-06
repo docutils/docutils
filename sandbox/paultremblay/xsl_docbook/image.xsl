@@ -13,23 +13,26 @@
             <d:title>
                 <xsl:value-of select="image/@alt"/>
             </d:title>
-            <d:mediaobject>
                 <xsl:apply-templates/>
-            </d:mediaobject>
         </d:figure>
         <xsl:apply-templates select="legend" mode="after-figure"/>
     </xsl:template>
     
 
 
-    <xsl:template match="figure/image">
-        <d:imageobject>
-            <xsl:variable name="path" select="@uri"/>
-                <d:imagedata  format="PNG" fileref="{$path}"/>
-            <!--
-            <imagedata align="right" width="6in" format="PNG" fileref="figs/web/duck-small.png"/>
-            -->
-        </d:imageobject>
+    <xsl:template match="image">
+        <xsl:variable name="format">
+            <xsl:text >PNG</xsl:text>
+        </xsl:variable>
+        <d:mediaobject>
+            <d:imageobject>
+                <xsl:variable name="path" select="@uri"/>
+                <d:imagedata  format="{$format}" fileref="{$path}"/>
+                <!--
+                <imagedata align="right" width="6in" format="PNG" fileref="figs/web/duck-small.png"/>
+                -->
+            </d:imageobject>
+        </d:mediaobject>
     </xsl:template>
 
 

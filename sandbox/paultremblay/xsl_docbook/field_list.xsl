@@ -4,25 +4,38 @@
     version="1.1">
 
 
-    <xsl:template match="field_list">
+    <xsl:template match="field_list|option_list">
         <d:variablelist>
             <xsl:apply-templates/>
         </d:variablelist>
     </xsl:template>
 
-    <xsl:template match="field">
+    <xsl:template match="field|option_list_item">
         <d:varlistentry>
             <xsl:apply-templates/>
         </d:varlistentry>
     </xsl:template>
 
-    <xsl:template match="field_name">
+    <xsl:template match="option_group|option">
+        <xsl:apply-templates/>
+    </xsl:template>
+
+    <xsl:template match="option_string">
+        <xsl:apply-templates/>
+    </xsl:template>
+
+    <xsl:template match="option_argument">
+        <xsl:value-of select="@delimiter"/>
+        <xsl:apply-templates/>
+    </xsl:template>
+
+    <xsl:template match="field_name|option">
         <d:term>
             <xsl:apply-templates/>
         </d:term>
     </xsl:template>
 
-    <xsl:template match="field_body">
+    <xsl:template match="field_body|option_list_item/description">
         <d:listitem>
             <xsl:apply-templates/>
         </d:listitem>
