@@ -1,7 +1,6 @@
 <xsl:stylesheet 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
     xmlns:d="http://docbook.org/ns/docbook"
-    xmlns:xlink = "http://www.w3.org/1999/xlink"
     version="1.1">
 
     <xsl:template match="emphasis">
@@ -24,20 +23,48 @@
         </d:link>
     </xsl:template>
 
-    <xsl:template match= "reference[@refuri]">
-        <d:link xlink:href="{@refuri}">
-            <xsl:apply-templates/>
-        </d:link>
-    </xsl:template> 
 
     <xsl:template match="target">
         <xsl:if test="parent::paragraph">
             <d:anchor>
                 <xsl:attribute name="xml:id">
-                    <xsl:value-of select="@refid"/>
+                    <xsl:choose >
+                        <xsl:when test="@refid">
+                            <xsl:value-of select="@refid"/>
+                        </xsl:when>
+                        <xsl:otherwise >
+                            <xsl:value-of select="@ids"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
                 </xsl:attribute>
             </d:anchor>
         </xsl:if>
     </xsl:template>
+
+    <xsl:template match="strong">
+        <d:emphasis role="strong">
+            <xsl:apply-templates/>
+        </d:emphasis>
+    </xsl:template>
+
+    <xsl:template match="title_reference">
+        <d:code>
+            <xsl:apply-templates/>
+        </d:code>
+    </xsl:template>
+
+    <xsl:template match="subscript">
+        <d:subscript>
+            <xsl:apply-templates/>
+        </d:subscript>
+    </xsl:template>
+
+    <xsl:template match="superscript">
+        <d:superscript>
+            <xsl:apply-templates/>
+        </d:superscript>
+    </xsl:template>
+
+    <xsl:template match="inline[@classes = 'title']" priority="2"/>
     
 </xsl:stylesheet>

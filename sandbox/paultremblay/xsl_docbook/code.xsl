@@ -9,4 +9,9 @@
         </d:screen>
     </xsl:template>
     
+    <xsl:template match="literal_block">
+        <d:programlisting xml:space="preserve">
+            <xsl:apply-templates/>
+        </d:programlisting>
+    </xsl:template>
 </xsl:stylesheet>
