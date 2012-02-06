@@ -7,7 +7,6 @@ from xml.sax.handler import feature_namespaces
 from StringIO import StringIO
 
 
-# import asciimathml
 import asciitomathml.asciitomathml 
 from xml.etree.ElementTree import Element, tostring
 import xml.etree.cElementTree as etree
