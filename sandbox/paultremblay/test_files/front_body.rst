@@ -9,7 +9,6 @@ Subtitle
 
 :Organization: Open Source Software
 :Author: Paul Tremblay
-:Authors: David Goodger, Paul Tremlbay
 :Contact: paulhtremblay@gmail.com
 :Address: Paul Tremblay 
           100 Market St. 

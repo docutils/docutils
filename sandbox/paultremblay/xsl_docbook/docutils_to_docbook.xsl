@@ -11,10 +11,13 @@
     <xsl:include href = "section.xsl"/>
     <xsl:include href = "admonitions.xsl"/>
     <xsl:include href = "block.xsl"/>
+    <xsl:include href = "table.xsl"/>
+    <xsl:include href = "image.xsl"/>
     <xsl:include href = "bullet_list.xsl"/>
     <xsl:include href = "field_list.xsl"/>
     <xsl:include href = "code.xsl"/>
     <xsl:include href = "citation.xsl"/>
+    <xsl:include href = "inline.xsl"/>
     <xsl:include href = "error.xsl"/>
     <xsl:include href = "utilities.xsl"/>
     <xsl:output method="xml" encoding="UTF-8"/>

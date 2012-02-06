@@ -3,6 +3,7 @@
     xmlns:d="http://docbook.org/ns/docbook"
     version="1.1">
 
+    <xsl:key name="footnote" match="footnote" use="@ids"/>
     <xsl:template
         match="document/paragraph|section/paragraph|block_quote/paragraph|
         attention/paragraph|caution/paragraph|admonition/paragraph|
@@ -10,7 +11,8 @@
         note/paragraph|tip/paragraph|warning/paragraph|
         docinfo/field/field_body/paragraph|/document/topic[@classes='dedication']/paragraph|
         /document/topic[@classes='abstract']/paragraph|
-        list_item/paragraph|container/paragraph">
+        list_item/paragraph|container/paragraph|legend/paragraph|
+        footnote/paragraph">
         <d:para>
             <xsl:apply-templates/>
         </d:para>
@@ -18,6 +20,11 @@
 
     <xsl:template match="section/block_quote|block_quote">
         <d:blockquote>
+            <xsl:if test="@classes">
+                <xsl:attribute name="role">
+                    <xsl:value-of select="@classes"/>
+                </xsl:attribute>
+            </xsl:if>
             <xsl:apply-templates select="attribution" mode="with-block-quote"/>
             <xsl:apply-templates/>
         </d:blockquote>
@@ -60,5 +67,27 @@
             <xsl:apply-templates/>
         </d:section>
     </xsl:template>
+
+    <xsl:template match="epigraph">
+        <d:epigraph>
+            <xsl:apply-templates/>
+        </d:epigraph>
+    </xsl:template>
+
+    <xsl:template match="footnote" mode="footnote">
+        <d:footnote>
+            <xsl:apply-templates/>
+        </d:footnote>
+    </xsl:template>
+
+    <xsl:template match="footnote_reference">
+        <!--need to check that there are no ancestors in a footnote reference, or 
+        you could get infinite recursion-->
+        <xsl:if test="not(ancestor::footnote)">
+            <xsl:apply-templates select="key('footnote', @refid)" mode="footnote"/>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template match="footnote|footnote/label"/>
     
 </xsl:stylesheet>

@@ -6,7 +6,17 @@
     <xsl:template match="section[not(@classes = 'appendix')]">
         <xsl:element name="d:section">
             <xsl:attribute name="xml:id">
-                <xsl:value-of select="@ids"/>
+                <xsl:choose >
+                    <xsl:when test="@names">
+                        <xsl:if test="not(contains(@ids, @names))">
+                            <xsl:message terminate="yes">This shouldn't happen</xsl:message>
+                        </xsl:if>
+                        <xsl:value-of select="@names"/>
+                    </xsl:when>
+                    <xsl:otherwise >
+                        <xsl:value-of select="@ids"/>
+                    </xsl:otherwise>
+                </xsl:choose>
             </xsl:attribute>
             <xsl:if test="@classes">
                 <xsl:attribute name="role">
