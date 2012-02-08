@@ -2142,8 +2142,8 @@ class Body(RSTState):
 
     def parse_directive_options(self, option_presets, option_spec, arg_block):
         options = option_presets.copy()
-        for i in range(len(arg_block)):
-            if arg_block[i][:1] == ':':
+        for i, line in enumerate(arg_block):
+            if re.match(Body.patterns['field_marker'], line):
                 opt_block = arg_block[i:]
                 arg_block = arg_block[:i]
                 break

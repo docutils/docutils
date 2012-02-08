@@ -56,6 +56,8 @@ Changes Since 0.8.1
 
   - Fix [ 3402314 ] allow non-ASCII whitespace, punctuation
     characters and "international" quotes around inline markup.
+  - Use `field_marker` pattern to look for start of a
+    directive option block (fixes [ 3484857 ]).
 
 * docutils/parsers/rst/tableparser.py
 

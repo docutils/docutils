@@ -85,6 +85,8 @@ totest['images'] = [
                :width: 200
                :scale: 50
 """],
+# If there are multiple lines in the link block, they are stripped of
+# leading and trailing whitespace and joined together:
 ["""\
 .. image:: a/very/long/path/to/
    picture.png
@@ -95,6 +97,34 @@ totest['images'] = [
 """\
 <document source="test data">
     <image height="100" scale="50" uri="a/very/long/path/to/picture.png" width="200">
+"""],
+# The following two misspellings were detected in Docutils <= 0.8
+# (the option block was started by any line starting with a colon
+# which led to problems with named roles in other directives):
+["""\
+.. image:: picture.png
+   :scale 50
+""",
+"""\
+<document source="test data">
+    <image uri="picture.png:scale50">
+"""],
+["""\
+.. image:: picture.png
+   :: 50
+""",
+"""\
+<document source="test data">
+    <image uri="picture.png::50">
+"""],
+# a missing leading colon went undetected also in Docutils <= 0.8:
+["""\
+.. image:: picture.png
+   scale: 50
+""",
+"""\
+<document source="test data">
+    <image uri="picture.pngscale:50">
 """],
 ["""\
 .. image:: picture.png
@@ -175,6 +205,7 @@ totest['images'] = [
 """ % DocutilsTestSupport.exception_data(int, None)[1][0]],
 ["""\
 .. image:: picture.png
+   :height: 100
    :scale 50
 """,
 """\
@@ -185,29 +216,8 @@ totest['images'] = [
             invalid option block.
         <literal_block xml:space="preserve">
             .. image:: picture.png
+               :height: 100
                :scale 50
-"""],
-["""\
-.. image:: picture.png
-   scale: 50
-""",
-"""\
-<document source="test data">
-    <image uri="picture.pngscale:50">
-"""],
-["""\
-.. image:: picture.png
-   :: 50
-""",
-"""\
-<document source="test data">
-    <system_message level="3" line="1" source="test data" type="ERROR">
-        <paragraph>
-            Error in "image" directive:
-            invalid option block.
-        <literal_block xml:space="preserve">
-            .. image:: picture.png
-               :: 50
 """],
 ["""\
 .. image:: picture.png
