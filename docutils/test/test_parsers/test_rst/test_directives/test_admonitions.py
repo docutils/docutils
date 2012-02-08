@@ -111,6 +111,35 @@ totest['admonitions'] = [
             No blank lines in-between.
 """],
 ["""\
+.. note:: Content before options
+   is possible too.
+   :class: mynote
+
+.. note:: :strong:`a role is not an option`.
+   :name: role not option
+
+.. note:: a role is
+   :strong:`not an option`, even if its starts a line.
+""",
+"""\
+<document source="test data">
+    <note classes="mynote">
+        <paragraph>
+            Content before options
+            is possible too.
+    <note ids="role-not-option" names="role\ not\ option">
+        <paragraph>
+            <strong>
+                a role is not an option
+            .
+    <note>
+        <paragraph>
+            a role is
+            <strong>
+                not an option
+            , even if its starts a line.
+"""],
+["""\
 .. note::
 """,
 """\
