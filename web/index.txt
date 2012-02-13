@@ -47,8 +47,9 @@ Up to Docutils 0.4, Python 2.1 is required.)
 From version 0.6, Docutils is compatible with Python 3 (see README_ for
 details).
 
-Docutils is in active development and should be considered **experimental**.
-APIs are subject to change at any time.
+Docutils is in active development and APIs should be considered 
+**experimental** subject to change at any time.  Although *any time* is a time 
+after serious thought and discussion.
 
 
 Download
