@@ -220,6 +220,9 @@ More extensions are in the `Docutils Sandbox`_.
 * zot4rst_ by Erik Hetzner is an extension that allows users to write reST
   documents using citations from a Zotero_ library.
 
+* Quick and easy publishing reStructuredText source files as blog posts 
+  on blogger.com is possible with `rst2blogger`_ .
+
 Related Applications
 --------------------
 
@@ -321,3 +324,4 @@ Presentations
 .. _Trac: http://trac.edgewall.org/
 .. _Texinfo Writer: http://docutils.sf.net/sandbox/texinfo-writer/README.html
 .. _confluence CMS: http://www.atlassian.com/software/confluence
+.. _rst2blogger: https://github.com/dhellmann/rst2blogger#readme
