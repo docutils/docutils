@@ -3,6 +3,7 @@
     xmlns:d="http://docbook.org/ns/docbook"
     version="1.1">
 
+    <xsl:param name="image-width">5in</xsl:param>
     <xsl:template match="figure">
         <d:figure>
             <xsl:if test="caption/target">
@@ -27,7 +28,7 @@
         <d:mediaobject>
             <d:imageobject>
                 <xsl:variable name="path" select="@uri"/>
-                <d:imagedata  format="{$format}" fileref="{$path}"/>
+                <d:imagedata  format="{$format}" fileref="{$path}" width="{$image-width}"/>
                 <!--
                 <imagedata align="right" width="6in" format="PNG" fileref="figs/web/duck-small.png"/>
                 -->
@@ -38,12 +39,6 @@
 
     <xsl:template match="caption">
         <xsl:element name="d:caption">
-            <xsl:if test="target">
-                <!--id should probably be with figure or image-->
-                <xsl:attribute name="xml:id">
-                    <xsl:value-of select="target/@ids"/>
-                </xsl:attribute>
-            </xsl:if>
             <d:para>
                 <xsl:apply-templates/>
             </d:para>

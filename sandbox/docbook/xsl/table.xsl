@@ -3,11 +3,24 @@
     xmlns:d="http://docbook.org/ns/docbook"
     version="1.1">
 
+    <xsl:template match="table[@classes='after-abstract']" priority="2">
+        <d:informaltable xsl:use-attribute-sets="table">
+            <xsl:call-template name="make-id"/>
+            <xsl:attribute name="role">after-abstract</xsl:attribute>
+            <xsl:apply-templates/>
+        </d:informaltable>
+    </xsl:template>
+
     <xsl:template match="table">
-        <d:table xsl:use-attribute-sets="table" rowsep="0" colsep="0">
-            <xsl:if test="following-sibling::container[1][@classes = 'caption']/paragraph/target">
-                <xsl:attribute name="xml:id">
-                    <xsl:value-of select="following-sibling::container[1][@classes = 'caption']/paragraph/target/@ids"/>
+        <d:table xsl:use-attribute-sets="table">
+            <xsl:call-template name="make-id"/>
+            <xsl:if test="@classes = 'borderless'">
+                <xsl:attribute name="rowsep">0</xsl:attribute>
+                <xsl:attribute name="colsep">0</xsl:attribute>
+            </xsl:if>
+            <xsl:if test="@classes">
+                <xsl:attribute name="class">
+                    <xsl:value-of select="@classes"/>
                 </xsl:attribute>
             </xsl:if>
             <xsl:if test="not(title)">
@@ -25,6 +38,8 @@
             <xsl:apply-templates/>
         </d:title>
     </xsl:template>
+
+    <xsl:template match="table/title/target"/>
 
     <xsl:template match="tgroup">
         <d:tgroup cols="{@cols}">

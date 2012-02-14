@@ -238,6 +238,8 @@
     <xsl:template match="/document/topic[@classes='abstract']" mode="with-info">
         <d:abstract>
             <xsl:apply-templates/>
+            <xsl:apply-templates select="../section[@classes = 'after-abstract']"
+                mode="with-abstract"/>
         </d:abstract>
     </xsl:template>
 
@@ -259,5 +261,15 @@
         </xsl:call-template>
     </xsl:template>
 
+    <xsl:template match="section[@classes = 'after-abstract']"
+        mode="with-abstract">
+        <xsl:apply-templates/>
+    </xsl:template>
+
+    <xsl:template match="section[@classes = 'after-abstract']" priority="2"/>
+    <xsl:template match="section[@classes = 'after-abstract']/title" priority="2"/>
+    <xsl:template match="section[@classes = 'after-abstract']/table/title"
+        priority="2">
+    </xsl:template>
 
 </xsl:stylesheet>

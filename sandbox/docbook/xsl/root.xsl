@@ -9,12 +9,22 @@
                 <d:book>
                     <xsl:call-template name="make-info"/>
                     <xsl:apply-templates/>
+                        <d:appendix>
+                            <xsl:apply-templates select="section[@classes='appendix']"
+                                mode="appendix"/>
+                        </d:appendix>
                 </d:book>
             </xsl:when>
             <xsl:otherwise>
                 <d:article>
                     <xsl:call-template name="make-info"/>
                     <xsl:apply-templates/>
+                    <xsl:if test="section[@classes='appendix']">
+                        <d:appendix>
+                            <xsl:apply-templates select="section[@classes='appendix']"
+                                mode="appendix"/>
+                        </d:appendix>
+                    </xsl:if>
                 </d:article>
             </xsl:otherwise>
         </xsl:choose>

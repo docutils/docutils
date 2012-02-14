@@ -18,9 +18,16 @@
     <xsl:template match="inline[@classes='page-num']"/>
 
     <xsl:template match="reference[@refid]">
-        <d:link linkend="{@refid}">
-            <xsl:apply-templates/>
-        </d:link>
+        <xsl:choose >
+            <xsl:when test="$link-type = 'xref'">
+                <d:xref linkend="{@refid}"/>
+            </xsl:when>
+            <xsl:otherwise >
+                <d:link linkend="{@refid}">
+                    <xsl:apply-templates/>
+                </d:link>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
 
