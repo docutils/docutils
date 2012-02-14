@@ -16,21 +16,15 @@
         </xsl:choose>
     </xsl:template>
 
+    <xsl:template match="section[@classes='appendix']" />
+
+    <xsl:template match="section[@classes='appendix']" mode="appendix">
+        <xsl:call-template name="make-section"/>
+    </xsl:template>
+
     <xsl:template name="make-section">
         <xsl:element name="d:section">
-            <xsl:attribute name="xml:id">
-                <xsl:choose >
-                    <xsl:when test="@names">
-                        <xsl:if test="not(contains(@ids, @names))">
-                            <xsl:message terminate="yes">This shouldn't happen</xsl:message>
-                        </xsl:if>
-                        <xsl:value-of select="@names"/>
-                    </xsl:when>
-                    <xsl:otherwise >
-                        <xsl:value-of select="@ids"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:attribute>
+            <xsl:call-template name="make-id"/>
             <xsl:if test="@classes">
                 <xsl:attribute name="role">
                     <xsl:value-of select="@classes"/>
@@ -42,19 +36,7 @@
 
     <xsl:template name="make-chapter">
         <xsl:element name="d:chapter">
-            <xsl:attribute name="xml:id">
-                <xsl:choose >
-                    <xsl:when test="@names">
-                        <xsl:if test="not(contains(@ids, @names))">
-                            <xsl:message terminate="yes">This shouldn't happen</xsl:message>
-                        </xsl:if>
-                        <xsl:value-of select="@names"/>
-                    </xsl:when>
-                    <xsl:otherwise >
-                        <xsl:value-of select="@ids"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:attribute>
+            <xsl:call-template name="make-id"/>
             <xsl:if test="@classes">
                 <xsl:attribute name="role">
                     <xsl:value-of select="@classes"/>

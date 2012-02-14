@@ -7,6 +7,8 @@
 
     <xsl:param name="docbook-type">article</xsl:param>
     <xsl:param name="strict"></xsl:param>
+    <xsl:param name="link-type">xref</xsl:param> <!--whether to use link or
+    xref for links-->
 
 </xsl:stylesheet>
 

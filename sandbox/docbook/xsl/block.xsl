@@ -59,9 +59,10 @@
         </d:literallayout>
     </xsl:template>
 
+    <xsl:template match="container[@classes='caption']"/>
     <!--imperfect match for container-->
-    <xsl:template match="container">
-        <d:section role="@classes">
+    <xsl:template match="container[not(@classes='caption')]">
+        <d:section role="{@classes}">
             <d:title>
                 <xsl:value-of select="@classes"/>
             </d:title>
@@ -117,6 +118,6 @@
         </xsl:call-template>
     </xsl:template>
 
-    <xsl:template match="substitution_definition"/>
+    <xsl:template match="substitution_definition|comment"/>
     
 </xsl:stylesheet>
