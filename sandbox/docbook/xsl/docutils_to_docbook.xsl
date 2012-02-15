@@ -8,6 +8,8 @@
     <xsl:include href = "params.xsl"/>
     <xsl:include href = "root.xsl"/>
     <xsl:include href = "front_matter.xsl"/>
+    <xsl:include href = "appendix.xsl"/>
+    <xsl:include href = "glossary.xsl"/>
     <xsl:include href = "section.xsl"/>
     <xsl:include href = "admonitions.xsl"/>
     <xsl:include href = "block.xsl"/>
