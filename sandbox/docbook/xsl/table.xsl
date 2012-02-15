@@ -11,45 +11,54 @@
         </d:informaltable>
     </xsl:template>
 
-    <xsl:template match="table">
+    <xsl:template match="table[title]">
         <d:table xsl:use-attribute-sets="table">
-            <xsl:call-template name="make-id"/>
-            <xsl:if test="@classes = 'borderless'">
-                <xsl:attribute name="rowsep">0</xsl:attribute>
-                <xsl:attribute name="colsep">0</xsl:attribute>
-            </xsl:if>
-            <xsl:if test="@classes">
-                <xsl:attribute name="role">
-                    <xsl:value-of select="@classes"/>
-                </xsl:attribute>
-            </xsl:if>
-            <xsl:attribute name="tabstyle">
-                <xsl:call-template name="tabstyle">
-                    <xsl:with-param name="classes" select="@classes"/>
-                </xsl:call-template>
+            <xsl:call-template name="table-insides"/>
+        </d:table>
+    </xsl:template>
+
+    <xsl:template match="table[not(title)]">
+        <xsl:if test="descendant::row[@classes = 'continuation-label']">
+            <d:para>
+                <xsl:processing-instruction name="hard-pagebreak"/>
+            </d:para>
+        </xsl:if>
+        <d:informaltable xsl:use-attribute-sets="table">
+            <xsl:call-template name="table-insides"/>
+        </d:informaltable>
+    </xsl:template>
+
+    <xsl:template name="table-insides">
+        <xsl:call-template name="make-id"/>
+        <xsl:if test="@classes = 'borderless'">
+            <xsl:attribute name="rowsep">0</xsl:attribute>
+            <xsl:attribute name="colsep">0</xsl:attribute>
+        </xsl:if>
+        <xsl:if test="@classes">
+            <xsl:attribute name="role">
+                <xsl:value-of select="@classes"/>
             </xsl:attribute>
-            <xsl:attribute name="rowsep">
-                <xsl:call-template name="table.rowsep">
-                    <xsl:with-param name="classes" select="@classes"/>
-                </xsl:call-template>
-            </xsl:attribute>
-            <xsl:attribute name="colsep">
-                <xsl:call-template name="table.colsep">
-                    <xsl:with-param name="classes" select="@classes"/>
-                </xsl:call-template>
-            </xsl:attribute>
-            <xsl:if test="not(title)">
-                <!-- should be an informal table-->
-                <d:title>
-                    <xsl:value-of select="@classes"/>
-                </d:title>
-            </xsl:if>
-            <xsl:call-template name="make-table-width">
+        </xsl:if>
+        <xsl:attribute name="tabstyle">
+            <xsl:call-template name="tabstyle">
                 <xsl:with-param name="classes" select="@classes"/>
             </xsl:call-template>
-            <xsl:apply-templates/>
-            <xsl:apply-templates select="following-sibling::container[1][@classes='caption']" mode="table"/>
-        </d:table>
+        </xsl:attribute>
+        <xsl:attribute name="rowsep">
+            <xsl:call-template name="table.rowsep">
+                <xsl:with-param name="classes" select="@classes"/>
+            </xsl:call-template>
+        </xsl:attribute>
+        <xsl:attribute name="colsep">
+            <xsl:call-template name="table.colsep">
+                <xsl:with-param name="classes" select="@classes"/>
+            </xsl:call-template>
+        </xsl:attribute>
+        <xsl:call-template name="make-table-width">
+            <xsl:with-param name="classes" select="@classes"/>
+        </xsl:call-template>
+        <xsl:apply-templates/>
+        <xsl:apply-templates select="following-sibling::container[1][@classes='caption']" mode="table"/>
     </xsl:template>
 
     <xsl:template match="table/title">
@@ -69,12 +78,30 @@
 
     <xsl:template match="row">
         <d:row>
+            <xsl:if test="@classes">
+                <xsl:attribute name="role">
+                    <xsl:value-of select="@classes"/>
+                </xsl:attribute>
+            </xsl:if>
             <xsl:apply-templates/>
         </d:row>
     </xsl:template>
 
     <xsl:template match="entry">
+        <xsl:variable name="position">
+            <xsl:number/>
+        </xsl:variable>
         <d:entry>
+            <xsl:if test="@morecols">
+                <xsl:attribute name="namest">
+                    <xsl:text >col</xsl:text>
+                    <xsl:value-of select="$position"/>
+                </xsl:attribute>
+                <xsl:attribute name="nameend">
+                    <xsl:text >col</xsl:text>
+                    <xsl:value-of select="$position + @morecols - 1"/>
+                </xsl:attribute>
+            </xsl:if>
             <xsl:apply-templates/>
         </d:entry>
     </xsl:template>
@@ -88,6 +115,13 @@
             <xsl:attribute name="colwidth">
                 <xsl:value-of select="@colwidth"/>
                 <xsl:text>*</xsl:text>
+            </xsl:attribute>
+            <xsl:attribute name="colname">
+                <xsl:text>col</xsl:text>
+                <xsl:value-of select="$position"/>
+            </xsl:attribute>
+            <xsl:attribute name="colnum">
+                <xsl:value-of select="$position"/>
             </xsl:attribute>
             <xsl:attribute name="align">
                 <xsl:call-template name="colspec-align">
