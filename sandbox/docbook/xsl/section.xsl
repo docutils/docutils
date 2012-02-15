@@ -16,11 +16,6 @@
         </xsl:choose>
     </xsl:template>
 
-    <xsl:template match="section[@classes='appendix']" />
-
-    <xsl:template match="section[@classes='appendix']" mode="appendix">
-        <xsl:call-template name="make-section"/>
-    </xsl:template>
 
     <xsl:template name="make-section">
         <xsl:element name="d:section">

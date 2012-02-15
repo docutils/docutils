@@ -9,6 +9,9 @@
     <xsl:param name="strict"></xsl:param>
     <xsl:param name="link-type">xref</xsl:param> <!--whether to use link or
     xref for links-->
+    <xsl:param name="Appendix.title">Appendix</xsl:param>
+    <xsl:param name="glossary-break-before">1</xsl:param> <!--break before-->
+    <xsl:param name="glossary-break-after">1</xsl:param> <!--break before-->
 
 </xsl:stylesheet>
 

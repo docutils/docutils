@@ -19,7 +19,7 @@
                 <xsl:attribute name="colsep">0</xsl:attribute>
             </xsl:if>
             <xsl:if test="@classes">
-                <xsl:attribute name="class">
+                <xsl:attribute name="role">
                     <xsl:value-of select="@classes"/>
                 </xsl:attribute>
             </xsl:if>
@@ -63,9 +63,6 @@
     <xsl:template match="tgroup">
         <d:tgroup cols="{@cols}">
             <xsl:apply-templates/>
-            <xsl:call-template name="make-table-footer">
-                <xsl:with-param name="classes" select="../@classes"/>
-            </xsl:call-template>
         </d:tgroup>
     </xsl:template>
 
@@ -109,13 +106,11 @@
 
     <xsl:template match="thead">
         <d:thead>
-            <xsl:attribute name="rowsep">
-                <xsl:call-template name="head.rowsep">
-                    <xsl:with-param name="classes" select="../../@classes"/>
-                </xsl:call-template>
-            </xsl:attribute>
             <xsl:apply-templates/>
         </d:thead>
+        <xsl:call-template name="make-table-foot">
+            <xsl:with-param name="classes" select="../../@classes"/>
+        </xsl:call-template>
     </xsl:template>
 
     <xsl:template match="tbody">
@@ -136,7 +131,7 @@
         </d:para>
     </xsl:template>
 
-    <xsl:template name="make-table-footer"/>
+    <xsl:template name="make-table-foot"/>
 
     <xsl:template name="colspec-align">
         <xsl:text >left</xsl:text>
@@ -152,13 +147,6 @@
         <xsl:text >1</xsl:text>
     </xsl:template>
 
-    <xsl:template name="head.rowsep">
-        <xsl:text >1</xsl:text>
-    </xsl:template>
-
-    <xsl:template name="foot.rowsep">
-        <xsl:text >1</xsl:text>
-    </xsl:template>
 
     <xsl:template name="tabstyle">
         <xsl:text >default</xsl:text>
