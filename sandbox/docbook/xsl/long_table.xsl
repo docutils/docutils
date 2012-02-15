@@ -19,11 +19,13 @@
         </xsl:comment>
     </xsl:template>
 
+    <!--
     <xsl:template match="table">
         <xsl:call-template name="split-table">
             <xsl:with-param name="first-page-rows" select="2"/>
         </xsl:call-template>
     </xsl:template>
+    -->
 
     <xsl:template name="split-table">
         <xsl:param name="first-page-rows"/>
@@ -72,8 +74,10 @@
     </xsl:template>
 
     <xsl:template match="title" mode="continue-label">
+        <!--do nothing here, because the fo templates overwrite the content
+             here
         <xsl:apply-templates/>
-        <xsl:text > (cont.)</xsl:text>
+        -->
     </xsl:template>
 
 </xsl:stylesheet>
