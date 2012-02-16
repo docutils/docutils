@@ -443,7 +443,6 @@ With no implied endorsement or recommendation, and in no particular
 order:
 
 * `Firedrop <http://www.voidspace.org.uk/python/firedrop2/>`__
-* `Python Desktop Server <http://pyds.muensterland.org/>`__
 * `PyBloxsom <http://pyblosxom.sourceforge.net/>`__
 * `Lino WebMan <http://lino.sourceforge.net/webman.html>`__
 
