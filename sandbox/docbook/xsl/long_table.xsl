@@ -19,16 +19,28 @@
         </xsl:comment>
     </xsl:template>
 
-    <!--
     <xsl:template match="table">
-        <xsl:call-template name="split-table">
-            <xsl:with-param name="first-page-rows" select="2"/>
-        </xsl:call-template>
+        <xsl:copy-of select="."/>
+        <xsl:apply-templates select="following-sibling::container[1][@classes='caption']" mode="keep"/>
     </xsl:template>
-    -->
+
+    <xsl:template match="container[@classes='caption']" mode="keep">
+        <xsl:copy-of select="."/>
+    </xsl:template>
+    <xsl:template match="container[@classes='caption']" />
 
     <xsl:template name="split-table">
         <xsl:param name="first-page-rows"/>
+        <xsl:variable name="num-rows" select="count(descendant::row)"/>
+        <xsl:if test="$first-page-rows &gt;= $num-rows">
+            <xsl:message terminate="yes">
+                <xsl:text>Cannot split tables because first-page-rows "</xsl:text>
+                <xsl:value-of select="$first-page-rows"/>
+                <xsl:text>" is greater than or equal to number of rows "</xsl:text>
+                <xsl:value-of select="$num-rows"/>
+                <xsl:text>" &#xA;Script now quiting.</xsl:text>
+            </xsl:message>
+        </xsl:if>
         <xsl:copy >
             <xsl:copy-of select="@*"/>
             <xsl:copy-of select="title"/>
@@ -71,6 +83,7 @@
                 </tbody>
             </tgroup>
         </table>
+        <xsl:apply-templates select="following-sibling::container[1][@classes='caption']" mode="keep"/>
     </xsl:template>
 
     <xsl:template match="title" mode="continue-label">

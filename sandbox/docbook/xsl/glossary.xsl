@@ -6,17 +6,13 @@
 
     <xsl:template match="section[@classes='glossary']" priority="2">
         <xsl:if test="$glossary-break-before != 0">
-            <d:para>
                 <xsl:processing-instruction name="hard-pagebreak"/>
-            </d:para>
         </xsl:if>
         <d:glossary>
             <xsl:apply-templates/>
         </d:glossary>
         <xsl:if test="$glossary-break-after != 0">
-            <d:para>
-                <xsl:processing-instruction name="hard-pagebreak"/>
-            </d:para>
+            <xsl:processing-instruction name="hard-pagebreak"/>
         </xsl:if>
     </xsl:template>
 

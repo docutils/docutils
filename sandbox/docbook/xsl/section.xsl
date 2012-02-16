@@ -18,6 +18,9 @@
 
 
     <xsl:template name="make-section">
+        <xsl:call-template name="page-break-before-section">
+            <xsl:with-param name="classes" select="@classes"/>
+        </xsl:call-template>
         <xsl:element name="d:section">
             <xsl:call-template name="make-id"/>
             <xsl:if test="@classes">
@@ -27,6 +30,9 @@
             </xsl:if>
             <xsl:apply-templates/>
         </xsl:element>
+        <xsl:call-template name="page-break-after-section">
+            <xsl:with-param name="classes" select="@classes"/>
+        </xsl:call-template>
     </xsl:template>
 
     <xsl:template name="make-chapter">
@@ -52,5 +58,12 @@
 
     <xsl:template match="section/title/generated"/>
 
+    <xsl:template name="page-break-before-section">
+        <xsl:param name="classes"/>
+    </xsl:template>
+
+    <xsl:template name="page-break-after-section">
+        <xsl:param name="classes"/>
+    </xsl:template>
 
 </xsl:stylesheet>
