@@ -119,5 +119,11 @@
     </xsl:template>
 
     <xsl:template match="substitution_definition|comment"/>
+
+    <xsl:template match="processing-instruction('hard-pagebreak')">
+        <d:para>
+            <xsl:processing-instruction name="hard-pagebreak"/>
+        </d:para>
+    </xsl:template>
     
 </xsl:stylesheet>

@@ -57,8 +57,15 @@
         <xsl:call-template name="make-table-width">
             <xsl:with-param name="classes" select="@classes"/>
         </xsl:call-template>
+        <xsl:call-template name="table-keep-together">
+            <xsl:with-param name="classes" select="@classes"/>
+        </xsl:call-template>
         <xsl:apply-templates/>
-        <xsl:apply-templates select="following-sibling::container[1][@classes='caption']" mode="table"/>
+        <xsl:for-each select="following-sibling::*[1]">
+            <xsl:if test="self::container[@classes = 'caption']">
+                <xsl:apply-templates select="self::container" mode="table"/>
+            </xsl:if>
+        </xsl:for-each>
     </xsl:template>
 
     <xsl:template match="table/title">
@@ -184,6 +191,10 @@
 
     <xsl:template name="tabstyle">
         <xsl:text >default</xsl:text>
+    </xsl:template>
+
+    <xsl:template name="table-keep-together">
+        <xsl:param name="classes"/>
     </xsl:template>
     
 </xsl:stylesheet>
