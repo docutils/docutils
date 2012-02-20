@@ -6,3 +6,7 @@ test_destination = "standalone_rst_pseudoxml.txt"
 
 # Keyword parameters passed to publish_file.
 writer_name = "pseudoxml"
+
+# Settings
+# enable INFO-level system messages in this test:
+settings_overrides['report_level'] = 1
