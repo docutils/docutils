@@ -795,6 +795,7 @@ class Inliner:
             uri = self.adjust_uri(uri)
             if uri:
                 target = nodes.target(match.group(1), refuri=uri)
+                target.referenced = 1
             else:
                 raise ApplicationError('problem with URI: %r' % uri_text)
             if not text:

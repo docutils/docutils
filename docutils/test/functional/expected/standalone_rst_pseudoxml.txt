@@ -616,6 +616,9 @@
                         <list_item>
                             <paragraph>
                                 Four
+                    <system_message level="1" line="8" source="functional/input/data/standard.txt" type="INFO">
+                        <paragraph>
+                            Enumerated list start value not ordinal-1: "3" (ordinal 3)
                     <enumerated_list enumtype="upperalpha" prefix="" start="3" suffix=".">
                         <list_item>
                             <paragraph>
@@ -623,6 +626,9 @@
                         <list_item>
                             <paragraph>
                                 D
+                    <system_message level="1" line="8" source="functional/input/data/standard.txt" type="INFO">
+                        <paragraph>
+                            Enumerated list start value not ordinal-1: "C" (ordinal 3)
                     <enumerated_list enumtype="lowerroman" prefix="" start="3" suffix=".">
                         <list_item>
                             <paragraph>
@@ -630,6 +636,9 @@
                         <list_item>
                             <paragraph>
                                 iv
+                    <system_message level="1" line="8" source="functional/input/data/standard.txt" type="INFO">
+                        <paragraph>
+                            Enumerated list start value not ordinal-1: "iii" (ordinal 3)
         <section ids="definition-lists" names="definition\ lists">
             <title auto="1" refid="id43">
                 <generated classes="sectnum">
@@ -1123,6 +1132,9 @@
                     <generated classes="sectnum">
                         2.13.2   
                     Duplicate Target Names
+                <system_message backrefs="id21" level="1" line="438" source="functional/input/data/standard.txt" type="INFO">
+                    <paragraph>
+                        Duplicate implicit target name: "duplicate target names".
                 <paragraph>
                     Since there are two "Duplicate Target Names" section headers, we
                     cannot uniquely refer to either of them by name.  If we try to (like
@@ -2044,3 +2056,24 @@
         <system_message backrefs="id90" ids="id89" level="3" line="440" source="functional/input/data/standard.txt" type="ERROR">
             <paragraph>
                 Duplicate target name, cannot be used as a unique reference: "duplicate target names".
+        <system_message level="1" line="163" source="functional/input/data/standard.txt" type="INFO">
+            <paragraph>
+                Hyperlink target "target" is not referenced.
+        <system_message level="1" line="405" source="functional/input/data/standard.txt" type="INFO">
+            <paragraph>
+                Hyperlink target "another-target" is not referenced.
+        <system_message level="1" line="473" source="functional/input/data/standard.txt" type="INFO">
+            <paragraph>
+                Hyperlink target "image-target-1" is not referenced.
+        <system_message level="1" line="474" source="functional/input/data/standard.txt" type="INFO">
+            <paragraph>
+                Hyperlink target "image-target-2" is not referenced.
+        <system_message level="1" line="475" source="functional/input/data/standard.txt" type="INFO">
+            <paragraph>
+                Hyperlink target "image-target-3" is not referenced.
+        <system_message level="1" line="632" source="functional/input/data/standard.txt" type="INFO">
+            <paragraph>
+                Hyperlink target "docutils" is not referenced.
+        <system_message level="1" line="753" source="functional/input/data/standard.txt" type="INFO">
+            <paragraph>
+                Hyperlink target "hyperlink targets" is not referenced.
