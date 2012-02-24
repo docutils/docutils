@@ -1,6 +1,6 @@
 <xsl:stylesheet 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-    xmlns:fo="http://www.w3.org/1999/XSL/Format"
+    xmlns:d="http://docbook.org/ns/docbook"
     version="1.1"
     >
     <!-- $Id: error.xsl 7131 2011-09-26 19:27:15Z paultremblay $ -->
@@ -103,9 +103,9 @@
     <xsl:template match="system_message[@type='ERROR']/paragraph| system_message[@type='ERROR']/literal_block" priority="2"/>
 
     <xsl:template match="problematic|system_message|system_message/paragraph">
-        <fo:block>
+        <d:para>
             <xsl:apply-templates/>
-        </fo:block>
+        </d:para>
     </xsl:template>
 
     <xsl:template match="split-space">

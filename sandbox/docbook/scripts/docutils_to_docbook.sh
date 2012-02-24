@@ -21,8 +21,9 @@ Usage() {
     echo --pdf: create a PDF document
     echo --valid: validate the FO document
     echo --strict: quit when a template does not match \(or other error\)
-    echo --asciiml: convert latex in the math element to mathml
-    echo --rawxml: post process the document to really allow the raw XML in your RST document
+    echo --asciiml: convert math in the math element to mathml
+    echo --fo: convert to FO
+    echo --html: convert to HTML
     echo "-s | --stylesheet <stylesheet> : the stylesheet to use"
     echo "-o | --out: file to output to"
 }
@@ -35,6 +36,8 @@ STYLESHEET=
 OUT=''
 STRICT=''
 ASCIIML='false'
+FO='false'
+HTML='false'
  while [ $# -gt 0 ]
  do
      case "$1" in
@@ -51,6 +54,8 @@ ASCIIML='false'
          --valid) VALID='true';;
          --strict) STRICT='true';;
          --asciiml) ASCIIML='true';;
+         --fo) FO='true';;
+         --html) HTML='true';;
          --out) shift;OUT=$1;;
          -o) shift;OUT=$1;;
          --stylesheet) shift;STYLESHEET=$1;;
@@ -130,7 +135,6 @@ if [ "$VALID" == 'true' ]; then
 fi
 
 FO_FILE=${DIRNAME}/${BASENAME}.fo
-exit 0 # for now until you get the docbook xsl styleseehts sets
 
 if [ "$PDF" == 'true' ]; then
     PDF_FILE=${DIRNAME}/${BASENAME}.pdf
@@ -141,8 +145,12 @@ if [ "$PDF" == 'true' ]; then
     fi
 fi
 
-if [ "$OUT" == "" ]  && [ "$PDF" == 'false' ];then 
+if [ "$OUT" == "" ]  && [ "$PDF" == 'false' ] && [ "$FO" == "true" ];then 
     cat $FO_FILE
+fi
+
+if [ "$OUT" == "" ]  && [ "$PDF" == 'false' ] && [ "$HTML" == "true" ];then 
+    xsltproc http://50.56.245.89/xsl-ns/xhtml/docbook.xsl $DOC_FILE
 fi
 
 if [ "$CLEAN" == "true" ]; then

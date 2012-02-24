@@ -4,7 +4,35 @@
     xmlns:ml="http://www.w3.org/1998/Math/MathML"
     version="1.1">
 
-    <xsl:template match="math_block|math">
+    <xsl:template match="math">
+        <d:inlineequation>
+            <xsl:choose >
+                <xsl:when test="ml:math">
+                    <xsl:apply-templates/>
+                </xsl:when>
+                <xsl:otherwise >
+                    <d:mathphrase>
+                        <xsl:apply-templates/>
+                    </d:mathphrase>
+                </xsl:otherwise>
+            </xsl:choose>
+        </d:inlineequation>
+    </xsl:template>
+
+    <xsl:template match="math_block">
+        <xsl:choose>
+            <xsl:when test="ancestor::paragraph">
+                <xsl:call-template name="inside-math-block"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <d:para>
+                    <xsl:call-template name="inside-math-block"/>
+                </d:para>
+            </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+    <xsl:template name="inside-math-block">
         <d:equation>
             <xsl:choose >
                 <xsl:when test="ml:math">
