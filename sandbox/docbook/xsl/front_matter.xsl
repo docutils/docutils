@@ -44,7 +44,7 @@
                 </d:authorgroup>
             </xsl:when>
             <xsl:when test="count(author) = 1">
-                <xsl:apply-templates select="author"/>
+                <xsl:apply-templates select="author" mode="author"/>
             </xsl:when>
         </xsl:choose>
     </xsl:template>
@@ -60,6 +60,9 @@
             <xsl:call-template name="contact"/>
             <xsl:call-template name="address"/>
         </d:author>
+        <xsl:for-each select="..">
+            <xsl:apply-templates select="address" mode="after-author"/>
+        </xsl:for-each>
     </xsl:template>
 
     <xsl:template name="organization">

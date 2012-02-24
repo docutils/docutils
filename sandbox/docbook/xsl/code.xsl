@@ -10,7 +10,7 @@
     </xsl:template>
     
     <xsl:template match="literal_block">
-        <d:programlisting xml:space="preserve">
+        <d:programlisting>
             <xsl:apply-templates/>
         </d:programlisting>
     </xsl:template>

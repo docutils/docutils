@@ -78,6 +78,11 @@
 
     <xsl:template match="footnote" mode="footnote">
         <d:footnote>
+            <xsl:if test= "string(number(label))='NaN'">
+                <xsl:attribute name="label">
+                    <xsl:value-of select="label"/>
+                </xsl:attribute>
+            </xsl:if>
             <xsl:apply-templates/>
         </d:footnote>
     </xsl:template>
