@@ -809,8 +809,9 @@ _`math_output`
       Format math in standard HTML enhanced by CSS rules
 
       Requires the ``math.css`` stylesheet (stored in the same
-      installation-dependent directory as the `default stylesheet
-      <stylesheet_path [html4css1 writer]>`__
+      installation-dependent directory as the `default stylesheet`__).
+
+      .. __: `<stylesheet_path [html4css1 writer]>`_
 
     :MathML:
       Embed math content as presentational MathML_.
