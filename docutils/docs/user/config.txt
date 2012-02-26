@@ -862,8 +862,8 @@ stylesheet
 
     Default: None.  Options: ``--stylesheet``.
 
-    __ `stylesheet_path [html4css1 writer]`_
     __ `stylesheet [latex2e writer]`_
+    __ `stylesheet_path [html4css1 writer]`_
 
 .. _stylesheet_path [html4css1 writer]:
 
