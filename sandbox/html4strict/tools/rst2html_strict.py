@@ -33,9 +33,9 @@ try:
 except ImportError:
     from html4strict import Writer
 
-description = ('Generates (X)HTML documents from standalone reStructuredText '
-               'sources that fully rely on a CSS2 stylesheet '
-               'and conforms to the XHTML version 1.0 Strict DTD. '
+description = ('Generates CSS2-styled HTML documents from standalone '
+               'reStructuredText! sources that conform to the XHTML 1.1 DTD '
+               '(strict XHTML). '
                + default_description)
 
 publish_cmdline(writer=Writer(), 
