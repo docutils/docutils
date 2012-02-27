@@ -21,7 +21,7 @@
 
     <xsl:template match="math_block">
         <xsl:choose>
-            <xsl:when test="ancestor::paragraph">
+            <xsl:when test="ancestor::paragraph or ancestor::compound">
                 <xsl:call-template name="inside-math-block"/>
             </xsl:when>
             <xsl:otherwise>
@@ -34,6 +34,7 @@
 
     <xsl:template name="inside-math-block">
         <d:equation>
+            <xsl:call-template name="make-id"/>
             <xsl:choose >
                 <xsl:when test="ml:math">
                     <xsl:apply-templates/>

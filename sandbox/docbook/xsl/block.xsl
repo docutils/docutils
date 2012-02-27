@@ -42,14 +42,18 @@
 
     <xsl:template match="block_quote/attribution"/>
 
-    <xsl:template match="compound">
+    <xsl:template match="compound_">
         <xsl:apply-templates/>
     </xsl:template>
 
-    <xsl:template match="compound/paragraph">
+    <xsl:template match="compound">
         <d:para role="compound">
             <xsl:apply-templates/>
         </d:para>
+    </xsl:template>
+
+    <xsl:template match="compound/paragraph">
+        <xsl:apply-templates/>
     </xsl:template>
 
     <!--use programlisting?? for now-->

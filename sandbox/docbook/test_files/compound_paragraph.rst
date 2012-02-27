@@ -11,3 +11,15 @@ Paragraph before
    you will erase the entire contents of your file system.
 
 Paragraph before
+
+Here is math:
+
+.. compound::
+   
+   Explains an equation
+
+   .. math::
+
+     x^2
+
+   After the equation.
