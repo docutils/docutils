@@ -1123,70 +1123,85 @@ Misc
 * Generalize docinfo contents (bibliographic fields): remove specific
   fields, and have only a single generic "field"?
 
-Inline markup recognition rules
--------------------------------
-
-The `inline markup`_ recognition rules were devised intentionally to allow
-90% of non-markup uses of "*", "`", "_", and "|" *without* resorting to
-backslashes.  For 9% of the remaining 10%, use inline literals or literal
-blocks. Only those who understand the escaping and inline markup rules
-should attempt the remaining 1%.  ;-)
-
-.. _inline markup: ../ref/rst/restructuredtext.html#inline-markup
-
-Changes need to be done in `parsers.rst.states.Inliner`.
-
-Alternatives
-
-a) Use `Unicode categories`_ for all chars (ASCII or not)
-
-   +1  comprehensible, standards based,
-   -1  many "false positives" need escaping,
-   -1  not backwards compatible.
-
-b) full backwards compatibility
-
-   :Pi: only before start-string
-   :Pf: only behind end-string
-   :Po: "conservative" sorting of other punctuation:
-
-        :``.,;!?\\``: Close
-        :``¡¿``:   Open
-
-   +1  backwards compatible,
-   +1  logical extension of the existing rules,
-   -1  exception list for "other" punctuation needed,
-   -1  rules even more complicated,
-   -1  not clear how to sort "other" punctuation that is currently not
-       recognized,
-   -2  international quoting convention like 
-       »German ›angular‹ quotes« not recognized.
-
-.. _Unicode categories:
-   http://www.unicode.org/Public/5.1.0/ucd/UCD.html#General_Category_Values
-
-
 Math Markup
 -----------
 
 Since Docutils 0.8, a "math" role and directive using LaTeX math
 syntax as input format is part of reStructuredText.
 
-Provide for `alternative input formats`__?
+Open issues:
 
-__ ./rst/alternatives.html#math-markup
+* Use a "Transform" for math format conversions as extensively discussed in
+  the "math directive issues" thread in May 2008
+  (http://osdir.com/ml/text.docutils.devel/2008-05/threads.html)?
 
-Try to be compatible with `Math support in Sphinx`_?
+* Generic "math-output" option (currently specific to HTML).
+  (List of math-output preferences?)
 
-* The ``:label:`` option selects a label for the equation, by which it
-  can be cross-referenced, and causes an equation number to be issued.
-  In Docutils, this would be called ``:name:``.
+* Try to be compatible with `Math support in Sphinx`_?
 
-* Option ``:nowrap:`` prevents wrapping of the given math in a
-  math environment (you have to specify the math environment in the
-  content).
+  * The ``:label:`` option selects a label for the equation, by which it
+    can be cross-referenced, and causes an equation number to be issued.
+    In Docutils, the option ``:name:`` sets the label.
+    Equation numbering is not implemented yet.
+
+  * Option ``:nowrap:`` prevents wrapping of the given math in a
+    math environment (you have to specify the math environment in the
+    content).
 
 .. _Math support in Sphinx: http://sphinx.pocoo.org/ext/math.html
+
+* Equation numbering and references. (Should be handled in a unified way
+  with other numbered entities like formal tables and images.)
+
+alternative input formats
+`````````````````````````
+
+Use a directive option to specify an alternative input format, e.g. (but not
+limited to):
+
+MathML_
+  Not for hand-written code but maybe usefull when pasted in (or included
+  from a file)
+
+  For an overview of MathML implementations and tests, see, e.g.,
+  the `mathweb wiki`_ or the `ConTeXT MathML page`_.
+
+  .. _MathML: http://www.w3.org/TR/MathML2/
+  .. _mathweb wiki: http://www.mathweb.org/wiki/MathML
+  .. _ConTeXT MathML page: http://wiki.contextgarden.net/MathML
+
+
+ASCIIMath_
+  Simple, ASCII based math input language (see also `ASCIIMath tutorial`_).
+
+  * The Python module ASCIIMathML_ translates a string with ASCIIMath into a
+    MathML tree. Used, e.g., by MultiMarkdown__.
+
+  * For conversion to LaTeX, there is a JavaScript script at
+    http://dlippman.imathas.com/asciimathtex/ASCIIMath2TeX.js
+
+  .. _ASCIIMath: http://www1.chapman.edu/~jipsen/mathml/asciimath.html
+  .. _ASCIIMath tutorial:
+     http://www.wjagray.co.uk/maths/ASCIIMathTutorial.html
+  .. _ASCIIMathML: http://pypi.python.org/pypi/asciimathml/
+  __ http://fletcherpenney.net/multimarkdown/
+
+`Unicode Nearly Plain Text Encoding of Mathematics`_
+   format for lightly marked-up representation of mathematical
+   expressions in Unicode.
+
+   (Unicode Technical Note. Sole responsibility for its contents rests
+   with the author(s). Publication does not imply any endorsement by
+   the Unicode Consortium.)
+
+   .. _Unicode Nearly Plain Text Encoding of Mathematics:
+      http://www.unicode.org/notes/tn28/
+
+itex
+  See `the culmination of a relevant discussion in 2003
+  <http://article.gmane.org/gmane.text.docutils.user/118>`__.
+
 
 
 LaTeX output

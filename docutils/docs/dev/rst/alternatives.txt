@@ -1847,84 +1847,46 @@ was implemented by recognising the second group in the example above and
 transforming it into ``\cite{cite1,cite2}``.)
 
 
-Math Markup
-===========
+Inline markup recognition
+=========================
 
-Using a standard, such as MathML_\ [#]_ seems a good start. However,
+Implemented 2011-12-05 (version 0.9):
+Extended `inline markup recognition rules`_.
 
-    MathML in its full XML form was never thought to be usable as an
-    input format: for a start it is far too verbose as necessitated by
-    its intention to be expressive.
+Non-ASCII whitespace, punctuation characters and "international" quotes are
+allowed around inline markup (based on `Unicode categories`_). The rules for
+ASCII characters were not changed.
 
-    -- http://www.w3.org/Math/Roadmap/
+Rejected alternatives:
 
-Like for non-mathematical content, a different input format is needed.
+a) Use `Unicode categories`_ for all chars (ASCII or not)
 
-.. [#] For an overview of MathML implementations and tests, see e.g.
-   the `mathweb wiki`_ or the `ConTeXT MathML page`_.
+   +1  comprehensible, standards based,
+   -1  many "false positives" need escaping,
+   -1  not backwards compatible.
 
-.. _MathML: http://www.w3.org/TR/MathML2/
-.. _mathweb wiki: http://www.mathweb.org/wiki/MathML
-.. _ConTeXT MathML page: http://wiki.contextgarden.net/MathML
+b) full backwards compatibility
 
-Input formats
--------------
+   :Pi: only before start-string
+   :Pf: only behind end-string
+   :Po: "conservative" sorting of other punctuation:
 
-LaTeX math syntax
-  * Intended for input by a human, widely used, and well documented.
+        :``.,;!?\\``: Close
+        :``¡¿``:   Open
 
-  * Can be used for both, input and internal storage.
+   +1  backwards compatible,
+   +1  logical extension of the existing rules,
+   -1  exception list for "other" punctuation needed,
+   -1  rules even more complicated,
+   -1  not clear how to sort "other" punctuation that is currently not
+       recognized,
+   -2  international quoting convention like
+       »German ›angular‹ quotes« not recognized.
 
-  * Convertible to all supported output formats (building on
-    existing extensions like `latex_math`_ (LaTeX2MathML) or the math
-    support in Sphinx
-
-  * Used by the `Math support in Sphinx`_.
-
-  * Unicode input similar to the "unicode-math" package for
-    XeTeX/LuaTeX provides for improved readability of the source.
-
-  * The backtick (GRAVE ACCENT, 0x60) cannot be used in a math role.
-    Fortunately, it is not required in LaTeX math mode, as the
-    ``\grave`` macro is used instead of ``\```.
-
-  .. _latex_math: ../../../sandbox/jensj/latex_math/
-  .. _Math support in Sphinx: http://sphinx.pocoo.org/ext/math.html
-
-
-ASCIIMath_
-  Simple, ASCII based math input language (see also `ASCIIMath tutorial`_).
-
-  * The Python module ASCIIMathML_ translates a string with ASCIIMath into a
-    MathML tree. Used, e.g., by MultiMarkdown__.
-
-  * For conversion to LaTeX, there is a JavaScript script at
-    http://dlippman.imathas.com/asciimathtex/ASCIIMath2TeX.js
-
-  .. _ASCIIMath: http://www1.chapman.edu/~jipsen/mathml/asciimath.html
-  .. _ASCIIMath tutorial:
-     http://www.wjagray.co.uk/maths/ASCIIMathTutorial.html
-  .. _ASCIIMathML: http://pypi.python.org/pypi/asciimathml/
-  __ http://fletcherpenney.net/multimarkdown/
-
-`Unicode Nearly Plain Text Encoding of Mathematics`_
-   format for lightly marked-up representation of mathematical
-   expressions in Unicode.
-
-   (Unicode Technical Note. Sole responsibility for its contents rests
-   with the author(s). Publication does not imply any endorsement by
-   the Unicode Consortium.)
-
-   .. _Unicode Nearly Plain Text Encoding of Mathematics:
-      http://www.unicode.org/notes/tn28/
-
-itex
-  See `the culmination of a relevant discussion in 2003
-  <http://article.gmane.org/gmane.text.docutils.user/118>`__.
-
-
-Since Docutils 0.8, a "math" role and directive using LaTeX math
-syntax as input format is part of reStructuredText.
+.. _Inline markup recognition rules:
+   ../../ref/rst/restructuredtext.html#inline-markup-recognition-rules
+.. _Unicode categories:
+   http://www.unicode.org/Public/5.1.0/ucd/UCD.html#General_Category_Values
 
 
 -----------------
@@ -2684,6 +2646,62 @@ I've thought a bit more on this, and I came up with two possibilities:
    mechanism would be required, but I think that's going too far.
 
 Both of these alternatives are flawed.  Any other ideas?
+
+
+Math Markup
+===========
+
+Since Docutils 0.8, a "math" role and directive using LaTeX math
+syntax as input format is part of reStructuredText.
+
+Use a "Transform" for math format conversions as extensively discussed in
+the "math directive issues" thread in May 2008
+
+Provide for alternative math input formats
+(see also http://osdir.com/ml/text.docutils.devel/2008-05/threads.html).
+
+MathML_
+  Not for hand-written code but maybe usefull when pasted in (or included
+  from a file)
+
+  For an overview of MathML implementations and tests, see, e.g.,
+  the `mathweb wiki`_ or the `ConTeXT MathML page`_.
+
+  .. _MathML: http://www.w3.org/TR/MathML2/
+  .. _mathweb wiki: http://www.mathweb.org/wiki/MathML
+  .. _ConTeXT MathML page: http://wiki.contextgarden.net/MathML
+
+
+ASCIIMath_
+  Simple, ASCII based math input language (see also `ASCIIMath tutorial`_).
+
+  * The Python module ASCIIMathML_ translates a string with ASCIIMath into a
+    MathML tree. Used, e.g., by MultiMarkdown__.
+
+  * For conversion to LaTeX, there is a JavaScript script at
+    http://dlippman.imathas.com/asciimathtex/ASCIIMath2TeX.js
+
+  .. _ASCIIMath: http://www1.chapman.edu/~jipsen/mathml/asciimath.html
+  .. _ASCIIMath tutorial:
+     http://www.wjagray.co.uk/maths/ASCIIMathTutorial.html
+  .. _ASCIIMathML: http://pypi.python.org/pypi/asciimathml/
+  __ http://fletcherpenney.net/multimarkdown/
+
+`Unicode Nearly Plain Text Encoding of Mathematics`_
+   format for lightly marked-up representation of mathematical
+   expressions in Unicode.
+
+   (Unicode Technical Note. Sole responsibility for its contents rests
+   with the author(s). Publication does not imply any endorsement by
+   the Unicode Consortium.)
+
+   .. _Unicode Nearly Plain Text Encoding of Mathematics:
+      http://www.unicode.org/notes/tn28/
+
+itex
+  See `the culmination of a relevant discussion in 2003
+  <http://article.gmane.org/gmane.text.docutils.user/118>`__.
+
 
 
 -------------------
