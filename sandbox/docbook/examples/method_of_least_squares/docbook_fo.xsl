@@ -5,7 +5,7 @@
     version="1.1">
 
     <!--
-    <xsl:import href="/Users/cejohnsonlouisville/Documents/docbook-xsl-ns-1.76.1/fo/docbook.xsl"/>
+    <xsl:import main stylesheets. My catolog actually overwrites the URL address and fetches a local stylesheet./>
     -->
     <xsl:import href="http://50.56.245.89/xsl-ns/fo/docbook.xsl"/>
     <xsl:import href="methods_title_page.xsl"/>
@@ -31,108 +31,116 @@ set       toc,title
 
     <xsl:param name="section.autolabel" select="1"/>
     <xsl:param name="fop1.extensions" select="1"/>
-    <xsl:param name="inline-orgname"></xsl:param>
-    <xsl:param name="header.rule">0</xsl:param>
-    <xsl:param name="footer.rule">0</xsl:param>
+    <xsl:param name="header.rule">0</xsl:param><!--no header rules at top of page-->
+    <xsl:param name="footer.rule">0</xsl:param><!-- no footer rules at top of page-->
+    <xsl:param name="autotoc.label.separator">&#160;&#160;&#160;</xsl:param><!--get rid of dot in TOC-->
+    <xsl:param name="body.start.indent">0pt</xsl:param><!--no indent for body text-->
+    <xsl:param name="text-indent">12pt</xsl:param><!--a default for first lines indent in paragraphs-->
+    <xsl:param name="toc.indent.width">0</xsl:param>
+    <xsl:param name="body.font.master">12</xsl:param><!--change default size of font from 10 to 12-->
 
-
-
-    <xsl:attribute-set name="article.appendix.title.properties">
-      <xsl:attribute name="margin-{$direction.align.start}">
-          <xsl:text >inherit</xsl:text>
-      </xsl:attribute>
-    </xsl:attribute-set>
 
     <xsl:attribute-set name="abstract.title.properties" >
         <xsl:attribute name="font-size">12pt</xsl:attribute>
-        <xsl:attribute name="space-before.conditionality">retain</xsl:attribute>
     </xsl:attribute-set>
-    <xsl:attribute-set name="formal.object.properties">
-       <xsl:attribute name="keep-together.within-column">always</xsl:attribute>
-    </xsl:attribute-set>
+
+    <!--change default for level one section titles-->
+    <xsl:attribute-set name="section.title.level1.properties">
+        <xsl:attribute name="font-size">14pt</xsl:attribute>
+        <xsl:attribute name="space-after.optimum">12pt</xsl:attribute>
+        <xsl:attribute name="space-after.minimum">10pt</xsl:attribute>
+        <xsl:attribute name="space-after.maximum">14pt</xsl:attribute>
+    </xsl:attribute-set> 
 
     <xsl:attribute-set name="address">
         <xsl:attribute name="text-align">center</xsl:attribute>
         <xsl:attribute name="font-size">12pt</xsl:attribute>
     </xsl:attribute-set>
 
+    <!--Since we are using first indent, set space between paragraphs to 0-->
+    <xsl:attribute-set name="normal.para.spacing">
+          <xsl:attribute name="space-before.optimum">0em</xsl:attribute>
+          <xsl:attribute name="space-before.minimum">0.0em</xsl:attribute>
+          <xsl:attribute name="space-before.maximum">0.0em</xsl:attribute>
+    </xsl:attribute-set>
 
-    <xsl:template match="d:street">
+    <!--indent abstract-->
+    <xsl:attribute-set name="abstract.properties">
+        <xsl:attribute name="start-indent">0.5in</xsl:attribute>
+        <xsl:attribute name="end-indent">0.2in</xsl:attribute>
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="informalfigure.properties">
+        <xsl:attribute name="start-indent">.5in</xsl:attribute>
+    </xsl:attribute-set>
+
+    <xsl:attribute-set name="equation.properties">
+        <xsl:attribute name="text-align">center</xsl:attribute>
+    </xsl:attribute-set>
+
+    <!--Change name of Table of Contents to Contents-->
+    <!--Get rid of "." after titles-->
+    <!--change the xref from Equation 2.5 to equation (2.5)-->
+    <xsl:param name="local.l10n.xml" select="document('')"/>  
+    <l:i18n xmlns:l="http://docbook.sourceforge.net/xmlns/l10n/1.0"> 
+      <l:l10n language="en"> 
+          <l:gentext key="TableofContents" text="Contents"/>
+        <l:context name="title-numbered">
+            <l:template name="section" text="%n &#160;&#160;&#160;%t"/>
+        </l:context>
+        <l:context name="xref-number">
+           <l:template name="equation" text="equation (%n)"/>
+        </l:context>
+      </l:l10n>
+    </l:i18n>
+
+    <!--change default numbering for eqations-->
+    <xsl:template match="d:equation" mode="label.markup">
+      <xsl:choose>
+        <xsl:when test="@label">
+          <xsl:value-of select="@label"/>
+        </xsl:when>
+        <xsl:otherwise>
+            <xsl:variable name="section-label">
+                <xsl:apply-templates select="ancestor::d:section" mode="label.markup"/>
+            </xsl:variable>
+            <xsl:value-of select="$section-label"/>
+            <xsl:text>.</xsl:text>
+          <xsl:number format="1" from="d:section" level="any"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:template>
+
+    <!--put otheraddr in own blocks-->
+    <xsl:template match="d:otheraddr">
         <fo:block  xsl:use-attribute-sets="address">
             <xsl:apply-templates/>
         </fo:block>
     </xsl:template>
-
-    <xsl:template match="d:city" >
-        <fo:block  xsl:use-attribute-sets="address">
-            <xsl:apply-templates/>
-        </fo:block>
-    </xsl:template>
-
-
-
-   <xsl:template match="d:affiliation/d:orgname" mode="titlepage.mode">
-       <fo:block>
-           <xsl:apply-templates/>
-       </fo:block>
-   </xsl:template>
-
-    <xsl:template match="d:author" mode="titlepage.mode">
-      <fo:block>
-        <xsl:call-template name="anchor"/>
-        <xsl:choose>
-          <xsl:when test="d:orgname">
-            <xsl:apply-templates/>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:call-template name="person.name"/>
-            <xsl:if test="d:affiliation/d:orgname">
-                <xsl:if test="$inline-orgname != ''">
-                    <xsl:text>, </xsl:text>
-                </xsl:if>
-              <xsl:apply-templates select="d:affiliation/d:orgname" mode="titlepage.mode"/>
-            </xsl:if>
-            <xsl:if test="d:email|d:affiliation/d:address/d:email">
-              <xsl:text> </xsl:text>
-              <xsl:apply-templates select="(d:email|d:affiliation/d:address/d:email)[1]"/>
-            </xsl:if>
-          </xsl:otherwise>
-        </xsl:choose>
-      </fo:block>
-    </xsl:template>
-
-    
 
    
-   <xsl:attribute-set name="toc.line.properties">
-    <xsl:attribute name="text-align-last">justify</xsl:attribute>
-    <xsl:attribute name="text-align">inherit</xsl:attribute>
-   </xsl:attribute-set>
+   <xsl:template name="header.content"/><!--no header-->
 
-   <xsl:template name="header.content_">
-      <xsl:param name="pageclass" select="''"/>
-      <xsl:param name="sequence" select="''"/>
-      <xsl:param name="position" select="''"/>
-      <xsl:param name="gentext-key" select="''"/>
-      <xsl:choose>
-          <xsl:when test="$pageclass = 'body'  and $position = 'left'">
-              <fo:block text-align="center">
-                    <xsl:apply-templates select="." mode="title.markup"/>
-              </fo:block>
-          </xsl:when>
-          <xsl:when test="$pageclass = 'long.table' and $position = 'left'">
-              <fo:block text-align="center">
-                  <xsl:text>Executive Report</xsl:text>
-              </fo:block>
-          </xsl:when>
-          <xsl:when test="$pageclass = 'long.table' and $position = 'after-rule' and ($sequence = 'even' or $sequence = 'odd') ">
-              <fo:block space-before="10pt">
-                <xsl:apply-templates select="self::d:table|descendant::d:table[1]" mode="object.title.markup"/>
-                <xsl:text> (cont.)</xsl:text>
-              </fo:block>
-          </xsl:when>
-      </xsl:choose>
-   </xsl:template>  
+   <!--indent first paragraph-->
+    <xsl:template match="d:para">
+        <xsl:variable name="keep.together">
+            <xsl:call-template name="pi.dbfo_keep-together"/>
+        </xsl:variable>
+        <fo:block xsl:use-attribute-sets="normal.para.spacing">
+            <xsl:if test="$keep.together != ''">
+                <xsl:attribute name="keep-together.within-column">
+                    <xsl:value-of select="$keep.together"/>
+                </xsl:attribute>
+            </xsl:if>
+            <xsl:if test="preceding-sibling::d:para">
+                <xsl:attribute name="text-indent">
+                    <xsl:value-of select="$text-indent"/>
+                </xsl:attribute>
+            </xsl:if>
+            <xsl:call-template name="anchor"/>
+            <xsl:apply-templates/>
+        </fo:block>
+    </xsl:template>
 
 
    
@@ -142,6 +150,11 @@ set       toc,title
         <fo:block break-after='page'/>
     </xsl:template>
    
+   <xsl:attribute-set name="toc.line.properties">
+    <xsl:attribute name="text-align-last">justify</xsl:attribute>
+    <xsl:attribute name="text-align">inherit</xsl:attribute>
+   </xsl:attribute-set>
+
    
 
 
