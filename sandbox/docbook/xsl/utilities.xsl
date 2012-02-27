@@ -55,6 +55,13 @@
                     <xsl:value-of select="$preceding-refid"/>
                 </xsl:attribute>
             </xsl:when>
+            <xsl:when test="self::figure">
+                <xsl:if test="caption/target">
+                    <xsl:attribute name="xml:id">
+                        <xsl:value-of select="caption/target/@ids"/>
+                    </xsl:attribute>
+                </xsl:if>
+            </xsl:when>
             <xsl:when test="$current-id != ''">
                 <xsl:attribute name="xml:id">
                     <xsl:value-of select="$current-id"/>
@@ -82,6 +89,40 @@
             <xsl:otherwise >
                 <xsl:value-of select="$id-string"/>
             </xsl:otherwise>
+        </xsl:choose>
+    </xsl:template>
+
+    <xsl:template name="count-in-string">
+        <xsl:param name="string"/>
+        <xsl:param name="pattern"/>
+        <xsl:value-of select="string-length($string) - string-length(translate($string,$pattern,''))"/>
+    </xsl:template>
+
+    <xsl:template name="get-fileformat">
+        <xsl:param name="uri"/>
+        <xsl:variable name="ext" select="substring-after($uri, '.')"/>
+        <xsl:choose>
+            <xsl:when test="$ext = 'PNG' or $ext = 'png'">
+                <xsl:text>PNG</xsl:text>
+            </xsl:when>
+            <xsl:when test="$ext = 'JPEG' or $ext = 'jpeg' or $ext = 'jpg' or ext = 'JPG'">
+                <xsl:text>JPEG</xsl:text>
+            </xsl:when>
+            <xsl:when test="$ext = 'GIF' or $ext = 'gif'">
+                <xsl:text>GIF</xsl:text>
+            </xsl:when>
+            <xsl:when test="$ext = 'TIFF' or $ext = 'tiff'">
+                <xsl:text>TIFF</xsl:text>
+            </xsl:when>
+            <xsl:when test="$ext = 'BMP' or $ext = 'bmb'">
+                <xsl:text>BMP</xsl:text>
+            </xsl:when>
+            <xsl:when test="$ext = 'EPS' or $ext = 'eps'">
+                <xsl:text>EPS</xsl:text>
+            </xsl:when>
+            <xsl:when test="$ext = 'SVG' or $ext = 'svg'">
+                <xsl:text>SVG</xsl:text>
+            </xsl:when>
         </xsl:choose>
     </xsl:template>
     

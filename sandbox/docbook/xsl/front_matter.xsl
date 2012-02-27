@@ -3,6 +3,7 @@
     xmlns:d="http://docbook.org/ns/docbook"
     version="1.1">
 
+
     <xsl:template name="make-info">
         <d:info>
             <d:title>
@@ -31,9 +32,16 @@
     </xsl:template>
 
     <xsl:template match="document/docinfo" mode="with-info">
-        <xsl:call-template name="authors"/>
-        <xsl:call-template name="make-revhistory"/>
-        <xsl:apply-templates/>
+        <xsl:choose>
+            <xsl:when test="$docinfo-by-author = ''">
+                <xsl:apply-templates select="author|address|organization|contact" mode="with-info"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:call-template name="authors"/>
+                <xsl:call-template name="make-revhistory"/>
+                <xsl:apply-templates/>
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:template>
 
     <xsl:template name="authors">
@@ -60,9 +68,135 @@
             <xsl:call-template name="contact"/>
             <xsl:call-template name="address"/>
         </d:author>
-        <xsl:for-each select="..">
-            <xsl:apply-templates select="address" mode="after-author"/>
-        </xsl:for-each>
+    </xsl:template>
+
+    <xsl:template match="author" mode="with-info">
+        <d:author>
+            <d:personname>
+                <xsl:apply-templates/>
+            </d:personname>
+        </d:author>
+    </xsl:template>
+
+    <xsl:template match="organization" mode="with-info">
+        <d:affiliation>
+            <d:orgname>
+                <xsl:apply-templates/>
+            </d:orgname>
+        </d:affiliation>
+    </xsl:template>
+
+    <xsl:template name="handle-token">
+        <xsl:param name="position"/>
+        <xsl:param name="desired-number"/>
+        <xsl:param name="string"/>
+        <xsl:param name="invalid"/>
+        <xsl:param name="action"/>
+        <xsl:param name="last"/>
+        <xsl:if test="$invalid != '' and $terminate-on-csv-error != ''">
+            <xsl:message terminate="yes">
+                <xsl:text>Now quiting</xsl:text>
+            </xsl:message>
+        </xsl:if>
+        <xsl:if test="$action = 'address' and $position = $desired-number">
+            <xsl:value-of select="normalize-space($string)"/>
+        </xsl:if>
+        <xsl:if test="$action = 'address-first' and $position = $desired-number">
+            <xsl:value-of select="normalize-space($string)"/>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template name="address-munge">
+        <xsl:param name="address-number">1</xsl:param>
+        <xsl:param name="param-number">1</xsl:param>
+        <xsl:variable name="format">
+            <xsl:call-template name="csv-split">
+                <xsl:with-param name="string" select="$address-format"/>
+                <xsl:with-param name="sep-char" select="','"/>
+                <xsl:with-param name="action" select="'address'"/>
+                <xsl:with-param name="desired-number" select="$param-number"/>
+            </xsl:call-template>
+        </xsl:variable>
+        <xsl:variable name="field">
+            <xsl:call-template name="csv-split">
+                <xsl:with-param name="string" select="."/>
+                <xsl:with-param name="sep-char" select="'&#xA;'"/>
+                <xsl:with-param name="desired-number" select="$address-number"/>
+                <xsl:with-param name="action" select="'address'"/>
+            </xsl:call-template>
+        </xsl:variable>
+        <xsl:choose>
+            <xsl:when test="$field = ''"/>
+            <xsl:when test="$format = 'city' or $format = 'street' or $format = 'email' or $format = 'phone'
+                or $format = 'pob' or $format = 'postcod' or $format = 'state' or $format = 'uri' 
+                or $format='country' or $format = 'phrase' or $format='personname' or $format = 'otheraddr'">
+                <xsl:element name="d:{$format}">
+                    <xsl:value-of select="$field"/>
+                </xsl:element>
+            </xsl:when>
+            <xsl:when test="$format = 'person'">
+                <d:person>
+                    <xsl:value-of select="$field"/>
+                </d:person>
+            </xsl:when>
+            <xsl:when test="$format = 'other'">
+                <d:otheraddr>
+                    <xsl:value-of select="$field"/>
+                </d:otheraddr>
+            </xsl:when>
+            <xsl:when test="$format = ''">
+                <xsl:value-of select="$field"/>
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:call-template name="error-message-generic">
+                    <xsl:with-param name="msg">
+                        <xsl:text>Stylesheet front_matter.xsl included in docutils_to_docbook.xsl&#xA;</xsl:text>
+                        <xsl:text>Don't know what to do with format "</xsl:text>
+                        <xsl:value-of select="$format"/>
+                        <xsl:text>" in param "address-format"</xsl:text>
+                    </xsl:with-param>
+                </xsl:call-template>
+                <xsl:value-of select="$field"/>
+            </xsl:otherwise>
+        </xsl:choose>
+        <xsl:if test="normalize-space($field) != ''">
+            <xsl:call-template name="address-munge">
+                <xsl:with-param name="address-number" select="$address-number + 1"/>
+                <xsl:with-param name="param-number" select="$param-number + 1"/>
+            </xsl:call-template>
+        </xsl:if>
+    </xsl:template>
+
+    <xsl:template match="address" mode="with-info">
+        <xsl:variable name="previous-address">
+            <xsl:for-each select="preceding-sibling::address">
+                <xsl:value-of select="."/>
+            </xsl:for-each>
+        </xsl:variable>
+        <xsl:variable name="num-previous-fields">
+            <xsl:call-template name="count-in-string">
+                <xsl:with-param name="string" select="$previous-address"/>
+                <xsl:with-param name="pattern" select="'&#xA;'"/>
+            </xsl:call-template>
+        </xsl:variable>
+        <d:address>
+            <xsl:choose>
+                <xsl:when test="$address-format = ''">
+                    <xsl:apply-templates/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:call-template name="address-munge">
+                        <xsl:with-param name="param-number" select="$num-previous-fields + 1"/>
+                    </xsl:call-template>
+                </xsl:otherwise>
+            </xsl:choose>
+        </d:address>
+    </xsl:template>
+
+    <xsl:template match="contact" mode="with-info">
+        <d:email>
+            <xsl:apply-templates/>
+        </d:email>
     </xsl:template>
 
     <xsl:template name="organization">
@@ -274,5 +408,6 @@
     <xsl:template match="section[@classes = 'after-abstract']/table/title"
         priority="2">
     </xsl:template>
+
 
 </xsl:stylesheet>

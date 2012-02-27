@@ -26,8 +26,7 @@ xmlformat:
 
 clean:
 	rm -f method_of_least_squares.xml method_of_least_squares_docbook.xml method_of_least_squares_docbook.fo\
-		method_of_least_squares.pdf methods_title_page.xsl
-
+		method_of_least_squares.pdf methods_title_page.xsl force_displacment.png  force_displacment_draft.png
 
 force_displacment_draft.png: make_graph.R
 	Rscript make_graph.R --draft

@@ -12,6 +12,8 @@
     <xsl:param name="Appendix.title">Appendix</xsl:param>
     <xsl:param name="glossary-break-before">1</xsl:param> <!--break before-->
     <xsl:param name="glossary-break-after">1</xsl:param> <!--break before-->
+    <xsl:param name="docinfo-by-author"/> <!--group other info with author or authors-->
+    <xsl:param name="draft"/> <!--in draft mode-->
 
 </xsl:stylesheet>
 

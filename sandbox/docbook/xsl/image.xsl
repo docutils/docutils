@@ -4,34 +4,48 @@
     version="1.1">
 
     <xsl:param name="image-width">5in</xsl:param>
-    <xsl:template match="figure">
+    <xsl:template match="figure[image/@alt]" priority="2">
         <d:figure>
-            <xsl:if test="caption/target">
-                <xsl:attribute name="xml:id">
-                    <xsl:value-of select="caption/target/@ids"/>
-                </xsl:attribute>
-            </xsl:if>
+            <xsl:call-template name="make-id"/>
             <d:title>
                 <xsl:value-of select="image/@alt"/>
             </d:title>
-                <xsl:apply-templates/>
+            <xsl:apply-templates/>
         </d:figure>
         <xsl:apply-templates select="legend" mode="after-figure"/>
     </xsl:template>
     
+    <xsl:template match="figure">
+        <d:informalfigure>
+            <xsl:call-template name="make-id"/>
+            <xsl:apply-templates/>
+        </d:informalfigure>
+        <xsl:apply-templates select="legend" mode="after-figure"/>
+    </xsl:template>
 
 
     <xsl:template match="image">
         <xsl:variable name="format">
-            <xsl:text >PNG</xsl:text>
+            <xsl:call-template name="get-fileformat">
+                <xsl:with-param name="uri" select="@uri"/>
+            </xsl:call-template>
+        </xsl:variable>
+        <xsl:variable name="uri">
+            <xsl:choose>
+                <xsl:when test="$draft_image != ''">
+                    <xsl:variable name="basename" select="substring-before(@uri, '.')"/>
+                    <xsl:variable name="ext" select="substring-after(@uri, '.')"/>
+                    <xsl:value-of select="concat($basename, $draft_image, '.', $ext)"/>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:value-of select="@uri"/>
+                </xsl:otherwise>
+            </xsl:choose>
         </xsl:variable>
         <d:mediaobject>
             <d:imageobject>
-                <xsl:variable name="path" select="@uri"/>
+                <xsl:variable name="path" select="$uri"/>
                 <d:imagedata  format="{$format}" fileref="{$path}" width="{$image-width}"/>
-                <!--
-                <imagedata align="right" width="6in" format="PNG" fileref="figs/web/duck-small.png"/>
-                -->
             </d:imageobject>
         </d:mediaobject>
     </xsl:template>

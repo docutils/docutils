@@ -83,7 +83,11 @@ class FixTree(xml.sax.ContentHandler):
         ns = name[0]
         el_name = name[1]
         if (el_name == 'math_block' and  self.__mathml) or (el_name == 'math' and self.__mathml) :
-            math_obj =  asciitomathml.asciitomathml.AsciiMathML()
+            # math_obj =  asciitomathml.asciitomathml.AsciiMathML()
+            if el_name == 'math_block':
+                math_obj =  asciitomathml.asciitomathml.AsciiMathML(mstyle={'displaystyle':'true'})
+            else:
+                math_obj =  asciitomathml.asciitomathml.AsciiMathML()
             math_obj.parse_string(self.__characters)
             math_tree = math_obj.get_tree()
             math_string = tostring(math_tree, encoding="us-ascii")

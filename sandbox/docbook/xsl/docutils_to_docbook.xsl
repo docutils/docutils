@@ -5,6 +5,7 @@
 >
     <!-- $Id: docutils_to_fo.xsl 7131 2011-09-26 19:27:15Z paultremblay $ -->
 
+    <xsl:import href = "csv_split.xsl"/>
     <xsl:include href = "params.xsl"/>
     <xsl:include href = "root.xsl"/>
     <xsl:include href = "front_matter.xsl"/>
