@@ -5,26 +5,9 @@
 
     <xsl:import href="http://docutils.svn.sourceforge.net/viewvc/docutils/trunk/sandbox/docbook/xsl/docutils_to_docbook.xsl"/>
 
-    <xsl:template name="address"/>
-
-    <xsl:template match="address" mode="after-author">
-        <d:address>
-            <xsl:variable name="street" select="substring-before(., '&#xA;')"/>
-            <xsl:variable name="rest" select="substring-after(., '&#xA;')"/>
-            <xsl:variable name="street2" select="substring-before($rest, '&#xA;')"/>
-            <xsl:variable name="city" select="substring-after($rest, '&#xA;')"/>
-            <d:street>
-                <xsl:value-of select="$street"/>
-            </d:street>
-            <d:street>
-                <xsl:value-of select="$street2"/>
-            </d:street>
-            <d:city>
-                <xsl:value-of select="$city"/>
-            </d:city>
-        </d:address>
-    </xsl:template>
-
+    <!--The three elements for each block of the address will be other, other, and other-->
+    <xsl:param name="address-format">other, other, other</xsl:param>
+    <xsl:param name="draft_image">_draft</xsl:param>
 
 
 </xsl:stylesheet>
