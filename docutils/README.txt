@@ -28,7 +28,7 @@ complete details.
 2. Use the latest Docutils code.  Get the code from Subversion or from
    the snapshot:
 
-       http://docutils.sf.net/docutils-snapshot.tgz
+       http://docutils.svn.sourceforge.net/viewvc/docutils/trunk/docutils/?view=tar
 
    See `Releases & Snapshots`_ below for details.
 
@@ -97,10 +97,11 @@ the current snapshot (which is usually updated within an hour of
 changes being committed to the repository):
 
 * Snapshot of Docutils code, documentation, front-end tools, and
-  tests: http://docutils.sf.net/docutils-snapshot.tgz
+  tests:
+  http://docutils.svn.sourceforge.net/viewvc/docutils/trunk/docutils/?view=tar
 
 * Snapshot of the Sandbox (experimental, contributed code):
-  http://docutils.sf.net/docutils-sandbox-snapshot.tgz
+  http://docutils.svn.sourceforge.net/viewvc/docutils/trunk/sandbox/?view=tar
 
 To keep up to date on the latest developments, download fresh copies
 of the snapshots regularly.  New functionality is being added weekly,
