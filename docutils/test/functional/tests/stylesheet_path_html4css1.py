@@ -11,5 +11,5 @@ writer_name = "html4css1"
 
 # Settings
 settings_overrides['stylesheet'] = ''
-settings_overrides['stylesheet_path'] = 'data/ham.css,/missing.css'
+settings_overrides['stylesheet_path'] = 'data/ham.css,functional/output/missing.css'
 settings_overrides['embed_stylesheet'] = False
