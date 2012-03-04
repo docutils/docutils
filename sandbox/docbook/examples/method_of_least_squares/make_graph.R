@@ -3,7 +3,7 @@ spec = matrix(c(
   'draft' , 'm', 0, "logical"
 ), ncol=4, byrow=T)
 opt = getopt(spec)
-if (opt$draft == T){
+if (length(opt$draft) > 0 && opt$draft == T){
 	res = 100
 	path = 'force_displacment_draft.png'
 }else{
@@ -11,7 +11,7 @@ if (opt$draft == T){
 	path = 'force_displacment.png'
 }
 x <- seq(from= 4, to=25, by=.2)
-y <- 4 * x
+y <- 5 * x
 y <- rnorm(length(y), mean=y, sd=4)
 y_range <- range(y)
 png(file=path, width=5.5, height=4.0, units="in", res=res)

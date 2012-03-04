@@ -34,8 +34,7 @@ force_displacment_draft.png: make_graph.R
 force_displacment.png: make_graph.R
 	Rscript make_graph.R 
 
-test: 
-	xsltproc rst_xml_to_docbook.xsl method_of_least_squares.xml > /dev/null
+test: method_of_least_squares.xml method_of_least_squares_docbook.xml method_of_least_squares_docbook.fo xmlformat
 	 
 validate: 
 	validate_docbook.sh validate_docbook.sh method_of_least_squares_docbook.xml 
