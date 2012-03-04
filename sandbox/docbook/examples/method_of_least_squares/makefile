@@ -3,6 +3,8 @@ all: force_displacment.png methods_title_page.xsl method_of_least_squares.pdf  x
 
 draft: force_displacment_draft.png methods_title_page.xsl method_of_least_squares.pdf  xmlformat
 
+default: methods_title_page.xsl method_of_least_squares_default.pdf
+
 
 methods_title_page.xsl: methods_title_page.xml
 	xsltproc make_title_page.xsl methods_title_page.xml > methods_title_page.xsl
@@ -10,14 +12,30 @@ methods_title_page.xsl: methods_title_page.xml
 method_of_least_squares.xml: method_of_least_squares.rst
 	rst2xml.py --no-doctype --trim-footnote-reference-space method_of_least_squares.rst |rstxml2xml.py  > method_of_least_squares.xml
 
+method_of_least_squares_default.xml: method_of_least_squares_clean.rst
+	rst2xml.py --no-doctype --trim-footnote-reference-space method_of_least_squares_clean.rst |rstxml2xml.py  > method_of_least_squares_default.xml
+
+method_of_least_squares_clean.rst:  method_of_least_squares.rst
+	python make_default.py method_of_least_squares.rst > method_of_least_squares_clean.rst
+
+method_of_least_squares_default_docbook.xml: method_of_least_squares_default.xml
+	xsltproc rst_xml_to_docbook_default.xsl method_of_least_squares_default.xml > method_of_least_squares_default_docbook.xml
+
 method_of_least_squares_docbook.xml: method_of_least_squares.xml
 	xsltproc rst_xml_to_docbook.xsl method_of_least_squares.xml > method_of_least_squares_docbook.xml
 
 method_of_least_squares_docbook.fo:method_of_least_squares_docbook.xml
 	xsltproc docbook_fo.xsl method_of_least_squares_docbook.xml > method_of_least_squares_docbook.fo
 
+method_of_least_squares_default_docbook.fo:method_of_least_squares_default_docbook.xml
+	xsltproc docbook_default_fo.xsl method_of_least_squares_default_docbook.xml > method_of_least_squares_default_docbook.fo
+
 method_of_least_squares.pdf: method_of_least_squares_docbook.fo
 	fop -fo method_of_least_squares_docbook.fo -pdf method_of_least_squares.pdf
+
+method_of_least_squares_default.pdf: method_of_least_squares_default_docbook.fo
+	fop -fo method_of_least_squares_default_docbook.fo -pdf method_of_least_squares_default.pdf
+
 
 xmlformat:
 	xmlformat.pl -i method_of_least_squares_docbook.xml
