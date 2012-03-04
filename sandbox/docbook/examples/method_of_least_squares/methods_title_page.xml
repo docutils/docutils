@@ -46,10 +46,12 @@
     <author space-before="0.5em"
             font-size="&hsize1;"/>
 
-        <address
-            text-align="center"
-            font-size="&hsize2;"
-            />
+    <address
+        text-align="center"
+        font-size="&hsize2;"
+        />
+
+    <email/>
 
     <abstract space-before=".5in"
               space-before.conditionality="retain"
