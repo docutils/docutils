@@ -48,6 +48,65 @@ originators of Ogg Vorbis) put it well when he said:
    http://www.catb.org/~esr/writings/magic-cauldron/
 
 
+How to get a new feature into Docutils
+========================================
+
+Question:
+   I would very much like to have this new feature in the Docutils core.
+   What exactly do I have to do to make this possible?
+
+* Present your idea at the Docutils-develop_ mailing list,
+
+  +1  usually triggers a fast response,
+  -1  may be forgotten later,
+
+  and/or file a feature request at the `docutils tracker`_
+
+  +1  there is a permanent record,
+  -1  it may stay forgotten among all the other feature requests.
+
+
+* Convince a Docutils developer that this is a valuable addition worth the
+  effort.
+
+* Contribute. The developers will make sure that the contribution fits
+  nicely into Docutils (cf. the `review criteria`_). This might involve
+  discussing (and compromising on) design and implementation details. It
+  might also lead to the conclusion that the addition fits better in `the
+  sandbox`_ than in the Docutils core.
+
+* Be patient, and be persistent.  None of us are paid to do this,
+  it's all in our spare time -- which is precious and rare.
+
+How to make code contributions that are easily accepted:
+
+* Have a look at the `Python coding conventions`_ and `documentation
+  conventions`_ below.
+
+* **Prepare test cases.** This vastly helps when integrating new code. Test
+  cases are also examples and showcases for new features. See `Docutils
+  Testing`_ for a description of the test suite in ``docutils/test/``.
+
+  Ensure the addition works with all supported Python versions
+  (2.3 ... 3.2).
+
+* Look at the Docutils sources to see how similar features are implemented,
+  learn to do it "the Docutils way".
+
+* Prepare the a patch or an addition to the existing documentation.
+  Include links.
+
+* If you are familiar with version control, consider creating a `feature
+  branch`_ in a Docutils repository_ checkout. (Working with branches is
+  *much* easier with git_. You can get a git clone of the repository from
+  http://repo.or.cz/w/docutils.git or with git-svn.)
+
+.. _docutils-develop: ../user/mailing-lists.html#docutils-develop
+.. _docutils tracker: http://sourceforge.net/tracker/?group_id=38414
+.. _git: http://git-scm.com/
+.. _Docutils testing: testing.html
+
+
 Python Coding Conventions
 =========================
 
@@ -217,8 +276,10 @@ intentions regarding copyright, in one of the following ways:
   .. _pypi: http://pypi.python.org/pypi?:action=browse&c=54
 
 
-Subversion Repository
-=====================
+.. _Subversion Repository:
+
+Repository
+==========
 
 Please see the `repository documentation`_ for details on how to
 access Docutils' Subversion repository.  Anyone can access the
@@ -256,6 +317,9 @@ to both.  No patches or dedicated branches are required for bug fixes,
 but they may be used.  It is up to the discretion of project
 developers to decide which mechanism to use for each case.
 
+.. _feature branches:
+.. _feature branch:
+
 Feature additions and API changes will be done in **feature
 branches**.  Feature branches will not be managed in any way.
 Frequent small checkins are encouraged here.  Feature branches must be
@@ -289,8 +353,6 @@ maintenance branch, it must undergo review.  These are the criteria:
 The review process will ensure that at least one other set of eyeballs
 & brains sees the code before it enters the core.  In addition to the
 above, the general `Check-ins`_ policy (below) also applies.
-
-.. _Docutils Testing: testing.html
 
 
 Check-ins
