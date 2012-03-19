@@ -135,7 +135,7 @@ class Publisher:
         if self.settings is None:
             defaults = (settings_overrides or {}).copy()
             # Propagate exceptions by default when used programmatically:
-            defaults.setdefault('traceback', 1)
+            defaults.setdefault('traceback', True)
             self.get_settings(settings_spec=settings_spec,
                               config_section=config_section,
                               **defaults)
@@ -171,9 +171,17 @@ class Publisher:
             source_path = self.settings._source
         else:
             self.settings._source = source_path
-        self.source = self.source_class(
-            source=source, source_path=source_path,
-            encoding=self.settings.input_encoding)
+        # Raise IOError instead of system exit with `tracback == True`
+        # TODO: change io.FileInput's default behaviour and remove this hack
+        try:
+            self.source = self.source_class(
+                source=source, source_path=source_path,
+                encoding=self.settings.input_encoding,
+                handle_io_errors=False)
+        except TypeError:
+            self.source = self.source_class(
+                source=source, source_path=source_path,
+                encoding=self.settings.input_encoding)
 
     def set_destination(self, destination=None, destination_path=None):
         if destination_path is None:
@@ -184,6 +192,9 @@ class Publisher:
             destination=destination, destination_path=destination_path,
             encoding=self.settings.output_encoding,
             error_handler=self.settings.output_encoding_error_handler)
+        # Raise IOError instead of system exit with `tracback == True`
+        # TODO: change io.FileInput's default behaviour and remove this hack
+        self.destination.handle_io_errors=False
 
     def apply_transforms(self):
         self.document.transformer.populate_from_components(
@@ -221,7 +232,7 @@ class Publisher:
                 self.debugging_dumps()
                 raise
             self.report_Exception(error)
-            exit = 1
+            exit = True
             exit_status = 1
         self.debugging_dumps()
         if (enable_exit_status and self.document
@@ -260,6 +271,13 @@ class Publisher:
             self.report_SystemMessage(error)
         elif isinstance(error, UnicodeEncodeError):
             self.report_UnicodeError(error)
+        elif isinstance(error, io.InputError):
+            self._stderr.write(u'Unable to open source file for reading:\n'
+                               u'  %s\n' % ErrorString(error))
+        elif isinstance(error, io.OutputError):
+            self._stderr.write(
+                u'Unable to open destination file for writing:\n'
+                u'  %s\n' % ErrorString(error))
         else:
             print >>self._stderr, u'%s' % ErrorString(error)
             print >>self._stderr, ("""\
