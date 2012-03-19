@@ -36,6 +36,8 @@ Changes Since 0.8.1
 * docutils/io.py
 
   - Fix [ 3395948 ] (Work around encoding problems in Py3k).
+  - `mode` argument for FileOutput avoids code replication in
+    BinaryFileOutput.
 
 * docutils/utils.py -> docutils/utils/__init__.py
 
