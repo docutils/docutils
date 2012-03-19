@@ -284,9 +284,15 @@ class FileOutput(Output):
     Output for single, simple file-like objects.
     """
 
+    mode = 'w'
+    """The mode argument for `open()`."""
+    # 'wb' for binary (e.g. OpenOffice) files.
+    # (Do not use binary mode ('wb') for text files, as this prevents the
+    # conversion of newlines to the system specific default.)
+
     def __init__(self, destination=None, destination_path=None,
                  encoding=None, error_handler='strict', autoclose=True,
-                 handle_io_errors=True):
+                 handle_io_errors=None, mode=None):
         """
         :Parameters:
             - `destination`: either a file-like object (which is written
@@ -294,14 +300,22 @@ class FileOutput(Output):
               `destination_path` given).
             - `destination_path`: a path to a file, which is opened and then
               written.
+            - `encoding`: the text encoding of the output file.
+            - `error_handler`: the encoding error handler to use.
             - `autoclose`: close automatically after write (except when
               `sys.stdout` or `sys.stderr` is the destination).
+            - `handle_io_errors`: summarize I/O errors here, and exit?
+            - `mode`: how the file is to be opened (see standard function
+              `open`). The default is 'w', providing universal newline
+              support for text files.
         """
         Output.__init__(self, destination, destination_path,
                         encoding, error_handler)
         self.opened = True
         self.autoclose = autoclose
         self.handle_io_errors = handle_io_errors
+        if mode is not None:
+            self.mode = mode
         self._stderr = ErrorOutput()
         if destination is None:
             if destination_path:
@@ -316,15 +330,13 @@ class FileOutput(Output):
 
     def open(self):
         # Specify encoding in Python 3.
-        # (Do not use binary mode ('wb') as this prevents the
-        # conversion of newlines to the system specific default.)
         if sys.version_info >= (3,0):
             kwargs = {'encoding': self.encoding,
                       'errors': self.error_handler}
         else:
             kwargs = {}
         try:
-            self.destination = open(self.destination_path, 'w', **kwargs)
+            self.destination = open(self.destination_path, self.mode, **kwargs)
         except IOError, error:
             if not self.handle_io_errors:
                 raise
@@ -376,17 +388,9 @@ class BinaryFileOutput(FileOutput):
     """
     A version of docutils.io.FileOutput which writes to a binary file.
     """
-    def open(self):
-        try:
-            self.destination = open(self.destination_path, 'wb')
-        except IOError, error:
-            if not self.handle_io_errors:
-                raise
-            print >>self._stderr, ErrorString(error)
-            print >>self._stderr, (u'Unable to open destination file'
-                u" for writing ('%s').  Exiting." % self.destination_path)
-            sys.exit(1)
-        self.opened = True
+    # Used by core.publish_cmdline_to_binary() which in turn is used by
+    # rst2odt (OpenOffice writer)
+    mode = 'wb'
 
 
 class StringInput(Input):
