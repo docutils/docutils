@@ -53,6 +53,29 @@ exposed_pseudoxml_output = b("""\
 """ % u_prefix)
 
 
+class PublisherTests(DocutilsTestSupport.StandardTestCase):
+
+    def test_input_error_handling(self):
+        # core.publish_cmdline(argv=['nonexisting/path'])
+        # exits with a short message, if `traceback` is False,
+
+        # pass IOErrors to calling application if `traceback` is True
+        try:
+            core.publish_cmdline(argv=['nonexisting/path'],
+                                       settings_overrides={'traceback': True})
+        except IOError, e:
+            self.assertTrue(isinstance(e, io.InputError))
+
+
+    def test_output_error_handling(self):
+        # pass IOErrors to calling application if `traceback` is True
+        try:
+            core.publish_cmdline(argv=['data/include.txt', 'nonexisting/path'],
+                                       settings_overrides={'traceback': True})
+        except IOError, e:
+            self.assertTrue(isinstance(e, io.OutputError))
+
+
 class PublishDoctreeTestCase(DocutilsTestSupport.StandardTestCase, docutils.SettingsSpec):
 
     settings_default_overrides = {
@@ -100,7 +123,7 @@ class PublishDoctreeTestCase(DocutilsTestSupport.StandardTestCase, docutils.Sett
 
     def test_publish_pickle(self):
         # Test publishing a document tree with pickling and unpickling.
-        
+
         # Produce the document tree.
         doctree = core.publish_doctree(
             source=test_document,

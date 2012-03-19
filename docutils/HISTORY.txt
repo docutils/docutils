@@ -38,6 +38,14 @@ Changes Since 0.8.1
   - Fix [ 3395948 ] (Work around encoding problems in Py3k).
   - `mode` argument for FileOutput avoids code replication in
     BinaryFileOutput.
+  - New exceptions InputError and OutputError for IO errors in
+    FileInput/FileOutput.
+    
+* docutils/core.py:
+
+  - No "hard" system exit on file IO errors: catch and report them in
+    `Publisher.reportException` instead. Allows handling by a calling
+    application if the configuration setting `traceback` is True. 
 
 * docutils/utils.py -> docutils/utils/__init__.py
 
