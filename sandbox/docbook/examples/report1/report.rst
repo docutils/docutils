@@ -812,10 +812,10 @@ of extra labor.
    :height: 2.6in
    :width: 5.73in
    :alt: Problem Solving, 2010, 2011
+   :name: problem-solve-graph
 
    Percentage of hours spent problem solving compared to total hours.
    Problem solving increased 1.5% after the cutover.
-   _`problem-solve-graph`
 
 
 The graph measures the amount of hours used to problem solves in terms
@@ -1017,9 +1017,10 @@ Costs
 
 
 .. class:: hardware-costs
-.. csv-table:: System Costs\ _`table-costs1`
+.. csv-table:: System Costs
      :file: tables/sys_costs.csv
      :header-rows: 1
+     :name: table-costs1
 
 
 .. class:: hardware-costs
