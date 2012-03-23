@@ -69,7 +69,7 @@ arrows(x0=10, x1=7, y0=150, y1=150, length=.1)
 text(x=10, y=150,pos=4, "migration")
 arrows(x0=30, x1=35, y0=80, y1=80, length=.1)
 text(x=30, y=80,pos=2, "cutover")
-legend("bottomleft", c("real","adjusted"), cex=legend_font_size, 
+legend("bottomleft", c("adjusted","real"), cex=legend_font_size, 
  col=line_colors,  lty=line_types, bty='y', bg="white", box.lwd=box.lwd)
 source("make_x_axis.R")
 dev.off()
