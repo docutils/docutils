@@ -72,7 +72,6 @@ class FixTree(xml.sax.ContentHandler):
 
   def __write_text(self, raw = False):
         if raw:
-            ff
             text = self.__characters
         else:
             text =  xml.sax.saxutils.escape(self.__characters)

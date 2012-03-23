@@ -13,7 +13,8 @@
     <xsl:param name="glossary-break-before">1</xsl:param> <!--break before-->
     <xsl:param name="glossary-break-after">1</xsl:param> <!--break before-->
     <xsl:param name="docinfo-by-author"/> <!--group other info with author or authors-->
-    <xsl:param name="draft"/> <!--in draft mode-->
+    <xsl:param name="draft_image"/> <!--suffix for draft images-->
+    <xsl:param name="address-format"/> <!--in draft mode-->
 
 </xsl:stylesheet>
 
