@@ -21,9 +21,27 @@
           </xsl:choose>
     </xsl:template>
 
+    <xsl:template name="make-roles">
+        <xsl:if test="@classes">
+            <xsl:attribute name="role">
+                <xsl:value-of select="@classes"/>
+            </xsl:attribute>
+        </xsl:if>
+    </xsl:template>
+
+
     <xsl:template name="make-id">
         <xsl:variable name="current-id">
-            <xsl:call-template name="find-id"/>
+            <xsl:choose>
+                <xsl:when test="self::figure">
+                    <xsl:for-each select="image">
+                        <xsl:call-template name="find-id"/>
+                    </xsl:for-each>
+                </xsl:when>
+                <xsl:otherwise>
+                    <xsl:call-template name="find-id"/>
+                </xsl:otherwise>
+            </xsl:choose>
         </xsl:variable>
         <xsl:variable name="preceding-refid">
             <xsl:for-each select="preceding-sibling::*[1]">
@@ -33,15 +51,6 @@
             </xsl:for-each>
         </xsl:variable>
         <xsl:choose >
-            <xsl:when test="self::table"><!--tables can only have ids in title-->
-                <xsl:if test="title/target">
-                    <xsl:attribute name="xml:id">
-                        <xsl:call-template name="find-id">
-                            <xsl:with-param name="string" select="title/target[@ids]"/>
-                        </xsl:call-template>
-                    </xsl:attribute>
-                </xsl:if>
-            </xsl:when>
             <xsl:when test="$preceding-refid != ''">
                 <xsl:if test="$preceding-refid != $current-id">
                     <xsl:message terminate="yes">
@@ -54,13 +63,6 @@
                 <xsl:attribute name="xml:id">
                     <xsl:value-of select="$preceding-refid"/>
                 </xsl:attribute>
-            </xsl:when>
-            <xsl:when test="self::figure">
-                <xsl:if test="caption/target">
-                    <xsl:attribute name="xml:id">
-                        <xsl:value-of select="caption/target/@ids"/>
-                    </xsl:attribute>
-                </xsl:if>
             </xsl:when>
             <xsl:when test="$current-id != ''">
                 <xsl:attribute name="xml:id">

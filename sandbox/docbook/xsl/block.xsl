@@ -14,17 +14,14 @@
         list_item/paragraph|container/paragraph|legend/paragraph|
         footnote/paragraph|description/paragraph|sidebar/paragraph">
         <d:para>
+            <xsl:call-template name="make-roles"/>
             <xsl:apply-templates/>
         </d:para>
     </xsl:template>
 
     <xsl:template match="section/block_quote|block_quote">
         <d:blockquote>
-            <xsl:if test="@classes">
-                <xsl:attribute name="role">
-                    <xsl:value-of select="@classes"/>
-                </xsl:attribute>
-            </xsl:if>
+            <xsl:call-template name="make-roles"/>
             <xsl:apply-templates select="attribution" mode="with-block-quote"/>
             <xsl:apply-templates/>
         </d:blockquote>
