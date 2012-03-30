@@ -61,7 +61,7 @@ class Writer(latex2e.Writer):
 
     def __init__(self):
         latex2e.Writer.__init__(self)
-        self.settings_defaults.update({'fontencoding': ''}) # use default (EU1)
+        self.settings_defaults.update({'fontencoding': ''}) # use default (EU1 or EU2)
         self.translator_class = XeLaTeXTranslator
 
 
@@ -125,79 +125,10 @@ class Babel(latex2e.Babel):
 class XeLaTeXTranslator(latex2e.LaTeXTranslator):
 
     def __init__(self, document):
+        self.is_xetex = True  # typeset with XeTeX or LuaTeX engine
         latex2e.LaTeXTranslator.__init__(self, document, Babel)
         if self.latex_encoding == 'utf8':
             self.requirements.pop('_inputenc', None)
         else:
             self.requirements['_inputenc'] = (r'\XeTeXinputencoding %s '
                                               % self.latex_encoding)
-
-    # XeTeX does not know the length unit px.
-    # Use \pdfpxdimen, the macro to set the value of 1 px in pdftex.
-    # This way, configuring works the same for pdftex and xetex.
-    def to_latex_length(self, length_str, px=r'\pdfpxdimen'):
-        """Convert string with rst lenght to LaTeX length"""
-        return latex2e.LaTeXTranslator.to_latex_length(self, length_str, px)
-
-    # Simpler variant of encode, as XeTeX understands utf8 Unicode:
-    def encode(self, text):
-        """Return text with 'problematic' characters escaped.
-
-        Escape the ten special printing characters ``# $ % & ~ _ ^ \ { }``,
-        square brackets ``[ ]``, double quotes and (in OT1) ``< | >``.
-        """
-        if self.verbatim:
-            return text
-        # LaTeX encoding maps:
-        special_chars = {
-            ord('#'): ur'\#',
-            ord('$'): ur'\$',
-            ord('%'): ur'\%',
-            ord('&'): ur'\&',
-            ord('~'): ur'\textasciitilde{}',
-            ord('_'): ur'\_',
-            ord('^'): ur'\textasciicircum{}',
-            ord('\\'): ur'\textbackslash{}',
-            ord('{'): ur'\{',
-            ord('}'): ur'\}',
-        # Square brackets are ordinary chars and cannot be escaped with '\',
-        # so we put them in a group '{[}'. (Alternative: ensure that all
-        # macros with optional arguments are terminated with {} and text
-        # inside any optional argument is put in a group ``[{text}]``).
-        # Commands with optional args inside an optional arg must be put
-        # in a group, e.g. ``\item[{\hyperref[label]{text}}]``.
-            ord('['): ur'{[}',
-            ord(']'): ur'{]}'
-        }
-        # Unicode chars that are not properly handled by XeTeX
-        unsupported_unicode_chars = {
-            0x00AD: ur'\-', # SOFT HYPHEN
-        }
-        # set up the translation table:
-        table = special_chars
-        # keep the underscore in citation references
-        if self.inside_citation_reference_label:
-            del(table[ord('_')])
-        if self.insert_non_breaking_blanks:
-            table[ord(' ')] = ur'~'
-        if self.literal:
-            # double quotes are 'active' in some languages
-            table[ord('"')] = self.babel.literal_double_quote
-        else:
-            text = self.babel.quote_quotes(text)
-        # Unicode chars:
-        table.update(unsupported_unicode_chars)
-
-        text = text.translate(table)
-
-        # Literal line breaks (in address or literal blocks):
-        if self.insert_newline:
-            # for blank lines, insert a protected space, to avoid
-            # ! LaTeX Error: There's no line here to end.
-            textlines = [line + '~'*(not line.lstrip())
-                         for line in text.split('\n')]
-            text = '\\\\\n'.join(textlines)
-        if self.literal and not self.insert_non_breaking_blanks:
-            # preserve runs of spaces but allow wrapping
-            text = text.replace('  ', ' ~')
-        return text
