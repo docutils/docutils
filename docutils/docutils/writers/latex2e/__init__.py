@@ -392,7 +392,7 @@ class Babel(object):
             self.setup.append(
                 r'\addto\shorthandsspanish{\spanishdeactivate{."~<>}}')
             # or prepend r'\def\spanishoptions{es-noshorthands}'
-        if (languages[-1] is 'english' and
+        if (languages[-1] == 'english' and
             'french' in self.otherlanguages.keys()):
             self.setup += ['% Prevent side-effects if French hyphenation '
                            'patterns are not loaded:',
