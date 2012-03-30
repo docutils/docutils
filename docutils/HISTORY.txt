@@ -82,6 +82,7 @@ Changes Since 0.8.1
   - Use ``\setcounter{secnumdepth}{0}`` instead of ``*``-versions
     when suppressing LaTeX section numbering.
   - Use ``\DUtitle`` for unsupported section levels
+  - Apply [ 3512791 ] do not compare string literals with "is"
 
 * docutils/writers/html4css1/__init__.py
 
