@@ -1,10 +1,10 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 #   $Id: sax_complete_copy.py 54 2011-04-17 15:44:41Z cynthia $
 
 import os, sys, argparse, io
 import xml.sax.handler
 from xml.sax.handler import feature_namespaces
-from StringIO import StringIO
+from io import StringIO
 
 
 import asciitomathml.asciitomathml 
@@ -20,11 +20,11 @@ class InvaidXml(Exception):
 class FixTree(xml.sax.ContentHandler):
   
   def __init__(self, mathml=True, raw_xml=True):
-        self.__characters = ''
-        self.__mathml = mathml
-        self.__raw_xml = raw_xml
-        self.__write_raw = False
-        self.__ns_dict = {'http://www.w3.org/XML/1998/namespace': "xml"}
+        self._characters = ''
+        self._mathml = mathml
+        self._raw_xml = raw_xml
+        self._write_raw = False
+        self._ns_dict = {'http://www.w3.org/XML/1998/namespace': "xml"}
 
 
   def startDocument(self):
@@ -32,23 +32,23 @@ class FixTree(xml.sax.ContentHandler):
 
 
   def characters (self, characters): 
-    self.__characters += characters
+    self._characters += characters
 
 
   def startElementNS(self, name, qname, attrs):
-        self.__write_text()
+        self._write_text()
         ns = name[0]
         el_name = name[1]
-        sys.stdout.write('<')
+        self._write_string('<')
         if el_name == 'raw':
-            if attrs.get((None, 'format')) == 'xml' and self.__raw_xml:
-                self.__write_raw = True
+            if attrs.get((None, 'format')) == 'xml' and self._raw_xml:
+                self._write_raw = True
         if ns:
-            sys.stdout.write('ns1:%s' % el_name)
+            self._write_string('ns1:%s' % el_name)
         else:
-            sys.stdout.write(el_name)
+            self._write_string(el_name)
         if ns:
-            sys.stdout.write(' xmlns:ns1="%s"' % ns)
+            self._write_string(' xmlns:ns1="%s"' % ns)
 
         the_keys = list(attrs.keys())
         counter = 1
@@ -57,60 +57,63 @@ class FixTree(xml.sax.ContentHandler):
             ns_att = the_key[0]
             att_name = the_key[1]
             value = attrs[the_key]
-            ns_prefix = self.__ns_dict.get(ns_att)
+            ns_prefix = self._ns_dict.get(ns_att)
             if ns_att and not ns_prefix:
                 raise InvaidXml('No namespace for "%s"\n' % (ns_att))
             if ns_att and ns_prefix == 'xml':
-                sys.stdout.write(' xml:%s="%s"' % (att_name, value))
+                self._write_string(' xml:%s="%s"' % (att_name, value))
             elif ns_att:
                 raise InvaidXml('Sorry, but don\'t know what to do with ns "%s"\n' % (ns_prefix))
             else:
-                sys.stdout.write(' %s="%s"' % (att_name.encode('utf8'), value.encode('utf8')))
-        sys.stdout.write('>')
+                self._write_string(' %s="%s"' % (att_name, value))
+        self._write_string('>')
 
     
 
-  def __write_text(self, raw = False):
+  def _write_text(self, raw = False):
         if raw:
-            text = self.__characters
+            text = self._characters
         else:
-            text =  xml.sax.saxutils.escape(self.__characters)
-        sys.stdout.write(text.encode('utf8'))
-        self.__characters = ''
+            text =  xml.sax.saxutils.escape(self._characters)
+        self._write_string(text)
+        self._characters = ''
+
+  def _write_string(self, the_string):
+      sys.stdout.write(the_string)
 
   def endElementNS(self, name, qname):
         ns = name[0]
         el_name = name[1]
-        if (el_name == 'math_block' and  self.__mathml) or (el_name == 'math' and self.__mathml) :
+        if (el_name == 'math_block' and  self._mathml) or (el_name == 'math' and self._mathml) :
             # math_obj =  asciitomathml.asciitomathml.AsciiMathML()
             if el_name == 'math_block':
                 math_obj =  asciitomathml.asciitomathml.AsciiMathML(mstyle={'displaystyle':'true'})
             else:
                 math_obj =  asciitomathml.asciitomathml.AsciiMathML()
-            math_obj.parse_string(self.__characters)
+            math_obj.parse_string(self._characters)
             math_tree = math_obj.get_tree()
             math_string = tostring(math_tree, encoding="us-ascii")
-            sys.stdout.write(math_string)
-            self.__characters = ''
-        elif el_name == 'raw' and self.__write_raw:
-            self.__write_text(raw = True)
-            self.__write_raw = False
+            self._write_string(math_string)
+            self._characters = ''
+        elif el_name == 'raw' and self._write_raw:
+            self._write_text(raw = True)
+            self._write_raw = False
         else:
-            self.__write_text()
+            self._write_text()
         if ns:
             raise InvaidXml('Should not be namespace "%s" here\n' % (ns))
         else:
-            sys.stdout.write('</%s>' % el_name)
+            self._write_string('</%s>' % el_name)
 
 
 
 class ConverttoMathml:
 
 
-    def __init__(self):
+    def _init_(self):
         pass
 
-    def __parse_args(self):
+    def _parse_args(self):
         desc = """Inserts Mathmx elements into an rst document. 
 In order to use the script, first run rs2txml.py on the RST file.
 Then run this script on that resulting file
@@ -127,7 +130,7 @@ Or, in one pass: rst2xml.py <infile> | python3 rstxml2mathml.py
 
 
     def convert_to_mathml(self):
-        args = self.__parse_args()
+        args = self._parse_args()
         standard_in = False
         in_file = args.in_file
         no_mathml = args.no_mathml
