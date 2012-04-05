@@ -148,4 +148,4 @@ report.pdf: report_docbook.fo
 	fop -fo report_docbook.fo -pdf report.pdf
 
 clean:
-	rm -f charts/*png title_page.xsl report.xml report_docbook.xml report_docbook.fo report.pdf
+	rm -f charts/*png title_page.xsl report.xml report_docbook.xml report_docbook.fo report.pdf charts/.Rprofile

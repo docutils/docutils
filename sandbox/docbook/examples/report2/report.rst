@@ -109,11 +109,12 @@ there are fewer shipping stations. Hence the rate is much higer.
    :height: 2.6in
    :width: 5.73in
    :alt: Shipping Rate, 2010
+   :name: shipping-graph
 
    Units shipped per hour over weeks, with a trend line. The first
    decline occurred during week 31, at the start of August, when ZFC
    had to close down PANDA stations to install SLAM lines. The second
-   decline, in the shaded area, occurred during the cutover. _`shipping-graph`
+   decline, in the shaded area, occurred during the cutover. 
 
 Here are the other processes, compared with the previous year, included for
 completeness.
@@ -440,9 +441,10 @@ requires more labor, hurting efficiency rates.
    :height: 3.6in
    :width: 5.73in
    :alt: Return Rates for 2010 
+   :name: returns-graph
 
    Units Processed per hour over weeks, for returns, in 2011.
-   _`returns-graph`
+   
 
 The percentage of indirect labor also increased at the same time.
 
