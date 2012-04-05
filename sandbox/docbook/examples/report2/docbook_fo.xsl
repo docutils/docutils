@@ -4,10 +4,7 @@
     xmlns:d="http://docbook.org/ns/docbook"
     version="1.1">
 
-    <!--
-    <xsl:import href="/Users/cejohnsonlouisville/Documents/docbook-xsl-ns-1.76.1/fo/docbook.xsl"/>
-    -->
-    <xsl:import href="http://50.56.245.89/xsl-ns/fo/docbook.xsl"/>
+    <xsl:import href="http://docbook.sourceforge.net/release/xsl-ns/current/fo/docbook.xsl"/>
     <xsl:import href="title_page.xsl"/>
     <xsl:param name="generate.toc">
 appendix  toc,title
