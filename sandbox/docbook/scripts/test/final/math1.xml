@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf8'?>
+<document xmlns:ns0="http://www.w3.org/1998/Math/MathML" source="test.rst">
+ <docinfo>
+  <author>Paul Tremblay</author>
+ </docinfo>
+ <section ids="title" names="title">
+  <title>title</title>
+  <math_block xml:space="preserve"><ns0:math><ns0:mstyle displaystyle="true"><ns0:msup><ns0:mi>a</ns0:mi><ns0:mn>2</ns0:mn></ns0:msup><ns0:mo>+</ns0:mo><ns0:msup><ns0:mi>b</ns0:mi><ns0:mn>2</ns0:mn></ns0:msup><ns0:mo>=</ns0:mo><ns0:msup><ns0:mi>c</ns0:mi><ns0:mn>2</ns0:mn></ns0:msup></ns0:mstyle></ns0:math></math_block>
+  <paragraph>end of math</paragraph>
+ </section>
+</document>
