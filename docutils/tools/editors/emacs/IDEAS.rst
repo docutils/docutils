@@ -322,3 +322,14 @@ having to hard-code this in every text file, nor forcing the user to
 add a local mode variable at the top of the file. We could perform
 this guessing by searching for a valid adornment at the top of the
 document or searching for reStructuredText directives further on.
+
+Entry level for rst-straighten-adornments
+-----------------------------------------
+
+* `rst-straighten-adornments` should have an entry level to start at a
+  lower than the top level
+
+  * I for one prefer a verbose style for top level titles which is not
+    appropriate for documents without titles
+
+  * Should be done by a prefix argument

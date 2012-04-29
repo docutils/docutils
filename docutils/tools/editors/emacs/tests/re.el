@@ -633,7 +633,8 @@ and the numbered matches are compared."
 	     (cons "\\\\(|" "\\(?:|") ;; Make a group shy
 	     (cons "\\[^|\n]\\+" "\\(?:\\S \\|\\S \\(?:[^|\\\n]\\|\\\\.\\)\\{0,1000\\}[^	 |\\]\\)"
 		   ) ;; Symbol name more sophisticated
-	     (cons "\\\\(\\\\s" "\\(?:\\s") ;; Make a group shy
+	     (cons (regexp-quote "\\(\\sw\\|\\s_\\)+")
+		   "\\(?:\\sw+\\(?:\\s_\\sw+\\)*\\)") ;; New syntax for symbols
 	     (cons "\\\\(\\[\t " "\\(?:[\t ") ;; Make a group shy
 	     ))
     (should (re-equal-matches
@@ -760,8 +761,10 @@ and the numbered matches are compared."
 	     (cons "\\\\(\\[^" "\\(?:[^") ;; Make a group shy
 	     (cons "\\\\(:" "\\(?::") ;; Make a group shy
 	     (cons "\\\\(:" "\\(?::") ;; Make a group shy
-	     (cons "\\\\(\\\\sw" "\\(?:\\sw") ;; Make a group shy
-	     (cons "\\\\(\\\\sw" "\\(?:\\sw") ;; Make a group shy
+	     (cons (regexp-quote "\\(\\sw\\|\\s_\\)+")
+		   "\\(?:\\sw+\\(?:\\s_\\sw+\\)*\\)") ;; New syntax for symbols
+	     (cons (regexp-quote "\\(\\sw\\|\\s_\\)+")
+		   "\\(?:\\sw+\\(?:\\s_\\sw+\\)*\\)") ;; New syntax for symbols
 	     (cons (regexp-quote "\\\\]") "\\]") ;; Remove superfluous quote
 	     (cons (regexp-quote "\\|$") "")
 	     (cons (regexp-quote "\\([\t ]")
@@ -819,8 +822,10 @@ and the numbered matches are compared."
 	     (list "someone@example"
 		   (cons 2 1))
 	     (cons "^\\\\(" "\\(?:") ;; Make a group shy
-	     (cons "\\\\(\\\\sw" "\\(?:\\sw") ;; Make a group shy
-	     (cons "\\\\(\\\\sw" "\\(?:\\sw") ;; Make a group shy
+	     (cons (regexp-quote "\\(\\sw\\|\\s_\\)+")
+		   "\\(?:\\sw+\\(?:\\s_\\sw+\\)*\\)") ;; New syntax for symbols
+	     (cons (regexp-quote "\\(\\sw\\|\\s_\\)+")
+		   "\\(?:\\sw+\\(?:\\s_\\sw+\\)*\\)") ;; New syntax for symbols
 	     (cons (regexp-quote "\\|$") "")
 	     (cons (regexp-quote "\\([\t ]")
 		   "\\(?:$\\|[\t ]") ;; Move "$" in regex and make a group shy

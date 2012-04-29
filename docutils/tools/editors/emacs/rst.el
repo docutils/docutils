@@ -1,7 +1,6 @@
 ;;; rst.el --- Mode for viewing and editing reStructuredText-documents.
 
-;; Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011
-;;   Free Software Foundation, Inc.
+;; Copyright (C) 2003-2012  Free Software Foundation, Inc.
 
 ;; Maintainer: Stefan Merten <smerten@oekonux.de>
 ;; Author: Martin Blais <blais@furius.ca>,
@@ -120,7 +119,7 @@ and before TAIL-RE and DELIM-RE in VAR or DEFAULT for no match"
 ;; Use CVSHeader to really get information from CVS and not other version
 ;; control systems
 (defconst rst-cvs-header
-  "$CVSHeader: sm/rst_el/rst.el,v 1.233 2011-03-20 17:20:28 stefan Exp $")
+  "$CVSHeader: sm/rst_el/rst.el,v 1.254 2012-04-29 14:49:50 stefan Exp $")
 (defconst rst-cvs-rev
   (rst-extract-version "\\$" "CVSHeader: \\S + " "[0-9]+\\(?:\\.[0-9]+\\)+"
 		       " .*" rst-cvs-header "0.0")
@@ -145,11 +144,11 @@ SVN revision is the upstream (docutils) revision.")
 ;; Maintained by the release process
 (defconst rst-official-version
   (rst-extract-version "%" "OfficialVersion: " "[0-9]+\\(?:\\.[0-9]+\\)+" " "
-		       "%OfficialVersion: 1.1.0 %")
+		       "%OfficialVersion: 1.2.0 %")
   "Official version of the package.")
 (defconst rst-official-cvs-rev
   (rst-extract-version "[%$]" "Revision: " "[0-9]+\\(?:\\.[0-9]+\\)+" " "
-		       "%Revision: 1.233 %")
+		       "%Revision: 1.254 %")
   "CVS revision of this file in the official version.")
 
 (defconst rst-version
@@ -357,8 +356,7 @@ in parentheses follows the development revision and the timestamp.")
 				       ; tag
 
     ;; Symbol (`sym')
-    (sym-prt (:alt "\\sw" "\\s_"))
-    (sym-tag sym-prt "+")
+    (sym-tag (:shy "\\sw+" (:shy "\\s_\\sw+") "*"))
 
     ;; URIs (`uri')
     (uri-tag (:alt ,@rst-uri-schemes))
@@ -422,6 +420,7 @@ in parentheses follows the development revision and the timestamp.")
 Each entry consists of the symbol naming the regex and an
 argument list for `rst-re'.")
 
+;; FIXME: Use `sregex` or `rx` instead of re-inventing the wheel
 (defun rst-re (&rest args)
   "Interpret ARGS as regular expressions and return a regex string.
 Each element of ARGS may be one of the following:
@@ -548,7 +547,7 @@ are defined as well but give an additional message."
     (rst-define-key map [?\C-c ?\C-a ?\C-h] 'describe-prefix-bindings)
     ;; Display the hierarchy of adornments implied by the current document contents.
     (rst-define-key map [?\C-c ?\C-a ?\C-d] 'rst-display-adornments-hierarchy)
-    ;; Homogeneize the adornments in the document.
+    ;; Homogenize the adornments in the document.
     (rst-define-key map [?\C-c ?\C-a ?\C-s] 'rst-straighten-adornments
 		    [?\C-c ?\C-s])
 
@@ -664,21 +663,22 @@ This inherits from Text mode.")
     (modify-syntax-entry ?& "." st)
     (modify-syntax-entry ?' "." st)
     (modify-syntax-entry ?* "." st)
-    (modify-syntax-entry ?+ "." st)
+    (modify-syntax-entry ?+ "_" st)
     (modify-syntax-entry ?. "_" st)
     (modify-syntax-entry ?/ "." st)
+    (modify-syntax-entry ?: "_" st)
     (modify-syntax-entry ?< "." st)
     (modify-syntax-entry ?= "." st)
     (modify-syntax-entry ?> "." st)
     (modify-syntax-entry ?\\ "\\" st)
     (modify-syntax-entry ?| "." st)
-    (modify-syntax-entry ?_ "." st)
-    (modify-syntax-entry (aref "\u00ab" 0) "." st)
-    (modify-syntax-entry (aref "\u00bb" 0) "." st)
-    (modify-syntax-entry (aref "\u2018" 0) "." st)
-    (modify-syntax-entry (aref "\u2019" 0) "." st)
-    (modify-syntax-entry (aref "\u201c" 0) "." st)
-    (modify-syntax-entry (aref "\u201d" 0) "." st)
+    (modify-syntax-entry ?_ "_" st)
+    (modify-syntax-entry ?\u00ab "." st)
+    (modify-syntax-entry ?\u00bb "." st)
+    (modify-syntax-entry ?\u2018 "." st)
+    (modify-syntax-entry ?\u2019 "." st)
+    (modify-syntax-entry ?\u201c "." st)
+    (modify-syntax-entry ?\u201d "." st)
 
     st)
   "Syntax table used while in `rst-mode'.")
@@ -769,11 +769,10 @@ highlighting.
 
 ;;;###autoload
 (define-minor-mode rst-minor-mode
-  "ReST Minor Mode.
-Toggle ReST minor mode.
-With no argument, this command toggles the mode.
-Non-null prefix argument turns on the mode.
-Null prefix argument turns off the mode.
+  "Toggle ReST minor mode.
+With a prefix argument ARG, enable ReST minor mode if ARG is
+positive, and disable it otherwise.  If called from Lisp, enable
+the mode if ARG is omitted or nil.
 
 When ReST minor mode is enabled, the ReST mode keybindings
 are installed on top of the major mode bindings.  Use this
@@ -985,11 +984,9 @@ is always assumed to be 0).
 If there are existing overline and/or underline from the
 existing adornment, they are removed before adding the
 requested adornment."
-  (let (marker
+  (end-of-line)
+  (let ((marker (point-marker))
         len)
-
-      (end-of-line)
-      (setq marker (point-marker))
 
       ;; Fixup whitespace at the beginning and end of the line
       (if (or (null indent) (eq style 'simple))
@@ -1102,9 +1099,9 @@ Return nil if no syntactically valid adornment is found."
 	  (cond
 	   ((and nxt-emp prv-emp)
 	    ;; A transition
-	    (setq key t)
-	    (setq beg-txt beg-pnt)
-	    (setq end-txt end-pnt))
+	    (setq key t
+		  beg-txt beg-pnt
+		  end-txt end-pnt))
 	   ((or und-fnd ovr-fnd)
 	    ;; An overline with an underline
 	    (setq key (cons ado-ch 'over-and-under))
@@ -1113,22 +1110,22 @@ Return nil if no syntactically valid adornment is found."
 		  (ovr-pnt (if ovr-fnd ovr-fnd beg-pnt))
 		  (txt-pnt (if ovr-fnd ttl-abv ttl-blw)))
 	      (goto-char ovr-pnt)
-	      (setq beg-ovr (point))
-	      (setq end-ovr (line-end-position))
+	      (setq beg-ovr (point)
+		    end-ovr (line-end-position))
 	      (goto-char txt-pnt)
-	      (setq beg-txt (point))
-	      (setq end-txt (line-end-position))
+	      (setq beg-txt (point)
+		    end-txt (line-end-position))
 	      (goto-char und-pnt)
-	      (setq beg-und (point))
-	      (setq end-und (line-end-position))))
+	      (setq beg-und (point)
+		    end-und (line-end-position))))
 	   (ttl-abv
 	    ;; An underline
-	    (setq key (cons ado-ch 'simple))
-	    (setq beg-und beg-pnt)
-	    (setq end-und end-pnt)
+	    (setq key (cons ado-ch 'simple)
+		  beg-und beg-pnt
+		  end-und end-pnt)
 	    (goto-char ttl-abv)
-	    (setq beg-txt (point))
-	    (setq end-txt (line-end-position)))
+	    (setq beg-txt (point)
+		  end-txt (line-end-position)))
 	   (t
 	    ;; Invalid adornment
 	    (setq key nil)))
@@ -1203,8 +1200,8 @@ are nil."
 (defun rst-reset-section-caches ()
   "Reset all section cache variables.
 Should be called by interactive functions which deal with sections."
-  (setq rst-all-sections nil)
-  (setq rst-section-hierarchy nil))
+  (setq rst-all-sections nil
+	rst-section-hierarchy nil))
 
 (defvar rst-all-sections nil
   "All section adornments in the buffer as found by `rst-find-all-adornments'.
@@ -1284,10 +1281,11 @@ Uses and sets `rst-section-hierarchy' unless IGNORE is given."
       (if (eq rst-section-hierarchy t)
 	  nil
 	rst-section-hierarchy)
-    (let ((all (rst-find-all-adornments))
-	  r)
-      (setq all (assq-delete-all ignore all))
-      (setq r (rst-infer-hierarchy (mapcar 'cdr all)))
+    (let ((r (rst-infer-hierarchy
+	      (mapcar 'cdr
+		      (assq-delete-all
+		       ignore
+		       (rst-find-all-adornments))))))
       (setq rst-section-hierarchy
 	    (if ignore
 		;; Clear cache reflecting that a possible update is not
@@ -1410,7 +1408,7 @@ b. a negative numerical argument, which generally inverts the
   (interactive "P")
 
   (let* (;; Save our original position on the current line.
-	 (origpt (set-marker (make-marker) (point)))
+	 (origpt (point-marker))
 
          (reverse-direction (and pfxarg (< (prefix-numeric-value pfxarg) 0)))
          (toggle-style (and pfxarg (not reverse-direction))))
@@ -1709,32 +1707,28 @@ hierarchy is similar to that used by `rst-adjust-adornment-work'."
     ;; Create a list of markers for all the adornments which are found within
     ;; the region.
     (save-excursion
-      (let (m line)
+      (let (line)
         (while (and cur (< (setq line (caar cur)) region-end-line))
-          (setq m (make-marker))
           (goto-char (point-min))
           (forward-line (1- line))
-          (push (list (set-marker m (point)) (cdar cur)) marker-list)
+          (push (list (point-marker) (cdar cur)) marker-list)
           (setq cur (cdr cur)) ))
 
       ;; Apply modifications.
-      (let (nextado)
-        (dolist (p marker-list)
-          ;; Go to the adornment to promote.
-          (goto-char (car p))
+      (dolist (p marker-list)
+	;; Go to the adornment to promote.
+	(goto-char (car p))
 
-          ;; Rotate the next adornment.
-          (setq nextado (rst-get-next-adornment
-                          (cadr p) hier suggestion demote))
+	;; Update the adornment.
+	(apply 'rst-update-section
+	       ;; Rotate the next adornment.
+	       (rst-get-next-adornment
+		(cadr p) hier suggestion demote))
 
-          ;; Update the adornment.
-          (apply 'rst-update-section nextado)
-
-          ;; Clear marker to avoid slowing down the editing after we're done.
-          (set-marker (car p) nil)
-          ))
+	;; Clear marker to avoid slowing down the editing after we're done.
+	(set-marker (car p) nil))
       (setq deactivate-mark nil)
-    )))
+      )))
 
 
 
@@ -1776,11 +1770,10 @@ in order to adapt it to our preferred style."
 			       (lambda (ado)
 				 (cons (rst-position (cdr ado)
 						     (rst-get-hierarchy))
-				       (let ((m (make-marker)))
+				       (progn
 					 (goto-char (point-min))
 					 (forward-line (1- (car ado)))
-					 (set-marker m (point))
-					 m)))
+					 (point-marker))))
 			       (rst-find-all-adornments))))
       (dolist (lm levels-and-markers)
 	;; Go to the appropriate position
@@ -1857,7 +1850,7 @@ This is used to find bullets and enumerated list items. PFX-RE is
 a regular expression for matching the lines after indentation
 with items. Returns a list of cons cells consisting of the point
 and the column of the point."
-  (let (pfx)
+  (let ((pfx ()))
     (save-excursion
       (goto-char beg)
       (while (< (point) end)
@@ -2132,10 +2125,9 @@ child.  This has advantages later in processing the graph."
                       (forward-line (1- (car ado)))
                       (list (gethash (cons (cadr ado) (caddr ado)) levels)
                             (rst-get-stripped-line)
-                            (let ((m (make-marker)))
+                            (progn
                               (beginning-of-line 1)
-                              (set-marker m (point)))
-                            ))
+                              (point-marker))))
                     (rst-find-all-adornments))))
     (let ((lcontnr (cons nil lines)))
       (rst-section-tree-rec lcontnr -1))))
@@ -2282,7 +2274,7 @@ The TOC is inserted indented at the current column."
       (delete-region init-point (+ init-point (length initial-indent)))
 
       ;; Delete the last newline added.
-      (delete-backward-char 1)
+      (delete-char -1)
     )))
 
 (defun rst-toc-insert-node (node level indent pfx)
@@ -2461,7 +2453,7 @@ children, and t if the node has been found."
 (defvar rst-toc-buffer-name "*Table of Contents*"
   "Name of the Table of Contents buffer.")
 
-(defvar rst-toc-return-buffer nil
+(defvar rst-toc-return-wincfg nil
   "Window configuration to which to return when leaving the TOC.")
 
 
@@ -2503,7 +2495,7 @@ brings the cursor in that section."
     (pop-to-buffer buf)
 
     ;; Save the buffer to return to.
-    (set (make-local-variable 'rst-toc-return-buffer) curbuf)
+    (set (make-local-variable 'rst-toc-return-wincfg) curbuf)
 
     ;; Move the cursor near the right section in the TOC.
     (goto-char (point-min))
@@ -2528,7 +2520,7 @@ brings the cursor in that section."
   (interactive)
   (let ((pos (rst-toc-mode-find-section)))
     (when kill
-      (set-window-configuration (car rst-toc-return-buffer))
+      (set-window-configuration (car rst-toc-return-wincfg))
       (kill-buffer (get-buffer rst-toc-buffer-name)))
     (pop-to-buffer (marker-buffer pos))
     (goto-char pos)
@@ -2544,11 +2536,11 @@ brings the cursor in that section."
   "In `rst-toc' mode, go to the occurrence whose line you click on.
 EVENT is the input event."
   (interactive "e")
-  (let (pos)
-    (with-current-buffer (window-buffer (posn-window (event-end event)))
-      (save-excursion
-        (goto-char (posn-point (event-end event)))
-        (setq pos (rst-toc-mode-find-section))))
+  (let ((pos
+	 (with-current-buffer (window-buffer (posn-window (event-end event)))
+	   (save-excursion
+	     (goto-char (posn-point (event-end event)))
+             (rst-toc-mode-find-section)))))
     (pop-to-buffer (marker-buffer pos))
     (goto-char pos)
     (recenter 5)))
@@ -2562,7 +2554,7 @@ EVENT is the input event."
 (defun rst-toc-quit-window ()
   "Leave the current TOC buffer."
   (interactive)
-  (let ((retbuf rst-toc-return-buffer))
+  (let ((retbuf rst-toc-return-wincfg))
     (set-window-configuration (car retbuf))
     (goto-char (cadr retbuf))))
 
@@ -2689,8 +2681,7 @@ Set FIRST-ONLY to true if you want to callback on the first line
 of each paragraph only."
   `(save-excursion
     (let ((leftcol (rst-find-leftmost-column ,beg ,end))
-	  (endm (set-marker (make-marker) ,end))
-	  )
+	  (endm (copy-marker ,end)))
 
       (do* (;; Iterate lines
 	    (l (progn (goto-char ,beg) (back-to-indentation))
@@ -2727,8 +2718,7 @@ first of a paragraph."
 
   `(save-excursion
      (let ((,leftmost (rst-find-leftmost-column ,beg ,end))
-	   (endm (set-marker (make-marker) ,end))
-	   )
+	   (endm (copy-marker ,end)))
 
       (do* (;; Iterate lines
 	    (l (progn (goto-char ,beg) (back-to-indentation))
@@ -3059,7 +3049,7 @@ ARG is ignored"
 ;;------------------------------------------------------------------------------
 
 ;; FIXME: these next functions should become part of a larger effort to redo the
-;; bullets in bulletted lists.  The enumerate would just be one of the possible
+;; bullets in bulleted lists.  The enumerate would just be one of the possible
 ;; outputs.
 ;;
 ;; FIXME: We need to do the enumeration removal as well.
@@ -3100,9 +3090,7 @@ Renumber as necessary."
   (let* (;; Find items and convert the positions to markers.
 	 (items (mapcar
 		 (lambda (x)
-		   (cons (let ((m (make-marker)))
-			   (set-marker m (car x))
-			   m)
+		   (cons (copy-marker (car x))
 			 (cdr x)))
 		 (rst-find-pfx-in-region beg end (rst-re 'itmany-sta-1))))
 	 (count 1)
@@ -3144,67 +3132,139 @@ With prefix argument set the empty lines too."
 
 (require 'font-lock)
 
+;; FIXME: The obsolete variables need to disappear
+
 (defgroup rst-faces nil "Faces used in Rst Mode."
   :group 'rst
   :group 'faces
   :version "21.1")
 
-(defcustom rst-block-face 'font-lock-keyword-face
+(defface rst-block '((t :inherit font-lock-keyword-face))
+  "Face used for all syntax marking up a special block."
+  :version "24.1"
+  :group 'rst-faces)
+
+(defcustom rst-block-face 'rst-block
   "All syntax marking up a special block."
+  :version "24.1"
   :group 'rst-faces
   :type '(face))
+(make-obsolete-variable 'rst-block-face
+                        "customize the face `rst-block' instead."
+                        "24.1")
 
-(defcustom rst-external-face 'font-lock-type-face
+(defface rst-external '((t :inherit font-lock-type-face))
+  "Face used for field names and interpreted text."
+  :version "24.1"
+  :group 'rst-faces)
+
+(defcustom rst-external-face 'rst-external
   "Field names and interpreted text."
+  :version "24.1"
   :group 'rst-faces
   :type '(face))
+(make-obsolete-variable 'rst-external-face
+                        "customize the face `rst-external' instead."
+                        "24.1")
 
-(defcustom rst-definition-face 'font-lock-function-name-face
+(defface rst-definition '((t :inherit font-lock-function-name-face))
+  "Face used for all other defining constructs."
+  :version "24.1"
+  :group 'rst-faces)
+
+(defcustom rst-definition-face 'rst-definition
   "All other defining constructs."
+  :version "24.1"
   :group 'rst-faces
   :type '(face))
+(make-obsolete-variable 'rst-definition-face
+                        "customize the face `rst-definition' instead."
+                        "24.1")
 
-(defcustom rst-directive-face
-  ;; XEmacs compatibility
-  (if (boundp 'font-lock-builtin-face)
-      'font-lock-builtin-face
-    'font-lock-preprocessor-face)
+;; XEmacs compatibility (?).
+(defface rst-directive (if (boundp 'font-lock-builtin-face)
+                           '((t :inherit font-lock-builtin-face))
+                         '((t :inherit font-lock-preprocessor-face)))
+  "Face used for directives and roles."
+  :version "24.1"
+  :group 'rst-faces)
+
+(defcustom rst-directive-face 'rst-directive
   "Directives and roles."
   :group 'rst-faces
   :type '(face))
+(make-obsolete-variable 'rst-directive-face
+                        "customize the face `rst-directive' instead."
+                        "24.1")
 
-(defcustom rst-comment-face 'font-lock-comment-face
+(defface rst-comment '((t :inherit font-lock-comment-face))
+  "Face used for comments."
+  :version "24.1"
+  :group 'rst-faces)
+
+(defcustom rst-comment-face 'rst-comment
   "Comments."
+  :version "24.1"
   :group 'rst-faces
   :type '(face))
+(make-obsolete-variable 'rst-comment-face
+                        "customize the face `rst-comment' instead."
+                        "24.1")
 
-(defcustom rst-emphasis1-face
-  ;; XEmacs compatibility
-  (if (facep 'italic)
-      ''italic
-    'italic)
+(defface rst-emphasis1 '((t :inherit italic))
+  "Face used for simple emphasis."
+  :version "24.1"
+  :group 'rst-faces)
+
+(defcustom rst-emphasis1-face 'rst-emphasis1
   "Simple emphasis."
+  :version "24.1"
   :group 'rst-faces
   :type '(face))
+(make-obsolete-variable 'rst-emphasis1-face
+                        "customize the face `rst-emphasis1' instead."
+                        "24.1")
 
-(defcustom rst-emphasis2-face
-  ;; XEmacs compatibility
-  (if (facep 'bold)
-      ''bold
-    'bold)
+(defface rst-emphasis2 '((t :inherit bold))
+  "Face used for double emphasis."
+  :version "24.1"
+  :group 'rst-faces)
+
+(defcustom rst-emphasis2-face 'rst-emphasis2
   "Double emphasis."
   :group 'rst-faces
   :type '(face))
+(make-obsolete-variable 'rst-emphasis2-face
+                        "customize the face `rst-emphasis2' instead."
+                        "24.1")
 
-(defcustom rst-literal-face 'font-lock-string-face
+(defface rst-literal '((t :inherit font-lock-string-face))
+  "Face used for literal text."
+  :version "24.1"
+  :group 'rst-faces)
+
+(defcustom rst-literal-face 'rst-literal
   "Literal text."
+  :version "24.1"
   :group 'rst-faces
   :type '(face))
+(make-obsolete-variable 'rst-literal-face
+                        "customize the face `rst-literal' instead."
+                        "24.1")
 
-(defcustom rst-reference-face 'font-lock-variable-name-face
+(defface rst-reference '((t :inherit font-lock-variable-name-face))
+  "Face used for references to a definition."
+  :version "24.1"
+  :group 'rst-faces)
+
+(defcustom rst-reference-face 'rst-reference
   "References to a definition."
+  :version "24.1"
   :group 'rst-faces
   :type '(face))
+(make-obsolete-variable 'rst-reference-face
+                        "customize the face `rst-reference' instead."
+                        "24.1")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -3228,7 +3288,7 @@ general but you do not like the details."
        (rst-define-level-faces)))
 
 ;; Faces for displaying items on several levels; these definitions define
-;; different shades of grey where the lightest one (i.e. least contrasting) is
+;; different shades of gray where the lightest one (i.e. least contrasting) is
 ;; used for level 1
 (defcustom rst-level-face-max 6
   "Maximum depth of levels for which section title faces are defined."
@@ -3311,10 +3371,11 @@ details check the Rst Faces Defaults group."
 			 rst-level-face-base-color
 			 (+ (* (1- i) rst-level-face-step-light)
 			    rst-level-face-base-light))))
-	(make-empty-face sym)
-	(set-face-doc-string sym doc)
-	(set-face-background sym col)
-	(set sym sym)
+        (unless (facep sym)
+          (make-empty-face sym)
+          (set-face-doc-string sym doc)
+          (set-face-background sym col)
+          (set sym sym))
 	(setq i (1+ i))))))
 
 (rst-define-level-faces)
@@ -3331,44 +3392,44 @@ details check the Rst Faces Defaults group."
     ;; `Bullet Lists`_
     ;; FIXME: A bullet directly after a field name is not recognized
     (,(rst-re 'lin-beg '(:grp bul-sta))
-     1 ,rst-block-face)
+     1 rst-block-face)
     ;; `Enumerated Lists`_
     (,(rst-re 'lin-beg '(:grp enmany-sta))
-     1 ,rst-block-face)
+     1 rst-block-face)
     ;; `Definition Lists`_ FIXME: missing
     ;; `Field Lists`_
     (,(rst-re 'lin-beg '(:grp fld-tag) 'bli-sfx)
-     1 ,rst-external-face)
+     1 rst-external-face)
     ;; `Option Lists`_
     (,(rst-re 'lin-beg '(:grp opt-tag (:shy optsep-tag opt-tag) "*")
 	      '(:alt "$" (:seq hws-prt "\\{2\\}")))
-     1 ,rst-block-face)
+     1 rst-block-face)
     ;; `Line Blocks`_
     ;; Only for lines containing no more bar - to distinguish from tables
     (,(rst-re 'lin-beg '(:grp "|" bli-sfx) "[^|\n]*$")
-     1 ,rst-block-face)
+     1 rst-block-face)
 
     ;; `Tables`_ FIXME: missing
 
     ;; All the `Explicit Markup Blocks`_
     ;; `Footnotes`_ / `Citations`_
     (,(rst-re 'lin-beg 'fnc-sta-2)
-     (1 ,rst-definition-face)
-     (2 ,rst-definition-face))
+     (1 rst-definition-face)
+     (2 rst-definition-face))
     ;; `Directives`_ / `Substitution Definitions`_
     (,(rst-re 'lin-beg 'dir-sta-3)
-     (1 ,rst-directive-face)
-     (2 ,rst-definition-face)
-     (3 ,rst-directive-face))
+     (1 rst-directive-face)
+     (2 rst-definition-face)
+     (3 rst-directive-face))
     ;; `Hyperlink Targets`_
     (,(rst-re 'lin-beg
 	      '(:grp exm-sta "_" (:alt
 				  (:seq "`" ilcbkqdef-tag "`")
 				  (:seq (:alt "[^:\\\n]" "\\\\.") "+")) ":")
 	      'bli-sfx)
-     1 ,rst-definition-face)
+     1 rst-definition-face)
     (,(rst-re 'lin-beg '(:grp "__") 'bli-sfx)
-     1 ,rst-definition-face)
+     1 rst-definition-face)
 
     ;; All `Inline Markup`_ - most of them may be multiline though this is
     ;; uninteresting
@@ -3376,16 +3437,16 @@ details check the Rst Faces Defaults group."
     ;; FIXME: Condition 5 preventing fontification of e.g. "*" not implemented
     ;; `Strong Emphasis`_
     (,(rst-re 'ilm-pfx '(:grp "\\*\\*" ilcast-tag "\\*\\*") 'ilm-sfx)
-     1 ,rst-emphasis2-face)
+     1 rst-emphasis2-face)
     ;; `Emphasis`_
     (,(rst-re 'ilm-pfx '(:grp "\\*" ilcast-tag "\\*") 'ilm-sfx)
-     1 ,rst-emphasis1-face)
+     1 rst-emphasis1-face)
     ;; `Inline Literals`_
     (,(rst-re 'ilm-pfx '(:grp "``" ilcbkq-tag "``") 'ilm-sfx)
-     1 ,rst-literal-face)
+     1 rst-literal-face)
     ;; `Inline Internal Targets`_
     (,(rst-re 'ilm-pfx '(:grp "_`" ilcbkq-tag "`") 'ilm-sfx)
-     1 ,rst-definition-face)
+     1 rst-definition-face)
     ;; `Hyperlink References`_
     ;; FIXME: `Embedded URIs`_ not considered
     ;; FIXME: Directly adjacing marked up words are not fontified correctly
@@ -3393,28 +3454,28 @@ details check the Rst Faces Defaults group."
     (,(rst-re 'ilm-pfx '(:grp (:alt (:seq "`" ilcbkq-tag "`")
 				    (:seq "\\sw" (:alt "\\sw" "-") "+\\sw"))
 			      "__?") 'ilm-sfx)
-     1 ,rst-reference-face)
+     1 rst-reference-face)
     ;; `Interpreted Text`_
     (,(rst-re 'ilm-pfx '(:grp (:shy ":" sym-tag ":") "?")
 	      '(:grp "`" ilcbkq-tag "`")
 	      '(:grp (:shy ":" sym-tag ":") "?") 'ilm-sfx)
-     (1 ,rst-directive-face)
-     (2 ,rst-external-face)
-     (3 ,rst-directive-face))
+     (1 rst-directive-face)
+     (2 rst-external-face)
+     (3 rst-directive-face))
     ;; `Footnote References`_ / `Citation References`_
     (,(rst-re 'ilm-pfx '(:grp fnc-tag "_") 'ilm-sfx)
-     1 ,rst-reference-face)
+     1 rst-reference-face)
     ;; `Substitution References`_
     ;; FIXME: References substitutions like |this|_ or |this|__ are not
     ;;        fontified correctly
     (,(rst-re 'ilm-pfx '(:grp sub-tag) 'ilm-sfx)
-     1 ,rst-reference-face)
+     1 rst-reference-face)
     ;; `Standalone Hyperlinks`_
     ;; FIXME: This takes it easy by using a whitespace as delimiter
     (,(rst-re 'ilm-pfx '(:grp uri-tag ":\\S +") 'ilm-sfx)
-     1 ,rst-definition-face)
+     1 rst-definition-face)
     (,(rst-re 'ilm-pfx '(:grp sym-tag "@" sym-tag ) 'ilm-sfx)
-     1 ,rst-definition-face)
+     1 rst-definition-face)
 
     ;; Do all block fontification as late as possible so 'append works
 
@@ -3433,20 +3494,24 @@ details check the Rst Faces Defaults group."
     ;;        properties on comments and literal blocks so they are *not*
     ;;        inline fontified; see (elisp)Search-based Fontification
 
+    ;; FIXME: And / or use `syntax-propertize` functions as in `octave-mod.el`
+    ;;        and other V24 modes; may make `font-lock-extend-region`
+    ;;        superfluous
+
     ;; `Comments`_ - this is multiline
     (,(rst-re 'lin-beg 'cmt-sta-1)
-     (1 ,rst-comment-face)
+     (1 rst-comment-face)
      (rst-font-lock-find-unindented-line-match
       (rst-font-lock-find-unindented-line-limit (match-end 1))
       nil
-      (0 ,rst-comment-face append)))
+      (0 rst-comment-face append)))
     (,(rst-re 'lin-beg '(:grp exm-tag) '(:grp hws-tag) "$")
-     (1 ,rst-comment-face)
-     (2 ,rst-comment-face)
+     (1 rst-comment-face)
+     (2 rst-comment-face)
      (rst-font-lock-find-unindented-line-match
       (rst-font-lock-find-unindented-line-limit 'next)
       nil
-      (0 ,rst-comment-face append)))
+      (0 rst-comment-face append)))
 
     ;; FIXME: This is not rendered as comment::
     ;; .. .. list-table::
@@ -3469,11 +3534,11 @@ details check the Rst Faces Defaults group."
 
     ;; `Indented Literal Blocks`_ - this is multiline
     (,(rst-re 'lin-beg 'lit-sta-2)
-     (2 ,rst-block-face)
+     (2 rst-block-face)
      (rst-font-lock-find-unindented-line-match
       (rst-font-lock-find-unindented-line-limit t)
       nil
-      (0 ,rst-literal-face append)))
+      (0 rst-literal-face append)))
 
     ;; FIXME: `Quoted Literal Blocks`_ missing - this is multiline
 
@@ -3499,8 +3564,8 @@ details check the Rst Faces Defaults group."
     ;;
     ;;   Indentation is not required for doctest blocks.
     (,(rst-re 'lin-beg '(:grp (:alt ">>>" ell-tag)) '(:grp ".+"))
-     (1,rst-block-face)
-     (2 ,rst-literal-face))
+     (1 rst-block-face)
+     (2 rst-literal-face))
     )
   "Keywords to highlight in rst mode.")
 
@@ -3516,12 +3581,35 @@ be in the middle of a multiline construct and return non-nil if so."
 (defun rst-font-lock-extend-region-internal (beg end)
   "Check the region BEG / END for being in the middle of a multiline construct.
 Return nil if not or a cons with new values for BEG / END"
-  ;; There are many potential multiline constructs but really relevant ones are
-  ;; comment lines without leading explicit markup tag and literal blocks
-  ;; following "::" which are both indented. Thus indendation is what is
-  ;; recognized here. The second criteria is an explicit markup tag which may
-  ;; be a comment or a double colon at the end of a line.
-  (if (not (get-text-property beg 'font-lock-multiline))
+  (let ((nbeg (rst-font-lock-extend-region-extend beg -1))
+	(nend (rst-font-lock-extend-region-extend end 1)))
+    (if (or nbeg nend)
+	(cons (or nbeg beg) (or nend end)))))
+
+(defun rst-forward-line (&optional n)
+  "Like `forward-line' but always end up in column 0 and return accordingly."
+  (let ((moved (forward-line n)))
+    (if (bolp)
+	moved
+      (forward-line 0)
+      (- moved (signum n)))))
+
+(defun rst-font-lock-extend-region-extend (pt dir)
+  "Extend the region starting at point PT and extending in direction DIR.
+Return extended point or nil if not moved."
+  ;; There are many potential multiline constructs but there are two groups
+  ;; which are really relevant. The first group consists of
+  ;;
+  ;; * comment lines without leading explicit markup tag and
+  ;;
+  ;; * literal blocks following "::"
+  ;;
+  ;; which are both indented. Thus indendation is the first thing recognized
+  ;; here. The second criteria is an explicit markup tag which may be a comment
+  ;; or a double colon at the end of a line.
+  ;;
+  ;; The second group consists of the adornment cases.
+  (if (not (get-text-property pt 'font-lock-multiline))
       ;; Move only if we don't start inside a multiline construct already
       (save-excursion
 	(let (;; non-empty non-indented line, explicit markup tag or literal
@@ -3529,13 +3617,36 @@ Return nil if not or a cons with new values for BEG / END"
 	      (stop-re (rst-re '(:alt "[^ \t\n]"
 				      (:seq hws-tag exm-tag)
 				      (:seq ".*" dcl-tag lin-end)))))
-	  (goto-char beg)
+	  ;; The comments below are for dir == -1 / dir == 1
+	  (goto-char pt)
 	  (forward-line 0)
+	  (setq pt (point))
 	  (while (and (not (looking-at stop-re))
-		      (zerop (forward-line -1)))) ; try previous line if exists
-	  ;; FIXME: Extending the end should also be done
-	  (if (not (= (point) beg))
-	      (cons (point) end))))))
+		      (zerop (rst-forward-line dir)))) ; try previous / next
+						       ; line if it exists
+	  (if (looking-at (rst-re 'ado-beg-2-1)) ; may be an underline /
+						 ; overline
+	      (if (zerop (rst-forward-line dir))
+		  (if (looking-at (rst-re 'ttl-beg)) ; title found, i.e.
+						     ; underline / overline
+						     ; found
+		      (if (zerop (rst-forward-line dir))
+			  (if (not
+			       (looking-at (rst-re 'ado-beg-2-1))) ; no
+								   ; overline /
+								   ; underline
+			      (rst-forward-line (- dir)))) ; step back to title
+							   ; / adornment
+		    (if (< dir 0) ; keep downward adornment
+			(rst-forward-line (- dir))))) ; step back to adornment
+	    (if (looking-at (rst-re 'ttl-beg)) ; may be a title
+		(if (zerop (rst-forward-line dir))
+		    (if (not
+			 (looking-at (rst-re 'ado-beg-2-1))) ; no overline /
+							     ; underline
+			(rst-forward-line (- dir)))))) ; step back to line
+	  (if (not (= (point) pt))
+	      (point))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Indented blocks
@@ -3713,25 +3824,45 @@ document with \\[rst-compile]."
   :group 'rst
   :version "21.1")
 
-;; FIXME: Should be `defcustom`
-(defvar rst-compile-toolsets
-  '((html . ("rst2html.py" ".html" nil))
-    (latex . ("rst2latex.py" ".tex" nil))
-    (newlatex . ("rst2newlatex.py" ".tex" nil))
-    (pseudoxml . ("rst2pseudoxml.py" ".xml" nil))
-    (xml . ("rst2xml.py" ".xml" nil))
-    (pdf . ("rst2pdf.py" ".pdf" nil))
-    (s5 . ("rst2s5.py" ".xml" nil)))
+(defcustom rst-compile-toolsets
+  `((html ,(if (executable-find "rst2html.py") "rst2html.py" "rst2html")
+          ".html" nil)
+    (latex ,(if (executable-find "rst2latex.py") "rst2latex.py" "rst2latex")
+           ".tex" nil)
+    (newlatex ,(if (executable-find "rst2newlatex.py") "rst2newlatex.py"
+                 "rst2newlatex")
+              ".tex" nil)
+    (pseudoxml ,(if (executable-find "rst2pseudoxml.py") "rst2pseudoxml.py"
+                  "rst2pseudoxml")
+               ".xml" nil)
+    (xml ,(if (executable-find "rst2xml.py") "rst2xml.py" "rst2xml")
+         ".xml" nil)
+    (pdf ,(if (executable-find "rst2pdf.py") "rst2pdf.py" "rst2pdf")
+         ".pdf" nil)
+    (s5 ,(if (executable-find "rst2s5.py") "rst2s5.py" "rst2s5")
+        ".html" nil))
   "Table describing the command to use for each toolset.
 An association list of the toolset to a list of the (command to use,
 extension of produced filename, options to the tool (nil or a
-string)) to be used for converting the document.")
+string)) to be used for converting the document."
+  ;; FIXME: These are not options but symbols which may be referenced by
+  ;; `rst-compile-*-toolset` below
+  :type '(alist :options (html latex newlatex pseudoxml xml pdf s5)
+                :key-type symbol
+                :value-type (list :tag "Specification"
+                             (file :tag "Command")
+                             (string :tag "File extension")
+                             (choice :tag "Command options"
+                                     (const :tag "No options" nil)
+                                     (string :tag "Options"))))
+  :group 'rst
+  :version "24.1")
 
-;; FIXME: Should be `defcustom`
+;; FIXME: Must be `defcustom`
 (defvar rst-compile-primary-toolset 'html
   "The default toolset for `rst-compile'.")
 
-;; FIXME: Should be `defcustom`
+;; FIXME: Must be `defcustom`
 (defvar rst-compile-secondary-toolset 'latex
   "The default toolset for `rst-compile' with a prefix argument.")
 
@@ -3935,8 +4066,8 @@ column is used (fill-column vs. end of previous/next line)."
   "A portable function that returns non-nil if the mark is active."
   (cond
    ((fboundp 'region-active-p) (region-active-p))
-   ((boundp 'transient-mark-mode) transient-mark-mode mark-active)))
-
+   ((boundp 'transient-mark-mode) (and transient-mark-mode mark-active))
+   (t mark-active)))
 
 
 (provide 'rst)
