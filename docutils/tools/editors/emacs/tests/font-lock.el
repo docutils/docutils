@@ -31,7 +31,7 @@ Uses and sets region and returns t if region has been changed."
       (set-mark (cdr r))
       t)))
 
-(ert-deftest rst-font-lock-extend-region-internal ()
+(ert-deftest rst-font-lock-extend-region-internal-indent ()
   "Tests `rst-font-lock-extend-region-internal'."
   (should (equal-buffer-return
 	   '(extend-region)
@@ -55,32 +55,52 @@ Uses and sets region and returns t if region has been changed."
 	   t))
   (should (equal-buffer-return
 	   '(extend-region)
+	   "  abc
+\^@  def
+\^?  ghi
+uvw"
+	   "\^@  abc
+  def
+  ghi
+\^?uvw"
+	   t
+	   t))
+  (should (equal-buffer-return
+	   '(extend-region)
 	   "xyz
 abc
-\^@  def\^?"
+\^@  def
+\^?  ghi"
 	   "xyz
 \^@abc
-  def\^?"
+  def
+  ghi\^?"
 	   t
 	   t))
   (should (equal-buffer-return
 	   '(extend-region)
 	   "xyz
   abc::
-\^@  def\^?"
+\^@  def
+\^?  ghi
+uvw"
 	   "xyz
 \^@  abc::
-  def\^?"
+  def
+  ghi
+\^?uvw"
 	   t
 	   t))
   (should (equal-buffer-return
 	   '(extend-region)
 	   "xyz
   .. abc
-\^@     def\^?"
+\^@     def
+\^?uvw"
 	   "xyz
 \^@  .. abc
-     def\^?"
+     def
+\^?uvw"
 	   t
 	   t))
   (should (equal-buffer-return
@@ -88,11 +108,15 @@ abc
 	   "xyz
   .. abc
      123
-\^@       def\^?"
+\^@       def
+\^?
+uvw"
 	   "xyz
 \^@  .. abc
      123
-       def\^?"
+       def
+\^?
+uvw"
 	   t
 	   t))
   (should (equal-buffer-return
@@ -103,14 +127,112 @@ abc
 
      123
 
-\^@       def\^?"
+\^@       def
+\^?
+uvw"
 	   "xyz
 
 \^@  .. abc
 
      123
 
-       def\^?"
+       def
+\^?
+uvw"
+	   t
+	   t))
+  )
+
+(ert-deftest rst-font-lock-extend-region-internal-adornment ()
+  "Tests `rst-font-lock-extend-region-internal'."
+  (should (equal-buffer-return
+	   '(extend-region)
+	   "\^@===\^?"
+	   "\^@===\^?"
+	   nil
+	   t))
+  (should (equal-buffer-return
+	   '(extend-region)
+	   "abc
+\^@===\^?"
+	   "\^@abc
+===\^?"
+	   t
+	   t))
+  (should (equal-buffer-return ; Quite complicated without the trailing newline
+	   '(extend-region)
+	   "\^@abc
+\^?==="
+	   "\^@abc
+\^?==="
+	   nil
+	   t))
+  (should (equal-buffer-return
+	   '(extend-region)
+	   "\^@abc
+\^?===
+"
+	   "\^@abc
+===
+\^?"
+	   t
+	   t))
+  (should (equal-buffer-return
+	   '(extend-region)
+	   "===
+abc
+\^@===
+\^?"
+	   "\^@===
+abc
+===
+\^?"
+	   t
+	   t))
+  (should (equal-buffer-return
+	   '(extend-region)
+	   "\^@===
+\^?abc
+===
+"
+	   "\^@===
+abc
+===
+\^?"
+	   t
+	   t))
+  (should (equal-buffer-return
+	   '(extend-region)
+	   "def
+
+===
+\^@abc
+===
+\^?"
+	   "def
+
+\^@===
+abc
+===
+\^?"
+	   t
+	   t))
+  (should (equal-buffer-return
+	   '(extend-region)
+	   "def
+
+\^@===
+abc
+\^?===
+
+xyz"
+	   "def
+
+\^@===
+abc
+===
+\^?
+xyz"
 	   t
 	   t))
   )
