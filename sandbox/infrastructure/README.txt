@@ -27,7 +27,7 @@ Overview:
 Everything below this needs rework.
 
 :`<docutils-update.local>`_: The script to update the `web site`_
-    from a developer machine. *The* current way of to go.
+    from a developer machine. *The* current way to go.
 
 :`<release.sh>`_: The script to make releases_ of Docutils.
 
