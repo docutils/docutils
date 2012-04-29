@@ -119,7 +119,7 @@ and before TAIL-RE and DELIM-RE in VAR or DEFAULT for no match"
 ;; Use CVSHeader to really get information from CVS and not other version
 ;; control systems
 (defconst rst-cvs-header
-  "$CVSHeader: sm/rst_el/rst.el,v 1.254 2012-04-29 14:49:50 stefan Exp $")
+  "$CVSHeader: sm/rst_el/rst.el,v 1.256 2012-04-29 15:00:50 stefan Exp $")
 (defconst rst-cvs-rev
   (rst-extract-version "\\$" "CVSHeader: \\S + " "[0-9]+\\(?:\\.[0-9]+\\)+"
 		       " .*" rst-cvs-header "0.0")
@@ -144,11 +144,11 @@ SVN revision is the upstream (docutils) revision.")
 ;; Maintained by the release process
 (defconst rst-official-version
   (rst-extract-version "%" "OfficialVersion: " "[0-9]+\\(?:\\.[0-9]+\\)+" " "
-		       "%OfficialVersion: 1.2.0 %")
+		       "%OfficialVersion: 1.2.1 %")
   "Official version of the package.")
 (defconst rst-official-cvs-rev
   (rst-extract-version "[%$]" "Revision: " "[0-9]+\\(?:\\.[0-9]+\\)+" " "
-		       "%Revision: 1.254 %")
+		       "%Revision: 1.256 %")
   "CVS revision of this file in the official version.")
 
 (defconst rst-version
@@ -162,7 +162,9 @@ in parentheses follows the development revision and the timestamp.")
 
 (defconst rst-package-emacs-version-alist
   '(("1.0.0" . "24.0")
-    ("1.1.0" . "24.0")))
+    ("1.1.0" . "24.0")
+    ("1.2.0" . "24.0")
+    ("1.2.1" . "24.0")))
 
 (unless (assoc rst-official-version rst-package-emacs-version-alist)
   (error "Version %s not listed in `rst-package-emacs-version-alist'"
