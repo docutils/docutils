@@ -51,6 +51,11 @@ class AttentiveWriter(writers.Writer):
         self.document.walk(visitor)
 
 class StopTraversalTests(unittest.TestCase, docutils.SettingsSpec):
+
+    # python 2.3
+    if not hasattr(unittest.TestCase, "assertTrue"):
+        assertTrue = unittest.TestCase.failUnless
+
     """
     Test interrupting the visitor during traversal.  In this test we stop it
     when we reach an attention node.

@@ -16,6 +16,10 @@ from docutils.error_reporting import locale_encoding
 
 class InputTests(unittest.TestCase):
 
+    # python 2.3
+    if not hasattr(unittest.TestCase, "assertTrue"):
+        assertTrue = unittest.TestCase.failUnless
+
     def test_bom(self):
         input = io.StringInput(source=b('\xef\xbb\xbf foo \xef\xbb\xbf bar'),
                                encoding='utf8')

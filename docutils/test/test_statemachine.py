@@ -13,6 +13,11 @@ import sys
 import re
 from DocutilsTestSupport import statemachine
 
+# python 2.3
+if not hasattr(unittest.TestCase, "assertTrue"):
+    # HACK? this changes TestCase, fixes the problem for tests executing afterwards.
+    # this tests break if run alone
+    unittest.TestCase.assertTrue = unittest.TestCase.failUnless
 
 debug = False
 testtext = statemachine.string2lines("""\

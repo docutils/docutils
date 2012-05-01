@@ -18,6 +18,11 @@ from docutils._compat import b
 
 debug = False
 
+# python 2.3
+if not hasattr(unittest.TestCase, "assertTrue"):
+    # HACK? this changes TestCase, fixes the problem for tests executing afterwards.
+    # this tests break if run alone
+    unittest.TestCase.assertTrue = unittest.TestCase.failUnless
 
 class TextTests(unittest.TestCase):
 
