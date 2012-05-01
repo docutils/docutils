@@ -30,6 +30,10 @@ paths = {'include': u'data/include.txt',  # included rst file
 
 class RecordDependenciesTests(unittest.TestCase):
 
+    # python 2.3
+    if not hasattr(unittest.TestCase, "assertTrue"):
+        assertTrue = unittest.TestCase.failUnless
+
     def get_record(self, **settings):
         recordfile = 'record.txt'
         recorder = docutils.utils.DependencyList(recordfile)
@@ -37,7 +41,12 @@ class RecordDependenciesTests(unittest.TestCase):
         settings.setdefault('source_path',
                             os.path.join('data', 'dependencies.txt'))
         settings.setdefault('settings_overrides', {})
-        settings['settings_overrides'].update(_disable_config=True,
+        if sys.version_info < (2, 4):
+            # python 2.3 update() takes no keyword arguments
+            settings['settings_overrides'].update({"_disable_config":True,
+                                              "record_dependencies":recorder})
+        else:
+            settings['settings_overrides'].update(_disable_config=True,
                                               record_dependencies=recorder)
         docutils.core.publish_file(destination=DocutilsTestSupport.DevNull(),
                                    **settings)
