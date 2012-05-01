@@ -30,6 +30,7 @@ Everything below this needs rework.
     from a developer machine. *The* current way to go.
 
 :`<release.sh>`_: The script to make releases_ of Docutils.
+    For usage details see `<release.txt>`_
 
 :`<uploaddocutils.sh>`_: Upload files to http://docutils.sf.net/tmp/
     using ``scp``, inserting the current date in the file name.
@@ -53,4 +54,4 @@ and are these used by anyone.
 .. _web site: http://docutils.sourceforge.net/docs/dev/website.html
 .. _Docutils Subversion repository:
    http://docutils.sourceforge.net/docs/dev/repository.html
-.. _releases: http://docutils.sourceforge.net/docs/dev/release.html
+.. _release.txt: http://docutils.sourceforge.net/docs/dev/release.html

@@ -6,6 +6,8 @@
 # Date: $Date$
 # Copyright: This script has been placed in the public domain.
 
+# USAGE see: docutils/docs/dev/release.txt
+
 set -e
 
 function print_command()
