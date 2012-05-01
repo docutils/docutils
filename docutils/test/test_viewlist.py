@@ -16,6 +16,10 @@ from DocutilsTestSupport import statemachine
 
 class ViewListTests(unittest.TestCase):
 
+    # python 2.3
+    if not hasattr(unittest.TestCase, "assertTrue"):
+        assertTrue = unittest.TestCase.failUnless
+
     a_list = list('abcdefg')
     b_list = list('AEIOU')
     c_list = list('XYZ')
