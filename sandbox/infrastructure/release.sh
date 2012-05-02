@@ -286,7 +286,6 @@ function upload_tarball()
     cp docutils-$new_ver.tar.gz $new_ver
     cp docutils/RELEASE-NOTES.txt $new_ver
     # README.txt would be displayed automatically on sf.
-    cp docutils/RELEASE-NOTES.txt $new_ver/README.txt
     # BUG user grubert hardcoded
     # short path  "/home/frs/project/docutils/docutils/" also exists
     scp -r $new_ver grubert,docutils@frs.sourceforge.net:/home/frs/project/d/do/docutils/docutils/
