@@ -162,10 +162,10 @@ For details see the script.
 
   BUG: not found 2009-10-12.
 
-* **Register with FreshMeat.** (Add a new release for the
-  `Docutils project`__).
+* **Register with freecode.** Add a new release for the
+  `Docutils project`__. (freecode is freshmeat.net's new name)
 
-  __ http://freshmeat.net/projects/docutils/
+  __ http://freecode.com/projects/docutils/
 
 
 
