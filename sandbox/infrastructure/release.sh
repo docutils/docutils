@@ -231,6 +231,7 @@ function test_tarball()
             echo "Press enter."
             read
             site_packages="/usr/local/lib/python$py_ver/site-packages"
+            echo "BUG prefers /usr/local too /usr"
             if test ! -d "$site_packages"; then
                 site_packages="/usr/lib/python$py_ver/site-packages"
             fi
@@ -240,7 +241,9 @@ function test_tarball()
             fi
             if test -e "$site_packages/docutils-test"; then
                 echo "Error: \"$site_packages/docutils-test\" exists."
-                exit 1
+                echo "removing left over from previous releae. Ctrl-C to abort."
+                read
+                rm -rf $site_packages/docutils-test
             fi
             rm -rfv /usr/{local,}lib/python$py_ver/site-packages/{docutils'"$extras"'}
             python$py_ver setup.py install
@@ -261,12 +264,13 @@ function test_tarball()
             echo "Error: \"$site_packages\" does not exist."
             exit 1
         fi
+        # BUG
+        echo "shell script exits if any test fails, maybe run in separate shell."
         confirm su -c "python$py_ver -u \"$site_packages/docutils-test/alltests.py\""
-        # BUG shell script exits after alltests.py
     done
     run cd ../..
     echo "Cleaning up..."
-    confirm su -c "run rm -rf tarball_test"
+    confirm su -c "rm -rf tarball_test"
     confirm su -c '
         for py_ver in '"$python_versions"'; do
             rm -rfv /usr{/local,}/lib/python$py_ver/site-packages/docutils{-test,}
