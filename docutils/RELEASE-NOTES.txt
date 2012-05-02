@@ -42,7 +42,7 @@ Future changes
   :0.13: remove the `handle_io_errors` option.
 
 
-Release 0.9 (unpublished)
+Release 0.9 (2012-05-02)
 =========================
 
 * General:
@@ -52,6 +52,16 @@ Release 0.9 (unpublished)
   - "code" option of the "include" directive.
 
   .. _Pygments: http://pygments.org/
+
+  - Fix [ 3402314 ] allow non-ASCII whitespace, punctuation
+    characters and "international" quotes around inline markup.
+
+  - Fix handling of missing stylesheets.
+
+* setup.py
+
+  - Fix [ 2971827 ] and [ 3442827 ]
+    extras/roman.py moved to docutils/utils/roman.py
 
 * docutils/utils.py -> docutils/utils/__init__.py
 
@@ -63,7 +73,10 @@ Release 0.9 (unpublished)
 
 * docutils/writers/latex2e/__init__.py
 
+  - Support the `abbreviation` and `acronym` standard roles.
   - Record only files required to generate the LaTeX source as dependencies.
+  - Use ``\setcounter{secnumdepth}{0}`` instead of ``*``-versions
+    when suppressing LaTeX section numbering.
 
 
 Release 0.8.1 (2011-08-30)
