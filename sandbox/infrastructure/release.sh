@@ -433,7 +433,7 @@ function stage_2()
     echo 'Downloading the tarball to verify its integrity.'
     while true; do
 	    # BUG path is wrong. project admin filemanager shows md5sum
-        confirm wget http://osdn.dl.sourceforge.net/sourceforge/docutils/"$tarball"
+        confirm wget http://sourceforge.net/projects/docutils/files/"$tarball"
         echo 'Was the download successful?'
         echo 'If yes, press enter to continue, otherwise enter anything to repeat'
         echo '(it is possible that the file will show up in a few minutes).'
