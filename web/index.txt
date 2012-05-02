@@ -59,13 +59,13 @@ We recommend that you use a snapshot_ from `Docutils' Subversion
 repository`_. The snapshots usually contain *more features* and *fewer bugs*
 than the "official" releases |---| they're not only for developers!
 
-The latest **release package** is `docutils-0.8.1.tgz`__.  It was
-released on 2011-07-08 and is mostly intended for distributors.  See
+The latest **release package** is `docutils-0.9.tgz`__.  It was
+released on 2012-05-02 and is mostly intended for distributors.  See
 the `release notes`_ for a list of changes since the previous release
-(0.7).
+(0.8.1).
 
-__ http://prdownloads.sourceforge.net/docutils/docutils-0.8.1.tar.gz?download
-.. _release notes: RELEASE-NOTES.html#release-0-8-1-2011-08-30
+__ http://prdownloads.sourceforge.net/docutils/docutils-0.9.tar.gz?download
+.. _release notes: RELEASE-NOTES.html#release-0-9-2012-05-02
 
 The Sandbox_ contains experimental, contributed code. You can download a
 complete `snapshot of the Sandbox`_ or `browse the Sandbox`_ to download a
