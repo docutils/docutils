@@ -281,7 +281,11 @@ function upload_tarball()
     mkdir $new_ver
     cp docutils-$new_ver.tar.gz $new_ver
     cp docutils/RELEASE-NOTES.txt $new_ver
+    # README.txt would be displayed automatically on sf.
+    cp docutils/RELEASE-NOTES.txt $new_ver/README.txt
     # BUG user grubert hardcoded
+    # TODO do wen need the long project path ? 
+    # sf docu "release for download" does tell only "/home/frs/project/fooproject/Rel_1/".
     scp -r $new_ver grubert,docutils@frs.sourceforge.net:/home/frs/project/d/do/docutils/docutils/
     echo 'Upload completed.'
 }
