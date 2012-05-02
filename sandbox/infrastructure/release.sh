@@ -302,11 +302,8 @@ function upload_htdocs()
     run cd htdocs
     confirm tar xzvf "../$tarball"
     run cd docutils-"$new_ver"/tools/
-    # BUG no docutils installation left.
-    # BUG and it breaks on test/functional/input/standalone_rst_newlatex.txt:
-    #     1020: (SEVERE/4) Title level inconsistent
-    #     because this is an include file.
-    # BUG --local .. still recurses into test
+    echo "BUG no docutils installation left."
+    echo "DO NOT let call but manually in $working_area"
     confirm ./buildhtml.py --local ..
     confirm ./buildhtml.py ../docs
     run cd ..
@@ -426,10 +423,9 @@ function stage_2()
         confirm svn cp "$svnurl" "$svnroot/tags/docutils-$new_ver/" -m "$log_prefix tagging released revision"
         echo "Uploading $tarball to SF.net."
         confirm upload_tarball
-        echo 'Now go to https://sourceforge.net/project/admin/explorer.php?group_id=38414'
+        echo 'Now go to https://sourceforge.net/projects/docutils/files/docutils'
         echo 'and follow the instructions at'
         echo 'http://docutils.sf.net/docs/dev/release.html#file-release-system'
-        echo 'BUG find your way.'
         echo
         echo 'Then press enter.'
         read
