@@ -25,8 +25,12 @@ Release 0.9 (2012-05-02)
   - New reStructuredText "code" role and directive and "code" option
     of the "include" directive with syntax highlighting by Pygments_.
   - Fix parse_option_marker for option arguments containing ``=``.
+  - Fix [ 2993756 ]: import Python Imaging Library's Image module
+    via ``import PIL`` as starting with PIL 1.2,
+    "PIL lives in the PIL namespace only" (announcement__).
 
 .. _Pygments: http://pygments.org/
+__ http://mail.python.org/pipermail/image-sig/2011-January/006650.html
 
 * setup.py
 
