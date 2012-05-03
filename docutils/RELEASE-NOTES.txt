@@ -42,6 +42,7 @@ Future changes
                is called with `handle_io_errors`,
   :0.10 + n+1: remove the `handle_io_errors` option.
 
+* end of python2.3 support with 0.10, most likely.
 
 Changes Since 0.9
 =================
