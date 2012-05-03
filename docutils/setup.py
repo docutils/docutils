@@ -193,6 +193,8 @@ classifiers = [
     'Natural Language :: English',      # main/default language, keep first
     'Natural Language :: Afrikaans',
     'Natural Language :: Catalan',
+    'Natural Language :: Chinese (Simplified)',
+    'Natural Language :: Chinese (Traditional)',
     'Natural Language :: Czech',
     'Natural Language :: Dutch',
     'Natural Language :: Esperanto',
@@ -203,16 +205,14 @@ classifiers = [
     'Natural Language :: Italian',
     'Natural Language :: Japanese',
     'Natural Language :: Polish',
+    'Natural Language :: Portuguese (Brazilian)',
     'Natural Language :: Russian',
     'Natural Language :: Slovak',
     'Natural Language :: Spanish',
     'Natural Language :: Swedish',
     ]
 # BUG pypi did not like fllowing languages
-#   'Natural Language :: Brazilian Portuguese',
 #   'Natural Language :: Lithuanian',
-#   'Natural Language :: Simplified Chinese ',
-#   'Natural Language :: Traditional Chinese ',
 """Trove classifiers for the Distutils "register" command;
 Python 2.3 and up."""
 
