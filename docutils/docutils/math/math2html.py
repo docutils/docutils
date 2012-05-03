@@ -70,7 +70,8 @@ class Trace(object):
 
   def show(cls, message, channel):
     "Show a message out of a channel"
-    message = message.encode('utf-8')
+    if sys.version_info < (3,0):
+      message = message.encode('utf-8')
     channel.write(message + '\n')
 
   debug = classmethod(debug)
@@ -1701,7 +1702,7 @@ class LineWriter(object):
     "Write a string"
     if not self.file:
       self.file = codecs.open(self.filename, 'w', "utf-8")
-    if self.file == sys.stdout:
+    if self.file == sys.stdout and sys.version_info < (3,0):
       string = string.encode('utf-8')
     self.file.write(string)
 
