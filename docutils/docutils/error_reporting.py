@@ -140,11 +140,10 @@ class ErrorOutput(object):
                  decoding_errors='replace'):
         """
         :Parameters:
-            - `stream`: a file-like object (which is written to),
-                        a string (opended as a file),
-                        `None` (bind to `sys.stderr`; default).
-                        If evaluating to `False` (but not `None`),
-                        write() requests are ignored.
+            - `stream`: a file-like object,
+                        a string (path to a file),
+                        `None` (write to `sys.stderr`, default), or
+                        evaluating to `False` (write() requests are ignored).
             - `encoding`: `stream` text encoding. Guessed if None.
             - `encoding_errors`: how to treat encoding errors.
         """
