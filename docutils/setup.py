@@ -115,7 +115,7 @@ into useful formats, such as HTML, XML, and LaTeX.  For
 input Docutils supports reStructuredText, an easy-to-read,
 what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
     'url': 'http://docutils.sourceforge.net/',
-    'version': '0.9',
+    'version': '0.10',
     'author': 'David Goodger',
     'author_email': 'goodger@python.org',
     'license': 'public domain, Python, 2-Clause BSD, GPL 3 (see COPYING.txt)',
@@ -192,8 +192,9 @@ classifiers = [
     'Topic :: Text Processing',
     'Natural Language :: English',      # main/default language, keep first
     'Natural Language :: Afrikaans',
-    'Natural Language :: Brazilian Portuguese',
     'Natural Language :: Catalan',
+    'Natural Language :: Chinese (Simplified)',
+    'Natural Language :: Chinese (Traditional)',
     'Natural Language :: Czech',
     'Natural Language :: Dutch',
     'Natural Language :: Esperanto',
@@ -203,15 +204,15 @@ classifiers = [
     'Natural Language :: German',
     'Natural Language :: Italian',
     'Natural Language :: Japanese',
-    'Natural Language :: Lithuanian',
     'Natural Language :: Polish',
+    'Natural Language :: Portuguese (Brazilian)',
     'Natural Language :: Russian',
-    'Natural Language :: Simplified Chinese ',
     'Natural Language :: Slovak',
     'Natural Language :: Spanish',
     'Natural Language :: Swedish',
-    'Natural Language :: Traditional Chinese ',
     ]
+# BUG pypi did not like fllowing languages
+#   'Natural Language :: Lithuanian',
 """Trove classifiers for the Distutils "register" command;
 Python 2.3 and up."""
 

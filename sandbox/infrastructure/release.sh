@@ -286,7 +286,6 @@ function upload_tarball()
     cp docutils-$new_ver.tar.gz $new_ver
     cp docutils/RELEASE-NOTES.txt $new_ver
     # README.txt would be displayed automatically on sf.
-    cp docutils/RELEASE-NOTES.txt $new_ver/README.txt
     # BUG user grubert hardcoded
     # short path  "/home/frs/project/docutils/docutils/" also exists
     scp -r $new_ver grubert,docutils@frs.sourceforge.net:/home/frs/project/d/do/docutils/docutils/
@@ -302,11 +301,8 @@ function upload_htdocs()
     run cd htdocs
     confirm tar xzvf "../$tarball"
     run cd docutils-"$new_ver"/tools/
-    # BUG no docutils installation left.
-    # BUG and it breaks on test/functional/input/standalone_rst_newlatex.txt:
-    #     1020: (SEVERE/4) Title level inconsistent
-    #     because this is an include file.
-    # BUG --local .. still recurses into test
+    echo "BUG no docutils installation left."
+    echo "DO NOT let call but manually in $working_area"
     confirm ./buildhtml.py --local ..
     confirm ./buildhtml.py ../docs
     run cd ..
@@ -426,10 +422,9 @@ function stage_2()
         confirm svn cp "$svnurl" "$svnroot/tags/docutils-$new_ver/" -m "$log_prefix tagging released revision"
         echo "Uploading $tarball to SF.net."
         confirm upload_tarball
-        echo 'Now go to https://sourceforge.net/project/admin/explorer.php?group_id=38414'
+        echo 'Now go to https://sourceforge.net/projects/docutils/files/docutils'
         echo 'and follow the instructions at'
         echo 'http://docutils.sf.net/docs/dev/release.html#file-release-system'
-        echo 'BUG find your way.'
         echo
         echo 'Then press enter.'
         read
@@ -438,7 +433,7 @@ function stage_2()
     echo 'Downloading the tarball to verify its integrity.'
     while true; do
 	    # BUG path is wrong. project admin filemanager shows md5sum
-        confirm wget http://osdn.dl.sourceforge.net/sourceforge/docutils/"$tarball"
+        confirm wget http://sourceforge.net/projects/docutils/files/"$tarball"
         echo 'Was the download successful?'
         echo 'If yes, press enter to continue, otherwise enter anything to repeat'
         echo '(it is possible that the file will show up in a few minutes).'

@@ -64,12 +64,15 @@ try:
 except ImportError, exp:
     pygments = None
 
-#
-# Is the PIL imaging library installed?
-try:
-    import Image
-except ImportError, exp:
-    Image = None
+try: # check for the Python Imaging Library
+    import PIL
+except ImportError:
+    try:  # sometimes PIL modules are put in PYTHONPATH's root
+        import Image
+        class PIL(object): pass  # dummy wrapper
+        PIL.Image = Image
+    except ImportError:
+        PIL = None
 
 ## import warnings
 ## warnings.warn('importing IPShellEmbed', UserWarning)
@@ -2123,9 +2126,9 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         height = self.get_image_width_height(node, 'height')
 
         dpi = (72, 72)
-        if Image is not None and source in self.image_dict:
+        if PIL is not None and source in self.image_dict:
             filename, destination = self.image_dict[source]
-            imageobj = Image.open(filename, 'r')
+            imageobj = PIL.Image.open(filename, 'r')
             dpi = imageobj.info.get('dpi', dpi)
             # dpi information can be (xdpi, ydpi) or xydpi
             try: iter(dpi)
