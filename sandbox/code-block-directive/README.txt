@@ -7,40 +7,18 @@ Proposal for a code-block directive in docutils
 :Author: Günter Milde
 :Contact: milde@users.berlios.de
 :Date: $Date$
-:Copyright: © 2007, 2009 G. Milde,
-            Released  without warranties or conditions of any kind
-            under the terms of the Apache License, Version 2.0
-            http://www.apache.org/licenses/LICENSE-2.0
 
-This sandbox project contains experimental code and documentation related to
-the proposal for syntax highlight of source code in docutils using a
-"code-block" directive.
+This sandbox project contained experimental code and documentation related to
+the proposal for syntax highlight of source code in Docutils.
 
-See `<docs/syntax-highlight.html>`_ for a full description.
+Since version 0.9, Docutils supports this via the `code` directive and role
+and the `code` option of the `include` directive. Most of this project is
+moved to the attic.
 
-`<rst2html-highlight>`_
-   front end for reStructuredText -> HTML conversion supporting the
-   "code-block" directive.
+The documentation in `<docs/syntax-highlight.html>`_ is kept as it
+contains ideas for further improvement.
 
-`<rst2latex-highlight>`_
-   front end for reStructuredText -> LaTeX conversion supporting the
-   "code-block" directive.
-
-`<data>`_
-   Style sheets.
-
-`<docs>`_
-   Documentation, concepts, discussion, examples...
-
-`<pygments_code_block_directive.py>`_
-   Working example: defines and registers a
-   code-block directive using the Pygments_  syntax highlighter.
-
-`<tools/test_pygments_code_block_directive.py>`_
-   Script for interactive testing.
-
-`<tools/pygments-enhanced-front-ends/>`_
-   Legacy front ends,
+Sample stylesheets are now available in the `<../stylesheets>`_ repository.
 
 
 .. References

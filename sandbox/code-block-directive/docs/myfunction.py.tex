@@ -14,8 +14,11 @@
 \setlength{\DUlineblockindent}{1em}
 
 %%% User specified packages and stylesheets
-\usepackage{../data/pygments-docutilsroles}
+\usepackage{palatino-optima-txtt}
+\usepackage{microtype}
+\usepackage{bookmark}
 
+\usepackage{../data/pygments-docutilsroles}
 %%% Fallback definitions for Docutils-specific commands
 
 % inline markup (custom roles)
@@ -65,7 +68,7 @@ The example from Docutils TODO list:
 Numbered lines:
 %
 \begin{quote}{\ttfamily \raggedright \noindent
-\DUrole{ln}{1~}\DUrole{c}{\#~This~is~Python~code,}~\\
+\DUrole{l}{\DUrole{n}{1~}}\DUrole{c}{\#~This~is~Python~code,}~\\
 \DUrole{ln}{2~}\DUrole{c}{\#~that~prints~the~integers~from~0~to~9}~\\
 \DUrole{ln}{3~}\DUrole{k}{for}~\DUrole{n}{i}~\DUrole{ow}{in}~\DUrole{nb}{range}\DUrole{p}{(}\DUrole{mi}{10}\DUrole{p}{):}~\\
 \DUrole{ln}{4~}~~~~\DUrole{k}{print}~\DUrole{n}{i}
@@ -75,7 +78,7 @@ Numbered lines:
 Another example:
 %
 \begin{quote}{\ttfamily \raggedright \noindent
-\DUrole{ln}{~7~}\DUrole{k}{def}~\DUrole{nf}{my\_function}\DUrole{p}{():}~\\
+\DUrole{l}{\DUrole{n}{~7~}}\DUrole{k}{def}~\DUrole{nf}{my\_function}\DUrole{p}{():}~\\
 \DUrole{ln}{~8~}~~~~\DUrole{sd}{"{}"{}"Test~the~lexer.\\
 }\DUrole{ln}{~9~}\DUrole{sd}{~~~~"{}"{}"}~\\
 \DUrole{ln}{10~}~\\
@@ -84,6 +87,9 @@ Another example:
 }
 \end{quote}
 
-The end.
+Inline code \texttt{\DUrole{code}{\$\textbackslash{}alpha =
+\textbackslash{}int\_0\textasciicircum{}\textbackslash{}infty f(x) dx\$}}.
+
+Python code \texttt{\DUrole{code}{\DUrole{python}{\DUrole{testclass}{\DUrole{k}{print}\DUrole{p}{(}\DUrole{s}{"The end."}\DUrole{p}{)}}}}}
 
 \end{document}

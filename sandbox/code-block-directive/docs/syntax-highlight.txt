@@ -6,169 +6,26 @@ Syntax Highlight
 :Author:    Günter Milde
 :Contact:   milde@users.berlios.de
 :Date:      $Date$
-:Copyright: © 2007, 2009 G. Milde,
-            Released  without warranties or conditions of any kind
-            under the terms of the Apache License, Version 2.0
-            http://www.apache.org/licenses/LICENSE-2.0
+:Copyright: © 2007, 2009, 2012 G. Milde,
+:License: Released under the terms of the `2-Clause BSD license`_, in short:
+
+   Copying and distribution of this file, with or without modification,
+   are permitted in any medium without royalty provided the copyright
+   notice and this notice are preserved.
+   This file is offered as-is, without any warranty.
+
+.. _2-Clause BSD license: http://www.spdx.org/licenses/BSD-2-Clause
+
 :Abstract:  Proposal to add syntax highlight of code blocks to the
             capabilities of Docutils_.
 
 .. sectnum::
 .. contents::
 
-Syntax highlighting significantly enhances the readability of code. However,
-in the current version, docutils does not highlight literal blocks.
-
-This sandbox project aims to add syntax highlight of code blocks to the
-capabilities of docutils. To find its way into the docutils core, it should
-meet the requirements laid out in a mail on `Questions about writing
-programming manuals and scientific documents`__, by docutils main developer
-David Goodger:
-
-   I'd be happy to include Python source colouring support, and other
-   languages would be welcome too. A multi-language solution would be
-   useful, of course. My issue is providing support for all output formats
-   -- HTML and LaTeX and XML and anything in the future -- simultaneously.
-   Just HTML isn't good enough. Until there is a generic-output solution,
-   this will be something users will have to put together themselves.
-
-__ http://sourceforge.net/mailarchive/message.php?msg_id=12921194
-
-Some older ideas are gathered in Docutils TODO_ document.
-
-.. _TODO: ../../../docutils/docs/dev/todo.html#colorize-python
-
-State of the art
-----------------
-
-There are already docutils extensions providing syntax colouring, e.g:
-
-`listings`_,
-  Since Docutils 0.5, the "latex2e" writer supports syntax highlight of
-  literal blocks via the `listings` package with the
-  ``--literal-block-env=lstlistings`` option. You need to provide a custom
-  style sheet. The stylesheets_ repository provides two LaTeX style sheets
-  for highlighting literal-blocks with "listings".
-
-Odtwriter_, experimental writer for Docutils OpenOffice export supports syntax
-  colours using Pygments_. See also the (outdated) section `Odtwriter syntax`_.
-
-Pygments_
-  is a generic syntax highlighter written completely in Python.
-
-  * Usable as a command-line tool and as a Python package.
-  * Supports about 200 `languages and markup formats`_ (version 1.4).
-  * Already used by the odtwriter_ and Sphinx.
-  * Support for new languages, formats, and styles is added easily (modular
-    structure, Python code, existing documentation).
-  * Well documented and actively maintained.
-  * The web site provides a recipe for `using Pygments in ReST documents`_
-    (used in the legacy `Pygments enhanced docutils front-ends`_).
-
-rest2web_,
-  the "site builder" provides the `colorize`__ macro (using the
-  `Moin-Moin Python colorizer`_)
-
-__ http://www.voidspace.org.uk/python/rest2web/macros.html#colorize
-
-SilverCity_,
-  a C++ library and Python extension that can provide lexical
-  analysis for over 20 different programming languages. A recipe__ for a
-  "code-block" directive provides syntax highlight by SilverCity.
-
-__ http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/252170
-
-Sphinx_
-  features automatic highlighting using the Pygments_ highlighter.
-  It introduces the custom directives
-
-  :code-block: similar to the proposal below,
-  :sourcecode: an alias to "code-block", and
-  :highlight:  configre highlight of "literal blocks".
-
-  (see http://sphinx.pocoo.org/markup/code.html).
-
-Trac_
-  has `reStructuredText support`__ and offers syntax highlighting with
-  a "code-block" directive using GNU Enscript_, SilverCity_, or Pygments_.
-
-__ http://trac.edgewall.org/wiki/WikiRestructuredText
-
-
-Summary
-"""""""
-
-On 2009-02-20, David Goodger wrote in docutils-devel
-
-   I'd like to see the extensions implemented in Bruce and Sphinx etc.
-   folded back into core Docutils eventually. Otherwise we'll end up with
-   incompatible systems.
-
-Pygments_ seems to be the most promising Docutils highlighter.
-
-For printed output and PDFs via LaTeX, the listings_ package is a viable
-alternative.
-
-
-Pygments enhanced docutils front-ends
--------------------------------------
-
-Syntax highlight can be achieved by `front-end scripts`_ combining docutils and
-pygments.
-
-   "something users [will have to] put together themselves"
-
-Advantages:
-  + Easy implementation with no changes to the stock docutils_.
-  + Separation of code blocks and ordinary literal blocks.
-
-Disadvantages:
-  1. "code-block" content is formatted by `pygments`_ and inserted in the
-     document tree as a "raw" node making the approach writer-dependant.
-  2. documents are incompatible with the standard docutils because of the
-     locally defined directive.
-  3. more "invasive" markup distracting from content
-     (no "minimal" code block marker -- three additional lines per code block)
-
-
-Point 1 and 2 lead to the `code-block directive proposal`_.
-
-Point 3 becomes an issue in software documentation and literate programming
-where a code block is the most used block markup. It is addressed in the
-proposal for a `configurable literal block directive`_).
-
-
-`code-block` directive proposal
--------------------------------
-
-Syntax
-""""""
-
-.. note:: This is the first draft for a reStructuredText definition,
-          analogue to other directives in ``directives.txt``.
-
-:Directive Type: "code"
-:Doctree Element: literal_block
-:Directive Arguments: One (`language`), optional.
-:Directive Options: name, class, number-lines.
-:Directive Content: Becomes the body of the literal block.
-
-The "code-block" directive constructs a literal block where the content is
-parsed as source code and syntax highlight rules for `language` are applied.
-If syntax rules for `language` are not known to Docutils, a warning is
-issued and the content is rendered as ordinary literal block with
-additional class arguments: "code" and the value of `language`.
-
-  :number-lines: let pygments include line-numbers
-
-
-The following options are recognized:
-
-``number-lines`` : [start line number]
-    Precede every code line with a line number.
-    The optional argument is the number of the first line (defaut 1).
-
-and the common options `:class:`_ and `:name:`_.
+Syntax highlighting significantly enhances the readability of code.
+Since version 0.9, docutils supports this with a `code` directive and role
+as well as a `code` option to the `include` directive using the Pygments_
+syntax highlighter.
 
 Example::
   The content of the following directive ::
@@ -182,135 +39,26 @@ Example::
   is parsed and marked up as Python source code. The actual rendering
   depends on the style-sheet.
 
-
-Remarks
-"""""""
-
-* Without language argument, the parsing step is skipped. Use cases:
-
-  * Mark a literal block as pseudo-code.
-
-  * Suppress warnings about a missing Pygments_ module or unknown languages.
-
-  * Do the parsing in the writer or output processor (e.g. LaTeX with
-    the listings_ package).
-
-  The language's name can be given as `class` option.
-
-  Alternative:
-    make the `language` argument compulsory and add a "no-highlight" option.
+TODO
+====
 
 * TODO: Pygments_ provides filters like VisibleWhitespaceFilter
   add options to use them?
 
 
+* Use syntax-highlight=long as default and add basic highlight rules
+  (keyword, comment, string?) to the default CSS stylesheet to get syntax
+  highlight out-of-the-box?
+  
+  Let the latex2e writer write basic rules in the document preamble if
+  "code" is used in the document?
+  
+* The latex writer should pass the original content and options to a
+  ``lstlistings`` environment. with ``--literal-block-env=lstlistings``.
 
-Include directive option
-""""""""""""""""""""""""
+* Check the `odtwriter`, use common syntax and implementation.
 
-The include directive should get a matching new option:
-
-code: language
-  The entire included text is inserted into the document as if it were the
-  content of a code-block directive (useful for program listings).
-
-Code Role
-"""""""""
-
-For inline code snippets, a `code` role should be implemented. Roles for
-specific languages might be defined via the `role` directive based on the
-generic `code` role.
-
-Implementation
-""""""""""""""
-
-Reading
-'''''''
-
-Felix Wiemann provided a `proof of concept`_ script that utilizes the
-pygments_ parser to parse a source code string and store the result in
-the document tree.
-
-This concept is used in a `pygments_code_block_directive`_ (Source:
-`pygments_code_block_directive.py`_), to define and register a "code-block"
-directive.
-
-* The ``DocutilsInterface`` class uses pygments to parse the content of the
-  directive and classify the tokens using short CSS class names identical to
-  pygments HTML output. If pygments is not available, the unparsed code is
-  returned. TODO: issue a warning.
-
-* The ``code_block_directive`` function inserts the tokens in a "rich"
-  <literal_block> element with "classified" <inline> nodes.
-
-Writing
-'''''''
-
-The writers can use the class information in the <inline> elements to render
-the tokens. They should ignore the class information if they are unable to
-use it or to pass it on.
-
-Running the test script `<../tools/test_pygments_code_block_directive.py>`_
-produces example output for a set of writers.
-
-HTML
-  The "html" writer works out of the box.
-
-  * The rst2html-highlight_ front end registers the "code-block" directive and
-    converts an input file to html.
-
-  * Styling is done with the adapted CSS style sheet `pygments-default.css`_
-    based on docutils' default stylesheet and the output of
-    ``pygmentize -S default -f html``.
-
-  The conversion of `<myfunction.py.txt>`_ looks like
-  `<myfunction.py.htm>`_.
-
-  The "s5" and "pep" writers are not tested yet.
-
-XML
-  "xml" and "pseudoxml" work out of the box.
-
-  The conversion of `myfunction.py.txt`_ looks like
-  `<myfunction.py.xml>`_ respective `<myfunction.py.pseudoxml>`_
-
-LaTeX
-  "latex2e" (SVN version) works out of the box.
-
-  * A style file, e.g. `<pygments-docutilsroles.sty>`_, is required to actually
-    highlight the code in the output. (As with HTML, the pygments-produced
-    style file will not work with docutils' output.)
-
-  * Alternatively, the latex writer could reconstruct the original
-    content and pass it to a ``lstlistings`` environment.
-
-    TODO: This should be the default behaviour with
-    ``--literal-block-env=lstlistings``.
-
-  The LaTeX output of `myfunction.py.txt`_ looks like `<myfunction.py.tex>`_
-  and corresponding PDF like `<myfunction.py.pdf>`_.
-
-OpenOffice
-  The `odtwriter` provides syntax highlight with pygments but uses a
-  different syntax and implementation.
-
-
-TODO
-""""
-
-1. Minimal implementation:
-
-   * move the code from `pygments_code_block_directive.py`_ to "the right
-     place".
-
-   * add the CSS rules to the default style-sheet (see pygments-default.css_)
-
-   * provide a LaTeX style.
-
-2. Write functional test case and sample.
-
-3. Think about an interface for pygments' options (like "encoding" or
-   "linenumbers").
+* Provide more sample stylesheets in an official stylesheet library.
 
 
 Configurable literal block directive
@@ -385,92 +133,17 @@ Example::
 In the same line, a "default-block-quote" setting or directive could be
 considered to configure the role of a block quote.
 
-Odtwriter syntax
-----------------
-
-.. attention::
-   The content of this section relates to an old version of the
-   `odtwriter`. Things changed with the inclusion of the `odtwriter` into
-   standard Docutils.
-
-   This is only kept for historical reasons.
-
-Dave Kuhlman's odtwriter_ extension can add syntax highlighting
-to ordinary literal blocks.
-
-The ``--add-syntax-highlighting`` command line flag activates syntax
-highlighting in literal blocks. By default, the "python" lexer is used.
-
-You can change this within your reST document with the `sourcecode`
-directive::
-
-  .. sourcecode:: off
-
-  ordinary literal block::
-
-     content set in teletype
-
-  .. sourcecode:: on
-  .. sourcecode:: python
-
-  colourful Python code::
-
-     def hello():
-         print "hello world"
-
-
-The "sourcecode" directive defined by the odtwriter is principally
-different from the "code-block" directive of ``rst2html-pygments``:
-
-* The odtwriter directive does not have content. It is a switch.
-
-* The syntax highlighting state and language/lexer set by this directive
-  remain in effect until the next sourcecode directive is encountered in the
-  reST document.
-
-  ``.. sourcecode:: <newstate>``
-       make highlighting active or inactive.
-       <newstate> is either ``on`` or ``off``.
-
-  ``.. sourcecode:: <lexer>``
-       change the lexer parsing literal code blocks.
-       <lexer> should be one of aliases listed at pygment's `languages and
-       markup formats`_.
-
-I.e. the odtwriter implements a `configurable literal block directive`_
-(but with a slightly different syntax than the proposal above).
 
 
 .. External links
-.. _rest2web: http://www.voidspace.org.uk/python/rest2web/
-.. _Enscript: http://www.gnu.org/software/enscript/enscript.html
-.. _SilverCity: http://silvercity.sourceforge.net/
-.. _Trac: http://trac.edgewall.org/
-.. _Moin-Moin Python colorizer:
-    http://www.standards-schmandards.com/2005/fangs-093/
 .. _odtwriter: http://www.rexx.com/~dkuhlman/odtwriter.html
 .. _Sphinx: http://sphinx.pocoo.org
 .. _listings:
     http://www.ctan.org/tex-archive/help/Catalogue/entries/listings.html
-.. _PyLit: http://pylit.berlios.de
-.. _PyLit Examples: http://pylit.berlios.de/examples/index.html#latex-packages
-
 .. _Pygments: http://pygments.org/
-.. _languages and markup formats: http://pygments.org/languages
-.. _Using Pygments in ReST documents: http://pygments.org/docs/rstdirective/
-
 .. _Docutils: http://docutils.sourceforge.net/
 .. _Docutils Document Tree:
     http://docutils.sf.net/docs/ref/doctree.html#classes
-.. _latex-variants: http://docutils.sourceforge.net/sandbox/latex-variants/
-.. _proof of concept:
-    http://article.gmane.org/gmane.text.docutils.user/3689
 
 .. Internal links
-.. _front-end scripts: ../tools/pygments-enhanced-front-ends
-.. _pygments-default.css: ../data/pygments-default.css
-.. _pygments_code_block_directive.py: ../pygments_code_block_directive.py
-.. _pygments_code_block_directive: pygments_code_block_directive-bunt.py.htm
-.. _rst2html-highlight: ../rst2html-highlight
-.. _pygments-long.css: ../data/pygments-long.css
 .. _stylesheets:       ../../stylesheets/
