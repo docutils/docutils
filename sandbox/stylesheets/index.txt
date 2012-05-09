@@ -38,7 +38,9 @@ __ ../../docutils/docs/howto/html-stylesheets.html
 
   Replaces the horizontal line with three stars as often seen in novels.
 
-.. _transition: ../../docutils/docs/ref/rst/restructuredtext.html#transitions
+
+* `<pygments-default.css>`_, `<pygments-long.css>`_:
+  Examples/templates for syntax highlight of code_ snippets.
 
 
 LaTeX Style Sheets
@@ -68,6 +70,8 @@ directory in the LaTeX INPUT PATH, e.g., (on a modern TeX installation)
 
   Replaces the horizontal line with three stars as often seen in novels.
 
+* `<pygments-default.sty>`_, `<pygments-long.sty>`_:
+  Examples/templates for syntax highlight of code_ snippets.
 
 .. References
    ==========
@@ -77,6 +81,9 @@ directory in the LaTeX INPUT PATH, e.g., (on a modern TeX installation)
    http://docutils.sf.net/docs/user/mailing-lists.html#docutils-users
 .. _Generating LaTeX with Docutils:
    ../../docutils/docs/user/latex.html
+
+.. _transition: ../../docutils/docs/ref/rst/restructuredtext.html#transitions
+.. _code: ../../docutils/docs/ref/rst/directives.html#code
 
 
 
