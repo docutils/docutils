@@ -73,6 +73,13 @@ directory in the LaTeX INPUT PATH, e.g., (on a modern TeX installation)
 * `<pygments-default.sty>`_, `<pygments-long.sty>`_:
   Examples/templates for syntax highlight of code_ snippets.
 
+Tools
+=====
+
+* `<pygments_css2sty.py>`_:
+  Convert a CSS stylesheet for syntax highlight in a HTML document
+  into one for Docutils' LaTeX output.
+
 .. References
    ==========
 
