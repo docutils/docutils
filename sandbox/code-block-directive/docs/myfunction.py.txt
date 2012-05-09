@@ -42,4 +42,10 @@ Another example:
       # and now for something completely different
       print 8/2
 
-The end.
+Inline code :code:`$\alpha = \int_0^\infty f(x) dx$`.
+
+.. role:: python(code)
+   :language: python
+   :class: testclass
+
+Python code :python:`print("The end.")`
