@@ -16,6 +16,10 @@
 Changes Since 0.9
 =================
 
+* docutils/parsers/rst/directives/misc.py
+
+  - Fix [ 3525847 ] UnicodeEncodeError with locale == C and 8-bit char
+    in path argument of `include` directive.
 
 Release 0.9 (2012-05-02)
 ========================
