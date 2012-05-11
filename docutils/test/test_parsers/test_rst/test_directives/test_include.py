@@ -50,6 +50,18 @@ nonexistent = os.path.join(os.path.dirname(states.__file__),
 nonexistent_rel = DocutilsTestSupport.utils.relative_path(
     os.path.join(DocutilsTestSupport.testroot, 'dummy'), nonexistent)
 
+# Different error for path with 8bit chars with locale == C or None:
+try:
+    open(u'\u043c\u0438\u0440.txt')
+except UnicodeEncodeError:
+    errstr_8bit_path = u"""\
+Cannot encode input file path "\u043c\u0438\u0440.txt" (wrong locale?).\
+"""
+except:
+    errstr_8bit_path = u"""\
+InputError: [Errno 2] No such file or directory: '\u043c\u0438\u0440.txt'.\
+"""
+
 totest = {}
 
 totest['include'] = [
@@ -414,10 +426,10 @@ u"""\
     <system_message level="4" line="3" source="test data" type="SEVERE">
         <paragraph>
             Problems with "include" directive path:
-            InputError: [Errno 2] No such file or directory: '\u043c\u0438\u0440.txt'.
+            %s
         <literal_block xml:space="preserve">
             .. include:: \u043c\u0438\u0440.txt
-"""],
+""" % errstr_8bit_path],
 ["""\
 Testing errors in included file:
 

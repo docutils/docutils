@@ -33,8 +33,13 @@ class Tee:
         self.encoding = getattr(stream, 'encoding', None)
 
     def write(self, string):
-        self.stream.write(string)
-        self.file.write(string)
+        try:
+            self.stream.write(string)
+            self.file.write(string)
+        except UnicodeEncodeError:   # Py3k writing to "ascii" stream/file
+            string = string.encode('raw_unicode_escape').decode('ascii')
+            self.stream.write(string)
+            self.file.write(string)
 
     def flush(self):
         self.stream.flush()

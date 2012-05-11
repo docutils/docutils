@@ -73,6 +73,11 @@ class Include(Directive):
                 error_handler=(self.state.document.settings.\
                                input_encoding_error_handler),
                 handle_io_errors=None)
+        except UnicodeEncodeError, error:
+            raise self.severe(u'Problems with "%s" directive path:\n'
+                              'Cannot encode input file path "%s" '
+                              '(wrong locale?).' %
+                              (self.name, SafeString(path)))
         except IOError, error:
             raise self.severe(u'Problems with "%s" directive path:\n%s.' %
                       (self.name, ErrorString(error)))
