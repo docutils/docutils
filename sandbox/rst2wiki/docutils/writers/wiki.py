@@ -22,6 +22,7 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
+import re
 
 from docutils import nodes, writers, languages
 
@@ -40,6 +41,8 @@ class Writer(writers.Writer):
          'Valid options: %s' % ('twiki', ', '.join(supported)),
          ['--wiki'], {'default': 'twiki',
                       'choices': supported}),
+        ('File containing linked words to escape.',
+         ['--escape-linked-words'], {'default': None}),
         ))
     def __init__(self):
         writers.Writer.__init__(self)
@@ -97,6 +100,16 @@ class WikiTranslator(nodes.NodeVisitor):
         self.in_paragraph = False
         self.first_list_paragraph = False
         self.footnote_refs = dict()
+        self.escape_words = list()
+        if (self.settings.escape_linked_words and
+            os.path.exists(self.settings.escape_linked_words)):
+            fd = open(self.settings.escape_linked_words)
+            try:
+                self.escape_words = [line.strip() for line in fd.readlines()]
+            finally:
+                fd.close()
+        self.escape_word_start = ''
+        self.escape_word_end = ''
 
     def astext(self):
         for idx, item in enumerate(self.body):
@@ -146,6 +159,14 @@ class WikiTranslator(nodes.NodeVisitor):
             if ((self.in_paragraph and self.list_level) and
                 not self.first_list_paragraph):
                 text = '%s%s' % (self.list_indent(), text)
+        
+        if not self.in_literal_block:
+            for word in self.escape_words:
+                pattern = r'(?P<start>\b)%s(?P<end>\b)' % word
+                repl = r'\g<start>%s%s%s\g<end>' % \
+                       (self.escape_word_start, word,
+                        self.escape_word_end)
+                text = re.sub(pattern, repl, text)
         self.body.append(text)
         
     def depart_Text(self, node):
@@ -865,7 +886,7 @@ class TWikiTranslator(WikiTranslator):
         self.option_group_end = ' </td>'
         self.description_start = '<td> '
         self.description_end = ' </td>'
-        
+        self.escape_word_start = '!'
         
     def escape(self, text):
         if self.in_table:
@@ -1035,13 +1056,11 @@ class ConfluenceTranslator(WikiTranslator):
         self.description_start = '{column:width=80%}'
         self.description_end = '{column}'
         self.section_anchors = list()          # Track section anchors we have seen
+        self.escape_word_start = '{nl:'
+        self.escape_word_end = '}'
         
     def escape(self, text):
         if not (self.in_literal or self.in_literal_block):
-            text = text.replace('[', '\[')
-            text = text.replace(']', '\]')
-            text = text.replace('{', '\{')
-            text = text.replace('}', '\}')
             text = text.replace(':', '&#58;')
         if self.in_literal:
             text = text.replace('*', '\*')
@@ -1049,6 +1068,10 @@ class ConfluenceTranslator(WikiTranslator):
         if not self.in_literal_block:
             text = text.replace('-', '\-')
             text = text.replace('!', '\!')
+            text = text.replace('[', '\[')
+            text = text.replace(']', '\]')
+            text = text.replace('{', '\{')
+            text = text.replace('}', '\}')
         return text
     
     def title_prefix(self):
