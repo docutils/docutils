@@ -7,6 +7,8 @@ reader_name = "standalone"
 parser_name = "rst"
 writer_name = "html"
 
-# Extra setting
-
+# Settings
 settings_overrides['math_output'] = 'MathML'
+# local copy of default stylesheet:
+settings_overrides['stylesheet_path'] = ( 
+    'functional/input/data/html4css1.css')

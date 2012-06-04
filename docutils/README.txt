@@ -21,9 +21,9 @@ complete details.
 
        http://www.python.org/
 
-   Docutils is compatible with Python versions from 2.3 up to 2.6 and
-   version 3.1. (Support for Python 3 is new and might still have some
-   issues.)
+   Docutils is compatible with Python versions from 2.3 up to 2.7 and
+   versions 3.1 and 3.2. (Support for Python 3 is new and might still
+   have some issues.)
 
 2. Use the latest Docutils code.  Get the code from Subversion or from
    the snapshot:
@@ -42,7 +42,7 @@ complete details.
         (enter admin password)
         ./setup.py install
 
-   Docutils will only work with Python 3, if installed with a Python
+   Docutils will only work with Python 3, if installed with a Python
    version >= 3. If your default Python version is 2.x, also call
    ``python3 setup.py install`` from the temporary directory.
    See Installation_ below for details.
@@ -104,8 +104,7 @@ changes being committed to the repository):
   http://docutils.svn.sourceforge.net/viewvc/docutils/trunk/sandbox/?view=tar
 
 To keep up to date on the latest developments, download fresh copies
-of the snapshots regularly.  New functionality is being added weekly,
-sometimes daily.  (There's also the `Subversion repository`_.)
+of the snapshots regularly. (There's also the `Subversion repository`_.)
 
 .. _Subversion repository: docs/dev/repository.html
 
@@ -117,12 +116,17 @@ To run the code, Python 2.3 or later must already be installed.
 Python is available from
 http://www.python.org/.
 
-The `Python Imaging Library`, or PIL, is used for some image
-manipulation operations if it is installed.
+Docutils uses the following packages for enhanced functionality, if they are
+installed:
+
+* The `Python Imaging Library`, or PIL, is used for some image
+  manipulation operations.
+
+* The `Pygments`_ syntax highlighter is used for content of `code`
+  directives and roles.
 
 .. _Python Imaging Library: http://www.pythonware.com/products/pil/
-.. _Optik: http://optik.sourceforge.net/
-
+.. _pygments: http://pygments.org/
 
 Project Files & Directories
 ===========================
@@ -150,10 +154,6 @@ Project Files & Directories
 
 * docutils: The project source directory, installed as a Python
   package.
-
-* extras: Directory for third-party modules that Docutils depends on
-  (roman.py).  These are only installed if
-  they're not already present.
 
 * docs: The project documentation directory.  Read ``docs/index.txt``
   for an overview.
@@ -233,20 +233,18 @@ following:
    To install for a specific python version, specify the Python
    executable for this version.
 
+Developing under Python 3
+-------------------------
 
-Python 3 peculiarities
-----------------------
+Under Python 3, installing with ``setup.py`` converts the source to Python 3
+compatible code before installing. If you want to test or develop Docutils,
+also run ``python3 setup.py build``. This will generate Python 3 compatible
+sources, in the ``build/`` sub-directory, tests in ``tests3/``, and
+developer tools in ``tools3``.
 
-If called from Python 3, setup.py, in addition to copying the sources
-to the right place, will also convert them using 2to3 to Python 3
-compatible code.
-
-* If you want to test or develop Docutils, also run ``python3 setup.py
-  build``. This will generate Python 3 compatible sources, tests and
-  developer tools in the build directory.  Do changes on the Python 2
-  versions of the sources and re-run the build command. This works
-  incrementally, so if you change one file it will only reconvert that
-  file the next time you run setup.py build.
+Do changes on the Python 2 versions of the sources and re-run the build
+command. This works incrementally, so if you change one file it will only
+reconvert that file the next time you run setup.py build.
 
 
 Usage
@@ -310,8 +308,8 @@ Under Windows, type::
 
 For testing with Python 3 use the converted test suite::
 
-    cd <archive_directory_path>/build/<Python-3-subdir>/test
-    python alltests.py
+    cd <archive_directory_path>/test3
+    python3 alltests.py
 
 
 You should see a long line of periods, one for each test, and then a
@@ -342,7 +340,7 @@ Windows users type these commands::
     cd ..\tools
     python quicktest.py --version
 
-Python 3 users must use ``build/<Python-3-subdir>/tools/quicktest.py``.
+For Python 3, the path is ``tools3/quicktest.py``.
 
 
 .. _open a bug report:

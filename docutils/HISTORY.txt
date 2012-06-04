@@ -16,11 +16,28 @@
 Changes Since 0.9
 =================
 
+* docutils/setup.py
+
+  - Fix [ 3527842 ]. Under Python 3, converted tests and tools are now
+    stored in the ``test3/`` and ``tools3/`` sub-directories and not
+    installed in the PYTHONPATH.
+
+* docutils/test/
+
+  - Make tests independent from the location of the ``test/`` directory.
+  - Use converted sources from the ``build/`` directory for tests under
+    Python 3.
+
 * docutils/parsers/rst/directives/misc.py
 
-  - Fix [ 3525847 ] UnicodeEncodeError with locale == C and 8-bit char
-    in path argument of `include` directive.
+  - Fix [ 3525847 ]. Catch and report UnicodeEncodeError with 
+    ``locale == C`` and 8-bit char in path argument of `include` directive.
 
+* docutils/test/alltests.py
+
+  - class `Tee`: catch UnicodeError when writing to "ascii" stream or
+    file under Python 3.
+    
 Release 0.9 (2012-05-02)
 ========================
 
@@ -125,7 +142,7 @@ Release 0.8.1 (2011-08-30)
 
 * docutils/test/
 
-  -  Apply [ 3303733 ] and [ 3365041 ] to fix tests under py3k.
+  -  Apply [ 3303733 ] and [ 3365041 ] to fix tests under Py3k.
 
 * docutils/writers/latex2e/__init__.py
 
@@ -226,7 +243,7 @@ Release 0.8 (2011-07-07)
 * docutils/io.py:
 
   - Do not close() sys.stdin, sys.stdout, or sys.stderr. Prevents
-    ``Exception ValueError: 'I/O operation on closed file.'`` with Python 3.
+    ``Exception ValueError: 'I/O operation on closed file.'`` with Python 3.
 
 Release 0.7 (2010-07-07)
 ========================
@@ -294,7 +311,7 @@ __ docs/user/config.html#output_encoding
 
 * setup.py:
 
-  - Python 3 support: copy test/ and tools/ to the build-dir
+  - Python 3 support: copy test/ and tools/ to the build-dir
     and convert Python sources with 2to3.
 
 

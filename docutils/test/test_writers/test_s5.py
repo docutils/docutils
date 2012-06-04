@@ -13,7 +13,8 @@ from __init__ import DocutilsTestSupport
 
 
 def suite():
-    settings = {'embed_stylesheet': 0,}
+    settings = {'stylesheet_path': '/test.css',
+                'embed_stylesheet': 0,}
     s = DocutilsTestSupport.PublishTestSuite('s5', suite_settings=settings)
     s.generateTests(totest_1)
     settings['hidden_controls'] = 0
@@ -48,7 +49,7 @@ Slide text.
 <meta name="generator" content="Docutils %(version)s: http://docutils.sourceforge.net/" />
 <meta name="version" content="S5 1.1" />
 <title>Show Title</title>
-<link rel="stylesheet" href="../docutils/writers/html4css1/html4css1.css" type="text/css" />
+<link rel="stylesheet" href="/test.css" type="text/css" />
 <!-- configuration parameters -->
 <meta name="defaultView" content="slideshow" />
 <meta name="controlVis" content="hidden" />
@@ -113,7 +114,7 @@ We're just checking the settings
 <meta name="generator" content="Docutils %(version)s: http://docutils.sourceforge.net/" />
 <meta name="version" content="S5 1.1" />
 <title>Bogus Slide Show</title>
-<link rel="stylesheet" href="../docutils/writers/html4css1/html4css1.css" type="text/css" />
+<link rel="stylesheet" href="/test.css" type="text/css" />
 <!-- configuration parameters -->
 <meta name="defaultView" content="outline" />
 <meta name="controlVis" content="visible" />

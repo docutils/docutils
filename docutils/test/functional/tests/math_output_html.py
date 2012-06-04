@@ -7,10 +7,11 @@ reader_name = "standalone"
 parser_name = "rst"
 writer_name = "html"
 
-# Extra setting
-
+# Extra settings
 settings_overrides['math_output'] = 'HTML'
-settings_overrides['stylesheet_path'] = (
-    '../docutils/writers/html4css1/html4css1.css, '
-    '../docutils/writers/html4css1/math.css ')
+# stylesheets: 
+settings_overrides['stylesheet_path'] = ( 
+    'functional/input/data/html4css1.css,'
+    'functional/input/data/math.css')
+
     

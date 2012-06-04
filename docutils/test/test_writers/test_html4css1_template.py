@@ -15,6 +15,7 @@ from __init__ import DocutilsTestSupport
 def suite():
     settings = {'template': os.path.join(DocutilsTestSupport.testroot,
                                          'data', 'full-template.txt'),
+                'stylesheet_path': '/test.css',
                 'embed_stylesheet': 0,}
     s = DocutilsTestSupport.PublishTestSuite('html', suite_settings=settings)
     s.generateTests(totest)
@@ -55,7 +56,7 @@ head = """\
 
 
 stylesheet = """\
-<link rel="stylesheet" href="../docutils/writers/html4css1/html4css1.css" type="text/css" />"""
+<link rel="stylesheet" href="/test.css" type="text/css" />"""
 
 
 body_prefix = """\
@@ -112,7 +113,7 @@ head = """\
 
 
 stylesheet = """\
-<link rel="stylesheet" href="../docutils/writers/html4css1/html4css1.css" type="text/css" />"""
+<link rel="stylesheet" href="/test.css" type="text/css" />"""
 
 
 body_prefix = """\

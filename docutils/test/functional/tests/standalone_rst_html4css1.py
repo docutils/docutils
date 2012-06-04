@@ -7,4 +7,8 @@ test_destination = "standalone_rst_html4css1.html"
 # Keyword parameters passed to publish_file.
 writer_name = "html4css1"
 
-# Settings: settings_overrides['setting'] = value
+# Settings:
+# local copy of default stylesheet:
+# (Test runs in ``docutils/test/``, we need relative path from there.)
+settings_overrides['stylesheet_path'] = ( 
+    'functional/input/data/html4css1.css')

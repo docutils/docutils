@@ -50,9 +50,15 @@ from pprint import pformat
 
 testroot = os.path.abspath(os.path.dirname(__file__) or os.curdir)
 os.chdir(testroot)
-sys.path.insert(0, os.path.normpath(os.path.join(testroot, '..')))
+if sys.version_info >= (3,0):
+    sys.path.insert(0, os.path.normpath(os.path.join(testroot,
+                                                     '..', 'build', 'lib')))
+    sys.path.append(os.path.normpath(os.path.join(testroot, '..',
+                                                  'build', 'lib', 'extras')))
+else:
+    sys.path.insert(0, os.path.normpath(os.path.join(testroot, '..')))
+    sys.path.append(os.path.normpath(os.path.join(testroot, '..', 'extras')))
 sys.path.insert(0, testroot)
-sys.path.append(os.path.normpath(os.path.join(testroot, '..', 'extras')))
 
 try:
     import difflib
@@ -129,13 +135,13 @@ class StandardTestCase(unittest.TestCase):
 
     # aliases for assertion methods, deprecated since Python 2.7
 
-    failUnlessEqual = assertEquals = assertEqual 
+    failUnlessEqual = assertEquals = assertEqual
 
     assertNotEquals = failIfEqual = assertNotEqual
 
 
 class CustomTestCase(StandardTestCase):
-    
+
     """
     Helper class, providing extended functionality over unittest.TestCase.
 
@@ -166,7 +172,7 @@ class CustomTestCase(StandardTestCase):
         self.expected = expected
         self.run_in_debugger = run_in_debugger
         self.suite_settings = suite_settings.copy() or {}
-        
+
         # Ring your mother.
         unittest.TestCase.__init__(self, method_name)
 
@@ -791,7 +797,7 @@ class HtmlWriterPublishPartsTestCase(WriterPublishTestCase):
         # interpolate standard variables:
         expected = self.expected % {'version': docutils.__version__}
         self.compare_output(self.input, output, expected)
-    
+
     standard_content_type_template = ('<meta http-equiv="Content-Type"'
                                       ' content="text/html; charset=%s" />\n')
     standard_generator_template = (
