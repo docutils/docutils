@@ -32,7 +32,7 @@ if sys.version_info >= (3,):
         'tools/' and 'test/' dirs and run 2to3 on *.py files.
         """
         manifest_in = """\
-        exclude *.pyc *~ .DS_Store
+        exclude *.pyc *~ .DS_Store rst2*.py rstpep2html.py
         recursive-exclude * *.pyc *~ .DS_Store
         recursive-exclude functional/output *
         include functional/output/README.txt
@@ -48,7 +48,7 @@ if sys.version_info >= (3,):
             print("copying aux dirs")
             loglevel = log.set_threshold(log.ERROR)
             for source in ['tools', 'test']:
-                dest = os.path.join(self.build_lib, source)
+                dest = source + '3'
                 copydir_run_2to3(source, dest, template=self.manifest_in)
             log.set_threshold(loglevel)
 
@@ -187,6 +187,7 @@ classifiers = [
     'License :: OSI Approved :: GNU General Public License (GPL)',
     'Operating System :: OS Independent',
     'Programming Language :: Python',
+    'Programming Language :: Python :: 3',
     'Topic :: Documentation',
     'Topic :: Software Development :: Documentation',
     'Topic :: Text Processing',

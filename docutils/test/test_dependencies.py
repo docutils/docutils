@@ -24,7 +24,6 @@ paths = {'include': u'data/include.txt',  # included rst file
          'scaled-image': u'../docs/user/rst/images/biohazard.png',
          'figure-image': u'../docs/user/rst/images/title.png',
          'stylesheet':   u'data/stylesheet.txt',
-         'default-stylesheet': u'../docutils/writers/html4css1/html4css1.css',
         }
 
 
@@ -71,11 +70,13 @@ class RecordDependenciesTests(unittest.TestCase):
         self.assertEqual(record, expected)
 
     def test_dependencies_html(self):
-        keys = ['include', 'raw', 'default-stylesheet']
+        keys = ['include', 'raw']
         if PIL:
             keys += ['figure-image', 'scaled-image']
         expected = [paths[key] for key in keys]
-        record = self.get_record(writer_name='html')
+        # stylesheets are tested separately in test_stylesheet_dependencies():
+        so = {'stylesheet_path': None, 'stylesheet': None}
+        record = self.get_record(writer_name='html', settings_overrides=so)
         # the order of the files is arbitrary
         record.sort()
         expected.sort()
