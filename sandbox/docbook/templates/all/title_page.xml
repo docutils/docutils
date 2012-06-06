@@ -1,0 +1,69 @@
+<!DOCTYPE t:templates [
+<!ENTITY hsize0 "10pt">
+<!ENTITY hsize1 "12pt">
+<!ENTITY hsize2 "14.4pt">
+<!ENTITY hsize3 "17.28pt">
+<!ENTITY hsize4 "20.736pt">
+<!ENTITY hsize5 "24.8832pt">
+<!ENTITY hsize0space "7.5pt"> <!-- 0.75 * hsize0 -->
+<!ENTITY hsize1space "9pt"> <!-- 0.75 * hsize1 -->
+<!ENTITY hsize2space "10.8pt"> <!-- 0.75 * hsize2 -->
+<!ENTITY hsize3space "12.96pt"> <!-- 0.75 * hsize3 -->
+<!ENTITY hsize4space "15.552pt"> <!-- 0.75 * hsize4 -->
+<!ENTITY hsize5space "18.6624pt"> <!-- 0.75 * hsize5 -->
+]>
+<t:templates xmlns:t="http://nwalsh.com/docbook/xsl/template/1.0"
+	     xmlns:param="http://nwalsh.com/docbook/xsl/template/1.0/param"
+             xmlns:fo="http://www.w3.org/1999/XSL/Format"
+             xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+<!-- ********************************************************************
+     $Id: titlepage.templates.xml 8341 2009-03-16 03:00:56Z bobstayton $
+     ********************************************************************
+
+     This file is part of the DocBook XSL Stylesheet distribution.
+     See ../README or http://docbook.sf.net/ for copyright
+     copyright and other information.
+
+     ******************************************************************** -->
+
+<!-- ==================================================================== -->
+
+<t:titlepage t:element="article" t:wrapper="fo:block"
+             font-family="{$title.fontset}">
+
+  <t:titlepage-content t:side="recto"
+	     start-indent="0pt"
+             text-align="center">
+    <title t:named-template="component.title"
+	   param:node="ancestor-or-self::article[1]"
+	   keep-with-next.within-column="always"
+           space-before="2in"
+	   font-size="&hsize4;"
+            space-before.conditionality="retain"
+	   />
+
+    <author space-before="0.5em"
+            font-size="&hsize1;"/>
+
+    <address
+        text-align="center"
+        font-size="&hsize2;"
+        />
+
+    <email/>
+
+    <abstract space-before=".5in"
+              space-before.conditionality="retain"
+	      text-align="start"
+	      margin-left="0.5in"
+              margin-right="0.5in"
+              font-family="{$body.fontset}"/>
+
+
+  </t:titlepage-content>
+
+</t:titlepage>
+
+
+</t:templates>
