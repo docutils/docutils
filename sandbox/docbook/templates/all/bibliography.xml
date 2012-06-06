@@ -1,0 +1,138 @@
+ <bibliography xmlns="http://docbook.org/ns/docbook">
+     <title>References</title>
+  <biblioentry xreflabel="BD">
+      <authorgroup>
+          <author>
+              <personname>
+                  <firstname>P.</firstname>
+                  <surname>Bickel</surname>
+                </personname>
+          </author>
+          <author>
+              <personname>
+                  <firstname>K.</firstname>
+                  <surname>Doksum</surname>
+              </personname>
+          </author>
+      </authorgroup>
+      <title>Mathematical Statistics: Basic Ideas and Selected Topics</title>
+      <publisher>
+          <publishername>Holden-Day</publishername>
+          <address>
+              <city>San Francisco</city>
+          </address>
+      </publisher>
+      <date>1977</date>
+  </biblioentry>
+  <biblioentry xreflabel="CaBe">
+      <authorgroup>
+          <author>
+              <personname>
+                  <firstname>G.</firstname>
+                  <surname>Casella</surname>
+              </personname>
+          </author>
+          <author>
+              <personname>
+                  <firstname>R.</firstname>
+                  <surname>Berger</surname>
+              </personname>
+          </author>
+      </authorgroup>
+      <title>Statistical Inference</title>
+      <edition>2nd</edition>
+      <publisher>
+          <publishername>Duxbury Advanced Series</publishername>
+          <address>Pacific Grove, CA</address>
+      </publisher>
+      <date>2002</date>
+  </biblioentry>
+  <biblioentry xreflabel="Du">
+      <author>
+          <personname>
+              <firstname>R.</firstname>
+              <surname>Durrett</surname>
+          </personname>
+      </author>
+      <title>Probability: Theory and Examples</title>
+      <edition>2nd</edition>
+      <publisher>
+          <publishername>Duxbury Press</publishername>
+      </publisher>
+      <date>1996</date>
+  </biblioentry>
+  <biblioentry xreflabel="Fe">
+      <author>
+          <personname>
+              <firstname>W.</firstname>
+              <surname>Feller</surname>
+          </personname>
+      </author>
+      <title>An Introduction to Probability Theory and Its Applications</title>
+      <edition>2nd</edition>
+      <publisher>
+          <publishername>John Wiley &amp; Sons</publishername>
+          <address>New York</address>
+      </publisher>
+      <date>1971</date>
+      <volumenum>II</volumenum>
+  </biblioentry>
+  <biblioentry xreflabel="Ke">
+      <author>
+          <personname>
+              <firstname>D.</firstname>
+              <surname>Kelley</surname>
+          </personname>
+      </author>
+      <title>Introduction to Probability</title>
+      <publisher>
+          <publishername>Macmillan Publishing Company</publishername>
+          <address>London</address>
+      </publisher>
+      <date>1994</date>
+  </biblioentry>
+  <biblioentry xreflabel="Lf">
+      <authorgroup>
+          <author>
+              <personname>
+                  <firstname>R.</firstname>
+                  <surname>Larson</surname>
+              </personname>
+          </author>
+          <author>
+              <personname>
+                  <firstname>B.</firstname>
+                  <surname>Farber</surname>
+              </personname>
+          </author>
+      </authorgroup>
+      <title>Elementary Statistics: Picturing the World</title>
+      <publisher>
+          <publishername>Prentice-Hall</publishername>
+          <address>Englewood Cliffs, NJ</address>
+      </publisher>
+      <date>2003</date>
+  </biblioentry>
+  <biblioentry xreflabel="MoMc">
+      <authorgroup>
+          <author>
+              <personname>
+                  <firstname>R.</firstname>
+                  <surname>Moore</surname>
+              </personname>
+          </author>
+          <author>
+              <personname>
+                  <firstname>G.</firstname>
+                  <surname>McCabe</surname>
+              </personname>
+          </author>
+      </authorgroup>
+      <title>Introduction to the Practice of Statistics</title>
+      <publisher>
+          <publishername>W. H. Freeman and Co</publishername>
+          <address>London</address>
+      </publisher>
+      <date>2003</date>
+  </biblioentry>
+ </bibliography>
