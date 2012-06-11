@@ -327,12 +327,31 @@ class FileOutput(Output):
             if destination_path:
                 self.opened = False
             else:
-                self.destination = sys.stdout
+                if sys.version_info >= (3,0) and 'b' in self.mode:
+                    self.destination = sys.stdout.buffer
+                else:
+                    self.destination = sys.stdout
+        elif (# destination is file-type object -> check mode:
+              mode and hasattr(self.destination, 'mode')
+              and mode != self.destination.mode):
+                print >>self._stderr, ('Destination mode "%s" '
+                               'differs from specified mode "%s"' %
+                               (self.destination.mode, mode))
         if not destination_path:
             try:
                 self.destination_path = self.destination.name
             except AttributeError:
                 pass
+        if (encoding and hasattr(self.destination, 'encoding')
+            and codecs.lookup(self.encoding) !=
+            codecs.lookup(self.destination.encoding)):
+            if self.destination is sys.stdout and sys.version_info >= (3,0):
+                self.destination = sys.stdout.buffer
+            else:
+                raise UnicodeError('Encoding of %s (%s) '
+                                   'differs from specified encoding (%s)' %
+                                   (self.destination_path or 'destination',
+                                    self.destination.encoding, encoding))
 
     def open(self):
         # Specify encoding in Python 3.
@@ -349,31 +368,29 @@ class FileOutput(Output):
                 print >>self._stderr, (u'Unable to open destination file'
                     u" for writing ('%s').  Exiting." % self.destination_path)
                 sys.exit(1)
-            raise OutputError(error.errno, error.strerror, 
+            raise OutputError(error.errno, error.strerror,
                               self.destination_path)
         self.opened = True
 
     def write(self, data):
         """Encode `data`, write it to a single file, and return it.
 
-        In Python 3, `data` is returned unchanged.
+        With Python 3 or binary output mode, `data` is returned unchanged.
         """
-        if sys.version_info < (3,0):
+        if sys.version_info < (3,0) and 'b' not in self.mode:
             data = self.encode(data)
         if not self.opened:
             self.open()
         try: # In Python < 2.5, try...except has to be nested in try...finally.
             try:
-                if (sys.version_info >= (3,0) and self.encoding and
-                    hasattr(self.destination,'encoding') and
-                    self.encoding != self.destination.encoding and
-                    codecs.lookup(self.encoding) !=
-                    codecs.lookup(self.destination.encoding)):
-                    # encode self, write bytes
+                if (sys.version_info >= (3,0)
+                    and self.destination is sys.stdout.buffer
+                    and 'b' not in self.mode):
+                    # encode now, as sys.stdout.encoding != self.encoding
                     bdata = self.encode(data)
                     if os.linesep != '\n':
                         bdata = bdata.replace('\n', os.linesep)
-                    sys.stdout.buffer.write(bdata)
+                    self.destination.buffer.write(bdata)
                 else:
                     self.destination.write(data)
             except (UnicodeError, LookupError), err: # can only happen in py3k
