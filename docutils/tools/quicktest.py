@@ -52,21 +52,21 @@ options = [('pretty', 'p',
 the data structure: (long option, short option, description)."""
 
 def usage():
-    print usage_header
+    print(usage_header)
     for longopt, shortopt, description in options:
         if longopt[-1:] == '=':
             opts = '-%s arg, --%sarg' % (shortopt, longopt)
         else:
             opts = '-%s, --%s' % (shortopt, longopt)
-        print '%-15s' % opts,
+        sys.stdout.write('%-15s' % opts)
         if len(opts) > 14:
-            print '%-16s' % '\n',
+            sys.stdout.write('%-16s' % '\n')
         while len(description) > 60:
             limit = description.rindex(' ', 0, 60)
-            print description[:limit].strip()
+            print(description[:limit].strip())
             description = description[limit + 1:]
-            print '%-15s' % ' ',
-        print description
+            sys.stdout.write('%-15s' % ' ')
+        print(description)
 
 def _pretty(input, document, optargs):
     return document.pformat()
@@ -142,9 +142,9 @@ def posixGetArgs(argv):
             usage()
             sys.exit()
         elif o in ['-V', '--version']:
-            print >>sys.stderr, ('quicktest.py (Docutils %s [%s])'
-                                 % (docutils.__version__,
-                                    docutils.__version_details__))
+            sys.stderr.write('quicktest.py (Docutils %s [%s])\n' %
+                             (docutils.__version__, 
+                              docutils.__version_details__))
             sys.exit()
         elif o in ['-r', '--rawxml']:
             outputFormat = 'rawxml'
@@ -162,9 +162,9 @@ def posixGetArgs(argv):
         elif o in ['-d', '--debug']:
             optargs['debug'] = 1
         else:
-            raise getopt.GetoptError, "getopt should have saved us!"
+            raise getopt.GetoptError("getopt should have saved us!")
     if len(args) > 2:
-        print 'Maximum 2 arguments allowed.'
+        print('Maximum 2 arguments allowed.')
         usage()
         sys.exit(1)
     inputFile = sys.stdin

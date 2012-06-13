@@ -25,18 +25,31 @@ Build-HTML Options
 import unittest
 import os
 import re
+try:
+    import tempfile
+except ImportError:
+    pass
+try:
+    from subprocess import Popen, PIPE, STDOUT
+except ImportError:
+    pass
 
 def process_and_return_filelist(options):
     dirs = []
     files = []
-    cin, cout = os.popen4("../buildhtml.py "+options)
+    try:
+        p = Popen("../buildhtml.py "+options, shell=True, 
+                  stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=True)
+        (cin, cout) = (p.stdin, p.stdout)
+    except NameError:
+        cin, cout = os.popen4("../buildhtml.py "+options)
     while 1:
-        ln = cout.readline()
-        if not ln:
+        line = cout.readline()
+        if not line:
             break
         # BUG no colon in filename/path allowed
-        item = ln.split(":")[-1].strip()
-        if ln.startswith(" "):
+        item = line.split(":")[-1].strip()
+        if line.startswith(" "):
             files.append(item)
         else:
             dirs.append(item)
@@ -58,8 +71,12 @@ class BuildHtmlTests(unittest.TestCase):
              )
 
     def setUp(self):
-        self.root = os.tempnam()
-        os.mkdir(self.root)
+        try:
+            self.root = tempfile.mkdtemp()
+        except NameError:
+            self.root = os.tempnam()
+            os.mkdir(self.root)
+        
         for s in self.tree:
             s = os.path.join(self.root, s)
             if not "." in s:
