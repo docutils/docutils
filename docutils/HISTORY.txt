@@ -28,6 +28,11 @@ Changes Since 0.9
   - Use converted sources from the ``build/`` directory for tests under
     Python 3.
 
+* docutils/io.py
+
+  - Fix writing binary data to sys.stdout under Python 3 (allows
+    ``rst2odt.py`` to be used with output redirection).
+
 * docutils/parsers/rst/directives/misc.py
 
   - Fix [ 3525847 ]. Catch and report UnicodeEncodeError with 

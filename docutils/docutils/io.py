@@ -21,6 +21,21 @@ from docutils.error_reporting import locale_encoding, ErrorString, ErrorOutput
 class InputError(IOError): pass
 class OutputError(IOError): pass
 
+def check_encoding(stream, encoding):
+    """Test, whether the encoding of `stream` matches `encoding`.
+
+    Returns
+
+    :None:  if `encoding` or `stream.encoding` are not a valid encoding
+            argument (e.g. ``None``) or `stream.encoding is missing.
+    :True:  if the encoding argument resolves to the same value as `encoding`,
+    :False: if the encodings differ.
+    """
+    try:
+        return codecs.lookup(stream.encoding) == codecs.lookup(encoding)
+    except (LookupError, AttributeError, TypeError):
+        return None
+
 
 class Input(TransformSpec):
 
@@ -231,10 +246,7 @@ class FileInput(Input):
             else:
                 self.source = sys.stdin
         elif (sys.version_info >= (3,0) and
-              self.encoding and hasattr(self.source, 'encoding') and
-              self.encoding != self.source.encoding and
-              codecs.lookup(self.encoding) !=
-              codecs.lookup(self.source.encoding)):
+              check_encoding(self.source, self.encoding) is False):
             # TODO: re-open, warn or raise error?
             raise UnicodeError('Encoding clash: encoding given is "%s" '
                                'but source is opened with encoding "%s".' %
@@ -327,10 +339,7 @@ class FileOutput(Output):
             if destination_path:
                 self.opened = False
             else:
-                if sys.version_info >= (3,0) and 'b' in self.mode:
-                    self.destination = sys.stdout.buffer
-                else:
-                    self.destination = sys.stdout
+                self.destination = sys.stdout
         elif (# destination is file-type object -> check mode:
               mode and hasattr(self.destination, 'mode')
               and mode != self.destination.mode):
@@ -342,16 +351,21 @@ class FileOutput(Output):
                 self.destination_path = self.destination.name
             except AttributeError:
                 pass
-        if (encoding and hasattr(self.destination, 'encoding')
-            and codecs.lookup(self.encoding) !=
-            codecs.lookup(self.destination.encoding)):
-            if self.destination is sys.stdout and sys.version_info >= (3,0):
-                self.destination = sys.stdout.buffer
-            else:
-                raise UnicodeError('Encoding of %s (%s) '
-                                   'differs from specified encoding (%s)' %
-                                   (self.destination_path or 'destination',
-                                    self.destination.encoding, encoding))
+        # Special cases under Python 3: different encoding or binary output
+        if sys.version_info >= (3,0):
+            if ('b' in self.mode
+                and self.destination in (sys.stdout, sys.stderr)
+               ):
+                self.destination = self.destination.buffer
+            if check_encoding(self.destination, self.encoding) is False:
+                if self.destination in (sys.stdout, sys.stderr):
+                    self.destination = self.destination.buffer
+                else:  # TODO: try the `write to .buffer` scheme instead?
+                    raise ValueError('Encoding of %s (%s) differs \n'
+                                     '  from specified encoding (%s)' %
+                                     (self.destination_path or 'destination',
+                                      destination.encoding, encoding))
+
 
     def open(self):
         # Specify encoding in Python 3.
@@ -375,25 +389,23 @@ class FileOutput(Output):
     def write(self, data):
         """Encode `data`, write it to a single file, and return it.
 
-        With Python 3 or binary output mode, `data` is returned unchanged.
+        With Python 3 or binary output mode, `data` is returned unchanged,
+        except when specified encoding and output encoding differ.
         """
-        if sys.version_info < (3,0) and 'b' not in self.mode:
-            data = self.encode(data)
         if not self.opened:
             self.open()
         try: # In Python < 2.5, try...except has to be nested in try...finally.
             try:
-                if (sys.version_info >= (3,0)
-                    and self.destination is sys.stdout.buffer
-                    and 'b' not in self.mode):
-                    # encode now, as sys.stdout.encoding != self.encoding
-                    bdata = self.encode(data)
-                    if os.linesep != '\n':
-                        bdata = bdata.replace('\n', os.linesep)
-                    self.destination.buffer.write(bdata)
-                else:
-                    self.destination.write(data)
-            except (UnicodeError, LookupError), err: # can only happen in py3k
+                if 'b' not in self.mode and (sys.version_info < (3,0) or
+                   check_encoding(self.destination, self.encoding) is False):
+                    data = self.encode(data)
+                    if sys.version_info >= (3,0) and os.linesep != '\n':
+                        # writing as binary data -> fix endings
+                        data = data.replace('\n', os.linesep)
+
+                self.destination.write(data)
+
+            except (UnicodeError, LookupError), err:
                 raise UnicodeError(
                     'Unable to encode output data. output-encoding is: '
                     '%s.\n(%s)' % (self.encoding, ErrorString(err)))
