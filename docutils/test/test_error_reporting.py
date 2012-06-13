@@ -158,14 +158,14 @@ class ErrorStringTests(unittest.TestCase):
 # -----------------
 
 # Stub: Buffer with 'strict' auto-conversion of input to byte string:
-class BBuf(BytesIO, object):
+class BBuf(BytesIO, object): # super class object required by Python <= 2.5
     def write(self, data):
         if isinstance(data, unicode):
             data.encode('ascii', 'strict')
         super(BBuf, self).write(data)
 
 # Stub: Buffer expecting unicode string:
-class UBuf(StringIO, object):
+class UBuf(StringIO, object): # super class object required by Python <= 2.5
     def write(self, data):
         # emulate Python 3 handling of stdout, stderr
         if isinstance(data, bytes):

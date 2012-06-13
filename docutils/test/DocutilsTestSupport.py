@@ -881,7 +881,7 @@ def _format_str(*args):
     return_tuple = []
     for i in args:
         r = repr(i)
-        if ( (isinstance(i, str) or isinstance(i, unicode))
+        if ( (isinstance(i, bytes) or isinstance(i, unicode))
              and '\n' in i):
             stripped = ''
             if isinstance(i, unicode) and r.startswith('u'):
