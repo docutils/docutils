@@ -28,11 +28,11 @@ if sys.version_info >= (3,):
     class copy_build_py_2to3(build_py_2to3):
         """Copy/convert Python source files in given directories recursively.
 
-        Build py3k versions of the modules and packages. Also copy
-        'tools/' and 'test/' dirs and run 2to3 on *.py files.
+        Build py3k versions of the modules and packages.
+        Also copy 'test/' suite and run 2to3 on *.py files.
         """
         manifest_in = """\
-        exclude *.pyc *~ .DS_Store rst2*.py rstpep2html.py
+        exclude *.pyc *~ .DS_Store
         recursive-exclude * *.pyc *~ .DS_Store
         recursive-exclude functional/output *
         include functional/output/README.txt
@@ -45,11 +45,9 @@ if sys.version_info >= (3,):
         """
         def run(self):
             build_py_2to3.run(self)
-            print("copying aux dirs")
+            print("copy/convert test suite")
             loglevel = log.set_threshold(log.ERROR)
-            for source in ['tools', 'test']:
-                dest = source + '3'
-                copydir_run_2to3(source, dest, template=self.manifest_in)
+            copydir_run_2to3('test', 'test3', template=self.manifest_in)
             log.set_threshold(loglevel)
 
 

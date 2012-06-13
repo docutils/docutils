@@ -27,12 +27,12 @@ import re
 from xml.parsers.expat import ParserCreate
 
 
-usage_msg = """Usage: %s [unicode.xml]"""
+usage_msg = """Usage: %s [unicode.xml]\n"""
 
 def usage(prog, status=0, msg=None):
-    print >>sys.stderr, usage_msg % prog
+    sys.stderr.write(usage_msg % prog)
     if msg:
-        print >>sys.stderr, msg
+        sys.stderr.write(msg + '\n')
     sys.exit(status)
 
 def main(argv=None):
@@ -47,7 +47,10 @@ def main(argv=None):
         inpath = 'unicode.xml'
     if not os.path.isfile(inpath):
         usage(argv[0], 1, 'No such file: "%s".' % inpath)
-    infile = open(inpath)
+    if sys.version_info >= (3,0):
+        infile = open(inpath, mode='rb')
+    else:
+        infile = open(inpath)
     process(infile)
 
 def process(infile):
@@ -130,7 +133,7 @@ class CharacterEntitySetExtractor:
         if not set:
             return
         if set not in self.sets:
-            print 'bad set: %r' % set
+            print('bad set: %r' % set)
             return
         entity = attributes['id']
         assert (entity not in self.sets[set]
@@ -159,7 +162,7 @@ class CharacterEntitySetExtractor:
         return name
 
     def write_sets(self):
-        sets = self.sets.keys()
+        sets = list(self.sets.keys())
         sets.sort()
         for set_name in sets:
             self.write_set(set_name)
@@ -170,8 +173,8 @@ class CharacterEntitySetExtractor:
         else:
             outname = set_name + '.txt'
         outfile = open(outname, 'w')
-        print 'writing file "%s"' % outname
-        print >>outfile, self.header
+        print('writing file "%s"' % outname)
+        outfile.write(self.header + '\n')
         set = self.sets[set_name]
         entities = [(e.lower(), e) for e in set.keys()]
         entities.sort()
@@ -193,9 +196,9 @@ class CharacterEntitySetExtractor:
                 if int(code, 16) > 0xFFFF:
                     return 1            # wide-Unicode character
         codes = ' '.join(['U+%s' % code for code in charid[1:].split('-')])
-        print >>outfile, ('.. %-*s unicode:: %s .. %s'
-                          % (longest + 2, '|' + entity_name + '|',
-                             codes, self.descriptions[charid]))
+        outfile.write('.. %-*s unicode:: %s .. %s\n'
+                      % (longest + 2, '|' + entity_name + '|',
+                         codes, self.descriptions[charid]))
 
 
 if __name__ == '__main__':

@@ -200,13 +200,13 @@ class Builder:
         settings = self.get_settings('', directory)
         errout = ErrorOutput(encoding=settings.error_encoding)
         if settings.prune and (os.path.abspath(directory) in settings.prune):
-            print >>errout, ('/// ...Skipping directory (pruned): %s' %
-                              directory)
+            errout.write('/// ...Skipping directory (pruned): %s\n' %
+                         directory)
             sys.stderr.flush()
             del subdirectories[:]
             return
         if not self.initial_settings.silent:
-            print >>errout, '/// Processing directory: %s' % directory
+            errout.write('/// Processing directory: %s' % directory)
             sys.stderr.flush()
         # settings.ignore grows many duplicate entries as we recurse
         # if we add patterns in config files or on the command line.
@@ -230,7 +230,7 @@ class Builder:
         settings._source = os.path.normpath(os.path.join(directory, name))
         settings._destination = settings._source[:-4]+'.html'
         if not self.initial_settings.silent:
-            print >>errout, '    ::: Processing: %s' % name
+            errout.write('    ::: Processing: %s\n' % name)
             sys.stderr.flush()
         try:
             if not settings.dry_run:
@@ -240,8 +240,9 @@ class Builder:
                               parser_name='restructuredtext',
                               writer_name=pub_struct.writer_name,
                               settings=settings)
-        except ApplicationError, error:
-            print >>errout, '        %s' % ErrorString(error)
+        except ApplicationError:
+            error = sys.exc_info()[1] # get exception in Python <2.6 and 3.x
+            errout.write('        %s\n' % ErrorString(error))
 
 
 if __name__ == "__main__":

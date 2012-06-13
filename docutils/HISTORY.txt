@@ -25,8 +25,12 @@ Changes Since 0.9
 * docutils/test/
 
   - Make tests independent from the location of the ``test/`` directory.
-  - Use converted sources from the ``build/`` directory for tests under
+  - Use converted sources (from the ``build/`` directory) for tests under
     Python 3.
+
+* docutils/tools/
+
+  - Make tools compatible with both, Python 2 and 3 without 2to3-conversion.
 
 * docutils/io.py
 

@@ -14,45 +14,33 @@
 Quick-Start
 ===========
 
-This is for those who want to get up & running quickly.  Read on for
-complete details.
+This is for those who want to get up & running quickly.
 
-1. Get and install the latest release of Python, available from
+1. Docutils requires Python (version 2.3 or later), available from
 
-       http://www.python.org/
+     http://www.python.org/
 
-   Docutils is compatible with Python versions from 2.3 up to 2.7 and
-   versions 3.1 and 3.2. (Support for Python 3 is new and might still
-   have some issues.)
+   See Requirements_ below for details.
 
-2. Use the latest Docutils code.  Get the code from Subversion or from
-   the snapshot:
+2. Use the latest Docutils code.  Get the code from the `Subversion
+   repository`_ or from the snapshot:
 
-       http://docutils.svn.sourceforge.net/viewvc/docutils/trunk/docutils/?view=tar
+     http://docutils.svn.sourceforge.net/viewvc/docutils/trunk/docutils/?view=tar
 
    See `Releases & Snapshots`_ below for details.
 
 3. Unpack the tarball in a temporary directory (**not** directly in
-   Python's ``site-packages``) and run ``setup.py install`` or
-   ``install.py`` with admin rights.  On Windows systems it may be
-   sufficient to double-click ``install.py``.  On Unix or Mac OS X,
-   type::
+   Python's ``site-packages``), go to the directory created by expanding
+   the archive, and run ``setup.py install`` with admin rights. On
+   Windows systems it may be sufficient to double-click ``install.py``.
 
-        su
-        (enter admin password)
-        ./setup.py install
-
-   Docutils will only work with Python 3, if installed with a Python
-   version >= 3. If your default Python version is 2.x, also call
-   ``python3 setup.py install`` from the temporary directory.
    See Installation_ below for details.
 
-4. Use a front-end tool from the "tools" subdirectory of the same
-   directory as in step 3.  For example::
+4. Use the front-end scripts to convert reStructuredText documents.
+   Try for example::
 
-       cd tools
-       ./rst2html.py ../FAQ.txt ../FAQ.html        (Unix)
-       python rst2html.py ..\FAQ.txt ..\FAQ.html   (Windows)
+       rst2html.py FAQ.txt FAQ.html         (Unix)
+       python tools/rst2html.py FAQ.txt FAQ.html  (Windows)
 
    See Usage_ below for details.
 
@@ -103,8 +91,9 @@ changes being committed to the repository):
 * Snapshot of the Sandbox (experimental, contributed code):
   http://docutils.svn.sourceforge.net/viewvc/docutils/trunk/sandbox/?view=tar
 
-To keep up to date on the latest developments, download fresh copies
-of the snapshots regularly. (There's also the `Subversion repository`_.)
+To keep up to date on the latest developments, download fresh copies of
+the snapshots regularly or use a working copy of the
+`Subversion repository`_.
 
 .. _Subversion repository: docs/dev/repository.html
 
@@ -112,21 +101,48 @@ of the snapshots regularly. (There's also the `Subversion repository`_.)
 Requirements
 ============
 
-To run the code, Python 2.3 or later must already be installed.
-Python is available from
-http://www.python.org/.
+To run the code, Python_ must be installed.
+Docutils is compatible with Python versions from 2.3 up to 2.7 and
+versions 3.1 and 3.2 (cf. `Python 3 compatibility`_).
 
 Docutils uses the following packages for enhanced functionality, if they are
 installed:
 
-* The `Python Imaging Library`, or PIL, is used for some image
+* The `Python Imaging Library`_, or PIL, is used for some image
   manipulation operations.
 
 * The `Pygments`_ syntax highlighter is used for content of `code`
   directives and roles.
 
+.. _Python: http://www.python.org/.
 .. _Python Imaging Library: http://www.pythonware.com/products/pil/
-.. _pygments: http://pygments.org/
+.. _Pygments: http://pygments.org/
+
+
+Python 3 compatibility
+----------------------
+
+The Docutils codebase is written for Python 2 and uses "on-demand"
+translation for `porting to Python 3`_.
+
+* The `setup.py` script generates Python 3 compatible sources in
+  ``build/`` and tests in ``tests3/`` sub-directories during
+  installation_ with Python 3.
+
+* The scripts in the ``tools/`` sub-directory work with all supported
+  Python versions without conversion.
+
+* To convert the sources without installing (e.g. for testing), run
+  ``python3 setup.py build``.
+
+* When editing the source, do changes on the Python 2 versions of the
+  files and re-run the build command.
+
+Using Docutils with Python 3.x is less tested and might still have some
+issues.
+
+.. _porting to Python 3: http://docs.python.org/py3k/howto/pyporting.html
+
 
 Project Files & Directories
 ===========================
@@ -180,6 +196,12 @@ Project Files & Directories
   if you're planning to modify it.  See `Running the Test Suite`_
   below.
 
+Generated directories when installing under Python 3:
+
+* build: Converted sources.
+
+* test3: Converted tests.
+
 
 Installation
 ============
@@ -199,19 +221,26 @@ GNU/Linux, BSDs, Unix, Mac OS X, etc.
 
        cd <archive_directory_path>
 
-3. Install the package::
+3. Install the package (you may need root permissions to complete this
+   step)::
 
+       su
+       (enter admin password)
        python setup.py install
 
    If the python executable isn't on your path, you'll have to specify
-   the complete path, such as /usr/local/bin/python.  You may need
-   root permissions to complete this step.
+   the complete path, such as ``/usr/local/bin/python``.
 
-   To install for a specific python version, use this version in the
+   To install for a specific Python version, use this version in the
    setup call, e.g. ::
 
        python3.1 setup.py install
 
+   To install for different Python versions, repeat step 3 for every
+   required version. The last installed version will be used in the
+   `shebang line`_ of the ``rst2*.py`` wrapper scripts.
+
+   .. _shebang line: http://en.wikipedia.org/wiki/Shebang_%28Unix%29
 
 Windows
 -------
@@ -233,22 +262,36 @@ following:
    To install for a specific python version, specify the Python
    executable for this version.
 
-Developing under Python 3
--------------------------
+   To install for different Python versions, repeat step 3 for every
+   required version.
 
-Under Python 3, installing with ``setup.py`` converts the source to Python 3
-compatible code before installing. If you want to test or develop Docutils,
-also run ``python3 setup.py build``. This will generate Python 3 compatible
-sources, in the ``build/`` sub-directory, tests in ``tests3/``, and
-developer tools in ``tools3``.
+Optional steps:
 
-Do changes on the Python 2 versions of the sources and re-run the build
-command. This works incrementally, so if you change one file it will only
-reconvert that file the next time you run setup.py build.
+* `running the test suite`_
+
+* `converting the documentation`_
 
 
 Usage
 =====
+
+There are many front-end tools in the unpacked "tools" subdirectory.
+Installation under Unix places copies in the PATH.
+You may want to begin with the "rst2html.py" front-end tool.  Most
+tools take up to two arguments, the source path and destination path,
+with STDIN and STDOUT being the defaults.  Use the "--help" option to
+the front-end tools for details on options and arguments.  See
+Docutils Front-End Tools (``docs/user/tools.txt``) for full documentation.
+
+The package modules are continually growing and evolving.  The
+``docutils.statemachine`` module is usable independently.  It contains
+extensive inline documentation (in reStructuredText format of course).
+
+Contributions are welcome!
+
+
+Converting the documentation
+============================
 
 After unpacking and installing the Docutils package, the following
 shell commands will generate HTML for all included documentation::
@@ -270,33 +313,18 @@ Alternatively::
     tools/buildhtml.py --config=tools/docutils.conf          (Unix)
     python tools\buildhtml.py --config=tools\docutils.conf   (Windows)
 
-With Python 3, call::
-
-    build/<Python-3-subdir>/tools/buildhtml.py --config=tools/docutils.conf
-
 Some files may generate system messages (warnings and errors).  The
 ``docs/user/rst/demo.txt`` file (under the archive directory) contains
 five intentional errors.  (They test the error reporting mechanism!)
-
-There are many front-end tools in the unpacked "tools" subdirectory.
-You may want to begin with the "rst2html.py" front-end tool.  Most
-tools take up to two arguments, the source path and destination path,
-with STDIN and STDOUT being the defaults.  Use the "--help" option to
-the front-end tools for details on options and arguments.  See
-Docutils Front-End Tools (``docs/user/tools.txt``) for full documentation.
-
-The package modules are continually growing and evolving.  The
-``docutils.statemachine`` module is usable independently.  It contains
-extensive inline documentation (in reStructuredText format of course).
-
-Contributions are welcome!
 
 
 Running the Test Suite
 ======================
 
-To run the entire test suite, after installation_ open a shell and use
-the following commands::
+The test suite is documented in `Docutils Testing`_ (docs/dev/testing.txt).
+
+To run the entire test suite, open a shell and use the following
+commands::
 
     cd <archive_directory_path>/test
     ./alltests.py
@@ -340,9 +368,8 @@ Windows users type these commands::
     cd ..\tools
     python quicktest.py --version
 
-For Python 3, the path is ``tools3/quicktest.py``.
 
-
+.. _Docutils Testing: http://docutils.sourceforge.net/docs/dev/testing.html
 .. _open a bug report:
    http://sourceforge.net/tracker/?group_id=38414&atid=422030
 .. _send email: mailto:docutils-users@lists.sourceforge.net
