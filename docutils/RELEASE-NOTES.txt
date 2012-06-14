@@ -19,6 +19,8 @@ more detailed list of changes, please see the `Docutils History`_.
 Future changes
 ==============
 
+* Support for Python 2.3 will be dropped in version 0.10.
+
 * docutils/math, docutils/error_reporting.py, and
   docutils/urischemes.py will move to the utils package
   Code importing these modules needs to adapt, e.g.::
@@ -42,10 +44,19 @@ Future changes
                is called with `handle_io_errors`,
   :0.10 + n+1: remove the `handle_io_errors` option.
 
-* end of python2.3 support with 0.10, most likely.
 
 Changes Since 0.9
 =================
+
+* docutils/setup.py
+
+  - Fix [ 3527842 ]. Under Python 3, converted tests and tools were
+    installed in the PYTHONPATH. Converted tests are now
+    stored in ``docutils/test3/``, tools no longer need conversion.
+
+    If you installed one of Docutils versions 0.7 ... 0.9 with
+    ``setup.py install`` under Python 3, remove the spurious
+    ``test/`` and ``tools/`` directories in the site library root.
 
 
 Release 0.9 (2012-05-02)
@@ -93,13 +104,10 @@ Release 0.8.1 (2011-08-30)
   - Fix [ 3364658 ] (Change last file with Apache license to BSD-2-Clause)
     and [ 3395920 ] (correct copyright info for rst.el).
 
-* docutils/test/
-
-  -  Apply [ 3303733 ] and [ 3365041 ] to fix tests under py3k.
-
 * docutils/writers/latex2e/__init__.py
 
   - Clean up Babel language setting. Restores Sphinx compatibility.
+
 
 Release 0.8 (2011-07-07)
 ========================
@@ -158,6 +166,7 @@ Components:
 
 * and fixes and enhancements here and there.
 
+
 Release 0.7 (2010-07-07)
 ========================
 
@@ -201,6 +210,7 @@ General:
 
   - Python 3 support: copy test/ and tools/ to the build-dir
     and convert Python sources with 2to3.
+
 
 Release 0.6 (2009-10-11)
 ========================
@@ -320,6 +330,7 @@ General:
 * Added docutils/writers/html4css1/template.txt.
 
 * Enhance emacs support.
+
 
 Release 0.4 (2006-01-09)
 ========================
