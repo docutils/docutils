@@ -161,13 +161,35 @@ Imenu support
 Outline support
 ===============
 
-* Support for `outline-mode' / `allout-mode' would be nice
+* Support for `outline-mode` / `allout-mode` would be nice
 
   * Should consider section titles
 
-* May be folding is also possible
+    * May be item lists can also be included
 
-  * For item lists
+  * Using `allout-mode` is difficult
+
+    * It's not customizable enough for the complex syntax of
+      reStructuredText
+
+    * However, some commands make sense
+
+      * Motion commands
+
+      * Exposure commands
+
+      * Some alteration commands
+
+    * Should be reimplemented
+
+      * Key bindings need to be reused
+
+	* However, care must be taken if a file uses `allout-mode` for
+	  instance by comment strings
+
+	* In this case key bindings must not be overridden
+
+  * A command adding / updating `allout-mode` tags could be a solution
 
 Sophisticated filling
 =====================
