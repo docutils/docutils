@@ -160,8 +160,6 @@ For details see the script.
 * **Add a SourceForge News item, with title "Docutils X.Y.Z released"
   and containing the release tarball's download URL.**
 
-  BUG: not found 2009-10-12.
-
 * **Register with freecode.** Add a new release for the
   `Docutils project`__. (freecode is freshmeat.net's new name)
 
