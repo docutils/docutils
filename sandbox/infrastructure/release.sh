@@ -246,9 +246,11 @@ function test_tarball()
                 rm -rf $site_packages/docutils-test
             fi
             rm -rfv /usr/{local,}lib/python$py_ver/site-packages/{docutils'"$extras"'}
+            echo "TODO for python3 rm local build, but building takes a long time then "
             python$py_ver setup.py install
             echo
             echo "Copying the test suite to the site-packages directory of Python $py_ver."
+            echo "TODO for python3 copy test3"
             echo "Press enter."
             read
             cp -rv test "$site_packages/docutils-test"
