@@ -18,6 +18,19 @@ same failures as for 0.9 plus
   -             [Errno 2] No such file or directory: 'bogus.csv'.
   +             [Errno 2] No such file or directory: u'bogus.csv'.
 
+  python 2.3 ::
+
+    ======================================================================
+    ERROR: test_unicode (test_error_reporting.ErrorStringTests)
+    ----------------------------------------------------------------------
+    Traceback (most recent call last):
+      File "/usr/local/lib/python2.3/site-packages/docutils-test/test_error_reporting.py", line 153, in test_unicode
+        self.assertEqual(u'ImportError: %s' % SafeString(self.bs),
+    UnicodeDecodeError: 'ascii' codec can't decode byte 0xfc in position 0: ordinal not in range(128)
+
+Note: sf takes some considerable time till the downlods are visible for normal users.
+  More than 1 hour , the folder files/docutils/0.9.1 exists and the webinterface
+  correctly summarizes "Totals: 2 Items	 	1.6 MB" but nothing is shown.
 
 Release 0.9
 ===========
