@@ -265,7 +265,7 @@ function test_tarball()
             exit 1
         fi
         # BUG
-        echo "shell script exits if any test fails, maybe run in separate shell."
+        echo "WARNING shell script exits if any test fails, maybe run in separate shell."
         confirm su -c "python$py_ver -u \"$site_packages/docutils-test/alltests.py\""
     done
     run cd ../..
