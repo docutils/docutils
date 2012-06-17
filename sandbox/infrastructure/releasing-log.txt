@@ -8,6 +8,17 @@ Releasing
 
 Notes on what happend while releasing.
 
+Release 0.9.1
+=============
+
+same failures as for 0.9 plus
+
+* python 2.3: twice, ignored ::
+
+  -             [Errno 2] No such file or directory: 'bogus.csv'.
+  +             [Errno 2] No such file or directory: u'bogus.csv'.
+
+
 Release 0.9
 ===========
 
