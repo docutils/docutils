@@ -60,7 +60,7 @@ repository`_. The snapshots usually contain *more features* and *fewer bugs*
 than the "official" releases |---| they're not only for developers!
 
 The latest **release package** is `docutils-0.9.1.tgz`__.  It was
-released on 2012-05-02 and is mostly intended for distributors.  See
+released on 2012-06-17 and is mostly intended for distributors.  See
 the `release notes`_ for a list of changes since the previous release
 (0.8.1).
 
