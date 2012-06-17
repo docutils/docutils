@@ -13,8 +13,8 @@
 
 .. contents::
 
-Changes Since 0.9
-=================
+Release 0.9.1 (2012-06-17)
+==========================
 
 * docutils/setup.py
 
