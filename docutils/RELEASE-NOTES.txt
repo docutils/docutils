@@ -48,6 +48,10 @@ Future changes
 Changes Since 0.9
 =================
 
+* General:
+
+  Several fixes for Python 3 usage.
+
 * docutils/setup.py
 
   - Fix [ 3527842 ]. Under Python 3, converted tests and tools were
