@@ -39,7 +39,7 @@ Future changes
          ``handle_io_errors=False``,
          ignore and deprecate the `handle_io_errors` option.
          (allows us to clean up Docutils code and remove the error handling
-          code from the FileInput/FileOutput classes)
+         code from the FileInput/FileOutput classes)
   :0.10 + n:   deprecation warning to stderr if FileInput/FileOutput
                is called with `handle_io_errors`,
   :0.10 + n+1: remove the `handle_io_errors` option.
