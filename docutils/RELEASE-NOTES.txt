@@ -45,6 +45,10 @@ Future changes
   :0.10 + n+1: remove the `handle_io_errors` option.
 
 
+Changes Since 0.9.1
+===================
+
+
 Release 0.9.1 (2012-06-17)
 ==========================
 
