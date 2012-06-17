@@ -241,7 +241,7 @@ function test_tarball()
             fi
             if test -e "$site_packages/docutils-test"; then
                 echo "Error: \"$site_packages/docutils-test\" exists."
-                echo "removing left over from previous releae. Ctrl-C to abort."
+                echo "removing left over from previous release. Ctrl-C to abort."
                 read
                 rm -rf $site_packages/docutils-test
             fi
