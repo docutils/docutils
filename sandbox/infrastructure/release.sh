@@ -304,7 +304,7 @@ function upload_htdocs()
     confirm tar xzvf "../$tarball"
     run cd docutils-"$new_ver"/tools/
     echo "BUG no docutils installation left."
-    echo "DO NOT let call but manually in $working_area"
+    echo "DO NOT let call but manually in $(pwd)"
     confirm ./buildhtml.py --local ..
     confirm ./buildhtml.py ../docs
     run cd ..
