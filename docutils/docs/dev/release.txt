@@ -136,6 +136,8 @@ For details see the script.
 
 * Register with PyPI (``python setup.py register``).
 
+  Set the download-url so eggs can access older releases. 
+
 * Restore ``__version_details__`` in docutils/docutils/__init__.py to
   "repository" (from "release").
 
