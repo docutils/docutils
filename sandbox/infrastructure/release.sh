@@ -444,6 +444,7 @@ function stage_2()
     done
     confirm test_tarball
     echo 'Registering with PyPI...'
+    echo 'TODO upload to pypi or set download url for this release'
     echo 'Press enter to proceed (or enter anything to skip)...'
     read
     if [ ! "$REPLY" ]; then
