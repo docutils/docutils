@@ -116,6 +116,8 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
     'version': '0.10',
     'author': 'David Goodger',
     'author_email': 'goodger@python.org',
+    'maintainer': 'docutils-develop list',
+    'maintainer_email': 'docutils-develop@lists.sourceforge.net',
     'license': 'public domain, Python, 2-Clause BSD, GPL 3 (see COPYING.txt)',
     'platforms': 'OS-independent',
     'package_dir': {'docutils': 'docutils',
