@@ -15,10 +15,6 @@ from docutils._compat import b, bytes
 from docutils.error_reporting import locale_encoding
 from test_error_reporting import BBuf, UBuf
 
-# python 2.3
-if not hasattr(unittest.TestCase, "assertTrue"):
-    assertTrue = unittest.TestCase.failUnless
-
 class mock_stdout(UBuf):
     encoding = 'utf8'
 

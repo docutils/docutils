@@ -33,23 +33,21 @@ be sure that you haven't broken anything.  From a shell::
 Python Versions
 ===============
 
-The Docutils 0.6 release supports Python 2.3 or later. Therefore, you should
-actually have Pythons 2.3, as well as the latest Python (2.6 at the time
+The Docutils 0.10 release supports Python 2.4 or later. Therefore, you should
+actually have Pythons 2.4, as well as the latest Python (3.2 at the time
 of this writing) installed and always run the tests on all of them.  (A good
 way to do that is to always run the test suite through a short script that
 runs ``alltests.py`` under each version of Python.) If you can't afford
-installing 3 or more Python versions, the edge cases (2.3, and 2.6) should
+installing 3 or more Python versions, the edge cases (2.4, and 3.2) should
 cover most of it.
 
 Good resources covering the differences between Python versions:
 
-* `What's New in Python 2.3`__
 * `What's New in Python 2.4`__
 * `What's New in Python 2.5`__
 * `What's New in Python 2.6`__
 * `PEP 290 - Code Migration and Modernization`__
 
-__ http://www.python.org/doc/2.3.5/whatsnew/whatsnew23.html
 __ http://www.python.org/doc/2.4.4/whatsnew/whatsnew24.html
 __ http://www.python.org/doc/2.5.2/whatsnew/whatsnew25.html
 __ http://docs.python.org/whatsnew/2.6.html

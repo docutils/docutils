@@ -19,8 +19,6 @@ more detailed list of changes, please see the `Docutils History`_.
 Future changes
 ==============
 
-* Support for Python 2.3 will be dropped in version 0.10.
-
 * docutils/math, docutils/error_reporting.py, and
   docutils/urischemes.py will move to the utils package
   Code importing these modules needs to adapt, e.g.::
@@ -47,6 +45,15 @@ Future changes
 
 Changes Since 0.9.1
 ===================
+
+.. Note:: 
+
+   Docutils 0.9.x is the last version supporting Python 2.3.
+   
+   Docutils 0.10 is compatible with Python versions from 2.4 to 2.7,
+   as well as 3.1 and 3.2 (cf. `Python 3 compatibility`_).
+
+.. _Python 3 compatibility: README.html#python-3-compatibility
 
 
 Release 0.9.1 (2012-06-17)

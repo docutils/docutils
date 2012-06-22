@@ -129,10 +129,6 @@ class StandardTestCase(unittest.TestCase):
             raise self.failureException, \
                   (msg or '%s == %s' % _format_str(first, second))
 
-    # python 2.3
-    if not hasattr(unittest.TestCase, "assertTrue"):
-        assertTrue = unittest.TestCase.failUnless
-
     # aliases for assertion methods, deprecated since Python 2.7
 
     failUnlessEqual = assertEquals = assertEqual

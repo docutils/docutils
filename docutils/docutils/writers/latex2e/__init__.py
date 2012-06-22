@@ -28,11 +28,6 @@ from docutils.error_reporting import SafeString
 from docutils.transforms import writer_aux
 from docutils.math import pick_math_environment, unichar2tex
 
-# compatibility module for Python 2.3
-if not hasattr(string, 'Template'):
-    import docutils._string_template_compat
-    string.Template = docutils._string_template_compat.Template
-
 class Writer(writers.Writer):
 
     supported = ('latex','latex2e')

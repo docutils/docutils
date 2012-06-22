@@ -18,11 +18,6 @@ from docutils._compat import b
 
 debug = False
 
-# python 2.3
-if not hasattr(unittest.TestCase, "assertTrue"):
-    # HACK? this changes TestCase, fixes the problem for tests executing afterwards.
-    # this tests break if run alone
-    unittest.TestCase.assertTrue = unittest.TestCase.failUnless
 
 class TextTests(unittest.TestCase):
 
@@ -250,8 +245,6 @@ class MiscTests(unittest.TestCase):
             (u'\u024b q with hook tail', 'q-q-with-hook-tail'),
             (u'\u024d r with stroke', 'r-r-with-stroke'),
             (u'\u024f y with stroke', 'y-y-with-stroke'),
-          ]
-    ids_unicode_not_2_2 = [
            # From Latin-1 Supplements
             (u'\u00e0: a with grave', 'a-a-with-grave'),
             (u'\u00e1 a with acute', 'a-a-with-acute'),
@@ -384,9 +377,6 @@ class MiscTests(unittest.TestCase):
     def test_make_id(self):
         failures = []
         tests = self.ids + self.ids_unicode_all
-        import sys
-        if sys.version_info[:2] != (2, 2):
-            tests += self.ids_unicode_not_2_2
         for input, expect in tests:
             output = nodes.make_id(input)
             if expect != output:

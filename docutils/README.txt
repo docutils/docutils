@@ -16,7 +16,7 @@ Quick-Start
 
 This is for those who want to get up & running quickly.
 
-1. Docutils requires Python (version 2.3 or later), available from
+1. Docutils requires Python (version 2.4 or later), available from
 
      http://www.python.org/
 
@@ -102,7 +102,7 @@ Requirements
 ============
 
 To run the code, Python_ must be installed.
-Docutils is compatible with Python versions from 2.3 up to 2.7 and
+Docutils is compatible with Python versions from 2.4 up to 2.7 and
 versions 3.1 and 3.2 (cf. `Python 3 compatibility`_).
 
 Docutils uses the following packages for enhanced functionality, if they are

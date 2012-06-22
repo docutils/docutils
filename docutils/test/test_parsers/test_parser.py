@@ -26,7 +26,7 @@ class RstParserTests(unittest.TestCase):
 
         if sys.version_info < (3,):
             # supplying string input is supported, but only if ascii-decodable
-            self.assertRaises(UnicodeError, # UnicodeDecodeError since py2.3
+            self.assertRaises(UnicodeDecodeError,
                               parser.parse, b('hol%s' % chr(224)), document)
         else:
             # input must be unicode at all times

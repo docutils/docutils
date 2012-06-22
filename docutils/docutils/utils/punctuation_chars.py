@@ -68,9 +68,8 @@ def unicode_charlists(categories, cp_min=0, cp_max=None):
     # (may shorten the search time considerably if there are many
     # categories with not too high characters):
     if cp_max is None:
-        # python 2.3: list comprehension instead of generator required
-        cp_max = max([x for x in xrange(sys.maxunicode + 1)
-                     if unicodedata.category(unichr(x)) in categories])
+        cp_max = max(x for x in xrange(sys.maxunicode + 1)
+                     if unicodedata.category(unichr(x)) in categories)
         # print cp_max # => 74867 for unicode_punctuation_categories
     charlists = {}
     for cat in categories:

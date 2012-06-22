@@ -16,6 +16,10 @@
 Changes Since 0.9.1
 ===================
 
+* General
+  
+  - Dropped support for Python 2.3.
+
 
 Release 0.9.1 (2012-06-17)
 ==========================
