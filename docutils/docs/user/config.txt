@@ -260,8 +260,8 @@ _`error_encoding_error_handler`
     The error handler for unencodable characters in error output.  See
     output_encoding_error_handler_ for acceptable values.
 
-    Default: "backslashreplace" for Python 2.3 and later; "replace"
-    otherwise.  Options: ``--error-encoding-error-handler,
+    Default: "backslashreplace" 
+    Options: ``--error-encoding-error-handler,
     --error-encoding, -e``.
 
 _`exit_status_level`
@@ -376,8 +376,7 @@ _`output_encoding_error_handler`
         Replace with the appropriate XML character reference, such as
         "``&#8224;``".
     backslashreplace
-        (Python 2.3+)  Replace with backslashed escape sequences, such
-        as "``\u2020``".
+        Replace with backslashed escape sequences, such as "``\u2020``".
 
     Acceptable values are the same as for the "error" parameter of
     Python's ``encode`` string method; other values may be defined in
@@ -659,9 +658,9 @@ Under construction.
 
 .. Caution::
 
-   * In versions older than 2.7.3 and 3.2.3, the newlines_ and indents_
-     options may adversely affect whitespace; use them only for reading
-     convenience (see http://bugs.python.org/issue4147).
+   * In Python versions older than 2.7.3 and 3.2.3, the newlines_ and
+     indents_ options may adversely affect whitespace; use them only for
+     reading convenience (see http://bugs.python.org/issue4147).
 
    * The XML declaration carries text encoding information, without which
      standard tools may be unable to read the generated XML.

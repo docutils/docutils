@@ -10,11 +10,6 @@ Tests for latex2e writer.
 """
 
 import string
-# compatibility module for Python 2.3
-if not hasattr(string, 'Template'):
-    import docutils._string_template_compat
-    string.Template = docutils._string_template_compat.Template
-
 from __init__ import DocutilsTestSupport
 
 def suite():

@@ -214,8 +214,7 @@ classifiers = [
     ]
 # BUG pypi did not like fllowing languages
 #   'Natural Language :: Lithuanian',
-"""Trove classifiers for the Distutils "register" command;
-Python 2.3 and up."""
+"""Trove classifiers for the Distutils "register" command."""
 
 if __name__ == '__main__' :
     do_setup()

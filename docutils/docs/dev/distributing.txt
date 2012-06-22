@@ -28,7 +28,7 @@ Dependencies
 
 Docutils has the following dependencies:
 
-* Python 2.3 or later is required.  Use ">= Python 2.3" in the
+* Python 2.4 or later is required.  Use ">= Python 2.4" in the
   dependencies.
 
 * Docutils may optionally make use of the PIL (`Python Imaging

@@ -91,7 +91,7 @@ compound          Compound paragraphs [0.3.6]
 container         Generic block-level container element [0.3.10]
 table             Create a titled table [0.3.1]
 list-table        Create a table from a uniform two-level bullet list [0.3.8]
-csv-table         Create a table from CSV data (requires Python 2.3+) [0.3.4]
+csv-table         Create a table from CSV data [0.3.4]
 contents          Generate a table of contents
 sectnum           Automatically number sections, subsections, etc.
 header, footer    Create document decorations [0.3.8]

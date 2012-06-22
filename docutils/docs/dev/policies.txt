@@ -88,7 +88,7 @@ How to make code contributions that are easily accepted:
   Testing`_ for a description of the test suite in ``docutils/test/``.
 
   Ensure the addition works with all supported Python versions
-  (2.3 ... 3.2).
+  (2.4 ... 3.2).
 
 * Look at the Docutils sources to see how similar features are implemented,
   learn to do it "the Docutils way".

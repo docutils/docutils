@@ -23,11 +23,6 @@ from docutils.parsers import rst
 warnings.filterwarnings(action='ignore',
                         category=frontend.ConfigDeprecationWarning)
 
-# python 2.3
-if not hasattr(unittest.TestCase, "assertTrue"):
-    # HACK? this changes TestCase, fixes the problem for tests executing afterwards.
-    # this tests break if run alone
-    unittest.TestCase.assertTrue = unittest.TestCase.failUnless
 
 def fixpath(path):
     return os.path.abspath(os.path.join(*(path.split('/'))))
