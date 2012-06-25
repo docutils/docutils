@@ -22,6 +22,11 @@ Changes Since 0.9.1
   - ``docutils/math``, ``docutils/error_reporting.py``, and
     ``docutils/urischemes.py`` moved to the utils package.
 
+* docutils/io.py
+
+  - FileInput/FileOutput: no system-exit on IOError.  The `handle_io_errors`
+    option is ignored and will be removed in a future release.
+
 
 Release 0.9.1 (2012-06-17)
 ==========================

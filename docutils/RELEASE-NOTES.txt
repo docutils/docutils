@@ -19,19 +19,7 @@ more detailed list of changes, please see the `Docutils History`_.
 Future changes
 ==============
 
-* docutils.io.FileInput/FileOutput will no longer do a
-  system-exit on IOError by default.
-
-  Roadmap:
-
-  :0.10: change of default behaviour to the equivalent of
-         ``handle_io_errors=False``,
-         ignore and deprecate the `handle_io_errors` option.
-         (allows us to clean up Docutils code and remove the error handling
-         code from the FileInput/FileOutput classes)
-  :0.10 + n:   deprecation warning to stderr if FileInput/FileOutput
-               is called with `handle_io_errors`,
-  :0.10 + n+1: remove the `handle_io_errors` option.
+  :0.10 + n: remove the `handle_io_errors` option from io.FileInput/Output.
 
 
 Changes Since 0.9.1
@@ -54,6 +42,11 @@ Changes Since 0.9.1
           import docutils.math as math
       except ImportError:
           import docutils.utils.math as math
+
+* docutils/io.py
+
+  - FileInput/FileOutput: no system-exit on IOError. 
+    The `handle_io_errors` option is ignored.
 
 .. _Python 3 compatibility: README.html#python-3-compatibility
 

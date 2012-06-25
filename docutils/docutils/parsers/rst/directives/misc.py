@@ -64,15 +64,14 @@ class Include(Directive):
         path = nodes.reprunicode(path)
         encoding = self.options.get(
             'encoding', self.state.document.settings.input_encoding)
+        e_handler=self.state.document.settings.input_encoding_error_handler
         tab_width = self.options.get(
             'tab-width', self.state.document.settings.tab_width)
         try:
             self.state.document.settings.record_dependencies.add(path)
-            include_file = io.FileInput(
-                source_path=path, encoding=encoding,
-                error_handler=(self.state.document.settings.\
-                               input_encoding_error_handler),
-                handle_io_errors=None)
+            include_file = io.FileInput(source_path=path,
+                                        encoding=encoding,
+                                        error_handler=e_handler)
         except UnicodeEncodeError, error:
             raise self.severe(u'Problems with "%s" directive path:\n'
                               'Cannot encode input file path "%s" '
@@ -186,6 +185,7 @@ class Raw(Directive):
         attributes = {'format': ' '.join(self.arguments[0].lower().split())}
         encoding = self.options.get(
             'encoding', self.state.document.settings.input_encoding)
+        e_handler=self.state.document.settings.input_encoding_error_handler
         if self.content:
             if 'file' in self.options or 'url' in self.options:
                 raise self.error(
@@ -203,11 +203,9 @@ class Raw(Directive):
                                                  self.options['file']))
             path = utils.relative_path(None, path)
             try:
-                raw_file = io.FileInput(
-                    source_path=path, encoding=encoding,
-                    error_handler=(self.state.document.settings.\
-                                   input_encoding_error_handler),
-                    handle_io_errors=None)
+                raw_file = io.FileInput(source_path=path,
+                                        encoding=encoding,
+                                        error_handler=e_handler)
                 # TODO: currently, raw input files are recorded as
                 # dependencies even if not used for the chosen output format.
                 self.state.document.settings.record_dependencies.add(path)
@@ -231,10 +229,9 @@ class Raw(Directive):
             except (urllib2.URLError, IOError, OSError), error:
                 raise self.severe(u'Problems with "%s" directive URL "%s":\n%s.'
                     % (self.name, self.options['url'], ErrorString(error)))
-            raw_file = io.StringInput(
-                source=raw_text, source_path=source, encoding=encoding,
-                error_handler=(self.state.document.settings.\
-                               input_encoding_error_handler))
+            raw_file = io.StringInput(source=raw_text, source_path=source,
+                                      encoding=encoding, 
+                                      error_handler=e_handler)
             try:
                 text = raw_file.read()
             except UnicodeError, error:

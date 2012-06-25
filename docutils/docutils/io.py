@@ -4,7 +4,7 @@
 
 """
 I/O classes provide a uniform API for low-level input and output.  Subclasses
-will exist for a variety of input/output mechanisms.
+exist for a variety of input/output mechanisms.
 """
 
 __docformat__ = 'reStructuredText'
@@ -204,7 +204,7 @@ class FileInput(Input):
     """
     def __init__(self, source=None, source_path=None,
                  encoding=None, error_handler='strict',
-                 autoclose=True, handle_io_errors=True, mode='rU'):
+                 autoclose=True, handle_io_errors=None, mode='rU'):
         """
         :Parameters:
             - `source`: either a file-like object (which is read directly), or
@@ -214,14 +214,13 @@ class FileInput(Input):
             - `error_handler`: the encoding error handler to use.
             - `autoclose`: close automatically after read (except when
               `sys.stdin` is the source).
-            - `handle_io_errors`: summarize I/O errors here, and exit?
+            - `handle_io_errors`: ignored, deprecated, will be removed.
             - `mode`: how the file is to be opened (see standard function
               `open`). The default 'rU' provides universal newline support
               for text files.
         """
         Input.__init__(self, source, source_path, encoding, error_handler)
         self.autoclose = autoclose
-        self.handle_io_errors = handle_io_errors
         self._stderr = ErrorOutput()
 
         if source is None:
@@ -236,12 +235,6 @@ class FileInput(Input):
                 try:
                     self.source = open(source_path, mode, **kwargs)
                 except IOError, error:
-                    if handle_io_errors:
-                        print >>self._stderr, ErrorString(error)
-                        print >>self._stderr, (
-                            u'Unable to open source file for reading ("%s").'
-                            u'Exiting.' % source_path)
-                        sys.exit(1)
                     raise InputError(error.errno, error.strerror, source_path)
             else:
                 self.source = sys.stdin
@@ -310,7 +303,7 @@ class FileOutput(Output):
 
     def __init__(self, destination=None, destination_path=None,
                  encoding=None, error_handler='strict', autoclose=True,
-                 handle_io_errors=True, mode=None):
+                 handle_io_errors=None, mode=None):
         """
         :Parameters:
             - `destination`: either a file-like object (which is written
@@ -322,7 +315,7 @@ class FileOutput(Output):
             - `error_handler`: the encoding error handler to use.
             - `autoclose`: close automatically after write (except when
               `sys.stdout` or `sys.stderr` is the destination).
-            - `handle_io_errors`: summarize I/O errors here, and exit?
+            - `handle_io_errors`: ignored, deprecated, will be removed.
             - `mode`: how the file is to be opened (see standard function
               `open`). The default is 'w', providing universal newline
               support for text files.
@@ -331,7 +324,6 @@ class FileOutput(Output):
                         encoding, error_handler)
         self.opened = True
         self.autoclose = autoclose
-        self.handle_io_errors = handle_io_errors
         if mode is not None:
             self.mode = mode
         self._stderr = ErrorOutput()
@@ -377,11 +369,6 @@ class FileOutput(Output):
         try:
             self.destination = open(self.destination_path, self.mode, **kwargs)
         except IOError, error:
-            if self.handle_io_errors:
-                print >>self._stderr, ErrorString(error)
-                print >>self._stderr, (u'Unable to open destination file'
-                    u" for writing ('%s').  Exiting." % self.destination_path)
-                sys.exit(1)
             raise OutputError(error.errno, error.strerror,
                               self.destination_path)
         self.opened = True
