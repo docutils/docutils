@@ -176,8 +176,7 @@ class Publisher:
         try:
             self.source = self.source_class(
                 source=source, source_path=source_path,
-                encoding=self.settings.input_encoding,
-                handle_io_errors=False)
+                encoding=self.settings.input_encoding)
         except TypeError:
             self.source = self.source_class(
                 source=source, source_path=source_path,
@@ -192,9 +191,6 @@ class Publisher:
             destination=destination, destination_path=destination_path,
             encoding=self.settings.output_encoding,
             error_handler=self.settings.output_encoding_error_handler)
-        # Raise IOError instead of system exit with `tracback == True`
-        # TODO: change io.FileInput's default behaviour and remove this hack
-        self.destination.handle_io_errors=False
 
     def apply_transforms(self):
         self.document.transformer.populate_from_components(
