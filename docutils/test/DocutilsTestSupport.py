@@ -9,7 +9,7 @@ Exports the following:
 :Modules:
     - `statemachine` is 'docutils.statemachine'
     - `nodes` is 'docutils.nodes'
-    - `urischemes` is 'docutils.urischemes'
+    - `urischemes` is 'docutils.utils.urischemes'
     - `utils` is 'docutils.utils'
     - `transforms` is 'docutils.transforms'
     - `states` is 'docutils.parsers.rst.states'
@@ -65,7 +65,8 @@ try:
     import package_unittest
     import docutils
     import docutils.core
-    from docutils import frontend, nodes, statemachine, urischemes, utils
+    from docutils import frontend, nodes, statemachine, utils
+    from docutils.utils import urischemes
     from docutils.transforms import universal
     from docutils.parsers import rst
     from docutils.parsers.rst import states, tableparser, roles, languages

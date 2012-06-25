@@ -19,15 +19,6 @@ more detailed list of changes, please see the `Docutils History`_.
 Future changes
 ==============
 
-* docutils/math, docutils/error_reporting.py, and
-  docutils/urischemes.py will move to the utils package
-  Code importing these modules needs to adapt, e.g.::
-
-    try:
-        import docutils.math as math
-    except ImportError:
-        import docutils.utils.math as math
-
 * docutils.io.FileInput/FileOutput will no longer do a
   system-exit on IOError by default.
 
@@ -50,8 +41,19 @@ Changes Since 0.9.1
 
    Docutils 0.9.x is the last version supporting Python 2.3.
    
-   Docutils 0.10 is compatible with Python versions from 2.4 to 2.7,
-   as well as 3.1 and 3.2 (cf. `Python 3 compatibility`_).
+   Docutils 0.10 is compatible with Python versions from 2.4 to 3.2
+   (cf. `Python 3 compatibility`_).
+
+* General:
+
+  - ``docutils/math``, ``docutils/error_reporting.py``, and
+    ``docutils/urischemes.py`` moved to the utils package.
+    Code importing these modules needs to adapt, e.g.::
+    
+      try:
+          import docutils.math as math
+      except ImportError:
+          import docutils.utils.math as math
 
 .. _Python 3 compatibility: README.html#python-3-compatibility
 

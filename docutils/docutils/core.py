@@ -20,7 +20,7 @@ from docutils import __version__, __version_details__, SettingsSpec
 from docutils import frontend, io, utils, readers, writers
 from docutils.frontend import OptionParser
 from docutils.transforms import Transformer
-from docutils.error_reporting import ErrorOutput, ErrorString
+from docutils.utils.error_reporting import ErrorOutput, ErrorString
 import docutils.readers.doctree
 
 class Publisher:
