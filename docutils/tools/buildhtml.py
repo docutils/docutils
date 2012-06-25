@@ -29,7 +29,7 @@ from fnmatch import fnmatch
 import docutils
 from docutils import ApplicationError
 from docutils import core, frontend, utils
-from docutils.error_reporting import ErrorOutput, ErrorString
+from docutils.utils.error_reporting import ErrorOutput, ErrorString
 from docutils.parsers import rst
 from docutils.readers import standalone, pep
 from docutils.writers import html4css1, pep_html

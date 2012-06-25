@@ -36,7 +36,7 @@ except ImportError: # new in Python 2.6
 
 import DocutilsTestSupport              # must be imported before docutils
 from docutils import core, parsers, frontend, utils
-from docutils.error_reporting import SafeString, ErrorString, ErrorOutput
+from docutils.utils.error_reporting import SafeString, ErrorString, ErrorOutput
 from docutils._compat import b, bytes
 
 oldlocale = None

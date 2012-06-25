@@ -26,9 +26,6 @@ Modules:
 - statemachine.py: A finite state machine specialized for
   regular-expression-based text filters.
 
-- urischemes.py: Contains a complete mapping of known URI addressing
-  scheme names to descriptions.
-
 Subpackages:
 
 - languages: Language-specific mappings of terms.
@@ -43,6 +40,12 @@ Subpackages:
 
 - utils: Contains the ``Reporter`` system warning class and miscellaneous
   utilities used by readers, writers, and transforms.
+
+  utils/urischemes.py: Contains a complete mapping of known URI addressing
+  scheme names to descriptions.
+
+- utils/math: Contains functions for conversion of mathematical notation
+  between different formats (LaTeX, MathML, text, ...).
 
 - writers: Format-specific output translators.
 """

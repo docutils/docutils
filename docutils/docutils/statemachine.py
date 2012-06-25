@@ -111,7 +111,7 @@ import re
 import types
 import unicodedata
 from docutils import utils
-from docutils.error_reporting import ErrorOutput
+from docutils.utils.error_reporting import ErrorOutput
 
 
 class StateMachine:

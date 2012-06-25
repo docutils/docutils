@@ -24,9 +24,9 @@ try:
 except ImportError:
     import docutils.utils.roman as roman
 from docutils import frontend, nodes, languages, writers, utils, io
-from docutils.error_reporting import SafeString
+from docutils.utils.error_reporting import SafeString
 from docutils.transforms import writer_aux
-from docutils.math import pick_math_environment, unichar2tex
+from docutils.utils.math import pick_math_environment, unichar2tex
 
 class Writer(writers.Writer):
 

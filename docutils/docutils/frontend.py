@@ -38,7 +38,7 @@ from optparse import SUPPRESS_HELP
 import docutils
 import docutils.utils
 import docutils.nodes
-from docutils.error_reporting import locale_encoding, ErrorOutput, ErrorString
+from docutils.utils.error_reporting import locale_encoding, ErrorOutput, ErrorString
 
 
 def store_multiple(option, opt, value, parser, *args, **kwargs):

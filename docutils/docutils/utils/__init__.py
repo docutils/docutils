@@ -17,7 +17,7 @@ import unicodedata
 from docutils import ApplicationError, DataError
 from docutils import nodes
 from docutils.io import FileOutput
-from docutils.error_reporting import ErrorOutput, SafeString
+from docutils.utils.error_reporting import ErrorOutput, SafeString
 
 
 class SystemMessage(ApplicationError):

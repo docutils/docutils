@@ -19,7 +19,7 @@
 
 # Based on the `latex_math` sandbox project by Jens Jørgen Mortensen
 
-import docutils.math.tex2unichar as tex2unichar
+import docutils.utils.math.tex2unichar as tex2unichar
 
 #        TeX      spacing    combining
 over = {'acute':    u'\u00B4', # u'\u0301',

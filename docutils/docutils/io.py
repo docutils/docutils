@@ -15,7 +15,7 @@ import re
 import codecs
 from docutils import TransformSpec
 from docutils._compat import b
-from docutils.error_reporting import locale_encoding, ErrorString, ErrorOutput
+from docutils.utils.error_reporting import locale_encoding, ErrorString, ErrorOutput
 
 
 class InputError(IOError): pass

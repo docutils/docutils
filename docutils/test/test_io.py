@@ -12,7 +12,7 @@ import unittest, sys
 import DocutilsTestSupport              # must be imported before docutils
 from docutils import io
 from docutils._compat import b, bytes
-from docutils.error_reporting import locale_encoding
+from docutils.utils.error_reporting import locale_encoding
 from test_error_reporting import BBuf, UBuf
 
 class mock_stdout(UBuf):

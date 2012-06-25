@@ -19,6 +19,8 @@ Changes Since 0.9.1
 * General
   
   - Dropped support for Python 2.3.
+  - ``docutils/math``, ``docutils/error_reporting.py``, and
+    ``docutils/urischemes.py`` moved to the utils package.
 
 
 Release 0.9.1 (2012-06-17)
