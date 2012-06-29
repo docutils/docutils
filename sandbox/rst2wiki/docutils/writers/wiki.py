@@ -136,9 +136,11 @@ class WikiTranslator(nodes.NodeVisitor):
 
     def strip(self):
         """Remove all whitespace at the end of self.body."""
-        while self.body and not self.body[-1].strip():
+        while (self.body and isinstance(self.body[-1], basestring) 
+               and not self.body[-1].strip()):
             self.body.pop()
-        self.body[-1] = self.body[-1].rstrip()
+        if isinstance(self.body[-1], basestring):
+            self.body[-1] = self.body[-1].rstrip()
 
     def visit_document(self, node):
         pass
@@ -1082,6 +1084,7 @@ class ConfluenceTranslator(WikiTranslator):
         anchor = ''.join(title.split())
         anchor = anchor.strip('_')
         anchor = anchor.replace(':', '&#58;')
+        anchor = anchor.replace('-', '%5C')
         return anchor
     
     def list_prefix(self, type):
