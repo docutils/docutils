@@ -299,7 +299,7 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def list_start(self, node):
-        class enum_char:
+        class enum_char(object):
             enum_style = {
                     'bullet'     : '\\(bu',
                     'emdash'     : '\\(em',
