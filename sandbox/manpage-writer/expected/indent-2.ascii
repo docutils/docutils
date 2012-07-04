@@ -1,0 +1,28 @@
+EXAMPLE(NESTING)                                              EXAMPLE(NESTING)
+
+
+
+NNAAMMEE
+       Example nesting in admonitions -
+
+EEXXAAMMPPLLEE
+       In  the  manpage  writer  admonitions use troff's ..IIPP/..RREE for paragraph
+       indentation. This unfortunately does not appear to preserve indentation
+       for  bullets  and  other  block types (literal) that might be contained
+       within an admonition.
+
+       Note   This is an important note.
+
+       +o Bullet
+
+       Example:
+
+       $ man ls
+
+AAUUTTHHOORR
+       joe.user@example.com
+
+
+
+
+ADMONITIONS                           IN                      EXAMPLE(NESTING)
