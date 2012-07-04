@@ -4,7 +4,7 @@ IN_DIR=input
 OUT_DIR=output
 EXP_DIR=expected
 
-if [ -z "`man man|grep -- '^ *-T Format'`" ] ; then
+if [ -z "`man -?|grep -- '^ *-T'`" ] ; then
     echo 'WARNING: your man does not support "-T Format" to specify encoding'
     echo 'SKIPPING encoding tests'
     ENCS=""
@@ -17,6 +17,16 @@ if [ -z "$1" ] ; then
 else
   FILES=$1
 fi
+
+ERROR_CNT=0
+
+inc_ERROR_CNT () {
+    $(( ERROR_CNT + 1 ))
+}
+
+report_ERROR_CNT () {
+	echo "$ERROR_CNT errors"
+}
 
 CMD="../../docutils/tools/rst2man.py --traceback"
 
@@ -31,6 +41,9 @@ for IN_F in $IN_DIR/$FILES ; do
   $CMD $OPT $IN_F $OUT_DIR/$F_BASE.man
   if [ $? -eq 0 ] ; then
     diff -s -u $EXP_DIR/$F_BASE.man $OUT_DIR/$F_BASE.man
+    if [ $? -ne 0 ] ; then
+      inc_ERROR_CNT
+    fi
     for ENC in $ENCS ; do
       if [ -e $EXP_DIR/$F_BASE.$ENC ] ; then
         man -T$ENC $OUT_DIR/$F_BASE.man > $OUT_DIR/$F_BASE.$ENC
@@ -41,6 +54,7 @@ for IN_F in $IN_DIR/$FILES ; do
 done
 
 if [ -n "$1" ] ; then
+    report_ERROR_CNT
     exit
 fi
 
@@ -53,8 +67,12 @@ for L in "en" "de" ; do
     $CMD $OPT $IN_F $OUT_DIR/$F_BASE$EXT.man
     if [ $? -eq 0 ] ; then
       diff -s -u $EXP_DIR/$F_BASE$EXT.man $OUT_DIR/$F_BASE$EXT.man
+      if [ $? -ne 0 ] ; then
+        inc_ERROR_CNT
+      fi
     fi
   done
 done
 
+report_ERROR_CNT
 
