@@ -1,0 +1,22 @@
+EXAMPLE(LITERAL)                                              EXAMPLE(LITERAL)
+
+
+
+NNAAMMEE
+       Example literal block indentation -
+
+EEXXAAMMPPLLEE
+       The  current manpage writer does not add or maintain any type of inden-
+       tation on literal blocks.
+
+       Example:
+
+       $ man ls
+
+AAUUTTHHOORR
+       joe.user@example.com
+
+
+
+
+INDENTATION                          BLOCK                    EXAMPLE(LITERAL)
