@@ -102,6 +102,18 @@ OtHeR SECTION
 =============
 
 With mixed case.
+
+.. Attention::
+
+   Admonition with title
+
+   * bullet list
+   * bull and list
+
+.. admonition:: homegrown 
+
+   something important
+
 """, 
         r""".\" Man page generated from reStructuredText.
 .
@@ -138,6 +150,19 @@ Show this help message and exit.
 .SH OTHER SECTION
 .sp
 With mixed case.
+.IP Attention!
+Admonition with title
+.INDENT 0.0
+.IP \(bu 2
+bullet list
+.IP \(bu 2
+bull and list
+.UNINDENT
+.RE
+.IP "homegrown"
+.sp
+something important
+.RE
 .SH AUTHOR
 someone@somewhere.net
 
