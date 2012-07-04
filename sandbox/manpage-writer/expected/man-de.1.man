@@ -284,12 +284,16 @@ dem  System vorhanden sind. Um diese Unterstuetzung zu aktivieren, muss
 man entweder in  $LC_MESSAGES,  $LANG  oder  anderen  systemabhaengigen
 Umgebungsvariablen die gewuenschte Sprache einstellen. Die Sprache wird
 normalerweise in dem durch POSIX 1003.1 definierten Format angegeben:
+.INDENT 0.0
+.INDENT 3.5
 .sp
 .nf
 .ft C
 <Sprache>[_<Region>[.<Zeichensatz>[,<Version>]]]
 .ft P
 .fi
+.UNINDENT
+.UNINDENT
 .sp
 Wenn  die  angeforderte  Seite  in  der  locale vorhanden ist, wird sie
 anstelle der Standardseite (normalerweise in  amerikanischem  Englisch)
@@ -333,12 +337,16 @@ untersucht.  Wenn \-p nicht benutzt wird und die Umgebungsvariable nicht
 gesetzt ist, wird die Anfangszeile der nroff\-Datei nach einer  Zeichen\-
 kette  fuer  den  Praeprozessor  untersucht. Eine solche Praeprozessor\-
 Zeichenkette muss folgendes Aussehen haben:
+.INDENT 0.0
+.INDENT 3.5
 .sp
 .nf
 .ft C
 \(aq\e" <Zeichenkette>
 .ft P
 .fi
+.UNINDENT
+.UNINDENT
 .sp
 wobei Zeichenkette jede Kombination von Buchstaben sein kann, die unter
 Option \-p weiter unten beschrieben sind.
@@ -418,6 +426,8 @@ Wenn diese Zeichenkette \fB$MAN_PN\fP enthält, wird dieser Text
 durch den Namen der Manualseite gefolgt von der Abschnittsnummer
 in runden Klammern ersetzt.  Die  Zeichenkette, die im Normalfall
 verwendet wird ist:
+.INDENT 7.0
+.INDENT 3.5
 .sp
 .nf
 .ft C
@@ -425,6 +435,8 @@ verwendet wird ist:
 byte\e %bB?s/%s..?\e (END):?pB %pB\e\e%..
 .ft P
 .fi
+.UNINDENT
+.UNINDENT
 .sp
 Die  zweizeilige  Darstellung  wurde nur der besseren Lesbarkeit
 wegen gewählt. Nähere Informationen liefert less(1).   Da  die

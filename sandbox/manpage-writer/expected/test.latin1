@@ -147,17 +147,17 @@ EEXXAAMMPPLLEESS
    LLiitteerraall
        some literal text
 
-       here now it starts
-       and continues
-         indented
-       and back
+          here now it starts
+          and continues
+            indented
+          and back
 
        and a paragraph after the literal.
 
        some special characters and roff formatting in literal:
 
-       .SS "." at line start
-       backslash "\"
+          .SS "." at line start
+          backslash "\"
 
    LLiinnee bblloocckkss
        This is a line block.  It ends with a blank line.

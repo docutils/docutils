@@ -44,12 +44,16 @@ Bullet
 .UNINDENT
 .sp
 Example:
+.INDENT 0.0
+.INDENT 3.5
 .sp
 .nf
 .ft C
 $ man ls
 .ft P
 .fi
+.UNINDENT
+.UNINDENT
 .RE
 .SH AUTHOR
 joe.user@example.com

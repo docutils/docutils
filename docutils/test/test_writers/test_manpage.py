@@ -110,12 +110,16 @@ With mixed case.
 simple \- The way to go
 """+indend_macros+
 r""".SH SYNOPSIS
+.INDENT 0.0
+.INDENT 3.5
 .sp
 .nf
 .ft C
 K.I.S.S keep it simple.
 .ft P
 .fi
+.UNINDENT
+.UNINDENT
 .SH DESCRIPTION
 .sp
 General rule of life.

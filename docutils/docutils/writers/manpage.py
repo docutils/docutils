@@ -57,6 +57,7 @@ FIELD_LIST_INDENT = 7
 DEFINITION_LIST_INDENT = 7
 OPTION_LIST_INDENT = 7
 BLOCKQOUTE_INDENT = 3.5
+LITERAL_BLOCK_INDENT = 3.5
 
 # Define two macros so man/roff can calculate the
 # indent/unindent margins by itself
@@ -799,12 +800,18 @@ class Translator(nodes.NodeVisitor):
         self.body.append(self.defs['literal'][1])
 
     def visit_literal_block(self, node):
+        # BUG/HACK: indent alway uses the _last_ indention,
+        # thus we need two of them.
+        self.indent(LITERAL_BLOCK_INDENT)
+        self.indent(0)        
         self.body.append(self.defs['literal_block'][0])
         self._in_literal = True
 
     def depart_literal_block(self, node):
         self._in_literal = False
         self.body.append(self.defs['literal_block'][1])
+        self.dedent()
+        self.dedent()
 
     def visit_math(self, node):
         self.document.reporter.warning('"math" role not supported',

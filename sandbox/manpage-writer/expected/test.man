@@ -229,6 +229,8 @@ lorem ipsum lorem ipsum
 .SS Literal
 .sp
 some literal text
+.INDENT 0.0
+.INDENT 3.5
 .sp
 .nf
 .ft C
@@ -238,10 +240,14 @@ and continues
 and back
 .ft P
 .fi
+.UNINDENT
+.UNINDENT
 .sp
 and a paragraph after the literal.
 .sp
 some special characters and roff formatting in literal:
+.INDENT 0.0
+.INDENT 3.5
 .sp
 .nf
 .ft C
@@ -249,6 +255,8 @@ some special characters and roff formatting in literal:
 backslash "\e"
 .ft P
 .fi
+.UNINDENT
+.UNINDENT
 .SS Line blocks
 .nf
 This is a line block.  It ends with a blank line.
