@@ -98,7 +98,7 @@ OPTIONS
 --version, -V           Show this program's version number and exit.
 --help, -h              Show this help message and exit.
 
-OTHER SECTION
+OtHeR SECTION
 =============
 
 With mixed case.
