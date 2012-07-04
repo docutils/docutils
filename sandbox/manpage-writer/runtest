@@ -3,8 +3,8 @@
 # manpage tests using man/roff
 #
 # Contact: grubert@users.sourceforge.net
-# Revision: $Revision: 7461 $
-# Date: $Date: 2012-06-18 22:05:14 +0200 (Mon, 18. Jun 2012) $
+# Revision: $Revision$
+# Date: $Date$
 # Copyright: This script has been placed in the public domain.
 
 IN_DIR=input
