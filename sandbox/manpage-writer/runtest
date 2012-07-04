@@ -21,7 +21,7 @@ fi
 ERROR_CNT=0
 
 inc_ERROR_CNT () {
-    $(( ERROR_CNT + 1 ))
+    ERROR_CNT=$(( ERROR_CNT + 1 ))
 }
 
 report_ERROR_CNT () {
