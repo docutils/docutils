@@ -197,7 +197,7 @@ UUEEBBEERRSSIICCHHTT
        Umgebungsvariablen die gewuenschte Sprache einstellen. Die Sprache wird
        normalerweise in dem durch POSIX 1003.1 definierten Format angegeben:
 
-       <Sprache>[_<Region>[.<Zeichensatz>[,<Version>]]]
+          <Sprache>[_<Region>[.<Zeichensatz>[,<Version>]]]
 
        Wenn  die  angeforderte  Seite  in  der  locale vorhanden ist, wird sie
        anstelle der Standardseite (normalerweise in  amerikanischem  Englisch)
@@ -242,7 +242,7 @@ NNOORRMMAALLEEIINNSSTTEELLLLUUNNGGEENN
        kette  fuer  den  Praeprozessor  untersucht. Eine solche Praeprozessor-
        Zeichenkette muss folgendes Aussehen haben:
 
-       '\" <Zeichenkette>
+          '\" <Zeichenkette>
 
        wobei Zeichenkette jede Kombination von Buchstaben sein kann, die unter
        Option -p weiter unten beschrieben sind.
@@ -318,8 +318,8 @@ OOPPTTIIOONNEENN
               Abschnittsnummer in runden Klammern ersetzt.  Die  Zeichenkette,
               die im Normalfall verwendet wird ist:
 
-              \ Manual\ page\ \$MAN_PN\ ?ltline\ %lt?L/%L.:
-              byte\ %bB?s/%s..?\ (END):?pB %pB\\%..
+                 \ Manual\ page\ \$MAN_PN\ ?ltline\ %lt?L/%L.:
+                 byte\ %bB?s/%s..?\ (END):?pB %pB\\%..
 
               Die  zweizeilige  Darstellung  wurde nur der besseren Lesbarkeit
               wegen  gewählt.  Nähere Informationen liefert less(1).   Da  die

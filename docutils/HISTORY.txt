@@ -27,6 +27,10 @@ Changes Since 0.9.1
   - FileInput/FileOutput: no system-exit on IOError.  The `handle_io_errors`
     option is ignored and will be removed in a future release.
 
+* docutils/writers/manpage.py
+
+  - Apply [3527397] Add indentation to literal blocks in manpage writer.
+
 
 Release 0.9.1 (2012-06-17)
 ==========================

@@ -6,6 +6,8 @@ special characters \- test special characters
 .SH SEE ALSO
 .sp
 In mercurial the following substitutions are in use:
+.INDENT 0.0
+.INDENT 3.5
 .sp
 .nf
 .ft C
@@ -14,6 +16,8 @@ In mercurial the following substitutions are in use:
 \&.. |hgignore(5)| replace:: **hgignore**\e (5)
 .ft P
 .fi
+.UNINDENT
+.UNINDENT
 .sp
 resulting in.
 .sp
