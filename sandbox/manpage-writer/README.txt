@@ -8,5 +8,4 @@ the generated man pages and verify the output.
 Before changing functionality check
 
 * mercurial: they have a local modified version of manpage.py
-* mplayer seams to use reST too.
 
