@@ -193,42 +193,46 @@ EEXXAAMMPPLLEESS
        raw input to man
 
    AAddmmoonniittiioonnss
-       Attention!
-              Directives at large.
+       AATTTTEENNTTIIOONN!!::
+          Directives at large.
 
-       Caution!
-              Don't take any wooden nickels.
+       CCAAUUTTIIOONN!!::
+          Don't take any wooden nickels.
 
-       !DANGER!
-              Mad scientist at work!
+       !!DDAANNGGEERR!!::
+          Mad scientist at work!
 
-       Error  Does not compute.
+       EERRRROORR::
+          Does not compute.
 
-       Hint   It's bigger than a bread box.
+       HHIINNTT::
+          It's bigger than a bread box.
 
-       Important
+       IIMMPPOORRTTAANNTT::
 
-       · Wash behind your ears.
+          · Wash behind your ears.
 
-       · Clean up your room.
+          · Clean up your room.
 
-       · Call your mother.
+          · Call your mother.
 
-       · Back up your data.
+          · Back up your data.
 
-       Note   This is a note.
+       NNOOTTEE::
+          This is a note.
 
-       Tip    15% if the service is good.
+       TTIIPP::
+          15% if the service is good.
 
-       Warning
-              Strong  prose  may provoke extreme mental exertion.  Reader dis-
-              cretion is strongly advised.
+       WWAARRNNIINNGG::
+          Strong prose may provoke extreme mental exertion.  Reader discretion
+          is strongly advised.
 
-       And, by the way...
+          And, by the way...
 
-              You can make up your own admonition too.
+                 You can make up your own admonition too.
 
-              With more than one paragraph.
+                 With more than one paragraph.
 
        Text after the admonition.
 

@@ -29,6 +29,7 @@ Changes Since 0.9.1
 
 * docutils/writers/manpage.py
 
+  - Apply [3527401] addmonition's don't preserve indentation
   - Apply [3527397] Add indentation to literal blocks in manpage writer.
 
 

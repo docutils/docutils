@@ -313,22 +313,45 @@ Singing...
 .SS raw
 raw input to man
 .SS Admonitions
-.IP Attention!
+.sp
+\fBATTENTION!:\fP
+.INDENT 0.0
+.INDENT 3.5
 Directives at large.
-.RE
-.IP Caution!
+.UNINDENT
+.UNINDENT
+.sp
+\fBCAUTION!:\fP
+.INDENT 0.0
+.INDENT 3.5
 Don\(aqt take any wooden nickels.
-.RE
-.IP !DANGER!
+.UNINDENT
+.UNINDENT
+.sp
+\fB!DANGER!:\fP
+.INDENT 0.0
+.INDENT 3.5
 Mad scientist at work!
-.RE
-.IP Error
+.UNINDENT
+.UNINDENT
+.sp
+\fBERROR:\fP
+.INDENT 0.0
+.INDENT 3.5
 Does not compute.
-.RE
-.IP Hint
+.UNINDENT
+.UNINDENT
+.sp
+\fBHINT:\fP
+.INDENT 0.0
+.INDENT 3.5
 It\(aqs bigger than a bread box.
-.RE
-.IP Important
+.UNINDENT
+.UNINDENT
+.sp
+\fBIMPORTANT:\fP
+.INDENT 0.0
+.INDENT 3.5
 .INDENT 0.0
 .IP \(bu 2
 Wash behind your ears.
@@ -339,23 +362,39 @@ Call your mother.
 .IP \(bu 2
 Back up your data.
 .UNINDENT
-.RE
-.IP Note
+.UNINDENT
+.UNINDENT
+.sp
+\fBNOTE:\fP
+.INDENT 0.0
+.INDENT 3.5
 This is a note.
-.RE
-.IP Tip
+.UNINDENT
+.UNINDENT
+.sp
+\fBTIP:\fP
+.INDENT 0.0
+.INDENT 3.5
 15% if the service is good.
-.RE
-.IP Warning
+.UNINDENT
+.UNINDENT
+.sp
+\fBWARNING:\fP
+.INDENT 0.0
+.INDENT 3.5
 Strong prose may provoke extreme mental exertion.
 Reader discretion is strongly advised.
-.RE
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
 .IP "And, by the way..."
 .sp
 You can make up your own admonition too.
 .sp
 With more than one paragraph.
-.RE
+.UNINDENT
+.UNINDENT
 .sp
 Text after the admonition.
 .SS other

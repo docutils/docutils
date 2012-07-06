@@ -150,7 +150,10 @@ Show this help message and exit.
 .SH OTHER SECTION
 .sp
 With mixed case.
-.IP Attention!
+.sp
+\fBATTENTION!:\fP
+.INDENT 0.0
+.INDENT 3.5
 Admonition with title
 .INDENT 0.0
 .IP \(bu 2
@@ -158,11 +161,15 @@ bullet list
 .IP \(bu 2
 bull and list
 .UNINDENT
-.RE
+.UNINDENT
+.UNINDENT
+.INDENT 0.0
+.INDENT 3.5
 .IP "homegrown"
 .sp
 something important
-.RE
+.UNINDENT
+.UNINDENT
 .SH AUTHOR
 someone@somewhere.net
 
