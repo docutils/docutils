@@ -388,12 +388,27 @@ class Translator(nodes.NodeVisitor):
         pass
 
     def visit_admonition(self, node, name=None):
+        #
+        # Make admonitions a simple block quote
+        # with a strong heading
+        #
+        # Using .IP/.RE doesn't preserve indentation
+        # when admonitions contain bullets, literal,
+        # and/or block quotes.
+        #
         if name:
-            self.body.append('.IP %s\n' %
-                        self.language.labels.get(name, name))
+            # .. admonition:: has no name
+            self.body.append('.sp\n')
+            name = '%s%s:%s\n' % (
+                self.defs['strong'][0],
+                self.language.labels.get(name, name).upper(),
+                self.defs['strong'][1],
+                )        
+            self.body.append(name)
+        self.visit_block_quote(node)
 
     def depart_admonition(self, node):
-        self.body.append('.RE\n')
+        self.depart_block_quote(node)
 
     def visit_attention(self, node):
         self.visit_admonition(node, 'attention')
