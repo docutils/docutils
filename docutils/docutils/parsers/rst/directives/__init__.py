@@ -10,8 +10,12 @@ __docformat__ = 'reStructuredText'
 
 import re
 import codecs
+import sys
+
 from docutils import nodes
 from docutils.parsers.rst.languages import en as _fallback_language_module
+if sys.version_info < (2,5):
+    from docutils._compat import __import__
 
 
 _directive_registry = {
@@ -109,7 +113,7 @@ def directive(directive_name, language_module, document):
         # Error handling done by caller.
         return None, messages
     try:
-        module = __import__(modulename, globals(), locals())
+        module = __import__(modulename, globals(), locals(), level=1)
     except ImportError, detail:
         messages.append(document.reporter.error(
             'Error importing directive module "%s" (directive "%s"):\n%s'

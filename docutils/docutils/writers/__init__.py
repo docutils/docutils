@@ -8,11 +8,14 @@ This package contains Docutils Writer modules.
 
 __docformat__ = 'reStructuredText'
 
-
 import os.path
+import sys
+
 import docutils
 from docutils import languages, Component
 from docutils.transforms import universal
+if sys.version_info < (2,5):
+    from docutils._compat import __import__
 
 
 class Writer(Component):
@@ -130,5 +133,5 @@ def get_writer_class(writer_name):
     writer_name = writer_name.lower()
     if writer_name in _writer_aliases:
         writer_name = _writer_aliases[writer_name]
-    module = __import__(writer_name, globals(), locals())
+    module = __import__(writer_name, globals(), locals(), level=1)
     return module.Writer
