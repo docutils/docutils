@@ -12,7 +12,11 @@ reStructuredText.
 
 __docformat__ = 'reStructuredText'
 
+import sys
+
 from docutils.utils import normalize_language_tag
+if sys.version_info < (2,5):
+    from docutils._compat import __import__
 
 _languages = {}
 
@@ -21,7 +25,7 @@ def get_language(language_code):
         if tag in _languages:
             return _languages[tag]
         try:
-            module = __import__(tag, globals(), locals())
+            module = __import__(tag, globals(), locals(), level=1)
         except ImportError:
             continue
         _languages[tag] = module
