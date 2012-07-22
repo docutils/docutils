@@ -19,7 +19,13 @@ more detailed list of changes, please see the `Docutils History`_.
 Future changes
 ==============
 
-  :0.10 + n: remove the `handle_io_errors` option from io.FileInput/Output.
+* remove the `handle_io_errors` option from io.FileInput/Output.
+
+* »Prune« the doctree (no change to the reST input syntax):
+
+  - "doctest" element -> literal block with class argument,
+  - special admonitions (note, hint, warning, ...) -> generic "admonition"
+    element with class attribute and auto-generated title.
 
 
 Changes Since 0.9.1
