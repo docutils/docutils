@@ -28,6 +28,10 @@ Changes Since 0.9.1
   - FileInput/FileOutput: no system-exit on IOError.  The `handle_io_errors`
     option is ignored and will be removed in a future release.
 
+* docutils/parsers/rst/directives/misc.py
+
+  - Fix [ 3546533 ] unicode error with date directive.
+
 * docutils/writers/manpage.py
 
   - Apply [3527401] addmonition's don't preserve indentation

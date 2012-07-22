@@ -11,6 +11,7 @@ Tests for the misc.py "date" directive.
 from __init__ import DocutilsTestSupport
 import time
 
+from docutils.utils.error_reporting import locale_encoding
 
 def suite():
     s = DocutilsTestSupport.ParserTestSuite()
@@ -56,7 +57,19 @@ Today's date is |date|.
 """],
 ]
 
-
+# some locales return non-ASCII characters for names of days or months
+if locale_encoding in ['utf8', 'utf-8', 'latin-1']:
+    totest['decode date'] = [
+    [u"""\
+    .. |date| date:: t\xc3glich
+    """,
+    u"""\
+    <document source="test data">
+        <substitution_definition names="date">
+            t\xc3glich
+    """],
+    ]
+    
 if __name__ == '__main__':
     import unittest
     unittest.main(defaultTest='suite')

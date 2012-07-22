@@ -12,6 +12,7 @@ import re
 import time
 from docutils import io, nodes, statemachine, utils
 from docutils.utils.error_reporting import SafeString, ErrorString
+from docutils.utils.error_reporting import locale_encoding
 from docutils.parsers.rst import Directive, convert_directive_function
 from docutils.parsers.rst import directives, roles, states
 from docutils.parsers.rst.directives.body import CodeBlock, NumberLines
@@ -469,8 +470,22 @@ class Date(Directive):
             raise self.error(
                 'Invalid context: the "%s" directive can only be used within '
                 'a substitution definition.' % self.name)
-        format = '\n'.join(self.content) or '%Y-%m-%d'
-        text = time.strftime(format)
+        format_str = '\n'.join(self.content) or '%Y-%m-%d'
+        if sys.version_info< (3, 0):
+            try:
+                format_str = format_str.encode(locale_encoding or 'utf-8')
+            except UnicodeEncodeError:
+                raise self.warning(u'Cannot encode date format string '
+                    u'with locale encoding "%s".' % locale_encoding)
+        text = time.strftime(format_str)
+        if sys.version_info< (3, 0):
+            # `text` is a byte string that may contain non-ASCII characters:
+            try:
+                text = text.decode(locale_encoding or 'utf-8')
+            except UnicodeDecodeError:
+                text = text.decode(locale_encoding or 'utf-8', 'replace')
+                raise self.warning(u'Error decoding "%s"'
+                    u'with locale encoding "%s".' % (text, locale_encoding))
         return [nodes.Text(text)]
 
 
