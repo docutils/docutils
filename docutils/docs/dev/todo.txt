@@ -360,8 +360,6 @@ General
 
 * Rationalize Writer settings (HTML/LaTeX/PEP) -- share settings.
 
-* Merge docs/user/latex.txt info into tools.txt and config.txt?
-
 * Add an "--include file" command-line option (config setting too?),
   equivalent to ".. include:: file" as the first line of the doc text?
   Especially useful for character entity sets, text transform specs,
@@ -1123,6 +1121,70 @@ Misc
 * Generalize docinfo contents (bibliographic fields): remove specific
   fields, and have only a single generic "field"?
 
+* _`Line numbers` and "source" in system messages:
+
+  - Add "source" and "line" keyword arguments to all Reporter calls?
+    This would require passing source/line arguments along all
+    intermediate functions (where currently only `line` is used).
+
+    Or rather specify "line" only if actually needed?
+
+    Currently, `document.reporter` uses a state machine instance to
+    determine the "source" and "line" info from
+    `statemachine.input_lines` if not given explicitely. Except for
+    special cases, the "line" argument is not needed because,
+    `document.statemachine` keeps record of the current line number.
+
+  - For system messages generated after the parsing is completed (i.e. by
+    transforms or the writer) "line" info must be present in the doctree
+    elements.
+
+    Elements' .line assignments should be checked.  (Assign to .source
+    too?  Add a set_info method?  To what?)
+
+    The "source" (and line number in the source) can either be added
+    explicitely to the elements or determined from the “raw” line
+    number by `document.statemachine.get_source_and_line`.
+
+  - Some line numbers in elements are not being set properly
+    (explicitly), just implicitly/automatically.  See rev. 1.74 of
+    docutils/parsers/rst/states.py for an example of how to set.
+
+  - The line numbers of definition list items are wrong::
+
+        $ rst2pseudoxml.py --expose-internal-attribute line
+        1
+          2
+          3
+
+        5
+          6
+          7
+
+        <document source="<stdin>">
+            <definition_list>
+                <definition_list_item internal:line="3">
+                    <term>
+                        1
+                    <definition>
+                        <paragraph internal:line="2">
+                            2
+                            3
+                <definition_list_item internal:line="6">
+                    <term>
+                        5
+                    <definition>
+                        <paragraph internal:line="6">
+                            6
+                            7
+
+* .. _none source:
+
+  Quite a few nodes are getting a "None" source attribute as well.  In
+  particular, see the bodies of definition lists.
+
+
+
 Math Markup
 -----------
 
@@ -1609,7 +1671,7 @@ when used in a document.
 
     - include only a specified range of lines
 
-    - "number" or "line-numbers"
+    - "number" or "line-numbers"? (since 0.9 available with "code" directive)
 
     - "styled" could indicate that the directive should check for
       style comments at the end of lines to indicate styling or
@@ -1818,69 +1880,6 @@ nodes. This makes the document model and the writers somewhat simpler.
   keep them as distinct elements in the doctree specification.
 
   Keep the special admonition directives in reStructuredText syntax?
-
-* _`Line numbers` and "source" in system messages:
-
-  - Add "source" and "line" keyword arguments to all Reporter calls?
-    This would require passing source/line arguments along all
-    intermediate functions (where currently only `line` is used).
-
-    Or rather specify "line" only if actually needed?
-
-    Currently, `document.reporter` uses a state machine instance to
-    determine the "source" and "line" info from
-    `statemachine.input_lines` if not given explicitely. Except for
-    special cases, the "line" argument is not needed because,
-    `document.statemachine` keeps record of the current line number.
-
-  - For system messages generated after the parsing is completed (i.e. by
-    transforms or the writer) "line" info must be present in the doctree
-    elements.
-
-    Elements' .line assignments should be checked.  (Assign to .source
-    too?  Add a set_info method?  To what?)
-
-    The "source" (and line number in the source) can either be added
-    explicitely to the elements or determined from the “raw” line
-    number by `document.statemachine.get_source_and_line`.
-
-  - Some line numbers in elements are not being set properly
-    (explicitly), just implicitly/automatically.  See rev. 1.74 of
-    docutils/parsers/rst/states.py for an example of how to set.
-
-  - The line numbers of definition list items are wrong::
-
-        $ rst2pseudoxml.py --expose-internal-attribute line
-        1
-          2
-          3
-
-        5
-          6
-          7
-
-        <document source="<stdin>">
-            <definition_list>
-                <definition_list_item internal:line="3">
-                    <term>
-                        1
-                    <definition>
-                        <paragraph internal:line="2">
-                            2
-                            3
-                <definition_list_item internal:line="6">
-                    <term>
-                        5
-                    <definition>
-                        <paragraph internal:line="6">
-                            6
-                            7
-
-* .. _none source:
-
-  Quite a few nodes are getting a "None" source attribute as well.  In
-  particular, see the bodies of definition lists.
-
 
 
 Unimplemented Transforms
