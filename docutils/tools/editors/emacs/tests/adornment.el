@@ -1,7 +1,15 @@
 ;; Tests for various functions handling adornments
 
 (add-to-list 'load-path ".")
-(load "ert-support" nil t)
+(load "ert-buffer" nil t)
+(add-to-list 'load-path "..")
+(load "rst.el" nil t)
+
+(ert-deftest adornment-asserts ()
+  "Check some assertions."
+  (should (equal ert-Buf-point-char "\^@"))
+  (should (equal ert-Buf-mark-char "\^?"))
+  )
 
 (defun find-title-line ()
   "Wrapper for calling `rst-find-title-line'."
@@ -9,8 +17,8 @@
 
 (ert-deftest rst-find-title-line ()
   "Tests for `rst-find-title-line'."
-  (should (equal-buffer-return
-	   '(find-title-line)
+  (should (ert-equal-buffer-return
+	   (find-title-line)
 	   "
 
 Du bon vin tous les jours.
@@ -23,8 +31,8 @@ Du bon vin tous les jours.
 "
 	   '((nil . nil) nil "Du bon vin tous les jours." nil)
 	   ))
-  (should (equal-buffer-return
-	   '(find-title-line)
+  (should (ert-equal-buffer-return
+	   (find-title-line)
 	   "
 \^@
 Du bon vin tous les jours.
@@ -37,8 +45,8 @@ Du bon vin tous les jours.
 "
 	   '((nil . nil) nil "Du bon vin tous les jours." nil)
 	   ))
-  (should (equal-buffer-return
-	   '(find-title-line)
+  (should (ert-equal-buffer-return
+	   (find-title-line)
 	   "
 
 Du bon vin tous les jours.
@@ -51,8 +59,8 @@ Du bon vin tous les jours.
 "
 	   '((?- . simple) nil "Du bon vin tous les jours." "-----------")
 	   ))
-  (should (equal-buffer-return
-	   '(find-title-line)
+  (should (ert-equal-buffer-return
+	   (find-title-line)
 	   "
 ------\^@-----
 Du bon vin tous les jours.
@@ -65,8 +73,8 @@ Du bon vin tous les jours.
 "
 	   '((?- . nil) "-----------" "Du bon vin tous les jours." nil)
 	   ))
-  (should (equal-buffer-return
-	   '(find-title-line)
+  (should (ert-equal-buffer-return
+	   (find-title-line)
 	   "
 \^@-----------
 Du bon vin tous les jours.
@@ -82,8 +90,8 @@ Du bon vin tous les jours.
 	   '((?- . over-and-under) "-----------" "Du bon vin tous les jours."
 	     "-----------")
 	   ))
-  (should (equal-buffer-return
-	   '(find-title-line)
+  (should (ert-equal-buffer-return
+	   (find-title-line)
 	   "
 Du bon vin tous les jours.
 \^@-----------
@@ -101,8 +109,8 @@ Du bon vin tous les jours.
 	   '((?- . over-and-under) "-----------" "Du bon vin tous les jours."
 	     "-----------")
 	   ))
-  (should (equal-buffer-return
-	   '(find-title-line)
+  (should (ert-equal-buffer-return
+	   (find-title-line)
 	   "
 
 \^@-----------
@@ -115,8 +123,8 @@ Du bon vin tous les jours.
 "
 	   nil
 	   ))
-  (should (equal-buffer-return
-	   '(find-title-line)
+  (should (ert-equal-buffer-return
+	   (find-title-line)
 	   "
 Line 1
 \^@
@@ -131,8 +139,8 @@ Line 2
 "
 	   '((nil . nil) nil "Line 1" nil)
 	   ))
-  (should (equal-buffer-return
-	   '(find-title-line)
+  (should (ert-equal-buffer-return
+	   (find-title-line)
 	   "
 =====================================
    Project Idea: Panorama Stitcher
@@ -225,10 +233,10 @@ Current\^@
 
 (ert-deftest rst-find-all-adornments ()
   "Tests for `rst-find-all-adornments'."
-  (should (equal-buffer-return
-	   '(rst-find-all-adornments)
+  (should (ert-equal-buffer-return
+	   (rst-find-all-adornments)
 	   text-1
-	   nil
+	   t
 	   '((2 ?= over-and-under 3)
 	     (7 ?= simple 0)
 	     (12 ?- simple 0)
@@ -237,18 +245,18 @@ Current\^@
 	     (26 ?~ over-and-under 1)
 	     (31 ?= simple 0))
 	   ))
-  (should (equal-buffer-return
-	   '(rst-find-all-adornments)
+  (should (ert-equal-buffer-return
+	   (rst-find-all-adornments)
 	   text-2
-	   nil
+	   t
 	   '((3 ?- simple 0)
 	     (6 ?~ simple 0)
 	     (9 ?+ simple 0))
 	   ))
-  (should (equal-buffer-return
-	   '(rst-find-all-adornments)
+  (should (ert-equal-buffer-return
+	   (rst-find-all-adornments)
 	   text-3
-	   nil
+	   t
 	   '((3 ?- simple 0)
 	     (6 ?~ simple 0))
 	   ))
@@ -256,10 +264,10 @@ Current\^@
 
 (ert-deftest rst-get-hierarchy ()
   "Tests for `rst-get-hierarchy'."
-  (should (equal-buffer-return
-	   '(rst-get-hierarchy)
+  (should (ert-equal-buffer-return
+	   (rst-get-hierarchy)
 	   text-1
-	   nil
+	   t
 	   '((?= over-and-under 3)
 	     (?= simple 0)
 	     (?- simple 0)
@@ -269,10 +277,10 @@ Current\^@
 
 (ert-deftest rst-get-hierarchy-ignore ()
   "Tests for `rst-get-hierarchy' with ignoring a line."
-  (should (equal-buffer-return
-	   '(rst-get-hierarchy 26)
+  (should (ert-equal-buffer-return
+	   (rst-get-hierarchy 26)
 	   text-1
-	   nil
+	   t
 	   '((?= over-and-under 3)
 	     (?= simple 0)
 	     (?- simple 0))
@@ -281,225 +289,225 @@ Current\^@
 
 (ert-deftest rst-adornment-level ()
   "Tests for `rst-adornment-level'."
-  (should (equal-buffer-return
-	   '(rst-adornment-level t)
+  (should (ert-equal-buffer-return
+	   (rst-adornment-level t)
 	   text-1
-	   nil
+	   t
 	   t
 	   ))
-  (should (equal-buffer-return
-	   '(rst-adornment-level nil)
+  (should (ert-equal-buffer-return
+	   (rst-adornment-level nil)
 	   text-1
-	   nil
+	   t
 	   nil
 	   ))
-  (should (equal-buffer-return
-	   '(rst-adornment-level (?= . over-and-under))
+  (should (ert-equal-buffer-return
+	   (rst-adornment-level (?= . over-and-under))
 	   text-1
-	   nil
+	   t
 	   1
 	   ))
-  (should (equal-buffer-return
-	   '(rst-adornment-level (?= . simple))
+  (should (ert-equal-buffer-return
+	   (rst-adornment-level (?= . simple))
 	   text-1
-	   nil
+	   t
 	   2
 	   ))
-  (should (equal-buffer-return
-	   '(rst-adornment-level (?- . simple))
+  (should (ert-equal-buffer-return
+	   (rst-adornment-level (?- . simple))
 	   text-1
-	   nil
+	   t
 	   3
 	   ))
-  (should (equal-buffer-return
-	   '(rst-adornment-level (?~ . over-and-under))
+  (should (ert-equal-buffer-return
+	   (rst-adornment-level (?~ . over-and-under))
 	   text-1
-	   nil
+	   t
 	   4
 	   ))
-  (should (equal-buffer-return
-	   '(rst-adornment-level (?# . simple))
+  (should (ert-equal-buffer-return
+	   (rst-adornment-level (?# . simple))
 	   text-1
-	   nil
+	   t
 	   5
 	   ))
   )
 
 (ert-deftest rst-adornment-complete-p ()
   "Tests for `rst-adornment-complete-p'."
-  (should (equal-buffer-return
-	   '(rst-adornment-complete-p (?= simple 0))
+  (should (ert-equal-buffer-return
+	   (rst-adornment-complete-p (?= simple 0))
 	   "
 
 \^@Vaudou
 
 "
-	   nil
+	   t
 	   nil))
-  (should (equal-buffer-return
-	   '(rst-adornment-complete-p (?= simple 0))
+  (should (ert-equal-buffer-return
+	   (rst-adornment-complete-p (?= simple 0))
 	   "
 \^@Vaudou
 ======
 "
-	   nil
+	   t
 	   t))
-  (should (equal-buffer-return
-	   '(rst-adornment-complete-p (?= over-and-under 0))
+  (should (ert-equal-buffer-return
+	   (rst-adornment-complete-p (?= over-and-under 0))
 	   "
 ======
 \^@Vaudou
 ======
 "
-	   nil
+	   t
 	   t))
-  (should (equal-buffer-return
-	   '(rst-adornment-complete-p (?= over-and-under 2))
+  (should (ert-equal-buffer-return
+	   (rst-adornment-complete-p (?= over-and-under 2))
 	   "
 ==========
 \^@  Vaudou
 ==========
 "
-	   nil
+	   t
 	   t))
-  (should (equal-buffer-return
-	   '(rst-adornment-complete-p (?= simple 0))
+  (should (ert-equal-buffer-return
+	   (rst-adornment-complete-p (?= simple 0))
 	   "
 \^@Vaudou
 =====
 "
-	   nil
+	   t
 	   nil))
-  (should (equal-buffer-return
-	   '(rst-adornment-complete-p (?= simple 0))
+  (should (ert-equal-buffer-return
+	   (rst-adornment-complete-p (?= simple 0))
 	   "
 \^@Vaudou
 =======
 "
-	   nil
+	   t
 	   nil))
-  (should (equal-buffer-return
-	   '(rst-adornment-complete-p (?= simple 0))
+  (should (ert-equal-buffer-return
+	   (rst-adornment-complete-p (?= simple 0))
 	   "
 \^@Vaudou
 ===-==
 "
-	   nil
+	   t
 	   nil))
-  (should (equal-buffer-return
-	   '(rst-adornment-complete-p (?= over-and-under 0))
+  (should (ert-equal-buffer-return
+	   (rst-adornment-complete-p (?= over-and-under 0))
 	   "
 ======
 \^@Vaudou
 =====
 "
-	   nil
+	   t
 	   nil))
-  (should (equal-buffer-return
-	   '(rst-adornment-complete-p (?= over-and-under 0))
+  (should (ert-equal-buffer-return
+	   (rst-adornment-complete-p (?= over-and-under 0))
 	   "
 =====
 \^@Vaudou
 ======
 "
-	   nil
+	   t
 	   nil))
-  (should (equal-buffer-return
-	   '(rst-adornment-complete-p (?= over-and-under 0))
+  (should (ert-equal-buffer-return
+	   (rst-adornment-complete-p (?= over-and-under 0))
 	   "
 ======
 \^@Vaudou
 ===-==
 "
-	   nil
+	   t
 	   nil))
-  (should (equal-buffer-return
-	   '(rst-adornment-complete-p (?= over-and-under 0))
+  (should (ert-equal-buffer-return
+	   (rst-adornment-complete-p (?= over-and-under 0))
 	   "
 ===-==
 \^@Vaudou
 ======
 "
-	   nil
+	   t
 	   nil))
-  (should (equal-buffer-return
-	   '(rst-adornment-complete-p (?= over-and-under 0))
+  (should (ert-equal-buffer-return
+	   (rst-adornment-complete-p (?= over-and-under 0))
 	   "
 ======
 \^@Vaudou
 
 "
-	   nil
+	   t
 	   nil))
-  (should (equal-buffer-return
-	   '(rst-adornment-complete-p (?= over-and-under 0))
+  (should (ert-equal-buffer-return
+	   (rst-adornment-complete-p (?= over-and-under 0))
 	   "
 ======
 \^@Vaudou
 ------
 "
-	   nil
+	   t
 	   nil))
-  (should (equal-buffer-return
-	   '(rst-adornment-complete-p (?= over-and-under 0))
+  (should (ert-equal-buffer-return
+	   (rst-adornment-complete-p (?= over-and-under 0))
 	   "
 ==========
   \^@Vaudou
 =========
 "
-	   nil
+	   t
 	   nil))
-  (should (equal-buffer-return
-	   '(rst-adornment-complete-p (?= over-and-under 0))
+  (should (ert-equal-buffer-return
+	   (rst-adornment-complete-p (?= over-and-under 0))
 	   "
 =========
   \^@Vaudou
 ==========
 "
-	   nil
+	   t
 	   nil))
-  (should (equal-buffer-return
-	   '(rst-adornment-complete-p (?= over-and-under 0))
+  (should (ert-equal-buffer-return
+	   (rst-adornment-complete-p (?= over-and-under 0))
 	   "
 ==========
   \^@Vaudou
 ===-======
 "
-	   nil
+	   t
 	   nil))
-  (should (equal-buffer-return
-	   '(rst-adornment-complete-p (?= over-and-under 0))
+  (should (ert-equal-buffer-return
+	   (rst-adornment-complete-p (?= over-and-under 0))
 	   "
 ===-======
   \^@Vaudou
 ==========
 "
-	   nil
+	   t
 	   nil))
-  (should (equal-buffer-return
-	   '(rst-adornment-complete-p (?= over-and-under 0))
+  (should (ert-equal-buffer-return
+	   (rst-adornment-complete-p (?= over-and-under 0))
 	   "
 ==========
   \^@Vaudou
 
 "
-	   nil
+	   t
 	   nil))
-  (should (equal-buffer-return
-	   '(rst-adornment-complete-p (?= over-and-under 0))
+  (should (ert-equal-buffer-return
+	   (rst-adornment-complete-p (?= over-and-under 0))
 	   "
 ==========
   \^@Vaudou
 ----------
 "
-	   nil
+	   t
 	   nil))
   )
 
 (ert-deftest rst-get-adornments-around ()
   "Tests for `rst-get-adornments-around'."
-  (should (equal-buffer-return
-	   '(rst-get-adornments-around)
+  (should (ert-equal-buffer-return
+	   (rst-get-adornments-around)
 	   "
 
 Previous
@@ -511,10 +519,10 @@ Next
 ++++
 
 "
-	   nil
+	   t
 	   '((?- simple 0) (?+ simple 0))))
-  (should (equal-buffer-return
-	   '(rst-get-adornments-around)
+  (should (ert-equal-buffer-return
+	   (rst-get-adornments-around)
 	   "
 
 Previous
@@ -527,7 +535,7 @@ Next
 ++++
 
 "
-	   nil
+	   t
 	   '((?- simple 0) (?+ simple 0))))
   )
 
@@ -565,8 +573,8 @@ whether embedded match groups match match group 0."
 
 (ert-deftest rst-classify-adornment ()
   "Tests for `rst-classify-adornment'."
-  (should (equal-buffer-return
-	   '(classify-adornment)
+  (should (ert-equal-buffer-return
+	   (classify-adornment)
 	   "
 
 Du bon vin tous les jours
@@ -577,8 +585,8 @@ Du bon vin tous les jours
 	   '((?= . simple)
 	     nil "Du bon vin tous les jours" "=========================")
 	   t))
-  (should (equal-buffer-return
-	   '(classify-adornment)
+  (should (ert-equal-buffer-return
+	   (classify-adornment)
 	   "
 
 Du bon vin tous les jours
@@ -589,8 +597,8 @@ Du bon vin tous les jours
 	   '((?= . simple)
 	     nil "Du bon vin tous les jours" "====================")
 	   t))
-  (should (equal-buffer-return
-	   '(classify-adornment)
+  (should (ert-equal-buffer-return
+	   (classify-adornment)
 	   "
 
      Du bon vin tous les jours
@@ -601,8 +609,8 @@ Du bon vin tous les jours
 	   '((?= . simple)
 	     nil "     Du bon vin tous les jours" "====================")
 	   t))
-  (should (equal-buffer-return
-	   '(classify-adornment)
+  (should (ert-equal-buffer-return
+	   (classify-adornment)
 	   "
 
 Du bon vin tous les jours
@@ -611,8 +619,8 @@ Du bon vin tous les jours
 	   nil
 	   nil
 	   t))
-  (should (equal-buffer-return
-	   '(classify-adornment)
+  (should (ert-equal-buffer-return
+	   (classify-adornment)
 	   "
 
 Du bon vin tous les jours
@@ -621,8 +629,8 @@ Du bon vin tous les jours
 	   nil
 	   nil
 	   t))
-  (should (equal-buffer-return
-	   '(classify-adornment)
+  (should (ert-equal-buffer-return
+	   (classify-adornment)
 	   "
 
 Du bon vin tous les jours
@@ -632,8 +640,8 @@ Du bon vin tous les jours
 	   '((?- . simple)
 	     nil "Du bon vin tous les jours" "---")
 	   t))
-  (should (equal-buffer-return
-	   '(classify-adornment)
+  (should (ert-equal-buffer-return
+	   (classify-adornment)
 	   "
 \^@~~~~~~~~~~~~~~~~~~~~~~~~~\^?
 Du bon vin tous les jours
@@ -644,8 +652,8 @@ Du bon vin tous les jours
 	   '((?~ . over-and-under)
 	     "~~~~~~~~~~~~~~~~~~~~~~~~~" "Du bon vin tous les jours" "~~~~~~~~~~~~~~~~~~~~~~~~~")
 	   t))
-  (should (equal-buffer-return
-	   '(classify-adornment)
+  (should (ert-equal-buffer-return
+	   (classify-adornment)
 	   "~~~~~~~~~~~~~~~~~~~~~~~~~
 Du bon vin tous les jours
 \^@~~~~~~~~~~~~~~~~~~~~~~~~~\^?
@@ -655,8 +663,8 @@ Du bon vin tous les jours
 	   '((?~ . over-and-under)
 	     "~~~~~~~~~~~~~~~~~~~~~~~~~" "Du bon vin tous les jours" "~~~~~~~~~~~~~~~~~~~~~~~~~")
 	   t))
-  (should (equal-buffer-return
-	   '(classify-adornment)
+  (should (ert-equal-buffer-return
+	   (classify-adornment)
 	   "
 \^@~~~~~~~~~~~~~~~~~~~~~~~~~\^?
    Du bon vin tous les jours
@@ -667,8 +675,8 @@ Du bon vin tous les jours
 	   '((?~ . over-and-under)
 	     "~~~~~~~~~~~~~~~~~~~~~~~~~" "   Du bon vin tous les jours" "~~~~~~~~~~~~~~~~~~~~~~~~~")
 	   t))
-  (should (equal-buffer-return
-	   '(classify-adornment)
+  (should (ert-equal-buffer-return
+	   (classify-adornment)
 	   "
 \^@~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\^?
 Du bon vin tous les jours
@@ -679,8 +687,8 @@ Du bon vin tous les jours
 	   '((?~ . over-and-under)
 	     "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" "Du bon vin tous les jours" "~~~~~~~~~~~~~~~~~~~")
 	   t))
-  (should (equal-buffer-return
-	   '(classify-adornment)
+  (should (ert-equal-buffer-return
+	   (classify-adornment)
 	   "
 ---------------------------
 Du bon vin tous les jours
@@ -691,15 +699,15 @@ Du bon vin tous les jours
 	   '((?~ . simple)
 	     nil "Du bon vin tous les jours" "~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 	   t))
-  (should (equal-buffer-return
-	   '(classify-adornment)
+  (should (ert-equal-buffer-return
+	   (classify-adornment)
 	   "\^@---------------------------\^?"
 	   nil
 	   '(t
 	     nil "---------------------------" nil)
 	   t))
-  (should (equal-buffer-return
-	   '(classify-adornment)
+  (should (ert-equal-buffer-return
+	   (classify-adornment)
 	   "
 \^@---------------------------\^?
 Du bon vin tous les jours
@@ -709,8 +717,8 @@ Du bon vin tous les jours
 	   nil
 	   nil
 	   t))
-  (should (equal-buffer-return
-	   '(classify-adornment)
+  (should (ert-equal-buffer-return
+	   (classify-adornment)
 	   "
 =========================
 Du bon vin tous les jours
@@ -722,8 +730,8 @@ Du bon vin
 	   '((?= . over-and-under)
 	     "=========================" "Du bon vin tous les jours" "=========================")
 	   t))
-  (should (equal-buffer-return
-	   '(classify-adornment)
+  (should (ert-equal-buffer-return
+	   (classify-adornment)
 	   "
 =========================
 Du bon vin tous les jours
@@ -736,8 +744,8 @@ Du bon vin
 	   '((?- . simple)
 	     nil "Du bon vin" "----------")
 	   t))
-  (should (equal-buffer-return
-	   '(classify-adornment)
+  (should (ert-equal-buffer-return
+	   (classify-adornment)
 	   "
 =========================
 Du bon vin tous les jours
@@ -751,8 +759,8 @@ Du bon vin
 	   '((?- . over-and-under)
 	     "----------" "Du bon vin" "----------")
 	   t))
-  (should (equal-buffer-return
-	   '(classify-adornment)
+  (should (ert-equal-buffer-return
+	   (classify-adornment)
 	   "
 =========================
 Du bon vin tous les jours

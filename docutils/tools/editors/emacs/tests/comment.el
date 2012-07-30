@@ -1,7 +1,15 @@
 ;; Tests for comment handling
 
 (add-to-list 'load-path ".")
-(load "ert-support" nil t)
+(load "ert-buffer" nil t)
+(add-to-list 'load-path "..")
+(load "rst.el" nil t)
+
+(ert-deftest comment-asserts ()
+  "Check some assertions."
+  (should (equal ert-Buf-point-char "\^@"))
+  (should (equal ert-Buf-mark-char "\^?"))
+  )
 
 (defun cmnt-insert ()
   "Wrapper to insert comment via `comment-dwim'.
@@ -16,20 +24,20 @@ Must be called on a line conaining at most whitespace."
   (let ((rst-indent-width 2)
 	(rst-indent-comment 3)
 	(fill-column 20))
-    (should (equal-buffer
-	     '(cmnt-insert)
+    (should (ert-equal-buffer
+	     (cmnt-insert)
 	     "\^@"
 	     ".. \^@"
 	     ))
-    (should (equal-buffer
-	     '(cmnt-insert)
+    (should (ert-equal-buffer
+	     (cmnt-insert)
 	     "
    \^@"
 	     "
 .. \^@"
 	     ))
-    (should (equal-buffer
-	     '(cmnt-insert)
+    (should (ert-equal-buffer
+	     (cmnt-insert)
 	     "
 * bla
 
@@ -39,8 +47,8 @@ Must be called on a line conaining at most whitespace."
 
   .. \^@"
 	     ))
-    (should (equal-buffer
-	     '(cmnt-insert)
+    (should (ert-equal-buffer
+	     (cmnt-insert)
 	     "
 :Field: Content
 
@@ -64,25 +72,25 @@ Must be called on a line conaining at most whitespace."
   (let ((rst-indent-width 2)
 	(rst-indent-comment 3)
 	(fill-column 20))
-    (should (equal-buffer
-	     '(cmnt-indent nil)
+    (should (ert-equal-buffer
+	     (cmnt-indent nil)
 	     "\^@"
 	     ".. \^@"
 	     ))
-    (should (equal-buffer
-	     '(cmnt-indent nil)
+    (should (ert-equal-buffer
+	     (cmnt-indent nil)
 	     "
    \^@"
 	     "
 .. \^@"
 	     ))
-    (should (equal-buffer
-	     '(cmnt-indent nil)
+    (should (ert-equal-buffer
+	     (cmnt-indent nil)
 	     ".. comment\^@"
 	     ".. \^@comment"
 	     ))
-    (should (equal-buffer
-	     '(cmnt-indent nil)
+    (should (ert-equal-buffer
+	     (cmnt-indent nil)
 	     "
 * bla
 
@@ -92,8 +100,8 @@ Must be called on a line conaining at most whitespace."
 
   .. \^@comment"
 	     ))
-    (should (equal-buffer
-	     '(cmnt-indent nil)
+    (should (ert-equal-buffer
+	     (cmnt-indent nil)
 	     "
 :Field: Content
 
@@ -103,8 +111,8 @@ Must be called on a line conaining at most whitespace."
 
 	.. \^@"
 	     ))
-    (should (equal-buffer
-	     '(cmnt-indent nil)
+    (should (ert-equal-buffer
+	     (cmnt-indent nil)
 	     "
 :Field: Content
 
@@ -128,14 +136,14 @@ Must be called on a line conaining at most whitespace."
   (let ((rst-indent-width 2)
 	(rst-indent-comment 3)
 	(fill-column 20))
-    (should (equal-buffer
-	     '(uncmnt-region)
+    (should (ert-equal-buffer
+	     (uncmnt-region)
 	     "\^?..
    com\^@ment"
 	     "\^?com\^@ment"
 	     ))
-    (should (equal-buffer
-	     '(uncmnt-region)
+    (should (ert-equal-buffer
+	     (uncmnt-region)
 	     "\^?..
    com\^@ment
 
@@ -146,8 +154,8 @@ Must be called on a line conaining at most whitespace."
    bla
 "
 	     ))
-    (should (equal-buffer
-	     '(uncmnt-region)
+    (should (ert-equal-buffer
+	     (uncmnt-region)
 	     "\^?..
    comment
 
@@ -172,14 +180,14 @@ bl\^@a
   (let ((rst-indent-width 2)
 	(rst-indent-comment 3)
 	(fill-column 20))
-    (should (equal-buffer
-	     '(cmnt-region)
+    (should (ert-equal-buffer
+	     (cmnt-region)
 	     "\^?com\^@ment"
 	     "\^?..
    com\^@ment"
 	     ))
-    (should (equal-buffer
-	     '(cmnt-region)
+    (should (ert-equal-buffer
+	     (cmnt-region)
 	     "\^?com\^@ment
 
    bla
@@ -190,8 +198,8 @@ bl\^@a
    bla
 "
 	     ))
-    (should (equal-buffer
-	     '(cmnt-region)
+    (should (ert-equal-buffer
+	     (cmnt-region)
 	     "\^?comment
 
 bl\^@a

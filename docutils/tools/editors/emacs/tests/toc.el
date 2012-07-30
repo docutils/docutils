@@ -1,7 +1,15 @@
 ;; Tests for operations on toc
 
 (add-to-list 'load-path ".")
-(load "ert-support" nil t)
+(load "ert-buffer" nil t)
+(add-to-list 'load-path "..")
+(load "rst.el" nil t)
+
+(ert-deftest toc-asserts ()
+  "Check some assertions."
+  (should (equal ert-Buf-point-char "\^@"))
+  (should (equal ert-Buf-mark-char "\^?"))
+  )
 
 (ert-deftest rst-toc-insert ()
   "Tests `rst-toc-insert'."
@@ -33,58 +41,58 @@ Header C
 	  (rst-toc-insert-number-separator "  ")
 	  (rst-toc-insert-max-level nil))
       ;; Can't identify a title so do nothing - that's actually a (MIS-)FEATURE
-      (should (equal-buffer
-	       '(rst-toc-insert)
-	       (concat buf-point-char headers)
-	       (concat buf-point-char headers)))
+      (should (ert-equal-buffer
+	       (rst-toc-insert)
+	       (concat "\^@" headers)
+	       t))
       ;; Won't work on a section title
-      (should (equal-buffer
-	       '(rst-toc-insert)
-	       (concat title buf-point-char headers)
-	       (concat title buf-point-char headers)))
+      (should (ert-equal-buffer
+	       (rst-toc-insert)
+	       (concat title "\^@" headers)
+	       t))
       ;; No indentation
-      (should (equal-buffer
-	       '(rst-toc-insert)
-	       (concat title buf-point-char "\n\n" headers)
+      (should (ert-equal-buffer
+	       (rst-toc-insert)
+	       (concat title "\^@\n\n" headers)
 	       (concat title "1  Header A
 2  Header B
   2.1  Subheader B.a
     2.1.1  SubSubheader B.a.1
   2.2  Subheader B.b
-3  Header C" buf-point-char "
+3  Header C\^@
 
 " headers)))
       ;; Indentation
-      (should (equal-buffer
-	       '(rst-toc-insert)
-	       (concat title "  " buf-point-char "\n\n" headers)
+      (should (ert-equal-buffer
+	       (rst-toc-insert)
+	       (concat title "  \^@\n\n" headers)
 	       (concat title "  1  Header A
   2  Header B
     2.1  Subheader B.a
       2.1.1  SubSubheader B.a.1
     2.2  Subheader B.b
-  3  Header C" buf-point-char "
+  3  Header C\^@
 
 " headers)))
       ;; Only first level
-      (should (equal-buffer
-	       '(rst-toc-insert 1)
-	       (concat title "  " buf-point-char "\n\n" headers)
+      (should (ert-equal-buffer
+	       (rst-toc-insert 1)
+	       (concat title "  \^@\n\n" headers)
 	       (concat title "  1  Header A
   2  Header B
-  3  Header C" buf-point-char "
+  3  Header C\^@
 
 " headers)))
       ;; Prefix and indentation
-      (should (equal-buffer
-	       '(rst-toc-insert)
-	       (concat title "..  " buf-point-char "\n\n" headers)
+      (should (ert-equal-buffer
+	       (rst-toc-insert)
+	       (concat title "..  \^@\n\n" headers)
 	       (concat title "..  1  Header A
     2  Header B
       2.1  Subheader B.a
         2.1.1  SubSubheader B.a.1
       2.2  Subheader B.b
-    3  Header C" buf-point-char "
+    3  Header C\^@
 
 " headers)))
       )
@@ -132,14 +140,14 @@ Header C
 	  (rst-toc-insert-style 'fixed)
 	  (rst-toc-insert-number-separator "  ")
 	  (rst-toc-insert-max-level nil))
-      (should (equal-buffer
-	       '(rst-toc-update)
-	       (concat title contents fields old "\n\n" headers buf-point-char)
-	       (concat title contents fields new "\n\n" headers buf-point-char)))
-      (should (equal-buffer
-	       '(rst-toc-update)
-	       (concat title contents old "\n\n" headers buf-point-char)
-	       (concat title contents new "\n\n" headers buf-point-char)))
+      (should (ert-equal-buffer
+	       (rst-toc-update)
+	       (concat title contents fields old "\n\n" headers "\^@")
+	       (concat title contents fields new "\n\n" headers "\^@")))
+      (should (ert-equal-buffer
+	       (rst-toc-update)
+	       (concat title contents old "\n\n" headers "\^@")
+	       (concat title contents new "\n\n" headers "\^@")))
       )
     ))
 

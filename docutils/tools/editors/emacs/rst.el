@@ -103,6 +103,8 @@
 
 ;;; Code:
 
+;; FIXME: Add proper ";;;###autoload" comments.
+
 ;; FIXME: When 24.1 is common place remove use of `lexical-let' and put "-*-
 ;;        lexical-binding: t -*-" in the first line.
 
@@ -123,7 +125,7 @@
 (defun rst-some (seq &optional pred)
   "Return non-nil if any element of SEQ yields non-nil when PRED is applied.
 Apply PRED to each element of list SEQ until the first non-nil
-result is yielded and return this result. PRED defaults to
+result is yielded and return this result.  PRED defaults to
 `identity'."
   (unless pred
     (setq pred 'identity))
@@ -171,7 +173,7 @@ and before TAIL-RE and DELIM-RE in VAR or DEFAULT for no match."
 ;; Use CVSHeader to really get information from CVS and not other version
 ;; control systems.
 (defconst rst-cvs-header
-  "$CVSHeader: sm/rst_el/rst.el,v 1.286 2012-06-16 09:41:21 stefan Exp $")
+  "$CVSHeader: sm/rst_el/rst.el,v 1.300 2012-07-30 19:24:36 stefan Exp $")
 (defconst rst-cvs-rev
   (rst-extract-version "\\$" "CVSHeader: \\S + " "[0-9]+\\(?:\\.[0-9]+\\)+"
 		       " .*" rst-cvs-header "0.0")
@@ -196,7 +198,7 @@ SVN revision is the upstream (docutils) revision.")
 ;; Maintained by the release process.
 (defconst rst-official-version
   (rst-extract-version "%" "OfficialVersion: " "[0-9]+\\(?:\\.[0-9]+\\)+" " "
-		       "%OfficialVersion: 1.3.0 %")
+		       "%OfficialVersion: 1.3.1 %")
   "Official version of the package.")
 (defconst rst-official-cvs-rev
   (rst-extract-version "[%$]" "Revision: " "[0-9]+\\(?:\\.[0-9]+\\)+" " "
@@ -217,7 +219,9 @@ in parentheses follows the development revision and the time stamp.")
     ("1.1.0" . "24.2")
     ("1.2.0" . "24.2")
     ("1.2.1" . "24.2")
-    ("1.3.0" . "24.2")))
+    ("1.3.0" . "24.2")
+    ("1.3.1" . "24.2")
+    ))
 
 (unless (assoc rst-official-version rst-package-emacs-version-alist)
   (error "Version %s not listed in `rst-package-emacs-version-alist'"
@@ -580,10 +584,13 @@ well but give an additional message."
     ;;
     ;; The adjustment function that adorns or rotates a section title.
     (rst-define-key map [?\C-c ?\C-=] 'rst-adjust [?\C-c ?\C-a t])
-    (rst-define-key map [?\C-=] 'rst-adjust) ; (Does not work on the Mac OSX.)
+    (rst-define-key map [?\C-=] 'rst-adjust) ; Does not work on the Mac OSX and
+					     ; on consoles.
 
     ;; \C-c \C-a is the keymap for adornments.
     (rst-define-key map [?\C-c ?\C-a ?\C-h] 'describe-prefix-bindings)
+    ;; Another binding which works with all types of input.
+    (rst-define-key map [?\C-c ?\C-a ?\C-a] 'rst-adjust)
     ;; Display the hierarchy of adornments implied by the current document
     ;; contents.
     (rst-define-key map [?\C-c ?\C-a ?\C-d] 'rst-display-adornments-hierarchy)
@@ -2847,7 +2854,7 @@ and not from inner alignment points."
     (save-match-data
       (unless (looking-at (rst-re 'lin-end))
 	(back-to-indentation)
-	;; Current indendation is always the least likely tab.
+	;; Current indentation is always the least likely tab.
 	(let ((tabs (list (list (point) 0 nil)))) ; (POINT OFFSET INNER)
 	  ;; Push inner tabs more likely to continue writing.
 	  (cond
@@ -3416,10 +3423,11 @@ This color is used as background for section title text on level
 
 (defcustom rst-adornment-faces-alist
   ;; FIXME LEVEL-FACE: Must be redone if `rst-level-face-max' is changed
-  (let ((alist (copy-list '((t . rst-transition)
-			    (nil . rst-adornment))))
+  (let ((alist (copy-sequence '((t . rst-transition)
+                                (nil . rst-adornment))))
 	(i 1))
     (while (<= i rst-level-face-max)
+      ;; FIXME: why not `push'?
       (nconc alist (list (cons i (intern (format "rst-level-%d-face" i)))))
       (setq i (1+ i)))
     alist)
@@ -3953,7 +3961,9 @@ An association list of the tool-set to a list of the (command to use,
 extension of produced filename, options to the tool (nil or a
 string)) to be used for converting the document."
   ;; FIXME: These are not options but symbols which may be referenced by
-  ;;        `rst-compile-*-toolset` below.
+  ;;        `rst-compile-*-toolset` below. The `:validate' keyword of
+  ;;        `defcustom' may help to define this properly in newer Emacs
+  ;;        versions (> 23.1).
   :type '(alist :options (html latex newlatex pseudoxml xml pdf s5)
                 :key-type symbol
                 :value-type (list :tag "Specification"
