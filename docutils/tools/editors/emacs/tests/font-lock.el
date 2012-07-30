@@ -1,17 +1,25 @@
 ;; Tests for font-locking code
 
 (add-to-list 'load-path ".")
-(load "ert-support" nil t)
+(load "ert-buffer" nil t)
+(add-to-list 'load-path "..")
+(load "rst.el" nil t)
+
+(ert-deftest font-lock--asserts ()
+  "Check some assertions."
+  (should (equal ert-Buf-point-char "\^@"))
+  (should (equal ert-Buf-mark-char "\^?"))
+  )
 
 (ert-deftest rst-forward-indented-block ()
   "Tests `rst-forward-indented-block'."
-  (should (equal-buffer-return
-	   '(rst-forward-indented-block)
+  (should (ert-equal-buffer-return
+	   (rst-forward-indented-block)
 	   "\^@abc"
-	   "\^@abc"
+	   t
 	   nil))
-  (should (equal-buffer-return
-	   '(rst-forward-indented-block)
+  (should (ert-equal-buffer-return
+	   (rst-forward-indented-block)
 	   (concat "  \^@abc
 
 def")
@@ -33,28 +41,28 @@ Uses and sets region and returns t if region has been changed."
 
 (ert-deftest rst-font-lock-extend-region-internal-indent ()
   "Tests `rst-font-lock-extend-region-internal'."
-  (should (equal-buffer-return
-	   '(extend-region)
+  (should (ert-equal-buffer-return
+	   (extend-region)
 	   "\^@abc\^?"
-	   "\^@abc\^?"
+	   t
 	   nil
 	   t))
-  (should (equal-buffer-return
-	   '(extend-region)
+  (should (ert-equal-buffer-return
+	   (extend-region)
 	   "\^@  abc\^?"
-	   "\^@  abc\^?"
+	   t
 	   nil
 	   t))
-  (should (equal-buffer-return
-	   '(extend-region)
+  (should (ert-equal-buffer-return
+	   (extend-region)
 	   "  abc
 \^@  def\^?"
 	   "\^@  abc
   def\^?"
 	   t
 	   t))
-  (should (equal-buffer-return
-	   '(extend-region)
+  (should (ert-equal-buffer-return
+	   (extend-region)
 	   "  abc
 \^@  def
 \^?  ghi
@@ -65,8 +73,8 @@ uvw"
 \^?uvw"
 	   t
 	   t))
-  (should (equal-buffer-return
-	   '(extend-region)
+  (should (ert-equal-buffer-return
+	   (extend-region)
 	   "xyz
 abc
 \^@  def
@@ -77,8 +85,8 @@ abc
   ghi\^?"
 	   t
 	   t))
-  (should (equal-buffer-return
-	   '(extend-region)
+  (should (ert-equal-buffer-return
+	   (extend-region)
 	   "xyz
   abc::
 \^@  def
@@ -91,8 +99,8 @@ uvw"
 \^?uvw"
 	   t
 	   t))
-  (should (equal-buffer-return
-	   '(extend-region)
+  (should (ert-equal-buffer-return
+	   (extend-region)
 	   "xyz
   .. abc
 \^@     def
@@ -103,8 +111,8 @@ uvw"
 \^?uvw"
 	   t
 	   t))
-  (should (equal-buffer-return
-	   '(extend-region)
+  (should (ert-equal-buffer-return
+	   (extend-region)
 	   "xyz
   .. abc
      123
@@ -119,8 +127,8 @@ uvw"
 uvw"
 	   t
 	   t))
-  (should (equal-buffer-return
-	   '(extend-region)
+  (should (ert-equal-buffer-return
+	   (extend-region)
 	   "xyz
 
   .. abc
@@ -145,30 +153,29 @@ uvw"
 
 (ert-deftest rst-font-lock-extend-region-internal-adornment ()
   "Tests `rst-font-lock-extend-region-internal'."
-  (should (equal-buffer-return
-	   '(extend-region)
+  (should (ert-equal-buffer-return
+	   (extend-region)
 	   "\^@===\^?"
-	   "\^@===\^?"
+	   t
 	   nil
 	   t))
-  (should (equal-buffer-return
-	   '(extend-region)
+  (should (ert-equal-buffer-return
+	   (extend-region)
 	   "abc
 \^@===\^?"
 	   "\^@abc
 ===\^?"
 	   t
 	   t))
-  (should (equal-buffer-return ; Quite complicated without the trailing newline
-	   '(extend-region)
+  (should (ert-equal-buffer-return ; Quite complicated without the trailing newline
+	   (extend-region)
 	   "\^@abc
 \^?==="
-	   "\^@abc
-\^?==="
+	   t
 	   nil
 	   t))
-  (should (equal-buffer-return
-	   '(extend-region)
+  (should (ert-equal-buffer-return
+	   (extend-region)
 	   "\^@abc
 \^?===
 "
@@ -177,8 +184,8 @@ uvw"
 \^?"
 	   t
 	   t))
-  (should (equal-buffer-return
-	   '(extend-region)
+  (should (ert-equal-buffer-return
+	   (extend-region)
 	   "===
 abc
 \^@===
@@ -189,8 +196,8 @@ abc
 \^?"
 	   t
 	   t))
-  (should (equal-buffer-return
-	   '(extend-region)
+  (should (ert-equal-buffer-return
+	   (extend-region)
 	   "\^@===
 \^?abc
 ===
@@ -201,8 +208,8 @@ abc
 \^?"
 	   t
 	   t))
-  (should (equal-buffer-return
-	   '(extend-region)
+  (should (ert-equal-buffer-return
+	   (extend-region)
 	   "def
 
 ===
@@ -217,8 +224,8 @@ abc
 \^?"
 	   t
 	   t))
-  (should (equal-buffer-return
-	   '(extend-region)
+  (should (ert-equal-buffer-return
+	   (extend-region)
 	   "def
 
 \^@===

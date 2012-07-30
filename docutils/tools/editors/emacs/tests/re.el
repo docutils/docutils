@@ -1,7 +1,9 @@
 ;; Tests for the regular expression builder
 
 (add-to-list 'load-path ".")
-(load "ert-support" nil t)
+(load "ert-buffer" nil t)
+(add-to-list 'load-path "..")
+(load "rst.el" nil t)
 
 (ert-deftest rst-re ()
   "Tests `rst-re'."

@@ -1,7 +1,15 @@
 ;; Tests for rst-adjust
 
 (add-to-list 'load-path ".")
-(load "ert-support" nil t)
+(load "ert-buffer" nil t)
+(add-to-list 'load-path "..")
+(load "rst.el" nil t)
+
+(ert-deftest adjust-section-asserts ()
+  "Check some assertions."
+  (should (equal ert-Buf-point-char "\^@"))
+  (should (equal ert-Buf-mark-char "\^?"))
+  )
 
 (ert-deftest rst-adjust ()
   "Tests for `rst-adjust'."
@@ -16,8 +24,8 @@
 				    (?` simple 0)
 				    (?# simple 0)
 				    (?@ simple 0))))
-    (should (equal-buffer
-	     '(rst-adjust)
+    (should (ert-equal-buffer
+	     (rst-adjust)
 	     "
 Some Title\^@
 
@@ -29,8 +37,8 @@ Some Title\^@
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust)
+    (should (ert-equal-buffer
+	     (rst-adjust)
 	     "
 Some Title
 \^@
@@ -42,8 +50,8 @@ Some Title
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust)
+    (should (ert-equal-buffer
+	     (rst-adjust)
 	     "
 Some Tit\^@le
 
@@ -55,8 +63,8 @@ Some Tit\^@le
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust)
+    (should (ert-equal-buffer
+	     (rst-adjust)
 	     "
 \^@Some Title
 
@@ -68,8 +76,8 @@ Some Tit\^@le
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust)
+    (should (ert-equal-buffer
+	     (rst-adjust)
 	     "
 Some Title\^@
 
@@ -93,8 +101,8 @@ Other Title2
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust 1)
+    (should (ert-equal-buffer
+	     (rst-adjust 1)
 	     "
 Some Title\^@
 
@@ -105,8 +113,8 @@ Some Title
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust)
+    (should (ert-equal-buffer
+	     (rst-adjust)
 	     "
    Some Title\^@
 
@@ -118,8 +126,8 @@ Some Title
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust 1)
+    (should (ert-equal-buffer
+	     (rst-adjust 1)
 	     "
    Some Title\^@
 
@@ -130,8 +138,8 @@ Some Title
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust)
+    (should (ert-equal-buffer
+	     (rst-adjust)
 	     "
 Previous Title
 --------------
@@ -148,8 +156,8 @@ Some Title
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust)
+    (should (ert-equal-buffer
+	     (rst-adjust)
 	     "
 Previous Title
 --------------
@@ -172,8 +180,8 @@ Next Title
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust 1)
+    (should (ert-equal-buffer
+	     (rst-adjust 1)
 	     "
 Previous Title
 --------------
@@ -191,8 +199,8 @@ Some Title
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust 1)
+    (should (ert-equal-buffer
+	     (rst-adjust 1)
 	     "
 Previous Title
 --------------
@@ -210,8 +218,8 @@ Previous Title
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust)
+    (should (ert-equal-buffer
+	     (rst-adjust)
 	     "
 Previous Title
 --------------
@@ -228,8 +236,8 @@ Some Title
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust -)
+    (should (ert-equal-buffer
+	     (rst-adjust -)
 	     "
 Previous Title
 --------------
@@ -250,8 +258,8 @@ Next Title
 ~~~~~~~~~~
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust)
+    (should (ert-equal-buffer
+	     (rst-adjust)
 	     "
 Previous Title\^@
 ----------
@@ -262,8 +270,8 @@ Previous Title
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust)
+    (should (ert-equal-buffer
+	     (rst-adjust)
 	     "
 Previous Title
 ----------\^@
@@ -274,8 +282,8 @@ Previous Title
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust)
+    (should (ert-equal-buffer
+	     (rst-adjust)
 	     "
 Previous Title
 -\^@
@@ -285,8 +293,8 @@ Previous Title
 -
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust)
+    (should (ert-equal-buffer
+	     (rst-adjust)
 	     "
 Previous Title
 --\^@
@@ -296,8 +304,8 @@ Previous Title
 --
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust)
+    (should (ert-equal-buffer
+	     (rst-adjust)
 	     "
 Previous Title
 ---\^@
@@ -308,8 +316,8 @@ Previous Title
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust)
+    (should (ert-equal-buffer
+	     (rst-adjust)
 	     "
 Previous Title
 ------------------\^@
@@ -320,8 +328,8 @@ Previous Title
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust)
+    (should (ert-equal-buffer
+	     (rst-adjust)
 	     "
 ----------------
  Previous Title
@@ -334,8 +342,8 @@ Previous Title
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust)
+    (should (ert-equal-buffer
+	     (rst-adjust)
 	     "
 ----------\^@
  Previous Title
@@ -348,8 +356,8 @@ Previous Title
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust)
+    (should (ert-equal-buffer
+	     (rst-adjust)
 	     "
 ----------
  Previous Title\^@
@@ -362,8 +370,8 @@ Previous Title
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust 1)
+    (should (ert-equal-buffer
+	     (rst-adjust 1)
 	     "
 Previous Title
 ----------\^@
@@ -375,8 +383,8 @@ Previous Title
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust 1)
+    (should (ert-equal-buffer
+	     (rst-adjust 1)
 	     "
 ----------------
  Previous Title\^@
@@ -388,8 +396,8 @@ Previous Title
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust 1)
+    (should (ert-equal-buffer
+	     (rst-adjust 1)
 	     "
 --------\^@
  Previous Title
@@ -401,8 +409,8 @@ Previous Title
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust)
+    (should (ert-equal-buffer
+	     (rst-adjust)
 	     "--------\^@
  Previous Title
 ----------------
@@ -413,8 +421,8 @@ Previous Title
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust)
+    (should (ert-equal-buffer
+	     (rst-adjust)
 	     "=======
 Document Title\^@
 ==============
@@ -425,8 +433,8 @@ Document Title
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust)
+    (should (ert-equal-buffer
+	     (rst-adjust)
 	     "
 ================
  Document Title
@@ -459,8 +467,8 @@ After Title
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust -)
+    (should (ert-equal-buffer
+	     (rst-adjust -)
 	     "
 ================
  Document Title
@@ -492,8 +500,8 @@ After Title
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust -)
+    (should (ert-equal-buffer
+	     (rst-adjust -)
 	     "
 ================
  Document Title
@@ -519,8 +527,8 @@ My Title
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust -)
+    (should (ert-equal-buffer
+	     (rst-adjust -)
 	     "
 ================
  Document Title
@@ -547,8 +555,8 @@ SubTitle
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust)
+    (should (ert-equal-buffer
+	     (rst-adjust)
 	     "
 ================
  Document Title
@@ -575,8 +583,8 @@ My Title
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust)
+    (should (ert-equal-buffer
+	     (rst-adjust)
 	     "
 ================
  Document Title
@@ -601,8 +609,8 @@ My Title
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust 1)
+    (should (ert-equal-buffer
+	     (rst-adjust 1)
 	     "
 SubTitle\^@
 ~~~~~~~~
@@ -615,8 +623,8 @@ SubTitle\^@
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust 1)
+    (should (ert-equal-buffer
+	     (rst-adjust 1)
 	     "
 ~~~~~~~~~~
  SubTitle\^@
@@ -629,8 +637,8 @@ SubTitle
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust)
+    (should (ert-equal-buffer
+	     (rst-adjust)
 	     "
 Document Title\^@
 
@@ -642,8 +650,8 @@ Document Title\^@
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust)
+    (should (ert-equal-buffer
+	     (rst-adjust)
 	     "
 
 Document Title\^@
@@ -656,8 +664,8 @@ Document Title\^@
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust)
+    (should (ert-equal-buffer
+	     (rst-adjust)
 	     "
 
 Document Title\^@"
@@ -668,8 +676,8 @@ Document Title\^@"
 ================
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust)
+    (should (ert-equal-buffer
+	     (rst-adjust)
 	     "
 Document Title
 ==============
@@ -684,8 +692,8 @@ Subtitle\^@
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust)
+    (should (ert-equal-buffer
+	     (rst-adjust)
 	     "==============
 Document Title\^@
 ==============
@@ -700,8 +708,8 @@ Subtitle
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust)
+    (should (ert-equal-buffer
+	     (rst-adjust)
 	     "
 ==============
 Document Title\^@
@@ -718,8 +726,8 @@ Subtitle
 
 "
 	     t))
-    (should (equal-buffer
-	     '(rst-adjust)
+    (should (ert-equal-buffer
+	     (rst-adjust)
 	     "
 ==============
 Document Title
@@ -739,8 +747,8 @@ Document Title2
 "
 	     t))
     ;; docutils-Bugs #2972588
-    (should (equal-buffer
-	     '(rst-adjust)
+    (should (ert-equal-buffer
+	     (rst-adjust)
 	     "
 ==============
 Document Title

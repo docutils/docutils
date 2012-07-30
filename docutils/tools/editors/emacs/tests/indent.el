@@ -1,7 +1,15 @@
 ;; Tests for functions around indentation
 
 (add-to-list 'load-path ".")
-(load "ert-support" nil t)
+(load "ert-buffer" nil t)
+(add-to-list 'load-path "..")
+(load "rst.el" nil t)
+
+(ert-deftest indent-asserts ()
+  "Check some assertions."
+  (should (equal ert-Buf-point-char "\^@"))
+  (should (equal ert-Buf-mark-char "\^?"))
+  )
 
 (defun indent-for-tab (&optional count)
   "Wrapper to call `indent-for-tab-command' COUNT times defaulting to 1."
@@ -17,13 +25,13 @@
 	(rst-indent-literal-normal 3)
 	(rst-indent-literal-minimized 2)
 	(rst-indent-comment 3))
-    (should (equal-buffer
-	     '(indent-for-tab)
+    (should (ert-equal-buffer
+	     (indent-for-tab)
 	     "\^@"
-	     "\^@"
+	     t
 	     ))
-    (should (equal-buffer
-	     '(indent-for-tab)
+    (should (ert-equal-buffer
+	     (indent-for-tab)
 	     "
 * a
 \^@"
@@ -31,8 +39,8 @@
 * a
   \^@"
 	     ))
-    (should (equal-buffer
-	     '(indent-for-tab)
+    (should (ert-equal-buffer
+	     (indent-for-tab)
 	     "
 * a
   \^@"
@@ -40,8 +48,8 @@
 * a
 \^@"
 	     ))
-    (should (equal-buffer
-	     '(indent-for-tab)
+    (should (ert-equal-buffer
+	     (indent-for-tab)
 	     "
 * a
 
@@ -51,8 +59,8 @@
 
   * b\^@"
 	     ))
-    (should (equal-buffer
-	     '(indent-for-tab)
+    (should (ert-equal-buffer
+	     (indent-for-tab)
 	     "
 * a
 
@@ -62,8 +70,8 @@
 
 * b\^@"
 	     ))
-    (should (equal-buffer
-	     '(indent-for-tab)
+    (should (ert-equal-buffer
+	     (indent-for-tab)
 	     "
 * a
 
@@ -73,8 +81,8 @@
 
   \^@* b"
 	     ))
-    (should (equal-buffer
-	     '(indent-for-tab)
+    (should (ert-equal-buffer
+	     (indent-for-tab)
 	     "
 * a
 
@@ -84,8 +92,8 @@
 
 \^@* b"
 	     ))
-    (should (equal-buffer
-	     '(indent-for-tab)
+    (should (ert-equal-buffer
+	     (indent-for-tab)
 	     "
 * a
   * b
@@ -101,8 +109,8 @@
 * e
   \^@"
 	     ))
-    (should (equal-buffer
-	     '(indent-for-tab)
+    (should (ert-equal-buffer
+	     (indent-for-tab)
 	     "
 * a
   * b
@@ -118,8 +126,8 @@
 * e
 \^@"
 	     ))
-    (should (equal-buffer
-	     '(indent-for-tab)
+    (should (ert-equal-buffer
+	     (indent-for-tab)
 	     "
 * a
   * b
@@ -133,8 +141,8 @@
   * d
     * e\^@"
 	     ))
-    (should (equal-buffer
-	     '(indent-for-tab)
+    (should (ert-equal-buffer
+	     (indent-for-tab)
 	     "
 * a
   * b
@@ -148,8 +156,8 @@
   * d
   * e\^@"
 	     ))
-    (should (equal-buffer
-	     '(indent-for-tab)
+    (should (ert-equal-buffer
+	     (indent-for-tab)
 	     "
 * a
   * b
@@ -163,8 +171,8 @@
   * d
 * e\^@"
 	     ))
-    (should (equal-buffer
-	     '(indent-for-tab)
+    (should (ert-equal-buffer
+	     (indent-for-tab)
 	     "
 * a
   * b
@@ -178,8 +186,8 @@
   * d
     * e\^@"
 	     ))
-    (should (equal-buffer
-	     '(indent-for-tab)
+    (should (ert-equal-buffer
+	     (indent-for-tab)
 	     "
 .. [CIT]
 
@@ -207,8 +215,8 @@
              :f: val::
                  \^@"
 	     ))
-    (should (equal-buffer
-	     '(indent-for-tab)
+    (should (ert-equal-buffer
+	     (indent-for-tab)
 	     "
 .. [CIT]
 
@@ -236,8 +244,8 @@
              :f: val::
                \^@"
 	     ))
-    (should (equal-buffer
-	     '(indent-for-tab)
+    (should (ert-equal-buffer
+	     (indent-for-tab)
 	     "
 .. [CIT]
 
@@ -265,8 +273,8 @@
              :f: val::
              \^@"
 	     ))
-    (should (equal-buffer
-	     '(indent-for-tab)
+    (should (ert-equal-buffer
+	     (indent-for-tab)
 	     "
 .. [CIT]
 
@@ -294,8 +302,8 @@
              :f: val::
             \^@"
 	     ))
-    (should (equal-buffer
-	     '(indent-for-tab)
+    (should (ert-equal-buffer
+	     (indent-for-tab)
 	     "
 .. [CIT]
 
@@ -323,8 +331,8 @@
              :f: val::
           \^@"
 	     ))
-    (should (equal-buffer
-	     '(indent-for-tab)
+    (should (ert-equal-buffer
+	     (indent-for-tab)
 	     "
 .. [CIT]
 
@@ -352,8 +360,8 @@
              :f: val::
         \^@"
 	     ))
-    (should (equal-buffer
-	     '(indent-for-tab)
+    (should (ert-equal-buffer
+	     (indent-for-tab)
 	     "
 .. [CIT]
 
@@ -381,8 +389,8 @@
              :f: val::
       \^@"
 	     ))
-    (should (equal-buffer
-	     '(indent-for-tab)
+    (should (ert-equal-buffer
+	     (indent-for-tab)
 	     "
 .. [CIT]
 
@@ -410,8 +418,8 @@
              :f: val::
    \^@"
 	     ))
-    (should (equal-buffer
-	     '(indent-for-tab)
+    (should (ert-equal-buffer
+	     (indent-for-tab)
 	     "
 .. [CIT]
 

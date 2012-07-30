@@ -119,6 +119,10 @@ TOC in speedbar
 * If the TOC is displayed in the speedbar this could be used for
   permanent navigation
 
+  * Probably `imenu` functionality can be used for this
+
+    * See `imenu` documentation and `speedbar-use-imenu-flag`
+
 toc-mode without markup
 =======================
 
@@ -151,12 +155,22 @@ toc-mode only to a certain level
 * If a TOC buffer is created a prefix argument should limit the depth
   of the listing to the given level
 
-Imenu support
-=============
+Imenu support or similar
+========================
 
 * Imenu could be supported
 
   * See `(elisp)Imenu`
+
+* `etags` could be supported
+
+  * See `(emacs)Tags` and `etags.el`
+
+  * May be this can be used for generating HTML local tags somehow?
+
+    * As requested by `Convert to id`_
+
+    * Could use `complete-tag`
 
 Outline support
 ===============
@@ -334,7 +348,7 @@ rst-toc-insert features
   corresponding section, to render the toc.
 
 Automatic handling of `.txt` files
-----------------------------------
+==================================
 
 It would be nice to differentiate between text files using
 reStructuredText and other general text files. If we had a function to
@@ -346,7 +360,7 @@ this guessing by searching for a valid adornment at the top of the
 document or searching for reStructuredText directives further on.
 
 Entry level for rst-straighten-adornments
------------------------------------------
+=========================================
 
 * `rst-straighten-adornments` should have an entry level to start at a
   lower than the top level
@@ -355,3 +369,65 @@ Entry level for rst-straighten-adornments
     appropriate for documents without titles
 
   * Should be done by a prefix argument
+
+Support for ispell
+==================
+
+* `ispell` may skip certain things
+
+  * Using `ispell-skip-region-alist`
+
+    * ``Code`` should be skipped
+
+    * Literal text after ``::`` should be skipped
+
+  * A customization should switch this on so users are not surprised
+
+Marriage with `forms-mode`
+==========================
+
+* Like I married `forms-mode` with `sdf-mode`
+
+* Would allow editing a number of records with a fixed layout
+
+* The base reStructuredText file should be either
+
+  * a list consisting of field lists
+
+    * The separator needs to be defined, however
+
+    * A section header or transition may be a useful separator
+
+  * a `list-table`
+
+  * a CSV file
+
+    * That would call for a general support for CSV support for forms
+
+    * May be `orgtbl-to-csv` in `org/org-table.el` could be useful for
+      this
+
+Marriage with `org-mode`
+========================
+
+* May be Org mode can be utilized instead of `forms-mode`
+
+  * See `orgtbl-mode` 
+
+  * See `orgstruct-mode`
+
+    * Though this looks more like `allout-mode`
+
+Intelligent quote insertion
+===========================
+
+* Use or develop something like `insert-pair`
+
+  * Main use for forgotten quoting
+
+    * Thus may rather quote preceding word than following one
+
+  * If `forward-sexp` could be overridden `insert-pair` might me
+    usable directly
+
+* Also add something like `delete-pair`

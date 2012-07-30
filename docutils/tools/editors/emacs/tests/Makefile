@@ -20,6 +20,6 @@ tests:
 	$(EMACS_ERT_PFX) $(addprefix -l ,$(ERT_TESTS)) $(EMACS_ERT_SFX)
 
 compile:
-	$(EMACS_COMPILE_PFX) "$(RST_EL)" $(EMACS_COMPILE_SFX) 2>&1 \
+	$(EMACS_COMPILE_PFX) "$(RST_EL)" $(EMACS_COMPILE_SFX)
 
 clean:

@@ -1,7 +1,15 @@
 ;; Tests for various movement commands
 
 (add-to-list 'load-path ".")
-(load "ert-support" nil t)
+(load "ert-buffer" nil t)
+(add-to-list 'load-path "..")
+(load "rst.el" nil t)
+
+(ert-deftest movement-asserts ()
+  "Check some assertions."
+  (should (equal ert-Buf-point-char "\^@"))
+  (should (equal ert-Buf-mark-char "\^?"))
+  )
 
 (defun fwd-para ()
   "Wrapper to call `forward-paragraph'."
@@ -10,8 +18,8 @@
 
 (ert-deftest forward-paragraph ()
   "Tests for `forward-paragraph'."
-  (should (equal-buffer-return
-	   '(fwd-para)
+  (should (ert-equal-buffer-return
+	   (fwd-para)
 	   "
 :Field: Content
 \^@
@@ -34,8 +42,8 @@
 	   ))
 
 
-  (should (equal-buffer-return
-	   '(fwd-para)
+  (should (ert-equal-buffer-return
+	   (fwd-para)
 	   "\^@
 This is
 a short
@@ -46,8 +54,8 @@ a short
 para\^@"
 	   0
 	   ))
-  (should (equal-buffer-return
-	   '(fwd-para)
+  (should (ert-equal-buffer-return
+	   (fwd-para)
 	   "\^@
 This is
 a short
@@ -60,8 +68,8 @@ para
 \^@"
 	   0
 	   ))
-  (should (equal-buffer-return
-	   '(fwd-para)
+  (should (ert-equal-buffer-return
+	   (fwd-para)
 	   "\^@
 This is
 a short
@@ -76,8 +84,8 @@ para
 "
 	   0
 	   ))
-  (should (equal-buffer-return
-	   '(fwd-para)
+  (should (ert-equal-buffer-return
+	   (fwd-para)
 	   "\^@
 This is
 a short
@@ -94,8 +102,8 @@ para
 "
 	   0
 	   ))
-  (should (equal-buffer-return
-	   '(fwd-para)
+  (should (ert-equal-buffer-return
+	   (fwd-para)
 	   "
 \^@This is
 a short
@@ -110,8 +118,8 @@ para
 "
 	   0
 	   ))
-  (should (equal-buffer-return
-	   '(fwd-para)
+  (should (ert-equal-buffer-return
+	   (fwd-para)
 	   "
 This is
 a short
@@ -126,8 +134,8 @@ para
 "
 	   0
 	   ))
-  (should (equal-buffer-return
-	   '(fwd-para)
+  (should (ert-equal-buffer-return
+	   (fwd-para)
 	   "
 This is
 a short
@@ -142,8 +150,8 @@ para
 "
 	   0
 	   ))
-  (should (equal-buffer-return
-	   '(fwd-para)
+  (should (ert-equal-buffer-return
+	   (fwd-para)
 	   "
 This is
 \^@a short
@@ -158,8 +166,8 @@ a short
 "
 	   0
 	   ))
-  (should (equal-buffer-return
-	   '(fwd-para)
+  (should (ert-equal-buffer-return
+	   (fwd-para)
 	   "
 This is
 a short
@@ -182,8 +190,8 @@ para
 "
 	   0
 	   ))
-  (should (equal-buffer-return
-	   '(fwd-para)
+  (should (ert-equal-buffer-return
+	   (fwd-para)
 	   "
 \^@* An item
 
@@ -196,8 +204,8 @@ para
 "
 	   0
 	   ))
-  (should (equal-buffer-return
-	   '(fwd-para)
+  (should (ert-equal-buffer-return
+	   (fwd-para)
 	   "
 \^@* An item
 * Another item
@@ -208,8 +216,8 @@ para
 "
 	   0
 	   ))
-  (should (equal-buffer-return
-	   '(fwd-para)
+  (should (ert-equal-buffer-return
+	   (fwd-para)
 	   "
 \^@:Field: Content
 
@@ -230,8 +238,8 @@ para
 "
 	   0
 	   ))
-  (should (equal-buffer-return
-	   '(fwd-para)
+  (should (ert-equal-buffer-return
+	   (fwd-para)
 	   "
 :Field: Content
 \^@
@@ -252,8 +260,8 @@ para
 "
 	   0
 	   ))
-  (should (equal-buffer-return
-	   '(fwd-para)
+  (should (ert-equal-buffer-return
+	   (fwd-para)
 	   "
 :Field: Content
 
@@ -274,8 +282,8 @@ para
 \^@"
 	   0
 	   ))
-  (should (equal-buffer-return
-	   '(fwd-para)
+  (should (ert-equal-buffer-return
+	   (fwd-para)
 	   "\^@
 .. |s| d::
   :F: Content
@@ -296,8 +304,8 @@ para
 "
 	   0
 	   ))
-  (should (equal-buffer-return
-	   '(fwd-para)
+  (should (ert-equal-buffer-return
+	   (fwd-para)
 	   "
 .. |s| d::
 \^@  :F: Content
@@ -318,8 +326,8 @@ para
 "
 	   0
 	   ))
-  (should (equal-buffer-return
-	   '(fwd-para)
+  (should (ert-equal-buffer-return
+	   (fwd-para)
 	   "
 .. |s| d::
   :F: Content
@@ -340,8 +348,8 @@ para
 "
 	   0
 	   ))
-  (should (equal-buffer-return
-	   '(fwd-para)
+  (should (ert-equal-buffer-return
+	   (fwd-para)
 	   "
 .. |s| d::
   :F: Content
