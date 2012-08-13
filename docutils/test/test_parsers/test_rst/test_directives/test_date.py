@@ -61,15 +61,15 @@ Today's date is |date|.
 if locale_encoding in ['utf8', 'utf-8', 'latin-1']:
     totest['decode date'] = [
     [u"""\
-    .. |date| date:: t\xc3glich
-    """,
+.. |date| date:: t\xc3glich
+""",
     u"""\
-    <document source="test data">
-        <substitution_definition names="date">
-            t\xc3glich
-    """],
+<document source="test data">
+    <substitution_definition names="date">
+        t\xc3glich
+"""],
     ]
-    
+
 if __name__ == '__main__':
     import unittest
     unittest.main(defaultTest='suite')
