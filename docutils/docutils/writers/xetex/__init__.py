@@ -118,7 +118,7 @@ class Babel(latex2e.Babel):
                  r'\setdefaultlanguage{%s}' % self.language]
         if self.otherlanguages:
             setup.append(r'\setotherlanguages{%s}' %
-                         ','.join(self.otherlanguages.keys()))
+                         ','.join(sorted(self.otherlanguages.keys())))
         return '\n'.join(setup)
 
 

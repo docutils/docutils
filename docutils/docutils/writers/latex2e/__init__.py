@@ -379,7 +379,7 @@ class Babel(object):
 
     def __call__(self):
         """Return the babel call with correct options and settings"""
-        languages = self.otherlanguages.keys()
+        languages = sorted(self.otherlanguages.keys())
         languages.append(self.language or 'english')
         self.setup = [r'\usepackage[%s]{babel}' % ','.join(languages)]
         if 'spanish' in languages:
