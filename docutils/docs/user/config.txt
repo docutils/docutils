@@ -260,7 +260,7 @@ _`error_encoding_error_handler`
     The error handler for unencodable characters in error output.  See
     output_encoding_error_handler_ for acceptable values.
 
-    Default: "backslashreplace" 
+    Default: "backslashreplace"
     Options: ``--error-encoding-error-handler,
     --error-encoding, -e``.
 
@@ -801,8 +801,10 @@ _`math_output`
         (see http://www.mathjax.org/docs/1.1/tex.html).
 
       Con:
-        Requires an Internet connection or a local MathJax
-        installation.
+        Requires an Internet connection (or a local MathJax
+        installation and configuration).
+
+        Downloads JavaScript code from a third-party site.
 
     :HTML:
       Format math in standard HTML enhanced by CSS rules
