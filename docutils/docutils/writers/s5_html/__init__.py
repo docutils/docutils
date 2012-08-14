@@ -285,6 +285,8 @@ class S5HTMLTranslator(html4css1.HTMLTranslator):
         self.html_prolog.append(self.doctype)
         self.meta.insert(0, self.content_type % self.settings.output_encoding)
         self.head.insert(0, self.content_type % self.settings.output_encoding)
+        if self.math_header:
+            self.head.append(self.math_header)
 
         header = ''.join(self.s5_header)
         footer = ''.join(self.s5_footer)

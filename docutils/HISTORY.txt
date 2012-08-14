@@ -41,6 +41,10 @@ Changes Since 0.9.1
 
   - Apply [ 3555160 ] ensure order of "otherlanguages".
 
+* docutils/writers/s5_html/__init__.py
+
+  - Fix [ 3556388 ] Mathjax does not work with rst2s5.
+
 
 Release 0.9.1 (2012-06-17)
 ==========================
