@@ -45,6 +45,10 @@ Changes Since 0.9.1
 
   - Fix [ 3556388 ] Mathjax does not work with rst2s5.
 
+* docutils/writers/s5_html/docutils_xml.py
+
+  - Fix [ 3552403 ] Prevent broken PyXML replacing stdlibs xml module.
+
 
 Release 0.9.1 (2012-06-17)
 ==========================
