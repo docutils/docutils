@@ -2783,6 +2783,9 @@ class Text(RSTState):
         assert len(lines) == 1
         text_nodes, messages = self.inline_text(lines[0], lineno)
         term_node = nodes.term()
+        (term_node.source,
+         term_node.line) = self.state_machine.get_source_and_line(lineno)
+        term_node.rawsource = unescape(lines[0])
         node_list = [term_node]
         for i in range(len(text_nodes)):
             node = text_nodes[i]
