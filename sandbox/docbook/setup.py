@@ -18,3 +18,4 @@ setup(name='rst',
       # packages=['distutils', 'distutils.command'],
       scripts = [os.path.join(scripts_dir, 'rstxml2xml.py')],
      )
+# nothing
