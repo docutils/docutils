@@ -73,6 +73,8 @@ except ImportError:
         PIL.Image = Image
     except ImportError:
         PIL = None
+if PIL is not None:
+    import PIL.Image
 
 ## import warnings
 ## warnings.warn('importing IPShellEmbed', UserWarning)
@@ -946,6 +948,45 @@ class ODFTranslator(nodes.GenericNodeVisitor):
                     })
                 el.text = text
                 self.body_text_element.insert(0, el)
+        el = self.find_first_text_p(self.body_text_element)
+        if el is not None:
+            self.attach_page_style(el)
+
+    def find_first_text_p(self, el):
+        """Search the generated doc and return the first <text:p> element.
+        """
+        if (
+                el.tag == 'text:p' or
+                el.tag == 'text:h'
+                ):
+            return el
+        elif el.getchildren():
+            for child in el.getchildren():
+                el1 = self.find_first_text_p(child)
+                if el1 is not None:
+                    return el1
+            return None
+        else:
+            return None
+
+    def attach_page_style(self, el):
+        """Attach the default page style.
+
+        Create an automatic-style that refers to the current style
+        of this element and that refers to the default page style.
+        """
+        current_style = el.get('text:style-name')
+        style_name = 'P1003'
+        el1 = SubElement(
+            self.automatic_styles, 'style:style', attrib={
+                'style:name': style_name,
+                'style:master-page-name': "rststyle-pagedefault",
+                'style:family': "paragraph",
+                }, nsdict=SNSD)
+        if current_style:
+            el1.set('style:parent-style-name', current_style)
+        el.set('text:style-name', style_name)
+
 
     def rststyle(self, name, parameters=( )):
         """
