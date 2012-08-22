@@ -133,5 +133,8 @@ def get_writer_class(writer_name):
     writer_name = writer_name.lower()
     if writer_name in _writer_aliases:
         writer_name = _writer_aliases[writer_name]
-    module = __import__(writer_name, globals(), locals(), level=1)
+    try:
+        module = __import__(writer_name, globals(), locals(), level=0)
+    except ImportError:
+        module = __import__(writer_name, globals(), locals(), level=1)
     return module.Writer
