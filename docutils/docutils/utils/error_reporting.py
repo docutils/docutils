@@ -79,7 +79,11 @@ class SafeString(object):
                         for arg in self.data.args]
                 return ', '.join(args)
             if isinstance(self.data, unicode):
-                return self.data.encode(self.encoding, self.encoding_errors)
+                if sys.version_info > (3,0):
+                    return self.data
+                else:
+                    return self.data.encode(self.encoding,
+                                            self.encoding_errors)
             raise
 
     def __unicode__(self):
