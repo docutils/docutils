@@ -106,5 +106,8 @@ def get_reader_class(reader_name):
     reader_name = reader_name.lower()
     if reader_name in _reader_aliases:
         reader_name = _reader_aliases[reader_name]
-    module = __import__(reader_name, globals(), locals(), level=1)
+    try:
+        module = __import__(reader_name, globals(), locals(), level=0)
+    except ImportError:
+        module = __import__(reader_name, globals(), locals(), level=1)
     return module.Reader

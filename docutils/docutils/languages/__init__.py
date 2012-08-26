@@ -30,9 +30,12 @@ def get_language(language_code, reporter=None):
         if tag in _languages:
             return _languages[tag]
         try:
-            module = __import__(tag, globals(), locals(), level=1)
+            module = __import__(tag, globals(), locals(), level=0)
         except ImportError:
-            continue
+            try:
+                module = __import__(tag, globals(), locals(), level=1)
+            except ImportError:
+                continue
         _languages[tag] = module
         return module
     if reporter is not None:

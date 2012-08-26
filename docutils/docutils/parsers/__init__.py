@@ -46,5 +46,8 @@ def get_parser_class(parser_name):
     parser_name = parser_name.lower()
     if parser_name in _parser_aliases:
         parser_name = _parser_aliases[parser_name]
-    module = __import__(parser_name, globals(), locals(), level=1)
+    try:
+        module = __import__(parser_name, globals(), locals(), level=0)
+    except ImportError:
+        module = __import__(parser_name, globals(), locals(), level=1)
     return module.Parser
