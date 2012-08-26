@@ -110,6 +110,7 @@ donations, tasty treats, and related projects:
 * Panjunyong
 * Patrick K. O'Brien
 * Michel Pelletier
+* Toshio Kuratomi
 * Sam Penrose
 * Tim Peters
 * Pearu Peterson

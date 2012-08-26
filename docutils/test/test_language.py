@@ -53,6 +53,11 @@ class LanguageTestSuite(DocutilsTestSupport.CustomTestSuite):
         # test language tag normalization:
         self.languages += ['en_gb', 'en_US', 'en-CA', 'de-DE', 'de-AT-1901',
                            'pt-BR', 'pt-foo-BR']
+        # test that locally created language files are also loaded.
+        # requires local_dummy_lang.py in test directory (testroot)
+        # The local_dummy_lang.py contains all the fields from both
+        # the docutils language tags and the parser.rst language tags
+        self.languages += ['local_dummy_lang']
 
     def generateTests(self):
         for language in self.languages:

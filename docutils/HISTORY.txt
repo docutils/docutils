@@ -22,6 +22,8 @@ Changes Since 0.9.1
   - ``docutils/math``, ``docutils/error_reporting.py``, and
     ``docutils/urischemes.py`` moved to the utils package.
   - Fix [3541369] Relative __import__ also with Python 3.3.
+  - Fix [3559988] and [3560841] __import__ local writer, reader, languages 
+    and parsers for Python 2.7 up.
 
 * docutils/io.py
 
