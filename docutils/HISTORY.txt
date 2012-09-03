@@ -34,6 +34,11 @@ Changes Since 0.9.1
 
   - Fix [ 3546533 ] Unicode error with `date` directive.
 
+* docutils/tools/test/test_buildhtml.py
+
+  - Fix [ 3521167 ] allow running in any directory.
+  - Fix [ 3521168 ] allow running with Python 3.
+
 * docutils/writers/manpage.py
 
   - Apply [ 3527401 ] addmonition's don't preserve indentation
