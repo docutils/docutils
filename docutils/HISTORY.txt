@@ -47,6 +47,7 @@ Changes Since 0.9.1
 * docutils/writers/latex2e/__init__.py, docutils/writers/xetex/__init__.py
 
   - Apply [ 3555160 ] ensure order of "otherlanguages".
+  - Fix section numbering by LaTeX.
 
 * docutils/writers/s5_html/__init__.py
 

@@ -1283,7 +1283,7 @@ class LaTeXTranslator(nodes.NodeVisitor):
         ##                                     len(self.d_class.sections))
 
         # Section numbering
-        if not self.settings.sectnum_xform: # section numbering by Docutils
+        if settings.sectnum_xform: # section numbering by Docutils
             PreambleCmds.secnumdepth = r'\setcounter{secnumdepth}{0}'
         else: # section numbering by LaTeX:
             secnumdepth = settings.sectnum_depth
@@ -2873,7 +2873,8 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.context.append('')
         # Section title
         else:
-            self.requirements['secnumdepth'] = PreambleCmds.secnumdepth
+            if hasattr(PreambleCmds, 'secnumdepth'):
+                self.requirements['secnumdepth'] = PreambleCmds.secnumdepth
             section_name = self.d_class.section(self.section_level)
             self.out.append('\n\n')
             # System messages heading in red:
