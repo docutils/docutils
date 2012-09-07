@@ -33,7 +33,7 @@ Advanced text editors with reStructuredText support, IDEs, and docutils GUIs:
   - `reStructuredText syntax highlighting mode
     <http://www.vim.org/scripts/script.php?script_id=973>`__,
 
-  - `VST <http://skawina.eu.org/mikolaj/vst.html>`__ (Vim reStructured Text)
+  - `VST <http://skawina.eu.org/mikolaj/vst.html>`__ (Vim reStructuredText)
     plugin for Vim7 with folding.
 
   - `VOoM <http://www.vim.org/scripts/script.php?script_id=2657>`__
@@ -62,7 +62,7 @@ Advanced text editors with reStructuredText support, IDEs, and docutils GUIs:
   .. _outliner: http://en.wikipedia.org/wiki/Outliner
   __ http://webpages.charter.net/edreamleo/rstplugin3.html
 
-* `NoTex <https://notex.ch>`_ is a browser based restructured text editor
+* `NoTex <https://notex.ch>`_ is a browser based reStructuredText editor
   with syntax highlighting and PDF/HTML export functionality using Sphinx.
 
 
@@ -76,7 +76,7 @@ PDF
 
 * `rst2pdf (reportlab)
   <http://rst2pdf.googlecode.com>`_ is a tool to go
-  directly from restructured text to PDF, via `reportlab
+  directly from reStructuredText to PDF, via `reportlab
   <http://www.reportlab.org/rl_toolkit.html>`_. No LaTeX installation is
   required.
 
@@ -255,7 +255,7 @@ Development
   programming with reStructuredText*.
 
 * If you are developing a Qt app, rst2qhc_ lets you generate the whole help
-  automatically from restructured text. That includes keywords, TOC,
+  automatically from reStructuredText. That includes keywords, TOC,
   multiple manuals per project, filters, project file, collection project
   file, and more.
 
