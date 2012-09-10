@@ -65,7 +65,7 @@ except ImportError, exp:
     pygments = None
 
 try: # check for the Python Imaging Library
-    import PIL
+    import PIL.Image
 except ImportError:
     try:  # sometimes PIL modules are put in PYTHONPATH's root
         import Image
@@ -73,8 +73,6 @@ except ImportError:
         PIL.Image = Image
     except ImportError:
         PIL = None
-if PIL is not None:
-    import PIL.Image
 
 ## import warnings
 ## warnings.warn('importing IPShellEmbed', UserWarning)
@@ -1040,7 +1038,14 @@ class ODFTranslator(nodes.GenericNodeVisitor):
         if master_el is None:
             return
         path = '{%s}master-page' % (SNSD['style'], )
-        master_el = master_el.find(path)
+        master_el_container = master_el.findall(path)
+        master_el = None
+        target_attrib = '{%s}name' % (SNSD['style'], )
+        target_name = self.rststyle('pagedefault')
+        for el in master_el_container:
+            if el.get(target_attrib) == target_name:
+                master_el = el
+                break
         if master_el is None:
             return
         el1 = master_el
@@ -1493,29 +1498,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
 
     def default_departure(self, node):
         self.document.reporter.warning('missing depart_%s' % (node.tagname, ))
-
-##     def add_text_to_element(self, text):
-##         # Are we in a citation.  If so, add text to current element, not
-##         #   to children.
-##         # Are we in mixed content?  If so, add the text to the
-##         #   etree tail of the previous sibling element.
-##         if not self.in_citation and len(self.current_element.getchildren()) > 0:
-##             if self.current_element.getchildren()[-1].tail:
-##                 self.current_element.getchildren()[-1].tail += text
-##             else:
-##                 self.current_element.getchildren()[-1].tail = text
-##         else:
-##             if self.current_element.text:
-##                 self.current_element.text += text
-##             else:
-##                 self.current_element.text = text
-## 
-##     def visit_Text(self, node):
-##         # Skip nodes whose text has been processed in parent nodes.
-##         if isinstance(node.parent, docutils.nodes.literal_block):
-##             return
-##         text = node.astext()
-##         self.add_text_to_element(text)
 
     def visit_Text(self, node):
         # Skip nodes whose text has been processed in parent nodes.
@@ -2267,8 +2249,6 @@ class ODFTranslator(nodes.GenericNodeVisitor):
             'draw:z-index': '0',
             }
         attrib['svg:width'] = width
-        # dbg
-        #attrib['svg:height'] = height
         el3 = SubElement(current_element, 'draw:frame', attrib=attrib)
         attrib = {}
         el4 = SubElement(el3, 'draw:text-box', attrib=attrib)
