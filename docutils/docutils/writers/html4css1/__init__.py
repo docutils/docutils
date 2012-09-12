@@ -1124,15 +1124,13 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</li>\n')
 
     def visit_literal(self, node):
-        # special case: inline code:
+        # special case: "code" role
         classes = node.get('classes', [])
         if 'code' in classes:
             # filter 'code' from class arguments
             node['classes'] = [cls for cls in classes if cls != 'code']
             self.body.append(self.starttag(node, 'code', ''))
-            node['classes'] = classes # restore for test in depart_literal()
             return
-        # Process text to prevent tokens from wrapping.
         self.body.append(
             self.starttag(node, 'tt', '', CLASS='docutils literal'))
         text = node.astext()
@@ -1156,8 +1154,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         raise nodes.SkipNode
 
     def depart_literal(self, node):
-        if 'code' in node.get('classes', []):
-            self.body.append('</code>')
+        # skipped unless literal element is from "code" role:
+        self.body.append('</code>')
 
     def visit_literal_block(self, node):
         self.body.append(self.starttag(node, 'pre', CLASS='literal-block'))
