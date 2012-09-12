@@ -22,7 +22,7 @@ import time
 import re
 import urllib
 try: # check for the Python Imaging Library
-    import PIL
+    import PIL.Image
 except ImportError:
     try:  # sometimes PIL modules are put in PYTHONPATH's root
         import Image
@@ -602,7 +602,13 @@ class HTMLTranslator(nodes.NodeVisitor):
                          '</tbody>\n</table>\n')
 
     def visit_citation_reference(self, node):
-        href = '#' + node['refid']
+        href = '#'
+        if 'refid' in node:
+            href += node['refid']
+        elif 'refname' in node:
+            href += self.document.nameids[node['refname']]
+        # else: # TODO system message (or already in the transform)?
+        # 'Citation reference missing.'
         self.body.append(self.starttag(
             node, 'a', '[', CLASS='citation-reference', href=href))
 
