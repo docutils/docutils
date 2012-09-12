@@ -168,7 +168,7 @@ class HTMLTranslator(html4css1.HTMLTranslator):
     def depart_docinfo(self, node):
         self.body.append('</dl>\n')
 
-    def visit_docinfo_item(self, node, name, meta=1):
+    def visit_docinfo_item(self, node, name, meta=True):
         if meta:
             meta_tag = '<meta name="%s" content="%s" />\n' \
                        % (name, self.attval(node.astext()))
@@ -252,8 +252,8 @@ class HTMLTranslator(html4css1.HTMLTranslator):
 
     def depart_footnote(self, node):
         self.body.append('</dd>\n')
-        next_siblings = node.traverse(descend=0, siblings=1,
-                                      include_self=0)
+        next_siblings = node.traverse(descend=False, siblings=True,
+                                      include_self=False)
         next = next_siblings and next_siblings[0]
         if isinstance(next, nodes.footnote):
             self.body.append('<-- next footnote -->')
@@ -298,8 +298,8 @@ class HTMLTranslator(html4css1.HTMLTranslator):
             # Content already processed:
             raise nodes.SkipNode
 
-    def depart_generated(self, node):
-        pass
+    # def depart_generated(self, node):
+    #     pass
 
     # Do not  mark the first child with 'class="first"'
     def visit_list_item(self, node):
@@ -307,7 +307,13 @@ class HTMLTranslator(html4css1.HTMLTranslator):
 
     # inline literal
     def visit_literal(self, node):
-        """Process text to prevent in-word line wrapping."""
+        # special case: "code" role
+        classes = node.get('classes', [])
+        if 'code' in classes:
+            # filter 'code' from class arguments
+            node['classes'] = [cls for cls in classes if cls != 'code']
+            self.body.append(self.starttag(node, 'code', ''))
+            return
         self.body.append(
             self.starttag(node, 'tt', '', CLASS='literal'))
         text = node.astext()
@@ -325,6 +331,10 @@ class HTMLTranslator(html4css1.HTMLTranslator):
         self.body.append('</tt>')
         # Content already processed:
         raise nodes.SkipNode
+
+    def depart_literal(self, node):
+        # skipped unless literal element is from "code" role:
+        self.body.append('</code>')
 
     # literal block and doctest block: no newline after <pre> tag
     # (leads to blank line in XHTML1.1)
@@ -409,15 +419,23 @@ class HTMLTranslator(html4css1.HTMLTranslator):
                ):
             self.body.append('\n')
 
-
-    # no hard-coded border setting in the table head
-    # ----------------------------------------------
+    # tables
+    # ------
+    # no hard-coded border setting in the table head::
 
     def visit_table(self, node):
         classes = [cls.strip(u' \t\n')
                    for cls in self.settings.table_style.split(',')]
         tag = self.starttag(node, 'table', CLASS=' '.join(classes))
         self.body.append(tag)
+
+
+    # no hard-coded vertical alignment in table body::
+
+    def visit_tbody(self, node):
+        self.write_colspecs()
+        self.body.append(self.context.pop()) # '</colgroup>\n' or ''
+        self.body.append(self.starttag(node, 'tbody'))
 
 
 class SimpleListChecker(html4css1.SimpleListChecker):
