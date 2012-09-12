@@ -24,6 +24,7 @@ Changes Since 0.9.1
   - Fix [3541369] Relative __import__ also with Python 3.3.
   - Fix [3559988] and [3560841] __import__ local writer, reader, languages 
     and parsers for Python 2.7 up.
+  - Fix import of PIL.Image.
 
 * docutils/io.py
 

@@ -17,7 +17,7 @@ from docutils.parsers.rst import directives, states
 from docutils.nodes import fully_normalize_name, whitespace_normalize_name
 from docutils.parsers.rst.roles import set_classes
 try: # check for the Python Imaging Library
-    import PIL
+    import PIL.Image
 except ImportError:
     try:  # sometimes PIL modules are put in PYTHONPATH's root
         import Image
