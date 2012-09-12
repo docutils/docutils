@@ -253,7 +253,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     generator = ('<meta name="generator" content="Docutils %s: '
                  'http://docutils.sourceforge.net/" />\n')
-    
+
     # Template for the MathJax script in the header:
     mathjax_script = '<script type="text/javascript" src="%s"></script>\n'
     # The latest version of MathJax from the distributed server:
@@ -266,7 +266,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     # a) as extra option or
     # b) appended to math-output="MathJax"?
     #
-    # If b), which delimiter/delimter-set (':', ',', ' ')? 
+    # If b), which delimiter/delimter-set (':', ',', ' ')?
 
     stylesheet_link = '<link rel="stylesheet" href="%s" type="text/css" />\n'
     embedded_stylesheet = '<style type="text/css">\n\n%s\n</style>\n'
@@ -288,7 +288,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             # encoding not interpolated:
             self.html_prolog.append(self.xml_declaration)
         self.head = self.meta[:]
-        self.stylesheet = [self.stylesheet_call(path) 
+        self.stylesheet = [self.stylesheet_call(path)
                            for path in utils.get_stylesheet_list(settings)]
         self.body_prefix = ['</head>\n<body>\n']
         # document title, subtitle display
@@ -1124,7 +1124,15 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</li>\n')
 
     def visit_literal(self, node):
-        """Process text to prevent tokens from wrapping."""
+        # special case: inline code:
+        classes = node.get('classes', [])
+        if 'code' in classes:
+            # filter 'code' from class arguments
+            node['classes'] = [cls for cls in classes if cls != 'code']
+            self.body.append(self.starttag(node, 'code', ''))
+            node['classes'] = classes # restore for test in depart_literal()
+            return
+        # Process text to prevent tokens from wrapping.
         self.body.append(
             self.starttag(node, 'tt', '', CLASS='docutils literal'))
         text = node.astext()
@@ -1146,6 +1154,10 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</tt>')
         # Content already processed:
         raise nodes.SkipNode
+
+    def depart_literal(self, node):
+        if 'code' in node.get('classes', []):
+            self.body.append('</code>')
 
     def visit_literal_block(self, node):
         self.body.append(self.starttag(node, 'pre', CLASS='literal-block'))
@@ -1201,7 +1213,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                 self.body.append(self.starttag(node, 'p'))
                 self.body.append(u','.join(err.args))
                 self.body.append('</p>\n')
-                self.body.append(self.starttag(node, 'pre', 
+                self.body.append(self.starttag(node, 'pre',
                                                CLASS='literal-block'))
                 self.body.append(self.encode(math_code))
                 self.body.append('\n</pre>\n')
