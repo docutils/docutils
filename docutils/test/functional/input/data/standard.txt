@@ -780,18 +780,15 @@ numbers:
       print i
 
 For inline code snippets, there is the `code` role, which can be used
-directly (the code will not be parsed/tagged, as the language is not
-known) or as base for special code roles, e.g.,
+directly (the code will not be parsed/tagged, as the language is not known)
+or as base for special code roles, e.g. the LaTeX code in the next
+paragraph.
 
 .. role:: tex(code)
-   :language: latex
+   :language: tex
 
-..
-
-  Docutils uses LaTeX syntax for math directives and roles:
-  :tex:`\alpha = f(x)` prints :math:`\alpha = f(x)`.
-
-.. _Pygments: http://pygments.org/
+Docutils uses LaTeX syntax for math directives and roles: 
+:tex:`\alpha = f(x)` prints :math:`\alpha = f(x)`.
 
 The ``:code:`` option of the `include` directive sets the included content
 as a code block, here the rst file ``header_footer.txt`` with line numbers:
@@ -800,6 +797,7 @@ as a code block, here the rst file ``header_footer.txt`` with line numbers:
    :code: rst
    :number-lines:
 
+.. _Pygments: http://pygments.org/
 
 Substitution Definitions
 ------------------------

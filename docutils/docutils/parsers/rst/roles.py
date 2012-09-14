@@ -320,11 +320,10 @@ def code_role(role, rawtext, text, lineno, inliner, options={}, content=[]):
     set_classes(options)
     language = options.get('language', '')
     classes = ['code']
-    if language:
-        classes.append(language)
     if 'classes' in options:
         classes.extend(options['classes'])
-
+    if language and language not in classes:
+        classes.append(language)
     try:
         tokens = Lexer(utils.unescape(text, 1), language,
                        inliner.document.settings.syntax_highlight)

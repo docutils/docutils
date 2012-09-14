@@ -136,7 +136,7 @@ class Parser(docutils.parsers.Parser):
           '"long", "short", or "none (no parsing)". Default is "short".',
           ['--syntax-highlight'],
           {'choices': ['long', 'short', 'none'],
-           'default': 'short', 'metavar': '<format>'}),))
+           'default': 'long', 'metavar': '<format>'}),))
 
     config_section = 'restructuredtext parser'
     config_section_dependencies = ('parsers',)

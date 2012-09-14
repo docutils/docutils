@@ -545,6 +545,12 @@ PreambleCmds.graphicx_auto = r"""% Check output format
   \usepackage[pdftex]{graphicx}
 \fi'))"""
 
+PreambleCmds.highlight_rules = r"""% basic code highlight:
+\providecommand*\DUrolecomment[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\providecommand*\DUroledeleted[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\providecommand*\DUrolekeyword[1]{\textbf{#1}}
+\providecommand*\DUrolestring[1]{\textit{#1}}"""
+
 PreambleCmds.inline = r"""
 % inline markup (custom roles)
 % \DUrole{#1}{#2} tries \DUrole#1{#2}
@@ -2370,6 +2376,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
     def visit_literal(self, node):
         self.literal = True
+        if 'code' in node.get('classes', []):
+            self.requirements['color'] = PreambleCmds.color
+            self.requirements['code'] = PreambleCmds.highlight_rules
         self.out.append('\\texttt{')
         if node['classes']:
             self.visit_inline(node)

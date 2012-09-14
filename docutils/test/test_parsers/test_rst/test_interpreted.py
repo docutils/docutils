@@ -244,22 +244,22 @@ Custom role based on code role:
 <document source="test data">
     <paragraph>
         Custom role based on code role:
-        <literal classes="code latex tex">
-            <inline classes="s">
+        <literal classes="code tex latex">
+            <inline classes="literal string">
                 $
-            <inline classes="nb">
+            <inline classes="name builtin">
                 \x07lpha \n\
-            <inline classes="o">
+            <inline classes="operator">
                 =
-            <inline classes="nb">
+            <inline classes="name builtin">
                  f
-            <inline classes="o">
+            <inline classes="operator">
                 (
-            <inline classes="nb">
+            <inline classes="name builtin">
                 x
-            <inline classes="o">
+            <inline classes="operator">
                 )
-            <inline classes="s">
+            <inline classes="literal string">
                 $
         .
 """],
@@ -278,14 +278,14 @@ Python code :python:`print("The end")`.
         Custom role based on code role:
     <paragraph>
         Python code \n\
-        <literal classes="code python testclass">
-            <inline classes="k">
+        <literal classes="code testclass python">
+            <inline classes="keyword">
                 print
-            <inline classes="p">
+            <inline classes="punctuation">
                 (
-            <inline classes="s">
+            <inline classes="literal string">
                 "The end"
-            <inline classes="p">
+            <inline classes="punctuation">
                 )
         .
 """],

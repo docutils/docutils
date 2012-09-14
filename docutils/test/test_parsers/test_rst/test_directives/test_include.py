@@ -913,15 +913,15 @@ Included code
     <paragraph>
         Included code
     <literal_block classes="code rst" source="%s" xml:space="preserve">
-        <inline classes="gh">
+        <inline classes="generic heading">
             Inclusion 1
         \n\
-        <inline classes="gh">
+        <inline classes="generic heading">
             -----------
         \n\
         \n\
         This file is used by \n\
-        <inline classes="s">
+        <inline classes="literal string">
             ``test_include.py``
         .
 """ % reldir(include1)],
@@ -939,12 +939,12 @@ Included code
     <literal_block classes="code rst" source="%s" xml:space="preserve">
         <inline classes="ln">
             1 \n\
-        <inline classes="gh">
+        <inline classes="generic heading">
             Inclusion 1
         \n\
         <inline classes="ln">
             2 \n\
-        <inline classes="gh">
+        <inline classes="generic heading">
             -----------
         \n\
         <inline classes="ln">
@@ -953,7 +953,7 @@ Included code
         <inline classes="ln">
             4 \n\
         This file is used by \n\
-        <inline classes="s">
+        <inline classes="literal string">
             ``test_include.py``
         .
 """ % reldir(include1)],

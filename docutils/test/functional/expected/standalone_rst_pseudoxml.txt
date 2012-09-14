@@ -1665,19 +1665,17 @@
                     <title_reference>
                         code
                      role, which can be used
-                    directly (the code will not be parsed/tagged, as the language is not
-                    known) or as base for special code roles, e.g.,
-                <comment xml:space="preserve">
-                <block_quote>
-                    <paragraph>
-                        Docutils uses LaTeX syntax for math directives and roles:
-                        <literal classes="code latex tex">
-                            \alpha = f(x)
-                         prints 
-                        <math>
-                            \alpha = f(x)
-                        .
-                <target ids="pygments" names="pygments" refuri="http://pygments.org/">
+                    directly (the code will not be parsed/tagged, as the language is not known)
+                    or as base for special code roles, e.g. the LaTeX code in the next
+                    paragraph.
+                <paragraph>
+                    Docutils uses LaTeX syntax for math directives and roles:
+                    <literal classes="code tex">
+                        \alpha = f(x)
+                     prints 
+                    <math>
+                        \alpha = f(x)
+                    .
                 <paragraph>
                     The 
                     <literal>
@@ -1697,6 +1695,7 @@
                     <inline classes="ln">
                         2 
                     .. footer:: Document footer
+                <target ids="pygments" names="pygments" refuri="http://pygments.org/">
         <section ids="substitution-definitions" names="substitution\ definitions">
             <title auto="1" refid="id65">
                 <generated classes="sectnum">
