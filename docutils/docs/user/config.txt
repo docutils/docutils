@@ -600,7 +600,7 @@ _`syntax_highlight`
       No code parsing. Use this to avoid the "Pygments not
       found" warning when Pygments is not installed.
 
-    Default: "short".  Option: ``--syntax-highlight``.
+    Default: "long".  Option: ``--syntax-highlight``.
 
 .. _Pygments: http://pygments.org/
 .. _code: ../ref/rst/directives.html#code

@@ -104,13 +104,13 @@ totest['code-parsing'] = [
 <document source="test data">
     <literal_block classes="code python testclass" xml:space="preserve">
          \n\
-        <inline classes="k">
+        <inline classes="keyword">
             print
          \n\
-        <inline classes="s">
+        <inline classes="literal string">
             'hello world'
          \n\
-        <inline classes="c">
+        <inline classes="comment">
             # to stdout
 """],
 ["""\
@@ -131,22 +131,22 @@ totest['code-parsing'] = [
     <literal_block classes="code python testclass" ids="my-function" names="my_function" xml:space="preserve">
         <inline classes="ln">
              7 \n\
-        <inline classes="k">
+        <inline classes="keyword">
             def
          \n\
-        <inline classes="nf">
+        <inline classes="name function">
             my_function
-        <inline classes="p">
+        <inline classes="punctuation">
             ():
         \n\
         <inline classes="ln">
              8 \n\
             \n\
-        <inline classes="sd">
+        <inline classes="literal string doc">
             \'\'\'Test the lexer.
         <inline classes="ln">
              9 \n\
-        <inline classes="sd">
+        <inline classes="literal string doc">
                 \'\'\'
         \n\
         <inline classes="ln">
@@ -155,20 +155,20 @@ totest['code-parsing'] = [
         <inline classes="ln">
             11 \n\
             \n\
-        <inline classes="c">
+        <inline classes="comment">
             # and now for something completely different
         \n\
         <inline classes="ln">
             12 \n\
             \n\
-        <inline classes="k">
+        <inline classes="keyword">
             print
          \n\
-        <inline classes="mi">
+        <inline classes="literal number integer">
             8
-        <inline classes="o">
+        <inline classes="operator">
             /
-        <inline classes="mi">
+        <inline classes="literal number integer">
             2
 """],
 ["""\
@@ -181,15 +181,15 @@ totest['code-parsing'] = [
 <document source="test data">
     <literal_block classes="code latex testclass" xml:space="preserve">
         hello \n\
-        <inline classes="k">
+        <inline classes="keyword">
             \\emph
-        <inline classes="nb">
+        <inline classes="name builtin">
             {
         world
-        <inline classes="nb">
+        <inline classes="name builtin">
             }
          \n\
-        <inline classes="c">
+        <inline classes="comment">
             % emphasize"""],
 ["""\
 .. code:: rst
