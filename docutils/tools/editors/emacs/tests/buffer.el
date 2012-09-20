@@ -1,6 +1,5 @@
 ;;; buffer.el --- Test the test support for buffers
 
-
 (add-to-list 'load-path ".")
 (load "ert-buffer" nil t)
 

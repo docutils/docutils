@@ -1,9 +1,8 @@
 ;; Tests for operations on toc
 
 (add-to-list 'load-path ".")
-(load "ert-buffer" nil t)
-(add-to-list 'load-path "..")
-(load "rst.el" nil t)
+(load "init" nil t)
+(init-rst-ert t)
 
 (ert-deftest toc-asserts ()
   "Check some assertions."
@@ -151,6 +150,6 @@ Header C
       )
     ))
 
-;; More functions to test:
+;; FIXME: More functions to test:
 ;; * rst-toc
 ;; * rst-toc-mode-goto-section
