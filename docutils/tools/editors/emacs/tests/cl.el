@@ -1,7 +1,8 @@
 ;; Tests for replacement functions for `cl.el'
 
-(add-to-list 'load-path "..")
-(load "rst.el" nil t)
+(add-to-list 'load-path ".")
+(load "init" nil t)
+(init-rst-ert nil)
 
 (ert-deftest rst-signum ()
   "Test `rst-signum'."

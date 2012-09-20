@@ -123,6 +123,8 @@ TOC in speedbar
 
     * See `imenu` documentation and `speedbar-use-imenu-flag`
 
+  * See `speedbar`
+
 toc-mode without markup
 =======================
 
@@ -218,6 +220,8 @@ Sophisticated filling
 
     should work as expected by *not* breaking the line
 
+  * May be `fill-nobreak-predicate` can help here
+
 * These things may not be filled at all
 
   * Literal blocks
@@ -227,6 +231,21 @@ Sophisticated filling
   * Section headers
 
   * Link definitions
+
+  * May be `fill-nobreak-predicate` can help here, too
+
+* May be defining an own `auto-fill-function` may be useful
+
+  * Might prevent auto-filling of literal text
+
+* Filling of a re-indented item doesn't work as expected::
+
+    * Something just indented once more by the user
+    though continuation line is not indented already
+
+  * Alternatively indentation could indent the whole item
+
+    * See `Sophisticated indentation`_
 
 Sophisticated indentation
 =========================
@@ -276,6 +295,15 @@ Sophisticated indentation
 	* SSSSSSSSSSSSSSS
 	* TTTTTTTT
 	* ZZZZZZZZ
+
+* An indenting tab on the head of a list item should indent the whole
+  list item instead of only the first line
+
+  * Alternatively `fill-paragraph` could do so
+
+    * See `Sophisticated filling`_
+
+* May be `refill-mode` can be useful
 
 List to sections
 ================
@@ -431,3 +459,16 @@ Intelligent quote insertion
     usable directly
 
 * Also add something like `delete-pair`
+
+Sophisticated alignment
+=======================
+
+* May be aligning can be used to get results like this
+
+  :Some:             Field
+
+  :Longer name:      Aligned
+
+  :Even longer name: More aligned
+
+  * See `align.el`
