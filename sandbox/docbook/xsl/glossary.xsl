@@ -29,7 +29,7 @@
     </xsl:template>
 
     <xsl:template match="field_name" mode="glossary">
-        <d:glossterm>
+        <d:glossterm xsl:use-attribute-sets="glossterm">
             <xsl:apply-templates mode="glossary"/>
         </d:glossterm>
     </xsl:template>
