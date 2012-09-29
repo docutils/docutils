@@ -2,10 +2,9 @@ import sys, os
 from distutils.core import setup
 
 scripts_dir = 'scripts'
-if sys.version_info >= (3,):
-    from distutils.util import copydir_run_2to3
-    copydir_run_2to3('scripts', 'scripts_ver3')
-    scripts_dir = 'scripts_ver3'
+if sys.version_info < (3,):
+    sys.stderr.write('Sorry, but you must have Python version 3.0 or later\n')
+    sys.exit(1)
 
 
 
