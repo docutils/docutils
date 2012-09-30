@@ -2,6 +2,7 @@ import os, sys, subprocess, argparse, tempfile, logging, glob
 import xml.etree.cElementTree as etree
 import asciitomathml.asciitomathml 
 from xml.etree.ElementTree import Element, tostring
+import validate_docbook
 
 try:
     import locale
@@ -18,9 +19,14 @@ class ToXml():
 
     """
 
-    def __init__(self):
+    def __init__(self, in_file, in_encoding='utf8', to_docbook=True, 
+            validate_docbook = True, convert_to_fo = True):
         self.path_id = '__rst__'
         self._transform_num = 0
+        self.in_file = in_file
+        self.in_encoding = in_encoding
+        self.validate_docbook = validate_docbook
+        self.convert_to_fo = convert_to_fo
         self.make_logging()
 
     def make_logging(self, ch_level=logging.ERROR, fh_level=logging.INFO):
@@ -88,6 +94,8 @@ class ToXml():
             return '{0}{1}docbook.xml'.format(filename, self.path_id ) 
         elif the_type == 'rst':
             return  '{0}{1}raw.xml'.format(filename, self.path_id ) 
+        elif the_type == 'fo':
+            return '{0}{1}docbook.fo'.format(filename, self.path_id ) 
 
     def to_docbook(self, raw_path, xsl_files = []):
         doc_home = os.environ.get('DOCBOOK_XSL')
@@ -113,6 +121,22 @@ class ToXml():
                 raise NoRunException('Cannot do xsl')
             in_files.append(out_file)
             counter += 1
+        return in_files[-1]
+
+    def to_fo(self, docbook_path, xsl_file = None):
+        doc_home = os.environ.get('DOCBOOK_OFF')
+        if xsl_file == None:
+            xsl_file = os.path.join(doc_home, 'fo', 'docbook.xsl')
+            if not os.path.isfile(xsl_file):
+                raise IOError('cannot find "{0}'.format(xsl_file))
+        out_file = self._make_temp(the_type='fo')
+        command_list = ['xsltproc', '--nonet', '--novalid', '--output',  out_file,  xsl_file, docbook_path]
+        self.logger.debug(command_list)
+        exit_status = subprocess.call(command_list)
+        if exit_status:
+            raise NoRunException('Cannot do xsl')
+        return out_file
+
 
     def clean(self, the_dir):
         pattern = os.path.join(the_dir, '*{0}docbook.xml'.format(self.path_id))
@@ -127,24 +151,21 @@ class ToXml():
             os.remove(f)
 
 
-    def convert(self, in_file, in_encoding='utf8', to_docbook=True):
-        self.in_file = in_file
-        xml_string = self.rst_to_xml(in_file=in_file, in_encoding=in_encoding)
+    def convert(self):
+        xml_string = self.rst_to_xml(in_file=self.in_file, in_encoding=self.in_encoding)
         xml_string = self.insert_math_elements(xml_string)
         raw_path = self._make_temp(the_type = 'rst')
         with open(raw_path, 'w') as write_obj:
             write_obj.write(xml_string)
-        self.to_docbook(raw_path)
-        doc_home = os.environ.get('DOCBOOK_XSL')
-        x_main = os.path.join(doc_home, 'docutils_to_docbook.xsl')
-        xsl_t = '/Users/cejohnsonlouisville/Dropbox/programming/xsl/examples/complete_copy.xsl'
-        self.to_docbook(raw_path, xsl_files = [xsl_t, x_main])
+        docbook_file = self.to_docbook(raw_path)
+        if self.validate_docbook:
+            valid_obj =  validate_docbook.ValidateDocbook()
+            valid = valid_obj.is_valid(in_files = docbook_file)
+        if self.convert_to_fo:
+            self.to_fo(docbook_file)
 
 
 
 if __name__ == '__main__':
-    to_xml_obj = ToXml()
-    to_xml_obj.make_logging(ch_level = logging.DEBUG)
-    t = to_xml_obj.convert(in_file = 'test/data/simple.rst')
-    to_xml_obj.clean(the_dir = 'test/data')
-    # to_xml_obj.convert(in_file = 'temp2.rst', in_encoding='utf16')
+    to_xml_obj = ToXml(sys.argv[1])
+    to_xml_obj.convert()
