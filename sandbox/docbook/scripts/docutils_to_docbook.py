@@ -2,7 +2,9 @@ import os, sys, subprocess, argparse, tempfile, logging, glob
 import xml.etree.cElementTree as etree
 import asciitomathml.asciitomathml 
 from xml.etree.ElementTree import Element, tostring
-import validate_docbook
+from xml.etree import ElementTree
+import validate_docbook, validate_fo
+import fop
 
 try:
     import locale
@@ -20,13 +22,15 @@ class ToXml():
     """
 
     def __init__(self, in_file, in_encoding='utf8', to_docbook=True, 
-            validate_docbook = True, convert_to_fo = True):
+            validate_docbook = True, convert_to_fo = True, convert_to_pdf = True, debug=False):
         self.path_id = '__rst__'
         self._transform_num = 0
         self.in_file = in_file
         self.in_encoding = in_encoding
         self.validate_docbook = validate_docbook
         self.convert_to_fo = convert_to_fo
+        self.convert_to_pdf = convert_to_pdf
+        self.debug = debug
         self.make_logging()
 
     def make_logging(self, ch_level=logging.ERROR, fh_level=logging.INFO):
@@ -42,13 +46,29 @@ class ToXml():
         logger.addHandler(ch)
         logger.addHandler(fh)
         self.logger = logger
-    
+
+    def pretty_print(self, elem, level=0):
+        i = "\n" + level*"  "
+        if len(elem):
+            if not elem.text or not elem.text.strip():
+                elem.text = i + "  "
+            if not elem.tail or not elem.tail.strip():
+                elem.tail = i
+            for elem in elem:
+                self.pretty_print(elem, level+1)
+            if not elem.tail or not elem.tail.strip():
+                elem.tail = i
+        else:
+            if level and (not elem.tail or not elem.tail.strip()):
+                elem.tail = i
+
     def rst_to_xml(self, in_file, base=None, in_encoding='utf8'):
         from docutils.core import publish_cmdline, default_description
         input_encode = '--input-encoding={0}'.format(in_encoding)
         output_encode = '--output-encoding=ascii'
         needed_opts = ['--traceback', '--strip-comments', '--trim-footnote-reference-space', 
-                '--no-doctype', input_encode, output_encode, '--no-generator']
+                '--no-doctype', input_encode, output_encode, '--no-generator', 
+                '--newlines', '--indents']
         fh, temp_file = tempfile.mkstemp()
         if not base:
             base = [sys.argv[0]]
@@ -98,7 +118,7 @@ class ToXml():
             return '{0}{1}docbook.fo'.format(filename, self.path_id ) 
 
     def to_docbook(self, raw_path, xsl_files = []):
-        doc_home = os.environ.get('DOCBOOK_XSL')
+        doc_home = os.environ.get('RST_DOCBOOK_HOME')
         if len(xsl_files) == 0:
             xsl_file = os.path.join(doc_home, 'docutils_to_docbook.xsl')
             if not os.path.isfile(xsl_file):
@@ -124,18 +144,22 @@ class ToXml():
         return in_files[-1]
 
     def to_fo(self, docbook_path, xsl_file = None):
-        doc_home = os.environ.get('DOCBOOK_OFF')
+        doc_home = os.environ.get('DOCBOOK_HOME')
         if xsl_file == None:
             xsl_file = os.path.join(doc_home, 'fo', 'docbook.xsl')
             if not os.path.isfile(xsl_file):
                 raise IOError('cannot find "{0}'.format(xsl_file))
         out_file = self._make_temp(the_type='fo')
-        command_list = ['xsltproc', '--nonet', '--novalid', '--output',  out_file,  xsl_file, docbook_path]
+        command_list = ['xsltproc', '--nonet', '--novalid', '--output', out_file,  xsl_file, docbook_path]
         self.logger.debug(command_list)
         exit_status = subprocess.call(command_list)
         if exit_status:
             raise NoRunException('Cannot do xsl')
         return out_file
+
+    def to_pdf(self, fo_file):
+        fop_obj = fop.Fop()
+        pdf_file = fop_obj.to_pdf(fo_file)
 
 
     def clean(self, the_dir):
@@ -162,7 +186,17 @@ class ToXml():
             valid_obj =  validate_docbook.ValidateDocbook()
             valid = valid_obj.is_valid(in_files = docbook_file)
         if self.convert_to_fo:
-            self.to_fo(docbook_file)
+            fo_file = self.to_fo(docbook_file)
+            if self.debug:
+                root = ElementTree.parse(fo_file).getroot()
+                self.pretty_print(root)
+                root = tostring(root)
+                with open(fo_file, 'w') as write_obj:
+                    write_obj.write(root)
+            valid_fo_obj =  validate_fo.ValidateFo()
+            valid = valid_fo_obj.validate_fo(fo_file) # if not valid, raise valid exception?
+            if self.convert_to_pdf:
+                self.to_pdf(fo_file)
 
 
 
