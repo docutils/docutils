@@ -67,8 +67,7 @@ class ToXml():
         input_encode = '--input-encoding={0}'.format(in_encoding)
         output_encode = '--output-encoding=ascii'
         needed_opts = ['--traceback', '--strip-comments', '--trim-footnote-reference-space', 
-                '--no-doctype', input_encode, output_encode, '--no-generator', 
-                '--newlines', '--indents']
+                '--no-doctype', input_encode, output_encode, '--no-generator', ]
         fh, temp_file = tempfile.mkstemp()
         if not base:
             base = [sys.argv[0]]
