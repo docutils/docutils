@@ -7,7 +7,7 @@
     <!--
     <xsl:import main stylesheets. My catolog actually overwrites the URL address and fetches a local stylesheet./>
     -->
-    <xsl:import href="http://50.56.245.89/xsl-ns/fo/docbook.xsl"/>
+    <xsl:import href="http://docbook.sourceforge.net/release/xsl-ns/current/fo/docbook.xsl"/>
     <xsl:import href="methods_title_page.xsl"/>
     <xsl:import href="bibliography.xsl"/>
     <xsl:param name="generate.toc">

@@ -10,7 +10,9 @@ methods_title_page.xsl: methods_title_page.xml
 	xsltproc make_title_page.xsl methods_title_page.xml > methods_title_page.xsl
 
 method_of_least_squares.xml: method_of_least_squares.rst
-	rst2xml.py --no-doctype --trim-footnote-reference-space method_of_least_squares.rst |rstxml2xml.py  > method_of_least_squares.xml
+	rst2xml.py --no-doctype --trim-footnote-reference-space --input-encoding=utf8 method_of_least_squares.rst method_of_least_squares.xml
+	rstxml2xml.py  -o tmp.xml method_of_least_squares.xml 
+	cat tmp.xml > method_of_least_squares.xml
 
 method_of_least_squares_default.xml: method_of_least_squares_clean.rst
 	rst2xml.py --no-doctype --trim-footnote-reference-space method_of_least_squares_clean.rst |rstxml2xml.py  > method_of_least_squares_default.xml

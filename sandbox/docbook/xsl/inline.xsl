@@ -72,6 +72,10 @@
         </d:superscript>
     </xsl:template>
 
+    <xsl:template match="inline[@classes='page-break']">
+        <xsl:processing-instruction name="hard-pagebreak"/>
+    </xsl:template>
+
     <xsl:template match="inline[@classes = 'title']" priority="2"/>
     
 </xsl:stylesheet>

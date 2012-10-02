@@ -5,6 +5,7 @@ from xml.etree.ElementTree import Element, tostring
 from xml.etree import ElementTree
 import validate_docbook, validate_fo
 import fop
+import logging
 
 try:
     import locale
@@ -118,6 +119,8 @@ class ToXml():
 
     def to_docbook(self, raw_path, xsl_files = []):
         doc_home = os.environ.get('RST_DOCBOOK_HOME')
+        if not doc_home:
+            raise OSError('You must set RST_DOCBOOK_HOME')
         if len(xsl_files) == 0:
             xsl_file = os.path.join(doc_home, 'docutils_to_docbook.xsl')
             if not os.path.isfile(xsl_file):
