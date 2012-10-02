@@ -24,11 +24,12 @@ class Fop():
         if not out_file:
             filename, ext = os.path.splitext(fo_file)
             out_file = '{0}.pdf'.format(filename)
-        command_list = [self.fop_bin, '-fo', fo_file, '-pdf']
-        p = Popen(command_list, stdout=PIPE, stderr=PIPE, shell=True)
+        command_list = [self.fop_bin, '-fo', fo_file, '-pdf', out_file]
+        p = Popen(command_list, stdout=PIPE, stderr=PIPE)
         stdout, stderr = p.communicate()
         if p.returncode:
             print(stderr)
+        # on windows check for existence of pdf file
 
 if __name__ == '__main__':
     fop_obj = Fop()
