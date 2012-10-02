@@ -1,0 +1,32 @@
+<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
+    <!--create all of your master pages-->
+    <fo:layout-master-set>
+      <fo:simple-page-master  master-name="A4"
+         page-height="11in"   page-width="8.5in"
+         margin-top="0.5in"   margin-bottom="0.5in"
+         margin-left="0.5in"  margin-right="0.5in">
+        <fo:region-body
+            margin-top="3in"
+        />
+      </fo:simple-page-master>
+    </fo:layout-master-set>
+
+
+    <!--page sequences-->
+    <fo:page-sequence master-reference="A4">
+        <fo:flow flow-name="xsl-region-body">
+            <fo:block role="trem" font-family="Tahoma">
+                hello world
+
+            </fo:block>
+            <fo:block text-align="justify">
+                <fo:leader leader-pattern="rule" leader-length="3in" text-align="center"/>
+            </fo:block>
+            <fo:block>
+                hello world
+
+            </fo:block>
+        </fo:flow>
+    </fo:page-sequence>
+</fo:root>
+
