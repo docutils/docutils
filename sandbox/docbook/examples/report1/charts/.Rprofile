@@ -1,6 +1,5 @@
 lwd=3
 font_size = .8
-res = 100
 tick_multiplier = 1
 lwd_grid = .3
 width=5.5
@@ -31,4 +30,4 @@ line_colors = c("red","blue", "green", "orange")
 bar_color = c("#330099", "#FF6600")
 base_line_col = "green"
 base_line_col = c(654)
-
+res = 100

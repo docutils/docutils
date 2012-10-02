@@ -3,7 +3,6 @@
     xmlns:d="http://docbook.org/ns/docbook"
     version="1.1">
 
-    <xsl:param name="image-width">5in</xsl:param>
     <xsl:template match="figure[image/@alt]" priority="2">
         <d:figure>
             <xsl:call-template name="make-id"/>

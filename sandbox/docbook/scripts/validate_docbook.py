@@ -15,7 +15,9 @@ class ValidateDocbook():
             raise IOError('You need to set the variable "VALIDATE_HOME"')
         docbook_rng = os.path.join(valid_home, 'relax', 'docbook.rng')
         if not os.path.isfile(docbook_rng):
-            raise IOError('You need download docbook.rng')
+            msg = 'cannot find "{0}"'.format(docbook_rng)
+            msg += '\nYou need download docbook.rng'
+            raise IOError(msg)
         self.docbook_rng = docbook_rng
 
     def is_valid(self, in_files):

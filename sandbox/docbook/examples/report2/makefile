@@ -130,13 +130,17 @@ title_page.xsl: title_page.xml
 	xsltproc make_title_page.xsl title_page.xml > title_page.xsl
 
 report.xml: report.rst
-	rst2xml.py --no-doctype --trim-footnote-reference-space report.rst |rstxml2xml.py  > report.xml
+	rst2xml.py --no-doctype --trim-footnote-reference-space --input-encoding=utf8 report.rst report.xml
+	rstxml2xml.py -o tmp.xml report.xml 
+	cat tmp.xml > report.xml
+	rm tmp.xml
 	xsltproc format_numbers.xsl report.xml > tmp
 	cat tmp > report.xml
 	rm tmp
 	xsltproc long_tables.xsl report.xml > tmp
 	cat tmp > report.xml
 	rm tmp
+
 
 report_docbook.xml: report.xml
 	xsltproc rst_docbook.xsl report.xml > report_docbook.xml
