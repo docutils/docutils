@@ -1,11 +1,11 @@
 import os, sys, subprocess, argparse, tempfile, logging, glob
-import xml.etree.cElementTree as etree
 import asciitomathml.asciitomathml 
-from xml.etree.ElementTree import Element, tostring
-from xml.etree import ElementTree
 import validate_docbook, validate_fo
 import fop
 import logging
+import xsl_process
+import lxml
+from lxml import etree as etree
 
 try:
     import locale
@@ -33,6 +33,7 @@ class ToXml():
         self.convert_to_pdf = convert_to_pdf
         self.debug = debug
         self.make_logging()
+        self.debug=True
 
     def make_logging(self, ch_level=logging.ERROR, fh_level=logging.INFO):
         logger = logging.getLogger(__name__)
@@ -98,10 +99,10 @@ class ToXml():
                     math_obj =  asciitomathml.asciitomathml.AsciiMathML()
                 math_obj.parse_string(math_text)
                 math_tree = math_obj.get_tree()
-                math_string = tostring(math_tree, encoding='ascii') 
+                math_string = etree.tostring(math_tree, encoding='ascii') 
                 math_tree = etree.XML(math_string)
                 e.insert(0, math_tree)
-        xml_string = tostring(tree, encoding=out_encoding)
+        xml_string = etree.tostring(tree, encoding=out_encoding)
         return xml_string
 
     def _make_temp(self, the_type):
@@ -135,38 +136,93 @@ class ToXml():
                 the_type = 'transform'
             out_file = self._make_temp(the_type=the_type)
             self.logger.debug('out file from temp is "{0}"'.format(out_file))
-            command_list = ['xsltproc', '--nonet', '--novalid', '--output',  out_file,  xsl, in_files[counter]]
-            self.logger.debug('command list is:')
-            self.logger.debug(command_list)
-            exit_status = subprocess.call(command_list)
-            if exit_status:
-                raise NoRunException('Cannot do xsl')
+            error, xml_obj = xsl_process.transform_lxml(xsl, in_files[counter])
             in_files.append(out_file)
             counter += 1
-        return in_files[-1]
+        return xml_obj
 
-    def to_fo(self, docbook_path, xsl_file = None):
+    def to_fo(self, result_tree_obj, xsl_files = []):
         doc_home = os.environ.get('DOCBOOK_HOME')
-        if xsl_file == None:
+        if not doc_home:
+            raise OSError('You must set DOCBOOK_HOME')
+        if len(xsl_files) == 0:
             xsl_file = os.path.join(doc_home, 'fo', 'docbook.xsl')
             if not os.path.isfile(xsl_file):
                 raise IOError('cannot find "{0}'.format(xsl_file))
-        out_file = self._make_temp(the_type='fo')
-        command_list = ['xsltproc', '--nonet', '--novalid', '--output', out_file,  xsl_file, docbook_path]
-        self.logger.debug(command_list)
-        exit_status = subprocess.call(command_list)
-        if exit_status:
-            raise NoRunException('Cannot do xsl')
-        return out_file
+            xsl_files = [xsl_file]
+        in_files = [result_tree_obj]
+        counter = 0
+        for xsl in xsl_files:
+            if counter + 1 == len(xsl_files):
+                the_type = 'fo'
+            else:
+                the_type = 'transform'
+            out_file = self._make_temp(the_type=the_type)
+            self.logger.debug('out file from temp is "{0}"'.format(out_file))
+            error, xml_obj = xsl_process.transform_lxml(xsl, in_files[counter])
+            in_files.append(out_file)
+            counter += 1
+        return xml_obj
+
 
     def to_pdf(self, fo_file):
         fop_obj = fop.Fop()
         pdf_file = fop_obj.to_pdf(fo_file)
 
+    def report_xsl_error(self, transform_error_obj):
+        for error_obj in transform_error_obj:
+            sys.stderr.write(error_obj.message)
+            sys.stderr.write('\n')
+            if error_obj.line != 0 and error_obj.column != 0:
+                self.logger.critical(str(error_obj.line))
+                self.logger.critical(str(error_obj.column))
+
+    def validate_docutils_rng(self, xml_obj):
+        valid_home = os.environ.get('VALIDATE_HOME')
+        if valid_home == None:
+            raise IOError('You need to set the variable "VALIDATE_HOME"')
+        docbook_rng = os.path.join(valid_home, 'relax', 'docbook.rng')
+        if not os.path.isfile(docbook_rng):
+            msg = 'cannot find "{0}"'.format(docbook_rng)
+            msg += '\nYou need download docbook.rng'
+            raise IOError(msg)
+        # the_rng = os.path.join(os.path.dirname(__file__), 'valid','docutils.rng') 
+        relaxng_doc = etree.parse(open(docbook_rng, 'r'))
+        relaxng = etree.RelaxNG(relaxng_doc)
+        is_valid = relaxng.validate(xml_obj)
+        if not is_valid:
+            self.logger.critical('Not valid docbook\n')
+            self.report_xsl_error(relaxng.error_log)
+            return 1
+
+    def validate_fo_xsl(self, result_tree_obj):
+        # xsl_ss = os.path.join(os.path.dirname(__file__), 'valid','folint.xsl')
+        valid_home = os.environ.get('VALIDATE_HOME')
+        if valid_home == None:
+            raise IOError('You need to set the variable "VALIDATE_HOME"')
+        xsl_ss = os.path.join(valid_home, 'xslt', 'folint.xsl')
+        if not os.path.isfile(xsl_ss):
+            msg = 'cannot find "{0}"'.format(docbook_rng)
+            msg += '\nYou need download docbook.rng'
+            raise IOError(msg)
+        xslt_doc = etree.parse(xsl_ss) 
+        transform = etree.XSLT(xslt_doc)
+        indoc = result_tree_obj
+        try:
+            outdoc = transform(indoc)
+        except lxml.etree.XSLTApplyError, error:
+            msg = 'error converting %s to %s with %s:\n' % (xml_file, out_file, xslt_file)
+            msg += str(error)
+            msg += '\n'
+            self.logger.critical(msg)
+            self.report_xsl_error(transform.error_log)
+            return 1
+        self.report_xsl_error(transform.error_log)
+        return  len(transform.error_log)
+
 
     def clean(self, the_dir):
         pattern = os.path.join(the_dir, '*{0}docbook.xml'.format(self.path_id))
-        print(pattern)
         files = glob.glob(pattern)
         pattern = os.path.join(the_dir, '*{0}transform[0-9].xml'.format(self.path_id))
         files += glob.glob(pattern)
@@ -183,20 +239,19 @@ class ToXml():
         raw_path = self._make_temp(the_type = 'rst')
         with open(raw_path, 'w') as write_obj:
             write_obj.write(xml_string)
-        docbook_file = self.to_docbook(raw_path)
+        result_obj = self.to_docbook(raw_path)
         if self.validate_docbook:
-            valid_obj =  validate_docbook.ValidateDocbook()
-            valid = valid_obj.is_valid(in_files = docbook_file)
+            valid = self.validate_docutils_rng(result_obj)
         if self.convert_to_fo:
-            fo_file = self.to_fo(docbook_file)
+            result_obj = self.to_fo(result_obj)
+            valid = self.validate_fo_xsl(result_obj)
+            fo_file = self._make_temp(the_type = 'fo')
             if self.debug:
-                root = ElementTree.parse(fo_file).getroot()
-                self.pretty_print(root)
-                root = tostring(root)
-                with open(fo_file, 'w') as write_obj:
-                    write_obj.write(root)
-            valid_fo_obj =  validate_fo.ValidateFo()
-            valid = valid_fo_obj.validate_fo(fo_file) # if not valid, raise valid exception?
+                root = etree.tostring(result_obj, pretty_print=True)
+            else:
+                root = etree.tostring(result_obj)
+            with open(fo_file, 'w') as write_obj:
+                write_obj.write(root)
             if self.convert_to_pdf:
                 self.to_pdf(fo_file)
 
