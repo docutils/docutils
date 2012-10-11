@@ -162,23 +162,25 @@ class OutputTests(unittest.TestCase):
     # Test for Python 3 features:
     if sys.version_info >= (3,0):
         def test_write_bytes_to_stdout(self):
-            # binary data is written to destination.buffer, if the
-            # destination is sys.stdout or sys.stdin
-            backup = sys.stdout
-            sys.stdout = self.mock_stdout
-            fo = io.FileOutput(destination=sys.stdout, mode='wb',
-                               autoclose=False)
+            # try writing data to `destination.buffer`, if data is
+            # instance of `bytes` and writing to `destination` fails:
+            fo = io.FileOutput(destination=self.mock_stdout)
             fo.write(self.bdata)
             self.assertEqual(self.mock_stdout.buffer.getvalue(),
                              self.bdata)
-            sys.stdout = backup
 
-        def test_encoding_clash(self):
-            # Raise error, if given and destination encodings differ
-            # TODO: try the `write to .buffer` scheme instead?
-            self.assertRaises(ValueError,
-                              io.FileOutput, destination=self.mock_stdout,
-                               encoding='latin1')
+        def test_encoding_clash_resolved(self):
+            fo = io.FileOutput(destination=self.mock_stdout,
+                               encoding='latin1', autoclose=False)
+            fo.write(self.udata)
+            self.assertEqual(self.mock_stdout.buffer.getvalue(),
+                             self.udata.encode('latin1'))
+
+        def test_encoding_clash_nonresolvable(self):
+            del(self.mock_stdout.buffer)
+            fo = io.FileOutput(destination=self.mock_stdout,
+                               encoding='latin1', autoclose=False)
+            self.assertRaises(ValueError, fo.write, self.udata)
 
 
 if __name__ == '__main__':

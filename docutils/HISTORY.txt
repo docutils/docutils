@@ -32,6 +32,7 @@ Changes Since 0.9.1
 
   - FileInput/FileOutput: no system-exit on IOError.  The `handle_io_errors`
     option is ignored and will be removed in a future release.
+  - Fix Py3k error writing to stdout with encoding differing from default.
 
 * docutils/parsers/rst/directives/misc.py
 

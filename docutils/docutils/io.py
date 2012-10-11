@@ -191,7 +191,7 @@ class Output(TransformSpec):
                 'a Unicode string')
             return data
         if not isinstance(data, unicode):
-            # Non-unicode (e.g. binary) output.
+            # Non-unicode (e.g. bytes) output.
             return data
         else:
             return data.encode(self.encoding, self.error_handler)
@@ -335,7 +335,7 @@ class FileOutput(Output):
         elif (# destination is file-type object -> check mode:
               mode and hasattr(self.destination, 'mode')
               and mode != self.destination.mode):
-                print >>self._stderr, ('Destination mode "%s" '
+                print >>self._stderr, ('Warning: Destination mode "%s" '
                                'differs from specified mode "%s"' %
                                (self.destination.mode, mode))
         if not destination_path:
@@ -343,21 +343,6 @@ class FileOutput(Output):
                 self.destination_path = self.destination.name
             except AttributeError:
                 pass
-        # Special cases under Python 3: different encoding or binary output
-        if sys.version_info >= (3,0):
-            if ('b' in self.mode
-                and self.destination in (sys.stdout, sys.stderr)
-               ):
-                self.destination = self.destination.buffer
-            if check_encoding(self.destination, self.encoding) is False:
-                if self.destination in (sys.stdout, sys.stderr):
-                    self.destination = self.destination.buffer
-                else:  # TODO: try the `write to .buffer` scheme instead?
-                    raise ValueError('Encoding of %s (%s) differs \n'
-                                     '  from specified encoding (%s)' %
-                                     (self.destination_path or 'destination',
-                                      destination.encoding, encoding))
-
 
     def open(self):
         # Specify encoding in Python 3.
@@ -381,17 +366,29 @@ class FileOutput(Output):
         """
         if not self.opened:
             self.open()
+        if ('b' not in self.mode and sys.version_info < (3,0)
+            or check_encoding(self.destination, self.encoding) is False
+           ):
+            data = self.encode(data)
+            if sys.version_info >= (3,0) and os.linesep != '\n':
+                data = data.replace('\n', os.linesep) # fix endings
+
         try: # In Python < 2.5, try...except has to be nested in try...finally.
             try:
-                if 'b' not in self.mode and (sys.version_info < (3,0) or
-                   check_encoding(self.destination, self.encoding) is False):
-                    data = self.encode(data)
-                    if sys.version_info >= (3,0) and os.linesep != '\n':
-                        # writing as binary data -> fix endings
-                        data = data.replace('\n', os.linesep)
-
                 self.destination.write(data)
-
+            except TypeError, e:
+                if sys.version_info >= (3,0) and isinstance(data, bytes):
+                    try:
+                        self.destination.buffer.write(data)
+                    except AttributeError:
+                        if check_encoding(self.destination, 
+                                          self.encoding) is False:
+                            raise ValueError('Encoding of %s (%s) differs \n'
+                                '  from specified encoding (%s)' %
+                                (self.destination_path or 'destination',
+                                self.destination.encoding, self.encoding))
+                        else:
+                            raise e
             except (UnicodeError, LookupError), err:
                 raise UnicodeError(
                     'Unable to encode output data. output-encoding is: '
