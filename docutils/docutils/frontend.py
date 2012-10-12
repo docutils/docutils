@@ -18,8 +18,10 @@ Also exports the following functions:
 * Option callbacks: `store_multiple`, `read_config_file`.
 * Setting validators: `validate_encoding`,
   `validate_encoding_error_handler`,
-  `validate_encoding_and_error_handler`, `validate_boolean`,
-  `validate_threshold`, `validate_colon_separated_string_list`,
+  `validate_encoding_and_error_handler`,
+  `validate_boolean`, `validate_ternary`, `validate_threshold`,
+  `validate_colon_separated_string_list`,
+  `validate_comma_separated_string_list`,
   `validate_dependency_file`.
 * `make_paths_absolute`.
 * SettingSpec manipulation: `filter_settings_spec`.
@@ -110,13 +112,33 @@ def validate_encoding_and_error_handler(
 
 def validate_boolean(setting, value, option_parser,
                      config_parser=None, config_section=None):
-    if isinstance(value, unicode):
-        try:
-            return option_parser.booleans[value.strip().lower()]
-        except KeyError:
-            raise (LookupError('unknown boolean value: "%s"' % value),
-                   None, sys.exc_info()[2])
-    return value
+    """Check/normalize boolean settings:
+         True:  '1', 'on', 'yes', 'true'
+         False: '0', 'off', 'no','false', ''
+    """
+    if isinstance(value, bool):
+        return value
+    try:
+        return option_parser.booleans[value.strip().lower()]
+    except KeyError:
+        raise (LookupError('unknown boolean value: "%s"' % value),
+               None, sys.exc_info()[2])
+
+def validate_ternary(setting, value, option_parser,
+                     config_parser=None, config_section=None):
+    """Check/normalize three-value settings:
+         True:  '1', 'on', 'yes', 'true'
+         False: '0', 'off', 'no','false',
+         None:  any other value (including '')
+    """
+    if isinstance(value, bool) or value is None:
+        return value
+    if value == '':
+        return None
+    try:
+        return option_parser.booleans[value.strip().lower()]
+    except KeyError:
+        return None
 
 def validate_nonnegative_int(setting, value, option_parser,
                              config_parser=None, config_section=None):
@@ -145,6 +167,22 @@ def validate_colon_separated_string_list(
         value.extend(last.split(':'))
     return value
 
+def validate_comma_separated_list(setting, value, option_parser,
+                                    config_parser=None, config_section=None):
+    """Check/normalize list arguments (split at "," and strip whitespace).
+    """
+    # `value` is already a list when  given as command line option
+    # and "action" is "append"
+    if isinstance(value, unicode):
+        value = [value]
+    # this function is called for every option added to `value`
+    # -> split the last item and apped the result:
+    last = value.pop()
+    classes = [cls.strip(u' \t\n') for cls in last.split(',')
+               if cls.strip(u' \t\n')]
+    value.extend(classes)
+    return value
+
 def validate_url_trailing_slash(
     setting, value, option_parser, config_parser=None, config_section=None):
     if not value:
@@ -163,17 +201,15 @@ def validate_dependency_file(setting, value, option_parser,
 
 def validate_strip_class(setting, value, option_parser,
                          config_parser=None, config_section=None):
-    # convert to list:
-    if isinstance(value, unicode):
-        value = [value]
-    class_values = filter(None, [v.strip() for v in value.pop().split(',')])
-    # validate:
-    for class_value in class_values:
-        normalized = docutils.nodes.make_id(class_value)
-        if class_value != normalized:
+    # value is a comma separated string list:
+    value = validate_comma_separated_list(setting, value, option_parser,
+                                          config_parser, config_section)
+    # validate list elements:
+    for cls in value:
+        normalized = docutils.nodes.make_id(cls)
+        if cls != normalized:
             raise ValueError('invalid class value %r (perhaps %r?)'
-                             % (class_value, normalized))
-    value.extend(class_values)
+                             % (cls, normalized))
     return value
 
 def make_paths_absolute(pathdict, keys, base_path=None):
