@@ -509,14 +509,11 @@ def get_stylesheet_list(settings):
     """
     assert not (settings.stylesheet and settings.stylesheet_path), (
             'stylesheet and stylesheet_path are mutually exclusive.')
-    if settings.stylesheet_path:
-        sheets = settings.stylesheet_path.split(",")
-    elif settings.stylesheet:
-        sheets = settings.stylesheet.split(",")
-    else:
-        sheets = []
-    # strip whitespace (frequently occuring in config files)
-    return [sheet.strip(u' \t\n') for sheet in sheets]
+    stylesheets = settings.stylesheet_path or settings.stylesheet or []
+    # programmatically set default can be string or unicode:
+    if not isinstance(stylesheets, list):
+        stylesheets = [cls.strip() for cls in stylesheets.split(',')]
+    return stylesheets
 
 def get_trim_footnote_ref_space(settings):
     """
