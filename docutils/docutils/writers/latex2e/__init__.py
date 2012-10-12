@@ -88,11 +88,13 @@ class Writer(writers.Writer):
           ' Overrides previous --stylesheet and --stylesheet-path settings.',
           ['--stylesheet'],
           {'default': '', 'metavar': '<file>',
-           'overrides': 'stylesheet_path'}),
+           'overrides': 'stylesheet_path',
+           'validator': frontend.validate_comma_separated_list}),
          ('Like --stylesheet, but the path is rewritten '
           'relative to the output file. ',
           ['--stylesheet-path'],
-          {'metavar': '<file>', 'overrides': 'stylesheet'}),
+          {'metavar': '<file>', 'overrides': 'stylesheet',
+           'validator': frontend.validate_comma_separated_list}),
          ('Link to the stylesheet(s) in the output file. (default)',
           ['--link-stylesheet'],
           {'dest': 'embed_stylesheet', 'action': 'store_false'}),
@@ -226,14 +228,11 @@ class Writer(writers.Writer):
 
     # Override parent method to add latex-specific transforms
     def get_transforms(self):
-       # call the parent class' method
-       transform_list = writers.Writer.get_transforms(self)
-       # print transform_list
+       return writers.Writer.get_transforms(self) + [
        # Convert specific admonitions to generic one
-       transform_list.append(writer_aux.Admonitions)
+       writer_aux.Admonitions,
        # TODO: footnote collection transform
-       # transform_list.append(footnotes.collect)
-       return transform_list
+       ]
 
     def translate(self):
         visitor = self.translator_class(self.document)

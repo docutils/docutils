@@ -65,14 +65,16 @@ class Writer(writers.Writer):
         ('Specify comma separated list of stylesheet URLs. '
           'Overrides previous --stylesheet and --stylesheet-path settings.',
           ['--stylesheet'],
-          {'metavar': '<URL>', 'overrides': 'stylesheet_path'}),
+          {'metavar': '<URL>', 'overrides': 'stylesheet_path',
+           'validator': frontend.validate_comma_separated_list}),
          ('Specify comma separated list of stylesheet paths. '
           'With --link-stylesheet, '
           'the path is rewritten relative to the output HTML file. '
           'Default: "%s"' % default_stylesheet_path,
           ['--stylesheet-path'],
           {'metavar': '<file>', 'overrides': 'stylesheet',
-           'default': default_stylesheet_path}),
+           'validator': frontend.validate_comma_separated_list,
+           'default': [default_stylesheet_path]}),
          ('Embed the stylesheet(s) in the output HTML file.  The stylesheet '
           'files must be accessible during processing. This is the default.',
           ['--embed-stylesheet'],
@@ -300,6 +302,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body_suffix = ['</body>\n</html>\n']
         self.section_level = 0
         self.initial_header_level = int(settings.initial_header_level)
+        
         self.math_output = settings.math_output.lower()
         # A heterogenous stack used in conjunction with the tree traversal.
         # Make sure that the pops correspond to the pushes:
@@ -1164,10 +1167,16 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('\n</pre>\n')
 
     def visit_math(self, node, math_env=''):
+        # If the method is called from visit_math_block(), math_env != ''.
+        
         # As there is no native HTML math support, we provide alternatives:
         # LaTeX and MathJax math_output modes simply wrap the content,
         # HTML and MathML math_output modes also convert the math_code.
-        # If the method is called from visit_math_block(), math_env != ''.
+        if self.math_output not in ('mathml', 'html', 'mathjax', 'latex'):
+            self.document.reporter.error(
+                'math-output format "%s" not supported '
+                'falling back to "latex"'% self.math_output)
+            self.math_output = 'latex'        
         #
         # HTML container
         tags = {# math_output: (block, inline, class-arguments)
