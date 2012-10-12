@@ -92,8 +92,11 @@ recognized:
 :On: "true", "yes", "on", "1"
 :Off: "false", "no", "off", "0", "" (no value)
 
-List values are comma-delimited. Whitespace around list values is
-stripped. ::
+List values can be comma- or colon-delimited.
+
+strip_classes_, strip_elements_with_classes_, stylesheet_, and
+stylesheet_path_ use the comma as delimiter,
+whitespace around list values is stripped. ::
 
     strip-classes: ham,eggs,
     strip-elements-with-classes: sugar, salt, flour
@@ -102,8 +105,8 @@ stripped. ::
                 style with spaces.css
     stylesheet-path: ../styles/my.css, ../styles/funny.css
 
-expose_internals_ and prune_ use the colon as delimiter and do not strip
-whitespace::
+expose_internals_, ignore_ and prune_ use the colon as delimiter and do not
+strip whitespace::
 
     expose_internals: b:c:d
 
