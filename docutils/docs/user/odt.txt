@@ -73,6 +73,21 @@ Examples::
     $ rst2odt.py --source-url=odtwriter.txt --generator --stylesheet=/myconfigs/styles.odt odtwriter.txt odtwriter.odt
 
 
+Configuration file
+------------------
+
+The options described below can also be set in a configuration file.
+Use section ``[odf_odt writer]`` to set options specific to the
+``odtwriter``.  For example::
+
+    [odf_odt writer]
+    stylesheet: styles1.odt
+
+See the "Docutils Configuration" document for more information on
+Docutils configuration files, including locations which are
+searched.
+
+
 Command line options
 --------------------
 
