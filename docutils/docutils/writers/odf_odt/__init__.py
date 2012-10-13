@@ -21,13 +21,10 @@ from xml.dom import minidom
 import time
 import re
 import StringIO
-import inspect
-import imp
 import copy
 import urllib2
 import docutils
 from docutils import frontend, nodes, utils, writers, languages
-from docutils.parsers import rst
 from docutils.readers import standalone
 from docutils.transforms import references
 
@@ -64,7 +61,8 @@ try:
 except ImportError, exp:
     pygments = None
 
-try: # check for the Python Imaging Library
+# check for the Python Imaging Library
+try:
     import PIL.Image
 except ImportError:
     try:  # sometimes PIL modules are put in PYTHONPATH's root
@@ -136,7 +134,7 @@ CONTENT_NAMESPACE_DICT = CNSD = {
     'oooc': 'http://openoffice.org/2004/calc',
     'ooow': 'http://openoffice.org/2004/writer',
     'presentation': 'urn:oasis:names:tc:opendocument:xmlns:presentation:1.0',
-    
+
     'script': 'urn:oasis:names:tc:opendocument:xmlns:script:1.0',
     'style': 'urn:oasis:names:tc:opendocument:xmlns:style:1.0',
     'svg': 'urn:oasis:names:tc:opendocument:xmlns:svg-compatible:1.0',
@@ -534,7 +532,7 @@ class Writer(writers.Writer):
         'stylesheet_path',
         )
 
-    config_section = 'opendocument odf writer'
+    config_section = 'odf_odt writer'
     config_section_dependencies = (
         'writers',
         )
