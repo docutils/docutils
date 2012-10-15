@@ -147,6 +147,7 @@ what-you-see-is-what-you-get plaintext markup syntax.""", # wrap at col 60
                      glob.glob('docutils/parsers/rst/include/*.txt')),
                     ('docutils/writers/html4css1',
                      ['docutils/writers/html4css1/html4css1.css',
+                      'docutils/writers/html4css1/math.css',
                       'docutils/writers/html4css1/template.txt']),
                     ('docutils/writers/latex2e',
                      ['docutils/writers/latex2e/default.tex',

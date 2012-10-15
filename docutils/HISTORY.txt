@@ -38,15 +38,14 @@ Changes Since 0.9.1
 
   - Fix [ 3546533 ] Unicode error with `date` directive.
 
+* docutils/setup.py
+
+  - Add ``math.css`` stylesheet to data files (thanks to Dmitry Shachnev).
+
 * docutils/writers/html4css1/__init__.py
 
   - Use ``<code>`` tag for inline "code",
     do not drop nested inline nodes (syntax highlight tokens).
-
-* docutils/tools/test/test_buildhtml.py
-
-  - Fix [ 3521167 ] allow running in any directory.
-  - Fix [ 3521168 ] allow running with Python 3.
 
 * docutils/writers/manpage.py
 
@@ -65,6 +64,11 @@ Changes Since 0.9.1
 * docutils/writers/s5_html/docutils_xml.py
 
   - Fix [ 3552403 ] Prevent broken PyXML replacing stdlibs xml module.
+
+* docutils/tools/test/test_buildhtml.py
+
+  - Fix [ 3521167 ] allow running in any directory.
+  - Fix [ 3521168 ] allow running with Python 3.
 
 
 Release 0.9.1 (2012-06-17)
