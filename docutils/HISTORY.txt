@@ -38,9 +38,9 @@ Changes Since 0.9.1
 
   - Fix [ 3546533 ] Unicode error with `date` directive.
 
-* docutils/setup.py
+* docutils/transforms/universal.py
 
-  - Add ``math.css`` stylesheet to data files (thanks to Dmitry Shachnev).
+  - Add SmartQuotes transform for typographic quotes and dashes.
 
 * docutils/writers/html4css1/__init__.py
 
@@ -65,7 +65,11 @@ Changes Since 0.9.1
 
   - Fix [ 3552403 ] Prevent broken PyXML replacing stdlibs xml module.
 
-* docutils/tools/test/test_buildhtml.py
+* setup.py
+
+  - Tag ``math.css`` stylesheet as data file (patch by Dmitry Shachnev).
+
+* tools/test/test_buildhtml.py
 
   - Fix [ 3521167 ] allow running in any directory.
   - Fix [ 3521168 ] allow running with Python 3.
@@ -74,7 +78,7 @@ Changes Since 0.9.1
 Release 0.9.1 (2012-06-17)
 ==========================
 
-* docutils/setup.py
+* setup.py
 
   - Fix [ 3527842 ]. Under Python 3, converted tests and tools were
     installed in the PYTHONPATH. Converted tests are now
@@ -84,13 +88,13 @@ Release 0.9.1 (2012-06-17)
     ``setup.py install`` under Python 3, remove the spurious
     ``test/`` and ``tools/`` directories in the site library root.
 
-* docutils/test/
+* test/
 
   - Make tests independent from the location of the ``test/`` directory.
   - Use converted sources (from the ``build/`` directory) for tests under
     Python 3.
 
-* docutils/tools/
+* tools/
 
   - Make tools compatible with both, Python 2 and 3 without 2to3-conversion.
 
@@ -104,7 +108,7 @@ Release 0.9.1 (2012-06-17)
   - Fix [ 3525847 ]. Catch and report UnicodeEncodeError with
     ``locale == C`` and 8-bit char in path argument of `include` directive.
 
-* docutils/test/alltests.py
+* test/alltests.py
 
   - class `Tee`: catch UnicodeError when writing to "ascii" stream or
     file under Python 3.
@@ -211,7 +215,7 @@ Release 0.8.1 (2011-08-30)
   - Fix [ 3364658 ] (Change last file with Apache license to BSD-2-Clause)
     and [ 3395920 ] (correct copyright info for rst.el).
 
-* docutils/test/
+* test/
 
   -  Apply [ 3303733 ] and [ 3365041 ] to fix tests under Py3k.
 
