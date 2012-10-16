@@ -11,15 +11,38 @@
 
 .. contents::
 
+Transforms change the document tree in-place, add to the tree, or prune it.
+Transforms resolve references and footnote numbers, process interpreted
+text, and do other context-sensitive processing. Each transform is a
+subclass of ``docutils.tranforms.Transform``.
 
-For background about transforms and the Transformer object, see `PEP
-258`_.
+There are `transforms added by components`_, others (e.g.
+``parts.Contents``) are added by the parser, if a corresponding directive is
+found in the document.
+
+To add a transform, components (objects inheriting from
+Docutils.Component like Readers, Parsers, Writers, Input, Output) overwrite
+the ``get_transforms()`` method of their base class. After the Reader has
+finished processing, the Publisher calls
+``Transformer.populate_from_components()`` with a list of components and all
+transforms returned by the component's ``get_transforms()`` method are
+stored in a `transformer object` attached to the document tree.
+
+
+For more about transforms and the Transformer object, see also `PEP
+258`_. (The ``default_transforms()`` attribute of component classes mentioned
+there is deprecated. Use the ``get_transforms()`` method instead.)
 
 .. _PEP 258: ../peps/pep-0258.html#transformer
 
 
 Transforms Listed in Priority Order
 ===================================
+
+Transform classes each have a default_priority attribute which is used by
+the Transformer to apply transforms in order (low to high). The default
+priority can be overridden when adding transforms to the Transformer object.
+
 
 ==============================  ============================  ========
 Transform: module.Class         Added By                      Priority
@@ -83,12 +106,14 @@ universal.Messages              Writer (w)                    860
 
 universal.FilterMessages        Writer (w)                    870
 
+universal.SmartQuotes           Parser                        850
+
 universal.TestMessages          DocutilsTestSupport           880
 
 writer_aux.Compound             newlatex2e (w)                910
 
 writer_aux.Admonitions          html4css1 (w),                920
-                                newlatex2e (w)
+                                latex2e (w)
 
 misc.CallBack                   n/a                           990
 ==============================  ============================  ========
@@ -119,3 +144,64 @@ From   To   Category
  800   899  very late
  900   999  very late (non-standard)
 ====  ====  ================================================
+
+
+Transforms added by components
+===============================
+
+
+readers.Reader:
+  | universal.Decorations,
+  | universal.ExposeInternals,
+  | universal.StripComments
+
+readers.ReReader:
+  None
+
+readers.standalone.Reader:
+  | references.Substitutions,
+  | references.PropagateTargets,
+  | frontmatter.DocTitle,
+  | frontmatter.SectionSubTitle,
+  | frontmatter.DocInfo,
+  | references.AnonymousHyperlinks,
+  | references.IndirectHyperlinks,
+  | references.Footnotes,
+  | references.ExternalTargets,
+  | references.InternalTargets,
+  | references.DanglingReferences,
+  | misc.Transitions
+
+readers.pep.Reader:
+  | references.Substitutions,
+  | references.PropagateTargets,
+  | references.AnonymousHyperlinks,
+  | references.IndirectHyperlinks,
+  | references.Footnotes,
+  | references.ExternalTargets,
+  | references.InternalTargets,
+  | references.DanglingReferences,
+  | misc.Transitions,
+  | peps.Headers,
+  | peps.Contents,
+  | peps.TargetNotes
+
+parsers.rst.Parser
+  universal.SmartQuotes
+
+writers.Writer:
+  | universal.Messages,
+  | universal.FilterMessages,
+  | universal.StripClassesAndElements
+
+writers.UnfilteredWriter
+  None
+
+writers.latex2e.Writer
+  writer_aux.Admonitions
+
+writers.html4css1.Writer:
+  writer_aux.Admonitions
+
+writers.odf_odt.Writer:
+  removes references.DanglingReferences

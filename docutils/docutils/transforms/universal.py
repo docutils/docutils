@@ -19,7 +19,7 @@ import sys
 import time
 from docutils import nodes, utils
 from docutils.transforms import TransformError, Transform
-
+from docutils.utils import smartquotes
 
 class Decorations(Transform):
 
@@ -201,3 +201,25 @@ class StripClassesAndElements(Transform):
                     node['classes'].remove(class_value)
                 if class_value in self.strip_elements:
                     return 1
+
+class SmartQuotes(Transform):
+
+    """
+    Replace ASCII quotation marks with typographic form.
+
+    Also replace multiple dashes with em-dashes and en-dashes.
+    """
+
+    default_priority = 850
+
+    def apply(self):
+        if self.document.settings.smart_quotes is False:
+            return
+        for node in self.document.traverse(nodes.Text):
+            if isinstance(node.parent,
+                          (nodes.FixedTextElement, nodes.literal)):
+                # print "literal", node
+                continue
+            newtext = smartquotes.smartyPants(node.astext(), attr='2')
+            node.parent.replace(node, nodes.Text(newtext))
+            # print "smartquote",

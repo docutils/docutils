@@ -1925,13 +1925,15 @@ Unimplemented Transforms
            supports Zotero databases and CSL_ styles with Docutils with an
            ``xcite`` role.
 
-         .. _CSL: http://www.citationstyles.org/
-
+         * `sphinxcontrib-bibtex`_ Sphinx extension with "bibliography"
+           directive and "cite" role supporting BibTeX databases.
 
     * Automatically insert a "References" heading?
 
 .. _CrossTeX: http://www.cs.cornell.edu/people/egs/crosstex/
 .. _Pybtex:   http://pybtex.sourceforge.net/
+.. _CSL: http://www.citationstyles.org/
+.. _sphinxcontrib-bibtex: http://sphinxcontrib-bibtex.readthedocs.org/
 
 * _`Reference Merging`
 
@@ -2020,24 +2022,6 @@ Unimplemented Transforms
   System Messages section).
 
 * _`Index Generation`
-
-* _`Beautify`
-
-  Convert quotes and dashes to typographically correct entities.
-  Sphinx does this with ``smartypants.py``.
-
-  Write a generic version that uses Unicode chars
-  (let the writer replace these if required).
-
-  Some arguments for "smart quotes" are collected in a `mail to
-  docutils-user by Jörg W. Mittag from 2006-03-13`__.
-
-  Also see the "... Or Not To Do?" list entry for
-  `Character Processing`_
-
-__ http://article.gmane.org/gmane.text.docutils.user/2765
-
-.. _Character Processing: rst/alternatives.html#character-processing
 
 
 HTML Writer
