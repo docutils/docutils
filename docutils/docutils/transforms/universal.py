@@ -217,7 +217,11 @@ class SmartQuotes(Transform):
             return
         for node in self.document.traverse(nodes.Text):
             if isinstance(node.parent,
-                          (nodes.FixedTextElement, nodes.literal)):
+                          (nodes.FixedTextElement,
+                           nodes.literal,
+                           nodes.Special,
+                           nodes.option_string
+                          )):
                 # print "literal", node
                 continue
             newtext = smartquotes.smartyPants(node.astext(), attr='2')
