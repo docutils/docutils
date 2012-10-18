@@ -263,12 +263,7 @@ class HTMLTranslator(nodes.NodeVisitor):
     # __http://www.mathjax.org/download/mathjax-cdn-terms-of-service/
     mathjax_url = ('http://cdn.mathjax.org/mathjax/latest/MathJax.js?'
                    'config=TeX-AMS-MML_HTMLorMML')
-    # TODO: make this configurable:
-    #
-    # a) as extra option or
-    # b) appended to math-output="MathJax"?
-    #
-    # If b), which delimiter/delimter-set (':', ',', ' ')?
+    # may be overwritten by custom URL appended to "mathjax"
 
     stylesheet_link = '<link rel="stylesheet" href="%s" type="text/css" />\n'
     embedded_stylesheet = '<style type="text/css">\n\n%s\n</style>\n'
@@ -302,8 +297,14 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body_suffix = ['</body>\n</html>\n']
         self.section_level = 0
         self.initial_header_level = int(settings.initial_header_level)
-        
-        self.math_output = settings.math_output.lower()
+
+        self.math_output = settings.math_output.split(None, 1)
+        if len(self.math_output) == 2:
+            self.math_output_option = self.math_output[1]
+        else:
+            self.math_output_option = None
+        self.math_output = self.math_output[0].lower()
+
         # A heterogenous stack used in conjunction with the tree traversal.
         # Make sure that the pops correspond to the pushes:
         self.context = []
@@ -1168,7 +1169,7 @@ class HTMLTranslator(nodes.NodeVisitor):
 
     def visit_math(self, node, math_env=''):
         # If the method is called from visit_math_block(), math_env != ''.
-        
+
         # As there is no native HTML math support, we provide alternatives:
         # LaTeX and MathJax math_output modes simply wrap the content,
         # HTML and MathML math_output modes also convert the math_code.
@@ -1176,7 +1177,7 @@ class HTMLTranslator(nodes.NodeVisitor):
             self.document.reporter.error(
                 'math-output format "%s" not supported '
                 'falling back to "latex"'% self.math_output)
-            self.math_output = 'latex'        
+            self.math_output = 'latex'
         #
         # HTML container
         tags = {# math_output: (block, inline, class-arguments)
@@ -1205,7 +1206,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         if self.math_output in ('latex', 'mathjax'):
             math_code = self.encode(math_code)
         if self.math_output == 'mathjax':
-            self.math_header = self.mathjax_script % self.mathjax_url
+            self.math_header = self.mathjax_script % (
+                                self.math_output_option or self.mathjax_url)
         elif self.math_output == 'html':
             math_code = math2html(math_code)
         elif self.math_output == 'mathml':
@@ -1228,7 +1230,9 @@ class HTMLTranslator(nodes.NodeVisitor):
                 raise nodes.SkipNode
         # append to document body
         if tag:
-            self.body.append(self.starttag(node, tag, CLASS=clsarg))
+            self.body.append(self.starttag(node, tag, 
+                                           suffix='\n'*bool(math_env),
+                                           CLASS=clsarg))
         self.body.append(math_code)
         if math_env:
             self.body.append('\n')

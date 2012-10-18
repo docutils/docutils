@@ -46,6 +46,8 @@ Changes Since 0.9.1
 
   - Use ``<code>`` tag for inline "code",
     do not drop nested inline nodes (syntax highlight tokens).
+  - Customizable MathJax URL (based on patch by Dmitry Shachnev).
+  - No line break after opening inline math tag.
 
 * docutils/writers/manpage.py
 
