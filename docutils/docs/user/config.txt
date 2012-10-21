@@ -1341,6 +1341,92 @@ template
     path, use the ``--help`` option).  Options: ``--template``.
 
 
+
+[odf_odt writer]
+``````````````````
+
+The following command line options are specific to ``odtwriter``:
+
+_`stylesheet=<URL>`
+    Specify a stylesheet URL, used verbatim.  Default:
+    writers/odf_odt/styles.odt in the installation directory.
+
+_`odf-config-file=<file>`
+    Specify a configuration/mapping file relative to the
+    current working directory for additional ODF options.
+    In particular, this file may contain a section named
+    "Formats" that maps default style names to names to be
+    used in the resulting output file allowing for
+    adhering to external standards. For more info and the
+    format of the configuration/mapping file, see the
+    `Odt Writer for Docutils`_ document.
+
+_`cloak-email-addresses`
+    Obfuscate email addresses to confuse harvesters while still
+    keeping email links usable with standards-compliant browsers.
+
+_`no-cloak-email-addresses`
+    Do not obfuscate email addresses.
+
+_`table-border-thickness=<TABLE_BORDER_THICKNESS>`
+    Specify the thickness of table borders in thousands of a cm.
+    Default is 35.
+
+_`add-syntax-highlighting`
+    Add syntax highlighting in literal code blocks.
+
+_`no-syntax-highlighting`
+    Do not add syntax highlighting in literal code blocks.
+    (default)
+
+_`create-sections`
+    Create sections for headers.  (default)
+
+_`no-sections`
+    Do not create sections for headers.
+
+_`create-links`
+    Create links.
+
+_`no-links`
+    Do not create links.  (default)
+
+_`endnotes-end-doc`
+    Generate endnotes at end of document, not footnotes at bottom of
+    page.
+
+_`no-endnotes-end-doc`
+    Generate footnotes at bottom of page, not endnotes at end of
+    document. (default)
+
+_`generate-list-toc`
+    Generate a bullet list table of contents, not an
+    ODF/``oowriter`` table of contents.
+
+_`generate-oowriter-toc`
+    Generate an ODF/``oowriter`` table of contents, not a bullet
+    list.  (default) **Note:** ``odtwriter`` is not able to
+    determine page numbers, so you will need to open the generated
+    document in ``oowriter``, then right-click on the table of
+    contents and select "Update" to insert page numbers.
+
+_`custom-odt-header=<CUSTOM_HEADER>`
+    Specify the contents of a custom header line.  For details about
+    custom headers and about special field character sequences, see
+    section "Custom header/footers: inserting page numbers, date,
+    time, etc" in the `Odt Writer for Docutils`_ document for
+    details.
+
+_`custom-odt-footer=<CUSTOM_FOOTER>`
+    Specify the contents of a custom footer line.  For details about
+    custom footers and about special field character sequences, see
+    section "Custom header/footers: inserting page numbers, date,
+    time, etc" in the `Odt Writer for Docutils`_ document for
+    details.
+
+.. _`Odt Writer for Docutils`: odt.html
+
+
 [pseudoxml writer]
 ``````````````````
 
