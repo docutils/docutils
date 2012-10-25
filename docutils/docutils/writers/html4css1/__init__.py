@@ -298,11 +298,8 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.section_level = 0
         self.initial_header_level = int(settings.initial_header_level)
 
-        self.math_output = settings.math_output.split(None, 1)
-        if len(self.math_output) == 2:
-            self.math_output_option = self.math_output[1]
-        else:
-            self.math_output_option = None
+        self.math_output = settings.math_output.split()
+        self.math_output_options = self.math_output[1:]
         self.math_output = self.math_output[0].lower()
 
         # A heterogenous stack used in conjunction with the tree traversal.
@@ -1206,8 +1203,9 @@ class HTMLTranslator(nodes.NodeVisitor):
         if self.math_output in ('latex', 'mathjax'):
             math_code = self.encode(math_code)
         if self.math_output == 'mathjax':
-            self.math_header = self.mathjax_script % (
-                                self.math_output_option or self.mathjax_url)
+            if self.math_output_options:
+                self.mathjax_url = self.math_output_options[0]
+            self.math_header = self.mathjax_script % self.mathjax_url
         elif self.math_output == 'html':
             math_code = math2html(math_code)
         elif self.math_output == 'mathml':
