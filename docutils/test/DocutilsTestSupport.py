@@ -119,16 +119,28 @@ class StandardTestCase(unittest.TestCase):
            operator.
         """
         if not first == second:
-            raise self.failureException, \
-                  (msg or '%s != %s' % _format_str(first, second))
+            raise self.failureException, (
+                    msg or '%s != %s' % _format_str(first, second))
 
     def assertNotEqual(self, first, second, msg=None):
         """Fail if the two objects are equal as determined by the '=='
            operator.
         """
         if first == second:
-            raise self.failureException, \
-                  (msg or '%s == %s' % _format_str(first, second))
+            raise self.failureException, (
+                    msg or '%s == %s' % _format_str(first, second))
+
+    # assertIn and assertNotIn: new in Python 2.7:
+
+    def assertIn(self, a, b, msg=None):
+        if a not in b:
+            raise self.failureException, (
+                    msg or '%s not in %s' % _format_str(a, b))
+
+    def assertNotIn(self, a, b, msg=None):
+        if a in b:
+            raise self.failureException, (
+                    msg or '%s in %s' % _format_str(a, b))
 
     # aliases for assertion methods, deprecated since Python 2.7
 
