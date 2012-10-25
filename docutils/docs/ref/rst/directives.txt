@@ -171,6 +171,9 @@ An "image" is a simple picture::
 
     .. image:: picture.png
 
+Inline images can be defined with an "image" directive in a `substitution
+definition`_
+
 The URI for the image source file is specified in the directive
 argument.  As with hyperlink targets, the image URI may begin on the
 same line as the explicit markup start and target name, or it may
@@ -234,6 +237,8 @@ The following options are recognized:
     `reference name`_ with underscore suffix (e.g. ```a name`_``).
 
 and the common options `:class:`_ and `:name:`_.
+
+.. _substitution definition: restructuredtext.html#substitution-definitions
 
 
 Figure
