@@ -297,7 +297,7 @@ class FileOutput(Output):
 
     mode = 'w'
     """The mode argument for `open()`."""
-    # 'wb' for binary (e.g. OpenOffice) files.
+    # 'wb' for binary (e.g. OpenOffice) files (see also `BinaryFileOutput`).
     # (Do not use binary mode ('wb') for text files, as this prevents the
     # conversion of newlines to the system specific default.)
 
@@ -346,7 +346,7 @@ class FileOutput(Output):
 
     def open(self):
         # Specify encoding in Python 3.
-        if sys.version_info >= (3,0):
+        if sys.version_info >= (3,0) and 'b' not in self.mode:
             kwargs = {'encoding': self.encoding,
                       'errors': self.error_handler}
         else:
