@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 
 # :Id: $Id$
-# :Copyright: © 2011 Günter Milde,
+# :Copyright: © 2010 Günter Milde,
 #             original `SmartyPants`_: © 2003 John Gruber
 #             smartypants.py:          © 2004, 2007 Chad Miller
 # :License: Released under the terms of the `2-Clause BSD license`_, in short:
@@ -313,6 +313,10 @@ proper character for closing single-quotes (``’``) by hand.
 Version History
 ===============
 
+1.6.1:  2012-11-06
+        - Refactor code, code cleanup,
+        - `educate_tokens()` generator as interface for Docutils.
+
 1.6:    2010-08-26
         - Adaption to Docutils:
           - Use Unicode instead of HTML entities,
@@ -352,6 +356,7 @@ Version History
 
 default_smartypants_attr = "1"
 
+
 import re
 
 class smart(object):
@@ -371,7 +376,14 @@ class smart(object):
     ellipsis = u'…' # "&#8230;" HORIZONTAL ELLIPSIS
 
 def smartyPants(text, attr=default_smartypants_attr):
-    convert_quot = False  # translate &quot; entities into normal quotes?
+    """Main function for "traditional" use."""
+
+    return "".join([t for t in educate_tokens(tokenize(text), attr)])
+
+
+def educate_tokens(text_tokens, attr=default_smartypants_attr):
+    """Return iterator that "educates" `text_tokens`.
+    """
 
     # Parse attributes:
     # 0 : do nothing
@@ -388,142 +400,123 @@ def smartyPants(text, attr=default_smartypants_attr):
     # e : ellipses
     # w : convert &quot; entities to " for Dreamweaver users
 
-    skipped_tag_stack = []
-    do_dashes = "0"
-    do_backticks = "0"
-    do_quotes = "0"
-    do_ellipses = "0"
-    do_stupefy = "0"
+    convert_quot = False  # translate &quot; entities into normal quotes?
+    do_dashes = False
+    do_backticks = False
+    do_quotes = False
+    do_ellipses = False
+    do_stupefy = False
 
-    if attr == "0":
-        # Do nothing.
-        return text
-    elif attr == "1":
-        do_quotes    = "1"
-        do_backticks = "1"
-        do_dashes    = "1"
-        do_ellipses  = "1"
+    if attr == "0": # Do nothing.
+        yield text
+    elif attr == "1": # Do everything, turn all options on.
+        do_quotes    = True
+        do_backticks = True
+        do_dashes    = 1
+        do_ellipses  = True
     elif attr == "2":
         # Do everything, turn all options on, use old school dash shorthand.
-        do_quotes    = "1"
-        do_backticks = "1"
-        do_dashes    = "2"
-        do_ellipses  = "1"
+        do_quotes    = True
+        do_backticks = True
+        do_dashes    = 2
+        do_ellipses  = True
     elif attr == "3":
-        # Do everything, turn all options on, use inverted old school dash shorthand.
-        do_quotes    = "1"
-        do_backticks = "1"
-        do_dashes    = "3"
-        do_ellipses  = "1"
-    elif attr == "-1":
-        # Special "stupefy" mode.
-        do_stupefy   = "1"
+        # Do everything, use inverted old school dash shorthand.
+        do_quotes    = True
+        do_backticks = True
+        do_dashes    = 3
+        do_ellipses  = True
+    elif attr == "-1": # Special "stupefy" mode.
+        do_stupefy   = True
     else:
-        for c in attr:
-            if c == "q": do_quotes = "1"
-            elif c == "b": do_backticks = "1"
-            elif c == "B": do_backticks = "2"
-            elif c == "d": do_dashes = "1"
-            elif c == "D": do_dashes = "2"
-            elif c == "i": do_dashes = "3"
-            elif c == "e": do_ellipses = "1"
-            elif c == "w": convert_quot = "1"
-            else:
-                pass
-                # ignore unknown option
+        if "q" in attr: do_quotes = True
+        if "b" in attr: do_backticks = True
+        if "B" in attr: do_backticks = 2
+        if "d" in attr: do_dashes = 1
+        if "D" in attr: do_dashes = 2
+        if "i" in attr: do_dashes = 3
+        if "e" in attr: do_ellipses = True
+        if "w" in attr: convert_quot = True
 
-    tokens = _tokenize(text)
-    result = []
-    in_pre = False
+    prev_token_last_char = " "
+    # Get context around inline mark-up. (Remember the last character of the
+    # previous text token, to use as context to curl single-character quote
+    # tokens correctly.)
 
-    prev_token_last_char = ""
-    # This is a cheat, used to get some context
-    # for one-character tokens that consist of
-    # just a quote char. What we do is remember
-    # the last character of the previous text
-    # token, to use as context to curl single-
-    # character quote tokens correctly.
-
-    for cur_token in tokens:
+    for cur_token in text_tokens:
         t = cur_token[1]
+
+        # skip HTML and/or XML tags (do not update last character)
+        if cur_token[0] == 'tag':
+            yield t
+            continue
+
         last_char = t[-1:] # Remember last char of this token before processing.
-        if not in_pre:
-            oldstr = t
-            t = processEscapes(t)
 
-            if convert_quot != "0":
-                t = re.sub('&quot;', '"', t)
+        # skip literal text (math, literal, raw, ...)
+        if cur_token[0] == 'literal':
+            yield t
+            continue
 
-            if do_dashes != "0":
-                if do_dashes == "1":
-                    t = educateDashes(t)
-                if do_dashes == "2":
-                    t = educateDashesOldSchool(t)
-                if do_dashes == "3":
-                    t = educateDashesOldSchoolInverted(t)
+        t = processEscapes(t)
 
-            if do_ellipses != "0":
-                t = educateEllipses(t)
+        if convert_quot:
+            t = re.sub('&quot;', '"', t)
 
-            # Note: backticks need to be processed before quotes.
-            if do_backticks != "0":
-                t = educateBackticks(t)
+        if do_dashes == 1:
+            t = educateDashes(t)
+        elif do_dashes == 2:
+            t = educateDashesOldSchool(t)
+        elif do_dashes == 3:
+            t = educateDashesOldSchoolInverted(t)
 
-            if do_backticks == "2":
-                t = educateSingleBackticks(t)
+        if do_ellipses:
+            t = educateEllipses(t)
 
-            if do_quotes != "0":
-                if t == "'":
-                    # Special case: single-character ' token
-                    if re.match("\S", prev_token_last_char):
-                        t = smart.rquote
-                    else:
-                        t = smart.lquote
-                elif t == '"':
-                    # Special case: single-character " token
-                    if re.match("\S", prev_token_last_char):
-                        t = smart.rdquote
-                    else:
-                        t = smart.ldquote
+        # Note: backticks need to be processed before quotes.
+        if do_backticks:
+            t = educateBackticks(t)
 
-                else:
-                    # Normal case:
-                    t = educateQuotes(t)
+        if do_backticks == 2:
+            t = educateSingleBackticks(t)
 
-            if do_stupefy == "1":
-                t = stupefyEntities(t)
+        if do_quotes:
+            t = educateQuotes(prev_token_last_char+t)[1:]
 
+        if do_stupefy:
+            t = stupefyEntities(t)
+
+        # print prev_token_last_char, t.encode('utf8')
         prev_token_last_char = last_char
-        result.append(t)
 
-    return "".join(result)
+        yield t
 
 
-def educateQuotes(str):
+
+def educateQuotes(text):
     """
-    Parameter:  String.
-
-    Returns:        The string, with "educated" curly quote characters.
+    Parameter:  String (unicode or bytes).
+    Returns:    The `text`, with "educated" curly quote characters.
 
     Example input:  "Isn't this fun?"
     Example output: “Isn’t this fun?“;
     """
 
-    oldstr = str
+    # oldtext = text
     punct_class = r"""[!"#\$\%'()*+,-.\/:;<=>?\@\[\\\]\^_`{|}~]"""
 
     # Special case if the very first character is a quote
     # followed by punctuation at a non-word-break. Close the quotes by brute force:
-    str = re.sub(r"""^'(?=%s\\B)""" % (punct_class,), smart.rquote, str)
-    str = re.sub(r"""^"(?=%s\\B)""" % (punct_class,), smart.rdquote, str)
+    text = re.sub(r"""^'(?=%s\\B)""" % (punct_class,), smart.rquote, text)
+    text = re.sub(r"""^"(?=%s\\B)""" % (punct_class,), smart.rdquote, text)
 
     # Special case for double sets of quotes, e.g.:
     #   <p>He said, "'Quoted' words in a larger quote."</p>
-    str = re.sub(r""""'(?=\w)""", smart.ldquote+smart.lquote, str)
-    str = re.sub(r"""'"(?=\w)""", smart.lquote+smart.ldquote, str)
+    text = re.sub(r""""'(?=\w)""", smart.ldquote+smart.lquote, text)
+    text = re.sub(r"""'"(?=\w)""", smart.lquote+smart.ldquote, text)
 
     # Special case for decade abbreviations (the '80s):
-    str = re.sub(r"""\b'(?=\d{2}s)""", smart.rquote, str)
+    text = re.sub(r"""\b'(?=\d{2}s)""", smart.rquote, text)
 
     close_class = r"""[^\ \t\r\n\[\{\(\-]"""
     dec_dashes = r"""&#8211;|&#8212;"""
@@ -541,24 +534,24 @@ def educateQuotes(str):
                     '                 # the quote
                     (?=\w)            # followed by a word character
                     """ % (dec_dashes,), re.VERBOSE)
-    str = opening_single_quotes_regex.sub(r'\1'+smart.lquote, str)
+    text = opening_single_quotes_regex.sub(r'\1'+smart.lquote, text)
 
     closing_single_quotes_regex = re.compile(r"""
                     (%s)
                     '
                     (?!\s | s\b | \d)
                     """ % (close_class,), re.VERBOSE)
-    str = closing_single_quotes_regex.sub(r'\1'+smart.rquote, str)
+    text = closing_single_quotes_regex.sub(r'\1'+smart.rquote, text)
 
     closing_single_quotes_regex = re.compile(r"""
                     (%s)
                     '
                     (\s | s\b)
                     """ % (close_class,), re.VERBOSE)
-    str = closing_single_quotes_regex.sub(r'\1%s\2' % smart.rquote, str)
+    text = closing_single_quotes_regex.sub(r'\1%s\2' % smart.rquote, text)
 
     # Any remaining single quotes should be opening ones:
-    str = re.sub(r"""'""", smart.lquote, str)
+    text = re.sub(r"""'""", smart.lquote, text)
 
     # Get most opening double quotes:
     opening_double_quotes_regex = re.compile(r"""
@@ -573,7 +566,7 @@ def educateQuotes(str):
                     "                 # the quote
                     (?=\w)            # followed by a word character
                     """ % (dec_dashes,), re.VERBOSE)
-    str = opening_double_quotes_regex.sub(r'\1'+smart.ldquote, str)
+    text = opening_double_quotes_regex.sub(r'\1'+smart.ldquote, text)
 
     # Double closing quotes:
     closing_double_quotes_regex = re.compile(r"""
@@ -581,81 +574,78 @@ def educateQuotes(str):
                     "
                     (?=\s)
                     """ % (close_class,), re.VERBOSE)
-    str = closing_double_quotes_regex.sub(smart.rdquote, str)
+    text = closing_double_quotes_regex.sub(smart.rdquote, text)
 
     closing_double_quotes_regex = re.compile(r"""
                     (%s)   # character that indicates the quote should be closing
                     "
                     """ % (close_class,), re.VERBOSE)
-    str = closing_double_quotes_regex.sub(r'\1'+smart.rdquote, str)
+    text = closing_double_quotes_regex.sub(r'\1'+smart.rdquote, text)
 
     # Any remaining quotes should be opening ones.
-    str = re.sub(r'"', smart.ldquote, str)
+    text = re.sub(r'"', smart.ldquote, text)
 
-    return str
+    return text
 
 
-def educateBackticks(str):
+def educateBackticks(text):
     """
-    Parameter:  String.
-    Returns:    The string, with ``backticks'' -style double quotes
+    Parameter:  String (unicode or bytes).
+    Returns:    The `text`, with ``backticks'' -style double quotes
                 translated into HTML curly quote entities.
     Example input:  ``Isn't this fun?''
     Example output: “Isn't this fun?“;
     """
 
-    str = re.sub(r"""``""", smart.ldquote, str)
-    str = re.sub(r"""''""", smart.rdquote, str)
-    return str
+    text = re.sub(r"""``""", smart.ldquote, text)
+    text = re.sub(r"""''""", smart.rdquote, text)
+    return text
 
 
-def educateSingleBackticks(str):
+def educateSingleBackticks(text):
     """
-    Parameter:  String.
-    Returns:    The string, with `backticks' -style single quotes
+    Parameter:  String (unicode or bytes).
+    Returns:    The `text`, with `backticks' -style single quotes
                 translated into HTML curly quote entities.
 
     Example input:  `Isn't this fun?'
     Example output: ‘Isn’t this fun?’
     """
 
-    str = re.sub(r"""`""", smart.lquote, str)
-    str = re.sub(r"""'""", smart.rquote, str)
-    return str
+    text = re.sub(r"""`""", smart.lquote, text)
+    text = re.sub(r"""'""", smart.rquote, text)
+    return text
 
 
-def educateDashes(str):
+def educateDashes(text):
     """
-    Parameter:  String.
-
-    Returns:    The string, with each instance of "--" translated to
+    Parameter:  String (unicode or bytes).
+    Returns:    The `text`, with each instance of "--" translated to
                 an em-dash character.
     """
 
-    str = re.sub(r"""---""", smart.endash, str) # en  (yes, backwards)
-    str = re.sub(r"""--""", smart.emdash, str) # em (yes, backwards)
-    return str
+    text = re.sub(r"""---""", smart.endash, text) # en  (yes, backwards)
+    text = re.sub(r"""--""", smart.emdash, text) # em (yes, backwards)
+    return text
 
 
-def educateDashesOldSchool(str):
+def educateDashesOldSchool(text):
     """
-    Parameter:  String.
-
-    Returns:    The string, with each instance of "--" translated to
+    Parameter:  String (unicode or bytes).
+    Returns:    The `text`, with each instance of "--" translated to
                 an en-dash character, and each "---" translated to
                 an em-dash character.
     """
 
-    str = re.sub(r"""---""", smart.emdash, str)    # em (yes, backwards)
-    str = re.sub(r"""--""", smart.endash, str)    # en (yes, backwards)
-    return str
+    text = re.sub(r"""---""", smart.emdash, text)    # em (yes, backwards)
+    text = re.sub(r"""--""", smart.endash, text)    # en (yes, backwards)
+    return text
 
 
-def educateDashesOldSchoolInverted(str):
+def educateDashesOldSchoolInverted(text):
     """
-    Parameter:  String.
-
-    Returns:    The string, with each instance of "--" translated to
+    Parameter:  String (unicode or bytes).
+    Returns:    The `text`, with each instance of "--" translated to
                 an em-dash character, and each "---" translated to
                 an en-dash character. Two reasons why: First, unlike the
                 en- and em-dash syntax supported by
@@ -666,55 +656,55 @@ def educateDashesOldSchoolInverted(str):
                 the shortcut should be shorter to type. (Thanks to Aaron
                 Swartz for the idea.)
     """
-    str = re.sub(r"""---""", smart.endash, str)    # em
-    str = re.sub(r"""--""", smart.emdash, str)    # en
-    return str
+    text = re.sub(r"""---""", smart.endash, text)    # em
+    text = re.sub(r"""--""", smart.emdash, text)    # en
+    return text
 
 
 
-def educateEllipses(str):
+def educateEllipses(text):
     """
-    Parameter:  String.
-    Returns:    The string, with each instance of "..." translated to
+    Parameter:  String (unicode or bytes).
+    Returns:    The `text`, with each instance of "..." translated to
                 an ellipsis character.
 
     Example input:  Huh...?
     Example output: Huh&#8230;?
     """
 
-    str = re.sub(r"""\.\.\.""", smart.ellipsis, str)
-    str = re.sub(r"""\. \. \.""", smart.ellipsis, str)
-    return str
+    text = re.sub(r"""\.\.\.""", smart.ellipsis, text)
+    text = re.sub(r"""\. \. \.""", smart.ellipsis, text)
+    return text
 
 
-def stupefyEntities(str):
+def stupefyEntities(text):
     """
-    Parameter:  String.
-    Returns:    The string, with each SmartyPants character translated to
+    Parameter:  String (unicode or bytes).
+    Returns:    The `text`, with each SmartyPants character translated to
                 its ASCII counterpart.
 
     Example input:  “Hello — world.”
     Example output: "Hello -- world."
     """
 
-    str = re.sub(smart.endash, "-", str)  # en-dash
-    str = re.sub(smart.emdash, "--", str) # em-dash
+    text = re.sub(smart.endash, "-", text)  # en-dash
+    text = re.sub(smart.emdash, "--", text) # em-dash
 
-    str = re.sub(smart.lquote, "'", str)  # open single quote
-    str = re.sub(smart.rquote, "'", str)  # close single quote
+    text = re.sub(smart.lquote, "'", text)  # open single quote
+    text = re.sub(smart.rquote, "'", text)  # close single quote
 
-    str = re.sub(smart.ldquote, '"', str)  # open double quote
-    str = re.sub(smart.rdquote, '"', str)  # close double quote
+    text = re.sub(smart.ldquote, '"', text)  # open double quote
+    text = re.sub(smart.rdquote, '"', text)  # close double quote
 
-    str = re.sub(smart.ellipsis, '...', str)# ellipsis
+    text = re.sub(smart.ellipsis, '...', text)# ellipsis
 
-    return str
+    return text
 
 
-def processEscapes(str):
+def processEscapes(text):
     r"""
-    Parameter:  String.
-    Returns:    The string, with after processing the following backslash
+    Parameter:  String (unicode or bytes).
+    Returns:    The `text`, with after processing the following backslash
                 escape sequences. This is useful if you want to force a "dumb"
                 quote or other character to appear.
 
@@ -727,24 +717,24 @@ def processEscapes(str):
                 \-      &#45;
                 \`      &#96;
     """
-    str = re.sub(r"""\\\\""", r"""&#92;""", str)
-    str = re.sub(r'''\\"''', r"""&#34;""", str)
-    str = re.sub(r"""\\'""", r"""&#39;""", str)
-    str = re.sub(r"""\\\.""", r"""&#46;""", str)
-    str = re.sub(r"""\\-""", r"""&#45;""", str)
-    str = re.sub(r"""\\`""", r"""&#96;""", str)
+    text = re.sub(r"""\\\\""", r"""&#92;""", text)
+    text = re.sub(r'''\\"''', r"""&#34;""", text)
+    text = re.sub(r"""\\'""", r"""&#39;""", text)
+    text = re.sub(r"""\\\.""", r"""&#46;""", text)
+    text = re.sub(r"""\\-""", r"""&#45;""", text)
+    text = re.sub(r"""\\`""", r"""&#96;""", text)
 
-    return str
+    return text
 
 
-def _tokenize(str):
+def tokenize(text):
     """
     Parameter:  String containing HTML markup.
-    Returns:    Reference to an array of the tokens comprising the input
+    Returns:    An iterator that yields the tokens comprising the input
                 string. Each token is either a tag (possibly with nested,
                 tags contained therein, such as <a href="<MTFoo>">, or a
-                run of text between tags. Each element of the array is a
-                two-element array; the first is either 'tag' or 'text';
+                run of text between tags. Each yielded element is a
+                two-element tuple; the first is either 'tag' or 'text';
                 the second is the actual value.
 
     Based on the _tokenize() subroutine from Brad Choate's MTRegex plugin.
@@ -752,8 +742,8 @@ def _tokenize(str):
     """
 
     pos = 0
-    length = len(str)
-    tokens = []
+    length = len(text)
+    # tokens = []
 
     depth = 6
     nested_tags = "|".join(['(?:<(?:[^<>]',] * depth) + (')*>)' * depth)
@@ -762,22 +752,20 @@ def _tokenize(str):
     #               %s  # nested tags       """ % (nested_tags,)
     tag_soup = re.compile(r"""([^<]*)(<[^>]*>)""")
 
-    token_match = tag_soup.search(str)
+    token_match = tag_soup.search(text)
 
     previous_end = 0
     while token_match is not None:
         if token_match.group(1):
-            tokens.append(['text', token_match.group(1)])
+            yield ('text', token_match.group(1))
 
-        tokens.append(['tag', token_match.group(2)])
+        yield ('tag', token_match.group(2))
 
         previous_end = token_match.end()
-        token_match = tag_soup.search(str, token_match.end())
+        token_match = tag_soup.search(text, token_match.end())
 
-    if previous_end < len(str):
-        tokens.append(['text', str[previous_end:]])
-
-    return tokens
+    if previous_end < len(text):
+        yield ('text', text[previous_end:])
 
 
 
@@ -796,7 +784,7 @@ if __name__ == "__main__":
     print docstring_html
 
 
-    # Unit test output goes out stderr.  No worries.
+    # Unit test output goes out stderr.
     import unittest
     sp = smartyPants
 
@@ -818,6 +806,10 @@ if __name__ == "__main__":
 
         def test_educated_quotes(self):
             self.assertEqual(sp('''"Isn't this fun?"'''), u'“Isn’t this fun?”')
+
+        def test_html_tags(self):
+            text = '<a src="foo">more</a>'
+            self.assertEqual(sp(text), text)
 
     unittest.main()
 
