@@ -34,14 +34,93 @@ totest = {}
 
 totest['transitions'] = ((SmartQuotes,), [
 ["""\
-Test "smart quotes", 'single smart quotes'
+Test "smart quotes", 'single smart quotes',
+"'nested' smart" quotes
 -- and ---also long--- dashes.
 """,
 u"""\
 <document source="test data">
     <paragraph>
-        Test “smart quotes”, ‘single smart quotes’
+        Test “smart quotes”, ‘single smart quotes’,
+        “‘nested’ smart” quotes
         – and —also long— dashes.
+"""],
+["""\
+Do not "educate" quotes ``inside "literal" text`` and ::
+ 
+  "literal" blocks.
+
+Keep quotes straight in code and math: 
+:code:`print "hello"` :math:`1' 12"`.
+
+.. code::
+
+   print "hello"
+   
+.. math::
+
+   f'(x) = df(x)/dx
+  
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        Do not “educate” quotes 
+        <literal>
+            inside "literal" text
+         and
+    <literal_block xml:space="preserve">
+        "literal" blocks.
+    <paragraph>
+        Keep quotes straight in code and math:
+        <literal classes="code">
+            print "hello"
+         
+        <math>
+            1' 12"
+        .
+    <literal_block classes="code" xml:space="preserve">
+        print "hello"
+    <math_block xml:space="preserve">
+        f'(x) = df(x)/dx
+"""],
+["""\
+Quotes and inline-elements:
+
+* Around "_`targets`", "*emphasized*" or "``literal``" text
+  and links to "targets_".                                          
+
+* Inside *"emphasized"* or other `inline "roles"`
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        Quotes and inline-elements:
+    <bullet_list bullet="*">
+        <list_item>
+            <paragraph>
+                Around “
+                <target ids="targets" names="targets">
+                    targets
+                ”, “
+                <emphasis>
+                    emphasized
+                ” or “
+                <literal>
+                    literal
+                ” text
+                and links to “
+                <reference name="targets" refname="targets">
+                    targets
+                ”.
+        <list_item>
+            <paragraph>
+                Inside \n\
+                <emphasis>
+                    “emphasized”
+                 or other \n\
+                <title_reference>
+                    inline “roles”\
 """],
 ])
 

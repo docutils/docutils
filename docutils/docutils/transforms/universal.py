@@ -207,23 +207,46 @@ class SmartQuotes(Transform):
     """
     Replace ASCII quotation marks with typographic form.
 
-    Also replace multiple dashes with em-dashes and en-dashes.
+    Also replace multiple dashes with em-dash/en-dash characters.
     """
 
     default_priority = 850
 
+    texttype = {True: 'literal',
+                False: 'plain'}
+
     def apply(self):
         if self.document.settings.smart_quotes is False:
             return
-        for node in self.document.traverse(nodes.Text):
-            if isinstance(node.parent,
-                          (nodes.FixedTextElement,
-                           nodes.literal,
-                           nodes.Special,
-                           nodes.option_string
-                          )):
-                # print "literal", node
+        
+        # "Educate" quotes in normal text. Handle each block of text
+        # (TextElement node) as a unit to keep context around inline nodes:
+        for node in self.document.traverse(nodes.TextElement):
+            # skip preformatted text blocks and special elements:
+            if isinstance(node, (nodes.FixedTextElement, nodes.Special)):
                 continue
-            newtext = smartquotes.smartyPants(node.astext(), attr='2')
-            node.parent.replace(node, nodes.Text(newtext))
-            # print "smartquote",
+            # nested TextElements are not "block-level" elements:
+            if isinstance(node.parent, nodes.TextElement):
+                continue
+
+            # list of text nodes in the "text block":
+            txtnodes = [txtnode for txtnode in node.traverse(nodes.Text)
+                        if not isinstance(txtnode.parent,
+                                          nodes.option_string)]
+            # smartquotes.educate_tokens() iterates over
+            # ``(texttype, nodetext)`` tuples. `texttype` is "literal" 
+            # or "plain" where "literal" text is not changed:
+            tokens = [(self.texttype[isinstance(txtnode.parent,
+                                                  (nodes.literal,
+                                                   nodes.math,
+                                                   nodes.image,
+                                                   nodes.raw,
+                                                   nodes.problematic))],
+                       txtnode.astext()) for txtnode in txtnodes]
+
+            # Iterator educating quotes in plain text
+            # 2 : set all, using old school en- and em- dash shortcuts
+            teacher = smartquotes.educate_tokens(tokens, attr='2')
+
+            for txtnode, newtext in zip(txtnodes, teacher):
+                txtnode.parent.replace(txtnode, nodes.Text(newtext))
