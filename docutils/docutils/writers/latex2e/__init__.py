@@ -293,18 +293,18 @@ class Babel(object):
         'cy':           'welsh',
         'da':           'danish',
         'de':           'ngerman', # new spelling (de_1996)
-        'de_1901':      'german', # old spelling
-        'de_at':        'naustrian',
-        'de_at_1901':   'austrian',
+        'de-1901':      'german', # old spelling
+        'de-AT':        'naustrian',
+        'de-AT-1901':   'austrian',
         'dsb':          'lowersorbian',
         'el':           'greek', # monotonic (el-monoton)
-        'el_polyton':   'polutonikogreek',
+        'el-polyton':   'polutonikogreek',
         'en':           'english',  # TeX' default language
-        'en_au':        'australian',
-        'en_ca':        'canadian',
-        'en_gb':        'british',
-        'en_nz':        'newzealand',
-        'en_us':        'american',
+        'en-AU':        'australian',
+        'en-CA':        'canadian',
+        'en-GB':        'british',
+        'en-NZ':        'newzealand',
+        'en-US':        'american',
         'eo':           'esperanto', # '^' is active
         'es':           'spanish',
         'et':           'estonian',
@@ -312,10 +312,10 @@ class Babel(object):
         # 'fa':           'farsi',
         'fi':           'finnish',
         'fr':           'french',
-        'fr_ca':        'canadien',
+        'fr-CA':        'canadien',
         'ga':           'irish',    # Irish Gaelic
         # 'grc':                    # Ancient Greek
-        'grc_ibycus':   'ibycus',   # Ibycus encoding
+        'grc-ibycus':   'ibycus',   # Ibycus encoding
         'gl':           'galician',
         'he':           'hebrew',
         'hr':           'croatian',
@@ -338,24 +338,27 @@ class Babel(object):
         'no':           'norsk',     # Norwegian Bokmal
         'pl':           'polish',
         'pt':           'portuges',
-        'pt_br':        'brazil',
+        'pt-BR':        'brazil',
         'ro':           'romanian',
         'ru':           'russian',   # '"' is active
         'se':           'samin',     # North Sami
-        # sh-cyrl:      Serbo-Croatian, Cyrillic script
-        'sh-latn':      'serbian', # Serbo-Croatian, Latin script
+        # sh-Cyrl:      Serbo-Croatian, Cyrillic script
+        'sh-Latn':      'serbian', # Serbo-Croatian, Latin script
         'sk':           'slovak',
         'sl':           'slovene',
         'sq':           'albanian',
-        # 'sr-cyrl':    Serbian, Cyrillic script (sr-cyrl)
-        'sr-latn':      'serbian', # Serbian, Latin script, " active.
+        # 'sr-Cyrl':    Serbian, Cyrillic script (sr-cyrl)
+        'sr-Latn':      'serbian', # Serbian, Latin script, " active.
         'sv':           'swedish',
         # 'th':           'thai',
         'tr':           'turkish',
         'uk':           'ukrainian',
         'vi':           'vietnam',
-        # zh-latn:      Chinese Pinyin
+        # zh-Latn:      Chinese Pinyin
         }
+    # normalize (downcase) keys
+    language_codes = dict([(k.lower(), v) for (k,v) in language_codes.items()])
+
     warn_msg = 'Language "%s" not supported by LaTeX (babel)'
 
     def __init__(self, language_code, reporter=None):
@@ -1595,8 +1598,12 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.out.append( '%\n\\begin{list}{}{}\n' )
         else:
             self.out.append( '%\n\\begin{itemize}\n' )
+        # if node['classes']:
+        #     self.visit_inline(node)
 
     def depart_bullet_list(self, node):
+        # if node['classes']:
+        #     self.depart_inline(node)
         if self.is_toc_list:
             self.out.append( '\n\\end{list}\n' )
         else:

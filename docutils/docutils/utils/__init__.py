@@ -12,6 +12,7 @@ __docformat__ = 'reStructuredText'
 import sys
 import os
 import os.path
+import re
 import warnings
 import unicodedata
 from docutils import ApplicationError, DataError
@@ -642,20 +643,20 @@ def normalize_language_tag(tag):
 
     Example:
 
-      >>> normalize_language_tag('de-AT-1901')
-      ['de_at_1901', 'de_at', 'de_1901', 'de']
+    >>> normalize_language_tag('de_AT-1901')
+    ['de-at-1901', 'de-at', 'de-1901', 'de']
     """
     # normalize:
-    tag = tag.lower().replace('-','_')
-    # find all combinations of subtags
+    tag = tag.lower().replace('_','-')
+    # split (except singletons, which mark the following tag as non-standard):
+    tag = re.sub(r'-([a-zA-Z0-9])-', r'-\1_', tag)
     taglist = []
-    base_tag= tag.split('_')[:1]
-    subtags = tag.split('_')[1:]
-    # print base_tag, subtags
+    subtags = [subtag.replace('_', '-') for subtag in tag.split('-')]
+    base_tag = [subtags.pop(0)]
+    # find all combinations of subtags
     for n in range(len(subtags), 0, -1):
         for tags in unique_combinations(subtags, n):
-            # print tags
-            taglist.append('_'.join(base_tag + tags))
+            taglist.append('-'.join(base_tag+tags))
     taglist += base_tag
     return taglist
 

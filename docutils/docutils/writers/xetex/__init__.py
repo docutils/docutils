@@ -76,30 +76,33 @@ class Babel(latex2e.Babel):
         # code          Polyglossia-name       comment
         'cop':          'coptic',
         'de':           'german', # new spelling (de_1996)
-        'de_1901':      'ogerman', # old spelling
+        'de-1901':      'ogerman', # old spelling
         'dv':           'divehi',  # Maldivian
         'dsb':          'lsorbian',
-        'el_polyton':   'polygreek',
+        'el-polyton':   'polygreek',
         'fa':           'farsi',
         'grc':          'ancientgreek',
         'hsb':          'usorbian',
-        'sh-cyrl':      'serbian', # Serbo-Croatian, Cyrillic script
-        'sh-latn':      'croatian', # Serbo-Croatian, Latin script
+        'sh-Cyrl':      'serbian', # Serbo-Croatian, Cyrillic script
+        'sh-Latn':      'croatian', # Serbo-Croatian, Latin script
         'sq':           'albanian',
-        'sr':           'serbian', # Cyrillic script (sr-cyrl)
+        'sr':           'serbian', # Cyrillic script (sr-Cyrl)
         'th':           'thai',
         'vi':           'vietnamese',
-        # zh-latn:      ???        #     Chinese Pinyin
+        # zh-Latn:      ???        #     Chinese Pinyin
         })
+    # normalize (downcase) keys
+    language_codes = dict([(k.lower(), v) for (k,v) in language_codes.items()])
+
     # Languages without Polyglossia support:
     for key in ('af',           # 'afrikaans',
-                'de_at',        # 'naustrian',
-                'de_at_1901',   # 'austrian',
-                'fr_ca',        # 'canadien',
-                'grc_ibycus',   # 'ibycus', (Greek Ibycus encoding)
-                'sr-latn',      # 'serbian script=latin'
+                'de-AT',        # 'naustrian',
+                'de-AT-1901',   # 'austrian',
+                'fr-CA',        # 'canadien',
+                'grc-ibycus',   # 'ibycus', (Greek Ibycus encoding)
+                'sr-Latn',      # 'serbian script=latin'
                ):
-        del(language_codes[key])
+        del(language_codes[key.lower()])
 
     def __init__(self, language_code, reporter):
         self.language_code = language_code
