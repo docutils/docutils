@@ -240,12 +240,15 @@ class HelperFunctionsTests(unittest.TestCase):
     def test_normalize_language_tag(self):
         self.assertEqual(utils.normalize_language_tag('de'), ['de'])
         self.assertEqual(utils.normalize_language_tag('de-AT'),
-                          ['de_at', 'de'])
+                         ['de-at', 'de'])
         self.assertEqual(utils.normalize_language_tag('de-AT-1901'),
-                          ['de_at_1901', 'de_at', 'de_1901', 'de'])
+                         ['de-at-1901', 'de-at', 'de-1901', 'de'])
         self.assertEqual(utils.normalize_language_tag('de-AT-1901-frak'),
-                          ['de_at_1901_frak', 'de_at_1901', 'de_at_frak',
-                          'de_1901_frak', 'de_at', 'de_1901', 'de_frak', 'de'])
+                         ['de-at-1901-frak', 'de-at-1901', 'de-at-frak',
+                          'de-1901-frak', 'de-at', 'de-1901', 'de-frak', 'de'])
+        self.assertEqual(utils.normalize_language_tag('grc-ibycus-x-altquot'),
+                         ['grc-ibycus-x-altquot', 'grc-ibycus',
+                          'grc-x-altquot', 'grc'])
 
     def test_column_width(self):
         self.assertEqual(utils.column_width(u'de'), 2)

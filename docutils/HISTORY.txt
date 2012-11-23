@@ -43,6 +43,11 @@ Changes Since 0.9.1
 
   - Add SmartQuotes transform for typographic quotes and dashes.
 
+* docutils/utils/__init__.py
+
+  - normalize_language_tag() now returns `BCP 47`_ conformant tags
+    with subtags separated by ``-``.
+
 * docutils/writers/html4css1/__init__.py
 
   - Use ``<code>`` tag for inline "code",

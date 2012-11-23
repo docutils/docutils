@@ -27,6 +27,7 @@ def get_language(language_code, reporter=None):
     """
     # TODO: use a dummy module returning emtpy strings?, configurable?
     for tag in normalize_language_tag(language_code):
+        tag = tag.replace('-','_') # '-' not valid in module names
         if tag in _languages:
             return _languages[tag]
         try:
