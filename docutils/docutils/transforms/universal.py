@@ -1,5 +1,7 @@
 # $Id$
-# Authors: David Goodger <goodger@python.org>; Ueli Schlaepfer
+# -*- coding: utf8 -*-
+# Authors: David Goodger <goodger@python.org>; Ueli Schlaepfer; Günter Milde
+# Maintainer: docutils-develop@lists.sourceforge.net
 # Copyright: This module has been placed in the public domain.
 
 """
@@ -212,13 +214,38 @@ class SmartQuotes(Transform):
 
     default_priority = 850
 
-    texttype = {True: 'literal',
-                False: 'plain'}
+    def __init__(self, document, startnode):
+        Transform.__init__(self, document, startnode=startnode)
+        self.unsupported_languages = set()
+
+    def get_tokens(self, txtnodes):
+        # A generator that yields ``(texttype, nodetext)`` tuples for a list
+        # of "Text" nodes (interface to ``smartquotes.educate_tokens()``).
+
+        texttype = {True: 'literal', # "literal" text is not changed:
+                    False: 'plain'}
+        for txtnode in txtnodes:
+            nodetype = texttype[isinstance(txtnode.parent,
+                                           (nodes.literal,
+                                            nodes.math,
+                                            nodes.image,
+                                            nodes.raw,
+                                            nodes.problematic))]
+            yield (nodetype, txtnode.astext())
+
 
     def apply(self):
-        if self.document.settings.smart_quotes is False:
+        smart_quotes = self.document.settings.smart_quotes
+        if not smart_quotes:
             return
-        
+        try:
+            alternative = smart_quotes.startswith('alt')
+        except AttributeError:
+            alternative = False
+        # print repr(alternative)
+
+        document_language = self.document.settings.language_code
+
         # "Educate" quotes in normal text. Handle each block of text
         # (TextElement node) as a unit to keep context around inline nodes:
         for node in self.document.traverse(nodes.TextElement):
@@ -233,20 +260,33 @@ class SmartQuotes(Transform):
             txtnodes = [txtnode for txtnode in node.traverse(nodes.Text)
                         if not isinstance(txtnode.parent,
                                           nodes.option_string)]
-            # smartquotes.educate_tokens() iterates over
-            # ``(texttype, nodetext)`` tuples. `texttype` is "literal" 
-            # or "plain" where "literal" text is not changed:
-            tokens = [(self.texttype[isinstance(txtnode.parent,
-                                                  (nodes.literal,
-                                                   nodes.math,
-                                                   nodes.image,
-                                                   nodes.raw,
-                                                   nodes.problematic))],
-                       txtnode.astext()) for txtnode in txtnodes]
 
-            # Iterator educating quotes in plain text
-            # 2 : set all, using old school en- and em- dash shortcuts
-            teacher = smartquotes.educate_tokens(tokens, attr='2')
+            # language: use smart-quotes for language "lang"
+            lang = node.get_language_code(document_language)
+            # use alternative form if `smart-quotes` setting starts with "alt":
+            if alternative:
+                if '-x-altquot' in lang:
+                    lang = lang.replace('-x-altquot', '')
+                else:
+                    lang += '-x-altquot'
+            # drop subtags missing in quotes:
+            for tag in utils.normalize_language_tag(lang):
+                if tag in smartquotes.smartchars.quotes:
+                    lang = tag
+                    break
+            else: # language not supported: (keep ASCII quotes)
+                if lang not in self.unsupported_languages:
+                    self.document.reporter.warning('No smart quotes '
+                        'defined for language "%s".'%lang, base_node=node)
+                self.unsupported_languages.add(lang)
+                lang = ''
+
+            # Iterator educating quotes in plain text:
+            # '2': set all, using old school en- and em- dash shortcuts
+            teacher = smartquotes.educate_tokens(self.get_tokens(txtnodes),
+                                                 attr='2', language=lang)
 
             for txtnode, newtext in zip(txtnodes, teacher):
                 txtnode.parent.replace(txtnode, nodes.Text(newtext))
+
+            self.unsupported_languages = set() # reset

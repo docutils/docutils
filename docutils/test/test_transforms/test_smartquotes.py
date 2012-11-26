@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
-
 # $Id$
-
+#
 # :Copyright: © 2011 Günter Milde.
+# :Maintainer: docutils-develop@lists.sourceforge.net
 # :License: Released under the terms of the `2-Clause BSD license`_, in short:
 #
 #    Copying and distribution of this file, with or without modification,
@@ -24,13 +24,20 @@ from docutils.parsers.rst import Parser
 
 def suite():
     parser = Parser()
+    settings = {'smart_quotes': True}
     s = DocutilsTestSupport.TransformTestSuite(
-        parser, suite_settings={'smart_quotes': True})
+        parser, suite_settings=settings)
     s.generateTests(totest)
+    settings['language_code'] = 'de'
+    s.generateTests(totest_de)
+    settings['smart_quotes'] = 'alternative'
+    s.generateTests(totest_de_alt)
     return s
 
 
 totest = {}
+totest_de = {}
+totest_de_alt = {}
 
 totest['transitions'] = ((SmartQuotes,), [
 ["""\
@@ -47,7 +54,7 @@ u"""\
 """],
 ["""\
 Do not "educate" quotes ``inside "literal" text`` and ::
- 
+
   "literal" blocks.
 
 Keep quotes straight in code and math: 
@@ -56,11 +63,11 @@ Keep quotes straight in code and math:
 .. code::
 
    print "hello"
-   
+  
 .. math::
 
    f'(x) = df(x)/dx
-  
+
 """,
 u"""\
 <document source="test data">
@@ -122,8 +129,72 @@ u"""\
                 <title_reference>
                     inline “roles”\
 """],
+["""\
+.. class:: language-de
+
+German "smart quotes" and 'single smart quotes'.
+
+.. class:: language-foo
+
+"Quoting style" for unknown languages is 'ASCII'.
+
+.. class:: language-de-x-altquot
+
+Alternative German "smart quotes" and 'single smart quotes'.
+""",
+u"""\
+<document source="test data">
+    <paragraph classes="language-de">
+        German „smart quotes“ and ‚single smart quotes‘.
+    <paragraph classes="language-foo">
+        "Quoting style" for unknown languages is 'ASCII'.
+    <paragraph classes="language-de-x-altquot">
+        Alternative German »smart quotes« and ›single smart quotes‹.
+    <system_message level="2" line="7" source="test data" type="WARNING">
+        <paragraph>
+            No smart quotes defined for language "foo".
+"""],
 ])
 
+totest_de['transitions'] = ((SmartQuotes,), [
+["""\
+German "smart quotes" and 'single smart quotes'.
+
+.. class:: language-en-UK
+
+English "smart quotes" and 'single smart quotes'.
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        German „smart quotes“ and ‚single smart quotes‘.
+    <paragraph classes="language-en-uk">
+        English “smart quotes” and ‘single smart quotes’.
+"""],
+])
+
+totest_de_alt['transitions'] = ((SmartQuotes,), [
+["""\
+Alternative German "smart quotes" and 'single smart quotes'.
+
+.. class:: language-en-UK
+
+English "smart quotes" and 'single smart quotes' have no alternative.
+
+.. class:: language-ro
+
+Alternative Romanian "smart quotes" and 'single' smart quotes.
+""",
+u"""\
+<document source="test data">
+    <paragraph>
+        Alternative German »smart quotes« and ›single smart quotes‹.
+    <paragraph classes="language-en-uk">
+        English “smart quotes” and ‘single smart quotes’ have no alternative.
+    <paragraph classes="language-ro">
+        Alternative Romanian «smart quotes» and „single” smart quotes.
+"""],
+])
 
 if __name__ == '__main__':
     import unittest
