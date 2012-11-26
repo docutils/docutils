@@ -18,7 +18,7 @@ class PickleTests(unittest.TestCase):
     def test_pickle(self):
         doctree = core.publish_doctree(
             source='Title\n=====\n\nparagraph\n',
-            settings_overrides={'_disable_config': 1})
+            settings_overrides={'_disable_config': True})
         dill = pickle.dumps(doctree)
         reconstituted = pickle.loads(dill)
         self.assertEqual(doctree.pformat(), reconstituted.pformat())

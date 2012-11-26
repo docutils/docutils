@@ -706,8 +706,8 @@ class WriterPublishTestCase(CustomTestCase, docutils.SettingsSpec):
     Test case for publish.
     """
 
-    settings_default_overrides = {'_disable_config': 1,
-                                  'strict_visitor': 1}
+    settings_default_overrides = {'_disable_config': True,
+                                  'strict_visitor': True}
     writer_name = '' # set in subclasses or constructor
 
     def __init__(self, *args, **kwargs):
