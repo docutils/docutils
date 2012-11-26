@@ -5,7 +5,7 @@
 ==================
 
 :Author: David Goodger; open to all Docutils developers
-:Contact: goodger@python.org
+:Contact: docutils-develop@lists.sourceforge.net
 :Date: $Date$
 :Revision: $Revision$
 :Web site: http://docutils.sourceforge.net/
@@ -41,7 +41,7 @@ Changes Since 0.9.1
 
 * docutils/transforms/universal.py
 
-  - Add SmartQuotes transform for typographic quotes and dashes.
+  - SmartQuotes transform for typographic quotes and dashes.
 
 * docutils/utils/__init__.py
 

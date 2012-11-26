@@ -269,7 +269,7 @@ class Node(object):
                 index = node.parent.index(node)
                 for sibling in node.parent[index+1:]:
                     r.extend(sibling.traverse(include_self=True,
-                                              descend=descend, 
+                                              descend=descend,
                                               siblings=False, ascend=False,
                                               condition=condition))
                 if not ascend:
@@ -620,8 +620,23 @@ class Element(Node):
 
     has_key = hasattr
 
-    # support operator in
+    # support operator ``in``
     __contains__ = hasattr
+
+    def get_language_code(self, fallback=''):
+        """Return node's language tag.
+
+        Look iteratively in self and parents for a class argument
+        starting with ``language-`` and return the remainder of it
+        (which should be a `BCP49` language tag) or the `fallback`.
+        """
+        for cls in self.get('classes', []):
+            if cls.startswith('language-'):
+                return cls[9:]
+        try:
+            return self.parent.get_language(fallback)
+        except AttributeError:
+            return fallback
 
     def append(self, item):
         self.setup_child(item)

@@ -3,6 +3,7 @@
 ========================
 
 :Contact: grubert@users.sourceforge.net
+:Maintainer: docutils-develop@lists.sourceforge.net
 :Date: $Date$
 :Revision: $Revision$
 :Web site: http://docutils.sourceforge.net/
@@ -39,6 +40,8 @@ Changes Since 0.9.1
    (cf. `Python 3 compatibility`_).
 
 * General:
+
+  - SmartQuotes transform for typographic quotes and dashes.
 
   - ``docutils/math``, ``docutils/error_reporting.py``, and
     ``docutils/urischemes.py`` moved to the utils package.

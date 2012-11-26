@@ -86,7 +86,7 @@ settings.  Underscores ("_") and hyphens ("-") can be used
 interchangably in entry names; hyphens are automatically converted to
 underscores.
 
-For on/off switch settings (booleans), the following values are
+For on/off switch settings (_`booleans`), the following values are
 recognized:
 
 :On: "true", "yes", "on", "1"
@@ -94,8 +94,8 @@ recognized:
 
 List values can be comma- or colon-delimited.
 
-strip_classes_, strip_elements_with_classes_, stylesheet_, and
-stylesheet_path_ use the comma as delimiter,
+strip_classes_, strip_elements_with_classes_, stylesheet, and
+stylesheet_path use the comma as delimiter,
 whitespace around list values is stripped. ::
 
     strip-classes: ham,eggs,
@@ -588,7 +588,6 @@ __ `footnote_references [latex2e writer]`_
 
 
 _`syntax_highlight`
-
     Token type names used by Pygments_ when parsing contents of the code_
     directive and role.
 
@@ -605,10 +604,34 @@ _`syntax_highlight`
 
     Default: "long".  Option: ``--syntax-highlight``.
 
+    New in Docutils 0.9.
+
 .. _Pygments: http://pygments.org/
 .. _code: ../ref/rst/directives.html#code
 .. _Pygments-generated stylesheets:
    http://pygments.org/docs/cmdline/#generating-styles
+
+_`smart_quotes`
+    Change straight quotation marks to typographic form. `Quote characters`_
+    are selected according to the language of the current block element (see
+    language_code_). Also changes consequtive runs of hyphen-minus and full
+    stops (``---``, ``--``, ``...``) to em-dash, en-dash and ellipsis
+    Unicode characters respectively.
+
+    Supported values:
+
+    booleans_ (yes/no)
+      Use smart quotes?
+
+    alt (or "alternative")
+      Use alternative quote set (if defined for the language).
+
+    Default: "no". Option: ``--smart-quotes``.
+
+    New in Docutils 0.10.
+
+.. _quote characters:
+   http://en.wikipedia.org/wiki/Non-English_usage_of_quotation_marks
 
 
 [readers]
