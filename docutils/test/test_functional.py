@@ -123,7 +123,7 @@ expected output and check it in:
         namespace = {}
         # Initialize 'settings_overrides' for test settings scripts,
         # and disable configuration files:
-        namespace['settings_overrides'] = {'_disable_config': 1}
+        namespace['settings_overrides'] = {'_disable_config': True}
         # Read the variables set in the default config file and in
         # the current config file into namespace:
         defaultpy = open(join_path(datadir, 'tests', '_default.py')).read()

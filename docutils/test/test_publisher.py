@@ -79,7 +79,7 @@ class PublisherTests(DocutilsTestSupport.StandardTestCase):
 class PublishDoctreeTestCase(DocutilsTestSupport.StandardTestCase, docutils.SettingsSpec):
 
     settings_default_overrides = {
-        '_disable_config': 1,
+        '_disable_config': True,
         'warning_stream': io.NullOutput()}
 
     def test_publish_doctree(self):

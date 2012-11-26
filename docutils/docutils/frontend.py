@@ -128,17 +128,15 @@ def validate_ternary(setting, value, option_parser,
                      config_parser=None, config_section=None):
     """Check/normalize three-value settings:
          True:  '1', 'on', 'yes', 'true'
-         False: '0', 'off', 'no','false',
-         None:  any other value (including '')
+         False: '0', 'off', 'no','false', ''
+         any other value: returned as-is.
     """
     if isinstance(value, bool) or value is None:
         return value
-    if value == '':
-        return None
     try:
         return option_parser.booleans[value.strip().lower()]
     except KeyError:
-        return None
+        return value
 
 def validate_nonnegative_int(setting, value, option_parser,
                              config_parser=None, config_section=None):
@@ -349,8 +347,8 @@ class OptionParser(optparse.OptionParser, docutils.SettingsSpec):
     thresholds = {'info': 1, 'warning': 2, 'error': 3, 'severe': 4, 'none': 5}
     """Lookup table for --report and --halt threshold values."""
 
-    booleans={'1': 1, 'on': 1, 'yes': 1, 'true': 1,
-              '0': 0, 'off': 0, 'no': 0, 'false': 0, '': 0}
+    booleans={'1': True, 'on': True, 'yes': True, 'true': True,
+              '0': False, 'off': False, 'no': False, 'false': False, '': False}
     """Lookup table for boolean configuration file settings."""
 
     default_error_encoding = getattr(sys.stderr, 'encoding',
