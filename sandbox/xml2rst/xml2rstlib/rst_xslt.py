@@ -17,7 +17,7 @@ Python package 'lxml' is not available.
 You may try to use an older version of 'xml2rst.xsl' with a standalone
 XSLT processor like 'xalan' or 'xsltproc'""")
 
-from xml2rst import markup
+from xml2rstlib import markup
 
 __docformat__ = 'reStructuredText'
 
