@@ -61,7 +61,7 @@ import re
 
 from optparse import OptionParser, OptionGroup, OptionValueError, Option
 
-from xml2rst import rst_xslt
+from xml2rstlib import rst_xslt
 
 ###############################################################################
 ###############################################################################

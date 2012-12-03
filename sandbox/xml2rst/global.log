@@ -1,4 +1,47 @@
 **************************************
+Date: Mon Dec  3 12:24:00 CET 2012
+Author: stefan
+Tag: xml2rst_1_226
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst
+In directory theowa:/home/stefan/free/xml2rst
+
+Modified Files:
+	Makefile README setup.py xml2rst.py 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xalan
+In directory theowa:/home/stefan/free/xml2rst/tests.xalan
+
+Modified Files:
+	common.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xsltproc
+In directory theowa:/home/stefan/free/xml2rst/tests.xsltproc
+
+Modified Files:
+	common.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/tests.xsltproc/options
+In directory theowa:/home/stefan/free/xml2rst/tests.xsltproc/options
+
+Modified Files:
+	filterunit.cfg 
+
+--------------------------------------
+Update of /home/stefan/vault/sm/xml2rst/xml2rstlib
+In directory theowa:/home/stefan/free/xml2rst/xml2rstlib
+
+Modified Files:
+	rst_xslt.py 
+
+--------------------------------------
+Log Message:
+Renamed package to `xml2rstlib` to work in installation.
+**************************************
 Date: Mon Dec  3 10:54:11 CET 2012
 Author: stefan
 Tag: xml2rst_1_225
