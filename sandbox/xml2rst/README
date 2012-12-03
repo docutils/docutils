@@ -22,7 +22,7 @@ three flavors:
 
 1. ``xml2rst.py``
 
-   This script uses ``rst/xml2rst.xsl`` through the XSLT_ engine
+   This script uses ``xml2rst/xml2rst.xsl`` through the XSLT_ engine
    available through the lxml_ package [#deb-lxml]_. It also uses
    Python callbacks for some advanced functionality.
 
@@ -34,7 +34,7 @@ three flavors:
 
    Run ``xml2rst --help`` for information on how to run it.
 
-2. ``rst/xml2rst-nopy.xsl``
+2. ``xml2rst/xml2rst-nopy.xsl``
 
    This is the core XSLT_ script without using Python. It uses EXSLT_
    and therefore needs an EXSLT_ capable XSLT_ processors such as
@@ -47,10 +47,10 @@ three flavors:
    .. [#deb-xsltproc] Under Debian based operating systems try
       ``apt-get install xsltproc``.
 
-   Run ``perldoc rst/xml2rst-nopy.xsl`` for information on how to run
-   it.
+   Run ``perldoc xml2rst/xml2rst-nopy.xsl`` for information on how to
+   run it.
 
-3. ``rst/xml2rst-noexslt.xsl``
+3. ``xml2rst/xml2rst-noexslt.xsl``
 
    This version can be processed with every XSLT_ processor like
    Xalan_ [#deb-xalan]_.
@@ -62,8 +62,8 @@ three flavors:
    .. [#deb-xalan] Under Debian based operating systems try ``apt-get
       install xalan``.
 
-   Run ``perldoc rst/xml2rst-noexslt.xsl`` for information on how to
-   run it.
+   Run ``perldoc xml2rst/xml2rst-noexslt.xsl`` for information on how
+   to run it.
 
 Availability
 ============
