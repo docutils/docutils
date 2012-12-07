@@ -555,6 +555,10 @@ No such mechanism exists in HTML.
   .. _OpenOffice.org XML: http://xml.openoffice.org/
   .. _object references: rst/alternatives.html#object-references
 
+See also the `Modified rst2html 
+<http://www.loria.fr/~rougier/coding/article/rst2html.py>`__ 
+by Nicolas Rougier for a sample implementation.
+
 
 Documentation
 =============
@@ -1927,6 +1931,11 @@ Unimplemented Transforms
 
          * `sphinxcontrib-bibtex`_ Sphinx extension with "bibliography"
            directive and "cite" role supporting BibTeX databases.
+           
+         * `Modified rst2html 
+           <http://www.loria.fr/~rougier/coding/article/rst2html.py>`__ by 
+           Nicolas Rougier.
+  
 
     * Automatically insert a "References" heading?
 
