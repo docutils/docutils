@@ -728,6 +728,8 @@ class CharMaps(object):
     }
     # Unicode chars that are recognized by LaTeX's utf8 encoding
     utf8_supported_unicode = {
+        0x00AB: ur'\guillemotleft', # LEFT-POINTING DOUBLE ANGLE QUOTATION MARK
+        0x00bb: ur'\guillemotright', # RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK
         0x200C: ur'\textcompwordmark', # ZERO WIDTH NON-JOINER
         0x2013: ur'\textendash{}',
         0x2014: ur'\textemdash{}',

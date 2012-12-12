@@ -399,8 +399,9 @@ class smartchars(object):
               'es-x-altquot': u'“”‘’',
               'fi':           u'””’’',
               'fi-x-altquot': u'»»’’',
-              'fr':           (u'« ',  u' »', u'‹ ', u' ›'),
-              'fr-x-altquot': (u'“ ',  u' ”', u'‘ ', u' ’'),
+              'fr':           (u'« ',  u' »', u'‹ ', u' ›'), # with narrow no-break space
+              'fr-x-altquot': u'«»‹›', # for use with manually set spaces
+              # 'fr-x-altquot': (u'“ ',  u' ”', u'‘ ', u' ’'), # rarely used
               'fr-ch':        u'«»‹›',
               'he':           u'”“»«',
               'he-x-altquot': u'„”‚’',
