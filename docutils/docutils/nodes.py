@@ -1,5 +1,6 @@
 # $Id$
 # Author: David Goodger <goodger@python.org>
+# Maintainer: docutils-develop@lists.sourceforge.net
 # Copyright: This module has been placed in the public domain.
 
 """

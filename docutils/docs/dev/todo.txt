@@ -555,8 +555,8 @@ No such mechanism exists in HTML.
   .. _OpenOffice.org XML: http://xml.openoffice.org/
   .. _object references: rst/alternatives.html#object-references
 
-See also the `Modified rst2html 
-<http://www.loria.fr/~rougier/coding/article/rst2html.py>`__ 
+See also the `Modified rst2html
+<http://www.loria.fr/~rougier/coding/article/rst2html.py>`__
 by Nicolas Rougier for a sample implementation.
 
 
@@ -1244,6 +1244,9 @@ ASCIIMath_
   * The Python module ASCIIMathML_ translates a string with ASCIIMath into a
     MathML tree. Used, e.g., by MultiMarkdown__.
 
+    A more comprehensive and implementation is ASCIIMathPython_ by
+    Paul Trembley (also used in his sandbox projects).
+
   * For conversion to LaTeX, there is a JavaScript script at
     http://dlippman.imathas.com/asciimathtex/ASCIIMath2TeX.js
 
@@ -1251,6 +1254,7 @@ ASCIIMath_
   .. _ASCIIMath tutorial:
      http://www.wjagray.co.uk/maths/ASCIIMathTutorial.html
   .. _ASCIIMathML: http://pypi.python.org/pypi/asciimathml/
+  .. _ASCIIMathPython: http://sourceforge.net/projects/asciimathpython/
   __ http://fletcherpenney.net/multimarkdown/
 
 `Unicode Nearly Plain Text Encoding of Mathematics`_
@@ -1931,11 +1935,11 @@ Unimplemented Transforms
 
          * `sphinxcontrib-bibtex`_ Sphinx extension with "bibliography"
            directive and "cite" role supporting BibTeX databases.
-           
-         * `Modified rst2html 
-           <http://www.loria.fr/~rougier/coding/article/rst2html.py>`__ by 
+
+         * `Modified rst2html
+           <http://www.loria.fr/~rougier/coding/article/rst2html.py>`__ by
            Nicolas Rougier.
-  
+
 
     * Automatically insert a "References" heading?
 
