@@ -8,6 +8,49 @@ Releasing
 
 Notes on what happend while releasing.
 
+Release 0.10
+============
+
+* same failures for some python2.6 versions ::
+
+              Problems with "raw" directive path:
+       -      InputError: [Errno 2] No such file or directory: 'non-existent.file'.
+       +      InputError: (2, 'No such file or directory').
+
+nothing than this, until testing release tarball, then :.
+
+    ======================================================================
+    FAIL: test_dependencies (__main__.RecordDependenciesTests)
+    ----------------------------------------------------------------------
+    Traceback (most recent call last):
+      File "docutils-test/test_dependencies.py", line 61, in test_dependencies
+        self.assertEqual(record, expected)
+    AssertionError: [u'data/include.txt', u'data/raw.txt'] != [u'../docs/user/rst/images/title.png',
+    u'data/include.txt', u'data/raw.txt']
+    
+    ======================================================================
+    FAIL: test_dependencies_html (__main__.RecordDependenciesTests)
+    ----------------------------------------------------------------------
+    Traceback (most recent call last):
+      File "docutils-test/test_dependencies.py", line 74, in test_dependencies_html
+        self.assertEqual(record, expected)
+    AssertionError: [u'data/include.txt', u'data/raw.txt'] != [u'../docs/user/rst/images/biohazard.png',
+    u'../docs/user/rst/images/title.png', u'data/include.txt', u'data/raw.txt']
+    
+    ======================================================================
+    FAIL: test_dependencies_latex (__main__.RecordDependenciesTests)
+    ----------------------------------------------------------------------
+    Traceback (most recent call last):
+      File "docutils-test/test_dependencies.py", line 89, in test_dependencies_latex
+        self.assertEqual(record, expected)
+    AssertionError: [u'data/include.txt', u'data/raw.txt'] != [u'../docs/user/rst/images/title.png',
+    u'data/include.txt', u'data/raw.txt']
+    
+if executed as non-adminuser ::
+
+    SystemMessage: data/dependencies.txt:9: (SEVERE/4) Problems with "include" directive path:
+    OutputError: [Errno 13] Permission denied: 'record.txt'.
+
 Release 0.9.1
 =============
 
@@ -52,7 +95,7 @@ Ignored test errors
   - ubuntu10.04, python 2.6  
   - ubuntu11.10, python 2.7  
 
-* python 2.64rc1 has a different error message format::
+* python 2.6.4rc1 has a different error message format::
 
               Problems with "raw" directive path:
        -      InputError: [Errno 2] No such file or directory: 'non-existent.file'.
