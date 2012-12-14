@@ -33,15 +33,32 @@ if [ ! -e $tarball ] ; then
     exit 1
 fi
 
+function print_command()
+{
+    # Print "$@", quoting parameters containing spaces.
+    echo -n $
+    for param in "$@"; do
+        echo "$param" | grep -Fq ' ' && echo -n " '$param'" || echo -n " $param"
+    done
+}
+
+function run()
+{
+    # Print and run "$@".
+    print_command "$@"
+    echo
+    "$@"
+}
+
 echo "Testing the release tarball: docutils-${docutils_ver} under python$py_ver."
 
 echo "ATTENTION: some parts must be run as root/sudo to be able to remove/install into site-packages."
 
 test_dir=tarball_test
-rm -rfv $test_dir
-mkdir -p $test_dir
+run rm -rf $test_dir
+run mkdir -p $test_dir
 cd $test_dir
-tar xzvf ../$tarball
+run tar xzf ../$tarball
 
 cd docutils-"$docutils_ver"
 
@@ -66,10 +83,11 @@ if test -e "$site_packages/docutils-test"; then
     read
     sudo rm -rf $site_packages/docutils-test
 fi
-echo "remove docutils installation (sudo). Ctrl-C to abort"
+echo "remove docutils installation (sudo) build and install. Ctrl-C to abort"
 read
 sudo rm -rfv ${site-packages}/docutils
 echo "TODO for python3 rm local build, but building takes a long time then "
+python$py_ver setup.py build
 sudo python$py_ver setup.py install
 echo
 echo "Copying the test suite to the site-packages directory of Python $py_ver (sudo)."
