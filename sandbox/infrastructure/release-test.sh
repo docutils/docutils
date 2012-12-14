@@ -11,9 +11,25 @@
 # Date: $Date: 2012-12-13 10:08:17 +0100 (Don, 13 Dez 2012) $
 # Copyright: This script has been placed in the public domain.
 
+USAGE="USAGE $0 python-version docutils-version"
+
 py_ver=$1
 
 docutils_ver=$2
+
+if [  -z "`which python$py_ver`" ] ; then
+    echo "ERROR python$py_ver not found."
+    echo $USAGE
+    exit 1
+fi
+
+tarball=docutils-${docutils_ver}.tar.gz
+
+if [ ! -e $tarball ] ; then
+    echo "ERROR $tarball not found."
+    echo $USAGE
+    exit 1
+fi
 
 echo "Testing the release tarball: docutils-${docutils_ver} under python$py_ver."
 
@@ -30,6 +46,7 @@ cd docutils-"$docutils_ver" || exit 1
 echo "Deleting and installing Docutils on Python $py_ver."
 echo "Press enter."
 read
+
 site_packages="/usr/local/lib/python$py_ver/site-packages"
 echo "BUG prefers /usr/local too /usr"
 if test ! -d "$site_packages"; then
