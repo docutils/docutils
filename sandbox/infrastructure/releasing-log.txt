@@ -17,7 +17,8 @@ Release 0.10
        -      InputError: [Errno 2] No such file or directory: 'non-existent.file'.
        +      InputError: (2, 'No such file or directory').
 
-nothing than this, until testing release tarball, then :.
+nothing than this.
+until testing release tarball, then for <2.7 :
 
     ======================================================================
     FAIL: test_dependencies (__main__.RecordDependenciesTests)
@@ -46,11 +47,6 @@ nothing than this, until testing release tarball, then :.
     AssertionError: [u'data/include.txt', u'data/raw.txt'] != [u'../docs/user/rst/images/title.png',
     u'data/include.txt', u'data/raw.txt']
     
-if executed as non-adminuser ::
-
-    SystemMessage: data/dependencies.txt:9: (SEVERE/4) Problems with "include" directive path:
-    OutputError: [Errno 13] Permission denied: 'record.txt'.
-
 Release 0.9.1
 =============
 
