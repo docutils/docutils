@@ -11,6 +11,8 @@
 # Date: $Date: 2012-12-13 10:08:17 +0100 (Don, 13 Dez 2012) $
 # Copyright: This script has been placed in the public domain.
 
+set -o errexit
+
 USAGE="USAGE $0 python-version docutils-version"
 
 py_ver=$1
