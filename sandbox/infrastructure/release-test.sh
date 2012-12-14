@@ -35,51 +35,53 @@ fi
 
 echo "Testing the release tarball: docutils-${docutils_ver} under python$py_ver."
 
-echo "BUG: must be run as root/sudo to be able to remove/install into site-packages."
+echo "ATTENTION: some parts must be run as root/sudo to be able to remove/install into site-packages."
 
 test_dir=tarball_test
 rm -rfv $test_dir
-mkdir -p $test_dir || exit 1
-cd $test_dir || exit 1
-tar xzvf ../docutils-${docutils_ver}.tar.gz || exit 1
+mkdir -p $test_dir
+cd $test_dir
+tar xzvf ../$tarball
 
-cd docutils-"$docutils_ver" || exit 1
+cd docutils-"$docutils_ver"
 
 echo "Deleting and installing Docutils on Python $py_ver."
 echo "Press enter."
 read
 
-site_packages="/usr/local/lib/python$py_ver/site-packages"
-echo "BUG prefers /usr/local too /usr"
-if test ! -d "$site_packages"; then
-    site_packages="/usr/lib/python$py_ver/site-packages"
+if [ -n "`which python$py_ver | grep local`" ] ; then
+    usr_local="local/"
+else
+    usr_local=""
 fi
+echo "docutils installation found under: /usr/$usr_local"
+site_packages="/usr/${usr_local}lib/python$py_ver/site-packages"
 if test ! -d "$site_packages"; then
     echo "Error: \"$site_packages\" does not exist."
     exit 1
 fi
 if test -e "$site_packages/docutils-test"; then
     echo "Error: \"$site_packages/docutils-test\" exists."
-    echo "removing left over from previous release. Ctrl-C to abort."
+    echo "removing left over from previous release (sudo). Ctrl-C to abort."
     read
-    rm -rf $site_packages/docutils-test
+    sudo rm -rf $site_packages/docutils-test
 fi
-rm -rfv /usr/{local,}lib/python$py_ver/site-packages/{docutils'"$extras"'}
+echo "remove docutils installation (sudo). Ctrl-C to abort"
+read
+sudo rm -rfv ${site-packages}/docutils
 echo "TODO for python3 rm local build, but building takes a long time then "
-python$py_ver setup.py install
+sudo python$py_ver setup.py install
 echo
-echo "Copying the test suite to the site-packages directory of Python $py_ver."
+echo "Copying the test suite to the site-packages directory of Python $py_ver (sudo)."
 echo "TODO for python3 copy test3"
 echo "Press enter."
 read
-cp -rv test "$site_packages/docutils-test"
+sudo cp -rv test "$site_packages/docutils-test"
 
-if test ! -d "$site_packages"; then
-    echo "Error: \"$site_packages\" does not exist."
-    exit 1
-fi
 # BUG test-dependecies.py
 # * breaks on record.txt access if not run as root
 # * fails missing dependecies to png.
-python$py_ver -u $site_packages/docutils-test/alltests.py
+
+echo "run alltests. sudo again because alltests.out will be created in $site_packages/docutils-test"
+sudo python$py_ver -u $site_packages/docutils-test/alltests.py
 
