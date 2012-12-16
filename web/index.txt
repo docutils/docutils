@@ -41,7 +41,7 @@ questions regarding how to extend Docutils, please feel free to ask on
 the Docutils-develop_ mailing list.  Please also consider **donating**
 to Docutils: |donate|.
 
-The only **requirement** for running Docutils is Python_ 2.3 or later.
+The only **requirement** for running Docutils is Python_ 2.4 or later.
 (For Docutils 0.5, Python 2.2.1+ is required.
 Up to Docutils 0.4, Python 2.1 is required.)
 From version 0.6, Docutils is compatible with Python 3 (see README_ for
