@@ -134,23 +134,12 @@ function initialize()
         exit 1
     fi
     echo -n 'Subversion binary to use: '
-    if [ -d .svn ]; then
-        svn=svn
-    else
-        svn=svk
-    fi
+    # TODO breaks for newer svn, .svn is in upper. is this for svk 
+    svn=svn
     echo $svn
     working_copy="`pwd -P`"
     echo "Working copy: $working_copy"
-    if test $svn = svk; then
-        depot_path="`svk info . | grep ^Depot\ Path: | sed 's/Depot Path: //'`"
-        depot="`echo "$depot_path" | sed 's|\(//[^/]\+/[^/]\+\).*|\1|'`"
-        echo "SVK depot: $depot"
-        mirrored_from="`svk info . | grep ^Mirrored\ From: | sed 's/Mirrored From: //;s/, Rev\. .*//'`"
-        svnurl="$mirrored_from`echo "$depot_path" | sed 's|//[^/]\+/[^/]\+||'`"
-    else
-        svnurl="`$svn info . | grep ^URL: | sed 's/URL: //'`"
-    fi
+    svnurl="`$svn info . | grep ^URL: | sed 's/URL: //'`"
     if test -z "$svnurl"; then
         echo 'Unable to detect Subversion URL.  Aborting.'
         exit 1
