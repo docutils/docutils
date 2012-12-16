@@ -17,10 +17,7 @@ Release 0.10
        -      InputError: [Errno 2] No such file or directory: 'non-existent.file'.
        +      InputError: (2, 'No such file or directory').
 
-nothing except this.
-until testing release tarball, then
-
-for <2.7 on the old ubuntu 8.04 and on 12.10 with 2.7 :
+* testing release tarball ::
 
     ======================================================================
     FAIL: test_dependencies (__main__.RecordDependenciesTests)
@@ -32,6 +29,8 @@ for <2.7 on the old ubuntu 8.04 and on 12.10 with 2.7 :
     u'data/include.txt', u'data/raw.txt']
     
     ...
+
+  because ../docs is not there if run from /usr/../pythonx.x/site-packages/docutils-test.
 
 Release 0.9.1
 =============
