@@ -74,8 +74,7 @@ fi
 echo "docutils installation found under: /usr/$usr_local"
 site_packages="/usr/${usr_local}lib/python$py_ver/site-packages"
 if test ! -d "$site_packages"; then
-    echo "Error: \"$site_packages\" does not exist."
-    exit 1
+    echo "Info: \"$site_packages\" does not exist."
 fi
 if test -e "$site_packages/docutils-test"; then
     echo "Error: \"$site_packages/docutils-test\" exists."
