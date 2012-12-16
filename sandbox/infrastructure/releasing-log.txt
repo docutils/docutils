@@ -17,8 +17,10 @@ Release 0.10
        -      InputError: [Errno 2] No such file or directory: 'non-existent.file'.
        +      InputError: (2, 'No such file or directory').
 
-nothing than this.
-until testing release tarball, then for <2.7 :
+nothing except this.
+until testing release tarball, then
+
+for <2.7 on the old ubuntu 8.04 and on 12.10 with 2.7 :
 
     ======================================================================
     FAIL: test_dependencies (__main__.RecordDependenciesTests)
@@ -29,24 +31,8 @@ until testing release tarball, then for <2.7 :
     AssertionError: [u'data/include.txt', u'data/raw.txt'] != [u'../docs/user/rst/images/title.png',
     u'data/include.txt', u'data/raw.txt']
     
-    ======================================================================
-    FAIL: test_dependencies_html (__main__.RecordDependenciesTests)
-    ----------------------------------------------------------------------
-    Traceback (most recent call last):
-      File "docutils-test/test_dependencies.py", line 74, in test_dependencies_html
-        self.assertEqual(record, expected)
-    AssertionError: [u'data/include.txt', u'data/raw.txt'] != [u'../docs/user/rst/images/biohazard.png',
-    u'../docs/user/rst/images/title.png', u'data/include.txt', u'data/raw.txt']
-    
-    ======================================================================
-    FAIL: test_dependencies_latex (__main__.RecordDependenciesTests)
-    ----------------------------------------------------------------------
-    Traceback (most recent call last):
-      File "docutils-test/test_dependencies.py", line 89, in test_dependencies_latex
-        self.assertEqual(record, expected)
-    AssertionError: [u'data/include.txt', u'data/raw.txt'] != [u'../docs/user/rst/images/title.png',
-    u'data/include.txt', u'data/raw.txt']
-    
+    ...
+
 Release 0.9.1
 =============
 
