@@ -56,12 +56,29 @@ Release 0.10 (2012-12-16)
       except ImportError:
           import docutils.utils.math as math
 
+  - enhanced math and error handling.
+
 * docutils/io.py
 
   - FileInput/FileOutput: no system-exit on IOError. 
     The `handle_io_errors` option is ignored.
 
 .. _Python 3 compatibility: README.html#python-3-compatibility
+
+* docutils/writers/html4css1/__init__.py
+
+  - Use ``<code>`` tag for inline "code",
+    do not drop nested inline nodes (syntax highlight tokens).
+  - Customizable MathJax URL (based on patch by Dmitry Shachnev).
+  - No line break after opening inline math tag.
+
+* docutils/writers/latex2e/__init__.py, docutils/writers/xetex/__init__.py
+
+  - Fix section numbering by LaTeX.
+
+* docutils/writers/s5_html/__init__.py
+
+  - Fix [ 3556388 ] Mathjax does not work with rst2s5.
 
 
 Release 0.9.1 (2012-06-17)
