@@ -118,9 +118,7 @@ function initialize()
     for py_ver in $python_versions; do
         echo -n "Checking for Python $py_ver (python$py_ver)... "
         if ! echo 'print "OK"' | python$py_ver; then
-            echo "Python $py_ver (python$py_ver) not found."
-            echo Aborting.
-            exit 1
+            echo "WARN: Python $py_ver (python$py_ver) not found."
         fi
     done
     echo -n 'Clearing $PYTHONPATH... '
