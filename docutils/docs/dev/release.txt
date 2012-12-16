@@ -10,6 +10,34 @@
 
 .. _Docutils: http://docutils.sourceforge.net/
 
+Assumptions and their failure
+-----------------------------
+
+On the test machine python2.4, 2.5 2.6 2.7 and 3.2 are installed.
+Some in /usr/ some under /usr/local.
+
+Assumption: If python2.6 is in /usr/bin/ than site-packages is under
+  /usr/local/lib/python2.6.
+
+On new ubuntu 12.10 
+
+* python2.7 is here /usr/bin/python2.7.
+* in /usr/lib are python2.7, pymodules and pyshared.
+
+  in /usr/lib/python2.7 no site-packages directory even after installation
+  of docutils
+
+  in /usr/local/lib/python2.7 are dist-packages  site-packages.
+
+  site-packages is empty.
+
+  docutils is installed under dist-packages.
+
+  pymodules has a python2.7 directory.
+
+Releasing
+---------
+
 REWORK FOR SOURCEFORGE REPO
 
 Steps in boldface text are *not* covered by the release script at
@@ -79,6 +107,8 @@ For details see the script.
 
   (b) Remove the old installation from site-packages (including
       roman.py, and optparse.py, textwrap.py).
+
+      "remove" might fail, see _`Assumptions and their failure`
 
       Install from expanded directory::
 
