@@ -1,15 +1,5 @@
 This is a test of the new "code" directive:
 
-.. Translate this document with a pygments enhanced frontend, e.g.
-
-    ../rst2html-highlight.py --stylesheet=../data/pygments-default.css
-    ../rst2latex-highlight.py --stylesheet=../data/pygments-docutilsroles.sty
-    
-   or via the test case in
-   
-    ../pygments_code_block_directive.py --traceback
-    
-
 The example from Docutils TODO list:
 
 .. code:: python
@@ -42,10 +32,60 @@ Another example:
       # and now for something completely different
       print 8/2
 
-Inline code :code:`$\alpha = \int_0^\infty f(x) dx$`.
+And now some CSS:
 
+.. code:: css
+
+  p.topic-title {
+    font-weight: bold }
+
+  pre.address {
+    margin-bottom: 0 ;
+    margin-top: 0 ;
+    font: inherit }
+
+as well as TeX:
+
+.. code:: tex
+
+  % hyperlinks:
+  \ifthenelse{\isundefined{\hypersetup}}{
+    \usepackage[linkcolor=blue,urlcolor=blue]{hyperref}
+    \urlstyle{same} % normal text font (alternatives: tt, rm, sf)
+  }{}
+
+  \begin{document}
+
+  The area of a circle is $A = \pi/4 d^2$
+
+  \end{document}
+
+You can also highlight a diff:
+
+.. code:: diff
+
+  Index: html4css1.css
+  ===================================================================
+  --- html4css1.css     (Revision 7509)
+  +++ html4css1.css     (Arbeitskopie)
+  @@ -68,7 +68,7 @@
+
+   div.attention p.admonition-title, div.caution p.admonition-title,
+   div.danger p.admonition-title, div.error p.admonition-title,
+  -div.warning p.admonition-title {
+  +div.warning p.admonition-title, .code .error {
+     color: red ;
+     font-weight: bold ;
+     font-family: sans-serif }
+
+Inline code
+***********
+
+.. role:: tex(code)
+  :language: tex
 .. role:: python(code)
    :language: python
    :class: testclass
 
-Python code :python:`print("The end.")`
+Inline code in LaTeX :tex:`$\alpha = \int_0^\infty f(x) dx$` and
+Python: :python:`print("The end.")`.

@@ -5,6 +5,14 @@
 \usepackage{ifthen}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+% code highlight rules:
+\providecommand*\DUrolecomment[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\providecommand*\DUroledeleted[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\providecommand*\DUrolekeyword[1]{\textbf{#1}}
+% \providecommand*\DUrolename[1]{\textcolor[rgb]{0.00,0.25,0.82}{#1}}
+\providecommand*\DUrolebuiltin[1]{\textbf{#1}}
+\providecommand*\DUrolestring[1]{\textit{#1}}
+\usepackage{color}
 \setcounter{secnumdepth}{0}
 
 %%% Custom LaTeX preamble
@@ -16,9 +24,7 @@
 %%% User specified packages and stylesheets
 \usepackage{palatino-optima-txtt}
 \usepackage{microtype}
-\usepackage{bookmark}
 
-\usepackage{../data/pygments-docutilsroles}
 %%% Fallback definitions for Docutils-specific commands
 
 % inline markup (custom roles)
@@ -47,49 +53,122 @@
 
 This is a test of the new ``code'' directive:
 
-% Translate this document with a pygments enhanced frontend, e.g.
-% 
-%  ../rst2html-highlight.py --stylesheet=../data/pygments-default.css
-%  ../rst2latex-highlight.py --stylesheet=../data/pygments-docutilsroles.sty
-% 
-% or via the test case in
-% 
-%  ../pygments_code_block_directive.py --traceback
-
 The example from Docutils TODO list:
 %
 \begin{quote}{\ttfamily \raggedright \noindent
-\DUrole{k}{print}~\DUrole{s}{'This~is~Python~code.'}~\\
-\DUrole{k}{for}~\DUrole{n}{i}~\DUrole{ow}{in}~\DUrole{nb}{range}\DUrole{p}{(}\DUrole{mi}{10}\DUrole{p}{):}~\\
-~~~~\DUrole{k}{print}~\DUrole{n}{i}
+\DUrole{keyword}{print}~\DUrole{literal}{\DUrole{string}{'This~is~Python~code.'}}~\\
+\DUrole{keyword}{for}~\DUrole{name}{i}~\DUrole{operator}{\DUrole{word}{in}}~\DUrole{name}{\DUrole{builtin}{range}}\DUrole{punctuation}{(}\DUrole{literal}{\DUrole{number}{\DUrole{integer}{10}}}\DUrole{punctuation}{):}~\\
+~~~~\DUrole{keyword}{print}~\DUrole{name}{i}
 }
 \end{quote}
 
 Numbered lines:
 %
 \begin{quote}{\ttfamily \raggedright \noindent
-\DUrole{l}{\DUrole{n}{1~}}\DUrole{c}{\#~This~is~Python~code,}~\\
-\DUrole{ln}{2~}\DUrole{c}{\#~that~prints~the~integers~from~0~to~9}~\\
-\DUrole{ln}{3~}\DUrole{k}{for}~\DUrole{n}{i}~\DUrole{ow}{in}~\DUrole{nb}{range}\DUrole{p}{(}\DUrole{mi}{10}\DUrole{p}{):}~\\
-\DUrole{ln}{4~}~~~~\DUrole{k}{print}~\DUrole{n}{i}
+\DUrole{ln}{1~}\DUrole{comment}{\#~This~is~Python~code,}~\\
+\DUrole{ln}{2~}\DUrole{comment}{\#~that~prints~the~integers~from~0~to~9}~\\
+\DUrole{ln}{3~}\DUrole{keyword}{for}~\DUrole{name}{i}~\DUrole{operator}{\DUrole{word}{in}}~\DUrole{name}{\DUrole{builtin}{range}}\DUrole{punctuation}{(}\DUrole{literal}{\DUrole{number}{\DUrole{integer}{10}}}\DUrole{punctuation}{):}~\\
+\DUrole{ln}{4~}~~~~\DUrole{keyword}{print}~\DUrole{name}{i}
 }
 \end{quote}
 
 Another example:
 %
 \begin{quote}{\ttfamily \raggedright \noindent
-\DUrole{l}{\DUrole{n}{~7~}}\DUrole{k}{def}~\DUrole{nf}{my\_function}\DUrole{p}{():}~\\
-\DUrole{ln}{~8~}~~~~\DUrole{sd}{"{}"{}"Test~the~lexer.\\
-}\DUrole{ln}{~9~}\DUrole{sd}{~~~~"{}"{}"}~\\
+\DUrole{ln}{~7~}\DUrole{keyword}{def}~\DUrole{name}{\DUrole{function}{my\_function}}\DUrole{punctuation}{():}~\\
+\DUrole{ln}{~8~}~~~~\DUrole{literal}{\DUrole{string}{\DUrole{doc}{"{}"{}"Test~the~lexer.\\
+}}}\DUrole{ln}{~9~}\DUrole{literal}{\DUrole{string}{\DUrole{doc}{~~~~"{}"{}"}}}~\\
 \DUrole{ln}{10~}~\\
-\DUrole{ln}{11~}~~~~\DUrole{c}{\#~and~now~for~something~completely~different}~\\
-\DUrole{ln}{12~}~~~~\DUrole{k}{print}~\DUrole{mi}{8}\DUrole{o}{/}\DUrole{mi}{2}
+\DUrole{ln}{11~}~~~~\DUrole{comment}{\#~and~now~for~something~completely~different}~\\
+\DUrole{ln}{12~}~~~~\DUrole{keyword}{print}~\DUrole{literal}{\DUrole{number}{\DUrole{integer}{8}}}\DUrole{operator}{/}\DUrole{literal}{\DUrole{number}{\DUrole{integer}{2}}}
 }
 \end{quote}
 
-Inline code \texttt{\DUrole{code}{\$\textbackslash{}alpha =
-\textbackslash{}int\_0\textasciicircum{}\textbackslash{}infty f(x) dx\$}}.
+And now some CSS:
+%
+\begin{quote}{\ttfamily \raggedright \noindent
+\DUrole{name}{\DUrole{tag}{p}}\DUrole{name}{\DUrole{class}{.topic-title}}~\DUrole{punctuation}{\{}~\\
+~~\DUrole{keyword}{font-weight}\DUrole{operator}{:}~\DUrole{keyword}{bold}~\DUrole{punctuation}{\}}~\\
+~\\
+\DUrole{name}{\DUrole{tag}{pre}}\DUrole{name}{\DUrole{class}{.address}}~\DUrole{punctuation}{\{}~\\
+~~\DUrole{keyword}{margin-bottom}\DUrole{operator}{:}~\DUrole{literal}{\DUrole{number}{0}}~\DUrole{punctuation}{;}~\\
+~~\DUrole{keyword}{margin-top}\DUrole{operator}{:}~\DUrole{literal}{\DUrole{number}{0}}~\DUrole{punctuation}{;}~\\
+~~\DUrole{keyword}{font}\DUrole{operator}{:}~\DUrole{keyword}{inherit}~\DUrole{punctuation}{\}}
+}
+\end{quote}
 
-Python code \texttt{\DUrole{code}{\DUrole{python}{\DUrole{testclass}{\DUrole{k}{print}\DUrole{p}{(}\DUrole{s}{"The end."}\DUrole{p}{)}}}}}
+as well as TeX:
+%
+\begin{quote}{\ttfamily \raggedright \noindent
+\DUrole{comment}{\%~hyperlinks:\\
+}\DUrole{keyword}{\textbackslash{}ifthenelse}\DUrole{name}{\DUrole{builtin}{\{}}\DUrole{keyword}{\textbackslash{}isundefined}\DUrole{name}{\DUrole{builtin}{\{}}\DUrole{keyword}{\textbackslash{}hypersetup}\DUrole{name}{\DUrole{builtin}{\}\}\{}}~\\
+~~\DUrole{keyword}{\textbackslash{}usepackage}\DUrole{name}{\DUrole{attribute}{{[}linkcolor=blue,urlcolor=blue{]}}}\DUrole{name}{\DUrole{builtin}{\{}}hyperref\DUrole{name}{\DUrole{builtin}{\}}}~\\
+~~\DUrole{keyword}{\textbackslash{}urlstyle}\DUrole{name}{\DUrole{builtin}{\{}}same\DUrole{name}{\DUrole{builtin}{\}}}~\DUrole{comment}{\%~normal~text~font~(alternatives:~tt,~rm,~sf)\\
+}\DUrole{name}{\DUrole{builtin}{\}\{\}}}~\\
+~\\
+\DUrole{keyword}{\textbackslash{}begin}\DUrole{name}{\DUrole{builtin}{\{}}document\DUrole{name}{\DUrole{builtin}{\}}}~\\
+~\\
+The~area~of~a~circle~is~\DUrole{literal}{\DUrole{string}{\$}}\DUrole{name}{\DUrole{builtin}{A~}}\DUrole{operator}{=}\DUrole{name}{\DUrole{builtin}{~}}\DUrole{name}{\DUrole{variable}{\textbackslash{}pi}}\DUrole{operator}{/}\DUrole{literal}{\DUrole{number}{4}}\DUrole{name}{\DUrole{builtin}{~d\textasciicircum{}}}\DUrole{literal}{\DUrole{number}{2}}\DUrole{literal}{\DUrole{string}{\$}}~\\
+~\\
+\DUrole{keyword}{\textbackslash{}end}\DUrole{name}{\DUrole{builtin}{\{}}document\DUrole{name}{\DUrole{builtin}{\}}}
+}
+\end{quote}
+
+and Lua:
+%
+\begin{quote}{\ttfamily \raggedright \noindent
+\DUrole{keyword}{if}~\DUrole{operator}{\DUrole{word}{not}}~\DUrole{name}{modules}~\DUrole{keyword}{then}~\DUrole{name}{modules}~\DUrole{operator}{=}~\DUrole{punctuation}{\{}~\DUrole{punctuation}{\}}~\DUrole{keyword}{end}~\DUrole{name}{modules}~\DUrole{punctuation}{{[}}\DUrole{literal}{\DUrole{string}{\DUrole{single}{'}}}\DUrole{literal}{\DUrole{string}{char-def'}}\DUrole{punctuation}{{]}}~\DUrole{operator}{=}~\DUrole{punctuation}{\{}~\\
+~~~~\DUrole{name}{version}~~~\DUrole{operator}{=}~\DUrole{literal}{\DUrole{number}{\DUrole{float}{1.001}}}\DUrole{punctuation}{,}~\\
+~~~~\DUrole{name}{comment}~~~\DUrole{operator}{=}~\DUrole{literal}{\DUrole{string}{\DUrole{double}{"}}}\DUrole{literal}{\DUrole{string}{companion~to~char-ini.mkiv"}}\DUrole{punctuation}{,}~\\
+~~~~\DUrole{name}{author}~~~~\DUrole{operator}{=}~\DUrole{literal}{\DUrole{string}{\DUrole{double}{"}}}\DUrole{literal}{\DUrole{string}{Hans~Hagen,~PRAGMA-ADE,~Hasselt~NL"}}\DUrole{punctuation}{,}~\\
+~~~~\DUrole{name}{copyright}~\DUrole{operator}{=}~\DUrole{literal}{\DUrole{string}{\DUrole{double}{"}}}\DUrole{literal}{\DUrole{string}{PRAGMA~ADE~/~ConTeXt~Development~Team"}}\DUrole{punctuation}{,}~\\
+~~~~\DUrole{name}{license}~~~\DUrole{operator}{=}~\DUrole{literal}{\DUrole{string}{\DUrole{double}{"}}}\DUrole{literal}{\DUrole{string}{see~context~related~readme~files"}}~\\
+\DUrole{punctuation}{\}}~\\
+~\\
+\DUrole{comment}{\DUrole{multiline}{-{}-{[}{[}\\
+The~first~version~of~this~table~was~generated~from~unicode~tables\\
+but~after~that~was~mostly~updated~manual~using~data~present~in\\
+ConTeXt~and~elsewhere.\\
+{]}{]}}}\DUrole{comment}{\DUrole{single}{-{}-}}~\\
+~\\
+\DUrole{name}{characters}~\DUrole{operator}{=}~\DUrole{name}{characters}~\DUrole{operator}{\DUrole{word}{or}}~\DUrole{punctuation}{\{}~\DUrole{punctuation}{\}}~\\
+~\\
+\DUrole{name}{characters}\DUrole{punctuation}{.}\DUrole{name}{data}\DUrole{operator}{=}\DUrole{punctuation}{\{}~\\
+~\DUrole{punctuation}{{[}}\DUrole{literal}{\DUrole{number}{\DUrole{hex}{0x0000}}}\DUrole{punctuation}{{]}}\DUrole{operator}{=}\DUrole{punctuation}{\{}~\\
+~~\DUrole{name}{category}\DUrole{operator}{=}\DUrole{literal}{\DUrole{string}{\DUrole{double}{"}}}\DUrole{literal}{\DUrole{string}{cc"}}\DUrole{punctuation}{,}~\\
+~~\DUrole{name}{description}\DUrole{operator}{=}\DUrole{literal}{\DUrole{string}{\DUrole{double}{"}}}\DUrole{literal}{\DUrole{string}{NULL"}}\DUrole{punctuation}{,}~\\
+~~\DUrole{name}{direction}\DUrole{operator}{=}\DUrole{literal}{\DUrole{string}{\DUrole{double}{"}}}\DUrole{literal}{\DUrole{string}{bn"}}\DUrole{punctuation}{,}~\\
+~~\DUrole{name}{linebreak}\DUrole{operator}{=}\DUrole{literal}{\DUrole{string}{\DUrole{double}{"}}}\DUrole{literal}{\DUrole{string}{cm"}}\DUrole{punctuation}{,}~\\
+~~\DUrole{name}{unicodeslot}\DUrole{operator}{=}\DUrole{literal}{\DUrole{number}{\DUrole{hex}{0x0000}}}\DUrole{punctuation}{,}~\\
+~\DUrole{punctuation}{\}}
+}
+\end{quote}
+
+You can also highlight a diff:
+%
+\begin{quote}{\ttfamily \raggedright \noindent
+\DUrole{generic}{\DUrole{heading}{Index:~html4css1.css\\
+===================================================================\\
+}}\DUrole{generic}{\DUrole{deleted}{-{}-{}-~html4css1.css~~~~~(Revision~7509)\\
+}}\DUrole{generic}{\DUrole{inserted}{+++~html4css1.css~~~~~(Arbeitskopie)\\
+}}\DUrole{generic}{\DUrole{subheading}{@@~-68,7~+68,7~@@\\
+}}~\\
+~div.attention~p.admonition-title,~div.caution~p.admonition-title,\\
+~div.danger~p.admonition-title,~div.error~p.admonition-title,\\
+\DUrole{generic}{\DUrole{deleted}{-div.warning~p.admonition-title~\{\\
+}}\DUrole{generic}{\DUrole{inserted}{+div.warning~p.admonition-title,~.code~.error~\{\\
+}}~~~color:~red~;\\
+~~~font-weight:~bold~;\\
+~~~font-family:~sans-serif~\}
+}
+\end{quote}
+
+
+\section{Inline code%
+  \label{inline-code}%
+}
+
+Inline code in LaTeX \texttt{\DUrole{code}{\DUrole{tex}{\DUrole{literal}{\DUrole{string}{\$}}\DUrole{name}{\DUrole{variable}{\textbackslash{}alpha}}\DUrole{name}{\DUrole{builtin}{ }}\DUrole{operator}{=}\DUrole{name}{\DUrole{builtin}{ }}\DUrole{name}{\DUrole{variable}{\textbackslash{}int}}\DUrole{name}{\DUrole{builtin}{\_}}\DUrole{literal}{\DUrole{number}{0}}\DUrole{name}{\DUrole{builtin}{\textasciicircum{}}}\DUrole{name}{\DUrole{variable}{\textbackslash{}infty}}\DUrole{name}{\DUrole{builtin}{ f}}\DUrole{operator}{(}\DUrole{name}{\DUrole{builtin}{x}}\DUrole{operator}{)}\DUrole{name}{\DUrole{builtin}{ dx}}\DUrole{literal}{\DUrole{string}{\$}}}}} and
+Python: \texttt{\DUrole{code}{\DUrole{testclass}{\DUrole{python}{\DUrole{keyword}{print}\DUrole{punctuation}{(}\DUrole{literal}{\DUrole{string}{"The end."}}\DUrole{punctuation}{)}}}}}.
 
 \end{document}
