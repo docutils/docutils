@@ -47,7 +47,7 @@ dl.simple, dl.compact, dl.simple > dd, dl.compact > dd {
 }
 
 /* space around paragraphs */
-dl > dd p:first-child {
+dl > dd p:first-child, td > p {
   margin: 0;
 }
 
@@ -187,9 +187,10 @@ resulting list resembles the list-style 'outside' with a hanging indent.
 */
 
 /* New ordered list: reset counter, suppress the default label */
-ol {
+ol, ol.arabic, ol.loweralpha, ol.upperalpha,
+ol.lowerroman, ol.upperroman {
   counter-reset: item;
-  list-style-type: none  ! important;
+  list-style: none
 }
 
 /* Set the negative indent of the list label as feature of the list item */
@@ -247,6 +248,12 @@ ol.nested > li:before, ol.nested  ol > li:before {
   content: counters(item, ".") " ";
 }
 
+/* lists nested in definition list */
+
+dd > ul, dd > ol {
+  padding-left: 0pt;
+}
+
 /* TODO: prefix, suffix? */
 
 /* smaller font for super- and subscripts */
@@ -258,8 +265,9 @@ ol.nested > li:before, ol.nested  ol > li:before {
 
 /* margins and borders for "normal" tables */
 table {
-  margin-top: 0.5em ;
-  margin-bottom: 0.5em;
+/*   background: magenta; */
+  margin-top: 1em ;
+  margin-bottom: 1em;
 /*   border-style: outset; */
   border-style: solid;
   border-color: silver;
@@ -307,6 +315,7 @@ table.booktabs th {
 
 table > caption {
   text-align: left;
+  margin-bottom: 0.25em
 /*   padding: 2em 0 1em 0; */
 }
 

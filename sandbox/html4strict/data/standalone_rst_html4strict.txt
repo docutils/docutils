@@ -160,10 +160,10 @@ arguments for alternative styles:
                 prevented by a dummy dd:after element in the CSS.
 
 
-Tables
-------
+Table styling with class arguments
+----------------------------------
 
-Numbered tables can be achieved with the "formal" class option
+Numbered tables can be achieved with the ``numbered`` class option
 
 .. table:: truth values
    :class: numbered
@@ -176,9 +176,6 @@ Numbered tables can be achieved with the "formal" class option
    False   True    True
    True    True    True
    ======= ======= ==========
-
-Styling with class arguments
-````````````````````````````
 
 In addition to the "borderless" table-style_, the style sheet also
 defines "booktabs", that will be rendered similar to the style from
