@@ -12,25 +12,24 @@
 The `infrastructure <.>`_ sandbox directory stores any scripts that
 are needed for the development of the Docutils project.
 
-TODOs:
-
-* subversion is now on sourceforge
-  - change release and update
-
-* sourceforge does not have cron, but berlios installation
-  did not work since long time.
-
-* clean up.
-  
-Overview:
-
-Everything below this needs rework.
-
 :`<docutils-update.local>`_: The script to update the `web site`_
-    from a developer machine. *The* current way to go.
+    from a developer machine or on shell.sourceforge.
+
+    If a file ``ON_SOURCEFORGE`` exists in current dorectory, the
+    script assumes being executed on shell.sourceforge.
 
 :`<release.sh>`_: The script to make releases_ of Docutils.
     For usage details see `<release.txt>`_
+
+    TODO : less sudo ? must test-directory be installed ?NO? 
+
+:`<release-test.sh>`_: The script to run tests at release time, extracted
+    from ``release.sh``.
+
+Everything below this line needs rework
+---------------------------------------
+
+Overview:
 
 :`<uploaddocutils.sh>`_: Upload files to http://docutils.sf.net/tmp/
     using ``scp``, inserting the current date in the file name.
