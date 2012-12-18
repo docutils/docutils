@@ -21,7 +21,9 @@ are needed for the development of the Docutils project.
 :`<release.sh>`_: The script to make releases_ of Docutils.
     For usage details see `<release.txt>`_
 
-    TODO : less sudo ? must test-directory be installed ?NO? 
+    TODO : test. 
+      Allow release without testing, because tests must be done
+      on more than one os.
 
 :`<release-test.sh>`_: The script to run tests at release time, extracted
     from ``release.sh``.
