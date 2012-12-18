@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Author: Lea Wiemann
-# Contact: LeWiemann@gmail.com
+# Contact: grubert@users.sourceforge.net
 # Revision: $Revision$
 # Date: $Date$
 # Copyright: This script has been placed in the public domain.
