@@ -210,8 +210,6 @@ function test_tarball()
     echo
     run cd docutils-"$new_ver"
     echo 'Installing the distribution.'
-    # Extra files, with leading comma.
-    extras="`cd extras; for extrafile in *.py; do echo -n ",$extrafile{,c,o}"; done`"
     confirm su -c '
         for py_ver in '"$python_versions"'; do
             echo "Deleting and installing Docutils on Python $py_ver."
@@ -232,7 +230,6 @@ function test_tarball()
                 read
                 rm -rf $site_packages/docutils-test
             fi
-            rm -rfv /usr/{local,}lib/python$py_ver/site-packages/{docutils'"$extras"'}
             echo "TODO for python3 rm local build, but building takes a long time then "
             python$py_ver setup.py install
             echo
