@@ -54,6 +54,8 @@ echo "Testing the release tarball: docutils-${docutils_ver} under python$py_ver.
 
 echo "ATTENTION: some parts must be run as root/sudo to be able to remove/install into site-packages."
 
+START_DIR=`pwd`
+
 test_dir=tarball_test
 run rm -rf $test_dir
 run mkdir -p $test_dir
@@ -90,15 +92,28 @@ python$py_ver setup.py build
 sudo python$py_ver setup.py install
 echo
 echo "Copying the test suite to the site-packages directory of Python $py_ver (sudo)."
-echo "TODO for python3 copy test3"
-echo "Press enter."
+echo "TODO for python3 copy test3. Ennter.to continue."
 read
 sudo cp -rv test "$site_packages/docutils-test"
 
 # BUG test-dependecies.py
 # * breaks on record.txt access if not run as root
-# * fails missing dependecies to png.
+# * fails missing dependencies to files in docutils/docs.
 
-echo "run alltests. sudo again because alltests.out will be created in $site_packages/docutils-test"
-sudo python$py_ver -u $site_packages/docutils-test/alltests.py
+echo "run alltests.py"
+# run locally so we do not require sudo to create 
+# site_packages/docutils-test/alltests.out
+
+# copy to a directory and execute there to avoid usage
+# of local docutils source.
+test_run_dir=tmp-docutils-test
+cp -r test $test_run_dir
+mkdir -p $test_run_dir
+cd $test_run_dir
+python$py_ver -u test/alltests.py
+
+echo "remove test directory Ctrl C to abort"
+read
+cd $START_DIR
+rm -rfv $test_dir
 

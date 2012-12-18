@@ -8,6 +8,9 @@
 
 # USAGE see: docutils/docs/dev/release.txt
 
+# must be run from docutils trunk/docutils, 
+# because HISTORY and RELEASE_NOTES.txt are modified.
+
 set -e
 
 function print_command()
@@ -209,59 +212,14 @@ function test_tarball()
     confirm tar xzvf "../$tarball"
     echo
     run cd docutils-"$new_ver"
-    echo 'Installing the distribution.'
-    confirm su -c '
-        for py_ver in '"$python_versions"'; do
-            echo "Deleting and installing Docutils on Python $py_ver."
-            echo "Press enter."
-            read
-            site_packages="/usr/local/lib/python$py_ver/site-packages"
-            echo "BUG prefers /usr/local too /usr"
-            if test ! -d "$site_packages"; then
-                site_packages="/usr/lib/python$py_ver/site-packages"
-            fi
-            if test ! -d "$site_packages"; then
-                echo "Error: \"$site_packages\" does not exist."
-                exit 1
-            fi
-            if test -e "$site_packages/docutils-test"; then
-                echo "Error: \"$site_packages/docutils-test\" exists."
-                echo "removing left over from previous release. Ctrl-C to abort."
-                read
-                rm -rf $site_packages/docutils-test
-            fi
-            echo "TODO for python3 rm local build, but building takes a long time then "
-            python$py_ver setup.py install
-            echo
-            echo "Copying the test suite to the site-packages directory of Python $py_ver."
-            echo "TODO for python3 copy test3"
-            echo "Press enter."
-            read
-            cp -rv test "$site_packages/docutils-test"
-        done'
-    echo
-    echo 'Running the test suite as root with all Python versions.'
-    for py_ver in $python_versions; do
-        site_packages="/usr/local/lib/python$py_ver/site-packages"
-        if test ! -d "$site_packages"; then
-            site_packages="/usr/lib/python$py_ver/site-packages"
-        fi
-        if test ! -d "$site_packages"; then
-            echo "Error: \"$site_packages\" does not exist."
-            exit 1
-        fi
-        # BUG
-        echo "WARNING shell script exits if any test fails, maybe run in separate shell."
-        confirm su -c "python$py_ver -u \"$site_packages/docutils-test/alltests.py\""
+    echo 'Deleteing old installations. Installing the distribution.'
+    echo "WARN: might not find installation."
+    for py_ver in '"$python_versions"'; do
+        echo "python$py_ver install/update and test."
+        bash release-test.sh
+        echo "Enter to test next."
+        read
     done
-    run cd ../..
-    echo "Cleaning up..."
-    confirm su -c "rm -rf tarball_test"
-    confirm su -c '
-        for py_ver in '"$python_versions"'; do
-            rm -rfv /usr{/local,}/lib/python$py_ver/site-packages/docutils{-test,}
-        done'
-    echo
 }
 
 function upload_tarball()
