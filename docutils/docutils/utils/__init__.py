@@ -17,7 +17,7 @@ import warnings
 import unicodedata
 from docutils import ApplicationError, DataError
 from docutils import nodes
-from docutils.io import FileOutput
+import docutils.io
 from docutils.utils.error_reporting import ErrorOutput, SafeString
 
 
@@ -697,7 +697,7 @@ class DependencyList(object):
                 of = None
             else:
                 of = output_file
-            self.file = FileOutput(destination_path=of,
+            self.file = docutils.io.FileOutput(destination_path=of,
                                    encoding='utf8', autoclose=False)
         else:
             self.file = None
