@@ -195,5 +195,30 @@ class HelperFunctionsTests(unittest.TestCase):
         # not touched, because key not in keys:
         self.assertEqual(pathdict['spam'], u'spam')
 
+    def test_validate_colon_separated_string_list(self):
+        tests = (
+                    (u'a', ['a',] ),
+                    (u'a:12', ['a', '12'] ),
+                    ([u'a',], ['a',] ),
+                    # TODO ("u'a',", ['a',] ), AttributeError: 'str' object has no attribute 'pop'
+                )
+        for t in tests:
+            self.assertEqual(
+                    frontend.validate_colon_separated_string_list(None, t[0], None),
+                    t[1])
+
+
+    def test_validate_comma_separated_list(self):
+        tests = (
+                    (u'a', ['a',] ),
+                    (u'a,12', ['a', '12'] ),
+                    ([u'a',], ['a',] ),
+                    # TODO ("u'a',", ['a',] ), AttributeError: 'str' object has no attribute 'pop'
+                )
+        for t in tests:
+            self.assertEqual(
+                    frontend.validate_comma_separated_list(None, t[0], None),
+                    t[1])
+
 if __name__ == '__main__':
     unittest.main()
