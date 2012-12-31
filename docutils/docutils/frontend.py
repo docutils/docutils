@@ -174,7 +174,7 @@ def validate_comma_separated_list(setting, value, option_parser,
     if isinstance(value, unicode):
         value = [value]
     # this function is called for every option added to `value`
-    # -> split the last item and apped the result:
+    # -> split the last item and append the result:
     last = value.pop()
     classes = [cls.strip(u' \t\n') for cls in last.split(',')
                if cls.strip(u' \t\n')]
