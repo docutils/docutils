@@ -213,7 +213,7 @@ class HelperFunctionsTests(unittest.TestCase):
                     (u'a', ['a',] ),
                     (u'a,12', ['a', '12'] ),
                     ([u'a',], ['a',] ),
-                    # TODO ("u'a',", ['a',] ), AttributeError: 'str' object has no attribute 'pop'
+                    ('a,', ['a',] ), # in python3 this is unicode too 
                 )
         for t in tests:
             self.assertEqual(

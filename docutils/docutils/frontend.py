@@ -171,13 +171,11 @@ def validate_comma_separated_list(setting, value, option_parser,
     """
     # `value` is already a list when  given as command line option
     # and "action" is "append"
-    # TODO fix here or in buildhtml or process
-    # buildhtml.py:calls
-    #     values=frontend.Values()
-    # and later
-    #     optparse _process_args, _process_long_opt
-    # but then value is NOT unicode but str in python2 
-    if isinstance(value, unicode):
+    # in python2 buildhtml.py calls this once with str after several
+    #   times with unicode. MAYBE fix somewhere else.
+    #if isinstance(value, unicode): #py3
+    #if isinstance(value, basestr): # py3 and py2.7
+    if not hasattr(value, 'pop'):
         value = [value]
     # this function is called for every option added to `value`
     # -> split the last item and append the result:
