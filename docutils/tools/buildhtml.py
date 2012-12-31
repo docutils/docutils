@@ -206,7 +206,7 @@ class Builder:
             del subdirectories[:]
             return
         if not self.initial_settings.silent:
-            errout.write('/// Processing directory: %s' % directory)
+            errout.write('/// Processing directory: %s\n' % directory)
             sys.stderr.flush()
         # settings.ignore grows many duplicate entries as we recurse
         # if we add patterns in config files or on the command line.
