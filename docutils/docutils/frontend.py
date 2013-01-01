@@ -158,7 +158,7 @@ def validate_threshold(setting, value, option_parser,
 
 def validate_colon_separated_string_list(
     setting, value, option_parser, config_parser=None, config_section=None):
-    if isinstance(value, unicode):
+    if not isinstance(value, list):
         value = value.split(':')
     else:
         last = value.pop()
@@ -169,20 +169,15 @@ def validate_comma_separated_list(setting, value, option_parser,
                                     config_parser=None, config_section=None):
     """Check/normalize list arguments (split at "," and strip whitespace).
     """
-    # `value` is already a list when  given as command line option
-    # and "action" is "append"
-    # in python2 buildhtml.py calls this once with str after several
-    #   times with unicode. MAYBE fix somewhere else.
-    #if isinstance(value, unicode): #py3
-    #if isinstance(value, basestr): # py3 and py2.7
-    if not hasattr(value, 'pop'):
+    # `value` is already a ``list`` when  given as command line option
+    # and "action" is "append" and ``unicode`` or ``str`` else.
+    if not isinstance(value, list):
         value = [value]
     # this function is called for every option added to `value`
     # -> split the last item and append the result:
     last = value.pop()
-    classes = [cls.strip(u' \t\n') for cls in last.split(',')
-               if cls.strip(u' \t\n')]
-    value.extend(classes)
+    items = [i.strip(u' \t\n') for i in last.split(u',') if i.strip(u' \t\n')]
+    value.extend(items)
     return value
 
 def validate_url_trailing_slash(
