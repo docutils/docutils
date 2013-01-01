@@ -198,9 +198,11 @@ class HelperFunctionsTests(unittest.TestCase):
     def test_validate_colon_separated_string_list(self):
         tests = (
                     (u'a', ['a',] ),
-                    (u'a:12', ['a', '12'] ),
+                    ('a', ['a',] ),
+                    (u'a:b', ['a', 'b'] ),
+                    ('a:b', ['a', 'b'] ),
                     ([u'a',], ['a',] ),
-                    # TODO ("u'a',", ['a',] ), AttributeError: 'str' object has no attribute 'pop'
+                    ([u'a', u'b:c'], ['a', 'b', 'c'] ),
                 )
         for t in tests:
             self.assertEqual(
@@ -211,9 +213,12 @@ class HelperFunctionsTests(unittest.TestCase):
     def test_validate_comma_separated_list(self):
         tests = (
                     (u'a', ['a',] ),
-                    (u'a,12', ['a', '12'] ),
+                    ('a', ['a',] ),
+                    (u'a,b', ['a', 'b'] ),
+                    ('a,b', ['a', 'b'] ),
                     ([u'a',], ['a',] ),
-                    ('a,', ['a',] ), # in python3 this is unicode too 
+                    ([u'a', u'b,c'], ['a', 'b', 'c'] ),
+                    (['a', 'b,c'], ['a', 'b', 'c'] ),
                 )
         for t in tests:
             self.assertEqual(
