@@ -261,7 +261,7 @@ class SmartQuotes(Transform):
                         if not isinstance(txtnode.parent,
                                           nodes.option_string)]
 
-            # language: use smart-quotes for language "lang"
+            # language: use typographical quotes for language "lang"
             lang = node.get_language_code(document_language)
             # use alternative form if `smart-quotes` setting starts with "alt":
             if alternative:

@@ -95,9 +95,12 @@ u"""\
 Quotes and inline-elements:
 
 * Around "_`targets`", "*emphasized*" or "``literal``" text
-  and links to "targets_".                                          
+  and links to "targets_".
 
 * Inside *"emphasized"* or other `inline "roles"`
+
+Do not drop characters from intra-word inline markup like
+*re*\ ``Structured``\ *Text*.
 """,
 u"""\
 <document source="test data">
@@ -127,7 +130,16 @@ u"""\
                     “emphasized”
                  or other \n\
                 <title_reference>
-                    inline “roles”\
+                    inline “roles”
+    <paragraph>
+        Do not drop characters from intra-word inline markup like
+        <emphasis>
+            re
+        <literal>
+            Structured
+        <emphasis>
+            Text
+        .\
 """],
 ["""\
 .. class:: language-de

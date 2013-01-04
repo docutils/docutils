@@ -382,7 +382,7 @@ class smartchars(object):
     # For other languages see:
     # http://en.wikipedia.org/wiki/Non-English_usage_of_quotation_marks
     # http://de.wikipedia.org/wiki/Anf%C3%BChrungszeichen#Andere_Sprachen
-    quotes = {'af':        u'“”‘’',
+    quotes = {'af':           u'“”‘’',
               'af-x-altquot': u'„”‚’',
               'ca':           u'«»“”',
               'ca-x-altquot': u'“”‘’',
@@ -507,14 +507,15 @@ def educate_tokens(text_tokens, attr=default_smartypants_attr, language='en'):
 
     for (ttype, text) in text_tokens:
 
-        # skip HTML and/or XML tags (do not update last character)
-        if ttype == 'tag':
+        # skip HTML and/or XML tags as well as emtpy text tokens
+        # without updating the last character
+        if ttype == 'tag' or not text:
             yield text
             continue
 
         # skip literal text (math, literal, raw, ...)
         if ttype == 'literal':
-            prev_token_last_char = text[-1]
+            prev_token_last_char = text[-1:]
             yield text
             continue
 
