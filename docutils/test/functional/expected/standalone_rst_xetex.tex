@@ -231,7 +231,7 @@ A1B 2C3 } \\
 \textbf{Date}: &
 	Now, or yesterday.  Or maybe even \emph{before} yesterday. \\
 \textbf{Status}: &
-	This is a "work in progress" \\
+	This is a “work in progress” \\
 \textbf{Revision}: &
 	is managed by a version control system. \\
 \textbf{Version}: &
@@ -242,12 +242,12 @@ may do with it as you wish. You may copy, modify,
 redistribute, reattribute, sell, buy, rent, lease,
 destroy, or improve it, quote it at length, excerpt,
 incorporate, collate, fold, staple, or mutilate it, or do
-anything else to it that your or anyone else's heart
+anything else to it that your or anyone else’s heart
 desires. \\
 \textbf{field name}: &
-This is a "generic bibliographic field".
+This is a “generic bibliographic field”.
 \\
-\textbf{field name "2"}: &
+\textbf{field name “2”}: &
 Generic bibliographic fields may contain multiple body elements.
 
 Like this.
@@ -309,7 +309,7 @@ activated with the \texttt{--section-subtitles} command line option or the
   \label{transitions}%
 }
 
-Here's a transition:
+Here’s a transition:
 
 
 %___________________________________________________________________________
@@ -359,12 +359,12 @@ The default role for interpreted text is \DUroletitlereference{Title Reference}.
 some explicit interpreted text roles: a PEP reference (\href{http://www.python.org/dev/peps/pep-0287}{PEP 287}); an
 RFC reference (\href{http://www.faqs.org/rfcs/rfc2822.html}{RFC 2822}); an abbreviation (\DUrole{abbreviation}{abb.}), an acronym
 (\DUrole{acronym}{reST}), code (\texttt{\DUrole{code}{print "hello world"}}); a \textsubscript{subscript};
-a \textsuperscript{superscript} and explicit roles for \DUroletitlereference{Docutils}'
+a \textsuperscript{superscript} and explicit roles for \DUroletitlereference{Docutils}’
 \emph{standard} \textbf{inline} \texttt{markup}.
 
 % DO NOT RE-WRAP THE FOLLOWING PARAGRAPH!
 
-Let's test wrapping and whitespace significance in inline literals:
+Let’s test wrapping and whitespace significance in inline literals:
 \texttt{This is an example of --inline-literal --text, --including some--
 strangely--hyphenated-words. ~Adjust-the-width-of-your-browser-window
 to see how the text is wrapped. ~-- ---- -------- ~Now note ~ ~the
@@ -469,7 +469,7 @@ Paragraph 2 of item 2.
 \end{list}
 \end{list}
 
-\item Lists that don't start at 1:
+\item Lists that don’t start at 1:
 \setcounter{listcnt1}{0}
 \begin{list}{\arabic{listcnt1}.}
 {
@@ -553,7 +553,7 @@ relative to the field marker.
 \item[{credits:}]
 \DUrole{credits}{This paragraph has the \DUroletitlereference{credits} class set.  (This is actually not
 about credits but just for ensuring that the class attribute
-doesn't get stripped away.)}
+doesn’t get stripped away.)}
 
 \end{DUfieldlist}
 
@@ -566,7 +566,7 @@ For listing command-line options:
 %
 \begin{DUoptionlist}
 
-\item[-a]  command-line option "a"
+\item[-a]  command-line option “a”
 
 \item[-b file]  options can have arguments
 and long descriptions
@@ -581,7 +581,7 @@ arguments
 The description may contain multiple body elements,
 regardless of where it starts.
 
-\item[-x, -y, -z]  Multiple options are an "option group".
+\item[-x, -y, -z]  Multiple options are an “option group”.
 
 \item[-v, --verbose]  Commonly-seen: short \& long options.
 
@@ -599,7 +599,7 @@ description.
   \label{literal-blocks}%
 }
 
-Literal blocks are indicated with a double-colon ("::") at the end of
+Literal blocks are indicated with a double-colon (“::”) at the end of
 the preceding paragraph (over there \texttt{-->}).  They can be indented:
 %
 \begin{quote}{\ttfamily \raggedright \noindent
@@ -632,7 +632,7 @@ indentation.
 \item[] This is a line block.  It ends with a blank line.
 \item[]
 \begin{DUlineblock}{\DUlineblockindent}
-\item[] New lines begin with a vertical bar ("|").
+\item[] New lines begin with a vertical bar (“|”).
 \item[] Line breaks and initial indent are significant, and preserved.
 \item[]
 \begin{DUlineblock}{\DUlineblockindent}
@@ -647,16 +647,16 @@ the left edge of the text above it.
 \begin{DUlineblock}{0em}
 \item[] This is a second line block.
 \item[] 
-\item[] Blank lines are permitted internally, but they must begin with a "|".
+\item[] Blank lines are permitted internally, but they must begin with a “|”.
 \end{DUlineblock}
 
 Another line block, surrounded by paragraphs:
 
 \begin{DUlineblock}{0em}
-\item[] And it's no good waiting by the window
-\item[] It's no good waiting for the sun
+\item[] And it’s no good waiting by the window
+\item[] It’s no good waiting for the sun
 \item[] Please believe me, the things you dream of
-\item[] They don't fall in the lap of no-one
+\item[] They don’t fall in the lap of no-one
 \end{DUlineblock}
 
 Take it away, Eric the Orchestra Leader!
@@ -674,7 +674,7 @@ Take it away, Eric the Orchestra Leader!
 \item[] But half the bee has got to be,
 \item[]
 \begin{DUlineblock}{\DUlineblockindent}
-\item[] \emph{vis a vis} its entity.  D'you see?
+\item[] \emph{vis a vis} its entity.  D’you see?
 \item[] 
 \end{DUlineblock}
 \item[] But can a bee be said to be
@@ -691,7 +691,7 @@ Take it away, Eric the Orchestra Leader!
 \end{DUlineblock}
 \end{DUlineblock}
 \end{DUlineblock}
-\item[] Singing...
+\item[] Singing…
 \end{DUlineblock}
 
 \end{quote}
@@ -769,19 +769,19 @@ Python-specific~usage~examples;~begun~with~">>>"\\
 A footnote contains body elements, consistently indented by at
 least 3 spaces.
 
-This is the footnote's second paragraph.
+This is the footnote’s second paragraph.
 }
 %
 \DUfootnotetext{label}{id3}{2}{\phantomsection\label{label}%
 Footnotes may be numbered, either manually (as in\DUfootnotemark{id9}{id8}{1}) or
-automatically using a "\#"-prefixed label.  This footnote has a
+automatically using a “\#”-prefixed label.  This footnote has a
 label so it can be referred to from multiple places, both as a
 footnote reference (\DUfootnotemark{id10}{label}{2}) and as a \hyperref[label]{hyperlink reference}.
 }
 %
 \DUfootnotetext{id12}{id2}{3}{%
 This footnote is numbered automatically and anonymously using a
-label of "\#" only.
+label of “\#” only.
 
 This is the second paragraph.
 
@@ -789,8 +789,8 @@ And this is the third paragraph.
 }
 %
 \DUfootnotetext{id13}{id4}{*}{%
-Footnotes may also use symbols, specified with a "*" label.
-Here's a reference to the next footnote:\DUfootnotemark{id14}{id15}{†}.
+Footnotes may also use symbols, specified with a “*” label.
+Here’s a reference to the next footnote:\DUfootnotemark{id14}{id15}{†}.
 }
 %
 \DUfootnotetext{id15}{id14}{†}{%
@@ -798,7 +798,7 @@ This footnote shows the next symbol in the sequence.
 }
 %
 \DUfootnotetext{id16}{id16}{4}{%
-Here's an unreferenced footnote, with a reference to a
+Here’s an unreferenced footnote, with a reference to a
 nonexistent footnote:%
 \raisebox{1em}{\hypertarget{id45}{}}%
 \raisebox{1em}{\hypertarget{id17}{}}\hyperlink{id44}{\textbf{\color{red}{[}5{]}\_}}.
@@ -813,7 +813,7 @@ Citations are text-labeled footnotes. They may be
 rendered separately and differently from footnotes.
 \end{figure}
 
-Here's a reference to the above, \hyperlink{cit2002}{[CIT2002]}, and a %
+Here’s a reference to the above, \hyperlink{cit2002}{[CIT2002]}, and a %
 \raisebox{1em}{\hypertarget{id47}{}}%
 \raisebox{1em}{\hypertarget{id19}{}}\hyperlink{id46}{\textbf{\color{red}{[}nonexistent{]}\_}}
 citation.
@@ -825,7 +825,7 @@ citation.
 }
 
 \phantomsection\label{example}
-This paragraph is pointed to by the explicit "example" target. A
+This paragraph is pointed to by the explicit “example” target. A
 reference can be found under \hyperref[inline-markup]{Inline Markup}, above. \hyperref[inline-hyperlink-targets]{Inline
 hyperlink targets} are also possible.
 
@@ -833,12 +833,12 @@ Section headers are implicit targets, referred to by name. See
 \hyperref[targets]{Targets}, which is a subsection of \hyperref[body-elements]{Body Elements}.
 
 Explicit external targets are interpolated into references such as
-"\href{http://www.python.org/}{Python}\DUfootnotemark{id31}{id29}{5}".
+“\href{http://www.python.org/}{Python}\DUfootnotemark{id31}{id29}{5}”.
 
 Targets may be indirect and anonymous.  Thus \hyperref[targets]{this phrase} may also
 refer to the \hyperref[targets]{Targets} section.
 
-Here's a %
+Here’s a %
 \raisebox{1em}{\hypertarget{id49}{}}\hyperlink{id48}{\textbf{\color{red}`hyperlink reference without a target`\_}}, which generates an
 error.
 
@@ -848,15 +848,15 @@ error.
 }
 
 Duplicate names in section headers or other implicit targets will
-generate "info" (level-1) system messages.  Duplicate names in
-explicit targets will generate "warning" (level-2) system messages.
+generate “info” (level-1) system messages.  Duplicate names in
+explicit targets will generate “warning” (level-2) system messages.
 
 
 \subsubsection{2.13.2   Duplicate Target Names%
   \label{id21}%
 }
 
-Since there are two "Duplicate Target Names" section headers, we
+Since there are two “Duplicate Target Names” section headers, we
 cannot uniquely refer to either of them by name.  If we try to (like
 this: %
 \raisebox{1em}{\hypertarget{id51}{}}\hyperlink{id50}{\textbf{\color{red}`Duplicate Target Names`\_}}), an error is generated.
@@ -876,7 +876,7 @@ others, please see
   \label{document-parts}%
 }
 
-An example of the "contents" directive can be seen above this section
+An example of the “contents” directive can be seen above this section
 (a local, untitled table of \hyperref[contents]{contents}) and at the beginning of the
 document (a document-wide \hyperref[table-of-contents]{table of contents}).
 
@@ -885,7 +885,7 @@ document (a document-wide \hyperref[table-of-contents]{table of contents}).
   \label{images-and-figures}%
 }
 
-An image directive (also clickable -- a hyperlink reference):
+An image directive (also clickable – a hyperlink reference):
 
 \hyperref[directives]{\includegraphics{../../../docs/user/rst/images/title.png}}
 
@@ -947,7 +947,7 @@ layout.
 
 re
  & 
-Revised, revisited, based on 're' module.
+Revised, revisited, based on ‘re’ module.
  \\
 \hline
 
@@ -959,7 +959,7 @@ Structure-enhanced text, structuredtext.
 
 Text
  & 
-Well it is, isn't it?
+Well it is, isn’t it?
  \\
 \hline
 \end{longtable*}
@@ -1028,7 +1028,7 @@ Directives at large.
 \DUadmonition[caution]{
 \DUtitle[caution]{Caution!}
 
-Don't take any wooden nickels.
+Don’t take any wooden nickels.
 }
 
 \DUadmonition[danger]{
@@ -1046,7 +1046,7 @@ Does not compute.
 \DUadmonition[hint]{
 \DUtitle[hint]{Hint}
 
-It's bigger than a bread box.
+It’s bigger than a bread box.
 }
 
 \DUadmonition[important]{
@@ -1085,7 +1085,7 @@ Reader discretion is strongly advised.
 }
 
 \DUadmonition[admonition-and-by-the-way]{
-\DUtitle[admonition-and-by-the-way]{And, by the way...}
+\DUtitle[admonition-and-by-the-way]{And, by the way…}
 
 You can make up your own admonition too.
 }
@@ -1120,8 +1120,8 @@ with no subsections.
 This is a topic.
 }
 
-A \emph{rubric} is like an informal heading that doesn't correspond to the
-document's structure. It is typically highlighted in red (hence the name).
+A \emph{rubric} is like an informal heading that doesn’t correspond to the
+document’s structure. It is typically highlighted in red (hence the name).
 
 \DUrubric{This is a rubric}
 
@@ -1196,8 +1196,8 @@ This~one~starts~with~a~literal~block.
 \end{quote}
 Compound 4, a paragraph.
 
-Now something \emph{really} perverted -- a nested compound block.  This is
-just to test that it works at all; the results don't have to be
+Now something \emph{really} perverted – a nested compound block.  This is
+just to test that it works at all; the results don’t have to be
 meaningful.
 
 Compound 5, block 1 (a paragraph).
@@ -1310,7 +1310,7 @@ An inline image (\includegraphics{../../../docs/user/rst/images/biohazard.png}) 
   \label{comments}%
 }
 
-Here's one:
+Here’s one:
 
 % Comments begin with two dots and a space. Anything may
 % follow, except for the syntax of footnotes, hyperlink
@@ -1329,7 +1329,7 @@ Here's one:
 
 This does not necessarily look nice, because there may be missing white space.
 
-It's just there to freeze the behavior.
+It’s just there to freeze the behavior.
 
 A test.
 
@@ -1436,7 +1436,7 @@ True
   \label{rowspanning-tables}%
 }
 
-Here's a table with cells spanning several rows:
+Here’s a table with cells spanning several rows:
 
 \setlength{\DUtablewidth}{\linewidth}
 \begin{longtable*}[c]{|p{0.296\DUtablewidth}|p{0.156\DUtablewidth}|p{0.226\DUtablewidth}|}
@@ -1511,7 +1511,7 @@ body row 3
 
 \item A language-switching role:
 
-Let's count in German \otherlanguage{german}{eins zwei drei}.
+Let’s count in German \otherlanguage{german}{eins zwei drei}.
 
 \item A role with multiple class attributes, styled with raw directives:
 
@@ -2060,12 +2060,12 @@ to the document options or use a different font package.
   \label{encoding-special-chars}%
 }
 
-The LaTeX Info pages lists under "2.18 Special Characters"
+The LaTeX Info pages lists under “2.18 Special Characters”
 %
 \begin{quote}
 
 The following characters play a special role in LaTeX and are called
-"special printing characters", or simply "special characters".
+“special printing characters”, or simply “special characters”.
 %
 \begin{quote}
 
@@ -2091,9 +2091,9 @@ if the token right after the macro name is an opening bracket.
 In that case the contents between that bracket and the following
 closing bracket on the same grouping level are taken as the
 optional argument. What makes this unintuitive is the fact that
-the square brackets aren't grouping characters themselves, so in
-your last example item{[}{[}...{]}{]} the optional argument consists of
-{[}... (without the closing bracket).
+the square brackets aren’t grouping characters themselves, so in
+your last example item{[}{[}…{]}{]} the optional argument consists of
+{[}… (without the closing bracket).
 
 \end{quote}
 
@@ -2185,11 +2185,11 @@ a long URL that should wrap in the output
 
 \end{description}
 
-If the argument contains any "\%", "\#", or "\textasciicircum{}\textasciicircum{}", or ends with \texttt{\textbackslash{}}, it can't
+If the argument contains any “\%”, “\#”, or “\textasciicircum{}\textasciicircum{}”, or ends with \texttt{\textbackslash{}}, it can’t
 be used in the argument to another command. The argument must not contain
 unbalanced braces.
 
-The characters \textasciicircum{}, \{, \}, and \texttt{\textbackslash{}} are invalid in a "http:" or "ftp:" URL
+The characters \textasciicircum{}, \{, \}, and \texttt{\textbackslash{}} are invalid in a “http:” or “ftp:” URL
 and not recognized as part of it:
 
 \begin{DUlineblock}{0em}
@@ -2230,7 +2230,7 @@ These URLs are typeset inside a LaTeX command without error.
 %
 \begin{itemize}
 
-\item \textasciicircum{}\textasciicircum{} LaTeX's special syntax for characters results in "strange" replacements
+\item \textasciicircum{}\textasciicircum{} LaTeX’s special syntax for characters results in “strange” replacements
 (both with href and url). A warning is given.
 
 \href{../strange^^name}{file with \textasciicircum{}\textasciicircum{}}:
@@ -2329,7 +2329,7 @@ Currently, there is extended support for 28 languages in the
 Any errors caught during processing will generate system messages.
 
 There should be five messages in the following, auto-generated
-section, "Docutils System Messages":
+section, “Docutils System Messages”:
 
 % section should be added by Docutils automatically
 

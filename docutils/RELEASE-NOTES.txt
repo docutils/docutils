@@ -32,6 +32,12 @@ Future changes
 Changes Since 0.10
 ==================
 
+* docutils/writers/latex2e/__init__.py
+
+  - Drop the simple algorithm replacing straight double quotes with
+    English typographic ones. Use the SmartQuotes transform
+    (``--smart-quotes=True``) instead.
+
 
 Release 0.10 (2012-12-16)
 =========================

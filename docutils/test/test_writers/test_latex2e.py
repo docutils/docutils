@@ -421,54 +421,9 @@ head + r"""\newcounter{listcnt0}
 """],
 ]
 
-# BUG: need to test for quote replacing if language is de (ngerman).
+# TODO: need to test for quote replacing if the language uses "ASCII-quotes"
+# as active character (e.g. de (ngerman)).
 
-totest['quote_mangling'] = [
-# input
-["""
-Depending on language quotes are converted for latex.
-Expecting "en" here.
-
-Inside literal blocks quotes should be left untouched
-(use only two quotes in test code makes life easier for
-the python interpreter running the test)::
-
-    ""
-    This is left "untouched" also *this*.
-    ""
-
-.. parsed-literal::
-
-    should get "quotes" and *italics*.
-
-
-Inline ``literal "quotes"`` should be kept.
-""",
-head + r"""
-Depending on language quotes are converted for latex.
-Expecting ``en'' here.
-
-Inside literal blocks quotes should be left untouched
-(use only two quotes in test code makes life easier for
-the python interpreter running the test):
-%
-\begin{quote}{\ttfamily \raggedright \noindent
-"{}"\\
-This~is~left~"untouched"~also~*this*.\\
-"{}"
-}
-\end{quote}
-%
-\begin{quote}{\ttfamily \raggedright \noindent
-should~get~"quotes"~and~\emph{italics}.
-}
-\end{quote}
-
-Inline \texttt{literal "quotes"} should be kept.
-
-\end{document}
-"""],
-]
 
 totest['table_caption'] = [
 # input

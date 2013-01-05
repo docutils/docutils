@@ -6,3 +6,7 @@ test_destination = "standalone_rst_latex.tex"
 
 # Keyword parameters passed to publish_file.
 writer_name = "latex"
+
+# Settings
+# use "smartquotes" transition:
+settings_overrides['smart_quotes'] = True

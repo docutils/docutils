@@ -20,19 +20,26 @@ Changes Since 0.10
 
   - Fix [ 3596884 ] exception importing ``docutils.io``.
 
+* docutils/writers/latex2e/__init__.py
+
+  - Drop the simple algorithm replacing straight double quotes with
+    English typographic ones. Use the SmartQuotes transform
+    (``--smart-quotes=True``) instead.
+
+
 Release 0.10 (2012-12-16)
 =========================
 
 * General
-  
+
   - Dropped support for Python 2.3.
   - ``docutils/math``, ``docutils/error_reporting.py``, and
     ``docutils/urischemes.py`` moved to the utils package.
   - Fix [3541369] Relative __import__ also with Python 3.3.
-  - Fix [3559988] and [3560841] __import__ local writer, reader, languages 
+  - Fix [3559988] and [3560841] __import__ local writer, reader, languages
     and parsers for Python 2.7 up.
   - Fix import of PIL.Image.
-  - Change default of "syntax highlight" option to "long", 
+  - Change default of "syntax highlight" option to "long",
     basic syntax highlight styles for LaTeX and HTML.
 
 * docutils/io.py
@@ -67,7 +74,7 @@ Release 0.10 (2012-12-16)
   - Apply [ 3527401 ] addmonition's don't preserve indentation
   - Apply [ 3527397 ] Add indentation to literal blocks in manpage writer.
 
-* docutils/writers/latex2e/__init__.py, docutils/writers/xetex/__init__.py
+, docutils/writers/xetex/__init__.py
 
   - Apply [ 3555160 ] ensure order of "otherlanguages".
   - Fix section numbering by LaTeX.

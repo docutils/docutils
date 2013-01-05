@@ -361,22 +361,37 @@ class Babel(object):
 
     warn_msg = 'Language "%s" not supported by LaTeX (babel)'
 
+    # double quotes are "active" in some languages (e.g. German).
+    literal_double_quote = u'"'
+    # Languages with active ``"``, defining ``\dq``:
+    active_dq_languages = ('bulgarian',
+                           'czech',
+                           'estonian',
+                           'german', 'ngerman', 'austrian', 'naustrian',
+                           'icelandic',
+                           'norsk', 'nynorsk',
+                           'polish',
+                           'russian',
+                           'slovak',
+                           'swedish',
+                           'ukrainian',
+                           'uppersorbian',)
+    # Languages with active ``"``, not defining ``\dq``
+    # TODO: complete set of languages with active ``"``,
+    #       care for other active characters.
+    active_dq_languages_2 = ('danish',
+                             'dutch',
+                             'italian', 'latin')
+
     def __init__(self, language_code, reporter=None):
         self.reporter = reporter
         self.language = self.language_name(language_code)
         self.otherlanguages = {}
         self.quote_index = 0
-        self.quotes = ('``', "''")
         # language dependent configuration:
-        # double quotes are "active" in some languages (e.g. German).
-        self.literal_double_quote = u'"'
-        if self.language in ('ngerman', 'german', 'austrian', 'naustrian',
-                             'russian'):
-            self.quotes = (r'\glqq{}', r'\grqq{}')
+        if self.language in active_dq_languages:
             self.literal_double_quote = ur'\dq{}'
-        if self.language == 'french':
-            self.quotes = (r'\og{}', r'\fg{}')
-        if self.language == 'italian':
+        elif self.language in active_dq_languages_2:
             self.literal_double_quote = ur'{\char`\"}'
 
     def __call__(self):
@@ -398,20 +413,6 @@ class Babel(object):
                            r'\noextrasfrench}' % self.language]
         return '\n'.join(self.setup)
 
-    def next_quote(self):
-        q = self.quotes[self.quote_index]
-        self.quote_index = (self.quote_index+1) % 2
-        return q
-
-    def quote_quotes(self,text):
-        t = None
-        for part in text.split('"'):
-            if t == None:
-                t = part
-            else:
-                t += self.next_quote() + part
-        return t
-
     def language_name(self, language_code):
         """Return TeX language name for `language_code`"""
         for tag in utils.normalize_language_tag(language_code):
@@ -424,8 +425,7 @@ class Babel(object):
         return ''
 
     def get_language(self):
-        """Return `self.language` (for backwards compatibility with Sphinx).
-        """
+        # Obsolete, kept for backwards compatibility with Sphinx
         return self.language
 
 
@@ -1423,6 +1423,9 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         # Set up the translation table:
         table = CharMaps.special.copy()
+        # double quotes are 'active' in some languages
+        # TODO: use \textquotedbl if font encoding is T1?
+        table[ord('"')] = self.babel.literal_double_quote
         # keep the underscore in citation references
         if self.inside_citation_reference_label:
             del(table[ord('_')])
@@ -1444,10 +1447,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 table[ord('>')] = ur'\textgreater{}'
         if self.insert_non_breaking_blanks:
             table[ord(' ')] = ur'~'
-        if self.literal:
-            # double quotes are 'active' in some languages
-            # TODO: use \textquotedbl if font encoding starts with T?
-            table[ord('"')] = self.babel.literal_double_quote
         # Unicode replacements for 8-bit tex engines (not required with XeTeX/LuaTeX):
         if not self.is_xetex:
             table.update(CharMaps.unsupported_unicode)
@@ -1484,8 +1483,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
                 if not line.lstrip():
                     lines[i] += '~'
             text = (r'\\' + '\n').join(lines)
-        if not self.literal:
-            text = self.babel.quote_quotes(text)
         if self.literal and not self.insert_non_breaking_blanks:
             # preserve runs of spaces but allow wrapping
             text = text.replace('  ', ' ~')
@@ -2317,14 +2314,14 @@ class LaTeXTranslator(nodes.NodeVisitor):
         # depart_inline()):
         classes = node['classes'][:]
         self.context.append('}' * len(classes))
-        # handle language specification:
+    # handle language specification:
         language_tags = [cls for cls in classes
                          if cls.startswith('language-')]
         if language_tags:
             language = self.babel.language_name(language_tags[0][9:])
             if language:
                 self.babel.otherlanguages[language] = True
-                self.out.append(r'\otherlanguage{%s}{' % language)
+                self.out.append(r'\foreignlanguage{%s}{' % language)
                 classes.pop(classes.index(language_tags[0]))
         if not classes:
             return
