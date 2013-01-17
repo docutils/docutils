@@ -37,28 +37,28 @@
   \label{id1}%
 }
 
-первый пример: "Здравствуй, мир!"
+первый пример: «Здравствуй, мир!»
 
 
 \section{Title%
   \label{title}%
 }
 
-\otherlanguage{english}{first example: "Hello world".}
+\foreignlanguage{english}{first example: “Hello world”.}
 
 
 \section{Notes%
   \label{notes}%
 }
 
-This example tests rendering of Latin and Cyrillic characters by the LaTeX
+\foreignlanguage{english}{This example tests rendering of Latin and Cyrillic characters by the LaTeX
 and XeTeX writers. Check the compiled PDF for garbage characters in text and
-bookmarks.
+bookmarks.}
 
-To work around a problem with Cyrillic in PDF-bookmarks in \DUroletitlereference{hyperref}
+\foreignlanguage{english}{To work around a problem with Cyrillic in PDF-bookmarks in \DUroletitlereference{hyperref}
 versions older than v6.79g 2009/11/20, the test caller \texttt{latex\_cyrillic.py}
 sets \texttt{hyperref\_options} to \texttt{'unicode=true'} while \texttt{xetex\_cyrillic.py}
 sets it to \texttt{'unicode=false'}. The recommended option for current
-(2011-08-24) hyperref versions is \texttt{'pdfencoding=auto'}.
+(2011-08-24) hyperref versions is \texttt{'pdfencoding=auto'}.}
 
 \end{document}

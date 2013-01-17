@@ -13,3 +13,6 @@ settings_overrides['hyperref_options'] = 'unicode=true'
 settings_overrides['font_encoding'] = 'T1,T2A'
 settings_overrides['stylesheet'] = 'cmlgc'
 settings_overrides['language_code'] = 'ru'
+
+# use "smartquotes" transition:
+settings_overrides['smart_quotes'] = True

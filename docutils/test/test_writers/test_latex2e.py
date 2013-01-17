@@ -116,9 +116,9 @@ r"""\usepackage{ifthen}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish,english]{babel}
-\addto\shorthandsspanish{\spanishdeactivate{."~<>}}
+\AtBeginDocument{\shorthandoff{.<>}}
 """)) + r"""
-Und damit \otherlanguage{spanish}{basta}!
+Und damit \foreignlanguage{spanish}{basta}!
 
 \end{document}
 """],
@@ -604,7 +604,6 @@ two stylesheets embedded in the header
 \end{document}
 """],
 ]
-
 
 if __name__ == '__main__':
     import unittest

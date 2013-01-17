@@ -10,14 +10,16 @@ Title
 
 first example: "Hello world".
 
-.. class:: language-en
-
 Notes
 -----
+
+.. class:: language-en
 
 This example tests rendering of Latin and Cyrillic characters by the LaTeX
 and XeTeX writers. Check the compiled PDF for garbage characters in text and
 bookmarks.
+
+.. class:: language-en
 
 To work around a problem with Cyrillic in PDF-bookmarks in `hyperref`
 versions older than v6.79g 2009/11/20, the test caller ``latex_cyrillic.py``
