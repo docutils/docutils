@@ -23,9 +23,11 @@ Changes Since 0.10
 * docutils/writers/latex2e/__init__.py
 
   - Drop the simple algorithm replacing straight double quotes with
-    English typographic ones. Use the SmartQuotes transform
-    (``--smart-quotes=True``) instead.
+    English typographic ones.
+    Activate the SmartQuotes_ transform if you want this feature.
+  - Fix literal use of babel shorthands (straight quote, tilde, ...).
 
+.. _SmartQuotes: docs/user/config.html#smart-quotes
 
 Release 0.10 (2012-12-16)
 =========================

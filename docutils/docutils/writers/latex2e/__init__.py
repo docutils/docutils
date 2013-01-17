@@ -305,7 +305,7 @@ class Babel(object):
         'en-GB':        'british',
         'en-NZ':        'newzealand',
         'en-US':        'american',
-        'eo':           'esperanto', # '^' is active
+        'eo':           'esperanto',
         'es':           'spanish',
         'et':           'estonian',
         'eu':           'basque',
@@ -335,12 +335,12 @@ class Babel(object):
         'nb':           'norsk',     # Norwegian Bokmal
         'nl':           'dutch',
         'nn':           'nynorsk',   # Norwegian Nynorsk
-        'no':           'norsk',     # Norwegian Bokmal
+        'no':           'norsk',     # Norwegian (Bokmal)
         'pl':           'polish',
         'pt':           'portuges',
         'pt-BR':        'brazil',
         'ro':           'romanian',
-        'ru':           'russian',   # '"' is active
+        'ru':           'russian',
         'se':           'samin',     # North Sami
         # sh-Cyrl:      Serbo-Croatian, Cyrillic script
         'sh-Latn':      'serbian', # Serbo-Croatian, Latin script
@@ -348,7 +348,7 @@ class Babel(object):
         'sl':           'slovene',
         'sq':           'albanian',
         # 'sr-Cyrl':    Serbian, Cyrillic script (sr-cyrl)
-        'sr-Latn':      'serbian', # Serbian, Latin script, " active.
+        'sr-Latn':      'serbian', # Serbian, Latin script
         'sv':           'swedish',
         # 'th':           'thai',
         'tr':           'turkish',
@@ -361,49 +361,59 @@ class Babel(object):
 
     warn_msg = 'Language "%s" not supported by LaTeX (babel)'
 
-    # double quotes are "active" in some languages (e.g. German).
-    literal_double_quote = u'"'
-    # Languages with active ``"``, defining ``\dq``:
-    active_dq_languages = ('bulgarian',
-                           'czech',
-                           'estonian',
-                           'german', 'ngerman', 'austrian', 'naustrian',
-                           'icelandic',
-                           'norsk', 'nynorsk',
-                           'polish',
-                           'russian',
-                           'slovak',
-                           'swedish',
-                           'ukrainian',
-                           'uppersorbian',)
-    # Languages with active ``"``, not defining ``\dq``
-    # TODO: complete set of languages with active ``"``,
-    #       care for other active characters.
-    active_dq_languages_2 = ('danish',
-                             'dutch',
-                             'italian', 'latin')
+    # "Active characters" are shortcuts that start a LaTeX macro and may need
+    # escaping for literals use. Characters that prevent literal use (e.g.
+    # starting accent macros like "a -> ä) will be deactivated if one of the
+    # defining languages is used in the document.
+    # Special cases:
+    #  ~ (tilde) -- used in estonian, basque, galician, and old versions of
+    #    spanish -- cannot be deactivated as it denotes a no-break space macro,
+    #  " (straight quote) -- used in albanian, austrian, basque
+    #    brazil, bulgarian, catalan, czech, danish, dutch, estonian,
+    #    finnish, galician, german, icelandic, italian, latin, naustrian,
+    #    ngerman, norsk, nynorsk, polish, portuges, russian, serbian, slovak,
+    #    slovene, spanish, swedish, ukrainian, and uppersorbian --
+    #    is escaped as ``\textquotedbl``.
+    active_chars = {# TeX/Babel-name:  active characters to deactivate
+                    # 'breton':        ':;!?' # ensure whitespace
+                    # 'esperanto':     '^',
+                    # 'estonian':      '~"`',
+                    # 'french':        ':;!?' # ensure whitespace
+                    'galician':        '.<>', # also '~"'
+                    # 'magyar':        '`', # for special hyphenation cases
+                    'spanish':         '.<>', # old versions also '~'
+                    # 'turkish':       ':!=' # ensure whitespace
+                   }
 
     def __init__(self, language_code, reporter=None):
         self.reporter = reporter
         self.language = self.language_name(language_code)
         self.otherlanguages = {}
-        self.quote_index = 0
-        # language dependent configuration:
-        if self.language in active_dq_languages:
-            self.literal_double_quote = ur'\dq{}'
-        elif self.language in active_dq_languages_2:
-            self.literal_double_quote = ur'{\char`\"}'
 
     def __call__(self):
         """Return the babel call with correct options and settings"""
         languages = sorted(self.otherlanguages.keys())
         languages.append(self.language or 'english')
         self.setup = [r'\usepackage[%s]{babel}' % ','.join(languages)]
-        if 'spanish' in languages:
-            # reset active chars to the original meaning:
-            self.setup.append(
-                r'\addto\shorthandsspanish{\spanishdeactivate{."~<>}}')
-            # or prepend r'\def\spanishoptions{es-noshorthands}'
+        # Deactivate "active characters"
+        shorthands = []
+        for c in ''.join([self.active_chars.get(l, '') for l in languages]):
+            if c not in shorthands:
+                shorthands.append(c)
+        if shorthands:
+            self.setup.append(r'\AtBeginDocument{\shorthandoff{%s}}'
+                              % ''.join(shorthands))
+        # Including '~' in shorthandoff prevents its use as no-break space
+        if 'galician' in languages:
+            self.setup.append(r'\deactivatetilden % restore ~ in Galician')
+        if 'estonian' in languages:
+            self.setup.extend([r'\makeatletter',
+                               r'  \addto\extrasestonian{\bbl@deactivate{~}}',
+                               r'\makeatother'])
+        if 'basque' in languages:
+            self.setup.extend([r'\makeatletter',
+                               r'  \addto\extrasbasque{\bbl@deactivate{~}}',
+                               r'\makeatother'])
         if (languages[-1] == 'english' and
             'french' in self.otherlanguages.keys()):
             self.setup += ['% Prevent side-effects if French hyphenation '
@@ -702,6 +712,8 @@ class CharMaps(object):
         ord('\\'): ur'\textbackslash{}',
         ord('{'): ur'\{',
         ord('}'): ur'\}',
+        # straight double quotes are 'active' in many languages
+        ord('"'): ur'\textquotedbl{}',
         # Square brackets are ordinary chars and cannot be escaped with '\',
         # so we put them in a group '{[}'. (Alternative: ensure that all
         # macros with optional arguments are terminated with {} and text
@@ -710,7 +722,8 @@ class CharMaps(object):
         # group, e.g. ``\item[{\hyperref[label]{text}}]``.
         ord('['): ur'{[}',
         ord(']'): ur'{]}',
-        # the soft hyphen is unknown in 8-bit text and not properly handled by XeTeX
+        # the soft hyphen is unknown in 8-bit text
+        # and not properly handled by XeTeX
         0x00AD: ur'\-', # SOFT HYPHEN
     }
     # Unicode chars that are not recognized by LaTeX's utf8 encoding
@@ -1261,9 +1274,19 @@ class LaTeXTranslator(nodes.NodeVisitor):
             self.requirements['_inputenc'] = (r'\usepackage[%s]{inputenc}'
                                               % self.latex_encoding)
         # TeX font encoding
-        if self.font_encoding and not self.is_xetex:
-            self.requirements['_fontenc'] = (r'\usepackage[%s]{fontenc}' %
-                                             self.font_encoding)
+        if not self.is_xetex:
+            if self.font_encoding:
+                self.requirements['_fontenc'] = (r'\usepackage[%s]{fontenc}' %
+                                                 self.font_encoding)
+            # ensure \textquotedbl is defined:
+            for enc in self.font_encoding.split(','):
+                enc = enc.strip()
+                if enc == 'OT1':
+                    self.requirements['_textquotedblOT1'] = (
+                        r'\DeclareTextSymbol{\textquotedbl}{OT1}{`\"}')
+                elif enc not in ('T1', 'T2A', 'T2B', 'T2C', 'T4', 'T5'):
+                    self.requirements['_textquotedbl'] = (
+                        r'\DeclareTextSymbolDefault{\textquotedbl}{T1}')
         # page layout with typearea (if there are relevant document options)
         if (settings.documentclass.find('scr') == -1 and
             (self.documentoptions.find('DIV') != -1 or
@@ -1423,9 +1446,6 @@ class LaTeXTranslator(nodes.NodeVisitor):
 
         # Set up the translation table:
         table = CharMaps.special.copy()
-        # double quotes are 'active' in some languages
-        # TODO: use \textquotedbl if font encoding is T1?
-        table[ord('"')] = self.babel.literal_double_quote
         # keep the underscore in citation references
         if self.inside_citation_reference_label:
             del(table[ord('_')])
