@@ -390,23 +390,27 @@ class smartchars(object):
               'cs-x-altquot': u'»«›‹',
               'de':           u'„“‚‘',
               'de-x-altquot': u'»«›‹',
-              'de-ch':        u'«»‹›',
+              'de-CH':        u'«»‹›',
               'el':           u'«»“”',
               'en':           u'“”‘’',
               'en-UK':        u'‘’“”',
               'eo':           u'“”‘’',
               'es':           u'«»“”',
+              'et':           u'„“‚‘', # no secondary quote listed in
+              'et-x-altquot': u'»«›‹', # the sources above (wikipedia.org)
+              'eu':           u'«»‹›',
               'es-x-altquot': u'“”‘’',
               'fi':           u'””’’',
               'fi-x-altquot': u'»»’’',
               'fr':           (u'« ',  u' »', u'‹ ', u' ›'), # with narrow no-break space
               'fr-x-altquot': u'«»‹›', # for use with manually set spaces
               # 'fr-x-altquot': (u'“ ',  u' ”', u'‘ ', u' ’'), # rarely used
-              'fr-ch':        u'«»‹›',
+              'fr-CH':        u'«»‹›',
+              'gl':           u'«»“”',
               'he':           u'”“»«',
               'he-x-altquot': u'„”‚’',
               'it':           u'«»“”',
-              'it-ch':        u'«»‹›',
+              'it-CH':        u'«»‹›',
               'it-x-altquot': u'“”‘’',
               'ja':           u'「」『』',
               'lt':           u'„“‚‘',
@@ -415,7 +419,7 @@ class smartchars(object):
               'pl':           u'„”«»',
               'pl-x-altquot': u'«»“”',
               'pt':           u'«»“”',
-              'pt_br':        u'“”‘’',
+              'pt-BR':        u'“”‘’',
               'ro':           u'„”«»',
               'ro-x-altquot': u'«»„”',
               'ru':           u'«»„“',
@@ -423,9 +427,9 @@ class smartchars(object):
               'sk-x-altquot': u'»«›‹',
               'sv':           u'„“‚‘',
               'sv-x-altquot': u'»«›‹',
-              'zh_cn':        u'“”‘’',
+              'zh-CN':        u'“”‘’',
               'it':           u'«»“”',
-              'zh_tw':        u'「」『』',
+              'zh-TW':        u'「」『』',
              }
 
     def __init__(self, language='en'):
