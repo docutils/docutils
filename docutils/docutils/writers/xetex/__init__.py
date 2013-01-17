@@ -42,7 +42,7 @@ class Writer(latex2e.Writer):
         r'% Linux Libertine (free, wide coverage, not only for Linux)',
         r'\setmainfont{Linux Libertine O}',
         r'\setsansfont{Linux Biolinum O}',
-        r'\setmonofont[HyphenChar=None]{DejaVu Sans Mono}',
+        r'\setmonofont[HyphenChar=None,Scale=MatchLowercase]{DejaVu Sans Mono}',
     ])
 
     config_section = 'xetex writer'
