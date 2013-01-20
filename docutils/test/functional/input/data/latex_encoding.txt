@@ -12,7 +12,7 @@ The special chars verbatim::
 
                             # $ % & ~ _ ^ \ { }
 
-However also *square brackets* [] need special care. 
+However also *square brackets* [] need special care.
 
    \item and all the other commands with optional arguments check
    if the token right after the macro name is an opening bracket.
@@ -38,6 +38,4 @@ The OT1 font-encoding has different characters for the less-than,
 greater-than and bar, < | >, except for typewriter font `cmtt`::
 
    < | >
-   
-
 
