@@ -20,6 +20,10 @@ Changes Since 0.10
 
   - Fix [ 3601607 ] node.__repr__() must return `str` instance.
 
+* docutils/parsers/rst/directives/images.py
+
+  - Apply [ 3599485 ] node source/line information for sphinx translation.
+
 * docutils/utils/__init__.py
 
   - Fix [ 3596884 ] exception importing ``docutils.io``.
