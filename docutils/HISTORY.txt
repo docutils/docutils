@@ -16,9 +16,17 @@
 Changes Since 0.10
 ==================
 
+* docutils/nodes.py
+
+  - Fix [ 3601607 ] node.__repr__() must return `str` instance.
+
 * docutils/utils/__init__.py
 
   - Fix [ 3596884 ] exception importing ``docutils.io``.
+
+* docutils/writers/html4css1/__init__.py
+
+  - Fix [ 3600051 ] for tables in a list, table cells are not compacted.
 
 * docutils/writers/latex2e/__init__.py
 
