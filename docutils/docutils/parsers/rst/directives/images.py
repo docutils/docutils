@@ -149,6 +149,8 @@ class Figure(Image):
             if isinstance(first_node, nodes.paragraph):
                 caption = nodes.caption(first_node.rawsource, '',
                                         *first_node.children)
+                caption.source = first_node.source
+                caption.line = first_node.line
                 figure_node += caption
             elif not (isinstance(first_node, nodes.comment)
                       and len(first_node) == 0):
