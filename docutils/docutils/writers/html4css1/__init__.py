@@ -307,7 +307,7 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.context = []
         self.topic_classes = []
         self.colspecs = []
-        self.compact_p = 1
+        self.compact_p = True
         self.compact_simple = False
         self.compact_field_list = False
         self.in_docinfo = False
@@ -1228,7 +1228,7 @@ class HTMLTranslator(nodes.NodeVisitor):
                 raise nodes.SkipNode
         # append to document body
         if tag:
-            self.body.append(self.starttag(node, tag, 
+            self.body.append(self.starttag(node, tag,
                                            suffix='\n'*bool(math_env),
                                            CLASS=clsarg))
         self.body.append(math_code)
@@ -1331,13 +1331,13 @@ class HTMLTranslator(nodes.NodeVisitor):
         if (isinstance(node.parent, nodes.document) or
             isinstance(node.parent, nodes.compound)):
             # Never compact paragraphs in document or compound.
-            return 0
+            return False
         for key, value in node.attlist():
             if (node.is_not_default(key) and
                 not (key == 'classes' and value in
                      ([], ['first'], ['last'], ['first', 'last']))):
                 # Attribute which needs to survive.
-                return 0
+                return False
         first = isinstance(node.parent[0], nodes.label) # skip label
         for child in node.parent.children[first:]:
             # only first paragraph can be compact
@@ -1345,14 +1345,14 @@ class HTMLTranslator(nodes.NodeVisitor):
                 continue
             if child is node:
                 break
-            return 0
+            return False
         parent_length = len([n for n in node.parent if not isinstance(
             n, (nodes.Invisible, nodes.label))])
         if ( self.compact_simple
              or self.compact_field_list
              or self.compact_p and parent_length == 1):
-            return 1
-        return 0
+            return True
+        return False
 
     def visit_paragraph(self, node):
         if self.should_be_compact_paragraph(node):
@@ -1536,11 +1536,14 @@ class HTMLTranslator(nodes.NodeVisitor):
         self.body.append('</div>\n')
 
     def visit_table(self, node):
+        self.context.append(self.compact_p)
+        self.compact_p = True
         classes = ' '.join(['docutils', self.settings.table_style]).strip()
         self.body.append(
             self.starttag(node, 'table', CLASS=classes, border="1"))
 
     def depart_table(self, node):
+        self.compact_p = self.context.pop()
         self.body.append('</table>\n')
 
     def visit_target(self, node):
