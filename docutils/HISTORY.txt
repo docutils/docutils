@@ -16,6 +16,10 @@
 Changes Since 0.10
 ==================
 
+* General
+
+  - Apply [ 2714873 ] Fix for the overwritting of document attributes.
+
 * docutils/nodes.py
 
   - Fix [ 3601607 ] node.__repr__() must return `str` instance.
