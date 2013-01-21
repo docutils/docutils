@@ -432,9 +432,23 @@ class Element(Node):
     This is equivalent to ``element.extend([node1, node2])``.
     """
 
-    list_attributes = ('ids', 'classes', 'names', 'dupnames', 'backrefs')
+    basic_attributes = ('ids', 'classes', 'names', 'dupnames')
+    """List attributes which are defined for every Element-derived class
+    instance and can be safely transferred to a different node."""
+
+    local_attributes = ('backrefs',)
+    """A list of class-specific attributes that should not be copied with the
+    standard attributes when replacing a node.
+
+    NOTE: Derived classes should override this value to prevent any of its
+    attributes being copied by adding to the value in its parent class."""
+
+    list_attributes = basic_attributes + local_attributes
     """List attributes, automatically initialized to empty lists for
     all nodes."""
+
+    known_attributes = list_attributes + ('source',)
+    """List attributes that are known to the Element base class."""
 
     tagname = None
     """The element generic identifier. If None, it is set as an instance
@@ -680,17 +694,231 @@ class Element(Node):
         else:
             return 1
 
-    def update_basic_atts(self, dict):
+    def update_basic_atts(self, dict_):
         """
         Update basic attributes ('ids', 'names', 'classes',
-        'dupnames', but not 'source') from node or dictionary `dict`.
+        'dupnames', but not 'source') from node or dictionary `dict_`.
         """
-        if isinstance(dict, Node):
-            dict = dict.attributes
-        for att in ('ids', 'classes', 'names', 'dupnames'):
-            for value in dict.get(att, []):
-                if not value in self[att]:
-                    self[att].append(value)
+        if isinstance(dict_, Node):
+            dict_ = dict_.attributes
+        for att in self.basic_attributes:
+            self.append_attr_list(att, dict_.get(att, []))
+
+    def append_attr_list(self, attr, values):
+        """
+        For each element in values, if it does not exist in self[attr], append
+        it.
+
+        NOTE: Requires self[attr] and values to be sequence type and the
+        former should specifically be a list.
+        """
+        # List Concatenation
+        for value in values:
+            if not value in self[attr]:
+                self[attr].append(value)
+
+    def coerce_append_attr_list(self, attr, value):
+        """
+        First, convert both self[attr] and value to a non-string sequence
+        type; if either is not already a sequence, convert it to a list of one
+        element.  Then call append_attr_list.
+
+        NOTE: self[attr] and value both must not be None.
+        """
+        # List Concatenation
+        if not isinstance(self.get(attr), list):
+            self[attr] = [self[attr]]
+        if not isinstance(value, list):
+            value = [value]
+        self.append_attr_list(attr, value)
+
+    def replace_attr(self, attr, value, force = True):
+        """
+        If self[attr] does not exist or force is True or omitted, set
+        self[attr] to value, otherwise do nothing.
+        """
+        # One or the other
+        if force or self.get(attr) is None:
+            self[attr] = value
+
+    def copy_attr_convert(self, attr, value, replace = True):
+        """
+        If attr is an attribute of self, set self[attr] to
+        [self[attr], value], otherwise set self[attr] to value.
+
+        NOTE: replace is not used by this function and is kept only for
+              compatibility with the other copy functions.
+        """
+        if self.get(attr) is not value:
+            self.coerce_append_attr_list(attr, value)
+
+    def copy_attr_coerce(self, attr, value, replace):
+        """
+        If attr is an attribute of self and either self[attr] or value is a
+        list, convert all non-sequence values to a sequence of 1 element and
+        then concatenate the two sequence, setting the result to self[attr].
+        If both self[attr] and value are non-sequences and replace is True or
+        self[attr] is None, replace self[attr] with value. Otherwise, do
+        nothing.
+        """
+        if self.get(attr) is not value:
+            if isinstance(self.get(attr), list) or \
+               isinstance(value, list):
+                self.coerce_append_attr_list(attr, value)
+            else:
+                self.replace_attr(attr, value, replace)
+
+    def copy_attr_concatenate(self, attr, value, replace):
+        """
+        If attr is an attribute of self and both self[attr] and value are
+        lists, concatenate the two sequences, setting the result to
+        self[attr].  If either self[attr] or value are non-sequences and
+        replace is True or self[attr] is None, replace self[attr] with value.
+        Otherwise, do nothing.
+        """
+        if self.get(attr) is not value:
+            if isinstance(self.get(attr), list) and \
+               isinstance(value, list):
+                self.append_attr_list(attr, value)
+            else:
+                self.replace_attr(attr, value, replace)
+
+    def copy_attr_consistent(self, attr, value, replace):
+        """
+        If replace is True or selfpattr] is None, replace self[attr] with
+        value.  Otherwise, do nothing.
+        """
+        if self.get(attr) is not value:
+            self.replace_attr(attr, value, replace)
+
+    def update_all_atts(self, dict_, update_fun = copy_attr_consistent,
+                        replace = True, and_source = False):
+        """
+        Updates all attributes from node or dictionary `dict_`.
+
+        Appends the basic attributes ('ids', 'names', 'classes',
+        'dupnames', but not 'source') and then, for all other attributes in
+        dict_, updates the same attribute in self.  When attributes with the
+        same identifier appear in both self and dict_, the two values are
+        merged based on the value of update_fun.  Generally, when replace is
+        True, the values in self are replaced or merged with the values in
+        dict_; otherwise, the values in self may be preserved or merged.  When
+        and_source is True, the 'source' attribute is included in the copy.
+
+        NOTE: When replace is False, and self contains a 'source' attribute,
+              'source' is not replaced even when dict_ has a 'source'
+              attribute, though it may still be merged into a list depending
+              on the value of update_fun.
+        NOTE: It is easier to call the update-specific methods then to pass
+              the update_fun method to this function.
+        """
+        if isinstance(dict_, Node):
+            dict_ = dict_.attributes
+
+        # Include the source attribute when copying?
+        if and_source:
+            filter_fun = self.is_not_list_attribute
+        else:
+            filter_fun = self.is_not_known_attribute
+
+        # Copy the basic attributes
+        self.update_basic_atts(dict_)
+
+        # Grab other attributes in dict_ not in self except the
+        # (All basic attributes should be copied already)
+        for att in filter(filter_fun, dict_):
+            update_fun(self, att, dict_[att], replace)
+
+    def update_all_atts_consistantly(self, dict_, replace = True,
+                                     and_source = False):
+        """
+        Updates all attributes from node or dictionary `dict_`.
+
+        Appends the basic attributes ('ids', 'names', 'classes',
+        'dupnames', but not 'source') and then, for all other attributes in
+        dict_, updates the same attribute in self.  When attributes with the
+        same identifier appear in both self and dict_ and replace is True, the
+        values in self are replaced with the values in dict_; otherwise, the
+        values in self are preserved.  When and_source is True, the 'source'
+        attribute is included in the copy.
+
+        NOTE: When replace is False, and self contains a 'source' attribute,
+              'source' is not replaced even when dict_ has a 'source'
+              attribute, though it may still be merged into a list depending
+              on the value of update_fun.
+        """
+        self.update_all_atts(dict_, Element.copy_attr_consistent, replace,
+                             and_source)
+
+    def update_all_atts_concatenating(self, dict_, replace = True,
+                                      and_source = False):
+        """
+        Updates all attributes from node or dictionary `dict_`.
+
+        Appends the basic attributes ('ids', 'names', 'classes',
+        'dupnames', but not 'source') and then, for all other attributes in
+        dict_, updates the same attribute in self.  When attributes with the
+        same identifier appear in both self and dict_ whose values aren't each
+        lists and replace is True, the values in self are replaced with the
+        values in dict_; if the values from self and dict_ for the given
+        identifier are both of list type, then the two lists are concatenated
+        and the result stored in self; otherwise, the values in self are
+        preserved.  When and_source is True, the 'source' attribute is
+        included in the copy.
+
+        NOTE: When replace is False, and self contains a 'source' attribute,
+              'source' is not replaced even when dict_ has a 'source'
+              attribute, though it may still be merged into a list depending
+              on the value of update_fun.
+        """
+        self.update_all_atts(dict_, Element.copy_attr_concatenate, replace,
+                             and_source)
+
+    def update_all_atts_coercion(self, dict_, replace = True,
+                                 and_source = False):
+        """
+        Updates all attributes from node or dictionary `dict_`.
+
+        Appends the basic attributes ('ids', 'names', 'classes',
+        'dupnames', but not 'source') and then, for all other attributes in
+        dict_, updates the same attribute in self.  When attributes with the
+        same identifier appear in both self and dict_ whose values are both
+        not lists and replace is True, the values in self are replaced with
+        the values in dict_; if either of the values from self and dict_ for
+        the given identifier are of list type, then first any non-lists are
+        converted to 1-element lists and then the two lists are concatenated
+        and the result stored in self; otherwise, the values in self are
+        preserved.  When and_source is True, the 'source' attribute is
+        included in the copy.
+
+        NOTE: When replace is False, and self contains a 'source' attribute,
+              'source' is not replaced even when dict_ has a 'source'
+              attribute, though it may still be merged into a list depending
+              on the value of update_fun.
+        """
+        self.update_all_atts(dict_, Element.copy_attr_coerce, replace,
+                             and_source)
+
+    def update_all_atts_convert(self, dict_, and_source = False):
+        """
+        Updates all attributes from node or dictionary `dict_`.
+
+        Appends the basic attributes ('ids', 'names', 'classes',
+        'dupnames', but not 'source') and then, for all other attributes in
+        dict_, updates the same attribute in self.  When attributes with the
+        same identifier appear in both self and dict_ then first any non-lists
+        are converted to 1-element lists and then the two lists are
+        concatenated and the result stored in self; otherwise, the values in
+        self are preserved.  When and_source is True, the 'source' attribute
+        is included in the copy.
+
+        NOTE: When replace is False, and self contains a 'source' attribute,
+              'source' is not replaced even when dict_ has a 'source'
+              attribute, though it may still be merged into a list depending
+              on the value of update_fun.
+        """
+        self.update_all_atts(dict_, Element.copy_attr_convert,
+                             and_source = and_source)
 
     def clear(self):
         self.children = []
@@ -721,7 +949,7 @@ class Element(Node):
         else:
             # `update` is a Text node or `new` is an empty list.
             # Assert that we aren't losing any attributes.
-            for att in ('ids', 'names', 'classes', 'dupnames'):
+            for att in self.basic_attributes:
                 assert not self[att], \
                        'Losing "%s" attribute: %s' % (att, self[att])
         self.parent.replace(self, new)
@@ -804,6 +1032,22 @@ class Element(Node):
         if by_id:
             assert id is not None
             by_id.referenced = 1
+
+    @classmethod
+    def is_not_list_attribute(cls, attr):
+        """
+        Returns True if and only if the given attribute is NOT one of the
+        basic list attributes defined for all Elements.
+        """
+        return attr not in cls.list_attributes
+
+    @classmethod
+    def is_not_known_attribute(cls, attr):
+        """
+        Returns True if and only if the given attribute is NOT recognized by
+        this class.
+        """
+        return attr not in cls.known_attributes
 
 
 class TextElement(Element):

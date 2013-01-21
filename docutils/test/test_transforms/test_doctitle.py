@@ -10,8 +10,23 @@ Tests for docutils.transforms.frontmatter.DocTitle.
 
 from __init__ import DocutilsTestSupport
 from docutils.transforms.frontmatter import DocTitle, SectionSubTitle
-from docutils.parsers.rst import Parser
+from docutils.parsers.rst import Parser, Directive
+from docutils.parsers.rst.directives import register_directive
 
+# dummy directive to test attribute merging:
+class AddNameToDocumentTitle(Directive):
+    required_arguments = 0
+    optional_arguments = 0
+    final_argument_whitespace = True
+    option_spec = { }
+    has_content = False
+
+    def run(self):
+        document = self.state_machine.document
+        document['names'].append('Name')
+        return []
+
+register_directive('add-name-to-title', AddNameToDocumentTitle)
 
 def suite():
     parser = Parser()
@@ -221,6 +236,25 @@ Another Subtitle
             <subtitle ids="another-subtitle" names="another\ subtitle">
                 Another Subtitle
 """],
+["""\
+-----
+Title
+-----
+
+This is a document, it flows nicely, so the attributes of it are at the
+bottom.
+
+.. add-name-to-title::
+
+""",
+"""\
+<document ids="title" names="Name title" source="test data" title="Title">
+    <title>
+        Title
+    <paragraph>
+        This is a document, it flows nicely, so the attributes of it are at the
+        bottom.
+"""]
 ])
 
 

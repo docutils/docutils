@@ -166,6 +166,117 @@ class ElementTests(unittest.TestCase):
         # 'test' is not overwritten because it is not a basic attribute.
         self.assertEqual(element1['test'], ['test1'])
 
+    def test_update_all_atts(self):
+        # Note: Also tests is_not_list_attribute and is_not_known_attribute
+        # and various helpers
+        ## Test for full attribute replacement
+        element1 = nodes.Element(ids=['foo', 'bar'], parent_only='parent',
+                                 all_nodes='mom')
+        element2 = nodes.Element(ids=['baz', 'qux'], child_only='child',
+                                 all_nodes='dad', source='source')
+
+        # Test for when same fields are replaced as well as source...
+        element1.update_all_atts_consistantly(element2, True, True)
+        # 'ids' are appended because 'ids' is a basic attribute.
+        self.assertEquals(element1['ids'], ['foo', 'bar', 'baz', 'qux'])
+        # 'parent_only' should remain unaffected.
+        self.assertEquals(element1['parent_only'], 'parent')
+        # 'all_nodes' is overwritten due to the second parameter == True.
+        self.assertEquals(element1['all_nodes'], 'dad')
+        # 'child_only' should have been added.
+        self.assertEquals(element1['child_only'], 'child')
+        # 'source' is also overwritten due to the third parameter == True.
+        self.assertEquals(element1['source'], 'source')
+
+        # Test for when same fields are replaced but not source...
+        element1 = nodes.Element(ids=['foo', 'bar'], parent_only='parent',
+                                 all_nodes='mom')
+        element1.update_all_atts_consistantly(element2)
+        # 'ids' are appended because 'ids' is a basic attribute.
+        self.assertEquals(element1['ids'], ['foo', 'bar', 'baz', 'qux'])
+        # 'parent_only' should remain unaffected.
+        self.assertEquals(element1['parent_only'], 'parent')
+        # 'all_nodes' is overwritten due to the second parameter default of True.
+        self.assertEquals(element1['all_nodes'], 'dad')
+        # 'child_only' should have been added.
+        self.assertEquals(element1['child_only'], 'child')
+        # 'source' remains unset due to the third parameter default of False.
+        self.assertEquals(element1.get('source'), None)
+
+        # Test for when fields are NOT replaced but source is...
+        element1 = nodes.Element(ids=['foo', 'bar'], parent_only='parent',
+                                 all_nodes='mom')
+        element1.update_all_atts_consistantly(element2, False, True)
+        # 'ids' are appended because 'ids' is a basic attribute.
+        self.assertEquals(element1['ids'], ['foo', 'bar', 'baz', 'qux'])
+        # 'parent_only' should remain unaffected.
+        self.assertEquals(element1['parent_only'], 'parent')
+        # 'all_nodes' is preserved due to the second parameter == False.
+        self.assertEquals(element1['all_nodes'], 'mom')
+        # 'child_only' should have been added.
+        self.assertEquals(element1['child_only'], 'child')
+        # 'source' is added due to the third parameter == True.
+        self.assertEquals(element1['source'], 'source')
+        element1 = nodes.Element(source='destination')
+        element1.update_all_atts_consistantly(element2, False, True)
+        # 'source' remains unchanged due to the second parameter == False.
+        self.assertEquals(element1['source'], 'destination')
+
+        # Test for when same fields are replaced but not source...
+        element1 = nodes.Element(ids=['foo', 'bar'], parent_only='parent',
+                                 all_nodes='mom')
+        element1.update_all_atts_consistantly(element2, False)
+        # 'ids' are appended because 'ids' is a basic attribute.
+        self.assertEquals(element1['ids'], ['foo', 'bar', 'baz', 'qux'])
+        # 'parent_only' should remain unaffected.
+        self.assertEquals(element1['parent_only'], 'parent')
+        # 'all_nodes' is preserved due to the second parameter == False.
+        self.assertEquals(element1['all_nodes'], 'mom')
+        # 'child_only' should have been added.
+        self.assertEquals(element1['child_only'], 'child')
+        # 'source' remains unset due to the third parameter default of False.
+        self.assertEquals(element1.get('source'), None)
+
+        ## Test for List attribute merging
+        # Attribute Concatination
+        element1 = nodes.Element(ss='a', sl='1', ls=['I'], ll=['A'])
+        element2 = nodes.Element(ss='b', sl=['2'], ls='II', ll=['B'])
+        element1.update_all_atts_concatenating(element2)
+        # 'ss' is replaced because non-list
+        self.assertEquals(element1['ss'], 'b')
+        # 'sl' is replaced because they are both not lists
+        self.assertEquals(element1['sl'], ['2'])
+        # 'ls' is replaced because they are both not lists
+        self.assertEquals(element1['ls'], 'II')
+        # 'll' is extended because they are both lists
+        self.assertEquals(element1['ll'], ['A', 'B'])
+
+        # Attribute Coercion
+        element1 = nodes.Element(ss='a', sl='1', ls=['I'], ll=['A'])
+        element2 = nodes.Element(ss='b', sl=['2'], ls='II', ll=['B'])
+        element1.update_all_atts_coercion(element2)
+        # 'ss' is replaced because non-list
+        self.assertEquals(element1['ss'], 'b')
+        # 'sl' is converted to a list and appended because element2 has a list
+        self.assertEquals(element1['sl'], ['1', '2'])
+        # 'ls' has element2's value appended to the list
+        self.assertEquals(element1['ls'], ['I', 'II'])
+        # 'll' is extended because they are both lists
+        self.assertEquals(element1['ll'], ['A', 'B'])
+
+        # Attribute Conversion
+        element1 = nodes.Element(ss='a', sl='1', ls=['I'], ll=['A'])
+        element2 = nodes.Element(ss='b', sl=['2'], ls='II', ll=['B'])
+        element1.update_all_atts_convert(element2)
+        # 'ss' is converted to a list with the values from each element
+        self.assertEquals(element1['ss'], ['a', 'b'])
+        # 'sl' is converted to a list and appended
+        self.assertEquals(element1['sl'], ['1', '2'])
+        # 'ls' has element2's value appended to the list
+        self.assertEquals(element1['ls'], ['I', 'II'])
+        # 'll' is extended
+        self.assertEquals(element1['ll'], ['A', 'B'])
+
     def test_replace_self(self):
         parent = nodes.Element(ids=['parent'])
         child1 = nodes.Element(ids=['child1'])
