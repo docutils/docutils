@@ -299,13 +299,24 @@ class Node(object):
 if sys.version_info < (3,):
     class reprunicode(unicode):
         """
-        A class that removes the initial u from unicode's repr.
+        A unicode sub-class that removes the initial u from unicode's repr.
         """
 
         def __repr__(self):
             return unicode.__repr__(self)[1:]
+
+
 else:
     reprunicode = unicode
+
+
+def ensure_str(s):
+    """
+    Failsave conversion of `unicode` to `str`.
+    """
+    if sys.version_info < (3,) and isinstance(s, unicode):
+        return s.encode('ascii', 'backslashreplace')
+    return s
 
 
 class Text(Node, reprunicode):
@@ -341,7 +352,7 @@ class Text(Node, reprunicode):
         data = self
         if len(data) > maxlen:
             data = data[:maxlen-4] + ' ...'
-        return '<%s: %s>' % (self.tagname, repr(reprunicode(data)))
+        return '<%s: %r>' % (self.tagname, reprunicode(data))
 
     def __repr__(self):
         return self.shortrepr(maxlen=68)
@@ -478,14 +489,14 @@ class Element(Node):
                 break
         if self['names']:
             return '<%s "%s": %s>' % (self.__class__.__name__,
-                                      '; '.join(self['names']), data)
+                '; '.join([ensure_str(n) for n in self['names']]), data)
         else:
             return '<%s: %s>' % (self.__class__.__name__, data)
 
     def shortrepr(self):
         if self['names']:
             return '<%s "%s"...>' % (self.__class__.__name__,
-                                     '; '.join(self['names']))
+                '; '.join([ensure_str(n) for n in self['names']]))
         else:
             return '<%s...>' % self.tagname
 

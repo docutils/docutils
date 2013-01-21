@@ -33,6 +33,11 @@ class TextTests(unittest.TestCase):
         self.assertEqual(repr(self.text), r"<#text: 'Line 1.\nLine 2.'>")
         self.assertEqual(self.text.shortrepr(),
                           r"<#text: 'Line 1.\nLine 2.'>")
+        self.assertEqual(nodes.reprunicode('foo'), u'foo')
+        if sys.version_info < (3,):
+            self.assertEqual(repr(self.unicode_text), r"<#text: 'M\xf6hren'>")
+        else:
+            self.assertEqual(repr(self.unicode_text), u"<#text: 'Möhren'>")
 
     def test_str(self):
         self.assertEqual(str(self.text), 'Line 1.\nLine 2.')
@@ -42,10 +47,13 @@ class TextTests(unittest.TestCase):
         self.assertEqual(str(self.unicode_text), 'M\xf6hren')
 
     def test_astext(self):
-        self.assertEqual(self.text.astext(), 'Line 1.\nLine 2.')
+        self.assertTrue(isinstance(self.text.astext(), unicode))
+        self.assertEqual(self.text.astext(), u'Line 1.\nLine 2.')
+        self.assertEqual(self.unicode_text.astext(), u'Möhren')
 
     def test_pformat(self):
-        self.assertEqual(self.text.pformat(), 'Line 1.\nLine 2.\n')
+        self.assertTrue(isinstance(self.text.pformat(), unicode))
+        self.assertEqual(self.text.pformat(), u'Line 1.\nLine 2.\n')
 
     def test_asciirestriction(self):
         if sys.version_info < (3,):
@@ -88,11 +96,25 @@ class ElementTests(unittest.TestCase):
         dom = element.asdom()
         self.assertEqual(dom.toxml(), u'<Element mark="\u2022"/>')
         dom.unlink()
+        element['names'] = ['nobody', u'имя', u'näs']
+        if sys.version_info < (3,):
+            self.assertEqual(repr(element),
+                '<Element "nobody; \\u0438\\u043c\\u044f; n\\xe4s": >')
+        else:
+            self.assertEqual(repr(element), u'<Element "nobody; имя; näs": >')
+        self.assertTrue(isinstance(repr(element), str))
 
     def test_withtext(self):
         element = nodes.Element('text\nmore', nodes.Text('text\nmore'))
+        uelement = nodes.Element(u'grün', nodes.Text(u'grün'))
         self.assertEqual(repr(element), r"<Element: <#text: 'text\nmore'>>")
+        if sys.version_info < (3,):
+            self.assertEqual(repr(uelement), "<Element: <#text: 'gr\\xfcn'>>")
+        else:
+            self.assertEqual(repr(uelement), u"<Element: <#text: 'grün'>>")
+        self.assertTrue(isinstance(repr(uelement),str))
         self.assertEqual(str(element), '<Element>text\nmore</Element>')
+        self.assertEqual(str(uelement), '<Element>gr\xfcn</Element>')
         dom = element.asdom()
         self.assertEqual(dom.toxml(), '<Element>text\nmore</Element>')
         dom.unlink()
@@ -193,6 +215,25 @@ class ElementTests(unittest.TestCase):
 
 
 class MiscTests(unittest.TestCase):
+
+    def test_reprunicode(self):
+        # return `unicode` instance
+        self.assertTrue(isinstance(nodes.reprunicode('foo'), unicode))
+        self.assertEqual(nodes.reprunicode('foo'), u'foo')
+        self.assertEqual(nodes.reprunicode(u'Möhre'), u'Möhre')
+        if sys.version_info < (3,): # strip leading "u" from representation
+            self.assertEqual(repr(nodes.reprunicode(u'Möhre')),
+                             repr(u'Möhre')[1:])
+        else: # no change to `unicode` under Python 3k
+            self.assertEqual(repr(nodes.reprunicode(u'Möhre')), repr(u'Möhre'))
+
+    def test_ensure_str(self):
+        self.assertTrue(isinstance(nodes.ensure_str(u'über'), str))
+        self.assertEqual(nodes.ensure_str('over'), 'over')
+        if sys.version_info < (3,): # strip leading "u" from representation
+            self.assertEqual(nodes.ensure_str(u'über'), r'\xfcber')
+        else:
+            self.assertEqual(nodes.ensure_str(u'über'), r'über')
 
     def test_node_class_names(self):
         node_class_names = []
@@ -484,7 +525,7 @@ class TreeCopyVisitorTests(unittest.TestCase):
 
     def compare_trees(self, one, two):
         self.assertEqual(one.__class__, two.__class__)
-        self.assertNotEquals(id(one), id(two))
+        self.assertNotEqual(id(one), id(two))
         self.assertEqual(len(one.children), len(two.children))
         for i in range(len(one.children)):
             self.compare_trees(one.children[i], two.children[i])
@@ -534,7 +575,7 @@ class MiscFunctionTests(unittest.TestCase):
         element = nodes.Element()
         document.set_id(element)
         self.assertEqual(element['ids'], ['prefixauto1'])
-        
+
 
 if __name__ == '__main__':
     unittest.main()
