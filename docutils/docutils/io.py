@@ -369,9 +369,9 @@ class FileOutput(Output):
         if ('b' not in self.mode and sys.version_info < (3,0)
             or check_encoding(self.destination, self.encoding) is False
            ):
-            data = self.encode(data)
             if sys.version_info >= (3,0) and os.linesep != '\n':
                 data = data.replace('\n', os.linesep) # fix endings
+            data = self.encode(data)
 
         try: # In Python < 2.5, try...except has to be nested in try...finally.
             try:
