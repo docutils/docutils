@@ -72,8 +72,8 @@ Question:
 * Contribute. The developers will make sure that the contribution fits
   nicely into Docutils (cf. the `review criteria`_). This might involve
   discussing (and compromising on) design and implementation details. It
-  might also lead to the conclusion that the addition fits better in `the
-  sandbox`_ than in the Docutils core.
+  might also lead to the conclusion that the addition fits better in the
+  `extensions and related projects`_.
 
 * Be patient, and be persistent.  None of us are paid to do this,
   it's all in our spare time -- which is precious and rare.
@@ -554,9 +554,11 @@ There is a development wiki at http://docutils.python-hosting.com/ as
 a scratchpad for transient notes.  Please use the repository for
 permament document storage.
 
+Extensions and Related Projects
+===============================
 
 The Sandbox
-===========
+-----------
 
 The `sandbox directory`_ is a place to play around, to try out and
 share ideas.  It's a part of the Subversion repository but it isn't
@@ -610,7 +612,7 @@ Docutils, may graduate to become `parallel projects`_.
 .. _parallel project:
 
 Parallel Projects
-=================
+-----------------
 
 Parallel projects contain useful code that is not central to the
 functioning of Docutils.  Examples are specialized add-ons or
@@ -643,6 +645,16 @@ established.  Core Docutils developers are available for consultation
 and may contribute to the parallel project.  It's easier to keep the
 projects in sync when there are changes made to the core Docutils
 code.
+
+Other related projects
+----------------------
+
+Many related but independent projects are listed in the Docutils 
+`link list`_. If you want your project to appear there, drop a note at
+the Docutils-develop_ mailing list.
+
+.. _link list: http://docutils.sourceforge.net/docs/user/links.html
+
 
 
 ..
