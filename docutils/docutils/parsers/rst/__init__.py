@@ -134,7 +134,7 @@ class Parser(docutils.parsers.Parser):
           ['--raw-enabled'],
           {'action': 'store_true'}),
          ('Token name set for parsing code with Pygments: one of '
-          '"long", "short", or "none (no parsing)". Default is "short".',
+          '"long", "short", or "none (no parsing)". Default is "long".',
           ['--syntax-highlight'],
           {'choices': ['long', 'short', 'none'],
            'default': 'long', 'metavar': '<format>'}),
