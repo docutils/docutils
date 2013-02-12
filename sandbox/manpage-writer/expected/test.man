@@ -49,7 +49,7 @@ an option
 .B \-b
 another
 .TP
-.B \-f,  \-\-force
+.B \-f\fP,\fB  \-\-force
 really do it
 .UNINDENT
 .sp

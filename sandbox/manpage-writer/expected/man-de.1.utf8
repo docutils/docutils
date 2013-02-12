@@ -259,7 +259,7 @@ OOPPTTIIOONNEENN
        ein  Argument benötigen, überschreibt jedes Duplikat den vorhergehenden
        Wert.
 
-       --ll,, ----llooccaall--ffiillee
+       --ll, ----llooccaall--ffiillee
               Aktiviert den lokalen Modus. Formatiert und zeigt lokale Manual‐
               dateien  an,  anstatt  die System-Manualsammlung zu durchsuchen.
               Jedes Manualseiten-Argument wird als nroff-Quelle  im  richtigen
@@ -269,7 +269,7 @@ OOPPTTIIOONNEENN
               Es wird keine cat-Datei erzeugt. Wenn eines  der   Argumente   --
               ist, wird die Eingabe von der Standardeingabe uebernommen.
 
-       --LL _l_o_c_a_l_e_, ----llooccaallee==_l_o_c_a_l_e
+       --LL _l_o_c_a_l_e,, ----llooccaallee==_l_o_c_a_l_e
               Normalerweise  bestimmt  man  die  aktuelle  locale  durch einen
               Aufruf der C Funktion setlocale (3), die diverse  Umgebungsvari-
               ablen, darunter u. U.  $LC_MESSAGES und $LANG untersucht.  Diese
@@ -280,7 +280,7 @@ OOPPTTIIOONNEENN
               der Seite in Erscheinung tritt. Daher werden  Ausgaben  wie  die
               Hilfeseite immer in der urspruenglichen Sprache ausgegeben.
 
-       --DD,, ----ddeeffaauulltt
+       --DD, ----ddeeffaauulltt
               Diese Option wird normalerweise nur als allererste angegeben und
               setzt das Verhalten von man in allen Belangen  wieder  zum  Nor-
               malverhalten  zurueck.  Der Zweck dieser Option ist es, Optionen
@@ -288,18 +288,18 @@ OOPPTTIIOONNEENN
               able  $MANOPT  gesetzt sind. Alle Optionen, die -D folgen, haben
               wieder ihren gewohnten Effekt.
 
-       --MM _P_f_a_d_, ----mmaannppaatthh==_P_f_a_d
+       --MM _P_f_a_d,, ----mmaannppaatthh==_P_f_a_d
               Ermoeglicht es, einen alternativen  Manualpfad  anzugeben.  Nor‐
               malerweise  verwendet  man dieselben Methoden wie in manpath, um
               den Suchpfad zu ermitteln. Diese Option ueberschreibt die  Umge‐
               bungsvariable $$MMAANNPPAATTHH.
 
-       --PP _P_a_g_e_r_, ----ppaaggeerr==_P_a_g_e_r
+       --PP _P_a_g_e_r,, ----ppaaggeerr==_P_a_g_e_r
               Gibt an, welcher Pager verwendet wird. Die Normaleinstellung ist
               pager-s.   Diese  Option  ueberschreibt  die   Umgebungsvariable
               $$PPAAGGEERR und wird nicht in Zusammenhang mit -f oder -k verwendet.
 
-       --rr _P_r_o_m_p_t_, ----pprroommpptt==_P_r_o_m_p_t
+       --rr _P_r_o_m_p_t,, ----pprroommpptt==_P_r_o_m_p_t
               Wenn eine hinreichend neue Version von less als Pager  verwendet
               wird, versucht man dort einige sinnvolle Optionen zu setzen. Die
               Eingabeaufforderung in der letzten Zeile sieht in  dem  Fall  so
@@ -329,28 +329,28 @@ OOPPTTIIOONNEENN
               geschützten  $$ am Ende der Zeichenkette hinzugefügt werden.  Der
               Default ist hier --iixx88.
 
-       --SS _L_i_s_t_e_, ----sseeccttiioonnss==_L_i_s_t_e
+       --SS _L_i_s_t_e,, ----sseeccttiioonnss==_L_i_s_t_e
               Eine   durch   Doppelpunkte   getrennte  Liste  von  Abschnitten
               definiert bei Benutzung dieser Option die  Reihenfolge,  in  der
               die Abschnitte durchsucht werden. Diese Option ueberschreibt die
               Umgebungsvariable $MANSECT.
 
-       --aa,, ----aallll
+       --aa, ----aallll
               Wird eine Manualseite in einem Abschnitt gefunden, so terminiert
               man   nach  Anzeige  dieser  Seite.  Wird  jedoch  diese  Option
               angegeben, so werden alle  passenden  Manualseiten  nacheinander
               angezeigt.
 
-       --cc,, ----ccaattmmaann
+       --cc, ----ccaattmmaann
               Diese Option ueberprueft nur, ob die zur angegebenen Manualseite
               passende cat-Seite aktuell ist und erzeugt ggf.  eine  neue.  Es
               wird dabei nichts angezeigt.
 
-       --dd,, ----ddeebbuugg
+       --dd, ----ddeebbuugg
               Bei  dieser  Option werden keine Manualseiten angezeigt, sondern
               nur eine Menge von Diagnoseinformation.
 
-       --ee _E_r_w_e_i_t_e_r_u_n_g_, ----eexxtteennssiioonn==_E_r_w_e_i_t_e_r_u_n_g
+       --ee _E_r_w_e_i_t_e_r_u_n_g,, ----eexxtteennssiioonn==_E_r_w_e_i_t_e_r_u_n_g
               Einige  Systeme  enthalten  grosse  Pakete an Manualseiten,  wie
               z.B.  in dem Tcl Paket, die  in  die  normalen  Manualabschnitte
               integriert  werden.  Um beispielsweise das Problem zweier unter‐
@@ -367,14 +367,14 @@ OOPPTTIIOONNEENN
               Seiten  mit der Erweiterung **ttccll, wenn es mit --ee ttccll  aufgerufen
               wurde. Die Suche wird  dabei in allen Abschnitten durchgeführt.
 
-       --ff,, ----wwhhaattiiss
+       --ff, ----wwhhaattiiss
               Diese  Option  ist  das  AEquivalent  zu  whatis.   Es wird eine
               Kurzbeschreibung der gewuenschten  Manualseite  angezeigt,  wenn
               sie  gefunden  wurde.  Zu  Details  siehe whatis(1).  Mit dieser
               Option ist nur eine Standardsuche  moeglich.  Verbesserte  Such-
               moeglichkeiten bieten die Optionen von whatis.
 
-       --kk,, ----aapprrooppooss
+       --kk, ----aapprrooppooss
               Diese  Option  ist  das  AEquivalent  zu apropos.  Es werden die
               Kurzbeschreibungen zu allen Manualseiten  nach  dem  angegebenen
               Stichwort  durchsucht.  Zu Details siehe apropos(1).  Mit dieser
@@ -392,7 +392,7 @@ OOPPTTIIOONNEENN
               durch den Betriebssystemnamen  man  angesprochen.  Diese  Option
               ueberschreibt die Umgebungsvariable $SYSTEM.
 
-       --pp _Z_e_i_c_h_e_n_k_e_t_t_e_, ----pprreepprroocceessssoorr==_Z_e_i_c_h_e_n_k_e_t_t_e
+       --pp _Z_e_i_c_h_e_n_k_e_t_t_e,, ----pprreepprroocceessssoorr==_Z_e_i_c_h_e_n_k_e_t_t_e
               Diese Option gibt die Reihenfolge an, in der die Praeprozessoren
               vor nroff  oder  troff/groff  abgearbeitet  werden.  Nicht  alle
               Installationen   haben  notwendigerweise  alle  Praeprozessoren.
@@ -402,7 +402,7 @@ OOPPTTIIOONNEENN
               $MANROFFSEQ.   Der  Praeprozessor  zsoelim wird immer als erster
               gestartet.
 
-       --uu,, ----uuppddaattee
+       --uu, ----uuppddaattee
               Die  Indexdatenbanken  werden  immer  waehrend   des   laufenden
               Betriebes   auf   neuestem   Stand  gehalten,  was  insbesondere
               bedeutet, dass mandb nicht benoetigt wird, um sie konsistent  zu
@@ -414,7 +414,7 @@ OOPPTTIIOONNEENN
               Ebene  durchgefuehrt  werden  soll,  muss  man  die  Option   -u
               benutzen.
 
-       --tt,, ----ttrrooffff
+       --tt, ----ttrrooffff
               Mit  dieser  Option wird groff -mandoc verwendet, um die Manual-
               seite zu formatieren und an die Standardausgabe zu  liefern.  Im
               Zusammenhang mit -T oder -Z ist diese Option nicht noetig.
@@ -425,7 +425,7 @@ OOPPTTIIOONNEENN
               die  Angabe von -t.  Verfuegbare Ausgabeformate (von Groff-1.17)
               beinhalten dvi, latin1, ps, utf8, X75 und X100.
 
-       --ZZ,, ----ddiittrrooffff
+       --ZZ, ----ddiittrrooffff
               Das  traditionelle  troff  erzeugt   ditroff.    groff   startet
               zunaechst  troff  und leitet danach dessen Ausgabe an einen fuer
               das gewaehlte  Ausgabeformat  geeigneten  Postprozessor  weiter.
@@ -433,16 +433,16 @@ OOPPTTIIOONNEENN
               traditionelles troff zu emulieren und impliziert -t, andernfalls
               wird es ignoriert.
 
-       --ww,, ----wwhheerree,, ----llooccaattiioonn
+       --ww, ----wwhheerree, ----llooccaattiioonn
               Zeigt  nicht  die Manualseiten, sondern die Position der Dateien
               im Dateisystem an, die formatiert oder angezeigt  wuerden.  Wenn
               die  Datei  eine  cat-Seite  ist, wird auch der Ort ihrer nroff-
               Quelldatei angezeigt.
 
-       --hh,, ----hheellpp
+       --hh, ----hheellpp
               Zeigt einen Hilfstext an.
 
-       --VV,, ----vveerrssiioonn
+       --VV, ----vveerrssiioonn
               Zeigt Programmversion und Autor an.
 
 UUMMGGEEBBUUNNGG

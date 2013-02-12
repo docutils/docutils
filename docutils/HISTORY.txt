@@ -45,6 +45,10 @@ Changes Since 0.10
 
 .. _SmartQuotes: docs/user/config.html#smart-quotes
 
+* docutils/writers/manpage.py
+
+  - Fix option separating comma was bold (thanks to Bill Morris).
+
 Release 0.10 (2012-12-16)
 =========================
 
