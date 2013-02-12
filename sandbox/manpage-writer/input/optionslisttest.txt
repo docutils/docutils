@@ -60,6 +60,7 @@ MORE OPTIONS
 -o x   an option
 -b     another
 
+-m MESSAGE, --message=MESSAGE  The message to display (beaware of ``,``) 
 
 EXAMPLES
 ===========

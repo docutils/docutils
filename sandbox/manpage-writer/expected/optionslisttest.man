@@ -94,6 +94,9 @@ an option
 .TP
 .B \-b
 another
+.TP
+.BI \-m \ MESSAGE, \ \-\-message\fB= MESSAGE
+The message to display (beaware of \fB,\fP)
 .UNINDENT
 .SH EXAMPLES
 .sp

@@ -45,6 +45,9 @@ MMOORREE OOPPTTIIOONNSS
 
        --bb     another
 
+       --mm _M_E_S_S_A_G_E_, ----mmeessssaaggee==_M_E_S_S_A_G_E
+              The message to display (beaware of ,,)
+
 EEXXAAMMPPLLEESS
        The "Examples" section header must not be intented. But this  paragraph
        is indented, as all text in man-pages. This is level 0.
