@@ -898,7 +898,7 @@ class Translator(nodes.NodeVisitor):
     def visit_option(self, node):
         # each form of the option will be presented separately
         if self.context[-1] > 0:
-            self.body.append(', ')
+            self.body.append('\\fP,\\fB ')
         if self.context[-3] == '.BI':
             self.body.append('\\')
         self.body.append(' ')
