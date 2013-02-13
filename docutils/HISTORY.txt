@@ -42,6 +42,7 @@ Changes Since 0.10
     English typographic ones.
     Activate the SmartQuotes_ transform if you want this feature.
   - Fix literal use of babel shorthands (straight quote, tilde, ...).
+  - Fix [ 3603246 ] Bug in option "--graphicx-option=auto".
 
 .. _SmartQuotes: docs/user/config.html#smart-quotes
 
