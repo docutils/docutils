@@ -555,7 +555,7 @@ PreambleCmds.graphicx_auto = r"""% Check output format
   \usepackage{graphicx}
 \else
   \usepackage[pdftex]{graphicx}
-\fi'))"""
+\fi"""
 
 PreambleCmds.highlight_rules = r"""% basic code highlight:
 \providecommand*\DUrolecomment[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
@@ -782,7 +782,7 @@ class CharMaps(object):
         0x00b3: ur'\textthreesuperior{}', # ³ SUPERSCRIPT THREE
         0x00b4: ur'\textasciiacute{}',    # ´ ACUTE ACCENT
         0x00b5: ur'\textmu{}',            # µ MICRO SIGN
-        0x00b6: ur'\textparagraph{}',     # ¶ PILCROW SIGN # not equal to \textpilcrow
+        0x00b6: ur'\textparagraph{}',     # ¶ PILCROW SIGN # != \textpilcrow
         0x00b9: ur'\textonesuperior{}',   # ¹ SUPERSCRIPT ONE
         0x00ba: ur'\textordmasculine{}',  # º MASCULINE ORDINAL INDICATOR
         0x00bc: ur'\textonequarter{}',    # 1/4 FRACTION
@@ -790,7 +790,7 @@ class CharMaps(object):
         0x00be: ur'\textthreequarters{}', # 3/4 FRACTION
         0x00d7: ur'\texttimes{}',         # × MULTIPLICATION SIGN
         0x00f7: ur'\textdiv{}',           # ÷ DIVISION SIGN
-        #
+        # others
         0x0192: ur'\textflorin{}',        # LATIN SMALL LETTER F WITH HOOK
         0x02b9: ur'\textasciiacute{}',    # MODIFIER LETTER PRIME
         0x02ba: ur'\textacutedbl{}',      # MODIFIER LETTER DOUBLE PRIME
