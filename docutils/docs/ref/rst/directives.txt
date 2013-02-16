@@ -1079,10 +1079,10 @@ currently support for only one header and footer.
 
    Thus, you may soon find Docutils' abilities to be insufficient for
    these purposes.  At that time, you should consider using a
-   templating system (like ht2html_) rather than the "header" and
+   documentation generator like Sphinx_ rather than the "header" and
    "footer" directives.
 
-   .. _ht2html: http://ht2html.sourceforge.net/
+   .. _Sphinx: http://sphinx-doc.org/
 
 In addition to the use of these directives to populate header and
 footer content, content may also be added automatically by the
