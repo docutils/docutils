@@ -8,9 +8,9 @@ NNAAMMEE
 SSEEEE AALLSSOO
        In mercurial the following substitutions are in use:
 
-       .. |hg(1)| replace:: **hg**\ (1)
-       .. |hgrc(5)| replace:: **hgrc**\ (5)
-       .. |hgignore(5)| replace:: **hgignore**\ (5)
+          .. |hg(1)| replace:: **hg**\ (1)
+          .. |hgrc(5)| replace:: **hgrc**\ (5)
+          .. |hgignore(5)| replace:: **hgignore**\ (5)
 
        resulting in.
 
@@ -21,22 +21,22 @@ DDEESSCCRRIIPPTTIIOONN
 
        · accents:
 
-       · right: ´
+         · right: ´
 
-       · left: `
+         · left: `
 
        · quotes:
 
-       · straight: '
+         · straight: '
 
-       · double: "
+         · double: "
 
-       · single: ' '
+         · single: ' '
 
-       · double: " "
+         · double: " "
 
-         Some  text  afterwards,  test.txt  ended  with  quotes test.  Unicode
-         breaks the man processing chain. The display ends with ssiinnggllee:: .
+       Some  text afterwards, test.txt ended with quotes test.  Unicode breaks
+       the man processing chain. The display ends with ssiinnggllee:: .
 
 
 

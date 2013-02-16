@@ -253,7 +253,7 @@ class Translator(nodes.NodeVisitor):
         """Return the final formatted document as a string."""
         if not self.header_written:
             # ensure we get a ".TH" as viewers require it.
-            self.head.append(self.header())
+            self.append_header()
         # filter body
         for i in xrange(len(self.body)-1, 0, -1):
             # remove superfluous vertical gaps.
