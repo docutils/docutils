@@ -820,14 +820,6 @@ _`math_output`
       fonts for high-quality typesetting that is scalable and prints
       at full resolution.
 
-      A custom URL can be appended after whitespace,
-      for example a local install
-      ``MathJax file:/usr/share/javascript/mathjax/MathJax.js`` or
-      `access the MathJax CDN using a https secure connection`__
-      ``mathjax https://c328740.ssl.cf1.rackcdn.com/mathjax/latest/MathJax.js?config=config=TeX-AMS-MML_HTMLorMML``.
-
-      __ http://www.mathjax.org/resources/faqs/#problem-https
-
       Pro:
         Works 'out of the box' across multiple browsers and platforms.
 
@@ -839,6 +831,16 @@ _`math_output`
         installation and configuration).
 
         Downloads JavaScript code from a third-party site.
+
+      A custom URI can be appended after whitespace,
+      for example a local installation ::
+
+        math-output: MathJax file:/usr/share/javascript/mathjax/MathJax.js
+
+      or a URI to `access the MathJax CDN using a https secure
+      connection`__.
+
+      __ http://www.mathjax.org/resources/faqs/#problem-https
 
     :HTML:
       Format math in standard HTML enhanced by CSS rules
