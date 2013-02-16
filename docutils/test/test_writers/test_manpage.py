@@ -141,10 +141,10 @@ General rule of life.
 .BI \-\-config\fB= <file>
 Read configuration settings from <file>, if it exists.
 .TP
-.B \-\-version,  \-V
+.B \-\-version\fP,\fB  \-V
 Show this program\(aqs version number and exit.
 .TP
-.B \-\-help,  \-h
+.B \-\-help\fP,\fB  \-h
 Show this help message and exit.
 .UNINDENT
 .SH OTHER SECTION
