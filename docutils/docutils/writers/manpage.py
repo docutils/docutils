@@ -378,7 +378,7 @@ class Translator(nodes.NodeVisitor):
         if self.header_written:
             return
         self.head.append(self.header())
-        self.body.append(MACRO_DEF)
+        self.head.append(MACRO_DEF)
         self.header_written = 1
 
     def visit_address(self, node):
