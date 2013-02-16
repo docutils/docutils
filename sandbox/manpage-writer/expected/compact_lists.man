@@ -1,8 +1,8 @@
+.\" Man page generated from reStructuredText.
+.
 .TH   "" "" ""
 .SH NAME
  \- 
-.\" Man page generated from reStructuredText.
-.
 .INDENT 0.0
 .IP \(bu 2
 This is an ordinary simple bullet list.

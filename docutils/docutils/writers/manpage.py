@@ -246,7 +246,7 @@ class Translator(nodes.NodeVisitor):
 
     def ensure_eol(self):
         """Ensure the last line in body is terminated by new line."""
-        if self.body[-1][-1] != '\n':
+        if len(self.body) > 0 and self.body[-1][-1] != '\n':
             self.body.append('\n')
 
     def astext(self):
@@ -377,7 +377,7 @@ class Translator(nodes.NodeVisitor):
         # .TH title_upper section date source manual
         if self.header_written:
             return
-        self.body.append(self.header())
+        self.head.append(self.header())
         self.body.append(MACRO_DEF)
         self.header_written = 1
 
@@ -573,7 +573,7 @@ class Translator(nodes.NodeVisitor):
 
     def visit_document(self, node):
         # no blank line between comment and header.
-        self.body.append(self.comment(self.document_start).rstrip()+'\n')
+        self.head.append(self.comment(self.document_start).rstrip()+'\n')
         # writing header is postboned
         self.header_written = 0
 
